@@ -1,8 +1,0 @@
- async _fetch(url) {
-   let actualUrl = url;
-   if (window.location.protocol === 'file:' && PRODUCTION_CONFIG.CORS_PROXY.enabled) {
-     actualUrl = PRODUCTION_CONFIG.CORS_PROXY.url + encodeURIComponent(url);
-   }
-   // ... rest of the code
- }
- 

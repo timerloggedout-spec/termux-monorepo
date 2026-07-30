@@ -1,5 +1,0 @@
-function setPlayerHandle() {
-    playerHandle = document.getElementById('playerHandle').value.trim() || 'Player';
-    localStorage.setItem('qfoam_handle', playerHandle);
-    if (State.ymap) syncStateToYjs();
-}

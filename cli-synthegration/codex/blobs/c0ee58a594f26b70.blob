@@ -1,9 +1,0 @@
-const maxTradeSize = Math.min(opp.minLiquidity * 0.05, /* we don't have the input investment here? */);
-// We don't have the input investment in the display function? We can get it from the input element.
-// But note: the input investment is for the fixed investment, but we are using maxTradeSize now.
-// We can ignore the input investment for the opportunity display and use the maxTradeSize.
-
-const investment = maxTradeSize;
-const finalAmount = investment * opp.product;
-const profit = finalAmount - investment;
-const profitPercent = (profit / investment) * 100;

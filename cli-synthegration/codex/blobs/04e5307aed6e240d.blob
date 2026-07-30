@@ -1,9 +1,0 @@
-updateDisplay() {
-    if (!this.isEnabled) return;
-    const logsContainer = document.getElementById('diagnosticLogs');
-    logsContainer.innerHTML = '';
-    this.logs.slice(-20).forEach(log => {
-        // ... create logElement and append
-    });
-    logsContainer.scrollTop = logsContainer.scrollHeight;
-}

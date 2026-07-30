@@ -1,9 +1,0 @@
-Frontend → fetches from Apps Script → reads Google Sheets directly.
-                   ↑
-            Scheduled triggers (daily) pull from:
-            - ClinicalTrials.gov
-            - FDA openFDA / EMA
-            - WADA list
-            - Peptide DBs (Peptipedia, SATPdb)
-            - ROR
-            and update the Sheets.

@@ -1,8 +1,0 @@
-   // In each .js file
-   class DataManager { ... }
-   if (typeof module !== 'undefined' && module.exports) {
-       module.exports = DataManager;
-   } else {
-       window.DataManager = DataManager;
-   }
-   

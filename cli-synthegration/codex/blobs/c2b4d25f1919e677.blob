@@ -1,8 +1,0 @@
-type SystematicReview @createModel(accountRelation: LIST, description: "Cochrane review") {
-  review_id: String! @string(minLength: 1, maxLength: 20)
-  title: String! @string(maxLength: 500)
-  conclusion: String @string(maxLength: 5000)
-  publication_date: Date
-  interventions_reviewed: [String!]! @list(maxLength: 50)
-  linked_gene_ids: [String!]! @list(maxLength: 50)
-}

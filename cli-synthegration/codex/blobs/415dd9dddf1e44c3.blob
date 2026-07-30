@@ -1,8 +1,0 @@
----
-
-## 🧪 If compilation still fails
-
-SciPy is heavy. If you can’t get it installed, you have two escape hatches:
-
-### A. Rewrite the tiny part of `process_sets.py` that uses SciPy
-Usually the script only needs `scipy.signal.resample` for audio. You can replace it with a pure‑NumPy alternative:

@@ -1,6 +1,0 @@
-for (const f of fiatList) {
-    UI.toggleFiat(f); // first time adds
-    if (!State.selectedFiats.has(f)) throw new Error(`Failed to add ${f}`);
-    UI.toggleFiat(f); // removes
-    if (State.selectedFiats.has(f)) throw new Error(`Failed to remove ${f}`);
-}

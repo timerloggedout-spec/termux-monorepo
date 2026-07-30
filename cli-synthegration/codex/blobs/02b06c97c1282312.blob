@@ -1,9 +1,0 @@
-function activateInvestmentModule(moduleKey, amount) {
-    const module = MODULES[moduleKey];
-    if (!module || amount > STATE.user.qBucks) return;
-    
-    // Deduct cost
-    STATE.user.qBucks -= amount;
-    
-    // ... rest of the function ...
-}

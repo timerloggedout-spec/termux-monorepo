@@ -1,4 +1,0 @@
-const scale = maxTradeSize / opp.investment;
-opp.investment = maxTradeSize;
-opp.profit = opp.profit * scale;
-opp.finalAmount = opp.finalAmount * scale;

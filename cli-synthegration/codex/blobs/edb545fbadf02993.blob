@@ -1,1 +1,0 @@
-if(d.bitcoin?.usd){const bu=d.bitcoin.usd;State.forexRates={};f.forEach(cur=>{const lc = cur.toLowerCase(); if(d.bitcoin[lc])State.forexRates[cur]=bu/d.bitcoin[lc];});success=Object.keys(State.forexRates).length > 0;...}

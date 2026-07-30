@@ -1,5 +1,0 @@
-// MatrixView.jsx
-const { state, dispatch } = useAppContext();
-const handleSelectCompound = (compound) => {
-  dispatch({ type: 'SELECT_COMPOUND', payload: compound });
-};

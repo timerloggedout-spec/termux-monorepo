@@ -1,5 +1,0 @@
-async initializeExchangeData() {
-    try {
-        this.logger.log('DATA_MANAGER', 'Initializing exchange data...', 'info');
-        await this.loadAllExchanges();
-        // ... rest of the code

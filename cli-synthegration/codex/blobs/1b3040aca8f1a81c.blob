@@ -1,7 +1,0 @@
-ffmpeg -i first.mp4 -i second.mp4 \
-  -filter_complex \
-    "[0:v][1:v]xfade=transition=fade:duration=1:offset=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 first.mp4 | awk '{print $1 - 1}')[v_out]; \
-     [0:a][1:a]acrossfade=d=1[a_out]" \
-  -map "[v_out]" -map "[a_out]" \
-  -c:v libx264 -preset veryfast -crf 18 -c:a aac -b:a 192k \
-  output.mp4

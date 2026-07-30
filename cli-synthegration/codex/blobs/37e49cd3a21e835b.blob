@@ -1,2 +1,0 @@
-State.graph[p.base][p.target] = {rate: p.bidPrice, ...}  // selling base for target
-State.graph[p.target][p.base] = {rate: 1/p.askPrice, ...}  // buying base with target

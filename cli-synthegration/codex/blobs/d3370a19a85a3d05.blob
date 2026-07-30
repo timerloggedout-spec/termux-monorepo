@@ -1,4 +1,0 @@
-Then drop SciPy entirely – no heavy install needed.
-
-### B. Use `ffmpeg` directly for processing
-Your `auto_concat_v3.sh` already relies on `ffmpeg`. If `process_sets.py` only merges or resamples audio, you can do it entirely in `ffmpeg` with a shell one‑liner:

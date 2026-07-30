@@ -1,5 +1,0 @@
-ALTER TABLE country ADD COLUMN customs_authority_name TEXT;
-ALTER TABLE country ADD COLUMN customs_website TEXT;
-ALTER TABLE country ADD COLUMN import_permit_required BOOLEAN DEFAULT FALSE;
-ALTER TABLE country ADD COLUMN export_permit_required BOOLEAN DEFAULT FALSE;
-ALTER TABLE country ADD COLUMN dea_controlled_substance_schedule TEXT; -- e.g., "III" for US

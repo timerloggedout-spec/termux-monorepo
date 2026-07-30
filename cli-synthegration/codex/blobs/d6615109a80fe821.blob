@@ -1,8 +1,0 @@
-cd ~/concat_work_20260514_142902
-
-# Replace the SciPy import and usage with pure numpy
-sed -i 's/from scipy import signal/# using numpy.correlate/' process_sets.py
-sed -i 's/signal\.correlate/np.correlate/' process_sets.py
-
-# Now run the Python script again (it will use numpy.correlate)
-python3 process_sets.py

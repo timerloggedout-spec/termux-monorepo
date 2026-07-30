@@ -1,8 +1,0 @@
-graph TD
-    A[Start: Need a shared, distributed time-series DB in HTML?] --> B{Is your app decentralized / P2P?};
-    B -- Yes --> C{All-in-one solution?};
-    C -- Yes --> D[Use GunDB or OrbitDB];
-    C -- No --> E[Combine μts or LokiJS with Yjs or Swarm.js];
-    B -- No --> F{Do you need powerful analytics?};
-    F -- Yes --> G[Use DuckDB-Wasm with a sync protocol];
-    F -- No --> H[Combine PouchDB with CouchDB for a proven client-server sync];

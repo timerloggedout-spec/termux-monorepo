@@ -1,0 +1,230 @@
+{
+  "generated": "2026-07-25T05:41:26.515924+00:00",
+  "router_agent_hook": "python3 ~/workspace/llm_map/router_agent.py --foresight",
+  "run_history": {
+    "total": 131,
+    "pass": 53,
+    "fail": 71,
+    "pass_rate": 40.5
+  },
+  "sprints": {
+    "total": 11,
+    "blocked": 1,
+    "active": 4,
+    "resolved": 2,
+    "bottlenecks": [
+      {
+        "id": "expert-unlock",
+        "name": "Expert Model Unlock",
+        "blocker": "Version header gate in WASM/JS bundle",
+        "impact": "high"
+      }
+    ]
+  },
+  "dependencies": {
+    "raw_edges": 13419,
+    "resolved_edges": 158,
+    "resolution_rate": 1.2
+  },
+  "promotions": {
+    "total": 4,
+    "recent": [
+      {
+        "id": "promote-20260608195453",
+        "title": "Promote termux-multi-agent/run.py",
+        "ref": "PROMOTE",
+        "priority": "high",
+        "assigned_agent": "promote.py",
+        "status": "done",
+        "component": "promotion",
+        "session_id": "2026-06-08T19:54:53.089315+00:00",
+        "source": "termux-multi-agent/run.py",
+        "destination": "harmonizer-prod_cli/workspace/run.py",
+        "timestamp": "2026-06-08T19:54:53.089375+00:00",
+        "target_type": "output"
+      },
+      {
+        "id": "promote-20260608201452",
+        "title": "Promote termux-multi-agent/provision_agent.py",
+        "ref": "PROMOTE",
+        "priority": "high",
+        "assigned_agent": "promote.py",
+        "status": "done",
+        "component": "promotion",
+        "session_id": "2026-06-08T20:14:52.522326+00:00",
+        "source": "termux-multi-agent/provision_agent.py",
+        "destination": "harmonizer-prod_cli/workspace/provision_agent.py",
+        "timestamp": "2026-06-08T20:14:52.522394+00:00",
+        "target_type": "output"
+      },
+      {
+        "id": "promote-20260608233422",
+        "title": "Promote deepcli-tui/tui.py",
+        "ref": "PROMOTE",
+        "priority": "high",
+        "assigned_agent": "promote.py",
+        "status": "done",
+        "component": "promotion",
+        "session_id": "2026-06-08T23:34:22.186232+00:00",
+        "source": "deepcli-tui/tui.py",
+        "destination": "cli-synthegration/workspace/staging/tui.py",
+        "timestamp": "2026-06-08T23:34:22.186282+00:00",
+        "target_type": "output"
+      },
+      {
+        "id": "promote-20260608233453",
+        "title": "Promote deepcli-tui/tui.py",
+        "ref": "PROMOTE",
+        "priority": "high",
+        "assigned_agent": "promote.py",
+        "status": "done",
+        "component": "promotion",
+        "session_id": "2026-06-08T23:34:53.295945+00:00",
+        "source": "deepcli-tui/tui.py",
+        "destination": "cli-synthegration/workspace/staging/tui.py",
+        "timestamp": "2026-06-08T23:34:53.295987+00:00",
+        "target_type": "output"
+      }
+    ]
+  },
+  "delegations": [
+    {
+      "task": "------",
+      "agent": "-------",
+      "account": "---------",
+      "status": "--------",
+      "sandbox": "---------"
+    },
+    {
+      "task": "Token extraction automation",
+      "agent": "Scout",
+      "account": "Secondary",
+      "status": "\ud83d\udfe1 Spec drafted",
+      "sandbox": "`~/deepseek-cli/test-reports/`"
+    },
+    {
+      "task": "Chronomancer fork execution",
+      "agent": "Chronomancer",
+      "account": "Primary",
+      "status": "\ud83d\udfe2 Ready",
+      "sandbox": "N/A"
+    },
+    {
+      "task": "Pointer registry expansion",
+      "agent": "Linguist",
+      "account": "Primary",
+      "status": "\ud83d\udfe1 Spec drafted",
+      "sandbox": "`~/harmony_hub/workspace/linguist/`"
+    },
+    {
+      "task": "ELO bidder wiring",
+      "agent": "Bidder",
+      "account": "Primary",
+      "status": "\ud83d\udfe1 Spec drafted",
+      "sandbox": "N/A"
+    },
+    {
+      "task": "HTML dashboard skeleton",
+      "agent": "Orchestrator",
+      "account": "Primary",
+      "status": "\u26aa Queued",
+      "sandbox": "`~/harmony_hub/workspace/dashboard/`"
+    }
+  ],
+  "impact": {
+    "blast_radii": {
+      "harmonizer-prod_cli/workspace/reference/conv_versioner.py": 9,
+      "harmonizer-prod_cli/workspace/reference/conv_explorer.py": 3,
+      "harmonizer-prod_cli/workspace/reference/token_provider.py": 2,
+      "cli-synthegration/workspace/staging/chronos/__init__.py": 0,
+      "cli-synthegration/workspace/staging/chronos/versioner.py": 0,
+      "cli-synthegration/workspace/staging/reconstructed_msg596.py": 0,
+      "cli-synthegration/workspace/staging/time_loop_accelerator.py": 0,
+      "harmonizer-prod_cli/workspace/reference/MODULES.toml": 0,
+      "harmonizer-prod_cli/workspace/reference/account_manager.py": 0,
+      "harmonizer-prod_cli/workspace/reference/backfill_elo.py": 0,
+      "harmonizer-prod_cli/workspace/reference/batch_export_all.py": 0,
+      "harmonizer-prod_cli/workspace/reference/branch_manager.py": 0,
+      "harmonizer-prod_cli/workspace/reference/cedar_bridge.py": 0,
+      "harmonizer-prod_cli/workspace/reference/conv_branching.py": 0,
+      "harmonizer-prod_cli/workspace/reference/conv_export_cli.py": 0,
+      "harmonizer-prod_cli/workspace/reference/detect_paste.py": 0,
+      "harmonizer-prod_cli/workspace/reference/export_all.py": 0,
+      "harmonizer-prod_cli/workspace/reference/extract_cookie_token.py": 0,
+      "harmonizer-prod_cli/workspace/reference/extract_expert_headers.py": 0,
+      "harmonizer-prod_cli/workspace/reference/extract_from_official_export.py": 0,
+      "harmonizer-prod_cli/workspace/reference/generate_handoff.py": 0,
+      "harmonizer-prod_cli/workspace/reference/generate_loop.py": 0,
+      "harmonizer-prod_cli/workspace/reference/live_export.py": 0,
+      "harmonizer-prod_cli/workspace/reference/live_search.py": 0,
+      "harmonizer-prod_cli/workspace/reference/loop_optimizer.py": 0,
+      "harmonizer-prod_cli/workspace/reference/pointer_sync.py": 0,
+      "harmonizer-prod_cli/workspace/reference/session_categories.py": 0,
+      "harmonizer-prod_cli/workspace/reference/sprints.py": 0,
+      "harmonizer-prod_cli/workspace/reference/src/main.rs": 0,
+      "harmonizer-prod_cli/workspace/reference/success_metrics.py": 0,
+      "harmonizer-prod_cli/workspace/reference/sync/baseline.json": 0,
+      "harmonizer-prod_cli/workspace/reference/sync/selective_sync.py": 0,
+      "harmonizer-prod_cli/workspace/reference/sync_pipeline.py": 0,
+      "harmonizer-prod_cli/workspace/reference/synthegration_index.py": 0,
+      "harmonizer-prod_cli/workspace/staging/live_message_search.py": 0
+    },
+    "max_blast": 9
+  },
+  "readiness": {
+    "staged_files_count": 35,
+    "scores": {
+      "harmonizer-prod_cli/workspace/reference/conv_versioner.py": 60,
+      "harmonizer-prod_cli/workspace/reference/conv_explorer.py": 50,
+      "harmonizer-prod_cli/workspace/reference/token_provider.py": 50,
+      "cli-synthegration/workspace/staging/chronos/__init__.py": 50,
+      "cli-synthegration/workspace/staging/chronos/versioner.py": 50,
+      "cli-synthegration/workspace/staging/reconstructed_msg596.py": 50,
+      "cli-synthegration/workspace/staging/time_loop_accelerator.py": 50,
+      "harmonizer-prod_cli/workspace/reference/MODULES.toml": 50,
+      "harmonizer-prod_cli/workspace/reference/account_manager.py": 50,
+      "harmonizer-prod_cli/workspace/reference/backfill_elo.py": 50,
+      "harmonizer-prod_cli/workspace/reference/batch_export_all.py": 50,
+      "harmonizer-prod_cli/workspace/reference/branch_manager.py": 50,
+      "harmonizer-prod_cli/workspace/reference/cedar_bridge.py": 50,
+      "harmonizer-prod_cli/workspace/reference/conv_branching.py": 50,
+      "harmonizer-prod_cli/workspace/reference/conv_export_cli.py": 50,
+      "harmonizer-prod_cli/workspace/reference/detect_paste.py": 50,
+      "harmonizer-prod_cli/workspace/reference/export_all.py": 50,
+      "harmonizer-prod_cli/workspace/reference/extract_cookie_token.py": 50,
+      "harmonizer-prod_cli/workspace/reference/extract_expert_headers.py": 50,
+      "harmonizer-prod_cli/workspace/reference/extract_from_official_export.py": 50,
+      "harmonizer-prod_cli/workspace/reference/generate_handoff.py": 50,
+      "harmonizer-prod_cli/workspace/reference/generate_loop.py": 50,
+      "harmonizer-prod_cli/workspace/reference/live_export.py": 50,
+      "harmonizer-prod_cli/workspace/reference/live_search.py": 50,
+      "harmonizer-prod_cli/workspace/reference/loop_optimizer.py": 50,
+      "harmonizer-prod_cli/workspace/reference/pointer_sync.py": 50,
+      "harmonizer-prod_cli/workspace/reference/session_categories.py": 50,
+      "harmonizer-prod_cli/workspace/reference/sprints.py": 50,
+      "harmonizer-prod_cli/workspace/reference/src/main.rs": 50,
+      "harmonizer-prod_cli/workspace/reference/success_metrics.py": 50,
+      "harmonizer-prod_cli/workspace/reference/sync/baseline.json": 50,
+      "harmonizer-prod_cli/workspace/reference/sync/selective_sync.py": 50,
+      "harmonizer-prod_cli/workspace/reference/sync_pipeline.py": 50,
+      "harmonizer-prod_cli/workspace/reference/synthegration_index.py": 60,
+      "harmonizer-prod_cli/workspace/staging/live_message_search.py": 50
+    },
+    "ripe_for_promotion": []
+  },
+  "agent_workload": {
+    "per_agent": {
+      "-------": 1,
+      "developer": 3
+    },
+    "std_dev": 1.0,
+    "balanced": true
+  },
+  "effectiveness_baseline": {
+    "router_query_count": 0,
+    "promotion_success_rate": 0,
+    "impact_prediction_accuracy": 0,
+    "bloat_predetection_rate": 0,
+    "bottleneck_resolution_hours": 0
+  }
+}

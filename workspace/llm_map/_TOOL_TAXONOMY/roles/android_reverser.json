@@ -1,0 +1,1231 @@
+{
+  "description": "Android Reverse Engineer",
+  "tools": [
+    {
+      "name": "agent-browser",
+      "package": "npm:agent-browser",
+      "path": "/data/data/com.termux/files/usr/bin/agent-browser",
+      "source": "npm",
+      "tags": [
+        "reverse_engineering"
+      ],
+      "category": "reverse_engineering",
+      "description": ""
+    },
+    {
+      "name": "am",
+      "package": "termux-am",
+      "path": "/data/data/com.termux/files/usr/bin/am",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Android Oreo-compatible am command reimplementation"
+    },
+    {
+      "name": "chsh",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/chsh",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "cmd",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/cmd",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "cstool",
+      "package": "capstone",
+      "path": "/data/data/com.termux/files/usr/bin/cstool",
+      "source": "apt",
+      "tags": [
+        "reverse_engineering"
+      ],
+      "auto_tag_source": "auto:^capstone$|^capstone-",
+      "category": "reverse_engineering",
+      "description": "Lightweight multi-platform, multi-architecture disassembly framework"
+    },
+    {
+      "name": "dalvikvm",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/dalvikvm",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "df",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/df",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "getprop",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/getprop",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "http-mitm-proxy",
+      "package": "npm:http-mitm-proxy",
+      "path": "/data/data/com.termux/files/usr/bin/http-mitm-proxy",
+      "source": "npm",
+      "tags": [
+        "reverse_engineering"
+      ],
+      "category": "reverse_engineering",
+      "description": ""
+    },
+    {
+      "name": "logcat",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/logcat",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "login",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/login",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "passwd",
+      "package": "termux-auth",
+      "path": "/data/data/com.termux/files/usr/bin/passwd",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Password authentication library and utility for Termux"
+    },
+    {
+      "name": "ping",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/ping",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "ping6",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/ping6",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "pm",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/pm",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "pwlogin",
+      "package": "termux-auth",
+      "path": "/data/data/com.termux/files/usr/bin/pwlogin",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Password authentication library and utility for Termux"
+    },
+    {
+      "name": "service-daemon",
+      "package": "termux-services",
+      "path": "/data/data/com.termux/files/usr/bin/service-daemon",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Service daemon for Termux"
+    },
+    {
+      "name": "settings",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/settings",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "su",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/su",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "sv-disable",
+      "package": "termux-services",
+      "path": "/data/data/com.termux/files/usr/bin/sv-disable",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Service daemon for Termux"
+    },
+    {
+      "name": "sv-enable",
+      "package": "termux-services",
+      "path": "/data/data/com.termux/files/usr/bin/sv-enable",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Service daemon for Termux"
+    },
+    {
+      "name": "termux-am",
+      "package": "termux-am-socket",
+      "path": "/data/data/com.termux/files/usr/bin/termux-am",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "A faster version of am with less features that only works while Termux is running"
+    },
+    {
+      "name": "termux-am-socket",
+      "package": "termux-am-socket",
+      "path": "/data/data/com.termux/files/usr/bin/termux-am-socket",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "A faster version of am with less features that only works while Termux is running"
+    },
+    {
+      "name": "termux-api-start",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-api-start",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-api-stop",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-api-stop",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-apps-info-app-version-name",
+      "package": "termux-core",
+      "path": "/data/data/com.termux/files/usr/bin/termux-apps-info-app-version-name",
+      "source": "apt",
+      "tags": [
+        "reverse_engineering",
+        "termux_api"
+      ],
+      "category": "reverse_engineering",
+      "description": "Utils and libraries for Termux core"
+    },
+    {
+      "name": "termux-apps-info-app-version-name.bash",
+      "package": "termux-core",
+      "path": "/data/data/com.termux/files/usr/bin/termux-apps-info-app-version-name.bash",
+      "source": "apt",
+      "tags": [
+        "reverse_engineering",
+        "termux_api"
+      ],
+      "category": "reverse_engineering",
+      "description": "Utils and libraries for Termux core"
+    },
+    {
+      "name": "termux-apps-info-app-version-name.sh",
+      "package": "termux-core",
+      "path": "/data/data/com.termux/files/usr/bin/termux-apps-info-app-version-name.sh",
+      "source": "apt",
+      "tags": [
+        "reverse_engineering",
+        "termux_api"
+      ],
+      "category": "reverse_engineering",
+      "description": "Utils and libraries for Termux core"
+    },
+    {
+      "name": "termux-apps-info-env-variable",
+      "package": "termux-core",
+      "path": "/data/data/com.termux/files/usr/bin/termux-apps-info-env-variable",
+      "source": "apt",
+      "tags": [
+        "reverse_engineering",
+        "termux_api"
+      ],
+      "category": "reverse_engineering",
+      "description": "Utils and libraries for Termux core"
+    },
+    {
+      "name": "termux-apps-info-env-variable.bash",
+      "package": "termux-core",
+      "path": "/data/data/com.termux/files/usr/bin/termux-apps-info-env-variable.bash",
+      "source": "apt",
+      "tags": [
+        "reverse_engineering",
+        "termux_api"
+      ],
+      "category": "reverse_engineering",
+      "description": "Utils and libraries for Termux core"
+    },
+    {
+      "name": "termux-apps-info-env-variable.sh",
+      "package": "termux-core",
+      "path": "/data/data/com.termux/files/usr/bin/termux-apps-info-env-variable.sh",
+      "source": "apt",
+      "tags": [
+        "reverse_engineering",
+        "termux_api"
+      ],
+      "category": "reverse_engineering",
+      "description": "Utils and libraries for Termux core"
+    },
+    {
+      "name": "termux-audio-info",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-audio-info",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-backup",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/termux-backup",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "termux-battery-status",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-battery-status",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-brightness",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-brightness",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-call-log",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-call-log",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-camera-info",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-camera-info",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-camera-photo",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-camera-photo",
+      "source": "apt",
+      "tags": [
+        "multimedia",
+        "termux_api"
+      ],
+      "category": "multimedia",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-change-repo",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/termux-change-repo",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "termux-chroot",
+      "package": "proot",
+      "path": "/data/data/com.termux/files/usr/bin/termux-chroot",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Emulate chroot, bind mount and binfmt_misc for non-root users"
+    },
+    {
+      "name": "termux-clipboard-get",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-clipboard-get",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-clipboard-set",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-clipboard-set",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-contact-list",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-contact-list",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-dialog",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-dialog",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-download",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-download",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-elf-cleaner",
+      "package": "termux-elf-cleaner",
+      "path": "/data/data/com.termux/files/usr/bin/termux-elf-cleaner",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Cleaner of ELF files for Android"
+    },
+    {
+      "name": "termux-exec-ld-preload-lib",
+      "package": "termux-exec",
+      "path": "/data/data/com.termux/files/usr/bin/termux-exec-ld-preload-lib",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Utils and libraries for Termux exec including a LD_PRELOAD shared library for proper functioning of the Termux execution environment"
+    },
+    {
+      "name": "termux-exec-system-linker-exec",
+      "package": "termux-exec",
+      "path": "/data/data/com.termux/files/usr/bin/termux-exec-system-linker-exec",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Utils and libraries for Termux exec including a LD_PRELOAD shared library for proper functioning of the Termux execution environment"
+    },
+    {
+      "name": "termux-fingerprint",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-fingerprint",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-fix-shebang",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/termux-fix-shebang",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "termux-info",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/termux-info",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "termux-infrared-frequencies",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-infrared-frequencies",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-infrared-transmit",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-infrared-transmit",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-job-scheduler",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-job-scheduler",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-keystore",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-keystore",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-location",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-location",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-media-player",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-media-player",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-media-scan",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-media-scan",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-microphone-record",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-microphone-record",
+      "source": "apt",
+      "tags": [
+        "multimedia",
+        "termux_api"
+      ],
+      "category": "multimedia",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-nfc",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-nfc",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-notification",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-notification",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-notification-channel",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-notification-channel",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-notification-list",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-notification-list",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-notification-remove",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-notification-remove",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-open",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/termux-open",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "termux-open-url",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/termux-open-url",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "termux-reload-settings",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/termux-reload-settings",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "termux-reset",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/termux-reset",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "termux-restore",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/termux-restore",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "termux-saf-create",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-saf-create",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-saf-dirs",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-saf-dirs",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-saf-ls",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-saf-ls",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-saf-managedir",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-saf-managedir",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-saf-mkdir",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-saf-mkdir",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-saf-read",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-saf-read",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-saf-rm",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-saf-rm",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-saf-stat",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-saf-stat",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-saf-write",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-saf-write",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-scoped-env-variable",
+      "package": "termux-core",
+      "path": "/data/data/com.termux/files/usr/bin/termux-scoped-env-variable",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Utils and libraries for Termux core"
+    },
+    {
+      "name": "termux-scoped-env-variable.bash",
+      "package": "termux-core",
+      "path": "/data/data/com.termux/files/usr/bin/termux-scoped-env-variable.bash",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Utils and libraries for Termux core"
+    },
+    {
+      "name": "termux-scoped-env-variable.sh",
+      "package": "termux-core",
+      "path": "/data/data/com.termux/files/usr/bin/termux-scoped-env-variable.sh",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Utils and libraries for Termux core"
+    },
+    {
+      "name": "termux-sensor",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-sensor",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-setup-package-manager",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/termux-setup-package-manager",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "termux-setup-storage",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/termux-setup-storage",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "termux-share",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-share",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-sms-inbox",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-sms-inbox",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-sms-list",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-sms-list",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-sms-send",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-sms-send",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-speech-to-text",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-speech-to-text",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-storage-get",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-storage-get",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-sync",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/bin/termux-sync",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Package unknown"
+    },
+    {
+      "name": "termux-telephony-call",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-telephony-call",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-telephony-cellinfo",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-telephony-cellinfo",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-telephony-deviceinfo",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-telephony-deviceinfo",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-toast",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-toast",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-torch",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-torch",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-tts-engines",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-tts-engines",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-tts-speak",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-tts-speak",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-usb",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-usb",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-vibrate",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-vibrate",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-volume",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-volume",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-wake-lock",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/termux-wake-lock",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "termux-wake-unlock",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/termux-wake-unlock",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "termux-wallpaper",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-wallpaper",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-wifi-connectioninfo",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-wifi-connectioninfo",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-wifi-enable",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-wifi-enable",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-wifi-scaninfo",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-wifi-scaninfo",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-x11",
+      "package": "termux-x11-nightly",
+      "path": "/data/data/com.termux/files/usr/bin/termux-x11",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux X11 add-on."
+    },
+    {
+      "name": "termux-x11-preference",
+      "package": "termux-x11-nightly",
+      "path": "/data/data/com.termux/files/usr/bin/termux-x11-preference",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux X11 add-on."
+    }
+  ]
+}

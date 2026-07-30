@@ -1,0 +1,19 @@
+**Sync Protocol:** Yjs uses the **y-webrtc** provider, which establishes WebRTC data channels between peers via a public signaling server (`wss://y-webrtc-signaling-eu.herokuapp.com`). Document updates are propagated as binary CRDT operations, ensuring conflict-free merges.
+
+**Observation Pattern:** The `State.yPlayers.observe()` callback rebuilds the `State.otherPlayers` object whenever remote changes arrive, triggering UI re-renders via `UI.renderPlayerList()`.
+
+**Documentation References:**
+- [Yjs Documentation – Getting Started](https://docs.yjs.dev/getting-started/working-with-shared-types)
+- [Yjs CRDT Paper](https://www.researchgate.net/publication/310212186_Near_Real-Time_Peer-to-Peer_Shared_Editing_on_Extensible_Data_Types)
+- [y-webrtc Provider](https://github.com/yjs/y-webrtc)
+- [WebRTC API Specification](https://www.w3.org/TR/webrtc/)
+
+---
+
+### 5.5 DuckDB-Wasm Analytical Engine
+
+**Source File Location:** Lines ~2500-2550 of v23.5 artifact
+
+**Initialization:** DuckDB-Wasm is loaded dynamically via ES module import from jsDelivr CDN. The WASM bundle (~30MB) is fetched and instantiated in a Web Worker for non-blocking operation.
+
+**Schema:**

@@ -1,0 +1,10 @@
+startPerformanceMonitoring() {
+    setInterval(() => {
+        const memoryUsage = Math.round(performance.memory ? performance.memory.usedJSHeapSize / 1048576 : 80);
+        document.getElementById('memoryUsage').textContent = `${memoryUsage} MB`;
+        
+        const integrity = 98; // Simulated data integrity
+        document.getElementById('dataIntegrity').textContent = `${integrity}%`;
+        
+    }, 5000);
+}

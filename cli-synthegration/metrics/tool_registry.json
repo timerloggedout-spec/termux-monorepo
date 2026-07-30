@@ -1,0 +1,205 @@
+{
+  "updated": "2026-05-25T20:55:39.369305+00:00",
+  "tools": {
+    "synthegration_cli": [],
+    "python_modules": [
+      {
+        "module": "pointer_sync",
+        "functions": [
+          "compute_diff"
+        ],
+        "path": "/data/data/com.termux/files/home/cli-synthegration/pointer_sync.py"
+      },
+      {
+        "module": "branch_manager",
+        "functions": [
+          "list_branches",
+          "fork_branch",
+          "merge_branches",
+          "link_knowledge",
+          "resolve_branch_dir",
+          "list_dangling"
+        ],
+        "path": "/data/data/com.termux/files/home/cli-synthegration/branch_manager.py"
+      },
+      {
+        "module": "export_all",
+        "functions": [
+          "export_session",
+          "main"
+        ],
+        "path": "/data/data/com.termux/files/home/cli-synthegration/export_all.py"
+      },
+      {
+        "module": "token_provider",
+        "functions": [
+          "get_token"
+        ],
+        "path": "/data/data/com.termux/files/home/cli-synthegration/token_provider.py"
+      },
+      {
+        "module": "conv_export_cli",
+        "functions": [
+          "main"
+        ],
+        "path": "/data/data/com.termux/files/home/cli-synthegration/conv_export_cli.py"
+      },
+      {
+        "module": "sprints",
+        "functions": [
+          "save",
+          "show"
+        ],
+        "path": "/data/data/com.termux/files/home/cli-synthegration/sprints.py"
+      },
+      {
+        "module": "conv_branching",
+        "functions": [
+          "__init__",
+          "__init__",
+          "_load_refs",
+          "_save_refs",
+          "create_branch",
+          "merge_branches",
+          "a_b_test",
+          "link_knowledge",
+          "list_branches"
+        ],
+        "path": "/data/data/com.termux/files/home/cli-synthegration/conv_branching.py"
+      },
+      {
+        "module": "conv_versioner",
+        "functions": [
+          "__init__",
+          "to_ref",
+          "__init__",
+          "add_message",
+          "get_version",
+          "diff",
+          "commit",
+          "load",
+          "to_graphviz"
+        ],
+        "path": "/data/data/com.termux/files/home/cli-synthegration/conv_versioner.py"
+      },
+      {
+        "module": "conv_explorer",
+        "functions": [
+          "cache_manifest",
+          "load_cached_index",
+          "load_offline_manifest",
+          "search_offline",
+          "export_blocks",
+          "list_offline_sessions",
+          "main"
+        ],
+        "path": "/data/data/com.termux/files/home/cli-synthegration/conv_explorer.py"
+      },
+      {
+        "module": "cedar_bridge",
+        "functions": [
+          "cedar_validate",
+          "cedar_eval"
+        ],
+        "path": "/data/data/com.termux/files/home/cli-synthegration/cedar_bridge.py"
+      },
+      {
+        "module": "success_metrics",
+        "functions": [
+          "__init__",
+          "_load",
+          "_save",
+          "pattern_hash",
+          "update",
+          "top_patterns",
+          "moving_average",
+          "__init__",
+          "estimate",
+          "foo"
+        ],
+        "path": "/data/data/com.termux/files/home/cli-synthegration/success_metrics.py"
+      },
+      {
+        "module": "session_categories",
+        "functions": [
+          "__init__",
+          "_load_live",
+          "_classify",
+          "get",
+          "list_categories",
+          "search_category",
+          "export_index"
+        ],
+        "path": "/data/data/com.termux/files/home/cli-synthegration/session_categories.py"
+      },
+      {
+        "module": "backfill_elo",
+        "functions": [
+          "extract_refactor_pairs",
+          "main"
+        ],
+        "path": "/data/data/com.termux/files/home/cli-synthegration/backfill_elo.py"
+      },
+      {
+        "module": "synthegration_index",
+        "functions": [
+          "__init__",
+          "to_key",
+          "to_wire",
+          "from_wire",
+          "__init__",
+          "add_pointer",
+          "search",
+          "to_dict",
+          "__init__",
+          "_load",
+          "_from_flat",
+          "_save",
+          "flatten",
+          "index_conversation",
+          "compute_diff",
+          "sync_wire_format",
+          "search_by_taxonomy",
+          "_safe_name",
+          "chunk_similarity",
+          "_simple_similarity"
+        ],
+        "path": "/data/data/com.termux/files/home/cli-synthegration/synthegration_index.py"
+      }
+    ],
+    "node_scripts": [
+      {
+        "script": "capture-expert-version.js",
+        "path": "/data/data/com.termux/files/home/cli-synthegration/capture-expert-version.js"
+      },
+      {
+        "script": "http_sniffer.js",
+        "path": "/data/data/com.termux/files/home/cli-synthegration/http_sniffer.js"
+      }
+    ],
+    "shell_scripts": [],
+    "api_endpoints": [
+      {
+        "module": "deepcli.core",
+        "functions": [
+          "load_config",
+          "save_config",
+          "get_token",
+          "get_session",
+          "solve_pow",
+          "create_session",
+          "fetch_sessions",
+          "get_history",
+          "get_pow_challenge",
+          "upload_file",
+          "wait_for_file",
+          "branch_conversation",
+          "stream_completion",
+          "continue_response",
+          "chat_completion"
+        ]
+      }
+    ]
+  },
+  "system_prompt": "You are a 1337 Termux automation agent. Available capabilities:\n\n\n## DeepSeek API\n- deepcli.core: load_config, save_config, get_token, get_session, solve_pow, create_session, fetch_sessions, get_history, get_pow_challenge, upload_file\n\n## Python Tools\n- pointer_sync.py: compute_diff\n- branch_manager.py: list_branches, fork_branch, merge_branches, link_knowledge, resolve_branch_dir\n- export_all.py: export_session, main\n- token_provider.py: get_token\n- conv_export_cli.py: main\n- sprints.py: save, show\n- conv_branching.py: __init__, __init__, _load_refs, _save_refs, create_branch\n- conv_versioner.py: __init__, to_ref, __init__, add_message, get_version\n- conv_explorer.py: cache_manifest, load_cached_index, load_offline_manifest, search_offline, export_blocks\n- cedar_bridge.py: cedar_validate, cedar_eval\n\n## Operational Notes\n- Max 2 concurrent API calls per token\n- Use synthegration sprints to track work items\n- Expert model currently blocked; use default\n- Dangling forks use 'permissive' detection (no age/depth limits)\n"
+}

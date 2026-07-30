@@ -1,0 +1,16 @@
+Magnet Link → Torrent Client → File List
+                                   │
+                    ┌──────────────┼──────────────┐
+                    │              │              │
+                  CSV            Parquet        Other
+                    │              │
+                    ▼              ▼
+            TextDecoder      Uint8Array
+                    │              │
+                    ▼              ▼
+            Row-by-row      read_parquet()
+            INSERT          CREATE TABLE
+                    │              │
+                    └──────┬───────┘
+                           ▼
+                    DuckDB ohlc Table

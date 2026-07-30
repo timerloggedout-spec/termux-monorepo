@@ -1,0 +1,18 @@
+// WorldMap.jsx (connected)
+import { useAppContext } from '../contexts/AppContext';
+
+const WorldMap = () => {
+  const { state, dispatch } = useAppContext();
+  const { selectedCompound } = state;
+
+  const handleCountryClick = (geo) => {
+    const isoCode = geo.properties.ISO_A3;
+    const countryName = geo.properties.NAME;
+    dispatch({
+      type: 'CLICK_COUNTRY',
+      payload: { isoCode, countryName },
+    });
+  };
+
+  // ... render map with fill based on selectedCompound
+};

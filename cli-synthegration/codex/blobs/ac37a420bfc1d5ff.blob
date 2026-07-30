@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>QuanTM FOAM v10.1 · DEX Arbitrage Casino · Fixed Logs</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: radial-gradient(circle at 20% 20%, #1a0a2e, #0a0a1a);
+      font-family: 'Segoe UI', 'Orbitron', 'Courier New', monospace;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+    .casino-container {
+      width: 100%;
+      max-width: 1100px;
+      background: rgba(10, 10, 30, 0.8);
+      backdrop-filter: blur(12px);
+      border: 2px solid #ffd700;
+      border-radius: 2.5rem;
+      box-shadow: 0 0 40px rgba(255, 215, 0, 0.3), 0 0 80px rgba(138, 43, 226, 0.3);
+      padding: 2rem;
+    }
+    .header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    h1 {
+      font-size: 2.2rem;
+      background: linear-gradient(to right, #ffd700, #ff8c00, #ffd700);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 15px #ffd700;
+      letter-spacing: 2px;
+    }
+    .status-panel {
+      display: flex;
+      gap: 2rem;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid #ffd700;
+      border-radius: 3rem;
+      padding: 0.8rem 2rem;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+    .bankroll {
+      color: #00ff88;
+      text-shadow: 0 0 10px #00ff88;
+    }
+    .profit {
+      color: #ffd700;
+      text-shadow: 0 0 10px #ffd700;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .btn {
+      background: linear-gradient(180deg, #2a0040, #110020);
+      border: 2px solid #ff8c00;
+      color: #ffd700;
+      padding: 0.7rem 1.8rem;
+      border-radius: 3rem;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(255, 140, 0, 0.4);
+      transition: all 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .btn:hover {
+      background: linear-gradient(180deg, #4a0070, #2a0040);
+      box-shadow: 0 0 25px rgba(255, 140, 0, 0.8);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid #ffd700;
+      border-radius: 1.5rem;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0 0 25px rgba(138, 43, 226, 0.3);
+    }
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #ffd700;
+      text-shadow: 0 0 10px #ffd700;
+    }
+    .log-section {
+      background: #050510;
+      border: 2px solid #ff8c00;
+      border-radius: 2rem;
+      padding: 1.5rem;
+      margin-top: 1rem;
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
+    }
+    .log-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .log-filters button {
+      background: transparent;
+      border: 1px solid #ffd700;
+      color: #fff;
+      padding: 0.3rem 0.8rem;
+      border-radius: 1rem;
+      margin-left: 0.3rem;
+      cursor: pointer;
+    }
+    .log-filters button.active {
+      background: #ffd700;
+      color: #000;
+    }
+    #logContainer {
+      height: 350px;
+      overflow-y: auto;
+      background: #000000;
+      border-radius: 1.2rem;
+      padding: 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    #logContainer span.log-info { color: #00ccff; }
+    #logContainer span.log-success { color: #00ff88; }
+    #logContainer span.log-warn { color: #ffaa00; }
+    #logContainer span.log-error { color: #ff4466; }
+    #logContainer span.log-debug { color: #aa88ff; }
+    #logContainer span.log-timestamp { color: #888; }
+    footer {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+<div class="casino-container">
+  <div class="header">
+    <h1>🎰 QUANTM FOAM ARBITRAGE CASINO</h1>
+    <div class="status-panel">
+      <span class="bankroll">BANKROLL: $10,000.00</span>
+      <span class="profit">P/L: +$42.50 (0.42%)</span>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" onclick="startScanning()">▶ FULL SCAN</button>
+    <button class="btn" onclick="simulateTrade()">🎰 PULL LEVER</button>
+    <button class="btn" onclick="clearLogs()">🗑 CLEAR LOGS</button>
+    <button class="btn" onclick="toggleTheme()">🌗 THEME</button>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-value" id="statPairs">24</div>📊 Pairs</div>
+    <div class="stat-card"><div class="stat-value" id="statTriangles">7</div>🔺 Triangles</div>
+    <div class="stat-card"><div class="stat-value" id="statOpps">3</div>💎 Opportunities</div>
+    <div class="stat-card"><div class="stat-value" id="statWS">142 KB</div>📡 WS Feed</div>
+  </div>
+
+  <div class="log-section">
+    <div class="log-header">
+      <h3>📋 SYSTEM LOGS</h3>
+      <div class="log-filters">
+        <button class="active" onclick="filterLog('all')">ALL</button>
+        <button onclick="filterLog('info')">INFO</button>
+        <button onclick="filterLog('success')">SUCCESS</button>
+        <button onclick="filterLog('warn')">WARN</button>
+        <button onclick="filterLog('error')">ERROR</button>
+        <button onclick="filterLog('debug')">DEBUG</button>
+      </div>
+    </div>
+    <div id="logContainer"></div>
+  </div>
+  <footer>
+    QuanTM FOAM v10.1 · ANSI logs fixed · The House Always Wins (Unless You're Fast)
+  </footer>
+</div>
+
+<script>
+  (function() {
+    // ----- ANSI to HTML converter (core fix) -----
+    const ANSI_REGEX = /\x1B\[([0-9;]*)m/g;
+
+    function ansiToHtml(text) {
+      if (!text) return '';
+      const parts = [];
+      let lastIndex = 0;
+      let match;
+      const openSpans = [];
+
+      while ((match = ANSI_REGEX.exec(text)) !== null) {
+        if (match.index > lastIndex) {
+          parts.push(escapeHtml(text.substring(lastIndex, match.index)));
+        }
+        lastIndex = match.index + match[0].length;
+
+        const codes = match[1].split(';').map(Number);
+        const newSpans = [];
+
+        for (let i = 0; i < codes.length; i++) {
+          const code = codes[i];
+          if (code === 0) {
+            // Reset
+            while (openSpans.length) {
+              parts.push(openSpans.pop().close);
+            }
+            continue;
+          }
+          // Map common ANSI codes to CSS classes
+          const style = {
+            '1': 'font-weight:bold',
+            '30': 'color:#000',
+            '31': 'color:#ff4466',
+            '32': 'color:#00ff88',
+            '33': 'color:#ffaa00',
+            '34': 'color:#00ccff',
+            '35': 'color:#ff66ff',
+            '36': 'color:#00ffff',
+            '37': 'color:#fff',
+            '90': 'color:#888',
+          }[code];
+          if (style) {
+            const span = `<span style="${style}">`;
+            parts.push(span);
+            openSpans.push({ close: '</span>' });
+          }
+        }
+      }
+      if (lastIndex < text.length) {
+        parts.push(escapeHtml(text.substring(lastIndex)));
+      }
+      while (openSpans.length) {
+        parts.push(openSpans.pop().close);
+      }
+      return parts.join('');
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    // ----- Logging system -----
+    const logContainer = document.getElementById('logContainer');
+    let currentFilter = 'all';
+
+    function addLogEntry(message, level = 'info') {
+      const timestamp = new Date().toLocaleTimeString('en-US', { hour12: false });
+      const coloredMessage = typeof message === 'string' ? message : JSON.stringify(message);
+      const formatted = `[${timestamp}] ${coloredMessage}`;
+
+      const entry = document.createElement('div');
+      entry.className = `log-entry level-${level}`;
+      entry.innerHTML = ansiToHtml(formatted);
+      entry.dataset.level = level;
+
+      logContainer.appendChild(entry);
+      logContainer.scrollTop = logContainer.scrollHeight;
+      applyFilter();
+    }
+
+    function applyFilter() {
+      const entries = document.querySelectorAll('#logContainer .log-entry');
+      entries.forEach(entry => {
+        if (currentFilter === 'all' || entry.dataset.level === currentFilter) {
+          entry.style.display = '';
+        } else {
+          entry.style.display = 'none';
+        }
+      });
+    }
+
+    window.filterLog = function(level) {
+      currentFilter = level;
+      document.querySelectorAll('.log-filters button').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      applyFilter();
+    };
+
+    window.clearLogs = function() {
+      logContainer.innerHTML = '';
+      addLogEntry('Logs cleared', 'info');
+    };
+
+    // ----- Mock log generation (simulates streaming ANSI logs) -----
+    function generateMockLogs() {
+      const logs = [
+        { msg: '\x1B[32m[SUCCESS]\x1B[0m Connected to OKX WebSocket feed (public)', level: 'success' },
+        { msg: '\x1B[34m[INFO]\x1B[0m Coinbase Pro API v2 initialised; latency 87ms', level: 'info' },
+        { msg: '\x1B[33m[WARN]\x1B[0m Uniswap v3 pool ETH/USDC reserves low (12.4 ETH)', level: 'warn' },
+        { msg: '\x1B[31m[ERROR]\x1B[0m Pump.fun endpoint timeout (fetch aborted)', level: 'error' },
+        { msg: '\x1B[34m[INFO]\x1B[0m Bellman-Ford arbitrage path found: ETH→USDC→WBTC→ETH (0.87%)', level: 'info' },
+        { msg: '\x1B[32m[SUCCESS]\x1B[0m Triangular scan completed: 7 triangles, 3 opportunities', level: 'success' },
+        { msg: '\x1B[90m[DEBUG]\x1B[0m WS bytes received: 142 KB (last tick 0.4s)', level: 'debug' }
+      ];
+      logs.forEach((log, i) => {
+        setTimeout(() => addLogEntry(log.msg, log.level), i * 400);
+      });
+    }
+
+    window.startScanning = function() {
+      addLogEntry('\x1B[34m[INFO]\x1B[0m Full scan initiated...', 'info');
+      generateMockLogs();
+    };
+
+    window.simulateTrade = function() {
+      const win = Math.random() > 0.5;
+      if (win) {
+        addLogEntry('\x1B[32m[SUCCESS]\x1B[0m 🎉 Arbitrage executed! Profit: +$12.80', 'success');
+        document.querySelector('.profit').textContent = 'P/L: +$55.30 (0.55%)';
+      } else {
+        addLogEntry('\x1B[31m[ERROR]\x1B[0m 💥 Trade failed: slippage exceeded 0.5%', 'error');
+      }
+    };
+
+    window.toggleTheme = function() {
+      document.body.style.background = 
+        document.body.style.background.includes('radial-gradient') ?
+        'radial-gradient(circle at 20% 20%, #0a1a2e, #050510)' :
+        'radial-gradient(circle at 20% 20%, #1a0a2e, #0a0a1a)';
+      addLogEntry('Theme toggled', 'info');
+    };
+
+    // Initial logs to demonstrate the fix
+    addLogEntry('\x1B[34m[INFO]\x1B[0m QuanTM FOAM v10.1 initialised. ANSI logs fixed.', 'info');
+    addLogEntry('\x1B[32m[SUCCESS]\x1B[0m Color rendering is now correct.', 'success');
+  })();
+</script>
+</body>
+</html>

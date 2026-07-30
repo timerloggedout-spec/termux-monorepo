@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RegimenForge — Build. Track. Validate. Compete.</title>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    :root {
+      --bg: #06060d;
+      --surface: #0e0e1a;
+      --surface2: #141428;
+      --surface3: #1a1a35;
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #e0e0e8;
+      --text2: #9898b0;
+      --accent: #00c8ff;
+      --accent2: #00ff88;
+      --warn: #ffb347;
+      --danger: #ff4757;
+      --purple: #8b5cf6;
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    #root { min-height: 100vh; }
+    button { font-family: inherit; }
+    input, select, textarea { font-family: inherit; }
+    .tab-btn {
+      padding: 12px 16px;
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-sm);
+      color: var(--text2);
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .tab-btn.active {
+      background: var(--surface3);
+      color: #fff;
+      font-weight: 600;
+    }
+    .card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #00c8ff, #0068ff);
+      border: none;
+      color: #000;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+    }
+    .btn-success {
+      background: linear-gradient(135deg, #00ff88, #00c8a0);
+      border: none;
+      color: #000;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+    }
+    .btn-warn {
+      background: var(--warn);
+      border: none;
+      color: #000;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useCallback } = React;
+
+    // ---------- UTILS ----------
+    const uid = () => 'id_' + Math.random().toString(36).slice(2, 10);
+    const nowISO = () => new Date().toISOString();
+    const fmtDate = (iso) => new Date(iso).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+
+    // ---------- SEED DATA ----------
+    const SEED_REGIMENS = [
+      { id:'reg1', name:'Hypertrophy Upper/Lower Split', author:'CoachMarcus', version:3, category:'Bodybuilding', tags:['hypertrophy','4-day'], modules:{ training:{ schedule:'Upper A / Lower A / Rest / Upper B / Lower B / Rest / Rest', blocks:[ {name:'Upper A', exercises:[{name:'Bench Press', sets:4, reps:'6-8'},{name:'Pull-ups', sets:4, reps:'6-8'}]}, {name:'Lower A', exercises:[{name:'Squat', sets:4, reps:'6-8'}]} ] }, nutrition:{ targetCalories:3200, proteinG:200, carbsG:380, fatG:89 }, supplements:[ {name:'Creatine', dosage:'5g', timing:'Daily'} ] }, changelog:[{v:3, date:'2026-04-20', summary:'Adjusted volume'}] },
+      { id:'reg2', name:'Powerlifting Peak Block', author:'IronScientist', version:2, category:'Powerlifting', tags:['strength','advanced'], modules:{ training:{ schedule:'Squat / Rest / Bench / Rest / Deadlift', blocks:[ {name:'Squat Day', exercises:[{name:'Comp Squat', sets:5, reps:'1-3'}]} ] }, nutrition:{ targetCalories:3800, proteinG:220, carbsG:450, fatG:100 }, supplements:[{name:'Beta-Alanine', dosage:'3.2g', timing:'Pre'}] }, changelog:[] },
+      { id:'reg3', name:'Keto Cut + Fasted Cardio', author:'ShredQueen', version:1, category:'Fat Loss', tags:['keto','cutting'], modules:{ training:{ schedule:'Full Body / Cardio', blocks:[] }, nutrition:{ targetCalories:1800, proteinG:150, carbsG:25, fatG:120 }, supplements:[] }, changelog:[] }
+    ];
+
+    const SEED_LEADERBOARD = [
+      { id:'lb1', event:'Bench Press 1RM', athlete:'IronScientist', metric:185, unit:'kg', bodyweight:93, date:'2026-04-15', verified:true },
+      { id:'lb2', event:'Bench Press 1RM', athlete:'Atlas_Prime', metric:177, unit:'kg', bodyweight:88, date:'2026-05-01', verified:true },
+      { id:'lb3', event:'Squat 1RM', athlete:'IronScientist', metric:240, unit:'kg', bodyweight:93, date:'2026-03-20', verified:true },
+      { id:'lb4', event:'Deadlift 1RM', athlete:'IronScientist', metric:295, unit:'kg', bodyweight:93, date:'2026-02-14', verified:true },
+      { id:'lb5', event:'Bench Press 1RM', athlete:'LiftQueen99', metric:142, unit:'kg', bodyweight:72, date:'2026-04-28', verified:false }
+    ];
+
+    const EVENTS = ['Bench Press 1RM','Squat 1RM','Deadlift 1RM','Total (S/B/D)','Wilks Score'];
+
+    // ---------- APP ----------
+    const App = () => {
+      const [activeTab, setActiveTab] = useState('dashboard');
+      const [regimens, setRegimens] = useState(SEED_REGIMENS);
+      const [workouts, setWorkouts] = useState([]);
+      const [leaderboard, setLeaderboard] = useState(SEED_LEADERBOARD);
+      const [therapeuticLog, setTherapeuticLog] = useState([]);
+      const [therapeuticOptIn, setTherapeuticOptIn] = useState(false);
+      const [showSafetyGate, setShowSafetyGate] = useState(false);
+      const [toast, setToast] = useState(null);
+      const [forkModal, setForkModal] = useState(null);
+
+      const showToast = useCallback((msg) => {
+        setToast(msg);
+        setTimeout(() => setToast(null), 2500);
+      }, []);
+
+      const handleFork = (reg) => {
+        const newReg = {
+          ...reg,
+          id: uid(),
+          name: reg.name + ' (Fork)',
+          author: 'You',
+          version: 1,
+          forkedFrom: reg.id,
+          createdAt: nowISO(),
+          changelog: [{v:1, date:nowISO(), summary:'Forked from ' + reg.name}]
+        };
+        setRegimens(prev => [newReg, ...prev]);
+        showToast('🚀 Regimen forked!');
+      };
+
+      const handleLogWorkout = (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const workout = {
+          id: uid(),
+          regimenId: form.regimenId.value,
+          block: form.block.value,
+          exercise: form.exercise.value,
+          sets: parseInt(form.sets.value),
+          reps: parseInt(form.reps.value),
+          weight: parseFloat(form.weight.value),
+          adherence: parseInt(form.adherence.value),
+          date: nowISO()
+        };
+        setWorkouts(prev => [workout, ...prev]);
+        showToast('✅ Workout logged');
+        form.reset();
+      };
+
+      const handleVerify = (id) => {
+        setLeaderboard(prev => prev.map(e => e.id === id ? {...e, verified:true} : e));
+        showToast('✅ Entry verified');
+      };
+
+      const handleSubmitAttempt = (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const entry = {
+          id: uid(),
+          event: form.event.value,
+          athlete: 'You',
+          metric: parseFloat(form.metric.value),
+          unit: 'kg',
+          bodyweight: parseFloat(form.bw.value),
+          date: nowISO(),
+          verified: false
+        };
+        setLeaderboard(prev => [entry, ...prev]);
+        showToast('📤 Submitted for verification');
+        form.reset();
+      };
+
+      const tabs = [
+        {id:'dashboard', label:'📊 Dashboard'},
+        {id:'regimens', label:'🧬 Regimens'},
+        {id:'mylog', label:'📝 Log Workout'},
+        {id:'compete', label:'🏆 Compete'},
+        {id:'verify', label:'✅ Verify'},
+        {id:'therapeutics', label:'🔬 Therapeutics'}
+      ];
+
+      return (
+        <div style={{minHeight:'100vh', display:'flex', flexDirection:'column'}}>
+          {toast && <div style={{position:'fixed', top:20, right:20, background:'var(--surface2)', border:'1px solid var(--accent)', color:'#fff', padding:'12px 20px', borderRadius:'var(--radius)', zIndex:1000, fontWeight:600}}>{toast}</div>}
+          
+          <header style={{background:'var(--surface)', borderBottom:'1px solid var(--border)', padding:'0 24px', display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:12, position:'sticky', top:0, zIndex:100}}>
+            <span style={{fontSize:'1.8rem', fontWeight:800, background:'linear-gradient(135deg, #00c8ff, #0068ff)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent'}}>RegimenForge</span>
+            <nav style={{display:'flex', gap:4, flexWrap:'wrap'}}>
+              {tabs.map(t => (
+                <button key={t.id} className={`tab-btn ${activeTab===t.id ? 'active' : ''}`} onClick={() => setActiveTab(t.id)}>{t.label}</button>
+              ))}
+            </nav>
+          </header>
+
+          <main style={{flex:1, padding:24, maxWidth:1200, margin:'0 auto', width:'100%'}}>
+            {activeTab === 'dashboard' && <Dashboard workouts={workouts} regimens={regimens} leaderboard={leaderboard} />}
+            {activeTab === 'regimens' && <RegimensTab regimens={regimens} onFork={handleFork} />}
+            {activeTab === 'mylog' && <WorkoutLog regimens={regimens} onLogWorkout={handleLogWorkout} />}
+            {activeTab === 'compete' && <CompeteTab leaderboard={leaderboard} onSubmitAttempt={handleSubmitAttempt} />}
+            {activeTab === 'verify' && <VerifyTab leaderboard={leaderboard} onVerify={handleVerify} />}
+            {activeTab === 'therapeutics' && <TherapeuticsTab therapeuticOptIn={therapeuticOptIn} setTherapeuticOptIn={setTherapeuticOptIn} log={therapeuticLog} setLog={setTherapeuticLog} showGate={showSafetyGate} setShowGate={setShowSafetyGate} showToast={showToast} />}
+          </main>
+
+          <footer style={{background:'var(--surface)', borderTop:'1px solid var(--border)', padding:16, textAlign:'center', color:'var(--text2)', fontSize:'0.75rem'}}>
+            RegimenForge v0.1 · All data stored locally · No medical advice
+          </footer>
+        </div>
+      );
+    };
+
+    // ---------- DASHBOARD ----------
+    const Dashboard = ({workouts, regimens, leaderboard}) => (
+      <div>
+        <h2 style={{marginBottom:20}}>Performance Command Center</h2>
+        <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(180px,1fr))', gap:14, marginBottom:24}}>
+          {[
+            {label:'Total Workouts', value:workouts.length, icon:'🏋️'},
+            {label:'Regimens Available', value:regimens.length, icon:'🧬'},
+            {label:'Verified Entries', value:leaderboard.filter(e=>e.verified).length, icon:'✅'},
+            {label:'Pending Verifications', value:leaderboard.filter(e=>!e.verified).length, icon:'⏳'}
+          ].map((s,i) => (
+            <div key={i} className="card" style={{textAlign:'center'}}>
+              <div style={{fontSize:'2rem'}}>{s.icon}</div>
+              <div style={{fontSize:'1.8rem', fontWeight:700, color:'var(--accent)'}}>{s.value}</div>
+              <div style={{color:'var(--text2)', fontSize:'0.8rem'}}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+
+    // ---------- REGIMENS ----------
+    const RegimensTab = ({regimens, onFork}) => (
+      <div>
+        <h2 style={{marginBottom:20}}>Regimen Library</h2>
+        <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(300px,1fr))', gap:16}}>
+          {regimens.map(r => (
+            <div key={r.id} className="card">
+              <h3>{r.name}</h3>
+              <p style={{color:'var(--text2)', fontSize:'0.85rem'}}>by {r.author} · v{r.version} · {r.category}</p>
+              <div style={{margin:'12px 0', display:'flex', flexWrap:'wrap', gap:6}}>
+                {r.tags.map(t=><span key={t} style={{background:'var(--surface3)', padding:'2px 10px', borderRadius:10, fontSize:'0.7rem', color:'var(--text2)'}}>{t}</span>)}
+              </div>
+              <p style={{fontSize:'0.85rem', color:'var(--text2)'}}>📅 {r.modules.training.schedule}</p>
+              <button className="btn-primary" style={{marginTop:12}} onClick={()=>onFork(r)}>🔀 Fork This Regimen</button>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+
+    // ---------- WORKOUT LOG ----------
+    const WorkoutLog = ({regimens, onLogWorkout}) => (
+      <div className="card" style={{maxWidth:500}}>
+        <h2 style={{marginBottom:16}}>Log Workout</h2>
+        <form onSubmit={onLogWorkout}>
+          <select name="regimenId" required style={inputStyle}>
+            <option value="">Select regimen</option>
+            {regimens.map(r=><option key={r.id} value={r.id}>{r.name}</option>)}
+          </select>
+          <input name="block" placeholder="Block name (e.g. Upper A)" required style={{...inputStyle, marginTop:10}} />
+          <input name="exercise" placeholder="Exercise" required style={{...inputStyle, marginTop:10}} />
+          <div style={{display:'flex', gap:8, marginTop:10}}>
+            <input name="sets" type="number" placeholder="Sets" required style={{...inputStyle, flex:1}} />
+            <input name="reps" type="number" placeholder="Reps" required style={{...inputStyle, flex:1}} />
+            <input name="weight" type="number" placeholder="Weight (kg)" required style={{...inputStyle, flex:1}} />
+          </div>
+          <label style={{display:'block', marginTop:10, fontSize:'0.85rem', color:'var(--text2)'}}>Adherence %</label>
+          <input name="adherence" type="range" min="0" max="100" defaultValue="100" style={{width:'100%'}} />
+          <button type="submit" className="btn-success" style={{width:'100%', marginTop:16}}>✅ Log Workout</button>
+        </form>
+      </div>
+    );
+
+    // ---------- COMPETE ----------
+    const CompeteTab = ({leaderboard, onSubmitAttempt}) => {
+      const [filterEvent, setFilterEvent] = useState('Bench Press 1RM');
+      const filtered = leaderboard.filter(e=>e.event===filterEvent && e.verified).sort((a,b)=>b.metric-a.metric);
+      return (
+        <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:20}}>
+          <div className="card">
+            <h3 style={{marginBottom:12}}>Submit New Attempt</h3>
+            <form onSubmit={onSubmitAttempt}>
+              <select name="event" required style={inputStyle} defaultValue={filterEvent} onChange={e=>setFilterEvent(e.target.value)}>
+                {EVENTS.map(ev=><option key={ev} value={ev}>{ev}</option>)}
+              </select>
+              <input name="metric" type="number" placeholder="Weight lifted (kg)" required style={{...inputStyle, marginTop:10}} />
+              <input name="bw" type="number" placeholder="Bodyweight (kg)" required style={{...inputStyle, marginTop:10}} />
+              <button type="submit" className="btn-primary" style={{width:'100%', marginTop:14}}>🚀 Submit Attempt</button>
+            </form>
+          </div>
+          <div className="card">
+            <h3 style={{marginBottom:12}}>{filterEvent} Leaderboard</h3>
+            {filtered.length===0 ? <p style={{color:'var(--text2)'}}>No verified entries.</p> :
+              filtered.map((e,i)=> (
+                <div key={e.id} style={{display:'flex', justifyContent:'space-between', padding:'8px 0', borderBottom:'1px solid var(--border)'}}>
+                  <span>{i+1}. {e.athlete}</span>
+                  <span style={{fontWeight:700, color:'var(--accent)'}}>{e.metric}kg</span>
+                  <span style={{color:'var(--text2)', fontSize:'0.8rem'}}>@{e.bodyweight}kg</span>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      );
+    };
+
+    // ---------- VERIFY ----------
+    const VerifyTab = ({leaderboard, onVerify}) => {
+      const pending = leaderboard.filter(e=>!e.verified);
+      return (
+        <div>
+          <h2 style={{marginBottom:16}}>Verification Queue</h2>
+          <p style={{color:'var(--text2)', marginBottom:20}}>Peer review + ML validation (future).</p>
+          {pending.length===0 ? <p style={{color:'var(--text2)'}}>Queue clear.</p> :
+            pending.map(e=> (
+              <div key={e.id} className="card" style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:10}}>
+                <div>
+                  <strong>{e.event}</strong> — {e.athlete}<br/>
+                  <span style={{color:'var(--text2)', fontSize:'0.8rem'}}>{e.metric}kg @{e.bodyweight}kg · {fmtDate(e.date)}</span>
+                </div>
+                <button className="btn-success" onClick={()=>onVerify(e.id)}>✅ Verify</button>
+              </div>
+            ))
+          }
+        </div>
+      );
+    };
+
+    // ---------- THERAPEUTICS ----------
+    const TherapeuticsTab = ({therapeuticOptIn, setTherapeuticOptIn, log, setLog, showGate, setShowGate, showToast}) => {
+      const [form, setForm] = useState({substance:'', dosage:'', route:'Subcutaneous', frequency:'', markers:'', notes:''});
+      const handleLog = (e) => {
+        e.preventDefault();
+        if(!form.substance || !form.dosage) return;
+        setLog(prev => [{...form, id:uid(), date:nowISO()}, ...prev]);
+        setForm({substance:'', dosage:'', route:'Subcutaneous', frequency:'', markers:'', notes:''});
+        showToast('📋 Entry logged (private)');
+      };
+      if (!therapeuticOptIn) {
+        return (
+          <div style={{maxWidth:500, margin:'60px auto', textAlign:'center'}} className="card">
+            <span style={{fontSize:'3rem'}}>⚠️</span>
+            <h2>Therapeutics Module</h2>
+            <p style={{color:'var(--text2)', lineHeight:1.6, margin:'16px 0'}}>Track hormones, peptides, gene therapies. No substances are sold. All data private. Must be 18+.</p>
+            <button className="btn-warn" onClick={()=>setShowGate(true)}>I Understand — Access Module</button>
+            {showGate && (
+              <div style={{position:'fixed', inset:0, background:'rgba(0,0,0,0.8)', display:'flex', alignItems:'center', justifyContent:'center', zIndex:500}}>
+                <div className="card" style={{maxWidth:400}}>
+                  <h3 style={{color:'var(--warn)'}}>⚠️ Safety Acknowledgment</h3>
+                  <p style={{fontSize:'0.9rem', margin:'12px 0'}}>I confirm I am 18+, understand this is for tracking only, and I will consult a medical professional.</p>
+                  <div style={{display:'flex', gap:8, justifyContent:'flex-end'}}>
+                    <button onClick={()=>setShowGate(false)} style={{background:'transparent', border:'1px solid var(--border)', color:'#fff', padding:'8px 16px', borderRadius:'var(--radius-sm)'}}>Cancel</button>
+                    <button className="btn-warn" onClick={()=>{setTherapeuticOptIn(true); setShowGate(false);}}>✅ Proceed</button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      }
+      return (
+        <div>
+          <div style={{background:'var(--warn)', color:'#000', padding:'10px 16px', borderRadius:'var(--radius-sm)', fontWeight:700, marginBottom:20}}>
+            ⚠️ Harm-Reduction Active – all data private. Nothing is medical advice.
+          </div>
+          <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:20}}>
+            <div className="card">
+              <h3>Log Substance</h3>
+              <form onSubmit={handleLog}>
+                <input placeholder="Substance name" value={form.substance} onChange={e=>setForm({...form, substance:e.target.value})} style={inputStyle} required />
+                <input placeholder="Dosage (e.g., 5mg)" value={form.dosage} onChange={e=>setForm({...form, dosage:e.target.value})} style={{...inputStyle, marginTop:8}} required />
+                <select value={form.route} onChange={e=>setForm({...form, route:e.target.value})} style={{...inputStyle, marginTop:8}}>
+                  <option>Subcutaneous</option><option>Intramuscular</option><option>Oral</option><option>Transdermal</option>
+                </select>
+                <input placeholder="Frequency (e.g., EOD)" value={form.frequency} onChange={e=>setForm({...form, frequency:e.target.value})} style={{...inputStyle, marginTop:8}} />
+                <input placeholder="Blood markers to monitor" value={form.markers} onChange={e=>setForm({...form, markers:e.target.value})} style={{...inputStyle, marginTop:8}} />
+                <textarea placeholder="Notes / side effects" value={form.notes} onChange={e=>setForm({...form, notes:e.target.value})} style={{...inputStyle, marginTop:8, minHeight:60}} />
+                <button type="submit" className="btn-primary" style={{width:'100%', marginTop:14}}>📋 Log Entry (Private)</button>
+              </form>
+            </div>
+            <div className="card">
+              <h3>Biomarker Guardrails</h3>
+              <div style={{background:'var(--surface3)', padding:12, borderRadius:'var(--radius-sm)', fontSize:'0.85rem', lineHeight:1.7}}>
+                <p>🔴 Critical markers:</p>
+                <p>• Liver: ALT, AST<br/>• Lipids: HDL, LDL<br/>• Hormones: Total T, E2<br/>• Kidney: Creatinine</p>
+              </div>
+              <p style={{marginTop:12, color:'var(--warn)', fontWeight:600, fontSize:'0.85rem'}}>⚠️ Alerts for out-of-range values.</p>
+            </div>
+          </div>
+          {log.length>0 && (
+            <div style={{marginTop:24}}>
+              <h3>Private Log History</h3>
+              {log.map(e=>(
+                <div key={e.id} className="card" style={{marginBottom:8}}>
+                  <strong>{e.substance}</strong> — {e.dosage} {e.route} · {e.frequency}<br/>
+                  <span style={{color:'var(--text2)', fontSize:'0.8rem'}}>{fmtDate(e.date)} {e.markers && '· Markers: '+e.markers}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    };
+
+    const inputStyle = {
+      width:'100%', padding:'10px 14px', background:'var(--surface3)', border:'1px solid var(--border)',
+      borderRadius:'var(--radius-sm)', color:'#fff', fontSize:'0.9rem', outline:'none'
+    };
+
+    // ---------- RENDER ----------
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>

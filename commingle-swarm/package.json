@@ -1,0 +1,17 @@
+{
+  "name": "commingle-swarm",
+  "version": "0.2.0",
+  "private": true,
+  "scripts": {
+    "build:web": "cd web && npm run build",
+    "dev:web": "cd web && npm run dev",
+    "serve:web": "cd web && npm run serve",
+    "start:node": "ts-node --transpile-only termux/src/node.ts",
+    "build:node": "tsc -p tsconfig.json && node dist/termux/src/node.js"
+  },
+  "devDependencies": {
+    "esbuild": "^0.23.0",
+    "typescript": "^5.6.2",
+    "ts-node": "^10.9.2"
+  }
+}

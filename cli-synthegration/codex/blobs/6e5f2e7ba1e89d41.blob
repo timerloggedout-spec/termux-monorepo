@@ -1,0 +1,60 @@
+import React, { createContext, useReducer, useContext, useEffect } from 'react';
+import { fetchCompounds } from '../services/api';
+
+const AppContext = createContext();
+
+const initialState = {
+  compounds: [],
+  loading: true,
+  selectedCompound: null,
+  selectedCountry: null,
+  mapFilter: null,
+  error: null,
+};
+
+function appReducer(state, action) {
+  switch (action.type) {
+    case 'SET_COMPOUNDS':
+      return { ...state, compounds: action.payload, loading: false };
+    case 'SELECT_COMPOUND':
+      return { ...state, selectedCompound: action.payload };
+    case 'SELECT_COUNTRY':
+      return { ...state, selectedCountry: action.payload };
+    case 'SET_LOADING':
+      return { ...state, loading: action.payload };
+    case 'SET_ERROR':
+      return { ...state, error: action.payload, loading: false };
+    default:
+      return state;
+  }
+}
+
+export function AppProvider({ children }) {
+  const [state, dispatch] = useReducer(appReducer, initialState);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const data = await fetchCompounds();
+        dispatch({ type: 'SET_COMPOUNDS', payload: data });
+      } catch (err) {
+        dispatch({ type: 'SET_ERROR', payload: err.message });
+      }
+    }
+    loadData();
+  }, []);
+
+  return (
+    <AppContext.Provider value={{ state, dispatch }}>
+      {children}
+    </AppContext.Provider>
+  );
+}
+
+export function useAppContext() {
+  const context = useContext(AppContext);
+  if (!context) {
+    throw new Error('useAppContext must be used within AppProvider');
+  }
+  return context;
+}

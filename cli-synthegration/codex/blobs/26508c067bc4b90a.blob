@@ -1,0 +1,24 @@
+ async _fetch(url) {
+   let actualUrl = url;
+   if (window.location.protocol === 'file:' && PRODUCTION_CONFIG.CORS_PROXY.enabled) {
+     actualUrl = PRODUCTION_CONFIG.CORS_PROXY.url + encodeURIComponent(url);
+   }
+
+   const startTime = performance.now();
+   const response = await fetch(actualUrl, {
+     method: 'GET',
+     headers: {
+       'Content-Type': 'application/json',
+     },
+   });
+
+   if (!response.ok) {
+     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+   }
+
+   const data = await response.json();
+   const fetchTime = performance.now() - startTime;
+   this.logger.log('FETCH', `Fetched ${url} in ${fetchTime.toFixed(2)}ms`, 'info');
+   return data;
+ }
+ 

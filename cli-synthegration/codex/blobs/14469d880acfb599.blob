@@ -1,0 +1,53 @@
+// modules/auth/passport-setup.js
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
+const TokenManager = require('./token-manager');
+const User = require('../../models/User');
+
+// YouTube OAuth via Google
+passport.use('youtube', new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: '/auth/youtube/callback',
+    scope: [
+        'https://www.googleapis.com/auth/youtube',
+        'https://www.googleapis.com/auth/youtube.force-ssl',
+        'https://www.googleapis.com/auth/youtube.readonly'
+    ]
+}, async (accessToken, refreshToken, profile, done) => {
+    try {
+        const encryptedTokens = TokenManager.encrypt({ accessToken, refreshToken });
+        const user = await User.findOneAndUpdate(
+            { provider: 'youtube', providerId: profile.id },
+            { displayName: profile.displayName, tokens: encryptedTokens, profile },
+            { upsert: true, new: true }
+        );
+        return done(null, user);
+    } catch (err) {
+        return done(err);
+    }
+}));
+
+// Instagram OAuth via Facebook
+passport.use('instagram', new FacebookStrategy({
+    clientID: process.env.FACEBOOK_APP_ID,
+    clientSecret: process.env.FACEBOOK_APP_SECRET,
+    callbackURL: '/auth/instagram/callback',
+    profileFields: ['id', 'displayName']
+}, async (accessToken, refreshToken, profile, done) => {
+    try {
+        // Exchange Facebook token for Instagram token
+        const igToken = await InstagramClient.exchangeToken(accessToken);
+        const user = await User.findOneAndUpdate(
+            { provider: 'instagram', providerId: profile.id },
+            { displayName: profile.displayName, tokens: TokenManager.encrypt({ accessToken: igToken, refreshToken }) },
+            { upsert: true, new: true }
+        );
+        return done(null, user);
+    } catch (err) {
+        return done(err);
+    }
+}));
+
+module.exports = passport;

@@ -1,0 +1,1647 @@
+{
+  "category": "system_utility",
+  "tools": [
+    {
+      "name": "utmpset",
+      "package": "runit",
+      "path": "/data/data/com.termux/files/usr/bin/utmpset",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^runit$|^runit-",
+      "category": "system_utility",
+      "description": "Tools to provide service supervision and to manage services"
+    },
+    {
+      "name": "taskset",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/taskset",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "mcookie",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/mcookie",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "nsenter",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/nsenter",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "renice",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/renice",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "blkpr",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/blkpr",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "lscpu",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/lscpu",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "irqtop",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/irqtop",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "ctrlaltdel",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/ctrlaltdel",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "resizepart",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/resizepart",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "setfattr",
+      "package": "attr",
+      "path": "/data/data/com.termux/files/usr/bin/setfattr",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^attr$|^attr-",
+      "category": "system_utility",
+      "description": "Utilities for manipulating filesystem extended attributes"
+    },
+    {
+      "name": "colcrt",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/colcrt",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "delpart",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/delpart",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "hexdump",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/hexdump",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "setarch",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/setarch",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "mkfs",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/mkfs",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "prlimit",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/prlimit",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "dbus-launch",
+      "package": "dbus",
+      "path": "/data/data/com.termux/files/usr/bin/dbus-launch",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^dbus$|^dbus-",
+      "category": "system_utility",
+      "description": "Freedesktop.org message bus system"
+    },
+    {
+      "name": "setsid",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/setsid",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "dbus-uuidgen",
+      "package": "dbus",
+      "path": "/data/data/com.termux/files/usr/bin/dbus-uuidgen",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^dbus$|^dbus-",
+      "category": "system_utility",
+      "description": "Freedesktop.org message bus system"
+    },
+    {
+      "name": "more",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/more",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "ldattach",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/ldattach",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "dbus-update-activation-environment",
+      "package": "dbus",
+      "path": "/data/data/com.termux/files/usr/bin/dbus-update-activation-environment",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^dbus$|^dbus-",
+      "category": "system_utility",
+      "description": "Freedesktop.org message bus system"
+    },
+    {
+      "name": "savelog",
+      "package": "debianutils",
+      "path": "/data/data/com.termux/files/usr/bin/savelog",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^debianutils$|^debianutils-",
+      "category": "system_utility",
+      "description": "Small utilities which are used primarily by the installation scripts of Debian packages"
+    },
+    {
+      "name": "choom",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/choom",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "uclampset",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/uclampset",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "look",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/look",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "scriptlive",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/scriptlive",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "mkfs.minix",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/mkfs.minix",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "rename",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/rename",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "file",
+      "package": "file",
+      "path": "/data/data/com.termux/files/usr/bin/file",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^file$|^file-",
+      "category": "system_utility",
+      "description": "Command-line tool that tells you in words what kind of data a file contains"
+    },
+    {
+      "name": "rtcwake",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/rtcwake",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "enosys",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/enosys",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "dbus-monitor",
+      "package": "dbus",
+      "path": "/data/data/com.termux/files/usr/bin/dbus-monitor",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^dbus$|^dbus-",
+      "category": "system_utility",
+      "description": "Freedesktop.org message bus system"
+    },
+    {
+      "name": "cal",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/cal",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "dbus-run-session",
+      "package": "dbus",
+      "path": "/data/data/com.termux/files/usr/bin/dbus-run-session",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^dbus$|^dbus-",
+      "category": "system_utility",
+      "description": "Freedesktop.org message bus system"
+    },
+    {
+      "name": "fincore",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/fincore",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "hwclock",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/hwclock",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "attr",
+      "package": "attr",
+      "path": "/data/data/com.termux/files/usr/bin/attr",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^attr$|^attr-",
+      "category": "system_utility",
+      "description": "Utilities for manipulating filesystem extended attributes"
+    },
+    {
+      "name": "colrm",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/colrm",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "isosize",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/isosize",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "waitpid",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/waitpid",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "setpriv",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/setpriv",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "dbus-test-tool",
+      "package": "dbus",
+      "path": "/data/data/com.termux/files/usr/bin/dbus-test-tool",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^dbus$|^dbus-",
+      "category": "system_utility",
+      "description": "Freedesktop.org message bus system"
+    },
+    {
+      "name": "sv",
+      "package": "runit",
+      "path": "/data/data/com.termux/files/usr/bin/sv",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^runit$|^runit-",
+      "category": "system_utility",
+      "description": "Tools to provide service supervision and to manage services"
+    },
+    {
+      "name": "dbus-daemon",
+      "package": "dbus",
+      "path": "/data/data/com.termux/files/usr/bin/dbus-daemon",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^dbus$|^dbus-",
+      "category": "system_utility",
+      "description": "Freedesktop.org message bus system"
+    },
+    {
+      "name": "flock",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/flock",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "setterm",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/setterm",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "hardlink",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/hardlink",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "blockdev",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/blockdev",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "scriptreplay",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/scriptreplay",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "glibc-runner",
+      "package": "glibc-runner",
+      "path": "/data/data/com.termux/files/usr/bin/glibc-runner",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^glibc$|^glibc-",
+      "category": "system_utility",
+      "description": "Tool for convenient use of Glibc"
+    },
+    {
+      "name": "readprofile",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/readprofile",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "pipesz",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/pipesz",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "coresched",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/coresched",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "fallocate",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/fallocate",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "run-parts",
+      "package": "debianutils",
+      "path": "/data/data/com.termux/files/usr/bin/run-parts",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^debianutils$|^debianutils-",
+      "category": "system_utility",
+      "description": "Small utilities which are used primarily by the installation scripts of Debian packages"
+    },
+    {
+      "name": "unshare",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/unshare",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "lsfd",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/lsfd",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "xargs",
+      "package": "findutils",
+      "path": "/data/data/com.termux/files/usr/bin/xargs",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Utilities to find files meeting specified criteria and perform various actions on the files which are found"
+    },
+    {
+      "name": "getopt",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/getopt",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "runsvstat",
+      "package": "runit",
+      "path": "/data/data/com.termux/files/usr/bin/runsvstat",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^runit$|^runit-",
+      "category": "system_utility",
+      "description": "Tools to provide service supervision and to manage services"
+    },
+    {
+      "name": "fadvise",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/fadvise",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "mkfs.cramfs",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/mkfs.cramfs",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "svwaitdown",
+      "package": "runit",
+      "path": "/data/data/com.termux/files/usr/bin/svwaitdown",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^runit$|^runit-",
+      "category": "system_utility",
+      "description": "Tools to provide service supervision and to manage services"
+    },
+    {
+      "name": "rev",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/rev",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "addpart",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/addpart",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "setpgid",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/setpgid",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "which",
+      "package": "which",
+      "path": "/data/data/com.termux/files/usr/bin/which",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Shows the full path of (shell) commands"
+    },
+    {
+      "name": "svlogd",
+      "package": "runit",
+      "path": "/data/data/com.termux/files/usr/bin/svlogd",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^runit$|^runit-",
+      "category": "system_utility",
+      "description": "Tools to provide service supervision and to manage services"
+    },
+    {
+      "name": "getfattr",
+      "package": "attr",
+      "path": "/data/data/com.termux/files/usr/bin/getfattr",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^attr$|^attr-",
+      "category": "system_utility",
+      "description": "Utilities for manipulating filesystem extended attributes"
+    },
+    {
+      "name": "dbus-send",
+      "package": "dbus",
+      "path": "/data/data/com.termux/files/usr/bin/dbus-send",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^dbus$|^dbus-",
+      "category": "system_utility",
+      "description": "Freedesktop.org message bus system"
+    },
+    {
+      "name": "clear",
+      "package": "ncurses",
+      "path": "/data/data/com.termux/files/usr/bin/clear",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Library for text-based user interfaces in a terminal-independent manner"
+    },
+    {
+      "name": "svwaitup",
+      "package": "runit",
+      "path": "/data/data/com.termux/files/usr/bin/svwaitup",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^runit$|^runit-",
+      "category": "system_utility",
+      "description": "Tools to provide service supervision and to manage services"
+    },
+    {
+      "name": "fsck.cramfs",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/fsck.cramfs",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "exch",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/exch",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "ionice",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/ionice",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "ul",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/ul",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "script",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/script",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "bits",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/bits",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "whereis",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/whereis",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "mkfs.bfs",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/mkfs.bfs",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "column",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/column",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "fsck.minix",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/fsck.minix",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "runsvchdir",
+      "package": "runit",
+      "path": "/data/data/com.termux/files/usr/bin/runsvchdir",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^runit$|^runit-",
+      "category": "system_utility",
+      "description": "Tools to provide service supervision and to manage services"
+    },
+    {
+      "name": "fsfreeze",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/fsfreeze",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "file-roller",
+      "package": "file-roller",
+      "path": "/data/data/com.termux/files/usr/bin/file-roller",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^file$|^file-",
+      "category": "system_utility",
+      "description": "File Roller is an archive manager for the GNOME desktop environment."
+    },
+    {
+      "name": "lsirq",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/lsirq",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "tempfile",
+      "package": "debianutils",
+      "path": "/data/data/com.termux/files/usr/bin/tempfile",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^debianutils$|^debianutils-",
+      "category": "system_utility",
+      "description": "Small utilities which are used primarily by the installation scripts of Debian packages"
+    },
+    {
+      "name": "killall",
+      "package": "psmisc",
+      "path": "/data/data/com.termux/files/usr/bin/killall",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Some small useful utilities that use the proc filesystem"
+    },
+    {
+      "name": "runsv",
+      "package": "runit",
+      "path": "/data/data/com.termux/files/usr/bin/runsv",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^runit$|^runit-",
+      "category": "system_utility",
+      "description": "Tools to provide service supervision and to manage services"
+    },
+    {
+      "name": "ischroot",
+      "package": "debianutils",
+      "path": "/data/data/com.termux/files/usr/bin/ischroot",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^debianutils$|^debianutils-",
+      "category": "system_utility",
+      "description": "Small utilities which are used primarily by the installation scripts of Debian packages"
+    },
+    {
+      "name": "runsvdir",
+      "package": "runit",
+      "path": "/data/data/com.termux/files/usr/bin/runsvdir",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^runit$|^runit-",
+      "category": "system_utility",
+      "description": "Tools to provide service supervision and to manage services"
+    },
+    {
+      "name": "wdctl",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/wdctl",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "chpst",
+      "package": "runit",
+      "path": "/data/data/com.termux/files/usr/bin/chpst",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^runit$|^runit-",
+      "category": "system_utility",
+      "description": "Tools to provide service supervision and to manage services"
+    },
+    {
+      "name": "zramctl",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/zramctl",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "chcpu",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/chcpu",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "namei",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/namei",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "chrt",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/chrt",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "losetup",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/losetup",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "coreutils",
+      "package": "coreutils",
+      "path": "/data/data/com.termux/files/usr/bin/coreutils",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^coreutils$|^coreutils-",
+      "category": "system_utility",
+      "description": "Basic file, shell and text manipulation utilities from the GNU project"
+    },
+    {
+      "name": "lsclocks",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/lsclocks",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "dbus-cleanup-sockets",
+      "package": "dbus",
+      "path": "/data/data/com.termux/files/usr/bin/dbus-cleanup-sockets",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^dbus$|^dbus-",
+      "category": "system_utility",
+      "description": "Freedesktop.org message bus system"
+    },
+    {
+      "name": "runsvctrl",
+      "package": "runit",
+      "path": "/data/data/com.termux/files/usr/bin/runsvctrl",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^runit$|^runit-",
+      "category": "system_utility",
+      "description": "Tools to provide service supervision and to manage services"
+    },
+    {
+      "name": "col",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/col",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "lsipc",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/lsipc",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "auto_tag_source": "auto:^util$|^util-",
+      "category": "system_utility",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "shuf",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/shuf",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "[",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/[",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "echo",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/echo",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "env",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/env",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "expr",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/expr",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "tee",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/tee",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "cp",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/cp",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "basename",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/basename",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "readlink",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/readlink",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "false",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/false",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "mktemp",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/mktemp",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "mv",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/mv",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "nohup",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/nohup",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "rm",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/rm",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "dirname",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/dirname",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "chown",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/chown",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "timeout",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/timeout",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "id",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/id",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "mkdir",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/mkdir",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "date",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/date",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "nice",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/nice",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "sleep",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/sleep",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "whoami",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/whoami",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "ln",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/ln",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "true",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/true",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "printf",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/printf",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "chmod",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/chmod",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "realpath",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/realpath",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "touch",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/touch",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "yes",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/yes",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "printenv",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/printenv",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "test",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/test",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "seq",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/seq",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    },
+    {
+      "name": "rmdir",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/rmdir",
+      "source": "apt",
+      "tags": [
+        "system_utility"
+      ],
+      "category": "system_utility",
+      "description": "Package unknown"
+    }
+  ]
+}

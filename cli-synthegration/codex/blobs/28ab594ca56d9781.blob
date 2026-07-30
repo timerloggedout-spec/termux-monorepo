@@ -1,0 +1,3 @@
+const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+const targetUrl = 'https://api.binance.com/api/v3/ticker/24hr';
+const response = await fetch(proxyUrl + targetUrl);

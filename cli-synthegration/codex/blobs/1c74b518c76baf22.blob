@@ -1,0 +1,13 @@
+CREATE TABLE market_observation (
+    observation_id      UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    entity_id           UUID REFERENCES entity(entity_id) ON DELETE CASCADE,
+    vendor_org_id       UUID REFERENCES organization(org_id),
+    product_name_as_sold TEXT,
+    dosage_strength     TEXT,
+    dosage_unit         TEXT,
+    package_size        INTEGER,
+    price_usd           DECIMAL(10,2),
+    observation_date    DATE,
+    source_url          TEXT,
+    notes               TEXT
+);

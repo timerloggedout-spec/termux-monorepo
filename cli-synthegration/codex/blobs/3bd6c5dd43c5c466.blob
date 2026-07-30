@@ -1,0 +1,31 @@
+// modules/filter-engine/filter-rules.js
+module.exports = [
+    {
+        name: 'profanity',
+        test: async (msg) => {
+            const regex = /badword1|badword2/i; // Replace with actual list
+            return { passed: !regex.test(msg.text) };
+        },
+        action: async (msg) => console.log(`Filtered profanity from ${msg.author}`)
+    },
+    {
+        name: 'spam',
+        test: async (msg) => {
+            // Check message frequency from same user within time window
+            const recent = await MessageLog.countDocuments({
+                author: msg.author,
+                timestamp: { $gte: Date.now() - 5000 }
+            });
+            return { passed: recent < 3 };
+        },
+        action: async (msg) => console.log(`Rate-limited spam from ${msg.author}`)
+    },
+    {
+        name: 'link-filter',
+        test: async (msg) => {
+            const hasLink = /https?:\/\//i.test(msg.text);
+            return { passed: !hasLink };
+        },
+        action: async (msg) => console.log(`Link filtered from ${msg.author}`)
+    }
+];

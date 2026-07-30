@@ -1,0 +1,98 @@
+-- 1) entity table (canonical substances)
+CREATE TABLE entity (
+    entity_id VARCHAR(20) PRIMARY KEY,
+    canonical_name VARCHAR(200) NOT NULL,
+    entity_type VARCHAR(30),  -- peptide, peptide_hormone, protein, gene_therapy, anabolic_agent, steroid, small_molecule
+    modality VARCHAR(40),     -- peptide, recombinant_protein, gene_transfer, viral_vector, steroid, hormone, mixed
+    sequence TEXT,
+    sequence_length INTEGER,
+    modifications TEXT,
+    target TEXT,
+    mechanism TEXT,
+    indication_summary TEXT,
+    stage VARCHAR(20),        -- discovery, preclinical, phase_1, phase_2, phase_3, phase_4, approved, withdrawn
+    evidence_quality VARCHAR(20),
+    source_primary TEXT,
+    source_secondary TEXT,
+    last_verified_at DATE
+);
+
+-- 2) synonym table
+CREATE TABLE synonym (
+    synonym_id SERIAL PRIMARY KEY,
+    entity_id VARCHAR(20) REFERENCES entity(entity_id),
+    synonym_name VARCHAR(200) NOT NULL,
+    synonym_type VARCHAR(20),  -- INN, USAN, brand, registry_name, legacy, abbreviation
+    confidence VARCHAR(10)
+);
+
+-- 3) trial table
+CREATE TABLE trial (
+    trial_id SERIAL PRIMARY KEY,
+    entity_id VARCHAR(20) REFERENCES entity(entity_id),
+    registry_name VARCHAR(50),
+    registry_id VARCHAR(30),   -- NCT ID
+    sponsor_org_id VARCHAR(50),
+    phase VARCHAR(20),
+    status VARCHAR(30),
+    study_type VARCHAR(50),
+    condition TEXT,
+    country_list TEXT,
+    start_date DATE,
+    completion_date DATE,
+    source_url TEXT,
+    last_verified_at DATE
+);
+
+-- 4) regulatory_jurisdiction table (per country)
+CREATE TABLE regulatory_jurisdiction (
+    reg_id SERIAL PRIMARY KEY,
+    entity_id VARCHAR(20) REFERENCES entity(entity_id),
+    jurisdiction_code VARCHAR(3),
+    jurisdiction_name VARCHAR(50),
+    approval_status VARCHAR(30),  -- approved, investigational, unapproved, withdrawn, banned
+    market_status VARCHAR(30),    -- marketed, not_marketed, discontinued, shortage
+    legal_access VARCHAR(30),     -- prescription_only, otc, clinical_trial_only, prohibited
+    approved_indications TEXT,
+    approval_date DATE,
+    evidence_url TEXT,
+    last_verified_at DATE
+);
+
+-- 5) anti_doping table
+CREATE TABLE anti_doping (
+    doping_id SERIAL PRIMARY KEY,
+    entity_id VARCHAR(20) REFERENCES entity(entity_id),
+    framework VARCHAR(20),     -- WADA, AIU, local
+    status VARCHAR(20),        -- prohibited, monitored, permitted
+    category VARCHAR(20),      -- S1, S2, S3, S4, etc.
+    in_competition BOOLEAN,
+    out_of_competition BOOLEAN,
+    source_url TEXT,
+    last_verified_at DATE
+);
+
+-- 6) organization table
+CREATE TABLE organization (
+    org_id SERIAL PRIMARY KEY,
+    org_name_canonical VARCHAR(200) NOT NULL,
+    org_type VARCHAR(50),
+    ror_id VARCHAR(50),
+    grid_id VARCHAR(50),
+    wikidata_id VARCHAR(50),
+    isni_id VARCHAR(50),
+    crossref_funder_id VARCHAR(50),
+    country VARCHAR(3),
+    website TEXT,
+    last_verified_at DATE
+);
+
+-- 7) source table (evidence provenance)
+CREATE TABLE source (
+    source_id SERIAL PRIMARY KEY,
+    source_type VARCHAR(30),
+    source_name VARCHAR(100),
+    url TEXT,
+    retrieval_date DATE,
+    reliability_tier INTEGER
+);

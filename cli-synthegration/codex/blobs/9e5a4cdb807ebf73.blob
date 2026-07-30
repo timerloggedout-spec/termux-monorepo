@@ -1,0 +1,174 @@
+// ================= CONFIGURATION =================
+const SHEET_ID = SpreadsheetApp.getActiveSpreadsheet().getId();
+const COMPOUND_SHEET = "compounds";
+const TRIAL_SHEET = "trials";
+const ORG_SHEET = "organizations";
+
+// ================= MAIN IMPORT FUNCTIONS =================
+
+// 1. Import peptides from Peptipedia (via their public API or CSV)
+function importPeptides() {
+  // Peptipedia v2.0 provides a downloadable CSV at:
+  // https://peptipedia.cl/export (requires scraping; alternative: use static curated list)
+  // For demo, we use a public GitHub dataset of known therapeutic peptides
+  const url = "https://raw.githubusercontent.com/your-repo/peptide-database/main/peptides.csv";
+  const response = UrlFetchApp.fetch(url);
+  const csv = response.getContentText();
+  const parsed = Utilities.parseCsv(csv);
+  const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(COMPOUND_SHEET);
+  // Append new rows, avoiding duplicates by Entity_ID
+  // Implementation depends on CSV structure
+}
+
+// 2. Import FDA approved drugs (openFDA)
+function importFDA() {
+  const url = "https://api.fda.gov/drug/drugsfda.json?limit=100&search=products.brand_name.exact:?&sort=effective_date:desc";
+  // Note: openFDA requires pagination; this is a simplified example
+  const response = UrlFetchApp.fetch(url);
+  const data = JSON.parse(response.getContentText());
+  const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(COMPOUND_SHEET);
+  data.results.forEach(drug => {
+    const product = drug.products[0];
+    const row = {
+      Entity_ID: drug.application_number,
+      Canonical_Name: product.brand_name,
+      Entity_Type: "small_molecule",
+      US_FDA_Status: "approved",
+      US_Legal_Access: "prescription_only",
+      Last_Verified: new Date().toISOString(),
+      Source_URL: `https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=${drug.application_number}`
+    };
+    // Append or update row
+    appendOrUpdateRow(row);
+  });
+}
+
+// 3. Import EMA authorized medicines
+function importEMA() {
+  // EMA provides XML/CSV downloads; example using their public CSV
+  const url = "https://www.ema.europa.eu/en/medicines/download-medicines-data";
+  // This is a placeholder – you would parse the actual CSV
+}
+
+// 4. Import gene therapies from ClinicalTrials.gov
+function importGeneTherapies() {
+  const url = "https://clinicaltrials.gov/api/v2/studies?query.term=gene%20therapy&pageSize=100";
+  const response = UrlFetchApp.fetch(url);
+  const data = JSON.parse(response.getContentText());
+  const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(COMPOUND_SHEET);
+  data.studies.forEach(study => {
+    const interventions = study.protocolSection?.armsInterventionsModule?.interventionList || [];
+    interventions.forEach(interv => {
+      if (interv.name && (interv.name.toLowerCase().includes("gene") || interv.name.toLowerCase().includes("car-t"))) {
+        const row = {
+          Entity_ID: `GT_${study.protocolSection.identificationModule.nctId}`,
+          Canonical_Name: interv.name,
+          Entity_Type: "gene_therapy",
+          Development_Stage_Global: study.protocolSection.statusModule?.overallStatus,
+          Last_Verified: new Date().toISOString(),
+          Source_URL: `https://clinicaltrials.gov/ct2/show/${study.protocolSection.identificationModule.nctId}`
+        };
+        appendOrUpdateRow(row);
+      }
+    });
+  });
+}
+
+// 5. Import WADA prohibited list
+function importWADA() {
+  // WADA publishes a yearly list in PDF; we use a curated JSON from a reliable source
+  const url = "https://raw.githubusercontent.com/opendoping/wada-prohibited-list/main/wada.json";
+  const response = UrlFetchApp.fetch(url);
+  const data = JSON.parse(response.getContentText());
+  const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(COMPOUND_SHEET);
+  data.substances.forEach(sub => {
+    // Match by canonical name (fuzzy matching would be needed in production)
+    const rows = sheet.getDataRange().getValues();
+    for (let i = 1; i < rows.length; i++) {
+      if (rows[i][1] === sub.name) {
+        sheet.getRange(i+1, 29).setValue("prohibited"); // WADA_Status column
+        sheet.getRange(i+1, 30).setValue(sub.category);
+        sheet.getRange(i+1, 31).setValue(sub.inCompetition);
+        sheet.getRange(i+1, 32).setValue(sub.outCompetition);
+        break;
+      }
+    }
+  });
+}
+
+// 6. Import research organizations from ROR (for caching)
+function importROROrganizations() {
+  // Example: fetch top 100 research institutions
+  const url = "https://api.ror.org/organizations?page=1&pageSize=100";
+  const response = UrlFetchApp.fetch(url);
+  const data = JSON.parse(response.getContentText());
+  const orgSheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(ORG_SHEET);
+  if (orgSheet.getLastRow() === 0) orgSheet.appendRow(["ROR_ID", "Name", "Country", "Website", "Last_Fetched"]);
+  data.items.forEach(org => {
+    const rorId = org.id;
+    const name = org.name;
+    const country = org.addresses?.[0]?.country || "";
+    const website = org.links?.[0] || "";
+    orgSheet.appendRow([rorId, name, country, website, new Date().toISOString()]);
+  });
+}
+
+// Helper: Append or update a compound row
+function appendOrUpdateRow(newRow) {
+  const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(COMPOUND_SHEET);
+  const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  const data = sheet.getDataRange().getValues();
+  let existingRow = -1;
+  for (let i = 1; i < data.length; i++) {
+    if (data[i][0] === newRow.Entity_ID) {
+      existingRow = i + 1;
+      break;
+    }
+  }
+  const rowData = headers.map(h => newRow[h] || "");
+  if (existingRow === -1) {
+    sheet.appendRow(rowData);
+  } else {
+    sheet.getRange(existingRow, 1, 1, rowData.length).setValues([rowData]);
+  }
+}
+
+// ================= WEB APP (API) =================
+function doGet(e) {
+  const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(COMPOUND_SHEET);
+  const rows = sheet.getDataRange().getValues();
+  const headers = rows[0];
+  const data = rows.slice(1).map(row => {
+    let obj = {};
+    headers.forEach((h, i) => obj[h] = row[i]);
+    return obj;
+  });
+  return ContentService.createTextOutput(JSON.stringify(data))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e) {
+  // Allow batch updates from frontend (e.g., after CSV import)
+  const payload = JSON.parse(e.postData.contents);
+  const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(COMPOUND_SHEET);
+  const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  sheet.getRange(2, 1, sheet.getLastRow() - 1, sheet.getLastColumn()).clear();
+  payload.forEach(row => {
+    const rowData = headers.map(h => row[h] || "");
+    sheet.appendRow(rowData);
+  });
+  return ContentService.createTextOutput(JSON.stringify({ success: true }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+// ================= SCHEDULED TRIGGERS =================
+function setupTriggers() {
+  // Delete existing
+  ScriptApp.getProjectTriggers().forEach(t => ScriptApp.deleteTrigger(t));
+  // Run imports daily
+  ScriptApp.newTrigger("importPeptides").timeBased().everyDays(1).create();
+  ScriptApp.newTrigger("importFDA").timeBased().everyDays(1).create();
+  ScriptApp.newTrigger("importGeneTherapies").timeBased().everyDays(1).create();
+  ScriptApp.newTrigger("importWADA").timeBased().everyDays(1).create();
+  ScriptApp.newTrigger("importROROrganizations").timeBased().everyDays(7).create();
+}

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IAMGAINZ – Coaching, Peptides &amp; Nutrition</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #0a0a0a; color: #f0f0f0; line-height: 1.6; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* Header */
+    header { text-align: center; padding: 60px 0 20px; }
+    .logo { font-family: 'Anton', 'Impact', sans-serif; font-size: 4.5rem; font-weight: 800; letter-spacing: -1px; background: linear-gradient(135deg, #ff6b35, #ff3c00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; }
+    .sub-logo { font-size: 1.2rem; color: #aaa; margin-top: -8px; }
+    .youtube-link { display: inline-block; margin-top: 16px; color: #ff6b35; text-decoration: none; font-weight: 600; }
+
+    /* Hero */
+    .hero { text-align: center; padding: 40px 0 60px; }
+    .hero h1 { font-size: 3rem; font-weight: 700; margin-bottom: 16px; }
+    .hero p { font-size: 1.2rem; color: #ccc; max-width: 600px; margin: 0 auto 32px; }
+    .cta-btn { display: inline-block; padding: 16px 40px; background: #ff3c00; color: #fff; font-weight: 700; border-radius: 8px; text-decoration: none; transition: background 0.2s; font-size: 1.1rem; }
+    .cta-btn:hover { background: #e03400; }
+
+    /* Stats from real client data */
+    .stats { display: flex; justify-content: center; gap: 48px; margin: 20px 0 60px; flex-wrap: wrap; }
+    .stat { text-align: center; background: #1a1a1a; border-radius: 12px; padding: 24px 32px; min-width: 160px; }
+    .stat-number { font-size: 2.8rem; font-weight: 800; color: #ff6b35; line-height: 1.2; }
+    .stat-label { font-size: 0.9rem; color: #aaa; }
+
+    /* Section */
+    .section { padding: 80px 0; }
+    .section h2 { font-size: 2.2rem; text-align: center; margin-bottom: 16px; color: #fff; }
+    .section .subtitle { text-align: center; color: #aaa; margin-bottom: 48px; font-size: 1.1rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; }
+
+    .card { background: #1a1a1a; border-radius: 16px; padding: 36px 28px; transition: transform 0.2s; border: 1px solid #2a2a2a; }
+    .card:hover { transform: translateY(-4px); border-color: #ff3c00; }
+    .card h3 { font-size: 1.5rem; margin-bottom: 12px; color: #ff6b35; }
+    .card p { color: #bbb; margin-bottom: 16px; }
+    .card .price { font-weight: 700; color: #fff; }
+    .card a { color: #ff6b35; text-decoration: none; font-weight: 600; }
+
+    /* Resources list */
+    .resource-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: 32px; }
+    .resource-link { background: #1a1a1a; border-radius: 8px; padding: 12px 24px; color: #fff; text-decoration: none; font-weight: 600; border: 1px solid #333; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
+    .resource-link:hover { border-color: #ff3c00; color: #ff6b35; }
+
+    /* Footer */
+    footer { text-align: center; padding: 40px 0; color: #666; font-size: 0.9rem; border-top: 1px solid #1a1a1a; margin-top: 40px; }
+
+    @media (max-width: 600px) {
+      .logo { font-size: 2.8rem; }
+      .hero h1 { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <!-- Header / Branding -->
+    <header>
+      <div class="logo">IAMGAINZ</div>
+      <div class="sub-logo">IAmGainz · @IAmGainz</div>
+      <a href="https://www.youtube.com/@IAmGainz" target="_blank" rel="noopener" class="youtube-link">📺 YouTube Channel</a>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+      <h1>Transform Your Body With Science</h1>
+      <p>One‑on‑one coaching, advanced peptide protocols, and precision nutrition – built from real results.</p>
+      <a href="#coaching" class="cta-btn">Start Your Journey</a>
+    </section>
+
+    <!-- Prova stats (real case from channel) -->
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-number">21 lbs</div>
+        <div class="stat-label">Lost in 7 weeks</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">10%</div>
+        <div class="stat-label">Body Fat Dropped</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">60 yrs</div>
+        <div class="stat-label">Vegetarian Client</div>
+      </div>
+    </div>
+
+    <!-- Coaching Services -->
+    <section id="coaching" class="section">
+      <h2>Coaching Services</h2>
+      <p class="subtitle">From weekly check‑ins to full peptide‑enhanced protocols – your plan is personal.</p>
+      <div class="grid">
+        <div class="card">
+          <h3>1‑on‑1 Premium Coaching</h3>
+          <p>Custom workout &amp; nutrition plans, weekly video check‑ins, and daily chat support. Track everything in your own dashboard.</p>
+          <p class="price">$250 / month</p>
+          <a href="https://linktr.ee/Iam.gainz" target="_blank">Apply now →</a>
+        </div>
+        <div class="card">
+          <h3>Peptide Optimisation</h3>
+          <p>Research‑backed protocols (BPC‑157, TB‑500, GHRPs) integrated into your plan for recovery, fat loss, and longevity.</p>
+          <p class="price">Consultation required</p>
+          <a href="https://linktr.ee/Iam.gainz" target="_blank">Learn more →</a>
+        </div>
+        <div class="card">
+          <h3>Vegetarian / Vegan Plans</h3>
+          <p>The exact meal‑by‑meal strategy that helped a 60‑year‑old vegetarian drop 21 lbs in 7 weeks.</p>
+          <p class="price">Custom quote</p>
+          <a href="https://linktr.ee/Iam.gainz" target="_blank">Get yours →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Nutrition & Peptides -->
+    <section class="section">
+      <h2>Nutrition &amp; Peptide Hub</h2>
+      <p class="subtitle">Science‑backed supplements and peptide resources used by the top 1% – now available to you.</p>
+      <div class="grid">
+        <div class="card">
+          <h3>IAMGAINZ Whey Isolate</h3>
+          <p>Grass‑fed, cold‑processed, 27g protein per scoop. Chocolate &amp; Vanilla.</p>
+          <p class="price">$49.99</p>
+          <a href="https://linktr.ee/Iam.gainz" target="_blank">Buy on Linktree →</a>
+        </div>
+        <div class="card">
+          <h3>Pre‑Workout IGNITE</h3>
+          <p>Clean energy, no crash. Citrulline, Beta‑Alanine, and a focus matrix.</p>
+          <p class="price">$39.99</p>
+          <a href="https://linktr.ee/Iam.gainz" target="_blank">Shop now →</a>
+        </div>
+        <div class="card">
+          <h3>Peptide Research Guides</h3>
+          <p>Downloadable PDFs covering dosing, cycling, and safety. BPC‑157, TB‑500, CJC‑1295, and more.</p>
+          <p class="price">Free / Premium</p>
+          <a href="https://linktr.ee/Iam.gainz" target="_blank">Download →</a>
+        </div>
+        <div class="card">
+          <h3>Meal Prep Masterclass</h3>
+          <p>Video course + ebook. Learn to cook muscle‑building meals in under 20 minutes.</p>
+          <p class="price">$29.99</p>
+          <a href="https://linktr.ee/Iam.gainz" target="_blank">Enroll →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Client Result Highlight (Real) -->
+    <section class="section" style="background: #111; border-radius: 20px; text-align: center; padding: 60px 24px;">
+      <h2>Client of the Month</h2>
+      <div style="max-width: 650px; margin: 0 auto;">
+        <div style="font-size: 4rem;">🏆</div>
+        <blockquote style="font-size: 1.4rem; font-style: italic; color: #e0e0e0; margin: 24px 0;">
+          “I started at 195 lbs and 23% body fat. In just 7 weeks I hit 174 lbs and 13% body fat. The vegetarian plan and peer‑level support changed everything.”
+        </blockquote>
+        <cite style="color: #ff6b35; font-weight: 600;">— Male, 60, Vegetarian (Client of the Month)</cite>
+      </div>
+    </section>
+
+    <!-- All Your Resources (from Linktree, safe list) -->
+    <section class="section">
+      <h2>All Your IAMGAINZ Tools</h2>
+      <p class="subtitle">Direct access to everything you need – coaching, store, research, and more. (Adult content excluded – available only on your Linktree)</p>
+      <div class="resource-grid">
+        <a href="https://linktr.ee/Iam.gainz" target="_blank" class="resource-link">🛒 Supplement Store</a>
+        <a href="https://linktr.ee/Iam.gainz" target="_blank" class="resource-link">📋 Coaching Application</a>
+        <a href="https://linktr.ee/Iam.gainz" target="_blank" class="resource-link">🧬 Peptide Guides</a>
+        <a href="https://linktr.ee/Iam.gainz" target="_blank" class="resource-link">🥗 Nutrition Plans</a>
+        <a href="https://linktr.ee/Iam.gainz" target="_blank" class="resource-link">🎥 YouTube Content</a>
+        <a href="https://linktr.ee/Iam.gainz" target="_blank" class="resource-link">📘 Free E‑book</a>
+        <a href="https://linktr.ee/Iam.gainz" target="_blank" class="resource-link">💬 Discord Community</a>
+        <a href="https://linktr.ee/Iam.gainz" target="_blank" class="resource-link">📅 Book a Call</a>
+      </div>
+    </section>
+
+    <!-- Claude Artifacts placeholder (can be later embedded) -->
+    <section class="section" style="text-align: center; background: #1a1a1a; border-radius: 20px; padding: 40px 24px;">
+      <h2>Worldwide Regulations &amp; Research</h2>
+      <p style="color: #aaa; margin-bottom: 20px;">Our interactive Claude‑powered tools for global supplement &amp; peptide regulations are coming soon. (Currently embedding unavailable in your region – will be live once resolved.)</p>
+      <div style="color: #666; font-size: 0.9rem;">Placeholder for Artifact 1825b0c2 & 0adfeae1</div>
+    </section>
+
+    <!-- Final CTA -->
+    <section style="text-align: center; padding: 40px 0 80px;">
+      <h2 style="margin-bottom: 16px;">Ready to build your own transformation story?</h2>
+      <a href="https://linktr.ee/Iam.gainz" class="cta-btn" target="_blank">Get Started – FREE Consultation</a>
+    </section>
+  </main>
+
+  <footer>
+    © 2026 IAMGAINZ · @IAmGainz · All resources &amp; adult content: <a href="https://linktr.ee/Iam.gainz" style="color:#ff6b35;">Linktree</a>
+  </footer>
+</body>
+</html>

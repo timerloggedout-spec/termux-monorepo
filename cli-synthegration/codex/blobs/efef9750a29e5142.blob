@@ -1,0 +1,123 @@
+import React, { useState } from 'react';
+import { useAppContext } from './context/AppContext';
+import MatrixView from './components/MatrixView';
+import DetailView from './components/DetailView';
+import WorldMap from './components/WorldMap';
+import ClinicalTrialsTab from './components/ClinicalTrialsTab';
+import RORTab from './components/RORTab';
+import CSVImportExport from './components/CSVImportExport';
+import { Database, FlaskConical, Building2, MapIcon, Activity, Menu, X } from 'lucide-react';
+
+const tabs = [
+  { id: 'matrix', label: 'Regulatory Matrix', icon: Database },
+  { id: 'map', label: 'World Map', icon: MapIcon },
+  { id: 'trials', label: 'Clinical Trials', icon: FlaskConical },
+  { id: 'ror', label: 'Research Orgs', icon: Building2 },
+];
+
+function App() {
+  const { state, dispatch } = useAppContext();
+  const { selectedCompound, loading } = state;
+  const [activeTab, setActiveTab] = useState('matrix');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const handleSelectCompound = (compound) => {
+    dispatch({ type: 'SELECT_COMPOUND', payload: compound });
+  };
+
+  const handleCountryClick = (isoCode, countryName, status) => {
+    dispatch({ type: 'SELECT_COUNTRY', payload: { isoCode, countryName, status } });
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col md:flex-row">
+      {/* Mobile header */}
+      <div className="md:hidden flex items-center justify-between bg-gray-900 text-white p-4">
+        <div className="flex items-center font-bold text-lg">
+          <Activity className="w-5 h-5 text-indigo-400 mr-2" />
+          RegIntel
+        </div>
+        <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          {mobileMenuOpen ? <X /> : <Menu />}
+        </button>
+      </div>
+
+      {/* Sidebar */}
+      <nav className={`${mobileMenuOpen ? 'block' : 'hidden'} md:block w-full md:w-64 bg-gray-900 text-gray-300 flex-shrink-0`}>
+        <div className="p-6 hidden md:flex items-center text-white font-bold text-xl">
+          <Activity className="w-6 h-6 text-indigo-400 mr-3" />
+          RegIntel
+        </div>
+        <div className="px-4 pb-6 space-y-2">
+          {tabs.map(({ id, label, icon: Icon }) => (
+            <button
+              key={id}
+              onClick={() => {
+                setActiveTab(id);
+                setMobileMenuOpen(false);
+              }}
+              className={`w-full flex items-center px-4 py-3 rounded-lg transition-colors ${
+                activeTab === id
+                  ? 'bg-indigo-600 text-white'
+                  : 'hover:bg-gray-800 hover:text-white'
+              }`}
+            >
+              <Icon className="w-5 h-5 mr-3" />
+              {label}
+            </button>
+          ))}
+          <div className="pt-4 mt-4 border-t border-gray-700">
+            <CSVImportExport />
+          </div>
+        </div>
+      </nav>
+
+      {/* Main content */}
+      <main className="flex-1 overflow-y-auto p-4 md:p-6">
+        {activeTab === 'matrix' && (
+          <MatrixView
+            compounds={state.compounds}
+            onSelectCompound={handleSelectCompound}
+            selectedCompound={selectedCompound}
+          />
+        )}
+        {activeTab === 'map' && (
+          <WorldMap
+            compound={selectedCompound}
+            onCountryClick={handleCountryClick}
+          />
+        )}
+        {activeTab === 'trials' && (
+          <ClinicalTrialsTab
+            initialQuery={selectedCompound?.name}
+            countryFilter={state.selectedCountry?.countryName}
+          />
+        )}
+        {activeTab === 'ror' && (
+          <RORTab
+            initialQuery={selectedCompound?.name}
+            countryFilter={state.selectedCountry?.countryName}
+          />
+        )}
+      </main>
+
+      {/* Detail panel */}
+      {selectedCompound && (
+        <DetailView
+          compound={selectedCompound}
+          onClose={() => dispatch({ type: 'SELECT_COMPOUND', payload: null })}
+        />
+      )}
+    </div>
+  );
+}
+
+export default App;

@@ -1,0 +1,108 @@
+import { google } from 'googleapis';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const auth = new google.auth.GoogleAuth({
+  keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+});
+
+const sheets = google.sheets({ version: 'v4', auth });
+const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
+
+// Expected columns in the Compounds sheet
+const EXPECTED_HEADERS = [
+  'Entity_ID', 'Canonical_Name', 'Synonyms', 'Entity_Type', 'Modality',
+  'Mechanism_Summary', 'Development_Stage_Global', 'US_FDA_Status', 'US_Legal_Access', 'US_Notes',
+  'EU_EMA_Status', 'EU_Legal_Access', 'EU_Notes', 'CA_HealthCanada_Status', 'CA_Legal_Access',
+  'CA_Notes', 'AU_TGA_Status', 'AU_Legal_Access', 'AU_Notes', 'UK_MHRA_Status', 'UK_Legal_Access',
+  'UK_Notes', 'JP_PMDA_Status', 'JP_Legal_Access', 'JP_Notes', 'RU_Status', 'RU_Legal_Access',
+  'RU_Notes', 'WADA_Status', 'WADA_Category', 'WADA_In_Competition', 'WADA_Out_Competition',
+  'Key_Regulatory_Risks', 'Last_Verified'
+];
+
+export async function fetchCompounds() {
+  try {
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: 'Compounds!A1:AN',
+    });
+    const rows = response.data.values;
+    if (!rows || rows.length < 2) return [];
+
+    const headers = rows[0];
+    return rows.slice(1).map(row => {
+      const obj = {};
+      headers.forEach((h, i) => {
+        obj[h] = row[i] || '';
+      });
+      return obj;
+    });
+  } catch (err) {
+    console.error('Google Sheets read error:', err);
+    throw err;
+  }
+}
+
+export async function batchUpdateCompounds(compounds) {
+  if (!compounds.length) throw new Error('No compounds to update');
+
+  // Clear existing data (keep header row)
+  await sheets.spreadsheets.values.clear({
+    spreadsheetId: SPREADSHEET_ID,
+    range: 'Compounds!A2:AN',
+  });
+
+  // Prepare rows
+  const headers = EXPECTED_HEADERS;
+  const rows = compounds.map(c => headers.map(h => c[h] || ''));
+
+  // Write new data
+  await sheets.spreadsheets.values.update({
+    spreadsheetId: SPREADSHEET_ID,
+    range: 'Compounds!A2',
+    valueInputOption: 'USER_ENTERED',
+    requestBody: { values: rows },
+  });
+
+  return { success: true, count: compounds.length };
+}
+
+export async function updateCompound(entityId, updates) {
+  // First find the row index for the given Entity_ID
+  const response = await sheets.spreadsheets.values.get({
+    spreadsheetId: SPREADSHEET_ID,
+    range: 'Compounds!A:A',
+  });
+  const rows = response.data.values;
+  const rowIndex = rows.findIndex(row => row[0] === entityId);
+  if (rowIndex === -1) throw new Error('Compound not found');
+
+  const sheetRowNumber = rowIndex + 2; // +2 because row 1 is header, and array is 0-indexed
+  const headers = EXPECTED_HEADERS;
+
+  // Build update requests for each changed field
+  const requests = Object.entries(updates).map(([field, value]) => {
+    const colIndex = headers.indexOf(field);
+    if (colIndex === -1) return null;
+    return {
+      range: `Compounds!${String.fromCharCode(65 + colIndex)}${sheetRowNumber}`,
+      values: [[value]],
+    };
+  }).filter(Boolean);
+
+  if (requests.length === 0) return { success: true, message: 'No valid fields to update' };
+
+  // Batch update
+  for (const req of requests) {
+    await sheets.spreadsheets.values.update({
+      spreadsheetId: SPREADSHEET_ID,
+      range: req.range,
+      valueInputOption: 'USER_ENTERED',
+      requestBody: { values: req.values },
+    });
+  }
+
+  return { success: true, updated: requests.length };
+}

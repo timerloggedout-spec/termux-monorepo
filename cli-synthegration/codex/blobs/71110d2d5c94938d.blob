@@ -1,0 +1,11 @@
+findRate(fromCurrency, toCurrency, pairs) {
+    for (const pair of pairs) {
+        if (pair.base === fromCurrency) {
+            const targetCurrency = pair.target.split('/')[0];
+            if (targetCurrency === toCurrency) {
+                return pair.last;
+            }
+        }
+    }
+    return null;
+}

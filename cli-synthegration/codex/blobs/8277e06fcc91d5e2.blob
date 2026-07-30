@@ -1,0 +1,277 @@
+#!/usr/bin/env python3
+"""
+Casino‑Style Arbitrage Scanner – Next‑Generation Engine
+--------------------------------------------------------
+A real‑time crypto arbitrage detector with casino‑inspired
+visuals, sound alerts, and full‑colour logging.
+"""
+
+import time
+import random
+import threading
+import sys
+import os
+from typing import Dict, List, Optional, Tuple
+from dataclasses import dataclass
+
+# --- Third‑party libraries ---
+try:
+    from rich.console import Console
+    from rich.table import Table
+    from rich.live import Live
+    from rich.panel import Panel
+    from rich.text import Text
+    from rich.progress import Progress, SpinnerColumn, TextColumn
+    from rich.style import Style
+    from rich import box
+    import playsound  # for audio alerts
+    HAS_RICH = True
+except ImportError:
+    print("Please install required packages: pip install rich playsound")
+    sys.exit(1)
+
+# --- Configuration ---
+EXCHANGES = ["Binance", "Kraken", "Coinbase", "FTX", "Huobi"]
+SYMBOLS = ["BTC/USDT", "ETH/USDT", "SOL/USDT", "DOGE/USDT", "XRP/USDT"]
+REFRESH_INTERVAL = 2  # seconds
+ALERT_THRESHOLD = 0.5  # minimum spread % to trigger alert
+JACKPOT_THRESHOLD = 2.0  # spread % that triggers "jackpot" sound
+SOUND_ENABLED = True  # set False to disable sounds
+
+# --- Data structures ---
+@dataclass
+class PricePoint:
+    exchange: str
+    symbol: str
+    bid: float
+    ask: float
+    timestamp: float
+
+# --- Global state ---
+console = Console()
+live_data: Dict[Tuple[str, str], Tuple[float, float]] = {}  # (exchange, symbol) -> (bid, ask)
+running = True
+sound_lock = threading.Lock()
+
+# --- Helpers ---
+def play_sound(filename: str):
+    """Play a WAV file (non‑blocking)."""
+    if not SOUND_ENABLED:
+        return
+    def _play():
+        try:
+            playsound.playsound(filename, block=False)
+        except Exception:
+            pass  # silently ignore if sound fails
+    threading.Thread(target=_play, daemon=True).start()
+
+def random_price(base: float, spread: float = 0.01):
+    """Generate a realistic random price around a base."""
+    return round(base * (1 + random.uniform(-spread, spread)), 2)
+
+def fetch_simulated_prices(symbol: str) -> Dict[str, Tuple[float, float]]:
+    """
+    Simulate fetching bid/ask prices from different exchanges.
+    In production, replace with actual API calls.
+    """
+    base_prices = {
+        "BTC/USDT": 68000.0,
+        "ETH/USDT": 3400.0,
+        "SOL/USDT": 180.0,
+        "DOGE/USDT": 0.16,
+        "XRP/USDT": 0.62,
+    }
+    base = base_prices.get(symbol, 100.0)
+    prices = {}
+    for exchange in EXCHANGES:
+        # Add some randomness per exchange
+        offset = random.uniform(-0.02, 0.02)  # max 2% deviation
+        mid = base * (1 + offset)
+        half_spread = random.uniform(0.0005, 0.002) * mid
+        bid = round(mid - half_spread, 2)
+        ask = round(mid + half_spread, 2)
+        prices[exchange] = (bid, ask)
+    return prices
+
+def find_arbitrage_opportunities() -> List[Dict]:
+    """Identify arbitrage opportunities across exchanges."""
+    opportunities = []
+    for symbol in SYMBOLS:
+        prices = fetch_simulated_prices(symbol)
+        # Find min ask and max bid
+        min_ask = min(prices.items(), key=lambda x: x[1][1])
+        max_bid = max(prices.items(), key=lambda x: x[1][0])
+        
+        ask_exchange, (_, ask_price) = min_ask
+        bid_exchange, (bid_price, _) = max_bid
+        
+        if bid_price > ask_price:
+            spread_pct = (bid_price - ask_price) / ask_price * 100
+            if spread_pct > 0:
+                opportunities.append({
+                    "symbol": symbol,
+                    "buy_exchange": ask_exchange,
+                    "buy_price": ask_price,
+                    "sell_exchange": bid_exchange,
+                    "sell_price": bid_price,
+                    "spread_pct": spread_pct,
+                    "spread_abs": bid_price - ask_price,
+                    "timestamp": time.time(),
+                })
+    # Sort by spread descending
+    opportunities.sort(key=lambda x: x["spread_pct"], reverse=True)
+    return opportunities
+
+def generate_odds_style(spread: float) -> str:
+    """Convert spread percentage to a casino‑odds style string."""
+    if spread < 0.5:
+        return "🔹 Low"
+    elif spread < 1.0:
+        return "🔸 Medium"
+    elif spread < 2.0:
+        return "🔶 High"
+    else:
+        return "💎 JACKPOT"
+
+def generate_stars(spread: float) -> str:
+    """Give a star rating based on spread."""
+    if spread < 0.5:
+        return "⭐"
+    elif spread < 1.0:
+        return "⭐⭐"
+    elif spread < 2.0:
+        return "⭐⭐⭐"
+    else:
+        return "⭐⭐⭐⭐"
+
+def play_alert_sound(spread: float):
+    """Play appropriate sound based on spread magnitude."""
+    if not SOUND_ENABLED:
+        return
+    if spread >= JACKPOT_THRESHOLD:
+        play_sound("jackpot.wav")  # you need to provide this file
+    else:
+        play_sound("notification.wav")
+
+def handle_keypress():
+    """Background thread that listens for keypresses."""
+    global running
+    import keyboard  # optional; fallback to input()
+    try:
+        while running:
+            if keyboard.is_pressed('q'):
+                running = False
+                console.print("[bold red]Shutting down...[/bold red]")
+            elif keyboard.is_pressed('p'):
+                console.print("[yellow]⏸️  Paused – press 'r' to resume[/yellow]")
+                keyboard.wait('r')
+    except ImportError:
+        # Fallback: simple input loop
+        while running:
+            cmd = input()
+            if cmd.lower() == 'q':
+                running = False
+                console.print("[bold red]Shutting down...[/bold red]")
+            elif cmd.lower() == 'p':
+                console.print("[yellow]⏸️  Paused – Enter 'r' to resume[/yellow]")
+                while True:
+                    res = input()
+                    if res.lower() == 'r':
+                        break
+
+def build_table(opportunities: List[Dict]) -> Table:
+    """Construct a Rich table for live display."""
+    table = Table(
+        title="🎰 CASINO ARBITRAGE SCANNER 🎰",
+        style="bold cyan",
+        box=box.HEAVY_EDGE,
+        expand=True,
+    )
+    table.add_column("Symbol", style="cyan", no_wrap=True)
+    table.add_column("Buy (Exchange)", style="green")
+    table.add_column("Buy Price", justify="right")
+    table.add_column("Sell (Exchange)", style="red")
+    table.add_column("Sell Price", justify="right")
+    table.add_column("Spread %", justify="right")
+    table.add_column("Spread $", justify="right")
+    table.add_column("Odds", justify="center")
+    table.add_column("Rating", justify="center")
+
+    if not opportunities:
+        table.add_row("—", "—", "—", "—", "—", "—", "—", "—", "—")
+    else:
+        for opp in opportunities:
+            spread_color = "green" if opp["spread_pct"] >= JACKPOT_THRESHOLD else "yellow" if opp["spread_pct"] >= ALERT_THRESHOLD else "white"
+            table.add_row(
+                opp["symbol"],
+                opp["buy_exchange"],
+                f"${opp['buy_price']:.2f}",
+                opp["sell_exchange"],
+                f"${opp['sell_price']:.2f}",
+                f"[{spread_color}]{opp['spread_pct']:.3f}%[/{spread_color}]",
+                f"${opp['spread_abs']:.4f}",
+                generate_odds_style(opp["spread_pct"]),
+                generate_stars(opp["spread_pct"]),
+            )
+    return table
+
+def display_log(opportunities: List[Dict], iteration: int):
+    """Print coloured log messages (re‑included colour logging)."""
+    console.rule(f"[bold magenta]Scan #{iteration} – {time.strftime('%H:%M:%S')}[/bold magenta]")
+    if not opportunities:
+        console.log("[yellow]🔍 No arbitrage opportunities found this round.[/yellow]")
+    else:
+        for opp in opportunities:
+            spread_pct = opp["spread_pct"]
+            if spread_pct >= JACKPOT_THRESHOLD:
+                console.log(f"💥 [bold green blink]JACKPOT! {opp['symbol']} spread {spread_pct:.2f}% – Buy on {opp['buy_exchange']} at ${opp['buy_price']:.2f}, sell on {opp['sell_exchange']} at ${opp['sell_price']:.2f}[/bold green blink]")
+            elif spread_pct >= ALERT_THRESHOLD:
+                console.log(f"💰 [green]Arbitrage: {opp['symbol']} spread {spread_pct:.2f}% – Buy {opp['buy_exchange']} → Sell {opp['sell_exchange']}[/green]")
+            else:
+                console.log(f"🔹 [cyan]Minor: {opp['symbol']} spread {spread_pct:.2f}%[/cyan]")
+        # Also print a summary line
+        best = opportunities[0]
+        console.log(f"[bold white]🏆 Best opportunity: {best['symbol']} {best['spread_pct']:.2f}%[/bold white]")
+
+def scanner_loop():
+    """Main scanning loop."""
+    global running
+    console.clear()
+    console.print(Panel.fit(
+        "[bold yellow]🎰 CASINO ARBITRAGE SCANNER 🎰[/bold yellow]\n"
+        "[italic]Scanning the markets for profit… press 'q' to quit[/italic]",
+        border_style="bright_yellow",
+        padding=(1, 2),
+    ))
+
+    # Start keypress listener in background
+    threading.Thread(target=handle_keypress, daemon=True).start()
+
+    iteration = 0
+    with Live(console=console, refresh_per_second=2) as live:
+        while running:
+            iteration += 1
+            opportunities = find_arbitrage_opportunities()
+            
+            # Update live table
+            table = build_table(opportunities)
+            live.update(table)
+
+            # Re‑included colour logging (the core request)
+            display_log(opportunities, iteration)
+
+            # Play alert sounds
+            for opp in opportunities:
+                play_alert_sound(opp["spread_pct"])
+
+            time.sleep(REFRESH_INTERVAL)
+
+    console.print("[bold red]Scanner stopped by user.[/bold red]")
+
+if __name__ == "__main__":
+    try:
+        scanner_loop()
+    except KeyboardInterrupt:
+        console.print("[bold red]Interrupted. Exiting.[/bold red]")
+    finally:
+        pass

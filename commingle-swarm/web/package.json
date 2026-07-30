@@ -1,0 +1,17 @@
+{
+  "name": "commingle-swarm-web",
+  "version": "0.2.0",
+  "private": true,
+  "scripts": {
+    "build": "esbuild src/index.tsx --bundle --outfile=public/bundle.js --sourcemap --define:process.env.NODE_ENV='\"production\"'",
+    "dev": "esbuild src/index.tsx --bundle --outfile=public/bundle.js --sourcemap --watch",
+    "serve": "node server.js"
+  },
+  "devDependencies": {
+    "esbuild": "^0.23.0",
+    "typescript": "^5.6.2"
+  },
+  "dependencies": {
+    "lit-html": "^3.1.0"
+  }
+}

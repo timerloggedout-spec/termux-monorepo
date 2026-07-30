@@ -1,0 +1,18 @@
+// services/api.js
+const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+
+export async function fetchCompounds() {
+  const res = await fetch(`${API_BASE}/api/compounds`);
+  return res.json();
+}
+
+export async function batchUpdateCompounds(compounds) {
+  const res = await fetch(`${API_BASE}/api/compounds/batch`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ compounds }),
+  });
+  return res.json();
+}
+
+// For CSV import: parse CSV, convert to compound objects, then call batchUpdateCompounds.

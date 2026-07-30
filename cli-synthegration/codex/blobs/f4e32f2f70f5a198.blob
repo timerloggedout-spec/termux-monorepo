@@ -1,0 +1,13 @@
+<div class="base-game">
+    <h3>Quantum Dice</h3>
+    <p>Roll the dice to win Q-Bucks and points!</p>
+    <div class="dice-game">
+        <div class="dice" id="diceResult">?</div>
+        <div class="bet-amount">
+            <label for="diceBet">Bet Amount (Q-Bucks):</label>
+            <input type="number" id="diceBet" min="1" max="1000" value="10">
+        </div>
+        <button class="portal-button" id="rollDice">Roll Dice</button>
+        <div id="diceMessage"></div>
+    </div>
+</div>

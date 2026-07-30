@@ -1,0 +1,211 @@
+// ====================== CONFIGURATION ======================
+const SHEET_ID = 'YOUR_SHEET_ID'; // <-- REPLACE WITH YOUR SHEET ID
+
+const SHEETS = {
+  compounds: 'compounds',
+  country_tiers: 'country_tiers',
+  trials: 'trials',
+  organizations: 'organizations',
+  sources: 'sources',
+  synonyms: 'synonyms',
+  interactions: 'interactions',
+  research_links: 'research_links',
+  combination_stacks: 'combination_stacks',
+  production_facilities: 'production_facilities',
+  shipping_restrictions: 'shipping_restrictions'
+};
+
+// ====================== WEB APP API ======================
+function doGet(e) {
+  const type = e?.parameter?.type || 'compounds';
+  const sheetName = SHEETS[type] || SHEETS.compounds;
+  const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(sheetName);
+  if (!sheet) {
+    return ContentService.createTextOutput(JSON.stringify({error: 'Sheet not found'}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+  const rows = sheet.getDataRange().getValues();
+  const headers = rows[0];
+  const data = rows.slice(1).map(row => {
+    let obj = {};
+    headers.forEach((h, i) => obj[h] = row[i] || '');
+    return obj;
+  });
+  return ContentService.createTextOutput(JSON.stringify(data))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e) {
+  const action = e?.parameter?.action;
+  const payload = JSON.parse(e.postData.contents);
+
+  if (action === 'enrich') return handleEnrich(payload.query);
+  if (action === 'approve') return handleApproval(payload.id, 'approved');
+  if (action === 'reject') return handleApproval(payload.id, 'rejected');
+
+  // Default: batch update compounds (CSV import)
+  const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(SHEETS.compounds);
+  const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  sheet.getRange(2, 1, sheet.getLastRow() - 1, sheet.getLastColumn()).clear();
+  payload.forEach(row => {
+    const rowData = headers.map(h => row[h] || '');
+    sheet.appendRow(rowData);
+  });
+  return ContentService.createTextOutput(JSON.stringify({success: true, count: payload.length}))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+// ====================== ENRICHMENT ======================
+function handleEnrich(query) {
+  const normalized = query.trim();
+  const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(SHEETS.compounds);
+  const data = sheet.getDataRange().getValues();
+  const headers = data[0];
+
+  // Check if already exists (case-insensitive)
+  const existing = data.slice(1).find(row => {
+    const name = (row[1] || '').toString().toLowerCase();
+    const synonyms = (row[2] || '').toString().toLowerCase();
+    return name.includes(normalized.toLowerCase()) || synonyms.includes(normalized.toLowerCase());
+  });
+  if (existing) {
+    return ContentService.createTextOutput(JSON.stringify({found: true, existing: true}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
+  let newCompound = null;
+  let newResearchLinks = [];
+
+  // 1. Search OpenFDA
+  try {
+    const fdaUrl = `https://api.fda.gov/drug/label.json?search=openfda.brand_name:"${encodeURIComponent(normalized)}"&limit=1`;
+    const fdaRes = UrlFetchApp.fetch(fdaUrl, {muteHttpExceptions: true});
+    if (fdaRes.getResponseCode() === 200) {
+      const fdaData = JSON.parse(fdaRes.getContentText());
+      if (fdaData.results && fdaData.results.length) {
+        const d = fdaData.results[0];
+        newCompound = {
+          Entity_ID: d.id || 'FDA_' + Date.now(),
+          Canonical_Name: d.openfda?.brand_name?.[0] || normalized,
+          Synonyms: d.openfda?.generic_name?.[0] || '',
+          Entity_Type: 'small_molecule',
+          US_FDA_Status: 'approved',
+          Mechanism_Summary: d.indications_and_usage?.[0] || '',
+          Intended_Use: d.indications_and_usage?.[0] || '',
+          Side_Effects: d.adverse_reactions?.[0] || '',
+          Source_URL: `https://api.fda.gov/drug/label.json?search=id:${d.id}`,
+          Last_Verified: new Date().toISOString(),
+          Status: 'pending_review'
+        };
+      }
+    }
+  } catch (e) { console.log('FDA error: ' + e); }
+
+  // 2. Search ClinicalTrials.gov
+  if (!newCompound) {
+    try {
+      const ctUrl = `https://clinicaltrials.gov/api/v2/studies?query.term=${encodeURIComponent(normalized)}&pageSize=1`;
+      const ctRes = UrlFetchApp.fetch(ctUrl);
+      const ctData = JSON.parse(ctRes.getContentText());
+      if (ctData.studies && ctData.studies.length) {
+        const s = ctData.studies[0];
+        const intervention = s.protocolSection?.armsInterventionsModule?.interventions?.find(i =>
+          i.name?.toLowerCase().includes(normalized.toLowerCase())
+        );
+        if (intervention) {
+          newCompound = {
+            Entity_ID: 'CT_' + s.protocolSection.identificationModule.nctId,
+            Canonical_Name: intervention.name,
+            Entity_Type: intervention.type || 'unknown',
+            Development_Stage_Global: s.protocolSection.statusModule?.overallStatus,
+            Mechanism_Summary: s.protocolSection.descriptionModule?.briefSummary || '',
+            Source_URL: `https://clinicaltrials.gov/ct2/show/${s.protocolSection.identificationModule.nctId}`,
+            Last_Verified: new Date().toISOString(),
+            Status: 'pending_review'
+          };
+        }
+      }
+    } catch (e) { console.log('CT error: ' + e); }
+  }
+
+  // 3. Search PubMed for papers
+  try {
+    const pubmedUrl = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${encodeURIComponent(normalized)}&retmax=5&retmode=json`;
+    const pubmedRes = UrlFetchApp.fetch(pubmedUrl);
+    const pubmedData = JSON.parse(pubmedRes.getContentText());
+    const ids = pubmedData.esearchresult?.idlist || [];
+    if (ids.length > 0) {
+      // Fetch details for first 3 papers
+      const summaryUrl = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${ids.slice(0,3).join(',')}&retmode=json`;
+      const sumRes = UrlFetchApp.fetch(summaryUrl);
+      const sumData = JSON.parse(sumRes.getContentText());
+      const result = sumData.result;
+      ids.slice(0,3).forEach(id => {
+        const paper = result[id];
+        if (paper) {
+          newResearchLinks.push({
+            Link_ID: 'PUBMED_' + id,
+            Entity_ID: newCompound?.Entity_ID || 'TEMP_' + Date.now(),
+            Link_Type: 'PubMed',
+            URL: `https://pubmed.ncbi.nlm.nih.gov/${id}/`,
+            Title: paper.title || '',
+            Source: 'PubMed'
+          });
+        }
+      });
+    }
+  } catch (e) { console.log('PubMed error: ' + e); }
+
+  // 4. Add to sheets
+  if (newCompound) {
+    // Append compound
+    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    const row = headers.map(h => newCompound[h] || '');
+    sheet.appendRow(row);
+
+    // Append research links if any
+    if (newResearchLinks.length > 0) {
+      const researchSheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(SHEETS.research_links);
+      const rHeaders = researchSheet.getRange(1, 1, 1, researchSheet.getLastColumn()).getValues()[0];
+      newResearchLinks.forEach(link => {
+        const rRow = rHeaders.map(h => link[h] || '');
+        researchSheet.appendRow(rRow);
+      });
+    }
+
+    return ContentService.createTextOutput(JSON.stringify({found: true, added: newCompound}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
+  return ContentService.createTextOutput(JSON.stringify({found: false}))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+// ====================== APPROVAL WORKFLOW ======================
+function handleApproval(id, status) {
+  const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(SHEETS.compounds);
+  const data = sheet.getDataRange().getValues();
+  const headers = data[0];
+  const statusCol = headers.indexOf('Status') + 1;
+  if (statusCol === 0) return ContentService.createTextOutput(JSON.stringify({error: 'Status column missing'}));
+
+  for (let i = 1; i < data.length; i++) {
+    if (data[i][0] === id) {
+      sheet.getRange(i + 1, statusCol).setValue(status);
+      return ContentService.createTextOutput(JSON.stringify({success: true}));
+    }
+  }
+  return ContentService.createTextOutput(JSON.stringify({error: 'Not found'}));
+}
+
+// ====================== SCHEDULED TRIGGER SETUP ======================
+function setupTriggers() {
+  ScriptApp.getProjectTriggers().forEach(t => ScriptApp.deleteTrigger(t));
+  ScriptApp.newTrigger('importFromExternalSources')
+    .timeBased().everyDays(1).create();
+}
+
+function importFromExternalSources() {
+  // Placeholder: Add logic to fetch from WADA list, FDA updates, etc.
+  // This runs daily to refresh the sheet.
+}

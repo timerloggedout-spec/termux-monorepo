@@ -1,0 +1,294 @@
+class UIComponents {
+    constructor(dataManager, arbitrageEngine, logger) {
+        this.dataManager = dataManager;
+        this.arbitrageEngine = arbitrageEngine;
+        this.logger = logger;
+        this.isInitialized = false;
+    }
+
+    initialize() {
+        if (this.isInitialized) return;
+        
+        this.logger.log('UI_COMPONENTS', 'Initializing user interface components...', 'info');
+        
+        // Set up real-time updates
+        this.startRealTimeUpdates();
+        this.setupEventListeners();
+        
+        this.isInitialized = true;
+        this.logger.log('UI_COMPONENTS', 'UI components initialized successfully', 'success');
+    }
+
+    setupEventListeners() {
+        // Exchange selection updates
+        document.getElementById('exchangeSelect').addEventListener('change', (e) => {
+            this.updateExchangeDisplay();
+        });
+
+        // Method selection updates
+        document.getElementById('methodSelect').addEventListener('change', (e) => {
+            this.updateMethodInfo(e.target.value);
+        });
+
+        // Live data toggle
+        document.getElementById('liveDataToggle').addEventListener('change', (e) => {
+            this.handleLiveDataToggle(e.target.checked);
+        });
+    }
+
+    startRealTimeUpdates() {
+        // Update performance metrics every 2 seconds
+        setInterval(() => {
+            this.updatePerformanceMetrics();
+            this.updateSystemStatus();
+        }, 2000);
+
+        // Update exchange data every 5 seconds
+        setInterval(() => {
+            this.updateExchangeData();
+            this.updateLowValueCoins();
+        }, 5000);
+
+        // Update opportunities display when new ones are found
+        this.arbitrageEngine.opportunities = [];
+        const originalPush = this.arbitrageEngine.opportunities.push;
+        this.arbitrageEngine.opportunities.push = (...args) => {
+            const result = originalPush.apply(this.arbitrageEngine.opportunities, args);
+            this.updateOpportunitiesDisplay();
+            return result;
+        };
+    }
+
+    updatePerformanceMetrics() {
+        const metrics = this.arbitrageEngine.getPerformanceMetrics();
+        const dataMetrics = this.dataManager.performanceMetrics;
+
+        // Update metric displays
+        this.updateElement('batchMetric', `${dataMetrics.batchProcessingTime}ms`);
+        this.updateElement('graphMetric', `${dataMetrics.graphAnalysisTime}ms`);
+        this.updateElement('oppMetric', metrics.currentOpportunities);
+        this.updateElement('rateLimit', `${dataMetrics.apiCalls}/min`);
+        
+        // Calculate and display processing speed
+        const totalTime = dataMetrics.batchProcessingTime + dataMetrics.graphAnalysisTime;
+        const speed = totalTime > 0 ? Math.round(1000 / totalTime) : 0;
+        this.updateElement('processingSpeed', `${speed} ops/sec`);
+    }
+
+    updateSystemStatus() {
+        const metrics = this.arbitrageEngine.getPerformanceMetrics();
+        const statusElement = document.getElementById('portalStatus');
+        const scanStatusElement = document.getElementById('scanStatus');
+        const scanInfoElement = document.getElementById('scanInfo');
+
+        if (statusElement) {
+            if (this.dataManager.isOnline) {
+                statusElement.innerHTML = 'Engine: <span class="status-indicator status-active"></span>Online';
+                statusElement.style.color = '#00ff00';
+            } else {
+                statusElement.innerHTML = 'Engine: <span class="status-indicator status-inactive"></span>Offline';
+                statusElement.style.color = '#ff0000';
+            }
+        }
+
+        if (scanStatusElement && scanInfoElement) {
+            if (metrics.isScanning) {
+                scanStatusElement.className = 'status-indicator status-active';
+                scanInfoElement.textContent = `Scanning... ${metrics.currentOpportunities} opportunities found`;
+                
+                // Show stop button
+                document.getElementById('stopScan').style.display = 'inline-block';
+                document.getElementById('scanArbitrage').style.display = 'none';
+            } else {
+                scanStatusElement.className = 'status-indicator status-inactive';
+                scanInfoElement.textContent = `Ready for scan - ${metrics.opportunitiesFound} total opportunities found`;
+                
+                // Show scan button
+                document.getElementById('stopScan').style.display = 'none';
+                document.getElementById('scanArbitrage').style.display = 'inline-block';
+            }
+        }
+    }
+
+    updateExchangeDisplay() {
+        const select = document.getElementById('exchangeSelect');
+        const selectedExchanges = Array.from(select.selectedOptions).map(opt => opt.value);
+        
+        if (selectedExchanges.includes('all')) {
+            // Show aggregated data from all exchanges
+            this.updateAllExchangesData();
+        } else {
+            // Show data from selected exchanges
+            this.updateSelectedExchangesData(selectedExchanges);
+        }
+    }
+
+    updateAllExchangesData() {
+        const pairsContainer = document.getElementById('exchangePairs');
+        if (!pairsContainer) return;
+
+        let allPairs = [];
+        Object.values(PRODUCTION_CONFIG.EXCHANGES).forEach(exchange => {
+            allPairs = allPairs.concat(exchange.pairs.slice(0, 10)); // Top 10 from each
+        });
+
+        this.renderPairsList(pairsContainer, allPairs.slice(0, 15)); // Show top 15 overall
+    }
+
+    updateSelectedExchangesData(exchanges) {
+        const pairsContainer = document.getElementById('exchangePairs');
+        if (!pairsContainer) return;
+
+        let selectedPairs = [];
+        exchanges.forEach(exchangeName => {
+            const exchange = PRODUCTION_CONFIG.EXCHANGES[exchangeName];
+            if (exchange && exchange.pairs) {
+                selectedPairs = selectedPairs.concat(exchange.pairs.slice(0, 15));
+            }
+        });
+
+        this.renderPairsList(pairsContainer, selectedPairs.slice(0, 15));
+    }
+
+    renderPairsList(container, pairs) {
+        if (!pairs || pairs.length === 0) {
+            container.innerHTML = '<div class="pair-item">No pairs available</div>';
+            return;
+        }
+
+        container.innerHTML = '';
+        pairs.forEach(pair => {
+            const pairElement = document.createElement('div');
+            pairElement.className = 'pair-item';
+            pairElement.innerHTML = `
+                <span>${pair.base}/${pair.target}</span>
+                <span>$${pair.last.toFixed(6)}</span>
+            `;
+            container.appendChild(pairElement);
+        });
+    }
+
+    updateLowValueCoins() {
+        const container = document.getElementById('lowValueCoins');
+        if (!container) return;
+
+        const lowValueCoins = this.dataManager.getAllLowValueCoins().slice(0, 10); // Top 10 lowest
+
+        if (lowValueCoins.length === 0) {
+            container.innerHTML = '<div class="pair-item">Scanning for low-value coins...</div>';
+            return;
+        }
+
+        container.innerHTML = '';
+        lowValueCoins.forEach(coin => {
+            const coinElement = document.createElement('div');
+            coinElement.className = 'pair-item';
+            coinElement.innerHTML = `
+                <span>${coin.symbol}</span>
+                <span>$${coin.price.toFixed(8)}</span>
+            `;
+            container.appendChild(coinElement);
+        });
+    }
+
+    updateOpportunitiesDisplay() {
+        const container = document.getElementById('arbitrageOpportunities');
+        if (!container) return;
+
+        const opportunities = this.arbitrageEngine.opportunities.slice(0, 10); // Show top 10
+
+        if (opportunities.length === 0) {
+            container.innerHTML = '<div class="opportunity-card">No arbitrage opportunities found yet</div>';
+            return;
+        }
+
+        container.innerHTML = '';
+        opportunities.forEach(opp => {
+            const oppElement = document.createElement('div');
+            oppElement.className = `opportunity-card ${opp.profitPercent > 0 ? 'profitable' : 'loss'}`;
+            
+            oppElement.innerHTML = `
+                <div class="opportunity-header">
+                    <strong>${opp.exchange.toUpperCase()}</strong>
+                    <span class="opportunity-profit" style="color: ${opp.profitPercent > 0 ? '#00ff00' : '#ff0000'}">
+                        ${opp.profitPercent > 0 ? '+' : ''}${opp.profitPercent.toFixed(4)}%
+                    </span>
+                </div>
+                <div class="opportunity-path">${opp.path}</div>
+                <div class="opportunity-details">
+                    <div>Profit: $${opp.profit.toFixed(4)}</div>
+                    <div>Investment: $${opp.investment}</div>
+                    <div>Final: $${opp.finalAmount.toFixed(4)}</div>
+                    <div>Type: ${opp.type}</div>
+                </div>
+            `;
+            
+            container.appendChild(oppElement);
+        });
+    }
+
+    updateMethodInfo(method) {
+        const infoMap = {
+            'triangular': 'Triangular arbitrage: Find profit cycles across 3 currency pairs on the same exchange',
+            'bellman-ford': 'Bellman-Ford algorithm: Advanced pathfinding for complex multi-pair arbitrage opportunities',
+            'low-value': 'Low Value Focus: Target micro-cap coins with high volatility for quick flips'
+        };
+
+        const marketInfoElement = document.getElementById('marketInfo');
+        if (marketInfoElement && infoMap[method]) {
+            marketInfoElement.textContent = infoMap[method];
+        }
+    }
+
+    handleLiveDataToggle(isEnabled) {
+        if (isEnabled) {
+            this.logger.log('UI_COMPONENTS', 'Live data enabled', 'info');
+            // In a real implementation, this would restart data feeds
+        } else {
+            this.logger.log('UI_COMPONENTS', 'Live data disabled', 'warning');
+            // In a real implementation, this would pause data feeds
+        }
+    }
+
+    updateElement(elementId, content) {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.textContent = content;
+        }
+    }
+
+    showNotification(message, type = 'info') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: ${type === 'error' ? '#ff4444' : type === 'warning' ? '#ffaa00' : '#00ff00'};
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            max-width: 300px;
+        `;
+        notification.textContent = message;
+        
+        document.body.appendChild(notification);
+        
+        // Remove after 5 seconds
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 5000);
+    }
+}
+
+// Make available globally
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = UIComponents;
+} else {
+    window.UIComponents = UIComponents;
+}

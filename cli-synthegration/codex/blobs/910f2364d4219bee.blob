@@ -1,0 +1,42 @@
+function onOpen() {
+  var ui = SpreadsheetApp.getUi();
+  ui.createMenu('Consultant Tools')
+    .addItem('Fetch ClinicalTrials.gov Data', 'fetchCTData')
+    .addItem('Resolve Organization to ROR', 'resolveROR')
+    .addToUi();
+}
+
+function fetchCTData() {
+  var sheet = SpreadsheetApp.getActiveSheet();
+  var range = sheet.getActiveRange();
+  var nctId = range.getValue();
+  
+  if (!nctId || !nctId.startsWith('NCT')) {
+    SpreadsheetApp.getUi().alert('Please select a cell with an NCT ID (e.g., NCT05929248)');
+    return;
+  }
+
+  var url = `https://clinicaltrials.gov/api/v2/studies/${nctId}?format=json`;
+  try {
+    var response = UrlFetchApp.fetch(url);
+    var data = JSON.parse(response.getContentText());
+    var study = data.protocolSection;
+    
+    // Map to your sheet columns (adjust column letters/indexes as needed)
+    var phase = study.designModule.phases ? study.designModule.phases.join(', ') : 'Not Specified';
+    var status = study.statusModule.overallStatus;
+    var sponsor = study.identificationModule.organization.fullName;
+    var conditions = study.conditionsModule.conditions ? study.conditionsModule.conditions.join('; ') : '';
+    
+    // Write back to the row (assuming columns B=Phase, C=Status, D=Sponsor, E=Condition)
+    var row = range.getRow();
+    sheet.getRange(row, 2).setValue(phase); // Adjust column index (B=2)
+    sheet.getRange(row, 3).setValue(status);
+    sheet.getRange(row, 4).setValue(sponsor);
+    sheet.getRange(row, 5).setValue(conditions);
+    
+    SpreadsheetApp.getUi().alert(`✅ Trial data updated for ${nctId}`);
+  } catch (e) {
+    SpreadsheetApp.getUi().alert(`Error fetching NCT ID: ${e}`);
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "category": "virtualization",
+  "tools": [
+    {
+      "name": "Xvnc",
+      "package": "tigervnc",
+      "path": "/data/data/com.termux/files/usr/bin/Xvnc",
+      "source": "apt",
+      "tags": [
+        "virtualization"
+      ],
+      "auto_tag_source": "auto:^tigervnc$|^tigervnc-",
+      "category": "virtualization",
+      "description": "Suite of VNC servers. Based on the VNC 4 branch of TightVNC."
+    },
+    {
+      "name": "x0vncserver",
+      "package": "tigervnc",
+      "path": "/data/data/com.termux/files/usr/bin/x0vncserver",
+      "source": "apt",
+      "tags": [
+        "virtualization"
+      ],
+      "auto_tag_source": "auto:^tigervnc$|^tigervnc-",
+      "category": "virtualization",
+      "description": "Suite of VNC servers. Based on the VNC 4 branch of TightVNC."
+    },
+    {
+      "name": "proot",
+      "package": "proot",
+      "path": "/data/data/com.termux/files/usr/bin/proot",
+      "source": "apt",
+      "tags": [
+        "virtualization"
+      ],
+      "auto_tag_source": "auto:^proot$|^proot-",
+      "category": "virtualization",
+      "description": "Emulate chroot, bind mount and binfmt_misc for non-root users"
+    },
+    {
+      "name": "vncconfig",
+      "package": "tigervnc",
+      "path": "/data/data/com.termux/files/usr/bin/vncconfig",
+      "source": "apt",
+      "tags": [
+        "virtualization"
+      ],
+      "auto_tag_source": "auto:^tigervnc$|^tigervnc-",
+      "category": "virtualization",
+      "description": "Suite of VNC servers. Based on the VNC 4 branch of TightVNC."
+    },
+    {
+      "name": "vncpasswd",
+      "package": "tigervnc",
+      "path": "/data/data/com.termux/files/usr/bin/vncpasswd",
+      "source": "apt",
+      "tags": [
+        "virtualization"
+      ],
+      "auto_tag_source": "auto:^tigervnc$|^tigervnc-",
+      "category": "virtualization",
+      "description": "Suite of VNC servers. Based on the VNC 4 branch of TightVNC."
+    },
+    {
+      "name": "vncserver",
+      "package": "tigervnc",
+      "path": "/data/data/com.termux/files/usr/bin/vncserver",
+      "source": "apt",
+      "tags": [
+        "virtualization"
+      ],
+      "auto_tag_source": "auto:^tigervnc$|^tigervnc-",
+      "category": "virtualization",
+      "description": "Suite of VNC servers. Based on the VNC 4 branch of TightVNC."
+    }
+  ]
+}

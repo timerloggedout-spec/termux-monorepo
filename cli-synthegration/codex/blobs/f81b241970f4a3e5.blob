@@ -1,0 +1,9 @@
+{
+  id: number,        // Unique order identifier
+  side: 'buy'|'sell',
+  coin: string,      // Token symbol (e.g., "BABYDOGE")
+  amount: number,
+  user: string,      // Truncated NodeId
+  handle: string,    // Player handle
+  timestamp: number
+}

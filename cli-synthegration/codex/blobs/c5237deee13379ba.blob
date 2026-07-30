@@ -1,0 +1,55 @@
+**Supported Exchanges:**
+
+| Exchange | Parser | Type | CORS-Safe |
+|:---|:---|:---|:---|
+| OKX | `okx` | CEX | Yes |
+| Coinbase | `coinbase` | CEX | Yes |
+| Binance | `binance` | CEX | Yes |
+| KuCoin | `kucoin` | CEX | Yes |
+| Bybit | `bybit` | CEX | No |
+| Gate.io | `gate` | CEX | No |
+| MEXC | `mexc` | CEX | No |
+| Kraken | `kraken` | CEX | Yes |
+| Bitstamp | `bitstamp` | CEX | Yes |
+| Gemini | `gemini` | CEX | Yes |
+| Pump.fun | `pumpfun` | DEX | Auth |
+| DexScreener (5 chains) | `dexscreener` | DEX Agg | Yes |
+| CoinGecko | `coingecko` | Info | Yes |
+| +12 additional | various | CEX/DEX | Mixed |
+
+**CORS Proxy Architecture:**
+The `smartFetch()` function implements a three-tier fetch strategy:
+1. Direct fetch (if CORS-safe exchange)
+2. Built-in rotating proxy (`corsproxy.io`, `allorigins.win`)
+3. Custom user-provided proxy URL
+
+**Documentation References:**
+- [OKX REST API – Get Tickers](https://www.okx.com/docs-v5/en/#rest-api-market-data-get-tickers)
+- [Binance API – 24hr Ticker](https://binance-docs.github.io/apidocs/spot/en/#24hr-ticker-price-change-statistics)
+- [Coinbase Exchange API – Products](https://docs.cloud.coinbase.com/exchange/reference/exchangerestapi_getproducts)
+- [KuCoin API – All Tickers](https://docs.kucoin.com/#get-all-tickers)
+- [DexScreener API – Latest Dex Search](https://docs.dexscreener.com/api/reference)
+- [CoinGecko API – Coin Markets](https://docs.coingecko.com/v3.0.1/reference/coins-markets)
+
+---
+
+### 5.2 Arbitrage Detection Engine
+
+**Source File Location:** Lines ~1900-2100 of v23.5 artifact
+
+#### 5.2.1 Graph Construction
+
+The `buildGraph()` function constructs a **weighted directed graph** from normalized exchange pairs. Each edge carries:
+- `rate`: Bid price for forward edge, `1/askPrice` for reverse edge
+- `weight`: `-log(rate)` for Bellman‑Ford compatibility
+- `liquidity`: USD-denominated available liquidity
+- `volume`: 24-hour trading volume
+- `exchange`: Source exchange identifier
+
+**Minimum liquidity threshold:** $50 USD (filters noise)
+
+#### 5.2.2 Triangular Arbitrage
+
+The `scanTriangular()` function enumerates all 3-node cycles (`buildTriangles()` pre-computes up to 150 nodes). For each triangle `[A, B, C]`, three directed cycles are tested: `A→B→C→A`, `B→C→A→B`, `C→A→B→C`.
+
+**Profit calculation:**

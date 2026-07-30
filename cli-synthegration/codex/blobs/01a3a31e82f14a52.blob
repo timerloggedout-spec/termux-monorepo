@@ -1,0 +1,10 @@
+import ccxt
+try:
+    exchange = ccxt.binance()
+    markets = exchange.load_markets()
+    print(f"✅ Successfully loaded {len(markets)} markets from Binance")
+    # Print a few low-value coins
+    for symbol in list(markets.keys())[:5]:
+        print(f"Market: {symbol}")
+except Exception as e:
+    print(f"❌ Connection failed: {e}")

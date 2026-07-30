@@ -1,0 +1,16 @@
+graph TD
+    subgraph Server Infrastructure
+        A[Market Simulator / Exchange Feed] -->|NATS / Redpanda| B[Streaming Gateway Node.js]
+        C[Game State Server] -->|WebSocket| B
+    end
+
+    subgraph Client Browser
+        D[Market Feed Adapter] --> E[Ring Buffer / μts] --> F[DuckDB-Wasm]
+        G[Game State Sync (Yjs)] --> H[IndexedDB Persistence]
+        I[Compute Engine Web Workers] --> J[Arbitrage & Portfolio Optimization]
+        K[UI React/Vue] --> F & G & I
+    end
+
+    B -- "WebSocket (binary, e.g. FlatBuffers)" --> D
+    B -- "WebSocket (Yjs sync protocol)" --> G
+    J <-.-> L[Optional P2P Compute Mesh WebRTC]

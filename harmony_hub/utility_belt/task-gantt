@@ -1,0 +1,25 @@
+#!/bin/bash
+# task-gantt – show task dependencies and order
+echo "=== Task Dependencies ==="
+jq -r '.[] | select(.dependencies != null and (.dependencies | length) > 0) | "\(.id) → depends on: \(.dependencies | join(", "))"' ~/workspace/llm_map/master_tasks.json
+echo ""
+echo "=== Suggested execution order (by dependencies) ==="
+python3 -c "
+import json
+m = json.load(open('$HOME/workspace/llm_map/master_tasks.json'))
+# Topological sort by dependencies
+done = set()
+pending = [t for t in m if t['status'] == 'pending']
+order = []
+while pending:
+    ready = [t for t in pending if all(d in done or d not in [x['id'] for x in m] for d in t.get('dependencies',[]))]
+    if not ready:
+        for t in pending:
+            print(f'  {t[\"id\"]}: {t[\"title\"][:60]} (unresolved deps: {[d for d in t.get(\"dependencies\",[]) if d not in done]})')
+        break
+    for t in sorted(ready, key=lambda x: x['id']):
+        print(f'  {t[\"id\"]}: {t[\"title\"][:60]}')
+        order.append(t['id'])
+        done.add(t['id'])
+    pending = [t for t in pending if t['id'] not in done]
+"

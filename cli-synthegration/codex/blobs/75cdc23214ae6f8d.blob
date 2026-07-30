@@ -1,0 +1,108 @@
+Integrate a CORS proxy (e.g., Cloudflare Worker) to unlock Binance, Kraken, KuCoin, and all offline exchanges – this is 10x+ the pair count
+
+Feed WebSocket tickers directly into the graph for real‑time price updates without re‑fetching
+
+Connect a backend wallet proxy so the Live Mode toggle can sign and broadcast real transactions
+
+Add dynamically updated gas/withdrawal fee tables to make profit calculations more accurate for on‑chain execution
+
+Convert non‑USD prices (e.g., INR, RUR, etc..) to USD using the latest forex rate from CoinGecko’s /simple/price endpoint (with vs_currencies=) for tier categorization.
+- allow selection of any currencies.
+
+Below is a combined reference tailored to the QuanTM FOAM engine’s extreme price tiers (Pico, Femto, Planck), with a focus on non‑USD quote currencies (RUR, RUB) and curated API documentation for each platform.
+
+---
+
+## 1.  Price Thresholds (Recap)
+
+| Tier | Price Threshold (USD) |
+| :--- | :--- |
+| **Pico** | \(< 1 \times 10^{-9}\) and \(\ge 1 \times 10^{-12}\) |
+| **Femto** | \(< 1 \times 10^{-12}\) and \(\ge 1 \times 10^{-15}\) |
+| **Planck** | \(< 1 \times 10^{-15}\) |
+
+> **Key note:** Tokens at Planck and Femto scales are almost exclusively found on **decentralized exchanges** (Uniswap, PancakeSwap, Raydium, etc.), because centralized exchanges rarely list assets with prices below \(10^{-12}\). Centralized exchanges are better sources for **Pico‑tier** tokens.
+
+---
+
+## 2.  Exchanges with RUR / RUB / Non‑USD Pairs
+
+### 2.1  YoBit
+* **RUR pairs:** Yes – BTC/RUR, ETH/RUR, LTC/RUR, plus hundreds of micro‑cap tokens quoted in RUR.
+* **Relevance for extreme tiers:** YoBit lists ~9 000 spot pairs, many of which are illiquid meme‑tokens and “exotic” coins that often appear on YoBit before other exchanges.  
+  A quick scan of its ticker page shows pairs like `TOKEN_RUR` (last price 0.00000306 RUR) and `MICRO_RUR` (0.00000064 RUR).
+* **Equivalent USD thresholds:**  
+  * 1 RUR ≈ 0.010 USD (varies; assume 1 RUR = 0.01 USD for rough equivalence).  
+  * Pico threshold in RUR: \< 1 0⁻⁷ RUR.  
+  * Femto threshold in RUR: \< 1 0⁻¹⁰ RUR.  
+  * Planck threshold in RUR: \< 1 0⁻¹³ RUR.  
+
+### 2.2  WEX (formerly BTC‑E)
+* **RUR pairs:** BTC/RUR, LTC/RUR, EUR/USD, ZEC/LTC, etc..
+* **Relevance:** WEX is a spin‑off of the defunct BTC‑E exchange and still operates with RUR pairs. It is a niche venue for older, low‑liquidity tokens.
+* **API documentation:** Not publicly maintained; most integrators use community‑built wrappers (see Section 3).
+
+### 2.3  LiveCoin (Now Defunct)
+* **RUR pairs:** Historically offered PIVX/RUR, BTC/RUR, LTC/RUR, etc..
+* **Status:** LiveCoin closed in early 2022; it is no longer a live source for the FOAM engine.
+
+### 2.4  EXMO
+* **RUB pairs:** NEO/RUB, ONT/RUB, XRP/RUB, etc..
+* **Relevance:** EXMO supports fiat‑to‑crypto trading with Russian ruble pairs, though its token selection is smaller than YoBit’s.
+
+### 2.5  Other CIS‑Accessible Exchanges
+While these platforms do not natively list RUR pairs, they allow Russia‑based users to buy crypto with roubles via P2P and may list micro‑cap tokens:
+* **Bybit** – spot trading with P2P RUB on‑ and off‑ramp; Innovation Zone includes low‑cap tokens.
+* **BingX** – supports RUB via Paycat; spot pairs often include low‑price tokens.
+* **OKX** – P2P RUB support; comprehensive spot market with many low‑cap pairs.
+* **MEXC** – often first to list micro‑cap tokens; accessible to Russian users via P2P.
+* **Bitget** – spot and futures with RUB P2P; Innovation Zone includes low‑price assets.
+
+---
+
+## 3.  Curated API Documentation
+
+Below are direct links to official API docs and community SDKs for each exchange or data aggregator.
+
+### 3.1  Centralized Exchanges
+
+| Exchange | Official API Docs | SDKs / Wrappers |
+| :--- | :--- | :--- |
+| **YoBit** | [https://yobit.net/en/api](https://yobit.net/en/api) (base URL: `https://yobit.net/api/3`) | Ruby: [cryptoexchange](https://rubydoc.info/gems/cryptoexchange/0.27.0/Cryptoexchange/Exchanges/Yobit/Market); Python: [yobit‑api](https://github.com/ThinkAndRun/yobit_api); PHP: [olegstyle/yobitapi](https://libraries.io/packagist/olegstyle%2Fyobitapi); Node.js: [yobit‑api](https://npm.runkit.com/yobit-api) |
+| **MEXC** | [https://mexcdevelop.github.io/apidocs/](https://mexcdevelop.github.io/apidocs/) (V3) | Python: [pymexc](https://pypi.org/project/pymexc/); Go: [mexc‑sdk‑go](https://github.com/IvanTurko/mexc-sdk-go); TypeScript: [@mexc‑io/mexc‑api](https://www.npmjs.com/package/@mexc-io/mexc-api) |
+| **KuCoin** | [https://docs.kucoin.com/](https://docs.kucoin.com/) | Python: [kucoin‑python‑sdk](https://github.com/Kucoin/kucoin-python-sdk); Node.js: [kucoin‑node‑sdk](https://github.com/Kucoin/kucoin-node-sdk) |
+| **Gate.io** | [https://www.gate.io/docs/developers/apiv4/en/](https://www.gate.io/docs/developers/apiv4/en/) | Python: [gateio‑python‑sdk](https://github.com/gateio/gateapi-python); Node.js: [gateio‑node‑sdk](https://github.com/gateio/gateapi-node) |
+| **Bybit** | [https://bybit-exchange.github.io/docs/v5/intro](https://bybit-exchange.github.io/docs/v5/intro) | Python: [bybit‑py](https://github.com/bybit-exchange/bybit-official-api-docs); Node.js: [bybit‑api‑node](https://github.com/bybit-exchange/bybit-official-api-docs) |
+| **OKX** | [https://www.okx.com/docs‑v5/en/](https://www.okx.com/docs‑v5/en/) | Python: [python‑okx](https://github.com/okxapi/python-okx); Node.js: [okx‑api‑node](https://github.com/okxapi/okx-api-node) |
+| **Bitget** | [https://bitgetlimited.github.io/apidoc/en/](https://bitgetlimited.github.io/apidoc/en/) | Python: [bitget‑py](https://github.com/BitgetLimited/v3-api-python); Node.js: [bitget‑node](https://github.com/BitgetLimited/v3-api-node) |
+| **HTX** | [https://huobiapi.github.io/docs/spot/v1/en/](https://huobiapi.github.io/docs/spot/v1/en/) | Python: [huobi‑python](https://github.com/huobiapi/huobi_Python); Node.js: [huobi‑node](https://github.com/huobiapi/huobi_Node) |
+
+### 3.2  Decentralized Exchanges
+
+| DEX | API / Subgraph Docs |
+| :--- | :--- |
+| **Uniswap (Ethereum)** | [https://docs.uniswap.org/](https://docs.uniswap.org/) (Subgraph: [https://thegraph.com/explorer/subgraph/uniswap/uniswap‑v3](https://thegraph.com/explorer/subgraph/uniswap/uniswap-v3)) |
+| **PancakeSwap (BNB Chain)** | [https://docs.pancakeswap.finance/](https://docs.pancakeswap.finance/) (Subgraph: [https://thegraph.com/explorer/subgraph/pancakeswap/exchange‑v2](https://thegraph.com/explorer/subgraph/pancakeswap/exchange-v2)) |
+| **SushiSwap (Multi‑chain)** | [https://docs.sushi.com/](https://docs.sushi.com/) (Subgraph: [https://thegraph.com/explorer/subgraph/sushi‑v2/sushiswap‑exchange](https://thegraph.com/explorer/subgraph/sushi-v2/sushiswap-exchange)) |
+| **Raydium (Solana)** | [https://raydium.gitbook.io/raydium/](https://raydium.gitbook.io/raydium/) (REST: `https://api.raydium.io/v2/main/`) |
+| **Orca (Solana)** | [https://docs.orca.so/](https://docs.orca.so/) (Whirlpools SDK: [https://github.com/orca-so/whirlpools](https://github.com/orca-so/whirlpools)) |
+| **Trader Joe (Avalanche)** | [https://docs.traderjoexyz.com/](https://docs.traderjoexyz.com/) (Subgraph: [https://thegraph.com/explorer/subgraph/traderjoe‑xyz/exchange](https://thegraph.com/explorer/subgraph/traderjoe-xyz/exchange)) |
+| **Velodrome (Optimism)** | [https://docs.velodrome.finance/](https://docs.velodrome.finance/) (Subgraph: [https://thegraph.com/explorer/subgraph/velodrome‑finance/velodrome‑v2](https://thegraph.com/explorer/subgraph/velodrome-finance/velodrome-v2)) |
+| **Aerodrome (Base)** | [https://docs.aerodrome.finance/](https://docs.aerodrome.finance/) (Subgraph: [https://thegraph.com/explorer/subgraph/aerodrome‑finance/aerodrome‑v2](https://thegraph.com/explorer/subgraph/aerodrome-finance/aerodrome-v2)) |
+
+### 3.3  Data Aggregators
+
+| Aggregator | Official API Docs | SDK / Wrapper |
+| :--- | :--- | :--- |
+| **CoinGecko** | [https://docs.coingecko.com](https://docs.coingecko.com) (Pro API: `https://pro‑api.coingecko.com/api/v3`) | Python: [pycoingecko](https://github.com/man-c/pycoingecko); Node.js: [coingecko‑api](https://www.npmjs.com/package/coingecko-api) |
+| **CoinLore** | [https://www.coinlore.com/cryptocurrency-data-api](https://www.coinlore.com/cryptocurrency-data-api) | Python: [coinlore‑api](https://github.com/coinlore/coinlore-python-api) |
+| **CoinMarketCap** | [https://coinmarketcap.com/api/](https://coinmarketcap.com/api/) | Python: [python‑coinmarketcap](https://github.com/coinmarketcap/coinmarketcap‑python‑sdk) |
+| **DexScreener** | [https://docs.dexscreener.com/api/reference](https://docs.dexscreener.com/api/reference) | Python: [dexscreener‑py](https://github.com/janswist/mcp-dexscreener); TypeScript: [@0xobedient/dexscreener-sdk](https://www.npmjs.com/package/@0xobedient/dexscreener-sdk) |
+| **Birdeye** | [https://public.birdeye.so/api.html](https://public.birdeye.so/api.html) | – |
+| **CoinAPI** | [https://docs.coinapi.io/](https://docs.coinapi.io/) | Python: [coinapi‑sdk](https://github.com/coinapi/coinapi-sdk) |
+| **CryptoCompare** | [https://min‑api.cryptocompare.com/](https://min-api.cryptocompare.com/) | Python: [cryptocompare](https://pypi.org/project/cryptocompare/) |
+
+### 3.4  Community & Multi‑Exchange Wrappers
+* **[cryptoexchange](https://rubydoc.info/gems/cryptoexchange/0.27.0)** – Ruby gem that normalises REST/WebSocket APIs for 100+ exchanges, including YoBit, Crex24, Bithumb, Upbit, etc.
+* **[crypto‑exchange‑mcp](https://www.npmjs.com/package/crypto-exchange-mcp)** – Node.js MCP service that provides offline documentation for Binance, OKX, Bybit, Bitget, Gate.io, etc.
+* **[ccxt](https://github.com/ccxt/ccxt)** – Unified JavaScript / Python / PHP library for 200+ exchanges; ideal for building a custom “allPairs” aggregator.

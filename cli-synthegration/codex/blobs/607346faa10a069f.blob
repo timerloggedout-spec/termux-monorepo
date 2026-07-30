@@ -1,0 +1,41 @@
+// modules/auth/token-manager.js
+const crypto = require('crypto');
+
+class TokenManager {
+    static encrypt(tokens) {
+        const cipher = crypto.createCipheriv('aes-256-gcm', Buffer.from(process.env.ENCRYPTION_KEY, 'hex'), Buffer.from(process.env.ENCRYPTION_IV, 'hex'));
+        let encrypted = cipher.update(JSON.stringify(tokens), 'utf8', 'hex');
+        encrypted += cipher.final('hex');
+        return encrypted;
+    }
+
+    static decrypt(encrypted) {
+        const decipher = crypto.createDecipheriv('aes-256-gcm', Buffer.from(process.env.ENCRYPTION_KEY, 'hex'), Buffer.from(process.env.ENCRYPTION_IV, 'hex'));
+        let decrypted = decipher.update(encrypted, 'hex', 'utf8');
+        decrypted += decipher.final('utf8');
+        return JSON.parse(decrypted);
+    }
+
+    static async refreshYouTubeToken(user) {
+        const tokens = TokenManager.decrypt(user.tokens);
+        if (Date.now() > tokens.expiry) {
+            const response = await fetch('https://oauth2.googleapis.com/token', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({
+                    client_id: process.env.GOOGLE_CLIENT_ID,
+                    client_secret: process.env.GOOGLE_CLIENT_SECRET,
+                    refresh_token: tokens.refreshToken,
+                    grant_type: 'refresh_token'
+                })
+            });
+            const newTokens = await response.json();
+            user.tokens = TokenManager.encrypt({ ...tokens, accessToken: newTokens.access_token, expiry: Date.now() + newTokens.expires_in * 1000 });
+            await user.save();
+            return newTokens.access_token;
+        }
+        return tokens.accessToken;
+    }
+}
+
+module.exports = TokenManager;

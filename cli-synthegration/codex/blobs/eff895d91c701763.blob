@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The AG Vibe – Martial Arts Reactions & Good Vibes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #0a0a0a;
+            color: #f0e6d2;
+            line-height: 1.6;
+        }
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a0a0a 0%, #2d1a1a 50%, #0a0a0a 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+        }
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            color: #ffd700;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            text-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
+            margin-bottom: 1rem;
+            font-weight: 900;
+        }
+        .hero .subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: #ccc;
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+        .hero .creators {
+            font-size: 1.2rem;
+            color: #888;
+            margin-bottom: 2rem;
+        }
+        .hero .creators span {
+            color: #ffd700;
+            font-weight: 600;
+        }
+        .cta-button {
+            display: inline-block;
+            background: #ffd700;
+            color: #1a0a0a;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+            border: 2px solid #ffd700;
+        }
+        .cta-button:hover {
+            background: transparent;
+            color: #ffd700;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+        }
+        .section {
+            padding: 5rem 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .section h2 {
+            font-size: 2.5rem;
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: #ffd700;
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        @media (max-width: 768px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .about-text {
+            color: #bbb;
+            font-size: 1.1rem;
+        }
+        .about-text strong {
+            color: #ffd700;
+        }
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        .stat-box {
+            background: rgba(255, 215, 0, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            min-width: 180px;
+            flex: 1;
+        }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #ffd700;
+            display: block;
+        }
+        .stat-label {
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.9rem;
+        }
+        .content-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .content-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 2rem;
+            border-left: 4px solid #ffd700;
+            transition: transform 0.3s ease;
+        }
+        .content-card:hover {
+            transform: translateY(-5px);
+        }
+        .content-card h3 {
+            color: #ffd700;
+            margin-bottom: 0.8rem;
+            font-size: 1.3rem;
+        }
+        .content-card p {
+            color: #ccc;
+        }
+        .social-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .social-button {
+            display: inline-block;
+            padding: 0.8rem 1.8rem;
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            color: #ffd700;
+            text-decoration: none;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        .social-button:hover {
+            background: #ffd700;
+            color: #0a0a0a;
+        }
+        .contact {
+            background: rgba(255, 215, 0, 0.03);
+            text-align: center;
+            border-radius: 20px;
+            padding: 3rem;
+        }
+        .contact a {
+            color: #ffd700;
+            text-decoration: underline;
+        }
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: #555;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>The AG Vibe</h1>
+            <p class="subtitle">Real Reactions. Classic Kung Fu. Pure Fun.</p>
+            <p class="creators">Brought to you by <span>Apryl & Greg Gordon</span></p>
+            <a href="https://www.youtube.com/@theagvibe1?sub_confirmation=1" target="_blank" class="cta-button">
+                Subscribe on YouTube
+            </a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section">
+        <h2>About the Channel</h2>
+        <div class="about-grid">
+            <div class="about-text">
+                <p>
+                    Hey friends! We're <strong>Apryl and Greg Gordon</strong> — a married couple sharing our genuine, unfiltered reactions to the greatest Kung Fu movies ever made. From the legendary <strong>Jackie Chan</strong> and <strong>Jet Li</strong> classics to hidden martial arts gems, we bring humor, heart, and a whole lot of energy to every watch.
+                </p>
+                <p style="margin-top: 1rem;">
+                    Whether we're breaking down fight choreography, attempting Kung Fu moves ourselves, or just laughing our way through the chaos — <strong>The AG Vibe</strong> is your front-row seat to the ultimate martial arts reaction experience.
+                </p>
+            </div>
+            <div style="text-align: center;">
+                <div class="stat-box" style="margin-bottom: 1.5rem;">
+                    <span class="stat-number">40.6K+</span>
+                    <span class="stat-label">Subscribers</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">429+</span>
+                    <span class="stat-label">Videos Published</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Pillars -->
+    <section class="section" style="background: rgba(255, 215, 0, 0.02); max-width: 100%; padding: 5rem 2rem;">
+        <div style="max-width: 1100px; margin: 0 auto;">
+            <h2>What We Create</h2>
+            <div class="content-showcase">
+                <div class="content-card">
+                    <h3>🎬 Movie Reactions</h3>
+                    <p>Our signature series — real-time reactions to Kung Fu legends like <em>Drunken Master</em>, <em>Crouching Tiger, Hidden Dragon</em>, and <em>Fearless</em>.</p>
+                </div>
+                <div class="content-card">
+                    <h3>🥋 Kung Fu Experiments</h3>
+                    <p>We try out moves we see on screen (and in the internet), often with hilarious results. DIY iron rings included!</p>
+                </div>
+                <div class="content-card">
+                    <h3>📸 Behind the Scenes</h3>
+                    <p>A peek into our filming process, the bloopers, and the genuine couple moments that keep the vibe real.</p>
+                </div>
+                <div class="content-card">
+                    <h3>💬 Community & Shorts</h3>
+                    <p>Quick laughs, member-only exclusives, and constant interaction with our amazing AG Vibe community.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Socials & Connect -->
+    <section class="section">
+        <h2>Join the Vibe</h2>
+        <div style="text-align: center; color: #bbb; font-size: 1.2rem; margin-bottom: 2rem;">
+            <p>Follow us across platforms and never miss a laugh.</p>
+        </div>
+        <div class="social-links">
+            <a href="https://www.youtube.com/@theagvibe1" target="_blank" class="social-button">YouTube</a>
+            <a href="https://www.instagram.com/aprylpgordon" target="_blank" class="social-button">Apryl's Instagram</a>
+            <a href="https://www.instagram.com/thereal_gregorygordon" target="_blank" class="social-button">Greg's Instagram</a>
+            <a href="https://www.tiktok.com/@aprylpgordon" target="_blank" class="social-button">TikTok</a>
+            <a href="https://www.threads.net/@aprylpgordon" target="_blank" class="social-button">Threads</a>
+        </div>
+    </section>
+
+    <!-- Contact & Business -->
+    <section class="section">
+        <div class="contact">
+            <h2 style="font-size: 2rem;">Work with Us</h2>
+            <p style="color: #ccc; margin: 1.5rem 0; font-size: 1.1rem;">
+                For brand collaborations, sponsorships, or business inquiries, reach out directly:
+            </p>
+            <p style="font-size: 1.3rem; word-break: break-all;">
+                <a href="mailto:marriedwithkids2011@gmail.com">marriedwithkids2011@gmail.com</a>
+            </p>
+            <p style="color: #888; margin-top: 1.5rem;">
+                P.O. Box: 18565 Soledad Canyon Rd. #171, Canyon Country, CA 91351
+            </p>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>© 2026 The AG Vibe. Built with 🔥 by Team AG Vibe. | All Kung Fu, All Love.</p>
+    </footer>
+
+</body>
+</html>

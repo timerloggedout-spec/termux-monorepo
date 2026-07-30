@@ -1,0 +1,10 @@
+simulatePriceChanges() {
+  this.coins.forEach(coin => {
+    const changeA = (Math.random() * 15 - 5) / 100;
+    const changeB = (Math.random() * 15 - 5) / 100;
+    coin.priceA *= (1 + changeA);
+    coin.priceB *= (1 + changeB);
+    coin.changeA = changeA * 100;
+    coin.changeB = changeB * 100;
+  });
+}

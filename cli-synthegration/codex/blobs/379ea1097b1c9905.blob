@@ -1,0 +1,9 @@
+---
+
+## Freshness in Action
+
+1. On first visit, the app fetches from IPFS, saves the cache with a timestamp.
+2. Seven days later, the cache is stale—the next page load will re‑fetch.
+3. If the user clicks **Update from Source**, it ignores the cache and pulls fresh data immediately.
+4. In a real P2P deployment, the `fetchFromNetwork` function would be replaced with:
+   

@@ -1,0 +1,1 @@
+sed -n '241,340p' ~/deepcli/deepcli/core.py

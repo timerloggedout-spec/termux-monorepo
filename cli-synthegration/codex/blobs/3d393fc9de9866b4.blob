@@ -1,0 +1,13 @@
+ async _fetch(url) {
+   let actualUrl = url;
+   if (window.location.protocol === 'file:') {
+     // Use proxy for local file system
+     actualUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
+   }
+   const response = await fetch(actualUrl);
+   if (!response.ok) {
+     throw new Error(`HTTP ${response.status}`);
+   }
+   return response;
+ }
+ 

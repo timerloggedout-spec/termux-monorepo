@@ -1,0 +1,9 @@
+*(Full CSS, Badge, JurisCell, SectionBlock, and the rest of the UI have not been repeated for brevity—they are identical to the original except that `COMPOUNDS` is replaced with `compounds` state.)*
+
+---
+
+## Setting Up the App
+
+### 1. Remote Data Endpoint
+
+Create a JSON file containing the array of compound objects (the original dataset) and **pin it to IPFS** using Pinata or web3.storage. Then set `REACT_APP_DATA_URL` to the public gateway URL, e.g.:

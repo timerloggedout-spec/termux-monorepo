@@ -1,0 +1,36 @@
+┌──────────┐    ┌─────────────────────────────────────┐
+│  Client  │◄──►│  Next.js / React Frontend (Web App) │
+│ (Browser)│    └──────────────┬──────────────────────┘
+└──────────┘                   │ REST + WebSocket
+                               ▼
+┌──────────────────────────────────────────────────┐
+│                Node.js Backend API               │
+│  - User & Session management                     │
+│  - Command parser & action state machine         │
+│  - Partner matching                              │
+│  - WebSocket push (Socket.IO)                    │
+└────────┬────────────────────────────┬────────────┘
+         │                            │
+         ▼                            ▼
+┌────────────────┐          ┌──────────────────────┐
+│   PostgreSQL   │          │  Redis (Pub/Sub +    │
+│ (users, actions│          │   session cache)     │
+│  sessions, etc)│          └──────────────────────┘
+└────────────────┘                    ▲
+                                      │
+         ┌────────────────────────────┼─────────────────────┐
+         │                            │                     │
+         ▼                            ▼                     ▼
+┌─────────────────┐  ┌─────────────────────────┐  ┌─────────────────┐
+│ YouTube Chat    │  │ TikTok Live Watcher     │  │ Instagram Live  │
+│ Worker (Polling │  │ (WebSocket microservice)│  │ Worker (Private │
+│  Official API)  │  │ Python/Node unofficial  │  │ API, unofficial)│
+└─────────────────┘  └─────────────────────────┘  └─────────────────┘
+         │                            │                     │
+         └────────────────────────────┼─────────────────────┘
+                                      │ (publish chat messages)
+                                      ▼
+                           ┌──────────────────────┐
+                           │   Message Bus /      │
+                           │   Internal Queue     │
+                           └──────────────────────┘

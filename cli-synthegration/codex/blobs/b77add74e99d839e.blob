@@ -1,0 +1,17 @@
+// modules/response-dispatcher/index.js
+const YouTubeResponder = require('./youtube-responder');
+const InstagramResponder = require('./instagram-responder');
+
+class ResponseDispatcher {
+    constructor(userTokens) {
+        this.responders = {
+            youtube: new YouTubeResponder(userTokens.youtube),
+            instagram: new InstagramResponder(userTokens.instagram)
+        };
+    }
+
+    async dispatch(platform, context, responseText) {
+        if (!this.responders[platform]) throw new Error(`Unsupported platform: ${platform}`);
+        return await this.responders[platform].send(context, responseText);
+    }
+}

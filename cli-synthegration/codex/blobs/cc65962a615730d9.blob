@@ -1,0 +1,52 @@
+Both gene sequence data and physical reagents are increasingly accessible through automated APIs and programmatic interfaces, making them easier to integrate into high-throughput research workflows.
+
+1. Reagents and Plasmids (Automation & Ordering)
+
+Addgene is the primary source for physical recombineering reagents. They have significantly expanded their automation capabilities to help researchers find and analyze materials programmatically.
+
+Addgene Developers Portal: This API provides programmatic access to their massive catalog, allowing you to fetch data on plasmids, sequences, and expression systems.
+
+Sequence Analysis: You can use their Analyze Sequence tool to automatically identify features in a DNA sequence, which is essential for designing recombineering donors.
+
+OpenBio Toolkit: Addgene maintains an Open Toolkit on GitHub, featuring Python-based bioinformatics tools designed to automate the analysis of Next Generation Sequencing (NGS) data for quality control. [1, 2, 3, 4] 
+
+2. Longevity Gene Sequences & Pathways
+
+For specific longevity-associated proteins, several curated databases offer APIs for pulling structured data.
+
+Open Genes Database: This database is a comprehensive resource for genes linked to human aging. Crucially, all of its data—including lifespan-extending interventions and age-related changes—is provided via an API as well as a web interface.
+
+EcoCyc & BioCyc: If your recombineering work is in E. coli, EcoCyc provides the "blueprint" of the organism. It offers RESTful web services and APIs for Python, R, and Java to programmatically query metabolic pathways and gene regulatory networks.
+
+Human Aging and Longevity Landscape (HALL): A multi-omics repository that provides structured data on biomarkers and genes associated with longevity in diverse human cohorts. [5, 6, 7, 8, 9] 
+
+3. Therapeutic Evidence & Research
+
+If you are looking for evidence to support the development of a therapeutic, the clinical and research side also has automation options.
+
+Cochrane Library API: This API allows you to integrate peer-reviewed systematic reviews directly into AI models or knowledge bases. It is specifically designed for machine consumption to help ground research in transparent, authoritative evidence. [10, 11] 
+
+Would you like a sample Python script to show how to pull data from one of these APIs, or should I help you find a specific longevity gene sequence first?
+
+
+[1] https://developers.addgene.org
+
+[2] https://developers.addgene.org
+
+[3] https://www.addgene.org
+
+[4] https://addgene.github.io
+
+[5] https://pubmed.ncbi.nlm.nih.gov
+
+[6] https://www.fightaging.org
+
+[7] https://biocyc.org
+
+[8] https://biocyc.org
+
+[9] https://ngdc.cncb.ac.cn
+
+[10] https://www.cochranelibrary.com
+
+[11] https://www.cochranelibrary.com

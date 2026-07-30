@@ -1,0 +1,30 @@
+{
+  "include": [
+    "workspace/llm_map",
+    "deepcli",
+    "cli-synthegration",
+    "harmony_hub",
+    "harmonizer-prod_cli",
+    "deepseek_harvest_work"
+  ],
+  "exclude": [
+    "*/.cache/*",
+    "*/.git/*",
+    "*/__pycache__/*",
+    "*/browser-data/*",
+    "*/codex/blobs/*",
+    "*/dist/*",
+    "*/node_modules/*",
+    ".Xauthority*",
+    ".cache/node-gyp/*",
+    ".hermes/hermes-agent/tests/*",
+    ".hermes/hermes-agent/venv/*",
+    ".local/pipx/*",
+    ".npmrc*",
+    ".pi/agent/sessions/*",
+    "agent_telemetry_stream.json*",
+    "deepseek_api_key*",
+    "local_repo.db*",
+    "test.txt*"
+  ]
+}

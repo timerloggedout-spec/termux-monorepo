@@ -1,0 +1,1353 @@
+{
+  "description": "Forensic Data Analyst",
+  "tools": [
+    {
+      "name": "affixcompress",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/affixcompress",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "analyze",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/analyze",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "arp",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/arp",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "aspell",
+      "package": "aspell",
+      "path": "/data/data/com.termux/files/usr/bin/aspell",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^aspell$|^aspell-",
+      "category": "text_processing",
+      "description": "A free and open source spell checker designed to replace Ispell"
+    },
+    {
+      "name": "aspell-import",
+      "package": "aspell",
+      "path": "/data/data/com.termux/files/usr/bin/aspell-import",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^aspell$|^aspell-",
+      "category": "text_processing",
+      "description": "A free and open source spell checker designed to replace Ispell"
+    },
+    {
+      "name": "batch_transcribe.py",
+      "package": "custom",
+      "path": "/data/data/com.termux/files/home/forensic-indexer/scripts/batch_transcribe.py",
+      "source": "custom",
+      "tags": [
+        "forensics"
+      ],
+      "category": "forensics"
+    },
+    {
+      "name": "capinfos",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/capinfos",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "captype",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/captype",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "chmorph",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/chmorph",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "cmp",
+      "package": "diffutils",
+      "path": "/data/data/com.termux/files/usr/bin/cmp",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^diffutils$|^diffutils-",
+      "category": "text_processing",
+      "description": "Programs (cmp, diff, diff3 and sdiff) related to finding differences between files"
+    },
+    {
+      "name": "comm",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/comm",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Package unknown"
+    },
+    {
+      "name": "curl",
+      "package": "curl",
+      "path": "/data/data/com.termux/files/usr/bin/curl",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "category": "network_tools",
+      "description": "Command line tool for transferring data with URL syntax"
+    },
+    {
+      "name": "cut",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/cut",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Package unknown"
+    },
+    {
+      "name": "diff",
+      "package": "diffutils",
+      "path": "/data/data/com.termux/files/usr/bin/diff",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Programs (cmp, diff, diff3 and sdiff) related to finding differences between files"
+    },
+    {
+      "name": "diff3",
+      "package": "diffutils",
+      "path": "/data/data/com.termux/files/usr/bin/diff3",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^diffutils$|^diffutils-",
+      "category": "text_processing",
+      "description": "Programs (cmp, diff, diff3 and sdiff) related to finding differences between files"
+    },
+    {
+      "name": "dnsdomainname",
+      "package": "inetutils",
+      "path": "/data/data/com.termux/files/usr/bin/dnsdomainname",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^inetutils$|^inetutils-",
+      "category": "network_tools",
+      "description": "Collection of common network programs"
+    },
+    {
+      "name": "dos2unix",
+      "package": "dos2unix",
+      "path": "/data/data/com.termux/files/usr/bin/dos2unix",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^dos2unix$|^dos2unix-",
+      "category": "text_processing",
+      "description": "Converts between DOS and Unix text files"
+    },
+    {
+      "name": "drill",
+      "package": "ldns",
+      "path": "/data/data/com.termux/files/usr/bin/drill",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^ldns$|^ldns-",
+      "category": "network_tools",
+      "description": "Library for simplifying DNS programming and supporting recent and experimental RFCs"
+    },
+    {
+      "name": "dumpcap",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/dumpcap",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "ed",
+      "package": "ed",
+      "path": "/data/data/com.termux/files/usr/bin/ed",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Classic UNIX line editor"
+    },
+    {
+      "name": "editcap",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/editcap",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "egrep",
+      "package": "grep",
+      "path": "/data/data/com.termux/files/usr/bin/egrep",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^grep$|^grep-",
+      "category": "text_processing",
+      "description": "Command which searches one or more input files for lines containing a match to a specified pattern"
+    },
+    {
+      "name": "enchant-2",
+      "package": "enchant",
+      "path": "/data/data/com.termux/files/usr/bin/enchant-2",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^enchant$|^enchant-",
+      "category": "text_processing",
+      "description": "Wraps a number of different spelling libraries and programs with a consistent interface"
+    },
+    {
+      "name": "enchant-lsmod-2",
+      "package": "enchant",
+      "path": "/data/data/com.termux/files/usr/bin/enchant-lsmod-2",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^enchant$|^enchant-",
+      "category": "text_processing",
+      "description": "Wraps a number of different spelling libraries and programs with a consistent interface"
+    },
+    {
+      "name": "extract_words_from_json.py",
+      "package": "custom",
+      "path": "/data/data/com.termux/files/home/forensic-indexer/scripts/extract_words_from_json.py",
+      "source": "custom",
+      "tags": [
+        "forensics"
+      ],
+      "category": "forensics"
+    },
+    {
+      "name": "fgrep",
+      "package": "grep",
+      "path": "/data/data/com.termux/files/usr/bin/fgrep",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^grep$|^grep-",
+      "category": "text_processing",
+      "description": "Command which searches one or more input files for lines containing a match to a specified pattern"
+    },
+    {
+      "name": "forensic-query",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: $HOME/harmony_hub/utility_belt/forensic-query",
+      "tags": [
+        "forensics",
+        "harmony_hub",
+        "llm_orchestration"
+      ],
+      "category": "forensics"
+    },
+    {
+      "name": "fribidi",
+      "package": "fribidi",
+      "path": "/data/data/com.termux/files/usr/bin/fribidi",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^fribidi$|^fribidi-",
+      "category": "text_processing",
+      "description": "Implementation of the Unicode Bidirectional Algorithm"
+    },
+    {
+      "name": "ftp",
+      "package": "inetutils",
+      "path": "/data/data/com.termux/files/usr/bin/ftp",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^inetutils$|^inetutils-",
+      "category": "network_tools",
+      "description": "Collection of common network programs"
+    },
+    {
+      "name": "fts-query",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: bash ~/harmony_hub/utility_belt/fts-query",
+      "tags": [
+        "harmony_hub",
+        "llm_orchestration"
+      ],
+      "category": "harmony_hub"
+    },
+    {
+      "name": "gawk",
+      "package": "gawk",
+      "path": "/data/data/com.termux/files/usr/bin/gawk",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Programming language designed for text processing"
+    },
+    {
+      "name": "gh",
+      "package": "gh",
+      "path": "/data/data/com.termux/files/usr/bin/gh",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "category": "network_tools",
+      "description": "GitHub\u2019s official command line tool"
+    },
+    {
+      "name": "grep",
+      "package": "grep",
+      "path": "/data/data/com.termux/files/usr/bin/grep",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Command which searches one or more input files for lines containing a match to a specified pattern"
+    },
+    {
+      "name": "head",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/head",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Package unknown"
+    },
+    {
+      "name": "hostname",
+      "package": "inetutils",
+      "path": "/data/data/com.termux/files/usr/bin/hostname",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^inetutils$|^inetutils-",
+      "category": "network_tools",
+      "description": "Collection of common network programs"
+    },
+    {
+      "name": "hunspell",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/hunspell",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "hunzip",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/hunzip",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "hzip",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/hzip",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "ifconfig",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/ifconfig",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "indexer_diarize_layers.py",
+      "package": "custom",
+      "path": "/data/data/com.termux/files/home/forensic-indexer/scripts/indexer_diarize_layers.py",
+      "source": "custom",
+      "tags": [
+        "forensics"
+      ],
+      "category": "forensics"
+    },
+    {
+      "name": "indexer_extract_prosody.py",
+      "package": "custom",
+      "path": "/data/data/com.termux/files/home/forensic-indexer/scripts/indexer_extract_prosody.py",
+      "source": "custom",
+      "tags": [
+        "forensics"
+      ],
+      "category": "forensics"
+    },
+    {
+      "name": "indexer_fast_accurate.py",
+      "package": "custom",
+      "path": "/data/data/com.termux/files/home/forensic-indexer/scripts/indexer_fast_accurate.py",
+      "source": "custom",
+      "tags": [
+        "forensics"
+      ],
+      "category": "forensics"
+    },
+    {
+      "name": "indexer_full_scan_words.py",
+      "package": "custom",
+      "path": "/data/data/com.termux/files/home/forensic-indexer/scripts/indexer_full_scan_words.py",
+      "source": "custom",
+      "tags": [
+        "forensics"
+      ],
+      "category": "forensics"
+    },
+    {
+      "name": "indexer_full_upgrade.py",
+      "package": "custom",
+      "path": "/data/data/com.termux/files/home/forensic-indexer/scripts/indexer_full_upgrade.py",
+      "source": "custom",
+      "tags": [
+        "forensics"
+      ],
+      "category": "forensics"
+    },
+    {
+      "name": "indexer_full_upgrade_v2.py",
+      "package": "custom",
+      "path": "/data/data/com.termux/files/home/forensic-indexer/scripts/indexer_full_upgrade_v2.py",
+      "source": "custom",
+      "tags": [
+        "forensics"
+      ],
+      "category": "forensics"
+    },
+    {
+      "name": "indexer_manifest.py",
+      "package": "custom",
+      "path": "/data/data/com.termux/files/home/forensic-indexer/scripts/indexer_manifest.py",
+      "source": "custom",
+      "tags": [
+        "forensics"
+      ],
+      "category": "forensics"
+    },
+    {
+      "name": "indexer_remix.py",
+      "package": "custom",
+      "path": "/data/data/com.termux/files/home/forensic-indexer/scripts/indexer_remix.py",
+      "source": "custom",
+      "tags": [
+        "forensics"
+      ],
+      "category": "forensics"
+    },
+    {
+      "name": "indexer_scan_full.py",
+      "package": "custom",
+      "path": "/data/data/com.termux/files/home/forensic-indexer/scripts/indexer_scan_full.py",
+      "source": "custom",
+      "tags": [
+        "forensics"
+      ],
+      "category": "forensics"
+    },
+    {
+      "name": "indexer_scan_whisper_clean.py",
+      "package": "custom",
+      "path": "/data/data/com.termux/files/home/forensic-indexer/scripts/indexer_scan_whisper_clean.py",
+      "source": "custom",
+      "tags": [
+        "forensics"
+      ],
+      "category": "forensics"
+    },
+    {
+      "name": "indexer_select.py",
+      "package": "custom",
+      "path": "/data/data/com.termux/files/home/forensic-indexer/scripts/indexer_select.py",
+      "source": "custom",
+      "tags": [
+        "forensics"
+      ],
+      "category": "forensics"
+    },
+    {
+      "name": "indexer_tui.py",
+      "package": "custom",
+      "path": "/data/data/com.termux/files/home/forensic-indexer/scripts/indexer_tui.py",
+      "source": "custom",
+      "tags": [
+        "forensics"
+      ],
+      "category": "forensics"
+    },
+    {
+      "name": "indexer_upgrade.py",
+      "package": "custom",
+      "path": "/data/data/com.termux/files/home/forensic-indexer/scripts/indexer_upgrade.py",
+      "source": "custom",
+      "tags": [
+        "forensics"
+      ],
+      "category": "forensics"
+    },
+    {
+      "name": "ipmaddr",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/ipmaddr",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "iptunnel",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/iptunnel",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "ispellaff2myspell",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/ispellaff2myspell",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "jq",
+      "package": "jq",
+      "path": "/data/data/com.termux/files/usr/bin/jq",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Command-line JSON processor"
+    },
+    {
+      "name": "ldns-config",
+      "package": "ldns",
+      "path": "/data/data/com.termux/files/usr/bin/ldns-config",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^ldns$|^ldns-",
+      "category": "network_tools",
+      "description": "Library for simplifying DNS programming and supporting recent and experimental RFCs"
+    },
+    {
+      "name": "less",
+      "package": "less",
+      "path": "/data/data/com.termux/files/usr/bin/less",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^less$|^less-",
+      "category": "text_processing",
+      "description": "Terminal pager program used to view the contents of a text file one screen at a time"
+    },
+    {
+      "name": "lesskey",
+      "package": "less",
+      "path": "/data/data/com.termux/files/usr/bin/lesskey",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^less$|^less-",
+      "category": "text_processing",
+      "description": "Terminal pager program used to view the contents of a text file one screen at a time"
+    },
+    {
+      "name": "logger",
+      "package": "inetutils",
+      "path": "/data/data/com.termux/files/usr/bin/logger",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^inetutils$|^inetutils-",
+      "category": "network_tools",
+      "description": "Collection of common network programs"
+    },
+    {
+      "name": "makealias",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/makealias",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "mergecap",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/mergecap",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "mii-tool",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/mii-tool",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "mmdbresolve",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/mmdbresolve",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "munch",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/munch",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "nameif",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/nameif",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "nano",
+      "package": "nano",
+      "path": "/data/data/com.termux/files/usr/bin/nano",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^nano$|^nano-",
+      "category": "text_processing",
+      "description": "Small, free and friendly text editor"
+    },
+    {
+      "name": "netstat",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/netstat",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "onig-config",
+      "package": "oniguruma",
+      "path": "/data/data/com.termux/files/usr/bin/onig-config",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^oniguruma$|^oniguruma-",
+      "category": "text_processing",
+      "description": "Regular expressions library"
+    },
+    {
+      "name": "patch",
+      "package": "patch",
+      "path": "/data/data/com.termux/files/usr/bin/patch",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "GNU patch which applies diff files to create patched files"
+    },
+    {
+      "name": "pcre2-config",
+      "package": "pcre2",
+      "path": "/data/data/com.termux/files/usr/bin/pcre2-config",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^pcre2$|^pcre2-",
+      "category": "text_processing",
+      "description": "Perl 5 compatible regular expression library"
+    },
+    {
+      "name": "plipconfig",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/plipconfig",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "precat",
+      "package": "aspell",
+      "path": "/data/data/com.termux/files/usr/bin/precat",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^aspell$|^aspell-",
+      "category": "text_processing",
+      "description": "A free and open source spell checker designed to replace Ispell"
+    },
+    {
+      "name": "preunzip",
+      "package": "aspell",
+      "path": "/data/data/com.termux/files/usr/bin/preunzip",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^aspell$|^aspell-",
+      "category": "text_processing",
+      "description": "A free and open source spell checker designed to replace Ispell"
+    },
+    {
+      "name": "prezip",
+      "package": "aspell",
+      "path": "/data/data/com.termux/files/usr/bin/prezip",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^aspell$|^aspell-",
+      "category": "text_processing",
+      "description": "A free and open source spell checker designed to replace Ispell"
+    },
+    {
+      "name": "prezip-bin",
+      "package": "aspell",
+      "path": "/data/data/com.termux/files/usr/bin/prezip-bin",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^aspell$|^aspell-",
+      "category": "text_processing",
+      "description": "A free and open source spell checker designed to replace Ispell"
+    },
+    {
+      "name": "pspell-config",
+      "package": "aspell",
+      "path": "/data/data/com.termux/files/usr/bin/pspell-config",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^aspell$|^aspell-",
+      "category": "text_processing",
+      "description": "A free and open source spell checker designed to replace Ispell"
+    },
+    {
+      "name": "randpkt",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/randpkt",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "rarp",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/rarp",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "rawshark",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/rawshark",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "rclone",
+      "package": "rclone",
+      "path": "/data/data/com.termux/files/usr/bin/rclone",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "category": "network_tools",
+      "description": "rsync for cloud storage"
+    },
+    {
+      "name": "red",
+      "package": "ed",
+      "path": "/data/data/com.termux/files/usr/bin/red",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^ed$|^ed-",
+      "category": "text_processing",
+      "description": "Classic UNIX line editor"
+    },
+    {
+      "name": "reordercap",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/reordercap",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "rg",
+      "package": "ripgrep",
+      "path": "/data/data/com.termux/files/usr/bin/rg",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Search tool like grep and The Silver Searcher"
+    },
+    {
+      "name": "route",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/route",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "run-with-aspell",
+      "package": "aspell",
+      "path": "/data/data/com.termux/files/usr/bin/run-with-aspell",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^aspell$|^aspell-",
+      "category": "text_processing",
+      "description": "A free and open source spell checker designed to replace Ispell"
+    },
+    {
+      "name": "scp",
+      "package": "openssh",
+      "path": "/data/data/com.termux/files/usr/bin/scp",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "category": "network_tools",
+      "description": "Secure shell for logging into a remote machine"
+    },
+    {
+      "name": "sdiff",
+      "package": "diffutils",
+      "path": "/data/data/com.termux/files/usr/bin/sdiff",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^diffutils$|^diffutils-",
+      "category": "text_processing",
+      "description": "Programs (cmp, diff, diff3 and sdiff) related to finding differences between files"
+    },
+    {
+      "name": "sed",
+      "package": "sed",
+      "path": "/data/data/com.termux/files/usr/bin/sed",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "GNU stream editor for filtering/transforming text"
+    },
+    {
+      "name": "sftp",
+      "package": "openssh",
+      "path": "/data/data/com.termux/files/usr/bin/sftp",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "category": "network_tools",
+      "description": "Secure shell for logging into a remote machine"
+    },
+    {
+      "name": "sharkd",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/sharkd",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "shellcheck",
+      "package": "shellcheck",
+      "path": "/data/data/com.termux/files/usr/bin/shellcheck",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Shell script analysis tool"
+    },
+    {
+      "name": "slattach",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/slattach",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "sort",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/sort",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Package unknown"
+    },
+    {
+      "name": "ssh",
+      "package": "openssh",
+      "path": "/data/data/com.termux/files/usr/bin/ssh",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "category": "network_tools",
+      "description": "Secure shell for logging into a remote machine"
+    },
+    {
+      "name": "ssh-add",
+      "package": "openssh",
+      "path": "/data/data/com.termux/files/usr/bin/ssh-add",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^openssh$|^openssh-",
+      "category": "network_tools",
+      "description": "Secure shell for logging into a remote machine"
+    },
+    {
+      "name": "ssh-agent",
+      "package": "openssh",
+      "path": "/data/data/com.termux/files/usr/bin/ssh-agent",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^openssh$|^openssh-",
+      "category": "network_tools",
+      "description": "Secure shell for logging into a remote machine"
+    },
+    {
+      "name": "ssh-copy-id",
+      "package": "openssh",
+      "path": "/data/data/com.termux/files/usr/bin/ssh-copy-id",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^openssh$|^openssh-",
+      "category": "network_tools",
+      "description": "Secure shell for logging into a remote machine"
+    },
+    {
+      "name": "ssh-keyscan",
+      "package": "openssh",
+      "path": "/data/data/com.termux/files/usr/bin/ssh-keyscan",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^openssh$|^openssh-",
+      "category": "network_tools",
+      "description": "Secure shell for logging into a remote machine"
+    },
+    {
+      "name": "sshd",
+      "package": "openssh",
+      "path": "/data/data/com.termux/files/usr/bin/sshd",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^openssh$|^openssh-",
+      "category": "network_tools",
+      "description": "Secure shell for logging into a remote machine"
+    },
+    {
+      "name": "tail",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/tail",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Package unknown"
+    },
+    {
+      "name": "telnet",
+      "package": "inetutils",
+      "path": "/data/data/com.termux/files/usr/bin/telnet",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^inetutils$|^inetutils-",
+      "category": "network_tools",
+      "description": "Collection of common network programs"
+    },
+    {
+      "name": "text2pcap",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/text2pcap",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "tftp",
+      "package": "inetutils",
+      "path": "/data/data/com.termux/files/usr/bin/tftp",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^inetutils$|^inetutils-",
+      "category": "network_tools",
+      "description": "Collection of common network programs"
+    },
+    {
+      "name": "tidy",
+      "package": "tidy",
+      "path": "/data/data/com.termux/files/usr/bin/tidy",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "A tool to tidy down your HTML code to a clean style"
+    },
+    {
+      "name": "tr",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/tr",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Package unknown"
+    },
+    {
+      "name": "tshark",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/tshark",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "uniq",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/uniq",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Package unknown"
+    },
+    {
+      "name": "unix2dos",
+      "package": "dos2unix",
+      "path": "/data/data/com.termux/files/usr/bin/unix2dos",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^dos2unix$|^dos2unix-",
+      "category": "text_processing",
+      "description": "Converts between DOS and Unix text files"
+    },
+    {
+      "name": "unmunch",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/unmunch",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "wc",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/wc",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Package unknown"
+    },
+    {
+      "name": "wget",
+      "package": "wget",
+      "path": "/data/data/com.termux/files/usr/bin/wget",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "category": "network_tools",
+      "description": "Commandline tool for retrieving files using HTTP, HTTPS and FTP"
+    },
+    {
+      "name": "wireshark",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/wireshark",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "word-list-compress",
+      "package": "aspell",
+      "path": "/data/data/com.termux/files/usr/bin/word-list-compress",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^aspell$|^aspell-",
+      "category": "text_processing",
+      "description": "A free and open source spell checker designed to replace Ispell"
+    },
+    {
+      "name": "wordforms",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/wordforms",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "wordlist2hunspell",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/wordlist2hunspell",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "yq",
+      "package": "yq",
+      "path": "/data/data/com.termux/files/usr/bin/yq",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "A lightweight and portable command-line YAML, JSON and XML processor"
+    }
+  ]
+}

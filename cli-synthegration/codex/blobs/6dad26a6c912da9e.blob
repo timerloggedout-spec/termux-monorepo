@@ -1,0 +1,18 @@
+Let’s take your QuanTM FOAM v23 P2P Swarm to the next level. I’ve enhanced the artifact with **rich information panels** for Torrent, DuckDB, IPNS, and sharing—plus a built‑in QR code generator so you can invite others to your swarm with a single scan. Access control for code updates remains exclusively in the hands of the developer via IPNS cryptographic keys.
+
+Below is the **complete, standalone HTML file**. Open it, click INIT, and you’ll see the new panels in action.
+
+---
+
+## 🚀 What’s New
+
+| Feature | Description |
+|---------|-------------|
+| **📦 Torrent Panel** | Input your own magnet link, see real‑time download progress, file list, and import CSV/Parquet files straight into DuckDB. |
+| **📊 DB Query Panel** | Type SQL queries on the loaded OHLCV data and view results directly in the UI. DuckDB initialisation is more robust (fallback if unsupported). |
+| **☁️ IPNS & Share Panel** | Displays the app’s IPNS update status and a **QR code** that encodes the current page URL. Anyone scanning it joins the same Yjs room and sees your game state. |
+| **🛡️ Access Control** | Developers hold the private IPNS key; only they can publish new versions. Clients verify using the pre‑configured public key hash. The panel shows the trusted IPNS identity. |
+
+---
+
+## 🧩 The Upgraded Artifact (v23.1 – Panels Edition)

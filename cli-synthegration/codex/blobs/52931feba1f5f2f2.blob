@@ -1,0 +1,11 @@
+// Example using @react-oauth/google
+import { useGoogleLogin } from '@react-oauth/google';
+
+const login = useGoogleLogin({
+  scope: 'https://www.googleapis.com/auth/youtube.readonly',
+  onSuccess: tokenResponse => {
+    // store access_token in memory/localStorage
+    localStorage.setItem('yt_token', tokenResponse.access_token);
+  },
+  flow: 'implicit', // or 'auth-code' with PKCE (recommended)
+});

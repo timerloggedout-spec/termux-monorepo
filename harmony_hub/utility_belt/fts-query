@@ -1,0 +1,12 @@
+#!/bin/bash
+# fts-query – natural language search of all exported messages
+DB="$HOME/termux-multi-agent/local_repo.db"
+QUERY="$*"
+
+if [ -z "$QUERY" ]; then
+  echo "Usage: fts-query <search terms>"
+  echo "Example: fts-query how to dispatch a task"
+  exit 1
+fi
+
+sqlite3 "$DB" "SELECT snippet(messages_fts, '<b>', '</b>', '…', 40) FROM messages_fts WHERE messages_fts MATCH '$QUERY' LIMIT 10;"

@@ -1,0 +1,17 @@
+{
+  "category": "libnotify_tools",
+  "tools": [
+    {
+      "name": "notify-send",
+      "package": "libnotify",
+      "path": "/data/data/com.termux/files/usr/bin/notify-send",
+      "source": "apt",
+      "tags": [
+        "libnotify_tools"
+      ],
+      "auto_tag_source": "auto:^libnotify$|^libnotify-",
+      "category": "libnotify_tools",
+      "description": "Library for sending desktop notifications"
+    }
+  ]
+}

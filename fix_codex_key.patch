@@ -1,0 +1,16 @@
+--- a/archwiz/graph_tensor_visualizer.py
++++ b/archwiz/graph_tensor_visualizer.py
+@@ -202,8 +202,8 @@
+ if codex:
+     pointers = codex.get("pointers", [])
+     if not pointers:
+         print("⚠️  codex_index.json has no pointers")
+     else:
+-        sessions = sorted(set(p["session_id"] for p in pointers))
++        sessions = sorted(set(p["sid"] for p in pointers))
+         hashes   = sorted(set(p["ch"] for p in pointers))
+@@ -214,4 +214,4 @@
+             inc = [[0]*nh for _ in range(ns)]
+             for p in pointers:
+-                inc[s2i[p["session_id"]]][h2i[p["ch"]]] = 1
++                inc[s2i[p["sid"]]][h2i[p["ch"]]] = 1

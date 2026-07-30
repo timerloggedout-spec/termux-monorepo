@@ -1,0 +1,16 @@
+// Enhanced initialization with multiple fallbacks
+async initializeWithFallbackData() {
+    const fallbackExchanges = ['binance', 'kucoin', 'gateio'];
+    
+    for (const exchange of fallbackExchanges) {
+        try {
+            await this.loadExchangePairs(exchange);
+            if (this.getExchangePairs(exchange).length > 0) {
+                console.log(`✅ ${exchange} fallback successful`);
+                break;
+            }
+        } catch (error) {
+            console.warn(`❌ ${exchange} fallback failed`);
+        }
+    }
+}

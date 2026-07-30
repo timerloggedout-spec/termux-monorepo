@@ -1,0 +1,38 @@
+I'll create a CEDARscript patch for deepcli-tui[35m/[0m[95mt[0mui.py that adds the `[35m/[0maccount` toggle command to switch between primary and secondary DeepSeek accounts.
+
+```cedar
+[35m/[0m[35m/[0m CEDARscript Patch: Add [35m/[0maccount toggle to deepcli-tui
+[35m/[0m[35m/[0m Target: ~[35m/[0msandbox[35m/[0maccount_toggle[35m/[0m[95mde[0mepcli-tui[35m/[0m[95mt[0mui.py
+[35m/[0m[35m/[0m Version: DeepSeek v[1;36m4[0m-Pro Implementation
+
+patch deepcli-tui[35m/[0m[95mt[0mui.py [1m{[0m
+  [35m/[0m[35m/[0m Add account state management
+  + import json
+  + import os
+  + from pathlib import Path
+  
+  [35m/[0m[35m/[0m Add account configuration class
+  + class AccountManager:
+  +     def __init[1;35m__[0m[1m([0mself[1m)[0m:
+  +         self.config_path = Path.home[1m([0m[1m)[0m [35m/[0m ".deepcli" [35m/[0m "accounts.json"
+  +         self.current_account = "primary"
+  +         self.accounts = [1m{[0m
+  +             "primary": [1m{[0m
+  +                 "api_key": os.getenv[1m([0m"DEEPSEEK_PRIMARY_KEY", [32m""[0m[1m)[0m,
+  +                 "api_url": "https:[35m/[0m[35m/[0mapi.deepseek.com[35m/[0m[95mv[0m[1;36m1[0m",
+  +                 "model": "deepseek-chat"
+  +             [1m}[0m,
+  +             "secondary": [1m{[0m
+  +                 "api_key": os.getenv[1m([0m"DEEPSEEK_SECONDARY_KEY", [32m""[0m[1m)[0m,
+  +                 "api_url": "https:[35m/[0m[35m/[0mapi.deepseek.com[35m/[0m[95mv[0m[1;36m1[0m",
+  +                 "model": "deepseek-coder"
+  +             [1m}[0m
+  +         [1m}[0m
+  +         self.load_config[1m([0m[1m)[0m
+  +     
+  +     def load_config[1m([0mself[1m)[0m:
+  +         [32m""[0m"Load account configuration from file[32m""[0m"
+  +         if self.config_path.exists[1m([0m[1m)[0m:
+  +             with open[1m([0mself.config_path, 'r'[1m)[0m as f:
+  +                 data = json.load[1m([0mf[1m)[0m
+  +               

@@ -1,0 +1,17 @@
+// modules/command-handler/command-parser.js
+class CommandParser {
+    constructor(prefixes = ['!', '/']) {
+        this.prefixes = prefixes;
+    }
+
+    parse(message) {
+        for (const prefix of this.prefixes) {
+            if (message.startsWith(prefix)) {
+                const body = message.slice(prefix.length).trim();
+                const [command, ...args] = body.split(/\s+/);
+                return { command: command.toLowerCase(), args };
+            }
+        }
+        return null;
+    }
+}

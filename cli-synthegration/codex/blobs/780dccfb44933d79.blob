@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tallah/Goldie Case: Interactive Communication Network</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cinzel:wght@400;600;700&display=swap');
+
+        body {
+            font-family: 'Cinzel', serif;
+            background: #F8F4F0;
+            color: #800020;
+            line-height: 1.6;
+            position: relative;
+            print-color-adjust: exact;
+            -webkit-print-color-adjust: exact;
+            padding: 20px;
+        }
+
+        /* Royal ornate pattern background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><g fill="none" stroke="rgba(232,180,160,0.12)" stroke-width="1"><circle cx="60" cy="60" r="30"/><path d="M30,60 Q45,30 60,60 Q75,90 90,60 Q75,30 60,60 Q45,90 30,60"/><circle cx="60" cy="60" r="15" fill="rgba(155,124,182,0.08)"/><path d="M60,45 L65,50 L60,55 L55,50 Z" fill="rgba(232,180,160,0.15)"/></g></svg>') repeat;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 30px;
+            background: #F8F4F0;
+            border: 3px solid #E8B4A0;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            color: #800020;
+            font-weight: 700;
+            font-family: 'Amiri', serif;
+        }
+
+        .header .subtitle {
+            font-size: 1.2em;
+            color: #9B7CB6;
+            margin-bottom: 10px;
+        }
+
+        .section {
+            margin: 40px 0;
+            padding: 30px;
+            background: rgba(248,244,240,0.98);
+            border: 2px solid #E8B4A0;
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #E8B4A0;
+        }
+
+        .section-title {
+            font-size: 2em;
+            color: #800020;
+            font-family: 'Amiri', serif;
+            margin-bottom: 10px;
+        }
+
+        .section-description {
+            font-size: 1.1em;
+            color: #9B7CB6;
+            font-style: italic;
+        }
+
+        /* Network Visualization Container */
+        .network-container {
+            position: relative;
+            width: 100%;
+            height: 700px;
+            border: 2px solid rgba(232,180,160,0.4);
+            border-radius: 10px;
+            overflow: hidden;
+            background: rgba(248,244,240,0.8);
+        }
+
+        #network-graph {
+            width: 100%;
+            height: 100%;
+        }
+
+        .controls {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(128,0,32,0.8);
+            border-radius: 10px;
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .control-btn {
+            background: #E8B4A0;
+            color: #800020;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Cinzel', serif;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            background: #800020;
+            color: #F8F4F0;
+        }
+
+        .legend {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            background: rgba(248,244,240,0.95);
+            border: 1px solid #E8B4A0;
+            border-radius: 8px;
+            padding: 15px;
+            z-index: 100;
+            max-width: 250px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .legend-text {
+            font-size: 0.9em;
+            color: #800020;
+        }
+
+        .timeline-filter {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: #E8B4A0;
+            color: #800020;
+            border: 1px solid #E8B4A0;
+            border-radius: 20px;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Cinzel', serif;
+        }
+
+        .filter-btn.active {
+            background: #800020;
+            color: #F8F4F0;
+        }
+
+        .node-info {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(248,244,240,0.95);
+            border: 1px solid #E8B4A0;
+            border-radius: 8px;
+            padding: 15px;
+            z-index: 100;
+            max-width: 300px;
+            display: none;
+        }
+
+        .node-info h3 {
+            color: #800020;
+            margin-bottom: 10px;
+            font-family: 'Amiri', serif;
+        }
+
+        .node-info p {
+            color: #9B7CB6;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+
+        .escalation-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .escalation-item {
+            background: rgba(248,244,240,0.9);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #E8B4A0;
+            transition: all 0.3s ease;
+        }
+
+        .escalation-item:hover {
+            transform: translateX(8px);
+            box-shadow: 0 5px 15px rgba(128,0,32,0.15);
+        }
+
+        .escalation-date {
+            color: #800020;
+            font-weight: bold;
+            font-family: 'Amiri', serif;
+            margin-right: 15px;
+        }
+
+        .escalation-critical {
+            border-left-color: #800020;
+            background: rgba(128,0,32,0.05);
+        }
+
+        @media (max-width: 768px) {
+            .network-container {
+                height: 500px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .section-title {
+                font-size: 1.6em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Tallah/Goldie Case: Communication Network Analysis</h1>
+            <div class="subtitle">Interactive Visualization of Institutional Interactions & Escalation Patterns</div>
+        </div>
+
+        <!-- Network Visualization Section -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-title">Communication Network Analysis</div>
+                <div class="section-description">Interactive visualization showing communication patterns and institutional relationships throughout the investigation</div>
+            </div>
+            
+            <div class="timeline-filter">
+                <button class="filter-btn active" data-date="all">All Dates</button>
+                <button class="filter-btn" data-date="sep3">Sep 3</button>
+                <button class="filter-btn" data-date="sep4">Sep 4</button>
+                <button class="filter-btn" data-date="sep6">Sep 6</button>
+                <button class="filter-btn" data-date="sep8-9">Sep 8-9</button>
+                <button class="filter-btn" data-date="sep10">Sep 10</button>
+                <button class="filter-btn" data-date="sep12">Sep 12</button>
+                <button class="filter-btn" data-date="sep15">Sep 15</button>
+                <button class="filter-btn" data-date="sep18">Sep 18</button>
+            </div>
+            
+            <div class="network-container">
+                <svg id="network-graph" viewBox="0 0 1200 800"></svg>
+                
+                <div class="controls">
+                    <button class="control-btn" id="zoom-in">Zoom In</button>
+                    <button class="control-btn" id="zoom-out">Zoom Out</button>
+                    <button class="control-btn" id="reset-view">Reset</button>
+                </div>
+                
+                <div class="legend">
+                    <h3>Node Types</h3>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #800020;"></div>
+                        <div class="legend-text">Primary Actor (Dumas)</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #9B7CB6;"></div>
+                        <div class="legend-text">Institutional Contact</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #B8D4F1;"></div>
+                        <div class="legend-text">Legal/Regulatory Entity</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #E8B4A0;"></div>
+                        <div class="legend-text">External Service</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #B8966C;"></div>
+                        <div class="legend-text">Media/Public Outreach</div>
+                    </div>
+                </div>
+                
+                <div class="node-info" id="node-info">
+                    <h3 id="node-title">Node Title</h3>
+                    <p id="node-role">Role information</p>
+                    <p id="node-date">Date of interaction</p>
+                    <p id="node-details">Additional details about this node</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Escalation Analysis Section -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-title">Escalation Timeline Analysis</div>
+                <div class="section-description">Progressive escalation pattern showing institutional non-compliance and potential obstruction</div>
+            </div>
+            
+            <div class="escalation-flow">
+                <div class="escalation-item">
+                    <span class="escalation-date">Sep 3:</span>
+                    Initial incident with suspicious death; emergency preservation requests to UC Davis
+                </div>
+                <div class="escalation-item">
+                    <span class="escalation-date">Sep 4:</span>
+                    Initial preservation requests met with cooperation from NSG and UC Davis emergency contacts
+                </div>
+                <div class="escalation-item">
+                    <span class="escalation-date">Sep 6:</span>
+                    Detailed necropsy specifications sent to NSG - no response received
+                </div>
+                <div class="escalation-item escalation-critical">
+                    <span class="escalation-date">Sep 12:</span>
+                    VMTH formally rejects ViaGen submission with disputed storage claims
+                </div>
+                <div class="escalation-item">
+                    <span class="escalation-date">Sep 15:</span>
+                    Legal holds issued to DOJ, CA AG, VMB - auto-replies only
+                </div>
+                <div class="escalation-item escalation-critical">
+                    <span class="escalation-date">Sep 18:</span>
+                    Cremation deadline imposed despite legal holds - multi-agency investigation requested
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Database structure for network nodes and links
+        const networkData = {
+            nodes: [
+                // Primary actor
+                { id: "dumas", name: "Nicholas Dumas", type: "primary", date: "all", x: 600, y: 400, role: "Case Initiator, Service Dog Owner", details: "Primary point of contact for all communications" },
+                
+                // September 3 nodes
+                { id: "ucdavis-emergency", name: "UC Davis Emergency", type: "institution", date: "sep3", x: 400, y: 200, role: "Emergency Contact", details: "Initial preservation request within 1 hour of death" },
+                
+                // September 4 nodes
+                { id: "nsg", name: "NSG Necropsy", type: "external", date: "sep4", x: 800, y: 200, role: "Necropsy Services", details: "Initial cooperation, then non-responsive" },
+                { id: "ucdavis-vmth", name: "UC Davis VMTH", type: "institution", date: "sep4", x: 400, y: 300, role: "Veterinary Medical Teaching Hospital", details: "Body preservation and initial analysis" },
+                
+                // September 6 nodes
+                { id: "nsg-followup", name: "NSG Follow-up", type: "external", date: "sep6", x: 800, y: 300, role: "Necropsy Services", details: "Detailed specifications sent, no response" },
+                
+                // September 8-9 nodes
+                { id: "gemini", name: "Gemini Genetics", type: "external", date: "sep8-9", x: 300, y: 500, role: "Genetic Referral Service", details: "Referred to ViaGen for cloning protocols" },
+                { id: "viagen", name: "ViaGen", type: "external", date: "sep8-9", x: 500, y: 500, role: "Cloning Service", details: "Provided 5-day preservation protocol" },
+                { id: "biovenic", name: "BioVenic", type: "external", date: "sep8-9", x: 700, y: 500, role: "Cloning Service", details: "Inquiry made, limited response" },
+                
+                // September 10 nodes
+                { id: "storms", name: "Amanda Storms", type: "institution", date: "sep10", x: 400, y: 600, role: "UC Davis Administrator", details: "Initial engagement, later imposed cremation deadline" },
+                { id: "edso", name: "El Dorado Sheriff", type: "legal", date: "sep10", x: 800, y: 600, role: "Law Enforcement", details: "BCC'd on early communications" },
+                
+                // September 12 nodes
+                { id: "vmth-rejection", name: "VMTH Rejection", type: "institution", date: "sep12", x: 400, y: 700, role: "UC Davis Pathology", details: "Formally rejected ViaGen submission" },
+                
+                // September 15 nodes
+                { id: "doj", name: "DOJ", type: "legal", date: "sep15", x: 200, y: 300, role: "Department of Justice", details: "Legal hold notification" },
+                { id: "ca-ag", name: "CA Attorney General", type: "legal", date: "sep15", x: 200, y: 400, role: "State Legal Authority", details: "Legal hold notification" },
+                { id: "vmb", name: "Veterinary Medical Board", type: "legal", date: "sep15", x: 200, y: 500, role: "Regulatory Body", details: "Legal hold notification" },
+                { id: "virc", name: "VIRC", type: "institution", date: "sep15", x: 400, y: 400, role: "Veterinary Institute", details: "Salvage request for stem cells" },
+                
+                // September 18 nodes
+                { id: "da", name: "El Dorado DA", type: "legal", date: "sep18", x: 800, y: 700, role: "District Attorney", details: "Formal investigation request" },
+                { id: "storms-deadline", name: "Cremation Deadline", type: "institution", date: "sep18", x: 600, y: 700, role: "UC Davis Administrator", details: "Imposed Sep 26 cremation despite legal holds" }
+            ],
+            links: [
+                // September 3 links
+                { source: "dumas", target: "ucdavis-emergency", date: "sep3", strength: 1, type: "emergency" },
+                
+                // September 4 links
+                { source: "dumas", target: "nsg", date: "sep4", strength: 0.8, type: "cooperative" },
+                { source: "dumas", target: "ucdavis-vmth", date: "sep4", strength: 0.9, type: "cooperative" },
+                
+                // September 6 links
+                { source: "dumas", target: "nsg-followup", date: "sep6", strength: 0.7, type: "followup" },
+                
+                // September 8-9 links
+                { source: "dumas", target: "gemini", date: "sep8-9", strength: 0.6, type: "referral" },
+                { source: "gemini", target: "viagen", date: "sep8-9", strength: 0.8, type: "referral" },
+                { source: "dumas", target: "biovenic", date: "sep8-9", strength: 0.5, type: "inquiry" },
+                
+                // September 10 links
+                { source: "dumas", target: "storms", date: "sep10", strength: 0.7, type: "engagement" },
+                { source: "dumas", target: "edso", date: "sep10", strength: 0.6, type: "notification" },
+                
+                // September 12 links
+                { source: "vmth-rejection", target: "dumas", date: "sep12", strength: 0.9, type: "rejection" },
+                
+                // September 15 links
+                { source: "dumas", target: "doj", date: "sep15", strength: 0.8, type: "legal" },
+                { source: "dumas", target: "ca-ag", date: "sep15", strength: 0.8, type: "legal" },
+                { source: "dumas", target: "vmb", date: "sep15", strength: 0.8, type: "legal" },
+                { source: "dumas", target: "virc", date: "sep15", strength: 0.7, type: "request" },
+                
+                // September 18 links
+                { source: "dumas", target: "da", date: "sep18", strength: 1, type: "escalation" },
+                { source: "storms-deadline", target: "dumas", date: "sep18", strength: 1, type: "hostile" }
+            ]
+        };
+
+        // Initialize the network visualization
+        function initNetwork() {
+            const svg = document.getElementById('network-graph');
+            const nodeInfo = document.getElementById('node-info');
+            
+            // Clear previous content
+            svg.innerHTML = '';
+            
+            // Create links
+            networkData.links.forEach(link => {
+                const sourceNode = networkData.nodes.find(n => n.id === link.source);
+                const targetNode = networkData.nodes.find(n => n.id === link.target);
+                
+                if (sourceNode && targetNode) {
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    line.setAttribute('x1', sourceNode.x);
+                    line.setAttribute('y1', sourceNode.y);
+                    line.setAttribute('x2', targetNode.x);
+                    line.setAttribute('y2', targetNode.y);
+                    line.setAttribute('stroke', getLinkColor(link.type));
+                    line.setAttribute('stroke-width', link.strength * 4);
+                    line.setAttribute('stroke-dasharray', link.type === 'rejection' || link.type === 'hostile' ? '5,5' : '0');
+                    line.setAttribute('data-date', link.date);
+                    line.setAttribute('class', 'link');
+                    svg.appendChild(line);
+                    
+                    // Add arrowhead for direction
+                    if (link.type !== 'rejection' && link.type !== 'hostile') {
+                        const marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+                        marker.setAttribute('id', `arrow-${link.source}-${link.target}`);
+                        marker.setAttribute('viewBox', '0 0 10 10');
+                        marker.setAttribute('refX', 9);
+                        marker.setAttribute('refY', 3);
+                        marker.setAttribute('markerWidth', 6);
+                        marker.setAttribute('markerHeight', 6);
+                        marker.setAttribute('orient', 'auto');
+                        
+                        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                        path.setAttribute('d', 'M0,0 L0,6 L9,3 z');
+                        path.setAttribute('fill', getLinkColor(link.type));
+                        marker.appendChild(path);
+                        svg.appendChild(marker);
+                        
+                        line.setAttribute('marker-end', `url(#arrow-${link.source}-${link.target})`);
+                    }
+                }
+            });
+            
+            // Create nodes
+            networkData.nodes.forEach(node => {
+                const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                group.setAttribute('transform', `translate(${node.x}, ${node.y})`);
+                group.setAttribute('data-id', node.id);
+                group.setAttribute('data-date', node.date);
+                group.setAttribute('class', 'node');
+                
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('r', 20);
+                circle.setAttribute('fill', getNodeColor(node.type));
+                circle.setAttribute('stroke', '#800020');
+                circle.setAttribute('stroke-width', 2);
+                circle.setAttribute('class', 'node-circle');
+                group.appendChild(circle);
+                
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('dy', 5);
+                text.setAttribute('fill', node.type === 'primary' ? '#F8F4F0' : '#800020');
+                text.setAttribute('font-size', '12px');
+                text.setAttribute('font-weight', 'bold');
+                text.setAttribute('font-family', 'Amiri');
+                text.textContent = node.name.length > 12 ? node.name.substring(0, 10) + '...' : node.name;
+                group.appendChild(text);
+                
+                // Add hover effects
+                group.addEventListener('mouseover', function() {
+                    circle.setAttribute('r', 25);
+                    circle.setAttribute('filter', 'url(#glow)');
+                    showNodeInfo(node);
+                });
+                
+                group.addEventListener('mouseout', function() {
+                    circle.setAttribute('r', 20);
+                    circle.setAttribute('filter', 'none');
+                    hideNodeInfo();
+                });
+                
+                svg.appendChild(group);
+            });
+            
+            // Add glow filter for hover effect
+            const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+            const filter = document.createElementNS('http://www.w3.org/2000/svg', 'filter');
+            filter.setAttribute('id', 'glow');
+            filter.setAttribute('height', '300%');
+            filter.setAttribute('width', '300%');
+            filter.setAttribute('x', '-75%');
+            filter.setAttribute('y', '-75%');
+            
+            const feGaussianBlur = document.createElementNS('http://www.w3.org/2000/svg', 'feGaussianBlur');
+            feGaussianBlur.setAttribute('stdDeviation', '3.5');
+            feGaussianBlur.setAttribute('result', 'coloredBlur');
+            
+            const feMerge = document.createElementNS('http://www.w3.org/2000/svg', 'feMerge');
+            const feMergeNode1 = document.createElementNS('http://www.w3.org/2000/svg', 'feMergeNode');
+            feMergeNode1.setAttribute('in', 'coloredBlur');
+            const feMergeNode2 = document.createElementNS('http://www.w3.org/2000/svg', 'feMergeNode');
+            feMergeNode2.setAttribute('in', 'SourceGraphic');
+            
+            feMerge.appendChild(feMergeNode1);
+            feMerge.appendChild(feMergeNode2);
+            
+            filter.appendChild(feGaussianBlur);
+            filter.appendChild(feMerge);
+            defs.appendChild(filter);
+            svg.appendChild(defs);
+        }
+        
+        function getNodeColor(type) {
+            switch(type) {
+                case 'primary': return '#800020';
+                case 'institution': return '#9B7CB6';
+                case 'legal': return '#B8D4F1';
+                case 'external': return '#E8B4A0';
+                case 'media': return '#B8966C';
+                default: return '#9B7CB6';
+            }
+        }
+        
+        function getLinkColor(type) {
+            switch(type) {
+                case 'emergency': return '#800020';
+                case 'cooperative': return '#9B7CB6';
+                case 'followup': return '#B8D4F1';
+                case 'referral': return '#E8B4A0';
+                case 'inquiry': return '#B8966C';
+                case 'engagement': return '#9B7CB6';
+                case 'notification': return '#B8D4F1';
+                case 'rejection': return '#800020';
+                case 'legal': return '#B8D4F1';
+                case 'request': return '#E8B4A0';
+                case 'escalation': return '#800020';
+                case 'hostile': return '#800020';
+                default: return '#9B7CB6';
+            }
+        }
+        
+        function showNodeInfo(node) {
+            const nodeInfo = document.getElementById('node-info');
+            document.getElementById('node-title').textContent = node.name;
+            document.getElementById('node-role').textContent = node.role;
+            document.getElementById('node-date').textContent = `First interaction: ${node.date === 'all' ? 'Multiple dates' : node.date}`;
+            document.getElementById('node-details').textContent = node.details;
+            nodeInfo.style.display = 'block';
+        }
+        
+        function hideNodeInfo() {
+            document.getElementById('node-info').style.display = 'none';
+        }
+        
+        // Filter by date
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const date = this.getAttribute('data-date');
+                filterByDate(date);
+            });
+        });
+        
+        function filterByDate(date) {
+            const nodes = document.querySelectorAll('.node');
+            const links = document.querySelectorAll('.link');
+            
+            if (date === 'all') {
+                nodes.forEach(node => node.style.display = 'block');
+                links.forEach(link => link.style.display = 'block');
+            } else {
+                nodes.forEach(node => {
+                    if (node.getAttribute('data-date') === date || node.getAttribute('data-date') === 'all') {
+                        node.style.display = 'block';
+                    } else {
+                        node.style.display = 'none';
+                    }
+                });
+                
+                links.forEach(link => {
+                    if (link.getAttribute('data-date') === date) {
+                        link.style.display = 'block';
+                    } else {
+                        link.style.display = 'none';
+                    }
+                });
+            }
+        }
+        
+        // Zoom controls
+        let scale = 1;
+        const svgElement = document.getElementById('network-graph');
+        
+        document.getElementById('zoom-in').addEventListener('click', function() {
+            scale *= 1.2;
+            updateScale();
+        });
+        
+        document.getElementById('zoom-out').addEventListener('click', function() {
+            scale /= 1.2;
+            updateScale();
+        });
+        
+        document.getElementById('reset-view').addEventListener('click', function() {
+            scale = 1;
+            updateScale();
+        });
+        
+        function updateScale() {
+            svgElement.style.transform = `scale(${scale})`;
+            svgElement.style.transformOrigin = 'center center';
+        }
+        
+        // Initialize the network on page load
+        document.addEventListener('DOMContentLoaded', initNetwork);
+    </script>
+</body>
+</html>

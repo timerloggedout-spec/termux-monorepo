@@ -1,0 +1,638 @@
+{
+  "category": "security",
+  "tools": [
+    {
+      "name": "gpgtar",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/gpgtar",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "kdb5_util",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/kdb5_util",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "kpropd",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/kpropd",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "compile_et",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/compile_et",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "kadmin.local",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/kadmin.local",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "gpgsm",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/gpgsm",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "gpg-card",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/gpg-card",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "kbxutil",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/kbxutil",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "gpg-agent",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/gpg-agent",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "gpgsplit",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/gpgsplit",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "pinentry-tty",
+      "package": "pinentry",
+      "path": "/data/data/com.termux/files/usr/bin/pinentry-tty",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^pinentry$|^pinentry-",
+      "category": "security",
+      "description": "Dialog allowing secure password entry"
+    },
+    {
+      "name": "krb5-config",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/krb5-config",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "kproplog",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/kproplog",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "dirmngr",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/dirmngr",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "trust",
+      "package": "p11-kit",
+      "path": "/data/data/com.termux/files/usr/bin/trust",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^p11$|^p11-",
+      "category": "security",
+      "description": "Provides a way to load and enumerate PKCS#11 modules"
+    },
+    {
+      "name": "krb5-send-pr",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/krb5-send-pr",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "applygnupgdefaults",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/applygnupgdefaults",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "gpgv",
+      "package": "gpgv",
+      "path": "/data/data/com.termux/files/usr/bin/gpgv",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gpgv$|^gpgv-",
+      "category": "security",
+      "description": "GNU privacy guard - signature verification tool"
+    },
+    {
+      "name": "kadmind",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/kadmind",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "watchgnupg",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/watchgnupg",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "gpg",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/gpg",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "sim_server",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/sim_server",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "klist",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/klist",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "kvno",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/kvno",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "gpg-mail-tube",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/gpg-mail-tube",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "gss-server",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/gss-server",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "krb5kdc",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/krb5kdc",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "uuserver",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/uuserver",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "kadmin",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/kadmin",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "dirmngr-client",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/dirmngr-client",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "gss-client",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/gss-client",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "sclient",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/sclient",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "p11-kit",
+      "package": "p11-kit",
+      "path": "/data/data/com.termux/files/usr/bin/p11-kit",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^p11$|^p11-",
+      "category": "security",
+      "description": "Provides a way to load and enumerate PKCS#11 modules"
+    },
+    {
+      "name": "addgnupghome",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/addgnupghome",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "gpgconf",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/gpgconf",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "sim_client",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/sim_client",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "kpasswd",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/kpasswd",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "gpg-authcode-sign.sh",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/gpg-authcode-sign.sh",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "sserver",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/sserver",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "kswitch",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/kswitch",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "kprop",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/kprop",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "gpgscm",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/gpgscm",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "kinit",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/kinit",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "uuclient",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/uuclient",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "pinentry-curses",
+      "package": "pinentry",
+      "path": "/data/data/com.termux/files/usr/bin/pinentry-curses",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^pinentry$|^pinentry-",
+      "category": "security",
+      "description": "Dialog allowing secure password entry"
+    },
+    {
+      "name": "gpg-connect-agent",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/gpg-connect-agent",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "kdestroy",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/kdestroy",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "ssh-keygen",
+      "package": "openssh",
+      "path": "/data/data/com.termux/files/usr/bin/ssh-keygen",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "category": "security",
+      "description": "Secure shell for logging into a remote machine"
+    },
+    {
+      "name": "k5srvutil",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/k5srvutil",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "gpg-wks-client",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/gpg-wks-client",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "gpgparsemail",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/gpgparsemail",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "ktutil",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/ktutil",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "openssl",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/openssl",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "category": "security",
+      "description": "Package unknown"
+    }
+  ]
+}

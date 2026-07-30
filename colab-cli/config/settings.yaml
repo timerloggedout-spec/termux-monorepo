@@ -1,0 +1,9 @@
+colab:
+  auth:
+    cookie_file: ~/.config/colab/cookies.json
+  ssh:
+    key_path: ~/.ssh/colab_rsa
+    known_hosts: ~/.ssh/known_hosts
+  default_runtime: "CPU"
+  workspace_root: ~/colab-cli/sandbox
+  production_root: ~/colab-cli/production

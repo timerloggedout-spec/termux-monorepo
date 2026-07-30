@@ -1,0 +1,76 @@
+// server.js
+const express = require('express');
+const { google } = require('googleapis');
+const cors = require('cors');
+require('dotenv').config();
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+// Google Sheets setup
+const auth = new google.auth.GoogleAuth({
+  keyFile: 'service-account-key.json', // from Google Cloud Console
+  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+});
+const sheets = google.sheets({ version: 'v4', auth });
+const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
+
+// READ compounds (optional, but frontend can also read directly from published CSV)
+app.get('/api/compounds', async (req, res) => {
+  try {
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: 'Compounds!A:AN',
+    });
+    const rows = response.data.values;
+    if (rows.length) {
+      const headers = rows[0];
+      const data = rows.slice(1).map(row => {
+        const obj = {};
+        headers.forEach((h, i) => obj[h] = row[i] || '');
+        return obj;
+      });
+      res.json(data);
+    } else {
+      res.json([]);
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// WRITE compounds (used for CSV import / batch update)
+app.post('/api/compounds/batch', async (req, res) => {
+  const { compounds } = req.body; // array of compound objects
+  try {
+    // Clear existing data (except header)
+    await sheets.spreadsheets.values.clear({
+      spreadsheetId: SPREADSHEET_ID,
+      range: 'Compounds!A2:AN',
+    });
+    
+    // Prepare rows
+    const headers = Object.keys(compounds[0]); // must match sheet columns
+    const rows = compounds.map(c => headers.map(h => c[h] || ''));
+    
+    await sheets.spreadsheets.values.update({
+      spreadsheetId: SPREADSHEET_ID,
+      range: 'Compounds!A2',
+      valueInputOption: 'USER_ENTERED',
+      requestBody: { values: [headers, ...rows] },
+    });
+    res.json({ success: true, count: compounds.length });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// UPDATE single compound (for inline edits)
+app.patch('/api/compounds/:id', async (req, res) => {
+  // Implementation: find row by ID and update specific cells
+  // Omitted for brevity but essential for two‑way sync.
+});
+
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));

@@ -1,0 +1,1959 @@
+{
+  "description": "Master Architect-Wizard: surgically edits code, enforces structural precision, and assembles agent toolchains.",
+  "tools": [
+    {
+      "name": "addr2line",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/addr2line",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "aether",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/archwiz/aether.py",
+      "tags": [
+        "archwiz",
+        "llm_orchestration"
+      ],
+      "category": "archwiz"
+    },
+    {
+      "name": "affixcompress",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/affixcompress",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "agent-browser",
+      "package": "npm:agent-browser",
+      "path": "/data/data/com.termux/files/usr/bin/agent-browser",
+      "source": "npm",
+      "tags": [
+        "reverse_engineering"
+      ],
+      "category": "reverse_engineering",
+      "description": ""
+    },
+    {
+      "name": "agent-shell",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/agent_shell.py",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "analyze",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/analyze",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "ar",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/ar",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "archaeo",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/archaeologist.py",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "as",
+      "package": "binutils",
+      "path": "/data/data/com.termux/files/usr/bin/as",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "A GNU collection of binary utilities"
+    },
+    {
+      "name": "aspell",
+      "package": "aspell",
+      "path": "/data/data/com.termux/files/usr/bin/aspell",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^aspell$|^aspell-",
+      "category": "text_processing",
+      "description": "A free and open source spell checker designed to replace Ispell"
+    },
+    {
+      "name": "aspell-import",
+      "package": "aspell",
+      "path": "/data/data/com.termux/files/usr/bin/aspell-import",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^aspell$|^aspell-",
+      "category": "text_processing",
+      "description": "A free and open source spell checker designed to replace Ispell"
+    },
+    {
+      "name": "bash",
+      "package": "bash",
+      "path": "/data/data/com.termux/files/usr/bin/bash",
+      "source": "apt",
+      "tags": [
+        "shell_environment"
+      ],
+      "category": "shell_environment",
+      "description": "A sh-compatible shell that incorporates useful features from the Korn shell (ksh) and C shell (csh)"
+    },
+    {
+      "name": "black",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/bin/black",
+      "source": "apt",
+      "tags": [
+        "unknown_tools"
+      ],
+      "auto_tag_source": "auto:^unknown$|^unknown-",
+      "category": "unknown_tools",
+      "description": "Package unknown"
+    },
+    {
+      "name": "c++filt",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/c++filt",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "cargo",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/cargo",
+      "source": "apt",
+      "tags": [
+        "development",
+        "package_management",
+        "rust"
+      ],
+      "category": "development",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "cargo-clippy",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/cargo-clippy",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "auto_tag_source": "auto:^rust$|^rust-",
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "cargo-fmt",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/cargo-fmt",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "auto_tag_source": "auto:^rust$|^rust-",
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "chmorph",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/chmorph",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "clang-format",
+      "package": "clang",
+      "path": "/data/data/com.termux/files/usr/bin/clang-format",
+      "source": "apt",
+      "tags": [
+        "c_cpp"
+      ],
+      "auto_tag_source": "auto:^clang$|^clang-",
+      "category": "c_cpp",
+      "description": "C language frontend for LLVM"
+    },
+    {
+      "name": "clang-tidy",
+      "package": "clang",
+      "path": "/data/data/com.termux/files/usr/bin/clang-tidy",
+      "source": "apt",
+      "tags": [
+        "c_cpp"
+      ],
+      "auto_tag_source": "auto:^clang$|^clang-",
+      "category": "c_cpp",
+      "description": "C language frontend for LLVM"
+    },
+    {
+      "name": "clippy-driver",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/clippy-driver",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "auto_tag_source": "auto:^rust$|^rust-",
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "cmake",
+      "package": "cmake",
+      "path": "/data/data/com.termux/files/usr/bin/cmake",
+      "source": "apt",
+      "tags": [
+        "c_cpp",
+        "development"
+      ],
+      "category": "c_cpp",
+      "description": "Family of tools designed to build, test and package software"
+    },
+    {
+      "name": "cmp",
+      "package": "diffutils",
+      "path": "/data/data/com.termux/files/usr/bin/cmp",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^diffutils$|^diffutils-",
+      "category": "text_processing",
+      "description": "Programs (cmp, diff, diff3 and sdiff) related to finding differences between files"
+    },
+    {
+      "name": "comm",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/comm",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Package unknown"
+    },
+    {
+      "name": "cpack",
+      "package": "cmake",
+      "path": "/data/data/com.termux/files/usr/bin/cpack",
+      "source": "apt",
+      "tags": [
+        "development"
+      ],
+      "auto_tag_source": "auto:^cmake$|^cmake-",
+      "category": "development",
+      "description": "Family of tools designed to build, test and package software"
+    },
+    {
+      "name": "cstool",
+      "package": "capstone",
+      "path": "/data/data/com.termux/files/usr/bin/cstool",
+      "source": "apt",
+      "tags": [
+        "reverse_engineering"
+      ],
+      "auto_tag_source": "auto:^capstone$|^capstone-",
+      "category": "reverse_engineering",
+      "description": "Lightweight multi-platform, multi-architecture disassembly framework"
+    },
+    {
+      "name": "ctest",
+      "package": "cmake",
+      "path": "/data/data/com.termux/files/usr/bin/ctest",
+      "source": "apt",
+      "tags": [
+        "development"
+      ],
+      "auto_tag_source": "auto:^cmake$|^cmake-",
+      "category": "development",
+      "description": "Family of tools designed to build, test and package software"
+    },
+    {
+      "name": "cut",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/cut",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Package unknown"
+    },
+    {
+      "name": "deepcli",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/deepcli_send.py",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "dep",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: bash ~/workspace/llm_map/depgraph.sh",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "depmenu",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: bash ~/workspace/llm_map/depmenu.sh",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "diff",
+      "package": "diffutils",
+      "path": "/data/data/com.termux/files/usr/bin/diff",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Programs (cmp, diff, diff3 and sdiff) related to finding differences between files"
+    },
+    {
+      "name": "diff3",
+      "package": "diffutils",
+      "path": "/data/data/com.termux/files/usr/bin/diff3",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^diffutils$|^diffutils-",
+      "category": "text_processing",
+      "description": "Programs (cmp, diff, diff3 and sdiff) related to finding differences between files"
+    },
+    {
+      "name": "dispatch",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/dispatch_task.py",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "dispatch-adaptive",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: bash ~/workspace/llm_map/dispatch_adaptive.sh",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "dispatch-parallel",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: bash ~/workspace/llm_map/dispatch_parallel.sh",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "dos2unix",
+      "package": "dos2unix",
+      "path": "/data/data/com.termux/files/usr/bin/dos2unix",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^dos2unix$|^dos2unix-",
+      "category": "text_processing",
+      "description": "Converts between DOS and Unix text files"
+    },
+    {
+      "name": "ed",
+      "package": "ed",
+      "path": "/data/data/com.termux/files/usr/bin/ed",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Classic UNIX line editor"
+    },
+    {
+      "name": "egrep",
+      "package": "grep",
+      "path": "/data/data/com.termux/files/usr/bin/egrep",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^grep$|^grep-",
+      "category": "text_processing",
+      "description": "Command which searches one or more input files for lines containing a match to a specified pattern"
+    },
+    {
+      "name": "enchant-2",
+      "package": "enchant",
+      "path": "/data/data/com.termux/files/usr/bin/enchant-2",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^enchant$|^enchant-",
+      "category": "text_processing",
+      "description": "Wraps a number of different spelling libraries and programs with a consistent interface"
+    },
+    {
+      "name": "enchant-lsmod-2",
+      "package": "enchant",
+      "path": "/data/data/com.termux/files/usr/bin/enchant-lsmod-2",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^enchant$|^enchant-",
+      "category": "text_processing",
+      "description": "Wraps a number of different spelling libraries and programs with a consistent interface"
+    },
+    {
+      "name": "entr",
+      "package": "entr",
+      "path": "/data/data/com.termux/files/usr/bin/entr",
+      "source": "apt",
+      "tags": [
+        "development"
+      ],
+      "auto_tag_source": "auto:^entr$|^entr-",
+      "category": "development",
+      "description": "Event Notify Test Runner - run arbitrary commands when files change"
+    },
+    {
+      "name": "fgrep",
+      "package": "grep",
+      "path": "/data/data/com.termux/files/usr/bin/fgrep",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^grep$|^grep-",
+      "category": "text_processing",
+      "description": "Command which searches one or more input files for lines containing a match to a specified pattern"
+    },
+    {
+      "name": "flex",
+      "package": "flex",
+      "path": "/data/data/com.termux/files/usr/bin/flex",
+      "source": "apt",
+      "tags": [
+        "development"
+      ],
+      "auto_tag_source": "auto:^flex$|^flex-",
+      "category": "development",
+      "description": "Fast lexical analyser generator"
+    },
+    {
+      "name": "fore",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/foresight_collect.py",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "forensic-query",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: $HOME/harmony_hub/utility_belt/forensic-query",
+      "tags": [
+        "forensics",
+        "harmony_hub",
+        "llm_orchestration"
+      ],
+      "category": "forensics"
+    },
+    {
+      "name": "fribidi",
+      "package": "fribidi",
+      "path": "/data/data/com.termux/files/usr/bin/fribidi",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^fribidi$|^fribidi-",
+      "category": "text_processing",
+      "description": "Implementation of the Unicode Bidirectional Algorithm"
+    },
+    {
+      "name": "fts-query",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: bash ~/harmony_hub/utility_belt/fts-query",
+      "tags": [
+        "harmony_hub",
+        "llm_orchestration"
+      ],
+      "category": "harmony_hub"
+    },
+    {
+      "name": "gawk",
+      "package": "gawk",
+      "path": "/data/data/com.termux/files/usr/bin/gawk",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Programming language designed for text processing"
+    },
+    {
+      "name": "git-cvsserver",
+      "package": "git",
+      "path": "/data/data/com.termux/files/usr/bin/git-cvsserver",
+      "source": "apt",
+      "tags": [
+        "development"
+      ],
+      "auto_tag_source": "auto:^git$|^git-",
+      "category": "development",
+      "description": "Fast, scalable, distributed revision control system"
+    },
+    {
+      "name": "git-shell",
+      "package": "git",
+      "path": "/data/data/com.termux/files/usr/bin/git-shell",
+      "source": "apt",
+      "tags": [
+        "development"
+      ],
+      "auto_tag_source": "auto:^git$|^git-",
+      "category": "development",
+      "description": "Fast, scalable, distributed revision control system"
+    },
+    {
+      "name": "grep",
+      "package": "grep",
+      "path": "/data/data/com.termux/files/usr/bin/grep",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Command which searches one or more input files for lines containing a match to a specified pattern"
+    },
+    {
+      "name": "head",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/head",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Package unknown"
+    },
+    {
+      "name": "http-mitm-proxy",
+      "package": "npm:http-mitm-proxy",
+      "path": "/data/data/com.termux/files/usr/bin/http-mitm-proxy",
+      "source": "npm",
+      "tags": [
+        "reverse_engineering"
+      ],
+      "category": "reverse_engineering",
+      "description": ""
+    },
+    {
+      "name": "hunspell",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/hunspell",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "hunzip",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/hunzip",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "hzip",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/hzip",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "idle3.13",
+      "package": "python-tkinter",
+      "path": "/data/data/com.termux/files/usr/bin/idle3.13",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Tkinter support for Python 3"
+    },
+    {
+      "name": "ispellaff2myspell",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/ispellaff2myspell",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "jq",
+      "package": "jq",
+      "path": "/data/data/com.termux/files/usr/bin/jq",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Command-line JSON processor"
+    },
+    {
+      "name": "ld",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/ld",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "less",
+      "package": "less",
+      "path": "/data/data/com.termux/files/usr/bin/less",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^less$|^less-",
+      "category": "text_processing",
+      "description": "Terminal pager program used to view the contents of a text file one screen at a time"
+    },
+    {
+      "name": "lesskey",
+      "package": "less",
+      "path": "/data/data/com.termux/files/usr/bin/lesskey",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^less$|^less-",
+      "category": "text_processing",
+      "description": "Terminal pager program used to view the contents of a text file one screen at a time"
+    },
+    {
+      "name": "lld",
+      "package": "lld",
+      "path": "/data/data/com.termux/files/usr/bin/lld",
+      "source": "apt",
+      "tags": [
+        "c_cpp",
+        "development"
+      ],
+      "category": "c_cpp",
+      "description": "LLVM-based linker"
+    },
+    {
+      "name": "logged",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/tool_logger.py",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "m4",
+      "package": "m4",
+      "path": "/data/data/com.termux/files/usr/bin/m4",
+      "source": "apt",
+      "tags": [
+        "development"
+      ],
+      "auto_tag_source": "auto:^m4$|^m4-",
+      "category": "development",
+      "description": "Traditional Unix macro processor"
+    },
+    {
+      "name": "make",
+      "package": "make",
+      "path": "/data/data/com.termux/files/usr/bin/make",
+      "source": "apt",
+      "tags": [
+        "c_cpp",
+        "development"
+      ],
+      "category": "c_cpp",
+      "description": "Tool to control the generation of non-source files from source files"
+    },
+    {
+      "name": "makealias",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/makealias",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "map",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "\u2500\u2500 Recovered ArchWiz aliases (from archaeologist recovery) \u2500\u2500",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "map-build",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: cd ~/workspace/llm_map && python3 build_final_all_profile.py && ./generate_system_map.sh",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "map-func",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/func_indexer.py",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "map-graph",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: bash ~/workspace/llm_map/graph_fzf.sh",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "map-query",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: bash ~/harmony_hub/utility_belt/map-query.sh 2>/dev/null || echo \"map-query not yet built",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "map-set",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: export LLM_PROFILE=$1 && echo \"Profile set to $LLM_PROFILE",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "mdot",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/llm_mapper_pro.py graph-dot",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "mfull",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/llm_mapper_pro.py full-scan",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "mkprofile",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/llm_mapper_pro.py profile-create",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "mmap",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/llm_mapper_pro.py generate-map",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "mtree",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/llm_mapper_pro.py graph-tree",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "munch",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/munch",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "mupdate",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/llm_mapper_pro.py update",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "mypy",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/bin/mypy",
+      "source": "apt",
+      "tags": [
+        "unknown_tools"
+      ],
+      "auto_tag_source": "auto:^unknown$|^unknown-",
+      "category": "unknown_tools",
+      "description": "Package unknown"
+    },
+    {
+      "name": "nano",
+      "package": "nano",
+      "path": "/data/data/com.termux/files/usr/bin/nano",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^nano$|^nano-",
+      "category": "text_processing",
+      "description": "Small, free and friendly text editor"
+    },
+    {
+      "name": "ninja",
+      "package": "ninja",
+      "path": "/data/data/com.termux/files/usr/bin/ninja",
+      "source": "apt",
+      "tags": [
+        "c_cpp",
+        "development"
+      ],
+      "category": "c_cpp",
+      "description": "A small build system with a focus on speed"
+    },
+    {
+      "name": "nm",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/nm",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "node",
+      "package": "nodejs",
+      "path": "/data/data/com.termux/files/usr/bin/node",
+      "source": "apt",
+      "tags": [
+        "development",
+        "javascript"
+      ],
+      "category": "development",
+      "description": "Open Source, cross-platform JavaScript runtime environment"
+    },
+    {
+      "name": "npm",
+      "package": "npm:npm",
+      "path": "/data/data/com.termux/files/usr/bin/npm",
+      "source": "npm",
+      "tags": [
+        "development",
+        "javascript",
+        "package_management"
+      ],
+      "category": "development",
+      "description": ""
+    },
+    {
+      "name": "objdump",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/objdump",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "onig-config",
+      "package": "oniguruma",
+      "path": "/data/data/com.termux/files/usr/bin/onig-config",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^oniguruma$|^oniguruma-",
+      "category": "text_processing",
+      "description": "Regular expressions library"
+    },
+    {
+      "name": "oracle",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/impact_oracle.py",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "patch",
+      "package": "patch",
+      "path": "/data/data/com.termux/files/usr/bin/patch",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "GNU patch which applies diff files to create patched files"
+    },
+    {
+      "name": "patchelf",
+      "package": "patchelf",
+      "path": "/data/data/com.termux/files/usr/bin/patchelf",
+      "source": "apt",
+      "tags": [
+        "development"
+      ],
+      "auto_tag_source": "auto:^patchelf$|^patchelf-",
+      "category": "development",
+      "description": "Utility to modify the dynamic linker and RPATH of ELF executables"
+    },
+    {
+      "name": "pcre2-config",
+      "package": "pcre2",
+      "path": "/data/data/com.termux/files/usr/bin/pcre2-config",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^pcre2$|^pcre2-",
+      "category": "text_processing",
+      "description": "Perl 5 compatible regular expression library"
+    },
+    {
+      "name": "perl",
+      "package": "perl",
+      "path": "/data/data/com.termux/files/usr/bin/perl",
+      "source": "apt",
+      "tags": [
+        "development"
+      ],
+      "category": "development",
+      "description": "Capable, feature-rich programming language"
+    },
+    {
+      "name": "php",
+      "package": "php",
+      "path": "/data/data/com.termux/files/usr/bin/php",
+      "source": "apt",
+      "tags": [
+        "development",
+        "php"
+      ],
+      "category": "development",
+      "description": "Server-side, HTML-embedded scripting language"
+    },
+    {
+      "name": "pip",
+      "package": "python-pip",
+      "path": "/data/data/com.termux/files/usr/bin/pip",
+      "source": "apt",
+      "tags": [
+        "development",
+        "package_management",
+        "python",
+        "python_toolchain"
+      ],
+      "category": "development",
+      "description": "The PyPA recommended tool for installing Python packages"
+    },
+    {
+      "name": "pip3",
+      "package": "python-pip",
+      "path": "/data/data/com.termux/files/usr/bin/pip3",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "The PyPA recommended tool for installing Python packages"
+    },
+    {
+      "name": "pip3.13",
+      "package": "python-pip",
+      "path": "/data/data/com.termux/files/usr/bin/pip3.13",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "The PyPA recommended tool for installing Python packages"
+    },
+    {
+      "name": "pkg-config",
+      "package": "pkg-config",
+      "path": "/data/data/com.termux/files/usr/bin/pkg-config",
+      "source": "apt",
+      "tags": [
+        "development"
+      ],
+      "auto_tag_source": "auto:^pkg$|^pkg-",
+      "category": "development",
+      "description": "Helper tool used when compiling applications and libraries"
+    },
+    {
+      "name": "precat",
+      "package": "aspell",
+      "path": "/data/data/com.termux/files/usr/bin/precat",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^aspell$|^aspell-",
+      "category": "text_processing",
+      "description": "A free and open source spell checker designed to replace Ispell"
+    },
+    {
+      "name": "preunzip",
+      "package": "aspell",
+      "path": "/data/data/com.termux/files/usr/bin/preunzip",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^aspell$|^aspell-",
+      "category": "text_processing",
+      "description": "A free and open source spell checker designed to replace Ispell"
+    },
+    {
+      "name": "prezip",
+      "package": "aspell",
+      "path": "/data/data/com.termux/files/usr/bin/prezip",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^aspell$|^aspell-",
+      "category": "text_processing",
+      "description": "A free and open source spell checker designed to replace Ispell"
+    },
+    {
+      "name": "prezip-bin",
+      "package": "aspell",
+      "path": "/data/data/com.termux/files/usr/bin/prezip-bin",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^aspell$|^aspell-",
+      "category": "text_processing",
+      "description": "A free and open source spell checker designed to replace Ispell"
+    },
+    {
+      "name": "promote",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/promote.py",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "pspell-config",
+      "package": "aspell",
+      "path": "/data/data/com.termux/files/usr/bin/pspell-config",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^aspell$|^aspell-",
+      "category": "text_processing",
+      "description": "A free and open source spell checker designed to replace Ispell"
+    },
+    {
+      "name": "py3clean",
+      "package": "python",
+      "path": "/data/data/com.termux/files/usr/bin/py3clean",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Python 3 programming language intended to enable clear programs"
+    },
+    {
+      "name": "py3compile",
+      "package": "python",
+      "path": "/data/data/com.termux/files/usr/bin/py3compile",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Python 3 programming language intended to enable clear programs"
+    },
+    {
+      "name": "pydoc3.13",
+      "package": "python",
+      "path": "/data/data/com.termux/files/usr/bin/pydoc3.13",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Python 3 programming language intended to enable clear programs"
+    },
+    {
+      "name": "pytest",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/bin/pytest",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "category": "python",
+      "description": "Package unknown"
+    },
+    {
+      "name": "python3.13",
+      "package": "python",
+      "path": "/data/data/com.termux/files/usr/bin/python3.13",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Python 3 programming language intended to enable clear programs"
+    },
+    {
+      "name": "python3.13-config",
+      "package": "python",
+      "path": "/data/data/com.termux/files/usr/bin/python3.13-config",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Python 3 programming language intended to enable clear programs"
+    },
+    {
+      "name": "ranlib",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/ranlib",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "readelf",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/readelf",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "red",
+      "package": "ed",
+      "path": "/data/data/com.termux/files/usr/bin/red",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^ed$|^ed-",
+      "category": "text_processing",
+      "description": "Classic UNIX line editor"
+    },
+    {
+      "name": "rg",
+      "package": "ripgrep",
+      "path": "/data/data/com.termux/files/usr/bin/rg",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Search tool like grep and The Silver Searcher"
+    },
+    {
+      "name": "rhash",
+      "package": "rhash",
+      "path": "/data/data/com.termux/files/usr/bin/rhash",
+      "source": "apt",
+      "tags": [
+        "hashing"
+      ],
+      "auto_tag_source": "auto:^rhash$|^rhash-",
+      "category": "hashing",
+      "description": "Console utility for calculation and verification of magnet links and a wide range of hash sums"
+    },
+    {
+      "name": "ruff",
+      "package": "ruff",
+      "path": "/data/data/com.termux/files/usr/bin/ruff",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "category": "python",
+      "description": "An extremely fast Python linter, written in Rust"
+    },
+    {
+      "name": "run-with-aspell",
+      "package": "aspell",
+      "path": "/data/data/com.termux/files/usr/bin/run-with-aspell",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^aspell$|^aspell-",
+      "category": "text_processing",
+      "description": "A free and open source spell checker designed to replace Ispell"
+    },
+    {
+      "name": "rust-analyzer",
+      "package": "rust-analyzer",
+      "path": "/data/data/com.termux/files/usr/bin/rust-analyzer",
+      "source": "apt",
+      "tags": [
+        "development",
+        "rust"
+      ],
+      "category": "development",
+      "description": "A Rust compiler front-end for IDEs"
+    },
+    {
+      "name": "rust-gdb",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/rust-gdb",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "auto_tag_source": "auto:^rust$|^rust-",
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "rust-gdbgui",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/rust-gdbgui",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "auto_tag_source": "auto:^rust$|^rust-",
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "rust-lldb",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/rust-lldb",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "auto_tag_source": "auto:^rust$|^rust-",
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "rustc",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/rustc",
+      "source": "apt",
+      "tags": [
+        "development",
+        "rust"
+      ],
+      "category": "development",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "rustdoc",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/rustdoc",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "auto_tag_source": "auto:^rust$|^rust-",
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "rustfmt",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/rustfmt",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "scalar",
+      "package": "git",
+      "path": "/data/data/com.termux/files/usr/bin/scalar",
+      "source": "apt",
+      "tags": [
+        "development"
+      ],
+      "auto_tag_source": "auto:^git$|^git-",
+      "category": "development",
+      "description": "Fast, scalable, distributed revision control system"
+    },
+    {
+      "name": "sdiff",
+      "package": "diffutils",
+      "path": "/data/data/com.termux/files/usr/bin/sdiff",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^diffutils$|^diffutils-",
+      "category": "text_processing",
+      "description": "Programs (cmp, diff, diff3 and sdiff) related to finding differences between files"
+    },
+    {
+      "name": "sed",
+      "package": "sed",
+      "path": "/data/data/com.termux/files/usr/bin/sed",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "GNU stream editor for filtering/transforming text"
+    },
+    {
+      "name": "sha256sum",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/sha256sum",
+      "source": "apt",
+      "tags": [
+        "unknown_tools"
+      ],
+      "auto_tag_source": "auto:^unknown$|^unknown-",
+      "category": "unknown_tools",
+      "description": "Package unknown"
+    },
+    {
+      "name": "shellcheck",
+      "package": "shellcheck",
+      "path": "/data/data/com.termux/files/usr/bin/shellcheck",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Shell script analysis tool"
+    },
+    {
+      "name": "size",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/size",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "sort",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/sort",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Package unknown"
+    },
+    {
+      "name": "strace",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/strace",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "category": "system_monitor",
+      "description": "Package unknown"
+    },
+    {
+      "name": "strings",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/strings",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "strip",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/strip",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "tail",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/tail",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Package unknown"
+    },
+    {
+      "name": "task-list",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/agent_shell.py list",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "task-watch",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: bash ~/workspace/llm_map/task_watcher.sh",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "taxapply",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/_TOOL_TAXONOMY/modules/taxapply.py",
+      "tags": [
+        "alias_tools"
+      ],
+      "auto_tag_source": "auto:^alias$|^alias-",
+      "category": "alias_tools"
+    },
+    {
+      "name": "taxdiff",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/_TOOL_TAXONOMY/modules/taxdiff.py",
+      "tags": [
+        "alias_tools"
+      ],
+      "auto_tag_source": "auto:^alias$|^alias-",
+      "category": "alias_tools"
+    },
+    {
+      "name": "taxtool",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: bash ~/workspace/llm_map/_TOOL_TAXONOMY/build_tool_taxonomy.sh",
+      "tags": [
+        "alias_tools"
+      ],
+      "auto_tag_source": "auto:^alias$|^alias-",
+      "category": "alias_tools"
+    },
+    {
+      "name": "tclsh8.6",
+      "package": "tcl",
+      "path": "/data/data/com.termux/files/usr/bin/tclsh8.6",
+      "source": "apt",
+      "tags": [
+        "development"
+      ],
+      "auto_tag_source": "auto:^tcl$|^tcl-",
+      "category": "development",
+      "description": "Powerful but easy to learn dynamic programming language"
+    },
+    {
+      "name": "termux-apps-info-app-version-name",
+      "package": "termux-core",
+      "path": "/data/data/com.termux/files/usr/bin/termux-apps-info-app-version-name",
+      "source": "apt",
+      "tags": [
+        "reverse_engineering",
+        "termux_api"
+      ],
+      "category": "reverse_engineering",
+      "description": "Utils and libraries for Termux core"
+    },
+    {
+      "name": "termux-apps-info-app-version-name.bash",
+      "package": "termux-core",
+      "path": "/data/data/com.termux/files/usr/bin/termux-apps-info-app-version-name.bash",
+      "source": "apt",
+      "tags": [
+        "reverse_engineering",
+        "termux_api"
+      ],
+      "category": "reverse_engineering",
+      "description": "Utils and libraries for Termux core"
+    },
+    {
+      "name": "termux-apps-info-app-version-name.sh",
+      "package": "termux-core",
+      "path": "/data/data/com.termux/files/usr/bin/termux-apps-info-app-version-name.sh",
+      "source": "apt",
+      "tags": [
+        "reverse_engineering",
+        "termux_api"
+      ],
+      "category": "reverse_engineering",
+      "description": "Utils and libraries for Termux core"
+    },
+    {
+      "name": "termux-apps-info-env-variable",
+      "package": "termux-core",
+      "path": "/data/data/com.termux/files/usr/bin/termux-apps-info-env-variable",
+      "source": "apt",
+      "tags": [
+        "reverse_engineering",
+        "termux_api"
+      ],
+      "category": "reverse_engineering",
+      "description": "Utils and libraries for Termux core"
+    },
+    {
+      "name": "termux-apps-info-env-variable.bash",
+      "package": "termux-core",
+      "path": "/data/data/com.termux/files/usr/bin/termux-apps-info-env-variable.bash",
+      "source": "apt",
+      "tags": [
+        "reverse_engineering",
+        "termux_api"
+      ],
+      "category": "reverse_engineering",
+      "description": "Utils and libraries for Termux core"
+    },
+    {
+      "name": "termux-apps-info-env-variable.sh",
+      "package": "termux-core",
+      "path": "/data/data/com.termux/files/usr/bin/termux-apps-info-env-variable.sh",
+      "source": "apt",
+      "tags": [
+        "reverse_engineering",
+        "termux_api"
+      ],
+      "category": "reverse_engineering",
+      "description": "Utils and libraries for Termux core"
+    },
+    {
+      "name": "tidy",
+      "package": "tidy",
+      "path": "/data/data/com.termux/files/usr/bin/tidy",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "A tool to tidy down your HTML code to a clean style"
+    },
+    {
+      "name": "tokei",
+      "package": "tokei",
+      "path": "/data/data/com.termux/files/usr/bin/tokei",
+      "source": "apt",
+      "tags": [
+        "ast_tools"
+      ],
+      "auto_tag_source": "auto:^tokei$|^tokei-",
+      "category": "ast_tools",
+      "description": "A blazingly fast CLOC (Count Lines Of Code) program"
+    },
+    {
+      "name": "torchfrtrace",
+      "package": "python-torch",
+      "path": "/data/data/com.termux/files/usr/bin/torchfrtrace",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Tensors and Dynamic neural networks in Python"
+    },
+    {
+      "name": "torchrun",
+      "package": "python-torch",
+      "path": "/data/data/com.termux/files/usr/bin/torchrun",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Tensors and Dynamic neural networks in Python"
+    },
+    {
+      "name": "tr",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/tr",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Package unknown"
+    },
+    {
+      "name": "truth-report",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/generate_diff_report.py",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "tui",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Aliases",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "uniq",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/uniq",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Package unknown"
+    },
+    {
+      "name": "unix2dos",
+      "package": "dos2unix",
+      "path": "/data/data/com.termux/files/usr/bin/unix2dos",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^dos2unix$|^dos2unix-",
+      "category": "text_processing",
+      "description": "Converts between DOS and Unix text files"
+    },
+    {
+      "name": "unmunch",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/unmunch",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "wc",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/wc",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Package unknown"
+    },
+    {
+      "name": "wish8.6",
+      "package": "tk",
+      "path": "/data/data/com.termux/files/usr/bin/wish8.6",
+      "source": "apt",
+      "tags": [
+        "development"
+      ],
+      "auto_tag_source": "auto:^tk$|^tk-",
+      "category": "development",
+      "description": "A windowing toolkit for use with tcl"
+    },
+    {
+      "name": "word-list-compress",
+      "package": "aspell",
+      "path": "/data/data/com.termux/files/usr/bin/word-list-compress",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^aspell$|^aspell-",
+      "category": "text_processing",
+      "description": "A free and open source spell checker designed to replace Ispell"
+    },
+    {
+      "name": "wordforms",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/wordforms",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "wordlist2hunspell",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/wordlist2hunspell",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "workflow",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: bash ~/harmony_hub/utility_belt/workflow",
+      "tags": [
+        "harmony_hub",
+        "llm_orchestration"
+      ],
+      "category": "harmony_hub"
+    },
+    {
+      "name": "workspace-check",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: bash ~/harmony_hub/utility_belt/workspace-check",
+      "tags": [
+        "harmony_hub",
+        "llm_orchestration"
+      ],
+      "category": "harmony_hub"
+    },
+    {
+      "name": "xxhsum",
+      "package": "xxhash",
+      "path": "/data/data/com.termux/files/usr/bin/xxhsum",
+      "source": "apt",
+      "tags": [
+        "hashing"
+      ],
+      "auto_tag_source": "auto:^xxhash$|^xxhash-",
+      "category": "hashing",
+      "description": "Extremely fast non-cryptographic hash algorithm"
+    },
+    {
+      "name": "yq",
+      "package": "yq",
+      "path": "/data/data/com.termux/files/usr/bin/yq",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "A lightweight and portable command-line YAML, JSON and XML processor"
+    }
+  ]
+}

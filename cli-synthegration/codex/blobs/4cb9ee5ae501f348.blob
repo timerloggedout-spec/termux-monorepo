@@ -1,0 +1,16 @@
+// services/airtable.js
+const BASE_ID = 'appXXXXXXXX';
+const TABLE_NAME = 'Compounds';
+const API_KEY = 'keyXXXXXXXX';
+
+export async function fetchCompoundsFromAirtable() {
+  const res = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`, {
+    headers: { Authorization: `Bearer ${API_KEY}` },
+  });
+  const json = await res.json();
+  return json.records.map(rec => ({
+    id: rec.fields.Entity_ID,
+    name: rec.fields.Canonical_Name,
+    // ... map fields
+  }));
+}

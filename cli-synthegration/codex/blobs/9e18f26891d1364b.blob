@@ -1,0 +1,17 @@
+// Inside a Web Worker
+import * as duckdb from '@duckdb/duckdb-wasm';
+const db = await duckdb.getDB();
+
+// User's strategy, passed from main thread as a string
+const userStrategy = new Function('row', 'portfolio', `
+  if (row.close > row.sma_50 && portfolio.cash > 0) {
+    return { action: 'BUY', qty: Math.floor(portfolio.cash / row.close) };
+  }
+  return null;
+`);
+
+// Run backtest
+for (const row of historicalRows) {
+  const signal = userStrategy(row, currentPortfolio);
+  // apply signal, record trade, update equity curve...
+}

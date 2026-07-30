@@ -1,0 +1,26 @@
+User clicks opportunity card
+         │
+         ▼
+┌─────────────────────┐
+│  UI.openTradeModal() │
+│  - Validates rates   │
+│  - Shows breakdown   │
+│  - Detects conflicts │
+└────────┬────────────┘
+         │
+         ▼
+┌─────────────────────┐
+│ Engine.executeTrade()│
+│  - Live mode check   │
+│  - Wallet proxy POST │
+│  - State update      │
+│  - Mana increment    │
+│  - Yjs sync          │
+└────────┬────────────┘
+         │
+    ┌────┴────┐
+    ▼         ▼
+┌───────┐ ┌───────┐
+│local- │ │ Yjs   │
+│Storage│ │ Sync  │
+└───────┘ └───────┘

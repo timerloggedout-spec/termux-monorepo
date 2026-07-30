@@ -1,0 +1,8 @@
+function hexToRgba(hex, alpha) {
+    let c = hex.substring(1).split('');
+    if(c.length==3) c = [c[0],c[0],c[1],c[1],c[2],c[2]];
+    let r = parseInt(c[0]+c[1], 16);
+    let g = parseInt(c[2]+c[3], 16);
+    let b = parseInt(c[4]+c[5], 16);
+    return `rgba(${r},${g},${b},${alpha})`;
+}

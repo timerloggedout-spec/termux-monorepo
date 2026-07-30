@@ -1,0 +1,325 @@
+    // ── P2P MODULES (Yjs, DuckDB, Torrent, IPNS, DEX, Mana) ──────────
+
+    // DuckDB dynamic import & initialization
+    async function initDuckDB() {
+        try {
+            const mod = await import('https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm');
+            const JSDELIVR_BUNDLES = {
+                mvp: "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/dist/duckdb-mvp.wasm",
+                eh: "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/dist/duckdb-eh.wasm"
+            };
+            const bundle = await mod.selectBundle(JSDELIVR_BUNDLES);
+            const worker = new Worker(bundle.mainWorker);
+            const logger = new mod.ConsoleLogger();
+            const db = new mod.AsyncDuckDB(logger, worker);
+            await db.instantiate(bundle.mainModule);
+            const conn = await db.connect();
+            State.db = db; State.conn = conn;
+            await conn.query(`CREATE TABLE IF NOT EXISTS ohlc (
+                timestamp BIGINT, base VARCHAR, target VARCHAR,
+                open DOUBLE, high DOUBLE, low DOUBLE, close DOUBLE, volume DOUBLE
+            )`);
+            document.getElementById('dbStatus').innerHTML = '✅ DuckDB ready';
+            log('🦆 DuckDB-Wasm ready','success');
+        } catch(e) {
+            document.getElementById('dbStatus').innerHTML = '⚠️ DuckDB unavailable';
+            log('🦆 DuckDB not available: '+e.message,'warning');
+        }
+    }
+
+    async function executeDBQuery() {
+        if (!State.conn) { log('DuckDB not loaded','warning'); return; }
+        const sql = document.getElementById('sqlQuery').value.trim();
+        if (!sql) return;
+        try {
+            const result = await State.conn.query(sql);
+            document.getElementById('dbResult').textContent = JSON.stringify(result.toArray(), null, 2);
+            log('📊 Query executed','success');
+        } catch(e) { document.getElementById('dbResult').textContent = 'Error: '+e.message; }
+    }
+
+    // WebTorrent
+    function addTorrentFromInput() {
+        const magnet = document.getElementById('magnetInput').value.trim();
+        if (!magnet) return;
+        if (!State.torrentClient) {
+            try { State.torrentClient = new WebTorrent(); } catch(e) { log('WebTorrent not available','error'); return; }
+        }
+        document.getElementById('torrentStatus').textContent = 'Connecting...';
+        State.torrentClient.add(magnet, (torrent) => {
+            document.getElementById('torrentStatus').textContent = `📦 ${torrent.name} (${torrent.files.length} files)`;
+            const fileList = document.getElementById('torrentFileList');
+            fileList.innerHTML = '';
+            torrent.files.forEach(file => {
+                const li = document.createElement('li');
+                li.textContent = `${file.name} (${(file.length/1024).toFixed(1)} KB)`;
+                li.style.cursor = 'pointer';
+                li.onclick = () => importTorrentFile(file);
+                fileList.appendChild(li);
+            });
+            torrent.on('download', () => {
+                const progress = (torrent.progress*100).toFixed(1);
+                document.getElementById('torrentProgressBar').style.width = progress+'%';
+            });
+            torrent.on('done', () => {
+                log('📦 Torrent download complete','success');
+                document.getElementById('torrentStatus').textContent += ' ✅ Complete';
+            });
+        });
+    }
+
+    async function importTorrentFile(file) {
+        if (!State.conn) { log('DuckDB not ready for import','warning'); return; }
+        file.getBuffer(async (err, buf) => {
+            if (err) { log('Torrent read error: '+err,'error'); return; }
+            if (file.name.endsWith('.csv')) {
+                const text = new TextDecoder().decode(buf);
+                const lines = text.split('\n');
+                if (lines.length < 2) return;
+                const header = lines[0].toLowerCase();
+                let count = 0;
+                for (let i = 1; i < Math.min(lines.length, 10000); i++) {
+                    const cols = lines[i].split(',');
+                    if (cols.length >= 7) {
+                        try {
+                            await State.conn.query(
+                                `INSERT INTO ohlc VALUES (?,?,?,?,?,?,?,?)`,
+                                [parseInt(cols[0])||Date.now(), cols[1]?.trim(), cols[2]?.trim(),
+                                 parseFloat(cols[3])||0, parseFloat(cols[4])||0,
+                                 parseFloat(cols[5])||0, parseFloat(cols[6])||0,
+                                 parseFloat(cols[7])||0]
+                            );
+                            count++;
+                        } catch(e) { /* skip malformed rows */ }
+                    }
+                }
+                log(`📊 Imported ${count} rows into DuckDB`,'success');
+            } else if (file.name.endsWith('.parquet')) {
+                // Parquet import via DuckDB's built-in reader
+                try {
+                    const u8 = new Uint8Array(buf);
+                    await State.db.registerFileBuffer(file.name, u8);
+                    await State.conn.query(`CREATE OR REPLACE TABLE ohlc AS SELECT * FROM read_parquet('${file.name}')`);
+                    log(`📊 Parquet file loaded into DuckDB`,'success');
+                } catch(e) { log('Parquet import error: '+e.message,'error'); }
+            }
+        });
+    }
+
+    // IPNS check
+    const TRUSTED_IPNS_KEY = 'k51qzi5uqu5diz72xk75rwuk7buwxz92q3eg9l62i8l7b6wz18bc7a8d4p63qn';
+    document.getElementById('trustedKey').textContent = TRUSTED_IPNS_KEY.slice(0,12)+'...';
+    async function checkIPNSUpdate() {
+        document.getElementById('ipnsStatus').textContent = 'Checking...';
+        try {
+            const res = await fetch(`https://gateway.ipfs.io/ipns/${TRUSTED_IPNS_KEY}`, {method:'HEAD'});
+            if (res.ok) {
+                const cid = res.url.split('/ipfs/')[1]?.split('?')[0];
+                document.getElementById('ipnsStatus').textContent = `Latest CID: ${cid?.slice(0,10)}...`;
+                log('☁️ IPNS resolved: '+cid?.slice(0,10)+'...','success');
+            } else {
+                document.getElementById('ipnsStatus').textContent = 'Resolve failed';
+            }
+        } catch(e) {
+            document.getElementById('ipnsStatus').textContent = 'Gateway unreachable';
+            log('☁️ IPNS check error: '+e.message,'error');
+        }
+    }
+
+    // QR Code generation
+    function generateQRCode() {
+        const url = window.location.href;
+        const canvas = document.getElementById('qrCanvas');
+        try {
+            QRCode.toCanvas(canvas, url, { width: 200, margin: 1 }, (err) => {
+                if (err) log('QR error: '+err,'error');
+            });
+        } catch(e) { log('QR generation failed','error'); }
+    }
+
+    // Yjs multi-player sync
+    async function initYjs() {
+        try {
+            State.ydoc = new Y.Doc();
+            State.yPlayers = State.ydoc.getMap('players');
+            const signaling = ['wss://y-webrtc-signaling-eu.herokuapp.com'];
+            const webrtcProvider = new WebrtcProvider('quantm-foam-v23', State.ydoc, { signaling });
+            window.yProvider = webrtcProvider;
+
+            if (!State.yPlayers.has(NODE_ID)) {
+                State.yPlayers.set(NODE_ID, new Y.Map());
+            }
+            State.ymap = State.yPlayers.get(NODE_ID);
+
+            State.yPlayers.observe(() => {
+                const now = {};
+                State.yPlayers.forEach((map, id) => {
+                    if (id !== NODE_ID) {
+                        now[id] = map.toJSON();
+                    }
+                });
+                State.otherPlayers = now;
+                UI.renderPlayerList();
+            });
+
+            syncStateToYjs();
+            log('🧠 Yjs swarm joined (multi‑profile)','success');
+        } catch(e) {
+            log('⚠️ Yjs failed, game state is local only','warning');
+        }
+    }
+
+    function syncStateToYjs() {
+        if (!State.ymap) return;
+        State.ymap.set('handle', playerHandle);
+        State.ymap.set('level', State.level);
+        State.ymap.set('matrix', State.matrix);
+        State.ymap.set('bankroll', State.bankroll);
+        State.ymap.set('qFund', State.qFund);
+        State.ymap.set('lFund', State.lFund);
+        State.ymap.set('tradeLedger', State.tradeLedger.slice(0,10));
+        State.ymap.set('basketHoldings', State.basketHoldings);
+        State.ymap.set('mana', State.mana);
+    }
+
+    // Mana system
+    function addMana(type, amount=1) {
+        State.mana[type] += amount;
+        UI.updateManaDisplay();
+        if (State.ymap) {
+            State.ymap.set('mana', State.mana);
+        }
+    }
+
+    // Internal DEX (shared Yjs array)
+    function initDEX() {
+        if (!State.ydoc) return;
+        const yOrders = State.ydoc.getArray('dexOrders');
+        yOrders.observe(() => renderDEXOrderBook(yOrders));
+        window.yDexOrders = yOrders;
+        renderDEXOrderBook(yOrders);
+    }
+
+    function placeDEXOrder(side='buy') {
+        const coin = document.getElementById('dexCoin').value.trim().toUpperCase();
+        const amount = parseFloat(document.getElementById('dexAmount').value);
+        if (!coin || !amount || amount <= 0) return;
+        if (!window.yDexOrders) { log('DEX not initialized','warning'); return; }
+        window.yDexOrders.push([{
+            id: Date.now()+Math.random(),
+            side: side,
+            coin: coin,
+            amount: amount,
+            user: NODE_ID.slice(0,8),
+            handle: playerHandle,
+            timestamp: Date.now()
+        }]);
+        addMana('trade', 2);
+        document.getElementById('dexCoin').value = '';
+        document.getElementById('dexAmount').value = '';
+        log(`💱 DEX ${side}: ${amount} ${coin}`,'success');
+    }
+
+    function renderDEXOrderBook(yOrders) {
+        const el = document.getElementById('dexOrderBook');
+        if (!el) return;
+        const orders = yOrders.toArray();
+        if (!orders.length) { el.innerHTML = '<div style="color:#666;">No orders yet</div>'; return; }
+        el.innerHTML = orders.slice(-20).map(o => {
+            const color = o.side === 'buy' ? 'var(--green)' : '#ff4444';
+            return `<div style="margin:2px 0;">
+                <span style="color:${color}">${o.side==='buy'?'🟢 BUY':'🔴 SELL'}</span>
+                ${o.amount} ${o.coin}
+                <small style="color:#666;">(${o.handle||o.user})</small>
+            </div>`;
+        }).join('');
+    }
+
+    // Private strategy rooms placeholder
+    function createPrivateRoom() {
+        if (State.level < 10) return;
+        const roomKey = prompt('Enter room encryption key (or leave blank for auto-generate):');
+        const key = roomKey || ('room_'+Math.random().toString(36).substr(2,8));
+        document.getElementById('privateRoomInfo').innerHTML = 
+            `🔐 Room created!<br>Key: <strong>${key}</strong><br><small>Share this key with collaborators. (Full encryption in next release.)</small>`;
+        log('🔐 Private strategy room created','success');
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    //  BOOTSTRAP
+    // ═══════════════════════════════════════════════════════════════
+    window.addEventListener('load', async () => {
+        State.load();
+        document.getElementById('playerHandle').value = playerHandle;
+        log('🎰 v23.3 ready – Multi‑Profile P2P Swarm','success');
+        document.getElementById('logs').style.display = 'block';
+        UI.updateProxyStatus();
+        UI.renderFiatCheckboxes();
+        document.getElementById('slotDepthLabel2').textContent = document.getElementById('pathInput').value;
+        UI.applyLevelConstraints();
+        updateIntraExCheckboxes();
+        UI.renderBasketTracker();
+        document.getElementById('modeLabel').textContent = State.liveMode ? 'LIVE' : 'PAPER';
+
+        // Initialize P2P modules
+        await initDuckDB();
+        await initYjs();
+        initDEX();
+        UI.updateManaDisplay();
+        UI.updateProfile();
+
+        // Mana triggers on events
+        window.addEventListener('qfm-trade', () => addMana('trade', 5));
+        window.addEventListener('qfm-scan', () => addMana('compute', 1));
+
+        // Wrap fetch to count data mana
+        const origFetch = window.fetch;
+        window.fetch = function(...args) {
+            addMana('data', 1);
+            return origFetch.apply(this, args);
+        };
+
+        // Pre-generate QR code for sharing
+        setTimeout(generateQRCode, 1000);
+    });
+
+    // ── CLEANUP & UTILITY ────────────────────────────────────────
+    window.addEventListener('beforeunload', () => {
+        State.save();
+        if (State.graphRenderer && State.graphRenderer.animRAF) {
+            cancelAnimationFrame(State.graphRenderer.animRAF);
+        }
+    });
+
+    // Expose key functions globally for onclick handlers
+    window.initSystem = initSystem;
+    window.runFullScan = runFullScan;
+    window.toggleLiveScan = toggleLiveScan;
+    window.connectAllWebSockets = connectAllWebSockets;
+    window.openCreateCoinModal = openCreateCoinModal;
+    window.closeCreateCoinModal = closeCreateCoinModal;
+    window.toggleLogs = toggleLogs;
+    window.shareJackpot = shareJackpot;
+    window.toggleTheme = toggleTheme;
+    window.syncBetInput = syncBetInput;
+    window.syncBetSlider = syncBetSlider;
+    window.selectAllIntra = selectAllIntra;
+    window.deselectAllIntra = deselectAllIntra;
+    window.fetchForexRates = fetchForexRates;
+    window.closeModal = closeModal;
+    window.saveProxyConfig = saveProxyConfig;
+    window.setTargetPreset = setTargetPreset;
+    window.toggleSection = toggleSection;
+    window.setPlayerHandle = setPlayerHandle;
+    window.copyShareURL = copyShareURL;
+    window.addTorrentFromInput = addTorrentFromInput;
+    window.executeDBQuery = executeDBQuery;
+    window.checkIPNSUpdate = checkIPNSUpdate;
+    window.placeDEXOrder = placeDEXOrder;
+    window.createPrivateRoom = createPrivateRoom;
+    window.toggleIntraEx = toggleIntraEx;
+
+    log('🎭 QuanTM FOAM v23.3 – All systems initialized. The swarm awaits.','success');
+</script>
+</body>
+</html>

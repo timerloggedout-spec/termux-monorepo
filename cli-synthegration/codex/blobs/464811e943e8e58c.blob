@@ -1,0 +1,52 @@
+// In GameLogic.activateInvestmentModule, add a condition for 'arbitrage'
+if (moduleKey === 'arbitrage') {
+  // Find the best arbitrage opportunity
+  let bestCoin = null;
+  let bestDiscrepancy = 0;
+  let bestProfit = 0;
+
+  CryptoSimulator.coins.forEach(coin => {
+    const discrepancy = (coin.priceB - coin.priceA) / ((coin.priceA + coin.priceB) / 2);
+    // We want positive discrepancy (priceB > priceA) and above minimum profit
+    if (discrepancy > CONFIG.MIN_PROFIT_PERCENT / 100) {
+      if (discrepancy > bestDiscrepancy) {
+        bestDiscrepancy = discrepancy;
+        bestCoin = coin;
+      }
+    }
+  });
+
+  if (bestCoin) {
+    const fee = 0.002; // per trade, so two trades: 0.4% total
+    const buyPrice = bestCoin.priceA;
+    const sellPrice = bestCoin.priceB;
+    const coinAmount = amount / buyPrice;
+    const revenue = coinAmount * sellPrice;
+    const totalFee = amount * fee + revenue * fee;
+    const profit = revenue - amount - totalFee;
+
+    // Update user's Q-Bucks
+    StateManager.updateUser({ qBucks: StateManager.user.qBucks + profit });
+
+    // Add points
+    this.addPoints(amount / 10);
+
+    // Show result
+    UIComponents.showMessage(
+      'Arbitrage Opportunity Found',
+      `Bought ${bestCoin.name} on Exchange A at ${buyPrice} and sold on Exchange B at ${sellPrice}. Profit: ${profit.toFixed(2)} Q-Bucks.`
+    );
+  } else {
+    // No opportunity found, still deduct the cost and show a loss
+    const loss = amount * 0.05; // 5% loss for no opportunity
+    StateManager.updateUser({ qBucks: StateManager.user.qBucks - loss });
+    UIComponents.showMessage(
+      'Arbitrage Scan Complete',
+      `No arbitrage opportunities found. Loss: ${loss.toFixed(2)} Q-Bucks in trading fees.`
+    );
+  }
+
+  // Update UI
+  UIComponents.updateUI();
+  return;
+}

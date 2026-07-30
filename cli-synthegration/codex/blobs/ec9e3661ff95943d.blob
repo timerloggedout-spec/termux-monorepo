@@ -1,0 +1,16 @@
+   query GetPairs($tokenAddresses: [String!]) {
+     pairs(where: { token0_in: $tokenAddresses, token1_in: $tokenAddresses }) {
+       id
+       token0 {
+         id
+         symbol
+       }
+       token1 {
+         id
+         symbol
+       }
+       reserve0
+       reserve1
+     }
+   }
+   

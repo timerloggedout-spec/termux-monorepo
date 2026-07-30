@@ -1,0 +1,128 @@
+{
+  "category": "file_search",
+  "tools": [
+    {
+      "name": "ncdu",
+      "package": "ncdu",
+      "path": "/data/data/com.termux/files/usr/bin/ncdu",
+      "source": "apt",
+      "tags": [
+        "file_search"
+      ],
+      "category": "file_search",
+      "description": "Disk usage analyzer"
+    },
+    {
+      "name": "fzf-tmux",
+      "package": "fzf",
+      "path": "/data/data/com.termux/files/usr/bin/fzf-tmux",
+      "source": "apt",
+      "tags": [
+        "file_search"
+      ],
+      "auto_tag_source": "auto:^fzf$|^fzf-",
+      "category": "file_search",
+      "description": "Command-line fuzzy finder"
+    },
+    {
+      "name": "bat",
+      "package": "bat",
+      "path": "/data/data/com.termux/files/usr/bin/bat",
+      "source": "apt",
+      "tags": [
+        "file_search"
+      ],
+      "category": "file_search",
+      "description": "A cat(1) clone with wings"
+    },
+    {
+      "name": "eza",
+      "package": "eza",
+      "path": "/data/data/com.termux/files/usr/bin/eza",
+      "source": "apt",
+      "tags": [
+        "file_search"
+      ],
+      "category": "file_search",
+      "description": "A modern replacement for ls"
+    },
+    {
+      "name": "fd",
+      "package": "fd",
+      "path": "/data/data/com.termux/files/usr/bin/fd",
+      "source": "apt",
+      "tags": [
+        "file_search"
+      ],
+      "category": "file_search",
+      "description": "Simple, fast and user-friendly alternative to find"
+    },
+    {
+      "name": "dust",
+      "package": "dust",
+      "path": "/data/data/com.termux/files/usr/bin/dust",
+      "source": "apt",
+      "tags": [
+        "file_search"
+      ],
+      "category": "file_search",
+      "description": "A more intuitive version of du in rust"
+    },
+    {
+      "name": "find",
+      "package": "findutils",
+      "path": "/data/data/com.termux/files/usr/bin/find",
+      "source": "apt",
+      "tags": [
+        "file_search"
+      ],
+      "category": "file_search",
+      "description": "Utilities to find files meeting specified criteria and perform various actions on the files which are found"
+    },
+    {
+      "name": "tree",
+      "package": "tree",
+      "path": "/data/data/com.termux/files/usr/bin/tree",
+      "source": "apt",
+      "tags": [
+        "file_search"
+      ],
+      "category": "file_search",
+      "description": "Recursive directory lister producing a depth indented listing of files"
+    },
+    {
+      "name": "fzf",
+      "package": "fzf",
+      "path": "/data/data/com.termux/files/usr/bin/fzf",
+      "source": "apt",
+      "tags": [
+        "file_search"
+      ],
+      "auto_tag_source": "auto:^fzf$|^fzf-",
+      "category": "file_search",
+      "description": "Command-line fuzzy finder"
+    },
+    {
+      "name": "ls",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/ls",
+      "source": "apt",
+      "tags": [
+        "file_search"
+      ],
+      "category": "file_search",
+      "description": "Package unknown"
+    },
+    {
+      "name": "cat",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/cat",
+      "source": "apt",
+      "tags": [
+        "file_search"
+      ],
+      "category": "file_search",
+      "description": "Package unknown"
+    }
+  ]
+}

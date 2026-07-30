@@ -1,0 +1,4 @@
+document.getElementById('pipCloseBtn').addEventListener('click', () => {
+  pipActive = false;
+  document.getElementById('pipContainer').style.display = 'none';
+});

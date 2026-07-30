@@ -1,0 +1,47 @@
+checkTriangleArbitrage(pairs, investmentAmount, minProfitPercent) {
+    try {
+        const [pair1, pair2, pair3] = pairs;
+        
+        const currencies = new Set();
+        currencies.add(pair1.base);
+        currencies.add(pair1.target.split('/')[1]);
+        currencies.add(pair2.base);
+        currencies.add(pair2.target.split('/')[1]);
+        currencies.add(pair3.base);
+        currencies.add(pair3.target.split('/')[1]);
+
+        if (currencies.size !== 3) return null;
+
+        const currencyArray = Array.from(currencies);
+        
+        // We need to find the rates for the three legs of the triangle: A->B, B->C, C->A
+        const rateAB = this.findRate(currencyArray[0], currencyArray[1], [pair1, pair2, pair3]);
+        const rateBC = this.findRate(currencyArray[1], currencyArray[2], [pair1, pair2, pair3]);
+        const rateCA = this.findRate(currencyArray[2], currencyArray[0], [pair1, pair2, pair3]);
+
+        if (!rateAB || !rateBC || !rateCA) return null;
+
+        const effectiveRate = rateAB * rateBC * rateCA;
+        const profitPercent = (effectiveRate - 1) * 100;
+        const fees = PRODUCTION_CONFIG.ARBITRAGE.TRADING_FEE * 3;
+        const netProfitPercent = profitPercent - (fees * 100);
+
+        // For testing, log every triangle found
+        console.log(`Triangle found: ${currencyArray[0]}->${currencyArray[1]}->${currencyArray[2]}->${currencyArray[0]}, profit: ${netProfitPercent}%`);
+
+        if (netProfitPercent >= minProfitPercent) {
+            return {
+                path: `${currencyArray[0]} → ${currencyArray[1]} → ${currencyArray[2]} → ${currencyArray[0]}`,
+                profitPercent: netProfitPercent,
+                amountIn: investmentAmount,
+                amountOut: investmentAmount * effectiveRate * (1 - fees),
+                pairs: [pair1.target, pair2.target, pair3.target],
+                timestamp: Date.now(),
+                type: 'triangular'
+            };
+        }
+    } catch (error) {
+        this.logger.log('TRIANGULAR', `Error in triangle check: ${error.message}`, 'error');
+    }
+    return null;
+}

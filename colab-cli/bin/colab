@@ -1,0 +1,137 @@
+#!/usr/bin/env python3
+import click
+import os
+import subprocess
+import sys
+import yaml
+import json
+from pathlib import Path
+from datetime import datetime
+import shutil
+
+# Ensure we can import our libs
+LIB_DIR = Path.home() / "colab-cli" / "lib"
+if LIB_DIR.exists():
+    sys.path.insert(0, str(LIB_DIR))
+
+BASE_DIR = Path.home() / "colab-cli"
+CONFIG_PATH = BASE_DIR / "config" / "settings.yaml"
+
+# Load config (fallback defaults)
+if CONFIG_PATH.exists():
+    with open(CONFIG_PATH) as f:
+        config = yaml.safe_load(f)
+else:
+    config = {
+        "colab": {
+            "auth": {"cookie_file": "~/.config/colab/cookies.json"},
+            "ssh": {"key_path": "~/.ssh/colab_rsa"},
+            "default_runtime": "CPU",
+            "workspace_root": str(BASE_DIR / "sandbox"),
+            "production_root": str(BASE_DIR / "production")
+        }
+    }
+
+@click.group()
+def cli():
+    """Colab CLI – Sandbox management with promotion."""
+    pass
+
+@cli.command()
+@click.option('--runtime', default=config['colab']['default_runtime'], help='CPU/GPU/TPU')
+@click.option('--name', default='sandbox', help='Name of the sandbox session')
+def start(runtime, name):
+    """Start a new Colab sandbox with SSH and code-server."""
+    click.echo(f"🚀 Launching Colab sandbox: {name} ({runtime})")
+    sandbox_dir = Path(config['colab']['workspace_root']) / name
+    sandbox_dir.mkdir(parents=True, exist_ok=True)
+
+    # Use colab-ssh to launch (it has its own CLI)
+    # We'll call it via subprocess, passing our SSH key and workspace
+    cmd = [
+        sys.executable, "-m", "colab_ssh", "launch",
+        "--runtime", runtime,
+        "--ssh-key", config['colab']['ssh']['key_path'],
+        "--workspace", str(sandbox_dir)
+    ]
+    # Also add cookie file if exists
+    cookie_path = Path(config['colab']['auth']['cookie_file']).expanduser()
+    if cookie_path.exists():
+        cmd.extend(["--cookies", str(cookie_path)])
+
+    try:
+        subprocess.run(cmd, check=True)
+        click.echo(f"✅ Sandbox '{name}' running. SSH tunnel active on localhost:22")
+        click.echo(f"   Workspace: {sandbox_dir}")
+        # Optionally start code-server via colabcode
+        # We'll integrate that later.
+    except subprocess.CalledProcessError as e:
+        click.echo(f"❌ Failed to start sandbox: {e}", err=True)
+        sys.exit(1)
+
+@cli.command()
+@click.argument('sandbox_name')
+def stop(sandbox_name):
+    """Stop a running sandbox."""
+    click.echo(f"🛑 Stopping sandbox: {sandbox_name}")
+    # Kill colab_ssh processes for this sandbox (based on name)
+    # We'll use pkill with a pattern; improve later.
+    subprocess.run(["pkill", "-f", f"colab_ssh.*{sandbox_name}"], check=False)
+    click.echo("✅ Sandbox stopped.")
+
+@cli.command()
+@click.argument('sandbox_name')
+@click.option('--version', default=None, help='Version tag for promotion')
+def promote(sandbox_name, version):
+    """Promote a sandbox to production (graduation)."""
+    source = Path(config['colab']['workspace_root']) / sandbox_name
+    if not source.exists():
+        click.echo(f"❌ Sandbox '{sandbox_name}' not found.", err=True)
+        sys.exit(1)
+
+    if not version:
+        version = datetime.now().strftime("%Y%m%d-%H%M%S")
+    target = Path(config['colab']['production_root']) / f"{sandbox_name}-{version}"
+    click.echo(f"📦 Promoting {sandbox_name} -> {target.name}")
+
+    # Copy workspace
+    shutil.copytree(source, target, symlinks=False, ignore_dangling_symlinks=True)
+
+    # Run validation script
+    validate_script = BASE_DIR / "scripts" / "validate.sh"
+    if validate_script.exists():
+        subprocess.run([str(validate_script), str(target)], check=False)
+    else:
+        click.echo("⚠️ No validation script found; skipping.")
+
+    # Update latest symlink
+    latest = Path(config['colab']['production_root']) / "latest"
+    if latest.exists() or latest.is_symlink():
+        latest.unlink()
+    latest.symlink_to(target)
+
+    # Log
+    log_file = BASE_DIR / "logs" / "promotions.log"
+    log_file.parent.mkdir(exist_ok=True)
+    with open(log_file, "a") as f:
+        f.write(f"{datetime.now().isoformat()} Promoted {sandbox_name} -> {target.name}\n")
+
+    click.echo(f"✅ Promoted to {target} (symlink 'latest' updated).")
+
+@cli.command()
+def status():
+    """Show status of sandboxes and productions."""
+    click.echo("🔍 Current State:")
+    sandbox_dir = Path(config['colab']['workspace_root'])
+    if sandbox_dir.exists():
+        sandboxes = [d.name for d in sandbox_dir.iterdir() if d.is_dir()]
+        click.echo(f"  Sandboxes: {', '.join(sandboxes) if sandboxes else 'none'}")
+    prod_dir = Path(config['colab']['production_root'])
+    latest = prod_dir / "latest"
+    if latest.exists():
+        click.echo(f"  Latest production: {latest.resolve()}")
+    else:
+        click.echo("  No production promoted yet.")
+
+if __name__ == "__main__":
+    cli()

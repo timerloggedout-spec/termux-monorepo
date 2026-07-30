@@ -1,0 +1,38 @@
+// Build parent-child maps from combinations
+const parentMap = {}; // parentId -> [childIds]
+const childMap = {};  // childId -> [parentIds]
+
+combinations.forEach(comb => {
+  if (comb.Relationship_Type === 'stack_parent' && comb.Entity_ID_2) {
+    if (!parentMap[comb.Entity_ID_1]) parentMap[comb.Entity_ID_1] = [];
+    parentMap[comb.Entity_ID_1].push(comb.Entity_ID_2);
+  }
+  if (comb.Relationship_Type === 'stack_child' && comb.Entity_ID_1) {
+    if (!childMap[comb.Entity_ID_2]) childMap[comb.Entity_ID_2] = [];
+    childMap[comb.Entity_ID_2].push(comb.Entity_ID_1);
+  }
+});
+
+// Enhanced toggle that includes children when parent selected
+const toggleSelect = (id) => {
+  setSelectedIds(prev => {
+    const isSelected = prev.includes(id);
+    let newSelected = isSelected ? prev.filter(i => i !== id) : [...prev, id];
+    
+    // If selecting a parent, auto-select all its children
+    if (!isSelected && parentMap[id]) {
+      parentMap[id].forEach(childId => {
+        if (!newSelected.includes(childId)) newSelected.push(childId);
+      });
+    }
+    // If deselecting a parent, also deselect children? (optional)
+    if (isSelected && parentMap[id]) {
+      newSelected = newSelected.filter(i => !parentMap[id].includes(i));
+    }
+    return newSelected;
+  });
+};
+
+// In the detail panel, show children
+const children = parentMap[selectedCompound.Entity_ID] || [];
+// Render as nested badges

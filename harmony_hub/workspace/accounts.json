@@ -1,0 +1,23 @@
+{
+  "accounts": {
+    "primary": {
+      "type": "user",
+      "token_source": "upload-api.json",
+      "default_signature": {
+        "agent": "user",
+        "director": "human",
+        "project": "synthegration"
+      }
+    },
+    "secondary": {
+      "type": "user",
+      "token_source": "cookies_2.json",
+      "default_signature": {
+        "agent": "user",
+        "director": "human",
+        "project": "synthegration"
+      }
+    }
+  },
+  "agents": {}
+}

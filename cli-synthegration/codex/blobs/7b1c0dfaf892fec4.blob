@@ -1,0 +1,35 @@
+-- Users (linked to YouTube channel)
+CREATE TABLE users (
+  id UUID PRIMARY KEY,
+  youtube_channel_id TEXT UNIQUE NOT NULL,
+  access_token TEXT,       -- encrypted
+  refresh_token TEXT,      -- encrypted
+  display_name TEXT,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- Videos being watched
+CREATE TABLE watched_videos (
+  id UUID PRIMARY KEY,
+  video_id TEXT NOT NULL,
+  added_by UUID REFERENCES users(id),
+  last_comment_timestamp TIMESTAMPTZ, -- for differential polling
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- Parsed workout logs
+CREATE TABLE workout_logs (
+  id UUID PRIMARY KEY,
+  user_id UUID REFERENCES users(id),
+  video_id UUID REFERENCES watched_videos(id),
+  comment_id TEXT NOT NULL,           -- YouTube comment ID (idempotency)
+  log_type TEXT NOT NULL,             -- 'log', 'checkin', 'pr', 'partner_request'
+  sets INTEGER,
+  reps INTEGER,
+  exercise TEXT,
+  weight DECIMAL,
+  unit TEXT,
+  raw_text TEXT,
+  logged_at TIMESTAMPTZ,              -- from comment publishedAt
+  created_at TIMESTAMPTZ DEFAULT now()
+);

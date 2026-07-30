@@ -1,0 +1,22 @@
+~ $ pkg update && pkg upgrade
+pkg install python python-pip python-numpy clang libzmq openblas freetype libxml2 libxslt
+Checking availability of current mirror:
+[*] https://mirrors.ustc.edu.cn/termux/termux-main: ok
+Err:1 https://packages-cf.termux.dev/apt/termux-glibc glibc InRelease
+  521  <none> [IP: 104.21.44.149 443]
+Hit:2 https://mirrors.ustc.edu.cn/termux/termux-main stable InRelease
+Hit:3 https://mirrors.ustc.edu.cn/termux/termux-x11 x11 InRelease
+Reading package lists... Done
+E: Failed to fetch https://packages-cf.termux.dev/apt/termux-glibc/dists/glibc/InRelease  521  <none> [IP: 104.21.44.149 443]
+E: The repository 'https://packages-cf.termux.dev/apt/termux-glibc glibc InRelease' is no longer signed.
+N: Metadata integrity can't be verified, repository is disabled now.
+N: Possible causes: unstable or tampered Internet connection, wrong sources.list, outdated keyring or host is down currently.
+N: Please note that all hosting problems or other serious issues we announce on our social media pages.
+N: Use termux-change-repo for switching to a mirror.
+Checking availability of current mirror:
+[*] https://mirrors.ustc.edu.cn/termux/termux-main: ok
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+E: Unable to locate package openblas
+~ $

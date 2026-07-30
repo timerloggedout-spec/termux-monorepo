@@ -1,0 +1,87 @@
+// src/data/countryMapping.js
+
+// Every ISO_A3 code from world-atlas/countries-110m.json
+export const countryToJurisdiction = {
+  // North America
+  USA: 'us', CAN: 'ca', MEX: 'mx', GRL: 'gl', BMU: 'bm', ...
+  
+  // Europe (EU members map to 'eu', non-EU to their own keys)
+  FRA: 'eu', DEU: 'eu', ITA: 'eu', ESP: 'eu', NLD: 'eu', BEL: 'eu',
+  SWE: 'eu', POL: 'eu', AUT: 'eu', DNK: 'eu', FIN: 'eu', IRL: 'eu',
+  PRT: 'eu', GRC: 'eu', CZE: 'eu', HUN: 'eu', ROU: 'eu', BGR: 'eu',
+  SVK: 'eu', SVN: 'eu', HRV: 'eu', LTU: 'eu', LVA: 'eu', EST: 'eu',
+  CYP: 'eu', MLT: 'eu', LUX: 'eu',
+  GBR: 'uk', CHE: 'ch', NOR: 'no', ISL: 'is', LIE: 'li', MCO: 'mc',
+  SMR: 'sm', VAT: 'va', AND: 'ad', ALB: 'al', BIH: 'ba', MKD: 'mk',
+  MNE: 'me', SRB: 'rs', UKR: 'ua', BLR: 'by', MDA: 'md', RUS: 'ru',
+  TUR: 'tr', GEO: 'ge', ARM: 'am', AZE: 'az',
+  
+  // Asia & Oceania
+  JPN: 'jp', KOR: 'kr', AUS: 'au', NZL: 'nz', SGP: 'sg', MYS: 'my',
+  THA: 'th', PHL: 'ph', IDN: 'id', VNM: 'vn', KHM: 'kh', LAO: 'la',
+  MMR: 'mm', BRN: 'bn', TLS: 'tl', PNG: 'pg', FJI: 'fj', CHN: 'cn',
+  IND: 'in', PAK: 'pk', BGD: 'bd', LKA: 'lk', NPL: 'np', BTN: 'bt',
+  MDV: 'mv', AFG: 'af', IRN: 'ir', IRQ: 'iq', SAU: 'sa', ARE: 'ae',
+  OMN: 'om', YEM: 'ye', JOR: 'jo', LBN: 'lb', SYR: 'sy', PSE: 'ps',
+  ISR: 'il', KWT: 'kw', BHR: 'bh', QAT: 'qa', KAZ: 'kz', UZB: 'uz',
+  TKM: 'tm', KGZ: 'kg', TJK: 'tj', MNG: 'mn', PRK: 'kp', TWN: 'tw',
+  HKG: 'hk', MAC: 'mo',
+  
+  // Africa
+  ZAF: 'za', NGA: 'ng', GHA: 'gh', KEN: 'ke', EGY: 'eg', MAR: 'ma',
+  TUN: 'tn', DZA: 'dz', LBY: 'ly', SDN: 'sd', SSD: 'ss', ETH: 'et',
+  SOM: 'so', DJI: 'dj', ERI: 'er', UGA: 'ug', RWA: 'rw', BDI: 'bi',
+  TZA: 'tz', MOZ: 'mz', ZMB: 'zm', ZWE: 'zw', MWI: 'mw', AGO: 'ao',
+  COD: 'cd', COG: 'cg', GAB: 'ga', GNQ: 'gq', CMR: 'cm', TCD: 'td',
+  CAF: 'cf', NER: 'ne', MLI: 'ml', MRT: 'mr', SEN: 'sn', GMB: 'gm',
+  GNB: 'gw', SLE: 'sl', LBR: 'lr', CIV: 'ci', BFA: 'bf', TGO: 'tg',
+  BEN: 'bj', NAM: 'na', BWA: 'bw', SWZ: 'sz', LSO: 'ls', MDG: 'mg',
+  COM: 'km', MUS: 'mu', SYC: 'sc', STP: 'st', CPV: 'cv',
+  
+  // South America
+  BRA: 'br', ARG: 'ar', COL: 'co', CHL: 'cl', PER: 'pe', ECU: 'ec',
+  VEN: 've', GUY: 'gy', SUR: 'sr', PRY: 'py', URY: 'uy', BOL: 'bo',
+  
+  // Central America & Caribbean
+  CRI: 'cr', PAN: 'pa', DOM: 'do', CUB: 'cu', JAM: 'jm', TTO: 'tt',
+  HTI: 'ht', BHS: 'bs', BRB: 'bb', LCA: 'lc', VCT: 'vc', GRD: 'gd',
+  ATG: 'ag', KNA: 'kn', DMA: 'dm', BLZ: 'bz', GTM: 'gt', SLV: 'sv',
+  HND: 'hn', NIC: 'ni',
+  
+  // Oceania (others)
+  PLW: 'pw', FSM: 'fm', MHL: 'mh', KIR: 'ki', TUV: 'tv', NRU: 'nr',
+  WSM: 'ws', TON: 'to', SLB: 'sb', VUT: 'vu',
+};
+
+// Regulatory tier information for every country
+export const regulatoryTier = {
+  // WHO Listed Authorities (WLA)
+  USA: { tier: 'wla', name: 'FDA' },
+  CAN: { tier: 'wla', name: 'Health Canada' },
+  GBR: { tier: 'wla', name: 'MHRA' },
+  JPN: { tier: 'wla', name: 'PMDA' },
+  KOR: { tier: 'wla', name: 'MFDS' },
+  SGP: { tier: 'wla', name: 'HSA' },
+  ZAF: { tier: 'wla', name: 'SAHPRA' },
+  CHE: { tier: 'wla', name: 'Swissmedic' },
+  AUS: { tier: 'wla', name: 'TGA' },
+  // ... add all WLA countries
+  
+  // ICH Members (non-WLA)
+  MEX: { tier: 'ich', name: 'COFEPRIS' },
+  MYS: { tier: 'ich', name: 'NPRA' },
+  IDN: { tier: 'ich', name: 'BPOM' },
+  CHN: { tier: 'ich', name: 'NMPA' },
+  IND: { tier: 'ich', name: 'CDSCO' },
+  BRA: { tier: 'ich', name: 'ANVISA' },
+  SAU: { tier: 'ich', name: 'SFDA' },
+  NGA: { tier: 'ich', name: 'NAFDAC' },
+  // ... add all ICH members
+  
+  // Default for all others
+  default: { tier: 'unknown', name: 'National Regulatory Authority' },
+};
+
+export const getRegulatoryInfo = (isoCode) => {
+  return regulatoryTier[isoCode] || regulatoryTier.default;
+};

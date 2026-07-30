@@ -1,0 +1,65 @@
+// ================= CONFIGURATION =================
+const SHEET_ID = SpreadsheetApp.getActiveSpreadsheet().getId();
+const COMPOUND_SHEET_NAME = "compounds";
+const EXPANSION_SHEET_NAME = "expansion";
+
+// ================= WEB APP ENDPOINTS =================
+function doGet(e) {
+  // Return all compounds as JSON
+  const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(COMPOUND_SHEET_NAME);
+  const rows = sheet.getDataRange().getValues();
+  const headers = rows[0];
+  const data = rows.slice(1).map(row => {
+    let obj = {};
+    headers.forEach((h, i) => obj[h] = row[i]);
+    return obj;
+  });
+  return ContentService.createTextOutput(JSON.stringify(data))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e) {
+  // Accept JSON payload to update compounds (batch update)
+  const payload = JSON.parse(e.postData.contents);
+  const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(COMPOUND_SHEET_NAME);
+  const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  
+  // Clear existing data (keep header)
+  sheet.getRange(2, 1, sheet.getLastRow() - 1, sheet.getLastColumn()).clear();
+  
+  // Write new rows
+  payload.forEach(row => {
+    const rowData = headers.map(h => row[h] || "");
+    sheet.appendRow(rowData);
+  });
+  
+  return ContentService.createTextOutput(JSON.stringify({ success: true, count: payload.length }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+// ================= SCHEDULED DATA IMPORT (OPTIONAL) =================
+// This function can be triggered daily to fetch external CSV data
+function importFromExternalCSV() {
+  // Example: fetch a public CSV of peptides (e.g., from GitHub)
+  const url = "https://raw.githubusercontent.com/your-repo/peptides.csv";
+  const response = UrlFetchApp.fetch(url);
+  const csv = response.getContentText();
+  const parsed = Utilities.parseCsv(csv);
+  
+  const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(EXPANSION_SHEET_NAME);
+  // Append new rows (avoid duplicates by checking existing IDs)
+  // Implementation depends on your CSV structure
+}
+
+// ================= SETUP TRIGGERS (RUN ONCE) =================
+function setupTriggers() {
+  // Delete existing triggers
+  const triggers = ScriptApp.getProjectTriggers();
+  triggers.forEach(t => ScriptApp.deleteTrigger(t));
+  
+  // Create a daily trigger for importFromExternalCSV (if needed)
+  ScriptApp.newTrigger("importFromExternalCSV")
+    .timeBased()
+    .everyDays(1)
+    .create();
+}

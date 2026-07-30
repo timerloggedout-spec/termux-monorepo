@@ -1,0 +1,3 @@
+const lastPoll = localStorage.getItem('lastPollTimestamp') || new Date(0).toISOString();
+
+// After each fetch, update lastPoll to the latest comment timestamp.

@@ -1,0 +1,15 @@
+const plasmidSchema = {
+  title: 'plasmid',
+  version: 0,
+  primaryKey: 'plasmid_id',
+  type: 'object',
+  properties: {
+    plasmid_id:     { type: 'string' },
+    name:           { type: 'string' },
+    vector_backbone:{ type: 'string' },
+    sequence_id:    { type: 'string' },  // FK → DNA_Sequence
+    source:         { type: 'string', default: 'addgene' },
+    extra_properties: { type: 'object' }
+  },
+  required: ['plasmid_id']
+};

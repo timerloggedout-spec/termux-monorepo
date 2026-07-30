@@ -1,0 +1,21 @@
+// Inside the MatrixView or a new MapView tab
+const [selectedCompound, setSelectedCompound] = useState(null);
+const [mapFilterCountry, setMapFilterCountry] = useState(null);
+
+// When a country is clicked, filter compounds to those approved/not in that jurisdiction,
+// or simply select the first matching compound.
+const handleCountryClick = (isoCode, status) => {
+  // Example: filter compounds by jurisdiction status
+  // Or set mapFilterCountry to highlight countries with that status.
+};
+
+return (
+  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div className="lg:col-span-2">
+      <WorldMap compound={selectedCompound} onCountryClick={handleCountryClick} />
+    </div>
+    <div className="lg:col-span-1">
+      {/* Compound list or detail panel */}
+    </div>
+  </div>
+);

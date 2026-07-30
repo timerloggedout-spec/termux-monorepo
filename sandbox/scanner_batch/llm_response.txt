@@ -1,0 +1,50 @@
+Here’s a **CEDARscript patch** to retrofit `llm_mapper_pro.py` with `BatchResumer` for crash‑safe scanning.
+
+```cedar
+[35m/[0m[35m/[0m CEDARscript v[1;36m2[0m.[1;36m0[0m
+[35m/[0m[35m/[0m Patch: llm_mapper_pro.py + BatchResumer
+[35m/[0m[35m/[0m Crash‑safe batch scanning with atomic checkpoints
+
+patch target "~[35m/[0msandbox[35m/[0m[95msc[0manner_builder[35m/[0mllm_mapper_pro.py" [1m{[0m
+    import lines [1;36m1[0m..[1;36m30[0m [1m{[0m
+        inject after "import json" [1m{[0m
+            [32m""[0m"
+import pickle
+import hashlib
+from pathlib import Path
+from typing import Dict, Any, Optional, Tuple, List
+from dataclasses import dataclass, asdict
+from contextlib import contextmanager
+            [32m""[0m"
+        [1m}[0m
+    [1m}[0m
+
+    inject before "class LLMMapperPro" [1m{[0m
+        [32m""[0m"
+@dataclass
+class BatchResumeState:
+    checkpoint_id: str
+    processed_hashes: set
+    last_index: int
+    batch_metadata: Dict[1m[[0mstr, Any[1m][0m
+    pending_items: List[1m[[0mAny[1m][0m
+    completed: bool
+
+class BatchResumer:
+    def __init[1;35m__[0m[1m([0mself, resume_dir: str = ".scanner_resume"[1m)[0m:
+        self.resume_dir = Path[1m([0mresume_dir[1m)[0m
+        self.resume_dir.mkdir[1m([0mexist_ok=[3;92mTrue[0m, parents=[3;92mTrue[0m[1m)[0m
+        self._lock_path = self.resume_dir [35m/[0m ".lock"
+
+    @contextmanager
+    def _atomic_write[1m([0mself, path: Path, data: bytes[1m)[0m:
+        tmp = path.with_suffix[1m([0m".tmp"[1m)[0m
+        tmp.write_bytes[1m([0mdata[1m)[0m
+        tmp.rename[1m([0mpath[1m)[0m
+        yield
+
+    def _state_path[1m([0mself, job_id: str[1m)[0m -> Path:
+        safe_id = hashlib.sha[1;36m256[0m[1m([0mjob_id.encode[1m([0m[1m)[0m[1m)[0m.hexdigest[1m([0m[1m)[0m[1m[[0m:[1;36m16[0m[1m][0m
+        return self.resume_dir [35m/[0m f"state_[1m{[0msafe_id[1m}[0m.pkl"
+
+    def save_state[1m([0mself, job_id: str, state:

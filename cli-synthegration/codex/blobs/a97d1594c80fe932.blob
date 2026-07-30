@@ -1,0 +1,10 @@
+ async loadCoinGeckoData() {
+   try {
+     this.logger.log('COINGECKO', 'Fetching market data...', 'info');
+     const response = await fetch(...);
+     if (!response.ok) ...;
+     const data = await response.json();
+     ...
+   }
+ }
+ 

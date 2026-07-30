@@ -1,0 +1,19 @@
+ Plasmid ──→ DNA_Sequence (1:1)
+   │            ↓ contains
+   │          Feature[*]
+   │
+   └──→ NGS_QCRun (1:many)
+          ↓ contains
+        QCResult[*]  (Serotype | Recombination | CountSpacers | PLSA)
+
+ Gene ←── (many) ── Plasmid (encodes)
+   │
+   ├── Pathway (many-to-many through gene_ids)
+   ├── Intervention (one gene can have many interventions)
+   ├── Aging Evidence (embedded in Gene, sourced from Open Genes)
+   │
+ Biomarker ──→ Gene (many-to-many)
+   └── Cohort (many biomarkers per cohort, many cohorts per biomarker)
+
+ SystematicReview ──→ Study[*]
+   └── optionally links to Intervention / Gene

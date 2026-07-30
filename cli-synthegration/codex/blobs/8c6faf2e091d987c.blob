@@ -1,0 +1,12 @@
+1. Check local cache (bounded LRU, < 50 MB).
+2. If cache hit and “fresh enough” → return cache.
+3. Else, query the distributed network:
+   a. For graph data (genes, pathways, interventions) → query Gun.js relay using `gun.get(key).once()`.
+   b. For document data (plasmids, NGS runs) → fetch from OrbitDB docstore/eventlog via its CID, or query Ceramic stream.
+   c. For large immutable blobs (DNA sequences, QC output) → retrieve from IPFS via CID.
+4. If network result exists and is “fresh enough” → cache locally (subject to storage limits), return.
+5. If network result is missing or **stale** → fetch fresh from the original source API (Addgene, Open Genes, etc.):
+   a. Apply mapping to canonical schema.
+   b. Assign a unique content‑addressed ID (hash) and metadata (see §2).
+   c. Return data to user.
+   d. Trigger the Write Protocol (§3) to update the distributed database.

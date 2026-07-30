@@ -1,0 +1,17 @@
+{
+  "category": "libassuan_tools",
+  "tools": [
+    {
+      "name": "libassuan-config",
+      "package": "libassuan",
+      "path": "/data/data/com.termux/files/usr/bin/libassuan-config",
+      "source": "apt",
+      "tags": [
+        "libassuan_tools"
+      ],
+      "auto_tag_source": "auto:^libassuan$|^libassuan-",
+      "category": "libassuan_tools",
+      "description": "Library implementing the Assuan IPC protocol used between most newer GnuPG components"
+    }
+  ]
+}

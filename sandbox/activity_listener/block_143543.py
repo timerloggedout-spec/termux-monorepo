@@ -1,0 +1,2 @@
+# 2. Wire [7] to the existing profile manager
+sed -i '/choice == .7./,/elif choice == .8./c\        elif choice == '\''7'\'':\n            subprocess.run(['\''python3'\'', os.path.expanduser('\''~/archwiz/archwiz.py'\''), '\''--manage-profiles'\''])' ~/archwiz/archwiz.py

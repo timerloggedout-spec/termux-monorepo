@@ -1,0 +1,12 @@
+# Set up environment (example)
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt   # textual, web3, aiohttp, pycoingecko, psutil, numpy, python-dotenv, ccxt, solana, etc.
+
+# Create .env with API keys (Yobit, Uniswap private key, etc.)
+
+# Run analysis (no live trades, show UI)
+python -m yobitrageswap.main --exchange both --method bellman-ford --ui
+
+# Live trading (risky)
+python -m yobitrageswap.main --exchange yobit --method triangular --live

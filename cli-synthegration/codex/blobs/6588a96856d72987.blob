@@ -1,0 +1,15 @@
+ Plasmid ──→ DNA_Sequence (1:1)
+                ↓ contains
+              Feature[*]
+
+ Gene ←── (many) ── Plasmid (encodes)
+   │
+   ├── Pathway (many-to-many through gene_ids)
+   ├── Intervention (one gene can have many interventions)
+   ├── Aging Evidence (embedded in Gene)
+   │
+ Biomarker ──→ Gene (many-to-many)
+   └── Cohort (many biomarkers per cohort, many cohorts per biomarker)
+
+ SystematicReview ──→ Study[*]
+   └── optionally links to Intervention / Gene

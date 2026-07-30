@@ -1,0 +1,83 @@
+function displayOpportunities() {
+  const container = document.getElementById('opportunities');
+  container.innerHTML = '';
+
+  // Display triangular opportunities
+  container.innerHTML += '<h2>Triangular Arbitrage</h2>';
+  if (state.opportunities.triangular.length === 0) {
+    container.innerHTML += '<div class="card">No triangular opportunities found.</div>';
+  } else {
+    state.opportunities.triangular.slice(0, 50).forEach(function(opp) {
+      displayOpportunity(opp, container);
+    });
+  }
+
+  // Display Bellman-Ford opportunities
+  container.innerHTML += '<h2>Bellman-Ford Arbitrage</h2>';
+  if (state.opportunities.bellmanFord.length === 0) {
+    container.innerHTML += '<div class="card">No Bellman-Ford opportunities found.</div>';
+  } else {
+    state.opportunities.bellmanFord.slice(0, 50).forEach(function(opp) {
+      displayOpportunity(opp, container);
+    });
+  }
+
+  // Display micro-cap opportunities
+  container.innerHTML += '<h2>Micro-Cap Arbitrage</h2>';
+  if (state.opportunities.microCap.length === 0) {
+    container.innerHTML += '<div class="card">No micro-cap opportunities found.</div>';
+  } else {
+    state.opportunities.microCap.slice(0, 50).forEach(function(opp) {
+      displayOpportunity(opp, container);
+    });
+  }
+}
+
+function displayOpportunity(opp, container) {
+  const inputInvestment = parseFloat(document.getElementById('investment').value || 100);
+  const maxTradeSize = Math.min(opp.minLiquidity * 0.05, inputInvestment);
+  const investment = maxTradeSize;
+  const finalAmount = investment * opp.product;
+  const profit = finalAmount - investment;
+  const profitPercent = (profit / investment) * 100;
+
+  const oppClass = profitPercent > 5 ? 'opportunity mega' : 'opportunity';
+  
+  let pathHtml = '<div class="path-visual">';
+  for (let i = 0; i < opp.path.length - 1; i++) {
+    const from = opp.path[i];
+    const to = opp.path[i + 1];
+    const edge = opp.edges[i];
+    
+    pathHtml += '<div style="margin: 2px 0;">';
+    pathHtml += '<strong>' + from + ' → ' + to + '</strong> ';
+    pathHtml += 'Rate: ' + edge.rate.toFixed(10) + ' | ';
+    pathHtml += 'Liq: $' + edge.liquidity.toFixed(2) + ' | ';
+    pathHtml += 'Spread: ' + (edge.spread * 100).toFixed(3) + '%';
+    pathHtml += ' (Exchange: ' + edge.exchange + ')';
+    pathHtml += '</div>';
+  }
+  pathHtml += '</div>';
+  
+  const totalSpread = opp.edges.reduce(function(sum, e) { return sum + e.spread; }, 0);
+  const slippageRisk = (totalSpread * 100).toFixed(2);
+  
+  container.innerHTML += 
+    '<div class="' + oppClass + '">' +
+    '<div style="display: flex; justify-content: space-between; margin-bottom: 4px;">' +
+    '<strong>' + opp.type.toUpperCase() + '</strong>' +
+    '<strong style="color: ' + (profitPercent > 5 ? '#ffff00' : '#00ff00') + '">+' + profitPercent.toFixed(6) + '%</strong>' +
+    '</div>' +
+    pathHtml +
+    '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 6px; font-size: 9px;">' +
+    '<div>In: $' + investment.toFixed(2) + '</div>' +
+    '<div>Profit: $' + profit.toFixed(6) + '</div>' +
+    '<div>Out: $' + finalAmount.toFixed(6) + '</div>' +
+    '<div>MinLiq: $' + opp.minLiquidity.toFixed(2) + '</div>' +
+    '</div>' +
+    '<div style="margin-top: 4px; padding: 3px; background: #0a0a1a; border-radius: 2px; font-size: 9px;">' +
+    '<strong>Execution:</strong> MaxSize: $' + maxTradeSize.toFixed(2) + ' | ' +
+    'Slippage: ' + slippageRisk + '%' +
+    '</div>' +
+    '</div>';
+}

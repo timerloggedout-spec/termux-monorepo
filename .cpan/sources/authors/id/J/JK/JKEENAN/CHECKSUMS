@@ -1,0 +1,666 @@
+0&&<<''; # this PGP-signed message is also valid perl
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+# CHECKSUMS file written on Fri Apr  3 14:38:55 2026 GMT by CPAN::Checksums (v2.14)
+$cksum = {
+  'Business-Tax-US-Form_1040-Worksheets-0.08.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '54dfb1af9e0ebe1259a0e0fd6ba92cbf',
+    'mtime' => '2026-03-03',
+    'sha256' => '8e4d4dbd910a7bb5f92e8646f93fccc976184d3f52335f907489491809b0fa79',
+    'size' => 969
+  },
+  'Business-Tax-US-Form_1040-Worksheets-0.08.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '2125129e01bd04b97325147d20db9cec',
+    'md5-ungz' => 'eedc5ee2b22d11ff4a85de760046f8f5',
+    'mtime' => '2026-03-03',
+    'sha256' => 'c2e3dc3ca787fbc64d65d8367e1dcfa8800fdc933a70ff7ea06acf09fd40b69b',
+    'sha256-ungz' => 'd2abf2910047ed2b42a229bebcdd28a744889efedd1e5f2be5a60f4ef6230152',
+    'size' => 20020
+  },
+  'CPAN-Cpanorg-Auxiliary-0.03.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '0abcee0d9e9230e8417d738101573776',
+    'mtime' => '2018-10-03',
+    'sha256' => '501cac0231990c1a7f9b9917025871c8013c4cd4db0c682240c5b8de07364b5c',
+    'size' => 1690
+  },
+  'CPAN-Cpanorg-Auxiliary-0.03.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'aa5af3cba8472dee0688401b7163cb17',
+    'md5-ungz' => 'd2bbec85c6f37c9494a29e8b9fbbd05b',
+    'mtime' => '2018-10-03',
+    'sha256' => '6ff392e8c788178e8a455f8c51bd7ec10f948b3a28db4c48a7b9f53770dd4a7c',
+    'sha256-ungz' => '8207b0ab55ed54e37a632accbbae3ab4da900f400fa970fd0f31acba7de4547a',
+    'size' => 25393
+  },
+  'CPAN-Mini-Visit-Simple-0.018.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'f8ce492d50b3007cad28fccca1cbdb2e',
+    'mtime' => '2023-11-16',
+    'sha256' => '0888532ccbb3c49232bca611501074cb5aba5ba297e1ae3ef788de806fde932b',
+    'size' => 1835
+  },
+  'CPAN-Mini-Visit-Simple-0.018.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'a5ae8d1d9eb415e91192782c434f79d7',
+    'md5-ungz' => '46db0051d70ba199c71961c8d614bc46',
+    'mtime' => '2023-11-16',
+    'sha256' => '31e900e8f0d5a28515f796120ce1901e3dc8361947ce4881dfe521dbd6c4e907',
+    'sha256-ungz' => '2e20d55626c288d9db177399db32366ce24e11380f58336cb99d6dd05dd0f28a',
+    'size' => 35987
+  },
+  'CPAN-cpanminus-reporter-RetainReports-0.11.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'c55b8e5994766608d516a7500bf5c7d2',
+    'mtime' => '2023-05-13',
+    'sha256' => '59b220a8de1246f4b01ad1b1e710a3fce0acc6ba2f1fd425f341c1ee05725148',
+    'size' => 1740
+  },
+  'CPAN-cpanminus-reporter-RetainReports-0.11.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'f1acff048fe46ebf0c001944ee3845e8',
+    'md5-ungz' => '583fc35d614f7d2f667573b7f37fbd28',
+    'mtime' => '2023-05-13',
+    'sha256' => 'c7ec5ca908dc4290d23151e6b626603773ef3aa75e0e0165ab373d696d7bd5b5',
+    'sha256-ungz' => 'a22534a5991e91f0ded605d0356dcc9fd83455cae14fda18087b9645a200d0da',
+    'size' => 216014
+  },
+  'CPAN-cpanminus-reporter-RetainReports-0.12.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'c3a121460250132833530effa6c0f4f0',
+    'mtime' => '2025-10-01',
+    'sha256' => '75f701fcc0129300c1884b5bd1eeec792b7682ecf1604a89a6fabb408323eb58',
+    'size' => 1740
+  },
+  'CPAN-cpanminus-reporter-RetainReports-0.12.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'd33da5a813af53f456d44645f49f368e',
+    'md5-ungz' => '3908b752059059665e24c57ed28a3f84',
+    'mtime' => '2025-10-01',
+    'sha256' => '87e8a4946e52b6f770ff66af1ca5da59f9ee14577b80fa34b2571d7967d18da4',
+    'sha256-ungz' => 'b8512cc7d985d562bd6c9bad9290c358bbaec09a3e25ec9650e7dc65948c0d9e',
+    'size' => 216072
+  },
+  'Data-Presenter-1.03.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '50a8e802478abf33a91766be30cbc0d9',
+    'mtime' => '2008-02-10',
+    'sha256' => '28349034331e8f4e5c86a8c5e5aa7d9ec5f102ff3e3da65f057585fce111dd77',
+    'size' => 520
+  },
+  'Data-Presenter-1.03.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '665fff607c44bef475c3c94e7536e700',
+    'md5-ungz' => 'f232e44f0bee5084ee67c513f5c5b03d',
+    'mtime' => '2008-02-11',
+    'sha256' => 'ba65765d6a1c23a9ab17f9f94f810f15302ce6561676f647ba91c99053fdeecb',
+    'sha256-ungz' => 'a21fcace9cdb4c2dd28fb469fb51332594f798ae518612dec3ab7c6d46f7ee79',
+    'size' => 83787
+  },
+  'Devel-Git-MultiBisect-0.21.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '1e2e651faef386122be78bc74980ee13',
+    'mtime' => '2024-04-23',
+    'sha256' => 'ace66b3f433356494da7a4f266429196c33f1eb42fad79fe2a07f7fa4317711b',
+    'size' => 1803
+  },
+  'Devel-Git-MultiBisect-0.21.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '5b23b543344f534c59d19ff84ca07037',
+    'md5-ungz' => '5a2ac86dacee11f295401c5820f7e8e6',
+    'mtime' => '2024-04-23',
+    'sha256' => '3c6c71af927f39b2504ecd409b1912397f923fc789bbfe69627a0533d9b1c558',
+    'sha256-ungz' => '2703d1787f5d6d6d81c4756d46d5c8a3698b755b4a3fc3f92b51af9c0ef1d66a',
+    'size' => 74541
+  },
+  'Devel-NYTProf-6.15.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '87e65cd2ed68061db5624327d1c6394e',
+    'mtime' => '2026-03-31',
+    'sha256' => '3d5afd42d8f41bab093fc5d951a0c9b00c6c2272487d28753187c3ba48df205f',
+    'size' => 1854
+  },
+  'Devel-NYTProf-6.15.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '776efa13ea55cb0a4e92bc784377c30d',
+    'md5-ungz' => '8edb65ddbd364be7fc8732fdeffa2a5d',
+    'mtime' => '2026-03-31',
+    'sha256' => '5f59ea454c0458be6cd0c8eb22a3760b07672e88c5eaec209e0599c055881dbe',
+    'sha256-ungz' => '3b5ad73c185a643e0be164f4597f6c6c5392e87d11ef3022c5c483225d747382',
+    'size' => 569855
+  },
+  'ExtUtils-ModuleMaker-0.33.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '3890690e47cdfa0992221f6b281e03c7',
+    'mtime' => '2005-07-09',
+    'sha256' => '54a3900f9798956c73fdab216322291368d8831f0e5e3dc6f3351825fd5e759c',
+    'size' => 512
+  },
+  'ExtUtils-ModuleMaker-0.33.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '9f31e2f0052667a61181c565da585b39',
+    'md5-ungz' => 'a0dc7dda1a9efbefaf37da50b352033e',
+    'mtime' => '2005-07-09',
+    'sha256' => '1dfdbbe0ff0db93dcd7d1ddc5b3e36efcb3676b36ce00b1b30c223f06ffbbf05',
+    'sha256-ungz' => 'd357bfb5aa334473c40c62ee4a68d1a1a5ce43dab3afbf5d5a88167bca4d15d3',
+    'size' => 89848
+  },
+  'ExtUtils-ModuleMaker-0.63.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'e77449b9735296c8a5737f50676c1f4c',
+    'mtime' => '2018-07-31',
+    'sha256' => 'dd6d954abe9f2b14fda308c9b708d9d603fde2817c5111a119491fc4e3b9beb3',
+    'size' => 1839
+  },
+  'ExtUtils-ModuleMaker-0.63.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'a1dee2c14910fb515909235ab682947e',
+    'md5-ungz' => '649d22480d421f452ee0705dfb340095',
+    'mtime' => '2018-07-31',
+    'sha256' => 'cff683e6deec3f8db048256acef14cd6a0573c0d2ce820e4f55cffef44a26b83',
+    'sha256-ungz' => '01394f0a669c8364cb5777330e24543216e49d2455b1437a20e36cdb6df609c1',
+    'size' => 136420
+  },
+  'File-Copy-Recursive-Reduced-0.008.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '4b2e8ac4ce5e451fb6ed19649ee9b6f3',
+    'mtime' => '2024-03-25',
+    'sha256' => '7815b3618c3816f8a75c909969f94db8e85e6082731b736892be63d2b3a588bd',
+    'size' => 1826
+  },
+  'File-Copy-Recursive-Reduced-0.008.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '72f6213360813a53f5f9f98f5b28b187',
+    'md5-ungz' => '6bfd6fe6d9b12b83351d15efe7d9d51b',
+    'mtime' => '2024-03-25',
+    'sha256' => '462bd66bf55e74b78f29ebdc9626af622d4f0115b5191b03167e82164db98f5a',
+    'sha256-ungz' => '53403ddf702836cda31adef6f61bf1da591ed5ba79a4aada67d68be48a1c1bbf',
+    'size' => 24458
+  },
+  'File-Path-2.18.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '2fefa27fd5abbc133b6a86a7947da1e0',
+    'mtime' => '2020-11-05',
+    'sha256' => '072022ec5c686e7fcdd4384a0691dbf12ab2013e8c255ab132eafda77bcd6fe2',
+    'size' => 1493
+  },
+  'File-Path-2.18.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '3e1372f35ec0e11079087c1099f68de1',
+    'md5-ungz' => 'ea5c8d96c60829352f4da13f3a591968',
+    'mtime' => '2020-11-05',
+    'sha256' => '980f0a17edb353df46e9cd7b357f9f5929cde0f80c45fd7a06cf7e0e8bd6addd',
+    'sha256-ungz' => '55382362a5506034cc8ea5b0bca5ba02ac9b5083d4007fadaee6da869b54c56d',
+    'size' => 32066
+  },
+  'File-Save-Home-0.11.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '4a2c1bc924da846d15bd8a614abafc26',
+    'mtime' => '2017-10-26',
+    'sha256' => '79be82e4227574729289e33da122f9f341fd20f9334a37f2ea140b71349a4752',
+    'size' => 1611
+  },
+  'File-Save-Home-0.11.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'b588da8fd756dbaeace5cd3c57661c03',
+    'md5-ungz' => '2a922b0dda5b189988afd0a75d08affc',
+    'mtime' => '2017-10-26',
+    'sha256' => '46c3367a6f3a09d1075ed8c61cb5ba3073f18b2b80f7aaadc191e710332958df',
+    'sha256-ungz' => '7a6e3483ea7ee50356a3da892cb5d53c0b6c067c72596521e8a57d51f9834b4f',
+    'size' => 21340
+  },
+  'File-Save-Home-0.12.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'c9899d23de1cf6dc68e132d04ac6b3f8',
+    'mtime' => '2026-01-04',
+    'sha256' => '9c6fc5f2e239e144fe1d087bc15281de1beb5605097f3039780ed5dade985b46',
+    'size' => 1603
+  },
+  'File-Save-Home-0.12.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '7cd81764735fe813946789b7639c7d1e',
+    'md5-ungz' => 'fd6a7e87b55f958b560c98ee18dfcee6',
+    'mtime' => '2026-01-04',
+    'sha256' => 'b6322bdf93d39c92e94060e2ed14c7d372eebc5e232ecd0a1086230e8e118189',
+    'sha256-ungz' => '092acc543584cf72aa4081ecbc45ea184c25ae43cf5ef992906962eaee893c26',
+    'size' => 20697
+  },
+  'Git-Reduce-Tests-0.10.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '47356836a90663ee21660097ead711ae',
+    'mtime' => '2015-03-10',
+    'sha256' => '87098737d906ac2059ae9dbbce1f3b8b41d9c23e75af7bbcb5040f1212f6be63',
+    'size' => 1605
+  },
+  'Git-Reduce-Tests-0.10.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '787d50cc7feb047168cac4eaeac4861f',
+    'md5-ungz' => 'c267aee8b64a2fbe6fbaf88d726f3eb7',
+    'mtime' => '2015-03-10',
+    'sha256' => '4638d45070788498a7c691b841e6db2206c73c31740ac876c0c646ccc2a132e0',
+    'sha256-ungz' => '069c61d02e87d83611c142fe677f5f790a3de33f87b1d86c3a33ae9c2a0dfc1b',
+    'size' => 17338
+  },
+  'IO-Capture-Extended-0.13.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '297256a3d28a8b31e36567d8bc8c6b87',
+    'mtime' => '2015-03-11',
+    'sha256' => '716f5cc63d841fd37080ae58195f401988671683d610e3bf4c2b46975c5c72c5',
+    'size' => 1410
+  },
+  'IO-Capture-Extended-0.13.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'e88d542b09885044d63f9ecae9d52ab6',
+    'md5-ungz' => 'ebfbb6e2d2c24147fffb1b37a03b41fd',
+    'mtime' => '2015-03-11',
+    'sha256' => '94e7778a20710fdcd521526f4cf06731e4b2b1ab059bbccf29b7e69b45013055',
+    'sha256-ungz' => '8b9e03c068c3bd85f8b24a1dcb4517d68f704e465edb30f7bdff9a1f18061c7d',
+    'size' => 9526
+  },
+  'IPC-System-Simple-1.30.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '22d1b73684a88a31fd0435728208b815',
+    'mtime' => '2020-03-24',
+    'sha256' => 'b0ec2eff69e20bf99446ea05b08130e55fe8277f812289bca3621f893a703c1c',
+    'size' => 1745
+  },
+  'IPC-System-Simple-1.30.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'e68341fd958fd013b3521d909904f675',
+    'md5-ungz' => 'e6c0eac9a2551921118fddfb58090b94',
+    'mtime' => '2020-03-24',
+    'sha256' => '22e6f5222b505ee513058fdca35ab7a1eab80539b98e5ca4a923a70a8ae9ba9e',
+    'sha256-ungz' => '0f2a24a0ff9a39e252b6b6423eab2863b0edeb9c86df7a4dd6f7320c05e38b41',
+    'size' => 31902
+  },
+  'List-Compare-0.55.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'ed1361d8148c7dcb16b111fb2aa2c6eb',
+    'mtime' => '2020-08-16',
+    'sha256' => 'd3d5dc92120c2cad81638b67fdc63c34c8d9e9935c35ab48b0ba923b90c019bf',
+    'size' => 1368
+  },
+  'List-Compare-0.55.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '647265b473ff6373f6b58abb2c45d4f3',
+    'md5-ungz' => '8d2d30d073ffc47fdd2a5c9b87935dbd',
+    'mtime' => '2020-08-16',
+    'sha256' => 'cc719479836579d52b02bc328ed80a98f679df043a99b5710ab2c191669eb837',
+    'sha256-ungz' => '73f097bad5aedeaef8b7049f416e265c1b3019446853980207e5a5e7d76626bc',
+    'size' => 84975
+  },
+  'List-RewriteElements-0.09.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '7d1321c205a1dd5e77978708dd9b1257',
+    'mtime' => '2007-01-23',
+    'sha256' => '1bc913ea313f5fd4bb7132f615550d1b5a15bba4f51bc8c594bc43e27cf7b1c1',
+    'size' => 723
+  },
+  'List-RewriteElements-0.09.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'ceb1c25ebc211aee08569f59a869398d',
+    'md5-ungz' => 'd2703835bd55e46f16ca79e78dad00c6',
+    'mtime' => '2007-01-23',
+    'sha256' => '12851a2bd540b3d1fa6ab2dc28003a7d5bed7ef346ed7383d4ff0e121154db84',
+    'sha256-ungz' => '95f278c85094fac1749863e527f000fdceda10ba3a59ea226475dd2c947697c0',
+    'size' => 26708
+  },
+  'Parse-File-Metadata-0.07.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'be355dd12c52938fb88c149823bc014f',
+    'mtime' => '2010-05-15',
+    'sha256' => '2e3920a5b390fa4060dd57321584a23a2f888fc2cbfc4a277ad69c4291d69902',
+    'size' => 715
+  },
+  'Parse-File-Metadata-0.07.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '3678589988b02bf3294293584c8049ca',
+    'md5-ungz' => '9232f1ce0dc4ac5363881d5f33f7e701',
+    'mtime' => '2010-05-15',
+    'sha256' => '831240e0ca832283ec18016517fcbf5c8e67751c1b8213686815c5825dad8e57',
+    'sha256-ungz' => '90f1b421176f67c378bd3e05e7300c3b4d47e0408be29587b74f907bd2bf4153',
+    'size' => 13825
+  },
+  'Parse-Taxonomy-0.24.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '1677ff7e422b7e1f5a160ae73b035863',
+    'mtime' => '2016-04-09',
+    'sha256' => '46b08e748bba025eba1f30b385369ab0ab013ff26915bd16f91e5c6d9665bfa0',
+    'size' => 1459
+  },
+  'Parse-Taxonomy-0.24.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '2f13702b144e0fc42275a69465aaaf7d',
+    'md5-ungz' => '49da8bc62eaeff30048ec5461cda5ee6',
+    'mtime' => '2016-04-09',
+    'sha256' => '45d24bb1d627a6b54f918512d428460c2b27f26fff110c7f05bcd3b94a93c463',
+    'sha256-ungz' => '43bf37f8210c3470c4389d1a1a0cba7b261e4ee8d1ca7a8c221b56c005599116',
+    'size' => 54998
+  },
+  'Perl-RT2Github-0.04.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '2fda6be7e109d42ece74b075c1cbc3fd',
+    'mtime' => '2019-10-30',
+    'sha256' => '7d91a2382dcba87a7ffcf3880476bccffa0225836597154e2a992954f2ddaf2a',
+    'size' => 1134
+  },
+  'Perl-RT2Github-0.04.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '611fbabcfe64551a28194556a1221248',
+    'md5-ungz' => 'fa79924768f5078c231fd74b2ed7642a',
+    'mtime' => '2019-10-30',
+    'sha256' => '682cf7d2bd76af61f230f042c70bfa0f20be0a888a1a9b0c4c61090f3cf0cda9',
+    'sha256-ungz' => '51b19d8f7b177bba46a21ef60d7a723825e0287012fc88b1efb0f955a44baa10',
+    'size' => 12346
+  },
+  'Perl-RT2Github-0.04_001.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'f022868d76f2fe1f1f785954a2025b80',
+    'md5-ungz' => '2f498afb5cb0e523404423370a994ae1',
+    'mtime' => '2019-10-30',
+    'sha256' => 'e097ef58917e7c69b6a41fa1fca224997855db4d8b7063962656ab2fa45a69d2',
+    'sha256-ungz' => '0b8599ca9c9c1ce845d233fb46f4224f1c2a98caf4da98a4539a968c2f049cb7',
+    'size' => 11525
+  },
+  'Perl-RT2Github-0.04_005.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '75efad8aa9d69e6db237e2059ace2c05',
+    'md5-ungz' => '1c52cf7e35852ac173a40c9b29a85c78',
+    'mtime' => '2019-10-31',
+    'sha256' => '18172ed444377fdcedf408d4d4198aab167b7c4a6fd32440f1c6a822e6b897ce',
+    'sha256-ungz' => 'bd6eac06249476344dd189337fed12408a0ca01fb1048a06a844c47f70daae5a',
+    'size' => 12453
+  },
+  'Perl5-Build-Warnings-0.05.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'ea825c59807cffef2808f3480fbb4b38',
+    'mtime' => '2021-09-10',
+    'sha256' => 'f039762c4aa103972cac708252876b1448775a519c16cd7ba4436fc96dc0a5f8',
+    'size' => 1537
+  },
+  'Perl5-Build-Warnings-0.05.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'eb9812825f78f0adfa2c8dd6c7babe02',
+    'md5-ungz' => '8ffd24f91caf6c1063e2dbf26ab98d88',
+    'mtime' => '2021-09-10',
+    'sha256' => '7e29b71034d5a3f70a896bff7046c4cfbb6fe239bb99268d1c0cc4edf9a7ce0b',
+    'sha256-ungz' => '87a9273ff03df0a89f0efe7b6650db65697d7ba06f6d15706758b42f6b54a5bc',
+    'size' => 79465
+  },
+  'Perl5-Dist-Backcompat-0.10.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '9590f9f572483b39c4f570ecc7eb12c9',
+    'mtime' => '2022-02-04',
+    'sha256' => '28c23c45ea04f0eb3972eb2c1886d5ece3ace62e67bd9f4a22e463da24b35449',
+    'size' => 1367
+  },
+  'Perl5-Dist-Backcompat-0.10.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '5067e5e5ca00e4427c7616c6148a83f5',
+    'md5-ungz' => 'cb6e3efac5a37e95de02a6e34d3f471d',
+    'mtime' => '2022-02-04',
+    'sha256' => '52179062eef4057c20d9ff42d2a3e109582cf09b920f58b299fe34e6ae62c86f',
+    'sha256-ungz' => 'f0665893a6313c9b4fb27c7a4da0e8d2e46d99fe11738df23155b26ccac790d6',
+    'size' => 30697
+  },
+  'Perl5-TestEachCommit-0.06.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '5952eccc0f14ed3a8a5a8d55ca5db1e7',
+    'mtime' => '2025-10-20',
+    'sha256' => '87c4154269a741dc50afac83e6c22288fa3046ee079e784eb5511e4054bee08c',
+    'size' => 1751
+  },
+  'Perl5-TestEachCommit-0.06.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '18543f0c91b311e99a4cbef7fbf059a3',
+    'md5-ungz' => 'db7b14d046f45d9a18f4233d98d8afbe',
+    'mtime' => '2025-10-20',
+    'sha256' => '1c45f23fe68527e05ddc0cf42adf722fdbb788514d5e4ea4f9b2f2a415e72328',
+    'sha256-ungz' => '3b9140d51dd73a5a2487d142518dda26cabb6bc528a7025236887db5f0c73c30',
+    'size' => 24700
+  },
+  'Perl5-TestEachCommit-0.07.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'e691c94a923b688fb0a60ae374bb56dc',
+    'mtime' => '2025-10-24',
+    'sha256' => '7e8d875fcc3004ec57e5151d3f97566815f87f51103d3f3ee2c6c08db176a740',
+    'size' => 1751
+  },
+  'Perl5-TestEachCommit-0.07.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '5768ab198dbb3e774d19e199345b4df0',
+    'md5-ungz' => 'd499485a4a0e65c410b4e8fd482f4a00',
+    'mtime' => '2025-10-24',
+    'sha256' => '2aa3d5c9423da79bb02078a92ad60e760dae4265d11ec6aa77c83ed2a8784a65',
+    'sha256-ungz' => 'b3ddaf7cb3b0fcd58a8970244f55b8b5570c2954358c7379355b6d2022c1d1cc',
+    'size' => 25302
+  },
+  'Pod-Multi-0.10.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'e8e988052c07830c078058e93ca9147c',
+    'mtime' => '2017-05-16',
+    'sha256' => 'ba386aea1e74ed9f14da45110a12079aa1732e9935827a9a7d0c4767318c8076',
+    'size' => 1285
+  },
+  'Pod-Multi-0.10.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'b6307ed9c6dcbd9e30eda338f852541b',
+    'md5-ungz' => '03cdb77c90881431cbc48ec2e449384c',
+    'mtime' => '2017-05-16',
+    'sha256' => 'f8d8915326ef4fb458334426ccd8b0d38e56c8ec1d6b890bb805a84d677f5038',
+    'sha256-ungz' => '50ae5a8f72156774692f57e33929379835fe39688b4455d4d636b27f7e0f849a',
+    'size' => 21360
+  },
+  'Regexp-Functions-chmod_et_al-0.02.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '296713f8603e989f13d4ef16cf07e4d9',
+    'mtime' => '2017-08-12',
+    'sha256' => '6871dcc608d10e38960a93c113fbe0e25acee973ac0e34a6458e85e2a84df077',
+    'size' => 1032
+  },
+  'Regexp-Functions-chmod_et_al-0.02.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'd782d34a360c57e655eeed47e1c3eaa6',
+    'md5-ungz' => '8364ba2fe387d54bc590d6f6d0b16d2d',
+    'mtime' => '2017-08-12',
+    'sha256' => '33a591e8c2848c39e80320349643970994b177552de8225c44b30b027b488dd1',
+    'sha256-ungz' => '83dd5bdf32c02df8ba05a097c643fd646d741f488c90dd8f8dfa0555d6bc2566',
+    'size' => 11910
+  },
+  'Set-Integer-Gapfillers-0.08.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '65c863c96826690e4a0a732132b76dac',
+    'mtime' => '2009-05-17',
+    'sha256' => '2a03d948b8b8bbc406a9bfd614dd6039a661b31a38cf0320f77ebecbf8c956b3',
+    'size' => 530
+  },
+  'Set-Integer-Gapfillers-0.08.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '8824e9e4c2ecae1faaf3ceaffe1ae75b',
+    'md5-ungz' => 'c50567dd45dc638ec020f9bb8a690716',
+    'mtime' => '2009-05-17',
+    'sha256' => 'bd0912c821c577db9d242e94476cabcde81e2e79dc784f02214a0a924d460c72',
+    'sha256-ungz' => '7394d5214c755c814f829480a6bc1a61359f75661a303651250010b0877ab6ce',
+    'size' => 17293
+  },
+  'String-PerlIdentifier-0.06.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '0656b8e8fa50fd692ab649db739408ea',
+    'mtime' => '2016-11-14',
+    'sha256' => 'c3e46b5ba1a56ff530bcd3ce62afe57a6342bb4a30728116cd1ff3d6e3b1caa7',
+    'size' => 965
+  },
+  'String-PerlIdentifier-0.06.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'daeb5a671e6086948deb95e52f77c703',
+    'md5-ungz' => '2e47d800ef04118949ad262de0e77e22',
+    'mtime' => '2016-11-14',
+    'sha256' => '1f66cd35c758fa9afdf0a5718e956b99247a651bc1c0400960c07ff30712948c',
+    'sha256-ungz' => '3c739537ab0657907644a435b00a8c4662749052a1eeb754911af5d496aa4fc8',
+    'size' => 13717
+  },
+  'TAP-Harness-Multiple-0.07.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'a4f641d6236801cd60624965d8a4df63',
+    'mtime' => '2011-11-22',
+    'sha256' => '3927eae8b65aca0454a75cc7c40f8fd1baa328beb1c758c87596b3f24606edc5',
+    'size' => 722
+  },
+  'TAP-Harness-Multiple-0.07.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '3f966b47b92d7a46db7514ea52c0d2e2',
+    'md5-ungz' => 'c14992640c19dc21591532bf6e3a7a74',
+    'mtime' => '2011-11-22',
+    'sha256' => '86162e2b85a5612d7da4d907050d464e1d115700c163b220de5e7df5e745a4df',
+    'sha256-ungz' => 'dd9717c3226a3813b3b62df0dbfbe11f4a08ae74a69b3eb4e1759d40d1ef40e5',
+    'size' => 18508
+  },
+  'Test-Against-Commit-0.16.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '5a30043b0f466e7b3b62d9e132ef95e9',
+    'mtime' => '2025-09-27',
+    'sha256' => '35701a16f40daa257576583c5eed500948e3f9d54978a973bc4e8bfa025be88d',
+    'size' => 1989
+  },
+  'Test-Against-Commit-0.16.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '32addfcee8abb9a6b5ef708761fb3cc6',
+    'md5-ungz' => '45461ac2e54c7ed8f8e2f382c0ec593e',
+    'mtime' => '2025-09-27',
+    'sha256' => '2e2ca81a73e14a6cdedf86a451873f97e96f3d1a50b78f2f9fc85ca713cfc833',
+    'sha256-ungz' => '3393958803b6503a31403c4dd2721186efd3592c6b1e7fa8cec03ee30a43e16a',
+    'size' => 49510
+  },
+  'Test-Against-Commit-0.17.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '804428973f2b52c6b5bed5111fcbf4e6',
+    'mtime' => '2025-12-14',
+    'sha256' => '20c5c3184169ec5a89a5f0ec467517bb3923375df33fd2a2f39bd23bb324bfcd',
+    'size' => 1989
+  },
+  'Test-Against-Commit-0.17.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'df9f588fd13ea1c4c03530a80d45fd0c',
+    'md5-ungz' => '5132b5d8e625ba3f8bd650544f5f8076',
+    'mtime' => '2025-12-14',
+    'sha256' => '91e79d8d1fd601cc8f50f230575f7f1fa98a7ed5be0393a5ac9181e9602748ca',
+    'sha256-ungz' => '09905d53bfb75eb1ab0960ab8e060023b08615a08a7b7f88a7126c15919ba65b',
+    'size' => 49548
+  },
+  'Test-Against-Dev-0.14.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '999c9a7a3650abc2b13072079f6c3a24',
+    'mtime' => '2025-09-23',
+    'sha256' => 'be649ecd8313ab3037bbe024177bb21ced8073ba4b94037af512e16154086caf',
+    'size' => 2033
+  },
+  'Test-Against-Dev-0.14.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '28e389ae8ae1624cd8e0be14c3b03f68',
+    'md5-ungz' => 'a9392bf7539dfe44498b645de42017ab',
+    'mtime' => '2025-09-23',
+    'sha256' => 'b1ae0282912c6ae9ac5e7b5408f1132358423002598010a023f1b4fb4a0a85f9',
+    'sha256-ungz' => 'fe4d6252a712a2e52af5bc8c48cb9f6424b023f1512b00c0c78b55cf9657801e',
+    'size' => 100807
+  },
+  'Test-Vars-0.017.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '7dc8b9c4d25f792211786c5278aada1c',
+    'mtime' => '2024-09-16',
+    'sha256' => '7a5c87cd516c55d9101b3d0b96380a2172a56d03d6479f4dd3e1f67b3470f2f8',
+    'size' => 3051
+  },
+  'Test-Vars-0.017.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'c1c2a2b783045f96192adfa64fac2f7d',
+    'md5-ungz' => '4b9eb71436d12d9c5a25c214f79d0910',
+    'mtime' => '2024-09-16',
+    'sha256' => '56ddacbb663cf542673aa65525ef50980b53f207770e743a1d18614bd8268178',
+    'sha256-ungz' => 'c6ccb52190ee824e4d6c5ee2df9bbe0bc5f9d904c5641898399415a5d9d3688d',
+    'size' => 25234
+  },
+  'Text-CSV-Hashify-0.11.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'a4476afc58e51b91c6cccb6b23aa2c2b',
+    'mtime' => '2018-05-22',
+    'sha256' => 'ffeb717b2fa27bb9fdbb081830443940c3e0a7475a17a81446c846d944311580',
+    'size' => 1452
+  },
+  'Text-CSV-Hashify-0.11.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '6b0e1afcc2f6d2e051f91b64527b16bf',
+    'md5-ungz' => 'f3e2b144f4990bcc765f38b707659c96',
+    'mtime' => '2018-05-22',
+    'sha256' => 'a5afcc7c36ad8b01b617e86bbf8ede133624c2efba6187c758f48b23a3268277',
+    'sha256-ungz' => '987dd62816d805cfbc0c8962d2e7454a8ead81235c9ed69c8a347711c457c7fe',
+    'size' => 76696
+  },
+  'Text-FixedWidth-Helper-0.02.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'c6c2989458a16298c811ba6612899ed4',
+    'mtime' => '2011-10-30',
+    'sha256' => '3ba4f386b109cd1b46d5bf4def5f085da7224cb66eb2c3bfb54c1c7477f48a1e',
+    'size' => 714
+  },
+  'Text-FixedWidth-Helper-0.02.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '3da967f8fb638418c22eb10133a4311d',
+    'md5-ungz' => '5f2751ab264e509250e10425ca588e47',
+    'mtime' => '2011-10-30',
+    'sha256' => '44b9ed648feee592e41d730fcb942731b9c499d5971c704a0d11ee8777dc09fb',
+    'sha256-ungz' => 'b0d3abe8cf50037f25c7aecc38c73a545d152fe2a7ae896016f08c2d43356548',
+    'size' => 14265
+  },
+  'Tie-Filehandle-Preempt-Stdin-0.02.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '5d1405518a066ee87d606e86cbc261fe',
+    'mtime' => '2007-10-27',
+    'sha256' => 'fe9a477ee40af5af6da6e7d791088ab139d3e33d17270727c07739d60e575488',
+    'size' => 446
+  },
+  'Tie-Filehandle-Preempt-Stdin-0.02.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '8c775a15a15a6294b6817a30390a2b8b',
+    'md5-ungz' => '03920c123f8f1c2c0c129b3354f98b22',
+    'mtime' => '2007-10-27',
+    'sha256' => 'e0f6c571f98e29299d9923e2ec4dff9936d744d2c24bc7d34a4d695e8e011455',
+    'sha256-ungz' => '866743c580ae66ffc9bdbb9db4a871241cd1c1ee294cc86b40f23f559ba14037',
+    'size' => 10928
+  },
+  'XML-Easy-0.014.meta' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => '7a27eebcca555048721d659b3b870253',
+    'mtime' => '2026-01-17',
+    'sha256' => '5388c15c67367aa1612678ff5c3d0f100502b5af4cb6d9db619ccf4a50ad752b',
+    'size' => 1708
+  },
+  'XML-Easy-0.014.tar.gz' => {
+    'cpan_path' => 'J/JK/JKEENAN',
+    'md5' => 'de66b526f656fff0955d35b560d81d2b',
+    'md5-ungz' => '48674b1c9e056a340fc950673df40703',
+    'mtime' => '2026-01-17',
+    'sha256' => '884bc75db3a5eff5401ffe6c25cfba6dff6419f13f3ad1dab50a5d5612f6bce0',
+    'sha256-ungz' => 'fef8ac3f103225af674ace756225c7b0b8b269d90dbbbf40a105684e84668a01',
+    'size' => 57345
+  }
+};
+__END__
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEBxtGhQeBIGeRK5USWP2jy7dZ5cQFAmnP0QAACgkQWP2jy7dZ
+5cSJ2g//RbTj2A3i7ZVQ6JRrogv3YfG/PHxH+fcX9jfnASk82tFvVDgO3wZG94Df
+WQQp8rMGxtZni66krPrAtZ2tZC8YvrEM1Re5vsluHej5qwjhW30lNWNWtrf+AU8v
+x5kHDkDN3hcEP7tKO/+ZTIXJLQgzUEcpcyvC1sDGyVH9K6wAFgaj6Vf6uFDdIDVT
+U3EEu3SfsrOb6DZIvRnpiIWrjhUL2zNmZdox0RLf5AQlxBcWfI4QrG9noUDcHTYe
+0rk9AhvCGHeZ6wgqMLdSYp6om+maFBfVIy5O5NL+XB/kfUBnY0i16fX6HcWiR/AM
+0Q64rTlOhyzFkkv9HEgl4mQOoB5JEDIa4B1NezE7Xsuac3DJFdMdDe/Q37VzZiCJ
+wlEY49oxONwYlSBCR2qXtTYOoqEZYEMVDNPYdDOiVPgmzSCqquo7XhJVDuuBUvoS
+OfGZfhqpYIteb513xiFOqf+eOUe8ILoKlTqQRTBPJcCFa/dsm/3yknhbvZgQQitM
+Ska2Bwdcw0osZXkwrrYM/+Zf3eA2XLHt98bZEkJQcllQDpzmKlUwtISSaXYDWMJ+
+1Xi2LmzNvuNzycQQvPj/HfCOk3aFlS6mj0JHV3JlwVvMiemyFg5ORbuiPP1d4zi5
+9EC3m621BOK3QRLjku6bhbdL4h378L4w8sCqfk69jIo6CnI+BFI=
+=IyYh
+-----END PGP SIGNATURE-----

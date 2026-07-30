@@ -1,0 +1,16 @@
+Restore 🌿 Branch‑Point Indicators in TUI Tree Display
+Restore the 🌿 branch-point indicator in build_tree_str() inside deepcli-tui/tui.py.
+
+From the TUI_ARCHAEOLOGY.md investigation:
+- The marker line (96) has always been: marker = "🔽 " if mid == selected_parent_id else ""
+- The 🌿 display was originally from tree connectors, not the marker
+- The fix: add a 🌿 marker for EVERY message that has children, not just the selected parent
+
+Specific change in build_tree_str's _render() function:
+1. After computing 'marker', add a check for children
+2. If the node has children AND is not the selected parent, show "🌿 "
+3. If the node is the selected parent, keep "🔽 "
+4. Otherwise, keep the current blank marker
+
+This is a one‑line addition. Output a CEDARscript patch (SEARCH/REPLACE) for the exact code block in tui.py.
+Reference: TUI_ARCHAEOLOGY.md for full investigation report.

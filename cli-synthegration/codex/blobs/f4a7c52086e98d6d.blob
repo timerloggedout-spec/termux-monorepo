@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://unpkg.com/peerjs@1.5.1/dist/peerjs.min.js"></script>
+</head>
+<body>Loading...</body>
+<script>
+  const targetId = window.location.hash.slice(1);
+  const peer = new Peer();
+  peer.on('open', (id) => {
+    const conn = peer.connect(targetId);
+    conn.on('data', (data) => {
+      const blob = new Blob([data], {type:'text/html'});
+      window.location = URL.createObjectURL(blob);
+    });
+  });
+</script>
+</html>

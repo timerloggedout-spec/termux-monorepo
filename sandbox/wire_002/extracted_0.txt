@@ -1,0 +1,17 @@
+# --- PATCH FOR provision_agent.py ---
+# Extract code blocks from LLM response
+
+def extract_code_blocks[1m([0mresponse_text: str, language: str = [3;35mNone[0m[1m)[0m -> list:
+    [32m""[0m"
+    Extract code blocks from LLM response text.
+    
+    Args:
+        response_text: The raw response from LLM
+        language: Optional language filter [1m([0me.g., 'python', 'bash'[1m)[0m
+    
+    Returns:
+        List of code block strings
+    [32m""[0m"
+    import re
+    
+    # Pattern for markdown code blocks: 

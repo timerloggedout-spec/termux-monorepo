@@ -1,0 +1,58 @@
+// components/map/countryMapping.js
+
+// Complete ISO_A3 to jurisdiction mapping
+export const countryToJurisdiction = {
+  // North America
+  USA: 'us', CAN: 'ca', MEX: 'mx',
+  // Europe (EU members)
+  FRA: 'eu', DEU: 'eu', ITA: 'eu', ESP: 'eu', NLD: 'eu', BEL: 'eu',
+  SWE: 'eu', POL: 'eu', AUT: 'eu', DNK: 'eu', FIN: 'eu', IRL: 'eu',
+  PRT: 'eu', GRC: 'eu', CZE: 'eu', HUN: 'eu', ROU: 'eu', BGR: 'eu',
+  SVK: 'eu', SVN: 'eu', HRV: 'eu', LTU: 'eu', LVA: 'eu', EST: 'eu',
+  CYP: 'eu', MLT: 'eu', LUX: 'eu',
+  // Non-EU Europe
+  GBR: 'uk', CHE: 'ch', NOR: 'no', ISL: 'is', RUS: 'ru', UKR: 'ua',
+  // Asia
+  JPN: 'jp', KOR: 'kr', AUS: 'au', NZL: 'nz', SGP: 'sg', MYS: 'my',
+  THA: 'th', PHL: 'ph', IDN: 'id', VNM: 'vn', KHM: 'kh', LAO: 'la',
+  MMR: 'mm', BRN: 'bn', CHN: 'cn', IND: 'in', PAK: 'pk', BGD: 'bd',
+  LKA: 'lk', NPL: 'np', IRN: 'ir', SAU: 'sa', ARE: 'ae', ISR: 'il',
+  // Africa
+  ZAF: 'za', NGA: 'ng', GHA: 'gh', KEN: 'ke', EGY: 'eg', MAR: 'ma',
+  TUN: 'tn', DZA: 'dz', ETH: 'et',
+  // South America
+  BRA: 'br', ARG: 'ar', COL: 'co', CHL: 'cl', PER: 'pe', ECU: 'ec',
+  VEN: 've', PRY: 'py', URY: 'uy', BOL: 'bo',
+  // Central America
+  CRI: 'cr', PAN: 'pa', GTM: 'gt', SLV: 'sv', HND: 'hn', NIC: 'ni',
+  // ... add all 190+ countries
+};
+
+// Regulatory tier information for fallback coloring
+export const regulatoryTiers = {
+  // WHO Listed Authorities (WLA) - highest tier
+  USA: { tier: 'wla', name: 'FDA' },
+  CAN: { tier: 'wla', name: 'Health Canada' },
+  GBR: { tier: 'wla', name: 'MHRA' },
+  JPN: { tier: 'wla', name: 'PMDA' },
+  KOR: { tier: 'wla', name: 'MFDS' },
+  SGP: { tier: 'wla', name: 'HSA' },
+  ZAF: { tier: 'wla', name: 'SAHPRA' },
+  CHE: { tier: 'wla', name: 'Swissmedic' },
+  AUS: { tier: 'wla', name: 'TGA' },
+  // ICH Members (non-WLA)
+  MEX: { tier: 'ich', name: 'COFEPRIS' },
+  MYS: { tier: 'ich', name: 'NPRA' },
+  IDN: { tier: 'ich', name: 'BPOM' },
+  CHN: { tier: 'ich', name: 'NMPA' },
+  IND: { tier: 'ich', name: 'CDSCO' },
+  BRA: { tier: 'ich', name: 'ANVISA' },
+  SAU: { tier: 'ich', name: 'SFDA' },
+  NGA: { tier: 'ich', name: 'NAFDAC' },
+  // Default
+  default: { tier: 'unknown', name: 'National Regulatory Authority' }
+};
+
+export const getRegulatoryInfo = (isoCode) => {
+  return regulatoryTiers[isoCode] || regulatoryTiers.default;
+};

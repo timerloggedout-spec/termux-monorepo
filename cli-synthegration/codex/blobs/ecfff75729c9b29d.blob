@@ -1,0 +1,15 @@
+// Example Instagram webhook endpoint
+app.post('/webhook/instagram', (req, res) => {
+    const { body } = req;
+    if (body.object === 'instagram') {
+        body.entry.forEach(entry => {
+            entry.changes.forEach(change => {
+                if (change.field === 'comments') {
+                    // Process new comment in real-time
+                    processIncomingComment(change.value);
+                }
+            });
+        });
+    }
+    res.sendStatus(200);
+});

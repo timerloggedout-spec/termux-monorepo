@@ -1,0 +1,13 @@
+I’ll act as **Chronomancer** and execute the AST signature extraction pipeline.
+
+---
+
+## Step [1;36m1[0m — Read the pipeline input
+
+First, I’ll check the contents of `~[35m/[0mworkspace[35m/[0mllm_map[35m/[0m[95mf[0mull_map_output.txt` to understand the context.
+
+```bash
+cat ~[35m/[0mworkspace[35m/[0mllm_map[35m/[0m[95mf[0mull_map_output.txt
+```
+
+*Expected content:* a list of file paths mapped during a previous LLM‑based code map run, likely in the format `file_path → hash` or 

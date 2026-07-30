@@ -1,0 +1,555 @@
+{
+  "category": "multimedia",
+  "tools": [
+    {
+      "name": "spa-json-dump",
+      "package": "pipewire",
+      "path": "/data/data/com.termux/files/usr/bin/spa-json-dump",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^pipewire$|^pipewire-",
+      "category": "multimedia",
+      "description": "A server and user space API to deal with multimedia pipelines"
+    },
+    {
+      "name": "rubberband",
+      "package": "rubberband",
+      "path": "/data/data/com.termux/files/usr/bin/rubberband",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^rubberband$|^rubberband-",
+      "category": "multimedia",
+      "description": "An audio time-stretching and pitch-shifting library and utility program"
+    },
+    {
+      "name": "ffprobe",
+      "package": "ffmpeg",
+      "path": "/data/data/com.termux/files/usr/bin/ffprobe",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "category": "multimedia",
+      "description": "Tools and libraries to manipulate a wide range of multimedia formats and protocols"
+    },
+    {
+      "name": "gst-discoverer-1.0",
+      "package": "gst-plugins-base",
+      "path": "/data/data/com.termux/files/usr/bin/gst-discoverer-1.0",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^gst$|^gst-",
+      "category": "multimedia",
+      "description": "GStreamer base plug-ins"
+    },
+    {
+      "name": "aldebug",
+      "package": "openal-soft",
+      "path": "/data/data/com.termux/files/usr/bin/aldebug",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^openal$|^openal-",
+      "category": "multimedia",
+      "description": "Software implementation of the OpenAL API"
+    },
+    {
+      "name": "spa-resample",
+      "package": "pipewire",
+      "path": "/data/data/com.termux/files/usr/bin/spa-resample",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^pipewire$|^pipewire-",
+      "category": "multimedia",
+      "description": "A server and user space API to deal with multimedia pipelines"
+    },
+    {
+      "name": "gst-transcoder-1.0",
+      "package": "gst-plugins-bad",
+      "path": "/data/data/com.termux/files/usr/bin/gst-transcoder-1.0",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^gst$|^gst-",
+      "category": "multimedia",
+      "description": "GStreamer Bad Plug-ins"
+    },
+    {
+      "name": "wpctl",
+      "package": "pipewire",
+      "path": "/data/data/com.termux/files/usr/bin/wpctl",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^pipewire$|^pipewire-",
+      "category": "multimedia",
+      "description": "A server and user space API to deal with multimedia pipelines"
+    },
+    {
+      "name": "wpexec",
+      "package": "pipewire",
+      "path": "/data/data/com.termux/files/usr/bin/wpexec",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^pipewire$|^pipewire-",
+      "category": "multimedia",
+      "description": "A server and user space API to deal with multimedia pipelines"
+    },
+    {
+      "name": "pacmd",
+      "package": "pulseaudio",
+      "path": "/data/data/com.termux/files/usr/bin/pacmd",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^pulseaudio$|^pulseaudio-",
+      "category": "multimedia",
+      "description": "A featureful, general-purpose sound server"
+    },
+    {
+      "name": "pasuspender",
+      "package": "pulseaudio",
+      "path": "/data/data/com.termux/files/usr/bin/pasuspender",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^pulseaudio$|^pulseaudio-",
+      "category": "multimedia",
+      "description": "A featureful, general-purpose sound server"
+    },
+    {
+      "name": "lv2_validate",
+      "package": "lv2",
+      "path": "/data/data/com.termux/files/usr/bin/lv2_validate",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^lv2$|^lv2-",
+      "category": "multimedia",
+      "description": "A plugin standard for audio systems"
+    },
+    {
+      "name": "pw-loopback",
+      "package": "pipewire",
+      "path": "/data/data/com.termux/files/usr/bin/pw-loopback",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^pipewire$|^pipewire-",
+      "category": "multimedia",
+      "description": "A server and user space API to deal with multimedia pipelines"
+    },
+    {
+      "name": "spa-monitor",
+      "package": "pipewire",
+      "path": "/data/data/com.termux/files/usr/bin/spa-monitor",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^pipewire$|^pipewire-",
+      "category": "multimedia",
+      "description": "A server and user space API to deal with multimedia pipelines"
+    },
+    {
+      "name": "gst-play-1.0",
+      "package": "gst-plugins-base",
+      "path": "/data/data/com.termux/files/usr/bin/gst-play-1.0",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^gst$|^gst-",
+      "category": "multimedia",
+      "description": "GStreamer base plug-ins"
+    },
+    {
+      "name": "pw-metadata",
+      "package": "pipewire",
+      "path": "/data/data/com.termux/files/usr/bin/pw-metadata",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^pipewire$|^pipewire-",
+      "category": "multimedia",
+      "description": "A server and user space API to deal with multimedia pipelines"
+    },
+    {
+      "name": "gst-device-monitor-1.0",
+      "package": "gst-plugins-base",
+      "path": "/data/data/com.termux/files/usr/bin/gst-device-monitor-1.0",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^gst$|^gst-",
+      "category": "multimedia",
+      "description": "GStreamer base plug-ins"
+    },
+    {
+      "name": "pw-top",
+      "package": "pipewire",
+      "path": "/data/data/com.termux/files/usr/bin/pw-top",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^pipewire$|^pipewire-",
+      "category": "multimedia",
+      "description": "A server and user space API to deal with multimedia pipelines"
+    },
+    {
+      "name": "pipewire",
+      "package": "pipewire",
+      "path": "/data/data/com.termux/files/usr/bin/pipewire",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^pipewire$|^pipewire-",
+      "category": "multimedia",
+      "description": "A server and user space API to deal with multimedia pipelines"
+    },
+    {
+      "name": "rubberband-r3",
+      "package": "rubberband",
+      "path": "/data/data/com.termux/files/usr/bin/rubberband-r3",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^rubberband$|^rubberband-",
+      "category": "multimedia",
+      "description": "An audio time-stretching and pitch-shifting library and utility program"
+    },
+    {
+      "name": "sdl2-config",
+      "package": "sdl2",
+      "path": "/data/data/com.termux/files/usr/bin/sdl2-config",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^sdl2$|^sdl2-",
+      "category": "multimedia",
+      "description": "A library for portable low-level access to a video framebuffer, audio output, mouse, and keyboard (version 2)"
+    },
+    {
+      "name": "allafplay",
+      "package": "openal-soft",
+      "path": "/data/data/com.termux/files/usr/bin/allafplay",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^openal$|^openal-",
+      "category": "multimedia",
+      "description": "Software implementation of the OpenAL API"
+    },
+    {
+      "name": "alrecord",
+      "package": "openal-soft",
+      "path": "/data/data/com.termux/files/usr/bin/alrecord",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^openal$|^openal-",
+      "category": "multimedia",
+      "description": "Software implementation of the OpenAL API"
+    },
+    {
+      "name": "SvtAv1EncApp",
+      "package": "svt-av1",
+      "path": "/data/data/com.termux/files/usr/bin/SvtAv1EncApp",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^svt$|^svt-",
+      "category": "multimedia",
+      "description": "Scalable Video Technology for AV1 (SVT-AV1 Encoder and Decoder)"
+    },
+    {
+      "name": "pw-cat",
+      "package": "pipewire",
+      "path": "/data/data/com.termux/files/usr/bin/pw-cat",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^pipewire$|^pipewire-",
+      "category": "multimedia",
+      "description": "A server and user space API to deal with multimedia pipelines"
+    },
+    {
+      "name": "pw-cli",
+      "package": "pipewire",
+      "path": "/data/data/com.termux/files/usr/bin/pw-cli",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^pipewire$|^pipewire-",
+      "category": "multimedia",
+      "description": "A server and user space API to deal with multimedia pipelines"
+    },
+    {
+      "name": "wireplumber",
+      "package": "pipewire",
+      "path": "/data/data/com.termux/files/usr/bin/wireplumber",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^pipewire$|^pipewire-",
+      "category": "multimedia",
+      "description": "A server and user space API to deal with multimedia pipelines"
+    },
+    {
+      "name": "ffmpeg",
+      "package": "ffmpeg",
+      "path": "/data/data/com.termux/files/usr/bin/ffmpeg",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "category": "multimedia",
+      "description": "Tools and libraries to manipulate a wide range of multimedia formats and protocols"
+    },
+    {
+      "name": "pactl",
+      "package": "pulseaudio",
+      "path": "/data/data/com.termux/files/usr/bin/pactl",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^pulseaudio$|^pulseaudio-",
+      "category": "multimedia",
+      "description": "A featureful, general-purpose sound server"
+    },
+    {
+      "name": "spa-inspect",
+      "package": "pipewire",
+      "path": "/data/data/com.termux/files/usr/bin/spa-inspect",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^pipewire$|^pipewire-",
+      "category": "multimedia",
+      "description": "A server and user space API to deal with multimedia pipelines"
+    },
+    {
+      "name": "pw-config",
+      "package": "pipewire",
+      "path": "/data/data/com.termux/files/usr/bin/pw-config",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^pipewire$|^pipewire-",
+      "category": "multimedia",
+      "description": "A server and user space API to deal with multimedia pipelines"
+    },
+    {
+      "name": "altonegen",
+      "package": "openal-soft",
+      "path": "/data/data/com.termux/files/usr/bin/altonegen",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^openal$|^openal-",
+      "category": "multimedia",
+      "description": "Software implementation of the OpenAL API"
+    },
+    {
+      "name": "pw-dump",
+      "package": "pipewire",
+      "path": "/data/data/com.termux/files/usr/bin/pw-dump",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^pipewire$|^pipewire-",
+      "category": "multimedia",
+      "description": "A server and user space API to deal with multimedia pipelines"
+    },
+    {
+      "name": "pw-mon",
+      "package": "pipewire",
+      "path": "/data/data/com.termux/files/usr/bin/pw-mon",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^pipewire$|^pipewire-",
+      "category": "multimedia",
+      "description": "A server and user space API to deal with multimedia pipelines"
+    },
+    {
+      "name": "pw-mididump",
+      "package": "pipewire",
+      "path": "/data/data/com.termux/files/usr/bin/pw-mididump",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^pipewire$|^pipewire-",
+      "category": "multimedia",
+      "description": "A server and user space API to deal with multimedia pipelines"
+    },
+    {
+      "name": "pw-v4l2",
+      "package": "pipewire",
+      "path": "/data/data/com.termux/files/usr/bin/pw-v4l2",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^pipewire$|^pipewire-",
+      "category": "multimedia",
+      "description": "A server and user space API to deal with multimedia pipelines"
+    },
+    {
+      "name": "openal-info",
+      "package": "openal-soft",
+      "path": "/data/data/com.termux/files/usr/bin/openal-info",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^openal$|^openal-",
+      "category": "multimedia",
+      "description": "Software implementation of the OpenAL API"
+    },
+    {
+      "name": "pw-link",
+      "package": "pipewire",
+      "path": "/data/data/com.termux/files/usr/bin/pw-link",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^pipewire$|^pipewire-",
+      "category": "multimedia",
+      "description": "A server and user space API to deal with multimedia pipelines"
+    },
+    {
+      "name": "pacat",
+      "package": "pulseaudio",
+      "path": "/data/data/com.termux/files/usr/bin/pacat",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^pulseaudio$|^pulseaudio-",
+      "category": "multimedia",
+      "description": "A featureful, general-purpose sound server"
+    },
+    {
+      "name": "termux-microphone-record",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-microphone-record",
+      "source": "apt",
+      "tags": [
+        "multimedia",
+        "termux_api"
+      ],
+      "category": "multimedia",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "pw-container",
+      "package": "pipewire",
+      "path": "/data/data/com.termux/files/usr/bin/pw-container",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^pipewire$|^pipewire-",
+      "category": "multimedia",
+      "description": "A server and user space API to deal with multimedia pipelines"
+    },
+    {
+      "name": "pw-profiler",
+      "package": "pipewire",
+      "path": "/data/data/com.termux/files/usr/bin/pw-profiler",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^pipewire$|^pipewire-",
+      "category": "multimedia",
+      "description": "A server and user space API to deal with multimedia pipelines"
+    },
+    {
+      "name": "pw-dot",
+      "package": "pipewire",
+      "path": "/data/data/com.termux/files/usr/bin/pw-dot",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^pipewire$|^pipewire-",
+      "category": "multimedia",
+      "description": "A server and user space API to deal with multimedia pipelines"
+    },
+    {
+      "name": "termux-camera-photo",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-camera-photo",
+      "source": "apt",
+      "tags": [
+        "multimedia",
+        "termux_api"
+      ],
+      "category": "multimedia",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "pulseaudio",
+      "package": "pulseaudio",
+      "path": "/data/data/com.termux/files/usr/bin/pulseaudio",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^pulseaudio$|^pulseaudio-",
+      "category": "multimedia",
+      "description": "A featureful, general-purpose sound server"
+    },
+    {
+      "name": "pa-info",
+      "package": "pulseaudio",
+      "path": "/data/data/com.termux/files/usr/bin/pa-info",
+      "source": "apt",
+      "tags": [
+        "multimedia"
+      ],
+      "auto_tag_source": "auto:^pulseaudio$|^pulseaudio-",
+      "category": "multimedia",
+      "description": "A featureful, general-purpose sound server"
+    }
+  ]
+}

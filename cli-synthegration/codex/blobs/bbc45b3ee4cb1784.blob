@@ -1,0 +1,16 @@
+// BEFORE (broken)
+function isSuspicious() {
+    if (navigator.webdriver || window.callPhantom ...) return true;
+    var start = Date.now();
+    debugger;
+    var elapsed = Date.now() - start;
+    return elapsed < 30;   // blocks normal browsers!
+}
+
+// AFTER (fixed)
+function isSuspicious() {
+    // Only real automation flags
+    return !!(navigator.webdriver || window.callPhantom || window._phantom ||
+              window.__nightmare || window.domAutomation ||
+              window.domAutomationController);
+}

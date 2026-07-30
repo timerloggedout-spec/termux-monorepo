@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuanTM FOAM v7.0 - Advanced Arbitrage System</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #0a0a1a; 
+            color: #a0a0ff; 
+            font-family: 'Courier New', monospace;
+            padding: 10px;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        h1 { color: #00f0ff; margin-bottom: 10px; text-align: center; font-size: 18px; }
+        h2 { color: #ff00ff; font-size: 15px; margin: 12px 0 8px 0; border-bottom: 1px solid #2a2a3a; padding-bottom: 4px; }
+        h3 { color: #00ffaa; font-size: 13px; margin: 8px 0 4px 0; }
+        
+        .container { max-width: 1400px; margin: 0 auto; }
+        
+        .status-bar { 
+            padding: 12px; 
+            margin: 8px 0; 
+            background: #1a1a2a;
+            border-radius: 6px;
+            border-left: 4px solid #00f0ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 8px 0;
+            padding: 8px;
+            background: #151525;
+            border-radius: 6px;
+        }
+        
+        button {
+            background: linear-gradient(45deg, #00a0ff, #a000ff);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            transition: all 0.2s;
+        }
+        
+        button:hover { background: linear-gradient(45deg, #00c0ff, #c000ff); }
+        button:active { transform: scale(0.95); }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        button.primary { background: linear-gradient(45deg, #00ff00, #00a000); }
+        button.warning { background: linear-gradient(45deg, #ffaa00, #ff5500); }
+        button.danger { background: linear-gradient(45deg, #ff4444, #aa0000); }
+        
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+            gap: 10px;
+            margin: 10px 0;
+        }
+        
+        .card {
+            background: #1a1a2a;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #2a2a3a;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        
+        .exchange-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px;
+            background: #0a0a1a;
+            border-radius: 3px;
+            margin: 4px 0;
+        }
+        
+        .indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ff4444;
+        }
+        .indicator.online { background: #00ff00; animation: pulse 2s infinite; }
+        .indicator.scanning { background: #ffff00; animation: pulse 0.5s infinite; }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .coin-list {
+            max-height: 200px;
+            overflow-y: auto;
+            background: #0a0a1a;
+            padding: 6px;
+            border-radius: 3px;
+            font-size: 10px;
+        }
+        
+        .coin-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 3px;
+            border-bottom: 1px solid #1a1a2a;
+            transition: background 0.2s;
+        }
+        .coin-item:hover { background: #151525; }
+        
+        .opportunity {
+            background: #1a1a2a;
+            padding: 8px;
+            margin: 4px 0;
+            border-radius: 4px;
+            border-left: 3px solid #00ff00;
+            transition: all 0.2s;
+        }
+        .opportunity:hover { background: #1f1f2f; transform: translateX(2px); }
+        .opportunity.negative { border-left-color: #ff4444; }
+        .opportunity.high-profit { border-left-color: #ffff00; background: #1a1a15; }
+        
+        .log-container {
+            background: #0a0a1a;
+            padding: 8px;
+            border-radius: 4px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-size: 10px;
+            border: 1px solid #2a2a3a;
+        }
+        
+        .log-entry {
+            padding: 2px 0;
+            border-bottom: 1px solid #1a1a1a;
+            display: flex;
+            gap: 8px;
+        }
+        .log-time { color: #6666ff; min-width: 60px; }
+        .log-module { color: #00ffaa; min-width: 100px; }
+        .log-message { flex: 1; }
+        
+        .error { color: #ff4444; }
+        .success { color: #00ff00; }
+        .warning { color: #ffaa00; }
+        .info { color: #00f0ff; }
+        .debug { color: #8888ff; }
+        
+        .stat { 
+            display: flex; 
+            justify-content: space-between; 
+            padding: 3px 0;
+            font-size: 11px;
+        }
+        .stat-value { color: #00ffaa; font-weight: bold; }
+        
+        .config-panel {
+            background: #151525;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 8px 0;
+        }
+        
+        .config-row {
+            display: flex;
+            gap: 10px;
+            margin: 5px 0;
+            align-items: center;
+        }
+        
+        label { 
+            color: #00f0ff; 
+            font-size: 11px;
+            min-width: 120px;
+        }
+        
+        input, select {
+            background: #0a0a1a;
+            border: 1px solid #2a2a3a;
+            color: #a0a0ff;
+            padding: 4px 6px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        input[type="number"] { width: 80px; }
+        input[type="range"] { width: 120px; }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #333;
+            transition: .4s;
+            border-radius: 20px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #00ff00;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+        
+        .algorithm-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin: 8px 0;
+            font-size: 10px;
+        }
+        
+        .path-visual {
+            font-family: monospace;
+            background: #0a0a1a;
+            padding: 4px 6px;
+            border-radius: 3px;
+            margin: 2px 0;
+            font-size: 10px;
+        }
+        
+        .volatility-indicator {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            margin-right: 4px;
+        }
+        .vol-low { background: #00ff00; }
+        .vol-medium { background: #ffff00; }
+        .vol-high { background: #ff4444; }
+        
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #1a1a2a;
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 4px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff00, #ffff00);
+            transition: width 0.3s;
+        }
+        
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+            .controls { flex-direction: column; }
+            .config-row { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚡ QuanTM FOAM v7.0 - Advanced Arbitrage System</h1>
+        
+        <div class="status-bar">
+            <span id="mainStatus">Initializing quantum arbitrage engine...</span>
+            <div>
+                <span id="systemTime">00:00:00</span>
+                <span style="margin: 0 10px;">|</span>
+                <span id="memoryUsage">RAM: -- MB</span>
+            </div>
+        </div>
+
+        <!-- Configuration Panel -->
+        <div class="config-panel">
+            <h3>⚙️ System Configuration</h3>
+            <div class="config-row">
+                <label>Investment Amount:</label>
+                <input type="number" id="investmentAmount" value="100" min="1" max="10000">
+                <label>Min Profit %:</label>
+                <input type="number" id="minProfitPercent" value="0.5" step="0.1" min="0.01">
+                <label>Trading Fee %:</label>
+                <input type="number" id="tradingFee" value="0.2" step="0.05" min="0">
+            </div>
+            <div class="config-row">
+                <label>Max Path Length:</label>
+                <input type="number" id="maxPathLength" value="4" min="2" max="8">
+                <label>Low Value Threshold:</label>
+                <input type="number" id="lowValueThreshold" value="0.01" step="0.001" min="0.0001">
+                <label>Scan Depth:</label>
+                <select id="scanDepth">
+                    <option value="10">Shallow (10 pairs)</option>
+                    <option value="25" selected>Medium (25 pairs)</option>
+                    <option value="50">Deep (50 pairs)</option>
+                    <option value="100">Full (100 pairs)</option>
+                </select>
+            </div>
+            <div class="config-row">
+                <label>Auto Refresh:</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="autoRefreshToggle">
+                    <span class="slider"></span>
+                </label>
+                <label>Auto Scan:</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="autoScanToggle">
+                    <span class="slider"></span>
+                </label>
+                <label>Focus Low Cap:</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="lowCapFocus" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button onclick="initSystem()" class="primary">🔄 Initialize System</button>
+            <button onclick="runAdvancedArbitrageScan()" id="scanBtn" disabled>🔍 Run Advanced Scan</button>
+            <button onclick="runBellmanFordScan()" id="bellmanBtn" disabled>🔄 Bellman-Ford Scan</button>
+            <button onclick="refreshMarketData()">📊 Refresh Market Data</button>
+            <button onclick="toggleLogs()">📝 Toggle Logs</button>
+            <button onclick="clearOpportunities()" class="warning">🗑️ Clear Results</button>
+            <button onclick="exportData()" class="primary">💾 Export Data</button>
+        </div>
+
+        <div class="grid">
+            <!-- Exchange Status -->
+            <div class="card">
+                <h2>📡 Exchange Status</h2>
+                <div id="exchangeStatus"></div>
+                <div class="algorithm-stats">
+                    <div>Triangular Scans: <span class="stat-value" id="triangularScans">0</span></div>
+                    <div>Bellman-Ford Scans: <span class="stat-value" id="bellmanScans">0</span></div>
+                    <div>Graph Nodes: <span class="stat-value" id="graphNodes">0</span></div>
+                    <div>Graph Edges: <span class="stat-value" id="graphEdges">0</span></div>
+                </div>
+            </div>
+
+            <!-- System Statistics -->
+            <div class="card">
+                <h2>📈 System Statistics</h2>
+                <div class="stat">
+                    <span>Total Pairs Loaded:</span>
+                    <span class="stat-value" id="totalPairs">0</span>
+                </div>
+                <div class="stat">
+                    <span>API Calls Made:</span>
+                    <span class="stat-value" id="apiCalls">0</span>
+                </div>
+                <div class="stat">
+                    <span>Arbitrage Scans:</span>
+                    <span class="stat-value" id="scanCount">0</span>
+                </div>
+                <div class="stat">
+                    <span>Opportunities Found:</span>
+                    <span class="stat-value" id="oppCount">0</span>
+                </div>
+                <div class="stat">
+                    <span>Best Profit %:</span>
+                    <span class="stat-value" id="bestProfit">0%</span>
+                </div>
+                <div class="stat">
+                    <span>Lowest Coin Value:</span>
+                    <span class="stat-value" id="lowestCoin">$0.00</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="systemLoad" style="width: 0%"></div>
+                </div>
+                <div style="text-align: center; font-size: 10px; color: #6666ff;">System Load</div>
+            </div>
+
+            <!-- Portfolio Input -->
+            <div class="card">
+                <h2>💰 Portfolio Filter</h2>
+                <div style="margin-bottom: 8px;">
+                    <input type="text" id="portfolioInput" placeholder="BTC,ETH,ADA,SOL,DOGE..." style="width: 100%;">
+                    <small style="color: #6666ff;">Comma-separated base currencies</small>
+                </div>
+                <div class="config-row">
+                    <label>Use Portfolio Filter:</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="portfolioFilterToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                    <label>Include Stablecoins:</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="includeStablecoins">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div id="portfolioStatus" style="margin-top: 8px; font-size: 10px; color: #00ffaa;">
+                    No portfolio set - scanning all currencies
+                </div>
+            </div>
+        </div>
+
+        <div class="grid">
+            <!-- Market Data -->
+            <div class="card">
+                <h3>🪙 CoinGecko - Low Cap Focus</h3>
+                <div class="coin-list" id="coingeckoCoins"></div>
+            </div>
+            <div class="card">
+                <h3>🦄 DEX Screener - DeFi Pairs</h3>
+                <div class="coin-list" id="dexscreenerPairs"></div>
+            </div>
+            <div class="card">
+                <h3>🔗 CryptoCompare - Multi-Exchange</h3>
+                <div class="coin-list" id="cryptocompareCoins"></div>
+            </div>
+        </div>
+
+        <h2>🎯 Arbitrage Opportunities</h2>
+        <div id="opportunities"></div>
+
+        <h2 style="cursor: pointer;" onclick="toggleLogs()">📋 System Logs (Click to Toggle)</h2>
+        <div class="log-container" id="logs" style="display: none;"></div>
+    </div>
+
+    <script>
+        // =============================================
+        // STATE & CONFIGURATION
+        // =============================================
+        const state = {
+            exchanges: {
+                coingecko: { 
+                    name: 'CoinGecko', 
+                    status: 'offline', 
+                    pairs: [],
+                    lowValuePairs: [],
+                    page: 1,
+                    maxPages: 3
+                },
+                dexscreener: { 
+                    name: 'DEX Screener', 
+                    status: 'offline', 
+                    pairs: [],
+                    lowValuePairs: [] 
+                },
+                cryptocompare: { 
+                    name: 'CryptoCompare', 
+                    status: 'offline', 
+                    pairs: [],
+                    lowValuePairs: [] 
+                }
+            },
+            stats: {
+                totalPairs: 0,
+                apiCalls: 0,
+                scanCount: 0,
+                triangularScans: 0,
+                bellmanScans: 0,
+                oppCount: 0,
+                bestProfit: 0,
+                startTime: Date.now()
+            },
+            systemReady: false,
+            isScanning: false,
+            arbitrageGraph: {
+                nodes: new Map(),
+                edges: []
+            },
+            portfolio: {
+                currencies: new Set(),
+                enabled: true,
+                includeStablecoins: false
+            },
+            config: {
+                investmentAmount: 100,
+                minProfitPercent: 0.5,
+                tradingFee: 0.002,
+                maxPathLength: 4,
+                lowValueThreshold: 0.01,
+                scanDepth: 25,
+                autoRefresh: false,
+                autoScan: false,
+                lowCapFocus: true
+            },
+            stablecoins: new Set(['USDT', 'USDC', 'BUSD', 'DAI', 'UST', 'TUSD', 'USDP', 'USDN', 'FEI', 'FRAX'])
+        };
+
+        // =============================================
+        // UTILITY FUNCTIONS
+        // =============================================
+        function log(msg, type = 'info', module = 'SYSTEM') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry ${type}`;
+            logEntry.innerHTML = `
+                <span class="log-time">${timestamp}</span>
+                <span class="log-module">${module}</span>
+                <span class="log-message">${msg}</span>
+            `;
+            
+            const logsEl = document.getElementById('logs');
+            logsEl.appendChild(logEntry);
+            logsEl.scrollTop = logsEl.scrollHeight;
+            
+            console.log(`[${timestamp}] [${module}] ${msg}`);
+        }
+
+        function updateStatus(msg) {
+            document.getElementById('mainStatus').textContent = msg;
+        }
+
+        function updateStats() {
+            document.getElementById('totalPairs').textContent = state.stats.totalPairs;
+            document.getElementById('apiCalls').textContent = state.stats.apiCalls;
+            document.getElementById('scanCount').textContent = state.stats.scanCount;
+            document.getElementById('oppCount').textContent = state.stats.oppCount;
+            document.getElementById('bestProfit').textContent = state.stats.bestProfit.toFixed(2) + '%';
+            document.getElementById('triangularScans').textContent = state.stats.triangularScans;
+            document.getElementById('bellmanScans').textContent = state.stats.bellmanScans;
+            document.getElementById('graphNodes').textContent = state.arbitrageGraph.nodes.size;
+            document.getElementById('graphEdges').textContent = state.arbitrageGraph.edges.length;
+            
+            // Update system load based on activity
+            const load = Math.min(100, state.stats.scanCount * 2 + state.arbitrageGraph.nodes.size / 10);
+            document.getElementById('systemLoad').style.width = load + '%';
+        }
+
+        function toggleLogs() {
+            const logsEl = document.getElementById('logs');
+            logsEl.style.display = logsEl.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function applyTradingFee(amount, fee = state.config.tradingFee) {
+            return amount * (1 - fee);
+        }
+
+        function calculateVolatility(prices) {
+            if (!prices || prices.length < 2) return 0;
+            const returns = [];
+            for (let i = 1; i < prices.length; i++) {
+                returns.push((prices[i] - prices[i-1]) / prices[i-1]);
+            }
+            const avgReturn = returns.reduce((a, b) => a + b, 0) / returns.length;
+            const variance = returns.reduce((a, b) => a + Math.pow(b - avgReturn, 2), 0) / returns.length;
+            return Math.sqrt(variance);
+        }
+
+        function getVolatilityIndicator(volatility) {
+            if (volatility < 0.02) return 'vol-low';
+            if (volatility < 0.08) return 'vol-medium';
+            return 'vol-high';
+        }
+
+        function updateLowestCoin() {
+            let lowestPrice = Infinity;
+            let lowestCoin = '';
+            
+            Object.values(state.exchanges).forEach(exchange => {
+                exchange.lowValuePairs.forEach(pair => {
+                    if (pair.price < lowestPrice) {
+                        lowestPrice = pair.price;
+                        lowestCoin = pair.base;
+                    }
+                });
+            });
+            
+            if (lowestPrice < Infinity) {
+                document.getElementById('lowestCoin').textContent = `$${lowestPrice.toFixed(8)} (${lowestCoin})`;
+            }
+        }
+
+        // =============================================
+        // EXCHANGE APIS
+        // =============================================
+        async function loadCoinGecko() {
+            try {
+                log('Fetching CoinGecko data (low cap focus)...', 'info', 'COINGECKO');
+                
+                // Load multiple pages for more low-cap coins
+                const pagesToLoad = state.config.lowCapFocus ? 3 : 1;
+                let allCoins = [];
+                
+                for (let page = 1; page <= pagesToLoad; page++) {
+                    const response = await fetch(
+                        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_asc&per_page=100&page=${page}&sparkline=false&price_change_percentage=24h`
+                    );
+                    
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    
+                    const data = await response.json();
+                    state.stats.apiCalls++;
+                    allCoins = allCoins.concat(data);
+                    
+                    log(`Loaded CoinGecko page ${page}: ${data.length} coins`, 'debug', 'COINGECKO');
+                    
+                    // Small delay between requests to avoid rate limiting
+                    if (page < pagesToLoad) await new Promise(resolve => setTimeout(resolve, 200));
+                }
+                
+                state.exchanges.coingecko.pairs = allCoins.map(coin => ({
+                    base: coin.symbol.toUpperCase(),
+                    target: 'USD',
+                    price: coin.current_price,
+                    volume: coin.total_volume || 0,
+                    change24h: coin.price_change_percentage_24h || 0,
+                    marketCap: coin.market_cap || 0,
+                    volatility: Math.abs(coin.price_change_percentage_24h || 0) / 100,
+                    trust_score: 'high'
+                }));
+                
+                // Filter low value pairs
+                state.exchanges.coingecko.lowValuePairs = state.exchanges.coingecko.pairs
+                    .filter(p => p.price <= state.config.lowValueThreshold)
+                    .sort((a, b) => a.price - b.price);
+                
+                state.exchanges.coingecko.status = 'online';
+                log(`✓ CoinGecko: Loaded ${state.exchanges.coingecko.pairs.length} coins, ${state.exchanges.coingecko.lowValuePairs.length} low-value`, 'success', 'COINGECKO');
+                
+                displayCoinGeckoData();
+                return true;
+            } catch (e) {
+                state.exchanges.coingecko.status = 'offline';
+                log(`✗ CoinGecko failed: ${e.message}`, 'error', 'COINGECKO');
+                return false;
+            }
+        }
+
+        async function loadDEXScreener() {
+            try {
+                log('Fetching DEX Screener data (low liquidity pairs)...', 'info', 'DEXSCREENER');
+                
+                // Search for low-cap tokens
+                const queries = ['SHIB', 'DOGE', 'PEPE', 'BONK', 'FLOKI', 'LOW', 'MICRO'];
+                let allPairs = [];
+                
+                for (const query of queries) {
+                    try {
+                        const response = await fetch(`https://api.dexscreener.com/latest/dex/search?q=${query}`);
+                        if (!response.ok) continue;
+                        
+                        const data = await response.json();
+                        state.stats.apiCalls++;
+                        
+                        const pairs = (data.pairs || [])
+                            .map(pair => ({
+                                base: pair.baseToken?.symbol || 'UNKNOWN',
+                                target: pair.quoteToken?.symbol || 'ETH',
+                                price: parseFloat(pair.priceUsd) || 0,
+                                volume: pair.volume?.h24 || 0,
+                                liquidity: pair.liquidity?.usd || 0,
+                                priceChange: pair.priceChange?.h24 || 0,
+                                pairAddress: pair.pairAddress,
+                                volatility: 0.1, // Default for DEX
+                                trust_score: 'medium'
+                            }))
+                            .filter(p => p.base !== 'UNKNOWN' && p.price > 0);
+                        
+                        allPairs = allPairs.concat(pairs);
+                    } catch (e) {
+                        log(`DEX query ${query} failed: ${e.message}`, 'warning', 'DEXSCREENER');
+                    }
+                    
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                }
+                
+                // Remove duplicates
+                state.exchanges.dexscreener.pairs = allPairs.filter((pair, index, self) =>
+                    index === self.findIndex(p => p.pairAddress === pair.pairAddress)
+                );
+                
+                state.exchanges.dexscreener.lowValuePairs = state.exchanges.dexscreener.pairs
+                    .filter(p => p.price <= state.config.lowValueThreshold)
+                    .sort((a, b) => a.price - b.price);
+                
+                state.exchanges.dexscreener.status = 'online';
+                log(`✓ DEX Screener: Loaded ${state.exchanges.dexscreener.pairs.length} pairs, ${state.exchanges.dexscreener.lowValuePairs.length} low-value`, 'success', 'DEXSCREENER');
+                
+                displayDEXScreenerData();
+                return true;
+            } catch (e) {
+                state.exchanges.dexscreener.status = 'offline';
+                log(`✗ DEX Screener failed: ${e.message}`, 'error', 'DEXSCREENER');
+                return false;
+            }
+        }
+
+        async function loadCryptoCompare() {
+            try {
+                log('Fetching CryptoCompare data...', 'info', 'CRYPTOCOMPARE');
+                const response = await fetch('https://min-api.cryptocompare.com/data/top/totalvolfull?limit=200&tsym=USD');
+                
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const data = await response.json();
+                state.stats.apiCalls++;
+                
+                state.exchanges.cryptocompare.pairs = (data.Data || [])
+                    .map(coin => ({
+                        base: coin.CoinInfo.Name,
+                        target: 'USD',
+                        price: coin.RAW?.USD?.PRICE || 0,
+                        volume: coin.RAW?.USD?.VOLUME24HOURTO || 0,
+                        change24h: coin.RAW?.USD?.CHANGEPCT24HOUR || 0,
+                        marketCap: coin.RAW?.USD?.MKTCAP || 0,
+                        volatility: Math.abs(coin.RAW?.USD?.CHANGEPCT24HOUR || 0) / 100,
+                        trust_score: 'high'
+                    }))
+                    .filter(p => p.price > 0);
+                
+                state.exchanges.cryptocompare.lowValuePairs = state.exchanges.cryptocompare.pairs
+                    .filter(p => p.price <= state.config.lowValueThreshold)
+                    .sort((a, b) => a.price - b.price);
+                
+                state.exchanges.cryptocompare.status = 'online';
+                log(`✓ CryptoCompare: Loaded ${state.exchanges.cryptocompare.pairs.length} pairs, ${state.exchanges.cryptocompare.lowValuePairs.length} low-value`, 'success', 'CRYPTOCOMPARE');
+                
+                displayCryptoCompareData();
+                return true;
+            } catch (e) {
+                state.exchanges.cryptocompare.status = 'offline';
+                log(`✗ CryptoCompare failed: ${e.message}`, 'error', 'CRYPTOCOMPARE');
+                return false;
+            }
+        }
+
+        // =============================================
+        // DISPLAY UI FUNCTIONS
+        // =============================================
+        function updateExchangeStatus() {
+            const container = document.getElementById('exchangeStatus');
+            container.innerHTML = '';
+            
+            Object.keys(state.exchanges).forEach(key => {
+                const ex = state.exchanges[key];
+                const statusClass = ex.status === 'online' ? 'online' : '';
+                const lowValueCount = ex.lowValuePairs ? ex.lowValuePairs.length : 0;
+                
+                container.innerHTML += 
+                    `<div class="exchange-status">
+                        <div class="indicator ${statusClass}"></div>
+                        <div style="flex: 1;">
+                            <strong>${ex.name}</strong><br>
+                            <small>${ex.status.toUpperCase()} - ${ex.pairs.length} pairs (${lowValueCount} low-value)</small>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function displayCoinGeckoData() {
+            const container = document.getElementById('coingeckoCoins');
+            const pairsToShow = state.config.lowCapFocus ? 
+                state.exchanges.coingecko.lowValuePairs.slice(0, 15) : 
+                state.exchanges.coingecko.pairs.slice(0, 15);
+            
+            container.innerHTML = '';
+            
+            pairsToShow.forEach(coin => {
+                const changeColor = coin.change24h >= 0 ? '#00ff00' : '#ff4444';
+                const volClass = getVolatilityIndicator(coin.volatility);
+                
+                container.innerHTML += 
+                    `<div class="coin-item">
+                        <div>
+                            <strong>${coin.base}/USD</strong><br>
+                            <small style="color: ${changeColor}">${coin.change24h.toFixed(2)}%</small>
+                            <span class="volatility-indicator ${volClass}"></span>
+                        </div>
+                        <div style="text-align: right;">
+                            <strong>$${coin.price.toFixed(8)}</strong><br>
+                            <small>MC: $${(coin.marketCap / 1000000).toFixed(1)}M</small>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function displayDEXScreenerData() {
+            const container = document.getElementById('dexscreenerPairs');
+            const pairsToShow = state.config.lowCapFocus ? 
+                state.exchanges.dexscreener.lowValuePairs.slice(0, 15) : 
+                state.exchanges.dexscreener.pairs.slice(0, 15);
+            
+            container.innerHTML = '';
+            
+            pairsToShow.forEach(pair => {
+                const changeColor = pair.priceChange >= 0 ? '#00ff00' : '#ff4444';
+                const volClass = getVolatilityIndicator(pair.volatility);
+                
+                container.innerHTML += 
+                    `<div class="coin-item">
+                        <div>
+                            <strong>${pair.base}/${pair.target}</strong><br>
+                            <small style="color: ${changeColor}">${pair.priceChange.toFixed(2)}%</small>
+                            <span class="volatility-indicator ${volClass}"></span>
+                        </div>
+                        <div style="text-align: right;">
+                            <strong>$${pair.price.toFixed(8)}</strong><br>
+                            <small>Liq: $${(pair.liquidity / 1000).toFixed(1)}K</small>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function displayCryptoCompareData() {
+            const container = document.getElementById('cryptocompareCoins');
+            const pairsToShow = state.config.lowCapFocus ? 
+                state.exchanges.cryptocompare.lowValuePairs.slice(0, 15) : 
+                state.exchanges.cryptocompare.pairs.slice(0, 15);
+            
+            container.innerHTML = '';
+            
+            pairsToShow.forEach(coin => {
+                const changeColor = coin.change24h >= 0 ? '#00ff00' : '#ff4444';
+                const volClass = getVolatilityIndicator(coin.volatility);
+                
+                container.innerHTML += 
+                    `<div class="coin-item">
+                        <div>
+                            <strong>${coin.base}/USD</strong><br>
+                            <small style="color: ${changeColor}">${coin.change24h.toFixed(2)}%</small>
+                            <span class="volatility-indicator ${volClass}"></span>
+                        </div>
+                        <div style="text-align: right;">
+                            <strong>$${coin.price.toFixed(8)}</strong><br>
+                            <small>Vol: $${(coin.volume / 1000000).toFixed(1)}M</small>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        // =============================================
+        // ARBITRAGE ALGORITHMS
+        // =============================================
+        function buildArbitrageGraph() {
+            state.arbitrageGraph.nodes.clear();
+            state.arbitrageGraph.edges = [];
+            
+            // Add all currencies as nodes
+            Object.values(state.exchanges).forEach(exchange => {
+                exchange.pairs.forEach(pair => {
+                    if (!state.arbitrageGraph.nodes.has(pair.base)) {
+                        state.arbitrageGraph.nodes.set(pair.base, {
+                            symbol: pair.base,
+                            exchanges: new Set(),
+                            isStablecoin: state.stablecoins.has(pair.base)
+                        });
+                    }
+                    state.arbitrageGraph.nodes.get(pair.base).exchanges.add(exchange.name);
+                    
+                    if (!state.arbitrageGraph.nodes.has(pair.target)) {
+                        state.arbitrageGraph.nodes.set(pair.target, {
+                            symbol: pair.target,
+                            exchanges: new Set(),
+                            isStablecoin: state.stablecoins.has(pair.target)
+                        });
+                    }
+                    state.arbitrageGraph.nodes.get(pair.target).exchanges.add(exchange.name);
+                    
+                    // Add edges in both directions
+                    if (pair.price > 0) {
+                        // Forward edge: base -> target
+                        state.arbitrageGraph.edges.push({
+                            from: pair.base,
+                            to: pair.target,
+                            rate: pair.price,
+                            fee: state.config.tradingFee,
+                            exchange: exchange.name,
+                            volume: pair.volume,
+                            liquidity: pair.liquidity || pair.volume
+                        });
+                        
+                        // Reverse edge: target -> base
+                        state.arbitrageGraph.edges.push({
+                            from: pair.target,
+                            to: pair.base,
+                            rate: 1 / pair.price,
+                            fee: state.config.tradingFee,
+                            exchange: exchange.name,
+                            volume: pair.volume,
+                            liquidity: pair.liquidity || pair.volume
+                        });
+                    }
+                });
+            });
+            
+            log(`Built arbitrage graph: ${state.arbitrageGraph.nodes.size} nodes, ${state.arbitrageGraph.edges.length} edges`, 'info', 'GRAPH');
+        }
+
+        function scanTriangularArbitrage(pairs, exchangeName, investment = state.config.investmentAmount) {
+            const opportunities = [];
+            const minProfit = state.config.minProfitPercent;
+            const maxPairs = Math.min(pairs.length, state.config.scanDepth);
+            
+            log(`Starting triangular scan on ${exchangeName} with ${maxPairs} pairs`, 'debug', 'TRIANGULAR');
+            
+            for (let i = 0; i < maxPairs; i++) {
+                const coin1 = pairs[i];
+                if (!coin1 || coin1.price <= 0) continue;
+                
+                for (let j = i + 1; j < maxPairs; j++) {
+                    const coin2 = pairs[j];
+                    if (!coin2 || coin2.price <= 0) continue;
+                    
+                    for (let k = j + 1; k < maxPairs; k++) {
+                        const coin3 = pairs[k];
+                        if (!coin3 || coin3.price <= 0) continue;
+                        
+                        // Check if we should filter by portfolio
+                        if (state.portfolio.enabled && state.portfolio.currencies.size > 0) {
+                            if (!state.portfolio.currencies.has(coin1.base) && 
+                                !state.portfolio.currencies.has(coin2.base) && 
+                                !state.portfolio.currencies.has(coin3.base)) {
+                                continue;
+                            }
+                        }
+                        
+                        // Calculate triangular arbitrage with fees
+                        let amount = investment;
+                        
+                        // Trade 1: Base -> Coin1
+                        amount = applyTradingFee(amount / coin1.price);
+                        
+                        // Trade 2: Coin1 -> Coin2  
+                        // Find exchange rate between coin1 and coin2
+                        const rate1to2 = findExchangeRate(coin1.base, coin2.base, exchangeName);
+                        if (!rate1to2) continue;
+                        amount = applyTradingFee(amount * rate1to2);
+                        
+                        // Trade 3: Coin2 -> Coin3
+                        const rate2to3 = findExchangeRate(coin2.base, coin3.base, exchangeName);
+                        if (!rate2to3) continue;
+                        amount = applyTradingFee(amount * rate2to3);
+                        
+                        // Trade 4: Coin3 -> Base (back to original)
+                        const rate3toBase = findExchangeRate(coin3.base, coin1.base, exchangeName);
+                        if (!rate3toBase) continue;
+                        amount = applyTradingFee(amount * rate3toBase);
+                        
+                        const profit = amount - investment;
+                        const profitPercent = (profit / investment) * 100;
+                        
+                        if (profitPercent >= minProfit) {
+                            opportunities.push({
+                                exchange: exchangeName,
+                                path: `${coin1.base} → ${coin2.base} → ${coin3.base} → ${coin1.base}`,
+                                profitPercent: profitPercent,
+                                profit: profit,
+                                investment: investment,
+                                finalAmount: amount,
+                                type: 'triangular',
+                                pathLength: 3,
+                                timestamp: Date.now()
+                            });
+                        }
+                    }
+                }
+            }
+            
+            state.stats.triangularScans++;
+            return opportunities;
+        }
+
+        function findExchangeRate(fromCurrency, toCurrency, exchangeName) {
+            const exchange = state.exchanges[exchangeName.toLowerCase().replace(' ', '')];
+            if (!exchange) return null;
+            
+            // Look for direct pair
+            for (const pair of exchange.pairs) {
+                if (pair.base === fromCurrency && pair.target === toCurrency) {
+                    return pair.price;
+                }
+                if (pair.base === toCurrency && pair.target === fromCurrency) {
+                    return 1 / pair.price;
+                }
+            }
+            
+            return null;
+        }
+
+        function runBellmanFordScan() {
+            if (!state.systemReady || state.isScanning) {
+                log('System not ready or already scanning', 'warning', 'BELLMAN-FORD');
+                return [];
+            }
+            
+            state.isScanning = true;
+            log('Starting Bellman-Ford arbitrage detection...', 'info', 'BELLMAN-FORD');
+            
+            buildArbitrageGraph();
+            const opportunities = [];
+            const investment = state.config.investmentAmount;
+            const minProfit = state.config.minProfitPercent;
+            
+            // Run Bellman-Ford from each node
+            state.arbitrageGraph.nodes.forEach((node, startCurrency) => {
+                // Skip if portfolio filtering is enabled and currency not in portfolio
+                if (state.portfolio.enabled && state.portfolio.currencies.size > 0) {
+                    if (!state.portfolio.currencies.has(startCurrency)) return;
+                }
+                
+                // Skip stablecoins if not included
+                if (!state.portfolio.includeStablecoins && node.isStablecoin) return;
+                
+                const distances = new Map();
+                const predecessors = new Map();
+                
+                // Initialize distances
+                state.arbitrageGraph.nodes.forEach((_, currency) => {
+                    distances.set(currency, currency === startCurrency ? 0 : Infinity);
+                    predecessors.set(currency, null);
+                });
+                
+                // Relax edges |V| - 1 times
+                for (let i = 0; i < state.arbitrageGraph.nodes.size - 1; i++) {
+                    let updated = false;
+                    
+                    for (const edge of state.arbitrageGraph.edges) {
+                        const u = edge.from;
+                        const v = edge.to;
+                        const weight = -Math.log(edge.rate * (1 - edge.fee)); // Negative log for arbitrage detection
+                        
+                        if (distances.get(u) + weight < distances.get(v)) {
+                            distances.set(v, distances.get(u) + weight);
+                            predecessors.set(v, { node: u, edge: edge });
+                            updated = true;
+                        }
+                    }
+                    
+                    if (!updated) break;
+                }
+                
+                // Check for negative cycles (arbitrage opportunities)
+                for (const edge of state.arbitrageGraph.edges) {
+                    const u = edge.from;
+                    const v = edge.to;
+                    const weight = -Math.log(edge.rate * (1 - edge.fee));
+                    
+                    if (distances.get(u) + weight < distances.get(v)) {
+                        // Negative cycle found - reconstruct path
+                        const cycle = reconstructCycle(u, v, predecessors);
+                        if (cycle && cycle.length >= 2 && cycle.length <= state.config.maxPathLength) {
+                            const opportunity = calculateCycleProfit(cycle, investment);
+                            if (opportunity && opportunity.profitPercent >= minProfit) {
+                                opportunities.push(opportunity);
+                            }
+                        }
+                    }
+                }
+            });
+            
+            state.stats.bellmanScans++;
+            state.isScanning = false;
+            
+            log(`Bellman-Ford completed: ${opportunities.length} opportunities found`, 'success', 'BELLMAN-FORD');
+            return opportunities;
+        }
+
+        function reconstructCycle(u, v, predecessors) {
+            const cycle = [v, u];
+            let current = predecessors.get(u);
+            const visited = new Set([u, v]);
+            
+            while (current && !visited.has(current.node)) {
+                cycle.unshift(current.node);
+                visited.add(current.node);
+                current = predecessors.get(current.node);
+                
+                if (cycle.length > state.config.maxPathLength + 2) break; // Prevent infinite loops
+            }
+            
+            return cycle.length >= 3 ? cycle : null;
+        }
+
+        function calculateCycleProfit(cycle, investment) {
+            try {
+                let amount = investment;
+                const pathDescription = [];
+                
+                for (let i = 0; i < cycle.length - 1; i++) {
+                    const from = cycle[i];
+                    const to = cycle[i + 1];
+                    
+                    // Find the edge between from and to
+                    const edge = state.arbitrageGraph.edges.find(e => 
+                        e.from === from && e.to === to
+                    );
+                    
+                    if (!edge) {
+                        log(`Missing edge from ${from} to ${to}`, 'warning', 'PROFIT-CALC');
+                        return null;
+                    }
+                    
+                    amount = applyTradingFee(amount * edge.rate, edge.fee);
+                    pathDescription.push(`${from}→${to}(${edge.exchange})`);
+                }
+                
+                // Close the cycle
+                const from = cycle[cycle.length - 1];
+                const to = cycle[0];
+                const edge = state.arbitrageGraph.edges.find(e => 
+                    e.from === from && e.to === to
+                );
+                
+                if (!edge) {
+                    log(`Missing closing edge from ${from} to ${to}`, 'warning', 'PROFIT-CALC');
+                    return null;
+                }
+                
+                amount = applyTradingFee(amount * edge.rate, edge.fee);
+                pathDescription.push(`${from}→${to}(${edge.exchange})`);
+                
+                const profit = amount - investment;
+                const profitPercent = (profit / investment) * 100;
+                
+                if (profitPercent >= state.config.minProfitPercent) {
+                    return {
+                        exchange: 'Multi-Exchange',
+                        path: pathDescription.join(' → '),
+                        profitPercent: profitPercent,
+                        profit: profit,
+                        investment: investment,
+                        finalAmount: amount,
+                        type: 'bellman-ford',
+                        pathLength: cycle.length,
+                        timestamp: Date.now()
+                    };
+                }
+            } catch (error) {
+                log(`Error calculating cycle profit: ${error.message}`, 'error', 'PROFIT-CALC');
+            }
+            
+            return null;
+        }
+
+        function runAdvancedArbitrageScan() {
+            if (!state.systemReady || state.isScanning) {
+                log('System not ready or already scanning', 'warning', 'SCAN');
+                return;
+            }
+            
+            state.isScanning = true;
+            log('========== ADVANCED ARBITRAGE SCAN START ==========', 'info', 'SCAN');
+            state.stats.scanCount++;
+            updateStatus('🔄 Advanced arbitrage scan running...');
+            
+            const opportunities = [];
+            let scansPerformed = 0;
+            
+            // Run triangular arbitrage on each exchange
+            Object.values(state.exchanges).forEach(exchange => {
+                if (exchange.status === 'online' && exchange.pairs.length > 2) {
+                    log(`Scanning ${exchange.name} for triangular arbitrage...`, 'info', 'SCAN');
+                    const opps = scanTriangularArbitrage(exchange.pairs, exchange.name);
+                    opportunities.push(...opps);
+                    scansPerformed++;
+                    log(`${exchange.name}: ${opps.length} triangular opportunities`, 
+                         opps.length > 0 ? 'success' : 'warning', 'SCAN');
+                }
+            });
+            
+            // Run Bellman-Ford for cross-exchange opportunities
+            log('Running Bellman-Ford for cross-exchange opportunities...', 'info', 'SCAN');
+            const bfOpps = runBellmanFordScan();
+            opportunities.push(...bfOpps);
+            
+            // Sort by profit percentage
+            opportunities.sort((a, b) => b.profitPercent - a.profitPercent);
+            
+            // Update best profit
+            if (opportunities.length > 0 && opportunities[0].profitPercent > state.stats.bestProfit) {
+                state.stats.bestProfit = opportunities[0].profitPercent;
+            }
+            
+            state.stats.oppCount = opportunities.length;
+            updateStats();
+            updateLowestCoin();
+            
+            displayOpportunities(opportunities);
+            
+            state.isScanning = false;
+            updateStatus(`✅ Scan complete: ${opportunities.length} opportunities across ${scansPerformed} exchanges + cross-exchange`);
+            log(`========== SCAN COMPLETE: ${opportunities.length} OPPORTUNITIES ==========`, 'success', 'SCAN');
+        }
+
+        function displayOpportunities(opportunities) {
+            const container = document.getElementById('opportunities');
+            
+            if (opportunities.length === 0) {
+                container.innerHTML = '<div class="card">No profitable arbitrage opportunities found. Try adjusting parameters or wait for market conditions to change.</div>';
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            opportunities.slice(0, 25).forEach(opp => {
+                const oppClass = opp.profitPercent > 5 ? 'opportunity high-profit' : 
+                               opp.profitPercent > 0 ? 'opportunity' : 'opportunity negative';
+                
+                container.innerHTML += 
+                    `<div class="${oppClass}">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                            <strong>${opp.exchange}</strong>
+                            <strong style="color: ${opp.profitPercent > 0 ? '#00ff00' : '#ff4444'}">
+                                +${opp.profitPercent.toFixed(4)}%
+                            </strong>
+                        </div>
+                        <div class="path-visual">${opp.path}</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; font-size: 10px; margin-top: 4px;">
+                            <div>Investment: $${opp.investment.toFixed(2)}</div>
+                            <div>Profit: $${opp.profit.toFixed(4)}</div>
+                            <div>Final: $${opp.finalAmount.toFixed(4)}</div>
+                        </div>
+                        <div style="font-size: 9px; color: #6666ff; margin-top: 2px;">
+                            Type: ${opp.type} | Path: ${opp.pathLength} | ${new Date(opp.timestamp).toLocaleTimeString()}
+                        </div>
+                    </div>`;
+            });
+        }
+
+        // =============================================
+        // INITIALIZATION & EVENT HANDLERS
+        // =============================================
+        async function initSystem() {
+            log('========== SYSTEM INITIALIZATION ==========', 'info', 'INIT');
+            updateStatus('Connecting to exchanges...');
+            
+            // Update config from UI
+            updateConfigFromUI();
+            
+            const results = await Promise.allSettled([
+                loadCoinGecko(),
+                loadDEXScreener(),
+                loadCryptoCompare()
+            ]);
+            
+            const successCount = results.filter(r => r.status === 'fulfilled' && r.value).length;
+            
+            // Calculate total pairs
+            state.stats.totalPairs = Object.values(state.exchanges)
+                .reduce((sum, exchange) => sum + exchange.pairs.length, 0);
+            
+            updateExchangeStatus();
+            updateStats();
+            updateLowestCoin();
+            
+            if (successCount > 0) {
+                state.systemReady = true;
+                document.getElementById('scanBtn').disabled = false;
+                document.getElementById('bellmanBtn').disabled = false;
+                
+                // Build initial graph
+                buildArbitrageGraph();
+                
+                updateStatus(`✅ System ready - ${successCount}/3 exchanges - ${state.stats.totalPairs} pairs - ${state.arbitrageGraph.nodes.size} currencies`);
+                log('========== INITIALIZATION COMPLETE ==========', 'success', 'INIT');
+                
+                // Start auto features if enabled
+                if (state.config.autoRefresh) {
+                    startAutoRefresh();
+                }
+                if (state.config.autoScan) {
+                    startAutoScan();
+                }
+            } else {
+                updateStatus('❌ Initialization failed - No exchanges available');
+                log('========== INITIALIZATION FAILED ==========', 'error', 'INIT');
+            }
+        }
+
+        function updateConfigFromUI() {
+            state.config.investmentAmount = parseFloat(document.getElementById('investmentAmount').value) || 100;
+            state.config.minProfitPercent = parseFloat(document.getElementById('minProfitPercent').value) || 0.5;
+            state.config.tradingFee = parseFloat(document.getElementById('tradingFee').value) / 100 || 0.002;
+            state.config.maxPathLength = parseInt(document.getElementById('maxPathLength').value) || 4;
+            state.config.lowValueThreshold = parseFloat(document.getElementById('lowValueThreshold').value) || 0.01;
+            state.config.scanDepth = parseInt(document.getElementById('scanDepth').value) || 25;
+            state.config.autoRefresh = document.getElementById('autoRefreshToggle').checked;
+            state.config.autoScan = document.getElementById('autoScanToggle').checked;
+            state.config.lowCapFocus = document.getElementById('lowCapFocus').checked;
+            
+            // Update portfolio
+            state.portfolio.enabled = document.getElementById('portfolioFilterToggle').checked;
+            state.portfolio.includeStablecoins = document.getElementById('includeStablecoins').checked;
+            
+            const portfolioInput = document.getElementById('portfolioInput').value;
+            if (portfolioInput.trim()) {
+                state.portfolio.currencies = new Set(
+                    portfolioInput.toUpperCase().split(',').map(s => s.trim()).filter(s => s)
+                );
+                document.getElementById('portfolioStatus').textContent = 
+                    `Filtering for: ${Array.from(state.portfolio.currencies).join(', ')}`;
+            } else {
+                state.portfolio.currencies.clear();
+                document.getElementById('portfolioStatus').textContent = 'No portfolio set - scanning all currencies';
+            }
+        }
+
+        async function refreshMarketData() {
+            log('Refreshing market data...', 'info', 'REFRESH');
+            await initSystem();
+        }
+
+        function clearOpportunities() {
+            document.getElementById('opportunities').innerHTML = '';
+            state.stats.oppCount = 0;
+            updateStats();
+            log('Opportunities cleared', 'info', 'CLEANUP');
+        }
+
+        function exportData() {
+            const data = {
+                timestamp: new Date().toISOString(),
+                stats: state.stats,
+                exchanges: state.exchanges,
+                opportunities: Array.from(document.querySelectorAll('.opportunity')).map(el => ({
+                    exchange: el.querySelector('strong').textContent,
+                    profit: el.querySelector('.path-visual').textContent,
+                    details: Array.from(el.querySelectorAll('div')).map(d => d.textContent)
+                }))
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `arbitrage-data-${new Date().toISOString().slice(0, 10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            log('Data exported successfully', 'success', 'EXPORT');
+        }
+
+        function startAutoRefresh() {
+            if (state.config.autoRefresh) {
+                setInterval(() => {
+                    if (!state.isScanning) {
+                        refreshMarketData();
+                    }
+                }, 60000); // Every minute
+                log('Auto-refresh enabled (60s intervals)', 'info', 'AUTO');
+            }
+        }
+
+        function startAutoScan() {
+            if (state.config.autoScan) {
+                setInterval(() => {
+                    if (!state.isScanning && state.systemReady) {
+                        runAdvancedArbitrageScan();
+                    }
+                }, 120000); // Every 2 minutes
+                log('Auto-scan enabled (120s intervals)', 'info', 'AUTO');
+            }
+        }
+
+        // Update system time and memory usage
+        function updateSystemInfo() {
+            const now = new Date();
+            document.getElementById('systemTime').textContent = 
+                `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+            
+            // Simulate memory usage for demo
+            const memoryUsage = 50 + Math.random() * 50;
+            document.getElementById('memoryUsage').textContent = `RAM: ${Math.round(memoryUsage)} MB`;
+        }
+
+        // Auto-initialize on load
+        window.addEventListener('load', function() {
+            log('⚡ QuanTM FOAM v7.0 - Advanced Arbitrage System Loaded', 'success', 'BOOT');
+            setInterval(updateSystemInfo, 1000);
+            setTimeout(initSystem, 1000);
+        });
+
+        // Add event listeners for config changes
+        document.getElementById('portfolioInput').addEventListener('input', function() {
+            updateConfigFromUI();
+        });
+
+        document.querySelectorAll('input, select').forEach(el => {
+            el.addEventListener('change', updateConfigFromUI);
+        });
+    </script>
+</body>
+</html>

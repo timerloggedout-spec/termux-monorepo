@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAMGAINZ – Coaching, Peptides & Worldwide Regulations</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        :root {
+            --bg: #080c14;
+            --card-bg: #0d1526;
+            --accent: #ff3c00;
+            --accent2: #ff6b35;
+            --text: #e2e8f0;
+            --muted: #64748b;
+            --border: #1e3a5f;
+            --nav-h: 56px;
+            --font-heading: 'Rajdhani', 'Impact', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-body: 'DM Sans', 'Inter', sans-serif;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0f1a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a4a6e;
+            border-radius: 3px;
+        }
+
+        /* ── Navigation ── */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(8, 12, 20, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            height: var(--nav-h);
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .nav-brand {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, var(--accent2), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .nav-links {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .nav-btn {
+            padding: 7px 16px;
+            border-radius: 8px;
+            color: var(--muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: .82rem;
+            transition: all .2s;
+            cursor: pointer;
+            border: 1px solid transparent;
+            background: none;
+            font-family: var(--font-body);
+            white-space: nowrap;
+        }
+        .nav-btn:hover {
+            color: #fff;
+            border-color: #334;
+        }
+        .nav-btn.active {
+            color: #fff;
+            background: var(--card-bg);
+            border-color: #334;
+        }
+        .nav-btn.cta {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+        .nav-btn.cta:hover {
+            background: #e03400;
+        }
+
+        /* ── Page System ── */
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ── Main Page Styles ── */
+        .logo-block {
+            text-align: center;
+            padding: 50px 0 10px;
+        }
+        .logo-main {
+            font-family: var(--font-heading);
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, var(--accent2), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            line-height: 1.1;
+        }
+        .logo-yt {
+            font-size: 1rem;
+            color: #aaa;
+            margin-top: -2px;
+        }
+        .logo-yt a {
+            color: var(--accent2);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .hero {
+            text-align: center;
+            padding: 20px 0 35px;
+        }
+        .hero h1 {
+            font-family: var(--font-heading);
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: .5px;
+        }
+        .hero .sub {
+            font-size: 1.05rem;
+            color: #aaa;
+            max-width: 580px;
+            margin: 0 auto 24px;
+        }
+        .btn-primary {
+            display: inline-block;
+            padding: 14px 34px;
+            background: var(--accent);
+            color: #fff;
+            font-weight: 700;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background .2s;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-body);
+        }
+        .btn-primary:hover {
+            background: #e03400;
+        }
+        .btn-outline {
+            display: inline-block;
+            padding: 10px 22px;
+            border: 1px solid var(--accent2);
+            color: var(--accent2);
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all .2s;
+            font-size: .9rem;
+            background: transparent;
+            cursor: pointer;
+        }
+        .btn-outline:hover {
+            background: #ff3c0011;
+        }
+
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: clamp(16px, 3vw, 40px);
+            margin: 20px 0 45px;
+            flex-wrap: wrap;
+        }
+        .stat-box {
+            text-align: center;
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 18px 26px;
+            min-width: 130px;
+            border: 1px solid #1a2a3a;
+        }
+        .stat-num {
+            font-family: var(--font-heading);
+            font-size: 2.3rem;
+            font-weight: 800;
+            color: var(--accent2);
+            line-height: 1.2;
+        }
+        .stat-label {
+            font-size: .78rem;
+            color: #aaa;
+        }
+
+        .section {
+            padding: 50px 0;
+        }
+        .section h2 {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 6px;
+            letter-spacing: .5px;
+        }
+        .section .subtitle {
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 35px;
+            font-size: .95rem;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: 22px;
+        }
+        .card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 28px 22px;
+            transition: transform .2s, border-color .2s;
+            border: 1px solid #1a2a3a;
+        }
+        .card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent);
+        }
+        .card h3 {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+            color: var(--accent2);
+            letter-spacing: .3px;
+        }
+        .card p {
+            color: #bbb;
+            margin-bottom: 12px;
+            font-size: .9rem;
+        }
+        .card .tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: .72rem;
+            font-weight: 600;
+            background: #1a2a1a;
+            color: #4ade80;
+            margin-bottom: 8px;
+        }
+        .card .price {
+            font-weight: 700;
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        .badge-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin: 12px 0;
+        }
+        .badge-item {
+            background: #1a2a3a;
+            color: var(--accent2);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: .75rem;
+            font-weight: 600;
+        }
+
+        .testimonial {
+            background: #0d1520;
+            border-radius: 18px;
+            text-align: center;
+            padding: 40px 20px;
+            max-width: 650px;
+            margin: 0 auto;
+            border: 1px solid #1a2a3a;
+        }
+        .testimonial blockquote {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: #d0d0d0;
+            margin: 16px 0;
+        }
+        .testimonial cite {
+            color: var(--accent2);
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        .social-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .social-link {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 10px 18px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            border: 1px solid #2a3a4a;
+            transition: .2s;
+            font-size: .85rem;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+        .social-link:hover {
+            border-color: var(--accent);
+            color: var(--accent2);
+        }
+
+        /* ── Regulatory Tool ── */
+        .reg-header {
+            text-align: center;
+            padding: 25px 0 15px;
+        }
+        .reg-header h1 {
+            font-family: var(--font-heading);
+            font-size: 1.7rem;
+            color: var(--accent2);
+            letter-spacing: .5px;
+        }
+        .reg-header .sub {
+            color: #aaa;
+            font-size: .85rem;
+        }
+        .search-wrap {
+            display: flex;
+            gap: 8px;
+            max-width: 550px;
+            margin: 0 auto 16px;
+        }
+        .search-wrap input {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            background: var(--card-bg);
+            color: #fff;
+            font-size: .9rem;
+            outline: none;
+            font-family: var(--font-body);
+        }
+        .search-wrap input:focus {
+            border-color: var(--accent2);
+        }
+        .search-wrap button {
+            padding: 10px 20px;
+            border-radius: 8px;
+            background: var(--accent);
+            color: #fff;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-body);
+        }
+        .filter-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 14px;
+        }
+        .filter-row select {
+            padding: 7px 12px;
+            border-radius: 6px;
+            border: 1px solid #333;
+            background: var(--card-bg);
+            color: #fff;
+            font-size: .8rem;
+            font-family: var(--font-body);
+        }
+        .tab-nav-reg {
+            display: flex;
+            gap: 2px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #1e2a3a;
+            overflow-x: auto;
+        }
+        .tab-nav-reg button {
+            padding: 8px 16px;
+            background: none;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: .8rem;
+            white-space: nowrap;
+            border-bottom: 2px solid transparent;
+            transition: .2s;
+            font-family: var(--font-body);
+        }
+        .tab-nav-reg button.active {
+            color: #fff;
+            border-bottom-color: var(--accent);
+        }
+        .results-box {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 12px;
+            min-height: 250px;
+            max-height: 450px;
+            overflow-y: auto;
+            border: 1px solid #1a2a3a;
+        }
+        .result-item {
+            padding: 10px 12px;
+            border-bottom: 1px solid #1a2a3a;
+            cursor: pointer;
+            transition: background .15s;
+            border-radius: 6px;
+        }
+        .result-item:hover {
+            background: #111d2e;
+        }
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        .result-item h4 {
+            color: var(--accent2);
+            font-size: .95rem;
+            font-family: var(--font-heading);
+            letter-spacing: .3px;
+        }
+        .result-item .meta {
+            color: #aaa;
+            font-size: .78rem;
+            margin-top: 2px;
+        }
+        .chip {
+            display: inline-block;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: .68rem;
+            font-weight: 600;
+            margin-right: 4px;
+            font-family: var(--font-mono);
+        }
+        .detail-panel {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 18px;
+            margin-top: 12px;
+            border: 1px solid #1a2a3a;
+            display: none;
+        }
+        .detail-panel.show {
+            display: block;
+        }
+        .detail-panel h3 {
+            font-family: var(--font-heading);
+            color: var(--accent2);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            letter-spacing: .3px;
+        }
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 8px;
+        }
+        .field {
+            padding: 8px 10px;
+            background: #0a0f1a;
+            border-radius: 6px;
+            font-size: .8rem;
+        }
+        .field label {
+            font-size: .65rem;
+            text-transform: uppercase;
+            color: #888;
+            font-weight: 600;
+            display: block;
+            letter-spacing: .5px;
+        }
+        .field span {
+            color: #d0d0d0;
+            font-size: .82rem;
+        }
+        #worldMap {
+            width: 100%;
+            height: 380px;
+            border-radius: 12px;
+            margin-top: 16px;
+            border: 1px solid #1a2a3a;
+            z-index: 1;
+        }
+        .leaflet-container {
+            background: #080c14 !important;
+        }
+        .map-legend {
+            background: #0d1526;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: .72rem;
+            font-family: var(--font-mono);
+            color: #ccc;
+            border: 1px solid #1a2a3a;
+            line-height: 1.6;
+        }
+        .map-legend i {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 4px;
+            vertical-align: middle;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px 0;
+            color: #555;
+            font-size: .78rem;
+            border-top: 1px solid #111;
+            margin-top: 30px;
+        }
+        footer a {
+            color: var(--accent2);
+            text-decoration: none;
+        }
+
+        @media(max-width:700px) {
+            .nav-bar {
+                padding: 8px 12px;
+                height: auto;
+                gap: 6px;
+            }
+            .nav-btn {
+                font-size: .7rem;
+                padding: 5px 10px;
+            }
+            .logo-main {
+                font-size: 2.2rem;
+            }
+            .section h2 {
+                font-size: 1.4rem;
+            }
+            #worldMap {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══════════ NAVIGATION ═══════════ -->
+    <nav class="nav-bar">
+        <div class="nav-brand">IAMGAINZ</div>
+        <div class="nav-links">
+            <button class="nav-btn active" onclick="switchPage('main')" id="nav-main">🏠 Home</button>
+            <button class="nav-btn" onclick="switchPage('regulatory')" id="nav-reg">🌍 Regulations</button>
+            <a href="https://www.youtube.com/@IAmGainz" target="_blank" class="nav-btn">📺 @IAmGainz</a>
+            <a href="https://linktr.ee/Iam.gainz" target="_blank" class="nav-btn cta">🔗 Linktree</a>
+        </div>
+    </nav>
+
+    <!-- ═══════════ PAGE 1: MAIN ═══════════ -->
+    <main id="page-main" class="page active">
+        <div class="container">
+            <div class="logo-block">
+                <div class="logo-main">IAMGAINZ</div>
+                <div class="logo-yt">
+                    <a href="https://www.youtube.com/@IAmGainz" target="_blank">@IAmGainz</a> · Science‑Backed · B.Sc. Exercise Science
+                </div>
+            </div>
+
+            <section class="hero">
+                <h1>Built by the Trenches, Proven in the Lab</h1>
+                <p class="sub">Online coaching, peptide education &amp; nutrition forged through collegiate football, Military Special Forces, competitive MMA, and a Bachelor's Degree in Exercise Science — serving athletes worldwide.</p>
+                <a href="https://linktr.ee/Iam.gainz" target="_blank" class="btn-primary">Start Your Transformation</a>
+            </section>
+
+            <div class="stats-row">
+                <div class="stat-box"><div class="stat-num">21 lbs</div><div class="stat-label">Lost in 7 weeks</div></div>
+                <div class="stat-box"><div class="stat-num">10%</div><div class="stat-label">Body Fat Dropped</div></div>
+                <div class="stat-box"><div class="stat-num">60 yrs</div><div class="stat-label">Vegetarian Client</div></div>
+                <div class="stat-box"><div class="stat-num">B.Sc.</div><div class="stat-label">Exercise Science</div></div>
+            </div>
+
+            <!-- About -->
+            <section class="section">
+                <h2>Who Is IAMGAINZ?</h2>
+                <div class="card" style="max-width:750px;margin:0 auto;">
+                    <h3>Jimmy Richardson</h3>
+                    <div class="badge-row">
+                        <span class="badge-item">🎓 B.Sc. Exercise Science</span>
+                        <span class="badge-item">🏈 Collegiate Football</span>
+                        <span class="badge-item">🪖 Military Special Forces</span>
+                        <span class="badge-item">🥊 Competitive MMA</span>
+                        <span class="badge-item">🏋️ Bodybuilding</span>
+                    </div>
+                    <p>I break down training, nutrition, performance optimization, peptides, and PEDs in a way that's practical, honest, and immediately applicable. Everything is explained so you understand not just what to do, but <strong>why it works</strong>.</p>
+                </div>
+            </section>
+
+            <!-- Coaching -->
+            <section id="coaching" class="section">
+                <h2>Coaching Services</h2>
+                <p class="subtitle">One‑on‑one, in‑person, and remote — your plan, your goals, science‑backed protocols.</p>
+                <div class="grid">
+                    <div class="card">
+                        <span class="tag">Most Popular</span>
+                        <h3>1‑on‑1 Premium Coaching</h3>
+                        <p>Custom training &amp; nutrition blueprint, weekly video check‑ins, daily chat support. For athletes, competitors, and lifestyle clients.</p>
+                        <p class="price">$250 / month</p>
+                        <a href="https://api.whatsapp.com/send?phone=84347605367" target="_blank" class="btn-outline">Inquire via WhatsApp</a>
+                    </div>
+                    <div class="card">
+                        <span class="tag">Advanced</span>
+                        <h3>Peptide &amp; PED Education</h3>
+                        <p>Full protocol structuring, education, and guidance — honest, research‑backed, built from real‑world application and academic training.</p>
+                        <p class="price">Consultation Required</p>
+                        <a href="mailto:Jimmy.Richardson0311@gmail.com" class="btn-outline">Book a Consultation</a>
+                    </div>
+                    <div class="card">
+                        <span class="tag">Hands‑On</span>
+                        <h3>In‑Person / Live Video</h3>
+                        <p>Hands‑on coaching at your gym or via live video. Real‑time feedback, technique correction, and intensity — no fluff.</p>
+                        <p class="price">Custom Quote</p>
+                        <a href="https://api.whatsapp.com/send?phone=84347605367" target="_blank" class="btn-outline">Get a Quote</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Products -->
+            <section class="section">
+                <h2>Product Line &amp; Resources</h2>
+                <p class="subtitle">Everything trusted and used — now available to you.</p>
+                <div class="grid">
+                    <div class="card">
+                        <h3>📖 Peptide Catalog</h3>
+                        <p>In‑depth guide to peptides: dosages, cycling, sources. Science‑backed education.</p>
+                        <a href="https://drive.google.com/file/d/1ktiEMLdEEGHmunEKMkDS3auJERxxklQT/view" target="_blank" class="btn-outline">View Catalog</a>
+                    </div>
+                    <div class="card">
+                        <h3>🥤 Meal Prep Guide</h3>
+                        <p>High‑protein recipes, macros, and methods to fuel your gains — practical and delicious.</p>
+                        <a href="https://docs.google.com/document/d/1eXh-5ygHjrSCdBqSwJj9xQyMHwVHst_U86EZ-ShigF0/edit" target="_blank" class="btn-outline">Get the Guide</a>
+                    </div>
+                    <div class="card">
+                        <h3>🧪 Pacific Edge Labs</h3>
+                        <p>Research‑grade peptides. <strong>Code IAMVIP20</strong> for 20% off your order.</p>
+                        <a href="https://www.pacificedgelabs.com" target="_blank" class="btn-outline">Shop &amp; Save 20%</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Apparel / Merch -->
+            <section class="section">
+                <h2>🛒 Apparel &amp; Merch</h2>
+                <p class="subtitle">Represent the brand. Science‑backed style.</p>
+                <div class="grid">
+                    <div class="card" style="text-align:center;">
+                        <div style="font-size:3rem;margin-bottom:8px;">👕</div>
+                        <h3>IAMGAINZ Tee</h3>
+                        <p>Premium cotton, bold logo. Black / White / Orange.</p>
+                        <p class="price">$34.99</p>
+                        <a href="https://linktr.ee/Iam.gainz" target="_blank" class="btn-outline">Shop Apparel</a>
+                    </div>
+                    <div class="card" style="text-align:center;">
+                        <div style="font-size:3rem;margin-bottom:8px;">🧢</div>
+                        <h3>Snapback Cap</h3>
+                        <p>Embroidered IAMGAINZ logo. One size fits all.</p>
+                        <p class="price">$29.99</p>
+                        <a href="https://linktr.ee/Iam.gainz" target="_blank" class="btn-outline">Shop Apparel</a>
+                    </div>
+                    <div class="card" style="text-align:center;">
+                        <div style="font-size:3rem;margin-bottom:8px;">🫙</div>
+                        <h3>Shaker Bottle</h3>
+                        <p>28oz leak‑proof. IAMGAINZ branded.</p>
+                        <p class="price">$19.99</p>
+                        <a href="https://linktr.ee/Iam.gainz" target="_blank" class="btn-outline">Shop Apparel</a>
+                    </div>
+                    <div class="card" style="text-align:center;">
+                        <div style="font-size:3rem;margin-bottom:8px;">🎒</div>
+                        <h3>Gym Duffel</h3>
+                        <p>Heavy‑duty, wet compartment, IAMGAINZ patch.</p>
+                        <p class="price">$59.99</p>
+                        <a href="https://linktr.ee/Iam.gainz" target="_blank" class="btn-outline">Shop Apparel</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Testimonial -->
+            <section class="section">
+                <div class="testimonial">
+                    <div style="font-size:3rem;">🏆</div>
+                    <blockquote>"I started at 195 lbs and 23% body fat. In just 7 weeks I hit 174 lbs and 13% body fat. The vegetarian plan and support changed everything."</blockquote>
+                    <cite>— Male, 60, Vegetarian (Client of the Month)</cite>
+                </div>
+            </section>
+
+            <!-- Social -->
+            <section class="section">
+                <h2>Connect With IAMGAINZ</h2>
+                <div class="social-grid">
+                    <a href="https://youtube.com/@iamgainzofficial?si=t7EHQdYG4BNrXv3F" target="_blank" class="social-link">▶️ YouTube</a>
+                    <a href="https://tiktok.com/@iam.gainzof_backup" target="_blank" class="social-link">🎵 TikTok</a>
+                    <a href="https://x.com/iamgainzof" target="_blank" class="social-link">𝕏 Twitter</a>
+                    <a href="https://api.whatsapp.com/send?phone=84347605367" target="_blank" class="social-link">💬 WhatsApp</a>
+                    <a href="mailto:Jimmy.Richardson0311@gmail.com" class="social-link">✉️ Email</a>
+                    <a href="https://cash.app/$iamgainz" target="_blank" class="social-link">💰 Cash App</a>
+                </div>
+            </section>
+        </div>
+        <footer>
+            © 2026 IAMGAINZ · <a href="https://www.youtube.com/@IAmGainz" target="_blank">@IAmGainz</a> · Adult content on <a href="https://linktr.ee/Iam.gainz">Linktree</a> only
+        </footer>
+    </main>
+
+    <!-- ═══════════ PAGE 2: REGULATORY INTELLIGENCE ═══════════ -->
+    <main id="page-regulatory" class="page">
+        <div class="container">
+            <div class="reg-header">
+                <h1>🌍 Worldwide Peptide &amp; Compound Regulations</h1>
+                <p class="sub">Regulatory intelligence for 43 jurisdictions — FDA, EMA, WADA, ClinicalTrials.gov, PubMed</p>
+            </div>
+
+            <div class="search-wrap">
+                <input type="text" id="searchInput" placeholder="Search compounds (e.g., BPC-157, Tesamorelin, Semaglutide)..." onkeyup="if(event.key==='Enter')performSearch()">
+                <button onclick="performSearch()">🔍 Search</button>
+            </div>
+
+            <div class="filter-row">
+                <select id="jurisFilter" onchange="performSearch()">
+                    <option value="">🌎 All Jurisdictions</option>
+                </select>
+                <select id="catFilter" onchange="performSearch()">
+                    <option value="">📂 All Categories</option>
+                </select>
+                <select id="wadaFilter" onchange="performSearch()">
+                    <option value="">🔓 All WADA</option>
+                    <option value="prohibited">⚠️ Prohibited</option>
+                    <option value="permitted">✅ Permitted</option>
+                </select>
+                <select id="riskFilter" onchange="performSearch()">
+                    <option value="0">⚡ All Risk Levels</option>
+                    <option value="1">Low</option>
+                    <option value="2">Moderate</option>
+                    <option value="3">Elevated</option>
+                    <option value="4">Critical</option>
+                </select>
+            </div>
+
+            <div class="tab-nav-reg">
+                <button class="active" onclick="switchRegTab('compounds',this)">🧪 Compounds</button>
+                <button onclick="switchRegTab('trials',this)">📋 Trials</button>
+                <button onclick="switchRegTab('jurisdictions',this)">🗺️ Jurisdictions</button>
+            </div>
+
+            <div class="results-box" id="resultsBox">
+                <p style="text-align:center;color:#555;padding:30px;">Search for a compound to view regulatory status</p>
+            </div>
+
+            <div class="detail-panel" id="detailPanel">
+                <h3 id="detailTitle"></h3>
+                <div class="detail-grid" id="detailGrid"></div>
+                <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
+                    <button class="btn-outline" onclick="document.getElementById('detailPanel').classList.remove('show')">✕ Close</button>
+                </div>
+            </div>
+
+            <div id="worldMap"></div>
+        </div>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // ═══════════ PAGE NAVIGATION ═══════════
+        function switchPage(name) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('page-' + name).classList.add('active');
+            document.getElementById('nav-' + name).classList.add('active');
+            if (name === 'regulatory') { setTimeout(() => { if (window.map) window.map.invalidateSize(); }, 300); }
+        }
+
+        // ═══════════ COMPOUND DATA (compact from regulatory_matrix_app.jsx) ═══════════
+        const COMPOUNDS = [
+            { id: "SEMA001", name: "Semaglutide", syn: "Ozempic; Wegovy; Rybelsus", cat: "Incretin/GLP-1", mod: "Peptide", stage: "approved", wada: "permitted", wadaCat: "—", risk: 1,
+                US: "approved", EU: "approved", CA: "approved", AU: "approved", UK: "approved", JP: "approved", RU: "unknown",
+                note: "FDA compounding ban reinstated Apr 2024. NDA 209637/214460.", src: "https://www.accessdata.fda.gov/scripts/cder/daf/" },
+            { id: "TIRZ001", name: "Tirzepatide", syn: "Mounjaro; Zepbound", cat: "Incretin/GLP-1", mod: "Peptide", stage: "approved", wada: "permitted", wadaCat: "—", risk: 1,
+                US: "approved", EU: "approved", CA: "approved", AU: "approved", UK: "approved", JP: "approved", RU: "unknown",
+                note: "Dual GIP/GLP-1 agonist. NDA 215866/217806. Counterfeit risk significant.", src: "https://www.accessdata.fda.gov/scripts/cder/daf/" },
+            { id: "RETA001", name: "Retatrutide", syn: "LY3437943", cat: "Incretin/GLP-1", mod: "Peptide", stage: "phase_3", wada: "unknown", wadaCat: "Likely S2", risk: 2,
+                US: "investigational", EU: "investigational", CA: "investigational", AU: "investigational", UK: "investigational", JP: "investigational", RU: "unknown",
+                note: "Triple agonist. Phase 3 TRIUMPH. No NDA filed.", src: "https://clinicaltrials.gov/study/NCT05929248" },
+            { id: "TESM001", name: "Tesamorelin", syn: "Egrifta; TH9507", cat: "GHRH Analogue", mod: "Peptide", stage: "approved", wada: "prohibited", wadaCat: "S2 GHRH", risk: 4,
+                US: "approved", EU: "unapproved", CA: "approved", AU: "unapproved", UK: "unapproved", JP: "unapproved", RU: "unapproved",
+                note: "US/CA ONLY for HIV lipodystrophy. WADA S2. Narrow FDA indication.", src: "https://www.accessdata.fda.gov/scripts/cder/daf/" },
+            { id: "SERM001", name: "Sermorelin", syn: "GRF 1-29 NH2; Geref", cat: "GHRH Analogue", mod: "Peptide", stage: "withdrawn", wada: "prohibited", wadaCat: "S2 GHRH", risk: 4,
+                US: "withdrawn", EU: "unapproved", CA: "unapproved", AU: "unapproved", UK: "unapproved", JP: "unapproved", RU: "unapproved",
+                note: "Geref withdrawn 2008. Compounding only. WADA S2.", src: "https://www.accessdata.fda.gov/scripts/cder/daf/" },
+            { id: "CJC001", name: "CJC-1295", syn: "CJC-1295 with/without DAC", cat: "GHRH Analogue", mod: "Peptide", stage: "unapproved", wada: "prohibited", wadaCat: "S2 GHRH", risk: 4,
+                US: "unapproved", EU: "unapproved", CA: "unapproved", AU: "unapproved", UK: "unapproved", JP: "unapproved", RU: "unapproved",
+                note: "No IND/NDA. Prohibited all jurisdictions. WADA S2.", src: "https://www.fda.gov/" },
+            { id: "IPAM001", name: "Ipamorelin", syn: "", cat: "GH Secretagogue", mod: "Peptide", stage: "unapproved", wada: "prohibited", wadaCat: "S2 GHRPs", risk: 4,
+                US: "unapproved", EU: "unapproved", CA: "unapproved", AU: "unapproved", UK: "unapproved", JP: "unapproved", RU: "unapproved",
+                note: "No IND. WADA S2. Selective GHRP.", src: "https://www.fda.gov/" },
+            { id: "HGH001", name: "Somatropin", syn: "HGH; Norditropin; Genotropin", cat: "Growth Hormone", mod: "Recombinant Protein", stage: "approved", wada: "prohibited",
+                wadaCat: "S2 Peptide Hormones", risk: 3, US: "approved", EU: "approved", CA: "approved", AU: "approved", UK: "approved", JP: "approved", RU: "approved",
+                note: "Schedule III US. Multiple BLAs. WADA S2.", src: "https://www.accessdata.fda.gov/scripts/cder/daf/" },
+            { id: "MK677001", name: "MK-677", syn: "Ibutamoren; L-163,191", cat: "GH Secretagogue", mod: "Small Molecule", stage: "unapproved", wada: "prohibited",
+                wadaCat: "S2 Hormone Modulators", risk: 4, US: "unapproved", EU: "unapproved", CA: "unapproved", AU: "unapproved", UK: "unapproved", JP: "unapproved",
+                RU: "unapproved", note: "Phase 3 failed. FDA enforcement active. WADA S2.", src: "https://www.fda.gov/" },
+            { id: "BPC001", name: "BPC-157", syn: "Body Protection Compound 157; Bepecin", cat: "Cytoprotective", mod: "Peptide", stage: "unapproved", wada: "unknown",
+                wadaCat: "Potentially S2", risk: 4, US: "unapproved", EU: "unapproved", CA: "unapproved", AU: "unapproved", UK: "unapproved", JP: "unapproved", RU: "unknown",
+                note: "FDA banned 503B compounding Mar 2022. No human RCT data.", src: "https://www.fda.gov/" },
+            { id: "TB500001", name: "TB-500", syn: "Thymosin Beta-4; Tβ4", cat: "Cytoprotective", mod: "Peptide", stage: "unapproved", wada: "prohibited",
+                wadaCat: "S2 Thymosin Beta-4 (named)", risk: 4, US: "unapproved", EU: "unapproved", CA: "unapproved", AU: "unapproved", UK: "unapproved", JP: "unapproved",
+                RU: "unapproved", note: "WADA explicitly names TB-500. FDA warning letters issued.", src: "https://www.fda.gov/" },
+            { id: "IGF1LR3001", name: "IGF-1 LR3", syn: "Long R3 IGF-1", cat: "Growth Factor", mod: "Recombinant Protein", stage: "unapproved", wada: "prohibited",
+                wadaCat: "S2 Growth Factors", risk: 4, US: "unapproved", EU: "unapproved", CA: "unapproved", AU: "unapproved", UK: "unapproved", JP: "unapproved",
+                RU: "unapproved", note: "NOT Increlex. WADA S2. Hypoglycaemia risk.", src: "https://www.fda.gov/" },
+            { id: "HCG001", name: "HCG", syn: "Pregnyl; Novarel; Choragon", cat: "Gonadotropin", mod: "Recombinant Protein", stage: "approved", wada: "prohibited",
+                wadaCat: "S2 Gonadotropins (in-comp males)", risk: 3, US: "approved", EU: "approved", CA: "approved", AU: "approved", UK: "approved", JP: "approved",
+                RU: "approved", note: "WADA S2 in-competition for males. TUE required.", src: "https://www.accessdata.fda.gov/scripts/cder/daf/" },
+            { id: "AICAR001", name: "AICAR", syn: "Acadesine", cat: "Metabolic Modulator", mod: "Small Molecule", stage: "unapproved", wada: "prohibited",
+                wadaCat: "S4 Metabolic Modulators", risk: 4, US: "unapproved", EU: "unapproved", CA: "unapproved", AU: "unapproved", UK: "unapproved", JP: "unapproved",
+                RU: "unapproved", note: "WADA S4 AMPK activator. No current approved product.", src: "https://www.fda.gov/" },
+            { id: "SLU001", name: "SLU-PP-332", syn: "ERR agonist; exercise mimetic", cat: "Metabolic Modulator", mod: "Small Molecule", stage: "unapproved",
+                wada: "prohibited", wadaCat: "S4 2025 explicit listing", risk: 4, US: "unapproved", EU: "unapproved", CA: "unapproved", AU: "unapproved", UK: "unapproved",
+                JP: "unapproved", RU: "unapproved", note: "WADA 2025 explicit listing. Preclinical mouse data only.", src: "https://www.wada-ama.org/" },
+            { id: "FST344001", name: "Follistatin 344", syn: "FST344 gene therapy", cat: "Gene/Cell Therapy", mod: "Viral Vector", stage: "unapproved", wada: "prohibited",
+                wadaCat: "S2 + M3 Gene Doping", risk: 4, US: "unapproved", EU: "unapproved", CA: "unapproved", AU: "unapproved", UK: "unapproved", JP: "unapproved",
+                RU: "unapproved", note: "Dual WADA prohibition. EXTREME risk.", src: "https://www.fda.gov/" },
+            { id: "TEST001", name: "Testosterone", syn: "Cypionate; Enanthate; Sustanon", cat: "AAS Endogenous", mod: "Steroid", stage: "approved", wada: "prohibited",
+                wadaCat: "S1 AAS", risk: 3, US: "approved", EU: "approved", CA: "approved", AU: "approved", UK: "approved", JP: "approved", RU: "approved",
+                note: "Schedule III US. WADA S1 T/E ratio testing.", src: "https://www.accessdata.fda.gov/scripts/cder/daf/" },
+            { id: "TREN001", name: "Trenbolone", syn: "Finaplix; Parabolan", cat: "AAS Veterinary", mod: "Steroid", stage: "unapproved", wada: "prohibited",
+                wadaCat: "S1 AAS", risk: 4, US: "unapproved", EU: "unapproved", CA: "unapproved", AU: "unapproved", UK: "unapproved", JP: "unapproved", RU: "unapproved",
+                note: "NEVER approved for humans. Veterinary cattle implant only.", src: "https://www.deadiversion.usdoj.gov/" },
+            { id: "STAN001", name: "Stanozolol", syn: "Winstrol; Stromba", cat: "AAS Synthetic", mod: "Steroid", stage: "withdrawn", wada: "prohibited", wadaCat: "S1 AAS",
+                risk: 4, US: "withdrawn", EU: "unapproved", CA: "unapproved", AU: "unapproved", UK: "unapproved", JP: "unapproved", RU: "unapproved",
+                note: "Brand withdrawn 2003. Long metabolite detection. Ben Johnson 1988.", src: "https://www.accessdata.fda.gov/scripts/cder/daf/" },
+            { id: "CLEN001", name: "Clenbuterol", syn: "Spiropent; Ventipulmin", cat: "Beta-2 Agonist", mod: "Small Molecule", stage: "unapproved", wada: "prohibited",
+                wadaCat: "S3 Beta-2 Agonists (any route)", risk: 4, US: "unapproved", EU: "approved", CA: "unapproved", AU: "unapproved", UK: "unapproved", JP: "unapproved",
+                RU: "approved", note: "Not approved for humans in US. Equine vet only. WADA S3.", src: "https://www.accessdata.fda.gov/" },
+            { id: "TAMOX001", name: "Tamoxifen", syn: "Nolvadex", cat: "SERM/PCT", mod: "Small Molecule", stage: "approved", wada: "prohibited",
+                wadaCat: "S4 Anti-estrogenic (in-comp males)", risk: 2, US: "approved", EU: "approved", CA: "approved", AU: "approved", UK: "approved", JP: "approved",
+                RU: "approved", note: "Approved breast cancer. WADA S4 in-competition.", src: "https://www.accessdata.fda.gov/scripts/cder/daf/" },
+            { id: "ANAST001", name: "Anastrozole", syn: "Arimidex", cat: "Aromatase Inhibitor", mod: "Small Molecule", stage: "approved", wada: "prohibited",
+                wadaCat: "S4 Aromatase Inhibitors", risk: 2, US: "approved", EU: "approved", CA: "approved", AU: "approved", UK: "approved", JP: "approved",
+                RU: "approved", note: "WADA S4. AI manipulates T:E ratio.", src: "https://www.accessdata.fda.gov/scripts/cder/daf/" },
+            { id: "T3001", name: "Liothyronine (T3)", syn: "Cytomel; Triostat", cat: "Thyroid Hormone", mod: "Small Molecule", stage: "approved", wada: "unknown",
+                wadaCat: "Monitoring Programme", risk: 1, US: "approved", EU: "approved", CA: "approved", AU: "approved", UK: "approved", JP: "approved", RU: "approved",
+                note: "WADA monitoring only. Not currently prohibited.", src: "https://www.accessdata.fda.gov/scripts/cder/daf/" },
+            { id: "NAD001", name: "NAD+", syn: "Nicotinamide Adenine Dinucleotide", cat: "Coenzyme/Supplement", mod: "Mixed", stage: "unapproved", wada: "permitted",
+                wadaCat: "—", risk: 1, US: "unapproved", EU: "unknown", CA: "unknown", AU: "unknown", UK: "unknown", JP: "unknown", RU: "unknown",
+                note: "Not FDA-approved as drug. IV NAD+ legal basis murky.", src: "https://www.fda.gov/" },
+        ];
+
+        // ═══════════ JURISDICTIONS (from PRIS_Dashboard.jsx) ═══════════
+        const JURISDICTIONS = [
+            { code: "US", name: "United States", body: "FDA (CDER/CBER)", flag: "🇺🇸", tier: 1, region: "Americas", lat: 38.9, lng: -77.0 },
+            { code: "EU", name: "European Union", body: "EMA", flag: "🇪🇺", tier: 1, region: "Europe", lat: 52.3, lng: 4.9 },
+            { code: "UK", name: "United Kingdom", body: "MHRA", flag: "🇬🇧", tier: 1, region: "Europe", lat: 51.5, lng: -0.1 },
+            { code: "CA", name: "Canada", body: "Health Canada", flag: "🇨🇦", tier: 1, region: "Americas", lat: 45.4, lng: -75.7 },
+            { code: "AU", name: "Australia", body: "TGA", flag: "🇦🇺", tier: 1, region: "Oceania", lat: -35.3, lng: 149.1 },
+            { code: "JP", name: "Japan", body: "PMDA", flag: "🇯🇵", tier: 1, region: "Asia-Pacific", lat: 35.7, lng: 139.7 },
+            { code: "RU", name: "Russia", body: "Roszdravnadzor", flag: "🇷🇺", tier: 1, region: "Eurasia", lat: 55.7, lng: 37.6 },
+            { code: "CN", name: "China", body: "NMPA", flag: "🇨🇳", tier: 2, region: "Asia-Pacific", lat: 39.9, lng: 116.4 },
+            { code: "CH", name: "Switzerland", body: "Swissmedic", flag: "🇨🇭", tier: 2, region: "Europe", lat: 46.9, lng: 7.4 },
+            { code: "IN", name: "India", body: "CDSCO", flag: "🇮🇳", tier: 2, region: "Asia-Pacific", lat: 28.6, lng: 77.2 },
+            { code: "KR", name: "South Korea", body: "MFDS", flag: "🇰🇷", tier: 2, region: "Asia-Pacific", lat: 37.5, lng: 127.0 },
+            { code: "BR", name: "Brazil", body: "ANVISA", flag: "🇧🇷", tier: 2, region: "Americas", lat: -15.8, lng: -47.9 },
+            { code: "MX", name: "Mexico", body: "COFEPRIS", flag: "🇲🇽", tier: 2, region: "Americas", lat: 19.4, lng: -99.1 },
+            { code: "SG", name: "Singapore", body: "HSA", flag: "🇸🇬", tier: 2, region: "Asia-Pacific", lat: 1.3, lng: 103.8 },
+            { code: "IL", name: "Israel", body: "MOH Israel", flag: "🇮🇱", tier: 2, region: "Middle East", lat: 31.7, lng: 35.2 },
+            { code: "ZA", name: "South Africa", body: "SAHPRA", flag: "🇿🇦", tier: 2, region: "Africa", lat: -25.7, lng: 28.2 },
+            { code: "NZ", name: "New Zealand", body: "Medsafe", flag: "🇳🇿", tier: 2, region: "Oceania", lat: -41.3, lng: 174.8 },
+            { code: "TR", name: "Turkey", body: "TITCK", flag: "🇹🇷", tier: 2, region: "Middle East", lat: 39.9, lng: 32.8 },
+            { code: "SA", name: "Saudi Arabia", body: "SFDA", flag: "🇸🇦", tier: 2, region: "Middle East", lat: 24.7, lng: 46.7 },
+            { code: "AE", name: "UAE", body: "MOH-UAE", flag: "🇦🇪", tier: 2, region: "Middle East", lat: 24.4, lng: 54.4 },
+            { code: "AR", name: "Argentina", body: "ANMAT", flag: "🇦🇷", tier: 2, region: "Americas", lat: -34.6, lng: -58.4 },
+            { code: "TH", name: "Thailand", body: "FDA-TH", flag: "🇹🇭", tier: 2, region: "Asia-Pacific", lat: 13.7, lng: 100.5 },
+            { code: "DE", name: "Germany", body: "BfArM", flag: "🇩🇪", tier: 3, region: "Europe", lat: 52.5, lng: 13.4 },
+            { code: "FR", name: "France", body: "ANSM", flag: "🇫🇷", tier: 3, region: "Europe", lat: 48.8, lng: 2.3 },
+            { code: "IT", name: "Italy", body: "AIFA", flag: "🇮🇹", tier: 3, region: "Europe", lat: 41.9, lng: 12.5 },
+            { code: "ES", name: "Spain", body: "AEMPS", flag: "🇪🇸", tier: 3, region: "Europe", lat: 40.4, lng: -3.7 },
+            { code: "SE", name: "Sweden", body: "MPA", flag: "🇸🇪", tier: 3, region: "Europe", lat: 59.3, lng: 18.1 },
+            { code: "NO", name: "Norway", body: "NOMA", flag: "🇳🇴", tier: 3, region: "Europe", lat: 59.9, lng: 10.7 },
+            { code: "PL", name: "Poland", body: "URPL", flag: "🇵🇱", tier: 3, region: "Europe", lat: 52.2, lng: 21.0 },
+            { code: "UA", name: "Ukraine", body: "SMCU", flag: "🇺🇦", tier: 3, region: "Europe", lat: 50.4, lng: 30.5 },
+            { code: "EG", name: "Egypt", body: "EDRA", flag: "🇪🇬", tier: 3, region: "Africa", lat: 30.0, lng: 31.2 },
+            { code: "NG", name: "Nigeria", body: "NAFDAC", flag: "🇳🇬", tier: 3, region: "Africa", lat: 9.0, lng: 7.5 },
+            { code: "KE", name: "Kenya", body: "PPB", flag: "🇰🇪", tier: 3, region: "Africa", lat: -1.3, lng: 36.8 },
+            { code: "MY", name: "Malaysia", body: "NPRA", flag: "🇲🇾", tier: 3, region: "Asia-Pacific", lat: 3.1, lng: 101.7 },
+            { code: "PH", name: "Philippines", body: "FDA-PH", flag: "🇵🇭", tier: 3, region: "Asia-Pacific", lat: 14.6, lng: 121.0 },
+            { code: "ID", name: "Indonesia", body: "BPOM", flag: "🇮🇩", tier: 3, region: "Asia-Pacific", lat: -6.2, lng: 106.8 },
+            { code: "PK", name: "Pakistan", body: "DRAP", flag: "🇵🇰", tier: 3, region: "Asia-Pacific", lat: 33.7, lng: 73.0 },
+            { code: "TW", name: "Taiwan", body: "TFDA", flag: "🇹🇼", tier: 3, region: "Asia-Pacific", lat: 25.0, lng: 121.5 },
+            { code: "HK", name: "Hong Kong", body: "DH-HK", flag: "🇭🇰", tier: 3, region: "Asia-Pacific", lat: 22.3, lng: 114.2 },
+            { code: "CL", name: "Chile", body: "ISP", flag: "🇨🇱", tier: 3, region: "Americas", lat: -33.4, lng: -70.6 },
+            { code: "CO", name: "Colombia", body: "INVIMA", flag: "🇨🇴", tier: 3, region: "Americas", lat: 4.6, lng: -74.1 },
+            { code: "PE", name: "Peru", body: "DIGEMID", flag: "🇵🇪", tier: 3, region: "Americas", lat: -12.0, lng: -77.0 },
+            { code: "DZ", name: "Algeria", body: "ANPP", flag: "🇩🇿", tier: 3, region: "Africa", lat: 36.7, lng: 3.0 },
+            { code: "MA", name: "Morocco", body: "MSPS-DMP", flag: "🇲🇦", tier: 3, region: "Africa", lat: 34.0, lng: -6.8 },
+        ];
+
+        const JURIS_KEYS = ["US", "EU", "CA", "AU", "UK", "JP", "RU"];
+
+        // ═══════════ INIT FILTERS ═══════════
+        function initFilters() {
+            const jurSel = document.getElementById('jurisFilter');
+            JURISDICTIONS.forEach(j => { const o = document.createElement('option');
+                o.value = j.code;
+                o.textContent = j.flag + ' ' + j.name;
+                jurSel.appendChild(o); });
+            const cats = [...new Set(COMPOUNDS.map(c => c.cat))].sort();
+            const catSel = document.getElementById('catFilter');
+            cats.forEach(c => { const o = document.createElement('option');
+                o.value = c;
+                o.textContent = c;
+                catSel.appendChild(o); });
+        }
+
+        // ═══════════ REGULATORY TOOL ═══════════
+        let regTab = 'compounds';
+
+        function switchRegTab(tab, btn) {
+            regTab = tab;
+            document.querySelectorAll('.tab-nav-reg button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            performSearch();
+        }
+
+        function performSearch() {
+            const q = (document.getElementById('searchInput').value || '').toLowerCase();
+            const jurF = document.getElementById('jurisFilter').value;
+            const catF = document.getElementById('catFilter').value;
+            const wadaF = document.getElementById('wadaFilter').value;
+            const riskF = parseInt(document.getElementById('riskFilter').value) || 0;
+
+            let results = COMPOUNDS.filter(c => {
+                if (q && !c.name.toLowerCase().includes(q) && !c.syn.toLowerCase().includes(q) && !c.id
+                    .toLowerCase().includes(q)) return false;
+                if (catF && c.cat !== catF) return false;
+                if (wadaF && c.wada !== wadaF) return false;
+                if (riskF && c.risk !== riskF) return false;
+                if (jurF && JURIS_KEYS.includes(jurF) && c[jurF] !== 'approved') return false;
+                return true;
+            });
+
+            const box = document.getElementById('resultsBox');
+            if (regTab === 'compounds') {
+                if (results.length === 0) {
+                    box.innerHTML =
+                        '<p style="text-align:center;color:#555;padding:30px;">No compounds match. Try different filters.</p>';
+                } else {
+                    box.innerHTML = results.map(c => {
+                        const wadaCol = c.wada === 'prohibited' ? '#ef4444' : c.wada === 'permitted' ?
+                            '#22c55e' : '#94a3b8';
+                        const riskCol = ['', '#22c55e', '#f59e0b', '#f97316', '#ef4444'][c.risk];
+                        const riskLab = ['', 'LOW', 'MODERATE', 'ELEVATED', 'CRITICAL'][c.risk];
+                        const jstatus = JURIS_KEYS.map(j => {
+                            const s = c[j] || 'unknown';
+                            const col = s === 'approved' ? '#22c55e' : s === 'investigational' ?
+                                '#3b82f6' : s === 'withdrawn' ? '#f59e0b' : s === 'unapproved' ?
+                                '#ef4444' : '#64748b';
+                            return `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${col};margin:0 1px;" title="${j}:${s}"></span>`;
+                        }).join('');
+                        return `<div class="result-item" onclick="showDetail('${c.id}')" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+                  <div style="flex:1;min-width:180px;">
+                    <h4>${c.name} <span class="chip" style="background:#1a2a3a;color:#aaa;">${c.cat}</span></h4>
+                    <div class="meta">${c.mod} · Stage: ${c.stage.replace(/_/g,' ')} · ${c.syn.slice(0,60)}</div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                    <span class="chip" style="background:${wadaCol}22;color:${wadaCol};">WADA ${c.wada.toUpperCase()}</span>
+                    <span class="chip" style="background:${riskCol}22;color:${riskCol};">${riskLab}</span>
+                    <span style="font-size:.7rem;">${jstatus}</span>
+                  </div>
+                </div>`;
+                    }).join('');
+                }
+            } else if (regTab === 'trials') {
+                box.innerHTML =
+                    '<p style="text-align:center;color:#555;padding:30px;">🔗 <a href="https://clinicaltrials.gov/" target="_blank" style="color:#ff6b35;">Search ClinicalTrials.gov</a> for active trials on filtered compounds.</p><p style="text-align:center;color:#555;">Key trials linked in compound detail view.</p>';
+            } else if (regTab === 'jurisdictions') {
+                box.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;">' +
+                    JURISDICTIONS.map(j => {
+                        const approved = COMPOUNDS.filter(c => c[j.code] === 'approved').length;
+                        const tierCol = j.tier === 1 ? '#f59e0b' : j.tier === 2 ? '#a78bfa' : '#3b82f6';
+                        return `<div class="result-item" style="cursor:default;">
+                    <strong>${j.flag} ${j.name}</strong> <span class="chip" style="background:${tierCol}22;color:${tierCol};">T${j.tier}</span>
+                    <div class="meta">${j.body} · Approved: ${approved}</div>
+                  </div>`;
+                    }).join('') + '</div>';
+            }
+        }
+
+        function showDetail(id) {
+            const c = COMPOUNDS.find(x => x.id === id);
+            if (!c) return;
+            const panel = document.getElementById('detailPanel');
+            document.getElementById('detailTitle').textContent = c.name + ' — Regulatory Profile';
+            const wadaCol = c.wada === 'prohibited' ? '#ef4444' : c.wada === 'permitted' ? '#22c55e' : '#94a3b8';
+            const riskCol = ['', '#22c55e', '#f59e0b', '#f97316', '#ef4444'][c.risk];
+            document.getElementById('detailGrid').innerHTML = [
+                { l: 'Synonyms', v: c.syn || '—' },
+                { l: 'Category', v: c.cat },
+                { l: 'Modality', v: c.mod },
+                { l: 'Stage', v: c.stage.replace(/_/g, ' ') },
+                { l: 'WADA', v: `<span style="color:${wadaCol};font-weight:700;">${c.wada.toUpperCase()}</span> — ${c.wadaCat}` },
+                { l: 'Risk', v: `<span style="color:${riskCol};font-weight:700;">${['','LOW','MODERATE','ELEVATED','CRITICAL'][c.risk]}</span>` },
+                ...JURIS_KEYS.map(j => ({ l: j, v: `<span style="color:${c[j]==='approved'?'#22c55e':c[j]==='investigational'?'#3b82f6':c[j]==='withdrawn'?'#f59e0b':c[j]==='unapproved'?'#ef4444':'#64748b'};">${c[j]}</span>` })),
+                { l: 'Notes', v: c.note || '—' },
+                { l: 'Source', v: `<a href="${c.src}" target="_blank" style="color:#ff6b35;">${c.src.slice(0,50)}...</a>` },
+            ].map(f => `<div class="field"><label>${f.l}</label><span>${f.v}</span></div>`).join('');
+            panel.classList.add('show');
+            panel.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ═══════════ LEAFLET MAP ═══════════
+        function initMap() {
+            const mapEl = document.getElementById('worldMap');
+            if (!mapEl || mapEl.dataset.init) return;
+            mapEl.dataset.init = '1';
+
+            const map = L.map('worldMap', { zoomControl: true, scrollWheelZoom: true }).setView([25, 0], 2);
+            window.map = map;
+
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
+                subdomains: 'abcd',
+                maxZoom: 19,
+            }).addTo(map);
+
+            const tierColors = { 1: '#f59e0b', 2: '#a78bfa', 3: '#3b82f6' };
+            JURISDICTIONS.forEach(j => {
+                const color = tierColors[j.tier] || '#64748b';
+                const marker = L.circleMarker([j.lat, j.lng], {
+                    radius: j.tier === 1 ? 8 : j.tier === 2 ? 6 : 4,
+                    fillColor: color,
+                    color: '#fff',
+                    weight: 1,
+                    fillOpacity: 0.8,
+                }).addTo(map);
+                marker.bindTooltip(`${j.flag} ${j.name} · ${j.body} · Tier ${j.tier}`, {
+                    direction: 'top',
+                    offset: [0, -8],
+                });
+            });
+
+            const legend = L.control({ position: 'bottomright' });
+            legend.onAdd = function() {
+                const div = L.DomUtil.create('div', 'map-legend');
+                div.innerHTML = `
+              <strong>Jurisdiction Tiers</strong><br>
+              <i style="background:#f59e0b;"></i> Tier 1 — ICH Founders<br>
+              <i style="background:#a78bfa;"></i> Tier 2 — Major Markets<br>
+              <i style="background:#3b82f6;"></i> Tier 3 — National Authorities
+            `;
+                return div;
+            };
+            legend.addTo(map);
+
+            setTimeout(() => map.invalidateSize(), 400);
+        }
+
+        // ═══════════ INIT ═══════════
+        document.addEventListener('DOMContentLoaded', () => {
+            initFilters();
+            performSearch();
+            initMap();
+            // Re-init map when switching to regulatory page
+            const origSwitch = switchPage;
+            switchPage = function(name) {
+                origSwitch(name);
+                if (name === 'regulatory') {
+                    setTimeout(() => {
+                        if (window.map) window.map.invalidateSize();
+                        else initMap();
+                    }, 300);
+                }
+            };
+        });
+    </script>
+</body>
+</html>

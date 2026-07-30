@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gohan_Pump | Unlock Your Greatness</title>
+    <!-- Import modern, motivational font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ========== GLOBAL WHITE THEME ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #ffffff;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        /* ========== NAVIGATION ========== */
+        nav {
+            background: #ffffff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 1.2rem 0;
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: #e63946; /* Accent red */
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: #e63946;
+            transition: 0.3s;
+        }
+
+        .btn-nav {
+            background: #e63946;
+            color: white;
+            padding: 0.7rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-nav:hover {
+            background: #c1121f;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(230, 57, 70, 0.3);
+        }
+
+        /* ========== HERO SECTION ========== */
+        .hero {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            text-align: center;
+            padding: 5rem 0 4rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 .accent {
+            color: #e63946;
+            position: relative;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: #4a4a4a;
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: #e63946;
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(230, 57, 70, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: #c1121f;
+            transform: translateY(-3px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #1a1a1a;
+            color: #1a1a1a;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-outline:hover {
+            background: #1a1a1a;
+            color: white;
+        }
+
+        /* ========== ABOUT SECTION ========== */
+        .about {
+            padding: 5rem 0;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-image {
+            background: #f1f3f5;
+            border-radius: 20px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+            /* Placeholder – replace with real image */
+        }
+
+        .about-image img {
+            width: 80%;
+            max-width: 300px;
+            opacity: 0.7;
+        }
+
+        .about-text h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text p {
+            color: #4a4a4a;
+            margin-bottom: 1.2rem;
+        }
+
+        .signature {
+            font-weight: 600;
+            margin-top: 2rem;
+        }
+
+        /* ========== PHILOSOPHY SECTION ========== */
+        .philosophy {
+            background: #f8f9fa;
+            padding: 5rem 0;
+            text-align: center;
+        }
+
+        .philosophy h2 {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .philosophy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .philosophy-card {
+            background: white;
+            padding: 2.5rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+            transition: 0.3s;
+        }
+
+        .philosophy-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .philosophy-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .philosophy-card h3 {
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        /* ========== SERVICES SECTION ========== */
+        .services {
+            padding: 5rem 0;
+            text-align: center;
+        }
+
+        .services h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .services-subtitle {
+            color: #4a4a4a;
+            margin-bottom: 3rem;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 16px;
+            padding: 2.5rem 2rem;
+            transition: 0.3s;
+        }
+
+        .service-card:hover {
+            border-color: #e63946;
+            box-shadow: 0 15px 30px rgba(230, 57, 70, 0.1);
+        }
+
+        .service-card h3 {
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+
+        .service-card .price {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #e63946;
+            margin: 1rem 0;
+        }
+
+        /* ========== TESTIMONIALS ========== */
+        .testimonials {
+            background: #f8f9fa;
+            padding: 5rem 0;
+            text-align: center;
+        }
+
+        .testimonials h2 {
+            margin-bottom: 3rem;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+        }
+
+        .testimonial-card .quote {
+            font-style: italic;
+            color: #4a4a4a;
+            margin-bottom: 1.5rem;
+        }
+
+        .testimonial-author {
+            font-weight: 700;
+        }
+
+        /* ========== FOOTER / CONTACT ========== */
+        footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+
+        footer .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        footer h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        footer p {
+            color: #adb5bd;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.8rem;
+            margin-top: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .social-links a:hover {
+            color: #e63946;
+            transition: 0.3s;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: none;
+            border-radius: 8px;
+            background: #2b2b2b;
+            color: white;
+            font-family: inherit;
+        }
+
+        .contact-form button {
+            background: #e63946;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .contact-form button:hover {
+            background: #c1121f;
+        }
+
+        .copyright {
+            text-align: center;
+            color: #6c757d;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #2b2b2b;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .about-grid,
+            footer .container {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                display: none; /* Simple mobile fallback */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="container">
+            <div class="logo">GOHAN<span>_</span>PUMP</div>
+            <div class="nav-links">
+                <a href="#">Home</a>
+                <a href="#about">About</a>
+                <a href="#services">Programs</a>
+                <a href="#testimonials">Testimonials</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <button class="btn-nav">Start Your Journey</button>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container">
+            <h1>
+                There Is <span class="accent">Greatness</span><br>Within You.
+            </h1>
+            <p>
+                Step out of your comfort zone, look beyond the pain, and build the body—and life—you were always meant to have. Prince Abah (Gohan_Pump) is here to show you how.
+            </p>
+            <div class="btn-group">
+                <button class="btn-primary">🚀 Join the Movement</button>
+                <button class="btn-outline">▶️ Watch Motivation</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="about">
+        <div class="container about-grid">
+            <div class="about-image">
+                <!-- Replace with Gohan_Pump photo -->
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 24 24' fill='none' stroke='%23adb5bd' stroke-width='1'%3E%3Ccircle cx='12' cy='8' r='4'/%3E%3Cpath d='M4 20c0-4 4-7 8-7s8 3 8 7'/%3E%3C/svg%3E" alt="Profile placeholder">
+            </div>
+            <div class="about-text">
+                <h2>Meet Prince Abah</h2>
+                <p>
+                    I’m not just a fitness promoter—I’m a believer in the power that sleeps inside every human being. My journey started in Nigeria, where I learned that real strength isn’t just physical; it’s mental, emotional, and spiritual.
+                </p>
+                <p>
+                    Through bodybuilding and consistent hard work, I’ve sculpted more than a physique—I’ve shaped a mindset. And now I want to help you discover the same fire.
+                </p>
+                <p class="signature">— Prince Abah (Gohan_Pump)</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PHILOSOPHY -->
+    <section class="philosophy">
+        <div class="container">
+            <h2>The Gohan_Pump Philosophy</h2>
+            <div class="philosophy-grid">
+                <div class="philosophy-card">
+                    <span class="philosophy-icon">💪</span>
+                    <h3>Hard Work</h3>
+                    <p>Nothing replaces putting in the reps, day after day. Results are earned, not given.</p>
+                </div>
+                <div class="philosophy-card">
+                    <span class="philosophy-icon">🔄</span>
+                    <h3>Consistency</h3>
+                    <p>One workout won’t change you; a hundred will. Show up even when motivation fades.</p>
+                </div>
+                <div class="philosophy-card">
+                    <span class="philosophy-icon">🙏</span>
+                    <h3>God’s Grace</h3>
+                    <p>We are stewards of the bodies we’ve been given. Faith fuels the discipline to treat them well.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" class="services">
+        <div class="container">
+            <h2>Start Your Transformation</h2>
+            <p class="services-subtitle">Choose the path that fits your current season.</p>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3>🔥 1-on-1 Coaching</h3>
+                    <p>Personalized workout & nutrition plan, weekly check-ins, and full support from Prince Abah.</p>
+                    <div class="price">$199/mo</div>
+                    <button class="btn-primary">Apply Now</button>
+                </div>
+                <div class="service-card">
+                    <h3>📚 Self-Guided Program</h3>
+                    <p>8-week bodyweight & dumbbell program with video demos. Perfect for home workouts.</p>
+                    <div class="price">$49</div>
+                    <button class="btn-outline">Get Instant Access</button>
+                </div>
+                <div class="service-card">
+                    <h3>🎥 YouTube Membership</h3>
+                    <p>Exclusive behind-the-scenes content, early video access, and monthly Q&A sessions.</p>
+                    <div class="price">$4.99/mo</div>
+                    <button class="btn-outline">Join Channel</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <h2>What People Are Saying</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <p class="quote">"Prince’s words hit me right when I was about to quit. Three months later, I’m 12kg down and feel unstoppable."</p>
+                    <p class="testimonial-author">— Adeola O., Lagos</p>
+                </div>
+                <div class="testimonial-card">
+                    <p class="quote">"I never believed I could build muscle. Gohan_Pump’s mindset coaching changed everything. I’m living proof."</p>
+                    <p class="testimonial-author">— Chidi M., Abuja</p>
+                </div>
+                <div class="testimonial-card">
+                    <p class="quote">"The ‘comfort zone’ message felt like it was made for me. I finally started, and now I can’t stop."</p>
+                    <p class="testimonial-author">— Fatima B., London</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER / CONTACT -->
+    <footer id="contact">
+        <div class="container">
+            <div>
+                <h3>Let’s Connect</h3>
+                <p>
+                    Follow Gohan_Pump on YouTube for daily motivation, and reach out for collaborations or coaching inquiries.
+                </p>
+                <div class="social-links">
+                    <a href="https://www.youtube.com/@Gohan_pump" target="_blank">▶️</a>
+                    <a href="#" target="_blank">📸</a>
+                    <a href="#" target="_blank">🐦</a>
+                    <a href="#" target="_blank">📧</a>
+                </div>
+            </div>
+            <div>
+                <h3>Quick Message</h3>
+                <form class="contact-form">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <textarea rows="3" placeholder="What’s your biggest fitness struggle?"></textarea>
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>
+        </div>
+        <p class="copyright">© 2026 Gohan_Pump. Designed for greatness.</p>
+    </footer>
+
+</body>
+</html>

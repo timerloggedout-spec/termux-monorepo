@@ -1,0 +1,17 @@
+{
+  "category": "libksba_tools",
+  "tools": [
+    {
+      "name": "ksba-config",
+      "package": "libksba",
+      "path": "/data/data/com.termux/files/usr/bin/ksba-config",
+      "source": "apt",
+      "tags": [
+        "libksba_tools"
+      ],
+      "auto_tag_source": "auto:^libksba$|^libksba-",
+      "category": "libksba_tools",
+      "description": "Library for using X.509 certificates and CMS (Cryptographic Message Syntax) easily accessible"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+import numpy as np
+
+def resample(x, old_rate, new_rate):
+    n = len(x)
+    new_len = int(n * new_rate / old_rate)
+    old_indices = np.arange(n) / (old_rate)
+    new_indices = np.arange(new_len) / (new_rate)
+    return np.interp(new_indices, old_indices, x)

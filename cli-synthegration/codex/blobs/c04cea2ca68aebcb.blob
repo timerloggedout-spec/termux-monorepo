@@ -1,0 +1,9 @@
+---
+
+## 5. Component Deep Dive with Source Documentation
+
+### 5.1 Multi-Exchange Ingestion Engine
+
+**Source File Location:** Lines ~1200-1800 of v23.5 artifact
+
+**Architecture:** The `exchangeDefs` array defines 28 exchange configurations, each with a `key`, `name`, `url`, and `parser` type. The `loadApi()` function dispatches to parser-specific logic that normalizes exchange responses into a uniform pair schema:

@@ -1,0 +1,29 @@
+{
+  "category": "libwnck_tools",
+  "tools": [
+    {
+      "name": "wnck-urgency-monitor",
+      "package": "libwnck",
+      "path": "/data/data/com.termux/files/usr/bin/wnck-urgency-monitor",
+      "source": "apt",
+      "tags": [
+        "libwnck_tools"
+      ],
+      "auto_tag_source": "auto:^libwnck$|^libwnck-",
+      "category": "libwnck_tools",
+      "description": "Window Navigator Construction Kit"
+    },
+    {
+      "name": "wnckprop",
+      "package": "libwnck",
+      "path": "/data/data/com.termux/files/usr/bin/wnckprop",
+      "source": "apt",
+      "tags": [
+        "libwnck_tools"
+      ],
+      "auto_tag_source": "auto:^libwnck$|^libwnck-",
+      "category": "libwnck_tools",
+      "description": "Window Navigator Construction Kit"
+    }
+  ]
+}

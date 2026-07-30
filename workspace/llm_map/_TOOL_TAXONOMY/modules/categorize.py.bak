@@ -1,0 +1,174 @@
+import sys as _sys
+import sys, json, os
+from collections import defaultdict
+
+all_tools_file = sys.argv[1]
+top_file = sys.argv[2]
+cat_dir = sys.argv[3]
+role_dir = sys.argv[4]
+role_filter = sys.argv[5] if len(sys.argv) > 5 else ""
+tag_filter = sys.argv[6] if len(sys.argv) > 6 else ""
+
+TAG_RULES = {
+    "compression": ["tar","gzip","zip","unzip","arj","p7zip","lzop","lzip","zstd","xz","cpio","bsdtar","bzip2"],
+    "file_search": ["find","fd","locate","tree","dust","ncdu","eza","ls","bat","cat"],
+    "text_processing": ["grep","rg","ripgrep","sed","awk","gawk","jq","yq","tidy","shellcheck","diff","patch","ed","comm","cut","sort","uniq","wc","tr","head","tail","ast-grep"],
+    "system_monitor": ["htop","procs","bandwhich","ps","top","kill","lsof","strace","free","uptime","dmesg","vmstat","iostat"],
+    "network_tools": ["curl","wget","httpie","nmap","netcat","tcpdump","wireshark","termshark","ssh","scp","sftp","rsync","dig","nslookup","host","rclone","gh","git"],
+    "development": ["clang","clang++","cmake","make","ninja","gcc","rust","rustc","cargo","node","npm","npx","python","python3","pip","php","perl","lua","luajit","gem","yarn","ast-grep","flang","lld","llvm","rust-analyzer"],
+    "python": ["python","python3","pip","ruff","pytest","ast-grep"],
+    "rust": ["rustc","cargo","rust-analyzer","clippy","rustfmt"],
+    "c_cpp": ["clang","clang++","gcc","g++","cmake","make","ninja","lld","llvm*"],
+    "javascript": ["node","npm","npx","yarn","tsc"],
+    "lua": ["lua","luajit","luarocks"],
+    "fortran": ["flang"],
+    "php": ["php"],
+    "multimedia": ["ffmpeg","ffplay","ffprobe","imagemagick","convert","sox","mplayer","mpv","vlc","termux-camera-photo","termux-microphone-record"],
+    "database": ["sqlite","sqlite3","mysql","psql","redis"],
+    "shell_environment": ["bash","zsh","fish","dash","tmux","screen","starship","which-command"],
+    "terminal_multiplexer": ["tmux","screen"],
+    "shell_customization": ["zsh","starship","p10k","powerlevel10k","oh-my-zsh"],
+    "python_toolchain": ["pip","uv","venv","virtualenv","pipx","twine"],
+    "termux_api": ["termux-*"],
+    "documentation": ["man","mandoc","tldr","info","help","run-help"],
+    "benchmarking": ["hyperfine","time"],
+    "security": ["gnupg","gpg","openssl","ssh-keygen","nmap","tcpdump"],
+    "package_management": ["apt","pkg","dpkg","pip","npm","cargo","gem"],
+    "llm_orchestration": ["aether","agent-shell","archaeo","deepcli","dep","depmenu","dispatch","dispatch-adaptive","dispatch-parallel","fore","forensic-query","fts-query","logged","map","map-build","map-func","map-graph","map-query","map-set","mdot","mfull","mkprofile","mmap","mtree","mupdate","oracle","promote","task-list","task-watch","truth-report","tui","workflow","workspace-check"],
+    "harmony_hub": ["account-activity","forensic-query","fts-query","workflow","workspace-check"],
+    "archwiz": ["archwiz","aether"],
+    "recon_intel": ["deep_recon.sh","fast_scan.sh","quick_recon.sh","recon.py","recon_v2.sh","surgical_recon.sh"],
+    "reverse_engineering": ["apktool","jadx","dex2jar","aapt","adb","fastboot","agent-browser","http-mitm-proxy","termux-apps-info-*"],
+    "forensics": ["forensic-*","indexer_*","batch_transcribe.py","extract_words_from_json.py"],
+    "synthegration": ["synthegration","synth"],
+    "system_utility": ["true","false","yes","no","[","test","expr","printf","echo","date","sleep","wait","killall","clear","reset","id","whoami","groups","chmod","chown","ln","mkdir","rmdir","cp","mv","rm","touch","readlink","basename","dirname","realpath","mktemp","tee","xargs","env","printenv","seq","shuf","which","type","ulimit","nice","nohup","timeout"],
+}
+
+def extract_tags(name):
+    tags = set()
+    for tag, patterns in TAG_RULES.items():
+        for pat in patterns:
+            if pat.endswith('*'):
+                if name.startswith(pat[:-1]):
+                    tags.add(tag)
+            elif name == pat:
+                tags.add(tag)
+    if not tags:
+        tags.add("other")
+    return sorted(tags)
+
+def extract_desc(path):
+    if not path or not os.path.exists(path):
+        return "No description"
+    try:
+        with open(path, 'r', errors='ignore') as f:
+            for line in f:
+                line = line.strip()
+                if line.startswith('#!'):
+                    continue
+                if line.startswith('#'):
+                    return line.lstrip('#').strip()
+            return "Script: " + os.path.basename(path)
+    except:
+        return "No description"
+
+tools = []
+with open(all_tools_file, 'r') as f:
+    for line in f:
+        line = line.strip()
+        if not line:
+            continue
+        obj = json.loads(line)
+        name = obj['name']
+        obj['tags'] = extract_tags(name)
+        obj['category'] = obj['tags'][0] if obj['tags'] else "other"
+        if 'description' not in obj or not obj['description']:
+            if obj['source'] in ('npm','cargo','alias','custom','ref_templates'):
+                obj['description'] = extract_desc(obj.get('path',''))
+            else:
+                obj['description'] = "System tool"
+        tools.append(obj)
+
+if tag_filter:
+    tools = [t for t in tools if tag_filter in t['tags']]
+
+os.makedirs(cat_dir, exist_ok=True)
+by_cat = defaultdict(list)
+for t in tools:
+    by_cat[t['category']].append(t)
+for cat, tlist in by_cat.items():
+    with open(os.path.join(cat_dir, f"{cat}.json"), 'w') as f:
+        json.dump({"category": cat, "tools": tlist}, f, indent=2)
+
+tag_index = defaultdict(list)
+for t in tools:
+    for tag in t['tags']:
+        tag_index[tag].append(t['name'])
+with open(os.path.join(os.path.dirname(top_file), "TAG_INDEX.json"), 'w') as f:
+    json.dump(dict(tag_index), f, indent=2)
+
+ROLES = {
+    "full_stack_dev": {"desc":"Full-Stack Developer","tool_names":["node","npm","npx","python","pip","rustc","cargo","git","gh","tmux","curl","jq","bat","eza","ripgrep","fd","shellcheck","hyperfine"],"includes_tags":["javascript","python"],"includes_roles":[]},
+    "data_scientist": {"desc":"Data Scientist / ML","tool_names":["python","pip","jupyter","numpy","scipy","pandas","torch","sqlite3","jq","yq","git","curl","wget"],"includes_tags":["python","benchmarking"],"includes_roles":[]},
+    "devops_engineer": {"desc":"DevOps / SRE","tool_names":["ssh","scp","rsync","rclone","tmux","htop","procs","ncdu","hyperfine","yq","shellcheck","curl","wget","git","gh"],"includes_tags":["system_monitor","network_tools"],"includes_roles":[]},
+    "security_researcher": {"desc":"Security Researcher","tool_names":["nmap","tcpdump","wireshark","openssl","gnupg","forensic-query","agent-browser","http-mitm-proxy"],"includes_tags":["security","recon_intel"],"includes_roles":[]},
+    "android_reverser": {"desc":"Android Reverse Engineer","tool_names":["apktool","jadx","dex2jar","adb","fastboot"],"includes_tags":["termux_api","reverse_engineering"],"includes_roles":[]},
+    "llm_agent_dev": {"desc":"LLM Agent Toolchain Dev","tool_names":["map","map-build","map-func","map-graph","map-query","mmap","mfull","mdot","mtree","mkprofile","mupdate","oracle","promote","truth-report","agent-shell","archaeo","dispatch","dispatch-adaptive","dispatch-parallel","deepcli","fore","logged","dep","depmenu","tui","workflow"],"includes_tags":["llm_orchestration","harmony_hub"],"includes_roles":[]},
+    "system_architect": {"desc":"System Architect","tool_names":["account-activity","forensic-query","fts-query","workspace-check","aether","archwiz"],"includes_tags":["harmony_hub","archwiz"],"includes_roles":[]},
+    "recon_agent": {"desc":"Reconnaissance Specialist","tool_names":["deep_recon.sh","fast_scan.sh","quick_recon.sh","recon.py","recon_v2.sh","surgical_recon.sh","forensic-query","fts-query"],"includes_tags":["network_tools","recon_intel","termux_api","text_processing"],"includes_roles":["security_researcher"]},
+    "web_reverse_engineer": {"desc":"Web Reverse Engineer","tool_names":["curl","wget","http-mitm-proxy","agent-browser","wireshark","termux-open-url"],"includes_tags":["network_tools","reverse_engineering"],"includes_roles":[]},
+    "apk_reverse_engineer": {"desc":"APK Reverse Engineer","tool_names":["apktool","jadx","dex2jar","aapt","adb","fastboot"],"includes_tags":["termux_api","reverse_engineering"],"includes_roles":[]},
+    "python_developer": {"desc":"Python Developer","tool_names":["python","pip","ast-grep","shellcheck"],"includes_tags":["python","text_processing","package_management"],"includes_roles":[]},
+    "rust_developer": {"desc":"Rust Developer","tool_names":["rustc","cargo","rust-analyzer"],"includes_tags":["rust","benchmarking","package_management"],"includes_roles":[]},
+    "c_cpp_developer": {"desc":"C/C++ Developer","tool_names":["clang","cmake","make","ninja"],"includes_tags":["c_cpp","system_monitor","benchmarking"],"includes_roles":[]},
+    "web_frontend_dev": {"desc":"Web Frontend Developer","tool_names":["node","npm","npx"],"includes_tags":["javascript","network_tools","reverse_engineering"],"includes_roles":[]},
+    "lua_developer": {"desc":"Lua Developer","tool_names":["lua","luajit","luarocks"],"includes_tags":["lua","text_processing"],"includes_roles":[]},
+    "fortran_developer": {"desc":"Fortran Developer","tool_names":["flang"],"includes_tags":["fortran","benchmarking"],"includes_roles":[]},
+    "php_developer": {"desc":"PHP Developer","tool_names":["php"],"includes_tags":["php","network_tools"],"includes_roles":[]},
+    "shell_power_user": {"desc":"Power Shell User","tool_names":["zsh","tmux","screen","starship","p10k","bat","eza","ripgrep","fd","ncdu","htop"],"includes_tags":["shell_environment","shell_customization","terminal_multiplexer","file_search","system_monitor","system_utility"],"includes_roles":[]},
+    "python_package_dev": {"desc":"Python Package Developer","tool_names":["python","pip","uv","venv","pipx","twine","jq","yq"],"includes_tags":["python","python_toolchain","text_processing","package_management"],"includes_roles":[]},
+    "termux_operator": {"desc":"Termux Operator","tool_names":["termux-*"],"includes_tags":["termux_api","shell_environment","system_monitor","file_search"],"includes_roles":[]},
+    "forensic_analyst": {"desc":"Forensic Data Analyst","tool_names":["forensic-query","fts-query","batch_transcribe.py","extract_words_from_json.py"],"includes_tags":["forensics","text_processing","network_tools"],"includes_roles":[]},
+    "synthegration_dev": {"desc":"Synthegration Developer","tool_names":["synthegration"],"includes_tags":["synthegration","rust","network_tools"],"includes_roles":[]},
+}
+
+os.makedirs(role_dir, exist_ok=True)
+def resolve_role(role_name, visited=None):
+    if visited is None:
+        visited = set()
+    if role_name in visited:
+        return set()
+    visited.add(role_name)
+    rdef = ROLES[role_name]
+    tool_set = set(rdef['tool_names'])
+    for tag in rdef['includes_tags']:
+        tool_set.update(tag_index.get(tag, []))
+    for inc_role in rdef['includes_roles']:
+        tool_set.update(resolve_role(inc_role, visited))
+    return tool_set
+
+role_map = {}
+for role_name in ROLES:
+    if role_filter and role_name != role_filter:
+        continue
+    tools_in_role = resolve_role(role_name)
+    role_tools = [t for t in tools if t['name'] in tools_in_role]
+    role_obj = {"description": ROLES[role_name]['desc'], "tools": sorted(role_tools, key=lambda x: x['name'])}
+    role_map[role_name] = role_obj
+    with open(os.path.join(role_dir, f"{role_name}.json"), 'w') as f:
+        json.dump(role_obj, f, indent=2)
+
+top = {
+    "metadata": {
+        "total_tools": len(tools),
+        "categories": sorted(by_cat.keys()),
+        "tags": sorted(tag_index.keys()),
+        "roles": sorted(role_map.keys())
+    },
+    "tag_counts": {tag: len(names) for tag, names in tag_index.items()},
+    "category_counts": {c: len(by_cat[c]) for c in by_cat},
+    "role_tool_counts": {r: len(role_map[r]['tools']) for r in role_map}
+}
+with open(top_file, 'w') as f:
+    json.dump(top, f, indent=2)
+print(f"Taxonomy built: {len(tools)} tools, {len(tag_index)} tags, {len(role_map)} roles")

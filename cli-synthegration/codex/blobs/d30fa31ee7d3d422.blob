@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>🎰 QuanTM FOAM v20 - Build The Future Edition</title>
+    <style>
+        :root {
+            --pink: #ff00ff; --cyan: #00f0ff; --green: #00ffaa; --gold: #ffd700;
+            --bg: #0a0a1a; --card: #1a1a2a; --border: #2a2a3a;
+        }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{background:#0a0a1a;color:#a0a0ff;font-family:'Courier New',monospace;font-size:11px;overflow-x:hidden;}
+        canvas#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;}
+        .container{max-width:1500px;margin:0 auto;padding:10px;position:relative;z-index:1;}
+        h1{color:var(--gold);font-size:22px;text-shadow:0 0 15px var(--pink),0 0 25px var(--cyan);margin-bottom:8px;letter-spacing:2px;}
+        .status-bar{padding:10px 15px;margin:10px 0;background:linear-gradient(145deg,#0a0a1a,#1a1a2a);border-radius:10px;border-left:5px solid var(--cyan);font-weight:bold;display:flex;justify-content:space-between;align-items:center;box-shadow:0 0 20px rgba(0,240,255,0.3);}
+        .controls{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;}
+        button{background:#111;border:2px solid var(--pink);color:var(--pink);padding:8px 15px;border-radius:25px;font-size:10px;font-weight:bold;cursor:pointer;font-family:'Courier New',monospace;transition:all 0.2s;text-transform:uppercase;letter-spacing:1px;box-shadow:0 0 10px var(--pink);}
+        button:hover{background:var(--pink);color:#000;box-shadow:0 0 25px var(--pink);}
+        button:active{transform:scale(0.95);}
+        button.cyan{border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 10px var(--cyan);}
+        button.cyan:hover{background:var(--cyan);color:#000;}
+        button.live{border-color:#ff4444;color:#ff4444;animation:livePulse 1s infinite;}
+        @keyframes livePulse{0%,100%{box-shadow:0 0 8px #ff4444;}50%{box-shadow:0 0 20px #ff4444;}}
+        button:disabled{opacity:0.4;cursor:not-allowed;animation:none;}
+        .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px;margin:12px 0;}
+        .card{background:var(--card);border-radius:12px;padding:14px;border:1px solid var(--border);box-shadow:0 0 15px rgba(255,0,255,0.15);transition:all 0.3s;}
+        .card:hover{border-color:var(--pink);box-shadow:0 0 30px rgba(255,0,255,0.4);}
+        .card h3{color:var(--cyan);font-size:13px;margin-bottom:10px;}
+        .exchange-status{display:flex;align-items:center;gap:8px;padding:5px;background:#0a0a1a;border-radius:6px;margin:3px 0;font-size:10px;border:1px solid #2a2a3a;}
+        .indicator{width:8px;height:8px;border-radius:50%;background:#ff4444;box-shadow:0 0 8px #ff4444;flex-shrink:0;}
+        .indicator.online{background:var(--green);box-shadow:0 0 12px var(--green);animation:pulse 1.5s infinite;}
+        .indicator.info{background:#4488ff;box-shadow:0 0 12px #4488ff;}
+        .indicator.ws{background:#ff00ff;box-shadow:0 0 12px #ff00ff;animation:pulse 0.8s infinite;}
+        @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 8px var(--green);}50%{opacity:0.4;box-shadow:0 0 22px var(--green);}}
+        .stat{display:flex;justify-content:space-between;padding:4px 0;font-size:11px;}
+        .stat-value{color:var(--gold);font-weight:bold;}
+        .rolling-number{font-size:16px;color:var(--gold);font-weight:bold;}
+        .opp-section{margin:12px 0;padding:10px;background:#0f0f1f;border-radius:8px;border:1px solid #2a2a3a;}
+        .opp-header{display:flex;justify-content:space-between;align-items:center;padding:10px;background:#1a1a2a;border-radius:8px;cursor:pointer;font-weight:bold;color:var(--pink);}
+        .opp-list{max-height:450px;overflow-y:auto;}
+        .opportunity{background:#111;padding:10px;margin:6px 0;border-radius:8px;border-left:5px solid var(--green);cursor:pointer;transition:all 0.2s;}
+        .opportunity:hover{border-left-color:var(--pink);background:#1a1a2a;box-shadow:0 0 15px rgba(255,0,255,0.4);}
+        .opportunity.mega{border-left-color:var(--gold);animation:glow 1s infinite alternate;}
+        .opportunity.suspicious{border-left-color:#ff4444;background:#220000;}
+        @keyframes glow{from{box-shadow:0 0 5px var(--gold);}to{box-shadow:0 0 25px var(--gold);}}
+        .path-visual{font-size:9px;color:var(--cyan);margin:5px 0;}
+        .depth-bar{height:6px;background:#333;border-radius:3px;margin:1px 0;overflow:hidden;}
+        .depth-fill{height:100%;background:var(--cyan);transition:width 0.3s;}
+        .log-container{background:#000;padding:10px;border-radius:8px;max-height:200px;overflow-y:auto;font-size:9px;}
+        .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:10000;align-items:center;justify-content:center;}
+        .modal-content{background:#1a1a2a;border:2px solid var(--pink);border-radius:15px;padding:25px;max-width:600px;width:90%;color:white;max-height:80vh;overflow-y:auto;}
+        .chip{background:var(--pink);color:#000;padding:2px 8px;border-radius:12px;font-size:9px;font-weight:bold;display:inline-block;}
+        .flex-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+        .progress-bar{height:10px;background:#333;border-radius:5px;margin:5px 0;}
+        .progress-fill{height:100%;background:var(--gold);border-radius:5px;width:0%;}
+        input,select{background:#0a0a1a;border:1px solid var(--cyan);color:var(--cyan);padding:4px 8px;border-radius:5px;font-family:'Courier New',monospace;font-size:11px;}
+        .checkbox-group{display:flex;flex-wrap:wrap;gap:5px;align-items:center;}
+        .checkbox-group label{display:flex;align-items:center;gap:4px;font-size:9px;color:var(--cyan);}
+        @media(max-width:768px){.grid{grid-template-columns:1fr;}.controls{justify-content:center;}}
+    </style>
+</head>
+<body>
+<canvas id="particleCanvas"></canvas>
+<div class="container">
+    <h1>🎰 QUANTM FOAM v20 <span style="font-size:13px;">BUILD THE FUTURE EDITION</span></h1>
+    <div class="status-bar" id="mainStatus">🟡 READY TO SPIN</div>
+    <div class="controls">
+        <button class="cyan" onclick="initSystem()">🔄 INIT</button>
+        <button id="scanBtn" onclick="runFullScan()" disabled>🎲 FULL SCAN</button>
+        <button id="liveScanBtn" onclick="toggleLiveScan()">🔄 LIVE SCAN</button>
+        <button onclick="connectAllWebSockets()">📡 LIVE WS</button>
+        <button onclick="openCreateCoinModal()" title="Create your own token! (Level 5+)">🪙 CREATE COIN</button>
+        <button onclick="toggleLogs()">📋 LOGS</button>
+        <button onclick="shareJackpot()">📤 SHARE</button>
+        <button onclick="toggleTheme()">🎨 THEME</button>
+    </div>
+
+    <div class="grid">
+        <div class="card" style="grid-column: span 2;">
+            <h3>👤 USER PROFILE</h3>
+            <div class="flex-row">
+                <span>Level: <strong id="userLevel">1</strong></span>
+                <span>Matrix Score: <span id="matrixScore">0</span></span>
+                <span>Next Level: <span id="nextLevelScore">100</span></span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" id="levelProgress"></div></div>
+            <div class="flex-row" style="margin-top:5px;">
+                <span>💸 Royalties: <span id="royalties">$0.00</span></span>
+                <span>🏦 Quantums Fund: <span id="quantumFundVisible">$0.00</span></span>
+                <span>🔒 Locked Fund: <span id="quantumFundLocked">$0.00</span> (matures in <span id="lockMaturity">7d</span>)</span>
+            </div>
+        </div>
+        <div class="card">
+            <h3>📊 STATISTICS</h3>
+            <div class="stat"><span>Pairs:</span><span class="stat-value" id="totalPairs">0</span></div>
+            <div class="stat"><span>Nodes:</span><span class="stat-value" id="graphNodes">0</span></div>
+            <div class="stat"><span>Edges:</span><span class="stat-value" id="graphEdges">0</span></div>
+            <div class="stat"><span>Triangles:</span><span class="stat-value" id="triangleCount">0</span></div>
+            <div class="stat"><span>WS Bytes:</span><span class="stat-value" id="wsBytes">0 KB</span></div>
+            <div class="stat"><span>Opps:</span><span class="stat-value rolling-number" id="oppCount">0</span></div>
+        </div>
+    </div>
+
+    <div class="flex-row" style="margin:10px 0; background:#1a1a2a; padding:12px; border-radius:12px;">
+        <span style="color:var(--gold);font-size:14px;">💰 BANKROLL:</span>
+        <span class="rolling-number" id="bankroll">$10,000.00</span>
+        <span style="margin-left:auto;color:var(--cyan);">📈 P/L:</span>
+        <span id="pnl" style="color:var(--green);font-size:14px;">$0.00 (0.00%)</span>
+    </div>
+
+    <div class="flex-row" style="justify-content:space-between;margin:10px 0;">
+        <div class="flex-row"><label>🎚️ BET:</label><input type="range" id="betSlider" min="100" max="10000" value="1000" step="100" oninput="syncBetInput()"><input type="number" id="betInput" value="1000" min="100" max="10000" step="100" style="width:80px;" onchange="syncBetSlider()"></div>
+        <div class="flex-row"><label>🧺 BASKET:</label><input type="text" id="basketInput" value="USDT,BTC,ETH,DOGE,SHIB,SOL" style="width:220px;"><label style="font-size:10px;"><input type="checkbox" id="basketTriFilter"> Filter</label></div>
+        <div class="flex-row"><label>🔁 MODE:</label><select id="arbMode"><option value="intra">Intra</option><option value="inter">Inter</option><option value="both" selected>Both</option></select></div>
+        <div class="flex-row" style="flex-direction:column;align-items:flex-start;"><div id="intraExCheckboxes" class="checkbox-group"></div><div class="flex-row" style="gap:4px;"><button onclick="selectAllIntra()" class="cyan" style="padding:3px 8px;">ALL</button><button onclick="deselectAllIntra()" class="cyan" style="padding:3px 8px;">NONE</button></div></div>
+        <div class="flex-row"><label>🔑 PUMP TOKEN:</label><input type="text" id="pumpToken" placeholder="Bearer token" style="width:180px;" onchange="savePumpToken()"><span id="tokenSaved" style="color:var(--green);display:none;">✓</span></div>
+    </div>
+
+    <h2>⚡ EXCHANGE STATUS</h2>
+    <div class="grid" id="exchangeStatus"></div>
+
+    <div class="grid">
+        <div class="card"><h3>🔥 PICO (<$1e-9)</h3><div id="picoValue" style="max-height:180px;overflow-y:auto;"></div></div>
+        <div class="card"><h3>⚡ FEMTO (<$1e-12)</h3><div id="femtoValue" style="max-height:180px;overflow-y:auto;"></div></div>
+        <div class="card"><h3>💧 PLANCK (<$1e-15)</h3><div id="planckValue" style="max-height:180px;overflow-y:auto;"></div></div>
+    </div>
+    <div class="grid">
+        <div class="card"><h3>🔥 ULTRA LOW (<$0.0001)</h3><div id="ultraLowValue" style="max-height:200px;overflow-y:auto;"></div></div>
+        <div class="card"><h3>💧 MICRO CAP (<$0.001)</h3><div id="microCap" style="max-height:200px;overflow-y:auto;"></div></div>
+    </div>
+
+    <h2>🎯 OPPORTUNITIES</h2>
+    <div class="opp-section"><div class="opp-header" onclick="toggleSection('megaOpps')">🌟 MEGA JACKPOTS (>5%) <span id="megaCount">0</span></div><div id="megaOpps" class="opp-list"></div></div>
+    <div class="opp-section"><div class="opp-header" onclick="toggleSection('triangularOpps')">📐 TRIANGULAR <span id="triangularCount">0</span></div><div id="triangularOpps" class="opp-list"></div></div>
+    <div class="opp-section"><div class="opp-header" onclick="toggleSection('bellmanOpps')">🔍 BELLMAN-FORD <span id="bellmanCount">0</span></div><div id="bellmanOpps" class="opp-list"></div></div>
+    <div class="opp-section"><div class="opp-header" onclick="toggleSection('suspiciousOpps')" style="color:#ff4444;">⚠️ SUSPICIOUS / OUTLIERS <span id="suspiciousCount">0</span></div><div id="suspiciousOpps" class="opp-list"></div></div>
+
+    <h2 style="cursor:pointer;" onclick="toggleLogs()">📜 LOGS</h2>
+    <div class="log-container" id="logs" style="display:none;"></div>
+</div>
+
+<!-- Trade Modal -->
+<div id="tradeModal" class="modal">
+    <div class="modal-content">
+        <h3 style="color:var(--gold);">🎰 EXECUTE ARBITRAGE</h3>
+        <div id="tradeDetails"></div>
+        <div style="margin-top:15px;display:flex;gap:10px;justify-content:flex-end;"><button onclick="closeModal()">CANCEL</button><button class="cyan" id="executeTradeBtn">💸 PULL LEVER</button></div>
+    </div>
+</div>
+
+<!-- Create Coin Modal -->
+<div id="createCoinModal" class="modal">
+    <div class="modal-content">
+        <h3 style="color:var(--gold);">🪙 CREATE YOUR OWN TOKEN</h3>
+        <div>
+            <label>Token Symbol:</label><input type="text" id="newCoinSymbol" placeholder="e.g. MOON" style="width:100px;"><br>
+            <label>Initial Price ($):</label><input type="number" id="newCoinPrice" value="0.000001" step="0.000001"><br>
+            <label>Liquidity ($):</label><input type="number" id="newCoinLiq" value="500" step="100"><br>
+            <p style="font-size:9px;color:var(--cyan);">Creates a pair against USDT on "QUANTM_DEX".</p>
+        </div>
+        <div style="margin-top:15px;display:flex;gap:10px;justify-content:flex-end;"><button onclick="closeCreateCoinModal()">CANCEL</button><button id="createCoinBtn" class="cyan">🪙 MINT TOKEN</button></div>
+    </div>
+</div>
+
+<script>
+// ==================== AUDIO (unchanged) ====================
+const audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+function playTone(f,d,t='square',v=0.08){const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=t;o.frequency.value=f;g.gain.setValueAtTime(v,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+d);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+d);}
+function playSpin(){playTone(800,0.1,'sawtooth',0.04);}
+function playWin(){playTone(523,0.12);setTimeout(()=>playTone(659,0.12),120);setTimeout(()=>playTone(784,0.2),240);}
+function playJackpot(){[523,659,784,1047].forEach((f,i)=>setTimeout(()=>playTone(f,0.25,'square',0.12),i*140));}
+
+const canvas=document.getElementById('particleCanvas');
+const ctx=canvas.getContext('2d');
+let particles=[];
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight;}
+window.addEventListener('resize',resize);resize();
+class Particle{constructor(x,y,vx,vy,c,l){this.x=x;this.y=y;this.vx=vx;this.vy=vy;this.color=c;this.life=l;}}
+function anim(){ctx.clearRect(0,0,canvas.width,canvas.height);for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.x+=p.vx;p.y+=p.vy;p.vy+=0.08;p.life-=0.015;ctx.fillStyle=p.color;ctx.globalAlpha=Math.max(0,p.life);ctx.fillRect(p.x,p.y,4,4);if(p.life<=0)particles.splice(i,1);}requestAnimationFrame(anim);}
+anim();
+function confetti(x,y,n=35){const cols=['#ff00ff','#00f0ff','#ffd700','#00ffaa'];for(let i=0;i<n;i++)particles.push(new Particle(x,y,(Math.random()-0.5)*9,(Math.random()-0.5)*8-4,cols[Math.floor(Math.random()*cols.length)],0.7+Math.random()*0.5));}
+
+// ==================== STATE & PERSISTENCE ====================
+const DEFAULT_BANKROLL = 10000;
+const state = {
+    exchanges:{},
+    opportunities:{mega:[],triangular:[],bellman:[],suspicious:[]},
+    stats:{totalPairs:0,graphNodes:0,graphEdges:0,triangleCount:0,apiCalls:0,wsBytes:0,oppCount:0},
+    systemReady:false, graph:{}, triangles:[], allPairs:[],
+    bankroll:DEFAULT_BANKROLL, trades:[], wsConnections:{},
+    liveScanInterval:null, liveScanActive:false,
+    selectedIntraExchanges: new Set(),
+    user: { level:1, matrixScore:0, royalties:0, quantumFundVisible:0, quantumFundLocked:0, lockMaturity: null },
+    userCoins: []
+};
+
+function loadAll(){
+    try{
+        const s=JSON.parse(localStorage.getItem('quantum_foam_v20'));
+        if(s){
+            state.bankroll=s.bankroll||DEFAULT_BANKROLL;
+            state.trades=s.trades||[];
+            state.user=s.user||{level:1,matrixScore:0,royalties:0,quantumFundVisible:0,quantumFundLocked:0,lockMaturity:null};
+            state.userCoins=s.userCoins||[];
+        }
+        const token=localStorage.getItem('pumpfun_token_v20');
+        if(token)document.getElementById('pumpToken').value=token;
+        const basket=localStorage.getItem('basket_v20');
+        if(basket)document.getElementById('basketInput').value=basket;
+    }catch(e){}
+}
+function saveAll(){
+    localStorage.setItem('quantum_foam_v20',JSON.stringify({
+        bankroll:state.bankroll,trades:state.trades.slice(-100),
+        user:state.user,userCoins:state.userCoins
+    }));
+    localStorage.setItem('basket_v20',document.getElementById('basketInput').value);
+    const pt=document.getElementById('pumpToken').value.trim();
+    if(pt)localStorage.setItem('pumpfun_token_v20',pt);
+}
+loadAll();
+
+function savePumpToken(){
+    document.getElementById('tokenSaved').style.display='inline';
+    saveAll();
+}
+
+function updateUserProfile(){
+    document.getElementById('userLevel').textContent=state.user.level;
+    document.getElementById('matrixScore').textContent=state.user.matrixScore;
+    const nextLevel=Math.pow(state.user.level,2)*10;
+    document.getElementById('nextLevelScore').textContent=nextLevel;
+    const progress=(state.user.matrixScore/nextLevel)*100;
+    document.getElementById('levelProgress').style.width=Math.min(100,progress)+'%';
+    document.getElementById('royalties').textContent='$'+state.user.royalties.toFixed(2);
+    document.getElementById('quantumFundVisible').textContent='$'+state.user.quantumFundVisible.toFixed(2);
+    document.getElementById('quantumFundLocked').textContent='$'+state.user.quantumFundLocked.toFixed(2);
+    if(state.user.lockMaturity){
+        const rem=Math.max(0,state.user.lockMaturity-Date.now());
+        document.getElementById('lockMaturity').textContent=Math.ceil(rem/(1000*60*60*24))+'d';
+    }else{
+        document.getElementById('lockMaturity').textContent='N/A';
+    }
+}
+updateUserProfile();
+
+// ==================== EXCHANGE DEFINITIONS (unchanged) ====================
+const exchangeDefs=[
+    {key:'okx',name:'OKX',url:'https://www.okx.com/api/v5/market/tickers?instType=SPOT',type:'cex',parser:'okx'},
+    {key:'coinbase',name:'Coinbase',url:'https://api.exchange.coinbase.com/products',type:'cex',parser:'coinbase'},
+    {key:'binance',name:'Binance',url:'https://api.binance.com/api/v3/ticker/24hr',type:'cex',parser:'binance'},
+    {key:'kucoin',name:'KuCoin',url:'https://api.kucoin.com/api/v1/market/allTickers',type:'cex',parser:'kucoin'},
+    {key:'bybit',name:'Bybit',url:'https://api.bybit.com/v5/market/tickers?category=spot',type:'cex',parser:'bybit'},
+    {key:'gate',name:'Gate.io',url:'https://api.gateio.ws/api/v4/spot/tickers',type:'cex',parser:'gate'},
+    {key:'mexc',name:'MEXC',url:'https://api.mexc.com/api/v3/ticker/24hr',type:'cex',parser:'mexc'},
+    {key:'kraken',name:'Kraken',url:'https://api.kraken.com/0/public/Ticker?pair=ALL',type:'cex',parser:'kraken'},
+    {key:'bitstamp',name:'Bitstamp',url:'https://www.bitstamp.net/api/v2/ticker/',type:'cex',parser:'bitstamp'},
+    {key:'indodax',name:'Indodax',url:'https://indodax.com/api/tickers',type:'cex',parser:'indodax'},
+    {key:'yobit',name:'Yobit',url:'https://yobit.net/api/3/info',type:'cex',parser:'yobit'},
+    {key:'pumpfun',name:'Pump.fun Direct',url:'https://frontend-api.pump.fun/coins?offset=0&limit=100&sort=created_timestamp&order=DESC',type:'cex',parser:'pumpfun',auth:true},
+    {key:'poloniex',name:'Poloniex',url:'https://api.poloniex.com/markets/ticker24h',type:'cex',parser:'poloniex'},
+    {key:'huobi',name:'Huobi',url:'https://api.huobi.pro/market/tickers',type:'cex',parser:'huobi'},
+    {key:'gemini',name:'Gemini',url:'https://api.gemini.com/v1/pricefeed',type:'cex',parser:'gemini'},
+    {key:'ascendex',name:'AscendEX',url:'https://ascendex.com/api/pro/v1/ticker',type:'cex',parser:'ascendex'},
+    {key:'digifinex',name:'Digifinex',url:'https://openapi.digifinex.com/v3/ticker',type:'cex',parser:'digifinex'},
+    {key:'bittrex',name:'Bittrex',url:'https://api.bittrex.com/v3/markets/tickers',type:'cex',parser:'bittrex'},
+    {key:'crypto.com',name:'Crypto.com',url:'https://api.crypto.com/v2/public/get-ticker',type:'cex',parser:'cryptocom'},
+    {key:'dexscreener_eth',name:'DexScreener ETH',url:'https://api.dexscreener.com/latest/dex/search?q=ETH',type:'dex',parser:'dexscreener'},
+    {key:'dexscreener_bsc',name:'DexScreener BSC',url:'https://api.dexscreener.com/latest/dex/search?q=BNB',type:'dex',parser:'dexscreener'},
+    {key:'dexscreener_polygon',name:'DexScreener Polygon',url:'https://api.dexscreener.com/latest/dex/search?q=MATIC',type:'dex',parser:'dexscreener'},
+    {key:'dexscreener_arb',name:'DexScreener Arbitrum',url:'https://api.dexscreener.com/latest/dex/search?q=ARB',type:'dex',parser:'dexscreener'},
+    {key:'dexscreener_sol',name:'DexScreener Solana',url:'https://api.dexscreener.com/latest/dex/search?q=SOL',type:'dex',parser:'dexscreener'},
+    {key:'coingecko',name:'CoinGecko',url:'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1',type:'info',parser:'coingecko'},
+    {key:'coinlore',name:'CoinLore',url:'https://api.coinlore.net/api/tickers/',type:'info',parser:'coinlore'},
+    {key:'coinpaprika',name:'CoinPaprika',url:'https://api.coinpaprika.com/v1/tickers',type:'info',parser:'coinpaprika'}
+];
+exchangeDefs.forEach(d=>{state.exchanges[d.key]={name:d.name,status:'offline',pairs:[],type:d.type,url:d.url,parser:d.parser,auth:d.auth||false,wsStatus:'off'};});
+
+function log(msg,type='info'){
+    const t=new Date().toLocaleTimeString();
+    document.getElementById('logs').innerHTML=`<div class="log-entry ${type}">[${t}] ${msg}</div>`+document.getElementById('logs').innerHTML;
+    console.log(`[${t}] ${msg}`);
+}
+
+// ==================== API LOADERS (FULL) ====================
+function normalize(pairs,key,exType){return pairs.filter(p=>p&&p.price>0).map(p=>({...p,exchange:key,exchangeType:exType}));}
+
+async function loadApi(defKey){
+    const ex=state.exchanges[defKey];
+    try{
+        let headers={};
+        if(ex.auth){
+            const t=document.getElementById('pumpToken').value.trim();
+            if(t)headers={'Authorization':'Bearer '+t};
+        }
+        const r=await fetch(ex.url,{headers});
+        if(!r.ok)throw new Error('HTTP '+r.status);
+        const data=await r.json();
+        state.stats.apiCalls++;
+        let pairs=[];
+        switch(ex.parser){
+            case 'okx':
+                pairs=(data.data||[]).slice(0,600).map(t=>{
+                    const parts=t.instId.split('-');
+                    if(parts.length!==2)return null;
+                    const price=parseFloat(t.last)||0,vol=parseFloat(t.volCcy24h)*price||0;
+                    return {base:parts[0],target:parts[1],price,volume:vol,liquidity:vol,bidPrice:parseFloat(t.bidPx)||price*0.999,askPrice:parseFloat(t.askPx)||price*1.001};
+                }).filter(Boolean);
+                break;
+            case 'coinbase':
+                pairs=(Array.isArray(data)?data:[]).slice(0,300).map(p=>{
+                    const price=parseFloat(p.price)||1;
+                    const vol=(parseFloat(p.volume)||0)*price||0;
+                    return {base:p.base_currency,target:p.quote_currency,price,volume:vol,liquidity:vol,bidPrice:price*0.998,askPrice:price*1.002};
+                }).filter(p=>p.price>0);
+                break;
+            case 'binance':
+                pairs=(Array.isArray(data)?data:[]).slice(0,600).map(t=>{
+                    const price=parseFloat(t.lastPrice)||0,vol=parseFloat(t.quoteVolume)*price||0;
+                    const sym=t.symbol||'';
+                    let base=sym.replace(/USDT$/,'').replace(/BTC$/,'').replace(/ETH$/,'').replace(/BNB$/,'').replace(/USDC$/,'');
+                    if(base===sym)base=sym.replace(/USD$/,'');
+                    return {base,target:sym.includes('USDT')?'USDT':sym.includes('USDC')?'USDC':sym.includes('BTC')?'BTC':sym.includes('ETH')?'ETH':'USD',price,volume:vol,liquidity:vol,bidPrice:parseFloat(t.bidPrice)||price*0.999,askPrice:parseFloat(t.askPrice)||price*1.001};
+                }).filter(p=>p.price>0&&p.base&&p.base.length>0);
+                break;
+            case 'kucoin':
+                pairs=(data?.data?.ticker||[]).slice(0,500).map(t=>{
+                    const price=parseFloat(t.last)||0,vol=parseFloat(t.volValue)*price||0;
+                    const parts=(t.symbol||'').split('-');
+                    return {base:parts[0]||'',target:parts[1]||'USDT',price,volume:vol,liquidity:vol,bidPrice:parseFloat(t.buy)||price*0.999,askPrice:parseFloat(t.sell)||price*1.001};
+                }).filter(p=>p.price>0&&p.base);
+                break;
+            case 'bybit':
+                pairs=(data?.result?.list||[]).slice(0,400).map(t=>{
+                    const price=parseFloat(t.lastPrice)||0,vol=parseFloat(t.volume24h)*price||0;
+                    return {base:t.symbol.replace(/USDT$/,''),target:'USDT',price,volume:vol,liquidity:vol,bidPrice:parseFloat(t.bid1Price)||price*0.999,askPrice:parseFloat(t.ask1Price)||price*1.001};
+                }).filter(p=>p.price>0);
+                break;
+            case 'gate':
+                pairs=(Array.isArray(data)?data:[]).slice(0,400).map(t=>{
+                    const price=parseFloat(t.last)||0,vol=parseFloat(t.quote_volume)*price||0;
+                    const parts=(t.currency_pair||'').split('_');
+                    return {base:parts[0]||'',target:parts[1]||'USDT',price,volume:vol,liquidity:vol,bidPrice:parseFloat(t.highest_bid)||price*0.999,askPrice:parseFloat(t.lowest_ask)||price*1.001};
+                }).filter(p=>p.price>0&&p.base);
+                break;
+            case 'mexc':
+                pairs=(Array.isArray(data)?data:[]).slice(0,400).map(t=>{
+                    const price=parseFloat(t.lastPrice)||0,vol=parseFloat(t.quoteVolume)*price||0;
+                    return {base:t.symbol.replace(/USDT$/,''),target:'USDT',price,volume:vol,liquidity:vol,bidPrice:parseFloat(t.bidPrice)||price*0.999,askPrice:parseFloat(t.askPrice)||price*1.001};
+                }).filter(p=>p.price>0);
+                break;
+            case 'kraken':
+                const result=data?.result||{};
+                pairs=Object.keys(result).slice(0,300).map(k=>{
+                    const t=result[k];
+                    const price=parseFloat(t.c?.[0])||0,vol=parseFloat(t.v?.[1])*price||0;
+                    const base=k.replace(/^X|Z/g,'').replace(/USD$|EUR$|BTC$/,'');
+                    return {base,target:'USD',price,volume:vol,liquidity:vol,bidPrice:parseFloat(t.b?.[0])||price*0.999,askPrice:parseFloat(t.a?.[0])||price*1.001};
+                }).filter(p=>p.price>0);
+                break;
+            case 'bitstamp':
+                pairs=(Array.isArray(data)?data:[]).slice(0,250).map(t=>{
+                    const price=parseFloat(t.last)||0,vol=parseFloat(t.volume)*price||0;
+                    const parts=(t.pair||'').split('/');
+                    return {base:parts[0]||'',target:parts[1]||'USD',price,volume:vol,liquidity:vol,bidPrice:parseFloat(t.bid)||price*0.999,askPrice:parseFloat(t.ask)||price*1.001};
+                }).filter(p=>p.price>0&&p.base);
+                break;
+            case 'indodax':
+                const tickers=data||{};
+                pairs=Object.keys(tickers).slice(0,250).map(k=>{
+                    const t=tickers[k];
+                    const price=parseFloat(t.last)||0,vol=(parseFloat(t.vol_idr)||0)*price||0;
+                    const parts=k.split('_');
+                    return {base:parts[0]||'',target:(parts[1]||'IDR').toUpperCase(),price,volume:vol,liquidity:vol,bidPrice:parseFloat(t.buy)||price*0.999,askPrice:parseFloat(t.sell)||price*1.001};
+                }).filter(p=>p.price>0);
+                break;
+            case 'yobit':
+                const info=data?.pairs||{};
+                const allPairsYobit=Object.keys(info).slice(0,200);
+                if(allPairsYobit.length===0)throw new Error('No pairs');
+                const tickerUrl=`https://yobit.net/api/3/ticker/${allPairsYobit.join('-')}`;
+                const tickerResp=await fetch(tickerUrl);
+                const tickerData=await tickerResp.json();
+                pairs=allPairsYobit.map(k=>{
+                    const t=tickerData[k]||{};
+                    const price=parseFloat(t.last)||0,vol=(parseFloat(t.vol)||0)*price||0;
+                    const parts=k.split('_');
+                    return {base:(parts[0]||'').toUpperCase(),target:(parts[1]||'USD').toUpperCase(),price,volume:vol,liquidity:vol,bidPrice:parseFloat(t.buy)||price*0.999,askPrice:parseFloat(t.sell)||price*1.001};
+                }).filter(p=>p.price>0);
+                break;
+            case 'pumpfun':
+                pairs=(Array.isArray(data)?data:[]).map(t=>{
+                    const price=parseFloat(t.usd_market_cap)/parseFloat(t.total_supply)||0;
+                    const liq=parseFloat(t.usd_market_cap)*0.1||0;
+                    return {base:t.symbol||'UNKNOWN',target:'SOL',price,volume:liq*0.5,liquidity:liq,bidPrice:price*0.95,askPrice:price*1.05};
+                }).filter(p=>p.base!=='UNKNOWN'&&p.price>0);
+                if(pairs.length===0)throw new Error('Empty');
+                break;
+            case 'poloniex':
+                pairs=(Array.isArray(data)?data:[]).slice(0,400).map(t=>{
+                    const price=parseFloat(t.close)||0,vol=parseFloat(t.quantity)*price||0;
+                    const parts=(t.symbol||'').split('_');
+                    return {base:parts[0]||'',target:parts[1]||'USDT',price,volume:vol,liquidity:vol,bidPrice:parseFloat(t.bid)||price*0.999,askPrice:parseFloat(t.ask)||price*1.001};
+                }).filter(p=>p.price>0);
+                break;
+            case 'huobi':
+                pairs=(data?.data||[]).slice(0,400).map(t=>{
+                    const price=parseFloat(t.close)||0,vol=parseFloat(t.vol)*price||0;
+                    const base=(t.symbol||'').toUpperCase().replace(/USDT$/,'');
+                    return {base,target:'USDT',price,volume:vol,liquidity:vol,bidPrice:parseFloat(t.bid)||price*0.999,askPrice:parseFloat(t.ask)||price*1.001};
+                }).filter(p=>p.price>0);
+                break;
+            case 'gemini':
+                pairs=(Array.isArray(data)?data:[]).slice(0,150).map(t=>{
+                    const price=parseFloat(t.price)||0;
+                    const parts=(t.symbol||t.pair||'').split('/');
+                    return {base:parts[0]||'',target:parts[1]||'USD',price,volume:0,liquidity:0,bidPrice:price*0.999,askPrice:price*1.001};
+                }).filter(p=>p.price>0&&p.base);
+                break;
+            case 'ascendex':
+                pairs=(data?.data||[]).slice(0,250).map(t=>{
+                    const price=parseFloat(t.close)||0,vol=parseFloat(t.volume)*price||0;
+                    const parts=(t.symbol||'').split('/');
+                    return {base:parts[0]||'',target:parts[1]||'USDT',price,volume:vol,liquidity:vol,bidPrice:parseFloat(t.bid)||price*0.999,askPrice:parseFloat(t.ask)||price*1.001};
+                }).filter(p=>p.price>0);
+                break;
+            case 'digifinex':
+                pairs=(data?.ticker||[]).slice(0,250).map(t=>{
+                    const price=parseFloat(t.last)||0,vol=parseFloat(t.base_volume)*price||0;
+                    const parts=(t.symbol||'').split('_');
+                    return {base:parts[0]||'',target:parts[1]||'USDT',price,volume:vol,liquidity:vol,bidPrice:parseFloat(t.buy)||price*0.999,askPrice:parseFloat(t.sell)||price*1.001};
+                }).filter(p=>p.price>0);
+                break;
+            case 'bittrex':
+                pairs=(Array.isArray(data)?data:[]).slice(0,250).map(t=>{
+                    const price=parseFloat(t.lastTradeRate)||0;
+                    const parts=(t.symbol||'').split('-');
+                    return {base:parts[0]||'',target:parts[1]||'USD',price,volume:0,liquidity:0,bidPrice:price*0.999,askPrice:price*1.001};
+                }).filter(p=>p.price>0);
+                break;
+            case 'cryptocom':
+                pairs=(data?.result?.data||[]).slice(0,250).map(t=>{
+                    const price=parseFloat(t.a)||0,vol=parseFloat(t.v)*price||0;
+                    const parts=(t.i||'').split('_');
+                    return {base:parts[0]||'',target:parts[1]||'USD',price,volume:vol,liquidity:vol,bidPrice:parseFloat(t.b)||price*0.999,askPrice:parseFloat(t.k)||price*1.001};
+                }).filter(p=>p.price>0);
+                break;
+            case 'dexscreener':
+                const rawPairs=data?.pairs||[];
+                pairs=rawPairs.slice(0,400).map(p=>{
+                    const price=parseFloat(p.priceUsd)||0,liq=p.liquidity?.usd||0,vol=p.volume?.h24||0;
+                    const spread=liq>0?Math.max(0.003,Math.min(0.05,5000/liq)):0.03;
+                    return {
+                        base:p.baseToken?.symbol||'UNKNOWN',
+                        target:p.quoteToken?.symbol||'ETH',price,
+                        volume:vol,liquidity:liq,
+                        bidPrice:price*(1-spread/2),askPrice:price*(1+spread/2),
+                        chainId:p.chainId
+                    };
+                }).filter(p=>p.base!=='UNKNOWN'&&p.price>0);
+                break;
+            case 'coingecko':
+                const cg=Array.isArray(data)?data:[];
+                pairs=cg.slice(0,250).map(c=>({
+                    base:(c.symbol||'').toUpperCase(),target:'USD',price:c.current_price||0,
+                    volume:c.total_volume||0,liquidity:c.market_cap||0,
+                    bidPrice:(c.current_price||0)*0.999,askPrice:(c.current_price||0)*1.001
+                })).filter(p=>p.price>0);
+                break;
+            case 'coinlore':
+                const cl=data?.data||[];
+                pairs=cl.slice(0,250).map(c=>({
+                    base:c.symbol||'',target:'USD',price:parseFloat(c.price_usd)||0,
+                    volume:parseFloat(c.volume24)||0,liquidity:parseFloat(c.market_cap_usd)||0,
+                    bidPrice:(parseFloat(c.price_usd)||0)*0.999,askPrice:(parseFloat(c.price_usd)||0)*1.001
+                })).filter(p=>p.price>0);
+                break;
+            case 'coinpaprika':
+                const cp=Array.isArray(data)?data:[];
+                pairs=cp.slice(0,250).map(t=>({
+                    base:t.symbol||'',target:'USD',
+                    price:parseFloat(t.quotes?.USD?.price)||0,
+                    volume:parseFloat(t.quotes?.USD?.volume_24h)||0,
+                    liquidity:parseFloat(t.quotes?.USD?.market_cap)||0,
+                    bidPrice:(parseFloat(t.quotes?.USD?.price)||0)*0.999,
+                    askPrice:(parseFloat(t.quotes?.USD?.price)||0)*1.001
+                })).filter(p=>p.price>0);
+                break;
+            default:pairs=[];
+        }
+        ex.pairs=normalize(pairs,defKey,ex.type);
+        ex.status='online';
+        log(`${ex.name}: ${ex.pairs.length} pairs`,'success');
+    }catch(e){
+        if(defKey==='pumpfun'){
+            log('Pump.fun direct failed, fallback to DexScreener Solana','warning');
+            try{
+                const fbResp=await fetch('https://api.dexscreener.com/latest/dex/search?q=SOL');
+                const fbData=await fbResp.json();
+                state.stats.apiCalls++;
+                const fbPairs=(fbData?.pairs||[]).slice(0,400).map(p=>{
+                    const price=parseFloat(p.priceUsd)||0,liq=p.liquidity?.usd||0;
+                    const spread=liq>0?Math.max(0.003,Math.min(0.05,5000/liq)):0.03;
+                    return {base:p.baseToken?.symbol||'UNKNOWN',target:p.quoteToken?.symbol||'ETH',price,volume:p.volume?.h24||0,liquidity:liq,bidPrice:price*(1-spread/2),askPrice:price*(1+spread/2),chainId:p.chainId};
+                }).filter(p=>p.base!=='UNKNOWN'&&p.price>0);
+                ex.pairs=normalize(fbPairs,'pumpfun_fallback','dex');
+                ex.status='online';
+                log(`Pump.fun fallback: ${ex.pairs.length} pairs`,'success');
+                return;
+            }catch(fbErr){log(`Fallback failed: ${fbErr.message}`,'error');}
+        }
+        ex.status='offline';ex.pairs=[];
+        log(`${ex.name}: ${e.message}`,'error');
+    }
+}
+
+async function initSystem(){
+    log('🎰 INITIALIZING ALL EXCHANGES...','info');
+    updateStatus('🔄 LOADING...');playSpin();
+    await Promise.allSettled(exchangeDefs.map(d=>loadApi(d.key)));
+    // add user coins
+    state.userCoins.forEach(coin=>{
+        const pair={
+            base:coin.symbol,target:'USDT',price:coin.price,volume:coin.liq*0.3,liquidity:coin.liq,
+            bidPrice:coin.price*0.95,askPrice:coin.price*1.05,exchange:'QUANTM_DEX',exchangeType:'dex'
+        };
+        state.allPairs.push(pair);
+    });
+    state.allPairs=Object.values(state.exchanges).flatMap(e=>e.pairs);
+    state.allPairs.push(...state.userCoins.map(c=>({base:c.symbol,target:'USDT',price:c.price,volume:c.liq*0.3,liquidity:c.liq,bidPrice:c.price*0.95,askPrice:c.price*1.05,exchange:'QUANTM_DEX',exchangeType:'dex'})));
+    state.stats.totalPairs=state.allPairs.length;
+    updateIntraExCheckboxes();
+    buildGraph();
+    buildTriangles();
+    displayLowValue();
+    updateExchangeDisplay();
+    updateStats();
+    const online=Object.values(state.exchanges).filter(e=>e.status==='online').length;
+    if(online>0){
+        state.systemReady=true;document.getElementById('scanBtn').disabled=false;
+        updateStatus(`✅ READY · ${online}/${exchangeDefs.length} ONLINE · ${state.stats.totalPairs} PAIRS`);
+        log(`SYSTEM READY`,'success');
+    }else{updateStatus('❌ NO EXCHANGES');}
+}
+
+// ==================== UI HELPERS ====================
+function updateStatus(msg){document.getElementById('mainStatus').innerHTML=msg;}
+function updateStats(){
+    document.getElementById('totalPairs').textContent=state.stats.totalPairs;
+    document.getElementById('graphNodes').textContent=state.stats.graphNodes;
+    document.getElementById('graphEdges').textContent=state.stats.graphEdges;
+    document.getElementById('triangleCount').textContent=state.stats.triangleCount;
+    document.getElementById('wsBytes').textContent=(state.stats.wsBytes/1024).toFixed(2)+' KB';
+    document.getElementById('oppCount').textContent=Object.values(state.opportunities).flat().length;
+    document.getElementById('megaCount').textContent=state.opportunities.mega.length;
+    document.getElementById('triangularCount').textContent=state.opportunities.triangular.length;
+    document.getElementById('bellmanCount').textContent=state.opportunities.bellman.length;
+    document.getElementById('suspiciousCount').textContent=state.opportunities.suspicious.length;
+    document.getElementById('bankroll').textContent='$'+state.bankroll.toFixed(2);
+    const pnlPct=((state.bankroll-DEFAULT_BANKROLL)/DEFAULT_BANKROLL*100).toFixed(2);
+    document.getElementById('pnl').innerHTML=`$${(state.bankroll-DEFAULT_BANKROLL).toFixed(2)} (${pnlPct}%)`;
+    document.getElementById('pnl').style.color=state.bankroll>=DEFAULT_BANKROLL?'var(--green)':'#ff4444';
+    updateUserProfile();
+}
+function syncBetInput(){document.getElementById('betInput').value=document.getElementById('betSlider').value;}
+function syncBetSlider(){document.getElementById('betSlider').value=document.getElementById('betInput').value;}
+function toggleLogs(){const el=document.getElementById('logs');el.style.display=el.style.display==='none'?'block':'none';}
+function toggleSection(id){const el=document.getElementById(id);el.style.display=el.style.display==='none'?'block':'none';}
+function updateExchangeDisplay(){
+    const c=document.getElementById('exchangeStatus');c.innerHTML='';
+    Object.values(state.exchanges).forEach(ex=>{
+        let cls=(ex.wsStatus==='live')?'ws':(ex.status==='online')?'online':(ex.type==='info'?'info':'');
+        c.innerHTML+=`<div class="exchange-status"><div class="indicator ${cls}"></div><div><strong>${ex.name}</strong> ${ex.wsStatus==='live'?'<span style="color:#ff00ff;">LIVE WS</span>':''}<br><small>${ex.status.toUpperCase()} · ${ex.pairs.length} pairs</small></div></div>`;
+    });
+}
+function updateIntraExCheckboxes(){
+    const container=document.getElementById('intraExCheckboxes');
+    container.innerHTML='';
+    Object.keys(state.exchanges).forEach(key=>{
+        const ex=state.exchanges[key];
+        if(ex.status!=='online'||ex.type==='info')return;
+        const checked=state.selectedIntraExchanges.has(key)?'checked':'';
+        container.innerHTML+=`<label><input type="checkbox" value="${key}" ${checked} onchange="toggleIntraEx('${key}')"> ${ex.name}</label>`;
+    });
+    if(state.selectedIntraExchanges.size===0){
+        const largest=Object.keys(state.exchanges).filter(k=>state.exchanges[k].status==='online'&&state.exchanges[k].type!=='info').sort((a,b)=>state.exchanges[b].pairs.length-state.exchanges[a].pairs.length)[0];
+        if(largest){state.selectedIntraExchanges.add(largest);updateIntraExCheckboxes();}
+    }
+}
+function toggleIntraEx(key){state.selectedIntraExchanges.has(key)?state.selectedIntraExchanges.delete(key):state.selectedIntraExchanges.add(key);}
+function selectAllIntra(){state.selectedIntraExchanges.clear();Object.keys(state.exchanges).forEach(k=>{if(state.exchanges[k].status==='online'&&state.exchanges[k].type!=='info')state.selectedIntraExchanges.add(k);});updateIntraExCheckboxes();}
+function deselectAllIntra(){state.selectedIntraExchanges.clear();updateIntraExCheckboxes();}
+
+// ==================== GRAPH & ARBITRAGE ====================
+function getGraphPairs(){
+    const mode=document.getElementById('arbMode').value;
+    if(mode==='intra'){
+        return Array.from(state.selectedIntraExchanges).flatMap(k=>state.exchanges[k]?state.exchanges[k].pairs:[]);
+    }
+    return Object.values(state.exchanges).filter(e=>e.status==='online'&&e.type!=='info').flatMap(e=>e.pairs);
+}
+function buildGraph(){
+    state.graph={};
+    const pairs=getGraphPairs();
+    const minLiq=50;
+    pairs.forEach(p=>{
+        if(p.liquidity<minLiq)return;
+        if(!state.graph[p.base])state.graph[p.base]={};
+        if(!state.graph[p.target])state.graph[p.target]={};
+        const edgeData={rate:1/p.askPrice,weight:-Math.log(1/p.askPrice),volume:p.volume,liquidity:p.liquidity,exchange:p.exchange,exchangeType:p.exchangeType};
+        state.graph[p.base][p.target]=edgeData;
+        state.graph[p.target][p.base]={rate:p.bidPrice,weight:-Math.log(p.bidPrice),volume:p.volume,liquidity:p.liquidity,exchange:p.exchange,exchangeType:p.exchangeType};
+    });
+    state.stats.graphNodes=Object.keys(state.graph).length;
+    state.stats.graphEdges=Object.values(state.graph).reduce((s,o)=>s+Object.keys(o).length,0);
+}
+function buildTriangles(){
+    state.triangles=[];
+    const nodes=Object.keys(state.graph);
+    for(let i=0;i<Math.min(nodes.length,120);i++){
+        const A=nodes[i];const nA=Object.keys(state.graph[A]||{});
+        for(const B of nA){
+            const nB=Object.keys(state.graph[B]||{});
+            for(const C of nB){
+                if(state.graph[C]&&state.graph[C][A])state.triangles.push([A,B,C]);
+            }
+        }
+    }
+    state.stats.triangleCount=state.triangles.length;
+}
+function displayLowValue(){
+    const all=state.allPairs.filter(p=>p.price>0);
+    const fmt=p=>`<div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #222;"><span>${p.base} <span class="chip">${p.exchange}</span></span><span>$${p.price.toExponential(4)}</span></div>`;
+    document.getElementById('ultraLowValue').innerHTML=all.filter(p=>p.price<0.0001&&p.price>=1e-9).sort((a,b)=>a.price-b.price).slice(0,25).map(fmt).join('')||'None';
+    document.getElementById('microCap').innerHTML=all.filter(p=>p.price<0.001&&p.price>=0.0001).sort((a,b)=>a.price-b.price).slice(0,25).map(fmt).join('')||'None';
+    document.getElementById('picoValue').innerHTML=all.filter(p=>p.price<1e-9&&p.price>=1e-12).sort((a,b)=>a.price-b.price).slice(0,25).map(fmt).join('')||'None';
+    document.getElementById('femtoValue').innerHTML=all.filter(p=>p.price<1e-12&&p.price>=1e-15).sort((a,b)=>a.price-b.price).slice(0,25).map(fmt).join('')||'None';
+    document.getElementById('planckValue').innerHTML=all.filter(p=>p.price<1e-15&&p.price>0).sort((a,b)=>a.price-b.price).slice(0,25).map(fmt).join('')||'None';
+}
+function calcMaxSize(edges){let m=Infinity;edges.forEach(e=>{if(e.liquidity<m)m=e.liquidity;});return m*0.05;}
+function isSuspicious(opp){return opp.profitPercent>10000||opp.finalAmount>opp.investment*1000;}
+
+function scanTriangular(minProfit=0.0001){
+    const opps=[];const inv=1000;
+    const basket=document.getElementById('basketInput').value.split(',').map(s=>s.trim().toUpperCase()).filter(Boolean);
+    const filterBasket=document.getElementById('basketTriFilter').checked;
+    const mode=document.getElementById('arbMode').value;
+    state.triangles.forEach(([A,B,C])=>{
+        if(filterBasket&&!basket.includes(A))return;
+        const e1=state.graph[A]?.[B],e2=state.graph[B]?.[C],e3=state.graph[C]?.[A];
+        if(!e1||!e2||!e3)return;
+        if(mode==='intra'){
+            const exchanges=new Set([e1.exchange,e2.exchange,e3.exchange]);
+            if(exchanges.size!==1||!state.selectedIntraExchanges.has(e1.exchange))return;
+        }
+        const final=inv*e1.rate*e2.rate*e3.rate;
+        const profit=final-inv,pct=(profit/inv)*100;
+        if(pct>=minProfit){
+            const maxSize=calcMaxSize([e1,e2,e3]);
+            const opp={type:'triangular',path:[A,B,C,A],profitPercent:pct,profit,actualProfit:(maxSize/inv)*profit,maxTradeSize:maxSize,edges:[e1,e2,e3],investment:inv,finalAmount:final};
+            opp.suspicious=isSuspicious(opp);
+            opps.push(opp);
+        }
+    });
+    return opps;
+}
+
+function bellmanFord(startCur,maxPath=5){
+    const currencies=Object.keys(state.graph);
+    if(!currencies.includes(startCur))return[];
+    const mode=document.getElementById('arbMode').value;
+    const dist={},pred={};
+    currencies.forEach(c=>{dist[c]=Infinity;pred[c]=null;});
+    dist[startCur]=0;
+    for(let i=0;i<Math.min(maxPath-1,currencies.length-1);i++){
+        let updated=false;
+        for(const u of currencies){
+            const neighbors=state.graph[u];if(!neighbors)continue;
+            for(const v in neighbors){
+                const w=neighbors[v].weight;
+                if(dist[u]!==Infinity&&dist[u]+w<dist[v]){
+                    if(mode==='intra'&&!state.selectedIntraExchanges.has(neighbors[v].exchange))continue;
+                    dist[v]=dist[u]+w;pred[v]=u;updated=true;
+                }
+            }
+        }
+        if(!updated)break;
+    }
+    const opps=[];
+    for(const u of currencies){
+        const neighbors=state.graph[u];if(!neighbors)continue;
+        for(const v in neighbors){
+            if(dist[u]!==Infinity&&dist[u]+neighbors[v].weight<dist[v]){
+                const cycle=reconstructCycle(v,pred,maxPath);
+                if(cycle&&cycle.length>=3&&cycle[0]===startCur){
+                    const opp=calcCycleOpp(cycle);
+                    if(opp)opps.push(opp);
+                }
+            }
+        }
+    }
+    return opps;
+}
+
+function reconstructCycle(start,pred,maxLen){
+    const cycle=[start];let curr=pred[start];const visited=new Set([start]);
+    while(curr&&!visited.has(curr)&&cycle.length<maxLen){cycle.unshift(curr);visited.add(curr);curr=pred[curr];}
+    if(cycle.length<3)return null;
+    for(let i=0;i<cycle.length-1;i++)if(!state.graph[cycle[i]]||!state.graph[cycle[i]][cycle[i+1]])return null;
+    if(!state.graph[cycle[cycle.length-1]]||!state.graph[cycle[cycle.length-1]][cycle[0]])return null;
+    const mode=document.getElementById('arbMode').value;
+    if(mode==='intra'){
+        const exchanges=new Set();
+        for(let i=0;i<cycle.length-1;i++)exchanges.add(state.graph[cycle[i]][cycle[i+1]].exchange);
+        exchanges.add(state.graph[cycle[cycle.length-1]][cycle[0]].exchange);
+        if(exchanges.size!==1||!state.selectedIntraExchanges.has([...exchanges][0]))return null;
+    }
+    return cycle;
+}
+
+function calcCycleOpp(cycle){
+    let amount=1000;const edges=[];let totalLiq=Infinity;
+    for(let i=0;i<cycle.length-1;i++){
+        const edge=state.graph[cycle[i]]?.[cycle[i+1]];if(!edge)return null;
+        amount*=edge.rate;edges.push(edge);totalLiq=Math.min(totalLiq,edge.liquidity);
+    }
+    const lastEdge=state.graph[cycle[cycle.length-1]]?.[cycle[0]];if(!lastEdge)return null;
+    amount*=lastEdge.rate;edges.push(lastEdge);totalLiq=Math.min(totalLiq,lastEdge.liquidity);
+    const profit=amount-1000,pct=(profit/1000)*100;
+    if(pct>=0.0001&&totalLiq>=50){
+        const maxSize=calcMaxSize(edges);
+        const opp={type:'bellman-ford',path:[...cycle,cycle[0]],profitPercent:pct,profit,actualProfit:(maxSize/1000)*profit,maxTradeSize:maxSize,edges,investment:1000,finalAmount:amount};
+        opp.suspicious=isSuspicious(opp);
+        return opp;
+    }
+    return null;
+}
+
+async function runFullScan(){
+    if(!state.systemReady)return log('System not ready','error');
+    const basket=document.getElementById('basketInput').value.split(',').map(s=>s.trim().toUpperCase()).filter(Boolean);
+    const mode=document.getElementById('arbMode').value;
+    log(`🧺 Basket: ${basket.join(', ')} | Mode: ${mode.toUpperCase()}`,'info');
+    updateStatus('🎰 SCANNING...');playSpin();
+    state.opportunities={mega:[],triangular:[],bellman:[],suspicious:[]};
+    buildGraph();buildTriangles();
+    const triOpps=scanTriangular(0.0001);
+    const bfOpps=[];
+    for(const cur of basket){if(state.graph[cur])bfOpps.push(...bellmanFord(cur,5));}
+    const seen=new Set();
+    const process=opp=>{
+        const k=opp.path.slice().sort().join('-');
+        if(seen.has(k))return;
+        seen.add(k);
+        if(opp.suspicious)state.opportunities.suspicious.push(opp);
+        else if(opp.profitPercent>5)state.opportunities.mega.push(opp);
+        else if(opp.type==='triangular')state.opportunities.triangular.push(opp);
+        else state.opportunities.bellman.push(opp);
+    };
+    triOpps.forEach(process);bfOpps.forEach(process);
+    updateStats();displayAllOpps();
+    updateStatus(`✅ COMPLETE · ${Object.values(state.opportunities).flat().length} OPPORTUNITIES`);
+    if(state.opportunities.mega.length>0){confetti(innerWidth/2,100,60);playJackpot();}
+    log('🎉 SCAN DONE','success');
+    addMatrixPoints(1);
+}
+
+function toggleLiveScan(){
+    if(state.liveScanActive){clearInterval(state.liveScanInterval);state.liveScanActive=false;document.getElementById('liveScanBtn').classList.remove('live');document.getElementById('liveScanBtn').textContent='🔄 LIVE SCAN';log('Live scan stopped');}
+    else{state.liveScanActive=true;document.getElementById('liveScanBtn').classList.add('live');document.getElementById('liveScanBtn').textContent='⏸️ STOP LIVE';log('Live scan started (30s)','info');runFullScan();state.liveScanInterval=setInterval(()=>{if(state.systemReady)runFullScan();},30000);}
+}
+
+function displayAllOpps(){
+    document.getElementById('megaOpps').innerHTML=state.opportunities.mega.slice(0,20).map(o=>renderOppCard(o,'mega')).join('');
+    document.getElementById('triangularOpps').innerHTML=state.opportunities.triangular.slice(0,20).map(o=>renderOppCard(o,'')).join('');
+    document.getElementById('bellmanOpps').innerHTML=state.opportunities.bellman.slice(0,20).map(o=>renderOppCard(o,'')).join('');
+    document.getElementById('suspiciousOpps').innerHTML=state.opportunities.suspicious.slice(0,20).map(o=>renderOppCard(o,'suspicious')).join('');
+}
+
+function renderOppCard(opp,cls){
+    const pathHtml=opp.edges.map((e,i)=>`<div style="margin:2px 0;">${opp.path[i]} → ${opp.path[i+1]} <span class="chip">${e.exchange}</span> Rate:${e.rate.toFixed(6)} Liq:$${e.liquidity.toFixed(0)}</div>`).join('');
+    return `<div class="opportunity ${cls}" onclick="openTradeModal('${encodeURIComponent(JSON.stringify(opp))}')">
+        <div style="display:flex;justify-content:space-between;"><strong>${opp.type.toUpperCase()}</strong><strong style="color:${opp.profitPercent>5?'var(--gold)':'var(--green)'}">+${opp.profitPercent.toFixed(4)}%</strong></div>
+        ${opp.suspicious?'<div style="color:#ff4444;">⚠️ SUSPICIOUS OUTLIER</div>':''}
+        <div class="path-visual">${pathHtml}</div>
+        <div class="depth-info">Max: $${opp.maxTradeSize.toFixed(2)} · Profit: $${opp.actualProfit.toFixed(4)}</div>
+    </div>`;
+}
+
+function simulateExecution(opp,tradeSize){
+    let amount=tradeSize;let totalFees=0;const details=[];
+    opp.edges.forEach((edge,i)=>{
+        const from=opp.path[i],to=opp.path[i+1];
+        let price=edge.rate,fee=0;
+        if(edge.exchangeType==='dex'){
+            const slippage=Math.min(0.01,tradeSize/(edge.liquidity+1));
+            price=edge.rate*(1-slippage);
+            fee=tradeSize*0.003;
+        }else{
+            fee=tradeSize*0.001;
+        }
+        amount=amount*price-fee;
+        totalFees+=fee;
+        details.push({from,to,price,fee,exchangeType:edge.exchangeType});
+    });
+    return {finalAmount:amount,totalFees,details};
+}
+
+function openTradeModal(oppStr){
+    const opp=JSON.parse(decodeURIComponent(oppStr));
+    const bet=parseFloat(document.getElementById('betInput').value)||1000;
+    const tradeSize=Math.min(opp.maxTradeSize,bet);
+    const sim=simulateExecution(opp,tradeSize);
+    const net=sim.finalAmount-tradeSize;
+    const detailsHtml=sim.details.map(d=>`
+        <div style="margin:5px 0;padding:5px;background:#111;border-radius:5px;">
+            <strong>${d.from} → ${d.to}</strong> <span class="chip">${d.exchangeType.toUpperCase()}</span>
+            <div class="depth-bar"><div class="depth-fill" style="width:${Math.min(100,(tradeSize/(opp.edges[0].liquidity+1))*100)}%"></div></div>
+            <div style="font-size:9px;">Price: ${d.price.toFixed(6)} | Fee: $${d.fee.toFixed(2)}</div>
+        </div>`).join('');
+    document.getElementById('tradeDetails').innerHTML=`
+        <p>🔄 ${opp.path.join(' → ')}</p>
+        <p>💰 Trade: $${tradeSize.toFixed(2)}</p>
+        ${detailsHtml}
+        <p>📈 Estimated Output: $${sim.finalAmount.toFixed(4)}</p>
+        <p>💵 Net Profit: $${net.toFixed(4)}</p>
+        <p style="color:var(--gold);">🔁 Fees: CEX 0.1%, DEX 0.3% + slippage</p>
+        <p style="color:var(--cyan);">5% to Quantums Fund (visible) · 5% to Locked Fund</p>`;
+    document.getElementById('executeTradeBtn').onclick=()=>executeTrade(opp,tradeSize,net);
+    document.getElementById('tradeModal').style.display='flex';
+}
+
+function executeTrade(opp,size,netProfit){
+    const fundVisible=netProfit*0.05;
+    const fundLocked=netProfit*0.05;
+    const userNet=netProfit-fundVisible-fundLocked;
+    state.bankroll+=userNet;
+    state.user.quantumFundVisible+=fundVisible;
+    state.user.quantumFundLocked+=fundLocked;
+    state.user.lockMaturity=Date.now()+7*24*60*60*1000;
+    // Royalties
+    let royalty=0;
+    const userCoins=state.userCoins.map(c=>c.symbol);
+    opp.path.forEach(sym=>{if(userCoins.includes(sym))royalty+=netProfit*0.02;});
+    state.user.royalties+=royalty;
+    state.bankroll+=royalty;
+    addMatrixPoints(10+Math.floor(size/100));
+    state.trades.push({time:new Date().toISOString(),path:opp.path.join('→'),size,netProfit});
+    saveAll();
+    updateStats();
+    closeModal();
+    if(netProfit>30)confetti(innerWidth/2,180,80);
+    playWin();
+}
+function closeModal(){document.getElementById('tradeModal').style.display='none';}
+
+function addMatrixPoints(pts){state.user.matrixScore+=pts;const prevLevel=state.user.level;state.user.level=Math.floor(Math.sqrt(state.user.matrixScore/10))+1;if(state.user.level>prevLevel)confetti(innerWidth/2,200,30);updateUserProfile();saveAll();}
+
+function openCreateCoinModal(){
+    if(state.user.level<5){alert('Need level 5 to create coins!');return;}
+    document.getElementById('createCoinModal').style.display='flex';
+}
+function closeCreateCoinModal(){document.getElementById('createCoinModal').style.display='none';}
+document.getElementById('createCoinBtn').addEventListener('click',()=>{
+    const symbol=document.getElementById('newCoinSymbol').value.trim().toUpperCase();
+    const price=parseFloat(document.getElementById('newCoinPrice').value)||0.000001;
+    const liq=parseFloat(document.getElementById('newCoinLiq').value)||500;
+    if(!symbol)return;
+    state.userCoins.push({symbol,price,liq});
+    saveAll();
+    closeCreateCoinModal();
+    log(`🪙 Created ${symbol} on QUANTM_DEX!`,'success');
+    addMatrixPoints(50);
+    // immediately add to pairs
+    state.allPairs.push({base:symbol,target:'USDT',price,volume:liq*0.3,liquidity:liq,bidPrice:price*0.95,askPrice:price*1.05,exchange:'QUANTM_DEX',exchangeType:'dex'});
+    state.stats.totalPairs++;
+    buildGraph();buildTriangles();
+    displayLowValue();
+    updateStats();
+});
+
+function connectAllWebSockets(){
+    log('📡 Connecting live WebSockets...','info');
+    try{const ws=new WebSocket('wss://ws.okx.com:8443/ws/v5/public');ws.onopen=()=>{ws.send(JSON.stringify({op:'subscribe',args:[{channel:'tickers',instType:'SPOT'}]}));state.exchanges.okx.wsStatus='live';updateExchangeDisplay();};ws.onmessage=(e)=>{state.exchanges.okx.bytesReceived+=e.data.length;state.stats.wsBytes+=e.data.length;};}catch(e){}
+    try{const ws=new WebSocket('wss://stream.binance.com:9443/ws/!miniTicker@arr');ws.onopen=()=>{state.exchanges.binance.wsStatus='live';updateExchangeDisplay();};ws.onmessage=(e)=>{state.exchanges.binance.bytesReceived+=e.data.length;state.stats.wsBytes+=e.data.length;};}catch(e){}
+    try{const ws=new WebSocket('wss://stream.bybit.com/v5/public/spot');ws.onopen=()=>{ws.send(JSON.stringify({op:'subscribe',args:['tickers.BTCUSDT']}));state.exchanges.bybit.wsStatus='live';updateExchangeDisplay();};ws.onmessage=(e)=>{state.exchanges.bybit.bytesReceived+=e.data.length;state.stats.wsBytes+=e.data.length;};}catch(e){}
+    try{const ws=new WebSocket('wss://ws.kraken.com');ws.onopen=()=>{ws.send(JSON.stringify({event:'subscribe',pair:['XBT/USD','ETH/USD'],subscription:{name:'ticker'}}));state.exchanges.kraken.wsStatus='live';updateExchangeDisplay();};ws.onmessage=(e)=>{state.exchanges.kraken.bytesReceived+=e.data.length;state.stats.wsBytes+=e.data.length;};}catch(e){}
+    try{const ws=new WebSocket('wss://ws-feed.exchange.coinbase.com');ws.onopen=()=>{ws.send(JSON.stringify({type:'subscribe',product_ids:['BTC-USD','ETH-USD'],channels:['ticker']}));state.exchanges.coinbase.wsStatus='live';updateExchangeDisplay();};ws.onmessage=(e)=>{state.exchanges.coinbase.bytesReceived+=e.data.length;state.stats.wsBytes+=e.data.length;};}catch(e){}
+    setInterval(updateStats,2000);
+}
+
+function shareJackpot(){
+    const mega=state.opportunities.mega[0];
+    if(mega){navigator.clipboard.writeText(`🎰 ${mega.profitPercent.toFixed(2)}% arb on QuanTM FOAM! ${mega.path.join('→')}`);log('📤 Copied!','success');}
+    else log('No jackpot to share','warning');
+}
+function toggleTheme(){document.body.style.filter=document.body.style.filter==='hue-rotate(180deg)'?'none':'hue-rotate(180deg)';}
+
+window.addEventListener('load',()=>{
+    log('🎰 QuanTM FOAM v20 - Build The Future Edition','success');
+    setTimeout(initSystem,600);
+    syncBetInput();
+});
+</script>
+</body>
+</html>

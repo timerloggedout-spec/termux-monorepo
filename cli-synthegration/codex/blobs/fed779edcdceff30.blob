@@ -1,0 +1,34 @@
+.dice-game {
+    text-align: center;
+}
+
+.dice {
+    width: 60px;
+    height: 60px;
+    background: var(--primary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    margin: 0 auto 15px;
+    box-shadow: var(--glow);
+}
+
+.bet-amount {
+    margin-bottom: 15px;
+}
+
+.bet-amount label {
+    color: var(--primary);
+    margin-right: 10px;
+}
+
+.bet-amount input {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--primary);
+    border-radius: 5px;
+    padding: 5px;
+    color: white;
+    width: 100px;
+}

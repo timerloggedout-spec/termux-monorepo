@@ -1,0 +1,13 @@
+/quanTM-arbitrage/
+├── index.html (main interface)
+├── js/
+│   ├── config.js
+│   ├── diagnostic-logger.js
+│   ├── data-manager.js
+│   ├── arbitrage-engine.js
+│   ├── ui-components.js
+│   └── production-controller.js
+├── data/
+│   └── market-data.db (SQLite for Android/Termux)
+└── logs/
+    └── arbitrage.log

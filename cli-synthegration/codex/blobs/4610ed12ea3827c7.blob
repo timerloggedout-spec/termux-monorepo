@@ -1,0 +1,84 @@
+import { useState, useCallback, useRef, useEffect } from "react";
+
+// ─── Configuration (light‑client constants) ────────────────────────────────
+const DATA_URL = process.env.REACT_APP_DATA_URL || "https://example.com/compounds.json";
+// Replace with your IPFS gateway / OrbitDB endpoint
+const CACHE_KEY = "compounds_cache";
+const CACHE_TTL = 604800;         // 7 days (seconds)
+const ANTHROPIC_KEY = process.env.REACT_APP_ANTHROPIC_KEY || "";
+const ENRICH_FALLBACK = !ANTHROPIC_KEY;   // show mock enrichment if no key
+
+// ─── Inline styles identical to original ────────────────────────────────────
+const css = `...`;  // same CSS string as original (omitted for brevity)
+// ─── Color helpers, Badge, JurisCell, SectionBlock, RiskChip – all unchanged
+
+// ─── Fetch & freshness logic ────────────────────────────────────────────────
+async function fetchFromNetwork() {
+  const res = await fetch(DATA_URL);
+  if (!res.ok) throw new Error(`Network response ${res.status}`);
+  return res.json();   // expects an array of compounds following the original schema
+}
+
+function loadCache() {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+    const { data, timestamp } = JSON.parse(raw);
+    if (Date.now() - timestamp < CACHE_TTL * 1000) {
+      return data;
+    }
+  } catch (e) { /* ignore */}
+  return null; // stale or missing
+}
+
+function saveCache(data) {
+  localStorage.setItem(CACHE_KEY, JSON.stringify({ data, timestamp: Date.now() }));
+}
+
+// ─── Clinical Trials Enrichment (fixed) ────────────────────────────────────
+async function enrichWithTrials(compound) {
+  if (!ANTHROPIC_KEY) {
+    // Fallback mock enrichment so spinner never hangs
+    return {
+      trial_summary: `This is mock enrichment for ${compound.name}. Real enrichment requires an API key.`,
+      trial_count: 42, active_trials: 12, completed_trials: 30,
+      key_trials: [
+        { nct_id:"NCT01930999", title:"SUSTAIN-6 CVOT", phase:"Phase 3", status:"COMPLETED", sponsor:"Novo Nordisk", primary_completion:"2016" }
+      ],
+      key_findings: "Mock: significant reduction in major adverse cardiovascular events.",
+      primary_indications_studied: ["Type 2 diabetes", "Obesity"],
+      regulatory_pathway_notes: "Approved based on cardiovascular outcome trial."
+    };
+  }
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 15000);
+
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": ANTHROPIC_KEY,
+        "anthropic-version": "2023-06-01"
+      },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        system: "You are a pharmaceutical regulatory database assistant. Always respond with valid JSON only.",
+        messages: [{
+          role: "user",
+          content: `Search ClinicalTrials.gov and summarize trial data for ${compound.name} (${compound.synonyms}). Return JSON: {
+            "trial_summary": "...", "trial_count": number, "active_trials": number,
+            "completed_trials": number, "key_trials": [{nct_id,title,phase,status,sponsor,primary_completion}],
+            "key_findings": "...", "primary_indications_studied": [...], "regulatory_pathway_notes": "..."
+          }. Only JSON.`
+        }]
+      }),
+      signal: controller.signal
+    });
+    clearTimeout(timeout);
+    if (!res.ok) throw new Error(`API error ${res.status}`);
+    const data = await res.json();
+    const text = data.content.filter(b => b.type === "text").map(b => b.text).join("");
+    return JSON.parse(text.replace(/

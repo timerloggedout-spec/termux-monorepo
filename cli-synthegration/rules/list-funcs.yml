@@ -1,0 +1,9 @@
+id: list-funcs
+language: python
+rule:
+  pattern: |
+    def $FUNC($$$ARGS):
+      $$$
+transform:
+  func: { source: $FUNC }
+  args: { source: $$$ARGS }

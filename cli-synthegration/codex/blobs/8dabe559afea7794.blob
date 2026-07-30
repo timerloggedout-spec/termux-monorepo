@@ -1,0 +1,72 @@
+class DiagnosticLogger {
+    constructor() {
+        this.logs = [];
+        this.isEnabled = false;
+        this.maxLogs = 200;
+        this.displayLimit = 25;
+    }
+
+    enable() {
+        this.isEnabled = true;
+        const panel = document.getElementById('diagnosticPanel');
+        if (panel) panel.classList.add('active');
+        this.log('SYSTEM', 'Diagnostic logging enabled', 'success');
+    }
+
+    disable() {
+        this.isEnabled = false;
+        const panel = document.getElementById('diagnosticPanel');
+        if (panel) panel.classList.remove('active');
+    }
+
+    log(module, message, type = 'info') {
+        const timestamp = new Date().toLocaleTimeString();
+        const logEntry = { timestamp, module, message, type };
+
+        this.logs.push(logEntry);
+        if (this.logs.length > this.maxLogs) this.logs.shift();
+        this.updateDisplay();
+        
+        // Console logging for development
+        const consoleMethod = type === 'error' ? 'error' : 
+                             type === 'warning' ? 'warn' : 'log';
+        console[consoleMethod](`[${timestamp}] ${module}: ${message}`);
+    }
+
+    updateDisplay() {
+        if (!this.isEnabled) return;
+        const logsContainer = document.getElementById('diagnosticLogs');
+        if (!logsContainer) return;
+        
+        logsContainer.innerHTML = '';
+        const recentLogs = this.logs.slice(-this.displayLimit);
+        
+        recentLogs.forEach(log => {
+            const logElement = document.createElement('div');
+            logElement.className = `log-entry log-${log.type}`;
+            logElement.innerHTML = `
+                <span style="color: var(--accent);">[${log.timestamp}]</span>
+                <span style="color: var(--primary);">${log.module}:</span>
+                ${log.message}
+            `;
+            logsContainer.appendChild(logElement);
+        });
+        logsContainer.scrollTop = logsContainer.scrollHeight;
+    }
+
+    exportLogs() {
+        return this.logs;
+    }
+
+    clearLogs() {
+        this.logs = [];
+        this.updateDisplay();
+    }
+}
+
+// Make available globally
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = DiagnosticLogger;
+} else {
+    window.DiagnosticLogger = DiagnosticLogger;
+}

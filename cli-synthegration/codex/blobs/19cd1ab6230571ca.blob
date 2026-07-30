@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuanTM FOAM | Quantum Investment Interface</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00f0ff; --secondary: #ff00ff; --accent: #00ffaa;
+            --dark: #0a0a1a; --darker: #050510; --light: #a0a0ff;
+            --glow: 0 0 10px currentColor, 0 0 20px currentColor;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Orbitron', monospace; }
+        body { background: var(--dark); color: var(--light); min-height: 100vh; overflow-x: hidden; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 15px; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid rgba(0, 240, 255, 0.3); margin-bottom: 20px; flex-wrap: wrap; }
+        .logo { display: flex; align-items: center; gap: 10px; }
+        .logo-icon { width: 35px; height: 35px; background: var(--primary); border-radius: 50%; box-shadow: var(--glow); }
+        .logo-text { font-size: 24px; font-weight: 700; background: linear-gradient(90deg, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .user-info { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .info-display { background: rgba(0, 0, 0, 0.5); padding: 6px 12px; border-radius: 15px; border: 1px solid; font-size: 14px; }
+        .qbucks { border-color: var(--primary); box-shadow: 0 0 8px rgba(0, 240, 255, 0.3); }
+        .level { border-color: var(--secondary); box-shadow: 0 0 8px rgba(255, 0, 255, 0.3); }
+        .points { border-color: var(--accent); box-shadow: 0 0 8px rgba(0, 255, 170, 0.3); }
+        .main-content { display: grid; grid-template-columns: 1fr 320px; gap: 20px; }
+        .investment-interface, .tech-tree, .sweepstakes, .base-game, .arbitrage-game { 
+            background: rgba(10, 10, 26, 0.7); border-radius: 12px; padding: 15px; 
+            border: 1px solid; position: relative; overflow: hidden; margin-bottom: 15px;
+        }
+        .investment-interface { border-color: rgba(0, 240, 255, 0.2); }
+        .tech-tree { border-color: rgba(0, 255, 170, 0.2); }
+        .sweepstakes { border-color: rgba(255, 0, 255, 0.2); }
+        .base-game { border-color: rgba(255, 170, 0, 0.2); }
+        .arbitrage-game { border-color: rgba(255, 255, 0, 0.2); }
+        .portal-section { text-align: center; margin-bottom: 20px; }
+        .portal-button { background: linear-gradient(45deg, var(--primary), var(--secondary)); border: none; color: white; padding: 12px 24px; border-radius: 25px; font-size: 16px; cursor: pointer; transition: all 0.3s; box-shadow: 0 0 12px rgba(0, 240, 255, 0.5); margin: 15px 0; }
+        .portal-button:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(0, 240, 255, 0.8); }
+        .portal-button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .investment-options { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 15px; margin-top: 20px; }
+        .investment-card { background: rgba(0, 0, 0, 0.5); border-radius: 8px; padding: 12px; border: 1px solid rgba(255, 0, 255, 0.3); transition: all 0.3s; cursor: pointer; position: relative; }
+        .investment-card:hover { transform: translateY(-3px); box-shadow: 0 3px 10px rgba(255, 0, 255, 0.3); }
+        .investment-card.locked { opacity: 0.5; cursor: not-allowed; }
+        .investment-icon { width: 40px; height: 40px; background: rgba(0, 255, 170, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; font-size: 20px; }
+        .tech-node { background: rgba(0, 0, 0, 0.5); padding: 8px; border-radius: 6px; margin-bottom: 8px; border-left: 3px solid var(--accent); display: flex; justify-content: space-between; }
+        .tech-node.locked { opacity: 0.5; }
+        .boom-particle { position: fixed; width: 4px; height: 4px; border-radius: 50%; pointer-events: none; z-index: 1000; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 5, 16, 0.95); z-index: 2000; align-items: center; justify-content: center; }
+        .modal-content { background: linear-gradient(135deg, var(--darker), var(--dark)); border-radius: 12px; padding: 20px; max-width: 450px; width: 90%; border: 1px solid var(--primary); box-shadow: var(--glow); }
+        .close-modal { position: absolute; top: 12px; right: 12px; background: none; border: none; color: var(--light); font-size: 18px; cursor: pointer; }
+        .login-form { display: flex; flex-direction: column; gap: 12px; }
+        .form-group { display: flex; flex-direction: column; gap: 4px; }
+        .form-group label { color: var(--primary); font-size: 14px; }
+        .form-group input { background: rgba(0, 0, 0, 0.5); border: 1px solid var(--primary); border-radius: 4px; padding: 8px; color: white; }
+        .submit-btn { background: linear-gradient(45deg, var(--primary), var(--secondary)); border: none; color: white; padding: 10px; border-radius: 4px; cursor: pointer; margin-top: 8px; font-weight: 700; }
+        .generative-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
+        footer { text-align: center; padding: 15px 0; margin-top: 20px; border-top: 1px solid rgba(0, 240, 255, 0.3); font-size: 11px; color: rgba(160, 160, 255, 0.7); }
+        .toggle-switch { position: relative; display: inline-block; width: 50px; height: 24px; margin-left: 10px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 24px; }
+        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--accent); }
+        input:checked + .slider:before { transform: translateX(26px); }
+        .game-option { background: rgba(0, 0, 0, 0.5); padding: 10px; border-radius: 8px; margin-bottom: 10px; text-align: center; cursor: pointer; border: 1px solid rgba(255, 170, 0, 0.3); }
+        .game-option:hover { background: rgba(0, 0, 0, 0.7); }
+        .sweepstakes-options { display: flex; justify-content: space-between; margin: 10px 0; }
+        .sweepstakes-btn { background: rgba(0, 0, 0, 0.5); border: 1px solid var(--secondary); color: var(--light); padding: 8px 12px; border-radius: 6px; cursor: pointer; flex: 1; margin: 0 5px; font-size: 12px; }
+        .sweepstakes-btn.active { background: var(--secondary); color: white; }
+        .investment-controls { margin-top: 10px; display: flex; gap: 10px; }
+        .investment-controls input { flex: 1; background: rgba(0, 0, 0, 0.5); border: 1px solid var(--primary); border-radius: 4px; padding: 5px; color: white; }
+        
+        /* Arbitrage Game Styles */
+        .arbitrage-controls { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+        .arbitrage-controls select, .arbitrage-controls input { background: rgba(0, 0, 0, 0.5); border: 1px solid var(--primary); border-radius: 4px; padding: 8px; color: white; }
+        .arbitrage-controls button { background: linear-gradient(45deg, var(--primary), var(--secondary)); border: none; color: white; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
+        .arbitrage-opportunities { max-height: 300px; overflow-y: auto; margin-top: 15px; }
+        .opportunity-card { background: rgba(0, 0, 0, 0.5); border-radius: 6px; padding: 10px; margin-bottom: 8px; border-left: 4px solid var(--accent); }
+        .opportunity-card.profitable { border-left-color: #00ff00; }
+        .opportunity-card.loss { border-left-color: #ff0000; }
+        .opportunity-header { display: flex; justify-content: space-between; margin-bottom: 5px; }
+        .opportunity-profit { font-weight: bold; }
+        .opportunity-path { font-size: 12px; color: var(--light); }
+        .opportunity-details { font-size: 11px; color: rgba(160, 160, 255, 0.7); display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+        
+        /* Grid Trading Styles */
+        .grid-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .grid-controls input { background: rgba(0, 0, 0, 0.5); border: 1px solid var(--primary); border-radius: 4px; padding: 8px; color: white; }
+        .grid-orders { max-height: 200px; overflow-y: auto; margin-top: 10px; }
+        .grid-order { background: rgba(0, 0, 0, 0.5); border-radius: 4px; padding: 8px; margin-bottom: 5px; font-size: 12px; display: flex; justify-content: space-between; }
+        .grid-order.buy { border-left: 3px solid #00ff00; }
+        .grid-order.sell { border-left: 3px solid #ff0000; }
+        
+        /* Exchange Data Styles */
+        .exchange-data { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .exchange-card { background: rgba(0, 0, 0, 0.5); border-radius: 6px; padding: 10px; }
+        .exchange-card h4 { margin-bottom: 8px; color: var(--primary); }
+        .pair-list { max-height: 150px; overflow-y: auto; }
+        .pair-item { display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        
+        @media (max-width: 768px) { 
+            .main-content { grid-template-columns: 1fr; } 
+            .investment-options { grid-template-columns: 1fr; } 
+            header { flex-direction: column; gap: 10px; }
+            .user-info { justify-content: center; }
+            .arbitrage-controls, .grid-controls { grid-template-columns: 1fr; }
+            .exchange-data { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <canvas class="generative-canvas" id="backgroundCanvas"></canvas>
+    
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon"></div>
+                <div class="logo-text">QuanTM FOAM</div>
+            </div>
+            <div class="user-info">
+                <div class="info-display qbucks" id="qbucksDisplay">Q-Bucks: 1,250</div>
+                <div class="info-display level" id="levelDisplay">Level 1</div>
+                <div class="info-display points" id="pointsDisplay">Points: 0/100</div>
+                <div style="display: flex; align-items: center;">
+                    <span style="font-size: 12px;">Live Data</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="liveDataToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <button id="loginBtn" class="portal-button" style="padding: 6px 12px; font-size: 12px;">Login</button>
+            </div>
+        </header>
+        
+        <div class="main-content">
+            <div class="investment-interface">
+                <div class="portal-section">
+                    <h2>Quantum Portal Interface</h2>
+                    <p>Activate the quantum field to generate unique investment opportunities</p>
+                    <button class="portal-button" id="portalJump">Initiate Portal Jump</button>
+                    <div id="portalStatus">Portal Status: Stable</div>
+                </div>
+                
+                <h3>Investment Modules</h3>
+                <div class="investment-options" id="investmentOptions">
+                    <!-- Investment cards will be generated by JavaScript -->
+                </div>
+                
+                <!-- Arbitrage Game Section -->
+                <div class="arbitrage-game">
+                    <h3>Quantum Arbitrage Paths</h3>
+                    <p>Discover intra-exchange arbitrage opportunities across multiple exchanges</p>
+                    
+                    <div class="arbitrage-controls">
+                        <select id="exchangeSelect">
+                            <option value="yobit">YoBit</option>
+                            <option value="uniswap">Uniswap</option>
+                            <option value="binance">Binance</option>
+                            <option value="kraken">Kraken</option>
+                        </select>
+                        <select id="methodSelect">
+                            <option value="triangular">Triangular Arbitrage</option>
+                            <option value="bellman-ford">Bellman-Ford Algorithm</option>
+                        </select>
+                        <input type="number" id="investmentAmount" placeholder="Investment Amount" value="100" min="1">
+                        <button class="portal-button" id="scanArbitrage" style="padding: 8px 16px;">Scan Opportunities</button>
+                    </div>
+                    
+                    <div class="arbitrage-opportunities" id="arbitrageOpportunities">
+                        <!-- Arbitrage opportunities will be populated here -->
+                    </div>
+                </div>
+                
+                <!-- Grid Trading Section -->
+                <div class="arbitrage-game">
+                    <h3>Quantum Grid Trading</h3>
+                    <p>Automated grid trading with dynamic basket management</p>
+                    
+                    <div class="grid-controls">
+                        <input type="text" id="gridPair" placeholder="Trading Pair (e.g., BTC/USD)" value="BTC/USD">
+                        <input type="number" id="gridBudget" placeholder="Budget" value="1000" min="10">
+                        <input type="number" id="gridBaskets" placeholder="Number of Baskets" value="5" min="1" max="20">
+                        <input type="number" id="gridOrdersPerBasket" placeholder="Orders per Basket" value="5" min="1" max="10">
+                        <button class="portal-button" id="startGridTrading" style="padding: 8px 16px; grid-column: 1 / -1;">Start Grid Trading</button>
+                    </div>
+                    
+                    <div class="grid-orders" id="gridOrders">
+                        <!-- Grid orders will be populated here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar">
+                <div class="base-game">
+                    <h3>Base Games</h3>
+                    <div id="baseGames">
+                        <!-- Base games will be generated by JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="tech-tree">
+                    <h3>Quantum Tech Tree</h3>
+                    <div id="techTreeNodes">
+                        <!-- Tech nodes will be generated by JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="sweepstakes">
+                    <h3>BOOM Particle Generator</h3>
+                    <p>Generate BOOM particles for bonus rewards</p>
+                    <div class="sweepstakes-options">
+                        <button class="sweepstakes-btn active" data-time="1">1 min</button>
+                        <button class="sweepstakes-btn" data-time="5">5 min</button>
+                        <button class="sweepstakes-btn" data-time="15">15 min</button>
+                    </div>
+                    <button class="portal-button" id="generateBoom" style="font-size: 12px; padding: 8px 16px; width: 100%;">Generate BOOM</button>
+                    <div id="boomCounter">BOOM Particles: 3</div>
+                    <div id="sweepstakesInfo">Next entry: <span id="sweepstakesTimer">1:00</span></div>
+                </div>
+
+                <div class="sweepstakes">
+                    <h3>Exchange Data</h3>
+                    <div class="exchange-data">
+                        <div class="exchange-card">
+                            <h4>YoBit</h4>
+                            <div class="pair-list" id="yobitPairs">
+                                <!-- YoBit pairs will be populated here -->
+                            </div>
+                        </div>
+                        <div class="exchange-card">
+                            <h4>Uniswap</h4>
+                            <div class="pair-list" id="uniswapPairs">
+                                <!-- Uniswap pairs will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>QuanTM FOAM v2.0 | Quantum Investment Interface | For simulation purposes only</p>
+        </footer>
+    </div>
+    
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeLogin">&times;</button>
+            <h2>Quantum Authentication</h2>
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label for="username">Quantum ID</label>
+                    <input type="text" id="username" placeholder="Enter your Quantum ID">
+                </div>
+                <div class="form-group">
+                    <label for="password">Entanglement Key</label>
+                    <input type="password" id="password" placeholder="Enter your Entanglement Key">
+                </div>
+                <button type="submit" class="submit-btn">Authenticate</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="messageModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeMessage">&times;</button>
+            <h2 id="messageTitle">Quantum Message</h2>
+            <p id="messageText"></p>
+        </div>
+    </div>
+
+    <script>
+        // ========== CONFIGURATION ==========
+        const CONFIG = {
+            INITIAL_Q_BUCKS: 1250,
+            INITIAL_LEVEL: 1,
+            INITIAL_POINTS: 0,
+            POINTS_PER_LEVEL: 100,
+            BOOM_PARTICLES: 3,
+            BOOM_RECHARGE_TIME: 60000,
+            LEVEL_UP_INTERVAL: 30000,
+            CRYPTO_UPDATE_INTERVAL: 10000,
+            BASE_GAME_COST: 10,
+            ARBITRAGE_UPDATE_INTERVAL: 15000,
+            MIN_PROFIT_PERCENT: 0.5,
+            TRADING_FEE: 0.002
+        };
+
+        // Base currencies from the arbitrage bot
+        const BASE_CURRENCIES = ['ltc', 'doge', 'xrp', 'ada', 'sol', 'link', 'dot', 'matic', 'avax', 'shib', 'uni', 'aave', 'comp', 'snx', 'yfi', 'crv', 'sushi', '1inch', 'mkr', 'zrx'];
+        const AVOID_CURRENCIES = ['usd', 'cad', 'eur', 'btc', 'eth', 'bnb', 'usdt', 'usdc', 'yovi'];
+
+        const MODULES = {
+            micro: { name: 'Micro-Cap Scanner', icon: 'μ', level: 1, cost: 50, risk: 0.3, reward: 0.15, uses: 0, maxUses: 5 },
+            nano: { name: 'Nano-Cap Radar', icon: 'η', level: 3, cost: 100, risk: 0.5, reward: 0.25, uses: 0, maxUses: 10 },
+            planck: { name: 'Planck-Level Detection', icon: 'ℏ', level: 5, cost: 500, risk: 0.8, reward: 0.5, uses: 0, maxUses: 20 },
+            dca: { name: 'DCA Matrix', icon: '↔', level: 2, cost: 75, risk: 0.2, reward: 0.1, uses: 0, maxUses: 15 },
+            snipe: { name: 'Sniper Protocol', icon: '🎯', level: 4, cost: 150, risk: 0.6, reward: 0.3, uses: 0, maxUses: 8 },
+            grid: { name: 'Quantum Grid', icon: '#', level: 7, cost: 1000, risk: 0.7, reward: 0.4, uses: 0, maxUses: 25 },
+            arbitrage: { name: 'Arbitrage Hunter', icon: '⚡', level: 6, cost: 750, risk: 0.4, reward: 0.35, uses: 0, maxUses: 12 }
+        };
+
+        const BASE_GAMES = {
+            dice: { name: 'Quantum Dice', icon: '🎲', cost: 10, reward: 20, risk: 0.4 },
+            slots: { name: 'Neon Slots', icon: '🎰', cost: 25, reward: 50, risk: 0.6 },
+            wheel: { name: 'Fortune Wheel', icon: '🎡', cost: 50, reward: 100, risk: 0.5 },
+            arbitrage: { name: 'Arbitrage Paths', icon: '🔄', cost: 75, reward: 150, risk: 0.3 }
+        };
+
+        const TECH_TREE = [
+            { name: 'Basic Scanner', level: 1, unlocked: true },
+            { name: 'Risk Assessment Matrix', level: 2, unlocked: false },
+            { name: 'Volatility Predictor', level: 3, unlocked: false },
+            { name: 'Arbitrage Detection', level: 4, unlocked: false },
+            { name: 'Quantum Entanglement Trading', level: 5, unlocked: false },
+            { name: 'Grid Trading Protocol', level: 6, unlocked: false },
+            { name: 'Temporal Arbitrage', level: 8, unlocked: false }
+        ];
+
+        // ========== STATE MANAGEMENT ==========
+        const StateManager = {
+            user: null,
+            
+            init() {
+                if (!this.loadFromStorage('user')) {
+                    this.user = {
+                        username: null,
+                        level: CONFIG.INITIAL_LEVEL,
+                        points: CONFIG.INITIAL_POINTS,
+                        qBucks: CONFIG.INITIAL_Q_BUCKS,
+                        boomParticles: CONFIG.BOOM_PARTICLES,
+                        unlockedModules: ['micro'],
+                        portfolio: {},
+                        toolUses: {},
+                        arbitrageOpportunities: [],
+                        gridOrders: [],
+                        exchangeData: {
+                            yobit: {},
+                            uniswap: {},
+                            binance: {},
+                            kraken: {}
+                        },
+                        lastSweepstakes: Date.now(),
+                        sweepstakesTime: 1
+                    };
+                    this.saveToStorage('user', this.user);
+                } else {
+                    this.user = this.loadFromStorage('user');
+                }
+            },
+            
+            loadFromStorage(key) {
+                return JSON.parse(localStorage.getItem(`quanTM_${key}`) || 'null');
+            },
+            
+            saveToStorage(key, value) {
+                localStorage.setItem(`quanTM_${key}`, JSON.stringify(value));
+            },
+            
+            updateUser(updates) {
+                this.user = { ...this.user, ...updates };
+                this.saveToStorage('user', this.user);
+                return this.user;
+            }
+        };
+
+        // ========== ARBITRAGE ENGINE ==========
+        const ArbitrageEngine = {
+            opportunities: [],
+            gridOrders: [],
+            
+            // Triangular arbitrage detection
+            findTriangularArbitrage(exchangeData, investmentAmount = 100) {
+                const opportunities = [];
+                const pairs = Object.keys(exchangeData);
+                
+                // Filter base currencies
+                const baseCurrencies = BASE_CURRENCIES.filter(c => 
+                    !AVOID_CURRENCIES.includes(c.toLowerCase())
+                );
+                
+                // Look for triangular arbitrage opportunities
+                for (let i = 0; i < baseCurrencies.length; i++) {
+                    for (let j = 0; j < baseCurrencies.length; j++) {
+                        for (let k = 0; k < baseCurrencies.length; k++) {
+                            if (i === j || j === k || i === k) continue;
+                            
+                            const a = baseCurrencies[i];
+                            const b = baseCurrencies[j];
+                            const c = baseCurrencies[k];
+                            
+                            // Check if all required pairs exist
+                            const abPair = `${a}_${b}`;
+                            const bcPair = `${b}_${c}`;
+                            const caPair = `${c}_${a}`;
+                            
+                            if (exchangeData[abPair] && exchangeData[bcPair] && exchangeData[caPair]) {
+                                const abRate = exchangeData[abPair].bid || exchangeData[abPair].price;
+                                const bcRate = exchangeData[bcPair].bid || exchangeData[bcPair].price;
+                                const caRate = exchangeData[caPair].ask || exchangeData[caPair].price;
+                                
+                                if (abRate && bcRate && caRate) {
+                                    // Calculate arbitrage
+                                    const amountAfterFees = investmentAmount * 
+                                        (1 - CONFIG.TRADING_FEE) * abRate * 
+                                        (1 - CONFIG.TRADING_FEE) * bcRate * 
+                                        (1 - CONFIG.TRADING_FEE) * caRate;
+                                    
+                                    const profit = amountAfterFees - investmentAmount;
+                                    const profitPercent = (profit / investmentAmount) * 100;
+                                    
+                                    if (profitPercent >= CONFIG.MIN_PROFIT_PERCENT) {
+                                        opportunities.push({
+                                            path: `${a} → ${b} → ${c} → ${a}`,
+                                            profit: profit,
+                                            profitPercent: profitPercent,
+                                            amountIn: investmentAmount,
+                                            amountOut: amountAfterFees,
+                                            exchange: 'YoBit',
+                                            pairs: [abPair, bcPair, caPair],
+                                            rates: [abRate, bcRate, caRate]
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                return opportunities.sort((a, b) => b.profitPercent - a.profitPercent);
+            },
+            
+            // Bellman-Ford algorithm for negative cycle detection
+            findArbitrageBellmanFord(exchangeData, investmentAmount = 100) {
+                const graph = [];
+                const currencies = new Set();
+                
+                // Build graph from exchange data
+                Object.entries(exchangeData).forEach(([pair, data]) => {
+                    const [from, to] = pair.split('_');
+                    if (from && to) {
+                        currencies.add(from);
+                        currencies.add(to);
+                        
+                        const rate = data.bid || data.price;
+                        if (rate) {
+                            // Use negative log for Bellman-Ford
+                            graph.push({
+                                from,
+                                to,
+                                weight: -Math.log(rate * (1 - CONFIG.TRADING_FEE))
+                            });
+                        }
+                    }
+                });
+                
+                const currencyList = Array.from(currencies);
+                const dist = {};
+                const prev = {};
+                
+                // Initialize distances
+                currencyList.forEach(currency => {
+                    dist[currency] = Infinity;
+                    prev[currency] = null;
+                });
+                
+                // Start with first currency
+                if (currencyList.length > 0) {
+                    dist[currencyList[0]] = 0;
+                }
+                
+                // Relax edges |V| - 1 times
+                for (let i = 0; i < currencyList.length - 1; i++) {
+                    graph.forEach(edge => {
+                        if (dist[edge.from] + edge.weight < dist[edge.to]) {
+                            dist[edge.to] = dist[edge.from] + edge.weight;
+                            prev[edge.to] = edge.from;
+                        }
+                    });
+                }
+                
+                // Check for negative cycles (arbitrage opportunities)
+                const opportunities = [];
+                graph.forEach(edge => {
+                    if (dist[edge.from] + edge.weight < dist[edge.to]) {
+                        // Negative cycle found - reconstruct path
+                        const path = this.reconstructArbitragePath(edge.to, prev, currencyList);
+                        if (path && path.length > 2) {
+                            const profit = this.calculatePathProfit(path, exchangeData, investmentAmount);
+                            if (profit.profitPercent >= CONFIG.MIN_PROFIT_PERCENT) {
+                                opportunities.push(profit);
+                            }
+                        }
+                    }
+                });
+                
+                return opportunities;
+            },
+            
+            reconstructArbitragePath(start, prev, currencies) {
+                const path = [start];
+                let current = start;
+                const visited = new Set();
+                
+                while (prev[current] && !visited.has(current)) {
+                    visited.add(current);
+                    path.unshift(prev[current]);
+                    current = prev[current];
+                    
+                    if (path.length > currencies.length) {
+                        break; // Prevent infinite loops
+                    }
+                }
+                
+                // Ensure we have a cycle
+                if (path[0] === path[path.length - 1] && path.length > 1) {
+                    return path;
+                }
+                
+                return null;
+            },
+            
+            calculatePathProfit(path, exchangeData, investmentAmount) {
+                let amount = investmentAmount;
+                const pairs = [];
+                const rates = [];
+                
+                for (let i = 0; i < path.length - 1; i++) {
+                    const from = path[i];
+                    const to = path[i + 1];
+                    const pair = `${from}_${to}`;
+                    const rate = exchangeData[pair]?.bid || exchangeData[pair]?.price;
+                    
+                    if (!rate) {
+                        return { profitPercent: 0, profit: 0 };
+                    }
+                    
+                    amount = amount * rate * (1 - CONFIG.TRADING_FEE);
+                    pairs.push(pair);
+                    rates.push(rate);
+                }
+                
+                const profit = amount - investmentAmount;
+                const profitPercent = (profit / investmentAmount) * 100;
+                
+                return {
+                    path: path.join(' → '),
+                    profit: profit,
+                    profitPercent: profitPercent,
+                    amountIn: investmentAmount,
+                    amountOut: amount,
+                    exchange: 'Bellman-Ford',
+                    pairs: pairs,
+                    rates: rates
+                };
+            },
+            
+            // Grid trading functions
+            setupGridTrading(pair, budget, numBaskets, ordersPerBasket) {
+                const orders = [];
+                const amountPerBasket = budget / numBaskets;
+                const amountPerOrder = amountPerBasket / ordersPerBasket;
+                
+                // Get current price (simulated)
+                const currentPrice = this.getCurrentPrice(pair);
+                const spread = currentPrice * 0.01; // 1% spread
+                
+                for (let i = 0; i < numBaskets; i++) {
+                    const basketPrice = currentPrice - (spread / 2) + (i * spread / numBaskets);
+                    
+                    for (let j = 0; j < ordersPerBasket; j++) {
+                        const buyPrice = basketPrice * (1 - 0.005 * (j + 1));
+                        const sellPrice = basketPrice * (1 + 0.005 * (j + 1));
+                        
+                        orders.push({
+                            type: 'buy',
+                            pair: pair,
+                            price: buyPrice,
+                            amount: amountPerOrder,
+                            basket: i,
+                            status: 'open'
+                        });
+                        
+                        orders.push({
+                            type: 'sell',
+                            pair: pair,
+                            price: sellPrice,
+                            amount: amountPerOrder,
+                            basket: i,
+                            status: 'open'
+                        });
+                    }
+                }
+                
+                return orders;
+            },
+            
+            getCurrentPrice(pair) {
+                // Simulate price based on pair
+                const basePrices = {
+                    'BTC/USD': 45000,
+                    'ETH/USD': 3000,
+                    'LTC/USD': 70,
+                    'ADA/USD': 0.5,
+                    'DOT/USD': 7
+                };
+                
+                return basePrices[pair] || 100;
+            },
+            
+            // Update grid orders based on price movement
+            updateGridOrders(orders, priceUpdate) {
+                return orders.map(order => {
+                    if (order.status === 'open') {
+                        if (order.type === 'buy' && priceUpdate <= order.price) {
+                            return { ...order, status: 'filled' };
+                        } else if (order.type === 'sell' && priceUpdate >= order.price) {
+                            return { ...order, status: 'filled' };
+                        }
+                    }
+                    return order;
+                });
+            }
+        };
+
+        // ========== EXCHANGE DATA MANAGER ==========
+        const ExchangeDataManager = {
+            async fetchYoBitData() {
+                try {
+                    // Use CoinGecko as a proxy for YoBit data
+                    const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,litecoin,ethereum,ripple,cardano,polkadot,solana&vs_currencies=usd&include_24hr_change=true');
+                    const data = await response.json();
+                    
+                    const yobitData = {};
+                    
+                    // Create synthetic YoBit pairs
+                    if (data.bitcoin) {
+                        yobitData['btc_usd'] = { 
+                            bid: data.bitcoin.usd * 0.998, 
+                            ask: data.bitcoin.usd * 1.002,
+                            price: data.bitcoin.usd,
+                            change: data.bitcoin.usd_24h_change || 0
+                        };
+                    }
+                    
+                    if (data.litecoin) {
+                        yobitData['ltc_usd'] = { 
+                            bid: data.litecoin.usd * 0.998, 
+                            ask: data.litecoin.usd * 1.002,
+                            price: data.litecoin.usd,
+                            change: data.litecoin.usd_24h_change || 0
+                        };
+                        yobitData['ltc_btc'] = { 
+                            bid: (data.litecoin.usd / data.bitcoin.usd) * 0.998, 
+                            ask: (data.litecoin.usd / data.bitcoin.usd) * 1.002,
+                            price: data.litecoin.usd / data.bitcoin.usd,
+                            change: 0
+                        };
+                    }
+                    
+                    // Add more synthetic pairs for arbitrage opportunities
+                    BASE_CURRENCIES.forEach((curr, index) => {
+                        if (index < 5) { // Limit to first 5 for performance
+                            const price = 10 + Math.random() * 100;
+                            yobitData[`${curr}_usd`] = {
+                                bid: price * 0.998,
+                                ask: price * 1.002,
+                                price: price,
+                                change: (Math.random() - 0.5) * 10
+                            };
+                            
+                            if (index > 0) {
+                                const prevCurr = BASE_CURRENCIES[index - 1];
+                                const crossRate = price / (10 + Math.random() * 100);
+                                yobitData[`${curr}_${prevCurr}`] = {
+                                    bid: crossRate * 0.998,
+                                    ask: crossRate * 1.002,
+                                    price: crossRate,
+                                    change: (Math.random() - 0.5) * 5
+                                };
+                            }
+                        }
+                    });
+                    
+                    return yobitData;
+                } catch (error) {
+                    console.error('Error fetching YoBit data:', error);
+                    return this.getFallbackData('yobit');
+                }
+            },
+            
+            async fetchUniswapData() {
+                try {
+                    // Use DeFiPulse or similar for Uniswap data
+                    const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=uniswap,aave,chainlink,matic-network,curve-dao-token&vs_currencies=usd&include_24hr_change=true');
+                    const data = await response.json();
+                    
+                    const uniswapData = {};
+                    
+                    if (data.uniswap) {
+                        uniswapData['uni_usd'] = {
+                            price: data.uniswap.usd,
+                            change: data.uniswap.usd_24h_change || 0
+                        };
+                    }
+                    
+                    if (data.aave) {
+                        uniswapData['aave_usd'] = {
+                            price: data.aave.usd,
+                            change: data.aave.usd_24h_change || 0
+                        };
+                    }
+                    
+                    // Add more Uniswap tokens
+                    ['link', 'matic', 'crv', 'comp', 'snx'].forEach(token => {
+                        if (data[token] || data[`${token}-network`] || data[`${token}-dao-token`]) {
+                            const key = Object.keys(data).find(k => k.includes(token));
+                            if (key) {
+                                uniswapData[`${token}_usd`] = {
+                                    price: data[key].usd,
+                                    change: data[key].usd_24h_change || 0
+                                };
+                            }
+                        }
+                    });
+                    
+                    return uniswapData;
+                } catch (error) {
+                    console.error('Error fetching Uniswap data:', error);
+                    return this.getFallbackData('uniswap');
+                }
+            },
+            
+            getFallbackData(exchange) {
+                // Fallback data when API calls fail
+                const fallbackData = {
+                    yobit: {
+                        'btc_usd': { bid: 45000, ask: 45100, price: 45050, change: 2.5 },
+                        'eth_usd': { bid: 3000, ask: 3010, price: 3005, change: 1.8 },
+                        'ltc_usd': { bid: 70, ask: 71, price: 70.5, change: 0.5 },
+                        'ltc_btc': { bid: 0.00155, ask: 0.00157, price: 0.00156, change: 0.2 }
+                    },
+                    uniswap: {
+                        'uni_usd': { price: 6.50, change: 3.2 },
+                        'aave_usd': { price: 85, change: 1.5 },
+                        'link_usd': { price: 14, change: 2.1 }
+                    }
+                };
+                
+                return fallbackData[exchange] || {};
+            },
+            
+            async updateAllExchangeData() {
+                const yobitData = await this.fetchYoBitData();
+                const uniswapData = await this.fetchUniswapData();
+                
+                StateManager.updateUser({
+                    exchangeData: {
+                        yobit: yobitData,
+                        uniswap: uniswapData,
+                        binance: {}, // Could implement similar to YoBit
+                        kraken: {}   // Could implement similar to YoBit
+                    }
+                });
+                
+                this.updateExchangeDisplays();
+                return StateManager.user.exchangeData;
+            },
+            
+            updateExchangeDisplays() {
+                const yobitPairs = document.getElementById('yobitPairs');
+                const uniswapPairs = document.getElementById('uniswapPairs');
+                
+                if (yobitPairs) {
+                    yobitPairs.innerHTML = '';
+                    Object.entries(StateManager.user.exchangeData.yobit)
+                        .slice(0, 8) // Limit display
+                        .forEach(([pair, data]) => {
+                            const pairItem = document.createElement('div');
+                            pairItem.className = 'pair-item';
+                            pairItem.innerHTML = `
+                                <span>${pair.toUpperCase()}</span>
+                                <span>${data.price.toFixed(4)}</span>
+                            `;
+                            yobitPairs.appendChild(pairItem);
+                        });
+                }
+                
+                if (uniswapPairs) {
+                    uniswapPairs.innerHTML = '';
+                    Object.entries(StateManager.user.exchangeData.uniswap)
+                        .slice(0, 8) // Limit display
+                        .forEach(([pair, data]) => {
+                            const pairItem = document.createElement('div');
+                            pairItem.className = 'pair-item';
+                            pairItem.innerHTML = `
+                                <span>${pair.toUpperCase()}</span>
+                                <span>${data.price.toFixed(4)}</span>
+                            `;
+                            uniswapPairs.appendChild(pairItem);
+                        });
+                }
+            }
+        };
+
+        // ========== UI COMPONENTS ==========
+        const UIComponents = {
+            // Modal Management
+            modals: {
+                login: document.getElementById('loginModal'),
+                message: document.getElementById('messageModal')
+            },
+            
+            initModals() {
+                // Login modal
+                document.getElementById('loginBtn').addEventListener('click', () => {
+                    this.modals.login.style.display = 'flex';
+                });
+                
+                document.getElementById('closeLogin').addEventListener('click', () => {
+                    this.modals.login.style.display = 'none';
+                });
+                
+                document.getElementById('loginForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const username = document.getElementById('username').value;
+                    if (username) {
+                        StateManager.updateUser({ username });
+                        document.getElementById('loginBtn').textContent = username;
+                        this.modals.login.style.display = 'none';
+                    }
+                });
+                
+                // Message modal
+                document.getElementById('closeMessage').addEventListener('click', () => {
+                    this.modals.message.style.display = 'none';
+                });
+                
+                // Close modals when clicking outside
+                window.addEventListener('click', (e) => {
+                    if (e.target === this.modals.login) this.modals.login.style.display = 'none';
+                    if (e.target === this.modals.message) this.modals.message.style.display = 'none';
+                });
+            },
+            
+            showMessage(title, text) {
+                document.getElementById('messageTitle').textContent = title;
+                document.getElementById('messageText').textContent = text;
+                this.modals.message.style.display = 'flex';
+            },
+            
+            // Dynamic UI Generation
+            generateInvestmentCards() {
+                const container = document.getElementById('investmentOptions');
+                container.innerHTML = '';
+                
+                Object.entries(MODULES).forEach(([key, module]) => {
+                    const unlocked = StateManager.user.unlockedModules.includes(key);
+                    const usesLeft = module.maxUses - (StateManager.user.toolUses[key] || 0);
+                    const canUse = unlocked && usesLeft > 0 && StateManager.user.level >= module.level;
+                    
+                    const card = document.createElement('div');
+                    card.className = `investment-card ${unlocked && canUse ? '' : 'locked'}`;
+                    card.setAttribute('data-module', key);
+                    card.innerHTML = `
+                        <div class="investment-icon">${module.icon}</div>
+                        <h4>${module.name}</h4>
+                        <p>${unlocked ? 
+                            (canUse ? 
+                                `Cost: ${module.cost} Q-Bucks | Uses: ${usesLeft}/${module.maxUses}` : 
+                                `Level ${module.level} required | ${usesLeft > 0 ? 'Upgrade available' : 'No uses left'}`) : 
+                            `Unlocks at Level ${module.level}`}
+                        </p>
+                        ${unlocked && canUse ? `
+                            <div class="investment-controls">
+                                <input type="number" id="amount-${key}" placeholder="Q-Bucks to invest" min="1" max="${StateManager.user.qBucks}" value="${module.cost}">
+                                <button class="portal-button" style="padding: 5px 10px; font-size: 12px;" data-module="${key}">Invest</button>
+                            </div>
+                        ` : ''}
+                        <div class="module-status">${unlocked ? (canUse ? 'Active' : 'Locked') : 'Locked'}</div>
+                    `;
+                    container.appendChild(card);
+                });
+                
+                // Add event listeners to investment buttons
+                container.querySelectorAll('.portal-button').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const moduleKey = e.target.getAttribute('data-module');
+                        const amountInput = document.getElementById(`amount-${moduleKey}`);
+                        const amount = parseInt(amountInput.value) || MODULES[moduleKey].cost;
+                        
+                        if (amount > 0 && amount <= StateManager.user.qBucks) {
+                            GameLogic.activateInvestmentModule(moduleKey, amount);
+                        } else {
+                            this.showMessage('Quantum Flux Error', 'Invalid investment amount. Check your Q-Bucks balance.');
+                        }
+                    });
+                });
+            },
+            
+            generateBaseGames() {
+                const container = document.getElementById('baseGames');
+                container.innerHTML = '';
+                
+                Object.entries(BASE_GAMES).forEach(([key, game]) => {
+                    const gameEl = document.createElement('div');
+                    gameEl.className = 'game-option';
+                    gameEl.setAttribute('data-game', key);
+                    gameEl.innerHTML = `
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <span>${game.icon} ${game.name}</span>
+                            <span>${game.cost} Q-Bucks</span>
+                        </div>
+                    `;
+                    container.appendChild(gameEl);
+                });
+                
+                // Add event listeners to base games
+                container.querySelectorAll('.game-option').forEach(game => {
+                    game.addEventListener('click', (e) => {
+                        const gameKey = e.currentTarget.getAttribute('data-game');
+                        GameLogic.playBaseGame(gameKey);
+                    });
+                });
+            },
+            
+            generateTechTreeNodes() {
+                const container = document.getElementById('techTreeNodes');
+                container.innerHTML = '';
+                
+                TECH_TREE.forEach(node => {
+                    const unlocked = node.unlocked || StateManager.user.level >= node.level;
+                    const nodeEl = document.createElement('div');
+                    nodeEl.className = `tech-node ${unlocked ? '' : 'locked'}`;
+                    nodeEl.innerHTML = `
+                        <span>${node.name}</span>
+                        <span>${unlocked ? '✓' : `Lvl ${node.level}`}</span>
+                    `;
+                    container.appendChild(nodeEl);
+                });
+            },
+            
+            // Arbitrage UI Updates
+            updateArbitrageOpportunities(opportunities) {
+                const container = document.getElementById('arbitrageOpportunities');
+                container.innerHTML = '';
+                
+                if (opportunities.length === 0) {
+                    container.innerHTML = '<div class="opportunity-card">No arbitrage opportunities found. Try again later.</div>';
+                    return;
+                }
+                
+                opportunities.slice(0, 5).forEach(opp => {
+                    const oppCard = document.createElement('div');
+                    oppCard.className = `opportunity-card ${opp.profitPercent > 0 ? 'profitable' : 'loss'}`;
+                    oppCard.innerHTML = `
+                        <div class="opportunity-header">
+                            <span>${opp.path}</span>
+                            <span class="opportunity-profit" style="color: ${opp.profitPercent > 0 ? '#00ff00' : '#ff0000'}">
+                                ${opp.profitPercent > 0 ? '+' : ''}${opp.profitPercent.toFixed(2)}%
+                            </span>
+                        </div>
+                        <div class="opportunity-path">${opp.exchange}</div>
+                        <div class="opportunity-details">
+                            <span>Investment: $${opp.amountIn.toFixed(2)}</span>
+                            <span>Return: $${opp.amountOut.toFixed(2)}</span>
+                            <span>Profit: $${opp.profit.toFixed(2)}</span>
+                            <span>Pairs: ${opp.pairs.length}</span>
+                        </div>
+                    `;
+                    container.appendChild(oppCard);
+                });
+            },
+            
+            updateGridOrders(orders) {
+                const container = document.getElementById('gridOrders');
+                container.innerHTML = '';
+                
+                const openOrders = orders.filter(order => order.status === 'open').slice(0, 10);
+                
+                if (openOrders.length === 0) {
+                    container.innerHTML = '<div class="grid-order">No active grid orders</div>';
+                    return;
+                }
+                
+                openOrders.forEach(order => {
+                    const orderEl = document.createElement('div');
+                    orderEl.className = `grid-order ${order.type}`;
+                    orderEl.innerHTML = `
+                        <span>${order.type.toUpperCase()} ${order.pair}</span>
+                        <span>$${order.price.toFixed(2)}</span>
+                        <span>${order.amount.toFixed(4)}</span>
+                    `;
+                    container.appendChild(orderEl);
+                });
+            },
+            
+            // UI Updates
+            updateUI() {
+                document.getElementById('qbucksDisplay').textContent = `Q-Bucks: ${StateManager.user.qBucks.toLocaleString()}`;
+                document.getElementById('levelDisplay').textContent = `Level ${StateManager.user.level}`;
+                document.getElementById('pointsDisplay').textContent = `Points: ${StateManager.user.points}/${CONFIG.POINTS_PER_LEVEL}`;
+                document.getElementById('boomCounter').textContent = `BOOM Particles: ${StateManager.user.boomParticles}`;
+                
+                this.updatePortfolioDisplay();
+            },
+            
+            updatePortfolioDisplay() {
+                // Portfolio display logic remains the same
+                const portfolio = StateManager.user.portfolio;
+                let totalValue = 0;
+                
+                Object.entries(portfolio).forEach(([symbol, holding]) => {
+                    const coin = CryptoSimulator.getCoin(symbol);
+                    if (coin) {
+                        totalValue += holding.amount * coin.price;
+                    }
+                });
+                
+                // Update any portfolio displays if they exist
+            }
+        };
+
+        // ========== GAME LOGIC ==========
+        const GameLogic = {
+            // Investment Module Logic
+            activateInvestmentModule(moduleKey, amount) {
+                const module = MODULES[moduleKey];
+                if (!module || amount > StateManager.user.qBucks) {
+                    UIComponents.showMessage('Investment Error', 'Insufficient Q-Bucks for this investment.');
+                    return;
+                }
+                
+                const usesLeft = module.maxUses - (StateManager.user.toolUses[moduleKey] || 0);
+                if (usesLeft <= 0) {
+                    UIComponents.showMessage('Tool Depleted', `You have no uses left for ${module.name}. Upgrade at level ${module.level + 2}.`);
+                    return;
+                }
+                
+                // Deduct cost and track usage
+                StateManager.updateUser({
+                    qBucks: StateManager.user.qBucks - amount,
+                    toolUses: { ...StateManager.user.toolUses, [moduleKey]: (StateManager.user.toolUses[moduleKey] || 0) + 1 }
+                });
+                
+                // Special handling for arbitrage module
+                if (moduleKey === 'arbitrage') {
+                    this.activateArbitrageModule(amount);
+                    return;
+                }
+                
+                // Default investment logic for other modules
+                const coin = CryptoSimulator.getRandomCoin();
+                const coinAmount = amount / coin.price;
+                const portfolio = { ...StateManager.user.portfolio };
+                
+                if (!portfolio[coin.symbol]) {
+                    portfolio[coin.symbol] = { amount: 0, avgPrice: 0 };
+                }
+                
+                const portfolioItem = portfolio[coin.symbol];
+                const totalCost = portfolioItem.amount * portfolioItem.avgPrice + amount;
+                portfolioItem.amount += coinAmount;
+                portfolioItem.avgPrice = totalCost / portfolioItem.amount;
+                
+                StateManager.updateUser({ portfolio });
+                this.addPoints(amount / 10);
+                
+                // Update UI
+                UIComponents.updateUI();
+                UIComponents.generateInvestmentCards();
+                
+                // Show result after delay
+                setTimeout(() => {
+                    const profitLoss = (Math.random() * module.reward - module.risk/2) * amount;
+                    const message = profitLoss >= 0 ? 
+                        `Quantum alignment achieved! +${profitLoss.toFixed(2)} Q-Bucks profit` :
+                        `Quantum fluctuation detected! ${Math.abs(profitLoss).toFixed(2)} Q-Bucks loss`;
+                    
+                    UIComponents.showMessage(
+                        `${module.name} Activated`, 
+                        `Invested in ${coin.name} (${coinAmount.toFixed(coin.decimals)} coins)\n${message}`
+                    );
+                    
+                    // Add profit/loss to Q-Bucks
+                    StateManager.updateUser({ qBucks: StateManager.user.qBucks + profitLoss });
+                    UIComponents.updateUI();
+                }, 1000);
+            },
+            
+            activateArbitrageModule(amount) {
+                // Use real arbitrage opportunities
+                const exchange = document.getElementById('exchangeSelect').value;
+                const method = document.getElementById('methodSelect').value;
+                const investment = parseInt(document.getElementById('investmentAmount').value) || 100;
+                
+                this.scanArbitrageOpportunities(exchange, method, investment);
+                
+                // Add points for using the module
+                this.addPoints(amount / 5);
+                UIComponents.updateUI();
+                UIComponents.generateInvestmentCards();
+                
+                UIComponents.showMessage(
+                    'Arbitrage Hunter Activated', 
+                    `Scanning ${exchange} for ${method} arbitrage opportunities with $${investment} investment.`
+                );
+            },
+            
+            // Arbitrage scanning
+            async scanArbitrageOpportunities(exchange, method, investmentAmount) {
+                // Update exchange data first
+                await ExchangeDataManager.updateAllExchangeData();
+                
+                const exchangeData = StateManager.user.exchangeData[exchange];
+                let opportunities = [];
+                
+                if (method === 'triangular') {
+                    opportunities = ArbitrageEngine.findTriangularArbitrage(exchangeData, investmentAmount);
+                } else if (method === 'bellman-ford') {
+                    opportunities = ArbitrageEngine.findArbitrageBellmanFord(exchangeData, investmentAmount);
+                }
+                
+                StateManager.updateUser({ arbitrageOpportunities: opportunities });
+                UIComponents.updateArbitrageOpportunities(opportunities);
+                
+                if (opportunities.length > 0) {
+                    // Award Q-Bucks for finding opportunities
+                    const bonus = opportunities.length * 25;
+                    StateManager.updateUser({ qBucks: StateManager.user.qBucks + bonus });
+                    UIComponents.updateUI();
+                    
+                    UIComponents.showMessage(
+                        'Arbitrage Opportunities Found', 
+                        `Found ${opportunities.length} profitable paths! +${bonus} Q-Bucks awarded.`
+                    );
+                }
+            },
+            
+            // Grid Trading
+            startGridTrading() {
+                const pair = document.getElementById('gridPair').value;
+                const budget = parseInt(document.getElementById('gridBudget').value);
+                const numBaskets = parseInt(document.getElementById('gridBaskets').value);
+                const ordersPerBasket = parseInt(document.getElementById('gridOrdersPerBasket').value);
+                
+                if (!pair || budget < 10) {
+                    UIComponents.showMessage('Grid Trading Error', 'Please check your inputs. Budget must be at least 10 Q-Bucks.');
+                    return;
+                }
+                
+                const gridOrders = ArbitrageEngine.setupGridTrading(pair, budget, numBaskets, ordersPerBasket);
+                StateManager.updateUser({ gridOrders });
+                UIComponents.updateGridOrders(gridOrders);
+                
+                // Deduct budget from Q-Bucks
+                StateManager.updateUser({ qBucks: StateManager.user.qBucks - budget });
+                UIComponents.updateUI();
+                
+                UIComponents.showMessage(
+                    'Grid Trading Activated', 
+                    `Started grid trading for ${pair} with $${budget} budget. ${gridOrders.length} orders placed.`
+                );
+                
+                // Simulate grid trading updates
+                this.simulateGridTrading();
+            },
+            
+            simulateGridTrading() {
+                // Simulate price movements and update grid orders
+                setInterval(() => {
+                    const gridOrders = StateManager.user.gridOrders;
+                    if (gridOrders.length === 0) return;
+                    
+                    const pair = gridOrders[0].pair;
+                    const currentPrice = ArbitrageEngine.getCurrentPrice(pair);
+                    const priceUpdate = currentPrice * (1 + (Math.random() - 0.5) * 0.02); // ±1% change
+                    
+                    const updatedOrders = ArbitrageEngine.updateGridOrders(gridOrders, priceUpdate);
+                    StateManager.updateUser({ gridOrders: updatedOrders });
+                    UIComponents.updateGridOrders(updatedOrders);
+                    
+                    // Check for filled orders and calculate profit
+                    const filledOrders = updatedOrders.filter(order => order.status === 'filled');
+                    if (filledOrders.length > 0) {
+                        const profit = filledOrders.reduce((total, order) => {
+                            if (order.type === 'sell') {
+                                return total + (order.amount * order.price * 0.998); // After fees
+                            }
+                            return total;
+                        }, 0);
+                        
+                        if (profit > 0) {
+                            StateManager.updateUser({ qBucks: StateManager.user.qBucks + profit });
+                            UIComponents.updateUI();
+                        }
+                    }
+                }, 5000); // Update every 5 seconds
+            },
+            
+            // Base Game Logic
+            playBaseGame(gameKey) {
+                const game = BASE_GAMES[gameKey];
+                if (!game || StateManager.user.qBucks < game.cost) {
+                    UIComponents.showMessage('Game Error', 'Insufficient Q-Bucks to play this game.');
+                    return;
+                }
+                
+                // Special handling for arbitrage game
+                if (gameKey === 'arbitrage') {
+                    this.playArbitrageGame();
+                    return;
+                }
+                
+                // Default game logic for other games
+                StateManager.updateUser({ qBucks: StateManager.user.qBucks - game.cost });
+                
+                const win = Math.random() > game.risk;
+                let outcomeMessage, qbucksChange;
+                
+                if (win) {
+                    qbucksChange = game.reward;
+                    outcomeMessage = `Quantum victory! You won ${qbucksChange} Q-Bucks!`;
+                    StateManager.updateUser({ qBucks: StateManager.user.qBucks + qbucksChange });
+                } else {
+                    qbucksChange = -game.cost;
+                    outcomeMessage = `Quantum misalignment. You lost ${game.cost} Q-Bucks.`;
+                }
+                
+                this.addPoints(game.cost / 5);
+                UIComponents.updateUI();
+                UIComponents.showMessage(`${game.name} Result`, outcomeMessage);
+            },
+            
+            playArbitrageGame() {
+                const game = BASE_GAMES.arbitrage;
+                if (StateManager.user.qBucks < game.cost) {
+                    UIComponents.showMessage('Game Error', 'Insufficient Q-Bucks to play this game.');
+                    return;
+                }
+                
+                StateManager.updateUser({ qBucks: StateManager.user.qBucks - game.cost });
+                
+                // Simulate arbitrage path finding
+                const success = Math.random() > game.risk;
+                
+                if (success) {
+                    const profit = game.reward + Math.random() * 50;
+                    StateManager.updateUser({ qBucks: StateManager.user.qBucks + profit });
+                    
+                    // Also add a random crypto to portfolio
+                    const coin = CryptoSimulator.getRandomCoin();
+                    const coinAmount = (profit * 0.1) / coin.price;
+                    const portfolio = { ...StateManager.user.portfolio };
+                    
+                    if (!portfolio[coin.symbol]) {
+                        portfolio[coin.symbol] = { amount: 0, avgPrice: 0 };
+                    }
+                    
+                    const portfolioItem = portfolio[coin.symbol];
+                    const totalCost = portfolioItem.amount * portfolioItem.avgPrice + (profit * 0.1);
+                    portfolioItem.amount += coinAmount;
+                    portfolioItem.avgPrice = totalCost / portfolioItem.amount;
+                    
+                    StateManager.updateUser({ portfolio });
+                    
+                    UIComponents.showMessage(
+                        'Arbitrage Paths Victory', 
+                        `Quantum arbitrage successful! +${profit.toFixed(2)} Q-Bucks and ${coinAmount.toFixed(coin.decimals)} ${coin.symbol.toUpperCase()}`
+                    );
+                } else {
+                    UIComponents.showMessage(
+                        'Arbitrage Paths Result', 
+                        `Arbitrage path collapsed. Lost ${game.cost} Q-Bucks.`
+                    );
+                }
+                
+                this.addPoints(game.cost / 3);
+                UIComponents.updateUI();
+            },
+            
+            // Points and Level System
+            addPoints(points) {
+                const newPoints = StateManager.user.points + points;
+                let newLevel = StateManager.user.level;
+                let levelUps = 0;
+                
+                while (newPoints >= CONFIG.POINTS_PER_LEVEL) {
+                    newLevel++;
+                    levelUps++;
+                    StateManager.updateUser({ points: newPoints - CONFIG.POINTS_PER_LEVEL });
+                    newPoints -= CONFIG.POINTS_PER_LEVEL;
+                }
+                
+                StateManager.updateUser({ points: newPoints, level: newLevel });
+                
+                if (levelUps > 0) {
+                    const unlockedModules = [...StateManager.user.unlockedModules];
+                    Object.entries(MODULES).forEach(([key, module]) => {
+                        if (module.level <= newLevel && !unlockedModules.includes(key)) {
+                            unlockedModules.push(key);
+                            StateManager.updateUser({ toolUses: { ...StateManager.user.toolUses, [key]: 0 } });
+                        }
+                    });
+                    
+                    StateManager.updateUser({ unlockedModules });
+                    
+                    const levelBonus = newLevel * 100;
+                    StateManager.updateUser({ qBucks: StateManager.user.qBucks + levelBonus });
+                    
+                    UIComponents.generateInvestmentCards();
+                    UIComponents.generateTechTreeNodes();
+                    
+                    UIComponents.showMessage('Quantum Level Up!', `Reached Level ${newLevel}. +${levelBonus} Q-Bucks awarded! New tools unlocked.`);
+                }
+                
+                UIComponents.updateUI();
+            },
+            
+            // Portal Jump Logic
+            initiatePortalJump() {
+                const portalStatus = document.getElementById('portalStatus');
+                const portalButton = document.getElementById('portalJump');
+                
+                portalStatus.textContent = 'Portal Status: Quantum Fluctuation Detected';
+                portalButton.disabled = true;
+                portalButton.textContent = 'Portal Jumping...';
+                
+                // Create visual effects
+                for (let i = 0; i < 15; i++) {
+                    setTimeout(() => {
+                        const x = Math.random() * window.innerWidth;
+                        const y = Math.random() * window.innerHeight;
+                        VisualEffects.createBoomParticle(x, y, true);
+                    }, i * 100);
+                }
+                
+                // Update exchange data during portal jump
+                ExchangeDataManager.updateAllExchangeData();
+                
+                setTimeout(() => {
+                    portalStatus.textContent = 'Portal Status: Stable (New Opportunities Generated)';
+                    portalButton.disabled = false;
+                    portalButton.textContent = 'Initiate Portal Jump';
+                    
+                    this.addPoints(25);
+                    
+                    document.querySelectorAll('.investment-card:not(.locked)').forEach(card => {
+                        card.style.animation = 'pulse 1s';
+                        setTimeout(() => card.style.animation = '', 1000);
+                    });
+                    
+                    UIComponents.showMessage('Quantum Portal Activated', 'New investment opportunities have been generated across the quantum field.');
+                }, 3000);
+            },
+            
+            // BOOM Particle Logic
+            generateBoomParticle() {
+                if (StateManager.user.boomParticles > 0 && (!StateManager.user.lastBoomTime || Date.now() - StateManager.user.lastBoomTime > 1000)) {
+                    StateManager.updateUser({
+                        boomParticles: StateManager.user.boomParticles - 1,
+                        lastBoomTime: Date.now()
+                    });
+                    
+                    UIComponents.updateUI();
+                    
+                    for (let i = 0; i < 5; i++) {
+                        setTimeout(() => {
+                            const x = Math.random() * window.innerWidth;
+                            const y = Math.random() * window.innerHeight;
+                            VisualEffects.createBoomParticle(x, y, false);
+                        }, i * 200);
+                    }
+                    
+                    const timeMultiplier = StateManager.user.sweepstakesTime;
+                    const bonus = Math.floor(Math.random() * 50 * timeMultiplier) + (10 * timeMultiplier);
+                    StateManager.updateUser({ qBucks: StateManager.user.qBucks + bonus });
+                    UIComponents.updateUI();
+                    
+                    UIComponents.showMessage('BOOM Particle Generated', `Quantum energy released! +${bonus} Q-Bucks awarded.`);
+                    
+                    if (StateManager.user.boomParticles === 0) {
+                        const boomButton = document.getElementById('generateBoom');
+                        boomButton.disabled = true;
+                        boomButton.textContent = 'Recharging...';
+                        
+                        setTimeout(() => {
+                            StateManager.updateUser({ boomParticles: CONFIG.BOOM_PARTICLES });
+                            UIComponents.updateUI();
+                            boomButton.disabled = false;
+                            boomButton.textContent = 'Generate BOOM';
+                            UIComponents.showMessage('BOOM Particles Recharged', 'Quantum energy reserves replenished.');
+                        }, CONFIG.BOOM_RECHARGE_TIME);
+                    }
+                }
+            }
+        };
+
+        // ========== CRYPTO SIMULATOR ==========
+        const CryptoSimulator = {
+            coins: [
+                { id: 'bitcoin', symbol: 'btc', name: 'Bitcoin', price: 45000, change: 2.5, decimals: 8 },
+                { id: 'ethereum', symbol: 'eth', name: 'Ethereum', price: 3000, change: 1.8, decimals: 18 },
+                { id: 'litecoin', symbol: 'ltc', name: 'Litecoin', price: 70, change: 0.5, decimals: 8 },
+                { id: 'ripple', symbol: 'xrp', name: 'Ripple', price: 0.5, change: 1.2, decimals: 6 },
+                { id: 'cardano', symbol: 'ada', name: 'Cardano', price: 0.45, change: 2.1, decimals: 6 }
+            ],
+            
+            getCoin(symbol) {
+                return this.coins.find(c => c.symbol === symbol);
+            },
+            
+            getRandomCoin() {
+                return this.coins[Math.floor(Math.random() * this.coins.length)];
+            }
+        };
+
+        // ========== VISUAL EFFECTS ==========
+        const VisualEffects = {
+            createBoomParticle(x, y, isPortal) {
+                const particle = document.createElement('div');
+                particle.className = 'boom-particle';
+                particle.style.left = `${x}px`;
+                particle.style.top = `${y}px`;
+                
+                const colors = ['#00f0ff', '#ff00ff', '#00ffaa', '#ffaa00'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.background = `radial-gradient(circle, ${color} 0%, transparent 70%)`;
+                
+                document.body.appendChild(particle);
+                
+                const size = isPortal ? Math.random() * 25 + 15 : Math.random() * 15 + 5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                const angle = Math.random() * Math.PI * 2;
+                const distance = isPortal ? Math.random() * 150 + 100 : Math.random() * 80 + 40;
+                
+                const animation = particle.animate([
+                    { transform: `translate(0, 0) scale(1)`, opacity: 1 },
+                    { transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) scale(0)`, opacity: 0 }
+                ], {
+                    duration: Math.random() * 1000 + 500,
+                    easing: 'cubic-bezier(0.1, 0.8, 0.2, 1)'
+                });
+                
+                animation.onfinish = () => document.body.removeChild(particle);
+            },
+            
+            initBackgroundAnimation() {
+                const canvas = document.getElementById('backgroundCanvas');
+                const ctx = canvas.getContext('2d');
+                
+                function resizeCanvas() {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                }
+                
+                window.addEventListener('resize', resizeCanvas);
+                resizeCanvas();
+                
+                const particles = Array.from({ length: 50 }, () => ({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 2,
+                    vy: (Math.random() - 0.5) * 2,
+                    radius: Math.random() * 2 + 0.5,
+                    color: `hsl(${Math.random() * 60 + 180}, 100%, ${Math.random() * 30 + 50}%)`,
+                    alpha: Math.random() * 0.5 + 0.1
+                }));
+                
+                function animate() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    
+                    particles.forEach(p => {
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        
+                        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                        
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                        ctx.fillStyle = p.color;
+                        ctx.globalAlpha = p.alpha;
+                        ctx.fill();
+                    });
+                    
+                    requestAnimationFrame(animate);
+                }
+                
+                animate();
+            }
+        };
+
+        // ========== INITIALIZATION ==========
+        function init() {
+            // Initialize state management
+            StateManager.init();
+            
+            // Initialize UI components
+            UIComponents.initModals();
+            UIComponents.generateInvestmentCards();
+            UIComponents.generateBaseGames();
+            UIComponents.generateTechTreeNodes();
+            UIComponents.updateUI();
+            
+            // Initialize visual effects
+            VisualEffects.initBackgroundAnimation();
+            
+            // Set up event listeners
+            document.getElementById('portalJump').addEventListener('click', () => GameLogic.initiatePortalJump());
+            document.getElementById('generateBoom').addEventListener('click', () => GameLogic.generateBoomParticle());
+            document.getElementById('scanArbitrage').addEventListener('click', () => {
+                const exchange = document.getElementById('exchangeSelect').value;
+                const method = document.getElementById('methodSelect').value;
+                const investment = parseInt(document.getElementById('investmentAmount').value) || 100;
+                GameLogic.scanArbitrageOpportunities(exchange, method, investment);
+            });
+            document.getElementById('startGridTrading').addEventListener('click', () => GameLogic.startGridTrading());
+            
+            document.getElementById('liveDataToggle').addEventListener('change', () => {
+                UIComponents.showMessage('Data Source Updated', 
+                    document.getElementById('liveDataToggle').checked ? 
+                    'Now using live market data from exchanges' : 
+                    'Now using simulated market data');
+            });
+            
+            // Sweepstakes buttons
+            document.querySelectorAll('.sweepstakes-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.sweepstakes-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    StateManager.updateUser({ sweepstakesTime: parseInt(e.target.getAttribute('data-time')) });
+                    startSweepstakesTimer();
+                });
+            });
+            
+            // Start background processes
+            startCryptoUpdates();
+            startLevelProgression();
+            startSweepstakesTimer();
+            
+            // Initial exchange data load
+            ExchangeDataManager.updateAllExchangeData();
+            
+            // Restore username if logged in
+            if (StateManager.user.username) {
+                document.getElementById('loginBtn').textContent = StateManager.user.username;
+            }
+        }
+
+        // ========== BACKGROUND PROCESSES ==========
+        function startCryptoUpdates() {
+            setInterval(() => {
+                ExchangeDataManager.updateAllExchangeData();
+            }, CONFIG.CRYPTO_UPDATE_INTERVAL);
+        }
+
+        function startLevelProgression() {
+            setInterval(() => {
+                GameLogic.addPoints(5);
+            }, CONFIG.LEVEL_UP_INTERVAL);
+        }
+
+        function startSweepstakesTimer() {
+            let timeLeft = StateManager.user.sweepstakesTime * 60;
+            
+            setInterval(() => {
+                timeLeft--;
+                
+                if (timeLeft <= 0) {
+                    timeLeft = StateManager.user.sweepstakesTime * 60;
+                    StateManager.updateUser({ 
+                        boomParticles: Math.min(StateManager.user.boomParticles + 1, CONFIG.BOOM_PARTICLES) 
+                    });
+                    UIComponents.updateUI();
+                    
+                    UIComponents.showMessage('Sweepstakes Reward', 'Time portal activated! +1 BOOM Particle awarded.');
+                }
+                
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                document.getElementById('sweepstakesTimer').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        // Initialize the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

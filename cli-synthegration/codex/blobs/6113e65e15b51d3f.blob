@@ -1,0 +1,6 @@
+updatePerformanceMetrics() {
+    document.getElementById('batchMetric').textContent = `${this.performanceMetrics.batchProcessingTime}ms`;
+    document.getElementById('graphMetric').textContent = `${this.performanceMetrics.graphAnalysisTime}ms`;
+    document.getElementById('oppMetric').textContent = this.performanceMetrics.opportunitiesFound;
+    // ... rest
+}

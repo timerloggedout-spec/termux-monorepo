@@ -1,0 +1,60 @@
+{
+  "category": "recon_intel",
+  "tools": [
+    {
+      "name": "quick_recon.sh",
+      "package": "ref_templates",
+      "path": "/data/data/com.termux/files/home/refTemplates/quick_recon.sh",
+      "source": "ref_templates",
+      "tags": [
+        "recon_intel"
+      ],
+      "category": "recon_intel",
+      "description": "Remote"
+    },
+    {
+      "name": "deep_recon.sh",
+      "package": "ref_templates",
+      "path": "/data/data/com.termux/files/home/refTemplates/deep_recon.sh",
+      "source": "ref_templates",
+      "tags": [
+        "recon_intel"
+      ],
+      "category": "recon_intel",
+      "description": "All known repo names (as alternation for grep)"
+    },
+    {
+      "name": "surgical_recon.sh",
+      "package": "ref_templates",
+      "path": "/data/data/com.termux/files/home/refTemplates/surgical_recon.sh",
+      "source": "ref_templates",
+      "tags": [
+        "recon_intel"
+      ],
+      "category": "recon_intel",
+      "description": "README"
+    },
+    {
+      "name": "fast_scan.sh",
+      "package": "ref_templates",
+      "path": "/data/data/com.termux/files/home/refTemplates/fast_scan.sh",
+      "source": "ref_templates",
+      "tags": [
+        "recon_intel"
+      ],
+      "category": "recon_intel",
+      "description": "extract markdown headers"
+    },
+    {
+      "name": "recon_v2.sh",
+      "package": "ref_templates",
+      "path": "/data/data/com.termux/files/home/refTemplates/recon_v2.sh",
+      "source": "ref_templates",
+      "tags": [
+        "recon_intel"
+      ],
+      "category": "recon_intel",
+      "description": "Extract owner/repo using grep -oP (Perl regex), fallback"
+    }
+  ]
+}

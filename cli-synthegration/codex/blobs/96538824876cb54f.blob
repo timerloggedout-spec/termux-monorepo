@@ -1,0 +1,46 @@
+┌──────────────────────────────────────────────────────────────┐
+│                   PRESENTATION LAYER                          │
+│  ┌──────────┐ ┌───────────┐ ┌──────────┐ ┌───────────────┐  │
+│  │ HTML DOM │ │ Canvas 2D │ │  Panels  │ │ Modal Dialogs │  │
+│  │ (profile,│ │  (force-  │ │(Torrent, │ │  (Trade Exec, │  │
+│  │  stats,  │ │  directed │ │ DB, IPNS,│ │  Coin Create) │  │
+│  │  opps)   │ │  graph)   │ │ Mana,DEX)│ │               │  │
+│  └──────────┘ └───────────┘ └──────────┘ └───────────────┘  │
+├──────────────────────────────────────────────────────────────┤
+│                    APPLICATION LAYER                          │
+│  ┌──────────────────────────────────────────────────────┐    │
+│  │                    UI Controller                      │    │
+│  │  • Profile rendering    • Perk management             │    │
+│  │  • Panel toggle/show    • Trade modal orchestration   │    │
+│  │  • Player list display  • Mana display updates        │    │
+│  └──────────────────────────────────────────────────────┘    │
+│  ┌──────────────────────────────────────────────────────┐    │
+│  │                   Engine Module                       │    │
+│  │  • pullGraphLever()   • executeAllLines()             │    │
+│  │  • executeTrade()     • resetPaperAccount()           │    │
+│  └──────────────────────────────────────────────────────┘    │
+├──────────────────────────────────────────────────────────────┤
+│                    DOMAIN LAYER                               │
+│  ┌─────────────┐ ┌──────────────┐ ┌──────────────────────┐  │
+│  │ Arbitrage   │ │ Graph Builder│ │ Exchange Adapters    │  │
+│  │ • Triangular│ │ • buildGraph │ │ • 28 REST parsers    │  │
+│  │ • Bellman-  │ │ • buildTrian-│ │ • WebSocket tickers  │  │
+│  │   Ford      │ │   gles()     │ │ • DexScreener DEX    │  │
+│  └─────────────┘ └──────────────┘ └──────────────────────┘  │
+│  ┌─────────────┐ ┌──────────────┐ ┌──────────────────────┐  │
+│  │ Forex       │ │ State Manager│ │ Graph Renderer       │  │
+│  │ • Frankfurter│ │ • localStorage│ │ • Force layout      │  │
+│  │ • CoinGecko │ │ • Yjs sync   │ │ • Canvas animation   │  │
+│  └─────────────┘ └──────────────┘ └──────────────────────┘  │
+├──────────────────────────────────────────────────────────────┤
+│                  INFRASTRUCTURE LAYER                         │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────┐   │
+│  │   Yjs    │ │ DuckDB-  │ │WebTorrent│ │   PeerJS     │   │
+│  │ (CRDT    │ │   Wasm   │ │(P2P file │ │ (Direct P2P  │   │
+│  │  sync)   │ │ (SQL DB) │ │ sharing) │ │  transfer)   │   │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────────┘   │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────┐   │
+│  │  QRCode  │ │   IPFS   │ │AudioCtx  │ │   Canvas     │   │
+│  │ (share)  │ │  (deploy)│ │(feedback)│ │ (particles)  │   │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────────┘   │
+└──────────────────────────────────────────────────────────────┘

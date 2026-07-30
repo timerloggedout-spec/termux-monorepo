@@ -1,0 +1,37 @@
+// ================= CONFIGURATION =================
+const SHEET_ID = 'YOUR_SHEET_ID';
+const COMPOUND_SHEET = 'compounds';
+const COUNTRY_TIER_SHEET = 'country_tiers';
+
+// ================= WEB APP API =================
+function doGet(e) {
+  const type = e?.parameter?.type || 'compounds';
+  
+  if (type === 'countries') {
+    const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(COUNTRY_TIER_SHEET);
+    const rows = sheet.getDataRange().getValues();
+    const headers = rows[0];
+    const data = rows.slice(1).map(row => {
+      let obj = {};
+      headers.forEach((h, i) => obj[h] = row[i] || '');
+      return obj;
+    });
+    return ContentService.createTextOutput(JSON.stringify(data))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+  
+  // Default: compounds
+  const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(COMPOUND_SHEET);
+  const rows = sheet.getDataRange().getValues();
+  const headers = rows[0];
+  const data = rows.slice(1).map(row => {
+    let obj = {};
+    headers.forEach((h, i) => obj[h] = row[i] || '');
+    return obj;
+  });
+  return ContentService.createTextOutput(JSON.stringify(data))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+// doPost remains unchanged for batch updates
+// ... (rest of script unchanged)

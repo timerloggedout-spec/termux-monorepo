@@ -1,0 +1,5 @@
+cd server
+npm init -y
+npm install express cors googleapis dotenv
+# Set environment variables: SPREADSHEET_ID, PORT
+npm start

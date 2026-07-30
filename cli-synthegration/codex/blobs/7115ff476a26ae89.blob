@@ -1,0 +1,54 @@
+// ================= CONFIGURATION =================
+const SHEET_ID = 'YOUR_SHEET_ID';
+const COMPOUND_SHEET = 'compounds';
+
+// ================= WEB APP API =================
+function doGet(e) {
+  const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(COMPOUND_SHEET);
+  const rows = sheet.getDataRange().getValues();
+  const headers = rows[0];
+  const data = rows.slice(1).map(row => {
+    let obj = {};
+    headers.forEach((h, i) => obj[h] = row[i] || '');
+    return obj;
+  });
+  return ContentService.createTextOutput(JSON.stringify(data))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e) {
+  // Batch update (used for CSV import)
+  const payload = JSON.parse(e.postData.contents);
+  const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(COMPOUND_SHEET);
+  const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  sheet.getRange(2, 1, sheet.getLastRow() - 1, sheet.getLastColumn()).clear();
+  payload.forEach(row => {
+    const rowData = headers.map(h => row[h] || '');
+    sheet.appendRow(rowData);
+  });
+  return ContentService.createTextOutput(JSON.stringify({ success: true, count: payload.length }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+// ================= SCHEDULED DATA IMPORTS =================
+function importFromExternalSources() {
+  // Add your ETL logic here to fetch from:
+  // - Peptipedia / SATPdb (peptide sequences)
+  // - ClinicalTrials.gov (gene therapy trials)
+  // - WADA prohibited list
+  // - FDA openFDA, etc.
+  // Example: fetch a public CSV and append new rows
+  const url = 'https://raw.githubusercontent.com/your-repo/peptides.csv';
+  const response = UrlFetchApp.fetch(url);
+  const csv = response.getContentText();
+  const parsed = Utilities.parseCsv(csv);
+  const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(COMPOUND_SHEET);
+  // ... deduplicate and append logic
+}
+
+// ================= SETUP DAILY TRIGGERS =================
+function setupTriggers() {
+  ScriptApp.getProjectTriggers().forEach(t => ScriptApp.deleteTrigger(t));
+  ScriptApp.newTrigger('importFromExternalSources')
+    .timeBased().everyDays(1).create();
+}

@@ -1,0 +1,65 @@
+// server/services/googleSheets.js
+const { google } = require('googleapis');
+require('dotenv').config();
+
+const auth = new google.auth.GoogleAuth({
+  keyFile: 'service-account-key.json',
+  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+});
+const sheets = google.sheets({ version: 'v4', auth });
+const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
+
+// Read all compounds
+async function fetchCompounds() {
+  const response = await sheets.spreadsheets.values.get({
+    spreadsheetId: SPREADSHEET_ID,
+    range: 'Compounds!A:AN',
+  });
+  const rows = response.data.values;
+  if (!rows?.length) return [];
+  
+  const headers = rows[0];
+  return rows.slice(1).map(row => {
+    const obj = {};
+    headers.forEach((h, i) => obj[h] = row[i] || '');
+    return obj;
+  });
+}
+
+// Batch update compounds (for CSV import)
+async function batchUpdateCompounds(compounds) {
+  // Clear existing data (preserve header)
+  await sheets.spreadsheets.values.clear({
+    spreadsheetId: SPREADSHEET_ID,
+    range: 'Compounds!A2:AN',
+  });
+  
+  const headers = Object.keys(compounds[0]);
+  const rows = compounds.map(c => headers.map(h => c[h] || ''));
+  
+  await sheets.spreadsheets.values.update({
+    spreadsheetId: SPREADSHEET_ID,
+    range: 'Compounds!A2',
+    valueInputOption: 'USER_ENTERED',
+    requestBody: { values: [headers, ...rows] },
+  });
+  return { success: true, count: compounds.length };
+}
+
+// Update single compound (for inline edits)
+async function updateCompound(entityId, updates) {
+  const response = await sheets.spreadsheets.values.get({
+    spreadsheetId: SPREADSHEET_ID,
+    range: 'Compounds!A:A',
+  });
+  const rows = response.data.values;
+  const rowIndex = rows.findIndex(row => row[0] === entityId) + 1;
+  
+  if (rowIndex === 0) throw new Error('Compound not found');
+  
+  // Update specific cells based on updates object
+  // ... implementation details
+  return { success: true };
+}
+
+module.exports = { fetchCompounds, batchUpdateCompounds, updateCompound };

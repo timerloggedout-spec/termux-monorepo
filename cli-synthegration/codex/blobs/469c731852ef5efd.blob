@@ -1,0 +1,31 @@
+def find_offset(file1, file2, max_overlap_sec=5):
+    dur1 = get_duration(file1)
+    # Extract max_overlap_sec from end of file1 and start of file2
+    end_len = min(max_overlap_sec, dur1)
+    start_len = min(max_overlap_sec, get_duration(file2))
+    if end_len < 0.1 or start_len < 0.1:
+        return 0.0
+    a = load_audio_mono(file1, duration=end_len, sample_rate=8000)
+    b = load_audio_mono(file2, duration=start_len, sample_rate=8000)
+    corr = np.correlate(a, b, mode='full')
+    # Possible lags: index i -> lag = i - (len(a) - 1)
+    # overlap_samples = len(a) - lag  (for lag <= len(a)-1? Need to define valid range)
+    # We want overlap between 0.1s and max_overlap_sec
+    min_ov_samples = int(0.1 * 8000)
+    max_ov_samples = int(max_overlap_sec * 8000)
+    # For each possible overlap ov (in samples), the corresponding lag k = len(a) - ov
+    # The index in corr is k + (len(a)-1) = len(a) - ov + len(a) - 1 = 2*len(a) - ov - 1
+    # So we can iterate ov or directly slice.
+    # Simpler: loop ov in range(min_ov_samples, min(max_ov_samples, len(a), len(b))+1)
+    best_corr = -1e10
+    best_ov = 0.0
+    for ov_samples in range(min_ov_samples, min(max_ov_samples, len(a), len(b)) + 1):
+        # calculate correlation coefficient for this overlap
+        a_seg = a[-ov_samples:]
+        b_seg = b[:ov_samples]
+        # quick normalized correlation
+        corr_val = np.corrcoef(a_seg, b_seg)[0,1]
+        if corr_val > best_corr:
+            best_corr = corr_val
+            best_ov = ov_samples / 8000.0
+    return best_ov

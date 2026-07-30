@@ -1,0 +1,94 @@
+// Production Configuration - Real Market Data
+const PRODUCTION_CONFIG = {
+    PERFORMANCE: {
+        BATCH_SIZE_MIN: 10,
+        BATCH_SIZE_MAX: 500,
+        BATCH_SIZE_INIT: 100,
+        MAX_PAIRS_PER_EXCHANGE: 1000,
+        LOW_VALUE_THRESHOLD: 0.01,
+        PLANCK_TIER_THRESHOLD: 0.0001
+    },
+    
+    EXCHANGES: {
+        binance: { 
+            name: "Binance", 
+            pairs: [], 
+            lowValueCoins: [],
+            api: {
+                base: "https://api.binance.com/api/v3",
+                endpoints: {
+                    ticker: "/ticker/price",
+                    exchangeInfo: "/exchangeInfo"
+                }
+            }
+        },
+        kraken: { 
+            name: "Kraken", 
+            pairs: [], 
+            lowValueCoins: [],
+            api: {
+                base: "https://api.kraken.com/0/public",
+                endpoints: {
+                    assets: "/Assets",
+                    ticker: "/Ticker"
+                }
+            }
+        },
+        kucoin: { 
+            name: "KuCoin", 
+            pairs: [], 
+            lowValueCoins: [],
+            api: {
+                base: "https://api.kucoin.com/api/v1",
+                endpoints: {
+                    symbols: "/symbols",
+                    ticker: "/market/allTickers"
+                }
+            }
+        },
+        coingecko: { 
+            name: "CoinGecko", 
+            pairs: [], 
+            lowValueCoins: [],
+            api: {
+                base: "https://api.coingecko.com/api/v3",
+                endpoints: {
+                    markets: "/coins/markets",
+                    simplePrice: "/simple/price"
+                }
+            }
+        },
+        dexscreener: { 
+            name: "DEX Screener", 
+            pairs: [], 
+            lowValueCoins: [],
+            api: {
+                base: "https://api.dexscreener.com/latest/dex",
+                endpoints: {
+                    tokens: "/tokens",
+                    search: "/search"
+                }
+            }
+        }
+    },
+    
+    ARBITRAGE: {
+        MIN_PROFIT_PERCENT: 0.01,
+        TRADING_FEE: 0.001,
+        MAX_PATH_LENGTH: 4,
+        SCAN_TIMEOUT: 30000
+    },
+
+    DATABASE: {
+        PATH: './data/market-data.db',
+        UPDATE_INTERVAL: 60000, // 1 minute
+        MAX_RECORDS: 100000
+    }
+};
+
+// Make config available globally
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = PRODUCTION_CONFIG;
+} else {
+    window.PRODUCTION_CONFIG = PRODUCTION_CONFIG;
+}

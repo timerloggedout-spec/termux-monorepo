@@ -1,0 +1,85 @@
+import React, { memo } from 'react';
+import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
+import { countryToJurisdiction, getRegulatoryInfo } from '../data/countryMapping';
+
+const geoUrl = '/world-110m.json';
+
+const statusColors = {
+  approved: '#22c55e',
+  investigational: '#3b82f6',
+  unapproved: '#ef4444',
+  withdraw: '#f59e0b',
+  under_review: '#a78bfa',
+  harmonised: '#818cf8',
+  unknown: '#94a3b8',
+};
+
+const WorldMap = ({ compound, onCountryClick }) => {
+  const getStatusForCountry = (geo) => {
+    const isoCode = geo.properties.ISO_A3;
+    const jurisdictionKey = countryToJurisdiction[isoCode];
+
+    // 1. Direct compound approval data
+    if (jurisdictionKey && compound?.jurisdictions?.[jurisdictionKey]?.status) {
+      return compound.jurisdictions[jurisdictionKey].status;
+    }
+
+    // 2. Regulatory maturity proxy
+    const regInfo = getRegulatoryInfo(isoCode);
+    if (regInfo.tier === 'wla') return 'under_review';
+    if (regInfo.tier === 'ich') return 'harmonised';
+
+    return 'unknown';
+  };
+
+  return (
+    <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700">
+      <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">
+        Global Regulatory Status
+        {compound && <span className="text-sm font-normal ml-2 text-gray-500">for {compound.name}</span>}
+      </h2>
+      <ComposableMap projection="geoMercator" width={800} height={500}>
+        <ZoomableGroup center={[0, 20]} zoom={1.2}>
+          <Geographies geography={geoUrl}>
+            {({ geographies }) =>
+              geographies.map((geo) => {
+                const status = getStatusForCountry(geo);
+                return (
+                  <Geography
+                    key={geo.rsmKey}
+                    geography={geo}
+                    fill={statusColors[status] || statusColors.unknown}
+                    stroke="#FFFFFF"
+                    strokeWidth={0.5}
+                    style={{
+                      default: { outline: 'none' },
+                      hover: { fill: '#a855f7', outline: 'none', cursor: 'pointer' },
+                      pressed: { outline: 'none' },
+                    }}
+                    onClick={() =>
+                      onCountryClick(geo.properties.ISO_A3, geo.properties.NAME, status)
+                    }
+                  />
+                );
+              })
+            }
+          </Geographies>
+        </ZoomableGroup>
+      </ComposableMap>
+      <div className="flex flex-wrap justify-center gap-4 mt-4">
+        {Object.entries(statusColors).map(([key, color]) => (
+          <div key={key} className="flex items-center gap-1">
+            <span className="w-4 h-4 rounded" style={{ backgroundColor: color }} />
+            <span className="text-xs capitalize">{key.replace('_', ' ')}</span>
+          </div>
+        ))}
+      </div>
+      <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-3">
+        Colors based on direct approval data (if available) or regulatory maturity (WLA/ICH).
+        Click any country to search clinical trials.
+      </p>
+    </div>
+  );
+};
+
+export default memo(WorldMap);

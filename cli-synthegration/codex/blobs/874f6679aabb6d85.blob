@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IAmGainz – Fitness Coaching &amp; Supplements</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #0a0a0a; color: #f0f0f0; line-height: 1.6; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    /* Hero */
+    .hero { text-align: center; padding: 80px 0 60px; }
+    .hero h1 { font-size: 4rem; font-weight: 800; letter-spacing: -1px; background: linear-gradient(135deg, #ff6b35, #ff3c00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero p { font-size: 1.25rem; color: #ccc; margin: 16px 0 32px; }
+
+    .cta-btn { display: inline-block; padding: 14px 36px; background: #ff3c00; color: #fff; font-weight: 600; border-radius: 8px; text-decoration: none; transition: background 0.2s; }
+    .cta-btn:hover { background: #e03400; }
+
+    /* Stats */
+    .stats { display: flex; justify-content: center; gap: 48px; margin: 40px 0 60px; flex-wrap: wrap; }
+    .stat { text-align: center; }
+    .stat-number { font-size: 2.5rem; font-weight: 700; color: #ff6b35; }
+    .stat-label { font-size: 0.9rem; color: #aaa; }
+
+    /* Section */
+    .section { padding: 60px 0; }
+    .section h2 { font-size: 2rem; text-align: center; margin-bottom: 40px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 32px; }
+
+    .card { background: #1a1a1a; border-radius: 12px; padding: 32px; text-align: center; transition: transform 0.2s; }
+    .card:hover { transform: translateY(-4px); }
+    .card h3 { font-size: 1.4rem; margin-bottom: 12px; color: #ff6b35; }
+    .card p { color: #bbb; }
+
+    /* Testimonial */
+    .testimonial { background: #141414; border-radius: 12px; padding: 40px; margin: 0 auto; max-width: 700px; text-align: center; }
+    .testimonial img { width: 80px; height: 80px; border-radius: 50%; margin-bottom: 16px; object-fit: cover; }
+    .testimonial blockquote { font-size: 1.2rem; font-style: italic; color: #e0e0e0; }
+    .testimonial cite { display: block; margin-top: 16px; color: #888; }
+
+    /* Footer */
+    footer { text-align: center; padding: 32px 0; color: #666; font-size: 0.9rem; }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 2.5rem; }
+      .stats { gap: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <!-- Hero -->
+    <section class="hero">
+      <h1>I AM GAINZ</h1>
+      <p>Science‑backed coaching and premium supplements to unlock your strongest self.</p>
+      <a href="#services" class="cta-btn">Start Your Transformation</a>
+    </section>
+
+    <!-- Achievements (real data from channel) -->
+    <section class="stats">
+      <div class="stat">
+        <div class="stat-number">21 lbs</div>
+        <div class="stat-label">Lost in 7 weeks (client example)</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">10%</div>
+        <div class="stat-label">Body‑fat reduction</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">1‑on‑1</div>
+        <div class="stat-label">Personalised coaching</div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="section">
+      <h2>Coaching Services</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Premium 1‑on‑1 Coaching</h3>
+          <p>Custom workout &amp; nutrition plans, weekly check‑ins, and 24/7 chat support. Perfect for beginners and advanced athletes.</p>
+        </div>
+        <div class="card">
+          <h3>Vegetarian / Vegan Plans</h3>
+          <p>Specialised meal plans that helped a 60‑year‑old vegetarian client lose 21 lbs in 7 weeks.</p>
+        </div>
+        <div class="card">
+          <h3>Group Challenges</h3>
+          <p>Join periodic 8‑week transformation challenges with community support and daily accountability.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonial (based on channel data) -->
+    <section class="section">
+      <h2>Real Results</h2>
+      <div class="testimonial">
+        <div style="font-size: 3rem; margin-bottom: 8px;">🏆</div>
+        <blockquote>
+          “I started at 195 lbs with 23% body fat. In just 7 weeks I dropped to 174 lbs and 13% body fat. The vegetarian meal plan and daily support changed my life.”
+        </blockquote>
+        <cite>— Male, 60, Vegetarian (Client of the Month)</cite>
+      </div>
+    </section>
+
+    <!-- Product Catalogue -->
+    <section class="section">
+      <h2>Product Catalogue</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Ultimate Home Workout Guide</h3>
+          <p>PDF / App – 12‑week programme with video demos. £29.99</p>
+        </div>
+        <div class="card">
+          <h3>IAmGainz Whey Protein</h3>
+          <p>Grass‑fed whey isolate, 2 lbs. £44.99</p>
+        </div>
+        <div class="card">
+          <h3>Pre‑Workout Ignite</h3>
+          <p>Clean energy, focus, and endurance booster. £34.99</p>
+        </div>
+        <div class="card">
+          <h3>Branded Apparel</h3>
+          <p>T‑shirts, tanks, and hoodies. Starting at £24.99</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section style="text-align: center; padding: 40px 0 80px;">
+      <h2 style="margin-bottom: 16px;">Ready to make your own “Client of the Month” story?</h2>
+      <a href="https://www.youtube.com/@IAmGainz" class="cta-btn" target="_blank" rel="noopener">Subscribe on YouTube</a>
+    </section>
+  </main>
+
+  <footer>
+    © 2026 IAmGainz · All rights reserved.
+  </footer>
+</body>
+</html>

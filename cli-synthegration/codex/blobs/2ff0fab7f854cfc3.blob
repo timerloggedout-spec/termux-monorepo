@@ -1,0 +1,14 @@
+def find_offset(file1, file2):
+    dur1 = get_duration(file1)
+    end_len = min(30, dur1)
+    start_len = min(30, get_duration(file2))
+    a = load_audio_mono(file1, duration=end_len, sample_rate=8000)
+    b = load_audio_mono(file2, duration=start_len, sample_rate=8000)
+    corr = signal.correlate(a, b, mode='full')  # now using np.correlate
+    lag = np.argmax(np.abs(corr)) - (len(a) - 1)
+    if lag <= 0:
+        overlap_samples = len(a) + lag  # because lag is negative
+    else:
+        overlap_samples = len(b) - lag
+    overlap = max(0, overlap_samples / 8000.0)
+    return overlap

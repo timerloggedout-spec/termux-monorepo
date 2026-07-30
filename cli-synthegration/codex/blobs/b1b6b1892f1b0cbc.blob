@@ -1,0 +1,67 @@
+// Slot game logic (add to <script>)
+let slotActive = false;
+
+function toggleSlot() {
+    const slot = document.getElementById('slotMachine');
+    slot.style.display = slot.style.display === 'none' ? 'block' : 'none';
+    if (!state.systemReady) setTimeout(initSystem, 500);
+}
+
+function pullLever() {
+    if (!state.systemReady) return log('System not ready', 'error');
+    playSpin();
+    document.getElementById('slotResult').innerHTML = 'Spinning...';
+    runFullScan().then(() => {
+        // Select a random profitable opportunity (bias toward triangular for 3 reels)
+        const allOpps = [
+            ...state.opportunities.triangular,
+            ...state.opportunities.bellman,
+            ...state.opportunities.mega
+        ].filter(o => o.path.length >= 4); // at least 3 currencies + closing
+        if (allOpps.length === 0) {
+            document.getElementById('slotResult').innerHTML = 'No winning paths 😞';
+            return;
+        }
+        const chosen = allOpps[Math.floor(Math.random() * allOpps.length)];
+        animateSlots(chosen.path.slice(0, 3), chosen);
+    });
+}
+
+function animateSlots(symbols, opp) {
+    const reels = [document.getElementById('reel1'), document.getElementById('reel2'), document.getElementById('reel3')];
+    const allCurrencies = Object.keys(state.graph).slice(0, 50);
+    const spinDuration = 2000; // ms total
+    const steps = 20;
+    let currentStep = 0;
+    const interval = setInterval(() => {
+        reels.forEach((reel, i) => {
+            const randomCur = allCurrencies[Math.floor(Math.random() * allCurrencies.length)];
+            reel.innerHTML = `<div style="top:${Math.random()*20}px;">${randomCur}</div>`;
+        });
+        currentStep++;
+        if (currentStep >= steps) {
+            clearInterval(interval);
+            // Final stop on the winning symbols
+            reels.forEach((reel, i) => {
+                reel.innerHTML = `<div style="top:10px;">${symbols[i] || symbols[0]}</div>`;
+            });
+            // Show payout
+            const bet = parseFloat(document.getElementById('betInput').value) || 1000;
+            const tradeSize = Math.min(opp.maxTradeSize, bet);
+            const profit = (tradeSize / opp.maxTradeSize) * opp.actualProfit;
+            const gas = getGas(opp.edges);
+            const net = profit - gas.cost;
+            document.getElementById('slotResult').innerHTML = `
+                🏆 ${opp.path.join(' → ')}
+                <br>💵 Net Payout: $${net.toFixed(2)} ${net>0?'🎉':'😞'}
+            `;
+            if (net > 0) {
+                executeTrade(opp, tradeSize, net);
+                confetti(window.innerWidth/2, 200, 100);
+                playJackpot();
+            }
+        }
+    }, spinDuration / steps);
+}
+
+// Update getGas to be accessible (it's already global in the code)

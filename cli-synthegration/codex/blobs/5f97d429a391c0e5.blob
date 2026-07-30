@@ -1,0 +1,11 @@
+The handle appears in the Network card and DEX order book, providing human-readable identity without compromising cryptographic isolation.
+
+### 7.4 Network Discovery
+
+Players discover each other through the shared Yjs document. The `renderPlayerList()` function iterates `State.otherPlayers` and displays each peer's handle, level, bankroll, and mana. Clicking a player row shows a detailed alert with their basket holdings and recent trades.
+
+---
+
+## 8. UI/UX Architecture & Interaction Model
+
+### 8.1 Layout Structure

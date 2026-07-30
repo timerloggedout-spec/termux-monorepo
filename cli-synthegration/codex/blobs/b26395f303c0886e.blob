@@ -1,0 +1,63 @@
+// A comprehensive mapping of ISO A3 country codes to internal jurisdiction keys.
+export const countryToJurisdiction = {
+  // North America
+  USA: 'us', CAN: 'ca', MEX: 'mx',
+  
+  // Europe (EU member states map to 'eu')
+  FRA: 'eu', DEU: 'eu', ITA: 'eu', ESP: 'eu', NLD: 'eu', BEL: 'eu',
+  // ... (add all 27 EU members)
+  GBR: 'uk', CHE: 'ch', NOR: 'no',
+  
+  // Asia & Oceania
+  JPN: 'jp', KOR: 'kr', AUS: 'au', NZL: 'nz', SGP: 'sg', MYS: 'my',
+  THA: 'th', PHL: 'ph', IDN: 'id', VNM: 'vn', KHM: 'kh', LAO: 'la', MMR: 'mm', BRN: 'bn',
+  CHN: 'cn', IND: 'in', PAK: 'pk', BGD: 'bd', LKA: 'lk', NPL: 'np',
+  
+  // South America
+  BRA: 'br', ARG: 'ar', COL: 'co', CHL: 'cl', PER: 'pe',
+  
+  // Middle East
+  SAU: 'sa', ARE: 'ae', ISR: 'il', JOR: 'jo', OMN: 'om', QAT: 'qa', KWT: 'kw',
+  
+  // Africa
+  ZAF: 'za', NGA: 'ng', GHA: 'gh', KEN: 'ke', EGY: 'eg', MAR: 'ma', TUN: 'tn', DZA: 'dz',
+  
+  // Central America & Caribbean
+  CRI: 'cr', PAN: 'pa', DOM: 'do', CUB: 'cu', JAM: 'jm', TTO: 'tt',
+  
+  // ... Add every country
+};
+
+// Information about each country's regulatory body for the tiered logic
+export const regulatoryBodyInfo = {
+  // WLA & ICH Members
+  USA: { name: 'FDA', isWLA: true, isICHMember: true },
+  CAN: { name: 'Health Canada', isWLA: true, isICHMember: true },
+  GBR: { name: 'MHRA', isWLA: true, isICHMember: true },
+  JPN: { name: 'PMDA', isWLA: true, isICHMember: true },
+  KOR: { name: 'MFDS', isWLA: true, isICHMember: true },
+  SGP: { name: 'HSA', isWLA: true, isICHMember: true },
+  ZAF: { name: 'SAHPRA', isWLA: true, isICHMember: true },
+  
+  // ICH Members (not yet WLA)
+  MEX: { name: 'COFEPRIS', isWLA: false, isICHMember: true },
+  MYS: { name: 'NPRA', isWLA: false, isICHMember: true },
+  IDN: { name: 'BPOM', isWLA: false, isICHMember: true },
+  CHN: { name: 'NMPA', isWLA: false, isICHMember: true },
+  IND: { name: 'CDSCO', isWLA: false, isICHMember: true },
+  BRA: { name: 'ANVISA', isWLA: false, isICHMember: true },
+  SAU: { name: 'SFDA', isWLA: false, isICHMember: true },
+  NGA: { name: 'NAFDAC', isWLA: false, isICHMember: true },
+  
+  // Countries with other recognitions (e.g., ML3 from WHO)
+  THA: { name: 'Thai FDA', isWLA: true, isICHMember: false }, // ML3 for vaccines
+  VNM: { name: 'DAV', isWLA: true, isICHMember: false },      // ML3 for vaccines
+  GHA: { name: 'FDA Ghana', isWLA: true, isICHMember: false }, // ML3
+  
+  // Default for all others
+  // ...
+};
+
+export const getRegulatoryBodyInfo = (isoCode) => {
+  return regulatoryBodyInfo[isoCode] || { name: 'Unknown', isWLA: false, isICHMember: false };
+};

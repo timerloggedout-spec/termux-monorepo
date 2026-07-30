@@ -1,0 +1,27 @@
+class DiagnosticsLogger {
+    constructor() {
+        this.logs = [];
+        this.performanceMetrics = new Map();
+    }
+    
+    logArbitrageScan(opportunities, parameters, duration) {
+        const logEntry = {
+            timestamp: Date.now(),
+            opportunitiesFound: opportunities.length,
+            parameters,
+            duration,
+            systemMetrics: this.getSystemMetrics()
+        };
+        this.logs.push(logEntry);
+        console.log('🔍 Arbitrage Scan:', logEntry);
+    }
+    
+    // Export logs for analysis
+    exportDiagnostics() {
+        return {
+            logs: this.logs,
+            performance: Object.fromEntries(this.performanceMetrics),
+            summary: this.generateSummary()
+        };
+    }
+}

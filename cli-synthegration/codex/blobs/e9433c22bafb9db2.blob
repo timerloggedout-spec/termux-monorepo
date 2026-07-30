@@ -1,0 +1,21 @@
+~/storage/downloads $ pwd
+/data/data/com.termux/files/home/storage/downloads
+~/storage/downloads $ nano auto_concat.sh
+~/storage/downloads $ chmod +x auto_concat.sh
+~/storage/downloads $ ./auto_concat.sh
+bash: ./auto_concat.sh: Permission denied
+~/storage/downloads $ mv auto_concat.sh ~/
+~/storage/downloads $ cd ~/
+~ $ ./auto_concat.sh
+bash: ./auto_concat.sh: Permission denied
+~ $ termux-setup-storage
+
+It appears that directory '~/storage' already exists.
+This script is going to rebuild its structure from
+scratch, wiping all dangling files. The actual storage
+content IS NOT going to be deleted.
+
+Do you want to continue? (y/n) y
+~ $ ./auto_concat.sh
+bash: ./auto_concat.sh: Permission denied
+~ $

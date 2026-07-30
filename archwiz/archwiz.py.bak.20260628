@@ -1,0 +1,285 @@
+#!/usr/bin/env python3
+"""ArchWiz Dashboard - consolidated, automated cockpit."""
+import json, os, pathlib, shutil, subprocess, sys, time
+
+R = '\033[1;31m'; G = '\033[1;32m'; Y = '\033[1;33m'
+C = '\033[1;36m'; W = '\033[1;37m'; N = '\033[0m'
+
+PIPELINE_ACTIVE = True
+PIPELINE_MODE = 'auto'
+
+def banner():
+    os.system('clear')
+    print(C + r"""
+      █████╗ ██████╗  ██████╗██╗  ██╗██╗    ██╗██╗███████╗
+     ██╔══██╗██╔══██╗██╔════╝██║  ██║██║    ██║██║╚══███╔╝
+     ███████║██████╔╝██║     ███████║██║ █╗ ██║██║  ███╔╝
+     ██╔══██║██╔══██╗██║     ██╔══██║██║███╗██║██║ ███╔╝
+     ██║  ██║██║  ██║╚██████╗██║  ██║╚███╔███╔╝██║███████╗
+     ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝ ╚══╝╚══╝ ╚═╝╚══════╝
+    """ + N)
+    print(f"{G}\u26a1 ARCHWIZ DASHBOARD \u26a1{N}   {time.strftime('%c')}")
+    print(f"{W}session: {os.getlogin()}@{os.uname().nodename}{N}")
+    print(C + "\u2500" * 60 + N)
+
+def get_pipeline_status():
+    status = f"{G}\u23fa ON{N}" if PIPELINE_ACTIVE else f"{R}\u23fb OFF{N}"
+    mode_str = f"[{PIPELINE_MODE}]"
+    if PIPELINE_ACTIVE:
+        plog = os.path.expanduser('~/archwiz/autoexec.log')
+        if os.path.exists(plog):
+            lines = open(plog).read().splitlines()
+            for line in reversed(lines):
+                if line.strip() and '\u274c' not in line and '#' not in line:
+                    last = line.strip()[:80]
+                    return f"  {status} {mode_str}  |  {C}{last}{N}"
+    return f"  {status} {mode_str}"
+
+def toggle_pipeline(mode=None):
+    global PIPELINE_ACTIVE, PIPELINE_MODE
+    if mode:
+        PIPELINE_MODE = mode
+    if PIPELINE_ACTIVE:
+        subprocess.run(['python3', os.path.expanduser('~/archwiz/listener_control.py'), 'stop'])
+        print(f"{R}Pipeline stopped.{N}")
+        PIPELINE_ACTIVE = False
+    else:
+        env = os.environ.copy()
+        env['ARCHWIZ_MODE'] = PIPELINE_MODE
+        subprocess.run(['python3', os.path.expanduser('~/archwiz/listener_control.py'), 'start'])
+        print(f"{G}Pipeline started in {PIPELINE_MODE} mode.{N}")
+        PIPELINE_ACTIVE = True
+    time.sleep(1)
+
+def main():
+    global PIPELINE_MODE
+    banner()
+    print(f"  PHASE: {Y}ACTIVE{N}  MODE: {Y}CONSOLIDATED{N}")
+    print(f"{get_pipeline_status()}")
+    print(C + "\u2500" * 60 + N)
+
+    while True:
+        print(f"""
+  {G}[1]{N} Full Autonomous Run (dispatch)
+  {G}[2]{N} Diagnostic Sweep (archaeologist)
+  {G}[3]{N} Agent Shell
+  {G}[4]{N} Live Metrics
+  {G}[5]{N} Backup State
+  {G}[6]{N} Ecosystem Refresh (rebuild + sweep)
+  {G}[7]{N} Manage Profiles
+  {G}[8]{N} Workflow Automation (build + dispatch)
+  {G}[9]{N} Timeline Editor
+  {G}[10]{N} Task Builder
+  {G}[11]{N} Restore Version
+  {G}[12]{N} Health Check (dangles + mirror)
+  {G}[13]{N} Session Pipeline (import + live)
+  {G}[14]{N} Activity Feed (narrative + exec)
+  {G}[15]{N} Lexicon Harvest
+  {G}[16]{N} Live View
+  {G}[17]{N} Forensic Toolchain
+  {G}[18]{N} Documentation Pipeline
+  {G}[a]{N} Auto Mode  |  {G}[r]{N} Review Mode  |  {G}[p]{N} Toggle Pipeline
+  {G}[0]{N} Quit
+""")
+        try:
+            choice = input(f"{C}>> {N}").strip().lower()
+        except (EOFError, KeyboardInterrupt):
+            break
+
+        if choice == '1':
+            subprocess.run(['python3', os.path.expanduser('~/archwiz/autonomous_runner.py'), '--auto-approve'])
+        elif choice == '2':
+            subprocess.run(['python3', os.path.expanduser('~/archwiz/archaeo_sweep.py')])
+        elif choice == '3':
+            subprocess.run(['python3', os.path.expanduser('~/archwiz/agent_shell.py')])
+        elif choice == '4':
+            subprocess.run(['python3', os.path.expanduser('~/archwiz/metrics_viewer.py')])
+        elif choice == '5':
+            ts = time.strftime('%Y%m%d_%H%M%S')
+            fname = f'ecosystem_backup_{ts}.tar.gz'
+            subprocess.run(['tar', 'czf', fname, 'HANDOFF.json', 'master_tasks.json', 'metrics_log.jsonl', 'foresight_state.json'], cwd=os.path.expanduser('~/archwiz'))
+            print(f"{G}Backup: {fname}{N}")
+        elif choice == '6':
+            subprocess.run(['bash', '-c', 'python3 ~/workspace/llm_map/build_final_all_profile.py && python3 ~/workspace/llm_map/func_indexer.py && python3 ~/workspace/llm_map/foresight_collect.py'])
+            subprocess.run(['python3', os.path.expanduser('~/archwiz/archaeo_sweep.py'), '--max', '15'])
+        elif choice == '7':
+            subprocess.run(['python3', os.path.expanduser('~/archwiz/archwiz.py'), '--manage-profiles'])
+            print(f"{Y}Running automated workflow...{N}")
+            subprocess.run(['bash', '-c', 'python3 ~/workspace/llm_map/build_final_all_profile.py && python3 ~/workspace/llm_map/func_indexer.py && python3 ~/workspace/llm_map/foresight_collect.py'])
+            subprocess.run(['python3', os.path.expanduser('~/archwiz/autonomous_runner.py'), '--auto-approve'])
+        elif choice == '9':
+            subprocess.run(['python3', os.path.expanduser('~/archwiz/timeline_editor.py')])
+        elif choice == '10':
+            subprocess.run(['python3', os.path.expanduser('~/archwiz/task_builder.py')])
+        elif choice == '11':
+            # Check if there are staged blocks from forensic toolchain
+            staging = os.path.expanduser('~/archwiz/staging_blocks.json')
+            if os.path.exists(staging):
+                print(f"{Y}Staged blocks from forensic toolchain:{N}")
+                import json as _json
+                blocks = _json.loads(pathlib.Path(staging).read_text())
+                for i, b in enumerate(blocks[-5:]):
+                    print(f"  {G}{i}{N}: {b.get('search_term','?')} #{b.get('index','?')} ({b.get('session','?')[:16]}...)")
+                use_staged = input(f"{C}Restore from staged block? Enter number or 'n' for manual path: {N}").strip()
+                if use_staged.isdigit() and 0 <= int(use_staged) < len(blocks):
+                    b = blocks[int(use_staged)]
+                    target = input(f"{C}Target file path (e.g., deepcli/deepcli/core.py): {N}").strip()
+                    if target:
+                        # Write the staged code directly to the target file
+                        import pathlib as _pl
+                        dest = _pl.Path.home() / target
+                        dest.parent.mkdir(parents=True, exist_ok=True)
+                        # Backup original
+                        if dest.exists():
+                            _pl.Path(str(dest) + '.bak').write_text(dest.read_text())
+                        dest.write_text(b['code'])
+                        print(f"{G}✅ Restored staged block to {target}. Backup saved to {target}.bak{N}")
+                    return
+            target = input(f"{C}File to restore (relative path): {N}").strip()
+            if target:
+                subprocess.run(['python3', os.path.expanduser('~/archwiz/restore_version.py'), target])
+        elif choice == '12':
+            print(f"{Y}Running health check...{N}")
+            subprocess.run(['python3', os.path.expanduser('~/archwiz/dangle_detector.py')])
+            subprocess.run(['python3', os.path.expanduser('~/archwiz/mirror.py')])
+        elif choice == '13':
+            print(f"{Y}Session Pipeline - select a session.{N}")
+            cache_dir = os.path.expanduser('~/.deepcli/session_store')
+            if os.path.isdir(cache_dir):
+                files = sorted(pathlib.Path(cache_dir).glob('*.json'), key=lambda p: p.stat().st_mtime, reverse=True)[:10]
+                if files:
+                    for i, f in enumerate(files):
+                        sid = f.stem
+                        try:
+                            data = json.loads(f.read_text())
+                            msgs = data if isinstance(data, list) else data.get('messages', [])
+                            snippet = (msgs[0].get('content', '')[:60] + '...') if msgs and isinstance(msgs[0], dict) else '(empty)'
+                        except:
+                            snippet = '(corrupt cache)'
+                        print(f"  {G}{i}{N}: {sid[:16]}...  {snippet}")
+            sid = input(f"{C}Session number, ID, or Enter for current: {N}").strip()
+            if sid.isdigit():
+                idx = int(sid)
+                if 0 <= idx < len(files):
+                    sid = files[idx].stem
+            if not sid:
+                sid = '417ddd6d-9711-465d-ab90-c92cc04aeabf'
+            subprocess.run(['python3', os.path.expanduser('~/archwiz/listener_control.py'), 'stop'])
+            env = os.environ.copy()
+            env['ARCHWIZ_SESSION'] = sid
+            env['ARCHWIZ_MODE'] = PIPELINE_MODE
+            subprocess.Popen(['python3', os.path.expanduser('~/archwiz/activity_listener.py')],
+                             env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                             stdin=subprocess.DEVNULL, start_new_session=True)
+            print(f"{G}Pipeline live for {sid[:16]}...{N}")
+        elif choice == '14':
+            subprocess.run(['python3', os.path.expanduser('~/archwiz/narrative.py')])
+        elif choice == '15':
+            subprocess.run(['python3', os.path.expanduser('~/archwiz/lexicon_harvest.py'), 'review', '100', '20'])
+        elif choice == '17':
+            print(f"{Y}Forensic Toolchain{N}")
+            print(f"  {G}[f]{N} Fragment Match  (search all code blocks)")
+            print(f"  {G}[n]{N} Session Digest     (scan all sessions for features)")
+            print(f"  {G}[o]{N} Original Commit Notes (fast structural scanner)")
+            print(f"  {G}[p]{N} Pointer Resolve     (retrieve code by hash)")
+            print(f"  {G}[r]{N} Refactor Rune       (search & replace with runic tags)")
+            print(f"  {G}[x]{N} Export Status       (show missing/stale exports)")
+            print(f"  {G}[s]{N} Similarity Scan  (find similar blocks)")
+            print(f"  {G}[c]{N} Correlation Scout (trace file history)")
+            print(f"  {G}[e]{N} Extract & Stage   (save block for review)")
+            sub = input(f"{C}>> {N}").strip().lower()
+            if sub in ('f', 'fragment', '1'):
+                term = input(f"{C}Search term: {N}").strip()
+                if term:
+                    subprocess.run(['python3', os.path.expanduser('~/archwiz/forensic_toolchain.py'), 'fragment', term])
+            elif sub in ('s', 'similar', '2'):
+                text = input(f"{C}Text to match: {N}").strip()
+                if text:
+                    subprocess.run(['python3', os.path.expanduser('~/archwiz/forensic_toolchain.py'), 'similar', text])
+            elif sub in ('c', 'scout', '3'):
+                f = input(f"{C}File path: {N}").strip()
+                if f:
+                    subprocess.run(['python3', os.path.expanduser('~/archwiz/forensic_toolchain.py'), 'scout', f])
+            elif sub in ('n', 'notes', '5'):
+                subprocess.run(['python3', os.path.expanduser('~/archwiz/session_digest.py')])
+            elif sub in ('o', 'original', '6'):
+                subprocess.run(['python3', os.path.expanduser('~/archwiz/structural_scanner.py')])
+            elif sub in ('p', 'pointer', '7'):
+                h = input(f"{C}Hash or pointer (→xxxx): {N}").strip()
+                if h:
+                    subprocess.run(['python3', os.path.expanduser('~/archwiz/pointer_index.py'), 'resolve', h])
+            elif sub in ('r', 'rune', '9'):
+                term = input(f"{C}Search term: {N}").strip()
+                if term:
+                    action = input(f"{C}Action: (s)earch, (p)review, (a)pply: {N}").strip().lower()
+                    if action == 'a':
+                        repl = input(f"{C}Replacement: {N}").strip()
+                        rtype = input(f"{C}Type (word/function/translation) [word]: {N}").strip() or 'word'
+                        if repl:
+                            subprocess.run(['python3', os.path.expanduser('~/archwiz/refactor_rune.py'), 'apply', term, repl, rtype])
+                    elif action == 'p':
+                        repl = input(f"{C}Replacement: {N}").strip()
+                        if repl:
+                            subprocess.run(['python3', os.path.expanduser('~/archwiz/refactor_rune.py'), 'preview', term, repl])
+                    else:
+                        subprocess.run(['python3', os.path.expanduser('~/archwiz/refactor_rune.py'), 'search', term])
+            elif sub in ('x', 'export', '8'):
+                # Run the export status check inline
+                exec(open(os.path.expanduser('~/archwiz/export_status.py')).read()) if os.path.exists(os.path.expanduser('~/archwiz/export_status.py')) else print('Run export_status.py manually')
+            elif sub in ('e', 'extract', '4'):
+                term = input(f"{C}Search term: {N}").strip()
+                idx = input(f"{C}Index from fragment match: {N}").strip() or '0'
+                if term:
+                    subprocess.run(['python3', os.path.expanduser('~/archwiz/forensic_toolchain.py'), 'extract', term, idx])
+                    # Offer to open in review panel
+                    if os.path.exists(os.path.expanduser('~/archwiz/staging_blocks.json')):
+                        rev = input(f"{C}Open staged blocks in review panel? (y/n): {N}").strip().lower()
+                        if rev == 'y':
+                            subprocess.run(['python3', os.path.expanduser('~/archwiz/live_view.py')])
+
+        elif choice == '16':
+            # Auto‑pick the most recent session from cache
+            cache_dir = os.path.expanduser('~/.deepcli/session_store')
+            sid = '417ddd6d-9711-465d-ab90-c92cc04aeabf'  # default
+            if os.path.isdir(cache_dir):
+                files = sorted(pathlib.Path(cache_dir).glob('*.json'), key=lambda p: p.stat().st_mtime, reverse=True)
+                if files:
+                    sid = files[0].stem
+            os.environ['ARCHWIZ_SESSION'] = sid
+            subprocess.run(['python3', os.path.expanduser('~/archwiz/live_view.py')])
+        elif choice == '18':
+            print(f"{Y}📝 Documentation Pipeline{N}")
+            print("Regenerating all auto‑docs...")
+            # Session Digest
+            subprocess.run(['python3', os.path.expanduser('~/archwiz/session_digest.py')])
+            # Structural Scanner
+            subprocess.run(['python3', os.path.expanduser('~/archwiz/structural_scanner.py')])
+            # Export Status
+            subprocess.run(['python3', os.path.expanduser('~/archwiz/export_status.py')])
+            # Pointer Index rebuild
+            subprocess.run(['python3', os.path.expanduser('~/archwiz/pointer_index.py'), 'build'])
+            # Update Tool Index & Concept Index (already done by listener scribe, but force refresh)
+            print(f"{G}✅ Documentation pipeline complete.{N}")
+            print(f"   SESSION_DIGEST.md, COMMIT_NOTES.md, export status, pointer index updated.")
+
+        elif choice == 'a':
+            PIPELINE_MODE = 'auto'
+            if PIPELINE_ACTIVE:
+                toggle_pipeline()
+                toggle_pipeline()
+            else:
+                print(f"{G}Mode set to auto. Start pipeline with 'p'.{N}")
+        elif choice == 'r':
+            PIPELINE_MODE = 'review'
+            if PIPELINE_ACTIVE:
+                toggle_pipeline()
+                toggle_pipeline()
+            else:
+                print(f"{G}Mode set to review. Start pipeline with 'p'.{N}")
+        elif choice == 'p':
+            toggle_pipeline()
+        elif choice == '0':
+            break
+
+if __name__ == '__main__':
+    main()

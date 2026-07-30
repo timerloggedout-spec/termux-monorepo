@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Global Regulatory Intelligence</title>
+    <!-- Tailwind CSS + Lucide Icons + Simple Maps -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-simple-maps@3/dist/react-simple-maps.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <style>
+        /* Custom map tooltip */
+        .map-tooltip {
+            position: fixed;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        @media (max-width: 640px) {
+            .sidebar-mobile { transform: translateX(-100%); transition: transform 0.3s ease; }
+            .sidebar-mobile.open { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+
+<div id="app" class="flex flex-col md:flex-row min-h-screen">
+    <!-- Mobile header -->
+    <div class="md:hidden bg-gray-900 text-white p-4 flex justify-between items-center sticky top-0 z-20">
+        <div class="flex items-center gap-2 font-bold text-lg">
+            <i data-lucide="activity" class="w-5 h-5 text-indigo-400"></i>
+            <span>RegIntel</span>
+        </div>
+        <button id="menuBtn" class="p-2">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+    </div>
+
+    <!-- Sidebar -->
+    <nav id="sidebar" class="sidebar-mobile fixed md:static top-0 left-0 h-full w-64 bg-gray-900 text-gray-300 z-30 flex-shrink-0 overflow-y-auto transition-transform">
+        <div class="p-6 hidden md:flex items-center text-white font-bold text-xl gap-2">
+            <i data-lucide="activity" class="w-6 h-6 text-indigo-400"></i>
+            <span>RegIntel</span>
+        </div>
+        <div class="px-4 pb-6 space-y-2">
+            <button data-tab="matrix" class="tab-btn w-full flex items-center px-4 py-3 rounded-lg hover:bg-gray-800 hover:text-white transition">
+                <i data-lucide="database" class="w-5 h-5 mr-3"></i> Regulatory Matrix
+            </button>
+            <button data-tab="map" class="tab-btn w-full flex items-center px-4 py-3 rounded-lg hover:bg-gray-800 hover:text-white transition">
+                <i data-lucide="map" class="w-5 h-5 mr-3"></i> World Map
+            </button>
+            <button data-tab="trials" class="tab-btn w-full flex items-center px-4 py-3 rounded-lg hover:bg-gray-800 hover:text-white transition">
+                <i data-lucide="flask-conical" class="w-5 h-5 mr-3"></i> Clinical Trials
+            </button>
+            <button data-tab="ror" class="tab-btn w-full flex items-center px-4 py-3 rounded-lg hover:bg-gray-800 hover:text-white transition">
+                <i data-lucide="building-2" class="w-5 h-5 mr-3"></i> Research Orgs
+            </button>
+            <div class="pt-4 mt-4 border-t border-gray-700 space-y-2">
+                <button id="importBtn" class="w-full flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-800 transition">
+                    <i data-lucide="upload" class="w-4 h-4 mr-3"></i> Import CSV
+                </button>
+                <button id="exportBtn" class="w-full flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-800 transition">
+                    <i data-lucide="download" class="w-4 h-4 mr-3"></i> Export CSV
+                </button>
+                <input type="file" id="fileInput" accept=".csv" class="hidden">
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <main class="flex-1 p-4 md:p-6 overflow-y-auto">
+        <div id="matrixView" class="tab-content"></div>
+        <div id="mapView" class="tab-content hidden"></div>
+        <div id="trialsView" class="tab-content hidden"></div>
+        <div id="rorView" class="tab-content hidden"></div>
+        <div id="loading" class="flex justify-center items-center h-64">Loading...</div>
+    </main>
+
+    <!-- Detail panel (slide-out) -->
+    <div id="detailPanel" class="fixed inset-y-0 right-0 w-full md:w-[500px] bg-white dark:bg-gray-800 shadow-xl transform translate-x-full transition-transform z-50 overflow-y-auto"></div>
+</div>
+
+<script>
+// ================= CONFIGURATION =================
+const API_URL = "YOUR_APPS_SCRIPT_WEB_APP_URL"; // <-- REPLACE WITH YOUR DEPLOYED URL
+const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
+
+// Country mapping (ISO A3 -> jurisdiction key)
+const countryMap = {
+    USA: "us", CAN: "ca", GBR: "uk", AUS: "au", JPN: "jp", RUS: "ru",
+    FRA: "eu", DEU: "eu", ITA: "eu", ESP: "eu", NLD: "eu", BEL: "eu",
+    // ... add all countries (full list from previous code)
+    // For brevity, a simplified list; in production use the complete mapping.
+};
+// Default fallback for unknown countries
+function getJurisdictionKey(iso) { return countryMap[iso] || iso.toLowerCase(); }
+
+// Regulatory tiers for fallback coloring
+const regulatoryTiers = {
+    USA: "wla", CAN: "wla", GBR: "wla", JPN: "wla", KOR: "wla", SGP: "wla", ZAF: "wla", CHE: "wla", AUS: "wla",
+    MEX: "ich", MYS: "ich", IDN: "ich", CHN: "ich", IND: "ich", BRA: "ich", SAU: "ich", NGA: "ich"
+};
+function getRegulatoryTier(iso) { return regulatoryTiers[iso] || "unknown"; }
+
+// Status colors
+const statusColors = {
+    approved: "#22c55e", investigational: "#3b82f6", unapproved: "#ef4444",
+    withdraw: "#f59e0b", under_review: "#a78bfa", harmonised: "#818cf8", unknown: "#94a3b8"
+};
+
+// ================= GLOBAL STATE =================
+let compounds = [];
+let selectedCompound = null;
+let activeTab = "matrix";
+let mapComponent = null;
+
+// ================= HELPER FUNCTIONS =================
+async function fetchCompounds() {
+    const res = await fetch(API_URL);
+    return await res.json();
+}
+
+async function updateCompounds(newCompounds) {
+    const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newCompounds)
+    });
+    return await res.json();
+}
+
+function exportToCSV(data) {
+    const headers = Object.keys(data[0]);
+    const rows = data.map(row => headers.map(h => row[h] || ""));
+    const csv = [headers, ...rows].map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(",")).join("\n");
+    const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "regulatory_matrix.csv";
+    link.click();
+    URL.revokeObjectURL(link.href);
+}
+
+// ================= RENDER MATRIX VIEW =================
+function renderMatrixView() {
+    const container = document.getElementById("matrixView");
+    if (!container) return;
+    let search = "", filterType = "all", filterWADA = "all";
+    const types = ["all", ...new Set(compounds.map(c => c.Entity_Type).filter(Boolean))];
+    const wadaOptions = ["all", "prohibited", "permitted", "unknown"];
+
+    function filteredCompounds() {
+        return compounds.filter(c => {
+            const matchSearch = !search || c.Canonical_Name?.toLowerCase().includes(search) || (c.Synonyms || "").toLowerCase().includes(search);
+            const matchType = filterType === "all" || c.Entity_Type === filterType;
+            const matchWADA = filterWADA === "all" || (c.WADA_Status || "unknown").toLowerCase() === filterWADA;
+            return matchSearch && matchType && matchWADA;
+        });
+    }
+
+    function render() {
+        const filtered = filteredCompounds();
+        container.innerHTML = `
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h1 class="text-3xl font-bold">Global Regulatory Matrix</h1>
+                        <p class="text-gray-500 dark:text-gray-400">Peptides, hormones, gene therapies, anabolics, and advanced therapies.</p>
+                    </div>
+                    <button id="exportCurrentBtn" class="inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 border rounded-lg shadow-sm hover:bg-gray-50"><i data-lucide="download" class="w-4 h-4 mr-2"></i> Export CSV</button>
+                </div>
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-4 mb-6 flex flex-wrap gap-4">
+                    <div class="relative flex-1 min-w-[200px]">
+                        <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5"></i>
+                        <input type="text" id="searchInput" placeholder="Search compounds..." class="w-full pl-10 pr-4 py-2 rounded-lg border dark:bg-gray-900">
+                    </div>
+                    <select id="typeFilter" class="px-4 py-2 rounded-lg border dark:bg-gray-900">
+                        ${types.map(t => `<option value="${t}">${t === "all" ? "All Types" : t}</option>`).join("")}
+                    </select>
+                    <select id="wadaFilter" class="px-4 py-2 rounded-lg border dark:bg-gray-900">
+                        ${wadaOptions.map(o => `<option value="${o}">${o === "all" ? "All WADA" : o}</option>`).join("")}
+                    </select>
+                    <div class="ml-auto text-sm self-center">${filtered.length} of ${compounds.length} compounds</div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-50 dark:bg-gray-700">
+                            <tr><th class="px-6 py-3 text-left">Compound</th><th class="px-6 py-3 text-left">Type</th><th class="px-6 py-3 text-center">US Status</th><th class="px-6 py-3 text-center">EU Status</th><th class="px-6 py-3 text-center">WADA</th></tr>
+                        </thead>
+                        <tbody>
+                            ${filtered.map(c => `
+                                <tr class="border-t hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer" data-id="${c.Entity_ID}">
+                                    <td class="px-6 py-4"><div class="font-medium">${c.Canonical_Name}</div><div class="text-xs text-gray-500">${c.Entity_ID}</div></td>
+                                    <td class="px-6 py-4">${c.Entity_Type || "—"}</td>
+                                    <td class="px-6 py-4 text-center"><span class="px-2 py-1 rounded-full text-xs font-medium ${getStatusClass(c.US_FDA_Status)}">${c.US_FDA_Status || "unknown"}</span></td>
+                                    <td class="px-6 py-4 text-center"><span class="px-2 py-1 rounded-full text-xs font-medium ${getStatusClass(c.EU_EMA_Status)}">${c.EU_EMA_Status || "unknown"}</span></td>
+                                    <td class="px-6 py-4 text-center"><span class="px-2 py-1 rounded-full text-xs font-medium ${getWadaClass(c.WADA_Status)}">${c.WADA_Status || "unknown"}</span></td>
+                                </tr>
+                            `).join("")}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+        lucide.createIcons();
+        document.querySelectorAll("#matrixView tbody tr").forEach(tr => {
+            tr.addEventListener("click", () => showDetail(compounds.find(c => c.Entity_ID === tr.dataset.id)));
+        });
+        document.getElementById("exportCurrentBtn")?.addEventListener("click", () => exportToCSV(filtered));
+        document.getElementById("searchInput")?.addEventListener("input", (e) => { search = e.target.value.toLowerCase(); render(); });
+        document.getElementById("typeFilter")?.addEventListener("change", (e) => { filterType = e.target.value; render(); });
+        document.getElementById("wadaFilter")?.addEventListener("change", (e) => { filterWADA = e.target.value; render(); });
+    }
+    render();
+}
+
+function getStatusClass(status) {
+    const map = { approved: "bg-green-100 text-green-800", investigational: "bg-blue-100 text-blue-800", unapproved: "bg-red-100 text-red-800", withdrawn: "bg-yellow-100 text-yellow-800" };
+    return map[status] || "bg-gray-100 text-gray-800";
+}
+function getWadaClass(status) {
+    if (status === "prohibited") return "bg-red-100 text-red-800";
+    if (status === "permitted") return "bg-green-100 text-green-800";
+    return "bg-gray-100 text-gray-800";
+}
+
+// ================= WORLD MAP (using simple maps) =================
+async function renderMapView() {
+    const container = document.getElementById("mapView");
+    if (!container) return;
+    container.innerHTML = `<div id="mapContainer" class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow"></div>`;
+    // Load React and ReactDOM if not already (simple maps requires React)
+    if (typeof React === "undefined") {
+        await loadScript("https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js");
+        await loadScript("https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js");
+        await loadScript("https://cdn.jsdelivr.net/npm/react-simple-maps@3/dist/react-simple-maps.min.js");
+    }
+    // Render map using the global ReactSimpleMaps
+    const { ComposableMap, Geographies, Geography, ZoomableGroup } = window.ReactSimpleMaps;
+    const getCountryStatus = (geo) => {
+        const iso = geo.properties.ISO_A3;
+        const jurisdictionKey = getJurisdictionKey(iso);
+        if (selectedCompound && selectedCompound[`${jurisdictionKey}_Status`]) {
+            return selectedCompound[`${jurisdictionKey}_Status`];
+        }
+        const tier = getRegulatoryTier(iso);
+        if (tier === "wla") return "under_review";
+        if (tier === "ich") return "harmonised";
+        return "unknown";
+    };
+    const MapComponent = () => React.createElement(ComposableMap, { projection: "geoMercator", width: 800, height: 500 },
+        React.createElement(ZoomableGroup, { center: [0,20], zoom: 1.2 },
+            React.createElement(Geographies, { geography: GEO_URL },
+                ({ geographies }) => geographies.map(geo => React.createElement(Geography, {
+                    key: geo.rsmKey,
+                    geography: geo,
+                    fill: statusColors[getCountryStatus(geo)],
+                    stroke: "#FFF",
+                    strokeWidth: 0.5,
+                    style: { default: { outline: "none" }, hover: { fill: "#a855f7", cursor: "pointer" } },
+                    onClick: () => searchClinicalTrialsByCountry(geo.properties.NAME)
+                }))
+            )
+        )
+    );
+    const root = ReactDOM.createRoot(document.getElementById("mapContainer"));
+    root.render(React.createElement(MapComponent));
+}
+
+function loadScript(src) {
+    return new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = src;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+    });
+}
+
+// ================= DETAIL PANEL =================
+function showDetail(compound) {
+    selectedCompound = compound;
+    const panel = document.getElementById("detailPanel");
+    panel.innerHTML = `
+        <div class="p-6">
+            <div class="flex justify-between items-start mb-4">
+                <div><h2 class="text-2xl font-bold">${compound.Canonical_Name}</h2><p class="text-sm text-gray-500">${compound.Entity_ID} · ${compound.Entity_Type}</p></div>
+                <button id="closeDetail" class="p-2 hover:bg-gray-100 rounded-lg"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            ${compound.Synonyms ? `<div class="mb-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg"><span class="font-medium">Synonyms:</span> ${compound.Synonyms}</div>` : ""}
+            <div class="mb-4"><h3 class="text-xs font-semibold uppercase">Mechanism</h3><p class="text-sm">${compound.Mechanism_Summary || "—"}</p></div>
+            <div class="mb-4"><h3 class="text-xs font-semibold uppercase">Development Stage</h3><p class="text-sm">${compound.Development_Stage_Global || "—"}</p></div>
+            <div class="mb-6"><h3 class="text-xs font-semibold uppercase mb-3">Jurisdiction Status</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                    ${["US","EU","CA","AU","UK","JP","RU"].map(j => `<div class="border rounded-lg p-3"><div class="text-xs text-gray-500">${j}</div><div class="font-medium">${compound[`${j}_FDA_Status`] || compound[`${j}_EMA_Status`] || "unknown"}</div><div class="text-xs">${compound[`${j}_Legal_Access`] || ""}</div></div>`).join("")}
+                </div>
+            </div>
+            <div class="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border rounded-lg">
+                <h3 class="text-sm font-semibold text-red-800">WADA Anti-Doping Status</h3>
+                <div class="grid grid-cols-2 gap-2 text-sm mt-2">
+                    <div><span class="text-gray-600">Status:</span> <span class="font-medium">${compound.WADA_Status || "unknown"}</span></div>
+                    <div><span class="text-gray-600">Category:</span> ${compound.WADA_Category || "—"}</div>
+                    <div><span class="text-gray-600">In-Competition:</span> ${compound.WADA_In_Competition === "TRUE" ? "Prohibited" : "Permitted"}</div>
+                    <div><span class="text-gray-600">Out-of-Competition:</span> ${compound.WADA_Out_Competition === "TRUE" ? "Prohibited" : "Permitted"}</div>
+                </div>
+            </div>
+            <div class="text-xs text-gray-500">Last verified: ${compound.Last_Verified || "unknown"}</div>
+        </div>
+    `;
+    panel.classList.remove("translate-x-full");
+    panel.classList.add("translate-x-0");
+    lucide.createIcons();
+    document.getElementById("closeDetail")?.addEventListener("click", () => {
+        panel.classList.add("translate-x-full");
+        panel.classList.remove("translate-x-0");
+        selectedCompound = null;
+    });
+}
+
+// ================= CLINICAL TRIALS & ROR TABS =================
+async function searchClinicalTrials(query, country = "") {
+    const container = document.getElementById("trialsView");
+    if (!container) return;
+    container.innerHTML = '<div class="text-center py-12">Loading trials...</div>';
+    let term = query;
+    if (country) term += ` AND ${country}`;
+    const url = `https://clinicaltrials.gov/api/v2/studies?query.term=${encodeURIComponent(term)}&pageSize=20`;
+    try {
+        const res = await fetch(url);
+        const data = await res.json();
+        const studies = data.studies || [];
+        container.innerHTML = `
+            <div class="space-y-4">
+                ${studies.map(s => {
+                    const id = s.protocolSection?.identificationModule;
+                    const status = s.protocolSection?.statusModule;
+                    return `
+                        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow border">
+                            <div class="flex justify-between items-start"><h3 class="font-bold text-lg">${id?.briefTitle || "Untitled"}</h3><span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">${status?.overallStatus}</span></div>
+                            <p class="text-sm text-gray-500">NCT ID: ${id?.nctId}</p>
+                            <a href="https://clinicaltrials.gov/ct2/show/${id?.nctId}" target="_blank" class="text-indigo-600 text-sm inline-flex items-center gap-1 mt-2">View on ClinicalTrials.gov <i data-lucide="external-link" class="w-3 h-3"></i></a>
+                        </div>
+                    `;
+                }).join("")}
+            </div>
+        `;
+        lucide.createIcons();
+    } catch(e) { container.innerHTML = `<div class="text-red-500">Error: ${e.message}</div>`; }
+}
+
+async function searchROR(query, country = "") {
+    const container = document.getElementById("rorView");
+    if (!container) return;
+    container.innerHTML = '<div class="text-center py-12">Loading organizations...</div>';
+    let url = `https://api.ror.org/organizations?query=${encodeURIComponent(query)}`;
+    if (country) url += `&filter=country.country_code:${country.substring(0,2).toUpperCase()}`;
+    try {
+        const res = await fetch(url);
+        const data = await res.json();
+        const items = data.items || [];
+        container.innerHTML = `
+            <div class="grid gap-4">
+                ${items.map(org => `
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow border">
+                        <h3 class="font-bold text-lg">${org.name}</h3>
+                        <p class="text-sm text-gray-500">${org.addresses?.[0]?.city}, ${org.addresses?.[0]?.country}</p>
+                        <a href="${org.links?.[0]}" target="_blank" class="text-indigo-600 text-sm inline-flex items-center gap-1 mt-2">Website <i data-lucide="external-link" class="w-3 h-3"></i></a>
+                    </div>
+                `).join("")}
+            </div>
+        `;
+        lucide.createIcons();
+    } catch(e) { container.innerHTML = `<div class="text-red-500">Error: ${e.message}</div>`; }
+}
+
+function searchClinicalTrialsByCountry(countryName) {
+    setActiveTab("trials");
+    const input = document.querySelector("#trialsView input[type='text']");
+    if (input) input.value = countryName;
+    searchClinicalTrials("", countryName);
+}
+
+// ================= TAB SWITCHING =================
+function setActiveTab(tab) {
+    activeTab = tab;
+    document.querySelectorAll(".tab-content").forEach(el => el.classList.add("hidden"));
+    document.getElementById(`${tab}View`).classList.remove("hidden");
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+        if (btn.dataset.tab === tab) btn.classList.add("bg-indigo-600", "text-white");
+        else btn.classList.remove("bg-indigo-600", "text-white");
+    });
+    if (tab === "map" && !document.getElementById("mapContainer").innerHTML) renderMapView();
+}
+
+// ================= INITIALIZATION =================
+window.onload = async () => {
+    document.getElementById("loading").style.display = "flex";
+    compounds = await fetchCompounds();
+    document.getElementById("loading").style.display = "none";
+    renderMatrixView();
+    setActiveTab("matrix");
+    lucide.createIcons();
+
+    // Import CSV handler
+    document.getElementById("importBtn").onclick = () => document.getElementById("fileInput").click();
+    document.getElementById("fileInput").onchange = async (e) => {
+        const file = e.target.files[0];
+        Papa.parse(file, { header: true, complete: async (results) => {
+            await updateCompounds(results.data);
+            compounds = await fetchCompounds();
+            renderMatrixView();
+            alert("Import complete!");
+        }});
+    };
+    document.getElementById("exportBtn").onclick = () => exportToCSV(compounds);
+
+    // Trial & ROR search UI
+    document.getElementById("trialsView").innerHTML = `
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow mb-6">
+            <div class="flex flex-col md:flex-row gap-4">
+                <input type="text" id="trialQuery" placeholder="Condition / Intervention" class="flex-1 px-4 py-2 rounded-lg border dark:bg-gray-900">
+                <input type="text" id="trialCountry" placeholder="Country (optional)" class="flex-1 px-4 py-2 rounded-lg border dark:bg-gray-900">
+                <button id="searchTrialsBtn" class="px-6 py-2 bg-indigo-600 text-white rounded-lg">Search</button>
+            </div>
+        </div>
+        <div id="trialsResults"></div>
+    `;
+    document.getElementById("rorView").innerHTML = `
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow mb-6">
+            <div class="flex flex-col md:flex-row gap-4">
+                <input type="text" id="rorQuery" placeholder="Organization name" class="flex-1 px-4 py-2 rounded-lg border dark:bg-gray-900">
+                <input type="text" id="rorCountry" placeholder="Country (optional)" class="flex-1 px-4 py-2 rounded-lg border dark:bg-gray-900">
+                <button id="searchRorBtn" class="px-6 py-2 bg-indigo-600 text-white rounded-lg">Search</button>
+            </div>
+        </div>
+        <div id="rorResults"></div>
+    `;
+    document.getElementById("searchTrialsBtn").onclick = () => {
+        const q = document.getElementById("trialQuery").value;
+        const c = document.getElementById("trialCountry").value;
+        searchClinicalTrials(q, c);
+    };
+    document.getElementById("searchRorBtn").onclick = () => {
+        const q = document.getElementById("rorQuery").value;
+        const c = document.getElementById("rorCountry").value;
+        searchROR(q, c);
+    };
+
+    // Mobile sidebar toggle
+    document.getElementById("menuBtn").onclick = () => {
+        document.getElementById("sidebar").classList.toggle("open");
+    };
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.onclick = () => setActiveTab(btn.dataset.tab);
+    });
+};
+</script>
+</body>
+</html>

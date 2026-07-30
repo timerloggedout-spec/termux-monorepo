@@ -1,0 +1,12 @@
+let pipActive = false;
+document.getElementById('togglePipBtn').addEventListener('click', () => {
+  if (!pipPlayer) {
+    createPipPlayer();
+  }
+  pipActive = !pipActive;
+  document.getElementById('pipContainer').style.display = pipActive ? 'block' : 'none';
+  if (pipActive) {
+    const currentVideoId = player.getVideoData()?.video_id;
+    if (currentVideoId) pipPlayer.loadVideoById(currentVideoId);
+  }
+});

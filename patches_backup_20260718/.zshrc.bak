@@ -1,0 +1,77 @@
+# ArchWiz sentinel: route must remain a function, never an alias
+typeset -g ARCHWIZ_ROUTE_GUARD=1
+# Enable comments (fixes zsh 'unknown file attribute: h' warnings)
+setopt INTERACTIVE_COMMENTS
+
+# Powerlevel10k instant prompt
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# Load Powerlevel10k
+source ~/powerlevel10k/powerlevel10k.zsh-theme
+
+# Custom ecosystem segment
+function prompt_ecosystem() {
+  bash ~/workspace/llm_map/ecosystem_prompt.sh
+}
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(ecosystem)
+
+# Aliases
+alias tui="cd ~/deepcli-tui && python3 tui.py"
+alias forensic-query="$HOME/harmony_hub/utility_belt/forensic-query"
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+alias task-list="python3 ~/workspace/llm_map/agent_shell.py list"
+alias workflow="bash ~/harmony_hub/utility_belt/workflow"
+alias dispatch-adaptive="bash ~/workspace/llm_map/dispatch_adaptive.sh"
+alias truth-report="python3 ~/workspace/llm_map/generate_diff_report.py"
+alias logged="python3 ~/workspace/llm_map/tool_logger.py"
+alias dispatch-parallel="bash ~/workspace/llm_map/dispatch_parallel.sh"
+setopt EXTENDED_HISTORY
+alias workspace-check="bash ~/harmony_hub/utility_belt/workspace-check"
+alias account-activity="bash ~/harmony_hub/utility_belt/account-activity"
+[ -n "$BASH_VERSION" ] && source ~/.bashrc
+alias fts-query="bash ~/harmony_hub/utility_belt/fts-query"
+route() { python3 ~/workspace/llm_map/router_agent.py "$@"; }
+
+# ── 4_51GH7 Ecosystem Aliases ─────────────────────
+alias archwiz='~/archwiz/archwiz.sh'
+
+# fix Powerlevel10k instant prompt warning
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
+# ── Recovered ArchWiz aliases (from archaeologist recovery) ──
+alias map='mmap'
+alias mupdate='python3 ~/workspace/llm_map/llm_mapper_pro.py update'
+alias mfull='python3 ~/workspace/llm_map/llm_mapper_pro.py full-scan'
+alias mmap='python3 ~/workspace/llm_map/llm_mapper_pro.py generate-map'
+alias mtree='python3 ~/workspace/llm_map/llm_mapper_pro.py graph-tree'
+alias mdot='python3 ~/workspace/llm_map/llm_mapper_pro.py graph-dot'
+alias mkprofile='python3 ~/workspace/llm_map/llm_mapper_pro.py profile-create'
+alias map-build='cd ~/workspace/llm_map alias map-build='cd ~/workspace/llm_map && python3 build_final_all_profile.py && ./generate_system_map.sh'alias map-build='cd ~/workspace/llm_map && python3 build_final_all_profile.py && ./generate_system_map.sh' python3 build_final_all_profile.py alias map-build='cd ~/workspace/llm_map && python3 build_final_all_profile.py && ./generate_system_map.sh'alias map-build='cd ~/workspace/llm_map && python3 build_final_all_profile.py && ./generate_system_map.sh' mmap'
+alias map-func='python3 ~/workspace/llm_map/func_indexer.py'
+alias map-graph='bash ~/workspace/llm_map/graph_fzf.sh'
+alias map-set='export LLM_PROFILE=$1 && echo "Profile set to $LLM_PROFILE"'
+alias funcfind='function _ff(){ jq -r "select(.file | test(\"$1\")) | \"\(.name) \t line \(.line) \t \(.sig[:60])\"" ~/workspace/llm_map/func_index.jsonl; }; _ff'
+alias dep='bash ~/workspace/llm_map/depgraph.sh'
+alias depmenu='bash ~/workspace/llm_map/depmenu.sh'
+alias dispatch='python3 ~/workspace/llm_map/dispatch_task.py'
+alias promote='python3 ~/workspace/llm_map/promote.py'
+alias oracle='python3 ~/workspace/llm_map/impact_oracle.py'
+alias fore='python3 ~/workspace/llm_map/foresight_collect.py'
+alias archaeo='python3 ~/workspace/llm_map/archaeologist.py'
+alias agent-shell='python3 ~/workspace/llm_map/agent_shell.py'
+alias task-watch='bash ~/workspace/llm_map/task_watcher.sh'
+alias map-query='bash ~/harmony_hub/utility_belt/map-query.sh 2>/dev/null || echo "map-query not yet built"'
+alias deepcli="python3 ~/workspace/llm_map/deepcli_send.py"
+
+# opencode
+export PATH=/data/data/com.termux/files/home/.opencode/bin:$PATH
+alias aether="python3 ~/archwiz/aether.py"
+alias aether="python3 ~/archwiz/aether.py"
+alias taxapply='python3 ~/workspace/llm_map/_TOOL_TAXONOMY/modules/taxapply.py'
+alias taxtool='bash ~/workspace/llm_map/_TOOL_TAXONOMY/build_tool_taxonomy.sh'
+alias taxrefactor='python3 ~/workspace/llm_map/_TOOL_TAXONOMY/modules/post_refactor.py'
+alias taxdiff='python3 ~/workspace/llm_map/_TOOL_TAXONOMY/modules/taxdiff.py'
+export PYTHONPATH="$HOME/colab-cli/lib:$PYTHONPATH"

@@ -1,0 +1,33 @@
+// modules/api-clients/instagram-client.js
+class InstagramClient {
+    constructor(accessToken) {
+        this.baseURL = 'https://graph.facebook.com/v18.0'; // Latest stable version[reference:6]
+        this.token = accessToken;
+    }
+
+    // Fetch comments on a media post
+    async getComments(mediaId) {
+        const response = await fetch(`${this.baseURL}/${mediaId}/comments?access_token=${this.token}`);
+        return response.json();
+    }
+
+    // Reply to a comment
+    async replyToComment(commentId, message) {
+        const response = await fetch(`${this.baseURL}/${commentId}/replies`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: message, access_token: this.token })
+        });
+        return response.json();
+    }
+
+    // Hide/delete a comment (moderation)
+    async hideComment(commentId, hide = true) {
+        const response = await fetch(`${this.baseURL}/${commentId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ hide: hide, access_token: this.token })
+        });
+        return response.json();
+    }
+}

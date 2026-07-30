@@ -1,0 +1,9 @@
+**Identity portability:** To migrate an account to another device, the user copies the `qfoam_nodeId` value from one browser's localStorage to another.
+
+### 7.2 State Isolation
+
+The Yjs `players` map uses `NodeId` as keys, ensuring each player's state is stored under a unique, non-colliding identifier. The local player only writes to their own `Y.Map`; remote players' maps are read-only from the local perspective.
+
+### 7.3 Handle System
+
+The `playerHandle` is a user-chosen display name synced via Yjs. When a player updates their handle:

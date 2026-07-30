@@ -1,0 +1,7 @@
+# Use OpenBLAS and disable troublesome build options
+MATHLIB="openblas" \
+  BLAS="/data/data/com.termux/files/usr/lib/libopenblas.so" \
+  LAPACK="/data/data/com.termux/files/usr/lib/libopenblas.so" \
+  CFLAGS="-I/data/data/com.termux/files/usr/include" \
+  LDFLAGS="-L/data/data/com.termux/files/usr/lib -lopenblas" \
+  pip install --no-cache-dir --force-reinstall scipy==1.10.1

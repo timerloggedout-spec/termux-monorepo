@@ -1,0 +1,26 @@
+def find_offset(file1, file2, max_overlap_sec=5):
+    dur1 = get_duration(file1)
+    # Use up to max_overlap_sec*2 maybe? We need enough samples to compute correlation at those lags.
+    # We'll extract max_overlap_sec from the end of file1 and from the beginning of file2.
+    end_len = min(max_overlap_sec, dur1)   # Actually we need enough samples for correlation: we need at least the overlap length plus some? With the method of iterating overlaps from 0 to max_overlap, we need a segment from file1's end of length max_overlap, and from file2's start of length max_overlap. Then compute correlation for all possible overlaps (0 to max_overlap) using the full segment. That works if we extract exactly max_overlap seconds from end and start. So set end_len = max_overlap_sec, start_len = max_overlap_sec, but ensure we don't exceed file durations. If file is shorter, use its full length.
+    end_len = min(max_overlap_sec, dur1)
+    start_len = min(max_overlap_sec, get_duration(file2))
+    a = load_audio_mono(file1, duration=end_len, sample_rate=8000)
+    b = load_audio_mono(file2, duration=start_len, sample_rate=8000)
+    # a and b are both of length at most max_overlap_sec * 8000
+    if len(a) == 0 or len(b) == 0:
+        return 0.0
+    # We'll compute correlation for overlaps from 0 to min(len(a), len(b)) samples
+    max_ov_samples = min(len(a), len(b))
+    best_overlap = 0.0
+    best_corr = -np.inf
+    # Using a loop over overlap_samples
+    for ov_samples in range(1, max_ov_samples+1):  # overlap of at least 1 sample
+        # segment from a: last ov_samples samples; from b: first ov_samples
+        a_seg = a[-ov_samples:]
+        b_seg = b[:ov_samples]
+        corr_val = np.corrcoef(a_seg, b_seg)[0,1]
+        if corr_val > best_corr:
+            best_corr = corr_val
+            best_overlap = ov_samples / 8000.0
+    return best_overlap

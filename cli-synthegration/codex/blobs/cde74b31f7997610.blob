@@ -1,0 +1,44 @@
+function calculateCycleOpportunity(cycle) {
+  let product = 1;
+  const edges = [];
+  let totalLiquidity = Infinity;
+  
+  for (let i = 0; i < cycle.length - 1; i++) {
+    const from = cycle[i];
+    const to = cycle[i + 1];
+    const edge = state.graph[from] ? state.graph[from][to] : null;
+    
+    if (!edge) return null;
+    
+    product *= edge.rate;
+    totalLiquidity = Math.min(totalLiquidity, edge.liquidity);
+    edges.push(edge);
+  }
+  
+  const lastFrom = cycle[cycle.length - 1];
+  const firstTo = cycle[0];
+  const closeEdge = state.graph[lastFrom] ? state.graph[lastFrom][firstTo] : null;
+  
+  if (!closeEdge) return null;
+  
+  product *= closeEdge.rate;
+  totalLiquidity = Math.min(totalLiquidity, closeEdge.liquidity);
+  edges.push(closeEdge);
+  
+  const profitPercent = (product - 1) * 100;
+  
+  const minProfit = parseFloat(document.getElementById('minProfit').value || 0.0001);
+  const minLiq = parseFloat(document.getElementById('minLiq').value || 100);
+  
+  if (profitPercent >= minProfit && totalLiquidity >= minLiq) {
+    return {
+      type: 'bellman-ford',
+      path: cycle,
+      product: product,
+      minLiquidity: totalLiquidity,
+      edges: edges
+    };
+  }
+  
+  return null;
+}

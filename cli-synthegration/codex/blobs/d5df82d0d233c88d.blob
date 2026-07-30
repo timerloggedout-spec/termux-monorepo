@@ -1,0 +1,17 @@
+src/
+├── components/
+│   ├── MatrixView.jsx
+│   ├── DetailView.jsx
+│   ├── WorldMap.jsx
+│   ├── ClinicalTrialsTab.jsx
+│   ├── RORTab.jsx
+│   ├── CategoryTabs.jsx
+│   └── CSVImportExport.jsx
+├── services/
+│   ├── api.js          (backend communication)
+│   └── sheets.js       (direct read from published CSV fallback)
+├── utils/
+│   ├── export.js
+│   └── transform.js
+├── App.jsx
+└── index.js

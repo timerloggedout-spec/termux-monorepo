@@ -1,0 +1,23 @@
+import { createHelia } from 'helia';
+import { createOrbitDB } from '@orbitdb/core';
+import { pinToPinata } from './pinata.js';
+
+const helia = await createHelia();
+const orbitdb = await createOrbitDB({ ipfs: helia });
+
+// Open a docstore for DNA sequences
+const dnaStore = await orbitdb.open('dna_sequences', { type: 'docstore' });
+
+// Store a DNA sequence
+const hash = await dnaStore.put({
+  _id: 'seq_abc123',
+  nucleotide_sequence: 'ATCGATCG...',
+  length: 8420,
+  features: [
+    { feature_id: 'f1', type: 'CDS', start: 100, end: 450, strand: 1, label: 'GFP' }
+  ],
+  source: 'addgene_analysis'
+});
+
+// Pin the OrbitDB address to Pinata so data persists
+await pinToPinata(orbitdb.address);

@@ -1,0 +1,2 @@
+State.graph[p.base][p.target] = {rate: 1/p.askPrice, ...}
+State.graph[p.target][p.base] = {rate: p.bidPrice, ...}

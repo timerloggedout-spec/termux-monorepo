@@ -1,0 +1,20 @@
+/quanTM-arbitrage/
+├── src/
+│   ├── core/
+│   │   ├── arbitrage-engine.js
+│   │   ├── data-manager.js
+│   │   └── portfolio-manager.js
+│   ├── exchanges/
+│   │   ├── binance-api.js
+│   │   ├── kucoin-api.js
+│   │   └── coinbase-api.js
+│   ├── strategies/
+│   │   ├── triangular-arbitrage.js
+│   │   ├── bellman-ford.js
+│   │   └── market-making.js
+│   └── ui/
+│       ├── components/
+│       └── views/
+├── tests/
+├── docs/
+└── config/

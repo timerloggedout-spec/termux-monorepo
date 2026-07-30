@@ -1,0 +1,235 @@
+Triangular arbitrage — optimized direct path scanner (fastest for intra‑exchange)
+
+- Use when you have a fixed exchange with known trading pairs and want the lowest-latency detector.
+- Strategy: keep a compact symbol ➜ index map, real‑time mid prices in a Float64Array, evaluate only valid triangles (precomputed index triplets), compute product of rates with fees in native floating math, short‑circuit small gains, and use BigInt or Decimal for order-sizing when placing real trades.
+
+`html
+<!-- index.html (include this script in any browser or Node with minimal DOM) -->
+<script>
+/*
+  Fast triangle scanner:
+  - symbols: array of pair strings like "BTC/USDT"
+  - pairs: map "BASE/QUOTE" -> { idxA, idxB, price } stored in typed arrays
+  - triangles: list of [iAB, iBC, iCA] indices referencing pairs array
+  - fees: single fractional fee applied per trade (e.g. 0.001 for 0.1%)
+*/
+
+class FastTriScanner {
+  constructor(fee = 0.001) {
+    this.fee = fee;
+    this.symbolIndex = new Map();          // pair -> index
+    this.pairs = [];                       // {base,quote,price}
+    this.triangles = [];                   // [iAB,iBC,iCA]
+  }
+
+  // add a pair once at startup
+  addPair(base, quote, price = 0) {
+    const pair = ${base}/${quote};
+    if (this.symbolIndex.has(pair)) return;
+    const idx = this.pairs.length;
+    this.symbolIndex.set(pair, idx);
+    this.pairs.push({ base, quote, price });
+  }
+
+  // update price quickly (from websocket/ticker)
+  updatePrice(base, quote, price) {
+    const idx = this.symbolIndex.get(${base}/${quote});
+    if (idx === undefined) return;
+    this.pairs[idx].price = price;
+  }
+
+  // precompute triangles (call once after pairs added)
+  buildTriangles() {
+    const n = this.pairs.length;
+    // map by base -> list indices, quote -> list indices for fast lookup
+    const byBase = new Map(), byQuote = new Map();
+    for (let i = 0; i < n; ++i) {
+      const { base, quote } = this.pairs[i];
+      if (!byBase.has(base)) byBase.set(base, []);
+      byBase.get(base).push(i);
+      if (!byQuote.has(quote)) byQuote.set(quote, []);
+      byQuote.get(quote).push(i);
+    }
+
+    // Search triangles A->B, B->C, C->A: pair1.base=A pair1.quote=B etc.
+    for (let i = 0; i < n; ++i) {
+      const p1 = this.pairs[i]; // A/B
+      const listBC = byBase.get(p1.quote) || [];
+      for (const j of listBC) { // B/C
+        const p2 = this.pairs[j];
+        // need pair C/A exists as some k with base = p2.quote and quote = p1.base
+        const k = this.symbolIndex.get(${p2.quote}/${p1.base});
+        if (k !== undefined) {
+          this.triangles.push([i, j, k]);
+        }
+      }
+    }
+  }
+
+  // compute effective multiplier for the cycle including fees (fast inner loop)
+  _cycleMultiplier(i, j, k) {
+    // multiply prices, applying (1 - fee) per trade
+    const a = this.pairs[i].price;
+    const b = this.pairs[j].price;
+    const c = this.pairs[k].price;
+    const feeFactor = 1 - this.fee;
+    // For direct pairs as quoted (A/B, B/C, C/A) product gives Afinal per Astart.
+    return a  b  c  (feeFactor  feeFactor * feeFactor);
+  }
+
+  // scan all triangles, returns best candidate above threshold
+  scan(minProfitPct = 0.1) {
+    const threshold = 1 + minProfitPct / 100;
+    let best = null;
+    for (let t = 0, m = this.triangles.length; t < m; ++t) {
+      const [i, j, k] = this.triangles[t];
+      const mult = this._cycleMultiplier(i, j, k);
+      if (mult > threshold) {
+        const profitPct = (mult - 1) * 100;
+        if (!best || profitPct > best.profitPct) {
+          best = { triangle: [i, j, k], profitPct };
+        }
+      }
+    }
+    return best;
+  }
+}
+
+// Example usage:
+const scanner = new FastTriScanner(0.001);
+// onboarding pairs (must match how exchange presents pairs)
+scanner.addPair('BTC', 'USDT', 50000);
+scanner.addPair('ETH', 'BTC', 0.07);
+scanner.addPair('ETH', 'USDT', 3500);
+scanner.buildTriangles();
+// on each websocket tick call updatePrice(...) then:
+const op = scanner.scan(0.05); // require min 0.05% profit
+if (op) console.log('opportunity', op);
+</script>
+`
+
+Why this is fast
+- Minimal object churn; pair lookup by Map; triangles precomputed; inner loop performs only three float multiplies and one comparison; suitable for high-rate websocket updates and very low GC pressure.
+
+---
+
+Graph approach using log transformation + Bellman‑Ford (detects negative cycles reliably)
+
+- Use when you want an algorithmic guarantee to find arbitrage cycles across a dynamic graph.
+- Transform edge weight = -ln(rate * (1 - fee)). A negative cycle indicates arbitrage.
+- Use an optimized Bellman‑Ford implementation tuned for sparse graphs and early exit when no relaxations occur.
+
+`js
+// bellman-fast.js (Node/browser)
+class BellmanFordArb {
+  constructor(fee = 0.001) {
+    this.nodes = new Map(); // symbol -> index
+    this.edges = [];        // {u,v,w,meta}
+    this.nextIndex = 0;
+    this.feeFactor = 1 - fee;
+  }
+
+  _ensureNode(sym) {
+    if (!this.nodes.has(sym)) this.nodes.set(sym, this.nextIndex++);
+    return this.nodes.get(sym);
+  }
+
+  addPair(base, quote, price) {
+    // price represents base/quote (how much quote you get for 1 base)
+    // We want edges representing converting base -> quote at rate=price
+    const u = this._ensureNode(base);
+    const v = this._ensureNode(quote);
+    const effective = price * this.feeFactor;
+    if (effective <= 0) return;
+    const w = -Math.log(effective);
+    this.edges.push({ u, v, w, pair: ${base}/${quote}, rate: price });
+  }
+
+  // Run Bellman-Ford and return a negative cycle if found
+  findNegativeCycle() {
+    const n = this.nextIndex;
+    if (n === 0) return null;
+    const dist = new Float64Array(n);
+    const parent = new Int32Array(n).fill(-1);
+
+    // initialize
+    for (let i = 0; i < n; ++i) dist[i] = 0; // run from virtual source connecting to all nodes
+
+    // relax n-1 times with early exit
+    for (let iter = 0; iter < n - 1; ++iter) {
+      let updated = false;
+      for (let e = 0; e < this.edges.length; ++e) {
+        const edge = this.edges[e];
+        const nd = dist[edge.u] + edge.w;
+        if (nd < dist[edge.v]) {
+          dist[edge.v] = nd;
+          parent[edge.v] = edge.u;
+          updated = true;
+        }
+      }
+      if (!updated) break;
+    }
+
+    // check for negative cycle
+    for (let e = 0; e < this.edges.length; ++e) {
+      const edge = this.edges[e];
+      if (dist[edge.u] + edge.w < dist[edge.v]) {
+        // found a cycle; walk back to get cycle nodes
+        let x = edge.v;
+        for (let i = 0; i < this.nextIndex; ++i) x = parent[x]; // ensure inside cycle
+        const cycle = [];
+        for (let cur = x;; cur = parent[cur]) {
+          cycle.push(cur);
+          if (cur === x && cycle.length > 1) break;
+        }
+        cycle.reverse();
+        // convert indices to pair sequence for execution
+        const idxToSym = Array.from(this.nodes.keys());
+        return { nodes: cycle.map(i => idxToSym[i]) };
+      }
+    }
+    return null;
+  }
+}
+
+/* Usage example:
+const bf = new BellmanFordArb(0.001);
+bf.addPair('BTC','USDT', 50000);
+bf.addPair('ETH','BTC', 0.07);
+bf.addPair('ETH','USDT', 3500);
+const cycle = bf.findNegativeCycle();
+if (cycle) console.log('arb cycle', cycle);
+*/
+`
+
+Performance tips
+- Use Float64Array and Int32Array for numeric arrays to reduce JS engine overhead.
+- Maintain edges incrementally: on tick update only changed edges (updateEdge pattern) rather than rebuild all edges.
+- For very large node counts, partition graph by stablecoins or markets to reduce search space.
+
+---
+
+Practical production considerations (must implement before live trading)
+
+- Order book depth & slippage: compute executable quantity against top-of-book aggregated volumes; detect if the calculated profit survives actual fills.
+- Fees & rebates: include maker/taker and network fees; apply per-trade effective rate in calculations.
+- Latency: use websockets, batch updates, and avoid allocating in the hot path; prefer typed arrays and precomputed triangle lists for minimal work on each tick; dynamically update the lists.
+- Atomic execution: prefer exchange features like OCO or multi-leg orders when available; otherwise design execution strategies (linear vs parallel) and include cancel/fail-safe logic.
+- Precision: use integer-based math (satoshis, wei) or a decimal library for final order sizing; keep detection math in float for speed, but finalize order amounts with exact integer rounding.
+
+---
+
+References and implementation inspirations
+- Example production-grade Binance triangle project and HUD inspired structure and execution strategies.
+- Community triangular-arbitrage JS bots show practical end‑to‑end implementations and UI examples.
+- Bellman‑Ford native/node bindings and examples for negative-cycle detection used in graph approach.
+- Minimal runnable sandboxes and package manifests for fast prototyping.
+
+---
+
+Recommendation
+- For intra‑exchange low-latency detection implement the FastTriScanner pattern with precomputed triangles and typed arrays for the detection hot path; dynamically update 'hot paths' detection priority.
+- Use the Bellman‑Ford log‑transformed method as a validation/coverage step or for cross‑market graphs where pair existence is dynamic.
+- Always incorporate order book depth, fees, and atomic execution logic.
+
+We are searching everything available to find specific opportunities of volatility, low price (Cheaper than SHIB launch (Shiba Inu & DOGE coins etc). The DEX Screener might be helpful; 200 from CoinGecko is a small fraction of necessary markets (how many markets does CoinGecko list; and which fit our, best, criteria?) and requires the specific exchanges per market be scanned individually nested/silo'd.

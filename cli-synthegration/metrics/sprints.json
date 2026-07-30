@@ -1,0 +1,107 @@
+[
+  {
+    "id": "expert-unlock",
+    "name": "Expert Model Unlock",
+    "status": "blocked",
+    "blocker": "Version header gate in WASM/JS bundle",
+    "action": "Start http_sniffer.js on :8888 \u2192 set Firefox proxy \u2192 send Expert message \u2192 capture real headers",
+    "branch": "Termux-CLI-Recon-and-Harmoniza \u2192 expert-investigation"
+  },
+  {
+    "id": "similarity-chunking",
+    "name": "Code Similarity Clusters",
+    "status": "in-progress",
+    "blocker": "0 clusters found at 60% threshold; fuzzy phrase clusters also returned 0",
+    "action": "Lower threshold to 40% or use token-level Jaccard instead of 3-word phrases",
+    "branch": "Termux-CLI-Recon-and-Harmoniza \u2192 4/4-edit-continuation"
+  },
+  {
+    "id": "dangling-conversation-branches",
+    "name": "Dangling Conversation Fork Detection",
+    "status": "in-progress",
+    "blocker": "Syntax error fixed; depth + timestamp criteria added",
+    "action": "Run `python3 ~/cli-synthegration/branch_manager.py dangling` to test",
+    "branch": "Termux-CLI-Recon-and-Harmoniza \u2192 TUI-tree-analysis"
+  },
+  {
+    "id": "agent-parallelism",
+    "name": "Parallel Agent Capacity",
+    "status": "active",
+    "blocker": "2 concurrent tokens max per account",
+    "action": "Add 2nd DeepSeek account for 4-way parallel A/B/C/D testing",
+    "branch": "Termux-CLI-Recon-and-Harmoniza \u2192 1337-team-deployment"
+  },
+  {
+    "id": "mitmproxy-api24",
+    "name": "mitmproxy on Android API 24",
+    "status": "resolved",
+    "resolution": "Node.js http_sniffer.js works (no native deps). Python mitmproxy wrapper failed but native libs built.",
+    "branch": "Termux-CLI-Recon-and-Harmoniza \u2192 mitmproxy-api24-fix"
+  },
+  {
+    "id": "4-4-edit-loop",
+    "name": "4/4 Edit Loop Closure",
+    "status": "closing",
+    "resolution": "All features built. Expert capture is the final dangling branch.",
+    "branch": "Termux-CLI-Recon-and-Harmoniza \u2192 4/4-edit-continuation"
+  },
+  {
+    "title": "WebUI Selector & Feedback Automation",
+    "status": "probing",
+    "finding": "Page updated. New button selectors, feedback hooks, and layout changes may break existing scripts. Test suite framework (mitmproxy, frida) already installed; need to extend to probe new elements.",
+    "next": "1) Run existing deepseek-full-suite.mjs to capture new selectors. 2) Map feedback endpoint. 3) Create auto-feedback loop for rating responses programmatically."
+  },
+  {
+    "id": "account2-orchestrator-html-build",
+    "name": "Account2 Orchestrator & HTML Dashboard",
+    "status": "in-progress",
+    "objectives": {
+      "dual_account_volley": "Account 2 token extracted via bookmarklet. Both accounts operational.",
+      "html_build": "Build a real HTML dashboard for CLI orchestration, fed by agent outputs.",
+      "auto_token_extraction": "Automate the bookmarklet localStorage extraction for any account (POST-stabilization).",
+      "archwizard_scaffold": "Manager agent that monitors ELO and assigns tasks."
+    },
+    "added": "2026-06-04T09:53:49.313140"
+  },
+  {
+    "id": "time-loop-iteration-2",
+    "name": "Time Loop Iteration 2 \u2014 Validated State",
+    "status": "ready",
+    "objectives": {
+      "branch_point": "Fork from Account 2 confirmed message",
+      "carry_forward": "Dual-account tokens, utility belt spells, run_history validated, orchestrator clean",
+      "archwizard_scaffold": "Build manager agent that monitors ELO and auto-volleys tasks",
+      "html_dashboard": "Real HTML dashboard fed by agent outputs",
+      "account_n_auto": "Automate bookmarklet extraction for any account"
+    },
+    "added": "2026-06-04T17:35:52.768125"
+  },
+  {
+    "id": "incremental-fragment-matcher",
+    "name": "Incremental Fragment Matcher",
+    "status": "ready",
+    "description": "Add checkpointing to fragment_matcher.py so it only processes new/modified code blocks since the last run, displaying progress in batches of 10.",
+    "tasks": [
+      "Add a cursor file (~/cli-synthegration/workspace/provenance/.fragment_cursor.json) that records the last indexed code block hash per export.",
+      "On startup, load cursor; skip code blocks already processed.",
+      "Process only new blocks in batches of 10 with progress logging.",
+      "Update cursor after each batch.",
+      "Wire into Chronomancer's --analyze flag for fast cluster comparison."
+    ],
+    "added": "2026-06-05T17:36:24.739728"
+  },
+  {
+    "id": "session-state-recovery",
+    "name": "Session Versioning & State Recovery",
+    "status": "ready",
+    "description": "Research how existing tools (generate_loop, branch_conversation, synthegration branches) track session state. Build recovery exercises that can restore the latest branch point after app restart.",
+    "tasks": [
+      "Audit generate_loop.py and deepcli.core for how parent_id is tracked.",
+      "Map synthegration branches output to actual WebUI navigation URLs.",
+      "Create a 'recover' incantation: cast recover --session X that prints the latest branch point and its URL.",
+      "Test: close app, reopen, run cast recover, verify you land on the correct branch.",
+      "Integrate into Chronomancer so every fork logs the recovery URL."
+    ],
+    "added": "2026-06-05T19:05:12.203818"
+  }
+]

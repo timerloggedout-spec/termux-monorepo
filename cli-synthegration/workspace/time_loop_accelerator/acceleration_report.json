@@ -1,0 +1,117 @@
+{
+  "acceleration": {
+    "first_write_median_s": 233.08131957054138,
+    "iteration_median_s": 4587.354054927826,
+    "speedup_factor": 0.05,
+    "files_with_iterations": 2269
+  },
+  "bottlenecks_top20": [
+    {
+      "file": "cli-synthegration/synthegration_index.py",
+      "delay_s": 6022.304792881012,
+      "session": "e102d768-8a47-4001-95cb-14fb6245c6fa"
+    },
+    {
+      "file": "deepseek-cli/deepseek-record-interactions.js",
+      "delay_s": 5954.004433631897,
+      "session": "c360696e-5049-4754-9276-27d81fbe0a3e"
+    },
+    {
+      "file": "cli-synthegration/codex/message_index.json",
+      "delay_s": 5221.044792890549,
+      "session": "e102d768-8a47-4001-95cb-14fb6245c6fa"
+    },
+    {
+      "file": "deepseek-cli/test-reports/runtime-1779416308319.json",
+      "delay_s": 5086.08359670639,
+      "session": "d89848ef-8f0a-4cbd-a04d-3de4be802942"
+    },
+    {
+      "file": "deepseek-cli/test-reports/report-1779416307932.json",
+      "delay_s": 5085.695596694946,
+      "session": "d89848ef-8f0a-4cbd-a04d-3de4be802942"
+    },
+    {
+      "file": "deepseek-cli/test-reports/1779416307505-final.png",
+      "delay_s": 5085.691596508026,
+      "session": "d89848ef-8f0a-4cbd-a04d-3de4be802942"
+    },
+    {
+      "file": "deepseek-cli/test-reports/1779416297822-initial.png",
+      "delay_s": 5076.035596609116,
+      "session": "d89848ef-8f0a-4cbd-a04d-3de4be802942"
+    },
+    {
+      "file": "deepseek-cli/test-reports/runtime-1779337515544.json",
+      "delay_s": 4870.133592128754,
+      "session": "c3ad5c96-e9de-4c45-8c7c-815e0fe65efe"
+    },
+    {
+      "file": "deepseek-cli/test-reports/report-1779337514866.json",
+      "delay_s": 4869.457592010498,
+      "session": "c3ad5c96-e9de-4c45-8c7c-815e0fe65efe"
+    },
+    {
+      "file": "deepseek-cli/test-reports/1779337514112-final.png",
+      "delay_s": 4869.133592128754,
+      "session": "c3ad5c96-e9de-4c45-8c7c-815e0fe65efe"
+    },
+    {
+      "file": "deepseek-cli/test-reports/1779337504359-initial.png",
+      "delay_s": 4859.469592094421,
+      "session": "c3ad5c96-e9de-4c45-8c7c-815e0fe65efe"
+    },
+    {
+      "file": "deepseek-cli/tests/runtime-stream-intelligence.mjs",
+      "delay_s": 4841.781592130661,
+      "session": "c3ad5c96-e9de-4c45-8c7c-815e0fe65efe"
+    },
+    {
+      "file": "deepseek-cli/test-reports/runtime-1779337316647.json",
+      "delay_s": 4671.237591981888,
+      "session": "c3ad5c96-e9de-4c45-8c7c-815e0fe65efe"
+    },
+    {
+      "file": "deepseek-cli/test-reports/report-1779337316272.json",
+      "delay_s": 4670.861592054367,
+      "session": "c3ad5c96-e9de-4c45-8c7c-815e0fe65efe"
+    },
+    {
+      "file": "deepseek-cli/test-reports/1779337315833-final.png",
+      "delay_s": 4670.8575921058655,
+      "session": "c3ad5c96-e9de-4c45-8c7c-815e0fe65efe"
+    },
+    {
+      "file": "deepseek-cli/test-reports/1779337306135-initial.png",
+      "delay_s": 4661.18159198761,
+      "session": "c3ad5c96-e9de-4c45-8c7c-815e0fe65efe"
+    },
+    {
+      "file": "deepseek-cli/test-reports/runtime-1779337192800.json",
+      "delay_s": 4547.389591932297,
+      "session": "c3ad5c96-e9de-4c45-8c7c-815e0fe65efe"
+    },
+    {
+      "file": "deepseek-cli/test-reports/report-1779337190022.json",
+      "delay_s": 4544.613592147827,
+      "session": "c3ad5c96-e9de-4c45-8c7c-815e0fe65efe"
+    },
+    {
+      "file": "deepseek-cli/test-reports/1779337189223-final.png",
+      "delay_s": 4544.549592018127,
+      "session": "c3ad5c96-e9de-4c45-8c7c-815e0fe65efe"
+    },
+    {
+      "file": "deepseek-cli/test-reports/1779337179434-initial.png",
+      "delay_s": 4534.4935920238495,
+      "session": "c3ad5c96-e9de-4c45-8c7c-815e0fe65efe"
+    }
+  ],
+  "optimal_session": {
+    "session": "ce2e0c5b-9845-4091-a6a7-0d9631dce697",
+    "median_delay_s": 24.371320605278015,
+    "files_touched": 8
+  },
+  "total_files_versioned": 2269,
+  "total_sessions": 40
+}

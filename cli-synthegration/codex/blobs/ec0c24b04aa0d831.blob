@@ -1,0 +1,16 @@
+import { initializeApp } from 'firebase/app';
+import { getFirestore, addDoc, collection, query, where } from 'firebase/firestore';
+
+const app = initializeApp({ /* your config */ });
+const db = getFirestore(app);
+
+// After parsing a workout:
+await addDoc(collection(db, 'workout_logs'), {
+  userId: channelId,
+  exercise: 'Squats',
+  sets: 5,
+  reps: 10,
+  weight: 0,
+  videoId: '...',
+  loggedAt: new Date(),
+});

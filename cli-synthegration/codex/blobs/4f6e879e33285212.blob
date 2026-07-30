@@ -1,0 +1,14 @@
+// models/User.js
+const mongoose = require('mongoose');
+
+const userSchema = new mongoose.Schema({
+    provider: { type: String, enum: ['youtube', 'instagram'], required: true },
+    providerId: { type: String, required: true },
+    displayName: String,
+    email: String,
+    tokens: { type: String, required: true }, // Encrypted
+    createdAt: { type: Date, default: Date.now }
+});
+
+userSchema.index({ provider: 1, providerId: 1 }, { unique: true });
+module.exports = mongoose.model('User', userSchema);

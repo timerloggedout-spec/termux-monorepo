@@ -1,0 +1,67 @@
+[
+{
+  "text": "async function typeIntoReactInput(el, text) {\n  await el.evaluate((node, value) => {\n    const setter = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set;\n    setter.call(node, value);\n    node.dispatchEvent(new Event('input', { bubbles: true }));\n    node.dispatchEvent(new Event('change', { bubbles: true }));\n  }, text);\n}",
+  "range": {
+    "byteOffset": {
+      "start": 515,
+      "end": 866
+    },
+    "start": {
+      "line": 11,
+      "column": 0
+    },
+    "end": {
+      "line": 18,
+      "column": 1
+    }
+  },
+  "file": "deepseek-cli/deepseek-record-interactions.js",
+  "lines": "async function typeIntoReactInput(el, text) {\n  await el.evaluate((node, value) => {\n    const setter = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set;\n    setter.call(node, value);\n    node.dispatchEvent(new Event('input', { bubbles: true }));\n    node.dispatchEvent(new Event('change', { bubbles: true }));\n  }, text);\n}",
+  "charCount": {
+    "leading": 0,
+    "trailing": 0
+  },
+  "language": "JavaScript"
+},
+{
+  "text": "async function typeIntoReactInput(el, text) {\n  await el.evaluate((node, value) => {\n    const nativeSetter = Object.getOwnPropertyDescriptor(\n      window.HTMLTextAreaElement.prototype, 'value'\n    ).set;\n    nativeSetter.call(node, value);\n    node.dispatchEvent(new Event('input', { bubbles: true }));\n  }, text);\n}",
+  "range": {
+    "byteOffset": {
+      "start": 324,
+      "end": 642
+    },
+    "start": {
+      "line": 8,
+      "column": 0
+    },
+    "end": {
+      "line": 16,
+      "column": 1
+    }
+  },
+  "file": "deepseek-cli/deepseek-diag.js",
+  "lines": "async function typeIntoReactInput(el, text) {\n  await el.evaluate((node, value) => {\n    const nativeSetter = Object.getOwnPropertyDescriptor(\n      window.HTMLTextAreaElement.prototype, 'value'\n    ).set;\n    nativeSetter.call(node, value);\n    node.dispatchEvent(new Event('input', { bubbles: true }));\n  }, text);\n}",
+  "charCount": {
+    "leading": 0,
+    "trailing": 0
+  },
+  "language": "JavaScript"
+},
+{
+  "text": "async function typeIntoReactInput(el, text) {\n  await el.evaluate((node, value) => {\n    const nativeSetter = Object.getOwnPropertyDescriptor(\n      window.HTMLTextAreaElement.prototype, 'value'\n    ).set;\n    nativeSetter.call(node, value);\n    node.dispatchEvent(new Event('input', { bubbles: true }));\n    node.dispatchEvent(new Event('change', { bubbles: true }));\n  }, text);\n}",
+  "range": {
+    "byteOffset": {
+      "start": 758,
+      "end": 1140
+    },
+    "start": {
+      "line": 21,
+      "column": 0
+    },
+    "end": {
+      "line": 30,
+      "column": 1
+    }
+  },
+  "file": "deepseek-cli/deepseek.js",
+  "lines": "async function typeIntoReactInput(el, text) {\n  await el.evaluate((node, value) => {\n    const nativeSetter = Object.getOwnPropertyDescriptor(\n      window.HTMLTextAreaElement.prototype, 'value'\n    ).set;\n    nativeSetter.call(node, value);\n === AST JS ===

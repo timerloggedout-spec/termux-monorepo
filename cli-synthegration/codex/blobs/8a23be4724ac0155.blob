@@ -1,0 +1,19 @@
+**Data Import Paths:**
+1. **WebTorrent CSV files:** Parsed line-by-line, inserted via parameterized queries
+2. **WebTorrent Parquet files:** Loaded via DuckDB's native `read_parquet()` function
+3. **Real-time feed:** Future integration point for live tick storage
+
+**Documentation References:**
+- [DuckDB-Wasm Documentation](https://duckdb.org/docs/current/clients/wasm/overview)
+- [DuckDB-Wasm npm Package](https://www.npmjs.com/package/@duckdb/duckdb-wasm)
+- [DuckDB SQL Reference](https://duckdb.org/docs/sql/introduction)
+
+---
+
+### 5.6 WebTorrent Historical Data Distribution
+
+**Source File Location:** Lines ~2550-2650 of v23.5 artifact
+
+**Architecture:** The WebTorrent client operates in the browser using WebRTC for peer-to-peer data transfer. Users input a magnet link; the torrent client downloads file pieces from the swarm while simultaneously uploading to other peers.
+
+**File Processing Pipeline:**

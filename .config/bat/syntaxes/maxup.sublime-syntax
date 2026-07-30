@@ -1,0 +1,48 @@
+%YAML 1.2
+---
+name: MaxUp
+file_extensions:
+  - max
+  - mu
+scope: text.maxup
+
+contexts:
+  main:
+    - match: '\b(@|%|\^|\`|\||=|/|;|:|\?|\?=|\(|\)|-|#|\*|_|>|!|\$|&|\+|~|p)\b'
+      scope: keyword.operator.element.maxup
+    - match: '\b(S|P|R|C|E|L|Y|G|D|T|I|U)\b'
+      scope: keyword.operator.svg.maxup
+    - match: '\.[a-zA-Z_][a-zA-Z0-9_]*'
+      scope: entity.other.attribute-name.class.maxup
+    - match: '\b[a-zA-Z_][a-zA-Z0-9_]*\s*=\s*"[^"]*"'
+      scope: meta.attribute.maxup
+    - match: '"[^"]*"'
+      scope: string.quoted.double.maxup
+    - match: '\{\{'
+      scope: punctuation.section.interpolation.begin.maxup
+      push: interpolation
+    - match: '\{\%'
+      scope: punctuation.section.logic.begin.maxup
+      push: logic
+    - match: ':::'
+      scope: punctuation.section.fence.maxup
+    - match: '//.*$'
+      scope: comment.line.double-slash.maxup
+   
+  interpolation:
+    - meta_scope: meta.interpolation.maxup
+    - match: '\}\}'
+      scope: punctuation.section.interpolation.end.maxup
+      pop: true
+    - match: '[a-zA-Z_][a-zA-Z0-9_.]*'
+      scope: variable.other.maxup
+
+  logic:
+    - meta_scope: meta.logic.maxup
+    - match: '%\}'
+      scope: punctuation.section.logic.end.maxup
+      pop: true
+    - match: '\b(if|else|for|in|macro|end)\b'
+      scope: keyword.control.maxup
+    - match: '[a-zA-Z][a-zA-Z0-9_.]*'
+      scope: variable.other.maxup

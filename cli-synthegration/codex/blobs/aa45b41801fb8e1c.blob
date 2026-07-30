@@ -1,0 +1,67 @@
+// modules/api-clients/youtube-client.js
+const { google } = require('googleapis');
+
+class YouTubeClient {
+    constructor(accessToken) {
+        this.auth = new google.auth.OAuth2();
+        this.auth.setCredentials({ access_token: accessToken });
+        this.youtube = google.youtube({ version: 'v3', auth: this.auth });
+    }
+
+    // Retrieve comments for a video
+    async getComments(videoId, maxResults = 100) {
+        const response = await this.youtube.commentThreads.list({
+            part: 'snippet,replies',
+            videoId: videoId,
+            maxResults: maxResults,
+            order: 'time'
+        });
+        // Quota cost: 1 unit per call[reference:3]
+        return response.data.items;
+    }
+
+    // Reply to a comment
+    async replyToComment(parentId, text) {
+        const response = await this.youtube.comments.insert({
+            part: 'snippet',
+            requestBody: {
+                snippet: {
+                    parentId: parentId,
+                    textOriginal: text
+                }
+            }
+        });
+        // Quota cost: 50 units per insert[reference:4]
+        return response.data;
+    }
+
+    // Fetch live chat messages
+    async getLiveChatMessages(liveChatId, pageToken = null) {
+        const params = {
+            part: 'snippet,authorDetails',
+            liveChatId: liveChatId,
+            maxResults: 200
+        };
+        if (pageToken) params.pageToken = pageToken;
+        const response = await this.youtube.liveChatMessages.list(params);
+        return response.data;
+    }
+
+    // Send a message to live chat
+    async sendLiveChatMessage(liveChatId, messageText) {
+        const response = await this.youtube.liveChatMessages.insert({
+            part: 'snippet',
+            requestBody: {
+                snippet: {
+                    liveChatId: liveChatId,
+                    type: 'textMessageEvent',
+                    textMessageDetails: {
+                        messageText: messageText
+                    }
+                }
+            }
+        });
+        // Must be authorized by channel owner or moderator[reference:5]
+        return response.data;
+    }
+}

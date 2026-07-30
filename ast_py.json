@@ -1,0 +1,67 @@
+[
+{
+  "text": "def clear_screen():\n    print(\"\\033[H\\033[J\", end=\"\")",
+  "range": {
+    "byteOffset": {
+      "start": 82,
+      "end": 135
+    },
+    "start": {
+      "line": 6,
+      "column": 0
+    },
+    "end": {
+      "line": 7,
+      "column": 33
+    }
+  },
+  "file": "termux-multi-agent/dashboard.py",
+  "lines": "def clear_screen():\n    print(\"\\033[H\\033[J\", end=\"\")",
+  "charCount": {
+    "leading": 0,
+    "trailing": 0
+  },
+  "language": "Python"
+},
+{
+  "text": "def read_latest_telemetry():\n    if not os.path.exists(TELEMETRY_LOG):\n        return []\n    active_jobs = {}\n    try:\n        with open(TELEMETRY_LOG, \"r\") as f:\n            for line in f:\n                if not line.strip():\n                    continue\n                entry = json.loads(line)\n                target = entry.get(\"target\") or \"System\"\n                active_jobs[target] = entry\n    except Exception:\n        pass\n    return list(active_jobs.values())",
+  "range": {
+    "byteOffset": {
+      "start": 137,
+      "end": 607
+    },
+    "start": {
+      "line": 9,
+      "column": 0
+    },
+    "end": {
+      "line": 23,
+      "column": 37
+    }
+  },
+  "file": "termux-multi-agent/dashboard.py",
+  "lines": "def read_latest_telemetry():\n    if not os.path.exists(TELEMETRY_LOG):\n        return []\n    active_jobs = {}\n    try:\n        with open(TELEMETRY_LOG, \"r\") as f:\n            for line in f:\n                if not line.strip():\n                    continue\n                entry = json.loads(line)\n                target = entry.get(\"target\") or \"System\"\n                active_jobs[target] = entry\n    except Exception:\n        pass\n    return list(active_jobs.values())",
+  "charCount": {
+    "leading": 0,
+    "trailing": 0
+  },
+  "language": "Python"
+},
+{
+  "text": "def render_dashboard():\n    clear_screen()\n    print(\"=\" * 65)\n    print(\" ⚡ TERMUX MULTI-AGENT PARALLEL TELEMETRY DASHBOARD ⚡ \")\n    print(\"=\" * 65)\n    print(f\" Last Sync: {time.strftime('%Y-%m-%d %H:%M:%S')}\")\n    print(\"-\" * 65)\n    print(f\"{'TARGET FILE':<20} | {'AGENT':<16} | {'TRY':<4} | {'STATUS':<15}\")\n    print(\"-\" * 65)\n\n    jobs = read_latest_telemetry()\n    if not jobs:\n        print(\" [ Waiting for background agent pipelines to initialize... ]\")\n    for job in jobs:\n        target = job.get(\"target\") or \"Global\"\n        if len(target) > 18:\n            target = \"...\" + target[-15:]\n        agent = job.get(\"agent\", \"Unknown\")\n        attempt = str(job.get(\"attempt\") or \"-\")\n        level = job.get(\"level\", \"INFO\")\n\n        if level == \"SUCCESS\":\n            status_str = \"\\033[92mSUCCESS\\033[0m\"\n        elif level == \"RETRY\":\n            status_str = \"\\033[93mRETRYING\\033[0m\"\n        elif level == \"CRITICAL\":\n            status_str = \"\\033[91mCRITICAL\\033[0m\"\n        else:\n            status_str = \"\\033[94mPROCESSING\\033[0m\"\n\n        print(f\"{target:<20} | {agent:<16} | {attempt:<4} | {status_str:<15}\")\n        print(f\" ↳ Msg: {job.get('message', '')[:60]}\")\n        print(\"-\" * 65)",
+  "range": {
+    "byteOffset": {
+      "start": 609,
+      "end": 1827
+    },
+    "start": {
+      "line": 25,
+      "column": 0
+    },
+    "end": {
+      "line": 57,
+      "column": 23
+    }
+  },
+  "file": "termux-multi-agent/dashboard.py",
+  "lines": "def render_dashboard():\n    clear_screen()\n    print(\"=\" * 65)\n    print(\" ⚡ TERMUX MULTI-AGENT PARALLEL TELEMETRY DASHBOARD ⚡ \")\n    print(\"=\" * 65)\n    print(f\" Last Sync: {time.strftime('%Y-%m-%d %H:%M:%S')}\")\n    print(\"-\" * 65)\n    print(f\"{'TARGET FILE':<20} | {'AGENT':<16} | {'TRY':<4} | {'STATUS':<15}\")\n    print(\"-\" * 65)\n\n    jobs = read_latest_telemetry()\n    if not jobs:\n        print(\" [ Waiting for background agent pipelines to initialize... ]\")\n    for job in jobs:\n        target = job.get(\"target\") or \"Global\"\n        if len(target) > 18:\n       === AST PY ===

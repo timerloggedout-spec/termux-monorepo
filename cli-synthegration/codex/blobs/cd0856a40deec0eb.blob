@@ -1,0 +1,11 @@
+Browser Client 1:
+[User Interface (HTML/JS)]
+      │
+      ▼
+[Data Layer: DuckDB-Wasm]◄──── Parquet/Arrow data via HTTP
+      │                        (from S3, CDN, or local server)
+      ▼
+[Sync Engine: Yjs]◄────────── WebSocket ────────────► [Sync Server]
+      │ (CRDT for dashboard state, shared annotations)
+      ▼
+[Transport: WebRTC DataChannel]◄─ P2P ─────────────► Browser Client 2

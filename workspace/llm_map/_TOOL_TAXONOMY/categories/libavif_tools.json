@@ -1,0 +1,41 @@
+{
+  "category": "libavif_tools",
+  "tools": [
+    {
+      "name": "avifdec",
+      "package": "libavif",
+      "path": "/data/data/com.termux/files/usr/bin/avifdec",
+      "source": "apt",
+      "tags": [
+        "libavif_tools"
+      ],
+      "auto_tag_source": "auto:^libavif$|^libavif-",
+      "category": "libavif_tools",
+      "description": "Library for encoding and decoding .avif files"
+    },
+    {
+      "name": "avifenc",
+      "package": "libavif",
+      "path": "/data/data/com.termux/files/usr/bin/avifenc",
+      "source": "apt",
+      "tags": [
+        "libavif_tools"
+      ],
+      "auto_tag_source": "auto:^libavif$|^libavif-",
+      "category": "libavif_tools",
+      "description": "Library for encoding and decoding .avif files"
+    },
+    {
+      "name": "avifgainmaputil",
+      "package": "libavif",
+      "path": "/data/data/com.termux/files/usr/bin/avifgainmaputil",
+      "source": "apt",
+      "tags": [
+        "libavif_tools"
+      ],
+      "auto_tag_source": "auto:^libavif$|^libavif-",
+      "category": "libavif_tools",
+      "description": "Library for encoding and decoding .avif files"
+    }
+  ]
+}

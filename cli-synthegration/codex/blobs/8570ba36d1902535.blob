@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Accountability Tracker – YouTube Comment Logger</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --text: #f1f5f9;
+            --accent: #06b6d4;
+            --accent-hover: #0891b2;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --radius: 0.5rem;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+        .container { max-width: 900px; width: 100%; }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), #eab308);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--surface);
+            color: var(--text);
+            border: 1px solid #334155;
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: #000;
+            border: none;
+        }
+        .btn-primary:hover { background: var(--accent-hover); }
+        .btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: var(--shadow); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid #334155;
+        }
+        .card h2 { font-size: 1.25rem; margin-bottom: 1rem; color: var(--accent); }
+        .input-group {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        input {
+            flex: 1;
+            min-width: 250px;
+            padding: 0.75rem;
+            border-radius: var(--radius);
+            border: 1px solid #475569;
+            background: #0f172a;
+            color: var(--text);
+            font-size: 1rem;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        .stat {
+            background: #0f172a;
+            padding: 1rem;
+            border-radius: var(--radius);
+            text-align: center;
+        }
+        .stat-value { font-size: 1.8rem; font-weight: 700; color: var(--accent); }
+        .stat-label { font-size: 0.85rem; color: #94a3b8; margin-top: 0.25rem; }
+        .log-item {
+            background: #0f172a;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius);
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .log-item .date { color: #94a3b8; font-size: 0.8rem; }
+        .empty { color: #64748b; text-align: center; padding: 2rem; }
+        .badge {
+            background: var(--accent);
+            color: #000;
+            padding: 0.25rem 0.6rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .partner-box { background: #2d1b69; border: 1px solid #7c3aed; }
+        footer { margin-top: 2rem; color: #475569; font-size: 0.8rem; text-align: center; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>💪 Community Accountability</h1>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <span id="user-status" class="badge" style="background:#334155;">Offline</span>
+            <button id="login-btn" class="btn btn-primary">🔗 Login with YouTube</button>
+            <button id="logout-btn" class="btn" style="display:none;">Logout</button>
+        </div>
+    </header>
+
+    <!-- Video Setup -->
+    <div class="card">
+        <h2>📺 Accountability Board Video</h2>
+        <div class="input-group">
+            <input id="video-url" type="text" placeholder="Paste YouTube Video URL (e.g., https://youtube.com/watch?v=...)" />
+            <button id="save-video-btn" class="btn btn-primary">Set Video</button>
+        </div>
+        <div class="input-group">
+            <button id="import-history-btn" class="btn" disabled>📥 Import My Comment History</button>
+            <button id="toggle-polling-btn" class="btn" disabled>⏱️ Start Live Polling</button>
+        </div>
+        <div id="video-info" style="font-size:0.9rem; color:#94a3b8; margin-top:0.5rem;"></div>
+    </div>
+
+    <!-- Stats -->
+    <div class="card">
+        <h2>📊 Your Stats</h2>
+        <div class="stats-grid" id="stats-container">
+            <div class="stat"><div class="stat-value" id="stat-total-workouts">0</div><div class="stat-label">Total Workouts</div></div>
+            <div class="stat"><div class="stat-value" id="stat-streak">0</div><div class="stat-label">Day Streak</div></div>
+            <div class="stat"><div class="stat-value" id="stat-exercises">0</div><div class="stat-label">Exercises Tracked</div></div>
+        </div>
+    </div>
+
+    <!-- Recent Logs -->
+    <div class="card">
+        <h2>📝 Recent Workouts</h2>
+        <div id="logs-container"><div class="empty">No logs yet. Import your comment history or start live polling.</div></div>
+    </div>
+
+    <!-- Partner Requests (future) -->
+    <div class="card partner-box">
+        <h2>🤝 Partner Requests</h2>
+        <div id="partner-container"><div class="empty">No active partner requests.</div></div>
+    </div>
+</div>
+<footer>Runs entirely in your browser. Data stored locally. <br/>Replace CLIENT_ID with your own Google Cloud OAuth 2.0 Client ID (Web application).</footer>
+
+<script>
+    // ---------- CONFIG ----------
+    const CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com'; // Replace with your own
+    const OAUTH_SCOPE = 'https://www.googleapis.com/auth/youtube.readonly';
+    const REDIRECT_URI = window.location.origin + window.location.pathname;
+    const STORAGE_KEY = 'workout_logs';
+    const VIDEO_STORAGE_KEY = 'watched_video_id';
+
+    // ---------- GLOBAL STATE ----------
+    let accessToken = sessionStorage.getItem('yt_token') || null;
+    let videoId = localStorage.getItem(VIDEO_STORAGE_KEY) || null;
+    let userChannelId = null;
+    let pollIntervalId = null;
+    let lastPollTimestamp = localStorage.getItem('last_poll_timestamp') || null;
+    let workoutLogs = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    let isPolling = false;
+
+    // ---------- DOM ELEMENTS ----------
+    const loginBtn = document.getElementById('login-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+    const userStatus = document.getElementById('user-status');
+    const videoUrlInput = document.getElementById('video-url');
+    const saveVideoBtn = document.getElementById('save-video-btn');
+    const importHistoryBtn = document.getElementById('import-history-btn');
+    const togglePollingBtn = document.getElementById('toggle-polling-btn');
+    const videoInfo = document.getElementById('video-info');
+    const logsContainer = document.getElementById('logs-container');
+    const partnerContainer = document.getElementById('partner-container');
+    const statTotalWorkouts = document.getElementById('stat-total-workouts');
+    const statStreak = document.getElementById('stat-streak');
+    const statExercises = document.getElementById('stat-exercises');
+
+    // ---------- UTILS ----------
+    function extractVideoId(url) {
+        const regex = /(?:v=|\/)([0-9A-Za-z_-]{11})(?:[?&]|$)/;
+        const match = url.match(regex);
+        return match ? match[1] : null;
+    }
+
+    function updateUI() {
+        if (accessToken) {
+            userStatus.textContent = 'Connected';
+            userStatus.style.background = '#10b981';
+            loginBtn.style.display = 'none';
+            logoutBtn.style.display = 'inline-block';
+        } else {
+            userStatus.textContent = 'Offline';
+            userStatus.style.background = '#334155';
+            loginBtn.style.display = 'inline-block';
+            logoutBtn.style.display = 'none';
+        }
+        const hasVideo = !!videoId;
+        importHistoryBtn.disabled = !accessToken || !videoId;
+        togglePollingBtn.disabled = !accessToken || !videoId;
+        videoInfo.textContent = videoId ? `Watching video: ${videoId}` : 'No video set.';
+        renderStats();
+        renderLogs();
+        renderPartnerRequests();
+    }
+
+    // ---------- AUTH ----------
+    function startOAuth() {
+        const authUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');
+        authUrl.searchParams.set('client_id', CLIENT_ID);
+        authUrl.searchParams.set('redirect_uri', REDIRECT_URI);
+        authUrl.searchParams.set('response_type', 'token');
+        authUrl.searchParams.set('scope', OAUTH_SCOPE);
+        authUrl.searchParams.set('include_granted_scopes', 'true');
+        authUrl.searchParams.set('state', 'pass-through-value');
+        window.location.href = authUrl.toString();
+    }
+
+    function handleAuthCallback() {
+        const hash = window.location.hash.substring(1);
+        const params = new URLSearchParams(hash);
+        const token = params.get('access_token');
+        if (token) {
+            accessToken = token;
+            sessionStorage.setItem('yt_token', token);
+            window.location.hash = ''; // Clean URL
+            fetchUserChannelId();
+        }
+    }
+
+    async function fetchUserChannelId() {
+        try {
+            const res = await fetch(
+                'https://www.googleapis.com/youtube/v3/channels?part=id&mine=true',
+                { headers: { Authorization: `Bearer ${accessToken}` } }
+            );
+            const data = await res.json();
+            if (data.items && data.items.length > 0) {
+                userChannelId = data.items[0].id;
+                console.log('User channel ID:', userChannelId);
+            }
+        } catch (e) {
+            console.error('Failed to fetch channel ID:', e);
+        }
+        updateUI();
+    }
+
+    function logout() {
+        accessToken = null;
+        userChannelId = null;
+        sessionStorage.removeItem('yt_token');
+        stopPolling();
+        updateUI();
+    }
+
+    // ---------- VIDEO MANAGEMENT ----------
+    function setVideoId(id) {
+        videoId = id;
+        localStorage.setItem(VIDEO_STORAGE_KEY, id);
+        updateUI();
+    }
+
+    saveVideoBtn.addEventListener('click', () => {
+        const url = videoUrlInput.value.trim();
+        if (!url) return alert('Please paste a YouTube video URL');
+        const id = extractVideoId(url);
+        if (!id) return alert('Invalid YouTube URL');
+        setVideoId(id);
+    });
+
+    // ---------- COMMENT FETCHING & PARSING ----------
+    async function fetchCommentsPage(videoId, pageToken = null, maxResults = 100) {
+        const url = new URL('https://www.googleapis.com/youtube/v3/commentThreads');
+        url.searchParams.set('part', 'snippet');
+        url.searchParams.set('videoId', videoId);
+        url.searchParams.set('maxResults', maxResults.toString());
+        if (pageToken) url.searchParams.set('pageToken', pageToken);
+        const res = await fetch(url, { headers: { Authorization: `Bearer ${accessToken}` } });
+        if (!res.ok) throw new Error(`API error: ${res.status}`);
+        return await res.json();
+    }
+
+    function parseCommand(text) {
+        const cleaned = text.trim();
+        // !log / !logging
+        const logMatch = cleaned.match(/^![Ll]og(?:ging)?:?\s*(\d+)\s*[x×]\s*(\d+)\s+(.+?)(?:\s+(?:no\s+)?weight|\s+(\d+\.?\d*)\s*(kg|lbs?))?$/i);
+        if (logMatch) {
+            return {
+                type: 'log',
+                sets: parseInt(logMatch[1]),
+                reps: parseInt(logMatch[2]),
+                exercise: logMatch[3].trim(),
+                weight: logMatch[4] ? parseFloat(logMatch[4]) : 0,
+                unit: logMatch[5] ? logMatch[5] : 'bodyweight',
+            };
+        }
+        // !checkin / !checking-in
+        if (/^![Cc]heck(?:ing)?[- ]?in/i.test(cleaned)) {
+            return { type: 'checkin' };
+        }
+        // !accountability / !partner <exercise>
+        const partnerMatch = cleaned.match(/^!(?:accountability|partner)\s+(.+)$/i);
+        if (partnerMatch) {
+            return { type: 'partner_request', activity: partnerMatch[1].trim() };
+        }
+        // !pr <exercise> <weight>
+        const prMatch = cleaned.match(/^![Pp][Rr]\s+(.+?)\s+(\d+\.?\d*)\s*(kg|lbs?)?$/i);
+        if (prMatch) {
+            return {
+                type: 'pr',
+                exercise: prMatch[1].trim(),
+                weight: parseFloat(prMatch[2]),
+                unit: prMatch[3] || 'lbs',
+            };
+        }
+        return null;
+    }
+
+    function addOrUpdateLog(entry) {
+        // entry: { commentId, timestamp, type, sets, reps, exercise, weight, unit, activity }
+        const exists = workoutLogs.find(l => l.commentId === entry.commentId);
+        if (exists) return; // Idempotent
+        workoutLogs.push(entry);
+        // Sort by timestamp descending
+        workoutLogs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(workoutLogs));
+    }
+
+    async function importAllHistory() {
+        if (!accessToken || !videoId || !userChannelId) {
+            alert('Login and set a video first.');
+            return;
+        }
+        importHistoryBtn.disabled = true;
+        importHistoryBtn.textContent = 'Importing...';
+        try {
+            let pageToken = null;
+            let processed = 0;
+            do {
+                const data = await fetchCommentsPage(videoId, pageToken);
+                const items = data.items || [];
+                for (const item of items) {
+                    const comment = item.snippet.topLevelComment;
+                    const snippet = comment.snippet;
+                    if (snippet.authorChannelId?.value !== userChannelId) continue;
+                    const text = snippet.textDisplay;
+                    const parsed = parseCommand(text);
+                    if (parsed) {
+                        addOrUpdateLog({
+                            commentId: comment.id,
+                            timestamp: snippet.publishedAt,
+                            ...parsed,
+                            raw: text
+                        });
+                        processed++;
+                    }
+                }
+                pageToken = data.nextPageToken || null;
+            } while (pageToken);
+            // Update last poll timestamp to latest comment timestamp
+            if (workoutLogs.length > 0) {
+                lastPollTimestamp = new Date(workoutLogs[0].timestamp).toISOString();
+                localStorage.setItem('last_poll_timestamp', lastPollTimestamp);
+            }
+            updateUI();
+            alert(`Import complete! ${processed} workout entries added.`);
+        } catch (e) {
+            console.error(e);
+            alert('Import failed. Check console.');
+        } finally {
+            importHistoryBtn.disabled = false;
+            importHistoryBtn.textContent = '📥 Import My Comment History';
+        }
+    }
+
+    async function pollNewComments() {
+        if (!videoId || !userChannelId) return;
+        try {
+            const data = await fetchCommentsPage(videoId, null, 50); // just latest page
+            const items = data.items || [];
+            const latestTimestamps = [];
+            for (const item of items) {
+                const comment = item.snippet.topLevelComment;
+                const snippet = comment.snippet;
+                if (snippet.authorChannelId?.value !== userChannelId) continue;
+                const pubTime = new Date(snippet.publishedAt);
+                if (lastPollTimestamp && pubTime <= new Date(lastPollTimestamp)) continue;
+                const text = snippet.textDisplay;
+                const parsed = parseCommand(text);
+                if (parsed) {
+                    addOrUpdateLog({
+                        commentId: comment.id,
+                        timestamp: snippet.publishedAt,
+                        ...parsed,
+                        raw: text
+                    });
+                }
+                latestTimestamps.push(snippet.publishedAt);
+            }
+            if (latestTimestamps.length > 0) {
+                lastPollTimestamp = latestTimestamps.sort().reverse()[0];
+                localStorage.setItem('last_poll_timestamp', lastPollTimestamp);
+            }
+            updateUI();
+        } catch (e) {
+            console.error('Poll error:', e);
+        }
+    }
+
+    function startPolling() {
+        if (isPolling) return;
+        isPolling = true;
+        togglePollingBtn.textContent = '⏹️ Stop Live Polling';
+        pollNewComments(); // Immediate first poll
+        pollIntervalId = setInterval(pollNewComments, 60000); // every 60s
+    }
+
+    function stopPolling() {
+        if (pollIntervalId) clearInterval(pollIntervalId);
+        pollIntervalId = null;
+        isPolling = false;
+        togglePollingBtn.textContent = '⏱️ Start Live Polling';
+    }
+
+    togglePollingBtn.addEventListener('click', () => {
+        if (isPolling) stopPolling();
+        else startPolling();
+    });
+
+    importHistoryBtn.addEventListener('click', importAllHistory);
+
+    // ---------- RENDERING ----------
+    function renderStats() {
+        const totalWorkouts = workoutLogs.length;
+        // Streak: count consecutive days backwards from today
+        let streak = 0;
+        const today = new Date();
+        today.setHours(0,0,0,0);
+        let checkDate = new Date(today);
+        // Get unique dates with logs
+        const logDates = new Set(workoutLogs.map(l => new Date(l.timestamp).toISOString().split('T')[0]));
+        for (let i = 0; i < 365; i++) {
+            const dateStr = checkDate.toISOString().split('T')[0];
+            if (logDates.has(dateStr)) {
+                streak++;
+                checkDate.setDate(checkDate.getDate() - 1);
+            } else {
+                if (i === 0) {
+                    // today missing, check yesterday
+                    checkDate.setDate(checkDate.getDate() - 1);
+                    continue;
+                } else break;
+            }
+        }
+        // Count unique exercises
+        const exercises = new Set(workoutLogs.filter(l => l.type === 'log').map(l => l.exercise.toLowerCase()));
+        statTotalWorkouts.textContent = totalWorkouts;
+        statStreak.textContent = streak;
+        statExercises.textContent = exercises.size;
+    }
+
+    function renderLogs() {
+        const recent = workoutLogs.slice(0, 20);
+        if (recent.length === 0) {
+            logsContainer.innerHTML = '<div class="empty">No logs yet. Import your comment history or start live polling.</div>';
+            return;
+        }
+        logsContainer.innerHTML = recent.map(log => {
+            const date = new Date(log.timestamp).toLocaleString();
+            let desc = '';
+            if (log.type === 'log') {
+                desc = `${log.sets}×${log.reps} ${log.exercise}`;
+                if (log.weight > 0) desc += ` @ ${log.weight}${log.unit}`;
+                else desc += ` (bodyweight)`;
+            } else if (log.type === 'checkin') {
+                desc = '✅ Checked in';
+            } else if (log.type === 'partner_request') {
+                desc = `🤝 Looking for partner: ${log.activity}`;
+            } else if (log.type === 'pr') {
+                desc = `🏆 New PR! ${log.exercise}: ${log.weight}${log.unit}`;
+            }
+            return `<div class="log-item"><span>${desc}</span><span class="date">${date}</span></div>`;
+        }).join('');
+    }
+
+    function renderPartnerRequests() {
+        const requests = workoutLogs.filter(l => l.type === 'partner_request').slice(0, 5);
+        if (requests.length === 0) {
+            partnerContainer.innerHTML = '<div class="empty">No active partner requests.</div>';
+            return;
+        }
+        partnerContainer.innerHTML = requests.map(r => {
+            const date = new Date(r.timestamp).toLocaleDateString();
+            return `<div class="log-item"><span>🤝 ${r.activity}</span><span class="date">${date}</span></div>`;
+        }).join('');
+    }
+
+    // ---------- INITIALIZATION ----------
+    loginBtn.addEventListener('click', startOAuth);
+    logoutBtn.addEventListener('click', logout);
+
+    // Check for OAuth callback
+    window.addEventListener('load', () => {
+        if (window.location.hash.includes('access_token')) {
+            handleAuthCallback();
+        } else {
+            if (accessToken) {
+                fetchUserChannelId();
+            } else {
+                updateUI();
+            }
+        }
+        if (videoId) {
+            videoUrlInput.value = `https://youtube.com/watch?v=${videoId}`;
+        }
+    });
+
+    // Clean up on page close
+    window.addEventListener('beforeunload', () => {
+        if (pollIntervalId) clearInterval(pollIntervalId);
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+let NODE_ID = localStorage.getItem('qfoam_nodeId');
+if (!NODE_ID) {
+    NODE_ID = 'node_' + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem('qfoam_nodeId', NODE_ID);
+}

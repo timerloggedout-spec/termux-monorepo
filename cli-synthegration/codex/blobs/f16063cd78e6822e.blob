@@ -1,0 +1,9 @@
+const PLANCK_TIER_THRESHOLD = 0.01; // $0.01
+const MICRO_CAP_THRESHOLD = 1000000; // $1M market cap
+
+async function identifyPlanckTierCoins(exchangeData) {
+    return exchangeData.pairs.filter(pair => 
+        pair.last < PLANCK_TIER_THRESHOLD && 
+        pair.volume > 10000 // Minimum liquidity
+    );
+}

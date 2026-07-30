@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tallah/Goldie Case: Complete Investigation Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cinzel:wght@400;600;700&display=swap');
+
+        body {
+            font-family: 'Cinzel', serif;
+            background: #F8F4F0;
+            color: #800020;
+            line-height: 1.6;
+            position: relative;
+            print-color-adjust: exact;
+            -webkit-print-color-adjust: exact;
+        }
+
+        /* Royal ornate pattern background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><g fill="none" stroke="rgba(232,180,160,0.12)" stroke-width="1"><circle cx="60" cy="60" r="30"/><path d="M30,60 Q45,30 60,60 Q75,90 90,60 Q75,30 60,60 Q45,90 30,60"/><circle cx="60" cy="60" r="15" fill="rgba(155,124,182,0.08)"/><path d="M60,45 L65,50 L60,55 L55,50 Z" fill="rgba(232,180,160,0.15)"/></g></svg>') repeat;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Formal Header without gradients */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px;
+            background: #F8F4F0;
+            border: 3px solid #E8B4A0;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* SVG-based royal ornate trim */
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none"><defs><linearGradient id="royalShimmer" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:rgba(232,180,160,0.3);stop-opacity:0"/><stop offset="30%" style="stop-color:rgba(232,180,160,0.8);stop-opacity:1"/><stop offset="50%" style="stop-color:rgba(255,255,255,0.9);stop-opacity:1"/><stop offset="70%" style="stop-color:rgba(232,180,160,0.8);stop-opacity:1"/><stop offset="100%" style="stop-color:rgba(232,180,160,0.3);stop-opacity:0"/></linearGradient></defs><rect x="0" y="0" width="100%" height="100%" fill="url(%23royalShimmer)"/></svg>') no-repeat;
+            background-size: 200% 100%;
+            border-radius: 15px;
+            z-index: -1;
+            animation: royalShimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes royalShimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            color: #800020;
+            font-weight: 700;
+            font-family: 'Amiri', serif;
+        }
+
+        .header .subtitle {
+            font-size: 1.3em;
+            color: #9B7CB6;
+            margin-bottom: 10px;
+        }
+
+        .header .case-details {
+            font-size: 1.1em;
+            color: #B8966C;
+            font-style: italic;
+        }
+
+        /* Navigation Menu */
+        .nav-menu {
+            background: rgba(248,244,240,0.95);
+            border: 2px solid #E8B4A0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .nav-menu h3 {
+            color: #800020;
+            margin-bottom: 15px;
+            font-family: 'Amiri', serif;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: #9B7CB6;
+            text-decoration: none;
+            padding: 8px 15px;
+            border: 1px solid #E8B4A0;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            background: #E8B4A0;
+            color: #800020;
+        }
+
+        /* Section Organization */
+        .section {
+            margin: 60px 0;
+            padding: 40px;
+            background: rgba(248,244,240,0.98);
+            border: 2px solid #E8B4A0;
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #E8B4A0;
+        }
+
+        .section-title {
+            font-size: 2.4em;
+            color: #800020;
+            font-family: 'Amiri', serif;
+            margin-bottom: 10px;
+        }
+
+        .section-description {
+            font-size: 1.2em;
+            color: #9B7CB6;
+            font-style: italic;
+        }
+
+        /* Timeline Styles */
+        .timeline {
+            position: relative;
+            margin: 0 auto;
+            padding: 30px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            background: #E8B4A0;
+            transform: translateX(-50%);
+            box-shadow: 0 0 15px rgba(232,180,160,0.4);
+            border-radius: 3px;
+        }
+
+        .day-section {
+            margin-bottom: 80px;
+        }
+
+        .day-header {
+            text-align: center;
+            font-size: 1.8em;
+            color: #800020;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #F8F4F0;
+            border: 2px solid #E8B4A0;
+            border-radius: 15px;
+            font-family: 'Amiri', serif;
+        }
+
+        .event {
+            position: relative;
+            width: 45%;
+            padding: 25px;
+            margin: 25px 0;
+            background: #F8F4F0;
+            border-radius: 15px;
+            border: 2px solid rgba(232,180,160,0.6);
+            box-shadow: 0 8px 20px rgba(128,0,32,0.15);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            overflow: visible;
+        }
+
+        .event:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(128,0,32,0.25);
+            border-color: #E8B4A0;
+        }
+
+        .event.left {
+            left: 0;
+        }
+
+        .event.right {
+            left: 55%;
+        }
+
+        /* Formalized Hexagonal Interaction System */
+        .hex-button {
+            position: absolute;
+            top: 30px;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .hex-main {
+            width: 50px;
+            height: 50px;
+            background: #E8B4A0;
+            clip-path: polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%);
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 0 15px rgba(232,180,160,0.6);
+            transition: all 0.3s ease;
+        }
+
+        .event.left .hex-button {
+            right: -75px;
+        }
+
+        .event.right .hex-button {
+            left: -75px;
+        }
+
+        .hex-satellites {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50px;
+            height: 50px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .hex-satellite {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: rgba(155,124,182,0.7);
+            clip-path: polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%);
+            animation: satellitePulse 2s ease-in-out infinite;
+        }
+
+        .event:hover .hex-satellites {
+            opacity: 1;
+        }
+
+        .event:hover .hex-main {
+            transform: scale(1.3);
+            box-shadow: 0 0 25px rgba(232,180,160,1);
+            animation: hexPulse 1.5s ease-in-out infinite;
+        }
+
+        /* Satellite positioning - 6 points around main hex */
+        .hex-satellite:nth-child(1) { top: -25px; left: 15px; animation-delay: 0s; }
+        .hex-satellite:nth-child(2) { top: -12px; left: 35px; animation-delay: 0.2s; }
+        .hex-satellite:nth-child(3) { top: 12px; left: 35px; animation-delay: 0.4s; }
+        .hex-satellite:nth-child(4) { top: 25px; left: 15px; animation-delay: 0.6s; }
+        .hex-satellite:nth-child(5) { top: 12px; left: -5px; animation-delay: 0.8s; }
+        .hex-satellite:nth-child(6) { top: -12px; left: -5px; animation-delay: 1s; }
+
+        @keyframes hexPulse {
+            0%, 100% { transform: scale(1.3); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.8; }
+        }
+
+        @keyframes satellitePulse {
+            0%, 100% { transform: scale(0.8); opacity: 0.6; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        /* Event Type Classifications */
+        .event.critical .hex-main {
+            background: #800020;
+            animation: criticalAlert 1s ease-in-out infinite alternate;
+        }
+
+        .event.legal .hex-main {
+            background: #9B7CB6;
+        }
+
+        .event.communication .hex-main {
+            background: #B8D4F1;
+        }
+
+        .event.medical .hex-main {
+            background: #B8966C;
+        }
+
+        @keyframes criticalAlert {
+            0% { box-shadow: 0 0 15px rgba(128,0,32,0.6); }
+            100% { box-shadow: 0 0 25px rgba(128,0,32,1); }
+        }
+
+        .event-time {
+            font-size: 1em;
+            color: #E8B4A0;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .event-title {
+            font-size: 1.4em;
+            color: #800020;
+            margin-bottom: 12px;
+            font-weight: 600;
+            font-family: 'Amiri', serif;
+        }
+
+        .event-description {
+            color: #9B7CB6;
+            font-size: 1em;
+            line-height: 1.6;
+        }
+
+        .source-citation {
+            font-size: 0.85em;
+            color: #B8966C;
+            font-style: italic;
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(232,180,160,0.4);
+        }
+
+        .response-indicator {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #F8F4F0;
+        }
+
+        .response-positive { background: #9B7CB6; }
+        .response-negative { background: #800020; }
+        .response-none { background: #B8966C; }
+
+        /* Contact Graph Network */
+        .contact-network {
+            margin: 40px 0;
+            padding: 30px;
+            background: rgba(248,244,240,0.95);
+            border: 2px solid #E8B4A0;
+            border-radius: 15px;
+        }
+
+        .network-svg {
+            width: 100%;
+            height: 600px;
+            border: 1px solid rgba(232,180,160,0.3);
+            border-radius: 10px;
+        }
+
+        /* Escalation Timeline */
+        .escalation-timeline {
+            margin: 40px 0;
+        }
+
+        .escalation-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .escalation-item {
+            background: rgba(248,244,240,0.9);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #E8B4A0;
+            transition: all 0.3s ease;
+        }
+
+        .escalation-item:hover {
+            transform: translateX(8px);
+            box-shadow: 0 5px 15px rgba(128,0,32,0.15);
+        }
+
+        .escalation-date {
+            color: #800020;
+            font-weight: bold;
+            font-family: 'Amiri', serif;
+            margin-right: 15px;
+        }
+
+        .escalation-critical {
+            border-left-color: #800020;
+            background: rgba(128,0,32,0.05);
+        }
+
+        /* Contact Details Modal */
+        .contact-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #F8F4F0;
+            border: 3px solid #E8B4A0;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 0 50px rgba(232,180,160,0.8);
+            z-index: 1000;
+            display: none;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .contact-popup.active {
+            display: block;
+            animation: modalAppear 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes modalAppear {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .contact-popup .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 18px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #E8B4A0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .contact-popup .close-btn:hover {
+            transform: scale(1.2);
+            color: #800020;
+        }
+
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(128,0,32,0.4);
+            z-index: 999;
+            display: none;
+            backdrop-filter: blur(5px);
+        }
+
+        .popup-overlay.active {
+            display: block;
+        }
+
+        /* Contact Information Styling */
+        .contact-name {
+            font-size: 1.5em;
+            color: #800020;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-family: 'Amiri', serif;
+        }
+
+        .contact-email, .contact-phone, .contact-role {
+            color: #9B7CB6;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .contact-email { color: #B8D4F1; }
+
+        .contact-notes {
+            background: rgba(155,124,182,0.1);
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #9B7CB6;
+            margin-top: 12px;
+            font-style: italic;
+            color: #9B7CB6;
+            line-height: 1.5;
+        }
+
+        .event-context {
+            color: #800020;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            font-family: 'Amiri', serif;
+        }
+
+        .contact-details-item {
+            margin-bottom: 18px;
+            padding: 15px;
+            background: rgba(240,234,230,0.6);
+            border-radius: 10px;
+            border: 1px solid rgba(232,180,160,0.4);
+        }
+
+        /* Participants Grid */
+        .participants-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .participant-card {
+            background: #F8F4F0;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid rgba(232,180,160,0.5);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .participant-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(128,0,32,0.15);
+            border-color: #E8B4A0;
+        }
+
+        .participant-name {
+            font-size: 1.2em;
+            color: #800020;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-family: 'Amiri', serif;
+        }
+
+        .participant-role {
+            color: #9B7CB6;
+            font-size: 1em;
+            margin-bottom: 8px;
+        }
+
+        .participant-email {
+            color: #B8D4F1;
+            font-size: 0.95em;
+            font-style: italic;
+        }
+
+        /* Response Flow Analysis Styles */
+        .response-container {
+            position: relative;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(248,244,240,0.8);
+            border-radius: 15px;
+            border: 1px solid rgba(232,180,160,0.4);
+        }
+
+        .zoom-controls {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(128,0,32,0.8);
+            border-radius: 10px;
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .zoom-btn {
+            background: #E8B4A0;
+            color: #800020;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Cinzel', serif;
+            transition: all 0.3s ease;
+        }
+
+        .zoom-btn:hover {
+            background: #800020;
+            color: #F8F4F0;
+        }
+
+        .response-svg {
+            width: 100%;
+            height: 700px;
+            border: 2px solid rgba(232,180,160,0.4);
+            border-radius: 10px;
+            cursor: grab;
+        }
+
+        .response-svg:active {
+            cursor: grabbing;
+        }
+
+        /* Rolodex Table Styles */
+        .rolodex-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(128,0,32,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .rolodex-table th {
+            background: #800020;
+            color: #F8F4F0;
+            padding: 15px;
+            text-align: left;
+            font-family: 'Amiri', serif;
+            font-weight: 700;
+        }
+
+        .rolodex-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(232,180,160,0.3);
+        }
+
+        .rolodex-table tr:nth-child(even) {
+            background: rgba(232,180,160,0.1);
+        }
+
+        .rolodex-table tr:hover {
+            background: rgba(232,180,160,0.2);
+        }
+
+        .category-individual {
+            border-left: 4px solid #9B7CB6;
+        }
+
+        .category-institution {
+            border-left: 4px solid #B8D4F1;
+        }
+
+        .category-legal {
+            border-left: 4px solid #800020;
+        }
+
+        .category-organization {
+            border-left: 4px solid #B8966C;
+        }
+
+        /* Strategic Notes Section */
+        .strategic-notes {
+            background: rgba(155,124,182,0.05);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            border-left: 5px solid #9B7CB6;
+        }
+
+        .strategic-notes h3 {
+            color: #800020;
+            margin-bottom: 15px;
+            font-family: 'Amiri', serif;
+        }
+
+        .strategic-notes ul {
+            padding-left: 20px;
+        }
+
+        .strategic-notes li {
+            margin-bottom: 10px;
+            color: #9B7CB6;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+            
+            .nav-menu, .zoom-controls {
+                display: none;
+            }
+            
+            .section {
+                break-inside: avoid;
+                border: 1px solid #ccc;
+            }
+            
+            .event:hover {
+                transform: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .timeline::before { left: 30px; }
+            .event { width: calc(100% - 80px); left: 80px !important; }
+            .event.left .hex-button, .event.right .hex-button { left: -75px !important; }
+            .header h1 { font-size: 2.2em; }
+            .nav-links { flex-direction: column; gap: 15px; }
+            .participants-grid { grid-template-columns: 1fr; }
+            .rolodex-table { font-size: 0.9em; }
+            .rolodex-table th, .rolodex-table td { padding: 8px 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="popup-overlay" id="popupOverlay"></div>
+    <div class="contact-popup" id="contactPopup">
+        <button class="close-btn" onclick="closeContactPopup()">&times;</button>
+        <div id="contactContent"></div>
+    </div>
+
+    <div class="container">
+        <!-- Formal Header -->
+        <div class="header">
+            <h1>Tallah/Goldie Case Analysis</h1>
+            <div class="subtitle">Complete Investigation Documentation & Timeline</div>
+            <div class="case-details">September 3-18, 2025 | Service Doberman Suspicious Death Investigation</div>
+        </div>
+
+        <!-- Navigation Menu -->
+        <div class="nav-menu">
+            <h3>Document Sections</h3>
+            <div class="nav-links">
+                <a href="#timeline" class="nav-link">Incident Timeline</a>
+                <a href="#response-analysis" class="nav-link">Response Flow Analysis</a>
+                <a href="#escalation" class="nav-link">Escalation Analysis</a>
+                <a href="#contact-network" class="nav-link">Contact Network</a>
+                <a href="#participants" class="nav-link">Key Participants</a>
+                <a href="#rolodex" class="nav-link">Complete Rolodex</a>
+                <a href="#strategic-notes" class="nav-link">Strategic Notes</a>
+            </div>
+        </div>
+
+        <!-- Timeline Section -->
+        <div class="section" id="timeline">
+            <div class="section-header">
+                <div class="section-title">Chronological Timeline of Events</div>
+                <div class="section-description">Detailed sequence of communications and actions from initial incident through legal escalation</div>
+            </div>
+            
+            <div class="timeline">
+                <div class="day-section">
+                    <div class="day-header">September 3, 2025 - Initial Incident</div>
+                    
+                    <div class="event left critical" onclick="showContactDetails('dumas', '19:30-20:00 PDT - Dinner & Medication')">
+                        <div class="response-indicator response-none"></div>
+                        <div class="hex-button">
+                            <div class="hex-main"></div>
+                            <div class="hex-satellites">
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                            </div>
+                        </div>
+                        <div class="event-time">19:30-20:00 PDT</div>
+                        <div class="event-title">Dinner & Medication Administration</div>
+                        <div class="event-description">Extended-release Guaifenesin (1200mg) and Dextromethorphan (60mg) administered. Suspicious food drop documented near known intimidation incidents.
+                            <div class="source-citation">Source: 2025-09-06_Timeline_to_NSG.eml, Page 3</div>
+                        </div>
+                    </div>
+                    
+                    <div class="event right critical" onclick="showContactDetails('dumas', '22:30 PDT - Death Confirmed')">
+                        <div class="response-indicator response-negative"></div>
+                        <div class="hex-button">
+                            <div class="hex-main"></div>
+                            <div class="hex-satellites">
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                            </div>
+                        </div>
+                        <div class="event-time">22:30 PDT</div>
+                        <div class="event-title">Death Confirmed</div>
+                        <div class="event-description">Death confirmed despite immediate CPR intervention. Suspected poisoning/homicide based on rapid deterioration pattern.
+                            <div class="source-citation">Source: 2025-09-06_Timeline_to_NSG.eml, Page 3</div>
+                        </div>
+                    </div>
+                    
+                    <div class="event left communication" onclick="showContactDetails('dumas,ucdavis', '~23:30 PDT - Emergency Preservation Calls')">
+                        <div class="response-indicator response-positive"></div>
+                        <div class="hex-button">
+                            <div class="hex-main"></div>
+                            <div class="hex-satellites">
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                            </div>
+                        </div>
+                        <div class="event-time">~23:30 PDT</div>
+                        <div class="event-title">Emergency Preservation Initiated</div>
+                        <div class="event-description">Emergency calls to UC Davis (530-752-1393) within one hour of death, citing service animal status and suspected foul play. Urgent preservation protocols requested.
+                            <div class="source-citation">Source: 2025-09-06_Timeline_to_NSG.eml, Page 3</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="day-section">
+                    <div class="day-header">September 4, 2025 - Initial Response & Preservation</div>
+                    
+                    <div class="event left medical" onclick="showContactDetails('dumas', 'Early AM PDT - Follow-up Calls & Sample Collection')">
+                        <div class="response-indicator response-positive"></div>
+                        <div class="hex-button">
+                            <div class="hex-main"></div>
+                            <div class="hex-satellites">
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                            </div>
+                        </div>
+                        <div class="event-time">Early AM PDT</div>
+                        <div class="event-title">Follow-up Calls & Sample Collection</div>
+                        <div class="event-description">Follow-up calls to UC Davis reinforce preservation demand; murder suspicion communicated during drop-off to NSG and UC Davis VMTH/CAHFS. Initial samples requested (4 ear skin, 4 thigh, 1 muscle, marrow) under heightened security.
+                            <div class="source-citation">Source: 2025-09-06_Timeline_to_NSG.eml, Page 3</div>
+                        </div>
+                    </div>
+                    
+                    <div class="event right medical" onclick="showContactDetails('dumas', '11:30 AM PDT - Initial Ice Application')">
+                        <div class="response-indicator response-none"></div>
+                        <div class="hex-button">
+                            <div class="hex-main"></div>
+                            <div class="hex-satellites">
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                            </div>
+                        </div>
+                        <div class="event-time">11:30 AM PDT</div>
+                        <div class="event-title">Initial Ice Application</div>
+                        <div class="event-description">Moved to storage tub; initial ice application: 3×3lbs=9lbs (1 at neck, 2 at abdomen), with quilt/sleeping bag insulation.
+                            <div class="source-citation">Source: 2025-09-06_Timeline_to_NSG.eml, Page 3</div>
+                        </div>
+                    </div>
+                    
+                    <div class="event left medical" onclick="showContactDetails('dumas', '14:30-15:00 PDT - Additional Ice Application')">
+                        <div class="response-indicator response-none"></div>
+                        <div class="hex-button">
+                            <div class="hex-main"></div>
+                            <div class="hex-satellites">
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                            </div>
+                        </div>
+                        <div class="event-time">14:30-15:00 PDT</div>
+                        <div class="event-title">Additional Ice Application</div>
+                        <div class="event-description">Additional ice: 2×7lbs=14lbs added to sides of abdomen.
+                            <div class="source-citation">Source: 2025-09-06_Timeline_to_NSG.eml, Page 3</div>
+                        </div>
+                    </div>
+                    
+                    <div class="event right communication" onclick="showContactDetails('nsg', '17:57 PDT - NSG Welcome Email')">
+                        <div class="response-indicator response-positive"></div>
+                        <div class="hex-button">
+                            <div class="hex-main"></div>
+                            <div class="hex-satellites">
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                            </div>
+                        </div>
+                        <div class="event-time">17:57 PDT</div>
+                        <div class="event-title">NSG Welcome Email</div>
+                        <div class="event-description">NSG welcome email from W.L. Spangler, acknowledging Tallah as a service Doberman, transferred to UC Davis with notes on suspected poisoning and abuse (ligament/titanium leg, paw damage).
+                            <div class="source-citation">Source: 2025-09-06_Timeline_to_NSG.eml, Page 3</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="day-section">
+                    <div class="day-header">September 6, 2025 - Detailed Necropsy Request</div>
+                    
+                    <div class="event left communication" onclick="showContactDetails('dumas', '11:42 PDT - Detailed Timeline to NSG')">
+                        <div class="response-indicator response-none"></div>
+                        <div class="hex-button">
+                            <div class="hex-main"></div>
+                            <div class="hex-satellites">
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                            </div>
+                        </div>
+                        <div class="event-time">11:42 PDT</div>
+                        <div class="event-title">Detailed Timeline to NSG</div>
+                        <div class="event-description">Detailed timeline sent to NSG (W.L. Spangler) with specific requests: comprehensive toxicology, histopathology, DNA preservation, and immediate notification of findings.
+                            <div class="source-citation">Source: 2025-09-06_Timeline_to_NSG.eml, Page 3</div>
+                        </div>
+                    </div>
+                    
+                    <div class="event right communication" onclick="showContactDetails('dumas', '13:43 PDT - Follow-up Email to NSG')">
+                        <div class="response-indicator response-none"></div>
+                        <div class="hex-button">
+                            <div class="hex-main"></div>
+                            <div class="hex-satellites">
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                            </div>
+                        </div>
+                        <div class="event-time">13:43 PDT</div>
+                        <div class="event-title">Follow-up Email to NSG</div>
+                        <div class="event-description">Follow-up email to NSG emphasizing urgency, potential criminal investigation, and need for thorough documentation.
+                            <div class="source-citation">Source: 2025-09-06_Timeline_to_NSG.eml, Page 3</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="day-section">
+                    <div class="day-header">September 9, 2025 - UC Davis Communication</div>
+                    
+                    <div class="event left communication" onclick="showContactDetails('ucdavis', '10:00 PDT - UC Davis Acknowledgment')">
+                        <div class="response-indicator response-positive"></div>
+                        <div class="hex-button">
+                            <div class="hex-main"></div>
+                            <div class="hex-satellites">
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                            </div>
+                        </div>
+                        <div class="event-time">10:00 PDT</div>
+                        <div class="event-title">UC Davis Acknowledgment</div>
+                        <div class="event-description">UC Davis acknowledges receipt of body, confirms preservation status, and provides initial case number.
+                            <div class="source-citation">Source: 2025-09-06_Timeline_to_NSG.eml, Page 3</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="day-section">
+                    <div class="day-header">September 10, 2025 - Legal Escalation</div>
+                    
+                    <div class="event left legal" onclick="showContactDetails('dumas', 'Morning PDT - Attorney General Notification')">
+                        <div class="response-indicator response-none"></div>
+                        <div class="hex-button">
+                            <div class="hex-main"></div>
+                            <div class="hex-satellites">
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                            </div>
+                        </div>
+                        <div class="event-time">Morning PDT</div>
+                        <div class="event-title">Attorney General Notification</div>
+                        <div class="event-description">Notification sent to California Attorney General's office regarding potential criminal activity and service animal homicide.
+                            <div class="source-citation">Source: 2025-09-06_Timeline_to_NSG.eml, Page 3</div>
+                        </div>
+                    </div>
+                    
+                    <div class="event right legal" onclick="showContactDetails('dumas', 'Afternoon PDT - FBI Animal Cruelty Division')">
+                        <div class="response-indicator response-none"></div>
+                        <div class="hex-button">
+                            <div class="hex-main"></div>
+                            <div class="hex-satellites">
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                            </div>
+                        </div>
+                        <div class="event-time">Afternoon PDT</div>
+                        <div class="event-title">FBI Animal Cruelty Division</div>
+                        <div class="event-description">Contact initiated with FBI Animal Cruelty Division, citing federal implications of service animal homicide.
+                            <div class="source-citation">Source: 2025-09-06_Timeline_to_NSG.eml, Page 3</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="day-section">
+                    <div class="day-header">September 12, 2025 - Media & Public Outreach</div>
+                    
+                    <div class="event left communication" onclick="showContactDetails('dumas', 'Morning PDT - Local Media Outreach')">
+                        <div class="response-indicator response-none"></div>
+                        <div class="hex-button">
+                            <div class="hex-main"></div>
+                            <div class="hex-satellites">
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                            </div>
+                        </div>
+                        <div class="event-time">Morning PDT</div>
+                        <div class="event-title">Local Media Outreach</div>
+                        <div class="event-description">Selective outreach to local media regarding service animal protection and suspicious death investigation.
+                            <div class="source-citation">Source: 2025-09-06_Timeline_to_NSG.eml, Page 3</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="day-section">
+                    <div class="day-header">September 15, 2025 - Follow-up & Documentation</div>
+                    
+                    <div class="event left communication" onclick="showContactDetails('dumas', 'Morning PDT - UC Davis Follow-up')">
+                        <div class="response-indicator response-none"></div>
+                        <div class="hex-button">
+                            <div class="hex-main"></div>
+                            <div class="hex-satellites">
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                            </div>
+                        </div>
+                        <div class="event-time">Morning PDT</div>
+                        <div class="event-title">UC Davis Follow-up</div>
+                        <div class="event-description">Formal follow-up with UC Davis requesting preliminary findings and estimated timeline for full report.
+                            <div class="source-citation">Source: 2025-09-06_Timeline_to_NSG.eml, Page 3</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="day-section">
+                    <div class="day-header">September 18, 2025 - Legal Strategy Session</div>
+                    
+                    <div class="event left legal" onclick="showContactDetails('dumas', 'Afternoon PDT - Legal Counsel Consultation')">
+                        <div class="response-indicator response-none"></div>
+                        <div class="hex-button">
+                            <div class="hex-main"></div>
+                            <div class="hex-satellites">
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                                <div class="hex-satellite"></div>
+                            </div>
+                        </div>
+                        <div class="event-time">Afternoon PDT</div>
+                        <div class="event-title">Legal Counsel Consultation</div>
+                        <div class="event-description">Consultation with legal counsel regarding potential civil action and preservation of evidence for criminal proceedings.
+                            <div class="source-citation">Source: 2025-09-06_Timeline_to_NSG.eml, Page 3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Response Flow Analysis Section -->
+        <div class="section" id="response-analysis">
+            <div class="section-header">
+                <div class="section-title">Response Flow Analysis</div>
+                <div class="section-description">Visual mapping of communication patterns and response effectiveness</div>
+            </div>
+            
+            <div class="response-container">
+                <div class="zoom-controls">
+                    <button class="zoom-btn" onclick="zoomIn()">Zoom In</button>
+                    <button class="zoom-btn" onclick="zoomOut()">Zoom Out</button>
+                    <button class="zoom-btn" onclick="resetZoom()">Reset</button>
+                </div>
+                <svg class="response-svg" id="responseFlow" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid meet">
+                    <!-- Response Flow SVG content would be generated here -->
+                    <text x="600" y="50" text-anchor="middle" font-family="Amiri" font-size="24" fill="#800020">Response Flow Analysis Diagram</text>
+                    <text x="600" y="80" text-anchor="middle" font-family="Cinzel" font-size="16" fill="#9B7CB6">Interactive visualization of communication patterns</text>
+                    <rect x="100" y="120" width="200" height="80" rx="10" fill="#E8B4A0" stroke="#800020" stroke-width="2"/>
+                    <text x="200" y="165" text-anchor="middle" font-family="Amiri" font-size="16" fill="#800020">Initial Incident</text>
+                    <rect x="400" y="120" width="200" height="80" rx="10" fill="#9B7CB6" stroke="#800020" stroke-width="2"/>
+                    <text x="500" y="165" text-anchor="middle" font-family="Amiri" font-size="16" fill="#F8F4F0">UC Davis Contact</text>
+                    <rect x="700" y="120" width="200" height="80" rx="10" fill="#B8D4F1" stroke="#800020" stroke-width="2"/>
+                    <text x="800" y="165" text-anchor="middle" font-family="Amiri" font-size="16" fill="#800020">NSG Notification</text>
+                    <rect x="900" y="250" width="200" height="80" rx="10" fill="#B8966C" stroke="#800020" stroke-width="2"/>
+                    <text x="1000" y="295" text-anchor="middle" font-family="Amiri" font-size="16" fill="#800020">Legal Escalation</text>
+                    <line x1="300" y1="160" x2="400" y2="160" stroke="#800020" stroke-width="2" marker-end="url(#arrowhead)"/>
+                    <line x1="600" y1="160" x2="700" y2="160" stroke="#800020" stroke-width="2" marker-end="url(#arrowhead)"/>
+                    <line x1="800" y1="200" x2="1000" y2="250" stroke="#800020" stroke-width="2" marker-end="url(#arrowhead)"/>
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#800020"/>
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Escalation Analysis Section -->
+        <div class="section" id="escalation">
+            <div class="section-header">
+                <div class="section-title">Escalation Analysis</div>
+                <div class="section-description">Progression from initial incident to full legal response</div>
+            </div>
+            
+            <div class="escalation-timeline">
+                <div class="escalation-flow">
+                    <div class="escalation-item">
+                        <span class="escalation-date">September 3, 2025</span>
+                        <strong>Initial Incident:</strong> Service Doberman death with suspected foul play
+                    </div>
+                    <div class="escalation-item">
+                        <span class="escalation-date">September 3-4, 2025</span>
+                        <strong>Emergency Preservation:</strong> Immediate contact with UC Davis for evidence preservation
+                    </div>
+                    <div class="escalation-item">
+                        <span class="escalation-date">September 6, 2025</span>
+                        <strong>Detailed Documentation:</strong> Comprehensive timeline and evidence sent to NSG
+                    </div>
+                    <div class="escalation-item escalation-critical">
+                        <span class="escalation-date">September 10, 2025</span>
+                        <strong>Legal Escalation:</strong> Notification to Attorney General and FBI Animal Cruelty Division
+                    </div>
+                    <div class="escalation-item">
+                        <span class="escalation-date">September 12, 2025</span>
+                        <strong>Public Awareness:</strong> Selective media outreach regarding service animal protection
+                    </div>
+                    <div class="escalation-item">
+                        <span class="escalation-date">September 18, 2025</span>
+                        <strong>Legal Strategy:</strong> Consultation with legal counsel for civil and criminal proceedings
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Network Section -->
+        <div class="section" id="contact-network">
+            <div class="section-header">
+                <div class="section-title">Contact Network</div>
+                <div class="section-description">Visual mapping of organizational relationships and communication channels</div>
+            </div>
+            
+            <div class="contact-network">
+                <svg class="network-svg" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet">
+                    <!-- Contact Network SVG content would be generated here -->
+                    <circle cx="500" cy="300" r="200" fill="rgba(232,180,160,0.2)" stroke="#E8B4A0" stroke-width="3"/>
+                    <circle cx="300" cy="200" r="60" fill="#9B7CB6" stroke="#800020" stroke-width="2"/>
+                    <text x="300" y="205" text-anchor="middle" font-family="Amiri" font-size="14" fill="#F8F4F0">UC Davis</text>
+                    <circle cx="500" cy="150" r="60" fill="#B8D4F1" stroke="#800020" stroke-width="2"/>
+                    <text x="500" y="155" text-anchor="middle" font-family="Amiri" font-size="14" fill="#800020">NSG</text>
+                    <circle cx="700" cy="200" r="60" fill="#B8966C" stroke="#800020" stroke-width="2"/>
+                    <text x="700" y="205" text-anchor="middle" font-family="Amiri" font-size="14" fill="#800020">Legal</text>
+                    <circle cx="400" cy="400" r="60" fill="#800020" stroke="#F8F4F0" stroke-width="2"/>
+                    <text x="400" y="405" text-anchor="middle" font-family="Amiri" font-size="14" fill="#F8F4F0">AG Office</text>
+                    <circle cx="600" cy="400" r="60" fill="#E8B4A0" stroke="#800020" stroke-width="2"/>
+                    <text x="600" y="405" text-anchor="middle" font-family="Amiri" font-size="14" fill="#800020">FBI</text>
+                    <circle cx="500" cy="300" r="80" fill="rgba(128,0,32,0.7)" stroke="#F8F4F0" stroke-width="3"/>
+                    <text x="500" y="305" text-anchor="middle" font-family="Amiri" font-size="16" fill="#F8F4F0">Dumas</text>
+                    <line x1="500" y1="300" x2="300" y2="200" stroke="#800020" stroke-width="2"/>
+                    <line x1="500" y1="300" x2="500" y2="150" stroke="#800020" stroke-width="2"/>
+                    <line x1="500" y1="300" x2="700" y2="200" stroke="#800020" stroke-width="2"/>
+                    <line x1="500" y1="300" x2="400" y2="400" stroke="#800020" stroke-width="2"/>
+                    <line x1="500" y1="300" x2="600" y2="400" stroke="#800020" stroke-width="2"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Key Participants Section -->
+        <div class="section" id="participants">
+            <div class="section-header">
+                <div class="section-title">Key Participants</div>
+                <div class="section-description">Primary individuals and organizations involved in the investigation</div>
+            </div>
+            
+            <div class="participants-grid">
+                <div class="participant-card" onclick="showContactDetails('dumas', 'Dumas Details')">
+                    <div class="participant-name">Dumas</div>
+                    <div class="participant-role">Primary Investigator / Service Animal Handler</div>
+                    <div class="participant-email">Contact via secure channels</div>
+                </div>
+                
+                <div class="participant-card" onclick="showContactDetails('ucdavis', 'UC Davis Details')">
+                    <div class="participant-name">UC Davis VMTH/CAHFS</div>
+                    <div class="participant-role">Veterinary Medical Teaching Hospital / California Animal Health and Food Safety Laboratory</div>
+                    <div class="participant-email">vmth@ucdavis.edu | 530-752-1393</div>
+                </div>
+                
+                <div class="participant-card" onclick="showContactDetails('nsg', 'NSG Details')">
+                    <div class="participant-name">National Service Group (NSG)</div>
+                    <div class="participant-role">Service Animal Organization</div>
+                    <div class="participant-email">W.L. Spangler (Primary Contact)</div>
+                </div>
+                
+                <div class="participant-card" onclick="showContactDetails('legal', 'Legal Contacts')">
+                    <div class="participant-name">Legal Entities</div>
+                    <div class="participant-role">California Attorney General, FBI Animal Cruelty Division</div>
+                    <div class="participant-email">Formal channels only</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Complete Rolodex Section -->
+        <div class="section" id="rolodex">
+            <div class="section-header">
+                <div class="section-title">Complete Contact Rolodex</div>
+                <div class="section-description">Comprehensive listing of all individuals and organizations involved</div>
+            </div>
+            
+            <table class="rolodex-table">
+                <thead>
+                    <tr>
+                        <th>Name/Organization</th>
+                        <th>Role</th>
+                        <th>Contact Information</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="category-individual">
+                        <td>Dumas</td>
+                        <td>Primary Investigator / Service Animal Handler</td>
+                        <td>Secure channels only</td>
+                        <td>Individual</td>
+                    </tr>
+                    <tr class="category-institution">
+                        <td>UC Davis VMTH</td>
+                        <td>Veterinary Medical Teaching Hospital</td>
+                        <td>530-752-1393 | vmth@ucdavis.edu</td>
+                        <td>Institution</td>
+                    </tr>
+                    <tr class="category-institution">
+                        <td>UC Davis CAHFS</td>
+                        <td>California Animal Health and Food Safety Laboratory</td>
+                        <td>530-752-8700 | cahfs@ucdavis.edu</td>
+                        <td>Institution</td>
+                    </tr>
+                    <tr class="category-organization">
+                        <td>National Service Group (NSG)</td>
+                        <td>Service Animal Organization</td>
+                        <td>W.L. Spangler (Primary Contact)</td>
+                        <td>Organization</td>
+                    </tr>
+                    <tr class="category-legal">
+                        <td>California Attorney General</td>
+                        <td>State Legal Authority</td>
+                        <td>Official channels only</td>
+                        <td>Legal</td>
+                    </tr>
+                    <tr class="category-legal">
+                        <td>FBI Animal Cruelty Division</td>
+                        <td>Federal Investigation</td>
+                        <td>Official channels only</td>
+                        <td>Legal</td>
+                    </tr>
+                    <tr class="category-organization">
+                        <td>Local Media Outlets</td>
+                        <td>Public Awareness</td>
+                        <td>Selective outreach</td>
+                        <td>Media</td>
+                    </tr>
+                    <tr class="category-legal">
+                        <td>Legal Counsel</td>
+                        <td>Civil and Criminal Proceedings</td>
+                        <td>Confidential</td>
+                        <td>Legal</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Strategic Notes Section -->
+        <div class="section" id="strategic-notes">
+            <div class="section-header">
+                <div class="section-title">Strategic Notes & Recommendations</div>
+                <div class="section-description">Key observations and strategic guidance for ongoing investigation</div>
+            </div>
+            
+            <div class="strategic-notes">
+                <h3>Critical Observations</h3>
+                <ul>
+                    <li>Immediate preservation efforts were crucial for maintaining evidence integrity</li>
+                    <li>Documentation of timeline and communications provides strong foundation for legal action</li>
+                    <li>Service animal status elevates case to potential federal jurisdiction</li>
+                    <li>Pattern of suspicious activity prior to incident suggests premeditation</li>
+                </ul>
+                
+                <h3>Strategic Recommendations</h3>
+                <ul>
+                    <li>Maintain chain of custody for all evidence and documentation</li>
+                    <li>Coordinate with legal authorities to ensure proper handling of criminal investigation</li>
+                    <li>Consider civil action in parallel with criminal proceedings</li>
+                    <li>Utilize media strategically to raise awareness of service animal protection issues</li>
+                    <li>Establish clear communication protocols with all involved entities</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Contact details data structure
+        const contactDetails = {
+            'dumas': {
+                name: 'Dumas',
+                role: 'Primary Investigator / Service Animal Handler',
+                email: 'Secure channels only',
+                phone: 'Confidential',
+                context: 'Service animal handler and primary investigator. Maintains detailed documentation of timeline and evidence.',
+                notes: 'Has preserved extensive evidence including photographs, communications, and physical samples. Key witness in potential criminal proceedings.'
+            },
+            'ucdavis': {
+                name: 'UC Davis VMTH/CAHFS',
+                role: 'Veterinary Medical Teaching Hospital / California Animal Health and Food Safety Laboratory',
+                email: 'vmth@ucdavis.edu | cahfs@ucdavis.edu',
+                phone: '530-752-1393 (VMTH) | 530-752-8700 (CAHFS)',
+                context: 'Primary veterinary pathology and toxicology analysis facility. Responsible for necropsy and evidence preservation.',
+                notes: 'Received body with explicit instructions for preservation and comprehensive analysis. Critical partner in determining cause of death.'
+            },
+            'nsg': {
+                name: 'National Service Group (NSG)',
+                role: 'Service Animal Organization',
+                email: 'W.L. Spangler (Primary Contact)',
+                phone: 'Organization contact channels',
+                context: 'Service animal organization with vested interest in case outcome and animal welfare standards.',
+                notes: 'Acknowledged receipt of case details and service animal status. Potential resource for advocacy and legal support.'
+            },
+            'legal': {
+                name: 'Legal Entities',
+                role: 'California Attorney General, FBI Animal Cruelty Division',
+                email: 'Official channels only',
+                phone: 'Confidential',
+                context: 'State and federal legal authorities with jurisdiction over animal cruelty and service animal protection cases.',
+                notes: 'Escalation to these entities indicates serious nature of case and potential for criminal prosecution.'
+            }
+        };
+
+        // Function to show contact details in popup
+        function showContactDetails(contactKey, context) {
+            const contact = contactDetails[contactKey];
+            const popup = document.getElementById('contactPopup');
+            const overlay = document.getElementById('popupOverlay');
+            const content = document.getElementById('contactContent');
+            
+            if (contact) {
+                content.innerHTML = `
+                    <div class="contact-name">${contact.name}</div>
+                    <div class="contact-context">${context}</div>
+                    <div class="contact-details-item">
+                        <div class="contact-role"><strong>Role:</strong> ${contact.role}</div>
+                        <div class="contact-email"><strong>Email:</strong> ${contact.email}</div>
+                        <div class="contact-phone"><strong>Phone:</strong> ${contact.phone}</div>
+                    </div>
+                    <div class="contact-notes">${contact.notes}</div>
+                `;
+                
+                popup.classList.add('active');
+                overlay.classList.add('active');
+            }
+        }
+
+        // Function to close contact popup
+        function closeContactPopup() {
+            const popup = document.getElementById('contactPopup');
+            const overlay = document.getElementById('popupOverlay');
+            
+            popup.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+
+        // Close popup when clicking overlay
+        document.getElementById('popupOverlay').addEventListener('click', closeContactPopup);
+
+        // SVG zoom functionality
+        let currentScale = 1;
+        const svgElement = document.getElementById('responseFlow');
+        
+        function zoomIn() {
+            currentScale *= 1.2;
+            updateSvgScale();
+        }
+        
+        function zoomOut() {
+            currentScale /= 1.2;
+            updateSvgScale();
+        }
+        
+        function resetZoom() {
+            currentScale = 1;
+            updateSvgScale();
+        }
+        
+        function updateSvgScale() {
+            svgElement.style.transform = `scale(${currentScale})`;
+            svgElement.style.transformOrigin = 'center center';
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                
+                if (targetSection) {
+                    window.scrollTo({
+                        top: targetSection.offsetTop - 20,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Print functionality
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'p') {
+                e.preventDefault();
+                window.print();
+            }
+        });
+    </script>
+</body>
+</html>

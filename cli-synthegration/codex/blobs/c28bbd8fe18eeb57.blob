@@ -1,0 +1,6 @@
+cd frontend
+npm install
+cp .env.example .env
+# Set VITE_API_URL to your backend URL
+npm run build
+# Deploy the `dist` folder to Vercel, Netlify, or any static host

@@ -1,0 +1,272 @@
+use crate::lexer::Token;
+
+#[derive(Debug)]
+pub enum ASTNode {
+    Element {
+        tag: String,
+        classes: Vec<String>,
+        attrs: Vec<(String, String)>,
+        children: Vec<ASTNode>,
+    },
+    Text(String),
+}
+
+pub fn parse(tokens: &[Token]) -> Vec<ASTNode> {
+    let _ = std::fs::write("parse_debug.log", "parse_start");
+    let mut roots: Vec<ASTNode> = Vec::new();
+    let mut stack: Vec<(usize, ASTNode)> = Vec::new();
+    let mut i = 0;
+    let mut iteration = 0u32;
+    let max_iterations = 1_000_000; // safety valve
+
+    while i < tokens.len() {
+        iteration += 1;
+        if iteration > max_iterations {
+            let _ = std::fs::write("parse_debug.log", "MAX_ITERATIONS");
+            break;
+        }
+        if tokens[i] == Token::Newline {
+            i += 1;
+            continue;
+        }
+
+        let indent = if let Token::Whitespace(ws) = &tokens[i] {
+            let n = ws.len();
+            i += 1;
+            n
+        } else {
+            0
+        };
+
+        let (node, next_i) = parse_one(tokens, i, indent);
+        if next_i <= i && next_i < tokens.len() {
+            // No progress — force advance
+            let _ = std::fs::write(
+                "parse_debug.log",
+                format!("STALL at {} next_i={}", i, next_i),
+            );
+            i += 1;
+        } else {
+            i = next_i;
+        }
+
+        // Pop completed siblings
+        while let Some((top_indent, _)) = stack.last() {
+            if *top_indent >= indent {
+                let (_, completed) = stack.pop().unwrap();
+                if let Some((_, parent)) = stack.last_mut() {
+                    if let ASTNode::Element { children, .. } = &mut *parent {
+                        children.push(completed);
+                    }
+                } else {
+                    roots.push(completed);
+                }
+            } else {
+                break;
+            }
+        }
+        stack.push((indent, node));
+    }
+
+    while let Some((_, node)) = stack.pop() {
+        if let Some((_, parent)) = stack.last_mut() {
+            if let ASTNode::Element { children, .. } = &mut *parent {
+                children.push(node);
+            }
+        } else {
+            roots.push(node);
+        }
+    }
+
+    // Iterative ARIA injection (no recursion)
+    let mut aria_stack: Vec<&mut ASTNode> = roots.iter_mut().collect();
+    while let Some(node) = aria_stack.pop() {
+        if let ASTNode::Element {
+            tag,
+            attrs,
+            children,
+            ..
+        } = node
+        {
+            if (*tag == "div" || *tag == "span")
+                && attrs
+                    .iter()
+                    .any(|(k, _)| k.starts_with("on:") || k.starts_with("on") || k.starts_with("@"))
+            {
+                if !attrs.iter().any(|(k, _)| k == "role") {
+                    attrs.push(("role".to_string(), "button".to_string()));
+                }
+                if !attrs.iter().any(|(k, _)| k == "tabindex") {
+                    attrs.push(("tabindex".to_string(), "0".to_string()));
+                }
+            }
+            aria_stack.extend(children.iter_mut());
+        }
+    }
+
+    roots
+}
+
+fn parse_one(tokens: &[Token], start: usize, _indent: usize) -> (ASTNode, usize) {
+    let token = &tokens[start];
+    let tag = match token {
+        Token::Div => "div",
+        Token::Span => "span",
+        Token::Button => "button",
+        Token::Section => "section",
+        Token::Aside => "aside",
+        Token::Paragraph => "p",
+        Token::Heading => "h1",
+        Token::UnorderedList => "ul",
+        Token::ListItem => "li",
+        Token::Blockquote => "blockquote",
+        Token::Svg => "svg",
+        Token::Path => "path",
+        Token::Rect => "rect",
+        Token::Circle => "circle",
+        Token::Ellipse => "ellipse",
+        Token::Line => "line",
+        Token::Polyline => "polyline",
+        Token::Group => "g",
+        Token::Defs => "defs",
+        Token::Text => "text",
+        Token::SvgImage => "image",
+        Token::Use => "use",
+        Token::Anchor => "a",
+        Token::Image => "img",
+        Token::Table => "table",
+        Token::TableCell => "td",
+        Token::TableRow => "tr",
+        Token::Form => "form",
+        Token::Input => "input",
+        Token::TextArea => "textarea",
+        Token::Label => "label",
+        Token::InterpolationOpen => return parse_interpolation(tokens, start),
+        _ => return parse_text(tokens, start),
+    };
+
+    let mut i = start + 1;
+    let mut classes = Vec::new();
+    let mut attrs = Vec::new();
+    let mut children = Vec::new();
+
+    loop {
+        if i >= tokens.len() || tokens[i] == Token::Newline {
+            if i < tokens.len() {
+                i += 1;
+            }
+            break;
+        }
+        match &tokens[i] {
+            Token::Class(c) => {
+                classes.push(c.clone());
+                i += 1;
+            }
+            Token::AttrName(name) | Token::Ident(name) => {
+                let name = name.clone();
+                i += 1;
+                if i < tokens.len() {
+                    if let Token::Equals = &tokens[i] {
+                        i += 1;
+                    }
+                    if let Token::QuotedValue(val) = &tokens[i] {
+                        attrs.push((name, val.clone()));
+                        i += 1;
+                    } else if let Token::Ident(val) = &tokens[i] {
+                        attrs.push((name, val.clone()));
+                        i += 1;
+                    } else {
+                        children.push(ASTNode::Text(name));
+                    }
+                } else {
+                    children.push(ASTNode::Text(name));
+                }
+            }
+            Token::TextLiteral(t) => {
+                children.push(ASTNode::Text(t.clone()));
+                i += 1;
+            }
+            Token::InterpolationOpen => {
+                let (node, next) = parse_interpolation(tokens, i);
+                children.push(node);
+                i = next;
+            }
+            Token::Whitespace(_) => {
+                i += 1;
+            }
+            Token::Unknown => {
+                i += 1;
+            }
+            _ => {
+                i += 1;
+            }
+        }
+    }
+    (
+        ASTNode::Element {
+            tag: tag.to_string(),
+            classes,
+            attrs,
+            children,
+        },
+        i,
+    )
+}
+
+fn parse_interpolation(tokens: &[Token], start: usize) -> (ASTNode, usize) {
+    let mut content = String::new();
+    let mut i = start + 1;
+    while i < tokens.len() {
+        match &tokens[i] {
+            Token::InterpolationClose => {
+                i += 1;
+                break;
+            }
+            Token::Ident(s) | Token::AttrName(s) => {
+                content.push_str(s);
+                i += 1;
+            }
+            Token::Whitespace(_) => {
+                content.push(' ');
+                i += 1;
+            }
+            _ => {
+                i += 1;
+            }
+        }
+    }
+    (ASTNode::Text(format!("{{{{{}}}}}", content.trim())), i)
+}
+
+fn parse_text(tokens: &[Token], start: usize) -> (ASTNode, usize) {
+    let mut text = String::new();
+    let mut i = start;
+    while i < tokens.len() {
+        match &tokens[i] {
+            Token::Ident(s)
+            | Token::AttrName(s)
+            | Token::QuotedValue(s)
+            | Token::TextLiteral(s) => {
+                if !text.is_empty() {
+                    text.push(' ');
+                }
+                text.push_str(s);
+                i += 1;
+            }
+            Token::Whitespace(_) => {
+                text.push(' ');
+                i += 1;
+            }
+            Token::Unknown => {
+                i += 1;
+            }
+            _ => break,
+        }
+    }
+    let trimmed = text.trim().to_string();
+    if trimmed.is_empty() {
+        (ASTNode::Text(String::new()), i)
+    } else {
+        (ASTNode::Text(trimmed), i)
+    }
+}

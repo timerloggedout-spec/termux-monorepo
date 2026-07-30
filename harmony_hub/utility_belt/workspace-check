@@ -1,0 +1,9 @@
+#!/bin/bash
+echo "=== Workspace files (last 10 modified) ==="
+ls -lt ~/termux-multi-agent/workspace/*.py ~/termux-multi-agent/workspace/*.sh 2>/dev/null | head -10
+echo ""
+echo "=== Recent dispatch results ==="
+tail -15 ~/workspace/llm_map/dispatch_debug.log 2>/dev/null || echo "No debug log"
+echo ""
+echo "=== Pending tasks ==="
+jq -r '.[] | select(.status=="pending") | "  \(.id): \(.title)"' ~/workspace/llm_map/master_tasks.json

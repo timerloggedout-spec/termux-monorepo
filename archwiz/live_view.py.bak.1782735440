@@ -1,0 +1,223 @@
+#!/usr/bin/env python3
+"""Review Panel – stable, all features, TUI‑style send."""
+import json, sys, time, subprocess, os, re, hashlib
+from pathlib import Path
+from datetime import datetime
+
+HOME = Path.home()
+_state_file = Path.home() / '.deepcli' / 'active_session'
+if _state_file.exists():
+    SESSION_ID = _state_file.read_text().strip()
+else:
+    SESSION_ID = os.environ.get('ARCHWIZ_SESSION', '417ddd6d-9711-465d-ab90-c92cc04aeabf')
+CACHE = HOME / f'.deepcli/session_store/{SESSION_ID}.json'
+AUTOEXEC = HOME / 'archwiz/autoexec.log'
+EXECUTED = HOME / 'archwiz/executed_blocks.txt'
+EXCEPTIONS = HOME / 'archwiz/exception_notes.md'
+
+def sync_cache():
+    # Simply re-read the local cache file; the listener keeps it updated.
+    # No API call needed – avoids curl failures.
+    pass
+def load():
+    if not CACHE.exists(): return []
+    try:
+        d = json.loads(CACHE.read_text())
+        return d if isinstance(d, list) else d.get('messages', [])
+    except (json.JSONDecodeError, FileNotFoundError):
+        # Cache corrupt – try to fetch fresh once via the listener's mechanism
+        # The listener will auto-repair on next cycle; just return empty for now
+        return []
+
+def executed_set():
+    if not EXECUTED.exists(): return set()
+    return set(l.strip() for l in EXECUTED.read_text().splitlines() if l.strip())
+
+def tail(n=6):
+    if not AUTOEXEC.exists(): return ''
+    return '\n'.join(AUTOEXEC.read_text().splitlines()[-n:])
+
+def extract_blocks(msgs, already):
+    out = []
+    seen = set()
+    for m in msgs:
+        if m.get('role', '').lower() != 'assistant':
+            continue
+        mid = str(m.get('message_id', ''))
+        content = m.get('content', '')
+        for match in re.finditer(r"""```(?:[a-z]*\n)?(.*?)```""", content, re.DOTALL):
+            code = match.group(1).strip()
+            if len(code) < 30 or 'activity_listener' in code:
+                continue
+            block_key = mid + ':' + hashlib.md5(code[:80].encode()).hexdigest()[:12]
+            if block_key in already or block_key in seen:
+                continue
+            seen.add(block_key)
+            ctx = content[:match.start()].strip()
+            out.append((block_key, code, m, ctx))
+    return out
+
+def is_shell(code):
+    return bool(re.match(r'^(python3|bash|~/|cd |ls |grep |sed|awk|export|mkdir|cat|chmod|echo)',
+                code.split('\n')[0].strip())) or '<<' in code.split('\n')[0]
+
+def execute_block(code):
+    sandbox=HOME/'sandbox/activity_listener'; sandbox.mkdir(parents=True,exist_ok=True)
+    ext='.sh' if is_shell(code) else '.py'
+    script=sandbox/f'block_{datetime.now().strftime("%H%M%S")}{ext}'
+    script.write_text(code); script.chmod(0o755)
+    res=subprocess.run(['bash',str(script)] if ext=='.sh' else ['python3',str(script)],
+        capture_output=True,text=True,timeout=60,cwd=str(sandbox),stdin=subprocess.DEVNULL)
+    return res.stdout+res.stderr,res.returncode
+
+def add_note(action,idx,code,txt=''):
+    ts=datetime.now().strftime('%Y-%m-%d %H:%M')
+    with open(EXCEPTIONS,'a') as f: f.write(f"\n- **[{ts}]** {action} block #{idx}: {txt}\n  ```\n  {code[:120]}...\n  ```\n")
+
+def send(text):
+    try:
+        sys.path.insert(0, str(HOME / 'deepcli'))
+        from deepcli.core import get_token, chat_completion
+        token = get_token()
+        reply = chat_completion(token, text, SESSION_ID)
+        print(f"\nSent. Reply: {reply[:200]}...")
+    except Exception as e:
+        print(f"Send error: {e}")
+
+def self_mod(code):
+    pats=['archwiz/','activity_listener','export_poller','live_view','sentinel.py','probe.py','archivist.py','mirror.py','autonomous_runner','dispatch_task','archwiz.py']
+    return any(p in code for p in pats)
+
+def show_errors():
+    if not AUTOEXEC.exists(): return
+    errs=[l for l in AUTOEXEC.read_text().splitlines() if 'Error' in l or 'SyntaxError' in l or '❌' in l]
+    if errs:
+        print("\n"+"RECENT ERRORS".center(60,'─'))
+        for l in errs[-3:]: print(f"  {l[:120]}")
+
+def restart_listener():
+    subprocess.run(['python3', str(HOME/'archwiz/listener_control.py'), 'restart'])
+
+def main():
+    os.system('clear')
+    sync_cache(); time.sleep(3)
+    show_ctx=False
+    print(f"⚡ Panel — {SESSION_ID[:16]}...")
+    print("  /exec<n|all> /skip<n|all> /send /m /c /ctx /clear /hist /sync /q")
+
+    while True:
+        try:
+            msgs=load(); ex=executed_set(); blk=extract_blocks(msgs,ex)
+            print("\n"+"─"*60)
+            if not blk: print("✅ No pending blocks.")
+            else:
+                print(f"PENDING ({len(blk)}):")
+                for i,(bk,code,m,ctx) in enumerate(blk[:8]):
+                    snippet=code[:80].replace('\n',' ')
+                    warn=' ⚠️SELF‑MOD' if self_mod(code) else ''
+                    print(f"  {i}:{warn} {snippet}")
+                    if show_ctx:
+                        full=m.get('content',''); cs=full.find('```')
+                        if cs>0: full=full[:cs].strip()
+                        for line in full.split('\n')[-8:]: print(f"     │ {line[:120]}")
+                    elif ctx: print(f"     ↳ {ctx[:100]}")
+            show_errors()
+            print("─"*60)
+
+            cmd=input("> ").strip()
+            if cmd in('/q','q','quit','exit'): break
+            if not cmd: continue
+            if cmd=='/sync': sync_cache(); print("Syncing..."); time.sleep(2)
+            elif cmd=='/ctx': show_ctx=not show_ctx; print(f"Context {'ON' if show_ctx else 'OFF'}")
+            elif cmd=='/clear':
+                AUTOEXEC.write_text('')
+                print("Autoexec log cleared. Panel tracking preserved.")
+            elif cmd=='/hist':
+                if EXCEPTIONS.exists():
+                    print("RECENT NOTES:"); lines=EXCEPTIONS.read_text().splitlines()
+                    for l in lines[-15:]: print(l)
+                print("\nRECENT EXECUTIONS (last 5):"); print(tail(5) or "  (none)")
+            elif cmd in('/c','/continue'): send("Continue"); print("Sent: Continue")
+            elif cmd=='/send':
+                text = input("Message: ").strip()
+                if text: send(text); print("Sent.")
+            elif cmd=='/m':
+                lines=[]
+                print("Multi-line (/end to cancel, empty line to send):")
+                while True:
+                    line=input("  ").rstrip()
+                    if line=='': break
+                    if line=='/end': lines=[]; break
+                    lines.append(line)
+                if not lines: print("Cancelled.")
+                else:
+                    text='\n'.join(lines)
+                    if text.strip(): send(text); print("Sent.")
+            elif cmd.startswith('/exec'):
+                parts=cmd.split(' ',1); rest=parts[1] if len(parts)>1 else ''
+                idx_str=rest.split()[0] if rest else ''
+                if idx_str=='all' or ',' in idx_str:
+                    indices=list(range(len(blk[:8])))
+                    if ',' in idx_str: indices=[int(x.strip()) for x in idx_str.split(',') if x.strip().isdigit()]
+                    for idx in indices:
+                        if 0<=idx<len(blk):
+                            bk,code,m,ctx=blk[idx]; sm=self_mod(code)
+                            if sm: print(f"⚠️ Block {idx} modifies ArchWiz.")
+                            out,rc=execute_block(code); print(out)
+                            with open(AUTOEXEC,'a') as f: f.write(f"[{datetime.now().strftime('%H:%M:%S')}] {code[:50]}...\n{out}\n")
+                            with open(EXECUTED,'a') as f: f.write(f"{bk}\n")
+                            if sm: restart_listener(); print("✅ Listener restarted.")
+                elif idx_str.isdigit():
+                    idx=int(idx_str)
+                    if 0<=idx<len(blk):
+                        bk,code,m,ctx=blk[idx]; nt=rest[len(idx_str):].strip().lstrip('–-').strip(); sm=self_mod(code)
+                        if sm: print(f"⚠️ Block {idx} modifies ArchWiz.")
+                        out,rc=execute_block(code); print(out)
+                        with open(AUTOEXEC,'a') as f: f.write(f"[{datetime.now().strftime('%H:%M:%S')}] {code[:50]}...\n{out}\n")
+                        with open(EXECUTED,'a') as f: f.write(f"{bk}\n")
+                        if nt: add_note('executed',idx,code,nt)
+                        if sm: restart_listener(); print("✅ Listener restarted.")
+            elif cmd.startswith('/skip'):
+                parts=cmd.split(' ',1); rest=parts[1] if len(parts)>1 else ''
+                idx_str=rest.split()[0] if rest else ''
+                # --- /skip all  (every pending block, not just visible ones) ---
+                if idx_str=='all':
+                    for bk,code,m,ctx in blk:
+                        with open(EXECUTED,'a') as f: f.write(f"{bk}\n")
+                    print(f"Skipped all {len(blk)} pending blocks.")
+                # --- /skip page  (all blocks on the current page) ---
+                elif idx_str=='page':
+                    for i,(bk,code,m,ctx) in enumerate(blk[:8]):
+                        with open(EXECUTED,'a') as f: f.write(f"{bk}\n")
+                    print(f"Skipped {min(8, len(blk))} blocks on this page.")
+                # --- /skip 1,3,5-9,12  (comma-separated list with ranges) ---
+                elif ',' in idx_str or '-' in idx_str:
+                    indices=set()
+                    for part in idx_str.split(','):
+                        part=part.strip()
+                        if '-' in part:
+                            try:
+                                a,b=part.split('-',1)
+                                for n in range(int(a.strip()), int(b.strip())+1):
+                                    indices.add(n)
+                            except: pass
+                        elif part.isdigit():
+                            indices.add(int(part))
+                    for idx in sorted(indices):
+                        if 0<=idx<len(blk):
+                            bk,code,m,ctx=blk[idx]
+                            with open(EXECUTED,'a') as f: f.write(f"{bk}\n")
+                    print(f"Skipped {len(indices)} blocks.")
+                # --- /skip <n>  (single block) ---
+                elif idx_str.isdigit():
+                    idx=int(idx_str)
+                    if 0<=idx<len(blk):
+                        bk,code,m,ctx=blk[idx]; nt=rest[len(idx_str):].strip().lstrip('–-').strip()
+                        with open(EXECUTED,'a') as f: f.write(f"{bk}\n")
+                        print(f"Skipped block {idx}")
+                        if nt: add_note('skipped',idx,code,nt)
+            time.sleep(0.5)
+        except KeyboardInterrupt: break
+        except Exception as e: print(f"Error: {e}"); time.sleep(5)
+
+if __name__=='__main__': main()

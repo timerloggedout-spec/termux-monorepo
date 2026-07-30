@@ -1,0 +1,84 @@
+// components/WorldMap.jsx
+import React, { memo } from 'react';
+import {
+  ComposableMap,
+  Geographies,
+  Geography,
+  ZoomableGroup
+} from 'react-simple-maps';
+import { scaleLinear } from 'd3-scale';
+
+// TopoJSON world map (110m resolution)
+const geoUrl = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
+
+// Map country codes to our jurisdiction keys
+const countryToJurisdiction = {
+  USA: 'us',
+  CAN: 'ca',
+  GBR: 'uk',
+  AUS: 'au',
+  JPN: 'jp',
+  RUS: 'ru',
+  // EU countries map to 'eu' (simplified; real implementation would use EU membership list)
+  FRA: 'eu', DEU: 'eu', ITA: 'eu', ESP: 'eu', NLD: 'eu', BEL: 'eu', etc.
+};
+
+// Status color scale
+const statusColors = {
+  approved: '#22c55e',
+  investigational: '#3b82f6',
+  unapproved: '#ef4444',
+  withdrawn: '#f59e0b',
+  unknown: '#94a3b8',
+};
+
+const WorldMap = ({ compound, onCountryClick }) => {
+  const getStatusForCountry = (geo) => {
+    const iso_a3 = geo.properties.ISO_A3;
+    const jurisKey = countryToJurisdiction[iso_a3];
+    if (!jurisKey) return 'unknown';
+    return compound[`${jurisKey}Status`] || 'unknown';
+  };
+
+  return (
+    <div className="bg-gray-100 dark:bg-gray-800 rounded-xl p-4">
+      <ComposableMap projection="geoMercator" width={800} height={500}>
+        <ZoomableGroup center={[0, 20]} zoom={1.2}>
+          <Geographies geography={geoUrl}>
+            {({ geographies }) =>
+              geographies.map(geo => {
+                const status = getStatusForCountry(geo);
+                return (
+                  <Geography
+                    key={geo.rsmKey}
+                    geography={geo}
+                    fill={statusColors[status] || statusColors.unknown}
+                    stroke="#FFFFFF"
+                    strokeWidth={0.5}
+                    style={{
+                      default: { outline: 'none' },
+                      hover: { fill: '#a855f7', outline: 'none', cursor: 'pointer' },
+                      pressed: { outline: 'none' },
+                    }}
+                    onClick={() => onCountryClick(geo.properties.ISO_A3, status)}
+                  />
+                );
+              })
+            }
+          </Geographies>
+        </ZoomableGroup>
+      </ComposableMap>
+      {/* Legend */}
+      <div className="flex justify-center gap-4 mt-4">
+        {Object.entries(statusColors).map(([key, color]) => (
+          <div key={key} className="flex items-center gap-1">
+            <span className="w-4 h-4 rounded" style={{ backgroundColor: color }}></span>
+            <span className="text-xs capitalize">{key}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default memo(WorldMap);

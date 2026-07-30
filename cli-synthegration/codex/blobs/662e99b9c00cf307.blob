@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Global Regulatory Intelligence</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-simple-maps@3/dist/react-simple-maps.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #080c14; color: #e2e8f0; font-family: 'Outfit', sans-serif; }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: #0f1724; }
+    ::-webkit-scrollbar-thumb { background: #2d4a6e; border-radius: 2px; }
+    .spin { animation: spin 1s linear infinite; }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .sidebar-mobile { transform: translateX(-100%); transition: transform 0.3s ease; }
+    .sidebar-mobile.open { transform: translateX(0); }
+    .detail-panel { transform: translateX(100%); transition: transform 0.3s ease; }
+    .detail-panel.open { transform: translateX(0); }
+  </style>
+</head>
+<body class="bg-[#080c14] text-[#e2e8f0]">
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useEffect, useRef, useMemo } = React;
+    const { ComposableMap, Geographies, Geography, ZoomableGroup } = window.ReactSimpleMaps;
+
+    const API_URL = 'YOUR_APPS_SCRIPT_URL';
+    const GEO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
+    const ISO_COUNTRIES_URL = 'https://raw.githubusercontent.com/stefangabos/world_countries/master/data/countries/en/world.json';
+
+    const statusColors = {
+      approved: '#22c55e', investigational: '#3b82f6', unapproved: '#ef4444', withdrawn: '#f59e0b',
+      under_review: '#a78bfa', harmonised: '#818cf8', unknown: '#64748b'
+    };
+    const wadaColor = { prohibited: '#ef4444', permitted: '#22c55e', unknown: '#64748b' };
+    const JURISDICTIONS = ['US','EU','CA','AU','UK','JP','RU'];
+
+    const Badge = ({ color, bg, children, small }) => (
+      <span style={{ background: bg || color + '22', color, border: `1px solid ${color}44`, borderRadius: 4, padding: small ? '1px 6px' : '2px 8px', fontSize: small ? 10 : 11, fontFamily: "'JetBrains Mono', monospace", fontWeight: 600, whiteSpace: 'nowrap', letterSpacing: 0.5 }}>{children}</span>
+    );
+    const JurisCell = ({ status, access }) => {
+      const s = statusColors[status] || '#64748b';
+      const bgMap = { prescription_only:'#1a3a2a', clinical_trial_only:'#1a2a3a', pharmacy_compounded:'#2a2a1a', prohibited:'#3a1a1a', not_marketed:'#1a1a2a', unknown:'#1a1a1a' };
+      const labelMap = { prescription_only:'Rx Only', clinical_trial_only:'Trial Only', pharmacy_compounded:'Compounding', prohibited:'Prohibited', not_marketed:'Not Marketed', unknown:'Unknown' };
+      const textMap = { prescription_only:'#86efac', clinical_trial_only:'#93c5fd', pharmacy_compounded:'#fde68a', prohibited:'#fca5a5', not_marketed:'#94a3b8', unknown:'#64748b' };
+      const bg = bgMap[access] || '#1a1a1a';
+      const tc = textMap[access] || '#94a3b8';
+      const lb = labelMap[access] || '—';
+      return (<div style={{ background: bg, border: `1px solid ${s}44`, borderRadius: 6, padding: '4px 6px', minWidth: 80, textAlign: 'center' }}><div style={{ color: s, fontSize: 10, fontFamily: "'JetBrains Mono', monospace", fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.5 }}>{status}</div><div style={{ color: tc, fontSize: 9, marginTop: 1 }}>{lb}</div></div>);
+    };
+    const RiskChip = ({ level }) => {
+      const map = { approved:{c:'#22c55e',l:'Approved'}, phase_3:{c:'#8b5cf6',l:'Phase 3'}, phase_2:{c:'#a78bfa',l:'Phase 2'}, withdrawn:{c:'#f59e0b',l:'Withdrawn'}, unapproved:{c:'#ef4444',l:'No Approval'}, preclinical:{c:'#f97316',l:'Preclinical'} };
+      const m = map[level] || {c:'#64748b',l:'Unknown'};
+      return <Badge color={m.c}>{m.l}</Badge>;
+    };
+    const SectionBlock = ({ title, children, accent = '#3b82f6' }) => (
+      <div style={{ marginBottom: 16 }}><div style={{ color: accent, fontSize: 10, fontFamily: "'JetBrains Mono', monospace", fontWeight: 600, letterSpacing: 1.5, textTransform: 'uppercase', borderBottom: `1px solid ${accent}33`, paddingBottom: 4, marginBottom: 8 }}>{title}</div><div style={{ color: '#cbd5e1', fontSize: 13, lineHeight: 1.6 }}>{children}</div></div>
+    );
+
+    function App() {
+      const [compounds, setCompounds] = useState([]);
+      const [trials, setTrials] = useState([]);
+      const [researchLinks, setResearchLinks] = useState([]);
+      const [combinations, setCombinations] = useState([]);
+      const [countryTierMap, setCountryTierMap] = useState({});
+      const [countryMap, setCountryMap] = useState({});
+      const [loading, setLoading] = useState(true);
+      const [search, setSearch] = useState('');
+      const [filterType, setFilterType] = useState('all');
+      const [filterWADA, setFilterWADA] = useState('all');
+      const [filterUS, setFilterUS] = useState('all');
+      const [filterTrialStatus, setFilterTrialStatus] = useState('all');
+      const [filterResearchType, setFilterResearchType] = useState('all');
+      const [selectedIds, setSelectedIds] = useState([]);
+      const [compareMode, setCompareMode] = useState(false);
+      const [activeTab, setActiveTab] = useState('matrix');
+      const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+      const [trialsData, setTrialsData] = useState([]);
+      const [rorData, setRorData] = useState([]);
+      const [trialsLoading, setTrialsLoading] = useState(false);
+      const [rorLoading, setRorLoading] = useState(false);
+      const [enriching, setEnriching] = useState(false);
+      const [showPendingOnly, setShowPendingOnly] = useState(false);
+      const panelRef = useRef(null);
+
+      useEffect(() => {
+        (async () => {
+          try {
+            const [compRes, countryRes, tierRes, combRes, trialsRes, researchRes] = await Promise.all([
+              fetch(API_URL),
+              fetch(ISO_COUNTRIES_URL),
+              fetch(API_URL + '?type=country_tiers'),
+              fetch(API_URL + '?type=combination_stacks'),
+              fetch(API_URL + '?type=trials'),
+              fetch(API_URL + '?type=research_links')
+            ]);
+            const compData = await compRes.json();
+            const countryData = await countryRes.json();
+            const tierData = await tierRes.json();
+            const combData = await combRes.json();
+            const trialsData = await trialsRes.json();
+            const researchData = await researchRes.json();
+            
+            const tierMap = {};
+            tierData.forEach(r => { tierMap[r.ISO_A3] = { tier: r.tier, name: r.regulator_name }; });
+            setCountryTierMap(tierMap);
+            
+            const newMap = {};
+            countryData.forEach(c => {
+              const iso = c.alpha3.toUpperCase();
+              if (iso === 'USA') newMap[iso] = 'us';
+              else if (iso === 'CAN') newMap[iso] = 'ca';
+              else if (iso === 'GBR') newMap[iso] = 'uk';
+              else if (iso === 'AUS') newMap[iso] = 'au';
+              else if (iso === 'JPN') newMap[iso] = 'jp';
+              else if (iso === 'RUS') newMap[iso] = 'ru';
+              else if (['FRA','DEU','ITA','ESP','NLD','BEL','SWE','AUT','DNK','FIN','IRL','PRT','GRC','CZE','HUN','POL','ROU','BGR','SVK','SVN','HRV','LTU','LVA','EST','CYP','MLT','LUX'].includes(iso)) newMap[iso] = 'eu';
+              else newMap[iso] = iso.toLowerCase();
+            });
+            setCountryMap(newMap);
+            setCompounds(compData);
+            setCombinations(combData);
+            setTrials(trialsData);
+            setResearchLinks(researchData);
+          } catch(e) { console.error(e); } finally { setLoading(false); }
+        })();
+      }, []);
+
+      // Build fuzzy search indices
+      const compoundFuse = useMemo(() => new Fuse(compounds, {
+        keys: ['Canonical_Name', 'Synonyms', 'Entity_ID'],
+        threshold: 0.4,
+        includeScore: true
+      }), [compounds]);
+      
+      const trialFuse = useMemo(() => new Fuse(trials, {
+        keys: ['Title', 'NCT_ID', 'Conditions', 'Sponsor'],
+        threshold: 0.4
+      }), [trials]);
+      
+      const researchFuse = useMemo(() => new Fuse(researchLinks, {
+        keys: ['Title', 'URL', 'Link_Type'],
+        threshold: 0.4
+      }), [researchLinks]);
+
+      // Combined search across all data
+      const combinedResults = useMemo(() => {
+        if (!search) return { compounds, trials, research: researchLinks };
+        const compResults = compoundFuse.search(search).map(r => r.item);
+        const trialResults = trialFuse.search(search).map(r => r.item);
+        const researchResults = researchFuse.search(search).map(r => r.item);
+        return { compounds: compResults, trials: trialResults, research: researchResults };
+      }, [search, compoundFuse, trialFuse, researchFuse]);
+
+      const parentMap = {};
+      combinations.forEach(c => {
+        if (c.Relationship_Type === 'stack_parent' && c.Component_Entity_ID) {
+          if (!parentMap[c.Parent_Entity_ID]) parentMap[c.Parent_Entity_ID] = [];
+          parentMap[c.Parent_Entity_ID].push(c.Component_Entity_ID);
+        }
+      });
+
+      const toggleSelect = (id) => {
+        setSelectedIds(prev => {
+          const isSelected = prev.includes(id);
+          let newSel = isSelected ? prev.filter(i => i !== id) : [...prev, id];
+          if (!isSelected && parentMap[id]) {
+            parentMap[id].forEach(cid => { if (!newSel.includes(cid)) newSel.push(cid); });
+          }
+          if (isSelected && parentMap[id]) {
+            newSel = newSel.filter(i => !parentMap[id].includes(i));
+          }
+          return newSel;
+        });
+      };
+
+      const filteredCompounds = useMemo(() => {
+        let data = combinedResults.compounds;
+        if (showPendingOnly) data = data.filter(c => c.Status === 'pending_review');
+        return data.filter(c => {
+          const typeOk = filterType==='all' || c.Entity_Type === filterType;
+          const wadaOk = filterWADA==='all' || (c.WADA_Status||'unknown') === filterWADA;
+          const usOk = filterUS==='all' || (c.US_FDA_Status||'unknown') === filterUS;
+          return typeOk && wadaOk && usOk;
+        });
+      }, [combinedResults.compounds, filterType, filterWADA, filterUS, showPendingOnly]);
+
+      const filteredTrials = useMemo(() => {
+        return combinedResults.trials.filter(t => 
+          filterTrialStatus==='all' || t.Status === filterTrialStatus
+        );
+      }, [combinedResults.trials, filterTrialStatus]);
+
+      const filteredResearch = useMemo(() => {
+        return combinedResults.research.filter(r => 
+          filterResearchType==='all' || r.Link_Type === filterResearchType
+        );
+      }, [combinedResults.research, filterResearchType]);
+
+      const selectedCompounds = compounds.filter(c => selectedIds.includes(c.Entity_ID));
+
+      const handleEnrich = async () => {
+        if (!search) return;
+        setEnriching(true);
+        try {
+          const res = await fetch(API_URL + '?action=enrich', { method:'POST', body: JSON.stringify({query:search}), headers:{'Content-Type':'application/json'} });
+          const data = await res.json();
+          if (data.added) {
+            const fresh = await fetch(API_URL).then(r=>r.json());
+            setCompounds(fresh);
+            alert(`Added ${data.added.Canonical_Name} (pending review)`);
+          } else if (data.existing) alert('Already in database.');
+          else alert('Not found.');
+        } catch(e) { alert('Enrichment failed.'); }
+        finally { setEnriching(false); }
+      };
+
+      const handleApproval = async (id, status) => {
+        await fetch(API_URL + '?action=' + status, { method:'POST', body: JSON.stringify({id}), headers:{'Content-Type':'application/json'} });
+        const fresh = await fetch(API_URL).then(r=>r.json());
+        setCompounds(fresh);
+      };
+
+      const searchTrials = async (query, country='') => {
+        setTrialsLoading(true);
+        let term = query;
+        if (country) term += ` AND ${country}`;
+        const url = `https://clinicaltrials.gov/api/v2/studies?query.term=${encodeURIComponent(term)}&pageSize=30`;
+        try { const r = await fetch(url); const d = await r.json(); setTrialsData(d.studies||[]); } catch(e) {} finally { setTrialsLoading(false); }
+      };
+      const searchROR = async (query, country='') => {
+        setRorLoading(true);
+        let url = `https://api.ror.org/organizations?query=${encodeURIComponent(query)}`;
+        if (country) url += `&filter=country.country_code:${country.substring(0,2).toUpperCase()}`;
+        try { const r = await fetch(url); const d = await r.json(); setRorData(d.items||[]); } catch(e) {} finally { setRorLoading(false); }
+      };
+      const exportCSV = () => {
+        const headers = ['Entity_ID','Canonical_Name','Entity_Type','US_FDA_Status','EU_EMA_Status','WADA_Status'];
+        const rows = filteredCompounds.map(c => [c.Entity_ID, c.Canonical_Name, c.Entity_Type, c.US_FDA_Status, c.EU_EMA_Status, c.WADA_Status]);
+        const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
+        const blob = new Blob([csv], {type:'text/csv'});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob); a.download = 'export.csv'; a.click();
+      };
+      const importCSV = (file) => {
+        Papa.parse(file, { header:true, complete: async (r) => {
+          await fetch(API_URL, { method:'POST', body: JSON.stringify(r.data), headers:{'Content-Type':'application/json'} });
+          const fresh = await fetch(API_URL).then(res=>res.json());
+          setCompounds(fresh);
+          alert('Imported');
+        }});
+      };
+
+      const getCountryStatus = (geo, compound) => {
+        const iso = geo.properties.ISO_A3;
+        const jurisKey = countryMap[iso] || iso.toLowerCase();
+        if (compound) {
+          const status = compound[`${jurisKey}_FDA_Status`] || compound[`${jurisKey}_EMA_Status`] || compound[`${jurisKey}_Status`];
+          if (status) return status;
+        }
+        const info = countryTierMap[iso] || { tier:'unknown' };
+        if (info.tier === 'wla') return 'under_review';
+        if (info.tier === 'ich') return 'harmonised';
+        return 'unknown';
+      };
+
+      if (loading) return <div className="flex justify-center items-center h-screen"><div className="spin text-2xl">⟳</div></div>;
+
+      const trialStatusOptions = ['all', ...new Set(trials.map(t => t.Status).filter(Boolean))];
+      const researchTypeOptions = ['all', ...new Set(researchLinks.map(r => r.Link_Type).filter(Boolean))];
+
+      return (
+        <div className="min-h-screen flex flex-col md:flex-row bg-[#080c14]">
+          <div className="md:hidden bg-[#0d1526] border-b border-[#1e3a5f] p-4 flex justify-between items-center sticky top-0 z-20">
+            <div className="flex items-center gap-2 font-bold text-lg" style={{fontFamily:'Syne'}}><i data-lucide="activity" className="w-5 h-5 text-indigo-400"></i><span>RegIntel</span></div>
+            <button onClick={()=>setMobileMenuOpen(!mobileMenuOpen)} className="p-2"><i data-lucide={mobileMenuOpen?'x':'menu'} className="w-6 h-6"></i></button>
+          </div>
+          <nav className={`sidebar-mobile ${mobileMenuOpen?'open':''} md:translate-x-0 fixed md:static top-0 left-0 h-full w-64 bg-[#0d1526] border-r border-[#1e3a5f] text-gray-300 z-30 flex-shrink-0 overflow-y-auto`}>
+            <div className="p-6 hidden md:flex items-center text-white font-bold text-xl gap-2" style={{fontFamily:'Syne'}}><i data-lucide="activity" className="w-6 h-6 text-indigo-400"></i><span>RegIntel</span></div>
+            <div className="px-4 pb-6 space-y-2">
+              {[ {id:'matrix',label:'Compounds',icon:'database'}, {id:'trials',label:'Trials',icon:'flask-conical'}, {id:'research',label:'Research',icon:'book-open'}, {id:'map',label:'World Map',icon:'map'}, {id:'ror',label:'Organizations',icon:'building-2'} ].map(t=>(
+                <button key={t.id} onClick={()=>{setActiveTab(t.id);setMobileMenuOpen(false)}} className={`w-full flex items-center px-4 py-3 rounded-lg transition ${activeTab===t.id?'bg-indigo-600 text-white':'hover:bg-gray-800 hover:text-white'}`}><i data-lucide={t.icon} className="w-5 h-5 mr-3"></i>{t.label}</button>
+              ))}
+              <div className="pt-4 mt-4 border-t border-[#1e3a5f] space-y-2">
+                <button onClick={()=>document.getElementById('csvUpload').click()} className="w-full flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-800"><i data-lucide="upload" className="w-4 h-4 mr-3"></i>Import CSV</button>
+                <button onClick={exportCSV} className="w-full flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-800"><i data-lucide="download" className="w-4 h-4 mr-3"></i>Export CSV</button>
+                <input type="file" id="csvUpload" accept=".csv" className="hidden" onChange={e=>importCSV(e.target.files[0])}/>
+                <button onClick={()=>setCompareMode(!compareMode)} className={`w-full flex items-center px-4 py-2 text-sm rounded-lg ${compareMode?'bg-indigo-600 text-white':'hover:bg-gray-800'}`}><i data-lucide="git-compare" className="w-4 h-4 mr-3"></i>Compare {compareMode&&'(ON)'}</button>
+                {selectedIds.length>0 && <button onClick={()=>setSelectedIds([])} className="w-full flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-800 text-red-400"><i data-lucide="x-circle" className="w-4 h-4 mr-3"></i>Clear ({selectedIds.length})</button>}
+                <button onClick={()=>setShowPendingOnly(!showPendingOnly)} className={`w-full flex items-center px-4 py-2 text-sm rounded-lg ${showPendingOnly?'bg-yellow-600 text-white':'hover:bg-gray-800'}`}><i data-lucide="clock" className="w-4 h-4 mr-3"></i>Pending Review</button>
+              </div>
+            </div>
+          </nav>
+          <main className="flex-1 p-4 md:p-6 overflow-y-auto">
+            {/* Global Search Bar */}
+            <div className="bg-[#0f1724] border border-[#1e3a5f] rounded-xl p-4 mb-6 flex flex-wrap gap-4 items-center">
+              <div className="relative flex-1 min-w-[200px]"><i data-lucide="search" className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5"></i><input placeholder="Search across compounds, trials, research..." value={search} onChange={e=>setSearch(e.target.value)} className="w-full pl-10 pr-4 py-2 rounded-lg border border-[#1e3a5f] bg-[#0a0f1a] text-white"/></div>
+              {search && <div className="text-sm text-gray-400">{filteredCompounds.length} compounds, {filteredTrials.length} trials, {filteredResearch.length} research</div>}
+            </div>
+
+            {/* Compounds Tab */}
+            {activeTab==='matrix' && (
+              <div>
+                <div className="flex flex-wrap gap-4 mb-6">
+                  <select value={filterType} onChange={e=>setFilterType(e.target.value)} className="px-4 py-2 rounded-lg border border-[#1e3a5f] bg-[#0a0f1a] text-gray-300">{['all',...new Set(compounds.map(c=>c.Entity_Type))].map(t=><option key={t}>{t==='all'?'All Types':t}</option>)}</select>
+                  <select value={filterWADA} onChange={e=>setFilterWADA(e.target.value)} className="px-4 py-2 rounded-lg border border-[#1e3a5f] bg-[#0a0f1a] text-gray-300">{['all','prohibited','permitted','unknown'].map(s=><option key={s}>{s}</option>)}</select>
+                  <select value={filterUS} onChange={e=>setFilterUS(e.target.value)} className="px-4 py-2 rounded-lg border border-[#1e3a5f] bg-[#0a0f1a] text-gray-300">{['all','approved','unapproved','investigational','withdrawn'].map(s=><option key={s}>{s}</option>)}</select>
+                  {filteredCompounds.length===0 && search && <button onClick={handleEnrich} disabled={enriching} className="px-4 py-2 bg-indigo-600 text-white rounded-lg">{enriching?<span className="spin inline-block mr-1">⟳</span>:null}Search External</button>}
+                </div>
+                <div className="bg-[#0d1526] border border-[#1e3a5f] rounded-xl overflow-x-auto">
+                  <table className="w-full text-sm font-mono"><thead className="bg-[#0a0f1a] text-gray-400"><tr><th className="px-6 py-3 text-left sticky left-0 bg-[#0a0f1a]">Compound</th><th className="px-4 py-3">Type</th><th className="px-4 py-3">US</th><th className="px-4 py-3">EU</th><th className="px-4 py-3">WADA</th><th className="px-4 py-3">Status</th></tr></thead><tbody>{filteredCompounds.map(c=>(<tr key={c.Entity_ID} onClick={()=>compareMode?toggleSelect(c.Entity_ID):setSelectedIds([c.Entity_ID])} className={`hover:bg-[#1a2a4a] cursor-pointer ${selectedIds.includes(c.Entity_ID)?'bg-indigo-900/30':''}`}><td className="px-6 py-4 sticky left-0 bg-[#0d1526]"><div className="font-medium text-white">{c.Canonical_Name}</div><div className="text-xs text-gray-500">{c.Entity_ID}</div></td><td className="px-4 py-4 text-gray-300">{c.Entity_Type}</td><td className="px-4 py-4 text-center"><span className="px-2 py-1 rounded-full text-xs font-medium" style={{backgroundColor:statusColors[c.US_FDA_Status]+'33',color:statusColors[c.US_FDA_Status]}}>{c.US_FDA_Status||'?'}</span></td><td className="px-4 py-4 text-center"><span className="px-2 py-1 rounded-full text-xs font-medium" style={{backgroundColor:statusColors[c.EU_EMA_Status]+'33',color:statusColors[c.EU_EMA_Status]}}>{c.EU_EMA_Status||'?'}</span></td><td className="px-4 py-4 text-center"><span className="px-2 py-1 rounded-full text-xs font-medium" style={{backgroundColor:wadaColor[c.WADA_Status]+'33',color:wadaColor[c.WADA_Status]}}>{c.WADA_Status||'?'}</span></td><td className="px-4 py-4 text-center">{c.Status==='pending_review'?<Badge color="#f59e0b" small>Pending</Badge>:<Badge color="#22c55e" small>Approved</Badge>}{compareMode && <input type="checkbox" checked={selectedIds.includes(c.Entity_ID)} readOnly className="ml-2"/>}</td></tr>))}</tbody></table>
+                </div>
+                {/* Pending Review Management */}
+                {compounds.some(c=>c.Status==='pending_review') && (
+                  <div className="mt-6 p-4 bg-[#0f1724] border border-[#1e3a5f] rounded-xl">
+                    <h3 className="text-lg font-bold mb-3">Pending Review</h3>
+                    {compounds.filter(c=>c.Status==='pending_review').map(c=>(
+                      <div key={c.Entity_ID} className="flex items-center justify-between p-3 border-b border-[#1e3a5f]">
+                        <span>{c.Canonical_Name} ({c.Entity_ID})</span>
+                        <div className="flex gap-2">
+                          <button onClick={()=>handleApproval(c.Entity_ID, 'approve')} className="px-3 py-1 bg-green-600 text-white rounded">Approve</button>
+                          <button onClick={()=>handleApproval(c.Entity_ID, 'reject')} className="px-3 py-1 bg-red-600 text-white rounded">Reject</button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Trials Tab */}
+            {activeTab==='trials' && (
+              <div>
+                <div className="flex flex-wrap gap-4 mb-6">
+                  <select value={filterTrialStatus} onChange={e=>setFilterTrialStatus(e.target.value)} className="px-4 py-2 rounded-lg border border-[#1e3a5f] bg-[#0a0f1a] text-gray-300">{trialStatusOptions.map(s=><option key={s}>{s==='all'?'All Statuses':s}</option>)}</select>
+                  <button onClick={()=>searchTrials(search)} className="px-4 py-2 bg-indigo-600 text-white rounded-lg">Search ClinicalTrials.gov</button>
+                </div>
+                <div className="space-y-4">
+                  {filteredTrials.map(t=>(
+                    <div key={t.NCT_ID} className="bg-[#0d1526] p-4 rounded-xl border border-[#1e3a5f]">
+                      <h3 className="font-bold">{t.Title}</h3>
+                      <p className="text-sm text-gray-400">NCT: {t.NCT_ID} | Phase: {t.Phase} | Status: {t.Status}</p>
+                      <p className="text-sm">{t.Conditions}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Research Tab */}
+            {activeTab==='research' && (
+              <div>
+                <div className="flex flex-wrap gap-4 mb-6">
+                  <select value={filterResearchType} onChange={e=>setFilterResearchType(e.target.value)} className="px-4 py-2 rounded-lg border border-[#1e3a5f] bg-[#0a0f1a] text-gray-300">{researchTypeOptions.map(t=><option key={t}>{t==='all'?'All Types':t}</option>)}</select>
+                </div>
+                <div className="space-y-4">
+                  {filteredResearch.map(r=>(
+                    <div key={r.Link_ID} className="bg-[#0d1526] p-4 rounded-xl border border-[#1e3a5f]">
+                      <h3 className="font-bold">{r.Title}</h3>
+                      <p className="text-sm text-gray-400">Type: {r.Link_Type}</p>
+                      <a href={r.URL} target="_blank" className="text-indigo-400 text-sm">{r.URL}</a>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Map Tab */}
+            {activeTab==='map' && (
+              <div className="bg-[#0d1526] border border-[#1e3a5f] rounded-xl p-4">
+                <h2 className="text-xl font-bold mb-4" style={{fontFamily:'Syne'}}>Global Regulatory Status</h2>
+                <ComposableMap projection="geoMercator" width={800} height={500}><ZoomableGroup center={[0,20]} zoom={1.2}><Geographies geography={GEO_URL}>{({geographies})=>geographies.map(geo=>(<Geography key={geo.rsmKey} geography={geo} fill={statusColors[getCountryStatus(geo, selectedCompounds[0])]||statusColors.unknown} stroke="#FFF" strokeWidth={0.5} style={{default:{outline:'none'},hover:{fill:'#a855f7',cursor:'pointer'}}} onClick={()=>{if(selectedCompounds[0]) searchTrials(selectedCompounds[0].Canonical_Name, geo.properties.NAME);}}/>))}</Geographies></ZoomableGroup></ComposableMap>
+                <div className="flex flex-wrap justify-center gap-4 mt-4">{Object.entries(statusColors).map(([k,c])=>(<div key={k} className="flex items-center gap-1"><span className="w-4 h-4 rounded" style={{backgroundColor:c}}></span><span className="text-xs capitalize">{k.replace('_',' ')}</span></div>))}</div>
+              </div>
+            )}
+
+            {/* ROR Tab */}
+            {activeTab==='ror' && (
+              <div className="space-y-4">
+                <div className="bg-[#0d1526] p-6 rounded-xl"><div className="flex gap-4"><input id="rq" placeholder="Organization" className="flex-1 px-4 py-2 rounded-lg border border-[#1e3a5f] bg-[#0a0f1a] text-white"/><input id="rc" placeholder="Country" className="flex-1 px-4 py-2 rounded-lg border border-[#1e3a5f] bg-[#0a0f1a] text-white"/><button onClick={()=>searchROR(document.getElementById('rq').value, document.getElementById('rc').value)} className="px-6 py-2 bg-indigo-600 text-white rounded-lg">Search</button></div></div>
+                {rorLoading?<div className="text-center"><span className="spin">⟳</span></div>:rorData.map(o=><div key={o.id} className="bg-[#0d1526] p-6 rounded-xl border border-[#1e3a5f]"><h3 className="font-bold">{o.name}</h3><p className="text-sm text-gray-400">{o.addresses?.[0]?.country}</p></div>)}
+              </div>
+            )}
+          </main>
+          {/* Detail Panel (single compound) */}
+          {selectedCompounds.length===1 && !compareMode && (
+            <div ref={panelRef} className="detail-panel open fixed inset-y-0 right-0 w-full md:w-[600px] bg-[#090e1b] border-l border-[#1e3a5f] shadow-xl z-50 overflow-y-auto">
+              <div className="p-6">
+                <div className="flex justify-between"><div><h2 className="text-2xl font-bold" style={{fontFamily:'Syne'}}>{selectedCompounds[0].Canonical_Name}</h2><p className="text-sm text-gray-500">{selectedCompounds[0].Entity_ID} · {selectedCompounds[0].Entity_Type}</p></div><button onClick={()=>setSelectedIds([])} className="p-2"><i data-lucide="x"></i></button></div>
+                {parentMap[selectedCompounds[0].Entity_ID]?.length>0 && (<div className="my-4 p-3 bg-[#0f1724] border border-[#1e3a5f] rounded-lg"><div className="text-xs text-gray-400 mb-2">Contains (auto-selected):</div><div className="flex flex-wrap gap-2">{parentMap[selectedCompounds[0].Entity_ID].map(cid=>{const child=compounds.find(c=>c.Entity_ID===cid); return child?<Badge key={cid} color="#4ade80">{child.Canonical_Name}</Badge>:null})}</div></div>)}
+                <SectionBlock title="Intended Use">{selectedCompounds[0].Intended_Use||selectedCompounds[0].Mechanism_Summary}</SectionBlock>
+                <SectionBlock title="Mechanism">{selectedCompounds[0].Mechanism_Summary}</SectionBlock>
+                <SectionBlock title="Side Effects">{selectedCompounds[0].Side_Effects}</SectionBlock>
+                <SectionBlock title="Safety Concerns">{selectedCompounds[0].Safety_Concerns}</SectionBlock>
+                <div className="mb-6"><div className="text-gray-400 text-xs font-mono uppercase border-b border-[#1e3a5f] pb-1 mb-3">Jurisdiction Status</div><div className="grid grid-cols-2 md:grid-cols-3 gap-2">{JURISDICTIONS.map(j=>{const status=selectedCompounds[0][`${j}_FDA_Status`]||selectedCompounds[0][`${j}_EMA_Status`]||selectedCompounds[0][`${j}_Status`]||'unknown'; const access=selectedCompounds[0][`${j}_Legal_Access`]||'unknown'; return <JurisCell key={j} status={status} access={access}/>})}</div></div>
+                <div className="mb-6 p-4 bg-red-950/20 border border-red-800 rounded-lg"><h3 className="text-sm font-semibold text-red-400">WADA</h3><div className="grid grid-cols-2 gap-2 text-sm"><div>Status: <span style={{color:wadaColor[selectedCompounds[0].WADA_Status]}}>{selectedCompounds[0].WADA_Status}</span></div><div>Category: {selectedCompounds[0].WADA_Category}</div><div>In-Comp: {selectedCompounds[0].WADA_In_Competition==='TRUE'?'Prohibited':'Permitted'}</div><div>Out-Comp: {selectedCompounds[0].WADA_Out_Competition==='TRUE'?'Prohibited':'Permitted'}</div></div></div>
+                {selectedCompounds[0].Status==='pending_review' && (
+                  <div className="mb-6 p-4 bg-yellow-950/20 border border-yellow-800 rounded-lg flex gap-2">
+                    <button onClick={()=>handleApproval(selectedCompounds[0].Entity_ID, 'approve')} className="px-4 py-2 bg-green-600 text-white rounded">Approve</button>
+                    <button onClick={()=>handleApproval(selectedCompounds[0].Entity_ID, 'reject')} className="px-4 py-2 bg-red-600 text-white rounded">Reject</button>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    setTimeout(()=>lucide.createIcons(),100);
+  </script>
+</body>
+</html>

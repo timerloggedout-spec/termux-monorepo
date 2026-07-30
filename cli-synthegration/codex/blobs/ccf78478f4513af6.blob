@@ -1,0 +1,10 @@
+{
+  players: Map({
+    "player1": {
+      unlocks: Set(["tool_macd", "tool_arbitrage"]),
+      activePortfolio: { assets: { ... }, budget: 100000 },
+      customAlgos: Array(...)
+    }
+  }),
+  leaderboard: Array(...)
+}

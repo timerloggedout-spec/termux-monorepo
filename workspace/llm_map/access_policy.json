@@ -1,0 +1,33 @@
+{
+  "roles": {
+    "developer": {
+      "allowed_dirs": ["~/termux-multi-agent", "~/workspace/llm_map", "~/sandbox/*"],
+      "allowed_files": ["~/.bashrc"],
+      "forbidden_dirs": ["~/harmony_hub", "~/deepcli/deepcli/core.py"],
+      "note": "Developer can modify agent code and workspace tools, but not core deepcli or harmony_hub directly."
+    },
+    "linguist": {
+      "allowed_dirs": ["~/harmony_hub", "~/workspace/llm_map", "~/sandbox/*"],
+      "allowed_files": ["~/.deepcli/*"],
+      "forbidden_dirs": ["~/termux-multi-agent"],
+      "note": "Linguist handles compression, naming, and CID; cannot touch agent execution code."
+    },
+    "chronomancer": {
+      "allowed_dirs": ["~/cli-synthegration/workspace/provenance", "~/workspace/llm_map", "~/sandbox/*"],
+      "allowed_files": [],
+      "forbidden_dirs": ["~/termux-multi-agent", "~/deepcli"],
+      "note": "Chronomancer manages versioning and temporal data, not live agent code."
+    },
+    "orchestrator": {
+      "allowed_dirs": ["~/termux-multi-agent", "~/workspace/llm_map", "~/sandbox/*"],
+      "allowed_files": ["~/workspace/FORGE_OVERSIGHT.md"],
+      "forbidden_dirs": [],
+      "note": "Orchestrator has broad access to coordinate agents."
+    }
+  },
+  "default": {
+    "allowed_dirs": ["~/sandbox/*"],
+    "forbidden_dirs": ["~/*"],
+    "note": "Unknown roles are restricted to sandbox only."
+  }
+}

@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS ohlc (
+    timestamp BIGINT,
+    base VARCHAR,
+    target VARCHAR,
+    open DOUBLE,
+    high DOUBLE,
+    low DOUBLE,
+    close DOUBLE,
+    volume DOUBLE
+)

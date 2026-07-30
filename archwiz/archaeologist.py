@@ -1,0 +1,1 @@
+/data/data/com.termux/files/home/workspace/llm_map/archaeologist.py

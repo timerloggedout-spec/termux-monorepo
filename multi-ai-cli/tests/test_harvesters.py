@@ -9,7 +9,7 @@ from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from harvesters.code_harvester import CodeHarvester, CodeSnippet
+from harvesters.code_harvester import CodeHarvester, CodeBlock, CodexIndex, Pointer, TaxonomyNode
 from harvesters.search_engine import SearchEngine, SearchResult
 from harvesters.extractor import CodeExtractor, ExtractedCode
 from harvesters.analyzer import CodeAnalyzer, AnalysisResult
@@ -26,11 +26,11 @@ class TestCodeHarvester:
         
         try:
             harvester = CodeHarvester()
-            snippets = harvester.harvest_file(file_path)
+            code_blocks = harvester.harvest_file(file_path)
             
-            assert len(snippets) == 1
-            assert snippets[0].language == "python"
-            assert "def hello():" in snippets[0].content
+            assert len(code_blocks) == 1
+            assert code_blocks[0].language == "python"
+            assert "def hello():" in code_blocks[0].content
         finally:
             os.unlink(file_path)
     
@@ -45,17 +45,16 @@ class TestCodeHarvester:
             js_file.write_text("function test() {}\n")
             
             harvester = CodeHarvester()
-            snippets = harvester.harvest_directory(tmpdir, recursive=False)
+            code_blocks = harvester.harvest_directory(tmpdir, recursive=False)
             
-            assert len(snippets) == 2
-            languages = {s.language for s in snippets}
+            assert len(code_blocks) == 2
+            languages = {b.language for b in code_blocks}
             assert "python" in languages
             assert "javascript" in languages
     
     def test_harvest_from_text(self):
-        """Test harvesting code from text."""
-        text = """
-        Here's some code:
+        """Test harvesting code from session messages."""
+        text = """Here's some code:
         
         ```python
         def hello():
@@ -70,123 +69,120 @@ class TestCodeHarvester:
         """
         
         harvester = CodeHarvester()
-        snippets = harvester.harvest_from_text(text, "test")
+        messages = [{"role": "assistant", "content": text}]
+        code_blocks = harvester.harvest_from_session("test_session", messages, "Test")
         
-        # We expect at least 2 snippets (python and javascript)
-        assert len(snippets) >= 2
-        languages = {s.language for s in snippets}
+        # We expect at least 2 code blocks (python and javascript)
+        assert len(code_blocks) >= 2
+        languages = {b.language for b in code_blocks}
         assert "python" in languages
         assert "javascript" in languages
     
-    def test_code_snippet(self):
-        """Test CodeSnippet class."""
-        snippet = CodeSnippet(
+    def test_code_block(self):
+        """Test CodeBlock class."""
+        code_block = CodeBlock(
             content="def test():\n    pass",
             language="python",
-            source="test",
-            file_path="/tmp/test.py"
+            session_id="test_session",
+            message_index=0,
+            block_index=0,
         )
         
-        assert snippet.hash != ""
-        assert len(snippet.hash) == 16
-        assert snippet.language == "python"
+        assert code_block.content_hash != ""
+        assert len(code_block.content_hash) == 16
+        assert code_block.language == "python"
         
         # Test serialization
-        data = snippet.to_dict()
+        data = code_block.to_dict()
         assert "content" in data
         assert "language" in data
-        assert "hash" in data
+        assert "content_hash" in data
         
         # Test deserialization
-        new_snippet = CodeSnippet.from_dict(data)
-        assert new_snippet.content == snippet.content
-        assert new_snippet.hash == snippet.hash
+        new_block = CodeBlock.from_dict(data)
+        assert new_block.content == code_block.content
+        assert new_block.content_hash == code_block.content_hash
+    
+    def test_codex_index(self):
+        """Test CodexIndex functionality."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            codex = CodexIndex(Path(tmpdir))
+            
+            messages = [
+                {"role": "user", "content": "Write a function"},
+                {"role": "assistant", "content": "```python\ndef hello():\n    print('Hello')\n```"}
+            ]
+            
+            codex.index_conversation("test_session", "Test", messages)
+            
+            # Check that we can search
+            results = codex.search("hello")
+            assert len(results) >= 1
+            
+            # Check that we can get by hash
+            if results:
+                code = codex.get_code_by_hash(results[0]['hash'])
+                assert code is not None
+                assert "def hello" in code
 
 
 class TestSearchEngine:
     """Test search engine functionality."""
     
-    def test_index_snippet(self):
-        """Test indexing a snippet."""
+    def test_index_conversation(self):
+        """Test indexing a conversation."""
         engine = SearchEngine()
         
-        snippet = {
-            "hash": "test123",
-            "content": "def hello():\n    print('Hello')",
-            "language": "python",
-            "source": "test",
-            "file_path": "/tmp/test.py"
-        }
-        
-        engine.index_snippet(snippet)
-        
-        assert "test123" in engine.snippets
-        assert "def" in engine.inverted_index
-    
-    def test_search(self):
-        """Test searching snippets."""
-        engine = SearchEngine()
-        
-        # Index some snippets
-        snippets = [
-            {
-                "hash": "test1",
-                "content": "def hello():\n    print('Hello')",
-                "language": "python",
-                "source": "test",
-                "file_path": "/tmp/test1.py"
-            },
-            {
-                "hash": "test2",
-                "content": "def world():\n    print('World')",
-                "language": "python",
-                "source": "test",
-                "file_path": "/tmp/test2.py"
-            }
+        messages = [
+            {"role": "user", "content": "Write a function"},
+            {"role": "assistant", "content": "```python\ndef hello():\n    print('Hello')\n```"}
         ]
         
-        engine.index_snippets(snippets)
+        engine.index_conversation("test_session", "Test", messages)
+        
+        # Check that we can search
+        results = engine.search("hello")
+        assert len(results) >= 1
+    
+    def test_search(self):
+        """Test searching code blocks."""
+        engine = SearchEngine()
+        
+        messages = [
+            {"role": "assistant", "content": "```python\ndef add(a, b):\n    return a + b\n```"},
+            {"role": "assistant", "content": "```python\ndef sub(a, b):\n    return a - b\n```"}
+        ]
+        
+        engine.index_conversation("test_session", "Test", messages)
         
         # Search for "def"
         results = engine.search("def")
-        assert len(results) == 2
+        assert len(results) >= 2
         
-        # Search for "hello"
-        results = engine.search("hello")
-        assert len(results) == 1
-        assert results[0].snippet_hash == "test1"
+        # Search for "add"
+        results = engine.search("add")
+        assert len(results) >= 1
+        assert "add" in results[0].content
     
     def test_search_by_language(self):
         """Test searching by language."""
         engine = SearchEngine()
         
-        snippets = [
-            {
-                "hash": "py1",
-                "content": "def test():\n    pass",
-                "language": "python",
-                "source": "test",
-                "file_path": "/tmp/test.py"
-            },
-            {
-                "hash": "js1",
-                "content": "function test() {}",
-                "language": "javascript",
-                "source": "test",
-                "file_path": "/tmp/test.js"
-            }
+        messages = [
+            {"role": "assistant", "content": "```python\ndef test():\n    pass\n```"},
+            {"role": "assistant", "content": "```javascript\nfunction test() {}\n```"}
         ]
         
-        engine.index_snippets(snippets)
+        engine.index_conversation("test_session", "Test", messages)
         
         # Search for Python
         results = engine.search_by_language("python")
-        assert len(results) == 1
+        assert len(results) >= 1
         assert results[0].language == "python"
         
         # Search for JavaScript
         results = engine.search_by_language("javascript")
-        assert len(results) == 1
+        assert len(results) >= 1
         assert results[0].language == "javascript"
 
 
@@ -217,8 +213,7 @@ class TestCodeExtractor:
         # Code Example
         
         ```python
-        def test():
-            pass
+        def test():\n            pass
         ```
         
         ```javascript

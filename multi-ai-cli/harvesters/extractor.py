@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
-"""Code Extractor for extracting code from various formats."""
+"""Code Extractor for extracting code from various formats.
+
+This uses lightweight regex extraction (not BeautifulSoup) following the
+same pattern as the Codex system in cli-synthegration.
+"""
 import os
 import re
 import json
+import hashlib
 from typing import List, Dict, Optional, Tuple
 from dataclasses import dataclass
 from pathlib import Path
@@ -18,11 +23,14 @@ class ExtractedCode:
     source: str
     start_line: int = 0
     end_line: int = 0
+    content_hash: str = ""
     metadata: Dict = None
     
     def __post_init__(self):
         if self.metadata is None:
             self.metadata = {}
+        if not self.content_hash and self.content:
+            self.content_hash = hashlib.sha256(self.content.encode()).hexdigest()[:16]
     
     def to_dict(self) -> Dict:
         """Convert to dictionary."""
@@ -32,31 +40,22 @@ class ExtractedCode:
             "source": self.source,
             "start_line": self.start_line,
             "end_line": self.end_line,
+            "content_hash": self.content_hash,
             "metadata": self.metadata,
         }
 
 class CodeExtractor:
-    """Extracts code from various formats and sources."""
+    """Extracts code from various formats and sources.
     
-    # Patterns for extracting code blocks
-    PATTERNS = {
-        "markdown": [
-            (r'```(\w+)?\n([\s\S]*?)```', 'markdown_code'),
-            (r'~~~(\w+)?\n([\s\S]*?)~~~', 'markdown_code'),
-        ],
-        "html": [
-            (r'<pre[^>]*><code[^>]*>([\s\S]*?)</code></pre>', 'html_code'),
-            (r'<code[^>]*>([\s\S]*?)</code>', 'html_code'),
-        ],
-        "python": [
-            (r'"""([\s\S]*?)"""', 'python_docstring'),
-            (r"'''([\s\S]*?)'''", 'python_docstring'),
-        ],
-        "javascript": [
-            (r'/\*([\s\S]*?)\*/', 'javascript_comment'),
-            (r'//.*', 'javascript_line_comment'),
-        ],
-    }
+    Uses the same lightweight regex pattern as cli-synthegration's Codex:
+    r"```(\w+)?\n(.*?)```"
+    
+    This is intentionally lightweight (no BeautifulSoup) for performance
+    and compatibility with the existing DeepSeek workflow.
+    """
+    
+    # Code block pattern (same as Codex)
+    CODE_BLOCK_PATTERN = re.compile(r'```(\w+)?\n(.*?)```', re.DOTALL)
     
     # File magic numbers for detection
     MAGIC_NUMBERS = {
@@ -68,15 +67,122 @@ class CodeExtractor:
         b'<?xml': 'xml',
     }
     
+    # Language extensions mapping
+    LANGUAGE_EXTENSIONS = {
+        '.py': 'python',
+        '.js': 'javascript',
+        '.ts': 'typescript',
+        '.java': 'java',
+        '.c': 'c',
+        '.cpp': 'cpp',
+        '.h': 'c',
+        '.hpp': 'cpp',
+        '.go': 'go',
+        '.rs': 'rust',
+        '.rb': 'ruby',
+        '.php': 'php',
+        '.swift': 'swift',
+        '.kt': 'kotlin',
+        '.scala': 'scala',
+        '.sh': 'bash',
+        '.bash': 'bash',
+        '.zsh': 'bash',
+        '.sql': 'sql',
+        '.html': 'html',
+        '.css': 'css',
+        '.json': 'json',
+        '.yaml': 'yaml',
+        '.yml': 'yaml',
+        '.xml': 'xml',
+        '.md': 'markdown',
+    }
+    
     def __init__(self):
         """Initialize the extractor."""
         pass
     
+    def extract_from_text(self, text: str, source: str = "text") -> List[ExtractedCode]:
+        """Extract code blocks from text using regex.
+        
+        This is the primary method, using the same pattern as Codex.
+        
+        Args:
+            text: The text to extract code from
+            source: Source identifier
+            
+        Returns:
+            List of ExtractedCode objects
+        """
+        extracted = []
+        
+        for match in self.CODE_BLOCK_PATTERN.finditer(text):
+            lang = (match.group(1) or 'text').lower()
+            code = match.group(2).strip()
+            
+            if code:
+                extracted.append(ExtractedCode(
+                    content=code,
+                    language=lang,
+                    source=source,
+                    metadata={
+                        "extraction_method": "regex",
+                        "pattern": "code_block",
+                    }
+                ))
+        
+        return extracted
+    
+    def extract_from_messages(self, messages: List[Dict]) -> List[ExtractedCode]:
+        """Extract code blocks from a list of messages.
+        
+        Args:
+            messages: List of message dictionaries with 'content' key
+            
+        Returns:
+            List of ExtractedCode objects
+        """
+        extracted = []
+        
+        for msg_idx, msg in enumerate(messages):
+            content = msg.get('content', '')
+            role = msg.get('role', 'unknown')
+            
+            for blk_idx, match in enumerate(self.CODE_BLOCK_PATTERN.finditer(content)):
+                lang = (match.group(1) or 'text').lower()
+                code = match.group(2).strip()
+                
+                if code:
+                    extracted.append(ExtractedCode(
+                        content=code,
+                        language=lang,
+                        source=f"session:{role}",
+                        start_line=msg_idx,
+                        end_line=msg_idx,
+                        metadata={
+                            "extraction_method": "regex",
+                            "message_index": msg_idx,
+                            "block_index": blk_idx,
+                            "role": role,
+                        }
+                    ))
+        
+        return extracted
+    
     def extract_from_file(self, file_path: str) -> List[ExtractedCode]:
-        """Extract code from a file."""
+        """Extract code from a file.
+        
+        For markdown files, extracts code blocks.
+        For other files, returns the entire file as code.
+        
+        Args:
+            file_path: Path to the file
+            
+        Returns:
+            List of ExtractedCode objects
+        """
         path = Path(file_path)
         if not path.exists():
-            console.print(f"[red]File not found: {file_path}[/]")
+            console.print(f"[red]File not found: {file_path}[/red]")
             return []
         
         try:
@@ -85,69 +191,36 @@ class CodeExtractor:
             try:
                 content = path.read_text(encoding='latin-1')
             except Exception as e:
-                console.print(f"[red]Failed to read {file_path}: {e}[/]")
+                console.print(f"[red]Failed to read {file_path}: {e}[/red]")
                 return []
         
-        # Detect language from file extension or content
+        # Detect language
         language = self._detect_language(file_path, content)
         
-        # Extract code blocks based on language
-        extracted = []
-        
+        # For markdown, extract code blocks
         if language == "markdown":
-            extracted.extend(self._extract_markdown_code(content, file_path))
-        elif language == "html":
-            extracted.extend(self._extract_html_code(content, file_path))
-        else:
-            # For most languages, just return the entire file as code
-            extracted.append(ExtractedCode(
-                content=content,
-                language=language,
-                source=file_path,
-                metadata={"file_type": "source"}
-            ))
+            return self.extract_from_text(content, file_path)
         
-        return extracted
-    
-    def extract_from_text(self, text: str, source: str = "text") -> List[ExtractedCode]:
-        """Extract code blocks from text."""
-        extracted = []
-        
-        # Try markdown patterns
-        for pattern, pattern_type in self.PATTERNS.get("markdown", []):
-            matches = re.finditer(pattern, text, re.MULTILINE | re.DOTALL)
-            for match in matches:
-                lang = match.group(1) or "unknown"
-                code = match.group(2).strip()
-                
-                if code:
-                    extracted.append(ExtractedCode(
-                        content=code,
-                        language=lang,
-                        source=source,
-                        metadata={"extraction_method": "regex", "pattern_type": pattern_type}
-                    ))
-        
-        # Try HTML patterns
-        for pattern, pattern_type in self.PATTERNS.get("html", []):
-            matches = re.finditer(pattern, text, re.MULTILINE | re.DOTALL)
-            for match in matches:
-                code = match.group(1).strip()
-                
-                if code:
-                    # Try to detect language from code content
-                    lang = self._detect_language_from_content(code)
-                    extracted.append(ExtractedCode(
-                        content=code,
-                        language=lang,
-                        source=source,
-                        metadata={"extraction_method": "regex", "pattern_type": pattern_type}
-                    ))
-        
-        return extracted
+        # For other files, return entire file
+        return [ExtractedCode(
+            content=content,
+            language=language,
+            source=file_path,
+            metadata={
+                "file_type": "source",
+                "file_path": file_path,
+            }
+        )]
     
     def extract_from_json(self, json_data: Dict) -> List[ExtractedCode]:
-        """Extract code from JSON data (e.g., API responses)."""
+        """Extract code from JSON data (e.g., API responses).
+        
+        Args:
+            json_data: JSON data to extract from
+            
+        Returns:
+            List of ExtractedCode objects
+        """
         extracted = []
         
         # Check for code in common fields
@@ -157,14 +230,8 @@ class CodeExtractor:
             if field in json_data:
                 content = json_data[field]
                 if isinstance(content, str):
-                    # Try to detect language
-                    lang = self._detect_language_from_content(content)
-                    extracted.append(ExtractedCode(
-                        content=content,
-                        language=lang,
-                        source="json",
-                        metadata={"field": field}
-                    ))
+                    # Extract code blocks from the content
+                    extracted.extend(self.extract_from_text(content, f"json:{field}"))
         
         # Recursively check nested structures
         for key, value in json_data.items():
@@ -177,115 +244,24 @@ class CodeExtractor:
         
         return extracted
     
-    def extract_from_session(self, session_data: List[Dict]) -> List[ExtractedCode]:
-        """Extract code from chat session data."""
-        extracted = []
-        
-        for message in session_data:
-            role = message.get("role", "unknown")
-            content = message.get("content", "")
-            
-            # Extract code blocks from message content
-            message_extracted = self.extract_from_text(content, f"session:{role}")
-            extracted.extend(message_extracted)
-        
-        return extracted
-    
-    def _extract_markdown_code(self, content: str, source: str) -> List[ExtractedCode]:
-        """Extract code blocks from markdown."""
-        extracted = []
-        
-        # Extract fenced code blocks
-        pattern = r'```(\w+)?\n([\s\S]*?)```'
-        matches = re.finditer(pattern, content, re.MULTILINE | re.DOTALL)
-        
-        for match in matches:
-            lang = match.group(1) or "unknown"
-            code = match.group(2).strip()
-            
-            if code:
-                extracted.append(ExtractedCode(
-                    content=code,
-                    language=lang,
-                    source=source,
-                    metadata={"extraction_method": "markdown_fenced"}
-                ))
-        
-        return extracted
-    
-    def _extract_html_code(self, content: str, source: str) -> List[ExtractedCode]:
-        """Extract code blocks from HTML."""
-        extracted = []
-        
-        # Extract <pre><code> blocks
-        pattern = r'<pre[^>]*><code[^>]*>([\s\S]*?)</code></pre>'
-        matches = re.finditer(pattern, content, re.MULTILINE | re.DOTALL)
-        
-        for match in matches:
-            code = match.group(1).strip()
-            
-            if code:
-                # Try to detect language from class attribute
-                lang = "unknown"
-                # Look for class="language-xxx" in the code tag
-                code_match = re.search(r'<code[^>]*class="[^"]*language-(\w+)[^"]*"', match.group(0))
-                if code_match:
-                    lang = code_match.group(1)
-                
-                extracted.append(ExtractedCode(
-                    content=code,
-                    language=lang,
-                    source=source,
-                    metadata={"extraction_method": "html_pre_code"}
-                ))
-        
-        return extracted
-    
     def _detect_language(self, file_path: str, content: str = "") -> str:
         """Detect language from file path and content."""
         # First try file extension
         ext = Path(file_path).suffix.lower()
-        
-        language_map = {
-            '.py': 'python',
-            '.js': 'javascript',
-            '.ts': 'typescript',
-            '.java': 'java',
-            '.c': 'c',
-            '.cpp': 'cpp',
-            '.h': 'c',
-            '.hpp': 'cpp',
-            '.go': 'go',
-            '.rs': 'rust',
-            '.rb': 'ruby',
-            '.php': 'php',
-            '.swift': 'swift',
-            '.kt': 'kotlin',
-            '.scala': 'scala',
-            '.sh': 'bash',
-            '.bash': 'bash',
-            '.zsh': 'bash',
-            '.sql': 'sql',
-            '.html': 'html',
-            '.css': 'css',
-            '.json': 'json',
-            '.yaml': 'yaml',
-            '.yml': 'yaml',
-            '.xml': 'xml',
-            '.md': 'markdown',
-            '.txt': 'text',
-        }
-        
-        if ext in language_map:
-            return language_map[ext]
+        if ext in self.LANGUAGE_EXTENSIONS:
+            return self.LANGUAGE_EXTENSIONS[ext]
         
         # Try magic numbers
         if content:
             for magic, lang in self.MAGIC_NUMBERS.items():
-                if content.startswith(magic.decode() if isinstance(magic, bytes) else magic):
-                    return lang
+                if isinstance(magic, bytes):
+                    if content.encode().startswith(magic):
+                        return lang
+                else:
+                    if content.startswith(magic):
+                        return lang
         
-        return "unknown"
+        return "text"
     
     def _detect_language_from_content(self, content: str) -> str:
         """Detect language from content only."""
@@ -312,10 +288,18 @@ class CodeExtractor:
         if re.search(r'<?php', content):
             return "php"
         
-        return "unknown"
+        return "text"
     
     def clean_code(self, code: str, language: str) -> str:
-        """Clean extracted code (remove comments, normalize, etc.)."""
+        """Clean extracted code (remove comments, normalize, etc.).
+        
+        Args:
+            code: The code to clean
+            language: The language of the code
+            
+        Returns:
+            Cleaned code
+        """
         if language == "python":
             # Remove docstrings
             code = re.sub(r'"""[\s\S]*?"""', '', code)
@@ -330,6 +314,7 @@ class CodeExtractor:
         code = code.strip()
         
         return code
+
 
 if __name__ == "__main__":
     # Example usage
@@ -356,4 +341,5 @@ if __name__ == "__main__":
     extracted = extractor.extract_from_text(markdown_text, "test_markdown")
     print(f"Extracted {len(extracted)} code blocks")
     for code in extracted:
-        print(f"  - {code.language}: {code.content[:30]}...")
+        print(f"  - {code.language}: {code.content_hash}")
+        print(f"    Content: {code.content[:30]}...")

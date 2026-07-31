@@ -1,17 +1,29 @@
-# Mistralai Vibe Code webWrapper CLI
+# Multi-AI CLI
 
-A comprehensive command-line interface for interacting with Mistralai's Vibe Code, featuring code harvesting, search, analysis, and integration with DeepSeek/ArchW1z/Synthegration architectures.
+A unified command-line interface for interacting with multiple AI providers (Mistral, DeepSeek, etc.) with code harvesting, search, and analysis capabilities.
 
-## Features
+## Overview
 
-- **Session Management**: Create, list, and manage chat sessions with Mistralai
-- **Chat Interface**: Send messages and receive responses with streaming support
-- **Code Harvesting**: Extract code from files, directories, and text
-- **Code Search**: Full-text search across harvested code with language filtering
+`multi-ai-cli` serves as the **main entry point** for selecting and using different AI providers. It provides:
+
+- **Provider Selection**: Choose between Mistral, DeepSeek, and other AI providers
+- **Unified Interface**: Common commands across all providers
+- **Code Harvesting**: Extract and collect code from various sources
+- **Code Search**: Full-text search across harvested code
 - **Code Analysis**: Analyze code structure, complexity, and dependencies
-- **Multi-Provider Support**: Compatible with DeepSeek, ArchW1z, Synthegration, and more
-- **Termux Integration**: Special utilities for Termux/Android environment
-- **Sandboxed Environment**: Safe dev/staging/prod directory structure
+- **Tool Integration**: File, Git, network, and Termux utilities
+
+## Architecture
+
+The system is designed to work **alongside** existing CLIs:
+
+- **`multi-ai-cli`** (this project) - Main entry point and Mistral implementation
+- **`deepcli`** - Existing DeepSeek CLI at `~/deepcli/deepcli.py`
+- **`deepcli-tui`** - Existing DeepSeek TUI at `~/deepcli-tui/tui.py`
+
+When you select a provider, `multi-ai-cli` either:
+1. Uses its native implementation (for Mistral)
+2. Calls the existing CLI as a subprocess (for DeepSeek, DeepSeek-TUI)
 
 ## Installation
 
@@ -19,7 +31,6 @@ A comprehensive command-line interface for interacting with Mistralai's Vibe Cod
 
 - Python 3.8+
 - pip
-- Node.js (for POW solver)
 
 ### Install from source
 
@@ -41,84 +52,99 @@ pip install -r requirements.txt
 
 ```bash
 # Start the CLI
-mistralai-cli
+multi-ai-cli
 
-# Or use the legacy interface
-python cli.py
+# Or use the short form
+multi-ai
 ```
 
-### Session Management
+### Provider Selection
+
+```bash
+# List available providers
+multi-ai-cli provider list
+
+# Select a default provider
+multi-ai-cli provider select mistral
+multi-ai-cli provider select deepseek
+
+# Run a provider's CLI directly
+multi-ai-cli provider run deepseek --help
+multi-ai-cli provider run deepseek-tui
+```
+
+### Mistral-Specific Commands
 
 ```bash
 # Create a new session
-mistralai-cli session new
+multi-ai-cli session new
 
 # List all sessions
-mistralai-cli session list
+multi-ai-cli session list
 
 # Select a session
-mistralai-cli session select
+multi-ai-cli session select
 
 # Send a message
-mistralai-cli chat send "Hello, Mistral!"
+multi-ai-cli chat send "Hello, Mistral!"
 
 # View chat history
-mistralai-cli chat history
+multi-ai-cli chat history
 ```
 
 ### Code Harvesting
 
 ```bash
 # Harvest code from a directory
-mistralai-cli harvest code ./src --recursive
+multi-ai-cli harvest code ./src --recursive
 
 # Harvest code from a specific file
-mistralai-cli harvest code myfile.py
+multi-ai-cli harvest code myfile.py
 
 # Harvest code from text
-mistralai-cli harvest text myfile.txt
+multi-ai-cli harvest text myfile.txt
 ```
 
 ### Code Search
 
 ```bash
 # Search harvested code
-mistralai-cli search code "def hello"
+multi-ai-cli search code "def hello"
 
 # Search by language
-mistralai-cli search by-language python
+multi-ai-cli search by-language python
 
 # Search with query filter
-mistralai-cli search by-language python --query "class"
+multi-ai-cli search by-language python --query "class"
 ```
 
 ### Code Analysis
 
 ```bash
 # Analyze a single file
-mistralai-cli analyze file myfile.py
+multi-ai-cli analyze file myfile.py
 
 # Analyze a directory
-mistralai-cli analyze directory ./src --recursive
+multi-ai-cli analyze directory ./src --recursive
 
 # Analyze with specific language
-mistralai-cli analyze file myfile.js --language javascript
+multi-ai-cli analyze file myfile.js --language javascript
 ```
 
 ### Tools
 
 ```bash
 # Extract code from text
-mistralai-cli tools extract "Here's some code: ```python\ndef hello():\n    pass```"
+multi-ai-cli tools extract "Here's some code: ```python\ndef hello():\n    pass```"
 
 # Show system information
-mistralai-cli tools info
+multi-ai-cli tools info
 
 # Clean up temporary files
-mistralai-cli tools cleanup
+multi-ai-cli tools cleanup
 
 # Interactive shell
-mistralai-cli shell --interactive
+multi-ai-cli shell --interactive
 ```
 
 ## Configuration
@@ -126,7 +152,7 @@ mistralai-cli shell --interactive
 The CLI uses a configuration file at `~/.mistralai-cli/config.json`. You can also set environment variables:
 
 - `MISTRALAI_TOKEN`: Your Mistralai API token
-- `MISTRALAI_CLI_VERSION`: CLI version (for development)
+- `MULTI_AI_CLI_VERSION`: CLI version (for development)
 
 ### Setting up authentication
 
@@ -135,38 +161,7 @@ The CLI uses a configuration file at `~/.mistralai-cli/config.json`. You can als
    ```bash
    export MISTRALAI_TOKEN="your_token_here"
    ```
-3. Or add it to your config:
-   ```bash
-   mistralai-cli session new  # This will prompt for token if not set
-   ```
-
-## Architecture
-
-The CLI is built on the following architecture:
-
-### Core Module (`core/`)
-- `core.py`: Main API wrapper for Mistralai
-- `session_manager.py`: Session management
-- `chat_dispatcher.py`: Chat message dispatching
-- `cache.py`: Caching utilities
-
-### Harvesters Module (`harvesters/`)
-- `code_harvester.py`: Code extraction from files and directories
-- `search_engine.py`: Full-text search engine
-- `extractor.py`: Code extraction from various formats
-- `analyzer.py`: Code analysis and metrics
-
-### Tools Module (`tools/`)
-- `file_utils.py`: File operations
-- `git_utils.py`: Git operations
-- `network_utils.py`: HTTP requests and web operations
-- `termux_utils.py`: Termux-specific utilities
-
-### Bridge Module (`bridge/`)
-- `mistral_bridge.py`: WebSocket bridge for Mistralai
-
-### Backends Module (`backends/`)
-- Various backend implementations for different providers
+3. Or it will be prompted when you first run a command
 
 ## Directory Structure
 
@@ -190,12 +185,12 @@ multi-ai-cli/
 │   ├── git_utils.py
 │   ├── network_utils.py
 │   └── termux_utils.py
-├── backends/             # Backend implementations
+├── backends/             # Backend implementations (existing)
 │   ├── __init__.py
 │   ├── base.py
 │   ├── mistral_web.py
 │   └── ...
-├── bridge/               # Bridge components
+├── bridge/               # Bridge components (existing)
 │   └── mistral_bridge.py
 ├── sandbox/              # Sandboxed environment
 │   ├── dev/
@@ -206,9 +201,7 @@ multi-ai-cli/
 │   ├── cache/
 │   ├── logs/
 │   └── sessions/
-├── utils/                # Utility scripts
-├── harvesters/           # Legacy harvesters
-├── cli.py                # Legacy CLI interface
+├── cli.py                # Legacy CLI interface (backward compatible)
 ├── main.py               # Main entry point
 ├── mistralai_cli.py      # New CLI interface
 ├── config.yaml           # Configuration
@@ -217,19 +210,38 @@ multi-ai-cli/
 └── README.md             # Documentation
 ```
 
-## Integration with DeepSeek/ArchW1z/Synthegration
+## Integration with Existing Systems
 
-The CLI is designed to be compatible with existing architectures:
+### DeepSeek CLI
 
-- **DeepSeek**: Uses similar POW solving and session management
-- **ArchW1z**: Integrates with archwiz dispatch pipeline
-- **Synthegration**: Compatible with cli-synthegration workflows
+The existing DeepSeek CLI at `~/deepcli/deepcli.py` is automatically detected and can be run directly:
 
-### Deepterm Integration
+```bash
+multi-ai-cli provider run deepseek --help
+multi-ai-cli provider run deepseek session new
+```
 
-The CLI uses deepterm for terminal operations and can integrate with:
-- `deepterm_fork`: For terminal-based operations
-- `deepcli`: For DeepSeek CLI compatibility
+### DeepSeek TUI
+
+The existing TUI at `~/deepcli-tui/tui.py` is also available:
+
+```bash
+multi-ai-cli provider run deepseek-tui
+```
+
+### Aliases
+
+You can add these aliases to your `.zshrc` or `.bashrc`:
+
+```bash
+# Multi-AI CLI
+alias multi-ai="python3 -m multi_ai_cli.main"
+alias multi-ai-cli="python3 -m multi_ai_cli.main"
+
+# Direct provider access
+alias deepseek-cli="python3 ~/deepcli/deepcli.py"
+alias deepseek-tui="python3 ~/deepcli-tui/tui.py"
+```
 
 ## Development
 
@@ -256,11 +268,13 @@ pip install pytest black flake8 mypy
 pytest tests/
 ```
 
-### Building documentation
+## Key Design Principles
 
-```bash
-# Documentation will be added in future versions
-```
+1. **Minimal Overhead**: `multi-ai-cli` adds minimal overhead when calling existing CLIs
+2. **Parallel Operation**: Each provider operates independently
+3. **Unified Interface**: Common commands work across all providers
+4. **Backward Compatibility**: Existing `cli.py` interface is preserved
+5. **Extensibility**: Easy to add new providers
 
 ## Contributing
 
@@ -273,13 +287,6 @@ pytest tests/
 ## License
 
 MIT License - See LICENSE file for details.
-
-## Acknowledgments
-
-- Built on the `deepcli` architecture from `timerloggedout-spec/termux-monorepo`
-- Uses `deepterm` from `timerloggedout-spec/deepterm_fork`
-- Inspired by `ChapitoAI` template
-- Compatible with DeepSeek, ArchW1z, Synthegration architectures
 
 ## Support
 

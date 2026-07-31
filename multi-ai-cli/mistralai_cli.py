@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Mistralai Vibe Code webWrapper CLI - Main Interface"""
+"""Mistralai Vibe Code webWrapper CLI - Main Interface
+
+This is the main entry point for multi-ai-cli, which provides a unified interface
+for selecting between different AI providers (Mistral, DeepSeek, etc.).
+"""
 import os
 import sys
 import click
@@ -7,10 +11,8 @@ from pathlib import Path
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
-from rich.progress import Progress, SpinnerColumn, TextColumn
 
 # Import core modules
-from core.core import MistralCore, load_config, save_config, get_token
 from core.session_manager import SessionManager
 from core.chat_dispatcher import ChatDispatcher
 from harvesters.code_harvester import CodeHarvester
@@ -35,9 +37,9 @@ CONFIG_DIR.mkdir(parents=True, exist_ok=True)
 @click.option("--verbose", "-v", is_flag=True, help="Enable verbose output")
 @click.option("--config", "-c", type=str, default=str(CONFIG_FILE), help="Path to config file")
 def cli(verbose, config):
-    """Mistralai Vibe Code webWrapper CLI
+    """Multi-AI CLI - Unified interface for AI providers
     
-    A comprehensive CLI for interacting with Mistralai's Vibe Code
+    Select and use different AI providers (Mistral, DeepSeek, etc.)
     with code harvesting, search, and analysis capabilities.
     """
     global verbose_mode, config_path
@@ -45,13 +47,132 @@ def cli(verbose, config):
     config_path = config
     
     if verbose:
-        console.print("[bold blue]Mistralai Vibe Code CLI[/bold blue]")
+        console.print("[bold blue]Multi-AI CLI[/bold blue]")
         console.print(f"Config: {config}")
         console.print(f"Verbose: {verbose}")
 
 @cli.group()
+def provider():
+    """Provider selection and management."""
+    pass
+
+@provider.command()
+@click.argument("name", required=False)
+@click.option("--list", "-l", is_flag=True, help="List available providers")
+def select(name, list):
+    """Select or list AI providers."""
+    if list or not name:
+        # List available providers
+        providers = get_available_providers()
+        
+        table = Table(title="Available AI Providers")
+        table.add_column("Name", style="cyan")
+        table.add_column("Description", style="green")
+        table.add_column("Status", style="blue")
+        
+        for prov_name, prov_info in providers.items():
+            status = "[green]Available[/green]" if prov_info.get("available", True) else "[red]Unavailable[/red]"
+            table.add_row(prov_name, prov_info.get("description", ""), status)
+        
+        console.print(table)
+        return
+    
+    # Set default provider
+    cfg = load_config()
+    cfg["default_provider"] = name
+    save_config(cfg)
+    console.print(f"[green]Default provider set to: {name}[/green]")
+
+@provider.command()
+@click.argument("provider_name", required=True)
+@click.argument("args", nargs=-1, required=False)
+def run(provider_name, args):
+    """Run a provider's CLI directly."""
+    providers = get_available_providers()
+    
+    if provider_name not in providers:
+        console.print(f"[red]Unknown provider: {provider_name}[/red]")
+        console.print(f"Available providers: {', '.join(providers.keys())}")
+        return
+    
+    prov_info = providers[provider_name]
+    
+    if not prov_info.get("available", True):
+        console.print(f"[red]Provider {provider_name} is not available[/red]")
+        return
+    
+    # Execute the provider's CLI
+    import subprocess
+    
+    if provider_name == "deepseek":
+        # Run deepcli
+        deepcli_path = Path.home() / "deepcli" / "deepcli.py"
+        if deepcli_path.exists():
+            cmd = ["python3", str(deepcli_path)] + list(args)
+            console.print(f"[blue]Running: {' '.join(cmd)}[/blue]")
+            result = subprocess.run(cmd, capture_output=True, text=True)
+            console.print(result.stdout)
+            if result.stderr:
+                console.print(f"[red]{result.stderr}[/red]", file=sys.stderr)
+            return
+    
+    elif provider_name == "deepseek-tui":
+        # Run deepcli-tui
+        tui_path = Path.home() / "deepcli-tui" / "tui.py"
+        if tui_path.exists():
+            cmd = ["python3", str(tui_path)] + list(args)
+            console.print(f"[blue]Running: {' '.join(cmd)}[/blue]")
+            result = subprocess.run(cmd, capture_output=True, text=True)
+            console.print(result.stdout)
+            if result.stderr:
+                console.print(f"[red]{result.stderr}[/red]", file=sys.stderr)
+            return
+    
+    elif provider_name == "mistral":
+        # Use our native Mistral implementation
+        console.print(f"[blue]Using native Mistral implementation[/blue]")
+        # For now, just show help
+        console.print("Native Mistral commands:")
+        console.print("  mistralai-cli session new")
+        console.print("  mistralai-cli chat send <message>")
+        return
+    
+    console.print(f"[red]Provider {provider_name} execution not implemented[/red]")
+
+def get_available_providers():
+    """Get list of available AI providers."""
+    providers = {
+        "mistral": {
+            "description": "Mistral AI (native implementation)",
+            "available": True,
+            "module": "native",
+        },
+        "deepseek": {
+            "description": "DeepSeek CLI",
+            "available": (Path.home() / "deepcli" / "deepcli.py").exists(),
+            "module": "subprocess",
+            "path": str(Path.home() / "deepcli" / "deepcli.py"),
+        },
+        "deepseek-tui": {
+            "description": "DeepSeek TUI",
+            "available": (Path.home() / "deepcli-tui" / "tui.py").exists(),
+            "module": "subprocess",
+            "path": str(Path.home() / "deepcli-tui" / "tui.py"),
+        },
+    }
+    
+    return providers
+
+# Import existing functions from core
+from core.core import (
+    get_token, create_session, fetch_sessions, get_history,
+    stream_completion, send_message, upload_file, wait_for_file,
+    load_config, save_config, _set_last_session, MistralCore
+)
+
+@cli.group()
 def session():
-    """Session management commands."""
+    """Session management commands (Mistral-specific)."""
     pass
 
 @session.command()
@@ -143,7 +264,7 @@ def select(session_id):
 
 @cli.group()
 def chat():
-    """Chat commands."""
+    """Chat commands (Mistral-specific)."""
     pass
 
 @chat.command()
@@ -167,6 +288,7 @@ def send(message, session, model, stream):
             console.print("[bold blue]Streaming response...[/bold blue]")
             response = core.stream_message(message, session_id, model=model)
         else:
+            from rich.progress import Progress, SpinnerColumn, TextColumn
             with Progress(
                 SpinnerColumn(),
                 TextColumn("[progress.description]{task.description}"),
@@ -235,6 +357,7 @@ def code(path, recursive, patterns, output):
     try:
         harvester = CodeHarvester()
         
+        from rich.progress import Progress, SpinnerColumn, TextColumn
         with Progress(
             SpinnerColumn(),
             TextColumn("[progress.description]{task.description}"),
@@ -371,10 +494,10 @@ def file(file_path, language):
         
         # Detect language if not specified
         if not language:
-            from harvesters.extractor import CodeExtractor
             extractor = CodeExtractor()
             language = extractor._detect_language(file_path, content)
         
+        from rich.progress import Progress, SpinnerColumn, TextColumn
         with Progress(
             SpinnerColumn(),
             TextColumn("[progress.description]{task.description}"),
@@ -400,60 +523,6 @@ def file(file_path, language):
         
     except Exception as e:
         console.print(f"[red]Error analyzing file: {e}[/red]")
-
-@analyze.command()
-@click.argument("directory", type=str, required=True)
-@click.option("--recursive", "-r", is_flag=True, help="Analyze recursively")
-@click.option("--patterns", "-p", type=str, multiple=True, help="File patterns to include")
-def directory(directory, recursive, patterns):
-    """Analyze all code files in a directory."""
-    try:
-        analyzer = CodeAnalyzer()
-        extractor = CodeExtractor()
-        
-        files = FileUtils.list_files(directory, recursive, list(patterns) if patterns else None)
-        
-        if not files:
-            console.print(f"[yellow]No files found in {directory}[/yellow]")
-            return
-        
-        results = []
-        
-        with Progress(
-            SpinnerColumn(),
-            TextColumn("[progress.description]{task.description}"),
-            console=console,
-        ) as progress:
-            for file_path in files:
-                task = progress.add_task(f"Analyzing {file_path}...", total=None)
-                
-                content = FileUtils.read_file(file_path)
-                if content:
-                    language = extractor._detect_language(file_path, content)
-                    result = analyzer.analyze(content, language)
-                    result.metadata["file_path"] = file_path
-                    results.append(result)
-                
-                progress.remove_task(task)
-        
-        # Aggregate results
-        total_functions = sum(len(r.functions) for r in results)
-        total_classes = sum(len(r.classes) for r in results)
-        total_imports = sum(len(r.imports) for r in results)
-        all_dependencies = set()
-        for r in results:
-            all_dependencies.update(r.dependencies)
-        
-        console.print(f"[bold green]Analysis Summary for {directory}:[/bold green]")
-        console.print(f"  Files analyzed: {len(results)}")
-        console.print(f"  Total functions: {total_functions}")
-        console.print(f"  Total classes: {total_classes}")
-        console.print(f"  Total imports: {total_imports}")
-        console.print(f"  Unique dependencies: {len(all_dependencies)}")
-        console.print(f"  Dependencies: {', '.join(sorted(all_dependencies)[:20])}{'...' if len(all_dependencies) > 20 else ''}")
-        
-    except Exception as e:
-        console.print(f"[red]Error analyzing directory: {e}[/red]")
 
 @cli.group()
 def tools():
@@ -501,15 +570,19 @@ def info():
         console.print("\n[bold blue]Termux Information[/bold blue]")
         console.print(f"  Termux: {TermuxUtils.get_termux_version()}")
         console.print(f"  Device: {TermuxUtils.get_device_info()}")
-        console.print(f"  Battery: {TermuxUtils.get_battery_status()}")
-        console.print(f"  Network: {TermuxUtils.get_network_info()}")
     
     # Git info
     if GitUtils.is_git_repo():
         console.print("\n[bold blue]Git Information[/bold blue]")
         console.print(f"  Root: {GitUtils.get_git_root()}")
         console.print(f"  Branch: {GitUtils.get_current_branch()}")
-        console.print(f"  Remotes: {GitUtils.get_remotes()}")
+    
+    # Available providers
+    console.print("\n[bold blue]Available Providers[/bold blue]")
+    providers = get_available_providers()
+    for prov_name, prov_info in providers.items():
+        status = "[green]Available[/green]" if prov_info.get("available", True) else "[red]Unavailable[/red]"
+        console.print(f"  {prov_name}: {status}")
     
     # Config info
     console.print("\n[bold blue]Configuration[/bold blue]")
@@ -517,6 +590,7 @@ def info():
     console.print(f"  Config file: {config_path}")
     console.print(f"  Token available: {'Yes' if cfg.get('token') else 'No'}")
     console.print(f"  Last session: {cfg.get('last_session', 'None')}")
+    console.print(f"  Default provider: {cfg.get('default_provider', 'None')}")
 
 @tools.command()
 def cleanup():
@@ -557,12 +631,12 @@ def cleanup():
 def shell(command, interactive):
     """Start an interactive shell or execute a command."""
     if interactive or not command:
-        console.print("[bold blue]Mistralai Vibe Code CLI - Interactive Mode[/bold blue]")
+        console.print("[bold blue]Multi-AI CLI - Interactive Mode[/bold blue]")
         console.print("Type 'help' for available commands, 'exit' to quit")
         
         while True:
             try:
-                cmd = input("mistralai> ").strip()
+                cmd = input("multi-ai> ").strip()
                 
                 if not cmd:
                     continue
@@ -571,6 +645,8 @@ def shell(command, interactive):
                     break
                 elif cmd.lower() in ['help', 'h']:
                     console.print("\n[bold green]Available Commands:[/bold green]")
+                    console.print("  provider select - Select AI provider")
+                    console.print("  provider run <name> - Run a provider's CLI")
                     console.print("  session new - Create new session")
                     console.print("  session list - List all sessions")
                     console.print("  session select - Select a session")
@@ -585,50 +661,16 @@ def shell(command, interactive):
                     console.print("  exit - Exit interactive mode")
                 else:
                     # Parse and execute command
-                    parts = cmd.split()
-                    if parts:
-                        cmd_name = parts[0]
-                        args = parts[1:]
-                        
-                        # Map to click commands
-                        if cmd_name == "session":
-                            if args and args[0] == "new":
-                                from .mistralai_cli import new
-                                new()
-                            elif args and args[0] == "list":
-                                from .mistralai_cli import list
-                                list()
-                            elif args and args[0] == "select":
-                                from .mistralai_cli import select
-                                select(*args[1:])
-                        elif cmd_name == "chat":
-                            if args and args[0] == "send":
-                                from .mistralai_cli import send
-                                send(" ".join(args[1:]))
-                            elif args and args[0] == "history":
-                                from .mistralai_cli import history
-                                history(*args[1:])
-                        elif cmd_name == "harvest":
-                            if args and args[0] == "code":
-                                from .mistralai_cli import code
-                                code(*args[1:])
-                        elif cmd_name == "search":
-                            if args and args[0] == "code":
-                                from .mistralai_cli import code as search_code
-                                search_code(*args[1:])
-                        elif cmd_name == "analyze":
-                            if args and args[0] == "file":
-                                from .mistralai_cli import file as analyze_file
-                                analyze_file(*args[1:])
-                        elif cmd_name == "tools":
-                            if args and args[0] == "info":
-                                from .mistralai_cli import info
-                                info()
-                            elif args and args[0] == "cleanup":
-                                from .mistralai_cli import cleanup
-                                cleanup()
-                        else:
-                            console.print(f"[red]Unknown command: {cmd_name}[/red]")
+                    import subprocess
+                    result = subprocess.run(
+                        ["python3", "-m", "multi_ai_cli.mistralai_cli", "--"] + cmd.split(),
+                        capture_output=True,
+                        text=True
+                    )
+                    if result.stdout:
+                        console.print(result.stdout)
+                    if result.stderr:
+                        console.print(f"[red]{result.stderr}[/red]", file=sys.stderr)
             except KeyboardInterrupt:
                 console.print("\n[yellow]Use 'exit' to quit[/yellow]")
             except Exception as e:
@@ -636,9 +678,16 @@ def shell(command, interactive):
     else:
         # Execute single command
         console.print(f"[yellow]Executing: {command}[/yellow]")
-        # For now, just echo the command
-        # In a real implementation, we'd parse and execute it
-        console.print(f"[green]Command would be executed: {command}[/green]")
+        import subprocess
+        result = subprocess.run(
+            ["python3", "-m", "multi_ai_cli.mistralai_cli", "--"] + command.split(),
+            capture_output=True,
+            text=True
+        )
+        if result.stdout:
+            console.print(result.stdout)
+        if result.stderr:
+            console.print(f"[red]{result.stderr}[/red]", file=sys.stderr)
 
 if __name__ == "__main__":
     # Set up error handling

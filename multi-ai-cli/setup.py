@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
-"""Setup script for Mistralai Vibe Code webWrapper CLI"""
+"""Setup script for Multi-AI CLI"""
 from setuptools import setup, find_packages
 import os
 
 # Read version from config or environment
-VERSION = os.environ.get("MISTRALAI_CLI_VERSION", "0.1.0")
+VERSION = os.environ.get("MULTI_AI_CLI_VERSION", "0.1.0")
 
 # Read requirements
 with open("requirements.txt") as f:
     requirements = [line.strip() for line in f if line.strip() and not line.startswith("#")]
 
 setup(
-    name="mistralai-vibe-code-cli",
+    name="multi-ai-cli",
     version=VERSION,
-    description="Mistralai Vibe Code webWrapper CLI with code harvesting and analysis capabilities",
+    description="Multi-AI CLI - Unified interface for AI providers with code harvesting and analysis",
     author="timerloggedout-spec",
     author_email="",
     url="https://github.com/timerloggedout-spec/termux-monorepo/tree/master/multi-ai-cli",
@@ -22,8 +22,8 @@ setup(
     install_requires=requirements,
     entry_points={
         "console_scripts": [
-            "mistralai-cli = multi_ai_cli.main:cli",
-            "mistralai = multi_ai_cli.main:cli",
+            "multi-ai-cli = multi_ai_cli.main:cli",
+            "multi-ai = multi_ai_cli.main:cli",
         ],
     },
     classifiers=[

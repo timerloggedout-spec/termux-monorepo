@@ -11,47 +11,102 @@ env:
 
 jobs:
   discover:
-    name: Discover Rust crates
+    name: Discover Rust crates and affected set
     runs-on: ubuntu-latest
     outputs:
       crates: ${{ steps.find.outputs.crates }}
+      affected: ${{ steps.find.outputs.affected }}
     steps:
       - uses: actions/checkout@v4
-      - name: Find Cargo.toml files
+        with:
+          fetch-depth: 0
+      - name: Find all Cargo.toml files
         id: find
         run: |
           set -euo pipefail
-          echo "Searching for Cargo.toml files..."
-          crates=$(find . -type f -name Cargo.toml -not -path './.git/*' -print0 | xargs -0 -n1 dirname | sed 's|^./||' | sort -u)
-          # Convert newline-separated list into JSON array
-          crates_json=$(python3 - <<'PY'
-import sys, json
-lines = [l.strip() for l in sys.stdin if l.strip()]
-print(json.dumps(lines))
+          echo "Finding Cargo.toml files..."
+          # Find all crate directories
+          mapfile -t crates < <(find . -type f -name Cargo.toml -not -path './.git/*' -print0 | xargs -0 -n1 dirname | sed 's|^./||' | sort -u)
+          # Prepare JSON
+          python3 - <<'PY'
+import json,sys
+crates = ${crates:+""}
+# The above substitution will not populate inside python; instead rebuild from bash
 PY
-<<EOF
-$crates
-EOF
-)
+          # Build crates_json
+          crates_json=$(printf '%s
+' "${crates[@]}" | python3 -c 'import sys,json; print(json.dumps([l.strip() for l in sys.stdin if l.strip()]))')
+
+          # Default affected = crates (for non-PR events we build all)
+          affected_json=$crates_json
+
+          # If this is a pull_request event, compute changed files and reduce to affected crates
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "Detected pull_request event — computing changed files relative to base..."
+            base_ref=${{ github.event.pull_request.base.ref }}
+            head_ref=${{ github.sha }}
+            # Fetch base ref
+            git fetch origin "$base_ref":"refs/remotes/origin/$base_ref"
+            changed=$(git diff --name-only "refs/remotes/origin/$base_ref" "$head_ref" || true)
+            echo "Changed files:\n$changed"
+            # Map changed files to crates
+            affected=()
+            while IFS= read -r f; do
+              [ -z "$f" ] && continue
+              # find crate dir containing this file
+              for c in "${crates[@]}"; do
+                if [[ "$f" == "$c"/* || "$f" == "$c" || "$c" == "$f" ]]; then
+                  affected+=("$c")
+                  break
+                fi
+              done
+            done <<< "$changed"
+            # Remove duplicates
+            if [ ${#affected[@]} -gt 0 ]; then
+              IFS=$'\n' read -r -d '' -a uniq < <(printf '%s
+' "${affected[@]}" | awk '!x[$0]++' && printf '\0') || true
+              affected_json=$(printf '%s
+' "${uniq[@]}" | python3 -c 'import sys,json; print(json.dumps([l.strip() for l in sys.stdin if l.strip()]))')
+            else
+              # No changed files mapping to crates -> empty list means skip builds
+              affected_json="[]"
+            fi
+          fi
+
           echo "crates=$crates_json" >> $GITHUB_OUTPUT
+          echo "affected=$affected_json" >> $GITHUB_OUTPUT
 
   build:
     name: Build & Test (per-crate, parallel)
     needs: discover
-    if: needs.discover.outputs.crates != '[]'
     runs-on: ubuntu-latest
+    if: needs.discover.outputs.affected != '[]'
     strategy:
       fail-fast: false
       matrix:
-        crate: ${{ fromJson(needs.discover.outputs.crates) }}
+        crate: ${{ fromJson(needs.discover.outputs.affected) }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Setup Rust toolchain
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
           profile: minimal
           override: true
+
+      - name: Cache cargo registry and target
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
 
       - name: Show crate
         run: |
@@ -65,13 +120,12 @@ EOF
         working-directory: ${{ matrix.crate }}
         run: cargo test --verbose
 
-  no-crates:
-    name: No Rust crates found
-    runs-on: ubuntu-latest
+  skip:
+    name: No affected Rust crates
     needs: discover
-    if: needs.discover.outputs.crates == '[]'
+    runs-on: ubuntu-latest
+    if: needs.discover.outputs.affected == '[]'
     steps:
       - uses: actions/checkout@v4
-      - name: Exit gracefully
-        run: |
-          echo "No Cargo.toml files found in the repository. Nothing to build/test."
+      - name: Skip
+        run: echo "No changed Rust crates to build/test in this PR." 

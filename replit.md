@@ -10,9 +10,9 @@ A personal **agentic development environment** built around the DeepSeek AI API.
 
 ### Pipeline Flow (high-level)
 ```
-User → DeepSeek (via deepcli) → session cache (~/.deepcli/session_store/)
-  → archwiz/dispatch_pipeline.py (called on every cache write)
-    → activity_listener.py (extracts + deduplicates code blocks)
+User → DeepSeek (via deepcli TUI / cli.py)
+  → core.py stream_completion() → session cache (~/.deepcli/session_store/)
+    → dispatch_pipeline.py (called on every cache write, via core.py hook)
       → autonomous_runner.py / dispatch_task.py (sandboxed execution)
         → Sentinel (5-gate verification: file integrity, naming, duplicate, probe, shockwave)
           → promote.py (ascension to true_versions)
@@ -20,6 +20,8 @@ User → DeepSeek (via deepcli) → session cache (~/.deepcli/session_store/)
     → Chronos / time_loop_accelerator (success-only trunk management)
   → archwiz/archivist.py (query engine over all indices)
 ```
+
+> **Note:** `export_poller.sh` and `activity_listener.py` are legacy execution paths — the canonical code-block execution flow runs through the TUI and `core.py`'s cache-write hook (`dispatch_pipeline.py`). The poller/listener represent an earlier, now-superseded approach and should be treated as candidates for removal or archival rather than maintained in parallel.
 
 ---
 
@@ -48,7 +50,32 @@ Almost all `subprocess.run(...)` calls in `archwiz/archwiz.py` use `os.path.expa
 - Many top-level symlinks (e.g., `dispatch_task.py`, `agent_shell.py`, `archaeologist.py`) point into the Termux filesystem — silently broken on Replit
 - Large archive files (`archwiz/pointer_inverted.json`, session logs) contain historical Termux paths — low priority but confusing
 
-**Fix:** Introduce `ARCHWIZ_HOME` environment variable (default: `~`). Replace all `~/archwiz/...` string construction with `Path(os.environ.get('ARCHWIZ_HOME', Path.home())) / 'archwiz' / ...`. Create a `config.py` in `archwiz/` that provides this resolution.
+> **Key constraint:** Pure relative paths are not a safe fix here — the tools are invoked from different working directories (cockpit, listener, dispatch, TUI), so a relative path resolves differently depending on the call site. The correct solution is an **environment-aware intermediary layer**, not relative paths.
+
+**Fix:** Create `archwiz/config.py` as a single source of truth for all paths, resolved at import time via an environment variable:
+
+```python
+# archwiz/config.py
+import os
+from pathlib import Path
+
+# Set ARCHWIZ_ENV=termux | replit | local (auto-detected if unset)
+_env = os.environ.get('ARCHWIZ_ENV', '').lower()
+if not _env:
+    _env = 'termux' if Path('/data/data/com.termux').exists() else 'replit'
+
+if _env == 'termux':
+    ARCHWIZ_ROOT = Path('/data/data/com.termux/files/home')
+else:
+    ARCHWIZ_ROOT = Path(os.environ.get('ARCHWIZ_HOME', Path.home()))
+
+ARCHWIZ_DIR   = ARCHWIZ_ROOT / 'archwiz'
+DEEPCLI_DIR   = ARCHWIZ_ROOT / 'deepcli'
+SESSION_STORE = ARCHWIZ_ROOT / '.deepcli' / 'session_store'
+WORKSPACE_DIR = ARCHWIZ_ROOT / 'workspace'
+```
+
+All scripts import from `config.py` instead of constructing paths inline. `ARCHWIZ_ENV` overrides auto-detection for edge cases. This is portable across Termux, Replit, and local Linux without changing any call-site code.
 
 ### 2. Silent Exception Swallowing in `core.py`
 `deepcli/deepcli/core.py:58-59` has a bare `except Exception: pass` around the ArchWiz dispatch call. If the dispatch pipeline fails (missing file, import error, broken path), the failure is completely invisible. The user sees normal operation while the pipeline is dead.
@@ -101,26 +128,15 @@ The `archwiz/` directory contains **~25 timestamped `.bak` files** for `archwiz.
 
 **Recommendation:** Move all `.bak` files to a `_archive/` folder or delete them. Git history is the canonical backup mechanism.
 
-### commingle-swarm Has No Installed Dependencies
-`commingle-swarm/` is a TypeScript/Node project with a `package.json` but no `node_modules/`. It is a self-contained P2P/PWA and appears disconnected from the rest of the monorepo (no import relationships found). It cannot be started without `npm install`.
+### commingle-swarm Is a Template / Scavenging Source
+`commingle-swarm/` is a **cloned/forked external repo** kept in the monorepo as a structural reference and code-scavenging template, not a first-class project to run or maintain. It is intentionally disconnected from the rest of the monorepo. Treat it as read-only reference material — do not install its dependencies, do not wire it into the pipeline, and do not include it in health checks or index sweeps.
 
 ---
 
 ## Optimization Proposals
 
-### A. Unified Config Layer
-Replace all scattered `os.path.expanduser('~/archwiz/...')` calls (~60+ occurrences in `archwiz.py` alone) with a single import:
-
-```python
-# archwiz/config.py
-from pathlib import Path
-ARCHWIZ_ROOT = Path(os.environ.get('ARCHWIZ_HOME', Path.home()))
-ARCHWIZ_DIR  = ARCHWIZ_ROOT / 'archwiz'
-DEEPCLI_DIR  = ARCHWIZ_ROOT / 'deepcli'
-SESSION_STORE = ARCHWIZ_ROOT / '.deepcli' / 'session_store'
-```
-
-This makes the entire system relocatable and testable.
+### A. Retire / Archive `export_poller.sh` and `activity_listener.py`
+These are legacy execution paths that predate the current `core.py` cache-write hook → `dispatch_pipeline.py` flow. They duplicate work the TUI already does and introduce a second, less-reliable execution surface. The methodology log documents the pain: 4 listener lifecycle attempts, nohup ghosts, PID-file fragility. The canonical path is: `core.py stream_completion()` writes cache → `dispatch_pipeline.update_all()` → `autonomous_runner`. The listener and poller should be archived (moved to `_archive/`) once the dispatch hook is confirmed stable on Replit.
 
 ### B. `fzf` Integration (Shelved → Resolvable)
 CONSIDERATIONS.md documents why fzf was shelved: it indexed 194k files without respecting `bloat_exclusions.lst`. The fix is already documented:
@@ -156,7 +172,6 @@ Sessions created without the `thinking_enabled`/`search_enabled` fields default 
 | Commit notes scanner → CHANGES.md | Low | Auto-detect "what changed" summaries from session digests |
 | Tab completion for `/sessions` | Low | Already partially designed in TUI |
 | Sigil substitution engine (cedrlang) | High | Runtime compression protocol — reduces token usage |
-| Export poller as a Replit workflow | Low | `export_poller.sh` is a natural persistent workflow |
 
 ---
 

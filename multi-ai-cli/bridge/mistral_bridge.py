@@ -1,14 +1,23 @@
 #!/usr/bin/env python3
-"""HTTP bridge: Termux <-> Firefox Tampermonkey for Mistral"""
+"""
+Hardened and config-aware Mistral HTTP bridge:
+- Uses archwiz.config to determine token directory
+- Writes token atomically with secure permissions (600)
+"""
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import json, sys, threading, time, os
 from pathlib import Path
+
+from archwiz import config as aw_config
 
 PORT = 9876
 prompt_queue = None
 response_data = None
 response_event = threading.Event()
-token_file = Path.home() / ".multi-ai-tokens" / "mistral_token.txt"
+
+TOKEN_DIR = aw_config.get_tokens_dir()
+TOKEN_DIR.mkdir(mode=0o700, parents=True, exist_ok=True)
+TOKEN_FILE = TOKEN_DIR / "mistral_token.txt"
 
 class BridgeHandler(BaseHTTPRequestHandler):
     def do_POST(self):
@@ -17,13 +26,27 @@ class BridgeHandler(BaseHTTPRequestHandler):
         body = self.rfile.read(length)
         data = json.loads(body)
         if data.get("type") == "token":
-            token_file.write_text(data["token"])
+            token = data.get('token')
+            if not token:
+                self.send_response(400)
+                self.end_headers()
+                self.wfile.write(b'missing token')
+                return
+            # Atomic write to a temp file then replace, set secure perms
+            tmp = TOKEN_FILE.with_suffix('.tmp')
+            with open(tmp, 'w') as f:
+                f.write(token)
+            os.replace(tmp, TOKEN_FILE)
+            try:
+                TOKEN_FILE.chmod(0o600)
+            except Exception:
+                pass
             self.send_response(200)
             self.end_headers()
             self.wfile.write(b'ok')
             print("[bridge] Token saved")
         elif data.get("type") == "prompt":
-            prompt_queue = data["text"]
+            prompt_queue = data.get("text")
             response_event.clear()
             # Wait for response from the browser (polling)
             for _ in range(240):  # wait up to 120 seconds
@@ -35,7 +58,7 @@ class BridgeHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(json.dumps({"response": response_data or ""}).encode())
         elif data.get("type") == "response":
-            response_data = data["text"]
+            response_data = data.get("text")
             response_event.set()
             self.send_response(200)
             self.end_headers()

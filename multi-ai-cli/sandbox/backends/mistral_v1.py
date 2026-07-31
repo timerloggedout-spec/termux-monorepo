@@ -2,7 +2,10 @@ import json, os, re
 from pathlib import Path
 from curl_cffi import requests as curl_requests
 
-COOKIE_FILE = Path.home() / ".multi-ai-tokens" / "mistral_cookies.json"
+# Use archwiz config for token/cookie paths and environment detection
+from archwiz import config as aw_config
+
+COOKIE_FILE = aw_config.get_tokens_dir() / "mistral_cookies.json"
 BASE = "https://chat.mistral.ai"
 
 class MistralV1Backend:
@@ -17,26 +20,33 @@ class MistralV1Backend:
         self._load_cookies()
 
     def _load_cookies(self):
-        if not COOKIE_FILE.exists():
-            return
-        with open(COOKIE_FILE) as f:
-            data = json.load(f)
-        cookies = data.get("cookies", data if isinstance(data, list) else [])
-        for c in cookies:
-            self.session.cookies.set(
-                c["name"], c["value"],
-                domain=c.get("domain", ".mistral.ai"),
-                path=c.get("path", "/")
-            )
+        try:
+            if not COOKIE_FILE.exists():
+                return
+            with open(COOKIE_FILE) as f:
+                data = json.load(f)
+            cookies = data.get("cookies", data if isinstance(data, list) else [])
+            for c in cookies:
+                # Defensive: ensure required fields exist
+                name = c.get('name')
+                value = c.get('value')
+                if name is None or value is None:
+                    continue
+                domain = c.get('domain', '.mistral.ai')
+                path = c.get('path', '/')
+                self.session.cookies.set(name, value, domain=domain, path=path)
+        except Exception as e:
+            print(f"[mistral] error loading cookies: {e}")
 
     def is_available(self):
         try:
-            r = self.session.get(f"{BASE}/api/auth/session")
+            r = self.session.get(f"{BASE}/api/auth/session", timeout=10)
             if r.ok:
                 data = r.json()
                 return "user" in data and data["user"] is not None
             return False
-        except:
+        except Exception as e:
+            print(f"[mistral] availability check failed: {e}")
             return False
 
     def send_message(self, message: str, context: list) -> str:
@@ -50,10 +60,14 @@ class MistralV1Backend:
 
         # Get CSRF token from cookies
         csrf = None
-        for c in self.session.cookies:
-            if c.name == "csrftoken":
-                csrf = c.value
-                break
+        try:
+            for c in self.session.cookies:
+                if getattr(c, 'name', None) == "csrftoken" or (hasattr(c, 'name') and c.name == 'csrftoken'):
+                    csrf = c.value
+                    break
+        except Exception:
+            csrf = None
+
         headers = {}
         if csrf:
             headers["X-CSRFToken"] = csrf
@@ -64,12 +78,19 @@ class MistralV1Backend:
             "stream": False,
         }
         # Primary endpoint (may change; we adapt)
+        last_exc = None
         for endpoint in ["/api/chat/completions", "/api/chat", "/api/v1/chat"]:
-            r = self.session.post(f"{BASE}{endpoint}", json=payload, headers=headers)
-            if r.status_code == 200:
-                break
+            try:
+                r = self.session.post(f"{BASE}{endpoint}", json=payload, headers=headers, timeout=20)
+                if r.status_code == 200:
+                    break
+            except Exception as e:
+                last_exc = e
+                continue
         else:
-            r.raise_for_status()
+            if last_exc:
+                raise last_exc
+            raise RuntimeError("No endpoint responded with 200")
 
         data = r.json()
         if "choices" in data:

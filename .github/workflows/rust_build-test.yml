@@ -16,7 +16,22 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Build
-      run: cargo build --verbose
-    - name: Run tests
-      run: cargo test --verbose
+    - name: Find and build/test Rust crates
+      run: |
+        set -euo pipefail
+        echo "Searching for Cargo.toml files..."
+        # Find all Cargo.toml files, excluding common backup/temp paths
+        IFS=$'\n' read -r -d '' -a cargo_files < <(find . -type f -name Cargo.toml -not -path './.git/*' -print0)
+        if [ ${#cargo_files[@]} -eq 0 ]; then
+          echo "No Cargo.toml found, skipping Rust build/test."
+          exit 0
+        fi
+        for file in "${cargo_files[@]}"; do
+          # Remove leading ./ if present
+          file=${file#./}
+          dir=$(dirname "$file")
+          echo "== Building in $dir =="
+          (cd "$dir" && cargo build --verbose)
+          echo "== Testing in $dir =="
+          (cd "$dir" && cargo test --verbose)
+        done

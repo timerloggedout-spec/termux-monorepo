@@ -9,7 +9,7 @@
 A personal **agentic development environment** built around the DeepSeek AI API. The system closes a loop: the user chats with DeepSeek via a terminal CLI (`deepcli`), the ArchWiz cockpit auto-detects and executes code blocks from those conversations, results feed back into the knowledge graph, and a suite of forensic/verification tools (Sentinel, Archivist, Mirror, Dangle Detector) maintain quality and provenance.
 
 ### Pipeline Flow (high-level)
-```
+```text
 User → DeepSeek (via deepcli TUI / cli.py)
   → core.py stream_completion() → session cache (~/.deepcli/session_store/)
     → dispatch_pipeline.py (called on every cache write, via core.py hook)
@@ -102,19 +102,19 @@ except Exception:
 
 ### 5. Broken Symlinks at Root
 Multiple top-level symlinks are permanently broken on any non-Termux host:
-```
-dispatch_task.py → /data/data/com.termux/files/home/workspace/llm_map/dispatch_task.py
-agent_shell.py   → /data/data/com.termux/.../agent_shell.py
-archaeologist.py → /data/data/com.termux/.../archaeologist.py
+```text
+dispatch_task.py     → /data/data/com.termux/files/home/workspace/llm_map/dispatch_task.py
+agent_shell.py       → /data/data/com.termux/.../agent_shell.py
+archaeologist.py     → /data/data/com.termux/.../archaeologist.py
 enforce_hierarchy.sh → /data/data/com.termux/.../enforce_workspace_hierarchy.sh
 ```
 
 **Fix:** Either replace symlinks with relative path symlinks (pointing into `archwiz/` or `cli-synthegration/workspace/`) or remove them and update callers to use the canonical paths.
 
-### 6. No Dependency Declaration
-No `requirements.txt` exists. The Python environment depends on Termux `pkg` installs of: `curl_cffi`, `requests`, `ruff`, `ripgrep`, `fd`, `shellcheck`, `jq`, `entr`. On Replit, these must be installed explicitly.
+### 6. No Dependency Declaration *(partially resolved — see Branch Evaluations below)*
+~~No `requirements.txt` exists.~~ `requirements-base.txt` and `setup.sh` now exist (landed in `mistral/fixes-config-security`). Remaining gap: `requirements-base.txt` covers only `curl-cffi`, `requests`, `websockets` — system tools (`ruff`, `ripgrep`, `fd`, `shellcheck`, `jq`, `entr`) still require manual install. `multi-ai-cli/requirements.txt` exists independently but is not reconciled with the root baseline.
 
-**Fix:** Create `requirements.txt` at the root with all Python deps. Add a `setup.sh` that installs system tools via `nix` or the package skill.
+**Fix remaining:** Add system-tool installation to `setup.sh` via `nix-env` or document them in a `PREREQUISITES.md`. Reconcile `multi-ai-cli/requirements.txt` with `requirements-base.txt` — avoid two separate dependency tracks diverging silently.
 
 ---
 
@@ -157,6 +157,15 @@ The full loop: Sentinel detects a failure → auto-repair attempts a fix → Pro
 ### F. Web Dashboard (Replit-Native Extension)
 The cockpit is currently terminal-only (stdin/stdout). On Replit, a lightweight Flask/FastAPI server exposing the same 19 menu actions as REST endpoints, with a minimal HTML dashboard, would make the environment accessible from any browser — including mobile. The pipeline status, activity feed, and live metrics are natural candidates for this.
 
+**Security requirements before any REST implementation:**
+- Bind to `127.0.0.1` only (never `0.0.0.0`) unless behind the Replit proxy
+- Require a session token (env-var seeded, checked on every request via middleware)
+- CSRF protection on all state-mutating endpoints (e.g., double-submit cookie or `SameSite=Strict`)
+- Origin allowlist (only the Replit preview domain)
+- Rate-limit all endpoints — especially `[1]` (Full Autonomous Run), which triggers heavy workloads
+- Emit an audit log entry (timestamp, action, result) for every invocation; persist to `LOG_DIR`
+- Least-privilege: read-only endpoints (status, feed, metrics) available without elevated scope; execution endpoints require an explicit capability flag
+
 ### G. Expert-Mode Session Creation (ROADMAP 🟡)
 Sessions created without the `thinking_enabled`/`search_enabled` fields default to non-Expert mode. The `create_session()` call in `core.py` should accept and forward these flags, and `cli.py`'s `new` command should expose `--expert / --no-expert`.
 
@@ -172,6 +181,63 @@ Sessions created without the `thinking_enabled`/`search_enabled` fields default 
 | Commit notes scanner → CHANGES.md | Low | Auto-detect "what changed" summaries from session digests |
 | Tab completion for `/sessions` | Low | Already partially designed in TUI |
 | Sigil substitution engine (cedrlang) | High | Runtime compression protocol — reduces token usage |
+
+---
+
+---
+
+## Branch Evaluations
+
+### `mistral/fixes-config-security` — env-aware config, bridge hardening, security docs
+*Author: timerloggedout-spec. 9 files, +297/−27 lines.*
+
+**What it does well:**
+- `archwiz/config.py` — persistent JSON config at `~/.archwiz/config.json`, proper directory/file permissions (700/600), graceful corruption handling (renames to `.broken`), atomic token writes (temp-file + `os.replace`)
+- `multi-ai-cli/bridge/mistral_bridge.py` — now imports from `archwiz.config`; atomic token write with secure perms
+- `tools/tests/mistral_bridge_smoke.py` — smoke test that is safe (no external calls, cleans up after itself)
+- `SECURITY.md` and harvester READMEs — explicit opt-in model for credential tooling
+- `requirements-base.txt` + `setup.sh` — fills the missing dependency declaration gap
+
+**Critical gaps (fixed in this branch on `critical-proposal`):**
+
+| Gap | Severity | Fix applied |
+|-----|----------|-------------|
+| Missing `ARCHWIZ_DIR`, `DEEPCLI_DIR`, `WORKSPACE_DIR` — the paths archwiz.py actually calls | 🔴 High | Added as `@property` on `Config` + module-level constants |
+| Replit detection used `REPL_OWNER` (unreliable) | 🟡 Medium | Updated to `REPL_ID` / `REPLIT_DOMAINS` / `REPLIT_DB_URL` |
+| No `archwiz/__init__.py` — `from archwiz import config` fails | 🔴 High | Created `archwiz/__init__.py` |
+| `setup.sh` creates a venv — breaks on Replit (no venv support) | 🔴 High | Replaced with env-aware install: venv only for `local`, system pip for Replit/Termux |
+| Module-level constants missing — callers need `from archwiz.config import ARCHWIZ_DIR` | 🟡 Medium | Added flat module-level constants as drop-in replacements |
+| `multi-ai-cli/core/core.py` dispatch hook copies the silent `except: pass` bug | 🔴 High | Not yet fixed — tracked in task #3 |
+
+**Verdict:** Merge-ready after the fixes above. The config design is sound. The bridge hardening and security documentation are genuine improvements.
+
+---
+
+### `vibe/mistralai-vibe-code-wrapper-6055d2` — MistralAI CLI + Codex-style code harvester
+*Author: Vibe Nuage Agent / timerloggedout-spec co-authored. 22 files, +1072/−643 lines.*
+
+**What it does well:**
+- Complete MistralAI CLI mirroring the DeepSeek/cli-synthegration pattern end-to-end
+- `code_harvester.py` — content-addressable blob store (SHA256, first 16 chars), `Pointer` class, hierarchical taxonomy (`language → project → session`), dedup by hash — directly ports the cli-synthegration Codex pattern
+- 31 tests passing; regex-only extraction (no BeautifulSoup dependency)
+- Dispatch hook plumbed into `multi-ai-cli/core/core.py` — same pipeline integration as deepcli
+
+**Critical gaps:**
+
+| Gap | Severity | Recommendation |
+|-----|----------|----------------|
+| `multi-ai-cli/core/core.py` uses hardcoded `~/.mistralai-cli/` paths — ignores `archwiz/config.py` for its own storage | 🟡 Medium | Replace with `from archwiz.config import SESSION_STORE` or a parallel `MISTRALAI_SESSION_STORE` constant in config.py |
+| Dispatch hook (`core.py:64-65`) is `except Exception: pass` — copies the deepcli silent-failure bug | 🔴 High | Log to stderr; tracked in task #3 |
+| `multi-ai-cli/requirements.txt` is independent — not reconciled with `requirements-base.txt` | 🟡 Medium | Merge or reference from root baseline |
+| `WASM_SOLVER` path constructed relative to `__file__` — will break if CLI is invoked from outside the package | 🟡 Medium | Resolve via `archwiz.config.DEEPCLI_DIR` or a package-local `__file__`-relative path with an existence check |
+| No equivalent of `archwiz/sentinel.py` or `archwiz/probe.py` for Mistral output — verification absent | 🟢 Low | Future: extend Sentinel to validate multi-ai-cli executions |
+
+**What to expand:**
+- Add `MISTRALAI_SESSION_STORE`, `MISTRALAI_TOKENS_DIR` to `archwiz/config.py` so all AI providers share one config root
+- `code_harvester.py`'s taxonomy is richer than cli-synthegration's — port the `TaxonomyNode.search()` back to the DeepSeek codex (`cli-synthegration/codex/`)
+- The harvester's blob store is an ideal foundation for the **cross-session idea harvester** extension (Extension Ideas table) — add a `#concept` tag scanner on top of it
+
+**Verdict:** High-value addition. The Codex port is well-executed. Fix the silent dispatch hook and reconcile storage paths before merging to master.
 
 ---
 

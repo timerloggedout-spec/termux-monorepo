@@ -10,28 +10,68 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
-
+  discover:
+    name: Discover Rust crates
     runs-on: ubuntu-latest
-
+    outputs:
+      crates: ${{ steps.find.outputs.crates }}
     steps:
-    - uses: actions/checkout@v4
-    - name: Find and build/test Rust crates
-      run: |
-        set -euo pipefail
-        echo "Searching for Cargo.toml files..."
-        # Find all Cargo.toml files, excluding common backup/temp paths
-        IFS=$'\n' read -r -d '' -a cargo_files < <(find . -type f -name Cargo.toml -not -path './.git/*' -print0)
-        if [ ${#cargo_files[@]} -eq 0 ]; then
-          echo "No Cargo.toml found, skipping Rust build/test."
-          exit 0
-        fi
-        for file in "${cargo_files[@]}"; do
-          # Remove leading ./ if present
-          file=${file#./}
-          dir=$(dirname "$file")
-          echo "== Building in $dir =="
-          (cd "$dir" && cargo build --verbose)
-          echo "== Testing in $dir =="
-          (cd "$dir" && cargo test --verbose)
-        done
+      - uses: actions/checkout@v4
+      - name: Find Cargo.toml files
+        id: find
+        run: |
+          set -euo pipefail
+          echo "Searching for Cargo.toml files..."
+          crates=$(find . -type f -name Cargo.toml -not -path './.git/*' -print0 | xargs -0 -n1 dirname | sed 's|^./||' | sort -u)
+          # Convert newline-separated list into JSON array
+          crates_json=$(python3 - <<'PY'
+import sys, json
+lines = [l.strip() for l in sys.stdin if l.strip()]
+print(json.dumps(lines))
+PY
+<<EOF
+$crates
+EOF
+)
+          echo "crates=$crates_json" >> $GITHUB_OUTPUT
+
+  build:
+    name: Build & Test (per-crate, parallel)
+    needs: discover
+    if: needs.discover.outputs.crates != '[]'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        crate: ${{ fromJson(needs.discover.outputs.crates) }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          override: true
+
+      - name: Show crate
+        run: |
+          echo "Building crate: '${{ matrix.crate }}'"
+
+      - name: Build
+        working-directory: ${{ matrix.crate }}
+        run: cargo build --verbose
+
+      - name: Test
+        working-directory: ${{ matrix.crate }}
+        run: cargo test --verbose
+
+  no-crates:
+    name: No Rust crates found
+    runs-on: ubuntu-latest
+    needs: discover
+    if: needs.discover.outputs.crates == '[]'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Exit gracefully
+        run: |
+          echo "No Cargo.toml files found in the repository. Nothing to build/test."

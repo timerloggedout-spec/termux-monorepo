@@ -5,10 +5,6 @@ echo "Running staged credential scan..."
 violations=0
 
 while IFS= read -r -d '' path; do
-  case "$path" in
-    *.md|*.rst|*.txt|*.adoc) continue ;;
-  esac
-
   if git show ":$path" 2>/dev/null | grep -I -q -E \
     'gh[pousr]_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9_-]{20,}|AKIA[0-9A-Z]{16}|Bearer[[:space:]]+[A-Za-z0-9._~+/=-]{12,}|-----BEGIN [A-Z ]*PRIVATE KEY-----'; then
     printf 'Suspicious credential-shaped value in staged file: %s\n' "$path" >&2

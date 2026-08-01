@@ -125,6 +125,7 @@ ArchWizard — indexing, provenance, recovery indices, automation cockpit.
 ## refTemplates — last-known directory snapshot (include B)
 The following is the last-known top-2-level snapshot of `~/refTemplates/` from the last 30 days. Use this as the authoritative reference for restoration.
 
+```
 refTemplates/
   01_Agent_Runtime/
     frankenterm/
@@ -190,6 +191,298 @@ refTemplates/
   Haven/ (Android app workspace + build artifacts + docs)
   Interpreted-Context-Methdology_fork/ (fork workspace with _core and workspaces)
   ...many other subprojects (see repo inventory for full details)
+```
+
+Here's the most recent `tree` 'snapshot' shortly before restoration became necessary:
+```
+❯ tree -L 2 refTemplates                                   refTemplates                                               ├── 01_Agent_Runtime                                       │   ├── frankenterm                                        │   ├── hermes-agent
+│   ├── opencode                                           │   ├── orca
+│   ├── pi_agent_rust                                      │   └── senpi
+├── 02_Memory_Session                                      │   ├── cass_memory_system
+│   └── coding_agent_session_search                        ├── 03_Agent_Communication
+│   └── mcp_agent_mail_rust                                ├── 04_CedarScript
+│   ├── cedarscript-ast-parser-python                      │   ├── cedarscript-editor-python                          │   ├── cedarscript-grammar
+│   └── cedarscript-mcp                                    ├── 05_Safety_Observability                                │   ├── destructive_command_guard                          │   ├── process_triage                                     │   ├── rano                                               │   └── system_resource_protection_script
+├── 06_Task_Tracking                                       │   ├── beads_rust
+│   └── beads_viewer
+├── 07_Prompt_Context
+│   ├── markdown_web_browser                               │   ├── source_to_prompt_tui
+│   └── toon_rust                                          ├── 08_Swarm_References
+│   ├── swarm-ecosystem                                    │   ├── swarms
+│   └── swarms-rs                                          ├── 09_Auth_Networking
+│   ├── coding_agent_account_manager
+│   ├── openclaw-zero-token
+│   └── rust_proxy
+├── 10_Infrastructure
+│   ├── ntm                                                │   └── repo_updater
+├── 11_Evaluation_Quality                                  │   ├── Approxination-Benchmark
+│   ├── Inverse-Arena
+│   └── ultimate_bug_scanner
+├── 12_External_Agents                                     │   ├── AiShell
+│   ├── YGK-a                                              │   ├── brenner_bot
+│   ├── lazycodex                                          │   ├── llm_fallbacks
+│   └── oh-my-openagent                                    ├── 13_Third_Party_Refs
+│   ├── ChapitoAI-main                                     │   ├── CloudBooter
+│   ├── My-Jogyo                                           │   ├── Termux
+│   ├── TradingAgents                                      │   ├── aadc
+│   ├── assistral                                          │   ├── ffa-brackets
+│   ├── insane-search                                      │   └── openskill.lua
+├── 14_Plain_Files                                         │   ├── approxination.txt
+│   └── ranking_research-concept-_.txt
+├── Haven
+│   ├── CHANGELOG.md                                       │   ├── EMAIL.md
+│   ├── LICENSE
+│   ├── NOTICE-Fonts.md                                    │   ├── PRIVACY_POLICY.md                                  │   ├── README.md
+│   ├── RELEASE.md                                         │   ├── VISION.md
+│   ├── app                                                │   ├── build-ffmpeg                                       │   ├── build-proot                                        │   ├── build.gradle.kts                                   │   ├── core                                               │   ├── dev                                                │   ├── docs                                               │   ├── fastlane
+│   ├── feature                                            │   ├── gradle
+│   ├── gradle.properties                                  │   ├── gradlew
+│   ├── gradlew.bat                                        │   ├── integration-tests
+│   ├── metadata                                           │   ├── rclone-android
+│   ├── rdp-kotlin                                         │   ├── scratch
+│   ├── scripts                                            │   ├── settings.gradle.kts
+│   └── tools                                              ├── Interpreted-Context-Methdology
+│   ├── CLAUDE.md                                          │   ├── LICENSE
+│   ├── README.md                                          │   ├── _core
+│   └── workspaces
+├── Interpreted-Context-Methdology_fork
+│   ├── CLAUDE.md
+│   ├── LICENSE
+│   ├── README.md
+│   ├── _core                                              │   └── workspaces                                         ├── OpenWebUI-Monitor                                      │   ├── AGENTS.md                                          │   ├── Dockerfile                                         │   ├── LICENSE                                            │   ├── README.md
+│   ├── app                                                │   ├── components
+│   ├── components.json                                    │   ├── docker-compose.yml                                 │   ├── drizzle.config.ts                                  │   ├── eslint.config.mjs
+│   ├── hooks                                              │   ├── i18n.config.ts
+│   ├── locales                                            │   ├── middleware.ts                                      │   ├── next.config.js                                     │   ├── package.json                                       │   ├── pnpm-lock.yaml
+│   ├── pnpm-workspace.yaml                                │   ├── postcss.config.js
+│   ├── postcss.config.mjs                                 │   ├── resources
+│   ├── scripts                                            │   ├── start.sh
+│   ├── tailwind.config.ts                                 │   └── tsconfig.json
+├── _TOOL_TAXONOMY -> /data/data/com.termux/files/home/workspace/llm_map/_TOOL_TAXONOMY
+├── agent-c                                                │   ├── Makefile
+│   ├── README.md                                          │   ├── SPEC.md
+│   ├── agent.c                                            │   └── preview.webp
+├── audio-preprocess
+│   ├── LICENSE                                            │   ├── README.md
+│   ├── README.zh.md                                       │   ├── fap-complete.zsh                                   │   ├── fish_audio_preprocess
+│   ├── pyproject.toml                                     │   └── tools                                              ├── better-clawd                                           │   ├── PERFORMANCE.md                                     │   ├── README.md                                          │   ├── bun.lock
+│   ├── package.json                                       │   ├── schemas
+│   ├── scripts                                            │   ├── src
+│   └── tsconfig.json
+├── big-AGI
+│   ├── AGENTS.md -> CLAUDE.md
+│   ├── CLAUDE.md                                          │   ├── Dockerfile
+│   ├── LICENSE
+│   ├── README.md
+│   ├── app                                                │   ├── docker-compose.yaml
+│   ├── docs                                               │   ├── eslint.config.mjs
+│   ├── kb                                                 │   ├── middleware_BASIC_AUTH.ts
+│   ├── next.config.ts                                     │   ├── package-lock.json                                  │   ├── package.json                                       │   ├── pages
+│   ├── public                                             │   ├── src                                                │   ├── tools                                              │   └── tsconfig.json
+├── cc-mirror                                              │   ├── AGENTS.md                                          │   ├── CHANGELOG.md
+│   ├── CLAUDE.md
+│   ├── CONTRIBUTING.md                                    │   ├── DESIGN.md
+│   ├── LICENSE
+│   ├── README.md                                          │   ├── docs
+│   ├── eslint.config.js                                   │   ├── lefthook.yml
+│   ├── package-lock.json                                  │   ├── package.json                                       │   ├── scripts                                            │   ├── src
+│   └── tsconfig.json                                      ├── ccs
+│   ├── AGENTS.md -> CLAUDE.md                             │   ├── CHANGELOG.md
+│   ├── CLAUDE.md
+│   ├── CONTRIBUTING.md
+│   ├── LICENSE                                            │   ├── README.md
+│   ├── SECURITY.md                                        │   ├── assets
+│   ├── bun.lock                                           │   ├── bunfig.toml
+│   ├── commitlint.config.cjs                              │   ├── config
+│   ├── docker                                             │   ├── docs
+│   ├── eslint-rules                                       │   ├── eslint.config.mjs
+│   ├── macos-bar                                          │   ├── package.json
+│   ├── scripts                                            │   ├── src
+│   ├── tsconfig.json                                      │   └── ui
+├── colab-ssh                                              │   ├── CHANGELOG.md
+│   ├── CODE_OF_CONDUCT.md
+│   ├── CONTRIBUTING.md
+│   ├── LICENSE
+│   ├── MANIFEST.in                                        │   ├── Makefile                                           │   ├── README.md
+│   ├── build.sh
+│   ├── colab_ssh
+│   ├── docs                                               │   ├── publish.sh
+│   ├── requirements.dev.txt
+│   ├── requirements.txt                                   │   └── setup.py
+├── colabcode                                              │   ├── LICENSE                                            │   ├── Makefile                                           │   ├── README.md                                          │   ├── colab_starter.ipynb
+│   ├── colabcode                                          │   ├── requirements.txt
+│   ├── scripts
+│   └── setup.cfg
+├── colabsh
+│   ├── CODE_OF_CONDUCT.md
+│   ├── CONTRIBUTING.md
+│   ├── Dockerfile
+│   ├── LICENSE                                            │   ├── README.md                                          │   ├── cliff.toml
+│   ├── codecov.yml
+│   ├── docs                                               │   ├── info_checks
+│   ├── pyproject.toml
+│   ├── src
+│   ├── uv.lock
+│   └── zensical.toml
+├── colabtools
+│   ├── CONTRIBUTING.md
+│   ├── LICENSE
+│   ├── MANIFEST.in
+│   ├── README.md                                          │   ├── google                                             │   ├── jupyter-config
+│   ├── notebooks                                          │   ├── setup.cfg
+│   └── setup.py
+├── conduit                                                │   ├── AGENTS.md
+│   ├── CLAUDE.md -> AGENTS.md                             │   ├── LICENSE                                            │   ├── PRIVACY_POLICY.md                                  │   ├── README.md                                          │   ├── analysis_options.yaml                              │   ├── android
+│   ├── assets                                             │   ├── cargokit_options.yaml
+│   ├── devtools_options.yaml                              │   ├── docs
+│   ├── ios                                                │   ├── l10n.yaml
+│   ├── pigeons                                            │   ├── pubspec.lock
+│   ├── pubspec.yaml
+│   ├── scripts                                            │   └── tool
+├── deep_intel.txt                                         ├── deep_recon.sh                                          ├── fast_intel.txt                                         ├── fast_scan.sh
+├── final_intel.json                                       ├── fish-audio-python
+│   ├── CHANGELOG.md                                       │   ├── CONTRIBUTING.md
+│   ├── LICENSE                                            │   ├── README.md                                          │   ├── pyproject.toml
+│   ├── release-please-config.json                         │   ├── scripts
+│   ├── src                                                │   └── uv.lock
+├── flywheel_intel.txt                                     ├── gemini_recon
+│   ├── Gemini-API                                         │   ├── gemini-web-to-api
+│   ├── gemini-web2api
+│   └── reverse_gemini-cli
+├── google-colab-cli                                       │   ├── AGENTS.md
+│   ├── CHANGELOG.md
+│   ├── CONTRIBUTING.md                                    │   ├── LICENSE
+│   ├── README.md                                          │   ├── cloudbuild.yaml
+│   ├── docs                                               │   ├── integration
+│   ├── pyproject.toml                                     │   ├── skills
+│   ├── src                                                │   └── uv.lock
+├── hermes-agent                                           │   ├── AGENTS.md
+│   ├── CONTRIBUTING.es.md                                 │   ├── CONTRIBUTING.md
+│   ├── Dockerfile
+│   ├── LICENSE
+│   ├── MANIFEST.in
+│   ├── README.es.md
+│   ├── README.md                                          │   ├── README.ur-pk.md
+│   ├── README.zh-CN.md                                    │   ├── SECURITY.es.md
+│   ├── SECURITY.md                                        │   ├── acp_adapter
+│   ├── acp_registry
+│   ├── agent                                              │   ├── batch_runner.py
+│   ├── cli-config.yaml.example                            │   ├── cli.py                                             │   ├── constraints-termux.txt
+│   ├── cron                                               │   ├── datagen-config-examples                            │   ├── docker
+│   ├── docker-compose.windows.yml                         │   ├── docker-compose.yml
+│   ├── docs                                               │   ├── flake.lock                                         │   ├── flake.nix                                          │   ├── gateway
+│   ├── hermes                                             │   ├── hermes-already-has-routines.md
+│   ├── hermes_bootstrap.py                                │   ├── hermes_cli
+│   ├── hermes_constants.py                                │   ├── hermes_logging.py
+│   ├── hermes_state.py                                    │   ├── hermes_time.py
+│   ├── locales                                            │   ├── mcp_serve.py
+│   ├── mini_swe_runner.py                                 │   ├── model_tools.py
+│   ├── nix                                                │   ├── package-lock.json
+│   ├── package.json                                       │   ├── packaging
+│   ├── plugins
+│   ├── providers                                          │   ├── pyproject.toml
+│   ├── run_agent.py                                       │   ├── scripts
+│   ├── setup-hermes.sh                                    │   ├── setup.py
+│   ├── skills                                             │   ├── tools
+│   ├── toolset_distributions.py                           │   ├── toolsets.py                                        │   ├── trajectory_compressor.py
+│   ├── tui_gateway
+│   ├── ui-tui
+│   ├── utils.py                                           │   ├── uv.lock
+│   └── web                                                ├── hermes-agent-self-evolution
+│   ├── PLAN.md                                            │   ├── README.md                                          │   ├── datasets
+│   ├── evolution
+│   ├── generate_report.py
+│   └── pyproject.toml
+├── hermes-webui
+│   ├── AGENTS.md                                          │   ├── ARCHITECTURE.md
+│   ├── BUGS.md                                            │   ├── CHANGELOG.md
+│   ├── CONTRIBUTING.md                                    │   ├── CONTRIBUTORS.md                                    │   ├── DESIGN.md                                          │   ├── Dockerfile
+│   ├── LICENSE                                            │   ├── README.md
+│   ├── ROADMAP.md
+│   ├── SPRINTS.md                                         │   ├── TESTING.md
+│   ├── THEMES.md                                          │   ├── api                                                │   ├── bootstrap.py
+│   ├── ctl.sh                                             │   ├── docker-compose.three-container.yml
+│   ├── docker-compose.two-container.yml
+│   ├── docker-compose.yml
+│   ├── docker_init.bash                                   │   ├── docs                                               │   ├── eslint.runtime-guard.config.mjs                    │   ├── mcp_server.py
+│   ├── package.json                                       │   ├── pyproject.toml                                     │   ├── pytest.ini
+│   ├── requirements-dev.txt                               │   ├── requirements.txt
+│   ├── scripts                                            │   ├── server.py
+│   ├── start.ps1                                          │   ├── start.sh
+│   ├── static
+│   └── uv.lock
+├── inventory_deep.py
+├── inventory_repos.py                                     ├── move_log.txt
+├── openrouter-deep-research-mcp
+│   ├── AGENTS.md
+│   ├── BEFORE_AFTER.md
+│   ├── CHANGELOG.md
+│   ├── CLAUDE.md
+│   ├── CONTEXT.md                                         │   ├── Dockerfile                                         │   ├── LICENSE
+│   ├── PLAN.md                                            │   ├── README.md
+│   ├── RESILIENCE_IMPROVEMENTS.md
+│   ├── TEST-RESULTS.md
+│   ├── THEME_UPDATE.md
+│   ├── ZERO.json
+│   ├── ZERO.md
+│   ├── agents.code-workspace
+│   ├── check_db.js                                        │   ├── config.js
+│   ├── docs
+│   ├── extension
+│   ├── find_query.js
+│   ├── harnesses                                          │   ├── package.json                                       │   ├── research_outputs
+│   ├── scripts
+│   ├── skills
+│   ├── src
+│   ├── templates
+│   ├── test-client.js
+│   ├── test-input.json                                    │   ├── test-layout.js
+│   ├── test-perplexity.js                                 │   ├── test-planning.js                                   │   └── test-resilience.sh                                 ├── openrouter-rs
+│   ├── AGENTS.md                                          │   ├── CHANGELOG.md
+│   ├── CLAUDE.md                                          │   ├── CONTRIBUTING.md
+│   ├── Cargo.lock
+│   ├── Cargo.toml
+│   ├── LICENSE                                            │   ├── MIGRATION.md
+│   ├── README.md
+│   ├── SECURITY.md                                        │   ├── SUPPORT.md
+│   ├── crates                                             │   ├── docs
+│   ├── justfile                                           │   ├── openspec
+│   ├── scripts                                            │   ├── specs                                              │   └── src
+├── perfect_trunk_cc-mirror
+│   ├── HEAD                                               │   ├── config                                             │   ├── description                                        │   ├── hooks
+│   └── info                                               ├── pi
+│   ├── AGENTS.md
+│   ├── CONTRIBUTING.md                                    │   ├── LICENSE
+│   ├── README.md                                          │   ├── SECURITY.md
+│   ├── biome.json                                         │   ├── package-lock.json                                  │   ├── package.json
+│   ├── packages                                           │   ├── pi-test.bat                                        │   ├── pi-test.ps1
+│   ├── pi-test.sh                                         │   ├── scripts
+│   ├── test.sh                                            │   ├── tsconfig.base.json
+│   └── tsconfig.json                                      ├── quick_intel.txt
+├── quick_recon.sh                                         ├── recon.py
+├── recon.sh                                               ├── recon_lag.py
+├── recon_v2.sh                                            ├── repo_intel.txt
+├── repo_inventory.json                                    ├── repo_inventory_deep.json
+├── reverser_ai                                            │   ├── LICENSE
+│   ├── README.md                                          │   ├── __init__.py
+│   ├── example_config.toml                                │   ├── plugin.json
+│   ├── requirements.txt                                   │   ├── reverser_ai
+│   ├── scripts                                            │   └── setup.py                                           ├── revert.sh                                              ├── starship                                               │   ├── AI_POLICY.md                                       │   ├── CHANGELOG.md                                       │   ├── CODE_OF_CONDUCT.md
+│   ├── CONTRIBUTING.md                                    │   ├── Cargo.lock
+│   ├── Cargo.toml                                         │   ├── LICENSE
+│   ├── README.md                                          │   ├── SECURITY.md
+│   ├── build.rs                                           │   ├── clippy.toml
+│   ├── crowdin.yml                                        │   ├── deny.toml
+│   ├── docs                                               │   ├── install
+│   ├── media                                              │   ├── release-please-config.json
+│   ├── src                                                │   ├── starship.exe.manifest
+│   └── typos.toml
+├── surgical_intel.txt
+├── surgical_recon.sh
+└── trunk_builder.py
+
+219 directories, 327 files                                 ~ ❯                                               15:05:53
+```
 
 > Note: Many entries above correspond to external git repositories or local workspaces and were sometimes included as submodules or as nested repositories. **Existing refTemplates were depth-1 selective sparse-checkout of relevant files, with metadata only** — not full recursive checkouts.
 

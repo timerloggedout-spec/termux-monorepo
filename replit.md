@@ -198,7 +198,7 @@ Sessions created without the `thinking_enabled`/`search_enabled` fields default 
 - `SECURITY.md` and harvester READMEs — explicit opt-in model for credential tooling
 - `requirements-base.txt` + `setup.sh` — fills the missing dependency declaration gap
 
-**Critical gaps (fixed in this branch on `critical-proposal`):**
+**Critical gaps (fixes applied on `master`):**
 
 | Gap | Severity | Fix applied |
 |-----|----------|-------------|
@@ -209,7 +209,7 @@ Sessions created without the `thinking_enabled`/`search_enabled` fields default 
 | Module-level constants missing — callers need `from archwiz.config import ARCHWIZ_DIR` | 🟡 Medium | Added flat module-level constants as drop-in replacements |
 | `multi-ai-cli/core/core.py` dispatch hook copies the silent `except: pass` bug | 🔴 High | Not yet fixed — tracked in task #3 |
 
-**Verdict:** Merge-ready after the fixes above. The config design is sound. The bridge hardening and security documentation are genuine improvements.
+**Verdict:** Merging is conditional on completing task #3 (silent dispatch failure). The config design is sound. The bridge hardening and security documentation are genuine improvements.
 
 ---
 
@@ -229,7 +229,7 @@ Sessions created without the `thinking_enabled`/`search_enabled` fields default 
 | `multi-ai-cli/core/core.py` uses hardcoded `~/.mistralai-cli/` paths — ignores `archwiz/config.py` for its own storage | 🟡 Medium | Replace with `from archwiz.config import SESSION_STORE` or a parallel `MISTRALAI_SESSION_STORE` constant in config.py |
 | Dispatch hook (`core.py:64-65`) is `except Exception: pass` — copies the deepcli silent-failure bug | 🔴 High | Log to stderr; tracked in task #3 |
 | `multi-ai-cli/requirements.txt` is independent — not reconciled with `requirements-base.txt` | 🟡 Medium | Merge or reference from root baseline |
-| `WASM_SOLVER` path constructed relative to `__file__` — will break if CLI is invoked from outside the package | 🟡 Medium | Resolve via `archwiz.config.DEEPCLI_DIR` or a package-local `__file__`-relative path with an existence check |
+| `WASM_SOLVER` path constructed relative to `__file__` — solver target may be missing or resolve to incorrect package-relative location | 🟡 Medium | Resolve via `archwiz.config.DEEPCLI_DIR` or a package-local `__file__`-relative path with an existence check |
 | No equivalent of `archwiz/sentinel.py` or `archwiz/probe.py` for Mistral output — verification absent | 🟢 Low | Future: extend Sentinel to validate multi-ai-cli executions |
 
 **What to expand:**

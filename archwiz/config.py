@@ -41,11 +41,13 @@ class Config:
                 data = json.loads(USER_CONFIG_FILE.read_text())
                 if isinstance(data, dict):
                     self._cfg.update(data)
-            except Exception:
+            except (OSError, json.JSONDecodeError) as e:
+                import sys
+                print(f"[config] Failed to load {USER_CONFIG_FILE}: {e}", file=sys.stderr, flush=True)
                 try:
                     USER_CONFIG_FILE.rename(USER_CONFIG_FILE.with_suffix(".broken"))
-                except Exception:
-                    pass
+                except OSError as rename_err:
+                    print(f"[config] Failed to rename broken config: {rename_err}", file=sys.stderr, flush=True)
 
         # Shell override takes highest priority
         shell_env = os.environ.get("ARCHWIZ_ENV", "").strip().lower()

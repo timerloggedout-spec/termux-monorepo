@@ -216,9 +216,11 @@ refTemplates/
     ranking_research-concept-_.txt
   15_Reverse_Engineering/   # MISSING as category — pointers removed in consolidation; recreate as metadata-only
     # AIStudio2API, AIStudioProxy, AIstudioProxyAPI, gemini-cli-api
-  # UNCATEGORIZED at tree -L 1 (need nesting):
-  Haven/  → propose 15_Android_Workspaces or 16_Product_Workspaces
-  Interpreted-Context-Methdology_fork/  → propose under 07_Prompt_Context
+
+**Uncategorized at tree -L 1 (need nesting):**
+
+- `Haven/` → propose 15_Android_Workspaces or 16_Product_Workspaces
+- `Interpreted-Context-Methdology_fork/` → propose under 07_Prompt_Context
 
 > Note: Many entries above correspond to external git repositories or local workspaces and were sometimes included as submodules or as nested repositories. **Existing refTemplates were depth-1 selective sparse-checkout of relevant files, with metadata only** — not full recursive checkouts.
 
@@ -294,14 +296,26 @@ git submodule status
 ```
 
 3) Recreate the `refTemplates` tree from git history if needed
+
+**Primary (preferred):** restore metadata-only skeleton from `recreate/refTemplates-skeleton`:
+
 ```bash
-# Prefer merging metadata from recreate/refTemplates-skeleton rather than full clones
+git fetch origin recreate/refTemplates-skeleton
+git restore --source=origin/recreate/refTemplates-skeleton -- refTemplates
+git add refTemplates
+git commit -m "Restore refTemplates metadata from recreate/refTemplates-skeleton"
+```
+
+**Fallback (if skeleton branch is unavailable):** checkout from a known restore commit:
+
+```bash
 git log --all --pretty=format:'%H %ad %s' --date=iso -- refTemplates | head -n 50
 git checkout <commit> -- refTemplates
 git add refTemplates
 git commit -m "Restore refTemplates from <commit>"
 ```
-If git checkout fails because refTemplates was a submodule pointer, try the backup-restore commits already present (see commits listed above). Prefer depth-1 selective sparse-checkout of relevant files (metadata only) rather than full recursive population. Nest uncategorized L1 entries (Haven, ICM_fork) and restore **15_Reverse_Engineering** as metadata slots.
+
+Prefer depth-1 selective sparse-checkout of relevant files (metadata only) rather than full recursive population. Nest uncategorized L1 entries (Haven, ICM_fork) and restore **15_Reverse_Engineering** as metadata slots.
 
 4) Use archwiz and llm_map indices to fill gaps
 - Many indices are present in: `archwiz/pointer_index.json`, `archwiz/index_registry.json`, `workspace/llm_map/*_index*.jsonl`.

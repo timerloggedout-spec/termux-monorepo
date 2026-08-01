@@ -1,9 +1,8 @@
-User manual copy share Links to Repository && Commit/PR Evaluation.
+# Repository and Commit/PR Evaluation Links
 
-# consider better proposals 📂 directory locations.
+This document contains shared links for repository and commit/PR evaluations.
 
-Initial
-[link-1](https://chatgpt.com/s/t_6a6d3a3b2a308191981b5877ea748ed4)
+> **Note:** Reconsider the directory location for proposal documents under `docs/proposals/`.
 
-with PR Branch Commit review 
-[link-2](https://chatgpt.com/s/t_6a6d3a0c17e48191a470ddf338780387)
+- [Initial repository evaluation](https://chatgpt.com/s/t_6a6d3a3b2a308191981b5877ea748ed4)
+- [PR branch commit review](https://chatgpt.com/s/t_6a6d3a0c17e48191a470ddf338780387)

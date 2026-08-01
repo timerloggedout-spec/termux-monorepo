@@ -35,7 +35,7 @@ python3 deepcli/deepcli.py new    # Start a new DeepSeek session
 python3 deepcli/deepcli.py send "prompt here"
 ```
 
-The DeepSeek integration requires a valid `ds_session_id` cookie and bearer token extracted from a browser session (see `deepcli/extract-token.js`).
+The DeepSeek integration requires a valid `ds_session_id` cookie and bearer token extracted from a browser session (see `deepcli/extract-token.js`). **Store these only in Replit Secrets or environment variables** — never commit or echo them, redact them from logs and exports, and revoke immediately if exposed.
 
 ---
 
@@ -55,14 +55,23 @@ Almost all `subprocess.run(...)` calls in `archwiz/archwiz.py` use `os.path.expa
 **Fix:** Create `archwiz/config.py` as a single source of truth for all paths, resolved at import time via an environment variable:
 
 ```python
-# archwiz/config.py
+# archwiz/config.py (summary — see landed implementation on this branch)
 import os
 from pathlib import Path
 
-# Set ARCHWIZ_ENV=termux | replit | local (auto-detected if unset)
+# ARCHWIZ_ENV=termux | replit | local (explicit) or auto-detect
+# Detection: Termux via /data/data/com.termux; Replit via REPL_ID / REPLIT_DOMAINS / REPLIT_DB_URL;
+# otherwise local. Reject unknown explicit values.
 _env = os.environ.get('ARCHWIZ_ENV', '').lower()
-if not _env:
-    _env = 'termux' if Path('/data/data/com.termux').exists() else 'replit'
+if not _env or _env == 'auto':
+    if Path('/data/data/com.termux').exists():
+        _env = 'termux'
+    elif os.environ.get('REPL_ID') or os.environ.get('REPLIT_DOMAINS') or os.environ.get('REPLIT_DB_URL'):
+        _env = 'replit'
+    else:
+        _env = 'local'
+elif _env not in ('termux', 'replit', 'local'):
+    raise ValueError(f'Unknown ARCHWIZ_ENV: {_env}')
 
 if _env == 'termux':
     ARCHWIZ_ROOT = Path('/data/data/com.termux/files/home')
@@ -139,14 +148,19 @@ The `archwiz/` directory contains **~25 timestamped `.bak` files** for `archwiz.
 These are legacy execution paths that predate the current `core.py` cache-write hook → `dispatch_pipeline.py` flow. They duplicate work the TUI already does and introduce a second, less-reliable execution surface. The methodology log documents the pain: 4 listener lifecycle attempts, nohup ghosts, PID-file fragility. The canonical path is: `core.py stream_completion()` writes cache → `dispatch_pipeline.update_all()` → `autonomous_runner`. The listener and poller should be archived (moved to `_archive/`) once the dispatch hook is confirmed stable on Replit.
 
 ### B. `fzf` Integration (Shelved → Resolvable)
-CONSIDERATIONS.md documents why fzf was shelved: it indexed 194k files without respecting `bloat_exclusions.lst`. The fix is already documented:
+CONSIDERATIONS.md documents why fzf was shelved: it indexed 194k files without respecting `bloat_exclusions.lst`. Resolve the exclusions file from the **stable repository root** (via `archwiz.config.ARCHWIZ_ROOT` or repo root), and **prune during traversal** rather than filtering after a full walk:
+
 ```bash
-find ~ -type d | grep -vFf bloat_exclusions.lst | fzf
+# Example: prune excluded dirs during find (adjust paths to repo root)
+EXCL="$(git rev-parse --show-toplevel)/bloat_exclusions.lst"
+find "$(git rev-parse --show-toplevel)" -type d \(
+  $(while read -r d; do [ -n "$d" ] && printf -- '-path */%s -o ' "$d"; done < "$EXCL") -false \) -prune -o -type d -print | fzf
 ```
-The keyboard issue was Termux-specific and does not apply on Replit. This is ready to implement.
+
+The keyboard issue was Termux-specific and does not apply on Replit. This is ready to implement once pruning is in place.
 
 ### C. Real-Time Chat Feedback (ROADMAP Priority 🔴)
-The listener executes code blocks but cannot send results back to the conversation. The methodology log proves `stream_completion()` is the correct path (Attempt C). The missing piece is a `report_back(session_id, text)` helper that calls `stream_completion` with the execution result as a user message.
+Do **not** add `report_back` onto legacy `activity_listener.py`. Route execution results through the **canonical** cache-write → `dispatch_pipeline.py` path using a non-dispatching message/event append with an **idempotency guard** so each result is recorded once. Avoid calling `stream_completion()` from a path that re-enters dispatch and risks recursive or duplicate reports.
 
 ### D. ChronoMancer Branch-Routing UI (ROADMAP 🟡)
 `cli-synthegration/Chronos/accelerator.py` and `versioner.py` have the data layer. What's missing is a TUI visualizer for the branch tree — a read-only `curses` (or rich-text) panel showing fork points and child session previews.
@@ -198,7 +212,7 @@ Sessions created without the `thinking_enabled`/`search_enabled` fields default 
 - `SECURITY.md` and harvester READMEs — explicit opt-in model for credential tooling
 - `requirements-base.txt` + `setup.sh` — fills the missing dependency declaration gap
 
-**Critical gaps (fixes applied on `master`):**
+**Critical gaps (fixes applied on this branch / tracked):**
 
 | Gap | Severity | Fix applied |
 |-----|----------|-------------|
@@ -209,7 +223,7 @@ Sessions created without the `thinking_enabled`/`search_enabled` fields default 
 | Module-level constants missing — callers need `from archwiz.config import ARCHWIZ_DIR` | 🟡 Medium | Added flat module-level constants as drop-in replacements |
 | `multi-ai-cli/core/core.py` dispatch hook copies the silent `except: pass` bug | 🔴 High | Not yet fixed — tracked in task #3 |
 
-**Verdict:** Merging is conditional on completing task #3 (silent dispatch failure). The config design is sound. The bridge hardening and security documentation are genuine improvements.
+**Verdict:** Do not merge until task `#3` (silent dispatch failure) is fixed and verified. The config design is sound. The bridge hardening and security documentation are genuine improvements.
 
 ---
 
@@ -229,7 +243,7 @@ Sessions created without the `thinking_enabled`/`search_enabled` fields default 
 | `multi-ai-cli/core/core.py` uses hardcoded `~/.mistralai-cli/` paths — ignores `archwiz/config.py` for its own storage | 🟡 Medium | Replace with `from archwiz.config import SESSION_STORE` or a parallel `MISTRALAI_SESSION_STORE` constant in config.py |
 | Dispatch hook (`core.py:64-65`) is `except Exception: pass` — copies the deepcli silent-failure bug | 🔴 High | Log to stderr; tracked in task #3 |
 | `multi-ai-cli/requirements.txt` is independent — not reconciled with `requirements-base.txt` | 🟡 Medium | Merge or reference from root baseline |
-| `WASM_SOLVER` path constructed relative to `__file__` — solver target may be missing or resolve to incorrect package-relative location | 🟡 Medium | Resolve via `archwiz.config.DEEPCLI_DIR` or a package-local `__file__`-relative path with an existence check |
+| `WASM_SOLVER` may be missing or resolve to an incorrect package-relative location (not a cwd-change failure) | 🟡 Medium | Resolve via `archwiz.config.DEEPCLI_DIR` or package-local path with an existence check |
 | No equivalent of `archwiz/sentinel.py` or `archwiz/probe.py` for Mistral output — verification absent | 🟢 Low | Future: extend Sentinel to validate multi-ai-cli executions |
 
 **What to expand:**

@@ -12,6 +12,37 @@ It further documents the **live projects and directories currently in the codeba
 - I compiled a consolidated recovery plan (Option B) and embedded the `refTemplates` snapshot (Option A) in this README.
 - I created this README in the repo root so it is available as the single recovery cockpit.
 - **Expansion:** project inventory of directories present on `master` (deepcli, cli-synthegration, termux-multi-agent, archwiz, harmonizer, etc.) is included below so recovery and live code share one map.
+- **Navigation:** prefer ArchWiz indices over a two-link “Entry + HTML” pair — see **Navigation SSOT** below and `docs/RECON.md` on `feature/recon-intel-and-nav`.
+
+---
+
+## Navigation SSOT (better than Entry + HTML alone)
+
+Use this ladder when orienting in the tree. `_Entry+ReadMe.md` and `termux-ecosystem-architecture.html` remain useful but are **not** the primary map.
+
+| Priority | Start here | What you get |
+|----------|------------|--------------|
+| 1 | `archwiz/TOOL_INDEX.md` | 28 tools / 7 categories — cockpit, forensic, autonomous, verification |
+| 2 | `archwiz/CONCEPT_INDEX.md` | Concepts + status (built / reserved / not built) + feature backlog |
+| 3 | `archwiz/REFERENCE_HUB.md` | Links to DATA_FLOW_MANIFEST, SYSTEM_MAP, func/llm indices |
+| 4 | `archwiz/METHODOLOGY_INDEX.md` | Approaches tried, failures, what stuck |
+| 5 | `archwiz/PROCEDURES.md`, `ARCHWIZARD_TASKS.md` | Runbooks and active tasks |
+| 6 | `docs/RECON.md` (this RECON) | Branch/PR critique, refTemplates nesting gaps, prioritized proposals |
+| 7 | `replit.md` on branch `critical-proposal` (PR #1) | Critical path/config issues and optimization proposals |
+| 8 | `_Entry+ReadMe.md` | One-line command → entry table |
+| 9 | `termux-ecosystem-architecture.html` | Visual ecosystem diagram |
+| 10 | `refTemplates/README_RECOVERY.md` on `recreate/refTemplates-skeleton` | Metadata-only restore policy for refs |
+
+Quick command table (also in `_Entry+ReadMe.md`):
+
+| What you want to do | Where you start |
+|---------------------|-----------------|
+| Research a file's history | `archaeo <file>` |
+| Check impact before changing | `oracle <file>` |
+| Make a change | `dispatch <task>` or `agent-shell run <id>` |
+| Validate & promote | `validate_promotion.py` → promote |
+| Rebuild indices | `map-build && map-func && fore` |
+| Open cockpit | `python3 archwiz/archwiz.py` |
 
 ---
 
@@ -27,17 +58,7 @@ This information was used to run git-diff-style consolidation and create the rec
 
 ## Live projects & directories (currently available on master)
 
-Quick entry map (also in `_Entry+ReadMe.md`):
-
-| What you want to do | Where you start |
-|---------------------|-----------------|
-| Research a file's history | `archaeo <file>` |
-| Check impact before changing | `oracle <file>` |
-| Make a change | `dispatch <task>` or `agent-shell run <id>` |
-| Validate & promote | `validate_promotion.py` → promote |
-| Rebuild indices | `map-build && map-func && fore` |
-
-Architecture overview: `termux-ecosystem-architecture.html` (Terminal → ArchWiz / Harmonizer / DeepSeek CLI-TUI / Central Mapper / Multi-Agent → DeepSeek API, local cache, workspace).
+Architecture overview: `termux-ecosystem-architecture.html` (Terminal → ArchWiz / Harmonizer / DeepSeek CLI-TUI / Central Mapper / Multi-Agent → DeepSeek API, local cache, workspace). Prefer **TOOL_INDEX** + **CONCEPT_INDEX** for tool-level truth.
 
 ### Core automation & agents
 
@@ -82,9 +103,9 @@ Related: `synthegration-cli/`, `.synthegration/`.
 #### `archwiz/`
 ArchWizard — indexing, provenance, recovery indices, automation cockpit.
 
-- Docs: `ARCHWIZARD_TASKS.md`, `CONCEPT_INDEX.md`, `METHODOLOGY_INDEX.md`, `PROCEDURES.md`, `DATA_FLOW_MANIFEST.md`, `REFERENCE_HUB.md`, etc.
-- Operational: pointer/staging indices, restore helpers, listener/poller/autoexec-style components
-- Role: dashboard + pipeline control (see architecture HTML)
+- Docs: `ARCHWIZARD_TASKS.md`, `CONCEPT_INDEX.md`, `METHODOLOGY_INDEX.md`, `PROCEDURES.md`, `DATA_FLOW_MANIFEST.md`, `REFERENCE_HUB.md`, `TOOL_INDEX.md`, etc.
+- Operational: pointer/staging indices, restore helpers, listener/poller/autoexec-style components (**poller/listener = legacy**; canonical path is cache-write → `dispatch_pipeline` — see PR #1 / `replit.md`)
+- Role: dashboard + pipeline control
 
 ### Harmonizer, multi-AI, swarm
 
@@ -93,7 +114,7 @@ ArchWizard — indexing, provenance, recovery indices, automation cockpit.
 | `harmonizer-prod_cli/` | Production Harmonizer CLI (unified DeepSeek automation: sessions, export, search, sync) |
 | `harmony_hub/` | Harmony hub integration |
 | `multi-ai-cli/` | Multi-model CLI surface |
-| `commingle-swarm/` | Swarm / multi-agent commingle setup |
+| `commingle-swarm/` | **Template / scavenge-only** external clone — not first-class runtime |
 | Root scripts | `setup-comingle-swarm.sh`, `upgrade-commingle-swarm.sh`, `deepseek_harmonizer.sh` |
 
 ### Projects, exchanges, applied work
@@ -125,6 +146,9 @@ ArchWizard — indexing, provenance, recovery indices, automation cockpit.
 ## refTemplates — last-known directory snapshot (include B)
 The following is the last-known top-2-level snapshot of `~/refTemplates/` from the last 30 days. Use this as the authoritative reference for restoration.
 
+**On `master` today:** only a stub under `refTemplates/01_Agent_Runtime/`.  
+**Full metadata skeleton:** branch `recreate/refTemplates-skeleton` (README.md + SOURCE.txt per entry; depth-1 sparse style). See `refTemplates/README_RECOVERY.md` on that branch.
+
 refTemplates/
   01_Agent_Runtime/
     frankenterm/
@@ -133,6 +157,7 @@ refTemplates/
     orca/
     pi_agent_rust/
     senpi/
+    # also historically: deepcode-cli (pointer removed in consolidation)
   02_Memory_Session/
     cass_memory_system/
     coding_agent_session_search/
@@ -155,6 +180,7 @@ refTemplates/
     markdown_web_browser/
     source_to_prompt_tui/
     toon_rust/
+    # nest here: Interpreted-Context-Methdology_fork (currently uncategorized at tree -L 1)
   08_Swarm_References/
     swarm-ecosystem/
     swarms/
@@ -184,12 +210,15 @@ refTemplates/
     aadc/
     ffa-brackets/
     openskill.lua/
+    # also historically: assistral (pointer removed)
   14_Plain_Files/
     approxination.txt
     ranking_research-concept-_.txt
-  Haven/ (Android app workspace + build artifacts + docs)
-  Interpreted-Context-Methdology_fork/ (fork workspace with _core and workspaces)
-  ...many other subprojects (see repo inventory for full details)
+  15_Reverse_Engineering/   # MISSING as category — pointers removed in consolidation; recreate as metadata-only
+    # AIStudio2API, AIStudioProxy, AIstudioProxyAPI, gemini-cli-api
+  # UNCATEGORIZED at tree -L 1 (need nesting):
+  Haven/  → propose 15_Android_Workspaces or 16_Product_Workspaces
+  Interpreted-Context-Methdology_fork/  → propose under 07_Prompt_Context
 
 > Note: Many entries above correspond to external git repositories or local workspaces and were sometimes included as submodules or as nested repositories. **Existing refTemplates were depth-1 selective sparse-checkout of relevant files, with metadata only** — not full recursive checkouts.
 
@@ -226,7 +255,7 @@ I inspected recent commits touching `refTemplates` and surrounding restore commi
 
 - `.gitmodules` (current repo content): contains submodule entries for several projects, notably `powerlevel10k` and other project submodules.
 
-Summary: The repo history shows active restoration attempts — multiple commits rehydrated `refTemplates` from a backup commit (d5814d9 referenced). Later consolidation removed some explicit submodule pointers, possibly because content was restored directly or those submodules were intentionally removed. The state on `master` represents the consolidated result of these operations.
+Summary: The repo history shows active restoration attempts — multiple commits rehydrated `refTemplates` from a backup commit (d5814d9 referenced). Later consolidation removed some explicit submodule pointers, possibly because content was restored directly or those submodules were intentionally removed. The state on `master` represents the consolidated result of these operations. **Category 15 and several L1 names remain debt** — see `docs/RECON.md` §5.
 
 ---
 
@@ -266,15 +295,13 @@ git submodule status
 
 3) Recreate the `refTemplates` tree from git history if needed
 ```bash
-# find commit that contained refTemplates
+# Prefer merging metadata from recreate/refTemplates-skeleton rather than full clones
 git log --all --pretty=format:'%H %ad %s' --date=iso -- refTemplates | head -n 50
-# checkout the tree from a known good commit (replace <commit> with the commit sha found)
 git checkout <commit> -- refTemplates
-# commit the restored tree if it looks correct
 git add refTemplates
 git commit -m "Restore refTemplates from <commit>"
 ```
-If git checkout fails because refTemplates was a submodule pointer, try the backup-restore commits already present (see commits listed above). The repository already contains restore commits; inspect files under refTemplates to confirm content is present. Prefer depth-1 selective sparse-checkout of relevant files (metadata only) rather than full recursive population.
+If git checkout fails because refTemplates was a submodule pointer, try the backup-restore commits already present (see commits listed above). Prefer depth-1 selective sparse-checkout of relevant files (metadata only) rather than full recursive population. Nest uncategorized L1 entries (Haven, ICM_fork) and restore **15_Reverse_Engineering** as metadata slots.
 
 4) Use archwiz and llm_map indices to fill gaps
 - Many indices are present in: `archwiz/pointer_index.json`, `archwiz/index_registry.json`, `workspace/llm_map/*_index*.jsonl`.
@@ -319,15 +346,31 @@ python3 build_all.py   # or the smaller targeted build scripts: build_llm_index.
 
 ## Safety & Secrets
 - The repo includes references to `cookies_2.json` and browser cookie exports; DO NOT commit secrets. If `cookies_2.json` is present locally, ensure it is in `.gitignore`.
+- Session stores must not be tracked in Git (see open PR #3 `agent/repository-hygiene`).
 - Back up large JSONL indices externally before attempting destructive rebuilds.
+
+---
+
+## Open branches & PRs (snapshot 2026-08-01)
+
+| Item | Note |
+|------|------|
+| PR #1 `critical-proposal` | Docs: critical eval + roadmap — mergeable |
+| PR #2 `timerloggedout-spec-patch-1` | GHA Rust — narrow scope before merge |
+| PR #3 `agent/repository-hygiene` (draft) | Untrack session stores — **priority** |
+| `recreate/refTemplates-skeleton` | Full metadata tree; merge to master |
+| `mistral/fixes-config-security` | config.py + security baseline |
+| `vibe/mistralai-vibe-code-wrapper-*` | Mistral CLI + harvester; fix silent dispatch |
+
+Detail and ranked proposals: **`docs/RECON.md`**.
 
 ---
 
 ## What I can do next (pick one or more)
 1. Run selective submodule / sparse-checkout steps and report results (I can run commands only if you ask me to perform GitHub write operations or environment commands; I can provide exact commands for you to run).
 2. Page through archwiz and workspace/llm_map to list every `.bak` file and recommend the highest-confidence restoration candidates.
-3. Commit this README into `master` (I am about to do this now). If you want a different branch, tell me.
-4. Create an automated PR that applies the recommended recovery script(s) (I can open issues/PRs if you want).
+3. Land refTemplates skeleton + category 15 nesting on a dedicated `feature/*` branch.
+4. Create follow-up PRs for P0 items in `docs/RECON.md` (dispatch logging, PR #3 hygiene).
 
 ---
 
@@ -339,10 +382,11 @@ python3 build_all.py   # or the smaller targeted build scripts: build_llm_index.
   - 65c9f81162fd9a080a4a8aea4f6a0b6ecd2dcd72 — "Complete restore: refTemplates, submodules, and powerlevel10k"
   - ee1807049fd93d087bc14055b2ae6cbffb5dbf82 — "Add base configs and dotfiles"
   - ebe3e0ca504cb35ef61832b0b1b1576a1a0d44fb — "Initial monorepo commit..."
+  - f19716e / 5c6e5e2 / 6ef0e2f — README expand + refTemplates stub restore
 
 - Found `.gitmodules` with multiple submodule URLs — use **selective depth-1** updates only when a listed submodule is needed; refTemplates historically used sparse depth-1 checkout with metadata only.
 - Found evidence that some restored content was then consolidated and had submodule pointers removed in the latest commit; verify that removed submodules are intentionally removed (or re-add them via git submodule add if needed).
 
 ---
 
-If you confirm, I will push this README into `master` (the repository's default branch) and then proceed to Option B step 2 (list .bak files and large indices and produce a prioritized file-by-file recovery plan). If you prefer to run commands yourself first, I will provide a runnable script you can execute.
+If you confirm further implementation work, use **`feature/*` branches only** (never commit recovery or nav changes straight to `master` without review). See `docs/RECON.md` for the full proposal table.

@@ -1,4 +1,4 @@
-"""Command-line operations for the Codex bridge scaffold (DeepForge)."""
+"""Command-line operations for the Codex bridge scaffold."""
 
 import argparse
 import hashlib
@@ -11,6 +11,9 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from . import paths
+
+# Working product title until TER-12 naming poll settles (PR #9).
+PRODUCT = os.environ.get("CODEX_BRIDGE_NAME", "DeepForge")
 
 
 class _IndexUnreadable(Exception):
@@ -85,9 +88,6 @@ def _doctor(strict: bool) -> int:
     checks.append(
         _print_status("codex index", paths.codex_index().is_file(), str(paths.codex_index()))
     )
-    print("\nDeepForge note: prefer `python -m codex_bridge deepcli` or plain `run`")
-    print("  to stay on the deepcli path; use --codex-native only when you need the")
-    print("  stock OpenAI Codex binary (requires ChatGPT / API key auth).")
     return 1 if strict and not all(checks) else 0
 
 
@@ -110,7 +110,7 @@ def _export_environment() -> Dict[str, str]:
             "CODEX_TERMUX_ROOT": str(paths.CODEX_ROOT),
             "DEEPCLI_STORE": str(paths.deepcli_store()),
             "SYNTHEGRATION_DIR": str(paths.synthegration_dir()),
-            "DEEPFORGE": "1",
+            "CODEX_BRIDGE_NAME": PRODUCT,
         }
     )
     binary = paths.codex_binary()
@@ -123,18 +123,16 @@ def _run_deepcli(arguments: List[str]) -> int:
     launcher = _deepcli_launcher()
     if launcher is None:
         print(
-            "DeepCLI launcher not found. Expected deepcli/deepcli.py in the monorepo "
+            "deepcli launcher not found. Expected deepcli/deepcli.py in the monorepo "
             "or a `deepcli` binary on PATH.",
             file=sys.stderr,
         )
         return 1
     env = _export_environment()
-    # Ensure package import works when launching the script
     package_root = str(paths.REPO_ROOT / "deepcli")
     if (Path(package_root) / "deepcli" / "__init__.py").is_file():
         existing = env.get("PYTHONPATH", "")
         env["PYTHONPATH"] = package_root + (os.pathsep + existing if existing else "")
-    print(f"DeepForge → deepcli via {launcher}")
     os.execvpe(sys.executable, [sys.executable, str(launcher), *arguments], env)
     return 1
 
@@ -144,11 +142,6 @@ def _run_codex_native(arguments: List[str]) -> int:
     if binary is None or not binary.is_file():
         print("Codex binary missing; run `python -m codex_bridge build` first.", file=sys.stderr)
         return 1
-    print(
-        "DeepForge → native Codex binary (OpenAI auth may be required).\n"
-        "  Tip: use `python -m codex_bridge deepcli` to stay on the custom deepcli path.",
-        file=sys.stderr,
-    )
     os.execvpe(str(binary), [str(binary), *arguments], _export_environment())
     return 1
 
@@ -159,13 +152,52 @@ def _run(arguments: List[str], force_native: bool = False) -> int:
         return _run_codex_native(arguments)
     if _deepcli_launcher() is not None or _deepcli_importable():
         return _run_deepcli(arguments)
-    # Fallback: stock binary (will show ChatGPT auth wall if unauthenticated)
     print(
-        "DeepCLI not available — falling back to native Codex binary.\n"
+        "deepcli not available — falling back to native Codex binary.\n"
         "  Install/place deepcli to avoid the OpenAI sign-in gate.",
         file=sys.stderr,
     )
     return _run_codex_native(arguments)
+
+
+def _menu() -> int:
+    """Native-style numbered picker (no CLI subcommand jargon)."""
+    deepcli_ready = _deepcli_launcher() is not None or _deepcli_importable()
+    native_ready = paths.codex_binary() is not None
+
+    print()
+    print(f"  {PRODUCT}")
+    print("  ────────────────────────────────────────")
+    print("  1. deepcli          custom wrapper" + (" ✓" if deepcli_ready else " (missing)"))
+    print("  2. Codex native     stock binary" + (" ✓" if native_ready else " (missing)"))
+    print("  3. Doctor           check prerequisites")
+    print("  4. Reconcile        sync session pointers")
+    print("  5. Quit")
+    print("  ────────────────────────────────────────")
+    try:
+        choice = input("  Select [1]: ").strip() or "1"
+    except (EOFError, KeyboardInterrupt):
+        print()
+        return 0
+
+    if choice in ("1", "deepcli", "d"):
+        if not deepcli_ready:
+            print("deepcli is not available on this device.", file=sys.stderr)
+            return 1
+        return _run_deepcli([])
+    if choice in ("2", "native", "codex", "n"):
+        if not native_ready:
+            print("Codex binary not found; try build first.", file=sys.stderr)
+            return 1
+        return _run_codex_native([])
+    if choice in ("3", "doctor"):
+        return _doctor(strict=False)
+    if choice in ("4", "reconcile"):
+        return _reconcile()
+    if choice in ("5", "q", "quit", "exit"):
+        return 0
+    print(f"Unknown selection: {choice}", file=sys.stderr)
+    return 1
 
 
 def _load_index(index_path: Path) -> Dict[str, Any]:
@@ -221,8 +253,14 @@ def _reconcile() -> int:
 
 
 def main(argv: List[str] = None) -> int:
+    # Bare invocation → native menu (no subcommand required).
+    if argv is None:
+        argv = sys.argv[1:]
+    if not argv:
+        return _menu()
+
     parser = argparse.ArgumentParser(
-        description="DeepForge bridge: deepcli sessions ↔ Termux Codex (prefer deepcli)"
+        description=f"{PRODUCT} bridge: deepcli sessions ↔ Termux Codex"
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
@@ -230,6 +268,7 @@ def main(argv: List[str] = None) -> int:
     doctor.add_argument("--strict", action="store_true", help="exit 1 if any check is missing")
 
     subparsers.add_parser("build", help="build codex-cli with Cargo")
+    subparsers.add_parser("menu", help="show native-style entry menu")
 
     run = subparsers.add_parser(
         "run",
@@ -242,14 +281,10 @@ def main(argv: List[str] = None) -> int:
     )
     run.add_argument("args", nargs=argparse.REMAINDER)
 
-    deepcli_p = subparsers.add_parser(
-        "deepcli", help="explicitly launch deepcli (DeepForge default path)"
-    )
+    deepcli_p = subparsers.add_parser("deepcli", help="launch deepcli")
     deepcli_p.add_argument("args", nargs=argparse.REMAINDER)
 
-    native = subparsers.add_parser(
-        "codex-native", help="explicitly launch the stock OpenAI Codex binary"
-    )
+    native = subparsers.add_parser("codex-native", help="launch stock OpenAI Codex binary")
     native.add_argument("args", nargs=argparse.REMAINDER)
 
     subparsers.add_parser("reconcile", help="merge deepcli sessions into codex_index.json")
@@ -259,8 +294,9 @@ def main(argv: List[str] = None) -> int:
         return _doctor(args.strict)
     if args.command == "build":
         return _build()
+    if args.command == "menu":
+        return _menu()
     if args.command == "run":
-        # Strip a leading "--" that argparse.REMAINDER sometimes leaves
         run_args = args.args
         if run_args and run_args[0] == "--":
             run_args = run_args[1:]

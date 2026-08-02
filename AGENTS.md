@@ -7,11 +7,12 @@ Instructions for coding agents (Grok, Claude, Codex, Devin, ChatGPT, local runne
 1. **This file** (`AGENTS.md`)
 2. [`docs/proposals/registry.yaml`](docs/proposals/registry.yaml) — what is active
 3. [`docs/proposals/PROCESS.md`](docs/proposals/PROCESS.md) — post / debate / consensus / close
-4. [`docs/ARCHW1Z-GATE.md`](docs/ARCHW1Z-GATE.md) — repo-gate + termux-smoke
-5. [`docs/ARCHW1Z-STATUS.md`](docs/ARCHW1Z-STATUS.md) — living board
-6. [`docs/proposals/AGENTIC-PERMISSIONS.md`](docs/proposals/AGENTIC-PERMISSIONS.md) — human-only edges
+4. [`docs/PR-SUMMARY-PROCESS.md`](docs/PR-SUMMARY-PROCESS.md) — who may rewrite PR bodies (multi-agent)
+5. [`docs/ARCHW1Z-GATE.md`](docs/ARCHW1Z-GATE.md) — repo-gate + termux-smoke
+6. [`docs/ARCHW1Z-STATUS.md`](docs/ARCHW1Z-STATUS.md) — living board
+7. [`docs/proposals/AGENTIC-PERMISSIONS.md`](docs/proposals/AGENTIC-PERMISSIONS.md) — human-only edges
 
-Optional: `CLAUDE.md` (same pointers, Claude-oriented), `CONTRIBUTING.md` (humans + agents).
+Optional: `CLAUDE.md`, `CONTRIBUTING.md`.
 
 ## Hard rules
 
@@ -24,6 +25,7 @@ Optional: `CLAUDE.md` (same pointers, Claude-oriented), `CONTRIBUTING.md` (human
 - **No** wholesale merge of PR #6 (TER-9) or PR #2 (Rust CI) — see disposition comments.
 - **No** Class 3/4 artifacts in git (session stores, browser profiles, tokens).
 - Unposted chat is not consensus — write Review log or DEBATE.md.
+- PR body rewrites: follow `docs/PR-SUMMARY-PROCESS.md` roster (not a single-agent monopoly).
 
 ## Debate & close
 

@@ -23,6 +23,8 @@ mirrors those sessions as `{sid, ch}` pointers in
 session file bytes when no content hash is otherwise available. Existing
 pointers are preserved by `sid`. `DEEPCLI_STORE`, `SYNTHEGRATION_DIR`, and
 `TERMUX_CODEX_BIN` can override the default paths.
+If an existing index is unreadable or has a foreign structure, reconciliation
+aborts rather than overwriting it.
 
 ## Reconcile & connect locally (Termux)
 

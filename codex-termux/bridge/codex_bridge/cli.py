@@ -13,6 +13,10 @@ from typing import Any, Dict, List
 from . import paths
 
 
+class _IndexUnreadable(Exception):
+    """The existing index cannot be safely merged."""
+
+
 def _deepcli_importable() -> bool:
     package_root = str(paths.REPO_ROOT / "deepcli")
     if not (Path(package_root) / "deepcli" / "__init__.py").is_file():
@@ -106,12 +110,13 @@ def _load_index(index_path: Path) -> Dict[str, Any]:
         return {"pointers": []}
     try:
         data = json.loads(index_path.read_text())
-    except (OSError, json.JSONDecodeError):
-        return {"pointers": []}
+    except (OSError, json.JSONDecodeError) as error:
+        raise _IndexUnreadable(f"cannot read {index_path}: {error}") from error
     if not isinstance(data, dict):
-        return {"pointers": []}
+        raise _IndexUnreadable(f"{index_path} must contain a JSON object")
     pointers = data.get("pointers")
-    data["pointers"] = pointers if isinstance(pointers, list) else []
+    if not isinstance(pointers, list):
+        raise _IndexUnreadable(f"{index_path} must contain a list at `pointers`")
     return data
 
 
@@ -120,7 +125,11 @@ def _reconcile() -> int:
     index_path = paths.codex_index()
     store.mkdir(parents=True, exist_ok=True)
     index_path.parent.mkdir(parents=True, exist_ok=True)
-    index = _load_index(index_path)
+    try:
+        index = _load_index(index_path)
+    except _IndexUnreadable as error:
+        print(f"Reconcile aborted: {error}", file=sys.stderr)
+        return 1
     pointers = index["pointers"]
     existing_sids = {
         pointer.get("sid")

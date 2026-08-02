@@ -1,197 +1,188 @@
-# Consensus & Voting Rules (ArchW1z)
+# Consensus (ArchW1z)
 
-Multi-agent agreement without theater. Inspired by **Raft** ideas (terms, majority, single leader per term, log as source of truth) — **not** a full Raft implementation. We do not run elections over the network; we use the metaphors for clarity.
+How multi-agent decisions become shared truth — and when **no vote** is required.
 
-Related: `docs/proposals/PROCESS.md` · `docs/PR-SUMMARY-PROCESS.md` · `AGENTS.md`
-
----
-
-## 1. What “consensus” means here
-
-| Concept | Raft analogue | ArchW1z meaning |
-|---------|---------------|-----------------|
-| **Term** | Monotonic term number | A decision window on one *subject* (one proposal item, one PR disposition, one summary version) |
-| **Leader** | Elected leader | **Driver** for that term — agent or human who proposes the binding write |
-| **Log** | Replicated log | GitHub PR comment / MANIFEST Review log / `PR-SUMMARY-LOG.md` / registry.yaml |
-| **Commit** | Majority-replicated entry | Decision is **committed** only when written to the log *and* vote threshold met |
-| **Follower** | Applies leader’s log | Other agents may ack, dissent, or stay silent per rules below |
-| **Split vote** | New election | Escalate to Operator or open a new term with clearer options |
-
-**Unposted chat is not a log entry.** Same rule as proposals.
+Related: `docs/proposals/PROCESS.md` · `docs/PR-SUMMARY-PROCESS.md` · `AGENTS.md` · `docs/ARCHW1Z-GATE.md`
 
 ---
 
-## 2. Subjects & vote thresholds
-
-Votes are **per subject**, not global popularity contests.
-
-| Subject | Quorum (commit) | Who may vote | Silence |
-|---------|-----------------|--------------|---------|
-| **P0 item done** (security, credentials, history) | Driver + **≥1 distinct Reviewer accept** *or* Operator accept | Reviewer, Operator | Silence ≠ accept |
-| **P0 PR body rewrite** | Driver posts draft in comment → **≥1 other** Reviewer/Operator “summary OK” → then edit body | summary-editor, Reviewer, Operator | Must not apply body before ack |
-| **P1 item / PR disposition** | Driver + evidence (+ gates if merge) | Reviewer optional; 1 clear cycle then silence OK | Silence after 1 cycle ≈ no objection |
-| **P2–P3 item** | Driver + evidence | Anyone on roster | Silence OK |
-| **Proposal `accepted`** | ≥1 **non-author** Reviewer accept *or* Operator self-accept (logged) | Reviewer, Operator | — |
-| **Proposal close** | Closer rules in PROCESS.md | Closer role | — |
-| **Merge to master-staging** | Gates green + no critical unresolved threads + disposition not 🔴 | Checks are mechanical votes | Failed check = veto |
-| **Merge to master** | Same + promotion intent | Operator may require extra human review | — |
-| **Force-push / history rewrite** | **Operator only** (explicit issue/PR comment) | Operator | Agents never “majority” this |
-
-### Ballot labels (use in comments)
+## Tier summary (read this first)
 
 ```text
-VOTE: accept     — support commit of the proposed decision
-VOTE: reject     — block; must state reason
-VOTE: abstain    — present but not counting toward quorum
-VOTE: summary OK — ack for P0 PR body rewrite only
+Tier 0  MERIT        Branch, implement, run gates — no social vote
+Tier 1  DRIVER       P2–P3 claims: driver + evidence in the log
+Tier 2  LIGHT        P1: driver + evidence; 1 review cycle then silence OK
+Tier 3  QUORUM       P0 claims / P0 PR body: driver + distinct second mind OR Operator
+Tier 4  OPERATOR     Credentials, force-push, history rewrite — human only
+Tier R  RAFT-STRICT  Optional profile for named irreversible subjects (see §5)
 ```
 
-One vote per **voter id** per **term**. Changing your mind = new comment with `VOTE: …` and higher term note if needed.
+| Tier | Name | Needs vote? | Commit when |
+|------|------|-------------|-------------|
+| **0** | Merit | No | Gates/tests green on a branch; exploration allowed to fail |
+| **1** | Driver | Minimal | Driver posts evidence; silence OK |
+| **2** | Light | Soft | Driver + evidence; after one clear ask, silence ≈ no objection |
+| **3** | Quorum | Yes | Driver + ≥1 other Reviewer **or** Operator |
+| **4** | Operator | N/A | Explicit Operator comment; agents cannot majority this |
+| **R** | Raft-strict | Yes (formal) | Term + single driver + majority of fixed voter set + log commit |
+
+**Default path for code:** Tier 0 → open PR → Tier 1–2 disposition → merge when gates green.  
+**Default path for irreversible security claims:** Tier 3–4 (optionally R).
 
 ---
 
-## 3. Terms (decision windows)
+## 1. Three paths (not one protocol)
 
-```text
-term = <subject-id>/<n>
+### A. Merit path (preferred for code)
 
-Examples:
-  pr-3/summary/1
-  pr-12/disposition/2
-  ce-13/history-rewrite/1
-  proposal/chatgpt-critical-eval/accept/1
-```
+Skip social consensus. Prove accuracy on a branch:
 
-- Driver opens a term by posting a proposal in the **log** (PR comment or Review log) including options and recommended Status.
-- Commit ends the term; further changes need `…/n+1`.
-- **Leader (driver) per term:** first summary-editor or reviewer to post a well-formed term proposal *or* explicit handoff (`DRIVER: <id>`).
+1. Branch from `master-staging`
+2. Implement
+3. `python3 scripts/ci/repo_gate.py` / `termux_smoke.py`
+4. Open PR with honest Status
+5. Land when checks green and disposition ≠ 🔴
 
-No parallel drivers for the same `subject/term` — second writer becomes follower and must `VOTE` or open `term+1` with rationale (Raft-style: one leader per term).
+**Merit answers “does it work?”** Votes do not replace gates.
 
----
+### B. Social path (claims & sequencing)
 
-## 4. Raft-inspired safety (what we keep)
+Used when asserting shared process truth: proposal accepted/closed, P0 “done”, disposition Status, summary of security scope.
 
-| Property | Practice |
-|----------|----------|
-| **Election safety** | At most one *committed* disposition Status per PR at a time (🟢/🟡/🔴/⚪). Conflicting statuses → new term, not silent overwrite. |
-| **Leader append-only log** | Prefer appending Review log / summary log rows; do not delete prior disposition history. Body may be rewritten but log retains trail. |
-| **Majority of *eligible* voters** | Eligible set is small (roster + Operator), not “everyone on the internet.” For P0, majority of {Driver, Reviewer, Operator} present in the term. |
-| **Log matching** | `PR-SUMMARY-LOG.md` and MANIFEST must not contradict the PR body’s Status without a new term. |
+**Home for intent decisions:** `docs/proposals/` (MANIFEST Review log + registry).  
+**Projection for landing:** PR body Status + comments.
 
-What we **do not** implement: heartbeats, randomized election timeouts, network partitions, full log replication state machines.
+### C. Authority path (Operator)
+
+Credential rotation, history rewrite, force-push, App permission changes. Not subject to agent majority.
 
 ---
 
-## 5. Consecutive summary rewrites (clarified)
+## 2. Where decisions live
 
-**Question:** Does “three consecutive PR summaries” mean the same PR or three different PRs?
+| Decision type | Primary log | Model |
+|---------------|-------------|--------|
+| Proposal accept / item done / close | MANIFEST + `registry.yaml` | Social tiers 1–4 |
+| PR disposition / summary | PR comment + body + `PR-SUMMARY-LOG.md` | Thin projection of tiers |
+| Code correctness | CI checks + branch commits | Merit (Tier 0) |
+| Irreversible git history | Operator comment on issue/PR | Tier 4 (+ optional R) |
 
-**Answer: three different PRs.**
-
-| Pattern | Allowed? |
-|---------|----------|
-| Same agent iterates body on **PR #12** three times (fix skills → fix status → retarget note) | **Yes** — same subject, same term or `summary/n+1` |
-| Same agent rewrites **#3, then #2, then #6** (three distinct PRs in a row in the log) | Counts as **3 consecutive distinct PR rewrites** |
-| Fourth **distinct** PR rewrite by same agent | Hand off to another roster agent or Operator |
-| Batch pass in one session on many PRs | Counts per distinct PR number in `PR-SUMMARY-LOG.md` order |
-
-**Iteration on one PR is encouraged** until Status/blockers are accurate. Anti-monopoly exists to force a second *mind* across the queue, not to block editing the same PR.
-
-Log column guidance:
-
-```text
-| date | PR | editor | status | notes |
-| 2026-08-02 | #12 | grok-archw1z | 🟡 | pass 1 |
-| 2026-08-02 | #12 | grok-archw1z | 🟡 | pass 2 — iteration OK, same PR |
-```
-
-Same PR rows do **not** increment the consecutive-distinct counter.
+Proposals own **what we intend**. Branches own **what we measured**. Consensus attaches to **claims**, not to **existence of a branch**.
 
 ---
 
-## 6. Automated PR triage bots (explore & adopt selectively)
+## 3. Ballot labels (social path)
 
-Bots **comment and label**; they do not by themselves commit ArchW1z dispositions unless a roster human/agent promotes their output into the log with a `VOTE`.
+```text
+VOTE: accept      — support commit of the proposed decision
+VOTE: reject      — block; state reason
+VOTE: abstain     — present; not counting toward quorum
+VOTE: summary OK  — ack for P0 PR body rewrite only
+```
 
-### Already in this repo
+One vote per voter id per **term**. Log entry required — unposted chat does not count.
 
-| Bot | Role | Trust for consensus |
-|-----|------|---------------------|
-| **Devin Review** | Inline findings, severity | High signal for blockers; agent may `VOTE: accept` findings into disposition |
-| **CodeRabbit** | Review summaries | **Comment only** — never sole summary-editor; may inflate scope |
-| **Vercel** | Deploy status | Irrelevant to Termux gates unless web surface |
-| **ecc-tools** | Generated skill bundles | Author of its PRs; human/summary-editor corrects |
-| **Gitar** (if installed) | Review / heal assist | Same as other AI reviewers — evidence, not vote |
-
-### Ecosystem options (evaluate, don’t auto-install all)
-
-| Tool | Kind | Fit for termux-monorepo |
-|------|------|-------------------------|
-| **GitHub native** — labels, auto-merge, merge queue, PR Inbox | First-party | Prefer for required checks = `repo gate` + `termux smoke`; agent-authored PR filters |
-| **Probot family** ([googleapis/repo-automation-bots](https://github.com/googleapis/repo-automation-bots)) | auto-label, blunderbuss assign, merge-on-green, do-not-merge | Useful: `do-not-merge` label for 🔴; auto-label `security` / `gate` |
-| **PR Triage Bot** (Actions marketplace) | Classify type, risk, duplicates, trust tier | Good for opening triage comment; map risk→ our 🟢🟡🔴⚪ |
-| **Mergify / Graphite / merge-steward** | Merge queues, stacked PRs | Optional later; gates already define landing train via `master-staging` |
-| **Pullfrog** | Agent-in-GitHub triggers | Optional; must obey `AGENTS.md` + this file |
-| **PR-Agent (Codium/Qodo)** | Describe / review commands | Optional describe assist; still run through summary-editor rules |
-| **GitHub agent automation controls** (Issues, preview) | Confidence + approval for issue actions | Prefer for issue triage; not a substitute for PR disposition log |
-
-### Recommended minimal triage automation
-
-1. **Labels:** `status:merge-candidate` · `status:conditional` · `status:no-go` · `status:draft` · `security` · `needs-operator`  
-2. **Required checks** on protected branches: repo-gate + termux-smoke only (not every bot).  
-3. **On PR open:** optional Action posts triage skeleton (type, risk, base branch warning if not `master-staging`).  
-4. **Never** auto-merge 🔴 or P0 security without Operator.  
-5. Bot comments are **proposals**; promotion path: roster agent posts `VOTE: accept` of a specific bot finding into disposition.
+**Terms:** `subject-id/n` (e.g. `pr-3/summary/2`, `ce-13/history-rewrite/1`). One driver per term; conflicts open `n+1`.
 
 ---
 
-## 7. Worked examples
+## 4. Subject → tier map
 
-### Example A — Same PR iterated (OK)
-
-```text
-#12 summary/1  DRIVER: grok-archw1z  → body rewrite 🟡
-#12 summary/2  DRIVER: grok-archw1z  → fix checklist after Devin  (iteration OK)
-#12 summary/3  DRIVER: devin         → optional handoff after skills regen
-```
-
-### Example B — Three distinct PRs then handoff
-
-```text
-PR-SUMMARY-LOG:
-  #3  grok-archw1z
-  #2  grok-archw1z
-  #6  grok-archw1z   ← 3 distinct; next distinct PR should be devin|chatgpt|operator
-  #5  devin          ← handoff satisfied
-```
-
-### Example C — P0 body rewrite votes
-
-```text
-Comment: term=pr-3/summary/2 DRIVER: grok-archw1z
-Proposed body: Status ⚪ A-only …
-
-Comment: VOTE: summary OK — @operator
-→ driver applies update_pull_request
-```
-
-### Example D — Bot finding promoted
-
-```text
-Devin: 🔴 SKILL.md fenced
-Agent: VOTE: accept on Devin finding BUG_0001; disposition remains 🟡 until fixed
-```
+| Subject | Tier |
+|---------|------|
+| Create branch / push experiments | **0** |
+| P2–P3 item `done` | **1** |
+| P1 item / ordinary PR disposition | **2** |
+| Proposal `accepted` (non-author review) | **3** (or Operator self-accept logged) |
+| P0 item `done`, P0 PR body rewrite | **3** |
+| Merge to `master-staging` | **0 checks** + disposition not 🔴 |
+| Promote to `master` | **0 checks** + may require Operator |
+| Force-push / history rewrite / credential rotation | **4** |
+| Optional formal close of high-stakes proposal | **R** if enabled for that subject |
 
 ---
 
-## 8. Quick reference
+## 5. Raft as an **optional strict profile** (not the default model)
+
+Raft was considered as a real consensus design, not decoration.
+
+**Keep if using profile R on a named subject:**
+
+- Single driver (leader) per term  
+- Monotonic terms; ignore stale term votes  
+- Majority of a **fixed voter set** declared in the term open  
+- Decision committed only in the append-only log  
+
+**Do not use Raft as the global control plane:** membership churn (agents offline), unequal authority (Operator ≠ peer), and multi-subject concurrency make a single cluster Raft a poor fit. Per-subject Tier 3 already captures most of the value.
+
+Enable R by naming it in the term open: `profile: raft-strict voters: [operator, grok-archw1z, devin]`.
+
+---
+
+## 6. CRDT merge strategies (investigation & recommendations)
+
+CRDTs converge concurrent updates **without** voting. Use them for **state that should merge**, not for **authorization**.
+
+### Strategy cheat sheet
+
+| Strategy | Behavior | Use here | Avoid for |
+|----------|----------|----------|-----------|
+| **G-Set** | Add-only; merge = union | Observed bot findings, “seen commit SHAs” | Anything that must be revoked cleanly |
+| **OR-Set** (observed-remove) | Add/remove with unique tags; concurrent add∥remove keeps add if not observed | Agent roster membership, label sets, item id sets | Security “credential rotated” flags |
+| **2P-Set** | Remove wins forever | Tombstones for deleted paths in indexes | Re-adding same id after remove |
+| **LWW-Register** | Highest timestamp wins | Non-critical UI prefs, last smoke run timestamp | Disposition Status, proposal state |
+| **LWW-Element-Set** | Per-element timestamps | Soft metadata | P0 claims |
+| **MV-Register** | Keep all concurrent values | Surface conflicts for a human/agent to pick | Silent auto-resolve of Status |
+| **G/PN-Counter** | Merge by max per replica | Ratchet debt counters (aligns with repo-gate baseline) | Voting tallies as authority |
+| **RGA / sequence CRDTs** | Concurrent text edit | Collaborative DEBATE.md drafts (optional) | MANIFEST binding outcomes |
+| **Three-way / MRDT (Git-like)** | LCA + two tips → typed merge | Branch merges, registry field merges with explicit rules | Pretending merge = approved claim |
+
+### Recommended bindings for this monorepo
+
+| Data | Merge strategy |
+|------|----------------|
+| **Git branches / commits** | Git’s own history (three-way merge + gates) — already merit path |
+| **`registry.yaml` item rows** | Field-level: `status` is **not** LWW — requires Tier 1–3 social commit; `evidence` links are G-Set (union) |
+| **PR-SUMMARY-LOG** | Append-only G-Set of rows (never rewrite history of the log) |
+| **Review log entries** | Append-only; concurrent reviews = union (OR-Set of note ids) |
+| **Disposition Status (🟢🟡🔴⚪)** | **Single-value register under social tier** — concurrent Status → MV-Register until Tier 2–3 resolves (do **not** LWW) |
+| **repo-gate baseline counters** | Ratchet = min/monotonic decrease only (domain-specific; not classic PN-Counter up) |
+| **Session SSOT / agent memory** (future) | OR-Set + confidence-LWW for soft memories; **never** CRDT-merge secrets into git |
+| **DEBATE.md** | Optional RGA/LWW for prose; binding outcome still copied into Review log via vote |
+
+### Rule of thumb
 
 ```text
-Commit decision → write to log + meet threshold for subject
-P0              → two minds or Operator
-Same PR iterate → always OK for summary accuracy
-3 distinct PRs  → hand off fourth distinct rewrite
-Bots            → evidence; humans/agents commit votes
-Raft            → metaphor for terms/majority/leader/log — not a cluster daemon
+CRDT  →  concurrent facts that should converge without a meeting
+Vote  →  authorization to treat something as shared institutional truth
+Gate  →  mechanical proof about a concrete revision
+```
+
+LWW is the wrong default for **Status** and **proposal state**: wall-clock or agent-local clocks race; security claims must not flip because a slower agent wrote later.
+
+---
+
+## 7. PR summary anti-monopoly (distinct PRs)
+
+Three consecutive = **three different PR numbers**. Iterating the same PR is always OK. Details: `docs/PR-SUMMARY-PROCESS.md`.
+
+---
+
+## 8. Bots
+
+Bots (Devin, CodeRabbit, ecc-tools, …) emit **evidence**. They are not voters until a roster agent posts `VOTE: accept` on a specific finding into the log. See earlier triage map in git history / `PR-SUMMARY-PROCESS.md` for tooling options.
+
+---
+
+## 9. Quick reference
+
+```text
+Explore on a branch          → Tier 0 (no vote)
+Claim “P2 done”              → Tier 1
+Claim “P1 ready to merge”    → Tier 2 + gates
+Claim “P0 / security done”   → Tier 3
+Rotate keys / rewrite history → Tier 4
+Optional formal subject      → profile raft-strict
+Merge concurrent facts       → CRDT (OR-Set / G-Set / counters)
+Merge authority              → never CRDT; use tiers
 ```

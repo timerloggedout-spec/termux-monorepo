@@ -1,41 +1,29 @@
 #!/usr/bin/env python3
-"""Kimi Provider with Codex harvesting."""
-from typing import List, Dict, Optional, Any
+"""Kimi Provider scaffold (not live)."""
+from typing import List, Dict
 from .base import BaseProvider, ProviderConfig, ProviderType
 
 
 class KimiProvider(BaseProvider):
-    """Kimi provider implementation."""
-    
     name = "kimi"
     provider_type = ProviderType.KIMI
-    
+    live = False
+
     def __init__(self, config: ProviderConfig = None, **kwargs):
-        """Initialize Kimi provider."""
         super().__init__(config, **kwargs)
-    
+
     @classmethod
     def get_default_config(cls) -> ProviderConfig:
-        """Get default Kimi configuration."""
-        return ProviderConfig(
-            name="kimi",
-            api_url="https://kimi.cn",
-            token_path="~/.multi-ai-tokens/kimi_token.txt",
-            model="kimi-latest",
-        )
-    
+        return ProviderConfig(name="kimi", api_url="https://kimi.moonshot.cn", model="kimi")
+
     def send_message(self, message: str, session_id: str = None, **kwargs) -> str:
-        """Send a message to Kimi."""
-        return f"Kimi response to: {message}"
-    
+        raise RuntimeError("kimi is a scaffold provider (live=False)")
+
     def create_session(self, **kwargs) -> str:
-        """Create a new Kimi session."""
-        return "kimi_session_" + self.codex._safe_name(str(id(self))[:8])
-    
+        raise RuntimeError("kimi is a scaffold provider (live=False)")
+
     def get_history(self, session_id: str, **kwargs) -> List[Dict]:
-        """Get session history from Kimi."""
         return []
-    
+
     def is_available(self) -> bool:
-        """Check if Kimi is available."""
-        return True
+        return False

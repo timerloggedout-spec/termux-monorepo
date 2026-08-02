@@ -32,6 +32,7 @@ Use this ladder when orienting in the tree. `_Entry+ReadMe.md` and `termux-ecosy
 | 8 | `_Entry+ReadMe.md` | One-line command → entry table |
 | 9 | `termux-ecosystem-architecture.html` | Visual ecosystem diagram |
 | 10 | `refTemplates/README_RECOVERY.md` on `recreate/refTemplates-skeleton` | Metadata-only restore policy for refs |
+| 0.1 | `workspace/*.md` `workspace/CAVEMAN_INDEX.md` `workspace/SYSTEM_MAP.md` `workspace/llm_map/{*.md,*.txt,*.json,*.jsonl}` | Full Ecosystem Mapping |
 
 Quick command table (also in `_Entry+ReadMe.md`):
 

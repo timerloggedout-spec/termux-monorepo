@@ -176,6 +176,27 @@ SingletonSocket
 *.orig
 *.rej
 
+# === Browser profiles are credential stores (see docs/CREDENTIAL-EXPOSURE.md) ===
+# `deepseek-cli/browser-data*/` is already ignored at line 146 yet 469 of its
+# files are tracked — an ignore rule cannot untrack. `deepcli/browser-data/`
+# had no rule at all, which is the gap that let the live cookie DB in.
+# Generic rules so the next automation dir is covered before it is created:
+deepcli/browser-data/
+**/browser-data/
+**/browser-data-*/
+**/browser-profile*/
+**/chrome-profile*/
+**/chromium-profile*/
+**/puppeteer-data*/
+**/playwright-data*/
+**/user-data-dir*/
+# Chromium credential stores, wherever they land:
+**/Default/Cookies
+**/Default/Cookies-journal
+**/Default/Login Data
+**/Default/Login Data-journal
+**/Local State
+
 # === Agent session stores — never commit conversation state (Class E) ===
 # .deepcli/session_store/ is listed above; these are the sibling agents.
 .deepcli/

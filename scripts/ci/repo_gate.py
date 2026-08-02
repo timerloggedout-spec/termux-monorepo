@@ -64,6 +64,22 @@ SESSION_ARTIFACT_RE = re.compile(
 )
 BACKUP_RE = re.compile(r"\.bak(\.|$)|\.backup(\.|$)|\.old$|~$")
 
+# A committed Chromium profile is a credential store, not test data. The Cookies
+# DB holds live session tokens; on Termux/Linux there is usually no keyring, so
+# Chromium falls back to a hardcoded OSCrypt password and "encrypted_value" is
+# recoverable by anyone who can read the file. See docs/CREDENTIAL-EXPOSURE.md.
+BROWSER_PROFILE_RE = re.compile(
+    r"(^|/)(browser-data|browser-profile|chrome-profile|chromium-profile|"
+    r"puppeteer-data|playwright-data|user-data-dir)[^/]*/"
+)
+BROWSER_CREDENTIAL_RE = re.compile(
+    r"(^|/)("
+    r"Cookies|Login Data|Login Data For Account|Web Data|Account Web Data|"
+    r"Local State|Trust Tokens|Safe Browsing Cookies|"
+    r"Session Storage|Local Storage|Sessions|IndexedDB"
+    r")($|-journal$|-wal$|/)"
+)
+
 # Deliberately narrow: shaped, high-confidence key material only. Anything
 # fuzzier produces noise on a repo that legitimately talks *about* API keys.
 SECRET_PATTERNS = (
@@ -283,6 +299,19 @@ def check_new_symlinks(report: Report, paths: list[str], index: dict[str, IndexE
 
 def check_new_debt_paths(report: Report, paths: list[str]) -> None:
     for path in paths:
+        if BROWSER_CREDENTIAL_RE.search(path) and BROWSER_PROFILE_RE.search(path):
+            report.fail(
+                "no-browser-credential-stores",
+                f"{path} — browser profile credential store. Rotate the affected "
+                f"session and keep the profile dir untracked "
+                f"(see docs/CREDENTIAL-EXPOSURE.md)",
+            )
+        elif BROWSER_PROFILE_RE.search(path):
+            report.fail(
+                "no-browser-profiles",
+                f"{path} — browser profile data is runtime state, not source; "
+                f"point the automation at a gitignored dir instead",
+            )
         if SESSION_ARTIFACT_RE.search(path):
             report.fail(
                 "no-session-artifacts",
@@ -352,6 +381,14 @@ def measure(index: list[IndexEntry]) -> dict[str, int]:
             1 for e in index if BACKUP_RE.search(Path(e.path).name)
         ),
         "paths_with_spaces": sum(1 for e in index if " " in e.path),
+        "tracked_browser_profile_files": sum(
+            1 for e in index if BROWSER_PROFILE_RE.search(e.path)
+        ),
+        "tracked_browser_credential_stores": sum(
+            1
+            for e in index
+            if BROWSER_PROFILE_RE.search(e.path) and BROWSER_CREDENTIAL_RE.search(e.path)
+        ),
     }
 
 

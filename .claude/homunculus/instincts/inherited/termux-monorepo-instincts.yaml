@@ -1,0 +1,324 @@
+# Instincts generated from https://github.com/timerloggedout-spec/termux-monorepo
+# Generated: 2026-08-02T22:16:42.901Z
+# Version: 2.0
+# NOTE: This file supplements (does not replace) any existing curated instincts.
+# High-confidence manually curated instincts should be preserved alongside these.
+
+---
+id: termux-monorepo-commit-length
+trigger: "when writing a commit message"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: https://github.com/timerloggedout-spec/termux-monorepo
+---
+
+# Termux Monorepo Commit Length
+
+## Action
+
+Write moderate-length commit messages (~55 characters)
+
+## Evidence
+
+- Average commit message length: 55 chars
+- Based on 4 commits
+
+---
+id: termux-monorepo-naming-files
+trigger: "when creating a new file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/timerloggedout-spec/termux-monorepo
+---
+
+# Termux Monorepo Naming Files
+
+## Action
+
+Use kebab-case naming convention
+
+## Evidence
+
+- Analyzed file naming patterns in repository
+- Dominant pattern: kebab-case
+
+---
+id: termux-monorepo-import-relative
+trigger: "when importing modules"
+confidence: 0.75
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/timerloggedout-spec/termux-monorepo
+---
+
+# Termux Monorepo Import Relative
+
+## Action
+
+Use relative imports for project files
+
+## Evidence
+
+- Import analysis shows relative import pattern
+- Example: import { x } from '../lib/x'
+
+---
+id: termux-monorepo-export-style
+trigger: "when exporting from a module"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/timerloggedout-spec/termux-monorepo
+---
+
+# Termux Monorepo Export Style
+
+## Action
+
+Prefer named exports
+
+## Evidence
+
+- Export pattern analysis
+- Dominant style: named
+
+---
+id: termux-monorepo-test-separate
+trigger: "when writing tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/timerloggedout-spec/termux-monorepo
+---
+
+# Termux Monorepo Test Separate
+
+## Action
+
+Place tests in the tests/ or __tests__/ directory, mirroring src structure
+
+## Evidence
+
+- Separate test directory pattern detected
+- Tests live in dedicated test folders
+
+---
+id: termux-monorepo-workflow-add-new-gate-to-ci-pipeline
+trigger: "when doing add new gate to ci pipeline"
+confidence: 0.55
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/timerloggedout-spec/termux-monorepo
+---
+
+# Termux Monorepo Workflow Add New Gate To Ci Pipeline
+
+## Action
+
+Follow the add-new-gate-to-ci-pipeline workflow:
+1. Implement the gate logic as a script (e.g., Python, Bash).
+2. Add a new workflow YAML file to .github/workflows to run the gate in CI.
+3. Document the gate in a dedicated markdown file in docs/.
+4. Update architectural documentation to reflect the new gate's position in the pipeline.
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~1x per month
+- Files: scripts/ci/{gate_name}.py, .github/workflows/{gate_name}.yml, docs/{GATE_NAME}.md
+
+---
+id: termux-monorepo-instinct-file-naming
+trigger: "When creating a new source file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: timerloggedout-spec/termux-monorepo
+---
+
+# Termux Monorepo Instinct File Naming
+
+## Action
+
+Name the file using kebab-case (e.g., my-script.py)
+
+## Evidence
+
+- Pattern in codeStyle.namingConventions.files
+
+---
+id: termux-monorepo-instinct-function-naming
+trigger: "When defining a new function"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: timerloggedout-spec/termux-monorepo
+---
+
+# Termux Monorepo Instinct Function Naming
+
+## Action
+
+Use camelCase for function names (e.g., runTest())
+
+## Evidence
+
+- Pattern in codeStyle.namingConventions.functions
+
+---
+id: termux-monorepo-instinct-class-naming
+trigger: "When defining a new class"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: timerloggedout-spec/termux-monorepo
+---
+
+# Termux Monorepo Instinct Class Naming
+
+## Action
+
+Use PascalCase for class names (e.g., TestRunner)
+
+## Evidence
+
+- Pattern in codeStyle.namingConventions.classes
+
+---
+id: termux-monorepo-instinct-constant-naming
+trigger: "When declaring a constant"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: timerloggedout-spec/termux-monorepo
+---
+
+# Termux Monorepo Instinct Constant Naming
+
+## Action
+
+Use SCREAMING_SNAKE_CASE for constant names (e.g., MAX_RETRIES)
+
+## Evidence
+
+- Pattern in codeStyle.namingConventions.constants
+
+---
+id: termux-monorepo-instinct-import-style
+trigger: "When importing modules in Python files"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: timerloggedout-spec/termux-monorepo
+---
+
+# Termux Monorepo Instinct Import Style
+
+## Action
+
+Use relative imports
+
+## Evidence
+
+- Pattern in codeStyle.importStyle
+
+---
+id: termux-monorepo-instinct-export-style
+trigger: "When exporting functions or classes"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: timerloggedout-spec/termux-monorepo
+---
+
+# Termux Monorepo Instinct Export Style
+
+## Action
+
+Use named exports
+
+## Evidence
+
+- Pattern in codeStyle.exportStyle
+
+---
+id: termux-monorepo-instinct-test-location
+trigger: "When adding new tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: timerloggedout-spec/termux-monorepo
+---
+
+# Termux Monorepo Instinct Test Location
+
+## Action
+
+Place test files in a separate directory from source code
+
+## Evidence
+
+- Pattern in architecture.folderStructure.testLocation
+
+---
+id: termux-monorepo-instinct-git-commit-prefix
+trigger: "When writing a commit message"
+confidence: 0.85
+domain: git
+source: repo-analysis
+source_repo: timerloggedout-spec/termux-monorepo
+---
+
+# Termux Monorepo Instinct Git Commit Prefix
+
+## Action
+
+Prefix the commit message with 'ArchW1z: ' followed by a concise description
+
+## Evidence
+
+- Seen in commit: 'ArchW1z: Termux smoke-test gate for Agentic Termux integration'
+- Pattern in commits.prefixes
+
+---
+id: termux-monorepo-instinct-git-commit-length
+trigger: "When composing a commit message"
+confidence: 0.7
+domain: git
+source: repo-analysis
+source_repo: timerloggedout-spec/termux-monorepo
+---
+
+# Termux Monorepo Instinct Git Commit Length
+
+## Action
+
+Keep the commit message concise, around 55 characters on average
+
+## Evidence
+
+- Pattern in commits.averageLength
+
+---
+id: termux-monorepo-instinct-add-ci-gate
+trigger: "When introducing a new automated gate/checkpoint in the CI pipeline"
+confidence: 0.95
+domain: workflow
+source: repo-analysis
+source_repo: timerloggedout-spec/termux-monorepo
+---
+
+# Termux Monorepo Instinct Add Ci Gate
+
+## Action
+
+Implement the gate logic as a script, add a workflow YAML to .github/workflows, document the gate in docs/, and update architectural docs
+
+## Evidence
+
+- Workflow: add-new-gate-to-ci-pipeline
+- Files: scripts/ci/{gate_name}.py, .github/workflows/{gate_name}.yml, docs/{GATE_NAME}.md, docs/ARCHW1Z-GATE.md
+- Commit sequence in workflow example
+

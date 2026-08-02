@@ -20,6 +20,7 @@ CONFIG_DIR = Path.home() / ".mistralai-cli"
 CONFIG_FILE = CONFIG_DIR / "config.json"
 WASM_SOLVER = Path(__file__).parent.parent / "pow_solver.js"
 BASE_URL = "https://chat.mistral.ai"
+PROVIDER_NAME = "mistral"
 
 # Ensure config directory exists
 CONFIG_DIR.mkdir(parents=True, exist_ok=True)
@@ -48,21 +49,25 @@ def _cache_save(session_id: str, messages: List[Dict[str, Any]], account: str = 
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, 'w') as f:
         json.dump(messages, f, indent=2)
-    
+
     # === DISPATCH HOOK - additive, never blocks save ===
     try:
         import importlib.util
-        spec = importlib.util.spec_from_file_location(
-            "dispatch_pipeline",
-            os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "archwiz", "dispatch_pipeline.py")
-        )
-        if spec and os.path.exists(spec.origin):
-            disp = importlib.util.module_from_spec(spec)
-            sys.modules["dispatch_pipeline"] = disp
-            spec.loader.exec_module(disp)
-            disp.update_all(session_id)
-    except Exception:
-        pass
+        pipeline = Path(__file__).resolve().parents[2] / "archwiz" / "dispatch_pipeline.py"
+        if pipeline.is_file():
+            spec = importlib.util.spec_from_file_location("dispatch_pipeline", str(pipeline))
+            if spec and spec.loader:
+                disp = importlib.util.module_from_spec(spec)
+                sys.modules["dispatch_pipeline"] = disp
+                spec.loader.exec_module(disp)
+                disp.update_all(
+                    session_id,
+                    account=account,
+                    provider=PROVIDER_NAME,
+                    store_path=path,
+                )
+    except Exception as e:
+        print(f"[archwiz dispatch] {type(e).__name__}: {e}", file=sys.stderr, flush=True)
     # === END DISPATCH HOOK ===
 
 def _set_last_session(sid: str):
@@ -290,7 +295,7 @@ def send_message(token: str, session_id: str, message: str, parent_id: Optional[
     if r.status_code != 200:
         console.print(f"[red]Completion failed: {r.text[:200]}[/]")
         r.raise_for_status()
-    
+
     data = r.json()["data"]["biz_data"]
     return data.get("content", "")
 
@@ -324,43 +329,43 @@ def export_json(token: str, session_id: str, output_path: str):
 # ---------- Main Core Class ----------
 class MistralCore:
     """Main core class for Mistralai Vibe Code webWrapper."""
-    
+
     def __init__(self, token: str = None, session_id: str = None):
         self.token = token or get_token()
         self.session_id = session_id
         self.session = get_session(self.token)
-    
+
     def create_session(self, model: str = "mistral-large-latest") -> str:
         """Create a new session."""
         self.session_id = create_session(self.token, model)
         _set_last_session(self.session_id)
         return self.session_id
-    
+
     def get_history(self, session_id: str = None, force_refresh: bool = False) -> List[Dict]:
         """Get session history."""
         sid = session_id or self.session_id
         if not sid:
             raise ValueError("No session ID provided")
         return get_history(self.token, sid, force_refresh)
-    
+
     def send_message(self, message: str, session_id: str = None, **kwargs) -> str:
         """Send a message to the session."""
         sid = session_id or self.session_id
         if not sid:
             raise ValueError("No session ID provided")
         return send_message(self.token, sid, message, **kwargs)
-    
+
     def stream_message(self, message: str, session_id: str = None, **kwargs) -> str:
         """Stream a message to the session."""
         sid = session_id or self.session_id
         if not sid:
             raise ValueError("No session ID provided")
         return stream_completion(self.token, sid, message, **kwargs)
-    
+
     def list_sessions(self) -> List[Dict]:
         """List all sessions."""
         return fetch_sessions(self.token)
-    
+
     def branch_conversation(self, parent_id: int, session_id: str = None) -> str:
         """Branch a conversation from a message."""
         sid = session_id or self.session_id

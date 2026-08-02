@@ -27,6 +27,8 @@ Use this ladder when orienting in the tree. `_Entry+ReadMe.md` and `termux-ecosy
 | 3 | `archwiz/REFERENCE_HUB.md` | Links to DATA_FLOW_MANIFEST, SYSTEM_MAP, func/llm indices |
 | 4 | `archwiz/METHODOLOGY_INDEX.md` | Approaches tried, failures, what stuck |
 | 5 | `archwiz/PROCEDURES.md`, `ARCHWIZARD_TASKS.md` | Runbooks and active tasks |
+| 5.1 | `docs/PORTABILITY.md` | **Read before trusting the table below.** 42 of 45 tracked symlinks dangle in a fresh clone — including `archaeo`, `oracle`, `dispatch`, `promote`. Contains the on-device relink helper. |
+| 5.2 | `docs/TRIAGE.md` | Every open PR + branch critically evaluated, with a recommended merge order |
 | 6 | `docs/RECON.md` (this RECON) | Branch/PR critique, refTemplates nesting gaps, prioritized proposals |
 | 7 | `replit.md` on branch `critical-proposal` (PR #1) | Critical path/config issues and optimization proposals |
 | 8 | `_Entry+ReadMe.md` | One-line command → entry table |

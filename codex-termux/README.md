@@ -1,17 +1,21 @@
-# Codex Termux bridge
+# DeepForge — Codex Termux bridge
 
-This directory is the scaffold for making the `codex-termux_fork` Rust Codex
-agent the base of a future native build. It is not yet a full deepcli/Codex
-integration.
+This directory is the scaffold for making the `codex-termux_fork` Rust agent the
+base of a future native build (**DeepForge**), driven first by the Python
+`deepcli` wrapper. It is not yet a full deepcli ↔ Codex protocol integration.
+
+**Product name (working):** **DeepForge** — deepcli + forge the native agent.
+Distinct from stock OpenAI Codex so we never confuse the ChatGPT-auth binary
+with our own stack.
 
 ## Architecture
 
 ```text
 deepcli session_store
         ⇄ (reconcile / future dispatch integration)
-codex_bridge (Python)
+codex_bridge / DeepForge (Python)
         ⇄
-codex-termux_fork (Rust codex-cli)
+codex-termux_fork (Rust codex-cli)   ← only when explicitly requested
         ⇄
 archwiz / synthegration codex_index.json
 ```
@@ -25,6 +29,21 @@ pointers are preserved by `sid`. `DEEPCLI_STORE`, `SYNTHEGRATION_DIR`, and
 `TERMUX_CODEX_BIN` can override the default paths.
 If an existing index is unreadable or has a foreign structure, reconciliation
 aborts rather than overwriting it.
+
+## Deepcli-first entry (recommended)
+
+Stock OpenAI Codex requires ChatGPT sign-in or an API key. DeepForge therefore
+prefers **deepcli** by default:
+
+```bash
+cd codex-termux/bridge
+python -m codex_bridge doctor
+python -m codex_bridge reconcile
+python -m codex_bridge run              # → deepcli if present
+python -m codex_bridge deepcli --help   # explicit deepcli path
+python -m codex_bridge run --codex-native --help   # stock binary (auth wall)
+python -m codex_bridge codex-native --help
+```
 
 ## Reconcile & connect locally (Termux)
 
@@ -81,11 +100,15 @@ Scaffolded now:
 
 - a prerequisite-checking `codex_bridge doctor`;
 - a Cargo build and resolved-binary runner;
+- **deepcli-first `run` / `deepcli` subcommands** (DeepForge default path);
+- explicit `--codex-native` / `codex-native` for the stock binary;
 - an idempotent, conservative deepcli-session-to-index reconciliation;
 - path overrides and Termux runbooks.
 
-The deepcli↔Codex wiring is **scaffolding only**: `run` does not yet translate
-deepcli turns into a Codex protocol, and `reconcile` is not a live dispatch
-pipeline. The eventual direction is a native Rust/MoonBit/Cangjie layer around
-the fork, with explicit session/thread protocols, durable content-addressed
-blobs, and archwiz/synthegration synchronization.
+Still scaffolding: `run` does not yet translate deepcli turns into a Codex
+protocol, and `reconcile` is not a live dispatch pipeline. The eventual
+direction is a native Rust/MoonBit/Cangjie layer around the fork (**DeepForge**),
+with explicit session/thread protocols, durable content-addressed blobs, and
+archwiz/synthegration synchronization. multi-ai-cli lands after TER-8 parity.
+
+See **TER-12** for the deepcli-first / rename tracking issue.

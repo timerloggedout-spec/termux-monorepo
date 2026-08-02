@@ -2,6 +2,8 @@
 
 Keep PR titles/bodies honest, scannable, and multi-agent — **not** a single-agent monologue.
 
+**Consensus / votes:** [`docs/CONSENSUS.md`](CONSENSUS.md) (Raft-inspired terms, quorums, triage bots).
+
 ## When to rewrite
 
 Rewrite (or request rewrite) when **any** apply:
@@ -69,15 +71,26 @@ Titles: conventional (`fix:`, `feat:`, `security:`) + short constraint if needed
 | CodeRabbit | `coderabbit` | **Comment only** — never sole body rewriter |
 | ECC bot | `ecc-tools` | Own generated PRs only; human/summary-editor may correct |
 
-**Consensus for body rewrite on P0 security PRs (#3):**
+### P0 security body rewrite
 
-1. summary-editor drafts rewrite  
-2. ≥1 **other** reviewer (Devin or human Operator) acknowledges in a comment, **or** Operator posts “summary OK”  
-3. Then apply body update  
+See **CONSENSUS.md** §2–§3. Short form:
 
-For P1–P3: a single summary-editor may rewrite if they cite disposition comment + this process.
+1. Driver posts proposed body under `term=pr-N/summary/k`
+2. ≥1 other Reviewer/Operator: `VOTE: summary OK`
+3. Then `update_pull_request`
 
-**Anti-monopoly:** If the same agent rewrote **three consecutive** PR bodies, the next rewrite should be done by a different roster agent or Operator. Record in the PR comment: `Summary-Editor: <id>`.
+### Anti-monopoly (distinct PRs only)
+
+**Three consecutive = three different PR numbers**, not three edits to one PR.
+
+| Allowed | Not the intent of the limit |
+|---------|-----------------------------|
+| Iterate #12 body as often as needed until accurate | Blocking refinement on the same PR |
+| Same agent: #3 → #2 → #6 then hand off | One agent owning the entire open queue forever |
+
+Count distinct PR numbers in `docs/PR-SUMMARY-LOG.md` order. Same-PR rows do not increment the counter. After three distinct PR rewrites by one editor, the next **new** PR number should use a different roster agent or Operator.
+
+Record: `Summary-Editor: <id>` on the PR comment.
 
 ## Procedure
 
@@ -85,17 +98,15 @@ For P1–P3: a single summary-editor may rewrite if they cite disposition commen
 2. Classify Status (🟢/🟡/🔴/⚪).
 3. Draft body using skeleton; preserve Author’s technical facts; add Status/Non-goals/Follow-ups.
 4. Comment: `Summary-Editor: <id> — rewrite per docs/PR-SUMMARY-PROCESS.md` + one-line rationale.
-5. `update_pull_request` title/body.
-6. Optional: retarget base to `master-staging` only when that is already agreed disposition (not silently).
+5. For P0: wait for `VOTE: summary OK` if required by CONSENSUS.md.
+6. `update_pull_request` title/body.
+7. Append `PR-SUMMARY-LOG.md`.
+8. Retarget base only when disposition already agrees (not silently).
 
 ## Registry of summary passes
 
-Maintain a short log in `docs/PR-SUMMARY-LOG.md` (append-only):
-
-```text
-| date | PR | editor | status set | notes |
-```
+`docs/PR-SUMMARY-LOG.md` (append-only).
 
 ## Relation to proposals
 
-PR summary rewrite is **not** a proposal. Linking `Implements: <ITEM-ID>` is required when the PR executes proposal work. Disposition may reference Critical-Eval items (CE-*).
+PR summary rewrite is **not** a proposal. Link `Implements: <ITEM-ID>` when executing proposal work.

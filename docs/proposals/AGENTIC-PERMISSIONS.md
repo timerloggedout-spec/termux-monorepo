@@ -1,8 +1,8 @@
 # Why You Still Have To Do Anything — Agentic Permissions
 
-Honest boundary list. Everything else is already agent-operable via the GitHub connector on this account.
+Honest boundary list. Everything else is already agent-operable via the GitHub + Linear connectors on this account.
 
-## What the agent CAN do today (proven this session)
+## What the agent CAN do today (proven)
 
 | Action | Status |
 |--------|--------|
@@ -12,8 +12,11 @@ Honest boundary list. Everything else is already agent-operable via the GitHub c
 | Open PRs | ✅ |
 | Comment on issues/PRs | ✅ |
 | Merge PRs (when mergeable + allowed) | ✅ (merged #11) |
-| Retarget PR base branch | ✅ (retargeted #10 → master-staging) |
-| Submit PR reviews (COMMENT / REQUEST_CHANGES / APPROVE) | ✅ tool present |
+| Retarget PR base branch | ✅ |
+| Submit PR reviews (COMMENT / REQUEST_CHANGES / APPROVE) | ✅ |
+| **Linear: list / get / create / update issues** | ✅ MCP `linear___*` |
+| **Linear: start / done / comment via CLI** | ✅ `archwiz/linear_client.py` |
+| **Linear agent protocol (binding)** | ✅ `docs/LINEAR-AGENT-PROTOCOL.md` |
 
 ## What still needs YOU (human-only or policy)
 
@@ -25,7 +28,23 @@ Honest boundary list. Everything else is already agent-operable via the GitHub c
 | **GitHub App permission gaps** | Some orgs restrict Administration, Secrets, Workflows, or Environments | Settings → Applications → installed app → **Repository permissions**: Contents R/W, PRs R/W, Checks R/W, Commit statuses R/W, Workflows R/W (if editing Actions), Administration R if managing protection rules |
 | **Device-side Termux state** | Agent runs in cloud connector, not on your phone | Optional: self-hosted runner on Termux **or** you run `termux_smoke.py` locally when hardware-specific |
 | **Provider API keys / browser logins** | Auth is interactive / ToS-bound | Store in Termux-local env only; agent uses capability registry (`authenticated: true/false`) never the raw secret |
-| **Linear / external trackers** | Only if not connected | Connect Linear MCP (already partially available) and grant write |
+| **LINEAR_API_KEY on device** | Needed only for on-device `linear_client` / `linear_sync` (MCP path does not need it) | Export in Termux env; never commit |
+
+## Linear is connected
+
+Agents **must** follow `docs/LINEAR-AGENT-PROTOCOL.md`:
+
+- Start work → issue **In Progress**
+- Open PR → `Implements: TER-N` + comment PR URL on issue
+- Merge → **Done** + evidence
+
+Connected agents use MCP (`linear___save_issue`, etc.). On-device/CI use:
+
+```bash
+export LINEAR_API_KEY=lin_api_...
+python3 -m archwiz.linear_client start TER-14
+python3 -m archwiz.linear_client done TER-14 --pr 16
+```
 
 ## Minimum permission checklist (GitHub App / token)
 
@@ -58,15 +77,15 @@ On `master-staging`:
 ## Fully agentic target state
 
 ```
-Proposal posted → registry.yaml updated by agent
-  → items executed on branches off master-staging
-  → PRs opened, gates run, agent merges to master-staging
-  → agent opens promotion PR to master
-  → required checks pass → agent merges to master
+Linear TER-* + registry.yaml → agent picks Todo
+  → Linear In Progress + branch off master-staging
+  → PR Implements: TER-N → gates green → merge
+  → Linear Done + ITEMS.md update
+  → promotion PR to master when healthy
 ```
 
 Human intervenes only for: credential rotation, destructive history ops, and first-time permission grants above.
 
 ## ChatGPT connector note
 
-ChatGPT's GitHub connector previously returned `403 Resource not accessible by integration` on write. This Grok connector **can** write. If you want ChatGPT to execute the same pipeline, mirror the permission checklist on the ChatGPT GitHub App installation.
+ChatGPT's GitHub connector previously returned `403 Resource not accessible by integration` on write. This Grok connector **can** write. If you want ChatGPT to execute the same pipeline, mirror the permission checklist on the ChatGPT GitHub App installation. Connect Linear MCP (or pass LINEAR_API_KEY) for full tracker parity.

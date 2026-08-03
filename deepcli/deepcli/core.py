@@ -43,9 +43,13 @@ _session: Optional[Any] = None
 
 # ---------- cache helpers ----------
 def _cache_path(session_id: str, account: str = "primary") -> str:
-    store_dir = os.path.join(os.path.expanduser("~/.deepcli/session_store"), account)
-    os.makedirs(store_dir, exist_ok=True)
-    return os.path.join(store_dir, f"{session_id}.json")
+    try:
+        from archwiz.config import SESSION_STORE
+        store_dir = SESSION_STORE / account
+    except ImportError:
+        store_dir = Path.home() / ".deepcli" / "session_store" / account
+    store_dir.mkdir(parents=True, exist_ok=True)
+    return str(store_dir / f"{session_id}.json")
 
 def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict[str, Any]]]:
     path = _cache_path(session_id, account)
@@ -59,6 +63,19 @@ def _cache_save(session_id: str, messages: List[Dict[str, Any]], account: str = 
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, 'w') as f:
         json.dump(messages, f, indent=2)
+
+    # === SSOT HOOK — write to canonical cross-provider store ===
+    try:
+        from archwiz.session_ssot import save_session_ssot
+        save_session_ssot(provider="deepcli", session_id=session_id, messages=messages)
+    except Exception as e:
+        try:
+            from archwiz.config import LOG_DIR
+            with open(LOG_DIR / "ssot_error.log", "a") as f:
+                f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} - SSOT write error: {e}\n")
+        except:
+            pass
+
     # === DISPATCH HOOK — additive, never blocks save ===
     try:
         import importlib.util

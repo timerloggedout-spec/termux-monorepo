@@ -150,6 +150,11 @@ class Config:
         """~/.archwiz/logs/ — pipeline + debug logs."""
         return self._mkdir(Path(self._cfg["log_dir"]))
 
+    @property
+    def SSOT_DIR(self) -> Path:
+        """~/.archwiz/sessions/ — canonical cross-provider session store."""
+        return self._mkdir(self.archwiz_root / ".archwiz" / "sessions")
+
 
 # ---------------------------------------------------------------------------
 # Module-level singleton — import and use directly:
@@ -166,6 +171,7 @@ WORKSPACE_DIR      = _config.WORKSPACE_DIR
 SESSION_STORE      = _config.SESSION_STORE
 MULTI_AI_TOKENS_DIR = _config.MULTI_AI_TOKENS_DIR
 LOG_DIR            = _config.LOG_DIR
+SSOT_DIR           = _config.SSOT_DIR
 ARCHWIZ_ENV        = _config.archwiz_env
 ARCHWIZ_ROOT       = _config.archwiz_root
 

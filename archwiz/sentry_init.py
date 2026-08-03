@@ -3,10 +3,14 @@
 Sentry SDK bootstrap for termux-monorepo / ArchWiz.
 
 Import and call init_sentry() as early as possible in any long-running process
-(dashboard, dispatch pipeline, deepcli, autonomous runner, etc.).
+(dashboard, dispatch pipeline, deepcli, autonomous runner, aiohttp apps, etc.).
 
-DSN is the one provisioned via GitHub Sentry integration.
-Override with SENTRY_DSN env var if needed (e.g. staging vs production).
+Multiple Sentry projects are provisioned under the same org:
+  - python   — default CLI / ArchWiz / deepcli
+  - aiohttp  — aiohttp web services
+
+Override with SENTRY_DSN or SENTRY_PROJECT=python|aiohttp.
+Browser (JS) and Rust use separate SDKs — see docs/SENTRY_LINEAR.md.
 """
 from __future__ import annotations
 
@@ -14,29 +18,54 @@ import os
 import sys
 from typing import Optional
 
-# Official project DSN from Sentry GitHub integration
-DEFAULT_DSN = (
+# Official project DSNs from Sentry GitHub integration
+DSN_PYTHON = (
     "https://a922fa6cd019e401e779d420d28b155c@o4511844213522432.ingest.us.sentry.io/4511844223680512"
 )
+DSN_AIOHTTP = (
+    "https://c7fb0bb5cf4210fae90119131c12b320@o4511844213522432.ingest.us.sentry.io/4511844256055296"
+)
 
+PROJECT_DSNS = {
+    "python": DSN_PYTHON,
+    "aiohttp": DSN_AIOHTTP,
+}
+
+DEFAULT_DSN = DSN_PYTHON
 _initialized = False
+
+
+def _resolve_dsn(dsn: Optional[str] = None, project: Optional[str] = None) -> Optional[str]:
+    if dsn:
+        return dsn
+    env_dsn = os.environ.get("SENTRY_DSN")
+    if env_dsn:
+        return env_dsn
+    proj = (project or os.environ.get("SENTRY_PROJECT") or "python").strip().lower()
+    return PROJECT_DSNS.get(proj, DEFAULT_DSN)
 
 
 def init_sentry(
     dsn: Optional[str] = None,
     *,
+    project: Optional[str] = None,
     traces_sample_rate: float = 1.0,
     profile_session_sample_rate: float = 1.0,
+    profile_lifecycle: str = "trace",
     enable_logs: bool = True,
     send_default_pii: bool = True,
 ) -> bool:
-    """Initialize Sentry SDK. Idempotent. Returns True if active."""
+    """Initialize Sentry SDK. Idempotent. Returns True if active.
+
+    project: "python" (default) or "aiohttp" — selects the matching DSN
+    when SENTRY_DSN is not set.
+    """
     global _initialized
     if _initialized:
         return True
 
-    dsn = dsn or os.environ.get("SENTRY_DSN") or DEFAULT_DSN
-    if not dsn:
+    resolved = _resolve_dsn(dsn, project)
+    if not resolved:
         return False
 
     try:
@@ -54,12 +83,14 @@ def init_sentry(
         event_level=None,  # do not auto-send log records as events
     )
 
+    # AIOHTTPIntegration is auto-enabled when aiohttp is importable
     sentry_sdk.init(
-        dsn=dsn,
+        dsn=resolved,
         send_default_pii=send_default_pii,
         enable_logs=enable_logs,
         traces_sample_rate=traces_sample_rate,
         profile_session_sample_rate=profile_session_sample_rate,
+        profile_lifecycle=profile_lifecycle,
         integrations=[logging_integration],
         environment=os.environ.get("ARCHWIZ_ENV", "local"),
         release=os.environ.get("SENTRY_RELEASE"),
@@ -107,9 +138,9 @@ def stop_profiler() -> None:
 
 
 if __name__ == "__main__":
-    ok = init_sentry()
-    print(f"Sentry initialized: {ok}")
+    proj = sys.argv[1] if len(sys.argv) > 1 else "python"
+    ok = init_sentry(project=proj)
+    print(f"Sentry initialized ({proj}): {ok}")
     if ok:
-        # Verify by sending a test message (visible in Sentry Issues / Logs)
-        capture_message("termux-monorepo sentry_init self-test", level="info")
+        capture_message(f"termux-monorepo sentry_init self-test [{proj}]", level="info")
         print("Test message sent. Check Sentry dashboard.")

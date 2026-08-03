@@ -1,16 +1,33 @@
 #!/usr/bin/env python3
 """Core API wrapper for DeepSeek internal API."""
 import os
+import sys
 import json
 import base64
 import time
 import subprocess
 import random
 from pathlib import Path
-from typing import Optional, List, Dict, Any
-from curl_cffi import requests as curl_requests
+from typing import Optional, List, Dict, Any, Any as SessionType
+
 import requests as http_requests
 from rich.console import Console
+
+# curl_cffi is preferred (TLS fingerprinting) but optional on Termux when the
+# wheel's NDK/libc++ ABI does not match the host Python (seen on 3.14).
+_CURL_CFFI_AVAILABLE = False
+try:
+    from curl_cffi import requests as curl_requests
+
+    _CURL_CFFI_AVAILABLE = True
+except Exception as _curl_err:  # ImportError or dlopen failure
+    curl_requests = http_requests  # type: ignore
+    if os.environ.get("DEEPCLI_QUIET_FALLBACK") != "1":
+        print(
+            f"[deepcli] curl_cffi unavailable ({type(_curl_err).__name__}: {_curl_err}); "
+            "using requests fallback (some anti-bot paths may fail).",
+            file=sys.stderr,
+        )
 
 console = Console()
 
@@ -22,7 +39,7 @@ BASE_URL = "https://chat.deepseek.com"
 CONFIG_DIR.mkdir(parents=True, exist_ok=True)
 
 # Persistent session (cookies preserved across API calls)
-_session: Optional[curl_requests.Session] = None
+_session: Optional[Any] = None
 
 # ---------- cache helpers ----------
 def _cache_path(session_id: str, account: str = "primary") -> str:
@@ -45,14 +62,14 @@ def _cache_save(session_id: str, messages: List[Dict[str, Any]], account: str = 
     # === DISPATCH HOOK — additive, never blocks save ===
     try:
         import importlib.util
-        import sys
+        import sys as _sys
         spec = importlib.util.spec_from_file_location(
             "dispatch_pipeline",
             os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "archwiz", "dispatch_pipeline.py")
         )
         if spec and os.path.exists(spec.origin):
             disp = importlib.util.module_from_spec(spec)
-            sys.modules["dispatch_pipeline"] = disp
+            _sys.modules["dispatch_pipeline"] = disp
             spec.loader.exec_module(disp)
             disp.update_all(session_id)
     except Exception as e:
@@ -98,7 +115,7 @@ def get_token() -> str:
     return token
 
 # ---------- HTTP session ----------
-def get_session(token: str, cookie: str = None) -> curl_requests.Session:
+def get_session(token: str, cookie: str = None) -> Any:
     global _session
     cache_key = (token[:20] + '_' + (cookie or ''))[:30]
     if '_sessions' not in globals() or not isinstance(_sessions, dict):
@@ -128,7 +145,11 @@ def get_session(token: str, cookie: str = None) -> curl_requests.Session:
         })
         _sessions[cache_key] = _session
     if cookie:
-        _session.cookies.set("ds_session_id", cookie.split("=", 1)[1] if "=" in cookie else cookie)
+        # requests vs curl_cffi cookie APIs differ slightly
+        try:
+            _session.cookies.set("ds_session_id", cookie.split("=", 1)[1] if "=" in cookie else cookie)
+        except Exception:
+            pass
     return _session
 
 # ---------- POW ----------
@@ -343,7 +364,7 @@ def stream_completion(token: str, prompt: str, session_id: str,
                     payload['search_enabled'] = False
                 time.sleep(delay)
                 continue
-            # Read full response and parse SSE manually (curl_cffi doesn't do iter_lines)
+            # Read full response and parse SSE manually
             raw = resp.content.decode('utf-8', errors='replace')
             for line in raw.split('\n'):
                 if not line.strip():
@@ -412,7 +433,7 @@ def send_message_working(token: str, session_id: str, prompt: str,
                          files: list = None,
                          thinking: bool = False,
                          search: bool = False) -> str:
-    """Proven working send (May 22) – standalone, no curl_cffi."""
+    """Proven working send (May 22) – standalone requests path."""
     import requests as req
     s = get_session(token)
     headers = s.headers.copy()

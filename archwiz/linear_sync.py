@@ -14,15 +14,25 @@ from archwiz.config import ARCHWIZ_DIR, WORKSPACE_DIR
 
 def get_tasks():
     master_tasks = ARCHWIZ_DIR / "master_tasks.json"
-    if master_tasks.exists():
-        with open(master_tasks) as f:
-            return json.load(f)
-    return []
+    if not master_tasks.exists():
+        return []
+    try:
+        with open(master_tasks, encoding="utf-8") as f:
+            data = json.load(f)
+    except (json.JSONDecodeError, OSError) as exc:
+        print(f"Failed to read {master_tasks}: {exc}", file=sys.stderr)
+        return []
+    if isinstance(data, dict):
+        data = data.get("tasks", [])
+    if not isinstance(data, list):
+        print(f"Unexpected task format in {master_tasks}", file=sys.stderr)
+        return []
+    return [t for t in data if isinstance(t, dict)]
 
 def get_done_tasks():
     tadone = WORKSPACE_DIR / "termux-multi-agent" / "taDone.md"
     if tadone.exists():
-        return tadone.read_text().splitlines()
+        return tadone.read_text(encoding="utf-8").splitlines()
     return []
 
 def sync_to_linear():

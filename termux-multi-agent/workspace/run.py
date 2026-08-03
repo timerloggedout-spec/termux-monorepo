@@ -67,6 +67,14 @@ def get_refactor_goal(workspace_path):
     return default_goal
 
 def main():
+    """
+    Run the refactoring pipeline for the configured workspace and target file.
+    
+    Initializes the project database, indexes workspace files, determines the
+    refactoring goal, collects codebase context, and invokes the agent with Python
+    compilation as the validation command. Creates a default workspace and sample
+    target file when the configured workspace does not exist.
+    """
     init_db()
     workspace_path = os.environ.get("TASK_WORKSPACE", "/data/data/com.termux/files/home/termux-multi-agent/workspace")
     

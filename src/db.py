@@ -7,6 +7,9 @@ import subprocess
 DB_PATH = "local_repo.db"
 
 def init_db():
+    """
+    Create the SQLite database and required tables if they do not already exist.
+    """
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
         cursor.execute('''
@@ -44,6 +47,16 @@ def init_db():
         conn.commit()
 
 def log_attempt_telemetry(target_file, attempt, patch, errors, verdict):
+    """
+    Record a patch attempt and its outcome in the run history.
+    
+    Parameters:
+        target_file: Path of the file targeted by the attempt.
+        attempt: Attempt number.
+        patch: Patch content associated with the attempt.
+        errors: Errors reported for the attempt.
+        verdict: Outcome assigned to the attempt.
+    """
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
         cursor.execute(
@@ -72,6 +85,13 @@ def log_attempt_telemetry(target_file, attempt, patch, errors, verdict):
         pass
 
 def index_project_file(workspace_root, relative_path, conn=None):
+    """
+    Index a supported project file's code elements and import relationships in the database.
+    
+    Parameters:
+        workspace_root: Root directory of the project.
+        relative_path: File path relative to the project root.
+    """
     abs_path = os.path.join(workspace_root, relative_path)
     ext = os.path.splitext(relative_path)[1]
     lang_map = {'.py': 'python', '.js': 'javascript', '.mjs': 'javascript', '.rs': 'rust'}
@@ -129,7 +149,13 @@ def index_project_file(workspace_root, relative_path, conn=None):
         pass
 
 def batch_insert_fts_messages(messages, conn=None):
-    """Batch insert messages into messages_fts."""
+    """
+    Insert message records into the full-text search table in a single batch.
+    
+    Parameters:
+        messages (iterable): Message dictionaries with `content`, `session_id`, and
+            `msg_idx` fields, or three-item iterables containing those values.
+    """
     data = []
     for msg in messages:
         if isinstance(msg, dict):
@@ -155,7 +181,17 @@ def batch_insert_fts_messages(messages, conn=None):
             conn.close()
 
 def search_fts_messages(query, limit=10, conn=None):
-    """Search messages using FTS5 MATCH."""
+    """
+    Search indexed messages for matches in their content.
+    
+    Parameters:
+    	query (str): FTS5 query used to match message content.
+    	limit (int): Maximum number of matching messages to return.
+    	conn: Optional SQLite database connection.
+    
+    Returns:
+    	list: Tuples containing a highlighted content snippet, session ID, and message index.
+    """
     close_conn = False
     if conn is None:
         conn = sqlite3.connect(DB_PATH)

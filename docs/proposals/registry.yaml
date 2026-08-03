@@ -55,3 +55,16 @@ proposals:
         status: accepted
     related_prs: [1, 2]
     gates_required: [repo-gate]
+
+  - id: manus-critical-eval
+    title: "Manus Critical Evaluation & Novel Work"
+    author: Manus
+    status: executing
+    priority: P0
+    path: active/manus-critical-eval/
+    reviewers:
+      - id: manus
+        role: author
+        status: posted
+    related_prs: [13]
+    gates_required: [repo-gate, termux-smoke]

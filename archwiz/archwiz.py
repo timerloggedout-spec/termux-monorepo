@@ -33,7 +33,12 @@ def banner():
      ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝ ╚══╝╚══╝ ╚═╝╚══════╝
     """ + N)
     print(f"{G}\u26a1 ARCHWIZ DASHBOARD \u26a1{N}   {time.strftime('%c')}")
-    print(f"{W}session: {os.getlogin()}@{os.uname().nodename}{N}")
+    try:
+        user = os.getlogin()
+    except:
+        import getpass
+        user = getpass.getuser()
+    print(f"{W}session: {user}@{os.uname().nodename}{N}")
     print(C + "\u2500" * 60 + N)
 
 def get_pipeline_status():

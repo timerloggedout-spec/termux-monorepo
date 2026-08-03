@@ -1,0 +1,3 @@
+## 2026-08-01 - Flicker-Free Real-Time CLI Dashboards with Rich Live
+**Learning:** Terminal dashboards that clear the screen using raw ANSI escape codes (`\033[H\033[J`) or `clear` commands create severe flicker and redraw lag. This harms cognitive accessibility and visual appeal. Using `rich.live.Live` with high-level structural layout (`Table`, `Panel`, `Text`) ensures updates are drawn to the screen differential/flicker-free, and handles terminal exits cleanly.
+**Action:** Always prefer `rich.live.Live` (or similar differential-updating curses-like tools) for terminal UI dashboards that require frequent, real-time telemetry updates.

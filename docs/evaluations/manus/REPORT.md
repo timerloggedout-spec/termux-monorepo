@@ -4,7 +4,7 @@
 
 The `termux-monorepo` is a sophisticated, agent-centric development ecosystem designed for Termux and CI environments. It features a robust "Four-plane" architecture and a two-gate hygiene spine (`repo-gate` and `termux-smoke`). While the system architecture is sound, the repository currently faces challenges with **branch divergence**, **security hygiene (session stores)**, and **generator quality** from external tools like ECC.
 
-My evaluation has resulted in a novel work branch `manus/novel-work` (PR #13) which normalizes system paths, implements a Linear sync bridge, and improves error observability.
+My evaluation has resulted in a novel work branch `manus/novel-work` (PR #13) which normalizes system paths, implements a Linear sync bridge, improves error observability, and integrates a canonical Session SSOT writer. I also retargeted and merged high-priority PRs (#9, #10) after gate validation.
 
 ---
 
@@ -63,10 +63,17 @@ The repository has a strict ban on session artifacts (`.pi`, `.deepcli`, `.cedar
 ## 6. Proposals & Novel Work
 
 ### 6.1 Novel Work: `manus/novel-work` (PR #13)
-- **Path Normalization:** `archwiz.py` now respects environment-aware roots.
-- **Linear Bridge:** Added `linear_sync.py` and a dashboard menu option.
-- **Observability:** Structured error logging for the `deepcli` core.
+- **Path Normalization:** `archwiz.py` now respects environment-aware roots via `archwiz.config`.
+- **Linear Bridge:** Added `linear_sync.py` and a dashboard menu option to bridge local tasks to Linear.
+- **Session SSOT:** Implemented `archwiz/session_ssot.py` and integrated it into `deepcli/core.py` to ensure a single source of truth for all provider sessions.
+- **Provider Abstraction:** Salvaged and cleaned up the `CodexIndex` and `BaseProvider` interface from PR #6, providing a foundation for multi-provider support.
+- **Observability:** Structured error logging for the `deepcli` core and SSOT writes.
 - **Portability:** Fixed `os.getlogin()` crashes in headless/sandbox environments.
+
+### 6.2 Integration Success
+- **PR #10 Merged:** Integrated `curl_cffi` fallback for Termux 3.14 compatibility.
+- **PR #9 Merged:** Integrated DeepForge launcher and `deepcli`-first policy.
+- **CI Gate Fix:** Fixed a critical bug in `repo_gate.py` that caused crashes when encountering submodules.
 
 ### 6.2 Future Proposals
 1. **Event-Sourced Dispatch:** Implement the full `dispatch_pipeline.py` to decouple task execution from API response saving.

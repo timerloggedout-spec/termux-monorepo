@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 """
-Linear Sync Bridge for ArchWiz.
-Syncs local task status (taDone.md / master_tasks.json) to Linear.app.
+Linear Sync Bridge for ArchWiz - DRY-RUN SCAFFOLD.
+
+This is a dry-run scaffold that prints intended synchronization actions
+between local task status (taDone.md / master_tasks.json) and Linear.app.
+It does not perform actual API calls to Linear; implement the Linear API
+integration to make this functional.
 """
 import os
 import json
@@ -48,9 +52,14 @@ def sync_to_linear():
     
     for task in tasks:
         task_id = task.get("id")
-        status = "DONE" if any(task_id in line for line in done) else "TODO"
+        # Handle missing IDs and match as complete tokens
+        if task_id is None:
+            continue
+        task_id_str = str(task_id)
+        # Match task ID as complete token, not substring
+        status = "DONE" if any(task_id_str == line.strip() or task_id_str in line.split() for line in done) else "TODO"
         print(f"Syncing Task [{task_id}] -> Linear (Status: {status})")
-        
+
         # MOCK API CALL
         # linear_client.update_issue(task_id, {"status": status})
     

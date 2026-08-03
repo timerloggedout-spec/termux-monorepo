@@ -45,7 +45,7 @@ Several core components (e.g., `deepcli/core.py`) used silent `except: pass` blo
 
 ### 4.3 Linear Integration
 The user indicated "Linear is integrated," but the codebase lacked a functional bridge.
-- **Fix:** Implemented `archwiz/linear_sync.py` to sync `master_tasks.json` and `taDone.md` status to Linear issues.
+- **Fix:** Implemented `archwiz/linear_sync.py` as a dry-run scaffold that prints intended sync actions. Full Linear API integration is still in progress.
 
 ---
 

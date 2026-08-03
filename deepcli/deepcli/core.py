@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Core API wrapper for DeepSeek internal API."""
 import os
+import sys
 import json
 import base64
 import time
@@ -60,7 +61,7 @@ def _cache_save(session_id: str, messages: List[Dict[str, Any]], account: str = 
             from archwiz.config import LOG_DIR
             with open(LOG_DIR / "dispatch_error.log", "a") as f:
                 f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} - Dispatch error: {e}\n")
-        except:
+        except OSError:
             pass
     # === END DISPATCH HOOK ===
 
@@ -75,7 +76,7 @@ def _set_last_session(sid: str):
             from archwiz.config import LOG_DIR
             with open(LOG_DIR / "history_error.log", "a") as f:
                 f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} - History fetch error: {e}\n")
-        except:
+        except OSError:
             pass
 
 # ---------- config helpers ----------

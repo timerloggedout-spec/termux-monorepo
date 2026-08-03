@@ -130,6 +130,10 @@ class IndexEntry:
     def is_symlink(self) -> bool:
         return self.mode == "120000"
 
+    @property
+    def is_submodule(self) -> bool:
+        return self.mode == "160000"
+
 
 def read_index() -> list[IndexEntry]:
     """Parse `git ls-files -s -z`. NUL-delimited: 452 tracked paths contain spaces."""
@@ -221,7 +225,7 @@ def check_python_syntax(report: Report, paths: list[str], index: dict[str, Index
         if not path.endswith(".py") or is_scratch(path):
             continue
         entry = index.get(path)
-        if entry is None or entry.is_symlink:
+        if entry is None or entry.is_symlink or entry.is_submodule:
             continue
         checked += 1
         source = blob(entry.sha)
@@ -244,7 +248,7 @@ def check_shell_syntax(report: Report, paths: list[str], index: dict[str, IndexE
         if not path.endswith((".sh", ".bash")) or is_scratch(path):
             continue
         entry = index.get(path)
-        if entry is None or entry.is_symlink:
+        if entry is None or entry.is_symlink or entry.is_submodule:
             continue
         checked += 1
         proc = subprocess.run(
@@ -264,7 +268,7 @@ def check_json_parses(report: Report, paths: list[str], index: dict[str, IndexEn
         if not path.endswith(".json") or is_scratch(path):
             continue
         entry = index.get(path)
-        if entry is None or entry.is_symlink:
+        if entry is None or entry.is_symlink or entry.is_submodule:
             continue
         raw = blob(entry.sha)
         if not raw.strip():
@@ -334,7 +338,7 @@ def check_secrets(report: Report, paths: list[str], index: dict[str, IndexEntry]
     checked = 0
     for path in paths:
         entry = index.get(path)
-        if entry is None or entry.is_symlink:
+        if entry is None or entry.is_symlink or entry.is_submodule:
             continue
         if path.startswith("scripts/ci/"):  # the patterns themselves live here
             continue

@@ -55,8 +55,13 @@ def _cache_save(session_id: str, messages: List[Dict[str, Any]], account: str = 
             sys.modules["dispatch_pipeline"] = disp
             spec.loader.exec_module(disp)
             disp.update_all(session_id)
-    except Exception:
-        pass
+    except Exception as e:
+        try:
+            from archwiz.config import LOG_DIR
+            with open(LOG_DIR / "dispatch_error.log", "a") as f:
+                f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} - Dispatch error: {e}\n")
+        except:
+            pass
     # === END DISPATCH HOOK ===
 
 def _set_last_session(sid: str):
@@ -65,8 +70,13 @@ def _set_last_session(sid: str):
     save_config(cfg)
     try:
         get_history(get_token(), sid, force_refresh=True)
-    except:
-        pass
+    except Exception as e:
+        try:
+            from archwiz.config import LOG_DIR
+            with open(LOG_DIR / "history_error.log", "a") as f:
+                f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} - History fetch error: {e}\n")
+        except:
+            pass
 
 # ---------- config helpers ----------
 def load_config() -> Dict[str, Any]:
@@ -265,8 +275,8 @@ def _log_retry(operation: str, status_code: int, attempt: int, delay: float):
         with open(log_path, "a") as f:
             json.dump({"ts": __import__("datetime").datetime.now().isoformat(), "op": operation, "status": status_code, "attempt": attempt, "delay": delay}, f)
             f.write("\n")
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"[retry_log] Failed to log retry: {e}", file=sys.stderr)
 
 def stream_completion(token: str, prompt: str, session_id: str,
                      parent_message_id: Optional[str] = None,

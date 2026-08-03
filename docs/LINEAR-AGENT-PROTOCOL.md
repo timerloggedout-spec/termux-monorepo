@@ -9,6 +9,23 @@ Project: **termux-monorepo hardening**
 
 ---
 
+## 0. Branch model (binding)
+
+```
+feature/*  ──PR──►  master-staging   ← permanent integration spine
+                        │
+                        │  selective cherry-pick / focused promotion PRs only
+                        │  NEVER merge master-staging → master wholesale
+                        ▼
+                     master          ← stable, green, protected
+```
+
+- **`master-staging` is a permanent gate**, not a temporary buffer.
+- Agent “done” = merged to **`master-staging`** (not necessarily to `master`).
+- Promotion to `master` is **selective** only. Operator note (TER-14): *"master-staging is for selective merge to master meaning master-staging is meant to never merge to master completely."*
+
+---
+
 ## 1. Hard rules (agents MUST)
 
 1. **Every non-trivial agent action** that creates a branch, opens a PR, or closes work **must** reference a Linear issue (`TER-N`).
@@ -17,8 +34,9 @@ Project: **termux-monorepo hardening**
 4. Branch names **should** match Linear’s suggested `gitBranchName` when starting from an issue (e.g. `timerloggedout/ter-14-…`).
 5. On start of work → set Linear state to **In Progress**.
 6. On PR open → comment on Linear issue with PR URL (or attach link).
-7. On merge to `master-staging` (or close of work) → set Linear state to **Done** (or leave In Progress if residual).
+7. On merge to **`master-staging`** (or explicit completion) → set Linear state to **Done** (or leave In Progress if residual).
 8. Do **not** invent work outside Linear + `docs/proposals/active/*/ITEMS.md`. If needed, create Linear issue **and** ITEMS row.
+9. Do **not** open a PR that merges all of `master-staging` into `master`. Promotion PRs must be selective (specific commits or a narrow feature already on staging).
 
 Unposted chat is not Linear state. If it is not on the issue, it did not happen for tracking purposes.
 
@@ -31,7 +49,7 @@ Unposted chat is not Linear state. If it is not on the issue, it did not happen 
 | **Backlog** | Parked / not started |
 | **Todo** | Ready to pick |
 | **In Progress** | Agent started branch / PR |
-| **Done** | Merged to `master-staging` or explicitly completed |
+| **Done** | Merged to **`master-staging`** or explicitly completed |
 | **Canceled** | Won’t do (with reason in description) |
 | **Duplicate** | Point to canonical TER-N |
 
@@ -45,9 +63,10 @@ Priority map: P0 → Urgent (1), P1 → High (2), P2 → Medium (3), P3 → Low 
 |--------------|-------------|
 | Pick work | `list_issues` filter Todo/Backlog; claim via assignee if available |
 | Start implementation | `save_issue` → state **In Progress**; ensure `gitBranchName` used |
-| Open PR | Comment on issue with PR URL; body `Implements: TER-N` |
+| Open PR | Comment on issue with PR URL; body `Implements: TER-N`; base = **`master-staging`** |
 | Push significant commits | Optional short comment (milestone only; avoid noise) |
-| PR merged to `master-staging` | state **Done**; append evidence (PR/commit) to description |
+| PR merged to **`master-staging`** | state **Done**; append evidence (PR/commit) to description |
+| Selective promote to `master` | Separate narrow PR; do not close staging; optional Linear comment |
 | Blocked (human-only) | Comment + leave **In Progress** or move **Backlog**; cite `AGENTIC-PERMISSIONS.md` |
 | New work discovered | `save_issue` create; link parent if sub-task; add ITEMS row |
 | Close proposal | Ensure related TER-* are Done/Canceled; comment cross-ref |
@@ -102,15 +121,14 @@ Description:
 ```text
 id: TER-N
 state: In Progress
-# optional: assignee me, links [{url, title}]
 ```
 
-**Update on complete:**
+**Update on complete (merged to master-staging):**
 
 ```text
 id: TER-N
 state: Done
-# description append: Evidence: PR #X merged YYYY-MM-DD
+# description append: Evidence: PR #X merged to master-staging YYYY-MM-DD
 ```
 
 ---
@@ -122,7 +140,9 @@ registry.yaml / ITEMS.md     ← consensus & itemization (PROCESS.md)
         ↕ must cite each other
 Linear TER-*                 ← execution board (this protocol)
         ↕ Implements: TER-N
-GitHub PR → master-staging   ← code
+GitHub PR → master-staging   ← code (integration spine)
+        ↕ selective only
+GitHub PR → master           ← promotion of ready slices
 ```
 
 - Proposal **ITEMS** may map 1:1 or N:1 to TER-*.
@@ -133,14 +153,14 @@ GitHub PR → master-staging   ← code
 
 ## 6. TER-14 scope
 
-**TER-14** = Sentry multi-project + Linear GraphQL bridge + **this protocol**.
+**TER-14** = Sentry multi-project + Linear GraphQL bridge + **this protocol** + branch-model clarification.
 
 Related:
 - TER-5 (dispatch logging) — observability adjacent
 - TER-2 (tools connected) — Done; MCP available
 - Manus PR #13 — path norm + mock bridge (superseded for Linear by PR #16)
 
-When Sentry+Linear PR merges to `master-staging`, mark **TER-14 Done**.
+When Sentry+Linear PR merges to **`master-staging`**, mark **TER-14 Done**.
 
 ---
 
@@ -154,9 +174,10 @@ When Sentry+Linear PR merges to `master-staging`, mark **TER-14 Done**.
 [ ] Implement; commits reference TER-N
 [ ] PR → master-staging with Implements: TER-N
 [ ] Comment on Linear issue with PR URL
-[ ] Gates green; merge
+[ ] Gates green; merge to master-staging
 [ ] save_issue → Done + evidence
 [ ] Update ITEMS.md if proposal-linked
+[ ] Never open wholesale master-staging → master merge
 ```
 
 ---
@@ -169,3 +190,5 @@ When Sentry+Linear PR merges to `master-staging`, mark **TER-14 Done**.
 | MCP write denied | Fall back to GitHub issue comment + request Operator grant |
 | Orphan PR (no TER-*) | Open/link TER-* before merge; do not merge orphan P0 |
 | Duplicate TER-* | Mark Duplicate; point to canonical |
+| PR base is `master` for feature work | Retarget to `master-staging` |
+| Wholesale staging→master PR | Reject; split into selective promotion |

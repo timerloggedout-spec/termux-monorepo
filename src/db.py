@@ -40,6 +40,7 @@ def init_db():
 from pathlib import Path
 from datetime import datetime, timezone
 
+def log_attempt_telemetry(target_file, attempt, patch, errors, verdict):
     # Also write to run_history.jsonl for ForeSight
     rh_file = Path.home() / 'termux-multi-agent/run_history.jsonl'
     rh_file.parent.mkdir(parents=True, exist_ok=True)
@@ -54,7 +55,6 @@ from datetime import datetime, timezone
         }, rhf)
         rhf.write('\n')
 
-def log_attempt_telemetry(target_file, attempt, patch, errors, verdict):
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
         cursor.execute(

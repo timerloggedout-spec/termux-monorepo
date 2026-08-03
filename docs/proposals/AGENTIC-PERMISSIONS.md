@@ -36,7 +36,7 @@ Agents **must** follow `docs/LINEAR-AGENT-PROTOCOL.md`:
 
 - Start work → issue **In Progress**
 - Open PR → `Implements: TER-N` + comment PR URL on issue
-- Merge → **Done** + evidence
+- Merge to **`master-staging`** → **Done** + evidence
 
 Connected agents use MCP (`linear___save_issue`, etc.). On-device/CI use:
 
@@ -45,6 +45,25 @@ export LINEAR_API_KEY=lin_api_...
 python3 -m archwiz.linear_client start TER-14
 python3 -m archwiz.linear_client done TER-14 --pr 16
 ```
+
+## Branch model (binding)
+
+```
+feature/*  ──PR──►  master-staging   ← integration spine (always exists)
+                        │
+                        │  selective cherry-pick / focused promotion PRs only
+                        │  NEVER merge master-staging → master wholesale
+                        ▼
+                     master          ← stable, green, protected
+```
+
+**`master-staging` is a permanent gate, not a temporary buffer.**
+
+- Agents land work on `master-staging` via feature PRs.
+- Promotion to `master` is **selective**: only commits/PRs that are ready, never “merge the whole staging branch.”
+- `master-staging` must **not** be deleted, fast-forward-merged away, or treated as disposable.
+
+See also Operator note on TER-14: *"master-staging is for selective merge to master meaning master-staging is meant to never merge to master completely."*
 
 ## Minimum permission checklist (GitHub App / token)
 
@@ -72,16 +91,16 @@ On `master`:
 
 On `master-staging`:
 
-- Prefer **no** protection or soft protection so agents can iterate quickly; promote to `master` only when both gates are green.
+- Soft or no protection so agents can iterate; **keep the branch permanently** as the integration target.
 
 ## Fully agentic target state
 
 ```
 Linear TER-* + registry.yaml → agent picks Todo
   → Linear In Progress + branch off master-staging
-  → PR Implements: TER-N → gates green → merge
+  → PR Implements: TER-N → gates green → merge to master-staging
   → Linear Done + ITEMS.md update
-  → promotion PR to master when healthy
+  → selective promotion PR(s) of ready commits to master (never wholesale staging merge)
 ```
 
 Human intervenes only for: credential rotation, destructive history ops, and first-time permission grants above.

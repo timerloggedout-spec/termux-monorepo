@@ -58,8 +58,8 @@ class AutomatedContextCollector:
         bundle = ["=== CODEBASE ARCHITECTURE SUBSTRUCTURE CONTEXT ==="]
         for dep in dependencies:
             skeleton = self.generate_ast_skeleton(dep)
-            bundle.append(f'\n<file path="{dep}" layout="dependent_skeleton">\n{skeleton}\n')
+            bundle.append(f"\n<file path="{dep}" layout="dependent_skeleton">\n{skeleton}\n")
         with open(os.path.join(self.workspace, active_target_file), 'r') as f:
             full_source = f.read()
-        bundle.append(f'\n<file path="{active_target_file}" layout="active_target_edit_zone">\n{full_source}\n')
+        bundle.append(f"\n<file path="{active_target_file}" layout="active_target_edit_zone">\n{full_source}\n")
         return "\n".join(bundle)

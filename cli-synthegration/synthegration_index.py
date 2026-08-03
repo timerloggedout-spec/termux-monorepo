@@ -8,43 +8,76 @@ from typing import Dict, List, Any
 from datetime import datetime, timezone
 
 class Pointer:
-    """C++‑style lightweight reference: (session_id, msg_idx, blk_idx) -> content_hash."""
-    __slots__ = ('session_id', 'message_index', 'block_index', 'content_hash', 'start_line', 'end_line')
+    """Immutable content-addressed storage Pointer representation."""
+    __slots__ = ('provider', 'account', 'session', 'message', 'block', 'content_hash', 'start_line', 'end_line')
     
-    def __init__(self, session_id: str, msg_idx: int, blk_idx: int, content_hash: str, start_line: int = 0, end_line: int = 0):
-        self.session_id = session_id
-        self.message_index = msg_idx
-        self.block_index = blk_idx
-        self.content_hash = content_hash
-        self.start_line = start_line
-        self.end_line = end_line
+    def __init__(self, *args, **kwargs):
+        # Handle legacy positional arguments: (session_id, msg_idx, blk_idx, content_hash, [start_line, end_line])
+        if len(args) == 4 or (len(args) >= 4 and isinstance(args[1], int) and isinstance(args[2], int)):
+            self.provider = "unknown"
+            self.account = "unknown"
+            self.session = args[0]
+            self.message = args[1]
+            self.block = args[2]
+            self.content_hash = args[3]
+            self.start_line = args[4] if len(args) > 4 else 0
+            self.end_line = args[5] if len(args) > 5 else 0
+        else:
+            self.provider = kwargs.get('provider', args[0] if len(args) > 0 else "unknown")
+            self.account = kwargs.get('account', args[1] if len(args) > 1 else "unknown")
+            self.session = kwargs.get('session', args[2] if len(args) > 2 else "unknown")
+            self.message = kwargs.get('message', args[3] if len(args) > 3 else 0)
+            self.block = kwargs.get('block', args[4] if len(args) > 4 else 0)
+            self.content_hash = kwargs.get('content_hash', args[5] if len(args) > 5 else "")
+            self.start_line = kwargs.get('start_line', args[6] if len(args) > 6 else 0)
+            self.end_line = kwargs.get('end_line', args[7] if len(args) > 7 else 0)
+
+    @property
+    def session_id(self) -> str:
+        return self.session
+
+    @property
+    def message_index(self) -> int:
+        return self.message
+
+    @property
+    def block_index(self) -> int:
+        return self.block
     
     def to_key(self) -> str:
-        return ""
+        return f"{self.provider}:{self.account}:{self.session}:{self.message}:{self.block}"
 
     def citation(self) -> str:
-        return ""
-        """Return 【cursor_id†Lstart-Lend】 formatted citation."""
-        cursor_id = f"{self.session_id[:8]}:{self.message_index}:{self.block_index}"
+        cursor_id = f"{self.session[:8]}:{self.message}:{self.block}"
         if self.end_line > self.start_line:
             return f"【{cursor_id}†L{self.start_line}-L{self.end_line}】"
         return f"【{cursor_id}†L{self.start_line}】"
-
-        return f"{self.session_id}:{self.message_index}:{self.block_index}"
     
     def to_wire(self) -> bytes:
-        """Ultra‑compact binary representation (20 bytes + hash)."""
+        """Compact binary representation."""
         import struct
-        sid_bytes = self.session_id.encode()[:12].ljust(12, b'\x00')
-        packed = struct.pack('>12sII', sid_bytes, self.message_index, self.block_index)
-        return packed + bytes.fromhex(self.content_hash)
+        # Pack provider, account, and session as compact bytes
+        prov_bytes = self.provider.encode()[:8].ljust(8, b'\x00')
+        acc_bytes = self.account.encode()[:8].ljust(8, b'\x00')
+        sid_bytes = self.session.encode()[:12].ljust(12, b'\x00')
+        packed = struct.pack('>8s8s12sII', prov_bytes, acc_bytes, sid_bytes, self.message, self.block)
+        # Handle either full 64-char or 16-char hashes gracefully
+        hash_bytes = bytes.fromhex(self.content_hash[:16].ljust(16, '0'))
+        return packed + hash_bytes
     
     @classmethod
     def from_wire(cls, data: bytes) -> 'Pointer':
         import struct
-        sid_bytes, msg_idx, blk_idx = struct.unpack('>12sII', data[:20])
-        content_hash = data[20:28].hex()
-        return cls(sid_bytes.rstrip(b'\x00').decode(), msg_idx, blk_idx, content_hash)
+        prov_bytes, acc_bytes, sid_bytes, msg_idx, blk_idx = struct.unpack('>8s8s12sII', data[:36])
+        content_hash = data[36:44].hex()
+        return cls(
+            provider=prov_bytes.rstrip(b'\x00').decode(),
+            account=acc_bytes.rstrip(b'\x00').decode(),
+            session=sid_bytes.rstrip(b'\x00').decode(),
+            message=msg_idx,
+            block=blk_idx,
+            content_hash=content_hash
+        )
 
 class _TaxonomyNode_v1:
     """Hierarchical taxonomy: language → project → session → timestamp."""
@@ -243,7 +276,6 @@ class CodexIndex:
                 except Exception:
                     pass
 
-    @staticmethod
     def __init__(self, base_dir: Path = None):
         self.base_dir = base_dir or Path.home() / 'cli-synthegration' / 'codex'
         self.base_dir.mkdir(parents=True, exist_ok=True)
@@ -273,21 +305,39 @@ class CodexIndex:
     
     def _rebuild_hash_index(self):
         """Rebuild blobs dict and hash→pointer by scanning disk."""
+        # Support new immutable CAS hierarchy: blob/sha256/ab/abcd...
+        cas_dir = self.base_dir / "blob" / "sha256"
+        if cas_dir.exists():
+            for sub_dir in cas_dir.iterdir():
+                if sub_dir.is_dir() and len(sub_dir.name) == 2:
+                    for blob_file in sub_dir.iterdir():
+                        ch = blob_file.name
+                        self.blobs[ch] = str(blob_file)
+                        if ch not in self.hash_to_pointer:
+                            self.hash_to_pointer[ch] = Pointer("unknown", "unknown", "imported", 0, 0, ch)
+
+        # Backward compatibility fallback: blobs/*.blob
         blob_dir = self.base_dir / "blobs"
-        if not blob_dir.exists():
-            return
-        for blob_file in blob_dir.glob("*.blob"):
-            ch = blob_file.stem
-            self.blobs[ch] = str(blob_file)
-            if ch not in self.hash_to_pointer:
-                self.hash_to_pointer[ch] = Pointer("imported", 0, 0, ch)
+        if blob_dir.exists():
+            for blob_file in blob_dir.glob("*.blob"):
+                ch = blob_file.stem
+                if ch not in self.blobs:
+                    self.blobs[ch] = str(blob_file)
+                    if ch not in self.hash_to_pointer:
+                        self.hash_to_pointer[ch] = Pointer("unknown", "unknown", "imported", 0, 0, ch)
+
     def _save(self):
         flat = {'pointers': [], 'version': 1}
         def flatten(node, path):
             for p in node.pointers:
                 flat['pointers'].append({
-                    'sid': p.session_id, 'mi': p.message_index, 'bi': p.block_index,
-                    'ch': p.content_hash, 'path': path,
+                    'provider': getattr(p, 'provider', 'unknown'),
+                    'account': getattr(p, 'account', 'unknown'),
+                    'sid': p.session,
+                    'mi': p.message,
+                    'bi': p.block,
+                    'ch': p.content_hash,
+                    'path': path,
                     'ts': self.time_index.get(p.content_hash, datetime.now(timezone.utc)).isoformat()
                 })
             for name, child in node.children.items():
@@ -306,14 +356,14 @@ class CodexIndex:
             for blk_idx, match in enumerate(re.finditer(r"```(\w+)?\n(.*?)```", content, re.DOTALL)):
                 lang = (match.group(1) or 'text').lower()
                 code = match.group(2)
-                ch = hashlib.sha256(code.encode()).hexdigest()[:16]
-                p = Pointer(session_id, msg_idx, blk_idx, ch)
+                ch = hashlib.sha256(code.encode()).hexdigest()
+                p = Pointer("unknown", "unknown", session_id, msg_idx, blk_idx, ch)
                 path = [lang, project, role]
                 self.taxonomy.add_pointer(p, path)
                 self.time_index[ch] = datetime.fromisoformat(ts) if ts else datetime.now(timezone.utc)
-                # Store blob if not already
-                blob_path = self.base_dir / 'blobs' / f"{ch}.blob"
-                blob_path.parent.mkdir(exist_ok=True)
+                # Store blob in immutable content-addressed storage hierarchy: blob/sha256/ab/abcd...
+                blob_path = self.base_dir / 'blob' / 'sha256' / ch[:2] / ch
+                blob_path.parent.mkdir(parents=True, exist_ok=True)
                 if not blob_path.exists():
                     blob_path.write_text(code)
                 self.blobs[ch] = str(blob_path)

@@ -12,7 +12,11 @@ class MistralProvider(BaseProvider):
     provider_type = ProviderType.MISTRAL
     
     def __init__(self, config: ProviderConfig = None, **kwargs):
-        """Initialize Mistral provider."""
+        """Initialize the Mistral provider and its API client.
+        
+        Parameters:
+            config (ProviderConfig, optional): Provider configuration, including the token file path.
+        """
         super().__init__(config, **kwargs)
         # Import Mistral core
         from core.core import MistralCore
@@ -39,26 +43,60 @@ class MistralProvider(BaseProvider):
         )
     
     def send_message(self, message: str, session_id: str = None, **kwargs) -> str:
-        """Send a message to Mistral."""
+        """
+        Send a message through a Mistral session.
+        
+        Parameters:
+            message (str): The message to send.
+            session_id (str, optional): The session to use. A new session is created when omitted.
+        
+        Returns:
+            str: The response from Mistral.
+        """
         if not session_id:
             session_id = self.core.session_id or self.create_session()
         return self.core.send_message(message, session_id, **kwargs)
     
     def create_session(self, **kwargs) -> str:
-        """Create a new Mistral session."""
+        """
+        Create a new Mistral session using the configured model or a specified model.
+        
+        Parameters:
+            model (str): Optional model name to use for the session.
+        
+        Returns:
+            str: The identifier of the new session.
+        """
         model = kwargs.get("model", self.config.model if self.config else "mistral-large-latest")
         return self.core.create_session(model)
     
     def get_history(self, session_id: str, **kwargs) -> List[Dict]:
-        """Get session history from Mistral."""
+        """Retrieve the message history for a Mistral session.
+        
+        Parameters:
+        	session_id (str): Identifier of the session whose history to retrieve.
+        
+        Returns:
+        	List[Dict]: The session's message history.
+        """
         return self.core.get_history(session_id)
     
     def list_sessions(self) -> List[Dict]:
-        """List all Mistral sessions."""
+        """
+        List all available Mistral sessions.
+        
+        Returns:
+            List[Dict]: Session records.
+        """
         return self.core.list_sessions()
     
     def is_available(self) -> bool:
-        """Check if Mistral is available."""
+        """
+        Determine whether Mistral has an available authentication token.
+        
+        Returns:
+        	bool: `true` if a Mistral token is present, `false` otherwise.
+        """
         try:
             return self.core.token is not None
         except:

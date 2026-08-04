@@ -26,7 +26,12 @@ class SearchResult:
     metadata: Dict = field(default_factory=dict)
     
     def to_dict(self) -> Dict:
-        """Convert to dictionary."""
+        """
+        Convert the search result into a dictionary containing its fields.
+        
+        Returns:
+        	dict: The search result data.
+        """
         return {
             "content_hash": self.content_hash,
             "content": self.content,
@@ -61,15 +66,16 @@ class SearchEngine:
         self.codex.index_conversation(session_id, title, messages)
     
     def search(self, query: str, language: str = None, limit: int = 10) -> List[SearchResult]:
-        """Search for code blocks matching the query.
+        """
+        Search indexed code blocks matching a query, optionally restricted by language.
         
-        Args:
-            query: Search query
-            language: Optional language filter
-            limit: Maximum number of results
-            
+        Parameters:
+            query (str): The terms to search for.
+            language (str): An optional programming language filter.
+            limit (int): The maximum number of results to include.
+        
         Returns:
-            List of SearchResult objects
+            List[SearchResult]: Matching code blocks with position-based scores.
         """
         results = []
         
@@ -95,15 +101,16 @@ class SearchEngine:
         return results
     
     def search_by_language(self, language: str, query: str = "", limit: int = 10) -> List[SearchResult]:
-        """Search code blocks by language.
+        """
+        Search indexed code blocks for a language and optional query.
         
-        Args:
-            language: Language to filter by
-            query: Optional additional query filter
-            limit: Maximum number of results
-            
+        Parameters:
+        	language (str): Language used to filter the code blocks.
+        	query (str): Optional text query used to narrow the results.
+        	limit (int): Maximum number of results to return.
+        
         Returns:
-            List of SearchResult objects
+        	List[SearchResult]: Matching code blocks with source metadata and positional scores.
         """
         results = []
         

@@ -17,7 +17,12 @@ class ChatDispatcher:
     """
     
     def __init__(self, session_manager=None):
-        """Initialize the dispatcher."""
+        """
+        Initialize the chat dispatcher.
+        
+        Parameters:
+            session_manager: Optional manager used for session-related operations.
+        """
         self.session_manager = session_manager
         self.providers: Dict[str, Any] = {}
         self.codex_enabled = True
@@ -30,20 +35,18 @@ class ChatDispatcher:
         return self.providers[name]
     
     def send(self, provider_name: str, message: str, session_id: str = None, harvest: bool = True, **kwargs) -> Dict:
-        """Send a message and optionally harvest code blocks.
+        """
+        Send a message through the selected provider and optionally harvest code blocks from the response.
         
         Args:
-            provider_name: Name of the provider
-            message: Message to send
-            session_id: Optional session ID
-            harvest: Whether to harvest code blocks from response
-            **kwargs: Additional arguments for the provider
-            
+            provider_name: Name of the provider to use.
+            message: Message to send.
+            session_id: Optional session identifier.
+            harvest: Whether to extract and index code blocks from the response.
+            **kwargs: Additional arguments passed to the provider.
+        
         Returns:
-            Dictionary with:
-            - 'response': The provider's response
-            - 'code_blocks': List of harvested code blocks (if harvest=True)
-            - 'session_id': The session ID used
+            Dictionary containing the response, provider name, session ID, and, when harvesting is enabled, serialized code blocks.
         """
         provider = self.get_provider(provider_name)
         
@@ -82,16 +85,16 @@ class ChatDispatcher:
         return result
     
     def send_with_history(self, provider_name: str, message: str, session_id: str = None, **kwargs) -> Dict:
-        """Send a message with full session history and code harvesting.
+        """
+        Send a message using the session's existing conversation history.
         
-        Args:
-            provider_name: Name of the provider
-            message: Message to send
-            session_id: Optional session ID
-            **kwargs: Additional arguments
-            
+        Parameters:
+            provider_name (str): Name of the provider to use.
+            message (str): Message to send.
+            session_id (str, optional): Identifier of the session whose history should be included.
+        
         Returns:
-            Dictionary with response and harvested code
+            Dict: Response metadata containing the response text, provider name, session ID, and conversation messages.
         """
         provider = self.get_provider(provider_name)
         
@@ -160,14 +163,15 @@ class ChatDispatcher:
         return provider.search_code(query, language)
     
     def get_code_by_hash(self, provider_name: str, content_hash: str) -> Optional[str]:
-        """Get code by hash from a provider's codex.
+        """
+        Retrieve harvested code associated with a content hash from a provider.
         
-        Args:
-            provider_name: Name of the provider
-            content_hash: Content hash
-            
+        Parameters:
+            provider_name (str): Name of the provider whose code index to search.
+            content_hash (str): Hash identifying the code content.
+        
         Returns:
-            Code content or None
+            str | None: The matching code content, or None if no match exists.
         """
         provider = self.get_provider(provider_name)
         return provider.get_code_by_hash(content_hash)
@@ -188,6 +192,12 @@ class LegacyChatDispatcher:
     """Legacy dispatcher for backward compatibility."""
     
     def __init__(self, session_manager=None):
+        """
+        Initialize a legacy dispatcher backed by a ChatDispatcher.
+        
+        Parameters:
+        	session_manager: Optional session manager used for session-aware operations.
+        """
         self.dispatcher = ChatDispatcher(session_manager)
     
     def send(self, provider, message, session_id=None):

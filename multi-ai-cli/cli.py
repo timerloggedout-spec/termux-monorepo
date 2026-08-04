@@ -14,7 +14,14 @@ def cli():
 @click.option("--session", "-s", default=None)
 @click.argument("prompt")
 def chat(provider, session, prompt):
-    """Send a chat message (legacy interface)."""
+    """
+    Send a chat message through the legacy interface.
+    
+    Parameters:
+        provider: The chat provider to use.
+        session: The session identifier, if provided.
+        prompt: The message to send.
+    """
     mgr = SessionManager()
     dispatcher = ChatDispatcher(mgr)
     try:
@@ -26,7 +33,13 @@ def chat(provider, session, prompt):
 @click.option("--provider", "-p", default="colab")
 @click.argument("code")
 def execute(provider, code):
-    """Execute code (legacy interface)."""
+    """
+    Execute code through the legacy command-line interface.
+    
+    Parameters:
+        provider: The AI provider to use.
+        code: The code to execute.
+    """
     mgr = SessionManager()
     dispatcher = ChatDispatcher(mgr)
     try:

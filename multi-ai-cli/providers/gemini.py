@@ -26,7 +26,16 @@ class GeminiProvider(BaseProvider):
         )
     
     def send_message(self, message: str, session_id: str = None, **kwargs) -> str:
-        """Send a message to Gemini."""
+        """
+        Send a message to Gemini.
+        
+        Parameters:
+            message (str): The message to send.
+            session_id (str, optional): Session identifier associated with the message.
+        
+        Returns:
+            str: Gemini's response.
+        """
         from backends.gemini_web import GeminiWebBackend
         from core.session_manager import SessionManager
         
@@ -43,11 +52,21 @@ class GeminiProvider(BaseProvider):
         return "default"
     
     def get_history(self, session_id: str, **kwargs) -> List[Dict]:
-        """Get session history from Gemini."""
+        """
+        Provide an empty conversation history for a Gemini session.
+        
+        Returns:
+            List[Dict]: An empty list.
+        """
         return []
     
     def is_available(self) -> bool:
-        """Check if Gemini is available."""
+        """
+        Determine whether Gemini is available.
+        
+        Returns:
+            bool: `True` if Gemini is available, `False` if availability cannot be determined.
+        """
         try:
             from backends.gemini_web import GeminiWebBackend
             from core.session_manager import SessionManager

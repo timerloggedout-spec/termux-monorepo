@@ -36,7 +36,15 @@ class GitUtils:
     
     @staticmethod
     def get_current_branch(directory: str = ".") -> Optional[str]:
-        """Get the current Git branch."""
+        """
+        Get the current Git branch for a directory.
+        
+        Parameters:
+        	directory (str): Path to the Git working directory.
+        
+        Returns:
+        	Optional[str]: The current branch name, or `None` if Git cannot determine it.
+        """
         try:
             result = subprocess.run(
                 ["git", "branch", "--show-current"],
@@ -53,7 +61,16 @@ class GitUtils:
     
     @staticmethod
     def get_commits(directory: str = ".", limit: int = 10) -> List[Dict]:
-        """Get recent commits."""
+        """
+        Retrieve recent commits from a Git repository.
+        
+        Parameters:
+            directory (str): Repository directory to inspect.
+            limit (int): Maximum number of commits to retrieve.
+        
+        Returns:
+            List[Dict]: Commit records containing the hash, author, date, and message. Returns an empty list if the Git command fails.
+        """
         try:
             result = subprocess.run(
                 ["git", "log", f"-n{limit}", "--pretty=format:%H|%an|%ad|%s"],
@@ -80,7 +97,15 @@ class GitUtils:
     
     @staticmethod
     def get_status(directory: str = ".") -> Dict:
-        """Get Git status."""
+        """
+        Categorize the working tree changes in a Git repository.
+        
+        Parameters:
+        	directory (str): The repository directory to inspect.
+        
+        Returns:
+        	Dict: A mapping of change categories to file paths, or an empty dictionary if the status cannot be retrieved.
+        """
         try:
             result = subprocess.run(
                 ["git", "status", "--porcelain"],
@@ -114,7 +139,17 @@ class GitUtils:
     
     @staticmethod
     def commit(message: str, directory: str = ".", all_files: bool = False) -> bool:
-        """Commit changes."""
+        """
+        Stage changes and create a Git commit with the specified message.
+        
+        Parameters:
+            message (str): Commit message.
+            directory (str): Repository directory.
+            all_files (bool): Whether to stage all files in the repository.
+        
+        Returns:
+            bool: `True` if the changes are committed successfully, `False` otherwise.
+        """
         try:
             # Add files
             add_cmd = ["git", "add", "."] if all_files else ["git", "add"]
@@ -149,7 +184,17 @@ class GitUtils:
     
     @staticmethod
     def push(remote: str = "origin", branch: str = None, directory: str = ".") -> bool:
-        """Push changes to remote."""
+        """
+        Push changes to a remote branch.
+        
+        Parameters:
+            remote (str): Name of the remote repository.
+            branch (str): Branch to push, or `None` to use the current branch.
+            directory (str): Repository directory.
+        
+        Returns:
+            bool: `True` if the push succeeds, `False` otherwise.
+        """
         try:
             if branch is None:
                 branch = GitUtils.get_current_branch(directory)
@@ -177,7 +222,17 @@ class GitUtils:
     
     @staticmethod
     def pull(remote: str = "origin", branch: str = None, directory: str = ".") -> bool:
-        """Pull changes from remote."""
+        """
+        Pull changes for a branch from a remote repository.
+        
+        Parameters:
+        	remote (str): Name of the remote repository.
+        	branch (str): Branch to pull; if omitted, uses the current branch.
+        	directory (str): Repository directory.
+        
+        Returns:
+        	bool: `True` if the pull succeeds, `False` otherwise.
+        """
         try:
             if branch is None:
                 branch = GitUtils.get_current_branch(directory)
@@ -205,7 +260,16 @@ class GitUtils:
     
     @staticmethod
     def checkout(branch: str, directory: str = ".", create: bool = False) -> bool:
-        """Checkout a branch."""
+        """Switch to an existing branch or create and switch to a new branch.
+        
+        Parameters:
+        	branch (str): Name of the branch to check out.
+        	directory (str): Repository directory in which to perform the checkout.
+        	create (bool): Whether to create the branch before switching to it.
+        
+        Returns:
+        	bool: `True` if the checkout succeeds, `False` otherwise.
+        """
         try:
             if create:
                 result = subprocess.run(
@@ -236,7 +300,17 @@ class GitUtils:
     
     @staticmethod
     def clone(repository: str, directory: str = None, branch: str = None) -> bool:
-        """Clone a repository."""
+        """
+        Clone a Git repository to an optional destination.
+        
+        Parameters:
+        	repository (str): The repository URL or source path.
+        	directory (str, optional): The destination directory.
+        	branch (str, optional): The branch to check out.
+        
+        Returns:
+        	bool: `True` if cloning succeeds, `False` otherwise.
+        """
         try:
             cmd = ["git", "clone", repository]
             if directory:
@@ -262,7 +336,15 @@ class GitUtils:
     
     @staticmethod
     def get_diff(file_path: str = None, directory: str = ".") -> Optional[str]:
-        """Get Git diff."""
+        """Retrieve the working-tree changes from a Git repository.
+        
+        Parameters:
+            file_path (str, optional): Path to restrict the diff to.
+            directory (str): Directory containing the Git repository.
+        
+        Returns:
+            str or None: The Git diff output, or `None` if the command fails.
+        """
         try:
             cmd = ["git", "diff"]
             if file_path:
@@ -283,7 +365,16 @@ class GitUtils:
     
     @staticmethod
     def get_remotes(directory: str = ".") -> List[str]:
-        """Get list of Git remotes."""
+        """
+        List Git remotes configured for a repository.
+        
+        Parameters:
+            directory (str): Path to the Git repository.
+        
+        Returns:
+            List[str]: Remote names reported by Git, including repeated entries for
+                separate remote URLs.
+        """
         try:
             result = subprocess.run(
                 ["git", "remote", "-v"],

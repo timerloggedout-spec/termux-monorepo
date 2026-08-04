@@ -50,7 +50,15 @@ PROVIDERS: Dict[str, BaseProvider] = {}
 
 
 def register_provider(provider_class: BaseProvider):
-    """Register a provider class."""
+    """
+    Register a provider class by its declared name.
+    
+    Parameters:
+    	provider_class (BaseProvider): The provider class to add to the registry.
+    
+    Returns:
+    	BaseProvider: The registered provider class.
+    """
     PROVIDERS[provider_class.name] = provider_class
     return provider_class
 
@@ -97,14 +105,18 @@ class _Qwen(QwenProvider): pass
 
 
 def get_provider(name: str, **kwargs) -> BaseProvider:
-    """Get a provider instance by name.
+    """
+    Create an instance of the registered provider identified by name.
     
-    Args:
-        name: Provider name (e.g., 'mistral', 'deepseek', 'claude')
-        **kwargs: Additional arguments for provider initialization
-        
+    Parameters:
+        name (str): Registered provider name.
+        **kwargs: Arguments passed to the provider constructor.
+    
     Returns:
-        Provider instance
+        BaseProvider: Initialized provider instance.
+    
+    Raises:
+        ValueError: If the provider name is not registered.
     """
     provider_class = PROVIDERS.get(name)
     if not provider_class:
@@ -113,10 +125,11 @@ def get_provider(name: str, **kwargs) -> BaseProvider:
 
 
 def get_all_providers() -> Dict[str, BaseProvider]:
-    """Get all registered providers.
+    """
+    Return a copy of the registered provider mapping.
     
     Returns:
-        Dictionary mapping provider names to classes
+        Dict[str, BaseProvider]: A mapping of provider names to provider classes.
     """
     return PROVIDERS.copy()
 
@@ -131,10 +144,11 @@ def get_provider_types() -> List[str]:
 
 
 def get_available_providers() -> Dict[str, bool]:
-    """Get all providers with their availability status.
+    """
+    Determine the availability of each registered provider.
     
     Returns:
-        Dictionary mapping provider names to availability
+        Dict[str, bool]: A mapping of provider names to availability status. Providers that cannot be initialized or checked are marked as unavailable.
     """
     available = {}
     for name, provider_class in PROVIDERS.items():

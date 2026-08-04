@@ -15,13 +15,17 @@ def _resolve_session_store(
     provider: Optional[str] = None,
     store_path: Optional[str] = None,
 ) -> Optional[Path]:
-    """Find session JSON across known provider store roots.
-
-    Order:
-      1. explicit store_path
-      2. provider-specific roots (mistral, deepseek)
-      3. deepcli account + flat fallbacks
-      4. multi-ai-cache flat session id
+    """
+    Locate the first existing JSON session store for a session.
+    
+    Parameters:
+        session_id (str): Identifier of the session.
+        account (str): Account name used for account-specific store paths.
+        provider (Optional[str]): Provider used to prioritize provider-specific paths.
+        store_path (Optional[str]): Explicit session-store path to check first.
+    
+    Returns:
+        Optional[Path]: The first existing session-store path, or `None` if no candidate exists.
     """
     candidates: List[Path] = []
 
@@ -63,7 +67,15 @@ def update_all(
     provider: Optional[str] = None,
     store_path: Optional[str] = None,
 ):
-    """Run downstream updates for a session. Lightweight — no subprocess calls."""
+    """
+    Process a session's stored messages for export, lexicon harvesting, and incremental indexing.
+    
+    Parameters:
+    	session_id (str): Identifier of the session to process.
+    	account (str): Account namespace used to locate the store and organize exports.
+    	provider (Optional[str]): Provider namespace used to locate the store and organize exports.
+    	store_path (Optional[str]): Explicit session-store path to use instead of resolving one.
+    """
     store = _resolve_session_store(session_id, account=account, provider=provider, store_path=store_path)
     if store is None:
         print(

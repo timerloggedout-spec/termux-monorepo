@@ -24,7 +24,12 @@ class ClaudeProvider(BaseProvider):
     
     @classmethod
     def get_default_config(cls) -> ProviderConfig:
-        """Get default Claude configuration."""
+        """
+        Provide the default Claude provider configuration.
+        
+        Returns:
+            ProviderConfig: The default Claude API URL, credential paths, and model.
+        """
         return ProviderConfig(
             name="claude",
             api_url="https://claude.ai",
@@ -34,7 +39,16 @@ class ClaudeProvider(BaseProvider):
         )
     
     def send_message(self, message: str, session_id: str = None, **kwargs) -> str:
-        """Send a message to Claude."""
+        """
+        Send a message to Claude.
+        
+        Parameters:
+            message (str): The message to send.
+            session_id (str): Optional session identifier; the default session is used when omitted.
+        
+        Returns:
+            str: Claude's response.
+        """
         # Use the existing backend
         from backends.claude_web import ClaudeWebBackend
         from core.session_manager import SessionManager
@@ -54,12 +68,25 @@ class ClaudeProvider(BaseProvider):
         return "default"
     
     def get_history(self, session_id: str, **kwargs) -> List[Dict]:
-        """Get session history from Claude."""
+        """
+        Provide the conversation history for a Claude session.
+        
+        Parameters:
+        	session_id (str): Identifier of the session whose history is requested.
+        
+        Returns:
+        	List[Dict]: An empty list.
+        """
         # For now, return empty - would need to implement
         return []
     
     def is_available(self) -> bool:
-        """Check if Claude is available."""
+        """
+        Determine whether the Claude backend is available.
+        
+        Returns:
+        	bool: `true` if the Claude backend is available, `false` otherwise.
+        """
         try:
             from backends.claude_web import ClaudeWebBackend
             from core.session_manager import SessionManager

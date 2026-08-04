@@ -18,7 +18,12 @@ class TermuxUtils:
     
     @staticmethod
     def get_termux_version() -> Optional[str]:
-        """Get Termux version."""
+        """
+        Retrieve the installed Termux version.
+        
+        Returns:
+        	str: The Termux version, or None if it cannot be determined.
+        """
         try:
             result = subprocess.run(
                 ["termux-info"],
@@ -36,7 +41,13 @@ class TermuxUtils:
     
     @staticmethod
     def get_device_info() -> Dict:
-        """Get device information."""
+        """
+        Collect available Android device information.
+        
+        Returns:
+            Dict: A dictionary containing available Android version, device model,
+                and manufacturer values.
+        """
         info = {}
         
         try:
@@ -77,7 +88,12 @@ class TermuxUtils:
     
     @staticmethod
     def get_termux_storage() -> Optional[str]:
-        """Get Termux storage directory."""
+        """
+        Determine the available Termux home directory.
+        
+        Returns:
+        	str: The existing home directory path, or None if it does not exist.
+        """
         storage_dir = os.environ.get("HOME", "/data/data/com.termux/files/home")
         if os.path.exists(storage_dir):
             return storage_dir
@@ -85,7 +101,12 @@ class TermuxUtils:
     
     @staticmethod
     def setup_storage() -> bool:
-        """Setup Termux storage access."""
+        """
+        Request access to shared device storage in Termux.
+        
+        Returns:
+            `true` if storage setup succeeds, `false` otherwise.
+        """
         try:
             result = subprocess.run(
                 ["termux-setup-storage"],
@@ -99,7 +120,12 @@ class TermuxUtils:
     
     @staticmethod
     def get_battery_status() -> Optional[Dict]:
-        """Get battery status."""
+        """
+        Retrieve battery information from the Android system.
+        
+        Returns:
+            Optional[Dict]: A dictionary of battery status fields, or `None` if the information cannot be retrieved.
+        """
         try:
             result = subprocess.run(
                 ["dumpsys", "battery"],
@@ -120,7 +146,13 @@ class TermuxUtils:
     
     @staticmethod
     def get_network_info() -> Optional[Dict]:
-        """Get network information."""
+        """
+        Determine the connectivity status reported by Android.
+        
+        Returns:
+        	dict: A mapping containing connected Wi-Fi or mobile network types.
+        	None: If the connectivity information cannot be retrieved.
+        """
         try:
             result = subprocess.run(
                 ["dumpsys", "connectivity"],
@@ -156,7 +188,15 @@ class TermuxUtils:
     
     @staticmethod
     def vibrate(duration: int = 100) -> bool:
-        """Vibrate the device."""
+        """
+        Request device vibration for the specified duration.
+        
+        Parameters:
+        	duration (int): Vibration duration in milliseconds. Defaults to 100.
+        
+        Returns:
+        	bool: `True` if the vibration request succeeds, `False` otherwise.
+        """
         try:
             result = subprocess.run(
                 ["termux-vibrate", "-d", str(duration)],
@@ -170,7 +210,11 @@ class TermuxUtils:
     
     @staticmethod
     def get_clipboard() -> Optional[str]:
-        """Get clipboard content."""
+        """Retrieve the current clipboard text.
+        
+        Returns:
+        	str: The trimmed clipboard content, or `None` if retrieval fails.
+        """
         try:
             result = subprocess.run(
                 ["termux-clipboard-get"],
@@ -186,7 +230,15 @@ class TermuxUtils:
     
     @staticmethod
     def set_clipboard(text: str) -> bool:
-        """Set clipboard content."""
+        """
+        Set the device clipboard content.
+        
+        Parameters:
+        	text (str): Text to place on the clipboard.
+        
+        Returns:
+        	`true` if the clipboard content was set successfully, `false` otherwise.
+        """
         try:
             result = subprocess.run(
                 ["termux-clipboard-set", text],
@@ -200,7 +252,15 @@ class TermuxUtils:
     
     @staticmethod
     def share_text(text: str, title: str = "Share") -> bool:
-        """Share text using Android share dialog."""
+        """
+        Share text through Android's share interface.
+        
+        Parameters:
+        	title (str): Accepted for API compatibility but not used.
+        
+        Returns:
+        	bool: `true` if sharing succeeds, `false` otherwise.
+        """
         try:
             result = subprocess.run(
                 ["termux-share", "-a", "send", text],
@@ -248,7 +308,14 @@ class TermuxUtils:
     
     @staticmethod
     def install_package(package: str) -> bool:
-        """Install a package using pkg."""
+        """Install a Termux package noninteractively.
+        
+        Parameters:
+        	package (str): Name of the package to install.
+        
+        Returns:
+        	bool: `True` if installation succeeds, `False` otherwise.
+        """
         try:
             result = subprocess.run(
                 ["pkg", "install", "-y", package],
@@ -262,7 +329,12 @@ class TermuxUtils:
     
     @staticmethod
     def get_termux_env() -> Dict:
-        """Get Termux environment variables."""
+        """
+        Collect defined Termux and Android environment variables.
+        
+        Returns:
+            Dict: A mapping of available environment variable names to their values.
+        """
         env = {}
         termux_vars = [
             "PREFIX", "HOME", "ANDROID_DATA", "ANDROID_ROOT",

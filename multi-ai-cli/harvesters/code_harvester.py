@@ -60,7 +60,15 @@ class Pointer:
     
     @classmethod
     def from_dict(cls, data: Dict) -> 'Pointer':
-        """Create from dictionary."""
+        """
+        Create a pointer from a dictionary of serialized pointer fields.
+        
+        Parameters:
+            data (Dict): Serialized pointer data.
+        
+        Returns:
+            Pointer: The reconstructed pointer.
+        """
         return cls(
             session_id=data.get("session_id", ""),
             message_index=data.get("message_index", 0),
@@ -90,7 +98,12 @@ class CodeBlock:
     metadata: Dict = field(default_factory=dict)
     
     def to_dict(self) -> Dict:
-        """Convert to dictionary."""
+        """
+        Serialize the code block and its metadata to a dictionary.
+        
+        Returns:
+        	dict: A dictionary containing the content, language, source indexes, content hash, ISO 8601 timestamp, and metadata.
+        """
         return {
             "content": self.content,
             "language": self.language,
@@ -104,7 +117,15 @@ class CodeBlock:
     
     @classmethod
     def from_dict(cls, data: Dict) -> 'CodeBlock':
-        """Create from dictionary."""
+        """
+        Create a code block from a serialized dictionary.
+        
+        Parameters:
+            data (Dict): Serialized code block data.
+        
+        Returns:
+            CodeBlock: The reconstructed code block.
+        """
         return cls(
             content=data.get("content", ""),
             language=data.get("language", "text"),
@@ -125,6 +146,7 @@ class TaxonomyNode:
     __slots__ = ('name', 'children', 'pointers', 'meta')
     
     def __init__(self, name: str):
+        """Initialize a taxonomy node with the specified name."""
         self.name = name
         self.children: Dict[str, 'TaxonomyNode'] = {}
         self.pointers: List[Pointer] = []
@@ -140,7 +162,15 @@ class TaxonomyNode:
         node.pointers.append(pointer)
     
     def search(self, term: str) -> List[Pointer]:
-        """Recursive search by name or metadata."""
+        """
+        Search this node and its descendants for names containing a term.
+        
+        Parameters:
+            term (str): Text to match case-insensitively against node names.
+        
+        Returns:
+            List[Pointer]: Pointers associated with matching nodes.
+        """
         results = []
         if term.lower() in self.name.lower():
             results.extend(self.pointers)
@@ -149,6 +179,12 @@ class TaxonomyNode:
         return results
     
     def to_dict(self) -> dict:
+        """
+        Serialize the taxonomy node and its descendants into a dictionary.
+        
+        Returns:
+        	dict: A dictionary containing the node name, metadata, serialized pointers, and serialized child nodes.
+        """
         return {
             'name': self.name,
             'meta': self.meta,
@@ -174,7 +210,12 @@ class CodexIndex:
     CODE_BLOCK_PATTERN = re.compile(r'```(\w+)?\n(.*?)```', re.DOTALL)
     
     def __init__(self, base_dir: Path = None):
-        """Initialize the Codex index."""
+        """
+        Initialize the index and load its persisted data.
+        
+        Parameters:
+        	base_dir (Path, optional): Directory used to store the index and content blobs. Defaults to the user's local Codex directory.
+        """
         self.base_dir = base_dir or Path.home() / '.mistralai-cli' / 'codex'
         self.base_dir.mkdir(parents=True, exist_ok=True)
         
@@ -201,7 +242,12 @@ class CodexIndex:
                 console.print(f"[yellow]Warning: Failed to load codex index: {e}[/yellow]")
     
     def _from_flat(self, data: dict):
-        """Rebuild index from flat JSON format."""
+        """
+        Rebuild the taxonomy and timestamp index from flat serialized data.
+        
+        Parameters:
+        	data (dict): Flat index data containing serialized pointers, taxonomy paths, and optional timestamps.
+        """
         for ptr_data in data.get('pointers', []):
             p = Pointer(
                 session_id=ptr_data.get('sid', ptr_data.get('session_id', '')),
@@ -219,7 +265,9 @@ class CodexIndex:
                     pass
     
     def _rebuild_hash_index(self):
-        """Rebuild blobs dict and hash->pointer by scanning disk."""
+        """
+        Rebuild the in-memory blob and content-hash indexes from stored blob files.
+        """
         blob_dir = self.base_dir / "blobs"
         if not blob_dir.exists():
             return
@@ -234,6 +282,13 @@ class CodexIndex:
         flat = {'pointers': [], 'version': 1}
         
         def flatten(node, path):
+            """
+            Populate the flat index with pointers from a taxonomy node and its descendants.
+            
+            Parameters:
+            	node (TaxonomyNode): The taxonomy node to traverse.
+            	path (list[str]): The taxonomy path associated with the node.
+            """
             for p in node.pointers:
                 flat['pointers'].append({
                     'sid': p.session_id,
@@ -250,15 +305,13 @@ class CodexIndex:
         (self.base_dir / 'codex_index.json').write_text(json.dumps(flat, indent=2))
     
     def index_conversation(self, session_id: str, title: str, messages: List[dict]):
-        """Index all code blocks from a conversation into the taxonomy.
+        """
+        Index fenced code blocks from a conversation in the taxonomy and persistent blob store.
         
-        This is the main entry point called after fetching session messages.
-        It extracts code blocks using regex and stores them in the codex.
-        
-        Args:
-            session_id: The session identifier
-            title: Session title (used for taxonomy path)
-            messages: List of message dictionaries with 'content' and 'role' keys
+        Parameters:
+            session_id (str): Identifier of the conversation.
+            title (str): Conversation title used to organize the taxonomy.
+            messages (List[dict]): Messages containing code content and role metadata.
         """
         project = self._safe_name(title)
         
@@ -306,10 +359,11 @@ class CodexIndex:
         console.print(f"[green]Indexed {len(self.blobs)} code blocks from session {session_id[:8]}[/green]")
     
     def index_session_file(self, session_file: Path):
-        """Index a session JSON file.
+        """
+        Index messages from a session JSON file.
         
-        Args:
-            session_file: Path to a session JSON file (from session_store)
+        Parameters:
+            session_file (Path): Path to the session JSON file to load.
         """
         if not session_file.exists():
             console.print(f"[red]Session file not found: {session_file}[/red]")
@@ -329,15 +383,16 @@ class CodexIndex:
         self.index_conversation(session_id, title, messages)
     
     def extract_from_messages(self, messages: List[dict], session_id: str = "temp", title: str = "temp") -> List[CodeBlock]:
-        """Extract code blocks from a list of messages.
+        """
+        Extract code blocks from message content into CodeBlock objects.
         
-        Args:
-            messages: List of message dictionaries
-            session_id: Session identifier
-            title: Session title
-            
+        Parameters:
+        	messages (List[dict]): Message dictionaries containing optional content and role fields.
+        	session_id (str): Identifier associated with the extracted blocks.
+        	title (str): Session title associated with the extraction.
+        
         Returns:
-            List of extracted CodeBlock objects
+        	List[CodeBlock]: Extracted code blocks with source metadata and content hashes.
         """
         code_blocks = []
         
@@ -392,14 +447,15 @@ class CodexIndex:
         return self.hash_to_pointer.get(content_hash)
     
     def search(self, term: str, language: str = None) -> List[Dict]:
-        """Search code blocks by term and optional language filter.
+        """
+        Search indexed code blocks for a case-insensitive term, optionally restricted to a language.
         
-        Args:
-            term: Search term
-            language: Optional language filter
-            
+        Parameters:
+            term (str): Text to search for in code content.
+            language (str, optional): Language taxonomy name used to filter results.
+        
         Returns:
-            List of search results with code content
+            List[Dict]: Matching results containing truncated code, source metadata, timestamp, and content hash.
         """
         results = []
         
@@ -445,14 +501,15 @@ class CodexIndex:
         return False
     
     def search_by_language(self, language: str, term: str = "") -> List[Dict]:
-        """Search code blocks by language.
+        """
+        Search indexed code blocks for a language and optional text term.
         
-        Args:
-            language: Language to filter by
-            term: Optional additional search term
-            
+        Parameters:
+            language (str): Language taxonomy name to search.
+            term (str): Optional case-insensitive text to find within the code.
+        
         Returns:
-            List of search results
+            List[Dict]: Matching results containing pointer, hash, truncated code, timestamp, and source metadata.
         """
         # Search the taxonomy for the language
         lang_node = self.taxonomy.children.get(language.lower())
@@ -463,6 +520,15 @@ class CodexIndex:
         
         # Collect all pointers under this language
         def collect_pointers(node):
+            """
+            Collect all pointers contained in a taxonomy node and its descendants.
+            
+            Parameters:
+            	node (TaxonomyNode): The node whose pointers and descendants to traverse.
+            
+            Returns:
+            	list: All pointers contained in the node hierarchy.
+            """
             pointers = []
             pointers.extend(node.pointers)
             for child in node.children.values():
@@ -487,14 +553,22 @@ class CodexIndex:
         return results
     
     def get_all_blocks(self) -> List[CodeBlock]:
-        """Get all code blocks in the index.
+        """
+        Collects all stored code blocks represented in the index.
         
         Returns:
-            List of all CodeBlock objects
+            List[CodeBlock]: Code blocks whose content is available in the stored blobs.
         """
         code_blocks = []
         
         def traverse(node, path=[]):
+            """
+            Collects available code blocks from a taxonomy node and its descendants.
+            
+            Parameters:
+                node (TaxonomyNode): Taxonomy node to traverse.
+                path (list[str]): Taxonomy path associated with the node.
+            """
             for p in node.pointers:
                 code = self.get_code_by_hash(p.content_hash)
                 if code:
@@ -516,12 +590,23 @@ class CodexIndex:
         return code_blocks
     
     def get_stats(self) -> Dict:
-        """Get index statistics.
+        """
+        Summarize the indexed code blocks, references, and top-level languages.
         
         Returns:
-            Dictionary with index statistics
+            Dict: A dictionary containing ``total_blocks``, ``total_pointers``, and
+                ``languages``.
         """
         def count_pointers(node):
+            """
+            Count the pointers contained in a taxonomy node and its descendants.
+            
+            Parameters:
+                node (TaxonomyNode): The node whose pointers and descendant pointers are counted.
+            
+            Returns:
+                int: The total number of pointers in the node hierarchy.
+            """
             count = len(node.pointers)
             for child in node.children.values():
                 count += count_pointers(child)
@@ -535,7 +620,12 @@ class CodexIndex:
     
     @staticmethod
     def _safe_name(name: str) -> str:
-        """Sanitize name for use in taxonomy path."""
+        """Sanitize a name for use as a taxonomy path component.
+        
+        Returns:
+            str: The name with unsafe characters and whitespace replaced by underscores,
+                truncated to 60 characters.
+        """
         return re.sub(r'[\\/*?:"<>|\[\]\s]', '_', name)[:60]
 
 
@@ -582,18 +672,15 @@ class CodeHarvester:
         self.snippets: List[CodeBlock] = []
     
     def harvest_from_session(self, session_id: str, messages: List[dict], title: str = None) -> List[CodeBlock]:
-        """Harvest code from a session's messages.
-        
-        This is the primary method for harvesting code from MistralAI chat sessions.
-        It extracts code blocks and indexes them in the Codex.
+        """Harvest and index code blocks from session messages.
         
         Args:
-            session_id: The session identifier
-            messages: List of message dictionaries with 'content' and 'role' keys
-            title: Optional session title for taxonomy
-            
+            session_id: Identifier of the session.
+            messages: Message dictionaries containing ``content`` and ``role``.
+            title: Optional title used to categorize the session.
+        
         Returns:
-            List of extracted CodeBlock objects
+            Extracted code blocks.
         """
         if title is None:
             title = session_id[:8]
@@ -608,13 +695,14 @@ class CodeHarvester:
         return code_blocks
     
     def harvest_from_session_file(self, session_file: Path) -> List[CodeBlock]:
-        """Harvest code from a session JSON file.
+        """
+        Harvest code blocks from a session JSON file.
         
-        Args:
-            session_file: Path to a session JSON file
-            
+        Parameters:
+        	session_file (Path): Path to the session JSON file.
+        
         Returns:
-            List of extracted CodeBlock objects
+        	List[CodeBlock]: Extracted code blocks, or an empty list if harvesting fails.
         """
         self.codex.index_session_file(session_file)
         
@@ -632,14 +720,15 @@ class CodeHarvester:
             return []
     
     def harvest_from_text(self, text: str, source: str = "text") -> List[CodeBlock]:
-        """Extract code blocks from plain text.
+        """
+        Extract fenced code blocks from text and record them as harvested snippets.
         
-        Args:
-            text: The text to extract code from
-            source: Source identifier
-            
+        Parameters:
+        	text (str): Text containing fenced code blocks.
+        	source (str): Identifier for the text source.
+        
         Returns:
-            List of extracted CodeBlock objects
+        	List[CodeBlock]: Extracted code blocks.
         """
         code_blocks = []
         
@@ -663,14 +752,15 @@ class CodeHarvester:
         return code_blocks
     
     def harvest_file(self, file_path: str, language: str = None) -> List[CodeBlock]:
-        """Harvest code from a single file.
+        """
+        Harvest code from a file, extracting fenced blocks from Markdown files and treating other files as single code blocks.
         
-        Args:
-            file_path: Path to the file
-            language: Optional language override
-            
+        Parameters:
+            file_path (str): Path to the file to harvest.
+            language (str, optional): Language override used instead of detecting the language from the file path.
+        
         Returns:
-            List of CodeBlock objects (one per file for non-markdown)
+            List[CodeBlock]: Harvested code blocks, or an empty list when the file is missing or unreadable.
         """
         path = Path(file_path)
         if not path.exists():
@@ -710,15 +800,15 @@ class CodeHarvester:
         return [code_block]
     
     def harvest_directory(self, dir_path: str, recursive: bool = True, patterns: List[str] = None) -> List[CodeBlock]:
-        """Harvest code from a directory.
+        """Harvest code blocks from files in a directory.
         
         Args:
-            dir_path: Path to the directory
-            recursive: Whether to recurse into subdirectories
-            patterns: Optional list of file patterns to include
-            
+            dir_path: Path to the directory to harvest.
+            recursive: Whether to include files in subdirectories.
+            patterns: Optional filename suffixes used to filter included files.
+        
         Returns:
-            List of extracted CodeBlock objects
+            Extracted code blocks from the included files.
         """
         path = Path(dir_path)
         if not path.exists():
@@ -761,14 +851,15 @@ class CodeHarvester:
         return self.codex
     
     def search(self, query: str, language: str = None) -> List[Dict]:
-        """Search harvested code.
+        """
+        Search harvested code for a text query, optionally limited to a programming language.
         
-        Args:
-            query: Search query
-            language: Optional language filter
-            
+        Parameters:
+        	query (str): Text to find in harvested code.
+        	language (str, optional): Language taxonomy used to filter results.
+        
         Returns:
-            List of search results
+        	List[Dict]: Matching code results with source metadata.
         """
         return self.codex.search(query, language)
     

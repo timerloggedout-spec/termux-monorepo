@@ -25,7 +25,15 @@ class ColabProvider(BaseProvider):
         )
     
     def send_message(self, message: str, session_id: str = None, **kwargs) -> str:
-        """Send a message to Colab."""
+        """
+        Send a message to Colab and obtain its response.
+        
+        Parameters:
+        	message (str): The message to send.
+        
+        Returns:
+        	str: Colab's response.
+        """
         from backends.colab import ColabBackend
         from core.session_manager import SessionManager
         
@@ -39,11 +47,24 @@ class ColabProvider(BaseProvider):
         return "default"
     
     def get_history(self, session_id: str, **kwargs) -> List[Dict]:
-        """Get session history from Colab."""
+        """
+        Retrieve the conversation history for a Colab session.
+        
+        Parameters:
+        	session_id (str): Identifier of the session whose history is requested.
+        
+        Returns:
+        	List[Dict]: An empty list.
+        """
         return []
     
     def is_available(self) -> bool:
-        """Check if Colab is available."""
+        """
+        Determine whether the Colab backend is available.
+        
+        Returns:
+        	bool: `True` if Colab is available, `False` otherwise.
+        """
         try:
             from backends.colab import ColabBackend
             from core.session_manager import SessionManager

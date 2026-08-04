@@ -13,17 +13,18 @@ def detect(pasted_text: str):
     from difflib import SequenceMatcher
     
     results = []
+    # Use full 64-char hash to match synthegration_index.py
+    pasted_hash = hashlib.sha256(pasted_text.encode()).hexdigest()
     for ch, blob_path in idx.blobs.items():
         if not Path(blob_path).exists():
             continue
         existing = Path(blob_path).read_text()
         # Exact hash match?
-        pasted_hash = hashlib.sha256(pasted_text.encode()).hexdigest()[:16]
         if ch == pasted_hash:
             ratio = 1.0
         else:
             ratio = SequenceMatcher(None, pasted_text[:2000], existing[:2000]).ratio()
-        
+
         if ratio >= 0.80:
             results.append((ch, ratio, existing[:200]))
     

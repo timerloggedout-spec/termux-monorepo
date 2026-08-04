@@ -23,8 +23,8 @@ BASE_URL = "https://chat.deepseek.com"
 CONFIG_DIR.mkdir(mode=0o700, parents=True, exist_ok=True)
 try:
     os.chmod(str(CONFIG_DIR), 0o700)
-except Exception:
-    pass
+except OSError:
+    raise  # Fail loudly if directory hardening fails
 
 # Persistent session (cookies preserved across API calls)
 _session: Optional[curl_requests.Session] = None
@@ -36,12 +36,12 @@ def _cache_path(session_id: str, account: str = "primary") -> str:
     os.makedirs(store_dir, mode=0o700, exist_ok=True)
     try:
         os.chmod(store_dir, 0o700)
-    except Exception:
-        pass
+    except OSError:
+        raise  # Fail loudly if directory hardening fails
     try:
         os.chmod(os.path.dirname(store_dir), 0o700)
-    except Exception:
-        pass
+    except OSError:
+        raise  # Fail loudly if parent directory hardening fails
     return os.path.join(store_dir, f"{session_id}.json")
 
 def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict[str, Any]]]:
@@ -55,7 +55,10 @@ def _cache_save(session_id: str, messages: List[Dict[str, Any]], account: str = 
     path = _cache_path(session_id, account)
     os.makedirs(os.path.dirname(path), mode=0o700, exist_ok=True)
     # SECURITY ENHANCEMENT: Enforce file permissions (600) on session exports
-    fd = os.open(path, os.O_CREAT | os.O_WRONLY | os.O_TRUNC, 0o600)
+    # Open without O_TRUNC, apply permissions, then truncate
+    fd = os.open(path, os.O_CREAT | os.O_WRONLY, 0o600)
+    os.fchmod(fd, 0o600)  # Explicitly normalize permissions on existing files
+    os.ftruncate(fd, 0)   # Now truncate after permissions are secure
     with os.fdopen(fd, 'w') as f:
         json.dump(messages, f, indent=2)
     # === DISPATCH HOOK — additive, never blocks save ===
@@ -95,9 +98,12 @@ def save_config(cfg: Dict[str, Any]):
     CONFIG_DIR.mkdir(mode=0o700, parents=True, exist_ok=True)
     try:
         os.chmod(str(CONFIG_DIR), 0o700)
-    except Exception:
-        pass
-    fd = os.open(str(CONFIG_FILE), os.O_CREAT | os.O_WRONLY | os.O_TRUNC, 0o600)
+    except OSError:
+        raise  # Fail loudly if directory hardening fails
+    # Open without O_TRUNC, apply permissions, then truncate
+    fd = os.open(str(CONFIG_FILE), os.O_CREAT | os.O_WRONLY, 0o600)
+    os.fchmod(fd, 0o600)  # Explicitly normalize permissions on existing files
+    os.ftruncate(fd, 0)   # Now truncate after permissions are secure
     with os.fdopen(fd, 'w') as f:
         json.dump(cfg, f, indent=2)
 

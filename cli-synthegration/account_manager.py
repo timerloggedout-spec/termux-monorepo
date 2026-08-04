@@ -20,10 +20,13 @@ def import_account(cookies_file: str, account_name: str):
     CONFIG_DIR.mkdir(mode=0o700, parents=True, exist_ok=True)
     try:
         os.chmod(str(CONFIG_DIR), 0o700)
-    except Exception:
-        pass
+    except OSError:
+        raise  # Fail loudly if directory hardening fails
     config = CONFIG_DIR / f"config_{account_name}.json"
-    fd = os.open(str(config), os.O_CREAT | os.O_WRONLY | os.O_TRUNC, 0o600)
+    # Open without O_TRUNC, apply permissions, then truncate
+    fd = os.open(str(config), os.O_CREAT | os.O_WRONLY, 0o600)
+    os.fchmod(fd, 0o600)  # Explicitly normalize permissions on existing files
+    os.ftruncate(fd, 0)   # Now truncate after permissions are secure
     with os.fdopen(fd, 'w') as f:
         json.dump({"token": token}, f, indent=2)
     print(f"[+] Token for '{account_name}' saved to {config}")

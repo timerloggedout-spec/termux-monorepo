@@ -38,12 +38,17 @@ def init_db():
                 verdict TEXT,
                 timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
             )''')
-        cursor.execute('''
-            CREATE VIRTUAL TABLE IF NOT EXISTS messages_fts USING fts5(
-                content,
-                session_id UNINDEXED,
-                msg_idx UNINDEXED
-            )''')
+        # Guard FTS5 virtual table creation against unavailability
+        try:
+            cursor.execute('''
+                CREATE VIRTUAL TABLE IF NOT EXISTS messages_fts USING fts5(
+                    content,
+                    session_id UNINDEXED,
+                    msg_idx UNINDEXED
+                )''')
+        except sqlite3.OperationalError:
+            # FTS5 module unavailable; skip search functionality
+            pass
         conn.commit()
 
 def log_attempt_telemetry(target_file, attempt, patch, errors, verdict):
@@ -84,10 +89,9 @@ def index_project_file(workspace_root, relative_path, conn=None):
     if not lang:
         return
     try:
-        # Run first ast-grep to scan nodes (matching specific pattern or wildcard)
+        # Run first ast-grep to scan nodes
         output = subprocess.check_output(
-            ["ast-grep", "run", "--pattern", ".*", "--json", abs_path],
-            cwd="/data/data/com.termux/files/home/termux-multi-agent",
+            ["ast-grep", "scan", "--json", abs_path],
             text=True
         )
         nodes = json.loads(output)
@@ -95,8 +99,7 @@ def index_project_file(workspace_root, relative_path, conn=None):
         # Run second ast-grep to scan imports
         import_pattern = "import $MOD from '$PATH'" if lang == 'javascript' else "import $MOD"
         import_output = subprocess.check_output(
-            ["ast-grep", "run", "--pattern", import_pattern, "--json", abs_path],
-            cwd="/data/data/com.termux/files/home/termux-multi-agent",
+            ["ast-grep", "scan", "--pattern", import_pattern, "--json", abs_path],
             text=True
         )
         import_nodes = json.loads(import_output)
@@ -148,6 +151,7 @@ def batch_insert_fts_messages(messages, conn=None):
 	conn: Optional SQLite database connection to use.
     """
     data = []
+    delete_keys = []
     for msg in messages:
         if isinstance(msg, dict):
             content = msg.get('content', '')
@@ -156,6 +160,7 @@ def batch_insert_fts_messages(messages, conn=None):
         else:
             content, session_id, msg_idx = msg
         data.append((content, session_id, msg_idx))
+        delete_keys.append((session_id, msg_idx))
 
     close_conn = False
     if conn is None:
@@ -164,6 +169,8 @@ def batch_insert_fts_messages(messages, conn=None):
     try:
         cursor = conn.cursor()
         if data:
+            # Delete existing rows to prevent duplicates
+            cursor.executemany("DELETE FROM messages_fts WHERE session_id = ? AND msg_idx = ?", delete_keys)
             cursor.executemany("INSERT INTO messages_fts(content, session_id, msg_idx) VALUES (?, ?, ?)", data)
         if close_conn:
             conn.commit()

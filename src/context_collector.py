@@ -54,21 +54,12 @@ class AutomatedContextCollector:
             return f"// Unable to trace AST module boundary map for {file_relative_path}"
 
     def assemble_minimized_bundle(self, active_target_file):
-        """
-        Assemble a minimized context bundle containing dependent-file structures and the active file's full source.
-
-        Parameters:
-		active_target_file (str): Relative path of the file to include as the active editing target.
-
-        Returns:
-		str: Formatted architecture context containing dependency skeletons and the active file source.
-        """
         dependencies = self.find_dependent_files(active_target_file)
         bundle = ["=== CODEBASE ARCHITECTURE SUBSTRUCTURE CONTEXT ==="]
         for dep in dependencies:
             skeleton = self.generate_ast_skeleton(dep)
-            bundle.append(f'\n<file path="{dep}" layout="dependent_skeleton">\n{skeleton}\n')
+            bundle.append(f"\n<file path="{dep}" layout="dependent_skeleton">\n{skeleton}\n")
         with open(os.path.join(self.workspace, active_target_file), 'r') as f:
             full_source = f.read()
-        bundle.append(f'\n<file path="{active_target_file}" layout="active_target_edit_zone">\n{full_source}\n')
+        bundle.append(f"\n<file path="{active_target_file}" layout="active_target_edit_zone">\n{full_source}\n")
         return "\n".join(bundle)

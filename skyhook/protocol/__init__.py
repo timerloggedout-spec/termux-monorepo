@@ -5,9 +5,9 @@ repositories and services. It abstracts away the differences between various
 Jules implementations (dispatch-cli, mcp-server, action, SDK) to provide a
 consistent interface for SKYHOOK operations.
 
-Agent: Grok | Jules
-Profile: https://x.com/grok
-Signed-off-by: Grok <grok@x.ai>
+Agent: Mistral-Vibe
+Profile: Mistral-Vibe
+Signed-off-by: Mistral-Vibe <mistral-vibe@mistral.ai>
 """
 
 from __future__ import annotations

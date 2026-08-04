@@ -3,9 +3,9 @@
 Provides device-specific profiles and optimizations for Termux environments,
 particularly targeting the BLU B160V device.
 
-Agent: Grok | Jules
-Profile: https://x.com/grok
-Signed-off-by: Grok <grok@x.ai>
+Agent: Mistral-Vibe
+Profile: Mistral-Vibe
+Signed-off-by: Mistral-Vibe <mistral-vibe@mistral.ai>
 """
 
 from __future__ import annotations

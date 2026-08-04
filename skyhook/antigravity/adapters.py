@@ -4,9 +4,9 @@ Provides adapter patterns for integrating Antigravity with the SKYHOOK
 protocol layer. These adapters allow for seamless conversion between
 Antigravity and Jules-based systems.
 
-Agent: Grok | Jules
-Profile: https://x.com/grok
-Signed-off-by: Grok <grok@x.ai>
+Agent: Mistral-Vibe
+Profile: Mistral-Vibe
+Signed-off-by: Mistral-Vibe <mistral-vibe@mistral.ai>
 """
 
 from __future__ import annotations

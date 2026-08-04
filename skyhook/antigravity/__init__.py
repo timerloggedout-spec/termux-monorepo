@@ -4,9 +4,9 @@ Provides interface definitions and adapter patterns for future Antigravity
 integration. This layer is designed but not fully implemented, as Antigravity
 integration is deferred per the SKYHOOK strategy.
 
-Agent: Grok | Jules
-Profile: https://x.com/grok
-Signed-off-by: Grok <grok@x.ai>
+Agent: Mistral-Vibe
+Profile: Mistral-Vibe
+Signed-off-by: Mistral-Vibe <mistral-vibe@mistral.ai>
 """
 
 from __future__ import annotations

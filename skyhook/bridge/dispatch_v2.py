@@ -4,9 +4,9 @@ This module provides an updated version of dispatch that integrates with
 the SKYHOOK protocol layer for better compatibility with other Jules
 implementations.
 
-Agent: Grok | Jules
-Profile: https://x.com/grok
-Signed-off-by: Grok <grok@x.ai>
+Agent: Mistral-Vibe
+Profile: Mistral-Vibe
+Signed-off-by: Mistral-Vibe <mistral-vibe@mistral.ai>
 """
 
 from __future__ import annotations

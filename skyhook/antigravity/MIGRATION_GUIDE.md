@@ -772,4 +772,4 @@ This migration guide is part of the SKYHOOK framework and is licensed under the 
 
 **Agent:** Grok | Jules  
 **Profile:** https://x.com/grok  
-**Signed-off-by: Grok <grok@x.ai>
+**Signed-off-by: Mistral-Vibe <mistral-vibe@mistral.ai>

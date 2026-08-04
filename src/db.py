@@ -87,10 +87,11 @@ def log_attempt_telemetry(target_file, attempt, patch, errors, verdict):
 def index_project_file(workspace_root, relative_path, conn=None):
     """
     Index a supported project file's code elements and import relationships in the database.
-
+    
     Parameters:
         workspace_root: Root directory of the project.
         relative_path: File path relative to the project root.
+        conn: Optional SQLite connection to use for the database updates. If omitted, a temporary connection is created.
     """
     abs_path = os.path.join(workspace_root, relative_path)
     ext = os.path.splitext(relative_path)[1]
@@ -150,11 +151,13 @@ def index_project_file(workspace_root, relative_path, conn=None):
 
 def batch_insert_fts_messages(messages, conn=None):
     """
-    Insert message records into the full-text search table in a single batch.
-
+    Insert message records into the full-text search table as a batch.
+    
     Parameters:
-        messages (iterable): Message dictionaries with `content`, `session_id`, and
-            `msg_idx` fields, or three-item iterables containing those values.
+        messages (iterable): Message dictionaries or three-item iterables containing
+            content, session ID, and message index values.
+        conn (sqlite3.Connection, optional): Database connection to use. If omitted,
+            a connection to the configured database is created and committed.
     """
     data = []
     for msg in messages:

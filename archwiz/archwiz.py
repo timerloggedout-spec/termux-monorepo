@@ -45,7 +45,7 @@ def get_pipeline_status():
     status = f"{G}\u23fa ON{N}" if PIPELINE_ACTIVE else f"{R}\u23fb OFF{N}"
     mode_str = f"[{PIPELINE_MODE}]"
     if PIPELINE_ACTIVE:
-        plog = LOG_DIR / 'autoexec.log'
+        plog = ARCHWIZ_DIR / 'autoexec.log'
         if plog.exists():
             # Read only the last few lines instead of the whole file
             try:

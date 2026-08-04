@@ -27,13 +27,22 @@ class ExtractedCode:
     metadata: Dict = None
     
     def __post_init__(self):
+        """
+        Initialize missing metadata and generate a truncated SHA-256 hash for non-empty content when needed.
+        """
         if self.metadata is None:
             self.metadata = {}
         if not self.content_hash and self.content:
             self.content_hash = hashlib.sha256(self.content.encode()).hexdigest()[:16]
     
     def to_dict(self) -> Dict:
-        """Convert to dictionary."""
+        """
+        Serialize the extracted code record and its metadata into a dictionary.
+        
+        Returns:
+            Dict: A dictionary containing the record's content, language, source,
+                line positions, content hash, and metadata.
+        """
         return {
             "content": self.content,
             "language": self.language,
@@ -102,16 +111,15 @@ class CodeExtractor:
         pass
     
     def extract_from_text(self, text: str, source: str = "text") -> List[ExtractedCode]:
-        """Extract code blocks from text using regex.
+        """
+        Extract fenced code blocks from text.
         
-        This is the primary method, using the same pattern as Codex.
+        Parameters:
+            text (str): Text containing fenced code blocks.
+            source (str): Identifier for the source text.
         
-        Args:
-            text: The text to extract code from
-            source: Source identifier
-            
         Returns:
-            List of ExtractedCode objects
+            List[ExtractedCode]: Extracted non-empty code blocks, using ``text`` for blocks without a language.
         """
         extracted = []
         
@@ -133,13 +141,14 @@ class CodeExtractor:
         return extracted
     
     def extract_from_messages(self, messages: List[Dict]) -> List[ExtractedCode]:
-        """Extract code blocks from a list of messages.
+        """
+        Extract code blocks from message contents.
         
-        Args:
-            messages: List of message dictionaries with 'content' key
-            
+        Parameters:
+        	messages (List[Dict]): Message dictionaries containing optional `content` and `role` fields.
+        
         Returns:
-            List of ExtractedCode objects
+        	List[ExtractedCode]: Extracted non-empty code blocks with message and role metadata.
         """
         extracted = []
         
@@ -264,7 +273,11 @@ class CodeExtractor:
         return "text"
     
     def _detect_language_from_content(self, content: str) -> str:
-        """Detect language from content only."""
+        """Detect the programming language from code content.
+        
+        Returns:
+        	str: The detected language, or ``"text"`` when no supported language pattern matches.
+        """
         # Try magic numbers
         for magic, lang in self.MAGIC_NUMBERS.items():
             if isinstance(magic, bytes):
@@ -291,14 +304,15 @@ class CodeExtractor:
         return "text"
     
     def clean_code(self, code: str, language: str) -> str:
-        """Clean extracted code (remove comments, normalize, etc.).
+        """
+        Normalize extracted code and remove language-specific documentation or comments.
         
-        Args:
-            code: The code to clean
-            language: The language of the code
-            
+        Parameters:
+            code (str): The extracted code to clean.
+            language (str): The code language that determines which documentation or comments to remove.
+        
         Returns:
-            Cleaned code
+            str: The cleaned code with normalized whitespace.
         """
         if language == "python":
             # Remove docstrings

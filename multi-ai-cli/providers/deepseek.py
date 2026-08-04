@@ -37,7 +37,18 @@ class DeepSeekProvider(BaseProvider):
         )
     
     def _run_deepcli(self, args: List[str]) -> Dict:
-        """Run deepcli command and return JSON output."""
+        """
+        Execute a deepcli command and parse its output.
+        
+        Parameters:
+        	args (List[str]): Arguments to pass to deepcli.
+        
+        Returns:
+        	Dict: Parsed JSON output, or the raw output under the ``"output"`` key when parsing fails. Returns an empty dictionary when the command fails.
+        
+        Raises:
+        	RuntimeError: If the configured deepcli executable does not exist.
+        """
         if not self.deepcli_path.exists():
             raise RuntimeError(f"deepcli not found at {self.deepcli_path}")
         
@@ -54,7 +65,16 @@ class DeepSeekProvider(BaseProvider):
             return {"output": result.stdout}
     
     def send_message(self, message: str, session_id: str = None, **kwargs) -> str:
-        """Send a message via deepcli."""
+        """
+        Send a message through DeepSeek and obtain the session response.
+        
+        Parameters:
+            message (str): The message to send.
+            session_id (str, optional): The session identifier. A new session is created when omitted.
+        
+        Returns:
+            str: The response text returned by DeepSeek.
+        """
         if not session_id:
             session_id = self.create_session()
         
@@ -67,14 +87,27 @@ class DeepSeekProvider(BaseProvider):
         return str(result)
     
     def create_session(self, **kwargs) -> str:
-        """Create a new DeepSeek session."""
+        """
+        Create a new DeepSeek session.
+        
+        Returns:
+            str: The new session ID, or an empty string if session creation fails.
+        """
         result = self._run_deepcli(["new"])
         if isinstance(result, dict):
             return result.get("session_id", result.get("id", ""))
         return ""
     
     def get_history(self, session_id: str, **kwargs) -> List[Dict]:
-        """Get session history from DeepSeek."""
+        """
+        Retrieve the messages recorded for a DeepSeek session.
+        
+        Parameters:
+        	session_id (str): Identifier of the session whose history to retrieve
+        
+        Returns:
+        	List[Dict]: Messages containing role, content, and message ID fields
+        """
         # Use deepcli history command
         result = self._run_deepcli(["history", session_id])
         
@@ -98,11 +131,24 @@ class DeepSeekProvider(BaseProvider):
         return []
     
     def is_available(self) -> bool:
-        """Check if DeepSeek is available."""
+        """
+        Determine whether the configured DeepSeek CLI executable is available.
+        
+        Returns:
+        	bool: `true` if the executable exists, `false` otherwise.
+        """
         return self.deepcli_path.exists()
     
     def harvest_from_session_file(self, session_file: Path) -> List[Dict]:
-        """Harvest code from a DeepSeek session file."""
+        """
+        Harvest code entries from a DeepSeek session file and index its conversation.
+        
+        Parameters:
+        	session_file (Path): Path to the JSON session file.
+        
+        Returns:
+        	List[Dict]: Extracted code entries, or an empty list if the file is missing or cannot be processed.
+        """
         if not session_file.exists():
             return []
         

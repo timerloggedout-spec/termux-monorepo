@@ -14,7 +14,15 @@ class FileUtils:
     
     @staticmethod
     def read_file(file_path: str, encoding: str = 'utf-8') -> Optional[str]:
-        """Read file content."""
+        """
+        Read text content from a file using the requested encoding.
+        
+        Parameters:
+            encoding (str): The encoding to use initially; defaults to UTF-8.
+        
+        Returns:
+            str or None: The file content, or None if the file is missing or cannot be read.
+        """
         path = Path(file_path)
         if not path.exists():
             console.print(f"[red]File not found: {file_path}[/]")
@@ -31,7 +39,17 @@ class FileUtils:
     
     @staticmethod
     def write_file(file_path: str, content: str, encoding: str = 'utf-8') -> bool:
-        """Write content to file."""
+        """
+        Write text content to a file, creating missing parent directories as needed.
+        
+        Parameters:
+            file_path (str): Path of the file to write.
+            content (str): Text to write.
+            encoding (str): Character encoding to use.
+        
+        Returns:
+            bool: `True` if the file is written successfully, `False` otherwise.
+        """
         path = Path(file_path)
         try:
             path.parent.mkdir(parents=True, exist_ok=True)
@@ -43,7 +61,15 @@ class FileUtils:
     
     @staticmethod
     def read_json(file_path: str) -> Optional[Dict]:
-        """Read JSON file."""
+        """
+        Read and parse a JSON file.
+        
+        Parameters:
+            file_path (str): Path to the JSON file.
+        
+        Returns:
+            Optional[Dict]: The parsed JSON object, or `None` if the file cannot be read or contains invalid JSON.
+        """
         content = FileUtils.read_file(file_path)
         if content is None:
             return None
@@ -55,7 +81,17 @@ class FileUtils:
     
     @staticmethod
     def write_json(file_path: str, data: Dict, indent: int = 2) -> bool:
-        """Write JSON to file."""
+        """
+        Write dictionary data to a JSON file.
+        
+        Parameters:
+        	file_path (str): Path of the file to write.
+        	data (Dict): Data to serialize as JSON.
+        	indent (int): Number of spaces used for JSON indentation.
+        
+        Returns:
+        	bool: `True` if the file is written successfully, `False` otherwise.
+        """
         try:
             content = json.dumps(data, indent=indent)
             return FileUtils.write_file(file_path, content)
@@ -65,7 +101,15 @@ class FileUtils:
     
     @staticmethod
     def copy_file(src: str, dst: str) -> bool:
-        """Copy file from src to dst."""
+        """Copy a file to a destination path while preserving its metadata.
+        
+        Parameters:
+            src (str): Path to the source file.
+            dst (str): Destination path for the copied file.
+        
+        Returns:
+            bool: `True` if the file is copied successfully, `False` otherwise.
+        """
         try:
             Path(dst).parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(src, dst)
@@ -76,7 +120,15 @@ class FileUtils:
     
     @staticmethod
     def move_file(src: str, dst: str) -> bool:
-        """Move file from src to dst."""
+        """Move a file to a destination path, creating missing parent directories.
+        
+        Parameters:
+        	src (str): Path to the file to move.
+        	dst (str): Destination path.
+        
+        Returns:
+        	bool: `True` if the file was moved successfully, `False` otherwise.
+        """
         try:
             Path(dst).parent.mkdir(parents=True, exist_ok=True)
             shutil.move(src, dst)
@@ -87,7 +139,15 @@ class FileUtils:
     
     @staticmethod
     def delete_file(file_path: str) -> bool:
-        """Delete a file."""
+        """
+        Delete a file if it exists.
+        
+        Parameters:
+            file_path (str): Path to the file to delete.
+        
+        Returns:
+            bool: `True` if the file is deleted or already absent, `False` if deletion fails.
+        """
         path = Path(file_path)
         if not path.exists():
             console.print(f"[yellow]File not found: {file_path}[/]")
@@ -101,7 +161,17 @@ class FileUtils:
     
     @staticmethod
     def list_files(directory: str, recursive: bool = False, patterns: List[str] = None) -> List[str]:
-        """List files in directory."""
+        """
+        List files in a directory, optionally searching subdirectories and filtering by filename suffix.
+        
+        Parameters:
+            directory (str): Directory to search.
+            recursive (bool): Whether to include files in subdirectories.
+            patterns (List[str]): Optional filename suffixes used to filter results.
+        
+        Returns:
+            List[str]: Paths of matching files, or an empty list if the directory does not exist.
+        """
         path = Path(directory)
         if not path.exists():
             console.print(f"[red]Directory not found: {directory}[/]")
@@ -124,7 +194,17 @@ class FileUtils:
     
     @staticmethod
     def find_files(directory: str, name: str = None, patterns: List[str] = None) -> List[str]:
-        """Find files matching criteria."""
+        """
+        Recursively find files in a directory by exact filename or suffix pattern.
+        
+        Parameters:
+        	directory (str): Root directory to search.
+        	name (str, optional): Exact filename to match.
+        	patterns (List[str], optional): Filename suffixes to match.
+        
+        Returns:
+        	List[str]: Paths of matching files, or an empty list if the directory does not exist.
+        """
         path = Path(directory)
         if not path.exists():
             return []
@@ -141,7 +221,15 @@ class FileUtils:
     
     @staticmethod
     def get_file_info(file_path: str) -> Optional[Dict]:
-        """Get file information."""
+        """
+        Return metadata for an existing file or directory path.
+        
+        Parameters:
+            file_path (str): Path to the file or directory.
+        
+        Returns:
+            Optional[Dict]: A dictionary containing the path, name, size, modification and creation timestamps, file and directory flags, and extension; `None` if the path does not exist or its metadata cannot be retrieved.
+        """
         path = Path(file_path)
         if not path.exists():
             return None
@@ -164,7 +252,14 @@ class FileUtils:
     
     @staticmethod
     def create_directory(path: str) -> bool:
-        """Create directory (and parents if needed)."""
+        """Create a directory and any missing parent directories.
+        
+        Parameters:
+            path (str): Path of the directory to create.
+        
+        Returns:
+            bool: `True` if the directory exists or is created successfully, `False` otherwise.
+        """
         try:
             Path(path).mkdir(parents=True, exist_ok=True)
             return True
@@ -174,7 +269,15 @@ class FileUtils:
     
     @staticmethod
     def remove_directory(path: str) -> bool:
-        """Remove directory and its contents."""
+        """
+        Remove a directory and all of its contents.
+        
+        Parameters:
+        	path (str): Path to the directory to remove.
+        
+        Returns:
+        	bool: `True` if the directory is removed successfully, `False` otherwise.
+        """
         try:
             shutil.rmtree(path)
             return True
@@ -184,7 +287,16 @@ class FileUtils:
     
     @staticmethod
     def get_file_hash(file_path: str, algorithm: str = 'sha256') -> Optional[str]:
-        """Calculate file hash."""
+        """
+        Calculate a file's hexadecimal hash digest.
+        
+        Parameters:
+            file_path (str): Path to the file to hash.
+            algorithm (str): Hash algorithm name supported by `hashlib`.
+        
+        Returns:
+            Optional[str]: The hexadecimal digest, or `None` if the file cannot be hashed.
+        """
         import hashlib
         
         path = Path(file_path)

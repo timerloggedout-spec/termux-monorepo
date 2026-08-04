@@ -23,7 +23,11 @@ class AnalysisResult:
     metadata: Dict = field(default_factory=dict)
     
     def to_dict(self) -> Dict:
-        """Convert to dictionary."""
+        """Convert the analysis result to a dictionary.
+        
+        Returns:
+            Dict: A dictionary containing the analysis functions, classes, imports, variables, complexity metrics, dependencies, issues, and metadata.
+        """
         return {
             "functions": self.functions,
             "classes": self.classes,
@@ -43,7 +47,18 @@ class CodeAnalyzer:
         pass
     
     def analyze(self, code: str, language: str = "python") -> AnalysisResult:
-        """Analyze code based on language."""
+        """
+        Analyze source code and produce a structured analysis result.
+        
+        Parameters:
+            code (str): Source code to analyze.
+            language (str): Source language, such as ``"python"``, ``"javascript"``,
+                or ``"java"``. Other values use generic analysis.
+        
+        Returns:
+            AnalysisResult: Analysis data containing extracted entities, metadata,
+                dependencies, complexity metrics, and any issues encountered.
+        """
         result = AnalysisResult()
         result.metadata["language"] = language
         result.metadata["code_length"] = len(code)
@@ -69,7 +84,15 @@ class CodeAnalyzer:
         return result
     
     def _analyze_python(self, code: str, result: AnalysisResult):
-        """Analyze Python code."""
+        """
+        Analyze Python source code and populate the analysis result with extracted metadata, complexity metrics, imports, dependencies, and issues.
+        
+        Parameters:
+            code (str): Python source code to analyze.
+            result (AnalysisResult): Result object to populate with analysis data.
+        
+        Syntax errors are recorded as issues with error severity.
+        """
         try:
             tree = ast.parse(code)
             
@@ -137,7 +160,7 @@ class CodeAnalyzer:
             })
     
     def _analyze_javascript(self, code: str, result: AnalysisResult):
-        """Analyze JavaScript code."""
+        """Analyze JavaScript code and populate the result with detected functions, classes, imports, dependencies, and complexity metrics."""
         # Use regex-based analysis for JavaScript
         
         # Extract functions
@@ -192,7 +215,13 @@ class CodeAnalyzer:
         }
     
     def _analyze_java(self, code: str, result: AnalysisResult):
-        """Analyze Java code."""
+        """
+        Analyze Java source code and populate the analysis result with detected classes, methods, imports, dependencies, and complexity metrics.
+        
+        Parameters:
+            code (str): Java source code to analyze.
+            result (AnalysisResult): Object to populate with the analysis findings.
+        """
         # Extract classes
         class_pattern = r'class\s+(\w+)\s*\{'
         for match in re.finditer(class_pattern, code):
@@ -233,7 +262,7 @@ class CodeAnalyzer:
         }
     
     def _analyze_generic(self, code: str, result: AnalysisResult):
-        """Generic analysis for any language."""
+        """Collect basic size, word, comment, and complexity metrics for source code."""
         # Count lines and characters
         lines = code.splitlines()
         result.metadata["line_count"] = len(lines)
@@ -256,7 +285,15 @@ class CodeAnalyzer:
         }
     
     def _calculate_python_complexity(self, tree: ast.AST) -> Dict:
-        """Calculate complexity metrics for Python code."""
+        """
+        Calculate structural and cyclomatic complexity metrics for a Python syntax tree.
+        
+        Parameters:
+        	tree (ast.AST): Parsed Python syntax tree to analyze.
+        
+        Returns:
+        	Dict: Metrics containing counts of functions, classes, and imports, along with nesting and cyclomatic complexity values.
+        """
         metrics = {
             "functions": 0,
             "classes": 0,
@@ -282,7 +319,15 @@ class CodeAnalyzer:
         return metrics
     
     def analyze_multiple(self, codes: List[Tuple[str, str]]) -> List[AnalysisResult]:
-        """Analyze multiple code snippets."""
+        """
+        Analyze multiple code snippets using their specified languages.
+        
+        Parameters:
+        	codes (List[Tuple[str, str]]): Code and language pairs to analyze.
+        
+        Returns:
+        	List[AnalysisResult]: Analysis results in the same order as the input pairs.
+        """
         results = []
         for code, language in codes:
             result = self.analyze(code, language)
@@ -290,7 +335,15 @@ class CodeAnalyzer:
         return results
     
     def compare_analyses(self, results: List[AnalysisResult]) -> Dict:
-        """Compare multiple analysis results."""
+        """
+        Summarize function, class, import, dependency, issue, and language counts across analysis results.
+        
+        Parameters:
+            results (List[AnalysisResult]): Analysis results to compare.
+        
+        Returns:
+            Dict: Aggregate counts and the languages represented in the results.
+        """
         comparison = {
             "total_functions": sum(len(r.functions) for r in results),
             "total_classes": sum(len(r.classes) for r in results),

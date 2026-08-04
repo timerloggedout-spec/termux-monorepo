@@ -60,7 +60,13 @@ def provider():
 @click.argument("name", required=False)
 @click.option("--list", "-l", is_flag=True, help="List available providers")
 def select(name, list):
-    """Select or list AI providers."""
+    """
+    List available AI providers or set the default provider.
+    
+    Parameters:
+        name (str): Provider name to save as the default.
+        list (bool): Whether to display available providers instead of selecting one.
+    """
     if list or not name:
         # List available providers
         providers = get_available_providers()
@@ -87,7 +93,13 @@ def select(name, list):
 @click.argument("provider_name", required=True)
 @click.argument("args", nargs=-1, required=False)
 def run(provider_name, args):
-    """Run a provider's CLI directly."""
+    """
+    Run the selected provider's command-line interface.
+    
+    Parameters:
+        provider_name (str): Name of the provider to execute.
+        args (Iterable[str]): Arguments to pass to the provider's command-line interface.
+    """
     providers = get_available_providers()
     
     if provider_name not in providers:
@@ -140,7 +152,12 @@ def run(provider_name, args):
     console.print(f"[red]Provider {provider_name} execution not implemented[/red]")
 
 def get_available_providers():
-    """Get list of available AI providers."""
+    """Describe the supported AI providers and their availability.
+    
+    Returns:
+    	providers (dict): Provider metadata, including descriptions, availability,
+    	and executable paths for subprocess-based providers.
+    """
     providers = {
         "mistral": {
             "description": "Mistral AI (native implementation)",
@@ -193,7 +210,11 @@ def new(model):
 
 @session.command()
 def list():
-    """List all chat sessions."""
+    """
+    List available chat sessions in a formatted table.
+    
+    If no sessions are available, displays a corresponding message. Errors are reported to the console.
+    """
     try:
         core = MistralCore()
         sessions = core.list_sessions()
@@ -220,7 +241,12 @@ def list():
 @session.command()
 @click.argument("session_id", required=False)
 def select(session_id):
-    """Select a session as the current session."""
+    """
+    Select a session and save it as the current session.
+    
+    Parameters:
+    	session_id: The session identifier to select. If omitted, prompts for a session from the available sessions.
+    """
     try:
         if not session_id:
             # List sessions and let user choose
@@ -273,7 +299,15 @@ def chat():
 @click.option("--model", "-m", type=str, default="mistral-large-latest", help="Model to use")
 @click.option("--stream", is_flag=True, help="Stream the response")
 def send(message, session, model, stream):
-    """Send a message to the chat."""
+    """
+    Send a message through the selected chat session and display the response.
+    
+    Parameters:
+        message: Message content to send.
+        session: Optional session identifier; uses the configured last session when omitted.
+        model: Optional model to use for the response.
+        stream: Whether to display the response as it is generated.
+    """
     try:
         cfg = load_config()
         session_id = session or cfg.get("last_session")
@@ -308,7 +342,13 @@ def send(message, session, model, stream):
 @click.argument("session_id", required=False)
 @click.option("--limit", "-n", type=int, default=10, help="Number of messages to show")
 def history(session_id, limit):
-    """Show chat history for a session."""
+    """
+    Display recent messages from a chat session.
+    
+    Parameters:
+    	session_id: The session identifier; when omitted, the configured last session is used.
+    	limit: Maximum number of recent messages to display.
+    """
     try:
         cfg = load_config()
         sid = session_id or cfg.get("last_session")
@@ -353,7 +393,14 @@ def harvest():
 @click.option("--patterns", "-p", type=str, multiple=True, help="File patterns to include")
 @click.option("--output", "-o", type=str, help="Output file name")
 def code(path, recursive, patterns, output):
-    """Harvest code from files or directories."""
+    """Harvest code snippets from a file or directory and save them to storage.
+    
+    Parameters:
+        path: File or directory to harvest.
+        recursive: Whether to search directories recursively.
+        patterns: Optional filename patterns used to filter directory harvesting.
+        output: Optional storage name; a timestamped name is used when omitted.
+    """
     try:
         harvester = CodeHarvester()
         
@@ -389,7 +436,7 @@ def code(path, recursive, patterns, output):
 @click.argument("text_file", type=str, required=True)
 @click.option("--output", "-o", type=str, help="Output file name")
 def text(text_file, output):
-    """Harvest code from text files."""
+    """Harvest code snippets from a text file and save them to storage."""
     try:
         harvester = CodeHarvester()
         
@@ -421,7 +468,14 @@ def search():
 @click.option("--index", "-i", type=str, help="Index name to search")
 @click.option("--limit", "-n", type=int, default=10, help="Number of results to show")
 def code(query, index, limit):
-    """Search harvested code."""
+    """
+    Search harvested code and display matching results.
+    
+    Parameters:
+    	query (str): Search query.
+    	index (str): Optional path to a search index to load.
+    	limit (int): Maximum number of results to display.
+    """
     try:
         engine = SearchEngine()
         
@@ -454,7 +508,14 @@ def code(query, index, limit):
 @click.option("--query", "-q", type=str, default="", help="Additional query filter")
 @click.option("--limit", "-n", type=int, default=10, help="Number of results to show")
 def by_language(language, query, limit):
-    """Search code by language."""
+    """
+    Search harvested code snippets by programming language and optional query.
+    
+    Parameters:
+        language (str): Programming language to search for.
+        query (str): Optional text to match within the snippets.
+        limit (int): Maximum number of matching snippets to display.
+    """
     try:
         engine = SearchEngine()
         results = engine.search_by_language(language, query, limit)
@@ -483,7 +544,7 @@ def analyze():
 @click.argument("file_path", type=str, required=True)
 @click.option("--language", "-l", type=str, help="Language of the file")
 def file(file_path, language):
-    """Analyze a code file."""
+    """Analyze a code file and display its structural metrics, complexity, and reported issues."""
     try:
         analyzer = CodeAnalyzer()
         
@@ -526,14 +587,20 @@ def file(file_path, language):
 
 @cli.group()
 def tools():
-    """Additional tools."""
+    """Group commands for extracting content, displaying system information, and cleaning up tool data."""
     pass
 
 @tools.command()
 @click.argument("text", type=str, required=True)
 @click.option("--output", "-o", type=str, help="Output file path")
 def extract(text, output):
-    """Extract code from text."""
+    """
+    Extracts code blocks from text and optionally saves them as JSON.
+    
+    Parameters:
+        text (str): Text containing code blocks to extract.
+        output (str): Optional path for the JSON file containing the extracted blocks.
+    """
     try:
         extractor = CodeExtractor()
         extracted = extractor.extract_from_text(text, "input")
@@ -556,7 +623,9 @@ def extract(text, output):
 
 @tools.command()
 def info():
-    """Show system and environment information."""
+    """
+    Display system, environment, provider, and configuration information.
+    """
     console.print("[bold blue]System Information[/bold blue]")
     
     # Basic info
@@ -594,7 +663,10 @@ def info():
 
 @tools.command()
 def cleanup():
-    """Clean up temporary files and cache."""
+    """Remove and recreate the session cache, harvested-code storage, and search-index directories.
+    
+    Errors are reported to the console.
+    """
     try:
         # Clean up cache
         cache_dir = os.path.join(os.path.expanduser("~/.mistralai-cli"), "session_store")
@@ -629,7 +701,13 @@ def cleanup():
 @click.argument("command", required=False)
 @click.option("--interactive", "-i", is_flag=True, help="Start interactive mode")
 def shell(command, interactive):
-    """Start an interactive shell or execute a command."""
+    """
+    Start an interactive command shell or execute a single command.
+    
+    Parameters:
+        command (str): Command to execute when interactive mode is disabled.
+        interactive (bool): Whether to start the interactive shell.
+    """
     if interactive or not command:
         console.print("[bold blue]Multi-AI CLI - Interactive Mode[/bold blue]")
         console.print("Type 'help' for available commands, 'exit' to quit")

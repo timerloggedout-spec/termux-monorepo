@@ -30,13 +30,30 @@ _session: Optional[curl_requests.Session] = None
 
 # ---------- Cache Helpers ----------
 def _cache_path(session_id: str, account: str = "primary") -> str:
-    """Get cache path for session data."""
+    """
+    Builds the file path used to store a session's cached data.
+    
+    Parameters:
+    	session_id (str): Identifier of the session.
+    	account (str): Account namespace for the session store.
+    
+    Returns:
+    	str: Path to the session's JSON cache file.
+    """
     store_dir = os.path.join(os.path.expanduser("~/.mistralai-cli/session_store"), account)
     os.makedirs(store_dir, exist_ok=True)
     return os.path.join(store_dir, f"{session_id}.json")
 
 def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict[str, Any]]]:
-    """Load cached session data."""
+    """Load cached messages for a session.
+    
+    Parameters:
+    	session_id (str): Identifier of the session whose cached data is loaded.
+    	account (str): Account associated with the session.
+    
+    Returns:
+    	Optional[List[Dict[str, Any]]]: Cached session messages, or `None` when no cache exists.
+    """
     path = _cache_path(session_id, account)
     if os.path.exists(path):
         with open(path) as f:
@@ -44,7 +61,14 @@ def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict
     return None
 
 def _cache_save(session_id: str, messages: List[Dict[str, Any]], account: str = "primary"):
-    """Save session data to cache."""
+    """
+    Save a session's messages to the account-specific cache.
+    
+    Parameters:
+    	session_id (str): Identifier of the session to cache.
+    	messages (List[Dict[str, Any]]): Messages associated with the session.
+    	account (str): Account whose cache should store the session.
+    """
     path = _cache_path(session_id, account)
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, 'w') as f:
@@ -82,7 +106,12 @@ def _set_last_session(sid: str):
 
 # ---------- Config Helpers ----------
 def load_config() -> Dict[str, Any]:
-    """Load configuration from file."""
+    """
+    Load the application configuration from the configuration file.
+    
+    Returns:
+        Dict[str, Any]: The configuration data, or an empty dictionary when the file does not exist.
+    """
     if CONFIG_FILE.exists():
         return json.loads(CONFIG_FILE.read_text())
     return {}
@@ -92,7 +121,12 @@ def save_config(cfg: Dict[str, Any]):
     CONFIG_FILE.write_text(json.dumps(cfg, indent=2))
 
 def get_token() -> str:
-    """Get Mistralai API token from environment or config."""
+    """
+    Retrieve the Mistral API token from the environment or saved configuration.
+    
+    Returns:
+        str: The configured Mistral API token.
+    """
     token = os.environ.get("MISTRALAI_TOKEN")
     if not token:
         cfg = load_config()
@@ -104,7 +138,16 @@ def get_token() -> str:
 
 # ---------- HTTP Session ----------
 def get_session(token: str, cookie: str = None) -> curl_requests.Session:
-    """Get or create HTTP session with authentication."""
+    """
+    Create or retrieve an authenticated HTTP session for the specified token.
+    
+    Parameters:
+        token (str): Authentication token used for the session.
+        cookie (str, optional): Session cookie value, optionally in ``name=value`` format.
+    
+    Returns:
+        curl_requests.Session: Authenticated HTTP session.
+    """
     global _session
     cache_key = (token[:20] + '_' + (cookie or ''))[:30]
     if '_sessions' not in globals() or not isinstance(_sessions, dict):
@@ -139,7 +182,15 @@ def get_session(token: str, cookie: str = None) -> curl_requests.Session:
 
 # ---------- POW Solver (Proof of Work) ----------
 def solve_pow(challenge: dict) -> str:
-    """Solve Proof of Work challenge using WASM solver."""
+    """
+    Solve a proof-of-work challenge and encode the resulting payload.
+    
+    Parameters:
+        challenge (dict): Challenge data containing the challenge, salt, and signature.
+    
+    Returns:
+        str: Base64-encoded proof-of-work payload.
+    """
     inp = json.dumps(challenge)
     try:
         proc = subprocess.run(
@@ -168,7 +219,16 @@ def solve_pow(challenge: dict) -> str:
 
 # ---------- API Wrappers ----------
 def create_session(token: str, model_type: str = "mistral-large-latest", cookie: str = None) -> str:
-    """Create a new chat session."""
+    """
+    Create a new chat session.
+    
+    Parameters:
+        model_type (str): Model to use for the session.
+        cookie (str, optional): Session cookie for authenticated requests.
+    
+    Returns:
+        str: Identifier of the newly created chat session.
+    """
     s = get_session(token, cookie=cookie)
     if cookie:
         print(f"[DEBUG] create_session using cookie: {cookie[:30]}...")
@@ -186,7 +246,18 @@ def fetch_sessions(token: str) -> List[Dict[str, Any]]:
     return data.get("chat_sessions", data.get("sessions", []))
 
 def get_history(token: str, session_id: str, force_refresh: bool = False, account: str = "primary") -> List[Dict[str, Any]]:
-    """Get chat history for a session."""
+    """
+    Retrieve the message history for a chat session, using cached data when available.
+    
+    Parameters:
+        token (str): Authentication token for the Mistral API.
+        session_id (str): Identifier of the chat session.
+        force_refresh (bool): Whether to bypass cached history.
+        account (str): Account name associated with the session cache.
+    
+    Returns:
+        List[Dict[str, Any]]: The chat session's message history.
+    """
     if not force_refresh:
         cached = _cache_load(session_id, account)
         if cached is not None:
@@ -202,7 +273,16 @@ def get_history(token: str, session_id: str, force_refresh: bool = False, accoun
     return data
 
 def get_pow_challenge(token: str, target_path="/api/v0/chat/completion") -> dict:
-    """Get Proof of Work challenge from API."""
+    """
+    Retrieve a proof-of-work challenge for an API request.
+    
+    Parameters:
+        token (str): Authentication token.
+        target_path (str): API path for which the challenge will be used.
+    
+    Returns:
+        dict: Proof-of-work challenge data.
+    """
     s = get_session(token)
     r = s.post(f"{BASE_URL}/api/v0/chat/create_pow_challenge",
                json={"target_path": target_path})
@@ -210,7 +290,17 @@ def get_pow_challenge(token: str, target_path="/api/v0/chat/completion") -> dict
     return r.json()["data"]["biz_data"]["challenge"]
 
 def upload_file(token: str, session_id: str, file_path: str) -> Optional[str]:
-    """Upload a file to a session."""
+    """
+    Upload a file for use in a chat session.
+    
+    Parameters:
+        token (str): Authentication token for the API.
+        session_id (str): Identifier of the target chat session.
+        file_path (str): Path to the file to upload.
+    
+    Returns:
+        Optional[str]: The uploaded file's identifier, or `None` if the file does not exist or the upload fails.
+    """
     if not Path(file_path).exists():
         console.print(f"[red]File not found: {file_path}[/]")
         return None
@@ -228,7 +318,16 @@ def upload_file(token: str, session_id: str, file_path: str) -> Optional[str]:
     return r.json()["data"]["biz_data"]["file_id"]
 
 def wait_for_file(token: str, file_id: str, timeout: int = 60) -> bool:
-    """Wait for file processing to complete."""
+    """
+    Wait for a file to finish processing.
+    
+    Parameters:
+    	file_id (str): Identifier of the file to monitor.
+    	timeout (int): Maximum number of seconds to wait.
+    
+    Returns:
+    	bool: `True` if processing completes within the timeout, `False` otherwise.
+    """
     s = get_session(token)
     for _ in range(timeout):
         r = s.get(f"{BASE_URL}/api/v0/file/status?file_id={file_id}")
@@ -240,7 +339,21 @@ def wait_for_file(token: str, file_id: str, timeout: int = 60) -> bool:
     return False
 
 def stream_completion(token: str, session_id: str, message: str, parent_id: Optional[int] = None, model: str = "mistral-large-latest", temperature: float = 0.7, max_tokens: int = 4096) -> str:
-    """Stream completion from Mistralai API."""
+    """
+    Stream a chat completion and return the assembled response.
+    
+    Parameters:
+    	token (str): Authentication token for the API.
+    	session_id (str): Chat session identifier.
+    	message (str): User message to submit.
+    	parent_id (Optional[int]): Parent message identifier for continuing a conversation.
+    	model (str): Model used to generate the completion.
+    	temperature (float): Sampling temperature for the completion.
+    	max_tokens (int): Maximum number of tokens to generate.
+    
+    Returns:
+    	str: Complete response content assembled from the streamed chunks.
+    """
     challenge = get_pow_challenge(token)
     pow_header = solve_pow(challenge)
 
@@ -274,7 +387,21 @@ def stream_completion(token: str, session_id: str, message: str, parent_id: Opti
     return full_response
 
 def send_message(token: str, session_id: str, message: str, parent_id: Optional[int] = None, model: str = "mistral-large-latest", temperature: float = 0.7, max_tokens: int = 4096) -> str:
-    """Send a message and get completion."""
+    """
+    Send a message to a chat session and retrieve its completion.
+    
+    Parameters:
+    	token (str): Authentication token.
+    	session_id (str): Identifier of the chat session.
+    	message (str): Message content to send.
+    	parent_id (Optional[int]): Identifier of the parent message when continuing a conversation branch.
+    	model (str): Model used to generate the completion.
+    	temperature (float): Sampling temperature for the completion.
+    	max_tokens (int): Maximum number of tokens in the completion.
+    
+    Returns:
+    	str: Generated completion content.
+    """
     challenge = get_pow_challenge(token)
     pow_header = solve_pow(challenge)
 
@@ -331,43 +458,112 @@ class MistralCore:
     """Main core class for Mistralai Vibe Code webWrapper."""
 
     def __init__(self, token: str = None, session_id: str = None):
+        """
+        Initialize a Mistral API client with optional authentication and session identifiers.
+        
+        Parameters:
+        	token (str): Authentication token to use; the configured token is used when omitted.
+        	session_id (str): Chat session identifier to associate with the client.
+        """
         self.token = token or get_token()
         self.session_id = session_id
         self.session = get_session(self.token)
 
     def create_session(self, model: str = "mistral-large-latest") -> str:
-        """Create a new session."""
+        """
+        Create a new chat session and make it the active session.
+        
+        Parameters:
+        	model (str): The model to use for the session.
+        
+        Returns:
+        	str: The identifier of the newly created session.
+        """
         self.session_id = create_session(self.token, model)
         _set_last_session(self.session_id)
         return self.session_id
 
     def get_history(self, session_id: str = None, force_refresh: bool = False) -> List[Dict]:
-        """Get session history."""
+        """
+        Retrieve the message history for a chat session.
+        
+        Parameters:
+            session_id (str, optional): Session identifier; uses the instance session when omitted.
+            force_refresh (bool): Whether to fetch the history instead of using cached data.
+        
+        Returns:
+            List[Dict]: The session's message history.
+        
+        Raises:
+            ValueError: If no session identifier is available.
+        """
         sid = session_id or self.session_id
         if not sid:
             raise ValueError("No session ID provided")
         return get_history(self.token, sid, force_refresh)
 
     def send_message(self, message: str, session_id: str = None, **kwargs) -> str:
-        """Send a message to the session."""
+        """
+        Send a message to a chat session.
+        
+        Parameters:
+            message (str): The message to send.
+            session_id (str, optional): The target session ID. Uses the instance session ID when omitted.
+            **kwargs: Additional completion options.
+        
+        Returns:
+            str: The generated response content.
+        
+        Raises:
+            ValueError: If no session ID is available.
+        """
         sid = session_id or self.session_id
         if not sid:
             raise ValueError("No session ID provided")
         return send_message(self.token, sid, message, **kwargs)
 
     def stream_message(self, message: str, session_id: str = None, **kwargs) -> str:
-        """Stream a message to the session."""
+        """
+        Stream a message to a chat session.
+        
+        Parameters:
+            message (str): The message to send.
+            session_id (str, optional): The target session identifier. Uses the instance session when omitted.
+        
+        Returns:
+            str: The complete streamed response.
+        
+        Raises:
+            ValueError: If no session identifier is available.
+        """
         sid = session_id or self.session_id
         if not sid:
             raise ValueError("No session ID provided")
         return stream_completion(self.token, sid, message, **kwargs)
 
     def list_sessions(self) -> List[Dict]:
-        """List all sessions."""
+        """
+        List the chat sessions available to the authenticated account.
+        
+        Returns:
+            List[Dict]: The available chat sessions.
+        """
         return fetch_sessions(self.token)
 
     def branch_conversation(self, parent_id: int, session_id: str = None) -> str:
-        """Branch a conversation from a message."""
+        """
+        Create a new conversation branch from a message.
+        
+        Parameters:
+            parent_id (int): ID of the message where the branch starts.
+            session_id (str, optional): Session containing the parent message.
+        
+        Returns:
+            str: ID of the newly created conversation.
+        
+        Raises:
+            ValueError: If no session ID is available.
+        """
         sid = session_id or self.session_id
         if not sid:
             raise ValueError("No session ID provided")

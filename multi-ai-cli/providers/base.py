@@ -29,7 +29,15 @@ class ProviderConfig:
     
     @classmethod
     def from_dict(cls, data: Dict) -> 'ProviderConfig':
-        """Create from dictionary."""
+        """
+        Create a provider configuration from a dictionary of settings.
+        
+        Parameters:
+        	data (Dict): Configuration values keyed by provider setting name.
+        
+        Returns:
+        	ProviderConfig: A configuration populated with recognized settings.
+        """
         return cls(**{k: v for k, v in data.items() if k in cls.__dataclass_fields__})
 
 
@@ -64,18 +72,33 @@ class Pointer:
     end_line: int = 0
     
     def to_key(self) -> str:
-        """Return string key for storage."""
+        """
+        Create a storage key from the session, message, and block identifiers.
+        
+        Returns:
+        	str: A colon-delimited key containing the session ID, message index, and block index.
+        """
         return f"{self.session_id}:{self.message_index}:{self.block_index}"
     
     def citation(self) -> str:
-        """Return citation format: [cursor_id Lstart-Lend]."""
+        """
+        Format the code block reference as a compact citation.
+        
+        Returns:
+        	str: A citation containing the session identifier, message and block indices, and line range.
+        """
         cursor_id = f"{self.session_id[:8]}:{self.message_index}:{self.block_index}"
         if self.end_line > self.start_line:
             return f"[{cursor_id} L{self.start_line}-L{self.end_line}]"
         return f"[{cursor_id} L{self.start_line}]"
     
     def to_dict(self) -> Dict:
-        """Convert to dictionary."""
+        """
+        Serialize the pointer identifiers and optional line range to a dictionary.
+        
+        Returns:
+        	dict: A dictionary containing the session, message, block, content-hash, and line-range metadata.
+        """
         return {
             "session_id": self.session_id,
             "message_index": self.message_index,
@@ -100,11 +123,19 @@ class CodeBlock:
     content_hash: str = ""
     
     def __post_init__(self):
+        """
+        Compute a content hash when the code block has content but no existing hash.
+        """
         if not self.content_hash and self.content:
             self.content_hash = hashlib.sha256(self.content.encode()).hexdigest()[:16]
     
     def to_dict(self) -> Dict:
-        """Convert to dictionary."""
+        """
+        Serialize the code block's content and metadata as a dictionary.
+        
+        Returns:
+        	dict: A dictionary containing the code block fields, with the timestamp represented as an ISO 8601 string.
+        """
         return {
             "content": self.content,
             "language": self.language,
@@ -123,6 +154,7 @@ class TaxonomyNode:
     __slots__ = ('name', 'children', 'pointers', 'meta')
     
     def __init__(self, name: str):
+        """Initialize a taxonomy node with the given name and empty children, pointers, and metadata."""
         self.name = name
         self.children: Dict[str, 'TaxonomyNode'] = {}
         self.pointers: List[Pointer] = []
@@ -138,7 +170,15 @@ class TaxonomyNode:
         node.pointers.append(pointer)
     
     def search(self, term: str) -> List[Pointer]:
-        """Recursive search by name."""
+        """
+        Find pointers in this node and its descendants whose names contain a search term.
+        
+        Parameters:
+            term (str): Case-insensitive text to search for in node names.
+        
+        Returns:
+            List[Pointer]: Pointers stored in matching nodes.
+        """
         results = []
         if term.lower() in self.name.lower():
             results.extend(self.pointers)
@@ -157,7 +197,13 @@ class CodexIndex:
     CODE_BLOCK_PATTERN = re.compile(r'```(\w+)?\n(.*?)```', re.DOTALL)
     
     def __init__(self, base_dir: Path = None, provider: str = None):
-        """Initialize the Codex index."""
+        """
+        Initialize a persistent code index for an optional provider.
+        
+        Parameters:
+            base_dir (Path, optional): Directory used to store index data and code blobs. Defaults to the provider-specific Codex directory in the user's home directory.
+            provider (str, optional): Provider associated with the index. Defaults to the global index.
+        """
         self.provider = provider
         self.base_dir = base_dir or Path.home() / '.multi-ai-cli' / 'codex' / (provider or 'global')
         self.base_dir.mkdir(parents=True, exist_ok=True)
@@ -172,7 +218,11 @@ class CodexIndex:
         self._rebuild_hash_index()
     
     def _load(self):
-        """Load index from disk."""
+        """
+        Load the persisted code index from disk when the index file exists.
+        
+        Malformed or unreadable index data is skipped and a warning is displayed.
+        """
         index_file = self.base_dir / 'codex_index.json'
         if index_file.exists():
             try:
@@ -182,7 +232,12 @@ class CodexIndex:
                 console.print(f"[yellow]Warning: Failed to load codex index: {e}[/yellow]")
     
     def _from_flat(self, data: dict):
-        """Rebuild index from flat JSON."""
+        """
+        Reconstruct index entries from serialized flat data.
+        
+        Parameters:
+        	data (dict): Flat index data containing pointer records, taxonomy paths, timestamps, and provider associations.
+        """
         for ptr_data in data.get('pointers', []):
             p = Pointer(
                 session_id=ptr_data.get('sid', ptr_data.get('session_id', '')),
@@ -217,10 +272,19 @@ class CodexIndex:
                 self.hash_to_pointer[ch] = Pointer("imported", 0, 0, ch)
     
     def _save(self):
-        """Save index to disk."""
+        """
+        Persist the current code index, including pointers, taxonomy paths, timestamps, and provider metadata, to disk.
+        """
         flat = {'pointers': [], 'version': 1}
         
         def flatten(node, path):
+            """
+            Append node pointers and their metadata to the flattened index representation.
+            
+            Parameters:
+                node (TaxonomyNode): Taxonomy node whose pointers and descendants are serialized.
+                path (list[str]): Path of node names leading to the current node.
+            """
             for p in node.pointers:
                 flat['pointers'].append({
                     'sid': p.session_id,
@@ -238,7 +302,15 @@ class CodexIndex:
         (self.base_dir / 'codex_index.json').write_text(json.dumps(flat, indent=2))
     
     def index_conversation(self, session_id: str, title: str, messages: List[dict], provider: str = None):
-        """Index all code blocks from a conversation."""
+        """
+        Index fenced code blocks from a conversation and persist their content and metadata.
+        
+        Parameters:
+        	session_id (str): Identifier of the conversation session.
+        	title (str): Conversation title used to organize indexed blocks.
+        	messages (List[dict]): Conversation messages containing content and optional role and timestamp fields.
+        	provider (str, optional): Provider associated with the conversation.
+        """
         project = self._safe_name(title)
         
         for msg_idx, msg in enumerate(messages):
@@ -282,7 +354,18 @@ class CodexIndex:
         console.print(f"[green][{provider or 'global'}] Indexed {len(self.blobs)} code blocks from session {session_id[:8]}[/green]")
     
     def extract_from_messages(self, messages: List[dict], session_id: str = "temp", title: str = "temp", provider: str = None) -> List[CodeBlock]:
-        """Extract code blocks from messages."""
+        """
+        Extract fenced code blocks from conversation messages.
+        
+        Parameters:
+        	messages (List[dict]): Messages containing content and role fields.
+        	session_id (str): Identifier for the conversation.
+        	title (str): Conversation title retained for compatibility.
+        	provider (str): Provider associated with the extracted code blocks.
+        
+        Returns:
+        	List[CodeBlock]: Extracted code blocks with language, message position, provider, and source metadata.
+        """
         code_blocks = []
         
         for msg_idx, msg in enumerate(messages):
@@ -308,7 +391,17 @@ class CodexIndex:
         return code_blocks
     
     def search(self, term: str, language: str = None, provider: str = None) -> List[Dict]:
-        """Search code blocks by term, language, and/or provider."""
+        """
+        Search indexed code blocks for a term, optionally filtered by language and provider.
+        
+        Parameters:
+            term (str): Case-insensitive text to find in the stored code.
+            language (str, optional): Language used to filter matching code blocks.
+            provider (str, optional): Provider used to filter matching code blocks.
+        
+        Returns:
+            List[Dict]: Matching code-block metadata, including its pointer, hash, truncated code, timestamp, location, and provider.
+        """
         results = []
         
         # Filter by provider if specified
@@ -356,14 +449,30 @@ class CodexIndex:
         return False
     
     def get_code_by_hash(self, content_hash: str) -> Optional[str]:
-        """Get code by hash."""
+        """
+        Retrieve stored code using its content hash.
+        
+        Parameters:
+        	content_hash (str): The hash identifying the stored code.
+        
+        Returns:
+        	str: The stored code, or None if no matching blob is available.
+        """
         blob_path = self.blobs.get(content_hash)
         if blob_path and Path(blob_path).exists():
             return Path(blob_path).read_text()
         return None
     
     def get_by_provider(self, provider: str) -> List[Dict]:
-        """Get all code blocks from a specific provider."""
+        """
+        Retrieve indexed code blocks associated with a provider.
+        
+        Parameters:
+        	provider (str): Provider name used to filter the indexed code blocks.
+        
+        Returns:
+        	List[Dict]: Code block records containing the hash, code preview, provider name, and session ID.
+        """
         results = []
         for ch in self.provider_index.get(provider, []):
             code = self.get_code_by_hash(ch)
@@ -379,7 +488,14 @@ class CodexIndex:
     
     @staticmethod
     def _safe_name(name: str) -> str:
-        """Sanitize name for taxonomy."""
+        """Sanitize a taxonomy name for safe storage.
+        
+        Parameters:
+        	name (str): The taxonomy name to sanitize.
+        
+        Returns:
+        	str: The name with unsafe characters replaced by underscores and limited to 60 characters.
+        """
         return re.sub(r'[\\/*?:"<>|\[\]\s]', '_', name)[:60]
 
 
@@ -402,28 +518,64 @@ class BaseProvider(ABC):
     
     @classmethod
     def get_default_config(cls) -> ProviderConfig:
-        """Get default configuration."""
+        """
+        Create the default configuration for the provider.
+        
+        Returns:
+        	ProviderConfig: Configuration initialized with the provider name.
+        """
         return ProviderConfig(name=cls.name)
     
     @abstractmethod
     def send_message(self, message: str, session_id: str = None, **kwargs) -> str:
-        """Send a message and get response."""
+        """
+        Send a message to the provider and obtain its response.
+        
+        Parameters:
+            message (str): The message to send.
+            session_id (str, optional): The session in which to send the message.
+            **kwargs: Additional provider-specific options.
+        
+        Returns:
+            str: The provider's response.
+        """
         pass
     
     @abstractmethod
     def create_session(self, **kwargs) -> str:
-        """Create a new session."""
+        """
+        Create a new provider session.
+        
+        Returns:
+            str: The identifier of the newly created session.
+        """
         pass
     
     @abstractmethod
     def get_history(self, session_id: str, **kwargs) -> List[Dict]:
-        """Get session history."""
+        """
+        Retrieve the messages recorded for a session.
+        
+        Parameters:
+        	session_id (str): Identifier of the session whose history to retrieve
+        	**kwargs: Provider-specific options
+        
+        Returns:
+        	List[Dict]: The session's messages
+        """
         pass
     
     def harvest_code(self, session_id: str, messages: List[Dict] = None, title: str = None) -> List[CodeBlock]:
-        """Harvest code blocks from a session.
+        """
+        Extract and index code blocks from a provider session.
         
-        This is the unified method that all providers use for code extraction.
+        Parameters:
+            session_id (str): Identifier of the session to process.
+            messages (List[Dict], optional): Session messages to process. If omitted, retrieves the session history.
+            title (str, optional): Title associated with the indexed conversation.
+        
+        Returns:
+            List[CodeBlock]: Code blocks extracted from the session.
         """
         if messages is None:
             messages = self.get_history(session_id)
@@ -435,16 +587,39 @@ class BaseProvider(ABC):
         return self.codex.extract_from_messages(messages, session_id, title or session_id, self.name)
     
     def search_code(self, query: str, language: str = None) -> List[Dict]:
-        """Search harvested code blocks."""
+        """
+        Search this provider's harvested code blocks for a matching term.
+        
+        Parameters:
+            query (str): Term to find in the stored code.
+            language (str, optional): Language used to filter results.
+        
+        Returns:
+            List[Dict]: Matching code blocks and their associated metadata.
+        """
         return self.codex.search(query, language, self.name)
     
     def get_code_by_hash(self, content_hash: str) -> Optional[str]:
-        """Get code by hash."""
+        """
+        Retrieve stored code by its content hash.
+        
+        Parameters:
+            content_hash (str): Hash identifying the stored code.
+        
+        Returns:
+            Optional[str]: The code associated with the hash, or `None` if it is unavailable.
+        """
         return self.codex.get_code_by_hash(content_hash)
     
     def is_available(self) -> bool:
-        """Check if provider is available."""
+        """
+        Determine whether the provider is available.
+        
+        Returns:
+        	bool: `true` if the provider is available, `false` otherwise.
+        """
         return True
     
     def __repr__(self):
+        """Return a descriptive representation containing the provider name and type."""
         return f"{self.name} ({self.provider_type})"

@@ -49,14 +49,16 @@ def get_pipeline_status():
         if plog.exists():
             # Read only the last few lines instead of the whole file
             try:
-                with open(plog, 'r') as f:
-                    # Seek to end and read backwards for efficiency
+                with open(plog, 'rb') as f:
                     f.seek(0, 2)  # Go to end
                     file_size = f.tell()
                     # Read up to last 2KB (roughly 20-30 lines)
                     read_size = min(2048, file_size)
-                    f.seek(max(0, file_size - read_size))
-                    lines = f.read().splitlines()
+                    f.seek(file_size - read_size)
+                    chunk = f.read().decode('utf-8', errors='replace')
+                    lines = chunk.splitlines()
+                    if read_size < file_size and lines:
+                        lines = lines[1:]  # drop possibly partial first line
                     for line in reversed(lines):
                         if line.strip() and '\u274c' not in line and '#' not in line:
                             last = line.strip()[:80]

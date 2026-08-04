@@ -1,0 +1,64 @@
+# Jules ADE multi-repo roster — SSOT for scavenger connections
+# Agents: read JULES_ADE_PROJECT.md first
+version: 1
+updated_at: "2026-08-03T20:00:00Z"
+updated_by: grok-archw1z
+
+home:
+  owner: timerloggedout-spec
+  repo: termux-monorepo
+  role: first_class_runtime
+  branches:
+    integration: master-staging
+    smoke: termux-smoke
+    production: master
+  gates: [repo-gate, termux-smoke]
+
+scavenge_templates:
+  jules:
+    - jules-sdk-fork-rs
+    - jules-action_fork
+    - jules-awesome-list_fork
+    - jules-multi-agent
+    - jules-foreman_fork
+    - jules-skill_fork
+    - jules_api_cli_fork
+    - jules-dispatch-cli_fork
+    - jules-skills_fork
+    - jules-mcp-server_fork
+    - cjules_fork
+    - gh-jules-workflow-development_fork
+    - pi-jules_fork
+    - google-jules-workflow_fork
+    - google-jules-skill_fork
+    - jules-studio_fork
+  antigravity:
+    - antigravity-jules-orchestration_fork
+    - llm-antigravity-orchestrator_fork
+    - Antigravity_cli_sdk_fork
+    - Antigravity_2.0_fork
+    - agy-sdk-agents_fork
+    - run-agy-sdk_fork
+    - feishu-agy-sdk-bridge_fork
+    - lego_fork
+    - STMoEOrchestrator_fork
+
+focus_first:
+  - multi-ai-cli
+  - deepcli
+  - deepseek-cli
+  - deepterm
+  - jules-sdk
+  - antigravity-orchestration
+  - agy-sdk-agents
+  - jules-dispatch-cli
+  - jules-mcp-server
+  - jules-studio
+  - google-jules-skill
+  - google-jules-workflow
+
+policy:
+  scavenge: depth-1-sparse-metadata
+  human_only: [credential_rotation, history_rewrite, app_permissions]
+  human_temporary: [termux-smoke_cherry_pick_until_automated]
+  agent_owns: [branch, implement, pr, merge_to_master_staging, gates]

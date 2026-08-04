@@ -332,11 +332,12 @@ class CodexIndex:
                             if lang_node and not self._is_hash_in_node(lang_node, ch):
                                 continue
                         
+                        ts = self.time_index.get(ch)
                         results.append({
                             'pointer': p.to_key(),
                             'hash': ch,
                             'code': code[:200] + '...' if len(code) > 200 else code,
-                            'timestamp': self.time_index.get(ch, '').isoformat(),
+                            'timestamp': ts.isoformat() if ts else '',
                             'session_id': p.session_id,
                             'message_index': p.message_index,
                             'block_index': p.block_index,

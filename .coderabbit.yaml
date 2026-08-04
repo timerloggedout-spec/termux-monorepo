@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+reviews:
+  profile: assertive
+  high_level_summary: true
+  auto_review:
+    enabled: true
+    drafts: true
+    auto_incremental_review: true
+    base_branches:
+      - master
+      - master-staging
+      - feature/skyhook
+  finishing_touches:
+    autofix:
+      enabled: true
+chat:
+  auto_reply: true

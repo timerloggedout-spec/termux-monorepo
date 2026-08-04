@@ -1,0 +1,14 @@
+id: JULES-ADE-02
+title: Add unit tests for bridge config + plan_task
+status: todo
+owner: null
+priority: P1
+prompt: |
+  Add stdlib/unittest or pytest tests for jules-ade/bridge/config.py and
+  dispatch.py. No network. Assert prefer_staging rewrites master →
+  master-staging. Assert key presence is boolean-only.
+repo: timerloggedout-spec/termux-monorepo
+branch: feature/jules-ade
+require_plan_approval: false
+notes: |
+  Keep tests offline so termux-smoke / repo-gate stay happy.

@@ -1,0 +1,16 @@
+name: jules-mcp
+role: mcp_server
+upstream_official: https://www.npmjs.com/package/@google/jules-mcp
+upstream_sdk: https://github.com/google-labs-code/jules-sdk
+private_fork_candidates:
+  - timerloggedout-spec/jules-mcp-server_fork
+  - timerloggedout-spec/jules-dispatch-cli_fork
+steal:
+  - create_session / list_sessions / get_session_state tool shapes
+  - env-only API key (JULES_API_KEY)
+  - plan approval via send_reply
+  - batch YAML dispatch pattern (jules-dispatch)
+non_goals:
+  - vendoring node_modules
+  - committing API keys
+  - replacing archwiz dispatch_pipeline

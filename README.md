@@ -42,7 +42,10 @@ Which aspect of your Termux workspace are you looking to test first: CLI script 
 -->> Mobile 🥇 Priority
   -->> _THEN_ other environments.
 ## Check all existing code PR's merged since initialization against the Termux Environment.
+
 ## PRIORITY - Establish Baselines; Standards (use Termux Official Docs as well); Reconciliation of potential drift (like: hardcoded PATHS).
+
+## Develop Workflow for the `termux-smoke`, perpetual branch; and, or delegate to Agents with code spaces or access to them (like @Jules 'Render' Workspaces access; others have access to the same or similar ++>> Add to Roster Considerations).
 
 # Monorepo Recovery & RefTemplates Restoration
 

@@ -7,6 +7,7 @@ import time
 import random
 import sys
 import json
+import getpass
 
 # Add root to path for config import
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -35,8 +36,7 @@ def banner():
     print(f"{G}\u26a1 ARCHWIZ DASHBOARD \u26a1{N}   {time.strftime('%c')}")
     try:
         user = os.getlogin()
-    except:
-        import getpass
+    except OSError:
         user = getpass.getuser()
     print(f"{W}session: {user}@{os.uname().nodename}{N}")
     print(C + "\u2500" * 60 + N)
@@ -47,33 +47,52 @@ def get_pipeline_status():
     if PIPELINE_ACTIVE:
         plog = ARCHWIZ_DIR / 'autoexec.log'
         if plog.exists():
-            lines = plog.read_text().splitlines()
-            for line in reversed(lines):
-                if line.strip() and '\u274c' not in line and '#' not in line:
-                    last = line.strip()[:80]
-                    return f"  {status} {mode_str}  |  {C}{last}{N}"
+            # Read only the last few lines instead of the whole file
+            try:
+                with open(plog, 'rb') as f:
+                    f.seek(0, 2)  # Go to end
+                    file_size = f.tell()
+                    # Read up to last 2KB (roughly 20-30 lines)
+                    read_size = min(2048, file_size)
+                    f.seek(file_size - read_size)
+                    chunk = f.read().decode('utf-8', errors='replace')
+                    lines = chunk.splitlines()
+                    if read_size < file_size and lines:
+                        lines = lines[1:]  # drop possibly partial first line
+                    for line in reversed(lines):
+                        if line.strip() and '\u274c' not in line and '#' not in line:
+                            last = line.strip()[:80]
+                            return f"  {status} {mode_str}  |  {C}{last}{N}"
+            except OSError:
+                pass
     return f"  {status} {mode_str}"
 
 def toggle_pipeline(mode=None):
     global PIPELINE_ACTIVE, PIPELINE_MODE
     if mode:
         PIPELINE_MODE = mode
-    
+
     control_script = ARCHWIZ_DIR / 'listener_control.py'
     if not control_script.exists():
         print(f"{R}Error: {control_script} not found.{N}")
         return
 
     if PIPELINE_ACTIVE:
-        subprocess.run(['python3', str(control_script), 'stop'])
-        print(f"{R}Pipeline stopped.{N}")
-        PIPELINE_ACTIVE = False
+        result = subprocess.run(['python3', str(control_script), 'stop'])
+        if result.returncode == 0:
+            print(f"{R}Pipeline stopped.{N}")
+            PIPELINE_ACTIVE = False
+        else:
+            print(f"{R}Failed to stop pipeline.{N}")
     else:
         env = os.environ.copy()
         env['ARCHWIZ_MODE'] = PIPELINE_MODE
-        subprocess.run(['python3', str(control_script), 'start'])
-        print(f"{G}Pipeline started in {PIPELINE_MODE} mode.{N}")
-        PIPELINE_ACTIVE = True
+        result = subprocess.run(['python3', str(control_script), 'start'], env=env)
+        if result.returncode == 0:
+            print(f"{G}Pipeline started in {PIPELINE_MODE} mode.{N}")
+            PIPELINE_ACTIVE = True
+        else:
+            print(f"{R}Failed to start pipeline.{N}")
     time.sleep(1)
 
 def main():
@@ -120,8 +139,11 @@ def main():
         elif choice == '5':
             ts = time.strftime('%Y%m%d_%H%M%S')
             fname = f'ecosystem_backup_{ts}.tar.gz'
-            subprocess.run(['tar', 'czf', fname, 'HANDOFF.json', 'master_tasks.json', 'metrics_log.jsonl', 'foresight_state.json'], cwd=str(ARCHWIZ_DIR))
-            print(f"{G}Backup: {fname}{N}")
+            result = subprocess.run(['tar', 'czf', fname, 'HANDOFF.json', 'master_tasks.json', 'metrics_log.jsonl', 'foresight_state.json'], cwd=str(ARCHWIZ_DIR))
+            if result.returncode == 0:
+                print(f"{G}Backup: {fname}{N}")
+            else:
+                print(f"{R}Backup failed with exit code {result.returncode}{N}")
         elif choice == '6':
             llm_map_dir = WORKSPACE_DIR / 'llm_map'
             subprocess.run(['python3', str(llm_map_dir / 'build_final_all_profile.py')])
@@ -129,7 +151,7 @@ def main():
             subprocess.run(['python3', str(llm_map_dir / 'foresight_collect.py')])
             subprocess.run(['python3', str(ARCHWIZ_DIR / 'archaeo_sweep.py'), '--max', '15'])
         elif choice == '7':
-            prof_dir = HOME / '.config' / 'llm_map' / 'profiles'
+            prof_dir = pathlib.Path.home() / '.config' / 'llm_map' / 'profiles'
             if not prof_dir.exists():
                 print(f"{Y}No profiles directory found.{N}")
             else:
@@ -146,7 +168,11 @@ def main():
         elif choice == '11':
             target = input(f"{C}File to restore (relative path): {N}").strip()
             if target:
-                subprocess.run(['python3', str(ARCHWIZ_DIR / 'restore_version.py'), target])
+                # Validate and normalize target path
+                if target.startswith('/') or target.startswith('~') or '..' in target:
+                    print(f"{R}Error: Only relative paths within workspace are allowed (no absolute paths, ~, or ..){N}")
+                else:
+                    subprocess.run(['python3', str(ARCHWIZ_DIR / 'restore_version.py'), target])
         elif choice == '12':
             subprocess.run(['python3', str(ARCHWIZ_DIR / 'dangle_detector.py')])
             subprocess.run(['python3', str(ARCHWIZ_DIR / 'mirror.py')])
@@ -167,5 +193,4 @@ def main():
         print(C + "\u2500" * 60 + N)
 
 if __name__ == "__main__":
-    HOME = pathlib.Path.home()
     main()

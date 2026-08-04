@@ -113,6 +113,18 @@ def restore(target_file, output_path=None):
             return False
 
     target_path = Path(output_path) if output_path else HOME / target_file
+
+    # Root containment check: ensure target_path resolves within HOME
+    try:
+        resolved_target = target_path.resolve()
+        resolved_home = HOME.resolve()
+        if not resolved_target.is_relative_to(resolved_home):
+            print(f"{R}Error: Target path must be within home directory{N}")
+            return False
+    except (OSError, ValueError) as e:
+        print(f"{R}Error validating target path: {e}{N}")
+        return False
+
     # Backup current file
     if target_path.exists():
         bak = target_path.with_suffix(target_path.suffix + '.bak')

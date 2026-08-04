@@ -17,6 +17,9 @@ PIPELINE_ACTIVE = True
 PIPELINE_MODE = 'auto'
 
 def banner():
+    """
+    Display the ArchWiz dashboard banner with the current time and session identity.
+    """
     os.system('clear')
     print(C + r"""
       █████╗ ██████╗  ██████╗██╗  ██╗██╗    ██╗██╗███████╗
@@ -36,6 +39,12 @@ def banner():
     print(C + "\u2500" * 60 + N)
 
 def get_pipeline_status():
+    """
+    Display the current pipeline state, mode, and latest available execution message.
+    
+    Returns:
+    	str: Formatted pipeline status information, including the latest eligible log entry when the pipeline is active.
+    """
     status = f"{G}\u23fa ON{N}" if PIPELINE_ACTIVE else f"{R}\u23fb OFF{N}"
     mode_str = f"[{PIPELINE_MODE}]"
     if PIPELINE_ACTIVE:
@@ -65,6 +74,11 @@ def toggle_pipeline(mode=None):
     time.sleep(1)
 
 def main():
+    """
+    Run the interactive ArchWiz terminal dashboard.
+    
+    The dashboard presents pipeline status and provides menu-driven access to execution tools, diagnostics, profiles, session management, forensic utilities, documentation workflows, and pipeline controls. It exits on the quit command, end-of-file, or keyboard interruption.
+    """
     global PIPELINE_MODE
     banner()
     print(f"  PHASE: {Y}ACTIVE{N}  MODE: {Y}CONSOLIDATED{N}")

@@ -294,6 +294,9 @@ def show_commands():
     input("\nPress Enter to continue...")
 
 def main():
+    """
+    Run the interactive DeepCLI terminal dashboard for selecting sessions, browsing conversation history, configuring settings, attaching files, and sending messages.
+    """
     token = get_token()
     sid, model_mode = prompt_session_id()
     if sid == 'new':

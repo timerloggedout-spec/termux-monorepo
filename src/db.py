@@ -86,11 +86,12 @@ def log_attempt_telemetry(target_file, attempt, patch, errors, verdict):
 
 def index_project_file(workspace_root, relative_path, conn=None):
     """
-    Index a supported project file's code elements and import relationships in the database.
-
+    Index supported Python, JavaScript, and Rust files by recording their code elements and import relationships.
+    
     Parameters:
         workspace_root: Root directory of the project.
         relative_path: File path relative to the project root.
+        conn: Optional SQLite connection to use for database operations.
     """
     abs_path = os.path.join(workspace_root, relative_path)
     ext = os.path.splitext(relative_path)[1]

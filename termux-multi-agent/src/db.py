@@ -141,11 +141,11 @@ def index_project_file(workspace_root, relative_path, conn=None):
 
 def batch_insert_fts_messages(messages, conn=None):
     """
-    Insert message records into the full-text search index.
-
+    Insert message content and metadata into the full-text search index.
+    
     Parameters:
-	messages: Message dictionaries or tuples containing content, session ID, and message index.
-	conn: Optional SQLite database connection to use.
+    	messages: Message dictionaries or tuples containing content, session ID, and message index.
+    	conn: Optional SQLite connection to use for the insertion.
     """
     data = []
     for msg in messages:

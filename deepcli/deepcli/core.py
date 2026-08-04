@@ -31,6 +31,7 @@ _session: Optional[curl_requests.Session] = None
 
 # ---------- cache helpers ----------
 def _cache_path(session_id: str, account: str = "primary") -> str:
+    """Return the filesystem path for a cached session history file."""
     store_dir = os.path.join(os.path.expanduser("~/.deepcli/session_store"), account)
     # SECURITY ENHANCEMENT: Enforce directory permissions (700) on session store
     os.makedirs(store_dir, mode=0o700, exist_ok=True)
@@ -45,6 +46,16 @@ def _cache_path(session_id: str, account: str = "primary") -> str:
     return os.path.join(store_dir, f"{session_id}.json")
 
 def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict[str, Any]]]:
+    """
+    Load cached messages for a session.
+    
+    Parameters:
+        session_id (str): The session identifier.
+        account (str): The account associated with the session cache.
+    
+    Returns:
+        Optional[List[Dict[str, Any]]]: The cached messages, or `None` if no cache exists.
+    """
     path = _cache_path(session_id, account)
     if os.path.exists(path):
         with open(path) as f:
@@ -52,6 +63,9 @@ def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict
     return None
 
 def _cache_save(session_id: str, messages: List[Dict[str, Any]], account: str = "primary"):
+    """
+    Save session messages to the account-specific cache and trigger a best-effort session update.
+    """
     path = _cache_path(session_id, account)
     os.makedirs(os.path.dirname(path), mode=0o700, exist_ok=True)
     # SECURITY ENHANCEMENT: Enforce file permissions (600) on session exports
@@ -86,12 +100,24 @@ def _set_last_session(sid: str):
 
 # ---------- config helpers ----------
 def load_config() -> Dict[str, Any]:
+    """
+    Load the saved configuration.
+    
+    Returns:
+        Dict[str, Any]: The configuration values, or an empty dictionary when no configuration file exists.
+    """
     if CONFIG_FILE.exists():
         return json.loads(CONFIG_FILE.read_text())
     return {}
 
 def save_config(cfg: Dict[str, Any]):
     # SECURITY ENHANCEMENT: Enforce directory permissions (700) and file permissions (600) on token config
+    """
+    Save configuration data to the local configuration file with restricted permissions.
+    
+    Parameters:
+        cfg (Dict[str, Any]): Configuration data to serialize.
+    """
     CONFIG_DIR.mkdir(mode=0o700, parents=True, exist_ok=True)
     try:
         os.chmod(str(CONFIG_DIR), 0o700)
@@ -102,6 +128,15 @@ def save_config(cfg: Dict[str, Any]):
         json.dump(cfg, f, indent=2)
 
 def get_token() -> str:
+    """
+    Retrieve the DeepSeek authentication token from the environment or saved configuration.
+    
+    Returns:
+    	str: The authentication token.
+    
+    Raises:
+    	SystemExit: If no authentication token is available.
+    """
     token = os.environ.get("DEEPSEEK_TOKEN")
     if not token:
         cfg = load_config()

@@ -14,14 +14,17 @@ MONOREPO = ROOT.parent
 
 
 def ok(msg: str) -> None:
+    """Prints a standard green/success status message."""
     print(f"[ok] {msg}")
 
 
 def fail(msg: str) -> None:
+    """Prints a standard red/failure status message."""
     print(f"[FAIL] {msg}")
 
 
 def check_layout() -> bool:
+    """Verifies that all required file and directory structures exist in skyhook."""
     required = [
         ROOT / "README.md",
         ROOT / "AGENTS.md",
@@ -45,6 +48,7 @@ def check_layout() -> bool:
 
 
 def check_compile() -> bool:
+    """Validates that all Python files compile cleanly with syntax checks."""
     good = True
     for py in list((ROOT / "bridge").glob("*.py")) + list((ROOT / "tests").glob("*.py")):
         try:
@@ -63,6 +67,7 @@ def check_compile() -> bool:
 
 
 def check_bridge_logic() -> bool:
+    """Validates the basic configuration loading and offline dispatch logic."""
     sys.path.insert(0, str(ROOT))
     try:
         from bridge.config import load_config
@@ -85,16 +90,9 @@ def check_bridge_logic() -> bool:
 
 
 def check_unit_tests() -> bool:
-    tests_dir = ROOT / "tests"
-    if not tests_dir.is_dir():
-        fail("missing tests directory")
-        return False
+    """Discovers and executes the entire unittest test suite for skyhook."""
     loader = unittest.TestLoader()
-    try:
-        suite = loader.discover(str(tests_dir), pattern="test_*.py")
-    except Exception as e:  # discovery itself can fail
-        fail(f"unit test discovery failed: {e}")
-        return False
+    suite = loader.discover(str(ROOT / "tests"), pattern="test_*.py")
     result = unittest.TextTestRunner(verbosity=1).run(suite)
     if result.wasSuccessful():
         ok(f"unit tests passed ({result.testsRun} run)")
@@ -104,6 +102,7 @@ def check_unit_tests() -> bool:
 
 
 def check_tasks() -> bool:
+    """Verifies that at least one task file is present in the task queue."""
     queue = ROOT / "tasks" / "queue"
     files = list(queue.glob("*.yaml")) + list(queue.glob("*.yml"))
     if not files:
@@ -114,6 +113,7 @@ def check_tasks() -> bool:
 
 
 def main() -> int:
+    """Main command line entrypoint for the offline doctor script."""
     print("skyhook doctor (offline)")
     print(f"package root: {ROOT}")
     results = [

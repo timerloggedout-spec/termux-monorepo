@@ -291,7 +291,7 @@ class CodexIndex:
             
             for blk_idx, match in enumerate(self.CODE_BLOCK_PATTERN.finditer(content)):
                 lang = (match.group(1) or 'text').lower()
-                code = match.group(2).strip()
+                code = match.group(2)
                 ch = hashlib.sha256(code.encode()).hexdigest()[:16]
                 
                 code_block = CodeBlock(

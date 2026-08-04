@@ -54,10 +54,17 @@ def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict
 def _cache_save(session_id: str, messages: List[Dict[str, Any]], account: str = "primary"):
     path = _cache_path(session_id, account)
     os.makedirs(os.path.dirname(path), mode=0o700, exist_ok=True)
-    # SECURITY ENHANCEMENT: Enforce file permissions (600) on session exports
-    fd = os.open(path, os.O_CREAT | os.O_WRONLY | os.O_TRUNC, 0o600)
-    with os.fdopen(fd, 'w') as f:
-        json.dump(messages, f, indent=2)
+    # SECURITY ENHANCEMENT: Enforce strict file permissions (600) even on existing session exports
+    fd = os.open(path, os.O_CREAT | os.O_WRONLY, 0o600)
+    try:
+        os.fchmod(fd, 0o600)
+        os.ftruncate(fd, 0)
+        with os.fdopen(fd, 'w') as f:
+            json.dump(messages, f, indent=2)
+            fd = -1
+    finally:
+        if fd >= 0:
+            os.close(fd)
     # === DISPATCH HOOK — additive, never blocks save ===
     try:
         import importlib.util
@@ -97,9 +104,17 @@ def save_config(cfg: Dict[str, Any]):
         os.chmod(str(CONFIG_DIR), 0o700)
     except OSError as e:
         raise PermissionError(f"Fail-closed: Failed to enforce 0o700 permissions on {CONFIG_DIR}: {e}")
-    fd = os.open(str(CONFIG_FILE), os.O_CREAT | os.O_WRONLY | os.O_TRUNC, 0o600)
-    with os.fdopen(fd, 'w') as f:
-        json.dump(cfg, f, indent=2)
+    # SECURITY ENHANCEMENT: Enforce strict file permissions (600) even on existing token config
+    fd = os.open(str(CONFIG_FILE), os.O_CREAT | os.O_WRONLY, 0o600)
+    try:
+        os.fchmod(fd, 0o600)
+        os.ftruncate(fd, 0)
+        with os.fdopen(fd, 'w') as f:
+            json.dump(cfg, f, indent=2)
+            fd = -1
+    finally:
+        if fd >= 0:
+            os.close(fd)
 
 def get_token() -> str:
     token = os.environ.get("DEEPSEEK_TOKEN")

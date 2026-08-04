@@ -16,20 +16,21 @@ def import_account(cookies_file: str, account_name: str):
         print(f"Extraction failed: {proc.stderr}")
         return False
     token = proc.stdout.strip()
-    # SECURITY: dirs 0o700 (fail-closed); files 0o600 via open+fchmod (covers pre-existing)
+    # SECURITY ENHANCEMENT: Enforce strict directory permissions (700) and file permissions (600) on token config - Fail-closed on OSError
     CONFIG_DIR.mkdir(mode=0o700, parents=True, exist_ok=True)
     try:
         os.chmod(str(CONFIG_DIR), 0o700)
     except OSError as e:
         raise PermissionError(f"Fail-closed: Failed to enforce 0o700 permissions on {CONFIG_DIR}: {e}")
     config = CONFIG_DIR / f"config_{account_name}.json"
+    # SECURITY ENHANCEMENT: Enforce strict file permissions (600) even on existing token config
     fd = os.open(str(config), os.O_CREAT | os.O_WRONLY, 0o600)
     try:
         os.fchmod(fd, 0o600)
         os.ftruncate(fd, 0)
         with os.fdopen(fd, 'w') as f:
             json.dump({"token": token}, f, indent=2)
-            fd = -1  # fdopen owns it
+            fd = -1
     finally:
         if fd >= 0:
             os.close(fd)

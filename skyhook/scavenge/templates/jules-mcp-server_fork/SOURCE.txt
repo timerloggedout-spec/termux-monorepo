@@ -1,0 +1,14 @@
+name: jules-mcp-server_fork
+tier: 1
+role: mcp_server
+owner_repo: timerloggedout-spec/jules-mcp-server_fork
+upstream_hint: "@google/jules-mcp"
+status: pending_private_verify
+steal:
+  - create_session / list_sessions / get_session_state
+  - send_reply including plan approval
+  - get_code_review_context / show_code_diff
+  - env-only JULES_API_KEY
+non_goals:
+  - vendoring node_modules into HOME
+  - product-side MCP allowlist bypass

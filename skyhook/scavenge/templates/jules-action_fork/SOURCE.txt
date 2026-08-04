@@ -1,0 +1,10 @@
+name: jules-action_fork
+tier: 2
+role: github_action
+owner_repo: timerloggedout-spec/jules-action_fork
+status: pending_private_verify
+steal:
+  - action inputs: prompt, source, branch, approval flags
+  - secrets via GitHub Actions secrets not git
+non_goals:
+  - expanding Actions minutes without Operator budget check

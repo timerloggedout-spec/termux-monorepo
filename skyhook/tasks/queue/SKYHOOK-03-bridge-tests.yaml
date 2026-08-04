@@ -1,0 +1,12 @@
+id: SKYHOOK-03
+title: Unit tests for skyhook bridge
+status: todo
+owner: null
+priority: P1
+prompt: |
+  Stdlib unittest for config + plan_task. Assert master → master-staging rewrite.
+  Assert key presence is boolean-only (never print secrets).
+repo: timerloggedout-spec/termux-monorepo
+branch: feature/skyhook
+require_plan_approval: false
+notes: ""

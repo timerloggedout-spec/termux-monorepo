@@ -1,0 +1,119 @@
+# skyhook roster — Jules-first; 🥇 forks from Create Project instructions
+version: 2
+updated_at: "2026-08-03T20:40:00Z"
+updated_by: grok-archw1z
+package: skyhook
+branch: feature/skyhook
+former_name: jules-ade
+
+home:
+  owner: timerloggedout-spec
+  repo: termux-monorepo
+  package_root: skyhook/
+  integration_branch: master-staging
+  package_branch: feature/skyhook
+  smoke_branch: termux-smoke
+  production_branch: master
+  gates: [repo-gate, termux-smoke]
+
+# --- Phase NOW: Jules ---
+focus_first:
+  local_drivers_in_home:
+    - multi-ai-cli
+    - deepcli
+    - deepseek-cli
+    - deepterm  # deepcli is modeled on it
+  jules_gold:  # order = RECON priority (Project Instructions)
+    - jules-dispatch-cli_fork
+    - jules-mcp-server_fork
+    - jules-sdk-fork-rs
+    - jules-action_fork
+    - gh-jules-workflow-development_fork
+    - jules-skill_fork
+    - jules-skills_fork
+    - google-jules-skill_fork
+    - jules-foreman_fork
+    - jules-studio_fork
+    - jules-multi-agent
+    - google-jules-workflow_fork
+    - cjules_fork
+    - jules_api_cli_fork
+    - jules-awesome-list_fork
+    - pi-jules_fork
+
+scavenge_templates:
+  jules_gold:
+    - name: jules-dispatch-cli_fork
+      tier: 1
+      role: batch_dispatch_yaml
+      upstream_hint: jules-dispatch / parallel session fleet
+    - name: jules-mcp-server_fork
+      tier: 1
+      role: mcp_server
+      upstream_hint: "@google/jules-mcp"
+    - name: jules-sdk-fork-rs
+      tier: 2
+      role: rust_sdk
+      upstream_hint: google-labs-code/jules-sdk
+    - name: jules-action_fork
+      tier: 2
+      role: github_action
+    - name: gh-jules-workflow-development_fork
+      tier: 2
+      role: gh_workflows
+    - name: jules-skill_fork
+      tier: 3
+      role: skill_packaging
+    - name: jules-skills_fork
+      tier: 3
+      role: skills_collection
+    - name: google-jules-skill_fork
+      tier: 3
+      role: google_skill
+    - name: jules-foreman_fork
+      tier: 4
+      role: task_foreman
+    - name: jules-studio_fork
+      tier: 4
+      role: studio_ui
+    - name: jules-multi-agent
+      tier: 4
+      role: multi_agent_patterns
+    - name: google-jules-workflow_fork
+      tier: 5
+      role: google_workflow
+    - name: cjules_fork
+      tier: 5
+      role: c_variant
+    - name: jules_api_cli_fork
+      tier: 5
+      role: api_cli
+    - name: jules-awesome-list_fork
+      tier: 5
+      role: catalog
+    - name: pi-jules_fork
+      tier: 5
+      role: pi_agent_bridge
+
+# --- Phase LATER: Antigravity (do not RECON-block Jules) ---
+deferred_antigravity:
+  reason: >-
+    Heavy for solo Termux. Solve Jules delegation first; use Jules to implement
+    Antigravity integration. Investigate Colab / free intro cloud credits then.
+  forks:
+    - antigravity-jules-orchestration_fork
+    - llm-antigravity-orchestrator_fork
+    - Antigravity_cli_sdk_fork
+    - Antigravity_2.0_fork
+    - agy-sdk-agents_fork
+    - run-agy-sdk_fork
+    - feishu-agy-sdk-bridge_fork
+    - lego_fork
+    - STMoEOrchestrator_fork
+
+policy:
+  phase: jules_first
+  scavenge: depth-1-sparse-metadata
+  human_only: [credential_rotation, history_rewrite, app_permissions]
+  human_temporary: [termux_smoke_cherry_pick_until_automated]
+  agent_owns: [branch, implement, pr, merge_to_master_staging, gates]

@@ -1,0 +1,14 @@
+name: jules-dispatch-cli_fork
+tier: 1
+role: batch_dispatch_yaml
+owner_repo: timerloggedout-spec/jules-dispatch-cli_fork
+upstream_hint: jules-dispatch (YAML tasks, parallel sessions, MCP mode)
+status: pending_private_verify
+steal:
+  - task YAML schema (title, repo, branch, prompt)
+  - concurrency-limited session create
+  - poll completion → collect PR URLs
+  - MCP tool exposure of batch dispatch
+non_goals:
+  - replacing archwiz dispatch_pipeline
+  - committing API keys

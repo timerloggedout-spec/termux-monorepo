@@ -85,8 +85,16 @@ def check_bridge_logic() -> bool:
 
 
 def check_unit_tests() -> bool:
+    tests_dir = ROOT / "tests"
+    if not tests_dir.is_dir():
+        fail("missing tests directory")
+        return False
     loader = unittest.TestLoader()
-    suite = loader.discover(str(ROOT / "tests"), pattern="test_*.py")
+    try:
+        suite = loader.discover(str(tests_dir), pattern="test_*.py")
+    except Exception as e:  # discovery itself can fail
+        fail(f"unit test discovery failed: {e}")
+        return False
     result = unittest.TextTestRunner(verbosity=1).run(suite)
     if result.wasSuccessful():
         ok(f"unit tests passed ({result.testsRun} run)")

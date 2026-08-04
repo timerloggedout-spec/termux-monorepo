@@ -19,12 +19,12 @@ CONFIG_FILE = CONFIG_DIR / "config.json"
 WASM_SOLVER = Path(__file__).parent.parent / "pow_solver.js"
 BASE_URL = "https://chat.deepseek.com"
 
-# SECURITY ENHANCEMENT: Enforce strict directory permissions (700)
+# SECURITY ENHANCEMENT: Enforce strict directory permissions (700) - Fail-closed on OSError
 CONFIG_DIR.mkdir(mode=0o700, parents=True, exist_ok=True)
 try:
     os.chmod(str(CONFIG_DIR), 0o700)
-except Exception:
-    pass
+except OSError as e:
+    raise PermissionError(f"Fail-closed: Failed to enforce 0o700 permissions on {CONFIG_DIR}: {e}")
 
 # Persistent session (cookies preserved across API calls)
 _session: Optional[curl_requests.Session] = None
@@ -32,16 +32,16 @@ _session: Optional[curl_requests.Session] = None
 # ---------- cache helpers ----------
 def _cache_path(session_id: str, account: str = "primary") -> str:
     store_dir = os.path.join(os.path.expanduser("~/.deepcli/session_store"), account)
-    # SECURITY ENHANCEMENT: Enforce directory permissions (700) on session store
+    # SECURITY ENHANCEMENT: Enforce directory permissions (700) on session store - Fail-closed on OSError
     os.makedirs(store_dir, mode=0o700, exist_ok=True)
     try:
         os.chmod(store_dir, 0o700)
-    except Exception:
-        pass
+    except OSError as e:
+        raise PermissionError(f"Fail-closed: Failed to enforce 0o700 permissions on {store_dir}: {e}")
     try:
         os.chmod(os.path.dirname(store_dir), 0o700)
-    except Exception:
-        pass
+    except OSError as e:
+        raise PermissionError(f"Fail-closed: Failed to enforce 0o700 permissions on {os.path.dirname(store_dir)}: {e}")
     return os.path.join(store_dir, f"{session_id}.json")
 
 def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict[str, Any]]]:
@@ -91,12 +91,12 @@ def load_config() -> Dict[str, Any]:
     return {}
 
 def save_config(cfg: Dict[str, Any]):
-    # SECURITY ENHANCEMENT: Enforce directory permissions (700) and file permissions (600) on token config
+    # SECURITY ENHANCEMENT: Enforce directory permissions (700) and file permissions (600) on token config - Fail-closed on OSError
     CONFIG_DIR.mkdir(mode=0o700, parents=True, exist_ok=True)
     try:
         os.chmod(str(CONFIG_DIR), 0o700)
-    except Exception:
-        pass
+    except OSError as e:
+        raise PermissionError(f"Fail-closed: Failed to enforce 0o700 permissions on {CONFIG_DIR}: {e}")
     fd = os.open(str(CONFIG_FILE), os.O_CREAT | os.O_WRONLY | os.O_TRUNC, 0o600)
     with os.fdopen(fd, 'w') as f:
         json.dump(cfg, f, indent=2)

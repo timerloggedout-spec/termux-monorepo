@@ -34,11 +34,11 @@ def banner():
     """ + N)
     print(f"{G}\u26a1 ARCHWIZ DASHBOARD \u26a1{N}   {time.strftime('%c')}")
     try:
-        user = os.getlogin()
-    except:
+        username = os.getlogin()
+    except Exception:
         import getpass
-        user = getpass.getuser()
-    print(f"{W}session: {user}@{os.uname().nodename}{N}")
+        username = getpass.getuser()
+    print(f"{W}session: {username}@{os.uname().nodename}{N}")
     print(C + "\u2500" * 60 + N)
 
 def get_pipeline_status():
@@ -105,6 +105,7 @@ def main():
         try:
             choice = input(f"{C}>> {N}").strip().lower()
         except (EOFError, KeyboardInterrupt):
+            print()
             break
 
         if choice == '0':
@@ -129,14 +130,13 @@ def main():
             subprocess.run(['python3', str(llm_map_dir / 'foresight_collect.py')])
             subprocess.run(['python3', str(ARCHWIZ_DIR / 'archaeo_sweep.py'), '--max', '15'])
         elif choice == '7':
-            prof_dir = HOME / '.config' / 'llm_map' / 'profiles'
+            prof_dir = pathlib.Path.home() / '.config' / 'llm_map' / 'profiles'
             if not prof_dir.exists():
                 print(f"{Y}No profiles directory found.{N}")
             else:
                 profiles = sorted(f.replace('.json', '') for f in os.listdir(prof_dir) if f.endswith('.json'))
                 for idx, p in enumerate(profiles, 1):
                     print(f"  {G}[{idx}]{N} {p}")
-                # Simplified for this fix
         elif choice == '8':
             subprocess.run(['python3', str(ARCHWIZ_DIR / 'linear_sync.py')])
         elif choice == '9':
@@ -166,6 +166,14 @@ def main():
         print(f"{get_pipeline_status()}")
         print(C + "\u2500" * 60 + N)
 
+    # Uniform, delightful exit signature for all exits (choice '0', Ctrl+C, Ctrl+D)
+    print(G + random.choice([
+        "ArchWiz signing off. Forge well.",
+        "Until next cycle. Stay l33T.",
+        "Dashboard closed. The Forge awaits.",
+        "ArchWiz out. Happy hacking.",
+        "Systems stable. ArchWiz offline."
+    ]) + N)
+
 if __name__ == "__main__":
-    HOME = pathlib.Path.home()
     main()

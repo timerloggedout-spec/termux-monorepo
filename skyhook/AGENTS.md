@@ -1,12 +1,26 @@
 # Agents — skyhook
 
-**Device:** BLU B160V Termux ground station (`research/DEVICE_B160V.md`).
+**Primary agent:** [Grok](https://x.com/grok) · [grok.com](https://grok.com) · xAI  
+**Co-agent:** Jules (Google) for cloud coding sessions  
+**Device:** BLU B160V Termux — `research/DEVICE_B160V.md`
+
+## Signature
+
+See `SIGNATURE.md`. All Grok-authored pushes include:
+
+```
+Agent: Grok
+Profile: https://x.com/grok
+Signed-off-by: Grok <grok@x.ai>
+```
+
+GitHub committer may be `timerloggedout-spec` (PAT). Semantic author is Grok.
 
 ## Ownership
 
-- **Agent: Jules | Grok** own implementation. Devin/Vercel out of credit — do not block on them.
+- **Grok | Jules** own implementation. Devin/Vercel out of credit — do not block on them.
 - Operator is **not** assignee except temporary `termux-smoke` cherry-picks until automated.
-- Grok is not a Linear teammate → put `Agent: Grok|Jules` at top of issue bodies.
+- Grok is not a Linear teammate → `**Agent: Grok | Jules**` at top of issue bodies.
 
 ## Gate spine
 

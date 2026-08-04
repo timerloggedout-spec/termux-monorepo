@@ -33,7 +33,7 @@ class Pointer:
         return f"{self.session_id}:{self.message_index}:{self.block_index}"
 
     def to_wire(self) -> bytes:
-        """Ultra‑compact binary representation (20 bytes + 32 byte hash)."""
+        """Ultra‑compact binary representation (20 bytes + 8 byte hash)."""
         import struct
         sid_bytes = self.session_id.encode()[:12].ljust(12, b'\x00')
         packed = struct.pack('>12sII', sid_bytes, self.message_index, self.block_index)
@@ -128,7 +128,7 @@ class _CodexIndex_v1:
         return f"{self.session_id}:{self.message_index}:{self.block_index}"
 
     def to_wire(self) -> bytes:
-        """Ultra‑compact binary representation (20 bytes + 32 byte hash)."""
+        """Ultra‑compact binary representation (20 bytes + hash)."""
         import struct
         sid_bytes = self.session_id.encode()[:12].ljust(12, b'\x00')
         packed = struct.pack('>12sII', sid_bytes, self.message_index, self.block_index)
@@ -138,7 +138,7 @@ class _CodexIndex_v1:
     def from_wire(cls, data: bytes) -> 'Pointer':
         import struct
         sid_bytes, msg_idx, blk_idx = struct.unpack('>12sII', data[:20])
-        content_hash = data[20:52].hex()
+        content_hash = data[20:28].hex()
         return cls(sid_bytes.rstrip(b'\x00').decode(), msg_idx, blk_idx, content_hash)
 
 class TaxonomyNode:
@@ -338,17 +338,14 @@ class CodexIndex:
         for p in self.taxonomy.search(term):
             if lang and not any(lang in part for part in [p.session_id, '']):
                 continue  # simplistic
-                        'timestamp': (self.time_index[p.content_hash].isoformat()
-                                      if p.content_hash in self.time_index else None)
-            if blob_path:
-                blob = Path(blob_path)
-                if blob.exists():
-                    results.append({
-                        'pointer': p.to_key(),
-                        'hash': p.content_hash,
-                        'code': blob.read_text()[:200] + '...' if len(blob.read_text()) > 200 else blob.read_text(),
-                        'timestamp': self.time_index.get(p.content_hash, '').isoformat()
-                    })
+            blob = self.base_dir / 'blobs' / f"{p.content_hash}.blob"
+            if blob.exists():
+                results.append({
+                    'pointer': p.to_key(),
+                    'hash': p.content_hash,
+                    'code': blob.read_text()[:200] + '...' if len(blob.read_text()) > 200 else blob.read_text(),
+                    'timestamp': self.time_index.get(p.content_hash, '').isoformat()
+                })
         return results
     
     @staticmethod

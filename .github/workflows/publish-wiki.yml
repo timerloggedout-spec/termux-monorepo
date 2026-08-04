@@ -1,0 +1,35 @@
+name: Publish wiki
+
+on:
+  push:
+    branches: [master, master-staging]
+    paths:
+      - "wiki/**"
+      - ".github/workflows/publish-wiki.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: publish-wiki
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  publish-wiki:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Publish wiki/ → GitHub Wiki
+        uses: Andrew-Chen-Wang/github-wiki-action@v5
+        with:
+          path: wiki
+          strategy: clone
+          # First run after creating a dummy wiki page: if clone fails because
+          # the wiki has never been initialized, switch strategy to "init" once.
+          # strategy: init   # force-push empty history — use only for first bootstrap
+          preprocess: true
+          disable-empty-commits: true
+          commit-message: "wiki: sync from ${{ github.sha }}"

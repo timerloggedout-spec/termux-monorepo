@@ -56,7 +56,7 @@ class ChatDispatcher:
         result = {
             'response': response,
             'provider': provider_name,
-            'session_id': session_id or provider.core.session_id if hasattr(provider, 'core') else None,
+            'session_id': session_id or (provider.core.session_id if hasattr(provider, 'core') else None),
         }
         
         # Harvest code blocks if enabled

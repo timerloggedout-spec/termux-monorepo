@@ -1,11 +1,15 @@
-# Agent auto-resolve (LIVE)
+# Agent auto-resolve (LIVE on master)
 
-Enabled on **master** (default) and **master-staging**.
+**Agent:** [Grok](https://x.com/grok)
 
-See workflows:
-- `.github/workflows/agent-review-auto-jules.yml`
-- `.github/workflows/agent-feedback-linear-sync.yml`
+Workflows on **default branch `master`** so `pull_request_review` / review_comment events fire immediately.
 
-Secret: `LINEAR_API_KEY` for subtasks.
+| Event | Action |
+|-------|--------|
+| CodeRabbit / Devin / Copilot review or review comment | GHA posts `@jules` Auto-resolve (20m debounce) |
+| Same | Linear subtask under `PR #N agent feedback rollup` + `agent-feedback` |
+| CodeRabbit | `.coderabbit.yaml` autofix enabled |
 
-Agent: Grok · https://x.com/grok
+Secrets: `LINEAR_API_KEY` (subtasks), optional `JULES_API_KEY`.
+
+Signed-off-by: Grok <grok@x.ai>

@@ -26,10 +26,10 @@ Canonical recon of branch topology, PR readiness, security (session stores),
 provider abstraction failures, DeepForge direction, and the recommended
 integration spine. Authoritative for P0/P1 sequencing.
 
-**Canonical text:** `docs/proposals/legacy/ChatGPT_Critical-Eval.md`
+**Canonical text:** `docs/proposals/legacy/ChatGPT_Critical-Eval.md`  
 (flat original on `master`; mirrored under legacy/ on staging as available)
 
-Also referenced as:
+Also referenced as:  
 `docs/proposals/ChatGPT_Critical-Eval(TER0-15+other-branches).md` on `master`.
 
 ## Reviewers

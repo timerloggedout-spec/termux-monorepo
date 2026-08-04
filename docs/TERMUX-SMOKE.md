@@ -1,7 +1,7 @@
 # Termux Smoke Gate — Agentic runtime surface
 
-> **Branch:** `termux-smoke`
-> **Script:** `scripts/ci/termux_smoke.py`
+> **Branch:** `termux-smoke`  
+> **Script:** `scripts/ci/termux_smoke.py`  
 > **Workflow:** `.github/workflows/termux-smoke.yml`
 
 ## Position in the spine

@@ -53,20 +53,20 @@ docs/proposals/
 
 Primary venues (in order of record strength):
 
-1. **`active/<id>/MANIFEST.md` → Review log**
+1. **`active/<id>/MANIFEST.md` → Review log**  
    Binding dispositions (`accepted`, `changes_requested`). Required for state transitions.
 
-2. **`active/<id>/DEBATE.md`** (optional but preferred for long threads)
+2. **`active/<id>/DEBATE.md`** (optional but preferred for long threads)  
    Free-form argument, alternatives, dissent. Not binding until summarized into Review log.
 
-3. **GitHub PR conversation** on PRs that `Implements: <ITEM-ID>`
+3. **GitHub PR conversation** on PRs that `Implements: <ITEM-ID>`  
    Implementation debate. Critical unresolved threads **block merge**, not necessarily proposal close.
 
-4. **GitHub issue** linked from MANIFEST (optional tracking issue)
+4. **GitHub issue** linked from MANIFEST (optional tracking issue)  
    Cross-cutting or multi-PR discussion.
 
-5. **Chat / agent transcripts**
-   Ephemeral unless an agent **posts a summary** into Review log or DEBATE.md.
+5. **Chat / agent transcripts**  
+   Ephemeral unless an agent **posts a summary** into Review log or DEBATE.md.  
    *Unposted chat is not consensus.*
 
 **Rule:** If it is not in MANIFEST Review log, DEBATE.md, or a linked PR/issue, it did not happen for process purposes.
@@ -163,10 +163,10 @@ Agents **must not** invent work outside ITEMS without adding a row first.
 
 Merges that execute proposal items require:
 
-1. `repo-gate` green
-2. `termux-smoke` green
-3. Item IDs cited
-4. No unresolved **critical** PR review threads
+1. `repo-gate` green  
+2. `termux-smoke` green  
+3. Item IDs cited  
+4. No unresolved **critical** PR review threads  
 
 Promotion to `master` follows the same gates once `master-staging` is healthy.
 

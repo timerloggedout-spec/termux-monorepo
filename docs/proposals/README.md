@@ -1,7 +1,7 @@
 # Proposals
 
-**Agents: start at [`registry.yaml`](registry.yaml).**
-**Humans: start at [`PROCESS.md`](PROCESS.md).**
+**Agents: start at [`registry.yaml`](registry.yaml).**  
+**Humans: start at [`PROCESS.md`](PROCESS.md).**  
 **Permissions / why human still needed: [`AGENTIC-PERMISSIONS.md`](AGENTIC-PERMISSIONS.md).**
 
 ## Active

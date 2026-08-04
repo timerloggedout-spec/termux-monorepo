@@ -1,6 +1,6 @@
 # Session SSOT Schema
 
-> **Status:** SPEC (P0 / elevated above TER-8)
+> **Status:** SPEC (P0 / elevated above TER-8)  
 > **Goal:** One canonical session identity across deepcli, multi-ai, Codex, Colab, etc.
 
 ## Problem

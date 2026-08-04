@@ -191,7 +191,7 @@ def new(model):
     except Exception as e:
         console.print(f"[red]Error creating session: {e}[/red]")
 
-`@session.command`(name="list")
+@session.command(name="list")
 def list_sessions():
     """List all chat sessions."""
     try:

@@ -426,7 +426,7 @@ class CodexIndex:
                             'pointer': p.to_key(),
                             'hash': ch,
                             'code': code[:200] + '...' if len(code) > 200 else code,
-                            'timestamp': self.time_index.get(ch, '').isoformat(),
+                            'timestamp': self.time_index[ch].isoformat() if ch in self.time_index else '',
                             'session_id': p.session_id,
                             'message_index': p.message_index,
                             'block_index': p.block_index,

@@ -1,7 +1,7 @@
 id: SKYHOOK-04
 title: Example Jules plans for TER-20 and TER-21
-status: todo
-owner: null
+status: done
+owner: grok-archw1z
 priority: P1
 prompt: |
   Add skyhook/tasks/examples/ JSON plans for Sentinel conflicts and Termux MCP,
@@ -9,4 +9,6 @@ prompt: |
 repo: timerloggedout-spec/termux-monorepo
 branch: feature/skyhook
 require_plan_approval: false
-notes: ""
+notes: |
+  Examples landed: ter-20-sentinel.json, ter-21-termux-mcp.json.
+  Submit via Jules UI or @google/jules-mcp create_session with JULES_API_KEY.

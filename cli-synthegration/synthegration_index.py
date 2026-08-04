@@ -43,7 +43,7 @@ class Pointer:
     def from_wire(cls, data: bytes) -> 'Pointer':
         import struct
         sid_bytes, msg_idx, blk_idx = struct.unpack('>12sII', data[:20])
-        content_hash = data[20:52].hex()
+        content_hash = data[20:28].hex()
         return cls(sid_bytes.rstrip(b'\x00').decode(), msg_idx, blk_idx, content_hash)
 
 class _TaxonomyNode_v1:

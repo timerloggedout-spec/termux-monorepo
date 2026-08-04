@@ -34,7 +34,15 @@ def load_task_from_master(task_id):
         return None
 
 def get_refactor_goal(workspace_path):
-    """D3t3rm1n3 r3f4ct0r g04l fr0m 3nv1r0nm3nt v4r14bl3s 0r f1l3s"""
+    """
+    Selects a refactoring goal from the configured task, environment, workspace, or default value.
+    
+    Parameters:
+        workspace_path (str): Path to the workspace containing the optional ``current_task.txt`` file.
+    
+    Returns:
+        str: The selected refactoring goal.
+    """
     # Pr10r1ty 1: T4SK_ID 3nv v4r
     task_id = os.environ.get("TASK_ID")
     if task_id:

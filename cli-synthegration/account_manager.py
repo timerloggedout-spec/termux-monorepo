@@ -6,7 +6,16 @@ HOME = Path.home()
 CONFIG_DIR = HOME / ".deepcli"
 
 def import_account(cookies_file: str, account_name: str):
-    """Extract Bearer token from cookies JSON and save as config_<account>.json."""
+    """
+    Extract a bearer token from a cookies file and save it for an account.
+    
+    Parameters:
+        cookies_file (str): Path to the cookies JSON file.
+        account_name (str): Name used to identify the saved account configuration.
+    
+    Returns:
+        bool: `True` if the token is saved successfully, `False` if token extraction fails.
+    """
     extract_script = HOME / "deepseek-cli" / "extract_token_from_cookies.cjs"
     proc = subprocess.run(
         ["node", str(extract_script), cookies_file],

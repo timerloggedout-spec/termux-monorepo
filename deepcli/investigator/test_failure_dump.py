@@ -4,6 +4,15 @@ import json, os, glob, sys
 from pathlib import Path
 
 def load_json(path):
+    """
+    Load and parse a JSON file.
+    
+    Parameters:
+    	path: Path to the JSON file.
+    
+    Returns:
+    	The parsed JSON value, or `None` if the file cannot be opened or parsed.
+    """
     try:
         with open(path) as f:
             return json.load(f)
@@ -11,6 +20,12 @@ def load_json(path):
         return None
 
 def main():
+    """
+    Display the latest DeepSeek test report and runtime log.
+    
+    Exits with status 1 when no test report is available. Reports are read from
+    the ``~/deepseek-cli/test-reports`` directory.
+    """
     REPORTS = Path.home() / 'deepseek-cli' / 'test-reports'
     reports = sorted(glob.glob(str(REPORTS / 'report-*.json')), reverse=True)
     runtimes = sorted(glob.glob(str(REPORTS / 'runtime-*.json')), reverse=True)

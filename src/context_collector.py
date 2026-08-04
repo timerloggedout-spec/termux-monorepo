@@ -33,6 +33,15 @@ class AutomatedContextCollector:
         return valid_dependencies
 
     def generate_ast_skeleton(self, file_relative_path):
+        """
+        Builds a structural architecture map for a supported source file.
+        
+        Parameters:
+            file_relative_path (str): Workspace-relative path of the file to analyze.
+        
+        Returns:
+            str: Architecture map containing matched class or function declarations, a structural stub for unsupported file types, or an inability-to-trace message when analysis fails.
+        """
         abs_path = os.path.join(self.workspace, file_relative_path)
         ext = os.path.splitext(file_relative_path)[1]
         if ext == '.py':

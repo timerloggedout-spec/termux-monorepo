@@ -21,6 +21,15 @@ TELEMETRY_LOG = "agent_telemetry_stream.json"
 console = Console()
 
 def read_latest_telemetry():
+    """
+    Read the latest telemetry entry for each target.
+    
+    Entries without a target are grouped under "System"; malformed entries and
+    file-reading errors are ignored. The retained entries are sorted by timestamp.
+    
+    Returns:
+    	list: Telemetry entries grouped by target and ordered by timestamp.
+    """
     if not os.path.exists(TELEMETRY_LOG):
         return []
     active_jobs = {}
@@ -42,6 +51,12 @@ def read_latest_telemetry():
 
 def make_dashboard():
     # Read data
+    """
+    Builds a Rich dashboard displaying the latest telemetry for each target.
+    
+    Returns:
+    	Panel: A dashboard containing the telemetry header, job table or initialization message, and exit instructions.
+    """
     jobs = read_latest_telemetry()
 
     # Header info
@@ -143,6 +158,7 @@ def make_dashboard():
     )
 
 def main():
+    """Run the live telemetry dashboard until interrupted by the user."""
     try:
         # Use Live rendering for smooth, flicker-free updates
         with Live(make_dashboard(), refresh_per_second=1, screen=True) as live:

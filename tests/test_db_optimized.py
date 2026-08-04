@@ -38,6 +38,9 @@ def test_index_project_file_no_ast_grep(tmp_path, monkeypatch):
     index_project_file(str(tmp_path), "test_file.py")
 
 def test_index_project_file_success(tmp_path, monkeypatch):
+    """
+    Verify that indexing a project file stores its parsed node and import relationship in the database.
+    """
     temp_db = tmp_path / "test_repo.db"
     monkeypatch.setattr("src.db.DB_PATH", str(temp_db))
     init_db()

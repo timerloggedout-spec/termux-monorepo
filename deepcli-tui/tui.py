@@ -269,7 +269,9 @@ def prompt_session_id():
         console.print("[red]Invalid choice.[/]")
 
 def show_commands():
-    """Display available commands with descriptions."""
+    """
+    Display the available DeepCLI TUI commands and their descriptions, then wait for confirmation.
+    """
     help_text = """[bold cyan]/branches[/]                List root messages (conversation branches)
 [bold cyan]/branchpoints[/]            Show fork points (messages with multiple children)
 [bold cyan]/more[/]                    Toggle full tree (uncapped)
@@ -294,6 +296,9 @@ def show_commands():
     input("\nPress Enter to continue...")
 
 def main():
+    """
+    Run the interactive DeepCLI terminal dashboard for browsing sessions, managing conversation branches, configuring request options, and sending messages.
+    """
     token = get_token()
     sid, model_mode = prompt_session_id()
     if sid == 'new':

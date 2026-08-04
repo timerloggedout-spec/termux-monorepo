@@ -8,7 +8,17 @@ sys.path.insert(0, str(HOME / 'cli-synthegration'))
 from synthegration_index import CodexIndex
 
 def detect(pasted_text: str):
-    """Find pasted content in the codex. Returns list of (session_id, message_id, similarity, preview)."""
+    """
+    Find codex entries that closely match pasted text.
+    
+    Parameters:
+        pasted_text (str): Text to compare with indexed codex entries.
+    
+    Returns:
+        list: Up to 10 tuples containing the blob key, similarity score, and a
+            200-character preview of each matching entry, sorted by descending
+            similarity.
+    """
     idx = CodexIndex()
     from difflib import SequenceMatcher
     

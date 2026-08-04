@@ -12,6 +12,17 @@ class Pointer:
     __slots__ = ('session_id', 'message_index', 'block_index', 'content_hash', 'start_line', 'end_line')
 
     def __init__(self, session_id: str, msg_idx: int, blk_idx: int, content_hash: str, start_line: int = 0, end_line: int = 0):
+        """
+        Create a reference to a code block within a session message.
+        
+        Parameters:
+        	session_id (str): Identifier of the session containing the message.
+        	msg_idx (int): Index of the message containing the code block.
+        	blk_idx (int): Index of the code block within the message.
+        	content_hash (str): Content hash identifying the code block.
+        	start_line (int): First line of the referenced range.
+        	end_line (int): Last line of the referenced range.
+        """
         self.session_id = session_id
         self.message_index = msg_idx
         self.block_index = blk_idx
@@ -23,6 +34,11 @@ class Pointer:
         return ""
 
     def citation(self) -> str:
+        """Provide an empty citation string.
+        
+        Returns:
+            str: An empty string.
+        """
         return ""
         """Return 【cursor_id†Lstart-Lend】 formatted citation."""
         cursor_id = f"{self.session_id[:8]}:{self.message_index}:{self.block_index}"
@@ -33,7 +49,11 @@ class Pointer:
         return f"{self.session_id}:{self.message_index}:{self.block_index}"
 
     def to_wire(self) -> bytes:
-        """Ultra‑compact binary representation (20 bytes + 32 byte hash)."""
+        """Serialize the pointer as a compact 52-byte binary representation.
+        
+        The representation contains the session identifier, message and block indexes,
+        and the full content hash.
+        """
         import struct
         sid_bytes = self.session_id.encode()[:12].ljust(12, b'\x00')
         packed = struct.pack('>12sII', sid_bytes, self.message_index, self.block_index)
@@ -41,6 +61,15 @@ class Pointer:
 
     @classmethod
     def from_wire(cls, data: bytes) -> 'Pointer':
+        """
+        Reconstruct a pointer from its binary wire representation.
+        
+        Parameters:
+            data (bytes): Wire-encoded pointer data containing a session ID, message and block indexes, and a SHA-256 hash.
+        
+        Returns:
+            Pointer: The reconstructed pointer.
+        """
         import struct
         sid_bytes, msg_idx, blk_idx = struct.unpack('>12sII', data[:20])
         content_hash = data[20:52].hex()
@@ -85,7 +114,15 @@ class _TaxonomyNode_v1:
 class _CodexIndex_v1:
     @staticmethod
     def from_live_exports(exports_root: str = None):
-        """Build codex from all live-exported session manifests."""
+        """
+        Build a codex index from session manifests in an export directory.
+        
+        Parameters:
+        	exports_root (str, optional): Directory containing session subdirectories with `manifest.json` files. Defaults to the standard synthegration exports directory.
+        
+        Returns:
+        	CodexIndex: An index containing the discovered code blocks, or an empty index if the export directory does not exist.
+        """
         from pathlib import Path
         if exports_root is None:
             exports_root = Path.home() / "storage" / "downloads" / "synthegration_exports"
@@ -107,6 +144,17 @@ class _CodexIndex_v1:
     @staticmethod
 
     def __init__(self, session_id: str, msg_idx: int, blk_idx: int, content_hash: str, start_line: int = 0, end_line: int = 0):
+        """
+        Create a reference to a code block within a session message.
+        
+        Parameters:
+        	session_id (str): Identifier of the session containing the message.
+        	msg_idx (int): Index of the message containing the code block.
+        	blk_idx (int): Index of the code block within the message.
+        	content_hash (str): Content hash identifying the code block.
+        	start_line (int): First line of the referenced range.
+        	end_line (int): Last line of the referenced range.
+        """
         self.session_id = session_id
         self.message_index = msg_idx
         self.block_index = blk_idx
@@ -118,6 +166,11 @@ class _CodexIndex_v1:
         return ""
 
     def citation(self) -> str:
+        """Provide an empty citation string.
+        
+        Returns:
+            str: An empty string.
+        """
         return ""
         """Return 【cursor_id†Lstart-Lend】 formatted citation."""
         cursor_id = f"{self.session_id[:8]}:{self.message_index}:{self.block_index}"
@@ -128,7 +181,11 @@ class _CodexIndex_v1:
         return f"{self.session_id}:{self.message_index}:{self.block_index}"
 
     def to_wire(self) -> bytes:
-        """Ultra‑compact binary representation (20 bytes + 32 byte hash)."""
+        """Serialize the pointer as a compact 52-byte binary representation.
+        
+        The representation contains the session identifier, message and block indexes,
+        and the full content hash.
+        """
         import struct
         sid_bytes = self.session_id.encode()[:12].ljust(12, b'\x00')
         packed = struct.pack('>12sII', sid_bytes, self.message_index, self.block_index)
@@ -136,6 +193,15 @@ class _CodexIndex_v1:
 
     @classmethod
     def from_wire(cls, data: bytes) -> 'Pointer':
+        """
+        Reconstruct a pointer from its binary wire representation.
+        
+        Parameters:
+            data (bytes): Wire-encoded pointer data containing a session ID, message and block indexes, and a SHA-256 hash.
+        
+        Returns:
+            Pointer: The reconstructed pointer.
+        """
         import struct
         sid_bytes, msg_idx, blk_idx = struct.unpack('>12sII', data[:20])
         content_hash = data[20:52].hex()
@@ -180,7 +246,15 @@ class TaxonomyNode:
 class CodexIndex:
     @staticmethod
     def from_live_exports(exports_root: str = None):
-        """Build codex from live-exported session manifests (manifest.json or session.json)."""
+        """
+        Build a codex index from exported session manifests or conversation files.
+        
+        Parameters:
+        	exports_root (str, optional): Directory containing session export subdirectories. Defaults to the user's synthegration exports directory.
+        
+        Returns:
+        	CodexIndex: An index populated with code blocks from the available exports.
+        """
         from pathlib import Path
         if exports_root is None:
             exports_root = Path.home() / "synthegration_exports"
@@ -218,7 +292,11 @@ class CodexIndex:
         return idx
 
     def _ingest_blocks(self, blocks: list):
-        """Add a list of code blocks to the codex."""
+        """Add code blocks to the index, creating pointers, storing code content, and recording valid timestamps.
+        
+        Parameters:
+            blocks (list): Code block records containing identifiers, content or hashes, taxonomy paths, and optional timestamps.
+        """
         import hashlib
         for blk in blocks:
             sid = blk.get("session_id", "unknown")
@@ -297,7 +375,16 @@ class CodexIndex:
     
     def index_conversation(self, session_id: str, title: str, messages: List[dict],
                            language_detect: bool = True):
-        """Index all code blocks from a conversation into the taxonomy."""
+        """
+                           Index fenced code blocks from a conversation and persist their taxonomy and blob records.
+                           
+                           Parameters:
+                               session_id (str): Identifier of the conversation session.
+                               title (str): Conversation title used to derive the project taxonomy name.
+                               messages (List[dict]): Conversation messages containing content, role, and optional timestamp data.
+                               language_detect (bool): Accepted for compatibility; language detection is not applied.
+                           
+                           """
         project = self._safe_name(title)
         for msg_idx, msg in enumerate(messages):
             content = msg.get('content', '')
@@ -333,7 +420,18 @@ class CodexIndex:
         return b''.join(p.to_wire() for p in pointers)
     
     def search_by_taxonomy(self, term: str, lang: str = None, project: str = None) -> List[dict]:
-        """Search with optional taxonomy filters."""
+        """
+        Search indexed code blocks by taxonomy term with optional language and project filters.
+        
+        Parameters:
+            term (str): Text to search for in taxonomy node names.
+            lang (str, optional): Language filter applied to matching pointers.
+            project (str, optional): Project filter for matching results.
+        
+        Returns:
+            List[dict]: Matching code blocks with their pointer key, content hash,
+            truncated code, and timestamp.
+        """
         results = []
         for p in self.taxonomy.search(term):
             if lang and not any(lang in part for part in [p.session_id, '']):
@@ -552,8 +650,16 @@ class MessageIndex:
 
     # ----- Reverse lookup: content → origin pointer -----
     def reverse_lookup(self, text: str, min_similarity: float = 0.80) -> list:
-        """Given any text, find its origin using hash→pointer index.
-        Returns list of (pointer, similarity, snippet)."""
+        """
+        Find pointers associated with text by exact hash or content similarity.
+        
+        Parameters:
+            text (str): Text to match against indexed blobs.
+            min_similarity (float): Minimum similarity ratio for approximate matches.
+        
+        Returns:
+            list: Tuples containing a pointer, similarity score, and text snippet, ordered by descending similarity.
+        """
         import hashlib
         from difflib import SequenceMatcher
 

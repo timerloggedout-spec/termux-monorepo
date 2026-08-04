@@ -47,6 +47,9 @@ Which aspect of your Termux workspace are you looking to test first: CLI script 
 
 ## Develop Workflow for the `termux-smoke`, perpetual branch; and, or delegate to Agents with code spaces or access to them (like @Jules 'Render' Workspaces access; others have access to the same or similar ++>> Add to Roster Considerations).
 
+## _***HIGH PRIORITY***_ INTIALIZE: `https://github.com/marketplace/render`
+Already Installed!
+
 # Monorepo Recovery & RefTemplates Restoration
 
 This README documents the filesystem incident, the recovered state from the repository history, and step-by-step recovery & rebuild actions (includes the refTemplates snapshot). It also includes the git-diff consolidation results I performed and concrete recovery commands.

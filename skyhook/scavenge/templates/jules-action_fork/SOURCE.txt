@@ -2,9 +2,15 @@ name: jules-action_fork
 tier: 2
 role: github_action
 owner_repo: timerloggedout-spec/jules-action_fork
-status: pending_private_verify
+url: https://github.com/timerloggedout-spec/jules-action_fork
+default_branch: main
+visibility: public
+upstream_action: google-labs-code/jules-invoke@v1
+status: recon_done_2026-08-03
 steal:
-  - action inputs: prompt, source, branch, approval flags
-  - secrets via GitHub Actions secrets not git
+  - inputs: prompt, jules_api_key (secret), starting_branch
+  - scheduled + issue + CI-failure example workflows
+  - issue allowlist security pattern
 non_goals:
-  - expanding Actions minutes without Operator budget check
+  - defaulting starting_branch to main for HOME (use master-staging)
+  - expanding Actions minutes without budget check

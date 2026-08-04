@@ -1,55 +1,36 @@
 # skyhook
 
-> **Termux ground station → Jules cloud fleet.**  
-> Branch: `feature/skyhook` (multi-agent) · Target: `master-staging` → cherry-pick `master`
+Termux **ground station** that hooks the **Jules cloud fleet**.
 
-**skyhook** is the in-repo package that moors Google Jules to this HOME monorepo so agents can **delegate now** from Termux and from GitHub Actions.
+Multi-agent branch: `feature/skyhook` · Integration: `master-staging`
 
-Former name: `jules-ade` (retired on this branch).
+## Device first
 
-## Strategy
+Optimized for **BLU B160V** (Helio A22, ~3 GB RAM, 64 GB). See `research/DEVICE_B160V.md`.
 
-| Phase | Scope |
-|-------|--------|
-| **Now** | Jules only — MCP, dispatch, skills, actions, workflows |
-| **Later** | Antigravity on Termux (heavy). Let Jules implement it. Explore Colab / free-tier cloud compute if device is too thin. |
+- On-device: stdlib Python, existing HOME CLIs, offline doctor
+- Off-device / CI: GH Actions (`jules-action`), full MCP, optional Bun dispatch
+- Templates: **use or rewrite** — never bulk-install gold forks into Termux
 
-HOME repo remains `timerloggedout-spec/termux-monorepo`. Every other Create Project repo is a **scavenge template**.
-
-## Layout
-
-```
-skyhook/
-  README.md AGENTS.md roster.yaml
-  research/          # Jules surface + 🥇 fork RECON + deferred Antigravity
-  scavenge/templates # metadata SOURCE.txt per gold fork
-  bridge/            # config + session plan helpers (stdlib)
-  mcp/               # Jules MCP wiring (no secrets)
-  tasks/queue/       # multi-agent claimable YAML
-  scripts/doctor.py  # offline health check
-```
-
-## 🥇 Focus (from Project Instructions)
-
-**Local HOME (already in monorepo):**
-- `multi-ai-cli`
-- `deepcli` / `deepseek-cli` / `deepterm` (deepcli is modeled on deepterm)
-
-**Jules forks — RECON + scavenge order:**
-1. `jules-dispatch-cli_fork` · `jules-mcp-server_fork` — delegate **now**
-2. `jules-sdk-fork-rs`
-3. `jules-action_fork` · `gh-jules-workflow-development_fork`
-4. `jules-skill_fork` · `jules-skills_fork` · `google-jules-skill_fork`
-5. `jules-foreman_fork` · `jules-studio_fork` · `jules-multi-agent`
-6. `google-jules-workflow_fork` · `cjules_fork` · `jules_api_cli_fork` · `jules-awesome-list_fork` · `pi-jules_fork`
-
-**Parked (not RECON-active):** all `antigravity-*`, `agy-*`, `feishu-agy-*`, `lego_fork`, `STMoEOrchestrator_fork` — see `research/DEFERRED_ANTIGRAVITY.md`.
-
-## Agent quick start
+## Doctor
 
 ```bash
 python3 skyhook/scripts/doctor.py
-# claim a task under skyhook/tasks/queue/
 ```
 
-Gate spine unchanged: `repo-gate` → `termux-smoke` → `master`.
+## Layout
+
+| Path | Role |
+|------|------|
+| `bridge/` | Config, plan_task, thin HTTP helpers |
+| `mcp/` | Jules MCP wiring notes |
+| `research/` | 🥇 RECON, B160V profile, deferred Antigravity |
+| `scavenge/templates/` | SOURCE.txt only |
+| `tasks/` | Claim queue + example Jules plans |
+| `tests/` | Offline unit tests |
+
+## Strategy
+
+1. Jules protocol into skyhook (done: plans, tests, tier-1 RECON)
+2. Production PRs via Jules sessions (Sentinel #18, Termux MCP #7)
+3. Later: Antigravity via Jules + optional Colab credits

@@ -10,7 +10,9 @@ on:
 
 concurrency:
   group: publish-wiki
-  cancel-in-progress: true
+  # Match agent-feedback-linear-sync: do not cancel in-flight wiki publishes
+  # (a workflow_dispatch from one ref must not be dropped by an unrelated push).
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -27,9 +29,9 @@ jobs:
         with:
           path: wiki
           strategy: clone
-          # First run after creating a dummy wiki page: if clone fails because
-          # the wiki has never been initialized, switch strategy to "init" once.
-          # strategy: init   # force-push empty history — use only for first bootstrap
+          # First bootstrap only: if the wiki has never been initialized, create a
+          # dummy page in the Wiki UI, or temporarily set strategy: init once.
+          token: ${{ github.token }}
           preprocess: true
           disable-empty-commits: true
           commit-message: "wiki: sync from ${{ github.sha }}"

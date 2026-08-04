@@ -10,6 +10,15 @@ from .config import BridgeConfig, load_config
 
 @dataclass
 class JulesTaskPlan:
+    """Structure representing a planned Jules delegation task.
+
+    Attributes:
+        title: Title of the task session.
+        prompt: Detailed instructions or task prompt.
+        source_repo: The repository to clone and run on.
+        starting_branch: Initial branch to check out.
+        require_plan_approval: If True, pauses for review before running.
+    """
     title: str
     prompt: str
     source_repo: str
@@ -17,6 +26,7 @@ class JulesTaskPlan:
     require_plan_approval: bool = False
 
     def to_dict(self) -> Dict[str, Any]:
+        """Converts the task plan to a dictionary representation."""
         return asdict(self)
 
 
@@ -29,6 +39,19 @@ def plan_task(
     require_plan_approval: bool = False,
     config: Optional[BridgeConfig] = None,
 ) -> JulesTaskPlan:
+    """Creates a planned Jules task, applying staging redirects if required.
+
+    Args:
+        title: Title of the task session.
+        prompt: Detailed prompt instruction.
+        source_repo: Target repository (defaults to home_repo).
+        starting_branch: Starting target branch (defaults to default_branch).
+        require_plan_approval: If True, requires interactive plan approval.
+        config: Loaded config to resolve defaults from.
+
+    Returns:
+        The generated JulesTaskPlan.
+    """
     cfg = config or load_config()
     branch = starting_branch or cfg.default_branch
     if cfg.prefer_staging and branch == "master":
@@ -47,6 +70,15 @@ def plan_from_task_yaml_fields(
     *,
     config: Optional[BridgeConfig] = None,
 ) -> JulesTaskPlan:
+    """Parses and generates a JulesTaskPlan from task queue YAML fields.
+
+    Args:
+        fields: A dictionary representing parsed YAML fields.
+        config: Loaded config to resolve defaults from.
+
+    Returns:
+        The generated JulesTaskPlan.
+    """
     return plan_task(
         title=str(fields.get("title") or fields.get("id") or "untitled"),
         prompt=str(fields.get("prompt") or ""),

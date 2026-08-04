@@ -5,8 +5,8 @@ set -e
 cd "$HOME"
 
 echo "[*] Git prune + gc"
-git reflog expire --expire=7.days.ago --all
-git gc --prune=7.days.ago
+git reflog expire --expire=now --all
+git gc --prune=now
 
 echo "[*] Clear rebuildable caches"
 rm -rf .cache/go-build .cache/node-gyp .cache/pip 2>/dev/null || true

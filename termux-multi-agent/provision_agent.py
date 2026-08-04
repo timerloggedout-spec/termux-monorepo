@@ -413,16 +413,11 @@ def main():
     from src.db import DB_PATH
     try:
         conn = sqlite3.connect(DB_PATH)
-        file_count = 0
         for root, _, files in os.walk(workspace_path):
             for file in files:
                 rel_path = os.path.relpath(os.path.join(root, file), workspace_path)
                 index_project_file(workspace_path, rel_path, conn=conn)
-                file_count += 1
-                # Commit periodically to preserve progress
-                if file_count % 10 == 0:
-                    conn.commit()
-        conn.commit()  # Final commit for remaining files
+        conn.commit()
     except Exception:
         pass
     finally:

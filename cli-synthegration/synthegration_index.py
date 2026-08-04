@@ -35,19 +35,13 @@ class Pointer:
     def to_wire(self) -> bytes:
         """Ultra‑compact binary representation (20 bytes + 32 byte hash)."""
         import struct
-        # Validate content_hash is exactly 32 bytes (64 hex chars)
-        hash_bytes = bytes.fromhex(self.content_hash)
-        if len(hash_bytes) != 32:
-            raise ValueError(f"content_hash must be exactly 32 bytes (64 hex chars), got {len(hash_bytes)} bytes")
         sid_bytes = self.session_id.encode()[:12].ljust(12, b'\x00')
         packed = struct.pack('>12sII', sid_bytes, self.message_index, self.block_index)
-        return packed + hash_bytes
+        return packed + bytes.fromhex(self.content_hash)
 
     @classmethod
     def from_wire(cls, data: bytes) -> 'Pointer':
         import struct
-        if len(data) != 52:
-            raise ValueError(f"Wire format must be exactly 52 bytes, got {len(data)} bytes")
         sid_bytes, msg_idx, blk_idx = struct.unpack('>12sII', data[:20])
         content_hash = data[20:52].hex()
         return cls(sid_bytes.rstrip(b'\x00').decode(), msg_idx, blk_idx, content_hash)
@@ -136,19 +130,13 @@ class _CodexIndex_v1:
     def to_wire(self) -> bytes:
         """Ultra‑compact binary representation (20 bytes + 32 byte hash)."""
         import struct
-        # Validate content_hash is exactly 32 bytes (64 hex chars)
-        hash_bytes = bytes.fromhex(self.content_hash)
-        if len(hash_bytes) != 32:
-            raise ValueError(f"content_hash must be exactly 32 bytes (64 hex chars), got {len(hash_bytes)} bytes")
         sid_bytes = self.session_id.encode()[:12].ljust(12, b'\x00')
         packed = struct.pack('>12sII', sid_bytes, self.message_index, self.block_index)
-        return packed + hash_bytes
+        return packed + bytes.fromhex(self.content_hash)
 
     @classmethod
     def from_wire(cls, data: bytes) -> 'Pointer':
         import struct
-        if len(data) != 52:
-            raise ValueError(f"Wire format must be exactly 52 bytes, got {len(data)} bytes")
         sid_bytes, msg_idx, blk_idx = struct.unpack('>12sII', data[:20])
         content_hash = data[20:52].hex()
         return cls(sid_bytes.rstrip(b'\x00').decode(), msg_idx, blk_idx, content_hash)
@@ -232,27 +220,22 @@ class CodexIndex:
     def _ingest_blocks(self, blocks: list):
         """Add a list of code blocks to the codex."""
         import hashlib
-        blob_dir = self.base_dir / "blobs"
-        blob_dir.mkdir(exist_ok=True)
         for blk in blocks:
             sid = blk.get("session_id", "unknown")
             mi = blk.get("mi", blk.get("message_index", 0))
             bi = blk.get("bi", blk.get("block_index", 0))
             ch = blk.get("ch", blk.get("content_hash", ""))
-            code_text = blk.get("code", "")
-            if not ch and code_text:
-                ch = hashlib.sha256(code_text.encode()).hexdigest()
+            if not ch:
+                code_text = blk.get("code", "")
+                if code_text:
+                    ch = hashlib.sha256(code_text.encode()).hexdigest()
             if not ch:
                 continue
             path = blk.get("path", ["uncategorized"])
             p = Pointer(sid, mi, bi, ch)
             self.taxonomy.add_pointer(p, path)
-            # Write code to blob file and store path instead of raw text
-            if code_text:
-                blob_path = blob_dir / f"{ch}.blob"
-                if not blob_path.exists():
-                    blob_path.write_text(code_text)
-                self.blobs[ch] = str(blob_path)
+            # root pointers handled via add_pointer
+            self.blobs[ch] = blk.get("code", "")
             ts = blk.get("ts")
             if ts:
                 try:
@@ -471,34 +454,6 @@ class CodexIndex:
                 results.append((ch, ratio, existing[:200]))
         return sorted(results, key=lambda x: -x[1])[:20]
 
-    def reverse_lookup(self, text: str, min_similarity: float = 0.80) -> list:
-        """Given any text, find its origin using hash→pointer index.
-        Returns list of (pointer, similarity, snippet)."""
-        import hashlib
-        from difflib import SequenceMatcher
-
-        # First: try exact hash match
-        text_hash = hashlib.sha256(text.encode()).hexdigest()
-        if text_hash in self.hash_to_pointer:
-            p = self.hash_to_pointer[text_hash]
-            blob = self.base_dir / 'blobs' / f'{text_hash}.blob'
-            snippet = blob.read_text()[:200] if blob.exists() else ''
-            return [(p, 1.0, snippet)]
-
-        # Fallback: similarity scan (limited to avoid hangs)
-        results = []
-        text_sample = text[:2000]
-        for ch, ptr in list(self.hash_to_pointer.items())[:200]:  # limit scan
-            blob = self.base_dir / 'blobs' / f'{ch}.blob'
-            if not blob.exists():
-                continue
-            existing = blob.read_text()
-            ratio = SequenceMatcher(None, text_sample, existing[:2000]).ratio()
-            if ratio >= min_similarity:
-                results.append((ptr, ratio, existing[:200]))
-        results.sort(key=lambda x: -x[1])
-        return results[:10]
-
 if __name__ == "__main__":
     import sys
     sys.path.insert(0, str(Path.home() / 'deepcli'))
@@ -594,3 +549,32 @@ class MessageIndex:
             data = json.loads(idx_file.read_text())
             instance.inverted = {k: set(tuple(x) for x in v) for k, v in data.items()}
         return instance
+
+    # ----- Reverse lookup: content → origin pointer -----
+    def reverse_lookup(self, text: str, min_similarity: float = 0.80) -> list:
+        """Given any text, find its origin using hash→pointer index.
+        Returns list of (pointer, similarity, snippet)."""
+        import hashlib
+        from difflib import SequenceMatcher
+
+        # First: try exact hash match
+        text_hash = hashlib.sha256(text.encode()).hexdigest()
+        if text_hash in self.hash_to_pointer:
+            p = self.hash_to_pointer[text_hash]
+            blob = self.base_dir / 'blobs' / f'{text_hash}.blob'
+            snippet = blob.read_text()[:200] if blob.exists() else ''
+            return [(p, 1.0, snippet)]
+
+        # Fallback: similarity scan (limited to avoid hangs)
+        results = []
+        text_sample = text[:2000]
+        for ch, ptr in list(self.hash_to_pointer.items())[:200]:  # limit scan
+            blob = self.base_dir / 'blobs' / f'{ch}.blob'
+            if not blob.exists():
+                continue
+            existing = blob.read_text()
+            ratio = SequenceMatcher(None, text_sample, existing[:2000]).ratio()
+            if ratio >= min_similarity:
+                results.append((ptr, ratio, existing[:200]))
+        results.sort(key=lambda x: -x[1])
+        return results[:10]

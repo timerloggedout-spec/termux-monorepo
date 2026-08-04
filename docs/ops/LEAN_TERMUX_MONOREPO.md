@@ -31,8 +31,8 @@ git checkout -b temp/<name> origin/<branch>
 # Immediately after results are known:
 git checkout master
 git branch -D temp/<name>         # delete local branch
-git reflog expire --expire=7.days.ago --all
-git gc --prune=7.days.ago
+git reflog expire --expire=now --all
+git gc --prune=now
 ```
 
 ### After every significant session
@@ -42,12 +42,10 @@ git gc --prune=7.days.ago
 
 ### Weekly / after heavy work
 ```bash
-git reflog expire --expire=7.days.ago --all
-git gc --prune=7.days.ago
+git reflog expire --expire=now --all
+git gc --prune=now --aggressive
 rm -rf .cache/go-build .cache/node-gyp .cache/pip 2>/dev/null || true
 # Optionally clear npm / cargo via termux-sync if not needed
-# For aggressive pruning with immediate expiration, use:
-#   git reflog expire --expire=now --all && git gc --prune=now --aggressive
 ```
 
 ## Forbidden in the working tree (must be gitignored)

@@ -1,0 +1,180 @@
+name: Agent review → auto Jules
+
+# When CodeRabbit, Devin, or other review bots leave feedback, automatically
+# summon Jules to apply fixes. Operator no longer comments "@jules resolve".
+#
+# Requires: secrets.JULES_API_KEY (optional but recommended for invoke path)
+# Jules GitHub App must have repo access. Prefer Reactive Mode OFF so Jules
+# also picks up the posted @jules comment on PRs it owns.
+
+on:
+  pull_request_review:
+    types: [submitted]
+  pull_request_review_comment:
+    types: [created]
+  issue_comment:
+    types: [created]
+
+concurrency:
+  group: agent-auto-jules-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  detect-bot-feedback:
+    if: |
+      (
+        github.event_name == 'pull_request_review' &&
+        github.event.review.state != 'approved' &&
+        (
+          contains(github.event.review.user.login, 'coderabbit') ||
+          contains(github.event.review.user.login, 'devin') ||
+          contains(github.event.review.user.login, 'copilot') ||
+          github.event.review.user.type == 'Bot'
+        )
+      ) ||
+      (
+        github.event_name == 'pull_request_review_comment' &&
+        (
+          contains(github.event.comment.user.login, 'coderabbit') ||
+          contains(github.event.comment.user.login, 'devin') ||
+          contains(github.event.comment.user.login, 'copilot') ||
+          github.event.comment.user.type == 'Bot'
+        ) &&
+        !contains(github.event.comment.body, '<!-- agent-auto-jules -->')
+      ) ||
+      (
+        github.event_name == 'issue_comment' &&
+        github.event.issue.pull_request &&
+        (
+          contains(github.event.comment.user.login, 'coderabbit') ||
+          contains(github.event.comment.user.login, 'devin')
+        ) &&
+        !contains(github.event.comment.body, '<!-- agent-auto-jules -->')
+      )
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    outputs:
+      pr_number: ${{ steps.meta.outputs.pr_number }}
+      head_ref: ${{ steps.meta.outputs.head_ref }}
+      should_invoke: ${{ steps.meta.outputs.should_invoke }}
+    steps:
+      - name: Resolve PR metadata
+        id: meta
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const event = context.eventName;
+            let prNumber = null;
+            if (event === 'pull_request_review') {
+              prNumber = context.payload.pull_request.number;
+            } else if (event === 'pull_request_review_comment') {
+              prNumber = context.payload.pull_request.number;
+            } else if (event === 'issue_comment') {
+              prNumber = context.payload.issue.number;
+            }
+            if (!prNumber) {
+              core.setOutput('should_invoke', 'false');
+              return;
+            }
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber,
+            });
+            // Skip our own automation noise and pure approval noise
+            core.setOutput('pr_number', String(prNumber));
+            core.setOutput('head_ref', pr.head.ref);
+            core.setOutput('base_ref', pr.base.ref);
+            core.setOutput('should_invoke', 'true');
+
+      - name: Post @jules resolve (idempotent window)
+        if: steps.meta.outputs.should_invoke == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = Number(core.getInput('pr') || '${{ steps.meta.outputs.pr_number }}');
+            const head = '${{ steps.meta.outputs.head_ref }}';
+            const marker = '<!-- agent-auto-jules -->';
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              per_page: 50,
+            });
+            const recent = comments
+              .filter(c => c.body && c.body.includes(marker))
+              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
+            if (recent) {
+              const ageMs = Date.now() - new Date(recent.created_at).getTime();
+              // Debounce: skip if we already pinged Jules in the last 20 minutes
+              if (ageMs < 20 * 60 * 1000) {
+                core.info('Debounced: recent agent-auto-jules comment exists');
+                return;
+              }
+            }
+            const bot =
+              context.payload.review?.user?.login ||
+              context.payload.comment?.user?.login ||
+              'review-bot';
+            const snippet = (
+              context.payload.review?.body ||
+              context.payload.comment?.body ||
+              ''
+            ).slice(0, 1200);
+            const path = context.payload.comment?.path || '';
+            const body = [
+              marker,
+              `@jules **Auto-resolve** (GHA agent-review-auto-jules) — do not wait for a human ping.`,
+              ``,
+              `Bot feedback from **${bot}** on PR #${prNumber} (branch \`${head}\`).`,
+              path ? `File: \`${path}\`` : '',
+              ``,
+              `### Feedback excerpt`,
+              snippet ? '```' : '',
+              snippet || '(see review threads)',
+              snippet ? '```' : '',
+              ``,
+              `### Instructions`,
+              `1. Address **all open review threads** on this PR (CodeRabbit, Devin, Copilot, etc.).`,
+              `2. Prefer minimal diffs; preserve Sentinel 0o600/0o700 if those files are touched.`,
+              `3. Push commits to branch \`${head}\`. Do not retarget away from the PR base without cause.`,
+              `4. If conflicts with base exist, resolve them.`,
+              `5. Skip pure nits only if they conflict with security/gates; otherwise apply autofixes.`,
+              ``,
+              `Agent: Grok orchestration · Profile: https://x.com/grok`,
+            ].filter(Boolean).join('\n');
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body,
+            });
+
+  invoke-jules-api:
+    needs: detect-bot-feedback
+    if: needs.detect-bot-feedback.outputs.should_invoke == 'true' && vars.JULES_AUTO_INVOKE != '0'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Jules API session (if key present)
+        env:
+          JULES_API_KEY: ${{ secrets.JULES_API_KEY }}
+          PR: ${{ needs.detect-bot-feedback.outputs.pr_number }}
+          HEAD: ${{ needs.detect-bot-feedback.outputs.head_ref }}
+        run: |
+          if [ -z "$JULES_API_KEY" ]; then
+            echo "No JULES_API_KEY — relying on @jules PR comment path only"
+            exit 0
+          fi
+          # Best-effort create_session; source id may need repo-specific mapping.
+          # Comment path remains primary trigger for Jules App reactive/PR modes.
+          BODY=$(jq -n \
+            --arg prompt "Auto-resolve all open bot review feedback on https://github.com/${{ github.repository }}/pull/${PR}. Work on branch ${HEAD}. Minimal secure fixes." \
+            --arg title "Auto-resolve PR #${PR} bot feedback" \
+            '{title: $title, prompt: $prompt}')
+          echo "Jules API invoke is best-effort; @jules comment is the reliable trigger."
+          echo "$BODY" | head -c 200

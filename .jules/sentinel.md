@@ -1,0 +1,10 @@
+# Sentinel Security Journal
+
+## 2026-08-01 - Enforcing Strict Credentials File and Directory Permissions
+**Vulnerability:** Local configuration and session history caching files (containing sensitive Bearer tokens, cookies, and full chat histories) were written with default file permissions. This would allow other local users or unprivileged processes running on the same local system to read these sensitive assets, violating the principle of least privilege.
+**Learning:** This gap existed because the standard Python `Path.write_text` and `open(..., 'w')` APIs do not restrict file creation permissions to the owner (they default to standard system umask, which typically allows group or world readability). Specifying permissions during initial file and directory creation is required to fail securely.
+**Prevention:** Always enforce `0o700` permissions on directories and `0o600` permissions on files when handling credentials, session caches, or other highly sensitive assets on local storage. In Python, this can be securely achieved by using `os.open(path, os.O_CREAT | os.O_WRONLY | os.O_TRUNC, 0o600)` and `os.fdopen(fd, 'w')` rather than the default `open(path, 'w')`, ensuring that there are no permission race conditions.
+
+## 2026-08-04 - Conflict-free rebase onto master-staging
+**Agent:** Grok (https://x.com/grok)
+**Change:** Re-applied fail-closed Sentinel perms on current `master-staging` tip after PR #18 became dirty against TER-5 / curl_cffi landings. Narrow surface: `deepcli/deepcli/core.py`, `cli-synthegration/account_manager.py` only.

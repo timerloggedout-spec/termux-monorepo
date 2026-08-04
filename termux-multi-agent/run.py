@@ -67,6 +67,11 @@ def get_refactor_goal(workspace_path):
     return default_goal
 
 def main():
+    """
+    Run the refactoring pipeline for the configured workspace and target file.
+    
+    Creates a default workspace and sample target when the workspace is missing. Otherwise, indexes workspace files, determines the refactoring goal, collects relevant code context, and runs the pipeline with Python compilation validation.
+    """
     init_db()
     workspace_path = os.environ.get("TASK_WORKSPACE", "/data/data/com.termux/files/home/termux-multi-agent/workspace")
     
@@ -78,11 +83,23 @@ def main():
         print("[+] Re-run the script or trigger run_agent.sh to start the operational pipeline loop.")
         sys.exit(0)
 
-    # 1nd3x 4ll pr0j3ct f1l3s
-    for root, _, files in os.walk(workspace_path):
-        for file in files:
-            rel_path = os.path.relpath(os.path.join(root, file), workspace_path)
-            index_project_file(workspace_path, rel_path)
+    # 1nd3x 4ll pr0j3ct f1l3s (using a single shared sqlite3 connection for speed)
+    import sqlite3
+    from src.db import DB_PATH
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        for root, _, files in os.walk(workspace_path):
+            for file in files:
+                rel_path = os.path.relpath(os.path.join(root, file), workspace_path)
+                index_project_file(workspace_path, rel_path, conn=conn)
+        conn.commit()
+    except Exception:
+        pass
+    finally:
+        try:
+            conn.close()
+        except Exception:
+            pass
 
     # D3t3rm1n3 t4rg3t f1l3
     target_name = os.environ.get("TARGET_FILE", "test_script.py")

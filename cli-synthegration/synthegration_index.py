@@ -206,7 +206,7 @@ class CodexIndex:
                     for bi, match in enumerate(__import__("re").finditer(r"```(\w+)?\n(.*?)```", content, __import__("re").DOTALL)):
                         lang = (match.group(1) or "text").lower()
                         code_text = match.group(2)
-                        ch = __import__("hashlib").sha256(code_text.encode()).hexdigest()
+                        ch = __import__("hashlib").sha256(code_text.encode()).hexdigest()[:16]
                         all_blocks.append({
                             "session_id": session_dir.name,
                             "mi": mi, "bi": bi, "ch": ch,
@@ -228,7 +228,7 @@ class CodexIndex:
             if not ch:
                 code_text = blk.get("code", "")
                 if code_text:
-                    ch = hashlib.sha256(code_text.encode()).hexdigest()
+                    ch = hashlib.sha256(code_text.encode()).hexdigest()[:16]
             if not ch:
                 continue
             path = blk.get("path", ["uncategorized"])
@@ -306,7 +306,7 @@ class CodexIndex:
             for blk_idx, match in enumerate(re.finditer(r"```(\w+)?\n(.*?)```", content, re.DOTALL)):
                 lang = (match.group(1) or 'text').lower()
                 code = match.group(2)
-                ch = hashlib.sha256(code.encode()).hexdigest()
+                ch = hashlib.sha256(code.encode()).hexdigest()[:16]
                 p = Pointer(session_id, msg_idx, blk_idx, ch)
                 path = [lang, project, role]
                 self.taxonomy.add_pointer(p, path)
@@ -558,7 +558,7 @@ class MessageIndex:
         from difflib import SequenceMatcher
 
         # First: try exact hash match
-        text_hash = hashlib.sha256(text.encode()).hexdigest()
+        text_hash = hashlib.sha256(text.encode()).hexdigest()[:16]
         if text_hash in self.hash_to_pointer:
             p = self.hash_to_pointer[text_hash]
             blob = self.base_dir / 'blobs' / f'{text_hash}.blob'

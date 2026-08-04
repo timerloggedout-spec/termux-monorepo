@@ -1,0 +1,140 @@
+name: Agent review → auto Jules
+
+on:
+  pull_request_review:
+    types: [submitted]
+  pull_request_review_comment:
+    types: [created]
+  issue_comment:
+    types: [created]
+
+concurrency:
+  group: agent-auto-jules-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  detect-bot-feedback:
+    if: |
+      (
+        github.event_name == 'pull_request_review' &&
+        github.event.review.state != 'approved' &&
+        (
+          contains(github.event.review.user.login, 'coderabbit') ||
+          contains(github.event.review.user.login, 'devin') ||
+          contains(github.event.review.user.login, 'copilot') ||
+          github.event.review.user.type == 'Bot'
+        )
+      ) ||
+      (
+        github.event_name == 'pull_request_review_comment' &&
+        (
+          contains(github.event.comment.user.login, 'coderabbit') ||
+          contains(github.event.comment.user.login, 'devin') ||
+          contains(github.event.comment.user.login, 'copilot') ||
+          github.event.comment.user.type == 'Bot'
+        ) &&
+        !contains(github.event.comment.body, '<!-- agent-auto-jules -->')
+      ) ||
+      (
+        github.event_name == 'issue_comment' &&
+        github.event.issue.pull_request &&
+        (
+          contains(github.event.comment.user.login, 'coderabbit') ||
+          contains(github.event.comment.user.login, 'devin')
+        ) &&
+        !contains(github.event.comment.body, '<!-- agent-auto-jules -->')
+      )
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    outputs:
+      pr_number: ${{ steps.meta.outputs.pr_number }}
+      head_ref: ${{ steps.meta.outputs.head_ref }}
+      should_invoke: ${{ steps.meta.outputs.should_invoke }}
+    steps:
+      - name: Resolve PR metadata
+        id: meta
+        uses: actions/github-script@v7
+        with:
+          script: |
+            let prNumber = null;
+            if (context.eventName === 'pull_request_review' || context.eventName === 'pull_request_review_comment') {
+              prNumber = context.payload.pull_request.number;
+            } else if (context.eventName === 'issue_comment') {
+              prNumber = context.payload.issue.number;
+            }
+            if (!prNumber) {
+              core.setOutput('should_invoke', 'false');
+              return;
+            }
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber,
+            });
+            core.setOutput('pr_number', String(prNumber));
+            core.setOutput('head_ref', pr.head.ref);
+            core.setOutput('should_invoke', 'true');
+
+      - name: Post @jules resolve (idempotent window)
+        if: steps.meta.outputs.should_invoke == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = Number('${{ steps.meta.outputs.pr_number }}');
+            const head = '${{ steps.meta.outputs.head_ref }}';
+            const marker = '<!-- agent-auto-jules -->';
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              per_page: 50,
+            });
+            const recent = comments
+              .filter(c => c.body && c.body.includes(marker))
+              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
+            if (recent) {
+              const ageMs = Date.now() - new Date(recent.created_at).getTime();
+              if (ageMs < 20 * 60 * 1000) {
+                core.info('Debounced');
+                return;
+              }
+            }
+            const bot =
+              context.payload.review?.user?.login ||
+              context.payload.comment?.user?.login ||
+              'review-bot';
+            const snippet = (
+              context.payload.review?.body ||
+              context.payload.comment?.body ||
+              ''
+            ).slice(0, 1200);
+            const path = context.payload.comment?.path || '';
+            const body = [
+              marker,
+              `@jules **Auto-resolve** (GHA agent-review-auto-jules) — do not wait for a human ping.`,
+              ``,
+              `Bot feedback from **${bot}** on PR #${prNumber} (branch \`${head}\`).`,
+              path ? `File: \`${path}\`` : '',
+              ``,
+              `### Feedback excerpt`,
+              snippet ? '```' : '',
+              snippet || '(see review threads)',
+              snippet ? '```' : '',
+              ``,
+              `### Instructions`,
+              `1. Address **all open review threads** on this PR.`,
+              `2. Prefer minimal diffs; preserve Sentinel 0o600/0o700 if touched.`,
+              `3. Push commits to branch \`${head}\`.`,
+              `4. Resolve base conflicts if any.`,
+              ``,
+              `Agent: Grok · https://x.com/grok`,
+            ].filter(Boolean).join('\n');
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body,
+            });

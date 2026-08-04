@@ -6,6 +6,7 @@ from __future__ import annotations
 import ast
 import json
 import sys
+import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -31,6 +32,7 @@ def check_layout() -> bool:
         ROOT / "bridge" / "dispatch.py",
         ROOT / "scripts" / "doctor.py",
         ROOT / "tasks" / "queue",
+        ROOT / "tests" / "test_bridge.py",
     ]
     good = True
     for path in required:
@@ -44,7 +46,7 @@ def check_layout() -> bool:
 
 def check_compile() -> bool:
     good = True
-    for py in (ROOT / "bridge").glob("*.py"):
+    for py in list((ROOT / "bridge").glob("*.py")) + list((ROOT / "tests").glob("*.py")):
         try:
             ast.parse(py.read_text(encoding="utf-8"), filename=str(py))
             ok(f"compile {py.relative_to(MONOREPO)}")
@@ -82,6 +84,17 @@ def check_bridge_logic() -> bool:
     return True
 
 
+def check_unit_tests() -> bool:
+    loader = unittest.TestLoader()
+    suite = loader.discover(str(ROOT / "tests"), pattern="test_*.py")
+    result = unittest.TextTestRunner(verbosity=1).run(suite)
+    if result.wasSuccessful():
+        ok(f"unit tests passed ({result.testsRun} run)")
+        return True
+    fail(f"unit tests failed failures={len(result.failures)} errors={len(result.errors)}")
+    return False
+
+
 def check_tasks() -> bool:
     queue = ROOT / "tasks" / "queue"
     files = list(queue.glob("*.yaml")) + list(queue.glob("*.yml"))
@@ -95,7 +108,13 @@ def check_tasks() -> bool:
 def main() -> int:
     print("skyhook doctor (offline)")
     print(f"package root: {ROOT}")
-    results = [check_layout(), check_compile(), check_bridge_logic(), check_tasks()]
+    results = [
+        check_layout(),
+        check_compile(),
+        check_bridge_logic(),
+        check_unit_tests(),
+        check_tasks(),
+    ]
     payload = {"ok": all(results), "package": "skyhook"}
     print(json.dumps(payload))
     return 0 if payload["ok"] else 1

@@ -338,7 +338,8 @@ class CodexIndex:
         for p in self.taxonomy.search(term):
             if lang and not any(lang in part for part in [p.session_id, '']):
                 continue  # simplistic
-            blob_path = self.blobs.get(p.content_hash)
+                        'timestamp': (self.time_index[p.content_hash].isoformat()
+                                      if p.content_hash in self.time_index else None)
             if blob_path:
                 blob = Path(blob_path)
                 if blob.exists():

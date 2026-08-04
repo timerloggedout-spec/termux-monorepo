@@ -1,38 +1,25 @@
-# AGENTS.md — skyhook
+# Agents — skyhook
 
-## Scope
+**Device:** BLU B160V Termux ground station (`research/DEVICE_B160V.md`).
 
-Build **Jules delegation from Termux / Actions** into HOME. Do **not** spend cycles on Antigravity integration in this phase.
+## Ownership
 
-## Branch
+- **Agent: Jules | Grok** own implementation. Devin/Vercel out of credit — do not block on them.
+- Operator is **not** assignee except temporary `termux-smoke` cherry-picks until automated.
+- Grok is not a Linear teammate → put `Agent: Grok|Jules` at top of issue bodies.
 
-| Branch | Use |
-|--------|-----|
-| `feature/skyhook` | Package integration (multi-agent) |
-| `feature/skyhook-*` | Optional single-concern slices |
-| `master-staging` | PR target when a slice is gate-ready |
+## Gate spine
 
-## Read order
+`feature/*` → **master-staging** (repo-gate) → **termux-smoke** → **master**
 
-1. Root `AGENTS.md`
-2. `skyhook/README.md` + this file
-3. `skyhook/roster.yaml`
-4. `skyhook/research/GOLD_FORK_RECON.md`
-5. `docs/ARCHW1Z-GATE.md`
+## Templates
 
-## Hard rules
+Forks are **templates**: use directly (CI/host) **or rewrite** into HOME Python/stdlib systems. Do not install Bun/Node/cargo as on-device doctor dependencies.
 
-- **Jules-first.** Antigravity = deferred notes only.
-- **No secrets** in tree.
-- **No full clones** of forks — metadata / sparse scavenge only.
-- Stdlib for doctor + bridge probes that run in CI/Termux.
-- Cite `Implements: SKYHOOK-<id>` or Linear TER-*.
-- Operator is not the assignee for routine work.
+## Jules-first
 
-## Claim protocol
+Antigravity deferred. Prefer MCP protocol + thin `bridge/http_client.py` over shipping Bun CLI on the phone.
 
-1. Pick `skyhook/tasks/queue/*.yaml` with `status: todo`
-2. Set `doing` + `owner: <agent-id>`
-3. Implement on `feature/skyhook`
-4. `python3 skyhook/scripts/doctor.py`
-5. Focused PR → `master-staging` when slice complete
+## Claim tasks
+
+Edit `tasks/queue/*.yaml` status/owner; PR with `Implements: SKYHOOK-N` / `TER-N`.

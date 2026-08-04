@@ -1,10 +1,9 @@
-# skyhook roster — Jules-first; 🥇 forks from Create Project instructions
-version: 2
-updated_at: "2026-08-03T20:40:00Z"
+# skyhook roster — Jules-first; public forks under timerloggedout-spec
+version: 3
+updated_at: "2026-08-03T21:20:00Z"
 updated_by: grok-archw1z
 package: skyhook
 branch: feature/skyhook
-former_name: jules-ade
 
 home:
   owner: timerloggedout-spec
@@ -16,17 +15,16 @@ home:
   production_branch: master
   gates: [repo-gate, termux-smoke]
 
-# --- Phase NOW: Jules ---
 focus_first:
   local_drivers_in_home:
     - multi-ai-cli
     - deepcli
     - deepseek-cli
-    - deepterm  # deepcli is modeled on it
-  jules_gold:  # order = RECON priority (Project Instructions)
+    - deepterm
+  jules_gold:
     - jules-dispatch-cli_fork
     - jules-mcp-server_fork
-    - jules-sdk-fork-rs
+    - jules-sdk_fork-rs
     - jules-action_fork
     - gh-jules-workflow-development_fork
     - jules-skill_fork
@@ -34,7 +32,7 @@ focus_first:
     - google-jules-skill_fork
     - jules-foreman_fork
     - jules-studio_fork
-    - jules-multi-agent
+    - jules-cli_fork-multiAgent
     - google-jules-workflow_fork
     - cjules_fork
     - jules_api_cli_fork
@@ -45,61 +43,36 @@ scavenge_templates:
   jules_gold:
     - name: jules-dispatch-cli_fork
       tier: 1
-      role: batch_dispatch_yaml
-      upstream_hint: jules-dispatch / parallel session fleet
+      visibility: public
+      url: https://github.com/timerloggedout-spec/jules-dispatch-cli_fork
+      recon: skyhook/research/TIER1_DISPATCH_MCP.md
     - name: jules-mcp-server_fork
       tier: 1
-      role: mcp_server
-      upstream_hint: "@google/jules-mcp"
-    - name: jules-sdk-fork-rs
+      visibility: public
+      url: https://github.com/timerloggedout-spec/jules-mcp-server_fork
+      recon: skyhook/research/TIER1_DISPATCH_MCP.md
+    - name: jules-sdk_fork-rs
       tier: 2
-      role: rust_sdk
-      upstream_hint: google-labs-code/jules-sdk
+      visibility: public
+      url: https://github.com/timerloggedout-spec/jules-sdk_fork-rs
     - name: jules-action_fork
       tier: 2
-      role: github_action
+      visibility: public
+      url: https://github.com/timerloggedout-spec/jules-action_fork
     - name: gh-jules-workflow-development_fork
       tier: 2
-      role: gh_workflows
-    - name: jules-skill_fork
-      tier: 3
-      role: skill_packaging
-    - name: jules-skills_fork
-      tier: 3
-      role: skills_collection
-    - name: google-jules-skill_fork
-      tier: 3
-      role: google_skill
-    - name: jules-foreman_fork
+      visibility: public
+      url: https://github.com/timerloggedout-spec/gh-jules-workflow-development_fork
+    - name: jules-cli_fork-multiAgent
       tier: 4
-      role: task_foreman
-    - name: jules-studio_fork
-      tier: 4
-      role: studio_ui
-    - name: jules-multi-agent
-      tier: 4
-      role: multi_agent_patterns
-    - name: google-jules-workflow_fork
-      tier: 5
-      role: google_workflow
-    - name: cjules_fork
-      tier: 5
-      role: c_variant
-    - name: jules_api_cli_fork
-      tier: 5
-      role: api_cli
-    - name: jules-awesome-list_fork
-      tier: 5
-      role: catalog
-    - name: pi-jules_fork
-      tier: 5
-      role: pi_agent_bridge
+      visibility: public
+      url: https://github.com/timerloggedout-spec/jules-cli_fork-multiAgent
+      note: Create Project listed jules-multi-agent; actual name is jules-cli_fork-multiAgent
 
-# --- Phase LATER: Antigravity (do not RECON-block Jules) ---
 deferred_antigravity:
   reason: >-
-    Heavy for solo Termux. Solve Jules delegation first; use Jules to implement
-    Antigravity integration. Investigate Colab / free intro cloud credits then.
+    Heavy for solo Termux. Jules-first; use Jules later for Antigravity.
+    Optional Colab/free credits then.
   forks:
     - antigravity-jules-orchestration_fork
     - llm-antigravity-orchestrator_fork
@@ -114,6 +87,9 @@ deferred_antigravity:
 policy:
   phase: jules_first
   scavenge: depth-1-sparse-metadata
+  agents_credit_policy: >-
+    Devin and Vercel out of credit. Prefer Jules sessions or Grok (not a Linear
+    teammate — put Agent: Grok|Jules at top of issue body). Clear Devin delegate.
   human_only: [credential_rotation, history_rewrite, app_permissions]
   human_temporary: [termux_smoke_cherry_pick_until_automated]
   agent_owns: [branch, implement, pr, merge_to_master_staging, gates]

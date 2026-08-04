@@ -1,14 +1,28 @@
 name: jules-dispatch-cli_fork
 tier: 1
-role: batch_dispatch_yaml
+role: batch_dispatch_cli
 owner_repo: timerloggedout-spec/jules-dispatch-cli_fork
-upstream_hint: jules-dispatch (YAML tasks, parallel sessions, MCP mode)
-status: pending_private_verify
+url: https://github.com/timerloggedout-spec/jules-dispatch-cli_fork
+default_branch: main
+visibility: public
+stack: TypeScript + Bun + Commander.js
+upstream_hint: AVANT-ICONIC/jules-dispatch-cli
+auth: JULES_API_KEY via X-Goog-Api-Key
+api: https://jules.googleapis.com (v1alpha)
+status: recon_done_2026-08-03
+paths:
+  - src/
+  - AGENTS.md
+  - docs/agent-guide.md
+  - docs/jules-api-notes.md
+  - docs/command-reference.md
+  - .env.example
 steal:
-  - task YAML schema (title, repo, branch, prompt)
-  - concurrency-limited session create
-  - poll completion → collect PR URLs
-  - MCP tool exposure of batch dispatch
+  - sessions create/run/get with --json for agents
+  - session state machine QUEUED..COMPLETED/FAILED
+  - approve-plan flow (sessions approve)
+  - prs list/view/merge via gh bridge
+  - 429 backoff notes in architecture
 non_goals:
-  - replacing archwiz dispatch_pipeline
-  - committing API keys
+  - requiring Bun on Termux CI for doctor
+  - replacing skyhook.bridge with full CLI vendoring

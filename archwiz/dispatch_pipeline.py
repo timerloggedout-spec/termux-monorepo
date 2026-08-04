@@ -19,7 +19,8 @@ def update_all(session_id: str, account: str = "primary"):
     try:
         with open(store) as f:
             msgs = json.load(f)
-    except Exception:
+    except Exception as e:
+        print(f"[archwiz dispatch] load session {session_id}: {type(e).__name__}: {e}", file=sys.stderr, flush=True)
         return
 
     # 1. Write session.json into export dir
@@ -32,8 +33,8 @@ def update_all(session_id: str, account: str = "primary"):
         sys.path.insert(0, str(HOME / 'archwiz'))
         from lexicon_harvest import harvest_session
         harvest_session(session_id)
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"[archwiz dispatch] lexicon_harvest: {type(e).__name__}: {e}", file=sys.stderr, flush=True)
 
     # 3. Codex index (incremental add — does NOT rebuild full index)
     try:
@@ -42,5 +43,5 @@ def update_all(session_id: str, account: str = "primary"):
         codex = CodexIndex(HOME / 'cli-synthegration' / 'codex')
         codex.index_conversation(session_id, session_id[:8], msgs)
         codex._save()
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"[archwiz dispatch] codex_index: {type(e).__name__}: {e}", file=sys.stderr, flush=True)

@@ -72,8 +72,9 @@ def _cache_save(session_id: str, messages: List[Dict[str, Any]], account: str = 
             _sys.modules["dispatch_pipeline"] = disp
             spec.loader.exec_module(disp)
             disp.update_all(session_id)
-    except Exception:
-        pass
+    except Exception as e:
+        import sys
+        print(f"[archwiz dispatch] {type(e).__name__}: {e}", file=sys.stderr, flush=True)
     # === END DISPATCH HOOK ===
 
 def _set_last_session(sid: str):

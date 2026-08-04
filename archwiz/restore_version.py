@@ -118,7 +118,7 @@ def restore(target_file, output_path=None):
     try:
         resolved_target = target_path.resolve()
         resolved_home = HOME.resolve()
-        if not str(resolved_target).startswith(str(resolved_home)):
+        if not resolved_target.is_relative_to(resolved_home):
             print(f"{R}Error: Target path must be within home directory{N}")
             return False
     except (OSError, ValueError) as e:

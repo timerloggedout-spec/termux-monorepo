@@ -1,3 +1,7 @@
 ## 2026-08-01 - Flicker-Free Real-Time CLI Dashboards with Rich Live
 **Learning:** Terminal dashboards that clear the screen using raw ANSI escape codes (`\033[H\033[J`) or `clear` commands create severe flicker and redraw lag. This harms cognitive accessibility and visual appeal. Using `rich.live.Live` with high-level structural layout (`Table`, `Panel`, `Text`) ensures updates are drawn to the screen differential/flicker-free, and handles terminal exits cleanly.
 **Action:** Always prefer `rich.live.Live` (or similar differential-updating curses-like tools) for terminal UI dashboards that require frequent, real-time telemetry updates.
+
+## 2026-08-01 - Heartbeat Indicators and Multi-Dimensional Status Signaling in CLI TUIs
+**Learning:** CLI terminal viewers updating on an interval with static text lack visible cues to show they are alive and processing rather than frozen. A layout-stable, pulsing dot heartbeat provides instant reassurance. Furthermore, using color alone for status columns (e.g. green for SUCCESS, red for CRITICAL) violates WCAG 2.1 Success Criterion 1.4.1 (Use of Color) and isolates color-blind users. Combining color with distinct, shape-different emojis (🟢 SUCCESS, 🚨 CRITICAL, 🔄 RETRYING) resolves this accessibility barrier and improves glanceability for all users.
+**Action:** Always pair status colors with distinct shape/symbol indicators in terminal dashboards, and include a non-shifting pulse heartbeat to convey active monitoring.

@@ -243,7 +243,6 @@ class CodexIndex:
                 except Exception:
                     pass
 
-    @staticmethod
     def __init__(self, base_dir: Path = None):
         self.base_dir = base_dir or Path.home() / 'cli-synthegration' / 'codex'
         self.base_dir.mkdir(parents=True, exist_ok=True)
@@ -426,19 +425,26 @@ class CodexIndex:
             for i in range(len(words)-2):
                 phrases.add(' '.join(words[i:i+3]))
             code_phrases[ch] = phrases
-        # For each code, find others with overlapping phrases
+
+        # Optimized O(N^2) comparison with early-exit and sorted list scan.
+        # By sorting the hashes, hashes[i] < hashes[j] is always true,
+        # which allows us to eliminate slow 'min()' calls and conditional branching.
+        # Additionally, checking length constraints avoids slow set intersections on small blobs.
         clusters = {}
-        hashes = list(code_phrases.keys())
+        hashes = sorted(code_phrases.keys())
         for i in range(len(hashes)):
             ch1 = hashes[i]
             phrases1 = code_phrases[ch1]
+            if len(phrases1) < min_shared_phrases:
+                continue
             for j in range(i+1, len(hashes)):
                 ch2 = hashes[j]
                 phrases2 = code_phrases[ch2]
+                if len(phrases2) < min_shared_phrases:
+                    continue
                 overlap = phrases1 & phrases2
                 if len(overlap) >= min_shared_phrases:
-                    canonical = min(ch1, ch2)
-                    clusters.setdefault(canonical, []).append(ch2 if canonical == ch1 else ch1)
+                    clusters.setdefault(ch1, []).append(ch2)
         return clusters
 
     def find_similar_blocks(self, code: str, min_similarity: float = 0.6) -> list:

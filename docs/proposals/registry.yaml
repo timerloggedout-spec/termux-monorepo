@@ -1,6 +1,6 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-08-04T00:00:00Z"
+updated_at: "2026-08-05T17:00:00Z"
 updated_by: grok-archw1z
 
 proposals:
@@ -53,4 +53,24 @@ proposals:
         role: reviewer
         status: accepted
     related_prs: [1, 2]
+    gates_required: [repo-gate]
+
+  - id: kimi-cloud-offload
+    title: "Corrected Cloud Offload & Parallelization Evaluation"
+    author: Kimi2.6
+    status: posted
+    priority: P1
+    path: active/kimi-cloud-offload/
+    legacy_source: corrected_cloud_offload_evaluation.md
+    source_branch: docs/kimi-cloud-offload-evaluation
+    reviewers:
+      - id: kimi
+        role: author
+        status: posted
+      - id: grok-archw1z
+        role: registrar
+        status: posted
+    related_prs: []
+    related_branches:
+      - docs/kimi-cloud-offload-evaluation
     gates_required: [repo-gate]

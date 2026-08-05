@@ -206,6 +206,8 @@ master-staging → PR → master
 - `SUMMARY.md` - Complete project overview
 - `WORKFLOW.md` - Branch strategy and collaboration guidelines
 - `antigravity/MIGRATION_GUIDE.md` - Antigravity-specific migration
+- **TERMUX_ENVIRONMENT_EMULATOR_RESEARCH.md** (New)
+- **TERMUX_EMULATOR_SETUP.md** (New)
 
 **Documentation Statistics**:
 - Total files: 8

@@ -13,6 +13,11 @@ from typing import Optional, List, Dict, Any, Any as SessionType
 import requests as http_requests
 from rich.console import Console
 
+# Ensure monorepo root is in path for archwiz imports
+MONOREPO_ROOT = str(Path(__file__).resolve().parents[2])
+if MONOREPO_ROOT not in sys.path:
+    sys.path.insert(0, MONOREPO_ROOT)
+
 # curl_cffi is preferred (TLS fingerprinting) but optional on Termux when the
 # wheel's NDK/libc++ ABI does not match the host Python (seen on 3.14).
 _CURL_CFFI_AVAILABLE = False
@@ -64,31 +69,10 @@ def _cache_save(session_id: str, messages: List[Dict[str, Any]], account: str = 
     with open(path, 'w') as f:
         json.dump(messages, f, indent=2)
 
-    # === SSOT HOOK — write to canonical cross-provider store ===
-    try:
-        from archwiz.session_ssot import save_session_ssot
-        save_session_ssot(provider="deepcli", session_id=session_id, messages=messages)
-    except Exception as e:
-        try:
-            from archwiz.config import LOG_DIR
-            with open(LOG_DIR / "ssot_error.log", "a") as f:
-                f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} - SSOT write error: {e}\n")
-        except:
-            pass
-
     # === DISPATCH HOOK — additive, never blocks save ===
     try:
-        import importlib.util
-        import sys as _sys
-        spec = importlib.util.spec_from_file_location(
-            "dispatch_pipeline",
-            os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "archwiz", "dispatch_pipeline.py")
-        )
-        if spec and os.path.exists(spec.origin):
-            disp = importlib.util.module_from_spec(spec)
-            _sys.modules["dispatch_pipeline"] = disp
-            spec.loader.exec_module(disp)
-            disp.update_all(session_id)
+        from archwiz.dispatch_pipeline import trigger_dispatch
+        trigger_dispatch(session_id, messages)
     except Exception as e:
         try:
             from archwiz.config import LOG_DIR

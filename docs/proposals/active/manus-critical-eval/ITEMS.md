@@ -11,3 +11,6 @@
 | M-07 | Merge PR #9 and #10 into master-staging | P0 | manus | done | master-staging spine |
 | M-08 | Fix repo_gate submodule bug | P0 | manus | done | commit 44d79ab |
 | M-09 | Salvage provider abstraction from PR #6 | P1 | manus | done | archwiz/providers/ |
+| M-10 | Implement event-sourced dispatch pipeline | P0 | manus | done | archwiz/dispatch_pipeline.py |
+| M-11 | Automate repo_gate with pre-commit hook | P1 | manus | done | .git/hooks/pre-commit |
+| M-12 | Enhance Linear sync bridge | P1 | manus | done | archwiz/linear_sync.py |

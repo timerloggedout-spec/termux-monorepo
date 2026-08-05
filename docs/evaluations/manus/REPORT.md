@@ -64,8 +64,10 @@ The repository has a strict ban on session artifacts (`.pi`, `.deepcli`, `.cedar
 
 ### 6.1 Novel Work: `manus/novel-work` (PR #13)
 - **Path Normalization:** `archwiz.py` now respects environment-aware roots via `archwiz.config`.
-- **Linear Bridge:** Added `linear_sync.py` and a dashboard menu option to bridge local tasks to Linear.
+- **Linear Bridge:** Enhanced `linear_sync.py` with API structure and graceful fallback for syncing local tasks to Linear.
 - **Session SSOT:** Implemented `archwiz/session_ssot.py` and integrated it into `deepcli/core.py` to ensure a single source of truth for all provider sessions.
+- **Dispatch Pipeline:** Implemented an event-sourced `archwiz/dispatch_pipeline.py` to decouple ingestion from downstream indexing and harvesting.
+- **Gate Automation:** Installed a git `pre-commit` hook that runs `repo_gate.py` and `termux_smoke.py` automatically to maintain repository hygiene.
 - **Provider Abstraction:** Salvaged and cleaned up the `CodexIndex` and `BaseProvider` interface from PR #6, providing a foundation for multi-provider support.
 - **Observability:** Structured error logging for the `deepcli` core and SSOT writes.
 - **Portability:** Fixed `os.getlogin()` crashes in headless/sandbox environments.

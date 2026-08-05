@@ -11,7 +11,7 @@ jobs:
     if: github.event.label.name == 'jules'
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       issues: write
     steps:
       - name: Invoke Jules

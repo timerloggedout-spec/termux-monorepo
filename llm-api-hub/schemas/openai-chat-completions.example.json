@@ -1,0 +1,33 @@
+{
+  "request": {
+    "model": "hub/deepseek-chat",
+    "messages": [
+      {"role": "system", "content": "You are a helpful coding assistant inside the ADE."},
+      {"role": "user", "content": "Summarize the llm-api-hub contract in one sentence."}
+    ],
+    "temperature": 0.2,
+    "max_tokens": 512,
+    "stream": false
+  },
+  "response": {
+    "id": "chatcmpl-hub-example",
+    "object": "chat.completion",
+    "created": 1754320000,
+    "model": "hub/deepseek-chat",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "llm-api-hub exposes a single OpenAI-compatible /v1/chat/completions surface that routes through local wrappers, OpenRouter, or multi-ai-cli so NexusCLI and kai9000 never hold provider keys."
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 42,
+      "completion_tokens": 48,
+      "total_tokens": 90
+    }
+  }
+}

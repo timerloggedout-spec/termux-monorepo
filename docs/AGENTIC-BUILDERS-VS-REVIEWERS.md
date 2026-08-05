@@ -18,12 +18,35 @@
 | **Gemini CLI** (our triage/review/invoke workflows) | Issue triage, PR comments, on-demand analysis |
 | **Devin Review** (without Auto-Fix) | Comments only until Auto-Fix enabled |
 
+## Coordination (no overlapping files)
+
+Both Jules and Gemini workflows inject an inventory of **open agent PRs** into their prompts.
+
+Rules encoded in `GEMINI.md` and Jules invoke prompts:
+
+1. Scan open PRs from Jules / Devin / CodeRabbit / related issue links before editing.
+2. Do not modify files already in another open agent PR for the same issue.
+3. Prefer disjoint file sets.
+4. After opening a PR, post on the issue:
+
+```text
+<!-- agent-claim -->
+claimed_by: jules|gemini
+issue: N
+files: path/a, path/b
+pr: #
+```
+
+5. Cross-review: Gemini reviews Jules PRs; Jules auto-summons on bot feedback (`agent-review-auto-jules.yml`).
+
 ## Jules on issues (operational)
 
 1. Create label `jules` on the repo if missing (Issues → Labels).
 2. On any issue: add label **`jules`** → Jules App + workflow respond.
 3. Or comment **`@jules <what to do>`** as OWNER/MEMBER/COLLABORATOR.
 4. Optional: set `JULES_API_KEY` for `google-labs-code/jules-invoke` (stronger structured prompts).
+
+**Workflows must live on the default branch (`master`) for `issue_comment` / `issues` events to fire.**
 
 ## Devin suggested fixes — "auto approve"
 
@@ -47,7 +70,7 @@ That is GitHub branch protection + merge queue / rulesets — **not** something 
 
 ## Gemini 👀 indication
 
-After workflows are on the default branch *and* `GEMINI_API_KEY` is set:
+After workflows are on the **default branch** *and* `GEMINI_API_KEY` is set:
 
 - `@gemini-cli ...` comments get a **👀** reaction + short "received" comment with Actions run link
 - Same pattern as Jules / CodeRabbit

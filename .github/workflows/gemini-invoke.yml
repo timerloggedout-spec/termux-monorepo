@@ -6,6 +6,10 @@ on:
       additional_context:
         type: string
         required: false
+      prior_prs:
+        type: string
+        required: false
+        default: 'none'
 
 concurrency:
   group: gemini-invoke-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
@@ -38,6 +42,15 @@ jobs:
 
             User request / additional context:
             ${{ inputs.additional_context }}
+
+            ## Open agent / related PRs (coordination — DO NOT overlap files)
+            ${{ inputs.prior_prs }}
+
+            ## COORDINATION RULES
+            1. Jules is the primary *builder* (creates branches/PRs). You are primarily triage/review/analysis unless the user explicitly asks you to implement and write is possible.
+            2. Do not edit files already changed in open agent PRs for this issue.
+            3. If you open or recommend a PR, suggest posting <!-- agent-claim --> with claimed_by: gemini and file list.
+            4. Prefer reviewing Jules/Devin PRs over duplicating their work.
 
             Perform the request within free-tier limits. Prefer analysis + concrete suggestions or minimal patches.
             If code changes are required and you cannot push, describe the exact diff and next steps for Jules or a human.

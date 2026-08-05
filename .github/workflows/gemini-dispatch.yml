@@ -5,6 +5,7 @@ name: '🔀 Gemini Dispatch (free-tier agentic)'
 # Complements existing Jules + CodeRabbit stack.
 #
 # Ack pattern: posts 👀 on the triggering comment (same UX as Jules/CodeRabbit).
+# Coordination: prior open agent PRs are passed into triage/review/invoke prompts.
 
 on:
   pull_request:
@@ -45,9 +46,10 @@ jobs:
     outputs:
       command: ${{ steps.extract.outputs.command }}
       additional_context: ${{ steps.extract.outputs.additional_context }}
+      prior_prs: ${{ steps.extract.outputs.prior_prs }}
       issue_number: ${{ github.event.pull_request.number || github.event.issue.number }}
     steps:
-      - name: Extract command
+      - name: Extract command + prior PR inventory
         id: extract
         uses: actions/github-script@v7
         env:
@@ -73,6 +75,30 @@ jobs:
               core.setOutput('command', 'none');
             }
 
+            // Prior open agent PRs for coordination
+            try {
+              const issueNum = context.payload.pull_request?.number || context.payload.issue?.number;
+              const { data: prs } = await github.rest.pulls.list({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open',
+                per_page: 40,
+              });
+              const agentHints = ['jules', 'devin', 'coderabbit', 'ecc-tools', 'gemini'];
+              const relevant = prs.filter(p => {
+                const u = ((p.user && p.user.login) || '').toLowerCase();
+                const body = ((p.body || '') + ' ' + (p.title || '')).toLowerCase();
+                return agentHints.some(a => u.includes(a)) ||
+                       (issueNum && (body.includes('#' + issueNum) || body.includes('issue ' + issueNum)));
+              }).slice(0, 12);
+              const inventory = relevant.map(p =>
+                `PR #${p.number} @${p.user.login}: ${p.title}`
+              ).join(' | ') || 'none';
+              core.setOutput('prior_prs', inventory);
+            } catch (e) {
+              core.setOutput('prior_prs', 'unavailable');
+            }
+
       - name: Acknowledge with 👀 + comment
         if: steps.extract.outputs.command != 'none'
         uses: actions/github-script@v7
@@ -80,7 +106,6 @@ jobs:
           script: |
             const cmd = '${{ steps.extract.outputs.command }}';
             const number = context.payload.pull_request?.number || context.payload.issue?.number;
-            // React on comment if this was a mention
             if (context.payload.comment?.id) {
               try {
                 await github.rest.reactions.createForIssueComment({
@@ -104,7 +129,6 @@ jobs:
                 core.info('Issue reaction skip: ' + e.message);
               }
             }
-            // Only post text ack for explicit @gemini-cli mentions (avoid noise on every PR open)
             if (context.payload.comment || context.payload.review) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
@@ -124,6 +148,7 @@ jobs:
       pull-requests: write
     with:
       additional_context: ${{ needs.dispatch.outputs.additional_context }}
+      prior_prs: ${{ needs.dispatch.outputs.prior_prs }}
     secrets: inherit
 
   review:
@@ -136,6 +161,7 @@ jobs:
       pull-requests: write
     with:
       additional_context: ${{ needs.dispatch.outputs.additional_context }}
+      prior_prs: ${{ needs.dispatch.outputs.prior_prs }}
     secrets: inherit
 
   invoke:
@@ -148,4 +174,5 @@ jobs:
       pull-requests: write
     with:
       additional_context: ${{ needs.dispatch.outputs.additional_context }}
+      prior_prs: ${{ needs.dispatch.outputs.prior_prs }}
     secrets: inherit

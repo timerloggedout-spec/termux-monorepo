@@ -6,6 +6,10 @@ on:
       additional_context:
         type: string
         required: false
+      prior_prs:
+        type: string
+        required: false
+        default: 'none'
 
 concurrency:
   group: gemini-review-${{ github.event.pull_request.number || github.run_id }}
@@ -41,8 +45,10 @@ jobs:
             - Security (especially credentials, session stores, chmod 0o600/0o700 patterns)
             - Alignment with AGENTS.md hard rules (master-staging, gates, no Class 3/4 artifacts)
             - Minimal-diff preference
+            - Overlap with other open agent PRs: ${{ inputs.prior_prs }}
 
             Post a concise review comment. Do not approve or request changes via the formal review API unless clearly authorized; prefer a comment.
-            Coordinate mentally with CodeRabbit (already reviewing) and Jules (may auto-fix later).
+            Coordinate with CodeRabbit (already reviewing) and Jules (may auto-fix later).
+            If this is a Jules PR, focus on gaps Jules may have missed rather than rewriting the same work.
 
             Additional context: ${{ inputs.additional_context }}

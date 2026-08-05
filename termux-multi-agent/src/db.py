@@ -45,6 +45,10 @@ def init_db():
                 msg_idx UNINDEXED
             )''')
         conn.commit()
+    try:
+        os.chmod(DB_PATH, 0o600)
+    except Exception:
+        pass
 
 def log_attempt_telemetry(target_file, attempt, patch, errors, verdict):
     """

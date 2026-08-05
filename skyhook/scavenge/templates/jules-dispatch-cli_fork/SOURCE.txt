@@ -1,0 +1,28 @@
+name: jules-dispatch-cli_fork
+tier: 1
+role: batch_dispatch_cli
+owner_repo: timerloggedout-spec/jules-dispatch-cli_fork
+url: https://github.com/timerloggedout-spec/jules-dispatch-cli_fork
+default_branch: main
+visibility: public
+stack: TypeScript + Bun + Commander.js
+upstream_hint: AVANT-ICONIC/jules-dispatch-cli
+auth: JULES_API_KEY via X-Goog-Api-Key
+api: https://jules.googleapis.com (v1alpha)
+status: recon_done_2026-08-03
+paths:
+  - src/
+  - AGENTS.md
+  - docs/agent-guide.md
+  - docs/jules-api-notes.md
+  - docs/command-reference.md
+  - .env.example
+steal:
+  - sessions create/run/get with --json for agents
+  - session state machine QUEUED..COMPLETED/FAILED
+  - approve-plan flow (sessions approve)
+  - prs list/view/merge via gh bridge
+  - 429 backoff notes in architecture
+non_goals:
+  - requiring Bun on Termux CI for doctor
+  - replacing skyhook.bridge with full CLI vendoring

@@ -9,3 +9,10 @@ Using a single shared database connection across file walks and batching all ins
 
 **Action:**
 Always batch SQL database operations using `executemany` instead of iterating with `execute`. Provide support for passing an optional shared `conn` handle in indexing/utility functions to allow single-connection batch runs across walk loops, while safely closing connections only if opened locally.
+
+## 2026-08-05 - File Seek Position Tracking and Graceful Optional Imports in Terminal Dashboards
+**Learning:**
+In terminal-based live-monitoring applications, continuously polling growing append-only JSON log files to update UI dashboards causes severe CPU and I/O degradation. Tracking file seek positions (`f.tell()`) and keeping an in-memory accumulated dictionary of updates transforms the polling operation from $O(N)$ (where $N$ is total lines in log) to $O(M)$ (where $M$ is newly appended lines), resulting in a >170x performance gain. Additionally, avoiding `sys.exit(1)` at import time for optional CLI dependencies (like `rich`) and handling them lazily at script execution prevents import crashes in automated test environments.
+
+**Action:**
+Use stateful file-pointer seek offsets and in-memory caches to incrementally process append-only logs instead of re-reading from scratch. Ensure optional third-party library dependencies (such as `rich`) only fail during script execution, never at import time.

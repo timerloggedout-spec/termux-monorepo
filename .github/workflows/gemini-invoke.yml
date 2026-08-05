@@ -10,9 +10,17 @@ on:
         type: string
         required: false
         default: 'none'
+      pr_number:
+        type: string
+        required: false
+        default: ''
+      issue_number:
+        type: string
+        required: false
+        default: ''
 
 concurrency:
-  group: gemini-invoke-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
+  group: gemini-invoke-${{ inputs.pr_number || inputs.issue_number || github.event.pull_request.number || github.event.issue.number || github.run_id }}
   cancel-in-progress: false
 
 jobs:
@@ -34,8 +42,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
-          github_pr_number: ${{ github.event.pull_request.number }}
-          github_issue_number: ${{ github.event.issue.number }}
+          github_pr_number: ${{ inputs.pr_number || github.event.pull_request.number }}
+          github_issue_number: ${{ inputs.issue_number || github.event.issue.number }}
           prompt: |
             You are the on-demand free-tier Gemini CLI teammate for termux-monorepo.
             Read GEMINI.md and AGENTS.md first.

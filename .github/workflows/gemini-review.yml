@@ -10,9 +10,13 @@ on:
         type: string
         required: false
         default: 'none'
+      pr_number:
+        type: string
+        required: false
+        default: ''
 
 concurrency:
-  group: gemini-review-${{ github.event.pull_request.number || github.run_id }}
+  group: gemini-review-${{ inputs.pr_number || github.event.pull_request.number || github.run_id }}
   cancel-in-progress: true
 
 jobs:
@@ -35,7 +39,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
-          github_pr_number: ${{ github.event.pull_request.number }}
+          github_pr_number: ${{ inputs.pr_number || github.event.pull_request.number || github.event.issue.number }}
           prompt: |
             You are the free-tier agentic PR reviewer for termux-monorepo.
             Read GEMINI.md and AGENTS.md.

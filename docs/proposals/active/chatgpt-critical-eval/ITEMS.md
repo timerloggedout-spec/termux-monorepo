@@ -22,4 +22,5 @@
 | CE-18 | Content-addressed blob store | P2 | | todo | |
 | CE-19 | Four-plane architecture | P2 | | todo | |
 | CE-20 | Proposal process + nested registry | P0 | grok-archw1z | done | this tree |
-| CE-21 | CONSENSUS.md + promote process docs to master | P0 | grok-archw1z | doing | this PR |
+| CE-21 | CONSENSUS.md + promote process docs to master-staging | P0 | grok-archw1z | doing | this PR |
+| CE-22 | Free-tier agentic CI/CD (Gemini CLI + Jules coord + PromptPwnd mitigations) | P0 | grok | doing | PR #42 |

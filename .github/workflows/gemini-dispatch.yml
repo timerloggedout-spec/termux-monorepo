@@ -6,10 +6,19 @@ name: '🔀 Gemini Dispatch (free-tier agentic)'
 #
 # Ack pattern: posts 👀 on the triggering comment (same UX as Jules/CodeRabbit).
 # Coordination: prior open agent PRs are passed into triage/review/invoke prompts.
+#
+# INTENTIONAL AGENTIC SURFACE (ADE):
+# Agents may use tools / shell / gh CLI inside trusted runs. That is required for
+# an Automated Agentic Development Environment. Mitigations:
+# - @gemini-cli triggers require OWNER/MEMBER/COLLABORATOR
+# - Fork PRs excluded from auto review
+# - GEMINI.md hard rules (no secrets, master-staging, gates, claim markers)
+# - No secrets interpolated into prompts from untrusted issue bodies
+# See docs/AGENTIC-CICD-FREE-TIER.md § Security / PromptPwnd.
 
 on:
   pull_request:
-    types: [opened, synchronize, ready_for_review]
+    types: [opened, ready_for_review]
   issues:
     types: [opened, reopened]
   issue_comment:
@@ -32,11 +41,12 @@ jobs:
         github.event.pull_request.draft == false
       ) || (
         github.event_name == 'issues' &&
-        contains(fromJSON('["opened", "reopened"]'), github.event.action)
+        contains(fromJSON('["opened", "reopened"]'), github.event.action) &&
+        contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.issue.author_association)
       ) || (
         github.event.sender.type == 'User' &&
         startsWith(github.event.comment.body || github.event.review.body || '', '@gemini-cli') &&
-        contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association || github.event.review.author_association || github.event.issue.author_association)
+        contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association || github.event.review.author_association || '')
       )
     runs-on: ubuntu-latest
     permissions:
@@ -47,7 +57,8 @@ jobs:
       command: ${{ steps.extract.outputs.command }}
       additional_context: ${{ steps.extract.outputs.additional_context }}
       prior_prs: ${{ steps.extract.outputs.prior_prs }}
-      issue_number: ${{ github.event.pull_request.number || github.event.issue.number }}
+      issue_number: ${{ steps.extract.outputs.issue_number }}
+      pr_number: ${{ steps.extract.outputs.pr_number }}
     steps:
       - name: Extract command + prior PR inventory
         id: extract
@@ -59,7 +70,14 @@ jobs:
           script: |
             const eventType = process.env.EVENT_TYPE;
             const request = process.env.REQUEST || '';
-            if (eventType === 'pull_request.opened' || eventType === 'pull_request.synchronize' || eventType === 'pull_request.ready_for_review') {
+            const prNum = context.payload.pull_request?.number ||
+              (context.payload.issue?.pull_request ? context.payload.issue.number : null) ||
+              null;
+            const issueNum = context.payload.issue?.number || context.payload.pull_request?.number || null;
+            core.setOutput('pr_number', prNum ? String(prNum) : '');
+            core.setOutput('issue_number', issueNum ? String(issueNum) : '');
+
+            if (eventType === 'pull_request.opened' || eventType === 'pull_request.ready_for_review') {
               core.setOutput('command', 'review');
             } else if (['issues.opened', 'issues.reopened'].includes(eventType)) {
               core.setOutput('command', 'triage');
@@ -77,7 +95,6 @@ jobs:
 
             // Prior open agent PRs for coordination
             try {
-              const issueNum = context.payload.pull_request?.number || context.payload.issue?.number;
               const { data: prs } = await github.rest.pulls.list({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -162,6 +179,7 @@ jobs:
     with:
       additional_context: ${{ needs.dispatch.outputs.additional_context }}
       prior_prs: ${{ needs.dispatch.outputs.prior_prs }}
+      pr_number: ${{ needs.dispatch.outputs.pr_number }}
     secrets: inherit
 
   invoke:
@@ -175,4 +193,6 @@ jobs:
     with:
       additional_context: ${{ needs.dispatch.outputs.additional_context }}
       prior_prs: ${{ needs.dispatch.outputs.prior_prs }}
+      pr_number: ${{ needs.dispatch.outputs.pr_number }}
+      issue_number: ${{ needs.dispatch.outputs.issue_number }}
     secrets: inherit

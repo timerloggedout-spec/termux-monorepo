@@ -1,6 +1,4 @@
-{"timestamp": "2026-05-24 18:50:39", "level": "INFO", "agent": "system", "target": "test_script.py", "attempt": null, "message": "Initializing isolated branch..."}
-{"timestamp": "2026-05-24 18:50:39", "level": "INFO", "agent": "deepseek-v4-pro", "target": "test_script.py", "attempt": 1, "message": "Generating code fix..."}
-{"timestamp": "2026-05-24 19:11:16", "level": "INFO", "agent": "system", "target": "test_script.py", "attempt": null, "message": "Initializing isolated branch..."}
-{"timestamp": "2026-05-24 19:11:16", "level": "INFO", "agent": "deepseek-v4-pro", "target": "test_script.py", "attempt": 1, "message": "Generating code fix..."}
-{"timestamp": "2026-05-24 19:32:31", "level": "INFO", "agent": "system", "target": "test_script.py", "attempt": null, "message": "Initializing isolated branch..."}
-{"timestamp": "2026-05-24 19:32:31", "level": "INFO", "agent": "deepseek-v4-pro", "target": "test_script.py", "attempt": 1, "message": "Generating code fix..."}
+{"target": "workspace/test_script.py", "agent": "orchestrator", "attempt": 1, "level": "PROCESSING", "message": "Initializing workspace...", "timestamp": "2026-08-05 07:34:37"}
+{"target": "workspace/refactor_target.py", "agent": "refactor_agent", "attempt": 2, "level": "RETRY", "message": "Retrying with updated context", "timestamp": "2026-08-05 07:34:37"}
+{"target": "workspace/bad_code.py", "agent": "security_agent", "attempt": 1, "level": "CRITICAL", "message": "Vulnerability detected!", "timestamp": "2026-08-05 07:34:37"}
+{"target": "workspace/final_build.py", "agent": "builder", "attempt": 1, "level": "SUCCESS", "message": "Build completed successfully", "timestamp": "2026-08-05 07:34:37"}

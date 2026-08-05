@@ -1,6 +1,6 @@
 # ArchW1z Status Board
 
-> Living recon. Updated as gates land and PRs resolve.  
+> Living recon. Updated as gates land and PRs resolve.
 > Sources: ChatGPT Critical-Eval, ChatGPT-initial, ChatGPT_droidApp, live branch/PR inventory.
 
 **Last update:** 2026-08-02 (Grok / ArchW1z agent) — #11 merged; SSOT + capability + security docs landed

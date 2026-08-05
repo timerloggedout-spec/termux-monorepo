@@ -83,10 +83,10 @@ jobs:
             const teamId = '1e672463-31de-40b2-a378-3c03fd8f7e3b';
             const parentTitle = `PR #${prNumber} agent feedback rollup`;
             const search = await linear(
-              `query($q: String!) { issueSearch(query: $q, first: 5) { nodes { id title } } }`,
-              { q: `team:Termux-monorepo_linear title:"${parentTitle}"` }
+              `query($filter: IssueFilter) { issues(filter: $filter, first: 5) { nodes { id title } } }`,
+              { filter: { title: { eq: parentTitle } } }
             );
-            let parentId = search.issueSearch?.nodes?.find(n => n.title === parentTitle)?.id;
+            let parentId = search.issues?.nodes?.find(n => n.title === parentTitle)?.id;
             if (!parentId) {
               const created = await linear(
                 `mutation($input: IssueCreateInput!) { issueCreate(input: $input) { issue { id identifier } } }`,

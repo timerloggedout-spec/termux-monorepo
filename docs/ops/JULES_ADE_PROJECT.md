@@ -1,12 +1,12 @@
 # Jules ADE Project — Fully Agentic Development Environment
 
-> **Status:** LIVE definition  
-> **Source:** Jules Create Project UI (2026-08-03) + ArchW1z gate spine  
+> **Status:** LIVE definition
+> **Source:** Jules Create Project UI (2026-08-03) + ArchW1z gate spine
 > **Human role:** Tier 4 only (credentials, history rewrite) + `termux-smoke` cherry-pick until automated
 
 ## Core principle
 
-**`timerloggedout-spec/termux-monorepo` is the HOME Project Repo.**  
+**`timerloggedout-spec/termux-monorepo` is the HOME Project Repo.**
 Everything else is a **template to be scavenged from**. Agents own execution.
 
 ```
@@ -28,7 +28,7 @@ Do **not** integrate large TER-* work straight onto `master`.
 > - antigravity orchestration
 > - agy-sdk-agents / dispatch-cli / studio / google-jules-*
 >
-> We need to be able to delegate **Now**.  
+> We need to be able to delegate **Now**.
 > If you can install MCP Server integrations connections for our own Access, do so.
 
 ---

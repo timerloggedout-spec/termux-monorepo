@@ -1,0 +1,25 @@
+name: jules-mcp-server_fork
+tier: 1
+role: mcp_server
+owner_repo: timerloggedout-spec/jules-mcp-server_fork
+url: https://github.com/timerloggedout-spec/jules-mcp-server_fork
+default_branch: main
+visibility: public
+stack: Python 3.13+ FastMCP + jules-agent-sdk
+run: uv run fastmcp run jules_mcp/jules_mcp.py:mcp OR python -m jules_mcp
+auth: JULES_API_KEY
+status: recon_done_2026-08-03
+paths:
+  - jules_mcp/
+  - MCP.json
+  - fastmcp.json
+  - pyproject.toml
+steal:
+  - create_session(prompt, source, starting_branch, title, require_plan_approval)
+  - approve_session_plan / send_session_message / wait_for_session_completion
+  - list_sources / get_all_sources
+  - activity inspection tools
+  - MCP.json host config shape (env-only secrets)
+non_goals:
+  - committing API keys
+  - pinning Python 3.13 as hard Termux gate requirement without probe

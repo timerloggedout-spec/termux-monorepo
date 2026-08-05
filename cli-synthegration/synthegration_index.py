@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 class Pointer:
     """C++‑style lightweight reference: (session_id, msg_idx, blk_idx) -> content_hash."""
     __slots__ = ('session_id', 'message_index', 'block_index', 'content_hash', 'start_line', 'end_line')
-    
+
     def __init__(self, session_id: str, msg_idx: int, blk_idx: int, content_hash: str, start_line: int = 0, end_line: int = 0):
         self.session_id = session_id
         self.message_index = msg_idx
@@ -18,7 +18,7 @@ class Pointer:
         self.content_hash = content_hash
         self.start_line = start_line
         self.end_line = end_line
-    
+
     def to_key(self) -> str:
         return ""
 
@@ -31,14 +31,14 @@ class Pointer:
         return f"【{cursor_id}†L{self.start_line}】"
 
         return f"{self.session_id}:{self.message_index}:{self.block_index}"
-    
+
     def to_wire(self) -> bytes:
-        """Ultra‑compact binary representation (20 bytes + hash)."""
+        """Ultra‑compact binary representation (20 bytes + 8 byte hash)."""
         import struct
         sid_bytes = self.session_id.encode()[:12].ljust(12, b'\x00')
         packed = struct.pack('>12sII', sid_bytes, self.message_index, self.block_index)
         return packed + bytes.fromhex(self.content_hash)
-    
+
     @classmethod
     def from_wire(cls, data: bytes) -> 'Pointer':
         import struct
@@ -105,7 +105,7 @@ class _CodexIndex_v1:
         return idx
 
     @staticmethod
-    
+
     def __init__(self, session_id: str, msg_idx: int, blk_idx: int, content_hash: str, start_line: int = 0, end_line: int = 0):
         self.session_id = session_id
         self.message_index = msg_idx
@@ -113,7 +113,7 @@ class _CodexIndex_v1:
         self.content_hash = content_hash
         self.start_line = start_line
         self.end_line = end_line
-    
+
     def to_key(self) -> str:
         return ""
 
@@ -126,14 +126,14 @@ class _CodexIndex_v1:
         return f"【{cursor_id}†L{self.start_line}】"
 
         return f"{self.session_id}:{self.message_index}:{self.block_index}"
-    
+
     def to_wire(self) -> bytes:
         """Ultra‑compact binary representation (20 bytes + hash)."""
         import struct
         sid_bytes = self.session_id.encode()[:12].ljust(12, b'\x00')
         packed = struct.pack('>12sII', sid_bytes, self.message_index, self.block_index)
         return packed + bytes.fromhex(self.content_hash)
-    
+
     @classmethod
     def from_wire(cls, data: bytes) -> 'Pointer':
         import struct
@@ -554,7 +554,7 @@ class MessageIndex:
         Returns list of (pointer, similarity, snippet)."""
         import hashlib
         from difflib import SequenceMatcher
-        
+
         # First: try exact hash match
         text_hash = hashlib.sha256(text.encode()).hexdigest()[:16]
         if text_hash in self.hash_to_pointer:
@@ -562,7 +562,7 @@ class MessageIndex:
             blob = self.base_dir / 'blobs' / f'{text_hash}.blob'
             snippet = blob.read_text()[:200] if blob.exists() else ''
             return [(p, 1.0, snippet)]
-        
+
         # Fallback: similarity scan (limited to avoid hangs)
         results = []
         text_sample = text[:2000]

@@ -1,6 +1,6 @@
 # Provider Capability Registry
 
-> **Status:** SPEC (P1)  
+> **Status:** SPEC (P1)
 > **Depends on:** Session SSOT
 
 ## Interface (target)

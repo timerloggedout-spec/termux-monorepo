@@ -1,0 +1,190 @@
+name: Jules on Issues (label / @jules)
+
+# Native Jules already responds when the GitHub App sees label "jules".
+# This workflow adds:
+#  1) Explicit acknowledge + structured prompt via jules-invoke (if JULES_API_KEY set)
+#  2) Fallback @jules comment so the App path still fires without API key
+#  3) Optional auto-label path for trusted authors only
+#
+# Requires: Jules GitHub App installed on this repo
+# Optional: secrets.JULES_API_KEY for google-labs-code/jules-invoke
+#
+# SECURITY: Issue triggers are restricted — untrusted openers cannot burn quota.
+
+on:
+  issues:
+    types: [labeled, opened]
+  issue_comment:
+    types: [created]
+
+concurrency:
+  group: jules-issue-${{ github.event.issue.number || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  jules-on-label:
+    if: |
+      github.event_name == 'issues' &&
+      github.event.action == 'labeled' &&
+      (
+        github.event.label.name == 'jules' ||
+        github.event.label.name == 'Jules' ||
+        github.event.label.name == 'JULES'
+      )
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Acknowledge (👀)
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue.number;
+            // React on the issue itself
+            try {
+              await github.rest.reactions.createForIssue({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue,
+                content: 'eyes',
+              });
+            } catch (e) {
+              core.info('Reaction skip: ' + e.message);
+            }
+            const marker = '<!-- jules-issue-ack -->';
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue,
+              per_page: 30,
+            });
+            if (comments.some(c => c.body && c.body.includes(marker))) {
+              core.info('Already acknowledged');
+              return;
+            }
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue,
+              body: [
+                marker,
+                `👀 **Jules summoned** on issue #${issue} via label \`jules\`.`,
+                ``,
+                `Jules (Google Labs) will plan → implement in a Cloud VM → open a PR.`,
+                `If the Jules GitHub App is connected, it should also post its own status shortly.`,
+                ``,
+                `Tracking this workflow: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              ].join('\n'),
+            });
+
+      - name: Invoke Jules API (optional)
+        if: ${{ secrets.JULES_API_KEY != '' }}
+        continue-on-error: true
+        uses: google-labs-code/jules-invoke@v1
+        with:
+          jules_api_key: ${{ secrets.JULES_API_KEY }}
+          starting_branch: master-staging
+          prompt: |
+            You are Jules working on termux-monorepo. Read AGENTS.md and GEMINI.md if present.
+
+            ## Issue #${{ github.event.issue.number }}: ${{ github.event.issue.title }}
+
+            ${{ github.event.issue.body }}
+
+            ## Instructions
+            1. Diagnose root cause; prefer minimal diffs.
+            2. Preserve Sentinel 0o600/0o700 patterns if touching credentials/session paths.
+            3. Target branch base: master-staging. Open a PR; cite Implements if an ITEMS.md id applies.
+            4. Run or respect repo gates (repo_gate / termux_smoke) where possible.
+            5. Do not commit secrets or Class 3/4 artifacts.
+
+      - name: Fallback @jules ping (App path)
+        if: ${{ secrets.JULES_API_KEY == '' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue.number;
+            const marker = '<!-- jules-app-ping -->';
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue,
+              per_page: 30,
+            });
+            if (comments.some(c => c.body && c.body.includes(marker))) return;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue,
+              body: [
+                marker,
+                `@jules Please implement a fix for this issue.`,
+                ``,
+                `Base your work on **master-staging**. Prefer minimal diffs; respect AGENTS.md.`,
+                `Open a PR when done.`,
+              ].join('\n'),
+            });
+
+  jules-on-mention:
+    if: |
+      github.event_name == 'issue_comment' &&
+      !github.event.issue.pull_request &&
+      github.event.sender.type == 'User' &&
+      contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association) &&
+      (
+        startsWith(github.event.comment.body, '@jules') ||
+        startsWith(github.event.comment.body, '@Jules')
+      )
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: React 👀 on comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            try {
+              await github.rest.reactions.createForIssueComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: context.payload.comment.id,
+                content: 'eyes',
+              });
+            } catch (e) {
+              core.info('Reaction skip: ' + e.message);
+            }
+
+      - name: Ensure jules label
+        uses: actions/github-script@v7
+        with:
+          script: |
+            try {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.issue.number,
+                labels: ['jules'],
+              });
+            } catch (e) {
+              // Label may not exist yet — create is admin-only; App still sees @jules
+              core.info('Label add skip: ' + e.message);
+            }
+
+      - name: Invoke Jules API on mention (optional)
+        if: ${{ secrets.JULES_API_KEY != '' }}
+        continue-on-error: true
+        uses: google-labs-code/jules-invoke@v1
+        with:
+          jules_api_key: ${{ secrets.JULES_API_KEY }}
+          starting_branch: master-staging
+          prompt: |
+            Issue #${{ github.event.issue.number }}: ${{ github.event.issue.title }}
+
+            ${{ github.event.issue.body }}
+
+            User request:
+            ${{ github.event.comment.body }}
+
+            Follow AGENTS.md. Base branch master-staging. Minimal diffs. Open a PR.

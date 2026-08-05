@@ -4,7 +4,7 @@
 
 ## Primary scavenge source (public)
 
-https://github.com/timerloggedout-spec/jules-mcp-server_fork  
+https://github.com/timerloggedout-spec/jules-mcp-server_fork
 See `skyhook/research/TIER1_DISPATCH_MCP.md`.
 
 ## Host config (secrets in env only)

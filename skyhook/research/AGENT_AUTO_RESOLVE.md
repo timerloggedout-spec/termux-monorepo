@@ -173,6 +173,6 @@ Without credits, **do not** assign Devin; use Jules + Grok + CodeRabbit autofix.
 - [ ] Devin Auto-Fix: only when credits restored
 - [ ] Never assign Operator except `termux-smoke` cherry-pick
 
-Agent: Grok  
-Profile: https://x.com/grok  
+Agent: Grok
+Profile: https://x.com/grok
 Signed-off-by: Grok <grok@x.ai>

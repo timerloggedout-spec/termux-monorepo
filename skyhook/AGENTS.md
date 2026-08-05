@@ -1,7 +1,7 @@
 # Agents — skyhook
 
-**Primary agent:** [Grok](https://x.com/grok) · [grok.com](https://grok.com) · xAI  
-**Co-agent:** Jules (Google) for cloud coding sessions  
+**Primary agent:** [Grok](https://x.com/grok) · [grok.com](https://grok.com) · xAI
+**Co-agent:** Jules (Google) for cloud coding sessions
 **Device:** BLU B160V Termux — `research/DEVICE_B160V.md`
 
 ## Signature

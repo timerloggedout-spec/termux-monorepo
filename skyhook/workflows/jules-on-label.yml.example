@@ -1,6 +1,6 @@
 # Copy to .github/workflows/jules-on-label.yml after JULES_API_KEY is set.
 # Example only — not active until copied to .github/workflows/ on master-staging.
-name: Jules on jules/bug label
+name: Jules on jules label
 
 on:
   issues:
@@ -8,16 +8,14 @@ on:
 
 jobs:
   invoke-jules:
-    if: |
-      github.event.label.name == 'jules' ||
-      github.event.label.name == 'bug'
+    if: github.event.label.name == 'jules'
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      issues: read
+      contents: write
+      issues: write
     steps:
       - name: Invoke Jules
-        if: contains(fromJSON('["timerloggedout-spec"]'), github.event.issue.user.login)
+        if: contains(fromJSON('["timerloggedout-spec"]'), github.event.sender.login)
         uses: google-labs-code/jules-invoke@v1
         with:
           starting_branch: master-staging

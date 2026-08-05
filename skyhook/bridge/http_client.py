@@ -17,6 +17,7 @@ DEFAULT_BASE = "https://jules.googleapis.com/v1alpha"
 
 
 def _api_key() -> str:
+    """Returns the Jules API key from environment variables if present."""
     for name in ("JULES_API_KEY", "GOOGLE_JULES_API_KEY"):
         val = os.environ.get(name, "").strip()
         if val:
@@ -25,6 +26,7 @@ def _api_key() -> str:
 
 
 def _headers() -> Dict[str, str]:
+    """Generates standard request headers including API key authentication."""
     key = _api_key()
     if not key:
         raise RuntimeError("JULES_API_KEY not set")
@@ -43,7 +45,18 @@ def request_json(
     base: Optional[str] = None,
     timeout: float = 60.0,
 ) -> Dict[str, Any]:
-    """Low-level JSON request. path is relative (e.g. 'sessions')."""
+    """Low-level JSON request. path is relative (e.g. 'sessions').
+
+    Args:
+        method: HTTP request method (e.g. 'GET', 'POST').
+        path: Path relative to the base URL.
+        body: JSON request payload body.
+        base: Custom base URL override.
+        timeout: Network timeout in seconds.
+
+    Returns:
+        The decoded response JSON as a dictionary.
+    """
     url = (base or os.environ.get("JULES_API_BASE", DEFAULT_BASE)).rstrip("/") + "/" + path.lstrip("/")
     data = None if body is None else json.dumps(body).encode("utf-8")
     req = urllib.request.Request(url, data=data, headers=_headers(), method=method.upper())
@@ -66,8 +79,15 @@ def build_create_session_body(
 ) -> Dict[str, Any]:
     """Map skyhook plan fields → API-ish body (exact schema may evolve).
 
-    `source` should be a Jules source id (e.g. sources/...), not only owner/repo.
-    Agents resolve sources via list_sources on a host with full SDK if needed.
+    Args:
+        prompt: Task prompt instructions.
+        source: Jules source id (e.g. sources/...).
+        starting_branch: Base branch name.
+        title: Task session title.
+        require_plan_approval: If True, halts for plan approval.
+
+    Returns:
+        A formatted JSON payload dictionary.
     """
     body: Dict[str, Any] = {
         "prompt": prompt,

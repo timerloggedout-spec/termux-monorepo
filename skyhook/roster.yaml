@@ -1,7 +1,7 @@
 # skyhook roster — Jules-first; public forks under timerloggedout-spec
 version: 3
-updated_at: "2026-08-03T21:20:00Z"
-updated_by: grok-archw1z
+updated_at: "2026-08-04T08:00:00Z"
+updated_by: grok-and-jules
 package: skyhook
 branch: feature/skyhook
 
@@ -43,31 +43,90 @@ scavenge_templates:
   jules_gold:
     - name: jules-dispatch-cli_fork
       tier: 1
+      role: batch_dispatch_yaml
+      upstream_hint: jules-dispatch / parallel session fleet
       visibility: public
       url: https://github.com/timerloggedout-spec/jules-dispatch-cli_fork
       recon: skyhook/research/TIER1_DISPATCH_MCP.md
     - name: jules-mcp-server_fork
       tier: 1
+      role: mcp_server
+      upstream_hint: "@google/jules-mcp"
       visibility: public
       url: https://github.com/timerloggedout-spec/jules-mcp-server_fork
       recon: skyhook/research/TIER1_DISPATCH_MCP.md
     - name: jules-sdk_fork-rs
       tier: 2
+      role: rust_sdk
+      upstream_hint: google-labs-code/jules-sdk
       visibility: public
       url: https://github.com/timerloggedout-spec/jules-sdk_fork-rs
     - name: jules-action_fork
       tier: 2
+      role: github_action
       visibility: public
       url: https://github.com/timerloggedout-spec/jules-action_fork
     - name: gh-jules-workflow-development_fork
       tier: 2
+      role: gh_workflows
       visibility: public
       url: https://github.com/timerloggedout-spec/gh-jules-workflow-development_fork
+    - name: jules-skill_fork
+      tier: 3
+      role: skill_packaging
+      visibility: public
+      url: https://github.com/timerloggedout-spec/jules-skill_fork
+    - name: jules-skills_fork
+      tier: 3
+      role: skills_collection
+      visibility: public
+      url: https://github.com/timerloggedout-spec/jules-skills_fork
+    - name: google-jules-skill_fork
+      tier: 3
+      role: google_skill
+      visibility: public
+      url: https://github.com/timerloggedout-spec/google-jules-skill_fork
+    - name: jules-foreman_fork
+      tier: 4
+      role: task_foreman
+      visibility: public
+      url: https://github.com/timerloggedout-spec/jules-foreman_fork
+    - name: jules-studio_fork
+      tier: 4
+      role: studio_ui
+      visibility: public
+      url: https://github.com/timerloggedout-spec/jules-studio_fork
     - name: jules-cli_fork-multiAgent
       tier: 4
+      role: multi_agent_patterns
       visibility: public
       url: https://github.com/timerloggedout-spec/jules-cli_fork-multiAgent
       note: Create Project listed jules-multi-agent; actual name is jules-cli_fork-multiAgent
+    - name: google-jules-workflow_fork
+      tier: 5
+      role: google_workflow
+      visibility: public
+      url: https://github.com/timerloggedout-spec/google-jules-workflow_fork
+    - name: cjules_fork
+      tier: 5
+      role: c_variant
+      visibility: public
+      url: https://github.com/timerloggedout-spec/cjules_fork
+    - name: jules_api_cli_fork
+      tier: 5
+      role: api_cli
+      visibility: public
+      url: https://github.com/timerloggedout-spec/jules_api_cli_fork
+    - name: jules-awesome-list_fork
+      tier: 5
+      role: catalog
+      visibility: public
+      url: https://github.com/timerloggedout-spec/jules-awesome-list_fork
+    - name: pi-jules_fork
+      tier: 5
+      role: pi_agent_bridge
+      visibility: public
+      url: https://github.com/timerloggedout-spec/pi-jules_fork
 
 deferred_antigravity:
   reason: >-

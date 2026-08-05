@@ -1,6 +1,6 @@
 # Secrets & keys — continuous ADE contract
 
-**Agent: Grok** · Profile: https://x.com/grok  
+**Agent: Grok** · Profile: https://x.com/grok
 Device: BLU B160V Termux · Aligns with GitHub PR **#18 Sentinel** (0o700 dirs / 0o600 files)
 
 ## Hard rules
@@ -21,7 +21,7 @@ Device: BLU B160V Termux · Aligns with GitHub PR **#18 Sentinel** (0o700 dirs /
 | `SKYHOOK_PREFER_STAGING` | Prefer staging gate (`1` default) | Optional |
 | `JULES_API_BASE` | Override API base URL | Optional |
 
-`skyhook/bridge/config.py` only records **whether** a Jules key is present (`jules_api_key_present: bool`).  
+`skyhook/bridge/config.py` only records **whether** a Jules key is present (`jules_api_key_present: bool`).
 `skyhook/bridge/http_client.py` reads the key only at request time and never persists it.
 
 ## Sentinel alignment (PR #18)

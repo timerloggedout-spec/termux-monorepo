@@ -17,7 +17,10 @@ from bridge.dispatch import JulesTaskPlan, plan_from_task_yaml_fields, plan_task
 
 
 class TestLoadConfig(unittest.TestCase):
+    """Test suite for verifying the environment config loading contract."""
+
     def test_defaults(self) -> None:
+        """Verifies that the default configurations are populated correctly when env is empty."""
         with mock.patch.dict(os.environ, {}, clear=True):
             # clear=True drops inherited env; restore only what we need absent
             cfg = load_config()
@@ -28,6 +31,7 @@ class TestLoadConfig(unittest.TestCase):
         self.assertIsInstance(cfg.jules_api_key_present, bool)
 
     def test_env_overrides(self) -> None:
+        """Verifies that SKYHOOK env overrides are loaded correctly."""
         env = {
             "SKYHOOK_HOME_REPO": "org/other",
             "SKYHOOK_DEFAULT_BRANCH": "dev",
@@ -42,6 +46,7 @@ class TestLoadConfig(unittest.TestCase):
         self.assertFalse(cfg.prefer_staging)
 
     def test_key_present_jules(self) -> None:
+        """Verifies that JULES_API_KEY presence is registered as a boolean without leaking secrets."""
         with mock.patch.dict(os.environ, {"JULES_API_KEY": "secret-value"}, clear=False):
             cfg = load_config()
         self.assertTrue(cfg.jules_api_key_present)
@@ -50,12 +55,14 @@ class TestLoadConfig(unittest.TestCase):
         self.assertNotIn("secret-value", repr(cfg))
 
     def test_key_present_google_alias(self) -> None:
+        """Verifies that GOOGLE_JULES_API_KEY alias is correctly checked."""
         env = {"JULES_API_KEY": "", "GOOGLE_JULES_API_KEY": "other-secret"}
         with mock.patch.dict(os.environ, env, clear=False):
             cfg = load_config()
         self.assertTrue(cfg.jules_api_key_present)
 
     def test_key_absent(self) -> None:
+        """Verifies that absent keys are correctly marked as not present."""
         env = {"JULES_API_KEY": "", "GOOGLE_JULES_API_KEY": ""}
         with mock.patch.dict(os.environ, env, clear=False):
             cfg = load_config()
@@ -64,7 +71,10 @@ class TestLoadConfig(unittest.TestCase):
 
 
 class TestPlanTask(unittest.TestCase):
+    """Test suite for verifying the JulesTaskPlan generation logic."""
+
     def _cfg(self, **kwargs: object) -> BridgeConfig:
+        """Generates a standard test BridgeConfig block with optional overrides."""
         base = dict(
             jules_api_key_present=False,
             home_repo="timerloggedout-spec/termux-monorepo",
@@ -76,21 +86,25 @@ class TestPlanTask(unittest.TestCase):
         return BridgeConfig(**base)  # type: ignore[arg-type]
 
     def test_prefer_staging_rewrites_master(self) -> None:
+        """Asserts that starting_branch of 'master' is rewritten to 'master-staging' when prefer_staging is active."""
         plan = plan_task("t", "p", starting_branch="master", config=self._cfg())
         self.assertEqual(plan.starting_branch, "master-staging")
 
     def test_prefer_staging_off_keeps_master(self) -> None:
+        """Asserts that starting_branch of 'master' is preserved when prefer_staging is off."""
         plan = plan_task(
             "t", "p", starting_branch="master", config=self._cfg(prefer_staging=False)
         )
         self.assertEqual(plan.starting_branch, "master")
 
     def test_defaults_to_config_branch(self) -> None:
+        """Asserts that the default branch from config is used if starting_branch is unspecified."""
         plan = plan_task("t", "p", config=self._cfg())
         self.assertEqual(plan.starting_branch, "master-staging")
         self.assertEqual(plan.source_repo, "timerloggedout-spec/termux-monorepo")
 
     def test_explicit_repo_and_branch(self) -> None:
+        """Asserts that explicit repositories and branches are mapped correctly."""
         plan = plan_task(
             "title",
             "prompt body",
@@ -106,6 +120,7 @@ class TestPlanTask(unittest.TestCase):
         self.assertTrue(plan.require_plan_approval)
 
     def test_to_dict(self) -> None:
+        """Asserts that task plans can be cleanly serialized to dictionary payloads."""
         plan = JulesTaskPlan("a", "b", "o/r", "master-staging")
         d = plan.to_dict()
         self.assertEqual(d["title"], "a")
@@ -113,7 +128,10 @@ class TestPlanTask(unittest.TestCase):
 
 
 class TestPlanFromYamlFields(unittest.TestCase):
+    """Test suite for verifying the mapping of task YAML configurations."""
+
     def test_mapping(self) -> None:
+        """Asserts that YAML fields translate correctly to planned task attributes."""
         cfg = BridgeConfig(
             jules_api_key_present=False,
             home_repo="timerloggedout-spec/termux-monorepo",
@@ -138,6 +156,7 @@ class TestPlanFromYamlFields(unittest.TestCase):
         self.assertTrue(plan.require_plan_approval)
 
     def test_id_fallback_title(self) -> None:
+        """Asserts that task IDs fall back as session titles when explicitly unnamed."""
         cfg = BridgeConfig(
             jules_api_key_present=False,
             home_repo="timerloggedout-spec/termux-monorepo",

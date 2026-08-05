@@ -1,6 +1,6 @@
 # Security Remediation Sequence (PR #3 lineage)
 
-> **Status:** REQUIRED before treating session-store work as done  
+> **Status:** REQUIRED before treating session-store work as done
 > Related: `agent/repository-hygiene`, Critical-Eval §4, repo-gate HARD rules
 
 ## Three independent guarantees

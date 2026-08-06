@@ -47,7 +47,16 @@ def make_dashboard():
     # Header info
     now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     header_text = Text()
-    header_text.append("⚡ TERMUX MULTI-AGENT PARALLEL TELEMETRY ⚡\n", style="bold yellow")
+
+    # Pulsing active heartbeat indicator
+    is_even = int(time.time()) % 2 == 0
+    heartbeat = "●"
+    heartbeat_style = "bold green" if is_even else "dim green"
+
+    header_text.append("⚡ TERMUX MULTI-AGENT PARALLEL TELEMETRY ⚡  ", style="bold yellow")
+    header_text.append("[", style="dim")
+    header_text.append(heartbeat, style=heartbeat_style)
+    header_text.append(" LIVE]\n", style="dim")
     header_text.append(f"Last Sync: {now_str}  |  File: {TELEMETRY_LOG}", style="dim")
 
     header_panel = Panel(
@@ -110,15 +119,15 @@ def make_dashboard():
             except ValueError:
                 pass
 
-        # Beautiful styled status tag
+        # Beautiful styled status tag with color-blind accessible symbols
         if level == "SUCCESS":
-            status_str = Text("SUCCESS", style="bold green")
+            status_str = Text("✅ SUCCESS", style="bold green")
         elif level == "RETRY":
-            status_str = Text("RETRYING", style="bold yellow")
+            status_str = Text("🔄 RETRYING", style="bold yellow")
         elif level == "CRITICAL":
-            status_str = Text("CRITICAL", style="bold red")
+            status_str = Text("🚨 CRITICAL", style="bold red")
         else:
-            status_str = Text("PROCESSING", style="bold blue")
+            status_str = Text("⏳ PROCESSING", style="bold blue")
 
         table.add_row(
             target,

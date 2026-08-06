@@ -40,16 +40,19 @@ if [ ! -d "$CONNECTORS_DIR" ]; then
 fi
 
 # Set PYTHONPATH so imports work from any directory
-export PYTHONPATH="$CONNECTORS_DIR:$PYTHONPATH"
+export PYTHONPATH="$CONNECTORS_DIR:${PYTHONPATH:-}"
 
 # Run Python health check
 print_status "$BLUE" "Checking connector configurations..."
-if ! python3 "$CONNECTORS_DIR/connector_manager.py" > /tmp/connector_list.txt 2>&1; then
+CONNECTOR_LIST_FILE="$(mktemp)"
+trap 'rm -f "$CONNECTOR_LIST_FILE"' EXIT
+
+if ! python3 "$CONNECTORS_DIR/connector_manager.py" > "$CONNECTOR_LIST_FILE" 2>&1; then
     print_status "$RED" "Error checking connectors"
-    cat /tmp/connector_list.txt
+    cat "$CONNECTOR_LIST_FILE"
     FAILED=1
 else
-    cat /tmp/connector_list.txt
+    cat "$CONNECTOR_LIST_FILE"
 fi
 
 echo ""

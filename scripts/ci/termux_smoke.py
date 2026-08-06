@@ -330,6 +330,7 @@ def main() -> int:
     parser.add_argument("--strict", action="store_true", help="treat optional FAILs as required")
     parser.add_argument("--json", action="store_true", help="emit machine-readable JSON")
     parser.add_argument("--with-optional", action="store_true", help="probe deepcli/archwiz surfaces")
+    parser.add_argument("--light", action="store_true", help="run only fast, essential checks")
     args = parser.parse_args()
 
     report = SmokeReport()
@@ -339,9 +340,11 @@ def main() -> int:
     check_repo_layout(report)
     check_repo_gate_importable(report)
     check_self_compile(report)
-    check_git_available(report)
-    check_bash_available(report)
-    check_writable_tmp(report)
+    
+    if not args.light:
+        check_git_available(report)
+        check_bash_available(report)
+        check_writable_tmp(report)
 
     if args.with_optional:
         check_deepcli_surface(report)

@@ -1,47 +1,129 @@
 #!/usr/bin/env python3
-"""Additive post‑ingestion dispatch. Called by core.py after every session fetch.
-Non‑blocking: all heavy operations run via background scripts."""
+"""
+Enhanced event-sourced dispatch pipeline for ArchWiz.
+Decouples session ingestion from downstream updates (SSOT, Codex, Linear, etc.)
+"""
 import json
+import logging
+import os
 import sys
+import time
 from pathlib import Path
+from typing import List, Dict, Any, Callable
 
-HOME = Path.home()
+# Add root to path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from archwiz.config import ARCHWIZ_ROOT, LOG_DIR, SSOT_DIR
 
-def update_all(session_id: str, account: str = "primary"):
-    """Run downstream updates for a session. Lightweight — no subprocess calls."""
-    store = HOME / '.deepcli' / 'session_store' / account / f'{session_id}.json'
-    # Fallback to flat store if not in account subdir
-    if not store.exists():
-        store = HOME / '.deepcli' / 'session_store' / f'{session_id}.json'
-    if not store.exists():
-        return
+# Setup logging
+logging.basicConfig(
+    filename=LOG_DIR / "dispatch.log",
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s"
+)
+logger = logging.getLogger("dispatch")
 
+class DispatchPipeline:
+    def __init__(self):
+        self.dispatchers: List[Callable[[str, List[Dict[str, Any]]], None]] = []
+        self._register_default_dispatchers()
+
+    def register(self, func: Callable[[str, List[Dict[str, Any]]], None]):
+        self.dispatchers.append(func)
+
+    def _register_default_dispatchers(self):
+        self.register(self.dispatch_ssot)
+        self.register(self.dispatch_codex)
+        self.register(self.dispatch_lexicon)
+        self.register(self.dispatch_linear_hint)
+
+    def dispatch_ssot(self, session_id: str, messages: List[Dict[str, Any]]):
+        """Sync to Session SSOT."""
+        try:
+            from archwiz.session_ssot import SessionSSOT
+            ssot = SessionSSOT()
+            ssot.sync_session(session_id, messages)
+            logger.info(f"SSOT sync successful for {session_id}")
+        except Exception as e:
+            logger.error(f"SSOT dispatch failed for {session_id}: {e}")
+
+    def dispatch_codex(self, session_id: str, messages: List[Dict[str, Any]]):
+        """Harvest code blocks into Codex."""
+        try:
+            from archwiz.codex import CodexIndex
+            # We use a global index for the pipeline
+            codex = CodexIndex(provider="pipeline")
+            count = codex.harvest(session_id, messages)
+            logger.info(f"Codex harvested {count} blocks from {session_id}")
+        except Exception as e:
+            logger.error(f"Codex dispatch failed for {session_id}: {e}")
+
+    def dispatch_lexicon(self, session_id: str, messages: List[Dict[str, Any]]):
+        """Run legacy lexicon harvest."""
+        try:
+            # Try to find lexicon_harvest.py in the archwiz dir
+            sys.path.insert(0, str(ARCHWIZ_ROOT / "archwiz"))
+            try:
+                from lexicon_harvest import harvest_session
+                harvest_session(session_id)
+                logger.info(f"Lexicon harvest successful for {session_id}")
+            except ImportError:
+                # Fallback if not in archwiz dir
+                pass
+        except Exception as e:
+            logger.error(f"Lexicon dispatch failed for {session_id}: {e}")
+
+    def dispatch_linear_hint(self, session_id: str, messages: List[Dict[str, Any]]):
+        """Hint that a session might need Linear sync if it contains task updates."""
+        if not messages:
+            return
+        last_msg = messages[-1].get("content", "").lower()
+        if any(kw in last_msg for kw in ["done", "fixed", "implemented", "task"]):
+            logger.info(f"Session {session_id} marked for Linear sync review")
+
+    def run(self, session_id: str, messages: List[Dict[str, Any]]):
+        """Execute all registered dispatchers."""
+        start_time = time.time()
+        logger.info(f"Starting dispatch for session {session_id} ({len(messages)} messages)")
+        
+        for dispatcher in self.dispatchers:
+            try:
+                dispatcher(session_id, messages)
+            except Exception as e:
+                logger.error(f"Dispatcher {dispatcher.__name__} crashed: {e}")
+        
+        duration = time.time() - start_time
+        logger.info(f"Dispatch completed for {session_id} in {duration:.2f}s")
+
+def trigger_dispatch(session_id: str, messages: List[Dict[str, Any]]):
+    """Entry point for core.py and other ingestors."""
+    pipeline = DispatchPipeline()
+    pipeline.run(session_id, messages)
+
+def update_all(session_id: str):
+    """Legacy compatibility wrapper for older core.py versions."""
+    # We need the messages to run the pipeline properly.
+    # We try to load from the default store if not provided.
     try:
-        with open(store) as f:
-            msgs = json.load(f)
-    except Exception as e:
-        print(f"[archwiz dispatch] load session {session_id}: {type(e).__name__}: {e}", file=sys.stderr, flush=True)
-        return
+        from archwiz.config import SESSION_STORE
+        store_path = SESSION_STORE / "primary" / f"{session_id}.json"
+        if store_path.exists():
+            messages = json.loads(store_path.read_text())
+            trigger_dispatch(session_id, messages)
+    except Exception:
+        pass
 
-    # 1. Write session.json into export dir
-    export_dir = HOME / 'synthegration_exports' / account / session_id
-    export_dir.mkdir(parents=True, exist_ok=True)
-    (export_dir / 'session.json').write_text(json.dumps(msgs, indent=2))
-
-    # 2. Lexicon harvest (lightweight: single session)
-    try:
-        sys.path.insert(0, str(HOME / 'archwiz'))
-        from lexicon_harvest import harvest_session
-        harvest_session(session_id)
-    except Exception as e:
-        print(f"[archwiz dispatch] lexicon_harvest: {type(e).__name__}: {e}", file=sys.stderr, flush=True)
-
-    # 3. Codex index (incremental add — does NOT rebuild full index)
-    try:
-        sys.path.insert(0, str(HOME / 'cli-synthegration'))
-        from synthegration_index import CodexIndex
-        codex = CodexIndex(HOME / 'cli-synthegration' / 'codex')
-        codex.index_conversation(session_id, session_id[:8], msgs)
-        codex._save()
-    except Exception as e:
-        print(f"[archwiz dispatch] codex_index: {type(e).__name__}: {e}", file=sys.stderr, flush=True)
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Usage: dispatch_pipeline.py <session_id> [path_to_json]")
+        sys.exit(1)
+    
+    sid = sys.argv[1]
+    msgs = []
+    
+    if len(sys.argv) > 2:
+        p = Path(sys.argv[2])
+        if p.exists():
+            msgs = json.loads(p.read_text())
+    
+    trigger_dispatch(sid, msgs)

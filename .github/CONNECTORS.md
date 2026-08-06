@@ -217,130 +217,34 @@ webhooks:
 
 ### Python Connector Manager
 
+The ConnectorManager Python library provides a unified interface for managing all connectors. See the full implementation in [.github/connectors/connector_manager.py](connectors/connector_manager.py).
+
+**Usage Example:**
+
 ```python
-# .github/connectors/connector_manager.py
-#!/usr/bin/env python3
-"""
-Connector Management System for termux-monorepo
-Manages API connectors, webhooks, and external service integrations
-"""
+from connector_manager import ConnectorManager
 
-import os
-import yaml
-import json
-import requests
-from typing import Dict, Any, Optional
-from pathlib import Path
+manager = ConnectorManager()
 
-CONNECTORS_DIR = Path(__file__).parent
+# List all connectors
+connectors = manager.list_connectors()
 
-class ConnectorManager:
-    def __init__(self):
-        self.connectors = {}
-        self.load_connectors()
-    
-    def load_connectors(self):
-        """Load all connector configurations from YAML files"""
-        for config_file in CONNECTORS_DIR.glob("*.yaml"):
-            if config_file.name == "webhooks.yaml":
-                continue
-            with open(config_file, 'r') as f:
-                config = yaml.safe_load(f)
-                for connector_type, config_data in config.items():
-                    self.connectors[connector_type] = config_data
-    
-    def get_connector(self, connector_type: str, connector_name: str) -> Optional[Dict]:
-        """Get a specific connector configuration"""
-        if connector_type in self.connectors:
-            if connector_name in self.connectors[connector_type]:
-                return self.connectors[connector_type][connector_name]
-        return None
-    
-    def list_connectors(self) -> Dict[str, Any]:
-        """List all available connectors"""
-        return {
-            "llm_providers": list(self.connectors.get("llm_providers", {}).keys()),
-            "exchanges": list(self.connectors.get("exchanges", {}).keys()),
-            "github": self.connectors.get("github", {}),
-            "webhooks": self.connectors.get("webhooks", {})
-        }
-    
-    def test_connector(self, connector_type: str, connector_name: str) -> bool:
-        """Test a connector by making a simple API call"""
-        connector = self.get_connector(connector_type, connector_name)
-        if not connector or not connector.get("enabled", False):
-            return False
-        
-        # Implement actual API test based on connector type
-        # This is a placeholder - implement actual API calls
-        return True
-    
-    def get_llm_provider(self, provider_name: str) -> Optional[Dict]:
-        """Get LLM provider configuration"""
-        return self.get_connector("llm_providers", provider_name)
-    
-    def get_exchange(self, exchange_name: str) -> Optional[Dict]:
-        """Get exchange API configuration"""
-        return self.get_connector("exchanges", exchange_name)
-    
-    def get_github_config(self) -> Optional[Dict]:
-        """Get GitHub configuration"""
-        return self.connectors.get("github")
+# Get specific connector
+deepseek_config = manager.get_llm_provider("deepseek")
 
-# Usage example
-if __name__ == "__main__":
-    manager = ConnectorManager()
-    print("Available connectors:")
-    print(json.dumps(manager.list_connectors(), indent=2))
+# Test connector
+result = manager.test_connector("llm_providers", "deepseek")
 ```
 
 ### Connector Health Check Script
 
+The health_check.sh script validates connector configurations and tests enabled connectors. See the full implementation in [.github/connectors/health_check.sh](connectors/health_check.sh).
+
+**Usage Example:**
+
 ```bash
-#!/bin/bash
-# .github/connectors/health_check.sh
-
-set -e
-
-echo "=== Connector Health Check ==="
-echo ""
-
-# Check LLM providers
-echo "LLM Providers:"
-python3 -c "
-from connector_manager import ConnectorManager
-manager = ConnectorManager()
-for provider in manager.list_connectors()['llm_providers']:
-    config = manager.get_llm_provider(provider)
-    status = 'enabled' if config.get('enabled', False) else 'disabled'
-    print(f'  {provider}: {status}')
-"
-
-echo ""
-echo "Exchanges:"
-python3 -c "
-from connector_manager import ConnectorManager
-manager = ConnectorManager()
-for exchange in manager.list_connectors()['exchanges']:
-    config = manager.get_exchange(exchange)
-    status = 'enabled' if config.get('enabled', False) else 'disabled'
-    print(f'  {exchange}: {status}')
-"
-
-echo ""
-echo "GitHub:"
-python3 -c "
-from connector_manager import ConnectorManager
-manager = ConnectorManager()
-github = manager.get_github_config()
-if github:
-    print(f'  Repository: {github.get(\"repository\", {}).get(\"owner\", \"unknown\")}/{github.get(\"repository\", {}).get(\"name\", \"unknown\")}')
-    print(f'  API: enabled')
-    print(f'  Webhooks: {\"enabled\" if github.get(\"webhooks\", {}).get(\"enabled\", False) else \"disabled\"}')
-"
-
-echo ""
-echo "Health check complete."
+# Run health check
+bash .github/connectors/health_check.sh
 ```
 
 ---
@@ -408,6 +312,7 @@ secrets:
 ```python
 from connector_manager import ConnectorManager
 import requests
+import os
 
 manager = ConnectorManager()
 
@@ -446,6 +351,7 @@ import requests
 import hashlib
 import hmac
 import time
+import os
 
 manager = ConnectorManager()
 
@@ -520,94 +426,7 @@ metrics:
 
 ### Monitoring Script
 
-```python
-# .github/connectors/monitor.py
-#!/usr/bin/env python3
-"""
-Connector Monitoring System
-Tracks usage, errors, and performance of all connectors
-"""
-
-import json
-import time
-from datetime import datetime
-from pathlib import Path
-from connector_manager import ConnectorManager
-
-METRICS_FILE = Path(__file__).parent / "metrics.json"
-
-class ConnectorMonitor:
-    def __init__(self):
-        self.manager = ConnectorManager()
-        self.metrics = self.load_metrics()
-    
-    def load_metrics(self):
-        """Load existing metrics"""
-        if METRICS_FILE.exists():
-            with open(METRICS_FILE, 'r') as f:
-                return json.load(f)
-        return {
-            "llm_providers": {},
-            "exchanges": {},
-            "github": {}
-        }
-    
-    def save_metrics(self):
-        """Save metrics to file"""
-        with open(METRICS_FILE, 'w') as f:
-            json.dump(self.metrics, f, indent=2)
-    
-    def record_request(self, connector_type: str, connector_name: str, success: bool, response_time: float):
-        """Record a connector request"""
-        if connector_type not in self.metrics:
-            self.metrics[connector_type] = {}
-        
-        if connector_name not in self.metrics[connector_type]:
-            self.metrics[connector_type][connector_name] = {
-                "requests": 0,
-                "errors": 0,
-                "total_time": 0,
-                "last_request": None
-            }
-        
-        self.metrics[connector_type][connector_name]["requests"] += 1
-        self.metrics[connector_type][connector_name]["total_time"] += response_time
-        
-        if not success:
-            self.metrics[connector_type][connector_name]["errors"] += 1
-        
-        self.metrics[connector_type][connector_name]["last_request"] = datetime.now().isoformat()
-        self.save_metrics()
-    
-    def get_stats(self, connector_type: str, connector_name: str) -> dict:
-        """Get statistics for a connector"""
-        if (connector_type in self.metrics and 
-            connector_name in self.metrics[connector_type]):
-            stats = self.metrics[connector_type][connector_name]
-            avg_time = (stats["total_time"] / stats["requests"]) if stats["requests"] > 0 else 0
-            return {
-                **stats,
-                "avg_response_time": avg_time,
-                "success_rate": 1 - (stats["errors"] / stats["requests"]) if stats["requests"] > 0 else 1
-            }
-        return {}
-    
-    def get_all_stats(self) -> dict:
-        """Get statistics for all connectors"""
-        return self.metrics
-
-# Usage example
-if __name__ == "__main__":
-    monitor = ConnectorMonitor()
-    
-    # Record a sample request
-    monitor.record_request("llm_providers", "deepseek", True, 1.5)
-    monitor.record_request("llm_providers", "deepseek", True, 2.1)
-    monitor.record_request("llm_providers", "deepseek", False, 0.5)
-    
-    print("DeepSeek Stats:")
-    print(json.dumps(monitor.get_stats("llm_providers", "deepseek"), indent=2))
-```
+Connector monitoring and metrics tracking can be implemented as needed. The ConnectorManager provides built-in health checking via the `test_connector()` method and `health_check.sh` script.
 
 ---
 
@@ -633,7 +452,7 @@ if __name__ == "__main__":
 1. Get API key from [DeepSeek](https://deepseek.com)
 2. Set environment variable: `export DEEPSEEK_API_KEY="your_key"`
 3. Enable in `llm_providers.yaml`: `deepseek.enabled: true`
-4. Test connection: `python3 -c "from connector_manager import ConnectorManager; m = ConnectorManager(); print(m.test_connector('llm_providers', 'deepseek'))"`
+4. Test connection: `PYTHONPATH=.github/connectors python3 -c "from connector_manager import ConnectorManager; m = ConnectorManager(); print(m.test_connector('llm_providers', 'deepseek'))"`
 
 #### Setting up GitHub Webhooks
 
@@ -699,8 +518,7 @@ When updating connector configurations:
 |------|---------|
 | List connectors | `python3 .github/connectors/connector_manager.py` |
 | Check health | `bash .github/connectors/health_check.sh` |
-| Test connector | `python3 -c "from connector_manager import ConnectorManager; m = ConnectorManager(); print(m.test_connector('llm_providers', 'deepseek'))"` |
-| View metrics | `python3 .github/connectors/monitor.py` |
+| Test connector | `PYTHONPATH=.github/connectors python3 -c "from connector_manager import ConnectorManager; m = ConnectorManager(); print(m.test_connector('llm_providers', 'deepseek'))"` |
 
 ---
 

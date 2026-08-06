@@ -18,10 +18,12 @@ Optional: `CLAUDE.md`, `CONTRIBUTING.md`.
 
 ## Hard rules
 
-- Target **`master-staging`**, not raw `master`, for integration work.
-- Both gates must pass before merge:
+- Target **`master-staging`**, not raw `master`, for integration **code**.
+- **Exception:** docs-only PRs and default-branch workflow activation may target `master` (issue_comment events only fire from default branch). Keep those diffs minimal.
+- Both gates must pass before merge of **code** onto `master-staging`:
   - `python3 scripts/ci/repo_gate.py`
   - `python3 scripts/ci/termux_smoke.py`
+  - These scripts live primarily on `master-staging`; do not expect them on a pure docs checkout of `master`.
 - Do not invent work outside `docs/proposals/active/<id>/ITEMS.md` — add a row first.
 - Cite `Implements: <ITEM-ID>` on PRs/commits.
 - **One intent per PR** — workflows ≠ app perf ≠ Sentinel ≠ dashboard UX. See `docs/ops/PR-SCOPE-DISCIPLINE.md`.
@@ -49,3 +51,7 @@ registry.yaml → pick todo item → branch from master-staging
 
 Credential rotation and history rewrite require Operator (human) authorization.
 See `docs/SECURITY-REMEDIATION.md`.
+
+## Agentic command surface (ADE — intentional)
+
+Agents **may** run shell / `gh` / tools inside trusted CI runs. That is required for an Automated Agentic Development Environment. Mitigations: association gates (OWNER/MEMBER/COLLABORATOR), fork exclusion, GEMINI.md hard rules, no secret interpolation from untrusted bodies. See `docs/AGENTIC-CICD-FREE-TIER.md`. Security scanners (e.g. Aikido) flagging “agent passes commands” should treat this as **in-scope product behavior**, not accidental exposure — whitelist / exclude with that understanding.

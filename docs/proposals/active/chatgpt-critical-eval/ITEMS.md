@@ -23,3 +23,4 @@
 | CE-19 | Four-plane architecture | P2 | | todo | |
 | CE-20 | Proposal process + nested registry | P0 | grok-archw1z | done | this tree |
 | CE-21 | CONSENSUS.md + promote process docs to master | P0 | grok-archw1z | doing | this PR |
+| CE-22 | Agentic CI/CD free-tier (Gemini+Jules workflows) + PR scope discipline | P0 | grok | doing | PR #42 (workflows on master); PR #67 (scope docs) |

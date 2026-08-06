@@ -12,13 +12,12 @@ try:
     from rich.live import Live
     from rich.text import Text
     from rich.box import ROUNDED
+    HAS_RICH = True
 except ImportError:
-    # Clean fallback warning
-    print("[ERROR] 'rich' library is required. Please run: pip install rich")
-    sys.exit(1)
+    HAS_RICH = False
 
 TELEMETRY_LOG = "agent_telemetry_stream.json"
-console = Console()
+console = Console() if HAS_RICH else None
 
 def read_latest_telemetry():
     if not os.path.exists(TELEMETRY_LOG):
@@ -47,7 +46,12 @@ def make_dashboard():
     # Header info
     now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     header_text = Text()
-    header_text.append("⚡ TERMUX MULTI-AGENT PARALLEL TELEMETRY ⚡\n", style="bold yellow")
+    header_text.append("⚡ TERMUX MULTI-AGENT PARALLEL TELEMETRY ⚡ ", style="bold yellow")
+
+    # Pulsing active heartbeat indicator
+    heartbeat_style = "bold red" if int(time.time()) % 2 == 0 else "dim red"
+    header_text.append("💓\n", style=heartbeat_style)
+
     header_text.append(f"Last Sync: {now_str}  |  File: {TELEMETRY_LOG}", style="dim")
 
     header_panel = Panel(
@@ -110,15 +114,15 @@ def make_dashboard():
             except ValueError:
                 pass
 
-        # Beautiful styled status tag
+        # Beautiful styled status tag (color-blind accessible with distinct symbols/emojis)
         if level == "SUCCESS":
-            status_str = Text("SUCCESS", style="bold green")
+            status_str = Text("✅ SUCCESS", style="bold green")
         elif level == "RETRY":
-            status_str = Text("RETRYING", style="bold yellow")
+            status_str = Text("🔄 RETRYING", style="bold yellow")
         elif level == "CRITICAL":
-            status_str = Text("CRITICAL", style="bold red")
+            status_str = Text("🚨 CRITICAL", style="bold red")
         else:
-            status_str = Text("PROCESSING", style="bold blue")
+            status_str = Text("⏳ PROCESSING", style="bold blue")
 
         table.add_row(
             target,
@@ -143,6 +147,9 @@ def make_dashboard():
     )
 
 def main():
+    if not HAS_RICH:
+        print("[ERROR] 'rich' library is required. Please run: pip install rich")
+        sys.exit(1)
     try:
         # Use Live rendering for smooth, flicker-free updates
         with Live(make_dashboard(), refresh_per_second=1, screen=True) as live:
@@ -151,14 +158,15 @@ def main():
                 live.update(make_dashboard())
     except KeyboardInterrupt:
         # Clear screen and say goodbye gracefully
-        console.clear()
-        console.print(Panel(
-            "[bold green]Thank you for using Termux Multi-Agent Dashboard![/bold green]\n"
-            "Stay productive and keep building! ⚡🚀",
-            title="Exiting Dashboard",
-            border_style="green",
-            expand=False
-        ))
+        if console:
+            console.clear()
+            console.print(Panel(
+                "[bold green]Thank you for using Termux Multi-Agent Dashboard![/bold green]\n"
+                "Stay productive and keep building! ⚡🚀",
+                title="Exiting Dashboard",
+                border_style="green",
+                expand=False
+            ))
 
 if __name__ == '__main__':
     main()

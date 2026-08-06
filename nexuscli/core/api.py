@@ -25,6 +25,10 @@ WASM_SOLVER = Path(__file__).parent.parent / "pow_solver.js"
 BASE_URL = "https://chat.deepseek.com"
 
 CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+try:
+    CONFIG_DIR.chmod(0o700)
+except Exception:
+    pass
 
 # Persistent session (cookies preserved across API calls)
 _session: Optional[curl_requests.Session] = None
@@ -35,6 +39,11 @@ _sessions: Dict[str, curl_requests.Session] = {}
 def _cache_path(session_id: str, account: str = "primary") -> str:
     store_dir = os.path.join(os.path.expanduser("~/.nexuscli/session_store"), account)
     os.makedirs(store_dir, exist_ok=True)
+    try:
+        os.chmod(os.path.dirname(store_dir), 0o700)
+        os.chmod(store_dir, 0o700)
+    except Exception:
+        pass
     return os.path.join(store_dir, f"{session_id}.json")
 
 
@@ -49,8 +58,16 @@ def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict
 def _cache_save(session_id: str, messages: List[Dict[str, Any]], account: str = "primary"):
     path = _cache_path(session_id, account)
     os.makedirs(os.path.dirname(path), exist_ok=True)
+    try:
+        os.chmod(os.path.dirname(path), 0o700)
+    except Exception:
+        pass
     with open(path, 'w') as f:
         json.dump(messages, f, indent=2)
+    try:
+        os.chmod(path, 0o600)
+    except Exception:
+        pass
 
 
 # ---------- Config Helpers ----------
@@ -63,6 +80,10 @@ def load_config() -> Dict[str, Any]:
 
 def save_config(cfg: Dict[str, Any]):
     CONFIG_FILE.write_text(json.dumps(cfg, indent=2))
+    try:
+        CONFIG_FILE.chmod(0o600)
+    except Exception:
+        pass
 
 
 def get_token() -> str:

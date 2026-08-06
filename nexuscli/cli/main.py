@@ -63,10 +63,21 @@ def cmd_new_session(args):
     console.print(f"[green]New session created: {session_id}[/]")
     if args.save:
         cfg = {}
-        if os.path.exists(str(Path.home() / ".deepcode-cli" / "config.json")):
-            cfg = json.loads((Path.home() / ".deepcode-cli" / "config.json").read_text())
+        cfg_dir = Path.home() / ".deepcode-cli"
+        cfg_dir.mkdir(parents=True, exist_ok=True)
+        try:
+            cfg_dir.chmod(0o700)
+        except Exception:
+            pass
+        cfg_file = cfg_dir / "config.json"
+        if cfg_file.exists():
+            cfg = json.loads(cfg_file.read_text())
         cfg["last_session"] = session_id
-        (Path.home() / ".deepcode-cli" / "config.json").write_text(json.dumps(cfg, indent=2))
+        cfg_file.write_text(json.dumps(cfg, indent=2))
+        try:
+            cfg_file.chmod(0o600)
+        except Exception:
+            pass
         console.print("[yellow]Saved as last_session.[/]")
 
 
@@ -149,6 +160,10 @@ def cmd_export(args):
     if args.output:
         with open(args.output, "w") as f:
             f.write(content)
+        try:
+            os.chmod(args.output, 0o600)
+        except Exception:
+            pass
         console.print(f"[green]Exported to {args.output}[/]")
     else:
         console.print(content)

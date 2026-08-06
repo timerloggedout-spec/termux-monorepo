@@ -12,8 +12,17 @@ Instructions for coding agents (Grok, Claude, Codex, Devin, ChatGPT, local runne
 6. [`docs/ARCHW1Z-STATUS.md`](docs/ARCHW1Z-STATUS.md) — living board
 7. [`docs/proposals/AGENTIC-PERMISSIONS.md`](docs/proposals/AGENTIC-PERMISSIONS.md) — human-only edges
 8. [`docs/CONSENSUS.md`](docs/CONSENSUS.md) — tiers, merit path, CRDT, optional Raft-strict
+9. [`docs/DEBATE/TOC.md`](docs/DEBATE/TOC.md) — debate index only (do not load active/* by default)
 
 Optional: `CLAUDE.md`, `CONTRIBUTING.md`.
+
+
+## Debate dock (focus isolation)
+
+- Default: read only [`docs/DEBATE/TOC.md`](docs/DEBATE/TOC.md) + [`MATRIX.yaml`](docs/DEBATE/MATRIX.yaml).
+- Open `docs/DEBATE/active/<id>/` **only** when the task cites `debate:<id>` or you are voting/driving that term.
+- Full proposal dumps stay on docs/* branches or under `docs/proposals/`; do not load them for unrelated ITEMS work.
+- Rebuild TOC: `python3 scripts/debate/build_toc.py`. Stale flags: `python3 scripts/debate/flag_stale.py`.
 
 ## Hard rules
 
@@ -30,8 +39,8 @@ Optional: `CLAUDE.md`, `CONTRIBUTING.md`.
 
 ## Debate & close
 
-- Debate: MANIFEST Review log, optional DEBATE.md, linked PR/issue.
-- Close: all items terminal + Review log outcome + move `active/` → `closed/` + registry update.
+- Debate working surface: `docs/DEBATE/` (TOC-first). Binding ledger: MANIFEST Review log.
+- Close: all items terminal + Review log outcome + move proposal `active/` → `closed/` + registry update.
 - Full rules: `docs/proposals/PROCESS.md` §§ consensus / closing.
 
 ## Preferred execution loop

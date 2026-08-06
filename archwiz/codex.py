@@ -49,8 +49,7 @@ class CodeBlock:
 
 class CodexIndex:
     """
-    Content-addressed hierarchical index for code blocks.
-    Salvaged and normalized from PR #6 (TER-9).
+    Content-addressed hierarchical index for code blocks and session messages.
     """
     CODE_BLOCK_PATTERN = re.compile(r'```(\w+)?\n(.*?)```', re.DOTALL)
     
@@ -60,6 +59,8 @@ class CodexIndex:
         self.base_dir.mkdir(parents=True, exist_ok=True)
         self.blobs_dir = self.base_dir / "blobs"
         self.blobs_dir.mkdir(exist_ok=True)
+        self.sessions_dir = self.base_dir / "sessions"
+        self.sessions_dir.mkdir(exist_ok=True)
         
         self.index_file = self.base_dir / "index.json"
         self.pointers: List[Pointer] = []
@@ -81,36 +82,43 @@ class CodexIndex:
 
     def _save(self):
         data = {
-            "version": 1,
+            "version": 2,
             "provider": self.provider,
             "updated_at": datetime.now(timezone.utc).isoformat(),
             "pointers": [p.to_dict() for p in self.pointers]
         }
         self.index_file.write_text(json.dumps(data, indent=2))
 
+    def _store_blob(self, content: str) -> str:
+        """Store content in CAS and return hash."""
+        ch = hashlib.sha256(content.encode()).hexdigest()[:16]
+        blob_path = self.blobs_dir / f"{ch}.blob"
+        if not blob_path.exists():
+            blob_path.write_text(content)
+        self.blobs[ch] = str(blob_path)
+        return ch
+
     def harvest(self, session_id: str, messages: List[Dict[str, Any]]) -> int:
-        """Extract and index code blocks from messages."""
+        """Extract and index code blocks and full session messages."""
         count = 0
+        
+        # Store full session messages in a session-specific CAS pointer
+        session_json = json.dumps(messages, indent=2)
+        session_hash = self._store_blob(session_json)
+        (self.sessions_dir / f"{session_id}.ptr").write_text(session_hash)
+
         for msg_idx, msg in enumerate(messages):
             content = msg.get("content", "")
             for blk_idx, match in enumerate(self.CODE_BLOCK_PATTERN.finditer(content)):
-                lang = (match.group(1) or "text").lower()
                 code = match.group(2)
-                ch = hashlib.sha256(code.encode()).hexdigest()[:16]
-                
-                # Store blob
-                blob_path = self.blobs_dir / f"{ch}.blob"
-                if not blob_path.exists():
-                    blob_path.write_text(code)
-                self.blobs[ch] = str(blob_path)
+                ch = self._store_blob(code)
                 
                 # Record pointer
                 p = Pointer(session_id, msg_idx, blk_idx, ch)
                 self.pointers.append(p)
                 count += 1
         
-        if count > 0:
-            self._save()
+        self._save()
         return count
 
     def get_code(self, content_hash: str) -> Optional[str]:

@@ -180,7 +180,7 @@ def get_last_session():
 
 def main():
     """Main CLI entry point."""
-    import json
+
 
     parser = argparse.ArgumentParser(
         description="NexusCLI - A fast, lightweight CLI for agent interactions.",

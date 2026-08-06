@@ -417,24 +417,46 @@ import json
 
 TELEMETRY_LOG = "agent_telemetry_stream.json"
 
+# Stateful cache for high-performance incremental I/O parsing
+_last_file_position = 0
+_cached_active_jobs = {}
+
 def clear_screen():
     print("\\033[H\\033[J", end="")
 
 def read_latest_telemetry():
+    # Optimized telemetry parser with state tracking and seek/tell operations.
+    # Performs high-performance incremental I/O for massive speedups on large files.
+    global _last_file_position, _cached_active_jobs
     if not os.path.exists(TELEMETRY_LOG):
+        _last_file_position = 0
+        _cached_active_jobs = {}
         return []
-    active_jobs = {}
+
     try:
-        with open(TELEMETRY_LOG, "r") as f:
-            for line in f:
-                if not line.strip():
-                    continue
-                entry = json.loads(line)
-                target = entry.get("target") or "System"
-                active_jobs[target] = entry
+        file_size = os.path.getsize(TELEMETRY_LOG)
+        # If file was truncated/recreated, reset the position and cache state
+        if file_size < _last_file_position:
+            _last_file_position = 0
+            _cached_active_jobs = {}
+
+        if file_size > _last_file_position:
+            with open(TELEMETRY_LOG, "r") as f:
+                f.seek(_last_file_position)
+                for line in f:
+                    if not line.strip():
+                        continue
+                    try:
+                        entry = json.loads(line)
+                        target = entry.get("target") or "System"
+                        _cached_active_jobs[target] = entry
+                    except json.JSONDecodeError:
+                        continue
+                _last_file_position = f.tell()
     except Exception:
         pass
-    return list(active_jobs.values())
+
+    return list(_cached_active_jobs.values())
 
 def render_dashboard():
     clear_screen()

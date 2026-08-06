@@ -107,3 +107,61 @@ def test_fts5_virtual_table(tmp_path, monkeypatch):
     assert len(results) == 1
     assert "sess-02" in results[0][1]
     assert "SQLite" in results[0][0]
+
+def test_telemetry_incremental_parser(tmp_path, monkeypatch):
+    import json
+    import os
+    import sys
+    from dashboard import read_latest_telemetry
+    import dashboard
+
+    # Redirect TELEMETRY_LOG to a temporary path
+    temp_log = tmp_path / "test_telemetry_stream.json"
+    monkeypatch.setattr(dashboard, "TELEMETRY_LOG", str(temp_log))
+
+    # Reset any state variables inside dashboard
+    monkeypatch.setattr(dashboard, "_last_file_position", 0)
+    monkeypatch.setattr(dashboard, "_cached_active_jobs", {})
+
+    # Initially, file doesn't exist, should return empty list
+    assert read_latest_telemetry() == []
+
+    # Write initial telemetry entries
+    entries = [
+        {"timestamp": "2026-08-01 12:00:00", "level": "INFO", "agent": "coder", "target": "src/db.py", "message": "Init"},
+        {"timestamp": "2026-08-01 12:00:01", "level": "SUCCESS", "agent": "judge", "target": "src/db.py", "message": "Done"}
+    ]
+    with open(temp_log, "a") as f:
+        for entry in entries:
+            f.write(json.dumps(entry) + "\n")
+
+    # Read latest - should parse all
+    jobs = read_latest_telemetry()
+    assert len(jobs) == 1  # Only one target: "src/db.py" (the latest maps over target)
+    assert jobs[0]["message"] == "Done"
+    assert dashboard._last_file_position > 0
+
+    # Write a new entry for a different target
+    new_entry = {"timestamp": "2026-08-01 12:00:02", "level": "INFO", "agent": "coder", "target": "src/parser.py", "message": "Parsing"}
+    with open(temp_log, "a") as f:
+        f.write(json.dumps(new_entry) + "\n")
+
+    # Read again - should only read from the last position and add the new target
+    jobs = read_latest_telemetry()
+    assert len(jobs) == 2
+    targets = {j["target"] for j in jobs}
+    assert "src/db.py" in targets
+    assert "src/parser.py" in targets
+
+    # Let's test truncation / recreation scenario
+    temp_log.write_text("") # truncate
+    # Write a new job
+    truncated_entry = {"timestamp": "2026-08-01 12:00:03", "level": "INFO", "agent": "coder", "target": "src/db.py", "message": "New start"}
+    with open(temp_log, "a") as f:
+        f.write(json.dumps(truncated_entry) + "\n")
+
+    # Read again - should detect truncation, reset position, clear cache, and parse the new entry
+    jobs = read_latest_telemetry()
+    assert len(jobs) == 1
+    assert jobs[0]["target"] == "src/db.py"
+    assert jobs[0]["message"] == "New start"

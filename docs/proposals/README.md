@@ -5,6 +5,8 @@
 **Permissions: [`AGENTIC-PERMISSIONS.md`](AGENTIC-PERMISSIONS.md).**  
 **Consensus tiers: [`../CONSENSUS.md`](../CONSENSUS.md).**  
 **Automation: `scripts/proposals/` + `.github/workflows/proposal-lifecycle.yml`.**
+**Projects & Milestones: [`../../.github/PROJECTS.md`](../../.github/PROJECTS.md) + [`../../.github/MILESTONES.yaml`](../../.github/MILESTONES.yaml).**
+**Connectors: [`../../.github/CONNECTORS.md`](../../.github/CONNECTORS.md).**
 
 ## Active
 

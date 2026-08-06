@@ -304,6 +304,7 @@ print('Yobit enabled:', manager.is_enabled('exchanges', 'yobit'))
 ## 📝 Files Changed Summary
 
 ### New Files Created (10 files)
+
 1. `.github/PROJECTS.md` - Project definitions
 2. `.github/MILESTONES.yaml` - Milestone configurations
 3. `.github/CONNECTORS.md` - Connector documentation

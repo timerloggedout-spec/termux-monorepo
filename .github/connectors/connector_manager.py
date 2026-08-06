@@ -414,24 +414,27 @@ class ConnectorManager:
                 # Yobit HMAC signing
                 nonce = str(int(time.time() * 1000))
 
-                # Build the payload for signing
-                payload = f"nonce={nonce}"
+                # Build the payload for signing (form-encoded)
+                payload_dict = {"nonce": nonce}
                 if data:
-                    for key, value in data.items():
-                        payload += f"&{key}={value}"
+                    payload_dict.update(data)
+
+                # Create canonical form-encoded payload string
+                import urllib.parse
+                hmac_payload = urllib.parse.urlencode(sorted(payload_dict.items()))
 
                 # Sign the payload
                 hash_algorithm = connector.get("hash_algorithm", "sha512")
                 if hash_algorithm == "sha512":
                     signature = hmac.new(
                         api_secret.encode(),
-                        payload.encode(),
+                        hmac_payload.encode(),
                         hashlib.sha512
                     ).hexdigest()
                 elif hash_algorithm == "sha256":
                     signature = hmac.new(
                         api_secret.encode(),
-                        payload.encode(),
+                        hmac_payload.encode(),
                         hashlib.sha256
                     ).hexdigest()
                 else:
@@ -439,6 +442,8 @@ class ConnectorManager:
 
                 headers["Key"] = api_key
                 headers["Sign"] = signature
+                # Store the canonical payload to use as request body
+                data = hmac_payload
             elif url and not url.endswith(("/info", "/ticker", "/depth", "/trades")):
                 # Private operation requires credentials
                 raise ValueError(f"HMAC authentication requires both api_key and api_secret for private operations")
@@ -489,13 +494,23 @@ class ConnectorManager:
                     headers["Authorization"] = f"token {token}"
         
         # Create request
-        req = requests.Request(
-            method=method,
-            url=url,
-            headers=headers,
-            params=params,
-            json=data
-        )
+        # For HMAC auth, data is already form-encoded string; for others, send as JSON
+        if auth_method == "hmac" and isinstance(data, str):
+            req = requests.Request(
+                method=method,
+                url=url,
+                headers=headers,
+                params=params,
+                data=data
+            )
+        else:
+            req = requests.Request(
+                method=method,
+                url=url,
+                headers=headers,
+                params=params,
+                json=data
+            )
         
         return req.prepare()
     
@@ -537,13 +552,13 @@ class ConnectorManager:
 
         # Check if this is a non-idempotent operation
         if method.upper() not in idempotent_methods:
-            # For non-idempotent operations (POST, PATCH), check for idempotency key
+            # For non-idempotent operations (POST, PATCH), check for connector-configured idempotency field
             has_idempotency_key = False
-            if data and isinstance(data, dict):
-                # Check for common idempotency key headers/fields
-                has_idempotency_key = any(
-                    key in data for key in ["idempotency_key", "idempotency-key", "request_id", "client_request_id"]
-                )
+            idempotency_key_field = connector.get("idempotency_key_field")
+
+            if idempotency_key_field and data and isinstance(data, dict):
+                # Check if the configured idempotency field is present and non-empty
+                has_idempotency_key = bool(data.get(idempotency_key_field))
 
             # Only allow single attempt for non-idempotent operations without idempotency key
             if not has_idempotency_key:

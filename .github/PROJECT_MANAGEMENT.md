@@ -163,7 +163,7 @@ python3 .github/connectors/connector_manager.py
 bash .github/connectors/health_check.sh
 
 # Test specific connector
-python3 -c "
+PYTHONPATH=.github/connectors python3 -c "
 from connector_manager import ConnectorManager
 manager = ConnectorManager()
 print('DeepSeek:', manager.test_connector('llm_providers', 'deepseek'))

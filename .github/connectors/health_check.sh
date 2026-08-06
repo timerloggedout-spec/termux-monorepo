@@ -16,6 +16,9 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+# Track failures
+FAILED=0
+
 # Function to print colored output
 print_status() {
     local color=$1
@@ -36,16 +39,18 @@ if [ ! -d "$CONNECTORS_DIR" ]; then
     exit 1
 fi
 
+# Set PYTHONPATH so imports work from any directory
+export PYTHONPATH="$CONNECTORS_DIR:$PYTHONPATH"
+
 # Run Python health check
 print_status "$BLUE" "Checking connector configurations..."
-python3 "$CONNECTORS_DIR/connector_manager.py" > /tmp/connector_list.txt 2>&1
-if [ $? -ne 0 ]; then
+if ! python3 "$CONNECTORS_DIR/connector_manager.py" > /tmp/connector_list.txt 2>&1; then
     print_status "$RED" "Error checking connectors"
     cat /tmp/connector_list.txt
-    exit 1
+    FAILED=1
+else
+    cat /tmp/connector_list.txt
 fi
-
-cat /tmp/connector_list.txt
 
 echo ""
 print_status "$BLUE" "Testing enabled connectors..."
@@ -53,7 +58,7 @@ echo ""
 
 # Test LLM providers
 print_status "$BLUE" "LLM Providers:"
-python3 -c "
+if ! python3 -c "
 from connector_manager import ConnectorManager
 manager = ConnectorManager()
 connectors = manager.list_connectors()
@@ -67,13 +72,15 @@ for provider in connectors.get('llm_providers', []):
                 print(f'  ✗ {provider}: FAILED')
         except Exception as e:
             print(f'  ✗ {provider}: ERROR - {str(e)[:50]}')
-" 2>&1 || true
+" 2>&1; then
+    FAILED=1
+fi
 
 echo ""
 
 # Test exchanges
 print_status "$BLUE" "Exchanges:"
-python3 -c "
+if ! python3 -c "
 from connector_manager import ConnectorManager
 manager = ConnectorManager()
 connectors = manager.list_connectors()
@@ -87,13 +94,15 @@ for exchange in connectors.get('exchanges', []):
                 print(f'  ✗ {exchange}: FAILED')
         except Exception as e:
             print(f'  ✗ {exchange}: ERROR - {str(e)[:50]}')
-" 2>&1 || true
+" 2>&1; then
+    FAILED=1
+fi
 
 echo ""
 
 # Test GitHub
 print_status "$BLUE" "GitHub:"
-python3 -c "
+if ! python3 -c "
 from connector_manager import ConnectorManager
 manager = ConnectorManager()
 try:
@@ -104,7 +113,9 @@ try:
         print('  ✗ GitHub API: FAILED')
 except Exception as e:
     print(f'  ✗ GitHub API: ERROR - {str(e)[:50]}')
-" 2>&1 || true
+" 2>&1; then
+    FAILED=1
+fi
 
 echo ""
 
@@ -170,4 +181,12 @@ for file in "${CONFIG_FILES[@]}"; do
 done
 
 echo ""
-print_status "$GREEN" "Health check complete."
+
+# Exit with failure if any check failed
+if [ $FAILED -ne 0 ]; then
+    print_status "$RED" "Health check completed with failures."
+    exit 1
+else
+    print_status "$GREEN" "Health check complete."
+    exit 0
+fi

@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 class Pointer:
     """C++‑style lightweight reference: (session_id, msg_idx, blk_idx) -> content_hash."""
     __slots__ = ('session_id', 'message_index', 'block_index', 'content_hash', 'start_line', 'end_line')
-
+    
     def __init__(self, session_id: str, msg_idx: int, blk_idx: int, content_hash: str, start_line: int = 0, end_line: int = 0):
         self.session_id = session_id
         self.message_index = msg_idx
@@ -18,7 +18,7 @@ class Pointer:
         self.content_hash = content_hash
         self.start_line = start_line
         self.end_line = end_line
-
+    
     def to_key(self) -> str:
         return ""
 
@@ -31,9 +31,9 @@ class Pointer:
         return f"【{cursor_id}†L{self.start_line}】"
 
         return f"{self.session_id}:{self.message_index}:{self.block_index}"
-
+    
     def to_wire(self) -> bytes:
-        """Ultra‑compact binary representation (20 bytes + 8 byte hash)."""
+        """Ultra‑compact binary representation (20 bytes + 32 byte hash)."""
         import struct
         sid_bytes = self.session_id.encode()[:12].ljust(12, b'\x00')
         packed = struct.pack('>12sII', sid_bytes, self.message_index, self.block_index)
@@ -43,7 +43,7 @@ class Pointer:
     def from_wire(cls, data: bytes) -> 'Pointer':
         import struct
         sid_bytes, msg_idx, blk_idx = struct.unpack('>12sII', data[:20])
-        content_hash = data[20:28].hex()
+        content_hash = data[20:52].hex()
         return cls(sid_bytes.rstrip(b'\x00').decode(), msg_idx, blk_idx, content_hash)
 
 class _TaxonomyNode_v1:
@@ -113,7 +113,7 @@ class _CodexIndex_v1:
         self.content_hash = content_hash
         self.start_line = start_line
         self.end_line = end_line
-
+    
     def to_key(self) -> str:
         return ""
 
@@ -126,9 +126,9 @@ class _CodexIndex_v1:
         return f"【{cursor_id}†L{self.start_line}】"
 
         return f"{self.session_id}:{self.message_index}:{self.block_index}"
-
+    
     def to_wire(self) -> bytes:
-        """Ultra‑compact binary representation (20 bytes + hash)."""
+        """Ultra‑compact binary representation (20 bytes + 32 byte hash)."""
         import struct
         sid_bytes = self.session_id.encode()[:12].ljust(12, b'\x00')
         packed = struct.pack('>12sII', sid_bytes, self.message_index, self.block_index)
@@ -138,7 +138,7 @@ class _CodexIndex_v1:
     def from_wire(cls, data: bytes) -> 'Pointer':
         import struct
         sid_bytes, msg_idx, blk_idx = struct.unpack('>12sII', data[:20])
-        content_hash = data[20:28].hex()
+        content_hash = data[20:52].hex()
         return cls(sid_bytes.rstrip(b'\x00').decode(), msg_idx, blk_idx, content_hash)
 
 class TaxonomyNode:
@@ -206,7 +206,7 @@ class CodexIndex:
                     for bi, match in enumerate(__import__("re").finditer(r"```(\w+)?\n(.*?)```", content, __import__("re").DOTALL)):
                         lang = (match.group(1) or "text").lower()
                         code_text = match.group(2)
-                        ch = __import__("hashlib").sha256(code_text.encode()).hexdigest()[:16]
+                        ch = __import__("hashlib").sha256(code_text.encode()).hexdigest()
                         all_blocks.append({
                             "session_id": session_dir.name,
                             "mi": mi, "bi": bi, "ch": ch,
@@ -228,7 +228,7 @@ class CodexIndex:
             if not ch:
                 code_text = blk.get("code", "")
                 if code_text:
-                    ch = hashlib.sha256(code_text.encode()).hexdigest()[:16]
+                    ch = hashlib.sha256(code_text.encode()).hexdigest()
             if not ch:
                 continue
             path = blk.get("path", ["uncategorized"])
@@ -306,7 +306,7 @@ class CodexIndex:
             for blk_idx, match in enumerate(re.finditer(r"```(\w+)?\n(.*?)```", content, re.DOTALL)):
                 lang = (match.group(1) or 'text').lower()
                 code = match.group(2)
-                ch = hashlib.sha256(code.encode()).hexdigest()[:16]
+                ch = hashlib.sha256(code.encode()).hexdigest()
                 p = Pointer(session_id, msg_idx, blk_idx, ch)
                 path = [lang, project, role]
                 self.taxonomy.add_pointer(p, path)
@@ -338,14 +338,16 @@ class CodexIndex:
         for p in self.taxonomy.search(term):
             if lang and not any(lang in part for part in [p.session_id, '']):
                 continue  # simplistic
-            blob = self.base_dir / 'blobs' / f"{p.content_hash}.blob"
-            if blob.exists():
-                results.append({
-                    'pointer': p.to_key(),
-                    'hash': p.content_hash,
-                    'code': blob.read_text()[:200] + '...' if len(blob.read_text()) > 200 else blob.read_text(),
-                    'timestamp': self.time_index.get(p.content_hash, '').isoformat()
-                })
+            blob_path = self.blobs.get(p.content_hash)
+            if blob_path:
+                blob = Path(blob_path)
+                if blob.exists():
+                    results.append({
+                        'pointer': p.to_key(),
+                        'hash': p.content_hash,
+                        'code': blob.read_text()[:200] + '...' if len(blob.read_text()) > 200 else blob.read_text(),
+                        'timestamp': (lambda t: t.isoformat() if hasattr(t, 'isoformat') else None)(self.time_index.get(p.content_hash))
+                    })
         return results
     
     @staticmethod
@@ -556,13 +558,13 @@ class MessageIndex:
         from difflib import SequenceMatcher
 
         # First: try exact hash match
-        text_hash = hashlib.sha256(text.encode()).hexdigest()[:16]
+        text_hash = hashlib.sha256(text.encode()).hexdigest()
         if text_hash in self.hash_to_pointer:
             p = self.hash_to_pointer[text_hash]
             blob = self.base_dir / 'blobs' / f'{text_hash}.blob'
             snippet = blob.read_text()[:200] if blob.exists() else ''
             return [(p, 1.0, snippet)]
-
+        
         # Fallback: similarity scan (limited to avoid hangs)
         results = []
         text_sample = text[:2000]

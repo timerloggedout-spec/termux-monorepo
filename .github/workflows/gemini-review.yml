@@ -1,0 +1,58 @@
+name: '🔍 Gemini PR Review (free-tier)'
+
+on:
+  workflow_call:
+    inputs:
+      additional_context:
+        type: string
+        required: false
+      prior_prs:
+        type: string
+        required: false
+        default: 'none'
+      pr_number:
+        type: string
+        required: false
+        default: ''
+
+concurrency:
+  group: gemini-review-${{ inputs.pr_number || github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Run Gemini CLI PR review
+        uses: google-github-actions/run-gemini-cli@v0
+        env:
+          GEMINI_CLI_TRUST_WORKSPACE: 'true'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
+          github_pr_number: ${{ inputs.pr_number || github.event.pull_request.number || github.event.issue.number }}
+          prompt: |
+            You are the free-tier agentic PR reviewer for termux-monorepo.
+            Read GEMINI.md and AGENTS.md.
+
+            Review this pull request for:
+            - Correctness and regressions
+            - Security (especially credentials, session stores, chmod 0o600/0o700 patterns)
+            - Alignment with AGENTS.md hard rules (master-staging, gates, no Class 3/4 artifacts)
+            - Minimal-diff preference
+            - Overlap with other open agent PRs: ${{ inputs.prior_prs }}
+
+            Post a concise review comment. Do not approve or request changes via the formal review API unless clearly authorized; prefer a comment.
+            Coordinate with CodeRabbit (already reviewing) and Jules (may auto-fix later).
+            If this is a Jules PR, focus on gaps Jules may have missed rather than rewriting the same work.
+
+            Additional context: ${{ inputs.additional_context }}

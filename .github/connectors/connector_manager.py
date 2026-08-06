@@ -11,6 +11,7 @@ import requests
 import hashlib
 import hmac
 import time
+import base64
 from typing import Dict, Any, Optional, List
 from pathlib import Path
 from dataclasses import dataclass, field
@@ -191,16 +192,22 @@ class ConnectorManager:
     def get_connector(self, connector_type: str, connector_name: str) -> Optional[Dict]:
         """
         Get a specific connector configuration
-        
+
         Args:
             connector_type: Type of connector (llm_providers, exchanges, etc.)
             connector_name: Name of the connector
-            
+
         Returns:
             Connector configuration or None if not found
         """
         if connector_type in self.connectors:
             config = self.connectors[connector_type]
+
+            # Unwrap nested YAML documents where the mapping is nested under connector_type
+            # e.g., {"llm_providers": {...}} -> {...}
+            if isinstance(config, dict) and connector_type in config:
+                config = config[connector_type]
+
             if isinstance(config, dict) and connector_name in config:
                 return config[connector_name]
             elif connector_name == connector_type:
@@ -366,7 +373,22 @@ class ConnectorManager:
         if connector is None:
             raise ValueError(f"Connector {connector_type}:{connector_name} not found")
         
-        # Get base URL
+        # Resolve endpoint templates before joining with base URL
+        if url:
+            # Get template values from connector config or params
+            api_version = connector.get("api_version", "")
+            pair = params.get("pair", "") if params else ""
+
+            # Replace placeholders in the endpoint
+            url = url.replace("{api_version}", api_version)
+
+            # Validate required placeholders
+            if "{pair}" in url:
+                if not pair:
+                    raise ValueError(f"Endpoint '{url}' requires 'pair' parameter but none was provided")
+                url = url.replace("{pair}", pair)
+
+        # Get base URL and join with resolved endpoint
         base_url = connector.get("base_url", "")
         if not url.startswith("http") and base_url:
             url = f"{base_url}{url}" if url.startswith("/") else f"{base_url}/{url}"
@@ -376,20 +398,95 @@ class ConnectorManager:
         
         # Add authentication
         auth_method = connector.get("auth_method")
-        
+
         if auth_method == "bearer":
             api_key = self.get_api_key(connector_type, connector_name)
             if api_key:
                 headers["Authorization"] = f"Bearer {api_key}"
-        
+
         elif auth_method == "hmac":
-            # For HMAC authentication (used by exchanges)
+            # For HMAC authentication (used by exchanges like Yobit)
             api_key = self.get_api_key(connector_type, connector_name)
-            api_secret = os.environ.get(connector.get("api_secret_env", ""))
-            
+            api_secret_env = connector.get("api_secret_env", "")
+            api_secret = os.environ.get(api_secret_env) if api_secret_env else None
+
             if api_key and api_secret:
-                # This would be implemented based on the specific exchange's requirements
-                pass
+                # Yobit HMAC signing
+                nonce = str(int(time.time() * 1000))
+
+                # Build the payload for signing
+                payload = f"nonce={nonce}"
+                if data:
+                    for key, value in data.items():
+                        payload += f"&{key}={value}"
+
+                # Sign the payload
+                hash_algorithm = connector.get("hash_algorithm", "sha512")
+                if hash_algorithm == "sha512":
+                    signature = hmac.new(
+                        api_secret.encode(),
+                        payload.encode(),
+                        hashlib.sha512
+                    ).hexdigest()
+                elif hash_algorithm == "sha256":
+                    signature = hmac.new(
+                        api_secret.encode(),
+                        payload.encode(),
+                        hashlib.sha256
+                    ).hexdigest()
+                else:
+                    raise ValueError(f"Unsupported hash algorithm: {hash_algorithm}")
+
+                headers["Key"] = api_key
+                headers["Sign"] = signature
+            elif url and not url.endswith(("/info", "/ticker", "/depth", "/trades")):
+                # Private operation requires credentials
+                raise ValueError(f"HMAC authentication requires both api_key and api_secret for private operations")
+
+        elif auth_method == "jwt":
+            # KuCoin JWT authentication
+            api_key = self.get_api_key(connector_type, connector_name)
+            api_secret_env = connector.get("api_secret_env", "")
+            api_secret = os.environ.get(api_secret_env) if api_secret_env else None
+            passphrase_env = connector.get("passphrase_env", "")
+            passphrase = os.environ.get(passphrase_env) if passphrase_env else None
+
+            if api_key and api_secret and passphrase:
+                # Generate KuCoin signature
+                timestamp = str(int(time.time() * 1000))
+                str_to_sign = timestamp + method + url.replace(connector.get("base_url", ""), "")
+                if data:
+                    str_to_sign += json.dumps(data)
+
+                signature = hmac.new(
+                    api_secret.encode(),
+                    str_to_sign.encode(),
+                    hashlib.sha256
+                ).digest()
+                signature_b64 = base64.b64encode(signature).decode()
+
+                passphrase_signature = hmac.new(
+                    api_secret.encode(),
+                    passphrase.encode(),
+                    hashlib.sha256
+                ).digest()
+                passphrase_b64 = base64.b64encode(passphrase_signature).decode()
+
+                headers["KC-API-KEY"] = api_key
+                headers["KC-API-SIGN"] = signature_b64
+                headers["KC-API-TIMESTAMP"] = timestamp
+                headers["KC-API-PASSPHRASE"] = passphrase_b64
+                headers["KC-API-KEY-VERSION"] = "2"
+            else:
+                raise ValueError(f"JWT authentication requires api_key, api_secret, and passphrase")
+
+        elif not auth_method:
+            # GitHub API uses token_env when no auth_method is set
+            token_env = connector.get("token_env", "")
+            if token_env:
+                token = os.environ.get(token_env)
+                if token:
+                    headers["Authorization"] = f"token {token}"
         
         # Create request
         req = requests.Request(
@@ -433,52 +530,85 @@ class ConnectorManager:
         timeout = connector.get("timeout", 30)
         
         # Send request with retry logic
+        # Retries are enabled by default only for idempotent HTTP methods
+        idempotent_methods = {"GET", "HEAD", "OPTIONS", "PUT", "DELETE"}
         retry_attempts = connector.get("retry_attempts", 3)
         retry_delay = connector.get("retry_delay", 1)
-        
+
+        # Check if this is a non-idempotent operation
+        if method.upper() not in idempotent_methods:
+            # For non-idempotent operations (POST, PATCH), check for idempotency key
+            has_idempotency_key = False
+            if data and isinstance(data, dict):
+                # Check for common idempotency key headers/fields
+                has_idempotency_key = any(
+                    key in data for key in ["idempotency_key", "idempotency-key", "request_id", "client_request_id"]
+                )
+
+            # Only allow single attempt for non-idempotent operations without idempotency key
+            if not has_idempotency_key:
+                retry_attempts = 1
+
+        last_exception = None
         for attempt in range(retry_attempts):
             try:
                 session = requests.Session()
                 response = session.send(req, timeout=timeout)
-                
+
                 # Check for rate limiting
                 if response.status_code == 429:
                     retry_after = int(response.headers.get("Retry-After", retry_delay))
                     if attempt < retry_attempts - 1:
                         time.sleep(retry_after)
                         continue
-                
+
                 return response
-                
-            except requests.exceptions.Timeout:
+
+            except requests.exceptions.Timeout as e:
+                last_exception = e
                 if attempt < retry_attempts - 1:
                     time.sleep(retry_delay)
                     continue
                 raise
-            
-            except requests.exceptions.RequestException:
+
+            except requests.exceptions.RequestException as e:
+                last_exception = e
                 if attempt < retry_attempts - 1:
                     time.sleep(retry_delay)
                     continue
                 raise
-        
+
+        # If we exhausted all retries, raise the last exception or generic error
+        if last_exception:
+            raise last_exception
         raise Exception("Max retry attempts exceeded")
     
     def test_connector(self, connector_type: str, connector_name: str) -> bool:
         """
         Test a connector by making a simple API call
-        
+
         Args:
             connector_type: Type of connector
             connector_name: Name of the connector
-            
+
         Returns:
             True if test succeeds, False otherwise
         """
         try:
             connector = self.get_connector(connector_type, connector_name)
-            if not connector or not connector.get("enabled", False):
+            if not connector:
                 return False
+
+            # For GitHub API connector, enablement is implicit (no enabled field required)
+            # For other connectors, check the enabled field
+            if connector_type == "github" and connector_name == "api":
+                # GitHub API is enabled if it has a base_url
+                if not connector.get("base_url"):
+                    return False
+            else:
+                # Other connectors require explicit enabled flag
+                if not connector.get("enabled", False):
+                    return False
             
             # Different test for different connector types
             if connector_type == "llm_providers":
@@ -583,8 +713,13 @@ def get_exchange(exchange_name: str) -> Optional[Dict]:
 
 # Usage example
 if __name__ == "__main__":
+    import sys
+
     manager = ConnectorManager()
-    
+
+    # Check for --test flag
+    run_tests = "--test" in sys.argv
+
     print("=== Available Connectors ===")
     connectors = manager.list_connectors()
     for conn_type, conn_list in connectors.items():
@@ -592,28 +727,32 @@ if __name__ == "__main__":
         for conn_name in conn_list:
             enabled = manager.is_enabled(conn_type, conn_name)
             print(f"  - {conn_name}: {'enabled' if enabled else 'disabled'}")
-    
+
     print("\n=== All Connector Info ===")
     all_connectors = manager.list_all_connectors()
     for conn in all_connectors:
         print(f"\n{conn.name} ({conn.type}):")
         print(f"  Enabled: {conn.enabled}")
         print(f"  Description: {conn.description}")
-    
-    print("\n=== Testing Connectors ===")
-    # Test LLM providers
-    for provider in connectors.get("llm_providers", []):
-        if manager.is_enabled("llm_providers", provider):
-            result = manager.test_connector("llm_providers", provider)
-            print(f"  {provider}: {'OK' if result else 'FAILED'}")
-    
-    # Test exchanges
-    for exchange in connectors.get("exchanges", []):
-        if manager.is_enabled("exchanges", exchange):
-            result = manager.test_connector("exchanges", exchange)
-            print(f"  {exchange}: {'OK' if result else 'FAILED'}")
-    
-    # Test GitHub
-    if "github" in connectors:
-        result = manager.test_connector("github", "api")
-        print(f"  GitHub API: {'OK' if result else 'FAILED'}")
+
+    # Only run tests if --test flag is provided
+    if run_tests:
+        print("\n=== Testing Connectors ===")
+        # Test LLM providers
+        for provider in connectors.get("llm_providers", []):
+            if manager.is_enabled("llm_providers", provider):
+                result = manager.test_connector("llm_providers", provider)
+                print(f"  {provider}: {'OK' if result else 'FAILED'}")
+
+        # Test exchanges
+        for exchange in connectors.get("exchanges", []):
+            if manager.is_enabled("exchanges", exchange):
+                result = manager.test_connector("exchanges", exchange)
+                print(f"  {exchange}: {'OK' if result else 'FAILED'}")
+
+        # Test GitHub
+        if "github" in connectors:
+            result = manager.test_connector("github", "api")
+            print(f"  GitHub API: {'OK' if result else 'FAILED'}")
+    else:
+        print("\n(Use --test flag to run live network tests)")

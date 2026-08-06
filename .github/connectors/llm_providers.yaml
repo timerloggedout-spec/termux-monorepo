@@ -5,6 +5,7 @@ llm_providers:
   deepseek:
     enabled: true
     api_key_env: "DEEPSEEK_API_KEY"
+    auth_method: "bearer"
     base_url: "https://api.deepseek.com"
     rate_limit: 100
     timeout: 60
@@ -45,6 +46,7 @@ llm_providers:
   mistral:
     enabled: true
     api_key_env: "MISTRAL_API_KEY"
+    auth_method: "bearer"
     base_url: "https://api.mistral.ai"
     rate_limit: 100
     timeout: 60

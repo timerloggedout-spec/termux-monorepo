@@ -37,11 +37,10 @@ def set_manifest_status(pid: str, new_status: str, evidence: str) -> None:
         f"- Disposition: status → **{new_status}**\n"
         f"- Notes: {evidence or '(no evidence string)'}\n"
     )
-    if "## Review log" in text:
-        if "## Checklist" in text:
-            text = text.replace("## Checklist", entry + "\n## Checklist", 1)
-        else:
-            text = text.rstrip() + "\n" + entry
+    if "## Review log" in text and "## Checklist" in text:
+        text = text.replace("## Checklist", entry + "\n## Checklist", 1)
+    else:
+        text = text.rstrip() + "\n" + entry
     write_text(man, text)
 
 def maybe_close_move(pid: str) -> None:

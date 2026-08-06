@@ -1,0 +1,106 @@
+# Debate dock hygiene — TOC rebuild check, stale/blocker flags, optional Linear ping
+name: debate-hygiene
+
+on:
+  pull_request:
+    paths:
+      - "docs/DEBATE/**"
+      - "scripts/debate/**"
+      - ".github/workflows/debate-hygiene.yml"
+  schedule:
+    - cron: "0 15 * * 1"   # weekly Mon 15:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  matrix-toc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml
+      - name: Rebuild TOC and diff
+        run: |
+          python3 scripts/debate/build_toc.py
+          if ! git diff --quiet docs/DEBATE/TOC.md; then
+            echo "::error::TOC.md out of date — run scripts/debate/build_toc.py"
+            git diff docs/DEBATE/TOC.md
+            exit 1
+          fi
+      - name: Flag stale / blockers
+        run: |
+          set +e
+          out=$(python3 scripts/debate/flag_stale.py)
+          code=$?
+          echo "$out"
+          if [ "${{ github.event_name }}" = "pull_request" ] && [ $code -ne 0 ]; then
+            echo "$out" | grep -q BLOCKER && exit 1 || exit 0
+          fi
+          exit 0
+
+  linear-stale-ping:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    needs: matrix-toc
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml
+      - name: Create Linear issue for stale debates
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: |
+          if [ -z "$LINEAR_API_KEY" ]; then
+            echo "LINEAR_API_KEY missing — skip"
+            exit 0
+          fi
+          python3 << 'PY'
+          import os, json, urllib.request, datetime as dt
+          import yaml
+          from pathlib import Path
+          data = yaml.safe_load(Path("docs/DEBATE/MATRIX.yaml").read_text())
+          stale_after = int(data.get("stale_after_days") or 14)
+          today = dt.date.today()
+          lines = []
+          for d in data.get("debates") or []:
+              if d.get("status") != "open":
+                  continue
+              last = d.get("last_activity") or "1970-01-01"
+              try:
+                  age = (today - dt.date.fromisoformat(str(last)[:10])).days
+              except ValueError:
+                  age = 999
+              if age >= stale_after or d.get("blocker"):
+                  lines.append(f"- `{d['id']}` age={age}d blocker={d.get('blocker')} — {d.get('title')}")
+          if not lines:
+              print("No stale debates")
+              raise SystemExit(0)
+          body = "Auto from debate-hygiene.yml\n\n" + "\n".join(lines)
+          team_id = "1e672463-31de-40b2-a378-3c03fd8f7e3b"
+          payload = {
+            "query": """mutation($input: IssueCreateInput!) {
+              issueCreate(input: $input) { success issue { identifier url } }
+            }""",
+            "variables": {
+              "input": {
+                "teamId": team_id,
+                "title": f"Stale/blocked debates ({today.isoformat()})",
+                "description": body,
+              }
+            },
+          }
+          req = urllib.request.Request(
+              "https://api.linear.app/graphql",
+              data=json.dumps(payload).encode(),
+              headers={"Content-Type": "application/json", "Authorization": os.environ["LINEAR_API_KEY"]},
+          )
+          with urllib.request.urlopen(req) as resp:
+              print(resp.read().decode())
+          PY

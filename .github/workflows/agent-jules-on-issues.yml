@@ -1,0 +1,250 @@
+name: Jules on Issues (label / @jules)
+
+# Native Jules already responds when the GitHub App sees label "jules".
+# This workflow adds:
+#  1) Explicit acknowledge + structured prompt via jules-invoke (if JULES_API_KEY set)
+#  2) Fallback @jules comment so the App path still fires without API key
+#  3) Prior open-PR inventory injected into prompt (coordination)
+#  4) <!-- agent-claim --> marker so Gemini does not claim the same files
+#
+# Requires: Jules GitHub App installed on this repo
+# Optional: secrets.JULES_API_KEY for google-labs-code/jules-invoke
+#
+# SECURITY: Issue triggers are restricted — untrusted openers cannot burn quota.
+
+on:
+  issues:
+    types: [labeled, opened]
+  issue_comment:
+    types: [created]
+
+concurrency:
+  group: jules-issue-${{ github.event.issue.number || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  jules-on-label:
+    if: |
+      github.event_name == 'issues' &&
+      github.event.action == 'labeled' &&
+      (
+        github.event.label.name == 'jules' ||
+        github.event.label.name == 'Jules' ||
+        github.event.label.name == 'JULES'
+      )
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: read
+    steps:
+      - name: Acknowledge (👀) + inventory open agent PRs
+        id: coord
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue.number;
+            try {
+              await github.rest.reactions.createForIssue({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue,
+                content: 'eyes',
+              });
+            } catch (e) {
+              core.info('Reaction skip: ' + e.message);
+            }
+            const marker = '<!-- jules-issue-ack -->';
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue,
+              per_page: 50,
+            });
+            if (comments.some(c => c.body && c.body.includes(marker))) {
+              core.info('Already acknowledged');
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue,
+                body: [
+                  marker,
+                  `👀 **Jules summoned** on issue #${issue} via label \`jules\`.`,
+                  ``,
+                  `Jules (Google Labs) will plan → implement in a Cloud VM → open a PR.`,
+                  `Coordination: prior open agent PRs are injected into the task prompt.`,
+                  ``,
+                  `Tracking: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+                ].join('\n'),
+              });
+            }
+            const { data: prs } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 50,
+            });
+            const agentLogins = ['google-labs-jules[bot]', 'devin-ai-integration[bot]', 'coderabbitai[bot]', 'ecc-tools[bot]'];
+            const relevant = prs.filter(p => {
+              const u = (p.user && p.user.login) || '';
+              const body = (p.body || '') + ' ' + (p.title || '');
+              return agentLogins.some(a => u.includes(a.split('[')[0])) ||
+                     body.includes(`#${issue}`) ||
+                     body.toLowerCase().includes(`issue ${issue}`);
+            }).slice(0, 15);
+            const inventory = relevant.map(p =>
+              `- PR #${p.number} @${(p.user && p.user.login) || 'unknown'}: ${p.title} (base=${p.base.ref} head=${p.head.ref})`
+            ).join('\n') || '(none matching)';
+            core.setOutput('prior_prs', inventory);
+
+      - name: Invoke Jules API (optional)
+        if: ${{ secrets.JULES_API_KEY != '' }}
+        continue-on-error: true
+        uses: google-labs-code/jules-invoke@v1
+        with:
+          jules_api_key: ${{ secrets.JULES_API_KEY }}
+          starting_branch: master-staging
+          prompt: |
+            You are Jules working on termux-monorepo. Read AGENTS.md and GEMINI.md if present.
+
+            ## Issue #${{ github.event.issue.number }}: ${{ github.event.issue.title }}
+
+            ${{ github.event.issue.body }}
+
+            ## Open agent / related PRs (DO NOT overlap files)
+            ${{ steps.coord.outputs.prior_prs }}
+
+            ## COORDINATION RULES (mandatory)
+            1. Before changing any file, respect the open PRs listed above — do not modify files already present in those diffs unless that PR is closed/superseded.
+            2. Prefer disjoint file sets vs Gemini / other agents on the same issue.
+            3. After opening a PR, post a comment on the issue with:
+               <!-- agent-claim -->
+               claimed_by: jules
+               issue: ${{ github.event.issue.number }}
+               files: <comma-separated paths you changed>
+               pr: <your PR number>
+            4. Base branch: master-staging. Minimal diffs. No secrets. Respect repo gates.
+            5. If another agent already claimed the core work, review their PR instead of duplicating.
+
+            ## Instructions
+            1. Diagnose root cause; prefer minimal diffs.
+            2. Preserve Sentinel 0o600/0o700 patterns if touching credentials/session paths.
+            3. Open a PR; cite Implements if an ITEMS.md id applies.
+            4. Run or respect repo gates (repo_gate / termux_smoke) where possible.
+            5. Do not commit secrets or Class 3/4 artifacts.
+
+      - name: Fallback @jules ping (App path)
+        if: ${{ secrets.JULES_API_KEY == '' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue.number;
+            const marker = '<!-- jules-app-ping -->';
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue,
+              per_page: 30,
+            });
+            if (comments.some(c => c.body && c.body.includes(marker))) return;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue,
+              body: [
+                marker,
+                `@jules Please implement a fix for this issue.`,
+                ``,
+                `Base your work on **master-staging**. Prefer minimal diffs; respect AGENTS.md.`,
+                `Check open agent PRs first — do not edit files already claimed by another agent on this issue.`,
+                `Open a PR when done and post <!-- agent-claim --> on the issue.`,
+              ].join('\n'),
+            });
+
+  jules-on-mention:
+    if: |
+      github.event_name == 'issue_comment' &&
+      !github.event.issue.pull_request &&
+      github.event.sender.type == 'User' &&
+      contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association) &&
+      (
+        startsWith(github.event.comment.body, '@jules') ||
+        startsWith(github.event.comment.body, '@Jules')
+      )
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: read
+    steps:
+      - name: React 👀 on comment + inventory PRs
+        id: coord
+        uses: actions/github-script@v7
+        with:
+          script: |
+            try {
+              await github.rest.reactions.createForIssueComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: context.payload.comment.id,
+                content: 'eyes',
+              });
+            } catch (e) {
+              core.info('Reaction skip: ' + e.message);
+            }
+            const issue = context.payload.issue.number;
+            const { data: prs } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 50,
+            });
+            const agentLogins = ['google-labs-jules', 'devin-ai-integration', 'coderabbitai', 'ecc-tools'];
+            const relevant = prs.filter(p => {
+              const u = (p.user && p.user.login) || '';
+              const body = (p.body || '') + ' ' + (p.title || '');
+              return agentLogins.some(a => u.includes(a)) ||
+                     body.includes(`#${issue}`) ||
+                     body.toLowerCase().includes(`issue ${issue}`);
+            }).slice(0, 15);
+            const inventory = relevant.map(p =>
+              `- PR #${p.number} @${(p.user && p.user.login) || 'unknown'}: ${p.title}`
+            ).join('\n') || '(none matching)';
+            core.setOutput('prior_prs', inventory);
+
+      - name: Ensure jules label
+        uses: actions/github-script@v7
+        with:
+          script: |
+            try {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.issue.number,
+                labels: ['jules'],
+              });
+            } catch (e) {
+              core.info('Label add skip: ' + e.message);
+            }
+
+      - name: Invoke Jules API on mention (optional)
+        if: ${{ secrets.JULES_API_KEY != '' }}
+        continue-on-error: true
+        uses: google-labs-code/jules-invoke@v1
+        with:
+          jules_api_key: ${{ secrets.JULES_API_KEY }}
+          starting_branch: master-staging
+          prompt: |
+            Issue #${{ github.event.issue.number }}: ${{ github.event.issue.title }}
+
+            ${{ github.event.issue.body }}
+
+            User request:
+            ${{ github.event.comment.body }}
+
+            ## Open agent / related PRs (DO NOT overlap files)
+            ${{ steps.coord.outputs.prior_prs }}
+
+            COORDINATION: Prefer disjoint files vs other agents. Post <!-- agent-claim --> after opening a PR.
+            Follow AGENTS.md. Base branch master-staging. Minimal diffs. Open a PR.

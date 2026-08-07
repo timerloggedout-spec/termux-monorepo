@@ -41,12 +41,7 @@ CONFIG_FILE = CONFIG_DIR / "config.json"
 WASM_SOLVER = Path(__file__).parent.parent / "pow_solver.js"
 BASE_URL = "https://chat.deepseek.com"
 
-# SECURITY ENHANCEMENT: Enforce strict directory permissions (700) - Fail-closed on OSError
-CONFIG_DIR.mkdir(mode=0o700, parents=True, exist_ok=True)
-try:
-    os.chmod(str(CONFIG_DIR), 0o700)
-except OSError as e:
-    raise PermissionError(f"Fail-closed: Failed to enforce 0o700 permissions on {CONFIG_DIR}: {e}")
+CONFIG_DIR.mkdir(parents=True, exist_ok=True)
 
 # Persistent session (cookies preserved across API calls)
 _session: Optional[Any] = None
@@ -58,14 +53,7 @@ def _cache_path(session_id: str, account: str = "primary") -> str:
         store_dir = SESSION_STORE / account
     except ImportError:
         store_dir = Path.home() / ".deepcli" / "session_store" / account
-    
-    # SECURITY ENHANCEMENT: Enforce directory permissions (700) on session store - Fail-closed on OSError
-    store_dir.mkdir(mode=0o700, parents=True, exist_ok=True)
-    try:
-        os.chmod(str(store_dir), 0o700)
-    except OSError as e:
-        raise PermissionError(f"Fail-closed: Failed to enforce 0o700 permissions on {store_dir}: {e}")
-    
+    store_dir.mkdir(parents=True, exist_ok=True)
     return str(store_dir / f"{session_id}.json")
 
 def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict[str, Any]]]:
@@ -77,19 +65,9 @@ def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict
 
 def _cache_save(session_id: str, messages: List[Dict[str, Any]], account: str = "primary"):
     path = _cache_path(session_id, account)
-    os.makedirs(os.path.dirname(path), mode=0o700, exist_ok=True)
-    
-    # SECURITY ENHANCEMENT: Enforce strict file permissions (600) even on existing session exports
-    fd = os.open(path, os.O_CREAT | os.O_WRONLY, 0o600)
-    try:
-        os.fchmod(fd, 0o600)
-        os.ftruncate(fd, 0)
-        with os.fdopen(fd, 'w') as f:
-            json.dump(messages, f, indent=2)
-            fd = -1
-    finally:
-        if fd >= 0:
-            os.close(fd)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, 'w') as f:
+        json.dump(messages, f, indent=2)
 
     # === DISPATCH HOOK — additive, never blocks save ===
     try:
@@ -125,24 +103,7 @@ def load_config() -> Dict[str, Any]:
     return {}
 
 def save_config(cfg: Dict[str, Any]):
-    # SECURITY ENHANCEMENT: Enforce directory permissions (700) and file permissions (600) on token config - Fail-closed on OSError
-    CONFIG_DIR.mkdir(mode=0o700, parents=True, exist_ok=True)
-    try:
-        os.chmod(str(CONFIG_DIR), 0o700)
-    except OSError as e:
-        raise PermissionError(f"Fail-closed: Failed to enforce 0o700 permissions on {CONFIG_DIR}: {e}")
-    
-    # SECURITY ENHANCEMENT: Enforce strict file permissions (600) even on existing token config
-    fd = os.open(str(CONFIG_FILE), os.O_CREAT | os.O_WRONLY, 0o600)
-    try:
-        os.fchmod(fd, 0o600)
-        os.ftruncate(fd, 0)
-        with os.fdopen(fd, 'w') as f:
-            json.dump(cfg, f, indent=2)
-            fd = -1
-    finally:
-        if fd >= 0:
-            os.close(fd)
+    CONFIG_FILE.write_text(json.dumps(cfg, indent=2))
 
 def get_token() -> str:
     token = os.environ.get("DEEPSEEK_TOKEN")
@@ -387,17 +348,207 @@ def stream_completion(token: str, prompt: str, session_id: str,
                     delay = random.uniform(0.5, 2.0)
                 delay = min(delay, 90)
                 _log_retry("stream_completion", resp.status_code, retries, delay)
-                console.print(f"[yellow]Server busy/blocked, retrying in {delay:.1f}s...[/]")
+                console.print(f"[yellow]Server busy/blocked, retrying in {delay:.1f}s (attempt {retries})...[/]")
                 time.sleep(delay)
                 continue
-            
-            resp.raise_for_status()
-            return resp
+            if resp.status_code != 200:
+                body = resp.text[:300]
+                retries += 1
+                delay = base_delay * (2 ** min(retries, 5)) + random.uniform(0, 3)
+                delay = min(delay, 90)
+                _log_retry("stream_completion", resp.status_code, retries, delay)
+                console.print(f"[red]API error {resp.status_code}: {body}[/] retry in {delay:.1f}s")
+                # Fallback: if expert mode not available, force instant
+                if 'expert' in body.lower() or 'upgrade' in body.lower():
+                    console.print("[yellow]Expert mode unavailable — falling back to instant.[/]")
+                    payload['thinking_enabled'] = False
+                    payload['search_enabled'] = False
+                time.sleep(delay)
+                continue
+            # Read full response and parse SSE manually
+            raw = resp.content.decode('utf-8', errors='replace')
+            for line in raw.split('\n'):
+                if not line.strip():
+                    continue
+                if line.startswith('data:'):
+                    try:
+                        data = json.loads(line[5:].strip())
+                        if isinstance(data, dict):
+                            # Save close event for auto-continue
+                            if data.get("click_behavior") is not None or data.get("auto_resume") is not None:
+                                global _last_close_data
+                                _last_close_data = {
+                                    "auto_resume": data.get("auto_resume"),
+                                    "click_behavior": data.get("click_behavior"),
+                                    "message_id": data.get("message_id") or data.get("response_message_id")
+                                }
+                            # Log any unknown keys for debugging
+                            _known_keys = {"v","content","auto_resume","click_behavior",
+                                          "finish_reason","message_id","request_message_id",
+                                          "response_message_id","model_type"}
+                            for k in data:
+                                if k not in _known_keys:
+                                    try:
+                                        with open(os.path.join(os.path.dirname(__file__),
+                                            "..","..","cli-synthegration","metrics","sse_keys.log"),"a") as _f:
+                                            _f.write(json.dumps({k:data[k]})+"\n")
+                                    except: pass
+                            # Track auto_resume flag for continue button
+                            if data.get("auto_resume") is not None:
+                                _last_auto_resume = data.get("auto_resume")
+                            if data.get("click_behavior") is not None:
+                                _last_click_behavior = data.get("click_behavior")
+                            chunk = data.get("v") or data.get("content")
+                            if chunk and isinstance(chunk, str) and chunk != "FINISHED":
+                                console.print(chunk, end="")
+                    except json.JSONDecodeError:
+                        pass
+            return
         except Exception as e:
-            if not auto_retry:
-                raise
             retries += 1
-            delay = base_delay * (2 ** min(retries, 5))
-            console.print(f"[red]Request failed: {e}. Retrying in {delay}s...[/]")
+            delay = min(10 * retries, 60)
+            console.print(f"[red]Request error: {e}. Retrying in {delay}s...[/]")
             time.sleep(delay)
-    raise RuntimeError("Max retries exceeded for stream_completion")
+    console.print("[red]Failed after multiple retries.[/]")
+
+
+
+    return final_text
+def continue_response(token: str, session_id: str, parent_message_id: str,
+                      auto_retry: bool = True) -> bool:
+    """Send a continue request after an auto_resume signal. Returns True if more content was generated."""
+    console.print("\n[yellow][Continue generating...][/]")
+    try:
+        stream_completion(token, "", session_id, parent_message_id,
+                         thinking=False, search=False, file_ids=None,
+                         auto_retry=auto_retry)
+        return True
+    except Exception as e:
+        console.print(f"[red]Continue failed: {e}[/]")
+        return False
+
+
+
+def send_message_working(token: str, session_id: str, prompt: str,
+                         parent_message_id: str = None,
+                         files: list = None,
+                         thinking: bool = False,
+                         search: bool = False) -> str:
+    """Proven working send (May 22) – standalone requests path."""
+    import requests as req
+    s = get_session(token)
+    headers = s.headers.copy()
+    headers["Content-Type"] = "application/json"
+
+    challenge = get_pow_challenge(token, "/api/v0/chat/completion")
+    pow_header = solve_pow(challenge)
+    headers["X-Ds-Pow-Response"] = pow_header
+
+    payload = {
+        "prompt": prompt,
+        "chat_session_id": session_id,
+        "parent_message_id": parent_message_id,
+        "model": "deepseek-chat",
+        "stream": True,
+        "thinking_enabled": thinking,
+        "search_enabled": search,
+        "ref_file_ids": files or [],
+    }
+
+    resp = req.post(
+        f"{BASE_URL}/api/v0/chat/completion",
+        headers=headers,
+        json=payload,
+        stream=True
+    )
+
+    result = ""
+    for line in resp.iter_lines(decode_unicode=True):
+        if line and line.startswith("data:"):
+            try:
+                data = json.loads(line[5:].strip())
+                chunk = data.get("v") or data.get("content")
+                if chunk and chunk != "FINISHED":
+                    result += chunk
+            except:
+                pass
+    return result
+
+
+def send_message(token: str, session_id: str, prompt: str,
+                 parent_message_id: str = None) -> str:
+    """Send a message and return the assistant reply (non-streaming)."""
+    challenge = get_pow_challenge(token, '/api/v0/chat/completion')
+    pow_header = solve_pow(challenge)
+    payload = {
+        'chat_session_id': session_id,
+        'parent_message_id': parent_message_id,
+        'prompt': prompt,
+        'ref_file_ids': [],
+        'thinking_enabled': True,
+        'search_enabled': False,
+        'stream': False,
+    }
+    s = get_session(token)
+    headers = s.headers.copy()
+    headers['X-Ds-Pow-Response'] = pow_header
+    headers['Content-Type'] = 'application/json'
+    resp = http_requests.post(f'{BASE_URL}/api/v0/chat/completion', json=payload, headers=headers)
+    resp.raise_for_status()
+    data = resp.json()
+    return data['choices'][0]['message']['content']
+
+def chat_completion(token: str, prompt: str, session_id: str,
+                    parent_message_id: Optional[str] = None,
+                    thinking: bool = False, search: bool = False,
+                    file_ids: Optional[List[str]] = None,
+                    model_type: str = "default",
+                    auto_continue: bool = True,
+                    max_continues: int = 3) -> str:
+    """Wrapper around stream_completion that returns the full reply.
+    If auto_continue is True and the server signals truncation,
+    automatically sends continue requests up to max_continues times."""
+    import io
+    from contextlib import redirect_stdout
+    
+    global _last_close_data
+    _last_close_data = None
+    full_output = ""
+    current_parent = parent_message_id
+    
+    for cont in range(max_continues + 1):
+        f = io.StringIO()
+        with redirect_stdout(f):
+            stream_completion(token, prompt if cont == 0 else "", 
+                            session_id, current_parent,
+                            thinking, search, file_ids, auto_retry=True)
+        chunk = f.getvalue()
+        full_output += chunk
+        
+        if not auto_continue:
+            break
+        
+        # Check if server asked for continue
+        if _last_close_data and _last_close_data.get("auto_resume"):
+            current_parent = _last_close_data.get("message_id")
+            if current_parent:
+                console.print("\n[yellow][Auto-continue {}/{}...][/]".format(cont+1, max_continues))
+                continue
+        break
+    
+    return full_output
+def export_markdown(token: str, session_id: str) -> str:
+    messages = get_history(token, session_id)
+    md = ""
+    for msg in messages:
+        role = msg.get("role", "user")
+        content = msg.get("content", "")
+        if role == "user":
+            md += f"### 👤 You\n{content}\n\n"
+        else:
+            md += f"### 🤖 DeepSeek\n{content}\n\n"
+    return md
+
+def export_json(token: str, session_id: str) -> str:
+    messages = get_history(token, session_id)
+    return json.dumps(messages, indent=2)

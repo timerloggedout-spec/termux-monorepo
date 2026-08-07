@@ -5,7 +5,6 @@ Decouples session ingestion from downstream updates (SSOT, Codex, Linear, etc.)
 """
 import json
 import logging
-import os
 import sys
 import time
 from pathlib import Path
@@ -34,7 +33,6 @@ class DispatchPipeline:
     def _register_default_dispatchers(self):
         self.register(self.dispatch_ssot)
         self.register(self.dispatch_codex)
-        self.register(self.dispatch_lexicon)
         self.register(self.dispatch_linear_hint)
 
     def dispatch_ssot(self, session_id: str, messages: List[Dict[str, Any]]):
@@ -58,28 +56,16 @@ class DispatchPipeline:
         except Exception as e:
             logger.error(f"Codex dispatch failed for {session_id}: {e}")
 
-    def dispatch_lexicon(self, session_id: str, messages: List[Dict[str, Any]]):
-        """Run legacy lexicon harvest."""
-        try:
-            # Try to find lexicon_harvest.py in the archwiz dir
-            sys.path.insert(0, str(ARCHWIZ_ROOT / "archwiz"))
-            try:
-                from lexicon_harvest import harvest_session
-                harvest_session(session_id)
-                logger.info(f"Lexicon harvest successful for {session_id}")
-            except ImportError:
-                # Fallback if not in archwiz dir
-                pass
-        except Exception as e:
-            logger.error(f"Lexicon dispatch failed for {session_id}: {e}")
-
     def dispatch_linear_hint(self, session_id: str, messages: List[Dict[str, Any]]):
         """Hint that a session might need Linear sync if it contains task updates."""
+        # Simple heuristic: look for "done" or "task" in the last message
         if not messages:
             return
         last_msg = messages[-1].get("content", "").lower()
         if any(kw in last_msg for kw in ["done", "fixed", "implemented", "task"]):
             logger.info(f"Session {session_id} marked for Linear sync review")
+            # In a full implementation, we might trigger linear_sync.py here
+            # For now, we just log the hint.
 
     def run(self, session_id: str, messages: List[Dict[str, Any]]):
         """Execute all registered dispatchers."""
@@ -99,19 +85,6 @@ def trigger_dispatch(session_id: str, messages: List[Dict[str, Any]]):
     """Entry point for core.py and other ingestors."""
     pipeline = DispatchPipeline()
     pipeline.run(session_id, messages)
-
-def update_all(session_id: str):
-    """Legacy compatibility wrapper for older core.py versions."""
-    # We need the messages to run the pipeline properly.
-    # We try to load from the default store if not provided.
-    try:
-        from archwiz.config import SESSION_STORE
-        store_path = SESSION_STORE / "primary" / f"{session_id}.json"
-        if store_path.exists():
-            messages = json.loads(store_path.read_text())
-            trigger_dispatch(session_id, messages)
-    except Exception:
-        pass
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:

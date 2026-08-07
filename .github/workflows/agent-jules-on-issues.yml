@@ -209,7 +209,7 @@ jobs:
                      body.toLowerCase().includes(`issue ${issue}`);
             }).slice(0, 15);
             const inventory = relevant.map(p =>
-              `- PR #${p.number} @${p.user.login}: ${p.title}`
+              `- PR #${p.number} @${(p.user && p.user.login) || 'unknown'}: ${p.title}`
             ).join('\n') || '(none matching)';
             core.setOutput('prior_prs', inventory);
 

@@ -163,7 +163,7 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: number,
-                body: `🤖 **Gemini CLI** received \\`${cmd}\\`. Tracking: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+                body: `🤖 **Gemini CLI** received \`${cmd}\`. Tracking: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
               });
             }
 

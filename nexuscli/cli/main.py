@@ -6,6 +6,7 @@ Main CLI entry point for DeepCode-CLI Phased Nexus.
 import argparse
 import sys
 import os
+import json
 from pathlib import Path
 from rich.console import Console
 from rich.panel import Panel

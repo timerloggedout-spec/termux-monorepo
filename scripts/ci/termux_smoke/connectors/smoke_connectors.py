@@ -14,7 +14,8 @@ import sys
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parents[3]
+# scripts/ci/termux_smoke/connectors/smoke_connectors.py → parents[4] = repo root
+REPO_ROOT = Path(__file__).resolve().parents[4]
 CONNECTORS = REPO_ROOT / ".github" / "connectors"
 
 REQUIRED_FILES = [

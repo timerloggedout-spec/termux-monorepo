@@ -198,10 +198,428 @@ ArchWizard — indexing, provenance, recovery indices, automation cockpit.
 
 ## refTemplates — last-known directory snapshot (include B)
 The following is the last-known top-2-level snapshot of `~/refTemplates/` from the last 30 days. Use this as the authoritative reference for restoration.
+```
+❯ ls                                                       01_Agent_Runtime         final_intel.json
+02_Memory_Session        flywheel_intel.txt
+03_Agent_Communication   inventory_deep.py                 04_CedarScript           inventory_repos.py
+05_Safety_Observability  meta_intel.txt
+06_Task_Tracking         move_log.txt                      07_Prompt_Context        quick_intel.txt                   08_Swarm_References      quick_recon.sh                    09_Auth_Networking       recon.py
+10_Infrastructure        recon.sh                          11_Evaluation_Quality    recon_lag.py                      12_External_Agents       recon_v2.sh                       13_Third_Party_Refs      repo_intel.txt
+14_Plain_Files           repo_inventory.json               15_Reverse_Engineering   repo_inventory_deep.json          README.md                revert.sh
+_TOOL_TAXONOMY           scavenge.sh                       deep_intel.txt           sparse_report.txt
+deep_recon.sh            surgical_intel.txt                fast_intel.txt           surgical_recon.sh                 fast_scan.sh             trunk_builder.py                  ❯ tree -L 3
+.                                                          ├── 01_Agent_Runtime                                       │   ├── agent-c
+│   │   ├── Dockerfile                                     │   │   ├── README.md
+│   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt
+│   │   ├── pyproject.toml                                 │   │   └── requirements.txt
+│   ├── better-clawd
+│   │   ├── README.md                                      │   │   ├── REPO_INFO
+│   │   ├── TAGS.txt                                       │   │   ├── bun.lock
+│   │   ├── package.json                                   │   │   └── schemas
+│   ├── big-AGI
+│   │   ├── AGENTS.md -> CLAUDE.md                         │   │   ├── CLAUDE.md                                      │   │   ├── Dockerfile
+│   │   ├── README.md                                      │   │   ├── REPO_INFO
+│   │   ├── TAGS.txt                                       │   │   ├── kb                                             │   │   ├── package-lock.json                              │   │   ├── package.json                                   │   │   ├── pages                                          │   │   ├── public
+│   │   └── tools                                          │   ├── cc-mirror                                          │   │   ├── AGENTS.md                                      │   │   ├── CLAUDE.md
+│   │   ├── README.md                                      │   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt                                       │   │   ├── package-lock.json                              │   │   └── package.json                                   │   ├── ccs                                                │   │   ├── AGENTS.md -> CLAUDE.md                         │   │   ├── CLAUDE.md                                      │   │   ├── README.md                                      │   │   ├── REPO_INFO
+│   │   ├── TAGS.txt                                       │   │   ├── assets                                         │   │   ├── bun.lock                                       │   │   ├── config                                         │   │   ├── docker                                         │   │   ├── eslint-rules                                   │   │   ├── macos-bar                                      │   │   ├── package.json                                   │   │   └── ui                                             │   ├── frankenterm
+│   │   ├── AGENTS.md                                      │   │   ├── Cargo.lock                                     │   │   ├── Cargo.toml
+│   │   ├── README.md                                      │   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt
+│   │   ├── assets                                         │   │   ├── crates
+│   │   ├── evidence
+│   │   ├── frankenterm                                    │   │   ├── fuzz                                           │   │   ├── lints
+│   │   ├── rules                                          │   │   ├── rust-toolchain.toml                            │   │   └── scratch                                        │   ├── hermes-agent                                       │   │   ├── AGENTS.md                                      │   │   ├── CONTRIBUTING.es.md                             │   │   ├── CONTRIBUTING.md                                │   │   ├── Dockerfile
+│   │   ├── LICENSE                                        │   │   ├── README.es.md                                   │   │   ├── README.md                                      │   │   ├── README.ur-pk.md
+│   │   ├── README.zh-CN.md                                │   │   ├── REPO_INFO                                      │   │   ├── SECURITY.es.md                                 │   │   ├── SECURITY.md                                    │   │   ├── TAGS.txt                                       │   │   ├── agent                                          │   │   ├── apps                                           │   │   ├── cli.py                                         │   │   ├── docker-compose.windows.yml                     │   │   ├── docker-compose.yml
+│   │   ├── hermes_cli
+│   │   ├── hermes_state.py                                │   │   ├── model_tools.py                                 │   │   ├── optional-skills
+│   │   ├── package-lock.json                              │   │   ├── package.json                                   │   │   ├── packaging                                      │   │   ├── plugins                                        │   │   ├── providers
+│   │   ├── pyproject.toml                                 │   │   ├── run_agent.py
+│   │   ├── setup.py
+│   │   ├── skills                                         │   │   ├── toolsets.py
+│   │   ├── ui-tui                                         │   │   ├── web
+│   │   └── website                                        │   ├── hermes-agent_new
+│   │   ├── AGENTS.md                                      │   │   ├── Dockerfile                                     │   │   ├── README.md                                      │   │   ├── REPO_INFO
+│   │   ├── TAGS.txt                                       │   │   ├── acp_adapter
+│   │   ├── acp_registry                                   │   │   ├── agent
+│   │   ├── cron                                           │   │   ├── datagen-config-examples                        │   │   ├── docker                                         │   │   ├── docker-compose.yml
+│   │   ├── gateway                                        │   │   ├── hermes_cli                                     │   │   ├── locales                                        │   │   ├── nix                                            │   │   ├── package-lock.json                              │   │   ├── package.json
+│   │   ├── packaging                                      │   │   ├── plugins                                        │   │   ├── providers                                      │   │   ├── pyproject.toml                                 │   │   ├── setup.py                                       │   │   ├── skills                                         │   │   ├── tools
+│   │   ├── tui_gateway
+│   │   ├── ui-tui
+│   │   └── web                                            │   ├── hermes-webui
+│   │   ├── AGENTS.md                                      │   │   ├── ARCHITECTURE.md
+│   │   ├── Dockerfile
+│   │   ├── README.md
+│   │   ├── REPO_INFO
+│   │   ├── TAGS.txt                                       │   │   ├── api                                            │   │   ├── docker-compose.yml                             │   │   ├── package.json                                   │   │   ├── pyproject.toml                                 │   │   ├── requirements-dev.txt                           │   │   ├── requirements.txt                               │   │   └── static                                         │   ├── opencode
+│   │   ├── AGENTS.md                                      │   │   ├── README.md                                      │   │   ├── REPO_INFO
+│   │   ├── TAGS.txt                                       │   │   ├── bun.lock                                       │   │   ├── github                                         │   │   ├── infra                                          │   │   ├── nix                                            │   │   ├── package.json                                   │   │   ├── patches
+│   │   ├── perf                                           │   │   ├── script                                         │   │   ├── sdks                                           │   │   └── specs                                          │   ├── openrouter-deep-research-mcp
+│   │   ├── AGENTS.md                                      │   │   ├── CLAUDE.md                                      │   │   ├── Dockerfile                                     │   │   ├── README.md                                      │   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt
+│   │   ├── extension                                      │   │   ├── harnesses
+│   │   ├── package.json                                   │   │   ├── research_outputs                               │   │   ├── skills
+│   │   └── templates                                      │   ├── orca                                               │   │   ├── AGENTS.md                                      │   │   ├── CLAUDE.md
+│   │   ├── Casks                                          │   │   ├── README.md                                      │   │   ├── REPO_INFO
+│   │   ├── TAGS.txt
+│   │   ├── config                                         │   │   ├── mobile
+│   │   ├── native                                         │   │   ├── notes
+│   │   ├── package.json                                   │   │   ├── pnpm-lock.yaml
+│   │   ├── previews                                       │   │   ├── resources                                      │   │   ├── skills                                         │   │   └── tools
+│   ├── pi                                                 │   │   ├── AGENTS.md                                      │   │   ├── README.md                                      │   │   ├── REPO_INFO
+│   │   ├── TAGS.txt
+│   │   ├── package-lock.json
+│   │   └── package.json                                   │   ├── pi_agent_rust
+│   │   ├── AGENTS.md
+│   │   ├── Cargo.lock                                     │   │   ├── Cargo.toml
+│   │   ├── README.md
+│   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt
+│   │   ├── benches                                        │   │   ├── fuzz                                           │   │   ├── legacy_pi_mono_code                            │   │   ├── proptest-regressions                           │   │   ├── rust-toolchain.toml
+│   │   └── themes                                         │   └── senpi
+│       ├── AGENTS.md                                      │       ├── Cargo.lock
+│       ├── Cargo.toml
+│       ├── README.md                                      │       ├── REPO_INFO
+│       ├── TAGS.txt                                       │       ├── bench                                          │       ├── package-lock.json
+│       ├── package.json
+│       └── rust-toolchain.toml                            ├── 02_Memory_Session
+│   ├── cass_memory_system                                 │   │   ├── AGENTS.md                                      │   │   ├── README.md                                      │   │   ├── REPO_INFO
+│   │   ├── SKILL.md                                       │   │   ├── TAGS.txt
+│   │   ├── bun.lock                                       │   │   ├── competing_proposal_plans                       │   │   ├── package-lock.json                              │   │   └── package.json                                   │   └── coding_agent_session_search                        │       ├── AGENTS.md                                      │       ├── Cargo.lock                                     │       ├── Cargo.toml                                     │       ├── README.md                                      │       ├── REPO_INFO
+│       ├── SKILL.md                                       │       ├── TAGS.txt
+│       ├── benches                                        │       ├── fuzz
+│       ├── packaging                                      │       └── rust-toolchain.toml
+├── 03_Agent_Communication
+│   └── mcp_agent_mail_rust                                │       ├── AGENTS.md
+│       ├── Cargo.lock                                     │       ├── Cargo.toml                                     │       ├── Dockerfile
+│       ├── README.md                                      │       ├── REPO_INFO                                      │       ├── TAGS.txt                                       │       ├── benches
+│       ├── crates                                         │       ├── experimental
+│       ├── refactor                                       │       └── rust-toolchain.toml
+├── 04_CedarScript
+│   ├── cedarscript-ast-parser-python                      │   │   ├── Makefile
+│   │   ├── README.md                                      │   │   ├── REPO_INFO
+│   │   ├── TAGS.txt
+│   │   └── pyproject.toml                                 │   ├── cedarscript-editor-python
+│   │   ├── Makefile                                       │   │   ├── README.md                                      │   │   ├── REPO_INFO
+│   │   ├── TAGS.txt
+│   │   └── pyproject.toml                                 │   ├── cedarscript-grammar
+│   │   ├── Dockerfile                                     │   │   ├── Makefile
+│   │   ├── README.md
+│   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt
+│   │   ├── package.json
+│   │   ├── proposals                                      │   │   └── pyproject.toml                                 │   └── cedarscript-mcp                                    │       ├── README.md                                      │       ├── REPO_INFO
+│       ├── TAGS.txt                                       │       ├── package-lock.json                              │       ├── package.json                                   │       └── queries
+├── 05_Safety_Observability                                │   ├── destructive_command_guard                          │   │   ├── AGENTS.md                                      │   │   ├── Cargo.lock
+│   │   ├── Cargo.toml                                     │   │   ├── README.md                                      │   │   ├── REPO_INFO                                      │   │   ├── SKILL.md                                       │   │   ├── TAGS.txt                                       │   │   ├── action                                         │   │   ├── agent_baseline
+│   │   ├── benches
+│   │   ├── fuzz                                           │   │   ├── patches
+│   │   ├── perf
+│   │   └── rust-toolchain.toml                            │   ├── process_triage
+│   │   ├── AGENTS.md
+│   │   ├── Cargo.lock
+│   │   ├── Cargo.toml
+│   │   ├── Dockerfile
+│   │   ├── README.md                                      │   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt                                       │   │   ├── completions                                    │   │   ├── crates                                         │   │   ├── fuzz                                           │   │   ├── rust-toolchain.toml                            │   │   ├── specs
+│   │   └── sql
+│   ├── rano                                               │   │   ├── README.md                                      │   │   ├── REPO_INFO
+│   │   ├── TAGS.txt                                       │   │   └── logs
+│   └── system_resource_protection_script
+│       ├── Dockerfile                                     │       ├── HomebrewFormula
+│       ├── README.md                                      │       ├── REPO_INFO                                      │       ├── TAGS.txt                                       │       ├── cmd
+│       ├── go.mod                                         │       ├── go.sum
+│       └── internal                                       ├── 06_Task_Tracking                                       │   ├── beads_rust                                         │   │   ├── AGENTS.md
+│   │   ├── Cargo.lock
+│   │   ├── Cargo.toml                                     │   │   ├── README.md
+│   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt                                       │   │   ├── agent_baseline
+│   │   ├── benches                                        │   │   ├── fuzz
+│   │   ├── packaging
+│   │   ├── refactor                                       │   │   ├── rust-toolchain.toml
+│   │   ├── skills                                         │   │   ├── temp_test
+│   │   └── temp_test_2                                    │   └── beads_viewer                                       │       ├── AGENTS.md
+│       ├── Makefile
+│       ├── README.md                                      │       ├── REPO_INFO
+│       ├── SKILL.md
+│       ├── TAGS.txt                                       │       ├── bv-graph-wasm                                  │       ├── cmd                                            │       ├── go.mod
+│       ├── go.sum
+│       ├── internal
+│       ├── screenshots                                    │       └── testdata
+├── 07_Prompt_Context                                      │   ├── Interpreted-Context-Methdology                     │   │   ├── CLAUDE.md
+│   │   ├── LICENSE
+│   │   ├── README.md                                      │   │   ├── REPO_INFO
+│   │   ├── TAGS.txt                                       │   │   ├── fast_intel.txt
+│   │   └── workspaces                                     │   ├── Interpreted-Context-Methdology_fork
+│   │   ├── CLAUDE.md
+│   │   ├── LICENSE
+│   │   ├── README.md
+│   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt
+│   │   ├── fast_intel.txt
+│   │   └── workspaces                                     │   ├── _TOOL_TAXONOMY -> /data/data/com.termux/files/home/workspace/llm_map/_TOOL_TAXONOMY
+│   ├── markdown_web_browser                               │   │   ├── AGENTS.md                                      │   │   ├── Dockerfile                                     │   │   ├── README.md                                      │   │   ├── REPO_INFO
+│   │   ├── TAGS.txt
+│   │   ├── config                                         │   │   ├── docker-compose.yml
+│   │   ├── k8s
+│   │   ├── ops                                            │   │   ├── playwright
+│   │   ├── pyproject.toml
+│   │   └── web                                            │   ├── source_to_prompt_tui
+│   │   ├── AGENTS.md
+│   │   ├── README.md                                      │   │   ├── REPO_INFO
+│   │   ├── TAGS.txt
+│   │   ├── bun.lock                                       │   │   └── package.json
+│   └── toon_rust                                          │       ├── Cargo.toml                                     │       ├── README.md                                      │       ├── REPO_INFO                                      │       ├── TAGS.txt                                       │       └── benches
+├── 08_Swarm_References
+│   ├── swarm-ecosystem                                    │   │   ├── README.md
+│   │   ├── REPO_INFO
+│   │   └── TAGS.txt                                       │   ├── swarms
+│   │   ├── CLAUDE.md
+│   │   ├── README.md                                      │   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt
+│   │   ├── images                                         │   │   ├── pyproject.toml                                 │   │   ├── requirements.txt                               │   │   └── swarms                                         │   └── swarms-rs                                          │       ├── README.md -> swarms-rs/README.md               │       ├── REPO_INFO
+│       ├── TAGS.txt                                       │       ├── swarms-macro                                   │       └── swarms-rs                                      ├── 09_Auth_Networking                                     │   ├── coding_agent_account_manager                       │   │   ├── AGENTS.md
+│   │   ├── Makefile                                       │   │   ├── README.md
+│   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt                                       │   │   ├── cmd                                            │   │   ├── go.mod
+│   │   ├── go.sum                                         │   │   ├── internal
+│   │   └── web                                            │   ├── openclaw-zero-token                                │   │   ├── AGENTS.md                                      │   │   ├── ARCHITECTURE.md                                │   │   ├── CLAUDE.md -> AGENTS.md                         │   │   ├── Dockerfile                                     │   │   ├── README.md
+│   │   ├── REPO_INFO                                      │   │   ├── Swabble                                        │   │   ├── TAGS.txt                                       │   │   ├── apps                                           │   │   ├── assets                                         │   │   ├── auto-reply                                     │   │   ├── bindings                                       │   │   ├── bluebubbles                                    │   │   ├── bootstrap                                      │   │   ├── brave                                          │   │   ├── browser                                        │   │   ├── canvas-host                                    │   │   ├── channels
+│   │   ├── chat                                           │   │   ├── chutes                                         │   │   ├── cli
+│   │   ├── cloudflare-ai-gateway                          │   │   ├── commands
+│   │   ├── compat                                         │   │   ├── config
+│   │   ├── context-engine                                 │   │   ├── copilot-proxy
+│   │   ├── cron                                           │   │   ├── daemon                                         │   │   ├── deepgram                                       │   │   ├── device-pair                                    │   │   ├── diagnostics-otel
+│   │   ├── diffs                                          │   │   ├── discord
+│   │   ├── docker-compose.yml                             │   │   ├── duckduckgo                                     │   │   ├── elevenlabs                                     │   │   ├── exa                                            │   │   ├── extensions                                     │   │   ├── fal
+│   │   ├── firecrawl                                      │   │   ├── flows                                          │   │   ├── gateway                                        │   │   ├── generated
+│   │   ├── git-hooks                                      │   │   ├── github-copilot
+│   │   ├── helpers                                        │   │   ├── hooks                                          │   │   ├── i18n                                           │   │   ├── image-generation
+│   │   ├── image-generation-core                          │   │   ├── infra
+│   │   ├── interactive                                    │   │   ├── irc
+│   │   ├── link-understanding                             │   │   ├── llm-task                                       │   │   ├── logging                                        │   │   ├── markdown                                       │   │   ├── mcp
+│   │   ├── media                                          │   │   ├── media-understanding
+│   │   ├── media-understanding-core                       │   │   ├── minimax
+│   │   ├── mocks                                          │   │   ├── msteams
+│   │   ├── nextcloud-talk                                 │   │   ├── node-host
+│   │   ├── nostr                                          │   │   ├── nvidia
+│   │   ├── ollama                                         │   │   ├── open-prose
+│   │   ├── openai                                         │   │   ├── opencode                                       │   │   ├── opencode-go                                    │   │   ├── openrouter                                     │   │   ├── openshell                                      │   │   ├── package.json
+│   │   ├── pairing                                        │   │   ├── patches
+│   │   ├── perplexity                                     │   │   ├── phone-control
+│   │   ├── plugin-sdk                                     │   │   ├── plugins                                        │   │   ├── pnpm-lock.yaml                                 │   │   ├── process                                        │   │   ├── public                                         │   │   ├── pyproject.toml                                 │   │   ├── qianfan                                        │   │   ├── routing
+│   │   ├── secrets                                        │   │   ├── security
+│   │   ├── sessions
+│   │   ├── sglang                                         │   │   ├── shared
+│   │   ├── signal
+│   │   ├── skills
+│   │   ├── slack
+│   │   ├── speech-core                                    │   │   ├── synology-chat
+│   │   ├── synthetic
+│   │   ├── talk-voice                                     │   │   ├── tavily
+│   │   ├── telegram
+│   │   ├── terminal
+│   │   ├── test-fixtures                                  │   │   ├── test-helpers
+│   │   ├── test-utils
+│   │   ├── thread-ownership                               │   │   ├── tlon
+│   │   ├── together
+│   │   ├── tts                                            │   │   ├── tui                                            │   │   ├── twitch
+│   │   ├── types
+│   │   ├── ui
+│   │   ├── utils
+│   │   ├── venice                                         │   │   ├── vercel-ai-gateway                              │   │   ├── vllm                                           │   │   ├── voice-call                                     │   │   ├── volcengine                                     │   │   ├── web-search
+│   │   ├── whatsapp
+│   │   ├── wizard
+│   │   ├── xai                                            │   │   ├── xiaomi                                         │   │   ├── zai                                            │   │   ├── zalo                                           │   │   └── zalouser                                       │   └── rust_proxy                                         │       ├── Cargo.toml                                     │       ├── README.md                                      │       ├── REPO_INFO
+│       └── TAGS.txt                                       ├── 10_Infrastructure                                      │   ├── Artifacts
+│   │   └── perfect_trunk_cc-mirror
+│   ├── Haven                                              │   │   ├── README.md
+│   │   ├── REPO_INFO
+│   │   ├── TAGS.txt
+│   │   ├── build-ffmpeg                                   │   │   ├── build-proot
+│   │   ├── core                                           │   │   ├── dev
+│   │   ├── fastlane                                       │   │   ├── feature
+│   │   ├── gradle                                         │   │   ├── integration-tests                              │   │   ├── metadata                                       │   │   ├── rclone-android
+│   │   ├── rdp-kotlin                                     │   │   ├── scratch                                        │   │   └── tools                                          │   ├── conduit                                            │   │   ├── AGENTS.md
+│   │   ├── CLAUDE.md -> AGENTS.md                         │   │   ├── README.md                                      │   │   ├── REPO_INFO
+│   │   ├── TAGS.txt
+│   │   ├── android                                        │   │   ├── assets                                         │   │   ├── ios
+│   │   ├── pigeons
+│   │   └── tool                                           │   ├── ntm                                                │   │   ├── README.md
+│   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt                                       │   │   ├── cmd                                            │   │   ├── e2e                                            │   │   ├── internal                                       │   │   ├── references                                     │   │   ├── testdata                                       │   │   ├── third_party                                    │   │   ├── vscode                                         │   │   └── web                                            │   └── repo_updater                                       │       ├── README.md                                      │       ├── REPO_INFO
+│       ├── TAGS.txt                                       │       └── pyproject.toml                                 ├── 11_Evaluation_Quality                                  │   ├── Approxination-Benchmark
+│   │   ├── README.md
+│   │   ├── REPO_INFO
+│   │   ├── TAGS.txt                                       │   │   └── tasks
+│   ├── Inverse-Arena
+│   │   ├── README.md
+│   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt                                       │   │   ├── inverse_arena_eval
+│   │   └── pyproject.toml
+│   ├── OpenWebUI-Monitor                                  │   │   ├── AGENTS.md
+│   │   ├── Dockerfile
+│   │   ├── README.md                                      │   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt
+│   │   ├── components
+│   │   ├── docker-compose.yml
+│   │   ├── hooks                                          │   │   ├── locales
+│   │   ├── package.json                                   │   │   ├── pnpm-lock.yaml
+│   │   └── resources                                      │   ├── hermes-agent-self-evolution
+│   │   ├── README.md
+│   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt                                       │   │   ├── datasets                                       │   │   ├── evolution
+│   │   └── pyproject.toml                                 │   └── ultimate_bug_scanner                               │       ├── AGENTS.md                                      │       ├── Dockerfile                                     │       ├── README.md
+│       ├── REPO_INFO                                      │       ├── SKILL.md
+│       ├── TAGS.txt
+│       ├── modules
+│       ├── notes                                          │       ├── pyproject.toml
+│       └── test-suite
+├── 12_External_Agents
+│   ├── AiShell                                            │   │   ├── README.md                                      │   │   ├── REPO_INFO
+│   │   ├── TAGS.txt
+│   │   └── aishell                                        │   ├── YGK-a
+│   │   ├── README.md
+│   │   ├── REPO_INFO
+│   │   ├── TAGS.txt                                       │   │   ├── pyproject.toml                                 │   │   └── ygka                                           │   ├── brenner_bot
+│   │   ├── AGENTS.md                                      │   │   ├── README.md                                      │   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt                                       │   │   ├── apps                                           │   │   ├── artifacts                                      │   │   ├── bun.lock                                       │   │   ├── gemini_3_deep_think_responses
+│   │   ├── gpt_pro_extended_reasoning_responses           │   │   ├── internal_notes_and_plans
+│   │   ├── opus_45_responses                              │   │   ├── package.json
+│   │   └── specs                                          │   ├── lazycodex
+│   │   ├── README.md
+│   │   ├── REPO_INFO
+│   │   ├── TAGS.txt                                       │   │   ├── package-lock.json
+│   │   ├── package.json                                   │   │   └── plugins
+│   ├── llm_fallbacks                                      │   │   ├── AGENTS.md
+│   │   ├── README.md
+│   │   ├── REPO_INFO
+│   │   ├── TAGS.txt                                       │   │   ├── configs                                        │   │   ├── pyproject.toml                                 │   │   ├── requirements-dev.txt                           │   │   ├── requirements.txt                               │   │   └── setup.py
+│   └── oh-my-openagent                                    │       ├── AGENTS.md
+│       ├── CLAUDE.md -> AGENTS.md                         │       ├── README.md                                      │       ├── REPO_INFO
+│       ├── TAGS.txt
+│       ├── assets                                         │       ├── bun.lock
+│       ├── package.json                                   │       ├── script
+│       ├── signatures                                     │       └── test-support
+├── 13_Third_Party_Refs                                    │   ├── ChapitoAI-main                                     │   │   ├── README.md                                      │   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt                                       │   │   ├── chapito
+│   │   └── pyproject.toml                                 │   ├── CloudBooter                                        │   │   ├── README.md                                      │   │   ├── REPO_INFO
+│   │   ├── TAGS.txt                                       │   │   ├── cloud
+│   │   └── helper_scripts                                 │   ├── My-Jogyo                                           │   │   ├── AGENTS.md                                      │   │   ├── ARCHITECTURE.md
+│   │   ├── README.md                                      │   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt                                       │   │   ├── agents                                         │   │   ├── commands                                       │   │   ├── config                                         │   │   ├── package.json                                   │   │   ├── plans
+│   │   ├── pyproject.toml                                 │   │   └── skills                                         │   ├── README.md
+│   ├── REPO_INFO                                          │   ├── TAGS.txt                                           │   ├── Termux                                             │   │   ├── README.md
+│   │   ├── REPO_INFO                                      │   │   └── TAGS.txt                                       │   ├── TradingAgents                                      │   │   ├── Dockerfile
+│   │   ├── README.md                                      │   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt                                       │   │   ├── cli
+│   │   ├── docker-compose.yml                             │   │   ├── pyproject.toml                                 │   │   ├── requirements.txt                               │   │   └── tradingagents
+│   ├── aadc
+│   │   ├── README.md                                      │   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt
+│   │   └── benches
+│   ├── assistral                                          │   │   ├── CLAUDE.md
+│   │   ├── LICENSE
+│   │   ├── Makefile                                       │   │   ├── README.md                                      │   │   ├── RELEASES.md
+│   │   ├── REPO_INFO
+│   │   ├── TAGS.txt
+│   │   ├── build.gradle                                   │   │   ├── gradle.properties                              │   │   ├── gradlew
+│   │   ├── gradlew.bat                                    │   │   └── settings.gradle                                │   ├── audio-preprocess                                   │   │   ├── README.md
+│   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt                                       │   │   ├── fish_audio_preprocess                          │   │   ├── pyproject.toml
+│   │   └── tools                                          │   ├── colab-ssh                                          │   │   ├── Makefile
+│   │   ├── README.md                                      │   │   ├── REPO_INFO
+│   │   ├── TAGS.txt                                       │   │   ├── colab_ssh                                      │   │   ├── requirements.txt
+│   │   └── setup.py                                       │   ├── colabcode
+│   │   ├── Makefile                                       │   │   ├── README.md
+│   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt                                       │   │   ├── colabcode                                      │   │   ├── requirements.txt                               │   │   └── setup.cfg                                      │   ├── colabsh                                            │   │   ├── Dockerfile                                     │   │   ├── README.md
+│   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt
+│   │   ├── info_checks                                    │   │   └── pyproject.toml
+│   ├── colabtools                                         │   │   ├── README.md                                      │   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt                                       │   │   ├── google
+│   │   ├── jupyter-config
+│   │   ├── notebooks
+│   │   ├── setup.cfg                                      │   │   └── setup.py                                       │   ├── ffa-brackets
+│   │   ├── Cargo.lock
+│   │   ├── Cargo.toml
+│   │   ├── REPO_INFO
+│   │   └── TAGS.txt                                       │   ├── fish-audio-python
+│   │   ├── README.md                                      │   │   ├── REPO_INFO
+│   │   ├── TAGS.txt                                       │   │   └── pyproject.toml
+│   ├── google-colab-cli                                   │   │   ├── AGENTS.md
+│   │   ├── README.md                                      │   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt                                       │   │   ├── integration
+│   │   ├── pyproject.toml                                 │   │   └── skills
+│   ├── insane-search                                      │   │   ├── README.md                                      │   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt
+│   │   ├── setup                                          │   │   └── skills                                         │   ├── openrouter-rs                                      │   │   ├── AGENTS.md                                      │   │   ├── CLAUDE.md                                      │   │   ├── Cargo.lock
+│   │   ├── Cargo.toml                                     │   │   ├── README.md
+│   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt                                       │   │   ├── crates                                         │   │   ├── openspec
+│   │   └── specs                                          │   ├── openskill.lua
+│   │   ├── README.md
+│   │   ├── REPO_INFO                                      │   │   └── TAGS.txt
+│   └── starship                                           │       ├── Cargo.lock                                     │       ├── Cargo.toml
+│       ├── README.md
+│       ├── REPO_INFO
+│       ├── TAGS.txt
+│       ├── install
+│       └── media
+├── 14_Plain_Files                                         │   ├── approxination.txt                                  │   └── ranking_research-concept-_.txt                     ├── 15_Reverse_Engineering                                 │   ├── AIStudio2API                                       │   │   ├── README.md
+│   │   ├── README_en.md                                   │   │   ├── REPO_INFO
+│   │   ├── TAGS.txt                                       │   │   ├── docker
+│   │   └── pyproject.toml                                 │   ├── AIStudioProxy
+│   │   ├── LICENSE                                        │   │   ├── README.md                                      │   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt
+│   │   ├── configs                                        │   │   ├── docker
+│   │   ├── docker-compose.dev.yml                         │   │   ├── docker-compose.yml
+│   │   ├── poetry.lock                                    │   │   └── pyproject.toml
+│   ├── AIstudioProxyAPI                                   │   │   ├── CONTRIBUTING.md
+│   │   ├── LICENSE                                        │   │   ├── README.md
+│   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt
+│   │   ├── api_utils                                      │   │   ├── auth_profiles
+│   │   ├── browser_utils
+│   │   ├── certs
+│   │   ├── config                                         │   │   ├── docker
+│   │   ├── excluded_models.txt
+│   │   ├── gui
+│   │   ├── launch_camoufox.py                             │   │   ├── launcher
+│   │   ├── logging_utils
+│   │   ├── models
+│   │   ├── monkeytype_config.py
+│   │   ├── poetry.lock
+│   │   ├── pyproject.toml                                 │   │   ├── pyrightconfig.json                             │   │   ├── server.py                                      │   │   ├── simple_launcher.py
+│   │   ├── simple_start.sh                                │   │   ├── static
+│   │   ├── stream
+│   │   ├── supervisord.conf                               │   │   └── support_author.jpg
+│   ├── README.md                                          │   ├── gemini-cli-api
+│   │   ├── LICENSE
+│   │   ├── README.ja-JP.md                                │   │   ├── README.md
+│   │   ├── README.zh-CN.md
+│   │   ├── REPO_INFO                                      │   │   ├── SYSTEM_DESIGN.md
+│   │   ├── TAGS.txt                                       │   │   ├── env.example
+│   │   ├── output_comparison.py                           │   │   ├── pyproject.toml
+│   │   ├── requirements.txt                               │   │   ├── start_server.sh
+│   │   └── uv.lock                                        │   ├── gemini_recon
+│   │   ├── Gemini-API                                     │   │   ├── README.md
+│   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt
+│   │   ├── gemini-web-to-api
+│   │   ├── gemini-web2api                                 │   │   ├── requirements.txt
+│   │   └── reverse_gemini-cli
+│   ├── reverser_ai
+│   │   ├── README.md
+│   │   ├── REPO_INFO                                      │   │   ├── TAGS.txt
+│   │   ├── requirements.txt
+│   │   ├── reverser_ai                                    │   │   └── setup.py
+│   ├── userscripts
+│   │   ├── README.md
+│   │   ├── REPO_INFO
+│   │   ├── TAGS.txt                                       │   │   ├── package-lock.json
+│   │   └── package.json                                   │   └── userscripts_new
+│       ├── README.md                                      │       ├── REPO_INFO
+│       ├── TAGS.txt                                       │       ├── package-lock.json                              │       └── package.json
+├── README.md                                              ├── _TOOL_TAXONOMY -> /data/data/com.termux/files/home/workspace/llm_map/_TOOL_TAXONOMY                               ├── deep_intel.txt
+├── deep_recon.sh                                          ├── fast_intel.txt
+├── fast_scan.sh                                           ├── final_intel.json
+├── flywheel_intel.txt                                     ├── inventory_deep.py
+├── inventory_repos.py                                     ├── meta_intel.txt
+├── move_log.txt                                           ├── quick_intel.txt
+├── quick_recon.sh                                         ├── recon.py
+├── recon.sh                                               ├── recon_lag.py
+├── recon_v2.sh                                            ├── repo_intel.txt                                         ├── repo_inventory.json
+├── repo_inventory_deep.json
+├── revert.sh
+├── scavenge.sh
+├── sparse_report.txt                                      ├── surgical_intel.txt
+├── surgical_recon.sh
+└── trunk_builder.py
+
+450 directories, 539 files
+~/refTemplates ❯                                  14:18:28
+```
 
 **On `master` today:** only a stub under `refTemplates/01_Agent_Runtime/`.  
 **Full metadata skeleton:** branch `recreate/refTemplates-skeleton` (README.md + SOURCE.txt per entry; depth-1 sparse style). See `refTemplates/README_RECOVERY.md` on that branch.
 
+```
 refTemplates/
   01_Agent_Runtime/
     frankenterm/
@@ -269,11 +687,303 @@ refTemplates/
     ranking_research-concept-_.txt
   15_Reverse_Engineering/   # MISSING as category — pointers removed in consolidation; recreate as metadata-only
     # AIStudio2API, AIStudioProxy, AIstudioProxyAPI, gemini-cli-api
+```
 
 **Uncategorized at tree -L 1 (need nesting):**
 
 - `Haven/` → propose 15_Android_Workspaces or 16_Product_Workspaces
 - `Interpreted-Context-Methdology_fork/` → propose under 07_Prompt_Context
+
+Here's the most recent `tree` 'snapshot' shortly before restoration became necessary:
+```
+❯ tree -L 2 refTemplates                                   refTemplates                                               ├── 01_Agent_Runtime                                       │   ├── frankenterm                                        │   ├── hermes-agent
+│   ├── opencode                                           │   ├── orca
+│   ├── pi_agent_rust                                      │   └── senpi
+├── 02_Memory_Session                                      │   ├── cass_memory_system
+│   └── coding_agent_session_search                        ├── 03_Agent_Communication
+│   └── mcp_agent_mail_rust                                ├── 04_CedarScript
+│   ├── cedarscript-ast-parser-python                      │   ├── cedarscript-editor-python                          │   ├── cedarscript-grammar
+│   └── cedarscript-mcp                                    ├── 05_Safety_Observability                                │   ├── destructive_command_guard                          │   ├── process_triage                                     │   ├── rano                                               │   └── system_resource_protection_script
+├── 06_Task_Tracking                                       │   ├── beads_rust
+│   └── beads_viewer
+├── 07_Prompt_Context
+│   ├── markdown_web_browser                               │   ├── source_to_prompt_tui
+│   └── toon_rust                                          ├── 08_Swarm_References
+│   ├── swarm-ecosystem                                    │   ├── swarms
+│   └── swarms-rs                                          ├── 09_Auth_Networking
+│   ├── coding_agent_account_manager
+│   ├── openclaw-zero-token
+│   └── rust_proxy
+├── 10_Infrastructure
+│   ├── ntm                                                │   └── repo_updater
+├── 11_Evaluation_Quality                                  │   ├── Approxination-Benchmark
+│   ├── Inverse-Arena
+│   └── ultimate_bug_scanner
+├── 12_External_Agents                                     │   ├── AiShell
+│   ├── YGK-a                                              │   ├── brenner_bot
+│   ├── lazycodex                                          │   ├── llm_fallbacks
+│   └── oh-my-openagent                                    ├── 13_Third_Party_Refs
+│   ├── ChapitoAI-main                                     │   ├── CloudBooter
+│   ├── My-Jogyo                                           │   ├── Termux
+│   ├── TradingAgents                                      │   ├── aadc
+│   ├── assistral                                          │   ├── ffa-brackets
+│   ├── insane-search                                      │   └── openskill.lua
+├── 14_Plain_Files                                         │   ├── approxination.txt
+│   └── ranking_research-concept-_.txt
+├── Haven
+│   ├── CHANGELOG.md                                       │   ├── EMAIL.md
+│   ├── LICENSE
+│   ├── NOTICE-Fonts.md                                    │   ├── PRIVACY_POLICY.md                                  │   ├── README.md
+│   ├── RELEASE.md                                         │   ├── VISION.md
+│   ├── app                                                │   ├── build-ffmpeg                                       │   ├── build-proot                                        │   ├── build.gradle.kts                                   │   ├── core                                               │   ├── dev                                                │   ├── docs                                               │   ├── fastlane
+│   ├── feature                                            │   ├── gradle
+│   ├── gradle.properties                                  │   ├── gradlew
+│   ├── gradlew.bat                                        │   ├── integration-tests
+│   ├── metadata                                           │   ├── rclone-android
+│   ├── rdp-kotlin                                         │   ├── scratch
+│   ├── scripts                                            │   ├── settings.gradle.kts
+│   └── tools                                              ├── Interpreted-Context-Methdology
+│   ├── CLAUDE.md                                          │   ├── LICENSE
+│   ├── README.md                                          │   ├── _core
+│   └── workspaces
+├── Interpreted-Context-Methdology_fork
+│   ├── CLAUDE.md
+│   ├── LICENSE
+│   ├── README.md
+│   ├── _core                                              │   └── workspaces                                         ├── OpenWebUI-Monitor                                      │   ├── AGENTS.md                                          │   ├── Dockerfile                                         │   ├── LICENSE                                            │   ├── README.md
+│   ├── app                                                │   ├── components
+│   ├── components.json                                    │   ├── docker-compose.yml                                 │   ├── drizzle.config.ts                                  │   ├── eslint.config.mjs
+│   ├── hooks                                              │   ├── i18n.config.ts
+│   ├── locales                                            │   ├── middleware.ts                                      │   ├── next.config.js                                     │   ├── package.json                                       │   ├── pnpm-lock.yaml
+│   ├── pnpm-workspace.yaml                                │   ├── postcss.config.js
+│   ├── postcss.config.mjs                                 │   ├── resources
+│   ├── scripts                                            │   ├── start.sh
+│   ├── tailwind.config.ts                                 │   └── tsconfig.json
+├── _TOOL_TAXONOMY -> /data/data/com.termux/files/home/workspace/llm_map/_TOOL_TAXONOMY
+├── agent-c                                                │   ├── Makefile
+│   ├── README.md                                          │   ├── SPEC.md
+│   ├── agent.c                                            │   └── preview.webp
+├── audio-preprocess
+│   ├── LICENSE                                            │   ├── README.md
+│   ├── README.zh.md                                       │   ├── fap-complete.zsh                                   │   ├── fish_audio_preprocess
+│   ├── pyproject.toml                                     │   └── tools                                              ├── better-clawd                                           │   ├── PERFORMANCE.md                                     │   ├── README.md                                          │   ├── bun.lock
+│   ├── package.json                                       │   ├── schemas
+│   ├── scripts                                            │   ├── src
+│   └── tsconfig.json
+├── big-AGI
+│   ├── AGENTS.md -> CLAUDE.md
+│   ├── CLAUDE.md                                          │   ├── Dockerfile
+│   ├── LICENSE
+│   ├── README.md
+│   ├── app                                                │   ├── docker-compose.yaml
+│   ├── docs                                               │   ├── eslint.config.mjs
+│   ├── kb                                                 │   ├── middleware_BASIC_AUTH.ts
+│   ├── next.config.ts                                     │   ├── package-lock.json                                  │   ├── package.json                                       │   ├── pages
+│   ├── public                                             │   ├── src                                                │   ├── tools                                              │   └── tsconfig.json
+├── cc-mirror                                              │   ├── AGENTS.md                                          │   ├── CHANGELOG.md
+│   ├── CLAUDE.md
+│   ├── CONTRIBUTING.md                                    │   ├── DESIGN.md
+│   ├── LICENSE
+│   ├── README.md                                          │   ├── docs
+│   ├── eslint.config.js                                   │   ├── lefthook.yml
+│   ├── package-lock.json                                  │   ├── package.json                                       │   ├── scripts                                            │   ├── src
+│   └── tsconfig.json                                      ├── ccs
+│   ├── AGENTS.md -> CLAUDE.md                             │   ├── CHANGELOG.md
+│   ├── CLAUDE.md
+│   ├── CONTRIBUTING.md
+│   ├── LICENSE                                            │   ├── README.md
+│   ├── SECURITY.md                                        │   ├── assets
+│   ├── bun.lock                                           │   ├── bunfig.toml
+│   ├── commitlint.config.cjs                              │   ├── config
+│   ├── docker                                             │   ├── docs
+│   ├── eslint-rules                                       │   ├── eslint.config.mjs
+│   ├── macos-bar                                          │   ├── package.json
+│   ├── scripts                                            │   ├── src
+│   ├── tsconfig.json                                      │   └── ui
+├── colab-ssh                                              │   ├── CHANGELOG.md
+│   ├── CODE_OF_CONDUCT.md
+│   ├── CONTRIBUTING.md
+│   ├── LICENSE
+│   ├── MANIFEST.in                                        │   ├── Makefile                                           │   ├── README.md
+│   ├── build.sh
+│   ├── colab_ssh
+│   ├── docs                                               │   ├── publish.sh
+│   ├── requirements.dev.txt
+│   ├── requirements.txt                                   │   └── setup.py
+├── colabcode                                              │   ├── LICENSE                                            │   ├── Makefile                                           │   ├── README.md                                          │   ├── colab_starter.ipynb
+│   ├── colabcode                                          │   ├── requirements.txt
+│   ├── scripts
+│   └── setup.cfg
+├── colabsh
+│   ├── CODE_OF_CONDUCT.md
+│   ├── CONTRIBUTING.md
+│   ├── Dockerfile
+│   ├── LICENSE                                            │   ├── README.md                                          │   ├── cliff.toml
+│   ├── codecov.yml
+│   ├── docs                                               │   ├── info_checks
+│   ├── pyproject.toml
+│   ├── src
+│   ├── uv.lock
+│   └── zensical.toml
+├── colabtools
+│   ├── CONTRIBUTING.md
+│   ├── LICENSE
+│   ├── MANIFEST.in
+│   ├── README.md                                          │   ├── google                                             │   ├── jupyter-config
+│   ├── notebooks                                          │   ├── setup.cfg
+│   └── setup.py
+├── conduit                                                │   ├── AGENTS.md
+│   ├── CLAUDE.md -> AGENTS.md                             │   ├── LICENSE                                            │   ├── PRIVACY_POLICY.md                                  │   ├── README.md                                          │   ├── analysis_options.yaml                              │   ├── android
+│   ├── assets                                             │   ├── cargokit_options.yaml
+│   ├── devtools_options.yaml                              │   ├── docs
+│   ├── ios                                                │   ├── l10n.yaml
+│   ├── pigeons                                            │   ├── pubspec.lock
+│   ├── pubspec.yaml
+│   ├── scripts                                            │   └── tool
+├── deep_intel.txt                                         ├── deep_recon.sh                                          ├── fast_intel.txt                                         ├── fast_scan.sh
+├── final_intel.json                                       ├── fish-audio-python
+│   ├── CHANGELOG.md                                       │   ├── CONTRIBUTING.md
+│   ├── LICENSE                                            │   ├── README.md                                          │   ├── pyproject.toml
+│   ├── release-please-config.json                         │   ├── scripts
+│   ├── src                                                │   └── uv.lock
+├── flywheel_intel.txt                                     ├── gemini_recon
+│   ├── Gemini-API                                         │   ├── gemini-web-to-api
+│   ├── gemini-web2api
+│   └── reverse_gemini-cli
+├── google-colab-cli                                       │   ├── AGENTS.md
+│   ├── CHANGELOG.md
+│   ├── CONTRIBUTING.md                                    │   ├── LICENSE
+│   ├── README.md                                          │   ├── cloudbuild.yaml
+│   ├── docs                                               │   ├── integration
+│   ├── pyproject.toml                                     │   ├── skills
+│   ├── src                                                │   └── uv.lock
+├── hermes-agent                                           │   ├── AGENTS.md
+│   ├── CONTRIBUTING.es.md                                 │   ├── CONTRIBUTING.md
+│   ├── Dockerfile
+│   ├── LICENSE
+│   ├── MANIFEST.in
+│   ├── README.es.md
+│   ├── README.md                                          │   ├── README.ur-pk.md
+│   ├── README.zh-CN.md                                    │   ├── SECURITY.es.md
+│   ├── SECURITY.md                                        │   ├── acp_adapter
+│   ├── acp_registry
+│   ├── agent                                              │   ├── batch_runner.py
+│   ├── cli-config.yaml.example                            │   ├── cli.py                                             │   ├── constraints-termux.txt
+│   ├── cron                                               │   ├── datagen-config-examples                            │   ├── docker
+│   ├── docker-compose.windows.yml                         │   ├── docker-compose.yml
+│   ├── docs                                               │   ├── flake.lock                                         │   ├── flake.nix                                          │   ├── gateway
+│   ├── hermes                                             │   ├── hermes-already-has-routines.md
+│   ├── hermes_bootstrap.py                                │   ├── hermes_cli
+│   ├── hermes_constants.py                                │   ├── hermes_logging.py
+│   ├── hermes_state.py                                    │   ├── hermes_time.py
+│   ├── locales                                            │   ├── mcp_serve.py
+│   ├── mini_swe_runner.py                                 │   ├── model_tools.py
+│   ├── nix                                                │   ├── package-lock.json
+│   ├── package.json                                       │   ├── packaging
+│   ├── plugins
+│   ├── providers                                          │   ├── pyproject.toml
+│   ├── run_agent.py                                       │   ├── scripts
+│   ├── setup-hermes.sh                                    │   ├── setup.py
+│   ├── skills                                             │   ├── tools
+│   ├── toolset_distributions.py                           │   ├── toolsets.py                                        │   ├── trajectory_compressor.py
+│   ├── tui_gateway
+│   ├── ui-tui
+│   ├── utils.py                                           │   ├── uv.lock
+│   └── web                                                ├── hermes-agent-self-evolution
+│   ├── PLAN.md                                            │   ├── README.md                                          │   ├── datasets
+│   ├── evolution
+│   ├── generate_report.py
+│   └── pyproject.toml
+├── hermes-webui
+│   ├── AGENTS.md                                          │   ├── ARCHITECTURE.md
+│   ├── BUGS.md                                            │   ├── CHANGELOG.md
+│   ├── CONTRIBUTING.md                                    │   ├── CONTRIBUTORS.md                                    │   ├── DESIGN.md                                          │   ├── Dockerfile
+│   ├── LICENSE                                            │   ├── README.md
+│   ├── ROADMAP.md
+│   ├── SPRINTS.md                                         │   ├── TESTING.md
+│   ├── THEMES.md                                          │   ├── api                                                │   ├── bootstrap.py
+│   ├── ctl.sh                                             │   ├── docker-compose.three-container.yml
+│   ├── docker-compose.two-container.yml
+│   ├── docker-compose.yml
+│   ├── docker_init.bash                                   │   ├── docs                                               │   ├── eslint.runtime-guard.config.mjs                    │   ├── mcp_server.py
+│   ├── package.json                                       │   ├── pyproject.toml                                     │   ├── pytest.ini
+│   ├── requirements-dev.txt                               │   ├── requirements.txt
+│   ├── scripts                                            │   ├── server.py
+│   ├── start.ps1                                          │   ├── start.sh
+│   ├── static
+│   └── uv.lock
+├── inventory_deep.py
+├── inventory_repos.py                                     ├── move_log.txt
+├── openrouter-deep-research-mcp
+│   ├── AGENTS.md
+│   ├── BEFORE_AFTER.md
+│   ├── CHANGELOG.md
+│   ├── CLAUDE.md
+│   ├── CONTEXT.md                                         │   ├── Dockerfile                                         │   ├── LICENSE
+│   ├── PLAN.md                                            │   ├── README.md
+│   ├── RESILIENCE_IMPROVEMENTS.md
+│   ├── TEST-RESULTS.md
+│   ├── THEME_UPDATE.md
+│   ├── ZERO.json
+│   ├── ZERO.md
+│   ├── agents.code-workspace
+│   ├── check_db.js                                        │   ├── config.js
+│   ├── docs
+│   ├── extension
+│   ├── find_query.js
+│   ├── harnesses                                          │   ├── package.json                                       │   ├── research_outputs
+│   ├── scripts
+│   ├── skills
+│   ├── src
+│   ├── templates
+│   ├── test-client.js
+│   ├── test-input.json                                    │   ├── test-layout.js
+│   ├── test-perplexity.js                                 │   ├── test-planning.js                                   │   └── test-resilience.sh                                 ├── openrouter-rs
+│   ├── AGENTS.md                                          │   ├── CHANGELOG.md
+│   ├── CLAUDE.md                                          │   ├── CONTRIBUTING.md
+│   ├── Cargo.lock
+│   ├── Cargo.toml
+│   ├── LICENSE                                            │   ├── MIGRATION.md
+│   ├── README.md
+│   ├── SECURITY.md                                        │   ├── SUPPORT.md
+│   ├── crates                                             │   ├── docs
+│   ├── justfile                                           │   ├── openspec
+│   ├── scripts                                            │   ├── specs                                              │   └── src
+├── perfect_trunk_cc-mirror
+│   ├── HEAD                                               │   ├── config                                             │   ├── description                                        │   ├── hooks
+│   └── info                                               ├── pi
+│   ├── AGENTS.md
+│   ├── CONTRIBUTING.md                                    │   ├── LICENSE
+│   ├── README.md                                          │   ├── SECURITY.md
+│   ├── biome.json                                         │   ├── package-lock.json                                  │   ├── package.json
+│   ├── packages                                           │   ├── pi-test.bat                                        │   ├── pi-test.ps1
+│   ├── pi-test.sh                                         │   ├── scripts
+│   ├── test.sh                                            │   ├── tsconfig.base.json
+│   └── tsconfig.json                                      ├── quick_intel.txt
+├── quick_recon.sh                                         ├── recon.py
+├── recon.sh                                               ├── recon_lag.py
+├── recon_v2.sh                                            ├── repo_intel.txt
+├── repo_inventory.json                                    ├── repo_inventory_deep.json
+├── reverser_ai                                            │   ├── LICENSE
+│   ├── README.md                                          │   ├── __init__.py
+│   ├── example_config.toml                                │   ├── plugin.json
+│   ├── requirements.txt                                   │   ├── reverser_ai
+│   ├── scripts                                            │   └── setup.py                                           ├── revert.sh                                              ├── starship                                               │   ├── AI_POLICY.md                                       │   ├── CHANGELOG.md                                       │   ├── CODE_OF_CONDUCT.md
+│   ├── CONTRIBUTING.md                                    │   ├── Cargo.lock
+│   ├── Cargo.toml                                         │   ├── LICENSE
+│   ├── README.md                                          │   ├── SECURITY.md
+│   ├── build.rs                                           │   ├── clippy.toml
+│   ├── crowdin.yml                                        │   ├── deny.toml
+│   ├── docs                                               │   ├── install
+│   ├── media                                              │   ├── release-please-config.json
+│   ├── src                                                │   ├── starship.exe.manifest
+│   └── typos.toml
+├── surgical_intel.txt
+├── surgical_recon.sh
+└── trunk_builder.py
+
+219 directories, 327 files                                 ~ ❯                                               15:05:53
+```
 
 > Note: Many entries above correspond to external git repositories or local workspaces and were sometimes included as submodules or as nested repositories. **Existing refTemplates were depth-1 selective sparse-checkout of relevant files, with metadata only** — not full recursive checkouts.
 

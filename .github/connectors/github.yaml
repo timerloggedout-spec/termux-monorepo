@@ -1,5 +1,15 @@
 # GitHub Connectors Configuration
 # This file defines the configuration for GitHub integrations
+#
+# IMPORTANT — Workflow Actions SSOT:
+#   The gemini-*, agent-jules-on-issues, agent-load-balancer, and related
+#   workflow *implementations* ship on PR #72 (branch tembo/agent-quota-loadbalancer),
+#   not on this project-management / connector scaffold PR (#70).
+#   Lists below are declarative inventory for the connector manager + agents.
+#
+# Webhooks: receiver is not deployed. SSOT for active flags is webhooks.yaml
+#   (active: false, scaffold: true). Do not treat github.webhooks.endpoints
+#   active:true as evidence of a live receiver.
 
 github:
   # Repository information
@@ -8,40 +18,43 @@ github:
     name: "termux-monorepo"
     description: "Termux monorepo with multi-agent orchestration, DeepSeek CLI, and ArchWiz"
     homepage: "https://github.com/timerloggedout-spec/termux-monorepo"
-    
+
   # API configuration
   api:
     base_url: "https://api.github.com"
     graphql_url: "https://api.github.com/graphql"
     upload_url: "https://uploads.github.com"
-    
+
     # Authentication
     token_env: "GITHUB_TOKEN"
-    
+
     # Rate limiting
     rate_limit: 5000  # requests per hour
     timeout: 30
     retry_attempts: 3
     retry_delay: 1
-    
+
     # User agent
     user_agent: "termux-monorepo-bot"
-    
+
     # Default headers
     headers:
       Accept: "application/vnd.github+json"
       X-GitHub-Api-Version: "2022-11-28"
-    
+
     # Pagination
     per_page: 100
     max_pages: 10
-  
-  # Webhooks configuration
+
+  # Webhooks configuration (scaffold — no receiver deployed)
+  # Active flags for endpoint delivery live in webhooks.yaml (all false).
   webhooks:
-    enabled: true
+    enabled: false
+    scaffold: true
     secret_env: "GITHUB_WEBHOOK_SECRET"
-    
-    # Webhook endpoints
+    note: "Receiver not deployed. verify_webhook_signature exists on ConnectorManager; nothing calls it yet."
+
+    # Inventory only — paths for future receiver; active: false
     endpoints:
       - name: "agent-review-auto-jules"
         path: "/github/webhook/agent-review-auto-jules"
@@ -49,65 +62,65 @@ github:
           - "pull_request_review"
           - "pull_request_review_comment"
           - "issue_comment"
-        active: true
+        active: false
         content_type: "application/json"
-        
+
       - name: "agent-jules-on-issues"
         path: "/github/webhook/agent-jules-on-issues"
         events:
           - "issues"
           - "issue_comment"
-        active: true
+        active: false
         content_type: "application/json"
-        
+
       - name: "agent-feedback-linear-sync"
         path: "/github/webhook/agent-feedback-linear-sync"
         events:
           - "issues"
           - "pull_request"
-        active: true
+        active: false
         content_type: "application/json"
-        
+
       - name: "gemini-dispatch"
         path: "/github/webhook/gemini-dispatch"
         events:
           - "push"
           - "pull_request"
-        active: true
+        active: false
         content_type: "application/json"
-        
+
       - name: "gemini-invoke"
         path: "/github/webhook/gemini-invoke"
         events:
           - "push"
-        active: true
+        active: false
         content_type: "application/json"
-        
+
       - name: "gemini-review"
         path: "/github/webhook/gemini-review"
         events:
           - "pull_request_review"
           - "pull_request_review_comment"
-        active: true
+        active: false
         content_type: "application/json"
-        
+
       - name: "gemini-triage"
         path: "/github/webhook/gemini-triage"
         events:
           - "issues"
           - "pull_request"
-        active: true
+        active: false
         content_type: "application/json"
-        
+
       - name: "publish-wiki"
         path: "/github/webhook/publish-wiki"
         events:
           - "push"
-        active: true
+        active: false
         content_type: "application/json"
         paths:
           - "wiki/**"
-  
+
   # Agent configuration
   agents:
     jules:
@@ -115,13 +128,9 @@ github:
       api_key_env: "JULES_API_KEY"
       reactive_mode: false
       auto_invoke: true
-      
-      # Jules-specific settings
       model: "jules"
       temperature: 0.7
       max_tokens: 4096
-      
-      # Auto-resolve configuration
       auto_resolve:
         enabled: true
         bot_types:
@@ -129,138 +138,137 @@ github:
           - "devin"
           - "copilot"
         debounce_minutes: 20
-        
+
     coderabbit:
       enabled: true
       api_key_env: "CODERABBIT_API_KEY"
-      
-      # CodeRabbit-specific settings
       model: "coderabbit"
       review_depth: "full"
-      
+      # Direct cooldown check: @coderabbitai rate limit
+      # Fallback: parse PR comments for "Next review available in: N minutes"
+
     devin:
       enabled: false
       api_key_env: "DEVIN_API_KEY"
-      
-      # Devin-specific settings
       model: "devin"
-      
-    # Other potential agents
-    # grok:
-    #   enabled: false
-    #   api_key_env: "GROK_API_KEY"
-    #   model: "grok"
-    
-    # claude:
-    #   enabled: false
-    #   api_key_env: "CLAUDE_API_KEY"
-    #   model: "claude-3-sonnet"
-  
-  # CI/CD configuration
+
+  # CI/CD configuration — implementations ship on PR #72
   ci_cd:
     workflows_dir: ".github/workflows"
-    
-    # Workflow files
+    source_pr: 72
+    source_branch: "tembo/agent-quota-loadbalancer"
+    note: |
+      Workflow YAML files below are inventory. They are present on #72 / feature/agentic-cicd-gemini-free,
+      not necessarily on this #70 branch. Do not treat enabled:true here as proof the file exists on HEAD.
+
     workflows:
       - name: "Agent Review Auto Jules"
         file: "agent-review-auto-jules.yml"
         enabled: true
-        
+        ships_on: 72
+
       - name: "Agent Jules on Issues"
         file: "agent-jules-on-issues.yml"
         enabled: true
-        
+        ships_on: 72
+
       - name: "Agent Feedback Linear Sync"
         file: "agent-feedback-linear-sync.yml"
         enabled: true
-        
+        ships_on: 72
+
+      - name: "Agent Load Balancer"
+        file: "agent-load-balancer.yml"
+        enabled: true
+        ships_on: 72
+
       - name: "Gemini Dispatch"
         file: "gemini-dispatch.yml"
         enabled: true
-        
+        ships_on: 72
+
       - name: "Gemini Invoke"
         file: "gemini-invoke.yml"
         enabled: true
-        
+        ships_on: 72
+
       - name: "Gemini Review"
         file: "gemini-review.yml"
         enabled: true
-        
+        ships_on: 72
+
       - name: "Gemini Triage"
         file: "gemini-triage.yml"
         enabled: true
-        
+        ships_on: 72
+
       - name: "Publish Wiki"
         file: "publish-wiki.yml"
         enabled: true
-  
+        ships_on: 72
+
   # Repository management
   repository_management:
-    # Branch protection
     branch_protection:
       master:
         protected: true
         required_status_checks: true
         required_reviews: 1
         required_linear_history: true
-        
+
       master-staging:
         protected: true
         required_status_checks: true
         required_reviews: 1
-        
-    # Issue and PR templates
+
     templates:
       issue_template_dir: ".github/ISSUE_TEMPLATE"
       pull_request_template: ".github/PULL_REQUEST_TEMPLATE.md"
-    
-    # Labels
+
+    # GitHub Labels API expects 6-char hex WITHOUT leading '#'
     labels:
       - name: "P0"
-        color: "#FF0000"
+        color: "FF0000"
         description: "Critical - Must be addressed immediately"
-        
+
       - name: "P1"
-        color: "#FFA500"
+        color: "FFA500"
         description: "High - Important features and improvements"
-        
+
       - name: "P2"
-        color: "#FFFF00"
+        color: "FFFF00"
         description: "Medium - Nice-to-have enhancements"
-        
+
       - name: "P3"
-        color: "#00FF00"
+        color: "00FF00"
         description: "Low - Future considerations"
-        
+
       - name: "bug"
-        color: "#FF0000"
+        color: "FF0000"
         description: "Bug fixes"
-        
+
       - name: "enhancement"
-        color: "#00FF00"
+        color: "00FF00"
         description: "Feature enhancements"
-        
+
       - name: "documentation"
-        color: "#0000FF"
+        color: "0000FF"
         description: "Documentation improvements"
-        
+
       - name: "security"
-        color: "#FF00FF"
+        color: "FF00FF"
         description: "Security-related issues"
-        
+
       - name: "maintenance"
-        color: "#FFA500"
+        color: "FFA500"
         description: "Repository maintenance"
-    
-    # Milestones
+
     milestones:
       use_github_milestones: true
       sync_with_yaml: true
       yaml_file: ".github/MILESTONES.yaml"
-  
-  # Notifications
+
   notifications:
-    # GitHub notifications
     github:
       enabled: true
       events:
@@ -270,11 +278,9 @@ github:
         - "issue_comment"
         - "pull_request_review"
         - "pull_request_review_comment"
-      
-    # Email notifications (if configured)
+
     email:
       enabled: false
-      
-    # Slack/Discord webhooks (if configured)
+
     webhooks:
       enabled: false

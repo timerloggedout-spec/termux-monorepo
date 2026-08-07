@@ -338,17 +338,45 @@ class ConnectorManager:
     def is_enabled(self, connector_type: str, connector_name: str) -> bool:
         """
         Determine whether a connector is enabled.
-        
+
+        Resolves synthetic keys produced by ``list_connectors`` such as
+        ``github_agents`` (agent sub-map), ``github:api`` (platform connector),
+        and ``github:agent:<name>`` (individual agent) through the
+        ``connector_info`` registry before falling back to raw config lookup.
+
+        Connectors that have no ``enabled`` field in their config (e.g. the
+        GitHub API platform connector) are treated as enabled when they exist.
+
         Parameters:
-            connector_type (str): Connector category.
+            connector_type (str): Connector category, possibly a synthetic key
+                from ``list_connectors`` (e.g. ``"github_agents"``).
             connector_name (str): Connector identifier.
-        
+
         Returns:
-            bool: `true` if the connector exists and is enabled, `false` otherwise.
+            bool: ``True`` if the connector exists and is enabled, ``False`` otherwise.
         """
+        # --- synthetic key resolution via connector_info registry ---
+        info_key: Optional[str] = None
+
+        if connector_type == "github_agents":
+            # list_connectors returns "github_agents" with individual agent names
+            info_key = f"github:agent:{connector_name}"
+        elif connector_type == "github" and connector_name in ("api", "webhooks"):
+            info_key = f"github:{connector_name}"
+        elif connector_type == "github_webhooks":
+            info_key = f"webhook:github:{connector_name}"
+
+        if info_key and info_key in self.connector_info:
+            return self.connector_info[info_key].enabled
+
+        # --- raw config fallback ---
         connector = self.get_connector(connector_type, connector_name)
         if connector is None:
             return False
+        # GitHub API and similar connectors may not carry an ``enabled`` flag;
+        # treat existence as enabled for those.
+        if "enabled" not in connector:
+            return True
         return connector.get("enabled", False)
     
     def get_api_key(self, connector_type: str, connector_name: str) -> Optional[str]:
@@ -374,7 +402,49 @@ class ConnectorManager:
         env_var = f"{connector_name.upper()}_API_KEY"
         return os.environ.get(env_var)
     
-    def create_authenticated_request(self, connector_type: str, connector_name: str, 
+    def _is_public_endpoint(self, connector: Dict, url: str) -> bool:
+        """
+        Check whether a URL corresponds to a public (unauthenticated) endpoint.
+
+        A connector may declare ``public_endpoints`` as a list of endpoint
+        names whose paths are public. If the resolved URL path matches any of
+        those paths, the endpoint is considered public. As a fallback, paths
+        containing ``/market/`` are treated as public for exchange APIs that
+        follow the KuCoin convention.
+
+        Parameters:
+            connector (Dict): Connector configuration.
+            url (str): Full or path-only URL being requested.
+
+        Returns:
+            bool: ``True`` if the endpoint is public.
+        """
+        from urllib.parse import urlparse
+        parsed = urlparse(url)
+        path = parsed.path or url
+
+        # Check explicit public_endpoints list in connector config
+        public_endpoint_names = connector.get("public_endpoints", [])
+        endpoints = connector.get("endpoints", {})
+        api_version = connector.get("api_version", "")
+        for name in public_endpoint_names:
+            ep_path = endpoints.get(name, "")
+            if ep_path:
+                ep_path = ep_path.replace("{api_version}", api_version)
+                if path.rstrip("/") == ep_path.rstrip("/"):
+                    return True
+
+        # Fallback: KuCoin convention — /market/ paths are public
+        if "/market/" in path:
+            return True
+
+        # Fallback: /symbols and /currencies are public on most exchanges
+        if path.rstrip("/").endswith("/symbols") or path.rstrip("/").endswith("/currencies"):
+            return True
+
+        return False
+
+    def create_authenticated_request(self, connector_type: str, connector_name: str,
                                    method: str = "GET", url: str = "", 
                                    params: Optional[Dict] = None, 
                                    data: Optional[Dict] = None) -> requests.Request:
@@ -486,7 +556,14 @@ class ConnectorManager:
             if api_key and api_secret and passphrase:
                 # Generate KuCoin signature
                 timestamp = str(int(time.time() * 1000))
-                str_to_sign = timestamp + method + url.replace(connector.get("base_url", ""), "")
+                # KuCoin signature base: timestamp + method + requestPath + query + body
+                request_path = url.replace(connector.get("base_url", ""), "")
+                # Include query string in the signature prehash for GET requests
+                import urllib.parse as _urlparse
+                query_string = ""
+                if params and method.upper() == "GET":
+                    query_string = "?" + _urlparse.urlencode(sorted(params.items()))
+                str_to_sign = timestamp + method + request_path + query_string
                 if data:
                     str_to_sign += json.dumps(data)
 
@@ -509,8 +586,8 @@ class ConnectorManager:
                 headers["KC-API-TIMESTAMP"] = timestamp
                 headers["KC-API-PASSPHRASE"] = passphrase_b64
                 headers["KC-API-KEY-VERSION"] = "2"
-            else:
-                raise ValueError(f"JWT authentication requires api_key, api_secret, and passphrase")
+            elif not self._is_public_endpoint(connector, url):
+                raise ValueError(f"JWT authentication requires api_key, api_secret, and passphrase for private endpoints")
 
         elif not auth_method:
             # GitHub API uses token_env when no auth_method is set
@@ -591,39 +668,87 @@ class ConnectorManager:
                 retry_attempts = 1
 
         last_exception = None
-        for attempt in range(retry_attempts):
-            try:
-                session = requests.Session()
-                response = session.send(req, timeout=timeout)
+        session = requests.Session()
+        try:
+            for attempt in range(retry_attempts):
+                try:
+                    response = session.send(req, timeout=timeout)
 
-                # Check for rate limiting
-                if response.status_code == 429:
-                    retry_after = int(response.headers.get("Retry-After", retry_delay))
+                    # Check for rate limiting
+                    if response.status_code == 429:
+                        # Safely parse Retry-After; fall back to configured delay
+                        retry_after_raw = response.headers.get("Retry-After", str(retry_delay))
+                        try:
+                            retry_after = int(retry_after_raw)
+                        except (ValueError, TypeError):
+                            retry_after = retry_delay
+                        if attempt < retry_attempts - 1:
+                            time.sleep(retry_after)
+                            # Re-prepare request so timestamp/signature are fresh
+                            req = self.create_authenticated_request(
+                                connector_type, connector_name, method, endpoint, params, data
+                            )
+                            continue
+
+                    return response
+
+                except requests.exceptions.Timeout as e:
+                    last_exception = e
                     if attempt < retry_attempts - 1:
-                        time.sleep(retry_after)
+                        time.sleep(retry_delay)
                         continue
+                    raise
 
-                return response
+                except requests.exceptions.RequestException as e:
+                    last_exception = e
+                    if attempt < retry_attempts - 1:
+                        time.sleep(retry_delay)
+                        continue
+                    raise
 
-            except requests.exceptions.Timeout as e:
-                last_exception = e
-                if attempt < retry_attempts - 1:
-                    time.sleep(retry_delay)
-                    continue
-                raise
-
-            except requests.exceptions.RequestException as e:
-                last_exception = e
-                if attempt < retry_attempts - 1:
-                    time.sleep(retry_delay)
-                    continue
-                raise
-
-        # If we exhausted all retries, raise the last exception or generic error
-        if last_exception:
-            raise last_exception
-        raise Exception("Max retry attempts exceeded")
+            # If we exhausted all retries, raise the last exception or generic error
+            if last_exception:
+                raise last_exception
+            raise Exception("Max retry attempts exceeded")
+        finally:
+            session.close()
     
+    def verify_webhook_signature(self, payload_body: bytes, signature_header: str,
+                                 secret_env: str = "GITHUB_WEBHOOK_SECRET") -> bool:
+        """
+        Verify a webhook HMAC-SHA256 signature against the configured secret.
+
+        Implements the signature validation advertised by
+        ``webhooks.yaml → security.validate_signature: true``. Uses
+        HMAC-SHA256 with the webhook secret from the named environment
+        variable, matching GitHub's ``X-Hub-Signature-256`` convention.
+
+        Parameters:
+            payload_body (bytes): Raw request body bytes.
+            signature_header (str): Value of the ``X-Hub-Signature-256``
+                header (expected format ``sha256=<hex>``).
+            secret_env (str): Name of the environment variable holding
+                the webhook secret. Defaults to ``GITHUB_WEBHOOK_SECRET``.
+
+        Returns:
+            bool: ``True`` if the signature is valid, ``False`` otherwise.
+        """
+        secret = os.environ.get(secret_env)
+        if not secret:
+            return False
+
+        if not signature_header or not signature_header.startswith("sha256="):
+            return False
+
+        expected = signature_header[7:] if signature_header.startswith("sha256=") else signature_header
+        computed = hmac.new(
+            secret.encode(),
+            payload_body,
+            hashlib.sha256
+        ).hexdigest()
+
+        return hmac.compare_digest(expected, computed)
+
     def test_connector(self, connector_type: str, connector_name: str) -> bool:
         """
         Test a connector by making a representative API request.

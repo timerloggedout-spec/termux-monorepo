@@ -40,50 +40,63 @@ The termux-monorepo integrates with multiple external services, APIs, and platfo
 llm_providers:
   deepseek:
     enabled: true
-    api_key: "${DEEPSEEK_API_KEY}"
+    api_key_env: "DEEPSEEK_API_KEY"
+    auth_method: "bearer"
     base_url: "https://api.deepseek.com"
     rate_limit: 100
     timeout: 60
     retry_attempts: 3
     models:
-      - "deepseek-chat"
-      - "deepseek-coder"
+      - id: "deepseek-chat"
+        name: "DeepSeek Chat"
+      - id: "deepseek-coder"
+        name: "DeepSeek Coder"
     
   mistral:
     enabled: true
-    api_key: "${MISTRAL_API_KEY}"
+    api_key_env: "MISTRAL_API_KEY"
+    auth_method: "bearer"
     base_url: "https://api.mistral.ai"
     rate_limit: 100
     timeout: 60
     retry_attempts: 3
     models:
-      - "mistral-tiny"
-      - "mistral-small"
-      - "mistral-medium"
-      - "mistral-large"
+      - id: "mistral-tiny"
+        name: "Mistral Tiny"
+      - id: "mistral-small"
+        name: "Mistral Small"
+      - id: "mistral-medium"
+        name: "Mistral Medium"
+      - id: "mistral-large"
+        name: "Mistral Large"
     
   claude:
     enabled: false
-    api_key: "${CLAUDE_API_KEY}"
+    api_key_env: "CLAUDE_API_KEY"
     base_url: "https://api.anthropic.com"
     rate_limit: 100
     timeout: 60
     retry_attempts: 3
     models:
-      - "claude-3-haiku"
-      - "claude-3-sonnet"
-      - "claude-3-opus"
+      - id: "claude-3-haiku-20240307"
+        name: "Claude 3 Haiku"
+      - id: "claude-3-sonnet-20240229"
+        name: "Claude 3 Sonnet"
+      - id: "claude-3-opus-20240229"
+        name: "Claude 3 Opus"
     
   grok:
     enabled: false
-    api_key: "${GROK_API_KEY}"
+    api_key_env: "GROK_API_KEY"
     base_url: "https://api.grok.com"
     rate_limit: 100
     timeout: 60
     retry_attempts: 3
     models:
-      - "grok-beta"
-      - "grok-1"
+      - id: "grok-beta"
+        name: "Grok Beta"
+      - id: "grok-1"
+        name: "Grok 1"
 ```
 
 #### Exchange API Connectors
@@ -93,9 +106,12 @@ llm_providers:
 exchanges:
   yobit:
     enabled: true
-    api_key: "${YOBIT_API_KEY}"
-    api_secret: "${YOBIT_API_SECRET}"
+    api_key_env: "YOBIT_API_KEY"
+    api_secret_env: "YOBIT_API_SECRET"
+    auth_method: "hmac"
+    hash_algorithm: "sha512"
     base_url: "https://yobit.net"
+    api_version: "3"
     rate_limit: 10
     timeout: 30
     retry_attempts: 3
@@ -106,21 +122,35 @@ exchanges:
     
   binance:
     enabled: false
-    api_key: "${BINANCE_API_KEY}"
-    api_secret: "${BINANCE_API_SECRET}"
+    api_key_env: "BINANCE_API_KEY"
+    api_secret_env: "BINANCE_API_SECRET"
+    auth_method: "hmac"
+    hash_algorithm: "sha256"
     base_url: "https://api.binance.com"
+    api_version: "v3"
     rate_limit: 1200
     timeout: 30
     retry_attempts: 3
     
   kucoin:
     enabled: true
-    api_key: "${KUCOIN_API_KEY}"
-    api_secret: "${KUCOIN_API_SECRET}"
+    api_key_env: "KUCOIN_API_KEY"
+    api_secret_env: "KUCOIN_API_SECRET"
+    passphrase_env: "KUCOIN_PASSPHRASE"
+    auth_method: "jwt"
+    hash_algorithm: "sha256"
     base_url: "https://api.kucoin.com"
+    api_version: "v1"
     rate_limit: 100
     timeout: 30
     retry_attempts: 3
+    # Public endpoints that do not require authentication
+    public_endpoints:
+      - symbols
+      - ticker
+      - order_book
+      - trades
+      - kline
 ```
 
 #### GitHub Connectors
@@ -134,35 +164,42 @@ github:
     
   api:
     base_url: "https://api.github.com"
-    token: "${GITHUB_TOKEN}"
+    graphql_url: "https://api.github.com/graphql"
+    token_env: "GITHUB_TOKEN"
     rate_limit: 5000
     timeout: 30
     retry_attempts: 3
+    headers:
+      Accept: "application/vnd.github+json"
+      X-GitHub-Api-Version: "2022-11-28"
     
   webhooks:
     enabled: true
-    secret: "${GITHUB_WEBHOOK_SECRET}"
-    events:
-      - "push"
-      - "pull_request"
-      - "issues"
-      - "issue_comment"
-      - "pull_request_review"
-      - "pull_request_review_comment"
+    secret_env: "GITHUB_WEBHOOK_SECRET"
+    endpoints:
+      - name: "agent-review-auto-jules"
+        path: "/github/webhook/agent-review-auto-jules"
+        events:
+          - "pull_request_review"
+          - "pull_request_review_comment"
+          - "issue_comment"
+        active: true
+        content_type: "application/json"
     
   agents:
     jules:
       enabled: true
-      api_key: "${JULES_API_KEY}"
+      api_key_env: "JULES_API_KEY"
       reactive_mode: false
+      auto_invoke: true
       
     coderabbit:
       enabled: true
-      api_key: "${CODERABBIT_API_KEY}"
+      api_key_env: "CODERABBIT_API_KEY"
       
     devin:
       enabled: false
-      api_key: "${DEVIN_API_KEY}"
+      api_key_env: "DEVIN_API_KEY"
 ```
 
 ### Webhook Configuration
@@ -173,42 +210,64 @@ github:
 # .github/connectors/webhooks.yaml
 webhooks:
   github:
-    agent_review_auto_jules:
-      endpoint: "/github/webhook/agent-review-auto-jules"
-      events:
-        - "pull_request_review"
-        - "pull_request_review_comment"
-        - "issue_comment"
-      active: true
-      
-    agent_jules_on_issues:
-      endpoint: "/github/webhook/agent-jules-on-issues"
-      events:
-        - "issues"
-        - "issue_comment"
-      active: true
-      
-    agent_feedback_linear_sync:
-      endpoint: "/github/webhook/agent-feedback-linear-sync"
-      events:
-        - "issues"
-        - "pull_request"
-      active: true
-      
-    gemini_dispatch:
-      endpoint: "/github/webhook/gemini-dispatch"
-      events:
-        - "push"
-        - "pull_request"
-      active: true
-      
-    publish_wiki:
-      endpoint: "/github/webhook/publish-wiki"
-      events:
-        - "push"
-      paths:
-        - "wiki/**"
-      active: true
+    base_url: "https://github.com/timerloggedout-spec/termux-monorepo"
+    secret_env: "GITHUB_WEBHOOK_SECRET"
+    endpoints:
+      - name: "agent-review-auto-jules"
+        path: "/github/webhook/agent-review-auto-jules"
+        events:
+          - "pull_request_review"
+          - "pull_request_review_comment"
+          - "issue_comment"
+        active: true
+        content_type: "application/json"
+        action: "jules_auto_resolve"
+        
+      - name: "agent-jules-on-issues"
+        path: "/github/webhook/agent-jules-on-issues"
+        events:
+          - "issues"
+          - "issue_comment"
+        active: true
+        content_type: "application/json"
+        action: "jules_issue_response"
+        
+      - name: "agent-feedback-linear-sync"
+        path: "/github/webhook/agent-feedback-linear-sync"
+        events:
+          - "issues"
+          - "pull_request"
+        active: true
+        content_type: "application/json"
+        action: "linear_sync"
+        
+      - name: "gemini-dispatch"
+        path: "/github/webhook/gemini-dispatch"
+        events:
+          - "push"
+          - "pull_request"
+        active: true
+        content_type: "application/json"
+        action: "gemini_dispatch"
+        
+      - name: "publish-wiki"
+        path: "/github/webhook/publish-wiki"
+        events:
+          - "push"
+        paths:
+          - "wiki/**"
+        active: true
+        content_type: "application/json"
+        action: "publish_wiki"
+
+  # Webhook security
+  security:
+    validate_signature: true
+    validate_content_type: true
+    rate_limiting:
+      enabled: true
+      max_requests: 100
+      burst_limit: 20
 ```
 
 ---

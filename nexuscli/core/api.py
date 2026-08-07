@@ -12,7 +12,35 @@ import subprocess
 import random
 from pathlib import Path
 from typing import Optional, List, Dict, Any
-from curl_cffi import requests as curl_requests
+try:
+    from curl_cffi import requests as curl_requests
+except Exception:
+    import requests as standard_requests
+    class MockCurlSession(standard_requests.Session):
+        def __init__(self, *args, **kwargs):
+            kwargs.pop("impersonate", None)
+            super().__init__(*args, **kwargs)
+        def request(self, method, url, *args, **kwargs):
+            kwargs.pop("impersonate", None)
+            return super().request(method, url, *args, **kwargs)
+
+    class CurlRequestsFallback:
+        Session = MockCurlSession
+        def get(self, *args, **kwargs):
+            kwargs.pop("impersonate", None)
+            return standard_requests.get(*args, **kwargs)
+        def post(self, *args, **kwargs):
+            kwargs.pop("impersonate", None)
+            return standard_requests.post(*args, **kwargs)
+        def put(self, *args, **kwargs):
+            kwargs.pop("impersonate", None)
+            return standard_requests.put(*args, **kwargs)
+        def delete(self, *args, **kwargs):
+            kwargs.pop("impersonate", None)
+            return standard_requests.delete(*args, **kwargs)
+
+    curl_requests = CurlRequestsFallback()
+
 import requests as http_requests
 from rich.console import Console
 
@@ -44,7 +72,15 @@ def _cache_path(session_id: str, account: str = "primary") -> str:
         os.chmod(store_dir, 0o700)
     except Exception:
         pass
-    return os.path.join(store_dir, f"{session_id}.json")
+    path = os.path.join(store_dir, f"{session_id}.json")
+
+    # Path traversal validation (Aikido and Devin secure policy)
+    base_real = os.path.realpath(store_dir)
+    target_real = os.path.realpath(path)
+    if os.path.commonpath([base_real, target_real]) != base_real:
+        raise ValueError("Invalid file path")
+
+    return path
 
 
 def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict[str, Any]]]:
@@ -167,10 +203,7 @@ def solve_pow(challenge: dict) -> str:
 
 def create_session(token: str, model_type: str = "expert", cookie: str = None) -> str:
     s = get_session(token, cookie=cookie)
-    if cookie:
-        console.print(f"[DEBUG] create_session using cookie: {cookie[:30]}...")
     r = s.post(f"{BASE_URL}/api/v0/chat_session/create", json={"character_id": None, "model_type": model_type})
-    console.print(f"[yellow]create_session status: {r.status_code}[/]")
     r.raise_for_status()
     return r.json()["data"]["biz_data"]["id"]
 
@@ -313,7 +346,7 @@ def stream_completion(
 
     while retries < max_retries:
         try:
-            resp = base_sess.post(url, json=payload, headers=headers, stream=True)
+            resp = base_sess.post(url, json=payload, headers=headers)
             body_preview = resp.text[:200] if hasattr(resp, 'text') else ''
 
             if 'Update to the latest version' in body_preview:
@@ -358,6 +391,10 @@ def stream_completion(
                                 console.print(chunk, end="")
                     except json.JSONDecodeError:
                         pass
+            try:
+                get_history(token, session_id, force_refresh=True)
+            except Exception:
+                pass
             return
 
         except Exception as e:
@@ -383,7 +420,7 @@ def send_message(
     pow_header = solve_pow(challenge)
     payload = {
         'chat_session_id': session_id,
-        'parent_message_id': parent_message_id,
+        'parent_message_id': int(parent_message_id) if parent_message_id else None,
         'prompt': prompt,
         'ref_file_ids': [],
         'thinking_enabled': thinking,
@@ -397,7 +434,12 @@ def send_message(
     resp = http_requests.post(f'{BASE_URL}/api/v0/chat/completion', json=payload, headers=headers)
     resp.raise_for_status()
     data = resp.json()
-    return data['choices'][0]['message']['content']
+    content = data['choices'][0]['message']['content']
+    try:
+        get_history(token, session_id, force_refresh=True)
+    except Exception:
+        pass
+    return content
 
 
 # ---------- Chat Completion Wrapper ----------
@@ -434,8 +476,16 @@ def chat_completion(
             break
 
         # Check if server asked for continue (simplified)
-        if "auto_resume" in chunk.lower():
+        if "auto_resume" not in chunk.lower():
             break
+
+        # Update parent message ID for the next continue iteration
+        try:
+            history = get_history(token, session_id, force_refresh=True)
+            if history:
+                current_parent = str(history[-1].get("message_id"))
+        except Exception:
+            pass
 
     return full_output
 
@@ -443,7 +493,7 @@ def chat_completion(
 # ---------- Export Utilities ----------
 
 def export_markdown(token: str, session_id: str) -> str:
-    messages = get_history(token, session_id)
+    messages = get_history(token, session_id, force_refresh=True)
     md = ""
     for msg in messages:
         role = msg.get("role", "user")
@@ -456,5 +506,5 @@ def export_markdown(token: str, session_id: str) -> str:
 
 
 def export_json(token: str, session_id: str) -> str:
-    messages = get_history(token, session_id)
+    messages = get_history(token, session_id, force_refresh=True)
     return json.dumps(messages, indent=2)

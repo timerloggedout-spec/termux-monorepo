@@ -17,11 +17,9 @@ from typing import Dict, List, Optional, Tuple, Any
 from dataclasses import dataclass, asdict
 from enum import Enum
 
-# ============================================================
-================
+# ============================================================================
 # Configuration & Data Structures
-# ============================================================
-================
+# ============================================================================
 
 @dataclass
 class CommandAttempt:

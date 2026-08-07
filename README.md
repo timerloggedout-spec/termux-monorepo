@@ -1,3 +1,13 @@
+# termux-monorepo: Project Management & Navigation
+
+**🚀 Quick Start:**
+- **Projects & Milestones**: [`.github/PROJECTS.md`](.github/PROJECTS.md) | [`.github/MILESTONES.yaml`](.github/MILESTONES.yaml)
+- **Connectors**: [`.github/CONNECTORS.md`](.github/CONNECTORS.md) | [`.github/connectors/`](.github/connectors/)
+- **Navigation SSOT**: See [Navigation Ladder](#navigation-ssot) below
+- **Agent Workflow**: See [AGENTS.md](AGENTS.md)
+
+---
+
 # Project Remote Sandbox Workspace Setup Considerations:
 ```Gemini-GoogleSearch
 To run a Termux environment on an Ubuntu/Linux desktop or server for sandbox testing, you cannot run the exact Termux Android app natively. You must instead replicate its specific Android-based Linux environment (environment variables, paths, and package manager) using containerization, virtualization, or architectural simulation tools.
@@ -55,6 +65,39 @@ Already Installed!
 This README documents the filesystem incident, the recovered state from the repository history, and step-by-step recovery & rebuild actions (includes the refTemplates snapshot). It also includes the git-diff consolidation results I performed and concrete recovery commands.
 
 It further documents the **live projects and directories currently in the codebase** so the recovery cockpit and day-to-day navigation share one root README.
+
+---
+
+## 🧭 Navigation SSOT (Single Source of Truth)
+
+Use this **priority ladder** when orienting in the monorepo:
+
+| Priority | Start Here | What You Get |
+|----------|------------|--------------|
+| 1 | [`.github/PROJECTS.md`](.github/PROJECTS.md) | **8 Projects** with 16 Milestones, P0-P3 priority |
+| 2 | [`.github/MILESTONES.yaml`](.github/MILESTONES.yaml) | **16 Milestones** with acceptance criteria, dependencies |
+| 3 | [`.github/CONNECTORS.md`](.github/CONNECTORS.md) | **Connector Management** - LLM, Exchanges, GitHub, Webhooks |
+| 4 | [`archwiz/TOOL_INDEX.md`](archwiz/TOOL_INDEX.md) | 28 tools / 7 categories - operational cockpit |
+| 5 | [`archwiz/CONCEPT_INDEX.md`](archwiz/CONCEPT_INDEX.md) | Concepts + status (✅/🟡/❌) + feature backlog |
+| 6 | [`archwiz/REFERENCE_HUB.md`](archwiz/REFERENCE_HUB.md) | Auto-generated links to DATA_FLOW, SYSTEM_MAP, func/llm indices |
+| 7 | [`docs/RECON.md`](docs/RECON.md) | Branch/PR critique, refTemplates gaps, prioritized proposals |
+| 8 | [`_Entry+ReadMe.md`](_Entry+ReadMe.md) | One-line command → entry table |
+| 9 | [`termux-ecosystem-architecture.html`](termux-ecosystem-architecture.html) | Visual ecosystem diagram |
+
+**Quick Commands:**
+```bash
+# Projects & Milestones
+cat .github/PROJECTS.md | grep -E "^(# |## |### )"  # Quick outline
+python3 -c "import yaml; print(yaml.safe_load(open('.github/MILESTONES.yaml'))['milestones'][0]['title'])"
+
+# Connectors
+bash .github/connectors/health_check.sh  # Test all connectors
+python3 .github/connectors/connector_manager.py  # List all connectors
+
+# Navigation
+cat archwiz/TOOL_INDEX.md | head -20  # Top tools
+cat archwiz/CONCEPT_INDEX.md | head -20  # Core concepts
+```
 
 ---
 

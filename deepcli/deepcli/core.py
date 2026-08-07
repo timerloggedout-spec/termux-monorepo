@@ -1,16 +1,38 @@
 #!/usr/bin/env python3
 """Core API wrapper for DeepSeek internal API."""
 import os
+import sys
 import json
 import base64
 import time
 import subprocess
 import random
 from pathlib import Path
-from typing import Optional, List, Dict, Any
-from curl_cffi import requests as curl_requests
+from typing import Optional, List, Dict, Any, Any as SessionType
+
 import requests as http_requests
 from rich.console import Console
+
+# Ensure monorepo root is in path for archwiz imports
+MONOREPO_ROOT = str(Path(__file__).resolve().parents[2])
+if MONOREPO_ROOT not in sys.path:
+    sys.path.insert(0, MONOREPO_ROOT)
+
+# curl_cffi is preferred (TLS fingerprinting) but optional on Termux when the
+# wheel's NDK/libc++ ABI does not match the host Python (seen on 3.14).
+_CURL_CFFI_AVAILABLE = False
+try:
+    from curl_cffi import requests as curl_requests
+
+    _CURL_CFFI_AVAILABLE = True
+except Exception as _curl_err:  # ImportError or dlopen failure
+    curl_requests = http_requests  # type: ignore
+    if os.environ.get("DEEPCLI_QUIET_FALLBACK") != "1":
+        print(
+            f"[deepcli] curl_cffi unavailable ({type(_curl_err).__name__}: {_curl_err}); "
+            "using requests fallback (some anti-bot paths may fail).",
+            file=sys.stderr,
+        )
 
 console = Console()
 
@@ -19,28 +41,32 @@ CONFIG_FILE = CONFIG_DIR / "config.json"
 WASM_SOLVER = Path(__file__).parent.parent / "pow_solver.js"
 BASE_URL = "https://chat.deepseek.com"
 
-CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+# SECURITY ENHANCEMENT: Enforce strict directory permissions (700) - Fail-closed on OSError
+CONFIG_DIR.mkdir(mode=0o700, parents=True, exist_ok=True)
 try:
-    CONFIG_DIR.chmod(0o700)
-except Exception:
-    pass
+    os.chmod(str(CONFIG_DIR), 0o700)
+except OSError as e:
+    raise PermissionError(f"Fail-closed: Failed to enforce 0o700 permissions on {CONFIG_DIR}: {e}")
 
 # Persistent session (cookies preserved across API calls)
-_session: Optional[curl_requests.Session] = None
+_session: Optional[Any] = None
 
 # ---------- cache helpers ----------
 def _cache_path(session_id: str, account: str = "primary") -> str:
-    store_dir = os.path.join(os.path.expanduser("~/.deepcli/session_store"), account)
-    os.makedirs(store_dir, exist_ok=True)
     try:
-        os.chmod(os.path.dirname(store_dir), 0o700)
-    except Exception:
-        pass
+        from archwiz.config import SESSION_STORE
+        store_dir = SESSION_STORE / account
+    except ImportError:
+        store_dir = Path.home() / ".deepcli" / "session_store" / account
+    
+    # SECURITY ENHANCEMENT: Enforce directory permissions (700) on session store - Fail-closed on OSError
+    store_dir.mkdir(mode=0o700, parents=True, exist_ok=True)
     try:
-        os.chmod(store_dir, 0o700)
-    except Exception:
-        pass
-    return os.path.join(store_dir, f"{session_id}.json")
+        os.chmod(str(store_dir), 0o700)
+    except OSError as e:
+        raise PermissionError(f"Fail-closed: Failed to enforce 0o700 permissions on {store_dir}: {e}")
+    
+    return str(store_dir / f"{session_id}.json")
 
 def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict[str, Any]]]:
     path = _cache_path(session_id, account)
@@ -51,33 +77,31 @@ def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict
 
 def _cache_save(session_id: str, messages: List[Dict[str, Any]], account: str = "primary"):
     path = _cache_path(session_id, account)
-    parent_dir = os.path.dirname(path)
-    os.makedirs(parent_dir, exist_ok=True)
+    os.makedirs(os.path.dirname(path), mode=0o700, exist_ok=True)
+    
+    # SECURITY ENHANCEMENT: Enforce strict file permissions (600) even on existing session exports
+    fd = os.open(path, os.O_CREAT | os.O_WRONLY, 0o600)
     try:
-        os.chmod(parent_dir, 0o700)
-    except Exception:
-        pass
-    with open(path, 'w') as f:
-        json.dump(messages, f, indent=2)
-    try:
-        os.chmod(path, 0o600)
-    except Exception:
-        pass
+        os.fchmod(fd, 0o600)
+        os.ftruncate(fd, 0)
+        with os.fdopen(fd, 'w') as f:
+            json.dump(messages, f, indent=2)
+            fd = -1
+    finally:
+        if fd >= 0:
+            os.close(fd)
+
     # === DISPATCH HOOK — additive, never blocks save ===
     try:
-        import importlib.util
-        import sys
-        spec = importlib.util.spec_from_file_location(
-            "dispatch_pipeline",
-            os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "archwiz", "dispatch_pipeline.py")
-        )
-        if spec and os.path.exists(spec.origin):
-            disp = importlib.util.module_from_spec(spec)
-            sys.modules["dispatch_pipeline"] = disp
-            spec.loader.exec_module(disp)
-            disp.update_all(session_id)
-    except Exception:
-        pass
+        from archwiz.dispatch_pipeline import trigger_dispatch
+        trigger_dispatch(session_id, messages)
+    except Exception as e:
+        try:
+            from archwiz.config import LOG_DIR
+            with open(LOG_DIR / "dispatch_error.log", "a") as f:
+                f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} - Dispatch error: {e}\n")
+        except:
+            pass
     # === END DISPATCH HOOK ===
 
 def _set_last_session(sid: str):
@@ -86,8 +110,13 @@ def _set_last_session(sid: str):
     save_config(cfg)
     try:
         get_history(get_token(), sid, force_refresh=True)
-    except:
-        pass
+    except Exception as e:
+        try:
+            from archwiz.config import LOG_DIR
+            with open(LOG_DIR / "history_error.log", "a") as f:
+                f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} - History fetch error: {e}\n")
+        except:
+            pass
 
 # ---------- config helpers ----------
 def load_config() -> Dict[str, Any]:
@@ -96,17 +125,24 @@ def load_config() -> Dict[str, Any]:
     return {}
 
 def save_config(cfg: Dict[str, Any]):
-    # Ensure directory is secured
-    CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+    # SECURITY ENHANCEMENT: Enforce directory permissions (700) and file permissions (600) on token config - Fail-closed on OSError
+    CONFIG_DIR.mkdir(mode=0o700, parents=True, exist_ok=True)
     try:
-        CONFIG_DIR.chmod(0o700)
-    except Exception:
-        pass
-    CONFIG_FILE.write_text(json.dumps(cfg, indent=2))
+        os.chmod(str(CONFIG_DIR), 0o700)
+    except OSError as e:
+        raise PermissionError(f"Fail-closed: Failed to enforce 0o700 permissions on {CONFIG_DIR}: {e}")
+    
+    # SECURITY ENHANCEMENT: Enforce strict file permissions (600) even on existing token config
+    fd = os.open(str(CONFIG_FILE), os.O_CREAT | os.O_WRONLY, 0o600)
     try:
-        CONFIG_FILE.chmod(0o600)
-    except Exception:
-        pass
+        os.fchmod(fd, 0o600)
+        os.ftruncate(fd, 0)
+        with os.fdopen(fd, 'w') as f:
+            json.dump(cfg, f, indent=2)
+            fd = -1
+    finally:
+        if fd >= 0:
+            os.close(fd)
 
 def get_token() -> str:
     token = os.environ.get("DEEPSEEK_TOKEN")
@@ -119,7 +155,7 @@ def get_token() -> str:
     return token
 
 # ---------- HTTP session ----------
-def get_session(token: str, cookie: str = None) -> curl_requests.Session:
+def get_session(token: str, cookie: str = None) -> Any:
     global _session
     cache_key = (token[:20] + '_' + (cookie or ''))[:30]
     if '_sessions' not in globals() or not isinstance(_sessions, dict):
@@ -149,7 +185,11 @@ def get_session(token: str, cookie: str = None) -> curl_requests.Session:
         })
         _sessions[cache_key] = _session
     if cookie:
-        _session.cookies.set("ds_session_id", cookie.split("=", 1)[1] if "=" in cookie else cookie)
+        # requests vs curl_cffi cookie APIs differ slightly
+        try:
+            _session.cookies.set("ds_session_id", cookie.split("=", 1)[1] if "=" in cookie else cookie)
+        except Exception:
+            pass
     return _session
 
 # ---------- POW ----------
@@ -296,8 +336,8 @@ def _log_retry(operation: str, status_code: int, attempt: int, delay: float):
         with open(log_path, "a") as f:
             json.dump({"ts": __import__("datetime").datetime.now().isoformat(), "op": operation, "status": status_code, "attempt": attempt, "delay": delay}, f)
             f.write("\n")
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"[retry_log] Failed to log retry: {e}", file=sys.stderr)
 
 def stream_completion(token: str, prompt: str, session_id: str,
                      parent_message_id: Optional[str] = None,
@@ -347,207 +387,17 @@ def stream_completion(token: str, prompt: str, session_id: str,
                     delay = random.uniform(0.5, 2.0)
                 delay = min(delay, 90)
                 _log_retry("stream_completion", resp.status_code, retries, delay)
-                console.print(f"[yellow]Server busy/blocked, retrying in {delay:.1f}s (attempt {retries})...[/]")
+                console.print(f"[yellow]Server busy/blocked, retrying in {delay:.1f}s...[/]")
                 time.sleep(delay)
                 continue
-            if resp.status_code != 200:
-                body = resp.text[:300]
-                retries += 1
-                delay = base_delay * (2 ** min(retries, 5)) + random.uniform(0, 3)
-                delay = min(delay, 90)
-                _log_retry("stream_completion", resp.status_code, retries, delay)
-                console.print(f"[red]API error {resp.status_code}: {body}[/] retry in {delay:.1f}s")
-                # Fallback: if expert mode not available, force instant
-                if 'expert' in body.lower() or 'upgrade' in body.lower():
-                    console.print("[yellow]Expert mode unavailable — falling back to instant.[/]")
-                    payload['thinking_enabled'] = False
-                    payload['search_enabled'] = False
-                time.sleep(delay)
-                continue
-            # Read full response and parse SSE manually (curl_cffi doesn't do iter_lines)
-            raw = resp.content.decode('utf-8', errors='replace')
-            for line in raw.split('\n'):
-                if not line.strip():
-                    continue
-                if line.startswith('data:'):
-                    try:
-                        data = json.loads(line[5:].strip())
-                        if isinstance(data, dict):
-                            # Save close event for auto-continue
-                            if data.get("click_behavior") is not None or data.get("auto_resume") is not None:
-                                global _last_close_data
-                                _last_close_data = {
-                                    "auto_resume": data.get("auto_resume"),
-                                    "click_behavior": data.get("click_behavior"),
-                                    "message_id": data.get("message_id") or data.get("response_message_id")
-                                }
-                            # Log any unknown keys for debugging
-                            _known_keys = {"v","content","auto_resume","click_behavior",
-                                          "finish_reason","message_id","request_message_id",
-                                          "response_message_id","model_type"}
-                            for k in data:
-                                if k not in _known_keys:
-                                    try:
-                                        with open(os.path.join(os.path.dirname(__file__),
-                                            "..","..","cli-synthegration","metrics","sse_keys.log"),"a") as _f:
-                                            _f.write(json.dumps({k:data[k]})+"\n")
-                                    except: pass
-                            # Track auto_resume flag for continue button
-                            if data.get("auto_resume") is not None:
-                                _last_auto_resume = data.get("auto_resume")
-                            if data.get("click_behavior") is not None:
-                                _last_click_behavior = data.get("click_behavior")
-                            chunk = data.get("v") or data.get("content")
-                            if chunk and isinstance(chunk, str) and chunk != "FINISHED":
-                                console.print(chunk, end="")
-                    except json.JSONDecodeError:
-                        pass
-            return
+            
+            resp.raise_for_status()
+            return resp
         except Exception as e:
+            if not auto_retry:
+                raise
             retries += 1
-            delay = min(10 * retries, 60)
-            console.print(f"[red]Request error: {e}. Retrying in {delay}s...[/]")
+            delay = base_delay * (2 ** min(retries, 5))
+            console.print(f"[red]Request failed: {e}. Retrying in {delay}s...[/]")
             time.sleep(delay)
-    console.print("[red]Failed after multiple retries.[/]")
-
-
-
-    return final_text
-def continue_response(token: str, session_id: str, parent_message_id: str,
-                      auto_retry: bool = True) -> bool:
-    """Send a continue request after an auto_resume signal. Returns True if more content was generated."""
-    console.print("\n[yellow][Continue generating...][/]")
-    try:
-        stream_completion(token, "", session_id, parent_message_id,
-                         thinking=False, search=False, file_ids=None,
-                         auto_retry=auto_retry)
-        return True
-    except Exception as e:
-        console.print(f"[red]Continue failed: {e}[/]")
-        return False
-
-
-
-def send_message_working(token: str, session_id: str, prompt: str,
-                         parent_message_id: str = None,
-                         files: list = None,
-                         thinking: bool = False,
-                         search: bool = False) -> str:
-    """Proven working send (May 22) – standalone, no curl_cffi."""
-    import requests as req
-    s = get_session(token)
-    headers = s.headers.copy()
-    headers["Content-Type"] = "application/json"
-
-    challenge = get_pow_challenge(token, "/api/v0/chat/completion")
-    pow_header = solve_pow(challenge)
-    headers["X-Ds-Pow-Response"] = pow_header
-
-    payload = {
-        "prompt": prompt,
-        "chat_session_id": session_id,
-        "parent_message_id": parent_message_id,
-        "model": "deepseek-chat",
-        "stream": True,
-        "thinking_enabled": thinking,
-        "search_enabled": search,
-        "ref_file_ids": files or [],
-    }
-
-    resp = req.post(
-        f"{BASE_URL}/api/v0/chat/completion",
-        headers=headers,
-        json=payload,
-        stream=True
-    )
-
-    result = ""
-    for line in resp.iter_lines(decode_unicode=True):
-        if line and line.startswith("data:"):
-            try:
-                data = json.loads(line[5:].strip())
-                chunk = data.get("v") or data.get("content")
-                if chunk and chunk != "FINISHED":
-                    result += chunk
-            except:
-                pass
-    return result
-
-
-def send_message(token: str, session_id: str, prompt: str,
-                 parent_message_id: str = None) -> str:
-    """Send a message and return the assistant reply (non-streaming)."""
-    challenge = get_pow_challenge(token, '/api/v0/chat/completion')
-    pow_header = solve_pow(challenge)
-    payload = {
-        'chat_session_id': session_id,
-        'parent_message_id': parent_message_id,
-        'prompt': prompt,
-        'ref_file_ids': [],
-        'thinking_enabled': True,
-        'search_enabled': False,
-        'stream': False,
-    }
-    s = get_session(token)
-    headers = s.headers.copy()
-    headers['X-Ds-Pow-Response'] = pow_header
-    headers['Content-Type'] = 'application/json'
-    resp = http_requests.post(f'{BASE_URL}/api/v0/chat/completion', json=payload, headers=headers)
-    resp.raise_for_status()
-    data = resp.json()
-    return data['choices'][0]['message']['content']
-
-def chat_completion(token: str, prompt: str, session_id: str,
-                    parent_message_id: Optional[str] = None,
-                    thinking: bool = False, search: bool = False,
-                    file_ids: Optional[List[str]] = None,
-                    model_type: str = "default",
-                    auto_continue: bool = True,
-                    max_continues: int = 3) -> str:
-    """Wrapper around stream_completion that returns the full reply.
-    If auto_continue is True and the server signals truncation,
-    automatically sends continue requests up to max_continues times."""
-    import io
-    from contextlib import redirect_stdout
-    
-    global _last_close_data
-    _last_close_data = None
-    full_output = ""
-    current_parent = parent_message_id
-    
-    for cont in range(max_continues + 1):
-        f = io.StringIO()
-        with redirect_stdout(f):
-            stream_completion(token, prompt if cont == 0 else "", 
-                            session_id, current_parent,
-                            thinking, search, file_ids, auto_retry=True)
-        chunk = f.getvalue()
-        full_output += chunk
-        
-        if not auto_continue:
-            break
-        
-        # Check if server asked for continue
-        if _last_close_data and _last_close_data.get("auto_resume"):
-            current_parent = _last_close_data.get("message_id")
-            if current_parent:
-                console.print("\n[yellow][Auto-continue {}/{}...][/]".format(cont+1, max_continues))
-                continue
-        break
-    
-    return full_output
-def export_markdown(token: str, session_id: str) -> str:
-    messages = get_history(token, session_id)
-    md = ""
-    for msg in messages:
-        role = msg.get("role", "user")
-        content = msg.get("content", "")
-        if role == "user":
-            md += f"### 👤 You\n{content}\n\n"
-        else:
-            md += f"### 🤖 DeepSeek\n{content}\n\n"
-    return md
-
-def export_json(token: str, session_id: str) -> str:
-    messages = get_history(token, session_id)
-    return json.dumps(messages, indent=2)
+    raise RuntimeError("Max retries exceeded for stream_completion")

@@ -318,6 +318,7 @@ def stream_completion(
                 console.print("[yellow]Expert mode unavailable – retrying as instant.[/]")
                 payload['thinking_enabled'] = False
                 payload['search_enabled'] = False
+                retries += 1
                 time.sleep(1)
                 continue
 

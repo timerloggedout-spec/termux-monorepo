@@ -70,7 +70,7 @@ def log_attempt_telemetry(target_file, attempt, patch, errors, verdict):
         )
         conn.commit()
 
-def index_project_file(workspace_root, relative_path):
+def index_project_file(workspace_root, relative_path, conn=None):
     abs_path = os.path.join(workspace_root, relative_path)
     ext = os.path.splitext(relative_path)[1]
     lang_map = {'.py': 'python', '.js': 'javascript', '.mjs': 'javascript', '.rs': 'rust'}
@@ -78,32 +78,52 @@ def index_project_file(workspace_root, relative_path):
     if not lang:
         return
     try:
+        # Run first ast-grep to scan nodes
         output = subprocess.check_output(["ast-grep", "scan", "--json", abs_path], text=True)
         nodes = json.loads(output)
-        with sqlite3.connect(DB_PATH) as conn:
-            cursor = conn.cursor()
-            for node in nodes:
-                node_id = f"{relative_path}:{node.get('range', {}).get('start', {}).get('line', 0)}"
-                cursor.execute(
-                    "INSERT OR REPLACE INTO nodes VALUES (?, ?, ?, ?, ?, ?)",
-                    (node_id, relative_path, lang, node.get('kind'), node.get('text', '')[:50],
-                     node.get('range', {}).get('start', {}).get('line', 0))
-                )
+
+        # Run second ast-grep to scan imports
         import_pattern = "import $MOD from '$PATH'" if lang == 'javascript' else "import $MOD"
         import_output = subprocess.check_output(
             ["ast-grep", "scan", "--pattern", import_pattern, "--json", abs_path], text=True
         )
         import_nodes = json.loads(import_output)
+
+        # Batch node database entries
+        node_data = []
+        for node in nodes:
+            node_id = f"{relative_path}:{node.get('range', {}).get('start', {}).get('line', 0)}"
+            node_data.append((
+                node_id, relative_path, lang, node.get('kind'), node.get('text', '')[:50],
+                node.get('range', {}).get('start', {}).get('line', 0)
+            ))
+
+        # Batch import edge database entries
+        edge_data = []
         for imp in import_nodes:
             imp_text = imp.get('text', '')
             quoted_paths = re.findall(r"['\"](.*?)['\"]", imp_text)
             for target in quoted_paths:
                 clean_target = target.lstrip('./').replace('.js', '').replace('.py', '')
-                cursor.execute(
-                    "INSERT OR IGNORE INTO edges VALUES (?, ?, ?)",
-                    (relative_path, clean_target, "imports")
-                )
-        conn.commit()
+                edge_data.append((relative_path, clean_target, "imports"))
+
+        # Database transaction using batch executemany for high performance
+        close_conn = False
+        if conn is None:
+            conn = sqlite3.connect(DB_PATH)
+            close_conn = True
+
+        try:
+            cursor = conn.cursor()
+            if node_data:
+                cursor.executemany("INSERT OR REPLACE INTO nodes VALUES (?, ?, ?, ?, ?, ?)", node_data)
+            if edge_data:
+                cursor.executemany("INSERT OR IGNORE INTO edges VALUES (?, ?, ?)", edge_data)
+            if close_conn:
+                conn.commit()
+        finally:
+            if close_conn:
+                conn.close()
     except Exception:
         pass""",
     "src/sandbox.py": """import subprocess
@@ -388,10 +408,23 @@ def main():
         print("[+] Re-run the script or trigger run_agent.sh to start the operational pipeline loop.")
         sys.exit(0)
 
-    for root, _, files in os.walk(workspace_path):
-        for file in files:
-            rel_path = os.path.relpath(os.path.join(root, file), workspace_path)
-            index_project_file(workspace_path, rel_path)
+    # 1nd3x 4ll pr0j3ct f1l3s (using a single shared sqlite3 connection for speed)
+    import sqlite3
+    from src.db import DB_PATH
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        for root, _, files in os.walk(workspace_path):
+            for file in files:
+                rel_path = os.path.relpath(os.path.join(root, file), workspace_path)
+                index_project_file(workspace_path, rel_path, conn=conn)
+        conn.commit()
+    except Exception:
+        pass
+    finally:
+        try:
+            conn.close()
+        except Exception:
+            pass
 
     target_file = "test_script.py"
     refactor_goal = "Refactor compute to intercept and handle ZeroDivisionError scenario profiles cleanly."

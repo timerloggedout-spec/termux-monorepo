@@ -1,0 +1,52 @@
+name: '🏷️ Gemini Issue Triage (free-tier)'
+
+on:
+  workflow_call:
+    inputs:
+      additional_context:
+        type: string
+        required: false
+      prior_prs:
+        type: string
+        required: false
+        default: 'none'
+
+concurrency:
+  group: gemini-triage-${{ github.event.issue.number || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Run Gemini CLI triage
+        uses: google-github-actions/run-gemini-cli@v0
+        env:
+          GEMINI_CLI_TRUST_WORKSPACE: 'true'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
+          github_issue_number: ${{ github.event.issue.number }}
+          prompt: |
+            You are the free-tier agentic triage agent for termux-monorepo.
+            Read GEMINI.md and AGENTS.md if present.
+
+            Task: Triage the current GitHub issue.
+            1. Classify (bug / feature / docs / question / security / duplicate / invalid).
+            2. Suggest or apply appropriate labels and a priority (critical/high/medium/low) if the token allows label writes.
+            3. If it looks like a duplicate, search existing open issues and link them.
+            4. For bugs, ask for minimal reproduction steps if missing.
+            5. Note any open agent PRs already addressing this area:
+               ${{ inputs.prior_prs }}
+            6. Post a short, actionable comment summarizing triage. If implementation is needed, recommend labeling `jules` or `@jules` (Jules is the primary builder).
+
+            Additional context: ${{ inputs.additional_context }}
+            Stay within free-tier good citizenship (concise, no speculative long work).

@@ -1,0 +1,186 @@
+# Exchange API Connectors Configuration
+# Dedicated project surface — not part of the agent/project-management refresh.
+# See feature/exchange-connectors and PROJECTS.md Exchange track.
+
+exchanges:
+  yobit:
+    enabled: true
+    api_key_env: "YOBIT_API_KEY"
+    api_secret_env: "YOBIT_API_SECRET"
+    base_url: "https://yobit.net"
+    api_version: "3"
+    rate_limit: 10
+    timeout: 30
+    retry_attempts: 3
+    retry_delay: 1
+    auth_method: "hmac"
+    hash_algorithm: "sha512"
+    public_endpoints:
+      - info
+      - ticker
+      - depth
+      - trades
+    endpoints:
+      info: "/api/{api_version}/info"
+      ticker: "/api/{api_version}/ticker/{pair}"
+      depth: "/api/{api_version}/depth/{pair}"
+      trades: "/api/{api_version}/trades/{pair}"
+      get_info: "/tapi"
+      get_balance: "/tapi"
+      trade: "/tapi"
+      active_orders: "/tapi"
+      order_info: "/tapi"
+      cancel_order: "/tapi"
+      trade_history: "/tapi"
+      withdraw: "/tapi"
+    pairs:
+      - "BTC_USD"
+      - "ETH_USD"
+      - "LTC_USD"
+      - "XRP_USD"
+      - "BCH_USD"
+    features:
+      - spot_trading
+      - market_data
+      - account_balance
+      - order_management
+      - trade_history
+      - withdrawals
+    rate_limits:
+      public: 10
+      private: 10
+    order_types:
+      - limit
+      - market
+      - stop_limit
+      - stop_market
+    time_in_force:
+      - GTC
+      - IOC
+      - FOK
+
+  kucoin:
+    enabled: true
+    api_key_env: "KUCOIN_API_KEY"
+    api_secret_env: "KUCOIN_API_SECRET"
+    passphrase_env: "KUCOIN_PASSPHRASE"
+    base_url: "https://api.kucoin.com"
+    api_version: "v1"
+    rate_limit: 100
+    timeout: 30
+    retry_attempts: 3
+    retry_delay: 1
+    auth_method: "jwt"
+    hash_algorithm: "sha256"
+    public_endpoints:
+      - symbols
+      - ticker
+      - order_book
+      - trades
+      - kline
+    endpoints:
+      symbols: "/api/{api_version}/symbols"
+      ticker: "/api/{api_version}/market/allTickers"
+      order_book: "/api/{api_version}/market/orderbook/level2"
+      trades: "/api/{api_version}/market/histories"
+      kline: "/api/{api_version}/market/candles"
+      orders: "/api/{api_version}/orders"
+      order_by_id: "/api/{api_version}/orders/{orderId}"
+      cancel_order: "/api/{api_version}/orders/{orderId}"
+      cancel_all_orders: "/api/{api_version}/orders"
+      accounts: "/api/{api_version}/accounts"
+      account_balance: "/api/{api_version}/accounts/{accountId}/balance"
+      account_ledgers: "/api/{api_version}/accounts/{accountId}/ledgers"
+      deposits: "/api/{api_version}/deposits"
+      withdrawals: "/api/{api_version}/withdrawals"
+      withdrawal_quotas: "/api/{api_version}/withdrawals/quotas"
+      user_info: "/api/{api_version}/user/info"
+    pairs:
+      - "BTC-USDT"
+      - "ETH-USDT"
+      - "LTC-USDT"
+      - "XRP-USDT"
+      - "KCS-USDT"
+    features:
+      - spot_trading
+      - margin_trading
+      - futures_trading
+      - market_data
+      - account_balance
+      - order_management
+      - trade_history
+      - deposits
+      - withdrawals
+    rate_limits:
+      rest: 100
+      websocket: 1000
+    websocket:
+      enabled: true
+      url: "wss://ws-api.kucoin.com/endpoint"
+      ping_interval: 30
+      reconnect_delay: 5
+
+  binance:
+    enabled: false
+    api_key_env: "BINANCE_API_KEY"
+    api_secret_env: "BINANCE_API_SECRET"
+    base_url: "https://api.binance.com"
+    api_version: "v3"
+    rate_limit: 1200
+    timeout: 30
+    retry_attempts: 3
+    retry_delay: 1
+    auth_method: "hmac"
+    hash_algorithm: "sha256"
+    public_endpoints:
+      - ping
+      - server_time
+      - exchange_info
+      - depth
+      - trades
+      - ticker_24hr
+      - ticker_price
+    endpoints:
+      ping: "/api/{api_version}/ping"
+      server_time: "/api/{api_version}/time"
+      exchange_info: "/api/{api_version}/exchangeInfo"
+      depth: "/api/{api_version}/depth"
+      trades: "/api/{api_version}/trades"
+      historical_trades: "/api/{api_version}/historicalTrades"
+      agg_trades: "/api/{api_version}/aggTrades"
+      kline: "/api/{api_version}/klines"
+      ticker_24hr: "/api/{api_version}/ticker/24hr"
+      ticker_price: "/api/{api_version}/ticker/price"
+      ticker_book: "/api/{api_version}/ticker/bookTicker"
+      test_order: "/api/{api_version}/order/test"
+      new_order: "/api/{api_version}/order"
+      cancel_order: "/api/{api_version}/order"
+      cancel_all_orders: "/api/{api_version}/openOrders"
+      order_status: "/api/{api_version}/order"
+      account_info: "/api/{api_version}/account"
+      account_trades: "/api/{api_version}/myTrades"
+      user_assets: "/sapi/v1/asset/getUserAsset"
+    pairs:
+      - "BTCUSDT"
+      - "ETHUSDT"
+      - "LTCUSDT"
+      - "XRPUSDT"
+      - "BNBUSDT"
+    features:
+      - spot_trading
+      - margin_trading
+      - futures_trading
+      - market_data
+      - account_balance
+      - order_management
+      - trade_history
+      - staking
+      - savings
+    rate_limits:
+      rest: 1200
+      websocket: 5000
+    websocket:
+      enabled: true
+      url: "wss://stream.binance.com:9443/ws"
+      ping_interval: 60
+      reconnect_delay: 5

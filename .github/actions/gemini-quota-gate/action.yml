@@ -1,0 +1,143 @@
+name: 'Gemini Quota Gate'
+description: |
+  Throttle Gemini free-tier API calls so CI does not exhaust the daily quota.
+  Uses a GitHub Actions cache as a per-day atomic counter.
+  When the quota is exhausted, sets skip=true and posts a graceful comment
+  instead of letting the job hard-fail with TerminalQuotaError.
+  Supports multi-key rotation: if has-backup-key is "true", the gate
+  tries the backup key when the primary quota is exhausted.
+
+inputs:
+  daily-limit:
+    description: 'Max Gemini free-tier requests per day (safety margin included)'
+    required: false
+    default: '18'
+  pr-number:
+    description: 'PR or issue number for the graceful skip comment'
+    required: false
+    default: ''
+  command:
+    description: 'The Gemini command (review/triage/invoke) for the skip message'
+    required: false
+    default: 'review'
+  has-backup-key:
+    description: 'Set to "true" if GEMINI_API_KEY_BACKUP secret is configured'
+    required: false
+    default: 'false'
+
+outputs:
+  skip:
+    description: '"true" if quota exhausted and the job should be skipped'
+    value: ${{ steps.check.outputs.skip }}
+  remaining:
+    description: 'Remaining quota for today'
+    value: ${{ steps.check.outputs.remaining }}
+  use_backup_key:
+    description: '"true" if the backup key should be used instead of primary'
+    value: ${{ steps.check.outputs.use_backup_key }}
+
+runs:
+  using: composite
+  steps:
+    - name: Get UTC date key
+      id: date
+      run: echo "key=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+      shell: bash
+
+    # Restore any existing counter from the cache (keyed by UTC date)
+    - name: Restore quota counter
+      id: restore
+      uses: actions/cache@v4
+      with:
+        path: /tmp/gemini-quota
+        key: gemini-quota-${{ steps.date.outputs.key }}
+        lookup-only: true
+        enableCrossOsArchive: true
+
+    - name: Check / update daily Gemini quota
+      id: check
+      env:
+        DAILY_LIMIT: ${{ inputs.daily-limit }}
+        PR_NUMBER: ${{ inputs.pr-number }}
+        COMMAND: ${{ inputs.command }}
+        HAS_BACKUP_KEY: ${{ inputs.has-backup-key }}
+      run: |
+        set -eu
+
+        COUNTER_DIR="/tmp/gemini-quota"
+        COUNTER_FILE="${COUNTER_DIR}/counter.txt"
+        BACKUP_FILE="${COUNTER_DIR}/backup_counter.txt"
+
+        mkdir -p "$COUNTER_DIR"
+
+        CURRENT=$(cat "$COUNTER_FILE" 2>/dev/null || echo "0")
+        LIMIT="$DAILY_LIMIT"
+        REMAINING=$(( LIMIT - CURRENT ))
+
+        echo "Gemini quota (primary key): $CURRENT / $LIMIT used today, $REMAINING remaining"
+
+        if [ "$CURRENT" -ge "$LIMIT" ]; then
+          # Check if backup key is available for rotation
+          if [ "$HAS_BACKUP_KEY" = "true" ]; then
+            BACKUP_CURRENT=$(cat "$BACKUP_FILE" 2>/dev/null || echo "0")
+            BACKUP_REMAINING=$(( LIMIT - BACKUP_CURRENT ))
+            echo "Gemini quota (backup key): $BACKUP_CURRENT / $LIMIT, $BACKUP_REMAINING remaining"
+
+            if [ "$BACKUP_CURRENT" -lt "$LIMIT" ]; then
+              echo "Primary key exhausted — rotating to backup key"
+              NEW=$(( BACKUP_CURRENT + 1 ))
+              echo "$NEW" > "$BACKUP_FILE"
+              echo "skip=false" >> "$GITHUB_OUTPUT"
+              echo "remaining=$(( LIMIT - NEW ))" >> "$GITHUB_OUTPUT"
+              echo "use_backup_key=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+
+          echo "skip=true" >> "$GITHUB_OUTPUT"
+          echo "remaining=0" >> "$GITHUB_OUTPUT"
+          echo "use_backup_key=false" >> "$GITHUB_OUTPUT"
+          echo "::warning::Gemini free-tier daily quota exhausted ($CURRENT/$LIMIT). Skipping to avoid TerminalQuotaError. Quota resets at 00:00 UTC."
+        else
+          # Atomically increment
+          NEW=$(( CURRENT + 1 ))
+          echo "$NEW" > "$COUNTER_FILE"
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+          echo "remaining=$(( LIMIT - NEW ))" >> "$GITHUB_OUTPUT"
+          echo "use_backup_key=false" >> "$GITHUB_OUTPUT"
+        fi
+      shell: bash
+
+    # Save the updated counter back to cache (always runs when not skipping)
+    - name: Save quota counter
+      if: always() && steps.check.outputs.skip != 'true'
+      uses: actions/cache/save@v4
+      with:
+        path: /tmp/gemini-quota
+        key: gemini-quota-${{ steps.date.outputs.key }}
+        enableCrossOsArchive: true
+
+    - name: Post graceful skip comment
+      if: steps.check.outputs.skip == 'true' && inputs.pr-number != ''
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const prNumber = Number(process.env.PR_NUMBER);
+          if (!prNumber) return;
+          await github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: prNumber,
+            body: [
+              '<!-- gemini-quota-skip -->',
+              `⚠️ **Gemini CLI** ${process.env.COMMAND || 'review'} skipped — free-tier daily quota exhausted.`,
+              '',
+              'The quota resets at 00:00 UTC. This is **not a failure** — CI stays green.',
+              'Other agents (CodeRabbit, Jules) continue to review this PR.',
+              '',
+              'To increase capacity: add a paid `GEMINI_API_KEY` or a second free-tier key via `GEMINI_API_KEY_BACKUP`.',
+            ].join('\n'),
+          });
+      env:
+        PR_NUMBER: ${{ inputs.pr-number }}
+        COMMAND: ${{ inputs.command }}

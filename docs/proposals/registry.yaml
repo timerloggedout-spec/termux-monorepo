@@ -1,7 +1,7 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-08-04T00:00:00Z"
-updated_by: grok-archw1z
+updated_at: "2026-08-07T00:00:00Z"
+updated_by: tembo
 
 proposals:
   - id: chatgpt-critical-eval
@@ -53,4 +53,17 @@ proposals:
         role: reviewer
         status: accepted
     related_prs: [1, 2]
+    gates_required: [repo-gate]
+
+  - id: agent-quota-loadbalancer
+    title: "Agent quota throttling, session continuation, and load balancing"
+    author: tembo
+    status: executing
+    priority: P0
+    path: active/agent-quota-loadbalancer/
+    reviewers:
+      - id: tembo
+        role: author+executor
+        status: posted
+    related_prs: [63]
     gates_required: [repo-gate]

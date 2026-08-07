@@ -108,7 +108,7 @@ jobs:
         if: |
           steps.session.outputs.already_reviewed != 'true' &&
           steps.quota.outputs.skip != 'true'
-        uses: google-github-actions/run-gemini-cli@v0
+        uses: google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489 # v0.1.22
         env:
           GEMINI_CLI_TRUST_WORKSPACE: 'true'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

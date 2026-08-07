@@ -10,4 +10,6 @@ const server = http.createServer((req, res) => {
     res.writeHead(200); res.end(data);
   });
 });
-server.listen(8088, () => console.log('PWA served at http://localhost:8088'));
+const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || '0.0.0.0';
+server.listen(PORT, HOST, () => console.log(`PWA served at http://${HOST}:${PORT}`));

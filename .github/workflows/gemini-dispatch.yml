@@ -1,0 +1,181 @@
+name: '🔀 Gemini Dispatch (free-tier agentic)'
+
+# Central router for free-tier Gemini CLI agentic CI/CD.
+# Requires: secrets.GEMINI_API_KEY (Google AI Studio free quota)
+# Complements existing Jules + CodeRabbit stack.
+#
+# Ack pattern: posts 👀 on the triggering comment (same UX as Jules/CodeRabbit).
+# Coordination: prior open agent PRs are passed into triage/review/invoke prompts.
+# Quota: child workflows include a quota-gate that skips gracefully when the
+#   free-tier daily limit is hit — CI stays green, other agents continue.
+# Load balancing: routes to the agent with the most headroom (see
+#   agent-load-balancer.yml for capacity-aware dispatch).
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+  issues:
+    types: [opened, reopened]
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  pull_request_review:
+    types: [submitted]
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  dispatch:
+    if: |
+      (
+        github.event_name == 'pull_request' &&
+        github.event.pull_request.head.repo.fork == false &&
+        github.event.pull_request.draft == false
+      ) || (
+        github.event_name == 'issues' &&
+        contains(fromJSON('["opened", "reopened"]'), github.event.action)
+      ) || (
+        github.event.sender.type == 'User' &&
+        startsWith(github.event.comment.body || github.event.review.body || '', '@gemini-cli') &&
+        contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association || github.event.review.author_association || github.event.issue.author_association)
+      )
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    outputs:
+      command: ${{ steps.extract.outputs.command }}
+      additional_context: ${{ steps.extract.outputs.additional_context }}
+      prior_prs: ${{ steps.extract.outputs.prior_prs }}
+      issue_number: ${{ github.event.pull_request.number || github.event.issue.number }}
+    steps:
+      - name: Extract command + prior PR inventory
+        id: extract
+        uses: actions/github-script@v7
+        env:
+          EVENT_TYPE: ${{ github.event_name }}.${{ github.event.action }}
+          REQUEST: ${{ github.event.comment.body || github.event.review.body || github.event.issue.body || '' }}
+        with:
+          script: |
+            const eventType = process.env.EVENT_TYPE;
+            const request = process.env.REQUEST || '';
+            if (eventType === 'pull_request.opened' || eventType === 'pull_request.synchronize' || eventType === 'pull_request.ready_for_review') {
+              core.setOutput('command', 'review');
+            } else if (['issues.opened', 'issues.reopened'].includes(eventType)) {
+              core.setOutput('command', 'triage');
+            } else if (request.startsWith('@gemini-cli /review')) {
+              core.setOutput('command', 'review');
+              core.setOutput('additional_context', request.replace(/^@gemini-cli \/review/, '').trim());
+            } else if (request.startsWith('@gemini-cli /triage')) {
+              core.setOutput('command', 'triage');
+            } else if (request.startsWith('@gemini-cli')) {
+              core.setOutput('command', 'invoke');
+              core.setOutput('additional_context', request.replace(/^@gemini-cli/, '').trim());
+            } else {
+              core.setOutput('command', 'none');
+            }
+
+            try {
+              const issueNum = context.payload.pull_request?.number || context.payload.issue?.number;
+              const { data: prs } = await github.rest.pulls.list({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open',
+                per_page: 40,
+              });
+              const agentHints = ['jules', 'devin', 'coderabbit', 'ecc-tools', 'gemini'];
+              const relevant = prs.filter(p => {
+                const u = ((p.user && p.user.login) || '').toLowerCase();
+                const body = ((p.body || '') + ' ' + (p.title || '')).toLowerCase();
+                return agentHints.some(a => u.includes(a)) ||
+                       (issueNum && (body.includes('#' + issueNum) || body.includes('issue ' + issueNum)));
+              }).slice(0, 12);
+              const inventory = relevant.map(p =>
+                `PR #${p.number} @${p.user.login}: ${p.title}`
+              ).join(' | ') || 'none';
+              core.setOutput('prior_prs', inventory);
+            } catch (e) {
+              core.setOutput('prior_prs', 'unavailable');
+            }
+
+      - name: Acknowledge with 👀 + comment
+        if: steps.extract.outputs.command != 'none'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const cmd = '${{ steps.extract.outputs.command }}';
+            const number = context.payload.pull_request?.number || context.payload.issue?.number;
+            if (context.payload.comment?.id) {
+              try {
+                await github.rest.reactions.createForIssueComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: context.payload.comment.id,
+                  content: 'eyes',
+                });
+              } catch (e) {
+                core.info('Comment reaction skip: ' + e.message);
+              }
+            } else if (number) {
+              try {
+                await github.rest.reactions.createForIssue({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: number,
+                  content: 'eyes',
+                });
+              } catch (e) {
+                core.info('Issue reaction skip: ' + e.message);
+              }
+            }
+            if (context.payload.comment || context.payload.review) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: number,
+                body: `🤖 **Gemini CLI** received your request (\`${cmd}\`). Tracking: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              });
+            }
+
+  triage:
+    needs: dispatch
+    if: needs.dispatch.outputs.command == 'triage'
+    uses: ./.github/workflows/gemini-triage.yml
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    with:
+      additional_context: ${{ needs.dispatch.outputs.additional_context }}
+      prior_prs: ${{ needs.dispatch.outputs.prior_prs }}
+    secrets: inherit
+
+  review:
+    needs: dispatch
+    if: needs.dispatch.outputs.command == 'review'
+    uses: ./.github/workflows/gemini-review.yml
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    with:
+      additional_context: ${{ needs.dispatch.outputs.additional_context }}
+      prior_prs: ${{ needs.dispatch.outputs.prior_prs }}
+    secrets: inherit
+
+  invoke:
+    needs: dispatch
+    if: needs.dispatch.outputs.command == 'invoke'
+    uses: ./.github/workflows/gemini-invoke.yml
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    with:
+      additional_context: ${{ needs.dispatch.outputs.additional_context }}
+      prior_prs: ${{ needs.dispatch.outputs.prior_prs }}
+    secrets: inherit

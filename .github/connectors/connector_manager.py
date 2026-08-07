@@ -31,6 +31,12 @@ class ConnectorInfo:
     config: ConnectorConfig = field(default_factory=dict)
     
     def to_dict(self) -> Dict[str, Any]:
+        """
+        Convert connector metadata to a dictionary.
+        
+        Returns:
+            Dict[str, Any]: The connector's name, type, enabled state, description, and configuration.
+        """
         return {
             "name": self.name,
             "type": self.type,
@@ -47,10 +53,13 @@ class ConnectorManager:
     
     def __init__(self, connectors_dir: Optional[Path] = None):
         """
-        Initialize the connector manager
+        Initialize the connector manager with a connectors directory and load its configurations.
         
-        Args:
-            connectors_dir: Path to connectors directory. Defaults to .github/connectors
+        Parameters:
+        	connectors_dir (Optional[Path]): Directory containing connector configurations. When omitted, a supported default location is selected.
+        
+        Raises:
+        	FileNotFoundError: If no connectors directory can be found when `connectors_dir` is omitted.
         """
         if connectors_dir is None:
             # Try to find connectors directory
@@ -75,7 +84,15 @@ class ConnectorManager:
         self.load_connectors()
     
     def load_connectors(self):
-        """Load all connector configurations from YAML files"""
+        """
+        Load connector configurations from YAML files in the configured directory.
+        
+        Files whose names begin with an underscore are skipped. Invalid or unreadable
+        files are reported and ignored.
+        
+        Raises:
+            FileNotFoundError: If the configured connectors directory does not exist.
+        """
         if not self.connectors_dir.exists():
             raise FileNotFoundError(f"Connectors directory not found: {self.connectors_dir}")
         
@@ -101,7 +118,13 @@ class ConnectorManager:
                 print(f"Warning: Could not load {config_file}: {e}")
     
     def _extract_connector_info(self, config_key: str, config: Dict[str, Any]):
-        """Extract connector information from configuration"""
+        """
+        Extracts enabled and configured connector metadata into the manager's registry.
+        
+        Parameters:
+        	config_key (str): Configuration section identifying the connector category.
+        	config (Dict[str, Any]): Configuration data for that category.
+        """
         if config_key == "llm_providers":
             for provider_name, provider_config in config.get("llm_providers", {}).items():
                 key = f"llm:{provider_name}"
@@ -191,14 +214,14 @@ class ConnectorManager:
     
     def get_connector(self, connector_type: str, connector_name: str) -> Optional[Dict]:
         """
-        Get a specific connector configuration
-
-        Args:
-            connector_type: Type of connector (llm_providers, exchanges, etc.)
-            connector_name: Name of the connector
-
+        Retrieve a connector configuration by category and name.
+        
+        Parameters:
+            connector_type (str): Connector category, such as ``llm_providers`` or ``exchanges``.
+            connector_name (str): Name of the connector to retrieve.
+        
         Returns:
-            Connector configuration or None if not found
+            Optional[Dict]: The connector configuration, or ``None`` if it is not found.
         """
         if connector_type in self.connectors:
             config = self.connectors[connector_type]
@@ -216,13 +239,13 @@ class ConnectorManager:
     
     def get_connector_info(self, connector_key: str) -> Optional[ConnectorInfo]:
         """
-        Get connector information by key
+        Retrieve metadata for a connector identified by its category and name.
         
-        Args:
-            connector_key: Key of the connector (e.g., "llm:deepseek", "exchange:yobit")
-            
+        Parameters:
+            connector_key (str): Connector key, such as ``"llm:deepseek"`` or ``"exchange:yobit"``.
+        
         Returns:
-            ConnectorInfo object or None if not found
+            ConnectorInfo | None: The connector metadata, or ``None`` if no matching connector exists.
         """
         return self.connector_info.get(connector_key)
     
@@ -263,10 +286,10 @@ class ConnectorManager:
     
     def list_all_connectors(self) -> List[ConnectorInfo]:
         """
-        List all connectors with their information
+        List metadata for all configured connectors.
         
         Returns:
-            List of ConnectorInfo objects
+            List[ConnectorInfo]: Connector information for every configured connector.
         """
         return list(self.connector_info.values())
     
@@ -284,13 +307,13 @@ class ConnectorManager:
     
     def get_exchange(self, exchange_name: str) -> Optional[Dict]:
         """
-        Get exchange API configuration
+        Retrieve configuration for a named exchange.
         
-        Args:
-            exchange_name: Name of the exchange
-            
+        Parameters:
+            exchange_name (str): Name of the exchange.
+        
         Returns:
-            Exchange configuration or None if not found
+            Optional[Dict]: Exchange configuration, or None if the exchange is not found.
         """
         return self.get_connector("exchanges", exchange_name)
     
@@ -314,14 +337,14 @@ class ConnectorManager:
     
     def is_enabled(self, connector_type: str, connector_name: str) -> bool:
         """
-        Check if a connector is enabled
+        Determine whether a connector is enabled.
         
-        Args:
-            connector_type: Type of connector
-            connector_name: Name of the connector
-            
+        Parameters:
+            connector_type (str): Connector category.
+            connector_name (str): Connector identifier.
+        
         Returns:
-            True if enabled, False otherwise
+            bool: `true` if the connector exists and is enabled, `false` otherwise.
         """
         connector = self.get_connector(connector_type, connector_name)
         if connector is None:
@@ -330,14 +353,14 @@ class ConnectorManager:
     
     def get_api_key(self, connector_type: str, connector_name: str) -> Optional[str]:
         """
-        Get the API key for a connector from environment variables
+        Retrieve the API key configured for a connector.
         
-        Args:
-            connector_type: Type of connector
-            connector_name: Name of the connector
-            
+        Parameters:
+            connector_type (str): Connector category.
+            connector_name (str): Connector name.
+        
         Returns:
-            API key or None if not found
+            str or None: The API key from the configured or conventional environment variable, or `None` if unavailable.
         """
         connector = self.get_connector(connector_type, connector_name)
         if connector is None:
@@ -356,19 +379,23 @@ class ConnectorManager:
                                    params: Optional[Dict] = None, 
                                    data: Optional[Dict] = None) -> requests.Request:
         """
-        Create an authenticated request for a connector
-        
-        Args:
-            connector_type: Type of connector
-            connector_name: Name of the connector
-            method: HTTP method
-            url: URL to request
-            params: Query parameters
-            data: Request body
-            
-        Returns:
-            Prepared request object
-        """
+                                   Create a prepared HTTP request with connector-specific authentication and endpoint resolution.
+                                   
+                                   Args:
+                                       connector_type (str): Connector category.
+                                       connector_name (str): Connector identifier.
+                                       method (str): HTTP method.
+                                       url (str): Endpoint path or complete URL.
+                                       params (Optional[Dict]): Query parameters, including values for endpoint placeholders.
+                                       data (Optional[Dict]): Request body data.
+                                   
+                                   Returns:
+                                       requests.PreparedRequest: Prepared authenticated request.
+                                   
+                                   Raises:
+                                       ValueError: If the connector is missing, required endpoint parameters or credentials
+                                           are unavailable, or the configured hash algorithm is unsupported.
+                                   """
         connector = self.get_connector(connector_type, connector_name)
         if connector is None:
             raise ValueError(f"Connector {connector_type}:{connector_name} not found")
@@ -519,19 +546,18 @@ class ConnectorManager:
                     params: Optional[Dict] = None, 
                     data: Optional[Dict] = None) -> requests.Response:
         """
-        Send a request to a connector
-        
-        Args:
-            connector_type: Type of connector
-            connector_name: Name of the connector
-            method: HTTP method
-            endpoint: API endpoint
-            params: Query parameters
-            data: Request body
-            
-        Returns:
-            Response object
-        """
+                    Send an HTTP request through a configured connector with authentication, timeout, and retry handling.
+                    
+                    Parameters:
+                        connector_type (str): Connector category.
+                        connector_name (str): Connector identifier.
+                        endpoint (str): API endpoint path or URL.
+                        params (Optional[Dict]): Query parameters.
+                        data (Optional[Dict]): Request body.
+                    
+                    Returns:
+                        requests.Response: The HTTP response.
+                    """
         connector = self.get_connector(connector_type, connector_name)
         if connector is None:
             raise ValueError(f"Connector {connector_type}:{connector_name} not found")
@@ -600,14 +626,14 @@ class ConnectorManager:
     
     def test_connector(self, connector_type: str, connector_name: str) -> bool:
         """
-        Test a connector by making a simple API call
-
-        Args:
-            connector_type: Type of connector
-            connector_name: Name of the connector
-
+        Test a connector by making a representative API request.
+        
+        Parameters:
+            connector_type (str): Connector category.
+            connector_name (str): Connector identifier.
+        
         Returns:
-            True if test succeeds, False otherwise
+            bool: `True` if the connector is enabled and the test request succeeds, `False` otherwise.
         """
         try:
             connector = self.get_connector(connector_type, connector_name)
@@ -692,10 +718,10 @@ def get_connector_manager() -> ConnectorManager:
 
 def list_connectors() -> Dict[str, List[str]]:
     """
-    List all available connectors
+    List available connectors grouped by connector type.
     
     Returns:
-        Dictionary mapping connector types to lists of connector names
+        Dict[str, List[str]]: A mapping of connector types to connector names.
     """
     manager = get_connector_manager()
     return manager.list_connectors()
@@ -715,13 +741,13 @@ def get_llm_provider(provider_name: str) -> Optional[Dict]:
 
 def get_exchange(exchange_name: str) -> Optional[Dict]:
     """
-    Get exchange API configuration
+    Retrieve the configuration for an exchange connector.
     
-    Args:
-        exchange_name: Name of the exchange
-        
+    Parameters:
+        exchange_name (str): Name of the exchange.
+    
     Returns:
-        Exchange configuration or None if not found
+        Optional[Dict]: Exchange configuration, or `None` if the exchange is not found.
     """
     manager = get_connector_manager()
     return manager.get_exchange(exchange_name)

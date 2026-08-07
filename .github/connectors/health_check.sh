@@ -18,6 +18,7 @@ NC='\033[0m'
 
 FAILED=0
 
+# print_status prints a message using the specified terminal color and resets the color afterward.
 print_status() {
     local color=$1
     local message=$2
@@ -53,7 +54,7 @@ echo ""
 print_status "$BLUE" "Testing enabled connectors..."
 echo ""
 
-# Inline tests exit non-zero when any enabled connector fails (Devin #70).
+# run_connector_tests executes an inline Python connector test and marks the health check as failed when it exits with a nonzero status.
 run_connector_tests() {
     local label=$1
     local py=$2

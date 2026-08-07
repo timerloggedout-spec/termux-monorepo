@@ -107,3 +107,79 @@ def test_fts5_virtual_table(tmp_path, monkeypatch):
     assert len(results) == 1
     assert "sess-02" in results[0][1]
     assert "SQLite" in results[0][0]
+
+def test_read_latest_telemetry_incremental(tmp_path, monkeypatch):
+    import json
+    # Mock TELEMETRY_LOG path in dashboard module
+    temp_log = tmp_path / "test_telemetry.json"
+    monkeypatch.setattr("dashboard.TELEMETRY_LOG", str(temp_log))
+
+    # Reset state tracking variables in dashboard before testing
+    import dashboard
+    monkeypatch.setattr("dashboard._last_offset", 0)
+    monkeypatch.setattr("dashboard._active_jobs", {})
+
+    from dashboard import read_latest_telemetry
+
+    # 1. Initially, log file does not exist
+    assert read_latest_telemetry() == []
+
+    # 2. Write initial telemetry records
+    record1 = {"target": "file1.py", "agent": "coder", "attempt": 1, "level": "INFO", "message": "msg1", "timestamp": "2026-06-03 01:00:00"}
+    record2 = {"target": "file2.py", "agent": "coder", "attempt": 1, "level": "INFO", "message": "msg2", "timestamp": "2026-06-03 01:01:00"}
+
+    with open(temp_log, "w") as f:
+        f.write(json.dumps(record1) + "\n")
+        f.write(json.dumps(record2) + "\n")
+
+    res = read_latest_telemetry()
+    assert len(res) == 2
+    assert res[0]["target"] == "file1.py"
+    assert res[1]["target"] == "file2.py"
+    assert dashboard._last_offset > 0
+
+    first_offset = dashboard._last_offset
+
+    # 3. Append a new telemetry record to verify incremental I/O updates
+    record3 = {"target": "file1.py", "agent": "coder", "attempt": 2, "level": "SUCCESS", "message": "msg3", "timestamp": "2026-06-03 01:02:00"}
+    with open(temp_log, "a") as f:
+        f.write(json.dumps(record3) + "\n")
+
+    res = read_latest_telemetry()
+    assert len(res) == 2 # file1.py is updated/overwritten, file2.py remains
+    # Since it's sorted by timestamp: record2 (01:01:00), record3 (01:02:00)
+    assert res[0]["target"] == "file2.py"
+    assert res[1]["target"] == "file1.py"
+    assert res[1]["level"] == "SUCCESS"
+    assert dashboard._last_offset > first_offset
+
+    # 4. Simulate file truncation (current size < last_offset)
+    # Write only a single record which makes the file smaller than last_offset
+    record4 = {"target": "file3.py", "agent": "coder", "attempt": 1, "level": "INFO", "message": "msg4", "timestamp": "2026-06-03 01:03:00"}
+    with open(temp_log, "w") as f:
+        f.write(json.dumps(record4) + "\n")
+
+    res = read_latest_telemetry()
+    # State tracking must automatically reset _last_offset and clear old jobs, only returning the new record
+    assert len(res) == 1
+    assert res[0]["target"] == "file3.py"
+
+    # 5. Simulate file deletion/recreation (inode change)
+    # Since fast OS filesystems may recycle inode numbers immediately, we mock os.stat to return a different inode
+    orig_stat = os.stat
+    def mock_stat(path):
+        res_stat = orig_stat(path)
+        class MockStat:
+            st_size = res_stat.st_size
+            st_ino = res_stat.st_ino + 12345
+        return MockStat()
+    monkeypatch.setattr(os, "stat", mock_stat)
+
+    record5 = {"target": "file4.py", "agent": "coder", "attempt": 1, "level": "INFO", "message": "msg5", "timestamp": "2026-06-03 01:04:00"}
+    with open(temp_log, "w") as f:
+        f.write(json.dumps(record5) + "\n")
+
+    res = read_latest_telemetry()
+    # State tracking must detect inode change and reset, clearing file3.py and returning only file4.py
+    assert len(res) == 1
+    assert res[0]["target"] == "file4.py"

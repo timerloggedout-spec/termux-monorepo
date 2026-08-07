@@ -23,6 +23,8 @@ Usage:
   python3 scripts/ci/termux_smoke.py --json            # machine-readable
   python3 scripts/ci/termux_smoke.py --with-optional   # also probe deepcli etc.
 
+Suites: see scripts/ci/termux_smoke/TRACKING.md
+
 Exit codes:
   0  all required checks passed
   1  one or more required checks failed
@@ -113,11 +115,6 @@ def run_cmd(argv: list[str], timeout: float = 15.0) -> tuple[int, str, str]:
         return 1, "", str(exc)
 
 
-# --------------------------------------------------------------------------- #
-# Required checks (must pass for gate green)
-# --------------------------------------------------------------------------- #
-
-
 def check_python_runtime(report: SmokeReport) -> None:
     v = sys.version_info
     if v < (3, 9):
@@ -140,7 +137,6 @@ def check_repo_layout(report: SmokeReport) -> None:
 
 
 def check_repo_gate_importable(report: SmokeReport) -> None:
-    """Ensure the hygiene gate itself is syntactically valid and importable."""
     path = REPO_ROOT / "scripts/ci/repo_gate.py"
     if not path.exists():
         report.add(CheckResult("repo-gate-present", "FAIL", "scripts/ci/repo_gate.py missing"))
@@ -195,13 +191,31 @@ def check_writable_tmp(report: SmokeReport) -> None:
         report.add(CheckResult("writable-tmp", "FAIL", f"{tmp}: {exc}"))
 
 
-# --------------------------------------------------------------------------- #
-# Optional / agent-surface checks (--with-optional)
-# --------------------------------------------------------------------------- #
+def check_connectors_suite(report: SmokeReport) -> None:
+    """Run scripts/ci/termux_smoke/connectors offline suite (#70 tracking)."""
+    entry = REPO_ROOT / "scripts/ci/termux_smoke/connectors/smoke_connectors.py"
+    connectors_dir = REPO_ROOT / ".github" / "connectors"
+    if not entry.is_file():
+        if connectors_dir.is_dir():
+            report.add(
+                CheckResult(
+                    "connectors-suite",
+                    "FAIL",
+                    "connectors present but scripts/ci/termux_smoke/connectors/smoke_connectors.py missing",
+                )
+            )
+        else:
+            report.add(CheckResult("connectors-suite", "NOTE", "no connectors tree and no suite entry", required=False))
+        return
+    rc, out, err = run_cmd([sys.executable, str(entry)], timeout=45.0)
+    detail = (out or err or f"rc={rc}").replace("\n", " | ")[:240]
+    if rc != 0:
+        report.add(CheckResult("connectors-suite", "FAIL", detail))
+    else:
+        report.add(CheckResult("connectors-suite", "PASS", detail or "ok"))
 
 
 def check_deepcli_surface(report: SmokeReport) -> None:
-    """Probe deepcli / multi-ai entrypoints without requiring network."""
     candidates = [
         REPO_ROOT / "deepcli",
         REPO_ROOT / "deepcli-tui",
@@ -283,7 +297,6 @@ def check_archwiz_surface(report: SmokeReport) -> None:
 
 
 def check_termux_api_hint(report: SmokeReport) -> None:
-    """Do not require termux-api; only note its presence for agent awareness."""
     if shutil.which("termux-battery-status") or shutil.which("termux-info"):
         report.add(CheckResult("termux-api", "PASS", "termux-api binaries visible", required=False))
     elif report.environment.get("is_termux"):
@@ -297,9 +310,6 @@ def check_termux_api_hint(report: SmokeReport) -> None:
         )
     else:
         report.add(CheckResult("termux-api", "SKIP", "not on Termux", required=False))
-
-
-# --------------------------------------------------------------------------- #
 
 
 def print_human(report: SmokeReport) -> None:
@@ -340,11 +350,12 @@ def main() -> int:
     check_repo_layout(report)
     check_repo_gate_importable(report)
     check_self_compile(report)
-    
+
     if not args.light:
         check_git_available(report)
         check_bash_available(report)
         check_writable_tmp(report)
+        check_connectors_suite(report)
 
     if args.with_optional:
         check_deepcli_surface(report)

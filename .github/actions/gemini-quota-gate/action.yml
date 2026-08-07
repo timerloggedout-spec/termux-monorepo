@@ -1,17 +1,16 @@
 name: 'Gemini Quota Gate'
 description: |
-  Throttle Gemini free-tier API calls so CI does not exhaust quotas.
-  Free-tier limits are multi-dimensional (RPM + TPM + RPD), NOT a hard
-  20/day cap. Typical Flash free tier is ~15 RPM and ~1000–1500 RPD
-  (varies by model; Pro is lower). This gate tracks a per-day counter
-  with a safety margin (default 900 RPD) and supports multi-key rotation.
-  When exhausted, sets skip=true and posts a graceful comment instead of
-  hard-failing with TerminalQuotaError. Pair with continue-on-error on
-  the Gemini CLI step for transient RPM 429s within the day.
+  Best-effort throttle for Gemini free-tier calls so CI does not hard-fail on
+  TerminalQuotaError. Tracks a per-day counter (Pacific midnight reset) with a
+  safety margin (default 900 job invocations). One increment ≈ one workflow
+  job, not one model request — pair with session-skip in review and
+  continue-on-error on the CLI step for RPM 429s.
+  Single-key by default (has-backup-key: false). Cache is branch-scoped and
+  best-effort across concurrent PRs.
 
 inputs:
   daily-limit:
-    description: 'Max Gemini free-tier requests per day (safety margin on RPD; default 900)'
+    description: 'Max Gemini job invocations per day (safety margin; default 900)'
     required: false
     default: '900'
   pr-number:
@@ -23,7 +22,7 @@ inputs:
     required: false
     default: 'review'
   has-backup-key:
-    description: 'Set to "true" if GEMINI_API_KEY_BACKUP secret is configured'
+    description: 'Set to "true" only if a backup key exists (usually false — single key)'
     required: false
     default: 'false'
 
@@ -35,7 +34,7 @@ outputs:
     description: 'Remaining quota for today'
     value: ${{ steps.check.outputs.remaining }}
   use_backup_key:
-    description: '"true" if the backup key should be used instead of primary'
+    description: 'Always "false" under single-key policy'
     value: ${{ steps.check.outputs.use_backup_key }}
 
 runs:
@@ -59,54 +58,23 @@ runs:
       id: check
       env:
         DAILY_LIMIT: ${{ inputs.daily-limit }}
-        PR_NUMBER: ${{ inputs.pr-number }}
-        COMMAND: ${{ inputs.command }}
         HAS_BACKUP_KEY: ${{ inputs.has-backup-key }}
       run: |
         set -eu
-
         COUNTER_DIR="/tmp/gemini-quota"
         COUNTER_FILE="${COUNTER_DIR}/counter.txt"
-        BACKUP_FILE="${COUNTER_DIR}/backup_counter.txt"
-
         mkdir -p "$COUNTER_DIR"
-
         CURRENT=$(cat "$COUNTER_FILE" 2>/dev/null || echo "0")
-        # Normalize CURRENT to 0 if empty or non-numeric
-        if ! [[ "$CURRENT" =~ ^[0-9]+$ ]]; then
-          CURRENT=0
-        fi
+        if ! [[ "$CURRENT" =~ ^[0-9]+$ ]]; then CURRENT=0; fi
         LIMIT="$DAILY_LIMIT"
         REMAINING=$(( LIMIT - CURRENT ))
-
-        echo "Gemini quota (primary key): $CURRENT / $LIMIT used today (RPD safety margin), $REMAINING remaining"
-        echo "Note: RPM (~15/min Flash free) is enforced by the API; this gate tracks daily RPD only."
-
+        echo "Gemini quota (single key): $CURRENT / $LIMIT job-invocations today, $REMAINING remaining"
+        echo "Note: each job may issue many model requests; this gate is best-effort."
         if [ "$CURRENT" -ge "$LIMIT" ]; then
-          if [ "$HAS_BACKUP_KEY" = "true" ]; then
-            BACKUP_CURRENT=$(cat "$BACKUP_FILE" 2>/dev/null || echo "0")
-            # Normalize BACKUP_CURRENT to 0 if empty or non-numeric
-            if ! [[ "$BACKUP_CURRENT" =~ ^[0-9]+$ ]]; then
-              BACKUP_CURRENT=0
-            fi
-            BACKUP_REMAINING=$(( LIMIT - BACKUP_CURRENT ))
-            echo "Gemini quota (backup key): $BACKUP_CURRENT / $LIMIT, $BACKUP_REMAINING remaining"
-
-            if [ "$BACKUP_CURRENT" -lt "$LIMIT" ]; then
-              echo "Primary key exhausted — rotating to backup key"
-              NEW=$(( BACKUP_CURRENT + 1 ))
-              echo "$NEW" > "$BACKUP_FILE"
-              echo "skip=false" >> "$GITHUB_OUTPUT"
-              echo "remaining=$(( LIMIT - NEW ))" >> "$GITHUB_OUTPUT"
-              echo "use_backup_key=true" >> "$GITHUB_OUTPUT"
-              exit 0
-            fi
-          fi
-
           echo "skip=true" >> "$GITHUB_OUTPUT"
           echo "remaining=0" >> "$GITHUB_OUTPUT"
           echo "use_backup_key=false" >> "$GITHUB_OUTPUT"
-          echo "::warning::Gemini free-tier daily RPD safety margin exhausted ($CURRENT/$LIMIT). Skipping to avoid TerminalQuotaError. RPD resets at midnight Pacific."
+          echo "::warning::Gemini daily job-invocation safety margin exhausted ($CURRENT/$LIMIT). Skipping. Resets midnight Pacific."
         else
           NEW=$(( CURRENT + 1 ))
           echo "$NEW" > "$COUNTER_FILE"
@@ -117,7 +85,7 @@ runs:
       shell: bash
 
     - name: Save quota counter
-      if: always() && steps.check.outputs.skip != 'true'
+      if: steps.check.outcome == 'success' && steps.check.outputs.skip != 'true'
       uses: actions/cache/save@v4
       with:
         path: /tmp/gemini-quota
@@ -126,7 +94,7 @@ runs:
 
     - name: Post graceful skip comment
       if: steps.check.outputs.skip == 'true' && inputs.pr-number != ''
-      uses: actions/github-script@v7
+      uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
       with:
         script: |
           const prNumber = Number(process.env.PR_NUMBER);
@@ -148,12 +116,10 @@ runs:
             issue_number: prNumber,
             body: [
               marker,
-              `⚠️ **Gemini CLI** ${process.env.COMMAND || 'review'} skipped — free-tier daily RPD safety margin exhausted.`,
+              `⚠️ **Gemini CLI** ${process.env.COMMAND || 'review'} skipped — daily job-invocation safety margin exhausted.`,
               '',
-              'Limits are **RPM + TPM + RPD** (not a hard 20/day). RPD resets at midnight Pacific.',
-              'This is **not a failure** — CI stays green. Other agents (CodeRabbit, Jules) continue.',
-              '',
-              'To increase capacity: paid key, or `GEMINI_API_KEY_BACKUP` for multi-key rotation.',
+              'Single-key policy. Limits are RPM + TPM + RPD. Resets midnight Pacific.',
+              'This is **not a failure** — CI stays green. Other agents continue.',
             ].join('\n'),
           });
       env:

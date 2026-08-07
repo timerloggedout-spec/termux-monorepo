@@ -1,15 +1,16 @@
 name: '🔀 Gemini Dispatch (free-tier agentic)'
 
-# Central router for free-tier Gemini CLI agentic CI/CD.
-# Requires: secrets.GEMINI_API_KEY (Google AI Studio free quota)
-# Complements existing Jules + CodeRabbit stack.
+# Dispatch Conductor — central router for free-tier Gemini CLI agentic CI/CD.
+# NOT a load balancer. Commands, targets, timing, and session continuity live here.
+# Requires: secrets.GEMINI_API_KEY (single key; no rotation assumed)
+# Complements Jules + CodeRabbit (independent agents, not routed capacity).
 #
-# Ack pattern: posts 👀 on the triggering comment (same UX as Jules/CodeRabbit).
-# Coordination: prior open agent PRs are passed into triage/review/invoke prompts.
-# Quota: child workflows include a quota-gate that skips gracefully when the
-#   free-tier daily limit is hit — CI stays green, other agents continue.
-# Load balancing: routes to the agent with the most headroom (see
-#   agent-load-balancer.yml for capacity-aware dispatch).
+# Efficiency levers (Orchestrator Optimizations):
+#  1) Session skip — review only when head SHA is new
+#  2) Quota gate — graceful skip (CI green) when RPD safety margin hit
+#  3) Concurrency cancel-in-progress on PR review path
+#  4) OWNER/MEMBER/COLLABORATOR-only for @gemini-cli (no fork burn)
+#  5) Sanitized prior_prs inventory (no prompt injection from titles)
 
 on:
   pull_request:
@@ -22,6 +23,10 @@ on:
     types: [created]
   pull_request_review:
     types: [submitted]
+
+concurrency:
+  group: gemini-dispatch-${{ github.event.pull_request.number || github.event.issue.number || github.sha }}
+  cancel-in-progress: true
 
 defaults:
   run:
@@ -52,42 +57,50 @@ jobs:
       additional_context: ${{ steps.extract.outputs.additional_context }}
       prior_prs: ${{ steps.extract.outputs.prior_prs }}
       pr_number: ${{ steps.extract.outputs.pr_number }}
+      issue_number: ${{ steps.extract.outputs.issue_number }}
     steps:
-      - name: Extract command + prior PR inventory
+      - name: Extract command + numbers + prior PR inventory
         id: extract
-        uses: actions/github-script@v7
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         env:
           EVENT_TYPE: ${{ github.event_name }}.${{ github.event.action }}
-          REQUEST: ${{ github.event.comment.body || github.event.review.body || github.event.issue.body || '' }}
+          REQUEST: ${{ github.event.comment.body || github.event.review.body || '' }}
         with:
           script: |
             const eventType = process.env.EVENT_TYPE;
-            const request = process.env.REQUEST || '';
+            // Only comment/review bodies — never full issue body (prompt-injection surface)
+            const request = (process.env.REQUEST || '').slice(0, 2000);
             if (eventType === 'pull_request.opened' || eventType === 'pull_request.synchronize' || eventType === 'pull_request.ready_for_review') {
               core.setOutput('command', 'review');
             } else if (['issues.opened', 'issues.reopened'].includes(eventType)) {
               core.setOutput('command', 'triage');
             } else if (request.startsWith('@gemini-cli /review')) {
               core.setOutput('command', 'review');
-              core.setOutput('additional_context', request.replace(/^@gemini-cli \/review/, '').trim());
+              core.setOutput('additional_context', request.replace(/^@gemini-cli \/review/, '').trim().slice(0, 500));
             } else if (request.startsWith('@gemini-cli /triage')) {
               core.setOutput('command', 'triage');
             } else if (request.startsWith('@gemini-cli')) {
               core.setOutput('command', 'invoke');
-              core.setOutput('additional_context', request.replace(/^@gemini-cli/, '').trim());
+              core.setOutput('additional_context', request.replace(/^@gemini-cli/, '').trim().slice(0, 500));
             } else {
               core.setOutput('command', 'none');
             }
 
-            // Reliable number for both PR and issue contexts (including comment triggers)
-            const prNumber =
-              context.payload.pull_request?.number ||
-              context.payload.issue?.number ||
-              '';
-            core.setOutput('pr_number', String(prNumber || ''));
+            // Distinct PR vs issue numbers (comment on PR has issue.pull_request)
+            let prNumber = '';
+            let issueNumber = '';
+            if (context.payload.pull_request?.number) {
+              prNumber = String(context.payload.pull_request.number);
+            } else if (context.payload.issue?.pull_request && context.payload.issue?.number) {
+              prNumber = String(context.payload.issue.number);
+            } else if (context.payload.issue?.number) {
+              issueNumber = String(context.payload.issue.number);
+            }
+            core.setOutput('pr_number', prNumber);
+            core.setOutput('issue_number', issueNumber);
 
             try {
-              const issueNum = prNumber || undefined;
+              const linkNum = prNumber || issueNumber || undefined;
               const { data: prs } = await github.rest.pulls.list({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -99,11 +112,15 @@ jobs:
                 const u = ((p.user && p.user.login) || '').toLowerCase();
                 const body = ((p.body || '') + ' ' + (p.title || '')).toLowerCase();
                 return agentHints.some(a => u.includes(a)) ||
-                       (issueNum && (body.includes('#' + issueNum) || body.includes('issue ' + issueNum)));
+                       (linkNum && (body.includes('#' + linkNum) || body.includes('issue ' + linkNum)));
               }).slice(0, 12);
-              const inventory = relevant.map(p =>
-                `PR #${p.number} @${p.user.login}: ${p.title}`
-              ).join(' | ') || 'none';
+              const inventory = relevant.map(p => {
+                const sanitized = (p.title || '')
+                  .replace(/[\r\n]+/g, ' ')
+                  .replace(/[`$\\]/g, '')
+                  .slice(0, 100);
+                return `PR #${p.number} @${(p.user && p.user.login) || '?'}: ${sanitized}`;
+              }).join(' | ') || 'none';
               core.setOutput('prior_prs', inventory);
             } catch (e) {
               core.setOutput('prior_prs', 'unavailable');
@@ -111,10 +128,12 @@ jobs:
 
       - name: Acknowledge with 👀 + comment
         if: steps.extract.outputs.command != 'none'
-        uses: actions/github-script@v7
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        env:
+          COMMAND: ${{ steps.extract.outputs.command }}
         with:
           script: |
-            const cmd = '${{ steps.extract.outputs.command }}';
+            const cmd = process.env.COMMAND || 'none';
             const number = context.payload.pull_request?.number || context.payload.issue?.number;
             if (context.payload.comment?.id) {
               try {
@@ -139,12 +158,12 @@ jobs:
                 core.info('Issue reaction skip: ' + e.message);
               }
             }
-            if (context.payload.comment || context.payload.review) {
+            if ((context.payload.comment || context.payload.review) && number) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: number,
-                body: `🤖 **Gemini CLI** received your request (\`${cmd}\`). Tracking: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+                body: `🤖 **Gemini CLI** received \\`${cmd}\\`. Tracking: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
               });
             }
 
@@ -159,7 +178,7 @@ jobs:
     with:
       additional_context: ${{ needs.dispatch.outputs.additional_context }}
       prior_prs: ${{ needs.dispatch.outputs.prior_prs }}
-      pr_number: ${{ needs.dispatch.outputs.pr_number }}
+      issue_number: ${{ needs.dispatch.outputs.issue_number }}
     secrets: inherit
 
   review:
@@ -188,4 +207,5 @@ jobs:
       additional_context: ${{ needs.dispatch.outputs.additional_context }}
       prior_prs: ${{ needs.dispatch.outputs.prior_prs }}
       pr_number: ${{ needs.dispatch.outputs.pr_number }}
+      issue_number: ${{ needs.dispatch.outputs.issue_number }}
     secrets: inherit

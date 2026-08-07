@@ -92,14 +92,17 @@ jobs:
             const parentTitle = `PR #${prNumber} agent feedback rollup`;
 
             const search = await linear(
-              `query($q: String!) {
-                issueSearch(query: $q, first: 5) {
+              `query($teamId: String!, $title: String!) {
+                issues(filter: {
+                  team: { id: { eq: $teamId } }
+                  title: { eq: $title }
+                }) {
                   nodes { id identifier title }
                 }
               }`,
-              { q: `team:Termux-monorepo_linear title:"${parentTitle}"` }
+              { teamId, title: parentTitle }
             );
-            let parentId = search.issueSearch?.nodes?.find(
+            let parentId = search.issues?.nodes?.find(
               n => n.title === parentTitle
             )?.id;
 

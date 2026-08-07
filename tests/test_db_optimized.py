@@ -163,3 +163,23 @@ def test_read_latest_telemetry_incremental(tmp_path, monkeypatch):
     # State tracking must automatically reset _last_offset and clear old jobs, only returning the new record
     assert len(res) == 1
     assert res[0]["target"] == "file3.py"
+
+    # 5. Simulate file deletion/recreation (inode change)
+    # Since fast OS filesystems may recycle inode numbers immediately, we mock os.stat to return a different inode
+    orig_stat = os.stat
+    def mock_stat(path):
+        res_stat = orig_stat(path)
+        class MockStat:
+            st_size = res_stat.st_size
+            st_ino = res_stat.st_ino + 12345
+        return MockStat()
+    monkeypatch.setattr(os, "stat", mock_stat)
+
+    record5 = {"target": "file4.py", "agent": "coder", "attempt": 1, "level": "INFO", "message": "msg5", "timestamp": "2026-06-03 01:04:00"}
+    with open(temp_log, "w") as f:
+        f.write(json.dumps(record5) + "\n")
+
+    res = read_latest_telemetry()
+    # State tracking must detect inode change and reset, clearing file3.py and returning only file4.py
+    assert len(res) == 1
+    assert res[0]["target"] == "file4.py"

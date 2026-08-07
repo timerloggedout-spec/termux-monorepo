@@ -7,23 +7,30 @@ TELEMETRY_LOG = "agent_telemetry_stream.json"
 def clear_screen():
     print("\033[H\033[J", end="")
 
-# Optimization: cache last file seek offset and parsed telemetry entries to perform
+# Optimization: cache last file seek offset, parsed telemetry entries, and file inode to perform
 # incremental I/O updates instead of repeatedly reading/parsing the entire file from scratch.
 _last_offset = 0
+_last_ino = None
 _active_jobs = {}
 
 def read_latest_telemetry():
-    global _last_offset, _active_jobs
+    global _last_offset, _last_ino, _active_jobs
     if not os.path.exists(TELEMETRY_LOG):
         _last_offset = 0
+        _last_ino = None
         _active_jobs = {}
         return []
     try:
-        current_size = os.path.getsize(TELEMETRY_LOG)
-        # Handle log file truncation, rotation, or clean resets
-        if current_size < _last_offset:
+        stat = os.stat(TELEMETRY_LOG)
+        current_size = stat.st_size
+        current_ino = stat.st_ino
+
+        # Handle log file truncation, rotation, recreation, or clean resets safely
+        if current_size < _last_offset or (_last_ino is not None and current_ino != _last_ino):
             _last_offset = 0
             _active_jobs = {}
+
+        _last_ino = current_ino
 
         with open(TELEMETRY_LOG, "r") as f:
             if _last_offset > 0:

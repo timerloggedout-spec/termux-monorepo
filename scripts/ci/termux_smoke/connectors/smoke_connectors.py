@@ -11,6 +11,7 @@ import os
 import shutil
 import subprocess
 import sys
+import tempfile
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
@@ -68,13 +69,19 @@ def check_manager_compile(report: Report) -> None:
     if not path.is_file():
         report.add(Result("connector-manager-compile", "FAIL", "connector_manager.py missing"))
         return
-    proc = subprocess.run(
-        [sys.executable, "-m", "py_compile", str(path)],
-        cwd=REPO_ROOT,
-        capture_output=True,
-        text=True,
-        timeout=30,
-    )
+    with tempfile.TemporaryDirectory() as tmpdir:
+        cfile = os.path.join(tmpdir, "connector_manager.pyc")
+        code = (
+            "import py_compile, sys; "
+            "py_compile.compile(sys.argv[1], cfile=sys.argv[2], doraise=True)"
+        )
+        proc = subprocess.run(
+            [sys.executable, "-B", "-c", code, str(path), cfile],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
     if proc.returncode != 0:
         report.add(Result("connector-manager-compile", "FAIL", (proc.stderr or proc.stdout or f"rc={proc.returncode}")[:300]))
     else:
@@ -110,9 +117,9 @@ def check_list_optional(report: Report) -> None:
         "c = m.list_connectors(); "
         "print(','.join(sorted(c.keys())) if isinstance(c, dict) else type(c).__name__)"
     ) % str(CONNECTORS)
-    env = {**os.environ, "PYTHONPATH": str(CONNECTORS)}
+    env = {**os.environ, "PYTHONPATH": str(CONNECTORS), "PYTHONDONTWRITEBYTECODE": "1"}
     proc = subprocess.run(
-        [sys.executable, "-c", code],
+        [sys.executable, "-B", "-c", code],
         cwd=REPO_ROOT,
         capture_output=True,
         text=True,

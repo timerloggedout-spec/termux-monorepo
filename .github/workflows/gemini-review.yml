@@ -22,19 +22,119 @@ jobs:
       contents: read
       issues: write
       pull-requests: write
+      actions: write
+    outputs:
+      skipped: ${{ steps.quota.outputs.skip }}
+      reviewed_sha: ${{ steps.session.outputs.reviewed_sha }}
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
           fetch-depth: 0
 
+      # ── Session continuation ──────────────────────────────────────
+      # Cache the last-reviewed SHA per PR so synchronize pushes skip
+      # if the commit hasn't changed, and only re-review changed files.
+      - name: Session continuation — check last reviewed SHA
+        id: session
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = context.payload.pull_request?.number;
+            const headSha = context.payload.pull_request?.head?.sha || '';
+            if (!prNumber) {
+              core.setOutput('already_reviewed', 'false');
+              core.setOutput('reviewed_sha', '');
+              core.setOutput('changed_files', '');
+              return;
+            }
+            const cacheKey = `gemini-review-${prNumber}-sha`;
+            // Check if we already reviewed this exact SHA
+            try {
+              const { data: comments } = await github.rest.issues.listComments({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                per_page: 100,
+              });
+              const reviewComments = comments.filter(c =>
+                c.body?.includes('<!-- gemini-review-sha:') &&
+                c.body?.includes(headSha)
+              );
+              if (reviewComments.length > 0) {
+                core.info(`Already reviewed SHA ${headSha} — skipping`);
+                core.setOutput('already_reviewed', 'true');
+                core.setOutput('reviewed_sha', headSha);
+                core.setOutput('changed_files', '');
+                return;
+              }
+            } catch (e) {
+              core.info('Comment scan skip: ' + e.message);
+            }
+            // Find the previously reviewed SHA to compute changed files
+            let prevSha = '';
+            try {
+              const { data: comments } = await github.rest.issues.listComments({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                per_page: 100,
+              });
+              const shaComments = comments
+                .filter(c => c.body?.match(/<!-- gemini-review-sha: ([a-f0-9]+) -->/))
+                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+              if (shaComments.length > 0) {
+                const m = shaComments[0].body.match(/<!-- gemini-review-sha: ([a-f0-9]+) -->/);
+                prevSha = m ? m[1] : '';
+              }
+            } catch (e) {}
+            // Get changed files since last review (or all files if first review)
+            let changedFiles = '';
+            if (prevSha && headSha) {
+              try {
+                const { data: comparison } = await github.rest.repos.compareCommits({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  base: prevSha,
+                  head: headSha,
+                });
+                changedFiles = comparison.files?.map(f => f.filename).join(', ') || '';
+              } catch (e) {
+                core.info('Diff comparison skip: ' + e.message);
+              }
+            }
+            core.setOutput('already_reviewed', 'false');
+            core.setOutput('reviewed_sha', headSha);
+            core.setOutput('changed_files', changedFiles);
+            core.setOutput('prev_sha', prevSha);
+
+      - name: Skip if already reviewed
+        if: steps.session.outputs.already_reviewed == 'true'
+        run: |
+          echo "Already reviewed this SHA — skipping Gemini review to save quota."
+          echo "skip=true" >> "$GITHUB_ENV"
+
+      # ── Quota gate ────────────────────────────────────────────────
+      - name: Gemini quota gate
+        id: quota
+        if: steps.session.outputs.already_reviewed != 'true'
+        uses: ./.github/actions/gemini-quota-gate
+        with:
+          daily-limit: '18'
+          pr-number: ${{ github.event.pull_request.number || '' }}
+          command: 'review'
+          has-backup-key: ${{ secrets.GEMINI_API_KEY_BACKUP != '' }}
+
       - name: Run Gemini CLI PR review
+        if: |
+          steps.session.outputs.already_reviewed != 'true' &&
+          steps.quota.outputs.skip != 'true'
         uses: google-github-actions/run-gemini-cli@v0
         env:
           GEMINI_CLI_TRUST_WORKSPACE: 'true'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
+          gemini_api_key: ${{ steps.quota.outputs.use_backup_key == 'true' && secrets.GEMINI_API_KEY_BACKUP || secrets.GEMINI_API_KEY }}
           github_pr_number: ${{ github.event.pull_request.number }}
           prompt: |
             You are the free-tier agentic PR reviewer for termux-monorepo.
@@ -47,8 +147,24 @@ jobs:
             - Minimal-diff preference
             - Overlap with other open agent PRs: ${{ inputs.prior_prs }}
 
+            ${{ steps.session.outputs.changed_files != '' && format('## Changed files since last review\nOnly these files changed since your last review — focus here:\n{0}', steps.session.outputs.changed_files) || '## Full review (first pass on this PR)' }}
+
             Post a concise review comment. Do not approve or request changes via the formal review API unless clearly authorized; prefer a comment.
             Coordinate with CodeRabbit (already reviewing) and Jules (may auto-fix later).
             If this is a Jules PR, focus on gaps Jules may have missed rather than rewriting the same work.
 
+            End your comment with: <!-- gemini-review-sha: ${{ steps.session.outputs.reviewed_sha }} -->
+
             Additional context: ${{ inputs.additional_context }}
+
+      - name: Record reviewed SHA (session bookmark)
+        if: |
+          steps.session.outputs.already_reviewed != 'true' &&
+          steps.quota.outputs.skip != 'true' &&
+          always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // The SHA bookmark is embedded in the Gemini comment itself.
+            // This step is a no-op fallback if Gemini didn't post it.
+            core.info('Session bookmark handled via comment marker.');

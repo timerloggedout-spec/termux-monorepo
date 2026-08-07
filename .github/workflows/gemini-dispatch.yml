@@ -6,6 +6,10 @@ name: '🔀 Gemini Dispatch (free-tier agentic)'
 #
 # Ack pattern: posts 👀 on the triggering comment (same UX as Jules/CodeRabbit).
 # Coordination: prior open agent PRs are passed into triage/review/invoke prompts.
+# Quota: child workflows include a quota-gate that skips gracefully when the
+#   free-tier daily limit is hit — CI stays green, other agents continue.
+# Load balancing: routes to the agent with the most headroom (see
+#   agent-load-balancer.yml for capacity-aware dispatch).
 
 on:
   pull_request:

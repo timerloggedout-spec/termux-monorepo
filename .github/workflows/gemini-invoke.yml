@@ -22,18 +22,29 @@ jobs:
       contents: read
       issues: write
       pull-requests: write
+      actions: write
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
 
+      - name: Gemini quota gate
+        id: quota
+        uses: ./.github/actions/gemini-quota-gate
+        with:
+          daily-limit: '18'
+          pr-number: ${{ github.event.pull_request.number || github.event.issue.number || '' }}
+          command: 'invoke'
+          has-backup-key: ${{ secrets.GEMINI_API_KEY_BACKUP != '' }}
+
       - name: Run Gemini CLI assistant
+        if: steps.quota.outputs.skip != 'true'
         uses: google-github-actions/run-gemini-cli@v0
         env:
           GEMINI_CLI_TRUST_WORKSPACE: 'true'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
+          gemini_api_key: ${{ steps.quota.outputs.use_backup_key == 'true' && secrets.GEMINI_API_KEY_BACKUP || secrets.GEMINI_API_KEY }}
           github_pr_number: ${{ github.event.pull_request.number }}
           github_issue_number: ${{ github.event.issue.number }}
           prompt: |

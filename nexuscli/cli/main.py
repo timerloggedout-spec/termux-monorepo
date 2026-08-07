@@ -72,12 +72,14 @@ def cmd_new_session(args):
         cfg_file = cfg_dir / "config.json"
         if cfg_file.exists():
             cfg = json.loads(cfg_file.read_text())
+    if args.save:
+        cfg_path = Path.home() / ".nexuscli" / "config.json"
+        cfg_path.parent.mkdir(parents=True, exist_ok=True)
+        cfg = {}
+        if cfg_path.exists():
+            cfg = json.loads(cfg_path.read_text())
         cfg["last_session"] = session_id
-        cfg_file.write_text(json.dumps(cfg, indent=2))
-        try:
-            cfg_file.chmod(0o600)
-        except Exception:
-            pass
+        cfg_path.write_text(json.dumps(cfg, indent=2))
         console.print("[yellow]Saved as last_session.[/]")
 
 

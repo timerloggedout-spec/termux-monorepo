@@ -214,6 +214,8 @@ def upload_file(token: str, session_id: str, file_path: str) -> Optional[str]:
 
     s = get_session(token)
     s.headers["X-Ds-Pow-Response"] = pow_header
+    if ".." in file_path:
+        raise Exception("Invalid file path")
     with open(file_path, "rb") as f:
         file_bytes = f.read()
     upload_headers = {k: v for k, v in s.headers.items()}

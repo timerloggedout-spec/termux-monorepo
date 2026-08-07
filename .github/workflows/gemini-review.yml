@@ -10,9 +10,14 @@ on:
         type: string
         required: false
         default: 'none'
+      pr_number:
+        type: string
+        required: false
+        default: ''
+        description: 'PR number from dispatch (required for comment-trigger paths)'
 
 concurrency:
-  group: gemini-review-${{ github.event.pull_request.number || github.run_id }}
+  group: gemini-review-${{ inputs.pr_number || github.event.pull_request.number || github.run_id }}
   cancel-in-progress: true
 
 jobs:
@@ -22,33 +27,115 @@ jobs:
       contents: read
       issues: write
       pull-requests: write
+      actions: write
+    outputs:
+      skipped: ${{ steps.quota.outputs.skip }}
+      reviewed_sha: ${{ steps.session.outputs.reviewed_sha }}
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
           fetch-depth: 0
 
+      - name: Session continuation — check last reviewed SHA
+        id: session
+        uses: actions/github-script@v7
+        env:
+          PR_NUMBER: ${{ inputs.pr_number }}
+        with:
+          script: |
+            const prNumber = Number(process.env.PR_NUMBER) || context.payload.pull_request?.number;
+            const headSha = context.payload.pull_request?.head?.sha || '';
+            if (!prNumber) {
+              core.setOutput('already_reviewed', 'false');
+              core.setOutput('reviewed_sha', '');
+              core.setOutput('changed_files', '');
+              return;
+            }
+            try {
+              const { data: comments } = await github.rest.issues.listComments({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                per_page: 100,
+              });
+              const reviewComments = comments.filter(c =>
+                c.body?.includes('<!-- gemini-review-sha:') &&
+                c.body?.includes(headSha)
+              );
+              if (reviewComments.length > 0) {
+                core.info(`Already reviewed SHA ${headSha} — skipping`);
+                core.setOutput('already_reviewed', 'true');
+                core.setOutput('reviewed_sha', headSha);
+                core.setOutput('changed_files', '');
+                return;
+              }
+              let prevSha = '';
+              const shaComments = comments
+                .filter(c => c.body?.match(/<!-- gemini-review-sha: ([a-f0-9]+) -->/))
+                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+              if (shaComments.length > 0) {
+                const m = shaComments[0].body.match(/<!-- gemini-review-sha: ([a-f0-9]+) -->/);
+                prevSha = m ? m[1] : '';
+              }
+              let changedFiles = '';
+              if (prevSha && headSha) {
+                try {
+                  const { data: comparison } = await github.rest.repos.compareCommits({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    base: prevSha,
+                    head: headSha,
+                  });
+                  changedFiles = comparison.files?.map(f => f.filename).join(', ') || '';
+                } catch (e) {
+                  core.info('Diff comparison skip: ' + e.message);
+                }
+              }
+              core.setOutput('already_reviewed', 'false');
+              core.setOutput('reviewed_sha', headSha);
+              core.setOutput('changed_files', changedFiles);
+            } catch (e) {
+              core.setOutput('already_reviewed', 'false');
+              core.setOutput('reviewed_sha', headSha);
+              core.setOutput('changed_files', '');
+            }
+
+      - name: Gemini quota gate
+        id: quota
+        if: steps.session.outputs.already_reviewed != 'true'
+        uses: ./.github/actions/gemini-quota-gate
+        with:
+          daily-limit: '900'
+          pr-number: ${{ inputs.pr_number || github.event.pull_request.number || '' }}
+          command: 'review'
+          has-backup-key: ${{ secrets.GEMINI_API_KEY_BACKUP != '' }}
+
       - name: Run Gemini CLI PR review
-        uses: google-github-actions/run-gemini-cli@v0
+        if: |
+          steps.session.outputs.already_reviewed != 'true' &&
+          steps.quota.outputs.skip != 'true'
+        uses: google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489 # v0.1.22
         env:
           GEMINI_CLI_TRUST_WORKSPACE: 'true'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
-          github_pr_number: ${{ github.event.pull_request.number }}
+          gemini_api_key: ${{ steps.quota.outputs.use_backup_key == 'true' && secrets.GEMINI_API_KEY_BACKUP || secrets.GEMINI_API_KEY }}
+          github_pr_number: ${{ inputs.pr_number || github.event.pull_request.number }}
           prompt: |
             You are the free-tier agentic PR reviewer for termux-monorepo.
             Read GEMINI.md and AGENTS.md.
 
             Review this pull request for:
             - Correctness and regressions
-            - Security (especially credentials, session stores, chmod 0o600/0o700 patterns)
-            - Alignment with AGENTS.md hard rules (master-staging, gates, no Class 3/4 artifacts)
+            - Security (credentials, session stores, chmod 0o600/0o700)
+            - Alignment with AGENTS.md (master-staging, gates, no Class 3/4 artifacts)
             - Minimal-diff preference
             - Overlap with other open agent PRs: ${{ inputs.prior_prs }}
 
-            Post a concise review comment. Do not approve or request changes via the formal review API unless clearly authorized; prefer a comment.
-            Coordinate with CodeRabbit (already reviewing) and Jules (may auto-fix later).
-            If this is a Jules PR, focus on gaps Jules may have missed rather than rewriting the same work.
+            ${{ steps.session.outputs.changed_files != '' && format('## Changed files since last review\nFocus here:\n{0}', steps.session.outputs.changed_files) || '## Full review (first pass)' }}
+
+            Post a concise review comment. Prefer a comment over formal approve/request-changes.
+            End your comment with: <!-- gemini-review-sha: ${{ steps.session.outputs.reviewed_sha }} -->
 
             Additional context: ${{ inputs.additional_context }}

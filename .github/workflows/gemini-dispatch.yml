@@ -6,6 +6,10 @@ name: '🔀 Gemini Dispatch (free-tier agentic)'
 #
 # Ack pattern: posts 👀 on the triggering comment (same UX as Jules/CodeRabbit).
 # Coordination: prior open agent PRs are passed into triage/review/invoke prompts.
+# Quota: child workflows include a quota-gate that skips gracefully when the
+#   free-tier daily limit is hit — CI stays green, other agents continue.
+# Load balancing: routes to the agent with the most headroom (see
+#   agent-load-balancer.yml for capacity-aware dispatch).
 
 on:
   pull_request:
@@ -47,7 +51,7 @@ jobs:
       command: ${{ steps.extract.outputs.command }}
       additional_context: ${{ steps.extract.outputs.additional_context }}
       prior_prs: ${{ steps.extract.outputs.prior_prs }}
-      issue_number: ${{ github.event.pull_request.number || github.event.issue.number }}
+      pr_number: ${{ steps.extract.outputs.pr_number }}
     steps:
       - name: Extract command + prior PR inventory
         id: extract
@@ -75,8 +79,15 @@ jobs:
               core.setOutput('command', 'none');
             }
 
+            // Reliable number for both PR and issue contexts (including comment triggers)
+            const prNumber =
+              context.payload.pull_request?.number ||
+              context.payload.issue?.number ||
+              '';
+            core.setOutput('pr_number', String(prNumber || ''));
+
             try {
-              const issueNum = context.payload.pull_request?.number || context.payload.issue?.number;
+              const issueNum = prNumber || undefined;
               const { data: prs } = await github.rest.pulls.list({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -148,6 +159,7 @@ jobs:
     with:
       additional_context: ${{ needs.dispatch.outputs.additional_context }}
       prior_prs: ${{ needs.dispatch.outputs.prior_prs }}
+      pr_number: ${{ needs.dispatch.outputs.pr_number }}
     secrets: inherit
 
   review:
@@ -161,6 +173,7 @@ jobs:
     with:
       additional_context: ${{ needs.dispatch.outputs.additional_context }}
       prior_prs: ${{ needs.dispatch.outputs.prior_prs }}
+      pr_number: ${{ needs.dispatch.outputs.pr_number }}
     secrets: inherit
 
   invoke:
@@ -174,4 +187,5 @@ jobs:
     with:
       additional_context: ${{ needs.dispatch.outputs.additional_context }}
       prior_prs: ${{ needs.dispatch.outputs.prior_prs }}
+      pr_number: ${{ needs.dispatch.outputs.pr_number }}
     secrets: inherit

@@ -48,11 +48,11 @@ runs:
 
     - name: Restore quota counter
       id: restore
-      uses: actions/cache@v4
+      uses: actions/cache/restore@v4
       with:
         path: /tmp/gemini-quota
         key: gemini-quota-${{ steps.date.outputs.key }}
-        lookup-only: true
+        restore-keys: gemini-quota-${{ steps.date.outputs.key }}
         enableCrossOsArchive: true
 
     - name: Check / update daily Gemini quota
@@ -72,6 +72,10 @@ runs:
         mkdir -p "$COUNTER_DIR"
 
         CURRENT=$(cat "$COUNTER_FILE" 2>/dev/null || echo "0")
+        # Normalize CURRENT to 0 if empty or non-numeric
+        if ! [[ "$CURRENT" =~ ^[0-9]+$ ]]; then
+          CURRENT=0
+        fi
         LIMIT="$DAILY_LIMIT"
         REMAINING=$(( LIMIT - CURRENT ))
 
@@ -81,6 +85,10 @@ runs:
         if [ "$CURRENT" -ge "$LIMIT" ]; then
           if [ "$HAS_BACKUP_KEY" = "true" ]; then
             BACKUP_CURRENT=$(cat "$BACKUP_FILE" 2>/dev/null || echo "0")
+            # Normalize BACKUP_CURRENT to 0 if empty or non-numeric
+            if ! [[ "$BACKUP_CURRENT" =~ ^[0-9]+$ ]]; then
+              BACKUP_CURRENT=0
+            fi
             BACKUP_REMAINING=$(( LIMIT - BACKUP_CURRENT ))
             echo "Gemini quota (backup key): $BACKUP_CURRENT / $LIMIT, $BACKUP_REMAINING remaining"
 
@@ -113,7 +121,7 @@ runs:
       uses: actions/cache/save@v4
       with:
         path: /tmp/gemini-quota
-        key: gemini-quota-${{ steps.date.outputs.key }}
+        key: gemini-quota-${{ steps.date.outputs.key }}-${{ github.run_id }}-${{ github.run_attempt }}
         enableCrossOsArchive: true
 
     - name: Post graceful skip comment
@@ -123,12 +131,23 @@ runs:
         script: |
           const prNumber = Number(process.env.PR_NUMBER);
           if (!prNumber) return;
+          const { data: comments } = await github.rest.issues.listComments({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: prNumber,
+            per_page: 100,
+          });
+          const marker = '<!-- gemini-quota-skip -->';
+          if (comments.some(c => c.body && c.body.includes(marker))) {
+            core.info('Quota skip comment already exists');
+            return;
+          }
           await github.rest.issues.createComment({
             owner: context.repo.owner,
             repo: context.repo.repo,
             issue_number: prNumber,
             body: [
-              '<!-- gemini-quota-skip -->',
+              marker,
               `⚠️ **Gemini CLI** ${process.env.COMMAND || 'review'} skipped — free-tier daily RPD safety margin exhausted.`,
               '',
               'Limits are **RPM + TPM + RPD** (not a hard 20/day). RPD resets at midnight Pacific.',

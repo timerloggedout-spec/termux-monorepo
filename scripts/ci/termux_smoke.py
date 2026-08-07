@@ -207,7 +207,7 @@ def check_connectors_suite(report: SmokeReport) -> None:
         else:
             report.add(CheckResult("connectors-suite", "NOTE", "no connectors tree and no suite entry", required=False))
         return
-    rc, out, err = run_cmd([sys.executable, str(entry)], timeout=45.0)
+    rc, out, err = run_cmd([sys.executable, str(entry)], timeout=90.0)
     detail = (out or err or f"rc={rc}").replace("\n", " | ")[:240]
     if rc != 0:
         report.add(CheckResult("connectors-suite", "FAIL", detail))

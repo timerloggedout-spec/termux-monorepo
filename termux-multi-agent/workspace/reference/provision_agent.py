@@ -420,21 +420,40 @@ TELEMETRY_LOG = "agent_telemetry_stream.json"
 def clear_screen():
     print("\\033[H\\033[J", end="")
 
+# Optimization: cache last file seek offset and parsed telemetry entries to perform
+# incremental I/O updates instead of repeatedly reading/parsing the entire file from scratch.
+_last_offset = 0
+_active_jobs = {}
+
 def read_latest_telemetry():
+    global _last_offset, _active_jobs
     if not os.path.exists(TELEMETRY_LOG):
+        _last_offset = 0
+        _active_jobs = {}
         return []
-    active_jobs = {}
     try:
+        current_size = os.path.getsize(TELEMETRY_LOG)
+        # Handle log file truncation, rotation, or clean resets
+        if current_size < _last_offset:
+            _last_offset = 0
+            _active_jobs = {}
+
         with open(TELEMETRY_LOG, "r") as f:
+            if _last_offset > 0:
+                f.seek(_last_offset)
             for line in f:
                 if not line.strip():
                     continue
-                entry = json.loads(line)
-                target = entry.get("target") or "System"
-                active_jobs[target] = entry
+                try:
+                    entry = json.loads(line)
+                    target = entry.get("target") or "System"
+                    _active_jobs[target] = entry
+                except json.JSONDecodeError:
+                    continue
+            _last_offset = f.tell()
     except Exception:
         pass
-    return list(active_jobs.values())
+    return list(_active_jobs.values())
 
 def render_dashboard():
     clear_screen()

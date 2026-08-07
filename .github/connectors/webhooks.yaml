@@ -1,277 +1,75 @@
 # Webhook Connectors Configuration
-# This file defines the configuration for all webhook integrations
+# SCAFFOLD: receiver not deployed in this PR. Signature policy is declarative only.
+# validate_signature is enforced only when a receiver calls ConnectorManager.verify_webhook_signature.
 
 webhooks:
-  # GitHub webhooks
   github:
-    base_url: "https://github.com/timerloggedout-spec/termux-monorepo"
+    base_url: "${WEBHOOK_RECEIVER_BASE_URL:-}"  # set when receiver is deployed
     secret_env: "GITHUB_WEBHOOK_SECRET"
-    
     endpoints:
       - name: "agent-review-auto-jules"
         path: "/github/webhook/agent-review-auto-jules"
-        url: "https://github.com/timerloggedout-spec/termux-monorepo"
         events:
           - "pull_request_review"
           - "pull_request_review_comment"
           - "issue_comment"
-        active: true
+        active: false  # inactive until receiver deployed
         content_type: "application/json"
-        
-        # Trigger conditions
-        conditions:
-          bot_users:
-            - "coderabbit"
-            - "devin"
-            - "copilot"
-          bot_types:
-            - "Bot"
-          
-        # Action to trigger
-        action: "jules_auto_resolve"
-        
-        # Rate limiting
-        rate_limit: 10  # events per minute
-        
       - name: "agent-jules-on-issues"
         path: "/github/webhook/agent-jules-on-issues"
-        url: "https://github.com/timerloggedout-spec/termux-monorepo"
         events:
           - "issues"
           - "issue_comment"
-        active: true
+        active: false
         content_type: "application/json"
-        
-        # Trigger conditions
-        conditions:
-          issue_labels:
-            - "agent-request"
-            - "jules-request"
-          comment_triggers:
-            - "/jules"
-            - "@jules"
-          
-        # Action to trigger
-        action: "jules_issue_response"
-        
-        # Rate limiting
-        rate_limit: 5  # events per minute
-        
       - name: "agent-feedback-linear-sync"
         path: "/github/webhook/agent-feedback-linear-sync"
-        url: "https://github.com/timerloggedout-spec/termux-monorepo"
         events:
           - "issues"
           - "pull_request"
-        active: true
+        active: false
         content_type: "application/json"
-        
-        # Trigger conditions
-        conditions:
-          issue_labels:
-            - "feedback"
-            - "linear-sync"
-          
-        # Action to trigger
-        action: "linear_sync"
-        
-        # Rate limiting
-        rate_limit: 5  # events per minute
-        
       - name: "gemini-dispatch"
         path: "/github/webhook/gemini-dispatch"
-        url: "https://github.com/timerloggedout-spec/termux-monorepo"
         events:
           - "push"
           - "pull_request"
-        active: true
+        active: false
         content_type: "application/json"
-        
-        # Trigger conditions
-        conditions:
-          branches:
-            - "master"
-            - "master-staging"
-          paths:
-            - "deepcli/**"
-            - "archwiz/**"
-            - "termux-multi-agent/**"
-          
-        # Action to trigger
-        action: "gemini_dispatch"
-        
-        # Rate limiting
-        rate_limit: 20  # events per minute
-        
       - name: "gemini-invoke"
         path: "/github/webhook/gemini-invoke"
-        url: "https://github.com/timerloggedout-spec/termux-monorepo"
         events:
           - "push"
-        active: true
+        active: false
         content_type: "application/json"
-        
-        # Trigger conditions
-        conditions:
-          branches:
-            - "master"
-          paths:
-            - "deepcli/**"
-          
-        # Action to trigger
-        action: "gemini_invoke"
-        
-        # Rate limiting
-        rate_limit: 10  # events per minute
-        
       - name: "gemini-review"
         path: "/github/webhook/gemini-review"
-        url: "https://github.com/timerloggedout-spec/termux-monorepo"
         events:
           - "pull_request_review"
           - "pull_request_review_comment"
-        active: true
+        active: false
         content_type: "application/json"
-        
-        # Trigger conditions
-        conditions:
-          review_states:
-            - "changes_requested"
-            - "commented"
-          
-        # Action to trigger
-        action: "gemini_review"
-        
-        # Rate limiting
-        rate_limit: 10  # events per minute
-        
       - name: "gemini-triage"
         path: "/github/webhook/gemini-triage"
-        url: "https://github.com/timerloggedout-spec/termux-monorepo"
         events:
           - "issues"
           - "pull_request"
-        active: true
+        active: false
         content_type: "application/json"
-        
-        # Trigger conditions
-        conditions:
-          issue_labels:
-            - "triage"
-            - "needs-triage"
-          
-        # Action to trigger
-        action: "gemini_triage"
-        
-        # Rate limiting
-        rate_limit: 10  # events per minute
-        
       - name: "publish-wiki"
         path: "/github/webhook/publish-wiki"
-        url: "https://github.com/timerloggedout-spec/termux-monorepo"
         events:
           - "push"
-        active: true
+        active: false
         content_type: "application/json"
-        
-        # Trigger conditions
-        conditions:
-          paths:
-            - "wiki/**"
-          
-        # Action to trigger
-        action: "publish_wiki"
-        
-        # Rate limiting
-        rate_limit: 5  # events per minute
+        paths:
+          - "wiki/**"
 
-  # Agent-specific webhooks
-  agents:
-    jules:
-      webhook_url: "https://api.jules.ai/webhook"
-      events:
-        - "auto_resolve"
-        - "issue_response"
-      enabled: true
-      
-    coderabbit:
-      webhook_url: "https://api.coderabbit.ai/webhook"
-      events:
-        - "review_submitted"
-        - "comment_created"
-      enabled: true
-      
-    devin:
-      webhook_url: "https://api.devin.ai/webhook"
-      events:
-        - "review_submitted"
-        - "comment_created"
-      enabled: false
+  agents: {}
 
-  # External service webhooks (for future use)
-  external:
-    # Example: Slack webhook for notifications
-    # slack:
-    #   webhook_url: "${SLACK_WEBHOOK_URL}"
-    #   events:
-    #     - "push"
-    #     - "pull_request"
-    #     - "issues"
-    #   enabled: false
-    #   
-    # Example: Discord webhook for notifications
-    # discord:
-    #   webhook_url: "${DISCORD_WEBHOOK_URL}"
-    #   events:
-    #     - "push"
-    #     - "pull_request"
-    #   enabled: false
-
-  # Webhook processing configuration
-  processing:
-    # Maximum concurrent webhook processing
-    max_concurrent: 10
-    
-    # Timeout for webhook processing
-    timeout: 30  # seconds
-    
-    # Retry configuration
-    retry_attempts: 3
-    retry_delay: 1  # seconds
-    
-    # Logging
-    log_level: "INFO"
-    log_file: ".github/connectors/logs/webhooks.log"
-    
-    # Error handling
-    error_handling:
-      log_errors: true
-      notify_on_error: true
-      error_notification:
-        - "github"  # Create GitHub issue on error
-        # - "slack"  # Send Slack notification (if configured)
-        # - "email"  # Send email notification (if configured)
-
-  # Webhook security
   security:
-    # IP whitelisting (if applicable)
-    ip_whitelist:
-      - "140.82.112.0/20"  # GitHub IP range
-      - "185.199.108.0/22" # GitHub IP range
-      - "192.30.252.0/22" # GitHub IP range
-    
-    # Rate limiting
-    rate_limiting:
-      enabled: true
-      max_requests: 100  # per minute
-      burst_limit: 20   # burst requests allowed
-    
-    # Request validation
+    # Declarative policy only until HTTP receiver is deployed.
     validate_signature: true
-    validate_content_type: true
-    
-    # CORS settings (if webhook server is exposed)
-    cors:
-      enabled: false
-      allowed_origins:
-        - "https://github.com"
+    scaffold: true
+    note: "Enforcement requires a receiver that calls ConnectorManager.verify_webhook_signature on raw body + X-Hub-Signature-256"
+    secret_env: "GITHUB_WEBHOOK_SECRET"

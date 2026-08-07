@@ -95,9 +95,10 @@ class ConnectorManager:
                     description=f"Exchange: {name}", config=cfg)
         elif config_key == "github":
             gh = config.get("github", {})
+            api_cfg = gh.get("api", {})
             self.connector_info["github:api"] = ConnectorInfo(
-                name="github_api", type="platform", enabled=True,
-                description="GitHub API", config=gh.get("api", {}))
+                name="github_api", type="platform", enabled=api_cfg.get("enabled", True),
+                description="GitHub API", config=api_cfg)
             wh = gh.get("webhooks", {})
             if wh.get("enabled", False):
                 self.connector_info["github:webhooks"] = ConnectorInfo(

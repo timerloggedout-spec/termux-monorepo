@@ -61,7 +61,7 @@ def _cache_save(session_id: str, messages: List[Dict[str, Any]], account: str = 
             from archwiz.config import LOG_DIR
             with open(LOG_DIR / "dispatch_error.log", "a") as f:
                 f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} - Dispatch error: {e}\n")
-        except OSError:
+        except Exception:
             pass
     # === END DISPATCH HOOK ===
 

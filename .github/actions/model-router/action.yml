@@ -1,28 +1,34 @@
 name: 'Model Router'
 description: |
-  Select Gemini / OpenRouter model for a role (triage|review|invoke).
-  Tracks per-model daily soft budgets (Pacific midnight). Prefer high-RPD
-  Lite models; fall back to OpenRouter when Gemini constrained models are exhausted.
-  Soft budgets stay under published free-tier RPD (safety margin).
+  Select Gemini model for a role (triage|review|invoke).
+  Tracks per-model daily soft budgets (Pacific midnight).
+  Prefer high-RPD Lite models.
+
+  LIMITATIONS (documented, intentional for free-tier):
+  - GitHub Actions cache is per-branch best-effort — not a global RPD meter.
+    Concurrent PRs can under-count. Hard AI Studio limits still apply server-side.
+  - OpenRouter is not invoked here. When Gemini soft budgets are exhausted,
+    skip=true always (even if OPENROUTER_API_KEY is set). Wire a real OpenRouter
+    step before flipping skip=false for provider=openrouter (RL-05 foundation).
 
 inputs:
   role:
     description: 'triage | review | invoke'
     required: true
   has-openrouter:
-    description: '"true" if secrets.OPENROUTER_API_KEY is non-empty'
+    description: '"true" if secrets.OPENROUTER_API_KEY is non-empty (informational only until RL-05 invoke lands)'
     required: false
     default: 'false'
 
 outputs:
   provider:
-    description: 'gemini | openrouter | none'
+    description: 'gemini | none'
     value: ${{ steps.pick.outputs.provider }}
   model:
     description: 'Model id to request'
     value: ${{ steps.pick.outputs.model }}
   skip:
-    description: '"true" if no capacity remains'
+    description: '"true" if no Gemini capacity remains'
     value: ${{ steps.pick.outputs.skip }}
   reason:
     description: 'Human-readable selection reason'
@@ -36,7 +42,7 @@ runs:
       shell: bash
       run: echo "key=$(TZ=America/Los_Angeles date +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
 
-    - name: Restore per-model counters
+    - name: Restore per-model counters (per-branch best-effort)
       id: restore
       uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
       with:
@@ -67,20 +73,16 @@ runs:
           echo $((c + 1)) > "$f"
         }
 
-        # Soft RPD budgets (under published free-tier; see model-rotation.yaml)
-        # No yq dependency — works on stock ubuntu-latest runners.
+        # Soft RPD budgets under published free-tier (see docs/schemas/model-rotation.yaml)
         case "$ROLE" in
           triage)
             CANDIDATES="gemini-3.1-flash-lite:450 gemini-3.5-flash-lite:450 gemini-2.5-flash-lite:15"
-            OR_FALLBACK="openrouter/auto"
             ;;
           review)
             CANDIDATES="gemini-3.5-flash:15 gemini-2.5-flash:15 gemini-3-flash:15 gemini-3.1-flash-lite:450"
-            OR_FALLBACK="openrouter/auto"
             ;;
           invoke)
             CANDIDATES="gemini-3.1-flash-lite:450 gemini-3.5-flash-lite:450"
-            OR_FALLBACK="openrouter/auto"
             ;;
           *)
             echo "skip=true" >> "$GITHUB_OUTPUT"
@@ -107,21 +109,18 @@ runs:
           echo "Exhausted soft budget for $model ($used/$limit)"
         done
 
+        # Always skip when Gemini soft budgets are gone.
+        # Do NOT set provider=openrouter with skip=false — that suppressed the
+        # quota-skip comment and claimed a route that no step actually invoked.
+        OR_HINT=""
         if [ "$HAS_OPENROUTER" = "true" ]; then
-          bump "$OR_FALLBACK"
-          echo "provider=openrouter" >> "$GITHUB_OUTPUT"
-          echo "model=$OR_FALLBACK" >> "$GITHUB_OUTPUT"
-          echo "skip=false" >> "$GITHUB_OUTPUT"
-          echo "reason=gemini exhausted; openrouter fallback $OR_FALLBACK" >> "$GITHUB_OUTPUT"
-          echo "Selected openrouter/$OR_FALLBACK"
-          exit 0
+          OR_HINT="; OPENROUTER_API_KEY present but invoke path not wired (RL-05 foundation)"
         fi
-
         echo "skip=true" >> "$GITHUB_OUTPUT"
         echo "provider=none" >> "$GITHUB_OUTPUT"
         echo "model=" >> "$GITHUB_OUTPUT"
-        echo "reason=all soft budgets exhausted; no OpenRouter key" >> "$GITHUB_OUTPUT"
-        echo "::warning::Model router: no capacity for role=$ROLE"
+        echo "reason=all Gemini soft budgets exhausted${OR_HINT}" >> "$GITHUB_OUTPUT"
+        echo "::warning::Model router: no Gemini capacity for role=$ROLE"
 
     - name: Save per-model counters
       if: steps.pick.outputs.skip != 'true'

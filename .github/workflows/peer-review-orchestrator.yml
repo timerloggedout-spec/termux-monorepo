@@ -3,9 +3,8 @@ name: Peer review orchestrator
 # Hold free-tier agentic Gemini until external review bots finish, then
 # auto-trigger CodeRabbit Autofix (same path as the UI checkbox).
 #
-# IMPORTANT: CodeRabbit only honors @coderabbitai autofix from accounts with
-# repo write/admin. github-actions[bot] is rejected. Prefer secrets.OPERATOR_GITHUB_TOKEN
-# (classic PAT or fine-grained: contents+PRs write, owned by a write collaborator).
+# CodeRabbit only honors @coderabbitai autofix from accounts with repo
+# write/admin. Pass secrets.OPERATOR_GITHUB_TOKEN via with.github-token.
 #
 # Devin Apply Suggestions: enable Auto-Fix in Devin Settings (no public click API).
 
@@ -52,11 +51,20 @@ jobs:
             const headSha = process.env.HEAD_SHA;
             const maxWait = Number(process.env.MAX_WAIT_SEC) || 480;
             const pollSec = Number(process.env.POLL_SEC) || 30;
-            const isPeer = (login) => {
-              const u = (login || '').toLowerCase();
-              return /coderabbit|devin-ai|aikido|sentry|copilot-pull-request/.test(u);
-            };
+            const isPeer = (login) => /coderabbit|devin-ai|aikido|sentry|copilot-pull-request/.test((login || '').toLowerCase());
             const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+            // Head commit timestamp — only count peer activity after this push
+            let headPushedAt = 0;
+            try {
+              const { data: commit } = await github.rest.repos.getCommit({
+                owner: context.repo.owner, repo: context.repo.repo, ref: headSha,
+              });
+              headPushedAt = new Date(commit.commit.committer?.date || commit.commit.author?.date || 0).getTime();
+            } catch (e) {
+              core.info('getCommit skip: ' + e.message);
+            }
+
             const started = Date.now();
             let lastSummary = 'none';
             let coderabbitSeen = false;
@@ -67,18 +75,26 @@ jobs:
                 owner: context.repo.owner, repo: context.repo.repo,
                 pull_number: prNumber, per_page: 50,
               });
-              const peerReviews = reviews.filter(r => isPeer(r.user?.login));
-              const crReviews = peerReviews.filter(r =>
-                (r.user?.login || '').toLowerCase().includes('coderabbit')
-              );
-              if (crReviews.length > 0) coderabbitSeen = true;
+              // Prefer reviews on current head; also accept reviews without commit_id
+              const peerReviews = reviews.filter(r => {
+                if (!isPeer(r.user?.login)) return false;
+                if (!r.commit_id) return true;
+                return r.commit_id === headSha;
+              });
+              if (peerReviews.some(r => (r.user?.login || '').toLowerCase().includes('coderabbit'))) {
+                coderabbitSeen = true;
+              }
               if (peerReviews.length > 0) anyPeerSeen = true;
 
               const comments = await github.paginate(github.rest.issues.listComments, {
                 owner: context.repo.owner, repo: context.repo.repo,
                 issue_number: prNumber, per_page: 100,
               });
-              const peerComments = comments.filter(c => isPeer(c.user?.login));
+              const peerComments = comments.filter(c => {
+                if (!isPeer(c.user?.login)) return false;
+                if (!headPushedAt) return true;
+                return new Date(c.created_at).getTime() >= headPushedAt - 60_000;
+              });
               if (peerComments.some(c => (c.user?.login || '').toLowerCase().includes('coderabbit'))) {
                 coderabbitSeen = true;
               }
@@ -117,22 +133,23 @@ jobs:
             }
 
             const timedOut = (Date.now() - started) >= maxWait * 1000;
-            core.setOutput('ready', 'true');
+            core.setOutput('ready', anyPeerSeen || coderabbitSeen ? 'true' : 'false');
             core.setOutput('peer_summary', lastSummary.slice(0, 2000));
             core.setOutput('coderabbit_seen', coderabbitSeen ? 'true' : 'false');
             core.setOutput('timed_out', timedOut ? 'true' : 'false');
+            core.setOutput('any_peer_seen', anyPeerSeen ? 'true' : 'false');
 
-      - name: Auto-trigger CodeRabbit Autofix (operator token preferred)
+      - name: Auto-trigger CodeRabbit Autofix (operator token)
         id: autofix
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
           PR_NUMBER: ${{ github.event.pull_request.number }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           CR_SEEN: ${{ steps.wait.outputs.coderabbit_seen }}
-          # Prefer operator PAT so CodeRabbit accepts the command (write user).
-          GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
           HAS_OPERATOR_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN != '' }}
         with:
+          # Critical: github-token input, not env, authenticates the client
+          github-token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const prNumber = Number(process.env.PR_NUMBER);
             const headSha = process.env.HEAD_SHA;
@@ -164,7 +181,7 @@ jobs:
             }
             const note = hasOp
               ? '_Posted via OPERATOR_GITHUB_TOKEN (write user) so CodeRabbit accepts Autofix._'
-              : '_Posted via GITHUB_TOKEN — if CodeRabbit rejects write, add repo secret OPERATOR_GITHUB_TOKEN (PAT with contents+PR write)._';
+              : '_Posted via GITHUB_TOKEN — add OPERATOR_GITHUB_TOKEN if CR rejects write._';
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -173,7 +190,7 @@ jobs:
                 marker,
                 `sha: ${headSha}`,
                 '',
-                `@coderabbitai autofix`,
+                '@coderabbitai autofix',
                 '',
                 note,
                 'Apply unresolved CodeRabbit findings to this branch. Minimal diffs; respect AGENTS.md.',
@@ -194,24 +211,36 @@ jobs:
           SUMMARY: ${{ steps.wait.outputs.peer_summary }}
           AUTOFIX: ${{ steps.autofix.outputs.posted }}
           TIMED_OUT: ${{ steps.wait.outputs.timed_out }}
+          READY: ${{ steps.wait.outputs.ready }}
         with:
           script: |
             const prNumber = Number(process.env.PR_NUMBER);
             const headSha = process.env.HEAD_SHA;
+            const marker = '<!-- peer-review-ready -->';
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: prNumber, per_page: 100,
+            });
+            if (comments.some(c => c.body && c.body.includes(marker) && c.body.includes(headSha))) {
+              core.info('peer-review-ready already posted for this SHA');
+              return;
+            }
+            // Do NOT include the autofix command text here (avoids double-trigger)
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: prNumber,
               body: [
-                '<!-- peer-review-ready -->',
+                marker,
                 `head_sha: ${headSha}`,
+                `ready: ${process.env.READY}`,
                 `autofix_requested: ${process.env.AUTOFIX}`,
                 `timed_out: ${process.env.TIMED_OUT}`,
                 '',
                 '### Peer review gate (ready for second-pass agents)',
                 '',
                 'External reviewers polled: CodeRabbit, Devin, Aikido, Sentry, Copilot.',
-                'CodeRabbit Autofix: `@coderabbitai autofix` (operator token preferred).',
+                'Autofix (if any) was requested in a separate comment on this SHA.',
                 '',
                 '**Peer activity (truncated):**',
                 '```',

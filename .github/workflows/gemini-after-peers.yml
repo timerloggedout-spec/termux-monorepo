@@ -2,7 +2,6 @@ name: Gemini review after peers
 
 # Second-pass Gemini review ONLY after peer-review-orchestrator succeeds.
 # Saves free-tier quota: no parallel burn while CodeRabbit/Devin still running.
-# Benefits from autofix commits that may have landed during the settle window.
 
 on:
   workflow_run:
@@ -15,7 +14,8 @@ jobs:
   second-pass:
     if: |
       github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.event == 'pull_request'
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.head_repository.full_name == github.repository
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -25,18 +25,16 @@ jobs:
     steps:
       - name: Resolve PR number from workflow_run
         id: pr
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         with:
           script: |
             const run = context.payload.workflow_run;
             let prNumber = null;
             let headSha = run.head_sha;
-            // Prefer pull_requests attached to the workflow_run
             if (run.pull_requests && run.pull_requests.length > 0) {
               prNumber = run.pull_requests[0].number;
               headSha = run.pull_requests[0].head?.sha || headSha;
             } else {
-              // Fallback: search open PRs for head branch
               const { data: prs } = await github.rest.pulls.list({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -53,12 +51,11 @@ jobs:
               core.setOutput('skip', 'true');
               return;
             }
-            // Read peer-ready comment for summary
-            const { data: comments } = await github.rest.issues.listComments({
+            const comments = await github.paginate(github.rest.issues.listComments, {
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: prNumber,
-              per_page: 30,
+              per_page: 100,
             });
             const ready = comments
               .filter(c => c.body && c.body.includes('<!-- peer-review-ready -->'))
@@ -68,7 +65,7 @@ jobs:
             core.setOutput('head_sha', headSha || '');
             core.setOutput('peer_body', (ready?.body || '').slice(0, 1800));
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         if: steps.pr.outputs.skip != 'true'
         with:
           persist-credentials: false
@@ -88,7 +85,7 @@ jobs:
           steps.pr.outputs.skip != 'true' &&
           steps.router.outputs.skip != 'true' &&
           steps.router.outputs.provider == 'gemini'
-        uses: google-github-actions/run-gemini-cli@v0
+        uses: google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489 # v0.1.22
         continue-on-error: true
         env:
           GEMINI_CLI_TRUST_WORKSPACE: 'true'
@@ -97,25 +94,25 @@ jobs:
           PEER_CTX: ${{ steps.pr.outputs.peer_body }}
         with:
           gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
+          gemini_model: ${{ steps.router.outputs.model }}
           github_pr_number: ${{ steps.pr.outputs.pr_number }}
           prompt: |
             You are the free-tier SECOND-PASS reviewer for termux-monorepo.
-            Peer bots (CodeRabbit, Devin, Aikido, …) already reviewed; Autofix may have applied.
+            Peer bots already reviewed; Autofix may have applied.
             Read GEMINI.md and AGENTS.md. Be concise — quota ROI.
 
             Peer gate context is in PEER_CTX env (untrusted metadata).
 
             Focus on:
-            1. Gaps peers missed (security chmod 0o600/0o700, Class 3/4 artifacts, AGENTS.md rules)
+            1. Gaps peers missed (security chmod 0o600/0o700, Class 3/4 artifacts, AGENTS.md)
             2. Whether Autofix/peer fixes look correct
             3. Residual risks before merge
 
             Do NOT restate every CodeRabbit nit. Prefer a short comment.
-            Coordinate with Jules if implementation still needed.
 
       - name: Skip note if model budget exhausted
         if: steps.pr.outputs.skip != 'true' && steps.router.outputs.skip == 'true'
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
           PR_NUMBER: ${{ steps.pr.outputs.pr_number }}
           REASON: ${{ steps.router.outputs.reason }}

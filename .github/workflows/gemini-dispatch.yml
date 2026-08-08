@@ -3,7 +3,7 @@ name: '🔀 Gemini Dispatch (free-tier agentic)'
 # Central router for free-tier Gemini CLI agentic CI/CD.
 # Requires: secrets.GEMINI_API_KEY (Google AI Studio free quota)
 #
-# QUOTA POLICY (2026-08-08):
+# QUOTA POLICY:
 # - Automatic PR review on opened/synchronize is DISABLED here.
 #   Peer bots run first (peer-review-orchestrator → CodeRabbit autofix),
 #   then gemini-after-peers runs the second-pass review.
@@ -54,11 +54,11 @@ jobs:
       additional_context: ${{ steps.extract.outputs.additional_context }}
       prior_prs: ${{ steps.extract.outputs.prior_prs }}
       issue_number: ${{ github.event.pull_request.number || github.event.issue.number }}
-      pr_number: ${{ github.event.pull_request.number }}
+      pr_number: ${{ steps.extract.outputs.pr_number }}
     steps:
       - name: Extract command + prior PR inventory
         id: extract
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
           EVENT_TYPE: ${{ github.event_name }}.${{ github.event.action }}
           REQUEST: ${{ github.event.comment.body || github.event.review.body || github.event.issue.body || '' }}
@@ -66,7 +66,14 @@ jobs:
           script: |
             const eventType = process.env.EVENT_TYPE;
             const request = process.env.REQUEST || '';
-            // Automatic PR events: defer review to peer-review-orchestrator + gemini-after-peers
+
+            // PR number: direct PR events, else issue number when comment is on a PR
+            let prNumber = context.payload.pull_request?.number || null;
+            if (!prNumber && context.payload.issue?.pull_request) {
+              prNumber = context.payload.issue.number;
+            }
+            core.setOutput('pr_number', prNumber ? String(prNumber) : '');
+
             if (eventType === 'pull_request.opened' || eventType === 'pull_request.synchronize' || eventType === 'pull_request.ready_for_review') {
               core.setOutput('command', 'defer-peers');
               core.info('PR event → defer Gemini review until peer gate (saves quota)');
@@ -111,7 +118,7 @@ jobs:
         if: |
           steps.extract.outputs.command != 'none' &&
           steps.extract.outputs.command != 'defer-peers'
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         with:
           script: |
             const cmd = '${{ steps.extract.outputs.command }}';
@@ -151,7 +158,6 @@ jobs:
       issue_number: ${{ needs.dispatch.outputs.issue_number }}
     secrets: inherit
 
-  # On-demand only — automatic PR review is gemini-after-peers
   review:
     needs: dispatch
     if: needs.dispatch.outputs.command == 'review'

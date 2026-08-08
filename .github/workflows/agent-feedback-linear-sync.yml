@@ -83,6 +83,11 @@ jobs:
               });
               const json = await res.json();
               if (json.errors) {
+                const isLimitExceeded = json.errors.some(e => e.extensions && e.extensions.code === 'USAGE_LIMIT_EXCEEDED');
+                if (isLimitExceeded) {
+                  core.warning('Linear workspace issue limit exceeded — skip sync');
+                  return null;
+                }
                 throw new Error(JSON.stringify(json.errors));
               }
               return json.data;
@@ -104,6 +109,7 @@ jobs:
                 }
               }
             );
+            if (!search) return;
             let parentId = search.issues?.nodes?.find(
               n => n.title === parentTitle
             )?.id;
@@ -133,6 +139,10 @@ jobs:
                   },
                 }
               );
+              if (!created || !created.issueCreate || !created.issueCreate.issue) {
+                core.warning('Could not create parent issue — skip sync');
+                return;
+              }
               parentId = created.issueCreate.issue.id;
               core.info(`Created parent ${created.issueCreate.issue.identifier}`);
             }
@@ -140,6 +150,7 @@ jobs:
             const labels = await linear(
               `query { issueLabels(filter: { name: { eq: "agent-feedback" } }) { nodes { id } } }`
             );
+            if (!labels) return;
             const labelId = labels.issueLabels?.nodes?.[0]?.id;
 
             const subTitle = path
@@ -175,7 +186,11 @@ jobs:
                 },
               }
             );
-            core.info(`Subtask ${sub.issueCreate.issue.identifier} ${sub.issueCreate.issue.url}`);
+            if (sub && sub.issueCreate && sub.issueCreate.issue) {
+              core.info(`Subtask ${sub.issueCreate.issue.identifier} ${sub.issueCreate.issue.url}`);
+            } else {
+              core.warning('Could not create subtask issue — skip sync');
+            }
 
             if (context.payload.comment?.id) {
               try {

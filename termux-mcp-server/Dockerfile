@@ -4,12 +4,14 @@ FROM python:3.11-slim
 # Set up working directory
 WORKDIR /app
 
-# Copy application files and stub
-COPY . .
+# Copy dependency configs
+COPY pyproject.toml ./
 
 # Install python dependencies and mcp
 RUN pip install --no-cache-dir -e .
 
+# Copy application files and stub
+COPY . .
 
 # Set up termux API stubs in PATH
 RUN chmod +x termux-stub.py && \

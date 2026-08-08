@@ -107,3 +107,62 @@ def test_fts5_virtual_table(tmp_path, monkeypatch):
     assert len(results) == 1
     assert "sess-02" in results[0][1]
     assert "SQLite" in results[0][0]
+
+def test_read_latest_telemetry_incremental(tmp_path, monkeypatch):
+    import json
+    import dashboard
+    temp_log = tmp_path / "test_telemetry.json"
+    monkeypatch.setattr(dashboard, "TELEMETRY_LOG", str(temp_log))
+
+    # Reset any cached global state in the module
+    monkeypatch.setattr(dashboard, "_last_position", 0)
+    monkeypatch.setattr(dashboard, "_active_jobs", {})
+
+    # 1. Initially, file does not exist, should return empty list
+    assert dashboard.read_latest_telemetry() == []
+
+    # 2. Write initial logs
+    log_entries = [
+        {"timestamp": "2026-08-01 10:00:00", "level": "INFO", "agent": "A1", "target": "file1.py", "attempt": 1, "message": "Starting"},
+        {"timestamp": "2026-08-01 10:01:00", "level": "SUCCESS", "agent": "A1", "target": "file1.py", "attempt": 1, "message": "Done"}
+    ]
+    with open(temp_log, "w") as f:
+        for entry in log_entries:
+            f.write(json.dumps(entry) + "\n")
+
+    # Call first time - should read all lines
+    jobs = dashboard.read_latest_telemetry()
+    assert len(jobs) == 1
+    assert jobs[0]["target"] == "file1.py"
+    assert jobs[0]["level"] == "SUCCESS"
+    assert dashboard._last_position > 0
+
+    # 3. Append new logs (incremental update)
+    log_entries_append = [
+        {"timestamp": "2026-08-01 10:02:00", "level": "INFO", "agent": "A2", "target": "file2.py", "attempt": 1, "message": "Running"}
+    ]
+    with open(temp_log, "a") as f:
+        for entry in log_entries_append:
+            f.write(json.dumps(entry) + "\n")
+
+    # Call second time - should read only the new line incrementally and merge
+    jobs = dashboard.read_latest_telemetry()
+    assert len(jobs) == 2
+    # Sorted by timestamp: file1.py (10:01:00), then file2.py (10:02:00)
+    assert jobs[0]["target"] == "file1.py"
+    assert jobs[1]["target"] == "file2.py"
+
+    # 4. Truncate / recreate the log file (simulating log rotate or restart)
+    log_entries_truncated = [
+        {"timestamp": "2026-08-01 10:03:00", "level": "CRITICAL", "agent": "A3", "target": "file3.py", "attempt": 2, "message": "Fatal"}
+    ]
+    with open(temp_log, "w") as f:
+        for entry in log_entries_truncated:
+            f.write(json.dumps(entry) + "\n")
+
+    # Call third time - should detect truncation (file_size < _last_position),
+    # reset state, and only have file3.py
+    jobs = dashboard.read_latest_telemetry()
+    assert len(jobs) == 1
+    assert jobs[0]["target"] == "file3.py"
+    assert jobs[0]["level"] == "CRITICAL"

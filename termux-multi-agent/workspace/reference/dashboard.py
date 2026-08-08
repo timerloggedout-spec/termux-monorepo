@@ -7,21 +7,43 @@ TELEMETRY_LOG = "agent_telemetry_stream.json"
 def clear_screen():
     print("\033[H\033[J", end="")
 
+# Cache state variables to enable high-performance incremental I/O updates (state-tracking & seek/tell)
+_last_position = 0
+_active_jobs = {}
+
 def read_latest_telemetry():
+    """
+    Optimized telemetry parser that incrementally parses new lines from the telemetry stream
+    using state tracking and seek/tell operations, yielding massive performance gains on large log files.
+    """
+    global _last_position, _active_jobs
     if not os.path.exists(TELEMETRY_LOG):
+        _last_position = 0
+        _active_jobs = {}
         return []
-    active_jobs = {}
     try:
+        # Detect if log file has been truncated, rotated, or re-created
+        file_size = os.path.getsize(TELEMETRY_LOG)
+        if file_size < _last_position:
+            _last_position = 0
+            _active_jobs = {}
+
         with open(TELEMETRY_LOG, "r") as f:
+            if _last_position > 0:
+                f.seek(_last_position)
             for line in f:
                 if not line.strip():
                     continue
-                entry = json.loads(line)
-                target = entry.get("target") or "System"
-                active_jobs[target] = entry
+                try:
+                    entry = json.loads(line)
+                    target = entry.get("target") or "System"
+                    _active_jobs[target] = entry
+                except json.JSONDecodeError:
+                    continue
+            _last_position = f.tell()
     except Exception:
         pass
-    return list(active_jobs.values())
+    return list(_active_jobs.values())
 
 def render_dashboard():
     clear_screen()

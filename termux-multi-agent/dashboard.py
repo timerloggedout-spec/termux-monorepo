@@ -12,33 +12,51 @@ try:
     from rich.live import Live
     from rich.text import Text
     from rich.box import ROUNDED
+    HAS_RICH = True
 except ImportError:
-    # Clean fallback warning
-    print("[ERROR] 'rich' library is required. Please run: pip install rich")
-    sys.exit(1)
+    HAS_RICH = False
 
 TELEMETRY_LOG = "agent_telemetry_stream.json"
-console = Console()
+console = Console() if HAS_RICH else None
+
+# Cache state variables to enable high-performance incremental I/O updates (state-tracking & seek/tell)
+_last_position = 0
+_active_jobs = {}
 
 def read_latest_telemetry():
+    """
+    Optimized telemetry parser that incrementally parses new lines from the telemetry stream
+    using state tracking and seek/tell operations, yielding massive performance gains on large log files.
+    """
+    global _last_position, _active_jobs
     if not os.path.exists(TELEMETRY_LOG):
+        _last_position = 0
+        _active_jobs = {}
         return []
-    active_jobs = {}
     try:
+        # Detect if log file has been truncated, rotated, or re-created
+        file_size = os.path.getsize(TELEMETRY_LOG)
+        if file_size < _last_position:
+            _last_position = 0
+            _active_jobs = {}
+
         with open(TELEMETRY_LOG, "r") as f:
+            if _last_position > 0:
+                f.seek(_last_position)
             for line in f:
                 if not line.strip():
                     continue
                 try:
                     entry = json.loads(line)
                     target = entry.get("target") or "System"
-                    active_jobs[target] = entry
+                    _active_jobs[target] = entry
                 except json.JSONDecodeError:
                     continue
+            _last_position = f.tell()
     except Exception:
         pass
     # Sort by timestamp so the list ordering is consistent/predictable
-    return sorted(active_jobs.values(), key=lambda x: x.get("timestamp", ""))
+    return sorted(_active_jobs.values(), key=lambda x: x.get("timestamp", ""))
 
 def make_dashboard():
     # Read data
@@ -143,6 +161,9 @@ def make_dashboard():
     )
 
 def main():
+    if not HAS_RICH:
+        print("[ERROR] 'rich' library is required. Please run: pip install rich")
+        sys.exit(1)
     try:
         # Use Live rendering for smooth, flicker-free updates
         with Live(make_dashboard(), refresh_per_second=1, screen=True) as live:

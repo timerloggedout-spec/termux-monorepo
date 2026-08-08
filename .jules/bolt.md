@@ -9,3 +9,11 @@ Using a single shared database connection across file walks and batching all ins
 
 **Action:**
 Always batch SQL database operations using `executemany` instead of iterating with `execute`. Provide support for passing an optional shared `conn` handle in indexing/utility functions to allow single-connection batch runs across walk loops, while safely closing connections only if opened locally.
+
+## 2026-08-08 - Deferring Dependency Checks to Execution Block for Test Compatibility
+**Learning:**
+Importing modules that contain hard dependency checks (e.g. calling `sys.exit(1)` when `rich` is missing) at the module scope crashes import-time test suite discovery in headless test runners.
+By caching import success flags (e.g. `HAS_RICH = True/False`) and deferring the terminal exit checks directly to the script's `main()` execution block, we prevent test suite crashes while still protecting production runtime behavior.
+
+**Action:**
+Never exit or crash during import time for optional or CLI-specific dependencies. Declare a boolean flag at module-level (e.g., `HAS_DEP = True`) and handle exceptions/exits during active runtime execution inside the main block.

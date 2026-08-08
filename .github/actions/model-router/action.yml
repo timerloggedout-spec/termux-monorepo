@@ -1,9 +1,9 @@
 name: 'Model Router'
 description: |
-  Select Gemini / OpenRouter model for a role (triage|review|invoke)
-  using docs/schemas/model-rotation.yaml policy. Tracks per-model daily
-  counters (Pacific midnight). Prefer high-RPD Lite models; fall back to
-  OpenRouter when Gemini constrained models are exhausted.
+  Select Gemini / OpenRouter model for a role (triage|review|invoke).
+  Tracks per-model daily soft budgets (Pacific midnight). Prefer high-RPD
+  Lite models; fall back to OpenRouter when Gemini constrained models are exhausted.
+  Soft budgets stay under published free-tier RPD (safety margin).
 
 inputs:
   role:
@@ -13,10 +13,6 @@ inputs:
     description: '"true" if secrets.OPENROUTER_API_KEY is non-empty'
     required: false
     default: 'false'
-  registry-path:
-    description: 'Path to model-rotation.yaml'
-    required: false
-    default: 'docs/schemas/model-rotation.yaml'
 
 outputs:
   provider:
@@ -55,7 +51,6 @@ runs:
       env:
         ROLE: ${{ inputs.role }}
         HAS_OPENROUTER: ${{ inputs.has-openrouter }}
-        REGISTRY_PATH: ${{ inputs.registry-path }}
       run: |
         set -eu
         DIR=/tmp/model-router
@@ -72,59 +67,35 @@ runs:
           echo $((c + 1)) > "$f"
         }
 
-        # Read model candidates and RPD budgets from registry YAML
-        if [ ! -f "$REGISTRY_PATH" ]; then
-          echo "skip=true" >> "$GITHUB_OUTPUT"
-          echo "provider=none" >> "$GITHUB_OUTPUT"
-          echo "model=" >> "$GITHUB_OUTPUT"
-          echo "reason=registry file not found: $REGISTRY_PATH" >> "$GITHUB_OUTPUT"
-          exit 0
-        fi
+        # Soft RPD budgets (under published free-tier; see model-rotation.yaml)
+        # No yq dependency — works on stock ubuntu-latest runners.
+        case "$ROLE" in
+          triage)
+            CANDIDATES="gemini-3.1-flash-lite:450 gemini-3.5-flash-lite:450 gemini-2.5-flash-lite:15"
+            OR_FALLBACK="openrouter/auto"
+            ;;
+          review)
+            CANDIDATES="gemini-3.5-flash:15 gemini-2.5-flash:15 gemini-3-flash:15 gemini-3.1-flash-lite:450"
+            OR_FALLBACK="openrouter/auto"
+            ;;
+          invoke)
+            CANDIDATES="gemini-3.1-flash-lite:450 gemini-3.5-flash-lite:450"
+            OR_FALLBACK="openrouter/auto"
+            ;;
+          *)
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "provider=none" >> "$GITHUB_OUTPUT"
+            echo "model=" >> "$GITHUB_OUTPUT"
+            echo "reason=unknown role $ROLE" >> "$GITHUB_OUTPUT"
+            exit 0
+            ;;
+        esac
 
-        # Parse primary and fallback arrays for the role
-        primary_models=$(yq eval ".role_matrix.${ROLE}.primary[]" "$REGISTRY_PATH" 2>/dev/null || echo "")
-        fallback_models=$(yq eval ".role_matrix.${ROLE}.fallback[]" "$REGISTRY_PATH" 2>/dev/null || echo "")
-
-        if [ -z "$primary_models" ] && [ -z "$fallback_models" ]; then
-          echo "skip=true" >> "$GITHUB_OUTPUT"
-          echo "provider=none" >> "$GITHUB_OUTPUT"
-          echo "model=" >> "$GITHUB_OUTPUT"
-          echo "reason=unknown role $ROLE" >> "$GITHUB_OUTPUT"
-          exit 0
-        fi
-
-        # Build combined candidate list (primary + fallback), excluding OpenRouter models
-        CANDIDATES=""
-        OR_FALLBACK=""
-
-        for model in $primary_models $fallback_models; do
-          # Check if this is an OpenRouter model
-          if [[ "$model" == openrouter/* ]] || [[ "$model" == google/* ]]; then
-            # This is the OpenRouter fallback
-            if [ -z "$OR_FALLBACK" ]; then
-              OR_FALLBACK="$model"
-            fi
-          else
-            # This is a Gemini model - get its RPD budget
-            rpd=$(yq eval ".providers.gemini_ai_studio.models.\"${model}\".rpd" "$REGISTRY_PATH" 2>/dev/null || echo "0")
-            if [ "$rpd" != "null" ] && [ "$rpd" != "0" ]; then
-              CANDIDATES="$CANDIDATES ${model}:${rpd}"
-            fi
-          fi
-        done
-
-        # Default to openrouter/auto if no fallback found
-        if [ -z "$OR_FALLBACK" ]; then
-          OR_FALLBACK="openrouter/auto"
-        fi
-
-        CHOSEN=""
         for entry in $CANDIDATES; do
           model="${entry%%:*}"
           limit="${entry##*:}"
           used=$(count "$model")
           if [ "$used" -lt "$limit" ]; then
-            CHOSEN="$model"
             bump "$model"
             echo "provider=gemini" >> "$GITHUB_OUTPUT"
             echo "model=$model" >> "$GITHUB_OUTPUT"

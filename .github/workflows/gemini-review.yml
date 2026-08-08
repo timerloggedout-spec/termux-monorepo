@@ -30,7 +30,7 @@ jobs:
       issues: write
       pull-requests: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           persist-credentials: false
           fetch-depth: 0
@@ -56,7 +56,7 @@ jobs:
 
       - name: Skip comment when no capacity
         if: steps.router.outputs.skip == 'true'
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
           PR_NUMBER: ${{ inputs.pr_number || github.event.pull_request.number }}
           REASON: ${{ steps.router.outputs.reason }}
@@ -65,8 +65,8 @@ jobs:
             const n = Number(process.env.PR_NUMBER);
             if (!n) return;
             const marker = '<!-- gemini-review-quota-skip -->';
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner, repo: context.repo.repo, issue_number: n, per_page: 30,
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner, repo: context.repo.repo, issue_number: n, per_page: 100,
             });
             if (comments.some(c => c.body && c.body.includes(marker))) return;
             await github.rest.issues.createComment({
@@ -82,7 +82,7 @@ jobs:
 
       - name: Run Gemini CLI PR review
         if: steps.router.outputs.skip != 'true' && steps.router.outputs.provider == 'gemini'
-        uses: google-github-actions/run-gemini-cli@v0
+        uses: google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489 # v0.1.22
         continue-on-error: true
         env:
           GEMINI_CLI_TRUST_WORKSPACE: 'true'
@@ -92,6 +92,7 @@ jobs:
           EXTRA_CTX: ${{ inputs.additional_context }}
         with:
           gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
+          gemini_model: ${{ steps.router.outputs.model }}
           github_pr_number: ${{ inputs.pr_number || github.event.pull_request.number }}
           prompt: |
             You are the free-tier PR reviewer for termux-monorepo (SELECTED_MODEL env).
@@ -111,7 +112,7 @@ jobs:
 
       - name: OpenRouter fallback note
         if: steps.router.outputs.provider == 'openrouter'
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
           PR_NUMBER: ${{ inputs.pr_number || github.event.pull_request.number }}
           MODEL: ${{ steps.router.outputs.model }}

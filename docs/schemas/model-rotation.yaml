@@ -1,19 +1,24 @@
-# Model rotation & free-tier quota registry
-# Source of truth for agentic CI/CD model selection.
+# Model rotation & free-tier quota registry (policy reference)
+#
+# RUNTIME: soft budgets are currently inlined in
+#   .github/actions/model-router/action.yml
+# (no yq dependency on ubuntu-latest). Keep the shell table and this file
+# in sync by hand until a parse path lands (RL-02 follow-up).
+#
 # Updated from AI Studio rate-limit page (issue #86 snapshot 2026-08-08).
 #
 # Policy:
 # - Prefer high-RPD Lite models for triage/invoke
-# - Reserve limited Flash RPD for review quality
-# - On Gemini exhaustion → OpenRouter if OPENROUTER_API_KEY present
+# - Reserve limited Flash RPD for review quality (soft 15/20)
+# - On Gemini exhaustion → skip (OpenRouter HTTP invoke is RL-05 foundation)
 # - Never hard-fail CI on quota; graceful skip + comment
+# - Actions cache counters are per-branch best-effort (not global RPD)
 
 version: 1
-updated_at: "2026-08-08T18:00:00Z"
+updated_at: "2026-08-08T21:00:00Z"
 updated_by: grok
 source_issue: 86
 
-# Pacific midnight aligns with Google AI Studio free-tier RPD reset.
 reset_tz: America/Los_Angeles
 
 providers:
@@ -21,13 +26,13 @@ providers:
     secret: GEMINI_API_KEY
     notes: "Free tier CLI-Build project. RPM + TPM + RPD all apply."
     models:
-      # Overloaded historically — avoid as default
       gemini-3.5-flash:
         id: gemini-3.5-flash
         category: text-out
         rpm: 5
         tpm: 250000
         rpd: 20
+        soft_rpd: 15
         roles: [review]
         priority: 30
         status: constrained
@@ -39,10 +44,10 @@ providers:
         rpm: 15
         tpm: 250000
         rpd: 500
+        soft_rpd: 450
         roles: [triage, invoke, review-fallback]
         priority: 10
         status: preferred
-        note: "Primary workhorse for free-tier agentic CI"
 
       gemini-3.5-flash-lite:
         id: gemini-3.5-flash-lite
@@ -50,6 +55,7 @@ providers:
         rpm: 15
         tpm: 250000
         rpd: 500
+        soft_rpd: 450
         roles: [triage, invoke, review-fallback]
         priority: 11
         status: preferred
@@ -60,6 +66,7 @@ providers:
         rpm: 10
         tpm: 250000
         rpd: 20
+        soft_rpd: 15
         roles: [triage, invoke]
         priority: 40
         status: backup
@@ -70,6 +77,7 @@ providers:
         rpm: 5
         tpm: 250000
         rpd: 20
+        soft_rpd: 15
         roles: [review]
         priority: 35
         status: backup
@@ -80,6 +88,7 @@ providers:
         rpm: 5
         tpm: 250000
         rpd: 20
+        soft_rpd: 15
         roles: [review]
         priority: 36
         status: backup
@@ -87,25 +96,14 @@ providers:
   openrouter:
     secret: OPENROUTER_API_KEY
     base_url: https://openrouter.ai/api/v1
-    notes: "Fallback when Gemini RPD/RPM exhausted. Pay-per-use; maximize ROI."
+    notes: "Fallback foundation only until HTTP invoke is wired (RL-05)."
     models:
       openrouter/auto:
         id: openrouter/auto
         roles: [triage, review, invoke]
         priority: 50
         status: fallback
-      google/gemini-2.0-flash-001:
-        id: google/gemini-2.0-flash-001
-        roles: [triage, invoke, review-fallback]
-        priority: 51
-        status: fallback
-      google/gemini-flash-1.5:
-        id: google/gemini-flash-1.5
-        roles: [triage, invoke]
-        priority: 52
-        status: fallback
 
-# Role → preferred model order (first available with headroom wins)
 role_matrix:
   triage:
     primary:
@@ -113,10 +111,7 @@ role_matrix:
       - gemini-3.5-flash-lite
     fallback:
       - gemini-2.5-flash-lite
-      - openrouter/auto
     max_prompt_chars: 4000
-    note: "Cheap + high RPD. Compress prompts (issue #90)."
-
   review:
     primary:
       - gemini-3.5-flash
@@ -124,25 +119,18 @@ role_matrix:
       - gemini-3-flash
     fallback:
       - gemini-3.1-flash-lite
-      - openrouter/auto
     max_prompt_chars: 8000
-    note: "Quality first but respect 20 RPD; session-skip saves quota."
-
   invoke:
     primary:
       - gemini-3.1-flash-lite
       - gemini-3.5-flash-lite
-    fallback:
-      - openrouter/auto
+    fallback: []
     max_prompt_chars: 6000
-    note: "On-demand; default Lite."
 
-# Job-invocation safety margin (workflow jobs, not model requests)
 job_gate:
   daily_limit: 100
-  note: "Tightened from 900 — each job may issue many model RPM."
+  note: "Target value for gemini-quota-gate when #81 lands (RL-06 still todo)."
 
-# Coordination with PR #81 / #72
 related:
   quota_gate: .github/actions/gemini-quota-gate
   promote_pr: 81

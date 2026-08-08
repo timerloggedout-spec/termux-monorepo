@@ -100,6 +100,7 @@ jobs:
 
       - name: OpenRouter free-tier review (FB-01)
         if: steps.router.outputs.skip != 'true' && steps.router.outputs.provider == 'openrouter'
+        continue-on-error: true
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           SELECTED_MODEL: ${{ steps.router.outputs.model }}

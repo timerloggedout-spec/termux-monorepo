@@ -30,8 +30,7 @@ def _detect_adb_device():
     """Find the first online adb device serial."""
     global ADB_SERIAL
     try:
-        r = subprocess.run('adb devices', shell=True, capture_output=True,
-                           text=True, timeout=5)
+        r = subprocess.run(['adb', 'devices'], shell=False, capture_output=True, text=True, timeout=5)
         for line in r.stdout.strip().split('\n')[1:]:
             if '\tdevice' in line:
                 ADB_SERIAL = line.split('\t')[0]
@@ -41,7 +40,7 @@ def _detect_adb_device():
     return None
 
 
-def run(cmd, shell=True, timeout=15):
+def run(cmd, shell=False, timeout=15):
     try:
         r = subprocess.run(cmd, shell=shell, capture_output=True, text=True,
                            timeout=timeout, encoding='utf-8', errors='replace')

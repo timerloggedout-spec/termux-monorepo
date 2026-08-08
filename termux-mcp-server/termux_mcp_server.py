@@ -1066,18 +1066,18 @@ async def get_storage_info() -> str:
 async def get_device_info() -> str:
     """Get comprehensive device information (model, Android version, etc.)."""
     commands = {
-        'Model': 'getprop ro.product.model',
-        'Brand': 'getprop ro.product.brand',
-        'Android Version': 'getprop ro.build.version.release',
-        'SDK Level': 'getprop ro.build.version.sdk',
-        'Build': 'getprop ro.build.display.id',
-        'Kernel': 'uname -r',
-        'Architecture': 'uname -m',
-        'Uptime': 'uptime',
+        'Model': ['getprop', 'ro.product.model'],
+        'Brand': ['getprop', 'ro.product.brand'],
+        'Android Version': ['getprop', 'ro.build.version.release'],
+        'SDK Level': ['getprop', 'ro.build.version.sdk'],
+        'Build': ['getprop', 'ro.build.display.id'],
+        'Kernel': ['uname', '-r'],
+        'Architecture': ['uname', '-m'],
+        'Uptime': ['uptime'],
     }
     lines = []
     for label, cmd in commands.items():
-        r = _run(cmd, shell=True, timeout=5)
+        r = _run(cmd, timeout=5)
         val = r.get('stdout', '').strip() or 'N/A'
         lines.append(f"{label}: {val}")
     return "\n".join(lines)

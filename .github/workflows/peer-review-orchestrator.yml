@@ -45,6 +45,7 @@ jobs:
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           MAX_WAIT_SEC: '480'
           POLL_SEC: '30'
+          PR_UPDATED_AT: ${{ github.event.pull_request.updated_at }}
         with:
           script: |
             const prNumber = Number(process.env.PR_NUMBER);
@@ -54,13 +55,16 @@ jobs:
             const isPeer = (login) => /coderabbit|devin-ai|aikido|sentry|copilot-pull-request/.test((login || '').toLowerCase());
             const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
-            // Head commit timestamp — only count peer activity after this push
-            let headPushedAt = 0;
+            // Prefer PR event timestamp over commit metadata (trusted server-side)
+            let activityAfter = process.env.PR_UPDATED_AT
+              ? new Date(process.env.PR_UPDATED_AT).getTime() - 5 * 60 * 1000
+              : 0;
             try {
               const { data: commit } = await github.rest.repos.getCommit({
                 owner: context.repo.owner, repo: context.repo.repo, ref: headSha,
               });
-              headPushedAt = new Date(commit.commit.committer?.date || commit.commit.author?.date || 0).getTime();
+              const ct = new Date(commit.commit.committer?.date || commit.commit.author?.date || 0).getTime();
+              if (ct) activityAfter = Math.max(activityAfter, ct - 60_000);
             } catch (e) {
               core.info('getCommit skip: ' + e.message);
             }
@@ -71,16 +75,14 @@ jobs:
             let anyPeerSeen = false;
 
             while (Date.now() - started < maxWait * 1000) {
-              const { data: reviews } = await github.rest.pulls.listReviews({
+              const reviewPages = await github.paginate(github.rest.pulls.listReviews, {
                 owner: context.repo.owner, repo: context.repo.repo,
                 pull_number: prNumber, per_page: 50,
               });
-              // Prefer reviews on current head; also accept reviews without commit_id
-              const peerReviews = reviews.filter(r => {
-                if (!isPeer(r.user?.login)) return false;
-                if (!r.commit_id) return true;
-                return r.commit_id === headSha;
-              });
+              // Strict: only reviews with commit_id matching current head
+              const peerReviews = reviewPages.filter(r =>
+                isPeer(r.user?.login) && r.commit_id === headSha
+              );
               if (peerReviews.some(r => (r.user?.login || '').toLowerCase().includes('coderabbit'))) {
                 coderabbitSeen = true;
               }
@@ -92,8 +94,8 @@ jobs:
               });
               const peerComments = comments.filter(c => {
                 if (!isPeer(c.user?.login)) return false;
-                if (!headPushedAt) return true;
-                return new Date(c.created_at).getTime() >= headPushedAt - 60_000;
+                if (!activityAfter) return true;
+                return new Date(c.created_at).getTime() >= activityAfter;
               });
               if (peerComments.some(c => (c.user?.login || '').toLowerCase().includes('coderabbit'))) {
                 coderabbitSeen = true;
@@ -148,7 +150,6 @@ jobs:
           CR_SEEN: ${{ steps.wait.outputs.coderabbit_seen }}
           HAS_OPERATOR_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN != '' }}
         with:
-          # Critical: github-token input, not env, authenticates the client
           github-token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const prNumber = Number(process.env.PR_NUMBER);
@@ -164,8 +165,10 @@ jobs:
               core.setOutput('posted', 'false');
               return;
             }
+            // 45m throttle: ignore our own per-SHA marker comments so new SHAs can still request
             const recentAutofix = comments.some(c => {
               if (!c.body) return false;
+              if (c.body.includes(marker)) return false;
               const body = c.body.toLowerCase();
               if (!body.includes('@coderabbitai') || !body.includes('autofix')) return false;
               return (Date.now() - new Date(c.created_at).getTime()) < 45 * 60 * 1000;
@@ -225,7 +228,6 @@ jobs:
               core.info('peer-review-ready already posted for this SHA');
               return;
             }
-            // Do NOT include the autofix command text here (avoids double-trigger)
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,

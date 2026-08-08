@@ -1,0 +1,45 @@
+# Production routing priority — FREE TIER ROI
+# Operator lock-in 2026-08-08 (Stack #99 / #91 / #94)
+#
+# Burn high-aggregate free capacity FIRST.
+# Preserve Gemini RPD + Jules slots for residual / second-pass / long builds.
+
+version: 1
+updated_at: "2026-08-08T23:00:00Z"
+policy: free_tier_max_roi
+
+order:
+  - id: omni
+    rank: 1
+    label: primary
+    secrets: [OMNI_API_KEY, OMNIROUTE_API_KEY]  # either
+    base_url_secret: OMNI_BASE_URL
+    default_base: https://cloud.omniroute.online/v1
+    default_model: auto/best-free
+    notes: |
+      OmniRoute aggregates free providers (Groq, Cerebras, Mistral, Pollinations, …)
+      with automatic failover. One key → pooled free quota.
+  - id: openrouter
+    rank: 2
+    label: secondary
+    secrets: [OPENROUTER_API_KEY]
+    default_base: https://openrouter.ai/api/v1
+    model_suffix_required: ":free"
+    notes: Direct :free catalog when Omni path missing or soft-budgeted out.
+  - id: gemini
+    rank: 3
+    label: residual
+    secrets: [GEMINI_API_KEY]
+    notes: AI Studio free RPD — do NOT lead with this; second-pass / overflow only.
+  - id: jules
+    rank: 4
+    label: async_builder
+    notes: Cloud VM implementation later — not first-line triage/review.
+
+matrix_semantics:
+  valleys: loss-landscape / under-ranked free models that win on OUR harness
+  labels: our success metrics + 3L0 (ELO++) — not public leaderboard rank
+  public_boards: features only (see llm-leaderboard-matrix.yaml)
+
+related_issues: [91, 94, 86, 88, 97]
+stack: 99

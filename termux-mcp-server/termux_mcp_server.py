@@ -264,11 +264,11 @@ async def adb_connect(pair_code: str = "", pair_port: str = "", connect_port: st
 
     # Step 2: Connect
     if connect_port:
-        r = _run(f'adb connect localhost:{connect_port}', shell=True, timeout=10)
+        r = _run(['adb', 'connect', f'localhost:{connect_port}'], timeout=10)
         results.append(f"Connect: {r.get('stdout', '')} {r.get('stderr', '')}")
     elif not pair_code:
         # Try common port
-        r = _run('adb connect localhost:5555', shell=True, timeout=10)
+        r = _run(['adb', 'connect', 'localhost:5555'], timeout=10)
         results.append(f"Connect: {r.get('stdout', '')} {r.get('stderr', '')}")
 
     # Verify
@@ -292,7 +292,7 @@ async def list_running_apps() -> str:
     r = _run(['ps', '-eo', 'pid,user,%cpu,%mem,args', '--sort=-%cpu'], timeout=10)
     if not r['success']:
         # fallback
-        r = _run('ps aux', shell=True, timeout=10)
+        r = _run(['ps', 'aux'], timeout=10)
     return r.get('stdout', r.get('error', 'Failed to list processes'))
 
 
@@ -334,7 +334,12 @@ async def open_app(package_or_action: str) -> str:
                    'android.intent.category.LAUNCHER', '1'], timeout=10)
     if not r['success']:
         # final fallback: am start with package
-        r = _run(f'am start $(pm resolve-activity --brief {package_or_action} | tail -1)', shell=True, timeout=10)
+        brief_res = _run(['pm', 'resolve-activity', '--brief', package_or_action], timeout=10)
+        if brief_res['success'] and brief_res.get('stdout'):
+            last_line = brief_res['stdout'].splitlines()[-1].strip()
+            r = _run(['am', 'start', last_line], timeout=10)
+        else:
+            r = {'success': False, 'error': 'Could not resolve activity brief'}
     return r.get('stdout', '') + ('\n' + r.get('stderr', '') if r.get('stderr') else '')
 
 
@@ -345,10 +350,11 @@ async def list_android_packages(filter_keyword: str = "") -> str:
     Args:
         filter_keyword: Optional keyword to filter package names (e.g. 'camera', 'wechat')
     """
-    if filter_keyword:
-        r = _run(f'pm list packages | grep -i {filter_keyword}', shell=True, timeout=15)
-    else:
-        r = _run(['pm', 'list', 'packages'], timeout=15)
+    r = _run(['pm', 'list', 'packages'], timeout=15)
+    if r['success'] and r.get('stdout') and filter_keyword:
+        lines = r['stdout'].splitlines()
+        filtered = [line for line in lines if filter_keyword.lower() in line.lower()]
+        r['stdout'] = '\n'.join(filtered)
     return r.get('stdout', r.get('error', 'Failed to list packages'))
 
 # ---------------------------------------------------------------------------
@@ -374,9 +380,9 @@ async def take_screenshot(output_path: str = "/data/data/com.termux/files/home/s
                 shutil.copy2(sdcard_real, output_path)
             except Exception:
                 # Try adb pull as fallback
-                _run(f'adb pull {tmp_path} {output_path}', shell=True, timeout=10)
+                _run(['adb', 'pull', tmp_path, output_path], timeout=10)
     else:
-        r = _run(f'screencap -p {output_path}', shell=True, timeout=10)
+        r = _run(['screencap', '-p', output_path], timeout=10)
 
     if not r.get('success'):
         return f"Error taking screenshot: {r.get('error', r.get('stderr', 'Unknown'))}"
@@ -397,7 +403,7 @@ async def take_screenshot(output_path: str = "/data/data/com.termux/files/home/s
 @mcp.tool()
 async def get_screen_size() -> str:
     """Get the phone screen resolution (width x height in pixels)."""
-    r = _run('wm size', shell=True, timeout=5)
+    r = _run(['wm', 'size'], timeout=5)
     return r.get('stdout', r.get('error', 'Failed'))
 
 
@@ -411,7 +417,7 @@ async def tap_screen(x: int, y: int) -> str:
         x: X coordinate (pixels from left)
         y: Y coordinate (pixels from top)
     """
-    r = _run(f'input tap {x} {y}', shell=True, timeout=5)
+    r = _run(['input', 'tap', str(x), str(y)], timeout=5)
     if r['success']:
         return f"Tapped at ({x}, {y})"
     return f"Error: {r.get('error', r.get('stderr', 'Failed'))}"
@@ -426,7 +432,7 @@ async def long_press(x: int, y: int, duration_ms: int = 1000) -> str:
         y: Y coordinate
         duration_ms: Press duration in milliseconds (default: 1000)
     """
-    r = _run(f'input swipe {x} {y} {x} {y} {duration_ms}', shell=True, timeout=10)
+    r = _run(['input', 'swipe', str(x), str(y), str(x), str(y), str(duration_ms)], timeout=10)
     if r['success']:
         return f"Long pressed at ({x}, {y}) for {duration_ms}ms"
     return f"Error: {r.get('error', r.get('stderr', 'Failed'))}"
@@ -443,7 +449,7 @@ async def swipe_screen(x1: int, y1: int, x2: int, y2: int, duration_ms: int = 30
         y2: End Y coordinate
         duration_ms: Swipe duration in milliseconds (default: 300)
     """
-    r = _run(f'input swipe {x1} {y1} {x2} {y2} {duration_ms}', shell=True, timeout=10)
+    r = _run(['input', 'swipe', str(x1), str(y1), str(x2), str(y2), str(duration_ms)], timeout=10)
     if r['success']:
         return f"Swiped from ({x1},{y1}) to ({x2},{y2}) in {duration_ms}ms"
     return f"Error: {r.get('error', r.get('stderr', 'Failed'))}"
@@ -461,7 +467,7 @@ async def input_text(text: str) -> str:
     """
     # Replace spaces with %s for 'input text'
     escaped = text.replace(' ', '%s')
-    r = _run(f'input text "{escaped}"', shell=True, timeout=10)
+    r = _run(['input', 'text', escaped], timeout=10)
     if r['success']:
         return f"Typed: {text}"
     return f"Error: {r.get('error', r.get('stderr', 'Failed'))}"
@@ -481,11 +487,11 @@ async def input_chinese_text(text: str) -> str:
     if clip_result and 'Error' in clip_result:
         return f"Failed to set clipboard: {clip_result}"
     # Step 2: Paste (Ctrl+V = KEYCODE_PASTE = 279)
-    r = _run('input keyevent 279', shell=True, timeout=5)
+    r = _run(['input', 'keyevent', '279'], timeout=5)
     if r['success']:
         return f"Pasted text: {text}"
     # Fallback: try Ctrl+V combo
-    r = _run('input keyevent --longpress 113 50', shell=True, timeout=5)
+    r = _run(['input', 'keyevent', '--longpress', '113', '50'], timeout=5)
     return f"Attempted paste of: {text}"
 
 
@@ -507,7 +513,7 @@ async def input_keyevent(keycode: str) -> str:
             - '279' or 'KEYCODE_PASTE' = Paste
             - '84' or 'KEYCODE_SEARCH' = Search
     """
-    r = _run(f'input keyevent {keycode}', shell=True, timeout=5)
+    r = _run(['input', 'keyevent', str(keycode)], timeout=5)
     if r['success']:
         return f"Sent keyevent: {keycode}"
     return f"Error: {r.get('error', r.get('stderr', 'Failed'))}"
@@ -534,9 +540,9 @@ async def dump_ui(output_path: str = "/data/data/com.termux/files/home/ui_dump.x
             try:
                 shutil.copy2(sdcard_real, output_path)
             except Exception:
-                _run(f'adb pull {tmp_dump} {output_path}', shell=True, timeout=10)
+                _run(['adb', 'pull', tmp_dump, output_path], timeout=10)
     else:
-        r = _run(f'uiautomator dump {output_path}', shell=True, timeout=15)
+        r = _run(['uiautomator', 'dump', output_path], timeout=15)
 
     if not r.get('success'):
         return f"Error dumping UI: {r.get('error', r.get('stderr', 'Unknown'))}"
@@ -620,9 +626,9 @@ async def find_and_tap(text: str) -> str:
             try:
                 shutil.copy2(sdcard_real, dump_path)
             except Exception:
-                _run(f'adb pull {tmp_dump} {dump_path}', shell=True, timeout=10)
+                _run(['adb', 'pull', tmp_dump, dump_path], timeout=10)
     else:
-        r = _run(f'uiautomator dump {dump_path}', shell=True, timeout=15)
+        r = _run(['uiautomator', 'dump', dump_path], timeout=15)
 
     if not r.get('success'):
         return f"Error dumping UI: {r.get('error', r.get('stderr', 'Unknown'))}"
@@ -645,7 +651,7 @@ async def find_and_tap(text: str) -> str:
         if text_lower in node_text.lower() or text_lower in desc.lower():
             cx = (int(x1) + int(x2)) // 2
             cy = (int(y1) + int(y2)) // 2
-            r = _run(f'input tap {cx} {cy}', shell=True, timeout=5)
+            r = _run(['input', 'tap', str(cx), str(cy)], timeout=5)
             found_label = node_text or desc
             return f"Found \"{found_label}\" → tapped at ({cx}, {cy})"
 
@@ -655,21 +661,21 @@ async def find_and_tap(text: str) -> str:
 @mcp.tool()
 async def go_home() -> str:
     """Press the Home button to go to the home screen."""
-    r = _run('input keyevent 3', shell=True, timeout=5)
+    r = _run(['input', 'keyevent', '3'], timeout=5)
     return "Home button pressed" if r['success'] else f"Error: {r.get('stderr', 'Failed')}"
 
 
 @mcp.tool()
 async def go_back() -> str:
     """Press the Back button."""
-    r = _run('input keyevent 4', shell=True, timeout=5)
+    r = _run(['input', 'keyevent', '4'], timeout=5)
     return "Back button pressed" if r['success'] else f"Error: {r.get('stderr', 'Failed')}"
 
 
 @mcp.tool()
 async def open_recent_apps() -> str:
     """Open the recent apps / app switcher."""
-    r = _run('input keyevent 187', shell=True, timeout=5)
+    r = _run(['input', 'keyevent', '187'], timeout=5)
     return "Recent apps opened" if r['success'] else f"Error: {r.get('stderr', 'Failed')}"
 
 
@@ -677,13 +683,22 @@ async def open_recent_apps() -> str:
 async def get_current_app() -> str:
     """Get the currently focused app (package name and activity)."""
     # Try dumpsys
-    r = _run("dumpsys activity activities | grep -E 'mResumedActivity|mCurrentFocus' | head -3",
-             shell=True, timeout=10)
+    r = _run(['dumpsys', 'activity', 'activities'], timeout=10)
     if r['success'] and r.get('stdout'):
-        return r['stdout']
+        matched_lines = []
+        for l in r['stdout'].splitlines():
+            if 'mResumedActivity' in l or 'mCurrentFocus' in l:
+                matched_lines.append(l)
+        if matched_lines:
+            return '\n'.join(matched_lines[:3])
     # Fallback
-    r = _run("dumpsys window | grep -E 'mCurrentFocus|mFocusedApp' | head -3",
-             shell=True, timeout=10)
+    r = _run(['dumpsys', 'window'], timeout=10)
+    if r['success'] and r.get('stdout'):
+        matched_lines = []
+        for l in r['stdout'].splitlines():
+            if 'mCurrentFocus' in l or 'mFocusedApp' in l:
+                matched_lines.append(l)
+        r['stdout'] = '\n'.join(matched_lines[:3])
     return r.get('stdout', r.get('error', 'Failed to get current app'))
 
 
@@ -1039,45 +1054,11 @@ async def write_file(file_path: str, content: str) -> str:
 
 
 @mcp.tool()
-async def execute_command(command: str, working_directory: str = ".", timeout: int = 30) -> str:
-    """Execute a shell command on the phone.
-
-    Args:
-        command: Shell command to execute
-        working_directory: Working directory (default: current)
-        timeout: Timeout in seconds (default: 30)
-    """
-    cmd_parts = command.strip().split()
-    if cmd_parts and cmd_parts[0].lower() in BLOCKED_COMMANDS:
-        return f"Error: Command '{cmd_parts[0]}' is blocked for safety"
-
-    try:
-        result = subprocess.run(
-            command, shell=True, capture_output=True, text=True,
-            timeout=timeout, cwd=working_directory,
-            encoding='utf-8', errors='replace',
-            env=_ensure_path_env(),
-        )
-        output = []
-        if result.stdout.strip():
-            output.append(result.stdout.strip())
-        if result.stderr.strip():
-            output.append(f"[stderr] {result.stderr.strip()}")
-        output.append(f"[exit code: {result.returncode}]")
-        return "\n".join(output)
-    except subprocess.TimeoutExpired:
-        return f"Error: Command timed out after {timeout}s"
-    except Exception as e:
-        return f"Error: {e}"
-
-# ---------------------------------------------------------------------------
-# Storage Info
-# ---------------------------------------------------------------------------
-
-@mcp.tool()
 async def get_storage_info() -> str:
     """Get phone storage usage information (disk space)."""
-    r = _run('df -h /storage/emulated/0 /data 2>/dev/null || df -h', shell=True, timeout=10)
+    r = _run(['df', '-h', '/storage/emulated/0', '/data'], timeout=10)
+    if not r['success']:
+        r = _run(['df', '-h'], timeout=10)
     return r.get('stdout', r.get('error', 'Failed'))
 
 
@@ -1108,7 +1089,7 @@ async def get_device_info() -> str:
 @mcp.tool()
 async def get_screen_brightness() -> str:
     """Get current screen brightness level."""
-    r = _run('settings get system screen_brightness', shell=True, timeout=5)
+    r = _run(['settings', 'get', 'system', 'screen_brightness'], timeout=5)
     val = r.get('stdout', '').strip()
     return f"Screen brightness: {val}/255" if val else r.get('error', 'Failed')
 
@@ -1121,7 +1102,7 @@ async def set_screen_brightness(level: int) -> str:
         level: Brightness level 0-255
     """
     level = max(0, min(255, level))
-    r = _run(f'settings put system screen_brightness {level}', shell=True, timeout=5)
+    r = _run(['settings', 'put', 'system', 'screen_brightness', str(level)], timeout=5)
     return r.get('stdout', '') or f"Brightness set to {level}/255"
 
 # ---------------------------------------------------------------------------

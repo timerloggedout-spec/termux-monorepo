@@ -3,7 +3,7 @@
 /**
  * phone-mcp-server — Turn your Android phone into an MCP server
  *
- * Exposes 18 phone tools (SMS, contacts, camera, location, clipboard, etc.)
+ * Exposes 17 phone tools (SMS, contacts, camera, location, clipboard, etc.)
  * over HTTP using the Model Context Protocol (MCP). AI assistants like
  * GitHub Copilot CLI, Claude Desktop, and others can connect and control
  * your phone remotely.
@@ -423,41 +423,7 @@ server.tool(
 
 // ---- Bonus: Shell Command (restricted) ----
 
-const BLOCKED_COMMANDS = [
-  "rm -rf /",
-  "mkfs",
-  "dd if=",
-  "reboot",
-  "shutdown",
-  "> /dev/",
-  "chmod 777 /",
-];
 
-server.tool(
-  "shell",
-  "Run a shell command on the phone (with safety filters). For quick lookups and diagnostics.",
-  {
-    command: z.string().describe("Shell command to execute"),
-  },
-  async ({ command }) => {
-    const lower = command.toLowerCase();
-    for (const blocked of BLOCKED_COMMANDS) {
-      if (lower.includes(blocked)) {
-        return err(`Blocked command: contains '${blocked}'`);
-      }
-    }
-    try {
-      const { stdout, stderr } = await exec("sh", ["-c", command], {
-        timeout: 15_000,
-        maxBuffer: 5 * 1024 * 1024,
-      });
-      const output = [stdout.trim(), stderr.trim()].filter(Boolean).join("\n---stderr---\n");
-      return text(output || "(no output)");
-    } catch (e) {
-      return err(e.message);
-    }
-  }
-);
 
 // ---------------------------------------------------------------------------
 // HTTP Transport — Express server with Streamable HTTP
@@ -476,7 +442,7 @@ app.get("/health", (_req, res) => {
     server: "phone-mcp",
     version: "1.0.0",
     uptime: process.uptime(),
-    tools: 18,
+    tools: 17,
   });
 });
 
@@ -563,7 +529,7 @@ app.listen(PORT, "0.0.0.0", () => {
   log(`   Local:   http://localhost:${PORT}/mcp`);
   log(`   Network: http://${ip}:${PORT}/mcp`);
   log(`   Health:  http://${ip}:${PORT}/health`);
-  log("   Tools:   18 phone tools via Termux:API");
+  log("   Tools:   17 phone tools via Termux:API");
   log("========================================");
   log("");
   log("Add this to your MCP client config:");

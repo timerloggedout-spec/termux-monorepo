@@ -73,19 +73,38 @@ jobs:
               prUrl;
 
             async function linear(query, variables) {
-              const res = await fetch('https://api.linear.app/graphql', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: key,
-                },
-                body: JSON.stringify({ query, variables }),
-              });
-              const json = await res.json();
-              if (json.errors) {
-                throw new Error(JSON.stringify(json.errors));
+              try {
+                const res = await fetch('https://api.linear.app/graphql', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: key,
+                  },
+                  body: JSON.stringify({ query, variables }),
+                });
+                const json = await res.json();
+                if (json.errors) {
+                  const isLimit = json.errors.some(e =>
+                    (e.message && (
+                      e.message.toLowerCase().includes('limit exceeded') ||
+                      e.message.toLowerCase().includes('usage limit')
+                    )) ||
+                    (e.extensions && e.extensions.code === 'USAGE_LIMIT_EXCEEDED')
+                  );
+                  if (isLimit) {
+                    core.warning('Linear workspace limit exceeded (free issue limit). Skipping Linear sync.');
+                    return { _skippedLimit: true };
+                  }
+                  throw new Error(JSON.stringify(json.errors));
+                }
+                return json.data;
+              } catch (err) {
+                if (err.message && (err.message.includes('limit exceeded') || err.message.includes('USAGE_LIMIT_EXCEEDED'))) {
+                  core.warning('Linear workspace limit exceeded. Skipping Linear sync.');
+                  return { _skippedLimit: true };
+                }
+                throw err;
               }
-              return json.data;
             }
 
             const teamId = '1e672463-31de-40b2-a378-3c03fd8f7e3b';
@@ -104,6 +123,8 @@ jobs:
                 }
               }
             );
+            if (search._skippedLimit) return;
+
             let parentId = search.issues?.nodes?.find(
               n => n.title === parentTitle
             )?.id;
@@ -133,6 +154,7 @@ jobs:
                   },
                 }
               );
+              if (created._skippedLimit) return;
               parentId = created.issueCreate.issue.id;
               core.info(`Created parent ${created.issueCreate.issue.identifier}`);
             }
@@ -140,6 +162,7 @@ jobs:
             const labels = await linear(
               `query { issueLabels(filter: { name: { eq: "agent-feedback" } }) { nodes { id } } }`
             );
+            if (labels._skippedLimit) return;
             const labelId = labels.issueLabels?.nodes?.[0]?.id;
 
             const subTitle = path
@@ -175,6 +198,7 @@ jobs:
                 },
               }
             );
+            if (sub._skippedLimit) return;
             core.info(`Subtask ${sub.issueCreate.issue.identifier} ${sub.issueCreate.issue.url}`);
 
             if (context.payload.comment?.id) {

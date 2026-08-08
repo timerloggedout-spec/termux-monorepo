@@ -1,0 +1,46 @@
+{
+  "name": "phone-mcp-server",
+  "version": "1.0.0",
+  "description": "Turn your Android phone into an MCP server for AI assistants — control SMS, contacts, flashlight, clipboard, and more via Termux",
+  "type": "module",
+  "main": "server.js",
+  "bin": {
+    "phone-mcp": "./server.js"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js --verbose"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "android",
+    "termux",
+    "ai",
+    "copilot",
+    "claude",
+    "sms",
+    "phone",
+    "iot",
+    "home-automation",
+    "termux-api"
+  ],
+  "author": "Hector Rocha <hector@htek.dev> (https://htek.dev)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/htekdev/phone-mcp-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/htekdev/phone-mcp-server/issues"
+  },
+  "homepage": "https://github.com/htekdev/phone-mcp-server#readme",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "express": "^4.21.0",
+    "zod": "^3.23.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

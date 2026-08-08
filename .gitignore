@@ -156,3 +156,11 @@ concat_work_*/joined_videos/
 *.db
 *.sqlite
 *.sqlite3
+
+# MCP server ignores
+termux-mcp-server/.venv/
+phone-mcp-server/node_modules/
+phone-mcp-server/.venv/
+termux-mcp-server/__pycache__/
+termux-mcp-server/*.pyc
+phone-mcp-server/package-lock.json

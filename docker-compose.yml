@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  phone-mcp:
+    build:
+      context: ./phone-mcp-server
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - VERBOSE=true
+
+  termux-mcp:
+    build:
+      context: ./termux-mcp-server
+      dockerfile: Dockerfile
+    stdin_open: true
+    tty: true

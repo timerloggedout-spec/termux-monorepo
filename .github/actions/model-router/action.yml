@@ -14,7 +14,7 @@ inputs:
     required: false
     default: 'false'
   registry-path:
-    description: 'Path to model-rotation.yaml (informational)'
+    description: 'Path to model-rotation.yaml'
     required: false
     default: 'docs/schemas/model-rotation.yaml'
 
@@ -42,7 +42,7 @@ runs:
 
     - name: Restore per-model counters
       id: restore
-      uses: actions/cache/restore@v4
+      uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
       with:
         path: /tmp/model-router
         key: model-router-${{ steps.date.outputs.key }}
@@ -55,6 +55,7 @@ runs:
       env:
         ROLE: ${{ inputs.role }}
         HAS_OPENROUTER: ${{ inputs.has-openrouter }}
+        REGISTRY_PATH: ${{ inputs.registry-path }}
       run: |
         set -eu
         DIR=/tmp/model-router
@@ -71,29 +72,51 @@ runs:
           echo $((c + 1)) > "$f"
         }
 
-        # Soft RPD budgets (safety margin under published free-tier)
-        # Lite preferred for triage/invoke; Flash reserved for review.
-        case "$ROLE" in
-          triage)
-            CANDIDATES="gemini-3.1-flash-lite:450 gemini-3.5-flash-lite:450 gemini-2.5-flash-lite:15"
-            OR_FALLBACK="openrouter/auto"
-            ;;
-          review)
-            CANDIDATES="gemini-3.5-flash:15 gemini-2.5-flash:15 gemini-3-flash:15 gemini-3.1-flash-lite:450"
-            OR_FALLBACK="openrouter/auto"
-            ;;
-          invoke)
-            CANDIDATES="gemini-3.1-flash-lite:450 gemini-3.5-flash-lite:450"
-            OR_FALLBACK="openrouter/auto"
-            ;;
-          *)
-            echo "skip=true" >> "$GITHUB_OUTPUT"
-            echo "provider=none" >> "$GITHUB_OUTPUT"
-            echo "model=" >> "$GITHUB_OUTPUT"
-            echo "reason=unknown role $ROLE" >> "$GITHUB_OUTPUT"
-            exit 0
-            ;;
-        esac
+        # Read model candidates and RPD budgets from registry YAML
+        if [ ! -f "$REGISTRY_PATH" ]; then
+          echo "skip=true" >> "$GITHUB_OUTPUT"
+          echo "provider=none" >> "$GITHUB_OUTPUT"
+          echo "model=" >> "$GITHUB_OUTPUT"
+          echo "reason=registry file not found: $REGISTRY_PATH" >> "$GITHUB_OUTPUT"
+          exit 0
+        fi
+
+        # Parse primary and fallback arrays for the role
+        primary_models=$(yq eval ".role_matrix.${ROLE}.primary[]" "$REGISTRY_PATH" 2>/dev/null || echo "")
+        fallback_models=$(yq eval ".role_matrix.${ROLE}.fallback[]" "$REGISTRY_PATH" 2>/dev/null || echo "")
+
+        if [ -z "$primary_models" ] && [ -z "$fallback_models" ]; then
+          echo "skip=true" >> "$GITHUB_OUTPUT"
+          echo "provider=none" >> "$GITHUB_OUTPUT"
+          echo "model=" >> "$GITHUB_OUTPUT"
+          echo "reason=unknown role $ROLE" >> "$GITHUB_OUTPUT"
+          exit 0
+        fi
+
+        # Build combined candidate list (primary + fallback), excluding OpenRouter models
+        CANDIDATES=""
+        OR_FALLBACK=""
+
+        for model in $primary_models $fallback_models; do
+          # Check if this is an OpenRouter model
+          if [[ "$model" == openrouter/* ]] || [[ "$model" == google/* ]]; then
+            # This is the OpenRouter fallback
+            if [ -z "$OR_FALLBACK" ]; then
+              OR_FALLBACK="$model"
+            fi
+          else
+            # This is a Gemini model - get its RPD budget
+            rpd=$(yq eval ".providers.gemini_ai_studio.models.\"${model}\".rpd" "$REGISTRY_PATH" 2>/dev/null || echo "0")
+            if [ "$rpd" != "null" ] && [ "$rpd" != "0" ]; then
+              CANDIDATES="$CANDIDATES ${model}:${rpd}"
+            fi
+          fi
+        done
+
+        # Default to openrouter/auto if no fallback found
+        if [ -z "$OR_FALLBACK" ]; then
+          OR_FALLBACK="openrouter/auto"
+        fi
 
         CHOSEN=""
         for entry in $CANDIDATES; do
@@ -131,7 +154,7 @@ runs:
 
     - name: Save per-model counters
       if: steps.pick.outputs.skip != 'true'
-      uses: actions/cache/save@v4
+      uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
       with:
         path: /tmp/model-router
         key: model-router-${{ steps.date.outputs.key }}-${{ github.run_id }}-${{ github.run_attempt }}

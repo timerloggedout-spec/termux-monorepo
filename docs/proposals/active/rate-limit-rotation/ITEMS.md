@@ -12,3 +12,7 @@
 | RL-08 | OmniRoute hub integration surface | P2 | | todo | issue #91 |
 | RL-09 | Per-model Linear quota dashboard | P2 | | todo | |
 | RL-10 | Merge/rebase #81 quota-gate onto master | P0 | | todo | PR #81 |
+| RL-11 | Peer-review gate (wait CR/Devin/Aikido) | P0 | grok | done | peer-review-orchestrator.yml |
+| RL-12 | Auto `@coderabbitai autofix` after CR review | P0 | grok | done | peer-review-orchestrator |
+| RL-13 | Gemini second-pass after peers only | P0 | grok | done | gemini-after-peers.yml |
+| RL-14 | Devin Apply Suggestions automation | P1 | | partial | enable Auto-Fix in Devin Settings; no public click-API |

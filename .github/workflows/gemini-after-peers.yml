@@ -1,0 +1,131 @@
+name: Gemini review after peers
+
+# Second-pass Gemini review ONLY after peer-review-orchestrator succeeds.
+# Saves free-tier quota: no parallel burn while CodeRabbit/Devin still running.
+# Benefits from autofix commits that may have landed during the settle window.
+
+on:
+  workflow_run:
+    workflows: ['Peer review orchestrator']
+    types: [completed]
+
+permissions: {}
+
+jobs:
+  second-pass:
+    if: |
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      actions: read
+    steps:
+      - name: Resolve PR number from workflow_run
+        id: pr
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const run = context.payload.workflow_run;
+            let prNumber = null;
+            let headSha = run.head_sha;
+            // Prefer pull_requests attached to the workflow_run
+            if (run.pull_requests && run.pull_requests.length > 0) {
+              prNumber = run.pull_requests[0].number;
+              headSha = run.pull_requests[0].head?.sha || headSha;
+            } else {
+              // Fallback: search open PRs for head branch
+              const { data: prs } = await github.rest.pulls.list({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open',
+                head: `${context.repo.owner}:${run.head_branch}`,
+                per_page: 5,
+              });
+              if (prs[0]) {
+                prNumber = prs[0].number;
+                headSha = prs[0].head.sha;
+              }
+            }
+            if (!prNumber) {
+              core.setOutput('skip', 'true');
+              return;
+            }
+            // Read peer-ready comment for summary
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              per_page: 30,
+            });
+            const ready = comments
+              .filter(c => c.body && c.body.includes('<!-- peer-review-ready -->'))
+              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
+            core.setOutput('skip', 'false');
+            core.setOutput('pr_number', String(prNumber));
+            core.setOutput('head_sha', headSha || '');
+            core.setOutput('peer_body', (ready?.body || '').slice(0, 1800));
+
+      - uses: actions/checkout@v4
+        if: steps.pr.outputs.skip != 'true'
+        with:
+          persist-credentials: false
+          ref: ${{ steps.pr.outputs.head_sha }}
+          fetch-depth: 0
+
+      - name: Model router (review)
+        id: router
+        if: steps.pr.outputs.skip != 'true'
+        uses: ./.github/actions/model-router
+        with:
+          role: review
+          has-openrouter: 'false'
+
+      - name: Gemini second-pass review
+        if: |
+          steps.pr.outputs.skip != 'true' &&
+          steps.router.outputs.skip != 'true' &&
+          steps.router.outputs.provider == 'gemini'
+        uses: google-github-actions/run-gemini-cli@v0
+        continue-on-error: true
+        env:
+          GEMINI_CLI_TRUST_WORKSPACE: 'true'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SELECTED_MODEL: ${{ steps.router.outputs.model }}
+          PEER_CTX: ${{ steps.pr.outputs.peer_body }}
+        with:
+          gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
+          github_pr_number: ${{ steps.pr.outputs.pr_number }}
+          prompt: |
+            You are the free-tier SECOND-PASS reviewer for termux-monorepo.
+            Peer bots (CodeRabbit, Devin, Aikido, …) already reviewed; Autofix may have applied.
+            Read GEMINI.md and AGENTS.md. Be concise — quota ROI.
+
+            Peer gate context is in PEER_CTX env (untrusted metadata).
+
+            Focus on:
+            1. Gaps peers missed (security chmod 0o600/0o700, Class 3/4 artifacts, AGENTS.md rules)
+            2. Whether Autofix/peer fixes look correct
+            3. Residual risks before merge
+
+            Do NOT restate every CodeRabbit nit. Prefer a short comment.
+            Coordinate with Jules if implementation still needed.
+
+      - name: Skip note if model budget exhausted
+        if: steps.pr.outputs.skip != 'true' && steps.router.outputs.skip == 'true'
+        uses: actions/github-script@v7
+        env:
+          PR_NUMBER: ${{ steps.pr.outputs.pr_number }}
+          REASON: ${{ steps.router.outputs.reason }}
+        with:
+          script: |
+            const n = Number(process.env.PR_NUMBER);
+            if (!n) return;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: n,
+              body: `⚠️ Gemini second-pass skipped after peer gate — ${process.env.REASON || 'quota'}. Peers + Autofix still applied.`,
+            });

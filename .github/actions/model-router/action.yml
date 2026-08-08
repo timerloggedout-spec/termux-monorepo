@@ -1,0 +1,138 @@
+name: 'Model Router'
+description: |
+  Select Gemini / OpenRouter model for a role (triage|review|invoke)
+  using docs/schemas/model-rotation.yaml policy. Tracks per-model daily
+  counters (Pacific midnight). Prefer high-RPD Lite models; fall back to
+  OpenRouter when Gemini constrained models are exhausted.
+
+inputs:
+  role:
+    description: 'triage | review | invoke'
+    required: true
+  has-openrouter:
+    description: '"true" if secrets.OPENROUTER_API_KEY is non-empty'
+    required: false
+    default: 'false'
+  registry-path:
+    description: 'Path to model-rotation.yaml (informational)'
+    required: false
+    default: 'docs/schemas/model-rotation.yaml'
+
+outputs:
+  provider:
+    description: 'gemini | openrouter | none'
+    value: ${{ steps.pick.outputs.provider }}
+  model:
+    description: 'Model id to request'
+    value: ${{ steps.pick.outputs.model }}
+  skip:
+    description: '"true" if no capacity remains'
+    value: ${{ steps.pick.outputs.skip }}
+  reason:
+    description: 'Human-readable selection reason'
+    value: ${{ steps.pick.outputs.reason }}
+
+runs:
+  using: composite
+  steps:
+    - name: Pacific date key
+      id: date
+      shell: bash
+      run: echo "key=$(TZ=America/Los_Angeles date +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+
+    - name: Restore per-model counters
+      id: restore
+      uses: actions/cache/restore@v4
+      with:
+        path: /tmp/model-router
+        key: model-router-${{ steps.date.outputs.key }}
+        restore-keys: model-router-${{ steps.date.outputs.key }}
+        enableCrossOsArchive: true
+
+    - name: Pick model for role
+      id: pick
+      shell: bash
+      env:
+        ROLE: ${{ inputs.role }}
+        HAS_OPENROUTER: ${{ inputs.has-openrouter }}
+      run: |
+        set -eu
+        DIR=/tmp/model-router
+        mkdir -p "$DIR"
+        count() {
+          f="$DIR/${1//\//_}.txt"
+          c=$(cat "$f" 2>/dev/null || echo 0)
+          [[ "$c" =~ ^[0-9]+$ ]] || c=0
+          echo "$c"
+        }
+        bump() {
+          f="$DIR/${1//\//_}.txt"
+          c=$(count "$1")
+          echo $((c + 1)) > "$f"
+        }
+
+        # Soft RPD budgets (safety margin under published free-tier)
+        # Lite preferred for triage/invoke; Flash reserved for review.
+        case "$ROLE" in
+          triage)
+            CANDIDATES="gemini-3.1-flash-lite:450 gemini-3.5-flash-lite:450 gemini-2.5-flash-lite:15"
+            OR_FALLBACK="openrouter/auto"
+            ;;
+          review)
+            CANDIDATES="gemini-3.5-flash:15 gemini-2.5-flash:15 gemini-3-flash:15 gemini-3.1-flash-lite:450"
+            OR_FALLBACK="openrouter/auto"
+            ;;
+          invoke)
+            CANDIDATES="gemini-3.1-flash-lite:450 gemini-3.5-flash-lite:450"
+            OR_FALLBACK="openrouter/auto"
+            ;;
+          *)
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "provider=none" >> "$GITHUB_OUTPUT"
+            echo "model=" >> "$GITHUB_OUTPUT"
+            echo "reason=unknown role $ROLE" >> "$GITHUB_OUTPUT"
+            exit 0
+            ;;
+        esac
+
+        CHOSEN=""
+        for entry in $CANDIDATES; do
+          model="${entry%%:*}"
+          limit="${entry##*:}"
+          used=$(count "$model")
+          if [ "$used" -lt "$limit" ]; then
+            CHOSEN="$model"
+            bump "$model"
+            echo "provider=gemini" >> "$GITHUB_OUTPUT"
+            echo "model=$model" >> "$GITHUB_OUTPUT"
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            echo "reason=role=$ROLE model=$model used=$((used+1))/$limit" >> "$GITHUB_OUTPUT"
+            echo "Selected gemini/$model ($((used+1))/$limit)"
+            exit 0
+          fi
+          echo "Exhausted soft budget for $model ($used/$limit)"
+        done
+
+        if [ "$HAS_OPENROUTER" = "true" ]; then
+          bump "$OR_FALLBACK"
+          echo "provider=openrouter" >> "$GITHUB_OUTPUT"
+          echo "model=$OR_FALLBACK" >> "$GITHUB_OUTPUT"
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+          echo "reason=gemini exhausted; openrouter fallback $OR_FALLBACK" >> "$GITHUB_OUTPUT"
+          echo "Selected openrouter/$OR_FALLBACK"
+          exit 0
+        fi
+
+        echo "skip=true" >> "$GITHUB_OUTPUT"
+        echo "provider=none" >> "$GITHUB_OUTPUT"
+        echo "model=" >> "$GITHUB_OUTPUT"
+        echo "reason=all soft budgets exhausted; no OpenRouter key" >> "$GITHUB_OUTPUT"
+        echo "::warning::Model router: no capacity for role=$ROLE"
+
+    - name: Save per-model counters
+      if: steps.pick.outputs.skip != 'true'
+      uses: actions/cache/save@v4
+      with:
+        path: /tmp/model-router
+        key: model-router-${{ steps.date.outputs.key }}-${{ github.run_id }}-${{ github.run_attempt }}
+        enableCrossOsArchive: true

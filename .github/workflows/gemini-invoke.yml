@@ -139,7 +139,7 @@ jobs:
           BODY=$(printf '%s\n%s\n%s\n\n%s\n\n%s\n%s\n' \
             '<!-- openrouter-invoke -->' \
             "### ▶️ Free-tier invoke (OpenRouter \`${SELECTED_MODEL}\`)" \
-            '<!-- egg: 3L0 ranks our tasks; public boards rank other peoples' tasks -->' \
+            "<!-- egg: 3L0 ranks our tasks; public boards rank other peoples tasks -->" \
             "$TEXT" \
             '---' \
             '_Router: Gemini soft budgets exhausted → OpenRouter :free only._')

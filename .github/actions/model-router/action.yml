@@ -1,34 +1,33 @@
 name: 'Model Router'
 description: |
-  Select Gemini model for a role (triage|review|invoke).
+  Select model for a role (triage|review|invoke).
   Tracks per-model daily soft budgets (Pacific midnight).
-  Prefer high-RPD Lite models.
+  Prefer high-RPD Gemini Lite; on exhaustion route to OpenRouter :free models.
 
   LIMITATIONS (documented, intentional for free-tier):
   - GitHub Actions cache is per-branch best-effort — not a global RPD meter.
     Concurrent PRs can under-count. Hard AI Studio limits still apply server-side.
-  - OpenRouter is not invoked here. When Gemini soft budgets are exhausted,
-    skip=true always (even if OPENROUTER_API_KEY is set). Wire a real OpenRouter
-    step before flipping skip=false for provider=openrouter (RL-05 foundation).
+  - OpenRouter free tier is account-wide rate limited (~20 RPM / 50–1000 RPD).
+    We only select models with the :free suffix (zero $). Never paid routes.
 
 inputs:
   role:
     description: 'triage | review | invoke'
     required: true
   has-openrouter:
-    description: '"true" if secrets.OPENROUTER_API_KEY is non-empty (informational only until RL-05 invoke lands)'
+    description: '"true" if secrets.OPENROUTER_API_KEY is non-empty'
     required: false
     default: 'false'
 
 outputs:
   provider:
-    description: 'gemini | none'
+    description: 'gemini | openrouter | none'
     value: ${{ steps.pick.outputs.provider }}
   model:
     description: 'Model id to request'
     value: ${{ steps.pick.outputs.model }}
   skip:
-    description: '"true" if no Gemini capacity remains'
+    description: '"true" if no capacity remains'
     value: ${{ steps.pick.outputs.skip }}
   reason:
     description: 'Human-readable selection reason'
@@ -73,16 +72,21 @@ runs:
           echo $((c + 1)) > "$f"
         }
 
-        # Soft RPD budgets under published free-tier (see docs/schemas/model-rotation.yaml)
+        # Soft RPD budgets under published free-tier (docs/schemas/model-rotation.yaml)
         case "$ROLE" in
           triage)
             CANDIDATES="gemini-3.1-flash-lite:450 gemini-3.5-flash-lite:450 gemini-2.5-flash-lite:15"
+            # Free-tier OpenRouter: fast/small for triage (context-ok, complete in 1 req)
+            OR_CANDIDATES="meta-llama/llama-3.3-70b-instruct:free:40 google/gemma-3-12b-it:free:40"
             ;;
           review)
             CANDIDATES="gemini-3.5-flash:15 gemini-2.5-flash:15 gemini-3-flash:15 gemini-3.1-flash-lite:450"
+            # Stronger free models for review quality
+            OR_CANDIDATES="qwen/qwen3-coder:free:30 meta-llama/llama-3.3-70b-instruct:free:40 deepseek/deepseek-r1:free:20"
             ;;
           invoke)
             CANDIDATES="gemini-3.1-flash-lite:450 gemini-3.5-flash-lite:450"
+            OR_CANDIDATES="meta-llama/llama-3.3-70b-instruct:free:40 google/gemma-3-12b-it:free:40"
             ;;
           *)
             echo "skip=true" >> "$GITHUB_OUTPUT"
@@ -109,18 +113,35 @@ runs:
           echo "Exhausted soft budget for $model ($used/$limit)"
         done
 
-        # Always skip when Gemini soft budgets are gone.
-        # Do NOT set provider=openrouter with skip=false — that suppressed the
-        # quota-skip comment and claimed a route that no step actually invoked.
-        OR_HINT=""
+        # FREE TIER ONLY — OpenRouter :free models (FB-01 / #94)
         if [ "$HAS_OPENROUTER" = "true" ]; then
-          OR_HINT="; OPENROUTER_API_KEY present but invoke path not wired (RL-05 foundation)"
+          for entry in $OR_CANDIDATES; do
+            # format: provider/name:free:soft_rpd
+            model="${entry%:*}"
+            limit="${entry##*:}"
+            used=$(count "$model")
+            if [ "$used" -lt "$limit" ]; then
+              bump "$model"
+              echo "provider=openrouter" >> "$GITHUB_OUTPUT"
+              echo "model=$model" >> "$GITHUB_OUTPUT"
+              echo "skip=false" >> "$GITHUB_OUTPUT"
+              echo "reason=role=$ROLE openrouter=$model used=$((used+1))/$limit free-tier" >> "$GITHUB_OUTPUT"
+              echo "Selected openrouter/$model ($((used+1))/$limit) FREE"
+              exit 0
+            fi
+            echo "Exhausted soft budget for openrouter $model ($used/$limit)"
+          done
         fi
+
         echo "skip=true" >> "$GITHUB_OUTPUT"
         echo "provider=none" >> "$GITHUB_OUTPUT"
         echo "model=" >> "$GITHUB_OUTPUT"
-        echo "reason=all Gemini soft budgets exhausted${OR_HINT}" >> "$GITHUB_OUTPUT"
-        echo "::warning::Model router: no Gemini capacity for role=$ROLE"
+        if [ "$HAS_OPENROUTER" = "true" ]; then
+          echo "reason=all Gemini + OpenRouter free soft budgets exhausted" >> "$GITHUB_OUTPUT"
+        else
+          echo "reason=all Gemini soft budgets exhausted; set OPENROUTER_API_KEY for free Fallback" >> "$GITHUB_OUTPUT"
+        fi
+        echo "::warning::Model router: no capacity for role=$ROLE"
 
     - name: Save per-model counters
       if: steps.pick.outputs.skip != 'true'

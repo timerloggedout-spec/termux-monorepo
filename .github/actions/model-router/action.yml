@@ -1,0 +1,131 @@
+name: 'Model Router'
+description: |
+  Select Gemini model for a role (triage|review|invoke).
+  Tracks per-model daily soft budgets (Pacific midnight).
+  Prefer high-RPD Lite models.
+
+  LIMITATIONS (documented, intentional for free-tier):
+  - GitHub Actions cache is per-branch best-effort — not a global RPD meter.
+    Concurrent PRs can under-count. Hard AI Studio limits still apply server-side.
+  - OpenRouter is not invoked here. When Gemini soft budgets are exhausted,
+    skip=true always (even if OPENROUTER_API_KEY is set). Wire a real OpenRouter
+    step before flipping skip=false for provider=openrouter (RL-05 foundation).
+
+inputs:
+  role:
+    description: 'triage | review | invoke'
+    required: true
+  has-openrouter:
+    description: '"true" if secrets.OPENROUTER_API_KEY is non-empty (informational only until RL-05 invoke lands)'
+    required: false
+    default: 'false'
+
+outputs:
+  provider:
+    description: 'gemini | none'
+    value: ${{ steps.pick.outputs.provider }}
+  model:
+    description: 'Model id to request'
+    value: ${{ steps.pick.outputs.model }}
+  skip:
+    description: '"true" if no Gemini capacity remains'
+    value: ${{ steps.pick.outputs.skip }}
+  reason:
+    description: 'Human-readable selection reason'
+    value: ${{ steps.pick.outputs.reason }}
+
+runs:
+  using: composite
+  steps:
+    - name: Pacific date key
+      id: date
+      shell: bash
+      run: echo "key=$(TZ=America/Los_Angeles date +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+
+    - name: Restore per-model counters (per-branch best-effort)
+      id: restore
+      uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+      with:
+        path: /tmp/model-router
+        key: model-router-${{ steps.date.outputs.key }}
+        restore-keys: model-router-${{ steps.date.outputs.key }}
+        enableCrossOsArchive: true
+
+    - name: Pick model for role
+      id: pick
+      shell: bash
+      env:
+        ROLE: ${{ inputs.role }}
+        HAS_OPENROUTER: ${{ inputs.has-openrouter }}
+      run: |
+        set -eu
+        DIR=/tmp/model-router
+        mkdir -p "$DIR"
+        count() {
+          f="$DIR/${1//\//_}.txt"
+          c=$(cat "$f" 2>/dev/null || echo 0)
+          [[ "$c" =~ ^[0-9]+$ ]] || c=0
+          echo "$c"
+        }
+        bump() {
+          f="$DIR/${1//\//_}.txt"
+          c=$(count "$1")
+          echo $((c + 1)) > "$f"
+        }
+
+        # Soft RPD budgets under published free-tier (see docs/schemas/model-rotation.yaml)
+        case "$ROLE" in
+          triage)
+            CANDIDATES="gemini-3.1-flash-lite:450 gemini-3.5-flash-lite:450 gemini-2.5-flash-lite:15"
+            ;;
+          review)
+            CANDIDATES="gemini-3.5-flash:15 gemini-2.5-flash:15 gemini-3-flash:15 gemini-3.1-flash-lite:450"
+            ;;
+          invoke)
+            CANDIDATES="gemini-3.1-flash-lite:450 gemini-3.5-flash-lite:450"
+            ;;
+          *)
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "provider=none" >> "$GITHUB_OUTPUT"
+            echo "model=" >> "$GITHUB_OUTPUT"
+            echo "reason=unknown role $ROLE" >> "$GITHUB_OUTPUT"
+            exit 0
+            ;;
+        esac
+
+        for entry in $CANDIDATES; do
+          model="${entry%%:*}"
+          limit="${entry##*:}"
+          used=$(count "$model")
+          if [ "$used" -lt "$limit" ]; then
+            bump "$model"
+            echo "provider=gemini" >> "$GITHUB_OUTPUT"
+            echo "model=$model" >> "$GITHUB_OUTPUT"
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            echo "reason=role=$ROLE model=$model used=$((used+1))/$limit" >> "$GITHUB_OUTPUT"
+            echo "Selected gemini/$model ($((used+1))/$limit)"
+            exit 0
+          fi
+          echo "Exhausted soft budget for $model ($used/$limit)"
+        done
+
+        # Always skip when Gemini soft budgets are gone.
+        # Do NOT set provider=openrouter with skip=false — that suppressed the
+        # quota-skip comment and claimed a route that no step actually invoked.
+        OR_HINT=""
+        if [ "$HAS_OPENROUTER" = "true" ]; then
+          OR_HINT="; OPENROUTER_API_KEY present but invoke path not wired (RL-05 foundation)"
+        fi
+        echo "skip=true" >> "$GITHUB_OUTPUT"
+        echo "provider=none" >> "$GITHUB_OUTPUT"
+        echo "model=" >> "$GITHUB_OUTPUT"
+        echo "reason=all Gemini soft budgets exhausted${OR_HINT}" >> "$GITHUB_OUTPUT"
+        echo "::warning::Model router: no Gemini capacity for role=$ROLE"
+
+    - name: Save per-model counters
+      if: steps.pick.outputs.skip != 'true'
+      uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+      with:
+        path: /tmp/model-router
+        key: model-router-${{ steps.date.outputs.key }}-${{ github.run_id }}-${{ github.run_attempt }}
+        enableCrossOsArchive: true

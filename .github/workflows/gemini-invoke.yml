@@ -15,6 +15,8 @@ concurrency:
   group: gemini-invoke-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
   cancel-in-progress: false
 
+permissions: {}
+
 jobs:
   invoke:
     runs-on: ubuntu-latest
@@ -23,15 +25,16 @@ jobs:
       issues: write
       pull-requests: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
 
       - name: Run Gemini CLI assistant
-        uses: google-github-actions/run-gemini-cli@v0
+        uses: google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489 # v0
         env:
           GEMINI_CLI_TRUST_WORKSPACE: 'true'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ADDITIONAL_CONTEXT: ${{ inputs.additional_context }}
         with:
           gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
           github_pr_number: ${{ github.event.pull_request.number }}
@@ -40,8 +43,7 @@ jobs:
             You are the on-demand free-tier Gemini CLI teammate for termux-monorepo.
             Read GEMINI.md and AGENTS.md first.
 
-            User request / additional context:
-            ${{ inputs.additional_context }}
+            Please analyze and resolve the user request / additional context set in the environment variable ADDITIONAL_CONTEXT.
 
             ## Open agent / related PRs (coordination — DO NOT overlap files)
             ${{ inputs.prior_prs }}

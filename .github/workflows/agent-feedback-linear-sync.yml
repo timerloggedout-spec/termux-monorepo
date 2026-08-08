@@ -14,6 +14,8 @@ concurrency:
   group: linear-feedback-${{ github.event.pull_request.number }}
   cancel-in-progress: false
 
+permissions: {}
+
 jobs:
   sync-linear:
     if: |
@@ -46,70 +48,108 @@ jobs:
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
-            const key = process.env.LINEAR_API_KEY;
-            if (!key) {
-              core.warning('LINEAR_API_KEY not set — skip Linear subtask sync');
-              return;
-            }
-            const pr = context.payload.pull_request;
-            const prNumber = pr.number;
-            const prUrl = pr.html_url;
-            const bot =
-              context.payload.comment?.user?.login ||
-              context.payload.review?.user?.login ||
-              'bot';
-            const path = context.payload.comment?.path || '';
-            const commentBody = (
-              context.payload.comment?.body ||
-              context.payload.review?.body ||
-              ''
-            ).slice(0, 3500);
-            const commentUrl =
-              context.payload.comment?.html_url ||
-              context.payload.review?.html_url ||
-              prUrl;
-
-            async function linear(query, variables) {
-              const res = await fetch('https://api.linear.app/graphql', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: key,
-                },
-                body: JSON.stringify({ query, variables }),
-              });
-              const json = await res.json();
-              if (json.errors) {
-                throw new Error(JSON.stringify(json.errors));
+            try {
+              const key = process.env.LINEAR_API_KEY;
+              if (!key) {
+                core.warning('LINEAR_API_KEY not set — skip Linear subtask sync');
+                return;
               }
-              return json.data;
-            }
+              const pr = context.payload.pull_request;
+              const prNumber = pr.number;
+              const prUrl = pr.html_url;
+              const bot =
+                context.payload.comment?.user?.login ||
+                context.payload.review?.user?.login ||
+                'bot';
+              const path = context.payload.comment?.path || '';
+              const commentBody = (
+                context.payload.comment?.body ||
+                context.payload.review?.body ||
+                ''
+              ).slice(0, 3500);
+              const commentUrl =
+                context.payload.comment?.html_url ||
+                context.payload.review?.html_url ||
+                prUrl;
 
-            const teamId = '1e672463-31de-40b2-a378-3c03fd8f7e3b';
-            const parentTitle = `PR #${prNumber} agent feedback rollup`;
-
-            const search = await linear(
-              `query($filter: IssueFilter!) {
-                issues(filter: $filter, first: 5) {
-                  nodes { id identifier title }
+              async function linear(query, variables) {
+                const res = await fetch('https://api.linear.app/graphql', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: key,
+                  },
+                  body: JSON.stringify({ query, variables }),
+                });
+                const json = await res.json();
+                if (json.errors) {
+                  throw new Error(JSON.stringify(json.errors));
                 }
-              }`,
-              {
-                filter: {
-                  title: { eq: parentTitle },
-                  team: { id: { eq: teamId } }
-                }
+                return json.data;
               }
-            );
-            let parentId = search.issues?.nodes?.find(
-              n => n.title === parentTitle
-            )?.id;
 
-            if (!parentId) {
-              const created = await linear(
+              const teamId = '1e672463-31de-40b2-a378-3c03fd8f7e3b';
+              const parentTitle = `PR #${prNumber} agent feedback rollup`;
+
+              const search = await linear(
+                `query($filter: IssueFilter!) {
+                  issues(filter: $filter, first: 5) {
+                    nodes { id identifier title }
+                  }
+                }`,
+                {
+                  filter: {
+                    title: { eq: parentTitle },
+                    team: { id: { eq: teamId } }
+                  }
+                }
+              );
+              let parentId = search.issues?.nodes?.find(
+                n => n.title === parentTitle
+              )?.id;
+
+              if (!parentId) {
+                const created = await linear(
+                  `mutation($input: IssueCreateInput!) {
+                    issueCreate(input: $input) {
+                      success
+                      issue { id identifier url }
+                    }
+                  }`,
+                  {
+                    input: {
+                      teamId,
+                      title: parentTitle,
+                      description: [
+                        '**Agent: Jules | Grok**',
+                        '',
+                        `Parent rollup for automated review feedback on ${prUrl}`,
+                        '',
+                        'Subtasks are created by GHA `agent-feedback-linear-sync`.',
+                        'Jules auto-resolve via `agent-review-auto-jules`.',
+                        '',
+                        'Signed-off-by: Grok <grok@x.ai>',
+                      ].join('\n'),
+                    },
+                  }
+                );
+                parentId = created.issueCreate.issue.id;
+                core.info(`Created parent ${created.issueCreate.issue.identifier}`);
+              }
+
+              const labels = await linear(
+                `query { issueLabels(filter: { name: { eq: "agent-feedback" } }) { nodes { id } } }`
+              );
+              const labelId = labels.issueLabels?.nodes?.[0]?.id;
+
+              const subTitle = path
+                ? `[${bot}] PR #${prNumber}: ${path}`
+                : `[${bot}] PR #${prNumber}: review feedback`;
+
+              const sub = await linear(
                 `mutation($input: IssueCreateInput!) {
                   issueCreate(input: $input) {
                     success
@@ -119,73 +159,49 @@ jobs:
                 {
                   input: {
                     teamId,
-                    title: parentTitle,
+                    parentId,
+                    title: subTitle.slice(0, 200),
                     description: [
                       '**Agent: Jules | Grok**',
                       '',
-                      `Parent rollup for automated review feedback on ${prUrl}`,
+                      `Source: ${commentUrl}`,
+                      `PR: ${prUrl}`,
+                      `Bot: ${bot}`,
+                      path ? `Path: \`${path}\`` : '',
                       '',
-                      'Subtasks are created by GHA `agent-feedback-linear-sync`.',
-                      'Jules auto-resolve via `agent-review-auto-jules`.',
+                      '### Comment',
+                      commentBody,
                       '',
-                      'Signed-off-by: Grok <grok@x.ai>',
-                    ].join('\n'),
+                      'Auto-synced by agent-feedback-linear-sync.yml',
+                    ].filter(Boolean).join('\n'),
+                    ...(labelId ? { labelIds: [labelId] } : {}),
                   },
                 }
               );
-              parentId = created.issueCreate.issue.id;
-              core.info(`Created parent ${created.issueCreate.issue.identifier}`);
-            }
+              core.info(`Subtask ${sub.issueCreate.issue.identifier} ${sub.issueCreate.issue.url}`);
 
-            const labels = await linear(
-              `query { issueLabels(filter: { name: { eq: "agent-feedback" } }) { nodes { id } } }`
-            );
-            const labelId = labels.issueLabels?.nodes?.[0]?.id;
-
-            const subTitle = path
-              ? `[${bot}] PR #${prNumber}: ${path}`
-              : `[${bot}] PR #${prNumber}: review feedback`;
-
-            const sub = await linear(
-              `mutation($input: IssueCreateInput!) {
-                issueCreate(input: $input) {
-                  success
-                  issue { id identifier url }
+              if (context.payload.comment?.id) {
+                try {
+                  await github.rest.reactions.createForPullRequestReviewComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    comment_id: context.payload.comment.id,
+                    content: 'eyes',
+                  });
+                } catch (e) {
+                  core.info(String(e));
                 }
-              }`,
-              {
-                input: {
-                  teamId,
-                  parentId,
-                  title: subTitle.slice(0, 200),
-                  description: [
-                    '**Agent: Jules | Grok**',
-                    '',
-                    `Source: ${commentUrl}`,
-                    `PR: ${prUrl}`,
-                    `Bot: ${bot}`,
-                    path ? `Path: \`${path}\`` : '',
-                    '',
-                    '### Comment',
-                    commentBody,
-                    '',
-                    'Auto-synced by agent-feedback-linear-sync.yml',
-                  ].filter(Boolean).join('\n'),
-                  ...(labelId ? { labelIds: [labelId] } : {}),
-                },
               }
-            );
-            core.info(`Subtask ${sub.issueCreate.issue.identifier} ${sub.issueCreate.issue.url}`);
-
-            if (context.payload.comment?.id) {
-              try {
-                await github.rest.reactions.createForPullRequestReviewComment({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  comment_id: context.payload.comment.id,
-                  content: 'eyes',
-                });
-              } catch (e) {
-                core.info(String(e));
+            } catch (err) {
+              const errMsg = String(err);
+              if (
+                errMsg.includes('USAGE_LIMIT_EXCEEDED') ||
+                errMsg.includes('usage limit exceeded') ||
+                errMsg.includes('free issue limit') ||
+                errMsg.includes('exceeded the free issue limit')
+              ) {
+                core.warning(`Linear workspace free issue limit exceeded. Unable to sync comment. Error details: ${errMsg}`);
+                return;
               }
+              throw err;
             }

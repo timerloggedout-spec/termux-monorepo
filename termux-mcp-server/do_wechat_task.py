@@ -40,9 +40,9 @@ def _detect_adb_device():
     return None
 
 
-def run(cmd, shell=False, timeout=15):
+def run(cmd, timeout=15):
     try:
-        r = subprocess.run(cmd, shell=shell, capture_output=True, text=True,
+        r = subprocess.run(cmd, shell=False, capture_output=True, text=True,
                            timeout=timeout, encoding='utf-8', errors='replace')
         out = r.stdout.strip()
         err = r.stderr.strip()

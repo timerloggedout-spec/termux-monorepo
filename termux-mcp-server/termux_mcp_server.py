@@ -97,28 +97,24 @@ def _adb_shell(cmd: str, timeout: int = 30) -> dict:
         return {'success': False, 'error': str(e)}
 
 
-def _run(cmd: list[str] | str, timeout: int = 30, shell: bool = False) -> dict:
+def _run(cmd: list[str] | str, timeout: int = 30) -> dict:
     """Run a command. Auto-routes through adb shell if needed on Android 12+."""
     env = _ensure_path_env()
 
     # Detect if this is an Android system command that needs adb shell
-    if shell and isinstance(cmd, str):
-        first_word = cmd.strip().split()[0] if cmd.strip() else ''
-    elif isinstance(cmd, list) and cmd:
+    if isinstance(cmd, list) and cmd:
         first_word = os.path.basename(cmd[0])
     else:
         first_word = ''
 
     if first_word in _ADB_REQUIRED_CMDS and _adb_connected():
         # Route through adb shell
-        if shell and isinstance(cmd, str):
-            return _adb_shell(cmd, timeout=timeout)
-        elif isinstance(cmd, list):
+        if isinstance(cmd, list):
             return _adb_shell(' '.join(cmd), timeout=timeout)
 
     try:
         result = subprocess.run(
-            cmd, shell=shell, capture_output=True, text=True,
+            cmd, shell=False, capture_output=True, text=True,
             timeout=timeout, encoding='utf-8', errors='replace',
             env=env,
         )

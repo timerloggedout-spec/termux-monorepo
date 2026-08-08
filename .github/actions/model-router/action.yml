@@ -2,13 +2,13 @@ name: 'Model Router'
 description: |
   Select provider+model for a role (triage|review|invoke).
 
-  ORDER (max free-tier ROI — operator 2026-08-08):
-    1. OmniRoute   — free-tier aggregation / auto failover (#91)
-    2. OpenRouter  — :free models only
-    3. Gemini      — residual capacity (do NOT burn first)
+  PEER POLICY (operator 2026-08-08):
+    OmniRoute and OpenRouter are nearly equal free-tier peers.
+    Selection = model desired for the operation + soft-budget headroom.
+    Gemini is residual only. Jules is async builder.
 
-  Soft budgets are per-branch best-effort (Actions cache).
   FREE TIER ONLY on Omni + OpenRouter paths.
+  Soft budgets are per-branch best-effort (Actions cache).
 
 inputs:
   role:
@@ -58,7 +58,7 @@ runs:
         restore-keys: model-router-${{ steps.date.outputs.key }}
         enableCrossOsArchive: true
 
-    - name: Pick provider + model (Omni → OpenRouter → Gemini)
+    - name: Pick provider + model (peer Omni ↔ OpenRouter → Gemini residual)
       id: pick
       shell: bash
       env:
@@ -82,24 +82,19 @@ runs:
           echo $((c + 1)) > "$f"
         }
 
+        # Role → preferred free models (peers interleave; Gemini residual last)
         case "$ROLE" in
           triage)
-            # Omni: auto/best-free aggregates free providers
-            OMNI_MODEL="auto/best-free"
-            OMNI_LIMIT=200
-            OR_CANDIDATES="meta-llama/llama-3.3-70b-instruct:free:40 google/gemma-3-12b-it:free:40"
+            # Peer band: Omni auto + OR free small/fast
+            PEER_SLOTS="omni|auto/best-free|200 openrouter|meta-llama/llama-3.3-70b-instruct:free|40 openrouter|google/gemma-3-12b-it:free|40"
             GEM_CANDIDATES="gemini-3.1-flash-lite:450 gemini-3.5-flash-lite:450 gemini-2.5-flash-lite:15"
             ;;
           review)
-            OMNI_MODEL="auto/best-free"
-            OMNI_LIMIT=120
-            OR_CANDIDATES="qwen/qwen3-coder:free:30 meta-llama/llama-3.3-70b-instruct:free:40 deepseek/deepseek-r1:free:20"
+            PEER_SLOTS="omni|auto/best-free|120 openrouter|qwen/qwen3-coder:free|30 openrouter|meta-llama/llama-3.3-70b-instruct:free|40 openrouter|deepseek/deepseek-r1:free|20"
             GEM_CANDIDATES="gemini-3.5-flash:15 gemini-2.5-flash:15 gemini-3-flash:15 gemini-3.1-flash-lite:450"
             ;;
           invoke)
-            OMNI_MODEL="auto/best-free"
-            OMNI_LIMIT=200
-            OR_CANDIDATES="meta-llama/llama-3.3-70b-instruct:free:40 google/gemma-3-12b-it:free:40"
+            PEER_SLOTS="omni|auto/best-free|200 openrouter|meta-llama/llama-3.3-70b-instruct:free|40 openrouter|google/gemma-3-12b-it:free|40"
             GEM_CANDIDATES="gemini-3.1-flash-lite:450 gemini-3.5-flash-lite:450"
             ;;
           *)
@@ -111,41 +106,40 @@ runs:
             ;;
         esac
 
-        # ── 1. OmniRoute (PRIMARY) ──────────────────────────────────────
-        if [ "$HAS_OMNI" = "true" ]; then
-          used=$(count "omni/$OMNI_MODEL")
-          if [ "$used" -lt "$OMNI_LIMIT" ]; then
-            bump "omni/$OMNI_MODEL"
-            echo "provider=omni" >> "$GITHUB_OUTPUT"
-            echo "model=$OMNI_MODEL" >> "$GITHUB_OUTPUT"
+        # ── Peer band: Omni ↔ OpenRouter (model-desired order) ──────────
+        for slot in $PEER_SLOTS; do
+          provider="${slot%%|*}"
+          rest="${slot#*|}"
+          model="${rest%%|*}"
+          limit="${rest##*|}"
+
+          if [ "$provider" = "omni" ] && [ "$HAS_OMNI" != "true" ]; then
+            continue
+          fi
+          if [ "$provider" = "openrouter" ] && [ "$HAS_OPENROUTER" != "true" ]; then
+            continue
+          fi
+          # Free-tier hard rule for OpenRouter
+          if [ "$provider" = "openrouter" ] && [[ "$model" != *:free ]]; then
+            echo "::warning::Skipping non-:free OpenRouter model $model"
+            continue
+          fi
+
+          key="$provider/$model"
+          used=$(count "$key")
+          if [ "$used" -lt "$limit" ]; then
+            bump "$key"
+            echo "provider=$provider" >> "$GITHUB_OUTPUT"
+            echo "model=$model" >> "$GITHUB_OUTPUT"
             echo "skip=false" >> "$GITHUB_OUTPUT"
-            echo "reason=role=$ROLE omni=$OMNI_MODEL used=$((used+1))/$OMNI_LIMIT primary" >> "$GITHUB_OUTPUT"
-            echo "Selected omni/$OMNI_MODEL ($((used+1))/$OMNI_LIMIT) PRIMARY"
+            echo "reason=role=$ROLE peer=$provider model=$model used=$((used+1))/$limit" >> "$GITHUB_OUTPUT"
+            echo "Selected peer $provider/$model ($((used+1))/$limit)"
             exit 0
           fi
-          echo "Omni soft budget exhausted for $OMNI_MODEL ($used/$OMNI_LIMIT)"
-        fi
+          echo "Peer soft budget exhausted: $key ($used/$limit)"
+        done
 
-        # ── 2. OpenRouter :free (SECONDARY) ─────────────────────────────
-        if [ "$HAS_OPENROUTER" = "true" ]; then
-          for entry in $OR_CANDIDATES; do
-            model="${entry%:*}"
-            limit="${entry##*:}"
-            used=$(count "$model")
-            if [ "$used" -lt "$limit" ]; then
-              bump "$model"
-              echo "provider=openrouter" >> "$GITHUB_OUTPUT"
-              echo "model=$model" >> "$GITHUB_OUTPUT"
-              echo "skip=false" >> "$GITHUB_OUTPUT"
-              echo "reason=role=$ROLE openrouter=$model used=$((used+1))/$limit secondary" >> "$GITHUB_OUTPUT"
-              echo "Selected openrouter/$model ($((used+1))/$limit) SECONDARY"
-              exit 0
-            fi
-            echo "Exhausted soft budget for openrouter $model ($used/$limit)"
-          done
-        fi
-
-        # ── 3. Gemini (RESIDUAL — last) ─────────────────────────────────
+        # ── Residual: Gemini ────────────────────────────────────────────
         if [ "$HAS_GEMINI" = "true" ]; then
           for entry in $GEM_CANDIDATES; do
             model="${entry%%:*}"
@@ -157,7 +151,7 @@ runs:
               echo "model=$model" >> "$GITHUB_OUTPUT"
               echo "skip=false" >> "$GITHUB_OUTPUT"
               echo "reason=role=$ROLE gemini=$model used=$((used+1))/$limit residual" >> "$GITHUB_OUTPUT"
-              echo "Selected gemini/$model ($((used+1))/$limit) RESIDUAL"
+              echo "Selected residual gemini/$model ($((used+1))/$limit)"
               exit 0
             fi
             echo "Exhausted soft budget for gemini $model ($used/$limit)"
@@ -167,7 +161,7 @@ runs:
         echo "skip=true" >> "$GITHUB_OUTPUT"
         echo "provider=none" >> "$GITHUB_OUTPUT"
         echo "model=" >> "$GITHUB_OUTPUT"
-        echo "reason=all free paths exhausted (omni/openrouter/gemini) role=$ROLE" >> "$GITHUB_OUTPUT"
+        echo "reason=all free paths exhausted (omni/openrouter peers + gemini residual) role=$ROLE" >> "$GITHUB_OUTPUT"
         echo "::warning::Model router: no capacity for role=$ROLE"
 
     - name: Save per-model counters

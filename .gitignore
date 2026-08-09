@@ -124,13 +124,13 @@ cli-synthegration/workspace/provenance/
 cli-synthegration/codex/
 
 # === DeepSeek web-wrapper opt-in CI smoke test (transient; $RUNNER_TEMP only) ===
+# Only ignore runtime session state — never ignore tracked sources such as
+# deepcli/pow_solver.js (required for PoW). Bare patterns like pow_solver.js
+# or session.json would hide legitimate tracked files if re-added.
 deepseek-webwrapper-home/
 deepseek_output.json
 deepcli/session.json
-deepcli/pow_solver.js
-session.json
-cookies_2.json
-pow_solver.js
+deepcli/cookies_2.json
 
 # === Build artifacts and caches ===
 workspace/maxc/target/

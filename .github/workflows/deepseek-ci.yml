@@ -11,6 +11,9 @@ name: 'DeepSeek CI (peer Omni ↔ OpenRouter HTTPS + opt-in web-wrapper)'
 # The DeepSeek web-wrapper is intentionally a separate, explicit third-peer path
 # (see the deepseek-webwrapper job) and stays disabled until a real, non-simulated
 # invocation exists. Never caches/uploads/commits session cookies or tokens.
+#
+# Review job runs only on non-fork, non-draft PRs and uses a distinct comment
+# marker to avoid double-counting free-tier quota against gemini-after-peers.
 
 on:
   pull_request:
@@ -31,7 +34,10 @@ permissions: {}
 
 jobs:
   review:
-    if: github.event_name == 'pull_request'
+    if: |
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.head.repo.fork == false &&
+      github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -71,8 +77,11 @@ jobs:
           fi
           DIFF=$(gh api "repos/${REPO}/pulls/${TARGET_PR}" -H "Accept: application/vnd.github.v3.diff" 2>/dev/null \
             | head -c 24000 || true)
+          # Random delimiter prevents PR-diff lines that equal a fixed token from
+          # terminating the multiline GITHUB_OUTPUT early (step-output injection).
+          DELIM="DSCR_$(openssl rand -hex 8)"
           {
-            echo "prompt<<EOF"
+            echo "prompt<<${DELIM}"
             cat <<PROMPT
           You are the free-tier DeepSeek-CI peer reviewer for termux-monorepo. Concise. ONE response.
           Target PR #${TARGET_PR}.
@@ -80,7 +89,7 @@ jobs:
           Diff (truncated):
           ${DIFF}
           PROMPT
-            echo "EOF"
+            echo "${DELIM}"
           } >> "$GITHUB_OUTPUT"
 
       - name: OmniRoute review (peer)
@@ -118,6 +127,7 @@ jobs:
       github.event_name == 'workflow_dispatch' &&
       (inputs.enable_deepseek_webwrapper == true || vars.DEEPSEEK_WEBWRAPPER_ENABLED == '1')
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: read
     steps:
@@ -126,12 +136,12 @@ jobs:
           persist-credentials: false
 
       - name: Setup Node.js (PoW WASM solver)
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
         with:
           node-version: '20'
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@0b93645e9fea7318ecaed2b4117511b8a72f1f5 # v5.3.0
         with:
           python-version: '3.11'
 

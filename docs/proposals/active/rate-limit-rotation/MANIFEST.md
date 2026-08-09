@@ -9,8 +9,8 @@ reviewers:
   - id: grok
     role: author+executor
     status: posted
-related_issues: [86, 87, 88, 91]
-related_prs: [72, 81]
+related_issues: [86, 87, 88, 91, 94]
+related_prs: [72, 81, 101, 102, 104, 105]
 gates_required: [repo-gate]
 ---
 
@@ -18,11 +18,19 @@ gates_required: [repo-gate]
 
 ## Summary
 
-Free-tier Gemini 3.5 Flash exhausted (65/20 RPD, 7/5 RPM per #86).
-Route by role to high-RPD Lite models; reserve Flash for review;
-fall back to OpenRouter when Gemini soft budgets are gone.
+Free-tier Gemini soft budgets are residual only.
+**OmniRoute ↔ OpenRouter** are first-class free peers selected by role + soft budget;
+real HTTP invoke via `http-llm-invoke` (not notification stubs).
 
 ## Review log
+
+### 2026-08-09 — grok
+
+- Disposition: **executing**
+- #101/#102: peer selection + after-peers capacity on master
+- #104: active free model matrix + candidate fallback loop (APPROVED)
+- RL-05 closes on #104 merge; then land #105 fail-fast if non-conflicting
+- Next: RL-10 (#81 quota-gate on master), RL-17 (yq), #90 compression
 
 ### 2026-08-08 — grok
 

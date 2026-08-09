@@ -4,19 +4,17 @@
 # - Public leaderboards = FEATURES for models
 # - Our success matrices / ELO++ (3L0) = LABELS for routing decisions
 # - FREE TIER ONLY in production Fallback
-# - Immediate mode: best-per-role known free options; track context + completion in ≤n requests
-# - Long-term: A/B + randomized selection to hunt low valleys / saddles
-# - Selection mix: control / mixed / random_valley percentages (see model-success-matrix.yaml)
+# - Selection mix percentages: SINGLE OWNER = model-success-matrix.yaml selection_mix
 #
 # Related: #94 #86 #88 #91 #90 #96 · Termux-Multi-Agents/*
+# Implements: SM-01
 
 version: 2
-updated_at: "2026-08-09T01:00:00Z"
+updated_at: "2026-08-09T01:20:00Z"
 updated_by: grok
 policy: free_tier_only
 
 public_boards:
-  # Snapshot references — refresh best-effort; never sole routing authority
   - id: openrouter-free-collection
     url: https://openrouter.ai/collections/free-models
     notes: "Live free model roster rotates; always filter :free"
@@ -33,7 +31,6 @@ public_boards:
     url: https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard
     notes: "Open LLM leaderboard (academic benchmarks)"
 
-# Immediate best-per-role (free). Prefer models that fit task context and finish in 1 request.
 immediate_role_picks:
   triage:
     preferred:
@@ -71,23 +68,24 @@ immediate_role_picks:
         strength: [fast]
 
 selection_modes:
-  direct:
-    description: "Use immediate_role_picks order (current production control)"
-    default_pct: 60
+  # Percentages live ONLY in model-success-matrix.yaml selection_mix
+  control:
+    description: "Use immediate_role_picks order (production control)"
+    pct_key: control_pct
   mixed:
     description: "Weighted blend of our win-rate + public features"
-    default_pct: 25
+    pct_key: mixed_pct
   random_valley:
     description: |
-      Long-term A/B: sample lower-ranked free models to discover saddles/valleys
-      where our Cheat_Codes outperform public #1s. Track hex experiment ids.
-    default_pct: 15
-    status: active_sketch  # percentages live in model-success-matrix.yaml
+      Sample lower-ranked free models to discover saddles/valleys
+      where our harness outperforms public #1s. Track experiment_id.
+    pct_key: random_valley_pct
+    status: active_sketch
 
 our_success_metrics:
-  store: docs/schemas/model-success-matrix.yaml  # SM-01
+  store: docs/schemas/model-success-matrix.yaml  # SM-01 — single owner of %
   fields: [role, model, success, tokens_in, tokens_out, latency_ms, requests_used, human_override]
-  ranking: ELO++ / 3L0  # Termux-Multi-Agents path
+  ranking: ELO++ / 3L0
 
 constraints:
   cost: free_only
@@ -95,11 +93,10 @@ constraints:
   reject_paid_routes: true
   max_prompt_chars:
     triage: 4000
-    review: 24000  # diff-capped in workflow
+    review: 24000
     invoke: 6000
 
 easter_eggs:
-  # Public fun only — no PII. Related to sensitive-data cleaning hygiene.
   - id: egg-valley
     marker: "<!-- egg: low valleys often outrun peaks on free paths -->"
   - id: egg-label

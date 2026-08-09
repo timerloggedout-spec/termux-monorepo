@@ -1,21 +1,24 @@
 # Model success matrix — OUR labels (not public boards)
 # SM-01 · ELO++ / 3L0 · free-tier only
 # Related: #94 #90 #96 · llm-leaderboard-matrix.yaml · routing-priority.yaml
+# Implements: SM-01
 #
 # Policy: public boards = features; this file = labels that drive routing.
 # Telemetry from peer HTTP (Omni/OpenRouter) + residual Gemini writes rows.
 # Ranking: ELO++ (Termux-Multi-Agents) / 3L0 success path.
+#
+# SINGLE OWNER of selection percentages. llm-leaderboard-matrix references this.
 
 version: 1
-updated_at: "2026-08-09T01:00:00Z"
+updated_at: "2026-08-09T01:20:00Z"
 updated_by: grok
 status: stub  # SM-01: schema live; writers + recompute pending
 
-# Selection mix (operator intent)
+# Selection mix (operator intent) — canonical
 selection_mix:
   control_pct: 60      # immediate_role_picks / known free winners
   mixed_pct: 25        # blend our win-rate + public features
-  random_valley_pct: 15  # sample under-ranked free models (Cheat_Code valleys)
+  random_valley_pct: 15  # sample under-ranked free models (valleys)
 
 fields:
   - role          # triage | review | invoke | after-peers

@@ -1,0 +1,46 @@
+# Model success matrix — OUR labels (not public boards)
+# SM-01 · ELO++ / 3L0 · free-tier only
+# Related: #94 #90 #96 · llm-leaderboard-matrix.yaml · routing-priority.yaml
+#
+# Policy: public boards = features; this file = labels that drive routing.
+# Telemetry from peer HTTP (Omni/OpenRouter) + residual Gemini writes rows.
+# Ranking: ELO++ (Termux-Multi-Agents) / 3L0 success path.
+
+version: 1
+updated_at: "2026-08-09T01:00:00Z"
+updated_by: grok
+status: stub  # SM-01: schema live; writers + recompute pending
+
+# Selection mix (operator intent)
+selection_mix:
+  control_pct: 60      # immediate_role_picks / known free winners
+  mixed_pct: 25        # blend our win-rate + public features
+  random_valley_pct: 15  # sample under-ranked free models (Cheat_Code valleys)
+
+fields:
+  - role          # triage | review | invoke | after-peers
+  - model         # full id incl :free where applicable
+  - peer          # omni | openrouter | gemini | other
+  - success       # bool | 0..1 soft
+  - tokens_in
+  - tokens_out
+  - latency_ms
+  - requests_used
+  - human_override  # optional operator force
+  - experiment_id   # hex for valley A/B
+  - ts            # ISO-8601
+
+# Empty until first telemetry write
+rows: []
+
+ranking:
+  method: ELO++ / 3L0
+  notes: |
+    Recompute from rows after each successful peer invoke.
+    Feed immediate_role_picks + mixed/random_valley selectors.
+  store_history: true  # time-series for historical leaderboard
+
+constraints:
+  cost: free_only
+  openrouter_suffix_required: ":free"
+  reject_paid_routes: true

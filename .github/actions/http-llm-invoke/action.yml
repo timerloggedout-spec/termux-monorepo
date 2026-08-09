@@ -176,16 +176,13 @@ runs:
 
         case "$PROVIDER" in
           omni)
-            HEAD="### 🌐 OmniRoute textbook (\`${ACTIVE_MODEL}\`)"
-            # Patch HEAD
-            HEAD=$(echo "$HEAD" | sed "s/textbook/${ROLE}/")
+            HEAD="### 🌐 OmniRoute ${ROLE} (\`${ACTIVE_MODEL}\`)"
             ;;
           openrouter)
-            HEAD="### 🔀 OpenRouter textbook (\`${ACTIVE_MODEL}\`)"
-            # Patch HEAD
-            HEAD=$(echo "$HEAD" | sed "s/textbook/${ROLE}/")
+            HEAD="### 🔀 OpenRouter ${ROLE} (\`${ACTIVE_MODEL}\`)"
             ;;
         esac
+
 
         BODY=$(printf '%s\n%s\n%s\n\n%s\n\n%s\n%s\n' \
           "$MARKER" \

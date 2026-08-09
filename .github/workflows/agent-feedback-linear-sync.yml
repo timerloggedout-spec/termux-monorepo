@@ -83,7 +83,12 @@ jobs:
               });
               const json = await res.json();
               if (json.errors) {
-                throw new Error(JSON.stringify(json.errors));
+                const errMsg = JSON.stringify(json.errors);
+                if (errMsg.includes('usage limit exceeded') || errMsg.includes('USAGE_LIMIT_EXCEEDED')) {
+                  core.warning(`Linear workspace usage limit exceeded — skipping sync: ${errMsg}`);
+                  process.exit(0);
+                }
+                throw new Error(errMsg);
               }
               return json.data;
             }

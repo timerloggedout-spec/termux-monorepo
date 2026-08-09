@@ -1,0 +1,170 @@
+name: 'DeepSeek CI (peer Omni ↔ OpenRouter HTTPS + opt-in web-wrapper)'
+
+# Executable replacement for the non-functional .github/implement/deep_core.yaml
+# draft (that file was prose/Markdown, not a workflow GitHub Actions could load).
+#
+# Reuses the existing peer-routing actions instead of a bespoke HTTPS client:
+#   - .github/actions/model-router     selects the approved Omni/OpenRouter peer + model.
+#   - .github/actions/http-llm-invoke  performs the HTTPS call (HTTPS-only, host
+#     allow-list, OpenRouter :free gate) and posts the result as a PR comment.
+#
+# The DeepSeek web-wrapper (reverse-engineered chat.deepseek.com session) is a
+# separate, opt-in smoke-test job. It never runs automatically on pull_request
+# events — only on a manual workflow_dispatch with the input explicitly set,
+# or when the DEEPSEEK_WEBWRAPPER_ENABLED repository variable is '1'.
+# It never caches, uploads, or commits session/cookie/token material — all
+# transient state lives under $RUNNER_TEMP and is discarded at job end.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      enable_deepseek_webwrapper:
+        description: 'Opt-in: run the DeepSeek web-wrapper session/PoW smoke test'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: deepseek-ci-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  review:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Model router (peer Omni ↔ OpenRouter)
+        id: router
+        uses: ./.github/actions/model-router
+        with:
+          role: review
+          has-omni: ${{ secrets.OMNI_API_KEY != '' || secrets.OMNIROUTE_API_KEY != '' }}
+          has-openrouter: ${{ secrets.OPENROUTER_API_KEY != '' }}
+          has-gemini: 'false'
+
+      - name: Note skip (no comment; shared soft budget)
+        if: steps.router.outputs.skip == 'true'
+        run: echo "::notice::DeepSeek CI review skipped — ${{ steps.router.outputs.reason }}"
+
+      - name: Build review prompt (API diff — independent of checkout ref)
+        id: rev_ctx
+        if: steps.router.outputs.skip != 'true' && (steps.router.outputs.provider == 'omni' || steps.router.outputs.provider == 'openrouter')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          TARGET_PR: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          DIFF=$(gh api "repos/${REPO}/pulls/${TARGET_PR}" -H "Accept: application/vnd.github.v3.diff" 2>/dev/null \
+            | head -c 24000 || true)
+          {
+            echo "prompt<<EOF"
+            cat <<PROMPT
+          You are the free-tier DeepSeek-CI peer reviewer for termux-monorepo. Concise. ONE response.
+          Target PR #${TARGET_PR}.
+          Check: correctness, security (no secrets/PII), AGENTS.md rules, minimal diff.
+          Diff (truncated):
+          ${DIFF}
+          PROMPT
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: OmniRoute review (peer)
+        if: steps.router.outputs.skip != 'true' && steps.router.outputs.provider == 'omni'
+        continue-on-error: true
+        uses: ./.github/actions/http-llm-invoke
+        with:
+          provider: omni
+          model: ${{ steps.router.outputs.model }}
+          role: review
+          target_number: ${{ github.event.pull_request.number }}
+          api_key: ${{ secrets.OMNI_API_KEY || secrets.OMNIROUTE_API_KEY }}
+          base_url: ${{ secrets.OMNI_BASE_URL }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          prompt: ${{ steps.rev_ctx.outputs.prompt }}
+
+      - name: OpenRouter review (peer)
+        if: steps.router.outputs.skip != 'true' && steps.router.outputs.provider == 'openrouter'
+        continue-on-error: true
+        uses: ./.github/actions/http-llm-invoke
+        with:
+          provider: openrouter
+          model: ${{ steps.router.outputs.model }}
+          role: review
+          target_number: ${{ github.event.pull_request.number }}
+          api_key: ${{ secrets.OPENROUTER_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          prompt: ${{ steps.rev_ctx.outputs.prompt }}
+
+  deepseek-webwrapper:
+    # Opt-in only. Never runs on pull_request; manual dispatch (or repo var) required.
+    if: |
+      github.event_name == 'workflow_dispatch' &&
+      (inputs.enable_deepseek_webwrapper == true || vars.DEEPSEEK_WEBWRAPPER_ENABLED == '1')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js (PoW WASM solver)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python dependencies
+        run: pip install curl_cffi requests rich
+
+      - name: DeepSeek web-wrapper session + PoW smoke test (transient, opt-in)
+        env:
+          DEEPSEEK_TOKEN: ${{ secrets.DEEPSEEK_TOKEN }}
+          PYTHONPATH: ${{ github.workspace }}/deepcli
+        run: |
+          set -euo pipefail
+          if [ -z "${DEEPSEEK_TOKEN:-}" ]; then
+            echo "::warning::DEEPSEEK_TOKEN not set — skipping DeepSeek web-wrapper smoke test"
+            exit 0
+          fi
+          # Sandbox all state under $RUNNER_TEMP; core.py resolves paths from
+          # Path.home(), so pointing HOME here keeps session/config data out
+          # of the checkout and out of the real runner home directory.
+          export HOME="${RUNNER_TEMP}/deepseek-webwrapper-home"
+          mkdir -p "$HOME"
+          python - <<'PYEOF'
+          try:
+              from deepcli import core
+              token = core.get_token()
+              session_id = core.create_session(token)
+              reply = core.chat_completion(
+                  token, "Reply with exactly: OK", session_id, auto_continue=False,
+              )
+              print(f"::notice::DeepSeek web-wrapper session established (session_id={session_id[:8]}..., reply_len={len(reply)})")
+          except Exception as e:
+              print(f"::warning::DeepSeek web-wrapper smoke test failed (non-fatal): {e}")
+          PYEOF
+
+      - name: Discard transient session directory
+        if: always()
+        run: rm -rf "${RUNNER_TEMP}/deepseek-webwrapper-home"

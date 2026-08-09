@@ -16,6 +16,6 @@
 | RL-12 | Auto CodeRabbit autofix after CR review | P0 | grok | done | OPERATOR_GITHUB_TOKEN + github-token input |
 | RL-13 | Gemini second-pass after peers only | P0 | grok | done | gemini-after-peers.yml (#102) |
 | RL-14 | Devin Apply Suggestions automation | P1 | | partial | enable Auto-Fix in Devin Settings; no public click-API |
-| RL-15 | Honest OpenRouter (no false route) | P0 | grok | done | model-router selects peers first; skip only when all exhausted |
+| RL-15 | Honest OpenRouter (no false route) | P0 | grok | done | model-router selects peers first; residual Gemini after peers exhausted; skip only when no route remains |
 | RL-16 | Shared global counter (not per-branch cache) | P2 | | todo | gist/issue optimistic concurrency |
 | RL-17 | yq on runners for matrix parse (#104) | P1 | | todo | confirm/install before relying on preferred[] loop |

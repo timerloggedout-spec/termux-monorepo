@@ -11,7 +11,7 @@ reviewers:
     status: posted
 related_issues: [86, 87, 88, 91, 94]
 related_prs: [72, 81, 101, 102, 104, 105]
-gates_required: [repo-gate]
+gates_required: [repo-gate, termux-smoke]
 ---
 
 # MANIFEST — rate-limit-rotation

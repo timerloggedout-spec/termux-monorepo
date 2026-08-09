@@ -177,24 +177,24 @@ jobs:
                 }
               );
               core.info(`Subtask ${sub.issueCreate.issue.identifier} ${sub.issueCreate.issue.url}`);
+
+              if (context.payload.comment?.id) {
+                try {
+                  await github.rest.reactions.createForPullRequestReviewComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    comment_id: context.payload.comment.id,
+                    content: 'eyes',
+                  });
+                } catch (e) {
+                  core.info(String(e));
+                }
+              }
             } catch (err) {
               const msg = err.message || '';
               if (msg.includes('usage limit exceeded') || msg.includes('USAGE_LIMIT_EXCEEDED')) {
                 core.warning('Linear workspace limit exceeded — skipping sync cleanly: ' + msg);
               } else {
                 throw err;
-              }
-            }
-
-            if (context.payload.comment?.id) {
-              try {
-                await github.rest.reactions.createForPullRequestReviewComment({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  comment_id: context.payload.comment.id,
-                  content: 'eyes',
-                });
-              } catch (e) {
-                core.info(String(e));
               }
             }

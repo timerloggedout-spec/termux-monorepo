@@ -17,6 +17,15 @@ import time
 
 COUNTER_DIR = os.environ.get("COUNTER_DIR", "/tmp/model-router")
 
+# Previously known-good models to fall back on when no live catalog is available
+LEGACY_MODELS = {
+    "meta-llama/llama-3.3-70b-instruct:free",
+    "google/gemma-3-12b-it:free",
+    "qwen/qwen3-coder:free",
+    "deepseek/deepseek-r1:free",
+    "auto/best-free"
+}
+
 def parse_yaml(filepath):
     """
     Minimal robust YAML parser for standard key-value and indentation structures.
@@ -144,6 +153,10 @@ def fetch_openrouter_free_models():
 
                 if is_free and m_id:
                     free_models.append(m_id)
+
+            # Prevent caching an empty list if there's a temporary API anomaly
+            if not free_models:
+                return None
             return free_models
     except Exception as e:
         sys.stderr.write(f"Warning: Failed to poll OpenRouter models ({e}). Using hardcoded fallback list.\n")
@@ -156,18 +169,25 @@ def fetch_openrouter_free_models_cached():
     Optimizes polling intervals to avoid redundant network overhead.
     """
     cache_file = os.path.join(COUNTER_DIR, "openrouter_models_cache.json")
+    cached_models = None
+    cached_time = 0
+
+    # Try loading existing cache
     if os.path.exists(cache_file):
         try:
             with open(cache_file, "r") as f:
                 cache_data = json.load(f)
+                cached_models = cache_data.get("models")
                 cached_time = cache_data.get("timestamp", 0)
-                if time.time() - cached_time < 3600:
-                    sys.stderr.write("Using cached OpenRouter free models list.\n")
-                    return cache_data.get("models", [])
         except Exception:
             pass
 
-    # Cache is missing or expired, fetch from API
+    # If cache is valid (less than 1 hour old), return it immediately
+    if cached_models is not None and (time.time() - cached_time < 3600):
+        sys.stderr.write("Using cached OpenRouter free models list.\n")
+        return cached_models
+
+    # Cache is missing or expired, fetch fresh list from API
     models = fetch_openrouter_free_models()
     if models is not None:
         try:
@@ -179,7 +199,14 @@ def fetch_openrouter_free_models_cached():
                 }, f)
         except Exception:
             pass
-    return models
+        return models
+
+    # Fetch failed! Fall back to stale cached models if available to avoid unverified routes
+    if cached_models is not None:
+        sys.stderr.write("Warning: OpenRouter fresh poll failed. Falling back to stale cached models list.\n")
+        return cached_models
+
+    return None
 
 
 def get_usage(provider, model):
@@ -291,10 +318,16 @@ def main():
             continue
 
         # Cross-reference OpenRouter polled availability
-        if provider == "openrouter" and polled_free_models is not None:
-            if model not in polled_free_models:
-                sys.stderr.write(f"Warning: OpenRouter model {model} is not currently available/free in polled catalog. Skipping.\n")
-                continue
+        if provider == "openrouter":
+            if polled_free_models is not None:
+                if model not in polled_free_models:
+                    sys.stderr.write(f"Warning: OpenRouter model {model} is not currently available/free in polled catalog. Skipping.\n")
+                    continue
+            else:
+                # No catalog (fresh or cached) available at all! Skip unverified new models conservatively.
+                if model not in LEGACY_MODELS:
+                    sys.stderr.write(f"Warning: No OpenRouter catalog available. Skipping unverified new model '{model}' conservatively.\n")
+                    continue
 
         # Calculate ELO score from success matrix (ELO ≈ 3L0)
         model_entry = success_matrix.get("models", {}).get(model, {})

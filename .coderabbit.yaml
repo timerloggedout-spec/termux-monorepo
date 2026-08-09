@@ -1,7 +1,10 @@
 # yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+# Agent: Grok — autofix enabled so CodeRabbit applies without manual loops.
 reviews:
   profile: assertive
   high_level_summary: true
+  request_changes_workflow: true
+  review_status: false
   auto_review:
     enabled: true
     drafts: true
@@ -10,8 +13,11 @@ reviews:
       - master
       - master-staging
       - feature/skyhook
+      - deep_core/feat/reverse_engineered_deepseek_wasm_gh-worflows
   finishing_touches:
     autofix:
       enabled: true
+  auto_apply_labels: true
+
 chat:
   auto_reply: true

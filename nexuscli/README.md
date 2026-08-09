@@ -35,9 +35,9 @@ pip install curl_cffi rich
 ### 3. Set Up API Token
 
 ```bash
-export NEXUSCLI_TOKEN="your_deepseek_token_here"
+export NEXUSCLI_TOKEN="<insert-token>"
 # Or save in config
-echo '{"token": "your_deepseek_token_here"}' > ~/.nexuscli/config.json
+echo '{"token": "<insert-token>"}' > ~/.nexuscli/config.json
 ```
 
 ---
@@ -101,8 +101,8 @@ Located at `~/.nexuscli/config.json`:
 
 ```json
 {
-  "token": "your_deepseek_token",
-  "last_session": "your_last_session_id"
+  "token": "<insert-token>",
+  "last_session": "<last-session-id>"
 }
 ```
 

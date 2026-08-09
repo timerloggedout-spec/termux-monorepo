@@ -54,6 +54,15 @@ class AutomatedContextCollector:
             return f"// Unable to trace AST module boundary map for {file_relative_path}"
 
     def assemble_minimized_bundle(self, active_target_file):
+        """
+        Assemble a minimized context bundle containing dependent-file structures and the active file's full source.
+        
+        Parameters:
+        	active_target_file (str): Relative path of the file to include as the active editing target.
+        
+        Returns:
+        	str: Formatted architecture context containing dependency skeletons and the active file source.
+        """
         dependencies = self.find_dependent_files(active_target_file)
         bundle = ["=== CODEBASE ARCHITECTURE SUBSTRUCTURE CONTEXT ==="]
         for dep in dependencies:

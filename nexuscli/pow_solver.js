@@ -10,7 +10,7 @@ function solveDeepSeekHashV1(challenge, salt, signature, targetPath) {
         .update(challenge + target + salt + signature)
         .digest('hex')
         .substring(0, 16);
-    
+
     while (true) {
         const input = prefix + answer.toString();
         const hash = crypto.createHash('sha256').update(input).digest('hex');
@@ -38,7 +38,7 @@ if (algorithm === 'DeepSeekHashV1') {
         .update(challenge + targetPath + salt + signature)
         .digest('hex')
         .substring(0, 16);
-    
+
     while (true) {
         const inputStr = prefix + answer.toString();
         const hash = crypto.createHash('sha256').update(inputStr).digest('hex');

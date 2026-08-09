@@ -8,26 +8,38 @@ import time
 import subprocess
 import random
 from pathlib import Path
-from typing import Optional, List, Dict, Any, Any as SessionType
+from typing import Optional, List, Dict, Any
+try:
+    from curl_cffi import requests as curl_requests
+except Exception:
+    import requests as standard_requests
+    class MockCurlSession(standard_requests.Session):
+        def __init__(self, *args, **kwargs):
+            kwargs.pop("impersonate", None)
+            super().__init__(*args, **kwargs)
+        def request(self, method, url, *args, **kwargs):
+            kwargs.pop("impersonate", None)
+            return super().request(method, url, *args, **kwargs)
+
+    class CurlRequestsFallback:
+        Session = MockCurlSession
+        def get(self, *args, **kwargs):
+            kwargs.pop("impersonate", None)
+            return standard_requests.get(*args, **kwargs)
+        def post(self, *args, **kwargs):
+            kwargs.pop("impersonate", None)
+            return standard_requests.post(*args, **kwargs)
+        def put(self, *args, **kwargs):
+            kwargs.pop("impersonate", None)
+            return standard_requests.put(*args, **kwargs)
+        def delete(self, *args, **kwargs):
+            kwargs.pop("impersonate", None)
+            return standard_requests.delete(*args, **kwargs)
+
+    curl_requests = CurlRequestsFallback()
 
 import requests as http_requests
 from rich.console import Console
-
-# curl_cffi is preferred (TLS fingerprinting) but optional on Termux when the
-# wheel's NDK/libc++ ABI does not match the host Python (seen on 3.14).
-_CURL_CFFI_AVAILABLE = False
-try:
-    from curl_cffi import requests as curl_requests
-
-    _CURL_CFFI_AVAILABLE = True
-except Exception as _curl_err:  # ImportError or dlopen failure
-    curl_requests = http_requests  # type: ignore
-    if os.environ.get("DEEPCLI_QUIET_FALLBACK") != "1":
-        print(
-            f"[deepcli] curl_cffi unavailable ({type(_curl_err).__name__}: {_curl_err}); "
-            "using requests fallback (some anti-bot paths may fail).",
-            file=sys.stderr,
-        )
 
 console = Console()
 

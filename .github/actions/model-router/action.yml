@@ -1,0 +1,168 @@
+name: 'Model Router'
+description: |
+  Select provider+model for a role (triage|review|invoke).
+
+  PEER POLICY (operator 2026-08-08):
+    OmniRoute and OpenRouter are nearly equal free-tier peers.
+    Selection = model desired for the operation + soft-budget headroom.
+    Gemini is residual only. Jules is async builder.
+
+  FREE TIER ONLY on Omni + OpenRouter paths.
+  Soft budgets are per-branch best-effort (Actions cache).
+
+inputs:
+  role:
+    description: 'triage | review | invoke'
+    required: true
+  has-omni:
+    description: '"true" if OMNI_API_KEY or OMNIROUTE_API_KEY is set'
+    required: false
+    default: 'false'
+  has-openrouter:
+    description: '"true" if OPENROUTER_API_KEY is set'
+    required: false
+    default: 'false'
+  has-gemini:
+    description: '"true" if GEMINI_API_KEY is set'
+    required: false
+    default: 'true'
+
+outputs:
+  provider:
+    description: 'omni | openrouter | gemini | none'
+    value: ${{ steps.pick.outputs.provider }}
+  model:
+    description: 'Model id to request'
+    value: ${{ steps.pick.outputs.model }}
+  skip:
+    description: '"true" if no capacity remains'
+    value: ${{ steps.pick.outputs.skip }}
+  reason:
+    description: 'Human-readable selection reason'
+    value: ${{ steps.pick.outputs.reason }}
+
+runs:
+  using: composite
+  steps:
+    - name: Pacific date key
+      id: date
+      shell: bash
+      run: echo "key=$(TZ=America/Los_Angeles date +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+
+    - name: Restore per-model counters (per-branch best-effort)
+      id: restore
+      uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+      with:
+        path: /tmp/model-router
+        key: model-router-${{ steps.date.outputs.key }}
+        restore-keys: model-router-${{ steps.date.outputs.key }}
+        enableCrossOsArchive: true
+
+    - name: Pick provider + model (peer Omni ↔ OpenRouter → Gemini residual)
+      id: pick
+      shell: bash
+      env:
+        ROLE: ${{ inputs.role }}
+        HAS_OMNI: ${{ inputs.has-omni }}
+        HAS_OPENROUTER: ${{ inputs.has-openrouter }}
+        HAS_GEMINI: ${{ inputs.has-gemini }}
+      run: |
+        set -eu
+        DIR=/tmp/model-router
+        mkdir -p "$DIR"
+        count() {
+          f="$DIR/${1//\//_}.txt"
+          c=$(cat "$f" 2>/dev/null || echo 0)
+          [[ "$c" =~ ^[0-9]+$ ]] || c=0
+          echo "$c"
+        }
+        bump() {
+          f="$DIR/${1//\//_}.txt"
+          c=$(count "$1")
+          echo $((c + 1)) > "$f"
+        }
+
+        case "$ROLE" in
+          triage)
+            PEER_SLOTS="omni|auto/best-free|200 openrouter|meta-llama/llama-3.3-70b-instruct:free|40 openrouter|google/gemma-3-12b-it:free|40"
+            GEM_CANDIDATES="gemini-3.1-flash-lite:450 gemini-3.5-flash-lite:450 gemini-2.5-flash-lite:15"
+            ;;
+          review)
+            PEER_SLOTS="omni|auto/best-free|120 openrouter|qwen/qwen3-coder:free|30 openrouter|meta-llama/llama-3.3-70b-instruct:free|40 openrouter|deepseek/deepseek-r1:free|20"
+            GEM_CANDIDATES="gemini-3.5-flash:15 gemini-2.5-flash:15 gemini-3-flash:15 gemini-3.1-flash-lite:450"
+            ;;
+          invoke)
+            PEER_SLOTS="omni|auto/best-free|200 openrouter|meta-llama/llama-3.3-70b-instruct:free|40 openrouter|google/gemma-3-12b-it:free|40"
+            GEM_CANDIDATES="gemini-3.1-flash-lite:450 gemini-3.5-flash-lite:450"
+            ;;
+          *)
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "provider=none" >> "$GITHUB_OUTPUT"
+            echo "model=" >> "$GITHUB_OUTPUT"
+            echo "reason=unknown role $ROLE" >> "$GITHUB_OUTPUT"
+            exit 0
+            ;;
+        esac
+
+        for slot in $PEER_SLOTS; do
+          provider="${slot%%|*}"
+          rest="${slot#*|}"
+          model="${rest%%|*}"
+          limit="${rest##*|}"
+
+          if [ "$provider" = "omni" ] && [ "$HAS_OMNI" != "true" ]; then
+            continue
+          fi
+          if [ "$provider" = "openrouter" ] && [ "$HAS_OPENROUTER" != "true" ]; then
+            continue
+          fi
+          if [ "$provider" = "openrouter" ] && [[ "$model" != *:free ]]; then
+            echo "::warning::Skipping non-:free OpenRouter model $model"
+            continue
+          fi
+
+          key="$provider/$model"
+          used=$(count "$key")
+          if [ "$used" -lt "$limit" ]; then
+            bump "$key"
+            echo "provider=$provider" >> "$GITHUB_OUTPUT"
+            echo "model=$model" >> "$GITHUB_OUTPUT"
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            echo "reason=role=$ROLE peer=$provider model=$model used=$((used+1))/$limit" >> "$GITHUB_OUTPUT"
+            echo "Selected peer $provider/$model ($((used+1))/$limit)"
+            exit 0
+          fi
+          echo "Peer soft budget exhausted: $key ($used/$limit)"
+        done
+
+        if [ "$HAS_GEMINI" = "true" ]; then
+          for entry in $GEM_CANDIDATES; do
+            model="${entry%%:*}"
+            limit="${entry##*:}"
+            used=$(count "$model")
+            if [ "$used" -lt "$limit" ]; then
+              bump "$model"
+              echo "provider=gemini" >> "$GITHUB_OUTPUT"
+              echo "model=$model" >> "$GITHUB_OUTPUT"
+              echo "skip=false" >> "$GITHUB_OUTPUT"
+              echo "reason=role=$ROLE gemini=$model used=$((used+1))/$limit residual" >> "$GITHUB_OUTPUT"
+              echo "Selected residual gemini/$model ($((used+1))/$limit)"
+              exit 0
+            fi
+            echo "Exhausted soft budget for gemini $model ($used/$limit)"
+          done
+        fi
+
+        echo "skip=true" >> "$GITHUB_OUTPUT"
+        echo "provider=none" >> "$GITHUB_OUTPUT"
+        echo "model=" >> "$GITHUB_OUTPUT"
+        echo "reason=all free paths exhausted (omni/openrouter peers + gemini residual) role=$ROLE" >> "$GITHUB_OUTPUT"
+        echo "::warning::Model router: no capacity for role=$ROLE"
+
+    - name: Save per-model counters
+      if: steps.pick.outputs.skip != 'true'
+      uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+      with:
+        path: /tmp/model-router
+        key: model-router-${{ steps.date.outputs.key }}-${{ github.run_id }}-${{ github.run_attempt }}
+        enableCrossOsArchive: true

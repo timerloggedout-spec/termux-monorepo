@@ -79,7 +79,6 @@ jobs:
                 ].join('\n'),
               });
             }
-            // Inventory open PRs (agent bots + issue-linked)
             const { data: prs } = await github.rest.pulls.list({
               owner: context.repo.owner,
               repo: context.repo.repo,

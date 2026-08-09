@@ -249,6 +249,9 @@ def main():
             continue
         if provider == "openrouter" and not has_openrouter:
             continue
+        if provider == "openrouter" and not model.endswith(":free"):
+            sys.stderr.write(f"Warning: Skipping non-:free OpenRouter model {model}.\n")
+            continue
 
         # Cross-reference OpenRouter polled availability
         if provider == "openrouter" and polled_free_models is not None:

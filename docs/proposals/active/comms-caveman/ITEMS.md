@@ -11,4 +11,5 @@
 | CM-04 | Inventory Grimoire.md CID.py MaxC cedarlang | P1 | | todo | issue #90 local assets |
 | CM-05 | Cheat_Code inventory full phrase mine | P1 | | todo | docs/research/cheat-code-inventory.md |
 | CM-06 | Public label hygiene (no private packs in issues) | P1 | | todo | #98 related |
-| RL-07 | Prompt compression for agent workflows | P1 | | moved | was rate-limit-rotation; owned here |
+| CM-07 | Compress-before-send: CAVEMAN system in http-llm-invoke + Gemini residual | P0 | grok | done | .github/actions/http-llm-invoke + triage/review yml |
+| RL-07 | Prompt compression for agent workflows | P0 | grok | done | moved here; covered by CM-07 (output); input still head -c |

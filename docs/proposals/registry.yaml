@@ -1,9 +1,23 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-08-08T18:30:00Z"
+updated_at: "2026-08-09T01:20:00Z"
 updated_by: grok
 
 proposals:
+  - id: comms-caveman
+    title: "Comms compression + CAVEMAN + success matrices"
+    author: grok
+    status: executing
+    priority: P0
+    path: active/comms-caveman/
+    reviewers:
+      - id: grok
+        role: author+executor
+        status: posted
+    related_issues: [90, 94, 96]
+    related_prs: [103]
+    gates_required: [repo-gate]
+
   - id: rate-limit-rotation
     title: "Rate limits, model rotation, OpenRouter fallback"
     author: grok

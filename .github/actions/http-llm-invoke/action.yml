@@ -3,6 +3,7 @@ description: |
   OpenAI-compatible chat/completions for OmniRoute or OpenRouter peers.
   Posts result as a PR/issue comment. FREE paths only.
   Base URL: explicit input → catalog defaults. https + host allow-list only.
+  CAVEMAN: system message from workspace/caveman/caveman-micro.txt (output compress).
 
 inputs:
   provider:
@@ -18,7 +19,7 @@ inputs:
     description: 'PR or issue number to comment on'
     required: true
   prompt:
-    description: 'User prompt text'
+    description: 'User prompt text (task)'
     required: true
   api_key:
     description: 'Provider API key'
@@ -33,6 +34,10 @@ inputs:
   repository:
     description: 'owner/repo'
     required: true
+  caveman:
+    description: '"true" prepend CAVEMAN system msg (default true)'
+    required: false
+    default: 'true'
 
 runs:
   using: composite
@@ -49,6 +54,7 @@ runs:
         BASE_URL: ${{ inputs.base_url }}
         GH_TOKEN: ${{ inputs.github_token }}
         REPO: ${{ inputs.repository }}
+        CAVEMAN: ${{ inputs.caveman }}
       run: |
         set -euo pipefail
         if [ -z "${API_KEY}" ]; then
@@ -60,7 +66,6 @@ runs:
           exit 0
         fi
 
-        # Catalog defaults (ADE — no human paste required)
         DEFAULT_OMNI="https://cloud.omniroute.online/v1"
         DEFAULT_OR="https://openrouter.ai/api/v1"
 
@@ -71,10 +76,8 @@ runs:
         esac
 
         RAW="${BASE_URL:-$CATALOG}"
-        # Strip trailing slash
         RAW="${RAW%/}"
 
-        # SEC: https only + host allow-list (never POST Bearer to arbitrary hosts)
         ALLOW_HOSTS="cloud.omniroute.online openrouter.ai api.openrouter.ai"
         if [[ ! "$RAW" =~ ^https:// ]]; then
           echo "::error::base_url must be https:// (got scheme-less or http)"
@@ -95,7 +98,7 @@ runs:
           omni)
             TITLE="termux-monorepo-${ROLE}-omni"
             MARKER="<!-- omni-${ROLE} -->"
-            HEAD="### 🌐 OmniRoute ${ROLE} (\`${MODEL}\`)"
+            HEAD="### 🌐 OmniRoute ${ROLE} (`${MODEL}`)"
             EGG="<!-- matrix: valley-hunt via omni free aggregation / 3L0 labels pending -->"
             ;;
           openrouter)
@@ -105,17 +108,40 @@ runs:
             fi
             TITLE="termux-monorepo-${ROLE}-or"
             MARKER="<!-- openrouter-${ROLE} -->"
-            HEAD="### 🔀 OpenRouter ${ROLE} (\`${MODEL}\`)"
+            HEAD="### 🔀 OpenRouter ${ROLE} (`${MODEL}`)"
             EGG="<!-- matrix: peer free path; public boards=features; 3L0=our labels -->"
             ;;
         esac
+
+        # CAVEMAN system (output compress) — seed kuba-guzik/caveman-micro
+        SYS=""
+        if [ "${CAVEMAN}" = "true" ]; then
+          if [ -f workspace/caveman/caveman-micro.txt ]; then
+            SYS=$(cat workspace/caveman/caveman-micro.txt)
+          else
+            SYS='Respond like smart caveman. Cut all filler, keep technical substance.
+- Drop articles (a, an, the), filler (just, really, basically, actually).
+- Drop pleasantries (sure, certainly, happy to).
+- No hedging. Fragments fine. Short synonyms.
+- Technical terms stay exact. Code blocks unchanged.
+- Pattern: [thing] [action] [reason]. [next step].'
+          fi
+        fi
+
+        if [ -n "$SYS" ]; then
+          PAYLOAD=$(jq -n --arg m "$MODEL" --arg s "$SYS" --arg p "$PROMPT" \
+            '{model:$m,messages:[{role:"system",content:$s},{role:"user",content:$p}],max_tokens:1200}')
+        else
+          PAYLOAD=$(jq -n --arg m "$MODEL" --arg p "$PROMPT" \
+            '{model:$m,messages:[{role:"user",content:$p}],max_tokens:1200}')
+        fi
 
         RESP=$(curl -sS --connect-timeout 15 --max-time 90 -X POST "${BASE}/chat/completions" \
           -H "Authorization: Bearer ${API_KEY}" \
           -H "Content-Type: application/json" \
           -H "HTTP-Referer: https://github.com/${REPO}" \
           -H "X-Title: ${TITLE}" \
-          -d "$(jq -n --arg m "$MODEL" --arg p "$PROMPT" '{model:$m,messages:[{role:"user",content:$p}],max_tokens:1800}')" \
+          -d "$PAYLOAD" \
           || echo '{"error":{"message":"curl transport failure"}}')
 
         TEXT=$(echo "$RESP" | jq -r '.choices[0].message.content // .choices[0].message.reasoning // empty' 2>/dev/null || true)
@@ -125,13 +151,16 @@ runs:
           TEXT="⚠️ ${PROVIDER} returned no content. ${ERR}"
         fi
 
+        CAV_TAG=""
+        [ "${CAVEMAN}" = "true" ] && CAV_TAG=" · CAVEMAN"
+
         BODY=$(printf '%s\n%s\n%s\n\n%s\n\n%s\n%s\n' \
           "$MARKER" \
           "$HEAD" \
           "$EGG" \
           "$TEXT" \
           '---' \
-          "_Peer router: Omni ↔ OpenRouter by desired model; Gemini residual. role=${ROLE}_")
+          "_Peer router: Omni ↔ OpenRouter; Gemini residual. role=${ROLE}${CAV_TAG}_")
 
         gh api "repos/${REPO}/issues/${TARGET}/comments" -f body="$BODY" >/dev/null || \
           echo "::warning::Failed to post comment on #${TARGET}"

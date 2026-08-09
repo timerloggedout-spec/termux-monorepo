@@ -28,9 +28,10 @@ def import_account(cookies_file: str, account_name: str):
     try:
         os.fchmod(fd, 0o600)
         os.ftruncate(fd, 0)
-        with os.fdopen(fd, 'w') as f:
+        opened = fd
+        fd = -1
+        with os.fdopen(opened, 'w') as f:
             json.dump({"token": token}, f, indent=2)
-            fd = -1
     finally:
         if fd >= 0:
             os.close(fd)

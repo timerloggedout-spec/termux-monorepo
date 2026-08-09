@@ -189,7 +189,12 @@ def cmd_export(args):
     fmt = args.format or "json"
     output = export_json(token, sid) if fmt == "json" else export_markdown(token, sid)
     if args.output:
-        Path(args.output).write_text(output)
+        path = Path(args.output)
+        path.write_text(output)
+        try:
+            path.chmod(0o600)
+        except Exception:
+            pass
         console.print(f"[green]Exported to {args.output}[/]")
     else:
         console.print(output)

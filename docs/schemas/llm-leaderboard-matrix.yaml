@@ -10,7 +10,7 @@
 # Related: #94 #86 #88 #91 · Termux-Multi-Agents/*
 
 version: 1
-updated_at: "2026-08-08T22:30:00Z"
+updated_at: "2026-08-09T02:15:00Z"
 updated_by: grok
 policy: free_tier_only
 
@@ -36,35 +36,35 @@ public_boards:
 immediate_role_picks:
   triage:
     preferred:
-      - id: meta-llama/llama-3.3-70b-instruct:free
-        context_tokens: 131000
+      - id: google/gemma-4-31b-it:free
+        context_tokens: 128000
         max_requests: 1
-        strength: [classification, concise]
-      - id: google/gemma-3-12b-it:free
+        strength: [classification, concise, reasoning]
+      - id: google/gemma-4-26b-a4b-it:free
         context_tokens: 128000
         max_requests: 1
         strength: [fast, general]
   review:
     preferred:
-      - id: qwen/qwen3-coder:free
-        context_tokens: 262000
-        max_requests: 1
-        strength: [code, review]
-      - id: meta-llama/llama-3.3-70b-instruct:free
-        context_tokens: 131000
-        max_requests: 1
-        strength: [general, code]
-      - id: deepseek/deepseek-r1:free
+      - id: cohere/north-mini-code:free
         context_tokens: 128000
         max_requests: 1
-        strength: [reasoning]
+        strength: [code, review]
+      - id: google/gemma-4-31b-it:free
+        context_tokens: 128000
+        max_requests: 1
+        strength: [general, code]
+      - id: google/gemma-4-26b-a4b-it:free
+        context_tokens: 128000
+        max_requests: 1
+        strength: [fast, general]
   invoke:
     preferred:
-      - id: meta-llama/llama-3.3-70b-instruct:free
-        context_tokens: 131000
+      - id: google/gemma-4-31b-it:free
+        context_tokens: 128000
         max_requests: 1
         strength: [assistant, general]
-      - id: google/gemma-3-12b-it:free
+      - id: google/gemma-4-26b-a4b-it:free
         context_tokens: 128000
         max_requests: 1
         strength: [fast]

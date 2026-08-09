@@ -13,10 +13,11 @@ reviews:
       - master
       - master-staging
       - feature/skyhook
+      - deep_core/feat/reverse_engineered_deepseek_wasm_gh-worflows
   finishing_touches:
     autofix:
       enabled: true
-  auto_apply_labels: false
+  auto_apply_labels: true
 
 chat:
   auto_reply: true

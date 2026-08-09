@@ -240,9 +240,12 @@ def _reconcile() -> int:
         pointers.append(
             {
                 "sid": sid,
+                "mi": 0,
+                "bi": 0,
                 "ch": content_hash,
-                "path": str(session_file),
+                "path": ["deepcli", sid[:8]],
                 "source": "deepcli",
+                "file": str(session_file),
             }
         )
         existing_sids.add(sid)

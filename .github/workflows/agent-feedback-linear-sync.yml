@@ -73,19 +73,32 @@ jobs:
               prUrl;
 
             async function linear(query, variables) {
-              const res = await fetch('https://api.linear.app/graphql', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: key,
-                },
-                body: JSON.stringify({ query, variables }),
-              });
-              const json = await res.json();
-              if (json.errors) {
-                throw new Error(JSON.stringify(json.errors));
+              try {
+                const res = await fetch('https://api.linear.app/graphql', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: key,
+                  },
+                  body: JSON.stringify({ query, variables }),
+                });
+                const json = await res.json();
+                if (json.errors) {
+                  const errStr = JSON.stringify(json.errors);
+                  if (errStr.includes('USAGE_LIMIT_EXCEEDED') || errStr.includes('usage limit exceeded')) {
+                    core.warning(`Linear usage limit exceeded: ${errStr}`);
+                    return { issues: { nodes: [] }, issueLabels: { nodes: [] }, issueCreate: { success: false, issue: { id: '', identifier: '', url: '' } } };
+                  }
+                  throw new Error(errStr);
+                }
+                return json.data;
+              } catch (e) {
+                if (e.message.includes('USAGE_LIMIT_EXCEEDED') || e.message.includes('usage limit exceeded')) {
+                  core.warning(`Linear usage limit exceeded: ${e.message}`);
+                  return { issues: { nodes: [] }, issueLabels: { nodes: [] }, issueCreate: { success: false, issue: { id: '', identifier: '', url: '' } } };
+                }
+                throw e;
               }
-              return json.data;
             }
 
             const teamId = '1e672463-31de-40b2-a378-3c03fd8f7e3b';
@@ -133,8 +146,10 @@ jobs:
                   },
                 }
               );
-              parentId = created.issueCreate.issue.id;
-              core.info(`Created parent ${created.issueCreate.issue.identifier}`);
+              parentId = created?.issueCreate?.issue?.id;
+              if (parentId) {
+                core.info(`Created parent ${created.issueCreate.issue.identifier}`);
+              }
             }
 
             const labels = await linear(
@@ -146,7 +161,8 @@ jobs:
               ? `[${bot}] PR #${prNumber}: ${path}`
               : `[${bot}] PR #${prNumber}: review feedback`;
 
-            const sub = await linear(
+            if (parentId) {
+              const sub = await linear(
               `mutation($input: IssueCreateInput!) {
                 issueCreate(input: $input) {
                   success
@@ -175,7 +191,12 @@ jobs:
                 },
               }
             );
-            core.info(`Subtask ${sub.issueCreate.issue.identifier} ${sub.issueCreate.issue.url}`);
+              if (sub?.issueCreate?.issue) {
+                core.info(`Subtask ${sub.issueCreate.issue.identifier} ${sub.issueCreate.issue.url}`);
+              }
+            } else {
+              core.warning('No parentId available; skipping subtask creation.');
+            }
 
             if (context.payload.comment?.id) {
               try {

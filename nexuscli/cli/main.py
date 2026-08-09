@@ -63,10 +63,12 @@ def cmd_new_session(args):
     console.print(f"[green]New session created: {session_id}[/]")
     if args.save:
         cfg = {}
-        if os.path.exists(str(Path.home() / ".deepcode-cli" / "config.json")):
-            cfg = json.loads((Path.home() / ".deepcode-cli" / "config.json").read_text())
+        cfg_path = Path.home() / ".nexuscli" / "config.json"
+        cfg_path.parent.mkdir(parents=True, exist_ok=True)
+        if cfg_path.exists():
+            cfg = json.loads(cfg_path.read_text())
         cfg["last_session"] = session_id
-        (Path.home() / ".deepcode-cli" / "config.json").write_text(json.dumps(cfg, indent=2))
+        cfg_path.write_text(json.dumps(cfg, indent=2))
         console.print("[yellow]Saved as last_session.[/]")
 
 

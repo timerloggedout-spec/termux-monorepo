@@ -453,21 +453,34 @@ TELEMETRY_LOG = "agent_telemetry_stream.json"
 def clear_screen():
     print("\\033[H\\033[J", end="")
 
+# State-tracking cache and position pointers for incremental I/O performance optimization
+_active_jobs_cache = {}
+_last_file_pos = 0
+
 def read_latest_telemetry():
+    global _last_file_pos, _active_jobs_cache
     if not os.path.exists(TELEMETRY_LOG):
+        _active_jobs_cache = {}
+        _last_file_pos = 0
         return []
-    active_jobs = {}
     try:
+        file_size = os.path.getsize(TELEMETRY_LOG)
+        if file_size < _last_file_pos:
+            _active_jobs_cache = {}
+            _last_file_pos = 0
         with open(TELEMETRY_LOG, "r") as f:
+            if _last_file_pos > 0:
+                f.seek(_last_file_pos)
             for line in f:
                 if not line.strip():
                     continue
                 entry = json.loads(line)
                 target = entry.get("target") or "System"
-                active_jobs[target] = entry
+                _active_jobs_cache[target] = entry
+            _last_file_pos = f.tell()
     except Exception:
         pass
-    return list(active_jobs.values())
+    return list(_active_jobs_cache.values())
 
 def render_dashboard():
     clear_screen()

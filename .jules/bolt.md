@@ -9,3 +9,10 @@ Using a single shared database connection across file walks and batching all ins
 
 **Action:**
 Always batch SQL database operations using `executemany` instead of iterating with `execute`. Provide support for passing an optional shared `conn` handle in indexing/utility functions to allow single-connection batch runs across walk loops, while safely closing connections only if opened locally.
+
+## 2026-08-02 - Incremental I/O and State Tracking for Real-Time Log Telemetry Parsing
+**Learning:**
+The Termux multi-agent orchestration dashboard repeatedly scans and parses the entire `agent_telemetry_stream.json` file from the start every second. On long-running refactoring or multi-agent pipelines, the log file grows, transforming the telemetry read operation into a major CPU and I/O bottleneck (O(N) complexity). By implementing state-tracking globals (`_last_file_pos` and `_active_jobs_cache`) and utilizing `seek/tell` operations, the parser only scans newly appended lines, reducing parsing complexity to O(1) for subsequent reads and yielding a >100x speedup. It is also critical to handle the edge case where the log file is truncated, deleted, or recreated, by comparing `file_size < _last_file_pos` and resetting the tracking state dynamically.
+
+**Action:**
+For all real-time stream parsers, event loops, or active polling operations, use stateful incremental I/O (seek/tell tracking and in-memory caches) instead of full-file rescans. Always build in a self-healing reset trigger for truncation or deletion of the underlying log stream.

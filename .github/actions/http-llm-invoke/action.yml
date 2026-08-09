@@ -97,6 +97,7 @@ runs:
             MARKER="<!-- omni-${ROLE} -->"
             HEAD="### 🌐 OmniRoute ${ROLE} (\`${MODEL}\`)"
             EGG="<!-- matrix: valley-hunt via omni free aggregation / 3L0 labels pending -->"
+            SIGNATURE="@omniRoute{provider: omni; model: ${MODEL}; settings: [connect-timeout=15, max-time=90]; mechanism: peer-router-auto}"
             ;;
           openrouter)
             if [[ "$MODEL" != *:free ]]; then
@@ -107,6 +108,7 @@ runs:
             MARKER="<!-- openrouter-${ROLE} -->"
             HEAD="### 🔀 OpenRouter ${ROLE} (\`${MODEL}\`)"
             EGG="<!-- matrix: peer free path; public boards=features; 3L0=our labels -->"
+            SIGNATURE="@openRouter{provider: openrouter; model: ${MODEL}; settings: [connect-timeout=15, max-time=90]; mechanism: peer-router-auto}"
             ;;
         esac
 
@@ -121,8 +123,8 @@ runs:
         TEXT=$(echo "$RESP" | jq -r '.choices[0].message.content // .choices[0].message.reasoning // empty' 2>/dev/null || true)
         ERR=$(echo "$RESP" | jq -r '.error.message // empty' 2>/dev/null || true)
         if [ -z "$TEXT" ]; then
-          echo "::warning::${PROVIDER} empty response: ${ERR:-no content}"
-          TEXT="⚠️ ${PROVIDER} returned no content. ${ERR}"
+          echo "::error::${PROVIDER} empty response: ${ERR:-no content}"
+          exit 1
         fi
 
         BODY=$(printf '%s\n%s\n%s\n\n%s\n\n%s\n%s\n' \
@@ -131,7 +133,7 @@ runs:
           "$EGG" \
           "$TEXT" \
           '---' \
-          "_Peer router: Omni ↔ OpenRouter by desired model; Gemini residual. role=${ROLE}_")
+          "${SIGNATURE}")
 
         gh api "repos/${REPO}/issues/${TARGET}/comments" -f body="$BODY" >/dev/null || \
           echo "::warning::Failed to post comment on #${TARGET}"

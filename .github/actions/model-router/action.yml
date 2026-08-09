@@ -85,15 +85,15 @@ runs:
         case "$ROLE" in
           triage)
             PEER_SLOTS="omni|auto/best-free|200 openrouter|meta-llama/llama-3.3-70b-instruct:free|40 openrouter|google/gemma-3-12b-it:free|40"
-            GEM_CANDIDATES="gemini-3.1-flash-lite:450 gemini-3.5-flash-lite:450 gemini-2.5-flash-lite:15"
+            GEM_CANDIDATES="gemini-2.5-flash-lite:450 gemini-2.5-flash:15"
             ;;
           review)
             PEER_SLOTS="omni|auto/best-free|120 openrouter|qwen/qwen3-coder:free|30 openrouter|meta-llama/llama-3.3-70b-instruct:free|40 openrouter|deepseek/deepseek-r1:free|20"
-            GEM_CANDIDATES="gemini-3.5-flash:15 gemini-2.5-flash:15 gemini-3-flash:15 gemini-3.1-flash-lite:450"
+            GEM_CANDIDATES="gemini-2.5-flash:15 gemini-2.5-flash-lite:450"
             ;;
           invoke)
             PEER_SLOTS="omni|auto/best-free|200 openrouter|meta-llama/llama-3.3-70b-instruct:free|40 openrouter|google/gemma-3-12b-it:free|40"
-            GEM_CANDIDATES="gemini-3.1-flash-lite:450 gemini-3.5-flash-lite:450"
+            GEM_CANDIDATES="gemini-2.5-flash-lite:450 gemini-2.5-flash:15"
             ;;
           *)
             echo "skip=true" >> "$GITHUB_OUTPUT"

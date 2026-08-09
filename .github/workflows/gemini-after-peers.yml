@@ -1,7 +1,8 @@
 name: Gemini review after peers
 
-# Second-pass Gemini review ONLY after peer-review-orchestrator succeeds.
+# Second-pass review ONLY after peer-review-orchestrator succeeds.
 # Saves free-tier quota: no parallel burn while CodeRabbit/Devin still running.
+# Peer Omni ↔ OpenRouter first; Gemini residual.
 
 on:
   workflow_run:
@@ -51,7 +52,6 @@ jobs:
               core.setOutput('skip', 'true');
               return;
             }
-            // Re-verify not a fork PR (defense in depth beyond job if)
             const { data: pr } = await github.rest.pulls.get({
               owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber,
             });
@@ -74,25 +74,95 @@ jobs:
             core.setOutput('head_sha', headSha || '');
             core.setOutput('peer_body', (ready?.body || '').slice(0, 1800));
 
+      # Trusted composite actions from default branch (workflow_run privilege)
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         if: steps.pr.outputs.skip != 'true'
         with:
           persist-credentials: false
-          # Checkout the *default branch* workflow files for the composite action,
-          # then the agent reviews PR head via API — avoids executing untrusted
-          # action.yml from the PR head under workflow_run privileges.
-          ref: ${{ github.event.workflow_run.head_branch }}
+          ref: ${{ github.event.repository.default_branch }}
           fetch-depth: 0
 
-      - name: Model router (review)
+      - name: Model router (second-pass review)
         id: router
         if: steps.pr.outputs.skip != 'true'
         uses: ./.github/actions/model-router
         with:
           role: review
-          has-openrouter: 'false'
+          has-omni: ${{ secrets.OMNI_API_KEY != '' || secrets.OMNIROUTE_API_KEY != '' }}
+          has-openrouter: ${{ secrets.OPENROUTER_API_KEY != '' }}
+          has-gemini: ${{ secrets.GEMINI_API_KEY != '' }}
 
-      - name: Gemini second-pass review
+      - name: Build second-pass prompt (API diff)
+        id: rev_ctx
+        if: |
+          steps.pr.outputs.skip != 'true' &&
+          steps.router.outputs.skip != 'true' &&
+          (steps.router.outputs.provider == 'omni' || steps.router.outputs.provider == 'openrouter')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          TARGET_PR: ${{ steps.pr.outputs.pr_number }}
+          PEER_CTX: ${{ steps.pr.outputs.peer_body }}
+        run: |
+          set -euo pipefail
+          if ! [[ "${TARGET_PR:-}" =~ ^[0-9]+$ ]]; then
+            echo "prompt=missing PR" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          DIFF=$(gh api "repos/${REPO}/pulls/${TARGET_PR}" -H "Accept: application/vnd.github.v3.diff" 2>/dev/null \
+            | head -c 20000 || true)
+          PEER_TRIM=$(printf '%s' "${PEER_CTX:-}" | head -c 1200)
+          {
+            echo "prompt<<EOF"
+            cat <<PROMPT
+          You are free-tier SECOND-PASS reviewer for termux-monorepo. Concise. ONE response.
+          Target PR #${TARGET_PR}. Peers already reviewed; Autofix may have applied.
+          Focus: gaps peers missed (security 0o600/0o700, Class 3/4 artifacts, AGENTS.md); residual risks before merge.
+          Do NOT restate every nit.
+          Peer gate (untrusted metadata):
+          ${PEER_TRIM}
+          Diff (truncated):
+          ${DIFF}
+          PROMPT
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: OmniRoute second-pass (peer)
+        if: |
+          steps.pr.outputs.skip != 'true' &&
+          steps.router.outputs.skip != 'true' &&
+          steps.router.outputs.provider == 'omni'
+        continue-on-error: true
+        uses: ./.github/actions/http-llm-invoke
+        with:
+          provider: omni
+          model: ${{ steps.router.outputs.model }}
+          role: review
+          target_number: ${{ steps.pr.outputs.pr_number }}
+          api_key: ${{ secrets.OMNI_API_KEY || secrets.OMNIROUTE_API_KEY }}
+          base_url: ${{ secrets.OMNI_BASE_URL }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          prompt: ${{ steps.rev_ctx.outputs.prompt }}
+
+      - name: OpenRouter second-pass (peer)
+        if: |
+          steps.pr.outputs.skip != 'true' &&
+          steps.router.outputs.skip != 'true' &&
+          steps.router.outputs.provider == 'openrouter'
+        continue-on-error: true
+        uses: ./.github/actions/http-llm-invoke
+        with:
+          provider: openrouter
+          model: ${{ steps.router.outputs.model }}
+          role: review
+          target_number: ${{ steps.pr.outputs.pr_number }}
+          api_key: ${{ secrets.OPENROUTER_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          prompt: ${{ steps.rev_ctx.outputs.prompt }}
+
+      - name: Gemini second-pass (residual)
         if: |
           steps.pr.outputs.skip != 'true' &&
           steps.router.outputs.skip != 'true' &&
@@ -132,7 +202,7 @@ jobs:
           script: |
             const n = Number(process.env.PR_NUMBER);
             if (!n) return;
-            const marker = '<!-- gemini-after-peers-quota-skip -->';
+            const marker = '<!-- after-peers-quota-skip -->';
             const comments = await github.paginate(github.rest.issues.listComments, {
               owner: context.repo.owner, repo: context.repo.repo, issue_number: n, per_page: 100,
             });
@@ -141,5 +211,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: n,
-              body: `${marker}\n⚠️ Gemini second-pass skipped after peer gate — ${process.env.REASON || 'quota'}. Peers + Autofix still applied.`,
+              body: `${marker}\n⚠️ Second-pass skipped after peer gate — ${process.env.REASON || 'quota'}. Peers + Autofix still applied.`,
             });

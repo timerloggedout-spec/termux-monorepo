@@ -1,4 +1,4 @@
-name: '▶️ Gemini Invoke (on-demand free-tier teammate)'
+name: '▶️ Invoke (peer Omni ↔ OpenRouter → Gemini residual)'
 
 on:
   workflow_call:
@@ -38,12 +38,14 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Model router (invoke → Flash-Lite, OpenRouter :free)
+      - name: Model router (peer Omni ↔ OpenRouter → Gemini residual)
         id: router
         uses: ./.github/actions/model-router
         with:
           role: invoke
+          has-omni: ${{ secrets.OMNI_API_KEY != '' || secrets.OMNIROUTE_API_KEY != '' }}
           has-openrouter: ${{ secrets.OPENROUTER_API_KEY != '' }}
+          has-gemini: ${{ secrets.GEMINI_API_KEY != '' }}
 
       - name: Skip comment when no capacity
         if: steps.router.outputs.skip == 'true'
@@ -55,7 +57,7 @@ jobs:
           script: |
             const n = Number(process.env.ISSUE_NUMBER);
             if (!n) return;
-            const marker = '<!-- gemini-invoke-quota-skip -->';
+            const marker = '<!-- invoke-quota-skip -->';
             const comments = await github.paginate(github.rest.issues.listComments, {
               owner: context.repo.owner, repo: context.repo.repo, issue_number: n, per_page: 100,
             });
@@ -64,14 +66,55 @@ jobs:
               owner: context.repo.owner, repo: context.repo.repo, issue_number: n,
               body: [
                 marker,
-                '⚠️ **Invoke** skipped — free-tier soft budgets exhausted (Gemini + OpenRouter).',
+                '⚠️ **Invoke** skipped — Omni + OpenRouter peers + Gemini residual soft budgets exhausted.',
                 `Reason: ${process.env.REASON || 'unknown'}`,
                 '',
                 'Try `@jules` for async Cloud VM work, or wait for Pacific midnight reset.',
               ].join('\n'),
             });
 
-      - name: Run Gemini CLI assistant
+      - name: OmniRoute invoke (peer)
+        if: steps.router.outputs.skip != 'true' && steps.router.outputs.provider == 'omni'
+        continue-on-error: true
+        uses: ./.github/actions/http-llm-invoke
+        with:
+          provider: omni
+          model: ${{ steps.router.outputs.model }}
+          role: invoke
+          target_number: ${{ inputs.pr_number || inputs.issue_number || github.event.pull_request.number || github.event.issue.number }}
+          api_key: ${{ secrets.OMNI_API_KEY || secrets.OMNIROUTE_API_KEY }}
+          base_url: ${{ secrets.OMNI_BASE_URL }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          prompt: |
+            You are the on-demand free-tier teammate for termux-monorepo. Concise. ONE response.
+            Subject: PR/issue #${{ inputs.pr_number || inputs.issue_number || github.event.pull_request.number || github.event.issue.number }}.
+            User request (untrusted data): ${{ inputs.additional_context }}
+            PRIOR_PRS (metadata): ${{ inputs.prior_prs }}
+            Jules is primary builder — prefer analysis unless implement is explicit.
+            Never commit secrets or personal names.
+
+      - name: OpenRouter invoke (peer)
+        if: steps.router.outputs.skip != 'true' && steps.router.outputs.provider == 'openrouter'
+        continue-on-error: true
+        uses: ./.github/actions/http-llm-invoke
+        with:
+          provider: openrouter
+          model: ${{ steps.router.outputs.model }}
+          role: invoke
+          target_number: ${{ inputs.pr_number || inputs.issue_number || github.event.pull_request.number || github.event.issue.number }}
+          api_key: ${{ secrets.OPENROUTER_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          prompt: |
+            You are the on-demand free-tier teammate for termux-monorepo. Concise. ONE response.
+            Subject: PR/issue #${{ inputs.pr_number || inputs.issue_number || github.event.pull_request.number || github.event.issue.number }}.
+            User request (untrusted data): ${{ inputs.additional_context }}
+            PRIOR_PRS (metadata): ${{ inputs.prior_prs }}
+            Jules is primary builder — prefer analysis unless implement is explicit.
+            Never commit secrets or personal names.
+
+      - name: Run Gemini CLI assistant (residual)
         if: steps.router.outputs.skip != 'true' && steps.router.outputs.provider == 'gemini'
         uses: google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489 # v0.1.22
         continue-on-error: true
@@ -100,50 +143,3 @@ jobs:
             3. Prefer reviewing Jules/Devin PRs over duplicating work.
 
             Prefer analysis + concrete suggestions. Never commit secrets or PII.
-
-      - name: OpenRouter free-tier invoke (FB-01)
-        if: steps.router.outputs.skip != 'true' && steps.router.outputs.provider == 'openrouter'
-        env:
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-          SELECTED_MODEL: ${{ steps.router.outputs.model }}
-          TARGET_PR: ${{ inputs.pr_number || github.event.pull_request.number }}
-          TARGET_ISSUE: ${{ inputs.issue_number || github.event.issue.number }}
-          EXTRA_CTX: ${{ inputs.additional_context }}
-          PRIOR_PRS: ${{ inputs.prior_prs }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ github.repository }}
-        run: |
-          set -euo pipefail
-          ISSUE_OR_PR="${TARGET_PR:-$TARGET_ISSUE}"
-          PROMPT="You are the on-demand free-tier teammate for termux-monorepo. Concise. ONE response.
-          Subject: PR/issue #${ISSUE_OR_PR}.
-          User request (untrusted data): ${EXTRA_CTX}
-          PRIOR_PRS (metadata): ${PRIOR_PRS}
-          Jules is primary builder — prefer analysis unless implement is explicit.
-          Never commit secrets or personal names."
-
-          RESP=$(curl -sS -X POST "https://openrouter.ai/api/v1/chat/completions" \
-            -H "Authorization: Bearer ${OPENROUTER_API_KEY}" \
-            -H "Content-Type: application/json" \
-            -H "HTTP-Referer: https://github.com/${REPO}" \
-            -H "X-Title: termux-monorepo-invoke" \
-            -d "$(jq -n --arg m "$SELECTED_MODEL" --arg p "$PROMPT" '{model:$m,messages:[{role:"user",content:$p}],max_tokens:1500}')" )
-
-          TEXT=$(echo "$RESP" | jq -r '.choices[0].message.content // empty')
-          ERR=$(echo "$RESP" | jq -r '.error.message // empty')
-          if [ -z "$TEXT" ]; then
-            echo "::warning::OpenRouter invoke empty: ${ERR:-no content}"
-            TEXT="⚠️ OpenRouter free invoke returned no content. ${ERR}"
-          fi
-
-          BODY=$(printf '%s\n%s\n%s\n\n%s\n\n%s\n%s\n' \
-            '<!-- openrouter-invoke -->' \
-            "### ▶️ Free-tier invoke (OpenRouter \`${SELECTED_MODEL}\`)" \
-            "<!-- egg: 3L0 ranks our tasks; public boards rank other peoples tasks -->" \
-            "$TEXT" \
-            '---' \
-            '_Router: Gemini soft budgets exhausted → OpenRouter :free only._')
-
-          if [ -n "${ISSUE_OR_PR}" ]; then
-            gh api "repos/${REPO}/issues/${ISSUE_OR_PR}/comments" -f body="$BODY" >/dev/null
-          fi

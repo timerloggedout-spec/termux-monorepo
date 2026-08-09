@@ -2,7 +2,7 @@ name: 'HTTP LLM Invoke'
 description: |
   OpenAI-compatible chat/completions for OmniRoute or OpenRouter peers.
   Posts result as a PR/issue comment. FREE paths only.
-  Base URL auto-discovered: input → secret env → catalog defaults.
+  Base URL: explicit input → catalog defaults. https + host allow-list only.
 
 inputs:
   provider:
@@ -24,7 +24,7 @@ inputs:
     description: 'Provider API key'
     required: true
   base_url:
-    description: 'Optional OpenAI-compat base URL (…/v1). Empty → auto-discover.'
+    description: 'Optional OpenAI-compat base URL (…/v1). Empty → catalog default.'
     required: false
     default: ''
   github_token:
@@ -60,30 +60,36 @@ runs:
           exit 0
         fi
 
-        discover_base() {
-          local p="$1" explicit="$2"
-          if [ -n "$explicit" ]; then
-            echo "$explicit"
-            return
-          fi
-          case "$p" in
-            omni)
-              echo "${OMNI_BASE_URL:-${OMNIROUTE_BASE_URL:-https://cloud.omniroute.online/v1}}"
-              ;;
-            openrouter)
-              echo "${OPENROUTER_BASE_URL:-https://openrouter.ai/api/v1}"
-              ;;
-            *)
-              echo ""
-              ;;
-          esac
-        }
+        # Catalog defaults (ADE — no human paste required)
+        DEFAULT_OMNI="https://cloud.omniroute.online/v1"
+        DEFAULT_OR="https://openrouter.ai/api/v1"
 
-        BASE=$(discover_base "$PROVIDER" "${BASE_URL:-}")
-        if [ -z "$BASE" ]; then
-          echo "::warning::No base URL for provider=$PROVIDER"
+        case "$PROVIDER" in
+          omni) CATALOG="$DEFAULT_OMNI" ;;
+          openrouter) CATALOG="$DEFAULT_OR" ;;
+          *) echo "::error::Unknown provider $PROVIDER"; exit 1 ;;
+        esac
+
+        RAW="${BASE_URL:-$CATALOG}"
+        # Strip trailing slash
+        RAW="${RAW%/}"
+
+        # SEC: https only + host allow-list (never POST Bearer to arbitrary hosts)
+        ALLOW_HOSTS="cloud.omniroute.online openrouter.ai api.openrouter.ai"
+        if [[ ! "$RAW" =~ ^https:// ]]; then
+          echo "::error::base_url must be https:// (got scheme-less or http)"
           exit 0
         fi
+        HOST=$(echo "$RAW" | sed -E 's|^https://([^/]+).*|\1|' | tr '[:upper:]' '[:lower:]')
+        OK=0
+        for h in $ALLOW_HOSTS; do
+          if [ "$HOST" = "$h" ]; then OK=1; break; fi
+        done
+        if [ "$OK" != 1 ]; then
+          echo "::error::base_url host '$HOST' not in allow-list ($ALLOW_HOSTS); using catalog default"
+          RAW="$CATALOG"
+        fi
+        BASE="$RAW"
 
         case "$PROVIDER" in
           omni)
@@ -101,10 +107,6 @@ runs:
             MARKER="<!-- openrouter-${ROLE} -->"
             HEAD="### 🔀 OpenRouter ${ROLE} (\`${MODEL}\`)"
             EGG="<!-- matrix: peer free path; public boards=features; 3L0=our labels -->"
-            ;;
-          *)
-            echo "::error::Unknown provider $PROVIDER"
-            exit 1
             ;;
         esac
 

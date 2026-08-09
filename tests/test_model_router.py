@@ -74,6 +74,36 @@ def test_fetch_openrouter_free_models_failure(monkeypatch):
     assert models is None
 
 
+def test_fetch_openrouter_free_models_cached(tmp_path, monkeypatch):
+    monkeypatch.setattr(mr, "COUNTER_DIR", str(tmp_path))
+
+    mock_response = MagicMock()
+    mock_response.read.return_value = json.dumps({
+        "data": [
+            {"id": "google/gemma-4-31b-it:free", "pricing": {"prompt": "0", "completion": "0"}}
+        ]
+    }).encode("utf-8")
+    mock_response.__enter__.return_value = mock_response
+
+    call_count = 0
+    def mock_urlopen(*args, **kwargs):
+        nonlocal call_count
+        call_count += 1
+        return mock_response
+
+    monkeypatch.setattr(urllib.request, "urlopen", mock_urlopen)
+
+    # First fetch should trigger network request
+    models1 = mr.fetch_openrouter_free_models_cached()
+    assert models1 == ["google/gemma-4-31b-it:free"]
+    assert call_count == 1
+
+    # Second fetch should use file cache and NOT trigger network request
+    models2 = mr.fetch_openrouter_free_models_cached()
+    assert models2 == ["google/gemma-4-31b-it:free"]
+    assert call_count == 1
+
+
 def test_usage_counters(tmp_path, monkeypatch):
     # Set COUNTER_DIR environment variable and reload mr.COUNTER_DIR
     monkeypatch.setenv("COUNTER_DIR", str(tmp_path))
@@ -117,7 +147,7 @@ models:
     monkeypatch.setattr(mr, "parse_yaml", lambda path: original_parse_yaml(str(matrix_file)) if "success" in path else {})
 
     # Mock polling to say google/gemma-4-31b-it:free is available
-    monkeypatch.setattr(mr, "fetch_openrouter_free_models", lambda: ["google/gemma-4-31b-it:free"])
+    monkeypatch.setattr(mr, "fetch_openrouter_free_models_cached", lambda: ["google/gemma-4-31b-it:free"])
 
     # Redirect GITHUB_OUTPUT
     go_file = tmp_path / "github_output.txt"

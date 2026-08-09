@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
 Model Router (Optimized Dynamic Adaptive-ness)
-Implements Model Availability Polling, dynamic ELO-based (3L0) ranking,
-and soft-budget budget validation for triage, review, and invoke roles.
+Implements Model Availability Polling with smart temporal caching,
+dynamic ELO-based (3L0) ranking, and soft-budget validation.
 
 This script replaces rigid bash logic with robust Python standard library code.
 """
@@ -13,6 +13,7 @@ import re
 import json
 import urllib.request
 import ssl
+import time
 
 COUNTER_DIR = os.environ.get("COUNTER_DIR", "/tmp/model-router")
 
@@ -149,6 +150,38 @@ def fetch_openrouter_free_models():
         return None
 
 
+def fetch_openrouter_free_models_cached():
+    """
+    Retrieves the list of OpenRouter free models using a 1-hour temporal file cache.
+    Optimizes polling intervals to avoid redundant network overhead.
+    """
+    cache_file = os.path.join(COUNTER_DIR, "openrouter_models_cache.json")
+    if os.path.exists(cache_file):
+        try:
+            with open(cache_file, "r") as f:
+                cache_data = json.load(f)
+                cached_time = cache_data.get("timestamp", 0)
+                if time.time() - cached_time < 3600:
+                    sys.stderr.write("Using cached OpenRouter free models list.\n")
+                    return cache_data.get("models", [])
+        except Exception:
+            pass
+
+    # Cache is missing or expired, fetch from API
+    models = fetch_openrouter_free_models()
+    if models is not None:
+        try:
+            os.makedirs(COUNTER_DIR, exist_ok=True)
+            with open(cache_file, "w") as f:
+                json.dump({
+                    "timestamp": time.time(),
+                    "models": models
+                }, f)
+        except Exception:
+            pass
+    return models
+
+
 def get_usage(provider, model):
     """
     Returns the daily counter for a model.
@@ -188,8 +221,10 @@ def main():
     matrix_path = "docs/schemas/model-success-matrix.yaml"
     success_matrix = parse_yaml(matrix_path)
 
-    # 1. Poll OpenRouter models for availability
-    polled_free_models = fetch_openrouter_free_models()
+    # 1. Poll OpenRouter models for availability (only if has_openrouter is enabled)
+    polled_free_models = None
+    if has_openrouter:
+        polled_free_models = fetch_openrouter_free_models_cached()
 
     # 2. Define candidates per role and retrieve limit mapping
     # Defaults in case schemas are missing or incomplete
@@ -249,8 +284,10 @@ def main():
             continue
         if provider == "openrouter" and not has_openrouter:
             continue
+
+        # Security Assertion: guard against non-free model ids on OpenRouter paths
         if provider == "openrouter" and not model.endswith(":free"):
-            sys.stderr.write(f"Warning: Skipping non-:free OpenRouter model {model}.\n")
+            sys.stderr.write(f"Warning: Model router security check failed — non-free model ID '{model}' skipped.\n")
             continue
 
         # Cross-reference OpenRouter polled availability
@@ -356,4 +393,22 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        sys.stderr.write(f"Error: Model Router crashed during execution: {e}\n")
+        # Graceful degradation fallback outputs
+        print("::set-output name=provider::none")
+        print("::set-output name=model::")
+        print("::set-output name=skip::true")
+        print(f"::set-output name=reason::Model Router crashed: {e}")
+
+        if "GITHUB_OUTPUT" in os.environ:
+            try:
+                with open(os.environ["GITHUB_OUTPUT"], "a") as go:
+                    go.write("provider=none\n")
+                    go.write("model=\n")
+                    go.write("skip=true\n")
+                    go.write(f"reason=Model Router crashed: {e}\n")
+            except Exception:
+                pass

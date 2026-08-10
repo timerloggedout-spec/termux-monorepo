@@ -18,9 +18,11 @@
 3. Piped `@jules` instructions must reference disposition items or resolved thread IDs — never “implement the script.”
 4. Optional markers: `<!-- disposition -->`, `<!-- probe -->` for machine parse.
 
-## Implementation notes
+## Implementation status
 
-- `agent-review-auto-jules.yml` (ops/jules-session-management-145) now flags probe-like excerpts and instructs continue-only + disposition-first.
-- continuous-ops templates should follow the same rule (follow-up on that branch).
+- `agent-review-auto-jules.yml` (PR #148): probe detection + disposition-first + context_key
+- `agent-continuous-ops.yml` (PR #148 branch): context_key + disposition-first + continue-session
+- Living matrix: [`DECISION-MATRIX.md`](DECISION-MATRIX.md) (clean data)
+- Signatures: [`OPERATOR-SIGNING.md`](OPERATOR-SIGNING.md)
 
 Signed-off-by: Grok (OPERATOR) session-2026-08-10 / msg-signal-align-doc

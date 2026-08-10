@@ -39,9 +39,18 @@ except Exception:
     curl_requests = CurlRequestsFallback()
 
 import requests as http_requests
-from rich.console import Console
-
-console = Console()
+try:
+    from rich.console import Console
+    console = Console()
+except ImportError:
+    class DummyConsole:
+        def print(self, *args, **kwargs):
+            import re
+            msg = " ".join(str(a) for a in args)
+            # Remove rich styling markers
+            msg = re.sub(r"\[/?.*?\]", "", msg)
+            print(msg)
+    console = DummyConsole()
 
 CONFIG_DIR = Path.home() / ".deepcli"
 CONFIG_FILE = CONFIG_DIR / "config.json"
@@ -572,14 +581,14 @@ def run_ci(event, session, peer, workspace, operator_token):
 
     # Example: parse PR info
     pr_number = event.get('pull_request', {}).get('number')
-    repo = event.get('repository', {}).get('full_name')
+    repo = event.get('repository', {}).get('full_name') or os.environ.get('GITHUB_REPOSITORY')
     action = event.get('action')
 
     results = []
     decisions = []
 
     # Decide what to do based on event
-    if action in ['opened', 'synchronize', 'reopened'] and pr_number:
+    if action in ['opened', 'synchronize', 'reopened'] and pr_number and repo:
         # Get PR diff
         diff_cmd = ['gh', 'pr', 'diff', str(pr_number), '--repo', repo]
         try:
@@ -627,7 +636,10 @@ def run_ci(event, session, peer, workspace, operator_token):
 
         # Optionally create a comment on the PR
         comment_cmd = ['gh', 'pr', 'comment', str(pr_number), '--body', comment_body, '--repo', repo]
-        subprocess.run(comment_cmd, env=gh_env, check=False)
+        try:
+            subprocess.run(comment_cmd, env=gh_env, check=False)
+        except Exception as e:
+            print(f"Failed to post PR comment via gh CLI: {e}")
 
         decisions.append({
             'type': 'pr_review',

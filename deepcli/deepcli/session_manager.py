@@ -45,11 +45,16 @@ def solve_pow(challenge=None, wasm_path=DEFAULT_WASM_PATH):
 
     # Simple wrapper: assume a Node script that outputs JSON
     # We'll use a small inline script that loads the WASM and solves.
-    solver_script = Path(__file__).parent / "pow_solver.js"
+    import tempfile
+    solver_script = Path(tempfile.gettempdir()) / "pow_solver_session.js"
     if not solver_script.exists():
-        # Fallback: write a minimal solver on the fly that supports stdin or argument input
-        with open(solver_script, 'w') as f:
-            f.write("""
+        # Fallback: write a minimal solver on the fly that supports stdin or argument input with 0o600 permissions
+        flags = os.O_WRONLY | os.O_CREAT | os.O_TRUNC
+        mode = 0o600
+        try:
+            fd = os.open(solver_script, flags, mode)
+            with open(fd, 'w') as f:
+                f.write("""
 const fs = require('fs');
 const path = require('path');
 
@@ -80,6 +85,43 @@ async function run() {
 }
 run();
 """)
+        except Exception:
+            with open(solver_script, 'w') as f:
+                f.write("""
+const fs = require('fs');
+const path = require('path');
+
+let input = '';
+if (process.argv.length > 3) {
+    input = process.argv[3];
+}
+
+async function run() {
+    if (!input) {
+        input = await new Promise(resolve => {
+            let data = '';
+            process.stdin.setEncoding('utf-8');
+            process.stdin.on('data', chunk => { data += chunk; });
+            process.stdin.on('end', () => resolve(data));
+        });
+    }
+    const wasmPath = process.argv[2];
+    const wasm = fs.readFileSync(wasmPath);
+    try {
+        const obj = await WebAssembly.instantiate(wasm);
+        // If exports.solve exists, use it, otherwise return mock
+        const answer = obj.instance.exports.solve ? obj.instance.exports.solve() : 42;
+        console.log(JSON.stringify({ answer: answer, signature: "fallback_signature" }));
+    } catch (e) {
+        console.log(JSON.stringify({ answer: 42, signature: "fallback_signature" }));
+    }
+}
+run();
+""")
+            try:
+                os.chmod(solver_script, 0o600)
+            except Exception:
+                pass
     inp = json.dumps(challenge)
     try:
         result = subprocess.check_output(['node', str(solver_script), str(wasm_path), inp], text=True, timeout=10)

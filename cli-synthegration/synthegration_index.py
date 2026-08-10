@@ -346,7 +346,7 @@ class CodexIndex:
                         'pointer': p.to_key(),
                         'hash': p.content_hash,
                         'code': blob.read_text()[:200] + '...' if len(blob.read_text()) > 200 else blob.read_text(),
-                        'timestamp': self.time_index.get(p.content_hash, '').isoformat()
+                        'timestamp': (lambda t: t.isoformat() if hasattr(t, 'isoformat') else None)(self.time_index.get(p.content_hash))
                     })
         return results
     

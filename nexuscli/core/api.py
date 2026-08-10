@@ -58,7 +58,7 @@ console = Console()
 CONFIG_DIR = Path.home() / ".nexuscli"
 CONFIG_FILE = CONFIG_DIR / "config.json"
 WASM_SOLVER = Path(__file__).parent.parent / "pow_solver.js"
-BASE_URL = "https://chat.deepseek.com"
+BASE_URL = os.environ.get("NEXUSCLI_BASE_URL", "https://chat.deepseek.com")
 
 CONFIG_DIR.mkdir(parents=True, exist_ok=True)
 try:
@@ -81,9 +81,13 @@ def _session_cache_key(token: str, cookie: Optional[str] = None) -> str:
 
 def _cache_path(session_id: str, account: str = "primary") -> str:
     store_dir = os.path.join(os.path.expanduser("~/.nexuscli/session_store"), account)
-    os.makedirs(store_dir, exist_ok=True)
+    os.makedirs(store_dir, mode=0o700, exist_ok=True)
+    # Enforce 0o700 on both session_store and account subdirectory
     try:
         os.chmod(os.path.dirname(store_dir), 0o700)
+    except Exception:
+        pass
+    try:
         os.chmod(store_dir, 0o700)
     except Exception:
         pass
@@ -109,17 +113,21 @@ def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict
 
 def _cache_save(session_id: str, messages: List[Dict[str, Any]], account: str = "primary"):
     path = _cache_path(session_id, account)
-    os.makedirs(os.path.dirname(path), exist_ok=True)
+    os.makedirs(os.path.dirname(path), mode=0o700, exist_ok=True)
     try:
         os.chmod(os.path.dirname(path), 0o700)
     except Exception:
         pass
-    with open(path, "w") as f:
-        json.dump(messages, f, indent=2)
+    # Use os.open with O_CREAT|O_WRONLY|O_TRUNC and 0o600
+    fd = os.open(path, os.O_CREAT | os.O_WRONLY | os.O_TRUNC, 0o600)
     try:
-        os.chmod(path, 0o600)
-    except Exception:
-        pass
+        os.fchmod(fd, 0o600)
+        with os.fdopen(fd, 'w') as f:
+            json.dump(messages, f, indent=2)
+            fd = -1
+    finally:
+        if fd >= 0:
+            os.close(fd)
 
 
 # ---------- Config Helpers ----------
@@ -131,11 +139,16 @@ def load_config() -> Dict[str, Any]:
 
 
 def save_config(cfg: Dict[str, Any]):
-    CONFIG_FILE.write_text(json.dumps(cfg, indent=2))
+    # Use os.open with O_CREAT|O_WRONLY|O_TRUNC and 0o600
+    fd = os.open(str(CONFIG_FILE), os.O_CREAT | os.O_WRONLY | os.O_TRUNC, 0o600)
     try:
-        CONFIG_FILE.chmod(0o600)
-    except Exception:
-        pass
+        os.fchmod(fd, 0o600)
+        with os.fdopen(fd, 'w') as f:
+            json.dump(cfg, f, indent=2)
+            fd = -1
+    finally:
+        if fd >= 0:
+            os.close(fd)
 
 
 def get_token() -> str:
@@ -284,6 +297,7 @@ def upload_file(token: str, session_id: str, file_path: str) -> Optional[str]:
         f"{BASE_URL}/api/v0/file/upload_file",
         files={"file": (Path(file_path).name, file_bytes, "application/octet-stream")},
         headers=upload_headers,
+        timeout=(10, 60),  # (connect_timeout, read_timeout)
     )
     r.raise_for_status()
     file_id = r.json().get("data", {}).get("biz_data", {}).get("id") or r.json().get("data", {}).get("file_id")
@@ -468,7 +482,12 @@ def send_message(
     headers = {k: v for k, v in s.headers.items() if k != "X-Ds-Pow-Response"}
     headers["X-Ds-Pow-Response"] = pow_header
     headers["Content-Type"] = "application/json"
-    resp = http_requests.post(f"{BASE_URL}/api/v0/chat/completion", json=payload, headers=headers)
+    resp = http_requests.post(
+        f"{BASE_URL}/api/v0/chat/completion",
+        json=payload,
+        headers=headers,
+        timeout=(10, 90),  # (connect_timeout, read_timeout)
+    )
     resp.raise_for_status()
     data = resp.json()
     # Tolerate OpenAI-style or reverse-engineered biz_data envelopes

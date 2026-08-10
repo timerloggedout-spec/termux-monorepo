@@ -16,8 +16,29 @@ def import_account(cookies_file: str, account_name: str):
         print(f"Extraction failed: {proc.stderr}")
         return False
     token = proc.stdout.strip()
+    # SECURITY ENHANCEMENT: Enforce strict directory permissions (700) and file permissions (600) on token config - Fail-closed on OSError
+    CONFIG_DIR.mkdir(mode=0o700, parents=True, exist_ok=True)
+    try:
+        os.chmod(str(CONFIG_DIR), 0o700)
+    except OSError as e:
+        raise PermissionError(f"Fail-closed: Failed to enforce 0o700 permissions on {CONFIG_DIR}: {e}")
     config = CONFIG_DIR / f"config_{account_name}.json"
-    config.write_text(json.dumps({"token": token}, indent=2))
+    # SECURITY ENHANCEMENT: Enforce strict file permissions (600) with O_NOFOLLOW, O_TRUNC, and fstat validation
+    fd = os.open(str(config), os.O_CREAT | os.O_WRONLY | os.O_NOFOLLOW | os.O_TRUNC, 0o600)
+    try:
+        # Verify it's a regular file before writing
+        st = os.fstat(fd)
+        import stat
+        if not stat.S_ISREG(st.st_mode):
+            raise OSError(f"Fail-closed: {config} is not a regular file")
+        os.fchmod(fd, 0o600)
+        opened = fd
+        fd = -1
+        with os.fdopen(opened, 'w') as f:
+            json.dump({"token": token}, f, indent=2)
+    finally:
+        if fd >= 0:
+            os.close(fd)
     print(f"[+] Token for '{account_name}' saved to {config}")
     return True
 

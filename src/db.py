@@ -65,22 +65,34 @@ def log_attempt_telemetry(target_file, attempt, patch, errors, verdict):
         )
         conn.commit()
 
-    # Also write to run_history.jsonl for ForeSight
+    # Also write to run_history.jsonl for ForeSight (redact patch/error content)
     try:
         from pathlib import Path
         from datetime import datetime, timezone
         rh_file = Path.home() / 'termux-multi-agent/run_history.jsonl'
-        rh_file.parent.mkdir(parents=True, exist_ok=True)
-        with open(rh_file, 'a') as rhf:
-            json.dump({
-                "target_file": target_file,
-                "verdict": verdict,
-                "attempt": attempt,
-                "patch": patch[:200],
-                "errors": errors[:200] if errors else "",
-                "timestamp": datetime.now(timezone.utc).isoformat()
-            }, rhf)
-            rhf.write('\n')
+        rh_file.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+        try:
+            os.chmod(str(rh_file.parent), 0o700)
+        except Exception:
+            pass
+        # Open with append mode and set 0o600 permissions
+        fd = os.open(str(rh_file), os.O_CREAT | os.O_WRONLY | os.O_APPEND, 0o600)
+        try:
+            if rh_file.exists():
+                os.chmod(str(rh_file), 0o600)
+            with os.fdopen(fd, 'a') as rhf:
+                json.dump({
+                    "target_file": target_file,
+                    "verdict": verdict,
+                    "attempt": attempt,
+                    # Redact patch and error content
+                    "timestamp": datetime.now(timezone.utc).isoformat()
+                }, rhf)
+                rhf.write('\n')
+                fd = -1
+        finally:
+            if fd >= 0:
+                os.close(fd)
     except Exception:
         pass
 
@@ -136,6 +148,9 @@ def index_project_file(workspace_root, relative_path, conn=None):
 
         try:
             cursor = conn.cursor()
+            # Delete existing nodes and edges for this relative_path before inserting current data
+            cursor.execute("DELETE FROM nodes WHERE file_path = ?", (relative_path,))
+            cursor.execute("DELETE FROM edges WHERE source_file = ?", (relative_path,))
             if node_data:
                 cursor.executemany("INSERT OR REPLACE INTO nodes VALUES (?, ?, ?, ?, ?, ?)", node_data)
             if edge_data:
@@ -183,15 +198,20 @@ def batch_insert_fts_messages(messages, conn=None):
 def search_fts_messages(query, limit=10, conn=None):
     """
     Search indexed messages for matches in their content.
-    
+
     Parameters:
     	query (str): FTS5 query used to match message content.
     	limit (int): Maximum number of matching messages to return.
     	conn: Optional SQLite database connection.
-    
+
     Returns:
     	list: Tuples containing a highlighted content snippet, session ID, and message index.
     """
+    # Validate and cap limit to prevent negative or unbounded queries
+    if limit < 0:
+        raise ValueError("limit must be non-negative")
+    limit = min(limit, 1000)  # Application maximum
+
     close_conn = False
     if conn is None:
         conn = sqlite3.connect(DB_PATH)

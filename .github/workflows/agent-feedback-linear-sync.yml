@@ -54,41 +54,41 @@ jobs:
               core.warning('LINEAR_API_KEY not set — skip Linear subtask sync');
               return;
             }
-            try {
-              const pr = context.payload.pull_request;
-              const prNumber = pr.number;
-              const prUrl = pr.html_url;
-              const bot =
-                context.payload.comment?.user?.login ||
-                context.payload.review?.user?.login ||
-                'bot';
-              const path = context.payload.comment?.path || '';
-              const commentBody = (
-                context.payload.comment?.body ||
-                context.payload.review?.body ||
-                ''
-              ).slice(0, 3500);
-              const commentUrl =
-                context.payload.comment?.html_url ||
-                context.payload.review?.html_url ||
-                prUrl;
+            const pr = context.payload.pull_request;
+            const prNumber = pr.number;
+            const prUrl = pr.html_url;
+            const bot =
+              context.payload.comment?.user?.login ||
+              context.payload.review?.user?.login ||
+              'bot';
+            const path = context.payload.comment?.path || '';
+            const commentBody = (
+              context.payload.comment?.body ||
+              context.payload.review?.body ||
+              ''
+            ).slice(0, 3500);
+            const commentUrl =
+              context.payload.comment?.html_url ||
+              context.payload.review?.html_url ||
+              prUrl;
 
-              async function linear(query, variables) {
-                const res = await fetch('https://api.linear.app/graphql', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: key,
-                  },
-                  body: JSON.stringify({ query, variables }),
-                });
-                const json = await res.json();
-                if (json.errors) {
-                  throw new Error(JSON.stringify(json.errors));
-                }
-                return json.data;
+            async function linear(query, variables) {
+              const res = await fetch('https://api.linear.app/graphql', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: key,
+                },
+                body: JSON.stringify({ query, variables }),
+              });
+              const json = await res.json();
+              if (json.errors) {
+                throw new Error(JSON.stringify(json.errors));
               }
+              return json.data;
+            }
 
+            try {
               const teamId = '1e672463-31de-40b2-a378-3c03fd8f7e3b';
               const parentTitle = `PR #${prNumber} agent feedback rollup`;
 
@@ -190,11 +190,11 @@ jobs:
                   core.info(String(e));
                 }
               }
-            } catch (e) {
-              const errStr = String(e.message || e);
-              if (errStr.includes("usage limit exceeded") || errStr.includes("USAGE_LIMIT_EXCEEDED")) {
-                core.warning(`Linear workspace limit exceeded (gracefully ignored): ${errStr}`);
-                return;
+            } catch (err) {
+              const msg = err.message || '';
+              if (msg.includes('usage limit exceeded') || msg.includes('USAGE_LIMIT_EXCEEDED')) {
+                core.warning('Linear workspace limit exceeded — skipping sync cleanly: ' + msg);
+              } else {
+                throw err;
               }
-              throw e;
             }

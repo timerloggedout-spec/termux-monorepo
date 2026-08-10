@@ -1,0 +1,257 @@
+name: Agent status board
+
+# Live WAITING/WORKING/DONE/BLOCKED/IDLE/DIRTY table on #124.
+# Parses <!-- agent-status: ... --> markers; falls back to heuristics.
+# Implements: #124
+
+on:
+  schedule:
+    - cron: '7,37 * * * *'   # twice hourly, offset from continuous-ops :17
+  workflow_dispatch:
+    inputs:
+      max_prs:
+        description: 'Max open PRs to scan'
+        required: false
+        default: '20'
+  issue_comment:
+    types: [created]
+
+concurrency:
+  group: agent-status-board
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  refresh:
+    if: |
+      github.event_name != 'issue_comment' ||
+      contains(github.event.comment.body, '<!-- agent-status:') ||
+      contains(github.event.comment.body, '<!-- agent-auto-jules -->') ||
+      contains(github.event.comment.body, '<!-- continuous-agent-ops -->')
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: read
+    steps:
+      - name: Build and post status board on #124
+        uses: actions/github-script@v7
+        env:
+          MAX_PRS: ${{ github.event.inputs.max_prs || '20' }}
+          BOARD_ISSUE: '124'
+        with:
+          github-token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const maxPrs = Math.min(Number(process.env.MAX_PRS) || 20, 40);
+            const boardIssue = Number(process.env.BOARD_ISSUE) || 124;
+            const sticky = '<!-- agent-status-board -->';
+            const now = Date.now();
+
+            const agentLogins = [
+              'google-labs-jules', 'devin-ai-integration', 'coderabbitai',
+              'gitar-bot', 'copilot', 'github-actions',
+            ];
+            const isAgent = (login) => {
+              const l = (login || '').toLowerCase();
+              return agentLogins.some(a => l.includes(a));
+            };
+
+            const statusRe = /<!--\s*agent-status:\s*(WAITING|WORKING|DONE|BLOCKED|IDLE)\b([^>]*)-->/i;
+            const workingRe = /I'm on it|working on this|Gitar is working|in progress|currently (working|processing)/i;
+
+            const prs = await github.paginate(github.rest.pulls.list, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              sort: 'updated',
+              direction: 'desc',
+              per_page: 50,
+            });
+
+            const eligible = prs.filter(p => !p.draft).slice(0, maxPrs);
+            const rows = [];
+
+            for (const pr of eligible) {
+              let mergeableState = pr.mergeable_state || 'unknown';
+              try {
+                const { data: fresh } = await github.rest.pulls.get({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: pr.number,
+                });
+                mergeableState = fresh.mergeable_state || mergeableState;
+              } catch (_) {}
+
+              const comments = await github.paginate(github.rest.issues.listComments, {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                per_page: 100,
+              });
+
+              // Explicit marker (latest wins)
+              let status = null;
+              let contextKey = `pr-${pr.number}`;
+              let agent = '—';
+              let task = '';
+              let markerAt = null;
+
+              const sorted = [...comments].sort(
+                (a, b) => new Date(b.created_at) - new Date(a.created_at)
+              );
+
+              for (const c of sorted) {
+                const m = (c.body || '').match(statusRe);
+                if (m) {
+                  status = m[1].toUpperCase();
+                  const rest = m[2] || '';
+                  const ck = rest.match(/context_key=([\w.-]+)/);
+                  const ag = rest.match(/agent=([\w.-]+)/);
+                  const tk = rest.match(/task="([^"]*)"/);
+                  const rs = rest.match(/reason="([^"]*)"/);
+                  if (ck) contextKey = ck[1];
+                  if (ag) agent = ag[1];
+                  if (tk) task = tk[1];
+                  if (rs) task = rs[1];
+                  markerAt = c.created_at;
+                  break;
+                }
+              }
+
+              // Heuristics if no marker
+              if (!status) {
+                const lastPing = sorted.find(c =>
+                  c.body && (
+                    c.body.includes('<!-- agent-auto-jules -->') ||
+                    c.body.includes('<!-- continuous-agent-ops -->') ||
+                    /@jules\b/i.test(c.body)
+                  )
+                );
+                const lastAgent = sorted.find(c => isAgent(c.user?.login));
+                const pingAge = lastPing
+                  ? now - new Date(lastPing.created_at).getTime()
+                  : Infinity;
+                const agentAge = lastAgent
+                  ? now - new Date(lastAgent.created_at).getTime()
+                  : Infinity;
+
+                const ckMatch = (lastPing?.body || '').match(/context_key[:\s`]+([\w.-]+)/i);
+                if (ckMatch) contextKey = ckMatch[1];
+
+                if (lastAgent && workingRe.test(lastAgent.body || '') && agentAge < 45 * 60 * 1000) {
+                  status = 'WORKING';
+                  agent = lastAgent.user.login;
+                } else if (lastAgent && agentAge < 45 * 60 * 1000) {
+                  status = 'WORKING';
+                  agent = lastAgent.user.login;
+                } else if (lastPing && pingAge < 90 * 60 * 1000 && agentAge > pingAge) {
+                  status = 'WAITING';
+                  agent = 'jules';
+                } else if (pingAge > 6 * 60 * 60 * 1000 && mergeableState !== 'dirty') {
+                  status = 'IDLE';
+                } else if (lastPing && pingAge < 6 * 60 * 60 * 1000) {
+                  status = 'WAITING';
+                  agent = 'jules';
+                } else {
+                  status = 'IDLE';
+                }
+              }
+
+              const dirty = mergeableState === 'dirty';
+              const flags = [];
+              if (dirty) flags.push('DIRTY');
+              if (markerAt) flags.push('marker');
+
+              // Cross-PR awareness: referenced issue/PR numbers in title+body
+              const blob = `${pr.title}\n${pr.body || ''}`;
+              const refs = [...blob.matchAll(/#(\d{2,4})/g)]
+                .map(m => Number(m[1]))
+                .filter(n => n !== pr.number && n < 500);
+              const aware = [...new Set(refs)].slice(0, 5).map(n => `#${n}`).join(' ') || '—';
+
+              const ageLabel = markerAt
+                ? `${Math.round((now - new Date(markerAt).getTime()) / 60000)}m`
+                : '—';
+
+              rows.push({
+                pr: pr.number,
+                title: (pr.title || '').slice(0, 48).replace(/\|/g, '/'),
+                status,
+                contextKey: contextKey.slice(0, 36),
+                agent: String(agent).slice(0, 24),
+                state: mergeableState,
+                flags: flags.join(',') || '—',
+                aware,
+                task: (task || '').slice(0, 40),
+                updated: pr.updated_at,
+              });
+            }
+
+            // Sort: WORKING first, then WAITING, DIRTY, BLOCKED, rest
+            const rank = { WORKING: 0, WAITING: 1, BLOCKED: 2, DONE: 3, IDLE: 4 };
+            rows.sort((a, b) => {
+              const ra = rank[a.status] ?? 9;
+              const rb = rank[b.status] ?? 9;
+              if (ra !== rb) return ra - rb;
+              return new Date(b.updated) - new Date(a.updated);
+            });
+
+            const lines = [
+              sticky,
+              `## Agent status board · refreshed ${new Date().toISOString()}`,
+              '',
+              '| PR | Status | context_key | Agent | merge | Flags | Aware | Note |',
+              '|----|--------|-------------|-------|-------|-------|-------|------|',
+            ];
+            for (const r of rows) {
+              lines.push(
+                `| [#${r.pr}](https://github.com/${context.repo.owner}/${context.repo.repo}/pull/${r.pr}) | **${r.status}** | \`${r.contextKey}\` | ${r.agent} | ${r.state} | ${r.flags} | ${r.aware} | ${r.task || r.title} |`
+              );
+            }
+            lines.push(
+              '',
+              '### Legend',
+              '`WAITING` = pinged, no ack · `WORKING` = agent active · `DONE` / `BLOCKED` / `IDLE` · `DIRTY` = rebase needed',
+              '',
+              'Markers: `<!-- agent-status: WORKING context_key=pr-N-ref agent=jules task="…" -->`',
+              'Spec: `docs/ops/AGENT-STATUS-BOARD.md` · Workflow: `agent-status-board.yml`',
+              '',
+              `Signed-off-by: GHA agent-status-board / run ${context.runId}`,
+            );
+            const body = lines.join('\n');
+
+            // Upsert sticky comment on #124
+            const existing = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: boardIssue,
+              per_page: 50,
+            });
+            const prior = existing
+              .filter(c => c.body && c.body.includes(sticky))
+              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
+
+            if (prior) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: prior.id,
+                body,
+              });
+              core.info(`Updated sticky board comment ${prior.id}`);
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: boardIssue,
+                body,
+              });
+              core.info('Created sticky board comment on #124');
+            }
+
+            core.summary
+              .addHeading('Agent status board')
+              .addRaw(`Rows: **${rows.length}** · WORKING: ${rows.filter(r => r.status === 'WORKING').length} · WAITING: ${rows.filter(r => r.status === 'WAITING').length}`)
+              .write();

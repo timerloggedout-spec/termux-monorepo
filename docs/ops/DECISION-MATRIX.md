@@ -1,7 +1,7 @@
 # Decision Matrix — Impact × Importance (data)
 
 **Maintainer:** OPERATOR + mandated skeptic/critic/11th-man on P0; #129 roster may propose via queue.
-**Provenance:** [`OPERATOR-SIGNING.md`](OPERATOR-SIGNING.md) · **Queue:** [`MATRIX-QUEUE.md`](MATRIX-QUEUE.md) · **Delphi:** [`DELPHI-WEIGHTING.md`](DELPHI-WEIGHTING.md) · **Roster:** [`ROLES-ROSTER.md`](ROLES-ROSTER.md) · **Prompts:** [`ROLE-PROMPT-PIPELINE.md`](ROLE-PROMPT-PIPELINE.md)
+**Provenance:** [`OPERATOR-SIGNING.md`](OPERATOR-SIGNING.md) · **Queue:** [`MATRIX-QUEUE.md`](MATRIX-QUEUE.md) · **Delphi:** [`DELPHI-WEIGHTING.md`](DELPHI-WEIGHTING.md) · **Roster:** [`ROLES-ROSTER.md`](ROLES-ROSTER.md) · **Prompts:** [`ROLE-PROMPT-PIPELINE.md`](ROLE-PROMPT-PIPELINE.md) · **Status:** [`AGENT-STATUS-BOARD.md`](AGENT-STATUS-BOARD.md)
 
 ## Scoring methodology
 
@@ -17,9 +17,10 @@
 
 | Item | Impact | Importance | Score | Band | Action |
 |------|--------|------------|-------|------|--------|
-| **#120** durable work-context store | 5 | 5 | 25 | P0 root | Hygiene-clean head → merge |
+| **#120** durable work-context store | 5 | 5 | 25 | P0 root | Merged on master — use as store |
 | **#145** Jules session binding | 5 | 5 | 25 | P0 | #148 rebase dirty → coordinate #147 |
 | **#90 / Grimoire dual-file + rename** | 5 | 5 | 25 | P0 | AGENTS.grimoire + conv; rename cedr* |
+| **#124** agent status board | 4 | 5 | 20 | High | AGENT-STATUS-BOARD + workflow live |
 | **Role prompt pipeline (inject)** | 4 | 5 | 20 | High | Wired into auto-jules + continuous-ops |
 | **#146** disposition alignment | 4 | 5 | 20 | High | #149 + CODERABBIT-EXCERPT-POLICY |
 | **#96** mandatory phrases / Cheat_Code | 4 | 4 | 16 | High | MANDATORY-PHRASES.md; inventory backlog |
@@ -27,15 +28,15 @@
 | **Delphi + challenge + l337/haxor** | 4 | 5 | 20 | High | Weights live in DELPHI + ROSTER |
 | **#126** Linguist / Grimoire compiler | 4 | 5 | 20 | High | Round-trip merge measurement |
 | **Matrix cue/queue Actions** | 4 | 4 | 16 | High | agent-matrix-queue.yml |
-| **#150** continuous maintenance | 2 | 3 | 6 | Backlog | Skeptic/11th-man reject sprawl; research only |
+| **#150** continuous maintenance | 2 | 3 | 6 | Backlog | Skeptic/11th-man reject sprawl |
 | **#131** MoneyBall / betting arena | 3 | 4 | 12 | Medium | Feed scout/bettor priors |
 | **#118** Session parent | 5 | 4 | 20 | High | Via #120 |
 | **#143** MCP Agent Mail | 4 | 4 | 16 | Coordination | Parallel |
 
 ## Security note (public demo)
 
-Viewable-text `context_key` OK until #120 encrypted store. Never Class 3/4 in git.
+Viewable-text `context_key` OK until encrypted session_store. Never Class 3/4 in git.
 
 ## Related
 
-#120 · #145 · #146 · #90 · #96 · #126 · #129 · #131 · #118 · #143 · #150 · PR #148 · #149 · #147
+#120 · #145 · #146 · #90 · #96 · #124 · #126 · #129 · #131 · #118 · #143 · #150 · PR #148 · #149 · #147

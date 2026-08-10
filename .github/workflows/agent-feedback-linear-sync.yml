@@ -191,10 +191,10 @@ jobs:
                 }
               }
             } catch (err) {
-              const msg = err.message || String(err);
+              const msg = err.message || '';
               if (msg.includes('usage limit exceeded') || msg.includes('USAGE_LIMIT_EXCEEDED')) {
-                core.warning('Linear API usage limit exceeded - skipping subtask sync: ' + msg);
-                return;
+                core.warning('Linear workspace limit exceeded — skipping sync cleanly: ' + msg);
+              } else {
+                throw err;
               }
-              throw err;
             }

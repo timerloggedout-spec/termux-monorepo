@@ -18,3 +18,4 @@
 | RL-14 | Devin Apply Suggestions automation | P1 | | partial | enable Auto-Fix in Devin Settings; no public click-API |
 | RL-15 | Honest OpenRouter (no false route) | P0 | grok | done | model-router skip=true always when Gemini exhausted |
 | RL-16 | Shared global counter (not per-branch cache) | P2 | | todo | gist/issue optimistic concurrency |
+| RL-17 | Model availability polling & ELO (3L0) routing | P0 | jules | done | scripts/model_router.py, docs/schemas/model-success-matrix.yaml |

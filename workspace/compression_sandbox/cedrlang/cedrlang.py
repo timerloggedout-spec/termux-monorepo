@@ -113,7 +113,7 @@ GRIMOIRE_EXPAND = {
     "phyl4c73ry": "backup",
     "1337sp3@k": "leetspeak",
     "1337": "leet",
-    "h4x": "hacks",
+    "hacks": "h4x",
     "h4x0r": "hacker",
     "pwn": "defeat",
     "n00b": "newbie",
@@ -211,7 +211,7 @@ def protect_syntax(text: str) -> Tuple[str, List[Tuple[str, str]]]:
     block_re = re.compile(r"```[\s\S]*?```")
     inline_re = re.compile(r"`[^`\n]+`")
     link_re = re.compile(r"\[[^\]]+\]\([^)]+\)")
-    html_re = re.compile(r"<[^>\n]+>")
+    html_re = re.compile(r"</?[A-Za-z][^>\n]*>")
     # Match URLs (e.g., http://... or https://...)
     url_re = re.compile(r"https?://[^\s)]+")
     # Match file paths or filenames containing '/' or ending with common extensions
@@ -334,8 +334,12 @@ def expand(cedr: str) -> str:
     protected_text, placeholders = protect_syntax(cedr)
 
     def expand_repl(match):
-        val = match.group(0).strip().lower()
-        res = COMBINED_EXPAND_MAP.get(val, match.group(0))
+        val = match.group(0).strip()
+        if val == "T":
+            return " true "
+        elif val == "F":
+            return " false "
+        res = COMBINED_EXPAND_MAP.get(val.lower(), val)
         return f" {res} "
 
     expanded_lines = []

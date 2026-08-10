@@ -1,0 +1,54 @@
+name: 'Setup MCP Agent Mail'
+description: |
+  Installs and starts the Rust-based MCP Agent Mail server or runs its CLI tools.
+  Provides a powerful multi-agent coordination layer in GitHub Actions.
+
+inputs:
+  run-server:
+    description: 'Whether to start the MCP Agent Mail server in the background'
+    required: false
+    default: 'true'
+  port:
+    description: 'Port to run the server on'
+    required: false
+    default: '8080'
+  install-only:
+    description: 'Only install the binary, do not run the server'
+    required: false
+    default: 'false'
+
+runs:
+  using: composite
+  steps:
+    - name: Download and Install MCP Agent Mail (.rs version)
+      shell: bash
+      run: |
+        echo "Installing Rust-based MCP Agent Mail..."
+        curl -fsSL "https://raw.githubusercontent.com/Dicklesworthstone/mcp_agent_mail_rust/main/install.sh" | bash
+
+        # Verify the installation path and make sure it is in PATH
+        if command -v mcp-agent-mail &>/dev/null; then
+          echo "mcp-agent-mail is successfully installed and available in PATH."
+        elif [ -f "$HOME/.cargo/bin/mcp-agent-mail" ]; then
+          echo "mcp-agent-mail is located in $HOME/.cargo/bin. Adding to PATH..."
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+        else
+          echo "::warning::Could not find mcp-agent-mail after running install script. Searching..."
+          FOUND_PATH=$(find / -type f -name "mcp-agent-mail" -executable 2>/dev/null | head -n 1 || true)
+          if [ -n "$FOUND_PATH" ]; then
+            echo "Found mcp-agent-mail at $FOUND_PATH. Adding directory to PATH..."
+            echo "$(dirname "$FOUND_PATH")" >> $GITHUB_PATH
+          fi
+        fi
+
+    - name: Start MCP Agent Mail Server
+      shell: bash
+      if: ${{ inputs.run-server == 'true' && inputs.install-only != 'true' }}
+      run: |
+        PORT=${{ inputs.port }}
+        echo "Starting mcp-agent-mail server in background on port $PORT..."
+        mcp-agent-mail server --port "$PORT" &
+
+        # Settle down to let the server initialize
+        sleep 5
+        echo "MCP Agent Mail server started."

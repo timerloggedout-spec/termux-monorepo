@@ -1,0 +1,42 @@
+name: '🤖 MCP Agent Mail Coordination Demo'
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - master-staging
+
+jobs:
+  coordinate-agents:
+    name: 'Multi-Agent Coordination & Safety Reservations'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+
+      - name: Bootstrap MCP Agent Mail
+        uses: ./.github/actions/mcp-agent-mail
+        with:
+          run-server: 'true'
+          port: '8080'
+
+      - name: Declare Advisory File Lease (Reservation)
+        run: |
+          echo "Simulating Agent reservation of critical file: docs/mcp-multi-agent-access.md"
+          # Utilizing the Robot Mode CLI subcommands for reservation
+          if command -v mcp-agent-mail &>/dev/null; then
+            mcp-agent-mail reserve docs/mcp-multi-agent-access.md --by "GHA-agent-reviewer" --expire-in 300 || true
+          else
+            echo "mcp-agent-mail binary mock run: declared advisory lease on docs/mcp-multi-agent-access.md"
+          fi
+
+      - name: Audit Trail / Git-Backed Archive
+        run: |
+          echo "Inspecting agent coordination mailbox logs"
+          if command -v mcp-agent-mail &>/dev/null; then
+            mcp-agent-mail check-inbox "GHA-agent-reviewer" || true
+          else
+            echo "Mock checked inbox: no unread coordination messages."
+          fi

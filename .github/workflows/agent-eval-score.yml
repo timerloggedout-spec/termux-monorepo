@@ -1,0 +1,77 @@
+name: Agent eval score
+
+# Programmatic agent evaluation matrix v0
+# docs/ops/AGENT-EVAL-MATRIX.md · scripts/ci/agent_eval_score.py
+# Oracle/archaeo hooks optional (aliases in .zshrc)
+
+on:
+  pull_request:
+    types: [synchronize, closed]
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: 'PR number to score'
+        required: false
+
+permissions: {}
+
+jobs:
+  score:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts/ci
+            docs/ops
+          sparse-checkout-cone-mode: true
+
+      - name: Score event
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EVENT: ${{ github.event_name }}
+          ACTION: ${{ github.event.action }}
+          PR: ${{ github.event.pull_request.number || github.event.inputs.pr }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          MERGED: ${{ github.event.pull_request.merged }}
+          REPO: ${{ github.repository }}
+          AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: |
+          set -euo pipefail
+          if [ -z "${PR:-}" ]; then
+            echo "No PR number"; exit 0
+          fi
+          ROLE=jules
+          case "${AUTHOR:-}" in
+            *coderabbit*) ROLE=coderabbit ;;
+            *devin*) ROLE=devin ;;
+            *copilot*) ROLE=copilot ;;
+            google-labs-jules*|google-labs-jules*) ROLE=jules ;;
+            *) ROLE=engineer ;;
+          esac
+          SHORT=$(echo "${{ github.event.pull_request.head.ref || 'head' }}" | tr -cd 'a-zA-Z0-9-_' | cut -c1-40)
+          CK="pr-${PR}-${SHORT}"
+
+          if [ "$EVENT" = "pull_request" ] && [ "$ACTION" = "synchronize" ] && [ -n "${HEAD_SHA:-}" ]; then
+            STATS=$(curl -sS -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/$REPO/commits/$HEAD_SHA" || echo '{}')
+            FILES=$(echo "$STATS" | python3 -c "import sys,json; d=json.load(sys.stdin); print(len(d.get('files') or []))")
+            if [ "$FILES" = "0" ]; then
+              python3 scripts/ci/agent_eval_score.py empty-commit --role "$ROLE" --context-key "$CK" --pr "$PR" --sha "$HEAD_SHA"
+            else
+              echo "non-empty commit files=$FILES — no empty_commit penalty"
+            fi
+          fi
+
+          if [ "$EVENT" = "pull_request" ] && [ "$ACTION" = "closed" ] && [ "$MERGED" = "true" ]; then
+            ADD=${{ github.event.pull_request.additions || 0 }}
+            DEL=${{ github.event.pull_request.deletions || 0 }}
+            CF=${{ github.event.pull_request.changed_files || 1 }}
+            python3 scripts/ci/agent_eval_score.py pr-landed \
+              --role "$ROLE" --context-key "$CK" --pr "$PR" \
+              --files "$CF" --additions "$ADD" --deletions "$DEL" --band Medium
+          fi

@@ -11,6 +11,10 @@ name: Agent review → auto Jules
 # Persisted via Actions cache (viewable text OK on public demo repo until
 # encrypted session_store from #120). Never store Class 3/4 secrets.
 #
+# Jules API primary path: docs/ops/JULES-API-AUTOMATION.md
+# YOLO approvePlan when AWAITING_PLAN_APPROVAL (vars.JULES_YOLO_APPROVE != 0)
+# Eval: docs/ops/AGENT-EVAL-MATRIX.md · scripts/ci/agent_eval_score.py
+#
 # Role prompt pipeline: docs/ops/ROLE-PROMPT-PIPELINE.md + prompts/jules.md
 # Mandatory phrases: docs/ops/MANDATORY-PHRASES.md
 # Excerpt policy: docs/ops/CODERABBIT-EXCERPT-POLICY.md
@@ -67,8 +71,11 @@ jobs:
     outputs:
       pr_number: ${{ steps.meta.outputs.pr_number }}
       head_ref: ${{ steps.meta.outputs.head_ref }}
+      head_sha: ${{ steps.meta.outputs.head_sha }}
       context_key: ${{ steps.meta.outputs.context_key }}
       should_invoke: ${{ steps.meta.outputs.should_invoke }}
+      session_id: ${{ steps.load-ctx.outputs.session_id }}
+      empty_commit_count: ${{ steps.load-ctx.outputs.empty_commit_count }}
     steps:
       - name: Resolve PR metadata + context_key
         id: meta
@@ -97,6 +104,7 @@ jobs:
             const contextKey = `pr-${prNumber}-${shortRef}`;
             core.setOutput('pr_number', String(prNumber));
             core.setOutput('head_ref', pr.head.ref);
+            core.setOutput('head_sha', pr.head.sha);
             core.setOutput('base_ref', pr.base.ref);
             core.setOutput('context_key', contextKey);
             core.setOutput('should_invoke', 'true');
@@ -122,10 +130,16 @@ jobs:
             echo "Loaded prior context_key file"
             cat "$CTX_FILE"
             echo "has_prior=true" >> $GITHUB_OUTPUT
+            SID=$(python3 -c "import json; d=json.load(open('$CTX_FILE')); print(d.get('session_id',''))" 2>/dev/null || true)
+            ECC=$(python3 -c "import json; d=json.load(open('$CTX_FILE')); print(d.get('empty_commit_count',0))" 2>/dev/null || echo 0)
+            echo "session_id=$SID" >> $GITHUB_OUTPUT
+            echo "empty_commit_count=$ECC" >> $GITHUB_OUTPUT
           else
             echo "No prior context for ${{ steps.meta.outputs.context_key }}"
             echo "has_prior=false" >> $GITHUB_OUTPUT
-            printf '%s\n' "{\"context_key\":\"${{ steps.meta.outputs.context_key }}\",\"created\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"continue_preferred\":true}" > "$CTX_FILE"
+            echo "session_id=" >> $GITHUB_OUTPUT
+            echo "empty_commit_count=0" >> $GITHUB_OUTPUT
+            printf '%s\n' "{\"context_key\":\"${{ steps.meta.outputs.context_key }}\",\"created\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"continue_preferred\":true,\"session_id\":\"\",\"empty_commit_count\":0}" > "$CTX_FILE"
           fi
 
       - name: Post @jules resolve (idempotent + continue-only + role pipeline)
@@ -137,6 +151,7 @@ jobs:
             const head = '${{ steps.meta.outputs.head_ref }}';
             const contextKey = '${{ steps.meta.outputs.context_key }}';
             const hasPrior = '${{ steps.load-ctx.outputs.has_prior }}' === 'true';
+            const sessionId = '${{ steps.load-ctx.outputs.session_id }}' || '';
             const marker = '<!-- agent-auto-jules -->';
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
@@ -166,24 +181,25 @@ jobs:
             const isProbe = /🏁\s*Script executed:|Analysis chain|```shell/i.test(raw);
             const snippet = raw.slice(0, 1200);
             const path = context.payload.comment?.path || '';
-            const continueNote = hasPrior
-              ? `**Continue existing Jules session** for context_key \`${contextKey}\` (do not spawn a new task).`
+            const continueNote = (hasPrior || sessionId)
+              ? `**Continue existing Jules session** for context_key \`${contextKey}\`${sessionId ? ` (session_id bound)` : ''} — do not spawn a new task.`
               : `New work-context \`${contextKey}\` — create session if none exists, then prefer continue thereafter.`;
-            // Compact ROLE + mandatory phrases (docs/ops/ROLE-PROMPT-PIPELINE.md)
             const roleBlock = [
               '### Initial context (ROLE: jules)',
               '```text',
               'ROLE: jules',
               'Target: master-staging integration (or existing PR base if already open)',
               'Must: disposition-first open threads; continue-only context_key; minimal diffs;',
-              '      Sentinel 0o600/0o700 if credential paths; no Class 3/4; Implements: when applicable.',
+              '      Sentinel 0o600/0o700 if credential paths; no Class 3/4; Implements: when applicable;',
+              '      non-empty diffs only (empty commits = eval FAIL).',
               'Must-not: invent work outside DECISION-MATRIX / ITEMS; treat analysis-chain as probe-only.',
-              'Read: AGENTS.md · docs/ops/MANDATORY-PHRASES.md · docs/ops/CODERABBIT-EXCERPT-POLICY.md',
+              'Read: AGENTS.md · docs/ops/MANDATORY-PHRASES.md · docs/ops/CODERABBIT-EXCERPT-POLICY.md · docs/ops/JULES-API-AUTOMATION.md',
               '```',
             ].join('\n');
             const body = [
               marker,
               `context_key: ${contextKey}`,
+              sessionId ? `session_id: ${sessionId}` : '',
               `@jules **Auto-resolve** (GHA agent-review-auto-jules) — do not wait for a human ping.`,
               ``,
               continueNote,
@@ -205,6 +221,7 @@ jobs:
               `3. Push commits to branch \`${head}\`. Do not retarget away from the PR base without cause.`,
               `4. If conflicts with base exist, resolve them.`,
               `5. Skip pure nits only if they conflict with security/gates; otherwise apply autofixes.`,
+              `6. **Non-empty diff required** — empty commits are rejected and scored as eval FAIL.`,
               ``,
               `Agent: Grok orchestration · Profile: https://x.com/grok`,
               `Signed-off-by: Grok (OPERATOR) session-auto-jules / context_key=${contextKey}`,
@@ -229,16 +246,168 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      pull-requests: write
+      issues: write
     steps:
-      - name: Jules API session (if key present)
+      - name: Restore work-context
+        uses: actions/cache@v4
+        with:
+          path: .agent-context
+          key: work-context-${{ needs.detect-bot-feedback.outputs.context_key }}
+          restore-keys: |
+            work-context-pr-${{ needs.detect-bot-feedback.outputs.pr_number }}-
+
+      - name: Jules API — continue / YOLO / bind (primary path)
         env:
           JULES_API_KEY: ${{ secrets.JULES_API_KEY }}
           PR: ${{ needs.detect-bot-feedback.outputs.pr_number }}
           HEAD: ${{ needs.detect-bot-feedback.outputs.head_ref }}
+          HEAD_SHA: ${{ needs.detect-bot-feedback.outputs.head_sha }}
           CONTEXT_KEY: ${{ needs.detect-bot-feedback.outputs.context_key }}
+          SESSION_ID: ${{ needs.detect-bot-feedback.outputs.session_id }}
+          YOLO: ${{ vars.JULES_YOLO_APPROVE != '0' && '1' || '0' }}
+          GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
         run: |
-          if [ -z "$JULES_API_KEY" ]; then
-            echo "No JULES_API_KEY — relying on @jules PR comment path only (context_key=$CONTEXT_KEY)"
+          set -euo pipefail
+          CTX_FILE=".agent-context/${CONTEXT_KEY}.json"
+          mkdir -p .agent-context
+          if [ -z "${JULES_API_KEY:-}" ]; then
+            echo "No JULES_API_KEY — secondary @jules comment path only (context_key=$CONTEXT_KEY)"
             exit 0
           fi
-          echo "Jules API invoke is best-effort; @jules comment is the reliable trigger. context_key=$CONTEXT_KEY"
+          API="https://jules.googleapis.com/v1alpha"
+          AUTH=("x-goog-api-key: $JULES_API_KEY" "Content-Type: application/json")
+
+          # Load session_id from cache file if env empty
+          if [ -z "${SESSION_ID:-}" ] && [ -f "$CTX_FILE" ]; then
+            SESSION_ID=$(python3 -c "import json; print(json.load(open('$CTX_FILE')).get('session_id',''))" || true)
+          fi
+
+          CONTINUE_MSG=$(cat <<EOF
+          Continue session for context_key=${CONTEXT_KEY} on PR #${PR} branch ${HEAD}.
+          Disposition-first: address open review threads only. Non-empty diff required.
+          Ignore analysis-chain probes. Preserve Sentinel 0o600/0o700. No Class 3/4.
+          EOF
+          )
+
+          if [ -n "${SESSION_ID:-}" ]; then
+            echo "Bound session_id=$SESSION_ID — GET state"
+            STATE_JSON=$(curl -sS -H "${AUTH[0]}" "$API/sessions/$SESSION_ID" || echo '{}')
+            echo "$STATE_JSON" | head -c 2000
+            STATE=$(echo "$STATE_JSON" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('state', d.get('sessionState','')))" 2>/dev/null || echo unknown)
+            echo "state=$STATE"
+
+            if [ "$STATE" = "AWAITING_PLAN_APPROVAL" ] && [ "$YOLO" = "1" ]; then
+              echo "YOLO approvePlan session=$SESSION_ID"
+              curl -sS -X POST -H "${AUTH[0]}" -H "${AUTH[1]}" \
+                "$API/sessions/$SESSION_ID:approvePlan" -d '{}' || true
+              # Audit marker on PR
+              curl -sS -X POST -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+                "https://api.github.com/repos/$REPO/issues/$PR/comments" \
+                -d "{\"body\":\"<!-- jules-yolo-approve -->\\nYOLO approvePlan for session \\`$SESSION_ID\\` context_key=\\`$CONTEXT_KEY\\`\\nSigned-off-by: Grok (OPERATOR) GHA auto-jules\"}" || true
+            elif [ "$STATE" = "AWAITING_USER_FEEDBACK" ] || [ "$STATE" = "FAILED" ] || [ "$STATE" = "PAUSED" ]; then
+              echo "sendMessage continue state=$STATE"
+              curl -sS -X POST -H "${AUTH[0]}" -H "${AUTH[1]}" \
+                "$API/sessions/$SESSION_ID:sendMessage" \
+                -d "$(python3 -c "import json,os; print(json.dumps({'prompt': os.environ['CONTINUE_MSG'] if False else '''$CONTINUE_MSG'''}))" 2>/dev/null || echo "{\"prompt\":\"$CONTINUE_MSG\"}")" || true
+            else
+              echo "state=$STATE — no API action (wait or comment path)"
+            fi
+          else
+            echo "No bound session_id — create only if quota allows (best-effort)"
+            # List sources to resolve github source name
+            SOURCES=$(curl -sS -H "${AUTH[0]}" "$API/sources" || echo '{"sources":[]}')
+            SRC=$(echo "$SOURCES" | python3 -c "
+          import sys,json
+          d=json.load(sys.stdin)
+          for s in d.get('sources',[]):
+            n=s.get('name','')
+            if 'termux-monorepo' in n or 'timerloggedout' in n:
+              print(n); break
+          " 2>/dev/null || true)
+            if [ -z "$SRC" ]; then
+              echo "No Jules source for this repo — rely on @jules comment"
+              exit 0
+            fi
+            CREATE=$(curl -sS -X POST -H "${AUTH[0]}" -H "${AUTH[1]}" \
+              "$API/sessions" -d "$(python3 <<PY
+          import json, os
+          print(json.dumps({
+            "prompt": """Continue/fix PR #${PR} on branch ${HEAD}. context_key=${CONTEXT_KEY}. Disposition-first open threads. Non-empty diffs only.""",
+            "title": f"auto-jules PR#{os.environ.get('PR','')} {os.environ.get('CONTEXT_KEY','')}",
+            "sourceContext": {
+              "source": """$SRC""",
+              "githubRepoContext": {"startingBranch": """$HEAD"""}
+            },
+            "automationMode": "AUTO_CREATE_PR"
+          }))
+          PY
+          )" || echo '{}')
+            echo "$CREATE" | head -c 2000
+            NEW_SID=$(echo "$CREATE" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('name','').split('/')[-1] if d.get('name') else d.get('id',''))" 2>/dev/null || true)
+            if [ -n "$NEW_SID" ]; then
+              echo "Created session_id=$NEW_SID"
+              SESSION_ID="$NEW_SID"
+            fi
+          fi
+
+          # Persist binding
+          python3 <<PY
+          import json, os, pathlib
+          p = pathlib.Path("$CTX_FILE")
+          d = {}
+          if p.exists():
+            try: d = json.loads(p.read_text())
+            except Exception: d = {}
+          d["context_key"] = "$CONTEXT_KEY"
+          d["session_id"] = "${SESSION_ID:-}"
+          d["last_head_sha"] = "${HEAD_SHA:-}"
+          d["continue_preferred"] = True
+          d["updated"] = __import__("datetime").datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+          p.parent.mkdir(parents=True, exist_ok=True)
+          p.write_text(json.dumps(d, indent=2))
+          print("wrote", p)
+          PY
+
+      - name: Empty-commit gate on head
+        env:
+          GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR: ${{ needs.detect-bot-feedback.outputs.pr_number }}
+          HEAD_SHA: ${{ needs.detect-bot-feedback.outputs.head_sha }}
+          CONTEXT_KEY: ${{ needs.detect-bot-feedback.outputs.context_key }}
+          SESSION_ID: ${{ needs.detect-bot-feedback.outputs.session_id }}
+          JULES_API_KEY: ${{ secrets.JULES_API_KEY }}
+        run: |
+          set -euo pipefail
+          STATS=$(curl -sS -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/$REPO/commits/$HEAD_SHA" || echo '{}')
+          FILES=$(echo "$STATS" | python3 -c "import sys,json; d=json.load(sys.stdin); print(len(d.get('files') or []))" 2>/dev/null || echo 1)
+          echo "head files_changed=$FILES sha=$HEAD_SHA"
+          if [ "$FILES" = "0" ]; then
+            echo "EMPTY COMMIT detected — eval FAIL + continue"
+            CTX_FILE=".agent-context/${CONTEXT_KEY}.json"
+            python3 -c "
+          import json, pathlib
+          p=pathlib.Path('$CTX_FILE')
+          d=json.loads(p.read_text()) if p.exists() else {}
+          d['empty_commit_count']=int(d.get('empty_commit_count',0))+1
+          p.write_text(json.dumps(d, indent=2))
+          print('empty_commit_count', d['empty_commit_count'])
+          "
+            # metric line
+            python3 scripts/ci/agent_eval_score.py empty-commit --role jules --context-key "$CONTEXT_KEY" --pr "$PR" --sha "$HEAD_SHA" 2>/dev/null || \
+              echo "{\"metric\":\"empty_commit\",\"delta\":-3,\"pr\":$PR,\"sha\":\"$HEAD_SHA\"}"
+            if [ -n "${JULES_API_KEY:-}" ] && [ -n "${SESSION_ID:-}" ]; then
+              curl -sS -X POST -H "x-goog-api-key: $JULES_API_KEY" -H "Content-Type: application/json" \
+                "https://jules.googleapis.com/v1alpha/sessions/$SESSION_ID:sendMessage" \
+                -d '{"prompt":"Empty commit rejected (eval FAIL). Push a non-empty diff addressing open disposition threads. context_key='"$CONTEXT_KEY"'"}' || true
+            fi
+          fi
+
+      - name: Save work-context cache
+        uses: actions/cache/save@v4
+        with:
+          path: .agent-context
+          key: work-context-${{ needs.detect-bot-feedback.outputs.context_key }}

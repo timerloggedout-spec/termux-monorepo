@@ -12,6 +12,11 @@ Instructions for coding agents (Grok, Claude, Codex, Devin, ChatGPT, local runne
 6. [`docs/ARCHW1Z-STATUS.md`](docs/ARCHW1Z-STATUS.md) — living board
 7. [`docs/proposals/AGENTIC-PERMISSIONS.md`](docs/proposals/AGENTIC-PERMISSIONS.md) — human-only edges
 8. [`docs/CONSENSUS.md`](docs/CONSENSUS.md) — tiers, merit path, CRDT, optional Raft-strict
+9. **Ops (OPERATOR + Jules):**
+   - [`docs/ops/DECISION-MATRIX.md`](docs/ops/DECISION-MATRIX.md) — priority scores (clean data)
+   - [`docs/ops/OPERATOR-SIGNING.md`](docs/ops/OPERATOR-SIGNING.md) — session/msg signatures + diff ledger
+   - [`docs/ops/jules-session-management.md`](docs/ops/jules-session-management.md) — context_key + continue-only
+   - [`docs/ops/review-signal-alignment.md`](docs/ops/review-signal-alignment.md) — disposition vs probe
 
 Optional: `CLAUDE.md`, `CONTRIBUTING.md`.
 
@@ -27,6 +32,8 @@ Optional: `CLAUDE.md`, `CONTRIBUTING.md`.
 - **No** Class 3/4 artifacts in git (session stores, browser profiles, tokens).
 - Unposted chat is not consensus — write Review log or DEBATE.md.
 - PR body rewrites: follow `docs/PR-SUMMARY-PROCESS.md` roster (not a single-agent monopoly).
+- **OPERATOR agents** sign material ops/matrix changes per `docs/ops/OPERATOR-SIGNING.md`.
+- **Jules / continuous-ops:** prefer continue-existing session for a PR `context_key`; act on disposition, not analysis-chain scripts.
 
 ## Debate & close
 
@@ -46,3 +53,4 @@ registry.yaml → pick todo item → branch from master-staging
 
 Credential rotation and history rewrite require Operator (human) authorization.
 See `docs/SECURITY-REMEDIATION.md`.
+Viewable-text `context_key` in Actions cache is acceptable on this public demo until encrypted store (#120).

@@ -28,7 +28,8 @@ Non-OPERATOR bots (Jules, CodeRabbit, Devin, Tembo, …) use normal bot attribut
 | 2026-08-10 | Grok | session-2026-08-10 / msg-l337-roster | [ROLES-ROSTER](https://github.com/timerloggedout-spec/termux-monorepo/blob/ops/jules-session-management-145/docs/ops/ROLES-ROSTER.md) | #129 l337/haxor roster |
 | 2026-08-10 | Grok | session-2026-08-10 / msg-role-prompt-pipeline | [4772b6e](https://github.com/timerloggedout-spec/termux-monorepo/commit/4772b6ed071f5ec040dafa592c82f8e937743a90) | Role prompts + phrases + context method |
 | 2026-08-10 | Grok | session-2026-08-10 / msg-150-skeptic-11th | [#150 comment](https://github.com/timerloggedout-spec/termux-monorepo/issues/150#issuecomment-5244808789) | Challenge continuous-maintenance sprawl |
-| 2026-08-10 | Grok | session-2026-08-10 / msg-wire-role-phrases | *(this commit)* | Inject ROLE:jules into auto-jules + continuous-ops |
+| 2026-08-10 | Grok | session-2026-08-10 / msg-wire-role-phrases | ROLE inject workflows | Inject ROLE:jules into auto-jules + continuous-ops |
+| 2026-08-10 | Grok | session-2026-08-10 / msg-status-board | [d6dc0f4](https://github.com/timerloggedout-spec/termux-monorepo/commit/d6dc0f4535a5ea28ec45f66ce49dc9656dc2e330) | AGENT-STATUS-BOARD + workflow (#124) |
 
 ## How to append
 
@@ -41,4 +42,5 @@ Non-OPERATOR bots (Jules, CodeRabbit, Devin, Tembo, …) use normal bot attribut
 - [`DECISION-MATRIX.md`](DECISION-MATRIX.md) — clean scored data only
 - [`DELPHI-WEIGHTING.md`](DELPHI-WEIGHTING.md) — future agent-weight interpolation
 - [`ROLE-PROMPT-PIPELINE.md`](ROLE-PROMPT-PIPELINE.md)
+- [`AGENT-STATUS-BOARD.md`](AGENT-STATUS-BOARD.md)
 - AGENTS.md hard rules

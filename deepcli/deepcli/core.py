@@ -55,20 +55,26 @@ def enforce_local_privileges(root_dir: Path):
             return
         if root_dir.is_symlink():
             return
-        root_dir.chmod(0o700)
+        try:
+            root_dir.chmod(0o700)
+        except Exception:
+            pass
         for path in root_dir.rglob("*"):
-            if path.is_symlink():
-                continue
-            if path.is_dir():
-                path.chmod(0o700)
-            elif path.is_file():
-                path.chmod(0o600)
+            try:
+                if path.is_symlink():
+                    continue
+                if path.is_dir():
+                    path.chmod(0o700)
+                elif path.is_file():
+                    path.chmod(0o600)
+            except Exception:
+                pass
     except Exception:
         pass
 
 try:
     CONFIG_DIR.mkdir(parents=True, exist_ok=True)
-    enforce_local_privileges(CONFIG_DIR)
+    CONFIG_DIR.chmod(0o700)
 except Exception:
     pass
 

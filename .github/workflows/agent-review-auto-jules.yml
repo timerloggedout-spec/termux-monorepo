@@ -329,10 +329,10 @@ jobs:
               marker,
               `⚠️ **Jules API Invoke Skipped**`,
               ``,
-              `The automated ` + "`" + `google-labs-code/jules-invoke` + "`" + ` call was skipped.`,
+              'The automated `google-labs-code/jules-action` call was skipped.',
               `**Reason:** ${process.env.REASON}`,
               ``,
-              `*Note: The `@jules` comment-based dispatch path on the PR remains the primary/fallback work trigger.*`,
+              '*Note: The `@jules` comment-based dispatch path on the PR remains the primary/fallback work trigger.*',
             ].join('\n');
 
             if (existing) {

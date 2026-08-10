@@ -32,6 +32,7 @@ repo-gate → termux-smoke → language/provider → master
 | `docs/schemas/session-ssot.md` | TER-10 Session SSOT |
 | `docs/schemas/provider-capabilities.md` | Capability registry |
 | `docs/SECURITY-REMEDIATION.md` | PR #3 A+B+C checklist |
+| `docs/ops/LANE_CONSOLIDATION_SSOT.md` | Master Consolidation & Production improvements |
 
 ---
 

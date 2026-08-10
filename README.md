@@ -75,6 +75,7 @@ Use this ladder when orienting in the tree. `_Entry+ReadMe.md` and `termux-ecosy
 | Priority | Start here | What you get |
 |----------|------------|--------------|
 | 1 | `archwiz/TOOL_INDEX.md` | 28 tools / 7 categories — cockpit, forensic, autonomous, verification |
+| 1.5 | `docs/ops/LANE_CONSOLIDATION_SSOT.md` | Master Consolidation, Timing Quotas/CoolDowns & Production Improvements SSOT |
 | 2 | `archwiz/CONCEPT_INDEX.md` | Concepts + status (built / reserved / not built) + feature backlog |
 | 3 | `archwiz/REFERENCE_HUB.md` | Links to DATA_FLOW_MANIFEST, SYSTEM_MAP, func/llm indices |
 | 4 | `archwiz/METHODOLOGY_INDEX.md` | Approaches tried, failures, what stuck |

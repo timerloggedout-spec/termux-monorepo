@@ -6,7 +6,7 @@ from dataclasses import dataclass, field, asdict
 from typing import List, Dict, Optional, Tuple
 from pathlib import Path
 
-ROSTER_PATH = Path(__file__).resolve().parent.parent / "workspace" / "roster.json"
+ROSTER_PATH = Path("termux-multi-agent/workspace/roster.json")
 
 @dataclass
 class AgentCandidate:

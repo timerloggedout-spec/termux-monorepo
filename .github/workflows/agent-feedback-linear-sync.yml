@@ -73,19 +73,32 @@ jobs:
               prUrl;
 
             async function linear(query, variables) {
-              const res = await fetch('https://api.linear.app/graphql', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: key,
-                },
-                body: JSON.stringify({ query, variables }),
-              });
-              const json = await res.json();
-              if (json.errors) {
-                throw new Error(JSON.stringify(json.errors));
+              try {
+                const res = await fetch('https://api.linear.app/graphql', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: key,
+                  },
+                  body: JSON.stringify({ query, variables }),
+                });
+                const json = await res.json();
+                if (json.errors) {
+                  const errStr = JSON.stringify(json.errors);
+                  if (errStr.includes('USAGE_LIMIT_EXCEEDED') || errStr.includes('usage limit exceeded')) {
+                    core.warning('Linear workspace limit exceeded (USAGE_LIMIT_EXCEEDED) — skipping gracefully.');
+                    return null;
+                  }
+                  throw new Error(errStr);
+                }
+                return json.data;
+              } catch (e) {
+                if (e.message && (e.message.includes('USAGE_LIMIT_EXCEEDED') || e.message.includes('usage limit exceeded'))) {
+                  core.warning('Linear workspace limit exceeded — skipping gracefully.');
+                  return null;
+                }
+                throw e;
               }
-              return json.data;
             }
 
             const teamId = '1e672463-31de-40b2-a378-3c03fd8f7e3b';
@@ -104,11 +117,11 @@ jobs:
                 }
               }
             );
-            let parentId = search.issues?.nodes?.find(
+            let parentId = search?.issues?.nodes?.find(
               n => n.title === parentTitle
             )?.id;
 
-            if (!parentId) {
+            if (!parentId && search !== null) {
               const created = await linear(
                 `mutation($input: IssueCreateInput!) {
                   issueCreate(input: $input) {
@@ -133,49 +146,55 @@ jobs:
                   },
                 }
               );
-              parentId = created.issueCreate.issue.id;
-              core.info(`Created parent ${created.issueCreate.issue.identifier}`);
+              if (created && created.issueCreate && created.issueCreate.issue) {
+                parentId = created.issueCreate.issue.id;
+                core.info(`Created parent ${created.issueCreate.issue.identifier}`);
+              }
             }
 
-            const labels = await linear(
-              `query { issueLabels(filter: { name: { eq: "agent-feedback" } }) { nodes { id } } }`
-            );
-            const labelId = labels.issueLabels?.nodes?.[0]?.id;
+            if (parentId) {
+              const labels = await linear(
+                `query { issueLabels(filter: { name: { eq: "agent-feedback" } }) { nodes { id } } }`
+              );
+              const labelId = labels?.issueLabels?.nodes?.[0]?.id;
 
-            const subTitle = path
-              ? `[${bot}] PR #${prNumber}: ${path}`
-              : `[${bot}] PR #${prNumber}: review feedback`;
+              const subTitle = path
+                ? `[${bot}] PR #${prNumber}: ${path}`
+                : `[${bot}] PR #${prNumber}: review feedback`;
 
-            const sub = await linear(
-              `mutation($input: IssueCreateInput!) {
-                issueCreate(input: $input) {
-                  success
-                  issue { id identifier url }
+              const sub = await linear(
+                `mutation($input: IssueCreateInput!) {
+                  issueCreate(input: $input) {
+                    success
+                    issue { id identifier url }
+                  }
+                }`,
+                {
+                  input: {
+                    teamId,
+                    parentId,
+                    title: subTitle.slice(0, 200),
+                    description: [
+                      '**Agent: Jules | Grok**',
+                      '',
+                      `Source: ${commentUrl}`,
+                      `PR: ${prUrl}`,
+                      `Bot: ${bot}`,
+                      path ? `Path: \`${path}\`` : '',
+                      '',
+                      '### Comment',
+                      commentBody,
+                      '',
+                      'Auto-synced by agent-feedback-linear-sync.yml',
+                    ].filter(Boolean).join('\n'),
+                    ...(labelId ? { labelIds: [labelId] } : {}),
+                  },
                 }
-              }`,
-              {
-                input: {
-                  teamId,
-                  parentId,
-                  title: subTitle.slice(0, 200),
-                  description: [
-                    '**Agent: Jules | Grok**',
-                    '',
-                    `Source: ${commentUrl}`,
-                    `PR: ${prUrl}`,
-                    `Bot: ${bot}`,
-                    path ? `Path: \`${path}\`` : '',
-                    '',
-                    '### Comment',
-                    commentBody,
-                    '',
-                    'Auto-synced by agent-feedback-linear-sync.yml',
-                  ].filter(Boolean).join('\n'),
-                  ...(labelId ? { labelIds: [labelId] } : {}),
-                },
+              );
+              if (sub && sub.issueCreate && sub.issueCreate.issue) {
+                core.info(`Subtask ${sub.issueCreate.issue.identifier} ${sub.issueCreate.issue.url}`);
               }
-            );
-            core.info(`Subtask ${sub.issueCreate.issue.identifier} ${sub.issueCreate.issue.url}`);
+            }
 
             if (context.payload.comment?.id) {
               try {

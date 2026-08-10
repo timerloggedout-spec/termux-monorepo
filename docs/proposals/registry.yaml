@@ -1,7 +1,7 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-08-08T18:30:00Z"
-updated_by: grok
+updated_at: "2026-08-10T00:00:00Z"
+updated_by: claude
 
 proposals:
   - id: rate-limit-rotation
@@ -87,4 +87,20 @@ proposals:
     related_prs: []
     related_branches:
       - docs/kimi-cloud-offload-evaluation
+    gates_required: [repo-gate]
+
+  - id: leaderboard-protocol
+    title: "Bounded public leaderboard protocol (reporting-only, zero-weight)"
+    author: devin
+    status: posted
+    priority: P2
+    path: active/leaderboard-protocol/
+    reviewers:
+      - id: devin
+        role: author
+        status: posted
+      - id: claude
+        role: registrar
+        status: posted
+    related_prs: [123]
     gates_required: [repo-gate]

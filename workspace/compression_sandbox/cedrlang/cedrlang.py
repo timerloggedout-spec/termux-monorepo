@@ -131,37 +131,46 @@ STOPWORDS = {
 }
 
 def load_dynamic_lexicon() -> Tuple[Dict[str, str], Dict[str, str]]:
-    """Loads and returns Grimoire lexicon dictionary mappings."""
+    """Loads and returns Grimoire lexicon dictionary mappings including Character Substitutions."""
     compress_map = dict(GRIMOIRE_COMPRESS)
     expand_map = dict(GRIMOIRE_EXPAND)
     lexicon_file = Path.home() / "harmony_hub/config/grimoire/1337_D1CT10N4RY.md"
     if lexicon_file.exists():
         try:
             content = lexicon_file.read_text()
-            in_lexicon_section = False
+            current_section = ""
             for line in content.splitlines():
                 line_str = line.strip()
-                if line_str.startswith("## Core Castings") or line_str.startswith("## Grimoire Protocol"):
-                    in_lexicon_section = True
+                if line_str.startswith("## "):
+                    current_section = line_str[3:].strip()
                     continue
-                elif line_str.startswith("## ") or line_str.startswith("# "):
-                    in_lexicon_section = False
+                elif line_str.startswith("# "):
+                    current_section = line_str[2:].strip()
                     continue
 
-                if in_lexicon_section and line_str.startswith("|") and not line_str.startswith("|--") and "Term" not in line_str:
+                if line_str.startswith("|") and not line_str.startswith("|--") and "Term" not in line_str and "Letter" not in line_str:
                     parts = [p.strip() for p in line_str.split("|")[1:-1]]
                     if len(parts) >= 2:
-                        term = parts[0]
-                        meaning = parts[1]
-                        leet = parts[2] if len(parts) >= 3 else ""
-                        if len(term) <= 1 or len(meaning) <= 1:
-                            continue
-                        if leet and term:
-                            compress_map[term.lower()] = leet
-                            expand_map[leet.lower()] = term.lower()
-                        elif term and meaning:
-                            expand_map[term.lower()] = meaning.lower()
-                            compress_map[meaning.lower()] = term
+                        if "Character Substitutions" in current_section:
+                            letter = parts[0].strip().lower()
+                            variants = [v.strip() for v in parts[1].split(",") if v.strip()]
+                            if letter and variants:
+                                compress_map[letter] = variants[0]
+                                for var in variants:
+                                    if var not in {".", ",", "!", "?", "-", "+", "=", "<", ">", "|", "~"}:
+                                        expand_map[var.lower()] = letter
+                        elif current_section in {"Core Castings", "Grimoire Protocol"}:
+                            term = parts[0]
+                            meaning = parts[1]
+                            leet = parts[2] if len(parts) >= 3 else ""
+                            if len(term) <= 1 or len(meaning) <= 1:
+                                continue
+                            if leet and term:
+                                compress_map[term.lower()] = leet
+                                expand_map[leet.lower()] = term.lower()
+                            elif term and meaning:
+                                expand_map[term.lower()] = meaning.lower()
+                                compress_map[meaning.lower()] = term
         except Exception:
             pass
     return compress_map, expand_map

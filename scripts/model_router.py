@@ -261,6 +261,8 @@ def main():
         "openrouter/google/gemma-3-12b-it:free": {"triage": 40, "review": 40, "invoke": 40},
         "openrouter/qwen/qwen3-coder:free": {"triage": 30, "review": 30, "invoke": 30},
         "openrouter/deepseek/deepseek-r1:free": {"triage": 20, "review": 20, "invoke": 20},
+        "openrouter/google/gemma-4-31b-it:free": {"triage": 40, "review": 40, "invoke": 40},
+        "openrouter/google/gemma-4-26b-a4b-it:free": {"triage": 40, "review": 40, "invoke": 40},
         "openrouter/cohere/north-mini-code:free": {"triage": 30, "review": 30, "invoke": 30},
         "gemini-3.1-flash-lite": {"triage": 450, "review": 450, "invoke": 450},
         "gemini-3.5-flash-lite": {"triage": 450, "review": 450, "invoke": 450},
@@ -274,18 +276,23 @@ def main():
     role_peers = {
         "triage": [
             ("omni", "auto/best-free"),
+            ("openrouter", "google/gemma-4-31b-it:free"),
+            ("openrouter", "google/gemma-4-26b-a4b-it:free"),
             ("openrouter", "meta-llama/llama-3.3-70b-instruct:free"),
             ("openrouter", "google/gemma-3-12b-it:free"),
         ],
         "review": [
             ("omni", "auto/best-free"),
             ("openrouter", "cohere/north-mini-code:free"),
+            ("openrouter", "google/gemma-4-31b-it:free"),
             ("openrouter", "qwen/qwen3-coder:free"),
             ("openrouter", "meta-llama/llama-3.3-70b-instruct:free"),
             ("openrouter", "deepseek/deepseek-r1:free"),
         ],
         "invoke": [
             ("omni", "auto/best-free"),
+            ("openrouter", "google/gemma-4-31b-it:free"),
+            ("openrouter", "google/gemma-4-26b-a4b-it:free"),
             ("openrouter", "meta-llama/llama-3.3-70b-instruct:free"),
             ("openrouter", "google/gemma-3-12b-it:free"),
         ],

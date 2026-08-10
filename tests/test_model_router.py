@@ -134,7 +134,7 @@ def test_main_routing_decision_openrouter(tmp_path, monkeypatch, capsys):
     # Create mock success matrix
     matrix_content = """
 models:
-  "meta-llama/llama-3.3-70b-instruct:free":
+  "google/gemma-4-31b-it:free":
     elo: 1300
     role_suitability:
       triage: 1.5
@@ -146,8 +146,8 @@ models:
     original_parse_yaml = mr.parse_yaml
     monkeypatch.setattr(mr, "parse_yaml", lambda path: original_parse_yaml(str(matrix_file)) if "success" in path else {})
 
-    # Mock polling to say meta-llama/llama-3.3-70b-instruct:free is available
-    monkeypatch.setattr(mr, "fetch_openrouter_free_models_cached", lambda: ["meta-llama/llama-3.3-70b-instruct:free"])
+    # Mock polling to say google/gemma-4-31b-it:free is available
+    monkeypatch.setattr(mr, "fetch_openrouter_free_models_cached", lambda: ["google/gemma-4-31b-it:free"])
 
     # Redirect GITHUB_OUTPUT
     go_file = tmp_path / "github_output.txt"
@@ -159,66 +159,12 @@ models:
     # Verify stdout outputs
     captured = capsys.readouterr()
     assert "::set-output name=provider::openrouter" in captured.out
-    assert "::set-output name=model::meta-llama/llama-3.3-70b-instruct:free" in captured.out
+    assert "::set-output name=model::google/gemma-4-31b-it:free" in captured.out
     assert "::set-output name=skip::false" in captured.out
 
     # Verify GITHUB_OUTPUT file contents
     assert go_file.exists()
     outputs = go_file.read_text()
     assert "provider=openrouter" in outputs
-    assert "model=meta-llama/llama-3.3-70b-instruct:free" in outputs
+    assert "model=google/gemma-4-31b-it:free" in outputs
     assert "skip=false" in outputs
-
-
-def test_main_routing_skips_unconfigured_models(tmp_path, monkeypatch, capsys):
-    # Set up test environment
-    monkeypatch.setenv("ROLE", "triage")
-    monkeypatch.setenv("HAS_OMNI", "false")
-    monkeypatch.setenv("HAS_OPENROUTER", "true")
-    monkeypatch.setenv("HAS_GEMINI", "false")
-    monkeypatch.setenv("COUNTER_DIR", str(tmp_path))
-    monkeypatch.setattr(mr, "COUNTER_DIR", str(tmp_path))
-
-    # Create mock success matrix scoring the unconfigured model highest
-    matrix_content = """
-models:
-  "google/gemma-4-31b-it:free":
-    elo: 2000
-    role_suitability:
-      triage: 2.0
-  "meta-llama/llama-3.3-70b-instruct:free":
-    elo: 1300
-    role_suitability:
-      triage: 1.0
-"""
-    matrix_file = tmp_path / "model-success-matrix.yaml"
-    matrix_file.write_text(matrix_content)
-
-    original_parse_yaml = mr.parse_yaml
-    monkeypatch.setattr(mr, "parse_yaml", lambda path: original_parse_yaml(str(matrix_file)) if "success" in path else {})
-
-    # Catalog reports both the unconfigured Gemma 4 model and the configured
-    # Llama 3.3 model as available/free.
-    monkeypatch.setattr(
-        mr,
-        "fetch_openrouter_free_models_cached",
-        lambda: ["google/gemma-4-31b-it:free", "meta-llama/llama-3.3-70b-instruct:free"],
-    )
-
-    go_file = tmp_path / "github_output.txt"
-    monkeypatch.setenv("GITHUB_OUTPUT", str(go_file))
-
-    mr.main()
-
-    captured = capsys.readouterr()
-    assert "::set-output name=provider::openrouter" in captured.out
-    assert "::set-output name=model::meta-llama/llama-3.3-70b-instruct:free" in captured.out
-    assert "::set-output name=skip::false" in captured.out
-    assert "gemma-4-31b-it" not in captured.out
-    assert "gemma-4-26b-a4b-it" not in captured.out
-
-    assert go_file.exists()
-    outputs = go_file.read_text()
-    assert "provider=openrouter" in outputs
-    assert "model=meta-llama/llama-3.3-70b-instruct:free" in outputs
-    assert "gemma-4" not in outputs

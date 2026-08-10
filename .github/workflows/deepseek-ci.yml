@@ -1,0 +1,85 @@
+name: DeepSeek CI – Agentic Automation
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      event_payload:
+        description: 'JSON event payload (optional)'
+        required: false
+        default: '{}'
+
+concurrency:
+  group: deepseek-ci-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  deepseek-agent:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      actions: read
+
+    env:
+      OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      OMNI_API_KEY: ${{ secrets.OMNI_API_KEY }}
+      GITHUB_EVENT: ${{ toJson(github.event) }}
+      DEEPSEEK_WASM_PATH: ./deepcli/deepseek.wasm
+
+    steps:
+      - name: Debounce rapid-succession commits
+        run: sleep 10
+
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 0
+          token: ${{ env.OPERATOR_TOKEN }}
+
+      - name: Setup Node.js (for PoW WASM)
+        uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4.0.4
+        with:
+          node-version: '20'
+
+      - name: Setup Python
+        uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5.1.1
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Python dependencies
+        run: |
+          pip install curl_cffi requests pyyaml
+
+      - name: Cache DeepSeek session (cookies + tokens)
+        uses: actions/cache@0c45773b623bea8c8e14f0c07f1d39dd6f721c40 # v4.0.2
+        id: cache-session
+        with:
+          path: |
+            ./cookies_2.json
+            ./session.json
+          key: deepseek-session-${{ runner.os }}-${{ hashFiles('deepcli/deepcli/session_manager.py') }}
+          restore-keys: |
+            deepseek-session-${{ runner.os }}-
+
+      - name: Run DeepSeek CI Agent
+        env:
+          PYTHONPATH: ${{ github.workspace }}/deepcli
+        run: |
+          python -m deepcli.ci_mode \
+            --event "$GITHUB_EVENT" \
+            --workspace "$GITHUB_WORKSPACE" \
+            --cache-dir "${{ runner.temp }}/deepseek-cache"
+
+      - name: Upload results (if any)
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+        if: always()
+        with:
+          name: deepseek-output
+          path: ./deepseek_output.json

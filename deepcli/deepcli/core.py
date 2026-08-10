@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Core API wrapper for DeepSeek internal API."""
 import os
+import sys
 import json
 import base64
 import time
@@ -8,37 +9,30 @@ import subprocess
 import random
 from pathlib import Path
 from typing import Optional, List, Dict, Any
-try:
-    from curl_cffi import requests as curl_requests
-except Exception:
-    import requests as standard_requests
-    class MockCurlSession(standard_requests.Session):
-        def __init__(self, *args, **kwargs):
-            kwargs.pop("impersonate", None)
-            super().__init__(*args, **kwargs)
-        def request(self, method, url, *args, **kwargs):
-            kwargs.pop("impersonate", None)
-            return super().request(method, url, *args, **kwargs)
-
-    class CurlRequestsFallback:
-        Session = MockCurlSession
-        def get(self, *args, **kwargs):
-            kwargs.pop("impersonate", None)
-            return standard_requests.get(*args, **kwargs)
-        def post(self, *args, **kwargs):
-            kwargs.pop("impersonate", None)
-            return standard_requests.post(*args, **kwargs)
-        def put(self, *args, **kwargs):
-            kwargs.pop("impersonate", None)
-            return standard_requests.put(*args, **kwargs)
-        def delete(self, *args, **kwargs):
-            kwargs.pop("impersonate", None)
-            return standard_requests.delete(*args, **kwargs)
-
-    curl_requests = CurlRequestsFallback()
 
 import requests as http_requests
 from rich.console import Console
+
+# Ensure monorepo root is in path for archwiz imports
+MONOREPO_ROOT = str(Path(__file__).resolve().parents[2])
+if MONOREPO_ROOT not in sys.path:
+    sys.path.insert(0, MONOREPO_ROOT)
+
+# curl_cffi is preferred (TLS fingerprinting) but optional on Termux when the
+# wheel's NDK/libc++ ABI does not match the host Python (seen on 3.14).
+_CURL_CFFI_AVAILABLE = False
+try:
+    from curl_cffi import requests as curl_requests
+
+    _CURL_CFFI_AVAILABLE = True
+except Exception as _curl_err:  # ImportError or dlopen failure
+    curl_requests = http_requests  # type: ignore
+    if os.environ.get("DEEPCLI_QUIET_FALLBACK") != "1":
+        print(
+            f"[deepcli] curl_cffi unavailable ({type(_curl_err).__name__}: {_curl_err}); "
+            "using requests fallback (some anti-bot paths may fail).",
+            file=sys.stderr,
+        )
 
 console = Console()
 
@@ -50,13 +44,17 @@ BASE_URL = "https://chat.deepseek.com"
 CONFIG_DIR.mkdir(parents=True, exist_ok=True)
 
 # Persistent session (cookies preserved across API calls)
-_session: Optional[curl_requests.Session] = None
+_session: Optional[Any] = None
 
 # ---------- cache helpers ----------
 def _cache_path(session_id: str, account: str = "primary") -> str:
-    store_dir = os.path.join(os.path.expanduser("~/.deepcli/session_store"), account)
-    os.makedirs(store_dir, exist_ok=True)
-    return os.path.join(store_dir, f"{session_id}.json")
+    try:
+        from archwiz.config import SESSION_STORE
+        store_dir = SESSION_STORE / account
+    except ImportError:
+        store_dir = Path.home() / ".deepcli" / "session_store" / account
+    store_dir.mkdir(parents=True, exist_ok=True)
+    return str(store_dir / f"{session_id}.json")
 
 def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict[str, Any]]]:
     path = _cache_path(session_id, account)
@@ -70,21 +68,18 @@ def _cache_save(session_id: str, messages: List[Dict[str, Any]], account: str = 
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, 'w') as f:
         json.dump(messages, f, indent=2)
+
     # === DISPATCH HOOK — additive, never blocks save ===
     try:
-        import importlib.util
-        import sys
-        spec = importlib.util.spec_from_file_location(
-            "dispatch_pipeline",
-            os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "archwiz", "dispatch_pipeline.py")
-        )
-        if spec and os.path.exists(spec.origin):
-            disp = importlib.util.module_from_spec(spec)
-            sys.modules["dispatch_pipeline"] = disp
-            spec.loader.exec_module(disp)
-            disp.update_all(session_id)
-    except Exception:
-        pass
+        from archwiz.dispatch_pipeline import trigger_dispatch
+        trigger_dispatch(session_id, messages)
+    except Exception as e:
+        try:
+            from archwiz.config import LOG_DIR
+            with open(LOG_DIR / "dispatch_error.log", "a") as f:
+                f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} - Dispatch error: {e}\n")
+        except:
+            pass
     # === END DISPATCH HOOK ===
 
 def _set_last_session(sid: str):
@@ -93,8 +88,13 @@ def _set_last_session(sid: str):
     save_config(cfg)
     try:
         get_history(get_token(), sid, force_refresh=True)
-    except:
-        pass
+    except Exception as e:
+        try:
+            from archwiz.config import LOG_DIR
+            with open(LOG_DIR / "history_error.log", "a") as f:
+                f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} - History fetch error: {e}\n")
+        except:
+            pass
 
 # ---------- config helpers ----------
 def load_config() -> Dict[str, Any]:
@@ -116,7 +116,7 @@ def get_token() -> str:
     return token
 
 # ---------- HTTP session ----------
-def get_session(token: str, cookie: str = None) -> curl_requests.Session:
+def get_session(token: str, cookie: str = None) -> Any:
     global _session
     cache_key = (token[:20] + '_' + (cookie or ''))[:30]
     if '_sessions' not in globals() or not isinstance(_sessions, dict):
@@ -146,7 +146,11 @@ def get_session(token: str, cookie: str = None) -> curl_requests.Session:
         })
         _sessions[cache_key] = _session
     if cookie:
-        _session.cookies.set("ds_session_id", cookie.split("=", 1)[1] if "=" in cookie else cookie)
+        # requests vs curl_cffi cookie APIs differ slightly
+        try:
+            _session.cookies.set("ds_session_id", cookie.split("=", 1)[1] if "=" in cookie else cookie)
+        except Exception:
+            pass
     return _session
 
 # ---------- POW ----------
@@ -293,8 +297,8 @@ def _log_retry(operation: str, status_code: int, attempt: int, delay: float):
         with open(log_path, "a") as f:
             json.dump({"ts": __import__("datetime").datetime.now().isoformat(), "op": operation, "status": status_code, "attempt": attempt, "delay": delay}, f)
             f.write("\n")
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"[retry_log] Failed to log retry: {e}", file=sys.stderr)
 
 def stream_completion(token: str, prompt: str, session_id: str,
                      parent_message_id: Optional[str] = None,
@@ -361,7 +365,7 @@ def stream_completion(token: str, prompt: str, session_id: str,
                     payload['search_enabled'] = False
                 time.sleep(delay)
                 continue
-            # Read full response and parse SSE manually (curl_cffi doesn't do iter_lines)
+            # Read full response and parse SSE manually
             raw = resp.content.decode('utf-8', errors='replace')
             for line in raw.split('\n'):
                 if not line.strip():
@@ -430,7 +434,7 @@ def send_message_working(token: str, session_id: str, prompt: str,
                          files: list = None,
                          thinking: bool = False,
                          search: bool = False) -> str:
-    """Proven working send (May 22) – standalone, no curl_cffi."""
+    """Proven working send (May 22) – standalone requests path."""
     import requests as req
     s = get_session(token)
     headers = s.headers.copy()

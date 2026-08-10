@@ -36,9 +36,6 @@ pipeline_log.jsonl
 *.db
 *.sqlite
 *.sqlite3
-
-# === DeepSeek v4-Pro CI ===
-deepseek_output.json
 *.tar
 *.gz
 *.bz2
@@ -61,6 +58,9 @@ deepseek_output.json
 *.cap
 *.core
 *.dmp
+
+# === DeepSeek v4-Pro CI ===
+deepseek_output.json
 
 # === Sensitive files (keys, tokens, cookies) ===
 *.cookies

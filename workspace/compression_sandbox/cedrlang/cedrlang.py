@@ -122,36 +122,49 @@ GRIMOIRE_EXPAND = {
     "r00t": "root",
 }
 
-# Attempt to dynamically load dictionary file to enrich terms
-LEXICON_FILE = Path.home() / "harmony_hub/config/grimoire/1337_D1CT10N4RY.md"
-if LEXICON_FILE.exists():
-    try:
-        content = LEXICON_FILE.read_text()
-        for line in content.splitlines():
-            line_str = line.strip()
-            if line_str.startswith("|") and not line_str.startswith("|--") and "Term" not in line_str:
-                parts = [p.strip() for p in line_str.split("|")[1:-1]]
-                if len(parts) >= 2:
-                    term = parts[0]
-                    meaning = parts[1]
-                    # If there's a third column (Leet Variant)
-                    leet = parts[2] if len(parts) >= 3 else ""
-                    if leet and term:
-                        GRIMOIRE_COMPRESS[term.lower()] = leet
-                        GRIMOIRE_EXPAND[leet.lower()] = term.lower()
-                    elif term and meaning:
-                        # In Core Castings, Term is the 1337, meaning is the standard English
-                        GRIMOIRE_EXPAND[term.lower()] = meaning.lower()
-                        GRIMOIRE_COMPRESS[meaning.lower()] = term
-    except Exception:
-        pass
+# Module-level Stopwords Constant
+STOPWORDS = {
+    "a", "an", "the", "is", "are", "was", "were", "be", "been", "being",
+    "to", "of", "and", "for", "in", "that", "with", "on", "at", "by",
+    "this", "these", "those", "it", "they", "we", "you", "he", "she",
+    "to", "from", "for", "or", "and", "basically", "actually", "just", "really"
+}
+
+def load_dynamic_lexicon() -> Tuple[Dict[str, str], Dict[str, str]]:
+    """Loads and returns Grimoire lexicon dictionary mappings."""
+    compress_map = dict(GRIMOIRE_COMPRESS)
+    expand_map = dict(GRIMOIRE_EXPAND)
+    lexicon_file = Path.home() / "harmony_hub/config/grimoire/1337_D1CT10N4RY.md"
+    if lexicon_file.exists():
+        try:
+            content = lexicon_file.read_text()
+            for line in content.splitlines():
+                line_str = line.strip()
+                if line_str.startswith("|") and not line_str.startswith("|--") and "Term" not in line_str:
+                    parts = [p.strip() for p in line_str.split("|")[1:-1]]
+                    if len(parts) >= 2:
+                        term = parts[0]
+                        meaning = parts[1]
+                        leet = parts[2] if len(parts) >= 3 else ""
+                        if leet and term:
+                            compress_map[term.lower()] = leet
+                            expand_map[leet.lower()] = term.lower()
+                        elif term and meaning:
+                            expand_map[term.lower()] = meaning.lower()
+                            compress_map[meaning.lower()] = term
+        except Exception:
+            pass
+    return compress_map, expand_map
+
+# Load dynamic maps
+GRIMOIRE_COMPRESS, GRIMOIRE_EXPAND = load_dynamic_lexicon()
 
 # Combine Symbol Map and Grimoire for single-pass compression/expansion
 COMBINED_COMPRESS_MAP = {}
 for k, v in SYMBOL_MAP.items():
-    COMBINED_COMPRESS_MAP[k.lower()] = v
+    COMBINED_COMPRESS_MAP[k.strip().lower()] = v.strip()
 for k, v in GRIMOIRE_COMPRESS.items():
-    COMBINED_COMPRESS_MAP[k.lower()] = v
+    COMBINED_COMPRESS_MAP[k.strip().lower()] = v.strip()
 
 # Sort keys by descending length to match longest parts first
 sorted_comp_keys = sorted(COMBINED_COMPRESS_MAP.keys(), key=len, reverse=True)
@@ -167,8 +180,14 @@ for k in sorted_comp_keys:
 COMPRESS_RE = re.compile("|".join(patterns_comp), re.IGNORECASE)
 
 COMBINED_EXPAND_MAP = {}
+SAFE_EXPAND_SYMBOLS = {"→", "←", "∴", "∵", "⇒", "∧", "∨", "¬", "✓", "✗", "…", "⚠"}
+
 for k, v in SYMBOL_MAP.items():
-    COMBINED_EXPAND_MAP[v.strip()] = k.strip()
+    symbol_stripped = v.strip().lower()
+    # Expand only standalone unique symbols or alphanumeric words
+    if symbol_stripped.isalnum() or symbol_stripped in SAFE_EXPAND_SYMBOLS:
+        COMBINED_EXPAND_MAP[symbol_stripped] = k.strip()
+
 for k, v in GRIMOIRE_EXPAND.items():
     COMBINED_EXPAND_MAP[k.lower()] = v
 
@@ -179,7 +198,8 @@ for k in sorted_exp_keys:
     if k[0].isalnum() and k[-1].isalnum():
         patterns_exp.append(rf"\b{escaped}\b")
     else:
-        patterns_exp.append(escaped)
+        # Match standalone non-alphanumeric symbols (like standalone "+", "-", "→")
+        patterns_exp.append(rf"(?:^|\s){escaped}(?=\s|$)")
 
 EXPAND_RE = re.compile("|".join(patterns_exp), re.IGNORECASE)
 
@@ -187,38 +207,57 @@ EXPAND_RE = re.compile("|".join(patterns_exp), re.IGNORECASE)
 # 2. Markdown / Syntax Protection
 # ------------------------------------------------------------
 def protect_syntax(text: str) -> Tuple[str, List[Tuple[str, str]]]:
-    """Protects Markdown syntax (code blocks, inline code, links) with placeholders."""
+    """Protects Markdown syntax (code blocks, inline code, links) and URLs/paths with placeholders."""
     block_re = re.compile(r"```[\s\S]*?```")
     inline_re = re.compile(r"`[^`\n]+`")
     link_re = re.compile(r"\[[^\]]+\]\([^)]+\)")
     html_re = re.compile(r"<[^>\n]+>")
+    # Match URLs (e.g., http://... or https://...)
+    url_re = re.compile(r"https?://[^\s)]+")
+    # Match file paths or filenames containing '/' or ending with common extensions
+    path_re = re.compile(r"\b[\w.-]+/[\w.-]+(?:\.[\w]+)?\b")
 
     placeholders = []
     temp_text = text
+    match_to_ph = {}
 
-    # Extract Code Blocks
-    for match in block_re.findall(temp_text):
-        ph = f"__CODE_BLOCK_PH_{len(placeholders)}__"
-        placeholders.append((ph, match))
-        temp_text = temp_text.replace(match, ph)
+    def get_placeholder(match_str, prefix):
+        if match_str in match_to_ph:
+            return match_to_ph[match_str]
+        ph = f"__{prefix}_PH_{len(placeholders)}__"
+        match_to_ph[match_str] = ph
+        placeholders.append((ph, match_str))
+        return ph
 
-    # Extract Inline Code
-    for match in inline_re.findall(temp_text):
-        ph = f"__INLINE_CODE_PH_{len(placeholders)}__"
-        placeholders.append((ph, match))
-        temp_text = temp_text.replace(match, ph)
+    # 1. Code blocks
+    def block_sub(m):
+        return get_placeholder(m.group(0), "CODE_BLOCK")
+    temp_text = block_re.sub(block_sub, temp_text)
 
-    # Extract Markdown Links
-    for match in link_re.findall(temp_text):
-        ph = f"__LINK_PH_{len(placeholders)}__"
-        placeholders.append((ph, match))
-        temp_text = temp_text.replace(match, ph)
+    # 2. Inline code
+    def inline_sub(m):
+        return get_placeholder(m.group(0), "INLINE_CODE")
+    temp_text = inline_re.sub(inline_sub, temp_text)
 
-    # Extract HTML
-    for match in html_re.findall(temp_text):
-        ph = f"__HTML_PH_{len(placeholders)}__"
-        placeholders.append((ph, match))
-        temp_text = temp_text.replace(match, ph)
+    # 3. Markdown links
+    def link_sub(m):
+        return get_placeholder(m.group(0), "LINK")
+    temp_text = link_re.sub(link_sub, temp_text)
+
+    # 4. HTML tags
+    def html_sub(m):
+        return get_placeholder(m.group(0), "HTML")
+    temp_text = html_re.sub(html_sub, temp_text)
+
+    # 5. URLs
+    def url_sub(m):
+        return get_placeholder(m.group(0), "URL")
+    temp_text = url_re.sub(url_sub, temp_text)
+
+    # 6. Paths
+    def path_sub(m):
+        return get_placeholder(m.group(0), "PATH")
+    temp_text = path_re.sub(path_sub, temp_text)
 
     return temp_text, placeholders
 
@@ -234,9 +273,8 @@ def restore_syntax(text: str, placeholders: List[Tuple[str, str]]) -> str:
 # ------------------------------------------------------------
 def caveman(text: str) -> str:
     # Caveman in 6 Lines - ultra-compressed text filter
-    sw = {"a", "an", "the", "is", "are", "was", "were", "be", "been", "being", "to", "of", "and", "for", "in", "that", "with", "on", "at", "by", "this", "these", "those", "it", "they", "we", "you", "he", "she", "to", "from", "for", "or", "and"}
     words = re.findall(r"\b\w+'?\w*\b|[^\w\s]", text)
-    cleaned = [w for w in words if w.lower() not in sw]
+    cleaned = [w for w in words if w.lower() not in STOPWORDS]
     return " ".join(cleaned)
 
 # ------------------------------------------------------------
@@ -252,50 +290,79 @@ def compress(text: str, aggressive: bool = True) -> str:
 
     # 2. Compress line-by-line to preserve structure (headings, lists, newlines)
     ph_set = {ph for ph, _ in placeholders}
-    sw = {"a", "an", "the", "is", "are", "was", "were", "be", "been", "being", "to", "of", "and", "for", "in", "that", "with", "on", "at", "by", "this", "these", "those", "it", "they", "we", "you", "he", "she", "to", "from", "for", "or", "and"}
 
     def compress_repl(match):
-        val = match.group(0).lower()
-        return COMBINED_COMPRESS_MAP.get(val, match.group(0))
+        val = match.group(0).strip().lower()
+        res = COMBINED_COMPRESS_MAP.get(val, match.group(0))
+        return f" {res} "
 
     compressed_lines = []
+    has_trailing_newline = text.endswith('\n')
+
     for line in protected_text.splitlines():
-        # Apply single-pass symbolic substitution on the line
-        comp_line = COMPRESS_RE.sub(compress_repl, line)
+        # Match leading indentation
+        indent_match = re.match(r"^(\s*)", line)
+        indent = indent_match.group(1) if indent_match else ""
+        content_line = line[len(indent):]
+
+        # Apply single-pass symbolic substitution on the line content
+        comp_line = COMPRESS_RE.sub(compress_repl, content_line)
 
         if aggressive:
             # Tokenize and strip stopwords while preserving placeholders
             words = comp_line.split()
-            cleaned = [w for w in words if w in ph_set or w.lower() not in sw]
+            cleaned = [w for w in words if w in ph_set or w.lower() not in STOPWORDS]
             comp_line = " ".join(cleaned)
         else:
             comp_line = re.sub(r'\s+', ' ', comp_line).strip()
 
-        compressed_lines.append(comp_line)
+        compressed_lines.append(indent + comp_line)
 
     # Rejoin lines with actual newlines
     compressed = "\n".join(compressed_lines)
+    if has_trailing_newline:
+        compressed += '\n'
 
     # 3. Restore syntax
     return restore_syntax(compressed, placeholders)
 
 def expand(cedr: str) -> str:
-    """Expand CedrLang back to approximate readable English."""
+    """Expand CedrLang back to approximate readable English while preserving format."""
     if not cedr:
         return ""
 
     protected_text, placeholders = protect_syntax(cedr)
 
     def expand_repl(match):
-        val = match.group(0).lower()
+        val = match.group(0).strip().lower()
         res = COMBINED_EXPAND_MAP.get(val, match.group(0))
-        # Add space pads for smooth reading
         return f" {res} "
 
-    expanded = EXPAND_RE.sub(expand_repl, protected_text)
-    expanded = re.sub(r'\s+', ' ', expanded).strip()
+    expanded_lines = []
+    has_trailing_newline = cedr.endswith('\n')
+
+    for line in protected_text.splitlines():
+        # Match leading indentation
+        indent_match = re.match(r"^(\s*)", line)
+        indent = indent_match.group(1) if indent_match else ""
+        content_line = line[len(indent):]
+
+        # Apply expand pattern on line
+        expanded_line = EXPAND_RE.sub(expand_repl, content_line)
+        # Collapse double horizontal spaces only
+        expanded_line = re.sub(r'[ \t]+', ' ', expanded_line).strip()
+        expanded_lines.append(indent + expanded_line)
+
+    expanded = "\n".join(expanded_lines)
+    if has_trailing_newline:
+        expanded += '\n'
 
     return restore_syntax(expanded, placeholders)
+
+# Public helper deepcli_filter (kept for legacy support/external scripts)
+def deepcli_filter(prompt: str) -> str:
+    """Hook for deepcli – compress user prompt before sending to API."""
+    return compress(prompt, aggressive=True)
 
 # ------------------------------------------------------------
 # 5. Token Counter & Stats
@@ -328,7 +395,8 @@ def main():
     p_compress.add_argument("text", nargs="*", help="Text to compress")
     p_compress.add_argument("-f", "--file", help="Input file path to compress")
     p_compress.add_argument("-o", "--output", help="Output file path (default: write to stdout)")
-    p_compress.add_argument("--no-aggressive", dest="aggressive", action="store_false", default=True, help="Disable aggressive stopword stripping")
+    p_compress.add_argument("--aggressive", action="store_true", default=True, help="Enable aggressive stopword stripping")
+    p_compress.add_argument("--no-aggressive", dest="aggressive", action="store_false", help="Disable aggressive stopword stripping")
 
     # Expand Command
     p_expand = subparsers.add_parser("expand", help="Expand CedrLang to approximate English")

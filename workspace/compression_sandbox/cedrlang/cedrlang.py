@@ -114,7 +114,7 @@ GRIMOIRE_EXPAND = {
     "1337sp3@k": "leetspeak",
     "1337": "leet",
     "hacks": "h4x",
-    "h4x0r": "hacker",
+    "hacker": "h4x0r",
     "pwn": "defeat",
     "n00b": "newbie",
     "w00t": "excitement",
@@ -127,7 +127,7 @@ STOPWORDS = {
     "a", "an", "the", "is", "are", "was", "were", "be", "been", "being",
     "to", "of", "and", "for", "in", "that", "with", "on", "at", "by",
     "this", "these", "those", "it", "they", "we", "you", "he", "she",
-    "to", "from", "for", "or", "and", "basically", "actually", "just", "really"
+    "basically", "actually", "just", "really"
 }
 
 def load_dynamic_lexicon() -> Tuple[Dict[str, str], Dict[str, str]]:
@@ -138,14 +138,24 @@ def load_dynamic_lexicon() -> Tuple[Dict[str, str], Dict[str, str]]:
     if lexicon_file.exists():
         try:
             content = lexicon_file.read_text()
+            in_lexicon_section = False
             for line in content.splitlines():
                 line_str = line.strip()
-                if line_str.startswith("|") and not line_str.startswith("|--") and "Term" not in line_str:
+                if line_str.startswith("## Core Castings") or line_str.startswith("## Grimoire Protocol"):
+                    in_lexicon_section = True
+                    continue
+                elif line_str.startswith("## ") or line_str.startswith("# "):
+                    in_lexicon_section = False
+                    continue
+
+                if in_lexicon_section and line_str.startswith("|") and not line_str.startswith("|--") and "Term" not in line_str:
                     parts = [p.strip() for p in line_str.split("|")[1:-1]]
                     if len(parts) >= 2:
                         term = parts[0]
                         meaning = parts[1]
                         leet = parts[2] if len(parts) >= 3 else ""
+                        if len(term) <= 1 or len(meaning) <= 1:
+                            continue
                         if leet and term:
                             compress_map[term.lower()] = leet
                             expand_map[leet.lower()] = term.lower()
@@ -215,7 +225,7 @@ def protect_syntax(text: str) -> Tuple[str, List[Tuple[str, str]]]:
     # Match URLs (e.g., http://... or https://...)
     url_re = re.compile(r"https?://[^\s)]+")
     # Match file paths or filenames containing '/' or ending with common extensions
-    path_re = re.compile(r"\b[\w.-]+/[\w.-]+(?:\.[\w]+)?\b")
+    path_re = re.compile(r"\b[\w.-]+/[\w.-]+(?:\.[\w.-]+)+\b")
 
     placeholders = []
     temp_text = text
@@ -294,7 +304,7 @@ def compress(text: str, aggressive: bool = True) -> str:
     def compress_repl(match):
         val = match.group(0).strip().lower()
         res = COMBINED_COMPRESS_MAP.get(val, match.group(0))
-        return f" {res} "
+        return res
 
     compressed_lines = []
     has_trailing_newline = text.endswith('\n')
@@ -334,13 +344,16 @@ def expand(cedr: str) -> str:
     protected_text, placeholders = protect_syntax(cedr)
 
     def expand_repl(match):
-        val = match.group(0).strip()
+        full_match = match.group(0)
+        val = full_match.strip()
+        leading_space = full_match[:len(full_match)-len(full_match.lstrip())]
         if val == "T":
-            return " true "
+            res = "true"
         elif val == "F":
-            return " false "
-        res = COMBINED_EXPAND_MAP.get(val.lower(), val)
-        return f" {res} "
+            res = "false"
+        else:
+            res = COMBINED_EXPAND_MAP.get(val.lower(), val)
+        return leading_space + res
 
     expanded_lines = []
     has_trailing_newline = cedr.endswith('\n')

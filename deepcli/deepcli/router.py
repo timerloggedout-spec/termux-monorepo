@@ -23,22 +23,25 @@ def select_peer(event, env=None):
     if env is None:
         env = os.environ
 
-    # Get list of available providers with scores
+    # Get list of available providers with scores and model defaults
     providers = [
         {
             'name': 'openrouter',
             'score': score_provider('openrouter', env),
-            'endpoint': 'https://openrouter.ai/api/v1/chat/completions'
+            'endpoint': 'https://openrouter.ai/api/v1/chat/completions',
+            'model': env.get('OPENROUTER_MODEL', 'google/gemini-2.5-flash:free')
         },
         {
             'name': 'omni',
             'score': score_provider('omni', env),
-            'endpoint': env.get('OMNI_BASE_URL', 'https://api.omni.ai/v1/chat/completions')
+            'endpoint': env.get('OMNI_BASE_URL', 'https://api.omni.ai/v1/chat/completions'),
+            'model': env.get('OMNI_MODEL', 'gpt-4o-mini')
         },
         {
             'name': 'deepseek',
             'score': score_provider('deepseek', env),
-            'endpoint': None
+            'endpoint': None,
+            'model': 'deepseek-reasoner'
         },  # web wrapper
     ]
 
@@ -62,4 +65,5 @@ def select_peer(event, env=None):
         'provider': chosen['name'],
         'endpoint': chosen.get('endpoint'),
         'api_key': env.get(f"{chosen['name'].upper()}_API_KEY", None),
+        'model': chosen.get('model'),
     }

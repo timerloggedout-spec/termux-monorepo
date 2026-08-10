@@ -6,8 +6,13 @@ import shutil
 from pathlib import Path
 import pytest
 
-from deepcli.deepcli.router import score_provider, select_peer
-from deepcli.deepcli.session_manager import ensure_session
+import sys
+from pathlib import Path
+# Insert deepcli package directory directly to bypass package __init__ execution
+sys.path.insert(0, str(Path(__file__).parent.parent / "deepcli" / "deepcli"))
+
+from router import score_provider, select_peer
+from session_manager import ensure_session
 
 def test_score_provider():
     # Test router scoring based on API keys
@@ -49,7 +54,7 @@ def test_select_peer():
 def test_session_manager_permissions(monkeypatch):
     # Mock get_new_session to return a mock dictionary so we run offline/locally
     monkeypatch.setattr(
-        "deepcli.deepcli.session_manager.get_new_session",
+        "session_manager.get_new_session",
         lambda *args, **kwargs: {
             'cookies': {'foo': 'bar'},
             'headers': {'baz': 'qux'},

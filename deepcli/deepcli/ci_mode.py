@@ -9,12 +9,10 @@ import json
 import argparse
 from pathlib import Path
 
-# Ensure we can import from sibling modules
-sys.path.insert(0, str(Path(__file__).parent))
-
-from core import run_ci
-from session_manager import ensure_session
-from router import select_peer
+# Use relative package imports to prevent duplicate core module state
+from .core import run_ci
+from .session_manager import ensure_session
+from .router import select_peer
 
 def main():
     parser = argparse.ArgumentParser()
@@ -79,10 +77,12 @@ def main():
         # Fallback standard write if os.open is unsupported
         with open(output_path, 'w') as f:
             json.dump(result, f, indent=2)
-        try:
-            os.chmod(output_path, 0o600)
-        except Exception:
-            pass
+
+    # Ensure permissions are set to 0o600 unconditionally even if file existed with more permissive mode
+    try:
+        os.chmod(output_path, 0o600)
+    except Exception:
+        pass
 
     # Print summary to logs
     print(f"✅ CI run completed. Decisions: {result.get('actions', [])}")

@@ -9,7 +9,7 @@
 | RL-05 | OpenRouter fallback path | P0 | grok | foundation | skip=true when Gemini exhausted; real HTTP invoke still TODO |
 | RL-06 | Tighten job-gate daily-limit (900→100) | P1 | grok | todo | pair with #81 |
 | RL-07 | Prompt compression for agent workflows | P1 | | todo | issue #90 |
-| RL-08 | OmniRoute hub integration surface | P2 | | todo | issue #91 |
+| RL-08 | OmniRoute hub integration surface | P2 | jules | done | .github/workflows/deepseek-ci.yml, deepcli/deepcli/router.py (issue #91) |
 | RL-09 | Per-model Linear quota dashboard | P2 | | todo | |
 | RL-10 | Merge/rebase #81 quota-gate onto master | P0 | | todo | PR #81 |
 | RL-11 | Peer-review gate (wait CR/Devin/Aikido) | P0 | grok | done | peer-review-orchestrator.yml |

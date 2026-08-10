@@ -57,16 +57,6 @@ jobs:
         run: |
           pip install curl_cffi requests pyyaml
 
-      - name: Cache DeepSeek session (cookies + tokens)
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
-        id: cache-session
-        with:
-          path: |
-            ${{ runner.temp }}/deepseek-cache
-          key: deepseek-session-${{ runner.os }}-${{ hashFiles('deepcli/deepcli/session_manager.py') }}
-          restore-keys: |
-            deepseek-session-${{ runner.os }}-
-
       - name: Run DeepSeek CI Agent
         env:
           PYTHONPATH: ${{ github.workspace }}/deepcli

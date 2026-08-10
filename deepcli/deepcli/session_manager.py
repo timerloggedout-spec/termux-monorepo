@@ -12,7 +12,7 @@ from pathlib import Path
 DEEPSEEK_BASE = "https://chat.deepseek.com"
 
 # Robustly resolve deepseek.wasm path
-DEFAULT_WASM_PATH = Path(__file__).parent / "deepseek.wasm"
+DEFAULT_WASM_PATH = Path(os.environ.get('DEEPSEEK_WASM_PATH')) if os.environ.get('DEEPSEEK_WASM_PATH') else (Path(__file__).parent / "deepseek.wasm")
 if not DEFAULT_WASM_PATH.exists():
     DEFAULT_WASM_PATH = Path(__file__).parent.parent / "deepseek.wasm"
 
@@ -226,9 +226,11 @@ def ensure_session(cache_dir='/tmp/deepseek-cache'):
         # Fallback standard write if os.open is unsupported/blocked
         with open(cache_path, 'w') as f:
             json.dump(session, f)
-        try:
-            os.chmod(cache_path, 0o600)
-        except Exception:
-            pass
+
+    # Ensure permissions are set to 0o600 unconditionally even if file existed with more permissive mode
+    try:
+        os.chmod(cache_path, 0o600)
+    except Exception:
+        pass
 
     return session

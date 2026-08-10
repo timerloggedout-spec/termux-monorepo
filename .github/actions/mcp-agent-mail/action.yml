@@ -45,9 +45,10 @@ runs:
       shell: bash
       if: ${{ inputs.run-server == 'true' && inputs.install-only != 'true' }}
       run: |
-        PORT=${{ inputs.port }}
+        PORT="${{ inputs.port }}"
         echo "Starting mcp-agent-mail server in background on port $PORT..."
-        mcp-agent-mail server --port "$PORT" &
+        nohup mcp-agent-mail server --port "$PORT" > "$RUNNER_TEMP/mcp-agent-mail.log" 2>&1 &
+        disown || true
 
         # Settle down to let the server initialize
         sleep 5

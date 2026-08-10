@@ -198,7 +198,7 @@ jobs:
             } catch (error) {
               const errMsg = error.message || '';
               if (errMsg.includes('usage limit exceeded') || errMsg.includes('USAGE_LIMIT_EXCEEDED')) {
-                core.warning(`Linear workspace limit exceeded, skipping sync: ${errMsg}`);
+                core.warning('Linear workspace limit exceeded — skipping sync cleanly: ' + errMsg);
               } else {
                 throw error;
               }

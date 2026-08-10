@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Core API wrapper for DeepSeek internal API."""
 import os
+import sys
 import json
 import base64
 import time
@@ -38,9 +39,17 @@ except Exception:
     curl_requests = CurlRequestsFallback()
 
 import requests as http_requests
-from rich.console import Console
-
-console = Console()
+try:
+    from rich.console import Console
+    console = Console()
+except ImportError:
+    class DummyConsole:
+        def print(self, *args, **kwargs):
+            import re
+            msg = " ".join(str(a) for a in args)
+            msg = re.sub(r"\[/?.*?\]", "", msg)
+            print(msg)
+    console = DummyConsole()
 
 CONFIG_DIR = Path.home() / ".deepcli"
 CONFIG_FILE = CONFIG_DIR / "config.json"
@@ -327,7 +336,6 @@ def stream_completion(token: str, prompt: str, session_id: str,
     while retries < max_retries:
         try:
             resp = base_sess.post(url, json=payload, headers=headers, stream=True)
-            # Check for expert-mode rejection even on 200
             body_preview = resp.text[:200] if hasattr(resp, 'text') else ''
             if 'Update to the latest version' in body_preview:
                 console.print("[yellow]Expert mode unavailable – retrying as instant.[/]")
@@ -337,9 +345,7 @@ def stream_completion(token: str, prompt: str, session_id: str,
                 continue
             if resp.status_code in (403, 503):
                 retries += 1
-                # Exponential backoff with jitter: base * 2^retries + random
                 delay = base_delay * (2 ** min(retries, 5)) + random.uniform(0, base_delay)
-                # Occasionally do a quick burst (simulate impatient user)
                 if random.random() < 0.2:
                     delay = random.uniform(0.5, 2.0)
                 delay = min(delay, 90)
@@ -354,14 +360,12 @@ def stream_completion(token: str, prompt: str, session_id: str,
                 delay = min(delay, 90)
                 _log_retry("stream_completion", resp.status_code, retries, delay)
                 console.print(f"[red]API error {resp.status_code}: {body}[/] retry in {delay:.1f}s")
-                # Fallback: if expert mode not available, force instant
                 if 'expert' in body.lower() or 'upgrade' in body.lower():
                     console.print("[yellow]Expert mode unavailable — falling back to instant.[/]")
                     payload['thinking_enabled'] = False
                     payload['search_enabled'] = False
                 time.sleep(delay)
                 continue
-            # Read full response and parse SSE manually (curl_cffi doesn't do iter_lines)
             raw = resp.content.decode('utf-8', errors='replace')
             for line in raw.split('\n'):
                 if not line.strip():
@@ -370,7 +374,6 @@ def stream_completion(token: str, prompt: str, session_id: str,
                     try:
                         data = json.loads(line[5:].strip())
                         if isinstance(data, dict):
-                            # Save close event for auto-continue
                             if data.get("click_behavior") is not None or data.get("auto_resume") is not None:
                                 global _last_close_data
                                 _last_close_data = {
@@ -378,7 +381,6 @@ def stream_completion(token: str, prompt: str, session_id: str,
                                     "click_behavior": data.get("click_behavior"),
                                     "message_id": data.get("message_id") or data.get("response_message_id")
                                 }
-                            # Log any unknown keys for debugging
                             _known_keys = {"v","content","auto_resume","click_behavior",
                                           "finish_reason","message_id","request_message_id",
                                           "response_message_id","model_type"}
@@ -389,7 +391,6 @@ def stream_completion(token: str, prompt: str, session_id: str,
                                             "..","..","cli-synthegration","metrics","sse_keys.log"),"a") as _f:
                                             _f.write(json.dumps({k:data[k]})+"\n")
                                     except: pass
-                            # Track auto_resume flag for continue button
                             if data.get("auto_resume") is not None:
                                 _last_auto_resume = data.get("auto_resume")
                             if data.get("click_behavior") is not None:
@@ -524,7 +525,6 @@ def chat_completion(token: str, prompt: str, session_id: str,
         if not auto_continue:
             break
         
-        # Check if server asked for continue
         if _last_close_data and _last_close_data.get("auto_resume"):
             current_parent = _last_close_data.get("message_id")
             if current_parent:
@@ -548,3 +548,107 @@ def export_markdown(token: str, session_id: str) -> str:
 def export_json(token: str, session_id: str) -> str:
     messages = get_history(token, session_id)
     return json.dumps(messages, indent=2)
+
+
+# ========== CI mode integration ==========
+def run_ci(event, session, peer, workspace, operator_token):
+    """
+    Non-interactive agent loop for GHA.
+    Returns a dict with 'actions' (list of decisions).
+    Never posts error/mock strings as PR reviews.
+    """
+    import subprocess
+
+    gh_env = os.environ.copy()
+    token_for_gh = operator_token or os.environ.get('GITHUB_TOKEN') or os.environ.get('GH_TOKEN')
+    if token_for_gh:
+        gh_env['GH_TOKEN'] = token_for_gh
+
+    pr_number = event.get('pull_request', {}).get('number')
+    repo = event.get('repository', {}).get('full_name') or os.environ.get('GITHUB_REPOSITORY')
+    action = event.get('action')
+
+    decisions = []
+    error = None
+
+    if action in ['opened', 'synchronize', 'reopened'] and pr_number and repo:
+        diff_cmd = ['gh', 'pr', 'diff', str(pr_number), '--repo', repo]
+        try:
+            diff = subprocess.check_output(diff_cmd, env=gh_env, text=True)
+            if not diff or diff.startswith('Could not'):
+                raise RuntimeError(diff or 'empty diff')
+        except Exception as e:
+            return {
+                'actions': [],
+                'event': event.get('action'),
+                'pr': pr_number,
+                'provider_used': peer.get('provider') if peer else None,
+                'error': f'Could not retrieve diff: {e}',
+            }
+
+        analysis = None
+
+        if peer and peer.get('provider') == 'deepseek':
+            try:
+                if session.get('mock') or session.get('token') == 'mock_token':
+                    raise RuntimeError('mock session — skipping real DeepSeek path')
+                token = session.get('token') or get_token()
+                session_id = create_session(token)
+                prompt = f"You are a code reviewer. Analyze the diff and suggest improvements:\n\n{diff[:8000]}"
+                analysis = chat_completion(token, prompt, session_id, thinking=True)
+            except Exception as e:
+                error = f"DeepSeek Web-Wrapper Error: {e}"
+        else:
+            import requests
+            model_name = (peer or {}).get('model') or 'gpt-4o-mini'
+            headers = {
+                'Authorization': f"Bearer {(peer or {}).get('api_key')}",
+                'Content-Type': 'application/json',
+            }
+            payload = {
+                'model': model_name,
+                'messages': [
+                    {'role': 'system', 'content': 'You are a code reviewer. Analyze the diff and suggest improvements.'},
+                    {'role': 'user', 'content': diff[:8000]}
+                ]
+            }
+            try:
+                endpoint = (peer or {}).get('endpoint')
+                if not endpoint:
+                    raise RuntimeError('no endpoint for peer')
+                resp = requests.post(endpoint, json=payload, headers=headers, timeout=60)
+                if resp.status_code == 200:
+                    analysis = resp.json()['choices'][0]['message']['content']
+                else:
+                    error = f"API error: {resp.status_code}"
+            except Exception as e:
+                error = f"Request error: {e}"
+
+        # Gate: only post successful analyses
+        if analysis and not error:
+            signature = (
+                f"\n\n---\n*Bot Review powered by @deepseek-cli"
+                f"{{provider: {(peer or {}).get('provider')}, model: {(peer or {}).get('model', 'unknown')}}}*"
+            )
+            comment_body = analysis[:1900] + signature
+            comment_cmd = ['gh', 'pr', 'comment', str(pr_number), '--body', comment_body, '--repo', repo]
+            try:
+                subprocess.run(comment_cmd, env=gh_env, check=False)
+            except Exception as e:
+                print(f"Failed to post PR comment via gh CLI: {e}")
+
+            decisions.append({
+                'type': 'pr_review',
+                'pr': pr_number,
+                'summary': comment_body[:200],
+            })
+        else:
+            print(f"Skipping PR comment (error or empty analysis): {error}")
+
+    return {
+        'actions': decisions,
+        'event': event.get('action'),
+        'pr': pr_number,
+        'provider_used': (peer or {}).get('provider'),
+        'error': error,
+    }

@@ -577,7 +577,8 @@ def run_ci(event, session, peer, workspace, operator_token):
 
     # Set up GitHub CLI with token
     gh_env = os.environ.copy()
-    gh_env['GH_TOKEN'] = operator_token
+    if operator_token:
+        gh_env['GH_TOKEN'] = operator_token
 
     # Example: parse PR info
     pr_number = event.get('pull_request', {}).get('number')

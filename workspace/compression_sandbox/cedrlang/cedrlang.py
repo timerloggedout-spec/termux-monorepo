@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 """
-CedrLang – Agentic Compression Protocol
+Grimoire – Agentic Compression Protocol
 Minimal token language for LLM↔LLM coordination.
 Inspired by caveman prompting, symbolic substitution & minified JSON.
 
 Usage:
-  cedrlang compress "Your natural language instruction here"
-  cedrlang expand "→cmd:build|args:clean"
-  cedrlang stats  # show token savings over baseline
-  cedrlang serve  # start filter proxy for deepcli/synthegration
+  grimoire compress "Your natural language instruction here"
+  grimoire expand "→cmd:build|args:clean"
+  grimoire stats  # show token savings over baseline
+  grimoire serve  # start filter proxy for deepcli/synthegration
 
-Integrate with deepcli: add `--cedr` flag to auto-compress prompts.
+Integrate with deepcli: add `--grimoire` flag to auto-compress prompts.
 """
 
 import sys
@@ -413,11 +413,11 @@ def stats_report(original: str, compressed: str) -> Dict[str, Any]:
 # 6. Main CLI
 # ------------------------------------------------------------
 def main():
-    parser = argparse.ArgumentParser(description="CedrLang – Agentic Compression Protocol")
+    parser = argparse.ArgumentParser(description="Grimoire – Agentic Compression Protocol")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     # Compress Command
-    p_compress = subparsers.add_parser("compress", help="Compress natural language to CedrLang")
+    p_compress = subparsers.add_parser("compress", help="Compress natural language to Grimoire format")
     p_compress.add_argument("text", nargs="*", help="Text to compress")
     p_compress.add_argument("-f", "--file", help="Input file path to compress")
     p_compress.add_argument("-o", "--output", help="Output file path (default: write to stdout)")
@@ -425,7 +425,7 @@ def main():
     p_compress.add_argument("--no-aggressive", dest="aggressive", action="store_false", help="Disable aggressive stopword stripping")
 
     # Expand Command
-    p_expand = subparsers.add_parser("expand", help="Expand CedrLang to approximate English")
+    p_expand = subparsers.add_parser("expand", help="Expand Grimoire to approximate English")
     p_expand.add_argument("text", nargs="*", help="CedrLang text to expand")
     p_expand.add_argument("-f", "--file", help="Input file path to expand")
     p_expand.add_argument("-o", "--output", help="Output file path (default: write to stdout)")

@@ -88,3 +88,17 @@ proposals:
     related_branches:
       - docs/kimi-cloud-offload-evaluation
     gates_required: [repo-gate]
+
+  - id: agent-mailbox
+    title: "Multi-Agent Coordination via MCP Agent Mail integration"
+    author: jules
+    status: executing
+    priority: P1
+    path: active/agent-mailbox/
+    reviewers:
+      - id: jules
+        role: author+executor
+        status: posted
+    related_issues: [90, 105, 109]
+    related_prs: []
+    gates_required: [repo-gate]

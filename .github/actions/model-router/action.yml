@@ -67,7 +67,97 @@ runs:
         HAS_OPENROUTER: ${{ inputs.has-openrouter }}
         HAS_GEMINI: ${{ inputs.has-gemini }}
       run: |
-        python3 scripts/model_router.py
+        set -eu
+        DIR=/tmp/model-router
+        mkdir -p "$DIR"
+        count() {
+          f="$DIR/${1//\//_}.txt"
+          c=$(cat "$f" 2>/dev/null || echo 0)
+          [[ "$c" =~ ^[0-9]+$ ]] || c=0
+          echo "$c"
+        }
+        bump() {
+          f="$DIR/${1//\//_}.txt"
+          c=$(count "$1")
+          echo $((c + 1)) > "$f"
+        }
+
+        case "$ROLE" in
+          triage)
+            PEER_SLOTS="omni|auto/best-free|200 openrouter|meta-llama/llama-3.3-70b-instruct:free|40 openrouter|google/gemma-3-12b-it:free|40"
+            GEM_CANDIDATES="gemini-3.1-flash-lite:450 gemini-3.5-flash-lite:450 gemini-2.5-flash-lite:15"
+            ;;
+          review)
+            PEER_SLOTS="omni|auto/best-free|120 openrouter|qwen/qwen3-coder:free|30 openrouter|meta-llama/llama-3.3-70b-instruct:free|40 openrouter|deepseek/deepseek-r1:free|20"
+            GEM_CANDIDATES="gemini-3.5-flash:15 gemini-2.5-flash:15 gemini-3-flash:15 gemini-3.1-flash-lite:450"
+            ;;
+          invoke)
+            PEER_SLOTS="omni|auto/best-free|200 openrouter|meta-llama/llama-3.3-70b-instruct:free|40 openrouter|google/gemma-3-12b-it:free|40"
+            GEM_CANDIDATES="gemini-3.1-flash-lite:450 gemini-3.5-flash-lite:450"
+            ;;
+          *)
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "provider=none" >> "$GITHUB_OUTPUT"
+            echo "model=" >> "$GITHUB_OUTPUT"
+            echo "reason=unknown role $ROLE" >> "$GITHUB_OUTPUT"
+            exit 0
+            ;;
+        esac
+
+        for slot in $PEER_SLOTS; do
+          provider="${slot%%|*}"
+          rest="${slot#*|}"
+          model="${rest%%|*}"
+          limit="${rest##*|}"
+
+          if [ "$provider" = "omni" ] && [ "$HAS_OMNI" != "true" ]; then
+            continue
+          fi
+          if [ "$provider" = "openrouter" ] && [ "$HAS_OPENROUTER" != "true" ]; then
+            continue
+          fi
+          if [ "$provider" = "openrouter" ] && [[ "$model" != *:free ]]; then
+            echo "::warning::Skipping non-:free OpenRouter model $model"
+            continue
+          fi
+
+          key="$provider/$model"
+          used=$(count "$key")
+          if [ "$used" -lt "$limit" ]; then
+            bump "$key"
+            echo "provider=$provider" >> "$GITHUB_OUTPUT"
+            echo "model=$model" >> "$GITHUB_OUTPUT"
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            echo "reason=role=$ROLE peer=$provider model=$model used=$((used+1))/$limit" >> "$GITHUB_OUTPUT"
+            echo "Selected peer $provider/$model ($((used+1))/$limit)"
+            exit 0
+          fi
+          echo "Peer soft budget exhausted: $key ($used/$limit)"
+        done
+
+        if [ "$HAS_GEMINI" = "true" ]; then
+          for entry in $GEM_CANDIDATES; do
+            model="${entry%%:*}"
+            limit="${entry##*:}"
+            used=$(count "$model")
+            if [ "$used" -lt "$limit" ]; then
+              bump "$model"
+              echo "provider=gemini" >> "$GITHUB_OUTPUT"
+              echo "model=$model" >> "$GITHUB_OUTPUT"
+              echo "skip=false" >> "$GITHUB_OUTPUT"
+              echo "reason=role=$ROLE gemini=$model used=$((used+1))/$limit residual" >> "$GITHUB_OUTPUT"
+              echo "Selected residual gemini/$model ($((used+1))/$limit)"
+              exit 0
+            fi
+            echo "Exhausted soft budget for gemini $model ($used/$limit)"
+          done
+        fi
+
+        echo "skip=true" >> "$GITHUB_OUTPUT"
+        echo "provider=none" >> "$GITHUB_OUTPUT"
+        echo "model=" >> "$GITHUB_OUTPUT"
+        echo "reason=all free paths exhausted (omni/openrouter peers + gemini residual) role=$ROLE" >> "$GITHUB_OUTPUT"
+        echo "::warning::Model router: no capacity for role=$ROLE"
 
     - name: Save per-model counters
       if: steps.pick.outputs.skip != 'true'

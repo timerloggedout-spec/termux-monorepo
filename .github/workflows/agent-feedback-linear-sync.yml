@@ -73,75 +73,90 @@ jobs:
               prUrl;
 
             async function linear(query, variables) {
-              const res = await fetch('https://api.linear.app/graphql', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: key,
-                },
-                body: JSON.stringify({ query, variables }),
-              });
-              const json = await res.json();
-              if (json.errors) {
-                throw new Error(JSON.stringify(json.errors));
+              try {
+                const res = await fetch('https://api.linear.app/graphql', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: key,
+                  },
+                  body: JSON.stringify({ query, variables }),
+                });
+                const json = await res.json();
+                if (json.errors) {
+                  const errStr = JSON.stringify(json.errors);
+                  if (errStr.includes('USAGE_LIMIT_EXCEEDED') || errStr.includes('usage limit exceeded')) {
+                    core.warning('Linear workspace limit exceeded (USAGE_LIMIT_EXCEEDED) — skipping gracefully.');
+                    return null;
+                  }
+                  throw new Error(errStr);
+                }
+                return json.data;
+              } catch (e) {
+                if (e.message && (e.message.includes('USAGE_LIMIT_EXCEEDED') || e.message.includes('usage limit exceeded'))) {
+                  core.warning('Linear workspace limit exceeded — skipping gracefully.');
+                  return null;
+                }
+                throw e;
               }
-              return json.data;
             }
 
-            try {
-              const teamId = '1e672463-31de-40b2-a378-3c03fd8f7e3b';
-              const parentTitle = `PR #${prNumber} agent feedback rollup`;
+            const teamId = '1e672463-31de-40b2-a378-3c03fd8f7e3b';
+            const parentTitle = `PR #${prNumber} agent feedback rollup`;
 
-              const search = await linear(
-                `query($filter: IssueFilter!) {
-                  issues(filter: $filter, first: 5) {
-                    nodes { id identifier title }
+            const search = await linear(
+              `query($filter: IssueFilter!) {
+                issues(filter: $filter, first: 5) {
+                  nodes { id identifier title }
+                }
+              }`,
+              {
+                filter: {
+                  title: { eq: parentTitle },
+                  team: { id: { eq: teamId } }
+                }
+              }
+            );
+            let parentId = search?.issues?.nodes?.find(
+              n => n.title === parentTitle
+            )?.id;
+
+            if (!parentId && search !== null) {
+              const created = await linear(
+                `mutation($input: IssueCreateInput!) {
+                  issueCreate(input: $input) {
+                    success
+                    issue { id identifier url }
                   }
                 }`,
                 {
-                  filter: {
-                    title: { eq: parentTitle },
-                    team: { id: { eq: teamId } }
-                  }
+                  input: {
+                    teamId,
+                    title: parentTitle,
+                    description: [
+                      '**Agent: Jules | Grok**',
+                      '',
+                      `Parent rollup for automated review feedback on ${prUrl}`,
+                      '',
+                      'Subtasks are created by GHA `agent-feedback-linear-sync`.',
+                      'Jules auto-resolve via `agent-review-auto-jules`.',
+                      '',
+                      'Signed-off-by: Grok <grok@x.ai>',
+                    ].join('\n'),
+                  },
                 }
               );
-              let parentId = search.issues?.nodes?.find(
-                n => n.title === parentTitle
-              )?.id;
-
-              if (!parentId) {
-                const created = await linear(
-                  `mutation($input: IssueCreateInput!) {
-                    issueCreate(input: $input) {
-                      success
-                      issue { id identifier url }
-                    }
-                  }`,
-                  {
-                    input: {
-                      teamId,
-                      title: parentTitle,
-                      description: [
-                        '**Agent: Jules | Grok**',
-                        '',
-                        `Parent rollup for automated review feedback on ${prUrl}`,
-                        '',
-                        'Subtasks are created by GHA `agent-feedback-linear-sync`.',
-                        'Jules auto-resolve via `agent-review-auto-jules`.',
-                        '',
-                        'Signed-off-by: Grok <grok@x.ai>',
-                      ].join('\n'),
-                    },
-                  }
-                );
+              if (created && created.issueCreate && created.issueCreate.issue) {
                 parentId = created.issueCreate.issue.id;
                 core.info(`Created parent ${created.issueCreate.issue.identifier}`);
               }
+            }
 
+            if (parentId) {
               const labels = await linear(
                 `query { issueLabels(filter: { name: { eq: "agent-feedback" } }) { nodes { id } } }`
               );
-              const labelId = labels.issueLabels?.nodes?.[0]?.id;
+              const labelId = labels?.issueLabels?.nodes?.[0]?.id;
 
               const subTitle = path
                 ? `[${bot}] PR #${prNumber}: ${path}`
@@ -176,25 +191,20 @@ jobs:
                   },
                 }
               );
-              core.info(`Subtask ${sub.issueCreate.issue.identifier} ${sub.issueCreate.issue.url}`);
-
-              if (context.payload.comment?.id) {
-                try {
-                  await github.rest.reactions.createForPullRequestReviewComment({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    comment_id: context.payload.comment.id,
-                    content: 'eyes',
-                  });
-                } catch (e) {
-                  core.info(String(e));
-                }
+              if (sub && sub.issueCreate && sub.issueCreate.issue) {
+                core.info(`Subtask ${sub.issueCreate.issue.identifier} ${sub.issueCreate.issue.url}`);
               }
-            } catch (err) {
-              const msg = err.message || '';
-              if (msg.includes('usage limit exceeded') || msg.includes('USAGE_LIMIT_EXCEEDED')) {
-                core.warning('Linear workspace limit exceeded — skipping sync cleanly: ' + msg);
-              } else {
-                throw err;
+            }
+
+            if (context.payload.comment?.id) {
+              try {
+                await github.rest.reactions.createForPullRequestReviewComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: context.payload.comment.id,
+                  content: 'eyes',
+                });
+              } catch (e) {
+                core.info(String(e));
               }
             }

@@ -1,17 +1,30 @@
 # ArchW1z proposal registry — agents read this first
-# Schema: see PROCESS.md
 version: 1
-updated_at: "2026-08-02T22:30:00Z"
-updated_by: grok-archw1z
+updated_at: "2026-08-08T18:30:00Z"
+updated_by: grok
 
 proposals:
+  - id: rate-limit-rotation
+    title: "Rate limits, model rotation, OpenRouter fallback"
+    author: grok
+    status: executing
+    priority: P0
+    path: active/rate-limit-rotation/
+    reviewers:
+      - id: grok
+        role: author+executor
+        status: posted
+    related_issues: [86, 87, 88, 91]
+    related_prs: [72, 81]
+    gates_required: [repo-gate]
+
   - id: chatgpt-critical-eval
     title: "Critical Eval TER0-15 + other branches"
     author: ChatGPT
     status: executing
     priority: P0
     path: active/chatgpt-critical-eval/
-    legacy_source: legacy/ChatGPT_Critical-Eval.md
+    legacy_source: ChatGPT_Critical-Eval(TER0-15+other-branches).md
     reviewers:
       - id: chatgpt
         role: author
@@ -28,7 +41,7 @@ proposals:
     status: posted
     priority: P2
     path: active/chatgpt-initial/
-    legacy_source: legacy/ChatGPT-initial.md
+    legacy_source: ChatGPT-initial.md
     reviewers:
       - id: chatgpt
         role: author
@@ -45,7 +58,7 @@ proposals:
     status: posted
     priority: P2
     path: active/chatgpt-droidapp/
-    legacy_source: legacy/ChatGPT_droidApp.md
+    legacy_source: ChatGPT_droidApp.md
     reviewers:
       - id: chatgpt
         role: author
@@ -56,15 +69,22 @@ proposals:
     related_prs: [1, 2]
     gates_required: [repo-gate]
 
-  - id: manus-critical-eval
-    title: "Manus Critical Evaluation & Novel Work"
-    author: Manus
-    status: executing
-    priority: P0
-    path: active/manus-critical-eval/
+  - id: kimi-cloud-offload
+    title: "Corrected Cloud Offload & Parallelization Evaluation"
+    author: Kimi2.6
+    status: posted
+    priority: P1
+    path: active/kimi-cloud-offload/
+    legacy_source: corrected_cloud_offload_evaluation.md
+    source_branch: docs/kimi-cloud-offload-evaluation
     reviewers:
-      - id: manus
+      - id: kimi
         role: author
         status: posted
-    related_prs: [13]
-    gates_required: [repo-gate, termux-smoke]
+      - id: grok-archw1z
+        role: registrar
+        status: posted
+    related_prs: []
+    related_branches:
+      - docs/kimi-cloud-offload-evaluation
+    gates_required: [repo-gate]

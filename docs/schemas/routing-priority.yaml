@@ -1,0 +1,76 @@
+# Routing priority — FREE TIER ROI (peer semantics)
+# Operator clarification 2026-08-08: OmniRoute and OpenRouter are nearly equal
+# peers. Selection is driven by the *model desired for the operation* + soft
+# budget headroom + free-tier health — NOT a rigid "always burn Omni first".
+#
+# ADE / BIUDL: base URLs are auto-discovered from secrets or the catalog below.
+# Never require a human to paste an endpoint for production free paths.
+
+version: 2
+updated_at: "2026-08-08T23:55:00Z"
+policy: free_tier_peer_by_model
+
+peers:
+  - id: omni
+    kind: openai_compatible
+    secrets: [OMNI_API_KEY, OMNIROUTE_API_KEY]
+    base_url_secrets: [OMNI_BASE_URL, OMNIROUTE_BASE_URL]
+    discovery:
+      - https://cloud.omniroute.online/v1
+    default_models:
+      triage: auto/best-free
+      review: auto/best-free
+      invoke: auto/best-free
+    soft_rpd:
+      triage: 200
+      review: 120
+      invoke: 200
+    notes: Free aggregation + auto failover (#91). Peer with OpenRouter.
+
+  - id: openrouter
+    kind: openai_compatible
+    secrets: [OPENROUTER_API_KEY]
+    base_url_secrets: [OPENROUTER_BASE_URL]
+    discovery:
+      - https://openrouter.ai/api/v1
+    model_suffix_required: ":free"
+    default_models:
+      triage:
+        - meta-llama/llama-3.3-70b-instruct:free
+        - google/gemma-3-12b-it:free
+      review:
+        - qwen/qwen3-coder:free
+        - meta-llama/llama-3.3-70b-instruct:free
+        - deepseek/deepseek-r1:free
+      invoke:
+        - meta-llama/llama-3.3-70b-instruct:free
+        - google/gemma-3-12b-it:free
+    soft_rpd_per_model:
+      meta-llama/llama-3.3-70b-instruct:free: 40
+      google/gemma-3-12b-it:free: 40
+      qwen/qwen3-coder:free: 30
+      deepseek/deepseek-r1:free: 20
+    account_soft_rpd_default: 50
+    notes: Direct :free catalog. Peer with Omni. Account-wide free limit ~50 RPD default.
+
+residual:
+  - id: gemini
+    secrets: [GEMINI_API_KEY]
+    notes: AI Studio free RPD — residual / second-pass only. Do not lead.
+  - id: jules
+    notes: Cloud VM builder — async, not first-line triage/review.
+
+selection_rule: |
+  For role R and desired model M:
+    1. Among peers that can serve M (or auto/best-free) with soft-budget headroom,
+       pick the first with capacity (Omni and OpenRouter are equal priority band).
+    2. Else residual Gemini soft budgets.
+    3. Else skip + comment (never hard-fail CI on quota).
+
+matrix_semantics:
+  valleys: under-ranked free models that win on OUR harness (loss landscape)
+  labels: our success metrics + 3L0 / ELO++
+  public_boards: features only (llm-leaderboard-matrix.yaml)
+
+related_issues: [91, 94, 86, 88, 93, 97, 100]
+stack: 99

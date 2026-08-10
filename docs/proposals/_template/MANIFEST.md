@@ -4,8 +4,8 @@ title: "Title"
 author: NAME
 posted_at: YYYY-MM-DD
 source: source.md
-status: draft   # draft|posted|in_review|accepted|executing|blocked|closed
-priority: P2    # P0|P1|P2|P3
+status: draft
+priority: P2
 reviewers: []
 related_prs: []
 related_branches: []

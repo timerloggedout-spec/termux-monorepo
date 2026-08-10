@@ -26,7 +26,7 @@ Tier R  RAFT-STRICT  Optional profile for named irreversible subjects (see §5)
 | **4** | Operator | N/A | Explicit Operator comment; agents cannot majority this |
 | **R** | Raft-strict | Yes (formal) | Term + single driver + majority of fixed voter set + log commit |
 
-**Default path for code:** Tier 0 → open PR → Tier 1–2 disposition → merge when gates green.  
+**Default path for code:** Tier 0 → open PR → Tier 1–2 disposition → merge when gates green.
 **Default path for irreversible security claims:** Tier 3–4 (optionally R).
 
 ---
@@ -49,7 +49,7 @@ Skip social consensus. Prove accuracy on a branch:
 
 Used when asserting shared process truth: proposal accepted/closed, P0 “done”, disposition Status, summary of security scope.
 
-**Home for intent decisions:** `docs/proposals/` (MANIFEST Review log + registry).  
+**Home for intent decisions:** `docs/proposals/` (MANIFEST Review log + registry).
 **Projection for landing:** PR body Status + comments.
 
 ### C. Authority path (Operator)
@@ -108,10 +108,10 @@ Raft was considered as a real consensus design, not decoration.
 
 **Keep if using profile R on a named subject:**
 
-- Single driver (leader) per term  
-- Monotonic terms; ignore stale term votes  
-- Majority of a **fixed voter set** declared in the term open  
-- Decision committed only in the append-only log  
+- Single driver (leader) per term
+- Monotonic terms; ignore stale term votes
+- Majority of a **fixed voter set** declared in the term open
+- Decision committed only in the append-only log
 
 **Do not use Raft as the global control plane:** membership churn (agents offline), unequal authority (Operator ≠ peer), and multi-subject concurrency make a single cluster Raft a poor fit. Per-subject Tier 3 already captures most of the value.
 

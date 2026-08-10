@@ -36,7 +36,7 @@ def banner():
     print(f"{G}\u26a1 ARCHWIZ DASHBOARD \u26a1{N}   {time.strftime('%c')}")
     try:
         user = os.getlogin()
-    except OSError:
+    except Exception:
         user = getpass.getuser()
     print(f"{W}session: {user}@{os.uname().nodename}{N}")
     print(C + "\u2500" * 60 + N)
@@ -124,6 +124,7 @@ def main():
         try:
             choice = input(f"{C}>> {N}").strip().lower()
         except (EOFError, KeyboardInterrupt):
+            print()  # Ensure clean line alignment on interrupt exit
             break
 
         if choice == '0':
@@ -186,11 +187,20 @@ def main():
             toggle_pipeline(mode='review')
         elif choice == 'p':
             toggle_pipeline()
-        
+
         banner()
         print(f"  PHASE: {Y}ACTIVE{N}  MODE: {Y}CONSOLIDATED{N}")
         print(f"{get_pipeline_status()}")
         print(C + "\u2500" * 60 + N)
+
+    # Uniform, delightful exit signature for all exits (choice '0', Ctrl+C, Ctrl+D)
+    print(G + random.choice([
+        "ArchWiz signing off. Forge well.",
+        "Until next cycle. Stay l33T.",
+        "Dashboard closed. The Forge awaits.",
+        "ArchWiz out. Happy hacking.",
+        "Systems stable. ArchWiz offline."
+    ]) + N)
 
 if __name__ == "__main__":
     main()

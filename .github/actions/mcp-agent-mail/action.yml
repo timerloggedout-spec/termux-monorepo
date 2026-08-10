@@ -38,6 +38,9 @@ runs:
           if [ -n "$FOUND_PATH" ]; then
             echo "Found mcp-agent-mail at $FOUND_PATH. Adding directory to PATH..."
             echo "$(dirname "$FOUND_PATH")" >> $GITHUB_PATH
+          else
+            echo "::error::mcp-agent-mail installation failed; binary not found."
+            exit 1
           fi
         fi
 

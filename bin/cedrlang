@@ -1,2 +1,30 @@
-#!/data/data/com.termux/files/usr/bin/python3
-exec(open('/data/data/com.termux/files/home/workspace/compression_sandbox/cedrlang/cedrlang.py').read())
+#!/usr/bin/env python3
+import os
+import sys
+
+# Try relative path first
+possible_paths = [
+    os.path.join(os.path.dirname(__file__), "../workspace/compression_sandbox/cedrlang/cedrlang.py"),
+    os.path.join(os.getcwd(), "workspace/compression_sandbox/cedrlang/cedrlang.py"),
+    "/data/data/com.termux/files/home/workspace/compression_sandbox/cedrlang/cedrlang.py"
+]
+
+target_path = None
+for p in possible_paths:
+    if os.path.exists(p):
+        target_path = os.path.abspath(p)
+        break
+
+if not target_path:
+    # Default fallback to Termux absolute path
+    target_path = "/data/data/com.termux/files/home/workspace/compression_sandbox/cedrlang/cedrlang.py"
+
+# Execute the script
+try:
+    with open(target_path, "r", encoding="utf-8") as f:
+        code = f.read()
+    glb = {"__name__": "__main__", "__file__": target_path}
+    exec(code, glb)
+except Exception as e:
+    print(f"Error executing CedrLang from path {target_path}: {e}", file=sys.stderr)
+    sys.exit(1)

@@ -8,6 +8,7 @@ import subprocess
 import random
 from pathlib import Path
 from typing import Optional, List, Dict, Any
+import sys
 try:
     from curl_cffi import requests as curl_requests
 except Exception:
@@ -47,7 +48,29 @@ CONFIG_FILE = CONFIG_DIR / "config.json"
 WASM_SOLVER = Path(__file__).parent.parent / "pow_solver.js"
 BASE_URL = "https://chat.deepseek.com"
 
-CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+def enforce_local_privileges(root_dir: Path):
+    """Recursively restrict permissions of root_dir and its files, skipping symlinks to avoid hijacking."""
+    try:
+        if not root_dir.exists():
+            return
+        if root_dir.is_symlink():
+            return
+        root_dir.chmod(0o700)
+        for path in root_dir.rglob("*"):
+            if path.is_symlink():
+                continue
+            if path.is_dir():
+                path.chmod(0o700)
+            elif path.is_file():
+                path.chmod(0o600)
+    except Exception:
+        pass
+
+try:
+    CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+    enforce_local_privileges(CONFIG_DIR)
+except Exception:
+    pass
 
 # Persistent session (cookies preserved across API calls)
 _session: Optional[curl_requests.Session] = None
@@ -56,6 +79,11 @@ _session: Optional[curl_requests.Session] = None
 def _cache_path(session_id: str, account: str = "primary") -> str:
     store_dir = os.path.join(os.path.expanduser("~/.deepcli/session_store"), account)
     os.makedirs(store_dir, exist_ok=True)
+    try:
+        os.chmod(os.path.dirname(store_dir), 0o700)
+        os.chmod(store_dir, 0o700)
+    except Exception:
+        pass
     return os.path.join(store_dir, f"{session_id}.json")
 
 def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict[str, Any]]]:
@@ -70,6 +98,10 @@ def _cache_save(session_id: str, messages: List[Dict[str, Any]], account: str = 
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, 'w') as f:
         json.dump(messages, f, indent=2)
+    try:
+        Path(path).chmod(0o600)
+    except Exception:
+        pass
     # === DISPATCH HOOK — additive, never blocks save ===
     try:
         import importlib.util
@@ -104,6 +136,10 @@ def load_config() -> Dict[str, Any]:
 
 def save_config(cfg: Dict[str, Any]):
     CONFIG_FILE.write_text(json.dumps(cfg, indent=2))
+    try:
+        CONFIG_FILE.chmod(0o600)
+    except Exception:
+        pass
 
 def get_token() -> str:
     token = os.environ.get("DEEPSEEK_TOKEN")

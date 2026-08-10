@@ -16,3 +16,9 @@ class TermuxTelemetryLogger:
                      "target": target_file, "attempt": attempt, "message": message}
         with open(TELEMETRY_LOG, "a") as f:
             f.write(json.dumps(log_entry) + "\n")
+        try:
+            import os
+            if os.path.exists(TELEMETRY_LOG):
+                os.chmod(TELEMETRY_LOG, 0o600)
+        except Exception:
+            pass

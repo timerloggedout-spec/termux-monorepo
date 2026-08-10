@@ -113,6 +113,19 @@ def run_cmd(argv: list[str], timeout: float = 15.0) -> tuple[int, str, str]:
         return 1, "", str(exc)
 
 
+def compile_python_file(path: Path) -> tuple[bool, str]:
+    """Compile a Python file in-memory without creating __pycache__."""
+    import py_compile
+    try:
+        # Compile to os.devnull to avoid creating .pyc files
+        py_compile.compile(str(path), cfile=os.devnull, doraise=True, quiet=2)
+        return True, "compile-ok"
+    except py_compile.PyCompileError as exc:
+        return False, str(exc.msg) if hasattr(exc, 'msg') else str(exc)
+    except Exception as exc:
+        return False, str(exc)
+
+
 # --------------------------------------------------------------------------- #
 # Required checks (must pass for gate green)
 # --------------------------------------------------------------------------- #
@@ -145,18 +158,18 @@ def check_repo_gate_importable(report: SmokeReport) -> None:
     if not path.exists():
         report.add(CheckResult("repo-gate-present", "FAIL", "scripts/ci/repo_gate.py missing"))
         return
-    rc, out, err = run_cmd([sys.executable, "-m", "py_compile", str(path)])
-    if rc != 0:
-        report.add(CheckResult("repo-gate-compile", "FAIL", err or out or f"rc={rc}"))
+    ok, detail = compile_python_file(path)
+    if not ok:
+        report.add(CheckResult("repo-gate-compile", "FAIL", detail))
     else:
         report.add(CheckResult("repo-gate-compile", "PASS", "compiles clean"))
 
 
 def check_self_compile(report: SmokeReport) -> None:
     path = REPO_ROOT / "scripts/ci/termux_smoke.py"
-    rc, out, err = run_cmd([sys.executable, "-m", "py_compile", str(path)])
-    if rc != 0:
-        report.add(CheckResult("smoke-self-compile", "FAIL", err or out or f"rc={rc}"))
+    ok, detail = compile_python_file(path)
+    if not ok:
+        report.add(CheckResult("smoke-self-compile", "FAIL", detail))
     else:
         report.add(CheckResult("smoke-self-compile", "PASS", "compiles clean"))
 
@@ -185,14 +198,15 @@ def check_bash_available(report: SmokeReport) -> None:
 
 
 def check_writable_tmp(report: SmokeReport) -> None:
-    tmp = Path(os.environ.get("TMPDIR") or os.environ.get("TMP") or "/tmp")
+    import tempfile
+    tmpdir = os.environ.get("TMPDIR") or os.environ.get("TMP") or "/tmp"
     try:
-        probe = tmp / f".archwiz-smoke-{os.getpid()}"
-        probe.write_text("ok\n", encoding="utf-8")
-        probe.unlink(missing_ok=True)
-        report.add(CheckResult("writable-tmp", "PASS", str(tmp)))
+        with tempfile.NamedTemporaryFile(mode='w', encoding='utf-8', dir=tmpdir, delete=True) as f:
+            f.write("ok\n")
+            f.flush()
+        report.add(CheckResult("writable-tmp", "PASS", tmpdir))
     except OSError as exc:
-        report.add(CheckResult("writable-tmp", "FAIL", f"{tmp}: {exc}"))
+        report.add(CheckResult("writable-tmp", "FAIL", f"{tmpdir}: {exc}"))
 
 
 # --------------------------------------------------------------------------- #
@@ -236,13 +250,13 @@ def check_deepcli_surface(report: SmokeReport) -> None:
     ok = True
     details = []
     for launcher in launchers[:5]:
-        rc, out, err = run_cmd([sys.executable, "-m", "py_compile", str(launcher)])
+        compile_ok, detail = compile_python_file(launcher)
         rel = str(launcher.relative_to(REPO_ROOT))
-        if rc != 0:
+        if not compile_ok:
             ok = False
-            details.append(f"{rel}: {err or out or rc}")
+            details.append(f"{rel}: {detail}")
         else:
-            details.append(f"{rel}: compile-ok")
+            details.append(f"{rel}: {detail}")
 
     report.add(
         CheckResult(
@@ -266,9 +280,9 @@ def check_archwiz_surface(report: SmokeReport) -> None:
     sample = sorted(py_files, key=lambda p: len(p.parts))[:8]
     failures = []
     for path in sample:
-        rc, out, err = run_cmd([sys.executable, "-m", "py_compile", str(path)], timeout=10.0)
-        if rc != 0:
-            failures.append(f"{path.relative_to(REPO_ROOT)}: {err or out or rc}")
+        ok, detail = compile_python_file(path)
+        if not ok:
+            failures.append(f"{path.relative_to(REPO_ROOT)}: {detail}")
     if failures:
         report.add(CheckResult("archwiz-surface", "FAIL", "; ".join(failures[:3]), required=False))
     else:
@@ -350,7 +364,10 @@ def main() -> int:
 
     if args.strict:
         for r in report.results:
-            if r.status == "FAIL":
+            if r.status == "NOTE":
+                r.status = "FAIL"
+                r.required = True
+            elif r.status == "FAIL":
                 r.required = True
 
     if args.json:

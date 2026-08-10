@@ -50,7 +50,7 @@ python -m codex_bridge codex-native --help
 Run these commands from the repository's `codex-termux/` directory:
 
 ```bash
-make init          # git submodule update --init --depth 1 (from repo root)
+make init          # git submodule update --init --depth 1 (run from codex-termux/)
 make build
 cd bridge
 python -m codex_bridge doctor

@@ -63,6 +63,14 @@ def _doctor(strict: bool) -> int:
             str(cargo_file) if cargo_file.is_file() else f"{cargo_file} not found",
         ),
     ]
+    cargo_ok = __import__("shutil").which("cargo") is not None
+    checks.append(
+        _print_status(
+            "cargo",
+            cargo_ok,
+            "cargo available" if cargo_ok else "cargo not on PATH (install Rust to build)",
+        )
+    )
     binary = paths.codex_binary()
     checks.append(
         _print_status(
@@ -95,12 +103,16 @@ def _build() -> int:
     if not (paths.CODEX_ROOT / "codex-rs" / "Cargo.toml").is_file():
         print("MISSING submodule: run `make init` first", file=sys.stderr)
         return 1
-    result = subprocess.run(
-        ["cargo", "build", "-p", "codex-cli"],
-        cwd=paths.CODEX_ROOT / "codex-rs",
-        check=False,
-    )
-    return result.returncode
+    try:
+        result = subprocess.run(
+            ["cargo", "build", "-p", "codex-cli"],
+            cwd=paths.CODEX_ROOT / "codex-rs",
+            check=False,
+        )
+        return result.returncode
+    except FileNotFoundError:
+        print("ERROR: cargo not found on PATH. Install Rust/Cargo to build codex-cli.", file=sys.stderr)
+        return 1
 
 
 def _export_environment() -> Dict[str, str]:
@@ -218,8 +230,14 @@ def _load_index(index_path: Path) -> Dict[str, Any]:
 def _reconcile() -> int:
     store = paths.deepcli_store()
     index_path = paths.codex_index()
-    store.mkdir(parents=True, exist_ok=True)
-    index_path.parent.mkdir(parents=True, exist_ok=True)
+    store.mkdir(mode=0o700, parents=True, exist_ok=True)
+    index_path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+    # Ensure correct permissions on existing directories
+    try:
+        os.chmod(str(store), 0o700)
+        os.chmod(str(index_path.parent), 0o700)
+    except OSError:
+        pass
     try:
         index = _load_index(index_path)
     except _IndexUnreadable as error:
@@ -250,7 +268,28 @@ def _reconcile() -> int:
         )
         existing_sids.add(sid)
         added += 1
-    index_path.write_text(json.dumps(index, indent=2) + "\n")
+    # Atomic write with temp file + os.replace
+    temp_path = index_path.parent / f".{index_path.name}.tmp.{os.getpid()}"
+    try:
+        fd = os.open(str(temp_path), os.O_CREAT | os.O_WRONLY | os.O_TRUNC, 0o600)
+        try:
+            with os.fdopen(fd, 'w') as f:
+                json.dump(index, f, indent=2)
+                f.write("\n")
+                f.flush()
+                os.fsync(f.fileno())
+                fd = -1
+        finally:
+            if fd >= 0:
+                os.close(fd)
+        os.replace(str(temp_path), str(index_path))
+        # Ensure final index file has 0o600
+        os.chmod(str(index_path), 0o600)
+    except Exception:
+        # Clean up temp file on failure
+        if temp_path.exists():
+            temp_path.unlink(missing_ok=True)
+        raise
     print(f"Reconciled {added} deepcli pointer(s) into {index_path}")
     return 0
 

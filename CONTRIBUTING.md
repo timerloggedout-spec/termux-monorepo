@@ -17,10 +17,12 @@ This monorepo is developed with **humans and agents** on Termux and CI.
 1. Branch from **`master-staging`** (integration spine).
 2. Keep changes small and cite proposal items: `Implements: CE-09`.
 3. Ensure gates pass locally if possible:
+
    ```bash
    python3 scripts/ci/repo_gate.py
    python3 scripts/ci/termux_smoke.py
    ```
+
 4. Open PR **into `master-staging`**.
 5. Promote to `master` only when staging is healthy and both gates are green.
 

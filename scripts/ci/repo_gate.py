@@ -173,8 +173,8 @@ def resolve_base(requested: str | None) -> str | None:
     candidates = [requested] if requested else []
     candidates += [
         os.environ.get("GATE_BASE"),
-        "origin/master",
-        "master",
+        "origin/master-staging",
+        "master-staging",
         "origin/HEAD",
     ]
     for ref in candidates:
@@ -340,8 +340,6 @@ def check_secrets(report: Report, paths: list[str], index: dict[str, IndexEntry]
         entry = index.get(path)
         if entry is None or entry.is_symlink or entry.is_submodule:
             continue
-        if path.startswith("scripts/ci/"):  # the patterns themselves live here
-            continue
         raw = blob(entry.sha)
         if len(raw) > 2_000_000 or b"\0" in raw[:8192]:
             continue
@@ -397,12 +395,21 @@ def measure(index: list[IndexEntry]) -> dict[str, int]:
     }
 
 
-def check_ratchet(report: Report, index: list[IndexEntry]) -> dict[str, int]:
+def check_ratchet(report: Report, index: list[IndexEntry], base_ref: str | None = None) -> dict[str, int]:
     current = measure(index)
     if not BASELINE_PATH.exists():
         report.note(f"no baseline at {BASELINE_PATH.name}; run --write-baseline")
         return current
-    baseline = json.loads(BASELINE_PATH.read_text()).get("counters", {})
+    # Load baseline from the resolved base commit, not from the workspace
+    if base_ref:
+        try:
+            baseline_json = git("show", f"{base_ref}:scripts/ci/baseline.json").strip()
+            baseline = json.loads(baseline_json).get("counters", {})
+        except subprocess.CalledProcessError:
+            # Base doesn't have baseline.json yet; fall back to workspace
+            baseline = json.loads(BASELINE_PATH.read_text()).get("counters", {})
+    else:
+        baseline = json.loads(BASELINE_PATH.read_text()).get("counters", {})
     for key, value in sorted(current.items()):
         limit = baseline.get(key)
         if limit is None:
@@ -480,7 +487,7 @@ def main() -> int:
             )
 
     if not args.hard_only:
-        current = check_ratchet(report, index)
+        current = check_ratchet(report, index, base)
         print("  " + f"{DIM}counters{RESET} " + ", ".join(
             f"{k}={v}" for k, v in sorted(current.items())
         ))

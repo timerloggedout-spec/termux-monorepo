@@ -23,11 +23,15 @@ def import_account(cookies_file: str, account_name: str):
     except OSError as e:
         raise PermissionError(f"Fail-closed: Failed to enforce 0o700 permissions on {CONFIG_DIR}: {e}")
     config = CONFIG_DIR / f"config_{account_name}.json"
-    # SECURITY ENHANCEMENT: Enforce strict file permissions (600) even on existing token config
-    fd = os.open(str(config), os.O_CREAT | os.O_WRONLY, 0o600)
+    # SECURITY ENHANCEMENT: Enforce strict file permissions (600) with O_NOFOLLOW, O_TRUNC, and fstat validation
+    fd = os.open(str(config), os.O_CREAT | os.O_WRONLY | os.O_NOFOLLOW | os.O_TRUNC, 0o600)
     try:
+        # Verify it's a regular file before writing
+        st = os.fstat(fd)
+        import stat
+        if not stat.S_ISREG(st.st_mode):
+            raise OSError(f"Fail-closed: {config} is not a regular file")
         os.fchmod(fd, 0o600)
-        os.ftruncate(fd, 0)
         opened = fd
         fd = -1
         with os.fdopen(opened, 'w') as f:

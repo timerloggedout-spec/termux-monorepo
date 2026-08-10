@@ -7,6 +7,7 @@ name: Continuous agent ops
 #
 # context_key: pr-<N>-<short-ref> (same contract as agent-review-auto-jules).
 # Disposition-first: instruct Jules on open threads / judgment, not analysis-chain scripts.
+# Role pipeline: ROLE:jules + mandatory phrases; matrix discipline (#150 — no invent).
 #
 # Requires: Jules GitHub App (repo access). Optional: secrets.JULES_API_KEY
 # Security: no secrets in prompts; OPERATOR_TOKEN only for comment write if set.
@@ -177,6 +178,17 @@ jobs:
               instructions.push('Push commits to the existing head branch. Do not retarget base without cause.');
               instructions.push('Skip pure nits only if they conflict with security/gates.');
               instructions.push('If the PR is superseded, close it with a pointer to the replacement.');
+              instructions.push('**Matrix discipline:** do not invent epics from continuous maintenance lists; only advance this PR scope.');
+
+              const roleBlock = [
+                '### Initial context (ROLE: jules)',
+                '```text',
+                'ROLE: jules',
+                'Must: disposition-first; continue-only context_key; minimal diffs; no Class 3/4.',
+                'Must-not: expand scope beyond this PR / DECISION-MATRIX / ITEMS (#150 constraint).',
+                'Read: AGENTS.md · docs/ops/MANDATORY-PHRASES.md · docs/ops/DECISION-MATRIX.md',
+                '```',
+              ].join('\n');
 
               const body = [
                 marker,
@@ -187,6 +199,8 @@ jobs:
                 '',
                 `@jules **Continuous ops** (GHA agent-continuous-ops) — unattended advance.`,
                 '',
+                roleBlock,
+                '',
                 `PR #${pr.number} · \`${pr.head.ref}\` → \`${pr.base.ref}\``,
                 `**context_key:** \`${contextKey}\` — prefer continue-existing session.`,
                 `**Why:** ${reasons.join('; ')}`,
@@ -195,7 +209,7 @@ jobs:
                 ...instructions,
                 '',
                 'Disposition is source of truth; analysis-chain scripts are probe evidence only.',
-                'Read AGENTS.md + docs/ops/DECISION-MATRIX.md. No Class 3/4 artifacts. No secret leaks.',
+                'No Class 3/4 artifacts. No secret leaks.',
                 'Agent: Grok orchestration · Profile: https://x.com/grok',
                 `Signed-off-by: Grok (OPERATOR) session-continuous-ops / context_key=${contextKey}`,
               ].join('\n');

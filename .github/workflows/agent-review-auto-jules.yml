@@ -10,6 +10,10 @@ name: Agent review → auto Jules
 # context_key (durable work-context): pr-<number>-<short-ref>
 # Persisted via Actions cache (viewable text OK on public demo repo until
 # encrypted session_store from #120). Never store Class 3/4 secrets.
+#
+# Role prompt pipeline: docs/ops/ROLE-PROMPT-PIPELINE.md + prompts/jules.md
+# Mandatory phrases: docs/ops/MANDATORY-PHRASES.md
+# Excerpt policy: docs/ops/CODERABBIT-EXCERPT-POLICY.md
 
 on:
   pull_request_review:
@@ -124,7 +128,7 @@ jobs:
             printf '%s\n' "{\"context_key\":\"${{ steps.meta.outputs.context_key }}\",\"created\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"continue_preferred\":true}" > "$CTX_FILE"
           fi
 
-      - name: Post @jules resolve (idempotent + continue-only)
+      - name: Post @jules resolve (idempotent + continue-only + role pipeline)
         if: steps.meta.outputs.should_invoke == 'true'
         uses: actions/github-script@v7
         with:
@@ -165,12 +169,26 @@ jobs:
             const continueNote = hasPrior
               ? `**Continue existing Jules session** for context_key \`${contextKey}\` (do not spawn a new task).`
               : `New work-context \`${contextKey}\` — create session if none exists, then prefer continue thereafter.`;
+            // Compact ROLE + mandatory phrases (docs/ops/ROLE-PROMPT-PIPELINE.md)
+            const roleBlock = [
+              '### Initial context (ROLE: jules)',
+              '```text',
+              'ROLE: jules',
+              'Target: master-staging integration (or existing PR base if already open)',
+              'Must: disposition-first open threads; continue-only context_key; minimal diffs;',
+              '      Sentinel 0o600/0o700 if credential paths; no Class 3/4; Implements: when applicable.',
+              'Must-not: invent work outside DECISION-MATRIX / ITEMS; treat analysis-chain as probe-only.',
+              'Read: AGENTS.md · docs/ops/MANDATORY-PHRASES.md · docs/ops/CODERABBIT-EXCERPT-POLICY.md',
+              '```',
+            ].join('\n');
             const body = [
               marker,
               `context_key: ${contextKey}`,
               `@jules **Auto-resolve** (GHA agent-review-auto-jules) — do not wait for a human ping.`,
               ``,
               continueNote,
+              ``,
+              roleBlock,
               ``,
               `Bot feedback from **${bot}** on PR #${prNumber} (branch \`${head}\`).`,
               path ? `File: \`${path}\`` : '',

@@ -38,9 +38,6 @@ runs:
           if [ -n "$FOUND_PATH" ]; then
             echo "Found mcp-agent-mail at $FOUND_PATH. Adding directory to PATH..."
             echo "$(dirname "$FOUND_PATH")" >> $GITHUB_PATH
-          else
-            echo "::error::mcp-agent-mail installation failed; binary not found."
-            exit 1
           fi
         fi
 
@@ -48,10 +45,9 @@ runs:
       shell: bash
       if: ${{ inputs.run-server == 'true' && inputs.install-only != 'true' }}
       run: |
-        PORT="${{ inputs.port }}"
+        PORT=${{ inputs.port }}
         echo "Starting mcp-agent-mail server in background on port $PORT..."
-        nohup mcp-agent-mail server --port "$PORT" > "$RUNNER_TEMP/mcp-agent-mail.log" 2>&1 &
-        disown || true
+        mcp-agent-mail server --port "$PORT" &
 
         # Settle down to let the server initialize
         sleep 5

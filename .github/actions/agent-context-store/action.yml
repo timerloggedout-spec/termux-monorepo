@@ -35,8 +35,8 @@ outputs:
     description: 'Loaded context JSON (mode=load); empty object if miss or mode=save'
     value: ${{ steps.load.outputs.context_json || '{}' }}
   cache_hit:
-    description: 'true if Actions cache restored a previous context'
-    value: ${{ steps.cache.outputs.cache-hit }}
+    description: 'true if a previous context file was restored (exact or via restore-keys)'
+    value: ${{ steps.hit.outputs.cache_hit || 'false' }}
 
 runs:
   using: composite
@@ -55,7 +55,6 @@ runs:
         fi
         CTX_DIR="${RUNNER_TEMP}/agent-context"
         mkdir -p "$CTX_DIR"
-        # Sanitize + short hash of raw key to prevent collisions after tr
         KEY_SAFE=$(printf '%s' "$CONTEXT_KEY" | tr -c 'A-Za-z0-9._-' '_')
         KEY_HASH=$(printf '%s' "$CONTEXT_KEY" | sha256sum | cut -c1-8)
         KEY_SAFE="${KEY_SAFE}-${KEY_HASH}"
@@ -68,11 +67,22 @@ runs:
       uses: actions/cache@v4
       with:
         path: ${{ steps.paths.outputs.dir }}
-        # Unique primary key so re-runs of same SHA still save updates;
-        # restore-keys fall back to any prior context for this work unit.
         key: agent-ctx-${{ runner.os }}-${{ steps.paths.outputs.key_safe }}-${{ github.run_id }}-${{ github.run_attempt }}
         restore-keys: |
           agent-ctx-${{ runner.os }}-${{ steps.paths.outputs.key_safe }}-
+
+    - name: Detect restored context
+      id: hit
+      shell: bash
+      env:
+        FILE: ${{ steps.paths.outputs.file }}
+      run: |
+        set -euo pipefail
+        if [ -f "$FILE" ]; then
+          echo "cache_hit=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "cache_hit=false" >> "$GITHUB_OUTPUT"
+        fi
 
     - name: Load context
       id: load
@@ -80,15 +90,14 @@ runs:
       shell: bash
       env:
         FILE: ${{ steps.paths.outputs.file }}
-        GITHUB_OUTPUT: ${{ github.output }}
+        CONTEXT_KEY: ${{ inputs.context_key }}
       run: |
         set -euo pipefail
         if [ -f "$FILE" ]; then
           python3 - <<'PY'
-        import json, sys, os
+        import json, os
 
         def strip_forbidden(obj):
-            """Recursively remove forbidden keys from dicts/lists."""
             FORBIDDEN = {"token", "cookie", "cookies", "authorization", "api_key",
                          "pow_answer", "pow_signature", "password", "secret"}
             if isinstance(obj, dict):
@@ -118,14 +127,13 @@ runs:
             print("::warning::context truncated to 32k")
             cleaned = {"_truncated": True, "keys": list(cleaned.keys())[:20]}
             raw = json.dumps(cleaned, separators=(",", ":"))
-        # Write only to GITHUB_OUTPUT — never echo full payload to logs
         with open(os.environ["GITHUB_OUTPUT"], "a") as out:
             out.write(f"context_json={raw}\n")
         print(f"::notice::Loaded context keys={list(cleaned.keys())}")
         PY
         else
           echo 'context_json={}' >> "$GITHUB_OUTPUT"
-          echo "::notice::No prior context for key=${{ inputs.context_key }}"
+          echo "::notice::No prior context for key=${CONTEXT_KEY}"
         fi
 
     - name: Save context
@@ -154,9 +162,9 @@ runs:
                 return [strip_forbidden(i) for i in obj]
             return obj
 
-        raw = os.environ.get("INPUT_JSON") or "{}"
+        raw_in = os.environ.get("INPUT_JSON") or "{}"
         try:
-            data = json.loads(raw)
+            data = json.loads(raw_in)
         except json.JSONDecodeError:
             data = {}
         if not isinstance(data, dict):
@@ -164,6 +172,10 @@ runs:
         cleaned = strip_forbidden(data)
         cleaned["_saved_at"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
         cleaned["_key"] = os.environ.get("CONTEXT_KEY", "")
+        raw = json.dumps(cleaned, separators=(",", ":"))
+        if len(raw) > 32_000:
+            print("::warning::context exceeds 32k on save; truncating")
+            cleaned = {"_truncated": True, "_saved_at": cleaned["_saved_at"], "_key": cleaned["_key"], "keys": list(cleaned.keys())[:20]}
         path = os.environ["FILE"]
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, "w") as f:
@@ -184,10 +196,10 @@ runs:
         if ! [[ "${TARGET:-}" =~ ^[0-9]+$ ]]; then exit 0; fi
         if [ -z "${REPO:-}" ]; then REPO="${{ github.repository }}"; fi
         MARKER="<!-- agent-ctx:${KEY} -->"
-        # Paginate so busy threads still find the existing marker
-        EXISTING=$(gh api --paginate "repos/${REPO}/issues/${TARGET}/comments" \
-          --jq --arg m "$MARKER" '.[] | select(.body | contains($m)) | .id' \
-          2>/dev/null | head -1 || true)
+        # gh api has no --arg; pipe to jq for safe filtering
+        EXISTING=$(gh api --paginate "repos/${REPO}/issues/${TARGET}/comments" 2>/dev/null \
+          | jq -r --arg m "$MARKER" '.[] | select(.body | contains($m)) | .id' \
+          | head -1 || true)
         BODY=$(printf '%s\n_Context bookmark for `%s` (non-secret). Auth sessions remain ephemeral._\n' "$MARKER" "$KEY")
         if [ -n "$EXISTING" ]; then
           gh api -X PATCH "repos/${REPO}/issues/comments/${EXISTING}" -f body="$BODY" >/dev/null || true

@@ -1,3 +1,7 @@
 ## 2026-08-01 - Flicker-Free Real-Time CLI Dashboards with Rich Live
 **Learning:** Terminal dashboards that clear the screen using raw ANSI escape codes (`\033[H\033[J`) or `clear` commands create severe flicker and redraw lag. This harms cognitive accessibility and visual appeal. Using `rich.live.Live` with high-level structural layout (`Table`, `Panel`, `Text`) ensures updates are drawn to the screen differential/flicker-free, and handles terminal exits cleanly.
 **Action:** Always prefer `rich.live.Live` (or similar differential-updating curses-like tools) for terminal UI dashboards that require frequent, real-time telemetry updates.
+
+## 2026-08-05 - Lit-HTML Factory Closures for Stateful & Reactive UI Rendering
+**Learning:** In highly client-side environments like PWAs built with plain lit-html, using static template rendering components without proper propagation results in unresponsive state updates and potential async infinite render loops. Structuring components as factory closures that accept and invoke a `reRender` callback ensures precise, targeted, and immediate UI state synchronization. Deferring initial asynchronous tasks with `setTimeout` avoids cyclic dependency exceptions.
+**Action:** Always structure stateful lit-html components as factory closures accepting `reRender: () => void`, and safely defer async loading using `setTimeout` to isolate the initialization flow.

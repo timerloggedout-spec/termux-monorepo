@@ -1,43 +1,39 @@
-# OPERATOR Signing Requirement
+# OPERATOR Signing Ledger
 
-**Source policy:** [PR #126 comment 5243623808](https://github.com/timerloggedout-spec/termux-monorepo/pull/126#issuecomment-5243623808) and subsequent OPERATOR directives.
+**Source policy:** [PR #126 comment 5243623808](https://github.com/timerloggedout-spec/termux-monorepo/pull/126#issuecomment-5243623808).
 
-## Requirement
+## Rule
 
-All OPERATOR agents (Grok across sessions, other provider sessions granted OPERATOR role) **must** sign material modifications with their **session id** and **message id** (or equivalent PR/issue comment id).
+OPERATOR agents (Grok and other provider sessions with OPERATOR access) **must** sign material modifications with **session id** and **message / comment id**.
 
-### Signature format
+Format:
 
 ```text
 Signed-off-by: <AgentName> (OPERATOR) <session-id> / <message-or-comment-id>
 ```
 
-Examples:
+What must be signed: matrix score changes, ops workflow changes, policy docs under `docs/ops/`, disposition / context_key contract changes.
 
-```text
-Signed-off-by: Grok (OPERATOR) session-2026-08-10 / comment-5243638115
-Signed-off-by: Grok (OPERATOR) session-2026-08-10 / msg-matrix-init
-```
+Non-OPERATOR bots (Jules, CodeRabbit, Devin, Tembo, …) use normal bot attribution.
 
-### What must be signed
+## Ledger (append-only)
 
-- Edits to `docs/ops/DECISION-MATRIX.md`
-- Workflow changes that affect Jules session management, continuous-ops, auto-jules, or disposition piping
-- Policy docs under `docs/ops/`
-- Any PR body or issue comment that alters priority, disposition rules, or context_key contract
+| Date (UTC) | Agent | Session / Message id | Diff pointer | Summary |
+|------------|-------|----------------------|--------------|---------|
+| 2026-08-10 | Grok | session-2026-08-10 / msg-matrix-init | [commit on ops/jules-session-management-145](https://github.com/timerloggedout-spec/termux-monorepo/commit/843ddff37d2e515ba13bc56f8f4875126cc665d5) | Initial matrix + signing docs |
+| 2026-08-10 | Grok | session-2026-08-10 / msg-ctxkey-autojules | [280762c](https://github.com/timerloggedout-spec/termux-monorepo/commit/280762cb505e7de3dab964f22c8de0b99e10cdcf) | auto-jules context_key + disposition-first |
+| 2026-08-10 | Grok | session-2026-08-10 / msg-pr-145 | [PR #148](https://github.com/timerloggedout-spec/termux-monorepo/pull/148) | Opened #148 |
+| 2026-08-10 | Grok | session-2026-08-10 / msg-pr-146 | [PR #149](https://github.com/timerloggedout-spec/termux-monorepo/pull/149) | Opened #149 |
+| 2026-08-10 | Grok | session-2026-08-10 / msg-split-ledger-ctxops | *(this commit)* | Clean matrix data; ledger; continuous-ops context_key |
 
-### Why
+## How to append
 
-Multiple concurrent OPERATOR sessions (different provider contexts) share write access. Signatures make provenance recoverable without relying on git author alone, and satisfy the audit trail requested in the source comment.
-
-### Non-OPERATOR agents
-
-Jules, CodeRabbit, Devin, Tembo, etc. continue to use their normal commit / bot attribution. This rule applies only to agents acting under the OPERATOR role.
+1. Make the change (workflow / matrix score / policy).
+2. Add a row here with date, agent, session/msg id, link to commit or PR diff.
+3. Include the Signed-off-by line in the commit message and any related issue/PR comment.
 
 ## Related
 
-- `docs/ops/DECISION-MATRIX.md`
+- [`DECISION-MATRIX.md`](DECISION-MATRIX.md) — clean scored data only
+- [`DELPHI-WEIGHTING.md`](DELPHI-WEIGHTING.md) — future agent-weight interpolation
 - AGENTS.md hard rules
-- `#145` / `#146`
-
-Signed-off-by: Grok (OPERATOR) session-2026-08-10 / msg-signing-init

@@ -5,12 +5,15 @@ name: Continuous agent ops
 # those fire on bot feedback; this catches PRs that went quiet, got dirty,
 # or never received a follow-up after peer-review-ready.
 #
+# context_key: pr-<N>-<short-ref> (same contract as agent-review-auto-jules).
+# Disposition-first: instruct Jules on open threads / judgment, not analysis-chain scripts.
+#
 # Requires: Jules GitHub App (repo access). Optional: secrets.JULES_API_KEY
 # Security: no secrets in prompts; OPERATOR_TOKEN only for comment write if set.
+# Viewable context_key text OK on public demo until #120 encrypted store.
 
 on:
   schedule:
-    # Every 2 hours — enough to clear lag without burning review quota
     - cron: '17 */2 * * *'
   workflow_dispatch:
     inputs:
@@ -43,7 +46,6 @@ jobs:
         env:
           FORCE_ALL: ${{ github.event.inputs.force_all || 'false' }}
           MAX_PRS: ${{ github.event.inputs.max_prs || '8' }}
-          # Prefer operator token so @jules / @coderabbitai accept write-path comments
           HAS_OPERATOR: ${{ secrets.OPERATOR_GITHUB_TOKEN != '' || secrets.OPERATOR_TOKEN != '' }}
         with:
           github-token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
@@ -51,8 +53,8 @@ jobs:
             const forceAll = process.env.FORCE_ALL === 'true';
             const maxPrs = Math.min(Number(process.env.MAX_PRS) || 8, 20);
             const marker = '<!-- continuous-agent-ops -->';
-            const debounceMs = 90 * 60 * 1000; // 90 minutes
-            const staleMs = 3 * 60 * 60 * 1000; // 3 hours without agent activity
+            const debounceMs = 90 * 60 * 1000;
+            const staleMs = 3 * 60 * 60 * 1000;
 
             const agentLogins = [
               'google-labs-jules', 'devin-ai-integration', 'coderabbitai',
@@ -63,7 +65,6 @@ jobs:
               return agentLogins.some(a => l.includes(a));
             };
 
-            // List open non-draft PRs (newest activity first)
             const prs = await github.paginate(github.rest.pulls.list, {
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -82,7 +83,6 @@ jobs:
             for (const pr of eligible) {
               if (acted >= maxPrs) break;
 
-              // Fresh mergeability
               let mergeable = pr.mergeable;
               let mergeableState = pr.mergeable_state;
               try {
@@ -97,7 +97,6 @@ jobs:
                 core.info(`PR #${pr.number} get skip: ${e.message}`);
               }
 
-              // Comments for debounce + last agent activity
               const comments = await github.paginate(github.rest.issues.listComments, {
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -123,7 +122,6 @@ jobs:
                 ? Date.now() - new Date(lastAgentComment.created_at).getTime()
                 : Infinity;
 
-              // Open review threads (unresolved)
               let openThreads = 0;
               try {
                 const q = `
@@ -157,7 +155,9 @@ jobs:
                 continue;
               }
 
-              // Build action prompt
+              const shortRef = (pr.head.ref || 'head').replace(/[^a-zA-Z0-9-_]/g, '').slice(0, 40);
+              const contextKey = `pr-${pr.number}-${shortRef}`;
+
               const reasons = [];
               if (dirty) reasons.push('merge conflict / dirty vs base');
               if (blocked && openThreads > 0) reasons.push(`${openThreads} unresolved review thread(s)`);
@@ -170,15 +170,17 @@ jobs:
                 instructions.push('2. Prefer content-preserving resolution; cite Implements: if board item applies.');
               }
               if (openThreads > 0) {
-                instructions.push(`${dirty ? '3' : '1'}. Address **all open review threads** (CodeRabbit, Devin, Copilot).`);
+                instructions.push(`${dirty ? '3' : '1'}. Address **open review disposition / threads** (CodeRabbit, Devin, Copilot). Ignore pure analysis-chain probe scripts.`);
                 instructions.push(`${dirty ? '4' : '2'}. Prefer minimal diffs; preserve Sentinel 0o600/0o700.`);
               }
+              instructions.push('**Continue existing Jules session** for this context_key when possible; do not spawn ad-hoc new tasks.');
               instructions.push('Push commits to the existing head branch. Do not retarget base without cause.');
               instructions.push('Skip pure nits only if they conflict with security/gates.');
               instructions.push('If the PR is superseded, close it with a pointer to the replacement.');
 
               const body = [
                 marker,
+                `context_key: ${contextKey}`,
                 `sha: ${pr.head.sha}`,
                 `state: ${mergeableState}`,
                 `threads_open: ${openThreads}`,
@@ -186,13 +188,16 @@ jobs:
                 `@jules **Continuous ops** (GHA agent-continuous-ops) — unattended advance.`,
                 '',
                 `PR #${pr.number} · \`${pr.head.ref}\` → \`${pr.base.ref}\``,
+                `**context_key:** \`${contextKey}\` — prefer continue-existing session.`,
                 `**Why:** ${reasons.join('; ')}`,
                 '',
                 '### Instructions',
                 ...instructions,
                 '',
-                'Read AGENTS.md. No Class 3/4 artifacts. No secret leaks.',
+                'Disposition is source of truth; analysis-chain scripts are probe evidence only.',
+                'Read AGENTS.md + docs/ops/DECISION-MATRIX.md. No Class 3/4 artifacts. No secret leaks.',
                 'Agent: Grok orchestration · Profile: https://x.com/grok',
+                `Signed-off-by: Grok (OPERATOR) session-continuous-ops / context_key=${contextKey}`,
               ].join('\n');
 
               await github.rest.issues.createComment({
@@ -203,10 +208,9 @@ jobs:
               });
 
               acted += 1;
-              report.push(`#${pr.number} (${reasons.join(', ')})`);
-              core.info(`PR #${pr.number}: nudged — ${reasons.join('; ')}`);
+              report.push(`#${pr.number} (${contextKey}; ${reasons.join(', ')})`);
+              core.info(`PR #${pr.number}: nudged — ${contextKey} — ${reasons.join('; ')}`);
 
-              // Brief pause to avoid secondary rate limits
               await new Promise(r => setTimeout(r, 1500));
             }
 

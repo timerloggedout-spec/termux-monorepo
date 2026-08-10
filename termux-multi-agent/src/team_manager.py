@@ -307,7 +307,7 @@ class MoneyBallScout:
         most_frequent_failure = max(failures_by_topic, key=failures_by_topic.get)
         if failures_by_topic[most_frequent_failure] >= 2:
             # Create a new specialized agent to fill the gap
-            specialist_id = f"specialist-{most_frequent_failure}-{int(time.time()) % 1000}"
+            specialist_id = f"specialist-{most_frequent_failure}-{uuid.uuid4().hex[:8]}"
             role_map = {
                 "security": ("Security Specialist", "l337 4@xπ$", ["security-audit", "encryption", "privilege-restriction"]),
                 "performance": ("Performance Alchemist", "Engineer", ["profiling", "performance-optimization", "concurrency"]),

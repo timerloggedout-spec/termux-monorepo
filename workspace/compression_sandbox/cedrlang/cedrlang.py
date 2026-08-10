@@ -243,34 +243,40 @@ def caveman(text: str) -> str:
 # 4. Compressor & Expander Engines
 # ------------------------------------------------------------
 def compress(text: str, aggressive: bool = True) -> str:
-    """Compress standard English to CedrLang + Grimoire style with O(N) regex."""
+    """Compress standard English to CedrLang + Grimoire style with O(N) regex while preserving line structure."""
     if not text:
         return ""
 
-    # 1. Protect syntax
+    # 1. Protect syntax (multi-line structures are replaced by single-line placeholders)
     protected_text, placeholders = protect_syntax(text)
 
-    # 2. Single-pass symbolic substitution
+    # 2. Compress line-by-line to preserve structure (headings, lists, newlines)
+    ph_set = {ph for ph, _ in placeholders}
+    sw = {"a", "an", "the", "is", "are", "was", "were", "be", "been", "being", "to", "of", "and", "for", "in", "that", "with", "on", "at", "by", "this", "these", "those", "it", "they", "we", "you", "he", "she", "to", "from", "for", "or", "and"}
+
     def compress_repl(match):
         val = match.group(0).lower()
         return COMBINED_COMPRESS_MAP.get(val, match.group(0))
 
-    compressed = COMPRESS_RE.sub(compress_repl, protected_text)
+    compressed_lines = []
+    for line in protected_text.splitlines():
+        # Apply single-pass symbolic substitution on the line
+        comp_line = COMPRESS_RE.sub(compress_repl, line)
 
-    # 3. Aggressive Caveman stopword stripping
-    if aggressive:
-        # We need to run caveman but keep placeholders intact
-        words = compressed.split()
-        # Create temporary set of placeholders for O(1) lookup
-        ph_set = {ph for ph, _ in placeholders}
-        sw = {"a", "an", "the", "is", "are", "was", "were", "be", "been", "being", "to", "of", "and", "for", "in", "that", "with", "on", "at", "by", "this", "these", "those", "it", "they", "we", "you", "he", "she", "to", "from", "for", "or", "and"}
-        cleaned = [w for w in words if w in ph_set or w.lower() not in sw]
-        compressed = " ".join(cleaned)
+        if aggressive:
+            # Tokenize and strip stopwords while preserving placeholders
+            words = comp_line.split()
+            cleaned = [w for w in words if w in ph_set or w.lower() not in sw]
+            comp_line = " ".join(cleaned)
+        else:
+            comp_line = re.sub(r'\s+', ' ', comp_line).strip()
 
-    # 4. Clean up spaces
-    compressed = re.sub(r'\s+', ' ', compressed).strip()
+        compressed_lines.append(comp_line)
 
-    # 5. Restore syntax
+    # Rejoin lines with actual newlines
+    compressed = "\n".join(compressed_lines)
+
+    # 3. Restore syntax
     return restore_syntax(compressed, placeholders)
 
 def expand(cedr: str) -> str:

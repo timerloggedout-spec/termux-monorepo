@@ -6,6 +6,10 @@ dynamic ELO-based (3L0) ranking, and soft-budget validation.
 
 Soft budgets raised 2026-08-10 (OPERATOR) to exceed prior free-tier headroom.
 See .github/connectors/llm-peers.yaml for authorized catalog.
+
+LEGACY_MODELS is the conservative catalog-unavailable allow-list: only models
+proven in production. Newly listed free models must appear in a live/stale
+OpenRouter poll before they are selected.
 """
 
 import os
@@ -17,15 +21,14 @@ import time
 
 COUNTER_DIR = os.environ.get("COUNTER_DIR", "/tmp/model-router")
 
+# Proven-only fallback when OpenRouter catalog cannot be fetched.
+# Do NOT add unverified free models here — they belong in role_peers and the live poll.
 LEGACY_MODELS = {
     "meta-llama/llama-3.3-70b-instruct:free",
     "google/gemma-3-12b-it:free",
     "qwen/qwen3-coder:free",
     "deepseek/deepseek-r1:free",
     "auto/best-free",
-    "google/gemma-4-31b-it:free",
-    "google/gemma-4-26b-a4b-it:free",
-    "cohere/north-mini-code:free",
 }
 
 def parse_yaml(filepath):
@@ -109,6 +112,7 @@ def parse_yaml(filepath):
     return result
 
 def fetch_openrouter_free_models():
+    """Poll OpenRouter models endpoint; return free model ids or None on failure."""
     url = "https://openrouter.ai/api/v1/models"
     try:
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
@@ -139,6 +143,7 @@ def fetch_openrouter_free_models():
         return None
 
 def fetch_openrouter_free_models_cached():
+    """1h cache; on miss return stale cache if present, else live poll."""
     cache_file = os.path.join(COUNTER_DIR, "openrouter_models_cache.json")
     cached_models = None
     cached_time = 0
@@ -200,7 +205,8 @@ def main():
     if has_openrouter:
         polled_free_models = fetch_openrouter_free_models_cached()
 
-    # ELEVATED soft limits (OPERATOR 2026-08-10) — exceed prior capacity
+    # ELEVATED soft limits (OPERATOR 2026-08-10) — exceed prior capacity.
+    # Soft gates only; downstream 429 must still re-route / fall through.
     limits = {
         "omni/auto/best-free": {"triage": 400, "review": 250, "invoke": 400},
         "openrouter/meta-llama/llama-3.3-70b-instruct:free": {"triage": 80, "review": 80, "invoke": 80},

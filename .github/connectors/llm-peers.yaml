@@ -1,4 +1,4 @@
-# Peer policy: Omni ↔ OpenRouter nearly equal free-tier peers.
+# Peer policy: Omni \u2194 OpenRouter nearly equal free-tier peers.
 # Selection = desired model + soft-budget headroom. Gemini = residual only.
 
 peers:
@@ -47,7 +47,11 @@ peers:
         soft_limits: { triage: 450, review: 450, invoke: 450 }
       - id: gemini-3.5-flash-lite
         soft_limits: { triage: 450, review: 450, invoke: 450 }
+      - id: gemini-2.5-flash-lite
+        soft_limits: { triage: 20, review: 20, invoke: 20 }
       - id: gemini-3.5-flash
         soft_limits: { triage: 20, review: 20, invoke: 20 }
       - id: gemini-2.5-flash
+        soft_limits: { triage: 20, review: 20, invoke: 20 }
+      - id: gemini-3-flash
         soft_limits: { triage: 20, review: 20, invoke: 20 }

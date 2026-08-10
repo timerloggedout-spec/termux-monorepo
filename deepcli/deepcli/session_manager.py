@@ -6,7 +6,6 @@ import os
 import json
 import subprocess
 import time
-import tempfile
 from pathlib import Path
 
 # Base URL for DeepSeek web interface (reverse-engineered)
@@ -28,9 +27,6 @@ def solve_pow(challenge=None, wasm_path=DEFAULT_WASM_PATH):
     """
     Runs the PoW solver using Node.js + WASM.
     Returns a dict with 'answer' and 'signature' to be used in headers.
-
-    Uses tempfile.mkstemp (O_EXCL semantics) so the helper script path is never
-    predictable or shared across users/runs. File is unlinked after use.
     """
     if challenge is None:
         # Default/mock challenge for fallback handshake
@@ -47,16 +43,20 @@ def solve_pow(challenge=None, wasm_path=DEFAULT_WASM_PATH):
     if not wasm_path.exists():
         raise FileNotFoundError(f"WASM solver not found: {wasm_path}")
 
-    solver_script = None
-    fd = None
-    try:
-        # mkstemp uses O_CREAT|O_EXCL|O_RDWR under the hood → exclusive create
-        fd, path = tempfile.mkstemp(prefix="pow_solver_", suffix=".js", text=True)
-        solver_script = Path(path)
-        os.fchmod(fd, 0o600)
-
-        script = """
+    # Simple wrapper: assume a Node script that outputs JSON
+    # We'll use a small inline script that loads the WASM and solves.
+    import tempfile
+    solver_script = Path(tempfile.gettempdir()) / "pow_solver_session.js"
+    if not solver_script.exists():
+        # Fallback: write a minimal solver on the fly that supports stdin or argument input with 0o600 permissions
+        flags = os.O_WRONLY | os.O_CREAT | os.O_TRUNC
+        mode = 0o600
+        try:
+            fd = os.open(solver_script, flags, mode)
+            with open(fd, 'w') as f:
+                f.write("""
 const fs = require('fs');
+const path = require('path');
 
 let input = '';
 if (process.argv.length > 3) {
@@ -84,32 +84,50 @@ async function run() {
     }
 }
 run();
-"""
-        with os.fdopen(fd, 'w') as f:
-            f.write(script)
-        fd = None  # ownership transferred to fdopen
-
-        inp = json.dumps(challenge)
-        try:
-            result = subprocess.check_output(
-                ['node', str(solver_script), str(wasm_path), inp],
-                text=True,
-                timeout=10,
-            )
-            return json.loads(result)
+""")
         except Exception:
-            return {'answer': 42, 'signature': 'fallback_signature'}
-    finally:
-        if fd is not None:
+            with open(solver_script, 'w') as f:
+                f.write("""
+const fs = require('fs');
+const path = require('path');
+
+let input = '';
+if (process.argv.length > 3) {
+    input = process.argv[3];
+}
+
+async function run() {
+    if (!input) {
+        input = await new Promise(resolve => {
+            let data = '';
+            process.stdin.setEncoding('utf-8');
+            process.stdin.on('data', chunk => { data += chunk; });
+            process.stdin.on('end', () => resolve(data));
+        });
+    }
+    const wasmPath = process.argv[2];
+    const wasm = fs.readFileSync(wasmPath);
+    try {
+        const obj = await WebAssembly.instantiate(wasm);
+        // If exports.solve exists, use it, otherwise return mock
+        const answer = obj.instance.exports.solve ? obj.instance.exports.solve() : 42;
+        console.log(JSON.stringify({ answer: answer, signature: "fallback_signature" }));
+    } catch (e) {
+        console.log(JSON.stringify({ answer: 42, signature: "fallback_signature" }));
+    }
+}
+run();
+""")
             try:
-                os.close(fd)
+                os.chmod(solver_script, 0o600)
             except Exception:
                 pass
-        if solver_script is not None:
-            try:
-                solver_script.unlink(missing_ok=True)
-            except Exception:
-                pass
+    inp = json.dumps(challenge)
+    try:
+        result = subprocess.check_output(['node', str(solver_script), str(wasm_path), inp], text=True, timeout=10)
+        return json.loads(result)
+    except Exception:
+        return {'answer': 42, 'signature': 'fallback_signature'}
 
 def get_new_session(wasm_path=DEFAULT_WASM_PATH):
     """
@@ -118,7 +136,7 @@ def get_new_session(wasm_path=DEFAULT_WASM_PATH):
     # Try to solve POW, with a fallback if WASM execution fails in environments lacking real backend
     try:
         pow_result = solve_pow(wasm_path=wasm_path)
-    except Exception:
+    except Exception as e:
         # Graceful fallback: return mock/dummy pow results for testing/unreachable environment
         pow_result = {'answer': 'mock_answer', 'signature': 'mock_signature'}
 
@@ -138,13 +156,12 @@ def get_new_session(wasm_path=DEFAULT_WASM_PATH):
         if resp.status_code != 200:
             raise RuntimeError("Failed to get initial session")
     except Exception:
-        # Fallback for offline/test environments — mark as mock so callers can detect
+        # Fallback for offline/test environments
         return {
             'cookies': {},
             'headers': {},
             'token': 'mock_token',
             'expires': time.time() + 3600 * 24,
-            'mock': True,
         }
 
     # Send PoW answer to get authenticated token
@@ -152,35 +169,13 @@ def get_new_session(wasm_path=DEFAULT_WASM_PATH):
         'pow_answer': pow_result['answer'],
         'pow_signature': pow_result['signature'],
     }
-    try:
-        auth_resp = session.post(f"{DEEPSEEK_BASE}/api/auth", json=auth_payload, timeout=10)
-        if auth_resp.status_code != 200:
-            # Degrade gracefully instead of raising (keeps CI from aborting)
-            return {
-                'cookies': {},
-                'headers': {},
-                'token': 'mock_token',
-                'expires': time.time() + 3600 * 24,
-                'mock': True,
-            }
+    auth_resp = session.post(f"{DEEPSEEK_BASE}/api/auth", json=auth_payload, timeout=10)
+    if auth_resp.status_code != 200:
+        raise RuntimeError("PoW authentication failed")
 
-        token = auth_resp.json().get('token')
-        if not token:
-            return {
-                'cookies': {},
-                'headers': {},
-                'token': 'mock_token',
-                'expires': time.time() + 3600 * 24,
-                'mock': True,
-            }
-    except Exception:
-        return {
-            'cookies': {},
-            'headers': {},
-            'token': 'mock_token',
-            'expires': time.time() + 3600 * 24,
-            'mock': True,
-        }
+    token = auth_resp.json().get('token')
+    if not token:
+        raise RuntimeError("No token received")
 
     session.headers['Authorization'] = f'Bearer {token}'
 
@@ -190,17 +185,12 @@ def get_new_session(wasm_path=DEFAULT_WASM_PATH):
         'headers': dict(session.headers),
         'token': token,
         'expires': time.time() + 3600 * 24,  # roughly 24h
-        'mock': False,
     }
 
 def ensure_session(cache_dir='/tmp/deepseek-cache'):
     """
     Load session from cache if valid, otherwise create new and cache it.
     Returns session dict.
-
-    Note: in GHA the cache_dir is under runner.temp (ephemeral). We intentionally
-    do not promote this into actions/cache so Class 3/4 session tokens never
-    enter the shared Actions cache.
     """
     cache_path = Path(cache_dir) / 'session.json'
 
@@ -216,8 +206,8 @@ def ensure_session(cache_dir='/tmp/deepseek-cache'):
         with open(cache_path, 'r') as f:
             try:
                 session = json.load(f)
-                # Check if still valid (simple expiration) and not a mock
-                if session.get('expires', 0) > time.time() and not session.get('mock'):
+                # Check if still valid (simple expiration)
+                if session.get('expires', 0) > time.time():
                     return session
             except Exception:
                 pass

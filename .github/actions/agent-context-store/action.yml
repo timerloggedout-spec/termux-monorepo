@@ -1,0 +1,158 @@
+name: 'Agent Context Store'
+description: >
+  Load / save durable *work context* for agentic GitHub Actions runs.
+  Never stores tokens, cookies, PoW answers, or raw conversation bodies.
+  Auth sessions stay in $RUNNER_TEMP and are discarded (see #112/#114 policy).
+
+inputs:
+  mode:
+    description: 'load | save'
+    required: true
+  context_key:
+    description: >
+      Stable key for this work unit (e.g. pr-123-review, issue-118-triage).
+      Used as Actions cache key suffix.
+    required: true
+  context_json:
+    description: 'JSON string to save (mode=save). Must be non-secret fields only.'
+    required: false
+    default: '{}'
+  github_token:
+    description: 'Token for optional comment-marker fallback (GITHUB_TOKEN is fine)'
+    required: false
+    default: ''
+  target_number:
+    description: 'PR or issue number for comment-marker bookmark (optional)'
+    required: false
+    default: ''
+  repository:
+    description: 'owner/repo'
+    required: false
+    default: ''
+
+outputs:
+  context_json:
+    description: 'Loaded context JSON (mode=load); empty object if miss'
+    value: ${{ steps.load.outputs.context_json }}
+  cache_hit:
+    description: 'true if Actions cache restored a previous context'
+    value: ${{ steps.cache.outputs.cache-hit }}
+
+runs:
+  using: composite
+  steps:
+    - name: Resolve cache paths
+      id: paths
+      shell: bash
+      run: |
+        set -euo pipefail
+        CTX_DIR="${RUNNER_TEMP}/agent-context"
+        mkdir -p "$CTX_DIR"
+        KEY_SAFE=$(printf '%s' "${{ inputs.context_key }}" | tr -c 'A-Za-z0-9._-' '_')
+        echo "dir=${CTX_DIR}" >> "$GITHUB_OUTPUT"
+        echo "file=${CTX_DIR}/${KEY_SAFE}.json" >> "$GITHUB_OUTPUT"
+        echo "key_safe=${KEY_SAFE}" >> "$GITHUB_OUTPUT"
+
+    - name: Restore context cache
+      id: cache
+      uses: actions/cache@v4
+      with:
+        path: ${{ steps.paths.outputs.dir }}
+        key: agent-ctx-${{ runner.os }}-${{ steps.paths.outputs.key_safe }}-${{ github.sha }}
+        restore-keys: |
+          agent-ctx-${{ runner.os }}-${{ steps.paths.outputs.key_safe }}-
+
+    - name: Load context
+      id: load
+      if: inputs.mode == 'load'
+      shell: bash
+      env:
+        FILE: ${{ steps.paths.outputs.file }}
+      run: |
+        set -euo pipefail
+        if [ -f "$FILE" ]; then
+          # Validate: must be JSON object, no forbidden keys
+          python3 - <<'PY'
+        import json, sys, os
+        path = os.environ["FILE"]
+        with open(path) as f:
+            data = json.load(f)
+        if not isinstance(data, dict):
+            print("::warning::context is not an object; discarding")
+            data = {}
+        FORBIDDEN = {"token", "cookie", "cookies", "authorization", "api_key",
+                     "pow_answer", "pow_signature", "password", "secret"}
+        cleaned = {k: v for k, v in data.items()
+                   if k.lower() not in FORBIDDEN
+                   and not any(x in k.lower() for x in ("token", "cookie", "secret", "password"))}
+        # Cap size
+        raw = json.dumps(cleaned, separators=(",", ":"))
+        if len(raw) > 32_000:
+            print("::warning::context truncated to 32k")
+            cleaned = {"_truncated": True, "keys": list(cleaned.keys())[:20]}
+            raw = json.dumps(cleaned, separators=(",", ":"))
+        print(f"context_json={raw}")
+        with open(os.environ["GITHUB_OUTPUT"], "a") as out:
+            out.write(f"context_json={raw}\n")
+        PY
+        else
+          echo 'context_json={}' >> "$GITHUB_OUTPUT"
+          echo "::notice::No prior context for key=${{ inputs.context_key }}"
+        fi
+
+    - name: Save context
+      if: inputs.mode == 'save'
+      shell: bash
+      env:
+        INPUT_JSON: ${{ inputs.context_json }}
+        FILE: ${{ steps.paths.outputs.file }}
+        CONTEXT_KEY: ${{ inputs.context_key }}
+      run: |
+        set -euo pipefail
+        python3 - <<'PY'
+        import json, os, time
+        raw = os.environ.get("INPUT_JSON") or "{}"
+        try:
+            data = json.loads(raw)
+        except json.JSONDecodeError:
+            data = {}
+        if not isinstance(data, dict):
+            data = {}
+        FORBIDDEN = {"token", "cookie", "cookies", "authorization", "api_key",
+                     "pow_answer", "pow_signature", "password", "secret"}
+        cleaned = {k: v for k, v in data.items()
+                   if k.lower() not in FORBIDDEN
+                   and not any(x in k.lower() for x in ("token", "cookie", "secret", "password"))}
+        cleaned["_saved_at"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+        cleaned["_key"] = os.environ.get("CONTEXT_KEY", "")
+        path = os.environ["FILE"]
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w") as f:
+            json.dump(cleaned, f, indent=2)
+        print(f"::notice::Saved agent context → {path} keys={list(cleaned.keys())}")
+        PY
+
+    - name: Optional comment-marker bookmark
+      if: inputs.mode == 'save' && inputs.target_number != '' && inputs.github_token != ''
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github_token }}
+        REPO: ${{ inputs.repository }}
+        TARGET: ${{ inputs.target_number }}
+        KEY: ${{ inputs.context_key }}
+        CTX: ${{ inputs.context_json }}
+      run: |
+        set -euo pipefail
+        if ! [[ "${TARGET:-}" =~ ^[0-9]+$ ]]; then exit 0; fi
+        if [ -z "${REPO:-}" ]; then REPO="${{ github.repository }}"; fi
+        # Embed only a short pointer (hash of key + timestamp), never full JSON
+        MARKER="<!-- agent-ctx:${KEY} -->"
+        # Avoid duplicate markers on every save: update existing or post once
+        EXISTING=$(gh api "repos/${REPO}/issues/${TARGET}/comments" --jq \
+          ".[] | select(.body | contains(\"${MARKER}\")) | .id" 2>/dev/null | head -1 || true)
+        BODY=$(printf '%s\n_Context bookmark for `%s` (non-secret). Auth sessions remain ephemeral._\n' "$MARKER" "$KEY")
+        if [ -n "$EXISTING" ]; then
+          gh api -X PATCH "repos/${REPO}/issues/comments/${EXISTING}" -f body="$BODY" >/dev/null || true
+        else
+          gh api -X POST "repos/${REPO}/issues/${TARGET}/comments" -f body="$BODY" >/dev/null || true
+        fi

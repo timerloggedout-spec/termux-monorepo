@@ -14,14 +14,23 @@ on:
     types: [created]
   issue_comment:
     types: [created]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Test PR number'
+        required: true
+      head_ref:
+        description: 'Test head ref (branch name)'
+        required: false
 
 concurrency:
-  group: agent-auto-jules-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
+  group: agent-auto-jules-${{ github.event.pull_request.number || github.event.issue.number || github.event.inputs.pr_number || github.run_id }}
   cancel-in-progress: false
 
 jobs:
   detect-bot-feedback:
     if: |
+      github.event_name == 'workflow_dispatch' ||
       (
         github.event_name == 'pull_request_review' &&
         github.event.review.state != 'approved' &&
@@ -60,15 +69,26 @@ jobs:
       pr_number: ${{ steps.meta.outputs.pr_number }}
       head_ref: ${{ steps.meta.outputs.head_ref }}
       should_invoke: ${{ steps.meta.outputs.should_invoke }}
+      is_continue: ${{ steps.meta.outputs.is_continue }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+
       - name: Resolve PR metadata
         id: meta
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         with:
+          github-token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const event = context.eventName;
             let prNumber = null;
-            if (event === 'pull_request_review') {
+            let headRef = null;
+            if (event === 'workflow_dispatch') {
+              prNumber = context.payload.inputs.pr_number;
+              headRef = context.payload.inputs.head_ref;
+            } else if (event === 'pull_request_review') {
               prNumber = context.payload.pull_request.number;
             } else if (event === 'pull_request_review_comment') {
               prNumber = context.payload.pull_request.number;
@@ -82,21 +102,38 @@ jobs:
             const { data: pr } = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: prNumber,
+              pull_number: Number(prNumber),
             });
+            if (!headRef) {
+              headRef = pr.head.ref;
+            }
             core.setOutput('pr_number', String(prNumber));
-            core.setOutput('head_ref', pr.head.ref);
-            core.setOutput('base_ref', pr.base.ref);
+            core.setOutput('head_ref', headRef);
             core.setOutput('should_invoke', 'true');
+
+            // Determine if there is a recent marker to check continue state
+            const marker = '<!-- agent-auto-jules -->';
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: Number(prNumber),
+              per_page: 100,
+            });
+            const hasPrior = comments.some(c => c.body && (c.body.includes(marker) || c.body.includes('<!-- continuous-agent-ops -->')));
+            core.setOutput('is_continue', hasPrior ? 'true' : 'false');
 
       - name: Post @jules resolve (idempotent window)
         if: steps.meta.outputs.should_invoke == 'true'
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         with:
+          github-token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const prNumber = Number('${{ steps.meta.outputs.pr_number }}');
             const head = '${{ steps.meta.outputs.head_ref }}';
+            const isContinue = '${{ steps.meta.outputs.is_continue }}' === 'true';
             const marker = '<!-- agent-auto-jules -->';
+            const contextKey = `pr-${prNumber}-${head}`;
+
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -104,12 +141,12 @@ jobs:
               per_page: 50,
             });
             const recent = comments
-              .filter(c => c.body && c.body.includes(marker))
+              .filter(c => c.body && (c.body.includes(marker) || c.body.includes('<!-- continuous-agent-ops -->')))
               .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
             if (recent) {
               const ageMs = Date.now() - new Date(recent.created_at).getTime();
               if (ageMs < 20 * 60 * 1000) {
-                core.info('Debounced: recent agent-auto-jules comment exists');
+                core.info('Debounced: recent agent-auto-jules or continuous-ops comment exists');
                 return;
               }
             }
@@ -123,9 +160,17 @@ jobs:
               ''
             ).slice(0, 1200);
             const path = context.payload.comment?.path || '';
+
+            const header = isContinue
+              ? `@jules **Continue-resolve** (GHA agent-review-auto-jules) — continuing existing session.`
+              : `@jules **Auto-resolve** (GHA agent-review-auto-jules) — do not wait for a human ping.`;
+
             const body = [
               marker,
-              `@jules **Auto-resolve** (GHA agent-review-auto-jules) — do not wait for a human ping.`,
+              `context_key: ${contextKey}`,
+              `mode: ${isContinue ? 'continue' : 'spawn'}`,
+              ``,
+              header,
               ``,
               `Bot feedback from **${bot}** on PR #${prNumber} (branch \`${head}\`).`,
               path ? `File: \`${path}\`` : '',
@@ -136,11 +181,14 @@ jobs:
               snippet ? '```' : '',
               ``,
               `### Instructions`,
-              `1. Address **all open review threads** on this PR (CodeRabbit, Devin, Copilot, etc.).`,
+              isContinue
+                ? `1. Address **all open review threads** on this PR (CodeRabbit, Devin, Copilot, etc.) by continuing your existing work.`
+                : `1. Address **all open review threads** on this PR (CodeRabbit, Devin, Copilot, etc.).`,
               `2. Prefer minimal diffs; preserve Sentinel 0o600/0o700 if those files are touched.`,
               `3. Push commits to branch \`${head}\`. Do not retarget away from the PR base without cause.`,
               `4. If conflicts with base exist, resolve them.`,
               `5. Skip pure nits only if they conflict with security/gates; otherwise apply autofixes.`,
+              isContinue ? `6. Please continue existing session for context key: \`${contextKey}\`.` : '',
               ``,
               `Agent: Grok orchestration · Profile: https://x.com/grok`,
             ].filter(Boolean).join('\n');
@@ -153,19 +201,191 @@ jobs:
 
   invoke-jules-api:
     needs: detect-bot-feedback
-    if: needs.detect-bot-feedback.outputs.should_invoke == 'true' && vars.JULES_AUTO_INVOKE != '0'
+    if: needs.detect-bot-feedback.outputs.should_invoke == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      pull-requests: write
+      issues: write
     steps:
-      - name: Jules API session (if key present)
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+
+      - name: Load work context
+        id: ctx
+        uses: ./.github/actions/agent-context-store
+        with:
+          mode: load
+          context_key: pr-${{ needs.detect-bot-feedback.outputs.pr_number }}-${{ needs.detect-bot-feedback.outputs.head_ref }}
+
+      - name: Quota and Gating Check
+        id: gate
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
           JULES_API_KEY: ${{ secrets.JULES_API_KEY }}
-          PR: ${{ needs.detect-bot-feedback.outputs.pr_number }}
-          HEAD: ${{ needs.detect-bot-feedback.outputs.head_ref }}
-        run: |
-          if [ -z "$JULES_API_KEY" ]; then
-            echo "No JULES_API_KEY — relying on @jules PR comment path only"
-            exit 0
-          fi
-          echo "Jules API invoke is best-effort; @jules comment is the reliable trigger."
+          JULES_AUTO_INVOKE: ${{ vars.JULES_AUTO_INVOKE }}
+          PR_NUMBER: ${{ needs.detect-bot-feedback.outputs.pr_number }}
+          HEAD_REF: ${{ needs.detect-bot-feedback.outputs.head_ref }}
+          CONTEXT_JSON: ${{ steps.ctx.outputs.context_json }}
+        with:
+          github-token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const prNumber = Number(process.env.PR_NUMBER);
+            const headRef = process.env.HEAD_REF;
+            const contextKey = `pr-${prNumber}-${headRef}`;
+
+            // 1. Check basic conditions
+            if (!process.env.JULES_API_KEY) {
+              core.setOutput('skip', 'true');
+              core.setOutput('reason', 'Missing JULES_API_KEY secret.');
+              return;
+            }
+            if (process.env.JULES_AUTO_INVOKE === '0') {
+              core.setOutput('skip', 'true');
+              core.setOutput('reason', 'JULES_AUTO_INVOKE is explicitly set to 0.');
+              return;
+            }
+
+            // 2. Query Action runs to check Quota (3 concurrent / 15 per rolling 24h)
+            try {
+              const { data: runsData } = await github.rest.actions.listWorkflowRunsForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                per_page: 100,
+              });
+
+              const targetWorkflows = [
+                'agent-review-auto-jules.yml',
+                'agent-continuous-ops.yml',
+                'agent-jules-on-issues.yml'
+              ];
+
+              const julesRuns = runsData.workflow_runs.filter(run =>
+                targetWorkflows.some(w => run.path && run.path.includes(w))
+              );
+
+              // Concurrent active runs (in-progress, excluding current run)
+              const activeRuns = julesRuns.filter(run =>
+                run.status === 'in_progress' && run.id !== context.runId
+              );
+
+              // Runs in the last 24 hours
+              const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
+              const recentRuns = julesRuns.filter(run =>
+                new Date(run.created_at).getTime() > oneDayAgo
+              );
+
+              core.info(`Jules concurrent active runs: ${activeRuns.length} (limit: 3)`);
+              core.info(`Jules runs in the last 24h: ${recentRuns.length} (limit: 15)`);
+
+              if (activeRuns.length >= 3) {
+                core.setOutput('skip', 'true');
+                core.setOutput('reason', `Concurrency limit exceeded (active runs: ${activeRuns.length}/3).`);
+                return;
+              }
+              if (recentRuns.length >= 15) {
+                core.setOutput('skip', 'true');
+                core.setOutput('reason', `Daily rolling limit exceeded (runs in 24h: ${recentRuns.length}/15).`);
+                return;
+              }
+            } catch (e) {
+              core.warning('Failed to query workflow runs for quota check: ' + e.message);
+            }
+
+            // 3. Determine if continue vs spawn
+            let contextData = {};
+            try {
+              contextData = JSON.parse(process.env.CONTEXT_JSON || '{}');
+            } catch (e) {}
+
+            // Check if there was any prior run/session
+            const isContinue = contextData.has_started === true || contextData.session_status === 'active';
+            core.setOutput('skip', 'false');
+            core.setOutput('mode', isContinue ? 'continue' : 'spawn');
+
+      - name: Report skip reason
+        if: steps.gate.outputs.skip == 'true'
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        env:
+          PR_NUMBER: ${{ needs.detect-bot-feedback.outputs.pr_number }}
+          REASON: ${{ steps.gate.outputs.reason }}
+        with:
+          github-token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const prNumber = Number(process.env.PR_NUMBER);
+            const marker = '<!-- jules-invoke-skip-reason -->';
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              per_page: 50,
+            });
+            const existing = comments.find(c => c.body && c.body.includes(marker));
+
+            const body = [
+              marker,
+              `⚠️ **Jules API Invoke Skipped**`,
+              ``,
+              `The automated ` + "`" + `google-labs-code/jules-invoke` + "`" + ` call was skipped.`,
+              `**Reason:** ${process.env.REASON}`,
+              ``,
+              `*Note: The `@jules` comment-based dispatch path on the PR remains the primary/fallback work trigger.*`,
+            ].join('\n');
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body,
+              });
+            }
+
+      - name: Invoke Jules API
+        if: steps.gate.outputs.skip != 'true'
+        uses: google-labs-code/jules-invoke@v1
+        with:
+          jules_api_key: ${{ secrets.JULES_API_KEY }}
+          starting_branch: master-staging
+          prompt: |
+            You are Jules working on termux-monorepo. Read AGENTS.md and GEMINI.md if present.
+
+            ## Task Context: PR #${{ needs.detect-bot-feedback.outputs.pr_number }} (branch `${{ needs.detect-bot-feedback.outputs.head_ref }}`)
+            Context key: `pr-${{ needs.detect-bot-feedback.outputs.pr_number }}-${{ needs.detect-bot-feedback.outputs.head_ref }}`
+            Mode: ${{ steps.gate.outputs.mode }}
+
+            Please resolve the feedback posted by bots (CodeRabbit, Devin, Copilot, etc.) on this PR.
+            ${{ steps.gate.outputs.mode == 'continue' && 'This is a continuation of your existing active session. Please build upon your prior changes.' || 'This is a brand new session/task for this PR.' }}
+
+            ## Instructions
+            1. Address all open review threads.
+            2. Base your work on master-staging; prefer minimal diffs.
+            3. Preserve Sentinel 0o600/0o700 patterns if touching credentials/session paths.
+            4. Do not commit secrets or Class 3/4 artifacts.
+
+      - name: Save work context
+        if: always() && steps.gate.outputs.skip != 'true'
+        uses: ./.github/actions/agent-context-store
+        with:
+          mode: save
+          context_key: pr-${{ needs.detect-bot-feedback.outputs.pr_number }}-${{ needs.detect-bot-feedback.outputs.head_ref }}
+          context_json: |
+            {
+              "has_started": true,
+              "session_status": "active",
+              "last_run_id": "${{ github.run_id }}",
+              "last_action": "invoke"
+            }
+          github_token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
+          target_number: ${{ needs.detect-bot-feedback.outputs.pr_number }}
+          repository: ${{ github.repository }}

@@ -63,6 +63,40 @@ jobs:
               return agentLogins.some(a => l.includes(a));
             };
 
+            // 1. Quota check (3 concurrent / 15 per rolling 24h)
+            let dailyRuns = 0;
+            let activeRuns = 0;
+            try {
+              const { data: runsData } = await github.rest.actions.listWorkflowRunsForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                per_page: 100,
+              });
+
+              const targetWorkflows = [
+                'agent-review-auto-jules.yml',
+                'agent-continuous-ops.yml',
+                'agent-jules-on-issues.yml'
+              ];
+
+              const julesRuns = runsData.workflow_runs.filter(run =>
+                targetWorkflows.some(w => run.path && run.path.includes(w))
+              );
+
+              activeRuns = julesRuns.filter(run =>
+                run.status === 'in_progress' && run.id !== context.runId
+              ).length;
+
+              const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
+              dailyRuns = julesRuns.filter(run =>
+                new Date(run.created_at).getTime() > oneDayAgo
+              ).length;
+
+              core.info(`Global Jules capacity: active=${activeRuns}/3, rolling_24h=${dailyRuns}/15`);
+            } catch (e) {
+              core.warning('Failed to query workflow runs for quota check: ' + e.message);
+            }
+
             // List open non-draft PRs (newest activity first)
             const prs = await github.paginate(github.rest.pulls.list, {
               owner: context.repo.owner,
@@ -81,6 +115,8 @@ jobs:
 
             for (const pr of eligible) {
               if (acted >= maxPrs) break;
+
+              const contextKey = `pr-${pr.number}-${pr.head.ref}`;
 
               // Fresh mergeability
               let mergeable = pr.mergeable;
@@ -157,6 +193,35 @@ jobs:
                 continue;
               }
 
+              // 2. Check Quota limit before spawning
+              if (activeRuns >= 3 || dailyRuns >= 15) {
+                const limitReason = activeRuns >= 3
+                  ? `Concurrency limit exceeded (active runs: ${activeRuns}/3)`
+                  : `Daily rolling limit exceeded (runs in 24h: ${dailyRuns}/15)`;
+
+                const skipMarker = '<!-- jules-ops-quota-skip -->';
+                const hasSkipComment = comments.some(c => c.body && c.body.includes(skipMarker));
+                if (!hasSkipComment) {
+                  await github.rest.issues.createComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: pr.number,
+                    body: [
+                      skipMarker,
+                      `⚠️ **Continuous agent ops skipped**`,
+                      `Could not advance PR #${pr.number} automatically.`,
+                      `**Reason:** ${limitReason}.`,
+                      `*Jules capacity limits are active.*`
+                    ].join('\n'),
+                  });
+                }
+                core.info(`PR #${pr.number} skip: quota reached (${limitReason})`);
+                continue;
+              }
+
+              // Determine if continue vs spawn based on comments
+              const isContinue = comments.some(c => c.body && (c.body.includes('<!-- agent-auto-jules -->') || c.body.includes(marker)));
+
               // Build action prompt
               const reasons = [];
               if (dirty) reasons.push('merge conflict / dirty vs base');
@@ -176,14 +241,23 @@ jobs:
               instructions.push('Push commits to the existing head branch. Do not retarget base without cause.');
               instructions.push('Skip pure nits only if they conflict with security/gates.');
               instructions.push('If the PR is superseded, close it with a pointer to the replacement.');
+              if (isContinue) {
+                instructions.push(`Please continue the existing Jules session for context key: \`${contextKey}\`.`);
+              }
+
+              const header = isContinue
+                ? `@jules **Continuous ops (Continue)** (GHA agent-continuous-ops) — unattended advance (continue existing session).`
+                : `@jules **Continuous ops** (GHA agent-continuous-ops) — unattended advance.`;
 
               const body = [
                 marker,
                 `sha: ${pr.head.sha}`,
                 `state: ${mergeableState}`,
                 `threads_open: ${openThreads}`,
+                `context_key: ${contextKey}`,
+                `mode: ${isContinue ? 'continue' : 'spawn'}`,
                 '',
-                `@jules **Continuous ops** (GHA agent-continuous-ops) — unattended advance.`,
+                header,
                 '',
                 `PR #${pr.number} · \`${pr.head.ref}\` → \`${pr.base.ref}\``,
                 `**Why:** ${reasons.join('; ')}`,
@@ -202,7 +276,24 @@ jobs:
                 body,
               });
 
+              // Post or update context bookmark
+              const ctxMarker = `<!-- agent-ctx:${contextKey} -->`;
+              const hasCtxBookmark = comments.some(c => c.body && c.body.includes(ctxMarker));
+              if (!hasCtxBookmark) {
+                const ctxBody = `${ctxMarker}\n_Context bookmark for \`${contextKey}\` (non-secret). Auth sessions remain ephemeral._`;
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: pr.number,
+                  body: ctxBody,
+                });
+              }
+
               acted += 1;
+              // Optimistically increment active runs for local tracking
+              activeRuns += 1;
+              dailyRuns += 1;
+
               report.push(`#${pr.number} (${reasons.join(', ')})`);
               core.info(`PR #${pr.number}: nudged — ${reasons.join('; ')}`);
 

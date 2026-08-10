@@ -1,0 +1,54 @@
+name: '🔄 Model Availability Polling'
+
+# Scheduled/On-Demand polling of free-tier OpenRouter models.
+# Ensures that GHA workflows are frequently updated with the most up-to-date data.
+# Pair with: #119, rate-limit-rotation, RL-17.
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # Hourly updates
+  workflow_dispatch:
+
+concurrency:
+  group: model-availability-polling
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5.1.1
+        with:
+          python-version: '3.12'
+
+      - name: Run Availability Polling & Dynamic Router Verification
+        env:
+          ROLE: triage
+          HAS_OPENROUTER: true
+          HAS_GEMINI: true
+          COUNTER_DIR: /tmp/model-router
+        run: |
+          python3 scripts/model_router.py
+
+      - name: Commit and Push updated cache/data
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f /tmp/model-router/openrouter_models_cache.json 2>/dev/null || true
+          git add docs/schemas/model-success-matrix.yaml scripts/model_router.py
+          if git diff --staged --quiet; then
+            echo "No updates to commit."
+          else
+            git commit -m "chore: auto-update model availability and success matrix (Implements: RL-17)"
+            git push origin HEAD:${{ github.ref }}
+          fi

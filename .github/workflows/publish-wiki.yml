@@ -10,8 +10,6 @@ on:
 
 concurrency:
   group: publish-wiki
-  # Match agent-feedback-linear-sync: do not cancel in-flight wiki publishes
-  # (a workflow_dispatch from one ref must not be dropped by an unrelated push).
   cancel-in-progress: false
 
 permissions:
@@ -25,12 +23,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Publish wiki/ → GitHub Wiki
-        uses: Andrew-Chen-Wang/github-wiki-action@v5
+        uses: Andrew-Chen-Wang/github-wiki-action@1bbb4280446f9630e8e21a18012cbacf3b0f992e # v5.0.6
         with:
           path: wiki
           strategy: clone
-          # First bootstrap only: if the wiki has never been initialized, create a
-          # dummy page in the Wiki UI, or temporarily set strategy: init once.
           token: ${{ github.token }}
           preprocess: true
           disable-empty-commits: true

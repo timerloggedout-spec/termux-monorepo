@@ -7,9 +7,6 @@ import subprocess
 DB_PATH = "local_repo.db"
 
 def init_db():
-    """
-    Create the SQLite database and required tables if they do not already exist.
-    """
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
         cursor.execute('''
@@ -38,25 +35,26 @@ def init_db():
                 verdict TEXT,
                 timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
             )''')
-        cursor.execute('''
-            CREATE VIRTUAL TABLE IF NOT EXISTS messages_fts USING fts5(
-                content,
-                session_id UNINDEXED,
-                msg_idx UNINDEXED
-            )''')
         conn.commit()
 
+from pathlib import Path
+from datetime import datetime, timezone
+
+    # Also write to run_history.jsonl for ForeSight
+    rh_file = Path.home() / 'termux-multi-agent/run_history.jsonl'
+    rh_file.parent.mkdir(parents=True, exist_ok=True)
+    with open(rh_file, 'a') as rhf:
+        json.dump({
+            "target_file": target_file,
+            "verdict": verdict,
+            "attempt": attempt,
+            "patch": patch[:200],
+            "errors": errors[:200] if errors else "",
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }, rhf)
+        rhf.write('\n')
+
 def log_attempt_telemetry(target_file, attempt, patch, errors, verdict):
-    """
-    Record a patch attempt and its outcome in the run history.
-    
-    Parameters:
-        target_file: Path of the file targeted by the attempt.
-        attempt: Attempt number.
-        patch: Patch content associated with the attempt.
-        errors: Errors reported for the attempt.
-        verdict: Outcome assigned to the attempt.
-    """
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
         cursor.execute(
@@ -65,33 +63,7 @@ def log_attempt_telemetry(target_file, attempt, patch, errors, verdict):
         )
         conn.commit()
 
-    # Also write to run_history.jsonl for ForeSight
-    try:
-        from pathlib import Path
-        from datetime import datetime, timezone
-        rh_file = Path.home() / 'termux-multi-agent/run_history.jsonl'
-        rh_file.parent.mkdir(parents=True, exist_ok=True)
-        with open(rh_file, 'a') as rhf:
-            json.dump({
-                "target_file": target_file,
-                "verdict": verdict,
-                "attempt": attempt,
-                "patch": patch[:200],
-                "errors": errors[:200] if errors else "",
-                "timestamp": datetime.now(timezone.utc).isoformat()
-            }, rhf)
-            rhf.write('\n')
-    except Exception:
-        pass
-
-def index_project_file(workspace_root, relative_path, conn=None):
-    """
-    Index a supported project file's code elements and import relationships in the database.
-    
-    Parameters:
-        workspace_root: Root directory of the project.
-        relative_path: File path relative to the project root.
-    """
+def index_project_file(workspace_root, relative_path):
     abs_path = os.path.join(workspace_root, relative_path)
     ext = os.path.splitext(relative_path)[1]
     lang_map = {'.py': 'python', '.js': 'javascript', '.mjs': 'javascript', '.rs': 'rust'}
@@ -99,110 +71,31 @@ def index_project_file(workspace_root, relative_path, conn=None):
     if not lang:
         return
     try:
-        # Run first ast-grep to scan nodes
         output = subprocess.check_output(["ast-grep", "scan", "--json", abs_path], text=True)
         nodes = json.loads(output)
-
-        # Run second ast-grep to scan imports
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            for node in nodes:
+                node_id = f"{relative_path}:{node.get('range', {}).get('start', {}).get('line', 0)}"
+                cursor.execute(
+                    "INSERT OR REPLACE INTO nodes VALUES (?, ?, ?, ?, ?, ?)",
+                    (node_id, relative_path, lang, node.get('kind'), node.get('text', '')[:50],
+                     node.get('range', {}).get('start', {}).get('line', 0))
+                )
         import_pattern = "import $MOD from '$PATH'" if lang == 'javascript' else "import $MOD"
         import_output = subprocess.check_output(
             ["ast-grep", "scan", "--pattern", import_pattern, "--json", abs_path], text=True
         )
         import_nodes = json.loads(import_output)
-
-        # Batch node database entries
-        node_data = []
-        for node in nodes:
-            node_id = f"{relative_path}:{node.get('range', {}).get('start', {}).get('line', 0)}"
-            node_data.append((
-                node_id, relative_path, lang, node.get('kind'), node.get('text', '')[:50],
-                node.get('range', {}).get('start', {}).get('line', 0)
-            ))
-
-        # Batch import edge database entries
-        edge_data = []
         for imp in import_nodes:
             imp_text = imp.get('text', '')
-            quoted_paths = re.findall(r'["\'](.*?)["\']', imp_text)
+            quoted_paths = re.findall(r"['"](.*?)['"]", imp_text)
             for target in quoted_paths:
                 clean_target = target.lstrip('./').replace('.js', '').replace('.py', '')
-                edge_data.append((relative_path, clean_target, "imports"))
-
-        # Database transaction using batch executemany for high performance
-        close_conn = False
-        if conn is None:
-            conn = sqlite3.connect(DB_PATH)
-            close_conn = True
-
-        try:
-            cursor = conn.cursor()
-            if node_data:
-                cursor.executemany("INSERT OR REPLACE INTO nodes VALUES (?, ?, ?, ?, ?, ?)", node_data)
-            if edge_data:
-                cursor.executemany("INSERT OR IGNORE INTO edges VALUES (?, ?, ?)", edge_data)
-            if close_conn:
-                conn.commit()
-        finally:
-            if close_conn:
-                conn.close()
+                cursor.execute(
+                    "INSERT OR IGNORE INTO edges VALUES (?, ?, ?)",
+                    (relative_path, clean_target, "imports")
+                )
+        conn.commit()
     except Exception:
         pass
-
-def batch_insert_fts_messages(messages, conn=None):
-    """
-    Insert message records into the full-text search table in a single batch.
-    
-    Parameters:
-        messages (iterable): Message dictionaries with `content`, `session_id`, and
-            `msg_idx` fields, or three-item iterables containing those values.
-    """
-    data = []
-    for msg in messages:
-        if isinstance(msg, dict):
-            content = msg.get('content', '')
-            session_id = msg.get('session_id', '')
-            msg_idx = msg.get('msg_idx', 0)
-        else:
-            content, session_id, msg_idx = msg
-        data.append((content, session_id, msg_idx))
-
-    close_conn = False
-    if conn is None:
-        conn = sqlite3.connect(DB_PATH)
-        close_conn = True
-    try:
-        cursor = conn.cursor()
-        if data:
-            cursor.executemany("INSERT INTO messages_fts(content, session_id, msg_idx) VALUES (?, ?, ?)", data)
-        if close_conn:
-            conn.commit()
-    finally:
-        if close_conn:
-            conn.close()
-
-def search_fts_messages(query, limit=10, conn=None):
-    """
-    Search indexed messages for matches in their content.
-    
-    Parameters:
-    	query (str): FTS5 query used to match message content.
-    	limit (int): Maximum number of matching messages to return.
-    	conn: Optional SQLite database connection.
-    
-    Returns:
-    	list: Tuples containing a highlighted content snippet, session ID, and message index.
-    """
-    close_conn = False
-    if conn is None:
-        conn = sqlite3.connect(DB_PATH)
-        close_conn = True
-    try:
-        cursor = conn.cursor()
-        cursor.execute(
-            "SELECT snippet(messages_fts, 0, '<b>', '</b>', '…', 40), session_id, msg_idx FROM messages_fts WHERE content MATCH ? LIMIT ?",
-            (query, limit)
-        )
-        return cursor.fetchall()
-    finally:
-        if close_conn:
-            conn.close()

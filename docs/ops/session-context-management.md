@@ -1,6 +1,6 @@
 # Session && Context Management (GitHub Actions)
 
-**Issue:** [#118](https://github.com/timerloggedout-spec/termux-monorepo/issues/118)  
+**Issue:** [#118](https://github.com/timerloggedout-spec/termux-monorepo/issues/118)
 **Related:** #109 · #112 (merged) · #114 · #72 · PR #3 (session-store untrack)
 
 ## Why “cached data was removed”

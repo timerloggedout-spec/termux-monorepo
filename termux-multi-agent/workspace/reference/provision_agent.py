@@ -423,28 +423,52 @@ def clear_screen():
 # State-tracking cache and position pointers for incremental I/O performance optimization
 _active_jobs_cache = {}
 _last_file_pos = 0
+_last_file_ino = None
+_last_file_mtime = 0
 
 def read_latest_telemetry():
-    global _last_file_pos, _active_jobs_cache
+    global _last_file_pos, _active_jobs_cache, _last_file_ino, _last_file_mtime
     if not os.path.exists(TELEMETRY_LOG):
         _active_jobs_cache = {}
         _last_file_pos = 0
+        _last_file_ino = None
+        _last_file_mtime = 0
         return []
     try:
-        file_size = os.path.getsize(TELEMETRY_LOG)
-        if file_size < _last_file_pos:
+        stat_info = os.stat(TELEMETRY_LOG)
+        file_size = stat_info.st_size
+        file_ino = stat_info.st_ino
+        file_mtime = stat_info.st_mtime
+
+        if (file_size < _last_file_pos or
+            _last_file_ino is None or
+            _last_file_ino != file_ino or
+            file_mtime < _last_file_mtime):
             _active_jobs_cache = {}
             _last_file_pos = 0
+            _last_file_ino = file_ino
+            _last_file_mtime = file_mtime
+
         with open(TELEMETRY_LOG, "r") as f:
             if _last_file_pos > 0:
                 f.seek(_last_file_pos)
-            for line in f:
+            while True:
+                curr_pos = f.tell()
+                line = f.readline()
+                if not line:
+                    break
+                if not line.endswith("\n"):
+                    f.seek(curr_pos)
+                    break
+                _last_file_pos = f.tell()
                 if not line.strip():
                     continue
-                entry = json.loads(line)
-                target = entry.get("target") or "System"
-                _active_jobs_cache[target] = entry
-            _last_file_pos = f.tell()
+                try:
+                    entry = json.loads(line)
+                    target = entry.get("target") or "System"
+                    _active_jobs_cache[target] = entry
+                except json.JSONDecodeError:
+                    continue
     except Exception:
         pass
     return list(_active_jobs_cache.values())

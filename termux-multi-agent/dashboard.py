@@ -25,31 +25,57 @@ else:
 # State-tracking cache and position pointers for incremental I/O performance optimization
 _active_jobs_cache = {}
 _last_file_pos = 0
+_last_file_ino = None
+_last_file_mtime = 0
 
 def read_latest_telemetry():
     """
     Optimized telemetry parser using state tracking and seek/tell operations
     to perform incremental I/O, yielding massive performance gains on large log streams.
     """
-    global _last_file_pos, _active_jobs_cache
+    global _last_file_pos, _active_jobs_cache, _last_file_ino, _last_file_mtime
     if not os.path.exists(TELEMETRY_LOG):
         # Reset cache if file is missing
         _active_jobs_cache = {}
         _last_file_pos = 0
+        _last_file_ino = None
+        _last_file_mtime = 0
         return []
 
     try:
-        file_size = os.path.getsize(TELEMETRY_LOG)
-        # If file was truncated or cleared, reset position and cache
-        if file_size < _last_file_pos:
+        stat_info = os.stat(TELEMETRY_LOG)
+        file_size = stat_info.st_size
+        file_ino = stat_info.st_ino
+        file_mtime = stat_info.st_mtime
+
+        # If file was truncated, recreated, or replaced, reset position and cache
+        if (file_size < _last_file_pos or
+            _last_file_ino is None or
+            _last_file_ino != file_ino or
+            file_mtime < _last_file_mtime):
             _active_jobs_cache = {}
             _last_file_pos = 0
+            _last_file_ino = file_ino
+            _last_file_mtime = file_mtime
 
         with open(TELEMETRY_LOG, "r") as f:
             if _last_file_pos > 0:
                 f.seek(_last_file_pos)
 
-            for line in f:
+            while True:
+                curr_pos = f.tell()
+                line = f.readline()
+                if not line:
+                    break
+                # Torn append guard: check if line terminates with a newline character
+                if not line.endswith("\n"):
+                    # Seek back so this incomplete line can be fully read on the next tick
+                    f.seek(curr_pos)
+                    break
+
+                # Commit offset up to the end of this complete line
+                _last_file_pos = f.tell()
+
                 if not line.strip():
                     continue
                 try:
@@ -58,8 +84,6 @@ def read_latest_telemetry():
                     _active_jobs_cache[target] = entry
                 except json.JSONDecodeError:
                     continue
-
-            _last_file_pos = f.tell()
     except Exception:
         # Fallback to returning current cache on file access or read errors
         pass
@@ -181,14 +205,17 @@ def main():
                 live.update(make_dashboard())
     except KeyboardInterrupt:
         # Clear screen and say goodbye gracefully
-        console.clear()
-        console.print(Panel(
-            "[bold green]Thank you for using Termux Multi-Agent Dashboard![/bold green]\n"
-            "Stay productive and keep building! ⚡🚀",
-            title="Exiting Dashboard",
-            border_style="green",
-            expand=False
-        ))
+        if console:
+            console.clear()
+            console.print(Panel(
+                "[bold green]Thank you for using Termux Multi-Agent Dashboard![/bold green]\n"
+                "Stay productive and keep building! ⚡🚀",
+                title="Exiting Dashboard",
+                border_style="green",
+                expand=False
+            ))
+        else:
+            print("Thank you for using Termux Multi-Agent Dashboard!\nStay productive and keep building! ⚡🚀")
 
 if __name__ == '__main__':
     main()

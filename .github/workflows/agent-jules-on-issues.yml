@@ -14,8 +14,7 @@ name: Jules on Issues (label / @jules)
 #
 # NOTE: push is listed only so a no-op job can succeed (avoids 0-job failure
 # status pollution on every push). Real work stays issues / issue_comment only.
-# skip-on-push is UNCONDITIONAL so graph always has ≥1 job. Concurrency fully
-# removed. Per-issue serialization deferred.
+# Concurrency is job-level only; group key never accesses issue payload on push.
 
 on:
   push:
@@ -27,13 +26,14 @@ on:
     types: [created]
 
 jobs:
-  # Always runs — guarantees the workflow never materializes as 0-job (GitHub
-  # marks those failed). Real work is gated on the other jobs' if conditions.
+  # Prevents GitHub from marking the run as failure when event is push
+  # (0-job runs are treated as failed). No real work on push.
   skip-on-push:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
-      - name: Always-green no-op (issue/comment work lives in other jobs)
-        run: echo "agent-jules-on-issues — skip-on-push always green; real work gated by event if"
+      - name: Skip (issue/comment only)
+        run: echo "agent-jules-on-issues is issues/issue_comment only — push no-op ok"
 
   jules-on-label:
     if: |
@@ -45,6 +45,10 @@ jobs:
         github.event.label.name == 'JULES'
       )
     runs-on: ubuntu-latest
+    concurrency:
+      # Only evaluate issue.number on issues/issue_comment; otherwise run_id
+      group: jules-issue-${{ (github.event_name == 'issues' || github.event_name == 'issue_comment') && github.event.issue.number || github.run_id }}
+      cancel-in-progress: false
     permissions:
       contents: read
       issues: write
@@ -185,6 +189,9 @@ jobs:
         startsWith(github.event.comment.body, '@Jules')
       )
     runs-on: ubuntu-latest
+    concurrency:
+      group: jules-issue-${{ (github.event_name == 'issues' || github.event_name == 'issue_comment') && github.event.issue.number || github.run_id }}
+      cancel-in-progress: false
     permissions:
       contents: read
       issues: write

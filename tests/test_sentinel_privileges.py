@@ -83,3 +83,28 @@ def test_enforce_local_privileges_skips_symlinks():
         # Ensure the symlinks themselves are recognized as symlinks
         assert symlinked_dir.is_symlink()
         assert symlinked_file.is_symlink()
+
+
+def test_enforce_local_privileges_with_read_only_files():
+    """Verify that enforce_local_privileges handles individual path permission exceptions gracefully."""
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        root_path = Path(tmp_dir)
+
+        # Create directories and files
+        subdir = root_path / "subdir"
+        subdir.mkdir()
+
+        test_file = subdir / "test.txt"
+        test_file.write_text("content")
+
+        # Set to read-only first
+        os.chmod(test_file, 0o400)
+
+        # Enforce privileges
+        enforce_local_privileges(root_path)
+
+        # Check permissions
+        assert (root_path.stat().st_mode & 0o777) == 0o700
+        assert (subdir.stat().st_mode & 0o777) == 0o700
+        # The file itself should be restricted to 0o600 or remain safe
+        assert (test_file.stat().st_mode & 0o777) in (0o600, 0o400)

@@ -14,7 +14,7 @@ name: Jules on Issues (label / @jules)
 #
 # NOTE: push is listed only so a no-op job can succeed (avoids 0-job failure
 # status pollution on every push). Real work stays issues / issue_comment only.
-# Concurrency is job-level only so pure push events never evaluate issue payload.
+# Concurrency is job-level only; group key never accesses issue payload on push.
 
 on:
   push:
@@ -46,7 +46,8 @@ jobs:
       )
     runs-on: ubuntu-latest
     concurrency:
-      group: jules-issue-${{ github.event.issue.number || github.run_id }}
+      # Only evaluate issue.number on issues/issue_comment; otherwise run_id
+      group: jules-issue-${{ (github.event_name == 'issues' || github.event_name == 'issue_comment') && github.event.issue.number || github.run_id }}
       cancel-in-progress: false
     permissions:
       contents: read
@@ -189,7 +190,7 @@ jobs:
       )
     runs-on: ubuntu-latest
     concurrency:
-      group: jules-issue-${{ github.event.issue.number || github.run_id }}
+      group: jules-issue-${{ (github.event_name == 'issues' || github.event_name == 'issue_comment') && github.event.issue.number || github.run_id }}
       cancel-in-progress: false
     permissions:
       contents: read

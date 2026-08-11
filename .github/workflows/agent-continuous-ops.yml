@@ -10,8 +10,8 @@ name: Continuous agent ops
 
 on:
   schedule:
-    # Every 2 hours — enough to clear lag without burning review quota
-    - cron: '17 */2 * * *'
+    # Every hour — enough to clear lag without burning review quota
+    - cron: '17 * * * *'
   workflow_dispatch:
     inputs:
       force_all:
@@ -34,10 +34,20 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
-      contents: read
+      contents: write
       pull-requests: write
       issues: write
     steps:
+      - name: Checkout monorepo
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Calculate Response Time Lag Index
+        env:
+          OPERATOR_GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          python3 scripts/ci/calculate_lag_index.py
+
       - name: Sweep open PRs and advance stuck work
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
@@ -51,8 +61,22 @@ jobs:
             const forceAll = process.env.FORCE_ALL === 'true';
             const maxPrs = Math.min(Number(process.env.MAX_PRS) || 8, 20);
             const marker = '<!-- continuous-agent-ops -->';
-            const debounceMs = 90 * 60 * 1000; // 90 minutes
-            const staleMs = 3 * 60 * 60 * 1000; // 3 hours without agent activity
+
+            // Default fallbacks
+            const defaultDebounceMs = 90 * 60 * 1000; // 90 minutes
+            const defaultStaleMs = 3 * 60 * 60 * 1000; // 3 hours without agent activity
+
+            // Load dynamic lag index if available
+            const fs = require('fs');
+            let lagIndex = {};
+            try {
+              if (fs.existsSync('docs/ops/response_time_lag_index.json')) {
+                lagIndex = JSON.parse(fs.readFileSync('docs/ops/response_time_lag_index.json', 'utf8'));
+                core.info('Successfully loaded dynamic response time lag index.');
+              }
+            } catch (e) {
+              core.info('Could not load lag index, using default fallbacks: ' + e.message);
+            }
 
             const agentLogins = [
               'google-labs-jules', 'devin-ai-integration', 'coderabbitai',
@@ -104,6 +128,29 @@ jobs:
                 issue_number: pr.number,
                 per_page: 100,
               });
+
+              // Get dynamic debounce and stale times
+              let debounceMs = defaultDebounceMs;
+              let staleMs = defaultStaleMs;
+
+              if (lagIndex.by_pr && lagIndex.by_pr[String(pr.number)]) {
+                const metrics = lagIndex.by_pr[String(pr.number)];
+                if (metrics.suggested_debounce_ms) {
+                  debounceMs = metrics.suggested_debounce_ms;
+                }
+                if (metrics.suggested_stale_ms) {
+                  staleMs = metrics.suggested_stale_ms;
+                }
+              } else if (lagIndex.global_averages) {
+                if (lagIndex.global_averages.suggested_debounce_ms) {
+                  debounceMs = lagIndex.global_averages.suggested_debounce_ms;
+                }
+                if (lagIndex.global_averages.suggested_stale_ms) {
+                  staleMs = lagIndex.global_averages.suggested_stale_ms;
+                }
+              }
+
+              core.info(`PR #${pr.number}: Using debounceMs=${debounceMs} (${Math.round(debounceMs/60000)}m), staleMs=${staleMs} (${Math.round(staleMs/3600000)}h)`);
 
               const lastOps = comments
                 .filter(c => c.body && c.body.includes(marker))
@@ -217,3 +264,17 @@ jobs:
               .write();
 
             core.setOutput('acted', String(acted));
+
+      - name: Commit and Push Updated Lag Index & SSOT
+        env:
+          GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/ops/response_time_lag_index.json docs/ops/LANE_CONSOLIDATION_SSOT.md
+          if ! git diff-index --quiet HEAD --; then
+            git commit -m "docs: dynamic update of lane consolidation lag index & SSOT"
+            git push origin HEAD:${{ github.ref }} || echo "Could not push changes; skipping (likely read-only token or PR branch)"
+          else
+            echo "No changes to lag index/SSOT."
+          fi

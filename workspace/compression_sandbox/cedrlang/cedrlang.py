@@ -134,9 +134,9 @@ def protect_placeholders(text: str) -> Tuple[str, List[str]]:
         r'```[\s\S]*?```',
         r'`[^`\n]*?`',
         r'\!?\[[^\]]*?\]\([^\)]*?\)',
-        r'<[^>]*?>',
-        r'\*\*[^*]+?\*\*',
-        r'\*[^*]+?\*'
+        r'</?[a-zA-Z][^>\n]*?>',      # plausible HTML tags restricted to a single line
+        r'\*\*[^*\n]+?\*\*',          # bold strictly on single line to prevent spanning across bullets
+        r'\*[^*\n]+?\*'               # italics strictly on single line to prevent spanning across bullets
     ]
     combined_pattern = re.compile("|".join(patterns))
     def repl(match):

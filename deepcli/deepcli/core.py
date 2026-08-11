@@ -615,7 +615,7 @@ def run_ci(event, session, peer, workspace, operator_token):
                 'Content-Type': 'application/json',
             }
             payload = {
-                'model': peer.get('model') or 'gpt-4o-mini',
+                'model': 'gpt-4o-mini',  # or appropriate
                 'messages': [
                     {'role': 'system', 'content': 'You are a code reviewer. Analyze the diff and suggest improvements.'},
                     {'role': 'user', 'content': diff[:8000]}  # truncate

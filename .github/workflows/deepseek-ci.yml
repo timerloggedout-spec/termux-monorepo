@@ -63,7 +63,6 @@ jobs:
         run: |
           python -m deepcli.ci_mode \
             --workspace "$GITHUB_WORKSPACE" \
-            --event "${{ github.event.inputs.event_payload || '' }}" \
             --cache-dir "${{ runner.temp }}/deepseek-cache"
 
       - name: Upload results (if any)

@@ -11,8 +11,12 @@ name: Jules on Issues (label / @jules)
 # Optional: secrets.JULES_API_KEY for google-labs-code/jules-invoke
 #
 # SECURITY: Issue triggers are restricted — untrusted openers cannot burn quota.
+#
+# NOTE: push is listed only so a no-op job can succeed (avoids 0-job failure
+# status pollution on every push). Real work stays issues / issue_comment only.
 
 on:
+  push:
   issues:
     types: [labeled, opened]
   issue_comment:
@@ -23,6 +27,15 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # Prevents GitHub from marking the run as failure when event is push
+  # (0-job runs are treated as failed). No real work on push.
+  skip-on-push:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Skip (issue/comment only)
+        run: echo "agent-jules-on-issues is issues/issue_comment only — push no-op ok"
+
   jules-on-label:
     if: |
       github.event_name == 'issues' &&

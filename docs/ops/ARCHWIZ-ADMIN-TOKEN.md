@@ -1,9 +1,9 @@
 # ArchWiz Admin Token (4π¢hw12)
 
-**Role:** Second Administrator PAT for Grok / OPERATOR / ArchWiz automation.  
+**Role:** Second Administrator PAT for Grok / OPERATOR / ArchWiz automation.
 **Scope target:** Everything the primary `OPERATOR` token has **except** `delete_repo`.
 
-> GitHub does **not** allow minting classic/fine-grained PATs via API.  
+> GitHub does **not** allow minting classic/fine-grained PATs via API.
 > An account owner (or org admin) must create the token in the UI, then store it as a repository/org secret. This document is the SSOT for *what* to create and *where* to wire it.
 
 ## Why a second token

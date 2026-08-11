@@ -1,8 +1,8 @@
 # DeepSeek CI (safe path) — Agentic
 
-**Issue:** #109  
-**Implements:** RL-18 (`docs/proposals/active/rate-limit-rotation/ITEMS.md`)  
-**Supersedes destructive Jules PR:** #134  
+**Issue:** #109
+**Implements:** RL-18 (`docs/proposals/active/rate-limit-rotation/ITEMS.md`)
+**Supersedes destructive Jules PR:** #134
 **Folders:** `deepcli/` (PoW WASM + proxy), `multi-ai-cli/` (backends + `ci_mode.py`)
 
 ## What landed

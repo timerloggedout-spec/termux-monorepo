@@ -49,7 +49,9 @@ WASM_SOLVER = Path(__file__).parent.parent / "pow_solver.js"
 BASE_URL = "https://chat.deepseek.com"
 
 def enforce_local_privileges(root_dir: Path):
-    """Recursively restrict permissions of root_dir and its files, skipping symlinks to avoid hijacking."""
+    """Recursively restrict permissions of root_dir and its files, skipping symlinks to avoid hijacking.
+    Ensures directories are 0o700 and files are 0o600, with robust path-by-path try/except safety.
+    """
     try:
         if not root_dir.exists():
             return

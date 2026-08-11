@@ -29,9 +29,9 @@ Model routing is controlled via `scripts/model_router.py` using dynamic ELO-base
 |------------------|--------------|--------------|--------------|-------------------|
 | **omni/auto/best-free** | **400** | **250** | **400** | Primary free peer (all roles) |
 | **openrouter/google/gemma-4-31b-it:free** | **80** | **80** | **80** | Triage, Review, Invoke |
-| **openrouter/google/gemma-4-26b-a4b-it:free** | **80** | **80** | **80** | Triage, Invoke |
+| **openrouter/google/gemma-4-26b-a4b-it:free** | **80** | **80** | **80** | Triage, Review, Invoke |
 | **openrouter/meta-llama/llama-3.3-70b-instruct:free** | **80** | **80** | **80** | Triage, Review, Invoke |
-| **openrouter/google/gemma-3-12b-it:free** | **80** | **80** | **80** | Triage, Invoke |
+| **openrouter/google/gemma-3-12b-it:free** | **80** | **80** | **80** | Triage, Review, Invoke |
 | **openrouter/cohere/north-mini-code:free** | **60** | **60** | **60** | Review, Invoke |
 | **openrouter/qwen/qwen3-coder:free** | **60** | **60** | **60** | Review, Invoke |
 | **openrouter/deepseek/deepseek-r1:free** | **40** | **40** | **40** | Review (specialized) |

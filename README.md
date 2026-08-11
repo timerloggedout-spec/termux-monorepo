@@ -75,17 +75,17 @@ Use this ladder when orienting in the tree. `_Entry+ReadMe.md` and `termux-ecosy
 | Priority | Start here | What you get |
 |----------|------------|--------------|
 | 1 | `archwiz/TOOL_INDEX.md` | 28 tools / 7 categories — cockpit, forensic, autonomous, verification |
-| 1.5 | `docs/ops/LANE_CONSOLIDATION_SSOT.md` | Master Consolidation, Timing Quotas/CoolDowns & Production Improvements SSOT |
-| 2 | `archwiz/CONCEPT_INDEX.md` | Concepts + status (built / reserved / not built) + feature backlog |
-| 3 | `archwiz/REFERENCE_HUB.md` | Links to DATA_FLOW_MANIFEST, SYSTEM_MAP, func/llm indices |
-| 4 | `archwiz/METHODOLOGY_INDEX.md` | Approaches tried, failures, what stuck |
-| 5 | `archwiz/PROCEDURES.md`, `ARCHWIZARD_TASKS.md` | Runbooks and active tasks |
-| 6 | `docs/RECON.md` (this RECON) | Branch/PR critique, refTemplates nesting gaps, prioritized proposals |
-| 7 | `replit.md` on branch `critical-proposal` (PR #1) | Critical path/config issues and optimization proposals |
-| 8 | `_Entry+ReadMe.md` | One-line command → entry table |
-| 9 | `termux-ecosystem-architecture.html` | Visual ecosystem diagram |
-| 10 | `refTemplates/README_RECOVERY.md` on `recreate/refTemplates-skeleton` | Metadata-only restore policy for refs |
-| 0.1 | `workspace/*.md` `workspace/CAVEMAN_INDEX.md` `workspace/SYSTEM_MAP.md` `workspace/llm_map/{*.md,*.txt,*.json,*.jsonl}` | Full Ecosystem Mapping |
+| 2 | `docs/ops/LANE_CONSOLIDATION_SSOT.md` | Master Consolidation, Timing Quotas/CoolDowns & Production Improvements SSOT |
+| 3 | `archwiz/CONCEPT_INDEX.md` | Concepts + status (built / reserved / not built) + feature backlog |
+| 4 | `archwiz/REFERENCE_HUB.md` | Links to DATA_FLOW_MANIFEST, SYSTEM_MAP, func/llm indices |
+| 5 | `archwiz/METHODOLOGY_INDEX.md` | Approaches tried, failures, what stuck |
+| 6 | `archwiz/PROCEDURES.md`, `ARCHWIZARD_TASKS.md` | Runbooks and active tasks |
+| 7 | `docs/RECON.md` (this RECON) | Branch/PR critique, refTemplates nesting gaps, prioritized proposals |
+| 8 | `replit.md` on branch `critical-proposal` (PR #1) | Critical path/config issues and optimization proposals |
+| 9 | `_Entry+ReadMe.md` | One-line command → entry table |
+| 10 | `termux-ecosystem-architecture.html` | Visual ecosystem diagram |
+| 11 | `refTemplates/README_RECOVERY.md` on `recreate/refTemplates-skeleton` | Metadata-only restore policy for refs |
+| 12 | `workspace/*.md` `workspace/CAVEMAN_INDEX.md` `workspace/SYSTEM_MAP.md` `workspace/llm_map/{*.md,*.txt,*.json,*.jsonl}` | Full Ecosystem Mapping |
 
 Quick command table (also in `_Entry+ReadMe.md`):
 

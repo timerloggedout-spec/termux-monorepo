@@ -5,8 +5,6 @@ import sys
 import tempfile
 from pathlib import Path
 
-import pytest
-
 sys.path.insert(0, str(Path(__file__).parent.parent / "multi-ai-cli"))
 
 from ci_mode import main, run_ci
@@ -16,7 +14,9 @@ def test_run_ci_offline_mock(monkeypatch):
     temp_dir = tempfile.mkdtemp()
     try:
         import backends.deepseek as ds_mod
+        import subprocess
 
+        monkeypatch.setenv("DEEPSEEK_TOKEN", "test-model-token")
         monkeypatch.setattr(
             ds_mod.DeepSeekBackend,
             "send_message",
@@ -27,16 +27,6 @@ def test_run_ci_offline_mock(monkeypatch):
             "__init__",
             lambda self, session_manager: None,
         )
-
-        event_data = {
-            "action": "synchronize",
-            "pull_request": {"number": 137},
-            "repository": {"full_name": "test/repo"},
-        }
-
-        # Avoid real gh calls
-        import subprocess
-
         monkeypatch.setattr(
             subprocess,
             "check_output",
@@ -48,6 +38,11 @@ def test_run_ci_offline_mock(monkeypatch):
             lambda *a, **k: type("R", (), {"returncode": 0})(),
         )
 
+        event_data = {
+            "action": "synchronize",
+            "pull_request": {"number": 137},
+            "repository": {"full_name": "test/repo"},
+        }
         result = run_ci(
             event=event_data,
             workspace=temp_dir,
@@ -56,9 +51,10 @@ def test_run_ci_offline_mock(monkeypatch):
 
         assert result is not None
         assert result["provider_used"] == "deepseek"
-        assert result["event"] == "synchronize"
+        assert result["status"] == "ok"
         assert len(result["actions"]) == 1
-        assert "Mocked Code Review" in result["actions"][0]["summary"]
+        assert result["actions"][0]["type"] == "pr_review"
+        assert result["actions"][0].get("posted") is True
     finally:
         shutil.rmtree(temp_dir)
 
@@ -78,6 +74,7 @@ def test_ci_output_permissions(monkeypatch):
 
         monkeypatch.setenv("GITHUB_EVENT_PATH", str(event_path))
         monkeypatch.setenv("OPERATOR_TOKEN", "test_token")
+        monkeypatch.setenv("DEEPSEEK_TOKEN", "test-model-token")
 
         import backends.deepseek as ds_mod
         import subprocess
@@ -102,7 +99,6 @@ def test_ci_output_permissions(monkeypatch):
             "run",
             lambda *a, **k: type("R", (), {"returncode": 0})(),
         )
-
         monkeypatch.setattr(
             sys,
             "argv",
@@ -124,6 +120,10 @@ def test_ci_output_permissions(monkeypatch):
             output_file = Path("deepseek_output.json")
             assert output_file.exists()
             assert (os.stat(output_file).st_mode & 0o777) == 0o600
+            data = json.loads(output_file.read_text(encoding="utf-8"))
+            # Metadata only — no model body
+            assert "Mocked" not in json.dumps(data)
+            assert data.get("status") == "ok"
         finally:
             os.chdir(original_cwd)
     finally:

@@ -169,7 +169,8 @@ def is_leet_word(w: str) -> bool:
 
 
 def to_1337speak(text: str) -> str:
-    """Apply basic 1337 character replacements to standard words, preserving line structures."""
+    """Apply basic 1337 character replacements to standard words sparsely and randomly, preserving line structures."""
+    import random
     lines = text.splitlines()
     res_lines = []
     all_symbols = set(SYMBOL_MAP.values()) | set(GRIMOIRE_MAP.values())
@@ -180,7 +181,8 @@ def to_1337speak(text: str) -> str:
             if "__CEDR_PLACE_HOLDER_" in w or w in all_symbols:
                 res_words.append(w)
             elif w.isalpha():
-                res_words.append("".join(LEET_CHARS.get(c, c) for c in w))
+                # Sparsely substitute characters with a 70% probability for organic, distinct outputs
+                res_words.append("".join(LEET_CHARS.get(c, c) if random.random() < 0.7 else c for c in w))
             else:
                 res_words.append(w)
         res_lines.append(" ".join(res_words))

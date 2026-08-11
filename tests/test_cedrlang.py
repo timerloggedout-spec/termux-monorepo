@@ -1,4 +1,3 @@
-import os
 import tempfile
 from pathlib import Path
 from workspace.compression_sandbox.cedrlang import cedrlang
@@ -6,7 +5,6 @@ from workspace.compression_sandbox.cedrlang import cedrlang
 def test_symbol_substitution():
     text = "if true then success else error"
     compressed = cedrlang.compress(text, aggressive=False)
-    # expect symbols for if (?, then =>, success ✓, else |, error ⚠)
     assert "?" in compressed
     assert "⇒" in compressed
     assert "✓" in compressed
@@ -33,7 +31,6 @@ def test_grimoire_mapping():
 def test_placeholder_protection():
     text = "Please review the code in `x = 42` and check [this link](http://example.com) for details."
     compressed = cedrlang.compress(text, aggressive=True)
-    # The protected parts must remain exactly untouched
     assert "`x = 42`" in compressed
     assert "[this link](http://example.com)" in compressed
 
@@ -41,9 +38,41 @@ def test_placeholder_protection():
     assert "`x = 42`" in expanded
     assert "[this link](http://example.com)" in expanded
 
+def test_bold_emphasis_protection():
+    text = "This is **bold** text and *italic* text."
+    compressed = cedrlang.compress(text, aggressive=True)
+    assert "**bold**" in compressed
+    assert "*italic*" in compressed
+
+    expanded = cedrlang.expand(compressed)
+    assert "**bold**" in expanded
+    assert "*italic*" in expanded
+
+def test_line_preservation():
+    text = "Line 1.\nLine 2.\nLine 3."
+    compressed = cedrlang.compress(text, aggressive=True)
+    assert "\n" in compressed
+    assert len(compressed.splitlines()) == 3
+
+    expanded = cedrlang.expand(compressed)
+    assert "\n" in expanded
+    assert len(expanded.splitlines()) == 3
+
+def test_filename_and_number_protection():
+    text = "The file registry.yaml has version v1.2 and config 42."
+    compressed = cedrlang.compress(text, aggressive=True)
+    # registry.yaml and v1.2 should not be mangled
+    assert "registry.yaml" in compressed
+    assert "v1.2" in compressed
+    assert "42" in compressed
+
+    expanded = cedrlang.expand(compressed)
+    assert "registry.yaml" in expanded
+    assert "v1.2" in expanded
+    assert "42" in expanded
+
 def test_caveman_stripper():
     text = "The quick brown fox is jumping over a lazy dog"
-    # 'The', 'is', 'a' are stopwords and should be removed
     stripped = cedrlang.caveman_strip(text)
     words = stripped.split()
     assert "The" not in words

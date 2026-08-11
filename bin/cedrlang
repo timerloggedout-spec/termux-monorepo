@@ -1,30 +1,32 @@
 #!/usr/bin/env python3
 import os
 import sys
+import traceback
 
-# Try relative path first
+# Resolve path relative to the location of the bin/cedrlang script
+script_dir = os.path.dirname(os.path.abspath(__file__))
 possible_paths = [
-    os.path.join(os.path.dirname(__file__), "../workspace/compression_sandbox/cedrlang/cedrlang.py"),
-    os.path.join(os.getcwd(), "workspace/compression_sandbox/cedrlang/cedrlang.py"),
+    os.path.abspath(os.path.join(script_dir, "../workspace/compression_sandbox/cedrlang/cedrlang.py")),
     "/data/data/com.termux/files/home/workspace/compression_sandbox/cedrlang/cedrlang.py"
 ]
 
 target_path = None
 for p in possible_paths:
     if os.path.exists(p):
-        target_path = os.path.abspath(p)
+        target_path = p
         break
 
 if not target_path:
-    # Default fallback to Termux absolute path
     target_path = "/data/data/com.termux/files/home/workspace/compression_sandbox/cedrlang/cedrlang.py"
 
-# Execute the script
 try:
     with open(target_path, "r", encoding="utf-8") as f:
         code = f.read()
     glb = {"__name__": "__main__", "__file__": target_path}
     exec(code, glb)
+except SystemExit as se:
+    sys.exit(se.code)
 except Exception as e:
     print(f"Error executing CedrLang from path {target_path}: {e}", file=sys.stderr)
+    traceback.print_exc()
     sys.exit(1)

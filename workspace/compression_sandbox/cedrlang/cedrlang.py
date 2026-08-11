@@ -103,6 +103,10 @@ DECOMP_CHARS = {
     '5': 's', '$': 's', '+': 't', '2': 'z', '7': 't', '9': 'g'
 }
 
+# Create reverse mappings for exact expansion lookup
+REV_SYMBOL_MAP = {v: k for k, v in SYMBOL_MAP.items()}
+REV_GRIMOIRE_MAP = {v: k for k, v in GRIMOIRE_MAP.items()}
+
 # ------------------------------------------------------------
 # 2. Helper Utilities & O(N) Translation Engine
 # ------------------------------------------------------------
@@ -119,18 +123,20 @@ def single_pass_replace(text: str, mapping: Dict[str, str]) -> str:
             pattern_parts.append(re.escape(k))
     pattern = re.compile("|".join(pattern_parts), re.IGNORECASE)
     lower_mapping = {k.lower(): v for k, v in mapping.items()}
-    # Add spacing around symbols to keep them token-friendly and readable
+    # Clean padding spacing to keep them token-friendly and readable
     return pattern.sub(lambda m: f" {lower_mapping.get(m.group(0).lower(), m.group(0))} ", text)
 
 
 def protect_placeholders(text: str) -> Tuple[str, List[str]]:
-    """Extract code blocks, inline code, HTML and links to prevent corruption."""
+    """Extract code blocks, inline code, HTML, links, and bold/emphasis to prevent corruption."""
     placeholders = []
     patterns = [
         r'```[\s\S]*?```',
         r'`[^`\n]*?`',
         r'\!?\[[^\]]*?\]\([^\)]*?\)',
-        r'<[^>]*?>'
+        r'<[^>]*?>',
+        r'\*\*[^*]+?\*\*',
+        r'\*[^*]+?\*'
     ]
     combined_pattern = re.compile("|".join(patterns))
     def repl(match):
@@ -148,34 +154,58 @@ def restore_placeholders(text: str, placeholders: List[str]) -> str:
     return text
 
 
+def is_leet_word(w: str) -> bool:
+    """Determine if a word should be decompiled, avoiding numbers, placeholders, decimals/filenames."""
+    if "__CEDR_PLACE_HOLDER_" in w:
+        return False
+    if "." in w or "/" in w or "\\" in w:
+        return False
+    # Strip any surrounding punctuation to analyze the word core
+    clean_w = re.sub(r'[^a-zA-Z0-9$]', '', w)
+    if not clean_w or clean_w.isdigit():
+        return False
+    # Must contain at least one letter or leet-replaced character
+    return any(c.isalpha() or c in DECOMP_CHARS for c in clean_w)
+
+
 def to_1337speak(text: str) -> str:
-    """Apply basic 1337 character replacements to standard words only."""
-    words = text.split()
-    res = []
+    """Apply basic 1337 character replacements to standard words, preserving line structures."""
+    lines = text.splitlines()
+    res_lines = []
     all_symbols = set(SYMBOL_MAP.values()) | set(GRIMOIRE_MAP.values())
-    for w in words:
-        if w.startswith("__CEDR_PLACE_HOLDER_") or w in all_symbols:
-            res.append(w)
-        else:
-            # Only translate alphabetic words to avoid breaking numbers or symbols
-            if w.isalpha():
-                res.append("".join(LEET_CHARS.get(c, c) for c in w))
+    for line in lines:
+        words = line.split(" ")
+        res_words = []
+        for w in words:
+            if "__CEDR_PLACE_HOLDER_" in w or w in all_symbols:
+                res_words.append(w)
+            elif w.isalpha():
+                res_words.append("".join(LEET_CHARS.get(c, c) for c in w))
             else:
-                res.append(w)
-    return " ".join(res)
+                res_words.append(w)
+        res_lines.append(" ".join(res_words))
+    suffix = "\n" if text.endswith("\n") else ""
+    return "\n".join(res_lines) + suffix
 
 
 def from_1337speak(text: str) -> str:
-    """Reverse 1337 character replacements approximately."""
-    words = text.split()
-    res = []
+    """Reverse 1337 character replacements approximately, preserving line structures."""
+    lines = text.splitlines()
+    res_lines = []
     all_symbols = set(SYMBOL_MAP.values()) | set(GRIMOIRE_MAP.values())
-    for w in words:
-        if w.startswith("__CEDR_PLACE_HOLDER_") or w in all_symbols:
-            res.append(w)
-        else:
-            res.append("".join(DECOMP_CHARS.get(c, c) for c in w))
-    return " ".join(res)
+    for line in lines:
+        words = line.split(" ")
+        res_words = []
+        for w in words:
+            if "__CEDR_PLACE_HOLDER_" in w or w in all_symbols:
+                res_words.append(w)
+            elif is_leet_word(w):
+                res_words.append("".join(DECOMP_CHARS.get(c, c) for c in w))
+            else:
+                res_words.append(w)
+        res_lines.append(" ".join(res_words))
+    suffix = "\n" if text.endswith("\n") else ""
+    return "\n".join(res_lines) + suffix
 
 
 # ------------------------------------------------------------
@@ -212,25 +242,65 @@ def compress(text: str, aggressive: bool = True) -> str:
     return restore_placeholders(text, placeholders)
 
 
+def expand_token(word: str) -> str:
+    """Translate symbols/Grimoire exact matches while preserving leading/trailing punctuation."""
+    if word in REV_GRIMOIRE_MAP:
+        return REV_GRIMOIRE_MAP[word]
+    if word in REV_SYMBOL_MAP:
+        return REV_SYMBOL_MAP[word]
+    # Check with punctuation stripped, but only if it contains alphanumeric characters
+    if any(c.isalnum() for c in word):
+        m = re.match(r'^([^\w\s]*)(.*?)([^\w\s]*)$', word)
+        if m:
+            lead, core, trail = m.groups()
+            if core in REV_GRIMOIRE_MAP:
+                return f"{lead}{REV_GRIMOIRE_MAP[core]}{trail}"
+            if core in REV_SYMBOL_MAP:
+                return f"{lead}{REV_SYMBOL_MAP[core]}{trail}"
+    return word
+
+
 def expand(cedr: str) -> str:
-    """Expand CedrLang back to approximate natural language."""
+    """Expand CedrLang back to approximate natural language, preserving document layouts."""
     if not cedr:
         return ""
     cedr, placeholders = protect_placeholders(cedr)
     # 1. Decompile character replacements
     cedr = from_1337speak(cedr)
-    # 2. Expand symbols & Grimoire mappings
-    rev_symbols = {v.strip(): f" {k.strip()} " for k, v in SYMBOL_MAP.items()}
-    rev_grimoire = {v: k for k, v in GRIMOIRE_MAP.items()}
-    cedr = single_pass_replace(cedr, rev_symbols)
-    cedr = single_pass_replace(cedr, rev_grimoire)
-    # 3. Clean up formatting spaces and restore placeholders
+    # 2. Expand symbols & Grimoire mappings via token boundaries
+    lines = cedr.splitlines()
+    res_lines = []
+    for line in lines:
+        # Check if line is a markdown list item/bullet to avoid translating bullet marks
+        bullet_match = re.match(r'^(\s*[-+*]|\s*\d+\.)\s', line)
+        if bullet_match:
+            prefix = bullet_match.group(0)
+            rest = line[len(prefix):]
+            words = rest.split(" ")
+            expanded_words = [expand_token(w) for w in words]
+            res_lines.append(prefix + " ".join(expanded_words))
+        else:
+            words = line.split(" ")
+            expanded_words = [expand_token(w) for w in words]
+            res_lines.append(" ".join(expanded_words))
+
+    suffix = "\n" if cedr.endswith("\n") else ""
+    cedr = "\n".join(res_lines) + suffix
+    # 3. Clean up spaces and restore placeholders
     cedr = re.sub(r'[ \t]+', ' ', cedr)
     return restore_placeholders(cedr, placeholders).strip()
 
 
 # ------------------------------------------------------------
-# 5. Token counter (using cl100k_base approximation)
+# 5. Public helper for external integrations
+# ------------------------------------------------------------
+def deepcli_filter(prompt: str) -> str:
+    """Hook for deepcli – compress user prompt before sending to API."""
+    return compress(prompt, aggressive=True)
+
+
+# ------------------------------------------------------------
+# 6. Token counter (using cl100k_base approximation)
 # ------------------------------------------------------------
 def count_tokens(text: str) -> int:
     """Rough token count using whitespace + punctuation heuristic."""
@@ -252,7 +322,7 @@ def stats_report(original: str, compressed: str) -> Dict[str, Any]:
 
 
 # ------------------------------------------------------------
-# 6. CLI & main
+# 7. CLI & main
 # ------------------------------------------------------------
 def main():
     parser = argparse.ArgumentParser(description="CedrLang – Agentic Compression Protocol")

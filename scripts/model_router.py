@@ -10,6 +10,8 @@ See .github/connectors/llm-peers.yaml for authorized catalog.
 LEGACY_MODELS is the conservative catalog-unavailable allow-list: only models
 proven in production. Newly listed free models must appear in a live/stale
 OpenRouter poll before they are selected.
+
+Verified and dynamic model routing logic.
 """
 
 import os

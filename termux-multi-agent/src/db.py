@@ -6,6 +6,16 @@ import subprocess
 
 DB_PATH = "local_repo.db"
 
+def _secure_db():
+    try:
+        if os.path.exists(DB_PATH):
+            os.chmod(DB_PATH, 0o600)
+    except Exception:
+        pass
+
+# Ensure database permissions are restricted on module load
+_secure_db()
+
 def init_db():
     """
     Create the SQLite database tables used for code indexing, run history, and message search.

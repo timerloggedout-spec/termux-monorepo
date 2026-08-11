@@ -1,11 +1,8 @@
 name: Agent review → auto Jules
 
 # When CodeRabbit, Devin, or other review bots leave feedback, automatically
-# summon Jules to apply fixes. Operator no longer comments "@jules resolve".
-#
-# Requires: secrets.JULES_API_KEY (optional but recommended for invoke path)
-# Jules GitHub App must have repo access. Prefer Reactive Mode OFF so Jules
-# also picks up the posted @jules comment on PRs it owns.
+# summon Jules via @jules (display moniker: heyVern — do not @-mention strangers).
+# Monikers: docs/ops/AGENT-MONIKERS.md
 
 on:
   pull_request_review:
@@ -125,7 +122,7 @@ jobs:
             const path = context.payload.comment?.path || '';
             const body = [
               marker,
-              `@jules **Auto-resolve** (GHA agent-review-auto-jules) — do not wait for a human ping.`,
+              `@jules **Auto-resolve** (heyVern lane / GHA agent-review-auto-jules) — do not wait for a human ping.`,
               ``,
               `Bot feedback from **${bot}** on PR #${prNumber} (branch \`${head}\`).`,
               path ? `File: \`${path}\`` : '',
@@ -142,7 +139,8 @@ jobs:
               `4. If conflicts with base exist, resolve them.`,
               `5. Skip pure nits only if they conflict with security/gates; otherwise apply autofixes.`,
               ``,
-              `Agent: Grok orchestration · Profile: https://x.com/grok`,
+              `Monikers: docs/ops/AGENT-MONIKERS.md`,
+              `Agent: Grok (archW1z) orchestration · Profile: https://x.com/grok`,
             ].filter(Boolean).join('\n');
             await github.rest.issues.createComment({
               owner: context.repo.owner,

@@ -11,18 +11,30 @@ name: Jules on Issues (label / @jules)
 # Optional: secrets.JULES_API_KEY for google-labs-code/jules-invoke
 #
 # SECURITY: Issue triggers are restricted — untrusted openers cannot burn quota.
+#
+# NOTE: push is listed only so a no-op job can succeed (avoids 0-job failure
+# status pollution on every push). Real work stays issues / issue_comment only.
+# skip-on-push is UNCONDITIONAL so graph always has ≥1 job. Concurrency fully
+# removed. Per-issue serialization deferred.
 
 on:
+  push:
+    branches:
+      - '**'
   issues:
     types: [labeled, opened]
   issue_comment:
     types: [created]
 
-concurrency:
-  group: jules-issue-${{ github.event.issue.number || github.run_id }}
-  cancel-in-progress: false
-
 jobs:
+  # Always runs — guarantees the workflow never materializes as 0-job (GitHub
+  # marks those failed). Real work is gated on the other jobs' if conditions.
+  skip-on-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Always-green no-op (issue/comment work lives in other jobs)
+        run: echo "agent-jules-on-issues — skip-on-push always green; real work gated by event if"
+
   jules-on-label:
     if: |
       github.event_name == 'issues' &&

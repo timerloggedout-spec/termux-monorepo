@@ -6,6 +6,10 @@ name: DeepSeek CI – Agentic (safe)
 #
 # Cost control: NOT on every synchronize. Opt-in via label or dispatch.
 # Fixes #109 without superseding elevated peer budgets or continuous-ops.
+#
+# Tokens:
+#   DEEPSEEK_TOKEN — model auth only
+#   ARCHWIZ_GITHUB_TOKEN || OPERATOR_* — GitHub writes (PR comments)
 
 on:
   pull_request:
@@ -35,21 +39,24 @@ jobs:
           EVENT: ${{ github.event_name }}
           LABEL: ${{ github.event.label.name || '' }}
           PR: ${{ github.event.pull_request.number || github.event.inputs.pr_number || '' }}
-          HAS_TOKEN: ${{ secrets.DEEPSEEK_TOKEN != '' || secrets.OPERATOR_TOKEN != '' || secrets.OPERATOR_GITHUB_TOKEN != '' }}
+          HAS_MODEL: ${{ secrets.DEEPSEEK_TOKEN != '' }}
+          HAS_GH: ${{ secrets.ARCHWIZ_GITHUB_TOKEN != '' || secrets.OPERATOR_GITHUB_TOKEN != '' || secrets.OPERATOR_TOKEN != '' }}
         run: |
           set -euo pipefail
           run=false
           if [ "$EVENT" = "workflow_dispatch" ]; then
             run=true
           elif [ "$EVENT" = "pull_request" ]; then
-            # Only when explicitly labeled deepseek-ci or deepseek
             if [ "$LABEL" = "deepseek-ci" ] || [ "$LABEL" = "deepseek" ]; then
               run=true
             fi
           fi
-          if [ "$HAS_TOKEN" != "true" ]; then
-            echo "::notice::No DEEPSEEK_TOKEN / OPERATOR token — skipping DeepSeek CI"
+          if [ "$HAS_MODEL" != "true" ]; then
+            echo "::notice::No DEEPSEEK_TOKEN — skipping DeepSeek CI (model auth required)"
             run=false
+          fi
+          if [ "$HAS_GH" != "true" ]; then
+            echo "::notice::No ARCHWIZ/OPERATOR token — PR comments may use GITHUB_TOKEN only"
           fi
           echo "run=$run" >> "$GITHUB_OUTPUT"
           echo "pr_number=${PR}" >> "$GITHUB_OUTPUT"
@@ -65,8 +72,8 @@ jobs:
       issues: write
     env:
       DEEPSEEK_TOKEN: ${{ secrets.DEEPSEEK_TOKEN }}
-      OPERATOR_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
-      GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
+      OPERATOR_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
+      GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
@@ -97,7 +104,6 @@ jobs:
           export HOME="${RUNNER_TEMP}/deepseek-webwrapper-home"
           mkdir -p "$HOME"
           chmod 700 "$HOME"
-          # Point PoW solver at repo deepcli (not $HOME/deepcli)
           export DEEPSEEK_WASM_SOLVER="${GITHUB_WORKSPACE}/deepcli/pow_solver.js"
           python -m ci_mode \
             --workspace "$GITHUB_WORKSPACE" \

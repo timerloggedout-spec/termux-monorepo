@@ -177,14 +177,16 @@ jobs:
                     `⚡ \`deepCore\` (DeepSeek CI) received. reason=\`${reason}\``,
                     `Tracking: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
                     '',
-                    '_Live triggers: `@deepseek` / `@deepseek-ci` / `@deepCore` (case-insensitive). Labels: `deepseek-ci`, `deepseek`, `deepCore`. SSOT: docs/ops/AGENT-MONIKERS.md_',
-                  ];
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: number,
-                body: bodyLines.join('\n'),
-              });
+              try {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: number,
+                  body: bodyLines.join('\n'),
+                });
+              } catch (e) {
+                core.info('Ack comment skip: ' + e.message);
+              }
             }
 
   deepseek-agent:

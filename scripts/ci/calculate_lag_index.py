@@ -185,8 +185,8 @@ def main():
 
         if pr_avg_msg is not None or pr_avg_act is not None:
             # 1.5x multiplier for safe margins
-            suggested_debounce = max(30 * 60, pr_avg_msg * 1.5) if pr_avg_msg is not None else default_debounce_sec
-            suggested_stale = max(60 * 60, pr_avg_act * 1.5) if pr_avg_act is not None else default_stale_sec
+            suggested_debounce = max(30 * 60, (pr_avg_msg or default_debounce_sec) * 1.5)
+            suggested_stale = max(60 * 60, (pr_avg_act or default_stale_sec) * 1.5)
 
             metrics["by_pr"][str(pr_number)] = {
                 "avg_message_response_lag_sec": pr_avg_msg,

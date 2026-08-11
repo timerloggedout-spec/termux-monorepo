@@ -1,0 +1,119 @@
+name: DeepSeek CI – Agentic (safe)
+
+# DeepSeek v4-Pro web-wrapper path for PR review / invoke.
+# Security: ephemeral HOME under RUNNER_TEMP only — no session/cookie cache
+# (policy from #112/#114). Work context may use agent-context-store separately.
+#
+# Cost control: NOT on every synchronize. Opt-in via label or dispatch.
+# Fixes #109 without superseding elevated peer budgets or continuous-ops.
+
+on:
+  pull_request:
+    types: [labeled, opened, reopened]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to review (optional)'
+        required: false
+        default: ''
+
+concurrency:
+  group: deepseek-ci-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.check.outputs.run }}
+      pr_number: ${{ steps.check.outputs.pr_number }}
+    steps:
+      - id: check
+        env:
+          EVENT: ${{ github.event_name }}
+          LABEL: ${{ github.event.label.name || '' }}
+          PR: ${{ github.event.pull_request.number || github.event.inputs.pr_number || '' }}
+          HAS_TOKEN: ${{ secrets.DEEPSEEK_TOKEN != '' || secrets.OPERATOR_TOKEN != '' || secrets.OPERATOR_GITHUB_TOKEN != '' }}
+        run: |
+          set -euo pipefail
+          run=false
+          if [ "$EVENT" = "workflow_dispatch" ]; then
+            run=true
+          elif [ "$EVENT" = "pull_request" ]; then
+            # Only when explicitly labeled deepseek-ci or deepseek
+            if [ "$LABEL" = "deepseek-ci" ] || [ "$LABEL" = "deepseek" ]; then
+              run=true
+            fi
+          fi
+          if [ "$HAS_TOKEN" != "true" ]; then
+            echo "::notice::No DEEPSEEK_TOKEN / OPERATOR token — skipping DeepSeek CI"
+            run=false
+          fi
+          echo "run=$run" >> "$GITHUB_OUTPUT"
+          echo "pr_number=${PR}" >> "$GITHUB_OUTPUT"
+
+  deepseek-agent:
+    needs: gate
+    if: needs.gate.outputs.run == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    env:
+      DEEPSEEK_TOKEN: ${{ secrets.DEEPSEEK_TOKEN }}
+      OPERATOR_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
+      GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 1
+
+      - name: Setup Node (PoW WASM)
+        uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4.0.4
+        with:
+          node-version: '20'
+
+      - name: Setup Python
+        uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5.1.1
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: |
+          pip install --quiet curl_cffi requests pyyaml
+
+      - name: Ephemeral home + run CI mode
+        env:
+          PYTHONPATH: ${{ github.workspace }}/multi-ai-cli
+          PR_NUMBER: ${{ needs.gate.outputs.pr_number }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          export HOME="${RUNNER_TEMP}/deepseek-webwrapper-home"
+          mkdir -p "$HOME"
+          chmod 700 "$HOME"
+          # Point PoW solver at repo deepcli (not $HOME/deepcli)
+          export DEEPSEEK_WASM_SOLVER="${GITHUB_WORKSPACE}/deepcli/pow_solver.js"
+          python -m ci_mode \
+            --workspace "$GITHUB_WORKSPACE" \
+            --cache-dir "${RUNNER_TEMP}/deepseek-cache" \
+            --pr "${PR_NUMBER:-}"
+
+      - name: Scrub ephemeral session
+        if: always()
+        run: |
+          rm -rf "${RUNNER_TEMP}/deepseek-webwrapper-home" "${RUNNER_TEMP}/deepseek-cache" || true
+
+      - name: Upload non-secret summary
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+        if: always()
+        with:
+          name: deepseek-output
+          path: deepseek_output.json
+          if-no-files-found: ignore
+          retention-days: 7

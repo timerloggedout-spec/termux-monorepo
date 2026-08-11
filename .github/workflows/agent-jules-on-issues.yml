@@ -14,8 +14,8 @@ name: Jules on Issues (label / @jules)
 #
 # NOTE: push is listed only so a no-op job can succeed (avoids 0-job failure
 # status pollution on every push). Real work stays issues / issue_comment only.
-# Concurrency removed entirely: even safe groups abort graph materialization
-# on push before skip-on-push can run. Per-issue serialization deferred.
+# skip-on-push is UNCONDITIONAL so graph always has ≥1 job. Concurrency fully
+# removed. Per-issue serialization deferred.
 
 on:
   push:
@@ -27,14 +27,13 @@ on:
     types: [created]
 
 jobs:
-  # Prevents GitHub from marking the run as failure when event is push
-  # (0-job runs are treated as failed). No real work on push.
+  # Always runs — guarantees the workflow never materializes as 0-job (GitHub
+  # marks those failed). Real work is gated on the other jobs' if conditions.
   skip-on-push:
-    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
-      - name: Skip (issue/comment only)
-        run: echo "agent-jules-on-issues is issues/issue_comment only — push no-op ok"
+      - name: Always-green no-op (issue/comment work lives in other jobs)
+        run: echo "agent-jules-on-issues — skip-on-push always green; real work gated by event if"
 
   jules-on-label:
     if: |

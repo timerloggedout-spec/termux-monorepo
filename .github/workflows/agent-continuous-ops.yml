@@ -85,6 +85,7 @@ jobs:
               // Fresh mergeability
               let mergeable = pr.mergeable;
               let mergeableState = pr.mergeable_state;
+              let changedFiles = pr.changed_files;
               try {
                 const { data: fresh } = await github.rest.pulls.get({
                   owner: context.repo.owner,
@@ -93,6 +94,7 @@ jobs:
                 });
                 mergeable = fresh.mergeable;
                 mergeableState = fresh.mergeable_state;
+                changedFiles = fresh.changed_files;
               } catch (e) {
                 core.info(`PR #${pr.number} get skip: ${e.message}`);
               }
@@ -123,6 +125,81 @@ jobs:
                 ? Date.now() - new Date(lastAgentComment.created_at).getTime()
                 : Infinity;
 
+              // Check if PR status checks failed
+              let statusFailed = false;
+              let failCount = 0;
+              try {
+                const { data: checks } = await github.rest.checks.listForRef({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ref: pr.head.sha,
+                  per_page: 50,
+                });
+                const completedRuns = (checks.check_runs || []).filter(c => c.status === 'completed');
+                const failedRuns = completedRuns.filter(c => c.conclusion === 'failure');
+                if (failedRuns.length > 0) {
+                  statusFailed = true;
+                  failCount = failedRuns.length;
+                }
+              } catch (e) {
+                core.info(`PR #${pr.number} checks status list skip: ${e.message}`);
+              }
+
+              // Check if requesting approval
+              let requestingApproval = false;
+              const approvalRegex = /(requesting approval|waiting for approval|please approve|requires approval|request.*approval)/i;
+              if (lastAgentComment && lastAgentComment.body && approvalRegex.test(lastAgentComment.body)) {
+                requestingApproval = true;
+              }
+
+              // Check for loops
+              let loopDetected = false;
+              const sortedComments = [...comments].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+              const newestAgent = sortedComments.length > 0 && isAgent(sortedComments[0].user?.login) ? sortedComments[0].user?.login : null;
+              if (newestAgent) {
+                let lastCommitTime = 0;
+                try {
+                  const prCommits = await github.paginate(github.rest.pulls.listCommits, {
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    pull_number: pr.number,
+                    per_page: 50,
+                  });
+                  if (prCommits.length > 0) {
+                    const sortedCommits = prCommits.sort((a, b) => new Date(b.commit.committer?.date || b.commit.author?.date || 0) - new Date(a.commit.committer?.date || a.commit.author?.date || 0));
+                    lastCommitTime = new Date(sortedCommits[0].commit.committer?.date || sortedCommits[0].commit.author?.date || 0).getTime();
+                  }
+                } catch (e) {
+                  core.info(`PR #${pr.number} listCommits skip: ${e.message}`);
+                }
+
+                let consecutiveAgentComments = 0;
+                for (const c of sortedComments) {
+                  if (c.user?.login === newestAgent) {
+                    const commentTime = new Date(c.created_at).getTime();
+                    if (commentTime > lastCommitTime) {
+                      consecutiveAgentComments += 1;
+                    } else {
+                      break;
+                    }
+                  } else {
+                    break;
+                  }
+                }
+
+                const lastThreeAgentComments = sortedComments.filter(c => isAgent(c.user?.login)).slice(0, 3);
+                const bodiesAreIdentical = lastThreeAgentComments.length === 3 &&
+                  lastThreeAgentComments[0].body === lastThreeAgentComments[1].body &&
+                  lastThreeAgentComments[1].body === lastThreeAgentComments[2].body;
+
+                if (consecutiveAgentComments >= 3 || bodiesAreIdentical) {
+                  loopDetected = true;
+                }
+              }
+
+              // Check for empty diff
+              const emptyDiff = (changedFiles === 0);
+
               // Open review threads (unresolved)
               let openThreads = 0;
               try {
@@ -150,7 +227,17 @@ jobs:
               const dirty = mergeableState === 'dirty' || mergeable === false;
               const blocked = mergeableState === 'blocked' || mergeableState === 'unstable';
               const stale = lastAgentAge > staleMs;
-              const needsWork = dirty || (blocked && openThreads > 0) || (stale && openThreads > 0);
+              const stale4Days = lastAgentAge > 4 * 24 * 60 * 60 * 1000;
+
+              const needsWork = dirty ||
+                                (blocked && openThreads > 0) ||
+                                (stale && openThreads > 0) ||
+                                stale4Days ||
+                                statusFailed ||
+                                requestingApproval ||
+                                loopDetected ||
+                                emptyDiff ||
+                                forceAll;
 
               if (!needsWork && !forceAll) {
                 core.info(`PR #${pr.number}: clean enough (state=${mergeableState} threads=${openThreads})`);
@@ -162,6 +249,11 @@ jobs:
               if (dirty) reasons.push('merge conflict / dirty vs base');
               if (blocked && openThreads > 0) reasons.push(`${openThreads} unresolved review thread(s)`);
               if (stale) reasons.push(`stale agent activity (${Math.round(lastAgentAge/3600000)}h)`);
+              if (stale4Days) reasons.push('4 Days Response Failure (inactive for 4+ days)');
+              if (statusFailed) reasons.push(`PR status checks failing (${failCount} failure(s))`);
+              if (requestingApproval) reasons.push('agent/bot is requesting approval');
+              if (loopDetected) reasons.push('loop detected (consecutive duplicate comments or actions without commits)');
+              if (emptyDiff) reasons.push('failure to produce any diff (0 changed files)');
               if (forceAll) reasons.push('forced sweep');
 
               const instructions = [];
@@ -172,6 +264,21 @@ jobs:
               if (openThreads > 0) {
                 instructions.push(`${dirty ? '3' : '1'}. Address **all open review threads** (CodeRabbit, Devin, Copilot).`);
                 instructions.push(`${dirty ? '4' : '2'}. Prefer minimal diffs; preserve Sentinel 0o600/0o700.`);
+              }
+              if (stale4Days) {
+                instructions.push('**Stall Warning:** This PR has been inactive for more than 4 days. Comment "Continue" or send other relevant context to revive it.');
+              }
+              if (statusFailed) {
+                instructions.push('**Status Failed:** Check status is failed. It can still continue and sometimes it resolved and finishes with a message send as prompt [contextual steering]. Verify build errors, and if transient, comment "Continue" to retry.');
+              }
+              if (requestingApproval) {
+                instructions.push('**Approval Requested:** The agent is requesting approval. Check if ready, and provide approval or "Continue" as prompt steering.');
+              }
+              if (loopDetected) {
+                instructions.push('**Loop Detected:** The agent is stuck in a loop of consecutive duplicate comments/actions. Provide explicit steering context to break the loop, reset, or adjust files.');
+              }
+              if (emptyDiff) {
+                instructions.push('**Empty Diff:** PR has 0 changed files. Ensure you have committed and pushed the correct changes to the branch.');
               }
               instructions.push('Push commits to the existing head branch. Do not retarget base without cause.');
               instructions.push('Skip pure nits only if they conflict with security/gates.');

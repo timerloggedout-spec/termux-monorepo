@@ -1,7 +1,7 @@
 import { html } from 'lit-html';
 import * as API from '../api/NodeClient';
 
-export const ClientPortal = () => {
+export const ClientPortal = (reRender: () => void) => {
   let vaultText = 'Loading vault snapshot...';
   const load = async () => {
     try {
@@ -10,16 +10,16 @@ export const ClientPortal = () => {
     } catch (e) {
       vaultText = 'Failed to load vault.';
     }
-    renderView();
+    reRender();
   };
-  // initial load
-  load();
 
-  const renderView = () => html`
+  // Defer initialization task using setTimeout to ensure parent completes instantiation first
+  setTimeout(load, 0);
+
+  return () => html`
     <section style="margin-top:16px;">
       <h2>Client portal</h2>
       <pre style="background:#121426; padding:12px; border-radius:8px;">${vaultText}</pre>
     </section>
   `;
-  return renderView();
 };

@@ -20,13 +20,15 @@ Use this skill when the user:
 
 ## What is the Skills CLI?
 
-The Skills CLI (`npx skills`) is the package manager for the open agent skills ecosystem. Skills are modular packages that extend agent capabilities with specialized knowledge, workflows, and tools.
+The Skills CLI (`npx @agentic/skills@latest`) is the package manager for the open agent skills ecosystem. Skills are modular packages that extend agent capabilities with specialized knowledge, workflows, and tools.
 
 **Key commands:**
 
-- `npx skills find [query] [--owner <owner>]` - Search for skills interactively or by keyword, optionally scoped to a GitHub owner
-- `npx skills add <package>` - Install a skill from GitHub or other sources
-- `npx skills update` - Update all installed skills
+- `npx @agentic/skills@latest find [query] [--owner <owner>]` - Search for skills interactively or by keyword, optionally scoped to a GitHub owner
+- `npx @agentic/skills@latest add <package>` - Install a skill from GitHub or other sources (pinned to specific commit/tag when available)
+- `npx @agentic/skills@latest update` - Update all installed skills
+
+**Installation guidance:** When installing skills globally, avoid defaulting to `-g -y`; instead require explicit user confirmation for global installs and verify scope and target before proceeding.
 
 **Browse skills at:** https://skills.sh/
 
@@ -48,12 +50,19 @@ For example, top skills for web development include:
 - `vercel-labs/agent-skills` — React, Next.js, web design (100K+ installs each)
 - `anthropics/skills` — Frontend design, document processing (100K+ installs)
 
+**Before installing any skill:**
+1. Review the skill's source code, contents, and requested permissions
+2. Check source reputation (official sources are more trustworthy)
+3. Default to project-local installation rather than global
+4. Require explicit human approval for global or non-interactive installation
+5. Defer any first-time permission grant to a human (never auto-grant permissions on first install)
+
 ### Step 3: Search for Skills
 
 If the leaderboard doesn't cover the user's need, run the find command:
 
 ```bash
-npx skills find [query] [--owner <owner>]
+npx @agentic/skills@latest find [query] [--owner <owner>]
 ```
 
 For example:
@@ -81,7 +90,7 @@ When you find relevant skills, present them to the user with:
 
 Example response:
 
-```
+```text
 I found a skill that might help! The "react-best-practices" skill provides
 React and Next.js performance optimization guidelines from Vercel Engineering.
 (185K installs)
@@ -94,13 +103,13 @@ Learn more: https://skills.sh/vercel-labs/agent-skills/react-best-practices
 
 ### Step 6: Offer to Install
 
-If the user wants to proceed, you can install the skill for them:
+If the user wants to proceed, confirm the install scope with the user first, then install:
 
 ```bash
-npx skills add <owner/repo@skill> -g -y
+npx @agentic/skills@latest add <owner/repo@skill>
 ```
 
-The `-g` flag installs globally (user-level) and `-y` skips confirmation prompts.
+By default this installs to the project locally. Only add the `-g` flag (global, user-level install) if the user explicitly requests a global install, and never pass `-y` to skip confirmation prompts — the user should confirm the source and scope before installation proceeds.
 
 ## Common Skill Categories
 
@@ -128,14 +137,14 @@ If no relevant skills exist:
 
 1. Acknowledge that no existing skill was found
 2. Offer to help with the task directly using your general capabilities
-3. Suggest the user could create their own skill with `npx skills init`
+3. Suggest the user could create their own skill with `npx @agentic/skills@latest init`
 
 Example:
 
-```
+```text
 I searched for skills related to "xyz" but didn't find any matches.
 I can still help you with this task directly! Would you like me to proceed?
 
 If this is something you do often, you could create your own skill:
-npx skills init my-xyz-skill
+npx @agentic/skills@latest init my-xyz-skill
 ```

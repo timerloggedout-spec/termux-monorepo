@@ -17,20 +17,25 @@ module.exports = {
     // Custom Jules rules (overrides defaults if provided)
     customJulesRules: [
       "You don't have access to project environmental variables.",
-      "When publishing the github branch the name MUST BE THE FULL EXACT the FROM branch mentioned at the top of the output."
+      "When publishing the github branch the name MUST BE THE FULL EXACT the FROM branch mentioned at the top of the output.",
+      "Read AGENTS.md for agent-specific guidance and workflows before proceeding."
     ],
 
     // Additional project-specific rules
     additionalJulesRules: [
-      "Always use TypeScript strict mode",
+      "Use TypeScript strict mode when TypeScript files are modified in the PR.",
       "Follow the company coding standards in docs/CODING_STANDARDS.md",
-      "Run tests before pushing: npm test"
+      "Target master-staging branch for integration work",
+      "Run Python gates before merge: python3 scripts/ci/repo_gate.py && python3 scripts/ci/termux_smoke.py"
     ],
 
     // Include various sections
     includeUnifiedSummaryHeader: true,
     includeMetadata: true,
     includeLinearDiscussion: true,
+
+    // Include bot feedback section
+    includeBotFeedback: true,
 
     // Customize section order (reorder to change output structure)
     sectionOrder: [
@@ -49,22 +54,8 @@ module.exports = {
 
   // ===== CONTENT FILTERING =====
   filtering: {
-    // Bot users to filter out (add your custom bots)
-    botUsers: [
-      "copilot-pull-request-reviewer[bot]",
-      "github-actions[bot]",
-      "dependabot[bot]",
-      "vercel[bot]",
-      "linear[bot]",
-      "codecov[bot]",        // Example: Add Codecov bot
-      "sonarcloud[bot]"      // Example: Add SonarCloud bot
-    ],
-
     // Enable comment deduplication
     enableDeduplication: true,
-
-    // Include bot feedback section 
-    includeBotFeedback: true,
 
     // Max bot items to show per priority level
     maxBotItemsPerPriority: 3,
@@ -125,16 +116,16 @@ module.exports = {
   // ===== AI SUMMARY =====
   aiSummary: {
     // AI model to use
-    model: "gemini-2.5-flash-preview-05-20",
+    model: "gemini-3.6-flash",
 
     // Custom prompt template (use {context} placeholder)
-    customPrompt: `Analyze this PR discussion for our React/TypeScript project:
+    customPrompt: `Analyze this PR discussion, identifying languages and systems from the PR context:
 
 {context}
 
 Focus on:
 1. 🎯 Security and performance issues
-2. 🚨 Breaking changes or deployment risks  
+2. 🚨 Breaking changes or deployment risks
 3. 📋 Code quality improvements needed
 4. ⏱️ Implementation complexity (Low/Medium/High)
 

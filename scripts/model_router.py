@@ -12,6 +12,7 @@ proven in production. Newly listed free models must appear in a live/stale
 OpenRouter poll before they are selected.
 
 Verified and dynamic model routing logic.
+Dynamic model-routing optimized for high-performance and ELO rankings.
 """
 
 import os

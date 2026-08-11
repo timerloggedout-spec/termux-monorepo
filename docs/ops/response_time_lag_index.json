@@ -1,0 +1,10 @@
+{
+  "global_averages": {
+    "avg_message_response_lag_sec": 2700,
+    "avg_actual_response_lag_sec": 7200,
+    "suggested_debounce_ms": 2700000,
+    "suggested_stale_ms": 7200000
+  },
+  "by_pr": {},
+  "note": "Defaults aligned with high-perf continuous-ops on master (45m debounce / 2h stale). Recalculated by scripts/ci/calculate_lag_index.py on cron."
+}

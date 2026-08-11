@@ -6,9 +6,16 @@ github:
     base_url: https://api.github.com
     token_env: GITHUB_TOKEN
     operator_token_env: OPERATOR_GITHUB_TOKEN
+    archwiz_token_env: ARCHWIZ_GITHUB_TOKEN
+    # Preference chain for privileged writes:
+    # ARCHWIZ_GITHUB_TOKEN || OPERATOR_GITHUB_TOKEN || OPERATOR_TOKEN || GITHUB_TOKEN
   permissions_expected:
     - contents: read|write
     - pull-requests: write
     - issues: write
-    - actions: read
+    - actions: read|write
     - checks: read
+    - statuses: read
+    - workflows: write
+  forbidden:
+    - delete_repo

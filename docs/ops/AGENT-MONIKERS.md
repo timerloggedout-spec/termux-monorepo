@@ -1,23 +1,25 @@
 # Agent Monikers (SSOT)
 
-Creative call-signs for high-performance agent orchestration.
-Original handles remain **callable** where the underlying app/workflow still listens.
+Creative **display** call-signs for high-performance agent orchestration.
 
-| Role | Primary moniker | Still callable | Notes |
-|------|-----------------|----------------|-------|
-| Jules (implementation) | **@heyVern** | `@jules` | Use `@heyVern` in continuous-ops & auto-resolve pings |
-| Gemini CLI (on-demand) | **@sparkFlux** | `@gemini-cli` | Dispatch accepts both prefixes |
-| CodeRabbit (review) | **@codeHound** | `@coderabbitai` | Reviewer identity unchanged |
-| Devin (review/fix) | **@devinForge** | Devin app | |
-| Continuous-ops sweep | **@opsSweep** | (GHA) | Marker: `<!-- continuous-agent-ops -->` |
-| OPERATOR / Grok | **@archW1z** | human OWNER | Signing: `Signed-off-by: Grok (OPERATOR)` |
-| Peer orchestrator | **@peerGate** | (GHA) | |
+**Critical:** Do **not** `@`-mention monikers that collide with real GitHub usernames.
+Use backticks or plain text for display. Live triggers remain the original handles.
+
+| Role | Display moniker | Live trigger (callable) | Notes |
+|------|-----------------|-------------------------|-------|
+| Jules (implementation) | `heyVern` | `@jules` | App only reacts to `@jules` |
+| Gemini CLI (on-demand) | `sparkFlux` | `@gemini-cli` | Dispatch also accepts case-insensitive `@sparkFlux` as alias |
+| CodeRabbit (review) | `codeHound` | `@coderabbitai` | Reviewer identity unchanged |
+| Devin (review/fix) | `devinForge` | Devin app | |
+| Continuous-ops sweep | `opsSweep` | (GHA) | Marker: `<!-- continuous-agent-ops -->` |
+| OPERATOR / Grok | `archW1z` | human OWNER | Signing: `Signed-off-by: Grok (OPERATOR)` |
+| Peer orchestrator | `peerGate` | (GHA) | |
 
 ## Rules
-1. Prefer moniker in **new** automated pings (less collision with literal bot usernames in chat).
-2. Workflows that match `startsWith('@gemini-cli')` **must** also match `@sparkFlux`.
-3. Jules GitHub App still reacts to `@jules`; dual-ping `@heyVern` + `@jules` is allowed when reliability > style.
-4. Never put secrets or Class 3/4 material in moniker docs.
+1. Automated comments: **display** moniker in backticks; **ping** only the live trigger (`@jules`, `@gemini-cli`).
+2. Workflows matching `@gemini-cli` **must** also accept `@sparkFlux` case-insensitively.
+3. Never put secrets or Class 3/4 material in moniker docs.
+4. If a moniker string is later registered as a GH username we do not control, keep it non-@ only.
 
 ## High-performance intent
-Monikers reduce ambiguous pings and make role ownership obvious under load.
+Monikers reduce ambiguous role ownership under load without notifying strangers.

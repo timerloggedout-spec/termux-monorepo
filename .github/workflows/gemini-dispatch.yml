@@ -5,11 +5,7 @@ name: '🔀 Gemini Dispatch (free-tier agentic)'
 #
 # QUOTA POLICY:
 # - Automatic PR review on opened/synchronize is DISABLED here.
-#   Peer bots run first (peer-review-orchestrator → CodeRabbit autofix),
-#   then gemini-after-peers runs the second-pass review.
-# - On-demand @gemini-cli **and** @sparkFlux /review|/triage|… fire immediately.
-# - Issue triage on opened/reopened still fires (Lite model via model-router).
-#
+# - On-demand @gemini-cli and case-insensitive @sparkFlux fire immediately.
 # Monikers: docs/ops/AGENT-MONIKERS.md
 
 on:
@@ -45,7 +41,8 @@ jobs:
         github.event.sender.type == 'User' &&
         (
           startsWith(github.event.comment.body || github.event.review.body || '', '@gemini-cli') ||
-          startsWith(github.event.comment.body || github.event.review.body || '', '@sparkFlux')
+          startsWith(github.event.comment.body || github.event.review.body || '', '@sparkFlux') ||
+          startsWith(github.event.comment.body || github.event.review.body || '', '@sparkflux')
         ) &&
         contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association || github.event.review.author_association || github.event.issue.author_association)
       )
@@ -71,11 +68,10 @@ jobs:
           script: |
             const eventType = process.env.EVENT_TYPE;
             const request = process.env.REQUEST || '';
+            const lower = request.toLowerCase();
 
-            // Strip either moniker prefix
             const stripPrefix = (s) => s
-              .replace(/^@gemini-cli\b/, '')
-              .replace(/^@sparkFlux\b/, '')
+              .replace(/^@(gemini-cli|sparkflux)\b/i, '')
               .trim();
 
             let prNumber = context.payload.pull_request?.number || null;
@@ -89,12 +85,12 @@ jobs:
               core.info('PR event → defer Gemini review until peer gate (saves quota)');
             } else if (['issues.opened', 'issues.reopened'].includes(eventType)) {
               core.setOutput('command', 'triage');
-            } else if (request.startsWith('@gemini-cli /review') || request.startsWith('@sparkFlux /review')) {
+            } else if (lower.startsWith('@gemini-cli /review') || lower.startsWith('@sparkflux /review')) {
               core.setOutput('command', 'review');
-              core.setOutput('additional_context', stripPrefix(request).replace(/^\/review/, '').trim());
-            } else if (request.startsWith('@gemini-cli /triage') || request.startsWith('@sparkFlux /triage')) {
+              core.setOutput('additional_context', stripPrefix(request).replace(/^\/review/i, '').trim());
+            } else if (lower.startsWith('@gemini-cli /triage') || lower.startsWith('@sparkflux /triage')) {
               core.setOutput('command', 'triage');
-            } else if (request.startsWith('@gemini-cli') || request.startsWith('@sparkFlux')) {
+            } else if (lower.startsWith('@gemini-cli') || lower.startsWith('@sparkflux')) {
               core.setOutput('command', 'invoke');
               core.setOutput('additional_context', stripPrefix(request));
             } else {
@@ -109,7 +105,7 @@ jobs:
                 state: 'open',
                 per_page: 40,
               });
-              const agentHints = ['jules', 'devin', 'coderabbit', 'ecc-tools', 'gemini', 'heyvern', 'sparkflux'];
+              const agentHints = ['jules', 'devin', 'coderabbit', 'ecc-tools', 'gemini', 'sparkflux'];
               const relevant = prs.filter(p => {
                 const u = ((p.user && p.user.login) || '').toLowerCase();
                 const body = ((p.body || '') + ' ' + (p.title || '')).toLowerCase();
@@ -150,7 +146,7 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: number,
-                body: `⚡ **@sparkFlux** (Gemini CLI) received \`${cmd}\`. Tracking: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\n\n_Moniker SSOT: docs/ops/AGENT-MONIKERS.md — \`@gemini-cli\` still works._`,
+                body: `⚡ **sparkFlux** (Gemini CLI) received \`${cmd}\`. Tracking: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\n\n_Live trigger: \`@gemini-cli\` (alias \`@sparkFlux\` case-insensitive). SSOT: docs/ops/AGENT-MONIKERS.md_`,
               });
             }
 

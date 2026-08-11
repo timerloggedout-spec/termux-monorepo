@@ -51,7 +51,8 @@ jobs:
           COMMENT_BODY: ${{ github.event.comment.body || github.event.review.body || '' }}
           SENDER_TYPE: ${{ github.event.sender.type || '' }}
           ASSOCIATION: ${{ github.event.comment.author_association || github.event.review.author_association || github.event.issue.author_association || '' }}
-          PR: ${{ github.event.pull_request.number || github.event.issue.number || github.event.inputs.pr_number || '' }}
+          # Only use issue.number if it's actually a PR (issue.pull_request is set)
+          PR: ${{ github.event.pull_request.number || (github.event.issue.pull_request && github.event.issue.number) || github.event.inputs.pr_number || '' }}
           # Multi-name probe — user may have stored under alternate keys
           HAS_MODEL: ${{ secrets.DEEPSEEK_TOKEN != '' || secrets.DEEPSEEK_API_KEY != '' || secrets.DEEPSEEK_AUTH_TOKEN != '' || secrets.NEXUSCLI_TOKEN != '' }}
           HAS_GH: ${{ secrets.ARCHWIZ_GITHUB_TOKEN != '' || secrets.OPERATOR_GITHUB_TOKEN != '' || secrets.OPERATOR_TOKEN != '' }}
@@ -74,7 +75,7 @@ jobs:
               case "$ASSOCIATION" in
                 OWNER|MEMBER|COLLABORATOR)
                   lower=$(printf '%s' "$COMMENT_BODY" | tr '[:upper:]' '[:lower:]')
-                  if printf '%s' "$lower" | grep -qE '^@(deepseek-ci|deepseek|deepcore)\b'; then
+                  if printf '%s' "$lower" | grep -qE '(^|[^a-z0-9_])@(deepseek-ci|deepseek|deepcore)\b'; then
                     run=true
                     reason="mention"
                   fi

@@ -27,8 +27,6 @@ jobs:
 
     env:
       OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
-      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-      OMNI_API_KEY: ${{ secrets.OMNI_API_KEY }}
       GITHUB_EVENT: ${{ toJson(github.event) }}
       DEEPSEEK_WASM_PATH: ./deepcli/deepseek.wasm
 
@@ -55,13 +53,13 @@ jobs:
 
       - name: Install Python dependencies
         run: |
-          pip install curl_cffi requests pyyaml
+          pip install curl_cffi requests pyyaml click
 
       - name: Run DeepSeek CI Agent
         env:
-          PYTHONPATH: ${{ github.workspace }}/deepcli
+          PYTHONPATH: ${{ github.workspace }}/multi-ai-cli
         run: |
-          python -m deepcli.ci_mode \
+          python -m ci_mode \
             --workspace "$GITHUB_WORKSPACE" \
             --cache-dir "${{ runner.temp }}/deepseek-cache"
 

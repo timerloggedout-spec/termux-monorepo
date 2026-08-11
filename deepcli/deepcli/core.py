@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Core API wrapper for DeepSeek internal API."""
 import os
-import sys
 import json
 import base64
 import time
@@ -39,18 +38,9 @@ except Exception:
     curl_requests = CurlRequestsFallback()
 
 import requests as http_requests
-try:
-    from rich.console import Console
-    console = Console()
-except ImportError:
-    class DummyConsole:
-        def print(self, *args, **kwargs):
-            import re
-            msg = " ".join(str(a) for a in args)
-            # Remove rich styling markers
-            msg = re.sub(r"\[/?.*?\]", "", msg)
-            print(msg)
-    console = DummyConsole()
+from rich.console import Console
+
+console = Console()
 
 CONFIG_DIR = Path.home() / ".deepcli"
 CONFIG_FILE = CONFIG_DIR / "config.json"
@@ -558,99 +548,3 @@ def export_markdown(token: str, session_id: str) -> str:
 def export_json(token: str, session_id: str) -> str:
     messages = get_history(token, session_id)
     return json.dumps(messages, indent=2)
-
-
-# ========== CI mode integration ==========
-def run_ci(event, session, peer, workspace, operator_token):
-    """
-    Non-interactive agent loop.
-    - event: GitHub event dict
-    - session: session dict from session_manager
-    - peer: provider info from router
-    - workspace: path to repo root
-    - operator_token: GitHub PAT
-    Returns a dict with 'actions' (list of commands to execute).
-    """
-    import subprocess
-    import json
-    from pathlib import Path
-
-    # Set up GitHub CLI with token
-    gh_env = os.environ.copy()
-    gh_env['GH_TOKEN'] = operator_token
-
-    # Example: parse PR info
-    pr_number = event.get('pull_request', {}).get('number')
-    repo = event.get('repository', {}).get('full_name') or os.environ.get('GITHUB_REPOSITORY')
-    action = event.get('action')
-
-    results = []
-    decisions = []
-
-    # Decide what to do based on event
-    if action in ['opened', 'synchronize', 'reopened'] and pr_number and repo:
-        # Get PR diff
-        diff_cmd = ['gh', 'pr', 'diff', str(pr_number), '--repo', repo]
-        try:
-            diff = subprocess.check_output(diff_cmd, env=gh_env, text=True)
-        except Exception as e:
-            diff = f"Could not retrieve diff: {e}"
-
-        # Send to the chosen provider for analysis
-        # We'll call the provider's completion endpoint (official or via wrapper)
-        if peer['provider'] == 'deepseek':
-            try:
-                token = session.get('token') or get_token()
-                # Create a temporary session for this review
-                session_id = create_session(token)
-                prompt = f"You are a code reviewer. Analyze the diff and suggest improvements:\n\n{diff[:8000]}"
-                analysis = chat_completion(token, prompt, session_id, thinking=True)
-            except Exception as e:
-                analysis = f"DeepSeek Web-Wrapper Error: {e}"
-        else:
-            # Use official REST API
-            import requests
-            headers = {
-                'Authorization': f"Bearer {peer['api_key']}",
-                'Content-Type': 'application/json',
-            }
-            payload = {
-                'model': 'gpt-4o-mini',  # or appropriate
-                'messages': [
-                    {'role': 'system', 'content': 'You are a code reviewer. Analyze the diff and suggest improvements.'},
-                    {'role': 'user', 'content': diff[:8000]}  # truncate
-                ]
-            }
-            try:
-                resp = requests.post(peer['endpoint'], json=payload, headers=headers, timeout=15)
-                if resp.status_code == 200:
-                    analysis = resp.json()['choices'][0]['message']['content']
-                else:
-                    analysis = f"API error: {resp.status_code}"
-            except Exception as e:
-                analysis = f"Request error: {e}"
-
-        # To prevent supply-chain and tracking issues, append a compliant signature metadata to all postings
-        signature = f"\n\n---\n*Bot Review powered by @deepseek-cli{{provider: {peer['provider']}, model: {peer.get('model', 'gpt-4o-mini')}}}*"
-        comment_body = analysis[:1900] + signature
-
-        # Optionally create a comment on the PR
-        comment_cmd = ['gh', 'pr', 'comment', str(pr_number), '--body', comment_body, '--repo', repo]
-        try:
-            subprocess.run(comment_cmd, env=gh_env, check=False)
-        except Exception as e:
-            print(f"Failed to post PR comment via gh CLI: {e}")
-
-        decisions.append({
-            'type': 'pr_review',
-            'pr': pr_number,
-            'summary': comment_body[:200],
-        })
-
-    # Return structured output
-    return {
-        'actions': decisions,
-        'event': event.get('action'),
-        'pr': pr_number,
-        'provider_used': peer['provider'],
-    }

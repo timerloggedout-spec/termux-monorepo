@@ -6,5 +6,4 @@ from .core import (
     export_markdown, export_json,
     load_config, save_config, _set_last_session,
     _cache_path, _cache_load, _cache_save,
-    run_ci,
 )

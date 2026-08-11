@@ -17,13 +17,17 @@ name: Jules on Issues (label / @jules)
 
 on:
   push:
+    branches:
+      - '**'
   issues:
     types: [labeled, opened]
   issue_comment:
     types: [created]
 
+# Safe for push: issue payload is absent on pure push events.
+# Using event_name gate prevents expression evaluation against null.issue.
 concurrency:
-  group: jules-issue-${{ github.event.issue.number || github.run_id }}
+  group: jules-issue-${{ github.event_name == 'push' && github.run_id || github.event.issue.number }}
   cancel-in-progress: false
 
 jobs:

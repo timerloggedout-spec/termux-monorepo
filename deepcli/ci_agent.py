@@ -39,7 +39,7 @@ def run_ci(event, session, peer, workspace, operator_token):
     action = event.get('action')
     decisions = []
 
-    if action in ['opened', 'synchronize'] and pr_number:
+    if action in ['opened', 'synchronize', 'reopened'] and pr_number:
         try:
             diff = subprocess.check_output(
                 ['gh', 'pr', 'diff', str(pr_number), '--repo', repo],

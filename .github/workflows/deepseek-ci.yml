@@ -177,6 +177,9 @@ jobs:
                     `⚡ \`deepCore\` (DeepSeek CI) received. reason=\`${reason}\``,
                     `Tracking: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
                     '',
+                    '_See docs/ops/DEEPSEEK-CI.md_',
+                  ];
+
               try {
                 await github.rest.issues.createComment({
                   owner: context.repo.owner,

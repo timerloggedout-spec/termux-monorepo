@@ -11,18 +11,30 @@ name: Jules on Issues (label / @jules)
 # Optional: secrets.JULES_API_KEY for google-labs-code/jules-invoke
 #
 # SECURITY: Issue triggers are restricted — untrusted openers cannot burn quota.
+#
+# NOTE: push is listed only so a no-op job can succeed (avoids 0-job failure
+# status pollution on every push). Real work stays issues / issue_comment only.
+# Concurrency is job-level only; group key never accesses issue payload on push.
 
 on:
+  push:
+    branches:
+      - '**'
   issues:
     types: [labeled, opened]
   issue_comment:
     types: [created]
 
-concurrency:
-  group: jules-issue-${{ github.event.issue.number || github.run_id }}
-  cancel-in-progress: false
-
 jobs:
+  # Prevents GitHub from marking the run as failure when event is push
+  # (0-job runs are treated as failed). No real work on push.
+  skip-on-push:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Skip (issue/comment only)
+        run: echo "agent-jules-on-issues is issues/issue_comment only — push no-op ok"
+
   jules-on-label:
     if: |
       github.event_name == 'issues' &&
@@ -33,6 +45,10 @@ jobs:
         github.event.label.name == 'JULES'
       )
     runs-on: ubuntu-latest
+    concurrency:
+      # Only evaluate issue.number on issues/issue_comment; otherwise run_id
+      group: jules-issue-${{ (github.event_name == 'issues' || github.event_name == 'issue_comment') && github.event.issue.number || github.run_id }}
+      cancel-in-progress: false
     permissions:
       contents: read
       issues: write
@@ -173,6 +189,9 @@ jobs:
         startsWith(github.event.comment.body, '@Jules')
       )
     runs-on: ubuntu-latest
+    concurrency:
+      group: jules-issue-${{ (github.event_name == 'issues' || github.event_name == 'issue_comment') && github.event.issue.number || github.run_id }}
+      cancel-in-progress: false
     permissions:
       contents: read
       issues: write

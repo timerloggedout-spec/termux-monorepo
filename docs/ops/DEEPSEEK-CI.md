@@ -20,9 +20,9 @@
 
 | Trigger | How |
 |---------|-----|
-| Mention | Comment `@deepseek`, `@deepseek-ci`, or `@deepCore` (case-insensitive) on a PR/issue — OWNER/MEMBER/COLLABORATOR only |
+| Mention | Comment `@deepseek`, `@deepseek-ci`, or `@deepCore` (case-insensitive) on a **pull request** — OWNER/MEMBER/COLLABORATOR only |
 | Label | Add `deepseek-ci`, `deepseek`, or `deepCore` |
-| Dispatch | Actions → DeepSeek CI – Agentic (safe) → Run workflow (leaving `pr_number` empty skips PR review) |
+| Dispatch | Actions → DeepSeek CI – Agentic (safe) → Run workflow. `pr_number` must be a positive decimal integer (e.g. `163`); leaving empty intentionally skips PR review |
 
 Mirrors Gemini (`@gemini-cli` / `sparkFlux`) and Jules (`@jules` / `heyVern`) patterns.
 
@@ -51,6 +51,7 @@ Never use a GitHub PAT as DeepSeek model auth. Never use `DEEPSEEK_TOKEN` for `g
 2. Session: `HOME=$RUNNER_TEMP/deepseek-webwrapper-home` then **always scrub**.
 3. No cookies/tokens in Actions cache or git.
 4. Output JSON is **metadata only** (no model text).
+5. `pr_number` validated as positive decimal before any `gh pr` call.
 
 ## What #134 did wrong (do not merge)
 

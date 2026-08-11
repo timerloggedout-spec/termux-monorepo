@@ -25,12 +25,12 @@ on:
   workflow_dispatch:
     inputs:
       pr_number:
-        description: 'PR number to review (optional)'
+        description: 'PR number to review (positive decimal; empty skips PR review)'
         required: false
         default: ''
 
 concurrency:
-  group: deepseek-ci-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
+  group: deepseek-ci-${{ github.event_name }}-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
   cancel-in-progress: true
 
 permissions: {}
@@ -60,6 +60,7 @@ jobs:
           set -euo pipefail
           run=false
           reason="none"
+          pr_number="${PR}"
 
           # --- trigger detection (agentic, mirrors gemini-dispatch / jules) ---
           if [ "$EVENT" = "workflow_dispatch" ]; then
@@ -84,6 +85,29 @@ jobs:
             fi
           fi
 
+          # Validate pr_number: accept only positive decimal integers (or empty for dispatch skip)
+          if [ -n "$pr_number" ]; then
+            if ! printf '%s' "$pr_number" | grep -qE '^[1-9][0-9]*$'; then
+              echo "::warning::Invalid pr_number='$pr_number' — must be positive decimal; clearing"
+              pr_number=""
+              if [ "$reason" = "dispatch" ]; then
+                run=false
+                reason="invalid_pr_number"
+              fi
+            fi
+          fi
+
+          # For mention/label on non-PR issue, skip agent (ack may still fire)
+          if [ "$run" = "true" ] && [ -z "$pr_number" ] && [ "$reason" != "dispatch" ]; then
+            echo "::notice::Trigger on non-PR or missing PR number — agent skipped"
+            run=false
+            if [ "$reason" = "mention" ] || [[ "$reason" == label:* ]]; then
+              : # keep reason for ack diagnostic
+            else
+              reason="not_a_pr"
+            fi
+          fi
+
           if [ "$run" = "true" ] && [ "$HAS_MODEL" != "true" ]; then
             echo "::notice::DeepSeek model auth unset — checked DEEPSEEK_TOKEN, DEEPSEEK_API_KEY, DEEPSEEK_AUTH_TOKEN, NEXUSCLI_TOKEN. Add one as a *repository* secret (Settings → Secrets and variables → Actions). Environment-scoped secrets require jobs.<id>.environment."
             reason="missing_model_secret"
@@ -95,13 +119,13 @@ jobs:
           fi
 
           echo "run=$run" >> "$GITHUB_OUTPUT"
-          echo "pr_number=${PR}" >> "$GITHUB_OUTPUT"
+          echo "pr_number=${pr_number}" >> "$GITHUB_OUTPUT"
           echo "reason=$reason" >> "$GITHUB_OUTPUT"
-          echo "Gate: run=$run reason=$reason has_model=$HAS_MODEL"
+          echo "Gate: run=$run reason=$reason has_model=$HAS_MODEL pr=$pr_number"
 
   ack:
     needs: gate
-    if: needs.gate.outputs.reason == 'mention' || needs.gate.outputs.reason == 'label:deepseek-ci' || needs.gate.outputs.reason == 'label:deepseek' || needs.gate.outputs.reason == 'label:deepCore'
+    if: needs.gate.outputs.reason == 'mention' || needs.gate.outputs.reason == 'label:deepseek-ci' || needs.gate.outputs.reason == 'label:deepseek' || needs.gate.outputs.reason == 'label:deepCore' || needs.gate.outputs.reason == 'missing_model_secret'
     runs-on: ubuntu-latest
     permissions:
       issues: write
@@ -109,32 +133,57 @@ jobs:
     steps:
       - name: Acknowledge (eyes) + tracking
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        env:
+          GATE_REASON: ${{ needs.gate.outputs.reason }}
         with:
           script: |
             const number = context.payload.pull_request?.number || context.payload.issue?.number;
+            const reason = process.env.GATE_REASON || 'unknown';
+            const eventName = context.eventName;
+
             if (context.payload.comment?.id) {
               try {
-                await github.rest.reactions.createForIssueComment({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  comment_id: context.payload.comment.id,
-                  content: 'eyes',
-                });
+                if (eventName === 'pull_request_review_comment') {
+                  await github.rest.reactions.createForPullRequestReviewComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    comment_id: context.payload.comment.id,
+                    content: 'eyes',
+                  });
+                } else {
+                  await github.rest.reactions.createForIssueComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    comment_id: context.payload.comment.id,
+                    content: 'eyes',
+                  });
+                }
               } catch (e) {
                 core.info('Comment reaction skip: ' + e.message);
               }
             }
+
             if (number && (context.payload.comment || context.payload.review || context.payload.label)) {
+              const isMissingSecret = reason === 'missing_model_secret';
+              const bodyLines = isMissingSecret
+                ? [
+                    '`deepCore` (DeepSeek CI) trigger received but **model auth unset**.',
+                    'Add a repository secret: `DEEPSEEK_TOKEN` | `DEEPSEEK_API_KEY` | `DEEPSEEK_AUTH_TOKEN` | `NEXUSCLI_TOKEN`.',
+                    `Tracking: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+                    '',
+                    '_See docs/ops/DEEPSEEK-CI.md_',
+                  ]
+                : [
+                    `⚡ \`deepCore\` (DeepSeek CI) received. reason=\`${reason}\``,
+                    `Tracking: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+                    '',
+                    '_Live triggers: `@deepseek` / `@deepseek-ci` / `@deepCore` (case-insensitive). Labels: `deepseek-ci`, `deepseek`, `deepCore`. SSOT: docs/ops/AGENT-MONIKERS.md_',
+                  ];
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: number,
-                body: [
-                  `⚡ **deepCore** (DeepSeek CI) received. reason=\`${{ needs.gate.outputs.reason }}\``,
-                  `Tracking: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
-                  ``,
-                  `_Live triggers: \`@deepseek\` / \`@deepseek-ci\` / \`@deepCore\` (case-insensitive). Labels: \`deepseek-ci\`, \`deepseek\`. SSOT: docs/ops/AGENT-MONIKERS.md_`,
-                ].join('\n'),
+                body: bodyLines.join('\n'),
               });
             }
 
@@ -183,6 +232,11 @@ jobs:
           mkdir -p "$HOME"
           chmod 700 "$HOME"
           export DEEPSEEK_WASM_SOLVER="${GITHUB_WORKSPACE}/deepcli/pow_solver.js"
+          # Final guard: only positive decimal
+          if [ -n "${PR_NUMBER:-}" ] && ! printf '%s' "$PR_NUMBER" | grep -qE '^[1-9][0-9]*$'; then
+            echo "::error::Invalid PR_NUMBER=$PR_NUMBER"
+            exit 1
+          fi
           python -m ci_mode \
             --workspace "$GITHUB_WORKSPACE" \
             --cache-dir "${RUNNER_TEMP}/deepseek-cache" \

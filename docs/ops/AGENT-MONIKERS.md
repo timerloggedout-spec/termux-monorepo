@@ -18,10 +18,12 @@ Use backticks or plain text for display. Live triggers remain the original handl
 | Peer orchestrator | `peerGate` | (GHA) | |
 
 ## Rules
+
 1. Automated comments: **display** moniker in backticks; **ping** only the live trigger (`@jules`, `@gemini-cli`, `@deepseek` / `@deepseek-ci`).
 2. Workflows matching a live trigger **must** also accept the display moniker case-insensitively where registered above.
 3. Never put secrets or Class 3/4 material in moniker docs.
 4. If a moniker string is later registered as a GH username we do not control, keep it non-@ only.
 
 ## High-performance intent
+
 Monikers reduce ambiguous role ownership under load without notifying strangers.

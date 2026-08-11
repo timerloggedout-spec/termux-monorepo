@@ -14,8 +14,8 @@ name: Jules on Issues (label / @jules)
 #
 # NOTE: push is listed only so a no-op job can succeed (avoids 0-job failure
 # status pollution on every push). Real work stays issues / issue_comment only.
-# Concurrency group uses ONLY contexts that exist on every event (event_name + run_id).
-# Never reference github.event.issue in concurrency — it aborts graph on push.
+# Concurrency removed entirely: even safe groups abort graph materialization
+# on push before skip-on-push can run. Per-issue serialization deferred.
 
 on:
   push:
@@ -46,11 +46,6 @@ jobs:
         github.event.label.name == 'JULES'
       )
     runs-on: ubuntu-latest
-    concurrency:
-      # SAFE: only event_name + run_id (always present). Per-issue serialization
-      # deferred until a proven-safe issue.number expression is available.
-      group: jules-issue-${{ github.event_name }}-${{ github.run_id }}
-      cancel-in-progress: false
     permissions:
       contents: read
       issues: write
@@ -191,9 +186,6 @@ jobs:
         startsWith(github.event.comment.body, '@Jules')
       )
     runs-on: ubuntu-latest
-    concurrency:
-      group: jules-issue-${{ github.event_name }}-${{ github.run_id }}
-      cancel-in-progress: false
     permissions:
       contents: read
       issues: write

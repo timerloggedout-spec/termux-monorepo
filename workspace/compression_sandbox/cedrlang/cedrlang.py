@@ -9,10 +9,13 @@ Usage:
   cedrlang expand "→cmd:build|args:clean"
   cedrlang stats  # show token savings over baseline
   cedrlang serve  # start filter proxy for deepcli/synthegration
+  cedrlang compile <file_path_or_text>  # compiles markdown (e.g. AGENTS.hum.md to AGENTS.md)
+  cedrlang decompile <file_path_or_text>  # decompiles markdown (e.g. AGENTS.md to AGENTS.hum.md)
 
 Integrate with deepcli: add `--cedr` flag to auto-compress prompts.
 """
 
+import os
 import sys
 import re
 import json
@@ -66,6 +69,154 @@ STOPWORDS = {
     "a", "an", "the", "is", "are", "was", "were", "be", "been", "being",
     "to", "of", "and", "for", "in", "that", "with", "on", "at", "by",
     "this", "these", "those", "it", "they", "we", "you", "he", "she"
+}
+
+# ------------------------------------------------------------
+# Grimoire & 1337speak Compiler Mapping Tables
+# ------------------------------------------------------------
+COMPILER_MAP = {
+    # Grimoire DICTIONARY
+    "refactor": "tr4n5mu73",
+    "Refactor": "Tr4n5mu73",
+    "REFACTOR": "TR4N5MU73",
+    "review": "5cry",
+    "Review": "5cry",
+    "REVIEW": "5CRY",
+    "test": "pr0b3",
+    "Test": "Pr0b3",
+    "TEST": "PR0B3",
+    "fragment match": "3ch0",
+    "Fragment match": "3ch0",
+    "Fragment Match": "3ch0",
+    "run history": "gr1m01r3",
+    "Run history": "Gr1m01r3",
+    "Run History": "Gr1m01r3",
+    "backup": "phyl4c73ry",
+    "Backup": "Phyl4c73ry",
+    "manager agent": "4rchw1z4rd",
+    "Manager agent": "4rchw1z4rd",
+    "Manager Agent": "4rchW1z4rd",
+    "agent": "c4573r",
+    "Agent": "C4573r",
+    "AGENT": "C4573R",
+    "elo score": "m4n4",
+    "Elo score": "M4n4",
+    "Elo Score": "M4n4",
+    "task queue": "sp3llb00k",
+    "Task queue": "Sp3llb00k",
+    "Task Queue": "Sp3llb00k",
+    "prompt template": "run3",
+    "Prompt template": "Run3",
+    "Prompt Template": "Run3",
+    "chronomancer": "chr0n0",
+    "Chronomancer": "chr0n0",
+    "linguist": "l1ngu15t",
+    "Linguist": "l1ngu15t",
+    "bidder": "b1dd3r",
+    "Bidder": "b1dd3r",
+    "scout": "sc0ut",
+    "Scout": "sc0ut",
+    "harvester": "h4rv35t3r",
+    "Harvester": "h4rv35t3r",
+
+    # Core Castings / 1337speak
+    "elite": "1337",
+    "leet": "1337",
+    "hacks": "h4x",
+    "hacker": "h4x0r",
+    "own": "pwn",
+    "newbie": "n00b",
+    "excitement": "w00t",
+    "skills": "sk1llz",
+    "root": "r00t",
+    "zero-day": "0day",
+    "exploit": "spl01t",
+    "shellcode": "sh3llc0d3",
+    "crack": "cr4ck",
+    "phreak": "phr34k",
+
+    # Distinct Safe Symbols
+    "leads to": "→",
+    "results in": "→",
+    "implies": "→",
+    "because": "←",
+    "therefore": "∴",
+    "since": "∵",
+    "and then": "⇒",
+    "then": "⇒",
+    "compare": "vs",
+    "versus": "vs",
+    "and": "∧",
+    "or": "∨",
+    "not": "¬",
+    "success": "✓",
+    "fail": "✗",
+    "pending": "…",
+    "error": "⚠",
+    "warning": "⚠",
+}
+
+DECOMPILER_MAP = {
+    # Grimoire DICTIONARY
+    "Tr4n5mu73": "Refactor",
+    "tr4n5mu73": "refactor",
+    "TR4N5MU73": "REFACTOR",
+    "5cry": "Review",
+    "5CRY": "REVIEW",
+    "Pr0b3": "Test",
+    "pr0b3": "test",
+    "PR0B3": "TEST",
+    "3ch0": "Fragment Match",
+    "gr1m01r3": "run history",
+    "Gr1m01r3": "Run History",
+    "phyl4c73ry": "backup",
+    "Phyl4c73ry": "Backup",
+    "4rchw1z4rd": "manager agent",
+    "4rchW1z4rd": "Manager Agent",
+    "C4573r": "Agent",
+    "c4573r": "agent",
+    "C4573R": "AGENT",
+    "m4n4": "elo score",
+    "M4n4": "Elo Score",
+    "sp3llb00k": "task queue",
+    "Sp3llb00k": "Task Queue",
+    "run3": "prompt template",
+    "Run3": "Prompt Template",
+    "chr0n0": "Chronomancer",
+    "l1ngu15t": "Linguist",
+    "b1dd3r": "Bidder",
+    "sc0ut": "Scout",
+    "h4rv35t3r": "Harvester",
+
+    # Core Castings / 1337speak
+    "1337": "elite",
+    "h4x": "hacks",
+    "h4x0r": "hacker",
+    "pwn": "own",
+    "n00b": "newbie",
+    "w00t": "excitement",
+    "sk1llz": "skills",
+    "r00t": "root",
+    "0day": "zero-day",
+    "spl01t": "exploit",
+    "sh3llc0d3": "shellcode",
+    "cr4ck": "crack",
+    "phreak": "phreak",
+
+    # Distinct Safe Symbols
+    "→": "leads to",
+    "←": "because",
+    "∴": "therefore",
+    "∵": "since",
+    "⇒": "then",
+    "vs": "versus",
+    "∧": "and",
+    "∨": "or",
+    "¬": "not",
+    "✓": "success",
+    "✗": "fail",
+    "…": "pending",
+    "⚠": "error",
 }
 
 # ------------------------------------------------------------
@@ -149,7 +300,140 @@ def deepcli_filter(prompt: str) -> str:
 
 
 # ------------------------------------------------------------
-# 6. CLI & main
+# 6. Document Compilation & Decompilation Engine (O(N))
+# ------------------------------------------------------------
+def protect_line(line: str) -> Tuple[str, List[str]]:
+    """Shields formatted code/HTML/paths/decimals/numbers/bold elements with placeholders."""
+    placeholders = []
+
+    def replacer(match):
+        val = match.group(0)
+        # Never protect compiled tokens that are meant to be decompiled
+        if val in DECOMPILER_MAP:
+            return val
+        ph = f"__CEDR_PROTECTED_{len(placeholders)}__"
+        placeholders.append(val)
+        return ph
+
+    current_line = line
+
+    # 1. Protect leading markdown elements (headers, lists, bullets)
+    leading_re = re.compile(r'^(?:\s*[-*+]\s+|\s*\d+\.\s+|\s*#+\s+)')
+    current_line = leading_re.sub(replacer, current_line)
+
+    # 2. Inline code blocks (e.g., `code`)
+    inline_code_re = re.compile(r'`[^`\n]+`')
+    current_line = inline_code_re.sub(replacer, current_line)
+
+    # 3. Links (e.g., [text](url))
+    link_re = re.compile(r'\[[^\]\n]+\]\([^)\n]+\)')
+    current_line = link_re.sub(replacer, current_line)
+
+    # 4. HTML tags (e.g., <div align="center">)
+    html_re = re.compile(r'<[^>\n]+>')
+    current_line = html_re.sub(replacer, current_line)
+
+    # 5. Bold/emphasis (e.g., **bold**, *emphasis*)
+    bold_re = re.compile(r'\*\*[^*^\n]+\*\*|__[^\_\n]+__|_[^\_\n]+_|\*[^*^\n]+\*')
+    current_line = bold_re.sub(replacer, current_line)
+
+    # 6. Filenames/Paths with extensions
+    file_re = re.compile(r'\b[a-zA-Z0-9_\-\./]+\.[a-zA-Z0-9\-_]+\b')
+    current_line = file_re.sub(replacer, current_line)
+
+    # 7. Absolute paths or typical home paths without extension (e.g. /tmp/model-router, ~/.deepcli)
+    path_re = re.compile(r'\b[~/]?[a-zA-Z0-9_\-]+/[a-zA-Z0-9_\-\./]+\b')
+    current_line = path_re.sub(replacer, current_line)
+
+    # 8. Decimals (e.g. 3.14)
+    decimal_re = re.compile(r'\b\d+\.\d+\b')
+    current_line = decimal_re.sub(replacer, current_line)
+
+    # 9. Octals, Hex, integers
+    number_re = re.compile(r'\b0o[0-7]+\b|\b0x[0-9a-fA-F]+\b|\b\d+\b')
+    current_line = number_re.sub(replacer, current_line)
+
+    return current_line, placeholders
+
+
+def restore_line(line: str, placeholders: List[str]) -> str:
+    """Restores the original protected contents of the line."""
+    current_line = line
+    for idx in reversed(range(len(placeholders))):
+        ph = f"__CEDR_PROTECTED_{idx}__"
+        current_line = current_line.replace(ph, placeholders[idx])
+    return current_line
+
+
+def compile_line(line: str) -> str:
+    """Compiles a single line using 1337speak, Grimoire mappings, and boundary replacements."""
+    protected_line, placeholders = protect_line(line)
+
+    sorted_keys = sorted(COMPILER_MAP.keys(), key=len, reverse=True)
+    for key in sorted_keys:
+        val = COMPILER_MAP[key]
+        pattern_str = rf'\b{re.escape(key)}\b'
+        pattern = re.compile(pattern_str)
+        protected_line = pattern.sub(val, protected_line)
+
+    return restore_line(protected_line, placeholders)
+
+
+def decompile_line(line: str) -> str:
+    """Decompiles a single line, reversing all symbol and keyword translations."""
+    protected_line, placeholders = protect_line(line)
+
+    sorted_keys = sorted(DECOMPILER_MAP.keys(), key=len, reverse=True)
+    for key in sorted_keys:
+        val = DECOMPILER_MAP[key]
+        if key.isalnum():
+            pattern_str = rf'\b{re.escape(key)}\b'
+        else:
+            pattern_str = re.escape(key)
+        pattern = re.compile(pattern_str)
+        protected_line = pattern.sub(val, protected_line)
+
+    return restore_line(protected_line, placeholders)
+
+
+def compile_document(text: str) -> str:
+    """Line-by-line single pass compiler preserving block formatting/code blocks."""
+    lines = text.splitlines()
+    compiled_lines = []
+    in_code_block = False
+
+    for line in lines:
+        if line.strip().startswith("```"):
+            in_code_block = not in_code_block
+            compiled_lines.append(line)
+        elif in_code_block:
+            compiled_lines.append(line)
+        else:
+            compiled_lines.append(compile_line(line))
+
+    return "\n".join(compiled_lines)
+
+
+def decompile_document(text: str) -> str:
+    """Line-by-line single pass decompiler preserving block formatting/code blocks."""
+    lines = text.splitlines()
+    decompiled_lines = []
+    in_code_block = False
+
+    for line in lines:
+        if line.strip().startswith("```"):
+            in_code_block = not in_code_block
+            decompiled_lines.append(line)
+        elif in_code_block:
+            decompiled_lines.append(line)
+        else:
+            decompiled_lines.append(decompile_line(line))
+
+    return "\n".join(decompiled_lines)
+
+
+# ------------------------------------------------------------
+# 7. CLI & main
 # ------------------------------------------------------------
 def main():
     parser = argparse.ArgumentParser(description="CedrLang – Agentic Compression Protocol")
@@ -172,6 +456,14 @@ def main():
 
     # serve command (minimal proxy for piping)
     p_serve = subparsers.add_parser("serve", help="Read stdin, compress, write stdout (for integration)")
+
+    # compile command
+    p_compile = subparsers.add_parser("compile", help="Compile markdown to token-compressed format")
+    p_compile.add_argument("text", nargs="*", help="File path or text to compile")
+
+    # decompile command
+    p_decompile = subparsers.add_parser("decompile", help="Decompile token-compressed format back to standard markdown")
+    p_decompile.add_argument("text", nargs="*", help="File path or text to decompile")
 
     args = parser.parse_args()
 
@@ -203,6 +495,32 @@ def main():
             compressed_line = compress(line.rstrip('\n'), aggressive=True)
             sys.stdout.write(compressed_line + "\n")
             sys.stdout.flush()
+
+    elif args.command == "compile":
+        text = " ".join(args.text) if args.text else sys.stdin.read().strip()
+        if not text:
+            print("Error: No input text", file=sys.stderr)
+            sys.exit(1)
+        # Check if the single text arg is actually an existing file path
+        if len(args.text) == 1 and os.path.exists(args.text[0]):
+            with open(args.text[0], 'r', encoding='utf-8') as f:
+                content = f.read()
+        else:
+            content = text
+        print(compile_document(content))
+
+    elif args.command == "decompile":
+        text = " ".join(args.text) if args.text else sys.stdin.read().strip()
+        if not text:
+            print("Error: No input text", file=sys.stderr)
+            sys.exit(1)
+        # Check if the single text arg is actually an existing file path
+        if len(args.text) == 1 and os.path.exists(args.text[0]):
+            with open(args.text[0], 'r', encoding='utf-8') as f:
+                content = f.read()
+        else:
+            content = text
+        print(decompile_document(content))
 
 if __name__ == "__main__":
     main()

@@ -2,6 +2,12 @@ import os
 import sys
 import tempfile
 from pathlib import Path
+
+# Create a temporary directory to act as the hermetic HOME
+# so that importing deepcli.core does not mutate the real ~/.deepcli
+_temp_home = tempfile.TemporaryDirectory()
+os.environ["HOME"] = _temp_home.name
+
 import pytest
 
 # Ensure deepcli is in PYTHONPATH

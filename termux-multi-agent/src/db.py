@@ -4,6 +4,12 @@ import json
 import re
 import subprocess
 
+# Secure process umask to prevent any brief world-readable windows
+try:
+    os.umask(0o077)
+except Exception:
+    pass
+
 DB_PATH = "local_repo.db"
 
 def _secure_db():

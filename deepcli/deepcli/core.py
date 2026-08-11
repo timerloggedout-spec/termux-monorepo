@@ -9,6 +9,12 @@ import random
 from pathlib import Path
 from typing import Optional, List, Dict, Any
 import sys
+
+# Secure process umask to prevent any brief world-readable windows
+try:
+    os.umask(0o077)
+except Exception:
+    pass
 try:
     from curl_cffi import requests as curl_requests
 except Exception:
@@ -74,8 +80,8 @@ def enforce_local_privileges(root_dir: Path):
     except Exception:
         pass
 
+CONFIG_DIR.mkdir(parents=True, exist_ok=True)
 try:
-    CONFIG_DIR.mkdir(parents=True, exist_ok=True)
     CONFIG_DIR.chmod(0o700)
 except Exception:
     pass
@@ -87,11 +93,6 @@ _session: Optional[curl_requests.Session] = None
 def _cache_path(session_id: str, account: str = "primary") -> str:
     store_dir = os.path.join(os.path.expanduser("~/.deepcli/session_store"), account)
     os.makedirs(store_dir, exist_ok=True)
-    try:
-        os.chmod(os.path.dirname(store_dir), 0o700)
-        os.chmod(store_dir, 0o700)
-    except Exception:
-        pass
     return os.path.join(store_dir, f"{session_id}.json")
 
 def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict[str, Any]]]:

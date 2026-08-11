@@ -1,5 +1,12 @@
 import json
 import time
+import os
+
+# Secure process umask to prevent any brief world-readable windows
+try:
+    os.umask(0o077)
+except Exception:
+    pass
 
 TELEMETRY_LOG = "agent_telemetry_stream.json"
 
@@ -14,11 +21,12 @@ class TermuxTelemetryLogger:
         print(f"{timestamp} {color_tag} [{agent_id}]{context_str}: {message}")
         log_entry = {"timestamp": timestamp, "level": level, "agent": agent_id,
                      "target": target_file, "attempt": attempt, "message": message}
+
+        is_new = not os.path.exists(TELEMETRY_LOG)
         with open(TELEMETRY_LOG, "a") as f:
             f.write(json.dumps(log_entry) + "\n")
-        try:
-            import os
-            if os.path.exists(TELEMETRY_LOG):
+        if is_new:
+            try:
                 os.chmod(TELEMETRY_LOG, 0o600)
-        except Exception:
-            pass
+            except Exception:
+                pass

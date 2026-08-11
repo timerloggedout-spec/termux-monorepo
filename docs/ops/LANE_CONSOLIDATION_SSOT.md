@@ -75,6 +75,15 @@ Model routing is controlled via `scripts/model_router.py` using dynamic ELO-base
 - **Unattended Activity Age Limit:** `3 hours` stale duration (agent must have been inactive for at least 3 hours with open threads/conflicts before sweep acts).
 - **Sweep Capacity Cap:** Max `8` PRs processed per scheduled run (hard limit `20`) to respect API rate limits and quotas.
 
+### 2.3 Dynamic Response Lags & Lag Indexing (PR #156)
+As merged in PR #156, the agent continuous operations workflow utilizes `scripts/ci/calculate_lag_index.py` to compile a historical response time lag index (`docs/ops/response_time_lag_index.json`), distinguishing between message acknowledgment ("I'm working on it") and actual programmatic responses to adaptively schedule and jump start stuck PRs.
+
+*Running locally/offline. Fallback defaults applied.*
+
+| PR/Issue | Message Response Lag | Programmatic Response Lag | Status |
+|---|---|---|---|
+| Default Fallback | 1.5 hours | 3.0 hours | Active |
+
 ---
 
 ## 3. Pull Request & Issue Audit (Unified Map)

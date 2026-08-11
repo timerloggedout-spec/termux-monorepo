@@ -11,6 +11,7 @@ Guidelines
 - Tools that capture or manipulate credentials are placed under tools/harvesters/credentialing_optin/
   and require explicit opt-in (see README in that folder).
 - Token files, cookie files, and session exports MUST use 600 permissions; directories MUST use 700 permissions.
+- To guarantee absolute defense-in-depth and eliminate transient world-readable files or database/side-car leaks, critical modules set `os.umask(0o077)` on load, restricting all created files to at most `0o600` and directories to at most `0o700` automatically.
 
 If you find secrets accidentally committed to the repo, follow the GitHub guidance for removing
 secrets from history and rotate the credentials immediately.

@@ -184,9 +184,8 @@ def main():
         pr_avg_act = sum(pr_actual_lags) / len(pr_actual_lags) if pr_actual_lags else None
 
         if pr_avg_msg is not None or pr_avg_act is not None:
-            # 1.5x multiplier for safe margins
-            suggested_debounce = max(30 * 60, (pr_avg_msg or default_debounce_sec) * 1.5)
-            suggested_stale = max(60 * 60, (pr_avg_act or default_stale_sec) * 1.5)
+            suggested_debounce = max(30 * 60, pr_avg_msg * 1.5) if pr_avg_msg is not None else default_debounce_sec
+            suggested_stale = max(60 * 60, pr_avg_act * 1.5) if pr_avg_act is not None else default_stale_sec
 
             metrics["by_pr"][str(pr_number)] = {
                 "avg_message_response_lag_sec": pr_avg_msg,
@@ -195,8 +194,8 @@ def main():
                 "suggested_stale_ms": int(suggested_stale * 1000)
             }
 
-            msg_lag_str = f"{round(pr_avg_msg / 60, 1)} min" if pr_avg_msg else "N/A"
-            act_lag_str = f"{round(pr_avg_act / 3600, 1)} hrs" if pr_avg_act else "N/A"
+            msg_lag_str = f"{round(pr_avg_msg / 60, 1)} min" if pr_avg_msg is not None else "N/A"
+            act_lag_str = f"{round(pr_avg_act / 3600, 1)} hrs" if pr_avg_act is not None else "N/A"
             pr_table_rows.append(f"| PR #{pr_number} | {msg_lag_str} | {act_lag_str} | {pr_state.upper()} |")
 
     # Compute global averages

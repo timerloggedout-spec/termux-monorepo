@@ -21,8 +21,8 @@
 | Trigger | How |
 |---------|-----|
 | Mention | Comment `@deepseek`, `@deepseek-ci`, or `@deepCore` (case-insensitive) on a PR/issue — OWNER/MEMBER/COLLABORATOR only |
-| Label | Add `deepseek-ci` or `deepseek` |
-| Dispatch | Actions → DeepSeek CI – Agentic (safe) → Run workflow |
+| Label | Add `deepseek-ci`, `deepseek`, or `deepCore` |
+| Dispatch | Actions → DeepSeek CI – Agentic (safe) → Run workflow (leaving `pr_number` empty skips PR review) |
 
 Mirrors Gemini (`@gemini-cli` / `sparkFlux`) and Jules (`@jules` / `heyVern`) patterns.
 
@@ -37,7 +37,7 @@ Model auth — **first non-empty wins**:
 
 GitHub writes: `ARCHWIZ_GITHUB_TOKEN` → `OPERATOR_GITHUB_TOKEN` → `OPERATOR_TOKEN` → `GITHUB_TOKEN`.
 
-**If the gate reports "No DEEPSEEK_TOKEN":**
+**If the gate reports "DeepSeek model auth unset":**
 - Confirm the secret is a **repository** secret (Settings → Secrets and variables → Actions → Repository secrets), not only an Environment secret.
 - Environment secrets require `jobs.<id>.environment: <name>` in the workflow; this workflow uses repo secrets only.
 - Name must match one of the four keys above exactly (case-sensitive).

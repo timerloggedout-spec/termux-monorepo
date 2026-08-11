@@ -2,10 +2,12 @@
 """
 CI mode for multi-ai-cli – non-interactive DeepSeek review path.
 
+Implements: RL-18
 Security:
 - Never persist cookies / tokens / PoW answers across jobs.
 - Cache dir is RUNNER_TEMP only; caller must scrub.
-- OPERATOR / DEEPSEEK_TOKEN from env only.
+- OPERATOR / DEEPSEEK_TOKEN from env only; never cross-wire.
+- Artifact JSON is metadata-only (no model body).
 """
 from __future__ import annotations
 
@@ -71,6 +73,7 @@ def run_ci(
     )
     action = event.get("action")
     decisions: list[dict] = []
+    status = "ok"
 
     if not pr_number or not repo:
         return {
@@ -78,17 +81,20 @@ def run_ci(
             "event": action,
             "pr": pr_number,
             "provider_used": "deepseek",
+            "status": "skipped",
             "skipped": "missing pr or repo",
         }
 
-    # Prefer DEEPSEEK_TOKEN; never fall back to GH operator token as model auth
     if not os.environ.get("DEEPSEEK_TOKEN"):
-        print(
-            "Warning: DEEPSEEK_TOKEN unset — DeepSeek backend may fail",
-            file=sys.stderr,
-        )
+        print("::error::DEEPSEEK_TOKEN unset — model auth required", file=sys.stderr)
+        return {
+            "actions": [{"type": "error", "message": "DEEPSEEK_TOKEN unset"}],
+            "event": action,
+            "pr": pr_number,
+            "provider_used": "deepseek",
+            "status": "error",
+        }
 
-    diff = ""
     try:
         diff = subprocess.check_output(
             ["gh", "pr", "diff", str(pr_number), "--repo", repo],
@@ -97,7 +103,24 @@ def run_ci(
             timeout=60,
         )
     except Exception as e:
-        diff = f"Could not retrieve diff: {e}"
+        print(f"::error::diff retrieval failed: {e}", file=sys.stderr)
+        return {
+            "actions": [{"type": "error", "message": "diff_retrieval_failed"}],
+            "event": action,
+            "pr": pr_number,
+            "provider_used": "deepseek",
+            "status": "error",
+        }
+
+    if not diff.strip():
+        return {
+            "actions": [],
+            "event": action,
+            "pr": pr_number,
+            "provider_used": "deepseek",
+            "status": "skipped",
+            "skipped": "empty_diff",
+        }
 
     try:
         mgr = SessionManager()
@@ -105,7 +128,8 @@ def run_ci(
         prompt = (
             "You are a code reviewer for a Termux monorepo. "
             "Focus on security, correctness, and CI reliability. "
-            "Be concise. Flag Class 3/4 secret risks.\n\n"
+            "Be concise. Flag Class 3/4 secret risks. "
+            "Never echo tokens, cookies, or secrets from the diff.\n\n"
             f"PR #{pr_number} diff (truncated):\n\n{diff[:8000]}"
         )
         analysis = backend.send_message(prompt, [])
@@ -115,11 +139,14 @@ def run_ci(
             and not str(analysis).startswith("Error:")
             and not str(analysis).startswith("[No content returned]")
         ):
+            body = str(analysis)
+            if len(body) > 4000:
+                body = body[:4000] + "\n\n_(truncated)_"
             signature = (
                 "\n\n---\n*DeepSeek CI (multi-ai-cli / deepcli PoW) · "
-                "ephemeral session · Fixes #109*"
+                "ephemeral session · Implements: RL-18 · Fixes #109*"
             )
-            comment_body = (str(analysis)[:1900] + signature)
+            comment_body = body + signature
             try:
                 subprocess.run(
                     [
@@ -137,29 +164,34 @@ def run_ci(
                     timeout=30,
                 )
             except Exception as e:
-                print(f"Failed to post PR comment: {e}", file=sys.stderr)
+                print(f"::warning::Failed to post PR comment: {e}", file=sys.stderr)
 
             decisions.append(
                 {
                     "type": "pr_review",
                     "pr": pr_number,
-                    "summary": comment_body[:200],
+                    "posted": True,
+                    "chars": len(comment_body),
                 }
             )
         else:
-            print(
-                f"Warning: empty/invalid DeepSeek analysis: {analysis!r}",
-                file=sys.stderr,
-            )
+            print("::warning::empty or invalid DeepSeek analysis", file=sys.stderr)
+            status = "error"
+            decisions.append({"type": "error", "message": "empty_analysis"})
     except Exception as e:
-        print(f"Error during DeepSeek analysis: {e}", file=sys.stderr)
-        decisions.append({"type": "error", "message": str(e)[:300]})
+        print(f"::error::DeepSeek analysis failed: {type(e).__name__}", file=sys.stderr)
+        status = "error"
+        decisions.append({"type": "error", "message": type(e).__name__})
+
+    if any(d.get("type") == "error" for d in decisions):
+        status = "error"
 
     return {
         "actions": decisions,
         "event": action,
         "pr": pr_number,
         "provider_used": "deepseek",
+        "status": status,
     }
 
 
@@ -170,6 +202,8 @@ def main() -> None:
     parser.add_argument("--pr", default="", help="PR number override")
     args = parser.parse_args()
 
+    # Isolate any incidental HOME-relative writes
+    os.environ.setdefault("MULTI_AI_CACHE_DIR", args.cache_dir)
     os.makedirs(args.cache_dir, exist_ok=True)
     try:
         os.chmod(args.cache_dir, 0o700)
@@ -185,22 +219,41 @@ def main() -> None:
         pr_override=args.pr or None,
     )
 
+    # Metadata only — never store model body (secret echo risk)
+    safe = {
+        "status": result.get("status"),
+        "event": result.get("event"),
+        "pr": result.get("pr"),
+        "provider_used": result.get("provider_used"),
+        "actions": [
+            {k: v for k, v in a.items() if k != "summary"}
+            for a in result.get("actions", [])
+        ],
+        "skipped": result.get("skipped"),
+    }
+
     output_path = Path("deepseek_output.json")
     flags = os.O_WRONLY | os.O_CREAT | os.O_TRUNC
     mode = 0o600
     try:
         fd = os.open(output_path, flags, mode)
         with open(fd, "w", encoding="utf-8") as f:
-            json.dump(result, f, indent=2)
+            json.dump(safe, f, indent=2)
     except Exception:
         with open(output_path, "w", encoding="utf-8") as f:
-            json.dump(result, f, indent=2)
+            json.dump(safe, f, indent=2)
     try:
         os.chmod(output_path, 0o600)
     except Exception:
         pass
 
-    print(f"CI run completed. Decisions: {result.get('actions', [])}")
+    print(
+        f"CI run completed. status={safe.get('status')} "
+        f"actions={[a.get('type') for a in safe.get('actions', [])]}"
+    )
+
+    if safe.get("status") == "error":
+        sys.exit(1)
 
 
 if __name__ == "__main__":

@@ -88,3 +88,19 @@ proposals:
     related_branches:
       - docs/kimi-cloud-offload-evaluation
     gates_required: [repo-gate]
+
+  - id: catch-loops
+    title: "Catch Loops: Safe Recursion and Fork Traversal Guards"
+    author: jules
+    status: executing
+    priority: P1
+    path: active/catch-loops/
+    reviewers:
+      - id: jules
+        role: author
+        status: posted
+      - id: grok
+        role: registrar
+        status: accepted
+    related_prs: [154]
+    gates_required: [repo-gate, termux-smoke]

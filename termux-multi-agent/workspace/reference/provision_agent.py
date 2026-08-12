@@ -457,7 +457,7 @@ def read_latest_telemetry():
                 line = f.readline()
                 if not line:
                     break
-                if not line.endswith("\n"):
+                if not line.endswith("\\n"):
                     f.seek(curr_pos)
                     break
                 _last_file_pos = f.tell()

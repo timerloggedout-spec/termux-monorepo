@@ -9,7 +9,7 @@ on:
       - 'master-staging'
 
 concurrency:
-  group: commit-diff-watcher-${{ github.event.pull_request.number || github.ref || github.run_id }}
+  group: commit-diff-watcher-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: true
 
 permissions: {}
@@ -40,7 +40,15 @@ jobs:
 
             if (eventName === 'pull_request') {
               prNumber = context.payload.pull_request.number;
-              const changedFiles = context.payload.pull_request.changed_files;
+
+              // Fetch latest PR details at runtime to get accurate changed_files
+              const { data: prDetails } = await github.rest.pulls.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber,
+              });
+
+              const changedFiles = prDetails.changed_files;
               if (changedFiles === 0) {
                 isPrEmpty = true;
               }
@@ -80,9 +88,22 @@ jobs:
               const e = (email || '').toLowerCase();
               const n = (name || '').toLowerCase();
               const m = (message || '').toLowerCase();
-              if (agentLogins.some(a => l.includes(a) || e.includes(a) || n.includes(a))) return true;
-              if (l.includes('bot') || e.includes('bot') || n.includes('bot') || l.includes('jules')) return true;
-              if (m.includes('@jules') || m.includes('@google-labs-jules')) return true;
+
+              // Exact matching of known bot logins
+              if (agentLogins.includes(l)) return true;
+
+              // Standard GitHub Apps suffix
+              if (l.endsWith('[bot]')) return true;
+
+              // Check if login contains "bot" or "jules" but only as a word or suffix to avoid matching e.g. "Talbot" or "Botond"
+              if (/\b(bot|jules)\b|[-_]bot$|^bot[-_]/i.test(login || '')) return true;
+
+              // Explicitly check for jules-specific monikers
+              if (l === 'google-labs-jules' || l === 'jules' || l === 'google-labs-jules[bot]') return true;
+
+              // Known bot email domains
+              if (e.endsWith('@github.com') && l.includes('bot')) return true;
+
               return false;
             };
 

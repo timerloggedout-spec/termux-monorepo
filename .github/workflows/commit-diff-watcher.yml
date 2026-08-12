@@ -1,0 +1,159 @@
+name: '🛡️ Commit & PR Diff Watcher'
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - '**'
+
+concurrency:
+  group: commit-diff-watcher-${{ github.event.pull_request.number || github.ref || github.run_id }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  watch-diffs:
+    name: 'Check for empty diffs/commits'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Analyze commits & diffs
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        with:
+          script: |
+            const eventName = context.eventName;
+            let prNumber = null;
+            let commits = [];
+            let isPrEmpty = false;
+
+            if (eventName === 'pull_request') {
+              prNumber = context.payload.pull_request.number;
+              const changedFiles = context.payload.pull_request.changed_files;
+              if (changedFiles === 0) {
+                isPrEmpty = true;
+              }
+              // List all commits in the PR
+              const prCommits = await github.paginate(github.rest.pulls.listCommits, {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber,
+                per_page: 100,
+              });
+              commits = prCommits.map(c => ({
+                sha: c.sha,
+                message: c.commit.message,
+                author_login: c.author?.login,
+                author_email: c.commit.author?.email,
+                author_name: c.commit.author?.name,
+              }));
+            } else if (eventName === 'push') {
+              commits = (context.payload.commits || []).map(c => ({
+                sha: c.id,
+                message: c.message,
+                author_login: c.author?.username,
+                author_email: c.author?.email,
+                author_name: c.author?.name,
+              }));
+            }
+
+            core.info(`Found ${commits.length} commit(s) to analyze.`);
+
+            const agentLogins = [
+              'google-labs-jules', 'jules', 'devin-ai-integration', 'coderabbitai',
+              'github-actions', 'copilot', 'gitar-bot', 'blocksorg'
+            ];
+
+            const isAgent = (login, email, name, message) => {
+              const l = (login || '').toLowerCase();
+              const e = (email || '').toLowerCase();
+              const n = (name || '').toLowerCase();
+              const m = (message || '').toLowerCase();
+              if (agentLogins.some(a => l.includes(a) || e.includes(a) || n.includes(a))) return true;
+              if (l.includes('bot') || e.includes('bot') || n.includes('bot') || l.includes('jules')) return true;
+              if (m.includes('@jules') || m.includes('@google-labs-jules')) return true;
+              return false;
+            };
+
+            let emptyAgentCommits = [];
+
+            for (const commit of commits) {
+              const isCommitAgent = isAgent(
+                commit.author_login,
+                commit.author_email,
+                commit.author_name,
+                commit.message
+              );
+
+              if (isCommitAgent) {
+                // Fetch full commit info to check files changed
+                try {
+                  const { data: fullCommit } = await github.rest.repos.getCommit({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    ref: commit.sha,
+                  });
+                  const filesChanged = fullCommit.files ? fullCommit.files.length : 0;
+                  if (filesChanged === 0) {
+                    core.warning(`Empty commit from agent detected: ${commit.sha} ("${commit.message.split('\n')[0]}")`);
+                    emptyAgentCommits.push(commit);
+                  }
+                } catch (err) {
+                  core.error(`Failed to fetch commit ${commit.sha}: ${err.message}`);
+                }
+              }
+            }
+
+            if (isPrEmpty || emptyAgentCommits.length > 0) {
+              const marker = '<!-- empty-diff-watcher-warning -->';
+              let body = [
+                marker,
+                '### 🛡️ Commit & PR Diff Watcher Warning',
+                '',
+                '⚠️ **Empty Commit or Empty PR Diff Detected!**',
+                ''
+              ];
+
+              if (isPrEmpty) {
+                body.push('- The pull request has **0 changed files**.');
+              }
+              if (emptyAgentCommits.length > 0) {
+                body.push('- The following empty commit(s) were pushed by automated agents/bots:');
+                for (const c of emptyAgentCommits) {
+                  body.push(`  - \`${c.sha.slice(0, 7)}\` by \`${c.author_login || c.author_name}\`: *"${c.message.split('\n')[0]}"*`);
+                }
+              }
+
+              body.push('');
+              body.push('Empty commits or empty diff PRs from automated agents are blocked to protect CI/CD resources and pipeline hygiene.');
+              body.push('Please push a commit containing actual file modifications to proceed.');
+
+              const fullComment = body.join('\n');
+
+              if (prNumber) {
+                // Post comment on the PR (idempotently)
+                const comments = await github.paginate(github.rest.issues.listComments, {
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  per_page: 50,
+                });
+                const hasWarning = comments.some(c => c.body && c.body.includes(marker));
+                if (!hasWarning) {
+                  await github.rest.issues.createComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: prNumber,
+                    body: fullComment,
+                  });
+                }
+              }
+
+              core.setFailed('Action Refinements: Blocked empty commits/diffs from automated agents.');
+            } else {
+              core.info('All commits and diffs look valid.');
+            }

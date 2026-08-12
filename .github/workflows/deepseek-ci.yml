@@ -23,7 +23,7 @@ jobs:
       OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
       GITHUB_EVENT: ${{ toJson(github.event) }}
       DEEPSEEK_CACHE_DIR: ${{ github.workspace }}/.deepseek-cache
-      WASM_SOURCE_COMMIT: "abc123def456"   # replace with real commit
+      WASM_SOURCE_COMMIT: "ee1807049fd93d087bc14055b2ae6cbffb5dbf82"
       WASM_RAW_BASE: "https://raw.githubusercontent.com/termux/termux-monorepo"
 
     steps:
@@ -50,8 +50,8 @@ jobs:
       - name: Fetch DeepSeek PoW WASM & solver from termux-monorepo
         run: |
           mkdir -p deepcli/wasm
-          curl -sSfL "$WASM_RAW_BASE/$WASM_SOURCE_COMMIT/deepseek-cli/DeepTerm/deepseek.wasm" -o deepcli/wasm/deepseek.wasm
-          curl -sSfL "$WASM_RAW_BASE/$WASM_SOURCE_COMMIT/deepseek-cli/DeepTerm/pow_solver.js" -o deepcli/wasm/pow_solver.js
+          curl -sSfL "$WASM_RAW_BASE/$WASM_SOURCE_COMMIT/deepcli/deepseek.wasm" -o deepcli/wasm/deepseek.wasm
+          curl -sSfL "$WASM_RAW_BASE/$WASM_SOURCE_COMMIT/deepcli/pow_solver.js" -o deepcli/wasm/pow_solver.js
 
       - name: Cache DeepSeek session
         uses: actions/cache@v4

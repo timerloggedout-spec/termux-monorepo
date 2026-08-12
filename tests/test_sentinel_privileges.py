@@ -118,3 +118,4 @@ def test_enforce_local_privileges_with_read_only_files():
 
 # Sentinel verification complete. Secure privilege policies (0o600 for files,
 # 0o700 for directories) are fully verified, preventing symlink traversal attacks.
+# Last verified: August 12, 2026

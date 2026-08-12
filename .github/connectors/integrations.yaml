@@ -1,19 +1,176 @@
+# --- Core agentic (already wired) ---
 integrations:
   coderabbit:
     autofix_trigger: "@coderabbitai autofix"
     requires_operator_token: true
+    status: active
   jules:
     primary_builder: true
     async_cloud_vm: true
+    github_app: Google Labs Jules
+    status: active  # last used within last week
   devin:
     review_marker: true
+    status: optional
   linear:
     workflow: agent-feedback-linear-sync.yml
+    github_app: Linear
+    secret_env: LINEAR_API_KEY  # used by .github/workflows/agent-feedback-linear-sync.yml
+    status: authorized_never_used  # activate via secret + workflow
   vercel:
     status_context: Vercel
-  peer_reviewers:
-    - coderabbit
-    - devin-ai
+    github_app: Vercel
+    status: authorized_never_used
+  aikido:
+    status: active
+  sentry:
+    status: active
+  copilot-pull-request:
+    status: active
+  graphite:
+    status: active
+  gitar:
+    status: active
+
+# --- Peer reviewers (from #184 last-used / authorized) ---
+peer_reviewers:
+  - coderabbit
+  - devin
+  - aikido
+  - sentry
+  - copilot-pull-request
+  - graphite
+  - gitar
+
+# --- High-value last-used (activate / keep) ---
+last_used:
+  google_labs_jules:
+    ref: jules  # see integrations.jules for github_app and status
+    last_used: within_last_week
+    role: primary_async_builder
+  grok_xai:
+    github_app: Grok (by xAI)
+    last_used: within_last_week
+    role: operator_peer
+  cursor:
+    github_app: Cursor
+    last_used: within_last_week
+    role: ide_agent
+  graphite:
+    github_app: Graphite App
+    last_used: within_last_week
+    role: pr_stack_review
+  manus:
+    github_app: Manus Connector
+    last_used: within_last_week
+    role: agent_connector
+  zenhub:
+    oauth_app: Zenhub
+    last_used: within_last_week
+    role: project_board
+  replit:
+    oauth_app: Replit
+    last_used: within_last_2_weeks
+    role: cloud_ide
+  browserless:
+    oauth_app: Browserless
+    last_used: within_last_2_weeks
+    role: headless_browser
+  mistral:
+    github_app: MistralAI
+    last_used: within_last_2_weeks
+    role: model_peer
+  copilot_swe:
+    github_app: Copilot SWE Agent
+    last_used: within_last_2_weeks
+    role: github_native_agent
+  gitar:
+    oauth_app: Gitar
+    github_app: Gitar Bot
+    last_used: within_last_5_months
+    role: code_transform
+
+# --- Classic / fine-grained PATs (secret wiring only; never paste values) ---
+tokens:
+  ARCHWIZ_GITHUB_TOKEN:
+    type: fine_grained_pat
+    status: never_used
+    action: wire_as_repo_secret  # see docs/ops/ARCHWIZ-ADMIN-TOKEN.md
+    preference: preferred_admin
+  OPERATOR_GITHUB_TOKEN:
+    type: classic_or_fine
+    status: primary
+    action: keep
+  Gh_actions:
+    type: classic_pat
+    last_used: within_last_week
+    action: keep_as_secret_if_wired
+  gitlab_cicd-w+org_view:
+    type: classic_pat
+    last_used: within_last_week
+    scopes: [read:org, repo]
+    action: keep_for_gitlab_bridge
+  DeepSeek_account-1:
+    type: fine_grained_pat
+    status: expired
+    action: rotate_or_remove
+  DEEPSEEK_TOKEN:
+    type: model_auth
+    action: ensure_repo_secret  # not a GitHub PAT
+
+# --- SSH ---
+ssh:
+  DeepSeek_Account-1_ssh:
+    last_used: within_last_week
+    action: keep_for_deepseek_cli
+
+# --- Hygiene ---
+revoke_candidates:
+  note: Never-used OAuth/GitHub Apps increase attack surface. Revoke after confirming no workflow depends on them.
+  keep:
     - aikido
+    - devin
     - sentry
-    - copilot-pull-request
+  revoke:
+    - BLACKBOXAI
+    - ChatGPT Verification
+    - Codeit
+    - Composio
+    - Dify
+    - Entelligence-AI
+    - Genspark AI
+    - GitCode
+    - Jam
+    - Kernel Dashboard
+    - kilocode.ai
+    - Kimi GitHub Plugin
+    - Mino
+    - Nous Research
+    - PlanetScale
+    - PostHog
+    - Pulumi Cloud
+    - Qodo Git Connect
+    - Qodo.ai
+    - Spck Editor
+    - Supermemory
+    - Tavily
+    - Tembo
+    - AskSolo.ai
+    - BlocksOrg
+    - Claude
+    - Codacy Production
+    - cto.new
+    - ECC Tools
+    - Factory Droid
+    - GitHub Codespaces
+    - HackerOne Code
+    - Happy Coder App
+    - Kilo Code Bot
+    - Koyeb
+    - lovable.dev
+    - Miro
+    - Render
+    - SonarQube Agent
+    - SonarQubeCloud
+    - Travis CI
+    - Zed Industries

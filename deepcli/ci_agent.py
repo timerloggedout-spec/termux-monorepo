@@ -3,8 +3,9 @@ CI agent logic for DeepSeek integration.
 Does not modify core.py – used by ci_mode.py.
 
 Admin-scope defaults: thinking=True, expert=True (always).
-Account-2 (secondary) is the default for CI check runs.
+Account-1 (primary) is PRIORITY default.
 chat_session_id is required for /api/v0/chat/completion.
+Artifact output is metadata only (no model text).
 """
 import os
 import json
@@ -75,8 +76,6 @@ def _pow_header(session: dict) -> str | None:
         return None
     try:
         challenge = get_pow_challenge(token, cookies=session.get("cookies") or None)
-        # Prefer node WASM path that accepts challenge JSON on stdin when available;
-        # fall back to solve_pow() file-based solver used at bootstrap.
         solver = WASM_DIR / "pow_solver.js"
         import subprocess as sp
         proc = sp.run(
@@ -177,6 +176,7 @@ def run_ci(event, session, peer, workspace, operator_token):
     """
     Run CI agent for PR review.
     Requires operator_token for gh CLI operations.
+    Artifact fields are metadata only (no model text).
     """
     if not operator_token:
         return {
@@ -185,7 +185,7 @@ def run_ci(event, session, peer, workspace, operator_token):
             "event": event.get("action"),
             "pr": event.get("pull_request", {}).get("number"),
         }
-    
+
     gh_env = os.environ.copy()
     gh_env["GH_TOKEN"] = operator_token
 
@@ -193,7 +193,9 @@ def run_ci(event, session, peer, workspace, operator_token):
     repo = event.get("repository", {}).get("full_name")
     action = event.get("action")
     decisions = []
-    account = session.get("account") or peer.get("account") or "secondary"
+    account = session.get("account") or peer.get("account") or "primary"
+    comment_ok = None
+    comment_error = None
 
     thinking = os.environ.get("DEEPSEEK_THINKING", "true").lower() not in ("0", "false", "no")
 
@@ -244,8 +246,6 @@ def run_ci(event, session, peer, workspace, operator_token):
                 "account": account,
             }
 
-        comment_ok = False
-        comment_error = None
         try:
             r = subprocess.run(
                 ["gh", "pr", "comment", str(pr_number), "--body", analysis[:2000], "--repo", repo],
@@ -256,17 +256,20 @@ def run_ci(event, session, peer, workspace, operator_token):
                 comment_error = r.stderr[:200] if r.stderr else "Unknown error"
                 print(f"::error::Failed to post PR comment: {comment_error}")
         except subprocess.TimeoutExpired:
+            comment_ok = False
             comment_error = "Timeout posting comment"
             print(f"::error::{comment_error}")
         except Exception as e:
+            comment_ok = False
             comment_error = f"{type(e).__name__}: {str(e)[:100]}"
             print(f"::error::Exception posting comment: {comment_error}")
 
+        # Metadata only — never persist model text into the artifact
         if comment_ok:
             decisions.append({
                 "type": "pr_review",
                 "pr": pr_number,
-                "summary": analysis[:200],
+                "comment_posted": True,
                 "thinking": thinking,
                 "account": account,
                 "chat_session_id": session.get("chat_session_id"),
@@ -275,6 +278,7 @@ def run_ci(event, session, peer, workspace, operator_token):
             decisions.append({
                 "type": "pr_review_failed",
                 "pr": pr_number,
+                "comment_posted": False,
                 "error": comment_error,
                 "account": account,
             })
@@ -289,8 +293,7 @@ def run_ci(event, session, peer, workspace, operator_token):
         "chat_session_id": session.get("chat_session_id"),
     }
 
-    # Add error key if comment posting failed
-    if not comment_ok and comment_error:
+    if comment_ok is False and comment_error:
         result["error"] = f"Failed to post PR comment: {comment_error}"
 
     return result

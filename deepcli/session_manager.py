@@ -2,8 +2,8 @@
 Manages DeepSeek web session: PoW, cookies, chat_session_id, multi-account.
 
 Template webWrapper accounts (from token_provider_v2 / cedar_forge PLAN):
-  primary   / account-1  — interactive operator path
-  secondary / account-2  — CI check runs (cookies_2.json lineage)
+  primary   / account-1  — PRIORITY (default)
+  secondary / account-2  — alternate / cookies_2.json lineage
 
 Session dir: 0o700 · session.json: 0o600
 """
@@ -31,8 +31,9 @@ ACCOUNT_ALIASES = {
 
 
 def normalize_account(name: str | None) -> str:
-    raw = (name or os.environ.get("DEEPSEEK_ACCOUNT") or "secondary").strip().lower()
-    return ACCOUNT_ALIASES.get(raw, raw if raw in ("primary", "secondary") else "secondary")
+    # Account-1 / primary is PRIORITY default
+    raw = (name or os.environ.get("DEEPSEEK_ACCOUNT") or "primary").strip().lower()
+    return ACCOUNT_ALIASES.get(raw, raw if raw in ("primary", "secondary") else "primary")
 
 
 def solve_pow(token: str, cookies: dict | None = None, target_path: str = "/api/v0/chat/completion"):
@@ -48,13 +49,11 @@ def solve_pow(token: str, cookies: dict | None = None, target_path: str = "/api/
     if not solver_script.exists():
         raise FileNotFoundError(f"Solver script not found: {solver_script}")
 
-    # Get challenge using authenticated session
     try:
         challenge_data = get_pow_challenge(token, cookies=cookies, target_path=target_path)
     except Exception as e:
         raise RuntimeError(f"Failed to get PoW challenge: {e}")
 
-    # Pass challenge JSON to pow_solver.js via stdin
     challenge_json = json.dumps(challenge_data)
     result = subprocess.run(
         ["node", str(solver_script), str(wasm_path)],
@@ -68,10 +67,12 @@ def solve_pow(token: str, cookies: dict | None = None, target_path: str = "/api/
     if result.returncode != 0:
         raise RuntimeError(f"PoW solver failed (rc={result.returncode}): {result.stderr[:200]}")
 
-    # Validate solver output before parsing
     output = result.stdout.strip()
     if not output.isdigit():
-        raise RuntimeError(f"PoW solver returned non-numeric output: stdout={result.stdout[:100]!r}, stderr={result.stderr[:100]!r}")
+        raise RuntimeError(
+            f"PoW solver returned non-numeric output: stdout={result.stdout[:100]!r}, "
+            f"stderr={result.stderr[:100]!r}"
+        )
 
     answer = int(output)
     return {
@@ -86,7 +87,6 @@ def solve_pow(token: str, cookies: dict | None = None, target_path: str = "/api/
 
 def _token_from_env(account: str) -> str | None:
     """Resolve bearer token for account from env / secrets-exported vars."""
-    # token_provider_v2 style
     specific = os.environ.get(f"DEEPSEEK_TOKEN_{account.upper()}")
     if specific:
         return specific.strip()
@@ -101,7 +101,6 @@ def _token_from_env(account: str) -> str | None:
             v = os.environ.get(key)
             if v:
                 return v.strip()
-        # cookies_2 lineage: raw cookie value or JSON array in env
         raw = os.environ.get("DEEPSEEK_COOKIES_2") or os.environ.get("COOKIES_2")
         if raw:
             raw = raw.strip()
@@ -114,11 +113,10 @@ def _token_from_env(account: str) -> str | None:
                             return c.get("value")
                 except json.JSONDecodeError:
                     pass
-            return raw  # plain ds_session_id value
-        # Secondary account exhausted: do NOT fall through to primary
+            return raw
         return None
 
-    # primary / account-1
+    # primary / account-1 — PRIORITY path
     for key in (
         "DEEPSEEK_TOKEN_PRIMARY",
         "DEEPSEEK_TOKEN",
@@ -171,11 +169,18 @@ def create_chat_session(token: str, cookies: dict | None = None, model_type: str
         or data.get("chat_session_id")
     )
     if not sid:
-        raise RuntimeError(f"create_chat_session: no id in response keys={list(data) if isinstance(data, dict) else type(data)}")
+        raise RuntimeError(
+            f"create_chat_session: no id in response keys="
+            f"{list(data) if isinstance(data, dict) else type(data)}"
+        )
     return str(sid)
 
 
-def get_pow_challenge(token: str, cookies: dict | None = None, target_path: str = "/api/v0/chat/completion") -> dict:
+def get_pow_challenge(
+    token: str,
+    cookies: dict | None = None,
+    target_path: str = "/api/v0/chat/completion",
+) -> dict:
     s = _auth_session_headers(token, cookies)
     r = s.post(
         f"{DEEPSEEK_BASE}/api/v0/chat/create_pow_challenge",
@@ -191,34 +196,29 @@ def get_pow_challenge(token: str, cookies: dict | None = None, target_path: str 
         msg = resp_data.get("msg") if isinstance(resp_data, dict) else None
         raise RuntimeError(
             f"PoW challenge response missing expected structure: {e}. "
-            f"Response code={code}, msg={msg}, keys={list(resp_data.keys()) if isinstance(resp_data, dict) else type(resp_data)}"
+            f"Response code={code}, msg={msg}, keys="
+            f"{list(resp_data.keys()) if isinstance(resp_data, dict) else type(resp_data)}"
         )
 
 
-def get_new_session(account: str = "secondary"):
+def get_new_session(account: str = "primary"):
     """
     Build a full session dict for the given account.
-    Prefer env/secret token; fall back to PoW web handshake when no token.
-    Always attaches a fresh chat_session_id when possible.
+    Prefer env/secret token. Always attaches a fresh chat_session_id when possible.
     """
     account = normalize_account(account)
     token = _token_from_env(account)
     cookies = {}
 
     if not token:
-        # Anonymous / PoW handshake path (legacy CI bootstrap)
-        # NOTE: This path is deprecated since solve_pow now requires auth token.
-        # This branch is kept for backward compatibility but will raise if reached.
         raise RuntimeError(
             f"No token available for account={account}. "
-            "Anonymous PoW handshake is deprecated. "
-            "Set DEEPSEEK_TOKEN_SECONDARY or equivalent env var."
+            "Set DEEPSEEK_TOKEN_PRIMARY (Account-1) or DEEPSEEK_TOKEN_SECONDARY."
         )
-    else:
-        if account == "secondary":
-            cookies["ds_session_id"] = token  # often the cookie value itself
-        # Use default lifetime since we don't have a token creation response
-        lifetime = 3600 * 24
+
+    if account == "secondary":
+        cookies["ds_session_id"] = token
+    lifetime = 3600 * 24
 
     chat_session_id = None
     try:
@@ -257,7 +257,6 @@ def ensure_session(cache_dir, account: str | None = None):
                 and session.get("expires", 0) > time.time()
                 and session.get("token")
             ):
-                # Refresh chat_session_id if missing (important for completion API)
                 if not session.get("chat_session_id"):
                     try:
                         session["chat_session_id"] = create_chat_session(
@@ -265,7 +264,6 @@ def ensure_session(cache_dir, account: str | None = None):
                             cookies=session.get("cookies") or None,
                             model_type="expert",
                         )
-                        # Write with secure permissions from the start
                         fd = os.open(cache_path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
                         with os.fdopen(fd, "w", encoding="utf-8") as f:
                             json.dump(session, f)
@@ -277,7 +275,6 @@ def ensure_session(cache_dir, account: str | None = None):
             pass
 
     session = get_new_session(account=account)
-    # Write with secure permissions from the start
     fd = os.open(cache_path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
     with os.fdopen(fd, "w", encoding="utf-8") as f:
         json.dump(session, f)

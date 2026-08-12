@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 CI mode entrypoint – non-interactive agent.
-Default account: secondary (Account-2) for CI check runs.
+Default account: primary (Account-1) — PRIORITY.
 OPERATOR_TOKEN env is required (normalized by workflow from thread-listed secrets).
 """
 import os
@@ -20,8 +20,8 @@ def main():
     parser.add_argument("--cache-dir", required=True)
     parser.add_argument(
         "--account",
-        default=os.environ.get("DEEPSEEK_ACCOUNT", "account-2"),
-        help="DeepSeek webWrapper account: account-1/primary or account-2/secondary (CI default)",
+        default=os.environ.get("DEEPSEEK_ACCOUNT", "account-1"),
+        help="DeepSeek webWrapper account: account-1/primary (default) or account-2/secondary",
     )
     args = parser.parse_args()
 

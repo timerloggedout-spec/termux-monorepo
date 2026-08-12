@@ -55,29 +55,41 @@ def solve_pow():
         "Accept": "application/json",
         "Content-Type": "application/json",
     })
-    resp = session.post(
-        f"{DEEPSEEK_BASE}/api/v0/chat/create_pow_challenge",
-        json={"target_path": "/api/v0/chat/completion"},
-        timeout=30,
-    )
-    resp.raise_for_status()
-    resp_data = resp.json()
     
-    # Handle different response structures
-    if resp_data is None:
-        raise RuntimeError("PoW challenge API returned None")
-    
-    # Try different response structures
-    challenge_data = None
-    if isinstance(resp_data, dict):
-        challenge_data = (
-            resp_data.get("data", {}).get("biz_data", {}).get("challenge")
-            or resp_data.get("challenge")
-            or resp_data
+    try:
+        resp = session.post(
+            f"{DEEPSEEK_BASE}/api/v0/chat/create_pow_challenge",
+            json={"target_path": "/api/v0/chat/completion"},
+            timeout=30,
         )
-    
-    if not challenge_data or not isinstance(challenge_data, dict):
-        raise RuntimeError(f"Invalid PoW challenge response structure: {resp_data}")
+        resp.raise_for_status()
+        
+        # Debug: print response details
+        print(f"::debug::PoW API status={resp.status_code} content-type={resp.headers.get('content-type')}")
+        print(f"::debug::PoW API response body length={len(resp.text)}")
+        
+        if not resp.text:
+            raise RuntimeError("PoW challenge API returned empty response body")
+        
+        resp_data = resp.json()
+        
+        if resp_data is None:
+            raise RuntimeError("PoW challenge API json() returned None")
+        
+        # Try different response structures
+        challenge_data = None
+        if isinstance(resp_data, dict):
+            challenge_data = (
+                resp_data.get("data", {}).get("biz_data", {}).get("challenge")
+                or resp_data.get("challenge")
+                or resp_data
+            )
+        
+        if not challenge_data or not isinstance(challenge_data, dict):
+            raise RuntimeError(f"Invalid PoW challenge response structure: {resp_data}")
+            
+    except requests.exceptions.RequestException as e:
+        raise RuntimeError(f"PoW challenge API request failed: {e}")
 
     # Pass challenge JSON to pow_solver.js via stdin
     challenge_json = json.dumps(challenge_data)

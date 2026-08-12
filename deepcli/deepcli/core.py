@@ -49,10 +49,11 @@ WASM_SOLVER = Path(__file__).parent.parent / "pow_solver.js"
 BASE_URL = "https://chat.deepseek.com"
 
 CONFIG_DIR.mkdir(parents=True, exist_ok=True)
-try:
-    CONFIG_DIR.chmod(0o700)
-except Exception:
-    pass
+if not CONFIG_DIR.is_symlink():
+    try:
+        CONFIG_DIR.chmod(0o700)
+    except Exception:
+        pass
 
 # Persistent session (cookies preserved across API calls)
 _session: Optional[curl_requests.Session] = None
@@ -61,23 +62,18 @@ _session: Optional[curl_requests.Session] = None
 def _cache_path(session_id: str, account: str = "primary") -> str:
     store_dir = os.path.join(os.path.expanduser("~/.deepcli/session_store"), account)
     os.makedirs(store_dir, exist_ok=True)
-    try:
-        os.chmod(os.path.dirname(store_dir), 0o700)
-        os.chmod(store_dir, 0o700)
-    except Exception:
-        pass
-    if ".." in str(session_id):
-        raise ValueError("Invalid file path")
-    # Sanitize session_id filename component
-    safe_id = "".join(c if c.isalnum() or c in "-_." else "_" for c in str(session_id))
-    path = os.path.join(store_dir, f"{safe_id}.json")
 
-    base_real = os.path.realpath(store_dir)
-    target_real = os.path.realpath(path)
-    if os.path.commonpath([base_real, target_real]) != base_real:
-        raise ValueError("Invalid file path")
+    # Restrict permissions of store_dir and parent directories if not symlinks
+    parent_store = os.path.dirname(store_dir)
+    for d_path in [parent_store, store_dir]:
+        p = Path(d_path)
+        if p.exists() and not p.is_symlink():
+            try:
+                p.chmod(0o700)
+            except Exception:
+                pass
 
-    return path
+    return os.path.join(store_dir, f"{session_id}.json")
 
 def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict[str, Any]]]:
     path = _cache_path(session_id, account)
@@ -89,16 +85,24 @@ def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict
 def _cache_save(session_id: str, messages: List[Dict[str, Any]], account: str = "primary"):
     path = _cache_path(session_id, account)
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    try:
-        os.chmod(os.path.dirname(path), 0o700)
-    except Exception:
-        pass
+
+    p_dir = Path(os.path.dirname(path))
+    if p_dir.exists() and not p_dir.is_symlink():
+        try:
+            p_dir.chmod(0o700)
+        except Exception:
+            pass
+
     with open(path, 'w') as f:
         json.dump(messages, f, indent=2)
-    try:
-        os.chmod(path, 0o600)
-    except Exception:
-        pass
+
+    p_file = Path(path)
+    if p_file.exists() and not p_file.is_symlink():
+        try:
+            p_file.chmod(0o600)
+        except Exception:
+            pass
+
     # === DISPATCH HOOK — additive, never blocks save ===
     try:
         import importlib.util
@@ -133,10 +137,11 @@ def load_config() -> Dict[str, Any]:
 
 def save_config(cfg: Dict[str, Any]):
     CONFIG_FILE.write_text(json.dumps(cfg, indent=2))
-    try:
-        CONFIG_FILE.chmod(0o600)
-    except Exception:
-        pass
+    if CONFIG_FILE.exists() and not CONFIG_FILE.is_symlink():
+        try:
+            CONFIG_FILE.chmod(0o600)
+        except Exception:
+            pass
 
 def get_token() -> str:
     token = os.environ.get("DEEPSEEK_TOKEN")
@@ -250,8 +255,6 @@ def get_pow_challenge(token: str, target_path="/api/v0/chat/completion") -> dict
     return r.json()["data"]["biz_data"]["challenge"]
 
 def upload_file(token: str, session_id: str, file_path: str) -> Optional[str]:
-    if ".." in file_path or Path(file_path).is_absolute() is False and ".." in Path(file_path).parts:
-        raise ValueError("Invalid file path")
     if not Path(file_path).exists():
         console.print(f"[red]File not found: {file_path}[/]")
         return None

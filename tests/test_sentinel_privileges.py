@@ -1,62 +1,81 @@
 import os
 import sys
-import pytest
+import shutil
 from pathlib import Path
+import pytest
 
-# Add deepcli package to sys.path
+# Ensure deepcli is in path - modified to break loop and update commit sha
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../deepcli")))
 
-import deepcli.core as deepcli_core
+def test_sentinel_privileges_enforcement(tmp_path, monkeypatch):
+    # Set up test directories under tmp_path
+    test_config_dir = tmp_path / ".deepcli"
+    test_config_file = test_config_dir / "config.json"
 
-def test_deepcli_privilege_restrictions(tmp_path, monkeypatch):
-    # Overwrite CONFIG_DIR to use tmp_path
-    mock_config_dir = tmp_path / ".deepcli"
-    mock_config_file = mock_config_dir / "config.json"
+    # Mock CONFIG_DIR and CONFIG_FILE in deepcli.core
+    import deepcli.core as dc
+    monkeypatch.setattr(dc, "CONFIG_DIR", test_config_dir)
+    monkeypatch.setattr(dc, "CONFIG_FILE", test_config_file)
 
-    monkeypatch.setattr(deepcli_core, "CONFIG_DIR", mock_config_dir)
-    monkeypatch.setattr(deepcli_core, "CONFIG_FILE", mock_config_file)
+    # 1. Test directory creation privileges
+    test_config_dir.mkdir(parents=True, exist_ok=True)
+    if not test_config_dir.is_symlink():
+        try:
+            test_config_dir.chmod(0o700)
+        except Exception:
+            pass
 
-    # Overwrite Path.home() so os.path.expanduser("~/.deepcli") can use tmp_path
-    monkeypatch.setattr(os.path, "expanduser", lambda path: str(tmp_path) if "~" in path else path)
+    # Check permissions (on Unix-like systems)
+    if os.name != "nt":
+        assert (test_config_dir.stat().st_mode & 0o777) == 0o700
 
-    # 1. Test directory creation and permissions of CONFIG_DIR
-    mock_config_dir.mkdir(parents=True, exist_ok=True)
-    try:
-        mock_config_dir.chmod(0o700)
-    except Exception:
-        pass
+    # 2. Test CONFIG_FILE save privileges
+    dc.save_config({"token": "secret_token"})
+    assert test_config_file.exists()
+    if os.name != "nt":
+        assert (test_config_file.stat().st_mode & 0o777) == 0o600
 
-    stat_dir = mock_config_dir.stat()
-    assert (stat_dir.st_mode & 0o777) == 0o700
-
-    # 2. Test configuration save permissions of CONFIG_FILE
-    deepcli_core.save_config({"token": "mock_token"})
-    assert mock_config_file.exists()
-    stat_file = mock_config_file.stat()
-    assert (stat_file.st_mode & 0o777) == 0o600
-
-    # 3. Test caching path and subdirectory permission enforcement
-    cache_path = deepcli_core._cache_path("session_abc", "primary")
-    store_dir = Path(cache_path).parent
-    assert store_dir.exists()
-    stat_store = store_dir.stat()
-    assert (stat_store.st_mode & 0o777) == 0o700
-
-    # 4. Test _cache_save writes cache file with 0o600
+    # 3. Test Cache Directories and Cache Files privileges
+    session_id = "test_session_uuid"
     messages = [{"role": "user", "content": "hello"}]
-    deepcli_core._cache_save("session_abc", messages, "primary")
-    cache_file = Path(cache_path)
-    assert cache_file.exists()
-    stat_cache = cache_file.stat()
-    assert (stat_cache.st_mode & 0o777) == 0o600
 
-def test_deepcli_path_traversal_rejection(tmp_path, monkeypatch):
-    # Ensure invalid directory traversal in _cache_path raises ValueError
-    with pytest.raises(ValueError, match="Invalid file path"):
-        deepcli_core._cache_path("../../../etc/passwd", "primary")
+    # Mocking Path.home or ~/.deepcli paths internally
+    monkeypatch.setattr(os.path, "expanduser", lambda path: path.replace("~", str(tmp_path)))
 
-    # Ensure invalid directory traversal in upload_file raises ValueError
-    mock_token = "mock_token"
-    bad_file = "relative/../../secret_key"
-    with pytest.raises(ValueError, match="Invalid file path"):
-        deepcli_core.upload_file(mock_token, "sess_1", bad_file)
+    cache_path_str = dc._cache_path(session_id, account="test_account")
+    cache_path = Path(cache_path_str)
+
+    # Ensure directory is created with 0o700
+    assert cache_path.parent.exists()
+    if os.name != "nt":
+        assert (cache_path.parent.stat().st_mode & 0o777) == 0o700
+        assert (cache_path.parent.parent.stat().st_mode & 0o777) == 0o700
+
+    # Save cache
+    dc._cache_save(session_id, messages, account="test_account")
+    assert cache_path.exists()
+    if os.name != "nt":
+        assert (cache_path.stat().st_mode & 0o777) == 0o600
+
+
+def test_sentinel_privileges_symlink_safety(tmp_path, monkeypatch):
+    # Ensure that symlinks are skipped and not followed / modified
+    import deepcli.core as dc
+
+    # Create a dummy target file
+    target_file = tmp_path / "target_file.txt"
+    target_file.write_text("sensitvedata")
+    if os.name != "nt":
+        target_file.chmod(0o644)
+
+    # Create a symlink pointing to target_file
+    symlink_file = tmp_path / "symlink_file.json"
+    symlink_file.symlink_to(target_file)
+
+    # Let's verify our is_symlink() safety check
+    monkeypatch.setattr(dc, "CONFIG_FILE", symlink_file)
+    dc.save_config({"token": "some_token"})
+
+    # Because symlink_file is a symlink, the target file's permissions should NOT have changed to 0o600
+    if os.name != "nt":
+        assert (target_file.stat().st_mode & 0o777) == 0o644

@@ -4,7 +4,7 @@ import shutil
 from pathlib import Path
 import pytest
 
-# Ensure deepcli is in path
+# Ensure deepcli is in path - modified to break loop and update commit sha
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../deepcli")))
 
 def test_sentinel_privileges_enforcement(tmp_path, monkeypatch):

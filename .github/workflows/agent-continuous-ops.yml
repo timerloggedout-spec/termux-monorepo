@@ -1,16 +1,21 @@
 name: Continuous agent ops
 
 # 24/7 unattended advancement of open agent PRs.
-# Complements event-driven agent-review-auto-jules + peer-review-orchestrator:
-# those fire on bot feedback; this catches PRs that went quiet, got dirty,
-# or never received a follow-up after peer-review-ready.
+# High-performance rewrite (OPERATOR 2026-08-10/11):
+# - No false "4-day stall" on brand-new / never-commented PRs
+# - Self-nudge excluded from loop + approval; SHA sticky-skip
+# - checks:read so failing status detection works
+# - Display moniker heyVern; live ping only @jules
 #
-# Requires: Jules GitHub App (repo access). Optional: secrets.JULES_API_KEY
-# Security: no secrets in prompts; OPERATOR_TOKEN only for comment write if set.
+# Complements event-driven agent-review-auto-jules + peer-review-orchestrator.
+# Requires: Jules GitHub App. Optional: OPERATOR_GITHUB_TOKEN for privileged comments.
 
 on:
   schedule:
+<<<<<<< HEAD
     # Every hour — enough to clear lag without burning review quota
+=======
+>>>>>>> origin/master
     - cron: '17 * * * *'
   workflow_dispatch:
     inputs:
@@ -32,11 +37,13 @@ permissions: {}
 jobs:
   sweep:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 12
     permissions:
       contents: write
       pull-requests: write
       issues: write
+      checks: read
+      statuses: read
     steps:
       - name: Checkout monorepo
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
@@ -53,7 +60,6 @@ jobs:
         env:
           FORCE_ALL: ${{ github.event.inputs.force_all || 'false' }}
           MAX_PRS: ${{ github.event.inputs.max_prs || '8' }}
-          # Prefer operator token so @jules / @coderabbitai accept write-path comments
           HAS_OPERATOR: ${{ secrets.OPERATOR_GITHUB_TOKEN != '' || secrets.OPERATOR_TOKEN != '' }}
         with:
           github-token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
@@ -61,6 +67,7 @@ jobs:
             const forceAll = process.env.FORCE_ALL === 'true';
             const maxPrs = Math.min(Number(process.env.MAX_PRS) || 8, 20);
             const marker = '<!-- continuous-agent-ops -->';
+<<<<<<< HEAD
 
             // Default fallbacks
             const defaultDebounceMs = 90 * 60 * 1000; // 90 minutes
@@ -77,6 +84,13 @@ jobs:
             } catch (e) {
               core.info('Could not load lag index, using default fallbacks: ' + e.message);
             }
+=======
+            const debounceMs = 45 * 60 * 1000;
+            const stickyDebounceMs = 6 * 60 * 60 * 1000; // sticky reasons: 6h if SHA unchanged
+            const staleMs = 2 * 60 * 60 * 1000;
+            const stallMs = 4 * 24 * 60 * 60 * 1000;
+            const emptyDiffMinAgeMs = 30 * 60 * 1000;
+>>>>>>> origin/master
 
             const agentLogins = [
               'google-labs-jules', 'devin-ai-integration', 'coderabbitai',
@@ -86,8 +100,8 @@ jobs:
               const l = (login || '').toLowerCase();
               return agentLogins.some(a => l.includes(a));
             };
+            const isSelfNudge = (c) => c.body && c.body.includes(marker);
 
-            // List open non-draft PRs (newest activity first)
             const prs = await github.paginate(github.rest.pulls.list, {
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -106,9 +120,9 @@ jobs:
             for (const pr of eligible) {
               if (acted >= maxPrs) break;
 
-              // Fresh mergeability
               let mergeable = pr.mergeable;
               let mergeableState = pr.mergeable_state;
+              let changedFiles = pr.changed_files;
               try {
                 const { data: fresh } = await github.rest.pulls.get({
                   owner: context.repo.owner,
@@ -117,11 +131,11 @@ jobs:
                 });
                 mergeable = fresh.mergeable;
                 mergeableState = fresh.mergeable_state;
+                changedFiles = fresh.changed_files;
               } catch (e) {
                 core.info(`PR #${pr.number} get skip: ${e.message}`);
               }
 
-              // Comments for debounce + last agent activity
               const comments = await github.paginate(github.rest.issues.listComments, {
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -153,24 +167,104 @@ jobs:
               core.info(`PR #${pr.number}: Using debounceMs=${debounceMs} (${Math.round(debounceMs/60000)}m), staleMs=${staleMs} (${Math.round(staleMs/3600000)}h)`);
 
               const lastOps = comments
-                .filter(c => c.body && c.body.includes(marker))
+                .filter(isSelfNudge)
                 .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
+
+              // Sticky skip: same head SHA already nudged → long quiet period
+              let lastOpsSha = null;
+              if (lastOps && lastOps.body) {
+                const m = lastOps.body.match(/^sha:\s*([0-9a-f]{7,40})/m);
+                if (m) lastOpsSha = m[1];
+              }
               if (lastOps && !forceAll) {
                 const age = Date.now() - new Date(lastOps.created_at).getTime();
-                if (age < debounceMs) {
-                  core.info(`PR #${pr.number}: debounced (${Math.round(age/60000)}m ago)`);
+                const sameSha = lastOpsSha && pr.head.sha.startsWith(lastOpsSha);
+                const limit = sameSha ? stickyDebounceMs : debounceMs;
+                if (age < limit) {
+                  core.info(`PR #${pr.number}: debounced (${Math.round(age/60000)}m, sameSha=${!!sameSha})`);
                   continue;
                 }
               }
 
-              const lastAgentComment = comments
-                .filter(c => isAgent(c.user?.login))
-                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
+              const agentComments = comments
+                .filter(c => isAgent(c.user?.login) && !isSelfNudge(c))
+                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+              const lastAgentComment = agentComments[0] || null;
               const lastAgentAge = lastAgentComment
                 ? Date.now() - new Date(lastAgentComment.created_at).getTime()
-                : Infinity;
+                : null;
 
-              // Open review threads (unresolved)
+              let statusFailed = false;
+              let failCount = 0;
+              try {
+                const checkRuns = await github.paginate(github.rest.checks.listForRef, {
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ref: pr.head.sha,
+                  per_page: 50,
+                });
+                // Prefer latest run per check name
+                const byName = new Map();
+                for (const c of (checkRuns || [])) {
+                  const prev = byName.get(c.name);
+                  if (!prev || new Date(c.completed_at || c.started_at || 0) > new Date(prev.completed_at || prev.started_at || 0)) {
+                    byName.set(c.name, c);
+                  }
+                }
+                const latest = [...byName.values()].filter(c => c.status === 'completed');
+                // Do NOT treat cancelled as failure (concurrency cancel-in-progress is normal)
+                const failed = latest.filter(c =>
+                  ['failure', 'timed_out', 'action_required'].includes(c.conclusion)
+                );
+                if (failed.length > 0) {
+                  statusFailed = true;
+                  failCount = failed.length;
+                }
+              } catch (e) {
+                core.info(`PR #${pr.number} checks skip: ${e.message}`);
+              }
+
+              let requestingApproval = false;
+              const approvalRegex = /\b(requesting approval|waiting for approval|please approve|requires approval)\b/i;
+              if (lastAgentComment && lastAgentComment.body && approvalRegex.test(lastAgentComment.body)) {
+                requestingApproval = true;
+              }
+
+              let loopDetected = false;
+              if (agentComments.length >= 3) {
+                let lastCommitTime = null;
+                try {
+                  const { data: headCommit } = await github.rest.repos.getCommit({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    ref: pr.head.sha,
+                  });
+                  lastCommitTime = new Date(
+                    headCommit.commit.committer?.date || headCommit.commit.author?.date || 0
+                  ).getTime();
+                } catch (e) {
+                  core.info(`PR #${pr.number} getCommit skip: ${e.message}`);
+                }
+
+                if (lastCommitTime != null && lastCommitTime > 0) {
+                  const newestAgent = agentComments[0].user?.login;
+                  let consecutive = 0;
+                  for (const c of agentComments) {
+                    if (c.user?.login === newestAgent &&
+                        new Date(c.created_at).getTime() > lastCommitTime) {
+                      consecutive += 1;
+                    } else {
+                      break;
+                    }
+                  }
+                  if (consecutive >= 3) loopDetected = true;
+                }
+              }
+
+              const prAgeMs = Date.now() - new Date(pr.created_at).getTime();
+              const emptyDiff = (changedFiles === 0) && prAgeMs > emptyDiffMinAgeMs;
+
               let openThreads = 0;
               try {
                 const q = `
@@ -196,41 +290,56 @@ jobs:
 
               const dirty = mergeableState === 'dirty' || mergeable === false;
               const blocked = mergeableState === 'blocked' || mergeableState === 'unstable';
-              const stale = lastAgentAge > staleMs;
-              const needsWork = dirty || (blocked && openThreads > 0) || (stale && openThreads > 0);
+              const stale = lastAgentAge != null && lastAgentAge > staleMs;
+              const stale4Days = lastAgentAge != null && lastAgentAge > stallMs;
 
-              if (!needsWork && !forceAll) {
+              const needsWork = dirty ||
+                                (blocked && openThreads > 0) ||
+                                (stale && openThreads > 0) ||
+                                stale4Days ||
+                                statusFailed ||
+                                requestingApproval ||
+                                loopDetected ||
+                                emptyDiff ||
+                                forceAll;
+
+              if (!needsWork) {
                 core.info(`PR #${pr.number}: clean enough (state=${mergeableState} threads=${openThreads})`);
                 continue;
               }
 
-              // Build action prompt
               const reasons = [];
               if (dirty) reasons.push('merge conflict / dirty vs base');
               if (blocked && openThreads > 0) reasons.push(`${openThreads} unresolved review thread(s)`);
               if (stale) reasons.push(`stale agent activity (${Math.round(lastAgentAge/3600000)}h)`);
+              if (stale4Days) reasons.push('4-day stall (BUG #159 — inactive after prior agent activity)');
+              if (statusFailed) reasons.push(`status checks failing (${failCount})`);
+              if (requestingApproval) reasons.push('agent requesting approval');
+              if (loopDetected) reasons.push('loop (consecutive agent comments without commits)');
+              if (emptyDiff) reasons.push('empty diff (0 changed files, age>30m)');
               if (forceAll) reasons.push('forced sweep');
 
               const instructions = [];
-              if (dirty) {
-                instructions.push('1. Rebase or merge base into head; resolve conflicts; push.');
-                instructions.push('2. Prefer content-preserving resolution; cite Implements: if board item applies.');
-              }
+              if (dirty) instructions.push('- Rebase/merge base into head; resolve conflicts; push.');
               if (openThreads > 0) {
-                instructions.push(`${dirty ? '3' : '1'}. Address **all open review threads** (CodeRabbit, Devin, Copilot).`);
-                instructions.push(`${dirty ? '4' : '2'}. Prefer minimal diffs; preserve Sentinel 0o600/0o700.`);
+                instructions.push('- Address **all open review threads** (CodeRabbit, Devin, Copilot).');
+                instructions.push('- Prefer minimal diffs; preserve Sentinel 0o600/0o700.');
               }
-              instructions.push('Push commits to the existing head branch. Do not retarget base without cause.');
-              instructions.push('Skip pure nits only if they conflict with security/gates.');
-              instructions.push('If the PR is superseded, close it with a pointer to the replacement.');
+              if (stale4Days) instructions.push('- **4-day stall (#159):** revive with concrete next step or close if superseded.');
+              if (statusFailed) instructions.push('- **Checks failed:** fix or comment context if transient.');
+              if (requestingApproval) instructions.push('- **Approval path:** ready for human/OPERATOR, or continue with explicit steering.');
+              if (loopDetected) instructions.push('- **Loop break:** change approach or files; stop identical comment cycles.');
+              if (emptyDiff) instructions.push('- **Empty diff:** commit and push real changes.');
+              instructions.push('- Push to existing head branch. No Class 3/4 artifacts.');
 
+              // Display moniker only — live trigger is @jules (do not @heyVern real users)
               const body = [
                 marker,
                 `sha: ${pr.head.sha}`,
                 `state: ${mergeableState}`,
                 `threads_open: ${openThreads}`,
                 '',
-                `@jules **Continuous ops** (GHA agent-continuous-ops) — unattended advance.`,
+                `@jules **opsSweep** (heyVern lane) — high-perf unattended advance.`,
                 '',
                 `PR #${pr.number} · \`${pr.head.ref}\` → \`${pr.base.ref}\``,
                 `**Why:** ${reasons.join('; ')}`,
@@ -238,8 +347,8 @@ jobs:
                 '### Instructions',
                 ...instructions,
                 '',
-                'Read AGENTS.md. No Class 3/4 artifacts. No secret leaks.',
-                'Agent: Grok orchestration · Profile: https://x.com/grok',
+                'Monikers: docs/ops/AGENT-MONIKERS.md · Read AGENTS.md.',
+                'Agent: Grok (archW1z) orchestration · https://x.com/grok',
               ].join('\n');
 
               await github.rest.issues.createComment({
@@ -252,14 +361,12 @@ jobs:
               acted += 1;
               report.push(`#${pr.number} (${reasons.join(', ')})`);
               core.info(`PR #${pr.number}: nudged — ${reasons.join('; ')}`);
-
-              // Brief pause to avoid secondary rate limits
-              await new Promise(r => setTimeout(r, 1500));
+              await new Promise(r => setTimeout(r, 1200));
             }
 
             core.summary
-              .addHeading('Continuous agent ops')
-              .addRaw(`Acted on **${acted}** PR(s) this sweep.`)
+              .addHeading('Continuous agent ops (high-perf)')
+              .addRaw(`Acted on **${acted}** PR(s).`)
               .addList(report.length ? report : ['(none eligible)'])
               .write();
 

@@ -59,6 +59,7 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ env.OPERATOR_TOKEN }}
+          persist-credentials: false
 
       - name: Setup Node.js (for PoW WASM)
         uses: actions/setup-node@v4

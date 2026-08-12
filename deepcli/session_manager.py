@@ -36,6 +36,10 @@ def normalize_account(name: str | None) -> str:
 
 
 def solve_pow():
+    """
+    Fetch PoW challenge from DeepSeek and solve it using WASM solver.
+    Returns dict with 'answer' and 'signature' keys.
+    """
     wasm_path = WASM_DIR / "deepseek.wasm"
     solver_script = WASM_DIR / "pow_solver.js"
 
@@ -44,15 +48,44 @@ def solve_pow():
     if not solver_script.exists():
         raise FileNotFoundError(f"Solver script not found: {solver_script}")
 
-    result = subprocess.check_output(
+    # Get challenge from DeepSeek (anonymous path)
+    session = requests.Session()
+    session.headers.update({
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+    })
+    resp = session.post(
+        f"{DEEPSEEK_BASE}/api/v0/chat/create_pow_challenge",
+        json={"target_path": "/api/v0/chat/completion"},
+        timeout=30,
+    )
+    resp.raise_for_status()
+    challenge_data = resp.json()["data"]["biz_data"]["challenge"]
+
+    # Pass challenge JSON to pow_solver.js via stdin
+    challenge_json = json.dumps(challenge_data)
+    result = subprocess.run(
         ["node", str(solver_script), str(wasm_path)],
+        input=challenge_json,
         text=True,
+        capture_output=True,
         timeout=60,
     )
-    parsed = json.loads(result)
-    if not isinstance(parsed, dict) or "answer" not in parsed or "signature" not in parsed:
-        raise RuntimeError(f"PoW solver returned invalid shape: {parsed!r}")
-    return parsed
+    
+    if result.returncode != 0:
+        raise RuntimeError(f"PoW solver failed: {result.stderr}")
+    
+    # pow_solver.js outputs just the answer number, we need to return full structure
+    answer = int(result.stdout.strip())
+    return {
+        "answer": answer,
+        "signature": challenge_data.get("signature", ""),
+        "challenge": challenge_data.get("challenge", ""),
+        "salt": challenge_data.get("salt", ""),
+        "expire_at": challenge_data.get("expire_at", 0),
+        "difficulty": challenge_data.get("difficulty", 0),
+    }
 
 
 def _token_from_env(account: str) -> str | None:

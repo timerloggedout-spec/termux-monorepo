@@ -61,7 +61,23 @@ def solve_pow():
         timeout=30,
     )
     resp.raise_for_status()
-    challenge_data = resp.json()["data"]["biz_data"]["challenge"]
+    resp_data = resp.json()
+    
+    # Handle different response structures
+    if resp_data is None:
+        raise RuntimeError("PoW challenge API returned None")
+    
+    # Try different response structures
+    challenge_data = None
+    if isinstance(resp_data, dict):
+        challenge_data = (
+            resp_data.get("data", {}).get("biz_data", {}).get("challenge")
+            or resp_data.get("challenge")
+            or resp_data
+        )
+    
+    if not challenge_data or not isinstance(challenge_data, dict):
+        raise RuntimeError(f"Invalid PoW challenge response structure: {resp_data}")
 
     # Pass challenge JSON to pow_solver.js via stdin
     challenge_json = json.dumps(challenge_data)

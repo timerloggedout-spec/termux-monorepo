@@ -8,12 +8,9 @@ import os
 import sys
 import json
 import argparse
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent))
-
-from ci_agent import run_ci
-from session_manager import ensure_session, normalize_account
+from .ci_agent import run_ci
+from .session_manager import ensure_session, normalize_account
 
 
 def main():
@@ -39,11 +36,19 @@ def main():
             json.dump(result, f, indent=2)
         sys.exit(1)
 
-    session = ensure_session(cache_dir=args.cache_dir, account=account)
-    print(
-        f"::notice::DeepSeek account={session.get('account')} "
-        f"chat_session_id={session.get('chat_session_id')}"
-    )
+    try:
+        session = ensure_session(cache_dir=args.cache_dir, account=account)
+        print(
+            f"::notice::DeepSeek account={session.get('account')} "
+            f"chat_session_id={session.get('chat_session_id')}"
+        )
+    except Exception as e:
+        error_msg = f"{type(e).__name__}: {str(e)[:200]}"
+        print(f"::error::Session initialization failed: {error_msg}")
+        result = {"actions": [], "error": f"session_init_failed: {error_msg}", "account": account}
+        with open("deepseek_output.json", "w", encoding="utf-8") as f:
+            json.dump(result, f, indent=2)
+        sys.exit(1)
 
     try:
         event = json.loads(args.event)
@@ -65,6 +70,10 @@ def main():
 
     with open("deepseek_output.json", "w", encoding="utf-8") as f:
         json.dump(result, f, indent=2)
+
+    if result.get("error"):
+        print(f"::error::{result['error']}")
+        sys.exit(1)
 
     print(f"✅ CI run completed. Decisions: {result.get('actions', [])}")
 

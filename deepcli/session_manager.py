@@ -35,7 +35,7 @@ def normalize_account(name: str | None) -> str:
     return ACCOUNT_ALIASES.get(raw, raw if raw in ("primary", "secondary") else "secondary")
 
 
-def solve_pow():
+def solve_pow(token: str, cookies: dict | None = None, target_path: str = "/api/v0/chat/completion"):
     """
     Fetch PoW challenge from DeepSeek and solve it using WASM solver.
     Returns dict with 'answer' and 'signature' keys.
@@ -48,60 +48,11 @@ def solve_pow():
     if not solver_script.exists():
         raise FileNotFoundError(f"Solver script not found: {solver_script}")
 
-    # Get challenge from DeepSeek (anonymous path)
-    session = requests.Session()
-    session.headers.update({
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-    })
-    
+    # Get challenge using authenticated session
     try:
-        resp = session.post(
-            f"{DEEPSEEK_BASE}/api/v0/chat/create_pow_challenge",
-            json={"target_path": "/api/v0/chat/completion"},
-            timeout=30,
-        )
-        resp.raise_for_status()
-        
-        # Debug: print response details
-        print(f"::debug::PoW API status={resp.status_code} content-type={resp.headers.get('content-type')}")
-        print(f"::debug::PoW API response body length={len(resp.text)}")
-        
-        if not resp.text:
-            raise RuntimeError("PoW challenge API returned empty response body")
-        
-        try:
-            resp_data = resp.json()
-        except Exception as e:
-            raise RuntimeError(f"PoW challenge API json() parse failed: {e}")
-        
-        print(f"::debug::PoW API resp_data type={type(resp_data)} value={resp_data}")
-        
-        if resp_data is None:
-            raise RuntimeError("PoW challenge API json() returned None")
-        
-        if not isinstance(resp_data, dict):
-            raise RuntimeError(f"PoW challenge API returned non-dict: {type(resp_data)} = {resp_data}")
-        
-        # Try different response structures
-        challenge_data = None
-        if "data" in resp_data and isinstance(resp_data["data"], dict):
-            biz_data = resp_data["data"].get("biz_data", {})
-            if isinstance(biz_data, dict):
-                challenge_data = biz_data.get("challenge")
-        
-        if not challenge_data and "challenge" in resp_data:
-            challenge_data = resp_data.get("challenge")
-        
-        if not challenge_data and all(k in resp_data for k in ["algorithm", "challenge", "salt"]):
-            challenge_data = resp_data
-        
-        if not challenge_data or not isinstance(challenge_data, dict):
-            raise RuntimeError(f"Invalid PoW challenge response structure. Keys: {list(resp_data.keys()) if isinstance(resp_data, dict) else 'N/A'}")
-            
-    except requests.exceptions.RequestException as e:
-        raise RuntimeError(f"PoW challenge API request failed: {e}")
+        challenge_data = get_pow_challenge(token, cookies=cookies, target_path=target_path)
+    except Exception as e:
+        raise RuntimeError(f"Failed to get PoW challenge: {e}")
 
     # Pass challenge JSON to pow_solver.js via stdin
     challenge_json = json.dumps(challenge_data)
@@ -111,13 +62,18 @@ def solve_pow():
         text=True,
         capture_output=True,
         timeout=60,
+        check=False,
     )
-    
+
     if result.returncode != 0:
-        raise RuntimeError(f"PoW solver failed: {result.stderr}")
-    
-    # pow_solver.js outputs just the answer number, we need to return full structure
-    answer = int(result.stdout.strip())
+        raise RuntimeError(f"PoW solver failed (rc={result.returncode}): {result.stderr[:200]}")
+
+    # Validate solver output before parsing
+    output = result.stdout.strip()
+    if not output.isdigit():
+        raise RuntimeError(f"PoW solver returned non-numeric output: stdout={result.stdout[:100]!r}, stderr={result.stderr[:100]!r}")
+
+    answer = int(output)
     return {
         "answer": answer,
         "signature": challenge_data.get("signature", ""),
@@ -159,6 +115,8 @@ def _token_from_env(account: str) -> str | None:
                 except json.JSONDecodeError:
                     pass
             return raw  # plain ds_session_id value
+        # Secondary account exhausted: do NOT fall through to primary
+        return None
 
     # primary / account-1
     for key in (
@@ -225,7 +183,16 @@ def get_pow_challenge(token: str, cookies: dict | None = None, target_path: str 
         timeout=30,
     )
     r.raise_for_status()
-    return r.json()["data"]["biz_data"]["challenge"]
+    resp_data = r.json()
+    try:
+        return resp_data["data"]["biz_data"]["challenge"]
+    except (KeyError, TypeError) as e:
+        code = resp_data.get("code") if isinstance(resp_data, dict) else None
+        msg = resp_data.get("msg") if isinstance(resp_data, dict) else None
+        raise RuntimeError(
+            f"PoW challenge response missing expected structure: {e}. "
+            f"Response code={code}, msg={msg}, keys={list(resp_data.keys()) if isinstance(resp_data, dict) else type(resp_data)}"
+        )
 
 
 def get_new_session(account: str = "secondary"):
@@ -240,30 +207,17 @@ def get_new_session(account: str = "secondary"):
 
     if not token:
         # Anonymous / PoW handshake path (legacy CI bootstrap)
-        pow_result = solve_pow()
-        session = requests.Session()
-        session.headers.update({
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-        })
-        resp = session.get(f"{DEEPSEEK_BASE}/api/chat", timeout=30)
-        resp.raise_for_status()
-        auth_payload = {
-            "pow_answer": pow_result["answer"],
-            "pow_signature": pow_result["signature"],
-        }
-        auth_resp = session.post(f"{DEEPSEEK_BASE}/api/auth", json=auth_payload, timeout=30)
-        auth_resp.raise_for_status()
-        token_data = auth_resp.json()
-        token = token_data.get("token")
-        if not token:
-            raise RuntimeError("No token received from DeepSeek auth")
-        cookies = session.cookies.get_dict()
-        lifetime = 3600 * 24
+        # NOTE: This path is deprecated since solve_pow now requires auth token.
+        # This branch is kept for backward compatibility but will raise if reached.
+        raise RuntimeError(
+            f"No token available for account={account}. "
+            "Anonymous PoW handshake is deprecated. "
+            "Set DEEPSEEK_TOKEN_SECONDARY or equivalent env var."
+        )
     else:
         if account == "secondary":
             cookies["ds_session_id"] = token  # often the cookie value itself
+        # Use default lifetime since we don't have a token creation response
         lifetime = 3600 * 24
 
     chat_session_id = None
@@ -311,9 +265,10 @@ def ensure_session(cache_dir, account: str | None = None):
                             cookies=session.get("cookies") or None,
                             model_type="expert",
                         )
-                        with open(cache_path, "w", encoding="utf-8") as f:
+                        # Write with secure permissions from the start
+                        fd = os.open(cache_path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+                        with os.fdopen(fd, "w", encoding="utf-8") as f:
                             json.dump(session, f)
-                        os.chmod(cache_path, 0o600)
                     except Exception as e:
                         print(f"::warning::Could not attach chat_session_id: {e}")
                 session["account"] = account
@@ -322,10 +277,8 @@ def ensure_session(cache_dir, account: str | None = None):
             pass
 
     session = get_new_session(account=account)
-    with open(cache_path, "w", encoding="utf-8") as f:
+    # Write with secure permissions from the start
+    fd = os.open(cache_path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, "w", encoding="utf-8") as f:
         json.dump(session, f)
-    try:
-        os.chmod(cache_path, 0o600)
-    except OSError:
-        pass
     return session

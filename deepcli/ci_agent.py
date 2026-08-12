@@ -12,7 +12,7 @@ import subprocess
 import time
 import requests
 
-from session_manager import create_chat_session, get_pow_challenge, solve_pow
+from .session_manager import create_chat_session, get_pow_challenge, solve_pow, WASM_DIR
 
 DEEPSEEK_BASE = "https://chat.deepseek.com"
 STREAM_CONNECT_TIMEOUT = int(os.environ.get("DEEPSEEK_CONNECT_TIMEOUT", "30"))
@@ -77,8 +77,7 @@ def _pow_header(session: dict) -> str | None:
         challenge = get_pow_challenge(token, cookies=session.get("cookies") or None)
         # Prefer node WASM path that accepts challenge JSON on stdin when available;
         # fall back to solve_pow() file-based solver used at bootstrap.
-        from pathlib import Path
-        solver = Path(__file__).parent / "pow_solver.js"
+        solver = WASM_DIR / "pow_solver.js"
         import subprocess as sp
         proc = sp.run(
             ["node", str(solver)],
@@ -106,10 +105,11 @@ def _pow_header(session: dict) -> str | None:
     return None
 
 
-def deepseek_chat(session, messages, thinking=True, expert=True):
+def deepseek_chat(session, messages, thinking=True):
     """
     Stream completion with required chat_session_id + optional PoW header.
     Multi-minute thinking supported via long SSE read timeout.
+    Note: expert mode is set via model_type="expert" during session creation, not per-message.
     """
     chat_session_id = _ensure_chat_session_id(session)
     pow_hdr = _pow_header(session)
@@ -125,10 +125,6 @@ def deepseek_chat(session, messages, thinking=True, expert=True):
     }
     if pow_hdr:
         headers["X-Ds-Pow-Response"] = pow_hdr
-
-    s = requests.Session()
-    s.cookies.update(session.get("cookies", {}))
-    s.headers.update(headers)
 
     system_parts = [m["content"] for m in messages if m.get("role") == "system"]
     user_parts = [m["content"] for m in messages if m.get("role") == "user"]
@@ -149,28 +145,32 @@ def deepseek_chat(session, messages, thinking=True, expert=True):
     url = f"{DEEPSEEK_BASE}/api/v0/chat/completion"
     timeout = (STREAM_CONNECT_TIMEOUT, STREAM_READ_TIMEOUT)
 
-    resp = s.post(url, json=payload, stream=True, timeout=timeout)
-    if resp.status_code >= 400:
-        raise RuntimeError(f"HTTP {resp.status_code} on completion: {resp.text[:300]}")
+    with requests.Session() as s:
+        s.cookies.update(session.get("cookies", {}))
+        s.headers.update(headers)
 
-    parts = []
-    started = time.time()
-    for line in resp.iter_lines(decode_unicode=True):
-        if line is None:
-            continue
-        text_line = line if isinstance(line, str) else line.decode("utf-8", "replace")
-        chunk = _parse_sse_chunk(text_line)
-        if chunk:
-            parts.append(chunk)
-    elapsed = time.time() - started
-    text = "".join(parts).strip()
-    if not text:
-        raise RuntimeError(f"Empty SSE stream after {elapsed:.1f}s (chat_session_id={chat_session_id})")
-    print(
-        f"::notice::DeepSeek stream ok ({elapsed:.1f}s, {len(parts)} chunks, "
-        f"account={session.get('account')}, chat_session_id={chat_session_id})"
-    )
-    return text
+        with s.post(url, json=payload, stream=True, timeout=timeout) as resp:
+            if resp.status_code >= 400:
+                raise RuntimeError(f"HTTP {resp.status_code} on completion: {resp.text[:300]}")
+
+            parts = []
+            started = time.time()
+            for line in resp.iter_lines(decode_unicode=True):
+                if line is None:
+                    continue
+                text_line = line if isinstance(line, str) else line.decode("utf-8", "replace")
+                chunk = _parse_sse_chunk(text_line)
+                if chunk:
+                    parts.append(chunk)
+            elapsed = time.time() - started
+            text = "".join(parts).strip()
+            if not text:
+                raise RuntimeError(f"Empty SSE stream after {elapsed:.1f}s (chat_session_id={chat_session_id})")
+            print(
+                f"::notice::DeepSeek stream ok ({elapsed:.1f}s, {len(parts)} chunks, "
+                f"account={session.get('account')}, chat_session_id={chat_session_id})"
+            )
+            return text
 
 
 def run_ci(event, session, peer, workspace, operator_token):
@@ -196,7 +196,6 @@ def run_ci(event, session, peer, workspace, operator_token):
     account = session.get("account") or peer.get("account") or "secondary"
 
     thinking = os.environ.get("DEEPSEEK_THINKING", "true").lower() not in ("0", "false", "no")
-    expert = os.environ.get("DEEPSEEK_EXPERT", "true").lower() not in ("0", "false", "no")
 
     if action in ["opened", "synchronize", "reopened"] and pr_number:
         if not repo:
@@ -233,7 +232,7 @@ def run_ci(event, session, peer, workspace, operator_token):
         ]
 
         try:
-            analysis = deepseek_chat(session, messages, thinking=thinking, expert=expert)
+            analysis = deepseek_chat(session, messages, thinking=thinking)
         except Exception as e:
             error_msg = f"{type(e).__name__}: {str(e)[:200]}"
             print(f"::error::DeepSeek stream error: {error_msg}")
@@ -269,7 +268,6 @@ def run_ci(event, session, peer, workspace, operator_token):
                 "pr": pr_number,
                 "summary": analysis[:200],
                 "thinking": thinking,
-                "expert": expert,
                 "account": account,
                 "chat_session_id": session.get("chat_session_id"),
             })
@@ -281,13 +279,18 @@ def run_ci(event, session, peer, workspace, operator_token):
                 "account": account,
             })
 
-    return {
+    result = {
         "actions": decisions,
         "event": action,
         "pr": pr_number,
         "provider_used": peer.get("provider", "deepseek"),
         "thinking": thinking,
-        "expert": expert,
         "account": account,
         "chat_session_id": session.get("chat_session_id"),
     }
+
+    # Add error key if comment posting failed
+    if not comment_ok and comment_error:
+        result["error"] = f"Failed to post PR comment: {comment_error}"
+
+    return result

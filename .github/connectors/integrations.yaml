@@ -1,137 +1,230 @@
-# --- Core agentic (already wired) ---
+# Credential inventory SSOT — sourced from issue #184
+# Runtime code/Actions read env var NAMES only — never secret values.
+# Never paste PAT/OAuth values into issues, PRs, or this file.
+
+# =============================================================================
+# TIER 0 — Already active in this monorepo (workflows + bots firing)
+# =============================================================================
 integrations:
   coderabbit:
     autofix_trigger: "@coderabbitai autofix"
     requires_operator_token: true
-    status: active
+    status: ACTIVE
+    note: Bot commenting + autofix live
   jules:
     primary_builder: true
     async_cloud_vm: true
     github_app: Google Labs Jules
-    status: active  # last used within last week
-  devin:
-    review_marker: true
-    status: optional
-  linear:
-    workflow: agent-feedback-linear-sync.yml
-    github_app: Linear
-    secret_env: LINEAR_API_KEY  # used by .github/workflows/agent-feedback-linear-sync.yml
-    status: authorized_never_used  # activate via secret + workflow
-  vercel:
-    status_context: Vercel
-    github_app: Vercel
-    status: authorized_never_used
-  aikido:
-    status: active
-  sentry:
-    status: active
-  copilot-pull-request:
-    status: active
-  graphite:
-    status: active
-  gitar:
-    status: active
-
-# --- Peer reviewers (from #184 last-used / authorized) ---
-peer_reviewers:
-  - coderabbit
-  - devin
-  - aikido
-  - sentry
-  - copilot-pull-request
-  - graphite
-  - gitar
-
-# --- High-value last-used (activate / keep) ---
-last_used:
-  google_labs_jules:
-    ref: jules  # see integrations.jules for github_app and status
+    status: ACTIVE
     last_used: within_last_week
+  deepseek_ci:
+    workflow: deepseek-ci.yml
+    secret_env: [DEEPSEEK_TOKEN, DEEPSEEK_API_KEY, DEEPSEEK_AUTH_TOKEN, NEXUSCLI_TOKEN]
+    status: ACTIVE
+  gemini_peers:
+    workflows: [gemini-dispatch.yml, gemini-review.yml, gemini-triage.yml, gemini-invoke.yml]
+    secret_env: [GEMINI_API_KEY, OMNI_API_KEY, OPENROUTER_API_KEY]
+    status: ACTIVE
+  peer_review_orchestrator:
+    workflow: peer-review-orchestrator.yml
+    status: ACTIVE
+  continuous_ops:
+    workflow: agent-continuous-ops.yml
+    status: ACTIVE
+  dual_gate:
+    workflows: [repo-gate.yml, termux-smoke.yml]
+    status: ACTIVE
+
+# =============================================================================
+# TIER 1 — Last-used authorizations → ACTIVATE / KEEP (high value)
+# =============================================================================
+last_used:
+  # --- GitHub Apps ---
+  google_labs_jules:
+    type: github_app
+    last_used: within_last_week
+    action: KEEP
     role: primary_async_builder
   grok_xai:
-    github_app: Grok (by xAI)
+    type: github_app
+    name: Grok (by xAI)
     last_used: within_last_week
+    action: KEEP
     role: operator_peer
   cursor:
-    github_app: Cursor
+    type: github_app
     last_used: within_last_week
+    action: KEEP
     role: ide_agent
   graphite:
-    github_app: Graphite App
+    type: github_app
+    name: Graphite App
     last_used: within_last_week
+    action: KEEP
     role: pr_stack_review
   manus:
-    github_app: Manus Connector
+    type: github_app
+    name: Manus Connector
     last_used: within_last_week
+    action: KEEP
     role: agent_connector
-  zenhub:
-    oauth_app: Zenhub
+  copilot_chat:
+    type: github_app
+    name: Copilot Chat App
     last_used: within_last_week
+    action: KEEP
+  copilot_swe:
+    type: github_app
+    name: Copilot SWE Agent
+    last_used: within_last_2_weeks
+    action: KEEP
+    role: github_native_agent
+  mistral:
+    type: github_app
+    name: MistralAI
+    last_used: within_last_2_weeks
+    action: KEEP
+    role: model_peer
+  gitar_bot:
+    type: github_app
+    name: Gitar Bot
+    last_used: within_last_5_months
+    action: KEEP
+    role: code_transform
+  chatgpt_codex:
+    type: github_app
+    name: ChatGPT Codex Connector
+    last_used: within_last_5_months
+    action: KEEP
+
+  # --- OAuth apps ---
+  zenhub:
+    type: oauth_app
+    last_used: within_last_week
+    action: KEEP
     role: project_board
   replit:
-    oauth_app: Replit
+    type: oauth_app
     last_used: within_last_2_weeks
+    action: KEEP
     role: cloud_ide
   browserless:
-    oauth_app: Browserless
+    type: oauth_app
     last_used: within_last_2_weeks
+    action: KEEP
     role: headless_browser
-  mistral:
-    github_app: MistralAI
-    last_used: within_last_2_weeks
-    role: model_peer
-  copilot_swe:
-    github_app: Copilot SWE Agent
-    last_used: within_last_2_weeks
-    role: github_native_agent
   gitar:
-    oauth_app: Gitar
-    github_app: Gitar Bot
+    type: oauth_app
     last_used: within_last_5_months
-    role: code_transform
+    action: KEEP
+  komi_store:
+    type: oauth_app
+    name: Komi Store
+    last_used: within_last_4_months
+    action: KEEP
 
-# --- Classic / fine-grained PATs (secret wiring only; never paste values) ---
+# =============================================================================
+# TIER 2 — Authorized but never used → ACTIVATE if useful, else REVOKE
+# =============================================================================
+activate_via_secret:
+  linear:
+    type: github_app
+    status: authorized_never_used
+    workflow: agent-feedback-linear-sync.yml
+    secret_env: LINEAR_API_KEY
+    action: ACTIVATE
+    note: Team ID already hardcoded; just needs the key → subtasks start flowing
+  vercel:
+    type: github_app
+    status: authorized_never_used
+    action: ACTIVATE_IF_DEPLOYING
+    secret_env: [VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID]
+    note: status_context already expected by some checks
+  linear_code:
+    type: github_app
+    name: Linear Code
+    status: authorized_never_used
+    action: ACTIVATE_WITH_LINEAR
+
+peer_reviewers:
+  - name: coderabbitai
+    type: [oauth, github_app]
+    action: KEEP
+  - name: Aikido Security
+    type: github_app
+    action: KEEP
+  - name: Sentry
+    type: github_app
+    action: KEEP
+  - name: Copilot Pull Request Reviewer
+    type: github_app
+    action: KEEP
+  - name: Devin.ai Integration
+    type: github_app
+    action: KEEP
+
+# =============================================================================
+# TIER 3 — PATs (secret wiring only)
+# =============================================================================
 tokens:
   ARCHWIZ_GITHUB_TOKEN:
     type: fine_grained_pat
     status: never_used
-    action: wire_as_repo_secret  # see docs/ops/ARCHWIZ-ADMIN-TOKEN.md
+    action: WIRE_AS_REPO_SECRET
     preference: preferred_admin
+    runbook: docs/ops/ARCHWIZ-ADMIN-TOKEN.md
   OPERATOR_GITHUB_TOKEN:
     type: classic_or_fine
     status: primary
-    action: keep
+    action: KEEP
   Gh_actions:
     type: classic_pat
     last_used: within_last_week
-    action: keep_as_secret_if_wired
+    action: KEEP_IF_WIRED
   gitlab_cicd-w+org_view:
     type: classic_pat
     last_used: within_last_week
     scopes: [read:org, repo]
-    action: keep_for_gitlab_bridge
+    action: KEEP_FOR_GITLAB_BRIDGE
+  gitlab_cicd:
+    type: classic_pat
+    status: never_used
+    scopes: [repo]
+    action: REVOKE_OR_MERGE_INTO_W_ORG_VIEW
+  timers-full+accessPAT:
+    type: classic_pat
+    status: never_used
+    action: REVOKE
+    note: Prefer fine-grained ARCHWIZ / OPERATOR; avoid duplicate full admin
+  DEEPSEEK_API_KEY:
+    type: classic_pat
+    status: never_used
+    action: REVOKE_OR_RENAME
+    warning: MISNAMED — this is a GitHub PAT with admin scopes, NOT DeepSeek model auth. Do NOT use as DEEPSEEK_TOKEN.
   DeepSeek_account-1:
     type: fine_grained_pat
     status: expired
-    action: rotate_or_remove
+    action: ROTATE_OR_REMOVE
   DEEPSEEK_TOKEN:
     type: model_auth
-    action: ensure_repo_secret  # not a GitHub PAT
+    action: ENSURE_REPO_SECRET
+    note: Not a GitHub PAT. First non-empty of DEEPSEEK_TOKEN | DEEPSEEK_API_KEY | DEEPSEEK_AUTH_TOKEN | NEXUSCLI_TOKEN
 
-# --- SSH ---
+# =============================================================================
+# TIER 4 — SSH
+# =============================================================================
 ssh:
   DeepSeek_Account-1_ssh:
     last_used: within_last_week
-    action: keep_for_deepseek_cli
+    action: KEEP
+    role: deepseek_cli_git
 
-# --- Hygiene ---
+# =============================================================================
+# TIER 5 — Never used → REVOKE (hygiene)
+# Confirm no workflow/IDE dependency before revoking.
+# =============================================================================
 revoke_candidates:
-  note: Never-used OAuth/GitHub Apps increase attack surface. Revoke after confirming no workflow depends on them.
-  keep:
-    - aikido
-    - devin
-    - sentry
-  revoke:
+  oauth_apps:
     - BLACKBOXAI
     - ChatGPT Verification
     - Codeit
@@ -140,21 +233,24 @@ revoke_candidates:
     - Entelligence-AI
     - Genspark AI
     - GitCode
+    - GitHub CLI
+    - GitLab.com
     - Jam
     - Kernel Dashboard
     - kilocode.ai
     - Kimi GitHub Plugin
     - Mino
-    - Nous Research
+    - Nous Research (via Privy)
     - PlanetScale
     - PostHog
     - Pulumi Cloud
     - Qodo Git Connect
     - Qodo.ai
     - Spck Editor
-    - Supermemory
+    - Supermemory login [v3 prod]
     - Tavily
     - Tembo
+  github_apps:
     - AskSolo.ai
     - BlocksOrg
     - Claude
@@ -172,5 +268,13 @@ revoke_candidates:
     - Render
     - SonarQube Agent
     - SonarQubeCloud
+    - Tembo
     - Travis CI
     - Zed Industries
+
+rules:
+  - Admin PATs (OPERATOR_*, ARCHWIZ_*) → gh / REST / git only
+  - Model tokens (DEEPSEEK_TOKEN, Omni, OpenRouter, Gemini, Mistral) → provider APIs only
+  - Never cross-wire (no GH PAT as DeepSeek Bearer)
+  - Never paste secret values into issues/PRs/catalogs
+  - Prefer fine-grained over classic full-admin duplicates

@@ -97,7 +97,7 @@ jobs:
           ls -lh deepcli/wasm/
 
       - name: Cache DeepSeek session (Account-2 / secondary)
-        uses: actions/cache@6849a6489940f00c2f30c0fb92c6274307ccb58a  # v4.2.0
+        uses: actions/cache@v4
         id: cache-session
         with:
           path: ${{ env.DEEPSEEK_CACHE_DIR }}

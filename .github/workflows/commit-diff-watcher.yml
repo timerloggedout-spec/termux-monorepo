@@ -5,7 +5,8 @@ on:
     types: [opened, synchronize, reopened]
   push:
     branches:
-      - '**'
+      - 'master'
+      - 'master-staging'
 
 concurrency:
   group: commit-diff-watcher-${{ github.event.pull_request.number || github.ref || github.run_id }}
@@ -115,9 +116,8 @@ jobs:
                     filesChanged = fullCommit.files ? fullCommit.files.length : 0;
                     checkMethod = 'github_api';
                   } catch (apiErr) {
-                    core.error(`GitHub API fallback failed for commit ${commit.sha}: ${apiErr.message}`);
-                    // If both fail, we default to 0 files changed to be safe, or we can skip.
-                    // Let's assume filesChanged = 1 to prevent false positives if GitHub has transient API failure.
+                    core.info(`GitHub API fallback failed for commit ${commit.sha}: ${apiErr.message}`);
+                    // If both fail, we default to 1 file changed to be safe (fail-open on transient API/auth errors).
                     filesChanged = 1;
                   }
                 }
@@ -157,21 +157,35 @@ jobs:
               const fullComment = body.join('\n');
 
               if (prNumber) {
-                // Post comment on the PR (idempotently)
-                const comments = await github.paginate(github.rest.issues.listComments, {
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: prNumber,
-                  per_page: 50,
-                });
-                const hasWarning = comments.some(c => c.body && c.body.includes(marker));
-                if (!hasWarning) {
-                  await github.rest.issues.createComment({
+                try {
+                  // Post or update comment on the PR (idempotently and safely)
+                  const comments = await github.paginate(github.rest.issues.listComments, {
                     owner: context.repo.owner,
                     repo: context.repo.repo,
                     issue_number: prNumber,
-                    body: fullComment,
+                    per_page: 50,
                   });
+                  const existingWarning = comments.find(c => c.body && c.body.includes(marker));
+                  if (existingWarning) {
+                    await github.rest.issues.updateComment({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      comment_id: existingWarning.id,
+                      body: fullComment,
+                    });
+                    core.info(`Updated existing warning comment ${existingWarning.id}`);
+                  } else {
+                    await github.rest.issues.createComment({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      issue_number: prNumber,
+                      body: fullComment,
+                    });
+                    core.info('Posted new warning comment');
+                  }
+                } catch (commentErr) {
+                  // Catch write errors gracefully if GITHUB_TOKEN has read-only permission (e.g. from fork PRs)
+                  core.warning(`Could not post or update warning comment on PR #${prNumber} (e.g., read-only GITHUB_TOKEN on fork PR): ${commentErr.message}`);
                 }
               }
 

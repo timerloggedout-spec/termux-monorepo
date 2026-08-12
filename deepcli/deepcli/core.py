@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Core API wrapper for DeepSeek internal API."""
 import os
+import sys
 import json
 import base64
 import time
@@ -93,6 +94,17 @@ _session: Optional[curl_requests.Session] = None
 def _cache_path(session_id: str, account: str = "primary") -> str:
     store_dir = os.path.join(os.path.expanduser("~/.deepcli/session_store"), account)
     os.makedirs(store_dir, exist_ok=True)
+
+    # Restrict permissions of store_dir and parent directories if not symlinks
+    parent_store = os.path.dirname(store_dir)
+    for d_path in [parent_store, store_dir]:
+        p = Path(d_path)
+        if p.exists() and not p.is_symlink():
+            try:
+                p.chmod(0o700)
+            except Exception:
+                pass
+
     return os.path.join(store_dir, f"{session_id}.json")
 
 def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict[str, Any]]]:
@@ -105,6 +117,14 @@ def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict
 def _cache_save(session_id: str, messages: List[Dict[str, Any]], account: str = "primary"):
     path = _cache_path(session_id, account)
     os.makedirs(os.path.dirname(path), exist_ok=True)
+
+    p_dir = Path(os.path.dirname(path))
+    if p_dir.exists() and not p_dir.is_symlink():
+        try:
+            p_dir.chmod(0o700)
+        except Exception:
+            pass
+
     with open(path, 'w') as f:
         json.dump(messages, f, indent=2)
     try:

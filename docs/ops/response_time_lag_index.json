@@ -1,0 +1,31 @@
+{
+  "schema_version": 2,
+  "disposition_model": {
+    "summon": "opsSweep / auto-jules / explicit review request",
+    "ack_pending": "bot promised review — NOT actionable for Jules",
+    "quota_cooldown": "rate/review limit — WAIT until wait_until",
+    "real_review": "substantive findings — actionable",
+    "programmatic": "commit after summon"
+  },
+  "canonical_premature_pair": {
+    "pr": 174,
+    "ack_comment_id": 5260135328,
+    "premature_jules_comment_id": 5260137282,
+    "lesson": "Do not fire Jules on CodeRabbit 'I will re-review' ACK; wait for real_review"
+  },
+  "global_averages": {
+    "avg_message_response_lag_sec": 2700,
+    "avg_actual_response_lag_sec": 7200,
+    "suggested_debounce_ms": 2700000,
+    "suggested_stale_ms": 7200000
+  },
+  "by_pr": {
+    "174": {
+      "open_disposition": "ack_pending",
+      "jules_actionable": false,
+      "wait_sec": 1200,
+      "note": "CodeRabbit full review ACK at 5260135328; auto-jules 5260137282 was premature"
+    }
+  },
+  "note": "Defaults aligned with high-perf continuous-ops. Recalculated by scripts/ci/calculate_lag_index.py on cron."
+}

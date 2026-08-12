@@ -1,6 +1,8 @@
 """
-Manages DeepSeek web session: PoW solving (real WASM from termux-monorepo),
-cookie rotation, and persistence.
+Manages DeepSeek web session: PoW solving (real WASM),
+cookie rotation, and cross-run persistence (operator-required).
+
+Session dir: 0o700 · session.json: 0o600
 """
 import os
 import json
@@ -24,9 +26,13 @@ def solve_pow():
 
     result = subprocess.check_output(
         ['node', str(solver_script), str(wasm_path)],
-        text=True
+        text=True,
+        timeout=60,
     )
-    return json.loads(result)
+    parsed = json.loads(result)
+    if not isinstance(parsed, dict) or 'answer' not in parsed or 'signature' not in parsed:
+        raise RuntimeError(f"PoW solver returned invalid shape: {parsed!r}")
+    return parsed
 
 
 def get_new_session():
@@ -39,14 +45,14 @@ def get_new_session():
         'Content-Type': 'application/json',
     })
 
-    resp = session.get(f"{DEEPSEEK_BASE}/api/chat")
+    resp = session.get(f"{DEEPSEEK_BASE}/api/chat", timeout=30)
     resp.raise_for_status()
 
     auth_payload = {
         'pow_answer': pow_result['answer'],
         'pow_signature': pow_result['signature'],
     }
-    auth_resp = session.post(f"{DEEPSEEK_BASE}/api/auth", json=auth_payload)
+    auth_resp = session.post(f"{DEEPSEEK_BASE}/api/auth", json=auth_payload, timeout=30)
     auth_resp.raise_for_status()
 
     token_data = auth_resp.json()
@@ -56,25 +62,45 @@ def get_new_session():
 
     session.headers['Authorization'] = f'Bearer {token}'
 
+    # Prefer server-provided lifetime when present
+    lifetime = token_data.get('expires_in') or token_data.get('lifetime') or (3600 * 24)
+    try:
+        lifetime = int(lifetime)
+    except (TypeError, ValueError):
+        lifetime = 3600 * 24
+
     return {
         'cookies': session.cookies.get_dict(),
-        'headers': dict(session.headers),
+        'headers': {k: v for k, v in session.headers.items() if k.lower() != 'authorization'},
         'token': token,
-        'expires': time.time() + 3600 * 24,
+        'expires': time.time() + lifetime,
     }
 
 
 def ensure_session(cache_dir):
-    cache_path = Path(cache_dir) / 'session.json'
-    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    cache_dir_path = Path(cache_dir)
+    cache_dir_path.mkdir(parents=True, exist_ok=True)
+    try:
+        os.chmod(cache_dir_path, 0o700)
+    except OSError:
+        pass
+
+    cache_path = cache_dir_path / 'session.json'
 
     if cache_path.exists():
-        with open(cache_path, 'r') as f:
-            session = json.load(f)
-        if session.get('expires', 0) > time.time():
-            return session
+        try:
+            with open(cache_path, 'r', encoding='utf-8') as f:
+                session = json.load(f)
+            if isinstance(session, dict) and session.get('expires', 0) > time.time() and session.get('token'):
+                return session
+        except (OSError, json.JSONDecodeError, TypeError):
+            pass  # refresh below
 
     session = get_new_session()
-    with open(cache_path, 'w') as f:
+    with open(cache_path, 'w', encoding='utf-8') as f:
         json.dump(session, f)
+    try:
+        os.chmod(cache_path, 0o600)
+    except OSError:
+        pass
     return session

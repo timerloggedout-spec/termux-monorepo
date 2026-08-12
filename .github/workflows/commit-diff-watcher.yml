@@ -22,10 +22,16 @@ jobs:
       pull-requests: write
       issues: write
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 0
+
       - name: Analyze commits & diffs
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         with:
           script: |
+            const execSync = require('child_process').execSync;
             const eventName = context.eventName;
             let prNumber = null;
             let commits = [];
@@ -90,20 +96,36 @@ jobs:
               );
 
               if (isCommitAgent) {
-                // Fetch full commit info to check files changed
+                let filesChanged = 0;
+                let checkMethod = 'none';
                 try {
-                  const { data: fullCommit } = await github.rest.repos.getCommit({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    ref: commit.sha,
-                  });
-                  const filesChanged = fullCommit.files ? fullCommit.files.length : 0;
-                  if (filesChanged === 0) {
-                    core.warning(`Empty commit from agent detected: ${commit.sha} ("${commit.message.split('\n')[0]}")`);
-                    emptyAgentCommits.push(commit);
+                  // Try local git first
+                  const output = execSync(`git show --name-only --format="" ${commit.sha}`).toString().trim();
+                  filesChanged = output ? output.split('\n').filter(Boolean).length : 0;
+                  checkMethod = 'local_git';
+                } catch (gitErr) {
+                  core.info(`Local git check failed or commit not found locally for ${commit.sha}. Falling back to GitHub API...`);
+                  // Fallback to GitHub API
+                  try {
+                    const { data: fullCommit } = await github.rest.repos.getCommit({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      ref: commit.sha,
+                    });
+                    filesChanged = fullCommit.files ? fullCommit.files.length : 0;
+                    checkMethod = 'github_api';
+                  } catch (apiErr) {
+                    core.error(`GitHub API fallback failed for commit ${commit.sha}: ${apiErr.message}`);
+                    // If both fail, we default to 0 files changed to be safe, or we can skip.
+                    // Let's assume filesChanged = 1 to prevent false positives if GitHub has transient API failure.
+                    filesChanged = 1;
                   }
-                } catch (err) {
-                  core.error(`Failed to fetch commit ${commit.sha}: ${err.message}`);
+                }
+
+                core.info(`Commit ${commit.sha} (${checkMethod}): ${filesChanged} file(s) changed.`);
+                if (filesChanged === 0) {
+                  core.warning(`Empty commit from agent detected: ${commit.sha} ("${commit.message.split('\n')[0]}")`);
+                  emptyAgentCommits.push(commit);
                 }
               }
             }

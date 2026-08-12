@@ -32,7 +32,8 @@ def run_ci(event, session, peer, workspace, operator_token):
     Returns a dict of actions taken.
     """
     gh_env = os.environ.copy()
-    gh_env['GH_TOKEN'] = operator_token
+    if operator_token:
+        gh_env['GH_TOKEN'] = operator_token
 
     pr_number = event.get('pull_request', {}).get('number')
     repo = event.get('repository', {}).get('full_name')

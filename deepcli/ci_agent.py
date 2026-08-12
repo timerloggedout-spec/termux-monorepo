@@ -174,9 +174,20 @@ def deepseek_chat(session, messages, thinking=True, expert=True):
 
 
 def run_ci(event, session, peer, workspace, operator_token):
+    """
+    Run CI agent for PR review.
+    Requires operator_token for gh CLI operations.
+    """
+    if not operator_token:
+        return {
+            "actions": [],
+            "error": "OPERATOR_TOKEN required for gh CLI operations",
+            "event": event.get("action"),
+            "pr": event.get("pull_request", {}).get("number"),
+        }
+    
     gh_env = os.environ.copy()
-    if operator_token:
-        gh_env["GH_TOKEN"] = operator_token
+    gh_env["GH_TOKEN"] = operator_token
 
     pr_number = event.get("pull_request", {}).get("number")
     repo = event.get("repository", {}).get("full_name")
@@ -194,10 +205,15 @@ def run_ci(event, session, peer, workspace, operator_token):
         try:
             diff = subprocess.check_output(
                 ["gh", "pr", "diff", str(pr_number), "--repo", repo],
-                env=gh_env, text=True, timeout=120,
+                env=gh_env, text=True, timeout=180,
             )
         except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as e:
-            return {"actions": [], "error": f"Failed to get PR diff: {e}"}
+            return {
+                "actions": [],
+                "error": f"Failed to get PR diff: {e}",
+                "event": action,
+                "pr": pr_number,
+            }
 
         truncated = len(diff) > 8000
         user_content = diff[:8000]
@@ -219,18 +235,33 @@ def run_ci(event, session, peer, workspace, operator_token):
         try:
             analysis = deepseek_chat(session, messages, thinking=thinking, expert=expert)
         except Exception as e:
-            print(f"::error::DeepSeek stream error: {type(e).__name__}: {e}")
-            analysis = f"DeepSeek API error: {type(e).__name__}"
+            error_msg = f"{type(e).__name__}: {str(e)[:200]}"
+            print(f"::error::DeepSeek stream error: {error_msg}")
+            return {
+                "actions": [],
+                "error": f"DeepSeek API error: {error_msg}",
+                "event": action,
+                "pr": pr_number,
+                "account": account,
+            }
 
         comment_ok = False
+        comment_error = None
         try:
             r = subprocess.run(
                 ["gh", "pr", "comment", str(pr_number), "--body", analysis[:2000], "--repo", repo],
-                env=gh_env, check=False, timeout=60,
+                env=gh_env, capture_output=True, text=True, timeout=90,
             )
             comment_ok = r.returncode == 0
+            if not comment_ok:
+                comment_error = r.stderr[:200] if r.stderr else "Unknown error"
+                print(f"::error::Failed to post PR comment: {comment_error}")
         except subprocess.TimeoutExpired:
-            comment_ok = False
+            comment_error = "Timeout posting comment"
+            print(f"::error::{comment_error}")
+        except Exception as e:
+            comment_error = f"{type(e).__name__}: {str(e)[:100]}"
+            print(f"::error::Exception posting comment: {comment_error}")
 
         if comment_ok:
             decisions.append({
@@ -241,6 +272,13 @@ def run_ci(event, session, peer, workspace, operator_token):
                 "expert": expert,
                 "account": account,
                 "chat_session_id": session.get("chat_session_id"),
+            })
+        else:
+            decisions.append({
+                "type": "pr_review_failed",
+                "pr": pr_number,
+                "error": comment_error,
+                "account": account,
             })
 
     return {

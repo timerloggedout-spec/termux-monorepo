@@ -55,19 +55,19 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
         with:
           fetch-depth: 0
           token: ${{ env.OPERATOR_TOKEN }}
           persist-credentials: false
 
       - name: Setup Node.js (for PoW WASM)
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af  # v4.1.0
         with:
           node-version: '20'
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b  # v5.3.0
         with:
           python-version: '3.11'
           cache: 'pip'
@@ -78,18 +78,26 @@ jobs:
       - name: Stage DeepSeek PoW WASM & solver
         run: |
           mkdir -p deepcli/wasm
+          # Check if WASM files exist in repo root deepcli/ directory
           if [ -f deepcli/deepseek.wasm ] && [ -f deepcli/pow_solver.js ]; then
             cp -f deepcli/deepseek.wasm deepcli/wasm/deepseek.wasm
             cp -f deepcli/pow_solver.js deepcli/wasm/pow_solver.js
-            echo "Using checked-out WASM/solver"
+            echo "✓ Using checked-out WASM/solver from deepcli/"
           else
+            echo "⚠ WASM files not found in deepcli/, fetching from commit $WASM_SOURCE_COMMIT"
             curl -sSfL "$WASM_RAW_BASE/$WASM_SOURCE_COMMIT/deepcli/deepseek.wasm" -o deepcli/wasm/deepseek.wasm
             curl -sSfL "$WASM_RAW_BASE/$WASM_SOURCE_COMMIT/deepcli/pow_solver.js" -o deepcli/wasm/pow_solver.js
-            echo "Fetched WASM/solver from raw.githubusercontent"
+            echo "✓ Fetched WASM/solver from raw.githubusercontent"
           fi
+          # Verify files exist and are non-empty
+          if [ ! -s deepcli/wasm/deepseek.wasm ] || [ ! -s deepcli/wasm/pow_solver.js ]; then
+            echo "::error::WASM files missing or empty after staging"
+            exit 1
+          fi
+          ls -lh deepcli/wasm/
 
       - name: Cache DeepSeek session (Account-2 / secondary)
-        uses: actions/cache@v4
+        uses: actions/cache@6849a6489940f00c2f30c0fb92c6274307ccb58a  # v4.2.0
         id: cache-session
         with:
           path: ${{ env.DEEPSEEK_CACHE_DIR }}
@@ -109,7 +117,7 @@ jobs:
             --account "$DEEPSEEK_ACCOUNT"
 
       - name: Upload results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.5.0
         if: always()
         with:
           name: deepseek-output

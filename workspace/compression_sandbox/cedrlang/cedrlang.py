@@ -201,7 +201,7 @@ DECOMPILER_MAP = {
     "spl01t": "exploit",
     "sh3llc0d3": "shellcode",
     "cr4ck": "crack",
-    "phreak": "phreak",
+    "phr34k": "phreak",
 
     # Distinct Safe Symbols
     "→": "leads to",

@@ -1,8 +1,10 @@
 name: DeepSeek CI – Agentic Automation
 
-# Admin-scope DeepSeek web-wrapper path. No quota model — frustrated-user retries only.
+# Admin-scope DeepSeek web-wrapper (Account-1 primary).
+# No quota model — frustrated-user retries only.
+# Supports 2–3 simultaneous sessions; streaming read timeout allows multi-minute thinking.
 # GitLab CI/CD is a separate scope and does not gate this workflow.
-# Token names: use repository secrets listed in PR #174 comment thread.
+# Token names: repository secrets listed in PR #174 / auth inventory issue (already set).
 
 on:
   pull_request:
@@ -14,9 +16,16 @@ on:
         required: false
         default: '{}'
 
+# Allow up to 3 concurrent DeepSeek sessions (Account-1 capacity).
+# Do not cancel-in-progress — frustrated-user retries prefer completing in-flight work.
+concurrency:
+  group: deepseek-ci-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: false
+
 jobs:
   deepseek-agent:
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     permissions:
       contents: write
       pull-requests: write
@@ -29,6 +38,12 @@ jobs:
       GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
       GITHUB_EVENT: ${{ toJson(github.event) }}
       DEEPSEEK_CACHE_DIR: ${{ github.workspace }}/.deepseek-cache
+      DEEPSEEK_ACCOUNT: account-1
+      DEEPSEEK_THINKING: "true"
+      DEEPSEEK_EXPERT: "true"
+      # Multi-minute thinking: long SSE read window (seconds)
+      DEEPSEEK_CONNECT_TIMEOUT: "30"
+      DEEPSEEK_READ_TIMEOUT: "1200"
       WASM_SOURCE_COMMIT: "ee1807049fd93d087bc14055b2ae6cbffb5dbf82"
       WASM_RAW_BASE: "https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo"
 
@@ -66,20 +81,19 @@ jobs:
             echo "Fetched WASM/solver from raw.githubusercontent"
           fi
 
-      - name: Cache DeepSeek session
+      - name: Cache DeepSeek session (Account-1)
         uses: actions/cache@v4
         id: cache-session
         with:
           path: ${{ env.DEEPSEEK_CACHE_DIR }}
-          key: deepseek-session-${{ runner.os }}-${{ hashFiles('deepcli/session_manager.py') }}
+          key: deepseek-session-account1-${{ runner.os }}-${{ hashFiles('deepcli/session_manager.py') }}
           restore-keys: |
+            deepseek-session-account1-${{ runner.os }}-
             deepseek-session-${{ runner.os }}-
 
       - name: Run DeepSeek CI Agent
         env:
           PYTHONPATH: ${{ github.workspace }}
-          DEEPSEEK_THINKING: "true"
-          DEEPSEEK_EXPERT: "true"
         run: |
           python -m deepcli.ci_mode \
             --event "$GITHUB_EVENT" \

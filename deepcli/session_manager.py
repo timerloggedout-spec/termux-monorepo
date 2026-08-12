@@ -72,21 +72,23 @@ def solve_pow():
             raise RuntimeError("PoW challenge API returned empty response body")
         
         resp_data = resp.json()
+        print(f"::debug::PoW API resp_data type={type(resp_data)} value={resp_data}")
         
         if resp_data is None:
             raise RuntimeError("PoW challenge API json() returned None")
         
+        if not isinstance(resp_data, dict):
+            raise RuntimeError(f"PoW challenge API returned non-dict: {type(resp_data)} = {resp_data}")
+        
         # Try different response structures
-        challenge_data = None
-        if isinstance(resp_data, dict):
-            challenge_data = (
-                resp_data.get("data", {}).get("biz_data", {}).get("challenge")
-                or resp_data.get("challenge")
-                or resp_data
-            )
+        challenge_data = (
+            resp_data.get("data", {}).get("biz_data", {}).get("challenge")
+            or resp_data.get("challenge")
+            or (resp_data if all(k in resp_data for k in ["algorithm", "challenge", "salt"]) else None)
+        )
         
         if not challenge_data or not isinstance(challenge_data, dict):
-            raise RuntimeError(f"Invalid PoW challenge response structure: {resp_data}")
+            raise RuntimeError(f"Invalid PoW challenge response structure. Keys: {list(resp_data.keys()) if isinstance(resp_data, dict) else 'N/A'}")
             
     except requests.exceptions.RequestException as e:
         raise RuntimeError(f"PoW challenge API request failed: {e}")

@@ -71,7 +71,11 @@ def solve_pow():
         if not resp.text:
             raise RuntimeError("PoW challenge API returned empty response body")
         
-        resp_data = resp.json()
+        try:
+            resp_data = resp.json()
+        except Exception as e:
+            raise RuntimeError(f"PoW challenge API json() parse failed: {e}")
+        
         print(f"::debug::PoW API resp_data type={type(resp_data)} value={resp_data}")
         
         if resp_data is None:
@@ -81,11 +85,17 @@ def solve_pow():
             raise RuntimeError(f"PoW challenge API returned non-dict: {type(resp_data)} = {resp_data}")
         
         # Try different response structures
-        challenge_data = (
-            resp_data.get("data", {}).get("biz_data", {}).get("challenge")
-            or resp_data.get("challenge")
-            or (resp_data if all(k in resp_data for k in ["algorithm", "challenge", "salt"]) else None)
-        )
+        challenge_data = None
+        if "data" in resp_data and isinstance(resp_data["data"], dict):
+            biz_data = resp_data["data"].get("biz_data", {})
+            if isinstance(biz_data, dict):
+                challenge_data = biz_data.get("challenge")
+        
+        if not challenge_data and "challenge" in resp_data:
+            challenge_data = resp_data.get("challenge")
+        
+        if not challenge_data and all(k in resp_data for k in ["algorithm", "challenge", "salt"]):
+            challenge_data = resp_data
         
         if not challenge_data or not isinstance(challenge_data, dict):
             raise RuntimeError(f"Invalid PoW challenge response structure. Keys: {list(resp_data.keys()) if isinstance(resp_data, dict) else 'N/A'}")

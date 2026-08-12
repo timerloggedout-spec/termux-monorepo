@@ -97,9 +97,8 @@ jobs:
                     repo: context.repo.repo,
                     ref: commit.sha,
                   });
-                  const isMerge = (fullCommit.parents || []).length > 1;
                   const filesChanged = fullCommit.files ? fullCommit.files.length : 0;
-                  if (!isMerge && filesChanged === 0) {
+                  if (filesChanged === 0) {
                     core.warning(`Empty commit from agent detected: ${commit.sha} ("${commit.message.split('\n')[0]}")`);
                     emptyAgentCommits.push(commit);
                   }

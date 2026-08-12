@@ -3,12 +3,8 @@ CI agent logic for DeepSeek integration.
 Does not modify core.py – used by ci_mode.py.
 
 Admin-scope defaults: thinking=True, expert=True (always).
-No quota model — frustrated-user retries only.
-Account-1 primary; supports 2–3 simultaneous sessions.
-
-IMPORTANT: DeepSeek web always streams SSE. A fixed 120s non-stream
-timeout will abort multi-minute thinking. We stream-consume chunks
-with a long read timeout instead.
+Account-2 (secondary) is the default for CI check runs.
+chat_session_id is required for /api/v0/chat/completion.
 """
 import os
 import json
@@ -16,14 +12,14 @@ import subprocess
 import time
 import requests
 
+from session_manager import create_chat_session, get_pow_challenge, solve_pow
+
 DEEPSEEK_BASE = "https://chat.deepseek.com"
-# Connect quickly; allow long idle between SSE chunks while model thinks
 STREAM_CONNECT_TIMEOUT = int(os.environ.get("DEEPSEEK_CONNECT_TIMEOUT", "30"))
-STREAM_READ_TIMEOUT = int(os.environ.get("DEEPSEEK_READ_TIMEOUT", "1200"))  # 20 minutes
+STREAM_READ_TIMEOUT = int(os.environ.get("DEEPSEEK_READ_TIMEOUT", "1200"))
 
 
 def _parse_sse_chunk(line: str) -> str:
-    """Extract text content from one SSE data line. Returns '' if none."""
     if not line or not line.startswith("data:"):
         return ""
     raw = line[5:].strip()
@@ -33,17 +29,14 @@ def _parse_sse_chunk(line: str) -> str:
         data = json.loads(raw)
     except json.JSONDecodeError:
         return ""
-
     if not isinstance(data, dict):
         return ""
 
-    # Shape A: {"v": "text"} or {"content": "text"}
     for key in ("v", "content"):
         val = data.get(key)
         if isinstance(val, str) and val not in ("FINISHED",):
             return val
 
-    # Shape B: {"v": {"response": {"content": "..."}}}
     v = data.get("v")
     if isinstance(v, dict):
         resp = v.get("response") or {}
@@ -51,12 +44,7 @@ def _parse_sse_chunk(line: str) -> str:
             c = resp.get("content") or ""
             if isinstance(c, str) and c:
                 return c
-        # thinking delta
-        t = v.get("thinking_content") or v.get("thinking") or ""
-        if isinstance(t, str) and t and os.environ.get("DEEPSEEK_INCLUDE_THINKING", "").lower() in ("1", "true", "yes"):
-            return t
 
-    # Shape C: OpenAI-like choices delta
     choices = data.get("choices")
     if isinstance(choices, list) and choices:
         delta = choices[0].get("delta") or choices[0].get("message") or {}
@@ -64,109 +52,128 @@ def _parse_sse_chunk(line: str) -> str:
             c = delta.get("content") or ""
             if isinstance(c, str):
                 return c
-
     return ""
+
+
+def _ensure_chat_session_id(session: dict) -> str:
+    sid = session.get("chat_session_id")
+    if sid:
+        return str(sid)
+    token = session.get("token")
+    if not token:
+        raise RuntimeError("No token to create chat_session_id")
+    sid = create_chat_session(token, cookies=session.get("cookies") or None, model_type="expert")
+    session["chat_session_id"] = sid
+    return sid
+
+
+def _pow_header(session: dict) -> str | None:
+    if session.get("pow_header"):
+        return session["pow_header"]
+    token = session.get("token")
+    if not token:
+        return None
+    try:
+        challenge = get_pow_challenge(token, cookies=session.get("cookies") or None)
+        # Prefer node WASM path that accepts challenge JSON on stdin when available;
+        # fall back to solve_pow() file-based solver used at bootstrap.
+        from pathlib import Path
+        solver = Path(__file__).parent / "pow_solver.js"
+        import subprocess as sp
+        proc = sp.run(
+            ["node", str(solver)],
+            input=json.dumps(challenge),
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        if proc.returncode == 0 and proc.stdout.strip().isdigit():
+            import base64
+            answer = int(proc.stdout.strip())
+            payload = {
+                "algorithm": challenge.get("algorithm", "DeepSeekHashV1"),
+                "challenge": challenge["challenge"],
+                "salt": challenge["salt"],
+                "answer": answer,
+                "signature": challenge["signature"],
+                "target_path": challenge.get("target_path", "/api/v0/chat/completion"),
+            }
+            hdr = base64.b64encode(json.dumps(payload).encode()).decode()
+            session["pow_header"] = hdr
+            return hdr
+    except Exception as e:
+        print(f"::warning::PoW header skip: {e}")
+    return None
 
 
 def deepseek_chat(session, messages, thinking=True, expert=True):
     """
-    Stream a chat completion from DeepSeek web API.
-
-    Watches the SSE stream while the model thinks/responds — can take
-    several minutes. Does NOT use a single-shot 120s non-stream POST.
-
-    --thinking and --Expert are ALWAYS true by default (operator policy).
+    Stream completion with required chat_session_id + optional PoW header.
+    Multi-minute thinking supported via long SSE read timeout.
     """
+    chat_session_id = _ensure_chat_session_id(session)
+    pow_hdr = _pow_header(session)
+
     headers = {
         "Authorization": f"Bearer {session['token']}",
         "Content-Type": "application/json",
         "Accept": "text/event-stream",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:134.0) Gecko/20100101 Firefox/134.0",
         "X-Client-Platform": "web",
         "Origin": DEEPSEEK_BASE,
-        "Referer": f"{DEEPSEEK_BASE}/",
+        "Referer": f"{DEEPSEEK_BASE}/a/chat/s/{chat_session_id}",
     }
-    # Optional PoW header if session carried one from ensure_session
-    if session.get("pow_header"):
-        headers["X-Ds-Pow-Response"] = session["pow_header"]
+    if pow_hdr:
+        headers["X-Ds-Pow-Response"] = pow_hdr
 
     s = requests.Session()
     s.cookies.update(session.get("cookies", {}))
     s.headers.update(headers)
 
-    # Prefer last user prompt for web path; keep system context inlined
     system_parts = [m["content"] for m in messages if m.get("role") == "system"]
     user_parts = [m["content"] for m in messages if m.get("role") == "user"]
     prompt = "\n\n".join(user_parts) if user_parts else ""
     if system_parts:
         prompt = system_parts[0] + "\n\n" + prompt
 
-    # Web completion payload (matches multi-ai-cli / deepcli core)
     payload = {
-        "chat_session_id": session.get("chat_session_id"),
+        "chat_session_id": chat_session_id,
         "parent_message_id": session.get("parent_message_id"),
         "prompt": prompt,
         "ref_file_ids": [],
         "thinking_enabled": bool(thinking),
         "search_enabled": False,
-        "stream": True,  # server always SSE anyway
+        "stream": True,
     }
-    # Drop null chat_session_id so server can allocate if needed
-    if not payload["chat_session_id"]:
-        payload.pop("chat_session_id", None)
 
     url = f"{DEEPSEEK_BASE}/api/v0/chat/completion"
-    # Fallback OpenAI-style path if v0 rejects
-    alt_url = f"{DEEPSEEK_BASE}/api/chat/completions"
-
     timeout = (STREAM_CONNECT_TIMEOUT, STREAM_READ_TIMEOUT)
-    last_err = None
 
-    for attempt_url, use_openai_shape in ((url, False), (alt_url, True)):
-        try:
-            body = payload
-            if use_openai_shape:
-                body = {
-                    "messages": messages,
-                    "stream": True,
-                    "thinking": bool(thinking),
-                    "expert": bool(expert),
-                }
-            resp = s.post(attempt_url, json=body, stream=True, timeout=timeout)
-            if resp.status_code >= 400:
-                last_err = f"HTTP {resp.status_code} on {attempt_url}"
-                continue
+    resp = s.post(url, json=payload, stream=True, timeout=timeout)
+    if resp.status_code >= 400:
+        raise RuntimeError(f"HTTP {resp.status_code} on completion: {resp.text[:300]}")
 
-            parts = []
-            started = time.time()
-            for line in resp.iter_lines(decode_unicode=True):
-                if line is None:
-                    continue
-                chunk = _parse_sse_chunk(line if isinstance(line, str) else line.decode("utf-8", "replace"))
-                if chunk:
-                    parts.append(chunk)
-            elapsed = time.time() - started
-            text = "".join(parts).strip()
-            if text:
-                print(f"::notice::DeepSeek stream complete ({elapsed:.1f}s, {len(parts)} chunks, thinking={thinking})")
-                return text
-            last_err = f"Empty stream body from {attempt_url} after {elapsed:.1f}s"
-        except requests.Timeout as e:
-            last_err = f"Timeout after {STREAM_READ_TIMEOUT}s read window: {e}"
-            # Do not fall through on timeout of long think — surface it
-            break
-        except requests.RequestException as e:
-            last_err = str(e)
+    parts = []
+    started = time.time()
+    for line in resp.iter_lines(decode_unicode=True):
+        if line is None:
             continue
-
-    raise RuntimeError(f"DeepSeek stream failed: {last_err}")
+        text_line = line if isinstance(line, str) else line.decode("utf-8", "replace")
+        chunk = _parse_sse_chunk(text_line)
+        if chunk:
+            parts.append(chunk)
+    elapsed = time.time() - started
+    text = "".join(parts).strip()
+    if not text:
+        raise RuntimeError(f"Empty SSE stream after {elapsed:.1f}s (chat_session_id={chat_session_id})")
+    print(
+        f"::notice::DeepSeek stream ok ({elapsed:.1f}s, {len(parts)} chunks, "
+        f"account={session.get('account')}, chat_session_id={chat_session_id})"
+    )
+    return text
 
 
 def run_ci(event, session, peer, workspace, operator_token):
-    """
-    Non-interactive agent loop.
-    Returns a dict of actions taken.
-    """
     gh_env = os.environ.copy()
     if operator_token:
         gh_env["GH_TOKEN"] = operator_token
@@ -175,6 +182,7 @@ def run_ci(event, session, peer, workspace, operator_token):
     repo = event.get("repository", {}).get("full_name")
     action = event.get("action")
     decisions = []
+    account = session.get("account") or peer.get("account") or "secondary"
 
     thinking = os.environ.get("DEEPSEEK_THINKING", "true").lower() not in ("0", "false", "no")
     expert = os.environ.get("DEEPSEEK_EXPERT", "true").lower() not in ("0", "false", "no")
@@ -231,7 +239,8 @@ def run_ci(event, session, peer, workspace, operator_token):
                 "summary": analysis[:200],
                 "thinking": thinking,
                 "expert": expert,
-                "account": "account-1",
+                "account": account,
+                "chat_session_id": session.get("chat_session_id"),
             })
 
     return {
@@ -241,5 +250,6 @@ def run_ci(event, session, peer, workspace, operator_token):
         "provider_used": peer.get("provider", "deepseek"),
         "thinking": thinking,
         "expert": expert,
-        "account": "account-1",
+        "account": account,
+        "chat_session_id": session.get("chat_session_id"),
     }

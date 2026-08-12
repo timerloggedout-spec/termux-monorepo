@@ -1,10 +1,12 @@
 name: DeepSeek CI – Agentic Automation
 
-# Admin-scope DeepSeek web-wrapper (Account-1 primary).
-# No quota model — frustrated-user retries only.
-# Supports 2–3 simultaneous sessions; streaming read timeout allows multi-minute thinking.
-# GitLab CI/CD is a separate scope and does not gate this workflow.
-# Token names: repository secrets listed in PR #174 / auth inventory issue (already set).
+# Template webWrapper accounts:
+#   Account-1 / primary  — interactive / operator
+#   Account-2 / secondary — CI check runs (this workflow)
+#
+# chat_session_id is created via /api/v0/chat_session/create before completion.
+# Streaming SSE read timeout allows multi-minute thinking.
+# GitLab CI/CD is a separate scope.
 
 on:
   pull_request:
@@ -15,9 +17,11 @@ on:
         description: 'JSON event payload (optional)'
         required: false
         default: '{}'
+      account:
+        description: 'DeepSeek account (account-2/secondary for CI; account-1/primary for operator)'
+        required: false
+        default: 'account-2'
 
-# Allow up to 3 concurrent DeepSeek sessions (Account-1 capacity).
-# Do not cancel-in-progress — frustrated-user retries prefer completing in-flight work.
 concurrency:
   group: deepseek-ci-${{ github.event.pull_request.number || github.run_id }}
   cancel-in-progress: false
@@ -33,15 +37,17 @@ jobs:
       actions: read
 
     env:
-      # Thread-listed PAT names → normalize to OPERATOR_TOKEN for deepcli
       OPERATOR_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
       GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
       GITHUB_EVENT: ${{ toJson(github.event) }}
       DEEPSEEK_CACHE_DIR: ${{ github.workspace }}/.deepseek-cache
-      DEEPSEEK_ACCOUNT: account-1
+      # CI uses Account-2 (secondary / cookies_2 lineage)
+      DEEPSEEK_ACCOUNT: ${{ github.event.inputs.account || 'account-2' }}
+      DEEPSEEK_TOKEN_SECONDARY: ${{ secrets.DEEPSEEK_TOKEN_SECONDARY || secrets.DEEPSEEK_TOKEN_ACCOUNT_2 || secrets.DEEPSEEK_COOKIES_2 || secrets.DEEPSEEK_TOKEN }}
+      DEEPSEEK_TOKEN_PRIMARY: ${{ secrets.DEEPSEEK_TOKEN_PRIMARY || secrets.DEEPSEEK_TOKEN_ACCOUNT_1 || secrets.DEEPSEEK_TOKEN }}
+      DEEPSEEK_COOKIES_2: ${{ secrets.DEEPSEEK_COOKIES_2 }}
       DEEPSEEK_THINKING: "true"
       DEEPSEEK_EXPERT: "true"
-      # Multi-minute thinking: long SSE read window (seconds)
       DEEPSEEK_CONNECT_TIMEOUT: "30"
       DEEPSEEK_READ_TIMEOUT: "1200"
       WASM_SOURCE_COMMIT: "ee1807049fd93d087bc14055b2ae6cbffb5dbf82"
@@ -81,24 +87,25 @@ jobs:
             echo "Fetched WASM/solver from raw.githubusercontent"
           fi
 
-      - name: Cache DeepSeek session (Account-1)
+      - name: Cache DeepSeek session (Account-2 / secondary)
         uses: actions/cache@v4
         id: cache-session
         with:
           path: ${{ env.DEEPSEEK_CACHE_DIR }}
-          key: deepseek-session-account1-${{ runner.os }}-${{ hashFiles('deepcli/session_manager.py') }}
+          key: deepseek-session-account2-${{ runner.os }}-${{ hashFiles('deepcli/session_manager.py') }}
           restore-keys: |
-            deepseek-session-account1-${{ runner.os }}-
-            deepseek-session-${{ runner.os }}-
+            deepseek-session-account2-${{ runner.os }}-
+            deepseek-session-secondary-${{ runner.os }}-
 
-      - name: Run DeepSeek CI Agent
+      - name: Run DeepSeek CI Agent (Account-2)
         env:
           PYTHONPATH: ${{ github.workspace }}
         run: |
           python -m deepcli.ci_mode \
             --event "$GITHUB_EVENT" \
             --workspace "$GITHUB_WORKSPACE" \
-            --cache-dir "$DEEPSEEK_CACHE_DIR"
+            --cache-dir "$DEEPSEEK_CACHE_DIR" \
+            --account "$DEEPSEEK_ACCOUNT"
 
       - name: Upload results
         uses: actions/upload-artifact@v4

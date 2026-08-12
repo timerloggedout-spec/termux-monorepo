@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
 CI mode entrypoint – non-interactive agent.
+Default account: secondary (Account-2) for CI check runs.
 OPERATOR_TOKEN env is required (normalized by workflow from thread-listed secrets).
 """
 import os
@@ -12,35 +13,45 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from ci_agent import run_ci
-from session_manager import ensure_session
+from session_manager import ensure_session, normalize_account
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--event', required=True)
-    parser.add_argument('--workspace', required=True)
-    parser.add_argument('--cache-dir', required=True)
+    parser.add_argument("--event", required=True)
+    parser.add_argument("--workspace", required=True)
+    parser.add_argument("--cache-dir", required=True)
+    parser.add_argument(
+        "--account",
+        default=os.environ.get("DEEPSEEK_ACCOUNT", "account-2"),
+        help="DeepSeek webWrapper account: account-1/primary or account-2/secondary (CI default)",
+    )
     args = parser.parse_args()
 
-    os.environ['GITHUB_WORKSPACE'] = args.workspace
+    os.environ["GITHUB_WORKSPACE"] = args.workspace
+    account = normalize_account(args.account)
 
-    operator_token = os.environ.get('OPERATOR_TOKEN') or ''
+    operator_token = os.environ.get("OPERATOR_TOKEN") or ""
     if not operator_token:
-        print('::error::OPERATOR_TOKEN is empty — set ARCHWIZ_GITHUB_TOKEN / OPERATOR_GITHUB_TOKEN / OPERATOR_TOKEN')
-        result = {'actions': [], 'error': 'missing_OPERATOR_TOKEN'}
-        with open('deepseek_output.json', 'w', encoding='utf-8') as f:
+        print("::error::OPERATOR_TOKEN is empty — set ARCHWIZ_GITHUB_TOKEN / OPERATOR_GITHUB_TOKEN / OPERATOR_TOKEN")
+        result = {"actions": [], "error": "missing_OPERATOR_TOKEN", "account": account}
+        with open("deepseek_output.json", "w", encoding="utf-8") as f:
             json.dump(result, f, indent=2)
         sys.exit(1)
 
-    session = ensure_session(cache_dir=args.cache_dir)
+    session = ensure_session(cache_dir=args.cache_dir, account=account)
+    print(
+        f"::notice::DeepSeek account={session.get('account')} "
+        f"chat_session_id={session.get('chat_session_id')}"
+    )
 
     try:
         event = json.loads(args.event)
     except json.JSONDecodeError as e:
-        print(f'::warning::Invalid event JSON ({e}); using empty event')
+        print(f"::warning::Invalid event JSON ({e}); using empty event")
         event = {}
 
-    peer = {'provider': 'deepseek'}
+    peer = {"provider": "deepseek", "account": account}
 
     result = run_ci(
         event=event,
@@ -49,12 +60,14 @@ def main():
         workspace=args.workspace,
         operator_token=operator_token,
     )
+    result["account"] = account
+    result["chat_session_id"] = session.get("chat_session_id")
 
-    with open('deepseek_output.json', 'w', encoding='utf-8') as f:
+    with open("deepseek_output.json", "w", encoding="utf-8") as f:
         json.dump(result, f, indent=2)
 
     print(f"✅ CI run completed. Decisions: {result.get('actions', [])}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

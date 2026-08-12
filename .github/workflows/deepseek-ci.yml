@@ -24,7 +24,7 @@ on:
 
 concurrency:
   group: deepseek-ci-${{ github.event.pull_request.number || github.run_id }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   deepseek-agent:
@@ -39,7 +39,8 @@ jobs:
     env:
       OPERATOR_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
       GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
-      GITHUB_EVENT: ${{ toJson(github.event) }}
+      # Prefer dispatch payload when provided; otherwise use the real event
+      GITHUB_EVENT: ${{ github.event.inputs.event_payload != '' && github.event.inputs.event_payload || toJson(github.event) }}
       DEEPSEEK_CACHE_DIR: ${{ github.workspace }}/.deepseek-cache
       # CI uses Account-2 (secondary / cookies_2 lineage)
       DEEPSEEK_ACCOUNT: ${{ github.event.inputs.account || 'account-2' }}
@@ -97,7 +98,7 @@ jobs:
           ls -lh deepcli/wasm/
 
       - name: Cache DeepSeek session (Account-2 / secondary)
-        uses: actions/cache@v4
+        uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57  # v4.2.0
         id: cache-session
         with:
           path: ${{ env.DEEPSEEK_CACHE_DIR }}

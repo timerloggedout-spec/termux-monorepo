@@ -60,7 +60,15 @@ jobs:
       GITHUB_EVENT: ${{ github.event.inputs.event_payload != '' && github.event.inputs.event_payload || toJson(github.event) }}
       # Account-1 / primary is PRIORITY default
       DEEPSEEK_ACCOUNT: ${{ github.event.inputs.account || 'account-1' }}
-      DEEPSEEK_TOKEN_PRIMARY: ${{ secrets.DEEPSEEK_TOKEN_PRIMARY || secrets.DEEPSEEK_TOKEN_ACCOUNT_1 || secrets.DEEPSEEK_TOKEN }}
+      # Model auth — names from docs/ops/DEEPSEEK-CI.md + Issue #184 catalog.
+      # First non-empty wins inside session_manager._token_from_env.
+      DEEPSEEK_TOKEN_PRIMARY: ${{ secrets.DEEPSEEK_TOKEN_PRIMARY || secrets.DEEPSEEK_TOKEN_ACCOUNT_1 || secrets.DEEPSEEK_TOKEN || secrets.DEEPSEEK_API_KEY || secrets.DEEPSEEK_AUTH_TOKEN || secrets.NEXUSCLI_TOKEN }}
+      DEEPSEEK_TOKEN: ${{ secrets.DEEPSEEK_TOKEN || secrets.DEEPSEEK_API_KEY || secrets.DEEPSEEK_AUTH_TOKEN || secrets.NEXUSCLI_TOKEN }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      DEEPSEEK_AUTH_TOKEN: ${{ secrets.DEEPSEEK_AUTH_TOKEN }}
+      NEXUSCLI_TOKEN: ${{ secrets.NEXUSCLI_TOKEN }}
+      DEEPSEEK_COOKIES: ${{ secrets.DEEPSEEK_COOKIES || secrets.DEEPSEEK_COOKIES_1 || secrets.COOKIES }}
+      DEEPSEEK_COOKIES_1: ${{ secrets.DEEPSEEK_COOKIES_1 }}
       DEEPSEEK_TOKEN_SECONDARY: ${{ secrets.DEEPSEEK_TOKEN_SECONDARY || secrets.DEEPSEEK_TOKEN_ACCOUNT_2 || secrets.DEEPSEEK_COOKIES_2 }}
       DEEPSEEK_COOKIES_2: ${{ secrets.DEEPSEEK_COOKIES_2 }}
       DEEPSEEK_THINKING: "true"

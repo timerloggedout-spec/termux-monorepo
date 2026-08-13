@@ -207,6 +207,8 @@ def create_chat_session(token: str, cookies: dict | None = None, model_type: str
     """
     Create a DeepSeek chat_session_id (required for /api/v0/chat/completion).
     Matches deepcli.core.create_session / multi-ai-cli backends.
+
+    API may return data=None (not missing key). Guard every nested access.
     """
     s = _auth_session_headers(token, cookies)
     r = s.post(
@@ -216,17 +218,29 @@ def create_chat_session(token: str, cookies: dict | None = None, model_type: str
     )
     r.raise_for_status()
     data = r.json()
-    sid = (
-        data.get("data", {}).get("biz_data", {}).get("id")
-        or data.get("id")
-        or data.get("chat_session_id")
-    )
-    if not sid:
+    if not isinstance(data, dict):
         raise RuntimeError(
-            f"create_chat_session: no id in response keys="
-            f"{list(data) if isinstance(data, dict) else type(data)}"
+            f"create_chat_session: non-dict response type={type(data).__name__}"
         )
-    return str(sid)
+
+    # Nested path: data → biz_data → id  (any intermediate may be None)
+    nested = data.get("data")
+    if isinstance(nested, dict):
+        biz = nested.get("biz_data")
+        if isinstance(biz, dict) and biz.get("id"):
+            return str(biz["id"])
+        if nested.get("id"):
+            return str(nested["id"])
+
+    sid = data.get("id") or data.get("chat_session_id")
+    if sid:
+        return str(sid)
+
+    code = data.get("code")
+    msg = data.get("msg") or data.get("message")
+    raise RuntimeError(
+        f"create_chat_session: no id in response code={code} msg={msg!r} keys={list(data)}"
+    )
 
 
 def get_pow_challenge(

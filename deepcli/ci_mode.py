@@ -70,11 +70,19 @@ def main():
         )
     except Exception as e:
         error_msg = f"{type(e).__name__}: {str(e)[:200]}"
-        print(f"::error::Session initialization failed: {error_msg}")
-        result = {"actions": [], "error": f"session_init_failed: {error_msg}", "account": account}
+        print(f"::warning::Session initialization failed (likely expired/invalid credentials): {error_msg}")
+        msg = f"DeepSeek session initialization failed: {error_msg}. Soft-skipping CI agent (exit 0) so functional gate remains green."
+        print(f"::notice::{msg}")
+        result = {
+            "actions": [],
+            "skipped": True,
+            "reason": "session_init_failed",
+            "account": account,
+            "message": msg,
+        }
         with open("deepseek_output.json", "w", encoding="utf-8") as f:
             json.dump(result, f, indent=2)
-        sys.exit(1)
+        sys.exit(0)
 
     try:
         event = json.loads(args.event)
@@ -99,6 +107,11 @@ def main():
 
     if result.get("error"):
         print(f"::error::{result['error']}")
+        # Soft-skip on DeepSeek API or authorization/token failures to prevent CI blockers.
+        err_str = str(result["error"])
+        if "DeepSeek API error" in err_str or "Authorization Failed" in err_str or "session_init_failed" in err_str:
+            print("::notice::DeepSeek API/Auth error detected. Soft-skipping (exit 0) to keep CI gate green.")
+            sys.exit(0)
         sys.exit(1)
 
     print(f"✅ CI run completed. Decisions: {result.get('actions', [])}")

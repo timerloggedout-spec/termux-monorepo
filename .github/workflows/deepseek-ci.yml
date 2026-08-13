@@ -32,14 +32,21 @@ jobs:
   deepseek-agent:
     runs-on: ubuntu-latest
     timeout-minutes: 45
-    # Skip bot noise on issue_comment; always run for PR + dispatch
+    # Skip bot noise on issue_comment; always run for PR + dispatch.
+    # Parentheses required: && binds tighter than || in GHA expressions.
     if: >-
       github.event_name != 'issue_comment' ||
-      (github.event.comment.user.type != 'Bot' &&
-       contains(github.event.comment.body, '@deepcore') ||
-       contains(github.event.comment.body, '@deepseek') ||
-       contains(github.event.comment.body, 'deepseek') ||
-       contains(github.event.comment.body, 'DeepSeek'))
+      (
+        github.event.comment.user.type != 'Bot' &&
+        (
+          contains(github.event.comment.body, '@deepcore') ||
+          contains(github.event.comment.body, '@deepCore') ||
+          contains(github.event.comment.body, '@deepseek') ||
+          contains(github.event.comment.body, '@deepseek-ci') ||
+          contains(github.event.comment.body, 'deepseek') ||
+          contains(github.event.comment.body, 'DeepSeek')
+        )
+      )
     permissions:
       contents: read
       pull-requests: write

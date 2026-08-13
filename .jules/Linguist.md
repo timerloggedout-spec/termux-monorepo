@@ -4,3 +4,10 @@ Regex compiling inside loop functions (e.g., executing translations on every lin
 
 **Action:**
 Always compile regex patterns once globally. Isolate structural markdown formatting and technical identifiers (decimals, filenames) first, replacing them with unique, non-translatable placeholders before performing dictionary-based symbolic/1337speak translations, then restore them in a single final pass.
+
+## 2026-08-03 - Compiled Caching of Dynamic Mappings and "Caveman" 6-Line Routine
+**Learning:**
+On-the-fly dictionary sorting and regex pattern compilation inside nested loops (e.g., executing translations for links, bold, emphasis, and raw text on every line) is a catastrophic CPU bottleneck. By caching sorted mappings globally at module load and precompiling compiled regex patterns once, we can eliminate execution overhead. Additionally, a highly dense 6-line "Caveman" function achieves maximum compression and execution speeds using these pre-compiled static sets.
+
+**Action:**
+Cache sorted mappings and compile all dynamic regex matchers globally at initialization time to avoid runtime compilation loops. Maintain compact routines like `caveman` within strict line budgets by reusing globally precompiled structures.

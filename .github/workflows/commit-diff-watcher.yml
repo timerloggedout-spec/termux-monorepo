@@ -99,8 +99,8 @@ jobs:
               // Check if login starts or ends with "bot" or "jules" via standard automation delimiters to avoid false matching on human names
               if (/[-_](bot|jules)$|^(bot|jules)[-_]/i.test(login || '')) return true;
 
-              // Known bot email domains
-              if (e.endsWith('@github.com') && l.includes('bot')) return true;
+              // Known bot email patterns (works even when no GitHub login is linked)
+              if (e.includes('[bot]@') || (e.endsWith('@users.noreply.github.com') && agentLogins.some(a => e.startsWith(a) || e.includes(`+${a}`))) || (e.endsWith('@github.com') && l.includes('bot'))) return true;
 
               return false;
             };

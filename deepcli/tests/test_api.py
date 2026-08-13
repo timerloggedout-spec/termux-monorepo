@@ -81,12 +81,11 @@ def test_stream():
     except Exception as e:
         log(False, "Stream completion", str(e)[:100])
 
-if __name__ == '__main__':
-    print("🧪 DeepSeek API Test Suite")
-    print("=" * 40)
-    for test in [test_auth, test_create_session, test_upload, test_branch, test_list_sessions, test_stream]:
-        try:
-            test()
-        except Exception as e:
-            log(False, test.__name__, str(e)[:100])
-    print(f"\n{passed} passed, {failed} failed")
+print("🧪 DeepSeek API Test Suite")
+print("=" * 40)
+for test in [test_auth, test_create_session, test_upload, test_branch, test_list_sessions, test_stream]:
+    try:
+        test()
+    except Exception as e:
+        log(False, test.__name__, str(e)[:100])
+print(f"\n{passed} passed, {failed} failed")

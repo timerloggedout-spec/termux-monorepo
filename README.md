@@ -1,9 +1,3 @@
-# Termux Monorepo
-
-**For AI agents and developers:** See **[AGENTS.md](AGENTS.md)** for comprehensive technical documentation, governance rules, navigation hierarchy, 28 ArchWiz tools, CI/CD workflows, and development guidelines.
-
----
-
 # Project Remote Sandbox Workspace Setup Considerations:
 ```Gemini-GoogleSearch
 To run a Termux environment on an Ubuntu/Linux desktop or server for sandbox testing, you cannot run the exact Termux Android app natively. You must instead replicate its specific Android-based Linux environment (environment variables, paths, and package manager) using containerization, virtualization, or architectural simulation tools.

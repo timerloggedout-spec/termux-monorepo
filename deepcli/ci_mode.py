@@ -3,8 +3,10 @@
 CI mode entrypoint – non-interactive agent.
 Default account: primary (Account-1) — PRIORITY.
 OPERATOR_TOKEN env is required (normalized by workflow from thread-listed secrets).
-When DEEPSEEK_TOKEN_* secrets are absent, soft-skip (exit 0) so master
-functional gate stays green; fill secrets to enable live DeepSeek lane.
+When DEEPSEEK_TOKEN_* secrets are absent, or session initialization fails
+(due to expired/invalid credentials), or the DeepSeek API raises auth/connection
+errors, soft-skip (exit 0) so the master functional gate stays green; fill
+correct secrets to enable the live DeepSeek lane.
 """
 import os
 import sys
@@ -70,15 +72,25 @@ def main():
         )
     except Exception as e:
         error_msg = f"{type(e).__name__}: {str(e)[:200]}"
-        print(f"::warning::Session initialization failed (likely expired/invalid credentials): {error_msg}")
-        msg = f"DeepSeek session initialization failed: {error_msg}. Soft-skipping CI agent (exit 0) so functional gate remains green."
+        msg = f"DeepSeek session initialization failed (likely expired/invalid credentials): {error_msg}. Soft-skipping CI agent (exit 0) so functional gate remains green."
         print(f"::notice::{msg}")
+
+        # Populate GHA step summary with skipped status so it is visible in the workflow UI
+        summary_file = os.environ.get("GITHUB_STEP_SUMMARY")
+        if summary_file:
+            try:
+                with open(summary_file, "a", encoding="utf-8") as sf:
+                    sf.write(f"\n### ⚠ DeepSeek CI Skipped\n* **Reason:** Session initialization failed\n* **Details:** `{error_msg}`\n")
+            except Exception:
+                pass
+
         result = {
             "actions": [],
             "skipped": True,
             "reason": "session_init_failed",
             "account": account,
             "message": msg,
+            "soft_skippable": True,
         }
         with open("deepseek_output.json", "w", encoding="utf-8") as f:
             json.dump(result, f, indent=2)
@@ -107,10 +119,19 @@ def main():
 
     if result.get("error"):
         print(f"::error::{result['error']}")
-        # Soft-skip on DeepSeek API or authorization/token failures to prevent CI blockers.
-        err_str = str(result["error"])
-        if "DeepSeek API error" in err_str or "Authorization Failed" in err_str or "session_init_failed" in err_str:
-            print("::notice::DeepSeek API/Auth error detected. Soft-skipping (exit 0) to keep CI gate green.")
+        # Soft-skip on DeepSeek API or authorization/token failures (structured soft_skippable flag) to prevent CI blockers.
+        if result.get("soft_skippable"):
+            msg = f"DeepSeek API/Auth error detected: {result['error']}. Soft-skipping (exit 0) to keep CI gate green."
+            print(f"::notice::{msg}")
+
+            # Populate GHA step summary with skipped status so it is visible in the workflow UI
+            summary_file = os.environ.get("GITHUB_STEP_SUMMARY")
+            if summary_file:
+                try:
+                    with open(summary_file, "a", encoding="utf-8") as sf:
+                        sf.write(f"\n### ⚠ DeepSeek CI Skipped\n* **Reason:** API/Auth error\n* **Details:** `{result['error']}`\n")
+                except Exception:
+                    pass
             sys.exit(0)
         sys.exit(1)
 

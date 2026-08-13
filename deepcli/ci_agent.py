@@ -260,6 +260,7 @@ def _handle_issue_comment(event, session, peer, gh_env, thinking):
             "event": "issue_comment",
             "issue": issue_number,
             "account": account,
+            "soft_skippable": True,
         }
 
     # Prefix with moniker for clarity in the thread.
@@ -378,6 +379,7 @@ def run_ci(event, session, peer, workspace, operator_token):
                 "event": action,
                 "pr": pr_number,
                 "account": account,
+                "soft_skippable": True,
             }
 
         comment_ok, comment_error = _post_gh_comment(

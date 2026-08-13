@@ -13,6 +13,7 @@ OpenRouter poll before they are selected.
 
 Verified and dynamic model routing logic.
 Dynamic model-routing optimized for high-performance and ELO rankings.
+ELO-ranking dynamic model availability router.
 """
 
 import os

@@ -82,15 +82,39 @@ def main() -> None:
     )
     repo = os.environ.get("GITHUB_REPOSITORY") or "timerloggedout-spec/termux-monorepo"
     metrics = {
+        "schema_version": 2,
+        "disposition_model": {
+            "summon": "opsSweep / auto-jules / explicit review request",
+            "ack_pending": "bot promised review — NOT actionable for Jules",
+            "quota_cooldown": "rate/review limit — WAIT until wait_until",
+            "real_review": "substantive findings — actionable",
+            "programmatic": "commit after summon"
+        },
+        "canonical_premature_pair": {
+            "pr": 174,
+            "ack_comment_id": 5260135328,
+            "premature_jules_comment_id": 5260137282,
+            "lesson": "Do not fire Jules on CodeRabbit 'I will re-review' ACK; wait for real_review"
+        },
         "global_averages": {
             "avg_message_response_lag_sec": DEFAULT_DEBOUNCE_SEC,
             "avg_actual_response_lag_sec": DEFAULT_STALE_SEC,
             "suggested_debounce_ms": DEFAULT_DEBOUNCE_SEC * 1000,
             "suggested_stale_ms": DEFAULT_STALE_SEC * 1000,
         },
-        "by_pr": {},
+        "by_pr": {
+            "174": {
+                "open_disposition": "ack_pending",
+                "jules_actionable": False,
+                "wait_sec": 1200,
+                "note": "CodeRabbit full review ACK at 5260135328; auto-jules 5260137282 was premature"
+            }
+        },
+        "note": "Defaults aligned with high-perf continuous-ops. Recalculated by scripts/ci/calculate_lag_index.py on cron."
     }
-    table_rows: list[str] = []
+    table_rows: list[str] = [
+        "| PR #174 | N/A | N/A | CLOSED |"
+    ]
 
     if not token:
         print("No token; writing fallback lag index", file=sys.stderr)
@@ -156,9 +180,38 @@ def main() -> None:
         actual_response_time = None
         message_response_time = None
 
+        # v2 classification state
+        open_disposition = "programmatic"
+        jules_actionable = False
+        wait_sec = 0
+
         for event in timeline:
             if event["type"] == "comment":
                 body = event["body"]
+                body_lower = body.lower()
+
+                # Check for v2 classification
+                # 1. Check for quota/cooldown keywords
+                if any(k in body_lower for k in ("limit exceeded", "quota", "cooldown", "rate limit", "usage limit", "free-tier", "rate_limit", "hourly limit")):
+                    open_disposition = "quota_cooldown"
+                    jules_actionable = False
+                    wait_sec = 3600
+                # 2. Check for ack pending keywords
+                elif any(k in body_lower for k in ("i will re-review", "promised review", "will look at", "i'll review", "ack", "review scheduled", "queued", "acknowledged")):
+                    open_disposition = "ack_pending"
+                    jules_actionable = False
+                    wait_sec = 1200
+                # 3. Check for summon keywords
+                elif any(k in body_lower for k in ("<!-- continuous-agent-ops -->", "<!-- agent-auto-jules -->", "@jules", "@gemini-cli")):
+                    open_disposition = "summon"
+                    jules_actionable = True
+                    wait_sec = 0
+                # 4. Check for real review keywords
+                elif any(k in body_lower for k in ("findings", "approved", "changes requested", "review complete", "lgtm", "looks good", "reviewed by")):
+                    open_disposition = "real_review"
+                    jules_actionable = True
+                    wait_sec = 0
+
                 is_summon = any(
                     m in body
                     for m in (
@@ -178,28 +231,38 @@ def main() -> None:
                     lag = (message_response_time - summon_time).total_seconds()
                     pr_message_lags.append(lag)
                     all_message_lags.append(lag)
-            elif event["type"] == "commit" and summon_time and not actual_response_time:
-                actual_response_time = event["time"]
-                lag = (actual_response_time - summon_time).total_seconds()
-                pr_actual_lags.append(lag)
-                all_actual_lags.append(lag)
+            elif event["type"] == "commit":
+                open_disposition = "programmatic"
+                jules_actionable = False
+                wait_sec = 0
+                if summon_time and not actual_response_time:
+                    actual_response_time = event["time"]
+                    lag = (actual_response_time - summon_time).total_seconds()
+                    pr_actual_lags.append(lag)
+                    all_actual_lags.append(lag)
 
         pr_avg_msg = sum(pr_message_lags) / len(pr_message_lags) if pr_message_lags else None
         pr_avg_act = sum(pr_actual_lags) / len(pr_actual_lags) if pr_actual_lags else None
-        if pr_avg_msg is not None or pr_avg_act is not None:
-            suggested_debounce = max(30 * 60, (pr_avg_msg or DEFAULT_DEBOUNCE_SEC) * 1.5)
-            suggested_stale = max(60 * 60, (pr_avg_act or DEFAULT_STALE_SEC) * 1.5)
-            metrics["by_pr"][str(pr_number)] = {
-                "avg_message_response_lag_sec": pr_avg_msg,
-                "avg_actual_response_lag_sec": pr_avg_act,
-                "suggested_debounce_ms": int(suggested_debounce * 1000),
-                "suggested_stale_ms": int(suggested_stale * 1000),
-            }
-            msg_lag_str = f"{round(pr_avg_msg / 60, 1)} min" if pr_avg_msg else "N/A"
-            act_lag_str = f"{round(pr_avg_act / 3600, 1)} hrs" if pr_avg_act else "N/A"
-            table_rows.append(
-                f"| PR #{pr_number} | {msg_lag_str} | {act_lag_str} | {pr['state'].upper()} |"
-            )
+
+        suggested_debounce = max(30 * 60, (pr_avg_msg or DEFAULT_DEBOUNCE_SEC) * 1.5)
+        suggested_stale = max(60 * 60, (pr_avg_act or DEFAULT_STALE_SEC) * 1.5)
+
+        # Merge calculated lags with classification state
+        metrics["by_pr"][str(pr_number)] = {
+            "avg_message_response_lag_sec": pr_avg_msg,
+            "avg_actual_response_lag_sec": pr_avg_act,
+            "suggested_debounce_ms": int(suggested_debounce * 1000),
+            "suggested_stale_ms": int(suggested_stale * 1000),
+            "open_disposition": open_disposition,
+            "jules_actionable": jules_actionable,
+            "wait_sec": wait_sec,
+            "note": f"State computed automatically by lag compiler for PR {pr_number}."
+        }
+        msg_lag_str = f"{round(pr_avg_msg / 60, 1)} min" if pr_avg_msg else "N/A"
+        act_lag_str = f"{round(pr_avg_act / 3600, 1)} hrs" if pr_avg_act else "N/A"
+        table_rows.append(
+            f"| PR #{pr_number} | {msg_lag_str} | {act_lag_str} | {pr['state'].upper()} |"
+        )
 
     if all_message_lags:
         avg_msg = sum(all_message_lags) / len(all_message_lags)

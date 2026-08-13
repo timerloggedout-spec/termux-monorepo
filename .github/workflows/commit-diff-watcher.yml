@@ -52,27 +52,30 @@ jobs:
               if (changedFiles === 0) {
                 isPrEmpty = true;
               }
-              // List all commits in the PR
-              const prCommits = await github.paginate(github.rest.pulls.listCommits, {
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: prNumber,
-                per_page: 100,
-              });
-              commits = prCommits.map(c => ({
-                sha: c.sha,
-                message: c.commit.message,
-                author_login: c.author?.login,
-                author_email: c.commit.author?.email,
-                author_name: c.commit.author?.name,
-              }));
+
+              // Only check the latest head commit to avoid history-rewrite/rebase lock-ins on old empty commits
+              const headSha = context.payload.pull_request.head.sha;
+              try {
+                const { data: headCommit } = await github.rest.repos.getCommit({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ref: headSha,
+                });
+                commits = [{
+                  sha: headSha,
+                  message: headCommit.commit.message,
+                  author_login: headCommit.author?.login,
+                  author_email: headCommit.commit.author?.email,
+                }];
+              } catch (headErr) {
+                core.error(`Failed to fetch head commit ${headSha}: ${headErr.message}`);
+              }
             } else if (eventName === 'push') {
               commits = (context.payload.commits || []).map(c => ({
                 sha: c.id,
                 message: c.message,
                 author_login: c.author?.username,
                 author_email: c.author?.email,
-                author_name: c.author?.name,
               }));
             }
 
@@ -83,11 +86,9 @@ jobs:
               'github-actions', 'copilot', 'gitar-bot', 'blocksorg'
             ];
 
-            const isAgent = (login, email, name, message) => {
+            const isAgent = (login, email) => {
               const l = (login || '').toLowerCase();
               const e = (email || '').toLowerCase();
-              const n = (name || '').toLowerCase();
-              const m = (message || '').toLowerCase();
 
               // Exact matching of known bot logins
               if (agentLogins.includes(l)) return true;
@@ -95,11 +96,8 @@ jobs:
               // Standard GitHub Apps suffix
               if (l.endsWith('[bot]')) return true;
 
-              // Check if login contains "bot" or "jules" but only as a word or suffix to avoid matching e.g. "Talbot" or "Botond"
-              if (/\b(bot|jules)\b|[-_]bot$|^bot[-_]/i.test(login || '')) return true;
-
-              // Explicitly check for jules-specific monikers
-              if (l === 'google-labs-jules' || l === 'jules' || l === 'google-labs-jules[bot]') return true;
+              // Check if login starts or ends with "bot" or "jules" via standard automation delimiters to avoid false matching on human names
+              if (/[-_](bot|jules)$|^(bot|jules)[-_]/i.test(login || '')) return true;
 
               // Known bot email domains
               if (e.endsWith('@github.com') && l.includes('bot')) return true;
@@ -112,9 +110,7 @@ jobs:
             for (const commit of commits) {
               const isCommitAgent = isAgent(
                 commit.author_login,
-                commit.author_email,
-                commit.author_name,
-                commit.message
+                commit.author_email
               );
 
               if (isCommitAgent) {
@@ -167,7 +163,7 @@ jobs:
               if (emptyAgentCommits.length > 0) {
                 body.push('- The following empty commit(s) were pushed by automated agents/bots:');
                 for (const c of emptyAgentCommits) {
-                  body.push(`  - \`${c.sha.slice(0, 7)}\` by \`${c.author_login || c.author_name}\`: *"${c.message.split('\n')[0]}"*`);
+                  body.push(`  - \`${c.sha.slice(0, 7)}\` by \`${c.author_login || 'agent'}\`: *"${c.message.split('\n')[0]}"*`);
                 }
               }
 

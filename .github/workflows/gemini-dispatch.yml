@@ -131,12 +131,21 @@ jobs:
             const number = context.payload.pull_request?.number || context.payload.issue?.number;
             if (context.payload.comment?.id) {
               try {
-                await github.rest.reactions.createForIssueComment({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  comment_id: context.payload.comment.id,
-                  content: 'eyes',
-                });
+                if (context.eventName === 'pull_request_review_comment') {
+                  await github.rest.reactions.createForPullRequestReviewComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    comment_id: context.payload.comment.id,
+                    content: 'eyes',
+                  });
+                } else {
+                  await github.rest.reactions.createForIssueComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    comment_id: context.payload.comment.id,
+                    content: 'eyes',
+                  });
+                }
               } catch (e) {
                 core.info('Comment reaction skip: ' + e.message);
               }

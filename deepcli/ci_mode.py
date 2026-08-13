@@ -40,12 +40,14 @@ def main():
 
     # Soft-skip when DeepSeek web tokens are not provisioned (quota / secret gap).
     # Keeps dual-gate (repo_gate + termux_smoke) and master green; live lane
-    # activates once DEEPSEEK_TOKEN_PRIMARY (or SECONDARY) is set in repo secrets.
+    # activates once any catalog name from Issue #184 / DEEPSEEK-CI.md is set.
     token = _token_from_env(account)
     if not token:
         msg = (
             f"DeepSeek tokens absent for account={account}. "
-            "Set DEEPSEEK_TOKEN_PRIMARY (Account-1 priority) or DEEPSEEK_TOKEN_SECONDARY. "
+            "Set one of DEEPSEEK_TOKEN / DEEPSEEK_TOKEN_PRIMARY / DEEPSEEK_API_KEY / "
+            "DEEPSEEK_AUTH_TOKEN / NEXUSCLI_TOKEN / DEEPSEEK_COOKIES "
+            "(or SECONDARY / DEEPSEEK_COOKIES_2). See Issue #184 + docs/ops/DEEPSEEK-CI.md. "
             "Soft-skipping CI agent (exit 0) so functional gate remains green."
         )
         print(f"::notice::{msg}")

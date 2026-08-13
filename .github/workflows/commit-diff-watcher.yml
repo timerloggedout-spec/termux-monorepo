@@ -147,7 +147,11 @@ jobs:
               }
             }
 
-            if (isPrEmpty || emptyAgentCommits.length > 0) {
+            // On pull_request, fail if the PR as a whole has 0 changed files.
+            // On push, fail if an agent pushed any empty commits directly to the default branch.
+            const shouldFail = isPrEmpty || (eventName === 'push' && emptyAgentCommits.length > 0);
+
+            if (shouldFail) {
               const marker = '<!-- empty-diff-watcher-warning -->';
               let body = [
                 marker,
@@ -160,8 +164,8 @@ jobs:
               if (isPrEmpty) {
                 body.push('- The pull request has **0 changed files**.');
               }
-              if (emptyAgentCommits.length > 0) {
-                body.push('- The following empty commit(s) were pushed by automated agents/bots:');
+              if (eventName === 'push' && emptyAgentCommits.length > 0) {
+                body.push('- The following empty commit(s) were pushed by automated agents/bots directly to protected branch:');
                 for (const c of emptyAgentCommits) {
                   body.push(`  - \`${c.sha.slice(0, 7)}\` by \`${c.author_login || 'agent'}\`: *"${c.message.split('\n')[0]}"*`);
                 }

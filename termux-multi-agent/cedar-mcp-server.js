@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const readline = require('readline');
-const { execFileSync } = require('child_process');
+const { execSync } = require('child_process');
 
 const rl = readline.createInterface({ input: process.stdin });
 
@@ -13,19 +13,6 @@ rl.on('line', (line) => {
     handle(req);
   } catch (_) { /* wait for more lines */ }
 });
-
-function safeExecCedar(argsList) {
-  try {
-    return execFileSync('cedar', argsList).toString();
-  } catch (error) {
-    const out = error.stdout ? error.stdout.toString() : '';
-    const err = error.stderr ? error.stderr.toString() : '';
-    if (out || err) {
-      return (out + '\n' + err).trim();
-    }
-    return error.message;
-  }
-}
 
 function handle(req) {
   const { method, params, id } = req;
@@ -40,12 +27,11 @@ function handle(req) {
   } else if (method === 'tools/call') {
     const { name, arguments: args } = params;
     if (name === 'cedar_validate') {
-      const code = args.code ? Buffer.from(args.code, 'base64').toString() : '';
-      const output = safeExecCedar(['validate', '--schema', args.schema || '', '-p', code]);
-      result = { content: [{ type: 'text', text: output }] };
+      const code = Buffer.from(args.code, 'base64').toString();
+      result = { content: [{ type: 'text', text: execSync(`cedar validate --schema ${args.schema} -p ${code}`).toString() }] };
     } else if (name === 'cedar_eval') {
-      const output = safeExecCedar(['evaluate', '--schema', args.schema || '', '--input', args.input || '']);
-      result = { content: [{ type: 'text', text: output }] };
+      const code = Buffer.from(args.code, 'base64').toString();
+      result = { content: [{ type: 'text', text: execSync(`cedar evaluate --schema ${args.schema} --input ${args.input}`).toString() }] };
     }
   }
   process.stdout.write(JSON.stringify({ jsonrpc: '2.0', id, result }) + '\n');

@@ -79,3 +79,26 @@ def test_sentinel_privileges_symlink_safety(tmp_path, monkeypatch):
     # Because symlink_file is a symlink, the target file's permissions should NOT have changed to 0o600
     if os.name != "nt":
         assert (target_file.stat().st_mode & 0o777) == 0o644
+
+
+def test_sentinel_privileges_path_traversal_prevention(tmp_path, monkeypatch):
+    # Ensure that path traversal attempts are detected and raise ValueError or are sanitized.
+    import deepcli.core as dc
+
+    # Mocking ~/.deepcli path
+    monkeypatch.setattr(os.path, "expanduser", lambda path: path.replace("~", str(tmp_path)))
+
+    # Test that malicious path traversal UUIDs/SIDs raise ValueError or get sanitized safely
+    with pytest.raises(ValueError):
+        dc._cache_path("../../../etc/passwd")
+
+    with pytest.raises(ValueError):
+        dc._cache_path("/absolute/path/traversal")
+
+    # Safe SIDs with safe chars should succeed and have sanitized names
+    safe_path_str = dc._cache_path("session-123_abc.dot")
+    assert "session-123_abc.dot.json" in safe_path_str
+
+    # SIDs with unsafe chars should have them sanitized to underscores
+    unsanitized_path_str = dc._cache_path("session$#*!123")
+    assert "session____123.json" in unsanitized_path_str

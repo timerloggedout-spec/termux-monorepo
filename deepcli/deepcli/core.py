@@ -73,7 +73,19 @@ def _cache_path(session_id: str, account: str = "primary") -> str:
             except Exception:
                 pass
 
-    return os.path.join(store_dir, f"{session_id}.json")
+    if ".." in str(session_id) or str(session_id).startswith("/") or "\\" in str(session_id):
+        raise ValueError("Invalid file path")
+
+    # Sanitize session_id filename component
+    safe_id = "".join(c if c.isalnum() or c in "-_." else "_" for c in str(session_id))
+    path = os.path.join(store_dir, f"{safe_id}.json")
+
+    base_real = os.path.realpath(store_dir)
+    target_real = os.path.realpath(path)
+    if os.path.commonpath([base_real, target_real]) != base_real:
+        raise ValueError("Invalid file path")
+
+    return path
 
 def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict[str, Any]]]:
     path = _cache_path(session_id, account)

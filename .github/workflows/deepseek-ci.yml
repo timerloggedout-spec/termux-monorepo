@@ -13,6 +13,8 @@ on:
     types: [opened, synchronize, reopened]
   issue_comment:
     types: [created]
+  pull_request_review_comment:
+    types: [created]
   workflow_dispatch:
     inputs:
       event_payload:
@@ -25,17 +27,17 @@ on:
         default: 'account-1'
 
 concurrency:
-  group: deepseek-ci-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
+  group: deepseek-ci-${{ github.event.pull_request.number || github.event.issue.number || github.event.comment.id || github.run_id }}
   cancel-in-progress: true
 
 jobs:
   deepseek-agent:
     runs-on: ubuntu-latest
     timeout-minutes: 45
-    # Skip bot noise on issue_comment; always run for PR + dispatch.
+    # Skip bot noise on issue_comment / review_comment; always run for PR + dispatch.
     # Parentheses required: && binds tighter than || in GHA expressions.
     if: >-
-      github.event_name != 'issue_comment' ||
+      (github.event_name != 'issue_comment' && github.event_name != 'pull_request_review_comment') ||
       (
         github.event.comment.user.type != 'Bot' &&
         (
@@ -98,7 +100,10 @@ jobs:
           cache: 'pip'
 
       - name: Install Python dependencies
-        run: pip install requests pyyaml
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests pyyaml
+          python -c "import requests; print('requests', requests.__version__)"
 
       - name: Stage DeepSeek PoW WASM & solver
         run: |

@@ -1,6 +1,6 @@
 # lane-consolidation-ssot — Master Coordination & Production Improvements Map
 
-**Date:** 2026-08-11
+**Date:** 2026-08-14
 **Status:** ACTIVE
 **Orchestration Profile:** Grok / Jules Automated Operations
 **Authority Level:** Production Consolidated SSOT
@@ -196,7 +196,7 @@ For offline-first on-device execution (like BLU B160V mobile devices), execution
 To maintain this SSOT, automated sweeps (2-hour cron) and manual operator audits will check:
 - [x] Timing quotas are aligned with the elevated budgets in `model_router.py`.
 - [x] Cooldown policies prevent concurrent write-clashes on files.
-- [x] Security permissions remain tightly bound to Sentinel standards.
+- [x] Security permissions remain tightly bound to Sentinel standards (import path in test_sentinel_privileges.py updated to deepcli.deepcli.core).
 - [x] Branch scope is clear and contains no class 3/4 leaked credentials.
 
 ---

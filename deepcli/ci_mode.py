@@ -72,7 +72,7 @@ def main():
 
     operator_token = os.environ.get("OPERATOR_TOKEN") or ""
     if not operator_token:
-        print("::error::OPERATOR_TOKEN is empty — set ARCHWIZ_GITHUB_TOKEN / OPERATOR_GITHUB_TOKEN / OPERATOR_TOKEN")
+        print("::error::OPERATOR_TOKEN is empty — set 4RCHW12_61THU8_T0K3N / OPERATOR_GITHUB_TOKEN / OPERATOR_TOKEN")
         result = {"actions": [], "error": "missing_OPERATOR_TOKEN", "account": account}
         with open("deepseek_output.json", "w", encoding="utf-8") as f:
             json.dump(result, f, indent=2)
@@ -85,9 +85,9 @@ def main():
     if not token:
         msg = (
             f"DeepSeek tokens absent for account={account}. "
-            "Set one of DEEPSEEK_TOKEN / DEEPSEEK_TOKEN_PRIMARY / DEEPSEEK_API_KEY / "
-            "DEEPSEEK_AUTH_TOKEN / NEXUSCLI_TOKEN / DEEPSEEK_COOKIES "
-            "(or SECONDARY / DEEPSEEK_COOKIES_2). See Issue #184 + docs/ops/DEEPSEEK-CI.md. "
+            "Set one of DEEPSEEK_TOKEN / 4RCHW12_61THU8_T0K3N / DEEPSEEK_API_KEY / "
+            "DEEPSEEK_AUTH_TOKEN / DEEPSEEK_COOKIES "
+            "(or SECONDARY / DEEPSEEK_API_KEY). See Issue #184 + docs/ops/DEEPSEEK-CI.md. "
             "Soft-skipping CI agent (exit 0) so functional gate remains green."
         )
         print(f"::notice::{msg}")

@@ -76,6 +76,10 @@ jobs:
       DEEPSEEK_COOKIES_1: ${{ secrets.DEEPSEEK_COOKIES_1 }}
       DEEPSEEK_TOKEN_SECONDARY: ${{ secrets.DEEPSEEK_TOKEN_SECONDARY || secrets.DEEPSEEK_TOKEN_ACCOUNT_2 || secrets.DEEPSEEK_COOKIES_2 }}
       DEEPSEEK_COOKIES_2: ${{ secrets.DEEPSEEK_COOKIES_2 }}
+      # Captured browser sessions include aws-waf-token alongside ds_session_id.
+      # The value is consumed only by session_manager and persists in the existing
+      # permission-restricted session cache; it is never logged or uploaded.
+      DEEPSEEK_AWS_WAF_TOKEN: ${{ secrets.DEEPSEEK_AWS_WAF_TOKEN || secrets.DEEPSEEK_WAF_TOKEN || secrets.AWS_WAF_TOKEN || secrets.WAF_AWS_TOKEN }}
       DEEPSEEK_THINKING: "true"
       DEEPSEEK_EXPERT: "true"
       DEEPSEEK_CONNECT_TIMEOUT: "30"
@@ -128,6 +132,8 @@ jobs:
           fi
           ls -lh deepcli/wasm/
 
+      # Persistent session reuse is intentional: the cache retains the browser
+      # cookie jar (including aws-waf-token), chat session, and PoW-compatible state.
       - name: Cache DeepSeek session (Account-1 / primary)
         uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57  # v4.2.0
         id: cache-session

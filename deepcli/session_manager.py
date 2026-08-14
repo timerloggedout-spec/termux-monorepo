@@ -8,9 +8,10 @@ Template webWrapper accounts (from token_provider_v2 / cedar_forge PLAN):
 Session dir: 0o700 · session.json: 0o600
 
 Credential resolution (Issue #184 catalog + docs/ops/DEEPSEEK-CI.md):
-  Prefer explicit bearer tokens; fall back to imported cookie blobs
-  (ds_session_id extracted when JSON). Never invent secret names —
-  only consume what is already provisioned in repo secrets.
+  Prefer explicit bearer tokens; fall back to imported browser-cookie blobs.
+  Preserve ds_session_id and aws-waf-token when present, including across the
+  existing permission-restricted session cache. Never invent secret values —
+  only consume names already provisioned in the local environment or repo secrets.
 """
 import os
 import json
@@ -41,27 +42,38 @@ def normalize_account(name: str | None) -> str:
     return ACCOUNT_ALIASES.get(raw, raw if raw in ("primary", "secondary") else "primary")
 
 
-def _extract_ds_session_id(raw: str) -> str | None:
-    """If raw looks like a cookie dump (JSON list/dict), pull ds_session_id; else None."""
+def _extract_cookie_jar(raw: str | None) -> dict[str, str]:
+    """Return browser-cookie names and values from a JSON export, never logging them."""
     raw = (raw or "").strip()
-    if not raw:
-        return None
-    if not (raw.startswith("[") or raw.startswith("{")):
-        return None
+    if not raw or not (raw.startswith("[") or raw.startswith("{")):
+        return {}
     try:
         data = json.loads(raw)
     except json.JSONDecodeError:
-        return None
-    cookies = data if isinstance(data, list) else data.get("cookies", [])
+        return {}
+
+    cookies = data if isinstance(data, list) else data.get("cookies", data)
     if isinstance(cookies, dict):
-        # { "ds_session_id": "..." } form
-        v = cookies.get("ds_session_id")
-        return str(v).strip() if v else None
-    for c in cookies or []:
-        if isinstance(c, dict) and c.get("name") == "ds_session_id":
-            v = c.get("value")
-            return str(v).strip() if v else None
-    return None
+        return {
+            str(name): str(value)
+            for name, value in cookies.items()
+            if value is not None and str(value).strip()
+        }
+    if not isinstance(cookies, list):
+        return {}
+    return {
+        str(cookie["name"]): str(cookie["value"])
+        for cookie in cookies
+        if isinstance(cookie, dict)
+        and cookie.get("name")
+        and cookie.get("value") is not None
+        and str(cookie.get("value")).strip()
+    }
+
+
+def _extract_ds_session_id(raw: str) -> str | None:
+    """If raw looks like a cookie dump (JSON list/dict), pull ds_session_id; else None."""
+    return _extract_cookie_jar(raw).get("ds_session_id")
 
 
 def _first_env(*keys: str) -> str | None:
@@ -70,6 +82,32 @@ def _first_env(*keys: str) -> str | None:
         if v and str(v).strip():
             return str(v).strip()
     return None
+
+
+def _cookie_jar_from_env(account: str) -> dict[str, str]:
+    """Load a full browser cookie jar plus an explicit AWS WAF cookie when supplied.
+
+    The web-wrapper captures include both ``ds_session_id`` and ``aws-waf-token``.
+    Preserve both in the permission-restricted session cache so a resumed session can
+    recreate the verified browser request shape without a literal cookies.json file.
+    Values are never emitted to logs or result artifacts.
+    """
+    cookie_keys = (
+        ("DEEPSEEK_COOKIES_2", "COOKIES_2", "DEEPSEEK_COOKIES")
+        if account == "secondary"
+        else ("DEEPSEEK_COOKIES", "DEEPSEEK_COOKIES_1", "COOKIES", "COOKIES_1")
+    )
+    jar = _extract_cookie_jar(_first_env(*cookie_keys))
+    waf_token = _first_env(
+        "DEEPSEEK_AWS_WAF_TOKEN",
+        "DEEPSEEK_WAF_TOKEN",
+        "AWS_WAF_TOKEN",
+        "WAF_AWS_TOKEN",
+        "WAF-AWS-TOKEN",
+    )
+    if waf_token:
+        jar["aws-waf-token"] = waf_token
+    return jar
 
 
 def solve_pow(token: str, cookies: dict | None = None, target_path: str = "/api/v0/chat/completion"):
@@ -272,11 +310,11 @@ def get_new_session(account: str = "primary"):
     """
     Build a full session dict for the given account.
     Prefer env/secret token. Always attaches a fresh chat_session_id when possible.
-    Cookie-derived values are attached as ds_session_id for both accounts.
+    Cookie-derived values retain ds_session_id and aws-waf-token for both accounts.
     """
     account = normalize_account(account)
     token = _token_from_env(account)
-    cookies: dict = {}
+    cookies: dict[str, str] = _cookie_jar_from_env(account)
 
     if not token:
         raise RuntimeError(
@@ -287,9 +325,9 @@ def get_new_session(account: str = "primary"):
             "See docs/ops/DEEPSEEK-CI.md and Issue #184."
         )
 
-    # Web-wrapper sessions treat the resolved value as both Bearer material and
-    # the ds_session_id cookie when it originated from a cookie import.
-    cookies["ds_session_id"] = token
+    # Web-wrapper sessions preserve the captured browser cookie jar. When only
+    # a bearer/session value is configured, it also supplies ds_session_id.
+    cookies.setdefault("ds_session_id", token)
     lifetime = 3600 * 24
 
     chat_session_id = None
@@ -329,18 +367,32 @@ def ensure_session(cache_dir, account: str | None = None):
                 and session.get("expires", 0) > time.time()
                 and session.get("token")
             ):
+                # An explicitly supplied browser/WAF cookie refreshes the
+                # persistent jar without requiring cookies.json to exist.
+                refreshed_jar = _cookie_jar_from_env(account)
+                cached_jar = session.get("cookies")
+                if not isinstance(cached_jar, dict):
+                    cached_jar = {}
+                changed = False
+                for name, value in refreshed_jar.items():
+                    if cached_jar.get(name) != value:
+                        cached_jar[name] = value
+                        changed = True
+                session["cookies"] = cached_jar
                 if not session.get("chat_session_id"):
                     try:
                         session["chat_session_id"] = create_chat_session(
                             session["token"],
-                            cookies=session.get("cookies") or None,
+                            cookies=cached_jar or None,
                             model_type="expert",
                         )
-                        fd = os.open(cache_path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
-                        with os.fdopen(fd, "w", encoding="utf-8") as f:
-                            json.dump(session, f)
+                        changed = True
                     except Exception as e:
                         print(f"::warning::Could not attach chat_session_id: {e}")
+                if changed:
+                    fd = os.open(cache_path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+                    with os.fdopen(fd, "w", encoding="utf-8") as f:
+                        json.dump(session, f)
                 session["account"] = account
                 return session
         except (OSError, json.JSONDecodeError, TypeError):

@@ -16,6 +16,16 @@ try:
 except ImportError:
     _has_rich = False
 
+# Ensure import paths align
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.resolve()))
+
+try:
+    from src.team_manager import TeamRoster, BettingArena
+except ImportError:
+    TeamRoster = None
+    BettingArena = None
+
 TELEMETRY_LOG = "agent_telemetry_stream.json"
 if _has_rich:
     console = Console()
@@ -108,6 +118,42 @@ def make_dashboard():
         expand=True,
     )
 
+    # Roster Panel
+    roster_panel = None
+    if TeamRoster:
+        try:
+            roster = TeamRoster()
+            active_team = roster.get_active_team()
+            if active_team:
+                roster_table = Table(box=ROUNDED, border_style="cyan", expand=True)
+                roster_table.add_column("Agent ID", style="bold green", no_wrap=True)
+                roster_table.add_column("Name", style="white")
+                roster_table.add_column("Role", style="bold magenta")
+                roster_table.add_column("3L0/ELO", justify="right", style="yellow")
+                roster_table.add_column("Points Wallet", justify="right", style="green")
+                roster_table.add_column("Top Skills", style="dim")
+
+                # Sort by ELO descending
+                active_team.sort(key=lambda a: a.elo, reverse=True)
+                for agent in active_team[:8]:  # Limit display to avoid scroll overflow
+                    skills_str = ", ".join(agent.skills[:3])
+                    roster_table.add_row(
+                        agent.id,
+                        agent.name,
+                        agent.role,
+                        f"{agent.elo:.1f}",
+                        f"{agent.wallet:.1f}",
+                        skills_str
+                    )
+                roster_panel = Panel(
+                    roster_table,
+                    title="⚾ Drafted Agent Team & 3L0 Delta (MoneyBall Active Roster) ⚾",
+                    border_style="cyan",
+                    box=ROUNDED
+                )
+        except Exception:
+            pass
+
     if not jobs:
         # Beautiful empty state
         empty_text = Text()
@@ -124,11 +170,11 @@ def make_dashboard():
             border_style="cyan",
             expand=True
         )
+        group_elements = [header_panel, body_panel]
+        if roster_panel:
+            group_elements.append(roster_panel)
         return Panel(
-            Group(
-                header_panel,
-                body_panel
-            ),
+            Group(*group_elements),
             box=ROUNDED,
             border_style="dim"
         )
@@ -182,12 +228,13 @@ def make_dashboard():
 
     footer_text = Text("\nPress Ctrl+C to exit Dashboard Viewer.", style="dim italic red")
 
+    group_elements = [header_panel, table]
+    if roster_panel:
+        group_elements.append(roster_panel)
+    group_elements.append(footer_text)
+
     return Panel(
-        Group(
-            header_panel,
-            table,
-            footer_text
-        ),
+        Group(*group_elements),
         box=ROUNDED,
         border_style="blue",
         title="Agent Live Monitor"

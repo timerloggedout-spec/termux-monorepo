@@ -2,11 +2,10 @@
 """
 CI mode entrypoint – non-interactive agent.
 Default account: primary (Account-1) — PRIORITY.
-OPERATOR_TOKEN env is required (normalized by workflow from thread-listed secrets).
-When DEEPSEEK_TOKEN_* secrets are absent, or session initialization fails
-(due to expired/invalid credentials), or the DeepSeek API raises auth/connection
-errors, soft-skip (exit 0) so the master functional gate stays green; fill
-correct secrets to enable the live DeepSeek lane.
+OPERATOR_TOKEN env is required (normalized by workflow from ARCHWIZ_GITHUB_TOKEN first).
+Cookies and model auth secrets are expected to be present.
+Hard-fail (exit 1) on missing credentials, session init failure, or API/auth errors.
+No soft-skip fallbacks.
 """
 import os
 import sys
@@ -36,8 +35,7 @@ def sanitize_error_msg(e: str | Exception) -> str:
 
 def _write_step_summary(reason: str, details_or_exception: str | Exception) -> None:
     """
-    Helper to safely populate GITHUB_STEP_SUMMARY with a sanitized error message
-    and avoid copy-paste technical debt. Logs exceptions if summary write fails.
+    Helper to safely populate GITHUB_STEP_SUMMARY with a sanitized error message.
     """
     summary_file = os.environ.get("GITHUB_STEP_SUMMARY")
     if not summary_file:
@@ -47,7 +45,7 @@ def _write_step_summary(reason: str, details_or_exception: str | Exception) -> N
     try:
         with open(summary_file, "a", encoding="utf-8") as sf:
             sf.write(
-                f"\n### ⚠ DeepSeek CI Skipped\n"
+                f"\n### ❌ DeepSeek CI Failed\n"
                 f"* **Reason:** {reason}\n"
                 f"* **Details:** {sanitized}\n"
             )
@@ -72,35 +70,32 @@ def main():
 
     operator_token = os.environ.get("OPERATOR_TOKEN") or ""
     if not operator_token:
-        print("::error::OPERATOR_TOKEN is empty — set ARCHWIZ_GITHUB_TOKEN / OPERATOR_GITHUB_TOKEN / OPERATOR_TOKEN")
+        print("::error::OPERATOR_TOKEN is empty — set ARCHWIZ_GITHUB_TOKEN (preferred) / OPERATOR_GITHUB_TOKEN / OPERATOR_TOKEN")
         result = {"actions": [], "error": "missing_OPERATOR_TOKEN", "account": account}
         with open("deepseek_output.json", "w", encoding="utf-8") as f:
             json.dump(result, f, indent=2)
         sys.exit(1)
 
-    # Soft-skip when DeepSeek web tokens are not provisioned (quota / secret gap).
-    # Keeps dual-gate (repo_gate + termux_smoke) and master green; live lane
-    # activates once any catalog name from Issue #184 / DEEPSEEK-CI.md is set.
+    # Hard-fail when DeepSeek web tokens/cookies are not provisioned.
     token = _token_from_env(account)
     if not token:
         msg = (
-            f"DeepSeek tokens absent for account={account}. "
+            f"DeepSeek tokens/cookies absent for account={account}. "
             "Set one of DEEPSEEK_TOKEN / DEEPSEEK_TOKEN_PRIMARY / DEEPSEEK_API_KEY / "
             "DEEPSEEK_AUTH_TOKEN / NEXUSCLI_TOKEN / DEEPSEEK_COOKIES "
-            "(or SECONDARY / DEEPSEEK_COOKIES_2). See Issue #184 + docs/ops/DEEPSEEK-CI.md. "
-            "Soft-skipping CI agent (exit 0) so functional gate remains green."
+            "(or SECONDARY / DEEPSEEK_COOKIES_2). See Issue #184 + docs/ops/DEEPSEEK-CI.md."
         )
-        print(f"::notice::{msg}")
+        print(f"::error::{msg}")
         result = {
             "actions": [],
-            "skipped": True,
-            "reason": "missing_DEEPSEEK_TOKEN",
+            "error": "missing_DEEPSEEK_TOKEN",
             "account": account,
             "message": msg,
         }
         with open("deepseek_output.json", "w", encoding="utf-8") as f:
             json.dump(result, f, indent=2)
-        sys.exit(0)
+        _write_step_summary("Missing DeepSeek credentials", msg)
+        sys.exit(1)
 
     try:
         session = ensure_session(cache_dir=args.cache_dir, account=account)
@@ -110,22 +105,18 @@ def main():
         )
     except Exception as e:
         error_msg = f"{type(e).__name__}: {str(e)[:200]}"
-        msg = f"DeepSeek session initialization failed: {error_msg}. Soft-skipping CI agent (exit 0) so functional gate remains green."
-        print(f"::notice::{msg}")
-
+        msg = f"DeepSeek session initialization failed: {error_msg}"
+        print(f"::error::{msg}")
         _write_step_summary("Session initialization failed", e)
-
         result = {
             "actions": [],
-            "skipped": True,
-            "reason": "session_init_failed",
+            "error": "session_init_failed",
             "account": account,
             "message": msg,
-            "soft_skippable": True,
         }
         with open("deepseek_output.json", "w", encoding="utf-8") as f:
             json.dump(result, f, indent=2)
-        sys.exit(0)
+        sys.exit(1)
 
     try:
         event = json.loads(args.event)
@@ -150,20 +141,7 @@ def main():
 
     if result.get("error"):
         print(f"::error::{result['error']}")
-        # Soft-skip on DeepSeek API or authorization/token failures (structured soft_skippable flag) to prevent CI blockers.
-        if result.get("soft_skippable"):
-            msg = f"DeepSeek API/Auth error detected: {result['error']}. Soft-skipping (exit 0) to keep CI gate green."
-            print(f"::notice::{msg}")
-
-            result["skipped"] = True
-            result["reason"] = "api_auth_error"
-            result["message"] = msg
-
-            with open("deepseek_output.json", "w", encoding="utf-8") as f:
-                json.dump(result, f, indent=2)
-
-            _write_step_summary("API/Auth error", result["error"])
-            sys.exit(0)
+        _write_step_summary("API/runtime error", result["error"])
         sys.exit(1)
 
     print(f"✅ CI run completed. Decisions: {result.get('actions', [])}")

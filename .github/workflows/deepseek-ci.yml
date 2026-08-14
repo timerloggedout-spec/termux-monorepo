@@ -11,6 +11,8 @@ name: DeepSeek CI – Agentic Automation
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+  issue_comment:
+    types: [created]
   workflow_dispatch:
     inputs:
       event_payload:
@@ -23,16 +25,32 @@ on:
         default: 'account-1'
 
 concurrency:
-  group: deepseek-ci-${{ github.event.pull_request.number || github.run_id }}
+  group: deepseek-ci-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
   cancel-in-progress: true
 
 jobs:
   deepseek-agent:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    # Skip bot noise on issue_comment; always run for PR + dispatch.
+    # Parentheses required: && binds tighter than || in GHA expressions.
+    if: >-
+      github.event_name != 'issue_comment' ||
+      (
+        github.event.comment.user.type != 'Bot' &&
+        (
+          contains(github.event.comment.body, '@deepcore') ||
+          contains(github.event.comment.body, '@deepCore') ||
+          contains(github.event.comment.body, '@deepseek') ||
+          contains(github.event.comment.body, '@deepseek-ci') ||
+          contains(github.event.comment.body, 'deepseek') ||
+          contains(github.event.comment.body, 'DeepSeek')
+        )
+      )
     permissions:
       contents: read
       pull-requests: write
+      issues: write
       actions: read
 
     env:
@@ -40,11 +58,17 @@ jobs:
       GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
       # Prefer dispatch payload when provided; otherwise use the real event
       GITHUB_EVENT: ${{ github.event.inputs.event_payload != '' && github.event.inputs.event_payload || toJson(github.event) }}
-      # Ephemeral cache outside checkout (no Class-3 session files in workspace)
-      DEEPSEEK_CACHE_DIR: ${{ runner.temp }}/.deepseek-cache
       # Account-1 / primary is PRIORITY default
       DEEPSEEK_ACCOUNT: ${{ github.event.inputs.account || 'account-1' }}
-      DEEPSEEK_TOKEN_PRIMARY: ${{ secrets.DEEPSEEK_TOKEN_PRIMARY || secrets.DEEPSEEK_TOKEN_ACCOUNT_1 || secrets.DEEPSEEK_TOKEN }}
+      # Model auth — names from docs/ops/DEEPSEEK-CI.md + Issue #184 catalog.
+      # First non-empty wins inside session_manager._token_from_env.
+      DEEPSEEK_TOKEN_PRIMARY: ${{ secrets.DEEPSEEK_TOKEN_PRIMARY || secrets.DEEPSEEK_TOKEN_ACCOUNT_1 || secrets.DEEPSEEK_TOKEN || secrets.DEEPSEEK_API_KEY || secrets.DEEPSEEK_AUTH_TOKEN || secrets.NEXUSCLI_TOKEN }}
+      DEEPSEEK_TOKEN: ${{ secrets.DEEPSEEK_TOKEN || secrets.DEEPSEEK_API_KEY || secrets.DEEPSEEK_AUTH_TOKEN || secrets.NEXUSCLI_TOKEN }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      DEEPSEEK_AUTH_TOKEN: ${{ secrets.DEEPSEEK_AUTH_TOKEN }}
+      NEXUSCLI_TOKEN: ${{ secrets.NEXUSCLI_TOKEN }}
+      DEEPSEEK_COOKIES: ${{ secrets.DEEPSEEK_COOKIES || secrets.DEEPSEEK_COOKIES_1 || secrets.COOKIES }}
+      DEEPSEEK_COOKIES_1: ${{ secrets.DEEPSEEK_COOKIES_1 }}
       DEEPSEEK_TOKEN_SECONDARY: ${{ secrets.DEEPSEEK_TOKEN_SECONDARY || secrets.DEEPSEEK_TOKEN_ACCOUNT_2 || secrets.DEEPSEEK_COOKIES_2 }}
       DEEPSEEK_COOKIES_2: ${{ secrets.DEEPSEEK_COOKIES_2 }}
       DEEPSEEK_THINKING: "true"
@@ -100,7 +124,7 @@ jobs:
         uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57  # v4.2.0
         id: cache-session
         with:
-          path: ${{ env.DEEPSEEK_CACHE_DIR }}
+          path: ${{ runner.temp }}/.deepseek-cache
           key: deepseek-session-account1-${{ runner.os }}-${{ hashFiles('deepcli/session_manager.py') }}
           restore-keys: |
             deepseek-session-account1-${{ runner.os }}-
@@ -109,6 +133,8 @@ jobs:
       - name: Run DeepSeek CI Agent (Account-1 priority)
         env:
           PYTHONPATH: ${{ github.workspace }}
+          # runner.temp ONLY valid at step level — was the post-#174 master gate breaker
+          DEEPSEEK_CACHE_DIR: ${{ runner.temp }}/.deepseek-cache
         run: |
           python -m deepcli.ci_mode \
             --event "$GITHUB_EVENT" \

@@ -6,8 +6,13 @@ Admin-scope defaults: thinking=True, expert=True (always).
 Account-1 (primary) is PRIORITY default.
 chat_session_id is required for /api/v0/chat/completion.
 Artifact output is metadata only (no model text).
+
+Supports:
+  - pull_request opened/synchronize/reopened → PR review comment
+  - issue_comment (created) with @deepcore/@deepseek triggers → issue reply
 """
 import os
+import re
 import json
 import subprocess
 import time
@@ -18,6 +23,50 @@ from .session_manager import create_chat_session, get_pow_challenge, solve_pow, 
 DEEPSEEK_BASE = "https://chat.deepseek.com"
 STREAM_CONNECT_TIMEOUT = int(os.environ.get("DEEPSEEK_CONNECT_TIMEOUT", "30"))
 STREAM_READ_TIMEOUT = int(os.environ.get("DEEPSEEK_READ_TIMEOUT", "1200"))
+
+
+_AUTH_RE_PATTERNS = [
+    re.compile(r"\bAuthorization Failed\b", re.IGNORECASE),
+    re.compile(r"\binvalid token\b", re.IGNORECASE),
+    re.compile(r"\b40003\b"),
+    re.compile(r"\bHTTP\s+(401|403)\b"),
+]
+
+_CONN_RE_PATTERNS = [
+    re.compile(r"\bConnection\b", re.IGNORECASE),
+    re.compile(r"\btimeout\b", re.IGNORECASE),
+    re.compile(r"\btimed out\b", re.IGNORECASE),
+    re.compile(r"\bresolve\b", re.IGNORECASE),
+    re.compile(r"\bunreachable\b", re.IGNORECASE),
+]
+
+
+def is_soft_skippable_error(e: Exception) -> bool:
+    """
+    Classify failures: only return True for authentication/credential failures
+    or transient connection/network/timeout errors. Any other code crashes or
+    server/logic defects remain hard-failures.
+    """
+    err_str = str(e)
+
+    # 1. Strictly anchored Auth/Credential Failures
+    if any(pat.search(err_str) for pat in _AUTH_RE_PATTERNS):
+        return True
+
+    # 2. Connection/timeout/resolving failures
+    conn_exceptions = ["Connection", "Timeout", "NameResolution", "Dns", "AddrInfo"]
+    if any(conn_exc in type(e).__name__ for conn_exc in conn_exceptions):
+        return True
+    if any(pat.search(err_str) for pat in _CONN_RE_PATTERNS):
+        return True
+
+    return False
+
+
+# Triggers stripped from the user prompt before sending to the model.
+_TRIGGER_RE = re.compile(
+    r"(?i)@(?:deepcore|deepseek-ci|deepseek)\b",
+)
 
 
 def _parse_sse_chunk(line: str) -> str:
@@ -172,9 +221,128 @@ def deepseek_chat(session, messages, thinking=True):
             return text
 
 
+def _post_gh_comment(gh_env, repo, target, body, kind="issue"):
+    """Post comment via gh CLI. kind is 'issue' or 'pr'. Returns (ok, error)."""
+    cmd = [
+        "gh",
+        "pr" if kind == "pr" else "issue",
+        "comment",
+        str(target),
+        "--body",
+        body[:2000],
+        "--repo",
+        repo,
+    ]
+    try:
+        r = subprocess.run(cmd, env=gh_env, capture_output=True, text=True, timeout=90)
+        if r.returncode == 0:
+            return True, None
+        err = (r.stderr or r.stdout or "Unknown error")[:200]
+        return False, err
+    except subprocess.TimeoutExpired:
+        return False, "Timeout posting comment"
+    except Exception as e:
+        return False, f"{type(e).__name__}: {str(e)[:100]}"
+
+
+def _handle_issue_comment(event, session, peer, gh_env, thinking):
+    """Reply to an issue (or PR-as-issue) comment that mentioned deepCore."""
+    comment = event.get("comment") or {}
+    body = (comment.get("body") or "").strip()
+    issue = event.get("issue") or {}
+    issue_number = issue.get("number")
+    repo = (event.get("repository") or {}).get("full_name")
+    account = session.get("account") or peer.get("account") or "primary"
+
+    if not issue_number or not repo:
+        return {
+            "actions": [],
+            "error": "issue_comment missing issue.number or repository.full_name",
+            "event": "issue_comment",
+        }
+
+    # Strip trigger tokens so the model sees the actual request.
+    prompt = _TRIGGER_RE.sub("", body).strip()
+    if not prompt:
+        prompt = (
+            "You were mentioned on a GitHub issue. "
+            "Acknowledge and ask how you can help (one short paragraph)."
+        )
+
+    issue_title = issue.get("title") or ""
+    messages = [
+        {
+            "role": "system",
+            "content": (
+                "You are deepCore (DeepSeek CI agent) in Expert mode with thinking enabled. "
+                "Reply helpfully and concisely to the user's request on this GitHub issue. "
+                "Do not invent secrets, tokens, or private data. Keep the reply under ~1500 chars."
+            ),
+        },
+        {
+            "role": "user",
+            "content": (
+                f"Issue #{issue_number}: {issue_title}\n\n"
+                f"User request:\n{prompt}"
+            ),
+        },
+    ]
+
+    try:
+        analysis = deepseek_chat(session, messages, thinking=thinking)
+    except Exception as e:
+        error_msg = f"{type(e).__name__}: {str(e)[:200]}"
+        print(f"::error::DeepSeek stream error (issue_comment): {error_msg}")
+        return {
+            "actions": [],
+            "error": f"DeepSeek API error: {error_msg}",
+            "event": "issue_comment",
+            "issue": issue_number,
+            "account": account,
+            "soft_skippable": is_soft_skippable_error(e),
+        }
+
+    # Prefix with moniker for clarity in the thread.
+    reply = f"**`deepCore`**\n\n{analysis}"
+    ok, err = _post_gh_comment(gh_env, repo, issue_number, reply, kind="issue")
+    if not ok:
+        print(f"::error::Failed to post issue comment: {err}")
+        return {
+            "actions": [{
+                "type": "issue_reply_failed",
+                "issue": issue_number,
+                "comment_posted": False,
+                "error": err,
+                "account": account,
+            }],
+            "error": f"Failed to post issue comment: {err}",
+            "event": "issue_comment",
+            "issue": issue_number,
+            "account": account,
+            "chat_session_id": session.get("chat_session_id"),
+        }
+
+    return {
+        "actions": [{
+            "type": "issue_reply",
+            "issue": issue_number,
+            "comment_posted": True,
+            "thinking": thinking,
+            "account": account,
+            "chat_session_id": session.get("chat_session_id"),
+        }],
+        "event": "issue_comment",
+        "issue": issue_number,
+        "provider_used": peer.get("provider", "deepseek"),
+        "thinking": thinking,
+        "account": account,
+        "chat_session_id": session.get("chat_session_id"),
+    }
+
+
 def run_ci(event, session, peer, workspace, operator_token):
     """
-    Run CI agent for PR review.
+    Run CI agent for PR review or issue_comment reply.
     Requires operator_token for gh CLI operations.
     Artifact fields are metadata only (no model text).
     """
@@ -189,15 +357,21 @@ def run_ci(event, session, peer, workspace, operator_token):
     gh_env = os.environ.copy()
     gh_env["GH_TOKEN"] = operator_token
 
+    thinking = os.environ.get("DEEPSEEK_THINKING", "true").lower() not in ("0", "false", "no")
+    account = session.get("account") or peer.get("account") or "primary"
+
+    # --- issue_comment path (issue or PR discussion) ---
+    # GitHub delivers issue_comment for both issues and PRs.
+    if event.get("comment") and event.get("issue"):
+        return _handle_issue_comment(event, session, peer, gh_env, thinking)
+
+    # --- PR lifecycle path ---
     pr_number = event.get("pull_request", {}).get("number")
     repo = event.get("repository", {}).get("full_name")
     action = event.get("action")
     decisions = []
-    account = session.get("account") or peer.get("account") or "primary"
     comment_ok = None
     comment_error = None
-
-    thinking = os.environ.get("DEEPSEEK_THINKING", "true").lower() not in ("0", "false", "no")
 
     if action in ["opened", "synchronize", "reopened"] and pr_number:
         if not repo:
@@ -244,27 +418,15 @@ def run_ci(event, session, peer, workspace, operator_token):
                 "event": action,
                 "pr": pr_number,
                 "account": account,
+                "soft_skippable": is_soft_skippable_error(e),
             }
 
-        try:
-            r = subprocess.run(
-                ["gh", "pr", "comment", str(pr_number), "--body", analysis[:2000], "--repo", repo],
-                env=gh_env, capture_output=True, text=True, timeout=90,
-            )
-            comment_ok = r.returncode == 0
-            if not comment_ok:
-                comment_error = r.stderr[:200] if r.stderr else "Unknown error"
-                print(f"::error::Failed to post PR comment: {comment_error}")
-        except subprocess.TimeoutExpired:
-            comment_ok = False
-            comment_error = "Timeout posting comment"
-            print(f"::error::{comment_error}")
-        except Exception as e:
-            comment_ok = False
-            comment_error = f"{type(e).__name__}: {str(e)[:100]}"
-            print(f"::error::Exception posting comment: {comment_error}")
+        comment_ok, comment_error = _post_gh_comment(
+            gh_env, repo, pr_number, analysis, kind="pr"
+        )
+        if not comment_ok:
+            print(f"::error::Failed to post PR comment: {comment_error}")
 
-        # Metadata only — never persist model text into the artifact
         if comment_ok:
             decisions.append({
                 "type": "pr_review",

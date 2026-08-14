@@ -15,6 +15,7 @@ Use backticks or plain text for display. Live triggers remain the original handl
 | Devin (review/fix) | `devinForge` | Devin app | |
 | Continuous-ops sweep | `opsSweep` | (GHA) | Marker: `<!-- continuous-agent-ops -->` |
 | OPERATOR / Grok | `archW1z` | human OWNER | Signing: `Signed-off-by: Grok (OPERATOR)` |
+| Leet-Seek Admin / Full-scope Operator | `l337S33k` | (human / future profile role) | **Full admin across all repositories.** Parity with (and intended ≥) current OPERATOR/`archW1z`. Full-scope PAT + org/repo admin. Profile roles will be created under this moniker. Display only — do **not** `@`-mention. |
 | Peer orchestrator | `peerGate` | (GHA) | |
 
 ## Rules

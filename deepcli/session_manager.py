@@ -6,6 +6,11 @@ Template webWrapper accounts (from token_provider_v2 / cedar_forge PLAN):
   secondary / account-2  — alternate / cookies_2.json lineage
 
 Session dir: 0o700 · session.json: 0o600
+
+Credential resolution (Issue #184 catalog + docs/ops/DEEPSEEK-CI.md):
+  Prefer explicit bearer tokens; fall back to imported cookie blobs
+  (ds_session_id extracted when JSON). Never invent secret names —
+  only consume what is already provisioned in repo secrets.
 """
 import os
 import json
@@ -34,6 +39,37 @@ def normalize_account(name: str | None) -> str:
     # Account-1 / primary is PRIORITY default
     raw = (name or os.environ.get("DEEPSEEK_ACCOUNT") or "primary").strip().lower()
     return ACCOUNT_ALIASES.get(raw, raw if raw in ("primary", "secondary") else "primary")
+
+
+def _extract_ds_session_id(raw: str) -> str | None:
+    """If raw looks like a cookie dump (JSON list/dict), pull ds_session_id; else None."""
+    raw = (raw or "").strip()
+    if not raw:
+        return None
+    if not (raw.startswith("[") or raw.startswith("{")):
+        return None
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError:
+        return None
+    cookies = data if isinstance(data, list) else data.get("cookies", [])
+    if isinstance(cookies, dict):
+        # { "ds_session_id": "..." } form
+        v = cookies.get("ds_session_id")
+        return str(v).strip() if v else None
+    for c in cookies or []:
+        if isinstance(c, dict) and c.get("name") == "ds_session_id":
+            v = c.get("value")
+            return str(v).strip() if v else None
+    return None
+
+
+def _first_env(*keys: str) -> str | None:
+    for key in keys:
+        v = os.environ.get(key)
+        if v and str(v).strip():
+            return str(v).strip()
+    return None
 
 
 def solve_pow(token: str, cookies: dict | None = None, target_path: str = "/api/v0/chat/completion"):
@@ -86,46 +122,63 @@ def solve_pow(token: str, cookies: dict | None = None, target_path: str = "/api/
 
 
 def _token_from_env(account: str) -> str | None:
-    """Resolve bearer token for account from env / secrets-exported vars."""
+    """
+    Resolve bearer token / session id for account from env / secrets-exported vars.
+
+    Names align with docs/ops/DEEPSEEK-CI.md and Issue #184 credential catalog.
+    Cookie blobs are accepted: JSON cookie dumps yield ds_session_id; plain
+    strings are used as-is (caller may treat them as ds_session_id).
+    """
     specific = os.environ.get(f"DEEPSEEK_TOKEN_{account.upper()}")
-    if specific:
+    if specific and specific.strip():
         return specific.strip()
 
     if account == "secondary":
-        for key in (
+        v = _first_env(
             "DEEPSEEK_TOKEN_SECONDARY",
+            "DEEPSEEK_TOKEN_ACCOUNT_2",
             "DEEPSEEK_ACCOUNT_2",
             "DEEPSEEK_ACCOUNT2",
             "DeepSeek_account-2",
-        ):
-            v = os.environ.get(key)
-            if v:
-                return v.strip()
-        raw = os.environ.get("DEEPSEEK_COOKIES_2") or os.environ.get("COOKIES_2")
+        )
+        if v:
+            return v
+        raw = _first_env("DEEPSEEK_COOKIES_2", "COOKIES_2", "DEEPSEEK_COOKIES")
         if raw:
-            raw = raw.strip()
-            if raw.startswith("[") or raw.startswith("{"):
-                try:
-                    data = json.loads(raw)
-                    cookies = data if isinstance(data, list) else data.get("cookies", [])
-                    for c in cookies:
-                        if c.get("name") == "ds_session_id":
-                            return c.get("value")
-                except json.JSONDecodeError:
-                    pass
-            return raw
+            sid = _extract_ds_session_id(raw)
+            return sid or raw
         return None
 
     # primary / account-1 — PRIORITY path
-    for key in (
+    # Order matches DEEPSEEK-CI.md SSOT + workflow mappings + #184 names.
+    v = _first_env(
         "DEEPSEEK_TOKEN_PRIMARY",
+        "DEEPSEEK_TOKEN_ACCOUNT_1",
         "DEEPSEEK_TOKEN",
+        "DEEPSEEK_API_KEY",          # documented model-auth alias
+        "DEEPSEEK_AUTH_TOKEN",       # documented model-auth alias
+        "NEXUSCLI_TOKEN",            # documented model-auth alias
         "DEEPSEEK_ACCOUNT_1",
         "DeepSeek_account-1",
-    ):
-        v = os.environ.get(key)
-        if v:
-            return v.strip()
+    )
+    if v:
+        # If someone stored a cookie dump under a token-named secret, unwrap it.
+        sid = _extract_ds_session_id(v)
+        return sid or v
+
+    # Cookie-only primary secrets (imported cookies path)
+    raw = _first_env(
+        "DEEPSEEK_COOKIES",
+        "DEEPSEEK_COOKIES_1",
+        "COOKIES",
+        "COOKIES_1",
+        "DEEPSEEK_SESSION",
+        "DEEPSEEK_DS_SESSION_ID",
+    )
+    if raw:
+        sid = _extract_ds_session_id(raw)
+        return sid or raw
+
     return None
 
 
@@ -154,6 +207,8 @@ def create_chat_session(token: str, cookies: dict | None = None, model_type: str
     """
     Create a DeepSeek chat_session_id (required for /api/v0/chat/completion).
     Matches deepcli.core.create_session / multi-ai-cli backends.
+
+    API may return data=None (not missing key). Guard every nested access.
     """
     s = _auth_session_headers(token, cookies)
     r = s.post(
@@ -163,17 +218,29 @@ def create_chat_session(token: str, cookies: dict | None = None, model_type: str
     )
     r.raise_for_status()
     data = r.json()
-    sid = (
-        data.get("data", {}).get("biz_data", {}).get("id")
-        or data.get("id")
-        or data.get("chat_session_id")
-    )
-    if not sid:
+    if not isinstance(data, dict):
         raise RuntimeError(
-            f"create_chat_session: no id in response keys="
-            f"{list(data) if isinstance(data, dict) else type(data)}"
+            f"create_chat_session: non-dict response type={type(data).__name__}"
         )
-    return str(sid)
+
+    # Nested path: data → biz_data → id  (any intermediate may be None)
+    nested = data.get("data")
+    if isinstance(nested, dict):
+        biz = nested.get("biz_data")
+        if isinstance(biz, dict) and biz.get("id"):
+            return str(biz["id"])
+        if nested.get("id"):
+            return str(nested["id"])
+
+    sid = data.get("id") or data.get("chat_session_id")
+    if sid:
+        return str(sid)
+
+    code = data.get("code")
+    msg = data.get("msg") or data.get("message")
+    raise RuntimeError(
+        f"create_chat_session: no id in response code={code} msg={msg!r} keys={list(data)}"
+    )
 
 
 def get_pow_challenge(
@@ -205,19 +272,24 @@ def get_new_session(account: str = "primary"):
     """
     Build a full session dict for the given account.
     Prefer env/secret token. Always attaches a fresh chat_session_id when possible.
+    Cookie-derived values are attached as ds_session_id for both accounts.
     """
     account = normalize_account(account)
     token = _token_from_env(account)
-    cookies = {}
+    cookies: dict = {}
 
     if not token:
         raise RuntimeError(
             f"No token available for account={account}. "
-            "Set DEEPSEEK_TOKEN_PRIMARY (Account-1) or DEEPSEEK_TOKEN_SECONDARY."
+            "Set one of: DEEPSEEK_TOKEN / DEEPSEEK_TOKEN_PRIMARY / DEEPSEEK_API_KEY / "
+            "DEEPSEEK_AUTH_TOKEN / NEXUSCLI_TOKEN / DEEPSEEK_COOKIES "
+            "(or SECONDARY / DEEPSEEK_COOKIES_2 for account-2). "
+            "See docs/ops/DEEPSEEK-CI.md and Issue #184."
         )
 
-    if account == "secondary":
-        cookies["ds_session_id"] = token
+    # Web-wrapper sessions treat the resolved value as both Bearer material and
+    # the ds_session_id cookie when it originated from a cookie import.
+    cookies["ds_session_id"] = token
     lifetime = 3600 * 24
 
     chat_session_id = None

@@ -88,7 +88,50 @@ MAPPINGS = [
     ("linguist", "l1ngu15t"),
     ("scout", "sc0ut"),
     ("harvester", "h4rv35t3r"),
+    # Research Curation of Emerging Technologies Procurement Concepts
+    ("emerging technologies", "em_t3chs"),
+    ("emerging technology", "em_t3ch"),
+    ("procurements", "pr0cur3s"),
+    ("procurement", "pr0cur3"),
+    ("curations", "cur473s"),
+    ("curation", "cur473"),
+    ("sourcings", "s0urc3s"),
+    ("sourcing", "s0urc3"),
+    ("acquisitions", "4cqs"),
+    ("acquisition", "4cq"),
+    ("compliances", "c0mp1s"),
+    ("compliance", "c0mp1"),
 ]
+
+# ------------------------------------------------------------
+# 1.5. Pre-compiled regex patterns (Massive Speed Optimization)
+# ------------------------------------------------------------
+# Pre-compile standard symbol replacements once globally
+SYMBOL_REGEXES = {phrase: re.compile(re.escape(phrase), re.IGNORECASE) for phrase in SYMBOL_MAP}
+
+# Pre-compile general utility patterns
+INLINE_CODE_PATTERN = re.compile(r'`[^`]+`')
+HTML_TAG_PATTERN = re.compile(r'<[^>]+>')
+LINK_PATTERN = re.compile(r'\[([^\]]+)\]\(([^)]+)\)')
+BOLD_PATTERN_2 = re.compile(r'\*\*([^*]+)\*\*')
+BOLD_PATTERN_1 = re.compile(r'\*([^*]+)\*')
+BOLD_PATTERN_UNDER2 = re.compile(r'__([^_]+)__')
+BOLD_PATTERN_UNDER1 = re.compile(r'_([^_]+)_')
+PATH_REGEX = re.compile(
+    r'\b(?:~?/)?[\w\-]+(?:/[\w\-]+)*\.(?:py|js|json|md|yaml|sh|txt|yml|db|jsonl|wasm|html|cffi)\b|\b/?[\w\-]+/[\w\-\./]+\b'
+)
+DECIMAL_PATTERN = re.compile(r'\b\d+\.\d+\b')
+SPACES_PATTERN = re.compile(r'\s+')
+PUNCTUATION_PATTERN = re.compile(r'[.,!?;:]$')
+
+# Pre-sorted and pre-compiled mapping translation lists
+# Sort human words by length descending to prevent partial matching (e.g., "emerging technologies" before "emerging technology")
+SORTED_MAPPINGS_COMP = sorted(MAPPINGS, key=lambda x: len(x[0]), reverse=True)
+SORTED_MAPPINGS_DECOMP = sorted(MAPPINGS, key=lambda x: len(x[1]), reverse=True)
+
+COMP_REGEXES = [(re.compile(r'\b' + re.escape(human) + r'\b', re.IGNORECASE), comp) for human, comp in SORTED_MAPPINGS_COMP]
+DECOMP_REGEXES = [(re.compile(r'\b' + re.escape(comp) + r'\b', re.IGNORECASE), human) for human, comp in SORTED_MAPPINGS_DECOMP]
+
 
 # ------------------------------------------------------------
 # 2. Compressor (v1 prompt compression)
@@ -101,13 +144,11 @@ def compress(text: str, aggressive: bool = True) -> str:
     if not text:
         return ""
 
-    # lower only for pattern matching; keep original case for identifiers
     result = text[:]  # start with original case
 
-    # symbol replacement (case‑insensitive, word boundaries)
-    for phrase, symbol in SYMBOL_MAP.items():
-        pattern = re.compile(re.escape(phrase), re.IGNORECASE)
-        result = pattern.sub(symbol, result)
+    # symbol replacement (case‑insensitive, word boundaries) using pre-compiled patterns
+    for phrase, pattern in SYMBOL_REGEXES.items():
+        result = pattern.sub(SYMBOL_MAP[phrase], result)
 
     if not aggressive:
         return result.strip()
@@ -118,10 +159,20 @@ def compress(text: str, aggressive: bool = True) -> str:
     result = " ".join(filtered)
 
     # remove duplicate spaces & punctuation trimming
-    result = re.sub(r'\s+', ' ', result).strip()
-    # optional: remove trailing punctuation except symbols
-    result = re.sub(r'[.,!?;:]$', '', result)
+    result = SPACES_PATTERN.sub(' ', result).strip()
+    result = PUNCTUATION_PATTERN.sub('', result)
     return result
+
+
+# ------------------------------------------------------------
+# 2.5. Caveman Compression in 6 Lines
+# ------------------------------------------------------------
+def caveman(text: str, max_up: bool = False) -> str:
+    t = text.upper() if max_up else text
+    for phrase, pattern in SYMBOL_REGEXES.items():
+        t = pattern.sub(SYMBOL_MAP[phrase], t)
+    words = [w for w in t.split() if w.lower() not in STOPWORDS]
+    return SPACES_PATTERN.sub(' ', " ".join(words)).strip()
 
 
 # ------------------------------------------------------------
@@ -133,8 +184,7 @@ def expand(cedr: str) -> str:
     result = cedr
     for sym, phrase in rev_map.items():
         result = result.replace(sym, f" {phrase} ")
-    # restore stopwords approximately (add 'the' before nouns? skip for simplicity)
-    result = re.sub(r'\s+', ' ', result)
+    result = SPACES_PATTERN.sub(' ', result)
     return result.strip()
 
 
@@ -175,18 +225,9 @@ def apply_casing(src: str, dst: str) -> str:
 
 def translate_text_raw(text: str, to_compressed: bool) -> str:
     """Perform dictionary mapping translations preserving casing."""
-    if to_compressed:
-        # human -> compressed (sort by length descending of human term)
-        sorted_mappings = sorted(MAPPINGS, key=lambda x: len(x[0]), reverse=True)
-        for human, comp in sorted_mappings:
-            pattern = re.compile(r'\b' + re.escape(human) + r'\b', re.IGNORECASE)
-            text = pattern.sub(lambda m: apply_casing(m.group(0), comp), text)
-    else:
-        # compressed -> human (sort by length descending of compressed term)
-        sorted_mappings = sorted(MAPPINGS, key=lambda x: len(x[1]), reverse=True)
-        for human, comp in sorted_mappings:
-            pattern = re.compile(r'\b' + re.escape(comp) + r'\b', re.IGNORECASE)
-            text = pattern.sub(lambda m: apply_casing(m.group(0), human), text)
+    regexes = COMP_REGEXES if to_compressed else DECOMP_REGEXES
+    for pattern, target in regexes:
+        text = pattern.sub(lambda m: apply_casing(m.group(0), target), text)
     return text
 
 def translate_line(line: str, to_compressed: bool) -> str:
@@ -198,21 +239,21 @@ def translate_line(line: str, to_compressed: bool) -> str:
         placeholders.append((ph, val))
         return ph
 
-    # Protect inline code
-    line = re.sub(r'`[^`]+`', lambda m: add_placeholder(m.group(0)), line)
+    # Protect inline code using pre-compiled patterns
+    line = INLINE_CODE_PATTERN.sub(lambda m: add_placeholder(m.group(0)), line)
 
-    # Protect HTML tags
-    line = re.sub(r'<[^>]+>', lambda m: add_placeholder(m.group(0)), line)
+    # Protect HTML tags using pre-compiled patterns
+    line = HTML_TAG_PATTERN.sub(lambda m: add_placeholder(m.group(0)), line)
 
-    # Protect markdown links [text](url)
+    # Protect markdown links [text](url) using pre-compiled patterns
     def link_repl(match):
         text = match.group(1)
         url = match.group(2)
         translated_text = translate_text_raw(text, to_compressed)
         return add_placeholder(f"[{translated_text}]({url})")
-    line = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', link_repl, line)
+    line = LINK_PATTERN.sub(link_repl, line)
 
-    # Protect markdown bold/emphasis **text**, *text*, __text__, _text_
+    # Protect markdown bold/emphasis **text**, *text*, __text__, _text_ using pre-compiled patterns
     def bold_repl_2(match):
         text = match.group(1)
         translated_text = translate_text_raw(text, to_compressed)
@@ -233,17 +274,16 @@ def translate_line(line: str, to_compressed: bool) -> str:
         translated_text = translate_text_raw(text, to_compressed)
         return add_placeholder(f"_{translated_text}_")
 
-    line = re.sub(r'\*\*([^*]+)\*\*', bold_repl_2, line)
-    line = re.sub(r'\*([^*]+)\*', bold_repl_1, line)
-    line = re.sub(r'__([^_]+)__', bold_repl_under2, line)
-    line = re.sub(r'_([^_]+)_', bold_repl_under1, line)
+    line = BOLD_PATTERN_2.sub(bold_repl_2, line)
+    line = BOLD_PATTERN_1.sub(bold_repl_1, line)
+    line = BOLD_PATTERN_UNDER2.sub(bold_repl_under2, line)
+    line = BOLD_PATTERN_UNDER1.sub(bold_repl_under1, line)
 
-    # Protect paths and filenames
-    path_regex = r'\b(?:~?/)?[\w\-]+(?:/[\w\-]+)*\.(?:py|js|json|md|yaml|sh|txt|yml|db|jsonl|wasm|html|cffi)\b|\b/?[\w\-]+/[\w\-\./]+\b'
-    line = re.sub(path_regex, lambda m: add_placeholder(m.group(0)), line)
+    # Protect paths and filenames using pre-compiled patterns
+    line = PATH_REGEX.sub(lambda m: add_placeholder(m.group(0)), line)
 
-    # Protect decimals
-    line = re.sub(r'\b\d+\.\d+\b', lambda m: add_placeholder(m.group(0)), line)
+    # Protect decimals using pre-compiled patterns
+    line = DECIMAL_PATTERN.sub(lambda m: add_placeholder(m.group(0)), line)
 
     # Perform main translations on the remaining unprotected text
     line = translate_text_raw(line, to_compressed)

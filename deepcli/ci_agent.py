@@ -10,7 +10,7 @@ Artifact output is metadata only (no model text).
 Supports:
   - pull_request opened/synchronize/reopened → PR review comment
   - issue_comment (created) with @deepcore/@deepseek triggers → issue reply
-  - pull_request_review_comment (created) with @deepcore/@deepseek triggers → PR review reply
+  - pull_request_review_comment (created) with @deepcore/@deepseek triggers → threaded review reply
 """
 import os
 import re
@@ -246,6 +246,35 @@ def _post_gh_comment(gh_env, repo, target, body, kind="issue"):
         return False, f"{type(e).__name__}: {str(e)[:100]}"
 
 
+def _post_gh_review_reply(gh_env, repo, pr_number, comment_id, body, timeout=90):
+    """
+    Post a threaded reply to a pull request review comment via gh api.
+    Lands in the source review thread (in_reply_to) instead of the general PR conversation.
+    Returns (ok, error).
+    """
+    cmd = [
+        "gh",
+        "api",
+        "--method",
+        "POST",
+        f"repos/{repo}/pulls/{pr_number}/comments",
+        "-f",
+        f"body={body[:2000]}",
+        "-F",
+        f"in_reply_to={comment_id}",
+    ]
+    try:
+        r = subprocess.run(cmd, env=gh_env, capture_output=True, text=True, timeout=timeout)
+        if r.returncode == 0:
+            return True, None
+        err = (r.stderr or r.stdout or "Unknown error")[:200]
+        return False, err
+    except subprocess.TimeoutExpired:
+        return False, "Timeout posting comment"
+    except Exception as e:
+        return False, f"{type(e).__name__}: {str(e)[:100]}"
+
+
 def _handle_issue_comment(event, session, peer, gh_env, thinking):
     """Reply to an issue (or PR-as-issue) comment that mentioned deepCore."""
     comment = event.get("comment") or {}
@@ -369,18 +398,28 @@ def run_ci(event, session, peer, workspace, operator_token):
 
     # --- pull_request_review_comment path ---
     # Review comments have comment + pull_request but no issue key.
-    # Handle them as PR comments (reply to review thread).
+    # Handle them as threaded replies within the review thread.
     if event.get("comment") and event.get("pull_request") and not event.get("issue"):
+        # Only the 'created' action should call DeepSeek or post a reply.
+        if event.get("action") != "created":
+            return {
+                "actions": [],
+                "event": "pull_request_review_comment",
+                "pr": (event.get("pull_request") or {}).get("number"),
+                "account": account,
+            }
+
         comment = event.get("comment") or {}
         body = (comment.get("body") or "").strip()
+        comment_id = comment.get("id")
         pr = event.get("pull_request") or {}
         pr_number = pr.get("number")
         repo = (event.get("repository") or {}).get("full_name")
 
-        if not pr_number or not repo:
+        if not pr_number or not repo or not comment_id:
             return {
                 "actions": [],
-                "error": "pull_request_review_comment missing pull_request.number or repository.full_name",
+                "error": "pull_request_review_comment missing pull_request.number, repository.full_name, or comment.id",
                 "event": "pull_request_review_comment",
             }
 
@@ -425,9 +464,9 @@ def run_ci(event, session, peer, workspace, operator_token):
                 "soft_skippable": is_soft_skippable_error(e),
             }
 
-        # Post as PR comment (gh pr comment works for both regular and review comments).
+        # Post as a threaded reply in the source review comment's thread.
         reply = f"**`deepCore`**\n\n{analysis}"
-        ok, err = _post_gh_comment(gh_env, repo, pr_number, reply, kind="pr")
+        ok, err = _post_gh_review_reply(gh_env, repo, pr_number, comment_id, reply)
         if not ok:
             print(f"::error::Failed to post PR review reply: {err}")
             return {

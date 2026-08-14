@@ -7,6 +7,7 @@ name: DeepSeek CI – Agentic Automation
 # chat_session_id is created via /api/v0/chat_session/create before completion.
 # Streaming SSE read timeout allows multi-minute thinking.
 # GitLab CI/CD is a separate scope.
+# Hard-fail on missing cookies/token/session (no soft-skip).
 
 on:
   pull_request:
@@ -50,12 +51,13 @@ jobs:
         )
       )
     permissions:
-      contents: read
+      contents: write
       pull-requests: write
       issues: write
       actions: read
 
     env:
+      # ARCHWIZ_GITHUB_TOKEN (4RCHW12) supersedes all other GH tokens
       OPERATOR_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
       GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
       # Prefer dispatch payload when provided; otherwise use the real event
@@ -64,6 +66,7 @@ jobs:
       DEEPSEEK_ACCOUNT: ${{ github.event.inputs.account || 'account-1' }}
       # Model auth — names from docs/ops/DEEPSEEK-CI.md + Issue #184 catalog.
       # First non-empty wins inside session_manager._token_from_env.
+      # Cookies are primary auth path for the webWrapper (WASM + 🍪).
       DEEPSEEK_TOKEN_PRIMARY: ${{ secrets.DEEPSEEK_TOKEN_PRIMARY || secrets.DEEPSEEK_TOKEN_ACCOUNT_1 || secrets.DEEPSEEK_TOKEN || secrets.DEEPSEEK_API_KEY || secrets.DEEPSEEK_AUTH_TOKEN || secrets.NEXUSCLI_TOKEN }}
       DEEPSEEK_TOKEN: ${{ secrets.DEEPSEEK_TOKEN || secrets.DEEPSEEK_API_KEY || secrets.DEEPSEEK_AUTH_TOKEN || secrets.NEXUSCLI_TOKEN }}
       DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
@@ -86,7 +89,7 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ env.OPERATOR_TOKEN }}
-          persist-credentials: false
+          persist-credentials: true
 
       - name: Setup Node.js (for PoW WASM)
         uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af  # v4.1.0

@@ -202,3 +202,15 @@ To maintain this SSOT, automated sweeps (2-hour cron) and manual operator audits
 ---
 
 *Consolidated & Approved by Grok Orchestration Engine (xAI) on behalf of the Termux Monorepo Operators, 2026.*
+
+## Current Work & Dynamic Response Lags
+
+| PR/Issue | Message Response Lag | Programmatic Response Lag | State |
+|---|---|---|---|
+| PR #174 | N/A | N/A | CLOSED |
+
+### Calculated Global Averages
+- Message ack lag: 45.0 min
+- Programmatic lag: 2.0 h
+- Suggested debounce: 45.0 min
+- Suggested stale: 2.0 h

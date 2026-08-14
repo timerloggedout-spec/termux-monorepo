@@ -23,3 +23,4 @@
 | CE-19 | Four-plane architecture | P2 | | todo | |
 | CE-20 | Proposal process + nested registry | P0 | grok-archw1z | done | this tree |
 | CE-21 | CONSENSUS.md + promote process docs to master | P0 | grok-archw1z | doing | this PR |
+| CE-22 | Agentic Haiku, Test Suite Triage, & CI Soft-Skip Gating | P2 | jules | done | _user-thoughts.md, deepcli/ci_mode.py |

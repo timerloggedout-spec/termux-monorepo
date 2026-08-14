@@ -25,6 +25,22 @@ STREAM_CONNECT_TIMEOUT = int(os.environ.get("DEEPSEEK_CONNECT_TIMEOUT", "30"))
 STREAM_READ_TIMEOUT = int(os.environ.get("DEEPSEEK_READ_TIMEOUT", "1200"))
 
 
+_AUTH_RE_PATTERNS = [
+    re.compile(r"\bAuthorization Failed\b", re.IGNORECASE),
+    re.compile(r"\binvalid token\b", re.IGNORECASE),
+    re.compile(r"\b40003\b"),
+    re.compile(r"\bHTTP\s+(401|403)\b"),
+]
+
+_CONN_RE_PATTERNS = [
+    re.compile(r"\bConnection\b", re.IGNORECASE),
+    re.compile(r"\btimeout\b", re.IGNORECASE),
+    re.compile(r"\btimed out\b", re.IGNORECASE),
+    re.compile(r"\bresolve\b", re.IGNORECASE),
+    re.compile(r"\bunreachable\b", re.IGNORECASE),
+]
+
+
 def is_soft_skippable_error(e: Exception) -> bool:
     """
     Classify failures: only return True for authentication/credential failures
@@ -32,16 +48,16 @@ def is_soft_skippable_error(e: Exception) -> bool:
     server/logic defects remain hard-failures.
     """
     err_str = str(e)
-    # Auth/token/cookie failures (expired token, 401, 403, 40003, invalid token)
-    auth_keywords = ["Authorization Failed", "invalid token", "40003", "401", "403"]
-    if any(kw in err_str for kw in auth_keywords):
+
+    # 1. Strictly anchored Auth/Credential Failures
+    if any(pat.search(err_str) for pat in _AUTH_RE_PATTERNS):
         return True
 
-    # Connection/timeout/resolving failures
+    # 2. Connection/timeout/resolving failures
     conn_exceptions = ["Connection", "Timeout", "NameResolution", "Dns", "AddrInfo"]
     if any(conn_exc in type(e).__name__ for conn_exc in conn_exceptions):
         return True
-    if any(conn_kw in err_str for conn_kw in ["Connection", "timeout", "timed out", "resolve", "unreachable"]):
+    if any(pat.search(err_str) for pat in _CONN_RE_PATTERNS):
         return True
 
     return False

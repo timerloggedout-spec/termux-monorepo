@@ -31,7 +31,7 @@ def sanitize_error_msg(e: str | Exception) -> str:
         return "Network connection failure (unable to connect or resolve host)."
     if "timeout" in err_str or "timed out" in err_str:
         return "Network timeout occurred while communicating with DeepSeek."
-    return f"DeepSeek system/API error. Details: {err_str[:80]}"
+    return "DeepSeek system/API error. Please check the workflow run logs for details."
 
 
 def _write_step_summary(reason: str, details_or_exception: str | Exception) -> None:
@@ -154,6 +154,13 @@ def main():
         if result.get("soft_skippable"):
             msg = f"DeepSeek API/Auth error detected: {result['error']}. Soft-skipping (exit 0) to keep CI gate green."
             print(f"::notice::{msg}")
+
+            result["skipped"] = True
+            result["reason"] = "api_auth_error"
+            result["message"] = msg
+
+            with open("deepseek_output.json", "w", encoding="utf-8") as f:
+                json.dump(result, f, indent=2)
 
             _write_step_summary("API/Auth error", result["error"])
             sys.exit(0)

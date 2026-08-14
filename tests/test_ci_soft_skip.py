@@ -3,8 +3,8 @@ import sys
 from pathlib import Path
 
 # Namespace hygiene: Temporarily remove deepcli nested path to import the outer package,
-# then restore sys.path and clear the deepcli sys.modules cache so other tests
-# (like test_sentinel_privileges) can load the inner deepcli subpackage cleanly.
+# then restore sys.path and clear the deepcli sys.modules cache (including child modules)
+# so other tests (like test_sentinel_privileges) can load the inner deepcli subpackage cleanly.
 original_path = sys.path.copy()
 deepcli_dir = str(Path(__file__).resolve().parent.parent / "deepcli")
 while deepcli_dir in sys.path:
@@ -15,8 +15,10 @@ try:
     from deepcli.ci_mode import sanitize_error_msg
 finally:
     sys.path = original_path
-    if "deepcli" in sys.modules:
-        del sys.modules["deepcli"]
+    # Clean up cached imports to avoid parent package pollution
+    to_delete = [m for m in sys.modules if m == "deepcli" or m.startswith("deepcli.")]
+    for m in to_delete:
+        del sys.modules[m]
 
 def test_is_soft_skippable_error():
     # Authentication errors should be skippable
@@ -44,5 +46,6 @@ def test_sanitize_error_msg():
     conn_sanitized = sanitize_error_msg("Failed to resolve host chat.deepseek.com")
     assert "Network connection failure" in conn_sanitized
 
-    generic_err = sanitize_error_msg("Unknown error: some random crash")
-    assert "Unknown error" in generic_err
+    # Falls back to completely safe, generic message to prevent response body exposure
+    generic_err = sanitize_error_msg("Unknown error: some random crash and response body with secret token")
+    assert generic_err == "DeepSeek system/API error. Please check the workflow run logs for details."

@@ -20,28 +20,32 @@
 
 | Trigger | How |
 |---------|-----|
-| Mention | Comment `@deepseek`, `@deepseek-ci`, or `@deepCore` (case-insensitive) on a **pull request** — OWNER/MEMBER/COLLABORATOR only |
+| Mention | Comment `@deepseek`, `@deepseek-ci`, or `@deepCore` (case-insensitive) on a **pull request** or **issue** — OWNER/MEMBER/COLLABORATOR only |
 | Label | Add `deepseek-ci`, `deepseek`, or `deepCore` |
-| Dispatch | Actions → DeepSeek CI – Agentic (safe) → Run workflow. `pr_number` must be a positive decimal integer (e.g. `163`); leaving empty intentionally skips PR review |
+| Dispatch | Actions → DeepSeek CI – Agentic → Run workflow |
 
 Mirrors Gemini (`@gemini-cli` / `sparkFlux`) and Jules (`@jules` / `heyVern`) patterns.
 
 ## Secrets (repository-scoped)
 
-Model auth — **first non-empty wins**:
+Model auth — **first non-empty wins** (see `deepcli/session_manager.py::_token_from_env` + Issue #184 catalog):
 
-1. `DEEPSEEK_TOKEN` (preferred)
-2. `DEEPSEEK_API_KEY`
-3. `DEEPSEEK_AUTH_TOKEN`
-4. `NEXUSCLI_TOKEN`
+1. `DEEPSEEK_TOKEN_PRIMARY` / `DEEPSEEK_TOKEN_ACCOUNT_1`
+2. `DEEPSEEK_TOKEN` (preferred short name)
+3. `DEEPSEEK_API_KEY`
+4. `DEEPSEEK_AUTH_TOKEN`
+5. `NEXUSCLI_TOKEN`
+6. Cookie imports: `DEEPSEEK_COOKIES` / `DEEPSEEK_COOKIES_1` / `COOKIES` (JSON cookie dump or plain `ds_session_id`)
+7. Secondary: `DEEPSEEK_TOKEN_SECONDARY` / `DEEPSEEK_COOKIES_2`
 
 GitHub writes: `ARCHWIZ_GITHUB_TOKEN` → `OPERATOR_GITHUB_TOKEN` → `OPERATOR_TOKEN` → `GITHUB_TOKEN`.
 
-**If the gate reports "DeepSeek model auth unset":**
+**If the gate reports "DeepSeek model auth unset" / soft-skips:**
 - Confirm the secret is a **repository** secret (Settings → Secrets and variables → Actions → Repository secrets), not only an Environment secret.
 - Environment secrets require `jobs.<id>.environment: <name>` in the workflow; this workflow uses repo secrets only.
-- Name must match one of the four keys above exactly (case-sensitive).
+- Name must match one of the keys above exactly (case-sensitive).
 - Empty value counts as unset.
+- Cookie blobs: store the full exported cookie JSON or the raw `ds_session_id` value; the probe extracts `ds_session_id` automatically.
 
 Never use a GitHub PAT as DeepSeek model auth. Never use `DEEPSEEK_TOKEN` for `gh` / REST admin calls.
 

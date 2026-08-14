@@ -27,7 +27,7 @@ on:
         default: 'account-1'
 
 concurrency:
-  group: deepseek-ci-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
+  group: deepseek-ci-${{ github.event.pull_request.number || github.event.issue.number || github.event.comment.id || github.run_id }}
   cancel-in-progress: true
 
 jobs:

@@ -87,6 +87,10 @@ def _cache_path(session_id: str, account: str = "primary") -> str:
         os.chmod(store_dir, 0o700)
     except Exception:
         pass
+
+    if ".." in str(session_id) or str(session_id).startswith("/") or "\\" in str(session_id):
+        raise ValueError("Invalid file path")
+
     # Sanitize session_id filename component
     safe_id = "".join(c if c.isalnum() or c in "-_." else "_" for c in str(session_id))
     path = os.path.join(store_dir, f"{safe_id}.json")

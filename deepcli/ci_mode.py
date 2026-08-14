@@ -17,6 +17,44 @@ from .ci_agent import run_ci
 from .session_manager import ensure_session, normalize_account, _token_from_env
 
 
+def sanitize_error_msg(e: str | Exception) -> str:
+    """
+    Sanitize error message to prevent provider response body or credential-derived detail leakage
+    into step summaries. Returns a generic, safe string.
+    """
+    err_str = str(e)
+    if "40003" in err_str or "Authorization Failed" in err_str or "invalid token" in err_str:
+        return "Authentication failure (invalid, expired, or revoked DeepSeek credentials)."
+    if "401" in err_str or "403" in err_str:
+        return "HTTP 401/403: DeepSeek web wrapper authorization declined."
+    if "Connection" in err_str or "resolve" in err_str or "unreachable" in err_str:
+        return "Network connection failure (unable to connect or resolve host)."
+    if "timeout" in err_str or "timed out" in err_str:
+        return "Network timeout occurred while communicating with DeepSeek."
+    return f"DeepSeek system/API error. Details: {err_str[:80]}"
+
+
+def _write_step_summary(reason: str, details_or_exception: str | Exception) -> None:
+    """
+    Helper to safely populate GITHUB_STEP_SUMMARY with a sanitized error message
+    and avoid copy-paste technical debt. Logs exceptions if summary write fails.
+    """
+    summary_file = os.environ.get("GITHUB_STEP_SUMMARY")
+    if not summary_file:
+        return
+
+    sanitized = sanitize_error_msg(details_or_exception)
+    try:
+        with open(summary_file, "a", encoding="utf-8") as sf:
+            sf.write(
+                f"\n### ⚠ DeepSeek CI Skipped\n"
+                f"* **Reason:** {reason}\n"
+                f"* **Details:** {sanitized}\n"
+            )
+    except Exception as gha_err:
+        print(f"Warning: Failed to write GITHUB_STEP_SUMMARY: {gha_err}", file=sys.stderr)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--event", required=True)
@@ -72,17 +110,10 @@ def main():
         )
     except Exception as e:
         error_msg = f"{type(e).__name__}: {str(e)[:200]}"
-        msg = f"DeepSeek session initialization failed (likely expired/invalid credentials): {error_msg}. Soft-skipping CI agent (exit 0) so functional gate remains green."
+        msg = f"DeepSeek session initialization failed: {error_msg}. Soft-skipping CI agent (exit 0) so functional gate remains green."
         print(f"::notice::{msg}")
 
-        # Populate GHA step summary with skipped status so it is visible in the workflow UI
-        summary_file = os.environ.get("GITHUB_STEP_SUMMARY")
-        if summary_file:
-            try:
-                with open(summary_file, "a", encoding="utf-8") as sf:
-                    sf.write(f"\n### ⚠ DeepSeek CI Skipped\n* **Reason:** Session initialization failed\n* **Details:** `{error_msg}`\n")
-            except Exception:
-                pass
+        _write_step_summary("Session initialization failed", e)
 
         result = {
             "actions": [],
@@ -124,14 +155,7 @@ def main():
             msg = f"DeepSeek API/Auth error detected: {result['error']}. Soft-skipping (exit 0) to keep CI gate green."
             print(f"::notice::{msg}")
 
-            # Populate GHA step summary with skipped status so it is visible in the workflow UI
-            summary_file = os.environ.get("GITHUB_STEP_SUMMARY")
-            if summary_file:
-                try:
-                    with open(summary_file, "a", encoding="utf-8") as sf:
-                        sf.write(f"\n### ⚠ DeepSeek CI Skipped\n* **Reason:** API/Auth error\n* **Details:** `{result['error']}`\n")
-                except Exception:
-                    pass
+            _write_step_summary("API/Auth error", result["error"])
             sys.exit(0)
         sys.exit(1)
 

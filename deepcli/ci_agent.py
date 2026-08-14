@@ -10,6 +10,7 @@ Artifact output is metadata only (no model text).
 Supports:
   - pull_request opened/synchronize/reopened → PR review comment
   - issue_comment (created) with @deepcore/@deepseek triggers → issue reply
+  - pull_request_review_comment (created) with @deepcore/@deepseek triggers → PR review reply
 """
 import os
 import re
@@ -361,9 +362,105 @@ def run_ci(event, session, peer, workspace, operator_token):
     account = session.get("account") or peer.get("account") or "primary"
 
     # --- issue_comment path (issue or PR discussion) ---
-    # GitHub delivers issue_comment for both issues and PRs.
+    # GitHub delivers issue_comment for both issues and PRs (with issue key).
+    # pull_request_review_comment events have comment + pull_request but no issue key.
     if event.get("comment") and event.get("issue"):
         return _handle_issue_comment(event, session, peer, gh_env, thinking)
+
+    # --- pull_request_review_comment path ---
+    # Review comments have comment + pull_request but no issue key.
+    # Handle them as PR comments (reply to review thread).
+    if event.get("comment") and event.get("pull_request") and not event.get("issue"):
+        comment = event.get("comment") or {}
+        body = (comment.get("body") or "").strip()
+        pr = event.get("pull_request") or {}
+        pr_number = pr.get("number")
+        repo = (event.get("repository") or {}).get("full_name")
+
+        if not pr_number or not repo:
+            return {
+                "actions": [],
+                "error": "pull_request_review_comment missing pull_request.number or repository.full_name",
+                "event": "pull_request_review_comment",
+            }
+
+        # Strip trigger tokens so the model sees the actual request.
+        prompt = _TRIGGER_RE.sub("", body).strip()
+        if not prompt:
+            prompt = (
+                "You were mentioned in a pull request review comment. "
+                "Acknowledge and ask how you can help (one short paragraph)."
+            )
+
+        pr_title = pr.get("title") or ""
+        messages = [
+            {
+                "role": "system",
+                "content": (
+                    "You are deepCore (DeepSeek CI agent) in Expert mode with thinking enabled. "
+                    "Reply helpfully and concisely to the user's request on this GitHub pull request review. "
+                    "Do not invent secrets, tokens, or private data. Keep the reply under ~1500 chars."
+                ),
+            },
+            {
+                "role": "user",
+                "content": (
+                    f"PR #{pr_number}: {pr_title}\n\n"
+                    f"User request in review comment:\n{prompt}"
+                ),
+            },
+        ]
+
+        try:
+            analysis = deepseek_chat(session, messages, thinking=thinking)
+        except Exception as e:
+            error_msg = f"{type(e).__name__}: {str(e)[:200]}"
+            print(f"::error::DeepSeek stream error (pull_request_review_comment): {error_msg}")
+            return {
+                "actions": [],
+                "error": f"DeepSeek API error: {error_msg}",
+                "event": "pull_request_review_comment",
+                "pr": pr_number,
+                "account": account,
+                "soft_skippable": is_soft_skippable_error(e),
+            }
+
+        # Post as PR comment (gh pr comment works for both regular and review comments).
+        reply = f"**`deepCore`**\n\n{analysis}"
+        ok, err = _post_gh_comment(gh_env, repo, pr_number, reply, kind="pr")
+        if not ok:
+            print(f"::error::Failed to post PR review reply: {err}")
+            return {
+                "actions": [{
+                    "type": "pr_review_reply_failed",
+                    "pr": pr_number,
+                    "comment_posted": False,
+                    "error": err,
+                    "account": account,
+                }],
+                "error": f"Failed to post PR review reply: {err}",
+                "event": "pull_request_review_comment",
+                "pr": pr_number,
+                "account": account,
+                "chat_session_id": session.get("chat_session_id"),
+            }
+
+        return {
+            "actions": [{
+                "type": "pr_review_reply",
+                "pr": pr_number,
+                "comment_posted": True,
+                "thinking": thinking,
+                "account": account,
+                "chat_session_id": session.get("chat_session_id"),
+            }],
+            "event": "pull_request_review_comment",
+            "pr": pr_number,
+            "provider_used": peer.get("provider", "deepseek"),
+            "thinking": thinking,
+            "account": account,
+            "chat_session_id": session.get("chat_session_id"),
+        }
 
     # --- PR lifecycle path ---
     pr_number = event.get("pull_request", {}).get("number")

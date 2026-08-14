@@ -24,6 +24,45 @@ DEEPSEEK_BASE = "https://chat.deepseek.com"
 STREAM_CONNECT_TIMEOUT = int(os.environ.get("DEEPSEEK_CONNECT_TIMEOUT", "30"))
 STREAM_READ_TIMEOUT = int(os.environ.get("DEEPSEEK_READ_TIMEOUT", "1200"))
 
+
+_AUTH_RE_PATTERNS = [
+    re.compile(r"\bAuthorization Failed\b", re.IGNORECASE),
+    re.compile(r"\binvalid token\b", re.IGNORECASE),
+    re.compile(r"\b40003\b"),
+    re.compile(r"\bHTTP\s+(401|403)\b"),
+]
+
+_CONN_RE_PATTERNS = [
+    re.compile(r"\bConnection\b", re.IGNORECASE),
+    re.compile(r"\btimeout\b", re.IGNORECASE),
+    re.compile(r"\btimed out\b", re.IGNORECASE),
+    re.compile(r"\bresolve\b", re.IGNORECASE),
+    re.compile(r"\bunreachable\b", re.IGNORECASE),
+]
+
+
+def is_soft_skippable_error(e: Exception) -> bool:
+    """
+    Classify failures: only return True for authentication/credential failures
+    or transient connection/network/timeout errors. Any other code crashes or
+    server/logic defects remain hard-failures.
+    """
+    err_str = str(e)
+
+    # 1. Strictly anchored Auth/Credential Failures
+    if any(pat.search(err_str) for pat in _AUTH_RE_PATTERNS):
+        return True
+
+    # 2. Connection/timeout/resolving failures
+    conn_exceptions = ["Connection", "Timeout", "NameResolution", "Dns", "AddrInfo"]
+    if any(conn_exc in type(e).__name__ for conn_exc in conn_exceptions):
+        return True
+    if any(pat.search(err_str) for pat in _CONN_RE_PATTERNS):
+        return True
+
+    return False
+
+
 # Triggers stripped from the user prompt before sending to the model.
 _TRIGGER_RE = re.compile(
     r"(?i)@(?:deepcore|deepseek-ci|deepseek)\b",
@@ -260,6 +299,7 @@ def _handle_issue_comment(event, session, peer, gh_env, thinking):
             "event": "issue_comment",
             "issue": issue_number,
             "account": account,
+            "soft_skippable": is_soft_skippable_error(e),
         }
 
     # Prefix with moniker for clarity in the thread.
@@ -378,6 +418,7 @@ def run_ci(event, session, peer, workspace, operator_token):
                 "event": action,
                 "pr": pr_number,
                 "account": account,
+                "soft_skippable": is_soft_skippable_error(e),
             }
 
         comment_ok, comment_error = _post_gh_comment(

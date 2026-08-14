@@ -3,7 +3,8 @@ from workspace.compression_sandbox.cedrlang.cedrlang import (
     compile_doc,
     decompile_doc,
     compress,
-    expand
+    expand,
+    caveman
 )
 
 def test_1337speak_and_grimoire_translation():
@@ -107,3 +108,42 @@ def test_link_protection_and_translation():
     compiled = compile_doc(orig)
     assert compiled == expected
     assert decompile_doc(compiled) == orig
+
+def test_emerging_technologies_procurement_mappings():
+    # Test compilation of new mappings
+    orig = "We are researching emerging technology curation and procurement compliance."
+    expected = "We are researching em_t3ch cur473 and pr0cur3 c0mp1."
+    compiled = compile_doc(orig)
+    assert compiled == expected
+
+    # Test decompilation back to original
+    decompiled = decompile_doc(compiled)
+    assert decompiled == orig
+
+    # Test casing preservation
+    assert compile_doc("Procurement") == "Pr0cur3"
+    assert decompile_doc("Pr0cur3") == "Procurement"
+
+    assert compile_doc("PROCUREMENT") == "PR0CUR3"
+    assert decompile_doc("PR0CUR3") == "PROCUREMENT"
+
+    # Test plurals
+    assert compile_doc("Emerging Technologies") == "Em_t3chs"
+    assert decompile_doc("Em_t3chs") == "Emerging Technologies"
+
+def test_caveman_six_lines():
+    # Test without max_up (default)
+    res1 = caveman("success leads to update")
+    assert res1 == "success → update"
+
+    # Test with max_up=True
+    res2 = caveman("success leads to update", max_up=True)
+    assert res2 == "SUCCESS → UPDATE"
+
+    # Test with surrounding spaces for status matching
+    res3 = caveman(" success leads to update ")
+    assert res3 == "✓ → ~"
+
+    # Test stopword stripping
+    res4 = caveman("the quick brown fox", max_up=True)
+    assert res4 == "QUICK BROWN FOX"

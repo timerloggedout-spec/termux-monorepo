@@ -134,15 +134,14 @@ jobs:
 
       # Persistent session reuse is intentional: the cache retains the browser
       # cookie jar (including aws-waf-token), chat session, and PoW-compatible state.
+      # Scope the cache to this repository and exact Git ref; do not restore a
+      # broad prefix from another branch or pull-request head.
       - name: Cache DeepSeek session (Account-1 / primary)
         uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57  # v4.2.0
         id: cache-session
         with:
           path: ${{ runner.temp }}/.deepseek-cache
-          key: deepseek-session-account1-${{ runner.os }}-${{ hashFiles('deepcli/session_manager.py') }}
-          restore-keys: |
-            deepseek-session-account1-${{ runner.os }}-
-            deepseek-session-primary-${{ runner.os }}-
+          key: deepseek-session-${{ github.repository_id }}-${{ github.ref }}-account1-${{ runner.os }}-${{ hashFiles('deepcli/session_manager.py') }}
 
       - name: Run DeepSeek CI Agent (Account-1 priority)
         env:

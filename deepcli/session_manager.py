@@ -15,6 +15,7 @@ Credential resolution (Issue #184 catalog + docs/ops/DEEPSEEK-CI.md):
 """
 import os
 import json
+import re
 import subprocess
 import time
 from pathlib import Path
@@ -34,6 +35,7 @@ ACCOUNT_ALIASES = {
     "2": "secondary",
     "secondary": "secondary",
 }
+COOKIE_NAME_RE = re.compile(r"^[!#$%&'*+.^_`|~0-9A-Za-z-]+$")
 
 
 def normalize_account(name: str | None) -> str:
@@ -54,21 +56,32 @@ def _extract_cookie_jar(raw: str | None) -> dict[str, str]:
 
     cookies = data if isinstance(data, list) else data.get("cookies", data)
     if isinstance(cookies, dict):
+        # Keep support for a direct {"ds_session_id": "..."} map while
+        # rejecting metadata-bearing JSON objects and malformed cookie names.
         return {
-            str(name): str(value)
-            for name, value in cookies.items()
-            if value is not None and str(value).strip()
+            name: value
+            for raw_name, raw_value in cookies.items()
+            if isinstance(raw_name, str)
+            and COOKIE_NAME_RE.fullmatch(raw_name.strip())
+            and isinstance(raw_value, (str, int, float))
+            and (name := raw_name.strip())
+            and (value := str(raw_value).strip())
         }
     if not isinstance(cookies, list):
         return {}
-    return {
-        str(cookie["name"]): str(cookie["value"])
-        for cookie in cookies
-        if isinstance(cookie, dict)
-        and cookie.get("name")
-        and cookie.get("value") is not None
-        and str(cookie.get("value")).strip()
-    }
+    jar: dict[str, str] = {}
+    for cookie in cookies:
+        if not isinstance(cookie, dict):
+            continue
+        raw_name = cookie.get("name")
+        raw_value = cookie.get("value")
+        if not isinstance(raw_name, str) or not isinstance(raw_value, (str, int, float)):
+            continue
+        name = raw_name.strip()
+        value = str(raw_value).strip()
+        if name and value and COOKIE_NAME_RE.fullmatch(name):
+            jar[name] = value
+    return jar
 
 
 def _extract_ds_session_id(raw: str) -> str | None:
@@ -103,7 +116,6 @@ def _cookie_jar_from_env(account: str) -> dict[str, str]:
         "DEEPSEEK_WAF_TOKEN",
         "AWS_WAF_TOKEN",
         "WAF_AWS_TOKEN",
-        "WAF-AWS-TOKEN",
     )
     if waf_token:
         jar["aws-waf-token"] = waf_token
@@ -367,15 +379,20 @@ def ensure_session(cache_dir, account: str | None = None):
                 and session.get("expires", 0) > time.time()
                 and session.get("token")
             ):
-                # An explicitly supplied browser/WAF cookie refreshes the
-                # persistent jar without requiring cookies.json to exist.
+                # Persistent browser state wins by default. This avoids an
+                # unchanged environment secret overwriting a fresher WAF
+                # cookie retained from a prior verified session. Set
+                # DEEPSEEK_WAF_TOKEN_REFRESH=1 for an intentional replacement.
                 refreshed_jar = _cookie_jar_from_env(account)
                 cached_jar = session.get("cookies")
                 if not isinstance(cached_jar, dict):
                     cached_jar = {}
+                refresh_requested = os.environ.get("DEEPSEEK_WAF_TOKEN_REFRESH", "").strip().lower() in {
+                    "1", "true", "yes",
+                }
                 changed = False
                 for name, value in refreshed_jar.items():
-                    if cached_jar.get(name) != value:
+                    if name not in cached_jar or (refresh_requested and cached_jar.get(name) != value):
                         cached_jar[name] = value
                         changed = True
                 session["cookies"] = cached_jar

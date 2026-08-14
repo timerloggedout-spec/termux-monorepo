@@ -30,6 +30,24 @@ class DeepSeekWafSessionTests(unittest.TestCase):
             },
         )
 
+    def test_cookie_map_rejects_metadata_and_trims_values(self):
+        jar = session_manager._extract_cookie_jar(
+            json.dumps(
+                {
+                    "cookies": {
+                        "ds_session_id": " session-value ",
+                        "aws-waf-token": " waf-value ",
+                        "metadata": {"ignored": True},
+                        "bad cookie name": "ignored",
+                    }
+                }
+            )
+        )
+        self.assertEqual(
+            jar,
+            {"ds_session_id": "session-value", "aws-waf-token": "waf-value"},
+        )
+
     def test_explicit_waf_env_extends_imported_cookie_jar(self):
         exported = json.dumps(
             {"cookies": [{"name": "ds_session_id", "value": "session-value"}]}
@@ -70,7 +88,10 @@ class DeepSeekWafSessionTests(unittest.TestCase):
     def test_resumed_session_refreshes_waf_cookie_and_persists_it(self):
         with tempfile.TemporaryDirectory() as temp_dir, patch.dict(
             os.environ,
-            {"DEEPSEEK_AWS_WAF_TOKEN": "new-waf-value"},
+            {
+                "DEEPSEEK_AWS_WAF_TOKEN": "new-waf-value",
+                "DEEPSEEK_WAF_TOKEN_REFRESH": "1",
+            },
             clear=True,
         ):
             cache_path = Path(temp_dir) / "primary" / "session.json"
@@ -91,6 +112,39 @@ class DeepSeekWafSessionTests(unittest.TestCase):
             persisted = json.loads(cache_path.read_text(encoding="utf-8"))
         self.assertEqual(session["cookies"]["aws-waf-token"], "new-waf-value")
         self.assertEqual(persisted["cookies"]["aws-waf-token"], "new-waf-value")
+
+    def test_workflow_cache_is_repo_and_ref_scoped_without_restore_prefix(self):
+        workflow = (Path(__file__).parent.parent / ".github/workflows/deepseek-ci.yml").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("github.repository_id", workflow)
+        self.assertIn("github.ref", workflow)
+        self.assertNotIn("restore-keys:", workflow)
+
+    def test_resumed_session_keeps_cached_waf_without_refresh_flag(self):
+        with tempfile.TemporaryDirectory() as temp_dir, patch.dict(
+            os.environ,
+            {"DEEPSEEK_AWS_WAF_TOKEN": "new-waf-value"},
+            clear=True,
+        ):
+            cache_path = Path(temp_dir) / "primary" / "session.json"
+            cache_path.parent.mkdir(mode=0o700)
+            cache_path.write_text(
+                json.dumps(
+                    {
+                        "account": "primary",
+                        "token": "bearer-value",
+                        "cookies": {"ds_session_id": "session-value", "aws-waf-token": "cached-waf-value"},
+                        "chat_session_id": "chat-id",
+                        "expires": time.time() + 3600,
+                    }
+                ),
+                encoding="utf-8",
+            )
+            session = session_manager.ensure_session(temp_dir, "primary")
+            persisted = json.loads(cache_path.read_text(encoding="utf-8"))
+        self.assertEqual(session["cookies"]["aws-waf-token"], "cached-waf-value")
+        self.assertEqual(persisted["cookies"]["aws-waf-token"], "cached-waf-value")
 
 
 if __name__ == "__main__":

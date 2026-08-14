@@ -10,6 +10,7 @@ name: DeepSeek CI – Agentic Automation
 
 on:
   pull_request:
+    pull_request_review_comment:
     types: [opened, synchronize, reopened]
   workflow_dispatch:
     inputs:
@@ -45,7 +46,7 @@ jobs:
       # Account-1 / primary is PRIORITY default
       DEEPSEEK_ACCOUNT: ${{ github.event.inputs.account || 'account-1' }}
       DEEPSEEK_TOKEN_PRIMARY: ${{ secrets.DEEPSEEK_TOKEN_PRIMARY || secrets.DEEPSEEK_TOKEN_ACCOUNT_1 || secrets.DEEPSEEK_TOKEN }}
-      DEEPSEEK_TOKEN_SECONDARY: ${{ secrets.DEEPSEEK_TOKEN_SECONDARY || secrets.DEEPSEEK_TOKEN_ACCOUNT_2 || secrets.DEEPSEEK_COOKIES_2 }}
+      DEEPSEEK_TOKEN: ${{ secrets.DEEPSEEK_TOKEN || secrets.DEEPSEEK_TOKEN_ACCOUNT_2 || secrets.DEEPSEEK_COOKIES_2 }}
       DEEPSEEK_COOKIES_2: ${{ secrets.DEEPSEEK_COOKIES_2 }}
       DEEPSEEK_THINKING: "true"
       DEEPSEEK_EXPERT: "true"
@@ -107,6 +108,12 @@ jobs:
             deepseek-session-primary-${{ runner.os }}-
 
       - name: Run DeepSeek CI Agent (Account-1 priority)
+      - name: Upload debug logs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: deepseek-debug-logs
+          path: logs/
         env:
           PYTHONPATH: ${{ github.workspace }}
         run: |

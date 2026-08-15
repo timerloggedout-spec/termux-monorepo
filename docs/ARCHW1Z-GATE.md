@@ -1,6 +1,6 @@
 # ArchW1z Gate Spine
 
-> **Status:** LIVE  
+> **Status:** LIVE
 > **Branches:** `master-staging` (hygiene) · `termux-smoke` (runtime surface)
 
 ## Two gates, one constitution
@@ -25,7 +25,7 @@ Every change that wants to reach `master` should survive both gates.
 python3 scripts/ci/repo_gate.py
 ```
 
-Workflow: `.github/workflows/repo-gate.yml`  
+Workflow: `.github/workflows/repo-gate.yml`
 Docs: this file + original Critical-Eval recommendation
 
 ### Design rules (non-negotiable)
@@ -48,7 +48,7 @@ Docs: this file + original Critical-Eval recommendation
 | High-confidence secrets | changed content | HARD |
 | Debt counters | whole index | RATCHET |
 
-Baseline: `scripts/ci/baseline.json`  
+Baseline: `scripts/ci/baseline.json`
 Lower debt with: `python3 scripts/ci/repo_gate.py --write-baseline`
 
 ---
@@ -61,7 +61,7 @@ python3 scripts/ci/termux_smoke.py --with-optional   # agent surfaces
 python3 scripts/ci/termux_smoke.py --json            # for agents
 ```
 
-Workflow: `.github/workflows/termux-smoke.yml`  
+Workflow: `.github/workflows/termux-smoke.yml`
 Full docs: [`docs/TERMUX-SMOKE.md`](TERMUX-SMOKE.md)
 
 ### What it enforces (required)

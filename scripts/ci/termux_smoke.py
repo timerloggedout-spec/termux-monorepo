@@ -17,11 +17,14 @@ Design rules (same constitution as repo_gate):
   * fail-fast on broken entrypoints; soft-skip optional components with NOTES
   * never mutates the repo or the device state
 
+Suites: see scripts/ci/termux_smoke/TRACKING.md
+
 Usage:
   python3 scripts/ci/termux_smoke.py
   python3 scripts/ci/termux_smoke.py --strict          # treat NOTES as FAIL
   python3 scripts/ci/termux_smoke.py --json            # machine-readable
   python3 scripts/ci/termux_smoke.py --with-optional   # also probe deepcli etc.
+  python3 scripts/ci/termux_smoke.py --light           # run only fast, essential checks
 
 Exit codes:
   0  all required checks passed
@@ -102,7 +105,7 @@ def run_cmd(argv: list[str], timeout: float = 15.0) -> tuple[int, str, str]:
             capture_output=True,
             text=True,
             timeout=timeout,
-            env={**os.environ, "PYTHONPATH": str(REPO_ROOT)},
+            env={**os.environ, "PYTHONPATH": str(REPO_ROOT), "PYTHONDONTWRITEBYTECODE": "1"},
         )
         return proc.returncode, proc.stdout.strip(), proc.stderr.strip()
     except FileNotFoundError:
@@ -116,7 +119,6 @@ def run_cmd(argv: list[str], timeout: float = 15.0) -> tuple[int, str, str]:
 # --------------------------------------------------------------------------- #
 # Required checks (must pass for gate green)
 # --------------------------------------------------------------------------- #
-
 
 def check_python_runtime(report: SmokeReport) -> None:
     v = sys.version_info
@@ -145,7 +147,7 @@ def check_repo_gate_importable(report: SmokeReport) -> None:
     if not path.exists():
         report.add(CheckResult("repo-gate-present", "FAIL", "scripts/ci/repo_gate.py missing"))
         return
-    rc, out, err = run_cmd([sys.executable, "-m", "py_compile", str(path)])
+    rc, out, err = run_cmd([sys.executable, "-B", "-m", "py_compile", str(path)])
     if rc != 0:
         report.add(CheckResult("repo-gate-compile", "FAIL", err or out or f"rc={rc}"))
     else:
@@ -154,7 +156,7 @@ def check_repo_gate_importable(report: SmokeReport) -> None:
 
 def check_self_compile(report: SmokeReport) -> None:
     path = REPO_ROOT / "scripts/ci/termux_smoke.py"
-    rc, out, err = run_cmd([sys.executable, "-m", "py_compile", str(path)])
+    rc, out, err = run_cmd([sys.executable, "-B", "-m", "py_compile", str(path)])
     if rc != 0:
         report.add(CheckResult("smoke-self-compile", "FAIL", err or out or f"rc={rc}"))
     else:
@@ -194,11 +196,33 @@ def check_writable_tmp(report: SmokeReport) -> None:
     except OSError as exc:
         report.add(CheckResult("writable-tmp", "FAIL", f"{tmp}: {exc}"))
 
+def check_connectors_suite(report: SmokeReport) -> None:
+    """Run scripts/ci/termux_smoke/connectors offline suite (#70 tracking)."""
+    entry = REPO_ROOT / "scripts/ci/termux_smoke/connectors/smoke_connectors.py"
+    connectors_dir = REPO_ROOT / ".github" / "connectors"
+    if not entry.is_file():
+        if connectors_dir.is_dir():
+            report.add(
+                CheckResult(
+                    "connectors-suite",
+                    "FAIL",
+                    "connectors present but scripts/ci/termux_smoke/connectors/smoke_connectors.py missing",
+                )
+            )
+        else:
+            report.add(CheckResult("connectors-suite", "NOTE", "no connectors tree and no suite entry", required=False))
+        return
+    rc, out, err = run_cmd([sys.executable, "-B", str(entry)], timeout=90.0)
+    detail = (out or err or f"rc={rc}").replace("\n", " | ")[:240]
+    if rc != 0:
+        report.add(CheckResult("connectors-suite", "FAIL", detail))
+    else:
+        report.add(CheckResult("connectors-suite", "PASS", detail or "ok"))
+
 
 # --------------------------------------------------------------------------- #
 # Optional / agent-surface checks (--with-optional)
 # --------------------------------------------------------------------------- #
-
 
 def check_deepcli_surface(report: SmokeReport) -> None:
     """Probe deepcli / multi-ai entrypoints without requiring network."""
@@ -236,7 +260,7 @@ def check_deepcli_surface(report: SmokeReport) -> None:
     ok = True
     details = []
     for launcher in launchers[:5]:
-        rc, out, err = run_cmd([sys.executable, "-m", "py_compile", str(launcher)])
+        rc, out, err = run_cmd([sys.executable, "-B", "-m", "py_compile", str(launcher)])
         rel = str(launcher.relative_to(REPO_ROOT))
         if rc != 0:
             ok = False
@@ -266,7 +290,7 @@ def check_archwiz_surface(report: SmokeReport) -> None:
     sample = sorted(py_files, key=lambda p: len(p.parts))[:8]
     failures = []
     for path in sample:
-        rc, out, err = run_cmd([sys.executable, "-m", "py_compile", str(path)], timeout=10.0)
+        rc, out, err = run_cmd([sys.executable, "-B", "-m", "py_compile", str(path)], timeout=10.0)
         if rc != 0:
             failures.append(f"{path.relative_to(REPO_ROOT)}: {err or out or rc}")
     if failures:
@@ -301,7 +325,6 @@ def check_termux_api_hint(report: SmokeReport) -> None:
 
 # --------------------------------------------------------------------------- #
 
-
 def print_human(report: SmokeReport) -> None:
     env = report.environment
     print(f"{BOLD}termux smoke{RESET} — python {env.get('python')} — termux={env.get('is_termux')}")
@@ -330,18 +353,23 @@ def main() -> int:
     parser.add_argument("--strict", action="store_true", help="treat optional FAILs as required")
     parser.add_argument("--json", action="store_true", help="emit machine-readable JSON")
     parser.add_argument("--with-optional", action="store_true", help="probe deepcli/archwiz surfaces")
+    parser.add_argument("--light", action="store_true", help="run only fast, essential checks")
     args = parser.parse_args()
 
     report = SmokeReport()
     report.environment = detect_environment()
 
     check_python_runtime(report)
+    report.environment["python"] = report.environment["python"] # redundant but safe
     check_repo_layout(report)
     check_repo_gate_importable(report)
     check_self_compile(report)
-    check_git_available(report)
-    check_bash_available(report)
-    check_writable_tmp(report)
+
+    if not args.light:
+        check_git_available(report)
+        check_bash_available(report)
+        check_writable_tmp(report)
+        check_connectors_suite(report)
 
     if args.with_optional:
         check_deepcli_surface(report)
@@ -354,12 +382,7 @@ def main() -> int:
                 r.required = True
 
     if args.json:
-        payload = {
-            "environment": report.environment,
-            "results": [asdict(r) for r in report.results],
-            "ok": not report.failed,
-        }
-        print(json.dumps(payload, indent=2))
+        print(json.dumps(asdict(report), indent=2))
     else:
         print_human(report)
 

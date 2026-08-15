@@ -1,46 +1,102 @@
 #!/usr/bin/env python3
-"""Additive post‑ingestion dispatch. Called by core.py after every session fetch.
-Non‑blocking: all heavy operations run via background scripts."""
+"""
+Enhanced event-sourced dispatch pipeline for ArchWiz.
+Decouples session ingestion from downstream updates (SSOT, Codex, Linear, etc.)
+"""
 import json
+import logging
 import sys
+import time
 from pathlib import Path
+from typing import List, Dict, Any, Callable
 
-HOME = Path.home()
+# Add root to path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from archwiz.config import ARCHWIZ_ROOT, LOG_DIR, SSOT_DIR
 
-def update_all(session_id: str, account: str = "primary"):
-    """Run downstream updates for a session. Lightweight — no subprocess calls."""
-    store = HOME / '.deepcli' / 'session_store' / account / f'{session_id}.json'
-    # Fallback to flat store if not in account subdir
-    if not store.exists():
-        store = HOME / '.deepcli' / 'session_store' / f'{session_id}.json'
-    if not store.exists():
-        return
+# Setup logging
+logging.basicConfig(
+    filename=LOG_DIR / "dispatch.log",
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s"
+)
+logger = logging.getLogger("dispatch")
 
-    try:
-        with open(store) as f:
-            msgs = json.load(f)
-    except Exception:
-        return
+class DispatchPipeline:
+    def __init__(self):
+        self.dispatchers: List[Callable[[str, List[Dict[str, Any]]], None]] = []
+        self._register_default_dispatchers()
 
-    # 1. Write session.json into export dir
-    export_dir = HOME / 'synthegration_exports' / account / session_id
-    export_dir.mkdir(parents=True, exist_ok=True)
-    (export_dir / 'session.json').write_text(json.dumps(msgs, indent=2))
+    def register(self, func: Callable[[str, List[Dict[str, Any]]], None]):
+        self.dispatchers.append(func)
 
-    # 2. Lexicon harvest (lightweight: single session)
-    try:
-        sys.path.insert(0, str(HOME / 'archwiz'))
-        from lexicon_harvest import harvest_session
-        harvest_session(session_id)
-    except Exception:
-        pass
+    def _register_default_dispatchers(self):
+        self.register(self.dispatch_ssot)
+        self.register(self.dispatch_codex)
+        self.register(self.dispatch_linear_hint)
 
-    # 3. Codex index (incremental add — does NOT rebuild full index)
-    try:
-        sys.path.insert(0, str(HOME / 'cli-synthegration'))
-        from synthegration_index import CodexIndex
-        codex = CodexIndex(HOME / 'cli-synthegration' / 'codex')
-        codex.index_conversation(session_id, session_id[:8], msgs)
-        codex._save()
-    except Exception:
-        pass
+    def dispatch_ssot(self, session_id: str, messages: List[Dict[str, Any]]):
+        """Sync to Session SSOT."""
+        try:
+            from archwiz.session_ssot import SessionSSOT
+            ssot = SessionSSOT()
+            ssot.sync_session(session_id, messages)
+            logger.info(f"SSOT sync successful for {session_id}")
+        except Exception as e:
+            logger.error(f"SSOT dispatch failed for {session_id}: {e}")
+
+    def dispatch_codex(self, session_id: str, messages: List[Dict[str, Any]]):
+        """Harvest code blocks into Codex."""
+        try:
+            from archwiz.codex import CodexIndex
+            # We use a global index for the pipeline
+            codex = CodexIndex(provider="pipeline")
+            count = codex.harvest(session_id, messages)
+            logger.info(f"Codex harvested {count} blocks from {session_id}")
+        except Exception as e:
+            logger.error(f"Codex dispatch failed for {session_id}: {e}")
+
+    def dispatch_linear_hint(self, session_id: str, messages: List[Dict[str, Any]]):
+        """Hint that a session might need Linear sync if it contains task updates."""
+        # Simple heuristic: look for "done" or "task" in the last message
+        if not messages:
+            return
+        last_msg = messages[-1].get("content", "").lower()
+        if any(kw in last_msg for kw in ["done", "fixed", "implemented", "task"]):
+            logger.info(f"Session {session_id} marked for Linear sync review")
+            # In a full implementation, we might trigger linear_sync.py here
+            # For now, we just log the hint.
+
+    def run(self, session_id: str, messages: List[Dict[str, Any]]):
+        """Execute all registered dispatchers."""
+        start_time = time.time()
+        logger.info(f"Starting dispatch for session {session_id} ({len(messages)} messages)")
+        
+        for dispatcher in self.dispatchers:
+            try:
+                dispatcher(session_id, messages)
+            except Exception as e:
+                logger.error(f"Dispatcher {dispatcher.__name__} crashed: {e}")
+        
+        duration = time.time() - start_time
+        logger.info(f"Dispatch completed for {session_id} in {duration:.2f}s")
+
+def trigger_dispatch(session_id: str, messages: List[Dict[str, Any]]):
+    """Entry point for core.py and other ingestors."""
+    pipeline = DispatchPipeline()
+    pipeline.run(session_id, messages)
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Usage: dispatch_pipeline.py <session_id> [path_to_json]")
+        sys.exit(1)
+    
+    sid = sys.argv[1]
+    msgs = []
+    
+    if len(sys.argv) > 2:
+        p = Path(sys.argv[2])
+        if p.exists():
+            msgs = json.loads(p.read_text())
+    
+    trigger_dispatch(sid, msgs)

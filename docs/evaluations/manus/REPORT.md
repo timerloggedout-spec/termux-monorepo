@@ -49,14 +49,12 @@ The user indicated "Linear is integrated," but the codebase lacked a functional 
 
 ---
 
-## 5. Security & Hygiene Assessment
+## 5. Data Preservation & ML Pipeline Policy
 
-The repository has a strict ban on session artifacts (`.pi`, `.deepcli`, `.cedar`, etc.).
-- **Current State:** Tip-of-tree is cleaner, but git history still contains sensitive browser profiles and session tokens.
-- **Proposal:** A coordinated **History Remediation** event is required. This involves:
-  1. Human-led credential rotation.
-  2. `git filter-repo` to excise all directories matching `BROWSER_PROFILE_RE` and `SESSION_ARTIFACT_RE`.
-  3. Forced update of all branches.
+The repository follows a **Strict Data Preservation** policy to support the creation of a specialized ML pipeline.
+- **Current State:** All branches, commit history, and session artifacts are preserved.
+- **Policy:** No history purging or branch deletion is permitted. Even after merging, feature branches are retained to provide a complete dataset for training and analysis.
+- **Security:** Credentials should be rotated at the provider level rather than purged from history to maintain the integrity of the development dataset.
 
 ---
 
@@ -83,7 +81,7 @@ The repository has a strict ban on session artifacts (`.pi`, `.deepcli`, `.cedar
 ### 6.3 Future Proposals
 1. **NexusCLI Retargeting:** Migrate all NexusCLI calls to the new `llm-api-hub` client.
 2. **Server Implementation:** Complete the `llm-api-hub/server` implementation to provide a local OpenAI-compatible endpoint.
-3. **History Remediation:** Execute the `scripts/ops/purge_history.sh` script to excise legacy sensitive data from the repository history.
+3. **ML Pipeline Ingestion:** Leverage the complete repository history and all branches for the specialized ML development pipeline.
 
 ---
 

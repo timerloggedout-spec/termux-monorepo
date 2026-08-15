@@ -1,0 +1,1076 @@
+[1;37m{[m
+  [1;34m"body"[m[1;37m:[m [32m"## Summary\n\nProduction path for Fully Automated ADE model plane + kai9000 split.\n\n### 1. `llm-api-hub/` (repo root — NOT a dotfile)\n\n- Versioned OpenAI-compatible contract, routing, capability matrix\n- Thin Python client for NexusCLI / agents\n- Server plan: bind to existing `multi-ai-cli` backends + OpenRouter\n\n**Secrets stay in** `~/.multi-ai-tokens/`, `~/.deepcli/`, etc.\n\n### 2. kai9000 split\n\n| Track | Location |\n|-------|----------|\n| ADE / dev skills + MCP templates | monorepo (`llm-api-hub`, `.agents`, archwiz) |\n| Crypto + Hermes | `_1-Projects/a/kai9000-crypto/` (SOURCE pin to upstream/fork) |\n\nDocs: `docs/ADE_KAI9000_SPLIT.md`\n\nUpstream: https://github.com/romanyukzhenya82-sketch/kai9000-orchestrator\n\n### 3. NexusCLI policy\n\nPR #40 remains **architectural hold**: must call hub / multi-ai-cli only — not a permanent parallel DeepSeek client.\n\n### Validation\n\n- Docs-only + client stub; no secret material\n- Branch from `master-staging`\n\n### Follow-ups\n\n- [ ] Implement `llm-api-hub/server` HTTP on :8787\n- [ ] Retarget NexusCLI to client\n- [ ] Selective ADE skill import from kai9000\n- [ ] TER-9 extracts still required for multi-ai-cli reliability\n\n<!-- devin-review-badge-begin -->\n\n---\n\n<a href=\"https://app.devin.ai/review/timerloggedout-spec/termux-monorepo/pull/43\" target=\"_blank\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://static.devin.ai/assets/gh-open-in-devin-review-dark.svg?v=1\">\n    <img src=\"https://static.devin.ai/assets/gh-open-in-devin-review-light.svg?v=1\" alt=\"Open in Devin Review\">\n  </picture>\n</a>\n<!-- devin-review-badge-end -->"[m[1;37m,[m
+  [1;34m"comments"[m[1;37m:[m [1;37m[[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"IC_kwDOTnjXOs8AAAABNTwn8w"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"vercel"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"NONE"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m"[vc]: #Ffm0/t9N4AnEx6HF8pFabxfyjlcZKY2wsTo92GTq26Y=:eyJpc01vbm9yZXBvIjp0cnVlLCJ0eXBlIjoiZ2l0aHViIiwicHJvamVjdHMiOlt7Im5hbWUiOiJ0ZXJtdXgtbW9ub3JlcG8iLCJwcm9qZWN0SWQiOiJwcmpfak5zQ0d3OVFyb0p4bjEzNTZUNFFQd2UwWDl6RyIsImluc3BlY3RvclVybCI6Imh0dHBzOi8vdmVyY2VsLmNvbS90aW1lcmxvZ2dlZG91dC01MTg0cy1wcm9qZWN0cy90ZXJtdXgtbW9ub3JlcG8vMkZUR0F5N0QycmtzcFozYXA0a1h5Zlc5cGY0RiIsInByZXZpZXdVcmwiOiJ0ZXJtdXgtbW9ub3JlcG8tZ2l0LXRpbWVybC02ZWVlZWEtdGltZXJsb2dnZWRvdXQtNTE4NHMtcHJvamVjdHMudmVyY2VsLmFwcCIsIm5leHRDb21taXRTdGF0dXMiOiJERVBMT1lFRCIsImxpdmVGZWVkYmFjayI6eyJyZXNvbHZlZCI6MCwidW5yZXNvbHZlZCI6MCwidG90YWwiOjAsImxpbmsiOiJ0ZXJtdXgtbW9ub3JlcG8tZ2l0LXRpbWVybC02ZWVlZWEtdGltZXJsb2dnZWRvdXQtNTE4NHMtcHJvamVjdHMudmVyY2VsLmFwcCJ9LCJyb290RGlyZWN0b3J5IjoiZGVlcHNlZWstY2xpIiwidjAiOnRydWV9XX0=\nThe latest updates on your projects. Learn more about [Vercel for GitHub](https://vercel.link/github-learn-more).\n\n| Project | Deployment | Actions | Updated (UTC) |\n| :--- | :----- | :------ | :------ |\n| <a href=\"https://vercel.com/timerloggedout-5184s-projects/termux-monorepo\"><sup><img src=\"https://vercel.com/api/www/avatar?projectId=prj_jNsCGw9QroJxn1356T4QPwe0X9zG&teamId=team_jKHy7m9xZrvrGP5cAlIMPs3S&s=32\" width=\"16\" height=\"16\" align=\"middle\" alt=\"\" /></sup></a> [termux-monorepo](https://vercel.com/timerloggedout-5184s-projects/termux-monorepo) | ![Ready](https://vercel.com/static/status/ready.svg) [Ready](https://vercel.com/timerloggedout-5184s-projects/termux-monorepo/2FTGAy7D2rkspZ3ap4kXyfW9pf4F) | [Preview](https://termux-monorepo-git-timerl-6eeeea-timerloggedout-5184s-projects.vercel.app), [v0](https://v0.app/chat/api/open?vercelProjectId=prj_jNsCGw9QroJxn1356T4QPwe0X9zG&gitBranch=timerloggedout%2Fter-40-llm-api-hub-and-kai9000-split&vercelTeamId=team_jKHy7m9xZrvrGP5cAlIMPs3S&utm_source=pr-comment-table) | Aug 5, 2026 5:54am |\n\n"[m[1;37m,[m
+      [1;34m"createdAt"[m[1;37m:[m [32m"2026-08-05T05:53:57Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mtrue[m[1;37m,[m
+      [1;34m"isMinimized"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"minimizedReason"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"url"[m[1;37m:[m [32m"https://github.com/timerloggedout-spec/termux-monorepo/pull/43#issuecomment-5188102131"[m[1;37m,[m
+      [1;34m"viewerDidAuthor"[m[1;37m:[m [33mfalse[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"IC_kwDOTnjXOs8AAAABNTwqQw"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"coderabbitai"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"CONTRIBUTOR"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m"<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- This is an auto-generated comment: skip review by coderabbit.ai -->\n\n> [!IMPORTANT]\n> ## Review available on request\n> \n> - [ ] <!-- {\"checkboxId\": \"e9bb8d72-00e8-4f67-9cb2-caf3b22574fe\"} --> 🔍 Trigger review\n> \n> Reviews should be triggered manually for repositories with fewer than 10 stars. Select **Trigger review** above or comment `@coderabbitai review` to review the latest changes. For a full review, comment `@coderabbitai full review`.\n> \n> <details>\n> <summary>⚙️ Run configuration</summary>\n> \n> **Configuration used**: Path: .coderabbit.yaml\n> \n> **Review profile**: ASSERTIVE\n> \n> **Plan**: Pro Plus\n> \n> **Run ID**: `2c4275ae-5a35-4231-8558-064c94da2231`\n> \n> </details>\n\n<!-- end of auto-generated comment: skip review by coderabbit.ai -->\n\n<!-- tips_start -->\n\n---\n\nThanks for using [CodeRabbit](https://coderabbit.ai?utm_source=oss&utm_medium=github&utm_campaign=timerloggedout-spec/termux-monorepo&utm_content=43)! It's free for OSS, and your support helps us grow. If you like it, consider giving us a shout-out.\n\n<details>\n<summary>❤️ Share</summary>\n\n- [X](https://twitter.com/intent/tweet?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A&url=https%3A//coderabbit.ai)\n- [Mastodon](https://mastodon.social/share?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A%20https%3A%2F%2Fcoderabbit.ai)\n- [Reddit](https://www.reddit.com/submit?title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&text=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code.%20Check%20it%20out%3A%20https%3A//coderabbit.ai)\n- [LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcoderabbit.ai&mini=true&title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&summary=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code)\n\n</details>\n\n\n<sub>Comment `@coderabbitai help` to get the list of available commands.</sub>\n\n<!-- tips_end -->"[m[1;37m,[m
+      [1;34m"createdAt"[m[1;37m:[m [32m"2026-08-05T05:54:01Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mtrue[m[1;37m,[m
+      [1;34m"isMinimized"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"minimizedReason"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"url"[m[1;37m:[m [32m"https://github.com/timerloggedout-spec/termux-monorepo/pull/43#issuecomment-5188102723"[m[1;37m,[m
+      [1;34m"viewerDidAuthor"[m[1;37m:[m [33mfalse[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"IC_kwDOTnjXOs8AAAABNTwtTw"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"OWNER"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m"**BIUDL status:** Hub scaffold + split docs landed on this PR.\n\nCommon formats normalized here: **OpenAI Chat Completions** (primary), Anthropic Messages (mapped), Gemini generateContent (mapped), multi-ai-cli **wrappers** as `wrapper/*` virtual models, **OpenRouter** as key fallback.\n\nNot a dotfile: code in `llm-api-hub/`; secrets remain under `~/.*` token dirs."[m[1;37m,[m
+      [1;34m"createdAt"[m[1;37m:[m [32m"2026-08-05T05:54:07Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"isMinimized"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"minimizedReason"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"url"[m[1;37m:[m [32m"https://github.com/timerloggedout-spec/termux-monorepo/pull/43#issuecomment-5188103503"[m[1;37m,[m
+      [1;34m"viewerDidAuthor"[m[1;37m:[m [33mtrue[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"IC_kwDOTnjXOs8AAAABNTwuGQ"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"github-actions"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"NONE"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m"<!-- agent-auto-jules -->\n@jules **Auto-resolve** (GHA agent-review-auto-jules) — do not wait for a human ping.\nBot feedback from **coderabbitai[bot]** on PR #43 (branch `timerloggedout/ter-40-llm-api-hub-and-kai9000-split`).\n### Feedback excerpt\n```\n<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- This is an auto-generated comment: rate limited by coderabbit.ai -->\n\n> [!WARNING]\n> ## Review limit reached\n> \n> `@timerloggedout-spec`, you've reached your PR review limit, so we couldn't start this review.\n> \n> **Next review available in:** **3 minutes**\n> \n> You've used all free OSS reviews for now. Wait for the free limit to reset to keep reviewing this public repository.\n> \n> <details>\n> <summary>How can I continue?</summary>\n> \n> After more reviews become available, a review can be triggered using the `@coderabbitai review` command as a PR comment. Alternatively, push new commits to this PR.\n> \n> To avoid repeated limits, reduce automatic review volume by pausing incremental auto-reviews earlier, using label-based review opt-in, excluding WIP or generated PR titles, or requesting reviews manually when the PR is ready. If your team needs uninterrupted high-volume reviews, an organization admin can enable usage-based reviews.\n> \n> </details>\n> \n> \n> <details>\n> <summary>How do review limits work?</summary>\n> \n> CodeRabbit enforces per-developer PR review limits for each organization. Most developers re\n```\n### Instructions\n1. Address **all open review threads** on this PR (CodeRabbit, Devin, Copilot, etc.).\n2. Prefer minimal diffs; preserve Sentinel 0o600/0o700 if those files are touched.\n3. Push commits to branch `timerloggedout/ter-40-llm-api-hub-and-kai9000-split`. Do not retarget away from the PR base without cause.\n4. If conflicts with base exist, resolve them.\n5. Skip pure nits only if they conflict with security/gates; otherwise apply autofixes.\nAgent: Grok orchestration · Profile: https://x.com/grok"[m[1;37m,[m
+      [1;34m"createdAt"[m[1;37m:[m [32m"2026-08-05T05:54:09Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"isMinimized"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"minimizedReason"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"url"[m[1;37m:[m [32m"https://github.com/timerloggedout-spec/termux-monorepo/pull/43#issuecomment-5188103705"[m[1;37m,[m
+      [1;34m"viewerDidAuthor"[m[1;37m:[m [33mfalse[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"IC_kwDOTnjXOs8AAAABNTw08g"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"gitar-bot"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"NONE"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m"<kbd><img src=\"https://raw.githubusercontent.com/gitarcode/.github/main/assets/gitar-spin.svg\" align=\"texttop\" height=\"14\"> Gitar is working</kbd>\n\n<sub>[Gitar](https://gitar.ai)</sub>"[m[1;37m,[m
+      [1;34m"createdAt"[m[1;37m:[m [32m"2026-08-05T05:54:22Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mtrue[m[1;37m,[m
+      [1;34m"isMinimized"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"minimizedReason"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"url"[m[1;37m:[m [32m"https://github.com/timerloggedout-spec/termux-monorepo/pull/43#issuecomment-5188105458"[m[1;37m,[m
+      [1;34m"viewerDidAuthor"[m[1;37m:[m [33mfalse[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"IC_kwDOTnjXOs8AAAABO_8zwg"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"github-actions"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"NONE"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m"<!-- agent-auto-jules -->\n@jules **Auto-resolve** (GHA agent-review-auto-jules) — do not wait for a human ping.\nBot feedback from **devin-ai-integration[bot]** on PR #43 (branch `timerloggedout/ter-40-llm-api-hub-and-kai9000-split`).\n### Feedback excerpt\n```\n**Devin Review** found 1 new potential issue.\n\n<details><summary>🐛 1 issue in files not directly in the diff</summary>\n\n<!-- devin-review-comment {\"id\": \"BUG_pr-review-job-d8ccc93be4bb4bfb8eaabe961ea613d9_0001\", \"file_path\": \"deepcli-tui/tui.py\", \"start_line\": 273, \"end_line\": 328, \"side\": \"RIGHT\", \"based_on_repo_rules\": false} -->\n\n### 🐛 DeepCLI text interface no longer starts because unfinished merge leftovers were committed into it ([`deepcli-tui/tui.py:273-328`](https://github.com/timerloggedout-spec/termux-monorepo/blob/5fecc3b48d63e5f35c177fc8c25df7c5b43a594e/deepcli-tui/tui.py#L273-L328))\n\nThe DeepCLI TUI program file keeps raw merge leftover markers (`<<<<<<< HEAD` at `deepcli-tui/tui.py:273`) instead of a single resolved version of the commands screen, so the whole tool refuses to run.\n\nImpact: Anyone launching the DeepCLI text interface gets an immediate failure rather than a working session, and the repository hygiene gate fails.\n\n<details>\n<summary>Merge conflict markers left inside show_commands() make the module unparsable</summary>\n\nThe merge commit adopting the \"master-staging spine\" committed unresolved conflict markers at `deepcli-tui/tui.py:273`, `deepcli-tui/t\n```\n### Instructions\n1. Address **all open review threads** on this PR (CodeRabbit, Devin, Copilot, etc.).\n2. Prefer minimal diffs; preserve Sentinel 0o600/0o700 if those files are touched.\n3. Push commits to branch `timerloggedout/ter-40-llm-api-hub-and-kai9000-split`. Do not retarget away from the PR base without cause.\n4. If conflicts with base exist, resolve them.\n5. Skip pure nits only if they conflict with security/gates; otherwise apply autofixes.\nAgent: Grok orchestration · Profile: https://x.com/grok"[m[1;37m,[m
+      [1;34m"createdAt"[m[1;37m:[m [32m"2026-08-15T09:13:28Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"isMinimized"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"minimizedReason"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"url"[m[1;37m:[m [32m"https://github.com/timerloggedout-spec/termux-monorepo/pull/43#issuecomment-5301547970"[m[1;37m,[m
+      [1;34m"viewerDidAuthor"[m[1;37m:[m [33mfalse[m
+    [1;37m}[m
+  [1;37m][m[1;37m,[m
+  [1;34m"commits"[m[1;37m:[m [1;37m[[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-07-30T06:47:18Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-07-30T06:59:27Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"Add base configs and dotfiles"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"375d262d2516f41fa167020fc370a814c34e2640"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-07-30T07:33:50Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-07-30T07:33:50Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"Complete restore: refTemplates, submodules, and powerlevel10k"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"81c359c2e4f20a3c236afb1af6af193da3872120"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-07-30T07:36:55Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-07-30T07:36:55Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"Complete restore: all files from backup commit d5814d9"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"0812ca0255c55ef7993e2393516db71c52135567"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-07-30T07:43:47Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-07-30T07:43:47Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"Restore refTemplates and codex blobs from d5814d9"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"4f95618528fc0212351c6d99326c2fc66e752589"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-07-30T07:49:50Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-07-30T07:49:50Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"Restore refTemplates and codex blobs from d5814d9 (clone method)"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"42b2e74010eec19bdf3159488e7fd9bba11ca59d"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-07-30T14:46:50Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-07-30T14:46:50Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"Add recovery README: record git-diff consolidation and restoration plan"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"e4d281f6887a025efc2a5007d22a29f9365f3937"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-07-30T18:41:55Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-07-30T18:41:55Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"…ebase directories\n\nDocuments deepcli, cli-synthegration, termux-multi-agent, archwiz, harmonizer,\ncentral mapper, and related workspaces. Clarifies that refTemplates used depth-1\nselective sparse-checkout (metadata only); full submodule recursive update is rare."[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"docs: replace recovery-only README with project inventory of live cod…"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"3095c83a155c0e3025d6ee7451f3f4e3336d19d5"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-07-30T18:45:00Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-07-30T18:45:00Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"…(sparse-checkout clarification only)\n\nReverts full replacement. Keeps original recovery content; adds codebase directory\ndocumentation; corrects submodule guidance to depth-1 selective sparse-checkout."[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"docs: restore recovery README and expand with live project inventory …"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"7f9d6d19df1b6728a152a426de2ecfe7ce26e3c5"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-01T02:04:37Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-01T02:04:37Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"Restore refTemplates/01_Agent_Runtime README skeleton"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"6965ad4700b88bfb13ea5c5bab32f45ddaeed256"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-01T15:35:50Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-01T15:35:50Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"Expand-only README (recovery preserved) + docs/RECON.md. Resolves CodeRabbit MD023 and skeleton-first recovery threads."[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"docs: deep RECON intel, navigation SSOT, refTemplates gap analysis"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"506e18ef3340253d77aa2671ab65672fd61e7d9a"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-01T15:38:17Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-01T15:38:17Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"…vironment\n\nDocs + env-aware config scaffolding, skills lock, security baseline, Replit channel upgrade. All CodeRabbit threads resolved."[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"Critical Evaluation: Proposals & Optimizations for the Agentic Dev En…"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"3bdd1caf1cd3869fa52230b457d943638f341d55"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T02:44:14Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T02:44:14Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"SYSTEM_MAP.md CAVEMAN_INDEX.md {multiple locations -->> one noted}.\r\nTo also incorporate::\r\nRole based selections (code already in development; needs refinement and maintenance upgrades & integrations + Optimizations)."[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"Add full ecosystem mapping to README"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"60d90767d5aa9c233b42e5b84a1641250e9cb784"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T21:51:39Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T21:51:39Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"stdlib-only, index-based, no network/toolchain. HARD checks on changed\nfiles + RATCHET against baseline. Turns master-staging from a redundant\nalias of master into the actual hygiene + portability + security gate."[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: install repo-gate as the check spine on master-staging"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"90caae501fca47c145dd854b43e61e158c8dfe02"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T21:51:46Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T21:51:46Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"Initial debt snapshot. These numbers may only go down."[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: seed repo-gate baseline counters on master-staging"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"c6387a38e8220f47587ef8d8069d0b16d7cd5865"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T21:51:54Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T21:51:54Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"Triggers on PR + push to master/master-staging. stdlib-only, no\nsubmodules, no toolchains. This is the P0 check spine."[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: wire repo-gate workflow on master-staging"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"2e033f6b82d88ead69611488c587745999f070da"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T21:52:15Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T21:52:15Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"Makes the role of master-staging explicit: it is no longer a redundant\nalias of master. It is the integration point that must pass the cheap,\ndeterministic repo-gate before anything lands on master."[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: document master-staging as the check-gate spine"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"f6d9bca717f94dab2a64a0da60e74897c51390a7"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T22:21:43Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T22:21:43Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"Adds the second gate in the spine:\n  repo-gate (hygiene) → termux-smoke (runtime surface) → later gates\n\n- scripts/ci/termux_smoke.py (stdlib-only)\n- .github/workflows/termux-smoke.yml\n- docs/TERMUX-SMOKE.md + updated ARCHW1Z-GATE.md"[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: termux-smoke gate — Agentic Termux runtime surface check (#11)"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"162e50bdcb666adcb5ee4b632f5be351b04aa94b"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T22:22:05Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T22:22:05Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"…sals\n\nSingle source of truth for what is done, blocked, and next. Agents and\nhumans read this before opening new TER work."[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: living status board from Critical-Eval + three ChatGPT propo…"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"3f2fb97999b62d6f5b1c0416377f5c466abefb55"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T22:22:29Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T22:22:29Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"Canonical cross-provider session identity. Providers keep native stores as\ncaches; ArchWiz owns identity, provenance, and reconstruction."[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: Session SSOT schema (TER-10 elevated)"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"8910933966a70ec673f155abbf25d15f4a0b7b98"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T22:22:41Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T22:22:41Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"Stop using is_available() as the main abstraction. Routing becomes data-driven."[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: Provider capability registry stub"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"09d640124166153de536c10f74bc73d511c558d5"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T22:22:56Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T22:22:56Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"Branch-tip removal is not enough. Document the full sequence before any\nhistory rewrite / force-push."[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: PR #3 security remediation checklist (A+B+C)"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"cc3fa728961ebf310aac83df95bf21c9f23aedd7"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T22:23:40Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T22:23:40Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: refresh status board after #11 merge + schema specs"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"a4c756a5fe0445e4dda12e1d09f0190ca6409b02"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T22:29:31Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T22:29:31Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"…/ close)"[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: structured proposal review process (post / itemize / review …"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"09f0921d94ea6801a22b133611e961fb3fcd297d"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T22:29:57Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T22:29:57Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"…gentic"[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: document what still requires the human and how to go fully a…"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"3faf3b384219bba5a1b17c5f8243801c1829c162"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T22:30:05Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T22:30:05Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: proposals registry.yaml — machine-readable status for agents"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"4266b36df765abd07306a42a13bcdcb547bbbfb8"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T22:30:18Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T22:30:18Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: proposal MANIFEST template"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"d11f632ae1b9ca1f27ad6ce774730d10cb646b1b"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T22:30:31Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T22:30:31Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"…cklist"[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: register Critical-Eval proposal with reviewers + process che…"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"9d533fcbe030663640833b0e99e97695db8f7b89"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T22:30:43Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T22:30:43Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: itemize Critical-Eval work units with owners and status"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"4423a18b32b8d2b0b8d7fe2cd172853403e7af3e"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T22:30:51Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T22:30:51Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: register ChatGPT-initial proposal"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"32039f3cad9ee09e3abdbb842580ee0b31954a1b"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T22:30:54Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T22:30:54Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: itemize ChatGPT-initial cockpit work"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"ad1895c44ec86e70405ce1e1d66d0d0c366aedf5"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T22:31:03Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T22:31:03Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: register ChatGPT droidApp proposal"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"ea79c6e8f7a81b004976f9f2df58e0f50872285f"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T22:31:07Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T22:31:07Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: itemize droidApp proposal (plugin/event vision)"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"0727c54a375fa96e327dbff2a82a16b31fed5eb3"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T22:31:19Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T22:31:19Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: proposals index README — process entrypoint for agents"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"04d16f3f0b29d8f3bb7079ddcdbf062518d8b115"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T22:31:34Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T22:31:34Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"…ntic mode"[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: operator checklist — only human steps remaining for full age…"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"6e2a6a70e411a50d9502e84291e56bf1468a9060"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T22:40:05Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T22:40:05Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: closing rules, debate venues, consensus mechanics for proposals"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"aeef1e86dca078e2e8984627d7567124fd6a1fda"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T22:40:17Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T22:40:17Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: AGENTS.md — canonical agent entrypoint for process + gates"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"c7e843e7063a9c105f004a7c0749118b0accdd05"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T22:40:22Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T22:40:22Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: CLAUDE.md pointer file for Claude-family agents"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"15cedd3a888f844b9af37c40acdc6acb7890b225"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T22:40:33Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T22:40:33Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"…ocess"[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: CONTRIBUTING.md — humans and agents share proposal + gate pr…"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"548feea6888432e11e9dc0d87ef3876a8a05378f"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T23:21:45Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T23:21:45Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: PR summary rewrite process + multi-agent role access"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"d0070a263ca24f724f05ce9f7366590a4a6a8848"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T23:21:53Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T23:21:53Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: PR summary rewrite log (multi-agent)"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"44030a53d1ec09067bb4c548d68ddaa40f238fea"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T23:23:17Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T23:23:17Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: point AGENTS.md at PR summary multi-agent process"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"8fb2ea1ce8d1effb316e3cf3542cf1ccc810837e"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T23:28:26Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T23:28:26Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: consensus voting rules (Raft-inspired) + PR triage bot map"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"391ad5e728177e63155ebfa4944f844f321af03a"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T23:28:41Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T23:28:41Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: clarify consecutive rewrite = distinct PRs; link CONSENSUS.md"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"2f7a6a44edd97054213a18cc74b0a56bf0b5c967"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T23:28:47Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T23:28:47Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: note distinct-PR counter vs same-PR iteration in summary log"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"b16b0f192e4192d3acf5a532a77a08e4b7049eaa"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T23:38:52Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T23:38:52Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"…optional strict profile"[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: consensus tiers, CRDT merge strategies, merit path, Raft as …"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"9e30a30f92307c7f82e491dad952780ca4c7adc3"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-03T07:12:11Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-03T07:12:11Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"Merged after gates passed on master-staging spine. Implements CE-09 / TER-13."[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"fix(deepcli): make curl_cffi optional with requests fallback (#10)"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"3ca776a902e37422f64836def8c96b0d908aa678"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-03T07:13:23Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"2.33432881e+08+timerloggedout-spec@users.noreply.github.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m""[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m""[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-03T07:13:23Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"fix(ci): handle submodules correctly in repo_gate.py"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"6abf39bb9b3c7ed9ad75d7275d7ec1ef44a87702"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-03T07:14:06Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-03T07:14:06Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"…ault) (#9)\n\nMerged after gates passed on master-staging spine. Implements CE-10 / CE-11 / TER-12."[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"feat(TER-12): DeepForge — deepcli-first bridge (skip ChatGPT auth def…"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"46991da1cbce590f82d15f4036c97d20677415c5"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-04T02:46:36Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-04T02:46:36Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"P0 reliability: dispatch failures now emit [archwiz dispatch] lines to stderr.\n\n- deepcli core _cache_save\n- archwiz/dispatch_pipeline load/lexicon/codex paths\n- multi-ai-cli cache_save hook\n\nSave still succeeds if dispatch fails (non-blocking).\n\nImplements TER-5.\nMerged by automated production prioritization."[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"fix(TER-5): log archwiz dispatch failures instead of silent pass"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"42d6405b01b673696b23d786a734184c22c13d3a"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-04T03:09:25Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-04T03:09:25Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"HOME=termux-monorepo; jules/antigravity forks=scavenge templates.\nGate spine: master-staging → termux-smoke → master.\nOperator only Tier-4 + temporary termux-smoke cherry-pick."[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"docs(jules): ADE multi-repo project manifest — agent-owned"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"a5990983ad6c60ec72c552dd39b6816a970c8a24"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-04T08:54:27Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-04T08:54:27Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"…ging\n\nAgent: Grok\nProfile: https://x.com/grok\nSigned-off-by: Grok <grok@x.ai>"[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"feat(agents): mirror auto-Jules + Linear sync workflows on master-sta…"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"34d988408b114fc43c150c92d34da73602b87fe4"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-04T15:41:08Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-04T15:41:08Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"Implements CE-06 / issue #20 security core.\n\nNarrow surface onto master-staging:\n- deepcli/deepcli/core.py: CONFIG_DIR + session_store 0o700 fail-closed; config/session via os.open 0o600 + fchmod\n- cli-synthegration/account_manager.py: same for config_*.json\n- .jules/sentinel.md: security journal\n\nPreserves curl_cffi fallback and [archwiz dispatch] stderr logging.\n\nSigned-off-by: Grok"[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"🛡️ Sentinel: enforce 0o600/0o700 on credentials (conflict-free rebase)"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"098e4e3959bcc19b1e30db8eba43d204acb6bdea"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-05T03:28:39Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-05T03:28:39Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"Implements TER-19 / TER-20.\n\nStrict file (0o600) and directory (0o700) permissions for configs, tokens, and session caches. Includes hygiene helpers, Termux smoke docs, Codex–deepcli bridge pieces, and dispatch error-reporting improvements.\n\nSigned-off-by: Grok (xAI) via connector"[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"🛡️ Sentinel: enforce 0o600/0o700 on credentials and session caches"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"64420b16f711afa7c5d8c45a01dd2af8ad7ad9cb"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-05T05:52:26Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-05T05:52:26Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"docs(llm-api-hub): bootstrap OpenAI-compatible API unification hub"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"37c43526502ff3d4dc959b49078a312293bde5ad"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-05T05:52:36Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-05T05:52:36Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"docs(llm-api-hub): routing priority wrapper → openrouter → direct"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"90ec17a594c062b6cd4567b4c5e31c2e3b248703"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-05T05:52:45Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-05T05:52:45Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"docs(llm-api-hub): provider capability matrix"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"27dff62ce03479db943fa73f81c0fb0766daf452"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-05T05:52:59Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-05T05:52:59Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"docs: ADE vs crypto kai9000 split plan"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"c59550a4c18aeca13f072b775a2c7b265630555d"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-05T05:53:09Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-05T05:53:09Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"docs(projects): kai9000 crypto track pointer under _1-Projects/a"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"fcefcc0841b37b150e775c02ecef7d07dd5b786e"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-05T05:53:12Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-05T05:53:12Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"docs(projects): pin kai9000 crypto upstream source"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"cc36f58755f06324a1983b86072f0704990161bf"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-05T05:53:29Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-05T05:53:29Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"feat(llm-api-hub): thin OpenAI-compat client for NexusCLI/agents"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"c9cb8ff79a29a6f2a4466bedae5788714d368bfe"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-05T05:53:35Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-05T05:53:35Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"docs(llm-api-hub): local server plan binding multi-ai-cli"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"8741ed9caa43db46e207ecfe00325aac0629e989"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-05T05:53:41Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-05T05:53:41Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"docs(llm-api-hub): example OpenAI chat completion request/response"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"28bf60915483d205eb24b845affdd587f8dea523"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-15T09:11:21Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"2.33432881e+08+timerloggedout-spec@users.noreply.github.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m""[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m""[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-15T09:11:21Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"…spine"[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"merge(manus): resolve conflicts in PR #43 by adopting master-staging …"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"5fecc3b48d63e5f35c177fc8c25df7c5b43a594e"[m
+    [1;37m}[m
+  [1;37m][m[1;37m,[m
+  [1;34m"mergeable"[m[1;37m:[m [32m"UNKNOWN"[m[1;37m,[m
+  [1;34m"reviews"[m[1;37m:[m [1;37m[[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"PRR_kwDOTnjXOs8AAAABIcNaqQ"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"devin-ai-integration"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"CONTRIBUTOR"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m"**Devin Review** found 5 potential issues.\n\n<!-- devin-review-badge-begin -->\n<a href=\"https://app.devin.ai/review/timerloggedout-spec/termux-monorepo/pull/43\" target=\"_blank\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://static.devin.ai/assets/gh-open-in-devin-review-dark.svg?v=1\">\n    <img src=\"https://static.devin.ai/assets/gh-open-in-devin-review-light.svg?v=1\" alt=\"Open in Devin Review\">\n  </picture>\n</a>\n<!-- devin-review-badge-end -->"[m[1;37m,[m
+      [1;34m"submittedAt"[m[1;37m:[m [32m"2026-08-05T05:55:28Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"state"[m[1;37m:[m [32m"COMMENTED"[m[1;37m,[m
+      [1;34m"commit"[m[1;37m:[m [1;37m{[m
+        [1;34m"oid"[m[1;37m:[m [32m"77d62263fd7c0089d350acd5ec260da2b9050191"[m
+      [1;37m}[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"PRR_kwDOTnjXOs8AAAABJqdhLg"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"devin-ai-integration"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"CONTRIBUTOR"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m"**Devin Review** found 1 new potential issue.\n\n<details><summary>🐛 1 issue in files not directly in the diff</summary>\n\n<!-- devin-review-comment {\"id\": \"BUG_pr-review-job-d8ccc93be4bb4bfb8eaabe961ea613d9_0001\", \"file_path\": \"deepcli-tui/tui.py\", \"start_line\": 273, \"end_line\": 328, \"side\": \"RIGHT\", \"based_on_repo_rules\": false} -->\n\n### 🐛 DeepCLI text interface no longer starts because unfinished merge leftovers were committed into it ([`deepcli-tui/tui.py:273-328`](https://github.com/timerloggedout-spec/termux-monorepo/blob/5fecc3b48d63e5f35c177fc8c25df7c5b43a594e/deepcli-tui/tui.py#L273-L328))\n\nThe DeepCLI TUI program file keeps raw merge leftover markers (`<<<<<<< HEAD` at `deepcli-tui/tui.py:273`) instead of a single resolved version of the commands screen, so the whole tool refuses to run.\n\nImpact: Anyone launching the DeepCLI text interface gets an immediate failure rather than a working session, and the repository hygiene gate fails.\n\n<details>\n<summary>Merge conflict markers left inside show_commands() make the module unparsable</summary>\n\nThe merge commit adopting the \"master-staging spine\" committed unresolved conflict markers at `deepcli-tui/tui.py:273`, `deepcli-tui/tui.py:306`, and `deepcli-tui/tui.py:328`, keeping both variants of `show_commands()`. Python cannot parse `<<<<<<< HEAD` / `=======` / `>>>>>>> master-staging`, so importing or executing `tui.py` raises a SyntaxError at load time — the entire TUI, not just the help screen, is dead. `scripts/ci/repo_gate.py:222` (`check_python_syntax`) compiles changed Python files from the index and will HARD-fail on this file. The duplicated `input(\"\\nPress Enter to continue...\")` (once inside the HEAD side, once after the end marker) shows only one branch was intended to survive.\n\n</details>\n\n</details>\n\n<!-- devin-review-badge-begin -->\n<a href=\"https://app.devin.ai/review/timerloggedout-spec/termux-monorepo/pull/43\" target=\"_blank\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://static.devin.ai/assets/gh-open-in-devin-review-dark.svg?v=1\">\n    <img src=\"https://static.devin.ai/assets/gh-open-in-devin-review-light.svg?v=1\" alt=\"Open in Devin Review\">\n  </picture>\n</a>\n<!-- devin-review-badge-end -->"[m[1;37m,[m
+      [1;34m"submittedAt"[m[1;37m:[m [32m"2026-08-15T09:13:19Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"state"[m[1;37m:[m [32m"COMMENTED"[m[1;37m,[m
+      [1;34m"commit"[m[1;37m:[m [1;37m{[m
+        [1;34m"oid"[m[1;37m:[m [32m"5fecc3b48d63e5f35c177fc8c25df7c5b43a594e"[m
+      [1;37m}[m
+    [1;37m}[m
+  [1;37m][m[1;37m,[m
+  [1;34m"state"[m[1;37m:[m [32m"MERGED"[m
+[1;37m}[m

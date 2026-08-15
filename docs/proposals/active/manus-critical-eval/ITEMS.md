@@ -14,3 +14,8 @@
 | M-10 | Implement event-sourced dispatch pipeline | P0 | manus | done | archwiz/dispatch_pipeline.py |
 | M-11 | Automate repo_gate with pre-commit hook | P1 | manus | done | .git/hooks/pre-commit |
 | M-12 | Enhance Linear sync bridge | P1 | manus | done | archwiz/linear_sync.py |
+| M-13 | Implement session blob CAS | P1 | manus | done | archwiz/codex.py |
+| M-14 | Security history remediation script | P1 | manus | done | scripts/ops/purge_history.sh |
+| M-15 | Integrate PR #44 (Sentinel) | P0 | manus | done | master-staging merge |
+| M-16 | Integrate PR #43 (LLM Hub) | P0 | manus | done | master-staging merge |
+| M-17 | Resolve rebase conflicts & clean sandbox artifacts | P0 | manus | done | commit 1a88066 |

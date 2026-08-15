@@ -69,6 +69,9 @@ The repository has a strict ban on session artifacts (`.pi`, `.deepcli`, `.cedar
 - **Dispatch Pipeline:** Implemented an event-sourced `archwiz/dispatch_pipeline.py` to decouple ingestion from downstream indexing and harvesting.
 - **Gate Automation:** Installed a git `pre-commit` hook that runs `repo_gate.py` and `termux_smoke.py` automatically to maintain repository hygiene.
 - **Provider Abstraction:** Salvaged and cleaned up the `CodexIndex` and `BaseProvider` interface from PR #6, providing a foundation for multi-provider support.
+- **CAS Storage:** Implemented a Content-Addressed Store in `archwiz/codex.py` for session blobs to keep the repo lightweight.
+- **LLM Hub Integration:** Merged and normalized the `llm-api-hub/` architecture (from PR #43).
+- **Security Hardening:** Integrated Sentinel's 0o700/0o600 privilege boundaries (from PR #44).
 - **Observability:** Structured error logging for the `deepcli` core and SSOT writes.
 - **Portability:** Fixed `os.getlogin()` crashes in headless/sandbox environments.
 
@@ -77,10 +80,10 @@ The repository has a strict ban on session artifacts (`.pi`, `.deepcli`, `.cedar
 - **PR #9 Merged:** Integrated DeepForge launcher and `deepcli`-first policy.
 - **CI Gate Fix:** Fixed a critical bug in `repo_gate.py` that caused crashes when encountering submodules.
 
-### 6.2 Future Proposals
-1. **Event-Sourced Dispatch:** Implement the full `dispatch_pipeline.py` to decouple task execution from API response saving.
-2. **Content-Addressed Store:** Move session artifacts to a local, git-ignored blob store to keep the repository lightweight.
-3. **Gate Automation:** Wire `repo-gate.py` to run automatically on every `git commit` via a pre-commit hook.
+### 6.3 Future Proposals
+1. **NexusCLI Retargeting:** Migrate all NexusCLI calls to the new `llm-api-hub` client.
+2. **Server Implementation:** Complete the `llm-api-hub/server` implementation to provide a local OpenAI-compatible endpoint.
+3. **History Remediation:** Execute the `scripts/ops/purge_history.sh` script to excise legacy sensitive data from the repository history.
 
 ---
 

@@ -9,3 +9,10 @@ Using a single shared database connection across file walks and batching all ins
 
 **Action:**
 Always batch SQL database operations using `executemany` instead of iterating with `execute`. Provide support for passing an optional shared `conn` handle in indexing/utility functions to allow single-connection batch runs across walk loops, while safely closing connections only if opened locally.
+
+## 2026-08-15 - High-Throughput Datetime Parsing with `datetime.fromisoformat`
+**Learning:**
+In Python 3.11+, `datetime.strptime` involves string format parsing overhead that is over 20x slower than `datetime.fromisoformat` when processing high-volume ISO 8601 timestamps (such as GitHub comment and commit timelines). Replacing `datetime.strptime(ts.replace("Z", ""), "%Y-%m-%dT%H:%M:%S")` with `datetime.fromisoformat(ts.replace("Z", "+00:00"))` dramatically accelerates CI analytics and timeline analysis.
+
+**Action:**
+Prefer `datetime.fromisoformat` over `datetime.strptime` when parsing standard ISO 8601 date strings.

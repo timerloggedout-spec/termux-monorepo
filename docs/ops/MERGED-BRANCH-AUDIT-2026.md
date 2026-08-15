@@ -2,7 +2,7 @@
 
 **Status:** COMPLETE
 **Auditor:** Jules (Automated Systems Engineer)
-**Date:** 2026-08-13
+**Date:** 2026-08-14
 **SSOT Reference:** `docs/ops/LANE_CONSOLIDATION_SSOT.md`
 
 ## 1. Executive Summary
@@ -40,6 +40,12 @@ This audit provides visibility into merged branches, open development lanes, and
 - **Description:** Jules triggered an auto-resolve run on CodeRabbit's acknowledgement comment ('I will re-review') rather than waiting for the substantive completed review.
 - **Justification in Git/PR History:** Incomplete classification of bot comments led the orchestrator to treat ACK as a real review.
 - **Remediation Action:** Update `calculate_lag_index.py` to support v2 disposition schema to block execution on `ack_pending` comments.
+
+### [AUDIT-005] Test import path mismatch in test_sentinel_privileges.py
+- **Type:** Test Suite Import Failure
+- **Description:** `tests/test_sentinel_privileges.py` attempted to import `deepcli.core` directly instead of `deepcli.deepcli.core`, causing test failures when pytest was invoked without modifying PYTHONPATH.
+- **Justification in Git/PR History:** Package structure refactoring created a nested `deepcli/deepcli` module structure while test imports retained legacy flat package paths.
+- **Remediation Action:** Resolved by updating `test_sentinel_privileges.py` to import `deepcli.deepcli.core`.
 
 ## 4. Local Git Repository Merges (Recent)
 ```

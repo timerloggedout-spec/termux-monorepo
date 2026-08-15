@@ -60,7 +60,17 @@ _session: Optional[curl_requests.Session] = None
 
 # ---------- cache helpers ----------
 def _cache_path(session_id: str, account: str = "primary") -> str:
-    store_dir = os.path.join(os.path.expanduser("~/.deepcli/session_store"), account)
+    if ".." in str(account) or str(account).startswith("/") or "\\" in str(account):
+        raise ValueError("Invalid account name")
+
+    base_store = os.path.realpath(os.path.expanduser("~/.deepcli/session_store"))
+    safe_account = "".join(c if c.isalnum() or c in "-_." else "_" for c in str(account))
+    store_dir = os.path.join(base_store, safe_account)
+
+    store_real = os.path.realpath(store_dir)
+    if os.path.commonpath([base_store, store_real]) != base_store:
+        raise ValueError("Invalid account path")
+
     os.makedirs(store_dir, exist_ok=True)
 
     # Restrict permissions of store_dir and parent directories if not symlinks
@@ -73,7 +83,19 @@ def _cache_path(session_id: str, account: str = "primary") -> str:
             except Exception:
                 pass
 
-    return os.path.join(store_dir, f"{session_id}.json")
+    if ".." in str(session_id) or str(session_id).startswith("/") or "\\" in str(session_id):
+        raise ValueError("Invalid file path")
+
+    # Sanitize session_id filename component
+    safe_id = "".join(c if c.isalnum() or c in "-_." else "_" for c in str(session_id))
+    path = os.path.join(store_dir, f"{safe_id}.json")
+
+    base_real = os.path.realpath(store_dir)
+    target_real = os.path.realpath(path)
+    if os.path.commonpath([base_real, target_real]) != base_real:
+        raise ValueError("Invalid file path")
+
+    return path
 
 def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict[str, Any]]]:
     path = _cache_path(session_id, account)

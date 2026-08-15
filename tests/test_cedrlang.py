@@ -1,106 +1,125 @@
+import pytest
 import tempfile
 from pathlib import Path
-from workspace.compression_sandbox.cedrlang import cedrlang
+from workspace.compression_sandbox.cedrlang.cedrlang import (
+    compile_doc,
+    decompile_doc,
+    compress,
+    expand,
+    caveman
+)
 
-def test_symbol_substitution():
-    text = "if true then success else error"
-    compressed = cedrlang.compress(text, aggressive=False)
-    assert "?" in compressed
-    assert "⇒" in compressed
-    assert "✓" in compressed
-    assert "|" in compressed
-    assert "⚠" in compressed
+def test_1337speak_and_grimoire_translation():
+    orig = "We need to transmute the code and scry the output, then cast a spell from the grimoire."
+    expected = "We need to h4x the code and scry the output, then c4st a spell from the gr1m01r3."
 
-    expanded = cedrlang.expand(compressed)
-    assert "if" in expanded
-    assert "then" in expanded
-    assert "success" in expanded
-    assert "else" in expanded
+    compiled = compile_doc(orig)
+    assert compiled == expected
 
-def test_grimoire_mapping():
-    text = "The ArchWizard uses a Caster to increase Mana"
-    compressed = cedrlang.compress(text, aggressive=False)
-    assert "4rchW1z4rd" in compressed
-    assert "C4573r" in compressed
-    assert "M4n4" in compressed
+    decompiled = decompile_doc(compiled)
+    assert decompiled == orig
 
-    expanded = cedrlang.expand(compressed)
-    assert "ArchWizard" in expanded
-    assert "Caster" in expanded
+def test_casing_preservation():
+    assert compile_doc("Transmute") == "H4x"
+    assert decompile_doc("H4x") == "Transmute"
 
-def test_placeholder_protection():
-    text = "Please review the code in `x = 42` and check [this link](http://example.com) for details."
-    compressed = cedrlang.compress(text, aggressive=True)
-    assert "`x = 42`" in compressed
-    assert "[this link](http://example.com)" in compressed
+    assert compile_doc("transmute") == "h4x"
+    assert decompile_doc("h4x") == "transmute"
 
-    expanded = cedrlang.expand(compressed)
-    assert "`x = 42`" in expanded
-    assert "[this link](http://example.com)" in expanded
+    assert compile_doc("TRANSMUTE") == "H4X"
+    assert decompile_doc("H4X") == "TRANSMUTE"
 
-def test_bold_emphasis_protection():
-    text = "This is **bold** text and *italic* text."
-    compressed = cedrlang.compress(text, aggressive=True)
-    assert "**bold**" in compressed
-    assert "*italic*" in compressed
+def test_bullet_and_formatting_preservation():
+    orig_bullets = (
+        "- We need a scry of the codebase.\n"
+        "* Please transmute this function.\n"
+        "1. Cast the spell."
+    )
+    expected_bullets = (
+        "- We need a scry of the codebase.\n"
+        "* Please h4x this function.\n"
+        "1. C4st the spell."
+    )
 
-    expanded = cedrlang.expand(compressed)
-    assert "**bold**" in expanded
-    assert "*italic*" in expanded
+    compiled = compile_doc(orig_bullets)
+    assert compiled == expected_bullets
+    assert decompile_doc(compiled) == orig_bullets
 
-def test_line_preservation():
-    text = "Line 1.\nLine 2.\nLine 3."
-    compressed = cedrlang.compress(text, aggressive=True)
-    assert "\n" in compressed
-    assert len(compressed.splitlines()) == 3
+def test_fenced_code_protection():
+    orig = (
+        "Here is some human text to transmute.\n"
+        "```python\n"
+        "def transmute(code):\n"
+        "    return scry(code)\n"
+        "```\n"
+        "And more transmute text."
+    )
+    expected = (
+        "Here is some human text to h4x.\n"
+        "```python\n"
+        "def transmute(code):\n"
+        "    return scry(code)\n"
+        "```\n"
+        "And more h4x text."
+    )
 
-    expanded = cedrlang.expand(compressed)
-    assert "\n" in expanded
-    assert len(expanded.splitlines()) == 3
+    compiled = compile_doc(orig)
+    assert compiled == expected
+    assert decompile_doc(compiled) == orig
 
-def test_filename_and_number_protection():
-    text = "The file registry.yaml has version v1.2 and config 42."
-    compressed = cedrlang.compress(text, aggressive=True)
-    # registry.yaml and v1.2 should not be mangled
-    assert "registry.yaml" in compressed
-    assert "v1.2" in compressed
-    assert "42" in compressed
+def test_html_and_inline_code_protection():
+    orig = "Run `transmute` inside the <div>transmute</div> container."
+    expected = "Run `transmute` inside the <div>h4x</div> container."
 
-    expanded = cedrlang.expand(compressed)
-    assert "registry.yaml" in expanded
-    assert "v1.2" in expanded
-    assert "42" in expanded
+    compiled = compile_doc(orig)
+    assert compiled == expected
+    assert decompile_doc(compiled) == orig
 
-def test_caveman_stripper():
-    text = "The quick brown fox is jumping over a lazy dog"
-    stripped = cedrlang.caveman_strip(text)
-    words = stripped.split()
-    assert "The" not in words
-    assert "the" not in words
-    assert "is" not in words
-    assert "a" not in words
-    assert "quick" in words
-    assert "lazy" in words
+def test_decimal_number_and_filename_protection():
+    orig = "Check python script deepcli/deepcli/core.py for version 12.34."
+    compiled = compile_doc(orig)
+    assert compiled == orig
+    assert decompile_doc(compiled) == orig
 
-def test_compile_decompile_file():
-    with tempfile.TemporaryDirectory() as tmpdir:
-        input_file = Path(tmpdir) / "input.md"
-        output_file = Path(tmpdir) / "output.md"
-        decomp_file = Path(tmpdir) / "decomp.md"
+def test_markdown_bold_and_emphasis_protection():
+    orig = "This is **transmute** and *scry* and __transmute__ and _scry_."
+    expected = "This is **h4x** and *scry* and __h4x__ and _scry_."
 
-        content = "The ArchWizard is acting because of a warning.\nCheck `sys.exit()`."
-        input_file.write_text(content, encoding="utf-8")
+    compiled = compile_doc(orig)
+    assert compiled == expected
+    assert decompile_doc(compiled) == orig
 
-        # Compile
-        compiled_text = cedrlang.compress(content, aggressive=True)
-        output_file.write_text(compiled_text, encoding="utf-8")
+def test_punctuation_exclusion_and_boundaries():
+    orig = "transmute, transmute. transmute! transmute? (transmute) [transmute]"
+    expected = "h4x, h4x. h4x! h4x? (h4x) [h4x]"
 
-        assert "4rchW1z4rd" in compiled_text
-        assert "`sys.exit()`" in compiled_text
+    compiled = compile_doc(orig)
+    assert compiled == expected
+    assert decompile_doc(compiled) == orig
 
-        # Decompile
-        decompiled_text = cedrlang.expand(compiled_text)
-        decomp_file.write_text(decompiled_text, encoding="utf-8")
+def test_link_protection_and_translation():
+    orig = "Please click [transmute](http://scry.com/transmute) to transmute."
+    expected = "Please click [h4x](http://scry.com/transmute) to h4x."
 
-        assert "ArchWizard" in decompiled_text
-        assert "`sys.exit()`" in decompiled_text
+    compiled = compile_doc(orig)
+    assert compiled == expected
+    assert decompile_doc(compiled) == orig
+
+def test_emerging_technologies_procurement_mappings():
+    orig = "We are researching emerging technology curation and procurement compliance."
+    expected = "We are researching em_t3ch cur473 and pr0cur3 c0mp1."
+    compiled = compile_doc(orig)
+    assert compiled == expected
+
+    decompiled = decompile_doc(compiled)
+    assert decompiled == orig
+
+def test_caveman_six_lines():
+    res1 = caveman("success leads to update")
+    assert res1 == "✓ → ~"
+
+    res2 = caveman("success leads to update", max_up=True)
+    assert res2 == "✓ → ~"
+
+    res4 = caveman("the quick brown fox", max_up=True)
+    assert res4 == "QUICK BROWN FOX"

@@ -411,7 +411,7 @@ python3 archwiz/mirror.py
 - **Spellbook:** Library of system abilities
 - **Rune:** Short hash pointer (CID-style)
 - **Sigil:** Substitution engine for runtime compression
-- **ChronoMancer:** Time-loop agent with success-only trunks
+- **Chronomancer:** Time-loop agent with success-only trunks
 - **Self-healing Sandbox:** Detect error → request fix → validate → promote
 
 ### Methodology Evolution
@@ -486,7 +486,7 @@ python3 archwiz/mirror.py
 ### Feature Requests
 - Real-time chat feedback from listener
 - Cross-session idea harvester
-- ChronoMancer branch UI (visual tree)
+- Chronomancer branch UI (visual tree)
 - Listener auto-scribe (consolidate notes)
 - Multi-account probing with image upload
 - Tab completion for /sessions

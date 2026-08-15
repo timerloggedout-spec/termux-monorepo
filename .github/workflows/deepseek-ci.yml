@@ -1,262 +1,164 @@
-name: DeepSeek CI – Agentic (safe)
+name: DeepSeek CI – Agentic Automation
 
-# DeepSeek v4-Pro web-wrapper path for PR review / invoke.
-# Security: ephemeral HOME under RUNNER_TEMP only — no session/cookie cache
-# (policy from #112/#114). Work context may use agent-context-store separately.
+# Template webWrapper accounts:
+#   Account-1 / primary  — PRIORITY (default; interactive + CI)
+#   Account-2 / secondary — alternate / cookies_2 lineage
 #
-# Cost control: NOT on every synchronize. Opt-in via label, mention, or dispatch.
-# Agentic: @deepseek / @deepseek-ci / @deepCore (case-insensitive) — no CLI required.
-# Monikers: docs/ops/AGENT-MONIKERS.md
-#
-# Tokens (model auth — first non-empty wins):
-#   DEEPSEEK_TOKEN | DEEPSEEK_API_KEY | DEEPSEEK_AUTH_TOKEN | NEXUSCLI_TOKEN
-# GitHub writes:
-#   ARCHWIZ_GITHUB_TOKEN || OPERATOR_GITHUB_TOKEN || OPERATOR_TOKEN || GITHUB_TOKEN
+# chat_session_id is created via /api/v0/chat_session/create before completion.
+# Streaming SSE read timeout allows multi-minute thinking.
+# GitLab CI/CD is a separate scope.
+# Hard-fail on missing cookies/token/session (no soft-skip).
 
 on:
   pull_request:
-    types: [labeled, opened, reopened]
+    types: [opened, synchronize, reopened]
   issue_comment:
     types: [created]
   pull_request_review_comment:
     types: [created]
-  pull_request_review:
-    types: [submitted]
   workflow_dispatch:
     inputs:
-      pr_number:
-        description: 'PR number to review (positive decimal; empty skips PR review)'
+      event_payload:
+        description: 'JSON event payload (optional)'
         required: false
-        default: ''
+        default: '{}'
+      account:
+        description: 'DeepSeek account (account-1/primary default; account-2/secondary alternate)'
+        required: false
+        default: 'account-1'
 
 concurrency:
-  group: deepseek-ci-${{ github.event_name }}-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
+  group: deepseek-ci-${{ github.event.pull_request.number || github.event.issue.number || github.event.comment.id || github.run_id }}
   cancel-in-progress: true
 
-permissions: {}
-
 jobs:
-  gate:
-    runs-on: ubuntu-latest
-    outputs:
-      run: ${{ steps.check.outputs.run }}
-      pr_number: ${{ steps.check.outputs.pr_number }}
-      reason: ${{ steps.check.outputs.reason }}
-    steps:
-      - id: check
-        env:
-          EVENT: ${{ github.event_name }}
-          ACTION: ${{ github.event.action || '' }}
-          LABEL: ${{ github.event.label.name || '' }}
-          COMMENT_BODY: ${{ github.event.comment.body || github.event.review.body || '' }}
-          SENDER_TYPE: ${{ github.event.sender.type || '' }}
-          ASSOCIATION: ${{ github.event.comment.author_association || github.event.review.author_association || github.event.issue.author_association || '' }}
-          # Only use issue.number if it's actually a PR (issue.pull_request is set)
-          PR: ${{ github.event.pull_request.number || (github.event.issue.pull_request && github.event.issue.number) || github.event.inputs.pr_number || '' }}
-          # Multi-name probe — user may have stored under alternate keys
-          HAS_MODEL: ${{ secrets.DEEPSEEK_TOKEN != '' || secrets.DEEPSEEK_API_KEY != '' || secrets.DEEPSEEK_AUTH_TOKEN != '' || secrets.NEXUSCLI_TOKEN != '' }}
-          HAS_GH: ${{ secrets.ARCHWIZ_GITHUB_TOKEN != '' || secrets.OPERATOR_GITHUB_TOKEN != '' || secrets.OPERATOR_TOKEN != '' }}
-        run: |
-          set -euo pipefail
-          run=false
-          reason="none"
-          pr_number="${PR}"
-
-          # --- trigger detection (agentic, mirrors gemini-dispatch / jules) ---
-          if [ "$EVENT" = "workflow_dispatch" ]; then
-            run=true
-            reason="dispatch"
-          elif [ "$EVENT" = "pull_request" ]; then
-            if [ "$LABEL" = "deepseek-ci" ] || [ "$LABEL" = "deepseek" ] || [ "$LABEL" = "deepCore" ]; then
-              run=true
-              reason="label:$LABEL"
-            fi
-          elif [ "$EVENT" = "issue_comment" ] || [ "$EVENT" = "pull_request_review_comment" ] || [ "$EVENT" = "pull_request_review" ]; then
-            if [ "$SENDER_TYPE" = "User" ]; then
-              case "$ASSOCIATION" in
-                OWNER|MEMBER|COLLABORATOR)
-                  lower=$(printf '%s' "$COMMENT_BODY" | tr '[:upper:]' '[:lower:]')
-                  if printf '%s' "$lower" | grep -qE '(^|[^a-z0-9_])@(deepseek-ci|deepseek|deepcore)\b'; then
-                    run=true
-                    reason="mention"
-                  fi
-                  ;;
-              esac
-            fi
-          fi
-
-          # Validate pr_number: accept only positive decimal integers (or empty for dispatch skip)
-          if [ -n "$pr_number" ]; then
-            if ! printf '%s' "$pr_number" | grep -qE '^[1-9][0-9]*$'; then
-              echo "::warning::Invalid pr_number='$pr_number' — must be positive decimal; clearing"
-              pr_number=""
-              if [ "$reason" = "dispatch" ]; then
-                run=false
-                reason="invalid_pr_number"
-              fi
-            fi
-          fi
-
-          # For mention/label on non-PR issue, skip agent (ack may still fire)
-          if [ "$run" = "true" ] && [ -z "$pr_number" ] && [ "$reason" != "dispatch" ]; then
-            echo "::notice::Trigger on non-PR or missing PR number — agent skipped"
-            run=false
-            if [ "$reason" = "mention" ] || [[ "$reason" == label:* ]]; then
-              : # keep reason for ack diagnostic
-            else
-              reason="not_a_pr"
-            fi
-          fi
-
-          if [ "$run" = "true" ] && [ "$HAS_MODEL" != "true" ]; then
-            echo "::notice::DeepSeek model auth unset — checked DEEPSEEK_TOKEN, DEEPSEEK_API_KEY, DEEPSEEK_AUTH_TOKEN, NEXUSCLI_TOKEN. Add one as a *repository* secret (Settings → Secrets and variables → Actions). Environment-scoped secrets require jobs.<id>.environment."
-            reason="missing_model_secret"
-            run=false
-          fi
-
-          if [ "$HAS_GH" != "true" ]; then
-            echo "::notice::No ARCHWIZ/OPERATOR token — PR comments may use GITHUB_TOKEN only"
-          fi
-
-          echo "run=$run" >> "$GITHUB_OUTPUT"
-          echo "pr_number=${pr_number}" >> "$GITHUB_OUTPUT"
-          echo "reason=$reason" >> "$GITHUB_OUTPUT"
-          echo "Gate: run=$run reason=$reason has_model=$HAS_MODEL pr=$pr_number"
-
-  ack:
-    needs: gate
-    if: needs.gate.outputs.reason == 'mention' || needs.gate.outputs.reason == 'label:deepseek-ci' || needs.gate.outputs.reason == 'label:deepseek' || needs.gate.outputs.reason == 'label:deepCore' || needs.gate.outputs.reason == 'missing_model_secret'
-    runs-on: ubuntu-latest
-    permissions:
-      issues: write
-      pull-requests: write
-    steps:
-      - name: Acknowledge (eyes) + tracking
-        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
-        env:
-          GATE_REASON: ${{ needs.gate.outputs.reason }}
-        with:
-          script: |
-            const number = context.payload.pull_request?.number || context.payload.issue?.number;
-            const reason = process.env.GATE_REASON || 'unknown';
-            const eventName = context.eventName;
-
-            if (context.payload.comment?.id) {
-              try {
-                if (eventName === 'pull_request_review_comment') {
-                  await github.rest.reactions.createForPullRequestReviewComment({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    comment_id: context.payload.comment.id,
-                    content: 'eyes',
-                  });
-                } else {
-                  await github.rest.reactions.createForIssueComment({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    comment_id: context.payload.comment.id,
-                    content: 'eyes',
-                  });
-                }
-              } catch (e) {
-                core.info('Comment reaction skip: ' + e.message);
-              }
-            }
-
-            if (number && (context.payload.comment || context.payload.review || context.payload.label)) {
-              const isMissingSecret = reason === 'missing_model_secret';
-              const bodyLines = isMissingSecret
-                ? [
-                    '`deepCore` (DeepSeek CI) trigger received but **model auth unset**.',
-                    'Add a repository secret: `DEEPSEEK_TOKEN` | `DEEPSEEK_API_KEY` | `DEEPSEEK_AUTH_TOKEN` | `NEXUSCLI_TOKEN`.',
-                    `Tracking: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
-                    '',
-                    '_See docs/ops/DEEPSEEK-CI.md_',
-                  ]
-                : [
-                    `⚡ \`deepCore\` (DeepSeek CI) received. reason=\`${reason}\``,
-                    `Tracking: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
-                    '',
-                    '_See docs/ops/DEEPSEEK-CI.md_',
-                  ];
-
-              try {
-                await github.rest.issues.createComment({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: number,
-                  body: bodyLines.join('\n'),
-                });
-              } catch (e) {
-                core.info('Ack comment skip: ' + e.message);
-              }
-            }
-
   deepseek-agent:
-    needs: gate
-    if: needs.gate.outputs.run == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 45
+    # Skip bot noise on issue_comment / review_comment; always run for PR + dispatch.
+    # Parentheses required: && binds tighter than || in GHA expressions.
+    if: >-
+      (github.event_name != 'issue_comment' && github.event_name != 'pull_request_review_comment') ||
+      (
+        github.event.comment.user.type != 'Bot' &&
+        (
+          contains(github.event.comment.body, '@deepcore') ||
+          contains(github.event.comment.body, '@deepCore') ||
+          contains(github.event.comment.body, '@deepseek') ||
+          contains(github.event.comment.body, '@deepseek-ci') ||
+          contains(github.event.comment.body, 'deepseek') ||
+          contains(github.event.comment.body, 'DeepSeek')
+        )
+      )
     permissions:
-      contents: read
+      contents: write
       pull-requests: write
       issues: write
+      actions: read
+
     env:
-      # First non-empty model secret wins (expression coalescing)
-      DEEPSEEK_TOKEN: ${{ secrets.DEEPSEEK_TOKEN || secrets.DEEPSEEK_API_KEY || secrets.DEEPSEEK_AUTH_TOKEN || secrets.NEXUSCLI_TOKEN }}
+      # ARCHWIZ_GITHUB_TOKEN (4RCHW12) supersedes all other GH tokens
       OPERATOR_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
       GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-        with:
-          fetch-depth: 1
+      # Prefer dispatch payload when provided; otherwise use the real event
+      GITHUB_EVENT: ${{ github.event.inputs.event_payload != '' && github.event.inputs.event_payload || toJson(github.event) }}
+      # Account-1 / primary is PRIORITY default
+      DEEPSEEK_ACCOUNT: ${{ github.event.inputs.account || 'account-1' }}
+      # Model auth — names from docs/ops/DEEPSEEK-CI.md + Issue #184 catalog.
+      # First non-empty wins inside session_manager._token_from_env.
+      # Cookies are primary auth path for the webWrapper (WASM + 🍪).
+      DEEPSEEK_TOKEN_PRIMARY: ${{ secrets.DEEPSEEK_TOKEN_PRIMARY || secrets.DEEPSEEK_TOKEN_ACCOUNT_1 || secrets.DEEPSEEK_TOKEN || secrets.DEEPSEEK_API_KEY || secrets.DEEPSEEK_AUTH_TOKEN || secrets.NEXUSCLI_TOKEN }}
+      DEEPSEEK_TOKEN: ${{ secrets.DEEPSEEK_TOKEN || secrets.DEEPSEEK_API_KEY || secrets.DEEPSEEK_AUTH_TOKEN || secrets.NEXUSCLI_TOKEN }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      DEEPSEEK_AUTH_TOKEN: ${{ secrets.DEEPSEEK_AUTH_TOKEN }}
+      NEXUSCLI_TOKEN: ${{ secrets.NEXUSCLI_TOKEN }}
+      DEEPSEEK_COOKIES: ${{ secrets.DEEPSEEK_COOKIES || secrets.DEEPSEEK_COOKIES_1 || secrets.COOKIES }}
+      DEEPSEEK_COOKIES_1: ${{ secrets.DEEPSEEK_COOKIES_1 }}
+      DEEPSEEK_TOKEN_SECONDARY: ${{ secrets.DEEPSEEK_TOKEN_SECONDARY || secrets.DEEPSEEK_TOKEN_ACCOUNT_2 || secrets.DEEPSEEK_COOKIES_2 }}
+      DEEPSEEK_COOKIES_2: ${{ secrets.DEEPSEEK_COOKIES_2 }}
+      # Captured browser sessions include aws-waf-token alongside ds_session_id.
+      # The value is consumed only by session_manager and persists in the existing
+      # permission-restricted session cache; it is never logged or uploaded.
+      DEEPSEEK_AWS_WAF_TOKEN: ${{ secrets.DEEPSEEK_AWS_WAF_TOKEN || secrets.DEEPSEEK_WAF_TOKEN || secrets.AWS_WAF_TOKEN || secrets.WAF_AWS_TOKEN }}
+      DEEPSEEK_THINKING: "true"
+      DEEPSEEK_EXPERT: "true"
+      DEEPSEEK_CONNECT_TIMEOUT: "30"
+      DEEPSEEK_READ_TIMEOUT: "1200"
+      WASM_SOURCE_COMMIT: "ee1807049fd93d087bc14055b2ae6cbffb5dbf82"
+      WASM_RAW_BASE: "https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo"
 
-      - name: Setup Node (PoW WASM)
-        uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4.0.4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+        with:
+          fetch-depth: 0
+          token: ${{ env.OPERATOR_TOKEN }}
+          persist-credentials: true
+
+      - name: Setup Node.js (for PoW WASM)
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af  # v4.1.0
         with:
           node-version: '20'
 
       - name: Setup Python
-        uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5.1.1
+        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b  # v5.3.0
         with:
           python-version: '3.11'
+          cache: 'pip'
 
-      - name: Install deps
+      - name: Install Python dependencies
         run: |
-          pip install --quiet curl_cffi requests pyyaml
+          python -m pip install --upgrade pip
+          pip install requests pyyaml
+          python -c "import requests; print('requests', requests.__version__)"
 
-      - name: Ephemeral home + run CI mode
-        env:
-          PYTHONPATH: ${{ github.workspace }}/multi-ai-cli
-          PR_NUMBER: ${{ needs.gate.outputs.pr_number }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
+      - name: Stage DeepSeek PoW WASM & solver
         run: |
           set -euo pipefail
-          export HOME="${RUNNER_TEMP}/deepseek-webwrapper-home"
-          mkdir -p "$HOME"
-          chmod 700 "$HOME"
-          export DEEPSEEK_WASM_SOLVER="${GITHUB_WORKSPACE}/deepcli/pow_solver.js"
-          # Final guard: only positive decimal
-          if [ -n "${PR_NUMBER:-}" ] && ! printf '%s' "$PR_NUMBER" | grep -qE '^[1-9][0-9]*$'; then
-            echo "::error::Invalid PR_NUMBER=$PR_NUMBER"
+          mkdir -p deepcli/wasm
+          if [ -f deepcli/deepseek.wasm ] && [ -f deepcli/pow_solver.js ]; then
+            cp -f deepcli/deepseek.wasm deepcli/wasm/deepseek.wasm
+            cp -f deepcli/pow_solver.js deepcli/wasm/pow_solver.js
+            echo "✓ Using checked-out WASM/solver from deepcli/"
+          else
+            echo "⚠ WASM files not found in deepcli/, fetching from commit $WASM_SOURCE_COMMIT"
+            curl -sSfL "$WASM_RAW_BASE/$WASM_SOURCE_COMMIT/deepcli/deepseek.wasm" -o deepcli/wasm/deepseek.wasm
+            curl -sSfL "$WASM_RAW_BASE/$WASM_SOURCE_COMMIT/deepcli/pow_solver.js" -o deepcli/wasm/pow_solver.js
+            echo "✓ Fetched WASM/solver from raw.githubusercontent"
+          fi
+          if [ ! -s deepcli/wasm/deepseek.wasm ] || [ ! -s deepcli/wasm/pow_solver.js ]; then
+            echo "::error::WASM files missing or empty after staging"
             exit 1
           fi
-          python -m ci_mode \
-            --workspace "$GITHUB_WORKSPACE" \
-            --cache-dir "${RUNNER_TEMP}/deepseek-cache" \
-            --pr "${PR_NUMBER:-}"
+          ls -lh deepcli/wasm/
 
-      - name: Scrub ephemeral session
-        if: always()
+      # Persistent session reuse is intentional: the cache retains the browser
+      # cookie jar (including aws-waf-token), chat session, and PoW-compatible state.
+      # Scope the cache to this repository and exact Git ref; do not restore a
+      # broad prefix from another branch or pull-request head.
+      - name: Cache DeepSeek session (Account-1 / primary)
+        uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57  # v4.2.0
+        id: cache-session
+        with:
+          path: ${{ runner.temp }}/.deepseek-cache
+          key: deepseek-session-${{ github.repository_id }}-${{ github.ref }}-account1-${{ runner.os }}-${{ hashFiles('deepcli/session_manager.py') }}
+
+      - name: Run DeepSeek CI Agent (Account-1 priority)
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+          # runner.temp ONLY valid at step level — was the post-#174 master gate breaker
+          DEEPSEEK_CACHE_DIR: ${{ runner.temp }}/.deepseek-cache
         run: |
-          rm -rf "${RUNNER_TEMP}/deepseek-webwrapper-home" "${RUNNER_TEMP}/deepseek-cache" || true
+          python -m deepcli.ci_mode \
+            --event "$GITHUB_EVENT" \
+            --workspace "$GITHUB_WORKSPACE" \
+            --cache-dir "$DEEPSEEK_CACHE_DIR" \
+            --account "$DEEPSEEK_ACCOUNT"
 
-      - name: Upload non-secret summary
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+      - name: Upload results
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.5.0
         if: always()
         with:
           name: deepseek-output
-          path: deepseek_output.json
+          path: ./deepseek_output.json
           if-no-files-found: ignore
-          retention-days: 7

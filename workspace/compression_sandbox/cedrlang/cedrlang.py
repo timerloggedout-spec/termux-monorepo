@@ -9,8 +9,10 @@ Usage:
   cedrlang expand "→cmd:build|args:clean"
   cedrlang stats  # show token savings over baseline
   cedrlang serve  # start filter proxy for deepcli/synthegration
-  cedrlang compile <input_file> <output_file>
-  cedrlang decompile <input_file> <output_file>
+  cedrlang compile <file_or_text> [-o output_file]
+  cedrlang decompile <file_or_text> [-o output_file]
+
+Integrate with deepcli: add `--cedr` flag to auto-compress prompts.
 """
 
 import sys
@@ -58,257 +60,271 @@ SYMBOL_MAP = {
     "warning": "⚠",
 }
 
-GRIMOIRE_MAP = {
-    "ArchWizard": "4rchW1z4rd",
-    "Caster": "C4573r",
-    "Mana": "M4n4",
-    "Spellbook": "Sp3llb00k",
-    "Rune": "Run3",
-    "Transmute": "Tr4n5mu73",
-    "Scry": "5cry",
-    "Probe": "Pr0b3",
-    "Echo": "3ch0",
-    "Grimoire": "Gr1m01r3",
-    "Phylactery": "Phyl4c73ry",
-    "Bidder": "b1dd3r",
-    "Wager": "w4g3r",
-    "Branch": "f0rk",
-    "Incantation": "1nc4nt",
-    "Cast": "c4st",
-    "Chronomancer": "chr0n0",
-    "Linguist": "l1ngu15t",
-    "Scout": "sc0ut",
-    "Harvester": "h4rv35t3r",
-    "Refactor": "Tr4n5mu73",
-    "Review": "5cry",
-    "Inspect": "5cry",
-    "Test": "Pr0b3",
-    "Score": "M4n4",
+STOPWORDS = {
+    "a", "an", "the", "is", "are", "was", "were", "be", "been", "being",
+    "have", "has", "had", "do", "does", "did", "will", "would", "shall",
+    "should", "may", "might", "must", "can", "could", "of", "for", "in",
+    "to", "on", "at", "by", "with", "from", "up", "about", "into", "over",
+    "after", "that", "this", "these", "those", "it", "its", "you", "your",
+    "he", "his", "she", "her", "they", "their", "we", "our"
 }
 
-LEET_CHARS = {
-    'A': '4', 'a': '4',
-    'B': '8', 'b': '8',
-    'E': '3', 'e': '3',
-    'G': '6', 'g': '9',
-    'I': '1', 'i': '1',
-    'O': '0', 'o': '0',
-    'S': '5', 's': '$',
-    'T': '7', 't': '+',
-    'Z': '2', 'z': '2'
-}
-
-DECOMP_CHARS = {
-    '4': 'a', '8': 'b', '3': 'e', '1': 'i', '0': 'o',
-    '5': 's', '$': 's', '+': 't', '2': 'z', '7': 't', '9': 'g'
-}
-
-# Create reverse mappings for exact expansion lookup
-REV_SYMBOL_MAP = {v: k for k, v in SYMBOL_MAP.items()}
-REV_GRIMOIRE_MAP = {v: k for k, v in GRIMOIRE_MAP.items()}
-
-# ------------------------------------------------------------
-# 2. Helper Utilities & O(N) Translation Engine
-# ------------------------------------------------------------
-def single_pass_replace(text: str, mapping: Dict[str, str]) -> str:
-    """Perform O(N) single-pass substitution of mapped keys."""
-    if not text:
-        return text
-    sorted_keys = sorted(mapping.keys(), key=len, reverse=True)
-    pattern_parts = []
-    for k in sorted_keys:
-        if k[0].isalnum() and k[-1].isalnum():
-            pattern_parts.append(r'\b' + re.escape(k) + r'\b')
-        else:
-            pattern_parts.append(re.escape(k))
-    pattern = re.compile("|".join(pattern_parts), re.IGNORECASE)
-    lower_mapping = {k.lower(): v for k, v in mapping.items()}
-    # Clean padding spacing to keep them token-friendly and readable
-    return pattern.sub(lambda m: f" {lower_mapping.get(m.group(0).lower(), m.group(0))} ", text)
-
-
-def protect_placeholders(text: str) -> Tuple[str, List[str]]:
-    """Extract code blocks, inline code, HTML, links, and bold/emphasis to prevent corruption."""
-    placeholders = []
-    patterns = [
-        r'```[\s\S]*?```',
-        r'`[^`\n]*?`',
-        r'\!?\[[^\]]*?\]\([^\)]*?\)',
-        r'</?[a-zA-Z][^>\n]*?>',      # plausible HTML tags restricted to a single line
-        r'\*\*[^*\n]+?\*\*',          # bold strictly on single line to prevent spanning across bullets
-        r'\*[^*\n]+?\*'               # italics strictly on single line to prevent spanning across bullets
-    ]
-    combined_pattern = re.compile("|".join(patterns))
-    def repl(match):
-        val = match.group(0)
-        idx = len(placeholders)
-        placeholders.append(val)
-        return f"__CEDR_PLACE_HOLDER_{idx}__"
-    return combined_pattern.sub(repl, text), placeholders
-
-
-def restore_placeholders(text: str, placeholders: List[str]) -> str:
-    """Restore originally protected constructs."""
-    for idx, val in enumerate(placeholders):
-        text = text.replace(f"__CEDR_PLACE_HOLDER_{idx}__", val)
-    return text
-
-
-def is_leet_word(w: str) -> bool:
-    """Determine if a word should be decompiled, avoiding numbers, placeholders, decimals/filenames."""
-    if "__CEDR_PLACE_HOLDER_" in w:
-        return False
-    if "." in w or "/" in w or "\\" in w:
-        return False
-    # Strip any surrounding punctuation to analyze the word core
-    clean_w = re.sub(r'[^a-zA-Z0-9$]', '', w)
-    if not clean_w or clean_w.isdigit():
-        return False
-    # Must contain at least one letter or leet-replaced character
-    return any(c.isalpha() or c in DECOMP_CHARS for c in clean_w)
-
-
-def to_1337speak(text: str) -> str:
-    """Apply basic 1337 character replacements to standard words sparsely and randomly, preserving line structures."""
-    import random
-    lines = text.splitlines()
-    res_lines = []
-    all_symbols = set(SYMBOL_MAP.values()) | set(GRIMOIRE_MAP.values())
-    for line in lines:
-        words = line.split(" ")
-        res_words = []
-        for w in words:
-            if "__CEDR_PLACE_HOLDER_" in w or w in all_symbols:
-                res_words.append(w)
-            elif w.isalpha():
-                # Sparsely substitute characters with a 70% probability for organic, distinct outputs
-                res_words.append("".join(LEET_CHARS.get(c, c) if random.random() < 0.7 else c for c in w))
-            else:
-                res_words.append(w)
-        res_lines.append(" ".join(res_words))
-    suffix = "\n" if text.endswith("\n") else ""
-    return "\n".join(res_lines) + suffix
-
-
-def from_1337speak(text: str) -> str:
-    """Reverse 1337 character replacements approximately, preserving line structures."""
-    lines = text.splitlines()
-    res_lines = []
-    all_symbols = set(SYMBOL_MAP.values()) | set(GRIMOIRE_MAP.values())
-    for line in lines:
-        words = line.split(" ")
-        res_words = []
-        for w in words:
-            if "__CEDR_PLACE_HOLDER_" in w or w in all_symbols:
-                res_words.append(w)
-            elif is_leet_word(w):
-                res_words.append("".join(DECOMP_CHARS.get(c, c) for c in w))
-            else:
-                res_words.append(w)
-        res_lines.append(" ".join(res_words))
-    suffix = "\n" if text.endswith("\n") else ""
-    return "\n".join(res_lines) + suffix
-
+# CedrLang v2 / Grimoire Mappings
+MAPPINGS = [
+    ("transmute", "h4x"),
+    ("scry", "scry"),
+    ("probe", "pr0b3"),
+    ("echo", "3ch0"),
+    ("time loop", "l00p"),
+    ("branch", "f0rk"),
+    ("incantation", "1nc4nt"),
+    ("cast", "c4st"),
+    ("grimoire", "gr1m01r3"),
+    ("bidder", "b1dd3r"),
+    ("wager", "w4g3r"),
+    ("chronomancer", "chr0n0"),
+    ("linguist", "l1ngu15t"),
+    ("scout", "sc0ut"),
+    ("harvester", "h4rv35t3r"),
+    # Research Curation of Emerging Technologies Procurement Concepts
+    ("emerging technologies", "em_t3chs"),
+    ("emerging technology", "em_t3ch"),
+    ("procurements", "pr0cur3s"),
+    ("procurement", "pr0cur3"),
+    ("curations", "cur473s"),
+    ("curation", "cur473"),
+    ("sourcings", "s0urc3s"),
+    ("sourcing", "s0urc3"),
+    ("acquisitions", "4cqs"),
+    ("acquisition", "4cq"),
+    ("compliances", "c0mp1s"),
+    ("compliance", "c0mp1"),
+]
 
 # ------------------------------------------------------------
-# 3. 6-Line Caveman Stopword Stripper
+# 1.5. Pre-compiled regex patterns (Massive Speed Optimization)
 # ------------------------------------------------------------
-def caveman_strip(text: str) -> str:
-    p = r'\b(a|an|the|is|are|was|were|be|been|being|to|of|and|for|in|that|with|on|at|by|this|these|those|it|they|we|you|he|she)\b'
-    t = re.sub(p, '', text, flags=re.IGNORECASE)
-    # preserve line breaks while collapsing redundant spaces
-    lines = [re.sub(r'[ \t]+', ' ', line).strip() for line in t.splitlines()]
-    return '\n'.join(lines)
+SYMBOL_REGEXES = {phrase: re.compile(re.escape(phrase), re.IGNORECASE) for phrase in SYMBOL_MAP}
 
+INLINE_CODE_PATTERN = re.compile(r'`[^`]+`')
+HTML_TAG_PATTERN = re.compile(r'<[^>]+>')
+LINK_PATTERN = re.compile(r'\[([^\]]+)\]\(([^)]+)\)')
+BOLD_PATTERN_2 = re.compile(r'\*\*([^*]+)\*\*')
+BOLD_PATTERN_1 = re.compile(r'\*([^*]+)\*')
+BOLD_PATTERN_UNDER2 = re.compile(r'__([^_]+)__')
+BOLD_PATTERN_UNDER1 = re.compile(r'_([^_]+)_')
+PATH_REGEX = re.compile(
+    r'\b(?:~?/)?[\w\-]+(?:/[\w\-]+)*\.(?:py|js|json|md|yaml|sh|txt|yml|db|jsonl|wasm|html|cffi)\b|\b/?[\w\-]+/[\w\-\./]+\b'
+)
+DECIMAL_PATTERN = re.compile(r'\b\d+\.\d+\b')
+SPACES_PATTERN = re.compile(r'\s+')
+PUNCTUATION_PATTERN = re.compile(r'[.,!?;:]$')
+
+SORTED_MAPPINGS_COMP = sorted(MAPPINGS, key=lambda x: len(x[0]), reverse=True)
+SORTED_MAPPINGS_DECOMP = sorted(MAPPINGS, key=lambda x: len(x[1]), reverse=True)
+
+COMP_DICT = {human.lower(): comp for human, comp in SORTED_MAPPINGS_COMP}
+COMP_SINGLE_REGEX = re.compile(
+    r'\b(' + '|'.join(re.escape(human) for human, _ in SORTED_MAPPINGS_COMP) + r')\b',
+    re.IGNORECASE
+)
+
+DECOMP_DICT = {comp.lower(): human for human, comp in SORTED_MAPPINGS_DECOMP}
+DECOMP_SINGLE_REGEX = re.compile(
+    r'\b(' + '|'.join(re.escape(comp) for _, comp in SORTED_MAPPINGS_DECOMP) + r')\b',
+    re.IGNORECASE
+)
 
 # ------------------------------------------------------------
-# 4. Compressor & Expander Interfaces
+# 2. Compressor (v1 prompt compression)
 # ------------------------------------------------------------
 def compress(text: str, aggressive: bool = True) -> str:
     """Convert natural language to CedrLang."""
     if not text:
         return ""
-    # 1. Protect formatting and markup
-    text, placeholders = protect_placeholders(text)
-    # 2. Run single-pass symbols & Grimoire translations
-    text = single_pass_replace(text, SYMBOL_MAP)
-    text = single_pass_replace(text, GRIMOIRE_MAP)
-    # 3. Apply Caveman Stripping
-    if aggressive:
-        text = caveman_strip(text)
-    # 4. Convert standard words to 1337speak
-    text = to_1337speak(text)
-    # 5. Clean up duplicate spacing
-    text = re.sub(r'[ \t]+', ' ', text)
-    # 6. Restore placeholders
-    return restore_placeholders(text, placeholders)
 
+    result = text[:]
 
-def expand_token(word: str) -> str:
-    """Translate symbols/Grimoire exact matches while preserving leading/trailing punctuation."""
-    if word in REV_GRIMOIRE_MAP:
-        return REV_GRIMOIRE_MAP[word]
-    if word in REV_SYMBOL_MAP:
-        return REV_SYMBOL_MAP[word]
-    # Check with punctuation stripped, but only if it contains alphanumeric characters
-    if any(c.isalnum() for c in word):
-        m = re.match(r'^([^\w\s]*)(.*?)([^\w\s]*)$', word)
-        if m:
-            lead, core, trail = m.groups()
-            if core in REV_GRIMOIRE_MAP:
-                return f"{lead}{REV_GRIMOIRE_MAP[core]}{trail}"
-            if core in REV_SYMBOL_MAP:
-                return f"{lead}{REV_SYMBOL_MAP[core]}{trail}"
-    return word
+    for phrase, pattern in SYMBOL_REGEXES.items():
+        result = pattern.sub(SYMBOL_MAP[phrase], result)
 
+    if not aggressive:
+        return result.strip()
 
+    words = result.split()
+    filtered = [w for w in words if w.lower() not in STOPWORDS]
+    result = " ".join(filtered)
+
+    result = SPACES_PATTERN.sub(' ', result).strip()
+    result = PUNCTUATION_PATTERN.sub('', result)
+    return result
+
+# ------------------------------------------------------------
+# 2.5. Caveman Compression in 6 Lines
+# ------------------------------------------------------------
+def caveman(text: str, max_up: bool = False) -> str:
+    t = text.upper() if max_up else text
+    for phrase, pattern in SYMBOL_REGEXES.items():
+        t = pattern.sub(SYMBOL_MAP[phrase], t)
+    words = [w for w in t.split() if w.lower() not in STOPWORDS]
+    return SPACES_PATTERN.sub(' ', " ".join(words)).strip()
+
+# ------------------------------------------------------------
+# 3. Expander (for debugging / human reading)
+# ------------------------------------------------------------
 def expand(cedr: str) -> str:
-    """Expand CedrLang back to approximate natural language, preserving document layouts."""
-    if not cedr:
-        return ""
-    cedr, placeholders = protect_placeholders(cedr)
-    # 1. Decompile character replacements
-    cedr = from_1337speak(cedr)
-    # 2. Expand symbols & Grimoire mappings via token boundaries
-    lines = cedr.splitlines()
-    res_lines = []
+    """Rudimentary expansion – reverses most symbols to English."""
+    rev_map = {v.strip(): k.strip() for k, v in SYMBOL_MAP.items()}
+    result = cedr
+    for sym, phrase in rev_map.items():
+        result = result.replace(sym, f" {phrase} ")
+    result = SPACES_PATTERN.sub(' ', result)
+    return result.strip()
+
+# ------------------------------------------------------------
+# 4. CedrLang v2 Compilation & Decompilation (Document Mode)
+# ------------------------------------------------------------
+def capitalize_word(w: str) -> str:
+    if " " in w:
+        return " ".join(capitalize_word(part) for part in w.split(" "))
+    chars = list(w)
+    for i, c in enumerate(chars):
+        if c.isalpha():
+            chars[i] = c.upper()
+            break
+    return "".join(chars)
+
+def lowercase_word(w: str) -> str:
+    return w.lower()
+
+def uppercase_word(w: str) -> str:
+    return w.upper()
+
+def is_capitalized(w: str) -> bool:
+    for c in w:
+        if c.isalpha():
+            return c.isupper()
+    return False
+
+def apply_casing(src: str, dst: str) -> str:
+    if src.isupper():
+        return uppercase_word(dst)
+    if is_capitalized(src):
+        return capitalize_word(dst)
+    return lowercase_word(dst)
+
+def translate_text_raw(text: str, to_compressed: bool) -> str:
+    pattern = COMP_SINGLE_REGEX if to_compressed else DECOMP_SINGLE_REGEX
+    mapping_dict = COMP_DICT if to_compressed else DECOMP_DICT
+
+    return pattern.sub(lambda m: apply_casing(m.group(0), mapping_dict[m.group(0).lower()]), text)
+
+def translate_line(line: str, to_compressed: bool) -> str:
+    placeholders = []
+
+    def add_placeholder(val: str) -> str:
+        ph = f"§§PL_{len(placeholders)}§§"
+        placeholders.append((ph, val))
+        return ph
+
+    if "`" in line:
+        line = INLINE_CODE_PATTERN.sub(lambda m: add_placeholder(m.group(0)), line)
+
+    if "<" in line:
+        line = HTML_TAG_PATTERN.sub(lambda m: add_placeholder(m.group(0)), line)
+
+    if "[" in line:
+        def link_repl(match):
+            text = match.group(1)
+            url = match.group(2)
+            translated_text = translate_text_raw(text, to_compressed)
+            return add_placeholder(f"[{translated_text}]({url})")
+        line = LINK_PATTERN.sub(link_repl, line)
+
+    if "*" in line:
+        def bold_repl_2(match):
+            text = match.group(1)
+            translated_text = translate_text_raw(text, to_compressed)
+            return add_placeholder(f"**{translated_text}**")
+
+        def bold_repl_1(match):
+            text = match.group(1)
+            translated_text = translate_text_raw(text, to_compressed)
+            return add_placeholder(f"*{translated_text}*")
+
+        line = BOLD_PATTERN_2.sub(bold_repl_2, line)
+        line = BOLD_PATTERN_1.sub(bold_repl_1, line)
+
+    if "_" in line:
+        def bold_repl_under2(match):
+            text = match.group(1)
+            translated_text = translate_text_raw(text, to_compressed)
+            return add_placeholder(f"____{translated_text}____")
+
+        def bold_repl_under1(match):
+            text = match.group(1)
+            translated_text = translate_text_raw(text, to_compressed)
+            return add_placeholder(f"_{translated_text}_")
+
+        line = BOLD_PATTERN_UNDER2.sub(bold_repl_under2, line)
+        line = BOLD_PATTERN_UNDER1.sub(bold_repl_under1, line)
+
+    if "/" in line or "." in line or "~" in line:
+        line = PATH_REGEX.sub(lambda m: add_placeholder(m.group(0)), line)
+
+    if "." in line:
+        line = DECIMAL_PATTERN.sub(lambda m: add_placeholder(m.group(0)), line)
+
+    line = translate_text_raw(line, to_compressed)
+
+    for ph, orig in reversed(placeholders):
+        if orig.startswith("____") and orig.endswith("____"):
+            content = orig[4:-4]
+            orig = f"__{content}__"
+        line = line.replace(ph, orig)
+
+    return line
+
+def compile_doc(text: str) -> str:
+    lines = text.splitlines(keepends=True) if isinstance(text, str) else []
+    compiled_lines = []
+    in_fenced_code = False
+
     for line in lines:
-        # Check if line is a markdown list item/bullet to avoid translating bullet marks
-        bullet_match = re.match(r'^(\s*[-+*]|\s*\d+\.)\s', line)
-        if bullet_match:
-            prefix = bullet_match.group(0)
-            rest = line[len(prefix):]
-            words = rest.split(" ")
-            expanded_words = [expand_token(w) for w in words]
-            res_lines.append(prefix + " ".join(expanded_words))
+        stripped = line.strip()
+        if stripped.startswith("```"):
+            in_fenced_code = not in_fenced_code
+            compiled_lines.append(line)
+        elif in_fenced_code:
+            compiled_lines.append(line)
         else:
-            words = line.split(" ")
-            expanded_words = [expand_token(w) for w in words]
-            res_lines.append(" ".join(expanded_words))
+            compiled_lines.append(translate_line(line, to_compressed=True))
 
-    suffix = "\n" if cedr.endswith("\n") else ""
-    cedr = "\n".join(res_lines) + suffix
-    # 3. Clean up spaces and restore placeholders
-    cedr = re.sub(r'[ \t]+', ' ', cedr)
-    return restore_placeholders(cedr, placeholders).strip()
+    return "".join(compiled_lines)
 
+def decompile_doc(text: str) -> str:
+    lines = text.splitlines(keepends=True) if isinstance(text, str) else []
+    decompiled_lines = []
+    in_fenced_code = False
+
+    for line in lines:
+        stripped = line.strip()
+        if stripped.startswith("```"):
+            in_fenced_code = not in_fenced_code
+            decompiled_lines.append(line)
+        elif in_fenced_code:
+            decompiled_lines.append(line)
+        else:
+            decompiled_lines.append(translate_line(line, to_compressed=False))
+
+    return "".join(decompiled_lines)
 
 # ------------------------------------------------------------
-# 5. Public helper for external integrations
-# ------------------------------------------------------------
-def deepcli_filter(prompt: str) -> str:
-    """Hook for deepcli – compress user prompt before sending to API."""
-    return compress(prompt, aggressive=True)
-
-
-# ------------------------------------------------------------
-# 6. Token counter (using cl100k_base approximation)
+# 5. Token counter & Utilities
 # ------------------------------------------------------------
 def count_tokens(text: str) -> int:
-    """Rough token count using whitespace + punctuation heuristic."""
     tokens = re.findall(r'\b\w+\b|[^\w\s]', text)
     return len(tokens)
-
 
 def stats_report(original: str, compressed: str) -> Dict[str, Any]:
     orig_tokens = count_tokens(original)
@@ -322,6 +338,11 @@ def stats_report(original: str, compressed: str) -> Dict[str, Any]:
         "compressed_chars": len(compressed)
     }
 
+# ------------------------------------------------------------
+# 6. DeepCLI integration (proxy filter)
+# ------------------------------------------------------------
+def deepcli_filter(prompt: str) -> str:
+    return compress(prompt, aggressive=True)
 
 # ------------------------------------------------------------
 # 7. CLI & main
@@ -330,33 +351,27 @@ def main():
     parser = argparse.ArgumentParser(description="CedrLang – Agentic Compression Protocol")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    # compress command
     p_compress = subparsers.add_parser("compress", help="Compress natural language to CedrLang")
     p_compress.add_argument("text", nargs="*", help="Text to compress")
     p_compress.add_argument("--aggressive", action="store_true", default=True, help="Enable stopword stripping (default)")
     p_compress.add_argument("--no-aggressive", dest="aggressive", action="store_false", help="Disable stopword stripping")
 
-    # expand command
     p_expand = subparsers.add_parser("expand", help="Expand CedrLang to approximate English")
     p_expand.add_argument("text", nargs="*", help="CedrLang text to expand")
 
-    # stats command
+    p_compile = subparsers.add_parser("compile", help="Compile human readable markdown to CedrLang compressed markdown")
+    p_compile.add_argument("file_or_text", nargs="*", help="File path or text to compile")
+    p_compile.add_argument("-o", "--output", help="Output file path")
+
+    p_decompile = subparsers.add_parser("decompile", help="Decompile CedrLang compressed markdown to human readable markdown")
+    p_decompile.add_argument("file_or_text", nargs="*", help="File path or text to decompile")
+    p_decompile.add_argument("-o", "--output", help="Output file path")
+
     p_stats = subparsers.add_parser("stats", help="Show token savings stats")
     p_stats.add_argument("original", help="Original natural language")
     p_stats.add_argument("--compressed", help="Optional compressed text (otherwise compress automatically)")
 
-    # serve command
     p_serve = subparsers.add_parser("serve", help="Read stdin, compress, write stdout (for integration)")
-
-    # compile command
-    p_compile = subparsers.add_parser("compile", help="Compile human readable file to CedrLang")
-    p_compile.add_argument("input_file", help="Input file path")
-    p_compile.add_argument("output_file", help="Output file path")
-
-    # decompile command
-    p_decompile = subparsers.add_parser("decompile", help="Decompile CedrLang file to human readable")
-    p_decompile.add_argument("input_file", help="Input file path")
-    p_decompile.add_argument("output_file", help="Output file path")
 
     args = parser.parse_args()
 
@@ -376,6 +391,50 @@ def main():
         result = expand(text)
         print(result)
 
+    elif args.command == "compile":
+        input_str = ""
+        if args.file_or_text:
+            path_candidate = " ".join(args.file_or_text)
+            if Path(path_candidate).exists():
+                input_str = Path(path_candidate).read_text()
+            else:
+                input_str = path_candidate
+        else:
+            input_str = sys.stdin.read()
+
+        if not input_str:
+            print("Error: No input text or file", file=sys.stderr)
+            sys.exit(1)
+
+        result = compile_doc(input_str)
+
+        if args.output:
+            Path(args.output).write_text(result)
+        else:
+            print(result, end="")
+
+    elif args.command == "decompile":
+        input_str = ""
+        if args.file_or_text:
+            path_candidate = " ".join(args.file_or_text)
+            if Path(path_candidate).exists():
+                input_str = Path(path_candidate).read_text()
+            else:
+                input_str = path_candidate
+        else:
+            input_str = sys.stdin.read()
+
+        if not input_str:
+            print("Error: No input text or file", file=sys.stderr)
+            sys.exit(1)
+
+        result = decompile_doc(input_str)
+
+        if args.output:
+            Path(args.output).write_text(result)
+        else:
+            print(result, end="")
+
     elif args.command == "stats":
         original = args.original
         compressed = args.compressed if args.compressed else compress(original)
@@ -388,20 +447,6 @@ def main():
             compressed_line = compress(line.rstrip('\n'), aggressive=True)
             sys.stdout.write(compressed_line + "\n")
             sys.stdout.flush()
-
-    elif args.command in ("compile", "decompile"):
-        in_path = Path(args.input_file)
-        out_path = Path(args.output_file)
-        if not in_path.exists():
-            print(f"Error: {in_path} does not exist", file=sys.stderr)
-            sys.exit(1)
-        content = in_path.read_text(encoding="utf-8")
-        if args.command == "compile":
-            processed = compress(content, aggressive=True)
-        else:
-            processed = expand(content)
-        out_path.write_text(processed, encoding="utf-8")
-        print(f"✓ Processed {in_path} -> {out_path} successfully.")
 
 if __name__ == "__main__":
     main()

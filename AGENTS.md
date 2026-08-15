@@ -1,34 +1,34 @@
 # AGENTS.md
 
-f1l3 pr0v1d3$ 9u1d4nce 49en+$ when w0rking cod3 repository.
+This file provides guidance to agents when working with code in this repository.
 
-## Gov3rn4nce & Pr0c3$$ ( > First)
+## Governance & Process (Read First)
 
-1. **This file** (`AGENTS.md`) - 73chnic4l 9uidanc3 ∧ code84$e ov3rv13w
-2. [`docs/proposals/registry.yaml`](docs/proposals/registry.yaml) — wha+ 4c+1v3
-3. [`docs/proposals/PROCESS.md`](docs/proposals/PROCESS.md) — p0$+ / deb4+e / c0n$3n$us / clo$e
-4. [`docs/PR-SUMMARY-PROCESS.md`](docs/PR-SUMMARY-PROCESS.md) — who m4y r3wr1+e PR 80d1e$ (multi-agent)
+1. **This file** (`AGENTS.md`) - Technical guidance and codebase overview
+2. [`docs/proposals/registry.yaml`](docs/proposals/registry.yaml) — what is active
+3. [`docs/proposals/PROCESS.md`](docs/proposals/PROCESS.md) — post / debate / consensus / close
+4. [`docs/PR-SUMMARY-PROCESS.md`](docs/PR-SUMMARY-PROCESS.md) — who may rewrite PR bodies (multi-agent)
 5. [`docs/ARCHW1Z-GATE.md`](docs/ARCHW1Z-GATE.md) — repo-gate + termux-smoke
-6. [`docs/ARCHW1Z-STATUS.md`](docs/ARCHW1Z-STATUS.md) — liv1n9 8o4rd
-7. [`docs/proposals/AGENTIC-PERMISSIONS.md`](docs/proposals/AGENTIC-PERMISSIONS.md) — human-only 3d93$
-8. [`docs/CONSENSUS.md`](docs/CONSENSUS.md) — tiers, m3r1+ path, CRDT, 0p+1on4l Raft-strict
+6. [`docs/ARCHW1Z-STATUS.md`](docs/ARCHW1Z-STATUS.md) — living board
+7. [`docs/proposals/AGENTIC-PERMISSIONS.md`](docs/proposals/AGENTIC-PERMISSIONS.md) — human-only edges
+8. [`docs/CONSENSUS.md`](docs/CONSENSUS.md) — tiers, merit path, CRDT, optional Raft-strict
 
 Optional: `CLAUDE.md`, `CONTRIBUTING.md`.
 
-## H4rd Rul3$
+## Hard Rules
 
-- T4rge+ **`master-staging`**, ¬ r4w `master`, 1n+39r4t10n work.
-- 80+h 94+3s mu$t p4ss b3f0r3 merge:
-- `python3 scripts/ci/repo_gate.py`
-- `python3 scripts/ci/termux_smoke.py`
-- D0 ¬ 1nv3n+ work 0ut$ide `docs/proposals/active/<id>/ITEMS.md` — add r0w first.
-- C1+3 `Implements: <ITEM-ID>` PRs/commits.
-- **No** whol3$4le m3r93 PR #6 (TER-9) ∨ PR #2 (Rust CI) — $33 disp0$it1on comments.
-- **No** Cl4$$ 3/4 4r+1fact$ g1+ (session stores, 8r0ws3r profiles, tokens).
-- Unp0$+ed cha+ ¬ con$3nsu$ — < 5cry l09 ∨ DEBATE.md.
-- PR 80dy rewrites: foll0w `docs/PR-SUMMARY-PROCESS.md` r0$+3r ( ¬ single-agent monopoly).
+- Target **`master-staging`**, not raw `master`, for integration work.
+- Both gates must pass before merge:
+  - `python3 scripts/ci/repo_gate.py`
+  - `python3 scripts/ci/termux_smoke.py`
+- Do not invent work outside `docs/proposals/active/<id>/ITEMS.md` — add a row first.
+- Cite `Implements: <ITEM-ID>` on PRs/commits.
+- **No** wholesale merge of PR #6 (TER-9) or PR #2 (Rust CI) — see disposition comments.
+- **No** Class 3/4 artifacts in git (session stores, browser profiles, tokens).
+- Unposted chat is not consensus — write Review log or DEBATE.md.
+- PR body rewrites: follow `docs/PR-SUMMARY-PROCESS.md` roster (not a single-agent monopoly).
 
-## Preferr3d Ex3cu+10n L00p
+## Preferred Execution Loop
 
 ```text
 registry.yaml → pick todo item → branch from master-staging
@@ -36,24 +36,24 @@ registry.yaml → pick todo item → branch from master-staging
   → update ITEMS.md status
 ```
 
-## 53curi+y
+## Security
 
-Creden+14l r0t4+10n ∧ h1s+0ry rewri+3 r3quire Oper4t0r (human) authorization.
-53e `docs/SECURITY-REMEDIATION.md`.
+Credential rotation and history rewrite require Operator (human) authorization.
+See `docs/SECURITY-REMEDIATION.md`.
 
 ---
 
-# 73chn1c4l D0cum3ntat10n
+# Technical Documentation
 
-## Pr0j3c+ Overview
+## Project Overview
 
-**Termux-based multi-agent automation monorepo** running Android. 0rch3$+ra+3$ AI-powered d3v3l0pm3n+ workfl0w$ throu9h mul+1pl3 special1z3d CLI +o0ls ∧ au+0n0m0us agents. $y$+3m 1n+e9rat3s D33p533k API, m4n4g3s c0nvers4t1on branching, perform$ c0d3 forensics, ∧ m41n+4ins c0mpr3h3n$1v3 kn0wledg3 indices.
+This is a **Termux-based multi-agent automation monorepo** running on Android. It orchestrates AI-powered development workflows through multiple specialized CLI tools and autonomous agents. The system integrates with DeepSeek API, manages conversation branching, performs code forensics, and maintains comprehensive knowledge indices.
 
 **Core Technologies:**
-- **Language:** Pyth0n 3 (primary), Node.js (supporting), Bash, Ru$+ (selective components)
-- **Platform:** 73rmux Andr0id
-- **AI Integration:** D3epS33k API, multi-model $upp0r+
-- **Architecture:** Microservices-style shared w0rksp4c3 ∧ indic3$
+- **Language:** Python 3 (primary), Node.js (supporting), Bash, Rust (selective components)
+- **Platform:** Termux on Android
+- **AI Integration:** DeepSeek API, multi-model support
+- **Architecture:** Microservices-style with shared workspace and indices
 
 **Codebase Statistics (via tokei):**
 ```
@@ -73,25 +73,25 @@ Top Languages:
 ```
 
 **Key Architectural Components:**
-1. **ArchWiz** - C3n+r4l 4utom4+10n c0ckp1+ 28 +0ol$ 4cr0s$ 7 c4+e90r13s
-2. **DeepCLI** - DeepSeek-oriented CL1 $e$$1on managem3nt ∧ $+r34m1ng
-3. **Termux Multi-Agent** - 493n+ provi$10n1ng ∧ 0rch3s+ra+10n
-4. **CLI Synthegration** - C0nv3r$ati0n syn+h3s1s ∧ 8r4nching
-5. **Harmonizer** - Un1f13d 4u+0ma+i0n 1n+3rf4c3
-6. **Central Mapper** - 457 ind3x1n9 ∧ d3pend3ncy gr4ph g3ner4+10n
+1. **ArchWiz** - Central automation cockpit with 28 tools across 7 categories
+2. **DeepCLI** - DeepSeek-oriented CLI for session management and streaming
+3. **Termux Multi-Agent** - Agent provisioning and orchestration
+4. **CLI Synthegration** - Conversation synthesis and branching
+5. **Harmonizer** - Unified automation interface
+6. **Central Mapper** - AST indexing and dependency graph generation
 
-## N4v194+1on & D0cum3n+4+10n
+## Navigation & Documentation
 
 **Primary Navigation (in priority order):**
-1. `archwiz/TOOL_INDEX.md` - 28 +o0l$ / 7 c4+390r13$ (cockpit, forensic, autonomous, verification)
-2. `archwiz/CONCEPT_INDEX.md` - C0ncept$ + s+atu$ + f34+ur3 b4ckl0g
-3. `archwiz/REFERENCE_HUB.md` - L1nk$ da+4 flow, $ys+3m map, 1nd1c3s
-4. `archwiz/METHODOLOGY_INDEX.md` - 4ppr04ch3$ tried, failures, $ucc3$$3$
-5. `archwiz/PROCEDURES.md` - Run800k$ ∧ ac+1v3 +a$k$
-6. `docs/RECON.md` - f0rk /PR cr1t1que ∧ pr0p0$al$
-7. `README.md` - Rec0v3ry d0cum3n+4+1on ∧ pr0j3ct 1nv3nt0ry
-8. `workspace/llm_map/SYSTEM_MAP.md` - Compl3+3 proj3ct c4+4l0gue (8,239 fil3s indexed)
-9. `archwiz/DATA_FLOW_MANIFEST.md` - C0mplet3 da+4 fl0w m4n1fe$+ (1.5MB, 8,400 lines)
+1. `archwiz/TOOL_INDEX.md` - 28 tools / 7 categories (cockpit, forensic, autonomous, verification)
+2. `archwiz/CONCEPT_INDEX.md` - Concepts + status + feature backlog
+3. `archwiz/REFERENCE_HUB.md` - Links to data flow, system map, indices
+4. `archwiz/METHODOLOGY_INDEX.md` - Approaches tried, failures, successes
+5. `archwiz/PROCEDURES.md` - Runbooks and active tasks
+6. `docs/RECON.md` - Branch/PR critique and proposals
+7. `README.md` - Recovery documentation and project inventory
+8. `workspace/llm_map/SYSTEM_MAP.md` - Complete project catalogue (8,239 files indexed)
+9. `archwiz/DATA_FLOW_MANIFEST.md` - Complete data flow manifest (1.5MB, 8,400 lines)
 
 **Quick Command Reference:**
 ```bash
@@ -114,17 +114,17 @@ map-build && map-func && fore
 python3 archwiz/archwiz.py
 ```
 
-## C0r3 Pr0j3ct$
+## Core Projects
 
-### 1. D33pCL1 (`deepcli/`)
-DeepSeek-oriented CL1 $e$sion management, streaming, th1nk1n9 mode, ∧ 3xp0r+ capabilities.
+### 1. DeepCLI (`deepcli/`)
+DeepSeek-oriented CLI with session management, streaming, thinking mode, and export capabilities.
 
 **Entry Points:**
-- `deepcli.py` - M4in CLI l4unch3r
-- `deepapi.py` - 4P1 1n+3rf4ce
-- `deepseek_proxy.py` - Pr0xy layer
-- `ci_mode.py` - CI/CD 1n+egra+1on en+ry p0in+
-- `ci_agent.py` - 61+Hu8 4c+10n$ 493n+ lo91c
+- `deepcli.py` - Main CLI launcher
+- `deepapi.py` - API interface
+- `deepseek_proxy.py` - Proxy layer
+- `ci_mode.py` - CI/CD integration entry point
+- `ci_agent.py` - GitHub Actions agent logic
 
 **Key Commands:**
 ```bash
@@ -138,127 +138,127 @@ DeepSeek-oriented CL1 $e$sion management, streaming, th1nk1n9 mode, ∧ 3xp0r+ c
 ```
 
 **CI/CD Integration:**
-- 61+Hu8 Ac+10n$ workflow: `.github/workflows/deepseek-ci.yml`
-- 7ri993r$ PR ev3n+$ (opened, synchronize, reopened)
-- U$3$ P0W W45M s0lver 4uth3n+1c4+10n
-- Au+0m4+3d PR 5cry ∧ c0mm3nt1n9
+- GitHub Actions workflow: `.github/workflows/deepseek-ci.yml`
+- Triggers on PR events (opened, synchronize, reopened)
+- Uses PoW WASM solver for authentication
+- Automated PR review and commenting
 
-**Related:** `deepcli-tui/` (TUI c0nv3r$4+10n tree), `.deepcli/` (config), `deepseek-cli/` (includes deepterm)
+**Related:** `deepcli-tui/` (TUI with conversation tree), `.deepcli/` (config), `deepseek-cli/` (includes deepterm)
 
-### 2. 73rmux Multi-Agent (`termux-multi-agent/`)
-Multi-agent 0rch3stra+i0n $ys+em provisioning, running, ∧ m4n4g1n9 4u+0nomou$ agents.
+### 2. Termux Multi-Agent (`termux-multi-agent/`)
+Multi-agent orchestration system for provisioning, running, and managing autonomous agents.
 
 **Key Components:**
-- `provision_agent.py` - A93n+ pr0v1$1on1n9
-- `run.py` - M41n run loop
-- `dashboard.py` - Status/control U1
-- `patch_files.py` / `patch_files_final.py` - Pa+ch 4ppl1c4tion
-- `cedar-mcp-server.js` - C3d4r5cr1pt MCP serv3r
-- `run_history.jsonl` - Run hi$+0ry +r4ck1n9
+- `provision_agent.py` - Agent provisioning
+- `run.py` - Main run loop
+- `dashboard.py` - Status/control UI
+- `patch_files.py` / `patch_files_final.py` - Patch application
+- `cedar-mcp-server.js` - CedarScript MCP server
+- `run_history.jsonl` - Run history tracking
 
 **Task Management:**
-- T4sks l04d3d fr0m `~/workspace/llm_map/master_tasks.json`
-- 3nvironm3nt variables: `TASK_ID`, `REFACTOR_GOAL`, `TARGET_FILE`, `TASK_WORKSPACE`
-- Fallback: `current_task.txt` w0rk$p4c3
+- Tasks loaded from `~/workspace/llm_map/master_tasks.json`
+- Environment variables: `TASK_ID`, `REFACTOR_GOAL`, `TARGET_FILE`, `TASK_WORKSPACE`
+- Fallback: `current_task.txt` in workspace
 
-### 3. CL1 Syn+h3gr4+10n (`cli-synthegration/`)
-C0nv3rsa+10n synthe$1s branching, export, account/token management, ∧ metrics.
+### 3. CLI Synthegration (`cli-synthegration/`)
+Conversation synthesis with branching, export, account/token management, and metrics.
 
 **Notable Modules:**
-- `branch_manager.py` - Convers4+1on f0rk man493m3n+
-- `conv_branching.py` - f0rk /fork AP1 1mpl3m3n+a+i0n
-- `conv_explorer.py` - C0nv3r$4t10n 3xpl0r4+i0n
-- `conv_export_cli.py` - 3xpor+ func+10nali+y
-- `account_manager.py` - Multi-account suppor+
-- `token_provider.py` - T0ken manag3men+
-- `live_export.py` / `live_search.py` - Real-time op3ra+10n$
-- `sync_pipeline.py` - 5ynchr0n1z4t10n
-- `Chronos/` - Time-loop 4cc3l3ration
-- `workspace/` - W0rk1n9 d1rect0r13$
-- `metrics/` - P3rf0rm4nce tr4ck1ng
+- `branch_manager.py` - Conversation f0rk management
+- `conv_branching.py` - Branch/fork API implementation
+- `conv_explorer.py` - Conversation exploration
+- `conv_export_cli.py` - Export functionality
+- `account_manager.py` - Multi-account support
+- `token_provider.py` - Token management
+- `live_export.py` / `live_search.py` - Real-time operations
+- `sync_pipeline.py` - Synchronization
+- `Chronos/` - Time-loop acceleration
+- `workspace/` - Working directories
+- `metrics/` - Performance tracking
 
 **Data Storage:**
-- `synthegration_exports/` - 3,281 3xp0r+3d $3s$10n files
-- `workspace/correlation/` - Session--file c0rrel4t10n 1nd3x
-- `workspace/provenance/` - V3rs10n tr4ck1ng ∧ pr0v3n4nc3
-- `codex/message_index.json` - Full-text me$$4g3 s3arch 1nd3x
+- `synthegration_exports/` - 3,281 exported session files
+- `workspace/correlation/` - Session-to-file correlation index
+- `workspace/provenance/` - Version tracking and provenance
+- `codex/message_index.json` - Full-text message search index
 
-### 4. 4rchW12 (`archwiz/`)
-Cen+r4l 4utom4+10n c0ckp1+ indexing, prov3n4nce tracking, ∧ r3c0v3ry tools.
+### 4. ArchWiz (`archwiz/`)
+Central automation cockpit with indexing, provenance tracking, and recovery tools.
 
 **Tool Categories (28 tools total):**
 
 **Cockpit & Pipeline:**
-- `archwiz.py` - D4sh8oard 16 0p+10n$ + 3 mod3 t099le$
-- `activity_listener.py` - Auto-executes 4$s1$t4nt code 8l0ck$
-- `live_view.py` - 5cry p4nel /exec, /skip, /send c0mm4nds
-- `debug_daemon.py` - W4+ch3s failures, auto-fixes ruff/shellcheck
-- `listener_control.py` - PID-based saf3 start/stop
+- `archwiz.py` - Dashboard with 16 options + 3 mode toggles
+- `activity_listener.py` - Auto-executes assistant code blocks
+- `live_view.py` - Review panel with /exec, /skip, /send commands
+- `debug_daemon.py` - Watches failures, auto-fixes with ruff/shellcheck
+- `listener_control.py` - PID-based safe start/stop
 
 **Forensic & Version Control:**
-- `forensic_toolchain.py` - Fragmen+ matcher, $1m1l4r1+y scan, c0rrela+1on sc0ut
-- `correlation_scout.py` - 7r4c3$ file-path chan93$ 4cr0ss v3rs10n$
-- `fragment_matcher.py` - Function-level pr0v3n4nc3
-- `restore_version.py` - Provenance-based cod3 r3surrect10n
+- `forensic_toolchain.py` - Fragment matcher, similarity scan, correlation sc0ut
+- `correlation_scout.py` - Traces file-path changes across versions
+- `fragment_matcher.py` - Function-level provenance
+- `restore_version.py` - Provenance-based code resurrection
 
 **Autonomous Operation:**
-- `autonomous_runner.py` - D1$p4+che$ … +4sk$ m3m0ry 4warenes$
-- `dispatch_task.py` - Sand8ox3d 3x3cuti0n 5en+1n3l ver1fica+10n
-- `task_builder.py` - 1nt3r4ct1v3 t4$k cr34+10n
-- `auto_repair.py` - Auto-fixes 53n+1n3l 5cry 1s$u3s
+- `autonomous_runner.py` - Dispatches pending tasks with memory awareness
+- `dispatch_task.py` - Sandboxed execution with Sentinel verification
+- `task_builder.py` - Interactive task creation
+- `auto_repair.py` - Auto-fixes Sentinel REVIEW issues
 
 **Verification & Testing:**
-- `sentinel.py` - 5-gate v3r1fic4+10n (file integrity, naming, duplicate, Pr0b3 , shockwave)
-- `probe.py` - Syntax/import/ Pr0b3 v4l1d4+i0n
-- `mirror.py` - Self-critique +4$k hygiene, 1nd3x fr3$hn3ss
-- `dangle_detector.py` - Cross-ecosystem 8rok3n ref3r3nce $c4nn3r
+- `sentinel.py` - 5-gate verification (file integrity, naming, duplicate, pr0b3, shockwave)
+- `probe.py` - Syntax/import/test validation
+- `mirror.py` - Self-critique for task hygiene, index freshness
+- `dangle_detector.py` - Cross-ecosystem broken reference scanner
 
 **Knowledge & Memory:**
-- `archivist.py` - L0cal ? en91n3 4cr0s$ 4ll ind1c3s
-- `tasque_declare.py` - Decl4r3s c0mpl3+10n taDone.md
-- `timeline_editor.py` - Full D8 3d1+0r + 4rch43ol091$+
-- `narrative.py` - Chronol09ic4l fe3d pip3l1n3 3v3n+s
-- `lexicon_harvest.py` - 5ess10n sc4nn1n9 nov3l +3rm$
-- `name_forge.py` - Gr1m01r3 -powered t00l n4m1n9
+- `archivist.py` - Local query engine across all indices
+- `tasque_declare.py` - Declares completion to taDone.md
+- `timeline_editor.py` - Full DB editor + archaeologist
+- `narrative.py` - Chronological feed of pipeline events
+- `lexicon_harvest.py` - Session scanning for novel terms
+- `name_forge.py` - Gr1m01r3-powered tool naming
 
 **Documentation Pipeline:**
-- `session_digest.py` - 5can$ 3xp0rt3d s3$$i0n$ $+ructured fe4+ur3$
-- `structural_scanner.py` - F4st chunked-correlation $c4nn3r
-- `export_status.py` - 5how$ cach3d vs 3xpor+3d se$$1ons
-- `pointer_index.py` - Bu1ld$ hash→location m4p c0de block$
+- `session_digest.py` - Scans exported sessions for structured features
+- `structural_scanner.py` - Fast chunked-correlation scanner
+- `export_status.py` - Shows cached vs exported sessions
+- `pointer_index.py` - Builds hash→location map of code blocks
 
-### 5. Cen+ral M4pp3r (`central_mapper_v420.py`, `workspace/llm_map/`)
-Compr3h3ns1v3 code84$e index1ng ∧ dep3nd3ncy analysis.
+### 5. Central Mapper (`central_mapper_v420.py`, `workspace/llm_map/`)
+Comprehensive codebase indexing and dependency analysis.
 
 **Key Indices:**
-- `llm_index.jsonl` - Full LLM-optimized 1nd3x
-- `llm_index_compact.jsonl` - C0mp4ct v3r$10n (1.99MB)
-- `func_index.jsonl` - Function-level 1nd3x (287KB)
-- `central_enriched.jsonl` - 3nrich3d centr4l index
-- `task_files_index.json` - 4ll task/sprint/todo f1le$
-- `file_graph.json` - D3p3nd3ncy 9r4ph
-- `deps.jsonl` - Depend3ncy r3l4+ionship$
+- `llm_index.jsonl` - Full LLM-optimized index
+- `llm_index_compact.jsonl` - Compact version (1.99MB)
+- `func_index.jsonl` - Function-level index (287KB)
+- `central_enriched.jsonl` - Enriched central index
+- `task_files_index.json` - All task/sprint/todo files
+- `file_graph.json` - Dependency graph
+- `deps.jsonl` - Dependency relationships
 
 **Build Scripts:**
-- `build_all.py` - Compl3+3 1nd3x r38uild
-- `build_llm_index.py` - LLM ind3x 9en3ra+1on
-- `build_ast_index_from_existing.py` - A57 index fr0m ex1$t1ng d4t4
-- `build_graph_fast.py` - F4$+ 9r4ph 9en3r4+i0n
+- `build_all.py` - Complete index rebuild
+- `build_llm_index.py` - LLM index generation
+- `build_ast_index_from_existing.py` - AST index from existing data
+- `build_graph_fast.py` - Fast graph generation
 
-### 6. H4rm0ni23r (`harmonizer-prod_cli/`)
-Pr0duct1on H4rmon12er CL1 pr0vid1n9 un1f1ed De3p533k automation: sessions, export, search, sync.
+### 6. Harmonizer (`harmonizer-prod_cli/`)
+Production Harmonizer CLI providing unified DeepSeek automation: sessions, export, search, sync.
 
-### 7. 5upp0r+1n9 Pr0j3c+s
-- `harmony_hub/` - H4rm0ny hu8 in+e9r4+10n
-- `multi-ai-cli/` - Multi-model CL1 $urf4c3
-- `commingle-swarm/` - Template/scavenge-only ( ¬ first-class runtime)
-- `colab-cli/` - C0la8 CL1 +o0ling
-- `exchanges/` - Exchange/market 4PI c0d3
-- `appliedSxi/maxc/` - 4ppl13d Sxi/Max work
+### 7. Supporting Projects
+- `harmony_hub/` - Harmony hub integration
+- `multi-ai-cli/` - Multi-model CLI surface
+- `commingle-swarm/` - Template/scavenge-only (not first-class runtime)
+- `colab-cli/` - Colab CLI tooling
+- `exchanges/` - Exchange/market API code
+- `appliedSxi/maxc/` - Applied Sxi/Max work
 
-## D3velopment W0rkfl0w
+## Development Workflow
 
-### 8u1ld1n9 ∧ Running
+### Building and Running
 
 **Prerequisites:**
 ```bash
@@ -301,7 +301,7 @@ cd workspace/llm_map
 python3 build_all.py
 ```
 
-### T3$+in9
+### Testing
 
 **Validation Pipeline:**
 ```bash
@@ -316,115 +316,115 @@ python3 archwiz/mirror.py
 ```
 
 **Agent Test Runs:**
-- Pr0b3 v3rd1c+$ tracked `termux-multi-agent/run_history.jsonl`
-- Dash804rd 4va1l4bl3 vi4 `termux-multi-agent/dashboard.py`
+- Test verdicts tracked in `termux-multi-agent/run_history.jsonl`
+- Dashboard available via `termux-multi-agent/dashboard.py`
 
-## CI/CD & G1+Hu8 4c+i0ns
+## CI/CD & GitHub Actions
 
-### 4c+iv3 W0rkfl0ws
+### Active Workflows
 
 **DeepSeek CI (`.github/workflows/deepseek-ci.yml`):**
-- Triggers: PR opened, synchronize, reopened, manu4l d1sp4+ch
-- Features: 4u+0m4t3d PR 5cry , c0d3 analysis, c0mmen+ p0$ting
-- Authentication: PoW W45M $olver (deepseek.wasm + pow_solver.js)
-- 53ssi0n cach1n9 p3rf0rm4nc3
-- 4r+1fac+ uplo4d r3sul+$
+- Triggers: PR opened, synchronize, reopened, manual dispatch
+- Features: Automated PR review, code analysis, comment posting
+- Authentication: PoW WASM solver (deepseek.wasm + pow_solver.js)
+- Session caching for performance
+- Artifact upload for results
 
 **Other Workflows:**
-- `agent-continuous-ops.yml` - C0n+1nu0u$ a9ent 0p3r4+1on$
-- `agent-feedback-linear-sync.yml` - L1n34r 1s$ue sync
-- `agent-jules-on-issues.yml` - Jul3$ a9en+ i$$u3$
-- `agent-review-auto-jules.yml` - 4u+om4+ed Jules r3v1ew$
-- `gemini-*.yml` - 6em1n1 1n+39r4t10n workfl0w$
-- `peer-review-orchestrator.yml` - Multi-peer 5cry c00rdina+10n
-- `publish-wiki.yml` - W1ki publ1sh1ng
+- `agent-continuous-ops.yml` - Continuous agent operations
+- `agent-feedback-linear-sync.yml` - Linear issue sync
+- `agent-jules-on-issues.yml` - Jules agent for issues
+- `agent-review-auto-jules.yml` - Automated Jules reviews
+- `gemini-*.yml` - Gemini integration workflows
+- `peer-review-orchestrator.yml` - Multi-peer review coordination
+- `publish-wiki.yml` - Wiki publishing
 
-### 61+Hub Ac+10n$ 83s+ Pr4ct1ces
-- U$3 `OPERATOR_TOKEN` $3cr3+ au+h3n+1c4t3d 0per4+1ons
-- C4ch3 se$$10n da+4 r3duc3 4PI c4ll$
-- Fetch W45M fil3$ from c0rr3c+ comm1+ hash
-- U$e metadata-only 4r+1f4ct$ lar9e 0u+pu+$
-- 1mpl3men+ pr0p3r ⚠ h4ndl1n9 ∧ +im3ou+$
+### GitHub Actions Best Practices
+- Use `OPERATOR_TOKEN` secret for authenticated operations
+- Cache session data to reduce API calls
+- Fetch WASM files from correct commit hash
+- Use metadata-only artifacts for large outputs
+- Implement proper error handling and timeouts
 
-## D3velopm3n+ Conven+10n$
+## Development Conventions
 
-### Cod3 5tyl3
-- **Python:** F0ll0w PEP 8, us3 `ruff` lint1n9 ∧ auto-fix
-- **Shell:** U$3 `shellcheck` valid4+10n
-- **Logging:** U$3 3x1s+1ng p4+t3rns ∨ l4n9u4g3 s+and4rd l0991n9 library/facade
-- **Performance:** Check p3rf0rm4nc3 implic4ti0ns ch4n93s
-- **Security:** 5cry $3curity considerations, 3$p3c1ally 4P1 t0k3n$ ∧ cr3d3n+14ls
+### Code Style
+- **Python:** Follow PEP 8, use `ruff` for linting and auto-fix
+- **Shell:** Use `shellcheck` for validation
+- **Logging:** Use existing patterns or language standard logging library/facade
+- **Performance:** Check performance implications of changes
+- **Security:** Review security considerations, especially for API tokens and credentials
 
-### F1l3 0rg4n124+10n
-- **Indices:** 5tor3d `workspace/llm_map/`, `archwiz/`, `cli-synthegration/workspace/`
-- **Configuration:** Project-specific conf19$ re$p3c+1ve d1r3c+or13$
-- **Backups:** `.bak` f1l3$ cr3a+ed automatically, l4r9e JSONL ind1c3$ 84ck3d up 3xt3rn4lly
-- **Ignore Patterns:** R3$p3ct `.gitignore` ∧ `.bobignore` (see ro0+ `.bobignore` exclusions)
+### File Organization
+- **Indices:** Stored in `workspace/llm_map/`, `archwiz/`, `cli-synthegration/workspace/`
+- **Configuration:** Project-specific configs in respective directories
+- **Backups:** `.bak` files created automatically, large JSONL indices backed up externally
+- **Ignore Patterns:** Respect `.gitignore` and `.bobignore` (see root `.bobignore` for exclusions)
 
-### Comm1+ Pr4ct1c3$
-- Us3 f34tur3 br4nch3s (`feature/*`) all ch4n93$
-- N3v3r c0mmi+ d1r3c+ly `master` w1th0u+ 5cry
-- R3f3r3nc3 +a$k 1D$ c0mm1+ m3$$493s when 4ppl1c48l3
-- K33p c0mm1+$ f0cu$3d ∧ at0m1c
-- Foll0w c0nvent10n4l commit f0rma+ wh3n p0$$18l3
+### Commit Practices
+- Use feature branches (`feature/*`) for all changes
+- Never commit directly to `master` without review
+- Reference task IDs in commit messages when applicable
+- Keep commits focused and atomic
+- Follow conventional commit format when possible
 
-### 53cur1+y & S3cr3t$
-- **Never commit:** AP1 keys, tokens, cookies, $3$$10n s+0r3s
+### Security & Secrets
+- **Never commit:** API keys, tokens, cookies, session stores
 - **Sensitive files:** `cookies_2.json`, `*_api_key`, `*.env`, `*.pem`, `*.key`
-- **Session stores:** Mu$+ ¬ +r4ck3d 61+ (see PR #3 `agent/repository-hygiene`)
-- **Backup:** Lar93 J50NL ind1ce$ 3xt3rn4lly 83f0r3 d3$+ruc+iv3 re8u1ld$
-- **Browser data:** `deepcli/browser-data*/` ∧ `deepseek-cli/browser-data*/` con+4in s3n$i+1v3 c00k1e$
+- **Session stores:** Must not be tracked in Git (see PR #3 `agent/repository-hygiene`)
+- **Backup:** Large JSONL indices externally before destructive rebuilds
+- **Browser data:** `deepcli/browser-data*/` and `deepseek-cli/browser-data*/` contain sensitive cookies
 
-### 4u+0n0m0us Op3r4t10n
+### Autonomous Operation
 - **Task Sources:** `master_tasks.json`, `TASK_ID` env var, `REFACTOR_GOAL` env var, `current_task.txt`
-- **Execution:** S4nd80x3d S3ntin3l v3r1f1c4t10n
-- **Memory:** Memory-aware d1$patching cra$h rec0v3ry
-- **Validation:** Auto-repair $1mple issues, manual 5cry c0mpl3x 0n3$
+- **Execution:** Sandboxed with Sentinel verification
+- **Memory:** Memory-aware dispatching with crash recovery
+- **Validation:** Auto-repair for simple issues, manual review for complex ones
 
-### Ind3x Man4g3ment
-- **Pointer Index:** CID-style b00km4rk1n9 (`archwiz/pointer_index.json`)
-- **Correlation Index:** Session--file link$ (`cli-synthegration/workspace/correlation/`)
-- **True Versions:** Vers10n h4$h +r4cking (`cli-synthegration/workspace/provenance/true_versions.json`)
-- **Message Index:** Full-text $3$s10n m3$s493s (`cli-synthegration/codex/message_index.json`)
-- **Task Files:** 4ll task/sprint/todo f1l3$ (`workspace/llm_map/task_files_index.json`)
-- **Data Flow Manifest:** Compl3te f1l3 wri+er +r4ck1ng (`archwiz/DATA_FLOW_MANIFEST.md`)
+### Index Management
+- **Pointer Index:** CID-style bookmarking (`archwiz/pointer_index.json`)
+- **Correlation Index:** Session-to-file links (`cli-synthegration/workspace/correlation/`)
+- **True Versions:** Version hash tracking (`cli-synthegration/workspace/provenance/true_versions.json`)
+- **Message Index:** Full-text session messages (`cli-synthegration/codex/message_index.json`)
+- **Task Files:** All task/sprint/todo files (`workspace/llm_map/task_files_index.json`)
+- **Data Flow Manifest:** Complete file writer tracking (`archwiz/DATA_FLOW_MANIFEST.md`)
 
-### F0r3n$1c R3covery
+### Forensic Recovery
 - **Staged Blocks:** `archwiz/staging_blocks.json`
-- **Pipeline:** Ex+r4c+ f0r3n$1c +oolch41n → r3$+0r3 `restore_version.py`
-- **Backups:** Au+om4t1c `.bak` crea+ion b3f0re m0d1f1c4+1ons
-- **Restore Points:** Up 5 p3r f1le (0 = in1+1al state)
+- **Pipeline:** Extract with forensic toolchain → restore with `restore_version.py`
+- **Backups:** Automatic `.bak` creation before modifications
+- **Restore Points:** Up to 5 per file (0 = initial state)
 
-## K3y C0nc3p+$
+## Key Concepts
 
-### C0r3 48$+r4ct10n$
-- **TasQue:** 7a$k c0mpl3t1on declar4+ion sy$+em (ta'Done)
-- **Sentinel:** 5-gate ver1f1c4+ion (file, naming, duplicate, Pr0b3 , shockwave)
-- **Archivist:** Local-only ? eng1ne 4cr0$$ all 1nd1c3$
-- **Probe:** Syntax/import/ Pr0b3 v4l1d4t10n
-- **Mirror:** Self-critique +4$k hy9ien3 ∧ 1nd3x fr3shnes$
-- **Dangle Detector:** Cross-ecosystem 8r0k3n r3f3r3nc3 scann3r
-- **Pointer Index:** CID-style 80okm4rk1ng messages, tables, d4+4
-- **Narrative Feed:** Chr0n0l091cal 3ven+ $+re4m pipel1n3 3v3n+$
+### Core Abstractions
+- **TasQue:** Task completion declaration system (ta'Done)
+- **Sentinel:** 5-gate verification (file, naming, duplicate, pr0b3, shockwave)
+- **Archivist:** Local-only query engine across all indices
+- **Pr0b3:** Syntax/import/test validation
+- **Mirror:** Self-critique for task hygiene and index freshness
+- **Dangle Detector:** Cross-ecosystem broken reference scanner
+- **Pointer Index:** CID-style bookmarking of messages, tables, data
+- **Narrative Feed:** Chronological event stream of pipeline events
 
-### Re$3rv3d C0ncept$ ( ¬ Ye+ Implemented)
-- **Spellbook:** Libr4ry $ys+3m a81li+i3s
-- **Rune:** Shor+ h4$h p01n+er (CID-style)
-- **Sigil:** 5u8$+1+u+1on eng1ne run+1m3 compre$$10n
-- **ChronoMancer:** Time-loop 493nt ✓ -only +runk$
-- **Self-healing Sandbox:** D3+3c+ ⚠ → r3qu3$+ f1x → v4l1d4+3 → promot3
+### Reserved Concepts (Not Yet Implemented)
+- **Spellbook:** Library of system abilities
+- **Rune:** Short hash pointer (CID-style)
+- **Sigil:** Substitution engine for runtime compression
+- **Chr0n0:** Time-loop agent with success-only trunks
+- **Self-healing Sandbox:** Detect error → request fix → validate → promote
 
-### Me+hod0lo9y 3volut10n
-| Pha$3 | Wh4t 7r13d → Wha+ 5+uck |
+### Methodology Evolution
+| Phase | What We Tried → What Stuck |
 |-------|---------------------------|
 | **Listener lifecycle** | `nohup` → `pkill -f` → `Popen` → `listener_control.py` (PID file) |
 | **Chat feedback** | `deepcli_send.py` (new session) → `send_message` (missing fields) → `stream_completion` (TUI pipe) |
-| **Session cache** | `synthegration export` → `manifest.json` → `get_history()` direc+ |
-| **Block tracking** | Message-ID → per-block h4sh (MD5 f1r$t 12 chars) |
-| **Live View** | Cur$3s → +3x+ l00p → +hro++l3d redr4w + `/send` single-line |
-| **Hang avoidance** | `stdin=DEVNULL` + `start_new_session=True` + PID-file con+r0ll3r |
+| **Session cache** | `synthegration export` → `manifest.json` → `get_history()` direct |
+| **Block tracking** | Message-ID → per-block hash (MD5 first 12 chars) |
+| **Live View** | Curses → text loop → throttled redraw + `/send` single-line |
+| **Hang avoidance** | `stdin=DEVNULL` + `start_new_session=True` + PID-file controller |
 
-## W0rksp4c3 5+ruc+ur3
+## Workspace Structure
 
 ```
 ~/
@@ -449,117 +449,117 @@ python3 archwiz/mirror.py
 └── deepseek-cli/         # 1,463 files (includes browser data)
 ```
 
-## 1ns+4lled T00ls
+## Installed Tools
 
-- **ruff** - Py+hon lin+3r + auto-fix
-- **shellcheck** - Sh3ll scr1pt 4n4ly$1s
-- **ripgrep (rg)** - F4$t r3cur$iv3 $e4rch
-- **fd** - F4$+ `find` al+3rn4+1v3
-- **jq** - J5ON proc3ss0r
-- **entr** - F1l3 w4tch3r
-- **tokei** - Cod3 $+4+1stic$ ∧ l1ne c0unting
+- **ruff** - Python linter + auto-fix
+- **shellcheck** - Shell script analysis
+- **ripgrep (rg)** - Fast recursive search
+- **fd** - Fast `find` alternative
+- **jq** - JSON processor
+- **entr** - File watcher
+- **tokei** - Code statistics and line counting
 
-## 0pen Work & Pri0ri+13$
+## Open Work & Priorities
 
-### 4c+1v3 PR$ (as 2026-08-01)
-1. **PR #1 `critical-proposal`** - Cr1t1c4l 3v4l + r04dm4p (mergeable 4$ docs)
-2. **PR #2 `timerloggedout-spec-patch-1`** - 6HA Ru$+ (narrow sc0p3 83f0re merge)
-3. **PR #3 `agent/repository-hygiene`** (draft) - Un+r4ck $es$10n $+0r3$ (**priority security**)
+### Active PRs (as of 2026-08-01)
+1. **PR #1 `critical-proposal`** - Critical eval + roadmap (mergeable as docs)
+2. **PR #2 `timerloggedout-spec-patch-1`** - GHA Rust (narrow scope before merge)
+3. **PR #3 `agent/repository-hygiene`** (draft) - Untrack session stores (**priority security**)
 
-### 4c+1ve 8ranche$ (Critical Evaluation)
+### Active Branches (Critical Evaluation)
 
 **High Priority:**
-- `recreate/refTemplates-skeleton` - Full m3t4d4+4 +r33 (merge master)
-- `agent/repository-hygiene` - 53$$i0n $+0r3 $3cur1+y (PR #3, priority)
-- `mistral/fixes-config-security` - config.py + $3cur1+y 84$3l1ne
+- `recreate/refTemplates-skeleton` - Full metadata tree (merge to master)
+- `agent/repository-hygiene` - Session store security (PR #3, priority)
+- `mistral/fixes-config-security` - config.py + security baseline
 
 **Under Review:**
-- `feat/gh-actions/deepseek-integrates-itself` - D33p5e3k C1 workfl0w (fixed, ready)
-- `critical-proposal` - D0cum3n+4+i0n ∧ 4rchi+3c+ur3 cr1+1qu3 (PR #1)
-- `vibe/mistralai-vibe-code-wrapper-*` - M1$+ral CLI + h4rv35t3r
+- `feat/gh-actions/deepseek-integrates-itself` - DeepSeek CI workflow (fixed, ready)
+- `critical-proposal` - Documentation and architecture critique (PR #1)
+- `vibe/mistralai-vibe-code-wrapper-*` - Mistral CLI + h4rv35t3r
 
-**Branch Health Notes (from RECON.md):**
-- `master` @ `6ef0e2f` - Protected, r3c0very R3ADME + l1ve 1nv3n+0ry
-- L39acy p4+h$ (`export_poller.sh`, `activity_listener.py`) c4nd1d4+3$ 4rchiv3
-- Pr3f3r `dispatch_pipeline` c4ch3 < over dual m41n+3nanc3
+**F0rk Health Notes (from RECON.md):**
+- `master` @ `6ef0e2f` - Protected, recovery README + live inventory
+- Legacy paths (`export_poller.sh`, `activity_listener.py`) are candidates for archive
+- Prefer `dispatch_pipeline` on cache write over dual maintenance
 
-### F34tur3 Requ3st$
-- Real-time ch4+ f3edback fr0m l1$+3n3r
-- Cross-session id34 h4rv35t3r
-- chr0n0 f0rk U1 (visual tree)
-- L1$+3ner auto-scribe (consolidate notes)
-- Multi-account pr0b1n9 im49e upl0ad
-- 748 c0mpl3+10n /sessions
-- Expert-mode se$$1on cr34ti0n
+### Feature Requests
+- Real-time chat feedback from listener
+- Cross-session idea h4rv35t3r
+- Chr0n0 f0rk UI (visual tree)
+- Listener auto-scribe (consolidate notes)
+- Multi-account probing with image upload
+- Tab completion for /sessions
+- Expert-mode session creation
 
-### Kn0wn 1ssue$ & Techn1c4l D3b+
-1. **Termux path coupling** - 4bsolut3 p4+h$ REFERENCE_HUB n33d por+a8ili+y
-2. **Silent `except: pass`** - d1sp4+ch (deepcli + multi-ai-cli)
-3. **Broken root symlinks** - P4+h coupl1n9 1$$u3s
+### Known Issues & Technical Debt
+1. **Termux path coupling** - Absolute paths in REFERENCE_HUB need portability
+2. **Silent `except: pass`** - In dispatch (deepcli + multi-ai-cli)
+3. **Broken root symlinks** - Path coupling issues
 4. **refTemplates gaps:**
-- C4+3g0ry 15 (Reverse Engineering) removed, n33d$ metadata-only r3s+or3
-- Uncategorized: Haven/, Interpreted-Context-Methdology_fork/
-5. **Session store hygiene** - PR #3 addr3$$3$ credential-adjacent ri$k
+   - Category 15 (Reverse Engineering) removed, needs metadata-only restore
+   - Uncategorized: Haven/, Interpreted-Context-Methdology_fork/
+5. **Session store hygiene** - PR #3 addresses credential-adjacent risk
 
-## Trou8l3$h0o+1ng
+## Troubleshooting
 
-### Common 1$sue$
+### Common Issues
 
 **Listener Hangs:**
-- U$3 `listener_control.py` saf3 start/stop
-- Ch3ck P1D f1le `.deepcli/`
-- 3n$ur3 `stdin=DEVNULL` ∧ `start_new_session=True` su8pr0c3ss c4ll$
+- Use `listener_control.py` for safe start/stop
+- Check PID file in `.deepcli/`
+- Ensure `stdin=DEVNULL` and `start_new_session=True` in subprocess calls
 
 **Index Staleness:**
-- Run `mirror.py` ch3ck 1ndex fre$hn3s$
-- R38u1ld `map-build && map-func && fore`
-- Ch3ck b4ckup ag3 83for3 d3s+ruc+iv3 r38u1ld$
+- Run `mirror.py` to check index freshness
+- Rebuild with `map-build && map-func && fore`
+- Check backup age before destructive rebuilds
 
 **Task Not Found:**
-- V3r1fy `TASK_ID` `master_tasks.json`
-- Ch3ck `REFACTOR_GOAL` env v4r
-- F4ll84ck `current_task.txt` workspac3
+- Verify `TASK_ID` in `master_tasks.json`
+- Check `REFACTOR_GOAL` env var
+- Fallback to `current_task.txt` in workspace
 
 **Sentinel Failures:**
-- 5cry 5-gate 0utput (file, naming, duplicate, Pr0b3 , shockwave)
-- U$3 `auto_repair.py` $impl3 fix3s
-- Manu4l 5cry compl3x 1$sue$
+- Review 5-gate output (file, naming, duplicate, pr0b3, shockwave)
+- Use `auto_repair.py` for simple fixes
+- Manual review for complex issues
 
 **Broken References:**
-- Run `dangle_detector.py` cross-ecosystem sc4n
-- Ch3ck c0rr3l4+1on 1nd3x file-path ch4ng3$
-- Us3 forensic +o0lcha1n r3c0very
+- Run `dangle_detector.py` for cross-ecosystem scan
+- Check correlation index for file-path changes
+- Use forensic toolchain for recovery
 
 **CI/CD Workflow Failures:**
-- V3r1fy `OPERATOR_TOKEN` $3cret c0nfi9ured
-- Ch3ck WA5M f1le p4th$ ∧ c0mmit ha$h
-- 5cry workfl0w l09$ Gi+Hu8 Ac+10ns
-- 3n$ur3 se$s10n c4ch3 pr0perly c0nfigur3d
+- Verify `OPERATOR_TOKEN` secret is configured
+- Check WASM file paths and commit hash
+- Review workflow logs in GitHub Actions
+- Ensure session cache is properly configured
 
-## 4dd1+10nal R3s0urc3s
+## Additional Resources
 
-- **Full Documentation:** 53e `archwiz/REFERENCE_HUB.md` c0mpreh3n$1ve l1nk$
-- **Methodology:** `archwiz/METHODOLOGY_INDEX.md` d0cum3nt$ wha+ w0rked ∧ wh4+ didn't
-- **Procedures:** `archwiz/PROCEDURES.md` c0n+41n$ run80ok$
-- **Recovery:** `README.md` h4s de+a1l3d r3c0v3ry proc3dur3s ∧ ref7empl4+3$ $n4p$h0+
-- **Recon:** `docs/RECON.md` c0nt4ins f0rk /PR cr1tique ∧ pr0p0$als
-- **System Map:** `workspace/llm_map/SYSTEM_MAP.md` - C0mpl3+e proj3c+ ca+4l0gu3
-- **Data Flow:** `archwiz/DATA_FLOW_MANIFEST.md` - C0mpl3t3 d4+4 fl0w m4n1fe$+
+- **Full Documentation:** See `archwiz/REFERENCE_HUB.md` for comprehensive links
+- **Methodology:** `archwiz/METHODOLOGY_INDEX.md` documents what worked and what didn't
+- **Procedures:** `archwiz/PROCEDURES.md` contains runbooks
+- **Recovery:** `README.md` has detailed recovery procedures and refTemplates snapshot
+- **Recon:** `docs/RECON.md` contains branch/PR critique and proposals
+- **System Map:** `workspace/llm_map/SYSTEM_MAP.md` - Complete project catalogue
+- **Data Flow:** `archwiz/DATA_FLOW_MANIFEST.md` - Complete data flow manifest
 
-## N0+3$ 41 4g3nt$
+## Notes for AI Agents
 
-1. **Always check indices first** - U$3 `archivist.py` ? 3x1$t1ng kn0wled93 b3f0r3 m4k1n9 ch4n9e$
-2. **Respect the verification pipeline** - Run 53nt1n3l ∧ Pr0b3 83fore pr0m0+in9 ch4n9e$
-3. **Use feature branches** - N3v3r comm1+ dir3c+ly m4$+3r
-4. **Maintain provenance** - ~ c0rrel4+i0n ∧ ver$1on 1ndic3s when m0d1fy1n9 fil3$
-5. **Check for existing patterns** - 5cry sim1lar cod3 8ef0r3 1mpl3m3ntin9 n3w f34+ure$
-6. **Security first** - N3ver 3xp0$e tokens, keys, ∨ cr3d3n+14ls
-7. **Document decisions** - ~ r3levan+ ind1c3$ ∧ d0cum3n+4t1on
-8. **Test incrementally** - Us3 $and8ox experiments, valid4+3 b3f0r3 prom0+ing
-9. **Respect ignore patterns** - H0nor `.gitignore` ∧ `.bobignore` 3xclu$10ns
-10. **Prefer metadata-only** - refTemplates, us3 depth-1 $par$3 ch3ck0ut m3+ada+4 only
-11. **Check RECON.md** - 5cry f0rk h34l+h ∧ kn0wn i$$u3$ befor3 m4j0r ch4n93$
-12. **Use tokei** - Run `tokei --sort code` underst4nd c0d3b4$3 c0mp0$1+10n
-13. **Follow CI/CD patterns** - U$3 3xis+1n9 6i+Hu8 4c+i0n$ w0rkfl0w$ as t3mplat3$
-14. **Cache aggressively** - S3$$10n c4ch1n9 r3duc3$ 4PI calls ∧ impr0v3$ p3rf0rmanc3
-15. **Monitor data flow** - Ch3ck DATA_FLOW_MANIFEST.md f1l3 wr1t3r r3l4+1on$h1ps
+1. **Always check indices first** - Use `archivist.py` to query existing knowledge before making changes
+2. **Respect the verification pipeline** - Run Sentinel and Pr0b3 before promoting changes
+3. **Use feature branches** - Never commit directly to master
+4. **Maintain provenance** - Update correlation and version indices when modifying files
+5. **Check for existing patterns** - Review similar code before implementing new features
+6. **Security first** - Never expose tokens, keys, or credentials
+7. **Document decisions** - Update relevant indices and documentation
+8. **Test incrementally** - Use sandbox for experiments, validate before promoting
+9. **Respect ignore patterns** - Honor `.gitignore` and `.bobignore` exclusions
+10. **Prefer metadata-only** - For refTemplates, use depth-1 sparse checkout with metadata only
+11. **Check RECON.md** - Review f0rk health and known issues before major changes
+12. **Use tokei** - Run `tokei --sort code` to understand codebase composition
+13. **Follow CI/CD patterns** - Use existing GitHub Actions workflows as templates
+14. **Cache aggressively** - Session caching reduces API calls and improves performance
+15. **Monitor data flow** - Check DATA_FLOW_MANIFEST.md for file writer relationships

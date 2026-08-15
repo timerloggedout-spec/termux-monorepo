@@ -20,6 +20,7 @@ import urllib.request
 import time
 
 COUNTER_DIR = os.environ.get("COUNTER_DIR", "/tmp/model-router")
+KEY_VAL_RE = re.compile(r'^("[^"]+"|\'[^\']+\'|[^:]+):\s*(.*)$')
 
 # Proven-only fallback when OpenRouter catalog cannot be fetched.
 # Do NOT add unverified free models here — they belong in role_peers and the live poll.
@@ -77,7 +78,7 @@ def parse_yaml(filepath):
                         sub_key = list(item_val.keys())[0]
                         path.append((indent, item_val, sub_key))
                 continue
-            m = re.match(r'^("[^"]+"|\'[^\']+\'|[^:]+):\s*(.*)$', stripped)
+            m = KEY_VAL_RE.match(stripped)
             if not m:
                 continue
             key = m.group(1).strip().strip('"\'')
@@ -187,10 +188,17 @@ def increment_usage(provider, model):
     key = f"{provider}/{model}" if provider != "gemini" else model
     os.makedirs(COUNTER_DIR, exist_ok=True)
     filename = os.path.join(COUNTER_DIR, key.replace('/', '_') + ".txt")
-    current = get_usage(provider, model)
+    current = 0
+    if os.path.exists(filename):
+        try:
+            with open(filename, 'r') as f:
+                current = int(f.read().strip())
+        except Exception:
+            current = 0
+    new_usage = current + 1
     with open(filename, 'w') as f:
-        f.write(str(current + 1))
-    return current + 1
+        f.write(str(new_usage))
+    return new_usage
 
 def main():
     role = os.environ.get("ROLE", "triage")

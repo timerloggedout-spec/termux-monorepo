@@ -20,36 +20,41 @@
 
 | Trigger | How |
 |---------|-----|
-| Mention | Comment `@deepseek`, `@deepseek-ci`, or `@deepCore` (case-insensitive) on a **pull request** — OWNER/MEMBER/COLLABORATOR only |
+| Mention | Comment `@deepseek`, `@deepseek-ci`, or `@deepCore` (case-insensitive) on a **pull request** or **issue** — OWNER/MEMBER/COLLABORATOR only |
 | Label | Add `deepseek-ci`, `deepseek`, or `deepCore` |
-| Dispatch | Actions → DeepSeek CI – Agentic (safe) → Run workflow. `pr_number` must be a positive decimal integer (e.g. `163`); leaving empty intentionally skips PR review |
+| Dispatch | Actions → DeepSeek CI – Agentic → Run workflow |
 
 Mirrors Gemini (`@gemini-cli` / `sparkFlux`) and Jules (`@jules` / `heyVern`) patterns.
 
 ## Secrets (repository-scoped)
 
-Model auth — **first non-empty wins**:
+Model auth — **first non-empty wins** (see `deepcli/session_manager.py::_token_from_env` + Issue #184 catalog):
 
-1. `DEEPSEEK_TOKEN` (preferred)
-2. `DEEPSEEK_API_KEY`
-3. `DEEPSEEK_AUTH_TOKEN`
-4. `NEXUSCLI_TOKEN`
+1. `DEEPSEEK_TOKEN_PRIMARY` / `DEEPSEEK_TOKEN_ACCOUNT_1`
+2. `DEEPSEEK_TOKEN` (preferred short name)
+3. `DEEPSEEK_API_KEY`
+4. `DEEPSEEK_AUTH_TOKEN`
+5. `NEXUSCLI_TOKEN`
+6. Cookie imports: `DEEPSEEK_COOKIES` / `DEEPSEEK_COOKIES_1` / `COOKIES` (JSON browser-cookie dump or plain `ds_session_id`; preserves `aws-waf-token` when exported)
+7. Explicit AWS WAF cookie: `DEEPSEEK_AWS_WAF_TOKEN` / `DEEPSEEK_WAF_TOKEN` / `AWS_WAF_TOKEN` / `WAF_AWS_TOKEN`
+8. Secondary: `DEEPSEEK_TOKEN_SECONDARY` / `DEEPSEEK_COOKIES_2`
 
 GitHub writes: `ARCHWIZ_GITHUB_TOKEN` → `OPERATOR_GITHUB_TOKEN` → `OPERATOR_TOKEN` → `GITHUB_TOKEN`.
 
-**If the gate reports "DeepSeek model auth unset":**
+**If the gate reports "DeepSeek model auth unset" / soft-skips:**
 - Confirm the secret is a **repository** secret (Settings → Secrets and variables → Actions → Repository secrets), not only an Environment secret.
 - Environment secrets require `jobs.<id>.environment: <name>` in the workflow; this workflow uses repo secrets only.
-- Name must match one of the four keys above exactly (case-sensitive).
+- Name must match one of the keys above exactly (case-sensitive).
 - Empty value counts as unset.
+- Cookie blobs: store the full exported cookie JSON whenever available; the probe preserves both `ds_session_id` and `aws-waf-token` automatically. A raw `ds_session_id` remains supported for the token-only path.
 
 Never use a GitHub PAT as DeepSeek model auth. Never use `DEEPSEEK_TOKEN` for `gh` / REST admin calls.
 
 ## Security policy
 
 1. Auth: model secret only for model — never reuse `GITHUB_TOKEN` / OPERATOR as model auth.
-2. Session: `HOME=$RUNNER_TEMP/deepseek-webwrapper-home` then **always scrub**.
-3. No cookies/tokens in Actions cache or git.
+2. Session: persistent browser-compatible session cache is intentional for the web-wrapper; it may retain `ds_session_id`, `aws-waf-token`, chat-session state, and PoW-compatible metadata under the existing permission-restricted cache path. The Actions cache key is scoped to the repository and exact Git ref; it has no cross-ref restore prefix.
+3. No cookies/tokens in Git or result artifacts; cache/session values are never logged. Cached WAF state wins on resume unless `DEEPSEEK_WAF_TOKEN_REFRESH=1` explicitly requests an environment-supplied replacement.
 4. Output JSON is **metadata only** (no model text).
 5. `pr_number` validated as positive decimal before any `gh pr` call.
 

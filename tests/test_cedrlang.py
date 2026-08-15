@@ -1,155 +1,149 @@
 import pytest
-import sys
-import os
-
-# Ensure the correct path is in sys.path
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'workspace', 'compression_sandbox', 'cedrlang')))
-
-from cedrlang import (
-    compile_document,
-    decompile_document,
-    compile_line,
-    decompile_line,
-    protect_line,
-    restore_line
+from workspace.compression_sandbox.cedrlang.cedrlang import (
+    compile_doc,
+    decompile_doc,
+    compress,
+    expand,
+    caveman
 )
 
-def test_1337speak_conversion():
-    text = "We have elite hacks and extreme skills."
-    compiled = compile_document(text)
-    assert "1337" in compiled
-    assert "h4x" in compiled
-    assert "sk1llz" in compiled
+def test_1337speak_and_grimoire_translation():
+    # Translate human words to 1337speak
+    orig = "We need to transmute the code and scry the output, then cast a spell from the grimoire."
+    expected = "We need to h4x the code and scry the output, then c4st a spell from the gr1m01r3."
 
-    # Test round trip
-    assert decompile_document(compiled).lower() == text.lower()
+    compiled = compile_doc(orig)
+    assert compiled == expected
 
+    # Decompile back
+    decompiled = decompile_doc(compiled)
+    assert decompiled == orig
 
-def test_grimoire_mappings():
-    text = "The Agent should test the code and refactor it."
-    compiled = compile_document(text)
-    assert "c4573r" in compiled or "C4573r" in compiled
-    assert "Pr0b3" in compiled or "pr0b3" in compiled
-    assert "Tr4n5mu73" in compiled or "tr4n5mu73" in compiled
+def test_casing_preservation():
+    # Capitalized
+    assert compile_doc("Transmute") == "H4x"
+    assert decompile_doc("H4x") == "Transmute"
 
-    # Round trip
-    decompiled = decompile_document(compiled)
-    assert "agent" in decompiled.lower()
-    assert "test" in decompiled.lower()
-    assert "refactor" in decompiled.lower()
+    # Lowercase
+    assert compile_doc("transmute") == "h4x"
+    assert decompile_doc("h4x") == "transmute"
 
+    # Uppercase
+    assert compile_doc("TRANSMUTE") == "H4X"
+    assert decompile_doc("H4X") == "TRANSMUTE"
 
-def test_formatting_bullet_preservation():
-    text = """
-1. First item: Agent success.
-2. Second item: Refactor warning.
-- Bullet point: Test fail.
-* Another bullet: review pending.
-### Header 3
-    """
-    compiled = compile_document(text)
-    assert "1. " in compiled
-    assert "2. " in compiled
-    assert "- " in compiled
-    assert "* " in compiled
-    assert "### Header 3" in compiled
+def test_bullet_and_formatting_preservation():
+    orig_bullets = (
+        "- We need a scry of the codebase.\n"
+        "* Please transmute this function.\n"
+        "1. Cast the spell."
+    )
+    expected_bullets = (
+        "- We need a scry of the codebase.\n"
+        "* Please h4x this function.\n"
+        "1. C4st the spell."
+    )
 
-    decompiled = decompile_document(compiled)
-    assert "1. " in decompiled
-    assert "2. " in decompiled
-    assert "- " in decompiled
-    assert "* " in decompiled
-    assert "### Header 3" in decompiled
-    assert "agent" in decompiled.lower()
-    assert "review" in decompiled.lower()
+    compiled = compile_doc(orig_bullets)
+    assert compiled == expected_bullets
+    assert decompile_doc(compiled) == orig_bullets
 
+def test_fenced_code_protection():
+    orig = (
+        "Here is some human text to transmute.\n"
+        "```python\n"
+        "def transmute(code):\n"
+        "    return scry(code)\n"
+        "```\n"
+        "And more transmute text."
+    )
+    expected = (
+        "Here is some human text to h4x.\n"
+        "```python\n"
+        "def transmute(code):\n"
+        "    return scry(code)\n"
+        "```\n"
+        "And more h4x text."
+    )
 
-def test_decimal_filename_number_protection():
-    text = "Check the chmod 0o600 file AGENTS.md with value 3.14."
-    compiled = compile_document(text)
-    assert "0o600" in compiled
-    assert "AGENTS.md" in compiled
-    assert "3.14" in compiled
+    compiled = compile_doc(orig)
+    assert compiled == expected
+    assert decompile_doc(compiled) == orig
 
-    decompiled = decompile_document(compiled)
-    assert "0o600" in decompiled
-    assert "AGENTS.md" in decompiled
-    assert "3.14" in decompiled
+def test_html_and_inline_code_protection():
+    orig = "Run `transmute` inside the <div>transmute</div> container."
+    expected = "Run `transmute` inside the <div>h4x</div> container."
 
+    compiled = compile_doc(orig)
+    assert compiled == expected
+    assert decompile_doc(compiled) == orig
 
-def test_markdown_bold_emphasis_protection():
-    text = "We have **unmodified bold** and *unmodified italics* here."
-    compiled = compile_document(text)
-    assert "**unmodified bold**" in compiled
-    assert "*unmodified italics*" in compiled
+def test_decimal_number_and_filename_protection():
+    orig = "Check python script deepcli/deepcli/core.py for version 12.34."
+    # Both deepcli/deepcli/core.py and 12.34 are protected. No parts should be translated or mangled.
+    compiled = compile_doc(orig)
+    assert compiled == orig
+    assert decompile_doc(compiled) == orig
 
-    decompiled = decompile_document(compiled)
-    assert "**unmodified bold**" in decompiled
-    assert "*unmodified italics*" in decompiled
+def test_markdown_bold_and_emphasis_protection():
+    orig = "This is **transmute** and *scry* and __transmute__ and _scry_."
+    expected = "This is **h4x** and *scry* and __h4x__ and _scry_."
 
+    compiled = compile_doc(orig)
+    assert compiled == expected
+    assert decompile_doc(compiled) == orig
 
-def test_code_blocks_and_links_protection():
-    text = """
-See [the link](https://example.com/AGENTS.md) or execute `chmod 0o700`.
-```python
-# Fenced code block: Agent must test code
-def test():
-    pass
-```
-"""
-    compiled = compile_document(text)
-    assert "[the link](https://example.com/AGENTS.md)" in compiled
-    assert "`chmod 0o700`" in compiled
-    assert "def test():" in compiled
-    assert "Agent must test code" in compiled
+def test_punctuation_exclusion_and_boundaries():
+    orig = "transmute, transmute. transmute! transmute? (transmute) [transmute]"
+    expected = "h4x, h4x. h4x! h4x? (h4x) [h4x]"
 
-    decompiled = decompile_document(compiled)
-    assert "[the link](https://example.com/AGENTS.md)" in decompiled
-    assert "`chmod 0o700`" in decompiled
-    assert "def test():" in decompiled
-    assert "Agent must test code" in decompiled
+    compiled = compile_doc(orig)
+    assert compiled == expected
+    assert decompile_doc(compiled) == orig
 
+def test_link_protection_and_translation():
+    orig = "Please click [transmute](http://scry.com/transmute) to transmute."
+    expected = "Please click [h4x](http://scry.com/transmute) to h4x."
 
-def test_round_trip_stability():
-    doc = """# AGENTS.md — Termux monorepo
+    compiled = compile_doc(orig)
+    assert compiled == expected
+    assert decompile_doc(compiled) == orig
 
-Instructions for coding agents (Grok, Claude, Codex, Devin, ChatGPT, local runners).
+def test_emerging_technologies_procurement_mappings():
+    # Test compilation of new mappings
+    orig = "We are researching emerging technology curation and procurement compliance."
+    expected = "We are researching em_t3ch cur473 and pr0cur3 c0mp1."
+    compiled = compile_doc(orig)
+    assert compiled == expected
 
-## Read first (in order)
+    # Test decompilation back to original
+    decompiled = decompile_doc(compiled)
+    assert decompiled == orig
 
-1. **This file** (`AGENTS.md`)
-2. [`docs/proposals/registry.yaml`](docs/proposals/registry.yaml) — what is active
-3. [`docs/proposals/PROCESS.md`](docs/proposals/PROCESS.md) — post / debate / consensus / close
-4. [`docs/PR-SUMMARY-PROCESS.md`](docs/PR-SUMMARY-PROCESS.md) — who may rewrite PR bodies (multi-agent)
-5. [`docs/ARCHW1Z-GATE.md`](docs/ARCHW1Z-GATE.md) — repo-gate + termux-smoke
+    # Test casing preservation
+    assert compile_doc("Procurement") == "Pr0cur3"
+    assert decompile_doc("Pr0cur3") == "Procurement"
 
-## Hard rules
+    assert compile_doc("PROCUREMENT") == "PR0CUR3"
+    assert decompile_doc("PR0CUR3") == "PROCUREMENT"
 
-- Target **`master-staging`**, not raw `master`, for integration work.
-- Both gates must pass before merge:
-  - `python3 scripts/ci/repo_gate.py`
-  - `python3 scripts/ci/termux_smoke.py`
-- Do not invent work outside `docs/proposals/active/<id>/ITEMS.md` — add a row first.
-- Cite `Implements: <ITEM-ID>` on PRs/commits.
-- **No** wholesale merge of PR #6 (TER-9) or PR #2 (Rust CI) — see disposition comments.
-- **No** Class 3/4 artifacts in git (session stores, browser profiles, tokens).
-- Unposted chat is not consensus — write Review log or DEBATE.md.
-- PR body rewrites: follow `docs/PR-SUMMARY-PROCESS.md` roster (not a single-agent monopoly).
-"""
-    compiled = compile_document(doc)
-    decompiled = decompile_document(compiled)
+    # Test plurals
+    assert compile_doc("Emerging Technologies") == "Em_t3chs"
+    assert decompile_doc("Em_t3chs") == "Emerging Technologies"
 
-    assert "AGENTS.md" in decompiled
-    assert "registry.yaml" in decompiled
-    assert "PROCESS.md" in decompiled
-    assert "master-staging" in decompiled
-    assert "repo_gate.py" in decompiled
-    assert "termux_smoke.py" in decompiled
-    assert "Class 3/4" in decompiled
+def test_caveman_six_lines():
+    # Test without max_up (default)
+    res1 = caveman("success leads to update")
+    assert res1 == "success → update"
 
+    # Test with max_up=True
+    res2 = caveman("success leads to update", max_up=True)
+    assert res2 == "SUCCESS → UPDATE"
 
-def test_empty_and_edge_cases():
-    assert compile_document("") == ""
-    assert decompile_document("") == ""
-    assert compile_line("") == ""
-    assert decompile_line("") == ""
+    # Test with surrounding spaces for status matching
+    res3 = caveman(" success leads to update ")
+    assert res3 == "✓ → ~"
+
+    # Test stopword stripping
+    res4 = caveman("the quick brown fox", max_up=True)
+    assert res4 == "QUICK BROWN FOX"

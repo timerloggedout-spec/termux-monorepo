@@ -1,22 +1,2 @@
-#!/usr/bin/env python3
-import sys
-import os
-import traceback
-
-try:
-    # Resolve relative path to cedrlang.py from bin/cedrlang
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    target_path = os.path.abspath(os.path.join(base_dir, '..', 'workspace', 'compression_sandbox', 'cedrlang', 'cedrlang.py'))
-
-    # Execute the file dynamically
-    with open(target_path, 'r', encoding='utf-8') as f:
-        code = compile(f.read(), target_path, 'exec')
-        # Run in global namespace to support modules and script execution
-        exec(code, globals())
-except SystemExit as e:
-    # Let SystemExit bubble up cleanly
-    sys.exit(e.code)
-except Exception as e:
-    # Full traceback logging
-    traceback.print_exc()
-    sys.exit(1)
+#!/data/data/com.termux/files/usr/bin/python3
+exec(open('/data/data/com.termux/files/home/workspace/compression_sandbox/cedrlang/cedrlang.py').read())

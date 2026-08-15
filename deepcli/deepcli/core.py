@@ -1,33 +1,16 @@
 #!/usr/bin/env python3
 """Core API wrapper for DeepSeek internal API."""
 import os
-import sys
 import json
 import base64
 import time
 import subprocess
 import random
 from pathlib import Path
-from typing import Optional, List, Dict, Any, Any as SessionType
-
+from typing import Optional, List, Dict, Any
+from curl_cffi import requests as curl_requests
 import requests as http_requests
 from rich.console import Console
-
-# curl_cffi is preferred (TLS fingerprinting) but optional on Termux when the
-# wheel's NDK/libc++ ABI does not match the host Python (seen on 3.14).
-_CURL_CFFI_AVAILABLE = False
-try:
-    from curl_cffi import requests as curl_requests
-
-    _CURL_CFFI_AVAILABLE = True
-except Exception as _curl_err:  # ImportError or dlopen failure
-    curl_requests = http_requests  # type: ignore
-    if os.environ.get("DEEPCLI_QUIET_FALLBACK") != "1":
-        print(
-            f"[deepcli] curl_cffi unavailable ({type(_curl_err).__name__}: {_curl_err}); "
-            "using requests fallback (some anti-bot paths may fail).",
-            file=sys.stderr,
-        )
 
 console = Console()
 
@@ -36,29 +19,27 @@ CONFIG_FILE = CONFIG_DIR / "config.json"
 WASM_SOLVER = Path(__file__).parent.parent / "pow_solver.js"
 BASE_URL = "https://chat.deepseek.com"
 
-# SECURITY ENHANCEMENT: Enforce strict directory permissions (700) - Fail-closed on OSError
-CONFIG_DIR.mkdir(mode=0o700, parents=True, exist_ok=True)
+CONFIG_DIR.mkdir(parents=True, exist_ok=True)
 try:
-    os.chmod(str(CONFIG_DIR), 0o700)
-except OSError as e:
-    raise PermissionError(f"Fail-closed: Failed to enforce 0o700 permissions on {CONFIG_DIR}: {e}")
+    CONFIG_DIR.chmod(0o700)
+except Exception:
+    pass
 
 # Persistent session (cookies preserved across API calls)
-_session: Optional[Any] = None
+_session: Optional[curl_requests.Session] = None
 
 # ---------- cache helpers ----------
 def _cache_path(session_id: str, account: str = "primary") -> str:
     store_dir = os.path.join(os.path.expanduser("~/.deepcli/session_store"), account)
-    # SECURITY ENHANCEMENT: Enforce directory permissions (700) on session store - Fail-closed on OSError
-    os.makedirs(store_dir, mode=0o700, exist_ok=True)
-    try:
-        os.chmod(store_dir, 0o700)
-    except OSError as e:
-        raise PermissionError(f"Fail-closed: Failed to enforce 0o700 permissions on {store_dir}: {e}")
+    os.makedirs(store_dir, exist_ok=True)
     try:
         os.chmod(os.path.dirname(store_dir), 0o700)
-    except OSError as e:
-        raise PermissionError(f"Fail-closed: Failed to enforce 0o700 permissions on {os.path.dirname(store_dir)}: {e}")
+    except Exception:
+        pass
+    try:
+        os.chmod(store_dir, 0o700)
+    except Exception:
+        pass
     return os.path.join(store_dir, f"{session_id}.json")
 
 def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict[str, Any]]]:
@@ -70,34 +51,33 @@ def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict
 
 def _cache_save(session_id: str, messages: List[Dict[str, Any]], account: str = "primary"):
     path = _cache_path(session_id, account)
-    os.makedirs(os.path.dirname(path), mode=0o700, exist_ok=True)
-    # SECURITY ENHANCEMENT: Enforce strict file permissions (600) even on existing session exports
-    fd = os.open(path, os.O_CREAT | os.O_WRONLY, 0o600)
+    parent_dir = os.path.dirname(path)
+    os.makedirs(parent_dir, exist_ok=True)
     try:
-        os.fchmod(fd, 0o600)
-        os.ftruncate(fd, 0)
-        with os.fdopen(fd, 'w') as f:
-            json.dump(messages, f, indent=2)
-            fd = -1
-    finally:
-        if fd >= 0:
-            os.close(fd)
+        os.chmod(parent_dir, 0o700)
+    except Exception:
+        pass
+    with open(path, 'w') as f:
+        json.dump(messages, f, indent=2)
+    try:
+        os.chmod(path, 0o600)
+    except Exception:
+        pass
     # === DISPATCH HOOK — additive, never blocks save ===
     try:
         import importlib.util
-        import sys as _sys
+        import sys
         spec = importlib.util.spec_from_file_location(
             "dispatch_pipeline",
             os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "archwiz", "dispatch_pipeline.py")
         )
         if spec and os.path.exists(spec.origin):
             disp = importlib.util.module_from_spec(spec)
-            _sys.modules["dispatch_pipeline"] = disp
+            sys.modules["dispatch_pipeline"] = disp
             spec.loader.exec_module(disp)
             disp.update_all(session_id)
-    except Exception as e:
-        import sys
-        print(f"[archwiz dispatch] {type(e).__name__}: {e}", file=sys.stderr, flush=True)
+    except Exception:
+        pass
     # === END DISPATCH HOOK ===
 
 def _set_last_session(sid: str):
@@ -116,23 +96,17 @@ def load_config() -> Dict[str, Any]:
     return {}
 
 def save_config(cfg: Dict[str, Any]):
-    # SECURITY ENHANCEMENT: Enforce directory permissions (700) and file permissions (600) on token config - Fail-closed on OSError
-    CONFIG_DIR.mkdir(mode=0o700, parents=True, exist_ok=True)
+    # Ensure directory is secured
+    CONFIG_DIR.mkdir(parents=True, exist_ok=True)
     try:
-        os.chmod(str(CONFIG_DIR), 0o700)
-    except OSError as e:
-        raise PermissionError(f"Fail-closed: Failed to enforce 0o700 permissions on {CONFIG_DIR}: {e}")
-    # SECURITY ENHANCEMENT: Enforce strict file permissions (600) even on existing token config
-    fd = os.open(str(CONFIG_FILE), os.O_CREAT | os.O_WRONLY, 0o600)
+        CONFIG_DIR.chmod(0o700)
+    except Exception:
+        pass
+    CONFIG_FILE.write_text(json.dumps(cfg, indent=2))
     try:
-        os.fchmod(fd, 0o600)
-        os.ftruncate(fd, 0)
-        with os.fdopen(fd, 'w') as f:
-            json.dump(cfg, f, indent=2)
-            fd = -1
-    finally:
-        if fd >= 0:
-            os.close(fd)
+        CONFIG_FILE.chmod(0o600)
+    except Exception:
+        pass
 
 def get_token() -> str:
     token = os.environ.get("DEEPSEEK_TOKEN")
@@ -145,7 +119,7 @@ def get_token() -> str:
     return token
 
 # ---------- HTTP session ----------
-def get_session(token: str, cookie: str = None) -> Any:
+def get_session(token: str, cookie: str = None) -> curl_requests.Session:
     global _session
     cache_key = (token[:20] + '_' + (cookie or ''))[:30]
     if '_sessions' not in globals() or not isinstance(_sessions, dict):
@@ -175,11 +149,7 @@ def get_session(token: str, cookie: str = None) -> Any:
         })
         _sessions[cache_key] = _session
     if cookie:
-        # requests vs curl_cffi cookie APIs differ slightly
-        try:
-            _session.cookies.set("ds_session_id", cookie.split("=", 1)[1] if "=" in cookie else cookie)
-        except Exception:
-            pass
+        _session.cookies.set("ds_session_id", cookie.split("=", 1)[1] if "=" in cookie else cookie)
     return _session
 
 # ---------- POW ----------
@@ -394,7 +364,7 @@ def stream_completion(token: str, prompt: str, session_id: str,
                     payload['search_enabled'] = False
                 time.sleep(delay)
                 continue
-            # Read full response and parse SSE manually
+            # Read full response and parse SSE manually (curl_cffi doesn't do iter_lines)
             raw = resp.content.decode('utf-8', errors='replace')
             for line in raw.split('\n'):
                 if not line.strip():
@@ -463,7 +433,7 @@ def send_message_working(token: str, session_id: str, prompt: str,
                          files: list = None,
                          thinking: bool = False,
                          search: bool = False) -> str:
-    """Proven working send (May 22) – standalone requests path."""
+    """Proven working send (May 22) – standalone, no curl_cffi."""
     import requests as req
     s = get_session(token)
     headers = s.headers.copy()

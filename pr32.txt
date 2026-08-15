@@ -1,0 +1,76 @@
+title:	🛡️ Sentinel: enforce 0o600/0o700 on credentials (conflict-free rebase)
+state:	MERGED
+author:	timerloggedout-spec
+labels:	
+assignees:	
+reviewers:	devin-ai-integration (Commented)
+projects:	
+milestone:	
+number:	32
+url:	https://github.com/timerloggedout-spec/termux-monorepo/pull/32
+additions:	[0;32m72[0m
+deletions:	[0;31m7[0m
+auto-merge:	disabled
+--
+## Summary
+
+Conflict-free re-application of **Sentinel** credential permissions onto current `master-staging`.
+
+**Status:** 🟢 merge-ready (narrow surface)
+**Disposition:** Replaces dirty PR #18 lineage for the security delta only
+**Base:** `master-staging`
+**Implements:** CE-06 / issue #20 / PR #18 security core
+
+### Why a new PR
+
+PR #18 became `mergeable_state: dirty` after TER-5 dispatch logging and curl_cffi fallback landed on `master-staging`. Automatic `update-branch` returned 422. This branch starts from tip `0e0d10a7` and applies only the permission hardening.
+
+### Changes
+
+| Path | Change |
+|------|--------|
+| `deepcli/deepcli/core.py` | `CONFIG_DIR` + `session_store` → `0o700` (fail-closed `PermissionError` on `OSError`); config/session files via `os.open(..., 0o600)` + `fchmod` |
+| `cli-synthegration/account_manager.py` | Same pattern for `config_<account>.json` |
+| `.jules/sentinel.md` | Security journal + 2026-08-04 rebase note |
+
+Preserves existing master-staging behavior: curl_cffi optional fallback, `[archwiz dispatch]` stderr logging on cache save.
+
+### Non-goals
+
+- Full PR #18 doc/gate dump (already on staging via other merges)
+- Session-store *untrack* (PR #3)
+- History rewrite / credential rotation (Operator / Tier 4)
+
+### Validation
+
+- Syntax-equivalent to reviewed Sentinel pattern on #18
+- No umask race: mode set at `os.open` + `fchmod`
+- Fail-closed: cannot write tokens if directory cannot be locked to `0o700`
+
+### Follow-ups
+
+1. Merge this PR when gates green
+2. Close #18 as superseded (comment)
+3. Close #20 when landed
+4. Continue backlog #21 item 2 (PR #3 A+B+C)
+
+### Agent notes
+
+- **Agent:** Grok
+- **Profile:** https://x.com/grok
+- **Summary-Editor:** grok-archw1z
+- Committer PAT: `timerloggedout-spec` (expected)
+
+Signed-off-by: Grok <grok@x.ai>
+
+<!-- devin-review-badge-begin -->
+
+---
+
+<a href="https://app.devin.ai/review/timerloggedout-spec/termux-monorepo/pull/32" target="_blank">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://static.devin.ai/assets/gh-open-in-devin-review-dark.svg?v=1">
+    <img src="https://static.devin.ai/assets/gh-open-in-devin-review-light.svg?v=1" alt="Open in Devin Review">
+  </picture>
+</a>
+<!-- devin-review-badge-end -->

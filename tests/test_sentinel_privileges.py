@@ -99,3 +99,14 @@ def test_sentinel_privileges_path_traversal_prevention(tmp_path, monkeypatch):
     # SIDs with unsafe chars should have them sanitized to underscores
     unsanitized_path_str = dc._cache_path("session$#*!123")
     assert "session____123.json" in unsanitized_path_str
+
+    # Test malicious account names raise ValueError or get sanitized safely
+    with pytest.raises(ValueError):
+        dc._cache_path("session1", account="../../etc")
+
+    with pytest.raises(ValueError):
+        dc._cache_path("session1", account="/absolute/account")
+
+    # Safe account with special chars gets sanitized
+    acc_path_str = dc._cache_path("session1", account="acc$#*!123")
+    assert "acc____123" in acc_path_str

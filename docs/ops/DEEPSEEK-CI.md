@@ -35,8 +35,9 @@ Model auth — **first non-empty wins** (see `deepcli/session_manager.py::_token
 3. `DEEPSEEK_API_KEY`
 4. `DEEPSEEK_AUTH_TOKEN`
 5. `NEXUSCLI_TOKEN`
-6. Cookie imports: `DEEPSEEK_COOKIES` / `DEEPSEEK_COOKIES_1` / `COOKIES` (JSON cookie dump or plain `ds_session_id`)
-7. Secondary: `DEEPSEEK_TOKEN_SECONDARY` / `DEEPSEEK_COOKIES_2`
+6. Cookie imports: `DEEPSEEK_COOKIES` / `DEEPSEEK_COOKIES_1` / `COOKIES` (JSON browser-cookie dump or plain `ds_session_id`; preserves `aws-waf-token` when exported)
+7. Explicit AWS WAF cookie: `DEEPSEEK_AWS_WAF_TOKEN` / `DEEPSEEK_WAF_TOKEN` / `AWS_WAF_TOKEN` / `WAF_AWS_TOKEN`
+8. Secondary: `DEEPSEEK_TOKEN_SECONDARY` / `DEEPSEEK_COOKIES_2`
 
 GitHub writes: `ARCHWIZ_GITHUB_TOKEN` → `OPERATOR_GITHUB_TOKEN` → `OPERATOR_TOKEN` → `GITHUB_TOKEN`.
 
@@ -45,15 +46,15 @@ GitHub writes: `ARCHWIZ_GITHUB_TOKEN` → `OPERATOR_GITHUB_TOKEN` → `OPERATOR_
 - Environment secrets require `jobs.<id>.environment: <name>` in the workflow; this workflow uses repo secrets only.
 - Name must match one of the keys above exactly (case-sensitive).
 - Empty value counts as unset.
-- Cookie blobs: store the full exported cookie JSON or the raw `ds_session_id` value; the probe extracts `ds_session_id` automatically.
+- Cookie blobs: store the full exported cookie JSON whenever available; the probe preserves both `ds_session_id` and `aws-waf-token` automatically. A raw `ds_session_id` remains supported for the token-only path.
 
 Never use a GitHub PAT as DeepSeek model auth. Never use `DEEPSEEK_TOKEN` for `gh` / REST admin calls.
 
 ## Security policy
 
 1. Auth: model secret only for model — never reuse `GITHUB_TOKEN` / OPERATOR as model auth.
-2. Session: `HOME=$RUNNER_TEMP/deepseek-webwrapper-home` then **always scrub**.
-3. No cookies/tokens in Actions cache or git.
+2. Session: persistent browser-compatible session cache is intentional for the web-wrapper; it may retain `ds_session_id`, `aws-waf-token`, chat-session state, and PoW-compatible metadata under the existing permission-restricted cache path. The Actions cache key is scoped to the repository and exact Git ref; it has no cross-ref restore prefix.
+3. No cookies/tokens in Git or result artifacts; cache/session values are never logged. Cached WAF state wins on resume unless `DEEPSEEK_WAF_TOKEN_REFRESH=1` explicitly requests an environment-supplied replacement.
 4. Output JSON is **metadata only** (no model text).
 5. `pr_number` validated as positive decimal before any `gh pr` call.
 

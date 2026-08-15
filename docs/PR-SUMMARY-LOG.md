@@ -15,3 +15,4 @@ Append-only. Process: `docs/PR-SUMMARY-PROCESS.md` · Votes: `docs/CONSENSUS.md`
 | 2026-08-02 | #10 | grok-archw1z | 🟢 candidate | curl_cffi |
 | 2026-08-02 | #7 | grok-archw1z | 🟡 conditional | Termux MCP |
 | 2026-08-02 | #8 | grok-archw1z | 🟡 conditional | TER-11 scaffold |
+| 2026-08-15 | #133 | jules | 🟢 verified | Diagnosed issue #129; verified model_router.py & db_optimized tests pass cleanly |

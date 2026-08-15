@@ -270,40 +270,6 @@ def prompt_session_id():
 
 def show_commands():
     """Display available commands with descriptions."""
-<<<<<<< HEAD
-    console.print(Panel("""
-[bold cyan]/branches[/]       List root messages (conversation branches)
-[bold cyan]/branchpoints[/]   Show fork points (messages with multiple children)
-[bold cyan]/more[/]           Toggle full tree (uncapped)
-[bold cyan]/flat[/]           Toggle flat/tree view
-[bold cyan]/continue[/]       Pick an assistant message to continue from
-[bold cyan]/edit[/]           Branch from a user message
-[bold cyan]/back[/]           Return to session selection
-[bold cyan]/new[/]            Create a new session
-[bold cyan]/refresh[/]        Clear cache and reload
-[bold cyan]/bookmark[/]       Save current position
-[bold cyan]/bookmarks[/]      List saved bookmarks
-[bold cyan]/thinking on|off[/] Toggle DeepThink
-[bold cyan]/search on|off[/]   Toggle web search
-[bold cyan]/model instant|expert[/] Switch model
-[bold cyan]/attach <files> | <prompt>[/] Attach files
-[bold cyan]/reset[/]          Reset to latest assistant
-[bold cyan]/cmd[/]            Show this reference
-""", title="Commands", expand=False))
-    input("\nPress Enter to continue...")
-    help_text = """
-[bold]Commands:[/]
-/new, /continue, /edit, /reset, /thinking on|off, /search on|off
-/model expert|instant, /attach <file>, /clear-attach
-/flat      – toggle flat list view
-/refresh   – clear cache and reload conversation
-/more      – show full tree (uncapped)
-/branches  – list conversation branches
-/help      – this help
-exit/quit  – leave
-"""
-    console.print(Panel(help_text, title="Help"))
-=======
     help_text = """[bold cyan]/branches[/]                List root messages (conversation branches)
 [bold cyan]/branchpoints[/]            Show fork points (messages with multiple children)
 [bold cyan]/more[/]                    Toggle full tree (uncapped)
@@ -325,7 +291,6 @@ exit/quit  – leave
 [bold cyan]/help[/]                    Show this help menu
 [bold cyan]exit / quit[/]              Leave the TUI"""
     console.print(Panel(help_text, title="📖 DeepCLI TUI Commands Guide", expand=False, border_style="cyan"))
->>>>>>> master-staging
     input("\nPress Enter to continue...")
 
 def main():

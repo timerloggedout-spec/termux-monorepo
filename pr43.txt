@@ -1,0 +1,64 @@
+title:	feat(TER-40): llm-api-hub + kai9000 ADE/crypto split pointers
+state:	OPEN
+author:	timerloggedout-spec
+labels:	
+assignees:	
+reviewers:	devin-ai-integration (Commented)
+projects:	
+milestone:	
+number:	43
+url:	https://github.com/timerloggedout-spec/termux-monorepo/pull/43
+additions:	[0;32m409[0m
+deletions:	[0;31m0[0m
+auto-merge:	disabled
+--
+## Summary
+
+Production path for Fully Automated ADE model plane + kai9000 split.
+
+### 1. `llm-api-hub/` (repo root — NOT a dotfile)
+
+- Versioned OpenAI-compatible contract, routing, capability matrix
+- Thin Python client for NexusCLI / agents
+- Server plan: bind to existing `multi-ai-cli` backends + OpenRouter
+
+**Secrets stay in** `~/.multi-ai-tokens/`, `~/.deepcli/`, etc.
+
+### 2. kai9000 split
+
+| Track | Location |
+|-------|----------|
+| ADE / dev skills + MCP templates | monorepo (`llm-api-hub`, `.agents`, archwiz) |
+| Crypto + Hermes | `_1-Projects/a/kai9000-crypto/` (SOURCE pin to upstream/fork) |
+
+Docs: `docs/ADE_KAI9000_SPLIT.md`
+
+Upstream: https://github.com/romanyukzhenya82-sketch/kai9000-orchestrator
+
+### 3. NexusCLI policy
+
+PR #40 remains **architectural hold**: must call hub / multi-ai-cli only — not a permanent parallel DeepSeek client.
+
+### Validation
+
+- Docs-only + client stub; no secret material
+- Branch from `master-staging`
+
+### Follow-ups
+
+- [ ] Implement `llm-api-hub/server` HTTP on :8787
+- [ ] Retarget NexusCLI to client
+- [ ] Selective ADE skill import from kai9000
+- [ ] TER-9 extracts still required for multi-ai-cli reliability
+
+<!-- devin-review-badge-begin -->
+
+---
+
+<a href="https://app.devin.ai/review/timerloggedout-spec/termux-monorepo/pull/43" target="_blank">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://static.devin.ai/assets/gh-open-in-devin-review-dark.svg?v=1">
+    <img src="https://static.devin.ai/assets/gh-open-in-devin-review-light.svg?v=1" alt="Open in Devin Review">
+  </picture>
+</a>
+<!-- devin-review-badge-end -->

@@ -1,0 +1,53 @@
+title:	security: untrack session stores (A — tip only; not A+B+C)
+state:	DRAFT
+author:	timerloggedout-spec
+labels:	
+assignees:	
+reviewers:	
+projects:	
+milestone:	
+number:	3
+url:	https://github.com/timerloggedout-spec/termux-monorepo/pull/3
+additions:	[0;32m255[0m
+deletions:	[0;31m233175[0m
+auto-merge:	disabled
+--
+## Summary
+
+Removes session-store artifacts from the **current Git index** (tip hygiene) while keeping files on disk, tightens ignore rules, and adds a local sanitizer for extracted code blobs.
+
+**Status:** ⚪ **Draft — A only**  
+**Disposition:** 🔴 incomplete vs full remediation (**A ≠ A+B+C**). Green checks ≠ credentials gone from history.  
+**Base:** `master` (consider `master-staging` after gates land on master)  
+**Implements:** CE-06 / CE-13 (partial — tip only)
+
+### Changes (A)
+- Untrack ~571 paths under DeepCLI / Pi / Synthegration session locations
+- Ignore rules so those paths stay local-only
+- `tools/sanitize_codex_blobs.py` + tests; session-store policy doc
+- Older `AGENTS.md` on this branch (security-focused guidelines)
+
+### Non-goals (still required outside this PR)
+- **B:** Enforce forever (repo-gate HARD on integration spine — see `master-staging`)
+- **C:** History rewrite + coordinated force-push
+- Credential **rotation** (Operator)
+- Fixing pre-commit hook that scanned deleted files and printed contents during this work
+
+### Validation
+- `python3 -m unittest tests/test_sanitize_codex_blobs.py`
+- Local sanitize: 682 blobs scanned; 25 redactions (author-reported)
+- `git diff --cached --check`
+
+### Follow-ups (Operator + agents)
+1. Rotate any credentials that may have appeared in tracked session material
+2. Authorize history-rewrite window on this PR or tracking issue
+3. Retarget / re-land against `master-staging` so repo-gate + termux-smoke apply
+4. Keep **draft** until B/C plan is explicit — or merge **A only** with this body as the record
+
+### Agent notes
+- **Summary-Editor:** `grok-archw1z` (per `docs/PR-SUMMARY-PROCESS.md`)
+- **Reviewer ack for P0 body rewrite:** prior disposition comment on this PR; Operator may confirm
+- See `docs/SECURITY-REMEDIATION.md` on `master-staging`
+
+**Disposition comment:** https://github.com/timerloggedout-spec/termux-monorepo/pull/3#issuecomment-5160624555
+

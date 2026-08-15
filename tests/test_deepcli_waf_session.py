@@ -8,7 +8,18 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from deepcli import session_manager
+import sys
+from pathlib import Path
+
+original_path = sys.path.copy()
+deepcli_dir = str(Path(__file__).resolve().parent.parent / "deepcli")
+while deepcli_dir in sys.path:
+    sys.path.remove(deepcli_dir)
+
+try:
+    from deepcli import session_manager
+finally:
+    sys.path = original_path
 
 
 class DeepSeekWafSessionTests(unittest.TestCase):

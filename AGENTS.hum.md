@@ -165,7 +165,7 @@ Multi-agent orchestration system for provisioning, running, and managing autonom
 Conversation synthesis with branching, export, account/token management, and metrics.
 
 **Notable Modules:**
-- `branch_manager.py` - Conversation f0rk management
+- `branch_manager.py` - Conversation branch management
 - `conv_branching.py` - Branch/fork API implementation
 - `conv_explorer.py` - Conversation exploration
 - `conv_export_cli.py` - Export functionality
@@ -196,7 +196,7 @@ Central automation cockpit with indexing, provenance tracking, and recovery tool
 - `listener_control.py` - PID-based safe start/stop
 
 **Forensic & Version Control:**
-- `forensic_toolchain.py` - Fragment matcher, similarity scan, correlation sc0ut
+- `forensic_toolchain.py` - Fragment matcher, similarity scan, correlation scout
 - `correlation_scout.py` - Traces file-path changes across versions
 - `fragment_matcher.py` - Function-level provenance
 - `restore_version.py` - Provenance-based code resurrection
@@ -208,7 +208,7 @@ Central automation cockpit with indexing, provenance tracking, and recovery tool
 - `auto_repair.py` - Auto-fixes Sentinel REVIEW issues
 
 **Verification & Testing:**
-- `sentinel.py` - 5-gate verification (file integrity, naming, duplicate, pr0b3, shockwave)
+- `sentinel.py` - 5-gate verification (file integrity, naming, duplicate, probe, shockwave)
 - `probe.py` - Syntax/import/test validation
 - `mirror.py` - Self-critique for task hygiene, index freshness
 - `dangle_detector.py` - Cross-ecosystem broken reference scanner
@@ -219,7 +219,7 @@ Central automation cockpit with indexing, provenance tracking, and recovery tool
 - `timeline_editor.py` - Full DB editor + archaeologist
 - `narrative.py` - Chronological feed of pipeline events
 - `lexicon_harvest.py` - Session scanning for novel terms
-- `name_forge.py` - Gr1m01r3-powered tool naming
+- `name_forge.py` - Grimoire-powered tool naming
 
 **Documentation Pipeline:**
 - `session_digest.py` - Scans exported sessions for structured features
@@ -399,9 +399,9 @@ python3 archwiz/mirror.py
 
 ### Core Abstractions
 - **TasQue:** Task completion declaration system (ta'Done)
-- **Sentinel:** 5-gate verification (file, naming, duplicate, pr0b3, shockwave)
+- **Sentinel:** 5-gate verification (file, naming, duplicate, probe, shockwave)
 - **Archivist:** Local-only query engine across all indices
-- **Pr0b3:** Syntax/import/test validation
+- **Probe:** Syntax/import/test validation
 - **Mirror:** Self-critique for task hygiene and index freshness
 - **Dangle Detector:** Cross-ecosystem broken reference scanner
 - **Pointer Index:** CID-style bookmarking of messages, tables, data
@@ -411,7 +411,7 @@ python3 archwiz/mirror.py
 - **Spellbook:** Library of system abilities
 - **Rune:** Short hash pointer (CID-style)
 - **Sigil:** Substitution engine for runtime compression
-- **Chr0n0:** Time-loop agent with success-only trunks
+- **Chronomancer:** Time-loop agent with success-only trunks
 - **Self-healing Sandbox:** Detect error → request fix → validate → promote
 
 ### Methodology Evolution
@@ -476,17 +476,17 @@ python3 archwiz/mirror.py
 **Under Review:**
 - `feat/gh-actions/deepseek-integrates-itself` - DeepSeek CI workflow (fixed, ready)
 - `critical-proposal` - Documentation and architecture critique (PR #1)
-- `vibe/mistralai-vibe-code-wrapper-*` - Mistral CLI + h4rv35t3r
+- `vibe/mistralai-vibe-code-wrapper-*` - Mistral CLI + harvester
 
-**F0rk Health Notes (from RECON.md):**
+**Branch Health Notes (from RECON.md):**
 - `master` @ `6ef0e2f` - Protected, recovery README + live inventory
 - Legacy paths (`export_poller.sh`, `activity_listener.py`) are candidates for archive
 - Prefer `dispatch_pipeline` on cache write over dual maintenance
 
 ### Feature Requests
 - Real-time chat feedback from listener
-- Cross-session idea h4rv35t3r
-- Chr0n0 f0rk UI (visual tree)
+- Cross-session idea harvester
+- Chronomancer branch UI (visual tree)
 - Listener auto-scribe (consolidate notes)
 - Multi-account probing with image upload
 - Tab completion for /sessions
@@ -521,7 +521,7 @@ python3 archwiz/mirror.py
 - Fallback to `current_task.txt` in workspace
 
 **Sentinel Failures:**
-- Review 5-gate output (file, naming, duplicate, pr0b3, shockwave)
+- Review 5-gate output (file, naming, duplicate, probe, shockwave)
 - Use `auto_repair.py` for simple fixes
 - Manual review for complex issues
 
@@ -549,7 +549,7 @@ python3 archwiz/mirror.py
 ## Notes for AI Agents
 
 1. **Always check indices first** - Use `archivist.py` to query existing knowledge before making changes
-2. **Respect the verification pipeline** - Run Sentinel and Pr0b3 before promoting changes
+2. **Respect the verification pipeline** - Run Sentinel and Probe before promoting changes
 3. **Use feature branches** - Never commit directly to master
 4. **Maintain provenance** - Update correlation and version indices when modifying files
 5. **Check for existing patterns** - Review similar code before implementing new features
@@ -558,7 +558,7 @@ python3 archwiz/mirror.py
 8. **Test incrementally** - Use sandbox for experiments, validate before promoting
 9. **Respect ignore patterns** - Honor `.gitignore` and `.bobignore` exclusions
 10. **Prefer metadata-only** - For refTemplates, use depth-1 sparse checkout with metadata only
-11. **Check RECON.md** - Review f0rk health and known issues before major changes
+11. **Check RECON.md** - Review branch health and known issues before major changes
 12. **Use tokei** - Run `tokei --sort code` to understand codebase composition
 13. **Follow CI/CD patterns** - Use existing GitHub Actions workflows as templates
 14. **Cache aggressively** - Session caching reduces API calls and improves performance

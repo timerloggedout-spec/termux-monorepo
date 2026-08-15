@@ -4,16 +4,13 @@ import shutil
 from pathlib import Path
 import pytest
 
-# Ensure deepcli is in path - modified to break loop and update commit sha
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../deepcli")))
-
 def test_sentinel_privileges_enforcement(tmp_path, monkeypatch):
     # Set up test directories under tmp_path
     test_config_dir = tmp_path / ".deepcli"
     test_config_file = test_config_dir / "config.json"
 
-    # Mock CONFIG_DIR and CONFIG_FILE in deepcli.core
-    import deepcli.core as dc
+    # Mock CONFIG_DIR and CONFIG_FILE in deepcli.deepcli.core
+    import deepcli.deepcli.core as dc
     monkeypatch.setattr(dc, "CONFIG_DIR", test_config_dir)
     monkeypatch.setattr(dc, "CONFIG_FILE", test_config_file)
 
@@ -60,7 +57,7 @@ def test_sentinel_privileges_enforcement(tmp_path, monkeypatch):
 
 def test_sentinel_privileges_symlink_safety(tmp_path, monkeypatch):
     # Ensure that symlinks are skipped and not followed / modified
-    import deepcli.core as dc
+    import deepcli.deepcli.core as dc
 
     # Create a dummy target file
     target_file = tmp_path / "target_file.txt"
@@ -79,3 +76,26 @@ def test_sentinel_privileges_symlink_safety(tmp_path, monkeypatch):
     # Because symlink_file is a symlink, the target file's permissions should NOT have changed to 0o600
     if os.name != "nt":
         assert (target_file.stat().st_mode & 0o777) == 0o644
+
+
+def test_sentinel_privileges_path_traversal_prevention(tmp_path, monkeypatch):
+    # Ensure that path traversal attempts are detected and raise ValueError or are sanitized.
+    import deepcli.deepcli.core as dc
+
+    # Mocking ~/.deepcli path
+    monkeypatch.setattr(os.path, "expanduser", lambda path: path.replace("~", str(tmp_path)))
+
+    # Test that malicious path traversal UUIDs/SIDs raise ValueError or get sanitized safely
+    with pytest.raises(ValueError):
+        dc._cache_path("../../../etc/passwd")
+
+    with pytest.raises(ValueError):
+        dc._cache_path("/absolute/path/traversal")
+
+    # Safe SIDs with safe chars should succeed and have sanitized names
+    safe_path_str = dc._cache_path("session-123_abc.dot")
+    assert "session-123_abc.dot.json" in safe_path_str
+
+    # SIDs with unsafe chars should have them sanitized to underscores
+    unsanitized_path_str = dc._cache_path("session$#*!123")
+    assert "session____123.json" in unsanitized_path_str

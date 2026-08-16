@@ -7,6 +7,7 @@ import base64
 import time
 import subprocess
 import random
+import hashlib
 from pathlib import Path
 from typing import Optional, List, Dict, Any
 try:
@@ -57,6 +58,13 @@ if not CONFIG_DIR.is_symlink():
 
 # Persistent session (cookies preserved across API calls)
 _session: Optional[curl_requests.Session] = None
+_sessions: Dict[str, curl_requests.Session] = {}
+
+
+def _session_cache_key(token: str, cookie: Optional[str] = None) -> str:
+    """Collision-resistant key for token+cookie pairs."""
+    material = f"{token}\0{cookie or ''}".encode("utf-8", errors="replace")
+    return hashlib.sha256(material).hexdigest()
 
 # ---------- cache helpers ----------
 def _cache_path(session_id: str, account: str = "primary") -> str:
@@ -177,13 +185,14 @@ def get_token() -> str:
 
 # ---------- HTTP session ----------
 def get_session(token: str, cookie: str = None) -> curl_requests.Session:
-    global _session
-    cache_key = (token[:20] + '_' + (cookie or ''))[:30]
+    global _session, _sessions
+    cache_key = _session_cache_key(token, cookie)
     if '_sessions' not in globals() or not isinstance(_sessions, dict):
         globals()['_sessions'] = {}
     if cache_key in _sessions:
         _session = _sessions[cache_key]
         _session.headers["Authorization"] = f"Bearer {token}"
+        _session.headers.pop("X-Ds-Pow-Response", None)
     else:
         _session = curl_requests.Session()
         _session.headers.update({
@@ -284,10 +293,9 @@ def upload_file(token: str, session_id: str, file_path: str) -> Optional[str]:
     pow_header = solve_pow(challenge)
 
     s = get_session(token)
-    s.headers["X-Ds-Pow-Response"] = pow_header
     with open(file_path, "rb") as f:
         file_bytes = f.read()
-    upload_headers = {k: v for k, v in s.headers.items()}
+    upload_headers = {k: v for k, v in s.headers.items() if k != "X-Ds-Pow-Response"}
     upload_headers["X-Ds-Pow-Response"] = pow_header
     r = http_requests.post(
         f"{BASE_URL}/api/v0/file/upload_file",

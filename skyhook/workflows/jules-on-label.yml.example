@@ -1,0 +1,35 @@
+# Copy to .github/workflows/jules-on-label.yml after JULES_API_KEY is set.
+# Example only — not active until copied to .github/workflows/ on master-staging.
+name: Jules on jules/bug label
+
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  invoke-jules:
+    if: |
+      github.event.label.name == 'jules' ||
+      github.event.label.name == 'bug'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: read
+    steps:
+      - name: Invoke Jules
+        if: contains(fromJSON('["timerloggedout-spec"]'), github.event.issue.user.login)
+        uses: google-labs-code/jules-invoke@v1
+        with:
+          starting_branch: master-staging
+          jules_api_key: ${{ secrets.JULES_API_KEY }}
+          prompt: |
+            GitHub issue #${{ github.event.issue.number }}
+            Title: ${{ github.event.issue.title }}
+
+            ${{ github.event.issue.body }}
+
+            Constraints:
+            - Prefer starting/base path toward master-staging (gate spine).
+            - Do not commit secrets. Preserve 0o600/0o700 credential patterns if touched.
+            - B160V Termux ground station: no Bun/Node as required on-device deps.
+            - Sign work clearly; coordinate with Grok agent notes in skyhook/.

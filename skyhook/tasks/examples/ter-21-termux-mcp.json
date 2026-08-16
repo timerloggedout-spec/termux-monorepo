@@ -1,0 +1,7 @@
+{
+  "title": "TER-21: Harden Termux MCP on-device (PR #7)",
+  "source_repo": "timerloggedout-spec/termux-monorepo",
+  "starting_branch": "master-staging",
+  "require_plan_approval": false,
+  "prompt": "You are working in timerloggedout-spec/termux-monorepo.\n\nGoal: Harden Termux MCP so cloud agents (Jules/Devin) can control Termux via on-device MCP (stdio/sse/streamable-http). Linear TER-21 / PR #7.\n\nContext:\n- Branch: devin/1785650368-termux-mcp-integration (retargeted toward master-staging).\n- Gate spine: work lands on master-staging first.\n- Secrets must stay out of configs and git.\n\nTasks:\n1. Review integrations/termux-mcp/ (or equivalent paths on the PR branch): serve.py, run.sh, tunnel.sh.\n2. Ensure transport is selectable from env; document connection for custom MCP JSON.\n3. Pin MCP SDK reasonably; no network calls inside offline doctor/gates.\n4. Open or update PR to master-staging with Implements: TER-21.\n5. List non-goals clearly (no replacing archwiz dispatch, no committing keys).\n\nThis unblocks real delegation: Jules in cloud ↔ Termux device via MCP.\n"
+}

@@ -1,0 +1,95 @@
+# skyhook roster — Jules-first; public forks under timerloggedout-spec
+version: 3
+updated_at: "2026-08-03T21:20:00Z"
+updated_by: grok-archw1z
+package: skyhook
+branch: feature/skyhook
+
+home:
+  owner: timerloggedout-spec
+  repo: termux-monorepo
+  package_root: skyhook/
+  integration_branch: master-staging
+  package_branch: feature/skyhook
+  smoke_branch: termux-smoke
+  production_branch: master
+  gates: [repo-gate, termux-smoke]
+
+focus_first:
+  local_drivers_in_home:
+    - multi-ai-cli
+    - deepcli
+    - deepseek-cli
+    - deepterm
+  jules_gold:
+    - jules-dispatch-cli_fork
+    - jules-mcp-server_fork
+    - jules-sdk_fork-rs
+    - jules-action_fork
+    - gh-jules-workflow-development_fork
+    - jules-skill_fork
+    - jules-skills_fork
+    - google-jules-skill_fork
+    - jules-foreman_fork
+    - jules-studio_fork
+    - jules-cli_fork-multiAgent
+    - google-jules-workflow_fork
+    - cjules_fork
+    - jules_api_cli_fork
+    - jules-awesome-list_fork
+    - pi-jules_fork
+
+scavenge_templates:
+  jules_gold:
+    - name: jules-dispatch-cli_fork
+      tier: 1
+      visibility: public
+      url: https://github.com/timerloggedout-spec/jules-dispatch-cli_fork
+      recon: skyhook/research/TIER1_DISPATCH_MCP.md
+    - name: jules-mcp-server_fork
+      tier: 1
+      visibility: public
+      url: https://github.com/timerloggedout-spec/jules-mcp-server_fork
+      recon: skyhook/research/TIER1_DISPATCH_MCP.md
+    - name: jules-sdk_fork-rs
+      tier: 2
+      visibility: public
+      url: https://github.com/timerloggedout-spec/jules-sdk_fork-rs
+    - name: jules-action_fork
+      tier: 2
+      visibility: public
+      url: https://github.com/timerloggedout-spec/jules-action_fork
+    - name: gh-jules-workflow-development_fork
+      tier: 2
+      visibility: public
+      url: https://github.com/timerloggedout-spec/gh-jules-workflow-development_fork
+    - name: jules-cli_fork-multiAgent
+      tier: 4
+      visibility: public
+      url: https://github.com/timerloggedout-spec/jules-cli_fork-multiAgent
+      note: Create Project listed jules-multi-agent; actual name is jules-cli_fork-multiAgent
+
+deferred_antigravity:
+  reason: >-
+    Heavy for solo Termux. Jules-first; use Jules later for Antigravity.
+    Optional Colab/free credits then.
+  forks:
+    - antigravity-jules-orchestration_fork
+    - llm-antigravity-orchestrator_fork
+    - Antigravity_cli_sdk_fork
+    - Antigravity_2.0_fork
+    - agy-sdk-agents_fork
+    - run-agy-sdk_fork
+    - feishu-agy-sdk-bridge_fork
+    - lego_fork
+    - STMoEOrchestrator_fork
+
+policy:
+  phase: jules_first
+  scavenge: depth-1-sparse-metadata
+  agents_credit_policy: >-
+    Devin and Vercel out of credit. Prefer Jules sessions or Grok (not a Linear
+    teammate — put Agent: Grok|Jules at top of issue body). Clear Devin delegate.
+  human_only: [credential_rotation, history_rewrite, app_permissions]
+  human_temporary: [termux_smoke_cherry_pick_until_automated]
+  agent_owns: [branch, implement, pr, merge_to_master_staging, gates]

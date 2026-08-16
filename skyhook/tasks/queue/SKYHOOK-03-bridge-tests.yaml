@@ -1,0 +1,15 @@
+id: SKYHOOK-03
+title: Unit tests for skyhook bridge
+status: done
+owner: grok-archw1z
+priority: P1
+prompt: |
+  Stdlib unittest for config + plan_task. Assert master → master-staging rewrite.
+  Assert key presence is boolean-only (never print secrets).
+repo: timerloggedout-spec/termux-monorepo
+branch: feature/skyhook
+require_plan_approval: false
+notes: |
+  Landed skyhook/tests/test_bridge.py — run:
+  python3 -m unittest skyhook.tests.test_bridge
+  or from package: python3 -m unittest discover -s skyhook/tests -v

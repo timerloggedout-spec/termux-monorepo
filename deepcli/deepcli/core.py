@@ -60,7 +60,17 @@ _session: Optional[curl_requests.Session] = None
 
 # ---------- cache helpers ----------
 def _cache_path(session_id: str, account: str = "primary") -> str:
-    store_dir = os.path.join(os.path.expanduser("~/.deepcli/session_store"), account)
+    if ".." in str(account) or str(account).startswith("/") or "\\" in str(account):
+        raise ValueError("Invalid account name")
+
+    base_store = os.path.realpath(os.path.expanduser("~/.deepcli/session_store"))
+    safe_account = "".join(c if c.isalnum() or c in "-_." else "_" for c in str(account))
+    store_dir = os.path.join(base_store, safe_account)
+
+    store_real = os.path.realpath(store_dir)
+    if os.path.commonpath([base_store, store_real]) != base_store:
+        raise ValueError("Invalid account path")
+
     os.makedirs(store_dir, exist_ok=True)
 
     # Restrict permissions of store_dir and parent directories if not symlinks

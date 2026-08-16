@@ -31,9 +31,14 @@ def parse_iso8601(ts_str: str | None):
     if not ts_str:
         return None
     try:
-        return datetime.strptime(ts_str.replace("Z", ""), "%Y-%m-%dT%H:%M:%S")
+        clean_ts = ts_str.replace("Z", "+00:00") if ts_str.endswith("Z") else ts_str
+        dt = datetime.fromisoformat(clean_ts)
+        return dt.replace(tzinfo=None) if dt.tzinfo else dt
     except ValueError:
-        return None
+        try:
+            return datetime.strptime(ts_str.replace("Z", ""), "%Y-%m-%dT%H:%M:%S")
+        except ValueError:
+            return None
 
 def write_outputs(metrics: dict, table_rows: list[str]) -> None:
     os.makedirs("docs/ops", exist_ok=True)

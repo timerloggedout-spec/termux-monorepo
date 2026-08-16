@@ -20,3 +20,4 @@
 | RL-16 | Shared global counter (not per-branch cache) | P2 | | todo | gist/issue optimistic concurrency |
 | RL-17 | Model availability polling & ELO (3L0) routing | P0 | jules | done | #123 scripts/model_router.py, model-success-matrix.yaml |
 | RL-18 | DeepSeek CI peer path (no Class 3/4 cache) | P0 | jules | blocked | #134 security hold — ephemeral session only |
+| RL-19 | Audit Merged Branches, Skipped Reviews & Lane Consolidation | P0 | jules | done | docs/ops/MERGED-BRANCH-AUDIT-2026.md, docs/ops/LANE_CONSOLIDATION_SSOT.md |

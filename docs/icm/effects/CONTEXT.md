@@ -8,6 +8,7 @@ One job: answer **which cards should I open before changing X**. This index is i
 | ArchWiz cockpit, forensic, autonomous, verification, or knowledge tool | [`../objects/operations/archwiz.md`](../objects/operations/archwiz.md) | the named tool’s source and direct probe/test surface |
 | Root README, route, catalog, or index behavior | [`../objects/knowledge/navigation-and-indexes.md`](../objects/knowledge/navigation-and-indexes.md) | the owning authored source or generator; do not hand-edit generated maps |
 | Tracked code, document, submodule, or workflow change | [`../objects/governance/change-control.md`](../objects/governance/change-control.md) and [`../processes/change-and-validate.md`](../processes/change-and-validate.md) | work item, feature-branch base, required gates, and review status |
+| ICM map card, route, template, or maintenance-rule change | [`../maintenance/CLAUDE.md`](../maintenance/CLAUDE.md) | the `02_design` human gate, then map-specific verification |
 
 ## Human check
 

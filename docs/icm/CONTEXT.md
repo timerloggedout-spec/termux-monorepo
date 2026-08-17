@@ -11,14 +11,16 @@ This is a **system map**, not a replacement architecture specification or an aut
 | Navigation | [`../../README.md`](../../README.md) | Owns the root navigation ladder and subsystem inventory. |
 | Operations | [`../../archwiz/TOOL_INDEX.md`](../../archwiz/TOOL_INDEX.md) | Owns concise ArchWiz tool roles. |
 | Platform | [`../architecture/termux-agentic-hub.md`](../architecture/termux-agentic-hub.md) | Owns the Android execution-plane architecture. |
+| Maintenance factory | [`_shared/CONTEXT.md`](_shared/CONTEXT.md) | Holds stable rules and templates for documentation-only ICM map updates. |
 
 ## Reading protocol
 
 1. Start at `CLAUDE.md` and select **one** matching card or process.
-2. Read that card and the source paths it cites; source wins over the card if they disagree.
-3. Treat `live` cards as current editing surfaces, `leftover` cards as non-primary paths, and `ghost` cards as named-but-not-wired material.
-4. Use `effects/CONTEXT.md` for first-order impact only. Open further cards only when a cited source creates a concrete dependency.
-5. Run the governing validation before proposing a merge. The map records routing; it does not waive repository policy.
+2. If the request changes the map itself, enter [`maintenance/CLAUDE.md`](maintenance/CLAUDE.md) instead of editing a card directly.
+3. Read the selected card and the source paths it cites; source wins over the card if they disagree.
+4. Treat `live` cards as current editing surfaces, `leftover` cards as non-primary paths, and `ghost` cards as named-but-not-wired material.
+5. Use `effects/CONTEXT.md` for first-order impact only. Open further cards only when a cited source creates a concrete dependency.
+6. Run the governing validation before proposing a merge. The map records routing; it does not waive repository policy.
 
 ## Universes and name collisions
 

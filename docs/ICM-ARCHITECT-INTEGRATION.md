@@ -83,7 +83,9 @@ Run `git diff --submodule=log` before committing the monorepo pointer. The outpu
 
 The monorepo now applies the ICM Architect **System map** form at [`docs/icm/CLAUDE.md`](icm/CLAUDE.md). It is a linked edit map rather than a duplicate specification: its object cards cite existing architecture, navigation, tool, and governance sources; its process cards record the actual change-and-validation and structured-Termux-job movements; and its effect index provides only first-order routing. Start at the root `AGENTS.md` governance sequence, then open the ICM catalog and one matching card before loading deeper sources.[1]
 
-No source files, generated indexes, recovery artifacts, or device state were moved to make this map. The map’s purpose is to reduce context loading while preserving the existing source of truth and human approval boundaries.
+No source files, generated indexes, recovery artifacts, device state, or application code were moved or refactored to make this map. The map’s purpose is to reduce context loading while preserving the existing source of truth and human approval boundaries.
+
+The method is completed as a composition of a **System map** for repository editing and a nested, documentation-only **maintenance Pipeline** at [`docs/icm/maintenance/CLAUDE.md`](icm/maintenance/CLAUDE.md). The pipeline separates stable rules/templates from per-update artifacts, requires a human design gate, verifies links and canonical sources, and records `master-staging` validation before a later `master` merge. See [`docs/icm/_meta/method-coverage.md`](icm/_meta/method-coverage.md) for the exact method-to-file coverage.
 
 ## References
 

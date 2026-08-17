@@ -38,7 +38,12 @@ This change introduces the user-owned fork of **ICM Architect** as a pinned, sha
 ### 2026-08-17 — ICM System Map extension
 
 - Disposition: accepted for execution.
-- Notes: The operator authorized use of the integrated ICM Architect submodule to map the monorepo’s intended usage. The map remains beside existing documentation, cites existing sources, and does not move source, generated indexes, recovery artifacts, or device state.
+- Notes: The operator authorized use of the integrated ICM Architect submodule to map the monorepo’s intended usage. The map remains beside existing documentation, cites existing sources, and does not move source, generated indexes, recovery artifacts, device state, or application code.
+
+### 2026-08-17 — ICM maintenance-pipeline completion
+
+- Disposition: accepted for execution.
+- Notes: Research across RinDig’s `icm-architect`, `Interpretable-Context-Methodology`, `cost-of-remembering`, and `Content-Agent-Routing-Promptbase` resources confirmed the System map plus nested human-gated Pipeline composition. The completion work adds only documentation, templates, ignored stage-output markers, and routing records; no Python or application code is in scope.
 
 ## Checklist (process)
 

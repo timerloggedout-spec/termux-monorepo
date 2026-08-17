@@ -102,6 +102,8 @@ No source files, generated indexes, recovery artifacts, device state, or applica
 
 The method is completed as a composition of a **System map** for repository editing and a nested, documentation-only **maintenance Pipeline** at [`docs/icm/maintenance/CLAUDE.md`](icm/maintenance/CLAUDE.md). The pipeline separates stable rules/templates from per-update artifacts, requires a human design gate, verifies links and canonical sources, and records `master-staging` validation before a later `master` merge. See [`docs/icm/_meta/method-coverage.md`](icm/_meta/method-coverage.md) for the exact method-to-file coverage.
 
+Historical and pending PRs are not silently absorbed into this implementation. [`docs/icm/_meta/related-pull-requests.md`](icm/_meta/related-pull-requests.md) reconciles the merged reconnaissance precursor (#4), the open metadata-recovery skeleton (#47), the pending CAVEMAN workspace (#103), and this direct implementation (#232).
+
 ## References
 
 [1]: https://github.com/RinDig/ICM-Architect "RinDig/icm-architect — upstream project and usage overview"

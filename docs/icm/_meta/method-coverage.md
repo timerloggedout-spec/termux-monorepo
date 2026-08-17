@@ -15,6 +15,9 @@ This record explains how the monorepo applies the ICM method **without refactori
 | Master-staging validation before later master merge | [`../maintenance/04_promote/CONTEXT.md`](../maintenance/04_promote/CONTEXT.md) | Implemented |
 | No committed run artifacts | [`../maintenance/.gitignore`](../maintenance/.gitignore) and stage `.gitkeep` files | Implemented |
 | Canonical source and one-way-reference rules | [`../_shared/maintenance-rules.md`](../_shared/maintenance-rules.md) | Implemented |
+| Compact form-selection and restructure method | [`../../../refTemplates/smods/icm-architect_fork/SKILL.md`](../../../refTemplates/smods/icm-architect_fork/SKILL.md) | Implemented through the pinned Architect reference |
+| Full conventions, example workspaces, and workspace-builder | [`../../../refTemplates/smods/interpretable-context-methodology_fork/README.md`](../../../refTemplates/smods/interpretable-context-methodology_fork/README.md) | Implemented through the pinned methodology companion |
+| Nested workspace artifact classification | [`../objects/knowledge/workspace-artifact-estate.md`](../objects/knowledge/workspace-artifact-estate.md) and [`../processes/workspace-artifact-triage.md`](../processes/workspace-artifact-triage.md) | Implemented without source-code refactoring |
 
 ## Form selection
 
@@ -24,11 +27,11 @@ The other forms are intentionally not scaffolded: this repository is not a singl
 
 ## Selected sources
 
-The System map form and its walk test come from the installed [ICM Architect skill](../../../refTemplates/smods/icm-architect_fork/SKILL.md) and its [`references/system-map.md`](../../../refTemplates/smods/icm-architect_fork/references/system-map.md). The layered catalog/contract/factory/product distinction is grounded in [`references/core.md`](../../../refTemplates/smods/icm-architect_fork/references/core.md). The maintenance pipeline also follows the published ICM emphasis on stage contracts, human-editable handoffs, and canonical sources.[1] [2]
+The System map form and its walk test come from the installed [ICM Architect skill](../../../refTemplates/smods/icm-architect_fork/SKILL.md) and its [`references/system-map.md`](../../../refTemplates/smods/icm-architect_fork/references/system-map.md). The full methodology companion adds the published conventions, example workspaces, and workspace-builder at [`refTemplates/smods/interpretable-context-methodology_fork`](../../../refTemplates/smods/interpretable-context-methodology_fork/). The layered catalog/contract/factory/product distinction is grounded in Architect’s [`references/core.md`](../../../refTemplates/smods/icm-architect_fork/references/core.md), and the maintenance pipeline follows the full methodology’s emphasis on stage contracts, human-editable handoffs, and canonical sources.[1] [2]
 
 > **Deliberate boundary:** The ICM method structures the context and documentation supplied to editors. It does not supersede the monorepo’s runtime architecture, CI, GitHub review, or human authorization rules.
 
 ## References
 
 [1]: https://github.com/RinDig/Interpretable-Context-Methodology "RinDig/Interpretable-Context-Methodology"
-[2]: https://github.com/RinDig/Content-Agent-Routing-Promptbase "RinDig/Content-Agent-Routing-Promptbase"
+[2]: https://github.com/RinDig/icm-architect "RinDig/icm-architect"

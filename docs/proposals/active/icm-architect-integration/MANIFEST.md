@@ -45,6 +45,11 @@ This change introduces the user-owned fork of **ICM Architect** as a pinned, sha
 - Disposition: accepted for execution.
 - Notes: Research across RinDig’s `icm-architect`, `Interpretable-Context-Methodology`, `cost-of-remembering`, and `Content-Agent-Routing-Promptbase` resources confirmed the System map plus nested human-gated Pipeline composition. The completion work adds only documentation, templates, ignored stage-output markers, and routing records; no Python or application code is in scope.
 
+### 2026-08-17 — Full methodology companion and workspace-artifact triage
+
+- Disposition: accepted for execution.
+- Notes: The operator elevated completion of the existing ICM integration to P0, citing the existing master-priority issue and PR #232. The user-owned `interpretable-context-methodology_fork` reference is synchronized from upstream and pinned as a shallow custom submodule; `workspace/` artifacts are classified in ICM documentation only. No application-code refactor, cleanup, relocation, deletion, or sensitive-runtime inspection is authorized by this scope.
+
 ## Checklist (process)
 
 - [x] Registered in `docs/proposals/registry.yaml`

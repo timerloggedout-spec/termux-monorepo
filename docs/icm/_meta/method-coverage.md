@@ -17,6 +17,9 @@ This record explains how the monorepo applies the ICM method **without refactori
 | Canonical source and one-way-reference rules | [`../_shared/maintenance-rules.md`](../_shared/maintenance-rules.md) | Implemented |
 | Compact form-selection and restructure method | [`../../../refTemplates/smods/icm-architect_fork/SKILL.md`](../../../refTemplates/smods/icm-architect_fork/SKILL.md) | Implemented through the pinned Architect reference |
 | Full conventions, example workspaces, and workspace-builder | [`../../../refTemplates/smods/interpretable-context-methodology_fork/README.md`](../../../refTemplates/smods/interpretable-context-methodology_fork/README.md) | Implemented through the pinned methodology companion |
+| Layered routing, canonical sources, and one-way dependencies | [`../../../refTemplates/smods/content-agent-routing-promptbase_fork/README.md`](../../../refTemplates/smods/content-agent-routing-promptbase_fork/README.md) | Applied in repository-native catalog/contracts; Promptbase remains a reference input |
+| Optional file-backed visual stage mirror and human checkpoint | [`../../../refTemplates/smods/icm-cctv_fork/README.md`](../../../refTemplates/smods/icm-cctv_fork/README.md) | Routed as optional visual review; native Pipeline output remains canonical |
+| BLU B160V and free-services envelope | [`../objects/platform/blu-b160v-free-services.md`](../objects/platform/blu-b160v-free-services.md) | Applied as an operator-declared, re-verifiable design constraint; no device access implied |
 | Nested workspace artifact classification | [`../objects/knowledge/workspace-artifact-estate.md`](../objects/knowledge/workspace-artifact-estate.md) and [`../processes/workspace-artifact-triage.md`](../processes/workspace-artifact-triage.md) | Implemented without source-code refactoring |
 
 ## Form selection
@@ -35,3 +38,5 @@ The System map form and its walk test come from the installed [ICM Architect ski
 
 [1]: https://github.com/RinDig/Interpretable-Context-Methodology "RinDig/Interpretable-Context-Methodology"
 [2]: https://github.com/RinDig/icm-architect "RinDig/icm-architect"
+[3]: https://github.com/RinDig/Content-Agent-Routing-Promptbase "RinDig/Content-Agent-Routing-Promptbase"
+[4]: https://github.com/timerloggedout-spec/icm-cctv_fork "timerloggedout-spec/icm-cctv_fork"

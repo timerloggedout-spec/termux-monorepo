@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The monorepo includes **ICM Architect** as a shallow Git submodule at `refTemplates/smods/icm-architect_fork`. ICM Architect is a skill for designing or restructuring a process, repository, or workspace around the Interpretable Context Methodology (ICM), where navigable folders and Markdown artifacts carry the system’s operational context.[1]
+The monorepo applies ICM to **itself**: its `docs/icm/` catalog, contracts, cards, process definitions, and maintenance Pipeline are the operative workspace. It includes **ICM Architect** as a shallow Git reference submodule at `refTemplates/smods/icm-architect_fork`. ICM Architect is a skill for designing or restructuring a process, repository, or workspace around the Interpretable Context Methodology (ICM), where navigable folders and Markdown artifacts carry the system’s operational context.[1]
 
 > **Boundary:** The monorepo pins a reviewed revision; all intentional changes to ICM Architect belong in the user-owned fork, `timerloggedout-spec/icm-architect_fork`. This keeps local extensions reviewable without copying third-party source into the monorepo.
 
@@ -15,6 +15,19 @@ The monorepo includes **ICM Architect** as a shallow Git submodule at `refTempla
 | Initial pinned revision | `b20fb45063a564cf607b03526e206f519d174def` |
 | Checkout policy | Shallow, intentionally pinned through the Gitlink |
 | Governing work item | `ICM-01` |
+
+## Reference Inputs
+
+The monorepo maintains a bounded reference-input layer under `refTemplates/smods/`. These forks are pinned examples and customization surfaces; they are **not** a second monorepo, an automatic runtime, or permission to copy external source into repository-native ICM contracts.
+
+| Reference | Submodule path | Repository-native use |
+|---|---|---|
+| ICM Architect | `refTemplates/smods/icm-architect_fork` | Select the smallest ICM form and audit maps. |
+| Full methodology | `refTemplates/smods/interpretable-context-methodology_fork` | Consult detailed conventions, examples, and workspace-builder patterns. |
+| Promptbase | `refTemplates/smods/content-agent-routing-promptbase_fork` | Consult Layer 0–3 routing, canonical-source, and one-way-dependency patterns. |
+| ICM CCTV | `refTemplates/smods/icm-cctv_fork` | Consult optional visual stage mirrors and human-checkpoint patterns; keep the native Pipeline output canonical. |
+
+The user-declared BLU B160V/free-services envelope is documented in the repository-native [`docs/icm/` platform card](icm/objects/platform/blu-b160v-free-services.md). It is a design constraint only; this integration neither accesses the Termux MCP nor configures the device.[1]
 
 ## Companion Methodology Reference
 
@@ -37,6 +50,8 @@ After cloning the monorepo, initialize only the reference needed for the work. T
 ```bash
 git submodule update --init --depth 1 refTemplates/smods/icm-architect_fork
 git submodule update --init --depth 1 refTemplates/smods/interpretable-context-methodology_fork
+git submodule update --init --depth 1 refTemplates/smods/content-agent-routing-promptbase_fork
+git submodule update --init --depth 1 refTemplates/smods/icm-cctv_fork
 ```
 
 ICM Architect provides `SKILL.md`, reference notes, and starter templates. The methodology fork provides the complete conventions and example workspaces. Neither is automatically executed or copied into an agent runtime. A consuming agent or developer should read the relevant reference before selecting a destination workspace.[1] [2]
@@ -108,3 +123,5 @@ Historical and pending PRs are not silently absorbed into this implementation. [
 
 [1]: https://github.com/RinDig/ICM-Architect "RinDig/icm-architect — upstream project and usage overview"
 [2]: https://github.com/RinDig/Interpretable-Context-Methodology "RinDig/Interpretable-Context-Methodology — full conventions and reference workspaces"
+[3]: https://github.com/RinDig/Content-Agent-Routing-Promptbase "RinDig/Content-Agent-Routing-Promptbase — layered context-routing precedent"
+[4]: https://github.com/timerloggedout-spec/icm-cctv_fork "timerloggedout-spec/icm-cctv_fork — optional file-backed visual review reference"

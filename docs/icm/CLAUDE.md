@@ -14,6 +14,7 @@ Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect
 | [`objects/governance/`](objects/governance/CONTEXT.md) | Branch, proposal, validation, and approval constraints. |
 | [`processes/`](processes/CONTEXT.md) | Real editor workflows with explicit inputs and outputs. |
 | [`effects/`](effects/CONTEXT.md) | A compact “if you change X, read Y” index. |
+| [`maintenance/`](maintenance/CLAUDE.md) | A human-gated, documentation-only pipeline for future map updates. |
 
 ## Route by task
 
@@ -25,6 +26,7 @@ Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect
 | alter navigation or an index | [`objects/knowledge/navigation-and-indexes.md`](objects/knowledge/navigation-and-indexes.md) | the owning navigation/index file |
 | modify tracked code or documentation | [`processes/change-and-validate.md`](processes/change-and-validate.md) | the required human gate |
 | assess first-order change impact | [`effects/CONTEXT.md`](effects/CONTEXT.md) | the linked object/process card |
+| maintain or extend the ICM map | [`maintenance/CLAUDE.md`](maintenance/CLAUDE.md) | the `02_design` human gate |
 
 ## One rule
 

@@ -251,6 +251,11 @@ def translate_text_raw(text: str, to_compressed: bool) -> str:
 
 def translate_line(line: str, to_compressed: bool) -> str:
     """Translate a single line protecting syntax and structures with fast-path character checks."""
+    # Fast-path optimization: check if any translatable terms exist on the line before running placeholder regexes
+    matcher = COMP_SINGLE_REGEX if to_compressed else DECOMP_SINGLE_REGEX
+    if not matcher.search(line):
+        return line
+
     placeholders = []
 
     def add_placeholder(val: str) -> str:

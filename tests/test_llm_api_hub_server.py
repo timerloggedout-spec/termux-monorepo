@@ -10,7 +10,7 @@ import unittest
 from fastapi.testclient import TestClient
 
 
-APP_PATH = Path(__file__).parents[1] / "llm-api-hub" / "server" / "app.py"
+APP_PATH = Path(__file__).parents[1] / "llm_api_hub" / "server" / "app.py"
 
 
 def load_app():

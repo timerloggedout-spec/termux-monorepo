@@ -7,15 +7,14 @@
 From the repository root:
 
 ```bash
-python3 -m pip install -r llm-api-hub/server/requirements.txt
-cd llm-api-hub/server
-uvicorn app:app --host 127.0.0.1 --port 8787
+python3 -m pip install -r llm_api_hub/server/requirements.txt
+uvicorn llm_api_hub.server.app:app --host 127.0.0.1 --port 8787
 ```
 
-Because the directory name contains a hyphen, launching from the server directory is the portable form in Termux:
+The directory has been renamed from `llm-api-hub` to `llm_api_hub` to support standard Python package imports.
 
 ```bash
-cd llm-api-hub/server
+cd llm_api_hub/server
 uvicorn app:app --host "${LLM_API_HUB_HOST:-127.0.0.1}" --port "${LLM_API_HUB_PORT:-8787}"
 ```
 

@@ -10,9 +10,10 @@ One job: route orientation, documentation, and index questions to the owning nav
 
 ## Process
 
-1. Determine whether the request changes root routing, an authored index, or a generated map.
-2. Read the Navigation and Indexes card.
-3. Update only the source that owns the fact; link from other catalogs instead of copying payload.
+1. Determine whether the request changes root routing, an authored index, a generated map, or mixed `workspace/` artifacts.
+2. Read the Navigation and Indexes card for routing, the Interpretable Context Methodology Reference for recurring-workspace design, or the Workspace Artifact Estate card for a nested workspace request.
+3. Classify workspace material before loading it: catalog/contract, factory, product, leftover, or excluded.
+4. Update only the source that owns the fact; link from other catalogs instead of copying payload.
 
 ## Outputs
 
@@ -20,4 +21,4 @@ One job: route orientation, documentation, and index questions to the owning nav
 
 ## Human check
 
-Confirm that no generated index has been hand-edited and that the new route points to a maintained source.
+Confirm that no generated index has been hand-edited, no excluded runtime material has been loaded, and that the new route points to a maintained source.

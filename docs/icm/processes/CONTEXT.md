@@ -15,9 +15,17 @@ One job: describe a real movement through the monorepo as explicit input, bounde
 3. Follow the smallest listed steps; do not infer additional automation authority.
 4. Record the human check and surface any gate or approval blocker.
 
+## Available movements
+
+| Movement | Open when… | Stop at |
+|---|---|---|
+| [`change-and-validate.md`](change-and-validate.md) | changing tracked code or documentation | the governing validation and human gate |
+| [`structured-termux-job.md`](structured-termux-job.md) | running a declared Android/Termux job | the capability and approval boundary |
+| [`workspace-artifact-triage.md`](workspace-artifact-triage.md) | classifying nested workspace Markdown, text, JSONL, generated maps, or leftovers | the human decision before cleanup or promotion |
+
 ## Outputs
 
-- A scoped change plan, validation result, or structured device-job outcome.
+- A scoped change plan, validation result, structured device-job outcome, or artifact-classification record.
 
 ## Human check
 

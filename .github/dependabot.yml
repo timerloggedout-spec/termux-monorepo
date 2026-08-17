@@ -1,13 +1,10 @@
-# Momitor Only; we're a Research Team investigating and _USING_. these... we have our own _***EXCEPTIONS WHITELIST***_ // @Timer
-# requires BIUDL!
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
+# Monitor Only; we're a Research Team investigating and USING these...
+# To get started with Dependabot version updates, specify package ecosystems:
 # https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 
 version: 2
 updates:
-  - package-ecosystem: "" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "github-actions"
+    directory: "/"
     schedule:
       interval: "weekly"

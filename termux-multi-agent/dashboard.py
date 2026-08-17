@@ -3,7 +3,9 @@ import time
 import os
 import json
 import sys
+import requests
 from datetime import datetime
+from pathlib import Path
 
 try:
     from rich.console import Console, Group
@@ -19,6 +21,35 @@ except ImportError:
 
 TELEMETRY_LOG = "agent_telemetry_stream.json"
 console = Console()
+
+def check_infrastructure():
+    infra = {}
+    
+    # Hub Status
+    hub_url = os.environ.get("LLM_API_HUB_BASE", "http://127.0.0.1:8787/v1").replace("/v1", "/health")
+    try:
+        resp = requests.get(hub_url, timeout=0.5)
+        if resp.status_code == 200:
+            infra["Hub"] = ("ONLINE", "green")
+        else:
+            infra["Hub"] = ("ERROR", "red")
+    except:
+        infra["Hub"] = ("OFFLINE", "dim red")
+
+    # ML Ingestion Status
+    ml_latest = Path("/home/ubuntu/termux-monorepo/data/ml_ingestion/latest.json")
+    if ml_latest.exists():
+        try:
+            with open(ml_latest, "r") as f:
+                data = json.load(f)
+                ts = data.get("timestamp", "unknown")
+                infra["ML Pipeline"] = (f"READY ({ts})", "green")
+        except:
+            infra["ML Pipeline"] = ("CORRUPT", "red")
+    else:
+        infra["ML Pipeline"] = ("NO DATA", "dim yellow")
+        
+    return infra
 
 def read_latest_telemetry():
     if not os.path.exists(TELEMETRY_LOG):
@@ -43,6 +74,7 @@ def read_latest_telemetry():
 def make_dashboard():
     # Read data
     jobs = read_latest_telemetry()
+    infra = check_infrastructure()
 
     # Header info
     now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -55,6 +87,20 @@ def make_dashboard():
         box=ROUNDED,
         border_style="yellow",
         expand=True,
+    )
+
+    # Infra Panel
+    infra_text = Text()
+    for name, (status, color) in infra.items():
+        infra_text.append(f"{name}: ", style="bold")
+        infra_text.append(f"{status}  ", style=color)
+    
+    infra_panel = Panel(
+        infra_text,
+        title="Infrastructure Status",
+        box=ROUNDED,
+        border_style="blue",
+        expand=True
     )
 
     if not jobs:
@@ -76,6 +122,7 @@ def make_dashboard():
         return Panel(
             Group(
                 header_panel,
+                infra_panel,
                 body_panel
             ),
             box=ROUNDED,
@@ -134,6 +181,7 @@ def make_dashboard():
     return Panel(
         Group(
             header_panel,
+            infra_panel,
             table,
             footer_text
         ),

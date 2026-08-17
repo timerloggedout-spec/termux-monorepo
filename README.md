@@ -74,6 +74,7 @@ Use this ladder when orienting in the tree. `_Entry+ReadMe.md` and `termux-ecosy
 
 | Priority | Start here | What you get |
 |----------|------------|--------------|
+| 0 | [`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md) | Agent-navigable system map: component cards, real processes, and first-order change impact |
 | 1 | `archwiz/TOOL_INDEX.md` | 28 tools / 7 categories — cockpit, forensic, autonomous, verification |
 | 2 | `archwiz/CONCEPT_INDEX.md` | Concepts + status (built / reserved / not built) + feature backlog |
 | 3 | `archwiz/REFERENCE_HUB.md` | Links to DATA_FLOW_MANIFEST, SYSTEM_MAP, func/llm indices |

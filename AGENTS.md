@@ -13,6 +13,8 @@ Instructions for coding agents (Grok, Claude, Codex, Devin, ChatGPT, local runne
 7. [`docs/proposals/AGENTIC-PERMISSIONS.md`](docs/proposals/AGENTIC-PERMISSIONS.md) — human-only edges
 8. [`docs/CONSENSUS.md`](docs/CONSENSUS.md) — tiers, merit path, CRDT, optional Raft-strict
 
+After this governance sequence, use [`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md) to route the task to one verified component or process card before loading deeper source.
+
 Optional: `CLAUDE.md`, `CONTRIBUTING.md`.
 
 ## Hard rules

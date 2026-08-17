@@ -79,6 +79,12 @@ Run `git diff --submodule=log` before committing the monorepo pointer. The outpu
 | `python3 scripts/ci/repo_gate.py` | The repository gate completes successfully. |
 | `python3 scripts/ci/termux_smoke.py` | The Termux smoke gate completes successfully. |
 
+## Applied System Map
+
+The monorepo now applies the ICM Architect **System map** form at [`docs/icm/CLAUDE.md`](icm/CLAUDE.md). It is a linked edit map rather than a duplicate specification: its object cards cite existing architecture, navigation, tool, and governance sources; its process cards record the actual change-and-validation and structured-Termux-job movements; and its effect index provides only first-order routing. Start at the root `AGENTS.md` governance sequence, then open the ICM catalog and one matching card before loading deeper sources.[1]
+
+No source files, generated indexes, recovery artifacts, or device state were moved to make this map. The map’s purpose is to reduce context loading while preserving the existing source of truth and human approval boundaries.
+
 ## References
 
 [1]: https://github.com/RinDig/ICM-Architect "RinDig/icm-architect — upstream project and usage overview"

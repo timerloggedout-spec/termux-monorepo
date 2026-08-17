@@ -16,3 +16,10 @@ In Python 3.11+, `datetime.strptime` involves string format parsing overhead tha
 
 **Action:**
 Prefer `datetime.fromisoformat` over `datetime.strptime` when parsing standard ISO 8601 date strings.
+
+## 2026-08-18 - Epoch Timestamp Caching and String Slicing for Datetime Rendering
+**Learning:**
+Converting file stat timestamps (`st.st_mtime`) to `time.ctime()` strings and then repeatedly back-parsing them with `time.strptime(x['mtime'], "%c")` in loops during file sorting and age filtering causes severe CPU bottlenecks in filesystem scouting. Storing the raw numeric float timestamp (`mtime_ts`) directly in entry dicts allows O(1) float comparisons. Additionally, in high-frequency rendering loops, string slicing (`timestamp[11:19]`) on fixed-width ISO date strings avoids `strptime` overhead entirely.
+
+**Action:**
+Always cache raw numeric epoch timestamps (`mtime_ts`) alongside formatted date strings during file walks, and prefer string slicing over `strptime` when extracting fixed time substrings (`HH:MM:SS`) for display.

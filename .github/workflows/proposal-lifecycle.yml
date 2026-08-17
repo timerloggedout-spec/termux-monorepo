@@ -1,0 +1,80 @@
+name: proposal-lifecycle
+
+on:
+  pull_request:
+    paths:
+      - "docs/proposals/**"
+      - "scripts/proposals/**"
+      - ".github/workflows/proposal-lifecycle.yml"
+  push:
+    branches: [master, master-staging]
+    paths:
+      - "docs/proposals/**"
+      - "scripts/proposals/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  validate-registry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml
+      - run: python3 scripts/proposals/validate_registry.py
+      - name: Summarize active proposals
+        run: |
+          echo "## Active proposals" >> "$GITHUB_STEP_SUMMARY"
+          echo '```yaml' >> "$GITHUB_STEP_SUMMARY"
+          sed -n '1,120p' docs/proposals/registry.yaml >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+  vote-hygiene:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scan PR for VOTE lines
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+          BODY: ${{ github.event.pull_request.body }}
+        run: |
+          printf '%s\n%s\n' "$TITLE" "$BODY" > /tmp/pr.txt
+          if grep -E '^VOTE: (accept|reject|abstain|summary OK)' /tmp/pr.txt; then
+            echo "Found VOTE line(s) — MANIFEST Review log is the binding store."
+          else
+            echo "No VOTE: line in PR title/body (OK)."
+          fi
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `### Proposal process checklist
+            - [ ] registry.yaml updated if new/changed proposal
+            - [ ] active/<id>/MANIFEST.md + ITEMS.md present
+            - [ ] Binding decisions logged in Review log (not only chat)
+            - [ ] Votes use VOTE: accept|reject|abstain + term: (see docs/CONSENSUS.md)
+            - [ ] Promotion via scripts/proposals/promote_proposal.py when status changes
+            - [ ] Full large sources may stay on a docs/* branch with a pointer on master
+
+            Refs: PROCESS · CONSENSUS · registry.yaml
+            `;
+            const { data: files } = await github.rest.pulls.listFiles({
+              owner: context.repo.owner, repo: context.repo.repo,
+              pull_number: context.issue.number, per_page: 100,
+            });
+            const hit = files.some(f => f.filename.startsWith('docs/proposals/') || f.filename.startsWith('scripts/proposals/'));
+            if (!hit) return;
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: context.issue.number, per_page: 50,
+            });
+            if (comments.data.some(c => c.body && c.body.includes('Proposal process checklist'))) return;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: context.issue.number, body,
+            });

@@ -50,6 +50,11 @@ This change introduces the user-owned fork of **ICM Architect** as a pinned, sha
 - Disposition: accepted for execution.
 - Notes: The operator elevated completion of the existing ICM integration to P0, citing the existing master-priority issue and PR #232. The user-owned `interpretable-context-methodology_fork` reference is synchronized from upstream and pinned as a shallow custom submodule; `workspace/` artifacts are classified in ICM documentation only. No application-code refactor, cleanup, relocation, deletion, or sensitive-runtime inspection is authorized by this scope.
 
+### 2026-08-17 — Repository-native ICM reference inputs and visual review
+
+- Disposition: accepted for execution.
+- Notes: The operator clarified that ICM is being applied to the monorepo itself. `icm-cctv_fork` and `content-agent-routing-promptbase_fork` are shallow, optional reference inputs under `refTemplates/smods/`; the monorepo’s own `docs/icm/` contracts remain operative. The BLU B160V/free-services envelope is documented as an operator constraint only. No Termux MCP/device access, service-account operation, network deployment, application-code refactor, or visual renderer startup is authorized by this scope.
+
 ## Checklist (process)
 
 - [x] Registered in `docs/proposals/registry.yaml`

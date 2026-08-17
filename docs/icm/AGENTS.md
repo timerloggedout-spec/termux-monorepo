@@ -8,9 +8,9 @@ Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect
 
 | Shelf | What it holds |
 |---|---|
-| [`objects/platform/`](objects/platform/CONTEXT.md) | The Android/Termux execution plane and its boundary. |
+| [`objects/platform/`](objects/platform/CONTEXT.md) | The Android/Termux execution plane and its device/service boundary. |
 | [`objects/operations/`](objects/operations/CONTEXT.md) | ArchWiz and the bounded operational tool surface. |
-| [`objects/knowledge/`](objects/knowledge/CONTEXT.md) | Navigation, methodology references, indices, and generated-map boundaries. |
+| [`objects/knowledge/`](objects/knowledge/CONTEXT.md) | Navigation, pinned reference inputs, methodology references, indices, and generated-map boundaries. |
 | [`objects/governance/`](objects/governance/CONTEXT.md) | Branch, proposal, validation, and approval constraints. |
 | [`processes/`](processes/CONTEXT.md) | Real editor workflows with explicit inputs and outputs. |
 | [`effects/`](effects/CONTEXT.md) | A compact “if you change X, read Y” index. |
@@ -22,8 +22,11 @@ Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect
 |---|---|---|
 | orient before a change | [`CONTEXT.md`](CONTEXT.md) | the one relevant object or process card |
 | change the Android execution plane | [`objects/platform/termux-agentic-hub.md`](objects/platform/termux-agentic-hub.md) | the cited architecture source |
+| check device or service assumptions | [`objects/platform/blu-b160v-free-services.md`](objects/platform/blu-b160v-free-services.md) | the declared envelope and the required re-verification boundary |
 | change ArchWiz or a verification tool | [`objects/operations/archwiz.md`](objects/operations/archwiz.md) | the cited tool catalog or source path |
+| propose a visual stage mirror or human checkpoint | [`objects/operations/optional-visual-review.md`](objects/operations/optional-visual-review.md) | the source stage output and human approval boundary |
 | alter navigation or an index | [`objects/knowledge/navigation-and-indexes.md`](objects/knowledge/navigation-and-indexes.md) | the owning navigation/index file |
+| select or update an ICM reference | [`objects/knowledge/reference-inputs.md`](objects/knowledge/reference-inputs.md) | the pinned reference input and custom-submodule review |
 | design or customize a recurring ICM workspace | [`objects/knowledge/interpretable-context-methodology.md`](objects/knowledge/interpretable-context-methodology.md) | the smallest suitable form and reference workspace |
 | classify nested `workspace/` artifacts | [`processes/workspace-artifact-triage.md`](processes/workspace-artifact-triage.md) | the human decision before any cleanup or promotion |
 | modify tracked code or documentation | [`processes/change-and-validate.md`](processes/change-and-validate.md) | the required human gate |

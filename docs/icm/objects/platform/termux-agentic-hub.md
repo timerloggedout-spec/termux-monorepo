@@ -1,49 +1,36 @@
 ---
 type: object
 cluster: platform
-universe: live
-status: verified
-entity: docs/architecture/termux-agentic-hub.md
+universe: ghost
+status: stale
+entity: archived Termux Agentic Hub architecture
 verified_at: 2026-08-17
 ---
 
 # Termux Agentic Hub
 
-The **Termux Agentic Hub** is the controlled bridge between GitHub-coordinated work and bounded operations on the Android device; it is not an unauthenticated remote shell.
+The **Termux Agentic Hub** is an archived architecture pattern for a controlled bridge between GitHub-coordinated work and bounded Android operations. The current `master` tree no longer contains the source architecture document that originally defined this path. Therefore, this card preserves context but does **not** assert that a hub, MCP transport, worker, capability registry, or Android device is available now.
 
-## Why this shape
+## Historical shape
 
-The architecture separates the repository coordination plane from the Android execution plane so authorized agents can perform useful device administration without accepting arbitrary shell text or exposing the phone publicly.
+The archived pattern separated repository coordination from Android execution: a reviewed job passed through validation and a named local capability before producing a redacted result envelope. It was explicitly not a generic remote shell.
 
-## Shape
+## Current routing rule
 
-- A controlled job moves from GitHub through `hub_mcp` validation to a single local Termux worker, then to named capability invocation and a redacted result envelope.
-- `hub_mcp` is the policy, replay-prevention, validation, and result-redaction boundary; device adapters are declarative references, not execution policy.
-- Capability levels distinguish observation and bounded maintenance from changes and critical actions.
-
-Citations: `docs/architecture/termux-agentic-hub.md:3-6`, `docs/architecture/termux-agentic-hub.md:9-28`, `docs/architecture/termux-agentic-hub.md:32-50`, `docs/architecture/termux-agentic-hub.md:52-64`.
+Treat this as a stale design reference. Before any device-bound work, re-verify a current canonical architecture source and obtain the required human authorization. Do not connect to the Termux MCP, probe the BLU B160V, infer an SSH route, or recreate the archived architecture from this card.
 
 ## Connected to
 
-- **owns:** the documented policy boundary for device-bound work.
-- **owned-by:** the monorepo’s architecture and governance documents.
-- **joins:** GitHub review/CI coordination, structured job validation, local Termux execution, and audit results.
-- **looks-like-but-is-not:** a generic interactive MCP or unrestricted SSH shell.
+- **historically joined:** GitHub review/CI coordination, structured job validation, local Termux execution, and audit results.
+- **currently owned by:** no tracked current-master architecture source; review the preservation record before proposing recovery.
+- **looks-like-but-is-not:** proof of a live MCP, public shell, or permitted device operation.
 
-## If you change this
+## First-order impact
 
-- **Hits:** `docs/architecture/termux-agentic-hub.md`, the declared adapter roles, structured job validation, redaction/audit behavior, and the relevant smoke or policy checks.
-- **Does not hit:** generic root navigation and unrelated CLI subsystems merely because they share the repository.
+**Hits:** stale platform context, future architecture recovery, structured-job documentation, and device-bound governance.
+**Does not hit:** present device access, a live worker, provider polling, generic repository editing, or application-code execution.
 
-## Surfaces
+## Evidence
 
-| Surface | Role |
-|---|---|
-| Authorized agent | Requests a named, schema-bounded capability. |
-| Human operator | Approves the required tier and handles excluded interactive credential edges. |
-| GitHub/CI | Coordinates review and receives audit evidence. |
-| Android device | Executes only the bounded local operation. |
-
-## See
-
-- Source: [`docs/architecture/termux-agentic-hub.md`](../../../architecture/termux-agentic-hub.md)
+[1] [Archived pre-rebuild architecture source](https://github.com/timerloggedout-spec/termux-monorepo/blob/archive/pr232-pre-master-rebuild-20260817/docs/architecture/termux-agentic-hub.md) preserves the historical source text for later review.
+[2] [`../../_meta/master-rebuild-integration-evidence.md`](../../_meta/master-rebuild-integration-evidence.md) defines the read-only preservation and separate-integration boundary.

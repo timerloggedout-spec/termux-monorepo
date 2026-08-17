@@ -4,7 +4,8 @@ This record explains how the monorepo applies the ICM method **without refactori
 
 | ICM requirement | Implemented surface | Status |
 |---|---|---|
-| Small Layer-0 catalog | [`../CLAUDE.md`](../CLAUDE.md), with byte-identical `AGENTS.md` and `routing.md` | Implemented |
+| Small Layer-0 catalog | [`../CLAUDE.md`](../CLAUDE.md) with byte-identical [`../AGENTS.md`](../AGENTS.md) | Implemented as stable static aliases |
+| Nested, separately owned routing resource | [`../routing.md`](../routing.md) and [`../routing/CONTEXT.md`](../routing/CONTEXT.md) | Initiated; provider observations remain documentation-only and runtime changes are deferred |
 | Layer-1 routing contract | [`../CONTEXT.md`](../CONTEXT.md) | Implemented |
 | Layer-2 folder contracts | `objects/*/CONTEXT.md`, [`processes/CONTEXT.md`](../processes/CONTEXT.md), and [`maintenance/*/CONTEXT.md`](../maintenance/CONTEXT.md) | Implemented |
 | Stable factory separated from per-run product | [`../_shared/CONTEXT.md`](../_shared/CONTEXT.md) versus `maintenance/*/output/` | Implemented |
@@ -18,7 +19,7 @@ This record explains how the monorepo applies the ICM method **without refactori
 | Compact form-selection and restructure method | [`../../../refTemplates/smods/icm-architect_fork/SKILL.md`](../../../refTemplates/smods/icm-architect_fork/SKILL.md) | Implemented through the pinned Architect reference |
 | Full conventions, example workspaces, and workspace-builder | [`../../../refTemplates/smods/interpretable-context-methodology_fork/README.md`](../../../refTemplates/smods/interpretable-context-methodology_fork/README.md) | Implemented through the pinned methodology companion |
 | Layered routing, canonical sources, and one-way dependencies | [`../../../refTemplates/smods/content-agent-routing-promptbase_fork/README.md`](../../../refTemplates/smods/content-agent-routing-promptbase_fork/README.md) | Applied in repository-native catalog/contracts; Promptbase remains a reference input |
-| Optional file-backed visual stage mirror and human checkpoint | [`../../../refTemplates/smods/icm-cctv_fork/README.md`](../../../refTemplates/smods/icm-cctv_fork/README.md) | Routed as optional visual review; native Pipeline output remains canonical |
+| Optional file-backed visual stage mirror and human checkpoint | [`../_tv/README.md`](../_tv/README.md) and [`../../../refTemplates/smods/icm-cctv_fork/README.md`](../../../refTemplates/smods/icm-cctv_fork/README.md) | Initiated as native canonical card artifacts; renderer, polling, and publication remain separate scopes |
 | BLU B160V and free-services envelope | [`../objects/platform/blu-b160v-free-services.md`](../objects/platform/blu-b160v-free-services.md) | Applied as an operator-declared, re-verifiable design constraint; no device access implied |
 | Nested workspace artifact classification | [`../objects/knowledge/workspace-artifact-estate.md`](../objects/knowledge/workspace-artifact-estate.md) and [`../processes/workspace-artifact-triage.md`](../processes/workspace-artifact-triage.md) | Implemented without source-code refactoring |
 

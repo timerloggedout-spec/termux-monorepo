@@ -1,38 +1,34 @@
-# termux-monorepo ICM System Map
+# ICM Provider Routing Resource
 
-This is the agent-navigable system map for `termux-monorepo`. It routes an editor to the smallest authoritative source set needed to understand a component or plan a change; source code, governing documents, and generated indexes remain the sources of truth.
+> **Status: documentation contract only.** This resource makes provider-routing inputs inspectable. It does not poll a provider, invoke a model, change a secret, alter a GitHub Action, or become the runtime routing authority.
 
-Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect_fork/README.md) method: hierarchy scopes context, cards record change impact, and the filesystem makes the current documentation surface inspectable.
+## Purpose and ownership
 
-## Where things live
+`routing.md` is the ICM entry point for a **nested provider-routing resource**. Unlike the static root aliases [`CLAUDE.md`](CLAUDE.md) and [`AGENTS.md`](AGENTS.md), it is intentionally maintained by the routing-resource lifecycle because its provider observations, review state, and related governance can change independently.
 
-| Shelf | What it holds |
-|---|---|
-| [`objects/platform/`](objects/platform/CONTEXT.md) | The Android/Termux execution plane and its device/service boundary. |
-| [`objects/operations/`](objects/operations/CONTEXT.md) | ArchWiz and the bounded operational tool surface. |
-| [`objects/knowledge/`](objects/knowledge/CONTEXT.md) | Navigation, pinned reference inputs, methodology references, indices, and generated-map boundaries. |
-| [`objects/governance/`](objects/governance/CONTEXT.md) | Branch, proposal, validation, and approval constraints. |
-| [`processes/`](processes/CONTEXT.md) | Real editor workflows with explicit inputs and outputs. |
-| [`effects/`](effects/CONTEXT.md) | A compact “if you change X, read Y” index. |
-| [`maintenance/`](maintenance/CLAUDE.md) | A human-gated, documentation-only pipeline for future map updates. |
+The canonical machine-readable runtime inputs remain in the repository’s existing provider configuration and workflow code. This ICM resource is a documentation overlay: it records authoritative inputs, observation boundaries, and human gates without copying provider credentials, model inventories, or executable rules.
 
-## Route by task
+## Read order
 
-| If you need to… | Read | Then stop at |
+| Step | Read | Why it is authoritative |
 |---|---|---|
-| orient before a change | [`CONTEXT.md`](CONTEXT.md) | the one relevant object or process card |
-| change the Android execution plane | [`objects/platform/termux-agentic-hub.md`](objects/platform/termux-agentic-hub.md) | the cited architecture source |
-| check device or service assumptions | [`objects/platform/blu-b160v-free-services.md`](objects/platform/blu-b160v-free-services.md) | the declared envelope and the required re-verification boundary |
-| change ArchWiz or a verification tool | [`objects/operations/archwiz.md`](objects/operations/archwiz.md) | the cited tool catalog or source path |
-| propose a visual stage mirror or human checkpoint | [`objects/operations/optional-visual-review.md`](objects/operations/optional-visual-review.md) | the source stage output and human approval boundary |
-| alter navigation or an index | [`objects/knowledge/navigation-and-indexes.md`](objects/knowledge/navigation-and-indexes.md) | the owning navigation/index file |
-| select or update an ICM reference | [`objects/knowledge/reference-inputs.md`](objects/knowledge/reference-inputs.md) | the pinned reference input and custom-submodule review |
-| design or customize a recurring ICM workspace | [`objects/knowledge/interpretable-context-methodology.md`](objects/knowledge/interpretable-context-methodology.md) | the smallest suitable form and reference workspace |
-| classify nested `workspace/` artifacts | [`processes/workspace-artifact-triage.md`](processes/workspace-artifact-triage.md) | the human decision before any cleanup or promotion |
-| modify tracked code or documentation | [`processes/change-and-validate.md`](processes/change-and-validate.md) | the required human gate |
-| assess first-order change impact | [`effects/CONTEXT.md`](effects/CONTEXT.md) | the linked object/process card |
-| maintain or extend the ICM map | [`maintenance/CLAUDE.md`](maintenance/CLAUDE.md) | the `02_design` human gate |
+| 1 | [`CONTEXT.md`](routing/CONTEXT.md) | Defines the routing-resource boundary, ownership, and update lifecycle. |
+| 2 | [`providers/registry.md`](routing/providers/registry.md) | Maps provider records to the current source-of-truth configuration and existing GitHub governance. |
+| 3 | [`providers/observation-log.md`](routing/providers/observation-log.md) | Records reviewed observations and explicitly distinguishes them from executable routing changes. |
+| 4 | [`objects/knowledge/provider-routing.md`](objects/knowledge/provider-routing.md) | Shows the first-order ICM impact and the separate code/workflow gate. |
 
-## One rule
+## Routing rules
 
-Read this catalog, one relevant card, and its cited sources. Do **not** crawl the monorepo or treat generated maps, recovery notes, or untracked device state as substitute sources of truth.
+1. **Static aliases remain static.** `CLAUDE.md` and `AGENTS.md` are byte-identical navigation aliases. This file is not an alias because it has a different owner and update cadence.
+2. **The runtime stays canonical elsewhere.** This resource must link to the repository’s provider configuration, workflow scope, and issue/PR evidence rather than restating them as a competing router.
+3. **Polling produces observations, not execution.** A future provider poll may append a reviewed observation record only after its source, cadence, credentials, retention, and failure behavior are approved. It cannot alter provider selection or model invocation through documentation.
+4. **Provider changes are separately gated.** Any mutation of GitHub Actions, connectors, secrets, provider APIs, model routing, telemetry, or budget logic is deferred to the later code/workflow review phase.
+5. **No credential material belongs here.** Record only secret names, not their values. Do not write tokens, endpoints with embedded credentials, or response payloads that contain sensitive data.
+
+## GitHub Pages and CCTV boundary
+
+A later GitHub Pages deployment can publish a **static rendering** of canonical CCTV card files for mobile viewing. GitHub Pages publishes files from a branch or an Actions-built artifact; it is not the live CCTV renderer, file watcher, WebSocket host, or response writer.[1] The renderer and any publication workflow remain out of this documentation-only change set.
+
+## References
+
+[1] [GitHub Pages: configuring a publishing source](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) — branch- and Actions-based static publication model.

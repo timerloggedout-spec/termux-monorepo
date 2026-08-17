@@ -1,51 +1,42 @@
 ---
 type: process
-universe: live
-status: verified
+universe: ghost
+status: stale
 consumes:
   - ../objects/platform/termux-agentic-hub.md
   - ../objects/governance/change-control.md
 produces:
-  - redacted result envelope
-  - repository audit evidence
+  - future recovery proposal or explicit non-execution finding
 verified_at: 2026-08-17
 ---
 
 # Structured Termux Job
 
-A permitted Android operation moves from a reviewed GitHub request through schema and capability validation to one bounded local device action and a redacted, auditable result.
+This is an archived process model for moving a permitted Android operation through reviewed schema and capability validation to one bounded local device action and a redacted result envelope. Its original architecture source is not present on current `master`; the process is retained only to preserve the intended safety shape for later recovery review.
 
-## Input → Movement → Output
+## Current rule
 
-The input is a valid structured job with identity, capability, arguments, and approval data. `hub_mcp` validates the job and dispatches one named capability to the local Termux worker; the output is a bounded, redacted result envelope that can be reviewed as repository evidence.
+Do **not** execute this process. It does not authorize a Termux MCP call, device probe, local worker launch, capability invocation, credential operation, or interactive shell. The BLU B160V/free-services envelope remains a stale design constraint, not evidence that an execution path exists.
 
-## Why this shape
+## Historical movement
 
-Allowing repository events or agents to provide an arbitrary shell string would bypass capability checks, widen the attack surface, and erase the intended audit boundary.
+The archived model expected a reviewed request to map to a named capability, pass validation and replay protection, execute through one bounded worker, and return a redacted audit envelope. This historical description remains useful for deciding whether a future, separately approved recovery proposal preserves the original policy boundary.
 
-## Steps
+## Recovery gate
 
-1. Confirm the request maps to a named capability and the appropriate approval tier. Cite `docs/architecture/termux-agentic-hub.md:41-50`.
-2. Validate the structured job, including timestamps, fields, privileges, and replay protection. Cite `docs/architecture/termux-agentic-hub.md:52-56`.
-3. Execute the named capability through the single local worker and canonical Termux MCP/Termux:API route. Cite `docs/architecture/termux-agentic-hub.md:9-25`.
-4. Return a bounded, redacted result envelope for review. Cite `docs/architecture/termux-agentic-hub.md:25-28`, `docs/architecture/termux-agentic-hub.md:54-56`.
-5. Reject interactive MFA, OTP capture, public SSH publication, and unsupported Android GitHub Actions runner behavior. Cite `docs/architecture/termux-agentic-hub.md:62-64`.
+Before reviving any portion of this process:
 
-## If you change this
+1. Identify and approve a current canonical architecture source.
+2. Re-verify device and service availability without assuming transport access.
+3. Define capability schemas, approvals, redaction, failure behavior, and validation.
+4. Obtain a separate code/workflow/device authorization; this ICM documentation does not supply one.
 
-- **Hits:** capability definitions, validation, replay protection, redaction, adapter policy, and device-bound smoke/policy checks.
-- **Does not hit:** generic repository editing or a developer’s local shell workflow.
+## First-order impact
 
-## Surfaces
+**Hits:** future platform recovery, device-bound governance, capability policy, redaction, and audit design.
+**Does not hit:** current provider routing, the initiated CCTV card surface, generic documentation work, or a live device operation.
 
-| Surface | Role |
-|---|---|
-| GitHub review/CI | Provides the controlled request and receives audit evidence. |
-| `hub_mcp` | Validates the structured job and enforces policy. |
-| Termux worker | Executes one bounded local capability. |
-| Human operator | Supplies required approval and handles excluded interactive edges. |
+## Evidence
 
-## See
-
-- Objects: [`../objects/platform/termux-agentic-hub.md`](../objects/platform/termux-agentic-hub.md)
-- Source: [`docs/architecture/termux-agentic-hub.md`](../../architecture/termux-agentic-hub.md)
+[1] [`../objects/platform/termux-agentic-hub.md`](../objects/platform/termux-agentic-hub.md) preserves the stale architecture context and archive link.
+[2] [`../_meta/master-rebuild-integration-evidence.md`](../_meta/master-rebuild-integration-evidence.md) defines the read-only preservation boundary for inherited material.

@@ -9,9 +9,11 @@ Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect
 | Shelf | What it holds |
 |---|---|
 | [`objects/platform/`](objects/platform/CONTEXT.md) | The Android/Termux execution plane and its device/service boundary. |
-| [`objects/operations/`](objects/operations/CONTEXT.md) | ArchWiz and the bounded operational tool surface. |
-| [`objects/knowledge/`](objects/knowledge/CONTEXT.md) | Navigation, pinned reference inputs, methodology references, indices, and generated-map boundaries. |
+| [`objects/operations/`](objects/operations/CONTEXT.md) | ArchWiz and the bounded operational tool surface, including file-backed visual review. |
+| [`objects/knowledge/`](objects/knowledge/CONTEXT.md) | Navigation, routing governance, pinned reference inputs, methodology references, indices, and generated-map boundaries. |
 | [`objects/governance/`](objects/governance/CONTEXT.md) | Branch, proposal, validation, and approval constraints. |
+| [`routing.md`](routing.md) | A separately owned nested provider-routing evidence resource; it is intentionally not a root alias. |
+| [`_tv/`](./_tv/README.md) | Initiated file-backed CCTV cards for human review; renderer and publication remain separate scopes. |
 | [`processes/`](processes/CONTEXT.md) | Real editor workflows with explicit inputs and outputs. |
 | [`effects/`](effects/CONTEXT.md) | A compact “if you change X, read Y” index. |
 | [`maintenance/`](maintenance/CLAUDE.md) | A human-gated, documentation-only pipeline for future map updates. |
@@ -24,7 +26,8 @@ Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect
 | change the Android execution plane | [`objects/platform/termux-agentic-hub.md`](objects/platform/termux-agentic-hub.md) | the cited architecture source |
 | check device or service assumptions | [`objects/platform/blu-b160v-free-services.md`](objects/platform/blu-b160v-free-services.md) | the declared envelope and the required re-verification boundary |
 | change ArchWiz or a verification tool | [`objects/operations/archwiz.md`](objects/operations/archwiz.md) | the cited tool catalog or source path |
-| propose a visual stage mirror or human checkpoint | [`objects/operations/optional-visual-review.md`](objects/operations/optional-visual-review.md) | the source stage output and human approval boundary |
+| use the initiated visual-review cards or plan a human checkpoint | [`objects/operations/optional-visual-review.md`](objects/operations/optional-visual-review.md) | the canonical source artifact and human approval boundary |
+| review provider-routing state or propose polling | [`routing.md`](routing.md) | the nested source, observation, and post-ICM workflow gate |
 | alter navigation or an index | [`objects/knowledge/navigation-and-indexes.md`](objects/knowledge/navigation-and-indexes.md) | the owning navigation/index file |
 | select or update an ICM reference | [`objects/knowledge/reference-inputs.md`](objects/knowledge/reference-inputs.md) | the pinned reference input and custom-submodule review |
 | design or customize a recurring ICM workspace | [`objects/knowledge/interpretable-context-methodology.md`](objects/knowledge/interpretable-context-methodology.md) | the smallest suitable form and reference workspace |
@@ -35,4 +38,4 @@ Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect
 
 ## One rule
 
-Read this catalog, one relevant card, and its cited sources. Do **not** crawl the monorepo or treat generated maps, recovery notes, or untracked device state as substitute sources of truth.
+Read this static catalog, one relevant card or nested resource, and its cited sources. Do **not** crawl the monorepo or treat visual cards, generated maps, recovery notes, provider observations, or untracked device state as substitute sources of truth.

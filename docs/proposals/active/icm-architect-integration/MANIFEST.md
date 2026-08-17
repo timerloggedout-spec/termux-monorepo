@@ -20,7 +20,7 @@ gates_required: [repo-gate, termux-smoke]
 
 ## Summary
 
-This change introduces the user-owned fork of **ICM Architect** as a pinned, shallow Git submodule at `refTemplates/smods/icm-architect_fork`. The integration keeps project-specific customizations isolated in `timerloggedout-spec/icm-architect_fork` while retaining the upstream relationship to `RinDig/icm-architect`. It also adds a concise operating document covering initialization, upstream comparison, controlled updates, and validation.
+This change introduces the user-owned fork of **ICM Architect** as a pinned, shallow Git submodule at `refTemplates/smods/icm-architect_fork`. The integration keeps project-specific customizations isolated in `timerloggedout-spec/icm-architect_fork` while retaining the upstream relationship to `RinDig/icm-architect`. It adds a concise operating document covering initialization, upstream comparison, controlled updates, and validation, then applies the ICM System map form under `docs/icm/` to route later agents to verified monorepo components, real workflows, and first-order change impact without reorganizing source.
 
 ## Reviewers
 
@@ -34,6 +34,11 @@ This change introduces the user-owned fork of **ICM Architect** as a pinned, sha
 
 - Disposition: accepted for execution.
 - Notes: The remote `master-staging` baseline was captured before work began. The Termux MCP transport was unavailable, so no device-side checkout was modified; an isolated feature worktree based on `master-staging` is used instead.
+
+### 2026-08-17 — ICM System Map extension
+
+- Disposition: accepted for execution.
+- Notes: The operator authorized use of the integrated ICM Architect submodule to map the monorepo’s intended usage. The map remains beside existing documentation, cites existing sources, and does not move source, generated indexes, recovery artifacts, or device state.
 
 ## Checklist (process)
 

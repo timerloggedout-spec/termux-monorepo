@@ -1,0 +1,14 @@
+# NexusCLI Dependencies
+# Optimized for Termux and lightweight execution
+
+# Core dependencies (curl_cffi >=0.15.0 addresses known CVEs)
+curl_cffi>=0.15.0
+rich>=13.0.0
+
+# Fallback HTTP client when curl_cffi cannot dlopen on Termux
+requests>=2.31.0
+
+# Development dependencies (optional)
+# pytest>=7.0.0
+# black>=23.0.0
+# flake8>=6.0.0

@@ -1,3 +1,9 @@
+# Termux Monorepo
+
+**For AI agents and developers:** See **[AGENTS.md](AGENTS.md)** for comprehensive technical documentation, governance rules, navigation hierarchy, 28 ArchWiz tools, CI/CD workflows, and development guidelines.
+
+---
+
 # Project Remote Sandbox Workspace Setup Considerations:
 ```Gemini-GoogleSearch
 To run a Termux environment on an Ubuntu/Linux desktop or server for sandbox testing, you cannot run the exact Termux Android app natively. You must instead replicate its specific Android-based Linux environment (environment variables, paths, and package manager) using containerization, virtualization, or architectural simulation tools.
@@ -79,6 +85,9 @@ Use this ladder when orienting in the tree. `_Entry+ReadMe.md` and `termux-ecosy
 | 3 | `archwiz/REFERENCE_HUB.md` | Links to DATA_FLOW_MANIFEST, SYSTEM_MAP, func/llm indices |
 | 4 | `archwiz/METHODOLOGY_INDEX.md` | Approaches tried, failures, what stuck |
 | 5 | `archwiz/PROCEDURES.md`, `ARCHWIZARD_TASKS.md` | Runbooks and active tasks |
+| 0 | `docs/CREDENTIAL-EXPOSURE.md` | **Read this first.** 607 Chromium profile files are tracked; one `Cookies` DB holds 5 live `chat.deepseek.com` session cookies. Rotate the account. |
+| 5.1 | `docs/PORTABILITY.md` | **Read before trusting the table below.** 42 of 45 tracked symlinks dangle in a fresh clone — including `archaeo`, `oracle`, `dispatch`, `promote`. Contains the on-device relink helper. |
+| 5.2 | `docs/TRIAGE.md` | Every open PR + branch critically evaluated, with a recommended merge order |
 | 6 | `docs/RECON.md` (this RECON) | Branch/PR critique, refTemplates nesting gaps, prioritized proposals |
 | 7 | `replit.md` on branch `critical-proposal` (PR #1) | Critical path/config issues and optimization proposals |
 | 8 | `_Entry+ReadMe.md` | One-line command → entry table |
@@ -412,9 +421,35 @@ python3 build_all.py   # or the smaller targeted build scripts: build_llm_index.
 ---
 
 ## Safety & Secrets
-- The repo includes references to `cookies_2.json` and browser cookie exports; DO NOT commit secrets. If `cookies_2.json` is present locally, ensure it is in `.gitignore`.
-- Session stores must not be tracked in Git (see open PR #3 `agent/repository-hygiene`).
+
+> **This section understated the problem. Corrected 2026-08-02.**
+> The risk is not that cookies *might* get committed — they already are.
+> `deepseek-cli/browser-data-account2-clean/Default/Cookies` is tracked and
+> contains 5 live `.deepseek.com` / `chat.deepseek.com` session cookies, and
+> 607 Chromium profile files are tracked across four directories. Chromium
+> under Termux has no keyring, so `encrypted_value` falls back to a hardcoded
+> password and is recoverable offline. **Rotate the DeepSeek account**, then
+> follow `docs/CREDENTIAL-EXPOSURE.md`.
+
+- Browser profiles (`browser-data*/`, `Default/Cookies`, `Default/Login Data`,
+  `Local State`) are credential stores. They are now blocked by
+  `scripts/ci/repo_gate.py` and by `.gitignore`, and the 607 existing files are
+  held under a ratchet counter that may only go down.
+- Note that `.gitignore` has covered `deepseek-cli/browser-data*/` since before
+  this finding — **an ignore rule does not untrack an already-tracked file.**
+  Adding a pattern is never a fix on its own; `git rm --cached` is the fix.
+- The repo includes references to `cookies_2.json` and browser cookie exports;
+  DO NOT commit secrets. If `cookies_2.json` is present locally, ensure it is in
+  `.gitignore` *and* that `git ls-files | grep cookies` is empty.
+- Session stores must not be tracked in Git — 423 still are (see PR #3
+  `agent/repository-hygiene` and `docs/TRIAGE.md`).
 - Back up large JSONL indices externally before attempting destructive rebuilds.
+
+Verify the current state at any time, on-device, with no dependencies:
+
+```bash
+python3 scripts/ci/repo_gate.py
+```
 
 ---
 

@@ -1,9 +1,23 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-08-05T17:00:00Z"
-updated_by: grok-archw1z
+updated_at: "2026-08-08T18:30:00Z"
+updated_by: grok
 
 proposals:
+  - id: rate-limit-rotation
+    title: "Rate limits, model rotation, OpenRouter fallback"
+    author: grok
+    status: executing
+    priority: P0
+    path: active/rate-limit-rotation/
+    reviewers:
+      - id: grok
+        role: author+executor
+        status: posted
+    related_issues: [86, 87, 88, 91]
+    related_prs: [72, 81]
+    gates_required: [repo-gate]
+
   - id: chatgpt-critical-eval
     title: "Critical Eval TER0-15 + other branches"
     author: ChatGPT

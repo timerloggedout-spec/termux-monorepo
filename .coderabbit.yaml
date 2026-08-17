@@ -3,7 +3,8 @@
 reviews:
   profile: assertive
   high_level_summary: true
-  request_changes_workflow: false
+  request_changes_workflow: true
+  review_status: false
   auto_review:
     enabled: true
     drafts: true
@@ -12,10 +13,11 @@ reviews:
       - master
       - master-staging
       - feature/skyhook
+      - deep_core/feat/reverse_engineered_deepseek_wasm_gh-worflows
   finishing_touches:
     autofix:
       enabled: true
-  auto_apply_labels: false
+  auto_apply_labels: true
 
 chat:
   auto_reply: true

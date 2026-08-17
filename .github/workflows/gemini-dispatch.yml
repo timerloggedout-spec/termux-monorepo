@@ -2,10 +2,11 @@ name: '🔀 Gemini Dispatch (free-tier agentic)'
 
 # Central router for free-tier Gemini CLI agentic CI/CD.
 # Requires: secrets.GEMINI_API_KEY (Google AI Studio free quota)
-# Complements existing Jules + CodeRabbit stack.
 #
-# Ack pattern: posts 👀 on the triggering comment (same UX as Jules/CodeRabbit).
-# Coordination: prior open agent PRs are passed into triage/review/invoke prompts.
+# QUOTA POLICY:
+# - Automatic PR review on opened/synchronize is DISABLED here.
+# - On-demand @gemini-cli and case-insensitive @sparkFlux fire immediately.
+# Monikers: docs/ops/AGENT-MONIKERS.md
 
 on:
   pull_request:
@@ -23,6 +24,8 @@ defaults:
   run:
     shell: bash
 
+permissions: {}
+
 jobs:
   dispatch:
     if: |
@@ -34,8 +37,13 @@ jobs:
         github.event_name == 'issues' &&
         contains(fromJSON('["opened", "reopened"]'), github.event.action)
       ) || (
+        contains(fromJSON('["issue_comment", "pull_request_review_comment", "pull_request_review"]'), github.event_name) &&
         github.event.sender.type == 'User' &&
-        startsWith(github.event.comment.body || github.event.review.body || '', '@gemini-cli') &&
+        (
+          startsWith(github.event.comment.body || github.event.review.body || '', '@gemini-cli') ||
+          startsWith(github.event.comment.body || github.event.review.body || '', '@sparkFlux') ||
+          startsWith(github.event.comment.body || github.event.review.body || '', '@sparkflux')
+        ) &&
         contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association || github.event.review.author_association || github.event.issue.author_association)
       )
     runs-on: ubuntu-latest
@@ -48,10 +56,11 @@ jobs:
       additional_context: ${{ steps.extract.outputs.additional_context }}
       prior_prs: ${{ steps.extract.outputs.prior_prs }}
       issue_number: ${{ github.event.pull_request.number || github.event.issue.number }}
+      pr_number: ${{ steps.extract.outputs.pr_number }}
     steps:
       - name: Extract command + prior PR inventory
         id: extract
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
           EVENT_TYPE: ${{ github.event_name }}.${{ github.event.action }}
           REQUEST: ${{ github.event.comment.body || github.event.review.body || github.event.issue.body || '' }}
@@ -59,18 +68,31 @@ jobs:
           script: |
             const eventType = process.env.EVENT_TYPE;
             const request = process.env.REQUEST || '';
+            const lower = request.toLowerCase();
+
+            const stripPrefix = (s) => s
+              .replace(/^@(gemini-cli|sparkflux)\b/i, '')
+              .trim();
+
+            let prNumber = context.payload.pull_request?.number || null;
+            if (!prNumber && context.payload.issue?.pull_request) {
+              prNumber = context.payload.issue.number;
+            }
+            core.setOutput('pr_number', prNumber ? String(prNumber) : '');
+
             if (eventType === 'pull_request.opened' || eventType === 'pull_request.synchronize' || eventType === 'pull_request.ready_for_review') {
-              core.setOutput('command', 'review');
+              core.setOutput('command', 'defer-peers');
+              core.info('PR event → defer Gemini review until peer gate (saves quota)');
             } else if (['issues.opened', 'issues.reopened'].includes(eventType)) {
               core.setOutput('command', 'triage');
-            } else if (request.startsWith('@gemini-cli /review')) {
+            } else if (lower.startsWith('@gemini-cli /review') || lower.startsWith('@sparkflux /review')) {
               core.setOutput('command', 'review');
-              core.setOutput('additional_context', request.replace(/^@gemini-cli \/review/, '').trim());
-            } else if (request.startsWith('@gemini-cli /triage')) {
+              core.setOutput('additional_context', stripPrefix(request).replace(/^\/review/i, '').trim());
+            } else if (lower.startsWith('@gemini-cli /triage') || lower.startsWith('@sparkflux /triage')) {
               core.setOutput('command', 'triage');
-            } else if (request.startsWith('@gemini-cli')) {
+            } else if (lower.startsWith('@gemini-cli') || lower.startsWith('@sparkflux')) {
               core.setOutput('command', 'invoke');
-              core.setOutput('additional_context', request.replace(/^@gemini-cli/, '').trim());
+              core.setOutput('additional_context', stripPrefix(request));
             } else {
               core.setOutput('command', 'none');
             }
@@ -83,7 +105,7 @@ jobs:
                 state: 'open',
                 per_page: 40,
               });
-              const agentHints = ['jules', 'devin', 'coderabbit', 'ecc-tools', 'gemini'];
+              const agentHints = ['jules', 'devin', 'coderabbit', 'ecc-tools', 'gemini', 'sparkflux'];
               const relevant = prs.filter(p => {
                 const u = ((p.user && p.user.login) || '').toLowerCase();
                 const body = ((p.body || '') + ' ' + (p.title || '')).toLowerCase();
@@ -98,34 +120,34 @@ jobs:
               core.setOutput('prior_prs', 'unavailable');
             }
 
-      - name: Acknowledge with 👀 + comment
-        if: steps.extract.outputs.command != 'none'
-        uses: actions/github-script@v7
+      - name: Acknowledge on-demand only
+        if: |
+          steps.extract.outputs.command != 'none' &&
+          steps.extract.outputs.command != 'defer-peers'
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         with:
           script: |
             const cmd = '${{ steps.extract.outputs.command }}';
             const number = context.payload.pull_request?.number || context.payload.issue?.number;
             if (context.payload.comment?.id) {
               try {
-                await github.rest.reactions.createForIssueComment({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  comment_id: context.payload.comment.id,
-                  content: 'eyes',
-                });
+                if (context.eventName === 'pull_request_review_comment') {
+                  await github.rest.reactions.createForPullRequestReviewComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    comment_id: context.payload.comment.id,
+                    content: 'eyes',
+                  });
+                } else {
+                  await github.rest.reactions.createForIssueComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    comment_id: context.payload.comment.id,
+                    content: 'eyes',
+                  });
+                }
               } catch (e) {
                 core.info('Comment reaction skip: ' + e.message);
-              }
-            } else if (number) {
-              try {
-                await github.rest.reactions.createForIssue({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: number,
-                  content: 'eyes',
-                });
-              } catch (e) {
-                core.info('Issue reaction skip: ' + e.message);
               }
             }
             if (context.payload.comment || context.payload.review) {
@@ -133,7 +155,7 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: number,
-                body: `🤖 **Gemini CLI** received your request (\`${cmd}\`). Tracking: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+                body: `⚡ **sparkFlux** (Gemini CLI) received \`${cmd}\`. Tracking: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\n\n_Live trigger: \`@gemini-cli\` (alias \`@sparkFlux\` case-insensitive). SSOT: docs/ops/AGENT-MONIKERS.md_`,
               });
             }
 
@@ -148,6 +170,7 @@ jobs:
     with:
       additional_context: ${{ needs.dispatch.outputs.additional_context }}
       prior_prs: ${{ needs.dispatch.outputs.prior_prs }}
+      issue_number: ${{ needs.dispatch.outputs.issue_number }}
     secrets: inherit
 
   review:
@@ -161,6 +184,7 @@ jobs:
     with:
       additional_context: ${{ needs.dispatch.outputs.additional_context }}
       prior_prs: ${{ needs.dispatch.outputs.prior_prs }}
+      pr_number: ${{ needs.dispatch.outputs.pr_number }}
     secrets: inherit
 
   invoke:
@@ -174,4 +198,6 @@ jobs:
     with:
       additional_context: ${{ needs.dispatch.outputs.additional_context }}
       prior_prs: ${{ needs.dispatch.outputs.prior_prs }}
+      pr_number: ${{ needs.dispatch.outputs.pr_number }}
+      issue_number: ${{ needs.dispatch.outputs.issue_number }}
     secrets: inherit

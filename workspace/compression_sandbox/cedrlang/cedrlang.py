@@ -220,6 +220,10 @@ def translate_text_raw(text: str, to_compressed: bool) -> str:
     return pattern.sub(lambda m: apply_casing(m.group(0), mapping_dict[m.group(0).lower()]), text)
 
 def translate_line(line: str, to_compressed: bool) -> str:
+    matcher = COMP_SINGLE_REGEX if to_compressed else DECOMP_SINGLE_REGEX
+    if not matcher.search(line):
+        return line
+
     placeholders = []
 
     def add_placeholder(val: str) -> str:

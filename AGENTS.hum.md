@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # AGENTS.md
 
 This file provides guidance to agents when working with code in this repository.
@@ -5,6 +6,15 @@ This file provides guidance to agents when working with code in this repository.
 ## Governance & Process (Read First)
 
 1. **This file** (`AGENTS.md`) - Technical guidance and codebase overview
+=======
+# AGENTS.md — Termux monorepo
+
+Instructions for coding agents (Grok, Claude, Codex, Devin, ChatGPT, local runners).
+
+## Read first (in order)
+
+1. **This file** (`AGENTS.md`)
+>>>>>>> acdfc8f (📖 Linguist: Complete CedrLang v2 with Catch Loops and format preservation)
 2. [`docs/proposals/registry.yaml`](docs/proposals/registry.yaml) — what is active
 3. [`docs/proposals/PROCESS.md`](docs/proposals/PROCESS.md) — post / debate / consensus / close
 4. [`docs/PR-SUMMARY-PROCESS.md`](docs/PR-SUMMARY-PROCESS.md) — who may rewrite PR bodies (multi-agent)
@@ -15,7 +25,11 @@ This file provides guidance to agents when working with code in this repository.
 
 Optional: `CLAUDE.md`, `CONTRIBUTING.md`.
 
+<<<<<<< HEAD
 ## Hard Rules
+=======
+## Hard rules
+>>>>>>> acdfc8f (📖 Linguist: Complete CedrLang v2 with Catch Loops and format preservation)
 
 - Target **`master-staging`**, not raw `master`, for integration work.
 - Both gates must pass before merge:
@@ -28,7 +42,17 @@ Optional: `CLAUDE.md`, `CONTRIBUTING.md`.
 - Unposted chat is not consensus — write Review log or DEBATE.md.
 - PR body rewrites: follow `docs/PR-SUMMARY-PROCESS.md` roster (not a single-agent monopoly).
 
+<<<<<<< HEAD
 ## Preferred Execution Loop
+=======
+## Debate & close
+
+- Debate: MANIFEST Review log, optional DEBATE.md, linked PR/issue.
+- Close: all items terminal + Review log outcome + move `active/` → `closed/` + registry update.
+- Full rules: `docs/proposals/PROCESS.md` §§ consensus / closing.
+
+## Preferred execution loop
+>>>>>>> acdfc8f (📖 Linguist: Complete CedrLang v2 with Catch Loops and format preservation)
 
 ```text
 registry.yaml → pick todo item → branch from master-staging
@@ -40,6 +64,7 @@ registry.yaml → pick todo item → branch from master-staging
 
 Credential rotation and history rewrite require Operator (human) authorization.
 See `docs/SECURITY-REMEDIATION.md`.
+<<<<<<< HEAD
 
 ---
 
@@ -563,3 +588,5 @@ python3 archwiz/mirror.py
 13. **Follow CI/CD patterns** - Use existing GitHub Actions workflows as templates
 14. **Cache aggressively** - Session caching reduces API calls and improves performance
 15. **Monitor data flow** - Check DATA_FLOW_MANIFEST.md for file writer relationships
+=======
+>>>>>>> acdfc8f (📖 Linguist: Complete CedrLang v2 with Catch Loops and format preservation)

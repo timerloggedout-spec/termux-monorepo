@@ -1,7 +1,7 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-08-04T00:00:00Z"
-updated_by: grok-archw1z
+updated_at: "2026-08-17T14:23:51Z"
+updated_by: Manus AI
 
 proposals:
   - id: termux-agentic-hub
@@ -71,3 +71,20 @@ proposals:
         status: accepted
     related_prs: [1, 2]
     gates_required: [repo-gate]
+
+  - id: icm-architect-integration
+    title: "ICM Architect custom-fork submodule integration"
+    author: timerloggedout-spec
+    status: executing
+    priority: P2
+    path: active/icm-architect-integration/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: Manus AI
+        role: executor
+        status: executing
+    related_prs: []
+    related_branches: [feat/icm-architect-submodule]
+    gates_required: [repo-gate, termux-smoke]

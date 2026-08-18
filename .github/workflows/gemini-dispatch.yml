@@ -129,12 +129,16 @@ jobs:
               }
             }
             if (context.payload.comment || context.payload.review) {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: number,
-                body: `🤖 **Gemini CLI** received your request (\`${cmd}\`). Tracking: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
-              });
+              try {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: number,
+                  body: `🤖 **Gemini CLI** received your request (\`${cmd}\`). Tracking: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+                });
+              } catch (e) {
+                core.info('Comment skip: ' + e.message);
+              }
             }
 
   triage:

@@ -144,12 +144,16 @@ jobs:
               ``,
               `Agent: Grok orchestration · Profile: https://x.com/grok`,
             ].filter(Boolean).join('\n');
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              body,
-            });
+            try {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body,
+              });
+            } catch (e) {
+              core.info('Comment skip: ' + e.message);
+            }
 
   invoke-jules-api:
     needs: detect-bot-feedback

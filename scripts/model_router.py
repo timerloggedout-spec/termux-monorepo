@@ -16,6 +16,7 @@ import os
 import sys
 import re
 import json
+import urllib.request
 import time
 
 COUNTER_DIR = os.environ.get("COUNTER_DIR", "/tmp/model-router")
@@ -115,8 +116,6 @@ def fetch_openrouter_free_models():
     """Poll OpenRouter models endpoint; return free model ids or None on failure."""
     url = "https://openrouter.ai/api/v1/models"
     try:
-        # Lazy load urllib.request to avoid ~50ms module loading overhead during fast/cached runs
-        import urllib.request
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
         with urllib.request.urlopen(req, timeout=5) as response:
             data = json.loads(response.read().decode('utf-8'))

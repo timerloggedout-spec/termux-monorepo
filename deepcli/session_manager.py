@@ -363,15 +363,12 @@ def ensure_session(cache_dir, account: str | None = None):
     account = normalize_account(account)
     cache_dir_path = Path(cache_dir) / account
     cache_dir_path.mkdir(parents=True, exist_ok=True)
-    if not cache_dir_path.is_symlink():
-        try:
-            os.chmod(cache_dir_path, 0o700)
-        except OSError:
-            pass
+    try:
+        os.chmod(cache_dir_path, 0o700)
+    except OSError:
+        pass
 
     cache_path = cache_dir_path / "session.json"
-    if cache_path.is_symlink():
-        raise ValueError("Symlink session cache path rejected for security")
 
     if cache_path.exists():
         try:
@@ -410,8 +407,6 @@ def ensure_session(cache_dir, account: str | None = None):
                     except Exception as e:
                         print(f"::warning::Could not attach chat_session_id: {e}")
                 if changed:
-                    if cache_path.is_symlink():
-                        raise ValueError("Symlink session cache path rejected for security")
                     fd = os.open(cache_path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
                     with os.fdopen(fd, "w", encoding="utf-8") as f:
                         json.dump(session, f)
@@ -421,8 +416,6 @@ def ensure_session(cache_dir, account: str | None = None):
             pass
 
     session = get_new_session(account=account)
-    if cache_path.is_symlink():
-        raise ValueError("Symlink session cache path rejected for security")
     fd = os.open(cache_path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
     with os.fdopen(fd, "w", encoding="utf-8") as f:
         json.dump(session, f)

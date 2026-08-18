@@ -1,6 +1,4 @@
 import pytest
-import tempfile
-from pathlib import Path
 from workspace.compression_sandbox.cedrlang.cedrlang import (
     compile_doc,
     decompile_doc,
@@ -10,22 +8,27 @@ from workspace.compression_sandbox.cedrlang.cedrlang import (
 )
 
 def test_1337speak_and_grimoire_translation():
+    # Translate human words to 1337speak
     orig = "We need to transmute the code and scry the output, then cast a spell from the grimoire."
     expected = "We need to h4x the code and scry the output, then c4st a spell from the gr1m01r3."
 
     compiled = compile_doc(orig)
     assert compiled == expected
 
+    # Decompile back
     decompiled = decompile_doc(compiled)
     assert decompiled == orig
 
 def test_casing_preservation():
+    # Capitalized
     assert compile_doc("Transmute") == "H4x"
     assert decompile_doc("H4x") == "Transmute"
 
+    # Lowercase
     assert compile_doc("transmute") == "h4x"
     assert decompile_doc("h4x") == "transmute"
 
+    # Uppercase
     assert compile_doc("TRANSMUTE") == "H4X"
     assert decompile_doc("H4X") == "TRANSMUTE"
 
@@ -77,6 +80,7 @@ def test_html_and_inline_code_protection():
 
 def test_decimal_number_and_filename_protection():
     orig = "Check python script deepcli/deepcli/core.py for version 12.34."
+    # Both deepcli/deepcli/core.py and 12.34 are protected. No parts should be translated or mangled.
     compiled = compile_doc(orig)
     assert compiled == orig
     assert decompile_doc(compiled) == orig
@@ -106,20 +110,40 @@ def test_link_protection_and_translation():
     assert decompile_doc(compiled) == orig
 
 def test_emerging_technologies_procurement_mappings():
+    # Test compilation of new mappings
     orig = "We are researching emerging technology curation and procurement compliance."
     expected = "We are researching em_t3ch cur473 and pr0cur3 c0mp1."
     compiled = compile_doc(orig)
     assert compiled == expected
 
+    # Test decompilation back to original
     decompiled = decompile_doc(compiled)
     assert decompiled == orig
 
+    # Test casing preservation
+    assert compile_doc("Procurement") == "Pr0cur3"
+    assert decompile_doc("Pr0cur3") == "Procurement"
+
+    assert compile_doc("PROCUREMENT") == "PR0CUR3"
+    assert decompile_doc("PR0CUR3") == "PROCUREMENT"
+
+    # Test plurals
+    assert compile_doc("Emerging Technologies") == "Em_t3chs"
+    assert decompile_doc("Em_t3chs") == "Emerging Technologies"
+
 def test_caveman_six_lines():
+    # Test without max_up (default)
     res1 = caveman("success leads to update")
-    assert res1 == "✓ → ~"
+    assert res1 == "success → update"
 
+    # Test with max_up=True
     res2 = caveman("success leads to update", max_up=True)
-    assert res2 == "✓ → ~"
+    assert res2 == "SUCCESS → UPDATE"
 
+    # Test with surrounding spaces for status matching
+    res3 = caveman(" success leads to update ")
+    assert res3 == "✓ → ~"
+
+    # Test stopword stripping
     res4 = caveman("the quick brown fox", max_up=True)
     assert res4 == "QUICK BROWN FOX"

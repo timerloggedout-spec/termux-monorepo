@@ -157,3 +157,53 @@ concat_work_*/joined_videos/
 *.db
 *.sqlite
 *.sqlite3
+
+# === Process-runtime artifacts (see docs/PORTABILITY.md, Class B) ===
+# Chromium singleton links encode a live PID/hostname and a per-launch tmp socket.
+# They are meaningless in any other checkout. 12 of them are still tracked; an
+# ignore rule cannot untrack, so they also need `git rm --cached`.
+Singleton
+SingletonCookie
+SingletonLock
+SingletonSocket
+.config/pulse/
+.termux/shell
+
+# === Editor/script backups — git is the backup (Class D) ===
+*.bak
+*.bak.*
+*.backup
+*.backup.*
+*.orig
+*.rej
+
+# === Browser profiles are credential stores (see docs/CREDENTIAL-EXPOSURE.md) ===
+# `deepseek-cli/browser-data*/` is already ignored at line 146 yet 469 of its
+# files are tracked — an ignore rule cannot untrack. `deepcli/browser-data/`
+# had no rule at all, which is the gap that let the live cookie DB in.
+# Generic rules so the next automation dir is covered before it is created:
+deepcli/browser-data/
+**/browser-data/
+**/browser-data-*/
+**/browser-profile*/
+**/chrome-profile*/
+**/chromium-profile*/
+**/puppeteer-data*/
+**/playwright-data*/
+**/user-data-dir*/
+# Chromium credential stores, wherever they land:
+**/Default/Cookies
+**/Default/Cookies-journal
+**/Default/Login Data
+**/Default/Login Data-journal
+**/Local State
+
+# === Agent session stores — never commit conversation state (Class E) ===
+# .deepcli/session_store/ is listed above; these are the sibling agents.
+.deepcli/
+.pi/session_store/
+.synthegration/session_store/
+.cedar/session_store/
+.approxination/session_store/
+**/session_store/
+agent_telemetry_stream.json

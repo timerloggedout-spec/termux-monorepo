@@ -23,3 +23,10 @@ Converting file stat timestamps (`st.st_mtime`) to `time.ctime()` strings and th
 
 **Action:**
 Always cache raw numeric epoch timestamps (`mtime_ts`) alongside formatted date strings during file walks, and prefer string slicing over `strptime` when extracting fixed time substrings (`HH:MM:SS`) for display.
+
+## 2026-08-19 - Incremental File Hashing and Map-Based Fallback Resolution in Monorepo Indexing
+**Learning:**
+In monorepo mapping tools (`central_mapper_v420.py` & `mapper_graph.py`), computing SHA-256 hashes over every file regardless of state causes massive I/O bottlenecks during directory scanning. Reusing state-cached SHA hashes when `mtime` and `size` match avoids disk reads on unchanged files. Additionally, pre-compiling combined regex patterns and storing known filenames in an O(1) hash map for fallback import resolution eliminates repeated O(N) list scans and regex compilations per file.
+
+**Action:**
+Always check state metadata (`mtime` and `size`) before reading file contents for hashing, and construct filename lookup dictionaries once to replace linear searches during file dependency resolution.

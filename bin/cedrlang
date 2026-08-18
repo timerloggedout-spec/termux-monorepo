@@ -1,32 +1,12 @@
 #!/usr/bin/env python3
 import os
 import sys
-import traceback
+import runpy
 
-# Resolve path relative to the location of the bin/cedrlang script
-script_dir = os.path.dirname(os.path.abspath(__file__))
-possible_paths = [
-    os.path.abspath(os.path.join(script_dir, "../workspace/compression_sandbox/cedrlang/cedrlang.py")),
-    "/data/data/com.termux/files/home/workspace/compression_sandbox/cedrlang/cedrlang.py"
-]
+repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+target_script = os.path.join(repo_root, "workspace", "compression_sandbox", "cedrlang", "cedrlang.py")
 
-target_path = None
-for p in possible_paths:
-    if os.path.exists(p):
-        target_path = p
-        break
+if repo_root not in sys.path:
+    sys.path.insert(0, repo_root)
 
-if not target_path:
-    target_path = "/data/data/com.termux/files/home/workspace/compression_sandbox/cedrlang/cedrlang.py"
-
-try:
-    with open(target_path, "r", encoding="utf-8") as f:
-        code = f.read()
-    glb = {"__name__": "__main__", "__file__": target_path}
-    exec(code, glb)
-except SystemExit as se:
-    sys.exit(se.code)
-except Exception as e:
-    print(f"Error executing CedrLang from path {target_path}: {e}", file=sys.stderr)
-    traceback.print_exc()
-    sys.exit(1)
+runpy.run_path(target_script, run_name="__main__")

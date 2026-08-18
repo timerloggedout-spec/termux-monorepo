@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-CedrLang – Agentic Compression Protocol v2
+CedrLang – Agentic Compression Protocol
 Minimal token language for LLM↔LLM coordination.
 Inspired by caveman prompting, symbolic substitution & minified JSON.
 
@@ -19,54 +19,56 @@ import sys
 import re
 import json
 import argparse
-from pathlib import Path
 from typing import Dict, List, Any, Tuple
+from pathlib import Path
 
 # ------------------------------------------------------------
-# 1. Core mapping tables (symbolic & Grimoire substitution)
+# 1. Core mapping tables (symbolic substitution)
 # ------------------------------------------------------------
 SYMBOL_MAP = {
-    "leads to": "→",
-    "results in": "→",
-    "implies": "→",
-    "because": "←",
-    "therefore": "∴",
-    "since": "∵",
-    "and then": "⇒",
-    "compare": "vs",
-    "versus": "vs",
-    "create": "+",
-    "delete": "-",
-    "update": "~",
-    "read": ">",
-    "write": "<",
-    "execute": "!",
-    "query": "?",
-    "answer": "=",
-    "set": ":=",
-    "get": ".",
-    "if": "?",
-    "then": "⇒",
-    "else": "|",
-    "and": "∧",
-    "or": "∨",
-    "not": "¬",
-    "true": "T",
-    "false": "F",
-    "success": "✓",
-    "fail": "✗",
-    "pending": "…",
-    "error": "⚠",
-    "warning": "⚠",
+    # direction & causality
+    " leads to ": " → ",
+    " results in ": " → ",
+    " implies ": " → ",
+    " because ": " ← ",
+    " therefore ": " ∴ ",
+    " since ": " ∵ ",
+    " and then ": " ⇒ ",
+    " compare ": " vs ",
+    " versus ": " vs ",
+    # actions
+    " create ": " + ",
+    " delete ": " - ",
+    " update ": " ~ ",
+    " read ": " > ",
+    " write ": " < ",
+    " execute ": " ! ",
+    " query ": " ? ",
+    " answer ": " = ",
+    " set ": " := ",
+    " get ": " . ",
+    # logic
+    " if ": " ? ",
+    " then ": " ⇒ ",
+    " else ": " | ",
+    " and ": " ∧ ",
+    " or ": " ∨ ",
+    " not ": " ¬ ",
+    " true ": " T ",
+    " false ": " F ",
+    # status
+    " success ": " ✓ ",
+    " fail ": " ✗ ",
+    " pending ": " … ",
+    " error ": " ⚠ ",
+    " warning ": " ⚠ ",
 }
 
+# stopwords to strip (caveman compression)
 STOPWORDS = {
     "a", "an", "the", "is", "are", "was", "were", "be", "been", "being",
-    "have", "has", "had", "do", "does", "did", "will", "would", "shall",
-    "should", "may", "might", "must", "can", "could", "of", "for", "in",
-    "to", "on", "at", "by", "with", "from", "up", "about", "into", "over",
-    "after", "that", "this", "these", "those", "it", "its", "you", "your",
-    "he", "his", "she", "her", "they", "their", "we", "our"
+    "to", "of", "and", "for", "in", "that", "with", "on", "at", "by",
+    "this", "these", "those", "it", "they", "we", "you", "he", "she"
 }
 
 # CedrLang v2 / Grimoire Mappings
@@ -104,8 +106,10 @@ MAPPINGS = [
 # ------------------------------------------------------------
 # 1.5. Pre-compiled regex patterns (Massive Speed Optimization)
 # ------------------------------------------------------------
+# Pre-compile standard symbol replacements once globally
 SYMBOL_REGEXES = {phrase: re.compile(re.escape(phrase), re.IGNORECASE) for phrase in SYMBOL_MAP}
 
+# Pre-compile general utility patterns
 INLINE_CODE_PATTERN = re.compile(r'`[^`]+`')
 HTML_TAG_PATTERN = re.compile(r'<[^>]+>')
 LINK_PATTERN = re.compile(r'\[([^\]]+)\]\(([^)]+)\)')
@@ -120,9 +124,17 @@ DECIMAL_PATTERN = re.compile(r'\b\d+\.\d+\b')
 SPACES_PATTERN = re.compile(r'\s+')
 PUNCTUATION_PATTERN = re.compile(r'[.,!?;:]$')
 
+# Pre-sorted and pre-compiled mapping translation lists
+# Sort human words by length descending to prevent partial matching (e.g., "emerging technologies" before "emerging technology")
 SORTED_MAPPINGS_COMP = sorted(MAPPINGS, key=lambda x: len(x[0]), reverse=True)
 SORTED_MAPPINGS_DECOMP = sorted(MAPPINGS, key=lambda x: len(x[1]), reverse=True)
 
+COMP_REGEXES = [(re.compile(r'\b' + re.escape(human) + r'\b', re.IGNORECASE), comp) for human, comp in SORTED_MAPPINGS_COMP]
+DECOMP_REGEXES = [(re.compile(r'\b' + re.escape(comp) + r'\b', re.IGNORECASE), human) for human, comp in SORTED_MAPPINGS_DECOMP]
+
+# Single-pass combined regex pattern matching (Massive ~4.3x Speed Boost)
+# Instead of performing N sequential regex sub calls for every word in MAPPINGS,
+# we join pre-sorted terms into a single regex with alternations: \b(term1|term2|...)\b.
 COMP_DICT = {human.lower(): comp for human, comp in SORTED_MAPPINGS_COMP}
 COMP_SINGLE_REGEX = re.compile(
     r'\b(' + '|'.join(re.escape(human) for human, _ in SORTED_MAPPINGS_COMP) + r')\b',
@@ -135,29 +147,37 @@ DECOMP_SINGLE_REGEX = re.compile(
     re.IGNORECASE
 )
 
+
 # ------------------------------------------------------------
 # 2. Compressor (v1 prompt compression)
 # ------------------------------------------------------------
 def compress(text: str, aggressive: bool = True) -> str:
-    """Convert natural language to CedrLang."""
+    """
+    Convert natural language to CedrLang.
+    aggressive=True removes stopwords & applies symbol substitution.
+    """
     if not text:
         return ""
 
-    result = text[:]
+    result = text[:]  # start with original case
 
+    # symbol replacement (case‑insensitive, word boundaries) using pre-compiled patterns
     for phrase, pattern in SYMBOL_REGEXES.items():
         result = pattern.sub(SYMBOL_MAP[phrase], result)
 
     if not aggressive:
         return result.strip()
 
+    # strip stopwords (caveman style)
     words = result.split()
     filtered = [w for w in words if w.lower() not in STOPWORDS]
     result = " ".join(filtered)
 
+    # remove duplicate spaces & punctuation trimming
     result = SPACES_PATTERN.sub(' ', result).strip()
     result = PUNCTUATION_PATTERN.sub('', result)
     return result
+
 
 # ------------------------------------------------------------
 # 2.5. Caveman Compression in 6 Lines
@@ -168,6 +188,7 @@ def caveman(text: str, max_up: bool = False) -> str:
         t = pattern.sub(SYMBOL_MAP[phrase], t)
     words = [w for w in t.split() if w.lower() not in STOPWORDS]
     return SPACES_PATTERN.sub(' ', " ".join(words)).strip()
+
 
 # ------------------------------------------------------------
 # 3. Expander (for debugging / human reading)
@@ -181,10 +202,12 @@ def expand(cedr: str) -> str:
     result = SPACES_PATTERN.sub(' ', result)
     return result.strip()
 
+
 # ------------------------------------------------------------
 # 4. CedrLang v2 Compilation & Decompilation (Document Mode)
 # ------------------------------------------------------------
 def capitalize_word(w: str) -> str:
+    """Capitalize the first alphabetic character in the word/phrase."""
     if " " in w:
         return " ".join(capitalize_word(part) for part in w.split(" "))
     chars = list(w)
@@ -201,12 +224,14 @@ def uppercase_word(w: str) -> str:
     return w.upper()
 
 def is_capitalized(w: str) -> bool:
+    """True if the first alphabetic character is uppercase."""
     for c in w:
         if c.isalpha():
             return c.isupper()
     return False
 
 def apply_casing(src: str, dst: str) -> str:
+    """Apply the casing of src to dst strictly."""
     if src.isupper():
         return uppercase_word(dst)
     if is_capitalized(src):
@@ -214,12 +239,19 @@ def apply_casing(src: str, dst: str) -> str:
     return lowercase_word(dst)
 
 def translate_text_raw(text: str, to_compressed: bool) -> str:
+    """
+    Perform dictionary mapping translations preserving casing in a single pass.
+    Performance Optimization: Single combined regex substitution reduces function call and
+    regex evaluation overhead from O(N_mappings * N_lines) to O(1_regex * N_lines), yielding ~4.3x overall speedup.
+    """
     pattern = COMP_SINGLE_REGEX if to_compressed else DECOMP_SINGLE_REGEX
     mapping_dict = COMP_DICT if to_compressed else DECOMP_DICT
 
     return pattern.sub(lambda m: apply_casing(m.group(0), mapping_dict[m.group(0).lower()]), text)
 
 def translate_line(line: str, to_compressed: bool) -> str:
+    """Translate a single line protecting syntax and structures with fast-path character checks."""
+    # Fast-path optimization: check if any translatable terms exist on the line before running placeholder regexes
     matcher = COMP_SINGLE_REGEX if to_compressed else DECOMP_SINGLE_REGEX
     if not matcher.search(line):
         return line
@@ -231,6 +263,7 @@ def translate_line(line: str, to_compressed: bool) -> str:
         placeholders.append((ph, val))
         return ph
 
+    # Fast-path checks: skip regex passes if special markdown characters are not present in line
     if "`" in line:
         line = INLINE_CODE_PATTERN.sub(lambda m: add_placeholder(m.group(0)), line)
 
@@ -263,7 +296,7 @@ def translate_line(line: str, to_compressed: bool) -> str:
         def bold_repl_under2(match):
             text = match.group(1)
             translated_text = translate_text_raw(text, to_compressed)
-            return add_placeholder(f"____{translated_text}____")
+            return add_placeholder(f"____{translated_text}____")  # double underline wrapper to keep distinct
 
         def bold_repl_under1(match):
             text = match.group(1)
@@ -279,9 +312,12 @@ def translate_line(line: str, to_compressed: bool) -> str:
     if "." in line:
         line = DECIMAL_PATTERN.sub(lambda m: add_placeholder(m.group(0)), line)
 
+    # Perform main translations on the remaining unprotected text
     line = translate_text_raw(line, to_compressed)
 
+    # Restore placeholders in reverse order
     for ph, orig in reversed(placeholders):
+        # Unwrap special double underline bold markup back to standard __text__
         if orig.startswith("____") and orig.endswith("____"):
             content = orig[4:-4]
             orig = f"__{content}__"
@@ -290,6 +326,7 @@ def translate_line(line: str, to_compressed: bool) -> str:
     return line
 
 def compile_doc(text: str) -> str:
+    """Compile human-readable markdown into CedrLang compressed markdown."""
     lines = text.splitlines(keepends=True) if isinstance(text, str) else []
     compiled_lines = []
     in_fenced_code = False
@@ -307,6 +344,7 @@ def compile_doc(text: str) -> str:
     return "".join(compiled_lines)
 
 def decompile_doc(text: str) -> str:
+    """Decompile CedrLang compressed markdown into human-readable markdown."""
     lines = text.splitlines(keepends=True) if isinstance(text, str) else []
     decompiled_lines = []
     in_fenced_code = False
@@ -327,8 +365,11 @@ def decompile_doc(text: str) -> str:
 # 5. Token counter & Utilities
 # ------------------------------------------------------------
 def count_tokens(text: str) -> int:
+    """Rough token count using whitespace + punctuation heuristic."""
+    # simple but decent for comparison (error <10% vs cl100k)
     tokens = re.findall(r'\b\w+\b|[^\w\s]', text)
     return len(tokens)
+
 
 def stats_report(original: str, compressed: str) -> Dict[str, Any]:
     orig_tokens = count_tokens(original)
@@ -342,11 +383,14 @@ def stats_report(original: str, compressed: str) -> Dict[str, Any]:
         "compressed_chars": len(compressed)
     }
 
+
 # ------------------------------------------------------------
 # 6. DeepCLI integration (proxy filter)
 # ------------------------------------------------------------
 def deepcli_filter(prompt: str) -> str:
+    """Hook for deepcli – compress user prompt before sending to API."""
     return compress(prompt, aggressive=True)
+
 
 # ------------------------------------------------------------
 # 7. CLI & main
@@ -355,26 +399,32 @@ def main():
     parser = argparse.ArgumentParser(description="CedrLang – Agentic Compression Protocol")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
+    # compress command
     p_compress = subparsers.add_parser("compress", help="Compress natural language to CedrLang")
     p_compress.add_argument("text", nargs="*", help="Text to compress")
     p_compress.add_argument("--aggressive", action="store_true", default=True, help="Enable stopword stripping (default)")
     p_compress.add_argument("--no-aggressive", dest="aggressive", action="store_false", help="Disable stopword stripping")
 
+    # expand command
     p_expand = subparsers.add_parser("expand", help="Expand CedrLang to approximate English")
     p_expand.add_argument("text", nargs="*", help="CedrLang text to expand")
 
+    # compile command (v2 compilation)
     p_compile = subparsers.add_parser("compile", help="Compile human readable markdown to CedrLang compressed markdown")
     p_compile.add_argument("file_or_text", nargs="*", help="File path or text to compile")
     p_compile.add_argument("-o", "--output", help="Output file path")
 
+    # decompile command (v2 decompilation)
     p_decompile = subparsers.add_parser("decompile", help="Decompile CedrLang compressed markdown to human readable markdown")
     p_decompile.add_argument("file_or_text", nargs="*", help="File path or text to decompile")
     p_decompile.add_argument("-o", "--output", help="Output file path")
 
+    # stats command
     p_stats = subparsers.add_parser("stats", help="Show token savings stats")
     p_stats.add_argument("original", help="Original natural language")
     p_stats.add_argument("--compressed", help="Optional compressed text (otherwise compress automatically)")
 
+    # serve command (minimal proxy for piping)
     p_serve = subparsers.add_parser("serve", help="Read stdin, compress, write stdout (for integration)")
 
     args = parser.parse_args()

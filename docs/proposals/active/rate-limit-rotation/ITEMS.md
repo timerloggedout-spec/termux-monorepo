@@ -8,7 +8,7 @@
 | RL-04 | Wire review → Flash w/ Lite fallback | P0 | grok | done | gemini-review.yml |
 | RL-05 | OpenRouter fallback path | P0 | grok | executing | #123 landed ELO+poll router; http-llm-invoke fallback still tracked |
 | RL-06 | Tighten job-gate daily-limit (900→100) | P1 | grok | todo | pair with #81 |
-| RL-07 | Prompt compression for agent workflows | P1 | jules | done | issue #90; PR #154 (absorbs #126) |
+| RL-07 | Prompt compression for agent workflows | P1 | | todo | issue #90; PR #126 |
 | RL-08 | OmniRoute hub integration surface | P2 | | todo | issue #91 |
 | RL-09 | Per-model Linear quota dashboard | P2 | | todo | |
 | RL-10 | Merge/rebase #81 quota-gate onto master | P0 | | todo | PR #81 |

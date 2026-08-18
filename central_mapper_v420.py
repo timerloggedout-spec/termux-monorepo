@@ -25,6 +25,8 @@ BLOAT_PATTERNS = [
     r'tree_dump\.txt', r'explore_output\.txt', r'bloat_report\.txt',
     r'research_dump\.txt', r'sigs_.*\.txt', r'map_.*\.jsonl', r'ast_.*\.json'
 ]
+BLOAT_REGEX = re.compile('|'.join(f'(?:{p})' for p in BLOAT_PATTERNS))
+
 # Files to always treat as system/bloat (if not in a project dir)
 ALWAYS_BLOAT = {
     'agent_telemetry_stream.json', 'local_repo.db', 'test.txt',
@@ -104,15 +106,14 @@ class CentralMapper:
             return ''
         return h.hexdigest()
 
-    def is_bloat(self, path: Path) -> bool:
+    def is_bloat(self, path: Path, size: int = 0) -> bool:
         name = path.name
         if name in ALWAYS_BLOAT:
             return True
-        for pat in BLOAT_PATTERNS:
-            if re.fullmatch(pat, name):
-                return True
+        if BLOAT_REGEX.fullmatch(name):
+            return True
         # Also flag files larger than 5MB as potential bloat (logs, dumps)
-        if path.stat().st_size > 5_000_000:
+        if size > 5_000_000:
             return True
         return False
 
@@ -137,18 +138,25 @@ class CentralMapper:
                 mtime = stat.st_mtime
                 ext = filepath.suffix.lower()
                 lang = CODE_EXTS.get(ext, 'unknown')
-                sha = self.hash_file(filepath)
-                # Detect new/modified based on state
+
+                # Detect new/modified based on state; reuse cached SHA if unchanged
                 prev = self.state.get(str(rel_path), {})
-                is_new = not prev
-                is_modified = prev and (prev.get('sha') != sha or prev.get('size') != size)
+                if prev and prev.get('size') == size and prev.get('mtime') == mtime:
+                    sha = prev.get('sha', '')
+                    is_new = False
+                    is_modified = False
+                else:
+                    sha = self.hash_file(filepath)
+                    is_new = not prev
+                    is_modified = bool(prev)
+
                 if is_new:
                     self.new_files += 1
                 elif is_modified:
                     self.modified_files += 1
 
                 # Bloat flag
-                bloat_flag = self.is_bloat(filepath)
+                bloat_flag = self.is_bloat(filepath, size)
                 if bloat_flag:
                     self.bloat_files.append(str(rel_path))
 

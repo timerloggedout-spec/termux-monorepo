@@ -1,7 +1,3 @@
-# Linguist's Performance Journal
-
-Your journal is NOT a log - only add entries for CRITICAL learnings that will help you avoid mistakes or make better decisions.
-
 ## 2026-08-02 - Regex Compilation Overhead and Strict Token Protection in Markdown Translation
 **Learning:**
 Regex compiling inside loop functions (e.g., executing translations on every line of an AGENTS.md file) introduces significant CPU overhead. Furthermore, naive string substitution of short 1337speak or Grimoire tokens like `h4x` or `scry` can easily corrupt inline code blocks, URLs, HTML tags, or file extensions (e.g., `.py`, `.js`). By isolating code fences, inline markdown markers, links, and filenames using temporary random UUID placeholders in a single-pass scan, we protect code syntax integrity while keeping translations extremely fast (O(N) operations).
@@ -29,11 +25,3 @@ In line-by-line document translation pipelines where structural syntax protectio
 
 **Action:**
 In line-level transformation utilities, always perform a fast-path term existence pre-check (`matcher.search(line)`) before executing multi-pattern placeholder protection or DOM parsing pipelines.
-
-## 2026-08-10 - O(N) Regex Translation with Placeholder Protections for Markdown
-**Learning:**
-Translating rich formats like markdown into custom formats (e.g., 1337speak) can corrupt functional elements (code blocks, hyperlinks, formatting punctuation). Attempting to parse markdown line-by-line or with complex context-free parsing is slow and complex.
-Instead, employing a content-agnostic regex placeholder mask during translation maps functional constructs to stable IDs (like `__PLACEHOLDER_N__`) first, executes a single-pass regex compilation substitution for 1337speak/symbols, and then restores placeholders. This secures O(N) time complexity and ensures syntax preservation without regressions.
-
-**Action:**
-When developing compression translators, always use placeholder protection masks for structural syntax before executing general token or letter substitutions.

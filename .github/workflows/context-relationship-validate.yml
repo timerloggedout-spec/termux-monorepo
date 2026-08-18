@@ -1,0 +1,50 @@
+name: context relationship validation
+
+on:
+  pull_request:
+    paths:
+      - 'archwiz/context_relationships/**'
+      - 'config/context_relationships/**'
+      - 'tests/test_context_relationship_*.py'
+      - 'tests/fixtures/context_relationships/**'
+      - '.github/workflows/context-relationship-*.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: context-relationship-validate-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: schema, collectors, query, and diagram contract
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: '3.12'
+
+      - name: Install test dependency
+        run: python -m pip install --disable-pip-version-check pytest==9.1.1
+
+      - name: Validate relationship-index behavior
+        run: |
+          python -m pytest \
+            tests/test_context_relationship_compiler.py \
+            tests/test_context_relationship_source_collector.py \
+            tests/test_context_relationship_github_collector.py \
+            tests/test_context_relationship_seed_merger.py \
+            tests/test_context_relationship_query.py \
+            tests/test_context_relationship_build_index.py \
+            -q
+          python -m archwiz.context_relationships.compiler \
+            --input tests/fixtures/context_relationships/seed.json \
+            --validate

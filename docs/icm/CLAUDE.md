@@ -29,6 +29,7 @@ Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect
 | use the initiated visual-review cards or plan a human checkpoint | [`objects/operations/optional-visual-review.md`](objects/operations/optional-visual-review.md) | the canonical source artifact and human approval boundary |
 | review provider-routing state or propose polling | [`routing.md`](routing.md) | the nested source, observation, and post-ICM workflow gate |
 | alter navigation or an index | [`objects/knowledge/navigation-and-indexes.md`](objects/knowledge/navigation-and-indexes.md) | the owning navigation/index file |
+| reconstruct related source/GitHub history before a nontrivial change | [`processes/context-relationship-reconnaissance.md`](processes/context-relationship-reconnaissance.md) | the exact graph root, its evidence, and separately labeled candidates |
 | select or update an ICM reference | [`objects/knowledge/reference-inputs.md`](objects/knowledge/reference-inputs.md) | the pinned reference input and custom-submodule review |
 | design or customize a recurring ICM workspace | [`objects/knowledge/interpretable-context-methodology.md`](objects/knowledge/interpretable-context-methodology.md) | the smallest suitable form and reference workspace |
 | classify nested `workspace/` artifacts | [`processes/workspace-artifact-triage.md`](processes/workspace-artifact-triage.md) | the human decision before any cleanup or promotion |

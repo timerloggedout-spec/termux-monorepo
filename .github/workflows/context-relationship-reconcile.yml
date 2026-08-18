@@ -1,0 +1,85 @@
+name: context relationship reconciliation
+
+on:
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      max_items:
+        description: 'Maximum issues and pull requests per family for this bounded reconciliation.'
+        type: string
+        default: '50'
+      max_commits:
+        description: 'Maximum commits for this bounded reconciliation.'
+        type: string
+        default: '50'
+
+permissions:
+  contents: write
+  issues: read
+  pull-requests: read
+
+concurrency:
+  group: context-relationship-reconcile-master-staging
+  cancel-in-progress: false
+
+jobs:
+  reconcile:
+    name: bounded full refresh and checkpoint audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: master-staging
+          fetch-depth: 1
+          persist-credentials: true
+
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: '3.12'
+
+      - name: Rebuild bounded history window
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          MAX_ITEMS: ${{ inputs.max_items || '50' }}
+          MAX_COMMITS: ${{ inputs.max_commits || '50' }}
+        run: |
+          set -euo pipefail
+          python -m archwiz.context_relationships.build_index \
+            --root . \
+            --owner "$GITHUB_REPOSITORY_OWNER" \
+            --repo "${GITHUB_REPOSITORY#*/}" \
+            --ref master-staging \
+            --max-items "$MAX_ITEMS" \
+            --max-commits "$MAX_COMMITS" \
+            --max-comments-per-item 10 \
+            --max-cochange-pairs-per-commit 100 \
+            --full-refresh
+
+      - name: Publish reconciliation summary
+        run: |
+          set -euo pipefail
+          {
+            echo '## Context relationship reconciliation'
+            echo
+            echo '```json'
+            cat workspace/llm_map/context_relationships/build-summary.json
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit reconciliation delta
+        run: |
+          set -euo pipefail
+          git add workspace/llm_map/context_relationships
+          if git diff --cached --quiet; then
+            echo 'No reconciliation delta to publish.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -s -m 'chore(context): reconcile relationship index' \
+            -m 'Implements: CRG-05' \
+            -m 'Agent-Identity: GitHub Actions Context Indexer' \
+            -m 'Task-Ref: CRG-05'
+          git push origin HEAD:master-staging

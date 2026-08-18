@@ -8,10 +8,11 @@ name: Peer review orchestrator
 # pass only after every required provider has delivered for the live PR SHA.
 #
 # The workflow never handles browser cookies or attempts undocumented UI/API
-# requests. See docs/ops/OPERATOR_INTERACTIVE_ACTIONS.md.
+# requests. It runs API-only and never checks out pull-request code, including
+# under pull_request_target. See docs/ops/OPERATOR_INTERACTIVE_ACTIONS.md.
 
 on:
-  pull_request:
+  pull_request_target:
     types: [opened, synchronize, ready_for_review, reopened]
   issue_comment:
     types: [created, edited]
@@ -111,7 +112,7 @@ jobs:
             const eventAuthor = context.payload.comment?.user || context.payload.review?.user || {};
             const eventBody = context.payload.comment?.body || context.payload.review?.body || '';
             const eventProvider = providerFor(eventAuthor);
-            const relevantEvent = context.eventName === 'pull_request' ||
+            const relevantEvent = context.eventName === 'pull_request_target' ||
               Boolean(eventProvider) || eventBody.includes(operatorAckMarker);
             if (!relevantEvent) {
               core.info(`Ignoring unrelated ${context.eventName} event on PR #${prNumber}`);

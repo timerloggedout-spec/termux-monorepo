@@ -1,0 +1,91 @@
+name: context relationship historical backfill
+
+on:
+  workflow_dispatch:
+    inputs:
+      history_start_page:
+        description: 'GitHub REST history page to start. Resume with the next page reported in build-summary.json.'
+        type: string
+        default: '1'
+      max_items:
+        description: 'Maximum issues and pull requests per family in this explicit page window.'
+        type: string
+        default: '100'
+      max_commits:
+        description: 'Maximum commits in this explicit history window.'
+        type: string
+        default: '100'
+
+permissions:
+  contents: write
+  issues: read
+  pull-requests: read
+
+concurrency:
+  group: context-relationship-backfill-master-staging
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    name: operator-controlled historical graph backfill
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: master-staging
+          fetch-depth: 1
+          persist-credentials: true
+
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: '3.12'
+
+      - name: Build one historical relationship-index window
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          HISTORY_START_PAGE: ${{ inputs.history_start_page }}
+          MAX_ITEMS: ${{ inputs.max_items }}
+          MAX_COMMITS: ${{ inputs.max_commits }}
+        run: |
+          set -euo pipefail
+          python -m archwiz.context_relationships.build_index \
+            --root . \
+            --owner "$GITHUB_REPOSITORY_OWNER" \
+            --repo "${GITHUB_REPOSITORY#*/}" \
+            --ref master-staging \
+            --history-start-page "$HISTORY_START_PAGE" \
+            --max-items "$MAX_ITEMS" \
+            --max-commits "$MAX_COMMITS" \
+            --max-comments-per-item 10 \
+            --max-cochange-pairs-per-commit 100 \
+            --full-refresh
+
+      - name: Publish backfill coverage summary
+        run: |
+          set -euo pipefail
+          {
+            echo '## Context relationship historical backfill'
+            echo
+            echo 'Resume only when `history_window.next_start_page` is non-null.'
+            echo
+            echo '```json'
+            cat workspace/llm_map/context_relationships/build-summary.json
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit canonical historical delta
+        run: |
+          set -euo pipefail
+          git add workspace/llm_map/context_relationships
+          if git diff --cached --quiet; then
+            echo 'No historical relationship-index delta to publish.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -s -m 'chore(context): backfill relationship history' \
+            -m 'Implements: CRG-10' \
+            -m 'Agent-Identity: GitHub Actions Context Indexer' \
+            -m 'Task-Ref: CRG-10'
+          git push origin HEAD:master-staging

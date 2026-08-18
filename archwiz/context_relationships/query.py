@@ -80,8 +80,16 @@ def display_name(node: Mapping[str, Any]) -> str:
 
 
 def exact_roots(nodes: Iterable[Mapping[str, Any]], query: str) -> list[dict[str, Any]]:
-    selector = SELECTOR_RE.match(query.strip())
+    normalized_query = query.strip()
+    selector = SELECTOR_RE.match(normalized_query)
     matches: list[dict[str, Any]] = []
+    if normalized_query.startswith(("https://github.com/", "http://github.com/")):
+        target_url = normalized_query.rstrip("/")
+        for node in nodes:
+            node_url = node.get("url")
+            if isinstance(node_url, str) and node_url.rstrip("/") == target_url:
+                matches.append({"node": node, "score": 1.0, "reason": "exact GitHub permalink"})
+        return matches
     if selector:
         requested_kind = KIND_ALIASES.get(selector.group("kind").lower())
         value = selector.group("value").strip().lower()
@@ -203,7 +211,7 @@ def search_index(index_dir: Path, query: str, depth: int = 2, max_nodes: int = 3
     exact = exact_roots(nodes, query)
     is_selector = SELECTOR_RE.match(query.strip()) is not None
     fuzzy = [] if exact or is_selector else fuzzy_roots(nodes, query, fuzzy_limit)
-    root_results = exact or fuzzy
+    root_results = (exact or fuzzy)[:max_nodes]
     root_ids = [str(item["node"]["id"]) for item in root_results]
     visible_nodes, verified_edges = traverse_verified(root_ids, edges, depth, max_nodes)
     candidate_edges = related_candidates(visible_nodes, edges)
@@ -225,6 +233,97 @@ def search_index(index_dir: Path, query: str, depth: int = 2, max_nodes: int = 3
         "timeline": timeline([*verified_edges, *candidate_edges], nodes_by_id),
         "bounds": {"depth": depth, "max_nodes": max_nodes, "fuzzy_limit": fuzzy_limit},
     }
+
+
+def file_review_timeline(index_dir: Path, file_path: str, max_nodes: int = 50) -> dict[str, Any]:
+    """Return the bounded review and comment history attached to an exact file root."""
+    result = search_index(index_dir, f"file:{file_path}", depth=3, max_nodes=max_nodes)
+    if not result["roots"]:
+        result.update({"projection": "file_review_timeline", "file_path": file_path, "pull_requests": []})
+        return result
+
+    nodes_by_id = {str(node["id"]): node for node in result["visible_nodes"]}
+    root_ids = {str(root["id"]) for root in result["roots"]}
+    selected_ids = set(root_ids)
+    relevant_types = {"TOUCHES", "REVIEWS", "COMMENTS_ON", "REFERENCES", "MENTIONS", "CLOSES"}
+    verified_edges = [dict(edge) for edge in result["verified_edges"]]
+
+    for _ in range(4):
+        changed = False
+        for edge in verified_edges:
+            source, target, relationship = edge.get("source"), edge.get("target"), edge.get("type")
+            if not isinstance(source, str) or not isinstance(target, str) or relationship not in relevant_types:
+                continue
+            endpoints = {source, target}
+            if relationship == "TOUCHES" and endpoints & root_ids or endpoints & selected_ids:
+                before = len(selected_ids)
+                selected_ids.update(endpoints)
+                changed = changed or len(selected_ids) != before
+        if not changed:
+            break
+
+    selected_edges = [
+        edge
+        for edge in verified_edges
+        if edge.get("type") in relevant_types
+        and edge.get("source") in selected_ids
+        and edge.get("target") in selected_ids
+    ]
+    selected_nodes = [nodes_by_id[node_id] for node_id in sorted(selected_ids) if node_id in nodes_by_id]
+    pull_requests = [
+        {
+            "id": node["id"],
+            "number": node.get("external_id"),
+            "title": (node.get("attributes") or {}).get("title", ""),
+            "url": node.get("url"),
+        }
+        for node in selected_nodes
+        if node.get("kind") == "pull_request"
+    ]
+    result.update(
+        {
+            "projection": "file_review_timeline",
+            "file_path": file_path,
+            "visible_nodes": selected_nodes,
+            "verified_edges": selected_edges,
+            "candidate_edges": related_candidates(selected_ids, result["candidate_edges"]),
+            "timeline": timeline([*selected_edges, *related_candidates(selected_ids, result["candidate_edges"])], nodes_by_id),
+            "pull_requests": sorted(pull_requests, key=lambda item: str(item["number"])),
+        }
+    )
+    return result
+
+
+def render_file_review_markdown(result: Mapping[str, Any]) -> str:
+    lines = [f"# File review timeline: `{result['file_path']}`", "", "## Related pull requests", ""]
+    pull_requests = result.get("pull_requests", [])
+    if pull_requests:
+        lines.extend(["| PR | Title | Evidence |", "|---|---|---|"])
+        for pull_request in pull_requests:
+            lines.append(
+                f"| #{pull_request['number']} | {pull_request['title']} | {pull_request.get('url') or ''} |"
+            )
+    else:
+        lines.append("No touching pull request or review context was found within the query bounds.")
+    lines.extend(
+        ["", "## Verified review context", "", "| Time | Relationship | Source | Target | Evidence |", "|---|---|---|---|---|"]
+    )
+    for row in result.get("timeline", []):
+        if row.get("classification") != "verified":
+            continue
+        evidence = "<br>".join(str(url) for url in row.get("evidence_urls", [])[:2])
+        lines.append(
+            f"| {row['observed_at']} | {row['relationship']} | `{row['source']}` | `{row['target']}` | {evidence} |"
+        )
+    lines.extend(["", "## Ranked candidates", "", "| Score | Relationship | Source | Target | Evidence |", "|---:|---|---|---|---|"])
+    for row in result.get("timeline", []):
+        if row.get("classification") != "candidate":
+            continue
+        evidence = "<br>".join(str(url) for url in row.get("evidence_urls", [])[:2])
+        lines.append(
+            f"| {float(row['score']):.2f} | {row['relationship']} | `{row['source']}` | `{row['target']}` | {evidence} |"
+        )
+    return "\n".join(lines) + "\n"
 
 
 def mermaid_id(node_id: str) -> str:
@@ -284,7 +383,9 @@ def render_markdown(result: Mapping[str, Any]) -> str:
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--index", type=Path, default=Path("workspace/llm_map/context_relationships"))
-    parser.add_argument("--query", required=True)
+    projection = parser.add_mutually_exclusive_group(required=True)
+    projection.add_argument("--query")
+    projection.add_argument("--file-review-timeline", dest="file_review_path")
     parser.add_argument("--depth", type=int, default=2)
     parser.add_argument("--max-nodes", type=int, default=30)
     parser.add_argument("--fuzzy-limit", type=int, default=8)
@@ -296,13 +397,17 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
     try:
-        result = search_index(args.index, args.query, args.depth, args.max_nodes, args.fuzzy_limit)
+        result = (
+            file_review_timeline(args.index, args.file_review_path, args.max_nodes)
+            if args.file_review_path
+            else search_index(args.index, args.query, args.depth, args.max_nodes, args.fuzzy_limit)
+        )
         if args.format == "json":
             output = json.dumps(result, indent=2, sort_keys=True)
         elif args.format == "mermaid":
             output = render_mermaid(result)
         else:
-            output = render_markdown(result)
+            output = render_file_review_markdown(result) if args.file_review_path else render_markdown(result)
         if args.output:
             args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_text(output + ("" if output.endswith("\n") else "\n"), encoding="utf-8")

@@ -41,3 +41,32 @@ def test_reconciliation_is_bounded_and_explicitly_refreshes_history():
     assert "--max-commits" in content
     assert "contents: write" in content
     assert "pull_request_target" not in content
+
+
+def test_historical_backfill_is_manual_resumable_and_page_bounded():
+    content = workflow("context-relationship-backfill.yml")
+
+    assert "workflow_dispatch:" in content
+    assert "schedule:" not in content
+    assert "history_start_page" in content
+    assert "--history-start-page" in content
+    assert "--full-refresh" in content
+    assert "next_start_page" in content
+    assert "contents: write" in content
+    assert "pull_request_target" not in content
+    assert "Implements: CRG-10" in content
+
+
+def test_linear_freshness_workflow_is_manual_read_only_and_metadata_only():
+    content = workflow("context-relationship-linear-freshness.yml")
+
+    assert "workflow_dispatch:" in content
+    assert "schedule:" not in content
+    assert "contents: read" in content
+    assert "persist-credentials: false" in content
+    assert "LINEAR_API_KEY" in content
+    assert "linear_freshness" in content
+    assert "rm -f /tmp/linear-context-issues.json /tmp/linear-freshness-report.json" in content
+    assert "git push" not in content
+    assert "saveIssue" not in content
+    assert "issueUpdate" not in content

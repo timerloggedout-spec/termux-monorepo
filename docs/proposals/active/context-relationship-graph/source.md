@@ -48,3 +48,19 @@ The focused contract suite passes with **25 tests**, covering schema/compilation
 A live bounded bootstrap against `timerloggedout-spec/termux-monorepo` produced 4,804 nodes, 7,099 verified edges, and 1,579 separately marked candidate edges. The exact `pr:232` root resolved to the merged ICM integration pull request with evidence-backed commit and file-touch history. A subsequent one-item incremental window retained that PR and its timeline even though the fresh collection could not rediscover it, proving canonical-history retention.
 
 The required repository-wide gates remain blocked by a pre-existing conflict in `scripts/ci/repo_gate.py:139`: `repo_gate.py` raises `IndentationError: unexpected unindent`, and `termux_smoke.py` reports that same required failure while its other checks pass. This proposal does not modify that unrelated gate script.
+
+## Timeline, Permalink, Backfill, and Freshness Extension
+
+The supplied GitHub mobile timeline case was verified against the native issue timeline API: issue `#236` carries GitHub’s `cross-referenced` event from issue `#243` (**Game Teams**). The collector normalizes this as a verified `MENTIONS` edge from `issue:243` to `issue:236`, separately from the explicit body-derived `REFERENCES` edge. The event is source-URL-backed and does not retain timeline, issue, or comment body text.
+
+Exact local GitHub `#issuecomment-`, `#pullrequestreview-`, and `#discussion_r` URLs now resolve to their typed nodes, parent issue/PR, and verified reference edges. Review comments with a safe path now emit an explicit verified file-touch relation, which powers the bounded `--file-review-timeline` projection without broad PR-wide review noise.
+
+The operator-controlled historical backfill now reports `history_window` coverage. A live first-page run collected 100 issue and 100 pull-request records and correctly reported `next_start_page: 2`; this is an explicit partial-history state, not a claim of complete archive coverage. Successive manual page windows retain canonical history and continue until the reported next page is null.
+
+The enabled Linear integration was tested read-only against a bounded export of repository-linked records. The metadata-only comparator produced 1 `stale`, 60 `missing`, and 15 `ambiguous` mappings in the partial GitHub history window; it retained only Linear identifiers, titles, URLs, status/timestamps, explicit GitHub targets, comparison timestamps, and status. It neither writes to Linear nor emits descriptions/comment bodies. Missing and ambiguous states are expected during a partial GitHub backfill and remain review prompts rather than assertions.
+
+## Extension Validation Record
+
+The focused contract suite passes with **30 tests**, covering schema/compilation, source and GitHub collectors, nested native timeline events, exact comment/review permalinks, file-review projections, historical-window reporting, metadata-only Linear freshness comparison, workflow trust boundaries, and AGENTS/ICM/skill integration. Focused `ruff`, bytecode compilation, and `git diff --check` also pass.
+
+A live metadata-only build of the first 100 updated issues and pull requests produced 4,870 nodes, 7,206 verified edges, and 311 candidates. An exact `issue:236` query contains the verified `MENTIONS` relationship from **Game Teams** `#243` to `.APK Investigation List` `#236`, matching the supplied GitHub timeline event. The temporary live artifacts are not canonical repository content.

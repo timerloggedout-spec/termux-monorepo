@@ -38,6 +38,14 @@ CLOSING_RE = re.compile(
     r"(?:(?P<owner>[A-Za-z0-9_.-]+)/(?P<repo>[A-Za-z0-9_.-]+))?#(?P<number>\d+)",
     re.IGNORECASE,
 )
+PERMALINK_RE = re.compile(
+    r"https?://github\.com/(?P<owner>[A-Za-z0-9_.-]+)/(?P<repo>[A-Za-z0-9_.-]+)/"
+    r"(?P<parent_kind>issues|pull)/(?P<number>\d+)#(?P<anchor>"
+    r"issuecomment-(?P<issue_comment>\d+)|"
+    r"pullrequestreview-(?P<review>\d+)|"
+    r"discussion_r(?P<review_comment>\d+))",
+    re.IGNORECASE,
+)
 
 
 def utc_now() -> str:
@@ -56,6 +64,31 @@ def issue_url(owner: str, repo: str, number: int) -> str:
 
 def pull_url(owner: str, repo: str, number: int) -> str:
     return f"https://github.com/{owner}/{repo}/pull/{number}"
+
+
+def permalink_targets(text: str | None, owner: str, repo: str) -> list[tuple[str, str, int, str]]:
+    """Return exact local comment/review anchors as node refs and canonical URLs."""
+    if not isinstance(text, str) or not text:
+        return []
+    targets: list[tuple[str, str, int, str]] = []
+    for match in PERMALINK_RE.finditer(text):
+        if match.group("owner") != owner or match.group("repo") != repo:
+            continue
+        number = int(match.group("number"))
+        kind = next(
+            kind
+            for group, kind in (
+                ("issue_comment", "issue_comment"),
+                ("review", "review"),
+                ("review_comment", "review_comment"),
+            )
+            if match.group(group)
+        )
+        external_id = match.group(kind)
+        if external_id is None:
+            continue
+        targets.append((f"{kind}:{external_id}", match.group(0), number, match.group("parent_kind")))
+    return sorted(set(targets), key=lambda item: (item[0], item[1]))
 
 
 def reference_targets(
@@ -144,8 +177,11 @@ class GitHubClient:
         path: str,
         params: Mapping[str, Any] | None = None,
         limit: int = 100,
+        start_page: int = 1,
     ) -> Iterable[Mapping[str, Any]]:
-        page = 1
+        if start_page < 1:
+            raise CompilationError("GitHub pagination start page must be positive")
+        page = start_page
         emitted = 0
         while emitted < limit:
             page_params = dict(params or {})
@@ -225,6 +261,13 @@ def add_node(records: dict[str, dict[str, Any]], raw: dict[str, Any]) -> None:
     if existing is None:
         records[reference] = raw
         return
+    existing_placeholder = bool((existing.get("attributes") or {}).get("referenced_only"))
+    raw_placeholder = bool((raw.get("attributes") or {}).get("referenced_only"))
+    if existing_placeholder and not raw_placeholder:
+        records[reference] = raw
+        return
+    if raw_placeholder and not existing_placeholder:
+        return
     # Metadata can change during an incremental run; retain the newest observation.
     if raw.get("observed_at", "") >= existing.get("observed_at", ""):
         records[reference] = raw
@@ -263,6 +306,7 @@ def collect_github_seed(
     max_comments_per_item: int = 20,
     include_comments: bool = True,
     max_cochange_pairs_per_commit: int = 100,
+    history_start_page: int = 1,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     """Collect a bounded GitHub metadata window into a compiler-compatible seed."""
     collected_at = utc_now()
@@ -297,12 +341,17 @@ def collect_github_seed(
     issue_params: dict[str, Any] = {"state": "all", "sort": "updated", "direction": "desc"}
     if since:
         issue_params["since"] = since
-    raw_issues = list(client.paginate(f"/repos/{owner}/{repo}/issues", issue_params, max_items))
+    raw_issues = list(
+        client.paginate(
+            f"/repos/{owner}/{repo}/issues", issue_params, max_items, start_page=history_start_page
+        )
+    )
     raw_pulls = list(
         client.paginate(
             f"/repos/{owner}/{repo}/pulls",
             {"state": "all", "sort": "updated", "direction": "desc"},
             max_items,
+            start_page=history_start_page,
         )
     )
     if since:
@@ -368,6 +417,106 @@ def collect_github_seed(
                 edge(relationship, parent_ref, target_ref, observed_at, parent_url, {"reference": f"#{number}"})
             )
             report["explicit_references"] += 1
+        for target_ref, target_url, target_number, parent_kind in permalink_targets(text, owner, repo):
+            if target_ref == parent_ref:
+                continue
+            target_kind, target_id = target_ref.split(":", maxsplit=1)
+            target_parent_ref = (
+                f"pull_request:{target_number}"
+                if parent_kind == "pull"
+                else number_to_ref.get(target_number, f"issue:{target_number}")
+            )
+            target_parent_kind = target_parent_ref.split(":", maxsplit=1)[0]
+            target_parent_url = (
+                pull_url(owner, repo, target_number)
+                if target_parent_kind == "pull_request"
+                else issue_url(owner, repo, target_number)
+            )
+            add_node(
+                nodes,
+                node(
+                    target_parent_kind,
+                    str(target_number),
+                    observed_at,
+                    {"number": target_number, "referenced_only": True},
+                    target_parent_url,
+                ),
+            )
+            comment_attributes = {"referenced_only": True, "permalink": target_url}
+            if target_parent_kind == "pull_request":
+                comment_attributes["parent_pull_request"] = target_number
+            else:
+                comment_attributes["parent_issue"] = target_number
+            add_node(nodes, node(target_kind, target_id, observed_at, comment_attributes, target_url))
+            parent_relation = "REVIEWS" if target_kind == "review" else "COMMENTS_ON"
+            edges.append(
+                edge(
+                    parent_relation,
+                    target_ref,
+                    target_parent_ref,
+                    observed_at,
+                    target_url,
+                    {"parent": target_parent_ref, "permalink_target": True},
+                )
+            )
+            edges.append(
+                edge(
+                    "REFERENCES",
+                    parent_ref,
+                    target_ref,
+                    observed_at,
+                    parent_url,
+                    {"permalink": target_url, "target_kind": target_kind},
+                )
+            )
+            report["permalink_references"] += 1
+
+    def add_timeline_cross_references(parent_ref: str, number: int, parent_url: str, observed_at: str) -> None:
+        for event_item in client.paginate(f"/repos/{owner}/{repo}/issues/{number}/timeline", {}, max_items):
+            if event_item.get("event") != "cross-referenced":
+                continue
+            source_container = event_item.get("source")
+            if not isinstance(source_container, Mapping):
+                continue
+            source = source_container.get("issue") or source_container.get("pull_request") or source_container
+            if not isinstance(source, Mapping) or not isinstance(source.get("number"), int):
+                continue
+            source_number = int(source["number"])
+            source_kind = (
+                "pull_request"
+                if source_container.get("type") == "pull_request" or source.get("pull_request")
+                else "issue"
+            )
+            source_ref = f"{source_kind}:{source_number}"
+            source_url = str(
+                source.get("html_url")
+                or (pull_url(owner, repo, source_number) if source_kind == "pull_request" else issue_url(owner, repo, source_number))
+            )
+            event_time = safe_timestamp(event_item.get("created_at"), observed_at)
+            source_attributes = {
+                "number": source_number,
+                "state": source.get("state"),
+                "title": source.get("title", ""),
+                "referenced_only": source_number not in number_to_ref,
+            }
+            add_node(nodes, node(source_kind, str(source_number), event_time, source_attributes, source_url))
+            number_to_ref.setdefault(source_number, source_ref)
+            actor = (event_item.get("actor") or {}).get("login")
+            edges.append(
+                edge(
+                    "MENTIONS",
+                    source_ref,
+                    parent_ref,
+                    event_time,
+                    parent_url,
+                    {
+                        "timeline_event": "cross-referenced",
+                        "actor": actor if isinstance(actor, str) else None,
+                        "source_url": source_url,
+                    },
+                )
+            )
+            report["timeline_cross_references"] += 1
 
     for item in sorted(issue_items, key=lambda item: int(item["number"])):
         number = int(item["number"])
@@ -393,6 +542,7 @@ def collect_github_seed(
         report["issues"] += 1
         add_labels(parent_ref, item, observed_at, url)
         add_explicit_references(parent_ref, item.get("body"), observed_at, url)
+        add_timeline_cross_references(parent_ref, number, url, observed_at)
         if include_comments:
             for comment in client.paginate(
                 f"/repos/{owner}/{repo}/issues/{number}/comments", {}, max_comments_per_item
@@ -524,6 +674,18 @@ def collect_github_seed(
                     nodes,
                     node("review_comment", str(comment_id), comment_time, review_attributes, comment_url),
                 )
+                if review_path is not None:
+                    add_node(nodes, node("file", review_path, comment_time, {"path": review_path}, f"https://github.com/{owner}/{repo}/blob/{ref}/{review_path}"))
+                    edges.append(
+                        edge(
+                            "TOUCHES",
+                            comment_ref,
+                            f"file:{review_path}",
+                            comment_time,
+                            comment_url,
+                            {"path": review_path, "line": comment.get("line"), "review_comment": True},
+                        )
+                    )
                 edges.append(edge("COMMENTS_ON", comment_ref, parent_ref, comment_time, comment_url, {"parent": parent_ref}))
                 add_explicit_references(comment_ref, comment.get("body"), comment_time, comment_url)
                 report["review_comments"] += 1
@@ -589,6 +751,19 @@ def collect_github_seed(
         "max_commits": max_commits,
         "max_comments_per_item": max_comments_per_item,
         "include_comments": include_comments,
+        "history_window": {
+            "start_page": history_start_page,
+            "limit_per_family": max_items,
+            "issue_count": len(raw_issues),
+            "pull_request_count": len(raw_pulls),
+            "issues_complete": len(raw_issues) < max_items,
+            "pull_requests_complete": len(raw_pulls) < max_items,
+            "next_start_page": (
+                None
+                if len(raw_issues) < max_items and len(raw_pulls) < max_items
+                else history_start_page + ((max_items + 99) // 100)
+            ),
+        },
         "request_count": client.request_count,
         "unresolved_internal_reference_count": unresolved_references,
         "counts": dict(sorted(report.items())),
@@ -639,6 +814,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--max-commits", type=int, default=25)
     parser.add_argument("--max-comments-per-item", type=int, default=20)
     parser.add_argument("--max-cochange-pairs-per-commit", type=int, default=100)
+    parser.add_argument(
+        "--history-start-page",
+        type=int,
+        default=1,
+        help="GitHub history page to begin for an operator-controlled backfill window",
+    )
     parser.add_argument("--without-comments", action="store_true")
     parser.add_argument(
         "--scope-registry",
@@ -657,7 +838,16 @@ def main(argv: list[str] | None = None) -> int:
         print(f"GitHub collection failed: missing token in {args.token_env}", file=sys.stderr)
         return 2
     try:
-        if any(value < 1 for value in (args.max_items, args.max_commits, args.max_comments_per_item, args.max_cochange_pairs_per_commit)):
+        if any(
+            value < 1
+            for value in (
+                args.max_items,
+                args.max_commits,
+                args.max_comments_per_item,
+                args.max_cochange_pairs_per_commit,
+                args.history_start_page,
+            )
+        ):
             raise CompilationError("collection limits must be positive integers")
         if args.max_retries < 0:
             raise CompilationError("max retries must be zero or greater")
@@ -675,6 +865,7 @@ def main(argv: list[str] | None = None) -> int:
             args.max_comments_per_item,
             not args.without_comments,
             args.max_cochange_pairs_per_commit,
+            args.history_start_page,
         )
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.report.parent.mkdir(parents=True, exist_ok=True)

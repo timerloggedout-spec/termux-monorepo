@@ -19,7 +19,7 @@ Before a nontrivial code, workflow, consolidation, or documentation change, an a
 
 ## Input → Movement → Output
 
-A scoped work item and a precise root—file, symbol, pull request, issue, label, or scope—are the input. The agent queries the canonical index within explicit depth/node bounds, reviews the verified timeline and any separately ranked candidates, then cites material evidence in its plan or closeout. The output is a narrow contextual record that exposes connections and uncertainty without making speculative claims.
+A scoped work item and a precise root—file, symbol, pull request, issue, label, scope, or exact GitHub permalink—are the input. The agent queries the canonical index within explicit depth/node bounds, reviews the verified timeline and any separately ranked candidates, then cites material evidence in its plan or closeout. The output is a narrow contextual record that exposes connections and uncertainty without making speculative claims.
 
 ## Why this shape
 
@@ -28,11 +28,11 @@ Broad repository crawling produces noisy, stale, and potentially sensitive conte
 ## Steps
 
 1. Read `AGENTS.md`, the active proposal item, and `objects/knowledge/context-relationship-index.md`. Confirm that the intended work is registered and that the index manifest/ref is appropriate for the task.
-2. Start with an exact query root such as `file:archwiz/context_graph_builder.py`, `pr:232`, `issue:86`, `label:P1`, or `scope:context-relationships`. Use fuzzy text only when no exact root exists, and retain the score and overlap reason.
+2. Start with an exact query root such as `file:archwiz/context_graph_builder.py`, `pr:232`, `issue:86`, `label:P1`, `scope:context-relationships`, or a direct GitHub `#issuecomment-`, `#pullrequestreview-`, or `#discussion_r` permalink. Use `--file-review-timeline` for a review chronology tied to one exact file. Use fuzzy text only when no exact root exists, and retain the score and overlap reason.
 3. Keep traversal bounded. State the chosen depth and node limit; if the result is truncated, refine the root rather than silently widening collection.
-4. Treat AST, scope-registry, GitHub API, commit, and explicit-reference edges as **verified** only when their evidence is present. Treat lexical similarity and co-change links as **candidates** only.
+4. Treat AST, scope-registry, GitHub API, commit, native GitHub `cross-referenced` timeline events, exact permalinks, and explicit-reference edges as **verified** only when their evidence is present. Treat lexical similarity and co-change links as **candidates** only.
 5. Cite relevant evidence URLs/source locations in the work plan or closeout. Review candidate links manually before expanding scope; do not perform autonomous comment, label, merge, or configuration writes from graph results.
-6. If the canonical index is stale or unavailable, use the trusted publisher or an explicitly authorized bounded operator build. Do not hand-edit generated JSONL, matrix, manifest, reports, or checkpoint files.
+6. If the canonical index is stale or unavailable, use the trusted publisher or an explicitly authorized bounded operator build. For archive coverage, use manual history-page backfill and record the reported `next_start_page`; do not claim full history until it is null. Use the optional Linear freshness comparison only read-only and only for explicit GitHub mappings; its `stale`, `missing`, and `ambiguous` states require review, not an automatic Linear write. Do not hand-edit generated JSONL, matrix, manifest, reports, or checkpoint files.
 
 ## If you change this
 
@@ -47,7 +47,7 @@ Broad repository crawling produces noisy, stale, and potentially sensitive conte
 | Canonical index | Supplies normalized records and evidence-backed relationships. |
 | Source and GitHub evidence | Remain the authoritative evidence behind a graph edge. |
 | Candidate link | Directs manual investigation only. |
-| Operator | Authorizes full refreshes or any downstream GitHub write. |
+| Operator | Authorizes full refreshes, historical page backfill, or any downstream GitHub/Linear write. |
 
 ## See
 

@@ -32,4 +32,10 @@ def test_context_reconnaissance_artifacts_define_generated_and_candidate_boundar
         assert "metadata-only" in content
         assert "candidate" in content
     assert "not hand-edited" in object_card
-    assert "Do not persist PR, issue, review, or comment bodies" in skill
+    assert "cross-referenced" in object_card
+    assert "exact GitHub permalink" in process_card
+    assert "history-page backfill" in process_card
+    assert "Linear freshness" in object_card
+    assert "Do not persist PR, issue" in skill
+    assert "#discussion_r" in skill
+    assert "file-review-timeline" in skill

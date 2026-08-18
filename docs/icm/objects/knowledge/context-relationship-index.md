@@ -9,7 +9,7 @@ verified_at: 2026-08-18
 
 # Context Relationship Index
 
-The **Context Relationship Index** is the repository’s generated, metadata-only evidence graph. It connects repository files and bounded Python AST symbols with GitHub commits, pull requests, issues, labels, comments, reviews, changed-file touches, and explicit internal references.
+The **Context Relationship Index** is the repository’s generated, metadata-only evidence graph. It connects repository files and bounded Python AST symbols with GitHub commits, pull requests, issues, labels, native GitHub `cross-referenced` timeline events, comments, reviews, exact comment/review permalinks, changed-file touches, and explicit internal references.
 
 ## Why this shape
 
@@ -21,7 +21,7 @@ A conventional file map cannot reliably surface the historical and discussion co
 - `config/context_relationships/scope_registry.json` owns scopes, path exclusions, and collection size bounds.
 - `archwiz/context_relationships/` owns source collection, GitHub metadata collection, deterministic merge/compile, query, and the builder.
 - `workspace/llm_map/context_relationships/` holds only canonical generated records, manifest, reports, and a checkpoint; it is not hand-edited.
-- `.github/workflows/context-relationship-*.yml` own read-only pull-request validation, trusted staging publication, and bounded reconciliation.
+- `.github/workflows/context-relationship-*.yml` own read-only pull-request validation, trusted staging publication, bounded reconciliation, manual history-page backfill, and manual read-only Linear freshness comparison.
 
 Citations: `config/context_relationships/schema.json`, `config/context_relationships/scope_registry.json`, `archwiz/context_relationships/`, `.github/workflows/context-relationship-*.yml`.
 
@@ -30,7 +30,7 @@ Citations: `config/context_relationships/schema.json`, `config/context_relations
 - **owns:** the normalized relationship and evidence representation used for contextual reconnaissance.
 - **owned-by:** the schema, scope registry, compiler, and trusted index builder.
 - **joins:** an agent’s proposed change to exact file/symbol/history roots, verified evidence, and clearly marked candidate links.
-- **looks-like-but-is-not:** a full-text discussion archive, a substitute for source review, or authority to post GitHub comments, labels, or merges.
+- **looks-like-but-is-not:** a full-text discussion archive, a substitute for source review, proof of causal intent from candidates, or authority to post GitHub/Linear comments, labels, or merges.
 
 ## If you change this
 
@@ -43,10 +43,11 @@ Citations: `config/context_relationships/schema.json`, `config/context_relations
 |---|---|
 | Schema and compiler | Enforce stable IDs, valid relationships, evidence, and verified/candidate separation. |
 | Scope registry | Bounds source collection and excludes sensitive or generated paths. |
-| GitHub collector | Reads bounded metadata and extracts explicit references only in memory. |
+| GitHub collector | Reads bounded metadata, native cross-reference events, exact permalink targets, and explicit references only in memory. |
 | Canonical index | Offers queryable JSONL, sparse matrix, manifest, reports, and checkpoint. |
-| Query/Mermaid renderer | Produces bounded timelines and optional diagrams with candidate styling. |
-| Publisher and reconciliation workflows | Build and commit canonical artifacts only from trusted staging contexts. |
+| Query/Mermaid renderer | Produces bounded relationship timelines, direct permalink lookups, file-review projections, and optional diagrams with candidate styling. |
+| Publisher, reconciliation, and backfill workflows | Build and commit canonical artifacts only from trusted staging contexts; page backfill reports coverage explicitly. |
+| Linear freshness workflow | Compares explicit GitHub mappings against bounded Linear metadata read-only and emits `current`, `stale`, `missing`, or `ambiguous` for review. |
 
 ## See
 

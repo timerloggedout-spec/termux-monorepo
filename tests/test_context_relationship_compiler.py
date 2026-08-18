@@ -26,9 +26,9 @@ def test_compile_seed_is_deterministic_and_keeps_classification_boundaries():
 
     nodes, edges, matrix, manifest = first
     assert first == second
-    assert manifest["node_count"] == 7
-    assert manifest["edge_count"] == 5
-    assert manifest["verified_edge_count"] == 4
+    assert manifest["node_count"] == 10
+    assert manifest["edge_count"] == 11
+    assert manifest["verified_edge_count"] == 10
     assert manifest["candidate_edge_count"] == 1
     assert manifest["schema_sha256"]
     assert all(node["id"].startswith("node:") for node in nodes)
@@ -46,7 +46,7 @@ def test_duplicate_edges_merge_evidence_without_changing_the_relationship():
 
     _, edges, _, manifest = compile_seed(seed, SCOPE_REGISTRY, SCHEMA)
 
-    assert manifest["edge_count"] == 5
+    assert manifest["edge_count"] == 11
     scoped_edge = next(edge for edge in edges if edge["type"] == "IN_SCOPE" and len(edge["evidence"]) == 2)
     assert len(scoped_edge["evidence"]) == 2
 
@@ -56,8 +56,8 @@ def test_write_artifacts_creates_canonical_jsonl_matrix_and_manifest(tmp_path):
 
     write_artifacts(tmp_path, nodes, edges, matrix, manifest, FIXTURE)
 
-    assert (tmp_path / "nodes.jsonl").read_text().count("\n") == 7
-    assert (tmp_path / "edges.jsonl").read_text().count("\n") == 5
+    assert (tmp_path / "nodes.jsonl").read_text().count("\n") == 10
+    assert (tmp_path / "edges.jsonl").read_text().count("\n") == 11
     rendered_matrix = json.loads((tmp_path / "matrix.json").read_text())
     rendered_manifest = json.loads((tmp_path / "manifest.json").read_text())
     assert rendered_matrix["node_order"] == [node["id"] for node in nodes]

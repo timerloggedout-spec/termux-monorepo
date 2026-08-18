@@ -364,6 +364,56 @@ def models(request: Request) -> Dict[str, Any]:
 @app.post("/v1/chat/completions")
 def chat_completions(request: ChatCompletionRequest, raw_request: Request) -> Any:
     validate_auth(raw_request)
+    return handle_completion(request)
+
+@app.post("/v1/messages")
+def anthropic_messages(request: ChatCompletionRequest, raw_request: Request) -> Any:
+    """Anthropic-native Messages API compatibility."""
+    validate_auth(raw_request)
+    response = handle_completion(request)
+    if isinstance(response, dict) and "choices" in response:
+        content = response["choices"][0]["message"]["content"]
+        return {
+            "id": response["id"],
+            "type": "message",
+            "role": "assistant",
+            "content": [{"type": "text", "text": content}],
+            "model": response["model"],
+            "usage": response.get("usage", {"input_tokens": 0, "output_tokens": 0})
+        }
+    return response
+
+@app.post("/v1/models/{model_name}:generateContent")
+def google_generate_content(model_name: str, request_data: Dict[str, Any], raw_request: Request) -> Any:
+    """Google Gemini-native generateContent API compatibility."""
+    validate_auth(raw_request)
+    messages = []
+    for part in request_data.get("contents", []):
+        role = "user" if part.get("role") == "user" else "assistant"
+        content = ""
+        for p in part.get("parts", []):
+            if "text" in p:
+                content += p["text"]
+        messages.append(ChatMessage(role=role, content=content))
+    
+    hub_request = ChatCompletionRequest(model=model_name, messages=messages)
+    response = handle_completion(hub_request)
+    
+    if isinstance(response, dict) and "choices" in response:
+        content = response["choices"][0]["message"]["content"]
+        return {
+            "candidates": [{
+                "content": {"parts": [{"text": content}], "role": "model"},
+                "finishReason": "STOP"
+            }],
+            "usageMetadata": {
+                "promptTokenCount": response.get("usage", {}).get("prompt_tokens", 0),
+                "candidatesTokenCount": response.get("usage", {}).get("completion_tokens", 0)
+            }
+        }
+    return response
+
+def handle_completion(request: ChatCompletionRequest) -> Any:
     model = request.model.strip()
     if model.startswith("wrapper/"):
         provider = model.split("/", 1)[1]

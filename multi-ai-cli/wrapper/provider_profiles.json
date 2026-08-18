@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "providers": [
+    {
+      "id": "deepseek",
+      "kind": "browser-wrapper",
+      "state": "probe-required",
+      "allow_send_after_probe": true,
+      "source_examples": [
+        "deepseek-cli/deepseek-stable.js",
+        "deepseek-cli/deepseek-manual-login.js",
+        "deepseek-cli/tests/deepseek-full-suite.mjs"
+      ],
+      "url": "https://chat.deepseek.com/",
+      "input": {
+        "mode": "react-textarea",
+        "candidates": ["textarea[placeholder=\"Message DeepSeek\"]", "textarea"]
+      },
+      "submit": {"candidates": ["._52c986b", "button[type=\"submit\"]"]},
+      "response": {"candidates": ["div.ds-message[data-role=\"assistant\"]:last-child .ds-markdown", "div.ds-message[data-role=\"assistant\"]:last-child"]},
+      "ready": {"candidates": ["textarea[placeholder=\"Message DeepSeek\"]", "._52c986b"]},
+      "login": {"candidates": ["a[href*=\"sign_in\"]", "a[href*=\"login\"]"]},
+      "wait": {"stable_ms": 3000, "timeout_ms": 120000}
+    },
+    {
+      "id": "mistral",
+      "kind": "browser-wrapper",
+      "state": "probe-required",
+      "allow_send_after_probe": true,
+      "source_examples": [
+        "multi-ai-cli/harvesters/diag-mistral.cjs",
+        "multi-ai-cli/harvesters/capture-mistral-token.cjs",
+        "ChapitoAI:chapito/mistral_chat.py"
+      ],
+      "url": "https://chat.mistral.ai/",
+      "input": {
+        "mode": "textarea",
+        "candidates": ["textarea[name=\"message.text\"]", "textarea", "div[contenteditable=\"true\"]"]
+      },
+      "submit": {"candidates": ["button[type=\"submit\"]"]},
+      "response": {"candidates": ["div.prose:last-of-type", "[data-testid=\"assistant-message\"]:last-child"]},
+      "ready": {"candidates": ["textarea[name=\"message.text\"]", "button[type=\"submit\"]"]},
+      "login": {"candidates": ["a[href*=\"login\"]", "a[href*=\"sign\"]"]},
+      "wait": {"stable_ms": 3000, "timeout_ms": 120000}
+    },
+    {
+      "id": "ai_studio",
+      "kind": "browser-wrapper",
+      "state": "probe-required",
+      "allow_send_after_probe": true,
+      "source_examples": ["ChapitoAI:chapito/ai_studio_chat.py (WIP; requires local readiness probe)"],
+      "url": "https://aistudio.google.com/prompts/new_chat?pli=1",
+      "input": {
+        "mode": "textarea",
+        "candidates": [
+          "textarea.textarea",
+          "ms-autosize-textarea textarea",
+          "ms-chunk-input textarea",
+          "ms-prompt-input-wrapper textarea[aria-label*=\"prompt\" i]",
+          "ms-prompt-input-wrapper textarea",
+          "ms-prompt-box textarea[aria-label=\"Enter a prompt\"]",
+          "ms-prompt-box textarea"
+        ]
+      },
+      "submit": {
+        "candidates": [
+          "ms-run-button button[type=\"submit\"].ms-button-primary",
+          "ms-run-button button[type=\"submit\"]",
+          "ms-prompt-input-wrapper button[aria-label=\"Run\"][type=\"submit\"]",
+          "button[aria-label=\"Run\"].run-button",
+          "button.run-button"
+        ]
+      },
+      "response": {
+        "candidates": [
+          "ms-chat-turn .chat-turn-container.model:last-of-type ms-cmark-node.cmark-node:last-of-type",
+          "ms-text-chunk:not(:has(ms-thought-chunk)):last-of-type",
+          "[class*=\"turn-content\"]:last-child"
+        ]
+      },
+      "ready": {
+        "candidates": [
+          "ms-chunk-input textarea",
+          "ms-prompt-input-wrapper textarea",
+          "ms-run-button button[type=\"submit\"]",
+          "button.run-button"
+        ]
+      },
+      "login": {"candidates": ["a[href*=\"signin\"]", "a[href*=\"login\"]"]},
+      "wait": {"stable_ms": 3000, "timeout_ms": 120000}
+    },
+    {
+      "id": "perplexity",
+      "kind": "browser-wrapper",
+      "state": "probe-required",
+      "allow_send_after_probe": true,
+      "source_examples": ["ChapitoAI:chapito/perplexity_chat.py (requires local readiness probe)"],
+      "url": "https://www.perplexity.ai/",
+      "input": {"mode": "textarea", "candidates": ["textarea"]},
+      "submit": {"candidates": ["button[aria-label=\"Submit\"]"]},
+      "response": {"candidates": ["div.prose:last-of-type"]},
+      "ready": {"candidates": ["textarea", "button[aria-label=\"Submit\"]"]},
+      "login": {"candidates": ["a[href*=\"login\"]", "button[aria-label*=\"Log\"]"]},
+      "wait": {"stable_ms": 3000, "timeout_ms": 120000}
+    },
+    {
+      "id": "openai_web",
+      "kind": "browser-wrapper",
+      "state": "probe-required",
+      "allow_send_after_probe": true,
+      "source_examples": ["ChapitoAI:chapito/openai_chat.py"],
+      "url": "https://chatgpt.com/",
+      "input": {"mode": "contenteditable", "candidates": ["div[contenteditable=\"true\"]"]},
+      "submit": {"candidates": ["button[data-testid=\"send-button\"]"]},
+      "response": {"candidates": ["div[data-message-author-role=\"assistant\"]:last-child"]},
+      "ready": {"candidates": ["div[contenteditable=\"true\"]", "button[data-testid=\"composer-speech-button\"]"]},
+      "login": {"candidates": ["a[href*=\"login\"]", "button[data-testid*=\"login\"]"]},
+      "wait": {"stable_ms": 3000, "timeout_ms": 120000}
+    },
+    {
+      "id": "liner",
+      "kind": "browser-wrapper",
+      "state": "discovery-required",
+      "allow_send_after_probe": false,
+      "source_examples": [],
+      "url": null,
+      "input": {"mode": "textarea", "candidates": ["textarea", "div[contenteditable=\"true\"]"]},
+      "submit": {"candidates": ["button[type=\"submit\"]", "button[aria-label*=\"Send\"]"]},
+      "response": {"candidates": ["[data-message-author-role=\"assistant\"]:last-child", "div.prose:last-of-type"]},
+      "ready": {"candidates": ["textarea", "div[contenteditable=\"true\"]"]},
+      "login": {"candidates": ["a[href*=\"login\"]", "a[href*=\"sign\"]"]},
+      "wait": {"stable_ms": 3000, "timeout_ms": 120000}
+    },
+    {
+      "id": "openrouter",
+      "kind": "delegated",
+      "state": "delegated",
+      "allow_send_after_probe": false,
+      "source_examples": [".github/actions/http-llm-invoke/action.yml", "timerloggedout/ter-40-llm-api-hub-and-kai9000-split"],
+      "url": null,
+      "input": {"mode": "none", "candidates": []},
+      "submit": {"candidates": []},
+      "response": {"candidates": []},
+      "ready": {"candidates": []},
+      "login": {"candidates": []},
+      "wait": {"stable_ms": 0, "timeout_ms": 0}
+    }
+  ]
+}

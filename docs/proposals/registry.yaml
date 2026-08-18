@@ -71,3 +71,20 @@ proposals:
         status: accepted
     related_prs: [1, 2]
     gates_required: [repo-gate]
+
+  - id: multi-ai-lightwrap-parity
+    title: "Termux lightweight multi-AI web-wrapper parity hub"
+    author: Manus
+    status: executing
+    priority: P1
+    path: active/multi-ai-lightwrap-parity/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: Manus
+        role: implementation agent
+        status: executing
+    related_prs: [6, 48, 174, 216]
+    related_branches: [feature/multi-ai-lightwrap-parity, timerloggedout/ter-9-fix-vibe-silent-dispatch-provider-aware-stores-mark-scaffold, timerloggedout/ter-40-llm-api-hub-and-kai9000-split]
+    gates_required: [repo-gate, termux-smoke]

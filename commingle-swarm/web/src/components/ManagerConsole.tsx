@@ -12,10 +12,18 @@ export const ManagerConsole = (reRender: () => void) => {
   return () => html`
     <section style="margin-top:16px;">
       <h2>Manager console</h2>
-      <button style="padding:8px 12px; background:#1e2738; color:#eaf0ff; border:0; border-radius:6px;" @click=${propose}>
+      <button
+        aria-label="Propose trade allocation plan"
+        style="padding:8px 12px; background:#1e2738; color:#eaf0ff; border:0; border-radius:6px; cursor:pointer;"
+        @click=${propose}
+      >
         Propose trade
       </button>
-      <pre style="background:#121426; padding:12px; border-radius:8px; margin-top:12px;">${planText}</pre>
+      <pre
+        aria-live="polite"
+        aria-label="Trade proposal output"
+        style="background:#121426; padding:12px; border-radius:8px; margin-top:12px;"
+      >${planText}</pre>
     </section>
   `;
 };

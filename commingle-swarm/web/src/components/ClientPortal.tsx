@@ -19,7 +19,11 @@ export const ClientPortal = (reRender: () => void) => {
   return () => html`
     <section style="margin-top:16px;">
       <h2>Client portal</h2>
-      <pre style="background:#121426; padding:12px; border-radius:8px;">${vaultText}</pre>
+      <pre
+        aria-live="polite"
+        aria-label="Vault snapshot output"
+        style="background:#121426; padding:12px; border-radius:8px;"
+      >${vaultText}</pre>
     </section>
   `;
 };

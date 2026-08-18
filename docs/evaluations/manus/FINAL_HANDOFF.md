@@ -6,8 +6,9 @@ The `termux-monorepo` has been stabilized on the `master-staging` spine and the 
 ## 2. Integrated Infrastructure
 
 ### 2.1 Unified LLM API Hub (`llm_api_hub/`)
-- **Server:** FastAPI-based server at `llm_api_hub/server/app.py` providing a local OpenAI-compatible endpoint (`:8787/v1`).
-- **Routing:** Automatically routes requests to `multi-ai-cli` backends (DeepSeek, Mistral, etc.) or upstream providers (OpenRouter, OpenAI).
+- **Server:** FastAPI-based server at `llm_api_hub/server/app.py` providing local endpoints for OpenAI (`/v1/chat/completions`), Anthropic (`/v1/messages`), and Google Gemini (`/v1/models/{model}:generateContent`).
+- **Routing:** Automatically routes requests to `multi-ai-cli` backends (DeepSeek, Mistral, Grok, etc.) or upstream providers (OpenRouter, OpenAI, Anthropic).
+- **Integrated Registry:** Merged prior work from `feature/multi-ai-webwrapper-provider-hub` to include a governed `ProviderRegistry` and `ProviderChecklist` for multi-account lifecycle management.
 - **Client:** Thin Python client at `llm_api_hub/clients/openai_compat.py` for repository-wide use.
 
 ### 2.2 Agent Retargeting

@@ -157,6 +157,30 @@ class DeepSeekWafSessionTests(unittest.TestCase):
         self.assertEqual(session["cookies"]["aws-waf-token"], "cached-waf-value")
         self.assertEqual(persisted["cookies"]["aws-waf-token"], "cached-waf-value")
 
+    def test_ensure_session_rejects_symlink_cache_file(self):
+        with tempfile.TemporaryDirectory() as temp_dir, patch.dict(
+            os.environ,
+            {"DEEPSEEK_TOKEN": "test-token"},
+            clear=True,
+        ):
+            target_file = Path(temp_dir) / "sensitive.txt"
+            target_file.write_text("sensitive-data", encoding="utf-8")
+            if os.name != "nt":
+                target_file.chmod(0o644)
+
+            primary_dir = Path(temp_dir) / "primary"
+            primary_dir.mkdir(parents=True, exist_ok=True)
+            cache_path = primary_dir / "session.json"
+            cache_path.symlink_to(target_file)
+
+            with self.assertRaises(ValueError):
+                session_manager.ensure_session(temp_dir, "primary")
+
+            # Verify target content & mode were uncorrupted
+            self.assertEqual(target_file.read_text(encoding="utf-8"), "sensitive-data")
+            if os.name != "nt":
+                self.assertEqual(target_file.stat().st_mode & 0o777, 0o644)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -8,10 +8,11 @@ name: Peer review orchestrator
 # pass only after every required provider has delivered for the live PR SHA.
 #
 # The workflow never handles browser cookies or attempts undocumented UI/API
-# requests. See docs/ops/OPERATOR_INTERACTIVE_ACTIONS.md.
+# requests. It runs API-only and never checks out pull-request code, including
+# under pull_request_target. See docs/ops/OPERATOR_INTERACTIVE_ACTIONS.md.
 
 on:
-  pull_request:
+  pull_request_target:
     types: [opened, synchronize, ready_for_review, reopened]
   issue_comment:
     types: [created, edited]
@@ -21,8 +22,10 @@ on:
     types: [created, edited]
 
 concurrency:
-  group: peer-orch-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
-  cancel-in-progress: true
+  # Keep independent provider events; a later review/comment must not cancel
+  # the PR event that initialized the active SHA cycle.
+  group: peer-orch-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}-${{ github.event.review.id || github.event.comment.id || github.run_id }}
+  cancel-in-progress: false
 
 permissions: {}
 
@@ -35,6 +38,7 @@ jobs:
       pull-requests: read
       issues: write
       checks: read
+      actions: write
     outputs:
       cycle_id: ${{ steps.collect.outputs.cycle_id }}
       head_sha: ${{ steps.collect.outputs.head_sha }}
@@ -50,8 +54,12 @@ jobs:
           # Comma-separated provider policy. Set a repository variable to change
           # this only after the provider integration is deliberately enabled.
           REQUIRED_PROVIDERS: ${{ vars.PEER_REQUIRED_PROVIDERS || 'coderabbit,qodo,devin' }}
-          MAX_WAIT_SEC: '300'
-          POLL_SEC: '20'
+          # State is event-driven. A run snapshots the active cycle once;
+          # provider events re-enter this workflow and advance the state.
+          MAX_WAIT_SEC: '1'
+          POLL_SEC: '5'
+          OPERATOR_EXECUTOR_LOGINS: ${{ vars.OPERATOR_EXECUTOR_LOGINS || github.repository_owner }}
+          OPERATOR_ALLOWED_ACTIONS: ${{ vars.OPERATOR_ALLOWED_ACTIONS || 'coderabbit:trigger_review' }}
         with:
           script: |
             const requiredProviders = (process.env.REQUIRED_PROVIDERS || 'coderabbit,qodo,devin')
@@ -61,15 +69,30 @@ jobs:
             const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
             const operatorAckMarker = '<!-- operator-action-ack:v1 -->';
 
-            function providerFor(login) {
-              const value = (login || '').toLowerCase();
-              if (value.includes('coderabbit')) return 'coderabbit';
-              if (value.includes('qodo')) return 'qodo';
-              if (value.includes('devin')) return 'devin';
-              if (value.includes('aikido')) return 'aikido';
-              if (value.includes('sentry')) return 'sentry';
-              if (value.includes('copilot')) return 'copilot';
-              return '';
+            const providerLogins = new Map([
+              ['coderabbitai[bot]', 'coderabbit'],
+              ['qodo-code-review[bot]', 'qodo'],
+              ['devin-ai-integration[bot]', 'devin'],
+              ['aikido-security[bot]', 'aikido'],
+              ['sentry-io[bot]', 'sentry'],
+              ['copilot-pull-request-reviewer[bot]', 'copilot'],
+            ]);
+            const providerCheckApps = new Map([
+              ['coderabbit', 'coderabbit'],
+              ['qodo', 'qodo'],
+              ['devin', 'devin'],
+              ['aikido', 'aikido'],
+              ['sentry', 'sentry'],
+              ['copilot', 'copilot'],
+            ]);
+            const executorLogins = new Set((process.env.OPERATOR_EXECUTOR_LOGINS || '')
+              .split(',').map(value => value.trim().toLowerCase()).filter(Boolean));
+            const allowedActions = new Set((process.env.OPERATOR_ALLOWED_ACTIONS || '')
+              .split(',').map(value => value.trim().toLowerCase()).filter(Boolean));
+
+            function providerFor(user) {
+              if (user?.type !== 'Bot') return '';
+              return providerLogins.get((user.login || '').toLowerCase()) || '';
             }
 
             function eventDetails() {
@@ -86,11 +109,10 @@ jobs:
               return;
             }
 
-            const eventAuthor = context.payload.comment?.user?.login ||
-              context.payload.review?.user?.login || '';
+            const eventAuthor = context.payload.comment?.user || context.payload.review?.user || {};
             const eventBody = context.payload.comment?.body || context.payload.review?.body || '';
             const eventProvider = providerFor(eventAuthor);
-            const relevantEvent = context.eventName === 'pull_request' ||
+            const relevantEvent = context.eventName === 'pull_request_target' ||
               Boolean(eventProvider) || eventBody.includes(operatorAckMarker);
             if (!relevantEvent) {
               core.info(`Ignoring unrelated ${context.eventName} event on PR #${prNumber}`);
@@ -116,12 +138,29 @@ jobs:
             core.setOutput('cycle_id', cycleId);
             core.setOutput('head_sha', headSha);
 
-            const { data: commit } = await github.rest.repos.getCommit({
-              owner: context.repo.owner, repo: context.repo.repo, ref: headSha,
+            const stateMarker = '<!-- agent-peer-response-state:v2 -->';
+            const initialComments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100,
             });
-            const startedAt = new Date(
-              commit.commit.committer?.date || commit.commit.author?.date || pr.updated_at
-            ).getTime() - 60_000;
+            const parseField = (body, name) =>
+              (body || '').match(new RegExp(`^${name}:\\s*(.+?)\\s*$`, 'm'))?.[1]?.trim() || '';
+            const existingCycle = initialComments.filter(comment =>
+              comment.user?.type === 'Bot' &&
+              comment.user?.login === 'github-actions[bot]' &&
+              comment.body?.includes(stateMarker) &&
+              parseField(comment.body, 'cycle_id') === cycleId &&
+              parseField(comment.body, 'head_sha') === headSha
+            ).sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))[0];
+            const eventTimestamp = context.payload.pull_request?.updated_at ||
+              context.payload.comment?.created_at ||
+              context.payload.review?.submitted_at ||
+              context.payload.review?.created_at || '';
+            const initialEventTime = Date.parse(eventTimestamp);
+            const recordedCycleStart = Date.parse(parseField(existingCycle?.body, 'cycle_started_at'));
+            const cycleStartedAt = Number.isFinite(recordedCycleStart)
+              ? recordedCycleStart
+              : (Number.isFinite(initialEventTime) ? initialEventTime : Date.now());
+            const cycleStartedAtIso = new Date(cycleStartedAt).toISOString();
 
             async function fetchEvidence() {
               const comments = await github.paginate(github.rest.issues.listComments, {
@@ -157,7 +196,7 @@ jobs:
             function controlEntries(comments) {
               const controls = [];
               for (const comment of comments) {
-                const provider = providerFor(comment.user?.login);
+                const provider = providerFor(comment.user);
                 if (!provider) continue;
                 const matcher = /-\s*\[([ xX])\]\s*<!--\s*\{[^}]*"checkboxId"\s*:\s*"([^"]+)"[^}]*\}\s*-->/g;
                 let match;
@@ -176,42 +215,54 @@ jobs:
 
             function acknowledgedControls(comments, controls) {
               const authorizedAssociations = new Set(['OWNER', 'MEMBER', 'COLLABORATOR']);
-              return comments.filter(comment => {
-                if (!comment.body?.includes(operatorAckMarker)) return false;
-                if (!authorizedAssociations.has(comment.author_association)) return false;
-                return comment.body.includes(`cycle_id: ${cycleId}`);
-              }).map(comment => ({
-                body: comment.body,
-                url: comment.html_url,
-                actor: comment.user?.login || 'operator',
-              })).filter(ack => controls.some(control =>
-                ack.body.includes(`provider: ${control.provider}`) &&
-                ack.body.includes(`control_id: ${control.checkboxId}`)
-              ));
+              const acknowledged = new Set();
+              for (const comment of comments) {
+                if (!comment.body?.includes(operatorAckMarker)) continue;
+                if (!authorizedAssociations.has(comment.author_association)) continue;
+                if (!executorLogins.has((comment.user?.login || '').toLowerCase())) continue;
+                if (Date.parse(comment.created_at || '') < cycleStartedAt) continue;
+                const acknowledgement = {
+                  cycleId: parseField(comment.body, 'cycle_id'),
+                  provider: parseField(comment.body, 'provider').toLowerCase(),
+                  controlId: parseField(comment.body, 'control_id'),
+                  action: parseField(comment.body, 'action').toLowerCase(),
+                };
+                if (acknowledgement.cycleId !== cycleId) continue;
+                if (!allowedActions.has(`${acknowledgement.provider}:${acknowledgement.action}`)) continue;
+                const control = controls.find(candidate =>
+                  candidate.provider === acknowledgement.provider &&
+                  candidate.checkboxId === acknowledgement.controlId
+                );
+                if (control) acknowledged.add(`${control.provider}:${control.checkboxId}`);
+              }
+              return acknowledged;
             }
 
             function isControlOnly(body) {
-              return /checkboxId[\s\S]{0,500}Trigger review|does not receive automatic reviews/i.test(body || '');
+              const value = body || '';
+              const checkboxTrigger = /checkboxId[\s\S]{0,500}Trigger review/i.test(value);
+              return checkboxTrigger || /does not receive automatic reviews/i.test(value);
             }
 
             function deliveredProvider(provider, evidence) {
-              const afterCycle = item => new Date(item.updated_at || item.submitted_at || item.created_at || 0).getTime() >= startedAt;
+              const createdDuringCycle = item => Date.parse(item.created_at || item.submitted_at || '') >= cycleStartedAt;
               const sourceComments = [...evidence.comments, ...evidence.reviewComments];
               const comment = sourceComments.find(item =>
-                providerFor(item.user?.login) === provider && afterCycle(item) && !isControlOnly(item.body)
+                providerFor(item.user) === provider && createdDuringCycle(item) && !isControlOnly(item.body)
               );
               if (comment) return { delivered: true, url: comment.html_url || comment.url || '', via: 'comment' };
 
               const review = evidence.reviews.find(item =>
-                providerFor(item.user?.login) === provider &&
-                item.commit_id === headSha && afterCycle(item) && !isControlOnly(item.body)
+                providerFor(item.user) === provider &&
+                item.commit_id === headSha && createdDuringCycle(item) && !isControlOnly(item.body)
               );
               if (review) return { delivered: true, url: review.html_url || review.url || '', via: 'review' };
 
-              const check = evidence.checks.find(item => {
-                const name = `${item.name || ''} ${item.app?.slug || ''}`.toLowerCase();
-                return item.status === 'completed' && afterCycle(item) && name.includes(provider);
-              });
+              const check = evidence.checks.find(item =>
+                item.status === 'completed' &&
+                Date.parse(item.started_at || item.completed_at || '') >= cycleStartedAt &&
+                (item.app?.slug || '').toLowerCase() === providerCheckApps.get(provider)
+              );
               if (check) return { delivered: true, url: check.html_url || check.details_url || '', via: 'check' };
               return { delivered: false, url: '', via: '' };
             }
@@ -225,8 +276,11 @@ jobs:
               const providerStates = requiredProviders.map(provider => {
                 const providerControls = controls.filter(control => control.provider === provider);
                 const delivered = deliveredProvider(provider, evidence);
-                const acknowledged = providerControls.some(control => control.selected) ||
-                  acknowledgements.some(ack => ack.body.includes(`provider: ${provider}`));
+                // A selected control from a prior head is not proof for this cycle.
+                // Only a current, authorized acknowledgement binds a source control to this SHA.
+                const acknowledged = providerControls.some(control =>
+                  acknowledgements.has(`${control.provider}:${control.checkboxId}`)
+                );
                 let state = 'awaiting_provider_response';
                 if (providerControls.length && !acknowledged) state = 'pending_operator_action';
                 if (acknowledged) state = 'action_acknowledged';
@@ -263,6 +317,7 @@ jobs:
             core.setOutput('state', state);
             core.setOutput('ready', complete ? 'true' : 'false');
             core.setOutput('pending', pending);
+            core.setOutput('cycle_started_at', cycleStartedAtIso);
             core.setOutput('provider_lines', deliveryLines.join('\n'));
             core.setOutput('control_lines', operatorControls.join('\n') || '- none observed');
 
@@ -275,6 +330,7 @@ jobs:
           STATE: ${{ steps.collect.outputs.state }}
           READY: ${{ steps.collect.outputs.ready }}
           PENDING: ${{ steps.collect.outputs.pending }}
+          CYCLE_STARTED_AT: ${{ steps.collect.outputs.cycle_started_at }}
           PROVIDERS: ${{ steps.collect.outputs.provider_lines }}
           CONTROLS: ${{ steps.collect.outputs.control_lines }}
           REQUIRED_PROVIDERS: ${{ vars.PEER_REQUIRED_PROVIDERS || 'coderabbit,qodo,devin' }}
@@ -287,6 +343,7 @@ jobs:
               marker,
               `cycle_id: ${process.env.CYCLE_ID}`,
               `head_sha: ${process.env.HEAD_SHA}`,
+              `cycle_started_at: ${process.env.CYCLE_STARTED_AT}`,
               `state: ${process.env.STATE}`,
               `ready: ${process.env.READY}`,
               `required_providers: ${process.env.REQUIRED_PROVIDERS}`,
@@ -317,9 +374,11 @@ jobs:
               owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100,
             });
             const existing = comments.filter(comment =>
+              comment.user?.type === 'Bot' &&
               comment.user?.login === 'github-actions[bot]' &&
               comment.body?.includes(marker) &&
-              comment.body.includes(`cycle_id: ${process.env.CYCLE_ID}`)
+              comment.body.includes(`cycle_id: ${process.env.CYCLE_ID}`) &&
+              comment.body.includes(`head_sha: ${process.env.HEAD_SHA}`)
             ).sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))[0];
             if (existing) {
               await github.rest.issues.updateComment({
@@ -330,3 +389,31 @@ jobs:
                 owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, body,
               });
             }
+
+      - name: Dispatch verified second pass
+        if: |
+          steps.collect.outputs.skipped != 'true' &&
+          steps.collect.outputs.state == 'responses_collected' &&
+          steps.collect.outputs.ready == 'true' &&
+          github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number }}
+          HEAD_SHA: ${{ steps.collect.outputs.head_sha }}
+          CYCLE_ID: ${{ steps.collect.outputs.cycle_id }}
+        with:
+          script: |
+            const prNumber = Number(process.env.PR_NUMBER);
+            if (!prNumber) return;
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'gemini-after-peers.yml',
+              ref: context.payload.repository.default_branch,
+              inputs: {
+                pr_number: String(prNumber),
+                head_sha: process.env.HEAD_SHA,
+                cycle_id: process.env.CYCLE_ID,
+              },
+            });
+            core.info(`Dispatched verified second pass for ${process.env.CYCLE_ID}`);

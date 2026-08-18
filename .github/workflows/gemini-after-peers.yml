@@ -5,18 +5,26 @@ name: Gemini review after peers
 # Peer Omni ↔ OpenRouter first; Gemini residual.
 
 on:
-  workflow_run:
-    workflows: ['Peer review orchestrator']
-    types: [completed]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Pull request number with verified peer responses'
+        required: true
+        type: string
+      head_sha:
+        description: 'Verified live pull-request head SHA'
+        required: true
+        type: string
+      cycle_id:
+        description: 'Verified SHA-bound peer-response cycle ID'
+        required: true
+        type: string
 
 permissions: {}
 
 jobs:
   second-pass:
-    if: |
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.event == 'pull_request' &&
-      github.event.workflow_run.head_repository.full_name == github.repository
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -29,27 +37,18 @@ jobs:
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         with:
           script: |
-            const run = context.payload.workflow_run;
-            let prNumber = null;
-            let headSha = run.head_sha;
-            if (run.pull_requests && run.pull_requests.length > 0) {
-              prNumber = run.pull_requests[0].number;
-              headSha = run.pull_requests[0].head?.sha || headSha;
-            } else {
-              const { data: prs } = await github.rest.pulls.list({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                state: 'open',
-                head: `${context.repo.owner}:${run.head_branch}`,
-                per_page: 5,
-              });
-              if (prs[0]) {
-                prNumber = prs[0].number;
-                headSha = prs[0].head.sha;
-              }
-            }
-            if (!prNumber) {
+            const prNumber = Number(context.payload.inputs.pr_number);
+            const headSha = context.payload.inputs.head_sha || '';
+            const cycleId = context.payload.inputs.cycle_id || '';
+            if (!Number.isInteger(prNumber) || prNumber <= 0 || !/^[0-9a-f]{40}$/i.test(headSha)) {
               core.setOutput('skip', 'true');
+              core.setOutput('reason', 'invalid verified peer-response dispatch inputs');
+              return;
+            }
+            const expectedCycleId = `pr-${prNumber}-${headSha.slice(0, 12)}`;
+            if (cycleId !== expectedCycleId) {
+              core.setOutput('skip', 'true');
+              core.setOutput('reason', 'cycle ID does not bind the dispatched PR and SHA');
               return;
             }
             const { data: pr } = await github.rest.pulls.get({
@@ -73,10 +72,12 @@ jobs:
               per_page: 100,
             });
             const stateComment = comments
-              .filter(c =>
-                c.body &&
-                c.body.includes('<!-- agent-peer-response-state:v2 -->') &&
-                c.body.includes(`head_sha: ${headSha}`)
+              .filter(comment =>
+                comment.user?.type === 'Bot' &&
+                comment.user?.login === 'github-actions[bot]' &&
+                comment.body?.includes('<!-- agent-peer-response-state:v2 -->') &&
+                comment.body.includes(`cycle_id: ${cycleId}`) &&
+                comment.body.includes(`head_sha: ${headSha}`)
               )
               .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))[0];
             const state = stateComment?.body.match(/^state:\s*(.+)$/m)?.[1]?.trim() || 'missing';
@@ -89,7 +90,7 @@ jobs:
             }
             core.setOutput('skip', 'false');
             core.setOutput('pr_number', String(prNumber));
-            core.setOutput('head_sha', headSha || '');
+            core.setOutput('head_sha', headSha);
             core.setOutput('peer_body', (stateComment?.body || '').slice(0, 1800));
 
       # Trusted composite actions from default branch (workflow_run privilege)

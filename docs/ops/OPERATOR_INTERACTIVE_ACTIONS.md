@@ -20,7 +20,7 @@ Some external PR agents expose a provider-owned checkbox, button, or toggle inst
 2. Confirm the provider, source URL, and `control_id` are present under **Authorized interactive controls**.
 3. Use the named, approved operator profile for that provider. If the account is not signed in, lacks permission, or shows a different control, stop and report the state; do not substitute a different identity.
 4. Select only the requested control. Capture the provider source URL and the visible after-action result for the audit trail.
-5. Post the following acknowledgement from an `OWNER`, `MEMBER`, or `COLLABORATOR` account. Use the exact cycle and control values from the state comment.
+5. Post the following acknowledgement only from an exact login in the repository’s `OPERATOR_EXECUTOR_LOGINS` allowlist. A repository association alone is insufficient. Use the exact cycle and control values from the state comment, and use only a provider/action tuple in `OPERATOR_ALLOWED_ACTIONS` (the default is `coderabbit:trigger_review`).
 
 ```text
 <!-- operator-action-ack:v1 -->
@@ -40,6 +40,10 @@ action: <allowlisted-action>
 | `action_acknowledged` | A permitted UI action was acknowledged, but the provider has not completed review. | Wait for the provider response; investigate if it does not arrive. |
 | `awaiting_provider_response` | No provider response has been ingested for one or more required providers. | Confirm provider configuration or resolve its operational blocker. |
 | `responses_collected` | Every configured required provider has completion evidence for the active SHA. | No action; second pass is eligible. |
+
+## Authorization configuration
+
+Set `OPERATOR_EXECUTOR_LOGINS` to a comma-separated list of exact GitHub logins permitted to acknowledge provider UI actions. Set `OPERATOR_ALLOWED_ACTIONS` to comma-separated `provider:action` tuples. The workflow defaults to the repository owner and `coderabbit:trigger_review` only when those variables are not yet configured; production use should set both variables explicitly.
 
 ## Credential and account boundary
 

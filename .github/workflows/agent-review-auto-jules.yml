@@ -1,7 +1,9 @@
 name: Agent review → auto Jules
 
-# When CodeRabbit, Devin, or other review bots leave feedback, automatically
+# When CodeRabbit, Qodo, Devin, or other review bots leave substantive feedback,
 # summon Jules via @jules (display moniker: heyVern — do not @-mention strangers).
+# Provider-owned review controls (for example CodeRabbit's Trigger review checkbox)
+# are not review feedback and must remain in the authorized operator action path.
 # Monikers: docs/ops/AGENT-MONIKERS.md
 #
 # context_key (durable work-context): pr-<number>-<short-ref>
@@ -12,11 +14,11 @@ name: Agent review → auto Jules
 
 on:
   pull_request_review:
-    types: [submitted]
+    types: [submitted, edited]
   pull_request_review_comment:
-    types: [created]
+    types: [created, edited]
   issue_comment:
-    types: [created]
+    types: [created, edited]
 
 concurrency:
   group: agent-auto-jules-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
@@ -30,6 +32,7 @@ jobs:
         github.event.review.state != 'approved' &&
         (
           contains(github.event.review.user.login, 'coderabbit') ||
+          contains(github.event.review.user.login, 'qodo') ||
           contains(github.event.review.user.login, 'devin') ||
           contains(github.event.review.user.login, 'copilot') ||
           github.event.review.user.type == 'Bot'
@@ -39,6 +42,7 @@ jobs:
         github.event_name == 'pull_request_review_comment' &&
         (
           contains(github.event.comment.user.login, 'coderabbit') ||
+          contains(github.event.comment.user.login, 'qodo') ||
           contains(github.event.comment.user.login, 'devin') ||
           contains(github.event.comment.user.login, 'copilot') ||
           github.event.comment.user.type == 'Bot'
@@ -50,6 +54,7 @@ jobs:
         github.event.issue.pull_request &&
         (
           contains(github.event.comment.user.login, 'coderabbit') ||
+          contains(github.event.comment.user.login, 'qodo') ||
           contains(github.event.comment.user.login, 'devin')
         ) &&
         !contains(github.event.comment.body, '<!-- agent-auto-jules -->')
@@ -82,6 +87,16 @@ jobs:
               prNumber = context.payload.issue.number;
             }
             if (!prNumber) {
+              core.setOutput('should_invoke', 'false');
+              return;
+            }
+            const rawProviderBody = context.payload.review?.body || context.payload.comment?.body || '';
+            const isProviderControlOnly =
+              /<!--\s*\{[^}]*"checkboxId"[^}]*\}\s*-->/i.test(rawProviderBody) &&
+              /\btrigger review\b/i.test(rawProviderBody) &&
+              /\bdoes not receive automatic reviews\b/i.test(rawProviderBody);
+            if (isProviderControlOnly) {
+              core.notice('Provider control-only notice: keep in the authorized operator action path; do not relay to Jules.');
               core.setOutput('should_invoke', 'false');
               return;
             }

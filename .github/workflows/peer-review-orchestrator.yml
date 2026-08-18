@@ -1,254 +1,332 @@
 name: Peer review orchestrator
 
-# Hold free-tier agentic Gemini until external review bots finish, then
-# auto-trigger CodeRabbit Autofix (same path as the UI checkbox).
+# Control plane for external PR reviewers.
 #
-# CodeRabbit only honors @coderabbitai autofix from accounts with repo
-# write/admin. Pass secrets.OPERATOR_GITHUB_TOKEN via with.github-token.
+# Provider-owned checkboxes/buttons are NOT satisfied by a relay comment. This
+# workflow observes controls, records a SHA-bound request for an authorized
+# Operator Action Executor, ingests provider responses, and releases second
+# pass only after every required provider has delivered for the live PR SHA.
 #
-# Devin Apply Suggestions: enable Auto-Fix in Devin Settings (no public click API).
+# The workflow never handles browser cookies or attempts undocumented UI/API
+# requests. See docs/ops/OPERATOR_INTERACTIVE_ACTIONS.md.
 
 on:
   pull_request:
     types: [opened, synchronize, ready_for_review, reopened]
+  issue_comment:
+    types: [created, edited]
+  pull_request_review:
+    types: [submitted, edited, dismissed]
+  pull_request_review_comment:
+    types: [created, edited]
 
 concurrency:
-  group: peer-orch-${{ github.event.pull_request.number }}
+  group: peer-orch-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
   cancel-in-progress: true
 
 permissions: {}
 
 jobs:
-  orchestrate:
-    if: |
-      github.event.pull_request.head.repo.fork == false &&
-      github.event.pull_request.draft == false
+  collect-peer-responses:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 10
     permissions:
       contents: read
-      pull-requests: write
+      pull-requests: read
       issues: write
       checks: read
     outputs:
-      ready: ${{ steps.wait.outputs.ready }}
-      peer_summary: ${{ steps.wait.outputs.peer_summary }}
-      autofix_posted: ${{ steps.autofix.outputs.posted }}
-      pr_number: ${{ github.event.pull_request.number }}
-      head_sha: ${{ github.event.pull_request.head.sha }}
+      cycle_id: ${{ steps.collect.outputs.cycle_id }}
+      head_sha: ${{ steps.collect.outputs.head_sha }}
+      state: ${{ steps.collect.outputs.state }}
+      ready: ${{ steps.collect.outputs.ready }}
+      skipped: ${{ steps.collect.outputs.skipped }}
+      pending: ${{ steps.collect.outputs.pending }}
     steps:
-      - name: Wait for peer reviewers + collect summary
-        id: wait
+      - name: Collect controls and provider response evidence
+        id: collect
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-          MAX_WAIT_SEC: '480'
-          POLL_SEC: '30'
-          PR_UPDATED_AT: ${{ github.event.pull_request.updated_at }}
+          # Comma-separated provider policy. Set a repository variable to change
+          # this only after the provider integration is deliberately enabled.
+          REQUIRED_PROVIDERS: ${{ vars.PEER_REQUIRED_PROVIDERS || 'coderabbit,qodo,devin' }}
+          MAX_WAIT_SEC: '300'
+          POLL_SEC: '20'
         with:
           script: |
-            const prNumber = Number(process.env.PR_NUMBER);
-            const headSha = process.env.HEAD_SHA;
-            const maxWait = Number(process.env.MAX_WAIT_SEC) || 480;
-            const pollSec = Number(process.env.POLL_SEC) || 30;
-            const isPeer = (login) => /coderabbit|devin-ai|aikido|sentry|copilot-pull-request/.test((login || '').toLowerCase());
-            const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+            const requiredProviders = (process.env.REQUIRED_PROVIDERS || 'coderabbit,qodo,devin')
+              .split(',').map(v => v.trim().toLowerCase()).filter(Boolean);
+            const maxWait = Math.max(0, Number(process.env.MAX_WAIT_SEC) || 300);
+            const pollSec = Math.max(5, Number(process.env.POLL_SEC) || 20);
+            const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+            const operatorAckMarker = '<!-- operator-action-ack:v1 -->';
 
-            // Prefer PR event timestamp over commit metadata (trusted server-side)
-            let activityAfter = process.env.PR_UPDATED_AT
-              ? new Date(process.env.PR_UPDATED_AT).getTime() - 5 * 60 * 1000
-              : 0;
-            try {
-              const { data: commit } = await github.rest.repos.getCommit({
-                owner: context.repo.owner, repo: context.repo.repo, ref: headSha,
-              });
-              const ct = new Date(commit.commit.committer?.date || commit.commit.author?.date || 0).getTime();
-              if (ct) activityAfter = Math.max(activityAfter, ct - 60_000);
-            } catch (e) {
-              core.info('getCommit skip: ' + e.message);
+            function providerFor(login) {
+              const value = (login || '').toLowerCase();
+              if (value.includes('coderabbit')) return 'coderabbit';
+              if (value.includes('qodo')) return 'qodo';
+              if (value.includes('devin')) return 'devin';
+              if (value.includes('aikido')) return 'aikido';
+              if (value.includes('sentry')) return 'sentry';
+              if (value.includes('copilot')) return 'copilot';
+              return '';
             }
 
-            const started = Date.now();
-            let lastSummary = 'none';
-            let coderabbitSeen = false;
-            let anyPeerSeen = false;
+            function eventDetails() {
+              const payload = context.payload;
+              if (payload.pull_request) return { prNumber: payload.pull_request.number };
+              if (payload.issue?.pull_request) return { prNumber: payload.issue.number };
+              return { prNumber: null };
+            }
 
-            while (Date.now() - started < maxWait * 1000) {
-              const reviewPages = await github.paginate(github.rest.pulls.listReviews, {
-                owner: context.repo.owner, repo: context.repo.repo,
-                pull_number: prNumber, per_page: 50,
-              });
-              // Strict: only reviews with commit_id matching current head
-              const peerReviews = reviewPages.filter(r =>
-                isPeer(r.user?.login) && r.commit_id === headSha
-              );
-              if (peerReviews.some(r => (r.user?.login || '').toLowerCase().includes('coderabbit'))) {
-                coderabbitSeen = true;
-              }
-              if (peerReviews.length > 0) anyPeerSeen = true;
+            const { prNumber } = eventDetails();
+            if (!prNumber) {
+              core.setOutput('skipped', 'true');
+              core.setOutput('state', 'not_a_pull_request');
+              return;
+            }
 
+            const eventAuthor = context.payload.comment?.user?.login ||
+              context.payload.review?.user?.login || '';
+            const eventBody = context.payload.comment?.body || context.payload.review?.body || '';
+            const eventProvider = providerFor(eventAuthor);
+            const relevantEvent = context.eventName === 'pull_request' ||
+              Boolean(eventProvider) || eventBody.includes(operatorAckMarker);
+            if (!relevantEvent) {
+              core.info(`Ignoring unrelated ${context.eventName} event on PR #${prNumber}`);
+              core.setOutput('skipped', 'true');
+              core.setOutput('state', 'unrelated_event');
+              return;
+            }
+
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber,
+            });
+            if (pr.draft || !pr.head.repo || pr.head.repo.full_name !== `${context.repo.owner}/${context.repo.repo}`) {
+              core.info('Draft or fork PR: no interactive agent actions requested');
+              core.setOutput('skipped', 'true');
+              core.setOutput('state', 'out_of_scope_pr');
+              return;
+            }
+
+            const headSha = pr.head.sha;
+            const cycleId = `pr-${prNumber}-${headSha.slice(0, 12)}`;
+            core.setOutput('cycle_id', cycleId);
+            core.setOutput('head_sha', headSha);
+
+            const { data: commit } = await github.rest.repos.getCommit({
+              owner: context.repo.owner, repo: context.repo.repo, ref: headSha,
+            });
+            const startedAt = new Date(
+              commit.commit.committer?.date || commit.commit.author?.date || pr.updated_at
+            ).getTime() - 60_000;
+
+            async function fetchEvidence() {
               const comments = await github.paginate(github.rest.issues.listComments, {
-                owner: context.repo.owner, repo: context.repo.repo,
-                issue_number: prNumber, per_page: 100,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                per_page: 100,
               });
-              const peerComments = comments.filter(c => {
-                if (!isPeer(c.user?.login)) return false;
-                if (!activityAfter) return true;
-                return new Date(c.created_at).getTime() >= activityAfter;
+              const reviews = await github.paginate(github.rest.pulls.listReviews, {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber,
+                per_page: 100,
               });
-              if (peerComments.some(c => (c.user?.login || '').toLowerCase().includes('coderabbit'))) {
-                coderabbitSeen = true;
-              }
-              if (peerComments.length > 0) anyPeerSeen = true;
-
+              const reviewComments = await github.paginate(github.rest.pulls.listReviewComments, {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber,
+                per_page: 100,
+              });
+              let checks = [];
               try {
-                const { data: checks } = await github.rest.checks.listForRef({
-                  owner: context.repo.owner, repo: context.repo.repo,
-                  ref: headSha, per_page: 50,
+                const response = await github.rest.checks.listForRef({
+                  owner: context.repo.owner, repo: context.repo.repo, ref: headSha, per_page: 100,
                 });
-                const peerChecks = (checks.check_runs || []).filter(c => {
-                  const n = ((c.name || '') + (c.app?.slug || '')).toLowerCase();
-                  return /aikido|sentry|coderabbit|devin|snyk|semgrep/.test(n);
-                });
-                if (peerChecks.length && peerChecks.every(c => c.status === 'completed')) {
-                  anyPeerSeen = true;
+                checks = response.data.check_runs || [];
+              } catch (error) {
+                core.info(`Check lookup skipped: ${error.message}`);
+              }
+              return { comments, reviews, reviewComments, checks };
+            }
+
+            function controlEntries(comments) {
+              const controls = [];
+              for (const comment of comments) {
+                const provider = providerFor(comment.user?.login);
+                if (!provider) continue;
+                const matcher = /-\s*\[([ xX])\]\s*<!--\s*\{[^}]*"checkboxId"\s*:\s*"([^"]+)"[^}]*\}\s*-->/g;
+                let match;
+                while ((match = matcher.exec(comment.body || '')) !== null) {
+                  controls.push({
+                    provider,
+                    checkboxId: match[2],
+                    selected: match[1].toLowerCase() === 'x',
+                    commentId: comment.id,
+                    url: comment.html_url,
+                  });
                 }
-              } catch (e) {
-                core.info('checks.listForRef skip: ' + e.message);
               }
+              return controls;
+            }
 
-              const lines = [];
-              for (const r of peerReviews.slice(-8)) {
-                lines.push(`review @${r.user.login} state=${r.state} sha=${(r.commit_id || '').slice(0, 7)}`);
-              }
-              for (const c of peerComments.slice(-6)) {
-                lines.push(`comment @${c.user.login}: ${(c.body || '').replace(/\s+/g, ' ').slice(0, 120)}`);
-              }
-              lastSummary = lines.join(' | ') || 'no peer activity yet';
+            function acknowledgedControls(comments, controls) {
+              const authorizedAssociations = new Set(['OWNER', 'MEMBER', 'COLLABORATOR']);
+              return comments.filter(comment => {
+                if (!comment.body?.includes(operatorAckMarker)) return false;
+                if (!authorizedAssociations.has(comment.author_association)) return false;
+                return comment.body.includes(`cycle_id: ${cycleId}`);
+              }).map(comment => ({
+                body: comment.body,
+                url: comment.html_url,
+                actor: comment.user?.login || 'operator',
+              })).filter(ack => controls.some(control =>
+                ack.body.includes(`provider: ${control.provider}`) &&
+                ack.body.includes(`control_id: ${control.checkboxId}`)
+              ));
+            }
 
-              const elapsed = (Date.now() - started) / 1000;
-              if (coderabbitSeen && elapsed >= 45) break;
-              if (anyPeerSeen && elapsed >= 180) break;
-              core.info(`Waiting peers… elapsed=${Math.floor(elapsed)}s cr=${coderabbitSeen} any=${anyPeerSeen}`);
+            function isControlOnly(body) {
+              return /checkboxId[\s\S]{0,500}Trigger review|does not receive automatic reviews/i.test(body || '');
+            }
+
+            function deliveredProvider(provider, evidence) {
+              const afterCycle = item => new Date(item.updated_at || item.submitted_at || item.created_at || 0).getTime() >= startedAt;
+              const sourceComments = [...evidence.comments, ...evidence.reviewComments];
+              const comment = sourceComments.find(item =>
+                providerFor(item.user?.login) === provider && afterCycle(item) && !isControlOnly(item.body)
+              );
+              if (comment) return { delivered: true, url: comment.html_url || comment.url || '', via: 'comment' };
+
+              const review = evidence.reviews.find(item =>
+                providerFor(item.user?.login) === provider &&
+                item.commit_id === headSha && afterCycle(item) && !isControlOnly(item.body)
+              );
+              if (review) return { delivered: true, url: review.html_url || review.url || '', via: 'review' };
+
+              const check = evidence.checks.find(item => {
+                const name = `${item.name || ''} ${item.app?.slug || ''}`.toLowerCase();
+                return item.status === 'completed' && afterCycle(item) && name.includes(provider);
+              });
+              if (check) return { delivered: true, url: check.html_url || check.details_url || '', via: 'check' };
+              return { delivered: false, url: '', via: '' };
+            }
+
+            const began = Date.now();
+            let finalState = null;
+            while (Date.now() - began <= maxWait * 1000) {
+              const evidence = await fetchEvidence();
+              const controls = controlEntries(evidence.comments);
+              const acknowledgements = acknowledgedControls(evidence.comments, controls);
+              const providerStates = requiredProviders.map(provider => {
+                const providerControls = controls.filter(control => control.provider === provider);
+                const delivered = deliveredProvider(provider, evidence);
+                const acknowledged = providerControls.some(control => control.selected) ||
+                  acknowledgements.some(ack => ack.body.includes(`provider: ${provider}`));
+                let state = 'awaiting_provider_response';
+                if (providerControls.length && !acknowledged) state = 'pending_operator_action';
+                if (acknowledged) state = 'action_acknowledged';
+                // A control-bearing provider may expose a completed informational
+                // check before its interactive action is selected. Do not accept
+                // that check/comment as completion until the control is acknowledged.
+                if (delivered.delivered && (!providerControls.length || acknowledged)) {
+                  state = 'provider_completed';
+                }
+                return { provider, state, delivered, controls: providerControls };
+              });
+              const complete = providerStates.every(item => item.state === 'provider_completed');
+              finalState = { providerStates, complete };
+              if (complete || Date.now() - began + pollSec * 1000 > maxWait * 1000) break;
+              const pending = providerStates.map(item => `${item.provider}:${item.state}`).join(', ');
+              core.info(`Waiting for SHA-bound peer evidence (${pending})`);
               await sleep(pollSec * 1000);
             }
 
-            const timedOut = (Date.now() - started) >= maxWait * 1000;
-            core.setOutput('ready', anyPeerSeen || coderabbitSeen ? 'true' : 'false');
-            core.setOutput('peer_summary', lastSummary.slice(0, 2000));
-            core.setOutput('coderabbit_seen', coderabbitSeen ? 'true' : 'false');
-            core.setOutput('timed_out', timedOut ? 'true' : 'false');
-            core.setOutput('any_peer_seen', anyPeerSeen ? 'true' : 'false');
+            const { providerStates, complete } = finalState;
+            const state = complete ? 'responses_collected' :
+              providerStates.some(item => item.state === 'pending_operator_action') ? 'pending_operator_action' :
+              'awaiting_provider_response';
+            const pending = providerStates.filter(item => item.state !== 'provider_completed')
+              .map(item => `${item.provider}:${item.state}`).join(', ') || 'none';
+            const operatorControls = providerStates.flatMap(item => item.controls.map(control =>
+              `- ${item.provider}: control_id=${control.checkboxId}; source=${control.url}; selected=${control.selected}`
+            ));
+            const deliveryLines = providerStates.map(item =>
+              `- ${item.provider}: ${item.state}${item.delivered.url ? `; evidence=${item.delivered.url}` : ''}`
+            );
 
-      - name: Auto-trigger CodeRabbit Autofix (operator token)
-        id: autofix
+            core.setOutput('skipped', 'false');
+            core.setOutput('state', state);
+            core.setOutput('ready', complete ? 'true' : 'false');
+            core.setOutput('pending', pending);
+            core.setOutput('provider_lines', deliveryLines.join('\n'));
+            core.setOutput('control_lines', operatorControls.join('\n') || '- none observed');
+
+      - name: Publish SHA-bound peer response state
+        if: steps.collect.outputs.skipped != 'true'
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-          CR_SEEN: ${{ steps.wait.outputs.coderabbit_seen }}
-          HAS_OPERATOR_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN != '' }}
-        with:
-          github-token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
-          script: |
-            const prNumber = Number(process.env.PR_NUMBER);
-            const headSha = process.env.HEAD_SHA;
-            const marker = '<!-- peer-orch-coderabbit-autofix -->';
-            const hasOp = process.env.HAS_OPERATOR_TOKEN === 'true';
-            const comments = await github.paginate(github.rest.issues.listComments, {
-              owner: context.repo.owner, repo: context.repo.repo,
-              issue_number: prNumber, per_page: 100,
-            });
-            if (comments.some(c => c.body && c.body.includes(marker) && c.body.includes(headSha))) {
-              core.info('Autofix already requested for this SHA');
-              core.setOutput('posted', 'false');
-              return;
-            }
-            // 45m throttle: ignore our own per-SHA marker comments so new SHAs can still request
-            const recentAutofix = comments.some(c => {
-              if (!c.body) return false;
-              if (c.body.includes(marker)) return false;
-              const body = c.body.toLowerCase();
-              if (!body.includes('@coderabbitai') || !body.includes('autofix')) return false;
-              return (Date.now() - new Date(c.created_at).getTime()) < 45 * 60 * 1000;
-            });
-            if (recentAutofix) {
-              core.setOutput('posted', 'false');
-              return;
-            }
-            if (process.env.CR_SEEN !== 'true') {
-              core.info('CodeRabbit not seen — skip autofix');
-              core.setOutput('posted', 'false');
-              return;
-            }
-            const note = hasOp
-              ? '_Posted via OPERATOR_GITHUB_TOKEN (write user) so CodeRabbit accepts Autofix._'
-              : '_Posted via GITHUB_TOKEN — add OPERATOR_GITHUB_TOKEN if CR rejects write._';
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              body: [
-                marker,
-                `sha: ${headSha}`,
-                '',
-                '@coderabbitai autofix',
-                '',
-                note,
-                'Apply unresolved CodeRabbit findings to this branch. Minimal diffs; respect AGENTS.md.',
-              ].join('\n'),
-            });
-            core.setOutput('posted', 'true');
-
-      - name: Brief settle after autofix request
-        if: steps.autofix.outputs.posted == 'true'
-        run: sleep 90
-        shell: bash
-
-      - name: Publish peer-review-ready marker
-        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
-        env:
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-          SUMMARY: ${{ steps.wait.outputs.peer_summary }}
-          AUTOFIX: ${{ steps.autofix.outputs.posted }}
-          TIMED_OUT: ${{ steps.wait.outputs.timed_out }}
-          READY: ${{ steps.wait.outputs.ready }}
+          CYCLE_ID: ${{ steps.collect.outputs.cycle_id }}
+          HEAD_SHA: ${{ steps.collect.outputs.head_sha }}
+          STATE: ${{ steps.collect.outputs.state }}
+          READY: ${{ steps.collect.outputs.ready }}
+          PENDING: ${{ steps.collect.outputs.pending }}
+          PROVIDERS: ${{ steps.collect.outputs.provider_lines }}
+          CONTROLS: ${{ steps.collect.outputs.control_lines }}
+          REQUIRED_PROVIDERS: ${{ vars.PEER_REQUIRED_PROVIDERS || 'coderabbit,qodo,devin' }}
         with:
           script: |
-            const prNumber = Number(process.env.PR_NUMBER);
-            const headSha = process.env.HEAD_SHA;
-            const marker = '<!-- peer-review-ready -->';
+            const marker = '<!-- agent-peer-response-state:v2 -->';
+            const prNumber = Number(context.payload.pull_request?.number || context.payload.issue?.number);
+            if (!prNumber) return;
+            const body = [
+              marker,
+              `cycle_id: ${process.env.CYCLE_ID}`,
+              `head_sha: ${process.env.HEAD_SHA}`,
+              `state: ${process.env.STATE}`,
+              `ready: ${process.env.READY}`,
+              `required_providers: ${process.env.REQUIRED_PROVIDERS}`,
+              '',
+              '### Agent peer response gate',
+              '',
+              '**Provider state:**',
+              process.env.PROVIDERS || '- none',
+              '',
+              '**Pending:**',
+              process.env.PENDING || 'none',
+              '',
+              '**Authorized interactive controls:**',
+              process.env.CONTROLS || '- none observed',
+              '',
+              'A provider-owned checkbox/button requires an authorized Operator Action Executor.',
+              'Do not copy control markup into a relay comment. After a permitted UI action, post:',
+              '```text',
+              '<!-- operator-action-ack:v1 -->',
+              `cycle_id: ${process.env.CYCLE_ID}`,
+              'provider: <provider>',
+              'control_id: <provider-control-id>',
+              'action: <allowed-action>',
+              '```',
+              'The second-pass reviewer remains blocked until matching provider completion evidence is ingested for this SHA.',
+            ].join('\n');
             const comments = await github.paginate(github.rest.issues.listComments, {
-              owner: context.repo.owner, repo: context.repo.repo,
-              issue_number: prNumber, per_page: 100,
+              owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100,
             });
-            if (comments.some(c => c.body && c.body.includes(marker) && c.body.includes(headSha))) {
-              core.info('peer-review-ready already posted for this SHA');
-              return;
+            const existing = comments.filter(comment =>
+              comment.user?.login === 'github-actions[bot]' &&
+              comment.body?.includes(marker) &&
+              comment.body.includes(`cycle_id: ${process.env.CYCLE_ID}`)
+            ).sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))[0];
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner, repo: context.repo.repo, comment_id: existing.id, body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, body,
+              });
             }
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              body: [
-                marker,
-                `head_sha: ${headSha}`,
-                `ready: ${process.env.READY}`,
-                `autofix_requested: ${process.env.AUTOFIX}`,
-                `timed_out: ${process.env.TIMED_OUT}`,
-                '',
-                '### Peer review gate (ready for second-pass agents)',
-                '',
-                'External reviewers polled: CodeRabbit, Devin, Aikido, Sentry, Copilot.',
-                'Autofix (if any) was requested in a separate comment on this SHA.',
-                '',
-                '**Peer activity (truncated):**',
-                '```',
-                (process.env.SUMMARY || 'none').slice(0, 1500),
-                '```',
-                '',
-                'Downstream: `gemini-after-peers`. Jules: `agent-review-auto-jules`.',
-              ].join('\n'),
-            });

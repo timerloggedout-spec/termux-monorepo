@@ -7,7 +7,7 @@ name: repo gate
 #
 # No cargo, no node, no pip, no network, no device dependencies. One runner, one
 # job, well under a minute. Rust builds stay out of this workflow on purpose —
-# they belong behind workflow_dispatch / later language gates.
+# see docs/TRIAGE.md (PR #2) for why they belong behind workflow_dispatch.
 
 on:
   pull_request:

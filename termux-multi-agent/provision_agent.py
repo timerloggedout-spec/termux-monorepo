@@ -62,11 +62,218 @@ def init_db():
 def log_attempt_telemetry(file_path, attempt, coder_output, critic_feedback, verdict):
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
-        cursor.execute('''
-            INSERT INTO run_history (file_path, attempt, coder_output, critic_feedback, verdict)
-            VALUES (?, ?, ?, ?, ?)
-        ''', (file_path, attempt, coder_output, critic_feedback, verdict))
-        conn.commit()""",
+        cursor.execute(
+            "INSERT INTO run_history (target_file, attempt_number, patch_content, error_log, verdict) VALUES (?, ?, ?, ?, ?)",
+            (target_file, attempt, patch, errors, verdict)
+        )
+        conn.commit()
+
+def index_project_file(workspace_root, relative_path, conn=None):
+    abs_path = os.path.join(workspace_root, relative_path)
+    ext = os.path.splitext(relative_path)[1]
+    lang_map = {'.py': 'python', '.js': 'javascript', '.mjs': 'javascript', '.rs': 'rust'}
+    lang = lang_map.get(ext)
+    if not lang:
+        return
+    try:
+        # Run first ast-grep to scan nodes
+        output = subprocess.check_output(["ast-grep", "scan", "--json", abs_path], text=True)
+        nodes = json.loads(output)
+
+        # Run second ast-grep to scan imports
+        import_pattern = "import $MOD from '$PATH'" if lang == 'javascript' else "import $MOD"
+        import_output = subprocess.check_output(
+            ["ast-grep", "scan", "--pattern", import_pattern, "--json", abs_path], text=True
+        )
+        import_nodes = json.loads(import_output)
+
+        # Batch node database entries
+        node_data = []
+        for node in nodes:
+            node_id = f"{relative_path}:{node.get('range', {}).get('start', {}).get('line', 0)}"
+            node_data.append((
+                node_id, relative_path, lang, node.get('kind'), node.get('text', '')[:50],
+                node.get('range', {}).get('start', {}).get('line', 0)
+            ))
+
+        # Batch import edge database entries
+        edge_data = []
+        for imp in import_nodes:
+            imp_text = imp.get('text', '')
+            quoted_paths = re.findall(r"['\"](.*?)['\"]", imp_text)
+            for target in quoted_paths:
+                clean_target = target.lstrip('./').replace('.js', '').replace('.py', '')
+                edge_data.append((relative_path, clean_target, "imports"))
+
+        # Database transaction using batch executemany for high performance
+        close_conn = False
+        if conn is None:
+            conn = sqlite3.connect(DB_PATH)
+            close_conn = True
+
+        try:
+            cursor = conn.cursor()
+            if node_data:
+                cursor.executemany("INSERT OR REPLACE INTO nodes VALUES (?, ?, ?, ?, ?, ?)", node_data)
+            if edge_data:
+                cursor.executemany("INSERT OR IGNORE INTO edges VALUES (?, ?, ?)", edge_data)
+            if close_conn:
+                conn.commit()
+        finally:
+            if close_conn:
+                conn.close()
+    except Exception:
+        pass""",
+    "src/sandbox.py": """import subprocess
+import os
+
+def execute_concurrent_tmux_job(target_file, command_string, workspace_path):
+    clean_id = target_file.replace('.', '_').replace('/', '_')
+    session_name = f"agent_job_{clean_id}"
+    log_path = os.path.join(workspace_path, f"temp_{clean_id}_run.log")
+    subprocess.run(["tmux", "kill-session", "-t", session_name], capture_output=True)
+    full_cmd = f"cd {workspace_path} && {command_string} > {log_path} 2>&1"
+    subprocess.run(["tmux", "new-session", "-d", "-s", session_name, full_cmd])
+    return session_name, log_path
+
+def check_job_status(session_name):
+    check = subprocess.run(["tmux", "has-session", "-t", session_name], capture_output=True)
+    return check.returncode == 0""",
+    "src/parser.py": """import re
+
+def parse_compiler_logs(raw_stderr, language):
+    condensed_errors = []
+    if language in ['js', 'mjs']:
+        matches = re.findall(r'(ReferenceError|TypeError|SyntaxError): (.*?)\\n', raw_stderr)
+        for err_type, message in matches:
+            condensed_errors.append(f"[{err_type}] -> {message}")
+    elif language == 'rs':
+        matches = re.findall(r'error\\[E\\d+\\]: (.*?)\\n\\s+--> (.*?):(\\d+):(\\d+)', raw_stderr)
+        for desc, file, line, col in matches:
+            condensed_errors.append(f"[RustError] {desc} (File: {file} Line: {line})")
+    elif language == 'py':
+        matches = re.findall(r'(\\w+Error): (.*?)\\n', raw_stderr)
+        for err_type, message in matches:
+            condensed_errors.append(f"[PythonError] {err_type}: {message}")
+    return "\\n".join(condensed_errors) if condensed_errors else "Execution Status: Clear compilation.\"""" ,
+    "src/telemetry.py": """import json
+import time
+
+TELEMETRY_LOG = "agent_telemetry_stream.json"
+
+class TermuxTelemetryLogger:
+    @staticmethod
+    def notify(level, agent_id, message, target_file=None, attempt=None):
+        timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+        colors = {"INFO": "\\033[94m[INFO]\\033[0m", "SUCCESS": "\\033[92m[SUCCESS]\\033[0m",
+                  "RETRY": "\\033[93m[RETRY]\\033[0m", "CRITICAL": "\\033[91m[CRITICAL]\\033[0m"}
+        color_tag = colors.get(level, f"[{level}]")
+        context_str = f" ({target_file} | Try #{attempt})" if target_file and attempt else ""
+        print(f"{timestamp} {color_tag} [{agent_id}]{context_str}: {message}")
+        log_entry = {"timestamp": timestamp, "level": level, "agent": agent_id,
+                     "target": target_file, "attempt": attempt, "message": message}
+        with open(TELEMETRY_LOG, "a") as f:
+            f.write(json.dumps(log_entry) + "\\n")""",
+    "src/git_manager.py": """import subprocess
+import os
+import time
+
+class AgentGitManager:
+    def __init__(self, workspace_root):
+        self.workspace = os.path.abspath(workspace_root)
+        self.identities = {
+            "deepseek-v4-pro": {"name": "DeepSeek Coder Agent", "email": "v4pro@deepseek.agent"},
+            "critic-judge": {"name": "Critic Judge Agent", "email": "judge@critic.agent"}
+        }
+
+    def create_feature_branch(self, base_branch="main"):
+        if not os.path.exists(os.path.join(self.workspace, ".git")):
+            subprocess.run(["git", "init"], cwd=self.workspace, capture_output=True)
+            subprocess.run(["git", "add", "."], cwd=self.workspace, capture_output=True)
+            subprocess.run(["git", "commit", "-m", "Initial repository commit"], cwd=self.workspace, capture_output=True)
+        branch_name = f"ai-refactor-{int(time.time())}"
+        subprocess.run(["git", "checkout", base_branch], cwd=self.workspace, capture_output=True)
+        result = subprocess.run(["git", "checkout", "-b", branch_name], cwd=self.workspace, capture_output=True, text=True)
+        if result.returncode != 0:
+            raise RuntimeError(f"Failed to initialize Git branch: {result.stderr}")
+        return branch_name
+
+    def commit_as_agent(self, agent_id, commit_message, file_paths):
+        identity = self.identities.get(agent_id, {"name": "Local Agent", "email": "agent@local.dev"})
+        agent_env = os.environ.copy()
+        agent_env["GIT_AUTHOR_NAME"] = identity["name"]
+        agent_env["GIT_AUTHOR_EMAIL"] = identity["email"]
+        agent_env["GIT_COMMITTER_NAME"] = identity["name"]
+        agent_env["GIT_COMMITTER_EMAIL"] = identity["email"]
+        for path in file_paths:
+            subprocess.run(["git", "add", path], cwd=self.workspace, capture_output=True)
+        result = subprocess.run(["git", "commit", "-m", commit_message], cwd=self.workspace, env=agent_env, capture_output=True, text=True)
+        return result.returncode == 0""",
+    "src/context_collector.py": """import sqlite3
+import os
+import re
+import subprocess
+
+DB_PATH = "local_repo.db"
+
+class AutomatedContextCollector:
+    def __init__(self, workspace_root):
+        self.workspace = os.path.abspath(workspace_root)
+
+    def find_dependent_files(self, file_relative_path):
+        base_name = os.path.splitext(file_relative_path)[0]
+        related_files = set()
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT target_file FROM edges WHERE source_file = ? OR target_file LIKE ?",
+                           (file_relative_path, f"%{base_name}%"))
+            for row in cursor.fetchall():
+                related_files.add(row[0])
+            cursor.execute("SELECT source_file FROM edges WHERE target_file = ? OR source_file LIKE ?",
+                           (file_relative_path, f"%{base_name}%"))
+            for row in cursor.fetchall():
+                related_files.add(row[0])
+
+        valid_dependencies = []
+        for ref in related_files:
+            for ext in ['.py', '.js', '.mjs', '.rs', '.sh']:
+                check_path = ref if ref.endswith(ext) else f"{ref}{ext}"
+                if os.path.exists(os.path.join(self.workspace, check_path)) and check_path != file_relative_path:
+                    valid_dependencies.append(check_path)
+                    break
+        return valid_dependencies
+
+    def generate_ast_skeleton(self, file_relative_path):
+        abs_path = os.path.join(self.workspace, file_relative_path)
+        ext = os.path.splitext(file_relative_path)[1]
+        if ext == '.py':
+            pattern = "class $NAME: $$$"
+        elif ext in ['.js', '.mjs']:
+            pattern = "function $NAME($$ $) { $$$ }"
+        else:
+            return f"/* Structural stub context for file: {file_relative_path} */"
+        try:
+            output = subprocess.check_output(["ast-grep", "scan", "--pattern", pattern, "--json", abs_path], text=True)
+            import json
+            nodes = json.loads(output)
+            skeleton_lines = [f"// Architecture map for dependent file: {file_relative_path}"]
+            for n in nodes:
+                snippet = n.get('text', '').split('\\n')[0]
+                skeleton_lines.append(f"    {snippet} ...")
+            return "\\n".join(skeleton_lines)
+        except Exception:
+            return f"// Unable to trace AST module boundary map for {file_relative_path}"
+
+    def assemble_minimized_bundle(self, active_target_file):
+        dependencies = self.find_dependent_files(active_target_file)
+        bundle = ["=== CODEBASE ARCHITECTURE SUBSTRUCTURE CONTEXT ==="]
+        for dep in dependencies:
+            skeleton = self.generate_ast_skeleton(dep)
+            bundle.append(f"\\n<file path=\"{dep}\" layout=\"dependent_skeleton\">\\n{skeleton}\\n")
+        with open(os.path.join(self.workspace, active_target_file), 'r') as f:
+            full_source = f.read()
+        bundle.append(f"\\n<file path=\"{active_target_file}\" layout=\"active_target_edit_zone\">\\n{full_source}\\n")
+        return "\\n".join(bundle)""",
     "src/orchestrator.py": """import os
 import re
 import json
@@ -201,7 +408,184 @@ def main():
     init_db()
     workspace_path = "./workspace"
     if not os.path.exists(workspace_path):
-        os.makedirs(workspace_path)""",
+        os.makedirs(workspace_path)
+        with open(os.path.join(workspace_path, "test_script.py"), "w") as f:
+            f.write("def compute(total, count):\\n    return total / count\\n")
+        print("[+] Created empty workspace directory and added a dummy file target 'test_script.py'.")
+        print("[+] Re-run the script or trigger run_agent.sh to start the operational pipeline loop.")
+        sys.exit(0)
+
+    # 1nd3x 4ll pr0j3ct f1l3s (using a single shared sqlite3 connection for speed)
+    import sqlite3
+    from src.db import DB_PATH
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        for root, _, files in os.walk(workspace_path):
+            for file in files:
+                rel_path = os.path.relpath(os.path.join(root, file), workspace_path)
+                index_project_file(workspace_path, rel_path, conn=conn)
+        conn.commit()
+    except Exception:
+        pass
+    finally:
+        try:
+            conn.close()
+        except Exception:
+            pass
+
+    target_file = "test_script.py"
+    refactor_goal = "Refactor compute to intercept and handle ZeroDivisionError scenario profiles cleanly."
+    validation_test_command = "python -m py_compile test_script.py"
+    language_profile = "py"
+
+    collector = AutomatedContextCollector(workspace_path)
+    compressed_prompt_context = collector.assemble_minimized_bundle(target_file)
+
+    agent = TermuxAgentOrchestrator(workspace_root=workspace_path)
+    agent.run_refactor_pipeline(
+        target_file=target_file,
+        request_instruction=f"{refactor_goal}\\n\\nCodebase Context:\\n{compressed_prompt_context}",
+        test_command=validation_test_command,
+        language=language_profile
+    )
+
+if __name__ == '__main__':
+    main()""",
+    "dashboard.py": """import time
+import os
+import json
+
+TELEMETRY_LOG = "agent_telemetry_stream.json"
+
+def clear_screen():
+    print("\\033[H\\033[J", end="")
+
+# State-tracking cache and position pointers for incremental I/O performance optimization
+_active_jobs_cache = {}
+_last_file_pos = 0
+_last_file_ino = None
+_last_file_mtime = 0
+
+def read_latest_telemetry():
+    global _last_file_pos, _active_jobs_cache, _last_file_ino, _last_file_mtime
+    if not os.path.exists(TELEMETRY_LOG):
+        _active_jobs_cache = {}
+        _last_file_pos = 0
+        _last_file_ino = None
+        _last_file_mtime = 0
+        return []
+    try:
+        stat_info = os.stat(TELEMETRY_LOG)
+        file_size = stat_info.st_size
+        file_ino = stat_info.st_ino
+        file_mtime = stat_info.st_mtime
+
+        if (file_size < _last_file_pos or
+            _last_file_ino is None or
+            _last_file_ino != file_ino or
+            file_mtime < _last_file_mtime):
+            _active_jobs_cache = {}
+            _last_file_pos = 0
+            _last_file_ino = file_ino
+            _last_file_mtime = file_mtime
+
+        with open(TELEMETRY_LOG, "r") as f:
+            if _last_file_pos > 0:
+                f.seek(_last_file_pos)
+            while True:
+                curr_pos = f.tell()
+                line = f.readline()
+                if not line:
+                    break
+                if not line.endswith("\\n"):
+                    f.seek(curr_pos)
+                    break
+                _last_file_pos = f.tell()
+                if not line.strip():
+                    continue
+                try:
+                    entry = json.loads(line)
+                    target = entry.get("target") or "System"
+                    _active_jobs_cache[target] = entry
+                except json.JSONDecodeError:
+                    continue
+    except Exception:
+        pass
+    return list(_active_jobs_cache.values())
+
+def render_dashboard():
+    clear_screen()
+    print("=" * 65)
+    print(" ⚡ TERMUX MULTI-AGENT PARALLEL TELEMETRY DASHBOARD ⚡ ")
+    print("=" * 65)
+    print(f" Last Sync: {time.strftime('%Y-%m-%d %H:%M:%S')}")
+    print("-" * 65)
+    print(f"{'TARGET FILE':<20} | {'AGENT':<16} | {'TRY':<4} | {'STATUS':<15}")
+    print("-" * 65)
+
+    jobs = read_latest_telemetry()
+    if not jobs:
+        print(" [ Waiting for background agent pipelines to initialize... ]")
+    for job in jobs:
+        target = job.get("target") or "Global"
+        if len(target) > 18:
+            target = "..." + target[-15:]
+        agent = job.get("agent", "Unknown")
+        attempt = str(job.get("attempt") or "-")
+        level = job.get("level", "INFO")
+
+        if level == "SUCCESS":
+            status_str = "\\033[92mSUCCESS\\033[0m"
+        elif level == "RETRY":
+            status_str = "\\033[93mRETRYING\\033[0m"
+        elif level == "CRITICAL":
+            status_str = "\\033[91mCRITICAL\\033[0m"
+        else:
+            status_str = "\\033[94mPROCESSING\\033[0m"
+
+        print(f"{target:<20} | {agent:<16} | {attempt:<4} | {status_str:<15}")
+        print(f" ↳ Msg: {job.get('message', '')[:60]}")
+        print("-" * 65)
+
+def main():
+    try:
+        while True:
+            render_dashboard()
+            time.sleep(1.0)
+    except KeyboardInterrupt:
+        print("\\nExiting Dashboard Viewer.")
+
+if __name__ == '__main__':
+    main()""",
+    "run_agent.sh": """#!/usr/bin/env bash
+if [ -z "$DEEPSEEK_API_KEY" ] || [ -z "$CRITIC_API_KEY" ]; then
+    echo -e "\\e[91m[ERROR]\\e[0m Missing authentication configurations!"
+    echo "Please declare API tokens before launching your pipeline:"
+    echo "  export DEEPSEEK_API_KEY='your_key'"
+    echo "  export CRITIC_API_KEY='your_key'"
+    exit 1
+fi
+
+for cmd in ast-grep tmux python; do
+    if ! command -v $cmd &> /dev/null; then
+        echo -e "\\e[91m[ERROR]\\e[0m Required tool missing: '$cmd'"
+        exit 1
+    fi
+done
+
+if [ "$1" == "--clean" ]; then
+    rm -f agent_telemetry_stream.json local_repo.db temp_*_run.log
+fi
+
+if [ -z "$TMUX" ]; then
+    SESSION_NAME="agent_master_hub_$(date +%s)"
+    tmux new-session -d -s "$SESSION_NAME" "python run.py"
+    tmux split-window -h -t "$SESSION_NAME" "python dashboard.py"
+    tmux attach-session -t "$SESSION_NAME"
+else
+    tmux split-window -h "python dashboard.py"
+    python run.py
+fi"""
 }
 
 class TermuxAgentProvisioner:

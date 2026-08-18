@@ -1,13 +1,14 @@
-# Sentinel's Security Journal
+## 2026-08-12 - Local Privilege Restrictions & Symlink Hijacking Prevention
+**Vulnerability:** Weak default file permissions on user configurations (`~/.deepcli/config.json`) and session logs, which could allow unauthorized local users to access highly sensitive credentials (like `DEEPSEEK_TOKEN` and session cookies) on multi-user environments.
+**Learning:** Default file and directory creation permissions (umask) can leave configuration files readable by other local users. Furthermore, applying recursive permission adjustments without skipping symlinks can expose the application to traversal hijacking vulnerabilities if a malicious user links a sensitive system file inside the user's config folder.
+**Prevention:** Explicitly restrict sensitive configuration/cache directories to `0o700` and files to `0o600`. Secure all permission adjustments by validating that target paths are not symlinks (`path.is_symlink()`) before calling chmod.
 
-Your journal is NOT a log - only add entries for CRITICAL security learnings.
+## 2026-08-13 - Path Traversal Prevention in Local Session Storage Cache Paths
+**Vulnerability:** Path traversal vulnerability via unvalidated/unsanitized input in session_id when constructing the local cache path (`_cache_path`), potentially allowing attackers to read or write files outside of the intended `.deepcli/session_store` sandbox directory structure.
+**Learning:** Even internal utility functions like cache path builders should enforce strict input validation (allow-listing or strict character filtering) and layout boundary checks (via real path alignment check with `os.path.commonpath`) to prevent path traversal vectors.
+**Prevention:** Always sanitize the filename components by retaining only safe alphanumeric/selected special characters and strictly validating the canonical path alignment against the expected base directory.
 
-## 2026-08-05 - Symlink-Safe Local Directory Permission Restricting (0o700 / 0o600)
-**Vulnerability:**
-Local files and directories storing sensitive credentials (like Bearer tokens), user profile cookie databases (like browser-data), session exports (cache files), and sqlite database records (`local_repo.db`) were created using default system umask, making them potentially world-readable/group-readable (e.g. `0o644`/`0o755`). This represents a local exposure threat where other users on a shared environment (such as Termux on a shared/multi-user system) could access active session states.
-
-**Learning:**
-Explicitly modifying file/directory permissions to `0o600` and `0o700` is an essential local containment practice. However, recursive permission changes are vulnerable to symlink hijacking/arbitrary file permission modification if they blindly traverse directory paths. To prevent path traversal/symlink exploits, recursive permission modifications must explicitly skip symlinks (`path.is_symlink()`) and wrap `chmod` calls inside a protective try-except block to handle restricted or read-only filesystems (like FAT32 or certain containerized/headless virtual mounts) gracefully.
-
-**Prevention:**
-Always use a symlink-safe recursive walker when locking down user data folders, explicitly securing directories with `0o700` and files with `0o600`. Apply `try...except` isolation around all `os.chmod` or `Path.chmod` calls to fail-securely and prevent runtime crashes.
+## 2026-08-14 - Session Key Collision and Header Pollution in Shared HTTP Sessions
+**Vulnerability:** Key collision in `get_session` caused by truncating bearer tokens to 20 chars, causing distinct accounts sharing prefix strings to reuse the same cached `Session` instance. In addition, direct mutation of `s.headers` with one-shot `X-Ds-Pow-Response` headers polluted subsequent requests on shared sessions.
+**Learning:** Naive string truncation for dictionary keys creates subtle collision risks across distinct credentials. Mutating persistent `Session.headers` directly for single-use headers leaks authentication/challenge tokens across unrelated API requests.
+**Prevention:** Use SHA-256 digests over full token and cookie pairs to generate session cache keys (`_session_cache_key`), and always construct request-scoped header dictionaries without mutating shared session instances.

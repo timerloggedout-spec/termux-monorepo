@@ -105,7 +105,7 @@ def main():
         try:
             choice = input(f"{C}>> {N}").strip().lower()
         except (EOFError, KeyboardInterrupt):
-            print()
+            print()  # Ensure clean line alignment on interrupt exit
             break
 
         if choice == '0':
@@ -160,11 +160,8 @@ def main():
             toggle_pipeline(mode='review')
         elif choice == 'p':
             toggle_pipeline()
-        
-        banner()
-        print(f"  PHASE: {Y}ACTIVE{N}  MODE: {Y}CONSOLIDATED{N}")
-        print(f"{get_pipeline_status()}")
-        print(C + "\u2500" * 60 + N)
+        elif choice == '0':
+            break
 
     # Uniform, delightful exit signature for all exits (choice '0', Ctrl+C, Ctrl+D)
     print(G + random.choice([
@@ -175,5 +172,5 @@ def main():
         "Systems stable. ArchWiz offline."
     ]) + N)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

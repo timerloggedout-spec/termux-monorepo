@@ -140,6 +140,7 @@ def build_index(
     include_comments: bool,
     max_retries: int,
     full_refresh: bool = False,
+    history_start_page: int = 1,
 ) -> dict[str, Any]:
     """Build a complete index, replacing canonical artifacts only after validation."""
     checkpoint_path = output / "checkpoint.json"
@@ -162,8 +163,13 @@ def build_index(
         max_comments_per_item=max_comments_per_item,
         include_comments=include_comments,
         max_cochange_pairs_per_commit=max_cochange_pairs_per_commit,
+        history_start_page=history_start_page,
     )
     github_report["retry_count"] = client.retry_count
+    history_window = github_report.get(
+        "history_window",
+        {"start_page": history_start_page, "coverage": "not_reported_by_collector"},
+    )
     seeds = [seed for seed in (historical_seed, source_seed, github_seed) if seed is not None]
     merged_seed, merge_report = merge_seeds(*seeds)
     merge_report["retained_history"] = historical_seed is not None
@@ -177,6 +183,7 @@ def build_index(
             "incremental_since": since,
             "retained_history": historical_seed is not None,
             "bootstrap_backfill": bootstrap_backfill,
+            "history_window": history_window,
         }
     )
 
@@ -203,6 +210,7 @@ def build_index(
             "incremental_since": since,
             "retained_history": historical_seed is not None,
             "bootstrap_backfill": bootstrap_backfill,
+            "history_window": history_window,
             "github_requests": github_report["request_count"],
             "github_retries": github_report["retry_count"],
             "parser_failures": len(source_report["parser_failures"]),
@@ -227,6 +235,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--max-commits", type=int, default=25)
     parser.add_argument("--max-comments-per-item", type=int, default=20)
     parser.add_argument("--max-cochange-pairs-per-commit", type=int, default=100)
+    parser.add_argument(
+        "--history-start-page",
+        type=int,
+        default=1,
+        help="GitHub history page to begin for an operator-controlled backfill window",
+    )
     parser.add_argument("--without-comments", action="store_true")
     parser.add_argument("--max-retries", type=int, default=3)
     parser.add_argument("--full-refresh", action="store_true", help="Ignore the existing checkpoint for a bounded reconciliation run")
@@ -247,6 +261,7 @@ def main(argv: list[str] | None = None) -> int:
                 args.max_commits,
                 args.max_comments_per_item,
                 args.max_cochange_pairs_per_commit,
+                args.history_start_page,
             )
         ) or args.max_retries < 0:
             raise CompilationError("collection limits must be positive and max retries must be zero or greater")
@@ -266,6 +281,7 @@ def main(argv: list[str] | None = None) -> int:
             not args.without_comments,
             args.max_retries,
             args.full_refresh,
+            args.history_start_page,
         )
         print(json.dumps(summary, indent=2, sort_keys=True))
         return 0

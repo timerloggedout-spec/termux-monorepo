@@ -1,5 +1,33 @@
 import os, json
-from curl_cffi import requests as curl_requests
+try:
+    from curl_cffi import requests as curl_requests
+except Exception:
+    import requests as standard_requests
+    class MockCurlSession(standard_requests.Session):
+        def __init__(self, *args, **kwargs):
+            kwargs.pop("impersonate", None)
+            super().__init__(*args, **kwargs)
+        def request(self, method, url, *args, **kwargs):
+            kwargs.pop("impersonate", None)
+            return super().request(method, url, *args, **kwargs)
+
+    class CurlRequestsFallback:
+        Session = MockCurlSession
+        def get(self, *args, **kwargs):
+            kwargs.pop("impersonate", None)
+            return standard_requests.get(*args, **kwargs)
+        def post(self, *args, **kwargs):
+            kwargs.pop("impersonate", None)
+            return standard_requests.post(*args, **kwargs)
+        def put(self, *args, **kwargs):
+            kwargs.pop("impersonate", None)
+            return standard_requests.put(*args, **kwargs)
+        def delete(self, *args, **kwargs):
+            kwargs.pop("impersonate", None)
+            return standard_requests.delete(*args, **kwargs)
+
+    curl_requests = CurlRequestsFallback()
+
 from .base import ChatBackend
 
 class ClaudeWebBackend(ChatBackend):

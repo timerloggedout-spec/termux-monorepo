@@ -1,0 +1,57 @@
+# Peer policy: Omni \u2194 OpenRouter nearly equal free-tier peers.
+# Selection = desired model + soft-budget headroom. Gemini = residual only.
+
+peers:
+  omni:
+    enabled_env: OMNI_API_KEY  # or OMNIROUTE_API_KEY
+    base_url_env: OMNI_BASE_URL
+    default_base: https://cloud.omniroute.online/v1
+    models:
+      - id: auto/best-free
+        roles: [triage, review, invoke]
+        soft_limits:
+          triage: 400
+          review: 250
+          invoke: 400
+  openrouter:
+    enabled_env: OPENROUTER_API_KEY
+    default_base: https://openrouter.ai/api/v1
+    require_free_suffix: true
+    models:
+      - id: google/gemma-4-31b-it:free
+        roles: [triage, review, invoke]
+        soft_limits: { triage: 80, review: 80, invoke: 80 }
+      - id: google/gemma-4-26b-a4b-it:free
+        roles: [triage, review, invoke]
+        soft_limits: { triage: 80, review: 80, invoke: 80 }
+      - id: meta-llama/llama-3.3-70b-instruct:free
+        roles: [triage, review, invoke]
+        soft_limits: { triage: 80, review: 80, invoke: 80 }
+      - id: google/gemma-3-12b-it:free
+        roles: [triage, review, invoke]
+        soft_limits: { triage: 80, review: 80, invoke: 80 }
+      - id: qwen/qwen3-coder:free
+        roles: [review, invoke]
+        soft_limits: { triage: 60, review: 60, invoke: 60 }
+      - id: deepseek/deepseek-r1:free
+        roles: [review]
+        soft_limits: { triage: 40, review: 40, invoke: 40 }
+      - id: cohere/north-mini-code:free
+        roles: [review, invoke]
+        soft_limits: { triage: 60, review: 60, invoke: 60 }
+  gemini:
+    enabled_env: GEMINI_API_KEY
+    residual_only: true
+    models:
+      - id: gemini-3.1-flash-lite
+        soft_limits: { triage: 450, review: 450, invoke: 450 }
+      - id: gemini-3.5-flash-lite
+        soft_limits: { triage: 450, review: 450, invoke: 450 }
+      - id: gemini-2.5-flash-lite
+        soft_limits: { triage: 20, review: 20, invoke: 20 }
+      - id: gemini-3.5-flash
+        soft_limits: { triage: 20, review: 20, invoke: 20 }
+      - id: gemini-2.5-flash
+        soft_limits: { triage: 20, review: 20, invoke: 20 }
+      - id: gemini-3-flash
+        soft_limits: { triage: 20, review: 20, invoke: 20 }

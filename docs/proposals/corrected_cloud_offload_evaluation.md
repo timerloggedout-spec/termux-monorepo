@@ -1,8 +1,12 @@
 # Corrected Cloud Offload Evaluation
 
-> **Source branch:** `docs/kimi-cloud-offload-evaluation`
-> **Full text:** `docs/proposals/corrected_cloud_offload_evaluation.md` on that branch
-> **Promoted:** pointer on `master` so process docs land without a 24KB mid-flight dump
+> **Registered as:** [`active/kimi-cloud-offload/`](active/kimi-cloud-offload/)  
+> **Source branch (full text):** `docs/kimi-cloud-offload-evaluation`  
+> **Status:** posted (not yet accepted)  
+> **Priority:** P1
+
+Master keeps this **pointer** so process docs stay navigable without a 24KB mid-flight dump.
+Binding decisions live in the MANIFEST Review log + optional `DEBATE.md`.
 
 ## Summary of corrections
 
@@ -12,10 +16,22 @@
 4. **AGY/Jules templates** — agentic-workflow-starter, antigravity-jules-autonomous, gemini-cli-jules-orchestrator as scavenge sources.
 5. **jules-worker-pool-cli** — un-pause path documented on source branch.
 
-## Action
+## Read full text
 
-```text
+```bash
 git show origin/docs/kimi-cloud-offload-evaluation:docs/proposals/corrected_cloud_offload_evaluation.md
 ```
 
-Registrar may nest under `docs/proposals/active/` when itemized into ITEMS.
+Or browse:  
+https://github.com/timerloggedout-spec/termux-monorepo/blob/docs/kimi-cloud-offload-evaluation/docs/proposals/corrected_cloud_offload_evaluation.md
+
+## Vote / promote
+
+```bash
+python3 scripts/proposals/record_vote.py --proposal kimi-cloud-offload \
+  --term kimi-cloud-offload/accept/1 --voter <id> --vote accept --reason "…"
+python3 scripts/proposals/promote_proposal.py --id kimi-cloud-offload \
+  --to accepted --evidence "…"
+```
+
+See `docs/CONSENSUS.md` tiers and `docs/proposals/PROCESS.md`.

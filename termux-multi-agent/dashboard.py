@@ -12,33 +12,84 @@ try:
     from rich.live import Live
     from rich.text import Text
     from rich.box import ROUNDED
+    _has_rich = True
 except ImportError:
-    # Clean fallback warning
-    print("[ERROR] 'rich' library is required. Please run: pip install rich")
-    sys.exit(1)
+    _has_rich = False
 
 TELEMETRY_LOG = "agent_telemetry_stream.json"
-console = Console()
+if _has_rich:
+    console = Console()
+else:
+    console = None
+
+# State-tracking cache and position pointers for incremental I/O performance optimization
+_active_jobs_cache = {}
+_last_file_pos = 0
+_last_file_ino = None
+_last_file_mtime = 0
 
 def read_latest_telemetry():
+    """
+    Optimized telemetry parser using state tracking and seek/tell operations
+    to perform incremental I/O, yielding massive performance gains on large log streams.
+    """
+    global _last_file_pos, _active_jobs_cache, _last_file_ino, _last_file_mtime
     if not os.path.exists(TELEMETRY_LOG):
+        # Reset cache if file is missing
+        _active_jobs_cache = {}
+        _last_file_pos = 0
+        _last_file_ino = None
+        _last_file_mtime = 0
         return []
-    active_jobs = {}
+
     try:
+        stat_info = os.stat(TELEMETRY_LOG)
+        file_size = stat_info.st_size
+        file_ino = stat_info.st_ino
+        file_mtime = stat_info.st_mtime
+
+        # If file was truncated, recreated, or replaced, reset position and cache
+        if (file_size < _last_file_pos or
+            _last_file_ino is None or
+            _last_file_ino != file_ino or
+            file_mtime < _last_file_mtime):
+            _active_jobs_cache = {}
+            _last_file_pos = 0
+            _last_file_ino = file_ino
+            _last_file_mtime = file_mtime
+
         with open(TELEMETRY_LOG, "r") as f:
-            for line in f:
+            if _last_file_pos > 0:
+                f.seek(_last_file_pos)
+
+            while True:
+                curr_pos = f.tell()
+                line = f.readline()
+                if not line:
+                    break
+                # Torn append guard: check if line terminates with a newline character
+                if not line.endswith("\n"):
+                    # Seek back so this incomplete line can be fully read on the next tick
+                    f.seek(curr_pos)
+                    break
+
+                # Commit offset up to the end of this complete line
+                _last_file_pos = f.tell()
+
                 if not line.strip():
                     continue
                 try:
                     entry = json.loads(line)
                     target = entry.get("target") or "System"
-                    active_jobs[target] = entry
+                    _active_jobs_cache[target] = entry
                 except json.JSONDecodeError:
                     continue
     except Exception:
+        # Fallback to returning current cache on file access or read errors
         pass
+
     # Sort by timestamp so the list ordering is consistent/predictable
-    return sorted(active_jobs.values(), key=lambda x: x.get("timestamp", ""))
+    return sorted(_active_jobs_cache.values(), key=lambda x: x.get("timestamp", ""))
 
 def make_dashboard():
     # Read data
@@ -103,12 +154,16 @@ def make_dashboard():
         message = job.get("message", "")
         timestamp = job.get("timestamp", "")
         if timestamp:
-            # Format time if it has full date/time
-            try:
-                dt = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
-                timestamp = dt.strftime("%H:%M:%S")
-            except ValueError:
-                pass
+            # Bolt Optimization: Fast-path string slice formatting for HH:MM:SS
+            # Avoids datetime.strptime overhead in high-frequency dashboard rendering loops
+            if len(timestamp) >= 19 and timestamp[10] in (" ", "T"):
+                timestamp = timestamp[11:19]
+            elif not (len(timestamp) == 8 and timestamp[2] == ":" and timestamp[5] == ":"):
+                try:
+                    dt = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
+                    timestamp = dt.strftime("%H:%M:%S")
+                except ValueError:
+                    pass
 
         # Beautiful styled status tag
         if level == "SUCCESS":
@@ -143,6 +198,9 @@ def make_dashboard():
     )
 
 def main():
+    if not _has_rich:
+        print("[ERROR] 'rich' library is required. Please run: pip install rich")
+        sys.exit(1)
     try:
         # Use Live rendering for smooth, flicker-free updates
         with Live(make_dashboard(), refresh_per_second=1, screen=True) as live:
@@ -151,14 +209,17 @@ def main():
                 live.update(make_dashboard())
     except KeyboardInterrupt:
         # Clear screen and say goodbye gracefully
-        console.clear()
-        console.print(Panel(
-            "[bold green]Thank you for using Termux Multi-Agent Dashboard![/bold green]\n"
-            "Stay productive and keep building! ⚡🚀",
-            title="Exiting Dashboard",
-            border_style="green",
-            expand=False
-        ))
+        if console:
+            console.clear()
+            console.print(Panel(
+                "[bold green]Thank you for using Termux Multi-Agent Dashboard![/bold green]\n"
+                "Stay productive and keep building! ⚡🚀",
+                title="Exiting Dashboard",
+                border_style="green",
+                expand=False
+            ))
+        else:
+            print("Thank you for using Termux Multi-Agent Dashboard!\nStay productive and keep building! ⚡🚀")
 
 if __name__ == '__main__':
     main()

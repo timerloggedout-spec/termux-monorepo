@@ -310,7 +310,7 @@ def validate_auth(request: Request) -> None:
 
 
 def configured_models() -> List[str]:
-    models = ["wrapper/deepseek", "wrapper/mistral", "wrapper/claude", "wrapper/gemini", "wrapper/colab"]
+    models = ["wrapper/deepseek", "wrapper/mistral", "wrapper/grok", "wrapper/claude", "wrapper/gemini", "wrapper/colab"]
     if os.environ.get("OPENROUTER_API_KEY"):
         models.append("openrouter/<model>")
     if os.environ.get("OPENAI_API_KEY"):
@@ -367,7 +367,7 @@ def chat_completions(request: ChatCompletionRequest, raw_request: Request) -> An
     model = request.model.strip()
     if model.startswith("wrapper/"):
         provider = model.split("/", 1)[1]
-        if provider not in {"deepseek", "mistral", "claude", "gemini", "colab"}:
+        if provider not in {"deepseek", "mistral", "grok", "claude", "gemini", "colab"}:
             raise HubError(400, f"unknown wrapper model '{model}'", code="unknown_model")
         text = runtime.complete_wrapper(provider, request)
         response = completion_response(model, text)

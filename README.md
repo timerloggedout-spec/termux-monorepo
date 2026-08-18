@@ -96,6 +96,20 @@ Use this ladder when orienting in the tree. `_Entry+ReadMe.md` and `termux-ecosy
 | 10 | `refTemplates/README_RECOVERY.md` on `recreate/refTemplates-skeleton` | Metadata-only restore policy for refs |
 | 0.1 | `workspace/*.md` `workspace/CAVEMAN_INDEX.md` `workspace/SYSTEM_MAP.md` `workspace/llm_map/{*.md,*.txt,*.json,*.jsonl}` | Full Ecosystem Mapping |
 
+### Repository-native ICM workspace
+
+`docs/icm/` is the operative, repository-native **Interpretable Context Methodology** workspace. It helps agents and editors identify the smallest relevant component, its canonical source, its first-order impacts, and the required validation before a change. The four forks under `refTemplates/smods/*_fork` are **reference inputs**, not runtime dependencies or replacement workspaces.
+
+| Need | Start here | Boundary |
+|---|---|---|
+| System orientation or change impact | [`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md) | `docs/icm/AGENTS.md` is its identical static alias. |
+| Provider-routing evidence or a future polling proposal | [`docs/icm/routing.md`](docs/icm/routing.md) | This nested resource is intentionally distinct from the static catalog; it does not execute provider calls or change workflows. |
+| ICM maintenance or map changes | [`docs/icm/maintenance/CLAUDE.md`](docs/icm/maintenance/CLAUDE.md) | Inventory, human design review, verification, then promotion. |
+| Pinned methodology/reference inputs | [`docs/ICM-ARCHITECT-INTEGRATION.md`](docs/ICM-ARCHITECT-INTEGRATION.md) | Gitlinks are reviewed, shallow, and reference-only. |
+| File-backed visual review / CCTV cards | [`docs/icm/_tv/README.md`](docs/icm/_tv/README.md) | Canonical cards are initiated; no renderer, watcher, device connection, or public service is active by default. |
+
+> **Agentic boundary:** ICM supplies routing and governance; it does not self-modify the repository, poll providers, access Termux/BLU B160V, or deploy services. GitHub Actions, peer review, repository gates, explicit operator approval, and the relevant runtime source remain authoritative.
+
 Quick command table (also in `_Entry+ReadMe.md`):
 
 | What you want to do | Where you start |

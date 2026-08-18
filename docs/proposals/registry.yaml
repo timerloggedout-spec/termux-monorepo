@@ -105,3 +105,20 @@ proposals:
     related_prs: [232]
     related_branches: [feat/icm-architect-submodule]
     gates_required: [repo-gate, termux-smoke]
+
+  - id: multi-ai-webwrapper-hub
+    title: "Multi-AI provider selection and resumable web-wrapper connection hub"
+    author: Manus AI
+    status: executing
+    priority: P1
+    path: active/multi-ai-webwrapper-hub/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: Manus AI
+        role: evidence-led executor
+        status: executing
+    related_prs: [6, 48, 63, 162, 174, 204, 216, 221]
+    related_branches: [feature/multi-ai-webwrapper-provider-hub, feature/deepseek-waf-persistent-session]
+    gates_required: [repo-gate, termux-smoke]

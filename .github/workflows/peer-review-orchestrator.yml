@@ -156,10 +156,15 @@ jobs:
             const headSha = process.env.HEAD_SHA;
             const marker = '<!-- peer-orch-coderabbit-autofix -->';
             const hasOp = process.env.HAS_OPERATOR_TOKEN === 'true';
-            const comments = await github.paginate(github.rest.issues.listComments, {
-              owner: context.repo.owner, repo: context.repo.repo,
-              issue_number: prNumber, per_page: 100,
-            });
+            let comments = [];
+            try {
+              comments = await github.paginate(github.rest.issues.listComments, {
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: prNumber, per_page: 100,
+              });
+            } catch (e) {
+              core.warning(`Failed to list comments for autofix check: ${e.message}`);
+            }
             if (comments.some(c => c.body && c.body.includes(marker) && c.body.includes(headSha))) {
               core.info('Autofix already requested for this SHA');
               core.setOutput('posted', 'false');
@@ -185,21 +190,26 @@ jobs:
             const note = hasOp
               ? '_Posted via OPERATOR_GITHUB_TOKEN (write user) so CodeRabbit accepts Autofix._'
               : '_Posted via GITHUB_TOKEN — add OPERATOR_GITHUB_TOKEN if CR rejects write._';
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              body: [
-                marker,
-                `sha: ${headSha}`,
-                '',
-                '@coderabbitai autofix',
-                '',
-                note,
-                'Apply unresolved CodeRabbit findings to this branch. Minimal diffs; respect AGENTS.md.',
-              ].join('\n'),
-            });
-            core.setOutput('posted', 'true');
+            try {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body: [
+                  marker,
+                  `sha: ${headSha}`,
+                  '',
+                  '@coderabbitai autofix',
+                  '',
+                  note,
+                  'Apply unresolved CodeRabbit findings to this branch. Minimal diffs; respect AGENTS.md.',
+                ].join('\n'),
+              });
+              core.setOutput('posted', 'true');
+            } catch (e) {
+              core.warning(`Failed to post CodeRabbit autofix comment: ${e.message}`);
+              core.setOutput('posted', 'false');
+            }
 
       - name: Brief settle after autofix request
         if: steps.autofix.outputs.posted == 'true'
@@ -220,35 +230,44 @@ jobs:
             const prNumber = Number(process.env.PR_NUMBER);
             const headSha = process.env.HEAD_SHA;
             const marker = '<!-- peer-review-ready -->';
-            const comments = await github.paginate(github.rest.issues.listComments, {
-              owner: context.repo.owner, repo: context.repo.repo,
-              issue_number: prNumber, per_page: 100,
-            });
+            let comments = [];
+            try {
+              comments = await github.paginate(github.rest.issues.listComments, {
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: prNumber, per_page: 100,
+              });
+            } catch (e) {
+              core.warning(`Failed to list comments for peer-review-ready check: ${e.message}`);
+            }
             if (comments.some(c => c.body && c.body.includes(marker) && c.body.includes(headSha))) {
               core.info('peer-review-ready already posted for this SHA');
               return;
             }
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              body: [
-                marker,
-                `head_sha: ${headSha}`,
-                `ready: ${process.env.READY}`,
-                `autofix_requested: ${process.env.AUTOFIX}`,
-                `timed_out: ${process.env.TIMED_OUT}`,
-                '',
-                '### Peer review gate (ready for second-pass agents)',
-                '',
-                'External reviewers polled: CodeRabbit, Devin, Aikido, Sentry, Copilot.',
-                'Autofix (if any) was requested in a separate comment on this SHA.',
-                '',
-                '**Peer activity (truncated):**',
-                '```',
-                (process.env.SUMMARY || 'none').slice(0, 1500),
-                '```',
-                '',
-                'Downstream: `gemini-after-peers`. Jules: `agent-review-auto-jules`.',
-              ].join('\n'),
-            });
+            try {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body: [
+                  marker,
+                  `head_sha: ${headSha}`,
+                  `ready: ${process.env.READY}`,
+                  `autofix_requested: ${process.env.AUTOFIX}`,
+                  `timed_out: ${process.env.TIMED_OUT}`,
+                  '',
+                  '### Peer review gate (ready for second-pass agents)',
+                  '',
+                  'External reviewers polled: CodeRabbit, Devin, Aikido, Sentry, Copilot.',
+                  'Autofix (if any) was requested in a separate comment on this SHA.',
+                  '',
+                  '**Peer activity (truncated):**',
+                  '```',
+                  (process.env.SUMMARY || 'none').slice(0, 1500),
+                  '```',
+                  '',
+                  'Downstream: `gemini-after-peers`. Jules: `agent-review-auto-jules`.',
+                ].join('\n'),
+              });
+            } catch (e) {
+              core.warning(`Failed to post peer-review-ready marker comment: ${e.message}`);
+            }

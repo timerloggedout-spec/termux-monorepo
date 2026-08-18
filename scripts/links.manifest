@@ -1,0 +1,62 @@
+# Device link manifest — declarative replacement for committed dangling symlinks.
+#
+# Format:  <repo-relative link path>\t<target>
+#   ~/…              target resolved against $HOME (or $TERMUX_HOME if set)
+#   $PREFIX/…        target resolved against $PREFIX (Termux usr prefix)
+#   anything else    resolved as-is
+#
+# Recreate on-device:   bash scripts/link_local.sh
+# Audit only:           bash scripts/link_local.sh --check
+#
+# Why this file exists: master currently tracks 34 symlinks whose targets are
+# absolute /data/data/com.termux/... paths. In any clone that is not that exact
+# device — CI, a laptop, a fresh Termux install, another phone — they are dangling,
+# so `archwiz/agent_shell.py`, `bin/aicli`, `harmony_hub/bin/deepcli` and friends
+# read as present-but-broken. The README's Navigation SSOT commands (archaeo,
+# oracle, dispatch, promote) are therefore not reproducible from a clone.
+# See docs/PORTABILITY.md for the migration plan.
+
+# --- archwiz cockpit: canonical sources live in workspace/llm_map ---
+archwiz/agent_shell.py	~/workspace/llm_map/agent_shell.py
+archwiz/archaeologist.py	~/workspace/llm_map/archaeologist.py
+archwiz/dispatch_task.py	~/workspace/llm_map/dispatch_task.py
+archwiz/impact_oracle.py	~/workspace/llm_map/impact_oracle.py
+archwiz/promote.py	~/workspace/llm_map/promote.py
+
+# --- archwiz mutable state (never commit the contents) ---
+archwiz/HANDOFF.json	~/workspace/llm_map/HANDOFF.json
+archwiz/foresight_state.json	~/workspace/llm_map/foresight_state.json
+archwiz/master_tasks.json	~/workspace/llm_map/master_tasks.json
+archwiz/metrics_log.jsonl	~/workspace/llm_map/metrics_log.jsonl
+archwiz/synthegration_exports	~/synthegration_exports
+
+# --- archwiz utility belt ---
+archwiz/export_session.sh	~/harmony_hub/utility_belt/export_session.sh
+archwiz/export_status.py	~/harmony_hub/utility_belt/export_status.py
+
+# --- launchers on PATH ---
+bin/aicli	~/multi-ai-cli/cli.py
+bin/cedar-forge	~/workspace/cedar_forge/scripts/cedar-forge
+bin/gemini	~/gemini-cli/gemini.py
+
+# --- harmony_hub entrypoints ---
+harmony_hub/bin/agent	~/termux-multi-agent/run.py
+harmony_hub/bin/deepcli	~/deepcli/deepcli.py
+harmony_hub/bin/harvest	~/deepseek_harvest_work/harvest.py
+harmony_hub/bin/prov	~/cli-synthegration/workspace/provenance/prov_query.sh
+
+# --- colab-cli vendored refs (refTemplates/ is gitignored by policy) ---
+colab-cli/lib/colab_ssh	~/refTemplates/colab-ssh/colab_ssh
+colab-cli/lib/colabcode	~/refTemplates/colabcode/colabcode
+colab-cli/lib/colabsh	~/refTemplates/colabsh/colabsh
+colab-cli/lib/colabtools	~/refTemplates/colabtools/colabtools
+colab-cli/lib/google_colab_cli	~/refTemplates/google-colab-cli/google_colab_cli
+
+# --- misc ---
+enforce_hierarchy.sh	~/workspace/scripts/enforce_workspace_hierarchy.sh
+workspace/llm_map/build_tool_taxonomy.sh	~/workspace/llm_map/_TOOL_TAXONOMY/build_tool_taxonomy.sh
+deepcli/node_modules	~/deepseek-cli/node_modules
+
+# NOT listed on purpose — these are process-runtime junk that should be removed
+# from tracking, not recreated (12 Chromium Singleton{Cookie,Lock,Socket} links,
+# .config/pulse/*-runtime, .termux/shell). See docs/PORTABILITY.md Class B.

@@ -1,38 +1,32 @@
-# SWE Reference Performance Evaluation Automation
+# SWE Reference Adapter
 
 **Implements:** THUB-007  
-**Status:** Bounded, manual GitHub Actions evaluation control plane.
+**Suite position:** Optional reference adapter for the [Repository Development Performance Suite](../development-performance/SUITE.md).
 
-This directory defines the repository’s first performance-evaluation lane based on the user-owned `SWE-agent_fork` and `mini-swe-agent_fork` references. The initial executor uses only the pinned mini-SWE-agent revision because its documented batch interface exposes explicit benchmark, split, slice, output, and worker controls. The larger SWE-agent fork remains a reference source for a later adapter; it is not imported or invoked by the initial workflow.[1] [2]
+The user-owned `SWE-agent_fork` and `mini-swe-agent_fork` are **reference implementations** that inform comparable agent-evaluation methodology. They are not the target of THUB-007 and their external SWE-bench scores do not measure `termux-monorepo` development performance by themselves.[1] [2]
 
-> **Scope boundary:** GitHub Actions owns orchestration and evidence collection. The BLU B160V is neither a required runner nor a manual control surface. A human-managed provider credential is required before the optional model-bearing workflow can run; the workflow never creates, rotates, logs, commits, or uploads that credential.
+> The suite’s primary subject is this repository’s development lifecycle: change delivery, validation health, review flow, automation response, and merge readiness. A SWE-reference result is an optional, separately labeled context signal.
 
-## Automation Surface
+## Adapter Boundary
 
-| Component | Trigger | Purpose | Cost-bearing behavior |
-|---|---|---|---|
-| `swe-evaluation-contract.yml` | Pull request, integration-branch push, or manual dispatch | Runs deterministic manifest-contract tests and audits any committed, redacted result manifests. | **None.** It does not call a model, download a benchmark, or provision a benchmark environment. |
-| `swe-reference-evaluation.yml` | Manual dispatch only | Checks out the pinned mini-SWE-agent reference and runs one `0:1` benchmark slice. | **Opt-in only.** It requires the human-managed `SWE_EVALUATION_API_KEY` secret and has a 60-minute job limit. |
-| `swe_evaluation_contract.py` | Called by both workflows | Creates and audits a machine-readable, redacted result manifest. | **None.** It accepts counts and metadata only; trajectories, patches, prompts, logs, prediction payloads, and credentials are excluded. |
-
-## Bounded Run Contract
-
-The manual runner permits only the `lite` or `verified` benchmark aliases, the `dev` or `test` splits, and exactly one benchmark instance (`--slice 0:1`, one worker). The input model identifier must match a constrained identifier format and is rejected if it resembles a credential. The reference revision is fixed to `a83fcae82d2a08f0ee0c688f9d137b3566c097f8` for reproducibility.
-
-The workflow writes and uploads only `manifest.json`. Each manifest has a SHA-256 digest over canonical metadata and records the pinned reference revision, benchmark parameters, model identifier, timing, executor exit code, completed-instance count, and evaluation state. It deliberately leaves `benchmark_resolved_instances` as `null` until a separately designed SWE-bench scoring integration is approved. This prevents an agent-run completion from being misrepresented as benchmark resolution.[1]
-
-| Rejected data class | Reason |
+| Property | Rule |
 |---|---|
-| Provider keys, tokens, browser/session state | Human-managed credentials and sensitive state must not enter source control, logs, or artifacts. |
-| Trajectories, prompts, shell transcripts, and patches | They can contain unreviewed code or model/provider context and are unnecessary for the first-run performance record. |
-| Unbounded benchmark slices, scheduled runs, or fan-out workers | They create uncontrolled spend and capacity consumption. |
-| Automatic issue, PR, or device actions | Performance evaluation must produce validated evidence before it can drive a development action. |
+| Reference runtime | The first adapter pins `mini-swe-agent_fork` at `a83fcae82d2a08f0ee0c688f9d137b3566c097f8`. The larger SWE-agent fork remains a future adapter source. |
+| Invocation | Manual dispatch only. No schedule, fan-out, or automatic issue/PR trigger can invoke a provider model. |
+| Workload | Exactly one benchmark instance (`0:1`) with one worker; allowed suite aliases are `lite` and `verified`. |
+| Credential | A human-managed `SWE_EVALUATION_API_KEY` secret is required at runtime. The workflow neither creates nor changes it. |
+| Artifact | Only a redacted `manifest.json` is uploaded for 14 days. No prompt, trajectory, prediction patch, log, browser/session state, or credential is retained. |
+| Score semantics | `agent-run-complete` records a completed adapter run; it is **not** a confirmed benchmark resolution. Resolution remains `null` until a separately reviewed scorer adapter exists. |
 
-## Result Lifecycle
+## Result Contract
 
-The manual runner produces an immutable GitHub Actions artifact retained for 14 days. If a reviewed result needs to become a repository record, commit **only** its redacted manifest under `docs/evaluations/swe-performance/results/`; the deterministic contract workflow will audit it. Do not commit downloaded artifacts, raw `preds.json`, trajectories, patches, or logs.
+The reference adapter uses `scripts/ci/swe_evaluation_contract.py`. Its manifest contains the fixed reference revision, bounded benchmark parameters, model identifier, timing, executor state, completed-instance count, and canonical SHA-256 digest. It rejects secret-shaped values, unknown fields, invalid state/count relationships, and unbounded slices.
 
-The next adapter must introduce a separate evaluator that converts a compatible prediction artifact into a confirmed resolution score. It must retain the same reference pinning, redaction, digest verification, explicit workload cap, and manual-start policy before any scheduled comparative runs are considered.
+If a reviewed reference result becomes a durable repository record, commit only its redacted manifest under `docs/evaluations/swe-performance/results/`. The deterministic suite contract workflow validates it. Do not commit downloaded artifacts, `preds.json`, trajectories, patches, or raw logs.
+
+## Extension Rule
+
+A new reference adapter must document its pin, workload cap, credential boundary, output schema, and relationship to repository-development signals before use. It cannot replace the deterministic `repository-pr-lifecycle` adapter or cause automatic repository actions.
 
 ## References
 

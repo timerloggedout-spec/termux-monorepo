@@ -49,7 +49,7 @@ Establish a Termux-first Agentic Hub for the BLU B160V by adding the approved us
 ### 2026-08-18 — user / Manus
 
 - Disposition: P1 scope addition in progress
-- Notes: The Operator directed that the SWE-agent and mini-SWE-agent references be used for development-performance evaluation automation. THUB-007 is limited to a GitHub-native, manually dispatched control plane and deterministic result validation. It must not run an unbounded or scheduled model workload, create/rotate credentials, or make direct device control a dependency. Pull-request review and gates remain required before any integration claim.
+- Notes: The Operator directed that the SWE-agent and mini-SWE-agent references be used as starters in an extensible suite for measuring this repository’s development performance. THUB-007 therefore treats SWE references as pinned adapters, not as the benchmark target. The first repository adapter is GitHub-native and credential-free; optional reference adapters remain manual, bounded, and redacted. No scheduled model workload, credential creation/rotation, or device-control dependency is permitted. Pull-request review and gates remain required before any integration claim.
 
 ## Checklist (process)
 

@@ -2,7 +2,7 @@ name: Dependency Phase Evaluate
 
 on:
   push:
-    branches: [master-staging]
+    branches: [master]
     paths:
       - "docs/agentic/dependency-phases.json"
       - "docs/agentic/phase-approvals.json"

@@ -18,7 +18,7 @@ The initial source of truth is `docs/agentic/dependency-phases.yaml`. It must us
 ```yaml
 schema_version: 1
 plan_id: dependency-phases
-base_branch: master-staging
+base_branch: master
 
 phases:
   - phase_id: DPH-00
@@ -76,7 +76,7 @@ flowchart TD
   J --> K{still ready?}
   K -- no --> L[No-op + reason]
   K -- yes --> M[Record claim + invoke approved agent adapter]
-  M --> N[PR to master-staging]
+  M --> N[PR to master]
   N --> O[Existing gate and peer-review flows]
   O --> E
 ```
@@ -86,7 +86,7 @@ flowchart TD
 | Component | Trigger | Read/write boundary | Job permissions |
 |---|---|---|---|
 | `phase-plan-validate.yml` | `pull_request` paths for phase plan/schema/tests; manual dispatch | Parse fixtures and plan. Never writes GitHub state. | `contents: read` |
-| `phase-evaluate.yml` | Trusted push to `master-staging`; `repository_dispatch`; manual dispatch; low-frequency schedule | Reads plan, PRs, checks, proposal/item evidence; writes only a run summary in v1. | `contents: read`, `pull-requests: read`, `issues: read`, `checks: read`, `statuses: read` |
+| `phase-evaluate.yml` | Trusted push to `master`; `repository_dispatch`; manual dispatch; low-frequency schedule | Reads plan, PRs, checks, proposal/item evidence; writes only a run summary in v1. | `contents: read`, `pull-requests: read`, `issues: read`, `checks: read`, `statuses: read` |
 | `phase-agent-dispatch.yml` | `repository_dispatch` type `phase-ready`; manual recovery dispatch | Re-reads current state, records a claim only if still eligible, invokes approved launch adapter. | `contents: read`, `issues: write`, `pull-requests: read` |
 | `phase-status-report.yml` | Manual dispatch; at most a bounded daily/low-frequency schedule | Emits human-readable matrix and stale-evidence diagnostics. | Read-only permissions |
 | `scripts/agentic/validate_dependency_phases.py` | Called by validation/evaluation workflows | Pure parsing, validation, topological ordering, and output serialization. | No token |
@@ -104,11 +104,11 @@ GitHub Actions workflow-token events do not generally cause further workflow run
     "plan_id": "dependency-phases",
     "phase_id": "DPH-10",
     "plan_sha256": "<full canonical plan digest>",
-    "base_ref": "master-staging",
+    "base_ref": "master",
     "proposal": "gantt-dependency-phases",
     "items": ["DPH-10-01"],
     "trigger_sha": "<source commit>",
-    "idempotency_key": "DPH-10:<plan_sha256>:master-staging"
+    "idempotency_key": "DPH-10:<plan_sha256>:master"
   }
 }
 ```
@@ -126,12 +126,12 @@ The dispatch workflow must ignore its payload as an authority claim and independ
 
 ## Agent launch envelope
 
-The agent prompt should be generated from the current canonical sources, not hand-authored in a comment. It must include only the phase ID, goal, item IDs, plan hash, base branch, relevant repository contracts, open-PR file claims, and completion evidence required. It should reuse the repository’s existing `master-staging` and claim conventions from the Jules issue workflow rather than create a second coordination protocol.[5]
+The agent prompt should be generated from the current canonical sources, not hand-authored in a comment. It must include only the phase ID, goal, item IDs, plan hash, base branch, relevant repository contracts, open-PR file claims, and completion evidence required. It should reuse the repository’s existing `master` and claim conventions from the Jules issue workflow rather than create a second coordination protocol.[5]
 
 ```markdown
 Phase: DPH-10 — Read-only evaluator
 Plan hash: <sha256>
-Base branch: master-staging
+Base branch: master
 Implements: DPH-10-01
 
 Read: AGENTS.md, docs/proposals/registry.yaml, the current phase plan,
@@ -142,7 +142,7 @@ Constraints:
 - Make the smallest reviewable diff.
 - Do not add secrets, runtime credentials, or generated large artifacts.
 - Do not merge, close a proposal, or advance a submodule Gitlink.
-- Open a PR to master-staging and include the phase/item IDs.
+- Open a PR to master and include the phase/item IDs.
 
 Completion evidence:
 - The specified validation fixture and required gates are green.
@@ -202,7 +202,7 @@ The plan validation workflow runs on normal `pull_request` with read-only access
 
 ## Rollout sequence
 
-The rollout should proceed through small PRs against `master-staging`: (1) schema and pure validator; (2) read-only evaluator/report; (3) controlled idempotent dispatch; (4) bounded reconciliation; and (5) optional projections. Each PR carries its phase/item reference, passes `git diff --check`, repository gate, Termux smoke gate, and the smallest relevant fixture suite. No fork/submodule update belongs in the first four PRs.
+The rollout should proceed through small PRs against `master`: (1) schema and pure validator; (2) read-only evaluator/report; (3) controlled idempotent dispatch; (4) bounded reconciliation; and (5) optional projections. Each PR carries its phase/item reference, passes `git diff --check`, repository gate, Termux smoke gate, and the smallest relevant fixture suite. No fork/submodule update belongs in the first four PRs.
 
 ## References
 

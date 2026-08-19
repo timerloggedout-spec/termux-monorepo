@@ -113,7 +113,7 @@ flowchart LR
   V --> E[GitHub Actions evaluator\nobjective evidence only]
   E --> R[Read-only phase report]
   E -->|explicit, idempotent dispatch| A[Agent launch adapter]
-  A --> PR[PR to master-staging]
+  A --> PR[PR to master]
   PR --> E
   P --> X[Optional projections]
   X --> C[Camshaft advisory analysis]

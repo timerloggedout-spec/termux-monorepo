@@ -22,7 +22,7 @@ def plan_fixture() -> dict:
         "schema_version": 1,
         "plan_id": "fixture-plan",
         "title": "Fixture dependency plan",
-        "base_branch": "master-staging",
+        "base_branch": "master",
         "project": {
             "owner": "example-owner",
             "number": 1,

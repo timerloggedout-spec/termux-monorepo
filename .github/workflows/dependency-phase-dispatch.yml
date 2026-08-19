@@ -27,8 +27,8 @@ permissions: {}
 
 jobs:
   dispatch:
-    # Claims and downstream agent launches originate only from the staging integration branch.
-    if: ${{ github.ref == 'refs/heads/master-staging' }}
+    # Claims and downstream agent launches originate only from the master branch.
+    if: ${{ github.ref == 'refs/heads/master' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -68,10 +68,10 @@ jobs:
         uses: google-labs-code/jules-invoke@v1
         with:
           jules_api_key: ${{ secrets.JULES_API_KEY }}
-          starting_branch: master-staging
+          starting_branch: master
           prompt: |
             Dependency phase ${{ env.PHASE_ID }} was claimed with idempotency key ${{ steps.claim.outputs.idempotency_key }}.
-            Follow AGENTS.md and docs/agentic/dependency-phases.json. Read only the phase-relevant contracts and current issue #${{ env.ISSUE_NUMBER }}. Make the smallest reviewable change, target master-staging, cite Implements: ${{ env.PHASE_ID }}, and open a PR. Do not merge, close proposals, update submodules, or alter Project configuration.
+            Follow AGENTS.md and docs/agentic/dependency-phases.json. Read only the phase-relevant contracts and current issue #${{ env.ISSUE_NUMBER }}. Make the smallest reviewable change, target master, cite Implements: ${{ env.PHASE_ID }}, and open a PR. Do not merge, close proposals, update submodules, or alter Project configuration.
 
       - name: Upload claim record
         uses: actions/upload-artifact@v4

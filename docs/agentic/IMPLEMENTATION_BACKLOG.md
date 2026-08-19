@@ -2,7 +2,7 @@
 
 **Status:** Proposed backlog. It is not registered as an active proposal, does not authorize work, and does not change existing workflow behavior.
 
-The items are deliberately ordered so that policy and deterministic validation are reviewable before any agent-launch capability exists. Each implementation item should become a separate PR against `master-staging`, cite its item ID, use the repository’s agent identity conventions where applicable, and pass `git diff --check`, `repo-gate`, `termux-smoke`, and the smallest relevant test.
+The items are deliberately ordered so that policy and deterministic validation are reviewable before any agent-launch capability exists. Each implementation item should become a separate PR against `master`, cite its item ID, use the repository’s agent identity conventions where applicable, and pass `git diff --check`, `repo-gate`, `termux-smoke`, and the smallest relevant test.
 
 | Order | Proposed item | Dependency | Deliverable | Explicit exclusion |
 |---:|---|---|---|---|

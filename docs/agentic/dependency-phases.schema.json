@@ -10,7 +10,7 @@
     "schema_version": {"const": 1},
     "plan_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{1,63}$"},
     "title": {"type": "string", "minLength": 3},
-    "base_branch": {"const": "master-staging"},
+    "base_branch": {"const": "master"},
     "project": {"$ref": "#/$defs/project"},
     "policy": {"$ref": "#/$defs/policy"},
     "phases": {

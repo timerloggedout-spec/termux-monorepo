@@ -2,7 +2,7 @@ name: Dependency Phase Validate
 
 on:
   pull_request:
-    branches: [master-staging]
+    branches: [master]
     paths:
       - "docs/agentic/dependency-phases.json"
       - "docs/agentic/phase-approvals.json"

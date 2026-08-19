@@ -17,7 +17,7 @@ Optional: `CLAUDE.md`, `CONTRIBUTING.md`.
 
 ## Hard Rules
 
-- Target **`master-staging`**, not raw `master`, for integration work.
+- Target **`master`** for integration work.
 - Both gates must pass before merge:
   - `python3 scripts/ci/repo_gate.py`
   - `python3 scripts/ci/termux_smoke.py`
@@ -31,7 +31,7 @@ Optional: `CLAUDE.md`, `CONTRIBUTING.md`.
 ## Preferred Execution Loop
 
 ```text
-registry.yaml → pick todo item → branch from master-staging
+registry.yaml → pick todo item → branch from master
   → implement → PR with Implements: ID → gates green → merge
   → update ITEMS.md status
 ```

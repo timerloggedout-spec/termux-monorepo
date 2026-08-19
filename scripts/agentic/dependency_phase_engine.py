@@ -103,7 +103,7 @@ def validate_plan(plan: dict[str, Any]) -> list[str]:
     _require(plan.get("schema_version") == 1, "schema_version must equal 1", errors)
     _require(isinstance(plan.get("plan_id"), str) and plan["plan_id"], "plan_id is required", errors)
     _require(isinstance(plan.get("title"), str) and len(plan["title"].strip()) >= 3, "title is required", errors)
-    _require(plan.get("base_branch") == "master-staging", "base_branch must be master-staging", errors)
+    _require(plan.get("base_branch") == "master", "base_branch must be master", errors)
 
     project = plan.get("project")
     _require(isinstance(project, dict), "project must be an object", errors)

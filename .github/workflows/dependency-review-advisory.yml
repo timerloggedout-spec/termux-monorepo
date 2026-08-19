@@ -1,0 +1,64 @@
+name: Advisory dependency review
+
+on:
+  pull_request:
+    paths:
+      - "**/package.json"
+      - "**/package-lock.json"
+      - "**/pnpm-lock.yaml"
+      - "**/yarn.lock"
+      - "**/requirements.txt"
+      - "**/poetry.lock"
+      - "**/Pipfile.lock"
+      - "**/go.mod"
+      - "**/go.sum"
+      - "**/Cargo.toml"
+      - "**/Cargo.lock"
+      - "**/Gemfile.lock"
+      - "**/pom.xml"
+      - "**/gradle.lockfile"
+
+permissions: {}
+
+concurrency:
+  group: dependency-review-advisory-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  dependency-review:
+    name: dependency review advisory
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+
+      - name: Review dependency changes
+        uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
+        with:
+          fail-on-severity: high
+          license-check: true
+          vulnerability-check: true
+          warn-only: true
+          comment-summary-in-pr: never
+          show-openssf-scorecard: false
+
+      - name: Publish advisory boundary
+        if: always()
+        run: |
+          {
+            echo "## Advisory dependency review"
+            echo
+            echo "This B6 pilot evaluates dependency deltas only. It is non-blocking, creates no pull-request comments, and has no write permission."
+            echo
+            echo "| Field | Value |"
+            echo "|---|---|"
+            echo "| action revision | \`a1d282b36b6f3519aa1f3fc636f609c47dddb294\` (v5.0.0) |"
+            echo "| review threshold | high severity, warn-only |"
+            echo "| license and vulnerability checks | enabled |"
+            echo "| report channel | native job output and step summary only |"
+          } >> "$GITHUB_STEP_SUMMARY"

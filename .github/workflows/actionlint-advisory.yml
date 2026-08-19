@@ -1,0 +1,91 @@
+name: Advisory GitHub Actions lint
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/**"
+      - ".github/actions/**"
+      - "actionlint.yaml"
+      - ".actionlint.yaml"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: actionlint-advisory-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  actionlint:
+    name: actionlint advisory
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+
+      - name: Set up Go
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
+        with:
+          go-version: "1.25.0"
+          cache: false
+
+      - name: Fetch pinned actionlint source
+        env:
+          ACTIONLINT_REPOSITORY: rhysd/actionlint
+          ACTIONLINT_REVISION: 914e7df21a07ef503a81201c76d2b11c789d3fca # v1.7.12
+        run: |
+          set -euo pipefail
+          source_dir="$RUNNER_TEMP/actionlint-source"
+          git init --quiet "$source_dir"
+          git -C "$source_dir" remote add origin "https://github.com/${ACTIONLINT_REPOSITORY}.git"
+          git -C "$source_dir" fetch --depth=1 origin "$ACTIONLINT_REVISION"
+          git -C "$source_dir" checkout --quiet --detach FETCH_HEAD
+          test "$(git -C "$source_dir" rev-parse HEAD)" = "$ACTIONLINT_REVISION"
+
+      - name: Build pinned actionlint
+        run: |
+          set -euo pipefail
+          go build -trimpath -o "$RUNNER_TEMP/actionlint" ./cmd/actionlint
+          "$RUNNER_TEMP/actionlint" -version
+        working-directory: ${{ runner.temp }}/actionlint-source
+
+      - name: Lint GitHub Actions workflows
+        id: lint
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          "$RUNNER_TEMP/actionlint" -color 2>&1 | tee "$RUNNER_TEMP/actionlint-report.txt"
+          status=${PIPESTATUS[0]}
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          exit "$status"
+
+      - name: Publish advisory summary
+        if: always()
+        env:
+          ACTIONLINT_STATUS: ${{ steps.lint.outputs.status || 'infrastructure-error' }}
+        run: |
+          {
+            echo "## Advisory GitHub Actions lint"
+            echo
+            echo "This B6 pilot is non-blocking. Review findings before promotion to a required check."
+            echo
+            echo "| Field | Value |"
+            echo "|---|---|"
+            echo "| actionlint version | v1.7.12 |"
+            echo "| source revision | \`914e7df21a07ef503a81201c76d2b11c789d3fca\` |"
+            echo "| lint exit status | \`${ACTIONLINT_STATUS}\` |"
+            echo "| policy | advisory; no auto-fix and no pull-request comments |"
+            echo
+            echo "### First 200 report lines"
+            echo '```text'
+            if [ -f "$RUNNER_TEMP/actionlint-report.txt" ]; then
+              sed -n '1,200p' "$RUNNER_TEMP/actionlint-report.txt"
+            else
+              echo "No report was produced; inspect the preceding setup logs."
+            fi
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

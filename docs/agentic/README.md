@@ -110,10 +110,10 @@ The GitHub Actions dispatcher may invoke Jules only after a successful applied c
 
 | Secret | Required by | Purpose |
 |---|---|---|
-| `PROJECTS_TOKEN` | Live evaluation, Project synchronization, and dispatch revalidation | Fine-grained token with access to the user-owned Project and repository Issues/PR metadata. |
+| `ARCHWIZ_GITHUB_TOKEN`, `OPERATOR_GITHUB_TOKEN`, or `OPERATOR_TOKEN` | Live evaluation, Project synchronization, and dispatch revalidation | The first configured existing Operator credential is used, with `GITHUB_TOKEN` as a final fallback. The selected credential needs access to the user-owned Project and repository Issues/PR metadata. |
 | `JULES_API_KEY` | Optional final step of applied dispatch | Existing Jules integration secret; no value means the claim is recorded but no agent is invoked. |
 
-The validation workflow has no secrets and remains read-only. The evaluator is scheduled daily and can be manually run; it uploads derived artifacts rather than committing them. Project sync is manual and dry-run by default. Dispatch is manual or a controlled repository event, never a pull-request event from untrusted code.
+The validation workflow has no secrets and remains read-only. The evaluator is scheduled daily and can be manually run; it uploads derived artifacts rather than committing them. Live Project operations use the repository’s existing Operator-token precedence: `ARCHWIZ_GITHUB_TOKEN`, then `OPERATOR_GITHUB_TOKEN`, then `OPERATOR_TOKEN`, and finally `GITHUB_TOKEN`. Project sync is manual and dry-run by default. Dispatch is manual or a controlled repository event, never a pull-request event from untrusted code.
 
 ## Required checks before merge
 

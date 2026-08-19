@@ -42,7 +42,7 @@ Implement a repository-native dependency-phase system that derives lifecycle sta
 ### 2026-08-18 — Manus AI
 
 - Disposition: in_review
-- Notes: The full implementation passed `repo_gate.py --base origin/master-staging` and `termux_smoke.py`, with seven lifecycle/adapter unit tests passing. The live dry-run identified the canonical Project mapping. Issue #246 (`DPH-000`) and issue #247 (`DPH-100`) were created during reconciliation attempts; the authenticated integration token can read but lacks permission to add items to the user-owned Project. `PROJECTS_TOKEN` with Projects write permission is therefore the remaining deployment configuration requirement. Pull request #248 is open against `master-staging`.
+- Notes: The full implementation passed `repo_gate.py --base origin/master-staging` and `termux_smoke.py`, with seven lifecycle/adapter unit tests passing. The live dry-run identified the canonical Project mapping. Issue #246 (`DPH-000`) and issue #247 (`DPH-100`) were created during reconciliation attempts; the authenticated integration token can read but lacks permission to add items to the user-owned Project. The existing Operator-token chain must therefore be selected for Project writes and have Projects write permission. Pull request #248 is open against `master-staging`.
 
 ## Checklist (process)
 

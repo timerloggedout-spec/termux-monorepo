@@ -1,0 +1,153 @@
+{
+  "bootstrap_backfill": true,
+  "builder": "archwiz.context_relationships.build_index@1.0",
+  "candidate_edge_count": 1827,
+  "compiler": "archwiz.context_relationships.compiler@1.0",
+  "default_branch": "master-staging",
+  "edge_count": 14262,
+  "github_report": {
+    "checkpoint_eligible": false,
+    "collected_at": "2026-08-19T04:22:47.721555Z",
+    "collector": "archwiz.context_relationships.github_collector@1.0",
+    "counts": {
+      "cochange_candidates": 1827,
+      "commit_files": 1192,
+      "commits": 100,
+      "excluded_history_paths": 571,
+      "explicit_references": 860,
+      "issue_comments": 106,
+      "issues": 14,
+      "labels": 88,
+      "permalink_references": 99,
+      "pull_request_comments": 1247,
+      "pull_request_commits": 1654,
+      "pull_request_files": 1854,
+      "pull_requests": 100,
+      "review_comments": 1081,
+      "reviews": 627,
+      "timeline_cross_references": 65
+    },
+    "history_window": {
+      "issue_count": 100,
+      "issues_complete": false,
+      "limit_per_family": 100,
+      "next_start_page": 2,
+      "pull_request_count": 100,
+      "pull_requests_complete": false,
+      "start_page": 1
+    },
+    "include_comments": true,
+    "max_comments_per_item": 20,
+    "max_commits": 100,
+    "max_items": 100,
+    "request_count": 631,
+    "retry_count": 0,
+    "since": null,
+    "unresolved_internal_reference_count": 330
+  },
+  "history_window": {
+    "issue_count": 100,
+    "issues_complete": false,
+    "limit_per_family": 100,
+    "next_start_page": 2,
+    "pull_request_count": 100,
+    "pull_requests_complete": false,
+    "start_page": 1
+  },
+  "incremental_since": null,
+  "input_sha256": "9689d15a2752ec533b393b8bf6ba4bac7ab2278010740eebd320f1f13a72cf27",
+  "latest_observed_at": "2026-08-19T04:25:26Z",
+  "merge_report": {
+    "input_count": 2,
+    "input_counts": [
+      {
+        "edges": 2500,
+        "nodes": 2734
+      },
+      {
+        "edges": 11865,
+        "nodes": 5380
+      }
+    ],
+    "merged_edge_count": 14365,
+    "merged_node_count": 8001,
+    "merger": "archwiz.context_relationships.seed_merger@1.0",
+    "retained_history": false
+  },
+  "node_count": 8001,
+  "repository": "timerloggedout-spec/termux-monorepo",
+  "retained_history": false,
+  "schema_sha256": "795fd782ddbb7d52c09a9a85a8356683b12202968d6ba7b04fb13c55393cde93",
+  "schema_version": "1.0",
+  "scope_registry_sha256": "31c4f37c0c103b22a97d4ccd7c3f6f4f376a85860f2fa3430a0d66658d6db0ef",
+  "source_report": {
+    "collector": "archwiz.context_relationships.source_collector@1.0",
+    "excluded_files": 1319,
+    "oversized_files": 0,
+    "parser_failures": [
+      {
+        "error": "unexpected indent (indodax_api.py, line 5)",
+        "path": "_1-Projects/a/yobitrageswap/api/indodax_api.py"
+      },
+      {
+        "error": "unexpected indent (polygon_api.py, line 5)",
+        "path": "_1-Projects/a/yobitrageswap/api/polygon_api.py"
+      },
+      {
+        "error": "unexpected indent (pumpfun_api.py, line 5)",
+        "path": "_1-Projects/a/yobitrageswap/api/pumpfun_api.py"
+      },
+      {
+        "error": "unexpected indent (solana_api.py, line 4)",
+        "path": "_1-Projects/a/yobitrageswap/api/solana_api.py"
+      },
+      {
+        "error": "unexpected indent (tastytrade_api.py, line 5)",
+        "path": "_1-Projects/a/yobitrageswap/api/tastytrade_api.py"
+      },
+      {
+        "error": "unexpected indent (uniswap_api.py, line 14)",
+        "path": "_1-Projects/a/yobitrageswap/api/uniswap_api.py"
+      },
+      {
+        "error": "unexpected indent (yobit_api.py, line 15)",
+        "path": "_1-Projects/a/yobitrageswap/api/yobit_api.py"
+      },
+      {
+        "error": "expected an indented block after 'if' statement on line 64 (dangle_detector.py, line 65)",
+        "path": "archwiz/dangle_detector.py"
+      },
+      {
+        "error": "unterminated f-string literal (detected at line 17) (manifest_to_cache.py, line 17)",
+        "path": "archwiz/manifest_to_cache.py"
+      },
+      {
+        "error": "expected 'except' or 'finally' block (generate_loop.py, line 109)",
+        "path": "cli-synthegration/workspace/compression_sandbox/generate_loop.py"
+      },
+      {
+        "error": "invalid syntax (reconstructed_msg596.py, line 2)",
+        "path": "cli-synthegration/workspace/staging/reconstructed_msg596.py"
+      },
+      {
+        "error": "invalid syntax (provision_agent.py, line 21)",
+        "path": "harmonizer-prod_cli/workspace/provision_agent.py"
+      },
+      {
+        "error": "invalid syntax (provision_agent_20260608_201452.py, line 21)",
+        "path": "harmonizer-prod_cli/workspace/provision_agent_20260608_201452.py"
+      },
+      {
+        "error": "unexpected indent (recover-session.py, line 20)",
+        "path": "harmony_hub/utility_belt/recover-session.py"
+      }
+    ],
+    "scanned_files": 3727,
+    "scopes_matched": 100,
+    "source_files": 511,
+    "symlink_files": 45,
+    "unavailable_files": 0,
+    "unsupported_files": 1852
+  },
+  "verified_edge_count": 12435
+}

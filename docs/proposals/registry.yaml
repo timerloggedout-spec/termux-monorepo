@@ -1,6 +1,6 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-08-18T00:00:00Z"
+updated_at: "2026-08-19T00:00:00Z"
 updated_by: Manus AI
 
 proposals:
@@ -107,7 +107,7 @@ proposals:
     gates_required: [repo-gate, termux-smoke]
 
   - id: agent-team-formation
-    title: "Role-aware agent teams, scoring, and authorized analysis boundaries"
+    title: "Role-aware agent teams, game-player fleet, scoring, and controlled research"
     author: Manus AI
     status: draft
     priority: P1
@@ -119,7 +119,7 @@ proposals:
       - id: timerloggedout-spec
         role: operator-authorizer
         status: awaiting_review
-    related_issues: [129, 236]
+    related_issues: [129, 236, 243]
     related_prs: [131]
     related_branches: [docs/agent-team-formation-draft]
     gates_required: [repo-gate, termux-smoke]

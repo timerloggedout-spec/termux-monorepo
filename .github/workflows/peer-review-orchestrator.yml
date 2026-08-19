@@ -206,6 +206,7 @@ jobs:
                     provider,
                     checkboxId: match[2],
                     selected: match[1].toLowerCase() === 'x',
+                    updatedAt: comment.updated_at || comment.created_at || '',
                     commentId: comment.id,
                     url: comment.html_url,
                   });
@@ -239,23 +240,38 @@ jobs:
               return acknowledged;
             }
 
-            function isControlOnly(body) {
+            function isNonReviewProviderNotice(body) {
               const value = body || '';
               const checkboxTrigger = /checkboxId[\s\S]{0,500}Trigger review/i.test(value);
-              return checkboxTrigger || /does not receive automatic reviews/i.test(value);
+              const automaticReviewNotice = /does not receive automatic reviews/i.test(value);
+              const rateLimited = /review limit reached|couldn[’']t start this review|next review available in/i.test(value);
+              return checkboxTrigger || automaticReviewNotice || rateLimited;
+            }
+
+            function cooldownNotice(provider, evidence) {
+              if (provider !== 'coderabbit') return { active: false, url: '', detail: '' };
+              const sourceComments = [...evidence.comments, ...evidence.reviewComments];
+              const notice = sourceComments.find(item =>
+                providerFor(item.user) === provider &&
+                Date.parse(item.created_at || item.submitted_at || '') >= cycleStartedAt &&
+                /review limit reached|couldn[’']t start this review|next review available in/i.test(item.body || '')
+              );
+              if (!notice) return { active: false, url: '', detail: '' };
+              const retry = (notice.body || '').match(/next review available in:\s*\*\*([^*]+)\*\*/i)?.[1]?.trim() || 'provider cooldown';
+              return { active: true, url: notice.html_url || notice.url || '', detail: retry };
             }
 
             function deliveredProvider(provider, evidence) {
               const createdDuringCycle = item => Date.parse(item.created_at || item.submitted_at || '') >= cycleStartedAt;
               const sourceComments = [...evidence.comments, ...evidence.reviewComments];
               const comment = sourceComments.find(item =>
-                providerFor(item.user) === provider && createdDuringCycle(item) && !isControlOnly(item.body)
+                providerFor(item.user) === provider && createdDuringCycle(item) && !isNonReviewProviderNotice(item.body)
               );
               if (comment) return { delivered: true, url: comment.html_url || comment.url || '', via: 'comment' };
 
               const review = evidence.reviews.find(item =>
                 providerFor(item.user) === provider &&
-                item.commit_id === headSha && createdDuringCycle(item) && !isControlOnly(item.body)
+                item.commit_id === headSha && createdDuringCycle(item) && !isNonReviewProviderNotice(item.body)
               );
               if (review) return { delivered: true, url: review.html_url || review.url || '', via: 'review' };
 
@@ -277,21 +293,26 @@ jobs:
               const providerStates = requiredProviders.map(provider => {
                 const providerControls = controls.filter(control => control.provider === provider);
                 const delivered = deliveredProvider(provider, evidence);
-                // A selected control from a prior head is not proof for this cycle.
-                // Only a current, authorized acknowledgement binds a source control to this SHA.
-                const acknowledged = providerControls.some(control =>
+                const cooldown = cooldownNotice(provider, evidence);
+                // An [x] checkbox edit made during this active cycle is evidence that
+                // the provider UI action occurred. A stale [x] never carries forward.
+                const selectedForCycle = providerControls.some(control =>
+                  control.selected && Date.parse(control.updatedAt || '') >= cycleStartedAt
+                );
+                const acknowledged = selectedForCycle || providerControls.some(control =>
                   acknowledgements.has(`${control.provider}:${control.checkboxId}`)
                 );
                 let state = 'awaiting_provider_response';
                 if (providerControls.length && !acknowledged) state = 'pending_operator_action';
                 if (acknowledged) state = 'action_acknowledged';
+                if (cooldown.active) state = 'provider_cooldown';
                 // A control-bearing provider may expose a completed informational
                 // check before its interactive action is selected. Do not accept
                 // that check/comment as completion until the control is acknowledged.
                 if (delivered.delivered && (!providerControls.length || acknowledged)) {
                   state = 'provider_completed';
                 }
-                return { provider, state, delivered, controls: providerControls };
+                return { provider, state, delivered, cooldown, controls: providerControls };
               });
               const complete = providerStates.every(item => item.state === 'provider_completed');
               finalState = { providerStates, complete };
@@ -304,14 +325,15 @@ jobs:
             const { providerStates, complete } = finalState;
             const state = complete ? 'responses_collected' :
               providerStates.some(item => item.state === 'pending_operator_action') ? 'pending_operator_action' :
+              providerStates.some(item => item.state === 'provider_cooldown') ? 'provider_cooldown' :
               'awaiting_provider_response';
             const pending = providerStates.filter(item => item.state !== 'provider_completed')
               .map(item => `${item.provider}:${item.state}`).join(', ') || 'none';
             const operatorControls = providerStates.flatMap(item => item.controls.map(control =>
-              `- ${item.provider}: control_id=${control.checkboxId}; source=${control.url}; selected=${control.selected}`
+              `- ${item.provider}: control_id=${control.checkboxId}; source=${control.url}; selected=${control.selected}; updated_at=${control.updatedAt}`
             ));
             const deliveryLines = providerStates.map(item =>
-              `- ${item.provider}: ${item.state}${item.delivered.url ? `; evidence=${item.delivered.url}` : ''}`
+              `- ${item.provider}: ${item.state}${item.delivered.url ? `; evidence=${item.delivered.url}` : ''}${item.cooldown?.active ? `; cooldown=${item.cooldown.detail}; source=${item.cooldown.url}` : ''}`
             );
 
             core.setOutput('skipped', 'false');
@@ -394,6 +416,8 @@ jobs:
               'action: <allowed-action>',
               '```',
               'The second-pass reviewer remains blocked until matching provider completion evidence is ingested for this SHA.',
+              'A checked [x] control means the provider UI action occurred; it is not a completed review.',
+              'A provider cooldown is also non-completing: wait for the stated retry window, then retrigger through the authorized provider path.',
               'This workflow check intentionally remains failing while a required provider action or response is pending; configure it as a required branch-protection check.',
             ].join('\n');
             const comments = await github.paginate(github.rest.issues.listComments, {

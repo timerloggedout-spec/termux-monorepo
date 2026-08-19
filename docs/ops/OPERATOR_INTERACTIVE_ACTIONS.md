@@ -19,7 +19,7 @@ Some external PR agents expose a provider-owned checkbox, button, or toggle inst
 1. Find the current `<!-- agent-peer-response-state:v2 -->` comment for the PR and confirm its `head_sha` matches the live PR head.
 2. Confirm the provider, source URL, and `control_id` are present under **Authorized interactive controls**.
 3. Use the named, approved operator profile for that provider. If the account is not signed in, lacks permission, or shows a different control, stop and report the state; do not substitute a different identity.
-4. Select only the requested control. Capture the provider source URL and the visible after-action result for the audit trail.
+4. Select only the requested control. Confirm that the original provider comment is edited to show the checked Markdown form, for example `> - [x] <!-- {"checkboxId":"…"} --> 🔍 Trigger review`. Capture the provider source URL and the visible after-action result for the audit trail.
 5. Post the following acknowledgement only from an exact login in the repository’s `OPERATOR_EXECUTOR_LOGINS` allowlist. A repository association alone is insufficient. Use the exact cycle and control values from the state comment, and use only a provider/action tuple in `OPERATOR_ALLOWED_ACTIONS` (the default is `coderabbit:trigger_review`).
 
 ```text
@@ -30,7 +30,7 @@ control_id: <provider-control-id>
 action: <allowlisted-action>
 ```
 
-6. Wait for provider output. The workflow will ingest a matching review, provider comment, or completed provider check. An acknowledgement only changes the state to `action_acknowledged`; it does not release downstream review.
+6. Wait for provider output. The workflow will ingest a matching substantive review, provider comment, or completed provider check. A checked `[x]` control or acknowledgement only changes the state to `action_acknowledged`; neither releases downstream review. If CodeRabbit reports a review limit/cooldown, the state becomes `provider_cooldown`: wait for the stated retry window, then use the authorized provider retrigger path (for example `@coderabbitai review`) and wait again for substantive output.
 
 ## State meanings
 
@@ -39,6 +39,7 @@ action: <allowlisted-action>
 | `pending_operator_action` | A provider-owned control was found but has not been selected. | Review and act through the authorized provider UI. |
 | `action_acknowledged` | A permitted UI action was acknowledged, but the provider has not completed review. | Wait for the provider response; investigate if it does not arrive. |
 | `awaiting_provider_response` | No provider response has been ingested for one or more required providers. | Confirm provider configuration or resolve its operational blocker. |
+| `provider_cooldown` | A provider acknowledged the request but reported a rate limit or retry window. | Wait for the displayed cooldown, then use the authorized retrigger path and await substantive output. |
 | `responses_collected` | Every configured required provider has completion evidence for the active SHA. | No action; second pass is eligible. |
 
 ## Required-check policy

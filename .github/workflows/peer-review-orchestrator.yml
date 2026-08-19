@@ -38,7 +38,6 @@ jobs:
       pull-requests: read
       issues: write
       checks: read
-      actions: write
     outputs:
       cycle_id: ${{ steps.collect.outputs.cycle_id }}
       head_sha: ${{ steps.collect.outputs.head_sha }}
@@ -60,6 +59,7 @@ jobs:
           POLL_SEC: '5'
           OPERATOR_EXECUTOR_LOGINS: ${{ vars.OPERATOR_EXECUTOR_LOGINS || github.repository_owner }}
           OPERATOR_ALLOWED_ACTIONS: ${{ vars.OPERATOR_ALLOWED_ACTIONS || 'coderabbit:trigger_review' }}
+          PEER_STATE_PUBLISHER_LOGINS: ${{ vars.PEER_STATE_PUBLISHER_LOGINS || github.repository_owner }}
         with:
           script: |
             const requiredProviders = (process.env.REQUIRED_PROVIDERS || 'coderabbit,qodo,devin')
@@ -88,6 +88,8 @@ jobs:
             const executorLogins = new Set((process.env.OPERATOR_EXECUTOR_LOGINS || '')
               .split(',').map(value => value.trim().toLowerCase()).filter(Boolean));
             const allowedActions = new Set((process.env.OPERATOR_ALLOWED_ACTIONS || '')
+              .split(',').map(value => value.trim().toLowerCase()).filter(Boolean));
+            const statePublisherLogins = new Set((process.env.PEER_STATE_PUBLISHER_LOGINS || '')
               .split(',').map(value => value.trim().toLowerCase()).filter(Boolean));
 
             function providerFor(user) {
@@ -145,8 +147,7 @@ jobs:
             const parseField = (body, name) =>
               (body || '').match(new RegExp(`^${name}:\\s*(.+?)\\s*$`, 'm'))?.[1]?.trim() || '';
             const existingCycle = initialComments.filter(comment =>
-              comment.user?.type === 'Bot' &&
-              comment.user?.login === 'github-actions[bot]' &&
+              statePublisherLogins.has((comment.user?.login || '').toLowerCase()) &&
               comment.body?.includes(stateMarker) &&
               parseField(comment.body, 'cycle_id') === cycleId &&
               parseField(comment.body, 'head_sha') === headSha
@@ -321,8 +322,19 @@ jobs:
             core.setOutput('provider_lines', deliveryLines.join('\n'));
             core.setOutput('control_lines', operatorControls.join('\n') || '- none observed');
 
+      - name: Require authorized state publisher
+        if: |
+          steps.collect.outputs.skipped != 'true' &&
+          secrets.OPERATOR_GITHUB_TOKEN == '' &&
+          secrets.OPERATOR_TOKEN == ''
+        run: |
+          echo "::error title=Operator token required::Set OPERATOR_GITHUB_TOKEN (preferred) or OPERATOR_TOKEN with write permission to publish authenticated peer-gate state."
+          exit 1
+
       - name: Publish SHA-bound peer response state
-        if: steps.collect.outputs.skipped != 'true'
+        if: |
+          steps.collect.outputs.skipped != 'true' &&
+          (secrets.OPERATOR_GITHUB_TOKEN != '' || secrets.OPERATOR_TOKEN != '')
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
           CYCLE_ID: ${{ steps.collect.outputs.cycle_id }}
@@ -334,6 +346,7 @@ jobs:
           PROVIDERS: ${{ steps.collect.outputs.provider_lines }}
           CONTROLS: ${{ steps.collect.outputs.control_lines }}
           REQUIRED_PROVIDERS: ${{ vars.PEER_REQUIRED_PROVIDERS || 'coderabbit,qodo,devin' }}
+          PEER_STATE_PUBLISHER_LOGINS: ${{ vars.PEER_STATE_PUBLISHER_LOGINS || github.repository_owner }}
         with:
           # The base-repository workflow never executes PR code. Prefer an existing
           # full-scope Operator token for idempotent state comments when the
@@ -341,6 +354,8 @@ jobs:
           github-token: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
           script: |
             const marker = '<!-- agent-peer-response-state:v2 -->';
+            const statePublisherLogins = new Set((process.env.PEER_STATE_PUBLISHER_LOGINS || '')
+              .split(',').map(value => value.trim().toLowerCase()).filter(Boolean));
             const prNumber = Number(context.payload.pull_request?.number || context.payload.issue?.number);
             if (!prNumber) return;
             const body = [
@@ -379,8 +394,7 @@ jobs:
               owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100,
             });
             const existing = comments.filter(comment =>
-              comment.user?.type === 'Bot' &&
-              comment.user?.login === 'github-actions[bot]' &&
+              statePublisherLogins.has((comment.user?.login || '').toLowerCase()) &&
               comment.body?.includes(marker) &&
               comment.body.includes(`cycle_id: ${process.env.CYCLE_ID}`) &&
               comment.body.includes(`head_sha: ${process.env.HEAD_SHA}`)
@@ -400,7 +414,8 @@ jobs:
           steps.collect.outputs.skipped != 'true' &&
           steps.collect.outputs.state == 'responses_collected' &&
           steps.collect.outputs.ready == 'true' &&
-          github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+          github.ref == format('refs/heads/{0}', github.event.repository.default_branch) &&
+          (secrets.OPERATOR_GITHUB_TOKEN != '' || secrets.OPERATOR_TOKEN != '')
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
           PR_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number }}

@@ -47,7 +47,9 @@ action: <allowlisted-action>
 
 ## Authorization configuration
 
-Set `OPERATOR_EXECUTOR_LOGINS` to a comma-separated list of exact GitHub logins permitted to acknowledge provider UI actions. Set `OPERATOR_ALLOWED_ACTIONS` to comma-separated `provider:action` tuples. The workflow defaults to the repository owner and `coderabbit:trigger_review` only when those variables are not yet configured; production use should set both variables explicitly.
+Set `OPERATOR_EXECUTOR_LOGINS` to a comma-separated list of exact GitHub logins permitted to acknowledge provider UI actions. Set `OPERATOR_ALLOWED_ACTIONS` to comma-separated `provider:action` tuples. Set `PEER_STATE_PUBLISHER_LOGINS` to the exact login(s) used by the authorized state-publishing token. The workflow defaults to the repository owner and `coderabbit:trigger_review` only when variables are not yet configured; production use should set them explicitly.
+
+Set `OPERATOR_GITHUB_TOKEN` (preferred) or `OPERATOR_TOKEN` as a repository secret with only the repository permissions required to create/update issue comments and dispatch `gemini-after-peers.yml`. The workflow fails closed with a named error if neither secret is available. Never place a token, cookie, or browser-profile export in a variable, comment, cache, artifact, or `refTemplate`.
 
 ## Credential and account boundary
 

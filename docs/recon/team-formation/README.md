@@ -11,6 +11,7 @@ The package is planning and evidence work. It does not modify the active MoneyBa
 | [Label Recon and Additive Team Taxonomy](./LABEL_TAXONOMY.md) | Current label counts and specialist issue map; a registry model that allows teams, lanes, roles, tools, machines, games, and scorecards to be appended. | ATF-11 |
 | [Game Player Fleet and Genre Teams](./GAME_PLAYER_FLEET.md) | `Roster:Teams:Games:Players` as a first-class fleet, including catalog, machine profile, player-role, telemetry, reset, and score-event contracts. | ATF-12 |
 | [Initial Target Register Template](./TARGET_REGISTER.md) | Stable, versioned intake record for repository components, controlled labs, mobile artifacts, game builds, player machines, and wallet stages. | ATF-11, ATF-12, ATF-13 |
+| [Anchored Roster Context and Identity Schema](./ROSTER_CONTEXT_SCHEMA.md) | Canonical entity references, relationship records, context manifests, aliases, temporary batches, and validation rules for custom team/run notation. | ATF-14 |
 | [MoneyBall Implementation Recon](./MONEYBALL_RECON.md) | Live #131 status, branch/check evidence, SSOT discrepancy, and branch/gate blockers. | ATF-03, ATF-09, ATF-10, ATF-11 |
 | [Swarms Reference and Wallet Research](./SWARMS_WALLET_RESEARCH.md) | Public Swarms reference evaluation and staged internal-points, simulation/testnet, and future real-wallet architecture. | ATF-13 |
 

@@ -39,6 +39,7 @@ Every task assigned through the roster must carry a compact, durable task card. 
 | `risk_tier` | Standard, elevated, or human-only. |
 | `review_pair` | A distinct reviewer or reviewer team for development, delivery, and security work. |
 | `score_event` | The role-specific measures that will be updated only after verdict. |
+| `context_manifest` | Versioned roster-context record that resolves lane, team, role, skills, agent, target, machine, task, run, source labels, and review pair. |
 
 ## Score architecture
 
@@ -52,7 +53,7 @@ Every active candidate retains three **shared**, non-transferable signals. A can
 | `scope_discipline` | Whether the candidate stays inside approved task and file boundaries. | Clean scope events minus verified boundary violations. | Hard safety/routing gate. |
 | `collaboration_hygiene` | Whether the candidate claims work, preserves context, and responds to review. | Claim correctness, handoff completeness, and review-response timeliness. | Tie-breaker and pairing signal. |
 
-The current global ELO/3L0 field may remain as a **displayed aggregate**, but it must not be the sole task-routing metric. The aggregate must be traceable to role-specific score events, use confidence bounds for small samples, and never overwrite the raw event history.
+The current global ELO/3L0 field may remain as a **displayed aggregate**, but it must not be the sole task-routing metric. The aggregate must be traceable to role-specific score events, use confidence bounds for small samples, and never overwrite the raw event history. The roster-context manifest defined in [ROSTER_CONTEXT_SCHEMA.md](../../../recon/team-formation/ROSTER_CONTEXT_SCHEMA.md) is the canonical binding between a score event and its lane, team, role, skills, agent, target, machine, task, run, source labels, and review pair.
 
 ### Role-specific scorecards
 

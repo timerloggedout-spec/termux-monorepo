@@ -49,7 +49,7 @@ The existing lane SSOT assigns MoneyBall and agent mail to the multi-agent orche
 ### 2026-08-19 — Manus AI
 
 - **Disposition:** recon package added to the existing draft.
-- **Notes:** Added a label taxonomy, game-player fleet/genre-team contract, live MoneyBall reconciliation record, and Swarms/wallet research architecture. The package records #243 as the game-player seed, retains existing research labels, and treats future real-wallet work as a distinct staged architecture decision.
+- **Notes:** Added a label taxonomy, game-player fleet/genre-team contract, live MoneyBall reconciliation record, Swarms/wallet research architecture, and an anchored roster-context schema. The package records #243 as the game-player seed, retains existing research labels, treats future real-wallet work as a distinct staged architecture decision, and maps custom team/run notation to stable entity references and context manifests.
 
 ## Checklist (process)
 
@@ -73,6 +73,7 @@ The existing lane SSOT assigns MoneyBall and agent mail to the multi-agent orche
 - [Team-formation reconnaissance index](../../../recon/team-formation/README.md)
 - [Game Player Fleet and Genre Teams](../../../recon/team-formation/GAME_PLAYER_FLEET.md)
 - [Initial Target Register Template](../../../recon/team-formation/TARGET_REGISTER.md)
+- [Anchored Roster Context and Identity Schema](../../../recon/team-formation/ROSTER_CONTEXT_SCHEMA.md)
 - [Swarms Reference and Wallet Research](../../../recon/team-formation/SWARMS_WALLET_RESEARCH.md)
 - [Repository proposal process](../../PROCESS.md)
 - [Repository consensus rules](../../../CONSENSUS.md)

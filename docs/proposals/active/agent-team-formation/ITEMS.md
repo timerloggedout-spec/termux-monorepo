@@ -15,6 +15,7 @@
 | ATF-11 | Publish a timestamped issue, pull-request, and label reconnaissance record for the team-formation source set, including #129, #131, #236, and #243. | P1 | executing | Research & Intelligence + Orchestration | Evidence record identifies live state, labels, cited sources, and inconsistencies. | None |
 | ATF-12 | Define the `Roster:Teams:Games:Players` fleet with additive game catalog, machine-profile, genre-role, telemetry, reset, and score-event contracts. | P1 | executing | Game Player Machines + Game QA | Fleet charter and schema-ready contract reference issue #243 and permit future genre/team additions. | ATF-11 |
 | ATF-13 | Evaluate Swarms as an orchestration reference and define the staged internal-points, testnet/simulation, and future real-wallet architecture research path. | P1 | executing | Research & Intelligence + Wallet & Economic Systems | Architecture research record identifies reuse candidates, license/dependency review, custody/signer decisions, and no-transfer prototype boundary. | ATF-11 |
+| ATF-14 | Define an anchored, versioned roster-identity and context schema that supports additive teams, lanes, skills, player machines, task runs, and custom team batches without parsing decorative label strings. | P1 | executing | Orchestration + Research & Intelligence | Schema uses stable entity IDs, aliases/display labels, relationship records, task-context manifests, and machine-readable validation rules. | ATF-11, ATF-12 |
 
 ## Implementation constraints
 

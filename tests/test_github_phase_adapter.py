@@ -15,6 +15,7 @@ from github_phase_adapter import (  # noqa: E402
     GitHubAdapterError,
     active_claim_records,
     add_issue_to_project,
+    create_issue,
     phase_issue_matches,
     pull_requests,
     run_gh,
@@ -76,6 +77,22 @@ class GitHubPhaseAdapterTests(unittest.TestCase):
         self.assertEqual("api", commands[0][0])
         self.assertIn("/pulls?state=all&base=master", commands[0][-1])
         self.assertNotIn("statusCheckRollup", " ".join(" ".join(command) for command in commands))
+
+    def test_create_issue_uses_structured_rest_response(self) -> None:
+        response = {"number": 200, "html_url": "https://example.test/issues/200"}
+        with patch("github_phase_adapter.json_gh", return_value=response) as request:
+            result = create_issue("owner/repo", "[DPH-200] Dispatch", "canonical body", apply=True)
+        self.assertEqual(
+            {"planned": False, "operation": "create_issue", "number": 200, "url": "https://example.test/issues/200"},
+            result,
+        )
+        request.assert_called_once_with(
+            [
+                "api", "-X", "POST", "repos/owner/repo/issues",
+                "-f", "title=[DPH-200] Dispatch",
+                "-f", "body=canonical body",
+            ]
+        )
 
     def test_project_add_dry_run_never_calls_gh(self) -> None:
         with patch("github_phase_adapter.run_gh") as run_gh:

@@ -47,3 +47,11 @@ The repository-local context-relationship index expected at `workspace/llm_map/c
 ## External Baseline
 
 GitHub’s artifact guidance documents `upload-artifact` and `download-artifact` for dependent jobs and states that artifacts are immutable in v4, requiring distinct artifact names for successive outputs. This supports the AR-03 bounded hand-off rule, but it does not justify a general artifact addition. [GitHub Docs: Store and share data](https://docs.github.com/en/actions/tutorials/store-and-share-data#passing-data-between-jobs-in-a-workflow)
+
+## AR-01 Repair Evidence — 2026-08-19
+
+The current `master-staging` surface was rechecked before implementation. Syntax-affecting markers remained in `.github/workflows/gemini-dispatch.yml` and `.github/workflows/gemini-review.yml`; `scripts/ci/repo_gate.py` no longer contained a marker and was left unchanged. The dispatcher was structurally malformed above the remaining marker, so AR-01 restored both affected workflows from `a618774^2`, the conflict-free second parent of the repository’s `a618774` infrastructure-stabilization merge. That source preserved the complete reusable-workflow interfaces, explicit top-level `permissions: {}`, declared `issue_number`/`pr_number` handoffs, and the immutable `actions/github-script` SHA.
+
+The repair branch contains no conflict markers in the AR-01 surface. `python3 scripts/ci/repo_gate.py --base origin/master-staging` and `python3 scripts/ci/termux_smoke.py` passed. The proposal registry validator remains blocked by the pre-existing unregistered `docs/proposals/active/manus-critical-eval` directory; no unrelated proposal repair was made.
+
+The implementation branch `fix/ar01-automation-baseline` was pushed. GitHub temporarily rejected pull-request creation first through GraphQL as submitted too quickly and then through REST with a secondary content-creation limit at `2026-08-19 05:18:39 UTC` (request ID `A1BA:3AC918:2402CE4:76F458A:6A853CAF`). No pull request was created in that rate-limited interval.

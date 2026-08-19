@@ -24,6 +24,19 @@ defaults:
   run:
     shell: bash
 
+permissions: {}
+
+jobs:
+  dispatch:
+    if: |
+      (
+        github.event_name == 'pull_request' &&
+        github.event.pull_request.head.repo.fork == false &&
+        github.event.pull_request.draft == false
+      ) || (
+        github.event_name == 'issues' &&
+        contains(fromJSON('["opened", "reopened"]'), github.event.action)
+      ) || (
         contains(fromJSON('["issue_comment", "pull_request_review_comment", "pull_request_review"]'), github.event_name) &&
         github.event.sender.type == 'User' &&
         (
@@ -42,6 +55,11 @@ defaults:
       command: ${{ steps.extract.outputs.command }}
       additional_context: ${{ steps.extract.outputs.additional_context }}
       prior_prs: ${{ steps.extract.outputs.prior_prs }}
+      issue_number: ${{ github.event.pull_request.number || github.event.issue.number }}
+      pr_number: ${{ steps.extract.outputs.pr_number }}
+    steps:
+      - name: Extract command + prior PR inventory
+        id: extract
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
           EVENT_TYPE: ${{ github.event_name }}.${{ github.event.action }}
@@ -181,8 +199,5 @@ defaults:
       additional_context: ${{ needs.dispatch.outputs.additional_context }}
       prior_prs: ${{ needs.dispatch.outputs.prior_prs }}
       pr_number: ${{ needs.dispatch.outputs.pr_number }}
-<<<<<<< HEAD
-=======
       issue_number: ${{ needs.dispatch.outputs.issue_number }}
->>>>>>> pr238
     secrets: inherit

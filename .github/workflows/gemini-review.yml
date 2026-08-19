@@ -6,14 +6,20 @@ on:
       additional_context:
         type: string
         required: false
->>>>>>> pr238
+        default: ''
+      prior_prs:
+        type: string
+        required: false
+        default: 'none'
+      pr_number:
+        type: string
+        required: false
+        default: ''
 
 concurrency:
   group: gemini-review-${{ inputs.pr_number || github.event.pull_request.number || github.run_id }}
   cancel-in-progress: true
 
-<<<<<<< HEAD
-=======
 permissions: {}
 
 jobs:

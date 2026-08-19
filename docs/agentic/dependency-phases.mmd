@@ -1,0 +1,12 @@
+flowchart LR
+  DPH_000["DPH-000<br/>Foundation and lifecycle engine<br/>ready"]
+  DPH_100["DPH-100<br/>GitHub Projects synchronization<br/>waiting"]
+  DPH_200["DPH-200<br/>Idempotent agent dispatch<br/>waiting"]
+  DPH_300["DPH-300<br/>Derived timeline and reconciliation<br/>waiting"]
+  DPH_000 --> DPH_100
+  DPH_100 --> DPH_200
+  DPH_200 --> DPH_300
+  class DPH_000 ready
+  classDef ready fill:#166534,color:#ffffff,stroke:#14532d
+  class DPH_100,DPH_200,DPH_300 waiting
+  classDef waiting fill:#64748b,color:#ffffff,stroke:#475569

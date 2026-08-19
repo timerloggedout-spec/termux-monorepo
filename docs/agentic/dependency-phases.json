@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "plan_id": "gantt-dependency-phases",
+  "title": "Dependency-phase automation",
+  "base_branch": "master-staging",
+  "project": {
+    "owner": "timerloggedout-spec",
+    "number": 1,
+    "id": "PVT_kwHODennMc4BfLt5",
+    "url": "https://github.com/users/timerloggedout-spec/projects/1",
+    "status_field_id": "PVTSSF_lAHODennMc4BfLt5zhZgZIU",
+    "status_options": {
+      "Todo": "f75ad846",
+      "In progress": "47fc9ee4",
+      "Done": "98236657"
+    }
+  },
+  "policy": {
+    "canonical_state": "repository_json",
+    "derived_views": ["markdown", "mermaid", "github_project"],
+    "dispatch_agents": ["jules"],
+    "prohibited_actions": [
+      "automatic_merge",
+      "automatic_proposal_closure",
+      "automatic_submodule_update",
+      "approval_inference"
+    ]
+  },
+  "phases": [
+    {
+      "phase_id": "DPH-000",
+      "title": "Foundation and lifecycle engine",
+      "description": "Canonical phase plan, validation, deterministic evaluation, and generated views.",
+      "depends_on": [],
+      "project": {"title_marker": "DPH-000"},
+      "approval_required": false,
+      "execution": {"mode": "agent_or_human", "preferred_agent": "jules"},
+      "completion": {"required_checks": ["repo-gate", "termux-smoke"], "merged_pr": true}
+    },
+    {
+      "phase_id": "DPH-100",
+      "title": "GitHub Projects synchronization",
+      "description": "Project discovery, phase-to-item reconciliation, dry-run and explicit apply support.",
+      "depends_on": ["DPH-000"],
+      "project": {"title_marker": "DPH-100"},
+      "approval_required": true,
+      "execution": {"mode": "agent", "preferred_agent": "jules"},
+      "completion": {"required_checks": ["repo-gate", "termux-smoke"], "merged_pr": true}
+    },
+    {
+      "phase_id": "DPH-200",
+      "title": "Idempotent agent dispatch",
+      "description": "Claim records, duplicate prevention, revalidation, and a controlled dispatch event.",
+      "depends_on": ["DPH-100"],
+      "project": {"title_marker": "DPH-200"},
+      "approval_required": true,
+      "execution": {"mode": "agent", "preferred_agent": "jules"},
+      "completion": {"required_checks": ["repo-gate", "termux-smoke"], "merged_pr": true}
+    },
+    {
+      "phase_id": "DPH-300",
+      "title": "Derived timeline and reconciliation",
+      "description": "Mermaid and Markdown projection, stale-claim detection, and optional advisory Gantt adapters.",
+      "depends_on": ["DPH-200"],
+      "project": {"title_marker": "DPH-300"},
+      "approval_required": false,
+      "execution": {"mode": "agent_or_human", "preferred_agent": "jules"},
+      "completion": {"required_checks": ["repo-gate", "termux-smoke"], "merged_pr": true}
+    }
+  ]
+}

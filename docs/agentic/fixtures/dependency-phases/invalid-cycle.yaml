@@ -1,0 +1,28 @@
+schema_version: 1
+plan_id: fixture-cycle
+base_branch: master-staging
+phases:
+  - phase_id: CYC-00
+    title: First cyclic phase
+    proposal: fixture
+    items: [CYC-00-01]
+    depends_on: [CYC-10]
+    required_gates: [repo-gate, termux-smoke]
+    approval: { required: false }
+    execution: { mode: agent, preferred_agent: jules }
+    completion:
+      require_merged_pr: true
+      require_all_items_terminal: true
+      evidence: [linked_pr_to_master_staging, required_checks_green]
+  - phase_id: CYC-10
+    title: Second cyclic phase
+    proposal: fixture
+    items: [CYC-10-01]
+    depends_on: [CYC-00]
+    required_gates: [repo-gate, termux-smoke]
+    approval: { required: false }
+    execution: { mode: agent, preferred_agent: jules }
+    completion:
+      require_merged_pr: true
+      require_all_items_terminal: true
+      evidence: [linked_pr_to_master_staging, required_checks_green]

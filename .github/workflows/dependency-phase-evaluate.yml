@@ -1,0 +1,77 @@
+name: Dependency Phase Evaluate
+
+on:
+  push:
+    branches: [master-staging]
+    paths:
+      - "docs/agentic/dependency-phases.json"
+      - "docs/agentic/phase-approvals.json"
+      - "scripts/agentic/**"
+      - ".github/workflows/dependency-phase-evaluate.yml"
+  repository_dispatch:
+    types: [dependency-phase-reconcile]
+  schedule:
+    - cron: "23 5 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: dependency-phase-evaluate-${{ github.repository }}
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+      issues: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Evaluate live lifecycle evidence
+        run: |
+          python3 scripts/agentic/dependency_phases.py \
+            --live \
+            --repo "${{ github.repository }}" \
+            evaluate \
+            --output dependency-phase-report.json
+
+      - name: Render derived status view
+        run: |
+          python3 scripts/agentic/dependency_phases.py \
+            --live \
+            --repo "${{ github.repository }}" \
+            render \
+            --markdown-output DEPENDENCY_PHASES.md \
+            --mermaid-output dependency-phases.mmd
+
+      - name: Publish evaluator summary
+        shell: bash
+        run: |
+          {
+            echo "## Dependency phase evaluation"
+            echo
+            echo "Plan hash: \`$(jq -r '.plan_sha256' dependency-phase-report.json)\`"
+            echo
+            echo "| Phase | State | Reason |"
+            echo "|---|---|---|"
+            jq -r '.evaluations[] | "| `\(.phase_id)` | **\(.state)** | \(.reason) |"' dependency-phase-report.json
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload derived report
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-phase-report-${{ github.run_id }}
+          path: |
+            dependency-phase-report.json
+            DEPENDENCY_PHASES.md
+            dependency-phases.mmd
+          if-no-files-found: error

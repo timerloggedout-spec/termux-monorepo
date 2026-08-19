@@ -1,0 +1,79 @@
+schema_version: 1
+assessment_date: 2026-08-18
+policy: >-
+  DeepWiki and agent-generated claims are discovery aids. They may be cited only
+  alongside primary evidence and never authorize candidate adoption, workflow
+  execution, or completion.
+
+sources:
+  - source_id: DEEPWIKI_DIRECT
+    source_type: direct DeepWiki page
+    url: https://deepwiki.com/timerloggedout-spec/termux-monorepo
+    result: not_verifiable
+    observed_at: 2026-08-18
+    observation: >-
+      The page was reachable but reported "Repository Not Indexed". It supplied
+      no code-structure, template, Gantt, dependency, or automation claims.
+    action: do not use for capability claims; recheck only after indexing completes
+
+  - source_id: DEEPWIKI_NAMED_BRANCH
+    source_type: repository branch with DeepWiki in its name
+    ref: origin/feature/deepwiki-github-wiki-mirror
+    commit: 5f8278440cc87096a1af4ce413635e937cce4c89
+    result: partially_confirmed
+    observation: >-
+      The branch includes a historical change to publish-wiki.yml. The active
+      workflow publishes wiki/ to GitHub Wiki; it is a GitHub Wiki publication
+      mechanism, not evidence that the external DeepWiki repository index exists.
+    primary_evidence:
+      - .github/workflows/publish-wiki.yml
+    action: retain only as historical/wiki-mirror context
+
+  - source_id: MIRROR_GANTT_CORE
+    source_type: historical branch source artifact
+    ref: origin/feature/deepwiki-github-wiki-mirror:termux-multi-agent/templates/gantt_core.py
+    result: confirmed
+    claims:
+      - id/name/start/end/dependencies task records can be written as JSON
+      - the same records can be projected into Mermaid Gantt text
+    primary_evidence:
+      - termux-multi-agent/templates/gantt_core.py
+    limits:
+      - no DAG validation
+      - no agent-launch authorization
+      - no gate or completion-evidence model
+    action: treat as a native projection-pattern reference only
+
+  - source_id: DEVIN
+    source_type: Devin/agent evidence
+    result: not_used
+    observation: >-
+      No Devin output was needed because direct source and repository metadata
+      were available. The direct DeepWiki page offered an "Index your code with
+      Devin" control, but no indexing request was submitted.
+    action: if used later, record the exact claim and validate it against source
+
+claim_reconciliation:
+  - claim_id: DW-001
+    claim: A DeepWiki index exists and can be used to assess this repository.
+    status: contradicted
+    reason: The direct page explicitly reports that the repository is not indexed.
+
+  - claim_id: DW-002
+    claim: The deepwiki-named branch itself supplies DeepWiki capability evidence.
+    status: partially_confirmed
+    reason: >-
+      It supplies historical wiki-publication and local source artifacts, but does
+      not replace a live DeepWiki index or establish candidate behavior.
+
+  - claim_id: DW-003
+    claim: A file-backed Gantt projection has prior monorepo precedent.
+    status: confirmed
+    reason: >-
+      gantt_core.py serializes task cards to JSON and produces Mermaid Gantt text;
+      source review confirms the projection behavior and its limited scope.
+
+  - claim_id: DW-004
+    claim: Any tool candidate is safe or ready for agentic integration because an agent describes it as such.
+    status: not_verifiable
+    reason: Agent outputs were not used as primary evidence; readiness requires source, security, and test validation.

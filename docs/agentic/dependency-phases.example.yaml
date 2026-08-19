@@ -1,0 +1,92 @@
+# Draft only — promote to dependency-phases.yaml only through a reviewed implementation PR.
+schema_version: 1
+plan_id: gantt-dependency-phases
+base_branch: master-staging
+
+policy:
+  canonical_state: repository_yaml
+  derived_views: [json, markdown, mermaid, ascii]
+  prohibited_automation:
+    - automatic_merge
+    - automatic_proposal_closure
+    - automatic_submodule_update
+    - approval_inference
+
+phases:
+  - phase_id: DPH-00
+    title: Canonical model and validator
+    proposal: gantt-dependency-phases
+    items: [DPH-00-01, DPH-00-02]
+    depends_on: []
+    required_gates: [repo-gate, termux-smoke]
+    approval:
+      required: false
+    execution:
+      mode: agent_or_human
+      preferred_agent: jules
+    completion:
+      require_merged_pr: true
+      require_all_items_terminal: true
+      evidence:
+        - linked_pr_to_master_staging
+        - required_checks_green
+        - proposal_items_terminal
+
+  - phase_id: DPH-10
+    title: Read-only evaluator and status report
+    proposal: gantt-dependency-phases
+    items: [DPH-10-01]
+    depends_on: [DPH-00]
+    required_gates: [repo-gate, termux-smoke]
+    approval:
+      required: true
+      evidence_ref: docs/agentic/approvals/DPH-10.md
+    execution:
+      mode: agent
+      preferred_agent: jules
+    completion:
+      require_merged_pr: true
+      require_all_items_terminal: true
+      evidence:
+        - linked_pr_to_master_staging
+        - required_checks_green
+        - approval_evidence_present
+
+  - phase_id: DPH-20
+    title: Controlled idempotent dispatch adapter
+    proposal: gantt-dependency-phases
+    items: [DPH-20-01]
+    depends_on: [DPH-10]
+    required_gates: [repo-gate, termux-smoke]
+    approval:
+      required: true
+      evidence_ref: docs/agentic/approvals/DPH-20.md
+    execution:
+      mode: agent
+      preferred_agent: jules
+    completion:
+      require_merged_pr: true
+      require_all_items_terminal: true
+      evidence:
+        - linked_pr_to_master_staging
+        - required_checks_green
+        - idempotency_replay_test_green
+
+  - phase_id: DPH-30
+    title: Derived Gantt/ASCII/JSON projection
+    proposal: gantt-dependency-phases
+    items: [DPH-30-01]
+    depends_on: [DPH-20]
+    required_gates: [repo-gate, termux-smoke]
+    approval:
+      required: false
+    execution:
+      mode: agent_or_human
+      preferred_agent: jules
+    completion:
+      require_merged_pr: true
+      require_all_items_terminal: true
+      evidence:
+        - linked_pr_to_master_staging
+        - required_checks_green
+        - deterministic_projection_fixture_green

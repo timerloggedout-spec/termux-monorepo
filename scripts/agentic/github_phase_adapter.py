@@ -94,6 +94,18 @@ def json_gh(arguments: list[str], *, attempts: int = 1) -> dict[str, Any]:
     return value
 
 
+def list_gh(arguments: list[str], *, attempts: int = 1) -> list[dict[str, Any]]:
+    """Return a JSON array from a read-only gh command."""
+    result = run_gh(arguments, attempts=attempts)
+    try:
+        value = json.loads(result.stdout)
+    except json.JSONDecodeError as error:
+        raise GitHubAdapterError(f"gh did not return JSON: {error}") from error
+    if not isinstance(value, list):
+        raise GitHubAdapterError("gh JSON response must be an array")
+    return [item for item in value if isinstance(item, dict)]
+
+
 def project_items(owner: str, number: int, limit: int = 500) -> list[dict[str, Any]]:
     response = json_gh(
         ["project", "item-list", str(number), "--owner", owner, "--limit", str(limit), "--format", "json"],
@@ -119,29 +131,68 @@ def _normalise_checks(raw_checks: Any) -> dict[str, str]:
     return checks
 
 
-def pull_requests(repo: str, base_branch: str, limit: int = 200) -> list[dict[str, Any]]:
-    response = run_gh([
-        "pr", "list", "--repo", repo, "--state", "all", "--base", base_branch,
-        "--limit", str(limit), "--json", "number,title,body,state,mergedAt,statusCheckRollup,url",
-    ], attempts=LIVE_READ_ATTEMPTS)
-    try:
-        rows = json.loads(response.stdout)
-    except json.JSONDecodeError as error:
-        raise GitHubAdapterError(f"unable to parse pull request evidence: {error}") from error
-    if not isinstance(rows, list):
-        raise GitHubAdapterError("pull request response must be an array")
+def _rest_commit_checks(repo: str, ref: str) -> dict[str, str]:
+    """Collect check-run and legacy status evidence for one pull-request head."""
+    check_runs = json_gh(
+        ["api", "-X", "GET", f"repos/{repo}/commits/{ref}/check-runs?per_page=100"],
+        attempts=LIVE_READ_ATTEMPTS,
+    )
+    combined_status = json_gh(
+        ["api", "-X", "GET", f"repos/{repo}/commits/{ref}/status?per_page=100"],
+        attempts=LIVE_READ_ATTEMPTS,
+    )
+    checks = _normalise_checks(check_runs.get("check_runs"))
+    checks.update(_normalise_checks(combined_status.get("statuses")))
+    return checks
+
+
+def _phase_evidence_matches(row: dict[str, Any], phase_ids: set[str]) -> bool:
+    text = f"{row.get('title', '')}\n{row.get('body', '')}"
+    return any(phase_id in text for phase_id in phase_ids)
+
+
+def pull_requests(
+    repo: str,
+    base_branch: str,
+    limit: int = 200,
+    phase_ids: list[str] | None = None,
+) -> list[dict[str, Any]]:
+    """Read PR metadata from REST and checks only for canonical phase evidence.
+
+    ``gh pr list`` obtains GraphQL's expensive ``statusCheckRollup`` aggregate,
+    which can time out on large repositories. These REST resources preserve the
+    lifecycle evidence contract while avoiding that aggregate query.
+    """
+    page_size = min(100, max(1, limit))
+    rows: list[dict[str, Any]] = []
+    for page in range(1, (limit + page_size - 1) // page_size + 1):
+        page_rows = list_gh(
+            [
+                "api", "-X", "GET",
+                f"repos/{repo}/pulls?state=all&base={base_branch}&per_page={page_size}&page={page}",
+            ],
+            attempts=LIVE_READ_ATTEMPTS,
+        )
+        rows.extend(page_rows)
+        if len(page_rows) < page_size:
+            break
+
+    linked_phase_ids = {phase_id for phase_id in (phase_ids or []) if isinstance(phase_id, str)}
     normalized: list[dict[str, Any]] = []
-    for row in rows:
-        if not isinstance(row, dict):
-            continue
+    for row in rows[:limit]:
+        head = row.get("head")
+        ref = head.get("sha") if isinstance(head, dict) else None
+        checks: dict[str, str] = {}
+        if isinstance(ref, str) and _phase_evidence_matches(row, linked_phase_ids):
+            checks = _rest_commit_checks(repo, ref)
         normalized.append({
             "number": row.get("number"),
             "title": row.get("title", ""),
             "body": row.get("body", ""),
-            "state": row.get("state", "").lower(),
-            "merged": bool(row.get("mergedAt")),
-            "url": row.get("url"),
-            "checks": _normalise_checks(row.get("statusCheckRollup")),
+            "state": str(row.get("state", "")).lower(),
+            "merged": bool(row.get("merged_at")),
+            "url": row.get("html_url"),
+            "checks": checks,
         })
     return normalized
 

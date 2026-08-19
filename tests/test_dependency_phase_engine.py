@@ -117,6 +117,27 @@ class DependencyPhaseEngineTests(unittest.TestCase):
         state = next(entry["state"] for entry in report["evaluations"] if entry["phase_id"] == "DPH-000")
         self.assertEqual("blocked", state)
 
+    def test_project_item_identity_ignores_prerequisite_mentions_in_body(self) -> None:
+        snapshot = completed_snapshot()
+        snapshot["project_items"] = [
+            {
+                "id": "P1",
+                "title": "[DPH-100] Dependent work",
+                "content": {"body": "Prerequisite: DPH-000"},
+                "status": "Todo",
+            },
+            {"id": "P0", "title": "[DPH-000] Foundation", "status": "Done"},
+        ]
+        report = evaluate_plan(plan_fixture(), snapshot)
+        state = next(entry["state"] for entry in report["evaluations"] if entry["phase_id"] == "DPH-000")
+        self.assertEqual("complete", state)
+
+    def test_duplicate_canonical_project_items_fail_closed(self) -> None:
+        snapshot = completed_snapshot()
+        snapshot["project_items"].append({"id": "P0-duplicate", "title": "[DPH-000] Duplicate", "status": "Todo"})
+        with self.assertRaisesRegex(PlanValidationError, "multiple Project items found for DPH-000"):
+            evaluate_plan(plan_fixture(), snapshot)
+
     def test_completion_evidence_overrides_historical_claim(self) -> None:
         plan = plan_fixture()
         snapshot = completed_snapshot()

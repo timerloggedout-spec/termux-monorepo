@@ -34,6 +34,16 @@ from pydantic import BaseModel, ConfigDict, Field
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 MULTI_AI_CLI = REPO_ROOT / "multi-ai-cli"
+
+# Ensure multi-ai-cli is in path for core imports
+if str(MULTI_AI_CLI) not in sys.path:
+    sys.path.insert(0, str(MULTI_AI_CLI))
+
+try:
+    from core import provider_checklist, provider_registry
+except ImportError:
+    provider_checklist = None
+    provider_registry = None
 DEFAULT_HOST = os.environ.get("LLM_API_HUB_HOST", "127.0.0.1")
 DEFAULT_PORT = int(os.environ.get("LLM_API_HUB_PORT", "8787"))
 REQUEST_TIMEOUT = float(os.environ.get("LLM_API_HUB_TIMEOUT", "120"))
@@ -346,6 +356,41 @@ def health() -> Dict[str, Any]:
             "anthropic": bool(os.environ.get("ANTHROPIC_API_KEY")),
         },
     }
+
+
+@app.get("/v1/providers")
+def list_providers(request: Request) -> List[Dict[str, Any]]:
+    validate_auth(request)
+    if not provider_checklist:
+        raise HubError(501, "provider checklist is not available", code="not_implemented")
+    return provider_checklist.public_view(provider_checklist.load_state())
+
+
+class TransitionRequest(BaseModel):
+    state: str
+    account: Optional[str] = None
+    reason: Optional[str] = None
+
+
+@app.post("/v1/providers/{provider_id}/transition")
+def transition_provider(provider_id: str, request: TransitionRequest, raw_request: Request) -> Dict[str, Any]:
+    validate_auth(raw_request)
+    if not provider_checklist:
+        raise HubError(501, "provider checklist is not available", code="not_implemented")
+    
+    state = provider_checklist.load_state()
+    try:
+        updated = provider_checklist.transition(
+            state, 
+            provider_id, 
+            request.state, 
+            account=request.account, 
+            reason=request.reason
+        )
+        provider_checklist.save_state(updated)
+        return {"status": "success", "provider_id": provider_id, "state": request.state}
+    except ValueError as exc:
+        raise HubError(400, str(exc), code="invalid_transition")
 
 
 @app.get("/v1/models")

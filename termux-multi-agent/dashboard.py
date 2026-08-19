@@ -59,6 +59,16 @@ def check_infrastructure():
         
     return infra
 
+def fetch_provider_status():
+    hub_url = os.environ.get("LLM_API_HUB_BASE", "http://127.0.0.1:8787/v1").replace("/v1", "/v1/providers")
+    try:
+        resp = requests.get(hub_url, timeout=0.3)
+        if resp.status_code == 200:
+            return resp.json()
+    except:
+        pass
+    return []
+
 def read_latest_telemetry():
     """
     Optimized telemetry parser using state tracking and seek/tell operations
@@ -154,6 +164,27 @@ def make_dashboard():
         expand=True
     )
 
+    # Provider Panel
+    providers = fetch_provider_status()
+    provider_text = Text()
+    if not providers:
+        provider_text.append("Waiting for Hub connection...", style="italic dim")
+    else:
+        for p in providers:
+            p_id = p.get("provider_id", "???")
+            state = p.get("state", "not_started")
+            color = "green" if state == "connected" else "yellow" if state == "connecting" else "dim"
+            provider_text.append(f"{p_id}: ", style="bold")
+            provider_text.append(f"{state.upper()}  ", style=color)
+
+    provider_panel = Panel(
+        provider_text,
+        title="Provider Lifecycle",
+        box=ROUNDED,
+        border_style="magenta",
+        expand=True
+    )
+
     if not jobs:
         # Beautiful empty state
         empty_text = Text()
@@ -174,6 +205,7 @@ def make_dashboard():
             Group(
                 header_panel,
                 infra_panel,
+                provider_panel,
                 body_panel
             ),
             box=ROUNDED,
@@ -237,6 +269,7 @@ def make_dashboard():
         Group(
             header_panel,
             infra_panel,
+            provider_panel,
             table,
             footer_text
         ),

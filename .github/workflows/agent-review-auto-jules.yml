@@ -112,8 +112,9 @@ jobs:
               /<!--\s*\{[^}]*"checkboxId"[^}]*\}\s*-->/i.test(rawProviderBody) &&
               /\btrigger review\b/i.test(rawProviderBody);
             const automaticReviewNotice = /\bdoes not receive automatic reviews\b/i.test(rawProviderBody);
-            if (checkboxTrigger || automaticReviewNotice) {
-              core.notice('Provider control-only notice: keep in the authorized operator action path; do not relay to Jules.');
+            const codeRabbitCooldown = /review limit reached|review rate limited|action not completed|couldn[’']t start this review|next (?:included )?review (?:will be )?available in/i.test(rawProviderBody);
+            if (checkboxTrigger || automaticReviewNotice || codeRabbitCooldown) {
+              core.notice('Provider control or cooldown notice: keep in the authorized operator action path; do not relay to Jules.');
               core.setOutput('should_invoke', 'false');
               return;
             }

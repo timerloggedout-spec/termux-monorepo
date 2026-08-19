@@ -1,9 +1,40 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-08-18T15:33:00Z"
+updated_at: "2026-08-19T04:00:00Z"
 updated_by: Manus AI
 
 proposals:
+  - id: context-relationship-graph
+    title: "GitHub-native context relationship graph and scope index"
+    author: Manus
+    status: executing
+    priority: P1
+    path: active/context-relationship-graph/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: Manus
+        role: author-executor
+        status: executing
+    related_prs: [232]
+    related_branches: [manus/context-relationship-graph]
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: manus-critical-eval
+    title: "Manus Critical Evaluation & Novel Work"
+    author: Manus
+    status: executing
+    priority: P0
+    path: active/manus-critical-eval/
+    reviewers:
+      - id: manus
+        role: author
+        status: posted
+    related_prs: [13]
+    related_branches: [manus/novel-work]
+    gates_required: [repo-gate, termux-smoke]
+
   - id: rate-limit-rotation
     title: "Rate limits, model rotation, OpenRouter fallback"
     author: grok

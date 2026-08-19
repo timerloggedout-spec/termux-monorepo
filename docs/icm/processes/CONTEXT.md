@@ -20,6 +20,7 @@ One job: describe a real movement through the monorepo as explicit input, bounde
 | Movement | Open when… | Stop at |
 |---|---|---|
 | [`change-and-validate.md`](change-and-validate.md) | changing tracked code or documentation | the governing validation and human gate |
+| [`context-relationship-reconnaissance.md`](context-relationship-reconnaissance.md) | reconstructing related source, PR, issue, comment, label, or file-touch context before nontrivial work | verified evidence and separately marked candidate links |
 | [`structured-termux-job.md`](structured-termux-job.md) | running a declared Android/Termux job | the capability and approval boundary |
 | [`workspace-artifact-triage.md`](workspace-artifact-triage.md) | classifying nested workspace Markdown, text, JSONL, generated maps, or leftovers | the human decision before cleanup or promotion |
 

@@ -1,6 +1,6 @@
 # Implementation Status — Issue #192 Action Refinements
 
-**Program status:** All AR-01 through AR-07 decisions are now specified. **AR-01 is implemented locally and awaits GitHub pull-request publication; every remaining item is documented as an independently reviewable, least-privilege control or design.**
+**Program status:** AR-01 through AR-07 are implemented or explicitly bounded on `fix/ar01-automation-baseline`, with B1 deterministic routing, B2 same-run evidence artifacts, B3 read-only agentic reporting, and B6 advisory actionlint added to PR #261. B4 remains blocked pending separate writer-authority acceptance; B5 remains deferred because no concrete external capacity/service use case exists.
 
 > **Sequencing rule:** The repository must land AR-01’s baseline repair before any runtime workflow change from this program. No workflow in this document gains write, secret-management, or issue-derived execution authority merely because an item is specified.
 
@@ -8,12 +8,12 @@
 
 | Item | Current result | Runtime change now? | Promotion condition |
 |---|---|---:|---|
-| AR-01 — baseline repair | Implemented and locally validated on `fix/ar01-automation-baseline`. | Yes, already isolated on the repair branch. | A reviewable PR, green required checks, and merge into `master-staging`. |
-| AR-02 — ownership inventory | Completed in this record. | No. | Review the owner and pinning findings before a dedicated standardization change. |
-| AR-03 — artifact hand-off | A bounded design is complete; no qualifying producer/consumer pair exists. | No. | A concrete dependent job and an approved allowlisted report path. |
+| AR-01 — baseline repair | Implemented and locally validated on `fix/ar01-automation-baseline`. | Yes, in PR #261. | Required checks and merge into `master-staging`. |
+| AR-02 — ownership inventory | Completed in this record. | No additional runtime owner. | Review the owner and pinning findings before any wider normalization change. |
+| AR-03 — artifact hand-off | B2 provides an allowlisted same-run producer/consumer test-evidence artifact with a SHA-256 manifest. | Yes, in PR #261. | Required checks and review of the seven-day retention boundary. |
 | AR-04 — issue-to-PR path | Threat model and minimum design are complete. | No. | Separate acceptance of event provenance, branch ownership, write permissions, and test fixtures. |
-| AR-05 — changed-file filter | Existing native controls are retained; no third-party filter is adopted. | No. | A demonstrated routing or duplication defect that existing controls cannot express. |
-| AR-06 — native execution controls | Existing concurrency, cache, retry, marker, and dispatch controls are retained. | No. | A demonstrated missing primitive with an owner, bounded permission set, and test case. |
+| AR-05 — changed-file filter | B1 adopts one immutable `dorny/paths-filter` owner that emits booleans only. | Yes, in PR #261. | Required checks and review of fixture coverage. |
+| AR-06 — native execution controls | B1/B2 preserve native concurrency, markers, checks, summaries, and dispatch owners. | Yes, bounded additions only. | Demonstrated owner and test case for any future primitive. |
 | AR-07 — non-adoption controls | Explicitly recorded below. | No. | Separate threat model and approved minimal-permission design per privileged capability. |
 
 ## AR-02 — First-Party Ownership Inventory
@@ -28,9 +28,9 @@
 | Agent context store | Local composite action owns non-secret context cache and optional marker bookmarks. | Explicitly strips token, cookie, secret, password, and PoW-shaped fields; 32 KB cap; runner-temp auth state stays ephemeral. | **Reuse, do not fork.** Comment bookmarks remain optional and require the caller’s existing permission. |
 | Model router | Local composite action owns per-day, branch-best-effort free-tier model routing counters. | Immutable cache restore/save pins; run-specific save key; no broad cross-branch restore. | **Reuse, do not duplicate.** It is not an artifact or general-purpose state system. |
 
-## AR-03 — Bounded Artifact Hand-Off Design
+## AR-03 — Bounded Artifact Hand-Off Contract
 
-No current workflow has a proven dependent job that needs a retained file. Therefore this item adds **no upload or download action now**. When a real producer/consumer exists, it must use the following contract.
+B2 implements the required producer/consumer relationship for a real, deterministic policy-test evidence report. The contract and tests are documented in [B2 workflow-surface evidence](B2-WORKFLOW-SURFACE-EVIDENCE.md).
 
 | Contract element | Required control |
 |---|---|
@@ -41,7 +41,7 @@ No current workflow has a proven dependent job that needs a retained file. There
 | Retention | A documented finite retention period and `include-hidden-files: false`; failure behavior must be explicit. |
 | Validation | Tests cover missing report, unexpected path, digest mismatch, duplicate artifact name, and excluded sensitive path. |
 
-The current `deepseek_output.json` producer is not automatically eligible because no dependent job and no consumer integrity contract are declared.
+The existing `deepseek_output.json` producer is not automatically enrolled because it has no declared dependent consumer or matching integrity contract.
 
 ## AR-04 — Controlled Issue-to-PR Design
 
@@ -61,9 +61,7 @@ This design is **not implementation authorization**. It requires a separate acce
 
 ## AR-05 — Changed-File and Path Filtering Decision
 
-The repository already uses event `paths` / `paths-ignore` filters, GitHub API file and change counts, `git diff`, and scripted inventory checks. These controls are sufficient for the currently demonstrated routing paths.
-
-> **Decision:** Do not add `dorny/paths-filter`, `changed-files`, or another overlapping action now. Adoption requires a reproducible case in which the existing native controls create duplicate runs or misroute a workflow and a single filter demonstrably fixes it without duplicating an owner.
+B1 adds one narrow `dorny/paths-filter` owner in `workflow-surface-policy.yml`, pinned to an immutable v4.0.3 commit. It emits boolean route signals only and never interpolates changed filenames into shell. The deterministic classifier and fixture suite cover documentation-only, automation, source/test, mixed, traversal, and path-normalization cases. The control is documented in [B1 workflow-surface policy](B1-WORKFLOW-SURFACE-POLICY.md).
 
 ## AR-06 — Native Execution-Control Decision
 
@@ -87,6 +85,14 @@ The repository already uses event `paths` / `paths-ignore` filters, GitHub API f
 | `github-app-token` | **Deferred.** | A demonstrated same-repository `GITHUB_TOKEN` insufficiency and an approved App permission minimization review. |
 | `issue-ai-agent` | **Not adopted.** | Prompt-injection threat model, tool allowlist, credit cap, redacted output contract, and read-only pilot review. |
 | Direct issue/comment-to-shell | **Prohibited.** | No current exception path. Event text remains data and cannot become a command. |
+
+## B3 — Read-Only Agentic Operations Pilot
+
+B3 is a scheduled/manual, metadata-only operations report with read-only agent permissions, a 40-AI-Credit per-run ceiling, an 80-credit daily ceiling, four turns, an explicit prompt-injection corpus, and a single isolated `create_issue` safe-output type. The generated lock workflow is reviewed alongside the Markdown source. See [B3 agentic operations pilot](B3-AGENTIC-OPERATIONS-PILOT.md).
+
+## B6 — Advisory Workflow Lint
+
+B6 adds an advisory, non-blocking actionlint workflow for changed automation surfaces. It has `contents: read` only, immutable action and source pins, no auto-fix, and no pull-request comments. Its baseline and promotion decision are recorded in [B6 actionlint advisory](B6-ACTIONLINT-ADVISORY.md).
 
 ## References
 

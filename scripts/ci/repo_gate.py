@@ -2,14 +2,10 @@
 """
 repo_gate.py — cheap, device-friendly hygiene gate for termux-monorepo.
 
-<<<<<<< HEAD
 ArchW1z invariant gate (P0 spine).
 
-Design constraints:
-=======
 Design constraints (from PR #2 discussion: "Limit local, Android Termux, device,
 resources, usage."):
->>>>>>> pr238
 
   * stdlib only, no pip installs, no network, no toolchains
   * no Rust/cargo build, no Chromium, no adb, no termux-api
@@ -117,14 +113,14 @@ def git(*args: str) -> str:
 def git_ok(*args: str) -> bool:
     return (
         subprocess.run(
-            ["git", *args], cwd=REPO_ROOT, capture_output=True, text=True
+            ["git", *args], cwd=REPO_ROOT, capture_output=True, text=True, check=False
         ).returncode
         == 0
     )
 
 
 class IndexEntry:
-    __slots__ = ("mode", "sha", "path")
+    __slots__ = ("mode", "path", "sha")
 
     def __init__(self, mode: str, sha: str, path: str) -> None:
         self.mode = mode
@@ -136,12 +132,8 @@ class IndexEntry:
         return self.mode == "120000"
 
     @property
-<<<<<<< HEAD
-    def is_submodule(self) -> bool:
-=======
     def is_gitlink(self) -> bool:
         """A submodule entry points to a commit, not a blob in this repository."""
->>>>>>> pr238
         return self.mode == "160000"
 
 
@@ -235,11 +227,7 @@ def check_python_syntax(report: Report, paths: list[str], index: dict[str, Index
         if not path.endswith(".py") or is_scratch(path):
             continue
         entry = index.get(path)
-<<<<<<< HEAD
-        if entry is None or entry.is_symlink or entry.is_submodule:
-=======
-        if entry is None or entry.is_symlink:
->>>>>>> pr238
+        if entry is None or entry.is_symlink or entry.is_gitlink:
             continue
         checked += 1
         source = blob(entry.sha)
@@ -262,15 +250,11 @@ def check_shell_syntax(report: Report, paths: list[str], index: dict[str, IndexE
         if not path.endswith((".sh", ".bash")) or is_scratch(path):
             continue
         entry = index.get(path)
-<<<<<<< HEAD
-        if entry is None or entry.is_symlink or entry.is_submodule:
-=======
-        if entry is None or entry.is_symlink:
->>>>>>> pr238
+        if entry is None or entry.is_symlink or entry.is_gitlink:
             continue
         checked += 1
         proc = subprocess.run(
-            [bash, "-n", "-"], input=blob(entry.sha), capture_output=True
+            [bash, "-n", "-"], input=blob(entry.sha), capture_output=True, check=False
         )
         if proc.returncode != 0:
             first = (
@@ -286,11 +270,7 @@ def check_json_parses(report: Report, paths: list[str], index: dict[str, IndexEn
         if not path.endswith(".json") or is_scratch(path):
             continue
         entry = index.get(path)
-<<<<<<< HEAD
-        if entry is None or entry.is_symlink or entry.is_submodule:
-=======
-        if entry is None or entry.is_symlink:
->>>>>>> pr238
+        if entry is None or entry.is_symlink or entry.is_gitlink:
             continue
         raw = blob(entry.sha)
         if not raw.strip():
@@ -360,11 +340,7 @@ def check_secrets(report: Report, paths: list[str], index: dict[str, IndexEntry]
     checked = 0
     for path in paths:
         entry = index.get(path)
-<<<<<<< HEAD
-        if entry is None or entry.is_symlink or entry.is_submodule:
-=======
         if entry is None or entry.is_symlink or entry.is_gitlink:
->>>>>>> pr238
             continue
         if path.startswith("scripts/ci/"):  # the patterns themselves live here
             continue

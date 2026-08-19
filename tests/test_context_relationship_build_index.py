@@ -165,3 +165,30 @@ def test_build_index_retains_prior_history_when_later_collection_omits_it(monkey
     assert second["retained_history"] is True
     assert calls == [None, "2026-08-18T12:00:00Z"]
     assert '"external_id":"232"' in (output / "nodes.jsonl").read_text()
+
+
+
+def test_build_index_does_not_advance_checkpoint_for_incomplete_collection(monkeypatch, tmp_path):
+    repository = {"owner": "example", "name": "repo", "default_branch": "main"}
+    source_seed = {
+        "schema_version": "1.0",
+        "repository": repository,
+        "nodes": [{"kind": "repository", "external_id": "example/repo", "observed_at": "2026-08-18T10:00:00Z", "attributes": {"ref": "main"}}],
+        "edges": [],
+    }
+    empty_seed = {"schema_version": "1.0", "repository": repository, "nodes": [], "edges": []}
+    monkeypatch.setattr(builder, "collect_source_seed", lambda *args: (source_seed, {"parser_failures": []}))
+    monkeypatch.setattr(
+        builder,
+        "collect_github_seed",
+        lambda *args, **kwargs: (empty_seed, {"collected_at": "2026-08-18T13:00:00Z", "request_count": 0, "counts": {}, "checkpoint_eligible": False}),
+    )
+    output = tmp_path / "index"
+    builder.write_checkpoint(output / "checkpoint.json", "2026-08-18T12:00:00Z", "example", "repo", "main")
+
+    summary = builder.build_index(
+        tmp_path, "example", "repo", "main", "token", SCOPE_REGISTRY, SCHEMA, output, 1, 1, 1, 1, False, 0
+    )
+
+    assert summary["checkpoint_eligible"] is False
+    assert builder.load_checkpoint(output / "checkpoint.json", "example", "repo", "main") == "2026-08-18T12:00:00Z"

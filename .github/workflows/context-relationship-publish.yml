@@ -26,7 +26,7 @@ permissions:
   pull-requests: read
 
 concurrency:
-  group: context-relationship-publish-master-staging
+  group: context-relationship-writer-master-staging
   cancel-in-progress: false
 
 jobs:
@@ -38,6 +38,7 @@ jobs:
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
+          ref: master-staging
           fetch-depth: 1
           persist-credentials: true
 

@@ -92,3 +92,23 @@ def test_markdown_and_mermaid_outputs_preserve_candidate_distinction(tmp_path):
     assert "flowchart LR" in mermaid
     assert "SIMILAR_TO score=0.42" in mermaid
     assert "classDef candidate" in mermaid
+
+
+
+def test_traversal_caps_roots_to_max_nodes_before_initializing_visited(tmp_path):
+    from archwiz.context_relationships.query import traverse_verified
+
+    visited, _ = traverse_verified(["node:one", "node:two", "node:three"], [], depth=0, max_nodes=1)
+
+    assert visited == {"node:one"}
+
+
+def test_search_rejects_non_positive_fuzzy_limit(tmp_path):
+    from archwiz.context_relationships.query import QueryError
+
+    try:
+        search_index(build_index(tmp_path), "context relationship", fuzzy_limit=-1)
+    except QueryError as exc:
+        assert "fuzzy_limit" in str(exc)
+    else:
+        raise AssertionError("negative fuzzy_limit must be rejected")

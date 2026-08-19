@@ -219,3 +219,62 @@ def test_collect_github_seed_preserves_evidence_without_persisting_discussion_bo
     assert report["counts"]["timeline_cross_references"] == 1
     assert report["counts"]["permalink_references"] == 3
     assert report["unresolved_internal_reference_count"] == 0
+
+
+
+def test_reference_targets_classifies_each_occurrence_independently():
+    from archwiz.context_relationships.github_collector import reference_targets
+
+    references = reference_targets("Fixes #86; follow-up discussion of #86", "example", "repo", {86: "issue:86"})
+
+    assert ("CLOSES", "issue:86", 86) in references
+    assert ("REFERENCES", "issue:86", 86) in references
+
+
+def test_mixed_issues_window_marks_checkpoint_ineligible_when_truncated(tmp_path):
+    registry = tmp_path / "scopes.json"
+    write_registry(registry)
+    client = FakeGitHubClient()
+    client.responses["/repos/example/repo/issues"] = [
+        {
+            "number": 232,
+            "pull_request": {},
+            "updated_at": "2026-08-18T12:00:00Z",
+            "html_url": "https://github.com/example/repo/pull/232",
+        }
+    ]
+    client.responses["/repos/example/repo/pulls"] = []
+
+    _, report = collect_github_seed(
+        client,
+        "example",
+        "repo",
+        "master-staging",
+        registry,
+        since="2026-08-01T00:00:00Z",
+        max_items=1,
+        max_commits=1,
+        max_comments_per_item=1,
+        include_comments=False,
+    )
+
+    assert report["history_window"]["issues_complete"] is False
+    assert report["checkpoint_eligible"] is False
+
+
+def test_load_checkpoint_ignores_a_different_repository_or_ref(tmp_path):
+    from archwiz.context_relationships.github_collector import load_checkpoint
+
+    checkpoint = tmp_path / "checkpoint.json"
+    checkpoint.write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "repository": "other/repository",
+                "ref": "main",
+                "last_successful_at": "2026-08-18T12:00:00Z",
+            }
+        )
+    )
+
+    assert load_checkpoint(checkpoint, "example", "repo", "master-staging") is None

@@ -25,7 +25,7 @@ The public test-and-build environment’s enabled administrative control surface
 
 ## Acceptance Evidence
 
-The deterministic policy test checks the exact three immutable action references, source and schedule triggers, explicit language matrix, `build-mode: none`, `security-extended` suite, `contents: read` plus isolated `security-events: write`, disabled persisted credentials, and absence of code/PR/issue/comment/dispatch mutation paths. The workflow is lint-clean under checksum-verified actionlint v1.7.12. The first GitHub-hosted run will establish runtime, result volume, and operational compatibility before any required-check promotion is considered.
+The deterministic policy test checks the exact three immutable action references, source and schedule triggers, explicit language matrix, `build-mode: none`, `security-extended` suite, `contents: read` plus isolated `security-events: write`, disabled persisted credentials, and absence of code/PR/issue/comment/dispatch mutation paths. The workflow is lint-clean under checksum-verified actionlint v1.7.12. Its first GitHub-hosted run on PR #261 completed successfully for `actions` in 51 seconds, `javascript-typescript` in 64 seconds, and `python` in 110 seconds. The Python job exported SARIF and GitHub reported its analysis upload complete. Result severity and promotion suitability remain review decisions; no required-check policy changed.
 
 ## References
 

@@ -267,9 +267,13 @@ jobs:
 
             function cooldownNotice(provider, evidence) {
               if (provider !== 'coderabbit') return { active: false, url: '', detail: '' };
-              const sourceComments = [...evidence.comments, ...evidence.reviewComments];
-              const notice = sourceComments.find(item =>
+              // CodeRabbit may issue the cooldown as an issue comment, inline review
+              // comment, or a pull-request review body. Review-bound evidence must
+              // correspond to the active head; issue comments have no commit_id.
+              const sourceItems = [...evidence.comments, ...evidence.reviewComments, ...evidence.reviews];
+              const notice = sourceItems.find(item =>
                 providerFor(item.user) === provider &&
+                (!item.commit_id || item.commit_id === headSha) &&
                 Date.parse(item.created_at || item.submitted_at || '') >= cycleStartedAt &&
                 codeRabbitCooldownPattern.test(item.body || '')
               );

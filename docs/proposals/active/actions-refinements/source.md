@@ -40,6 +40,8 @@ This record is metadata-only. GitHub issue, comment, review, and timeline bodies
 
 The required integration baseline is `master-staging`. The collected revision contains unresolved conflict markers in `scripts/ci/repo_gate.py`, `.github/workflows/gemini-dispatch.yml`, and `.github/workflows/gemini-review.yml`; the gate script cannot compile, so both required validation commands currently fail before evaluating this documentation-only branch. Additional markers are present in a small number of Markdown and auxiliary files and must be classified separately rather than resolved opportunistically. The dispatch conflict concerns the `issue_number` input passed to the reusable invoke workflow. The invoke workflow declares that input; however, the review workflow’s conflict region leaves its reusable interface structurally incomplete. This is a prerequisite validity problem, not a safe reason to expand workflow scope.
 
+The proposal-lifecycle check on the intake branch also fails before evaluating this proposal because the inherited `docs/proposals/active/manus-critical-eval` directory is not registered in `docs/proposals/registry.yaml`. That orphan is outside the scope of this proposal; it is recorded here so a reviewer can distinguish it from the newly registered `actions-refinements` directory.
+
 The repository-local context-relationship index expected at `workspace/llm_map/context_relationships` was absent. No synthetic graph was generated. The GitHub timeline relations above are direct, verified GitHub-native evidence; the PR candidacies are intentionally separate and non-authoritative.
 
 ## External Baseline

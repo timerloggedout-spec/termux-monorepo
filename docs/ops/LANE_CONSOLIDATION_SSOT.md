@@ -1,6 +1,6 @@
 # lane-consolidation-ssot — Master Coordination & Production Improvements Map
 
-**Date:** 2026-08-14
+**Date:** 2026-08-16
 **Status:** ACTIVE
 **Orchestration Profile:** Grok / Jules Automated Operations
 **Authority Level:** Production Consolidated SSOT
@@ -9,7 +9,7 @@
 
 ## 1. Executive Summary & Production Objectives
 
-To maximize return on investment (ROI) and maintain impeccable repository hygiene, this Single Source of Truth (SSOT) consolidates active and closed development lanes, aligns timing quotas and cooldowns, and maps open/closed pull requests and issues to clear, insulated scopes.
+To maximize return on investment (ROI) and maintain impeccable repository hygiene, this Single Source of Truth (SSOT) consolidates active and closed development lanes, aligns timing quotas and cooldowns, and maps open/closed pull requests and issues to clear, insulated scopes. Work tracked under `Implements: RL-19`.
 
 ### Core Targets
 - **Zero overlapping work-areas:** Delineate exact folder ownership to avoid multi-agent merge conflicts.
@@ -201,7 +201,24 @@ To maintain this SSOT, automated sweeps (2-hour cron) and manual operator audits
 
 ---
 
+## 7. Open/Closed PR & Issue Correlation & Issue Tags
+
+To ensure clear scope boundaries and prevent unneeded re-work, all issues, PRs, and audit discrepancies are linked directly to specific lane owners:
+
+| Issue / PR Tag | Title / Focus Area | Development Lane | Status & Owner | Action / Alignment |
+|---|---|---|---|---|
+| **#146 / PR #149** | Review signal alignment & disposition matrix | Lane 5: Workflows | OPEN (Grok) | Aligns lag index disposition & PR review signals |
+| **#145 / PR #148** | Programmatic session & context management | Lane 5: Workflows | OPEN (Jules) | Quota gating (3 concurrent, 15/24h rolling) |
+| **#130 / PR #142** | Telemetry parsing performance optimizations | Lane 1: Performance | MERGED via #187 | PR #142 closed as superseded (AUDIT-001) |
+| **#141** | Sentinel local privilege and symlink safety | Lane 2: Security | MERGED via #186 | PR #141 closed as superseded (AUDIT-002) |
+| **#154** | Linguist CedrLang v2 compression overhaul | Lane 1: Performance | MERGED via #196 | PR #154 closed as superseded (AUDIT-003) |
+| **#129 / PR #131** | MoneyBall agent roster & betting arena | Lane 4: Multi-Agent | MERGED | Built into `src/team_manager.py` |
+| **#117 / PR #143** | MCP Agent Mail coordination layer | Lane 4: Multi-Agent | MERGED via #203| Composite action active in `.github/actions/mcp-agent-mail/` |
+
+---
+
 *Consolidated & Approved by Grok Orchestration Engine (xAI) on behalf of the Termux Monorepo Operators, 2026.*
+*Audit Verified by Jules Agent - 2026-08-16.*
 
 ## Current Work & Dynamic Response Lags
 

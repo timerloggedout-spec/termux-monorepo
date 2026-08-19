@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/docs/agentic/dependency-phases.schema.json",
+  "title": "Agentic Dependency Phase Plan",
+  "description": "Canonical version-controlled plan for dependency-phase lifecycle evaluation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "plan_id", "title", "base_branch", "project", "policy", "phases"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "plan_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{1,63}$"},
+    "title": {"type": "string", "minLength": 3},
+    "base_branch": {"const": "master"},
+    "project": {"$ref": "#/$defs/project"},
+    "policy": {"$ref": "#/$defs/policy"},
+    "phases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/phase"}
+    }
+  },
+  "$defs": {
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owner", "number", "id", "url", "status_field_id", "status_options"],
+      "properties": {
+        "owner": {"type": "string", "minLength": 1},
+        "number": {"type": "integer", "minimum": 1},
+        "id": {"type": "string", "minLength": 1},
+        "url": {"type": "string", "format": "uri", "pattern": "^https://"},
+        "status_field_id": {"type": "string", "minLength": 1},
+        "status_options": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["Todo", "In progress", "Done"],
+          "properties": {
+            "Todo": {"type": "string", "minLength": 1},
+            "In progress": {"type": "string", "minLength": 1},
+            "Done": {"type": "string", "minLength": 1}
+          }
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["canonical_state", "derived_views", "dispatch_agents", "prohibited_actions"],
+      "properties": {
+        "canonical_state": {"const": "repository_json"},
+        "derived_views": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"enum": ["markdown", "mermaid", "github_project"]}
+        },
+        "dispatch_agents": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "prohibited_actions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "phase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["phase_id", "title", "description", "depends_on", "project", "approval_required", "execution", "completion"],
+      "properties": {
+        "phase_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9-]{2,63}$"},
+        "title": {"type": "string", "minLength": 3},
+        "description": {"type": "string", "minLength": 3},
+        "depends_on": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9-]{2,63}$"}
+        },
+        "project": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["title_marker"],
+          "properties": {
+            "title_marker": {"type": "string", "pattern": "^[A-Z][A-Z0-9-]{2,63}$"}
+          }
+        },
+        "approval_required": {"type": "boolean"},
+        "execution": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mode", "preferred_agent"],
+          "properties": {
+            "mode": {"enum": ["agent", "human", "agent_or_human"]},
+            "preferred_agent": {"type": "string", "minLength": 1}
+          }
+        },
+        "completion": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["required_checks", "merged_pr"],
+          "properties": {
+            "required_checks": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {"type": "string", "minLength": 1}
+            },
+            "merged_pr": {"const": true}
+          }
+        }
+      }
+    }
+  }
+}

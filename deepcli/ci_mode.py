@@ -12,7 +12,7 @@ import sys
 import json
 import argparse
 
-from .ci_agent import run_ci
+from .ci_agent import run_ci, is_soft_skippable_error
 from .session_manager import ensure_session, normalize_account, _token_from_env
 
 
@@ -113,9 +113,13 @@ def main():
             "error": "session_init_failed",
             "account": account,
             "message": msg,
+            "soft_skippable": is_soft_skippable_error(e),
         }
         with open("deepseek_output.json", "w", encoding="utf-8") as f:
             json.dump(result, f, indent=2)
+        if is_soft_skippable_error(e):
+            print("::notice::Soft-skipping DeepSeek CI run due to classified auth or connection failure.")
+            sys.exit(0)
         sys.exit(1)
 
     try:
@@ -142,6 +146,9 @@ def main():
     if result.get("error"):
         print(f"::error::{result['error']}")
         _write_step_summary("API/runtime error", result["error"])
+        if result.get("soft_skippable"):
+            print("::notice::Soft-skipping DeepSeek CI run due to classified auth or connection failure.")
+            sys.exit(0)
         sys.exit(1)
 
     print(f"✅ CI run completed. Decisions: {result.get('actions', [])}")

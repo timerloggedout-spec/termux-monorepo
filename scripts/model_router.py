@@ -10,20 +10,16 @@ See .github/connectors/llm-peers.yaml for authorized catalog.
 LEGACY_MODELS is the conservative catalog-unavailable allow-list: only models
 proven in production. Newly listed free models must appear in a live/stale
 OpenRouter poll before they are selected.
-
-Verified and dynamic model routing logic.
-Dynamic model-routing optimized for high-performance and ELO rankings.
-ELO-ranking dynamic model availability router.
 """
 
 import os
 import sys
 import re
 import json
-import urllib.request
 import time
 
 COUNTER_DIR = os.environ.get("COUNTER_DIR", "/tmp/model-router")
+KEY_VAL_RE = re.compile(r'^("[^"]+"|\'[^\']+\'|[^:]+):\s*(.*)$')
 
 # Proven-only fallback when OpenRouter catalog cannot be fetched.
 # Do NOT add unverified free models here — they belong in role_peers and the live poll.
@@ -81,7 +77,7 @@ def parse_yaml(filepath):
                         sub_key = list(item_val.keys())[0]
                         path.append((indent, item_val, sub_key))
                 continue
-            m = re.match(r'^("[^"]+"|\'[^\']+\'|[^:]+):\s*(.*)$', stripped)
+            m = KEY_VAL_RE.match(stripped)
             if not m:
                 continue
             key = m.group(1).strip().strip('"\'')
@@ -119,6 +115,8 @@ def fetch_openrouter_free_models():
     """Poll OpenRouter models endpoint; return free model ids or None on failure."""
     url = "https://openrouter.ai/api/v1/models"
     try:
+        # Lazy load urllib.request to avoid ~50ms module loading overhead during fast/cached runs
+        import urllib.request
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
         with urllib.request.urlopen(req, timeout=5) as response:
             data = json.loads(response.read().decode('utf-8'))
@@ -191,33 +189,17 @@ def increment_usage(provider, model):
     key = f"{provider}/{model}" if provider != "gemini" else model
     os.makedirs(COUNTER_DIR, exist_ok=True)
     filename = os.path.join(COUNTER_DIR, key.replace('/', '_') + ".txt")
-    current = get_usage(provider, model)
+    current = 0
+    if os.path.exists(filename):
+        try:
+            with open(filename, 'r') as f:
+                current = int(f.read().strip())
+        except Exception:
+            current = 0
+    new_usage = current + 1
     with open(filename, 'w') as f:
-        f.write(str(current + 1))
-    return current + 1
-
-def parse_soft_limits(val):
-    if isinstance(val, dict):
-        return val
-    if isinstance(val, str):
-        res = {}
-        cleaned = val.replace("{", "").replace("}", "").strip()
-        if cleaned:
-            parts = cleaned.split(",")
-            for part in parts:
-                if ":" in part:
-                    k, v = part.split(":", 1)
-                    k = k.strip().strip("'\x22")
-                    v = v.strip().strip("'\x22")
-                    try:
-                        res[k] = int(v)
-                    except ValueError:
-                        try:
-                            res[k] = float(v)
-                        except ValueError:
-                            res[k] = v
-        return res
-    return {}
+        f.write(str(new_usage))
+    return new_usage
 
 def main():
     role = os.environ.get("ROLE", "triage")
@@ -232,41 +214,55 @@ def main():
     if has_openrouter:
         polled_free_models = fetch_openrouter_free_models_cached()
 
-    # Dynamically load from llm-peers.yaml
-    limits = {}
-    role_peers = {"triage": [], "review": [], "invoke": []}
-    role_residuals = {"triage": [], "review": [], "invoke": []}
+    # ELEVATED soft limits (OPERATOR 2026-08-10) — exceed prior capacity.
+    # Soft gates only; downstream 429 must still re-route / fall through.
+    limits = {
+        "omni/auto/best-free": {"triage": 400, "review": 250, "invoke": 400},
+        "openrouter/meta-llama/llama-3.3-70b-instruct:free": {"triage": 80, "review": 80, "invoke": 80},
+        "openrouter/google/gemma-3-12b-it:free": {"triage": 80, "review": 80, "invoke": 80},
+        "openrouter/qwen/qwen3-coder:free": {"triage": 60, "review": 60, "invoke": 60},
+        "openrouter/deepseek/deepseek-r1:free": {"triage": 40, "review": 40, "invoke": 40},
+        "openrouter/google/gemma-4-31b-it:free": {"triage": 80, "review": 80, "invoke": 80},
+        "openrouter/google/gemma-4-26b-a4b-it:free": {"triage": 80, "review": 80, "invoke": 80},
+        "openrouter/cohere/north-mini-code:free": {"triage": 60, "review": 60, "invoke": 60},
+        "gemini-3.1-flash-lite": {"triage": 450, "review": 450, "invoke": 450},
+        "gemini-3.5-flash-lite": {"triage": 450, "review": 450, "invoke": 450},
+        "gemini-2.5-flash-lite": {"triage": 20, "review": 20, "invoke": 20},
+        "gemini-3.5-flash": {"triage": 20, "review": 20, "invoke": 20},
+        "gemini-2.5-flash": {"triage": 20, "review": 20, "invoke": 20},
+        "gemini-3-flash": {"triage": 20, "review": 20, "invoke": 20},
+    }
 
-    peers_data = parse_yaml(".github/connectors/llm-peers.yaml").get("peers", {})
-    for provider, provider_data in peers_data.items():
-        models_list = provider_data.get("models", {})
-        if isinstance(models_list, dict):
-            models_list = models_list.get("models", [])
-        if not isinstance(models_list, list):
-            models_list = []
+    role_peers = {
+        "triage": [
+            ("omni", "auto/best-free"),
+            ("openrouter", "google/gemma-4-31b-it:free"),
+            ("openrouter", "google/gemma-4-26b-a4b-it:free"),
+            ("openrouter", "meta-llama/llama-3.3-70b-instruct:free"),
+            ("openrouter", "google/gemma-3-12b-it:free"),
+        ],
+        "review": [
+            ("omni", "auto/best-free"),
+            ("openrouter", "cohere/north-mini-code:free"),
+            ("openrouter", "google/gemma-4-31b-it:free"),
+            ("openrouter", "qwen/qwen3-coder:free"),
+            ("openrouter", "meta-llama/llama-3.3-70b-instruct:free"),
+            ("openrouter", "deepseek/deepseek-r1:free"),
+        ],
+        "invoke": [
+            ("omni", "auto/best-free"),
+            ("openrouter", "google/gemma-4-31b-it:free"),
+            ("openrouter", "google/gemma-4-26b-a4b-it:free"),
+            ("openrouter", "meta-llama/llama-3.3-70b-instruct:free"),
+            ("openrouter", "google/gemma-3-12b-it:free"),
+        ],
+    }
 
-        is_gemini = (provider == "gemini" or provider_data.get("residual_only") is True)
-
-        for model_data in models_list:
-            model_id = model_data.get("id")
-            if not model_id:
-                continue
-
-            raw_limits = model_data.get("soft_limits", {})
-            parsed_limits = parse_soft_limits(raw_limits)
-
-            limit_key = model_id if is_gemini else f"{provider}/{model_id}"
-            limits[limit_key] = parsed_limits
-
-            if is_gemini:
-                for r in ["triage", "review", "invoke"]:
-                    if r in parsed_limits:
-                        role_residuals[r].append(model_id)
-            else:
-                roles = model_data.get("roles", [])
-                for r in roles:
-                    if r in role_peers:
-                        role_peers[r].append((provider, model_id))
+    role_residuals = {
+        "triage": ["gemini-3.1-flash-lite", "gemini-3.5-flash-lite", "gemini-2.5-flash-lite"],
+        "review": ["gemini-3.5-flash", "gemini-2.5-flash", "gemini-3-flash", "gemini-3.1-flash-lite"],
+        "invoke": ["gemini-3.1-flash-lite", "gemini-3.5-flash-lite"],
+    }
 
     peer_candidates = []
     for provider, model in role_peers.get(role, []):

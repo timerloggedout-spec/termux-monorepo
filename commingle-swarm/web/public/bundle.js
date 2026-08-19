@@ -27,8 +27,8 @@
   var b = x(1);
   var w = x(2);
   var T = x(3);
-  var E = Symbol.for("lit-noChange");
-  var A = Symbol.for("lit-nothing");
+  var E = /* @__PURE__ */ Symbol.for("lit-noChange");
+  var A = /* @__PURE__ */ Symbol.for("lit-nothing");
   var C = /* @__PURE__ */ new WeakMap();
   var P = l.createTreeWalker(l, 129);
   function V(t2, i2) {
@@ -273,36 +273,27 @@
   // src/components/ManagerConsole.tsx
   var ManagerConsole = (reRender2) => {
     let planText = 'Click "Propose trade" to generate an allocation plan via the node.';
-    let isProposing = false;
     const propose = async () => {
-      if (isProposing) return;
-      isProposing = true;
-      planText = "Generating allocation plan...";
+      const trade = { asset: "ETH/USDT", direction: "buy", totalSize: 5, strategyId: "S1" };
+      const resp = await proposeTrade(trade);
+      planText = JSON.stringify(resp, null, 2);
       reRender2();
-      try {
-        const trade = { asset: "ETH/USDT", direction: "buy", totalSize: 5, strategyId: "S1" };
-        const resp = await proposeTrade(trade);
-        planText = JSON.stringify(resp, null, 2);
-      } catch (e2) {
-        planText = "Failed to generate allocation plan.";
-      } finally {
-        isProposing = false;
-        reRender2();
-      }
     };
     return () => b`
-    <section style="padding:16px; background:#111625; border-radius:10px; border:1px solid #1e2738;">
-      <h2 style="margin-top:0; color:#93c5fd; font-size:20px;">Manager Console</h2>
+    <section style="margin-top:16px;">
+      <h2>Manager console</h2>
       <button
-        style="padding:10px 16px; background:${isProposing ? "#1e293b" : "#2563eb"}; color:${isProposing ? "#94a3b8" : "#ffffff"}; border:0; border-radius:6px; cursor:${isProposing ? "not-allowed" : "pointer"}; font-weight:500; font-size:14px; display:inline-flex; align-items:center; gap:8px; box-shadow:0 1px 2px rgba(0,0,0,0.05);"
-        ?disabled=${isProposing}
-        aria-busy=${isProposing ? "true" : "false"}
         aria-label="Propose trade allocation plan"
+        style="padding:8px 12px; background:#1e2738; color:#eaf0ff; border:0; border-radius:6px; cursor:pointer;"
         @click=${propose}
       >
-        ${isProposing ? "\u23F3 Proposing trade..." : "\u{1F680} Propose trade"}
+        Propose trade
       </button>
-      <pre style="background:#090d16; padding:14px; border-radius:8px; margin-top:14px; border:1px solid #1a2035; overflow-x:auto; font-family:monospace; font-size:13px; color:#c7d2fe;">${planText}</pre>
+      <pre
+        aria-live="polite"
+        aria-label="Trade proposal output"
+        style="background:#121426; padding:12px; border-radius:8px; margin-top:12px;"
+      >${planText}</pre>
     </section>
   `;
   };
@@ -310,48 +301,40 @@
   // src/components/ClientPortal.tsx
   var ClientPortal = (reRender2) => {
     let vaultText = "Loading vault snapshot...";
-    let isLoading = true;
     const load = async () => {
-      isLoading = true;
       try {
         const v2 = await getVault();
         vaultText = JSON.stringify(v2, null, 2);
       } catch (e2) {
         vaultText = "Failed to load vault.";
-      } finally {
-        isLoading = false;
-        reRender2();
       }
+      reRender2();
     };
-    setTimeout(() => {
-      load();
-    }, 0);
+    setTimeout(load, 0);
     return () => b`
-    <section style="padding:16px; background:#111625; border-radius:10px; border:1px solid #1e2738;">
-      <h2 style="margin-top:0; color:#93c5fd; font-size:20px;">Client Portal</h2>
-      <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
-        <span style="font-size:14px; color:#94a3b8;">Vault snapshot:</span>
-        ${isLoading ? b`<span style="font-size:12px; color:#fbbf24; animation: pulse 1.5s infinite; font-weight:500;">⏳ Fetching...</span>` : ""}
-      </div>
-      <pre style="background:#090d16; padding:14px; border-radius:8px; border:1px solid #1a2035; overflow-x:auto; font-family:monospace; font-size:13px; color:#c7d2fe; margin-top:0;">${vaultText}</pre>
+    <section style="margin-top:16px;">
+      <h2>Client portal</h2>
+      <pre
+        aria-live="polite"
+        aria-label="Vault snapshot output"
+        style="background:#121426; padding:12px; border-radius:8px;"
+      >${vaultText}</pre>
     </section>
   `;
   };
 
   // src/index.tsx
-  var appEl = document.getElementById("app");
+  var container = document.getElementById("app");
   var reRender = () => {
-    D(App(), appEl);
+    D(App(), container);
   };
-  var managerConsole = ManagerConsole(reRender);
-  var clientPortal = ClientPortal(reRender);
+  var renderManager = ManagerConsole(reRender);
+  var renderClient = ClientPortal(reRender);
   var App = () => b`
-  <main style="min-height:100vh; padding:24px; max-width:800px; margin:0 auto; font-family:system-ui, -apple-system, sans-serif;">
-    <h1 style="border-bottom: 2px solid #1e2738; padding-bottom: 12px; margin-bottom: 24px; color:#f8fafc; font-size:32px; letter-spacing:-0.5px;">Commingle Swarm</h1>
-    <div style="display:flex; flex-direction:column; gap:24px;">
-      ${managerConsole()}
-      ${clientPortal()}
-    </div>
+  <main aria-label="Commingle Swarm Dashboard" style="min-height:100vh; padding:16px;">
+    <h1>Commingle Swarm</h1>
+    ${renderManager()}
+    ${renderClient()}
   </main>
 `;
   reRender();

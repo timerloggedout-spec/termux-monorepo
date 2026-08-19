@@ -144,7 +144,7 @@ models:
 
     # Redirect success matrix path cleanly without recursion
     original_parse_yaml = mr.parse_yaml
-    monkeypatch.setattr(mr, "parse_yaml", lambda path: original_parse_yaml(str(matrix_file)) if "success" in path else original_parse_yaml(path))
+    monkeypatch.setattr(mr, "parse_yaml", lambda path: original_parse_yaml(str(matrix_file)) if "success" in path else {})
 
     # Mock polling to say google/gemma-4-31b-it:free is available
     monkeypatch.setattr(mr, "fetch_openrouter_free_models_cached", lambda: ["google/gemma-4-31b-it:free"])

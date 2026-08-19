@@ -99,3 +99,61 @@ def test_sentinel_privileges_path_traversal_prevention(tmp_path, monkeypatch):
     # SIDs with unsafe chars should have them sanitized to underscores
     unsanitized_path_str = dc._cache_path("session$#*!123")
     assert "session____123.json" in unsanitized_path_str
+
+    # Test malicious account names raise ValueError or get sanitized safely
+    with pytest.raises(ValueError):
+        dc._cache_path("session1", account="../../etc")
+
+    with pytest.raises(ValueError):
+        dc._cache_path("session1", account="/absolute/account")
+
+    # Safe account with special chars gets sanitized
+    acc_path_str = dc._cache_path("session1", account="acc$#*!123")
+    assert "acc____123" in acc_path_str
+
+
+def test_sentinel_session_cache_key_collision_and_header_isolation(tmp_path, monkeypatch):
+    import deepcli.deepcli.core as dc
+
+    # 1. Test session cache key uniqueness across tokens sharing prefixes
+    token1 = "token_prefix_1234567890_AAA"
+    token2 = "token_prefix_1234567890_BBB"
+    key1 = dc._session_cache_key(token1)
+    key2 = dc._session_cache_key(token2)
+    assert key1 != key2
+
+    # 2. Test get_session clears stale POW response header
+    sess = dc.get_session(token1)
+    sess.headers["X-Ds-Pow-Response"] = "stale_pow_header"
+
+    # Subsequent retrieval of same session must purge X-Ds-Pow-Response
+    retrieved_sess = dc.get_session(token1)
+    assert "X-Ds-Pow-Response" not in retrieved_sess.headers
+
+    # 3. Test upload_file header isolation on dummy file
+    dummy_file = tmp_path / "test.txt"
+    dummy_file.write_text("hello world")
+
+    # Mock get_pow_challenge, solve_pow, and http_requests.post
+    monkeypatch.setattr(dc, "get_pow_challenge", lambda token, path: {"challenge": "c"})
+    monkeypatch.setattr(dc, "solve_pow", lambda challenge: "fresh_pow_header")
+
+    captured_headers = {}
+
+    def mock_post(url, files, headers):
+        nonlocal captured_headers
+        captured_headers = headers
+        class MockResp:
+            def raise_for_status(self): pass
+            def json(self): return {"data": {"biz_data": {"id": "uploaded_file_id"}}}
+        return MockResp()
+
+    monkeypatch.setattr(dc.http_requests, "post", mock_post)
+
+    file_id = dc.upload_file(token1, "session_123", str(dummy_file))
+    assert file_id == "uploaded_file_id"
+    assert captured_headers.get("X-Ds-Pow-Response") == "fresh_pow_header"
+
+    # Shared session headers in _session should NOT contain X-Ds-Pow-Response
+    sess_after = dc.get_session(token1)
+    assert "X-Ds-Pow-Response" not in sess_after.headers

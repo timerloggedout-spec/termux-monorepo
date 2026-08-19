@@ -88,7 +88,7 @@ def extract_imports(file_path: Path, lang: str) -> list:
                     imports.add(imp)
     return list(imports)
 
-def resolve_import_to_file(import_spec, current_file: Path, file_set: set) -> Path:
+def resolve_import_to_file(import_spec, current_file: Path, file_set: set, name_map: dict = None) -> Path:
     """Resolve an import string to an absolute Path using known file_set (relative paths)."""
     # Try relative resolution (current_file is absolute)
     target = resolve_import_target(current_file, import_spec)
@@ -102,11 +102,12 @@ def resolve_import_to_file(import_spec, current_file: Path, file_set: set) -> Pa
     candidate = HOME.joinpath(*parts) / '__init__.py'
     if str(candidate.relative_to(HOME)) in file_set:
         return candidate
-    # Fallback: match filename anywhere in known files (crude but effective)
+    # Fallback: match filename anywhere in known files (O(1) lookup via name_map)
     filename = parts[-1] + '.py'
-    for rel_f in file_set:
-        if Path(rel_f).name == filename:
-            return HOME / rel_f
+    if name_map is None:
+        name_map = {Path(f).name: f for f in file_set}
+    if filename in name_map:
+        return HOME / name_map[filename]
     return None
 
 def load_existing_maps():
@@ -154,6 +155,7 @@ def main():
     }
 
     print("[*] Extracting dependency edges...")
+    name_map = {Path(f).name: f for f in file_paths}
     import_count = 0
     for rel_path, entry in file_map.items():
         if entry.get('bloat'):
@@ -168,7 +170,7 @@ def main():
         raw_imports = extract_imports(full_path, lang)
         resolved_deps = []
         for imp in raw_imports:
-            target = resolve_import_to_file(imp, full_path, file_paths)
+            target = resolve_import_to_file(imp, full_path, file_paths, name_map=name_map)
             if target:
                 try:
                     target_rel = str(target.relative_to(HOME))

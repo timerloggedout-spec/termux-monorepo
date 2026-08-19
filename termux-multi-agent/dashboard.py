@@ -154,12 +154,16 @@ def make_dashboard():
         message = job.get("message", "")
         timestamp = job.get("timestamp", "")
         if timestamp:
-            # Format time if it has full date/time
-            try:
-                dt = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
-                timestamp = dt.strftime("%H:%M:%S")
-            except ValueError:
-                pass
+            # Bolt Optimization: Fast-path string slice formatting for HH:MM:SS
+            # Avoids datetime.strptime overhead in high-frequency dashboard rendering loops
+            if len(timestamp) >= 19 and timestamp[10] in (" ", "T"):
+                timestamp = timestamp[11:19]
+            elif not (len(timestamp) == 8 and timestamp[2] == ":" and timestamp[5] == ":"):
+                try:
+                    dt = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
+                    timestamp = dt.strftime("%H:%M:%S")
+                except ValueError:
+                    pass
 
         # Beautiful styled status tag
         if level == "SUCCESS":

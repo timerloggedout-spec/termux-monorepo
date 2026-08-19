@@ -7,3 +7,8 @@
 **Vulnerability:** Path traversal vulnerability via unvalidated/unsanitized input in session_id when constructing the local cache path (`_cache_path`), potentially allowing attackers to read or write files outside of the intended `.deepcli/session_store` sandbox directory structure.
 **Learning:** Even internal utility functions like cache path builders should enforce strict input validation (allow-listing or strict character filtering) and layout boundary checks (via real path alignment check with `os.path.commonpath`) to prevent path traversal vectors.
 **Prevention:** Always sanitize the filename components by retaining only safe alphanumeric/selected special characters and strictly validating the canonical path alignment against the expected base directory.
+
+## 2026-08-14 - Session Key Collision and Header Pollution in Shared HTTP Sessions
+**Vulnerability:** Key collision in `get_session` caused by truncating bearer tokens to 20 chars, causing distinct accounts sharing prefix strings to reuse the same cached `Session` instance. In addition, direct mutation of `s.headers` with one-shot `X-Ds-Pow-Response` headers polluted subsequent requests on shared sessions.
+**Learning:** Naive string truncation for dictionary keys creates subtle collision risks across distinct credentials. Mutating persistent `Session.headers` directly for single-use headers leaks authentication/challenge tokens across unrelated API requests.
+**Prevention:** Use SHA-256 digests over full token and cookie pairs to generate session cache keys (`_session_cache_key`), and always construct request-scoped header dictionaries without mutating shared session instances.

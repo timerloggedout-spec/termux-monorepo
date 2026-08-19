@@ -8,7 +8,18 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from deepcli import session_manager
+import sys
+from pathlib import Path
+
+original_path = sys.path.copy()
+deepcli_dir = str(Path(__file__).resolve().parent.parent / "deepcli")
+while deepcli_dir in sys.path:
+    sys.path.remove(deepcli_dir)
+
+try:
+    from deepcli import session_manager
+finally:
+    sys.path = original_path
 
 
 class DeepSeekWafSessionTests(unittest.TestCase):
@@ -145,6 +156,30 @@ class DeepSeekWafSessionTests(unittest.TestCase):
             persisted = json.loads(cache_path.read_text(encoding="utf-8"))
         self.assertEqual(session["cookies"]["aws-waf-token"], "cached-waf-value")
         self.assertEqual(persisted["cookies"]["aws-waf-token"], "cached-waf-value")
+
+    def test_ensure_session_rejects_symlink_cache_file(self):
+        with tempfile.TemporaryDirectory() as temp_dir, patch.dict(
+            os.environ,
+            {"DEEPSEEK_TOKEN": "test-token"},
+            clear=True,
+        ):
+            target_file = Path(temp_dir) / "sensitive.txt"
+            target_file.write_text("sensitive-data", encoding="utf-8")
+            if os.name != "nt":
+                target_file.chmod(0o644)
+
+            primary_dir = Path(temp_dir) / "primary"
+            primary_dir.mkdir(parents=True, exist_ok=True)
+            cache_path = primary_dir / "session.json"
+            cache_path.symlink_to(target_file)
+
+            with self.assertRaises(ValueError):
+                session_manager.ensure_session(temp_dir, "primary")
+
+            # Verify target content & mode were uncorrupted
+            self.assertEqual(target_file.read_text(encoding="utf-8"), "sensitive-data")
+            if os.name != "nt":
+                self.assertEqual(target_file.stat().st_mode & 0o777, 0o644)
 
 
 if __name__ == "__main__":

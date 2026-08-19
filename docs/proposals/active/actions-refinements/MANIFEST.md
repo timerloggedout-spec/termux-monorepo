@@ -73,3 +73,9 @@ Issue #192 is open and has one verified GitHub-native cross-reference to merged 
 - [Repository proposal process](../../PROCESS.md)
 - [Repository gate requirements](../../../ARCHW1Z-GATE.md)
 - [Agent permissions](../../AGENTIC-PERMISSIONS.md)
+
+### 2026-08-19 — Manus AI
+- Disposition: **all unblocked evidence and design items submitted for review**
+- Evidence: `IMPLEMENTATION-STATUS.md` records the first-party ownership inventory, bounded artifact hand-off design, constrained issue-to-PR design, native filter/control decisions, and explicit non-adoption security controls.
+- Findings: AR-02, AR-03, AR-05, AR-06, and AR-07 require no runtime workflow addition at this time. AR-04 remains implementation-blocked pending its separate event/provenance acceptance. AR-01 is locally green and awaits GitHub pull-request publication after the temporary content-creation throttle clears.
+- Safety: The work does not add a Marketplace action, secret-management action, write-capable issue automation, direct-push path, generic artifact download, or issue/comment-to-shell bridge.

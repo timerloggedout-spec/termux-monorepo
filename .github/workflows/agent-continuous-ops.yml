@@ -295,12 +295,16 @@ jobs:
                 'Agent: Grok (archW1z) orchestration · https://x.com/grok',
               ].join('\n');
 
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: pr.number,
-                body,
-              });
+              try {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: pr.number,
+                  body,
+                });
+              } catch (e) {
+                core.info(`PR #${pr.number} createComment skip: ${e.message}`);
+              }
 
               acted += 1;
               report.push(`#${pr.number} (${reasons.join(', ')})`);

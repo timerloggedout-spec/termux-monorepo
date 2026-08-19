@@ -289,8 +289,14 @@ def evaluate_plan(plan: dict[str, Any], snapshot: dict[str, Any] | None = None) 
             outcomes[phase_id] = Evaluation(phase_id, "blocked", "human approval evidence is required",
                                             item.get("id") if item else None, project_status, pr_numbers, key)
             continue
-        if _has_active_claim(phase_id, digest, snapshot):
-            outcomes[phase_id] = Evaluation(phase_id, "running", "active idempotent claim exists",
+        merged_prs = [pr for pr in matching_prs if bool(pr.get("merged"))]
+        required_checks = phase["completion"]["required_checks"]
+        if merged_prs and _checks_passed(merged_prs, required_checks) and project_status == PROJECT_DONE:
+            outcomes[phase_id] = Evaluation(phase_id, "complete", "merged PR, required checks, and project status agree",
+                                            item.get("id") if item else None, project_status, pr_numbers, key)
+            continue
+        if project_status == PROJECT_DONE and not merged_prs:
+            outcomes[phase_id] = Evaluation(phase_id, "blocked", "project item is Done without linked merged phase PR",
                                             item.get("id") if item else None, project_status, pr_numbers, key)
             continue
 
@@ -302,15 +308,8 @@ def evaluate_plan(plan: dict[str, Any], snapshot: dict[str, Any] | None = None) 
             outcomes[phase_id] = Evaluation(phase_id, state, reason, item.get("id") if item else None,
                                             project_status, pr_numbers, key)
             continue
-
-        merged_prs = [pr for pr in matching_prs if bool(pr.get("merged"))]
-        required_checks = phase["completion"]["required_checks"]
-        if merged_prs and _checks_passed(merged_prs, required_checks) and project_status == PROJECT_DONE:
-            outcomes[phase_id] = Evaluation(phase_id, "complete", "merged PR, required checks, and project status agree",
-                                            item.get("id") if item else None, project_status, pr_numbers, key)
-            continue
-        if project_status == PROJECT_DONE and not merged_prs:
-            outcomes[phase_id] = Evaluation(phase_id, "blocked", "project item is Done without linked merged phase PR",
+        if _has_active_claim(phase_id, digest, snapshot):
+            outcomes[phase_id] = Evaluation(phase_id, "running", "active idempotent claim exists",
                                             item.get("id") if item else None, project_status, pr_numbers, key)
             continue
         outcomes[phase_id] = Evaluation(phase_id, "ready", "all prerequisites and current evidence permit a claim",

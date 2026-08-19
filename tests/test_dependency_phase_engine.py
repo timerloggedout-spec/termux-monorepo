@@ -117,6 +117,16 @@ class DependencyPhaseEngineTests(unittest.TestCase):
         state = next(entry["state"] for entry in report["evaluations"] if entry["phase_id"] == "DPH-000")
         self.assertEqual("blocked", state)
 
+    def test_completion_evidence_overrides_historical_claim(self) -> None:
+        plan = plan_fixture()
+        snapshot = completed_snapshot()
+        initial = evaluate_plan(plan, snapshot)
+        key = next(entry["idempotency_key"] for entry in initial["evaluations"] if entry["phase_id"] == "DPH-000")
+        snapshot["claims"] = [{"idempotency_key": key, "active": True}]
+        report = evaluate_plan(plan, snapshot)
+        state = next(entry["state"] for entry in report["evaluations"] if entry["phase_id"] == "DPH-000")
+        self.assertEqual("complete", state)
+
     def test_mermaid_is_deterministic(self) -> None:
         report = evaluate_plan(plan_fixture(), completed_snapshot())
         first = render_mermaid(plan_fixture(), report)

@@ -112,14 +112,14 @@ def git(*args: str) -> str:
 def git_ok(*args: str) -> bool:
     return (
         subprocess.run(
-            ["git", *args], cwd=REPO_ROOT, capture_output=True, text=True
+            ["git", *args], cwd=REPO_ROOT, capture_output=True, text=True, check=False
         ).returncode
         == 0
     )
 
 
 class IndexEntry:
-    __slots__ = ("mode", "sha", "path")
+    __slots__ = ("mode", "path", "sha")
 
     def __init__(self, mode: str, sha: str, path: str) -> None:
         self.mode = mode
@@ -253,7 +253,7 @@ def check_shell_syntax(report: Report, paths: list[str], index: dict[str, IndexE
             continue
         checked += 1
         proc = subprocess.run(
-            [bash, "-n", "-"], input=blob(entry.sha), capture_output=True
+            [bash, "-n", "-"], input=blob(entry.sha), capture_output=True, check=False
         )
         if proc.returncode != 0:
             first = (

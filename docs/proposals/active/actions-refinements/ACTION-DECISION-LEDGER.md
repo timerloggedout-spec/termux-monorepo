@@ -1,6 +1,6 @@
 # GitHub-Native Action Decision Ledger — Issue #192
 
-**Status:** Research complete; implementation remains gated by AR-01 and proposal acceptance.  
+**Status:** Research complete; implementation remains gated by AR-01 and proposal acceptance.
 **Execution model:** GitHub Actions is the primary event, compute, and orchestration plane. The BLU B160V is not an operator prerequisite or primary runner; it is only an optional downstream service-capacity target when a future workflow has a separately defined, authenticated service contract.
 
 > **Decision rule:** A Marketplace action is not adopted because it is popular or convenient. It must have one owner workflow, a concrete repository problem, minimal permissions, a full immutable commit SHA, testable trigger behavior, and a rollback path.

@@ -22,9 +22,10 @@ on:
     types: [created, edited]
 
 concurrency:
-  # Keep independent provider events; a later review/comment must not cancel
-  # the PR event that initialized the active SHA cycle.
-  group: peer-orch-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}-${{ github.event.review.id || github.event.comment.id || github.run_id }}
+  # Serialize all events for a PR. Provider/comment events may arrive together;
+  # a single FIFO lane prevents each run from racing to create the same state
+  # comment while still preserving every event (`cancel-in-progress: false`).
+  group: peer-orch-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
   cancel-in-progress: false
 
 permissions: {}

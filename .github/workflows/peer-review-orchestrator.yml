@@ -22,9 +22,10 @@ on:
     types: [created, edited]
 
 concurrency:
-  # Keep independent provider events; a later review/comment must not cancel
-  # the PR event that initialized the active SHA cycle.
-  group: peer-orch-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}-${{ github.event.review.id || github.event.comment.id || github.run_id }}
+  # Serialize all events for a PR. Provider/comment events may arrive together;
+  # a single FIFO lane prevents each run from racing to create the same state
+  # comment while still preserving every event (`cancel-in-progress: false`).
+  group: peer-orch-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
   cancel-in-progress: false
 
 permissions: {}
@@ -38,7 +39,6 @@ jobs:
       pull-requests: read
       issues: write
       checks: read
-      actions: write
     outputs:
       cycle_id: ${{ steps.collect.outputs.cycle_id }}
       head_sha: ${{ steps.collect.outputs.head_sha }}
@@ -60,6 +60,7 @@ jobs:
           POLL_SEC: '5'
           OPERATOR_EXECUTOR_LOGINS: ${{ vars.OPERATOR_EXECUTOR_LOGINS || github.repository_owner }}
           OPERATOR_ALLOWED_ACTIONS: ${{ vars.OPERATOR_ALLOWED_ACTIONS || 'coderabbit:trigger_review' }}
+          PEER_STATE_PUBLISHER_LOGINS: ${{ vars.PEER_STATE_PUBLISHER_LOGINS || github.repository_owner }}
         with:
           script: |
             const requiredProviders = (process.env.REQUIRED_PROVIDERS || 'coderabbit,qodo,devin')
@@ -68,6 +69,7 @@ jobs:
             const pollSec = Math.max(5, Number(process.env.POLL_SEC) || 20);
             const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
             const operatorAckMarker = '<!-- operator-action-ack:v1 -->';
+            const operatorReviewMarker = '<!-- operator-coderabbit-review:v1 -->';
 
             const providerLogins = new Map([
               ['coderabbitai[bot]', 'coderabbit'],
@@ -88,6 +90,8 @@ jobs:
             const executorLogins = new Set((process.env.OPERATOR_EXECUTOR_LOGINS || '')
               .split(',').map(value => value.trim().toLowerCase()).filter(Boolean));
             const allowedActions = new Set((process.env.OPERATOR_ALLOWED_ACTIONS || '')
+              .split(',').map(value => value.trim().toLowerCase()).filter(Boolean));
+            const statePublisherLogins = new Set((process.env.PEER_STATE_PUBLISHER_LOGINS || '')
               .split(',').map(value => value.trim().toLowerCase()).filter(Boolean));
 
             function providerFor(user) {
@@ -113,7 +117,9 @@ jobs:
             const eventBody = context.payload.comment?.body || context.payload.review?.body || '';
             const eventProvider = providerFor(eventAuthor);
             const relevantEvent = context.eventName === 'pull_request_target' ||
-              Boolean(eventProvider) || eventBody.includes(operatorAckMarker);
+              Boolean(eventProvider) ||
+              eventBody.includes(operatorAckMarker) ||
+              eventBody.includes(operatorReviewMarker);
             if (!relevantEvent) {
               core.info(`Ignoring unrelated ${context.eventName} event on PR #${prNumber}`);
               core.setOutput('skipped', 'true');
@@ -145,8 +151,7 @@ jobs:
             const parseField = (body, name) =>
               (body || '').match(new RegExp(`^${name}:\\s*(.+?)\\s*$`, 'm'))?.[1]?.trim() || '';
             const existingCycle = initialComments.filter(comment =>
-              comment.user?.type === 'Bot' &&
-              comment.user?.login === 'github-actions[bot]' &&
+              statePublisherLogins.has((comment.user?.login || '').toLowerCase()) &&
               comment.body?.includes(stateMarker) &&
               parseField(comment.body, 'cycle_id') === cycleId &&
               parseField(comment.body, 'head_sha') === headSha
@@ -205,6 +210,7 @@ jobs:
                     provider,
                     checkboxId: match[2],
                     selected: match[1].toLowerCase() === 'x',
+                    updatedAt: comment.updated_at || comment.created_at || '',
                     commentId: comment.id,
                     url: comment.html_url,
                   });
@@ -238,23 +244,50 @@ jobs:
               return acknowledged;
             }
 
-            function isControlOnly(body) {
+            function operatorReviewRequested(comments) {
+              const authorizedAssociations = new Set(['OWNER', 'MEMBER', 'COLLABORATOR']);
+              return comments.some(comment =>
+                comment.body?.includes(operatorReviewMarker) &&
+                parseField(comment.body, 'cycle_id') === cycleId &&
+                /request_kind:\s*(initial|cooldown_retry)\s*$/m.test(comment.body) &&
+                authorizedAssociations.has(comment.author_association) &&
+                executorLogins.has((comment.user?.login || '').toLowerCase()) &&
+                Date.parse(comment.created_at || '') >= cycleStartedAt
+              );
+            }
+
+            function isNonReviewProviderNotice(body) {
               const value = body || '';
               const checkboxTrigger = /checkboxId[\s\S]{0,500}Trigger review/i.test(value);
-              return checkboxTrigger || /does not receive automatic reviews/i.test(value);
+              const automaticReviewNotice = /does not receive automatic reviews/i.test(value);
+              const rateLimited = /review limit reached|couldn[’']t start this review|next review available in/i.test(value);
+              return checkboxTrigger || automaticReviewNotice || rateLimited;
+            }
+
+            function cooldownNotice(provider, evidence) {
+              if (provider !== 'coderabbit') return { active: false, url: '', detail: '' };
+              const sourceComments = [...evidence.comments, ...evidence.reviewComments];
+              const notice = sourceComments.find(item =>
+                providerFor(item.user) === provider &&
+                Date.parse(item.created_at || item.submitted_at || '') >= cycleStartedAt &&
+                /review limit reached|couldn[’']t start this review|next review available in/i.test(item.body || '')
+              );
+              if (!notice) return { active: false, url: '', detail: '' };
+              const retry = (notice.body || '').match(/next review available in:\s*\*\*([^*]+)\*\*/i)?.[1]?.trim() || 'provider cooldown';
+              return { active: true, url: notice.html_url || notice.url || '', detail: retry };
             }
 
             function deliveredProvider(provider, evidence) {
               const createdDuringCycle = item => Date.parse(item.created_at || item.submitted_at || '') >= cycleStartedAt;
               const sourceComments = [...evidence.comments, ...evidence.reviewComments];
               const comment = sourceComments.find(item =>
-                providerFor(item.user) === provider && createdDuringCycle(item) && !isControlOnly(item.body)
+                providerFor(item.user) === provider && createdDuringCycle(item) && !isNonReviewProviderNotice(item.body)
               );
               if (comment) return { delivered: true, url: comment.html_url || comment.url || '', via: 'comment' };
 
               const review = evidence.reviews.find(item =>
                 providerFor(item.user) === provider &&
-                item.commit_id === headSha && createdDuringCycle(item) && !isControlOnly(item.body)
+                item.commit_id === headSha && createdDuringCycle(item) && !isNonReviewProviderNotice(item.body)
               );
               if (review) return { delivered: true, url: review.html_url || review.url || '', via: 'review' };
 
@@ -273,24 +306,30 @@ jobs:
               const evidence = await fetchEvidence();
               const controls = controlEntries(evidence.comments);
               const acknowledgements = acknowledgedControls(evidence.comments, controls);
+              const codeRabbitCommandRequested = operatorReviewRequested(evidence.comments);
               const providerStates = requiredProviders.map(provider => {
                 const providerControls = controls.filter(control => control.provider === provider);
                 const delivered = deliveredProvider(provider, evidence);
-                // A selected control from a prior head is not proof for this cycle.
-                // Only a current, authorized acknowledgement binds a source control to this SHA.
-                const acknowledged = providerControls.some(control =>
-                  acknowledgements.has(`${control.provider}:${control.checkboxId}`)
+                const cooldown = cooldownNotice(provider, evidence);
+                // An [x] checkbox edit made during this active cycle is evidence that
+                // the provider UI action occurred. A stale [x] never carries forward.
+                const selectedForCycle = providerControls.some(control =>
+                  control.selected && Date.parse(control.updatedAt || '') >= cycleStartedAt
                 );
+                const acknowledged = selectedForCycle || providerControls.some(control =>
+                  acknowledgements.has(`${control.provider}:${control.checkboxId}`)
+                ) || (provider === 'coderabbit' && codeRabbitCommandRequested);
                 let state = 'awaiting_provider_response';
                 if (providerControls.length && !acknowledged) state = 'pending_operator_action';
                 if (acknowledged) state = 'action_acknowledged';
+                if (cooldown.active) state = 'provider_cooldown';
                 // A control-bearing provider may expose a completed informational
                 // check before its interactive action is selected. Do not accept
                 // that check/comment as completion until the control is acknowledged.
                 if (delivered.delivered && (!providerControls.length || acknowledged)) {
                   state = 'provider_completed';
                 }
-                return { provider, state, delivered, controls: providerControls };
+                return { provider, state, delivered, cooldown, controls: providerControls };
               });
               const complete = providerStates.every(item => item.state === 'provider_completed');
               finalState = { providerStates, complete };
@@ -303,14 +342,15 @@ jobs:
             const { providerStates, complete } = finalState;
             const state = complete ? 'responses_collected' :
               providerStates.some(item => item.state === 'pending_operator_action') ? 'pending_operator_action' :
+              providerStates.some(item => item.state === 'provider_cooldown') ? 'provider_cooldown' :
               'awaiting_provider_response';
             const pending = providerStates.filter(item => item.state !== 'provider_completed')
               .map(item => `${item.provider}:${item.state}`).join(', ') || 'none';
             const operatorControls = providerStates.flatMap(item => item.controls.map(control =>
-              `- ${item.provider}: control_id=${control.checkboxId}; source=${control.url}; selected=${control.selected}`
+              `- ${item.provider}: control_id=${control.checkboxId}; source=${control.url}; selected=${control.selected}; updated_at=${control.updatedAt}`
             ));
             const deliveryLines = providerStates.map(item =>
-              `- ${item.provider}: ${item.state}${item.delivered.url ? `; evidence=${item.delivered.url}` : ''}`
+              `- ${item.provider}: ${item.state}${item.delivered.url ? `; evidence=${item.delivered.url}` : ''}${item.cooldown?.active ? `; cooldown=${item.cooldown.detail}; source=${item.cooldown.url}` : ''}`
             );
 
             core.setOutput('skipped', 'false');
@@ -321,8 +361,26 @@ jobs:
             core.setOutput('provider_lines', deliveryLines.join('\n'));
             core.setOutput('control_lines', operatorControls.join('\n') || '- none observed');
 
-      - name: Publish SHA-bound peer response state
+      - name: Resolve authorized state publisher
+        id: publisher-token
         if: steps.collect.outputs.skipped != 'true'
+        env:
+          ARCHWIZ_GITHUB_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN }}
+          OPERATOR_GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+          OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
+        run: |
+          if [ -n "$ARCHWIZ_GITHUB_TOKEN" ] || [ -n "$OPERATOR_GITHUB_TOKEN" ] || [ -n "$OPERATOR_TOKEN" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "::error title=Operator token required::Set ARCHWIZ_GITHUB_TOKEN, OPERATOR_GITHUB_TOKEN, or OPERATOR_TOKEN with write permission to publish authenticated peer-gate state."
+            exit 1
+          fi
+
+      - name: Publish SHA-bound peer response state
+        if: |
+          steps.collect.outputs.skipped != 'true' &&
+          steps.publisher-token.outputs.available == 'true'
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
           CYCLE_ID: ${{ steps.collect.outputs.cycle_id }}
@@ -334,6 +392,7 @@ jobs:
           PROVIDERS: ${{ steps.collect.outputs.provider_lines }}
           CONTROLS: ${{ steps.collect.outputs.control_lines }}
           REQUIRED_PROVIDERS: ${{ vars.PEER_REQUIRED_PROVIDERS || 'coderabbit,qodo,devin' }}
+          PEER_STATE_PUBLISHER_LOGINS: ${{ vars.PEER_STATE_PUBLISHER_LOGINS || github.repository_owner }}
         with:
           # The base-repository workflow never executes PR code. Prefer an existing
           # full-scope Operator token for idempotent state comments when the
@@ -341,6 +400,8 @@ jobs:
           github-token: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
           script: |
             const marker = '<!-- agent-peer-response-state:v2 -->';
+            const statePublisherLogins = new Set((process.env.PEER_STATE_PUBLISHER_LOGINS || '')
+              .split(',').map(value => value.trim().toLowerCase()).filter(Boolean));
             const prNumber = Number(context.payload.pull_request?.number || context.payload.issue?.number);
             if (!prNumber) return;
             const body = [
@@ -373,13 +434,15 @@ jobs:
               'action: <allowed-action>',
               '```',
               'The second-pass reviewer remains blocked until matching provider completion evidence is ingested for this SHA.',
+              'A checked [x] control means the provider UI action occurred; it is not a completed review.',
+              'A provider cooldown is also non-completing: wait for the stated retry window, then retrigger through the authorized provider path.',
+              'This workflow check intentionally remains failing while a required provider action or response is pending; configure it as a required branch-protection check.',
             ].join('\n');
             const comments = await github.paginate(github.rest.issues.listComments, {
               owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100,
             });
             const existing = comments.filter(comment =>
-              comment.user?.type === 'Bot' &&
-              comment.user?.login === 'github-actions[bot]' &&
+              statePublisherLogins.has((comment.user?.login || '').toLowerCase()) &&
               comment.body?.includes(marker) &&
               comment.body.includes(`cycle_id: ${process.env.CYCLE_ID}`) &&
               comment.body.includes(`head_sha: ${process.env.HEAD_SHA}`)
@@ -399,7 +462,8 @@ jobs:
           steps.collect.outputs.skipped != 'true' &&
           steps.collect.outputs.state == 'responses_collected' &&
           steps.collect.outputs.ready == 'true' &&
-          github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+          github.ref == format('refs/heads/{0}', github.event.repository.default_branch) &&
+          steps.publisher-token.outputs.available == 'true'
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
           PR_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number }}
@@ -423,3 +487,61 @@ jobs:
               },
             });
             core.info(`Dispatched verified second pass for ${process.env.CYCLE_ID}`);
+
+      - name: Request CodeRabbit review through OPERATOR
+        if: |
+          steps.collect.outputs.skipped != 'true' &&
+          steps.collect.outputs.state == 'pending_operator_action' &&
+          contains(steps.collect.outputs.pending, 'coderabbit:pending_operator_action') &&
+          steps.publisher-token.outputs.available == 'true'
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number }}
+          CYCLE_ID: ${{ steps.collect.outputs.cycle_id }}
+        with:
+          github-token: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
+          script: |
+            const prNumber = Number(process.env.PR_NUMBER);
+            const cycleId = process.env.CYCLE_ID;
+            if (!prNumber || !cycleId) return;
+            const marker = '<!-- operator-coderabbit-review:v1 -->';
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100,
+            });
+            const requested = comments.some(comment =>
+              comment.body?.includes(marker) &&
+              comment.body.includes(`cycle_id: ${cycleId}`) &&
+              comment.body.includes('request_kind: initial')
+            );
+            if (requested) {
+              core.info(`CodeRabbit review already requested for ${cycleId}`);
+              return;
+            }
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: [
+                marker,
+                `cycle_id: ${cycleId}`,
+                'request_kind: initial',
+                'request_actor: OPERATOR',
+                '',
+                '@coderabbitai full review',
+                '',
+                'Requested by the OPERATOR automation after CodeRabbit exposed an interactive review control. This requests a complete provider pass; await substantive provider output and do not treat the request as completed review.',
+              ].join('\n'),
+            });
+
+      - name: Block merge while required provider review is pending
+        if: |
+          steps.collect.outputs.skipped != 'true' &&
+          steps.collect.outputs.ready != 'true'
+        env:
+          CYCLE_ID: ${{ steps.collect.outputs.cycle_id }}
+          PENDING: ${{ steps.collect.outputs.pending }}
+        run: |
+          echo "::error title=Required provider review pending::${CYCLE_ID}: ${PENDING}"
+          echo "The peer-review check intentionally fails until every configured provider has current-SHA completion evidence."
+          echo "CodeRabbit is requested through the OPERATOR token using its supported full-review command; other provider-only UI controls require the Termux OPERATOR lane. Wait for substantive provider output."
+          exit 1

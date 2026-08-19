@@ -13,7 +13,7 @@ reviewers:
   - id: Manus AI
     role: executor
     status: executing
-related_prs: []
+related_prs: [248]
 related_branches:
   - manus/dependency-phase-automation
 gates_required: [repo-gate, termux-smoke]
@@ -42,7 +42,7 @@ Implement a repository-native dependency-phase system that derives lifecycle sta
 ### 2026-08-18 — Manus AI
 
 - Disposition: in_review
-- Notes: The full implementation passed `repo_gate.py --base origin/master-staging` and `termux_smoke.py`, with seven lifecycle/adapter unit tests passing. The live dry-run identified the canonical Project mapping. Issue #246 (`DPH-000`) and issue #247 (`DPH-100`) were created during reconciliation attempts; the authenticated integration token can read but lacks permission to add items to the user-owned Project. `PROJECTS_TOKEN` with Projects write permission is therefore the remaining deployment configuration requirement.
+- Notes: The full implementation passed `repo_gate.py --base origin/master-staging` and `termux_smoke.py`, with seven lifecycle/adapter unit tests passing. The live dry-run identified the canonical Project mapping. Issue #246 (`DPH-000`) and issue #247 (`DPH-100`) were created during reconciliation attempts; the authenticated integration token can read but lacks permission to add items to the user-owned Project. `PROJECTS_TOKEN` with Projects write permission is therefore the remaining deployment configuration requirement. Pull request #248 is open against `master-staging`.
 
 ## Checklist (process)
 
@@ -50,7 +50,7 @@ Implement a repository-native dependency-phase system that derives lifecycle sta
 - [x] ITEMS.md itemized
 - [x] Operator authorization recorded
 - [ ] Code and workflow review completed
-- [ ] PR opened with item references
+- [x] PR #248 opened with item references
 - [ ] Gates green on merge
 - [ ] Closed + moved to `closed/` when terminal
 

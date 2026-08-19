@@ -1,0 +1,59 @@
+name: SWE evaluation contract
+
+# Implements: THUB-007
+# Validates the evaluation control plane without invoking an external model or benchmark.
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/swe-reference-evaluation.yml"
+      - ".github/workflows/swe-evaluation-contract.yml"
+      - "scripts/ci/swe_evaluation_contract.py"
+      - "tests/test_swe_evaluation_contract.py"
+      - "docs/evaluations/swe-performance/**"
+  push:
+    branches: [master-staging]
+    paths:
+      - ".github/workflows/swe-reference-evaluation.yml"
+      - ".github/workflows/swe-evaluation-contract.yml"
+      - "scripts/ci/swe_evaluation_contract.py"
+      - "tests/test_swe_evaluation_contract.py"
+      - "docs/evaluations/swe-performance/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: swe-evaluation-contract-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: bounded evaluation contract
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 1
+          submodules: false
+
+      - name: Run deterministic contract tests
+        run: python3 -m unittest tests/test_swe_evaluation_contract.py
+
+      - name: Audit submitted redacted manifests
+        run: |
+          set -euo pipefail
+          directory="docs/evaluations/swe-performance/results"
+          if [ ! -d "${directory}" ]; then
+            echo "No committed evaluation manifests to audit."
+            exit 0
+          fi
+          count=0
+          while IFS= read -r -d '' manifest; do
+            python3 scripts/ci/swe_evaluation_contract.py audit "${manifest}"
+            count=$((count + 1))
+          done < <(find "${directory}" -type f -name '*.json' -print0)
+          printf 'Audited %s committed redacted evaluation manifest(s).\n' "${count}" >> "${GITHUB_STEP_SUMMARY}"

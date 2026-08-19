@@ -92,7 +92,7 @@ B3 is a scheduled/manual, metadata-only operations report with read-only agent p
 
 ## B6 — Advisory Workflow Lint
 
-B6 adds two advisory, non-blocking controls: actionlint for changed automation surfaces and dependency review for declared dependency deltas. Both have `contents: read` only, immutable action/source pins, no auto-fix, and no pull-request comments. Their baseline and promotion decisions are recorded in [B6 actionlint advisory](B6-ACTIONLINT-ADVISORY.md) and [B6 dependency-review advisory](B6-DEPENDENCY-REVIEW-ADVISORY.md).
+B6 adds three advisory controls: actionlint for changed automation surfaces, dependency review for declared dependency deltas, and CodeQL for Python, JavaScript/TypeScript, and GitHub Actions sources. Actionlint and dependency review have `contents: read` only. CodeQL isolates the separately approved `security-events: write` scope to its SARIF-uploading analysis job; it gains no content, PR, issue, action, identity-token, or secret write path. All three use immutable action/source pins, avoid auto-fix and pull-request comments, and remain non-required in this batch. Their baseline and promotion decisions are recorded in [B6 actionlint advisory](B6-ACTIONLINT-ADVISORY.md), [B6 dependency-review advisory](B6-DEPENDENCY-REVIEW-ADVISORY.md), and [B6 CodeQL advisory](B6-CODEQL-ADVISORY.md). Scorecard remains deferred because its reviewed action manifest invokes a mutable container tag.
 
 ## References
 

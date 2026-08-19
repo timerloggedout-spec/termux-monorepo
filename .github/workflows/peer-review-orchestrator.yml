@@ -322,19 +322,25 @@ jobs:
             core.setOutput('provider_lines', deliveryLines.join('\n'));
             core.setOutput('control_lines', operatorControls.join('\n') || '- none observed');
 
-      - name: Require authorized state publisher
-        if: |
-          steps.collect.outputs.skipped != 'true' &&
-          secrets.OPERATOR_GITHUB_TOKEN == '' &&
-          secrets.OPERATOR_TOKEN == ''
+      - name: Resolve authorized state publisher
+        id: publisher-token
+        if: steps.collect.outputs.skipped != 'true'
+        env:
+          OPERATOR_GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+          OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
         run: |
-          echo "::error title=Operator token required::Set OPERATOR_GITHUB_TOKEN (preferred) or OPERATOR_TOKEN with write permission to publish authenticated peer-gate state."
-          exit 1
+          if [ -n "$OPERATOR_GITHUB_TOKEN" ] || [ -n "$OPERATOR_TOKEN" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "::error title=Operator token required::Set OPERATOR_GITHUB_TOKEN (preferred) or OPERATOR_TOKEN with write permission to publish authenticated peer-gate state."
+            exit 1
+          fi
 
       - name: Publish SHA-bound peer response state
         if: |
           steps.collect.outputs.skipped != 'true' &&
-          (secrets.OPERATOR_GITHUB_TOKEN != '' || secrets.OPERATOR_TOKEN != '')
+          steps.publisher-token.outputs.available == 'true'
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
           CYCLE_ID: ${{ steps.collect.outputs.cycle_id }}
@@ -415,7 +421,7 @@ jobs:
           steps.collect.outputs.state == 'responses_collected' &&
           steps.collect.outputs.ready == 'true' &&
           github.ref == format('refs/heads/{0}', github.event.repository.default_branch) &&
-          (secrets.OPERATOR_GITHUB_TOKEN != '' || secrets.OPERATOR_TOKEN != '')
+          steps.publisher-token.outputs.available == 'true'
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
           PR_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number }}

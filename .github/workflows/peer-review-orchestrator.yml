@@ -348,14 +348,15 @@ jobs:
         id: publisher-token
         if: steps.collect.outputs.skipped != 'true'
         env:
+          ARCHWIZ_GITHUB_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN }}
           OPERATOR_GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
           OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
         run: |
-          if [ -n "$OPERATOR_GITHUB_TOKEN" ] || [ -n "$OPERATOR_TOKEN" ]; then
+          if [ -n "$ARCHWIZ_GITHUB_TOKEN" ] || [ -n "$OPERATOR_GITHUB_TOKEN" ] || [ -n "$OPERATOR_TOKEN" ]; then
             echo "available=true" >> "$GITHUB_OUTPUT"
           else
             echo "available=false" >> "$GITHUB_OUTPUT"
-            echo "::error title=Operator token required::Set OPERATOR_GITHUB_TOKEN (preferred) or OPERATOR_TOKEN with write permission to publish authenticated peer-gate state."
+            echo "::error title=Operator token required::Set ARCHWIZ_GITHUB_TOKEN, OPERATOR_GITHUB_TOKEN, or OPERATOR_TOKEN with write permission to publish authenticated peer-gate state."
             exit 1
           fi
 
@@ -376,10 +377,14 @@ jobs:
           REQUIRED_PROVIDERS: ${{ vars.PEER_REQUIRED_PROVIDERS || 'coderabbit,qodo,devin' }}
           PEER_STATE_PUBLISHER_LOGINS: ${{ vars.PEER_STATE_PUBLISHER_LOGINS || github.repository_owner }}
         with:
+<<<<<<< HEAD
           # The base-repository workflow never executes PR code. Prefer an existing
           # full-scope Operator token for idempotent state comments when the
           # repository's default Actions token is limited to read-only access.
           github-token: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
+=======
+          github-token: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
+>>>>>>> c04a547 (ci(peer): route CodeRabbit through operator commands)
           script: |
             const marker = '<!-- agent-peer-response-state:v2 -->';
             const statePublisherLogins = new Set((process.env.PEER_STATE_PUBLISHER_LOGINS || '')
@@ -470,6 +475,51 @@ jobs:
             });
             core.info(`Dispatched verified second pass for ${process.env.CYCLE_ID}`);
 
+      - name: Request CodeRabbit review through OPERATOR
+        if: |
+          steps.collect.outputs.skipped != 'true' &&
+          steps.collect.outputs.state == 'pending_operator_action' &&
+          contains(steps.collect.outputs.pending, 'coderabbit:pending_operator_action') &&
+          steps.publisher-token.outputs.available == 'true'
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number }}
+          CYCLE_ID: ${{ steps.collect.outputs.cycle_id }}
+        with:
+          github-token: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
+          script: |
+            const prNumber = Number(process.env.PR_NUMBER);
+            const cycleId = process.env.CYCLE_ID;
+            if (!prNumber || !cycleId) return;
+            const marker = '<!-- operator-coderabbit-review:v1 -->';
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100,
+            });
+            const requested = comments.some(comment =>
+              comment.body?.includes(marker) &&
+              comment.body.includes(`cycle_id: ${cycleId}`) &&
+              comment.body.includes('request_kind: initial')
+            );
+            if (requested) {
+              core.info(`CodeRabbit review already requested for ${cycleId}`);
+              return;
+            }
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: [
+                marker,
+                `cycle_id: ${cycleId}`,
+                'request_kind: initial',
+                'request_actor: OPERATOR',
+                '',
+                '@coderabbitai review',
+                '',
+                'Requested by the OPERATOR automation after CodeRabbit exposed an interactive review control. Await substantive provider output; do not treat this request as completed review.',
+              ].join('\n'),
+            });
+
       - name: Block merge while required provider review is pending
         if: |
           steps.collect.outputs.skipped != 'true' &&
@@ -480,5 +530,5 @@ jobs:
         run: |
           echo "::error title=Required provider review pending::${CYCLE_ID}: ${PENDING}"
           echo "The peer-review check intentionally fails until every configured provider has current-SHA completion evidence."
-          echo "Select any provider-owned control through the authorized Operator Action Executor, publish an exact acknowledgement, and wait for the provider response."
+          echo "CodeRabbit is requested through the OPERATOR token using its supported review command; other provider-only UI controls require the Termux OPERATOR lane. Wait for substantive provider output."
           exit 1

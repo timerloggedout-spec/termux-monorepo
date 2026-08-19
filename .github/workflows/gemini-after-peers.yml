@@ -36,36 +36,51 @@ jobs:
               prNumber = run.pull_requests[0].number;
               headSha = run.pull_requests[0].head?.sha || headSha;
             } else {
-              const { data: prs } = await github.rest.pulls.list({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                state: 'open',
-                head: `${context.repo.owner}:${run.head_branch}`,
-                per_page: 5,
-              });
-              if (prs[0]) {
-                prNumber = prs[0].number;
-                headSha = prs[0].head.sha;
+              try {
+                const { data: prs } = await github.rest.pulls.list({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  state: 'open',
+                  head: `${context.repo.owner}:${run.head_branch}`,
+                  per_page: 5,
+                });
+                if (prs[0]) {
+                  prNumber = prs[0].number;
+                  headSha = prs[0].head.sha;
+                }
+              } catch (e) {
+                core.warning(`pulls.list skip: ${e.message}`);
               }
             }
             if (!prNumber) {
               core.setOutput('skip', 'true');
               return;
             }
-            const { data: pr } = await github.rest.pulls.get({
-              owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber,
-            });
-            if (pr.head.repo.full_name !== `${context.repo.owner}/${context.repo.repo}` || pr.draft) {
-              core.info('Fork or draft — skip second pass');
+            try {
+              const { data: pr } = await github.rest.pulls.get({
+                owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber,
+              });
+              if (pr.head.repo.full_name !== `${context.repo.owner}/${context.repo.repo}` || pr.draft) {
+                core.info('Fork or draft — skip second pass');
+                core.setOutput('skip', 'true');
+                return;
+              }
+            } catch (e) {
+              core.warning(`pulls.get skip: ${e.message}`);
               core.setOutput('skip', 'true');
               return;
             }
-            const comments = await github.paginate(github.rest.issues.listComments, {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              per_page: 100,
-            });
+            let comments = [];
+            try {
+              comments = await github.paginate(github.rest.issues.listComments, {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                per_page: 100,
+              });
+            } catch (e) {
+              core.warning(`issues.listComments skip: ${e.message}`);
+            }
             const ready = comments
               .filter(c => c.body && c.body.includes('<!-- peer-review-ready -->'))
               .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
@@ -203,13 +218,22 @@ jobs:
             const n = Number(process.env.PR_NUMBER);
             if (!n) return;
             const marker = '<!-- after-peers-quota-skip -->';
-            const comments = await github.paginate(github.rest.issues.listComments, {
-              owner: context.repo.owner, repo: context.repo.repo, issue_number: n, per_page: 100,
-            });
+            let comments = [];
+            try {
+              comments = await github.paginate(github.rest.issues.listComments, {
+                owner: context.repo.owner, repo: context.repo.repo, issue_number: n, per_page: 100,
+              });
+            } catch (e) {
+              core.warning(`Failed to list comments: ${e.message}`);
+            }
             if (comments.some(c => c.body && c.body.includes(marker))) return;
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: n,
-              body: `${marker}\n⚠️ Second-pass skipped after peer gate — ${process.env.REASON || 'quota'}. Peers + Autofix still applied.`,
-            });
+            try {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: n,
+                body: `${marker}\n⚠️ Second-pass skipped after peer gate — ${process.env.REASON || 'quota'}. Peers + Autofix still applied.`,
+              });
+            } catch (e) {
+              core.warning(`Failed to post skip note: ${e.message}`);
+            }

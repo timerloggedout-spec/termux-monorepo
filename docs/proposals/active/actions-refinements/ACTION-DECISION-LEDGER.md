@@ -1,9 +1,9 @@
 # GitHub-Native Action Decision Ledger — Issue #192
 
-**Status:** Research complete; implementation remains gated by AR-01 and proposal acceptance.
+**Status:** B1, B2, B3, and B6 controls are implemented on the consolidated Issue #192 PR; B4 and B5 remain intentionally gated by their separate authority/use-case decisions.
 **Execution model:** GitHub Actions is the primary event, compute, and orchestration plane. The BLU B160V is not an operator prerequisite or primary runner; it is only an optional downstream service-capacity target when a future workflow has a separately defined, authenticated service contract.
 
-> **Decision rule:** A Marketplace action is not adopted because it is popular or convenient. It must have one owner workflow, a concrete repository problem, minimal permissions, a full immutable commit SHA, testable trigger behavior, and a rollback path.
+> **Decision rule:** A Marketplace action is not adopted because it is popular or convenient. It must have one owner workflow, a concrete repository problem, minimal permissions, a full immutable commit SHA, testable trigger behavior, and a rollback path. A transitive image or tool reference that the immutable outer action does not expose for direct pinning is allowed only through an explicit exception: a reviewed expected digest, a read-only preflight that fails closed before the privileged job, deterministic tests, and a PR-reviewed update protocol.
 
 ## Executive Decision Table
 
@@ -39,11 +39,11 @@
 
 | ID | Source | Opportunity | Decision | Why it is more relevant than a generic Marketplace import |
 |---|---|---|---|---|
-| X-01 | `rhysd/actionlint` | Static GitHub Actions workflow validation | **B1 candidate** | A focused, deterministic check for workflow syntax/expressions complements `repo_gate` and avoids the breadth of Super-Linter. |
-| X-02 | `actions/dependency-review-action` | Pull-request dependency and license policy review | **B6 candidate** | Official action with a narrow supply-chain purpose; evaluate after baseline health and lockfile ownership are understood. |
-| X-03 | `ossf/scorecard-action` | Repository security posture review | **B6 candidate** | Provides an externalized security posture signal; use as advisory first and avoid introducing noisy required checks. |
-| X-04 | `github/codeql-action` | CodeQL security analysis | **B6 candidate** | Official security-analysis path, but requires language/build and SARIF ownership assessment before adding a broad scan. |
-| X-05 | GitHub Agentic Workflows (`gh-aw`) | Declarative AI issue triage, CI investigation, reporting, or controlled PR outputs | **B3 candidate** | GitHub-native Markdown source, compiled lock workflows, safe outputs, engine choice, cost caps, and integrity controls provide a safer route than opaque issue-agent templates. |
+| X-01 | `rhysd/actionlint` | Static GitHub Actions workflow validation | **Implemented B6 advisory** | A focused, deterministic advisory check complements `repo_gate`; its baseline and promotion conditions are documented. |
+| X-02 | `actions/dependency-review-action` | Pull-request dependency and license policy review | **Implemented B6 advisory** | Official action with a narrow supply-chain purpose, read-only scope, and `warn-only` output. |
+| X-03 | `ossf/scorecard-action` | Repository security posture review | **Implemented B6 advisory with controlled updateability** | Immutable outer action pin, preflight registry tag-to-digest assertion, and isolated Scorecard result-publication permissions. |
+| X-04 | `github/codeql-action` | CodeQL security analysis | **Implemented B6 advisory** | Official security analysis for Python, JavaScript/TypeScript, and Actions sources with isolated SARIF publication. |
+| X-05 | GitHub Agentic Workflows (`gh-aw`) | Declarative AI issue triage, CI investigation, reporting, or controlled PR outputs | **Implemented B3 pilot** | GitHub-native Markdown source, compiled lock workflow, safe output, cost caps, and deterministic contract tests. |
 | X-06 | `actions/starter-workflows` | Official workflow templates and security examples | **Reference source** | Use as canonical template source, not as a bulk import catalog. |
 | X-07 | `sdras/awesome-actions` and action-security catalog | Curated discovery | **Reference source** | Useful for discovery and comparison only; every candidate still requires the ledger gates above. |
 
@@ -57,7 +57,19 @@
 | **B3** | Read-only agentic operations pilot | A GitHub Agentic Workflow that triages Issue/CI information or emits a daily repository report as a safe issue/comment. | Read-only repository tools initially; safe output limited to one issue/comment type; per-run AI credit cap; no code writes. | Compiled lock-file review, trigger fixtures, prompt-injection test corpus, cost ceiling, and output schema checks. |
 | **B4** | Controlled issue-to-PR automation | One fixed-name bot branch with `create-pull-request` or a reviewed `gh-aw` safe-output path, limited to an approved generated artifact. | Explicit `contents: write`, `pull-requests: write`; restricted `add-paths`; branch ownership; duplicate/run-loop prevention; human review before merge. | No-change, update-existing-PR, duplicate-event, untrusted-issue-content, and workflow-file-change tests. |
 | **B5** | Repository/service dispatch | Typed `repository_dispatch` envelope for a concrete external capacity/service use case. | Same-repo first; strict event allowlist; JSON schema and payload size limits; no secret payloads; cross-repo token only if separately approved. | Schema rejection, replay/duplicate handling, allowed/denied event tests, and audit trail. |
-| **B6** | Security and quality advisory pilots | Narrow workflow-lint, dependency review, Scorecard, CodeQL, or Super-Linter evaluation. | Advisory, non-blocking first; no auto-fix; no PR comments until review approves ownership. | Baseline report, false-positive review, runtime/cost measure, and a decision to promote or remove. |
+| **B6** | Security and quality advisory pilots | Implemented actionlint, dependency review, Scorecard, and CodeQL advisory controls; Super-Linter remains deferred. | Advisory/non-required first; no auto-fix or PR comments. CodeQL and Scorecard isolate `security-events: write`; Scorecard alone isolates `id-token: write` and guards its transitive container tag with a reviewed registry digest. | Baselines or first hosted run, false-positive review, runtime/cost measure, controlled-update test, and a decision to promote, update, or remove. |
+
+## Integration Checklist
+
+| Batch | Checklist status | Current evidence / retained boundary |
+|---|---|---|
+| B0 / AR-01 | **Complete** | Baseline workflow repair is included in PR #261. |
+| B1 / AR-05 | **Complete** | Boolean-only path routing, immutable pin, fixtures, and policy workflow are present. |
+| B2 / AR-03 | **Complete** | Same-run evidence artifact producer/consumer with digest validation and retention boundary is present. |
+| B3 / X-05 | **Complete pilot** | Compiled read-only agentic report, caps, safe-output schema, injection corpus, and fixtures are present. |
+| B4 / AR-04 | **Blocked by design** | Requires separately accepted writer authority, provenance, stable-branch, and hostile-input tests. |
+| B5 / A-14 | **Deferred by design** | Requires a concrete approved external capacity/service case and typed dispatch envelope. |
+| B6 / X-01–X-04 | **Complete advisory set** | Actionlint, dependency review, Scorecard, and CodeQL are implemented; all remain non-required. Scorecard uses the controlled-update protocol in [B6 Scorecard advisory](B6-SCORECARD-ADVISORY.md). |
 
 ## Agent Fork Compatibility Findings
 

@@ -17,9 +17,9 @@ The public test-and-build environment’s enabled administrative control surface
 | Findings policy | `security-extended` results are visible in GitHub Code Scanning but are **advisory** in this batch; no branch-protection required-check policy is changed. |
 | Rollback | Delete `codeql-advisory.yml`. This removes scheduled execution but does not alter existing source, PR, issue, or token state. |
 
-## Scorecard Evaluation and Deferral
+## Scorecard Controlled-Update Boundary
 
-`ossf/scorecard-action` v2.4.4 was evaluated as X-03. Its published action manifest is a Docker action that references `docker://ghcr.io/ossf/scorecard-action:v2.4.4`. Although the outer action repository commit can be SHA-pinned, the container reference remains a mutable tag inside the action manifest. That fails this program’s immutable-dependency rule until the maintainer supplies a digest-pinned container route or a separately reviewed wrapper can verify the image digest. Scorecard’s SARIF publication also needs `security-events: write` and `id-token: write`; this CodeQL pilot deliberately does not reuse either permission outside its isolated job.
+`ossf/scorecard-action` v2.4.4 is now implemented as X-03 under the narrowly approved controlled-update exception. Its immutable outer action pin remains mandatory; its transitive Docker tag is checked against a reviewed registry manifest digest in a separate read-only job before the Scorecard publisher may start. Scorecard’s `security-events: write` and `id-token: write` scopes are isolated to its own job and are not reused by CodeQL. See [B6 Scorecard advisory](B6-SCORECARD-ADVISORY.md).
 
 > CodeQL advanced setup requires `security-events: write` to upload findings. That permission is explicitly approved only for this isolated CodeQL analysis job in the public test environment.
 

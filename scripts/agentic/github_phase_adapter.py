@@ -229,12 +229,18 @@ def issue_comments(repo: str, issue_number: int) -> list[dict[str, Any]]:
 def create_issue(repo: str, title: str, body: str, *, apply: bool) -> dict[str, Any]:
     if not apply:
         return {"planned": True, "operation": "create_issue", "title": title}
-    response = run_gh(["issue", "create", "--repo", repo, "--title", title, "--body", body])
-    url = response.stdout.strip()
-    match = re.search(r"/(?:issues|pull)/(\d+)$", url)
-    if not match:
-        raise GitHubAdapterError(f"unable to identify issue number from gh output: {url}")
-    return {"planned": False, "operation": "create_issue", "number": int(match.group(1)), "url": url}
+    # Use a structured REST response rather than gh issue create's human-facing
+    # stdout, which can be empty in GitHub Actions despite a successful request.
+    response = json_gh([
+        "api", "-X", "POST", f"repos/{repo}/issues",
+        "-f", f"title={title}",
+        "-f", f"body={body}",
+    ])
+    number = response.get("number")
+    url = response.get("html_url")
+    if not isinstance(number, int) or not isinstance(url, str) or not url:
+        raise GitHubAdapterError("issue creation response did not contain a number and html_url")
+    return {"planned": False, "operation": "create_issue", "number": number, "url": url}
 
 
 def add_issue_to_project(owner: str, number: int, issue_url: str, *, apply: bool) -> dict[str, Any]:

@@ -68,6 +68,7 @@ jobs:
             const pollSec = Math.max(5, Number(process.env.POLL_SEC) || 20);
             const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
             const operatorAckMarker = '<!-- operator-action-ack:v1 -->';
+            const operatorReviewMarker = '<!-- operator-coderabbit-review:v1 -->';
 
             const providerLogins = new Map([
               ['coderabbitai[bot]', 'coderabbit'],
@@ -115,7 +116,9 @@ jobs:
             const eventBody = context.payload.comment?.body || context.payload.review?.body || '';
             const eventProvider = providerFor(eventAuthor);
             const relevantEvent = context.eventName === 'pull_request_target' ||
-              Boolean(eventProvider) || eventBody.includes(operatorAckMarker);
+              Boolean(eventProvider) ||
+              eventBody.includes(operatorAckMarker) ||
+              eventBody.includes(operatorReviewMarker);
             if (!relevantEvent) {
               core.info(`Ignoring unrelated ${context.eventName} event on PR #${prNumber}`);
               core.setOutput('skipped', 'true');
@@ -240,6 +243,18 @@ jobs:
               return acknowledged;
             }
 
+            function operatorReviewRequested(comments) {
+              const authorizedAssociations = new Set(['OWNER', 'MEMBER', 'COLLABORATOR']);
+              return comments.some(comment =>
+                comment.body?.includes(operatorReviewMarker) &&
+                parseField(comment.body, 'cycle_id') === cycleId &&
+                /request_kind:\s*(initial|cooldown_retry)\s*$/m.test(comment.body) &&
+                authorizedAssociations.has(comment.author_association) &&
+                executorLogins.has((comment.user?.login || '').toLowerCase()) &&
+                Date.parse(comment.created_at || '') >= cycleStartedAt
+              );
+            }
+
             function isNonReviewProviderNotice(body) {
               const value = body || '';
               const checkboxTrigger = /checkboxId[\s\S]{0,500}Trigger review/i.test(value);
@@ -290,6 +305,7 @@ jobs:
               const evidence = await fetchEvidence();
               const controls = controlEntries(evidence.comments);
               const acknowledgements = acknowledgedControls(evidence.comments, controls);
+              const codeRabbitCommandRequested = operatorReviewRequested(evidence.comments);
               const providerStates = requiredProviders.map(provider => {
                 const providerControls = controls.filter(control => control.provider === provider);
                 const delivered = deliveredProvider(provider, evidence);
@@ -301,7 +317,7 @@ jobs:
                 );
                 const acknowledged = selectedForCycle || providerControls.some(control =>
                   acknowledgements.has(`${control.provider}:${control.checkboxId}`)
-                );
+                ) || (provider === 'coderabbit' && codeRabbitCommandRequested);
                 let state = 'awaiting_provider_response';
                 if (providerControls.length && !acknowledged) state = 'pending_operator_action';
                 if (acknowledged) state = 'action_acknowledged';
@@ -514,9 +530,9 @@ jobs:
                 'request_kind: initial',
                 'request_actor: OPERATOR',
                 '',
-                '@coderabbitai review',
+                '@coderabbitai full review',
                 '',
-                'Requested by the OPERATOR automation after CodeRabbit exposed an interactive review control. Await substantive provider output; do not treat this request as completed review.',
+                'Requested by the OPERATOR automation after CodeRabbit exposed an interactive review control. This requests a complete provider pass; await substantive provider output and do not treat the request as completed review.',
               ].join('\n'),
             });
 
@@ -530,5 +546,5 @@ jobs:
         run: |
           echo "::error title=Required provider review pending::${CYCLE_ID}: ${PENDING}"
           echo "The peer-review check intentionally fails until every configured provider has current-SHA completion evidence."
-          echo "CodeRabbit is requested through the OPERATOR token using its supported review command; other provider-only UI controls require the Termux OPERATOR lane. Wait for substantive provider output."
+          echo "CodeRabbit is requested through the OPERATOR token using its supported full-review command; other provider-only UI controls require the Termux OPERATOR lane. Wait for substantive provider output."
           exit 1

@@ -157,9 +157,9 @@ jobs:
                     `cooldown_source: ${retryKey}`,
                     'request_actor: OPERATOR',
                     '',
-                    '@coderabbitai review',
+                    '@coderabbitai full review',
                     '',
-                    'The documented CodeRabbit cooldown has elapsed. This is an OPERATOR-token retrigger for the active SHA; await substantive provider output.',
+                    'The documented CodeRabbit cooldown has elapsed. This is an OPERATOR-token full-review retrigger for the active SHA; await substantive provider output.',
                   ].join('\\n'),
                 });
                 acted += 1;

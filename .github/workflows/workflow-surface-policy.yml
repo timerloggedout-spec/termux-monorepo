@@ -1,0 +1,90 @@
+name: Workflow Surface Policy
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+      - '.github/actions/**'
+      - 'scripts/ci/workflow_surface_policy.py'
+      - 'tests/test_workflow_surface_policy.py'
+      - 'docs/proposals/active/actions-refinements/**'
+
+permissions: {}
+
+concurrency:
+  group: workflow-surface-policy-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  route:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      automation: ${{ steps.changes.outputs.automation }}
+      source: ${{ steps.changes.outputs.source }}
+      tests: ${{ steps.changes.outputs.tests }}
+      docs: ${{ steps.changes.outputs.docs }}
+    steps:
+      - name: Classify changed surfaces
+        id: changes
+        uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4.0.3
+        with:
+          filters: |
+            automation:
+              - '.github/workflows/**'
+              - '.github/actions/**'
+              - 'scripts/ci/workflow_surface_policy.py'
+              - 'tests/test_workflow_surface_policy.py'
+            source:
+              - '**/*.py'
+              - '**/*.sh'
+              - '**/*.js'
+              - '**/*.mjs'
+              - '**/*.c'
+              - '**/*.h'
+              - '!tests/**'
+              - '!scripts/ci/**'
+            tests:
+              - 'tests/**'
+            docs:
+              - 'docs/**'
+              - '.github/ISSUE_TEMPLATE/**'
+              - '**/README*'
+              - 'CONTRIBUTING.md'
+              - 'SECURITY.md'
+              - 'CODE_OF_CONDUCT.md'
+
+  verify:
+    needs: route
+    if: always()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Run workflow-surface policy tests
+        run: python3 -m unittest tests.test_workflow_surface_policy
+
+      - name: Record boolean routing result
+        env:
+          AUTOMATION_CHANGED: ${{ needs.route.outputs.automation }}
+          SOURCE_CHANGED: ${{ needs.route.outputs.source }}
+          TESTS_CHANGED: ${{ needs.route.outputs.tests }}
+          DOCS_CHANGED: ${{ needs.route.outputs.docs }}
+        run: |
+          {
+            echo '## Workflow Surface Policy'
+            echo
+            echo '| Surface | Changed |'
+            echo '|---|---:|'
+            echo "| Automation | ${AUTOMATION_CHANGED} |"
+            echo "| Source | ${SOURCE_CHANGED} |"
+            echo "| Tests | ${TESTS_CHANGED} |"
+            echo "| Docs | ${DOCS_CHANGED} |"
+          } >> "$GITHUB_STEP_SUMMARY"

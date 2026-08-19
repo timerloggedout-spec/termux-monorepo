@@ -37,6 +37,7 @@ jobs:
       PHASE_ID: ${{ github.event.client_payload.phase_id || inputs.phase_id }}
       ISSUE_NUMBER: ${{ github.event.client_payload.issue_number || inputs.issue_number }}
       APPLY: ${{ github.event_name == 'repository_dispatch' || inputs.apply }}
+      JULES_ENABLED: ${{ secrets.JULES_API_KEY != '' }}
     steps:
       - name: Require scoped project token
         if: ${{ env.GH_TOKEN == '' }}
@@ -65,7 +66,7 @@ jobs:
           echo "idempotency_key=$(jq -r '.idempotency_key' claim.json)" >> "$GITHUB_OUTPUT"
 
       - name: Invoke Jules after successful claim
-        if: ${{ env.APPLY == 'true' && steps.claim.outputs.claimed == 'true' && secrets.JULES_API_KEY != '' }}
+        if: ${{ env.APPLY == 'true' && steps.claim.outputs.claimed == 'true' && env.JULES_ENABLED == 'true' }}
         uses: google-labs-code/jules-invoke@v1
         with:
           jules_api_key: ${{ secrets.JULES_API_KEY }}

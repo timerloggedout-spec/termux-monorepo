@@ -11,12 +11,24 @@ import json
 import os
 import re
 import subprocess
+import time
 from dataclasses import dataclass
 from typing import Any
 
 ANSI = re.compile(r"\x1b\[[0-?]*[ -/]*[@-~]")
 CLAIM_PREFIX = "<!-- dependency-phase-claim:"
 CLAIM_MARKER = re.compile(r"<!--\s*dependency-phase-claim:\s*([A-Z][A-Z0-9-]{2,63}:[0-9a-f]{64})\s*-->")
+LIVE_READ_ATTEMPTS = 3
+TRANSIENT_GH_FAILURES = (
+    "http 502",
+    "http 503",
+    "http 504",
+    "gateway timeout",
+    "secondary rate limit",
+    "rate limit exceeded",
+    "connection reset",
+    "temporarily unavailable",
+)
 
 
 class GitHubAdapterError(RuntimeError):
@@ -33,28 +45,46 @@ def _clean(value: str) -> str:
     return ANSI.sub("", value)
 
 
-def run_gh(arguments: list[str], *, input_text: str | None = None) -> CommandResult:
-    """Run gh in no-color mode and raise with a concise diagnostic on failure."""
+def _is_transient_failure(stdout: str, stderr: str) -> bool:
+    diagnostic = f"{stdout}\n{stderr}".lower()
+    return any(marker in diagnostic for marker in TRANSIENT_GH_FAILURES)
+
+
+def run_gh(
+    arguments: list[str],
+    *,
+    input_text: str | None = None,
+    attempts: int = 1,
+    retry_backoff_seconds: float = 1.0,
+) -> CommandResult:
+    """Run gh in no-color mode, retrying only explicitly opted-in transient reads."""
+    if attempts < 1:
+        raise ValueError("attempts must be at least one")
     environment = os.environ.copy()
     environment["NO_COLOR"] = "1"
     environment["CLICOLOR"] = "0"
-    process = subprocess.run(
-        ["gh", *arguments],
-        input=input_text,
-        text=True,
-        capture_output=True,
-        check=False,
-        env=environment,
-    )
-    stdout = _clean(process.stdout)
-    stderr = _clean(process.stderr)
-    if process.returncode != 0:
+    for attempt in range(1, attempts + 1):
+        process = subprocess.run(
+            ["gh", *arguments],
+            input=input_text,
+            text=True,
+            capture_output=True,
+            check=False,
+            env=environment,
+        )
+        stdout = _clean(process.stdout)
+        stderr = _clean(process.stderr)
+        if process.returncode == 0:
+            return CommandResult(stdout=stdout, stderr=stderr)
+        if attempt < attempts and _is_transient_failure(stdout, stderr):
+            time.sleep(retry_backoff_seconds * (2 ** (attempt - 1)))
+            continue
         raise GitHubAdapterError(f"gh {' '.join(arguments)} failed: {stderr.strip() or stdout.strip()}")
-    return CommandResult(stdout=stdout, stderr=stderr)
+    raise AssertionError("unreachable")
 
 
-def json_gh(arguments: list[str]) -> dict[str, Any]:
-    result = run_gh(arguments)
+def json_gh(arguments: list[str], *, attempts: int = 1) -> dict[str, Any]:
+    result = run_gh(arguments, attempts=attempts)
     try:
         value = json.loads(result.stdout)
     except json.JSONDecodeError as error:
@@ -65,7 +95,10 @@ def json_gh(arguments: list[str]) -> dict[str, Any]:
 
 
 def project_items(owner: str, number: int, limit: int = 500) -> list[dict[str, Any]]:
-    response = json_gh(["project", "item-list", str(number), "--owner", owner, "--limit", str(limit), "--format", "json"])
+    response = json_gh(
+        ["project", "item-list", str(number), "--owner", owner, "--limit", str(limit), "--format", "json"],
+        attempts=LIVE_READ_ATTEMPTS,
+    )
     items = response.get("items", [])
     if not isinstance(items, list):
         raise GitHubAdapterError("project item list did not contain an items array")
@@ -90,7 +123,7 @@ def pull_requests(repo: str, base_branch: str, limit: int = 200) -> list[dict[st
     response = run_gh([
         "pr", "list", "--repo", repo, "--state", "all", "--base", base_branch,
         "--limit", str(limit), "--json", "number,title,body,state,mergedAt,statusCheckRollup,url",
-    ])
+    ], attempts=LIVE_READ_ATTEMPTS)
     try:
         rows = json.loads(response.stdout)
     except json.JSONDecodeError as error:
@@ -118,7 +151,7 @@ def issues(repo: str, limit: int = 300) -> list[dict[str, Any]]:
     response = run_gh([
         "issue", "list", "--repo", repo, "--state", "all", "--limit", str(limit),
         "--json", "number,title,body,state,url",
-    ])
+    ], attempts=LIVE_READ_ATTEMPTS)
     try:
         rows = json.loads(response.stdout)
     except json.JSONDecodeError as error:
@@ -129,7 +162,10 @@ def issues(repo: str, limit: int = 300) -> list[dict[str, Any]]:
 
 
 def issue_comments(repo: str, issue_number: int) -> list[dict[str, Any]]:
-    response = run_gh(["api", f"repos/{repo}/issues/{issue_number}/comments", "--paginate"])
+    response = run_gh(
+        ["api", f"repos/{repo}/issues/{issue_number}/comments", "--paginate"],
+        attempts=LIVE_READ_ATTEMPTS,
+    )
     try:
         value = json.loads(response.stdout)
     except json.JSONDecodeError as error:

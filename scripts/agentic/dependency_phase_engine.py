@@ -216,10 +216,23 @@ def _phase_text_matches(phase_id: str, candidate: dict[str, Any]) -> bool:
 
 
 def _project_item_for_phase(phase_id: str, items: list[dict[str, Any]]) -> dict[str, Any] | None:
-    matches = [item for item in items if _phase_text_matches(phase_id, item)]
-    if not matches:
-        return None
-    return sorted(matches, key=lambda item: str(item.get("id", "")))[0]
+    """Resolve exactly one Project item from its canonical phase-marked title.
+
+    Issue bodies may refer to prerequisite phases, so bodies are deliberately
+    excluded from Project identity matching. They remain valid PR evidence.
+    """
+    pattern = re.compile(rf"(?<![A-Z0-9-]){re.escape(phase_id)}(?![A-Z0-9-])")
+    matches: list[dict[str, Any]] = []
+    for item in items:
+        content = item.get("content")
+        titles = [str(item.get("title", ""))]
+        if isinstance(content, dict):
+            titles.append(str(content.get("title", "")))
+        if any(pattern.search(title) for title in titles):
+            matches.append(item)
+    if len(matches) > 1:
+        raise PlanValidationError(f"multiple Project items found for {phase_id}")
+    return matches[0] if matches else None
 
 
 def _pull_requests_for_phase(phase_id: str, pull_requests: list[dict[str, Any]]) -> list[dict[str, Any]]:

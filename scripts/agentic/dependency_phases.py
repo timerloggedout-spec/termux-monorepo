@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -90,7 +91,11 @@ def live_snapshot(plan: dict[str, Any], repo: str, approvals_path: Path) -> dict
             claims.extend(active_claim_records(issue_comments(repo, int(canonical[0]["number"]))))
     return {
         "project_items": project_items(project["owner"], int(project["number"])),
-        "pull_requests": pull_requests(repo, plan["base_branch"]),
+        "pull_requests": pull_requests(
+            repo,
+            plan["base_branch"],
+            phase_ids=[str(phase["phase_id"]) for phase in plan["phases"]],
+        ),
         "approvals": _load_approvals(approvals_path),
         "claims": claims,
     }
@@ -104,15 +109,19 @@ def _phase_by_id(plan: dict[str, Any], phase_id: str) -> dict[str, Any]:
 
 
 def _project_item_for_phase(phase_id: str, items: list[dict[str, Any]]) -> dict[str, Any] | None:
+    """Resolve a Project item only from an exact canonical title marker."""
+    pattern = re.compile(rf"(?<![A-Z0-9-]){re.escape(phase_id)}(?![A-Z0-9-])")
+    matches: list[dict[str, Any]] = []
     for item in items:
-        text = "\n".join([
-            str(item.get("title", "")),
-            str(item.get("content", {}).get("title", "")) if isinstance(item.get("content"), dict) else "",
-            str(item.get("content", {}).get("body", "")) if isinstance(item.get("content"), dict) else "",
-        ])
-        if phase_id in text:
-            return item
-    return None
+        content = item.get("content")
+        titles = [str(item.get("title", ""))]
+        if isinstance(content, dict):
+            titles.append(str(content.get("title", "")))
+        if any(pattern.search(title) for title in titles):
+            matches.append(item)
+    if len(matches) > 1:
+        raise CommandError(f"multiple Project items found for {phase_id}")
+    return matches[0] if matches else None
 
 
 def _desired_project_status(state: str) -> str:

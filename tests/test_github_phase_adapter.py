@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import subprocess
 import sys
 import unittest
@@ -15,6 +16,7 @@ from github_phase_adapter import (  # noqa: E402
     active_claim_records,
     add_issue_to_project,
     phase_issue_matches,
+    pull_requests,
     run_gh,
 )
 
@@ -38,6 +40,42 @@ class GitHubPhaseAdapterTests(unittest.TestCase):
         ):
             run_gh(["issue", "create"])
         self.assertEqual(1, execute.call_count)
+
+    def test_pull_requests_uses_rest_and_fetches_checks_only_for_phase_evidence(self) -> None:
+        pulls = [
+            {
+                "number": 7,
+                "title": "[DPH-000] Foundation",
+                "body": "",
+                "state": "closed",
+                "merged_at": "2026-08-19T00:00:00Z",
+                "html_url": "https://example.test/pull/7",
+                "head": {"sha": "phase-head"},
+            },
+            {
+                "number": 8,
+                "title": "Unrelated maintenance",
+                "body": "",
+                "state": "open",
+                "merged_at": None,
+                "html_url": "https://example.test/pull/8",
+                "head": {"sha": "other-head"},
+            },
+        ]
+        responses = [
+            CommandResult(json.dumps(pulls), ""),
+            CommandResult(json.dumps({"check_runs": [{"name": "repo-gate", "conclusion": "success"}]}), ""),
+            CommandResult(json.dumps({"statuses": [{"context": "termux-smoke", "state": "success"}]}), ""),
+        ]
+        with patch("github_phase_adapter.run_gh", side_effect=responses) as execute:
+            evidence = pull_requests("owner/repo", "master", phase_ids=["DPH-000"])
+        self.assertTrue(evidence[0]["merged"])
+        self.assertEqual({"repo-gate": "success", "termux-smoke": "success"}, evidence[0]["checks"])
+        self.assertEqual({}, evidence[1]["checks"])
+        commands = [call.args[0] for call in execute.call_args_list]
+        self.assertEqual("api", commands[0][0])
+        self.assertIn("/pulls?state=all&base=master", commands[0][-1])
+        self.assertNotIn("statusCheckRollup", " ".join(" ".join(command) for command in commands))
 
     def test_project_add_dry_run_never_calls_gh(self) -> None:
         with patch("github_phase_adapter.run_gh") as run_gh:

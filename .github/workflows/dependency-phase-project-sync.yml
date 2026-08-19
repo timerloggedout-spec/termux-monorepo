@@ -24,9 +24,11 @@ jobs:
       contents: read
       issues: write
     env:
-      # Match the repository's existing privileged automation precedence.
-      OPERATOR_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
-      GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
+      # ProjectV2 writes require the Project-capable Operator credential. The
+      # prior first-choice token can create issues but was rejected by
+      # addProjectV2ItemById, so prefer the established Operator token first.
+      OPERATOR_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+      GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4

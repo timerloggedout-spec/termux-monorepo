@@ -41,6 +41,10 @@ action: <allowlisted-action>
 | `awaiting_provider_response` | No provider response has been ingested for one or more required providers. | Confirm provider configuration or resolve its operational blocker. |
 | `responses_collected` | Every configured required provider has completion evidence for the active SHA. | No action; second pass is eligible. |
 
+## Required-check policy
+
+`peer-review-orchestrator / collect-peer-responses` intentionally fails while any provider configured in `PEER_REQUIRED_PROVIDERS` is pending an action or current-SHA response. Add that check as a required branch-protection or ruleset status check. A passing state requires `responses_collected` and `ready: true`; a state comment or an acknowledgement alone is never a merge-ready signal.
+
 ## Authorization configuration
 
 Set `OPERATOR_EXECUTOR_LOGINS` to a comma-separated list of exact GitHub logins permitted to acknowledge provider UI actions. Set `OPERATOR_ALLOWED_ACTIONS` to comma-separated `provider:action` tuples. The workflow defaults to the repository owner and `coderabbit:trigger_review` only when those variables are not yet configured; production use should set both variables explicitly.

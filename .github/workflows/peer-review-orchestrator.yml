@@ -373,6 +373,7 @@ jobs:
               'action: <allowed-action>',
               '```',
               'The second-pass reviewer remains blocked until matching provider completion evidence is ingested for this SHA.',
+              'This workflow check intentionally remains failing while a required provider action or response is pending; configure it as a required branch-protection check.',
             ].join('\n');
             const comments = await github.paginate(github.rest.issues.listComments, {
               owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100,
@@ -423,3 +424,16 @@ jobs:
               },
             });
             core.info(`Dispatched verified second pass for ${process.env.CYCLE_ID}`);
+
+      - name: Block merge while required provider review is pending
+        if: |
+          steps.collect.outputs.skipped != 'true' &&
+          steps.collect.outputs.ready != 'true'
+        env:
+          CYCLE_ID: ${{ steps.collect.outputs.cycle_id }}
+          PENDING: ${{ steps.collect.outputs.pending }}
+        run: |
+          echo "::error title=Required provider review pending::${CYCLE_ID}: ${PENDING}"
+          echo "The peer-review check intentionally fails until every configured provider has current-SHA completion evidence."
+          echo "Select any provider-owned control through the authorized Operator Action Executor, publish an exact acknowledgement, and wait for the provider response."
+          exit 1

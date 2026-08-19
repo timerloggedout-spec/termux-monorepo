@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import sys
 import unittest
 from copy import deepcopy
@@ -20,24 +21,37 @@ def plan_fixture() -> dict:
     return {
         "schema_version": 1,
         "plan_id": "fixture-plan",
+        "title": "Fixture dependency plan",
         "base_branch": "master-staging",
+        "project": {
+            "owner": "example-owner",
+            "number": 1,
+            "id": "PVT_fixture",
+            "url": "https://github.com/users/example-owner/projects/1",
+            "status_field_id": "PVTSSF_fixture",
+            "status_options": {"Todo": "todo", "In progress": "progress", "Done": "done"},
+        },
         "policy": {"dispatch_agents": ["jules"]},
         "phases": [
             {
                 "phase_id": "DPH-000",
                 "title": "Foundation",
+                "description": "Foundation lifecycle implementation.",
                 "depends_on": [],
+                "project": {"title_marker": "DPH-000"},
                 "approval_required": False,
                 "execution": {"mode": "agent_or_human", "preferred_agent": "jules"},
-                "completion": {"required_checks": ["repo-gate", "termux-smoke"]},
+                "completion": {"required_checks": ["repo-gate", "termux-smoke"], "merged_pr": True},
             },
             {
                 "phase_id": "DPH-100",
                 "title": "Dependent work",
+                "description": "Dependent lifecycle implementation.",
                 "depends_on": ["DPH-000"],
+                "project": {"title_marker": "DPH-100"},
                 "approval_required": True,
                 "execution": {"mode": "agent", "preferred_agent": "jules"},
-                "completion": {"required_checks": ["repo-gate", "termux-smoke"]},
+                "completion": {"required_checks": ["repo-gate", "termux-smoke"], "merged_pr": True},
             },
         ],
     }
@@ -110,6 +124,31 @@ class DependencyPhaseEngineTests(unittest.TestCase):
         self.assertEqual(first, second)
         self.assertIn("DPH_000 --> DPH_100", first)
         self.assertIn("classDef complete", first)
+
+    def test_malformed_policy_fails_closed_with_diagnostic(self) -> None:
+        plan = plan_fixture()
+        plan["policy"] = []
+        errors = validate_plan(plan)
+        self.assertTrue(any("policy must be an object" in error for error in errors))
+        with self.assertRaises(PlanValidationError):
+            evaluate_plan(plan, {})
+
+    def test_non_string_dependency_fails_closed_with_diagnostic(self) -> None:
+        plan = plan_fixture()
+        plan["phases"][1]["depends_on"] = [[]]
+        errors = validate_plan(plan)
+        self.assertTrue(any("depends_on entries must be strings" in error for error in errors))
+        with self.assertRaises(PlanValidationError):
+            evaluate_plan(plan, {})
+
+    def test_schema_declares_the_canonical_runtime_contract(self) -> None:
+        schema = json.loads((ROOT / "docs" / "agentic" / "dependency-phases.schema.json").read_text(encoding="utf-8"))
+        plan = json.loads((ROOT / "docs" / "agentic" / "dependency-phases.json").read_text(encoding="utf-8"))
+        self.assertTrue(set(plan).issubset(set(schema["properties"])))
+        self.assertTrue(set(plan).issubset(set(schema["required"])))
+        phase_schema = schema["$defs"]["phase"]
+        self.assertTrue(set(plan["phases"][0]).issubset(set(phase_schema["properties"])))
+        self.assertTrue(set(plan["phases"][0]).issubset(set(phase_schema["required"])))
 
 
 if __name__ == "__main__":

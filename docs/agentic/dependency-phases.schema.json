@@ -2,14 +2,17 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/timerloggedout-spec/termux-monorepo/docs/agentic/dependency-phases.schema.json",
   "title": "Agentic Dependency Phase Plan",
+  "description": "Canonical version-controlled plan for dependency-phase lifecycle evaluation.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "plan_id", "base_branch", "phases"],
+  "required": ["schema_version", "plan_id", "title", "base_branch", "project", "policy", "phases"],
   "properties": {
     "schema_version": {"const": 1},
     "plan_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{1,63}$"},
+    "title": {"type": "string", "minLength": 3},
     "base_branch": {"const": "master-staging"},
-    "policy": {"type": "object"},
+    "project": {"$ref": "#/$defs/project"},
+    "policy": {"$ref": "#/$defs/policy"},
     "phases": {
       "type": "array",
       "minItems": 1,
@@ -17,74 +20,96 @@
     }
   },
   "$defs": {
-    "phase": {
+    "project": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "phase_id", "title", "proposal", "items", "depends_on", "required_gates",
-        "approval", "execution", "completion"
-      ],
+      "required": ["owner", "number", "id", "url", "status_field_id", "status_options"],
       "properties": {
-        "phase_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9-]{2,63}$"},
-        "title": {"type": "string", "minLength": 3},
-        "proposal": {"type": "string", "minLength": 1},
-        "items": {
+        "owner": {"type": "string", "minLength": 1},
+        "number": {"type": "integer", "minimum": 1},
+        "id": {"type": "string", "minLength": 1},
+        "url": {"type": "string", "format": "uri", "pattern": "^https://"},
+        "status_field_id": {"type": "string", "minLength": 1},
+        "status_options": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["Todo", "In progress", "Done"],
+          "properties": {
+            "Todo": {"type": "string", "minLength": 1},
+            "In progress": {"type": "string", "minLength": 1},
+            "Done": {"type": "string", "minLength": 1}
+          }
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["canonical_state", "derived_views", "dispatch_agents", "prohibited_actions"],
+      "properties": {
+        "canonical_state": {"const": "repository_json"},
+        "derived_views": {
           "type": "array",
           "minItems": 1,
           "uniqueItems": true,
-          "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9-]{2,63}$"}
+          "items": {"enum": ["markdown", "mermaid", "github_project"]}
         },
+        "dispatch_agents": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "prohibited_actions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "phase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["phase_id", "title", "description", "depends_on", "project", "approval_required", "execution", "completion"],
+      "properties": {
+        "phase_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9-]{2,63}$"},
+        "title": {"type": "string", "minLength": 3},
+        "description": {"type": "string", "minLength": 3},
         "depends_on": {
           "type": "array",
           "uniqueItems": true,
           "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9-]{2,63}$"}
         },
-        "required_gates": {
-          "type": "array",
-          "minItems": 1,
-          "uniqueItems": true,
-          "items": {"enum": ["repo-gate", "termux-smoke"]}
-        },
-        "approval": {
+        "project": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["required"],
+          "required": ["title_marker"],
           "properties": {
-            "required": {"type": "boolean"},
-            "evidence_ref": {"type": "string", "pattern": "^docs/"}
+            "title_marker": {"type": "string", "pattern": "^[A-Z][A-Z0-9-]{2,63}$"}
           }
         },
+        "approval_required": {"type": "boolean"},
         "execution": {
           "type": "object",
           "additionalProperties": false,
           "required": ["mode", "preferred_agent"],
           "properties": {
             "mode": {"enum": ["agent", "human", "agent_or_human"]},
-            "preferred_agent": {"enum": ["jules", "human"]}
+            "preferred_agent": {"type": "string", "minLength": 1}
           }
         },
         "completion": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["require_merged_pr", "require_all_items_terminal", "evidence"],
+          "required": ["required_checks", "merged_pr"],
           "properties": {
-            "require_merged_pr": {"const": true},
-            "require_all_items_terminal": {"const": true},
-            "evidence": {
+            "required_checks": {
               "type": "array",
               "minItems": 1,
               "uniqueItems": true,
-              "items": {
-                "enum": [
-                  "linked_pr_to_master_staging",
-                  "required_checks_green",
-                  "proposal_items_terminal",
-                  "approval_evidence_present",
-                  "idempotency_replay_test_green",
-                  "deterministic_projection_fixture_green"
-                ]
-              }
-            }
+              "items": {"type": "string", "minLength": 1}
+            },
+            "merged_pr": {"const": true}
           }
         }
       }

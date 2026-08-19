@@ -27,6 +27,8 @@ permissions: {}
 
 jobs:
   dispatch:
+    # Claims and downstream agent launches originate only from the staging integration branch.
+    if: ${{ github.ref == 'refs/heads/master-staging' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read

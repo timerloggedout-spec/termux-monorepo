@@ -96,17 +96,42 @@ def topological_order(phases: Iterable[dict[str, Any]]) -> list[str]:
 
 def validate_plan(plan: dict[str, Any]) -> list[str]:
     """Validate schema-level and graph-level invariants without modifying input."""
+    if not isinstance(plan, dict):
+        return ["plan must be a JSON object"]
+
     errors: list[str] = []
     _require(plan.get("schema_version") == 1, "schema_version must equal 1", errors)
     _require(isinstance(plan.get("plan_id"), str) and plan["plan_id"], "plan_id is required", errors)
+    _require(isinstance(plan.get("title"), str) and len(plan["title"].strip()) >= 3, "title is required", errors)
     _require(plan.get("base_branch") == "master-staging", "base_branch must be master-staging", errors)
+
+    project = plan.get("project")
+    _require(isinstance(project, dict), "project must be an object", errors)
+    if isinstance(project, dict):
+        _require(isinstance(project.get("owner"), str) and project["owner"], "project.owner is required", errors)
+        _require(isinstance(project.get("number"), int) and project["number"] > 0, "project.number must be positive", errors)
+        _require(isinstance(project.get("id"), str) and project["id"], "project.id is required", errors)
+        _require(isinstance(project.get("url"), str) and project["url"].startswith("https://"), "project.url must be an HTTPS URL", errors)
+        _require(isinstance(project.get("status_field_id"), str) and project["status_field_id"], "project.status_field_id is required", errors)
+        options = project.get("status_options")
+        _require(isinstance(options, dict) and all(isinstance(options.get(state), str) and options[state] for state in ("Todo", "In progress", "Done")),
+                 "project.status_options must define Todo, In progress, and Done", errors)
+
+    policy = plan.get("policy")
+    _require(isinstance(policy, dict), "policy must be an object", errors)
+    approved_agents: set[str] = set()
+    if isinstance(policy, dict):
+        dispatch_agents = policy.get("dispatch_agents")
+        _require(isinstance(dispatch_agents, list) and all(isinstance(agent, str) and agent for agent in dispatch_agents),
+                 "policy.dispatch_agents must be a list of non-empty strings", errors)
+        if isinstance(dispatch_agents, list) and all(isinstance(agent, str) and agent for agent in dispatch_agents):
+            approved_agents = set(dispatch_agents)
+
     phases = plan.get("phases")
     _require(isinstance(phases, list) and phases, "phases must be a non-empty list", errors)
-    if errors:
+    if not isinstance(phases, list) or not phases:
         return errors
 
-    policy = plan.get("policy", {})
-    approved_agents = set(policy.get("dispatch_agents", []))
     seen: set[str] = set()
     phase_ids: set[str] = set()
     for index, phase in enumerate(phases):
@@ -115,37 +140,57 @@ def validate_plan(plan: dict[str, Any]) -> list[str]:
             errors.append(f"{prefix} must be an object")
             continue
         phase_id = phase.get("phase_id")
-        _require(isinstance(phase_id, str) and re.fullmatch(r"[A-Z][A-Z0-9-]{2,63}", phase_id or "") is not None,
-                 f"{prefix}.phase_id must be an uppercase stable identifier", errors)
-        if isinstance(phase_id, str):
+        valid_phase_id = isinstance(phase_id, str) and re.fullmatch(r"[A-Z][A-Z0-9-]{2,63}", phase_id) is not None
+        _require(valid_phase_id, f"{prefix}.phase_id must be an uppercase stable identifier", errors)
+        if valid_phase_id:
+            assert isinstance(phase_id, str)
             if phase_id in seen:
                 errors.append(f"duplicate phase_id: {phase_id}")
             seen.add(phase_id)
             phase_ids.add(phase_id)
         _require(isinstance(phase.get("title"), str) and len(phase["title"].strip()) >= 3,
                  f"{prefix}.title is required", errors)
+        _require(isinstance(phase.get("description"), str) and len(phase["description"].strip()) >= 3,
+                 f"{prefix}.description is required", errors)
+        phase_project = phase.get("project")
+        _require(isinstance(phase_project, dict) and phase_project.get("title_marker") == phase_id,
+                 f"{prefix}.project.title_marker must equal phase_id", errors)
+        _require(isinstance(phase.get("approval_required"), bool), f"{prefix}.approval_required must be boolean", errors)
         dependencies = phase.get("depends_on")
         _require(isinstance(dependencies, list), f"{prefix}.depends_on must be a list", errors)
-        if isinstance(dependencies, list):
+        valid_dependencies = isinstance(dependencies, list) and all(isinstance(dependency, str) for dependency in dependencies)
+        if isinstance(dependencies, list) and not valid_dependencies:
+            errors.append(f"{prefix}.depends_on entries must be strings")
+        if valid_dependencies:
+            assert isinstance(dependencies, list)
             if len(set(dependencies)) != len(dependencies):
                 errors.append(f"{prefix}.depends_on contains duplicates")
-            if phase_id in dependencies:
+            if valid_phase_id and phase_id in dependencies:
                 errors.append(f"{prefix} cannot depend on itself")
-        checks = phase.get("completion", {}).get("required_checks") if isinstance(phase.get("completion"), dict) else None
-        _require(isinstance(checks, list) and checks, f"{prefix}.completion.required_checks must be non-empty", errors)
+        completion = phase.get("completion")
+        _require(isinstance(completion, dict), f"{prefix}.completion must be an object", errors)
+        checks = completion.get("required_checks") if isinstance(completion, dict) else None
+        _require(isinstance(checks, list) and checks and all(isinstance(check, str) and check for check in checks),
+                 f"{prefix}.completion.required_checks must be a non-empty string list", errors)
+        _require(isinstance(completion, dict) and completion.get("merged_pr") is True,
+                 f"{prefix}.completion.merged_pr must be true", errors)
         execution = phase.get("execution")
         _require(isinstance(execution, dict), f"{prefix}.execution must be an object", errors)
         if isinstance(execution, dict):
-            _require(execution.get("mode") in {"agent", "human", "agent_or_human"},
-                     f"{prefix}.execution.mode is invalid", errors)
+            mode = execution.get("mode")
+            _require(mode in {"agent", "human", "agent_or_human"}, f"{prefix}.execution.mode is invalid", errors)
             preferred = execution.get("preferred_agent")
-            if execution.get("mode") == "agent":
+            _require(isinstance(preferred, str) and preferred, f"{prefix}.execution.preferred_agent is required", errors)
+            if mode == "agent":
                 _require(preferred in approved_agents, f"{prefix}.preferred_agent is not approved", errors)
 
     for phase in phases:
         if not isinstance(phase, dict):
             continue
-        for dependency in phase.get("depends_on", []):
+        dependencies = phase.get("depends_on")
+        if not isinstance(dependencies, list) or not all(isinstance(dependency, str) for dependency in dependencies):
+            continue
+        for dependency in dependencies:
             if dependency not in phase_ids:
                 errors.append(f"{phase.get('phase_id', '<unknown>')} depends on unknown phase {dependency}")
     if not errors:

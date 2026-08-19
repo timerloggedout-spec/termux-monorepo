@@ -30,13 +30,16 @@ from dependency_phase_engine import (
     write_json,
 )
 from github_phase_adapter import (
+    CLAIM_PREFIX,
     GitHubAdapterError,
+    active_claim_records,
     add_issue_to_project,
     claim_exists,
     create_issue,
     issue_comments,
     issues,
     phase_issue_body,
+    phase_issue_matches,
     phase_issue_title,
     post_issue_comment,
     project_items,
@@ -75,12 +78,21 @@ def _load_snapshot(path: Path | None) -> dict[str, Any]:
 
 
 def live_snapshot(plan: dict[str, Any], repo: str, approvals_path: Path) -> dict[str, Any]:
+    """Read live Project, PR, approval, and canonical issue-claim evidence."""
     project = plan["project"]
+    live_issues = issues(repo)
+    claims: list[dict[str, Any]] = []
+    for phase in plan["phases"]:
+        canonical = [candidate for candidate in live_issues if phase_issue_matches(plan, phase, candidate)]
+        if len(canonical) > 1:
+            raise CommandError(f"multiple canonical issues found for {phase['phase_id']}")
+        if canonical:
+            claims.extend(active_claim_records(issue_comments(repo, int(canonical[0]["number"]))))
     return {
         "project_items": project_items(project["owner"], int(project["number"])),
         "pull_requests": pull_requests(repo, plan["base_branch"]),
         "approvals": _load_approvals(approvals_path),
-        "claims": [],
+        "claims": claims,
     }
 
 
@@ -125,13 +137,10 @@ def sync_project(plan: dict[str, Any], report: dict[str, Any], repo: str, *, app
         evaluation = evaluation_by_id[phase_id]
         item = _project_item_for_phase(phase_id, live_items)
         desired_status = _desired_project_status(evaluation["state"])
-        issue = next(
-            (
-                candidate for candidate in live_issues
-                if phase_id in (str(candidate.get("title", "")) + "\\n" + str(candidate.get("body", "")))
-            ),
-            None,
-        )
+        canonical_issues = [candidate for candidate in live_issues if phase_issue_matches(plan, phase, candidate)]
+        if len(canonical_issues) > 1:
+            raise CommandError(f"multiple canonical issues found for {phase_id}")
+        issue = canonical_issues[0] if canonical_issues else None
         if item is None:
             if issue is None:
                 issue_result = create_issue(repo, phase_issue_title(phase), phase_issue_body(plan, phase, digest), apply=apply)
@@ -168,7 +177,15 @@ def dispatch_claim(plan: dict[str, Any], report: dict[str, Any], repo: str, phas
         raise CommandError(f"phase {phase_id} was not evaluated")
     if evaluation["state"] != "ready":
         raise CommandError(f"phase {phase_id} is {evaluation['state']}: {evaluation['reason']}")
-    comments = issue_comments(repo, issue_number)
+    phase = _phase_by_id(plan, phase_id)
+    canonical_issues = [candidate for candidate in issues(repo) if phase_issue_matches(plan, phase, candidate)]
+    if len(canonical_issues) != 1:
+        raise CommandError(f"expected exactly one canonical issue for {phase_id}, found {len(canonical_issues)}")
+    canonical_issue = canonical_issues[0]
+    canonical_number = int(canonical_issue["number"])
+    if issue_number != canonical_number:
+        raise CommandError(f"issue #{issue_number} is not the canonical issue for {phase_id}; expected #{canonical_number}")
+    comments = issue_comments(repo, canonical_number)
     key = evaluation["idempotency_key"]
     if claim_exists(comments, key):
         return {"phase_id": phase_id, "claimed": False, "reason": "idempotency key already claimed", "idempotency_key": key}
@@ -178,7 +195,7 @@ def dispatch_claim(plan: dict[str, Any], report: dict[str, Any], repo: str, phas
         f"Plan hash: `{report['plan_sha256']}`.",
         "The dispatcher revalidated prerequisites, approval evidence, current PR state, and project evidence before recording this claim.",
     ])
-    result = post_issue_comment(repo, issue_number, body, apply=apply)
+    result = post_issue_comment(repo, canonical_number, body, apply=apply)
     return {"phase_id": phase_id, "claimed": bool(apply), "idempotency_key": key, **result}
 
 

@@ -17,6 +17,8 @@ permissions: {}
 
 jobs:
   reconcile:
+    # Project writes are governed exclusively from the staging integration branch.
+    if: ${{ github.ref == 'refs/heads/master-staging' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read

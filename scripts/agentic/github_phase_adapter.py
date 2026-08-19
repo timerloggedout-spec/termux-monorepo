@@ -16,6 +16,7 @@ from typing import Any
 
 ANSI = re.compile(r"\x1b\[[0-?]*[ -/]*[@-~]")
 CLAIM_PREFIX = "<!-- dependency-phase-claim:"
+CLAIM_MARKER = re.compile(r"<!--\s*dependency-phase-claim:\s*([A-Z][A-Z0-9-]{2,63}:[0-9a-f]{64})\s*-->")
 
 
 class GitHubAdapterError(RuntimeError):
@@ -176,13 +177,41 @@ def post_issue_comment(repo: str, issue_number: int, body: str, *, apply: bool) 
     return {"planned": False, "operation": "post_issue_comment", "url": response.stdout.strip()}
 
 
+def active_claim_records(comments: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Normalize durable active claim markers from GitHub issue comments."""
+    records: dict[str, dict[str, Any]] = {}
+    for comment in comments:
+        if not isinstance(comment, dict):
+            continue
+        body = str(comment.get("body", ""))
+        for match in CLAIM_MARKER.finditer(body):
+            key = match.group(1)
+            records[key] = {
+                "idempotency_key": key,
+                "active": True,
+                "comment_id": comment.get("id"),
+                "issue_url": comment.get("issue_url"),
+            }
+    return [records[key] for key in sorted(records)]
+
+
 def claim_exists(comments: list[dict[str, Any]], idempotency_key: str) -> bool:
-    marker = f"{CLAIM_PREFIX} {idempotency_key} -->"
-    return any(marker in str(comment.get("body", "")) for comment in comments)
+    return any(record["idempotency_key"] == idempotency_key for record in active_claim_records(comments))
 
 
 def phase_issue_title(phase: dict[str, Any]) -> str:
     return f"[{phase['phase_id']}] {phase['title']}"
+
+
+def phase_issue_matches(plan: dict[str, Any], phase: dict[str, Any], candidate: dict[str, Any]) -> bool:
+    """Require the exact generated title and durable plan/phase markers for a phase issue."""
+    title = str(candidate.get("title", "")).strip()
+    body = str(candidate.get("body", ""))
+    return (
+        title == phase_issue_title(phase)
+        and f"**Plan:** `{plan['plan_id']}`" in body
+        and f"**Phase:** `{phase['phase_id']}`" in body
+    )
 
 
 def phase_issue_body(plan: dict[str, Any], phase: dict[str, Any], plan_sha256: str) -> str:

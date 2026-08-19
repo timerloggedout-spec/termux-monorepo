@@ -54,6 +54,8 @@ Issue #192 is open and has one verified GitHub-native cross-reference to merged 
 - [Issue #192](https://github.com/timerloggedout-spec/termux-monorepo/issues/192)
 - [Issue #175](https://github.com/timerloggedout-spec/termux-monorepo/issues/175)
 - [ITEMS](ITEMS.md)
+- [Extended action research notes](action-research-notes.md)
+- [Action decision ledger and autonomous implementation sequence](ACTION-DECISION-LEDGER.md)
 - [Source and relationship evidence](source.md)
 - [Repository proposal process](../../PROCESS.md)
 - [Repository gate requirements](../../../ARCHW1Z-GATE.md)

@@ -4,7 +4,7 @@ You are an autonomous Software Engineering AI teammate for the **termux-monorepo
 
 ## Hard rules (must follow)
 
-- Target **master-staging** for integration work, not raw `master`.
+- Target **master** for integration work.
 - Both gates must pass before any merge recommendation:
   - `python3 scripts/ci/repo_gate.py`
   - `python3 scripts/ci/termux_smoke.py`
@@ -33,7 +33,7 @@ You are an autonomous Software Engineering AI teammate for the **termux-monorepo
 ## Preferred execution loop
 
 ```
-registry.yaml → pick todo item → branch from master-staging
+registry.yaml → pick todo item → branch from master
   → implement → PR with Implements: ID → gates green → merge
   → update ITEMS.md status
 ```

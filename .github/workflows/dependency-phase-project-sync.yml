@@ -1,0 +1,53 @@
+name: Dependency Phase Project Sync
+
+on:
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: "Apply issue/project updates (default: dry-run only)"
+        required: true
+        default: false
+        type: boolean
+
+concurrency:
+  group: dependency-phase-project-sync-${{ github.repository }}
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  reconcile:
+    # Project writes are governed exclusively from the master branch.
+    if: ${{ github.ref == 'refs/heads/master' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    env:
+      # Match the repository's existing privileged automation precedence.
+      OPERATOR_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
+      GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Reconcile project phases
+        run: |
+          set -euo pipefail
+          arguments=(--live --repo "${{ github.repository }}" sync-project)
+          if [ "${{ inputs.apply }}" = "true" ]; then
+            arguments=(--live --apply --repo "${{ github.repository }}" sync-project)
+          fi
+          python3 scripts/agentic/dependency_phases.py "${arguments[@]}" | tee project-sync.json
+
+      - name: Upload reconciliation plan
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-phase-project-sync-${{ github.run_id }}
+          path: project-sync.json
+          if-no-files-found: error

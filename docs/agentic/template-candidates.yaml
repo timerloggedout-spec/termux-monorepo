@@ -1,0 +1,222 @@
+schema_version: 1
+assessment_date: 2026-08-18
+scope: >-
+  User-owned Gantt/agentic seeds discovered through owned and starred repository
+  metadata, plus the four active refTemplates/smods reference forks.
+evidence_policy:
+  primary: source code, repository metadata, tests, CI records, and reproducible commands
+  secondary: DeepWiki pages, local wiki/mirror artifacts, agent comments, README claims
+  note: >-
+    A secondary source may guide discovery but cannot by itself establish current
+    behavior, security posture, testability, or adoption readiness.
+
+candidates:
+  - candidate_id: CAMSHAFT
+    repository: https://github.com/timerloggedout-spec/Camshaft_fork
+    upstream: https://github.com/thekozugroup/Camshaft
+    default_branch: main
+    language: Rust
+    license: MIT
+    category: agentic dependency planner and critical-path optimizer
+    intended_inspiration:
+      - machine-readable YAML/JSON bulk plan ingestion
+      - dependency and resource validation
+      - critical-path and parallel-group advisory output
+    evidence_status: source-reviewed
+    direct_evidence:
+      - README.md
+      - src/commands/bulk.rs
+      - tests/cli_tests.rs
+      - Cargo.toml
+    verification_note: >-
+      Local execution could not be performed because Cargo is absent from the
+      sandbox. The only visible recent workflow failures are Dependabot failures
+      caused by a missing local ../GanttML path dependency, not a recorded test
+      failure. Treat runtime validation as pending.
+    disposition: adapter-candidate
+
+  - candidate_id: GANTT_CLI
+    repository: https://github.com/timerloggedout-spec/gantt-cli_fork_agentic
+    upstream: https://github.com/zhangjinshui-nerveee/gantt-cli
+    default_branch: main
+    language: Rust
+    license: MIT
+    category: JSON-backed terminal planner and renderer
+    intended_inspiration:
+      - task hierarchy and parent/child roll-up
+      - dependency schedule calculation
+      - persisted JSON project representation
+    evidence_status: source-reviewed
+    direct_evidence:
+      - README.md
+      - src/main.rs
+    material_limitations:
+      - task IDs and dependency IDs are remapped on reorder
+      - interactive TUI owns the current workflow shape
+    disposition: pattern-extraction
+
+  - candidate_id: GANTTLESS
+    repository: https://github.com/timerloggedout-spec/ganttless_fork-agentic
+    upstream: https://github.com/kyoheiu/ganttless
+    default_branch: main
+    language: Rust
+    license: MIT
+    category: deterministic ASCII Gantt renderer
+    intended_inspiration:
+      - compact text timeline projection
+      - YAML/argument input ergonomics
+      - CI and terminal summary rendering
+    evidence_status: source-reviewed
+    direct_evidence:
+      - README.md
+      - src/ganttless.rs
+    material_limitations:
+      - no dependency graph
+      - no persistence or stable-identity layer
+      - no execution authorization behavior
+    disposition: pattern-extraction
+
+  - candidate_id: GANTTY
+    repository: https://github.com/timerloggedout-spec/GanTTY_fork
+    upstream: https://github.com/timeopochin/GanTTY
+    default_branch: master
+    language: Python
+    license: GPL-3.0
+    category: interactive terminal dependency editor
+    intended_inspiration:
+      - visual dependency selection
+      - task-state semantics and criticality presentation
+      - terminal interaction patterns
+    evidence_status: source-reviewed
+    direct_evidence:
+      - README.adoc
+      - gantt.py
+      - ui.py
+      - main.py
+    material_limitations:
+      - binary pickle persistence
+      - interactive terminal event loop
+      - no repository/CI-safe canonical artifact
+    disposition: reference-only
+
+  - candidate_id: GANTT_CHART_CODE
+    repository: https://github.com/timerloggedout-spec/Gantt-Chart-Code_fork
+    upstream: https://github.com/bytesandbalance/Gantt-Chart-Code
+    default_branch: main
+    language: Rust
+    license: unknown
+    category: flat-record-to-hierarchical-program graph ingester
+    intended_inspiration:
+      - reconstruct hierarchy from unordered records
+      - deterministic nested JSON serialization
+      - feature/team/status/date record shape
+    evidence_status: source-reviewed
+    direct_evidence:
+      - README.md
+      - program_ingester/src/input.rs
+      - program_ingester/src/output.rs
+    material_limitations:
+      - no dependency scheduling or DAG validation
+      - CLI output is debug-oriented
+    disposition: pattern-extraction
+
+  - candidate_id: MONTT
+    repository: https://github.com/timerloggedout-spec/montt_fork
+    upstream: https://github.com/simon-siggaard/montt
+    default_branch: main
+    language: Rust
+    license: unknown
+    category: probabilistic critical-path and forecast seed
+    intended_inspiration:
+      - estimate-plus-q95 risk fields
+      - critical-path calculation over a task graph
+      - potential forecast extension after core phase flow stabilizes
+    evidence_status: source-reviewed
+    direct_evidence:
+      - src/montt.rs
+      - src/statistics.rs
+    material_limitations:
+      - custom DSL rather than repository-native YAML
+      - LogNormalMontt sampling stub returns 0.0
+    disposition: defer-reject
+
+  - candidate_id: ICM_ARCHITECT
+    repository: https://github.com/timerloggedout-spec/icm-architect_fork
+    upstream: https://github.com/RinDig/icm-architect
+    default_branch: main
+    language: Markdown
+    license: MIT
+    category: workspace and pipeline architecture skill
+    intended_inspiration:
+      - explicit stage contracts
+      - filesystem-derived state
+      - smallest-viable workflow scaffolding
+      - human review gates
+    evidence_status: source-reviewed
+    direct_evidence:
+      - SKILL.md
+      - README.md
+    disposition: pinned-customization-candidate
+
+  - candidate_id: ICM_METHODOLOGY
+    repository: https://github.com/timerloggedout-spec/interpretable-context-methodology_fork
+    upstream: https://github.com/RinDig/Interpretable-Context-Methodology
+    default_branch: main
+    language: Python and Markdown
+    license: MIT
+    category: file-backed staged workflow methodology
+    intended_inspiration:
+      - canonical source and one-way dependency rules
+      - stage inputs/process/outputs contracts
+      - human-editable handoffs and audit points
+    evidence_status: source-reviewed
+    direct_evidence:
+      - README.md
+      - _core/CONVENTIONS.md
+    disposition: pinned-customization-candidate
+
+  - candidate_id: ICM_CCTV
+    repository: https://github.com/timerloggedout-spec/icm-cctv_fork
+    upstream: https://github.com/munronai/icm-cctv
+    default_branch: main
+    language: JavaScript and Python
+    license: Apache-2.0
+    category: optional file-backed visual status board
+    intended_inspiration:
+      - derived visual phase cards
+      - controlled human checkpoint response files
+      - split ownership of artifact content and layout state
+    evidence_status: source-reviewed
+    direct_evidence:
+      - README.md
+      - skill/SKILL.md
+    material_limitations:
+      - local renderer, WebSocket, and Node runtime are not GitHub Actions control-plane dependencies
+      - endpoints are documented as localhost-only
+    disposition: reference-only
+
+  - candidate_id: CONTENT_AGENT_ROUTING
+    repository: https://github.com/timerloggedout-spec/content-agent-routing-promptbase_fork
+    upstream: https://github.com/RinDig/Content-Agent-Routing-Promptbase
+    default_branch: main
+    language: TypeScript and Markdown
+    license: unknown
+    category: context-routing and one-way dependency architecture
+    intended_inspiration:
+      - stable routing files versus mutable content files
+      - selective context loading
+      - canonical-source and one-way dependency discipline
+    evidence_status: source-reviewed
+    direct_evidence:
+      - README.md
+      - CLAUDE.md
+      - CONTEXT.md
+    disposition: pinned-customization-candidate
+
+selection_scope:
+  include_in_shortlist: [CAMSHAFT, ICM_ARCHITECT, ICM_METHODOLOGY, CONTENT_AGENT_ROUTING, GANTT_CLI, GANTTLESS]
+  retain_as_reference: [GANTTY, GANTT_CHART_CODE, ICM_CCTV]
+  defer: [MONTT]
+  excluded_from_execution_authority:
+    - all candidates
+  canonical_authority_target: docs/agentic/dependency-phases.yaml

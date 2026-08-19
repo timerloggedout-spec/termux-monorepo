@@ -2,8 +2,9 @@
 """
 repo_gate.py — cheap, device-friendly hygiene gate for termux-monorepo.
 
-Design constraints (from PR #2 discussion: "Limit local, Android Termux, device,
-resources, usage."):
+ArchWiz invariant gate (P0 spine).
+
+Design constraints (including the PR #2 requirement to limit local Android Termux device resource use):
 
   * stdlib only, no pip installs, no network, no toolchains
   * no Rust/cargo build, no Chromium, no adb, no termux-api
@@ -225,7 +226,7 @@ def check_python_syntax(report: Report, paths: list[str], index: dict[str, Index
         if not path.endswith(".py") or is_scratch(path):
             continue
         entry = index.get(path)
-        if entry is None or entry.is_symlink:
+        if entry is None or entry.is_symlink or entry.is_gitlink:
             continue
         checked += 1
         source = blob(entry.sha)
@@ -248,7 +249,7 @@ def check_shell_syntax(report: Report, paths: list[str], index: dict[str, IndexE
         if not path.endswith((".sh", ".bash")) or is_scratch(path):
             continue
         entry = index.get(path)
-        if entry is None or entry.is_symlink:
+        if entry is None or entry.is_symlink or entry.is_gitlink:
             continue
         checked += 1
         proc = subprocess.run(
@@ -268,7 +269,7 @@ def check_json_parses(report: Report, paths: list[str], index: dict[str, IndexEn
         if not path.endswith(".json") or is_scratch(path):
             continue
         entry = index.get(path)
-        if entry is None or entry.is_symlink:
+        if entry is None or entry.is_symlink or entry.is_gitlink:
             continue
         raw = blob(entry.sha)
         if not raw.strip():

@@ -46,6 +46,7 @@ from github_phase_adapter import (
     project_items,
     pull_requests,
     set_project_status,
+    update_issue_body,
 )
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -150,9 +151,13 @@ def sync_project(plan: dict[str, Any], report: dict[str, Any], repo: str, *, app
         if len(canonical_issues) > 1:
             raise CommandError(f"multiple canonical issues found for {phase_id}")
         issue = canonical_issues[0] if canonical_issues else None
+        desired_issue_body = phase_issue_body(plan, phase, digest)
+        if issue is not None and str(issue.get("body", "")).strip() != desired_issue_body.strip():
+            operation = update_issue_body(repo, int(issue["number"]), desired_issue_body, apply=apply)
+            operations.append({"phase_id": phase_id, **operation})
         if item is None:
             if issue is None:
-                issue_result = create_issue(repo, phase_issue_title(phase), phase_issue_body(plan, phase, digest), apply=apply)
+                issue_result = create_issue(repo, phase_issue_title(phase), desired_issue_body, apply=apply)
                 operations.append({"phase_id": phase_id, **issue_result})
                 if not apply:
                     continue

@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts" / "agentic"))
 
 from dependency_phase_engine import plan_digest  # noqa: E402
-from dependency_phases import CommandError, dispatch_claim, live_snapshot  # noqa: E402
+from dependency_phases import CommandError, dispatch_claim, live_snapshot, sync_project  # noqa: E402
 
 
 def plan_fixture() -> dict:
@@ -65,6 +65,23 @@ class DependencyPhaseCliTests(unittest.TestCase):
         ):
             snapshot = live_snapshot(plan, "example/repo", ROOT / "missing-approvals.json")
         self.assertEqual([{"idempotency_key": f"DPH-100:{digest}", "active": True, "comment_id": 7, "issue_url": None}], snapshot["claims"])
+
+    def test_sync_project_refreshes_stale_canonical_issue_body_in_place(self) -> None:
+        plan = plan_fixture()
+        report = {"evaluations": [{"phase_id": "DPH-100", "state": "ready"}]}
+        item = {"id": "item-12", "title": "[DPH-100] Dependent work", "status": "Todo"}
+        with (
+            patch("dependency_phases.project_items", return_value=[item]),
+            patch("dependency_phases.issues", return_value=[canonical_issue()]),
+            patch(
+                "dependency_phases.update_issue_body",
+                return_value={"planned": True, "operation": "update_issue_body", "issue": 12},
+            ) as refresh,
+        ):
+            result = sync_project(plan, report, "example/repo", apply=False)
+        refresh.assert_called_once_with("example/repo", 12, unittest.mock.ANY, apply=False)
+        self.assertEqual("update_issue_body", result["operations"][0]["operation"])
+        self.assertEqual("no_change", result["operations"][1]["operation"])
 
     def test_dispatch_rejects_noncanonical_issue_number(self) -> None:
         plan = plan_fixture()

@@ -243,6 +243,20 @@ def create_issue(repo: str, title: str, body: str, *, apply: bool) -> dict[str, 
     return {"planned": False, "operation": "create_issue", "number": number, "url": url}
 
 
+def update_issue_body(repo: str, issue_number: int, body: str, *, apply: bool) -> dict[str, Any]:
+    """Update a canonical issue description in place without replaying mutations."""
+    if not apply:
+        return {"planned": True, "operation": "update_issue_body", "issue": issue_number}
+    response = json_gh([
+        "api", "-X", "PATCH", f"repos/{repo}/issues/{issue_number}",
+        "-f", f"body={body}",
+    ])
+    url = response.get("html_url")
+    if not isinstance(url, str) or not url:
+        raise GitHubAdapterError("issue update response did not contain an html_url")
+    return {"planned": False, "operation": "update_issue_body", "issue": issue_number, "url": url}
+
+
 def add_issue_to_project(owner: str, number: int, issue_url: str, *, apply: bool) -> dict[str, Any]:
     if not apply:
         return {"planned": True, "operation": "add_project_item", "url": issue_url}
@@ -308,19 +322,41 @@ def phase_issue_matches(plan: dict[str, Any], phase: dict[str, Any], candidate: 
 
 
 def phase_issue_body(plan: dict[str, Any], phase: dict[str, Any], plan_sha256: str) -> str:
-    prerequisites = ", ".join(phase.get("depends_on", [])) or "None"
-    checks = ", ".join(phase["completion"]["required_checks"])
+    """Render the human-readable contract for one canonical phase issue.
+
+    ``plan_sha256`` remains part of claim idempotency in the lifecycle engine,
+    but is not useful work guidance for issue readers and is deliberately not
+    displayed in the issue body.
+    """
+    prerequisites = ", ".join(phase.get("depends_on", [])) or "No prerequisites"
+    checks = ", ".join(f"`{check}`" for check in phase["completion"]["required_checks"])
+    approval = "An explicit approval entry is required before this phase can start." if phase.get("approval_required") else "No explicit approval entry is required."
     return "\n".join([
-        "## Dependency phase",
+        "## What this phase delivers",
+        "",
+        str(phase["description"]),
+        "",
+        "## Completion conditions",
+        "",
+        f"- Merge a pull request into `{plan['base_branch']}` that declares `Implements: {phase['phase_id']}`.",
+        f"- Pass the required checks: {checks}.",
+        f"- {approval}",
+        "",
+        "## Dependencies",
+        "",
+        f"- {prerequisites}",
+        "",
+        "## Automation and Project view",
+        "",
+        "GitHub Project status is a coordination view only. The lifecycle engine derives eligibility from this versioned plan, dependency evidence, merged pull requests, required checks, and explicit approvals.",
+        f"- Canonical plan: `docs/agentic/dependency-phases.json` (`{plan['plan_id']}`)",
+        "",
+        "## Canonical identity",
         "",
         f"**Plan:** `{plan['plan_id']}`",
         f"**Phase:** `{phase['phase_id']}`",
-        f"**Plan hash:** `{plan_sha256}`",
-        f"**Prerequisites:** {prerequisites}",
-        f"**Required checks:** {checks}",
-        f"**Approval required:** {'yes' if phase.get('approval_required') else 'no'}",
         "",
-        "This issue is managed by the repository dependency-phase system. Its GitHub Project status is a derived coordination view; lifecycle eligibility remains determined by the versioned plan and objective evidence.",
+        "These two fields let automation recognize this issue. Internal verification fingerprints remain in lifecycle records and are intentionally not shown as issue work guidance.",
         "",
         f"Implements: {phase['phase_id']}",
     ])

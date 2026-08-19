@@ -16,9 +16,11 @@ from github_phase_adapter import (  # noqa: E402
     active_claim_records,
     add_issue_to_project,
     create_issue,
+    phase_issue_body,
     phase_issue_matches,
     pull_requests,
     run_gh,
+    update_issue_body,
 )
 
 
@@ -92,6 +94,36 @@ class GitHubPhaseAdapterTests(unittest.TestCase):
                 "-f", "title=[DPH-200] Dispatch",
                 "-f", "body=canonical body",
             ]
+        )
+
+    def test_phase_issue_body_exposes_work_contract_without_plan_hash(self) -> None:
+        plan = {"plan_id": "fixture-plan", "base_branch": "master"}
+        phase = {
+            "phase_id": "DPH-100",
+            "description": "Synchronize canonical GitHub Project phase items.",
+            "depends_on": ["DPH-000"],
+            "approval_required": True,
+            "completion": {"required_checks": ["repo-gate", "termux-smoke"]},
+        }
+        body = phase_issue_body(plan, phase, "a" * 64)
+        self.assertIn("## What this phase delivers", body)
+        self.assertIn("Synchronize canonical GitHub Project phase items.", body)
+        self.assertIn("Merge a pull request into `master`", body)
+        self.assertIn("An explicit approval entry is required", body)
+        self.assertIn("**Plan:** `fixture-plan`", body)
+        self.assertIn("**Phase:** `DPH-100`", body)
+        self.assertNotIn("Plan hash", body)
+        self.assertNotIn("a" * 64, body)
+
+    def test_update_issue_body_uses_structured_rest_response(self) -> None:
+        with patch("github_phase_adapter.json_gh", return_value={"html_url": "https://example.test/issues/200"}) as request:
+            result = update_issue_body("owner/repo", 200, "readable body", apply=True)
+        self.assertEqual(
+            {"planned": False, "operation": "update_issue_body", "issue": 200, "url": "https://example.test/issues/200"},
+            result,
+        )
+        request.assert_called_once_with(
+            ["api", "-X", "PATCH", "repos/owner/repo/issues/200", "-f", "body=readable body"]
         )
 
     def test_project_add_dry_run_never_calls_gh(self) -> None:

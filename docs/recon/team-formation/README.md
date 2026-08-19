@@ -12,6 +12,7 @@ The package is planning and evidence work. It does not modify the active MoneyBa
 | [Game Player Fleet and Genre Teams](./GAME_PLAYER_FLEET.md) | `Roster:Teams:Games:Players` as a first-class fleet, including catalog, machine profile, player-role, telemetry, reset, and score-event contracts. | ATF-12 |
 | [Initial Target Register Template](./TARGET_REGISTER.md) | Stable, versioned intake record for repository components, controlled labs, mobile artifacts, game builds, player machines, and wallet stages. | ATF-11, ATF-12, ATF-13 |
 | [Anchored Roster Context and Identity Schema](./ROSTER_CONTEXT_SCHEMA.md) | Canonical entity references, relationship records, context manifests, aliases, temporary batches, and validation rules for custom team/run notation. | ATF-14 |
+| [Provider-Agnostic Role Label Dispatch Contract](./ROLE_LABEL_DISPATCH.md) | Maps approved labels to the user’s own roster policies, stable context manifests, and auditable dispatch intents without treating providers as roles. | ATF-15 |
 | [MoneyBall Implementation Recon](./MONEYBALL_RECON.md) | Live #131 status, branch/check evidence, SSOT discrepancy, and branch/gate blockers. | ATF-03, ATF-09, ATF-10, ATF-11 |
 | [Swarms Reference and Wallet Research](./SWARMS_WALLET_RESEARCH.md) | Public Swarms reference evaluation and staged internal-points, simulation/testnet, and future real-wallet architecture. | ATF-13 |
 
@@ -25,7 +26,7 @@ The public [Swarms framework](https://github.com/kyegomez/swarms) supplies matur
 
 ## Review Sequence
 
-The next review should first select the authoritative MoneyBall implementation and integration-gate policy. It should then approve the additive roster registry, initial game catalog and player-machine schema, target-register template, and wallet-stage decision record. This sequence allows the project to add teams and research roles without freezing the taxonomy or conflating labels with implementation readiness.
+The next review should first select the authoritative MoneyBall implementation and integration-gate policy. It should then approve the additive roster registry, initial game catalog and player-machine schema, target-register template, role-label dispatch contract, and wallet-stage decision record. This sequence allows the project to add teams and research roles without freezing the taxonomy, conflating providers with roles, or treating labels as implementation readiness.
 
 ## References
 

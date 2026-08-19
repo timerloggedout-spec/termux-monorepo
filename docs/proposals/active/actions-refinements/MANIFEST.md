@@ -3,9 +3,15 @@ id: actions-refinements
 title: "Issue #192 action-integration refinements"
 author: Manus AI
 posted_at: 2026-08-19
-status: posted
+status: accepted
 priority: P1
-reviewers: []
+reviewers:
+  - id: user
+    role: operator+approver
+    status: accepted
+  - id: Manus AI
+    role: executor
+    status: executing
 related_issues: [192, 175]
 related_prs: [193, 81, 92, 143, 72, 232]
 gates_required: [repo-gate, termux-smoke]
@@ -27,25 +33,32 @@ Issue #192 is open and has one verified GitHub-native cross-reference to merged 
 
 | ID | Role | Status | At | Notes |
 |---|---|---|---|---|
-| Manus AI | author | posted | 2026-08-19 | Created the evidence record and deferred unaccepted workflow changes. |
+| user | operator+approver | accepted | 2026-08-19 | Directed continuation of the batched Issue #192 implementation with the action-research ledger as the governing focus. |
+| Manus AI | author+executor | executing | 2026-08-19 | Created the evidence record and now implements the accepted, bounded AR-01 prerequisite. |
 
 ## Review Log
 
 ### 2026-08-19 — Manus AI
-
 - Disposition: **posted**
 - Evidence: Issue #192; its native timeline cross-reference to PR #193; Issue #175; PRs #81, #92, #143, #193, #232, and #72; and the checked `master-staging` workflow surface.
 - Findings: Existing PR reuse is not safe. A dedicated branch from `master-staging` is the correct future vehicle once the P1 items below are accepted.
 - Safety: Do not use mutable action tags in new workflow code. Do not add secret-writing, direct-push, or autonomous-PR functionality without a narrowly defined threat model and explicit permissions review.
+
+### 2026-08-19 — user / Manus AI
+- Disposition: **accepted for bounded execution**
+- Evidence: The Operator directed continuation of the batched implementation and reaffirmed that the Issue #192 action-research ledger, rather than any one reference adapter, is the governing focus.
+- Scope: Begin with AR-01 only: resolve the documented syntax-affecting conflict markers on a dedicated `master-staging` branch, preserve existing interfaces and least privilege, and validate before considering any marketplace-action addition.
+- Safety: AR-02 through AR-07 retain their existing item boundaries. No secret-writing, direct-push, autonomous-PR, or issue-body-to-shell behavior is authorized by this acceptance.
+
 
 ## Checklist
 
 - [x] Registered in `docs/proposals/registry.yaml`.
 - [x] Items are recorded in `ITEMS.md`.
 - [x] Source and relationship evidence are recorded in `source.md`.
-- [ ] At least one non-author review is recorded.
-- [ ] Status changes to `accepted` before workflow implementation or merge.
-- [ ] A future implementation PR cites `Implements: AR-01` or another accepted item.
+- [x] Operator acceptance is recorded for bounded execution.
+- [x] Status changed to `accepted` before workflow implementation.
+- [ ] An implementation PR cites `Implements: AR-01`.
 - [ ] `repo-gate` and `termux-smoke` pass for any implementation revision.
 - [ ] The proposal is closed after every item reaches a terminal state.
 

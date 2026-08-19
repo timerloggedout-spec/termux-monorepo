@@ -92,7 +92,7 @@ B3 is a scheduled/manual, metadata-only operations report with read-only agent p
 
 ## B6 — Advisory Workflow Lint
 
-B6 adds an advisory, non-blocking actionlint workflow for changed automation surfaces. It has `contents: read` only, immutable action and source pins, no auto-fix, and no pull-request comments. Its baseline and promotion decision are recorded in [B6 actionlint advisory](B6-ACTIONLINT-ADVISORY.md).
+B6 adds two advisory, non-blocking controls: actionlint for changed automation surfaces and dependency review for declared dependency deltas. Both have `contents: read` only, immutable action/source pins, no auto-fix, and no pull-request comments. Their baseline and promotion decisions are recorded in [B6 actionlint advisory](B6-ACTIONLINT-ADVISORY.md) and [B6 dependency-review advisory](B6-DEPENDENCY-REVIEW-ADVISORY.md).
 
 ## References
 

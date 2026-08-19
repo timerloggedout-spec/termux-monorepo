@@ -256,24 +256,29 @@ jobs:
               );
             }
 
+            const codeRabbitCooldownPattern = /review limit reached|review rate limited|action not completed|couldn[’']t start this review|next (?:included )?review (?:will be )?available in/i;
+
             function isNonReviewProviderNotice(body) {
               const value = body || '';
               const checkboxTrigger = /checkboxId[\s\S]{0,500}Trigger review/i.test(value);
               const automaticReviewNotice = /does not receive automatic reviews/i.test(value);
-              const rateLimited = /review limit reached|couldn[’']t start this review|next review available in/i.test(value);
-              return checkboxTrigger || automaticReviewNotice || rateLimited;
+              return checkboxTrigger || automaticReviewNotice || codeRabbitCooldownPattern.test(value);
             }
 
             function cooldownNotice(provider, evidence) {
               if (provider !== 'coderabbit') return { active: false, url: '', detail: '' };
-              const sourceComments = [...evidence.comments, ...evidence.reviewComments];
-              const notice = sourceComments.find(item =>
+              // CodeRabbit may issue the cooldown as an issue comment, inline review
+              // comment, or a pull-request review body. Review-bound evidence must
+              // correspond to the active head; issue comments have no commit_id.
+              const sourceItems = [...evidence.comments, ...evidence.reviewComments, ...evidence.reviews];
+              const notice = sourceItems.find(item =>
                 providerFor(item.user) === provider &&
+                (!item.commit_id || item.commit_id === headSha) &&
                 Date.parse(item.created_at || item.submitted_at || '') >= cycleStartedAt &&
-                /review limit reached|couldn[’']t start this review|next review available in/i.test(item.body || '')
+                codeRabbitCooldownPattern.test(item.body || '')
               );
               if (!notice) return { active: false, url: '', detail: '' };
-              const retry = (notice.body || '').match(/next review available in:\s*\*\*([^*]+)\*\*/i)?.[1]?.trim() || 'provider cooldown';
+              const retry = (notice.body || '').match(/next (?:included )?review (?:will be )?available in:?\s*\**\s*(\d+\s*(?:minutes?|hours?))\**/i)?.[1]?.trim() || 'provider cooldown';
               return { active: true, url: notice.html_url || notice.url || '', detail: retry };
             }
 
@@ -293,6 +298,7 @@ jobs:
 
               const check = evidence.checks.find(item =>
                 item.status === 'completed' &&
+                item.conclusion === 'success' &&
                 Date.parse(item.started_at || item.completed_at || '') >= cycleStartedAt &&
                 (item.app?.slug || '').toLowerCase() === providerCheckApps.get(provider)
               );

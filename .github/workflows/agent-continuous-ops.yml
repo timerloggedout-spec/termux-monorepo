@@ -168,6 +168,10 @@ jobs:
                 await new Promise(r => setTimeout(r, 1200));
                 continue;
               }
+              if (['pending_operator_action', 'action_acknowledged', 'awaiting_provider_response', 'provider_cooldown'].includes(peerStateValue)) {
+                core.info(`PR #${pr.number}: waiting on peer contract (${peerStateValue})`);
+                continue;
+              }
 
               const lastOps = comments
                 .filter(isSelfNudge)

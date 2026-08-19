@@ -394,14 +394,10 @@ jobs:
           REQUIRED_PROVIDERS: ${{ vars.PEER_REQUIRED_PROVIDERS || 'coderabbit,qodo,devin' }}
           PEER_STATE_PUBLISHER_LOGINS: ${{ vars.PEER_STATE_PUBLISHER_LOGINS || github.repository_owner }}
         with:
-<<<<<<< HEAD
           # The base-repository workflow never executes PR code. Prefer an existing
           # full-scope Operator token for idempotent state comments when the
           # repository's default Actions token is limited to read-only access.
           github-token: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
-=======
-          github-token: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
->>>>>>> c04a547 (ci(peer): route CodeRabbit through operator commands)
           script: |
             const marker = '<!-- agent-peer-response-state:v2 -->';
             const statePublisherLogins = new Set((process.env.PEER_STATE_PUBLISHER_LOGINS || '')

@@ -38,6 +38,7 @@ class SourceReport:
     unsupported_files: int = 0
     parser_failures: list[dict[str, str]] = field(default_factory=list)
     unavailable_files: int = 0
+    symlink_files: int = 0
     scopes_matched: int = 0
 
     def as_dict(self) -> dict[str, Any]:
@@ -50,6 +51,7 @@ class SourceReport:
             "unsupported_files": self.unsupported_files,
             "parser_failures": sorted(self.parser_failures, key=lambda item: item["path"]),
             "unavailable_files": self.unavailable_files,
+            "symlink_files": self.symlink_files,
             "scopes_matched": self.scopes_matched,
         }
 
@@ -175,6 +177,9 @@ def collect_source_seed(
 
     for path in iter_files(root):
         report.scanned_files += 1
+        if path.is_symlink():
+            report.symlink_files += 1
+            continue
         relative_path = normalize_relative(path, root)
         if path_is_sensitive(relative_path, exclusions):
             report.excluded_files += 1
@@ -260,11 +265,15 @@ def collect_source_seed(
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore", SyntaxWarning)
                 tree = ast.parse(path.read_text(encoding="utf-8"), filename=relative_path)
-        except (OSError, UnicodeDecodeError, SyntaxError) as exc:
+        except (OSError, UnicodeDecodeError, SyntaxError, RecursionError) as exc:
             report.parser_failures.append({"path": relative_path, "error": str(exc).splitlines()[0]})
             continue
         symbols = SymbolCollector(relative_path)
-        symbols.visit(tree)
+        try:
+            symbols.visit(tree)
+        except RecursionError as exc:
+            report.parser_failures.append({"path": relative_path, "error": str(exc).splitlines()[0]})
+            continue
         for symbol in symbols.symbols:
             nodes.append(symbol)
             edges.append(

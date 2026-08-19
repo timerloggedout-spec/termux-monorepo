@@ -72,3 +72,34 @@ def test_collect_source_seed_reports_bad_python_without_fabricating_symbols(tmp_
 
     assert any(item["path"] == "bad.py" for item in report["parser_failures"])
     assert not any(node["kind"] == "symbol" for node in seed["nodes"])
+
+
+def test_collect_source_seed_rejects_symlinked_files_before_reading_targets(tmp_path):
+    root = tmp_path / "repo"
+    root.mkdir()
+    outside = tmp_path / "outside.py"
+    outside.write_text("password = 'must not be indexed'\n")
+    (root / "linked.py").symlink_to(outside)
+    registry = tmp_path / "scopes.json"
+    write_registry(registry)
+
+    seed, report = collect_source_seed(root, "example", "repo", "main", registry)
+
+    assert not any(node.get("external_id") == "linked.py" for node in seed["nodes"])
+    assert report["symlink_files"] == 1
+
+
+def test_collect_source_seed_records_recursion_error_and_continues(tmp_path, monkeypatch):
+    root = tmp_path / "repo"
+    root.mkdir()
+    (root / "deep.py").write_text("x = 1\n")
+    registry = tmp_path / "scopes.json"
+    write_registry(registry)
+
+    from archwiz.context_relationships import source_collector
+
+    monkeypatch.setattr(source_collector.ast, "parse", lambda *args, **kwargs: (_ for _ in ()).throw(RecursionError("deep tree")))
+    seed, report = collect_source_seed(root, "example", "repo", "main", registry)
+
+    assert any(item["path"] == "deep.py" and "deep tree" in item["error"] for item in report["parser_failures"])
+    assert not any(node.get("kind") == "symbol" for node in seed["nodes"])

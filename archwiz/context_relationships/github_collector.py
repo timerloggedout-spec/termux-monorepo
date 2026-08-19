@@ -100,11 +100,11 @@ def reference_targets(
     """Return explicit internal references as (relation, node ref, number)."""
     if not isinstance(text, str) or not text:
         return []
-    closing_numbers = {
-        int(match.group("number"))
+    closing_spans = [
+        (match.start(), match.end())
         for match in CLOSING_RE.finditer(text)
         if not match.group("owner") or (match.group("owner") == owner and match.group("repo") == repo)
-    }
+    ]
     targets: list[tuple[str, str, int]] = []
     for match in REFERENCE_RE.finditer(text):
         match_owner, match_repo = match.group("owner"), match.group("repo")
@@ -113,7 +113,11 @@ def reference_targets(
         number = int(match.group("number"))
         target = number_to_ref.get(number)
         if target:
-            targets.append(("CLOSES" if number in closing_numbers else "REFERENCES", target, number))
+            is_closing_reference = any(
+                match.start() < closing_end and closing_start < match.end()
+                for closing_start, closing_end in closing_spans
+            )
+            targets.append(("CLOSES" if is_closing_reference else "REFERENCES", target, number))
     return sorted(set(targets), key=lambda item: (item[0], item[1]))
 
 
@@ -765,16 +769,21 @@ def collect_github_seed(
             ),
         },
         "request_count": client.request_count,
+        "checkpoint_eligible": (
+            history_start_page == 1 and len(raw_issues) < max_items and len(raw_pulls) < max_items
+        ),
         "unresolved_internal_reference_count": unresolved_references,
         "counts": dict(sorted(report.items())),
     }
     return seed, report_data
 
 
-def load_checkpoint(path: Path | None) -> str | None:
+def load_checkpoint(path: Path | None, owner: str, repo: str, ref: str) -> str | None:
     if path is None or not path.exists():
         return None
     checkpoint = load_json(path, "GitHub collection checkpoint")
+    if checkpoint.get("repository") != f"{owner}/{repo}" or checkpoint.get("ref") != ref:
+        return None
     value = checkpoint.get("last_successful_at")
     if value is not None and not isinstance(value, str):
         raise CompilationError("GitHub collection checkpoint last_successful_at must be a string")
@@ -851,7 +860,7 @@ def main(argv: list[str] | None = None) -> int:
             raise CompilationError("collection limits must be positive integers")
         if args.max_retries < 0:
             raise CompilationError("max retries must be zero or greater")
-        since = args.since or load_checkpoint(args.checkpoint)
+        since = args.since or load_checkpoint(args.checkpoint, args.owner, args.repo, args.ref)
         client = GitHubClient(token, args.api_url, args.max_retries)
         seed, report = collect_github_seed(
             client,
@@ -872,7 +881,7 @@ def main(argv: list[str] | None = None) -> int:
         args.output.write_text(json.dumps(seed, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         report["retry_count"] = client.retry_count
         args.report.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-        if args.checkpoint is not None:
+        if args.checkpoint is not None and report["checkpoint_eligible"]:
             write_checkpoint(args.checkpoint, report["collected_at"], args.owner, args.repo, args.ref)
         print(json.dumps(report, indent=2, sort_keys=True))
         return 0

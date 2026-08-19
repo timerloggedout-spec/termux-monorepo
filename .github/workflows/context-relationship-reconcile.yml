@@ -20,7 +20,7 @@ permissions:
   pull-requests: read
 
 concurrency:
-  group: context-relationship-reconcile-master-staging
+  group: context-relationship-writer-master-staging
   cancel-in-progress: false
 
 jobs:

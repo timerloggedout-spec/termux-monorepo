@@ -144,7 +144,7 @@ def build_index(
 ) -> dict[str, Any]:
     """Build a complete index, replacing canonical artifacts only after validation."""
     checkpoint_path = output / "checkpoint.json"
-    since = None if full_refresh else load_checkpoint(checkpoint_path)
+    since = None if full_refresh else load_checkpoint(checkpoint_path, owner, repo, ref)
     historical_seed = load_canonical_history(output, owner, repo, ref)
     bootstrap_backfill = historical_seed is None
     collection_max_items = max(max_items, 100) if bootstrap_backfill else max_items
@@ -198,7 +198,9 @@ def build_index(
         write_json(staging_dir / "source-report.json", source_report)
         write_json(staging_dir / "github-report.json", github_report)
         write_json(staging_dir / "merge-report.json", merge_report)
-        write_checkpoint(staging_dir / "checkpoint.json", github_report["collected_at"], owner, repo, ref)
+        checkpoint_eligible = bool(github_report.get("checkpoint_eligible", True))
+        if checkpoint_eligible:
+            write_checkpoint(staging_dir / "checkpoint.json", github_report["collected_at"], owner, repo, ref)
         summary = {
             "builder": BUILDER_ID,
             "repository": f"{owner}/{repo}",
@@ -211,6 +213,7 @@ def build_index(
             "retained_history": historical_seed is not None,
             "bootstrap_backfill": bootstrap_backfill,
             "history_window": history_window,
+            "checkpoint_eligible": checkpoint_eligible,
             "github_requests": github_report["request_count"],
             "github_retries": github_report["retry_count"],
             "parser_failures": len(source_report["parser_failures"]),

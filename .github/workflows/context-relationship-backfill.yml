@@ -22,7 +22,7 @@ permissions:
   pull-requests: read
 
 concurrency:
-  group: context-relationship-backfill-master-staging
+  group: context-relationship-writer-master-staging
   cancel-in-progress: false
 
 jobs:

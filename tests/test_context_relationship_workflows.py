@@ -70,3 +70,14 @@ def test_linear_freshness_workflow_is_manual_read_only_and_metadata_only():
     assert "git push" not in content
     assert "saveIssue" not in content
     assert "issueUpdate" not in content
+
+
+def test_all_context_index_writers_are_pinned_to_staging_and_share_one_lock():
+    publisher = workflow("context-relationship-publish.yml")
+    reconciliation = workflow("context-relationship-reconcile.yml")
+    backfill = workflow("context-relationship-backfill.yml")
+
+    assert "ref: master-staging" in publisher
+    assert "group: context-relationship-writer-master-staging" in publisher
+    assert "group: context-relationship-writer-master-staging" in reconciliation
+    assert "group: context-relationship-writer-master-staging" in backfill

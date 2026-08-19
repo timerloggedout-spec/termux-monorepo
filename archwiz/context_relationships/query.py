@@ -108,6 +108,8 @@ def exact_roots(nodes: Iterable[Mapping[str, Any]], query: str) -> list[dict[str
 
 
 def fuzzy_roots(nodes: Iterable[Mapping[str, Any]], query: str, limit: int) -> list[dict[str, Any]]:
+    if limit < 1:
+        raise QueryError("fuzzy_limit must be positive")
     query_tokens = tokenize(query)
     if not query_tokens:
         return []
@@ -154,9 +156,10 @@ def traverse_verified(
 ) -> tuple[set[str], list[dict[str, Any]]]:
     if depth < 0 or max_nodes < 1:
         raise QueryError("depth must be non-negative and max_nodes must be positive")
+    bounded_root_ids = root_ids[:max_nodes]
     adjacency = build_adjacency(edge for edge in edges if edge.get("classification") == "verified")
-    visited: set[str] = set(root_ids)
-    queue = deque((root_id, 0) for root_id in root_ids)
+    visited: set[str] = set(bounded_root_ids)
+    queue = deque((root_id, 0) for root_id in bounded_root_ids)
     included_edges: dict[str, dict[str, Any]] = {}
     while queue and len(visited) < max_nodes:
         current, current_depth = queue.popleft()
@@ -203,6 +206,8 @@ def timeline(edges: Iterable[Mapping[str, Any]], nodes: Mapping[str, Mapping[str
 
 
 def search_index(index_dir: Path, query: str, depth: int = 2, max_nodes: int = 30, fuzzy_limit: int = 8) -> dict[str, Any]:
+    if depth < 0 or max_nodes < 1 or fuzzy_limit < 1:
+        raise QueryError("depth must be non-negative and max_nodes and fuzzy_limit must be positive")
     nodes = load_jsonl(index_dir / "nodes.jsonl")
     edges = load_jsonl(index_dir / "edges.jsonl")
     nodes_by_id = {str(node.get("id")): node for node in nodes if isinstance(node.get("id"), str)}

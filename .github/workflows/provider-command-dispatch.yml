@@ -1,0 +1,204 @@
+name: Provider command dispatch
+
+# Executes only explicit, allowlisted provider operations. The library is read
+# from the trusted default branch, never from a pull-request head.
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: Open pull-request number
+        required: true
+        type: string
+      provider:
+        description: Provider key from .github/agentic/provider-command-library.json
+        required: true
+        type: choice
+        options: [coderabbit, qodo, devin]
+      action:
+        description: Allowlisted provider action
+        required: true
+        type: string
+      head_sha:
+        description: Required current pull-request head SHA
+        required: true
+        type: string
+      confirm_branch_write:
+        description: Required for actions that can commit or create a stacked PR
+        required: false
+        default: false
+        type: boolean
+  repository_dispatch:
+    types: [provider-command]
+
+concurrency:
+  group: provider-command-${{ github.event.inputs.pr_number || github.event.client_payload.pr_number || github.run_id }}-${{ github.event.inputs.provider || github.event.client_payload.provider || 'unknown' }}-${{ github.event.inputs.action || github.event.client_payload.action || 'unknown' }}
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Execute allowlisted provider command
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        env:
+          OPERATOR_EXECUTOR_LOGINS: ${{ vars.OPERATOR_EXECUTOR_LOGINS || github.repository_owner }}
+          OPERATOR_COMMAND_ACTIONS: ${{ vars.OPERATOR_COMMAND_ACTIONS || 'coderabbit:review_incremental,coderabbit:review_full,coderabbit:autofix_current,coderabbit:autofix_stacked,coderabbit:fix_ci_current,coderabbit:fix_ci_stacked,coderabbit:resolve_merge_conflict,qodo:review,devin:review,devin:autofix_enablement' }}
+          INPUT_PR_NUMBER: ${{ github.event.inputs.pr_number || github.event.client_payload.pr_number }}
+          INPUT_PROVIDER: ${{ github.event.inputs.provider || github.event.client_payload.provider }}
+          INPUT_ACTION: ${{ github.event.inputs.action || github.event.client_payload.action }}
+          INPUT_HEAD_SHA: ${{ github.event.inputs.head_sha || github.event.client_payload.head_sha }}
+          INPUT_CONFIRM_BRANCH_WRITE: ${{ github.event.inputs.confirm_branch_write || github.event.client_payload.confirm_branch_write || 'false' }}
+        with:
+          github-token: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
+          script: |
+            const prNumber = Number(process.env.INPUT_PR_NUMBER);
+            const provider = (process.env.INPUT_PROVIDER || '').trim().toLowerCase();
+            const action = (process.env.INPUT_ACTION || '').trim().toLowerCase();
+            const requestedSha = (process.env.INPUT_HEAD_SHA || '').trim();
+            const confirmBranchWrite = String(process.env.INPUT_CONFIRM_BRANCH_WRITE).toLowerCase() === 'true';
+            const marker = '<!-- operator-provider-command:v1 -->';
+            const operatorLogins = new Set((process.env.OPERATOR_EXECUTOR_LOGINS || context.repo.owner)
+              .split(',').map(value => value.trim().toLowerCase()).filter(Boolean));
+            const allowedActions = new Set((process.env.OPERATOR_COMMAND_ACTIONS || '')
+              .split(',').map(value => value.trim().toLowerCase()).filter(Boolean));
+            if (!prNumber || !provider || !action || !requestedSha) {
+              core.setFailed('pr_number, provider, action, and head_sha are required.');
+              return;
+            }
+            if (!allowedActions.has(`${provider}:${action}`)) {
+              core.setFailed(`${provider}:${action} is not in OPERATOR_COMMAND_ACTIONS.`);
+              return;
+            }
+
+            const defaultBranch = context.payload.repository.default_branch;
+            const { data: libraryContent } = await github.rest.repos.getContent({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              path: '.github/agentic/provider-command-library.json',
+              ref: defaultBranch,
+            });
+            if (Array.isArray(libraryContent) || !libraryContent.content) {
+              core.setFailed('Trusted provider command library is unavailable.');
+              return;
+            }
+            const library = JSON.parse(Buffer.from(libraryContent.content, 'base64').toString('utf8'));
+            const providerEntry = library.providers?.[provider];
+            const command = providerEntry?.commands?.[action];
+            if (!providerEntry || !command) {
+              core.setFailed(`No library entry exists for ${provider}:${action}.`);
+              return;
+            }
+            if (command.requires_confirm_branch_write && !confirmBranchWrite) {
+              core.setFailed(`${provider}:${action} can modify a branch; confirm_branch_write=true is required.`);
+              return;
+            }
+
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber,
+            });
+            if (pr.state !== 'open') {
+              core.setFailed(`PR #${prNumber} is not open.`);
+              return;
+            }
+            if (pr.head.sha !== requestedSha) {
+              core.setFailed(`Stale head SHA: expected ${requestedSha}, current ${pr.head.sha}.`);
+              return;
+            }
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              per_page: 100,
+            });
+            const alreadyRecorded = comments.some(comment =>
+              comment.body?.includes(marker) &&
+              comment.body.includes(`head_sha: ${requestedSha}`) &&
+              comment.body.includes(`provider: ${provider}`) &&
+              comment.body.includes(`action: ${action}`) &&
+              operatorLogins.has((comment.user?.login || '').toLowerCase())
+            );
+            if (alreadyRecorded) {
+              core.info(`Already dispatched ${provider}:${action} for ${requestedSha}.`);
+              return;
+            }
+
+            const result = { mode: 'documented_command', control_id: null, source_comment_id: null };
+            const labels = command.control?.labels || [];
+            if (command.control?.comment_kind === 'issue_comment' && labels.length) {
+              for (const comment of comments) {
+                const author = (comment.user?.login || '').toLowerCase();
+                if (!providerEntry.authors.includes(author) || !comment.body) continue;
+                const checkboxes = [...comment.body.matchAll(/^- \[ \] (<!--\s*\{"checkboxId":"([^"]+)"\}\s*-->)\s*(.+)$/gm)];
+                const checkbox = checkboxes.find(candidate => labels.includes(candidate[3].trim()));
+                if (!checkbox) continue;
+                const updatedBody = comment.body.replace(checkbox[0], `- [x] ${checkbox[1]} ${checkbox[3]}`);
+                try {
+                  await github.rest.issues.updateComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    comment_id: comment.id,
+                    body: updatedBody,
+                  });
+                  result.mode = 'provider_control_patch';
+                  result.control_id = checkbox[2];
+                  result.source_comment_id = comment.id;
+                  core.info(`Activated ${provider}:${action} control ${checkbox[2]}.`);
+                  break;
+                } catch (error) {
+                  core.warning(`Control patch for ${provider}:${action} failed: ${error.message}; using documented command.`);
+                }
+              }
+            }
+
+            if (result.mode === 'documented_command' && command.documented_command) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body: [
+                  command.documented_command,
+                  '',
+                  marker,
+                  `head_sha: ${requestedSha}`,
+                  `provider: ${provider}`,
+                  `action: ${action}`,
+                  `effect: ${command.effect}`,
+                  'request_actor: OPERATOR',
+                  'execution: documented_command',
+                  '',
+                  'Autonomous allowlisted provider-command request. This marker records dispatch, not provider completion.',
+                ].join('\n'),
+              });
+            } else if (result.mode === 'documented_command') {
+              core.setFailed(`${provider}:${action} requires provider configuration and has no GitHub command fallback.`);
+              return;
+            }
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: [
+                marker,
+                `head_sha: ${requestedSha}`,
+                `provider: ${provider}`,
+                `action: ${action}`,
+                `effect: ${command.effect}`,
+                'request_actor: OPERATOR',
+                `execution: ${result.mode}`,
+                `control_id: ${result.control_id || 'none'}`,
+                `source_comment_id: ${result.source_comment_id || 'none'}`,
+                '',
+                'Dispatch receipt. Provider completion remains independently verifiable.',
+              ].join('\n'),
+            });

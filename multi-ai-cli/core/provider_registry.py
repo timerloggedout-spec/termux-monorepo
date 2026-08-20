@@ -107,6 +107,38 @@ _PROVIDERS: tuple[ProviderDescriptor, ...] = (
         initial_state="selected",
         notes="Colab is an execution integration, not a chat-provider replacement.",
     ),
+    ProviderDescriptor(
+        provider_id="perplexity",
+        label="Perplexity AI",
+        runtime_owner="multi-ai-cli.backends.perplexity_web",
+        capability="live-web-wrapper",
+        connection_mode="manual-provider-flow",
+        manual_steps=(
+            "Open the provider sign-in page and complete the provider-owned login flow.",
+            "Extract cookies using the provided helper script.",
+            "Return here and mark the provider complete after local validation.",
+        ),
+        manual_command="python3 scripts/ops/extract_cookies.py",
+        account_url="https://www.perplexity.ai",
+        initial_state="selected",
+        notes="Uses headless API emulation via session cookies.",
+    ),
+    ProviderDescriptor(
+        provider_id="kimi",
+        label="Moonshot Kimi",
+        runtime_owner="multi-ai-cli.backends.kimi_web",
+        capability="live-web-wrapper",
+        connection_mode="manual-provider-flow",
+        manual_steps=(
+            "Open the provider sign-in page and complete the provider-owned login flow.",
+            "Extract cookies using the provided helper script.",
+            "Return here and mark the provider complete after local validation.",
+        ),
+        manual_command="python3 scripts/ops/extract_cookies.py",
+        account_url="https://kimi.moonshot.cn",
+        initial_state="selected",
+        notes="Uses headless API emulation via session cookies.",
+    ),
 )
 
 _BY_ID = {provider.provider_id: provider for provider in _PROVIDERS}

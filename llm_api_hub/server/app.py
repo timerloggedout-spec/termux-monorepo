@@ -138,6 +138,10 @@ class HubRuntime:
             base_url = os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1")
             api_key = os.environ.get("OPENAI_API_KEY")
             extra_headers = {}
+        elif provider == "xai":
+            base_url = os.environ.get("XAI_BASE_URL", "https://api.x.ai/v1")
+            api_key = os.environ.get("XAI_API_KEY")
+            extra_headers = {}
         else:
             raise HubError(400, f"unsupported upstream provider '{provider}'", code="unsupported_provider")
 
@@ -320,13 +324,19 @@ def validate_auth(request: Request) -> None:
 
 
 def configured_models() -> List[str]:
-    models = ["wrapper/deepseek", "wrapper/mistral", "wrapper/grok", "wrapper/claude", "wrapper/gemini", "wrapper/colab"]
+    models = [
+        "wrapper/deepseek", "wrapper/mistral", "wrapper/grok", 
+        "wrapper/claude", "wrapper/gemini", "wrapper/colab",
+        "wrapper/perplexity", "wrapper/kimi"
+    ]
     if os.environ.get("OPENROUTER_API_KEY"):
         models.append("openrouter/<model>")
     if os.environ.get("OPENAI_API_KEY"):
         models.append("openai/<model>")
     if os.environ.get("ANTHROPIC_API_KEY"):
         models.append("anthropic/<model>")
+    if os.environ.get("XAI_API_KEY"):
+        models.append("xai/<model>")
     return models
 
 
@@ -462,7 +472,7 @@ def handle_completion(request: ChatCompletionRequest) -> Any:
     model = request.model.strip()
     if model.startswith("wrapper/"):
         provider = model.split("/", 1)[1]
-        if provider not in {"deepseek", "mistral", "grok", "claude", "gemini", "colab"}:
+        if provider not in {"deepseek", "mistral", "grok", "claude", "gemini", "colab", "perplexity", "kimi"}:
             raise HubError(400, f"unknown wrapper model '{model}'", code="unknown_model")
         text = runtime.complete_wrapper(provider, request)
         response = completion_response(model, text)
@@ -472,6 +482,8 @@ def handle_completion(request: ChatCompletionRequest) -> Any:
         response = runtime.complete_upstream("openai", request)
     elif model.startswith("anthropic/"):
         response = runtime.complete_upstream("anthropic", request)
+    elif model.startswith("xai/"):
+        response = runtime.complete_upstream("xai", request)
     elif "/" not in model and os.environ.get("OPENROUTER_API_KEY"):
         response = runtime.complete_upstream("openrouter", request)
     else:

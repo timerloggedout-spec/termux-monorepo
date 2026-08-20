@@ -67,8 +67,8 @@ The new work is registered as proposal `cedrlang-grimoire-a2a` and its first wor
 
 | Delivered component | What it does | What it deliberately does not do |
 |---|---|---|
-| `protocol.py` | Canonical record normalization, deterministic serialization, SHA-256 digest, mapper collision validation, segment-safe encode/decode, coverage report, A2A envelope/TTL/state/replay validation. | No filesystem writes, subprocesses, network, external service, CID, CEDARscript, or patch routing. |
-| `test_cedrlang_protocol.py` | Six focused tests for deterministic round trips, collisions, literal handles, coverage enforcement, tamper failure, A2A TTL/state/replay behavior. | No real/private mapper test data. |
+| `protocol.py` | Canonical record normalization, deterministic serialization, SHA-256 digest, mapper collision validation, segment-safe encode/decode, coverage report, strict serialized A2A object parsing, and A2A TTL/state/replay validation. | No filesystem writes, subprocesses, network, external service, CID, CEDARscript, or patch routing. |
+| `test_cedrlang_protocol.py` | Seven focused tests for deterministic round trips, collisions, literal handles, coverage enforcement, tamper failure, strict serialized-envelope rejection, and A2A TTL/state/replay behavior. | No real/private mapper test data. |
 | `CEDRLANG-GRIMOIRE-A2A.md` | Public specification of canonical source, mapper boundary, 70% coverage definition, local A2A schema, and CEDARscript separation. | No private mapper custody instructions or operational automation. |
 | Proposal and review evidence | Item ledger, decision record, source inventory, graph outputs, external-boundary record, and review packet. | No PR comment, approval, merge, external workflow, secret, or repository configuration write. |
 
@@ -76,7 +76,7 @@ The new work is registered as proposal `cedrlang-grimoire-a2a` and its first wor
 
 | Validation | Result | Notes |
 |---|---|---|
-| `python3 -m pytest tests/test_cedrlang.py tests/test_cedrlang_protocol.py -q` | **Pass: 17 tests** | 11 historical translator tests plus 6 new foundation tests passed. |
+| `python3 -m pytest tests/test_cedrlang.py tests/test_cedrlang_protocol.py -q` | **Pass: 18 tests** | 11 historical translator tests plus 7 new foundation tests passed. |
 | `python3 -m compileall -q workspace/compression_sandbox/cedrlang/protocol.py tests/test_cedrlang_protocol.py` | **Pass** | New implementation and tests compile. |
 | `ruff check --select F,E9 …` | **Pass** | Compatibility-focused linting is clean. The repository’s global Ruff defaults suggest modern typing rewrites that are not adopted because the documented Python floor is 3.9. |
 | Dependency boundary scan | **Pass** | No execution, network, CID, or CEDARscript import/invocation pattern exists in `protocol.py`. |

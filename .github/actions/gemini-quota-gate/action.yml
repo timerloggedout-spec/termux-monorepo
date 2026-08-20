@@ -4,16 +4,16 @@ description: |
   Free-tier limits are multi-dimensional (RPM + TPM + RPD), NOT a hard
   20/day cap. Typical Flash free tier is ~15 RPM and ~1000–1500 RPD
   (varies by model; Pro is lower). This gate tracks a per-day counter
-  with a safety margin (default 900 RPD) and supports multi-key rotation.
+  aligned to real free-tier RPD (default 1450 — no soft room) and supports multi-key rotation.
   When exhausted, sets skip=true and posts a graceful comment instead of
   hard-failing with TerminalQuotaError. Pair with continue-on-error on
   the Gemini CLI step for transient RPM 429s within the day.
 
 inputs:
   daily-limit:
-    description: 'Max Gemini free-tier requests per day (safety margin on RPD; default 900)'
+    description: 'Max Gemini free-tier requests per day (real free-tier RPD ceiling; default 1450 — no soft room)'
     required: false
-    default: '900'
+    default: '1450'
   pr-number:
     description: 'PR or issue number for the graceful skip comment'
     required: false
@@ -79,7 +79,7 @@ runs:
         LIMIT="$DAILY_LIMIT"
         REMAINING=$(( LIMIT - CURRENT ))
 
-        echo "Gemini quota (primary key): $CURRENT / $LIMIT used today (RPD safety margin), $REMAINING remaining"
+        echo "Gemini quota (primary key): $CURRENT / $LIMIT used today (RPD ceiling), $REMAINING remaining"
         echo "Note: RPM (~15/min Flash free) is enforced by the API; this gate tracks daily RPD only."
 
         if [ "$CURRENT" -ge "$LIMIT" ]; then
@@ -106,7 +106,7 @@ runs:
           echo "skip=true" >> "$GITHUB_OUTPUT"
           echo "remaining=0" >> "$GITHUB_OUTPUT"
           echo "use_backup_key=false" >> "$GITHUB_OUTPUT"
-          echo "::warning::Gemini free-tier daily RPD safety margin exhausted ($CURRENT/$LIMIT). Skipping to avoid TerminalQuotaError. RPD resets at midnight Pacific."
+          echo "::warning::Gemini free-tier daily RPD ceiling exhausted ($CURRENT/$LIMIT). Skipping to avoid TerminalQuotaError. RPD resets at midnight Pacific."
         else
           NEW=$(( CURRENT + 1 ))
           echo "$NEW" > "$COUNTER_FILE"
@@ -148,7 +148,7 @@ runs:
             issue_number: prNumber,
             body: [
               marker,
-              `⚠️ **Gemini CLI** ${process.env.COMMAND || 'review'} skipped — free-tier daily RPD safety margin exhausted.`,
+              `⚠️ **Gemini CLI** ${process.env.COMMAND || 'review'} skipped — free-tier daily RPD ceiling exhausted.`,
               '',
               'Limits are **RPM + TPM + RPD** (not a hard 20/day). RPD resets at midnight Pacific.',
               'This is **not a failure** — CI stays green. Other agents (CodeRabbit, Jules) continue.',

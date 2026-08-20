@@ -4,8 +4,9 @@ Model Router (Optimized Dynamic Adaptive-ness)
 Implements Model Availability Polling with smart temporal caching,
 dynamic ELO-based (3L0) ranking, and soft-budget validation.
 
-Soft budgets raised 2026-08-10 (OPERATOR) to exceed prior free-tier headroom.
-See .github/connectors/llm-peers.yaml for authorized catalog.
+LEADER 2026-08-20: Gemini is PRIMARY for its best roles (review/triage/invoke).
+Omni/OpenRouter are secondary free-tier peers. Soft budgets aligned to real free-tier
+RPD (no artificial soft room). See issue #272 and .github/connectors/llm-peers.yaml.
 
 LEGACY_MODELS is the conservative catalog-unavailable allow-list: only models
 proven in production. Newly listed free models must appear in a live/stale
@@ -115,7 +116,6 @@ def fetch_openrouter_free_models():
     """Poll OpenRouter models endpoint; return free model ids or None on failure."""
     url = "https://openrouter.ai/api/v1/models"
     try:
-        # Lazy load urllib.request to avoid ~50ms module loading overhead during fast/cached runs
         import urllib.request
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
         with urllib.request.urlopen(req, timeout=5) as response:
@@ -214,8 +214,7 @@ def main():
     if has_openrouter:
         polled_free_models = fetch_openrouter_free_models_cached()
 
-    # ELEVATED soft limits (OPERATOR 2026-08-10) — exceed prior capacity.
-    # Soft gates only; downstream 429 must still re-route / fall through.
+    # Real free-tier RPD ceilings (LEADER 2026-08-20) — no artificial soft room.
     limits = {
         "omni/auto/best-free": {"triage": 400, "review": 250, "invoke": 400},
         "openrouter/meta-llama/llama-3.3-70b-instruct:free": {"triage": 80, "review": 80, "invoke": 80},
@@ -225,12 +224,12 @@ def main():
         "openrouter/google/gemma-4-31b-it:free": {"triage": 80, "review": 80, "invoke": 80},
         "openrouter/google/gemma-4-26b-a4b-it:free": {"triage": 80, "review": 80, "invoke": 80},
         "openrouter/cohere/north-mini-code:free": {"triage": 60, "review": 60, "invoke": 60},
-        "gemini-3.1-flash-lite": {"triage": 450, "review": 450, "invoke": 450},
-        "gemini-3.5-flash-lite": {"triage": 450, "review": 450, "invoke": 450},
-        "gemini-2.5-flash-lite": {"triage": 20, "review": 20, "invoke": 20},
-        "gemini-3.5-flash": {"triage": 20, "review": 20, "invoke": 20},
-        "gemini-2.5-flash": {"triage": 20, "review": 20, "invoke": 20},
-        "gemini-3-flash": {"triage": 20, "review": 20, "invoke": 20},
+        "gemini-3.1-flash-lite": {"triage": 1400, "review": 1400, "invoke": 1400},
+        "gemini-3.5-flash-lite": {"triage": 1400, "review": 1400, "invoke": 1400},
+        "gemini-2.5-flash-lite": {"triage": 1000, "review": 1000, "invoke": 1000},
+        "gemini-3.5-flash": {"triage": 1400, "review": 1400, "invoke": 1400},
+        "gemini-2.5-flash": {"triage": 1400, "review": 1400, "invoke": 1400},
+        "gemini-3-flash": {"triage": 1400, "review": 1400, "invoke": 1400},
     }
 
     role_peers = {
@@ -263,6 +262,34 @@ def main():
         "review": ["gemini-3.5-flash", "gemini-2.5-flash", "gemini-3-flash", "gemini-3.1-flash-lite"],
         "invoke": ["gemini-3.1-flash-lite", "gemini-3.5-flash-lite"],
     }
+
+    # LEADER 2026-08-20: Gemini PRIMARY for best roles. Peers secondary.
+    if has_gemini:
+        gemini_candidates = []
+        for model in role_residuals.get(role, []):
+            model_entry = success_matrix.get("models", {}).get(model, {})
+            elo = model_entry.get("elo", 1000)
+            suitability = model_entry.get("role_suitability", {}).get(role, 1.0)
+            score = elo * suitability
+            gemini_candidates.append({"provider": "gemini", "model": model, "score": score})
+        gemini_candidates.sort(key=lambda x: x["score"], reverse=True)
+        for candidate in gemini_candidates:
+            mod = candidate["model"]
+            limit_dict = limits.get(mod, {})
+            limit = limit_dict.get(role, limit_dict.get("default", 1000))
+            used = get_usage("gemini", mod)
+            if used < limit:
+                new_used = increment_usage("gemini", mod)
+                reason = f"role={role} gemini={mod} used={new_used}/{limit} (ranked score={candidate['score']}) PRIMARY"
+                print(f"::set-output name=provider::gemini")
+                print(f"::set-output name=model::{mod}")
+                print(f"::set-output name=skip::false")
+                print(f"::set-output name=reason::{reason}")
+                if "GITHUB_OUTPUT" in os.environ:
+                    with open(os.environ["GITHUB_OUTPUT"], "a") as go:
+                        go.write(f"provider=gemini\nmodel={mod}\nskip=false\nreason={reason}\n")
+                return
+            sys.stderr.write(f"Gemini primary soft budget exhausted: {mod} ({used}/{limit})\n")
 
     peer_candidates = []
     for provider, model in role_peers.get(role, []):
@@ -298,7 +325,7 @@ def main():
         used = get_usage(prov, mod)
         if used < limit:
             new_used = increment_usage(prov, mod)
-            reason = f"role={role} peer={prov} model={mod} used={new_used}/{limit} (ranked score={candidate['score']})"
+            reason = f"role={role} peer={prov} model={mod} used={new_used}/{limit} (ranked score={candidate['score']}) secondary"
             print(f"::set-output name=provider::{prov}")
             print(f"::set-output name=model::{mod}")
             print(f"::set-output name=skip::false")
@@ -309,34 +336,7 @@ def main():
             return
         sys.stderr.write(f"Peer soft budget exhausted: {prov}/{mod} ({used}/{limit})\n")
 
-    if has_gemini:
-        gemini_candidates = []
-        for model in role_residuals.get(role, []):
-            model_entry = success_matrix.get("models", {}).get(model, {})
-            elo = model_entry.get("elo", 1000)
-            suitability = model_entry.get("role_suitability", {}).get(role, 1.0)
-            score = elo * suitability
-            gemini_candidates.append({"provider": "gemini", "model": model, "score": score})
-        gemini_candidates.sort(key=lambda x: x["score"], reverse=True)
-        for candidate in gemini_candidates:
-            mod = candidate["model"]
-            limit_dict = limits.get(mod, {})
-            limit = limit_dict.get(role, limit_dict.get("default", 15))
-            used = get_usage("gemini", mod)
-            if used < limit:
-                new_used = increment_usage("gemini", mod)
-                reason = f"role={role} gemini={mod} used={new_used}/{limit} (ranked score={candidate['score']}) residual"
-                print(f"::set-output name=provider::gemini")
-                print(f"::set-output name=model::{mod}")
-                print(f"::set-output name=skip::false")
-                print(f"::set-output name=reason::{reason}")
-                if "GITHUB_OUTPUT" in os.environ:
-                    with open(os.environ["GITHUB_OUTPUT"], "a") as go:
-                        go.write(f"provider=gemini\nmodel={mod}\nskip=false\nreason={reason}\n")
-                return
-            sys.stderr.write(f"Gemini residual soft budget exhausted: {mod} ({used}/{limit})\n")
-
-    reason = f"all free paths exhausted (omni/openrouter peers + gemini residual) role={role}"
+    reason = f"all free paths exhausted (gemini primary + omni/openrouter secondary) role={role}"
     print("::set-output name=provider::none")
     print("::set-output name=model::")
     print("::set-output name=skip::true")

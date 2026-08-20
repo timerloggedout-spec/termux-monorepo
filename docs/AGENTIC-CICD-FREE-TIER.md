@@ -8,7 +8,7 @@ This document describes the free-tier-only autonomous / agentic development CI/C
 |-----------|------|--------|-----------------|
 | **Jules** (Google Labs) | Async autonomous coding agent (fix bugs, features, tests) | Integrated (`.Jules/`, `agent-review-auto-jules.yml`, `agent-jules-on-issues.yml`) | Introductory daily task limits |
 | **CodeRabbit** | AI PR review + autofix | Integrated (`.coderabbit.yaml`) | Free summaries + limited reviews; full free for public/OSS |
-| **Gemini CLI GitHub Action** | Issue triage, PR review, `@gemini-cli` on-demand teammate | Integrated | Google AI Studio free quota |
+| **Gemini CLI GitHub Action** | Issue triage, PR review, `@gemini-cli` on-demand teammate (**PRIMARY** free-tier path for those roles; Omni/OpenRouter secondary) | Integrated | Google AI Studio free quota — full RPD maximization, no soft room (issue #272) |
 | **GitHub MCP Server** | Tool access for agents (issues/PRs/code) | Usable via Gemini settings | Fully free / OSS |
 | Render (Marketplace) | Deploy / self-healing hooks (noted in README) | Already installed per README | Free tier exists |
 
@@ -40,3 +40,14 @@ GitHub only runs `issues` / `issue_comment` workflows from the **default branch*
 - Jules mention triggers similarly restricted.
 - Fork PRs are excluded from automatic review triggers.
 - GEMINI.md encodes the same hard rules as AGENTS.md (no secrets in git, master-staging, gates) plus coordination rules.
+
+## Routing policy (LEADER 2026-08-20)
+
+See issues **#272** and **#175**.
+
+- **Gemini is PRIMARY** for review / triage / invoke (maximize Official Agent Account free-tier RPD).
+- OmniRoute and OpenRouter are **secondary** free-tier peers.
+- Soft budgets aligned to real free-tier ceilings (~1000–1500 RPD Flash-class); **no artificial soft room**.
+- Quota skips post graceful comments; CI stays green (`continue-on-error`).
+- Jules remains the primary **async builder**; Gemini remains reviewer/triage/on-demand teammate.
+- Prefer **minimal / fat PRs** (stack related changes) to reduce PR sprawl and Qoda pressure.

@@ -28,4 +28,8 @@ The following are excluded from this proposal: migrating the root `AGENTS.md` or
 
 ## Evidence Basis
 
-The decision is based on the bounded graph rooted at PR #177, all-state title inventory, local source inventory, and the operator scope guidance for the dirty Linguist PRs. It preserves the valid requirements for deterministic translation and A2A protocol development while correcting the current scope mix between a document translator and an execution-capable code-editing system.
+The decision is based on the bounded graph rooted at PR #177, all-state title inventory, local source inventory, and the operator scope guidance for the dirty Linguist PRs. It preserves the valid requirements for deterministic translation and A2A protocol development while correcting the current scope mix between a document translator and an execution-capable code-editing system. The published evidence packet and implementation are tracked through [issue #274](https://github.com/timerloggedout-spec/termux-monorepo/issues/274), which is cross-linked to the A2A proposal [#117](https://github.com/timerloggedout-spec/termux-monorepo/issues/117) and operator gate record [#175](https://github.com/timerloggedout-spec/termux-monorepo/issues/175).
+
+## Pending Approval Boundary
+
+This record governs only the deterministic local foundation. It does **not** authorize a private mapper service, a public obfuscation claim, authenticated transport, CEDARscript/CID integration, external installation, or a migration of agent-contact documents. `RESEARCH.md` records the outstanding custody, canonical-source, transport, coverage, baseline-remediation, review, and vote requirements. The proposal remains `draft` until those decisions and a non-author review are recorded.

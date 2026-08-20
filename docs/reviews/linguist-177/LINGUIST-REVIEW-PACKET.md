@@ -90,11 +90,11 @@ The new work is registered as proposal `cedrlang-grimoire-a2a` and its first wor
 
 > **Status: 🔴 NO-GO for the current stack.** The PR is dirty and contains a broad 161-file scope that mixes the Linguist codec with unrelated workflows, dependencies, ICM, and runtime material. The current public regex mapping, tracked pointer index, and Grimoire dictionaries do not constitute a private authorized mapper, and the diff does not establish the requested 70% metric, canonical digest, mapper version/collision policy, or A2A envelope contract. Do not force-merge or rebase this stack to regain mergeability. Preserve only isolated, tested translator improvements through the successor proposal `cedrlang-grimoire-a2a` (`LGA-01`), which adds a deterministic non-executing codec and local A2A validator while keeping CEDARscript/CID execution separate. Repository integration remains conditional on a non-author proposal review, accepted status, and resolution or explicit baseline disposition for the current gate/registry blockers. [2] [3] [7]
 
-This text is a draft only. It has not been posted to GitHub.
+This full text remains the review packet's canonical draft. A concise, evidence-linked disposition summary was posted to [PR #177](https://github.com/timerloggedout-spec/termux-monorepo/pull/177#issuecomment-5361408055), [PR #154](https://github.com/timerloggedout-spec/termux-monorepo/pull/154#issuecomment-5361406746), [issue #117](https://github.com/timerloggedout-spec/termux-monorepo/issues/117#issuecomment-5361410703), and [issue #175](https://github.com/timerloggedout-spec/termux-monorepo/issues/175#issuecomment-5361403327). The complete evidence bundle and subtasks are published in [issue #274](https://github.com/timerloggedout-spec/termux-monorepo/issues/274). None of those cross-references is an approval, formal review verdict, merge, or private-mapper authorization.
 
 ## Required Next Decisions
 
-The next safe step is a non-author review of proposal `cedrlang-grimoire-a2a`. If accepted, it can be advanced through the ordinary feature-branch gate process. A later separate proposal must choose an approved private-mapper custody service, define access/rotation/audit behavior, and decide whether any canonical agent document should generate a machine projection. No migration of `AGENTS.md`, `CLAUDE.md`, ICM files, README, CID, CEDARscript, or workflows should proceed from this review alone.
+The next safe step is a non-author review of proposal `cedrlang-grimoire-a2a`, recorded through [issue #274](https://github.com/timerloggedout-spec/termux-monorepo/issues/274) and `RESEARCH.md`. If accepted, it can be advanced through the ordinary feature-branch gate process. A later separate proposal must choose an approved private-mapper custody service, define access/rotation/audit behavior, and decide whether any canonical agent document should generate a machine projection. No migration of `AGENTS.md`, `CLAUDE.md`, ICM files, README, CID, CEDARscript, or workflows should proceed from this review alone. Agents repeating or improving this evidence process should follow the linked [context-relationship graph reuse case study](context-relationship-graph-reuse.md).
 
 ## References
 
@@ -109,3 +109,5 @@ The next safe step is a non-author review of proposal `cedrlang-grimoire-a2a`. I
 9. [Existing CedrLang tests](../../../tests/test_cedrlang.py) and [new protocol tests](../../../tests/test_cedrlang_protocol.py)
 10. [Issue #117 — Agent2Agent Comms Proposal](https://github.com/timerloggedout-spec/termux-monorepo/issues/117)
 11. [Root AGENTS.md](../../../AGENTS.md), [root CLAUDE.md](../../../CLAUDE.md), and [ICM change process](../../icm/processes/change-and-validate.md)
+12. [Context-relationship graph reuse case study](context-relationship-graph-reuse.md)
+13. [Linguist publication and subtask tracker, issue #274](https://github.com/timerloggedout-spec/termux-monorepo/issues/274)

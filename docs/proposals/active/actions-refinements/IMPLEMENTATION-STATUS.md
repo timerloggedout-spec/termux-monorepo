@@ -1,6 +1,6 @@
 # Implementation Status — Issue #192 Action Refinements
 
-**Program status:** Consolidated PR #261 merged AR-01 through AR-07 controls and the B1, B2, B3, and B6 advisory set into `master-staging` at `2bc05db92bd20441431ff149749918feef299cee`. Promotion PR #266 reconciled that integration with concurrent `master` work and merged at `ef0f75bd198507373dd45c9943468d2821655fef` without force-updating history. The first default-branch Scorecard dispatch, [run #32332605273](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32332605273), succeeded. B4 remains blocked pending separate writer-authority acceptance; B5 remains deferred because no concrete external capacity/service use case exists.
+**Program status:** Consolidated PR #261 merged AR-01 through AR-07 controls and the B1, B2, B3, and B6 advisory set into `master-staging` at `2bc05db92bd20441431ff149749918feef299cee`. Promotion PR #266 reconciled that integration with concurrent `master` work and merged at `ef0f75bd198507373dd45c9943468d2821655fef` without force-updating history. The first default-branch Scorecard dispatch, [run #32332605273](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32332605273), succeeded. PR #269 subsequently merged the Issue #268 remedy for missing Gemini reusable-workflow input declarations into `master` at `933d65d0e2c49e28079f300f5a516932330c60e7`. B4 remains blocked pending separate writer-authority acceptance; B5 remains deferred because no concrete external capacity/service use case exists.
 
 > **Sequencing rule:** The repository must land AR-01’s baseline repair before any runtime workflow change from this program. No workflow in this document gains write, secret-management, or issue-derived execution authority merely because an item is specified.
 
@@ -15,6 +15,7 @@
 | AR-05 — changed-file filter | B1 adopts one immutable `dorny/paths-filter` owner that emits booleans only. | Yes, integrated through PR #261. | Promotion validation and review of fixture coverage. |
 | AR-06 — native execution controls | B1/B2 preserve native concurrency, markers, checks, summaries, and dispatch owners. | Yes, bounded additions only. | Demonstrated owner and test case for any future primitive. |
 | AR-07 — non-adoption controls | Explicitly recorded below. | No. | Separate threat model and approved minimal-permission design per privileged capability. |
+| AR-08 — team context alignment | Verified Issue #175 relationship and post-promotion evidence are recorded in the proposal-local status records. | No. | Documentation-only PR review; no workflow, authority, or generated-graph change. |
 
 ## AR-02 — First-Party Ownership Inventory
 
@@ -86,6 +87,18 @@ B1 adds one narrow `dorny/paths-filter` owner in `workflow-surface-policy.yml`, 
 | `issue-ai-agent` | **Not adopted.** | Prompt-injection threat model, tool allowlist, credit cap, redacted output contract, and read-only pilot review. |
 | Direct issue/comment-to-shell | **Prohibited.** | No current exception path. Event text remains data and cannot become a command. |
 
+## AR-08 — Team Context Alignment
+
+Issue #175 is the Grok-authored OPERATOR priority matrix and is a verified GitHub-native cross-reference on Issue #192. Its status text is operational context rather than implementation authority. The current program state is therefore maintained in the proposal-local records: `MANIFEST.md` records acceptance and provenance, `ITEMS.md` owns the work-item boundary, this file owns live implementation/promotion status, and `source.md` records relationship evidence.
+
+| Verified relationship | Current interpretation | Evidence boundary |
+|---|---|---|
+| Issue #175 → Issue #192 | The matrix identifies actions and gate health as operational priorities; it does not authorize a change to Issue #192 scope. | Native cross-reference on the Issue #192 timeline. |
+| PR #261 → PR #266 → PR #267 | The approved controls moved from staging integration to master promotion and then a verification record. | Implementation and promotion history only; B4/B5 gates remain intact. |
+| Issue #268 → PR #269 | Missing reusable-workflow input declarations were corrected and the PR was merged to `master`. | A corrective workflow change, not a new capability grant. |
+
+A search of root `README.md`, `AGENTS.md`, and `CLAUDE.md` found no direct Grok/Issue #175 association. This proposal-local record is the appropriate team-facing location. The historic relationship graph was used as a bounded discovery aid; because its last collection predates the latest master promotion, the current GitHub timeline is the controlling evidence. No graph artifact was regenerated or edited.
+
 ## B3 — Read-Only Agentic Operations Pilot
 
 B3 is a scheduled/manual, metadata-only operations report with read-only agent permissions, a 40-AI-Credit per-run ceiling, an 80-credit daily ceiling, four turns, an explicit prompt-injection corpus, and a single isolated `create_issue` safe-output type. The generated lock workflow is reviewed alongside the Markdown source. See [B3 agentic operations pilot](B3-AGENTIC-OPERATIONS-PILOT.md).
@@ -100,7 +113,7 @@ B6 adds four advisory controls: actionlint for changed automation surfaces, depe
 |---|---|---|
 | [Decision ledger](ACTION-DECISION-LEDGER.md) | Governing B0–B6 decisions and implementation checklist. | Updated for B1/B2/B3/B6 completion; B4/B5 boundaries retained. |
 | [Proposal manifest](MANIFEST.md) | Acceptance, provenance, review log, and completion checklist. | Updated with PR #261 staging integration, PR #266 master promotion, and the verified Scorecard dispatch. |
-| `ITEMS.md` | AR-01 through AR-07 work-item boundaries. | Remains the item-level authority; B4 remains blocked. |
+| `ITEMS.md` | AR-01 through AR-08 work-item boundaries. | Remains the item-level authority; B4 remains blocked and AR-08 is documentation-only pending review. |
 | [B1 policy](B1-WORKFLOW-SURFACE-POLICY.md) and [B2 evidence](B2-WORKFLOW-SURFACE-EVIDENCE.md) | Deterministic routing and artifact contracts. | Implemented and carried forward by promotion. |
 | [B3 pilot](B3-AGENTIC-OPERATIONS-PILOT.md) | Read-only agentic workflow, lock file, and bounded output contract. | Implemented and carried forward by promotion. |
 | B6 evidence records | Actionlint, dependency review, CodeQL, and Scorecard advisory controls. | Implemented and verified; Scorecard default-branch run #32332605273 passed its digest preflight and publisher jobs. |

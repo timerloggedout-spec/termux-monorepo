@@ -13,7 +13,7 @@ reviewers:
     role: executor
     status: executing
 related_issues: [192, 175]
-related_prs: [193, 81, 92, 143, 72, 232, 261]
+related_prs: [193, 81, 92, 143, 72, 232, 261, 266, 267, 269]
 gates_required: [repo-gate, termux-smoke]
 ---
 
@@ -21,11 +21,11 @@ gates_required: [repo-gate, termux-smoke]
 
 ## Summary
 
-This proposal turns Issue #192’s starter list of GitHub Actions into a constrained implementation program. Consolidated PR #261 repaired the AR-01 baseline and delivered the approved B1, B2, B3, and B6 controls; it merged into `master-staging` at `2bc05db92bd20441431ff149749918feef299cee`. The current promotion branch reconciles that validated integration history with concurrent `master` work before default-branch promotion. B4 and B5 retain their explicit authority/use-case gates.
+This proposal turns Issue #192’s starter list of GitHub Actions into a constrained implementation program. Consolidated PR #261 repaired the AR-01 baseline and delivered the approved B1, B2, B3, and B6 controls; it merged into `master-staging` at `2bc05db92bd20441431ff149749918feef299cee`. Promotion PR #266 reconciled that history into `master`, and PR #267 recorded the default-branch verification. PR #269 subsequently corrected the declared reusable-workflow inputs behind the Gemini Dispatch `startup_failure` tracked by Issue #268. B4 and B5 retain their explicit authority/use-case gates.
 
 ## Evidence and Scope
 
-Issue #192 is open and has one verified GitHub-native cross-reference to merged PR #193. The Issue #192 timeline also cross-references Issue #175, whose operator matrix names the workflow quota-gate PR #81 and repository gates as current operational concerns. PR #193 and PR #232 are merged, so neither can be extended. PRs #81, #143, and #72 are open but conflicted; #81 and #143 also target `master`, contrary to the repository integration rule. PR #92 is workflow-security work targeting `master` and is not an unreviewed carrier for functional additions.
+Issue #192 has verified GitHub-native cross-references to Issue #175, PR #193, the consolidated implementation PR #261, promotion PR #266, verification PR #267, and the Issue #268 remediation PR #269. Issue #175 is the Grok-authored OPERATOR priority matrix; it provides operational context but is not the authority for Issue #192 implementation scope. The canonical team-facing records are this manifest, `ITEMS.md`, `IMPLEMENTATION-STATUS.md`, and `source.md`. PR #193 and PR #232 are merged, so neither can be extended. PRs #81, #143, and #72 remain separate candidates and are not implementation authority for this proposal.
 
 > The implemented controls remain advisory or read-only unless their own documented boundary grants a narrowly scoped publication capability. No secret-writing, direct push, autonomous PR, or issue/comment-to-shell capability is authorized by this manifest.
 
@@ -61,6 +61,7 @@ Issue #192 is open and has one verified GitHub-native cross-reference to merged 
 - [x] Consolidated implementation PR #261 cites Issue #192 deliverables and is merged into `master-staging`.
 - [x] `repo-gate`, `termux-smoke`, deterministic suites, compiler validation, registry validation, and diff hygiene passed for the integrated revision.
 - [x] Promotion PR #266 is merged into `master` at `ef0f75bd198507373dd45c9943468d2821655fef` and the default-branch Scorecard manual dispatch is recorded.
+- [ ] AR-08 team-status alignment is awaiting review through the dedicated documentation pull request.
 - [ ] The proposal is closed after B4/B5 receive terminal decisions and all advisory promotion reviews are complete.
 
 ## Links
@@ -85,3 +86,9 @@ Issue #192 is open and has one verified GitHub-native cross-reference to merged 
 - Disposition: **promoted and default-branch verified**
 - Evidence: PR #266 merged the validated reconciliation into `master` at `ef0f75bd198507373dd45c9943468d2821655fef`. The Scorecard controlled-update workflow completed its first manual default-branch run, [#32332605273](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32332605273), with successful digest preflight and publisher jobs.
 - Safety: Promotion used a merge-based reconciliation without force-updating history. The verified Scorecard workflow remains advisory and has no repository-content, issue, PR, secret, or direct-push authority.
+
+### 2026-08-20 — Manus AI
+- Disposition: **AR-08 team-status alignment submitted for review**
+- Evidence: A bounded context-relationship query and direct GitHub timeline collection verified the Issue #175 → Issue #192 relationship and the subsequent PR #261, PR #266, PR #267, PR #269, and Issue #268 links. PR #269 merged to `master` at `933d65d0e2c49e28079f300f5a516932330c60e7`, closing the documented Gemini Dispatch input-declaration failure.
+- Findings: Grok’s OPERATOR matrix is associated with this program through Issue #175 and the verified Issue #192 timeline edge, not through root `README.md`, `AGENTS.md`, or `CLAUDE.md`. Proposal-local records remain the appropriate team-facing status surface. At collection time, the only failing status on the current `master` revision was the external `ci/gitlab/gitlab.com` context; Vercel was successful.
+- Safety: AR-08 is documentation-only. It neither changes workflow behavior nor grants new write, secret, dispatch, or issue-derived execution authority; generated relationship-graph artifacts remain untouched.

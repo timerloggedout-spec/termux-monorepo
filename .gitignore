@@ -124,6 +124,10 @@ cli-synthegration/workspace/correlation/
 cli-synthegration/workspace/provenance/
 cli-synthegration/codex/
 
+# === Hub-local execution state ===
+.hub_mcp/
+# Redacted job result envelopes may be reviewed under hub_mcp/results/.
+
 # === Build artifacts and caches ===
 workspace/maxc/target/
 CTranslate2/.git/

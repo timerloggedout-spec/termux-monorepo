@@ -166,6 +166,12 @@ def load_config() -> Dict[str, Any]:
     return {}
 
 def save_config(cfg: Dict[str, Any]):
+    # Ensure directory is secured
+    CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+    try:
+        CONFIG_DIR.chmod(0o700)
+    except Exception:
+        pass
     CONFIG_FILE.write_text(json.dumps(cfg, indent=2))
     if CONFIG_FILE.exists() and not CONFIG_FILE.is_symlink():
         try:

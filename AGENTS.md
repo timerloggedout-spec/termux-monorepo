@@ -44,7 +44,6 @@ registry.yaml → pick todo item → branch from master
 
 Credential rotation and history rewrite require Operator (human) authorization.
 See `docs/SECURITY-REMEDIATION.md`.
-
 ---
 
 # Technical Documentation

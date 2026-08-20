@@ -16,6 +16,7 @@ from reconcile_repository_surface import (  # noqa: E402
     Repository,
     _decode_content,
     _report,
+    _summary_report,
     _workflow_state,
     list_accessible_repositories,
     reconcile,
@@ -125,6 +126,23 @@ class RepositorySurfaceReconcilerTests(unittest.TestCase):
         self.assertEqual("excluded", findings[2].state)
         write_pr.assert_called_once()
         self.assertEqual(missing, write_pr.call_args.args[1])
+
+    def test_summary_report_excludes_repository_identifiers_and_details(self) -> None:
+        findings = [
+            Finding("timerloggedout-spec/private-repository", "master", "missing", "report", "Internal diagnostic detail"),
+            Finding("octo-org/another-private-repository", "main", "current", "none", "Current"),
+        ]
+        detailed = _report(findings, source_repository="timerloggedout-spec/termux-monorepo", apply=False)
+        summary = _summary_report(detailed)
+        serialized = str(summary)
+
+        self.assertEqual(2, summary["repository_count"])
+        self.assertEqual({"missing": 1, "current": 1}, summary["counts"])
+        self.assertEqual({"report": 1, "none": 1}, summary["operations"])
+        self.assertNotIn("private-repository", serialized)
+        self.assertNotIn("Internal diagnostic detail", serialized)
+        self.assertNotIn("source_repository", summary)
+        self.assertNotIn("findings", summary)
 
     def test_missing_management_marker_rejects_before_repository_reads(self) -> None:
         with patch("reconcile_repository_surface.list_accessible_repositories") as list_repositories:

@@ -364,6 +364,26 @@ def _report(findings: list[Finding], *, source_repository: str, apply: bool) -> 
     }
 
 
+def _summary_report(report: dict[str, Any]) -> dict[str, Any]:
+    """Return an artifact-safe projection with no repository identifiers or details."""
+    findings = report.get("findings", [])
+    operations: dict[str, int] = {}
+    if isinstance(findings, list):
+        for finding in findings:
+            if isinstance(finding, dict):
+                operation = str(finding.get("operation", "unknown"))
+                operations[operation] = operations.get(operation, 0) + 1
+    return {
+        "schema_version": report.get("schema_version"),
+        "credential_lane": report.get("credential_lane"),
+        "mode": report.get("mode"),
+        "counts": report.get("counts", {}),
+        "operations": operations,
+        "repository_count": len(findings) if isinstance(findings, list) else 0,
+        "redaction": "Repository names, branches, PR URLs, and diagnostic details are intentionally omitted.",
+    }
+
+
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source-repo", required=True, help="Canonical control-plane repository, OWNER/REPO.")
@@ -372,7 +392,8 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         default=MANAGED_WORKFLOW_PATH,
         help="Canonical workflow path relative to the repository root.",
     )
-    parser.add_argument("--report", required=True, help="Path for the JSON reconciliation report.")
+    parser.add_argument("--report", required=True, help="Path for the detailed local JSON reconciliation report.")
+    parser.add_argument("--summary-report", help="Optional path for an artifact-safe aggregate report without repository identifiers.")
     parser.add_argument("--apply", action="store_true", help="Create or update reviewable pull requests; never merge.")
     return parser.parse_args(argv)
 
@@ -395,6 +416,10 @@ def main(argv: list[str] | None = None) -> int:
     report_path = Path(args.report)
     report_path.parent.mkdir(parents=True, exist_ok=True)
     report_path.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    if args.summary_report:
+        summary_path = Path(args.summary_report)
+        summary_path.parent.mkdir(parents=True, exist_ok=True)
+        summary_path.write_text(json.dumps(_summary_report(report), indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"mode": report["mode"], "counts": report["counts"]}, sort_keys=True))
     return 0
 

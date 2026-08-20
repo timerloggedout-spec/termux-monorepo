@@ -41,17 +41,19 @@ jobs:
           arguments=(
             --source-repo "${GITHUB_REPOSITORY}"
             --source-workflow ".github/workflows/publish-wiki.yml"
-            --report "reports/repository-surface.json"
+            --report "reports/repository-surface-detail.json"
+            --summary-report "reports/repository-surface-summary.json"
           )
           if [[ "${APPLY}" == "true" ]]; then
             arguments+=(--apply)
           fi
           python3 scripts/agentic/reconcile_repository_surface.py "${arguments[@]}"
+          rm -f reports/repository-surface-detail.json
 
-      - name: Upload reconciliation report
+      - name: Upload redacted reconciliation summary
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: repository-surface-${{ github.run_id }}
-          path: reports/repository-surface.json
+          path: reports/repository-surface-summary.json
           if-no-files-found: error
           retention-days: 14

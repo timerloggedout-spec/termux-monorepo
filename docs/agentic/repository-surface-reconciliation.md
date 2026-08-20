@@ -4,7 +4,7 @@
 
 ## Purpose and boundary
 
-The repository surface is reconciled so that repositories reachable by the existing operator token are automatically **discovered** and assessed for the managed GitHub Wiki publisher. A daily scheduled run produces an immutable report artifact. A human may manually request an apply run; that run can create or update a dedicated `automation/wiki-publisher` branch and reviewable pull request in an eligible repository. It never pushes to a default branch, merges a pull request, overwrites a workflow lacking the managed marker, or interprets issue, pull-request, comment, or external-wiki content as an instruction.
+The repository surface is reconciled so that repositories reachable by the existing operator token are automatically **discovered** and assessed for the managed GitHub Wiki publisher. A daily scheduled run produces a redacted aggregate artifact; the detailed repository inventory exists only on the ephemeral runner and is deleted before artifact upload. A human may manually request an apply run; that run can create or update a dedicated `automation/wiki-publisher` branch and reviewable pull request in an eligible repository. It never pushes to a default branch, merges a pull request, overwrites a workflow lacking the managed marker, or interprets issue, pull-request, comment, or external-wiki content as an instruction.
 
 > **DeepWiki boundary:** Devin/DeepWiki remains a discovery and generation aid. The official DeepWiki documentation supports generation steering with `.devin/wiki.json`, but it does not document a repository-wide private-wiki Markdown export endpoint. Therefore this control plane does **not** fetch private Devin Wiki content or treat it as evidence that authorizes a GitHub change. GitHub Wiki publication remains an in-repository, reviewable Markdown flow.
 
@@ -12,7 +12,7 @@ The repository surface is reconciled so that repositories reachable by the exist
 
 | Stage | Trigger | Credential lane | Result | Mutation boundary |
 |---|---|---|---|---|
-| Discovery | Daily scheduled run | Existing operator-token precedence, scoped to the job | JSON report of `current`, `missing`, `drifted`, `unmanaged`, `excluded`, or `blocked` repositories | Read-only |
+| Discovery | Daily scheduled run | Existing operator-token precedence, scoped to the job | Redacted aggregate artifact of `current`, `missing`, `drifted`, `unmanaged`, `excluded`, or `blocked` counts; detailed inventory stays on the runner | Read-only |
 | Reconciliation | Manually dispatched with `apply=true` | The same job-scoped operator token | One stable branch and PR per eligible repository | Branch and PR only |
 | Publication | A merged target-repository change under `wiki/**` | Target repository `GITHUB_TOKEN` | GitHub Wiki receives the local `wiki/` Markdown projection | GitHub Wiki only |
 
@@ -39,7 +39,7 @@ The publisher is restricted to the repository default branch, uses immutable act
 ## Operator runbook
 
 1. Merge the control-plane PR after the normal repository checks are green. No new secret or GitHub App setup is required for this lane.
-2. Review the daily reconciliation artifact. It inventories only the user, organization, and collaboration repositories available to the existing operator token.
+2. Review the daily reconciliation artifact. It contains aggregate state and operation counts only; repository identifiers, branches, PR URLs, and diagnostics remain on the ephemeral runner. The underlying discovery scope is limited to user, organization, and collaboration repositories available to the existing operator token.
 3. Repositories listed as `unmanaged` need an explicit local ownership decision; they will never be overwritten automatically.
 4. When the report is acceptable, run **Reconcile repository surface** manually with `apply=true`. Review and merge each generated PR under its target repository’s normal protections.
 5. Keep any future GitHub App-token design in its separate Issue #192 scope, with its own permissions, installation, event, and provenance review.

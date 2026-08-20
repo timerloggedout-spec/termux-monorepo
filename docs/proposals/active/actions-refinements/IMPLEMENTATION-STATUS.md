@@ -1,6 +1,6 @@
 # Implementation Status — Issue #192 Action Refinements
 
-**Program status:** Consolidated PR #261 merged AR-01 through AR-07 controls and the B1, B2, B3, and B6 advisory set into `master-staging` at `2bc05db92bd20441431ff149749918feef299cee`. A dedicated merge-based promotion reconciliation now combines that integration branch with concurrent `master` work; it must validate and merge without force-updating history before Scorecard can be dispatched from the default branch. B4 remains blocked pending separate writer-authority acceptance; B5 remains deferred because no concrete external capacity/service use case exists.
+**Program status:** Consolidated PR #261 merged AR-01 through AR-07 controls and the B1, B2, B3, and B6 advisory set into `master-staging` at `2bc05db92bd20441431ff149749918feef299cee`. Promotion PR #266 reconciled that integration with concurrent `master` work and merged at `ef0f75bd198507373dd45c9943468d2821655fef` without force-updating history. The first default-branch Scorecard dispatch, [run #32332605273](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32332605273), succeeded. B4 remains blocked pending separate writer-authority acceptance; B5 remains deferred because no concrete external capacity/service use case exists.
 
 > **Sequencing rule:** The repository must land AR-01’s baseline repair before any runtime workflow change from this program. No workflow in this document gains write, secret-management, or issue-derived execution authority merely because an item is specified.
 
@@ -99,11 +99,11 @@ B6 adds four advisory controls: actionlint for changed automation surfaces, depe
 | Record | Purpose | Current promotion status |
 |---|---|---|
 | [Decision ledger](ACTION-DECISION-LEDGER.md) | Governing B0–B6 decisions and implementation checklist. | Updated for B1/B2/B3/B6 completion; B4/B5 boundaries retained. |
-| [Proposal manifest](MANIFEST.md) | Acceptance, provenance, review log, and completion checklist. | Updated with merged PR #261 and the pending reconciliation promotion. |
+| [Proposal manifest](MANIFEST.md) | Acceptance, provenance, review log, and completion checklist. | Updated with PR #261 staging integration, PR #266 master promotion, and the verified Scorecard dispatch. |
 | `ITEMS.md` | AR-01 through AR-07 work-item boundaries. | Remains the item-level authority; B4 remains blocked. |
 | [B1 policy](B1-WORKFLOW-SURFACE-POLICY.md) and [B2 evidence](B2-WORKFLOW-SURFACE-EVIDENCE.md) | Deterministic routing and artifact contracts. | Implemented and carried forward by promotion. |
 | [B3 pilot](B3-AGENTIC-OPERATIONS-PILOT.md) | Read-only agentic workflow, lock file, and bounded output contract. | Implemented and carried forward by promotion. |
-| B6 evidence records | Actionlint, dependency review, CodeQL, and Scorecard advisory controls. | Implemented; default-branch Scorecard first dispatch follows promotion. |
+| B6 evidence records | Actionlint, dependency review, CodeQL, and Scorecard advisory controls. | Implemented and verified; Scorecard default-branch run #32332605273 passed its digest preflight and publisher jobs. |
 
 ## References
 

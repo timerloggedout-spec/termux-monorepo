@@ -1,6 +1,6 @@
 # GitHub-Native Action Decision Ledger — Issue #192
 
-**Status:** B1, B2, B3, and B6 controls were implemented in consolidated PR #261 and merged into `master-staging`; the reconciled promotion to `master` and first default-branch Scorecard dispatch remain pending. B4 and B5 remain intentionally gated by their separate authority/use-case decisions.
+**Status:** B1, B2, B3, and B6 controls were implemented in consolidated PR #261, reconciled through promotion PR #266, and merged into `master`; the first default-branch Scorecard dispatch succeeded. B4 and B5 remain intentionally gated by their separate authority/use-case decisions.
 **Execution model:** GitHub Actions is the primary event, compute, and orchestration plane. The BLU B160V is not an operator prerequisite or primary runner; it is only an optional downstream service-capacity target when a future workflow has a separately defined, authenticated service contract.
 
 > **Decision rule:** A Marketplace action is not adopted because it is popular or convenient. It must have one owner workflow, a concrete repository problem, minimal permissions, a full immutable commit SHA, testable trigger behavior, and a rollback path. A transitive image or tool reference that the immutable outer action does not expose for direct pinning is allowed only through an explicit exception: a reviewed expected digest, a read-only preflight that fails closed before the privileged job, deterministic tests, and a PR-reviewed update protocol.
@@ -69,7 +69,7 @@
 | B3 / X-05 | **Complete pilot** | Compiled read-only agentic report, caps, safe-output schema, injection corpus, and fixtures are present. |
 | B4 / AR-04 | **Blocked by design** | Requires separately accepted writer authority, provenance, stable-branch, and hostile-input tests. |
 | B5 / A-14 | **Deferred by design** | Requires a concrete approved external capacity/service case and typed dispatch envelope. |
-| B6 / X-01–X-04 | **Integrated; default-branch verification pending** | Actionlint, dependency review, Scorecard, and CodeQL are implemented and non-required. Scorecard uses the controlled-update protocol in [B6 Scorecard advisory](B6-SCORECARD-ADVISORY.md); its first manual dispatch follows the reconciled `master` promotion. |
+| B6 / X-01–X-04 | **Verified advisory set** | Actionlint, dependency review, Scorecard, and CodeQL are implemented and non-required. Scorecard’s controlled-update protocol passed its first `master` manual dispatch in [run #32332605273](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32332605273). |
 
 ## Agent Fork Compatibility Findings
 

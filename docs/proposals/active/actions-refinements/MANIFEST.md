@@ -60,7 +60,7 @@ Issue #192 is open and has one verified GitHub-native cross-reference to merged 
 - [x] Status changed to `accepted` before workflow implementation.
 - [x] Consolidated implementation PR #261 cites Issue #192 deliverables and is merged into `master-staging`.
 - [x] `repo-gate`, `termux-smoke`, deterministic suites, compiler validation, registry validation, and diff hygiene passed for the integrated revision.
-- [ ] The reconciled promotion PR is merged into `master` and the default-branch Scorecard manual dispatch is recorded.
+- [x] Promotion PR #266 is merged into `master` at `ef0f75bd198507373dd45c9943468d2821655fef` and the default-branch Scorecard manual dispatch is recorded.
 - [ ] The proposal is closed after B4/B5 receive terminal decisions and all advisory promotion reviews are complete.
 
 ## Links
@@ -82,6 +82,6 @@ Issue #192 is open and has one verified GitHub-native cross-reference to merged 
 - Safety: The integration includes no secret-writing, direct-push, autonomous-PR, generic artifact download, or issue/comment-to-shell bridge. CodeQL and Scorecard publication scopes are isolated to their documented advisory jobs.
 
 ### 2026-08-20 — Manus AI
-- Disposition: **default-branch promotion in progress**
-- Evidence: `master` and `master-staging` diverged through concurrent work after #261 merged. A dedicated reconciliation branch preserves both histories and resolves the small configuration/gate conflicts before validation and a reviewed promotion PR.
-- Safety: Promotion is a merge-based reconciliation; no force update or history replacement is permitted. The default-branch Scorecard dispatch follows only after the workflow is present on `master`.
+- Disposition: **promoted and default-branch verified**
+- Evidence: PR #266 merged the validated reconciliation into `master` at `ef0f75bd198507373dd45c9943468d2821655fef`. The Scorecard controlled-update workflow completed its first manual default-branch run, [#32332605273](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32332605273), with successful digest preflight and publisher jobs.
+- Safety: Promotion used a merge-based reconciliation without force-updating history. The verified Scorecard workflow remains advisory and has no repository-content, issue, PR, secret, or direct-push authority.

@@ -1,6 +1,6 @@
 # B6 — Advisory OpenSSF Scorecard
 
-**Status:** Implemented on `fix/ar01-automation-baseline`; pending first manual/scheduled GitHub-hosted execution.
+**Status:** Verified on `master` by manual dispatch run [#32332605273](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32332605273) on 2026-08-20; remains advisory and non-required.
 **Ledger item:** X-03 / B6
 **Workflow:** `.github/workflows/scorecard-advisory.yml`
 
@@ -25,7 +25,7 @@ A Scorecard update is a reviewable three-part change: the upstream action commit
 
 ## Acceptance Evidence
 
-The policy test verifies scheduled/manual-only triggering, immutable outer action pins, the exact reviewed tag/digest pair, the fail-closed comparison, job dependency, least-privilege separation, explicit Scorecard/SARIF publication, and absence of repository mutation or comment paths. The workflow is lint-clean under checksum-verified actionlint v1.7.12. A manually dispatched first run is required before considering required-check promotion.
+The policy test verifies scheduled/manual-only triggering, immutable outer action pins, the exact reviewed tag/digest pair, the fail-closed comparison, job dependency, least-privilege separation, explicit Scorecard/SARIF publication, and absence of repository mutation or comment paths. The workflow is lint-clean under checksum-verified actionlint v1.7.12. The first default-branch manual dispatch, run [#32332605273](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32332605273), completed successfully: the read-only image-digest preflight succeeded in 3 seconds and the Scorecard advisory publisher succeeded in 69 seconds. Required-check promotion remains a separate review decision.
 
 ## Rollback
 

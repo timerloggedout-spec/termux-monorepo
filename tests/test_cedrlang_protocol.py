@@ -175,3 +175,58 @@ def test_a2a_envelope_validates_digest_ttl_state_and_replay_behavior():
     assert acknowledged.state == "ACK"
     with pytest.raises(A2AValidationError):
         acknowledged.transition("NACK", error_code="not-allowed")
+
+
+def test_a2a_envelope_serialization_rejects_unknown_missing_and_malformed_payloads():
+    mapper = build_mapper()
+    record = build_record()
+    encoded, _ = encode_record(record, mapper)
+    envelope = A2AEnvelope(
+        protocol_version="cedrlang.a2a/v1",
+        message_id=str(uuid4()),
+        sender_role="linguist",
+        recipient_role="reviewer",
+        correlation_id=str(uuid4()),
+        intent="instruction-transfer",
+        mapper_id=mapper.mapper_id,
+        mapper_version=mapper.version,
+        payload=encoded,
+        canonical_digest=record.digest(),
+        issued_at=datetime(2026, 8, 20, tzinfo=timezone.utc).isoformat(),
+        ttl_seconds=60,
+    )
+
+    serialized = envelope.to_dict()
+    assert A2AEnvelope.from_dict(serialized) == envelope
+    assert set(serialized) == {
+        "protocol_version",
+        "message_id",
+        "sender_role",
+        "recipient_role",
+        "correlation_id",
+        "intent",
+        "mapper_id",
+        "mapper_version",
+        "payload",
+        "canonical_digest",
+        "issued_at",
+        "ttl_seconds",
+        "state",
+        "acknowledgement_id",
+        "error_code",
+    }
+
+    missing = dict(serialized)
+    missing.pop("payload")
+    with pytest.raises(A2AValidationError):
+        A2AEnvelope.from_dict(missing)
+
+    unknown = dict(serialized)
+    unknown["unexpected"] = "value"
+    with pytest.raises(A2AValidationError):
+        A2AEnvelope.from_dict(unknown)
+
+    malformed = dict(serialized)
+    malformed["payload"] = ["not", "an", "object"]
+    with pytest.raises(A2AValidationError):
+        A2AEnvelope.from_dict(malformed)

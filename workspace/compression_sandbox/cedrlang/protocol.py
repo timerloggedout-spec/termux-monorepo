@@ -19,6 +19,25 @@ from uuid import UUID
 
 CIR_SCHEMA_VERSION = "cedrlang.cir/v1"
 A2A_PROTOCOL_VERSION = "cedrlang.a2a/v1"
+A2A_ENVELOPE_FIELDS = frozenset(
+    {
+        "protocol_version",
+        "message_id",
+        "sender_role",
+        "recipient_role",
+        "correlation_id",
+        "intent",
+        "mapper_id",
+        "mapper_version",
+        "payload",
+        "canonical_digest",
+        "issued_at",
+        "ttl_seconds",
+        "state",
+        "acknowledgement_id",
+        "error_code",
+    }
+)
 ALLOWED_RECORD_FIELDS = (
     "purpose",
     "directives",
@@ -411,7 +430,9 @@ class A2AEnvelope:
         object.__setattr__(self, "intent", _normalize_identifier(self.intent, "intent"))
         object.__setattr__(self, "mapper_id", _normalize_identifier(self.mapper_id, "mapper_id"))
         object.__setattr__(self, "mapper_version", _normalize_text(self.mapper_version))
-        if not re.fullmatch(r"[0-9a-f]{64}", self.canonical_digest):
+        if not isinstance(self.payload, Mapping):
+            raise A2AValidationError("payload must be an encoded record object")
+        if not isinstance(self.canonical_digest, str) or not re.fullmatch(r"[0-9a-f]{64}", self.canonical_digest):
             raise A2AValidationError("canonical_digest must be a SHA-256 hexadecimal digest")
         if not isinstance(self.ttl_seconds, int) or not 1 <= self.ttl_seconds <= 86_400:
             raise A2AValidationError("ttl_seconds must be between 1 and 86400")
@@ -421,10 +442,40 @@ class A2AEnvelope:
             raise A2AValidationError("ACK envelopes require acknowledgement_id")
         if self.state == "NACK" and not self.error_code:
             raise A2AValidationError("NACK envelopes require error_code")
-        payload_bytes = len(_canonical_json(dict(self.payload)).encode("utf-8"))
+        try:
+            payload_bytes = len(_canonical_json(dict(self.payload)).encode("utf-8"))
+        except (TypeError, ValueError) as exc:
+            raise A2AValidationError("payload must be JSON-serializable") from exc
         if payload_bytes > MAX_PAYLOAD_BYTES:
             raise A2AValidationError("payload exceeds the local A2A size limit")
         _parse_utc(self.issued_at)
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Return a transport-safe, explicit representation of this local envelope."""
+        return {
+            "protocol_version": self.protocol_version,
+            "message_id": self.message_id,
+            "sender_role": self.sender_role,
+            "recipient_role": self.recipient_role,
+            "correlation_id": self.correlation_id,
+            "intent": self.intent,
+            "mapper_id": self.mapper_id,
+            "mapper_version": self.mapper_version,
+            "payload": dict(self.payload),
+            "canonical_digest": self.canonical_digest,
+            "issued_at": self.issued_at,
+            "ttl_seconds": self.ttl_seconds,
+            "state": self.state,
+            "acknowledgement_id": self.acknowledgement_id,
+            "error_code": self.error_code,
+        }
+
+    @classmethod
+    def from_dict(cls, value: Mapping[str, Any]) -> "A2AEnvelope":
+        """Parse only an exact serialized local-envelope schema; reject extras and omissions."""
+        if not isinstance(value, Mapping) or set(value) != A2A_ENVELOPE_FIELDS:
+            raise A2AValidationError("A2A envelope has missing or unknown fields")
+        return cls(**dict(value))
 
     def transition(
         self,

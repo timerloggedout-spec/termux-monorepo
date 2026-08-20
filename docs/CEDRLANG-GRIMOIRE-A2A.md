@@ -37,7 +37,7 @@ It is a codec-coverage metric, not a claim about proprietary model tokenization,
 
 ## Local A2A Envelope
 
-The initial Agent2Agent contract is local validation only. An envelope carries its protocol version, message ID, sender role, recipient role, correlation ID, intent, mapper ID/version, encoded payload, canonical digest, issuance time, TTL, and one of three states: `PENDING`, `ACK`, or `NACK`.
+The initial Agent2Agent contract is local validation only. An envelope carries its protocol version, message ID, sender role, recipient role, correlation ID, intent, mapper ID/version, encoded payload, canonical digest, issuance time, TTL, and one of three states: `PENDING`, `ACK`, or `NACK`. Serialized envelopes use an exact field set: unknown fields, omitted fields, non-object payloads, and non-JSON-serializable payloads are rejected before record decoding is attempted.
 
 | Control | Behavior |
 |---|---|
@@ -47,6 +47,7 @@ The initial Agent2Agent contract is local validation only. An envelope carries i
 | Idempotency | The same message ID and digest is an idempotent duplicate; the same ID with a different digest is a conflict. |
 | State transition | Only `PENDING → ACK` and `PENDING → NACK` are permitted. |
 | Size limit | Payloads above the local 64 KiB contract limit are rejected. |
+| Serialized-object boundary | Unknown/missing fields, non-object payloads, and non-JSON-serializable values fail closed before payload decoding. |
 
 No external mailbox, workflow dispatch, public transformed comment, or remote installation is part of this contract. Such integration requires a separate, accepted proposal with supply-chain review, permissions analysis, safe output design, and prompt-injection tests.
 

@@ -2,7 +2,7 @@
 
 ## Collection Bounds
 
-This record is metadata-only. GitHub issue, comment, review, and timeline bodies were read only to identify explicit references and were not copied here. Collection was limited to the exact Issue #192 root, its GitHub-native timeline references, the directly cross-referenced Issue #175 and PR #193, and a bounded review of open workflow-related pull requests and the current `master-staging` workflow files.
+This record is metadata-only. GitHub issue, comment, review, and timeline bodies were read only to identify explicit references and were not copied here. Collection was limited to the exact Issue #192 root, its GitHub-native timeline references, the directly cross-referenced Issue #175 and PR #193, the implementation/promotion references PR #261, PR #266, PR #267, and PR #269, Issue #268, and a bounded review of the current `master` status context.
 
 ## Verified Relationships
 
@@ -12,6 +12,7 @@ This record is metadata-only. GitHub issue, comment, review, and timeline bodies
 | Issue #192 | Native GitHub `cross-referenced` event | Issue #175 | [Issue #192 timeline](https://github.com/timerloggedout-spec/termux-monorepo/issues/192) and [Issue #175](https://github.com/timerloggedout-spec/termux-monorepo/issues/175). |
 | PR #193 | Implements/refines action and connector surface | `.github/connectors/integrations.yaml`, `.github/workflows/commit-diff-watcher.yml`, `http-llm-invoke` composite action | [PR #193 files](https://github.com/timerloggedout-spec/termux-monorepo/pull/193/files). PR is merged and therefore cannot be extended. |
 | Issue #175 | Names PR #81 as a quota-gate workflow concern | PR #81 | [Issue #175](https://github.com/timerloggedout-spec/termux-monorepo/issues/175) and [PR #81](https://github.com/timerloggedout-spec/termux-monorepo/pull/81). |
+| Issue #192 | Native GitHub `cross-referenced` event | PRs #261, #266, #267, and #269; Issue #268 | [Issue #192 timeline](https://github.com/timerloggedout-spec/termux-monorepo/issues/192), [PR #261](https://github.com/timerloggedout-spec/termux-monorepo/pull/261), [PR #266](https://github.com/timerloggedout-spec/termux-monorepo/pull/266), [PR #267](https://github.com/timerloggedout-spec/termux-monorepo/pull/267), [PR #269](https://github.com/timerloggedout-spec/termux-monorepo/pull/269), and [Issue #268](https://github.com/timerloggedout-spec/termux-monorepo/issues/268). |
 | Active `rate-limit-rotation` proposal | Lists PRs #72 and #81 | PR #72, PR #81 | `docs/proposals/active/rate-limit-rotation/MANIFEST.md`; `ITEMS.md` entries RL-06 and RL-10. |
 | Active ICM proposal | Documents branch #232 as its implementation path | PR #232 | `docs/proposals/registry.yaml`; `docs/proposals/active/icm-architect-integration/ITEMS.md`; [PR #232](https://github.com/timerloggedout-spec/termux-monorepo/pull/232). |
 
@@ -42,7 +43,7 @@ The required integration baseline is `master-staging`. The collected revision co
 
 The proposal-lifecycle check on the intake branch also fails before evaluating this proposal because the inherited `docs/proposals/active/manus-critical-eval` directory is not registered in `docs/proposals/registry.yaml`. That orphan is outside the scope of this proposal; it is recorded here so a reviewer can distinguish it from the newly registered `actions-refinements` directory.
 
-The repository-local context-relationship index expected at `workspace/llm_map/context_relationships` was absent. No synthetic graph was generated. The GitHub timeline relations above are direct, verified GitHub-native evidence; the PR candidacies are intentionally separate and non-authoritative.
+The repository-local context-relationship index exists at `workspace/llm_map/context_relationships`, but its manifest was last collected on 2026-08-19, has incomplete pagination, and still identifies `master-staging` as the default branch. Bounded `issue:175` and `issue:192` queries were therefore used only as historical discovery aids. Direct live GitHub timeline collection is the controlling evidence for the Issue #175 relationship and post-promotion links recorded above. No synthetic graph was generated, rebuilt, or manually edited. The PR candidacies remain intentionally separate and non-authoritative.
 
 ## External Baseline
 

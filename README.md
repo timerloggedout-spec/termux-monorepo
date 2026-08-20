@@ -1,3 +1,10 @@
+# NEWLY ADDED; Requires proper documentation placement && malleability guidelines regarding 'stale' or 'drifted' concepts management updates and upgrades noted
+https://github.com/timerloggedout-spec/termux-monorepo/wiki
+https://deepwiki.com/timerloggedout-spec/termux-monorepo
+https://app.devin.ai/org/timerloggedout-spec/wiki/timerloggedout-spec/termux-monorepo
+ + requires DeepWiki.com/timerloggedout-spec/* repo's auto detect and update (Devin is scheduled low effort requires high validation daily update iirc.).
+
+
 # TERMUX MONOREPO
 
 > **C×O operator guide.** Build deliberately. Preserve evidence. Keep the Android/Termux target first; treat every other environment as a simulation, review surface, or constrained support plane.

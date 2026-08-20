@@ -2,10 +2,11 @@ name: Peer review orchestrator
 
 # Control plane for external PR reviewers.
 #
-# Provider-owned checkboxes/buttons are NOT satisfied by a relay comment. This
-# workflow observes controls, records a SHA-bound request for an authorized
-# Operator Action Executor, ingests provider responses, and releases second
-# pass only after every required provider has delivered for the live PR SHA.
+# The orchestrator autonomously invokes each provider's documented pull-request
+# command through the existing OPERATOR token lane, records a SHA-bound request,
+# ingests provider responses, and releases second pass only after every required
+# provider has delivered for the live PR SHA. Provider-owned checkboxes are audit
+# evidence only and are never emulated through undocumented API mutations.
 #
 # The workflow never handles browser cookies or attempts undocumented UI/API
 # requests. It runs API-only and never checks out pull-request code, including
@@ -59,7 +60,7 @@ jobs:
           MAX_WAIT_SEC: '1'
           POLL_SEC: '5'
           OPERATOR_EXECUTOR_LOGINS: ${{ vars.OPERATOR_EXECUTOR_LOGINS || github.repository_owner }}
-          OPERATOR_ALLOWED_ACTIONS: ${{ vars.OPERATOR_ALLOWED_ACTIONS || 'coderabbit:trigger_review' }}
+          OPERATOR_ALLOWED_ACTIONS: ${{ vars.OPERATOR_ALLOWED_ACTIONS || 'coderabbit:trigger_review,qodo:trigger_review,devin:trigger_review' }}
           PEER_STATE_PUBLISHER_LOGINS: ${{ vars.PEER_STATE_PUBLISHER_LOGINS || github.repository_owner }}
         with:
           script: |
@@ -70,6 +71,7 @@ jobs:
             const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
             const operatorAckMarker = '<!-- operator-action-ack:v1 -->';
             const operatorReviewMarker = '<!-- operator-coderabbit-review:v1 -->';
+            const operatorProviderReviewMarker = '<!-- operator-provider-review:v1 -->';
 
             const providerLogins = new Map([
               ['coderabbitai[bot]', 'coderabbit'],
@@ -119,7 +121,8 @@ jobs:
             const relevantEvent = context.eventName === 'pull_request_target' ||
               Boolean(eventProvider) ||
               eventBody.includes(operatorAckMarker) ||
-              eventBody.includes(operatorReviewMarker);
+              eventBody.includes(operatorReviewMarker) ||
+              eventBody.includes(operatorProviderReviewMarker);
             if (!relevantEvent) {
               core.info(`Ignoring unrelated ${context.eventName} event on PR #${prNumber}`);
               core.setOutput('skipped', 'true');
@@ -256,6 +259,19 @@ jobs:
               );
             }
 
+            function supportedProviderRequest(comments, provider) {
+              const authorizedAssociations = new Set(['OWNER', 'MEMBER', 'COLLABORATOR']);
+              return comments.some(comment =>
+                comment.body?.includes(operatorProviderReviewMarker) &&
+                parseField(comment.body, 'cycle_id') === cycleId &&
+                parseField(comment.body, 'provider').toLowerCase() === provider &&
+                parseField(comment.body, 'action').toLowerCase() === 'trigger_review' &&
+                authorizedAssociations.has(comment.author_association) &&
+                executorLogins.has((comment.user?.login || '').toLowerCase()) &&
+                Date.parse(comment.created_at || '') >= cycleStartedAt
+              );
+            }
+
             const codeRabbitCooldownPattern = /review limit reached|review rate limited|action not completed|couldn[’']t start this review|next (?:included )?review (?:will be )?available in/i;
 
             function isNonReviewProviderNotice(body) {
@@ -322,9 +338,10 @@ jobs:
                 const selectedForCycle = providerControls.some(control =>
                   control.selected && Date.parse(control.updatedAt || '') >= cycleStartedAt
                 );
+                const providerCommandRequested = supportedProviderRequest(evidence.comments, provider);
                 const acknowledged = selectedForCycle || providerControls.some(control =>
                   acknowledgements.has(`${control.provider}:${control.checkboxId}`)
-                ) || (provider === 'coderabbit' && codeRabbitCommandRequested);
+                ) || providerCommandRequested || (provider === 'coderabbit' && codeRabbitCommandRequested);
                 let state = 'awaiting_provider_response';
                 if (providerControls.length && !acknowledged) state = 'pending_operator_action';
                 if (acknowledged) state = 'action_acknowledged';
@@ -335,7 +352,7 @@ jobs:
                 if (delivered.delivered && (!providerControls.length || acknowledged)) {
                   state = 'provider_completed';
                 }
-                return { provider, state, delivered, cooldown, controls: providerControls };
+                return { provider, state, delivered, cooldown, controls: providerControls, providerCommandRequested };
               });
               const complete = providerStates.every(item => item.state === 'provider_completed');
               finalState = { providerStates, complete };
@@ -494,50 +511,79 @@ jobs:
             });
             core.info(`Dispatched verified second pass for ${process.env.CYCLE_ID}`);
 
-      - name: Request CodeRabbit review through OPERATOR
+      - name: Request supported provider reviews through OPERATOR
         if: |
           steps.collect.outputs.skipped != 'true' &&
-          steps.collect.outputs.state == 'pending_operator_action' &&
-          contains(steps.collect.outputs.pending, 'coderabbit:pending_operator_action') &&
+          steps.collect.outputs.ready != 'true' &&
           steps.publisher-token.outputs.available == 'true'
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
           PR_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number }}
           CYCLE_ID: ${{ steps.collect.outputs.cycle_id }}
+          HEAD_SHA: ${{ steps.collect.outputs.head_sha }}
+          REQUIRED_PROVIDERS: ${{ vars.PEER_REQUIRED_PROVIDERS || 'coderabbit,qodo,devin' }}
+          OPERATOR_ALLOWED_ACTIONS: ${{ vars.OPERATOR_ALLOWED_ACTIONS || 'coderabbit:trigger_review,qodo:trigger_review,devin:trigger_review' }}
         with:
           github-token: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
           script: |
             const prNumber = Number(process.env.PR_NUMBER);
             const cycleId = process.env.CYCLE_ID;
-            if (!prNumber || !cycleId) return;
-            const marker = '<!-- operator-coderabbit-review:v1 -->';
+            const headSha = process.env.HEAD_SHA;
+            if (!prNumber || !cycleId || !headSha) return;
+            const marker = '<!-- operator-provider-review:v1 -->';
+            const providers = (process.env.REQUIRED_PROVIDERS || '')
+              .split(',').map(value => value.trim().toLowerCase()).filter(Boolean);
+            const allowed = new Set((process.env.OPERATOR_ALLOWED_ACTIONS || '')
+              .split(',').map(value => value.trim().toLowerCase()).filter(Boolean));
+            const commands = new Map([
+              ['coderabbit', '@coderabbitai full review'],
+              ['qodo', '/agentic_review'],
+              ['devin', '/devin review'],
+            ]);
             const comments = await github.paginate(github.rest.issues.listComments, {
               owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100,
             });
-            const requested = comments.some(comment =>
-              comment.body?.includes(marker) &&
-              comment.body.includes(`cycle_id: ${cycleId}`) &&
-              comment.body.includes('request_kind: initial')
-            );
-            if (requested) {
-              core.info(`CodeRabbit review already requested for ${cycleId}`);
-              return;
+            for (const provider of providers) {
+              const command = commands.get(provider);
+              if (!command) {
+                core.info(`${provider}: no documented GitHub command is configured; leaving the provider pending.`);
+                continue;
+              }
+              if (!allowed.has(`${provider}:trigger_review`)) {
+                core.info(`${provider}: trigger_review is not in OPERATOR_ALLOWED_ACTIONS; leaving the provider pending.`);
+                continue;
+              }
+              const requested = comments.some(comment =>
+                comment.body?.includes(marker) &&
+                comment.body.includes(`cycle_id: ${cycleId}`) &&
+                comment.body.includes(`head_sha: ${headSha}`) &&
+                comment.body.includes(`provider: ${provider}`) &&
+                comment.body.includes('action: trigger_review')
+              );
+              if (requested) {
+                core.info(`${provider}: review already requested for ${cycleId}`);
+                continue;
+              }
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body: [
+                  command,
+                  '',
+                  marker,
+                  `cycle_id: ${cycleId}`,
+                  `head_sha: ${headSha}`,
+                  `provider: ${provider}`,
+                  'action: trigger_review',
+                  'request_actor: OPERATOR',
+                  '',
+                  'Autonomous OPERATOR-token request for a current-SHA provider review. A command request is not review completion; await provider evidence.',
+                ].join('\n'),
+              });
+              core.info(`${provider}: requested review for ${cycleId}`);
+              await new Promise(resolve => setTimeout(resolve, 1200));
             }
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              body: [
-                marker,
-                `cycle_id: ${cycleId}`,
-                'request_kind: initial',
-                'request_actor: OPERATOR',
-                '',
-                '@coderabbitai full review',
-                '',
-                'Requested by the OPERATOR automation after CodeRabbit exposed an interactive review control. This requests a complete provider pass; await substantive provider output and do not treat the request as completed review.',
-              ].join('\n'),
-            });
 
       - name: Block merge while required provider review is pending
         if: |
@@ -549,5 +595,5 @@ jobs:
         run: |
           echo "::error title=Required provider review pending::${CYCLE_ID}: ${PENDING}"
           echo "The peer-review check intentionally fails until every configured provider has current-SHA completion evidence."
-          echo "CodeRabbit is requested through the OPERATOR token using its supported full-review command; other provider-only UI controls require the Termux OPERATOR lane. Wait for substantive provider output."
+          echo "The OPERATOR token has requested every configured provider with a documented GitHub command. Wait for substantive provider output for this SHA; unsupported providers remain visible as explicit pending state."
           exit 1

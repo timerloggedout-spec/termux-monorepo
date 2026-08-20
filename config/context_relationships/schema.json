@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Context Relationship Index Seed",
+  "type": "object",
+  "required": ["schema_version", "repository", "nodes", "edges"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "repository": {
+      "type": "object",
+      "required": ["owner", "name", "default_branch"],
+      "additionalProperties": false,
+      "properties": {
+        "owner": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "default_branch": {"type": "string", "minLength": 1}
+      }
+    },
+    "nodes": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/node"}
+    },
+    "edges": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/edge"}
+    }
+  },
+  "$defs": {
+    "node": {
+      "type": "object",
+      "required": ["kind", "external_id", "attributes"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "repository", "directory", "file", "symbol", "module", "commit",
+            "pull_request", "issue", "issue_comment", "review", "review_comment",
+            "label", "scope", "alias"
+          ]
+        },
+        "external_id": {"type": "string", "minLength": 1},
+        "url": {"type": "string"},
+        "observed_at": {"type": "string", "format": "date-time"},
+        "attributes": {"type": "object"}
+      }
+    },
+    "edge": {
+      "type": "object",
+      "required": [
+        "type", "source", "target", "classification", "observed_at", "evidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "DEFINES", "IMPORTS", "CALLS_OR_REFERENCES", "TOUCHES", "CHANGED_IN", "HAS_COMMIT",
+            "COMMENTS_ON", "REVIEWS", "MENTIONS", "CLOSES", "REFERENCES", "LABELED_AS", "IN_SCOPE",
+            "CO_CHANGED_WITH", "SIMILAR_TO", "POSSIBLE_CONTEXT"
+          ]
+        },
+        "source": {"type": "string", "minLength": 1},
+        "target": {"type": "string", "minLength": 1},
+        "classification": {"enum": ["verified", "candidate"]},
+        "score": {"type": "number", "minimum": 0, "maximum": 1},
+        "observed_at": {"type": "string", "format": "date-time"},
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/evidence"}
+        },
+        "attributes": {"type": "object"}
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["kind", "source", "collector"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "ast", "git_commit", "github_api", "github_reference", "scope_registry",
+            "co_change", "lexical_similarity", "manual_fixture"
+          ]
+        },
+        "source": {"type": "string", "minLength": 1},
+        "collector": {"type": "string", "minLength": 1},
+        "observed_at": {"type": "string", "format": "date-time"},
+        "details": {"type": "object"}
+      }
+    }
+  }
+}

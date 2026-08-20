@@ -4,38 +4,57 @@ This file provides guidance to agents when working with code in this repository.
 
 ## Governance & Process (Read First)
 
-1. **This file** (`AGENTS.md`) - Technical guidance and codebase overview
-2. [`docs/proposals/registry.yaml`](docs/proposals/registry.yaml) — what is active
-3. [`docs/proposals/PROCESS.md`](docs/proposals/PROCESS.md) — post / debate / consensus / close
-4. [`docs/PR-SUMMARY-PROCESS.md`](docs/PR-SUMMARY-PROCESS.md) — who may rewrite PR bodies (multi-agent)
-5. [`docs/ARCHW1Z-GATE.md`](docs/ARCHW1Z-GATE.md) — repo-gate + termux-smoke
-6. [`docs/ARCHW1Z-STATUS.md`](docs/ARCHW1Z-STATUS.md) — living board
-7. [`docs/proposals/AGENTIC-PERMISSIONS.md`](docs/proposals/AGENTIC-PERMISSIONS.md) — human-only edges
-8. [`docs/CONSENSUS.md`](docs/CONSENSUS.md) — tiers, merit path, CRDT, optional Raft-strict
-
-After this governance sequence, use [`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md) to route the task to one verified component or process card before loading deeper source.
+1. **This file** (`AGENTS.md`)
+2. [`docs/LINEAR-AGENT-PROTOCOL.md`](docs/LINEAR-AGENT-PROTOCOL.md) — **Linear hooks for every agent action**
+3. [`docs/proposals/registry.yaml`](docs/proposals/registry.yaml) — what is active
+4. [`docs/proposals/PROCESS.md`](docs/proposals/PROCESS.md) — post / debate / consensus / close
+5. [`docs/PR-SUMMARY-PROCESS.md`](docs/PR-SUMMARY-PROCESS.md) — who may rewrite PR bodies (multi-agent)
+6. [`docs/ARCHW1Z-GATE.md`](docs/ARCHW1Z-GATE.md) — repo-gate + termux-smoke
+7. [`docs/ARCHW1Z-STATUS.md`](docs/ARCHW1Z-STATUS.md) — living board
+8. [`docs/proposals/AGENTIC-PERMISSIONS.md`](docs/proposals/AGENTIC-PERMISSIONS.md) — human-only edges + **branch model**
+9. [`docs/SENTRY_LINEAR.md`](docs/SENTRY_LINEAR.md) — Sentry multi-project + Linear bridgeture/sentry-linear-integration
 
 Optional: `CLAUDE.md`, `CONTRIBUTING.md`.
 
 ## Hard Rules
 
 - Target **`master-staging`**, not raw `master`, for integration work.
-- Both gates must pass before merge:
+- **`master-staging` is a permanent integration spine** — never merge it wholesale into `master`. Promotion to `master` is **selective** (cherry-pick / focused promotion PRs only). Operator: *"master-staging is for selective merge to master meaning master-staging is meant to never merge to master completely."*
+- Both gates must pass before merge to staging:
   - `python3 scripts/ci/repo_gate.py`
   - `python3 scripts/ci/termux_smoke.py`
-- Do not invent work outside `docs/proposals/active/<id>/ITEMS.md` — add a row first.
-- Cite `Implements: <ITEM-ID>` on PRs/commits.
+- Do not invent work outside `docs/proposals/active/<id>/ITEMS.md` — add a row first **and** a Linear `TER-*` issue.
+- Cite **`Implements: TER-N`** (and proposal item IDs) on PRs/commits.
+- **Linear is mandatory for agent actions** — see protocol:
+  - Start work → Linear **In Progress**
+  - Open PR (base **`master-staging`**) → comment on TER-* with PR URL
+  - Merge to **`master-staging`** → Linear **Done** + evidence
+  - MCP: `linear___save_issue` / `linear___list_issues`  
+    CLI: `python3 -m archwiz.linear_client start|done|status|comment TER-N`
 - **No** wholesale merge of PR #6 (TER-9) or PR #2 (Rust CI) — see disposition comments.
 - **No** Class 3/4 artifacts in git (session stores, browser profiles, tokens).
-- Unposted chat is not consensus — write Review log or DEBATE.md.
+- Unposted chat is not consensus — write Review log or DEBATE.md (and Linear comment if execution-related).
 - PR body rewrites: follow `docs/PR-SUMMARY-PROCESS.md` roster (not a single-agent monopoly).
 
-## Preferred Execution Loop
+## Debate & close
+
+- Debate: MANIFEST Review log, optional DEBATE.md, linked PR/issue.
+- Close: all items terminal + Review log outcome + move `active/` → `closed/` + registry update.
+- Close related **Linear TER-*** explicitly (Done / Canceled) — proposal close does not auto-close Linear.
+- Full rules: `docs/proposals/PROCESS.md` §§ consensus / closing · `docs/LINEAR-AGENT-PROTOCOL.md`.
+
+## Preferred execution loopture/sentry-linear-integration
 
 ```text
-registry.yaml → pick todo item → branch from master-staging
-  → implement → PR with Implements: ID → gates green → merge
+registry.yaml + Linear list_issues → pick todo
+  → linear_client start TER-N (or MCP save_issue In Progress)
+  → branch from master-staging (prefer Linear gitBranchName)
+  → implement → PR (base master-staging) with Implements: TER-N[, ITEM-ID]
+  → comment on Linear issue with PR URL
+  → gates green → merge to master-staging
+  → linear_client done TER-N --pr <n>
   → update ITEMS.md status
+  → (optional, separate) selective promotion of ready commits to master
 ```
 
 ## Security

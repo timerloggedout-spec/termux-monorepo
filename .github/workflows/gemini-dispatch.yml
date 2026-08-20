@@ -3,10 +3,12 @@ name: '🔀 Gemini Dispatch (free-tier agentic)'
 # Central router for free-tier Gemini CLI agentic CI/CD.
 # Requires: secrets.GEMINI_API_KEY (Google AI Studio free quota)
 #
-# QUOTA POLICY:
-# - Automatic PR review on opened/synchronize is DISABLED here.
-# - On-demand @gemini-cli and case-insensitive @sparkFlux fire immediately.
-# Monikers: docs/ops/AGENT-MONIKERS.md
+# Ack pattern: posts 👀 on the triggering comment (same UX as Jules/CodeRabbit).
+# Coordination: prior open agent PRs are passed into triage/review/invoke prompts.
+# Quota: child workflows include a quota-gate that skips gracefully when the
+#   free-tier daily limit is hit — CI stays green, other agents continue.
+# Load balancing: routes to the agent with the most headroom (see
+#   agent-load-balancer.yml for capacity-aware dispatch).
 
 on:
   pull_request:
@@ -24,6 +26,19 @@ defaults:
   run:
     shell: bash
 
+permissions: {}
+
+jobs:
+  dispatch:
+    if: |
+      (
+        github.event_name == 'pull_request' &&
+        github.event.pull_request.head.repo.fork == false &&
+        github.event.pull_request.draft == false
+      ) || (
+        github.event_name == 'issues' &&
+        contains(fromJSON('["opened", "reopened"]'), github.event.action)
+      ) || (
         contains(fromJSON('["issue_comment", "pull_request_review_comment", "pull_request_review"]'), github.event_name) &&
         github.event.sender.type == 'User' &&
         (
@@ -42,6 +57,11 @@ defaults:
       command: ${{ steps.extract.outputs.command }}
       additional_context: ${{ steps.extract.outputs.additional_context }}
       prior_prs: ${{ steps.extract.outputs.prior_prs }}
+      issue_number: ${{ github.event.pull_request.number || github.event.issue.number }}
+      pr_number: ${{ steps.extract.outputs.pr_number }}
+    steps:
+      - name: Extract command + prior PR inventory
+        id: extract
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
           EVENT_TYPE: ${{ github.event_name }}.${{ github.event.action }}
@@ -181,8 +201,5 @@ defaults:
       additional_context: ${{ needs.dispatch.outputs.additional_context }}
       prior_prs: ${{ needs.dispatch.outputs.prior_prs }}
       pr_number: ${{ needs.dispatch.outputs.pr_number }}
-<<<<<<< HEAD
-=======
       issue_number: ${{ needs.dispatch.outputs.issue_number }}
->>>>>>> pr238
     secrets: inherit

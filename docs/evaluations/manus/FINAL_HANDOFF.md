@@ -10,6 +10,7 @@ The `termux-monorepo` has been stabilized on the `master-staging` spine and the 
 - **Routing:** Automatically routes requests to `multi-ai-cli` backends (DeepSeek, Mistral, Grok, etc.) or upstream providers (OpenRouter, OpenAI, Anthropic).
 - **Integrated Registry & API:** Merged prior work from `feature/multi-ai-webwrapper-provider-hub` to include a governed `ProviderRegistry`. The Hub now exposes a `/v1/providers` API for real-time lifecycle management (connecting, connected, failed).
 - **Lightwrap Fallback:** Integrated the `lightwrap.py` backend and harvesters from `feature/multi-ai-lightwrap-parity` as a browser-based fallback for new providers.
+- **MCP Integration:** Integrated `hub_mcp/`, providing a Model Context Protocol (MCP) interface for the hub, enabling seamless tool use and context sharing across agents.
 - **Client:** Thin Python client at `llm_api_hub/clients/openai_compat.py` for repository-wide use.
 
 ### 2.2 Agent Retargeting
@@ -26,6 +27,8 @@ The `termux-monorepo` has been stabilized on the `master-staging` spine and the 
 The following high-priority PRs have been merged and conflict-resolved into the `master-staging` spine:
 - **PR #238 (Sentinel):** Hardened session cache permissions and symlink safety.
 - **PR #73 (Connectors):** Fixed critical bugs in `connector_manager.py` and implemented webhook signature verification.
+- **PR #72 (Quota):** Implemented agent quota throttling, session continuation, and load balancing logic.
+- **PR #92 (Security):** Hardened GHA workflow permissions, pinned SHAs, and addressed prompt injection risks.
 
 ## 4. Operational Dashboard
 The ArchWiz dashboard (`termux-multi-agent/dashboard.py`) now features an enhanced monitoring suite:

@@ -61,7 +61,7 @@ Issue #192 has verified GitHub-native cross-references to Issue #175, PR #193, t
 - [x] Consolidated implementation PR #261 cites Issue #192 deliverables and is merged into `master-staging`.
 - [x] `repo-gate`, `termux-smoke`, deterministic suites, compiler validation, registry validation, and diff hygiene passed for the integrated revision.
 - [x] Promotion PR #266 is merged into `master` at `ef0f75bd198507373dd45c9943468d2821655fef` and the default-branch Scorecard manual dispatch is recorded.
-- [ ] AR-08 team-status alignment is awaiting review through the dedicated documentation pull request.
+- [x] AR-08 team-status alignment merged through PR #270 at `7e243628b955a1bdb10a7ee361b15afd214fdd55`; the follow-on status and lineage assessments are linked below.
 - [ ] The proposal is closed after B4/B5 receive terminal decisions and all advisory promotion reviews are complete.
 
 ## Links
@@ -72,6 +72,8 @@ Issue #192 has verified GitHub-native cross-references to Issue #175, PR #193, t
 - [Extended action research notes](action-research-notes.md)
 - [Action decision ledger and autonomous implementation sequence](ACTION-DECISION-LEDGER.md)
 - [Source and relationship evidence](source.md)
+- [Comprehensive Issue #192 status assessment — 2026-08-20](../../../reports/issue-192-comprehensive-status-2026-08-20.md)
+- [Issue #192 lineage, PR #276 assessment, and workflow remediation plan — 2026-08-20](../../../reports/issue-192-lineage-and-remediation-plan-2026-08-20.md)
 - [Repository proposal process](../../PROCESS.md)
 - [Repository gate requirements](../../../ARCHW1Z-GATE.md)
 - [Agent permissions](../../AGENTIC-PERMISSIONS.md)
@@ -86,6 +88,13 @@ Issue #192 has verified GitHub-native cross-references to Issue #175, PR #193, t
 - Disposition: **promoted and default-branch verified**
 - Evidence: PR #266 merged the validated reconciliation into `master` at `ef0f75bd198507373dd45c9943468d2821655fef`. The Scorecard controlled-update workflow completed its first manual default-branch run, [#32332605273](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32332605273), with successful digest preflight and publisher jobs.
 - Safety: Promotion used a merge-based reconciliation without force-updating history. The verified Scorecard workflow remains advisory and has no repository-content, issue, PR, secret, or direct-push authority.
+
+### 2026-08-20 — Manus AI — operational assessment publication
+
+- Disposition: **status and lineage reports added to the existing Issue #192 documentation review surface**
+- Evidence: `docs/reports/issue-192-comprehensive-status-2026-08-20.md` records the end-to-end AR/B delivery posture, active advisory controls, and concentrated operational reliability risks. `docs/reports/issue-192-lineage-and-remediation-plan-2026-08-20.md` traces the initiating Issue #192 seed through the delivery matrix, holds PR #276's unaccepted writer path, and specifies the peer-review, Jules, cadence, and stale-check remediation sequence.
+- Findings: The reports extend, rather than replace, the original Issue #192 planning documents: `action-research-notes.md`, `ACTION-DECISION-LEDGER.md`, `ITEMS.md`, `IMPLEMENTATION-STATUS.md`, and `source.md` remain the controlling proposal records. The reports provide a concise, reviewable operational bridge from the seed to the current remediation sequence.
+- Safety: This is documentation-only. It introduces no workflow, permission, secret, direct-push, dispatch, or issue-derived execution capability and does not authorize the PR #276 writer workflow.
 
 ### 2026-08-20 — Manus AI — AR-08 status alignment
 

@@ -1,0 +1,17 @@
+<!--
+  Loader Script (no bundler) — drop into static HTML such as
+  termux-ecosystem-architecture.html
+-->
+<script
+  src="https://js.sentry-cdn.com/2fbd3c77388239145b6dd872f1e054aa.min.js"
+  crossorigin="anonymous"
+></script>
+<script>
+  Sentry.onLoad(function () {
+    Sentry.init({
+      tracesSampleRate: 1.0,
+      replaysSessionSampleRate: 0.1,
+      replaysOnErrorSampleRate: 1.0,
+    });
+  });
+</script>

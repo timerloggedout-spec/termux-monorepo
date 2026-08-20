@@ -1,0 +1,57 @@
+name: Reconcile repository surface
+
+on:
+  schedule:
+    - cron: "23 5 * * *"
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: "Create or update reviewable pull requests for missing or drifted managed workflows"
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: reconcile-repository-surface
+  cancel-in-progress: false
+
+jobs:
+  reconcile:
+    name: Discover accessible repositories and reconcile the managed Wiki publisher
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout control-plane source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Reconcile with the established operator-token lane
+        env:
+          APPLY: ${{ inputs.apply || 'false' }}
+          # Preserve existing precedence; the selected token exists only for this job.
+          GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
+          OPERATOR_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
+        run: |
+          set -euo pipefail
+          arguments=(
+            --source-repo "${GITHUB_REPOSITORY}"
+            --source-workflow ".github/workflows/publish-wiki.yml"
+            --report "reports/repository-surface.json"
+          )
+          if [[ "${APPLY}" == "true" ]]; then
+            arguments+=(--apply)
+          fi
+          python3 scripts/agentic/reconcile_repository_surface.py "${arguments[@]}"
+
+      - name: Upload reconciliation report
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: repository-surface-${{ github.run_id }}
+          path: reports/repository-surface.json
+          if-no-files-found: error
+          retention-days: 14

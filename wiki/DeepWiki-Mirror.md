@@ -1,57 +1,52 @@
 # DeepWiki → GitHub Wiki mirror
 
-## Source
+## Source boundaries
 
-| Source | URL |
-|--------|-----|
-| Private Devin Wiki | https://app.devin.ai/org/timerloggedout-spec/wiki/timerloggedout-spec/termux-monorepo |
-| Public DeepWiki | https://deepwiki.com/timerloggedout-spec/termux-monorepo |
+| Source | Role | Trust boundary |
+|---|---|---|
+| Private Devin Wiki | Documentation-generation and discovery aid | Private, provider-authenticated; not a GitHub Actions writer |
+| Public DeepWiki | Optional public discovery surface | Not indexed for this repository when last verified |
+| In-repository `wiki/` directory | GitHub Wiki publication source | Reviewed repository content |
+| GitHub Wiki | Published Markdown projection | Updated only by the managed publisher |
 
-Devin generates structured docs (architecture, modules, diagrams). GitHub Wiki is a separate git repo (`*.wiki.git`) of Markdown pages. There is no official one-click sync; this repo uses a **folder + Action** pattern.
+Devin can generate structured documentation, diagrams, and source links. GitHub Wiki is a separate `*.wiki.git` repository. The authoritative mirror mechanism is the reviewed `wiki/` directory and `.github/workflows/publish-wiki.yml`; it does **not** retrieve undocumented private Devin Wiki pages.
 
-## How the mirror works
+## How the managed mirror works
 
-1. **Source of truth in-repo:** the `wiki/` directory (Markdown pages).
-2. **Publisher:** `.github/workflows/publish-wiki.yml` runs `Andrew-Chen-Wang/github-wiki-action@v5` on pushes to `master` / `master-staging` that touch `wiki/**`, or via **workflow_dispatch**.
-3. **Target:** the repository’s GitHub Wiki (`https://github.com/timerloggedout-spec/termux-monorepo/wiki`).
+1. Documentation intended for publication is added to `wiki/` through the normal repository review process.
+2. A change merged to the repository default branch that touches `wiki/**` runs the managed `Publish wiki` workflow.
+3. The workflow publishes `wiki/` to `https://github.com/timerloggedout-spec/termux-monorepo/wiki`.
+4. The control-plane reconciler detects repositories reachable by the repository’s established job-scoped operator-token lane and can propose the same publisher as a reviewable PR. It never changes a default branch or merges a PR.
 
-### One-time bootstrap (required)
+The publisher may be manually dispatched with `dry_run=true` to validate its configuration without modifying GitHub Wiki.
 
-GitHub only creates the `*.wiki.git` backend after the first wiki page exists:
+### One-time bootstrap
 
-1. Open the repo → **Wiki** tab.
-2. Create any page (e.g. title `Home`, body `bootstrap`).
-3. Merge this feature branch (or push `wiki/` to `master`).
-4. Run **Actions → Publish wiki → Run workflow** (or push any change under `wiki/`).
+GitHub creates the `*.wiki.git` backend after the first wiki page exists. If this repository’s Wiki has not yet been initialized, create a page such as `Home` in the Wiki UI, merge the source change, then run **Actions → Publish wiki**. If the first run fails because the Wiki is empty, use `strategy: init` for one reviewed bootstrap run before returning to `strategy: clone`.
 
-If the first Action run fails because the wiki was empty, temporarily set `strategy: init` in the workflow (force-push), run once, then switch back to `strategy: clone`.
+## Working with Devin DeepWiki
 
-## Refreshing content from Devin DeepWiki
+Devin’s documented `.devin/wiki.json` configuration can steer which pages its generator produces. It is appropriate to use that configuration to improve documentation coverage, but it is not an export or synchronization interface.
 
-Private Devin Wiki pages are not exposed to the public DeepWiki MCP without indexing/auth. Practical refresh paths:
+A human should review and bring generated content into this repository using one of these evidence-preserving paths:
 
-1. **Manual / browser**  
-   Open the Devin Wiki, export or copy pages (Chrome “DeepWiki to Markdown” extensions exist), save as `wiki/<Page-Title>.md`.
+1. Export or copy the desired Devin Wiki material through an authenticated Devin session, then add normalized Markdown under `wiki/` in a pull request.
+2. Ask a Devin session to prepare Markdown files suitable for GitHub Wiki, then review the result and commit the approved pages under `wiki/`.
+3. Use a public exporter only after the public DeepWiki repository is actually indexed; preserve the source URL and verification date in the pull request.
 
-2. **CLI exporters** (public DeepWiki once indexed)  
-   - `dw2md timerloggedout-spec/termux-monorepo -o /tmp/out.md`  
-   - Other tools: `deepwiki-to-md`, interactive exporters on GitHub.
+Do not store Devin API tokens, browser cookies, or exported session state in this repository. Treat agent-generated claims as discovery aids and corroborate material statements with repository source, commits, or issue/PR evidence.
 
-3. **Ask Devin**  
-   In a Devin session: “Export the current wiki pages for this repo as Markdown files suitable for a GitHub Wiki (Home.md + one file per page).” Commit the result under `wiki/`.
+## Page conventions
 
-4. **Conventions**  
-   - `Home.md` is the landing page (not `README.md`).  
-   - Filenames become titles (`My-Page.md` → “My Page”).  
-   - Avoid `\ / : * ? " < > |` in titles.  
-   - Mermaid fenced blocks usually render.  
-   - Prefer relative wiki links: `[Architecture](Architecture)`.
-
-## Steering Devin’s generation
-
-Optional repo file `.devin/wiki.json` (repo notes + optional explicit `pages` list) steers regeneration inside Devin. That does not automatically update this GitHub Wiki; re-export into `wiki/` after regenerating.
+- `Home.md` is the landing page.
+- Filenames become page titles (`My-Page.md` becomes “My Page”).
+- Avoid `\ / : * ? " < > |` in titles.
+- Mermaid fenced blocks generally render.
+- Prefer relative wiki links such as `[Architecture](Architecture)`.
 
 ## Related
 
-- Workflow: `.github/workflows/publish-wiki.yml`
-- Action docs: https://github.com/Andrew-Chen-Wang/github-wiki-action
+- Managed publisher: `.github/workflows/publish-wiki.yml`
+- Repository-surface control plane: `.github/workflows/reconcile-repository-surface.yml`
+- Reconciliation design: `docs/agentic/repository-surface-reconciliation.md`
+- DeepWiki evidence policy: `docs/agentic/deepwiki-validation.yaml`

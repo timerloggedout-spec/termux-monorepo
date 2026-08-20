@@ -1,0 +1,122 @@
+# Agent Capability Registry
+# Used by the agent load balancer to route tasks to the agent with the most headroom.
+# Implements: agent-quota-loadbalancer QL-06
+
+version: 1
+updated_at: "2026-08-07T00:00:00Z"
+updated_by: tembo
+
+agents:
+  - id: gemini
+    name: "Gemini CLI (free-tier)"
+    role: review / triage / invoke
+    platform: google-github-actions/run-gemini-cli
+    quota:
+      daily_limit: 20
+      throttled_limit: 18
+      reset: "00:00 UTC"
+      metric: generate_content_free_tty_requests
+      model: gemini-3.5-flash
+    concurrency: 1
+    session_continuation: true
+    session_method: "comment-embedded SHA bookmark + changed-files diff"
+    strengths:
+      - PR review (correctness, security, AGENTS.md alignment)
+      - Issue triage (labeling, dedup, repro steps)
+      - On-demand analysis
+    fallback_when_exhausted: coderabbit
+
+  - id: jules
+    name: "Jules (Google Labs)"
+    role: build / implement / fix
+    platform: google-labs-code/jules-invoke
+    quota:
+      daily_limit: 15
+      concurrent: 3
+    session_continuation: true
+    session_method: "Cloud VM session spans multiple PR revisions and review requests"
+    strengths:
+      - Primary builder (creates branches/PRs)
+      - Auto-resolve on bot feedback
+      - Extended sessions across PR lifecycle
+    fallback_when_exhausted: human
+
+  - id: coderabbit
+    name: "CodeRabbit"
+    role: review / autofix
+    platform: coderabbitai GitHub App
+    quota:
+      daily_limit: unlimited
+      per_pr_limit: "platform-managed"
+    concurrency: unlimited
+    session_continuation: true
+    session_method: "per-PR review threads persist across pushes"
+    strengths:
+      - Always available (no quota exhaustion risk)
+      - Line-level review comments
+      - Autofix suggestions
+      - Walkthrough summaries
+    fallback_when_exhausted: none
+
+  - id: devin
+    name: "Devin (Cognition)"
+    role: review / build
+    platform: devin-ai-integration GitHub App
+    quota:
+      daily_limit: "platform-managed"
+    concurrency: "platform-managed"
+    session_continuation: true
+    strengths:
+      - End-to-end implementation
+      - Review with deep context
+    fallback_when_exhausted: coderabbit
+
+  - id: copilot
+    name: "GitHub Copilot"
+    role: review
+    platform: GitHub Copilot CLI
+    quota:
+      daily_limit: "platform-managed"
+    concurrency: "platform-managed"
+    session_continuation: false
+    strengths:
+      - Code suggestions
+      - Security review
+    fallback_when_exhausted: coderabbit
+
+  - id: tembo
+    name: "Tembo"
+    role: build / implement / fix / orchestration
+    platform: Tembo sandbox agent
+    quota:
+      daily_limit: "platform-managed"
+    concurrency: "platform-managed"
+    session_continuation: true
+    session_method: "per-PR session with context preserved across revisions"
+    strengths:
+      - Autonomous multi-file implementation
+      - CI/CD workflow engineering
+      - Proposal process compliance
+    fallback_when_exhausted: human
+
+# Routing matrix: which agent handles which command type
+routing:
+  review:
+    primary: gemini
+    fallback: coderabbit
+    always_on: [coderabbit]
+  triage:
+    primary: gemini
+    fallback: jules
+  invoke:
+    primary: gemini
+    fallback: jules
+  build:
+    primary: jules
+    fallback: tembo
+  fix:
+    primary: jules
+    fallback: tembo
+  autofix:
+    primary: coderabbit
+    fallback: jules

@@ -3,10 +3,12 @@ name: '🔀 Gemini Dispatch (free-tier agentic)'
 # Central router for free-tier Gemini CLI agentic CI/CD.
 # Requires: secrets.GEMINI_API_KEY (Google AI Studio free quota)
 #
-# QUOTA POLICY:
-# - Automatic PR review on opened/synchronize is DISABLED here.
-# - On-demand @gemini-cli and case-insensitive @sparkFlux fire immediately.
-# Monikers: docs/ops/AGENT-MONIKERS.md
+# Ack pattern: posts 👀 on the triggering comment (same UX as Jules/CodeRabbit).
+# Coordination: prior open agent PRs are passed into triage/review/invoke prompts.
+# Quota: child workflows include a quota-gate that skips gracefully when the
+#   free-tier daily limit is hit — CI stays green, other agents continue.
+# Load balancing: routes to the agent with the most headroom (see
+#   agent-load-balancer.yml for capacity-aware dispatch).
 
 on:
   pull_request:

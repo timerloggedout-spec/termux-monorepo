@@ -1,7 +1,7 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-08-19T04:00:00Z"
-updated_by: Manus AI
+updated_at: "2026-08-07T00:00:00Z"
+updated_by: tembo
 
 proposals:
   - id: context-relationship-graph
@@ -117,56 +117,15 @@ proposals:
     related_prs: [1, 2]
     gates_required: [repo-gate]
 
-  - id: kimi-cloud-offload
-    title: "Corrected Cloud Offload & Parallelization Evaluation"
-    author: Kimi2.6
-    status: posted
-    priority: P1
-    path: active/kimi-cloud-offload/
-    legacy_source: corrected_cloud_offload_evaluation.md
-    source_branch: docs/kimi-cloud-offload-evaluation
-    reviewers:
-      - id: kimi
-        role: author
-        status: posted
-      - id: grok-archw1z
-        role: registrar
-        status: posted
-    related_prs: []
-    related_branches:
-      - docs/kimi-cloud-offload-evaluation
-    gates_required: [repo-gate]
-
-  - id: icm-architect-integration
-    title: "Repository-native ICM integration"
-    author: timerloggedout-spec
+  - id: agent-quota-loadbalancer
+    title: "Agent quota throttling, session continuation, and load balancing"
+    author: tembo
     status: executing
     priority: P0
-    path: active/icm-architect-integration/
+    path: active/agent-quota-loadbalancer/
     reviewers:
-      - id: timerloggedout-spec
-        role: operator-authorizer
-        status: accepted
-      - id: Manus AI
-        role: executor
-        status: executing
-    related_prs: [232]
-    related_branches: [feat/icm-architect-submodule]
-    gates_required: [repo-gate, termux-smoke]
-
-  - id: actions-refinements
-    title: "Issue #192 action-integration refinements"
-    author: Manus AI
-    status: accepted
-    priority: P1
-    path: active/actions-refinements/
-    reviewers:
-      - id: user
-        role: operator+approver
-        status: accepted
-      - id: Manus AI
-        role: executor
-        status: executing
-    related_issues: [192, 175]
-    related_prs: [193, 81, 92, 143, 72, 232]
-    gates_required: [repo-gate, termux-smoke]
+      - id: tembo
+        role: author+executor
+        status: posted
+    related_prs: [63]
+    gates_required: [repo-gate]

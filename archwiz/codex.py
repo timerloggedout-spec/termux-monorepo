@@ -16,10 +16,10 @@ class Pointer:
     content_hash: str
     start_line: int = 0
     end_line: int = 0
-    
+
     def to_key(self) -> str:
         return f"{self.session_id}:{self.message_index}:{self.block_index}"
-    
+
     def to_dict(self) -> Dict:
         return {
             "session_id": self.session_id,
@@ -53,18 +53,18 @@ class CodexIndex:
     Salvaged and normalized from PR #6 (TER-9).
     """
     CODE_BLOCK_PATTERN = re.compile(r'```(\w+)?\n(.*?)```', re.DOTALL)
-    
+
     def __init__(self, provider: str = "global"):
         self.provider = provider
         self.base_dir = ARCHWIZ_ROOT / ".archwiz" / "codex" / provider
         self.base_dir.mkdir(parents=True, exist_ok=True)
         self.blobs_dir = self.base_dir / "blobs"
         self.blobs_dir.mkdir(exist_ok=True)
-        
+
         self.index_file = self.base_dir / "index.json"
         self.pointers: List[Pointer] = []
         self.blobs: Dict[str, str] = {}  # hash -> path
-        
+
         self._load()
 
     def _load(self):
@@ -75,7 +75,7 @@ class CodexIndex:
                     self.pointers.append(Pointer(**p_data))
             except Exception:
                 pass
-        
+
         for blob_file in self.blobs_dir.glob("*.blob"):
             self.blobs[blob_file.stem] = str(blob_file)
 
@@ -97,18 +97,18 @@ class CodexIndex:
                 lang = (match.group(1) or "text").lower()
                 code = match.group(2)
                 ch = hashlib.sha256(code.encode()).hexdigest()[:16]
-                
+
                 # Store blob
                 blob_path = self.blobs_dir / f"{ch}.blob"
                 if not blob_path.exists():
                     blob_path.write_text(code)
                 self.blobs[ch] = str(blob_path)
-                
+
                 # Record pointer
                 p = Pointer(session_id, msg_idx, blk_idx, ch)
                 self.pointers.append(p)
                 count += 1
-        
+
         if count > 0:
             self._save()
         return count

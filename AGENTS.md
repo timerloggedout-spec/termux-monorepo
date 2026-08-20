@@ -15,11 +15,13 @@ This file provides guidance to agents when working with code in this repository.
 
 After this governance sequence, use [`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md) to route the task to one verified component or process card before loading deeper source.
 
+For any nontrivial code, workflow, consolidation, or documentation change, perform bounded context reconnaissance with [`docs/icm/processes/context-relationship-reconnaissance.md`](docs/icm/processes/context-relationship-reconnaissance.md) and the project-local [context-relationship-graph skill](.agents/skills/context-relationship-graph/SKILL.md). Query `workspace/llm_map/context_relationships/` by an exact file, symbol, PR, issue, label, scope, or direct GitHub issue/comment/review permalink when the index is current; use the file-review timeline for a focused review history. Keep **verified evidence** (including native timeline events) separate from scored **candidates**; candidates prompt review and never justify an asserted fact or an autonomous GitHub write. Do not rebuild or edit the generated index manually—use its trusted workflow or an explicitly authorized operator build.
+
 Optional: `CLAUDE.md`, `CONTRIBUTING.md`.
 
 ## Hard Rules
 
-- Target **`master-staging`**, not raw `master`, for integration work.
+- Target **`master`** for integration work.
 - Both gates must pass before merge:
   - `python3 scripts/ci/repo_gate.py`
   - `python3 scripts/ci/termux_smoke.py`
@@ -33,7 +35,7 @@ Optional: `CLAUDE.md`, `CONTRIBUTING.md`.
 ## Preferred Execution Loop
 
 ```text
-registry.yaml → pick todo item → branch from master-staging
+registry.yaml → pick todo item → branch from master
   → implement → PR with Implements: ID → gates green → merge
   → update ITEMS.md status
 ```
@@ -564,4 +566,3 @@ python3 archwiz/mirror.py
 13. **Follow CI/CD patterns** - Use existing GitHub Actions workflows as templates
 14. **Cache aggressively** - Session caching reduces API calls and improves performance
 15. **Monitor data flow** - Check DATA_FLOW_MANIFEST.md for file writer relationships
->>>>>>> pr238

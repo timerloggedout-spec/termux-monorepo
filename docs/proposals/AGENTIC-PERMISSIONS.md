@@ -25,8 +25,6 @@ Read repo/PRs, create branches, create/update files, open PRs, comment, merge wh
 - [ ] Administration Read
 
 Human intervenes only for: credential rotation, destructive history ops, first-time permission grants.
-<<<<<<< HEAD
-=======
 
 ## CodeRabbit / third-party review bots
 
@@ -48,4 +46,3 @@ Consequence: CodeRabbit autofix can change `*.py` / docs, but GitHub will reject
 3. Workflow file edits: **OPERATOR PAT** (full scope) or a **custom GitHub App you own** with Workflows R/W.
 
 Do not expect review bots to own CI YAML. OPERATOR owns `.github/workflows/**`.
->>>>>>> pr238

@@ -71,13 +71,13 @@ class DispatchPipeline:
         """Execute all registered dispatchers."""
         start_time = time.time()
         logger.info(f"Starting dispatch for session {session_id} ({len(messages)} messages)")
-        
+
         for dispatcher in self.dispatchers:
             try:
                 dispatcher(session_id, messages)
             except Exception as e:
                 logger.error(f"Dispatcher {dispatcher.__name__} crashed: {e}")
-        
+
         duration = time.time() - start_time
         logger.info(f"Dispatch completed for {session_id} in {duration:.2f}s")
 
@@ -90,13 +90,13 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: dispatch_pipeline.py <session_id> [path_to_json]")
         sys.exit(1)
-    
+
     sid = sys.argv[1]
     msgs = []
-    
+
     if len(sys.argv) > 2:
         p = Path(sys.argv[2])
         if p.exists():
             msgs = json.loads(p.read_text())
-    
+
     trigger_dispatch(sid, msgs)

@@ -55,8 +55,6 @@ All ITEMS terminal + Review log outcome + move active/ → closed/ + registry up
 5. Update ITEMS.md + registry when possible
 6. Never close P0 security without Operator evidence
 ```
-<<<<<<< HEAD
-=======
 
 ## Automation
 
@@ -69,4 +67,3 @@ All ITEMS terminal + Review log outcome + move active/ → closed/ + registry up
 
 Large external proposals may live on a **docs/** branch with a **pointer** on master
 (see `corrected_cloud_offload_evaluation.md` → `active/kimi-cloud-offload/`).
->>>>>>> pr238

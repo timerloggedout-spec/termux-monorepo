@@ -50,7 +50,7 @@ class LinearClient:
     def query(self, query_str: str, variables: Optional[Dict] = None) -> Dict:
         if not self.api_key:
             raise ValueError("LINEAR_API_KEY not set")
-        
+
         import requests
         headers = {
             "Content-Type": "application/json",
@@ -87,20 +87,20 @@ def sync_to_linear():
     logger.info("Starting Linear Sync")
     tasks = get_tasks()
     done = get_done_tasks()
-    
+
     logger.info(f"Syncing {len(tasks)} tasks against {len(done)} done entries")
-    
+
     client = LinearClient()
-    
+
     for task in tasks:
         task_id = task.get("id")
         if not task_id: continue
-        
+
         is_done = any(task_id in line for line in done)
         target_status = "Done" if is_done else "Todo"
-        
+
         logger.info(f"Task {task_id} -> {target_status}")
-        
+
         if client.api_key:
             try:
                 # This is where the actual API call would happen

@@ -1,5 +1,5 @@
-# Peer policy: Omni \u2194 OpenRouter nearly equal free-tier peers.
-# Selection = desired model + soft-budget headroom. Gemini = residual only.
+# LEADER 2026-08-20 (issue #272): Gemini PRIMARY for best roles.
+# Omni ↔ OpenRouter secondary free-tier peers. Soft budgets = real free-tier RPD (no soft room).
 
 peers:
   omni:
@@ -41,17 +41,17 @@ peers:
         soft_limits: { triage: 60, review: 60, invoke: 60 }
   gemini:
     enabled_env: GEMINI_API_KEY
-    residual_only: true
+    residual_only: false  # LEADER: primary for best roles
     models:
       - id: gemini-3.1-flash-lite
-        soft_limits: { triage: 450, review: 450, invoke: 450 }
+        soft_limits: { triage: 1400, review: 1400, invoke: 1400 }
       - id: gemini-3.5-flash-lite
-        soft_limits: { triage: 450, review: 450, invoke: 450 }
+        soft_limits: { triage: 1400, review: 1400, invoke: 1400 }
       - id: gemini-2.5-flash-lite
-        soft_limits: { triage: 20, review: 20, invoke: 20 }
+        soft_limits: { triage: 1000, review: 1000, invoke: 1000 }
       - id: gemini-3.5-flash
-        soft_limits: { triage: 20, review: 20, invoke: 20 }
+        soft_limits: { triage: 1400, review: 1400, invoke: 1400 }
       - id: gemini-2.5-flash
-        soft_limits: { triage: 20, review: 20, invoke: 20 }
+        soft_limits: { triage: 1400, review: 1400, invoke: 1400 }
       - id: gemini-3-flash
-        soft_limits: { triage: 20, review: 20, invoke: 20 }
+        soft_limits: { triage: 1400, review: 1400, invoke: 1400 }

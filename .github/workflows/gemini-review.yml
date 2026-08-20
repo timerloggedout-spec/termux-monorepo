@@ -1,4 +1,4 @@
-name: '🔍 Gemini PR Review (peer Omni ↔ OpenRouter → Gemini residual)'
+name: '🔍 Gemini PR Review (Gemini PRIMARY → peer Omni ↔ OpenRouter secondary)'
 
 on:
   workflow_call:
@@ -6,14 +6,20 @@ on:
       additional_context:
         type: string
         required: false
->>>>>>> pr238
+        default: ''
+      prior_prs:
+        type: string
+        required: false
+        default: 'none'
+      pr_number:
+        type: string
+        required: false
+        default: ''
 
 concurrency:
   group: gemini-review-${{ inputs.pr_number || github.event.pull_request.number || github.run_id }}
   cancel-in-progress: true
 
-<<<<<<< HEAD
-=======
 permissions: {}
 
 jobs:
@@ -29,7 +35,7 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
 
-      - name: Model router (peer Omni ↔ OpenRouter → Gemini residual)
+      - name: Model router (Gemini PRIMARY → peer Omni ↔ OpenRouter secondary)
         id: router
         uses: ./.github/actions/model-router
         with:
@@ -57,7 +63,7 @@ jobs:
               owner: context.repo.owner, repo: context.repo.repo, issue_number: n,
               body: [
                 marker,
-                '⚠️ **Review** skipped — Omni + OpenRouter peers + Gemini residual soft budgets exhausted.',
+                '⚠️ **Review** skipped — Gemini primary + Omni/OpenRouter secondary soft budgets exhausted.',
                 `Reason: ${process.env.REASON || 'unknown'}`,
                 '',
                 'CodeRabbit / Jules may still review. Resets midnight Pacific.',
@@ -125,7 +131,7 @@ jobs:
           repository: ${{ github.repository }}
           prompt: ${{ steps.rev_ctx.outputs.prompt }}
 
-      - name: Run Gemini CLI PR review (residual)
+      - name: Run Gemini CLI PR review (PRIMARY)
         if: steps.router.outputs.skip != 'true' && steps.router.outputs.provider == 'gemini'
         uses: google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489 # v0.1.22
         continue-on-error: true

@@ -9,8 +9,6 @@ Using a single shared database connection across file walks and batching all ins
 
 **Action:**
 Always batch SQL database operations using `executemany` instead of iterating with `execute`. Provide support for passing an optional shared `conn` handle in indexing/utility functions to allow single-connection batch runs across walk loops, while safely closing connections only if opened locally.
-<<<<<<< HEAD
-=======
 
 ## 2026-08-15 - High-Throughput Datetime Parsing with `datetime.fromisoformat`
 **Learning:**
@@ -32,4 +30,3 @@ In monorepo mapping tools (`central_mapper_v420.py` & `mapper_graph.py`), comput
 
 **Action:**
 Always check state metadata (`mtime` and `size`) before reading file contents for hashing, and construct filename lookup dictionaries once to replace linear searches during file dependency resolution.
->>>>>>> pr238

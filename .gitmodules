@@ -16,9 +16,6 @@
 [submodule "powerlevel10k"]
 	path = powerlevel10k
 	url = https://github.com/romkatv/powerlevel10k.git
-[submodule "codex-termux/codex-termux_fork"]
-	path = codex-termux/codex-termux_fork
-	url = https://github.com/timerloggedout-spec/codex-termux_fork.git
 [submodule "refTemplates/smods/icm-architect_fork"]
 	path = refTemplates/smods/icm-architect_fork
 	url = https://github.com/timerloggedout-spec/icm-architect_fork.git
@@ -39,6 +36,29 @@
 	url = https://github.com/timerloggedout-spec/content-agent-routing-promptbase_fork.git
 	branch = main
 	shallow = true
+[submodule "multi-ai-cli/vendors/CLIProxyAPI"]
+	path = multi-ai-cli/vendors/CLIProxyAPI
+	url = https://github.com/timerloggedout-spec/CLIProxyAPI.git
+	branch = main
+	shallow = true
+[submodule "multi-ai-cli/vendors/gpt4free"]
+	path = multi-ai-cli/vendors/gpt4free
+	url = https://github.com/timerloggedout-spec/gpt4free.git
+	branch = main
+	shallow = true
+[submodule "multi-ai-cli/vendors/ai-manus"]
+	path = multi-ai-cli/vendors/ai-manus
+	url = https://github.com/timerloggedout-spec/ai-manus.git
+	branch = main
+	shallow = true
+[submodule "multi-ai-cli/vendors/Chapito"]
+	path = multi-ai-cli/vendors/Chapito
+	url = https://github.com/timerloggedout-spec/Chapito.git
+	branch = main
+	shallow = true
+[submodule "codex-termux/codex-termux_fork"]
+	path = codex-termux/codex-termux_fork
+	url = https://github.com/timerloggedout-spec/codex-termux_fork.git
 [submodule "refTemplates/smods/termux-mcp-server_fork"]
 	path = refTemplates/smods/termux-mcp-server_fork
 	url = https://github.com/timerloggedout-spec/termux-mcp-server_fork.git

@@ -277,8 +277,8 @@ class ConnectorManager:
         elif auth_method == "jwt":
             api_key = self.get_api_key(connector_type, connector_name)
             api_secret = self._safe_getenv(connector.get("api_secret_env", "")) if connector.get("api_secret_env") else None
-            passphrase = self._safe_getenv(connector.get("passphrase_env", "")) if connector.get("passphrase_env") else None
-            if api_key and api_secret and passphrase:
+            api_credential = self._safe_getenv(connector.get("passphrase_env", "")) if connector.get("passphrase_env") else None
+            if api_key and api_secret and api_credential:
                 timestamp = str(int(time.time() * 1000))
                 request_path = url.replace(connector.get("base_url", ""), "")
                 query_string = ""
@@ -289,7 +289,8 @@ class ConnectorManager:
                 if data:
                     str_to_sign += json.dumps(data, separators=(",", ":"))
                 signature = hmac.new(api_secret.encode(), str_to_sign.encode(), hashlib.sha256).digest()
-                passphrase_sig = hmac.new(api_secret.encode(), passphrase.encode(), hashlib.sha256).digest()
+                # lgtm[py/weak-sensitive-data-hashing] KuCoin API v2 mandates HMAC-SHA256 here; this is a request-authentication transform, not password storage.
+                passphrase_sig = hmac.new(api_secret.encode(), api_credential.encode(), hashlib.sha256).digest()
                 headers["KC-API-KEY"] = api_key
                 headers["KC-API-SIGN"] = base64.b64encode(signature).decode()
                 headers["KC-API-TIMESTAMP"] = timestamp

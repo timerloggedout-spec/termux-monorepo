@@ -1,7 +1,9 @@
 name: Agent review → auto Jules
 
-# When CodeRabbit, Devin, or other review bots leave feedback, automatically
+# When CodeRabbit, Qodo, Devin, or other review bots leave substantive feedback,
 # summon Jules via @jules (display moniker: heyVern — do not @-mention strangers).
+# Provider-owned review controls (for example CodeRabbit's Trigger review checkbox)
+# are not review feedback and must remain in the authorized operator action path.
 # Monikers: docs/ops/AGENT-MONIKERS.md
 #
 # context_key (durable work-context): pr-<number>-<short-ref>
@@ -12,14 +14,16 @@ name: Agent review → auto Jules
 
 on:
   pull_request_review:
-    types: [submitted]
+    types: [submitted, edited]
   pull_request_review_comment:
-    types: [created]
+    types: [created, edited]
   issue_comment:
-    types: [created]
+    types: [created, edited]
 
 concurrency:
-  group: agent-auto-jules-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
+  # Serialize only the same provider source. Distinct provider comments/reviews
+  # on one PR must not cancel one another's feedback relay.
+  group: agent-auto-jules-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}-${{ github.event.review.id || github.event.comment.id || github.run_id }}
   cancel-in-progress: false
 
 jobs:
@@ -28,29 +32,33 @@ jobs:
       (
         github.event_name == 'pull_request_review' &&
         github.event.review.state != 'approved' &&
+        github.event.review.user.type == 'Bot' &&
         (
-          contains(github.event.review.user.login, 'coderabbit') ||
-          contains(github.event.review.user.login, 'devin') ||
-          contains(github.event.review.user.login, 'copilot') ||
-          github.event.review.user.type == 'Bot'
+          github.event.review.user.login == 'coderabbitai[bot]' ||
+          github.event.review.user.login == 'qodo-code-review[bot]' ||
+          github.event.review.user.login == 'devin-ai-integration[bot]' ||
+          github.event.review.user.login == 'copilot-pull-request-reviewer[bot]'
         )
       ) ||
       (
         github.event_name == 'pull_request_review_comment' &&
+        github.event.comment.user.type == 'Bot' &&
         (
-          contains(github.event.comment.user.login, 'coderabbit') ||
-          contains(github.event.comment.user.login, 'devin') ||
-          contains(github.event.comment.user.login, 'copilot') ||
-          github.event.comment.user.type == 'Bot'
+          github.event.comment.user.login == 'coderabbitai[bot]' ||
+          github.event.comment.user.login == 'qodo-code-review[bot]' ||
+          github.event.comment.user.login == 'devin-ai-integration[bot]' ||
+          github.event.comment.user.login == 'copilot-pull-request-reviewer[bot]'
         ) &&
         !contains(github.event.comment.body, '<!-- agent-auto-jules -->')
       ) ||
       (
         github.event_name == 'issue_comment' &&
         github.event.issue.pull_request &&
+        github.event.comment.user.type == 'Bot' &&
         (
-          contains(github.event.comment.user.login, 'coderabbit') ||
-          contains(github.event.comment.user.login, 'devin')
+          github.event.comment.user.login == 'coderabbitai[bot]' ||
+          github.event.comment.user.login == 'qodo-code-review[bot]' ||
+          github.event.comment.user.login == 'devin-ai-integration[bot]'
         ) &&
         !contains(github.event.comment.body, '<!-- agent-auto-jules -->')
       )
@@ -66,6 +74,8 @@ jobs:
       context_key: ${{ steps.meta.outputs.context_key }}
       should_invoke: ${{ steps.meta.outputs.should_invoke }}
       session_id: ${{ steps.load-ctx.outputs.session_id }}
+      source_id: ${{ steps.meta.outputs.source_id }}
+      source_revision: ${{ steps.meta.outputs.source_revision }}
     steps:
       - name: Resolve PR metadata + context_key
         id: meta
@@ -85,6 +95,34 @@ jobs:
               core.setOutput('should_invoke', 'false');
               return;
             }
+            const actor = context.payload.review?.user || context.payload.comment?.user || {};
+            const trustedLogins = new Set([
+              'coderabbitai[bot]',
+              'qodo-code-review[bot]',
+              'devin-ai-integration[bot]',
+              'copilot-pull-request-reviewer[bot]',
+            ]);
+            if (actor.type !== 'Bot' || !trustedLogins.has((actor.login || '').toLowerCase())) {
+              core.notice('Untrusted provider identity: do not relay to Jules.');
+              core.setOutput('should_invoke', 'false');
+              return;
+            }
+            const rawProviderBody = context.payload.review?.body || context.payload.comment?.body || '';
+            const checkboxTrigger =
+              /<!--\s*\{[^}]*"checkboxId"[^}]*\}\s*-->/i.test(rawProviderBody) &&
+              /\btrigger review\b/i.test(rawProviderBody);
+            const automaticReviewNotice = /\bdoes not receive automatic reviews\b/i.test(rawProviderBody);
+            const codeRabbitCooldown = /review limit reached|review rate limited|action not completed|couldn[’']t start this review|next (?:included )?review (?:will be )?available in/i.test(rawProviderBody);
+            if (checkboxTrigger || automaticReviewNotice || codeRabbitCooldown) {
+              core.notice('Provider control or cooldown notice: keep in the authorized operator action path; do not relay to Jules.');
+              core.setOutput('should_invoke', 'false');
+              return;
+            }
+            const source = context.payload.review || context.payload.comment || {};
+            const sourceId = String(source.id || 'unknown');
+            const sourceRevision = `${sourceId}:${source.updated_at || source.submitted_at || source.created_at || context.runId}`;
+            core.setOutput('source_id', sourceId);
+            core.setOutput('source_revision', sourceRevision);
             const { data: pr } = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -136,9 +174,26 @@ jobs:
           script: |
             const prNumber = Number('${{ steps.meta.outputs.pr_number }}');
             const head = '${{ steps.meta.outputs.head_ref }}';
-                core.info(`Debounced: recent agent-auto-jules (${Math.round(ageMs/60000)}m) context_key=${contextKey}`);
-                return;
-              }
+            const contextKey = '${{ steps.meta.outputs.context_key }}';
+            const hasPrior = '${{ steps.load-ctx.outputs.has_prior }}' === 'true';
+            const sessionId = '${{ steps.load-ctx.outputs.session_id }}' || '';
+            const sourceId = '${{ steps.meta.outputs.source_id }}';
+            const sourceRevision = '${{ steps.meta.outputs.source_revision }}';
+            const marker = '<!-- agent-auto-jules -->';
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              per_page: 50,
+            });
+            const alreadyRelayed = comments.some(comment =>
+              comment.user?.login === 'github-actions[bot]' &&
+              comment.body?.includes(marker) &&
+              comment.body.includes(`source_revision: ${sourceRevision}`)
+            );
+            if (alreadyRelayed) {
+              core.info(`Debounced: provider source revision already relayed (${sourceRevision})`);
+              return;
             }
             const bot =
               context.payload.review?.user?.login ||
@@ -158,6 +213,8 @@ jobs:
             const body = [
               marker,
               `context_key: ${contextKey}`,
+              `source_id: ${sourceId}`,
+              `source_revision: ${sourceRevision}`,
               sessionId ? `session_id: ${sessionId}` : '',
               `@jules **Auto-resolve** (heyVern lane / GHA agent-review-auto-jules) — do not wait for a human ping.`,
               ``,
@@ -191,6 +248,25 @@ jobs:
               body,
             });
 
+      - name: Save work-context cache
+        if: steps.meta.outputs.should_invoke == 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: .agent-context
+          key: work-context-${{ steps.meta.outputs.context_key }}
+
+  invoke-jules-api:
+    needs: detect-bot-feedback
+    if: needs.detect-bot-feedback.outputs.should_invoke == 'true' && vars.JULES_AUTO_INVOKE != '0'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Jules API session (if key present)
+        env:
+          JULES_API_KEY: ${{ secrets.JULES_API_KEY }}
+          PR: ${{ needs.detect-bot-feedback.outputs.pr_number }}
+          HEAD: ${{ needs.detect-bot-feedback.outputs.head_ref }}
           CONTEXT_KEY: ${{ needs.detect-bot-feedback.outputs.context_key }}
         run: |
           if [ -z "$JULES_API_KEY" ]; then

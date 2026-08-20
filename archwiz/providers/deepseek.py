@@ -9,7 +9,7 @@ class DeepSeekProvider(BaseProvider):
     """
     DeepSeek provider that wraps the existing deepcli tool.
     """
-    
+
     def __init__(self, config: Optional[ProviderConfig] = None):
         if config is None:
             config = ProviderConfig(name="deepseek", model="deepseek-chat")
@@ -19,13 +19,13 @@ class DeepSeekProvider(BaseProvider):
     def _run_cli(self, args: List[str]) -> Dict[str, Any]:
         if not self.cli_path.exists():
             raise FileNotFoundError(f"deepcli not found at {self.cli_path}")
-        
+
         cmd = ["python3", str(self.cli_path)] + args
         result = subprocess.run(cmd, capture_output=True, text=True)
-        
+
         if result.returncode != 0:
             return {"error": result.stderr, "status": "failed"}
-        
+
         try:
             return json.loads(result.stdout)
         except json.JSONDecodeError:
@@ -35,7 +35,7 @@ class DeepSeekProvider(BaseProvider):
         args = ["send", message]
         if session_id:
             args.extend(["--session", session_id])
-        
+
         res = self._run_cli(args)
         return res.get("response", res.get("output", ""))
 

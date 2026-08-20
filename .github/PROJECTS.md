@@ -9,7 +9,7 @@ This file defines the project management structure for the termux-monorepo, incl
 #### 1. Core Infrastructure (P0)
 - **Description**: Foundational systems including ArchWiz, deepcli, and termux-multi-agent
 - **Status**: Active
-- **Milestones**: 
+- **Milestones**:
   - [M1: ArchWiz Stabilization](#milestone-m1-archwiz-stabilization)
   - [M2: DeepCLI Enhancement](#milestone-m2-deepcli-enhancement)
   - [M3: Multi-Agent Orchestration](#milestone-m3-multi-agent-orchestration)

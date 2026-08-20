@@ -4,13 +4,13 @@ import re
 def resolve_file(filepath):
     with open(filepath, 'r') as f:
         content = f.read()
-    
+
     # Pattern for conflict markers: <<<<<<<, =======, >>>>>>>
     # We want to keep the THEIRS section (the one after =======)
     pattern = re.compile(r'<<<<<<< HEAD\n(.*?)\n=======\n(.*?)\n>>>>>>> [a-f0-9]+', re.DOTALL)
-    
+
     new_content = pattern.sub(r'\2', content)
-    
+
     # Also handle variants without commit hash
     pattern2 = re.compile(r'<<<<<<< HEAD\n(.*?)\n=======\n(.*?)\n>>>>>>> .*?\n', re.DOTALL)
     new_content = pattern2.sub(r'\2\n', new_content)
@@ -18,7 +18,7 @@ def resolve_file(filepath):
     # And simple markers
     pattern3 = re.compile(r'<<<<<<<.*?\n(.*?)\n=======.*?\n(.*?)\n>>>>>>>.*?\n', re.DOTALL)
     new_content = pattern3.sub(r'\2\n', new_content)
-    
+
     if content != new_content:
         with open(filepath, 'w') as f:
             f.write(new_content)

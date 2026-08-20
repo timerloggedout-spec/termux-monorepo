@@ -58,7 +58,7 @@ def toggle_pipeline(mode=None):
     global PIPELINE_ACTIVE, PIPELINE_MODE
     if mode:
         PIPELINE_MODE = mode
-    
+
     control_script = ARCHWIZ_DIR / 'listener_control.py'
     if not control_script.exists():
         print(f"{R}Error: {control_script} not found.{N}")

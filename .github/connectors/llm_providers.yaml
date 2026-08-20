@@ -19,30 +19,30 @@ llm_providers:
         name: "DeepSeek Chat"
         max_tokens: 32768
         pricing: "free"
-        
+
       - id: "deepseek-coder"
         name: "DeepSeek Coder"
         max_tokens: 32768
         pricing: "free"
-    
+
     features:
       - chat_completions
       - streaming
       - thinking_mode
       - code_completion
-    
+
     headers:
       Content-Type: "application/json"
       Accept: "application/json"
-    
+
     endpoints:
       chat_completions: "/chat/completions"
       models: "/models"
-    
+
     # DeepSeek-specific configuration
     thinking_mode: true
     pow_solver: true
-    
+
   mistral:
     enabled: true
     api_key_env: "MISTRAL_API_KEY"
@@ -60,31 +60,31 @@ llm_providers:
         name: "Mistral Tiny"
         max_tokens: 32768
         pricing: "paid"
-        
+
       - id: "mistral-small"
         name: "Mistral Small"
         max_tokens: 32768
         pricing: "paid"
-        
+
       - id: "mistral-medium"
         name: "Mistral Medium"
         max_tokens: 32768
         pricing: "paid"
-        
+
       - id: "mistral-large"
         name: "Mistral Large"
         max_tokens: 32768
         pricing: "paid"
-    
+
     features:
       - chat_completions
       - streaming
       - embeddings
-    
+
     headers:
       Content-Type: "application/json"
       Accept: "application/json"
-    
+
     endpoints:
       chat_completions: "/v1/chat/completions"
       models: "/v1/models"
@@ -106,27 +106,27 @@ llm_providers:
         name: "Claude 3 Haiku"
         max_tokens: 4096
         pricing: "paid"
-        
+
       - id: "claude-3-sonnet-20240229"
         name: "Claude 3 Sonnet"
         max_tokens: 4096
         pricing: "paid"
-        
+
       - id: "claude-3-opus-20240229"
         name: "Claude 3 Opus"
         max_tokens: 4096
         pricing: "paid"
-    
+
     features:
       - chat_completions
       - streaming
       - messages_api
-    
+
     headers:
       Content-Type: "application/json"
       Accept: "application/json"
       Anthropic-Version: "2023-06-01"
-    
+
     endpoints:
       chat_completions: "/v1/messages"
       models: "/v1/models"
@@ -147,20 +147,20 @@ llm_providers:
         name: "Grok Beta"
         max_tokens: 8192
         pricing: "free"
-        
+
       - id: "grok-1"
         name: "Grok 1"
         max_tokens: 8192
         pricing: "free"
-    
+
     features:
       - chat_completions
       - streaming
-    
+
     headers:
       Content-Type: "application/json"
       Accept: "application/json"
-    
+
     endpoints:
       chat_completions: "/api/chat/completions"
       models: "/api/models"

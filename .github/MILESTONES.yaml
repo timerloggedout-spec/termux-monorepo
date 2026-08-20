@@ -23,34 +23,34 @@ milestones:
         assignee: ""
         related_prs: [1]
         success_criteria: "All dispatch operations have proper logging"
-      
+
       - title: "Implement config.py consumers across all tools"
         priority: P0
         status: "planned"
         assignee: ""
         related_branches: ["mistral/fixes-config-security"]
         success_criteria: "All ArchWiz tools use config.py for path resolution"
-      
+
       - title: "Archive legacy poller/listener components"
         priority: P0
         status: "planned"
         assignee: ""
         related_prs: [1]
         success_criteria: "Legacy components moved to _archive/ directory"
-      
+
       - title: "Replace broken Termux absolute symlinks"
         priority: P0
         status: "planned"
         assignee: ""
         success_criteria: "All symlinks use config-rooted entrypoints"
-    
+
     acceptance_criteria:
       - "All ArchWiz tools pass Sentinel gates"
       - "No silent exception handling in critical paths"
       - "Configuration is centralized and maintainable"
-    
+
     dependencies: []
-    
+
   - id: M2
     title: "DeepCLI Enhancement"
     description: "Enhance DeepCLI functionality with proper error handling and logging"
@@ -65,30 +65,30 @@ milestones:
         status: "planned"
         assignee: ""
         success_criteria: "All operations have proper logging"
-      
+
       - title: "Fix send_message vs stream_completion payload divergence"
         priority: P0
         status: "planned"
         assignee: ""
         success_criteria: "Payload formats are consistent across all methods"
-      
+
       - title: "Remove hardcoded session UUID fallback"
         priority: P0
         status: "planned"
         assignee: ""
         success_criteria: "Session UUIDs are properly generated and managed"
-      
+
       - title: "Improve error handling and reporting"
         priority: P0
         status: "planned"
         assignee: ""
         success_criteria: "All errors are properly caught and reported"
-    
+
     acceptance_criteria:
       - "All DeepCLI operations have proper logging and error handling"
       - "Session management is robust and reliable"
       - "Payload formats are consistent"
-    
+
     dependencies: ["M1"]
 
   - id: M3
@@ -105,30 +105,30 @@ milestones:
         status: "planned"
         assignee: ""
         success_criteria: "Agent provisioning is reliable and configurable"
-      
+
       - title: "Enhance Cedar MCP server integration"
         priority: P0
         status: "planned"
         assignee: ""
         success_criteria: "Cedar MCP server fully integrated"
-      
+
       - title: "Add better dashboard and status reporting"
         priority: P1
         status: "planned"
         assignee: ""
         success_criteria: "Dashboard provides comprehensive status information"
-      
+
       - title: "Implement run history tracking"
         priority: P1
         status: "planned"
         assignee: ""
         success_criteria: "Run history is properly tracked and accessible"
-    
+
     acceptance_criteria:
       - "Multi-agent system passes termux-smoke tests"
       - "Agent lifecycle management is complete"
       - "Status reporting is comprehensive"
-    
+
     dependencies: ["M1", "M2"]
 
   # P1 - Conversation Synthesis
@@ -146,30 +146,30 @@ milestones:
         status: "planned"
         assignee: ""
         success_criteria: "Branch management supports all required operations"
-      
+
       - title: "Implement conv_branching.py improvements"
         priority: P1
         status: "planned"
         assignee: ""
         success_criteria: "Conversation branching is reliable and efficient"
-      
+
       - title: "Add conversation export and import capabilities"
         priority: P1
         status: "planned"
         assignee: ""
         success_criteria: "Conversations can be exported and imported"
-      
+
       - title: "Improve Chronos integration"
         priority: P1
         status: "planned"
         assignee: ""
         success_criteria: "Chronos integration is seamless"
-    
+
     acceptance_criteria:
       - "Full conversation lifecycle management"
       - "Export/import functionality works correctly"
       - "Chronos integration is complete"
-    
+
     dependencies: ["M1"]
 
   - id: M5
@@ -186,30 +186,30 @@ milestones:
         status: "planned"
         assignee: ""
         success_criteria: "Accelerator functionality is enhanced"
-      
+
       - title: "Complete versioner.py integration"
         priority: P1
         status: "planned"
         assignee: ""
         success_criteria: "Versioning is properly integrated"
-      
+
       - title: "Add time-loop visualization"
         priority: P2
         status: "planned"
         assignee: ""
         success_criteria: "Time-loop visualization is available"
-      
+
       - title: "Implement success-only branching"
         priority: P1
         status: "planned"
         assignee: ""
         success_criteria: "Success-only branching works correctly"
-    
+
     acceptance_criteria:
       - "Chronos pipeline fully integrated and tested"
       - "Time-loop functionality is complete"
       - "Versioning is reliable"
-    
+
     dependencies: ["M4"]
 
   # P1 - Harmony & Multi-AI
@@ -227,30 +227,30 @@ milestones:
         status: "planned"
         assignee: ""
         success_criteria: "Support for 3+ LLM providers"
-      
+
       - title: "Implement model selection and switching"
         priority: P1
         status: "planned"
         assignee: ""
         success_criteria: "Model switching is seamless"
-      
+
       - title: "Add account management for multiple providers"
         priority: P1
         status: "planned"
         assignee: ""
         success_criteria: "Account management supports multiple providers"
-      
+
       - title: "Improve token management"
         priority: P1
         status: "planned"
         assignee: ""
         success_criteria: "Token management is secure and reliable"
-    
+
     acceptance_criteria:
       - "Support for 3+ LLM providers with proper account management"
       - "Model selection and switching works correctly"
       - "Token management is secure"
-    
+
     dependencies: ["M1"]
 
   - id: M7
@@ -267,30 +267,30 @@ milestones:
         status: "planned"
         assignee: ""
         success_criteria: "Harmony Hub workspace fully integrated"
-      
+
       - title: "Add utility_belt tools to main workflow"
         priority: P1
         status: "planned"
         assignee: ""
         success_criteria: "Utility belt tools are accessible"
-      
+
       - title: "Enhance token_provider_v2.py"
         priority: P1
         status: "planned"
         assignee: ""
         success_criteria: "Token provider v2 is fully functional"
-      
+
       - title: "Implement session management"
         priority: P1
         status: "planned"
         assignee: ""
         success_criteria: "Session management is comprehensive"
-    
+
     acceptance_criteria:
       - "Harmony Hub tools integrated into main workflow"
       - "Utility belt tools are accessible"
       - "Session management is complete"
-    
+
     dependencies: ["M6"]
 
   # P2 - Reference Templates
@@ -309,30 +309,30 @@ milestones:
         assignee: ""
         related_branches: ["recreate/refTemplates-skeleton"]
         success_criteria: "refTemplates skeleton merged to master"
-      
+
       - title: "Add 15_Reverse_Engineering category"
         priority: P2
         status: "planned"
         assignee: ""
         success_criteria: "Category 15 created with proper structure"
-      
+
       - title: "Nest Haven and Interpreted-Context-Methoddology_fork"
         priority: P2
         status: "planned"
         assignee: ""
         success_criteria: "Uncategorized entries properly nested"
-      
+
       - title: "Update README with refTemplates status"
         priority: P2
         status: "planned"
         assignee: ""
         success_criteria: "README documents refTemplates status"
-    
+
     acceptance_criteria:
       - "All refTemplates categories restored as metadata-only"
       - "Uncategorized entries properly nested"
       - "Documentation is up-to-date"
-    
+
     dependencies: []
 
   - id: M9
@@ -349,30 +349,30 @@ milestones:
         status: "planned"
         assignee: ""
         success_criteria: "All categories 01-15 are properly organized"
-      
+
       - title: "Add metadata for all entries"
         priority: P2
         status: "planned"
         assignee: ""
         success_criteria: "All entries have proper metadata"
-      
+
       - title: "Implement sparse checkout patterns"
         priority: P2
         status: "planned"
         assignee: ""
         success_criteria: "Sparse checkout patterns are implemented"
-      
+
       - title: "Update project mapping"
         priority: P2
         status: "planned"
         assignee: ""
         success_criteria: "Project mapping is up-to-date"
-    
+
     acceptance_criteria:
       - "All refTemplates properly categorized and documented"
       - "Sparse checkout patterns work correctly"
       - "Project mapping is accurate"
-    
+
     dependencies: ["M8"]
 
   # P3 - Swarm & Commingle
@@ -390,30 +390,30 @@ milestones:
         status: "planned"
         assignee: ""
         success_criteria: "Usage patterns are well-documented"
-      
+
       - title: "Add selective integration points"
         priority: P3
         status: "planned"
         assignee: ""
         success_criteria: "Selective integration points are implemented"
-      
+
       - title: "Implement resource limits for Termux"
         priority: P3
         status: "planned"
         assignee: ""
         success_criteria: "Resource limits are properly configured"
-      
+
       - title: "Add cleanup and maintenance scripts"
         priority: P3
         status: "planned"
         assignee: ""
         success_criteria: "Cleanup and maintenance scripts are available"
-    
+
     acceptance_criteria:
       - "Commingle-swarm properly documented and maintained"
       - "Resource limits are appropriate for Termux"
       - "Integration points are selective and controlled"
-    
+
     dependencies: []
 
   # P2 - Projects & Exchanges
@@ -431,30 +431,30 @@ milestones:
         status: "planned"
         assignee: ""
         success_criteria: "All submodules are up-to-date"
-      
+
       - title: "Add project discovery and indexing"
         priority: P2
         status: "planned"
         assignee: ""
         success_criteria: "Project discovery works correctly"
-      
+
       - title: "Implement project health monitoring"
         priority: P2
         status: "planned"
         assignee: ""
         success_criteria: "Project health monitoring is functional"
-      
+
       - title: "Add project documentation"
         priority: P2
         status: "planned"
         assignee: ""
         success_criteria: "All projects have proper documentation"
-    
+
     acceptance_criteria:
       - "All projects indexed and discoverable"
       - "Project health monitoring is functional"
       - "Documentation is comprehensive"
-    
+
     dependencies: []
 
   - id: M12
@@ -471,30 +471,30 @@ milestones:
         status: "planned"
         assignee: ""
         success_criteria: "yobitrageswap APIs are functional"
-      
+
       - title: "Add new exchange APIs"
         priority: P2
         status: "planned"
         assignee: ""
         success_criteria: "New exchange APIs are integrated"
-      
+
       - title: "Implement API health monitoring"
         priority: P2
         status: "planned"
         assignee: ""
         success_criteria: "API health monitoring is functional"
-      
+
       - title: "Add error handling and retries"
         priority: P2
         status: "planned"
         assignee: ""
         success_criteria: "Error handling and retries are implemented"
-    
+
     acceptance_criteria:
       - "All exchange APIs functional and monitored"
       - "Error handling is robust"
       - "API health monitoring works correctly"
-    
+
     dependencies: []
 
   # P1 - Documentation
@@ -512,30 +512,30 @@ milestones:
         status: "planned"
         assignee: ""
         success_criteria: "Session digest functionality is enhanced"
-      
+
       - title: "Complete structural_scanner.py"
         priority: P1
         status: "planned"
         assignee: ""
         success_criteria: "Structural scanner is complete"
-      
+
       - title: "Add export_status.py improvements"
         priority: P1
         status: "planned"
         assignee: ""
         success_criteria: "Export status functionality is improved"
-      
+
       - title: "Implement pointer_index.py updates"
         priority: P1
         status: "planned"
         assignee: ""
         success_criteria: "Pointer index is up-to-date"
-    
+
     acceptance_criteria:
       - "All documentation auto-generated and up-to-date"
       - "Pipeline runs successfully"
       - "Documentation is comprehensive"
-    
+
     dependencies: ["M1"]
 
   - id: M14
@@ -552,30 +552,30 @@ milestones:
         status: "in_progress"
         assignee: ""
         success_criteria: "Root README has clear navigation hierarchy"
-      
+
       - title: "Fix REFERENCE_HUB absolute path links"
         priority: P1
         status: "planned"
         assignee: ""
         success_criteria: "All absolute paths are config-rooted"
-      
+
       - title: "Implement config-rooted entrypoints"
         priority: P1
         status: "planned"
         assignee: ""
         success_criteria: "All entrypoints use config-rooted paths"
-      
+
       - title: "Archive legacy Entry + HTML as secondary"
         priority: P1
         status: "planned"
         assignee: ""
         success_criteria: "Legacy navigation is properly archived"
-    
+
     acceptance_criteria:
       - "Clear navigation hierarchy established and documented"
       - "All paths are config-rooted"
       - "Legacy navigation properly archived"
-    
+
     dependencies: []
 
   # P0 - Security
@@ -594,30 +594,30 @@ milestones:
         assignee: ""
         related_prs: [3]
         success_criteria: "Pre-commit hook properly scans for session stores"
-      
+
       - title: "Document credential rotation procedures"
         priority: P0
         status: "planned"
         assignee: ""
         success_criteria: "Credential rotation procedures are documented"
-      
+
       - title: "Implement history rewrite procedures"
         priority: P0
         status: "planned"
         assignee: ""
         success_criteria: "History rewrite procedures are available"
-      
+
       - title: "Add .gitignore patterns for session stores"
         priority: P0
         status: "planned"
         assignee: ""
         success_criteria: "Session stores are properly ignored"
-    
+
     acceptance_criteria:
       - "No session stores tracked in Git"
       - "Credential rotation procedures are documented"
       - "History rewrite procedures are available"
-    
+
     dependencies: []
 
   - id: M16
@@ -634,30 +634,30 @@ milestones:
         status: "planned"
         assignee: ""
         success_criteria: "Security remediation procedures are implemented"
-      
+
       - title: "Add security scanning to CI/CD"
         priority: P0
         status: "planned"
         assignee: ""
         success_criteria: "Security scanning is part of CI/CD"
-      
+
       - title: "Implement credential management"
         priority: P0
         status: "planned"
         assignee: ""
         success_criteria: "Credential management is secure"
-      
+
       - title: "Add security documentation"
         priority: P0
         status: "planned"
         assignee: ""
         success_criteria: "Security documentation is comprehensive"
-    
+
     acceptance_criteria:
       - "Security gates pass for all PRs"
       - "Security scanning is integrated into CI/CD"
       - "Credential management is secure"
-    
+
     dependencies: ["M15"]
 
 # Status Definitions
@@ -678,31 +678,31 @@ projects:
   - id: "Core Infrastructure"
     description: "Foundational systems including ArchWiz, deepcli, and termux-multi-agent"
     color: "#FF0000"
-    
+
   - id: "Conversation Synthesis"
     description: "CLI synthegration, Chronos, and conversation management"
     color: "#00FF00"
-    
+
   - id: "Harmony & Multi-AI"
     description: "Multi-model integration and harmony hub"
     color: "#0000FF"
-    
+
   - id: "Reference Templates"
     description: "refTemplates restoration and organization"
     color: "#FFFF00"
-    
+
   - id: "Swarm & Commingle"
     description: "Swarm ecosystem integration"
     color: "#FF00FF"
-    
+
   - id: "Projects & Exchanges"
     description: "External projects and exchange integrations"
     color: "#00FFFF"
-    
+
   - id: "Documentation & Navigation"
     description: "Documentation, wiki, and navigation improvements"
     color: "#FFA500"
-    
+
   - id: "Security & Hygiene"
     description: "Security improvements and repository hygiene"
     color: "#800080"

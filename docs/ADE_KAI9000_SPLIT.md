@@ -1,6 +1,6 @@
 # ADE vs Crypto — kai9000 split
 
-Upstream: https://github.com/romanyukzhenya82-sketch/kai9000-orchestrator  
+Upstream: https://github.com/romanyukzhenya82-sketch/kai9000-orchestrator
 Fork: https://github.com/timerloggedout-spec/kai9000-orchestrator_fork
 
 ## Principle

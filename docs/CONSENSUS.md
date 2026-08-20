@@ -186,8 +186,6 @@ Optional formal subject      → profile raft-strict
 Merge concurrent facts       → CRDT (OR-Set / G-Set / counters)
 Merge authority              → never CRDT; use tiers
 ```
-<<<<<<< HEAD
-=======
 
 ---
 
@@ -218,4 +216,3 @@ python3 scripts/proposals/record_vote.py --proposal <id> --term <id>/<subject>/1
   --voter <you> --vote accept --reason "…"
 python3 scripts/proposals/promote_proposal.py --id <id> --to accepted --evidence "…"
 ```
->>>>>>> pr238

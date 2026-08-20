@@ -13,7 +13,7 @@ class ProviderConfig:
 
 class BaseProvider(ABC):
     """Base interface for all AI providers in the ArchWiz ecosystem."""
-    
+
     def __init__(self, config: ProviderConfig):
         self.config = config
         self.codex = CodexIndex(provider=config.name)

@@ -1,0 +1,29 @@
+name: fork sync audit
+
+on:
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fork-sync-audit
+  cancel-in-progress: true
+
+jobs:
+  report:
+    name: user-owned fork divergence
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 1
+          submodules: false
+
+      - name: Report pinned versus remote fork revisions
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 scripts/ci/fork_sync_audit.py

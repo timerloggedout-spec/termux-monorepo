@@ -1,0 +1,512 @@
+[1;37m{[m
+  [1;34m"body"[m[1;37m:[m [32m"## Summary\n\nThis PR implements novel work as requested, focusing on Linear integration, path normalization, and improved error observability.\n\n### Changes\n- **Linear Integration:** Added  to bridge local  with Linear. Added a new menu option in  to trigger sync.\n- **Path Normalization:** Refactored ^[[H^[[2J^[[3J^[[1;36m\n      █████╗ ██████╗  ██████╗██╗  ██╗██╗    ██╗██╗███████╗\n     ██╔══██╗██╔══██╗██╔════╝██║  ██║██║    ██║██║╚══███╔╝\n     ███████║██████╔╝██║     ███████║██║ █╗ ██║██║  ███╔╝\n     ██╔══██║██╔══██╗██║     ██╔══██║██║███╗██║██║ ███╔╝\n     ██║  ██║██║  ██║╚██████╗██║  ██║╚███╔███╔╝██║███████╗\n     ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝ ╚══╝╚══╝ ╚═╝╚══════╝\n    ^[[0m\n^[[1;32m⚡ ARCHWIZ DASHBOARD ⚡^[[0m   Mon Aug  3 00:14:08 2026 to use  (SSOT) instead of hardcoded  paths.\n- **Error Observability:** Replaced silent  blocks in  with structured logging to  for dispatch and history fetch failures.\n\n### Validation\n- [x] ^[[H^[[2J^[[3J^[[1;36m\n      █████╗ ██████╗  ██████╗██╗  ██╗██╗    ██╗██╗███████╗\n     ██╔══██╗██╔══██╗██╔════╝██║  ██║██║    ██║██║╚══███╔╝\n     ███████║██████╔╝██║     ███████║██║ █╗ ██║██║  ███╔╝\n     ██╔══██║██╔══██╗██║     ██╔══██║██║███╗██║██║ ███╔╝\n     ██║  ██║██║  ██║╚██████╗██║  ██║╚███╔███╔╝██║███████╗\n     ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝ ╚══╝╚══╝ ╚═╝╚══════╝\n    ^[[0m\n^[[1;32m⚡ ARCHWIZ DASHBOARD ⚡^[[0m   Mon Aug  3 00:14:09 2026 runs and correctly resolves paths via  class.\n- [x]  correctly itemizes tasks for sync.\n- [x]  syntax is valid and logging hooks are correctly placed.\n\n### Related\n- Implements: Novel Work requirement from user request.\n- Integrates: Linear (Integrated as bridge).\n<!-- devin-review-badge-begin -->\n\n---\n\n<a href=\"https://app.devin.ai/review/timerloggedout-spec/termux-monorepo/pull/13\" target=\"_blank\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://static.devin.ai/assets/gh-open-in-devin-review-dark.svg?v=1\">\n    <img src=\"https://static.devin.ai/assets/gh-open-in-devin-review-light.svg?v=1\" alt=\"Open in Devin Review\">\n  </picture>\n</a>\n<!-- devin-review-badge-end -->\n\n<!-- This is an auto-generated comment: release notes by coderabbit.ai -->\n\n## Summary by CodeRabbit\n\n- **New Features**\n  - Added a task synchronization workflow that reports completed and outstanding tasks for Linear integration.\n  - Simplified dashboard navigation and profile management.\n  - Improved workspace and pipeline controls.\n\n- **Bug Fixes**\n  - Improved compatibility in environments where session details are unavailable.\n  - Added safer diagnostic reporting when background operations encounter errors.\n  - Improved handling of missing pipeline scripts.\n\n- **Documentation**\n  - Added architecture, audit, evaluation, and implementation planning documentation.\n\n<!-- end of auto-generated comment: release notes by coderabbit.ai -->"[m[1;37m,[m
+  [1;34m"comments"[m[1;37m:[m [1;37m[[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"IC_kwDOTnjXOs8AAAABM58yzw"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"vercel"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"NONE"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m"[vc]: #XSJ2d4HQyX/yXlRdXKwAse0z0xB3L2YTxqcFD5KKZ1M=:eyJpc01vbm9yZXBvIjp0cnVlLCJ0eXBlIjoiZ2l0aHViIiwicHJvamVjdHMiOlt7Im5hbWUiOiJ0ZXJtdXgtbW9ub3JlcG8iLCJwcm9qZWN0SWQiOiJwcmpfak5zQ0d3OVFyb0p4bjEzNTZUNFFQd2UwWDl6RyIsImluc3BlY3RvclVybCI6Imh0dHBzOi8vdmVyY2VsLmNvbS90aW1lcmxvZ2dlZG91dC01MTg0cy1wcm9qZWN0cy90ZXJtdXgtbW9ub3JlcG8vMmRvYktjUllCWVJjaXlwNnhQOWZrd2REZE5VNSIsInByZXZpZXdVcmwiOiJ0ZXJtdXgtbW9ub3JlcG8tZ2l0LW1hbnVzLWUyMWI3Mi10aW1lcmxvZ2dlZG91dC01MTg0cy1wcm9qZWN0cy52ZXJjZWwuYXBwIiwibmV4dENvbW1pdFN0YXR1cyI6IkRFUExPWUVEIiwibGl2ZUZlZWRiYWNrIjp7InJlc29sdmVkIjowLCJ1bnJlc29sdmVkIjowLCJ0b3RhbCI6MCwibGluayI6InRlcm11eC1tb25vcmVwby1naXQtbWFudXMtZTIxYjcyLXRpbWVybG9nZ2Vkb3V0LTUxODRzLXByb2plY3RzLnZlcmNlbC5hcHAifSwicm9vdERpcmVjdG9yeSI6ImRlZXBzZWVrLWNsaSIsInYwIjp0cnVlfV19\nThe latest updates on your projects. Learn more about [Vercel for GitHub](https://vercel.link/github-learn-more).\n\n| Project | Deployment | Actions | Updated (UTC) |\n| :--- | :----- | :------ | :------ |\n| <a href=\"https://vercel.com/timerloggedout-5184s-projects/termux-monorepo\"><sup><img src=\"https://vercel.com/api/www/avatar?projectId=prj_jNsCGw9QroJxn1356T4QPwe0X9zG&teamId=team_jKHy7m9xZrvrGP5cAlIMPs3S&s=32\" width=\"16\" height=\"16\" align=\"middle\" alt=\"\" /></sup></a> [termux-monorepo](https://vercel.com/timerloggedout-5184s-projects/termux-monorepo) | ![Ready](https://vercel.com/static/status/ready.svg) [Ready](https://vercel.com/timerloggedout-5184s-projects/termux-monorepo/2dobKcRYBYRciyp6xP9fkwdDdNU5) | [Preview](https://termux-monorepo-git-manus-e21b72-timerloggedout-5184s-projects.vercel.app), [v0](https://v0.app/chat/api/open?vercelProjectId=prj_jNsCGw9QroJxn1356T4QPwe0X9zG&gitBranch=manus%2Fnovel-work&vercelTeamId=team_jKHy7m9xZrvrGP5cAlIMPs3S&utm_source=pr-comment-table) | Aug 5, 2026 7:11am |\n\n"[m[1;37m,[m
+      [1;34m"createdAt"[m[1;37m:[m [32m"2026-08-03T00:14:16Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mtrue[m[1;37m,[m
+      [1;34m"isMinimized"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"minimizedReason"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"url"[m[1;37m:[m [32m"https://github.com/timerloggedout-spec/termux-monorepo/pull/13#issuecomment-5161038543"[m[1;37m,[m
+      [1;34m"viewerDidAuthor"[m[1;37m:[m [33mfalse[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"IC_kwDOTnjXOs8AAAABM580Ng"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"ecc-tools"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"NONE"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m"> Analyzing 200 commits..."[m[1;37m,[m
+      [1;34m"createdAt"[m[1;37m:[m [32m"2026-08-03T00:14:19Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"isMinimized"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"minimizedReason"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"url"[m[1;37m:[m [32m"https://github.com/timerloggedout-spec/termux-monorepo/pull/13#issuecomment-5161038902"[m[1;37m,[m
+      [1;34m"viewerDidAuthor"[m[1;37m:[m [33mfalse[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"IC_kwDOTnjXOs8AAAABM580fw"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"coderabbitai"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"CONTRIBUTOR"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m"<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- review_stack_entry_start -->\n\n[![Review Change Stack](https://storage.googleapis.com/coderabbit_public_assets/review-stack-in-coderabbit-ui.svg)](https://app.coderabbit.ai/change-stack/timerloggedout-spec/termux-monorepo/pull/13?utm_source=github_walkthrough&utm_medium=github&utm_campaign=change_stack)\n\n<!-- review_stack_entry_end -->\n<!-- This is an auto-generated comment: rate limited by coderabbit.ai -->\n\n> [!WARNING]\n> ## Review limit reached\n> \n> `@timerloggedout-spec`, you've reached your PR review limit, so we couldn't start this review.\n> \n> **Next review available in:** **58 minutes**\n> \n> You've used all free OSS reviews for now. Wait for the free limit to reset to keep reviewing this public repository.\n> \n> <details>\n> <summary>How can I continue?</summary>\n> \n> After more reviews become available, a review can be triggered using the `@coderabbitai review` command as a PR comment. Alternatively, push new commits to this PR.\n> \n> To avoid repeated limits, reduce automatic review volume by pausing incremental auto-reviews earlier, using label-based review opt-in, excluding WIP or generated PR titles, or requesting reviews manually when the PR is ready. If your team needs uninterrupted high-volume reviews, an organization admin can enable usage-based reviews.\n> \n> </details>\n> \n> \n> <details>\n> <summary>How do review limits work?</summary>\n> \n> CodeRabbit enforces per-developer PR review limits for each organization. Most developers receive the normal plan review availability.\n> \n> For paid Pro and Pro+ PR reviews, CodeRabbit uses adaptive limits for sustained high-volume activity. When a developer's recent PR review activity reaches the 95th percentile or higher among CodeRabbit users, additional reviews become available more gradually as earlier reviews age out of the rolling window.\n> \n> Please refer [docs](https://docs.coderabbit.ai/management/plans#rate-limits) for additional details.\n> \n> </details>\n> \n> <details>\n> <summary>Review details</summary>\n> \n> <details>\n> <summary>⚙️ Run configuration</summary>\n> \n> **Configuration used**: Path: .coderabbit.yaml\n> \n> **Review profile**: ASSERTIVE\n> \n> **Plan**: Pro Plus\n> \n> **Run ID**: `bd98c4e3-679b-4e68-bede-d897312036df`\n> \n> </details>\n> \n> <details>\n> <summary>📥 Commits</summary>\n> \n> Reviewing files that changed from the base of the PR and between 78c30d02a0fecf54b07da04e794a18ae6ee25e09 and 3da2b3c9501b8bbf161dcba2a8a65775533218c3.\n> \n> </details>\n> \n> <details>\n> <summary>📒 Files selected for processing (21)</summary>\n> \n> * `.gitmodules`\n> * `archwiz/codex.py`\n> * `archwiz/config.py`\n> * `archwiz/dispatch_pipeline.py`\n> * `archwiz/linear_sync.py`\n> * `archwiz/providers/__init__.py`\n> * `archwiz/providers/base.py`\n> * `archwiz/providers/deepseek.py`\n> * `archwiz/session_ssot.py`\n> * `codex-termux/Makefile`\n> * `codex-termux/README.md`\n> * `codex-termux/bridge/codex_bridge/__init__.py`\n> * `codex-termux/bridge/codex_bridge/__main__.py`\n> * `codex-termux/bridge/codex_bridge/cli.py`\n> * `codex-termux/bridge/codex_bridge/paths.py`\n> * `codex-termux/codex-termux_fork`\n> * `deepcli/deepcli/core.py`\n> * `docs/evaluations/manus/REPORT.md`\n> * `docs/proposals/active/manus-critical-eval/ITEMS.md`\n> * `scripts/ci/repo_gate.py`\n> * `scripts/ci/termux_smoke.py`\n> \n> </details>\n> \n> </details>\n\n<!-- end of auto-generated comment: rate limited by coderabbit.ai -->\n\n<!-- finishing_touch_checkbox_start -->\n\n<details>\n<summary>✨ Finishing Touches 💡 1</summary>\n\n<!-- finishing_touch_suggestion:resolve_merge_conflict -->\n<details open>\n<summary>⚔️ Resolve merge conflicts 💡</summary>\n\n- [ ] <!-- {\"checkboxId\": \"c3a5b2e1-4d7f-4a8c-b9d6-e1f2c3d4a5b6\"} --> Resolve merge conflict in branch `manus/novel-work`\n\n</details>\n<details>\n<summary>📝 Generate docstrings</summary>\n\n- [ ] <!-- {\"checkboxId\": \"7962f53c-55bc-4827-bfbf-6a18da830691\"} --> Create stacked PR\n- [ ] <!-- {\"checkboxId\": \"3e1879ae-f29b-4d0d-8e06-d12b7ba33d98\"} --> Commit on current branch\n\n</details>\n<details>\n<summary>🧪 Generate unit tests (beta)</summary>\n\n- [ ] <!-- {\"checkboxId\": \"f47ac10b-58cc-4372-a567-0e02b2c3d479\", \"radioGroupId\": \"utg-output-choice-group-unknown_comment_id\"} -->   Create PR with unit tests\n- [ ] <!-- {\"checkboxId\": \"6ba7b810-9dad-11d1-80b4-00c04fd430c8\", \"radioGroupId\": \"utg-output-choice-group-unknown_comment_id\"} -->   Commit unit tests in branch `manus/novel-work`\n\n</details>\n\n</details>\n\n<!-- finishing_touch_checkbox_end -->\n<!-- tips_start -->\n\n---\n\nThanks for using [CodeRabbit](https://coderabbit.ai?utm_source=oss&utm_medium=github&utm_campaign=timerloggedout-spec/termux-monorepo&utm_content=13)! It's free for OSS, and your support helps us grow. If you like it, consider giving us a shout-out.\n\n<details>\n<summary>❤️ Share</summary>\n\n- [X](https://twitter.com/intent/tweet?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A&url=https%3A//coderabbit.ai)\n- [Mastodon](https://mastodon.social/share?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A%20https%3A%2F%2Fcoderabbit.ai)\n- [Reddit](https://www.reddit.com/submit?title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&text=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code.%20Check%20it%20out%3A%20https%3A//coderabbit.ai)\n- [LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcoderabbit.ai&mini=true&title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&summary=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code)\n\n</details>\n\n\n<sub>Comment `@coderabbitai help` to get the list of available commands.</sub>\n\n<!-- tips_end -->"[m[1;37m,[m
+      [1;34m"createdAt"[m[1;37m:[m [32m"2026-08-03T00:14:20Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mtrue[m[1;37m,[m
+      [1;34m"isMinimized"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"minimizedReason"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"url"[m[1;37m:[m [32m"https://github.com/timerloggedout-spec/termux-monorepo/pull/13#issuecomment-5161038975"[m[1;37m,[m
+      [1;34m"viewerDidAuthor"[m[1;37m:[m [33mfalse[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"IC_kwDOTnjXOs8AAAABM582bg"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"ecc-tools"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"NONE"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m"> Analyzing 200 commits..."[m[1;37m,[m
+      [1;34m"createdAt"[m[1;37m:[m [32m"2026-08-03T00:14:26Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"isMinimized"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"minimizedReason"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"url"[m[1;37m:[m [32m"https://github.com/timerloggedout-spec/termux-monorepo/pull/13#issuecomment-5161039470"[m[1;37m,[m
+      [1;34m"viewerDidAuthor"[m[1;37m:[m [33mfalse[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"IC_kwDOTnjXOs8AAAABM585Ag"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"gitar-bot"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"NONE"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m"<kbd><img src=\"https://raw.githubusercontent.com/gitarcode/.github/main/assets/gitar-spin.svg\" align=\"center\"> Gitar is working</kbd>\n\n<sub>[Gitar](https://gitar.ai)</sub>"[m[1;37m,[m
+      [1;34m"createdAt"[m[1;37m:[m [32m"2026-08-03T00:14:33Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mtrue[m[1;37m,[m
+      [1;34m"isMinimized"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"minimizedReason"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"url"[m[1;37m:[m [32m"https://github.com/timerloggedout-spec/termux-monorepo/pull/13#issuecomment-5161040130"[m[1;37m,[m
+      [1;34m"viewerDidAuthor"[m[1;37m:[m [33mfalse[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"IC_kwDOTnjXOs8AAAABM589CA"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"ecc-tools"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"NONE"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m"## Analysis Failed\n\n`Reference cannot be updated - https://docs.github.com/rest/git/refs#update-a-reference`\n\n<details>\n<summary>Troubleshooting</summary>\n\n| Cause | Resolution |\n|-------|------------|\n| Large repository | Analysis may timeout on repos with extensive history |\n| API rate limits | Wait 15 minutes before retrying |\n| Network issues | Queue timeout is 15 minutes; retry may succeed |\n| Permissions | Verify app has Contents: Read access |\n\n</details>\n\n**Retry:** `/ecc-tools analyze`\n\n---\n<sub>[Report Issue](https://github.com/ECC-Tools/.github/issues/new) | [ECC Tools](https://ecc.tools)</sub>"[m[1;37m,[m
+      [1;34m"createdAt"[m[1;37m:[m [32m"2026-08-03T00:14:45Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"isMinimized"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"minimizedReason"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"url"[m[1;37m:[m [32m"https://github.com/timerloggedout-spec/termux-monorepo/pull/13#issuecomment-5161041160"[m[1;37m,[m
+      [1;34m"viewerDidAuthor"[m[1;37m:[m [33mfalse[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"IC_kwDOTnjXOs8AAAABM58-6g"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"ecc-tools"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"NONE"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m"## Analysis Complete\n\nGenerated ECC bundle from **1 commits** | Confidence: **50%**\n\n### [View Pull Request #14](https://github.com/timerloggedout-spec/termux-monorepo/pull/14)\n\n<details>\n<summary>Repository Profile</summary>\n\n| Attribute | Value |\n|-----------|-------|\n| Language | Python |\n| Framework | Not detected |\n| Commit Convention | conventional |\n| Test Directory | `separate` |\n\n</details>\n\n<details>\n<summary>Changed Files (3)</summary>\n\n| Metric | Value |\n|--------|-------|\n| Files changed | 3 |\n| Additions | 122 |\n| Deletions | 279 |\n\n**Top hotspots**\n\n| Path | Status | +/- |\n|------|--------|-----|\n| `archwiz/archwiz.py` | modified | +56 / -273 |\n| `archwiz/linear_sync.py` | added | +50 / -0 |\n| `deepcli/deepcli/core.py` | modified | +16 / -6 |\n\n**Top directories**\n\n| Directory | Files | Total changes |\n|-----------|-------|---------------|\n| `archwiz` | 2 | 379 |\n| `deepcli/deepcli` | 1 | 22 |\n\n</details>\n\n<details>\n<summary>Analysis Depth Readiness (commit-history, 7%)</summary>\n\nECC Tools uses this to decide whether recommendations should stay at commit-history/setup guidance or expand into CI, security, harness, reference-set, AI-routing, and team backlog work.\n\n| Area | Status | Evidence / Next Step |\n|------|--------|----------------------|\n| Commit history | Partial | `1 commits sampled` |\n| CI/CD signals | Missing | Add workflow files or CI troubleshooting evidence so ECC Tools can reason about pipeline setup. |\n| Security evidence | Missing | Add AgentShield, audit, SARIF, SBOM, or security review evidence so recommendations can cover security posture. |\n| Harness configuration | Missing | Add Claude, Codex, OpenCode, Zed, dmux, MCP, plugin, or cross-harness config evidence for harness-agnostic recommendations. |\n| Reference/eval evidence | Missing | Add fixtures, golden traces, reference sets, or evaluator benchmarks so deeper recommendations have regression evidence. |\n| AI routing and cost controls | Missing | Add model-routing, budget, usage, or cost-control files before relying on AI-heavy automation recommendations. |\n| Team handoff and project tracking | Missing | Add roadmap, runbook, project, Linear, or follow-up tracking docs so generated work can land in a team queue. |\n\n</details>\n\n<details>\n<summary>Reference Set Readiness (0/7, 0%)</summary>\n\n| Area | Status | Evidence / Next Step |\n|------|--------|----------------------|\n| Deep analyzer corpus | Missing | Add analyzer fixture, golden, benchmark, or reference-set files that can catch analyzer regressions. |\n| RAG/evaluator comparison | Missing | Add retrieval or evaluator reference-set comparison fixtures with expected ranking behavior. |\n| PR salvage/review corpus | Missing | Add stale-PR, review-thread, reopen-flow, or salvage reference cases for queue cleanup automation. |\n| Discussion triage corpus | Missing | Add public discussion triage fixtures, golden cases, or reference sets for informational, answered, and no-response classifications. |\n| Harness compatibility | Missing | Add cross-harness, adapter-compliance, or harness-audit evidence for Claude, Codex, OpenCode, Zed, dmux, and agent surfaces. |\n| Security evidence | Missing | Attach security evidence such as SBOMs, SARIF, audit reports, or AgentShield evidence packs. |\n| CI failure-mode evidence | Missing | Add captured CI failure logs, dry-run fixtures, or troubleshooting docs for common workflow failure modes. |\n\n</details>\n\n<details>\n<summary>Likely Future Issues (1)</summary>\n\n| Severity | Signal | Why it may show up |\n|----------|--------|--------------------|\n| HIGH | Regression coverage may lag behind the diff | 3 generic code paths changed; 0 test files changed |\n\n- **Regression coverage may lag behind the diff**: The PR changes multiple code paths but does not touch any obvious test files.\n\n</details>\n\n<details>\n<summary>Suggested Follow-up Work (1)</summary>\n\n| Type | Suggested title | Targets |\n|------|-----------------|---------|\n| PR | `test: add regression coverage for archwiz/archwiz.py + archwiz/linear_sync.py` | `archwiz/archwiz.py`, `archwiz/linear_sync.py` |\n\n- **test: add regression coverage for archwiz/archwiz.py + archwiz/linear_sync.py**: Backfill regression coverage before another change set lands on the touched code paths.\n\n**Copy-ready bodies**\n\n**test: add regression coverage for archwiz/archwiz.py + archwiz/linear_sync.py**\n\n```md\n## Summary\n- Add regression coverage for the recently touched code paths before more changes stack on top.\n\n## Why\n- Backfill regression coverage before another change set lands on the touched code paths.\n\n## Touched paths\n- `archwiz/archwiz.py`\n- `archwiz/linear_sync.py`\n\n## Validation\n- Add or extend focused tests that exercise the touched paths.\n- Run the affected test suite and verify the new coverage closes the gap.\n```\n\n</details>\n\n<details>\n<summary>Generated Instincts (15)</summary>\n\n| Domain | Count |\n|--------|-------|\n| git | 4 |\n| code-style | 9 |\n| testing | 2 |\n\nAfter merging, import with:\n```\n/instinct-import .claude/homunculus/instincts/inherited/termux-monorepo-instincts.yaml\n```\n\n</details>\n\n### Files\n- `.claude/ecc-tools.json`\n- `.claude/skills/termux-monorepo/SKILL.md`\n- `.agents/skills/termux-monorepo/SKILL.md`\n- `.agents/skills/termux-monorepo/agents/openai.yaml`\n- `.claude/identity.json`\n- `.codex/config.toml`\n- `.codex/AGENTS.md`\n- `.codex/agents/explorer.toml`\n- `.codex/agents/reviewer.toml`\n- `.codex/agents/docs-researcher.toml`\n- `.claude/homunculus/instincts/inherited/termux-monorepo-instincts.yaml`\n\n---\n<sub>[ECC Tools](https://ecc.tools) | [Everything Claude Code](https://github.com/affaan-m/everything-claude-code)</sub>"[m[1;37m,[m
+      [1;34m"createdAt"[m[1;37m:[m [32m"2026-08-03T00:14:51Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"isMinimized"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"minimizedReason"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"url"[m[1;37m:[m [32m"https://github.com/timerloggedout-spec/termux-monorepo/pull/13#issuecomment-5161041642"[m[1;37m,[m
+      [1;34m"viewerDidAuthor"[m[1;37m:[m [33mfalse[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"IC_kwDOTnjXOs8AAAABM6ET1w"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"coderabbitai"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"CONTRIBUTOR"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m"<!-- This is an auto-generated comment: autofix status by CodeRabbit -->\n> [!NOTE]\n> Autofix is a beta feature. Expect some limitations and changes as we gather feedback and continue to improve it.\n\n## Fixes Applied Successfully\n\nFixed 6 file(s) based on 10 unresolved review comments.\n\n\n\nA stacked PR containing fixes has been created.\n\n* Stacked PR: [`#15`](https://github.com/timerloggedout-spec/termux-monorepo/pull/15)\n* Files modified:\n- `archwiz/archwiz.py`\n- `archwiz/linear_sync.py`\n- `archwiz/restore_version.py`\n- `deepcli/deepcli/core.py`\n- `docs/evaluations/manus/REPORT.md`\n- `docs/proposals/active/manus-critical-eval/ITEMS.md`\n\n**Time taken:** `5m 37s`\n<!-- autofix-run-id: 594192c0-c84e-4961-84a0-0ac3df991db4 -->"[m[1;37m,[m
+      [1;34m"createdAt"[m[1;37m:[m [32m"2026-08-03T00:39:51Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mtrue[m[1;37m,[m
+      [1;34m"isMinimized"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"minimizedReason"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"url"[m[1;37m:[m [32m"https://github.com/timerloggedout-spec/termux-monorepo/pull/13#issuecomment-5161161687"[m[1;37m,[m
+      [1;34m"viewerDidAuthor"[m[1;37m:[m [33mfalse[m
+    [1;37m}[m
+  [1;37m][m[1;37m,[m
+  [1;34m"commits"[m[1;37m:[m [1;37m[[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-03T00:14:03Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"2.33432881e+08+timerloggedout-spec@users.noreply.github.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m""[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m""[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-03T00:14:03Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"…logging\n\n- Fix hardcoded paths in archwiz.py using config SSOT\n- Add archwiz/linear_sync.py bridge for master_tasks.json\n- Add Linear Sync option to archwiz dashboard\n- Replace silent except: pass with logging in deepcli/core.py"[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"feat(archwiz): novel work — Linear sync + path normalization + error …"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"b10c62f4ad66fcaef9decb941fa7849c8f49eb2e"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-03T00:14:19Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"2.33432881e+08+timerloggedout-spec@users.noreply.github.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m""[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m""[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-03T00:14:19Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"fix(archwiz): use getpass.getuser() fallback for portability"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"375b88e019821fa01d7b40de5e98ec553bf06f35"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-03T00:17:51Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"2.33432881e+08+timerloggedout-spec@users.noreply.github.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m""[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m""[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-03T00:17:51Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"docs(eval): persist Manus critical evaluation and audit reports"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"a8ae313c52981af6e3cf3789f062a2b804ef0a23"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-03T00:18:10Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"2.33432881e+08+timerloggedout-spec@users.noreply.github.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m""[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m""[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-03T00:18:10Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"docs(proposals): register manus-critical-eval in registry.yaml"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"78c30d02a0fecf54b07da04e794a18ae6ee25e09"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-03T00:36:03Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m[1;37m,[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"136622811+coderabbitai[bot]@users.noreply.github.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"BOT_kgDOCCSy2w"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"coderabbitai[bot]"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"coderabbitai[bot]"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-03T00:36:03Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"Co-authored-by: coderabbitai[bot] <136622811+coderabbitai[bot]@users.noreply.github.com>"[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"Update archwiz/linear_sync.py"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"40feea7790aafa7cac2bd13ffc596cb9ab0f1489"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-03T07:12:11Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-03T07:15:31Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"Merged after gates passed on master-staging spine. Implements CE-09 / TER-13."[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"fix(deepcli): make curl_cffi optional with requests fallback (#10)"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"5abfd005d081abf9f2c630e2a5208a234616d42f"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-03T07:13:23Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"2.33432881e+08+timerloggedout-spec@users.noreply.github.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m""[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m""[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-03T07:15:31Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"fix(ci): handle submodules correctly in repo_gate.py"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"6642c415dffb212a0c9ec7f9e93372bbaa1b028f"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-03T07:14:06Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-03T07:15:31Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"…ault) (#9)\n\nMerged after gates passed on master-staging spine. Implements CE-10 / CE-11 / TER-12."[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"feat(TER-12): DeepForge — deepcli-first bridge (skip ChatGPT auth def…"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"4bc507c87f6f48d7cfdf5a5932be7c78996c6a1f"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-03T07:15:06Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"2.33432881e+08+timerloggedout-spec@users.noreply.github.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m""[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m""[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-03T07:15:31Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"- Add SSOT_DIR to archwiz/config.py\n- Implement archwiz/session_ssot.py (minimal manifest/messages/events writer)\n- Update deepcli/core.py to use SESSION_STORE from config\n- Integrate save_session_ssot into deepcli's cache_save hook"[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"feat(archwiz): implement Session SSOT writer and integrate into deepcli"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"0fe2e26b3ad052d6707d8fab96d529ce178c780d"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-03T07:16:32Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"2.33432881e+08+timerloggedout-spec@users.noreply.github.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m""[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m""[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-03T07:16:43Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"…PR #6\n\n- Extract CodexIndex and Pointer logic into archwiz/codex.py\n- Define BaseProvider interface in archwiz/providers/base.py\n- Implement DeepSeekProvider wrapper in archwiz/providers/deepseek.py\n- Use archwiz.config for all paths"[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"feat(archwiz): salvage provider abstraction and codex harvester from …"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"7812177a27fcf85e5271d70f0e36ab44dee98619"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-03T07:17:18Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"2.33432881e+08+timerloggedout-spec@users.noreply.github.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m""[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m""[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-03T07:17:18Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"… work"[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"docs(eval): update report and items with integration success and SSOT…"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"567d35f976188a2dc6a20283496ddf0be9244d53"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-05T07:10:46Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"2.33432881e+08+timerloggedout-spec@users.noreply.github.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m""[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m""[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-05T07:10:46Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"… gates\n\n- Implement archwiz/dispatch_pipeline.py for decoupled downstream updates\n- Integrate dispatch pipeline into deepcli/core.py\n- Add --light flag to termux_smoke.py for pre-commit performance\n- Enhance archwiz/linear_sync.py with API structure and graceful fallback\n- Update proposal ITEMS.md"[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"feat(archwiz): implement event-sourced dispatch pipeline and automate…"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"7302e3c5e41c11eb17476c9521c590467ea2f6a7"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-05T07:10:58Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"2.33432881e+08+timerloggedout-spec@users.noreply.github.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m""[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m""[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-05T07:10:58Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"docs(eval): finalize evaluation report with pipeline and gate automation"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"3da2b3c9501b8bbf161dcba2a8a65775533218c3"[m
+    [1;37m}[m
+  [1;37m][m[1;37m,[m
+  [1;34m"mergeable"[m[1;37m:[m [32m"UNKNOWN"[m[1;37m,[m
+  [1;34m"reviews"[m[1;37m:[m [1;37m[[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"PRR_kwDOTnjXOs8AAAABIH23zg"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"devin-ai-integration"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"CONTRIBUTOR"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m"**Devin Review** found 13 potential issues.\n\n<!-- devin-review-badge-begin -->\n<a href=\"https://app.devin.ai/review/timerloggedout-spec/termux-monorepo/pull/13\" target=\"_blank\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://static.devin.ai/assets/gh-open-in-devin-review-dark.svg?v=1\">\n    <img src=\"https://static.devin.ai/assets/gh-open-in-devin-review-light.svg?v=1\" alt=\"Open in Devin Review\">\n  </picture>\n</a>\n<!-- devin-review-badge-end -->"[m[1;37m,[m
+      [1;34m"submittedAt"[m[1;37m:[m [32m"2026-08-03T00:16:44Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"state"[m[1;37m:[m [32m"COMMENTED"[m[1;37m,[m
+      [1;34m"commit"[m[1;37m:[m [1;37m{[m
+        [1;34m"oid"[m[1;37m:[m [32m"375b88e019821fa01d7b40de5e98ec553bf06f35"[m
+      [1;37m}[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"PRR_kwDOTnjXOs8AAAABIH3Y4Q"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"devin-ai-integration"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"CONTRIBUTOR"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m"**Devin Review** found 4 new potential issues.\n\n<!-- devin-review-badge-begin -->\n<a href=\"https://app.devin.ai/review/timerloggedout-spec/termux-monorepo/pull/13\" target=\"_blank\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://static.devin.ai/assets/gh-open-in-devin-review-dark.svg?v=1\">\n    <img src=\"https://static.devin.ai/assets/gh-open-in-devin-review-light.svg?v=1\" alt=\"Open in Devin Review\">\n  </picture>\n</a>\n<!-- devin-review-badge-end -->"[m[1;37m,[m
+      [1;34m"submittedAt"[m[1;37m:[m [32m"2026-08-03T00:20:50Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"state"[m[1;37m:[m [32m"COMMENTED"[m[1;37m,[m
+      [1;34m"commit"[m[1;37m:[m [1;37m{[m
+        [1;34m"oid"[m[1;37m:[m [32m"78c30d02a0fecf54b07da04e794a18ae6ee25e09"[m
+      [1;37m}[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"PRR_kwDOTnjXOs8AAAABIH4Gog"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"coderabbitai"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"CONTRIBUTOR"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m"**Actionable comments posted: 11**\r\n\r\n<details>\r\n<summary>🧹 Nitpick comments (3)</summary><blockquote>\r\n\r\n<details>\r\n<summary>archwiz/archwiz.py (3)</summary><blockquote>\r\n\r\n`110-162`: _🩺 Stability & Availability_ | _🔵 Trivial_ | _⚡ Quick win_\r\n\r\n**Hardcoded `python3` breaks on interpreter mismatch.** Every child process starts with the bare name `python3`, resolved through `PATH`. If the dashboard runs under a virtual environment or a non-default interpreter, the child processes use a different Python and can miss dependencies. Ruff reports S607 on all of these lines. Use `sys.executable`, which the module already imports on Line 8.\r\n- `archwiz/archwiz.py#L110-L162`: replace `'python3'` with `sys.executable` in the dispatch branches on Lines 113, 115, 117, 119, 127, 128, 129, 130, 141, 143, 145, 149, 151, 152, 154, and 156.\r\n- `archwiz/archwiz.py#L61-L77`: replace `'python3'` with `sys.executable` in the `listener_control.py` start and stop calls on Lines 68 and 74.\r\n\r\n<details>\r\n<summary>🤖 Prompt for AI Agents</summary>\r\n\r\n```\r\nVerify each finding against current code. Fix only still-valid issues, skip the\r\nrest with a brief reason, keep changes minimal, and validate.\r\n\r\nIn `@archwiz/archwiz.py` around lines 110 - 162, The subprocess dispatch branches\r\nin archwiz.py lines 110-162 must use the running interpreter instead of the\r\nhardcoded python3 command; replace python3 with the existing sys.executable\r\nsymbol in all specified child-process calls. Apply the same replacement to the\r\nlistener_control.py start and stop calls in archwiz.py lines 61-77.\r\n```\r\n\r\n</details>\r\n\r\n<!-- cr-comment:v1:a84911d7f8045e42a01329e8 -->\r\n\r\n_Source: Linters/SAST tools_\r\n\r\n---\r\n\r\n`22-22`: _🎯 Functional Correctness_ | _🔵 Trivial_ | _⚡ Quick win_\r\n\r\n**`PIPELINE_ACTIVE` is a static assumption, not real state.**\r\n\r\nThe dashboard now always starts in the OFF state. If the listener process already runs, the first `p` press calls `listener_control.py start` and can start a second listener. Query the real state from `listener_control.py` (for example a `status` subcommand or a PID file) at startup instead of assuming a fixed value.\r\n\r\n<details>\r\n<summary>🤖 Prompt for AI Agents</summary>\r\n\r\n```\r\nVerify each finding against current code. Fix only still-valid issues, skip the\r\nrest with a brief reason, keep changes minimal, and validate.\r\n\r\nIn `@archwiz/archwiz.py` at line 22, Replace the static initialization of\r\nPIPELINE_ACTIVE with startup state detection by querying listener_control.py\r\nthrough its status mechanism or PID-file state. Initialize PIPELINE_ACTIVE from\r\nthe listener’s actual running status before handling key presses, while\r\npreserving the existing start/stop control flow.\r\n```\r\n\r\n</details>\r\n\r\n<!-- cr-comment:v1:34e09c7dfa43ada72615fc66 -->\r\n\r\n---\r\n\r\n`131-139`: _📐 Maintainability & Code Quality_ | _🔵 Trivial_ | _💤 Low value_\r\n\r\n**Profile management now only lists profiles.**\r\n\r\nThe branch prints a numbered list and stops. The comment on Line 139 marks this as incomplete work. Users can no longer select or apply a profile. Confirm that this regression is intentional for this PR. If it is not, restore the selection step.\r\n\r\nI can generate the selection logic or open a tracking issue. Tell me which you prefer.\r\n\r\n<details>\r\n<summary>🤖 Prompt for AI Agents</summary>\r\n\r\n```\r\nVerify each finding against current code. Fix only still-valid issues, skip the\r\nrest with a brief reason, keep changes minimal, and validate.\r\n\r\nIn `@archwiz/archwiz.py` around lines 131 - 139, Restore profile selection and\r\napplication after the numbered list in the choice == '7' branch, using the\r\nexisting profile-management flow and symbols in archwiz.py where available.\r\nAfter displaying profiles, prompt for a valid selection, load the corresponding\r\nJSON profile, and apply it; preserve the no-directory behavior and handle\r\ninvalid or empty selections without applying a profile.\r\n```\r\n\r\n</details>\r\n\r\n<!-- cr-comment:v1:9e5fbc942ebda5b85fd8d370 -->\r\n\r\n</blockquote></details>\r\n\r\n</blockquote></details>\r\n\r\n<details>\r\n<summary>🤖 Prompt for all review comments with AI agents</summary>\r\n\r\n```\r\nVerify each finding against current code. Fix only still-valid issues, skip the\r\nrest with a brief reason, keep changes minimal, and validate.\r\n\r\nInline comments:\r\nIn `@archwiz/archwiz.py`:\r\n- Around line 121-124: Update the backup flow around the subprocess.run\r\ninvocation to detect a non-zero tar exit status, using check=True or equivalent\r\nhandling. Only print the “Backup” success message after tar completes\r\nsuccessfully, while preserving the existing archive command and filename\r\ngeneration.\r\n- Around line 36-40: Update the user-detection logic around os.getlogin() to\r\nimport getpass at module scope and catch only OSError, preserving the existing\r\ngetpass.getuser() fallback while allowing KeyboardInterrupt and SystemExit to\r\npropagate.\r\n- Line 132: Update the choice-7 profiles directory logic in main() to use the\r\nconfiguration-provided path from archwiz.config (or a module-scope base path)\r\ninstead of the locally assigned HOME variable, ensuring imported calls to main()\r\ncannot raise NameError. Remove the redundant HOME assignment from the __main__\r\nguard.\r\n- Around line 146-149: Validate and normalize the user-supplied target in the\r\nchoice == '11' restore flow before invoking restore_version.py, rejecting\r\nabsolute paths, home-expansion paths, and traversal that resolve outside the\r\nselected restore root. Ensure restore_version.py performs the same\r\nroot-containment check immediately before its write operation, so\r\nPath(target_path).write_text only targets files within the intended workspace.\r\n- Around line 61-77: Update the listener start path in the pipeline control\r\nfunction to pass the constructed env containing ARCHWIZ_MODE to subprocess.run,\r\nand only set PIPELINE_ACTIVE to True after confirming the command succeeds.\r\nPreserve the existing stopped-state behavior while ensuring failed start or stop\r\ncommands do not update the dashboard state as if they succeeded.\r\n- Around line 44-50: Update get_pipeline_status to use the same autoexec.log\r\nlocation as archwiz/activity_listener.py, preferably through the shared LOG_DIR\r\nconfiguration, and replace plog.read_text().splitlines() with a\r\ntail/readline-based approach that reads only the latest required lines during\r\ndashboard redraws.\r\n\r\nIn `@archwiz/linear_sync.py`:\r\n- Around line 1-5: Update the module docstring in linear_sync.py to describe the\r\nbridge as a dry-run scaffold that only prints intended synchronization actions.\r\nChange the M-02 status in ITEMS.md and its corresponding implementation status\r\nin REPORT.md from done/implemented to an in-progress state, without changing the\r\nexisting scaffold behavior.\r\n- Around line 15-26: Update get_tasks to read master_tasks.json with explicit\r\nUTF-8 encoding, catch JSON decoding failures, and return an empty list when\r\nparsing fails or the decoded value is not a list; preserve valid list data. Also\r\nupdate get_done_tasks to open/read taDone.md with explicit UTF-8 encoding.\r\n- Around line 39-42: Update the task-status logic in the task iteration to\r\nhandle missing IDs without evaluating membership with None, and match task IDs\r\nas complete tokens rather than arbitrary substrings in done. Preserve the\r\nexisting DONE/TODO behavior for valid identifiers while ensuring an ID such as\r\n“1” does not match entries such as “10”.\r\n\r\nIn `@deepcli/deepcli/core.py`:\r\n- Around line 63-64: Replace the bare exception handlers in the logging fallback\r\nblocks around the shown handlers with narrow expected exceptions, such as\r\nOSError, so logging failures remain non-blocking without swallowing\r\nKeyboardInterrupt, SystemExit, or unexpected coding errors. Preserve the\r\nexisting pass behavior in both handlers.\r\n- Around line 278-279: Add a module-level import for sys alongside the existing\r\nimports so `_log_retry` can safely use `sys.stderr` in its exception handler\r\nwithout relying on `_cache_save`’s local import.\r\n\r\n---\r\n\r\nNitpick comments:\r\nIn `@archwiz/archwiz.py`:\r\n- Around line 110-162: The subprocess dispatch branches in archwiz.py lines\r\n110-162 must use the running interpreter instead of the hardcoded python3\r\ncommand; replace python3 with the existing sys.executable symbol in all\r\nspecified child-process calls. Apply the same replacement to the\r\nlistener_control.py start and stop calls in archwiz.py lines 61-77.\r\n- Line 22: Replace the static initialization of PIPELINE_ACTIVE with startup\r\nstate detection by querying listener_control.py through its status mechanism or\r\nPID-file state. Initialize PIPELINE_ACTIVE from the listener’s actual running\r\nstatus before handling key presses, while preserving the existing start/stop\r\ncontrol flow.\r\n- Around line 131-139: Restore profile selection and application after the\r\nnumbered list in the choice == '7' branch, using the existing profile-management\r\nflow and symbols in archwiz.py where available. After displaying profiles,\r\nprompt for a valid selection, load the corresponding JSON profile, and apply it;\r\npreserve the no-directory behavior and handle invalid or empty selections\r\nwithout applying a profile.\r\n```\r\n\r\n</details>\r\n\r\n<details>\n<summary>🪄 Autofix (Beta)</summary>\n\n✅ Autofix completed\n\n</details>\r\n\r\n---\r\n\r\n<details>\r\n<summary>ℹ️ Review info</summary>\r\n\r\n<details>\r\n<summary>⚙️ Run configuration</summary>\r\n\r\n**Configuration used**: defaults\r\n\r\n**Review profile**: CHILL\r\n\r\n**Plan**: Pro Plus\r\n\r\n**Run ID**: `ee594c72-5a46-4880-828f-d3f5c4b769e7`\r\n\r\n</details>\r\n\r\n<details>\r\n<summary>📥 Commits</summary>\r\n\r\nReviewing files that changed from the base of the PR and between 48aebb1ae8310c6599c37f33f32fb006f92996e0 and 78c30d02a0fecf54b07da04e794a18ae6ee25e09.\r\n\r\n</details>\r\n\r\n<details>\r\n<summary>📒 Files selected for processing (8)</summary>\r\n\r\n* `archwiz/archwiz.py`\r\n* `archwiz/linear_sync.py`\r\n* `deepcli/deepcli/core.py`\r\n* `docs/evaluations/manus/AUDIT_FINDINGS.md`\r\n* `docs/evaluations/manus/REPORT.md`\r\n* `docs/proposals/active/manus-critical-eval/ITEMS.md`\r\n* `docs/proposals/active/manus-critical-eval/MANIFEST.md`\r\n* `docs/proposals/registry.yaml`\r\n\r\n</details>\r\n\r\n</details>\r\n\r\n<!-- This is an auto-generated comment by CodeRabbit for review status -->"[m[1;37m,[m
+      [1;34m"submittedAt"[m[1;37m:[m [32m"2026-08-03T00:25:16Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"state"[m[1;37m:[m [32m"COMMENTED"[m[1;37m,[m
+      [1;34m"commit"[m[1;37m:[m [1;37m{[m
+        [1;34m"oid"[m[1;37m:[m [32m"78c30d02a0fecf54b07da04e794a18ae6ee25e09"[m
+      [1;37m}[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"PRR_kwDOTnjXOs8AAAABIH44MA"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"OWNER"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"submittedAt"[m[1;37m:[m [32m"2026-08-03T00:28:56Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"state"[m[1;37m:[m [32m"COMMENTED"[m[1;37m,[m
+      [1;34m"commit"[m[1;37m:[m [1;37m{[m
+        [1;34m"oid"[m[1;37m:[m [32m"78c30d02a0fecf54b07da04e794a18ae6ee25e09"[m
+      [1;37m}[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"PRR_kwDOTnjXOs8AAAABIH5Jnw"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"OWNER"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"submittedAt"[m[1;37m:[m [32m"2026-08-03T00:30:57Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"state"[m[1;37m:[m [32m"COMMENTED"[m[1;37m,[m
+      [1;34m"commit"[m[1;37m:[m [1;37m{[m
+        [1;34m"oid"[m[1;37m:[m [32m"78c30d02a0fecf54b07da04e794a18ae6ee25e09"[m
+      [1;37m}[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"PRR_kwDOTnjXOs8AAAABIJW8MA"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"devin-ai-integration"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"CONTRIBUTOR"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"submittedAt"[m[1;37m:[m [32m"2026-08-03T07:20:04Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"state"[m[1;37m:[m [32m"COMMENTED"[m[1;37m,[m
+      [1;34m"commit"[m[1;37m:[m [1;37m{[m
+        [1;34m"oid"[m[1;37m:[m [32m"567d35f976188a2dc6a20283496ddf0be9244d53"[m
+      [1;37m}[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"PRR_kwDOTnjXOs8AAAABIJW97g"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"devin-ai-integration"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"CONTRIBUTOR"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m"**Devin Review** found 11 new potential issues.\n\n<!-- devin-review-badge-begin -->\n<a href=\"https://app.devin.ai/review/timerloggedout-spec/termux-monorepo/pull/13\" target=\"_blank\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://static.devin.ai/assets/gh-open-in-devin-review-dark.svg?v=1\">\n    <img src=\"https://static.devin.ai/assets/gh-open-in-devin-review-light.svg?v=1\" alt=\"Open in Devin Review\">\n  </picture>\n</a>\n<!-- devin-review-badge-end -->"[m[1;37m,[m
+      [1;34m"submittedAt"[m[1;37m:[m [32m"2026-08-03T07:20:20Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"state"[m[1;37m:[m [32m"COMMENTED"[m[1;37m,[m
+      [1;34m"commit"[m[1;37m:[m [1;37m{[m
+        [1;34m"oid"[m[1;37m:[m [32m"567d35f976188a2dc6a20283496ddf0be9244d53"[m
+      [1;37m}[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"PRR_kwDOTnjXOs8AAAABIcrdEw"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"devin-ai-integration"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"CONTRIBUTOR"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"submittedAt"[m[1;37m:[m [32m"2026-08-05T07:13:57Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"state"[m[1;37m:[m [32m"COMMENTED"[m[1;37m,[m
+      [1;34m"commit"[m[1;37m:[m [1;37m{[m
+        [1;34m"oid"[m[1;37m:[m [32m"3da2b3c9501b8bbf161dcba2a8a65775533218c3"[m
+      [1;37m}[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"PRR_kwDOTnjXOs8AAAABIcreHQ"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"devin-ai-integration"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"CONTRIBUTOR"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"submittedAt"[m[1;37m:[m [32m"2026-08-05T07:14:00Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"state"[m[1;37m:[m [32m"COMMENTED"[m[1;37m,[m
+      [1;34m"commit"[m[1;37m:[m [1;37m{[m
+        [1;34m"oid"[m[1;37m:[m [32m"3da2b3c9501b8bbf161dcba2a8a65775533218c3"[m
+      [1;37m}[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"PRR_kwDOTnjXOs8AAAABIcrfJQ"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"devin-ai-integration"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"CONTRIBUTOR"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"submittedAt"[m[1;37m:[m [32m"2026-08-05T07:14:02Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"state"[m[1;37m:[m [32m"COMMENTED"[m[1;37m,[m
+      [1;34m"commit"[m[1;37m:[m [1;37m{[m
+        [1;34m"oid"[m[1;37m:[m [32m"3da2b3c9501b8bbf161dcba2a8a65775533218c3"[m
+      [1;37m}[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"PRR_kwDOTnjXOs8AAAABIcrgFg"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"devin-ai-integration"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"CONTRIBUTOR"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"submittedAt"[m[1;37m:[m [32m"2026-08-05T07:14:05Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"state"[m[1;37m:[m [32m"COMMENTED"[m[1;37m,[m
+      [1;34m"commit"[m[1;37m:[m [1;37m{[m
+        [1;34m"oid"[m[1;37m:[m [32m"3da2b3c9501b8bbf161dcba2a8a65775533218c3"[m
+      [1;37m}[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"PRR_kwDOTnjXOs8AAAABIcrjZQ"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"devin-ai-integration"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"CONTRIBUTOR"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m"**Devin Review** found 5 new potential issues.\n\n<!-- devin-review-badge-begin -->\n<a href=\"https://app.devin.ai/review/timerloggedout-spec/termux-monorepo/pull/13\" target=\"_blank\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://static.devin.ai/assets/gh-open-in-devin-review-dark.svg?v=1\">\n    <img src=\"https://static.devin.ai/assets/gh-open-in-devin-review-light.svg?v=1\" alt=\"Open in Devin Review\">\n  </picture>\n</a>\n<!-- devin-review-badge-end -->"[m[1;37m,[m
+      [1;34m"submittedAt"[m[1;37m:[m [32m"2026-08-05T07:14:18Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"state"[m[1;37m:[m [32m"COMMENTED"[m[1;37m,[m
+      [1;34m"commit"[m[1;37m:[m [1;37m{[m
+        [1;34m"oid"[m[1;37m:[m [32m"3da2b3c9501b8bbf161dcba2a8a65775533218c3"[m
+      [1;37m}[m
+    [1;37m}[m
+  [1;37m][m[1;37m,[m
+  [1;34m"state"[m[1;37m:[m [32m"MERGED"[m
+[1;37m}[m

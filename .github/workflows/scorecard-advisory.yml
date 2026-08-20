@@ -1,0 +1,89 @@
+name: Advisory OpenSSF Scorecard
+
+on:
+  schedule:
+    - cron: "41 3 * * 1"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: scorecard-advisory-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify-scorecard-image:
+    name: verify Scorecard image digest
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Verify reviewed Scorecard image digest
+        run: |
+          set -euo pipefail
+          image_tag="v2.4.4"
+          expected_digest="sha256:ae5104dd3cc28466ebeb11144354be4cac4b7ff829654f9fab89021d71c46670"
+          token="$(curl --fail --silent --show-error --location \
+            'https://ghcr.io/token?service=ghcr.io&scope=repository:ossf/scorecard-action:pull' \
+            | sed -n 's/.*"token":"\([^"]*\)".*/\1/p')"
+          test -n "$token"
+          observed_digest="$(curl --fail --silent --show-error --head \
+            --header 'Accept: application/vnd.oci.image.index.v1+json, application/vnd.docker.distribution.manifest.list.v2+json, application/vnd.oci.image.manifest.v1+json' \
+            --header "Authorization: Bearer $token" \
+            "https://ghcr.io/v2/ossf/scorecard-action/manifests/${image_tag}" \
+            | tr -d '\r' \
+            | sed -n 's/^docker-content-digest: //Ip')"
+          test "$observed_digest" = "$expected_digest"
+          {
+            echo "## Scorecard image preflight"
+            echo
+            echo "| Field | Value |"
+            echo "|---|---|"
+            echo "| reviewed tag | \`${image_tag}\` |"
+            echo "| expected manifest digest | \`${expected_digest}\` |"
+            echo "| observed manifest digest | \`${observed_digest}\` |"
+            echo "| outcome | verified before the publisher job starts |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  scorecard:
+    name: Scorecard advisory
+    needs: verify-scorecard-image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      security-events: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+
+      - name: Run OpenSSF Scorecard
+        uses: ossf/scorecard-action@2d1146689b8cda280b9bc96326124645441f03bc # v2.4.4; transitive image guarded by verify-scorecard-image
+        with:
+          results_file: results.sarif
+          results_format: sarif
+          publish_results: true
+
+      - name: Upload Scorecard SARIF
+        uses: github/codeql-action/upload-sarif@ff2f1c621b7f889edc0d3c761ac2e6a3f8cdb0dd # v4
+        with:
+          sarif_file: results.sarif
+          category: scorecard
+
+      - name: Publish advisory boundary
+        if: always()
+        run: |
+          {
+            echo "## Advisory OpenSSF Scorecard"
+            echo
+            echo "This B6 pilot publishes Scorecard SARIF and verified public results only. It does not modify repository content, issues, pull requests, labels, or workflow configuration."
+            echo
+            echo "| Field | Value |"
+            echo "|---|---|"
+            echo "| outer action revision | \`2d1146689b8cda280b9bc96326124645441f03bc\` (v2.4.4) |"
+            echo "| mutable dependency guard | registry tag must match reviewed manifest digest before this job begins |"
+            echo "| write capability | isolated \`security-events: write\` for Scorecard SARIF and \`id-token: write\` for verified public result publication |"
+            echo "| merge policy | advisory; no required-check promotion in this batch |"
+          } >> "$GITHUB_STEP_SUMMARY"

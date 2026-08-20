@@ -1,0 +1,85 @@
+name: Workflow Surface Evidence
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+      - '.github/actions/**'
+      - 'scripts/ci/create_artifact_evidence.py'
+      - 'scripts/ci/verify_artifact_evidence.py'
+      - 'scripts/ci/workflow_surface_policy.py'
+      - 'tests/test_create_artifact_evidence.py'
+      - 'tests/test_workflow_surface_policy.py'
+      - 'docs/proposals/active/actions-refinements/**'
+
+permissions: {}
+
+concurrency:
+  group: workflow-surface-evidence-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  produce:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      artifact_name: ${{ steps.artifact.outputs.name }}
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Prepare bounded evidence directory
+        run: mkdir -p evidence
+
+      - name: Run policy test suites
+        id: tests
+        continue-on-error: true
+        run: python3 -m unittest tests.test_workflow_surface_policy tests.test_create_artifact_evidence > evidence/policy-tests.txt 2>&1
+
+      - name: Create evidence manifest
+        if: always()
+        run: python3 scripts/ci/create_artifact_evidence.py --root evidence --manifest evidence/evidence-manifest.json policy-tests.txt
+
+      - name: Set immutable artifact name
+        id: artifact
+        if: always()
+        run: echo "name=workflow-surface-evidence-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload bounded evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: ${{ steps.artifact.outputs.name }}
+          path: evidence
+          if-no-files-found: error
+          retention-days: 7
+          include-hidden-files: false
+
+      - name: Preserve policy test result
+        if: steps.tests.outcome == 'failure'
+        run: exit 1
+
+  verify:
+    needs: produce
+    if: always() && needs.produce.result != 'cancelled'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Download bounded evidence
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: ${{ needs.produce.outputs.artifact_name }}
+          path: downloaded-evidence
+          merge-multiple: false
+
+      - name: Verify artifact manifest and digests
+        run: python3 scripts/ci/verify_artifact_evidence.py --root downloaded-evidence --manifest downloaded-evidence/evidence-manifest.json

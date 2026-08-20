@@ -1,0 +1,161 @@
+[1;37m{[m
+  [1;34m"body"[m[1;37m:[m [32m"## Summary\n\nAdds the **second gate** in the ArchW1z spine for Agentic Termux integration testing.\n\n```\nrepo-gate (hygiene)  →  termux-smoke (runtime surface)  →  later language/provider gates\n```\n\n## What's new\n\n| Path | Purpose |\n|------|--------|\n| `scripts/ci/termux_smoke.py` | stdlib-only smoke: Python ≥3.9, gate layout, git/bash, tmp, optional deepcli/archwiz compile probes |\n| `.github/workflows/termux-smoke.yml` | Runs on PR + push to `master` / `master-staging` / `termux-smoke` |\n| `docs/TERMUX-SMOKE.md` | Full gate documentation |\n| `docs/ARCHW1Z-GATE.md` | Updated to describe the two-gate spine |\n\n## Design rules (same constitution as repo-gate)\n\n- **stdlib only** for the core path — no pip, cargo, node, or network required\n- Runs identically on-device and in CI\n- Optional probes (`--with-optional`) never execute network code; compile/help only\n- Agents can consume `--json` output and stop before provider work if `ok: false`\n\n## How to run on device\n\n```bash\npython3 scripts/ci/termux_smoke.py\npython3 scripts/ci/termux_smoke.py --with-optional\npython3 scripts/ci/termux_smoke.py --json\n```\n\n## Relation to ChatGPT Critical-Eval\n\nImplements the \"Termux smoke tests\" layer the Critical-Eval placed after the cheap repo-gate and before provider/Rust work.\n\n## Merge criteria\n\n- Both repo-gate and termux-smoke green\n- No new session/browser/credential debt\n- Docs accurate\n\n**LFG.**\n<!-- devin-review-badge-begin -->\n\n---\n\n<a href=\"https://app.devin.ai/review/timerloggedout-spec/termux-monorepo/pull/11\" target=\"_blank\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://static.devin.ai/assets/gh-open-in-devin-review-dark.svg?v=1\">\n    <img src=\"https://static.devin.ai/assets/gh-open-in-devin-review-light.svg?v=1\" alt=\"Open in Devin Review\">\n  </picture>\n</a>\n<!-- devin-review-badge-end -->"[m[1;37m,[m
+  [1;34m"comments"[m[1;37m:[m [1;37m[[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"IC_kwDOTnjXOs8AAAABM5h6Mg"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"vercel"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"NONE"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m"[vc]: #cQX5Jhzk7r0dZDW83tttuCWk+iRs1xySIxaU5jlEshs=:eyJpc01vbm9yZXBvIjp0cnVlLCJ0eXBlIjoiZ2l0aHViIiwicHJvamVjdHMiOlt7Im5hbWUiOiJ0ZXJtdXgtbW9ub3JlcG8iLCJwcm9qZWN0SWQiOiJwcmpfak5zQ0d3OVFyb0p4bjEzNTZUNFFQd2UwWDl6RyIsInYwIjp0cnVlLCJpbnNwZWN0b3JVcmwiOiJodHRwczovL3ZlcmNlbC5jb20vdGltZXJsb2dnZWRvdXQtNTE4NHMtcHJvamVjdHMvdGVybXV4LW1vbm9yZXBvLzRYdEZ0Y2ZHbUJhRzhqVFN6R29oM2NleVZob3UiLCJwcmV2aWV3VXJsIjoidGVybXV4LW1vbm9yZXBvLWdpdC10ZXJtdXgtc21va2UtdGltZXJsb2dnZWRvdXQtNTE4NHMtcHJvamVjdHMudmVyY2VsLmFwcCIsIm5leHRDb21taXRTdGF0dXMiOiJERVBMT1lFRCIsImxpdmVGZWVkYmFjayI6eyJyZXNvbHZlZCI6MCwidW5yZXNvbHZlZCI6MCwidG90YWwiOjAsImxpbmsiOiJ0ZXJtdXgtbW9ub3JlcG8tZ2l0LXRlcm11eC1zbW9rZS10aW1lcmxvZ2dlZG91dC01MTg0cy1wcm9qZWN0cy52ZXJjZWwuYXBwIn0sInJvb3REaXJlY3RvcnkiOiJkZWVwc2Vlay1jbGkifV19\nThe latest updates on your projects. Learn more about [Vercel for GitHub](https://vercel.link/github-learn-more).\n\n| Project | Deployment | Actions | Updated (UTC) |\n| :--- | :----- | :------ | :------ |\n| <a href=\"https://vercel.com/timerloggedout-5184s-projects/termux-monorepo\"><sup><img src=\"https://vercel.com/api/www/avatar?projectId=prj_jNsCGw9QroJxn1356T4QPwe0X9zG&teamId=team_jKHy7m9xZrvrGP5cAlIMPs3S&s=32\" width=\"16\" height=\"16\" align=\"middle\" alt=\"\" /></sup></a> [termux-monorepo](https://vercel.com/timerloggedout-5184s-projects/termux-monorepo) | ![Ready](https://vercel.com/static/status/ready.svg) [Ready](https://vercel.com/timerloggedout-5184s-projects/termux-monorepo/4XtFtcfGmBaG8jTSzGoh3ceyVhou) | [Preview](https://termux-monorepo-git-termux-smoke-timerloggedout-5184s-projects.vercel.app), [v0](https://v0.app/chat/api/open?vercelProjectId=prj_jNsCGw9QroJxn1356T4QPwe0X9zG&gitBranch=termux-smoke&vercelTeamId=team_jKHy7m9xZrvrGP5cAlIMPs3S&utm_source=pr-comment-table) | Aug 2, 2026 10:16pm |\n\n"[m[1;37m,[m
+      [1;34m"createdAt"[m[1;37m:[m [32m"2026-08-02T22:15:58Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mtrue[m[1;37m,[m
+      [1;34m"isMinimized"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"minimizedReason"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"url"[m[1;37m:[m [32m"https://github.com/timerloggedout-spec/termux-monorepo/pull/11#issuecomment-5160598066"[m[1;37m,[m
+      [1;34m"viewerDidAuthor"[m[1;37m:[m [33mfalse[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"IC_kwDOTnjXOs8AAAABM5h6xw"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"coderabbitai"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"CONTRIBUTOR"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m"<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- This is an auto-generated comment: skip review by coderabbit.ai -->\n\n> [!IMPORTANT]\n> ## Review skipped\n> \n> Auto reviews are disabled on base/target branches other than the default branch.\n> \n> \n> \n> Please check the settings in the CodeRabbit UI or the `.coderabbit.yaml` file in this repository. To trigger a single review, invoke the `@coderabbitai review` command.\n> \n> <details>\n> <summary>⚙️ Run configuration</summary>\n> \n> **Configuration used**: defaults\n> \n> **Review profile**: CHILL\n> \n> **Plan**: Pro Plus\n> \n> **Run ID**: `18f12544-a46b-4f5a-bd20-4107a22319aa`\n> \n> </details>\n> \n> You can disable this status message by setting the `reviews.review_status` to `false` in the CodeRabbit configuration file.\n> \n> Use the checkbox below for a quick retry:\n> - [ ] <!-- {\"checkboxId\": \"e9bb8d72-00e8-4f67-9cb2-caf3b22574fe\"} --> 🔍 Trigger review\n\n<!-- end of auto-generated comment: skip review by coderabbit.ai -->\n\n<!-- tips_start -->\n\n---\n\nThanks for using [CodeRabbit](https://coderabbit.ai?utm_source=oss&utm_medium=github&utm_campaign=timerloggedout-spec/termux-monorepo&utm_content=11)! It's free for OSS, and your support helps us grow. If you like it, consider giving us a shout-out.\n\n<details>\n<summary>❤️ Share</summary>\n\n- [X](https://twitter.com/intent/tweet?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A&url=https%3A//coderabbit.ai)\n- [Mastodon](https://mastodon.social/share?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A%20https%3A%2F%2Fcoderabbit.ai)\n- [Reddit](https://www.reddit.com/submit?title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&text=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code.%20Check%20it%20out%3A%20https%3A//coderabbit.ai)\n- [LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcoderabbit.ai&mini=true&title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&summary=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code)\n\n</details>\n\n\n<sub>Comment `@coderabbitai help` to get the list of available commands.</sub>\n\n<!-- tips_end -->"[m[1;37m,[m
+      [1;34m"createdAt"[m[1;37m:[m [32m"2026-08-02T22:16:01Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"isMinimized"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"minimizedReason"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"url"[m[1;37m:[m [32m"https://github.com/timerloggedout-spec/termux-monorepo/pull/11#issuecomment-5160598215"[m[1;37m,[m
+      [1;34m"viewerDidAuthor"[m[1;37m:[m [33mfalse[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"IC_kwDOTnjXOs8AAAABM5iAeA"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"ecc-tools"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"NONE"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m"> Analyzing 200 commits..."[m[1;37m,[m
+      [1;34m"createdAt"[m[1;37m:[m [32m"2026-08-02T22:16:25Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"isMinimized"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"minimizedReason"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"url"[m[1;37m:[m [32m"https://github.com/timerloggedout-spec/termux-monorepo/pull/11#issuecomment-5160599672"[m[1;37m,[m
+      [1;34m"viewerDidAuthor"[m[1;37m:[m [33mfalse[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"IC_kwDOTnjXOs8AAAABM5iAiQ"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"gitar-bot"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"NONE"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m"> [!IMPORTANT]\n> You are using the Gitar free plan. [Upgrade](https://app.gitar.ai/upgrade?utm_source=github&utm_medium=in_app&utm_campaign=in_app_upgrade&utm_content=body) to unlock code review, CI analysis, auto-apply, custom automations, and more.\n\n\n<sub>[Gitar](https://gitar.ai)</sub>\n"[m[1;37m,[m
+      [1;34m"createdAt"[m[1;37m:[m [32m"2026-08-02T22:16:26Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"isMinimized"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"minimizedReason"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"url"[m[1;37m:[m [32m"https://github.com/timerloggedout-spec/termux-monorepo/pull/11#issuecomment-5160599689"[m[1;37m,[m
+      [1;34m"viewerDidAuthor"[m[1;37m:[m [33mfalse[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"IC_kwDOTnjXOs8AAAABM5iI-Q"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"ecc-tools"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"NONE"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m"## Analysis Complete\n\nGenerated ECC bundle from **4 commits** | Confidence: **50%**\n\n### [View Pull Request #12](https://github.com/timerloggedout-spec/termux-monorepo/pull/12)\n\n<details>\n<summary>Repository Profile</summary>\n\n| Attribute | Value |\n|-----------|-------|\n| Language | Python |\n| Framework | Not detected |\n| Commit Convention | freeform |\n| Test Directory | `separate` |\n\n</details>\n\n<details>\n<summary>Changed Files (4)</summary>\n\n| Metric | Value |\n|--------|-------|\n| Files changed | 4 |\n| Additions | 565 |\n| Deletions | 41 |\n\n**Top hotspots**\n\n| Path | Status | +/- |\n|------|--------|-----|\n| `scripts/ci/termux_smoke.py` | added | +370 / -0 |\n| `docs/ARCHW1Z-GATE.md` | modified | +65 / -41 |\n| `docs/TERMUX-SMOKE.md` | added | +88 / -0 |\n| `.github/workflows/termux-smoke.yml` | added | +42 / -0 |\n\n**Top directories**\n\n| Directory | Files | Total changes |\n|-----------|-------|---------------|\n| `scripts/ci` | 1 | 370 |\n| `docs` | 2 | 194 |\n| `.github/workflows` | 1 | 42 |\n\n</details>\n\n<details>\n<summary>Analysis Depth Readiness (commit-history, 21%)</summary>\n\nECC Tools uses this to decide whether recommendations should stay at commit-history/setup guidance or expand into CI, security, harness, reference-set, AI-routing, and team backlog work.\n\n| Area | Status | Evidence / Next Step |\n|------|--------|----------------------|\n| Commit history | Partial | `4 commits sampled` |\n| CI/CD signals | Ready | `.github/workflows/termux-smoke.yml` |\n| Security evidence | Missing | Add AgentShield, audit, SARIF, SBOM, or security review evidence so recommendations can cover security posture. |\n| Harness configuration | Missing | Add Claude, Codex, OpenCode, Zed, dmux, MCP, plugin, or cross-harness config evidence for harness-agnostic recommendations. |\n| Reference/eval evidence | Missing | Add fixtures, golden traces, reference sets, or evaluator benchmarks so deeper recommendations have regression evidence. |\n| AI routing and cost controls | Missing | Add model-routing, budget, usage, or cost-control files before relying on AI-heavy automation recommendations. |\n| Team handoff and project tracking | Missing | Add roadmap, runbook, project, Linear, or follow-up tracking docs so generated work can land in a team queue. |\n\n</details>\n\n<details>\n<summary>Reference Set Readiness (0/7, 0%)</summary>\n\n| Area | Status | Evidence / Next Step |\n|------|--------|----------------------|\n| Deep analyzer corpus | Missing | Add analyzer fixture, golden, benchmark, or reference-set files that can catch analyzer regressions. |\n| RAG/evaluator comparison | Missing | Add retrieval or evaluator reference-set comparison fixtures with expected ranking behavior. |\n| PR salvage/review corpus | Missing | Add stale-PR, review-thread, reopen-flow, or salvage reference cases for queue cleanup automation. |\n| Discussion triage corpus | Missing | Add public discussion triage fixtures, golden cases, or reference sets for informational, answered, and no-response classifications. |\n| Harness compatibility | Missing | Add cross-harness, adapter-compliance, or harness-audit evidence for Claude, Codex, OpenCode, Zed, dmux, and agent surfaces. |\n| Security evidence | Missing | Attach security evidence such as SBOMs, SARIF, audit reports, or AgentShield evidence packs. |\n| CI failure-mode evidence | Missing | Add captured CI failure logs, dry-run fixtures, or troubleshooting docs for common workflow failure modes. |\n\n</details>\n\n<details>\n<summary>Likely Future Issues (2)</summary>\n\n| Severity | Signal | Why it may show up |\n|----------|--------|--------------------|\n| MEDIUM | CI workflow changes may ship without failure-mode evidence | 2 CI/test-runner paths changed; 0 CI failure-mode evidence artifacts changed |\n| MEDIUM | Dependency or CI drift could surface after merge | CI/workflow files changed; no lockfile changes detected |\n\n- **CI workflow changes may ship without failure-mode evidence**: The PR changes CI workflows or test-runner entrypoints without touching CI failure fixtures, captured logs, troubleshooting notes, or regression evidence.\n- **Dependency or CI drift could surface after merge**: Package or workflow changes landed without an accompanying lockfile update, which often turns into CI or release noise later.\n\n</details>\n\n<details>\n<summary>Suggested Follow-up Work (2)</summary>\n\n| Type | Suggested title | Targets |\n|------|-----------------|---------|\n| PR | `ci: add failure-mode evidence for .github/workflows/termux-smoke.yml + scripts/ci/termux_smoke.py` | `.github/workflows/termux-smoke.yml`, `scripts/ci/termux_smoke.py` |\n| PR | `chore: refresh lockfile and validate CI after dependency updates` | `.github/workflows/termux-smoke.yml` |\n\n- **ci: add failure-mode evidence for .github/workflows/termux-smoke.yml + scripts/ci/termux_smoke.py**: Backfill CI failure-mode evidence before another workflow or test-runner change lands on the touched surface.\n- **chore: refresh lockfile and validate CI after dependency updates**: Package or workflow changes without a lockfile refresh tend to turn into noisy follow-up fixes after merge.\n\n**Copy-ready bodies**\n\n**ci: add failure-mode evidence for .github/workflows/termux-smoke.yml + scripts/ci/termux_smoke.py**\n\n```md\n## Summary\n- Add CI failure-mode evidence for the recently changed workflow or test-runner surface.\n\n## Why\n- Backfill CI failure-mode evidence before another workflow or test-runner change lands on the touched surface.\n\n## Touched paths\n- `.github/workflows/termux-smoke.yml`\n- `scripts/ci/termux_smoke.py`\n\n## Validation\n- Add or update a CI failure fixture, captured failing log, troubleshooting note, workflow dry-run evidence, or regression test for the changed CI/test-runner behavior.\n- Run the affected workflow or test-runner entrypoint locally or in CI and record pass/fail evidence.\n```\n\n**chore: refresh lockfile and validate CI after dependency updates**\n\n```md\n## Summary\n- Refresh the lockfile and rerun CI after the dependency or workflow changes in this PR.\n\n## Why\n- Package or workflow changes without a lockfile refresh tend to turn into noisy follow-up fixes after merge.\n\n## Touched paths\n- `.github/workflows/termux-smoke.yml`\n\n## Validation\n- Refresh the lockfile in the same package manager used by the repo.\n- Run the repo typecheck / test / CI entrypoints that depend on the updated package graph.\n```\n\n</details>\n\n<details>\n<summary>Detected Workflows (1)</summary>\n\n| Workflow | Description |\n|----------|-------------|\n| add-new-gate-to-ci-pipeline | Implements a new CI gate (e.g., runtime smoke test) into the project pipeline, including code, CI workflow, and documentation. |\n\n</details>\n\n<details>\n<summary>Generated Instincts (16)</summary>\n\n| Domain | Count |\n|--------|-------|\n| git | 3 |\n| code-style | 9 |\n| testing | 2 |\n| workflow | 2 |\n\nAfter merging, import with:\n```\n/instinct-import .claude/homunculus/instincts/inherited/termux-monorepo-instincts.yaml\n```\n\n</details>\n\n### Files\n- `.claude/ecc-tools.json`\n- `.claude/skills/termux-monorepo/SKILL.md`\n- `.agents/skills/termux-monorepo/SKILL.md`\n- `.agents/skills/termux-monorepo/agents/openai.yaml`\n- `.claude/identity.json`\n- `.codex/config.toml`\n- `.codex/AGENTS.md`\n- `.codex/agents/explorer.toml`\n- `.codex/agents/reviewer.toml`\n- `.codex/agents/docs-researcher.toml`\n- `.claude/homunculus/instincts/inherited/termux-monorepo-instincts.yaml`\n- `.claude/commands/add-new-gate-to-ci-pipeline.md`\n\n---\n<sub>[ECC Tools](https://ecc.tools) | [Everything Claude Code](https://github.com/affaan-m/everything-claude-code)</sub>"[m[1;37m,[m
+      [1;34m"createdAt"[m[1;37m:[m [32m"2026-08-02T22:17:03Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"isMinimized"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"minimizedReason"[m[1;37m:[m [32m""[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"url"[m[1;37m:[m [32m"https://github.com/timerloggedout-spec/termux-monorepo/pull/11#issuecomment-5160601849"[m[1;37m,[m
+      [1;34m"viewerDidAuthor"[m[1;37m:[m [33mfalse[m
+    [1;37m}[m
+  [1;37m][m[1;37m,[m
+  [1;34m"commits"[m[1;37m:[m [1;37m[[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T22:14:48Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T22:14:48Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"Cheap device-friendly smoke checks: Python runtime, gate layout, git/bash,\nwritable tmp, optional deepcli/archwiz surface probes. stdlib-only core path.\nSits after repo-gate, before heavy provider/Rust work."[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: Termux smoke-test gate for Agentic Termux integration"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"5cd01047f19706f1bf1a48884688475135d95ea9"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T22:14:59Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T22:14:59Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"Runs after checkout on PRs and pushes to termux-smoke / master-staging / master.\nCore path is stdlib-only; --with-optional probes agent surfaces without network."[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: wire termux-smoke workflow"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"02ee687fa70b1af4dcc86bb32a512c713fb48fb4"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T22:15:16Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T22:15:16Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"Defines the second gate in the spine: repo-gate (hygiene) → termux-smoke\n(runtime surface) → later language/provider gates."[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: document termux-smoke gate for Agentic Termux testing"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"e0a04ef8adcb333181ce204fc747e5d276e9bac3"[m
+    [1;37m}[m[1;37m,[m
+    [1;37m{[m
+      [1;34m"authoredDate"[m[1;37m:[m [32m"2026-08-02T22:15:43Z"[m[1;37m,[m
+      [1;34m"authors"[m[1;37m:[m [1;37m[[m
+        [1;37m{[m
+          [1;34m"email"[m[1;37m:[m [32m"timerloggedout@gmail.com"[m[1;37m,[m
+          [1;34m"id"[m[1;37m:[m [32m"U_kgDODennMQ"[m[1;37m,[m
+          [1;34m"login"[m[1;37m:[m [32m"timerloggedout-spec"[m[1;37m,[m
+          [1;34m"name"[m[1;37m:[m [32m"timerloggedout-spec"[m
+        [1;37m}[m
+      [1;37m][m[1;37m,[m
+      [1;34m"committedDate"[m[1;37m:[m [32m"2026-08-02T22:15:43Z"[m[1;37m,[m
+      [1;34m"messageBody"[m[1;37m:[m [32m"repo-gate = hygiene. termux-smoke = agent runtime surface. Both stdlib-only."[m[1;37m,[m
+      [1;34m"messageHeadline"[m[1;37m:[m [32m"ArchW1z: document two-gate spine (repo-gate + termux-smoke)"[m[1;37m,[m
+      [1;34m"oid"[m[1;37m:[m [32m"c63f604887c51790f3c2969029704df85935c43a"[m
+    [1;37m}[m
+  [1;37m][m[1;37m,[m
+  [1;34m"mergeable"[m[1;37m:[m [32m"UNKNOWN"[m[1;37m,[m
+  [1;34m"reviews"[m[1;37m:[m [1;37m[[m
+    [1;37m{[m
+      [1;34m"id"[m[1;37m:[m [32m"PRR_kwDOTnjXOs8AAAABIHo2JQ"[m[1;37m,[m
+      [1;34m"author"[m[1;37m:[m [1;37m{[m
+        [1;34m"login"[m[1;37m:[m [32m"devin-ai-integration"[m
+      [1;37m}[m[1;37m,[m
+      [1;34m"authorAssociation"[m[1;37m:[m [32m"CONTRIBUTOR"[m[1;37m,[m
+      [1;34m"body"[m[1;37m:[m [32m"**Devin Review** found 5 potential issues.\n\n<!-- devin-review-badge-begin -->\n<a href=\"https://app.devin.ai/review/timerloggedout-spec/termux-monorepo/pull/11\" target=\"_blank\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://static.devin.ai/assets/gh-open-in-devin-review-dark.svg?v=1\">\n    <img src=\"https://static.devin.ai/assets/gh-open-in-devin-review-light.svg?v=1\" alt=\"Open in Devin Review\">\n  </picture>\n</a>\n<!-- devin-review-badge-end -->"[m[1;37m,[m
+      [1;34m"submittedAt"[m[1;37m:[m [32m"2026-08-02T22:18:09Z"[m[1;37m,[m
+      [1;34m"includesCreatedEdit"[m[1;37m:[m [33mfalse[m[1;37m,[m
+      [1;34m"reactionGroups"[m[1;37m:[m [1;37m[[m[1;37m][m[1;37m,[m
+      [1;34m"state"[m[1;37m:[m [32m"COMMENTED"[m[1;37m,[m
+      [1;34m"commit"[m[1;37m:[m [1;37m{[m
+        [1;34m"oid"[m[1;37m:[m [32m"c63f604887c51790f3c2969029704df85935c43a"[m
+      [1;37m}[m
+    [1;37m}[m
+  [1;37m][m[1;37m,[m
+  [1;34m"state"[m[1;37m:[m [32m"MERGED"[m
+[1;37m}[m

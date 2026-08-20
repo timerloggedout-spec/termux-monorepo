@@ -6,11 +6,6 @@ on:
       additional_context:
         type: string
         required: false
-        default: ''
-      prior_prs:
-        type: string
-        required: false
-        default: 'none'
       issue_number:
         type: string
         required: false

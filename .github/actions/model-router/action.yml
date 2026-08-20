@@ -2,10 +2,11 @@ name: 'Model Router'
 description: |
   Select provider+model for a role (triage|review|invoke).
 
-  PEER POLICY (operator 2026-08-08):
-    OmniRoute and OpenRouter are nearly equal free-tier peers.
-    Selection = model desired for the operation + soft-budget headroom.
-    Gemini is residual only. Jules is async builder.
+  LEADER POLICY (2026-08-20, issue #272):
+    Gemini is PRIMARY for its best roles (review / triage / invoke).
+    OmniRoute and OpenRouter are secondary free-tier peers.
+    Selection = model desired + real free-tier headroom (no soft room).
+    Jules remains async Cloud VM builder.
 
   FREE TIER ONLY on Omni + OpenRouter paths.
   Soft budgets are per-branch best-effort (Actions cache).
@@ -58,7 +59,7 @@ runs:
         restore-keys: model-router-${{ steps.date.outputs.key }}
         enableCrossOsArchive: true
 
-    - name: Pick provider + model (peer Omni ↔ OpenRouter → Gemini residual)
+    - name: Pick provider + model (Gemini PRIMARY → peer Omni ↔ OpenRouter secondary)
       id: pick
       shell: bash
       env:

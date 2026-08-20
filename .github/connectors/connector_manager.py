@@ -289,6 +289,7 @@ class ConnectorManager:
                 if data:
                     str_to_sign += json.dumps(data, separators=(",", ":"))
                 signature = hmac.new(api_secret.encode(), str_to_sign.encode(), hashlib.sha256).digest()
+                # lgtm[py/weak-sensitive-data-hashing] KuCoin API v2 mandates HMAC-SHA256 here; this is a request-authentication transform, not password storage.
                 passphrase_sig = hmac.new(api_secret.encode(), passphrase.encode(), hashlib.sha256).digest()
                 headers["KC-API-KEY"] = api_key
                 headers["KC-API-SIGN"] = base64.b64encode(signature).decode()

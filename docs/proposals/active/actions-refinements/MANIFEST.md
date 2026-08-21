@@ -13,7 +13,7 @@ reviewers:
     role: executor
     status: executing
 related_issues: [192, 175]
-related_prs: [193, 81, 92, 143, 72, 232, 261, 266, 267, 269, 278]
+related_prs: [193, 81, 92, 143, 72, 232, 261, 266, 267, 269, 277, 278]
 gates_required: [repo-gate, termux-smoke]
 ---
 
@@ -95,6 +95,13 @@ Issue #192 has verified GitHub-native cross-references to Issue #175, PR #193, t
 - Evidence: `docs/reports/issue-192-comprehensive-status-2026-08-20.md` records the end-to-end AR/B delivery posture, active advisory controls, and concentrated operational reliability risks. `docs/reports/issue-192-lineage-and-remediation-plan-2026-08-20.md` traces the initiating Issue #192 seed through the delivery matrix, holds PR #276's unaccepted writer path, and specifies the peer-review, Jules, cadence, and stale-check remediation sequence.
 - Findings: The reports extend, rather than replace, the original Issue #192 planning documents: `action-research-notes.md`, `ACTION-DECISION-LEDGER.md`, `ITEMS.md`, `IMPLEMENTATION-STATUS.md`, and `source.md` remain the controlling proposal records. The reports provide a concise, reviewable operational bridge from the seed to the current remediation sequence.
 - Safety: This is documentation-only. It introduces no workflow, permission, secret, direct-push, dispatch, or issue-derived execution capability and does not authorize the PR #276 writer workflow.
+
+### 2026-08-21 — Manus AI — AR-10 provider-request evidence hardening
+
+- Disposition: **corrective hardening submitted for review**
+- Evidence: The merged AR-10 provider-command implementation accepted raw provider-request marker text during event relevance and duplicate detection, and accepted provider issue comments without a commit association as completion evidence. The focused correction requires allowlisted executor identity, an authorized repository association, exact cycle/head-SHA/provider/action fields, and verifiable current-SHA review, inline-comment, or check evidence before a provider can complete a cycle.
+- Decision: Preserve the existing documented OPERATOR command lane and bounded `issues: write` capability. Harden its authorization and evidence validation rather than adding another Marketplace action, a browser path, or a new writer capability. Unbound issue comments remain visible state only, so an old-SHA provider response cannot release a newer cycle.
+- Safety: The correction does not modify branches, labels, artifacts, secrets, settings, or provider-owned UI. It never evaluates issue or review text as code; it narrows the conditions under which comment data can cause a provider request to be recognized or suppressed.
 
 ### 2026-08-20 — Manus AI — AR-11 provider command library
 

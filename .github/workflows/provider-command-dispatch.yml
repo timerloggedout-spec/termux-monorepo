@@ -50,7 +50,7 @@ jobs:
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
           OPERATOR_EXECUTOR_LOGINS: ${{ vars.OPERATOR_EXECUTOR_LOGINS || github.repository_owner }}
-          OPERATOR_COMMAND_ACTIONS: ${{ vars.OPERATOR_COMMAND_ACTIONS || 'coderabbit:review_incremental,coderabbit:review_full,coderabbit:autofix_current,coderabbit:autofix_stacked,coderabbit:fix_ci_current,coderabbit:fix_ci_stacked,coderabbit:resolve_merge_conflict,qodo:review,devin:review,devin:autofix_enablement' }}
+          OPERATOR_COMMAND_ACTIONS: ${{ vars.OPERATOR_COMMAND_ACTIONS || 'coderabbit:review_incremental,coderabbit:review_full,coderabbit:autofix_current,coderabbit:autofix_stacked,coderabbit:fix_ci_current,coderabbit:fix_ci_stacked,coderabbit:resolve_merge_conflict,qodo:review,devin:review' }}
           INPUT_PR_NUMBER: ${{ github.event.inputs.pr_number || github.event.client_payload.pr_number }}
           INPUT_PROVIDER: ${{ github.event.inputs.provider || github.event.client_payload.provider }}
           INPUT_ACTION: ${{ github.event.inputs.action || github.event.client_payload.action }}
@@ -59,18 +59,30 @@ jobs:
         with:
           github-token: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
           script: |
-            const prNumber = Number(process.env.INPUT_PR_NUMBER);
+            const prNumberRaw = (process.env.INPUT_PR_NUMBER || '').trim();
             const provider = (process.env.INPUT_PROVIDER || '').trim().toLowerCase();
             const action = (process.env.INPUT_ACTION || '').trim().toLowerCase();
             const requestedSha = (process.env.INPUT_HEAD_SHA || '').trim();
             const confirmBranchWrite = String(process.env.INPUT_CONFIRM_BRANCH_WRITE).toLowerCase() === 'true';
             const marker = '<!-- operator-provider-command:v1 -->';
-            const operatorLogins = new Set((process.env.OPERATOR_EXECUTOR_LOGINS || context.repo.owner)
-              .split(',').map(value => value.trim().toLowerCase()).filter(Boolean));
+            const operatorLogins = new Set([
+              ...((process.env.OPERATOR_EXECUTOR_LOGINS || '').split(',')),
+              context.actor,
+              'github-actions[bot]',
+            ].map(value => value.trim().toLowerCase()).filter(Boolean));
             const allowedActions = new Set((process.env.OPERATOR_COMMAND_ACTIONS || '')
               .split(',').map(value => value.trim().toLowerCase()).filter(Boolean));
-            if (!prNumber || !provider || !action || !requestedSha) {
+            if (!prNumberRaw || !provider || !action || !requestedSha) {
               core.setFailed('pr_number, provider, action, and head_sha are required.');
+              return;
+            }
+            if (!/^\d+$/.test(prNumberRaw)) {
+              core.setFailed('pr_number must be a positive decimal integer.');
+              return;
+            }
+            const prNumber = Number(prNumberRaw);
+            if (!Number.isSafeInteger(prNumber) || prNumber <= 0) {
+              core.setFailed('pr_number must be a positive safe integer.');
               return;
             }
             if (!allowedActions.has(`${provider}:${action}`)) {
@@ -94,6 +106,10 @@ jobs:
             const command = providerEntry?.commands?.[action];
             if (!providerEntry || !command) {
               core.setFailed(`No library entry exists for ${provider}:${action}.`);
+              return;
+            }
+            if (command.dispatchable === false) {
+              core.setFailed(`${provider}:${action} requires provider-side configuration and is not dispatchable.`);
               return;
             }
             if (command.requires_confirm_branch_write && !confirmBranchWrite) {
@@ -120,13 +136,15 @@ jobs:
               issue_number: prNumber,
               per_page: 100,
             });
-            const alreadyRecorded = comments.some(comment =>
-              comment.body?.includes(marker) &&
-              comment.body.includes(`head_sha: ${requestedSha}`) &&
-              comment.body.includes(`provider: ${provider}`) &&
-              comment.body.includes(`action: ${action}`) &&
-              operatorLogins.has((comment.user?.login || '').toLowerCase())
-            );
+            const alreadyRecorded = comments.some(comment => {
+              const author = (comment.user?.login || '').toLowerCase();
+              return comment.body?.includes(marker) &&
+                comment.body.includes('dispatch_receipt: true') &&
+                comment.body.includes(`head_sha: ${requestedSha}`) &&
+                comment.body.includes(`provider: ${provider}`) &&
+                comment.body.includes(`action: ${action}`) &&
+                (operatorLogins.has(author) || providerEntry.authors.includes(author));
+            });
             if (alreadyRecorded) {
               core.info(`Already dispatched ${provider}:${action} for ${requestedSha}.`);
               return;
@@ -141,7 +159,20 @@ jobs:
                 const checkboxes = [...comment.body.matchAll(/^- \[ \] (<!--\s*\{"checkboxId":"([^"]+)"\}\s*-->)\s*(.+)$/gm)];
                 const checkbox = checkboxes.find(candidate => labels.includes(candidate[3].trim()));
                 if (!checkbox) continue;
-                const updatedBody = comment.body.replace(checkbox[0], `- [x] ${checkbox[1]} ${checkbox[3]}`);
+                const updatedBody = [
+                  comment.body.replace(checkbox[0], `- [x] ${checkbox[1]} ${checkbox[3]}`),
+                  '',
+                  marker,
+                  'dispatch_receipt: true',
+                  `head_sha: ${requestedSha}`,
+                  `provider: ${provider}`,
+                  `action: ${action}`,
+                  `effect: ${command.effect}`,
+                  'request_actor: OPERATOR',
+                  'execution: provider_control_patch',
+                  `control_id: ${checkbox[2]}`,
+                  `source_comment_id: ${comment.id}`,
+                ].join('\n');
                 try {
                   await github.rest.issues.updateComment({
                     owner: context.repo.owner,
@@ -161,7 +192,7 @@ jobs:
             }
 
             if (result.mode === 'documented_command' && command.documented_command) {
-              await github.rest.issues.createComment({
+              const { data: receipt } = await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: prNumber,
@@ -169,36 +200,21 @@ jobs:
                   command.documented_command,
                   '',
                   marker,
+                  'dispatch_receipt: true',
                   `head_sha: ${requestedSha}`,
                   `provider: ${provider}`,
                   `action: ${action}`,
                   `effect: ${command.effect}`,
                   'request_actor: OPERATOR',
                   'execution: documented_command',
+                  'control_id: none',
+                  'source_comment_id: none',
                   '',
-                  'Autonomous allowlisted provider-command request. This marker records dispatch, not provider completion.',
+                  'Autonomous allowlisted provider-command request and receipt. Provider completion remains independently verifiable.',
                 ].join('\n'),
               });
+              result.source_comment_id = receipt.id;
             } else if (result.mode === 'documented_command') {
               core.setFailed(`${provider}:${action} requires provider configuration and has no GitHub command fallback.`);
               return;
             }
-
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              body: [
-                marker,
-                `head_sha: ${requestedSha}`,
-                `provider: ${provider}`,
-                `action: ${action}`,
-                `effect: ${command.effect}`,
-                'request_actor: OPERATOR',
-                `execution: ${result.mode}`,
-                `control_id: ${result.control_id || 'none'}`,
-                `source_comment_id: ${result.source_comment_id || 'none'}`,
-                '',
-                'Dispatch receipt. Provider completion remains independently verifiable.',
-              ].join('\n'),
-            });

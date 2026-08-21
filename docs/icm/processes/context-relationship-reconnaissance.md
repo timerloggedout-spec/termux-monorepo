@@ -34,6 +34,12 @@ Broad repository crawling produces noisy, stale, and potentially sensitive conte
 5. Cite relevant evidence URLs/source locations in the work plan or closeout. Review candidate links manually before expanding scope; do not perform autonomous comment, label, merge, or configuration writes from graph results.
 6. If the canonical index is stale or unavailable, use the trusted publisher or an explicitly authorized bounded operator build. For archive coverage, use manual history-page backfill and record the reported `next_start_page`; do not claim full history until it is null. Use the optional Linear freshness comparison only read-only and only for explicit GitHub mappings; its `stale`, `missing`, and `ambiguous` states require review, not an automatic Linear write. Do not hand-edit generated JSONL, matrix, manifest, reports, or checkpoint files.
 
+## Bounded no-match record
+
+| Work item | Root | Bounds | Result | Follow-up |
+|---|---|---|---|---|
+| AR-11 provider command library, 2026-08-20 | `pr:278` | Depth `2`; max nodes `30` | No matching root, verified timeline, or candidates. The newly opened PR is outside the canonical index’s published coverage. | Do not infer relationships or edit generated index files. The AR-11 manifest review-log entry carries the bounded result; the trusted publisher may add the PR on its normal cadence. |
+
 ## If you change this
 
 - **Hits:** agent planning behavior, query/closeout expectations, index freshness handling, and the line between verified context and investigation candidates.

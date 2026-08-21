@@ -24,6 +24,12 @@ class ProviderCommandLibraryTests(unittest.TestCase):
         self.assertIn("resolve_merge_conflict", providers["coderabbit"]["commands"])
         self.assertEqual("/agentic_review", providers["qodo"]["commands"]["review"]["documented_command"])
         self.assertEqual("/devin review", providers["devin"]["commands"]["review"]["documented_command"])
+        self.assertFalse(providers["devin"]["commands"]["autofix_enablement"]["dispatchable"])
+
+    def test_non_dispatchable_provider_configuration_is_rejected_before_api_use(self) -> None:
+        self.assertIn("command.dispatchable === false", self.workflow)
+        self.assertIn("requires provider-side configuration and is not dispatchable", self.workflow)
+        self.assertNotIn("devin:autofix_enablement'", self.workflow)
 
     def test_branch_writing_actions_require_explicit_dispatch_confirmation(self) -> None:
         commands = self.library["providers"]["coderabbit"]["commands"]
@@ -37,12 +43,25 @@ class ProviderCommandLibraryTests(unittest.TestCase):
         self.assertIn("Stale head SHA", self.workflow)
         self.assertNotIn("actions/checkout", self.workflow)
 
+    def test_dispatcher_rejects_non_decimal_and_non_positive_pr_identifiers(self) -> None:
+        self.assertIn("const prNumberRaw", self.workflow)
+        self.assertIn("!/^\\d+$/.test(prNumberRaw)", self.workflow)
+        self.assertIn("Number.isSafeInteger(prNumber) || prNumber <= 0", self.workflow)
+
     def test_dispatcher_uses_control_before_documented_command_and_records_receipt(self) -> None:
         self.assertIn("execution_order", LIBRARY_PATH.read_text(encoding="utf-8"))
         self.assertIn("github.rest.issues.updateComment", self.workflow)
         self.assertIn("using documented command", self.workflow)
         self.assertIn("<!-- operator-provider-command:v1 -->", self.workflow)
+        self.assertIn("dispatch_receipt: true", self.workflow)
         self.assertIn("Already dispatched ${provider}:${action}", self.workflow)
+
+    def test_receipts_are_atomic_and_accept_default_workflow_identity(self) -> None:
+        self.assertIn("'github-actions[bot]'", self.workflow)
+        self.assertIn("context.actor", self.workflow)
+        self.assertIn("comment.body.includes('dispatch_receipt: true')", self.workflow)
+        self.assertIn("Autonomous allowlisted provider-command request and receipt", self.workflow)
+        self.assertNotIn("Dispatch receipt. Provider completion remains independently verifiable.", self.workflow)
 
     def test_control_patch_is_limited_to_trusted_provider_authors_and_declared_labels(self) -> None:
         self.assertIn("providerEntry.authors.includes(author)", self.workflow)

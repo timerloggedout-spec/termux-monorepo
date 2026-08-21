@@ -5,6 +5,9 @@ from backends.mistral_web import MistralWebBackend
 from backends.claude_web import ClaudeWebBackend
 from backends.gemini_web import GeminiWebBackend
 from backends.colab import ColabBackend
+from backends.grok_web import GrokWebBackend
+from backends.perplexity_web import PerplexityWebBackend
+from backends.kimi_web import KimiWebBackend
 
 BACKENDS = {
     "deepseek": DeepSeekBackend,
@@ -12,6 +15,9 @@ BACKENDS = {
     "claude": ClaudeWebBackend,
     "gemini": GeminiWebBackend,
     "colab": ColabBackend,
+    "grok": GrokWebBackend,
+    "perplexity": PerplexityWebBackend,
+    "kimi": KimiWebBackend,
 }
 
 class ChatDispatcher:
@@ -30,10 +36,10 @@ class ChatDispatcher:
             raise RuntimeError(f"Backend '{name}' not available. Check token/cookies.")
         return inst
 
-    def send(self, provider, message, session_id=None):
+    def send(self, provider, message, session_id=None, **kwargs):
         backend = self.get_backend(provider)
         context = cache_load(session_id) if session_id else []
-        reply = backend.send_message(message, context)
+        reply = backend.send_message(message, context, **kwargs)
         if session_id:
             context.append({"role": "user", "content": message})
             context.append({"role": "assistant", "content": reply})

@@ -36,7 +36,7 @@ class GrokWebBackend(ChatBackend):
     def is_available(self):
         return all(self.cookies.values())
 
-    def send_message(self, message: str, context: list[dict]) -> str:
+    def send_message(self, message: str, context: list[dict], **kwargs) -> str:
         headers = {
             "accept": "*/*",
             "accept-language": "en-US,en;q=0.9",
@@ -46,13 +46,16 @@ class GrokWebBackend(ChatBackend):
             "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
         }
 
+        search_enabled = kwargs.get("search", True)
+        is_reasoning = kwargs.get("thinking", False)
+
         payload = {
             "temporary": False,
             "modelName": "grok-3",
             "message": message,
             "fileAttachments": [],
             "imageAttachments": [],
-            "disableSearch": False,
+            "disableSearch": not search_enabled,
             "enableImageGeneration": True,
             "returnImageBytes": False,
             "returnRawGrokInXaiRequest": False,
@@ -64,8 +67,8 @@ class GrokWebBackend(ChatBackend):
             "isPreset": False,
             "sendFinalMetadata": True,
             "customInstructions": "",
-            "deepsearchPreset": "",
-            "isReasoning": False
+            "deepsearchPreset": "deepsearch" if search_enabled and is_reasoning else "",
+            "isReasoning": is_reasoning
         }
 
         try:

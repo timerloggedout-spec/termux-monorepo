@@ -116,7 +116,7 @@ class DeepSeekBackend(ChatBackend):
         r.raise_for_status()
         return r.json()["data"]["biz_data"]["id"]
 
-    def send_message(self, message: str, context: list[dict]) -> str:
+    def send_message(self, message: str, context: list[dict], **kwargs) -> str:
         challenge = self.get_pow_challenge()
         pow_header = self.solve_pow(challenge)
 
@@ -128,15 +128,16 @@ class DeepSeekBackend(ChatBackend):
                 break
         if not session_id:
             session_id = self.create_session()
-            context.insert(0, {"role": "meta", "__session_id": session_id})
+            if isinstance(context, list):
+                context.insert(0, {"role": "meta", "__session_id": session_id})
 
         payload = {
             "chat_session_id": session_id,
             "parent_message_id": None,
             "prompt": message,
             "ref_file_ids": [],
-            "thinking_enabled": True,
-            "search_enabled": False,
+            "thinking_enabled": kwargs.get("thinking", True),
+            "search_enabled": kwargs.get("search", False),
             "stream": False,  # server ignores this, always SSE
         }
         s = self._get_session()

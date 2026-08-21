@@ -173,9 +173,8 @@ class LightwrapBackend(ChatBackend):
         status = result.get("status") or {}
         return bool(result.get("allow_send_after_probe") and status.get("observed_state") == "send-ready")
 
-    def send_message(self, message: str, context: list[dict]) -> str:
+    def send_message(self, message: str, context: list[dict], **kwargs) -> str:
         """Send through a previously verified provider browser profile."""
-
         result = self.run_action("send", prompt=message)
         text = result.get("text")
         if not isinstance(text, str) or not text.strip():

@@ -80,6 +80,8 @@ class ChatCompletionRequest(BaseModel):
     # Optional hub extension. It is ignored by upstream providers and can be
     # used by callers that want multi-turn wrapper session persistence.
     session_id: Optional[str] = None
+    search: Optional[bool] = False
+    thinking: Optional[bool] = True
 
 
 class HubRuntime:
@@ -109,11 +111,15 @@ class HubRuntime:
     def complete_wrapper(self, provider: str, request: ChatCompletionRequest) -> str:
         dispatcher = self._get_dispatcher()
         prompt = messages_to_prompt(request.messages)
+        kwargs = {
+            "search": request.search,
+            "thinking": request.thinking,
+        }
         try:
             if request.session_id:
-                return str(dispatcher.send(provider, prompt, request.session_id))
+                return str(dispatcher.send(provider, prompt, request.session_id, **kwargs))
             backend = dispatcher.get_backend(provider)
-            return str(backend.send_message(prompt, []))
+            return str(backend.send_message(prompt, [], **kwargs))
         except HubError:
             raise
         except Exception as exc:
@@ -413,6 +419,38 @@ def models(request: Request) -> Dict[str, Any]:
             {"id": model, "object": "model", "created": now, "owned_by": "termux-monorepo"}
             for model in configured_models()
         ],
+    }
+
+
+class SearchRequest(BaseModel):
+    q: str
+    provider: Optional[str] = "perplexity"
+
+
+@app.post("/v1/search")
+def search(request: SearchRequest, raw_request: Request) -> Dict[str, Any]:
+    """Perform a web search using a supported provider."""
+    validate_auth(raw_request)
+    provider = request.provider.strip()
+    if provider not in {"perplexity", "deepseek", "grok", "kimi"}:
+        raise HubError(400, f"provider '{provider}' does not support dedicated search", code="unsupported_search")
+    
+    # We use handle_completion with search=True and a prompt designed for search
+    hub_request = ChatCompletionRequest(
+        model=f"wrapper/{provider}",
+        messages=[ChatMessage(role="user", content=request.q)],
+        search=True,
+        thinking=False
+    )
+    response = handle_completion(hub_request)
+    
+    # For now, we return the full response. 
+    # In the future, we can extract citations/snippets.
+    return {
+        "query": request.q,
+        "provider": provider,
+        "results": response.get("choices", [{}])[0].get("message", {}).get("content", ""),
+        "raw": response
     }
 
 

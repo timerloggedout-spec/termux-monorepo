@@ -102,6 +102,9 @@ class AutomationDocumentationTests(unittest.TestCase):
                 self.assertFalse(automation_docs.check_outputs(ROOT))
                 automation_docs.write_outputs(ROOT)
                 self.assertTrue(automation_docs.check_outputs(ROOT))
+                automation_docs.OUTPUT_ASSETS.write_text("{}\n", encoding="utf-8")
+                self.assertFalse(automation_docs.check_outputs(ROOT))
+                automation_docs.write_outputs(ROOT)
                 automation_docs.OUTPUT_JSON.write_text("{}\n", encoding="utf-8")
                 self.assertFalse(automation_docs.check_outputs(ROOT))
         finally:

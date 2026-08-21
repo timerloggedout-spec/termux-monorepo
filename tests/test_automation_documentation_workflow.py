@@ -32,7 +32,8 @@ class AutomationDocumentationWorkflowTests(unittest.TestCase):
         self.assertIn("if: needs.route.outputs.automation_docs == 'true'", section)
         self.assertIn("permissions:\n      contents: read", section)
         self.assertIn(
-            "python3 -m unittest tests.test_automation_docs tests.test_automation_documentation_workflow",
+            "python3 -m unittest tests.test_automation_docs "
+            "tests.test_automation_documentation_workflow",
             section,
         )
         self.assertIn("python3 scripts/ci/automation_docs.py --check", section)

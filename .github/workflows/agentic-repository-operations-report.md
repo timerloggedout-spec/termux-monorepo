@@ -9,7 +9,6 @@ permissions:
   pull-requests: read
   copilot-requests: write
 engine: copilot
-model: gpt-4.1-mini
 network: defaults
 tools:
   github:

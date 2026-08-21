@@ -7,6 +7,7 @@ permissions:
   contents: read
   issues: read
   pull-requests: read
+  copilot-requests: write
 engine: copilot
 model: gpt-4.1-mini
 network: defaults
@@ -20,6 +21,7 @@ max-turns: 4
 safe-outputs:
   allowed-github-references: []
   report-failed-jobs: false
+  report-failure-as-issue: false
   create-issue:
     title-prefix: "[agentic-ops] "
     max: 1

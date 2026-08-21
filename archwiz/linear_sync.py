@@ -68,7 +68,7 @@ def get_tasks() -> List[Dict[str, Any]]:
         print(f"Unexpected task format in {master_tasks}", file=sys.stderr)
         return []
     return [t for t in data if isinstance(t, dict)]
-ture/sentry-linear-integration
+
 
 def get_done_tasks() -> List[str]:
     tadone = WORKSPACE_DIR / "termux-multi-agent" / "taDone.md"
@@ -234,4 +234,4 @@ def sync_to_linear(dry_run: bool = False) -> None:
 
 if __name__ == "__main__":
     dry = "--dry-run" in sys.argv or "-n" in sys.argv
-    sync_to_linear(dry_run=dry)ture/sentry-linear-integration
+    sync_to_linear(dry_run=dry)

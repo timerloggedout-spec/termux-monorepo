@@ -4,28 +4,28 @@
   "candidate_edge_count": 2286,
   "compiler": "archwiz.context_relationships.compiler@1.0",
   "default_branch": "master-staging",
-  "edge_count": 16390,
+  "edge_count": 16839,
   "github_report": {
     "checkpoint_eligible": false,
-    "collected_at": "2026-08-21T15:30:05.175574Z",
+    "collected_at": "2026-08-21T20:54:36.548175Z",
     "collector": "archwiz.context_relationships.github_collector@1.0",
     "counts": {
-      "cochange_candidates": 561,
-      "commit_files": 231,
+      "cochange_candidates": 461,
+      "commit_files": 192,
       "commits": 25,
       "excluded_history_paths": 31,
-      "explicit_references": 265,
-      "issue_comments": 31,
-      "issues": 2,
-      "labels": 22,
-      "permalink_references": 26,
-      "pull_request_comments": 388,
-      "pull_request_commits": 191,
-      "pull_request_files": 224,
+      "explicit_references": 271,
+      "issue_comments": 49,
+      "issues": 5,
+      "labels": 21,
+      "permalink_references": 21,
+      "pull_request_comments": 340,
+      "pull_request_commits": 119,
+      "pull_request_files": 198,
       "pull_requests": 20,
-      "review_comments": 322,
-      "reviews": 206,
-      "timeline_cross_references": 4
+      "review_comments": 240,
+      "reviews": 126,
+      "timeline_cross_references": 13
     },
     "history_window": {
       "issue_count": 20,
@@ -40,10 +40,10 @@
     "max_comments_per_item": 20,
     "max_commits": 25,
     "max_items": 20,
-    "request_count": 132,
+    "request_count": 138,
     "retry_count": 0,
     "since": null,
-    "unresolved_internal_reference_count": 240
+    "unresolved_internal_reference_count": 284
   },
   "history_window": {
     "issue_count": 20,
@@ -55,30 +55,30 @@
     "start_page": 1
   },
   "incremental_since": null,
-  "input_sha256": "ab95ea2f10eb0b12cf6c5f1f300d2dd33493c52387de75af59864de960e82e9e",
-  "latest_observed_at": "2026-08-21T15:31:02Z",
+  "input_sha256": "cc2b003b6b3d67f5d33af64487970c455b8d294eb377734301ce13e04e8e2778",
+  "latest_observed_at": "2026-08-21T20:54:36.548175Z",
   "merge_report": {
     "input_count": 3,
     "input_counts": [
       {
-        "edges": 15471,
-        "nodes": 8466
+        "edges": 16390,
+        "nodes": 9048
       },
       {
-        "edges": 3032,
-        "nodes": 3253
+        "edges": 3044,
+        "nodes": 3263
       },
       {
-        "edges": 2807,
-        "nodes": 1477
+        "edges": 2300,
+        "nodes": 1226
       }
     ],
-    "merged_edge_count": 21310,
-    "merged_node_count": 9048,
+    "merged_edge_count": 21734,
+    "merged_node_count": 9333,
     "merger": "archwiz.context_relationships.seed_merger@1.0",
     "retained_history": true
   },
-  "node_count": 9048,
+  "node_count": 9333,
   "repository": "timerloggedout-spec/termux-monorepo",
   "retained_history": true,
   "schema_sha256": "795fd782ddbb7d52c09a9a85a8356683b12202968d6ba7b04fb13c55393cde93",
@@ -122,10 +122,6 @@
         "path": "archwiz/dangle_detector.py"
       },
       {
-        "error": "invalid syntax (linear_sync.py, line 237)",
-        "path": "archwiz/linear_sync.py"
-      },
-      {
         "error": "unterminated f-string literal (detected at line 17) (manifest_to_cache.py, line 17)",
         "path": "archwiz/manifest_to_cache.py"
       },
@@ -157,5 +153,5 @@
     "unavailable_files": 0,
     "unsupported_files": 1897
   },
-  "verified_edge_count": 14104
+  "verified_edge_count": 14553
 }

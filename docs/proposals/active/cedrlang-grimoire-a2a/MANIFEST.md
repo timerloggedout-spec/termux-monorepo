@@ -4,14 +4,17 @@ title: "CEDRlang deterministic codec, Grimoire boundary, and local A2A envelope 
 author: Manus AI
 posted_at: 2026-08-20
 source: source.md
-status: draft
+status: in_review
 priority: P1
 reviewers:
   - id: timerloggedout-spec
     role: operator-authorizer
+    status: in_review
+  - id: google-labs-jules
+    role: non-author implementation reviewer
     status: requested
-related_prs: [126, 154, 177, 196, 208, 218, 228]
-related_issues: [117, 175, 274]
+related_prs: [126, 154, 177, 196, 208, 218, 228, 275]
+related_issues: [117, 175, 182, 274]
 related_branches: [feature/cedrlang-grimoire-a2a]
 gates_required: [repo-gate, termux-smoke]
 ---
@@ -27,7 +30,8 @@ This proposal reconstructs the useful, independently testable core of the Lingui
 | ID | Role | Status | At | Notes |
 |----|------|--------|-----|-------|
 | Manus AI | author / executor | posted | 2026-08-20 | Bounded implementation branch; no integration or external workflow write. |
-| timerloggedout-spec | operator-authorizer | requested | 2026-08-20 | Formal proposal acceptance is required before an integration claim or merge. |
+| timerloggedout-spec | operator-authorizer | in_review | 2026-08-21 | Requested consolidation of the viable successor and formal review; acceptance is still required before an integration claim or merge. |
+| google-labs-jules | non-author implementation reviewer | requested | 2026-08-21 | Requested to review the bounded successor after the current Jules PR family was reconciled. |
 
 ## Review log
 
@@ -40,6 +44,11 @@ This proposal reconstructs the useful, independently testable core of the Lingui
 
 - Disposition: changes_requested
 - Notes: Published the review packet and required follow-up work as [issue #274](https://github.com/timerloggedout-spec/termux-monorepo/issues/274); cross-linked the evidence to issues [#117](https://github.com/timerloggedout-spec/termux-monorepo/issues/117) and [#175](https://github.com/timerloggedout-spec/termux-monorepo/issues/175), and to open PRs [#154](https://github.com/timerloggedout-spec/termux-monorepo/pull/154) and [#177](https://github.com/timerloggedout-spec/termux-monorepo/pull/177). No acceptance, merge, or private-mapper decision is implied. `RESEARCH.md` contains the pending decision/vote questions.
+
+### 2026-08-21 — consolidation and formal-review request
+
+- Disposition: in_review
+- Notes: The successor branch was rebased onto current `master-staging` and validated with 18 focused/regression tests and selected lint. Current live review finds #154 and #177 open but `DIRTY`/`CONFLICTING`; [PR #275](https://github.com/timerloggedout-spec/termux-monorepo/pull/275) is the sole bounded review candidate. [Issue #182](https://github.com/timerloggedout-spec/termux-monorepo/issues/182) is the explicit Grimiore/CID/CEDR naming root; issue #117 remains the A2A design root. See `CURRENT-INTEGRATION-RECONCILIATION.md` and `current-integration-relationships.mmd`. The inherited registry-orphan failure remains a documented blocker; it is not waived.
 
 ## Checklist (process)
 
@@ -60,3 +69,5 @@ This proposal reconstructs the useful, independently testable core of the Lingui
 - Publication and subtask tracker: [Issue #274](https://github.com/timerloggedout-spec/termux-monorepo/issues/274)
 - Operator priority/gate record: [Issue #175](https://github.com/timerloggedout-spec/termux-monorepo/issues/175)
 - Research and decision requests: ./RESEARCH.md
+- Current integration reconciliation: `../../../reviews/linguist-177/CURRENT-INTEGRATION-RECONCILIATION.md`
+- Current relationship graph source: `../../../reviews/linguist-177/current-integration-relationships.mmd`

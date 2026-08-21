@@ -1,0 +1,29 @@
+flowchart TD
+  classDef selected fill:#0f766e,color:#ffffff,stroke:#115e59,stroke-width:2px
+  classDef verified fill:#e0f2fe,color:#0c4a6e,stroke:#0284c7
+  classDef candidate fill:#fef3c7,color:#78350f,stroke:#d97706,stroke-dasharray: 5 4
+  classDef blocked fill:#fee2e2,color:#7f1d1d,stroke:#dc2626
+  classDef boundary fill:#f3f4f6,color:#374151,stroke:#6b7280
+
+  I182[Issue #182<br/>Grimiore / CID / CEDR rename]:::verified
+  PR177[PR #177<br/>Linguist compression root<br/>open, dirty, conflicting]:::blocked
+  PR154[PR #154<br/>Linguist / Grimoire stack<br/>open, dirty, conflicting]:::blocked
+  I117[Issue #117<br/>Agent2Agent Comms]:::verified
+  PR275[PR #275<br/>selected successor<br/>review candidate]:::selected
+  P[CEDRlang proposal<br/>in formal review]:::selected
+  I181[Issue #181<br/>Compression & Security]:::candidate
+  I201[Issue #201<br/>AGENTS.md]:::candidate
+  PR153[PR #153<br/>closed SSOT precedent]:::candidate
+  B[Future separate proposal<br/>mapper custody, document projection,<br/>authenticated transport]:::boundary
+
+  I182 -->|explicit #177 reference| PR177
+  PR177 -->|evidence root only| PR275
+  PR154 -->|historical review context only| PR275
+  I117 -->|local A2A schema boundary| PR275
+  PR275 -->|implements bounded foundation| P
+  P -->|requires separate acceptance| B
+  I181 -.->|candidate security-review destination| B
+  I201 -.->|candidate migration destination| B
+  PR153 -.->|candidate SSOT precedent| P
+
+  linkStyle 4,5,6 stroke:#d97706,stroke-dasharray: 5 4

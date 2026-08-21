@@ -7,6 +7,7 @@ The `termux-monorepo` has been stabilized on the `master-staging` spine and the 
 
 ### 2.1 Unified LLM API Hub (`llm_api_hub/`)
 - **Server:** FastAPI-based server at `llm_api_hub/server/app.py` providing local endpoints for OpenAI (`/v1/chat/completions`), Anthropic (`/v1/messages`), and Google Gemini (`/v1/models/{model}:generateContent`).
+- **WebUI Search:** Implemented `/v1/search` endpoint for fuzzy search screening across DeepSeek, Perplexity, Grok, and Kimi.
 - **Routing:** Automatically routes requests to `multi-ai-cli` backends (DeepSeek, Mistral, Grok, etc.) or upstream providers (OpenRouter, OpenAI, Anthropic).
 - **Integrated Registry & API:** Merged prior work from `feature/multi-ai-webwrapper-provider-hub` to include a governed `ProviderRegistry`. The Hub now exposes a `/v1/providers` API for real-time lifecycle management (connecting, connected, failed).
 - **Lightwrap Fallback:** Integrated the `lightwrap.py` backend and harvesters from `feature/multi-ai-lightwrap-parity` as a browser-based fallback for new providers.
@@ -15,6 +16,7 @@ The `termux-monorepo` has been stabilized on the `master-staging` spine and the 
 
 ### 2.2 Agent Retargeting
 - **NexusCLI:** Fully refactored to use the hub. Obsolete PoW solvers and direct DeepSeek dependencies removed.
+- **DeepTerm Alignment:** Aligned `curl_cffi` backends with the `deepterm` template, ensuring lightweight, browser-mimicking fingerprints for WAF bypass.
 - **Orchestrator:** `src/orchestrator.py` now calls the hub client, enabling multi-model flexibility.
 - **Provisioner:** Agent blueprints now default to hub-based routing.
 

@@ -82,17 +82,18 @@ See also Operator note on TER-14: *"master-staging is for selective merge to mas
 Human intervenes only for: credential rotation, destructive history ops, first-time permission grants.
 - Soft or no protection so agents can iterate; **keep the branch permanently** as the integration target.
 
-## Fully agentic target state
+## Evidence-driven autonomous target state
 
 ```
-Linear TER-* + registry.yaml → agent picks Todo
-  → Linear In Progress + branch off master-staging
-  → PR Implements: TER-N → gates green → merge to master-staging
-  → Linear Done + ITEMS.md update
-  → selective promotion PR(s) of ready commits to master (never wholesale staging merge)
+registry.yaml + tracker evidence → agent picks routine P1 work
+  → branch off master-staging + current-SHA checks/review
+  → autonomous-merge label opts in eligible routine PRs
+  → workflow records evidence and selectively merges to master-staging
+  → GitHub/proposal tracker evidence updates; Linear sync when capacity is available
+  → focused promotion PR(s) of ready commits to master (never wholesale staging merge)
 ```
 
-Human intervenes only for: credential rotation, destructive history ops, and first-time permission grants above.
+Routine P1 work no longer waits for a human approval message when the current-SHA evidence, review, scope, and gate criteria are satisfied. The marker and label provide an auditable decision and immediate rollback switch. Human authority remains required only for credentials, destructive history operations, protected-branch administration, first-time permission grants, workflow/configuration changes, and production promotion. See [`docs/ops/AUTONOMOUS-OPERATIONS.md`](../ops/AUTONOMOUS-OPERATIONS.md).
 
 ## ChatGPT connector note
 

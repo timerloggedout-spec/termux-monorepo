@@ -13,7 +13,7 @@ reviewers:
     role: executor
     status: executing
 related_issues: [192, 175]
-related_prs: [193, 81, 92, 143, 72, 232, 261, 266, 267, 269]
+related_prs: [193, 81, 92, 143, 72, 232, 261, 266, 267, 269, 278]
 gates_required: [repo-gate, termux-smoke]
 ---
 
@@ -95,6 +95,14 @@ Issue #192 has verified GitHub-native cross-references to Issue #175, PR #193, t
 - Evidence: `docs/reports/issue-192-comprehensive-status-2026-08-20.md` records the end-to-end AR/B delivery posture, active advisory controls, and concentrated operational reliability risks. `docs/reports/issue-192-lineage-and-remediation-plan-2026-08-20.md` traces the initiating Issue #192 seed through the delivery matrix, holds PR #276's unaccepted writer path, and specifies the peer-review, Jules, cadence, and stale-check remediation sequence.
 - Findings: The reports extend, rather than replace, the original Issue #192 planning documents: `action-research-notes.md`, `ACTION-DECISION-LEDGER.md`, `ITEMS.md`, `IMPLEMENTATION-STATUS.md`, and `source.md` remain the controlling proposal records. The reports provide a concise, reviewable operational bridge from the seed to the current remediation sequence.
 - Safety: This is documentation-only. It introduces no workflow, permission, secret, direct-push, dispatch, or issue-derived execution capability and does not authorize the PR #276 writer workflow.
+
+### 2026-08-20 — Manus AI — AR-11 provider command library
+
+- Disposition: **accepted for independently reviewable implementation**
+- Evidence: Operator direction to treat the environment as autonomous and to expose provider command libraries rather than an interval-polling/diff-check loop; provider command documentation for CodeRabbit, Qodo, and Devin; bounded context root `pr:278` with depth `2` and max nodes `30`, which returned no matching canonical-index root because this new PR has not yet been published into the index.
+- Decision: Use a trusted-default-branch, declarative provider command library with explicit `workflow_dispatch`/`repository_dispatch` inputs. The dispatcher validates allowlisted provider/action pairs and current PR SHA, prefers a declared trusted provider checkbox patch, and falls back to that provider’s documented GitHub command. CodeRabbit branch-writing actions require an explicit event confirmation.
+- Alternatives considered: Per-provider hard-coded maps duplicate capability knowledge; interval polling/diff scans introduce stale and duplicate work; a browser-session emulation path weakens attribution and portability. A static catalog plus SHA-bound, idempotent event dispatch is selected.
+- Safety: The dispatcher never evaluates arbitrary text, reads no library from a PR head, never merges, and records a dispatch receipt without treating it as provider completion. Comment-control mutation requires the exact trusted author, exact declared label, live SHA, and a current unchecked control.
 
 ### 2026-08-20 — Manus AI — AR-08 status alignment
 

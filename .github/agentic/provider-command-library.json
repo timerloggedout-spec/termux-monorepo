@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "defaults": {
+    "requested_by": "OPERATOR",
+    "execution_order": ["provider_control", "documented_command"],
+    "require_current_head_sha": true
+  },
+  "providers": {
+    "coderabbit": {
+      "authors": ["coderabbitai[bot]", "coderabbitai"],
+      "commands": {
+        "review_incremental": {
+          "effect": "review_request",
+          "requires_confirm_branch_write": false,
+          "documented_command": "@coderabbitai review",
+          "control": {
+            "comment_kind": "issue_comment",
+            "labels": ["🔍 Trigger review", "Trigger review"]
+          }
+        },
+        "review_full": {
+          "effect": "review_request",
+          "requires_confirm_branch_write": false,
+          "documented_command": "@coderabbitai full review",
+          "control": {
+            "comment_kind": "issue_comment",
+            "labels": ["🔍 Trigger review", "Trigger review"]
+          }
+        },
+        "autofix_current": {
+          "effect": "branch_write",
+          "requires_confirm_branch_write": true,
+          "documented_command": "@coderabbitai autofix",
+          "control": {
+            "comment_kind": "issue_comment",
+            "labels": ["Push a commit to this branch"]
+          }
+        },
+        "autofix_stacked": {
+          "effect": "stacked_pull_request",
+          "requires_confirm_branch_write": true,
+          "documented_command": "@coderabbitai autofix stacked pr",
+          "control": {
+            "comment_kind": "issue_comment",
+            "labels": ["Create a new PR with the fixes", "Create stacked PR"]
+          }
+        },
+        "fix_ci_current": {
+          "effect": "branch_write",
+          "requires_confirm_branch_write": true,
+          "documented_command": "@coderabbitai fix-ci commit",
+          "control": {
+            "comment_kind": "issue_comment",
+            "labels": ["Commit on current branch"]
+          }
+        },
+        "fix_ci_stacked": {
+          "effect": "stacked_pull_request",
+          "requires_confirm_branch_write": true,
+          "documented_command": "@coderabbitai fix-ci",
+          "control": {
+            "comment_kind": "issue_comment",
+            "labels": ["Create stacked PR"]
+          }
+        },
+        "resolve_merge_conflict": {
+          "effect": "branch_write",
+          "requires_confirm_branch_write": true,
+          "documented_command": "@coderabbitai resolve merge conflict",
+          "control": {
+            "comment_kind": "issue_comment",
+            "labels": ["Resolve merge conflicts", "Resolve Merge Conflicts"]
+          }
+        }
+      }
+    },
+    "qodo": {
+      "authors": ["qodo-code-review[bot]", "qodo-code-review", "qodo"],
+      "commands": {
+        "review": {
+          "effect": "review_request",
+          "requires_confirm_branch_write": false,
+          "documented_command": "/agentic_review"
+        }
+      }
+    },
+    "devin": {
+      "authors": ["devin-ai-integration[bot]", "devin-ai-integration", "devin"],
+      "commands": {
+        "review": {
+          "effect": "review_request",
+          "requires_confirm_branch_write": false,
+          "documented_command": "/devin review"
+        },
+        "autofix_enablement": {
+          "effect": "provider_configuration",
+          "dispatchable": false,
+          "requires_confirm_branch_write": false,
+          "documented_command": null,
+          "requires_provider_setting": "Devin Review Auto-Fix and trusted-bot response policy"
+        }
+      }
+    }
+  }
+}

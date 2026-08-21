@@ -13,7 +13,7 @@ reviewers:
     role: executor
     status: executing
 related_issues: [192, 175]
-related_prs: [193, 81, 92, 143, 72, 232, 261, 266, 267, 269, 277, 278, 282, 283, 284]
+related_prs: [193, 81, 92, 143, 72, 232, 261, 266, 267, 269, 277, 278, 282, 283, 284, 285]
 gates_required: [repo-gate, termux-smoke]
 ---
 
@@ -131,3 +131,10 @@ Issue #192 has verified GitHub-native cross-references to Issue #175, PR #193, t
 - Evidence: A bounded context-relationship query and direct GitHub timeline collection verified the Issue #175 → Issue #192 relationship and the subsequent PR #261, PR #266, PR #267, PR #269, and Issue #268 links. PR #269 merged to `master` at `933d65d0e2c49e28079f300f5a516932330c60e7`, closing the documented Gemini Dispatch input-declaration failure. At `2026-08-20T19:44:57Z`, that exact `master` revision recorded the external `ci/gitlab/gitlab.com` failure at [GitLab pipeline 2776955893](https://gitlab.com/a-group2180532/termux-monorepo/-/pipelines/2776955893); the status context was last updated at `2026-08-20T17:17:50Z`.
 - Findings: Grok’s OPERATOR matrix is associated with this program through Issue #175 and the verified Issue #192 timeline edge, not through root `README.md`, `AGENTS.md`, or `CLAUDE.md`. Proposal-local records remain the appropriate team-facing status surface. The GitLab result is an external status observation, not evidence that AR-08 or its documentation-only changes failed.
 - Safety: AR-08 is documentation-only. It neither changes workflow behavior nor grants new write, secret, dispatch, or issue-derived execution authority; generated relationship-graph artifacts remain untouched.
+
+### 2026-08-21 — Manus AI — AR-16 autonomous development decision-tree documentation
+
+- Disposition: **submitted for review**
+- Evidence: PR #285; the approved documentation plan, the default-branch workflow inventory, `scripts/model_router.py`, the 3L0 model-success matrix, the local leaderboard policy, AR-10/AR-15 provider controls, and the current writer/reconciliation lanes.
+- Decision: Publish layered Mermaid decision trees, rendered artifacts, a generated workflow catalog, and a deterministic freshness verifier. Extend the existing `workflow-surface-policy.yml` only with a `contents: read` job that checks committed artifacts and uploads a seven-day review preview.
+- Safety: The verifier parses trusted repository control-plane files as data only. It does not execute workflow YAML, invoke a provider, read a secret, write a branch/PR/comment, change permissions, or turn arbitrary issue/review content into a command. Autonomous writers are documented as a high-impact capability with explicit preconditions, provenance, postconditions, bounded rollback, circuit breaker, and review requirements—not granted new runtime authority.

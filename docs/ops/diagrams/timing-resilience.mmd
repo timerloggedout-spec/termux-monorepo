@@ -1,0 +1,45 @@
+flowchart TD
+  classDef event fill:#e8f0fe,stroke:#1a73e8,color:#102a43
+  classDef guard fill:#fef7e0,stroke:#b06000,color:#4a2c00
+  classDef good fill:#e6f4ea,stroke:#188038,color:#102a43
+  classDef wait fill:#f3e8fd,stroke:#7b1fa2,color:#2b0c3d
+  classDef writer fill:#fce8e6,stroke:#c5221f,color:#4a1010
+  classDef stop fill:#f1f3f4,stroke:#5f6368,color:#202124
+
+  event[Event or schedule]:::event --> concurrency{Concurrency policy}:::guard
+  concurrency -->|cancel in progress| coalesce[Superseded run cancelled; newest state retained]:::wait
+  concurrency -->|FIFO or per-target lease| queue[Wait for active target cycle]:::wait
+  concurrency -->|no active conflict| begin[Begin bounded operation]:::good
+  queue --> begin
+
+  subgraph execution[Bounded provider and workflow execution]
+    direction TB
+    begin --> budget{Credit, request, artifact, and role budget available?}:::guard
+    budget -->|no| quota[Visible quota-exhausted or deferred state]:::stop
+    budget -->|yes| availability{Provider/catalog cache fresh?}:::guard
+    availability -->|yes| route[Route eligible model/provider]:::good
+    availability -->|no| refresh[Bounded availability/catalog refresh]:::wait
+    refresh -->|success| route
+    refresh -->|stale cache| stale[Use declared stale/proven fallback]:::wait
+    refresh -->|failed/no fallback| unavailable[No eligible route]:::stop
+    stale --> route
+    route --> invokeStep[Bounded provider or workflow invocation]:::good
+    invokeStep --> outcome{Completion, pending evidence, or cooldown?}:::guard
+    outcome -->|completion| report[Summary, artifact, check, or marker]:::good
+    outcome -->|pending evidence| evidencewait[Visible advisory/required pending state]:::wait
+    outcome -->|cooldown/rate limit| cooldown[Record cooldown class and bounded retry eligibility]:::wait
+    cooldown --> retry{Exact retry policy and wait elapsed?}:::guard
+    retry -->|yes| begin
+    retry -->|no| report
+  end
+
+  subgraph cadence[Scheduled control-plane cadence]
+    direction TB
+    weekly[Weekly read-only agentic operations report]:::good
+    hourly[Hourly continuous operations sweep]:::good
+    mondaywriter[Monday context-relationship writer reconciliation]:::writer
+    mondayaudit[Monday read-only fork audit: separate queued time-slot remediation]:::wait
+    nightly[Advisory security and validation schedules]:::good
+  end
+
+  event -. scheduled route .-> cadence

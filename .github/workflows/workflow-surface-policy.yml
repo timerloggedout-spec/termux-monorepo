@@ -7,7 +7,18 @@ on:
       - '.github/actions/**'
       - 'scripts/ci/workflow_surface_policy.py'
       - 'tests/test_workflow_surface_policy.py'
+      - 'scripts/ci/automation_docs.py'
+      - 'tests/test_automation_docs.py'
+      - 'docs/ops/automation-decision-tree.md'
+      - 'docs/ops/diagrams/**'
+      - 'docs/ops/generated/**'
+      - 'docs/schemas/model-success-matrix.yaml'
+      - 'docs/schemas/llm-leaderboard-matrix.yaml'
+      - 'docs/schemas/model-rotation.yaml'
+      - 'docs/schemas/routing-priority.yaml'
+      - 'docs/ops/OPERATOR_INTERACTIVE_ACTIONS.md'
       - 'docs/proposals/active/actions-refinements/**'
+      - 'docs/proposals/active/rate-limit-rotation/**'
 
 permissions: {}
 
@@ -26,6 +37,7 @@ jobs:
       source: ${{ steps.changes.outputs.source }}
       tests: ${{ steps.changes.outputs.tests }}
       docs: ${{ steps.changes.outputs.docs }}
+      automation_docs: ${{ steps.changes.outputs.automation_docs }}
     steps:
       - name: Classify changed surfaces
         id: changes
@@ -37,6 +49,22 @@ jobs:
               - '.github/actions/**'
               - 'scripts/ci/workflow_surface_policy.py'
               - 'tests/test_workflow_surface_policy.py'
+            automation_docs:
+              - '.github/workflows/**'
+              - '.github/actions/**'
+              - 'scripts/model_router.py'
+              - 'scripts/ci/automation_docs.py'
+              - 'tests/test_automation_docs.py'
+              - 'docs/ops/automation-decision-tree.md'
+              - 'docs/ops/diagrams/**'
+              - 'docs/ops/generated/**'
+              - 'docs/schemas/model-success-matrix.yaml'
+              - 'docs/schemas/llm-leaderboard-matrix.yaml'
+              - 'docs/schemas/model-rotation.yaml'
+              - 'docs/schemas/routing-priority.yaml'
+              - 'docs/ops/OPERATOR_INTERACTIVE_ACTIONS.md'
+              - 'docs/proposals/active/actions-refinements/**'
+              - 'docs/proposals/active/rate-limit-rotation/**'
             source:
               - '**/*.py'
               - '**/*.sh'
@@ -77,6 +105,7 @@ jobs:
           SOURCE_CHANGED: ${{ needs.route.outputs.source }}
           TESTS_CHANGED: ${{ needs.route.outputs.tests }}
           DOCS_CHANGED: ${{ needs.route.outputs.docs }}
+          AUTOMATION_DOCS_CHANGED: ${{ needs.route.outputs.automation_docs }}
         run: |
           {
             echo '## Workflow Surface Policy'
@@ -87,4 +116,50 @@ jobs:
             echo "| Source | ${SOURCE_CHANGED} |"
             echo "| Tests | ${TESTS_CHANGED} |"
             echo "| Docs | ${DOCS_CHANGED} |"
+            echo "| Automation documentation control plane | ${AUTOMATION_DOCS_CHANGED} |"
           } >> "$GITHUB_STEP_SUMMARY"
+
+  automation-documentation:
+    needs: route
+    if: needs.route.outputs.automation_docs == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Validate deterministic automation documentation catalog
+        run: |
+          python3 -m unittest tests.test_automation_docs
+          python3 scripts/ci/automation_docs.py --check
+
+      - name: Publish control-plane review summary
+        env:
+          AUTOMATION_CHANGED: ${{ needs.route.outputs.automation }}
+        run: |
+          {
+            echo '## Automation Documentation Freshness'
+            echo
+            if [ "${AUTOMATION_CHANGED}" = 'true' ]; then
+              echo '**high-impact control-plane review required**'
+            else
+              echo '**documentation update required**'
+            fi
+            echo
+            echo 'The catalog and rendered diagrams are deterministic, source-controlled artifacts.'
+            echo 'This job is read-only: it does not create a branch, pull request, comment, provider request, or repository mutation.'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload reviewed documentation artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: automation-documentation-preview
+          path: |
+            docs/ops/automation-decision-tree.md
+            docs/ops/diagrams
+            docs/ops/generated
+          if-no-files-found: error
+          retention-days: 7

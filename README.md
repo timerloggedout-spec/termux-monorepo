@@ -1,11 +1,6 @@
-# NEWLY ADDED; Requires proper documentation placement && malleability guidelines regarding 'stale' or 'drifted' concepts management updates and upgrades noted
-https://github.com/timerloggedout-spec/termux-monorepo/wiki
-https://deepwiki.com/timerloggedout-spec/termux-monorepo
-https://app.devin.ai/org/timerloggedout-spec/wiki/timerloggedout-spec/termux-monorepo
- + requires DeepWiki.com/timerloggedout-spec/* repo's auto detect and update (Devin is scheduled low effort requires high validation daily update iirc.).
-
-
 # TERMUX MONOREPO
+
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/timerloggedout-spec/termux-monorepo)
 
 > **C×O operator guide.** Build deliberately. Preserve evidence. Keep the Android/Termux target first; treat every other environment as a simulation, review surface, or constrained support plane.
 
@@ -39,7 +34,26 @@ The root README is an entry point, not a duplicate source of truth. When it conf
 
 ---
 
-## 1. Repository-native ICM — the operating context
+## 1. Wiki and knowledge discovery
+
+The repository’s Wiki surfaces have different responsibilities. They are designed to make discovery convenient without letting a provider-generated summary, an outdated snapshot, or an external page authorize a repository change.
+
+| Surface | Primary role | Validation and write boundary |
+|---|---|---|
+| [GitHub Wiki](https://github.com/timerloggedout-spec/termux-monorepo/wiki) | Published reader view for approved Wiki Markdown. | Updated only by the managed publisher from reviewed in-repository `wiki/` content. |
+| [Public DeepWiki](https://deepwiki.com/timerloggedout-spec/termux-monorepo) | Public discovery, repository orientation, source-linked questions, and provider-generated documentation. | Treat the displayed snapshot and its source reference as a discovery aid; verify freshness and corroborate material claims against repository source and review evidence. |
+| [Devin Wiki](https://app.devin.ai/org/timerloggedout-spec/wiki/timerloggedout-spec/termux-monorepo) | Authenticated documentation-generation and research surface. | Root [`.devin/wiki.json`](.devin/wiki.json) steers coverage; Devin is not a GitHub Actions writer or a source of change authorization. |
+| [`wiki/`](wiki/DeepWiki-Mirror.md) | Canonical, reviewable Markdown projection for GitHub Wiki publication. | Changes follow the normal pull-request process and are published only after merge. |
+
+The badge above links directly to the public DeepWiki page. The current public page exposes an indexed, source-linked snapshot, while the provider’s documentation describes automatic Wiki indexing and optional root-level steering through `.devin/wiki.json`.[5] [6] That convenience does **not** establish snapshot freshness, implementation truth, or authority to write. A stale, incomplete, or drifted provider description must be rechecked against the current repository path, commit, workflow, or review record before it is adopted.
+
+Repository-surface discovery is automated through the existing job-scoped operator-token lane. Its daily read-only reconciliation discovers repositories that the credential can actually reach—including accessible organization and collaborator repositories—and reports the managed Wiki-publisher state as `current`, `missing`, `drifted`, `unmanaged`, `excluded`, or `blocked`. A drifted or missing publisher is a review signal, not a write permission: only a manually requested `apply=true` run may create a dedicated branch and reviewable pull request; it never modifies a default branch or merges for a repository.[7]
+
+The validation sequence is therefore deliberate: use DeepWiki or Devin to discover context; bind material claims to primary repository evidence; bring approved documentation into `wiki/` through a pull request; and let the managed publisher project only that reviewed Markdown to GitHub Wiki. The full trust boundary, stale/drift handling, and operator runbook are maintained in [`wiki/DeepWiki-Mirror.md`](wiki/DeepWiki-Mirror.md) and [`docs/agentic/repository-surface-reconciliation.md`](docs/agentic/repository-surface-reconciliation.md). The **Linguist machine-parity README enhancement is a separate proposal** and is not part of this documentation or badge change.
+
+---
+
+## 2. Repository-native ICM — the operating context
 
 The [Interpretable Context Methodology](docs/icm/CONTEXT.md) is applied to **this repository itself**. It makes folders and Markdown contracts into an agent-readable control plane: each component has a purpose, source boundary, relationships, and first-order change impact. The operating workspace is `docs/icm/`; external forks are inputs, not a replacement for the repository’s own architecture.[2]
 
@@ -64,7 +78,7 @@ The full initialization and update rules are maintained in the [integration guid
 
 ---
 
-## 2. Agentic control plane — strong boundaries, no theater
+## 3. Agentic control plane — strong boundaries, no theater
 
 This repository supports agents, CI, and review tools, but it does **not** authorize unattended self-modification. Agentic work is governed by source ownership, repository checks, peer review, explicit secrets boundaries, and the human operator.
 
@@ -81,7 +95,7 @@ The current integration markers are maintained in [`.github/connectors/integrati
 
 ---
 
-## 3. Linguist, CedrLang, and CID pointers
+## 4. Linguist, CedrLang, and CID pointers
 
 The repository’s Linguist work optimizes **internal** agent communication through CedrLang compression and short-pointer conventions. The current `cid.py` implementation stores mappings locally under `~/.cedar/cedar_index.json`, generates short base-36 pointers, and expands them back to full commands.[1] The merged CedrLang v2 implementation documented lossless, line-oriented handling for its intended compiler pipeline.[3]
 
@@ -98,7 +112,7 @@ The repository’s Linguist work optimizes **internal** agent communication thro
 
 ---
 
-## 4. Visual review / CCTV — cards first, renderer later
+## 5. Visual review / CCTV — cards first, renderer later
 
 The repository now owns initiated, file-backed review cards at [`docs/icm/_tv/`](docs/icm/_tv/README.md). They can mirror an approved stage or human checkpoint while leaving the source artifact canonical.
 
@@ -112,7 +126,7 @@ Do not treat a dashboard card as an approval, an execution command, or a source 
 
 ---
 
-## 5. Validation and promotion
+## 6. Validation and promotion
 
 The repository gate is designed to be cheap, portable, and usable without device access. It reads the Git index, applies hard checks to changed paths, and ratchets tracked debt instead of allowing it to grow. It now handles Git submodule Gitlinks as commit references rather than trying to read them as blobs, so the ICM reference inputs can be safely checked in CI.[4]
 
@@ -126,7 +140,7 @@ Use the ICM [change-and-validate process](docs/icm/processes/change-and-validate
 
 ---
 
-## 6. Safety, recovery, and audit discipline
+## 7. Safety, recovery, and audit discipline
 
 The monorepo contains recovered, generated, historical, and mixed-confidence material. Treat `workspace/`, session artifacts, saved outputs, and recovery-era content as evidence to classify before using—not as indisputable runtime configuration.
 
@@ -140,7 +154,7 @@ The monorepo contains recovered, generated, historical, and mixed-confidence mat
 
 ---
 
-## 7. Audit trail
+## 8. Audit trail
 
 This README replaces a recovery-era root document with a deliberate navigation and operating guide. The immediate predecessor ICM entry-point update is preserved at [`a49efbb`](https://github.com/timerloggedout-spec/termux-monorepo/commit/a49efbb268b0847261bda65df516508fa2a11e95). The repository-native ICM delivery entered `master` through [PR #232](https://github.com/timerloggedout-spec/termux-monorepo/pull/232) at merge commit [`2b8396a`](https://github.com/timerloggedout-spec/termux-monorepo/commit/2b8396a65e65077d315c1a570b48061d903d8ce6).
 
@@ -154,3 +168,6 @@ The preserved pre-rebuild branch [`archive/pr232-pre-master-rebuild-20260817`](h
 [2]: https://github.com/timerloggedout-spec/termux-monorepo/pull/232 "Repository-native ICM integration"
 [3]: https://github.com/timerloggedout-spec/termux-monorepo/pull/196 "Linguist: implement CedrLang v2 compilation"
 [4]: https://github.com/timerloggedout-spec/termux-monorepo/commit/975f951bfc00dc6785bd3755b754dd9f19dc272e "Gitlink-safe repository gate repair"
+[5]: https://deepwiki.com/timerloggedout-spec/termux-monorepo "Public DeepWiki page for timerloggedout-spec/termux-monorepo"
+[6]: https://docs.devin.ai/work-with-devin/deepwiki "Devin DeepWiki documentation"
+[7]: docs/agentic/repository-surface-reconciliation.md "Repository-surface reconciliation runbook"

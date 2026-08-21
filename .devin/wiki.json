@@ -1,0 +1,34 @@
+{
+  "repo_notes": [
+    {
+      "author": "timerloggedout-spec",
+      "content": "This is an Android/Termux-first agentic-development monorepo. Start with README.md, AGENTS.md, and docs/icm/CLAUDE.md; treat repository-local source, reviewed commits, and current workflow files as authoritative over generated summaries or historical artifacts."
+    },
+    {
+      "author": "timerloggedout-spec",
+      "content": "The Wiki contract is validation-first. wiki/ is the reviewable source projected to GitHub Wiki by .github/workflows/publish-wiki.yml. Public DeepWiki and Devin Wiki are documentation discovery aids, not GitHub writers or authorization evidence."
+    },
+    {
+      "author": "timerloggedout-spec",
+      "content": "Repository-surface reconciliation is documented in docs/agentic/repository-surface-reconciliation.md. It discovers only repositories reachable by the existing job-scoped credential lane, reports state read-only on schedule, and creates reviewable pull requests only after an explicit apply request."
+    }
+  ],
+  "pages": [
+    {
+      "title": "Repository Orientation and Operating Context",
+      "purpose": "Explain the Android/Termux-first target, the root navigation paths, the evidence-led change model, and the ICM sources that orient a contributor before a change."
+    },
+    {
+      "title": "Agentic Control Plane and Review Boundaries",
+      "purpose": "Describe agent, CI, provider-review, credential, pull-request, and validation boundaries. Emphasize that generated content and issue text cannot authorize changes."
+    },
+    {
+      "title": "Wiki Publication and Knowledge Discovery",
+      "purpose": "Describe the distinct roles of in-repository wiki Markdown, GitHub Wiki, public DeepWiki, and Devin Wiki, including the validation-first policy and stale or drifted content handling."
+    },
+    {
+      "title": "Repository Surface Reconciliation",
+      "purpose": "Document credential-scoped repository discovery, publisher state categories, daily read-only reports, explicit apply behavior, and pull-request-only reconciliation boundaries."
+    }
+  ]
+}

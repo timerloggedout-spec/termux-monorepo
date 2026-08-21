@@ -1,6 +1,6 @@
-# ArchW1z proposal registry — agents read this first
+# ArchWiz proposal registry — agents read this first
 version: 1
-updated_at: "2026-08-21T20:05:00Z"
+updated_at: "2026-08-21T20:10:00Z"
 updated_by: ChatGPT
 
 proposals:
@@ -62,7 +62,7 @@ proposals:
       - id: Manus
         role: author+executor
         status: executing
-    related_prs: [221]
+    related_prs: []
     related_branches: [feature/termux-agentic-hub]
     gates_required: [repo-gate, termux-smoke]
 
@@ -94,8 +94,11 @@ proposals:
       - id: chatgpt
         role: author
         status: posted
+      - id: grok-archw1z
+        role: reviewer
+        status: accepted
     related_prs: []
-    gates_required: [repo-gate]
+    related_gates_required: [repo-gate]
 
   - id: chatgpt-droidapp
     title: "droidApp / early branch inventory + plugin architecture"
@@ -167,7 +170,6 @@ proposals:
     related_issues: [192, 175]
     related_prs: [193, 81, 92, 143, 72, 232]
     gates_required: [repo-gate, termux-smoke]
-
   - id: linguist-machine-parity
     title: "Linguist README machine-parity enhancement"
     author: Manus AI

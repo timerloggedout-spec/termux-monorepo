@@ -28,6 +28,7 @@ BOT_BRANCH = "automation/wiki-publisher"
 BOT_PR_TITLE = "chore(wiki): install managed GitHub Wiki publisher"
 SAFE_REPOSITORY = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 LIVE_READ_ATTEMPTS = 3
+ANSI_ESCAPE = re.compile(r"\x1B(?:\[[0-?]*[ -/]*[@-~]|[@-_])")
 TRANSIENT_FAILURES = (
     "http 502",
     "http 503",
@@ -75,6 +76,9 @@ class GhClient:
         environment = os.environ.copy()
         environment["NO_COLOR"] = "1"
         environment["CLICOLOR"] = "0"
+        environment.pop("CLICOLOR_FORCE", None)
+        environment.pop("GH_FORCE_TTY", None)
+        environment["GH_PAGER"] = "cat"
         for attempt in range(1, attempts + 1):
             result = subprocess.run(
                 ["gh", *arguments],
@@ -85,7 +89,7 @@ class GhClient:
             )
             if result.returncode == 0:
                 try:
-                    return json.loads(result.stdout)
+                    return json.loads(ANSI_ESCAPE.sub("", result.stdout))
                 except json.JSONDecodeError as error:
                     raise ReconcilerError(f"GitHub returned non-JSON for {endpoint}: {error}") from error
             diagnostic = f"{result.stdout}\n{result.stderr}".lower()

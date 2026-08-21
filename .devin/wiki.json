@@ -11,6 +11,10 @@
     {
       "author": "timerloggedout-spec",
       "content": "Repository-surface reconciliation is documented in docs/agentic/repository-surface-reconciliation.md. It discovers only repositories reachable by the existing job-scoped credential lane, reports state read-only on schedule, and creates reviewable pull requests only after an explicit apply request."
+    },
+    {
+      "author": "timerloggedout-spec",
+      "content": "Document Linguist, AppliedSxi, and agent-to-agent communication as source-validated domains. Linguist pointers are internal compression aids, not public documentation aliases; AppliedSxi coverage must remain bounded to its checked-in source; and claims from provider-generated pages must be linked to a visible source ref or corroborating repository evidence."
     }
   ],
   "pages": [
@@ -29,6 +33,18 @@
     {
       "title": "Repository Surface Reconciliation",
       "purpose": "Document credential-scoped repository discovery, publisher state categories, daily read-only reports, explicit apply behavior, and pull-request-only reconciliation boundaries."
+    },
+    {
+      "title": "Linguist and Machine Communication Boundaries",
+      "purpose": "Explain CedrLang, pointer compression, 1337 display dialect, and the rule that public documentation remains explicit while internal machine communication must be expanded through its trusted registry before action."
+    },
+    {
+      "title": "AppliedSxi Maxc Component",
+      "purpose": "Describe the checked-in AppliedSxi maxc component only from its current source tree, state its known documentation limits, and avoid treating historical or generated artifacts as runtime evidence."
+    },
+    {
+      "title": "Agent-to-Agent Evidence and Freshness",
+      "purpose": "Describe how agent review, orchestration events, timestamps, source references, and commit evidence should be reconciled when Wiki pages may lag the current repository state."
     }
   ]
 }

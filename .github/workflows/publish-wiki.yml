@@ -33,6 +33,15 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
 
+      - name: Surface wiki source presence
+        run: |
+          echo "wiki/ tree (source of truth for GitHub Wiki pages):"
+          ls -la wiki/ || echo "WARNING: wiki/ directory missing"
+          echo "---"
+          echo "NOTE: github-wiki-action requires the repository Wiki to be bootstrapped"
+          echo "(create any page once in the GitHub Wiki UI, or use strategy: init for a"
+          echo "one-time reviewed bootstrap). Without that, the job may fail immediately."
+
       - name: Explain dry-run mode
         if: ${{ inputs.dry_run }}
         run: echo "Dry run requested: the GitHub Wiki was not modified."

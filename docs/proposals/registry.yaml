@@ -1,7 +1,7 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-08-20T00:00:00Z"
-updated_by: Manus AI
+updated_at: "2026-08-21T00:00:00Z"
+updated_by: Manus
 
 proposals:
   - id: context-relationship-graph
@@ -150,3 +150,58 @@ proposals:
     related_prs: [126, 154, 177, 196, 208, 218, 228, 275]
     related_branches: [feature/cedrlang-grimoire-a2a]
     gates_required: [repo-gate, termux-smoke]
+
+  - id: actions-refinements
+    title: "Issue #192 action-integration refinements"
+    author: Manus AI
+    posted_at: 2026-08-19
+    status: accepted
+    priority: P1
+    path: active/actions-refinements/
+    reviewers:
+      - id: user
+        role: operator+approver
+        status: accepted
+      - id: Manus AI
+        role: executor
+        status: executing
+    related_issues: [192, 175]
+    related_prs: [193, 81, 92, 143, 72, 232]
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: icm-architect-integration
+    title: "ICM Architect custom-fork submodule integration"
+    author: timerloggedout-spec
+    posted_at: 2026-08-17
+    source: source.md
+    status: executing
+    priority: P2
+    path: active/icm-architect-integration/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_prs: []
+    related_branches:
+      - feat/icm-architect-submodule
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: kimi-cloud-offload
+    title: "Corrected Cloud Offload & Parallelization Evaluation"
+    author: Kimi2.6
+    posted_at: 2026-08-04
+    source: corrected_cloud_offload_evaluation.md
+    status: posted
+    priority: P1
+    path: active/kimi-cloud-offload/
+    reviewers:
+      - id: kimi
+        role: author
+        status: posted
+      - id: grok-archw1z
+        role: registrar
+        status: posted
+    related_prs: []
+    related_branches:
+      - docs/kimi-cloud-offload-evaluation
+    gates_required: [repo-gate]

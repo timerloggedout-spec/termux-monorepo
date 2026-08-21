@@ -130,6 +130,27 @@ proposals:
     related_prs: [63]
     gates_required: [repo-gate]
 
+  - id: cedrlang-grimoire-a2a
+    title: "CEDRlang deterministic codec, Grimoire boundary, and local A2A envelope foundation"
+    author: Manus AI
+    status: in_review
+    priority: P1
+    path: active/cedrlang-grimoire-a2a/
+    reviewers:
+      - id: Manus AI
+        role: author-executor
+        status: posted
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: in_review
+      - id: google-labs-jules
+        role: non-author implementation reviewer
+        status: requested
+    related_issues: [117, 175, 182, 274]
+    related_prs: [126, 154, 177, 196, 208, 218, 228, 275]
+    related_branches: [feature/cedrlang-grimoire-a2a]
+    gates_required: [repo-gate, termux-smoke]
+
   - id: actions-refinements
     title: "Issue #192 action-integration refinements"
     author: Manus AI

@@ -67,7 +67,7 @@ jobs:
           {
             echo '## Context relationship historical backfill'
             echo
-            echo 'Resume only when `history_window.next_start_page` is non-null.'
+            echo "Resume only when \`history_window.next_start_page\` is non-null."
             echo
             echo '```json'
             cat workspace/llm_map/context_relationships/build-summary.json

@@ -35,7 +35,7 @@ jobs:
 
       - name: Explain dry-run mode
         if: ${{ inputs.dry_run }}
-        run: echo "Dry run requested: the GitHub Wiki was not modified."
+        run: 'echo "Dry run requested: the GitHub Wiki was not modified."'
 
       - name: Reject a non-default branch publish request
         if: ${{ github.event_name == 'workflow_dispatch' && !inputs.dry_run && github.ref_name != github.event.repository.default_branch }}

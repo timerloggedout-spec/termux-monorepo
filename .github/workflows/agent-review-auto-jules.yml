@@ -157,13 +157,13 @@ jobs:
           if [ -f "$CTX_FILE" ]; then
             echo "Loaded prior context_key file"
             cat "$CTX_FILE"
-            echo "has_prior=true" >> $GITHUB_OUTPUT
+            printf '%s\n' 'has_prior=true' >> "$GITHUB_OUTPUT"
             SID=$(python3 -c "import json; d=json.load(open('$CTX_FILE')); print(d.get('session_id',''))" 2>/dev/null || true)
-            echo "session_id=$SID" >> $GITHUB_OUTPUT
+            printf 'session_id=%s\n' "$SID" >> "$GITHUB_OUTPUT"
           else
             echo "No prior context for ${{ steps.meta.outputs.context_key }}"
-            echo "has_prior=false" >> $GITHUB_OUTPUT
-            echo "session_id=" >> $GITHUB_OUTPUT
+            printf '%s\n' 'has_prior=false' >> "$GITHUB_OUTPUT"
+            printf '%s\n' 'session_id=' >> "$GITHUB_OUTPUT"
             printf '%s\n' "{\"context_key\":\"${{ steps.meta.outputs.context_key }}\",\"created\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"continue_preferred\":true,\"session_id\":\"\"}" > "$CTX_FILE"
           fi
 

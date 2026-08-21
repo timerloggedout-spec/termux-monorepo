@@ -63,6 +63,12 @@ class ActionlintAdvisoryWorkflowTests(unittest.TestCase):
         self.assertIn("continue-on-error: true", self.workflow)
         self.assertIn("This B6 pilot is non-blocking.", self.workflow)
         self.assertIn("advisory; no auto-fix and no pull-request comments", self.workflow)
+        self.assertIn("set +e", self.workflow)
+        self.assertIn("outcome=findings", self.workflow)
+        self.assertIn("printf 'outcome=%s\\n' \"$outcome\" >> \"$GITHUB_OUTPUT\"", self.workflow)
+        self.assertIn("ACTIONLINT_OUTCOME: ${{ steps.lint.outputs.outcome || 'not-run' }}", self.workflow)
+        self.assertIn("| lint outcome | \\`${ACTIONLINT_OUTCOME}\\` |", self.workflow)
+        self.assertNotIn("infrastructure-error", self.workflow)
         for forbidden in (
             "gh pr comment",
             "github.rest.issues.createComment",

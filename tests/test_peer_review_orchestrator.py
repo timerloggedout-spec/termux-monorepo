@@ -19,7 +19,10 @@ class PeerReviewOrchestratorTests(unittest.TestCase):
         self.assertIn("['coderabbit', '@coderabbitai full review']", self.workflow)
         self.assertIn("['qodo', '/agentic_review']", self.workflow)
         self.assertIn("['devin', '/devin review']", self.workflow)
-        self.assertIn("coderabbit:trigger_review,qodo:trigger_review,devin:trigger_review", self.workflow)
+        self.assertIn(
+            "coderabbit:trigger_review,qodo:trigger_review,devin:trigger_review",
+            self.workflow,
+        )
 
     def test_operator_requests_are_sha_bound_and_idempotent(self) -> None:
         self.assertIn("<!-- operator-provider-review:v1 -->", self.workflow)
@@ -29,19 +32,41 @@ class PeerReviewOrchestratorTests(unittest.TestCase):
         self.assertIn("action: trigger_review", self.workflow)
         self.assertIn("review already requested for ${cycleId}", self.workflow)
 
-    def test_provider_command_acknowledgement_requires_authorized_current_cycle_comment(self) -> None:
-        self.assertIn("function supportedProviderRequest(comments, provider)", self.workflow)
-        self.assertIn("parseField(comment.body, 'cycle_id') === cycleId", self.workflow)
-        self.assertIn("Date.parse(comment.created_at || '') >= cycleStartedAt", self.workflow)
-        self.assertIn("executorLogins.has((comment.user?.login || '').toLowerCase())", self.workflow)
-        self.assertIn("providerCommandRequested", self.workflow)
+    def test_untrusted_marker_text_cannot_trigger_or_suppress_requests(self) -> None:
+        self.assertIn("const isAuthorizedOperatorComment = comment =>", self.workflow)
+        self.assertIn(
+            "authorizedAssociations.has(comment?.author_association)",
+            self.workflow,
+        )
+        self.assertIn(
+            "executorLogins.has((comment?.user?.login || '').toLowerCase())",
+            self.workflow,
+        )
+        self.assertIn("const isCurrentProviderRequest = (comment, provider = '')", self.workflow)
+        self.assertIn("parseField(comment.body, 'head_sha') === headSha", self.workflow)
+        self.assertIn("isCurrentProviderRequest(eventComment)", self.workflow)
+        self.assertIn(
+            "parseField(comment.body, 'provider').toLowerCase() === provider",
+            self.workflow,
+        )
+
+    def test_provider_completion_requires_current_sha_bound_evidence(self) -> None:
+        self.assertIn("Issue comments are not bound to a commit.", self.workflow)
+        self.assertIn("const reviewComment = evidence.reviewComments.find(item =>", self.workflow)
+        self.assertIn("item.commit_id === headSha", self.workflow)
+        self.assertIn("via: 'review_comment'", self.workflow)
+        self.assertNotIn("const sourceComments = [...evidence.comments", self.workflow)
 
     def test_policy_makes_user_escalation_exceptional_not_normal(self) -> None:
         self.assertIn("The user is **not** an execution fallback.", self.policy)
         self.assertIn("`/agentic_review`", self.policy)
         self.assertIn("`/devin review`", self.policy)
         self.assertIn("`@coderabbitai full review`", self.policy)
-        self.assertNotIn("other provider-only UI controls require the Termux OPERATOR lane", self.workflow)
+        self.assertIn("verifiable current-SHA association", self.policy)
+        self.assertNotIn(
+            "other provider-only UI controls require the Termux OPERATOR lane",
+            self.workflow,
+        )
 
 
 if __name__ == "__main__":

@@ -19,17 +19,19 @@ The repository has one operational device: the **BLU B160V Android Termux hub**.
 
 | Provider | Autonomous OPERATOR command | Completion evidence |
 |---|---|---|
-| CodeRabbit | `@coderabbitai full review` | Current-SHA substantive CodeRabbit review or provider check; cooldown notices are non-completing. |
-| Qodo | `/agentic_review` | Current-SHA substantive Qodo review/comment or provider check. |
-| Devin | `/devin review` | Current-SHA Devin review/comment or provider check. The OPERATOR identity must satisfy Devin’s linked-account write-permission prerequisite. |
+| CodeRabbit | `@coderabbitai full review` | A substantive review, inline review comment, or provider check with a verifiable current-SHA association; cooldown notices are non-completing. |
+| Qodo | `/agentic_review` | A substantive review, inline review comment, or provider check with a verifiable current-SHA association. |
+| Devin | `/devin review` | A substantive review, inline review comment, or provider check with a verifiable current-SHA association. The OPERATOR identity must satisfy Devin’s linked-account write-permission prerequisite. |
 
-Every request has an `<!-- operator-provider-review:v1 -->` marker containing the active cycle ID, head SHA, provider, and `trigger_review` action. The orchestrator posts at most one such command for each provider/cycle/SHA, so event retries remain idempotent. A provider request is acknowledgement only; `responses_collected` is the sole completion state.
+Every request has an `<!-- operator-provider-review:v1 -->` marker containing the active cycle ID, head SHA, provider, and `trigger_review` action. The orchestrator treats that marker as authoritative only when it was posted by an allowlisted OPERATOR executor with an authorized repository association and exact current-cycle fields; untrusted lookalike comments neither trigger nor suppress requests. The orchestrator posts at most one authorized command for each provider/cycle/SHA, so event retries remain idempotent. A provider request is acknowledgement only; `responses_collected` is the sole completion state.
+
+Issue comments do not carry a commit association and are therefore status-only. They can explain a provider state, but cannot complete a cycle. Completion evidence must be a current-SHA pull-request review, an inline review comment whose `commit_id` matches the live head SHA, or a provider check associated with that same SHA.
 
 ## CodeRabbit cooldown contract
 
 1. When CodeRabbit returns a review-limit/cooldown notice, the peer gate classifies it as `provider_cooldown`.
 2. The hourly continuous OPERATOR sweep waits for the stated interval and posts one marked `@coderabbitai full review` retry for that exact cooldown source.
-3. The gate accepts only current-SHA substantive provider evidence. Checkbox notices, acknowledgement notices, and cooldown notices do not release the peer gate.
+3. The gate accepts only current-SHA substantive provider evidence with a verifiable commit or check association. Checkbox notices, acknowledgement notices, unbound issue comments, and cooldown notices do not release the peer gate.
 4. Only `responses_collected` with `ready: true` may dispatch the verified second-pass workflow.
 
 ## Termux-only fallback contract
@@ -52,5 +54,5 @@ Keep browser profiles, cookies, session exports, device keys, MFA/2FA/2SV secret
 
 ## References
 
-[1]: https://docs.qodo.ai/code-review/use-qodo-in-prs/code-review "Qodo: How to run a code review"
-[2]: https://docs.devin.ai/work-with-devin/devin-review "Devin Review"
+- [Qodo: How to run a code review](https://docs.qodo.ai/code-review/use-qodo-in-prs/code-review)
+- [Devin Review](https://docs.devin.ai/work-with-devin/devin-review)

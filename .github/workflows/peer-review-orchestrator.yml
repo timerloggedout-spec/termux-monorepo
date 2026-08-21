@@ -115,21 +115,6 @@ jobs:
               return;
             }
 
-            const eventAuthor = context.payload.comment?.user || context.payload.review?.user || {};
-            const eventBody = context.payload.comment?.body || context.payload.review?.body || '';
-            const eventProvider = providerFor(eventAuthor);
-            const relevantEvent = context.eventName === 'pull_request_target' ||
-              Boolean(eventProvider) ||
-              eventBody.includes(operatorAckMarker) ||
-              eventBody.includes(operatorReviewMarker) ||
-              eventBody.includes(operatorProviderReviewMarker);
-            if (!relevantEvent) {
-              core.info(`Ignoring unrelated ${context.eventName} event on PR #${prNumber}`);
-              core.setOutput('skipped', 'true');
-              core.setOutput('state', 'unrelated_event');
-              return;
-            }
-
             const { data: pr } = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -146,13 +131,53 @@ jobs:
             const cycleId = `pr-${prNumber}-${headSha.slice(0, 12)}`;
             core.setOutput('cycle_id', cycleId);
             core.setOutput('head_sha', headSha);
+            const parseField = (body, name) =>
+              (body || '').match(new RegExp(`^${name}:\\s*(.+?)\\s*$`, 'm'))?.[1]?.trim() || '';
+            const authorizedAssociations = new Set(['OWNER', 'MEMBER', 'COLLABORATOR']);
+            const isAuthorizedOperatorComment = comment =>
+              authorizedAssociations.has(comment?.author_association) &&
+              executorLogins.has((comment?.user?.login || '').toLowerCase());
+            const isCurrentProviderRequest = (comment, provider = '') => {
+              const requestedProvider = parseField(comment?.body, 'provider').toLowerCase();
+              return comment?.body?.includes(operatorProviderReviewMarker) &&
+                isAuthorizedOperatorComment(comment) &&
+                parseField(comment.body, 'cycle_id') === cycleId &&
+                parseField(comment.body, 'head_sha') === headSha &&
+                parseField(comment.body, 'action').toLowerCase() === 'trigger_review' &&
+                allowedActions.has(`${requestedProvider}:trigger_review`) &&
+                (!provider || requestedProvider === provider);
+            };
+            const isCurrentOperatorAcknowledgement = comment => {
+              const provider = parseField(comment?.body, 'provider').toLowerCase();
+              const action = parseField(comment?.body, 'action').toLowerCase();
+              return comment?.body?.includes(operatorAckMarker) &&
+                isAuthorizedOperatorComment(comment) &&
+                parseField(comment.body, 'cycle_id') === cycleId &&
+                allowedActions.has(`${provider}:${action}`);
+            };
+            const isCurrentOperatorReviewRequest = comment =>
+              comment?.body?.includes(operatorReviewMarker) &&
+              isAuthorizedOperatorComment(comment) &&
+              parseField(comment.body, 'cycle_id') === cycleId &&
+              /request_kind:\s*(initial|cooldown_retry)\s*$/m.test(comment.body);
+            const eventComment = context.payload.comment || context.payload.review || {};
+            const eventProvider = providerFor(eventComment.user);
+            const relevantEvent = context.eventName === 'pull_request_target' ||
+              Boolean(eventProvider) ||
+              isCurrentOperatorAcknowledgement(eventComment) ||
+              isCurrentOperatorReviewRequest(eventComment) ||
+              isCurrentProviderRequest(eventComment);
+            if (!relevantEvent) {
+              core.info(`Ignoring unrelated ${context.eventName} event on PR #${prNumber}`);
+              core.setOutput('skipped', 'true');
+              core.setOutput('state', 'unrelated_event');
+              return;
+            }
 
             const stateMarker = '<!-- agent-peer-response-state:v2 -->';
             const initialComments = await github.paginate(github.rest.issues.listComments, {
               owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100,
             });
-            const parseField = (body, name) =>
-              (body || '').match(new RegExp(`^${name}:\\s*(.+?)\\s*$`, 'm'))?.[1]?.trim() || '';
             const existingCycle = initialComments.filter(comment =>
               statePublisherLogins.has((comment.user?.login || '').toLowerCase()) &&
               comment.body?.includes(stateMarker) &&
@@ -223,21 +248,15 @@ jobs:
             }
 
             function acknowledgedControls(comments, controls) {
-              const authorizedAssociations = new Set(['OWNER', 'MEMBER', 'COLLABORATOR']);
               const acknowledged = new Set();
               for (const comment of comments) {
-                if (!comment.body?.includes(operatorAckMarker)) continue;
-                if (!authorizedAssociations.has(comment.author_association)) continue;
-                if (!executorLogins.has((comment.user?.login || '').toLowerCase())) continue;
+                if (!isCurrentOperatorAcknowledgement(comment)) continue;
                 if (Date.parse(comment.created_at || '') < cycleStartedAt) continue;
                 const acknowledgement = {
-                  cycleId: parseField(comment.body, 'cycle_id'),
                   provider: parseField(comment.body, 'provider').toLowerCase(),
                   controlId: parseField(comment.body, 'control_id'),
                   action: parseField(comment.body, 'action').toLowerCase(),
                 };
-                if (acknowledgement.cycleId !== cycleId) continue;
-                if (!allowedActions.has(`${acknowledgement.provider}:${acknowledgement.action}`)) continue;
                 const control = controls.find(candidate =>
                   candidate.provider === acknowledgement.provider &&
                   candidate.checkboxId === acknowledgement.controlId
@@ -248,26 +267,15 @@ jobs:
             }
 
             function operatorReviewRequested(comments) {
-              const authorizedAssociations = new Set(['OWNER', 'MEMBER', 'COLLABORATOR']);
               return comments.some(comment =>
-                comment.body?.includes(operatorReviewMarker) &&
-                parseField(comment.body, 'cycle_id') === cycleId &&
-                /request_kind:\s*(initial|cooldown_retry)\s*$/m.test(comment.body) &&
-                authorizedAssociations.has(comment.author_association) &&
-                executorLogins.has((comment.user?.login || '').toLowerCase()) &&
+                isCurrentOperatorReviewRequest(comment) &&
                 Date.parse(comment.created_at || '') >= cycleStartedAt
               );
             }
 
             function supportedProviderRequest(comments, provider) {
-              const authorizedAssociations = new Set(['OWNER', 'MEMBER', 'COLLABORATOR']);
               return comments.some(comment =>
-                comment.body?.includes(operatorProviderReviewMarker) &&
-                parseField(comment.body, 'cycle_id') === cycleId &&
-                parseField(comment.body, 'provider').toLowerCase() === provider &&
-                parseField(comment.body, 'action').toLowerCase() === 'trigger_review' &&
-                authorizedAssociations.has(comment.author_association) &&
-                executorLogins.has((comment.user?.login || '').toLowerCase()) &&
+                isCurrentProviderRequest(comment, provider) &&
                 Date.parse(comment.created_at || '') >= cycleStartedAt
               );
             }
@@ -300,11 +308,15 @@ jobs:
 
             function deliveredProvider(provider, evidence) {
               const createdDuringCycle = item => Date.parse(item.created_at || item.submitted_at || '') >= cycleStartedAt;
-              const sourceComments = [...evidence.comments, ...evidence.reviewComments];
-              const comment = sourceComments.find(item =>
-                providerFor(item.user) === provider && createdDuringCycle(item) && !isNonReviewProviderNotice(item.body)
+              // Issue comments are not bound to a commit. They may describe an older
+              // head after a new push, so they are status-only and never completion evidence.
+              const reviewComment = evidence.reviewComments.find(item =>
+                providerFor(item.user) === provider &&
+                item.commit_id === headSha && createdDuringCycle(item) && !isNonReviewProviderNotice(item.body)
               );
-              if (comment) return { delivered: true, url: comment.html_url || comment.url || '', via: 'comment' };
+              if (reviewComment) {
+                return { delivered: true, url: reviewComment.html_url || reviewComment.url || '', via: 'review_comment' };
+              }
 
               const review = evidence.reviews.find(item =>
                 providerFor(item.user) === provider &&
@@ -523,6 +535,7 @@ jobs:
           HEAD_SHA: ${{ steps.collect.outputs.head_sha }}
           REQUIRED_PROVIDERS: ${{ vars.PEER_REQUIRED_PROVIDERS || 'coderabbit,qodo,devin' }}
           OPERATOR_ALLOWED_ACTIONS: ${{ vars.OPERATOR_ALLOWED_ACTIONS || 'coderabbit:trigger_review,qodo:trigger_review,devin:trigger_review' }}
+          OPERATOR_EXECUTOR_LOGINS: ${{ vars.OPERATOR_EXECUTOR_LOGINS || github.repository_owner }}
         with:
           github-token: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
           script: |
@@ -535,6 +548,11 @@ jobs:
               .split(',').map(value => value.trim().toLowerCase()).filter(Boolean);
             const allowed = new Set((process.env.OPERATOR_ALLOWED_ACTIONS || '')
               .split(',').map(value => value.trim().toLowerCase()).filter(Boolean));
+            const executorLogins = new Set((process.env.OPERATOR_EXECUTOR_LOGINS || '')
+              .split(',').map(value => value.trim().toLowerCase()).filter(Boolean));
+            const authorizedAssociations = new Set(['OWNER', 'MEMBER', 'COLLABORATOR']);
+            const parseField = (body, name) =>
+              (body || '').match(new RegExp(`^${name}:\\s*(.+?)\\s*$`, 'm'))?.[1]?.trim() || '';
             const commands = new Map([
               ['coderabbit', '@coderabbitai full review'],
               ['qodo', '/agentic_review'],
@@ -555,10 +573,12 @@ jobs:
               }
               const requested = comments.some(comment =>
                 comment.body?.includes(marker) &&
-                comment.body.includes(`cycle_id: ${cycleId}`) &&
-                comment.body.includes(`head_sha: ${headSha}`) &&
-                comment.body.includes(`provider: ${provider}`) &&
-                comment.body.includes('action: trigger_review')
+                authorizedAssociations.has(comment.author_association) &&
+                executorLogins.has((comment.user?.login || '').toLowerCase()) &&
+                parseField(comment.body, 'cycle_id') === cycleId &&
+                parseField(comment.body, 'head_sha') === headSha &&
+                parseField(comment.body, 'provider').toLowerCase() === provider &&
+                parseField(comment.body, 'action').toLowerCase() === 'trigger_review'
               );
               if (requested) {
                 core.info(`${provider}: review already requested for ${cycleId}`);

@@ -205,3 +205,21 @@ proposals:
     related_branches:
       - docs/kimi-cloud-offload-evaluation
     gates_required: [repo-gate]
+
+  - id: linguist-contact-projections
+    title: "Linguist human and machine contact-document projections"
+    author: Manus AI
+    status: executing
+    priority: P1
+    path: active/linguist-contact-projections/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: in_review
+      - id: Manus AI
+        role: author-executor
+        status: executing
+    related_issues: [117, 175, 274]
+    related_prs: [154, 177, 275]
+    related_branches: [feature/linguist-contact-projections]
+    gates_required: [repo-gate, termux-smoke]

@@ -85,6 +85,51 @@ def test_mapper_rejects_duplicate_symbol_handles():
         )
 
 
+def test_codec_encodes_multi_word_mapper_sources_deterministically():
+    mapper = GrimoireMapper(
+        mapper_id="phrase-grimoire",
+        version="1.0.0",
+        forward={"inspect system": "§IS§", "status": "§T§", "unit-test": "§U§"},
+    )
+    record = CanonicalRecord(
+        schema_version="cedrlang.cir/v1",
+        document_id="phrase-record",
+        purpose="inspect system status",
+        directives=[],
+        constraints=[],
+        inputs=[],
+        outputs=[],
+        provenance="unit-test",
+    )
+
+    encoded, report = encode_record(record, mapper, minimum_coverage=1.0)
+
+    assert encoded["record"]["purpose"] == [{"symbol": "§IS§"}, {"text": " "}, {"symbol": "§T§"}]
+    assert report.coverage_ratio == 1.0
+    assert decode_record(encoded, mapper) == record
+
+
+def test_codec_retains_mixed_case_tokens_when_mapper_cannot_reconstruct_case():
+    mapper = build_mapper()
+    record = CanonicalRecord(
+        schema_version="cedrlang.cir/v1",
+        document_id="mixed-case-record",
+        purpose="Inspect system status",
+        directives=[],
+        constraints=[],
+        inputs=[],
+        outputs=[],
+        provenance="unit-test",
+    )
+
+    encoded, _ = encode_record(record, mapper)
+    decoded = decode_record(encoded, mapper)
+
+    assert encoded["record"]["purpose"][0] == {"text": "Inspect "}
+    assert decoded == record
+    assert decoded.digest() == encoded["canonical_digest"]
+
+
 def test_codec_is_lossless_deterministic_and_measures_eligible_coverage():
     mapper = build_mapper()
     record = build_record()
@@ -169,7 +214,13 @@ def test_a2a_envelope_validates_digest_ttl_state_and_replay_behavior():
     assert classify_replay({envelope.message_id: "different"}, envelope) == "conflict"
 
     with pytest.raises(A2AValidationError):
+        validate_a2a_envelope(envelope, mapper, now=now + timedelta(seconds=60))
+
+    with pytest.raises(A2AValidationError):
         validate_a2a_envelope(envelope, mapper, now=now + timedelta(seconds=61))
+
+    with pytest.raises(A2AValidationError):
+        validate_a2a_envelope(envelope, mapper, now=now - timedelta(seconds=1))
 
     acknowledged = envelope.transition("ACK", acknowledgement_id="ack-001")
     assert acknowledged.state == "ACK"
@@ -195,6 +246,27 @@ def test_a2a_envelope_serialization_rejects_unknown_missing_and_malformed_payloa
         issued_at=datetime(2026, 8, 20, tzinfo=timezone.utc).isoformat(),
         ttl_seconds=60,
     )
+
+    source_payload = deepcopy(encoded)
+    isolated = A2AEnvelope(
+        protocol_version="cedrlang.a2a/v1",
+        message_id=str(uuid4()),
+        sender_role="linguist",
+        recipient_role="reviewer",
+        correlation_id=str(uuid4()),
+        intent="instruction-transfer",
+        mapper_id=mapper.mapper_id,
+        mapper_version=mapper.version,
+        payload=source_payload,
+        canonical_digest=record.digest(),
+        issued_at=datetime(2026, 8, 20, tzinfo=timezone.utc).isoformat(),
+        ttl_seconds=60,
+    )
+    source_payload["record"]["purpose"][0] = {"text": "mutated source"}
+    detached = isolated.to_dict()
+    detached["payload"]["record"]["purpose"][0] = {"text": "mutated serialization"}
+    assert isolated.to_dict()["payload"] == encoded
+    assert isolated.transition("ACK", acknowledgement_id="ack-001").to_dict()["payload"] == encoded
 
     serialized = envelope.to_dict()
     assert A2AEnvelope.from_dict(serialized) == envelope

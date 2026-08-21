@@ -7,13 +7,15 @@ contains only synthetic test mappings.
 
 from __future__ import annotations
 
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 import hashlib
 import json
 import re
+from types import MappingProxyType
 import unicodedata
-from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 from uuid import UUID
 
 
@@ -117,6 +119,35 @@ def _tokens(text: str) -> Tuple[str, ...]:
     return tuple(match.group(0).lower() for match in TOKEN_PATTERN.finditer(text))
 
 
+def _freeze_json(value: Any) -> Any:
+    """Return a deeply immutable representation of a JSON-native value."""
+    if isinstance(value, Mapping):
+        return MappingProxyType({key: _freeze_json(item) for key, item in value.items()})
+    if isinstance(value, list):
+        return tuple(_freeze_json(item) for item in value)
+    return value
+
+
+def _thaw_json(value: Any) -> Any:
+    """Return a detached, mutable JSON-compatible copy of a frozen snapshot."""
+    if isinstance(value, Mapping):
+        return {key: _thaw_json(item) for key, item in value.items()}
+    if isinstance(value, tuple):
+        return [_thaw_json(item) for item in value]
+    return value
+
+
+def _snapshot_json_object(value: Mapping[str, Any]) -> Mapping[str, Any]:
+    """Canonicalize, validate, and deeply freeze an object for envelope storage."""
+    try:
+        snapshot = json.loads(_canonical_json(_thaw_json(value)))
+    except (TypeError, ValueError) as exc:
+        raise A2AValidationError("payload must be JSON-serializable") from exc
+    if not isinstance(snapshot, dict):
+        raise A2AValidationError("payload must be an encoded record object")
+    return _freeze_json(snapshot)
+
+
 @dataclass(frozen=True)
 class CanonicalRecord:
     """The authoritative normalized form for a CEDRlang instruction record."""
@@ -192,8 +223,10 @@ class GrimoireMapper:
         for source, handle in self.forward.items():
             source_key = _normalize_text(source).lower()
             handle_value = _normalize_text(handle)
-            if not source_key or not HANDLE_PATTERN.fullmatch(handle_value):
-                raise MapperValidationError("mapper entries require a token and a well-formed symbolic handle")
+            if not source_key or not re.fullmatch(r"[\w-]+(?:[ \t]+[\w-]+)*", source_key, re.UNICODE):
+                raise MapperValidationError("mapper sources must be normalized tokens or whitespace-separated phrases")
+            if not HANDLE_PATTERN.fullmatch(handle_value):
+                raise MapperValidationError("mapper entries require a well-formed symbolic handle")
             if source_key in normalized_forward:
                 raise MapperValidationError("mapper contains duplicate normalized source tokens")
             if handle_value in normalized_reverse:
@@ -239,30 +272,37 @@ class CoverageReport:
 
 
 def _encode_text(text: str, mapper: GrimoireMapper, eligible: bool) -> Tuple[List[Dict[str, str]], int, int]:
+    """Encode exact-case mapper tokens or phrases while retaining non-lossless literals."""
+    if not eligible:
+        return [{"text": text}], 0, 0
+
+    source_keys = sorted(mapper.forward, key=lambda source: (-len(_tokens(source)), -len(source), source))
+    phrase_pattern = re.compile(
+        r"(?<![\w-])(?:" + "|".join(re.escape(source) for source in source_keys) + r")(?![\w-])",
+        re.UNICODE,
+    )
     segments: List[Dict[str, str]] = []
     cursor = 0
     replaced = 0
-    total = 0
-    for match in TOKEN_PATTERN.finditer(text):
+    for match in phrase_pattern.finditer(text):
         if match.start() > cursor:
             segments.append({"text": text[cursor:match.start()]})
-        token = match.group(0)
-        normalized = token.lower()
-        if eligible:
-            total += 1
-        if eligible and normalized in mapper.forward:
-            segments.append({"symbol": mapper.forward[normalized]})
-            replaced += 1
+        phrase = match.group(0)
+        # A lower-cased mapper key cannot reconstruct mixed-case source text. Retain
+        # that literal rather than silently changing the canonical digest on decode.
+        if phrase in mapper.forward:
+            segments.append({"symbol": mapper.forward[phrase]})
+            replaced += len(_tokens(phrase))
         else:
-            segments.append({"text": token})
+            segments.append({"text": phrase})
         cursor = match.end()
     if cursor < len(text) or not segments:
         segments.append({"text": text[cursor:]})
-    return segments, replaced, total
+    return segments, replaced, len(_tokens(text))
 
 
 def _decode_text(segments: Any, mapper: GrimoireMapper) -> str:
-    if not isinstance(segments, list):
+    if not isinstance(segments, Sequence) or isinstance(segments, (str, bytes)):
         raise IntegrityError("encoded text must be a list of literal or symbolic segments")
     decoded: List[str] = []
     for segment in segments:
@@ -369,7 +409,7 @@ def decode_record(encoded: Mapping[str, Any], mapper: GrimoireMapper) -> Canonic
         if field_name in {"purpose", "provenance"}:
             decoded[field_name] = _decode_text(raw[field_name], mapper)
         else:
-            if not isinstance(raw[field_name], list):
+            if not isinstance(raw[field_name], Sequence) or isinstance(raw[field_name], (str, bytes)):
                 raise IntegrityError(f"encoded {field_name} must be a list")
             decoded[field_name] = [_decode_text(item, mapper) for item in raw[field_name]]
     record = CanonicalRecord.from_dict(decoded)
@@ -442,12 +482,11 @@ class A2AEnvelope:
             raise A2AValidationError("ACK envelopes require acknowledgement_id")
         if self.state == "NACK" and not self.error_code:
             raise A2AValidationError("NACK envelopes require error_code")
-        try:
-            payload_bytes = len(_canonical_json(dict(self.payload)).encode("utf-8"))
-        except (TypeError, ValueError) as exc:
-            raise A2AValidationError("payload must be JSON-serializable") from exc
+        payload_snapshot = _snapshot_json_object(self.payload)
+        payload_bytes = len(_canonical_json(_thaw_json(payload_snapshot)).encode("utf-8"))
         if payload_bytes > MAX_PAYLOAD_BYTES:
             raise A2AValidationError("payload exceeds the local A2A size limit")
+        object.__setattr__(self, "payload", payload_snapshot)
         _parse_utc(self.issued_at)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -461,7 +500,7 @@ class A2AEnvelope:
             "intent": self.intent,
             "mapper_id": self.mapper_id,
             "mapper_version": self.mapper_version,
-            "payload": dict(self.payload),
+            "payload": _thaw_json(self.payload),
             "canonical_digest": self.canonical_digest,
             "issued_at": self.issued_at,
             "ttl_seconds": self.ttl_seconds,
@@ -521,7 +560,9 @@ def validate_a2a_envelope(
         raise A2AValidationError("validation time must include a UTC offset")
     issued = _parse_utc(envelope.issued_at)
     now_utc = now.astimezone(timezone.utc)
-    if now_utc > issued and (now_utc - issued).total_seconds() > envelope.ttl_seconds:
+    if now_utc < issued:
+        raise A2AValidationError("envelope issued_at is in the future")
+    if (now_utc - issued).total_seconds() >= envelope.ttl_seconds:
         raise A2AValidationError("envelope TTL has expired")
     record = decode_record(envelope.payload, mapper)
     if record.digest() != envelope.canonical_digest:

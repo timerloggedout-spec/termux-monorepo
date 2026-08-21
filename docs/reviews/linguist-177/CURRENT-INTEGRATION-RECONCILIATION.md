@@ -12,9 +12,9 @@
 |---|---|---:|---|
 | [#154](https://github.com/timerloggedout-spec/termux-monorepo/pull/154) | Open; `DIRTY` and `CONFLICTING` | 165 files; 10,678 additions; 97 commits | Keep as historical/review context only. Its CEDRlang, Grimoire, and agent-contact content is inseparable from unrelated drift. |
 | [#177](https://github.com/timerloggedout-spec/termux-monorepo/pull/177) | Open; `DIRTY` and `CONFLICTING` | 161 files; 10,718 additions; 100 commits | Keep as the principal evidence root. Its live workflow and repository changes are not an integration source. |
-| [#275](https://github.com/timerloggedout-spec/termux-monorepo/pull/275) | Open; rebased on `master-staging`; mergeable | 20 files; 1,651 additions; 5 focused commits | **Selected integration candidate.** It contains the deterministic codec, local A2A validation, bounded review evidence, and explicit non-goals. |
+| [#275](https://github.com/timerloggedout-spec/termux-monorepo/pull/275) | Open; non-draft; requested review changes pending | Bounded successor scope; current head is under review remediation | **Selected integration candidate.** It contains the deterministic codec, local A2A validation, bounded review evidence, and explicit non-goals; no integration claim is made until requested findings are resolved and review is accepted. |
 
-The successor branch was refreshed onto current `master-staging` commit `21ac9e3`, and its focused translator/protocol suite passes 18 tests with clean selected lint. The current GitHub registry-validation check remains blocked by three inherited orphan proposal directories: `kimi-cloud-offload`, `icm-architect-integration`, and `actions-refinements`. That blocker is unrelated to the successor diff and must not be hidden or waived by a Linguist change.
+The successor branch was refreshed onto current `master-staging` commit `21ac9e3`; its pre-review translator/protocol suite passed 18 tests with clean selected lint. PR #275 currently reports a failing external `ci/gitlab/gitlab.com` status and requested CodeRabbit changes. The external status is recorded for visibility rather than classified as repository-owned validation, and it does not waive any local or repository gate. The inherited syntax and registry blockers are now isolated in PRs #288 and #290 respectively; until those focused remediations are independently integrated, they remain baseline dependencies outside the successor diff.
 
 ## Bounded Relationship Context
 
@@ -36,7 +36,7 @@ A later proposal, not PR #275, must decide private-mapper custody, canonical hum
 
 ## Required Review Path
 
-The selected PR is made ready for review after this reconciliation and refreshed branch validation. Reviewers should assess the narrow implementation, the non-executing boundary, the exact coverage definition, the current graph bounds, and the inherited registry failure. They should not treat a review of #275 as approval for the unresolved custody, migration, or remote-transport decisions.
+The selected PR is non-draft and has requested CodeRabbit changes under resolution. Reviewers should assess the narrow implementation, the non-executing boundary, exact phrase/token coverage and lossless casing behavior, envelope isolation and time validation, the current graph bounds, the observed external GitLab status, and the separately scoped baseline remediations. They should not treat a review of #275 as approval for the unresolved custody, migration, or remote-transport decisions.
 
 ## References
 

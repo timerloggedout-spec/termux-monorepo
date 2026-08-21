@@ -32,4 +32,4 @@ The decision is based on the bounded graph rooted at PR #177, all-state title in
 
 ## Pending Approval Boundary
 
-This record governs only the deterministic local foundation. It does **not** authorize a private mapper service, a public obfuscation claim, authenticated transport, CEDARscript/CID integration, external installation, or a migration of agent-contact documents. `RESEARCH.md` records the outstanding custody, canonical-source, transport, coverage, baseline-remediation, review, and vote requirements. The proposal remains `draft` until those decisions and a non-author review are recorded.
+This record governs only the deterministic local foundation. It does **not** authorize a private mapper service, a public obfuscation claim, authenticated transport, CEDARscript/CID integration, external installation, or a migration of agent-contact documents. `RESEARCH.md` records the outstanding custody, canonical-source, transport, coverage, baseline-remediation, review, and vote requirements. The proposal is `in_review`; it cannot advance to `accepted` until requested findings are resolved and the required non-author review and acceptance evidence are recorded.

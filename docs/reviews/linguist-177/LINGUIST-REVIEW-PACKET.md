@@ -12,7 +12,7 @@
 
 The Linguist workstream contains a useful performance-oriented public document translator, but its present implementation does not substantiate the requested internal-mapper, measured-70%, clean-transmission, or Agent2Agent protocol claims. The current regex codec, tracked CEDARscript pointer index, and public Grimoire diction sources represent separate concerns that have drifted into one role. The two open focal pull requests are both broad, dirty stacks and are unsuitable targets for incremental repair. The evidence-supported disposition is to preserve only isolated value in a clean, governed successor branch rather than amend or force-merge those stacks. [1] [2]
 
-A bounded implementation has been added on the successor branch. It introduces a deterministic, non-executing CIR codec, bijective synthetic mapper contract, integrity digest, measurable eligible-token coverage report, and local A2A envelope validator. It deliberately excludes private mapper contents, CEDARscript/CID execution, public transformed postings, workflow changes, external installation, and any migration of root agent contact files. The work remains **conditional** because the repository gate and full proposal-registry validator have inherited baseline blockers, and proposal acceptance/non-author review remain pending.
+A bounded implementation has been added on the successor branch. It introduces a deterministic, non-executing CIR codec, bijective synthetic mapper contract, integrity digest, measurable eligible-token coverage report, and local A2A envelope validator. It deliberately excludes private mapper contents, CEDARscript/CID execution, public transformed postings, workflow changes, external installation, and any migration of root agent contact files. The work remains **conditional**: PR #275 is non-draft but has requested review changes pending resolution, it reports a failing external GitLab status, and proposal acceptance/non-author review remain pending. The external status is preserved as observed context, not treated as a repository-owned gate or a waiver. The former syntax and registry baseline blockers are now isolated in PRs #288 and #290, pending their independent integration.
 
 | Disposition | Rationale |
 |---|---|
@@ -63,7 +63,7 @@ The Mermaid source for both the generated raw graph and the concise evidence sum
 
 ## Successor Implementation
 
-The new work is registered as proposal `cedrlang-grimoire-a2a` and its first work item, `LGA-01`. The proposal remains **draft** pending required non-author review and formal acceptance; the feature branch is a Tier-0 implementation/research artifact, not a merge request or an institutional acceptance claim.
+The new work is registered as proposal `cedrlang-grimoire-a2a` and its first work item, `LGA-01`. The proposal is **in review** pending resolution of requested findings, required non-author review, and formal acceptance; the feature branch is a Tier-0 implementation/research artifact, not an institutional acceptance claim.
 
 | Delivered component | What it does | What it deliberately does not do |
 |---|---|---|
@@ -76,15 +76,16 @@ The new work is registered as proposal `cedrlang-grimoire-a2a` and its first wor
 
 | Validation | Result | Notes |
 |---|---|---|
-| `python3 -m pytest tests/test_cedrlang.py tests/test_cedrlang_protocol.py -q` | **Pass: 18 tests** | 11 historical translator tests plus 7 new foundation tests passed. |
+| `python3 -m pytest tests/test_cedrlang.py tests/test_cedrlang_protocol.py -q` | **Pass: 20 tests** | 11 historical translator tests plus 9 foundation/regression tests passed, including phrase matching, mixed-case preservation, immutable payload snapshots, future-time rejection, and exact-TTL expiry. |
 | `python3 -m compileall -q workspace/compression_sandbox/cedrlang/protocol.py tests/test_cedrlang_protocol.py` | **Pass** | New implementation and tests compile. |
 | `ruff check --select F,E9 …` | **Pass** | Compatibility-focused linting is clean. The repository’s global Ruff defaults suggest modern typing rewrites that are not adopted because the documented Python floor is 3.9. |
 | Dependency boundary scan | **Pass** | No execution, network, CID, or CEDARscript import/invocation pattern exists in `protocol.py`. |
 | Scoped credential-signature scan | **Pass** | No credential signatures or private mapper contents were found in new implementation/docs/evidence files. |
 | `git diff --cached --check` | **Pass** | No staged whitespace error remains. |
 | `python3 scripts/ci/termux_smoke.py` | **Pass** | Smoke gate passed on Linux with Python 3.12.3; Termux-specific checks were reported as non-blocking environment notes. |
-| `python3 scripts/ci/repo_gate.py` | **Blocked by inherited failure** | Fails on pre-existing `archwiz/linear_sync.py:237` syntax, outside the scoped diff. The gate compares to `origin/master`, so it also sees inherited `master-staging` divergence. |
-| `python3 scripts/proposals/validate_registry.py` | **Blocked by inherited failure** | Full YAML validation reports existing orphan active directories: `actions-refinements`, `icm-architect-integration`, and `kimi-cloud-offload`; none are part of the staged change. |
+| `python3 scripts/ci/repo_gate.py` | **Baseline dependency remediated separately** | The inherited `archwiz/linear_sync.py:237` syntax is repaired in focused PR #288, which passes the index-based gate; it remains a dependency until independently integrated. |
+| `python3 scripts/proposals/validate_registry.py` | **Baseline dependency remediated separately** | The orphan active directories are registered in focused PR #290, where validation reports 11 proposals consistent with disk; it remains a dependency until independently integrated. |
+| `ci/gitlab/gitlab.com` on PR #275 | **External status failure observed** | The current GitLab status is failing. It is recorded for reviewer visibility, is not repository-owned evidence, and does not waive local or repository gates. |
 
 ## Unposted Draft Review for PR #177
 

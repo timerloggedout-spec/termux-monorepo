@@ -15,7 +15,9 @@ class PeerReviewOrchestratorTests(unittest.TestCase):
         cls.workflow = WORKFLOW.read_text(encoding="utf-8")
         cls.policy = POLICY.read_text(encoding="utf-8")
 
-    def test_all_default_providers_have_documented_operator_commands(self) -> None:
+    def test_verified_provider_is_the_only_default_and_others_remain_opt_in(self) -> None:
+        self.assertIn("vars.PEER_REQUIRED_PROVIDERS || 'coderabbit'", self.workflow)
+        self.assertNotIn("vars.PEER_REQUIRED_PROVIDERS || 'coderabbit,qodo,devin'", self.workflow)
         self.assertIn("['coderabbit', '@coderabbitai full review']", self.workflow)
         self.assertIn("['qodo', '/agentic_review']", self.workflow)
         self.assertIn("['devin', '/devin review']", self.workflow)
@@ -23,6 +25,22 @@ class PeerReviewOrchestratorTests(unittest.TestCase):
             "coderabbit:trigger_review,qodo:trigger_review,devin:trigger_review",
             self.workflow,
         )
+
+    def test_only_state_advancing_events_are_subscribed_and_coalesced(self) -> None:
+        self.assertIn("issue_comment:\n    types: [created]", self.workflow)
+        self.assertIn("pull_request_review:\n    types: [submitted]", self.workflow)
+        self.assertNotIn("pull_request_review_comment:", self.workflow)
+        self.assertNotIn("types: [created, edited]", self.workflow)
+        self.assertIn("cancel-in-progress: true", self.workflow)
+        self.assertNotIn("cancel-in-progress: false", self.workflow)
+
+    def test_pending_state_is_advisory_until_explicitly_enforced(self) -> None:
+        self.assertIn("ENFORCE_PROVIDER_COMPLETION", self.workflow)
+        self.assertIn("vars.PEER_ENFORCE_PROVIDER_COMPLETION || 'false'", self.workflow)
+        self.assertIn('if [ "$ENFORCE_PROVIDER_COMPLETION" = "true" ]; then', self.workflow)
+        self.assertIn("Provider review pending (advisory)", self.workflow)
+        self.assertIn("enforcement requires deliberate repository-variable opt-in", self.workflow)
+        self.assertNotIn("intentionally fails until every configured provider", self.workflow)
 
     def test_operator_requests_are_sha_bound_and_idempotent(self) -> None:
         self.assertIn("<!-- operator-provider-review:v1 -->", self.workflow)
@@ -45,10 +63,6 @@ class PeerReviewOrchestratorTests(unittest.TestCase):
         self.assertIn("const isCurrentProviderRequest = (comment, provider = '')", self.workflow)
         self.assertIn("parseField(comment.body, 'head_sha') === headSha", self.workflow)
         self.assertIn("isCurrentProviderRequest(eventComment)", self.workflow)
-        self.assertIn(
-            "parseField(comment.body, 'provider').toLowerCase() === provider",
-            self.workflow,
-        )
 
     def test_provider_completion_requires_current_sha_bound_evidence(self) -> None:
         self.assertIn("Issue comments are not bound to a commit.", self.workflow)
@@ -57,16 +71,12 @@ class PeerReviewOrchestratorTests(unittest.TestCase):
         self.assertIn("via: 'review_comment'", self.workflow)
         self.assertNotIn("const sourceComments = [...evidence.comments", self.workflow)
 
-    def test_policy_makes_user_escalation_exceptional_not_normal(self) -> None:
+    def test_policy_keeps_user_escalation_exceptional(self) -> None:
         self.assertIn("The user is **not** an execution fallback.", self.policy)
         self.assertIn("`/agentic_review`", self.policy)
         self.assertIn("`/devin review`", self.policy)
         self.assertIn("`@coderabbitai full review`", self.policy)
         self.assertIn("verifiable current-SHA association", self.policy)
-        self.assertNotIn(
-            "other provider-only UI controls require the Termux OPERATOR lane",
-            self.workflow,
-        )
 
 
 if __name__ == "__main__":

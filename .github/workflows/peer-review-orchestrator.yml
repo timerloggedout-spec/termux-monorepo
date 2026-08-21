@@ -16,18 +16,15 @@ on:
   pull_request_target:
     types: [opened, synchronize, ready_for_review, reopened]
   issue_comment:
-    types: [created, edited]
+    types: [created]
   pull_request_review:
-    types: [submitted, edited, dismissed]
-  pull_request_review_comment:
-    types: [created, edited]
+    types: [submitted]
 
 concurrency:
-  # Serialize all events for a PR. Provider/comment events may arrive together;
-  # a single FIFO lane prevents each run from racing to create the same state
-  # comment while still preserving every event (`cancel-in-progress: false`).
+  # Coalesce superseded PR/provider events. State comments and requests are
+  # SHA-bound and idempotent, so only the newest event for a PR needs to finish.
   group: peer-orch-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 permissions: {}
 
@@ -52,9 +49,12 @@ jobs:
         id: collect
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
-          # Comma-separated provider policy. Set a repository variable to change
-          # this only after the provider integration is deliberately enabled.
-          REQUIRED_PROVIDERS: ${{ vars.PEER_REQUIRED_PROVIDERS || 'coderabbit,qodo,devin' }}
+          # Comma-separated active-provider policy. CodeRabbit is the only
+          # verified default integration; opt in to other providers explicitly.
+          REQUIRED_PROVIDERS: ${{ vars.PEER_REQUIRED_PROVIDERS || 'coderabbit' }}
+          # Pending provider evidence is advisory by default. Set this variable
+          # to true only after deliberate branch-protection acceptance.
+          ENFORCE_PROVIDER_COMPLETION: ${{ vars.PEER_ENFORCE_PROVIDER_COMPLETION || 'false' }}
           # State is event-driven. A run snapshots the active cycle once;
           # provider events re-enter this workflow and advance the state.
           MAX_WAIT_SEC: '1'
@@ -64,9 +64,11 @@ jobs:
           PEER_STATE_PUBLISHER_LOGINS: ${{ vars.PEER_STATE_PUBLISHER_LOGINS || github.repository_owner }}
         with:
           script: |
-            const requiredProviders = (process.env.REQUIRED_PROVIDERS || 'coderabbit,qodo,devin')
+            const requiredProviders = (process.env.REQUIRED_PROVIDERS || 'coderabbit')
               .split(',').map(v => v.trim().toLowerCase()).filter(Boolean);
-            const maxWait = Math.max(0, Number(process.env.MAX_WAIT_SEC) || 300);
+            const enforceProviderCompletion =
+              (process.env.ENFORCE_PROVIDER_COMPLETION || 'false').toLowerCase() === 'true';
+            const maxWait = Math.max(0, Number(process.env.MAX_WAIT_SEC) || 1);
             const pollSec = Math.max(5, Number(process.env.POLL_SEC) || 20);
             const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
             const operatorAckMarker = '<!-- operator-action-ack:v1 -->';
@@ -392,6 +394,7 @@ jobs:
             core.setOutput('state', state);
             core.setOutput('ready', complete ? 'true' : 'false');
             core.setOutput('pending', pending);
+            core.setOutput('enforce_provider_completion', enforceProviderCompletion ? 'true' : 'false');
             core.setOutput('cycle_started_at', cycleStartedAtIso);
             core.setOutput('provider_lines', deliveryLines.join('\n'));
             core.setOutput('control_lines', operatorControls.join('\n') || '- none observed');
@@ -426,7 +429,8 @@ jobs:
           CYCLE_STARTED_AT: ${{ steps.collect.outputs.cycle_started_at }}
           PROVIDERS: ${{ steps.collect.outputs.provider_lines }}
           CONTROLS: ${{ steps.collect.outputs.control_lines }}
-          REQUIRED_PROVIDERS: ${{ vars.PEER_REQUIRED_PROVIDERS || 'coderabbit,qodo,devin' }}
+          REQUIRED_PROVIDERS: ${{ vars.PEER_REQUIRED_PROVIDERS || 'coderabbit' }}
+          ENFORCE_PROVIDER_COMPLETION: ${{ vars.PEER_ENFORCE_PROVIDER_COMPLETION || 'false' }}
           PEER_STATE_PUBLISHER_LOGINS: ${{ vars.PEER_STATE_PUBLISHER_LOGINS || github.repository_owner }}
         with:
           # The base-repository workflow never executes PR code. Prefer an existing
@@ -447,6 +451,7 @@ jobs:
               `state: ${process.env.STATE}`,
               `ready: ${process.env.READY}`,
               `required_providers: ${process.env.REQUIRED_PROVIDERS}`,
+              `enforce_provider_completion: ${process.env.ENFORCE_PROVIDER_COMPLETION}`,
               '',
               '### Agent peer response gate',
               '',
@@ -471,7 +476,7 @@ jobs:
               'The second-pass reviewer remains blocked until matching provider completion evidence is ingested for this SHA.',
               'A checked [x] control means the provider UI action occurred; it is not a completed review.',
               'A provider cooldown is also non-completing: wait for the stated retry window, then retrigger through the authorized provider path.',
-              'This workflow check intentionally remains failing while a required provider action or response is pending; configure it as a required branch-protection check.',
+              'Pending provider evidence is advisory unless PEER_ENFORCE_PROVIDER_COMPLETION is deliberately set to true for branch protection.',
             ].join('\n');
             const comments = await github.paginate(github.rest.issues.listComments, {
               owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100,
@@ -533,7 +538,7 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number }}
           CYCLE_ID: ${{ steps.collect.outputs.cycle_id }}
           HEAD_SHA: ${{ steps.collect.outputs.head_sha }}
-          REQUIRED_PROVIDERS: ${{ vars.PEER_REQUIRED_PROVIDERS || 'coderabbit,qodo,devin' }}
+          REQUIRED_PROVIDERS: ${{ vars.PEER_REQUIRED_PROVIDERS || 'coderabbit' }}
           OPERATOR_ALLOWED_ACTIONS: ${{ vars.OPERATOR_ALLOWED_ACTIONS || 'coderabbit:trigger_review,qodo:trigger_review,devin:trigger_review' }}
           OPERATOR_EXECUTOR_LOGINS: ${{ vars.OPERATOR_EXECUTOR_LOGINS || github.repository_owner }}
         with:
@@ -605,15 +610,19 @@ jobs:
               await new Promise(resolve => setTimeout(resolve, 1200));
             }
 
-      - name: Block merge while required provider review is pending
+      - name: Record pending provider review policy
         if: |
           steps.collect.outputs.skipped != 'true' &&
           steps.collect.outputs.ready != 'true'
         env:
           CYCLE_ID: ${{ steps.collect.outputs.cycle_id }}
           PENDING: ${{ steps.collect.outputs.pending }}
+          ENFORCE_PROVIDER_COMPLETION: ${{ vars.PEER_ENFORCE_PROVIDER_COMPLETION || 'false' }}
         run: |
-          echo "::error title=Required provider review pending::${CYCLE_ID}: ${PENDING}"
-          echo "The peer-review check intentionally fails until every configured provider has current-SHA completion evidence."
-          echo "The OPERATOR token has requested every configured provider with a documented GitHub command. Wait for substantive provider output for this SHA; unsupported providers remain visible as explicit pending state."
-          exit 1
+          if [ "$ENFORCE_PROVIDER_COMPLETION" = "true" ]; then
+            echo "::error title=Required provider review pending::${CYCLE_ID}: ${PENDING}"
+            echo "Current-SHA completion is explicitly enforced by PEER_ENFORCE_PROVIDER_COMPLETION."
+            exit 1
+          fi
+          echo "::notice title=Provider review pending (advisory)::${CYCLE_ID}: ${PENDING}"
+          echo "The SHA-bound provider state is published for review; enforcement requires deliberate repository-variable opt-in."

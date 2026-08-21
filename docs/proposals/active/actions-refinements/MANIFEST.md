@@ -13,7 +13,7 @@ reviewers:
     role: executor
     status: executing
 related_issues: [192, 175]
-related_prs: [193, 81, 92, 143, 72, 232, 261, 266, 267, 269, 277, 278, 282]
+related_prs: [193, 81, 92, 143, 72, 232, 261, 266, 267, 269, 277, 278, 282, 283, 284]
 gates_required: [repo-gate, termux-smoke]
 ---
 
@@ -103,12 +103,19 @@ Issue #192 has verified GitHub-native cross-references to Issue #175, PR #193, t
 - Decision: Preserve the existing documented OPERATOR command lane and bounded `issues: write` capability. Harden its authorization and evidence validation rather than adding another Marketplace action, a browser path, or a new writer capability. Unbound issue comments remain visible state only, so an old-SHA provider response cannot release a newer cycle.
 - Safety: The correction does not modify branches, labels, artifacts, secrets, settings, or provider-owned UI. It never evaluates issue or review text as code; it narrows the conditions under which comment data can cause a provider request to be recognized or suppressed.
 
-### 2026-08-21 — Manus AI — AR-10 promoted; AR-14 Jules reliability correction
+### 2026-08-21 — Manus AI — AR-10 and AR-14 promoted
 
-- Disposition: **AR-10 promoted; AR-14 submitted for review**
-- Evidence: PR #282 merged the AR-10 provider-request evidence hardening at `e916cec2766b6bbc96214767780e0c246ad9b628`. The current `agent-jules-on-issues.yml` had repeated push-event failures with no job logs, mutable action references, and direct secret references in `if:` conditions.
+- Disposition: **integrated**
+- Evidence: PR #282 merged the AR-10 provider-request evidence hardening at `e916cec2766b6bbc96214767780e0c246ad9b628`. PR #283 merged the AR-14 Jules reliability correction at `64268789a37453958013ce91d45613398b7e9b5d` after contract, gate, smoke, registry, and hosted-review evidence.
 - Decision: AR-14 removes the push trigger instead of creating a no-op job for every repository change, pins the maintained MIT-licensed Jules Action at `bff7875eaa123cac6742b7cfc51005b95ba4d566` (v1.0.0), moves API-key availability detection into a controlled step, requires a trusted label actor, serializes per-issue execution, and adds injection-boundary contract tests.
 - Safety: The correction preserves only issue-label and trusted-mention request paths. It does not check out PR or issue code, evaluate body/comment text as code, write repository branches, change workflow permissions outside its existing issue-comment scope, or merge any provider-created pull request.
+
+### 2026-08-21 — Manus AI — AR-15 peer-orchestrator reliability correction
+
+- Disposition: **submitted for review**
+- Evidence: Of the 100 most recent peer-orchestrator runs, 70 were cancelled and 14 failed. The workflow subscribed to comment edits and inline-review-comment events, serialized every event, defaulted to CodeRabbit, Qodo, and Devin despite no peer-policy variable, and intentionally failed for normal pending provider state.
+- Decision: Coalesce superseded events; retain only state-advancing event types; set CodeRabbit as the verified default active provider while leaving Qodo and Devin as explicit opt-ins; and surface pending provider evidence as advisory unless `PEER_ENFORCE_PROVIDER_COMPLETION=true` is deliberately set before branch-protection use.
+- Safety: AR-15 retains immutable action pins, SHA-bound provider evidence, authorized OPERATOR markers, exact current-cycle request idempotency, and current-SHA completion rules. It adds no secret, branch, provider-UI, checkout, or issue/comment-to-shell authority.
 
 ### 2026-08-20 — Manus AI — AR-11 provider command library
 

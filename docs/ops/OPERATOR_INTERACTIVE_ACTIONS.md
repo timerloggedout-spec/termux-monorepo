@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The repository has one operational device: the **BLU B160V Android Termux hub**. The user is **not** an execution fallback. GitHub Actions uses the existing full-scope OPERATOR token to autonomously invoke every provider’s documented GitHub-side review command, publish SHA-bound state, and ingest evidence. The Termux hub is a separate fallback lane only for a provider authentication, MFA/2FA/2SV, or UI operation that has no documented GitHub command or API path.
+The repository has one operational device: the **BLU B160V Android Termux hub**. The user is **not** an execution fallback. GitHub Actions uses the existing full-scope OPERATOR token to autonomously invoke the deliberately active providers’ documented GitHub-side review commands, publish SHA-bound state, and ingest evidence. CodeRabbit is the verified default; Qodo and Devin require explicit provider-policy opt-in. The Termux hub is a separate fallback lane only for a provider authentication, MFA/2FA/2SV, or UI operation that has no documented GitHub command or API path.
 
 > A full-scope GitHub token authorizes GitHub API operations. It does not confer authority to mutate a provider-owned checkbox. The peer gate uses documented provider commands rather than emulating a provider UI or copying checkbox markup.
 
@@ -10,7 +10,7 @@ The repository has one operational device: the **BLU B160V Android Termux hub**.
 
 | Component | Required responsibility | Boundary |
 |---|---|---|
-| `peer-review-orchestrator.yml` | Detect every required provider, post one SHA-bound documented trigger command per provider through the OPERATOR token, ingest evidence, and fail while review is unresolved. | Does not use browser state, emulate provider controls, or claim that a request is a completed review. |
+| `peer-review-orchestrator.yml` | Detect each deliberately active provider, post one SHA-bound documented trigger command per provider through the OPERATOR token, and ingest current-SHA evidence. Pending evidence is advisory unless explicit enforcement is configured. | Does not use browser state, emulate provider controls, or claim that a request is a completed review. |
 | `agent-continuous-ops.yml` | Once per scheduled sweep, parse an elapsed CodeRabbit cooldown and post one marked OPERATOR-token retry for that exact cooldown source. | Does not retry early or loop identical requests. |
 | BLU B160V Termux OPERATOR lane | Handle a provider operation only when no supported GitHub comment/API trigger exists: device-local login, MFA/2FA/2SV, or a provider-owned UI action. | Uses named device-local profiles; never exports cookies or session stores to Actions, Git, comments, artifacts, or `refTemplates`. |
 | User | Receives escalation only when both the documented GitHub trigger and the Termux OPERATOR fallback are unavailable, or a provider explicitly requires unrecoverable user-only verification. | Never the normal review-trigger executor. |
@@ -44,9 +44,9 @@ The service must reject a stale SHA, an unknown provider/action tuple, an unreco
 
 Use the established full-scope token priority: `ARCHWIZ_GITHUB_TOKEN`, then `OPERATOR_GITHUB_TOKEN`, then `OPERATOR_TOKEN`. Each is a GitHub API credential only, with the permissions necessary to create/update pull-request comments and dispatch `gemini-after-peers.yml`; it is not a provider-browser credential. Set `PEER_STATE_PUBLISHER_LOGINS` to the exact token identity used to post authenticated gate state.
 
-The default `OPERATOR_ALLOWED_ACTIONS` allowlist is `coderabbit:trigger_review,qodo:trigger_review,devin:trigger_review`. Remove a tuple only when the repository deliberately disables that provider. `peer-review-orchestrator / collect-peer-responses` fails closed if no authorized publisher token is available.
+The default `OPERATOR_ALLOWED_ACTIONS` allowlist is `coderabbit:trigger_review,qodo:trigger_review,devin:trigger_review`. `PEER_REQUIRED_PROVIDERS` defaults to `coderabbit`; add `qodo` or `devin` only after deliberately enabling and observing that integration. Removing a tuple disables a provider request even if it is listed as active. `peer-review-orchestrator / collect-peer-responses` fails closed if no authorized publisher token is available.
 
-To make the gate merge-enforcing, configure `peer-review-orchestrator / collect-peer-responses` as a required branch-protection or ruleset status check. A passing state requires `responses_collected` and `ready: true`; neither a command comment, checkbox edit, acknowledgement, nor cooldown notice is merge-ready.
+Pending provider evidence is advisory by default, so ordinary provider latency is visible in the SHA-bound state comment without manufacturing a failed workflow. To make the gate merge-enforcing, set `PEER_ENFORCE_PROVIDER_COMPLETION=true` and then configure `peer-review-orchestrator / collect-peer-responses` as a required branch-protection or ruleset status check. Under that explicit policy, a passing state requires `responses_collected` and `ready: true`; neither a command comment, checkbox edit, acknowledgement, nor cooldown notice is merge-ready.
 
 ## Security boundary
 

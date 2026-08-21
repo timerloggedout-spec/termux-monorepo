@@ -97,6 +97,7 @@ def classify_material_paths(values: Iterable[str]) -> dict[str, object]:
         or value in {
             "scripts/model_router.py",
             "docs/schemas/model-success-matrix.yaml",
+            "docs/schemas/llm-leaderboard-matrix.yaml",
             "docs/schemas/model-rotation.yaml",
             "docs/schemas/routing-priority.yaml",
             "docs/ops/OPERATOR_INTERACTIVE_ACTIONS.md",
@@ -267,6 +268,7 @@ def build_catalog(root: Path = ROOT) -> dict[str, object]:
                 ".github/actions/**",
                 "scripts/model_router.py",
                 "docs/schemas/model-success-matrix.yaml",
+                "docs/schemas/llm-leaderboard-matrix.yaml",
                 "docs/schemas/model-rotation.yaml",
                 "docs/schemas/routing-priority.yaml",
                 "docs/ops/OPERATOR_INTERACTIVE_ACTIONS.md",

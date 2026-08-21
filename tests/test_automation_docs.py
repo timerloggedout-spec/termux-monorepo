@@ -25,6 +25,15 @@ class AutomationDocumentationTests(unittest.TestCase):
         self.assertEqual(high["status"], "high-impact control-plane review required")
         self.assertEqual(high["high_impact_paths"], [".github/workflows/peer-review-orchestrator.yml"])
 
+        leaderboard = automation_docs.classify_material_paths(
+            ["docs/schemas/llm-leaderboard-matrix.yaml"]
+        )
+        self.assertEqual(leaderboard["status"], "high-impact control-plane review required")
+        self.assertEqual(
+            leaderboard["high_impact_paths"],
+            ["docs/schemas/llm-leaderboard-matrix.yaml"],
+        )
+
         docs = automation_docs.classify_material_paths(
             ["docs/proposals/active/actions-refinements/ITEMS.md"]
         )
@@ -83,17 +92,25 @@ class AutomationDocumentationTests(unittest.TestCase):
     def test_check_detects_missing_or_stale_generated_outputs(self) -> None:
         original_json = automation_docs.OUTPUT_JSON
         original_markdown = automation_docs.OUTPUT_MD
-        with tempfile.TemporaryDirectory() as temporary:
-            generated = Path(temporary) / "generated"
-            automation_docs.OUTPUT_JSON = generated / "catalog.json"
-            automation_docs.OUTPUT_MD = generated / "catalog.md"
-            self.assertFalse(automation_docs.check_outputs(ROOT))
-            automation_docs.write_outputs(ROOT)
-            self.assertTrue(automation_docs.check_outputs(ROOT))
-            automation_docs.OUTPUT_JSON.write_text("{}\n", encoding="utf-8")
-            self.assertFalse(automation_docs.check_outputs(ROOT))
-        automation_docs.OUTPUT_JSON = original_json
-        automation_docs.OUTPUT_MD = original_markdown
+        original_assets = automation_docs.OUTPUT_ASSETS
+        try:
+            with tempfile.TemporaryDirectory() as temporary:
+                generated = Path(temporary) / "generated"
+                automation_docs.OUTPUT_JSON = generated / "catalog.json"
+                automation_docs.OUTPUT_MD = generated / "catalog.md"
+                automation_docs.OUTPUT_ASSETS = generated / "assets.json"
+                self.assertFalse(automation_docs.check_outputs(ROOT))
+                automation_docs.write_outputs(ROOT)
+                self.assertTrue(automation_docs.check_outputs(ROOT))
+                automation_docs.OUTPUT_ASSETS.write_text("{}\n", encoding="utf-8")
+                self.assertFalse(automation_docs.check_outputs(ROOT))
+                automation_docs.write_outputs(ROOT)
+                automation_docs.OUTPUT_JSON.write_text("{}\n", encoding="utf-8")
+                self.assertFalse(automation_docs.check_outputs(ROOT))
+        finally:
+            automation_docs.OUTPUT_JSON = original_json
+            automation_docs.OUTPUT_MD = original_markdown
+            automation_docs.OUTPUT_ASSETS = original_assets
 
 
 if __name__ == "__main__":

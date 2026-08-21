@@ -16,8 +16,11 @@ class AutomationDocumentationWorkflowTests(unittest.TestCase):
     def test_control_plane_paths_trigger_freshness_job(self) -> None:
         for expected in (
             "automation_docs:",
+            "high_impact_control_plane:",
+            "high_impact_control_plane: ${{ steps.changes.outputs.high_impact_control_plane }}",
             "scripts/model_router.py",
             "docs/schemas/model-success-matrix.yaml",
+            "docs/schemas/llm-leaderboard-matrix.yaml",
             "docs/ops/diagrams/**",
             "docs/ops/generated/**",
         ):
@@ -28,11 +31,17 @@ class AutomationDocumentationWorkflowTests(unittest.TestCase):
         section = self.text.split("  automation-documentation:", 1)[1]
         self.assertIn("if: needs.route.outputs.automation_docs == 'true'", section)
         self.assertIn("permissions:\n      contents: read", section)
-        self.assertIn("python3 -m unittest tests.test_automation_docs", section)
+        self.assertIn(
+            "python3 -m unittest tests.test_automation_docs "
+            "tests.test_automation_documentation_workflow",
+            section,
+        )
         self.assertIn("python3 scripts/ci/automation_docs.py --check", section)
         self.assertNotIn("pull-requests: write", section)
         self.assertNotIn("issues: write", section)
         self.assertNotIn("git push", section)
+        self.assertIn("HIGH_IMPACT_CONTROL_PLANE_CHANGED", section)
+        self.assertIn("high-impact control-plane review required", section)
 
     def test_preview_artifact_is_immutable_pinned_and_retained_briefly(self) -> None:
         section = self.text.split("  automation-documentation:", 1)[1]

@@ -38,6 +38,7 @@ jobs:
       tests: ${{ steps.changes.outputs.tests }}
       docs: ${{ steps.changes.outputs.docs }}
       automation_docs: ${{ steps.changes.outputs.automation_docs }}
+      high_impact_control_plane: ${{ steps.changes.outputs.high_impact_control_plane }}
     steps:
       - name: Classify changed surfaces
         id: changes
@@ -49,6 +50,15 @@ jobs:
               - '.github/actions/**'
               - 'scripts/ci/workflow_surface_policy.py'
               - 'tests/test_workflow_surface_policy.py'
+            high_impact_control_plane:
+              - '.github/workflows/**'
+              - '.github/actions/**'
+              - 'scripts/model_router.py'
+              - 'docs/schemas/model-success-matrix.yaml'
+              - 'docs/schemas/llm-leaderboard-matrix.yaml'
+              - 'docs/schemas/model-rotation.yaml'
+              - 'docs/schemas/routing-priority.yaml'
+              - 'docs/ops/OPERATOR_INTERACTIVE_ACTIONS.md'
             automation_docs:
               - '.github/workflows/**'
               - '.github/actions/**'
@@ -106,6 +116,7 @@ jobs:
           TESTS_CHANGED: ${{ needs.route.outputs.tests }}
           DOCS_CHANGED: ${{ needs.route.outputs.docs }}
           AUTOMATION_DOCS_CHANGED: ${{ needs.route.outputs.automation_docs }}
+          HIGH_IMPACT_CONTROL_PLANE_CHANGED: ${{ needs.route.outputs.high_impact_control_plane }}
         run: |
           {
             echo '## Workflow Surface Policy'
@@ -117,6 +128,7 @@ jobs:
             echo "| Tests | ${TESTS_CHANGED} |"
             echo "| Docs | ${DOCS_CHANGED} |"
             echo "| Automation documentation control plane | ${AUTOMATION_DOCS_CHANGED} |"
+            echo "| High-impact automation control plane | ${HIGH_IMPACT_CONTROL_PLANE_CHANGED} |"
           } >> "$GITHUB_STEP_SUMMARY"
 
   automation-documentation:
@@ -133,17 +145,17 @@ jobs:
 
       - name: Validate deterministic automation documentation catalog
         run: |
-          python3 -m unittest tests.test_automation_docs
+          python3 -m unittest tests.test_automation_docs tests.test_automation_documentation_workflow
           python3 scripts/ci/automation_docs.py --check
 
       - name: Publish control-plane review summary
         env:
-          AUTOMATION_CHANGED: ${{ needs.route.outputs.automation }}
+          HIGH_IMPACT_CONTROL_PLANE_CHANGED: ${{ needs.route.outputs.high_impact_control_plane }}
         run: |
           {
             echo '## Automation Documentation Freshness'
             echo
-            if [ "${AUTOMATION_CHANGED}" = 'true' ]; then
+            if [ "${HIGH_IMPACT_CONTROL_PLANE_CHANGED}" = 'true' ]; then
               echo '**high-impact control-plane review required**'
             else
               echo '**documentation update required**'

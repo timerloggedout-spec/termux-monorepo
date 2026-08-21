@@ -430,7 +430,7 @@ jobs:
           PROVIDERS: ${{ steps.collect.outputs.provider_lines }}
           CONTROLS: ${{ steps.collect.outputs.control_lines }}
           REQUIRED_PROVIDERS: ${{ vars.PEER_REQUIRED_PROVIDERS || 'coderabbit' }}
-          ENFORCE_PROVIDER_COMPLETION: ${{ vars.PEER_ENFORCE_PROVIDER_COMPLETION || 'false' }}
+          ENFORCE_PROVIDER_COMPLETION: ${{ steps.collect.outputs.enforce_provider_completion }}
           PEER_STATE_PUBLISHER_LOGINS: ${{ vars.PEER_STATE_PUBLISHER_LOGINS || github.repository_owner }}
         with:
           # The base-repository workflow never executes PR code. Prefer an existing
@@ -617,7 +617,7 @@ jobs:
         env:
           CYCLE_ID: ${{ steps.collect.outputs.cycle_id }}
           PENDING: ${{ steps.collect.outputs.pending }}
-          ENFORCE_PROVIDER_COMPLETION: ${{ vars.PEER_ENFORCE_PROVIDER_COMPLETION || 'false' }}
+          ENFORCE_PROVIDER_COMPLETION: ${{ steps.collect.outputs.enforce_provider_completion }}
         run: |
           if [ "$ENFORCE_PROVIDER_COMPLETION" = "true" ]; then
             echo "::error title=Required provider review pending::${CYCLE_ID}: ${PENDING}"

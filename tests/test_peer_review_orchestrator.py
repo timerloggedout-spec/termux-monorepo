@@ -37,6 +37,13 @@ class PeerReviewOrchestratorTests(unittest.TestCase):
     def test_pending_state_is_advisory_until_explicitly_enforced(self) -> None:
         self.assertIn("ENFORCE_PROVIDER_COMPLETION", self.workflow)
         self.assertIn("vars.PEER_ENFORCE_PROVIDER_COMPLETION || 'false'", self.workflow)
+        self.assertIn("toLowerCase() === 'true'", self.workflow)
+        self.assertGreaterEqual(
+            self.workflow.count(
+                "ENFORCE_PROVIDER_COMPLETION: ${{ steps.collect.outputs.enforce_provider_completion }}"
+            ),
+            2,
+        )
         self.assertIn('if [ "$ENFORCE_PROVIDER_COMPLETION" = "true" ]; then', self.workflow)
         self.assertIn("Provider review pending (advisory)", self.workflow)
         self.assertIn("enforcement requires deliberate repository-variable opt-in", self.workflow)

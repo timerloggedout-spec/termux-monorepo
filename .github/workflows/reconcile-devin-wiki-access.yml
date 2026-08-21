@@ -1,0 +1,61 @@
+name: Reconcile Devin Wiki access
+
+on:
+  schedule:
+    - cron: "41 5 * * *"
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: "Grant missing selected-repository Devin GitHub App access through the documented GitHub endpoint"
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: reconcile-devin-wiki-access
+  cancel-in-progress: false
+
+jobs:
+  reconcile:
+    name: Discover Devin Wiki indexing eligibility for accessible repositories
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout control-plane source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Reconcile supported Devin GitHub App access
+        env:
+          # Scheduled runs reconcile newly discovered repositories. A manual run
+          # is read-only unless its explicit apply input is true.
+          APPLY: ${{ github.event_name == 'schedule' && 'true' || inputs.apply || 'false' }}
+          # The selected token must be an existing classic PAT with repo scope
+          # when GitHub App assignment is required. No new credential is minted.
+          GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
+          OPERATOR_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
+        run: |
+          set -euo pipefail
+          arguments=(
+            --source-repo "${GITHUB_REPOSITORY}"
+            --report "reports/devin-wiki-access-detail.json"
+            --summary-report "reports/devin-wiki-access-summary.json"
+          )
+          if [[ "${APPLY}" == "true" ]]; then
+            arguments+=(--apply)
+          fi
+          python3 scripts/agentic/reconcile_devin_wiki_access.py "${arguments[@]}"
+          rm -f reports/devin-wiki-access-detail.json
+
+      - name: Upload redacted Devin Wiki access summary
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: devin-wiki-access-${{ github.run_id }}
+          path: reports/devin-wiki-access-summary.json
+          if-no-files-found: error
+          retention-days: 14

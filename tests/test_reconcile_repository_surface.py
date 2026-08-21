@@ -4,6 +4,7 @@ import base64
 import sys
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -11,6 +12,7 @@ sys.path.insert(0, str(ROOT / "scripts" / "agentic"))
 
 from reconcile_repository_surface import (  # noqa: E402
     MANAGED_MARKER,
+    GhClient,
     Finding,
     ReconcilerError,
     Repository,
@@ -76,6 +78,19 @@ class RepositorySurfaceReconcilerTests(unittest.TestCase):
         source = "# managed publisher\nname: Publish wiki\n"
         wrapped = base64.encodebytes(source.encode("utf-8")).decode("ascii")
         self.assertEqual(source, _decode_content({"encoding": "base64", "content": wrapped}))
+
+    def test_gh_client_strips_terminal_ansi_sequences_before_json_parsing(self) -> None:
+        coloured = (
+            "\033[1;37m{\033[m"
+            "\n  "
+            "\033[1;34m\"ok\"\033[m: true"
+            "\n}"
+        )
+        completed = SimpleNamespace(returncode=0, stdout=coloured, stderr="")
+        with patch("reconcile_repository_surface.subprocess.run", return_value=completed):
+            response = GhClient().request("GET", "user/repos?per_page=1")
+
+        self.assertEqual({"ok": True}, response)
 
     def test_unmanaged_workflow_is_never_classified_as_writable(self) -> None:
         state, detail = _workflow_state(("name: bespoke publisher\n", "blob"), CANONICAL)

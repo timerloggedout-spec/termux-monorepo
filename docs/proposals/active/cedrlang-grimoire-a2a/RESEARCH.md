@@ -14,7 +14,7 @@
 
 ## Required Independent Review
 
-A non-author reviewer must evaluate the following before the proposal status can move from `draft` to `accepted`:
+A non-author reviewer must evaluate the following before the proposal status can move from `in_review` to `accepted`:
 
 1. The clean successor still has no CID, CEDARscript, subprocess, network, mapper-content, or external-service path in `protocol.py`.
 2. The lossless claim is constrained to canonical-record reconstruction with the authorized mapper; no public-obfuscation security claim is made.
@@ -27,7 +27,7 @@ A non-author reviewer must evaluate the following before the proposal status can
 | Reviewer | Role | Vote | Date | Evidence / rationale |
 |---|---|---|---|---|
 | Manus AI | author-executor | changes requested | 2026-08-20 | Foundation is implemented and published, but private custody, contact-point source policy, A2A transport, baseline blockers, and independent review remain open. |
-| _Unassigned_ | non-author technical reviewer | pending | — | Required before acceptance. |
+| google-labs-jules | non-author implementation reviewer | requested | 2026-08-21 | Requested in the proposal manifest; a recorded non-author disposition is required before acceptance. |
 | timerloggedout-spec | operator-authorizer | pending | — | Required before merge/integration claim. |
 
 ## Publication Links

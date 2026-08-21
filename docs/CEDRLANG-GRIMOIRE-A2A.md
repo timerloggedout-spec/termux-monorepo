@@ -69,7 +69,7 @@ CEDARscript / CID / patch router
 
 ## Implementation Reference
 
-The initial implementation is `workspace/compression_sandbox/cedrlang/protocol.py`. Its focused tests are `tests/test_cedrlang_protocol.py`. Work is tracked as proposal `cedrlang-grimoire-a2a`, item `LGA-01`; later migration work must receive separately scoped work items.
+The initial implementation is `workspace/compression_sandbox/cedrlang/protocol.py`. Its focused tests are `tests/test_cedrlang_protocol.py`. The bounded codec, coverage, A2A, evidence, and compatibility scope is tracked as proposal `cedrlang-grimoire-a2a`, items `LGA-01`, `LGA-02`, `LGA-03`, `LGA-04`, and `LGA-06`; later migration work must receive separately scoped work items.
 
 ## References
 

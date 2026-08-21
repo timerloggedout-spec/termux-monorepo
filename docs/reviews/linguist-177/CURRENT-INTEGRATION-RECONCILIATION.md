@@ -1,4 +1,4 @@
-# Current Linguist / Grimiore / A2A Integration Reconciliation
+# Current Linguist / Grimoire / A2A Integration Reconciliation
 
 **As of:** 2026-08-21 UTC
 

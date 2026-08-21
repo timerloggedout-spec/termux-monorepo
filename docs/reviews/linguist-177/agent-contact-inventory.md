@@ -50,9 +50,9 @@ The initial implementation scope is therefore limited to a clean, non-executing 
 
 ## References
 
-1. [Root AGENTS.md](../../AGENTS.md)
-2. [Root CLAUDE.md](../../CLAUDE.md)
-3. [Change and Validate ICM process](../../docs/icm/processes/change-and-validate.md)
+1. [Root AGENTS.md](../../../AGENTS.md)
+2. [Root CLAUDE.md](../../../CLAUDE.md)
+3. [Change and Validate ICM process](../../icm/processes/change-and-validate.md)
 4. [PR #154 operator scope guidance](https://github.com/timerloggedout-spec/termux-monorepo/pull/154#issuecomment-5322143674)
 5. [PR #177 mapping discussion](https://github.com/timerloggedout-spec/termux-monorepo/pull/177#issuecomment-5273315069)
 6. [CEDARScript Editor (Python)](https://github.com/CEDARScript/cedarscript-editor-python)

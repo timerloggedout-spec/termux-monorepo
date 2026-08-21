@@ -48,7 +48,7 @@ This proposal reconstructs the useful, independently testable core of the Lingui
 ### 2026-08-21 — consolidation and formal-review request
 
 - Disposition: in_review
-- Notes: The successor branch was rebased onto current `master-staging` and validated with 18 focused/regression tests and selected lint. Current live review finds #154 and #177 open but `DIRTY`/`CONFLICTING`; [PR #275](https://github.com/timerloggedout-spec/termux-monorepo/pull/275) is the sole bounded review candidate. [Issue #182](https://github.com/timerloggedout-spec/termux-monorepo/issues/182) is the explicit Grimiore/CID/CEDR naming root; issue #117 remains the A2A design root. See `CURRENT-INTEGRATION-RECONCILIATION.md` and `current-integration-relationships.mmd`. The inherited registry-orphan failure remains a documented blocker; it is not waived.
+- Notes: The successor branch was rebased onto current `master-staging`; the original focused suite passed 18 tests, and the review-resolution suite now passes 21 tests with selected lint. Current live review finds #154 and #177 open but `DIRTY`/`CONFLICTING`; [PR #275](https://github.com/timerloggedout-spec/termux-monorepo/pull/275) is the sole bounded review candidate. [Issue #182](https://github.com/timerloggedout-spec/termux-monorepo/issues/182) is the explicit Grimoire/CID/CEDR naming root; issue #117 remains the A2A design root. See `CURRENT-INTEGRATION-RECONCILIATION.md` and `current-integration-relationships.mmd`. The former registry-orphan failure is isolated in PR #290 and remains a dependency until independently integrated; it is not waived.
 
 ## Checklist (process)
 

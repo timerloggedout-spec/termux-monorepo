@@ -112,7 +112,7 @@ def _sha256_text(value: str) -> str:
 
 
 def _canonical_json(value: Mapping[str, Any]) -> str:
-    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False)
 
 
 def _tokens(text: str) -> Tuple[str, ...]:
@@ -237,8 +237,8 @@ class GrimoireMapper:
         material = _canonical_json({"mapper_id": mapper_id, "version": version, "forward": normalized_forward})
         object.__setattr__(self, "mapper_id", mapper_id)
         object.__setattr__(self, "version", version)
-        object.__setattr__(self, "forward", normalized_forward)
-        object.__setattr__(self, "reverse", normalized_reverse)
+        object.__setattr__(self, "forward", MappingProxyType(dict(normalized_forward)))
+        object.__setattr__(self, "reverse", MappingProxyType(dict(normalized_reverse)))
         object.__setattr__(self, "content_hash", _sha256_text(material))
 
 
@@ -462,26 +462,43 @@ class A2AEnvelope:
             raise A2AValidationError(f"unsupported A2A protocol version: {self.protocol_version}")
         object.__setattr__(self, "message_id", _validate_uuid(self.message_id, "message_id"))
         object.__setattr__(self, "correlation_id", _validate_uuid(self.correlation_id, "correlation_id"))
-        for field_name in ("sender_role", "recipient_role"):
-            value = _normalize_text(getattr(self, field_name))
-            if not ROLE_PATTERN.fullmatch(value):
-                raise A2AValidationError(f"{field_name} must be a bounded role identifier")
-            object.__setattr__(self, field_name, value)
-        object.__setattr__(self, "intent", _normalize_identifier(self.intent, "intent"))
-        object.__setattr__(self, "mapper_id", _normalize_identifier(self.mapper_id, "mapper_id"))
-        object.__setattr__(self, "mapper_version", _normalize_text(self.mapper_version))
+        try:
+            for field_name in ("sender_role", "recipient_role"):
+                value = _normalize_text(getattr(self, field_name))
+                if not ROLE_PATTERN.fullmatch(value):
+                    raise A2AValidationError(f"{field_name} must be a bounded role identifier")
+                object.__setattr__(self, field_name, value)
+            object.__setattr__(self, "intent", _normalize_identifier(self.intent, "intent"))
+            object.__setattr__(self, "mapper_id", _normalize_identifier(self.mapper_id, "mapper_id"))
+            object.__setattr__(self, "mapper_version", _normalize_text(self.mapper_version))
+        except RecordValidationError as exc:
+            raise A2AValidationError("envelope text fields are invalid") from exc
         if not isinstance(self.payload, Mapping):
             raise A2AValidationError("payload must be an encoded record object")
         if not isinstance(self.canonical_digest, str) or not re.fullmatch(r"[0-9a-f]{64}", self.canonical_digest):
             raise A2AValidationError("canonical_digest must be a SHA-256 hexadecimal digest")
-        if not isinstance(self.ttl_seconds, int) or not 1 <= self.ttl_seconds <= 86_400:
+        if type(self.ttl_seconds) is not int or not 1 <= self.ttl_seconds <= 86_400:
             raise A2AValidationError("ttl_seconds must be between 1 and 86400")
         if self.state not in {"PENDING", "ACK", "NACK"}:
             raise A2AValidationError("state must be PENDING, ACK, or NACK")
-        if self.state == "ACK" and not self.acknowledgement_id:
-            raise A2AValidationError("ACK envelopes require acknowledgement_id")
-        if self.state == "NACK" and not self.error_code:
-            raise A2AValidationError("NACK envelopes require error_code")
+        try:
+            if self.state == "PENDING":
+                if self.acknowledgement_id is not None or self.error_code is not None:
+                    raise A2AValidationError("PENDING envelopes cannot include acknowledgement or error metadata")
+            elif self.state == "ACK":
+                if self.error_code is not None or not isinstance(self.acknowledgement_id, str):
+                    raise A2AValidationError("ACK envelopes require only a string acknowledgement_id")
+                object.__setattr__(
+                    self,
+                    "acknowledgement_id",
+                    _normalize_identifier(self.acknowledgement_id, "acknowledgement_id"),
+                )
+            else:
+                if self.acknowledgement_id is not None or not isinstance(self.error_code, str):
+                    raise A2AValidationError("NACK envelopes require only a string error_code")
+                object.__setattr__(self, "error_code", _normalize_identifier(self.error_code, "error_code"))
+        except RecordValidationError as exc:
+            raise A2AValidationError("envelope acknowledgement or error metadata is invalid") from exc
         payload_snapshot = _snapshot_json_object(self.payload)
         payload_bytes = len(_canonical_json(_thaw_json(payload_snapshot)).encode("utf-8"))
         if payload_bytes > MAX_PAYLOAD_BYTES:

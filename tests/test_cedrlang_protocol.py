@@ -85,6 +85,19 @@ def test_mapper_rejects_duplicate_symbol_handles():
         )
 
 
+def test_mapper_snapshots_are_immutable_and_hash_stable_after_source_mutation():
+    source_mapping = {"inspect": "§I§"}
+    mapper = GrimoireMapper(mapper_id="immutable-mapper", version="1.0.0", forward=source_mapping)
+    original_hash = mapper.content_hash
+
+    source_mapping["system"] = "§S§"
+
+    assert dict(mapper.forward) == {"inspect": "§I§"}
+    assert mapper.content_hash == original_hash
+    with pytest.raises(TypeError):
+        mapper.forward["system"] = "§S§"
+
+
 def test_codec_encodes_multi_word_mapper_sources_deterministically():
     mapper = GrimoireMapper(
         mapper_id="phrase-grimoire",
@@ -302,3 +315,42 @@ def test_a2a_envelope_serialization_rejects_unknown_missing_and_malformed_payloa
     malformed["payload"] = ["not", "an", "object"]
     with pytest.raises(A2AValidationError):
         A2AEnvelope.from_dict(malformed)
+
+    non_json_payload = dict(serialized)
+    non_json_payload["payload"] = {"value": float("nan")}
+    with pytest.raises(A2AValidationError):
+        A2AEnvelope.from_dict(non_json_payload)
+
+    bool_ttl = dict(serialized)
+    bool_ttl["ttl_seconds"] = True
+    with pytest.raises(A2AValidationError):
+        A2AEnvelope.from_dict(bool_ttl)
+
+    invalid_role = dict(serialized)
+    invalid_role["sender_role"] = "invalid\x00role"
+    with pytest.raises(A2AValidationError):
+        A2AEnvelope.from_dict(invalid_role)
+
+    pending_metadata = dict(serialized)
+    pending_metadata["acknowledgement_id"] = "ack-001"
+    with pytest.raises(A2AValidationError):
+        A2AEnvelope.from_dict(pending_metadata)
+
+    invalid_ack = dict(serialized)
+    invalid_ack["state"] = "ACK"
+    invalid_ack["acknowledgement_id"] = 7
+    with pytest.raises(A2AValidationError):
+        A2AEnvelope.from_dict(invalid_ack)
+
+    contradictory_ack = dict(serialized)
+    contradictory_ack["state"] = "ACK"
+    contradictory_ack["acknowledgement_id"] = "ack-001"
+    contradictory_ack["error_code"] = "not-allowed"
+    with pytest.raises(A2AValidationError):
+        A2AEnvelope.from_dict(contradictory_ack)
+
+    invalid_nack = dict(serialized)
+    invalid_nack["state"] = "NACK"
+    invalid_nack["error_code"] = "not allowed"
+    with pytest.raises(A2AValidationError):
+        A2AEnvelope.from_dict(invalid_nack)

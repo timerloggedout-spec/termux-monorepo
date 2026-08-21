@@ -39,9 +39,7 @@ The authenticated GitHub CLI could not be used because its configured credential
 
 The generated graph used the exact root `pr:177`, depth `2`, and a 25-node limit. It contains verified commit, review, review-comment, issue-comment, and source-file relationships. The canonical index is current to 2026-08-19 but has a retained **partial** GitHub history window with `next_start_page: 2`; this packet therefore does not claim complete historical graph coverage. [5] [6]
 
-![Curated Linguist relationship summary](linguist-relationship-summary.png)
-
-The Mermaid source for both the generated raw graph and the concise evidence summary is committed under this directory. The PNG render artifacts remain intentionally ignored by the repository and are supplied as task attachments. The raw graph, rendering validation, evidence bounds, and candidate separation are documented in `context-pr177.md`, `context-pr177.mmd`, `linguist-relationship-summary.mmd`, and `diagram-validation.md`.
+The Mermaid source for both the generated raw graph and the concise evidence summary is committed under this directory. Rendered PNG artifacts are intentionally not linked from tracked Markdown because they are ignored by the repository; the raw graph, rendering validation, evidence bounds, and candidate separation are documented in `context-pr177.md`, `context-pr177.mmd`, `linguist-relationship-summary.mmd`, and `diagram-validation.md`.
 
 | Verified relationship | Evidence |
 |---|---|
@@ -76,7 +74,7 @@ The new work is registered as proposal `cedrlang-grimoire-a2a` and its first wor
 
 | Validation | Result | Notes |
 |---|---|---|
-| `python3 -m pytest tests/test_cedrlang.py tests/test_cedrlang_protocol.py -q` | **Pass: 20 tests** | 11 historical translator tests plus 9 foundation/regression tests passed, including phrase matching, mixed-case preservation, immutable payload snapshots, future-time rejection, and exact-TTL expiry. |
+| `python3 -m pytest tests/test_cedrlang.py tests/test_cedrlang_protocol.py -q` | **Pass: 21 tests** | 11 historical translator tests plus 10 foundation/regression tests passed, including immutable mapper snapshots, phrase matching, mixed-case preservation, strict JSON payloads, typed envelope metadata, immutable payload snapshots, future-time rejection, and exact-TTL expiry. |
 | `python3 -m compileall -q workspace/compression_sandbox/cedrlang/protocol.py tests/test_cedrlang_protocol.py` | **Pass** | New implementation and tests compile. |
 | `ruff check --select F,E9 …` | **Pass** | Compatibility-focused linting is clean. The repository’s global Ruff defaults suggest modern typing rewrites that are not adopted because the documented Python floor is 3.9. |
 | Dependency boundary scan | **Pass** | No execution, network, CID, or CEDARscript import/invocation pattern exists in `protocol.py`. |

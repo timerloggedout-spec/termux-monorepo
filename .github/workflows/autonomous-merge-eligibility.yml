@@ -1,0 +1,177 @@
+name: Evidence-gated autonomous merge
+
+# Merges only explicit, routine PRs into master-staging after current-SHA
+# review, thread, check, and scope evidence is complete. It never executes
+# PR code and never auto-merges workflow, governance, security, or master
+# promotion changes.
+
+on:
+  pull_request:
+    types: [labeled, unlabeled, synchronize, ready_for_review, reopened]
+  schedule:
+    - cron: '37 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: autonomous-merge-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  evaluate-and-merge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      checks: read
+    steps:
+      - name: Evaluate current-SHA evidence and merge eligible routine PRs
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        with:
+          script: |
+            const optInLabel = 'autonomous-merge';
+            const marker = '<!-- autonomous-merge-eligibility -->';
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const excludedPath = (path) => (
+              path.startsWith('.github/workflows/') ||
+              path.startsWith('.github/actions/') ||
+              path.startsWith('docs/proposals/') ||
+              path.startsWith('config/') ||
+              path.startsWith('scripts/ci/') ||
+              /(^|\/)(\.env|.*token.*|.*credential.*|.*api_key.*|.*\.pem|.*\.key)$/i.test(path)
+            );
+            const completedSuccess = new Set(['success', 'neutral', 'skipped']);
+            const isRepositoryOwnedCheck = (check) => {
+              const app = (check.app?.slug || '').toLowerCase();
+              const name = (check.name || '').toLowerCase();
+              return app !== 'gitlab' && !name.startsWith('ci/gitlab/');
+            };
+
+            const seeds = [];
+            if (context.eventName === 'pull_request') {
+              seeds.push(context.payload.pull_request);
+            } else {
+              const open = await github.paginate(github.rest.pulls.list, {
+                owner, repo, state: 'open', per_page: 100,
+              });
+              for (const pr of open) {
+                if ((pr.labels || []).some(label => label.name === optInLabel)) seeds.push(pr);
+              }
+            }
+
+            for (const seed of seeds) {
+              const prNumber = seed.number;
+              const { data: pr } = await github.rest.pulls.get({
+                owner, repo, pull_number: prNumber,
+              });
+              const labels = (pr.labels || []).map(label => label.name);
+              if (!labels.includes(optInLabel)) continue;
+
+              const reasons = [];
+              if (pr.draft) reasons.push('draft pull request');
+              if (pr.base.ref !== 'master-staging') reasons.push(`base is ${pr.base.ref}, not master-staging`);
+              if (pr.head.repo?.full_name !== `${owner}/${repo}`) reasons.push('fork head is excluded');
+              if (pr.mergeable !== true || pr.mergeable_state === 'dirty') reasons.push(`mergeability=${pr.mergeable_state || pr.mergeable}`);
+
+              const files = await github.paginate(github.rest.pulls.listFiles, {
+                owner, repo, pull_number: prNumber, per_page: 100,
+              });
+              const sensitive = files.map(file => file.filename).filter(excludedPath);
+              if (sensitive.length) reasons.push(`excluded paths: ${sensitive.slice(0, 5).join(', ')}`);
+
+              const reviews = await github.paginate(github.rest.pulls.listReviews, {
+                owner, repo, pull_number: prNumber, per_page: 100,
+              });
+              const currentReviews = reviews.filter(review => review.commit_id === pr.head.sha);
+              const changesRequested = currentReviews.some(review => review.state === 'CHANGES_REQUESTED');
+              const independentReview = currentReviews.some(review =>
+                review.user?.login !== pr.user?.login && ['APPROVED', 'COMMENTED'].includes(review.state)
+              );
+              if (changesRequested) reasons.push('current-SHA changes requested');
+              if (!independentReview) reasons.push('no current-SHA independent review');
+
+              const threadQuery = `
+                query($owner:String!, $repo:String!, $number:Int!) {
+                  repository(owner:$owner, name:$repo) {
+                    pullRequest(number:$number) {
+                      reviewThreads(first:100) {
+                        nodes { isResolved }
+                        pageInfo { hasNextPage }
+                      }
+                    }
+                  }
+                }`;
+              try {
+                const threadData = await github.graphql(threadQuery, { owner, repo, number: prNumber });
+                const threads = threadData.repository.pullRequest.reviewThreads;
+                if (threads.pageInfo.hasNextPage) reasons.push('more than 100 review threads');
+                if (threads.nodes.some(thread => !thread.isResolved)) reasons.push('unresolved review thread');
+              } catch (error) {
+                reasons.push(`review-thread lookup failed: ${error.message}`);
+              }
+
+              const checkRuns = await github.paginate(github.rest.checks.listForRef, {
+                owner, repo, ref: pr.head.sha, per_page: 100,
+              });
+              const repositoryChecks = checkRuns.filter(isRepositoryOwnedCheck);
+              const externalChecks = checkRuns.filter(check => !isRepositoryOwnedCheck(check));
+              const latestByName = new Map();
+              for (const check of repositoryChecks) {
+                const prior = latestByName.get(check.name);
+                if (!prior || new Date(check.completed_at || check.started_at || 0) > new Date(prior.completed_at || prior.started_at || 0)) {
+                  latestByName.set(check.name, check);
+                }
+              }
+              const incompleteOrFailed = [...latestByName.values()].filter(check =>
+                check.status !== 'completed' || !completedSuccess.has((check.conclusion || '').toLowerCase())
+              );
+              if (incompleteOrFailed.length) {
+                reasons.push(`checks not eligible: ${incompleteOrFailed.slice(0, 5).map(check => check.name).join(', ')}`);
+              }
+
+              const eligible = reasons.length === 0;
+              const comments = await github.paginate(github.rest.issues.listComments, {
+                owner, repo, issue_number: prNumber, per_page: 100,
+              });
+              const alreadyRecorded = comments.some(comment =>
+                comment.body?.includes(marker) && comment.body?.includes(`head_sha: ${pr.head.sha}`)
+              );
+
+              if (!alreadyRecorded) {
+                await github.rest.issues.createComment({
+                  owner, repo, issue_number: prNumber,
+                  body: [
+                    marker,
+                    `head_sha: ${pr.head.sha}`,
+                    `decision: ${eligible ? 'eligible' : 'blocked'}`,
+                    '',
+                    '## Evidence-gated autonomous merge',
+                    '',
+                    eligible
+                      ? 'All opt-in eligibility criteria passed for this current SHA. Attempting a squash merge into `master-staging`.'
+                      : `Autonomous merge is not eligible for this SHA: ${reasons.join('; ')}.`,
+                    externalChecks.length
+                      ? `Ignored external status context: ${externalChecks.slice(0, 5).map(check => check.name).join(', ')}.`
+                      : '',
+                    '',
+                    'Removing the `autonomous-merge` label, pushing a new commit, opening a review thread, or recording changes requested prevents or invalidates eligibility.',
+                  ].join('\n'),
+                });
+              }
+
+              if (!eligible) continue;
+              try {
+                const result = await github.rest.pulls.merge({
+                  owner, repo, pull_number: prNumber,
+                  sha: pr.head.sha, merge_method: 'squash',
+                  commit_title: `merge: ${pr.title} (#${prNumber})`,
+                });
+                core.info(`PR #${prNumber}: merge attempted merged=${result.data.merged}`);
+              } catch (error) {
+                core.warning(`PR #${prNumber}: autonomous merge attempt failed: ${error.message}`);
+              }
+            }

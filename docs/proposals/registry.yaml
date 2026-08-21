@@ -129,3 +129,21 @@ proposals:
         status: posted
     related_prs: [63]
     gates_required: [repo-gate]
+
+  - id: agentic-autonomy
+    title: "Evidence-driven autonomous agentic operations"
+    author: Manus
+    status: executing
+    priority: P1
+    path: active/agentic-autonomy/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: Manus
+        role: author-executor
+        status: executing
+    related_issues: [117, 175, 182, 274]
+    related_prs: [154, 177, 275]
+    related_branches: [feature/agentic-autonomy]
+    gates_required: [repo-gate, termux-smoke]

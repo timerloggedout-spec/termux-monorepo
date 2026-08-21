@@ -39,7 +39,7 @@ Every execution writes `<!-- operator-provider-command:v1 -->` metadata with the
 
 `OPERATOR_COMMAND_ACTIONS` is the runtime allowlist. Its default contains only the command tuples present in the initial library. Removing a tuple disables it even when the command remains documented. Adding a new provider command requires a library update, a focused test, documented capability evidence, and review.
 
-`OPERATOR_EXECUTOR_LOGINS` identifies the token identities that are allowed to create idempotency receipts. The established token priority remains `ARCHWIZ_GITHUB_TOKEN`, then `OPERATOR_GITHUB_TOKEN`, then `OPERATOR_TOKEN`, then the repository workflow token as a least-capable fallback.
+`OPERATOR_EXECUTOR_LOGINS` is the fixed, comma-separated allowlist of GitHub actors that may initiate a dispatch. An actor outside that list is rejected before any pull-request or comment API call. Receipt recognition is separate: it accepts the declared OPERATOR identities, `github-actions[bot]` for the repository-token fallback, or the declared provider author when a verified provider control was patched. The established token priority remains `ARCHWIZ_GITHUB_TOKEN`, then `OPERATOR_GITHUB_TOKEN`, then `OPERATOR_TOKEN`, then the repository workflow token as a least-capable fallback.
 
 ## Provider completion boundary
 

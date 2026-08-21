@@ -65,15 +65,18 @@ jobs:
             const requestedSha = (process.env.INPUT_HEAD_SHA || '').trim();
             const confirmBranchWrite = String(process.env.INPUT_CONFIRM_BRANCH_WRITE).toLowerCase() === 'true';
             const marker = '<!-- operator-provider-command:v1 -->';
-            const operatorLogins = new Set([
-              ...((process.env.OPERATOR_EXECUTOR_LOGINS || '').split(',')),
-              context.actor,
-              'github-actions[bot]',
-            ].map(value => value.trim().toLowerCase()).filter(Boolean));
+            const operatorLogins = new Set((process.env.OPERATOR_EXECUTOR_LOGINS || "")
+              .split(",").map(value => value.trim().toLowerCase()).filter(Boolean));
+            const receiptAuthors = new Set([...operatorLogins, "github-actions[bot]"]);
+            const actorLogin = (context.actor || "").trim().toLowerCase();
             const allowedActions = new Set((process.env.OPERATOR_COMMAND_ACTIONS || '')
               .split(',').map(value => value.trim().toLowerCase()).filter(Boolean));
             if (!prNumberRaw || !provider || !action || !requestedSha) {
               core.setFailed('pr_number, provider, action, and head_sha are required.');
+              return;
+            }
+            if (!operatorLogins.has(actorLogin)) {
+              core.setFailed(`Dispatch actor ${context.actor || "unknown"} is not in OPERATOR_EXECUTOR_LOGINS.`);
               return;
             }
             if (!/^\d+$/.test(prNumberRaw)) {
@@ -143,7 +146,7 @@ jobs:
                 comment.body.includes(`head_sha: ${requestedSha}`) &&
                 comment.body.includes(`provider: ${provider}`) &&
                 comment.body.includes(`action: ${action}`) &&
-                (operatorLogins.has(author) || providerEntry.authors.includes(author));
+                (receiptAuthors.has(author) || providerEntry.authors.includes(author));
             });
             if (alreadyRecorded) {
               core.info(`Already dispatched ${provider}:${action} for ${requestedSha}.`);

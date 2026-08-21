@@ -56,9 +56,12 @@ class ProviderCommandLibraryTests(unittest.TestCase):
         self.assertIn("dispatch_receipt: true", self.workflow)
         self.assertIn("Already dispatched ${provider}:${action}", self.workflow)
 
-    def test_receipts_are_atomic_and_accept_default_workflow_identity(self) -> None:
-        self.assertIn("'github-actions[bot]'", self.workflow)
-        self.assertIn("context.actor", self.workflow)
+    def test_actor_authorization_and_receipt_authors_are_separate(self) -> None:
+        self.assertIn("const actorLogin = (context.actor || \"\").trim().toLowerCase()", self.workflow)
+        self.assertIn("if (!operatorLogins.has(actorLogin))", self.workflow)
+        self.assertIn("is not in OPERATOR_EXECUTOR_LOGINS", self.workflow)
+        self.assertIn("const receiptAuthors = new Set([...operatorLogins, \"github-actions[bot]\"])", self.workflow)
+        self.assertIn("receiptAuthors.has(author)", self.workflow)
         self.assertIn("comment.body.includes('dispatch_receipt: true')", self.workflow)
         self.assertIn("Autonomous allowlisted provider-command request and receipt", self.workflow)
         self.assertNotIn("Dispatch receipt. Provider completion remains independently verifiable.", self.workflow)

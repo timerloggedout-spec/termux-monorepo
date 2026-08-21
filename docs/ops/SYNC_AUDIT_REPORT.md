@@ -1,86 +1,97 @@
 # Synchronization Audit Report
 
 **Repository:** [`timerloggedout-spec/termux-monorepo`](https://github.com/timerloggedout-spec/termux-monorepo)
-
-**Audit timestamp:** 2026-08-18 22:58 UTC  
+**Audit window:** 2026-08-20 22:50–23:01 UTC
+**Publication refresh:** 2026-08-21 00:28 UTC
 **Prepared by:** Manus AI
 
-> **Decision:** The controlled promotion path remains **blocked**. Production `master` has a current successful repository gate and a live Render deployment, but it lacks a current `termux smoke` run. `master-staging` fails both required current gates because `scripts/ci/repo_gate.py` has an `IndentationError` at line 139, and each staging-bound Render service fails deterministically at its configured repository root. `termux-smoke` has a successful smoke run but is materially behind staging and lacks a current `repo gate` result. No force-push, automatic merge, or automatic closure is authorized for any spine.
+> **Decision:** The controlled promotion path remains **blocked**. The current production `master` head has locally reproduced repository-gate and Termux-smoke success, while its automatic Render deployment is building and the preceding production deployment remains live. However, `master-staging` fails the repository gate because `archwiz/linear_sync.py` has a Python syntax error at line 237; its smoke check passes but all three staging Render services remain failed. `termux-smoke` passes both locally reproduced gates but remains materially behind staging. No automatic merge, direct spine rewrite, PR closure, or redeploy is authorized by this audit.
 
-## Scope and evidence
+## Scope, cutoff, and evidence discipline
 
-This audit reconciles the complete GitHub pull-request inventory, direct issue closing links, explicit `TER-*` references, all Linear work items, current required GitHub Actions gate runs, and the active Render service/deployment inventory.
+This report is the canonical discovery document for cross-system synchronization. It reconciles the complete GitHub pull-request inventory collected during the audit window, native GitHub closing links, explicit Linear pull-request references, the current Linear tracker inventory, Render services and deployments, and the three controlled branch spines.
 
-| Source | Audit coverage | Current result |
+The GitHub and Linear inventories below are accurate at the stated audit-window cutoff. The publication refresh independently revalidated the subsequently advanced `master` head and its Render deployment. Native and explicit links are treated as evidence; candidate or historical associations are not used to mutate tracker state.
+
+| Source | Audit coverage | Verified result |
 |---|---:|---|
-| GitHub pull requests | 181 total | 96 merged, 58 closed without merge, and 27 open. |
-| GitHub open PR readiness | 27 open | 2 clean, 22 dirty, and 3 unstable; no `UNKNOWN` merge states remain. |
-| GitHub-to-issue links | Native closures and explicit `TER-*` references | 22 PRs carry native GitHub closing links; 13 PRs expose explicit Linear references. |
-| Linear | 275 issues | 137 Done, 114 Triage, 11 In Progress, 7 Todo, 5 Backlog, and 1 Canceled. |
-| Render | 4 active web services | The `master` service is live. All three `master-staging` services failed their latest automatic build for deterministic configuration reasons. |
+| GitHub pull requests | 206 total | 115 merged, 58 closed without merge, and 33 open. |
+| GitHub open-PR readiness | 33 open | 2 clean, 23 dirty, and 8 unstable. |
+| GitHub-to-issue links | Native closures and explicit Linear references | 23 PRs carry native GitHub closing links; 214 deduplicated Linear issue-to-PR references span 14 unique PRs. |
+| Linear tracker | 275 issues | 137 Done, 114 Triage, 11 In Progress, 7 Todo, 5 Backlog, and 1 Canceled. |
+| Render | 4 active web services | Current `master` service is live. All three `master-staging` services have current deterministic build failures. |
 
-## Spine health
+## Controlled-spine health
 
-| Spine | Current head | Gate and test evidence | Deployment evidence | Health assessment |
+| Spine | Exact head and divergence | Gate evidence | Deployment evidence | Health assessment |
 |---|---|---|---|---|
-| `master` | `b1b8df94e83dfd245120d4bdbf67a93a2b635c98` | `repo gate` succeeded on this exact commit. No `termux smoke` run is recorded for this branch head. [1] | `termux-readme-extractor` deployed this exact commit with status `live`. [2] | **Conditionally healthy.** Production is serving the current head, but the dual-gate completion standard is not evidenced on `master`. |
-| `master-staging` | `d0c14f89ab48d973ef5b17178e21ae8820aa39db` | Both the current `repo gate` and `termux smoke` runs fail because `scripts/ci/repo_gate.py` does not compile: `IndentationError: unexpected unindent` at line 139. [3] [4] | Every staging-bound Render service has `build_failed` at this commit. [5] | **Unhealthy.** This spine is not eligible for promotion or for accepting dependent remediation work. |
-| `termux-smoke` | `d5116612803ab8207f7aa37902a383e269f57926` | The latest smoke run on this exact head succeeded. Its most recent `repo gate` evidence is for historical commit `c63f604`, not the current head. [6] | No Render service tracks this branch. | **Unsynchronized.** The branch is 5 commits ahead of and 345 commits behind `master-staging`; both gates must pass after reconciliation. |
+| `master` | `43672ba834928efaa25b90b63946264cfe770cd1`; 51 commits unique to master versus staging, while staging has 18 unique commits. | Local `repo_gate.py --base origin/master` passed. Local `termux_smoke.py` passed. No required GitHub gate run was found at this exact head. | `termux-readme-extractor` is automatically building `43672ba…`; the preceding `a05ebb47…` deployment remains `live`. [1] | **Locally gate healthy; deployment transition in progress.** Do not treat a clean production head as a substitute for staging/spine reconciliation. |
+| `master-staging` | `d33842a807f83bf88041f28ee3775ab4d6e03f2c`; 387 commits ahead of and `termux-smoke` is 5 commits ahead of their merge base. | Local `repo_gate.py --base origin/master` fails on `archwiz/linear_sync.py:237: invalid syntax`. Local `termux_smoke.py` passes. No exact-head required GitHub gate run exists. | Every staging-bound Render service is failed. [2] | **Blocked.** It is not eligible for promotion or dependent integration work. |
+| `termux-smoke` | `d5116612803ab8207f7aa37902a383e269f57926`; 387 commits behind staging and 5 commits ahead. | Local `repo_gate.py --base origin/master-staging` and local `termux_smoke.py` both passed. The exact-head GitHub smoke run succeeded, but no exact-head repository-gate run exists. [3] | No Render service tracks this branch. | **Gate healthy but stale relative to staging.** Reconcile only through a focused, reviewable change after staging is repaired. |
 
-The branch graph shows that `master` and `master-staging` remain non-linear: production has 6 commits absent from staging, while staging has 179 commits absent from production. Treat the three branches as distinct controlled spines, rather than assuming a fast-forward promotion path.
+The local smoke execution is a Linux support-surface check, not evidence of a live Android device run. It confirms the documented Python, repository layout, gate compilation, Git, Bash, writable-temporary-directory, and connector-suite requirements under the sandbox environment.
 
-## Verified current blockers
+## Material correction to the previous report
 
-The previous audit recorded malformed session-metadata JSON as the staging `repo gate` failure. That content may still require attention, but it is **not the immediate current failure**. On `d0c14f8`, both required gates fail before repository policy checks complete because `scripts/ci/repo_gate.py` has an unexpected unindent at line 139. Fix and compile the gate first; only then re-evaluate the prior JSON parsing findings. [3] [4]
+The prior report correctly treated staging as blocked, but its immediate `repo_gate.py` indentation diagnosis is stale. The current gate script compiles. Reproducing the repository gate at the current staging head identifies the present hard blocker:
 
-All three staging deployments are deterministic configuration failures, not transient redeploy events. `termux-monorepo_render-webService-v3` runs `poetry install` from repository root, where Render reports no `pyproject.toml`. The v1 and v2 services both run `pip install -r requirements.txt`, and Render reports that no root `requirements.txt` exists. Each service must have a validated project root plus build and start commands before a redeploy can be accepted as evidence. [5]
+> `python-syntax: archwiz/linear_sync.py:237: invalid syntax`
+
+Repair this exact staging-bound syntax error first. The prior malformed-JSON and indentation findings remain historical evidence only; they are not the current failing condition without a fresh reproduction.
 
 ## Pull-request and work-item reconciliation
 
-| Open PR and linked work | GitHub condition | Linear condition | Synchronization decision |
+| Verified operational link | GitHub condition at audit cutoff | Linear condition at audit cutoff | Synchronization decision |
 |---|---|---|---|
-| [#92](https://github.com/timerloggedout-spec/termux-monorepo/pull/92) ↔ `TER-120`, `TER-67`, `TER-69` | Dirty against `master`; do not merge directly. | All three are **In Progress** and delegated to **Devin**. | Preserved the prior recovery assignment for prompt-injection, immutable action pinning, and least-privilege workflow remediation. |
-| [#48](https://github.com/timerloggedout-spec/termux-monorepo/pull/48) ↔ `TER-71` (and historical rollup `TER-40`) | Dirty against `master-staging`; do not merge directly. | `TER-71` is **In Progress** and delegated to **Devin**. `TER-40` is Done as the PR #43 feedback rollup. | Preserve the scoped `TER-71` recovery; rebase or replace the PR only after staging gate repair. |
-| [#8](https://github.com/timerloggedout-spec/termux-monorepo/pull/8) ↔ `TER-11` | Dirty against `master-staging`; submodule work requires a clean rebase. | **In Progress**; delegate set to **Devin** during this audit. | Route the active submodule/bridge recovery to the configured specialist, without changing the human assignee or closing the issue. |
-| [#6](https://github.com/timerloggedout-spec/termux-monorepo/pull/6) ↔ `TER-9`, `TER-10` | Dirty against `master-staging`; its extract-only constraint remains active. | `TER-9` is **In Progress**; `TER-10` is Backlog. | Do not merge wholesale. Preserve the existing focused-extraction path. |
-| [#69](https://github.com/timerloggedout-spec/termux-monorepo/pull/69) ↔ `TER-116` | Dirty and targets a feature branch, not a controlled spine. | `TER-116` is **In Progress**. | Keep outside the promotion path until its target and scope are explicitly confirmed. |
+| [PR #92](https://github.com/timerloggedout-spec/termux-monorepo/pull/92) ↔ `TER-120`, `TER-67`, `TER-69` | Open against `master`; conflicting/dirty. | All three linked security items remain In Progress and delegated to Devin. | Preserve recovery ownership; do not promote directly to `master`. |
+| [PR #48](https://github.com/timerloggedout-spec/termux-monorepo/pull/48) ↔ `TER-71` | Open against `master-staging`; conflicting/dirty. | In Progress; delegated to Devin. | Preserve existing ownership; staging must recover first. |
+| [PR #8](https://github.com/timerloggedout-spec/termux-monorepo/pull/8) ↔ [`TER-11`](https://linear.app/termux-monorepo-linear/issue/TER-11/integrate-codex-termux-fork-as-submodule-deepcli-bridge-native-codex) | Open against `master-staging`; conflicting/dirty. | In Progress; delegated to Codex. | Preserve the configured submodule specialist and do not reassign. |
+| [PR #6](https://github.com/timerloggedout-spec/termux-monorepo/pull/6) ↔ `TER-9` | Open against `master-staging`; conflicting/dirty. | In Progress; extract-only constraint remains recorded. | No wholesale merge or closure. |
+| [PR #69](https://github.com/timerloggedout-spec/termux-monorepo/pull/69) ↔ `TER-116` | Open against a feature branch; conflicting/dirty. | In Progress; operator-owned debate work. | Keep outside the controlled promotion path. |
+| [PR #7](https://github.com/timerloggedout-spec/termux-monorepo/pull/7) ↔ [`TER-21`](https://linear.app/termux-monorepo-linear/issue/TER-21/jules-ready-termux-mcp-on-device-integration-pr-7) | Open against `master-staging`; clean. | Todo; no valid Linear delegate for the stated Jules route was present in the audited roster. | No reassignment. The work item itself records that Devin was previously unavailable. |
 
-The remaining open PRs without authoritative GitHub or explicit Linear references were not retroactively assigned, closed, or merged. A dirty or unstable PR must be rebased and have current checks refreshed before review; the audit is not authority to broaden or infer scope.
+The explicit-link audit also identified **61 Triage items** that refer to four already-merged PRs: #18 (7 items), #70 (36), #72 (9), and #75 (9). These are primarily bot-created review-feedback or rollup items. Merging the parent PR does not demonstrate completion of every independently tracked feedback item, so no mass status conversion was performed.
+
+## Synchronization action applied
+
+| Action | Before | After | Rationale |
+|---|---|---|---|
+| [`TER-15 — Linear Integration`](https://linear.app/termux-monorepo-linear/issue/TER-15/linear-integration) delegation | In Progress; no delegate. | In Progress; **delegate: Devin**. | TER-15 owns the Linear-integration surface, while the current staging gate is blocked by `archwiz/linear_sync.py`. Devin is the configured review/fix specialist. |
+
+No GitHub PR, GitHub issue, protected branch, Render service, deployment, or other Linear issue status was closed, merged, retargeted, or modified. This preserves the difference between evidence of a merged PR and evidence that a separately tracked feedback item is done.
 
 ## Render deployment matrix
 
-| Service | Branch | Latest deploy | Result | Verified failure | Required correction |
+| Service | Branch | Latest verified deploy | Result | Verified condition | Required next evidence |
 |---|---|---|---|---|---|
-| [`termux-readme-extractor`](https://dashboard.render.com/web/srv-d9pq9pajnfac73a73sh0) | `master` | `b1b8df9` | `live` | None on current deploy. | Maintain current configuration; observe future production deployments. |
-| [`termux-monorepo_render-webService-v3`](https://dashboard.render.com/web/srv-d9pphvdbedkc73e2im00) | `master-staging` | `d0c14f8` | `build_failed` | `poetry install` cannot find `pyproject.toml` at repository root. | Set a real project root or replace the build/start commands with commands valid for the intended service. |
-| [`termux-monorepo_render-webService-v2`](https://dashboard.render.com/web/srv-d9pph1qjobas73etpmrg) | `master-staging` | `d0c14f8` | `build_failed` | `pip install -r requirements.txt` cannot find a root requirements file. | Set a real project root or replace the build/start commands with commands valid for the intended service. |
-| [`termux-monorepo_render-webService`](https://dashboard.render.com/web/srv-d9oeqmvqj5pc738ke09g) | `master-staging` | `d0c14f8` | `build_failed` | `pip install -r requirements.txt` cannot find a root requirements file. | Set a real project root or replace the build/start commands with commands valid for the intended service. |
-
-## Synchronization actions completed
-
-| Action | Result |
-|---|---|
-| Reconciled GitHub PR state, native issue closures, and explicit Linear references | Complete; PR status counts and all explicit `TER-*` links refreshed. |
-| Reconciled Linear work status and agent ownership | Complete; the four prior security/hub recovery items remain in progress and delegated to Devin. `TER-11` was additionally delegated to Devin for the active submodule recovery. |
-| Updated existing spine-recovery tracker | A current audit update was posted to GitHub issue [#50](https://github.com/timerloggedout-spec/termux-monorepo/issues/50#issuecomment-5335163435). |
-| Altered protected spines or auto-resolved PRs | **No.** No direct branch rewrite, automatic merge, or automatic closure was performed. |
+| [`termux-readme-extractor`](https://dashboard.render.com/web/srv-d9pq9pajnfac73a73sh0) | `master` | `43672ba…` | `build_in_progress` | The prior `a05ebb47…` deployment remains `live`; the new automatic deployment has not yet produced final evidence. | Re-check the final status; accept current-master deployment health only after it reaches `live`. |
+| [`termux-monorepo_render-webService-v3`](https://dashboard.render.com/web/srv-d9pphvdbedkc73e2im00) | `master-staging` | `d33842a…` | `build_failed` | Empty `rootDir` with `poetry install`; no root `pyproject.toml` exists. | Validate project root plus build/start contract, then observe a successful automatic deployment. |
+| [`termux-monorepo_render-webService-v2`](https://dashboard.render.com/web/srv-d9pph1qjobas73etpmrg) | `master-staging` | `d33842a…` | `build_failed` | Empty `rootDir` with `pip install -r requirements.txt`; no root `requirements.txt` exists. | Validate project root plus build/start contract, then observe a successful automatic deployment. |
+| [`termux-monorepo_render-webService`](https://dashboard.render.com/web/srv-d9oeqmvqj5pc738ke09g) | `master-staging` | Latest recorded deploy | `build_failed` | The same empty-root `requirements.txt` configuration mismatch persists. | Validate project root plus build/start contract, then observe a successful automatic deployment. |
 
 ## Required recovery sequence
 
-| Order | Required outcome | Acceptance evidence |
-|---:|---|---|
-| 1 | Repair the indentation defect in `scripts/ci/repo_gate.py` on a reviewable staging-bound change. | The script compiles and both `repo gate` and `termux smoke` pass on the resulting `master-staging` commit. |
-| 2 | Re-run the policy gate after the syntax repair and resolve any remaining malformed session-metadata JSON or submit a narrowly justified, reviewed scope change. | A current `repo gate` success with no bypass of tracked-content policy. |
-| 3 | Correct the root directory and build/start commands of all three staging Render services. | A successful automatic deploy for each active `master-staging` service on the corrected commit. |
-| 4 | Reconcile `termux-smoke` with `master-staging` via a focused, reviewable PR. | Current `repo gate` and `termux smoke` successes on the reconciled smoke head; divergence reduced under the approved branch policy. |
-| 5 | Rebase or replace each active linked remediation PR with target-branch discipline. | Clean merge state, passing required checks, and explicit GitHub-to-Linear linkage. |
-| 6 | Consider selective promotion only after staging and smoke evidence is current and deployment health is green. | Current production `repo gate` and `termux smoke` evidence, a live production Render deployment, and no unresolved staging or smoke divergence. |
+| Order | Required outcome | Owner or route | Acceptance evidence |
+|---:|---|---|---|
+| 1 | Repair `archwiz/linear_sync.py:237` on a staging-bound, reviewable change. | **Devin** through `TER-15`; no direct protected-spine push. | Repository gate passes at the resulting staging commit. |
+| 2 | Run both required workflow gates on the repaired `master-staging` head. | Repository gate process. | Exact-head success for repository gate and Termux smoke. |
+| 3 | Correct all three staging Render services’ project-root and build/start contracts. Separately preserve production port binding. | Explicit Render configuration owner. | One live automatic deployment per service tied to a known commit. |
+| 4 | Bring `termux-smoke` forward only after staging is green. | Controlled, reviewable spine process. | Exact-head success for both gates and reduced divergence. |
+| 5 | Review the 61 bot-feedback Triage records under merged PRs #18, #70, #72, and #75 individually. | Tracker triage owner. | Each item is completed, retained with a current blocker, or otherwise dispositioned with evidence. |
+| 6 | Rebase or replace active linked remediation PRs with target-branch discipline. | Assigned agent and reviewer. | Clean merge state, passing checks, and explicit GitHub-to-Linear linkage. |
+
+## Scheduled-audit contract
+
+A recurring audit should collect evidence and propose bounded follow-up actions, but it must not merge, close, force-push, redeploy, change protected branches, or bulk-change tracker state without a separate explicit instruction. It should always refresh the canonical report above, distinguish native/explicit relationships from candidates, and treat a branch as fully healthy only when both required checks, tracker alignment, and appropriate deployment evidence are current.
 
 ## References
 
-[1]: https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32185855977 "Current master repo gate success"
-[2]: https://dashboard.render.com/web/srv-d9pq9pajnfac73a73sh0 "Production Render service"
-[3]: https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32169661080 "Current master-staging repo gate failure"
-[4]: https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32169661027 "Current master-staging termux smoke failure"
-[5]: https://dashboard.render.com/web/srv-d9pphvdbedkc73e2im00 "Staging Render service v3"
-[6]: https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/31895158871 "Current termux-smoke smoke success"
+[1]: https://dashboard.render.com/web/srv-d9pq9pajnfac73a73sh0 "Production Render service"
+[2]: https://dashboard.render.com/web/srv-d9pphvdbedkc73e2im00 "Staging Render service v3"
+[3]: https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/31895158871 "termux-smoke workflow run on d511661"
+[4]: https://github.com/timerloggedout-spec/termux-monorepo/pulls?q=is%3Apr "GitHub pull-request inventory"
+[5]: https://github.com/timerloggedout-spec/termux-monorepo/issues/192 "Issue #192: Implement Actions Refinements"
+
+---
+
+**Relationship-index boundary:** The repository-native context-relationship index was current through 2026-08-19 but covers the first 20 PR/issue history pages and reports `next_start_page: 2`. The audit used the current GitHub and Linear inventories for complete status counts. Verified native and explicit links are separated from candidate relationships; no candidate relationship justified an external write.

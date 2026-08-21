@@ -24,8 +24,17 @@ concurrency:
 
 jobs:
   event-received:
-    # A harmless event receipt prevents zero-job failure status without creating
-    # a run for every repository push. It has no write permission.
+    # Record only accepted label or trusted-mention shapes. This remains a
+    # read-only receipt and avoids starting a runner for PR discussion traffic.
+    if: |
+      github.event_name == 'issues' ||
+      (
+        github.event_name == 'issue_comment' &&
+        !github.event.issue.pull_request &&
+        github.event.sender.type == 'User' &&
+        contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association) &&
+        (startsWith(github.event.comment.body, '@jules') || startsWith(github.event.comment.body, '@Jules'))
+      )
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -107,11 +116,11 @@ jobs:
                 ].join('\n'),
               });
             }
-            const { data: prs } = await github.rest.pulls.list({
+            const prs = await github.paginate(github.rest.pulls.list, {
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
-              per_page: 50,
+              per_page: 100,
             });
             const agentLogins = [
               'google-labs-jules[bot]',
@@ -237,11 +246,11 @@ jobs:
               core.info(`Reaction skipped: ${error.message}`);
             }
             const issue = context.payload.issue.number;
-            const { data: prs } = await github.rest.pulls.list({
+            const prs = await github.paginate(github.rest.pulls.list, {
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
-              per_page: 50,
+              per_page: 100,
             });
             const agentLogins = ['google-labs-jules', 'devin-ai-integration', 'coderabbitai', 'ecc-tools'];
             const relevant = prs.filter(pr => {

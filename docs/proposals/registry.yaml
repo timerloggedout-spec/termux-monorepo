@@ -170,6 +170,23 @@ proposals:
     related_issues: [192, 175]
     related_prs: [193, 81, 92, 143, 72, 232]
     gates_required: [repo-gate, termux-smoke]
+  - id: linguist-machine-parity
+    title: "Linguist README machine-parity enhancement"
+    author: Manus AI
+    status: posted
+    priority: P2
+    path: active/linguist-machine-parity/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: Manus AI
+        role: registrar
+        status: posted
+    related_prs: []
+    related_branches: []
+    gates_required: [repo-gate, termux-smoke]
+
   - id: gantt-dependency-phases
     title: "Dependency-phase automation and GitHub Projects integration"
     author: Manus AI

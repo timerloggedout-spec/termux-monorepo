@@ -27,7 +27,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "40994e6495dff6b40f8a5498e251beeb59031eee47b0ee36adcde9ffacd1b0c3",
+  "source_fingerprint": "045950033026a836f013a3ca8656159df0719ad8ab500a684e50fb54aca131b4",
   "workflow_count": 40,
   "workflows": [
     {
@@ -133,7 +133,7 @@
         "actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3",
         "actions/setup-node@820762786026740c76f36085b0efc47a31fe5020",
         "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
-        "github/gh-aw/actions/setup@48e5fa3ff52294d91d97715017a9f8693a48387f"
+        "github/gh-aw-actions/setup@6aab9e5b5c91c615506061f09bedd81a23babe3c"
       ],
       "authority": "bounded-state-write",
       "concurrency": "group: \"gh-aw-${{ github.workflow }}\"",

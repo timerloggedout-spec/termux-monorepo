@@ -113,6 +113,8 @@ jobs:
           has-omni: ${{ secrets.OMNI_API_KEY != '' || secrets.OMNIROUTE_API_KEY != '' }}
           has-openrouter: ${{ secrets.OPENROUTER_API_KEY != '' }}
           has-gemini: ${{ secrets.GEMINI_API_KEY != '' }}
+          target-sha: ${{ steps.pr.outputs.head_sha }}
+          current-sha: ${{ steps.pr.outputs.head_sha }}
 
       - name: Record capability-spine observe decision
         if: steps.pr.outputs.skip != 'true'

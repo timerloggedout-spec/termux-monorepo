@@ -69,7 +69,7 @@ selection_rule: |
 
 capability_scope_specialist:
   mode: observe
-  rollback: set capability_spine_observe=false to remove the shadow recommendation; current execution routing remains unchanged
+  rollback: set capability-spine-observe: 'false' on each model-router action call, or set CAPABILITY_SPINE_OBSERVE=false only for direct script execution; current execution routing remains unchanged
   requested_capabilities: [triage, review, invoke, security_analysis, implementation, test, autofix, fix_ci, resolve_merge_conflict, conflict_resolution]
   authority_effects: [read_only_analysis, review_request, branch_write, stacked_pull_request, provider_configuration]
   hard_gates:
@@ -80,7 +80,7 @@ capability_scope_specialist:
     - current_sha_evidence_when_pr_scoped
     - explicit_confirm_branch_write_for_branch_effects
   decision_envelope:
-    schema_version: 1
+    schema_version: 2
     contains: [mode, capability, state, recommendation, runner_up, candidate_availability, quota, evidence_confidence, score_components]
     excludes: [secrets, raw_issue_bodies, raw_review_bodies, command_fragments]
   specialist_boundaries:

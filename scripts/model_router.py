@@ -49,7 +49,7 @@ def parse_yaml(filepath):
                 parent_key = path[-1][2]
             if stripped.startswith("- "):
                 item_str = stripped[2:].strip()
-                if ":" in item_str and not (item_str.startswith('"') or item_str.startswith("'")):
+                if ":" in item_str and not item_str.startswith(('"', "'")):
                     key, value = item_str.split(":", 1)
                     key = key.strip().strip('"\'')
                     value = value.strip().strip('"\'')
@@ -69,7 +69,7 @@ def parse_yaml(filepath):
                         parent[parent_key] = []
                     parent[parent_key].append(item_value)
                     if isinstance(item_value, dict):
-                        sub_key = list(item_value.keys())[0]
+                        sub_key = next(iter(item_value))
                         path.append((indent, item_value, sub_key))
                 continue
             match = KEY_VAL_RE.match(stripped)
@@ -126,7 +126,7 @@ def fetch_openrouter_free_models():
             if free and model_id:
                 free_models.append(model_id)
         return free_models or None
-    except Exception as error:
+    except (OSError, ValueError, json.JSONDecodeError) as error:
         sys.stderr.write(
             f"Warning: Failed to poll OpenRouter models ({error}). Using hardcoded fallback list.\n"
         )
@@ -144,8 +144,8 @@ def fetch_openrouter_free_models_cached_with_source():
                 cache_data = json.load(handle)
             cached_models = cache_data.get("models")
             cached_time = cache_data.get("timestamp", 0)
-        except Exception:
-            pass
+        except (OSError, ValueError, TypeError, json.JSONDecodeError) as error:
+            sys.stderr.write(f"Warning: OpenRouter cache is unreadable ({error}).\n")
     if cached_models is not None and time.time() - cached_time < 3600:
         sys.stderr.write("Using cached OpenRouter free models list.\n")
         return cached_models, "cached"
@@ -155,8 +155,8 @@ def fetch_openrouter_free_models_cached_with_source():
             os.makedirs(COUNTER_DIR, exist_ok=True)
             with open(cache_file, "w", encoding="utf-8") as handle:
                 json.dump({"timestamp": time.time(), "models": models}, handle)
-        except Exception:
-            pass
+        except (OSError, TypeError, ValueError) as error:
+            sys.stderr.write(f"Warning: Could not persist OpenRouter catalog ({error}).\n")
         return models, "live"
     if cached_models is not None:
         sys.stderr.write("Warning: OpenRouter fresh poll failed. Falling back to stale cached models list.\n")
@@ -176,7 +176,8 @@ def get_usage(provider, model):
         try:
             with open(filename, "r", encoding="utf-8") as handle:
                 return int(handle.read().strip())
-        except Exception:
+        except (OSError, ValueError) as error:
+            sys.stderr.write(f"Warning: usage counter is unreadable ({error}).\n")
             return 0
     return 0
 
@@ -205,12 +206,23 @@ def write_output(name, value):
             handle.write(f"{name}={value}\n")
 
 
-def emit_decision(role, success_matrix, limits, role_peers, role_residuals,
-                  has_omni, has_openrouter, has_gemini,
-                  openrouter_models, openrouter_catalog_state):
+def emit_decision(
+    role,
+    success_matrix,
+    limits,
+    role_peers,
+    role_residuals,
+    has_omni,
+    has_openrouter,
+    has_gemini,
+    openrouter_models,
+    openrouter_catalog_state,
+    target_sha=None,
+    current_sha=None,
+):
     """Emit AR-17 shadow data without affecting the legacy selected route."""
     if os.environ.get("CAPABILITY_SPINE_OBSERVE", "true").lower() != "true":
-        write_output("decision", json.dumps({"schema_version": 1, "mode": "disabled"}))
+        write_output("decision", json.dumps({"schema_version": 2, "mode": "disabled"}))
         write_output("decision_summary", "capability-spine observe mode disabled")
         return
 
@@ -241,6 +253,17 @@ def emit_decision(role, success_matrix, limits, role_peers, role_residuals,
                 provider=provider,
                 model=model,
                 capability=role,
+                declared_capabilities={role},
+                effect="read_only_analysis",
+                provenance={
+                    "declared_source": "llm-peers.yaml/model-success-matrix.yaml",
+                    "trusted": True,
+                },
+                policy_enabled=True,
+                requires_current_sha=bool(target_sha),
+                target_sha=target_sha,
+                current_sha=current_sha,
+                branch_write_confirmed=False,
                 has_provider=provider_flags.get(provider, False),
                 openrouter_models=catalog_models,
                 openrouter_catalog_state=catalog_state,
@@ -315,8 +338,18 @@ def main():
     }
 
     emit_decision(
-        role, success_matrix, limits, role_peers, role_residuals,
-        has_omni, has_openrouter, has_gemini, polled_free_models, catalog_state,
+        role,
+        success_matrix,
+        limits,
+        role_peers,
+        role_residuals,
+        has_omni,
+        has_openrouter,
+        has_gemini,
+        polled_free_models,
+        catalog_state,
+        target_sha=os.environ.get("TARGET_SHA") or None,
+        current_sha=os.environ.get("CURRENT_SHA") or None,
     )
 
     # Existing execution selection stays unchanged in AR-17 observe mode.
@@ -386,7 +419,7 @@ def main():
 if __name__ == "__main__":
     try:
         main()
-    except Exception as error:
+    except (OSError, ValueError, KeyError, TypeError) as error:
         sys.stderr.write(f"Error: Model Router crashed: {error}\n")
         write_output("provider", "none")
         write_output("model", "")

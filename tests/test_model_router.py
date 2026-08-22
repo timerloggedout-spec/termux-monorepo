@@ -1,13 +1,13 @@
+import json
 import os
 import sys
-import json
 import urllib.request
-import pytest
 from unittest.mock import MagicMock
 
 # Add scripts to path so we can import model_router
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import scripts.model_router as mr
+
 
 def test_parse_yaml(tmp_path):
     # Create a dummy yaml file
@@ -66,7 +66,7 @@ def test_fetch_openrouter_free_models_success(monkeypatch):
 def test_fetch_openrouter_free_models_failure(monkeypatch):
     # Simulate urllib network exception
     def mock_urlopen(*args, **kwargs):
-        raise Exception("Network Timeout")
+        raise OSError("Network Timeout")
 
     monkeypatch.setattr(urllib.request, "urlopen", mock_urlopen)
 
@@ -209,7 +209,7 @@ def test_observe_feature_gate_keeps_execution_route_and_marks_decision_disabled(
     monkeypatch.setenv("ROLE", "triage")
     monkeypatch.setenv("HAS_OMNI", "false")
     monkeypatch.setenv("HAS_OPENROUTER", "false")
-    monkeypatch.setenv("HAS_GEMINI", "false")
+    monkeypatch.setenv("HAS_GEMINI", "true")
     monkeypatch.setenv("CAPABILITY_SPINE_OBSERVE", "false")
     monkeypatch.setattr(mr, "COUNTER_DIR", str(tmp_path))
     output_file = tmp_path / "github_output.txt"
@@ -218,6 +218,27 @@ def test_observe_feature_gate_keeps_execution_route_and_marks_decision_disabled(
     mr.main()
 
     outputs = output_file.read_text()
-    assert 'decision={"schema_version": 1, "mode": "disabled"}' in outputs
-    assert "provider=none" in outputs
-    assert "skip=true" in outputs
+    assert 'decision={"schema_version": 2, "mode": "disabled"}' in outputs
+    assert "provider=gemini" in outputs
+    assert "skip=false" in outputs
+
+
+def test_stale_target_sha_fails_closed_in_observe_decision_only(tmp_path, monkeypatch):
+    monkeypatch.setenv("ROLE", "triage")
+    monkeypatch.setenv("HAS_OMNI", "false")
+    monkeypatch.setenv("HAS_OPENROUTER", "false")
+    monkeypatch.setenv("HAS_GEMINI", "true")
+    monkeypatch.setenv("CAPABILITY_SPINE_OBSERVE", "true")
+    monkeypatch.setenv("TARGET_SHA", "a" * 40)
+    monkeypatch.setenv("CURRENT_SHA", "b" * 40)
+    monkeypatch.setattr(mr, "COUNTER_DIR", str(tmp_path))
+    output_file = tmp_path / "github_output.txt"
+    monkeypatch.setenv("GITHUB_OUTPUT", str(output_file))
+
+    mr.main()
+
+    outputs = output_file.read_text()
+    assert '"state":"no_eligible_specialist"' in outputs
+    assert '"exclusion":"current-SHA gate is missing or stale"' in outputs
+    assert "provider=gemini" in outputs
+    assert "skip=false" in outputs

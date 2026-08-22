@@ -34,7 +34,7 @@ The coordination controller in `.github/workflows/agent-platform-coordination.ym
 - `gitlab-ahead` — GitLab-origin work owns the corrective-write lane; GitHub is review/shadow-only until reconciliation.
 - `diverged` — both platforms are held from automated corrective writes until reconciliation.
 
-The lease is keyed by PR and head SHA and is deliberately **advisory**: it does not invoke CodeRabbit, push commits, or grant cross-platform write authority. This is important because CodeRabbit is already configured for automatic incremental reviews and autofix on GitHub. citehttps://github.com/timerloggedout-spec/termux-monorepo/blob/master/.coderabbit.yaml
+The lease is keyed by PR and head SHA and is deliberately **advisory**: it does not invoke CodeRabbit, push commits, or grant cross-platform write authority. This is important because CodeRabbit is already configured for automatic incremental reviews and autofix on GitHub (`.coderabbit.yaml`).
 
 ### CodeRabbit operating rule
 
@@ -43,7 +43,7 @@ The lease is keyed by PR and head SHA and is deliberately **advisory**: it does 
 - A platform marked `*-primary` is the only automated corrective-write lane for that revision.
 - The other platform remains review/shadow-only until the head SHA changes or an operator explicitly transfers ownership.
 - `diverged` means no automated corrective writes; resolve the repository relationship first.
-- Review comments may be relayed to downstream agents, but provider-control messages (for example review-trigger UI notices or rate-limit notices) are not substantive review feedback. The existing GitHub agent relay already distinguishes those cases and debounces provider feedback by source revision. citehttps://github.com/timerloggedout-spec/termux-monorepo/blob/master/.github/workflows/agent-review-auto-jules.yml
+- Review comments may be relayed to downstream agents, but provider-control messages (for example review-trigger UI notices or rate-limit notices) are not substantive review feedback. The existing GitHub agent relay in `.github/workflows/agent-review-auto-jules.yml` already distinguishes those cases and debounces provider feedback by source revision.
 
 This prevents the common failure loop where GitHub CodeRabbit fixes a commit, GitLab CodeRabbit sees the mirrored commit and fixes it again, the mirror carries that second change back, and both reviewers re-open each other's work.
 

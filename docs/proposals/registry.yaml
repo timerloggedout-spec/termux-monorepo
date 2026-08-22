@@ -1,7 +1,7 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-08-22T20:30:00Z"
-updated_by: ChatGPT
+updated_at: "2026-08-22T22:00:00Z"
+updated_by: Grok (Administrator)
 
 proposals:
   - id: context-relationship-graph
@@ -205,7 +205,7 @@ proposals:
     related_branches: [manus/dependency-phase-automation]
     gates_required: [repo-gate, termux-smoke]
 
-  - id: notation-sets-evolution
+  - id: notation-sets
     title: "Notation Sets, Living Lexicon, and Cross-Domain Semantic Index"
     author: ChatGPT
     status: posted
@@ -216,7 +216,7 @@ proposals:
         role: operator-authorizer
         status: requested
     related_issues: [320, 309, 182, 175]
-    related_prs: []
+    related_prs: [322]
     related_branches:
       - docs/notation-sets-evolution
     gates_required: [repo-gate, termux-smoke]

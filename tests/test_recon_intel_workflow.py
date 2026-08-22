@@ -53,6 +53,7 @@ class ReconIntelWorkflowTests(unittest.TestCase):
 
     def test_gitlab_token_is_used_only_for_classification(self) -> None:
         self.assertIn("RECON_INTEL_GITLAB_READ_TOKEN", self.workflow)
+        self.assertIn("GITHUB_TOKEN: ${{ github.token }}", self.workflow)
         self.assertIn("secrets.GITLAB_TOKEN", self.workflow)
         self.assertIn("secrets.OPERATOR_GITLAB_TOKEN", self.workflow)
         self.assertIn("python3 scripts/ci/recon_intel_discovery.py", self.workflow)

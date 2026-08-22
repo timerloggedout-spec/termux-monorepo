@@ -71,6 +71,14 @@ class ProviderCommandLibraryTests(unittest.TestCase):
         self.assertIn("labels.includes(candidate[3].trim())", self.workflow)
         self.assertIn("checkboxId", self.workflow)
 
+    def test_branch_writing_dispatch_requires_an_exact_current_recon_intel_lease(self) -> None:
+        self.assertIn("INPUT_GITLAB_SHA", self.workflow)
+        self.assertIn("INPUT_POLICY_VERSION", self.workflow)
+        self.assertIn("A valid gitlab_sha and recon-intel policy_version are required", self.workflow)
+        self.assertIn("expectedExternalId = `recon-intel:${policyVersion}:master:${requestedGitlabSha}`", self.workflow)
+        self.assertIn("leaseLane !== 'github-primary'", self.workflow)
+        self.assertIn("No matching current RECON INTEL github-primary lease exists", self.workflow)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -63,7 +63,7 @@ jobs:
           echo "state=$state" >> "$GITHUB_OUTPUT"
           echo "Review lease state: $state (GitHub=$GH_SHA GitLab=$gitlab_sha)"
 
-      - name: Apply coordination labels
+      - name: Apply optional coordination labels
         if: github.event.pull_request.number != '' && steps.lease.outputs.state != 'unknown'
         env:
           GH_TOKEN: ${{ github.token }}
@@ -72,7 +72,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          gh pr edit "$PR_NUMBER" --add-label "agent-sync:$STATE"
+          gh pr edit "$PR_NUMBER" --add-label "agent-sync:$STATE" || true
           case "$STATE" in
             github-ahead|aligned)
               gh pr edit "$PR_NUMBER" --add-label "coderabbit:github-primary" || true

@@ -54,6 +54,10 @@ The manual reconciliation push and pull-request step prefer `RECON_INTEL_GITHUB_
 
 Neither GitLab nor GitHub credential is written to the repository, remote URL, workflow summary, artifact, log message, GitHub check, PR body, provider payload, or generated documentation. If no GitLab secret resolves, discovery reports `not-configured`; if both Git transport and the required REST endpoints are unavailable, it reports `external-access-denied`. Both outcomes are safe and do not trigger a write. A valid GitHub SHA that does not exist in the GitLab project is reported as `no-common-ancestor`, not as an authorization failure.
 
+## Manual discovery probe
+
+A blank manual **RECON INTEL discovery** dispatch always probes exactly the current GitHub default-branch SHA against the allowlisted GitLab `master` ref. It is intended for a bounded operational health check and never expands to the active PR matrix. To inspect one open same-repository PR, provide its exact `pr_number`. Pull-request events and the scheduled workflow retain their active-PR reconnaissance behavior.
+
 ## Manual reconciliation procedure
 
 Use **RECON INTEL reconciliation apply** only after the discovery check has reported a fresh `gitlab-ahead` result and the operator has captured the exact GitHub and GitLab SHAs from that check. Provide `apply=true`, `github_sha`, `gitlab_sha`, and the allowlisted `master` ref.

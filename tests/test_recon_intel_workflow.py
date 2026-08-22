@@ -45,6 +45,12 @@ class ReconIntelWorkflowTests(unittest.TestCase):
         self.assertIn("pr_number must be a positive decimal integer", self.workflow)
         self.assertIn("open, non-draft, same-repository pull request", self.workflow)
 
+    def test_blank_manual_dispatch_is_a_single_default_branch_probe(self) -> None:
+        self.assertIn("blank performs one current default-branch probe", self.workflow)
+        self.assertIn("context.eventName === 'workflow_dispatch'", self.workflow)
+        self.assertIn("operator’s bounded health probe, not a bulk PR sweep", self.workflow)
+        self.assertIn("targets = [{ pr_number: '0', github_sha: context.sha }]", self.workflow)
+
     def test_gitlab_token_is_used_only_for_classification(self) -> None:
         self.assertIn("RECON_INTEL_GITLAB_READ_TOKEN", self.workflow)
         self.assertIn("secrets.GITLAB_TOKEN", self.workflow)

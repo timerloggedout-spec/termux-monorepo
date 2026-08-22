@@ -31,7 +31,7 @@ RECON INTEL provides a current, metadata-only coordination record for the GitHub
 | `not-configured` | `not-configured` | GitHub-native review may proceed; cross-platform claims are suppressed. | Blocked. |
 | `external-access-denied` | `access-denied` | GitHub-native review may proceed; external state is advisory only. | Blocked. |
 
-Each decision is bound to the repository pair, GitHub PR number where applicable, GitHub head SHA, GitLab ref, GitLab observed SHA, and policy version. A new GitHub head, new GitLab SHA, changed ref, or changed policy invalidates the preceding lease.
+Each decision is bound to the repository pair, GitHub PR number where applicable, GitHub head SHA, GitLab ref, GitLab observed SHA, and policy version. A new GitHub head, new GitLab SHA, changed ref, or changed policy invalidates the preceding lease. **Parallel development coordination is mandatory:** every exact SHA tuple permits broad review in shadow mode but exactly one corrective-write lane. All `hold`, inaccessible, unknown, and no-common-ancestor states prohibit every automated corrective writer.
 
 ## Bot and agent rules
 
@@ -48,7 +48,7 @@ Provider comments, review text, checkbox notices, quota messages, rate-limit not
 
 ## GitLab credential boundary
 
-The preferred GitHub Actions secret is `RECON_INTEL_GITLAB_READ_TOKEN`, dedicated to this purpose and scoped only to the GitLab project’s repository-read capability. For compatibility with the existing repository configuration, discovery and reconciliation fall back in order to `GITLAB_TOKEN` and `OPERATOR_GITLAB_TOKEN`. The workflows read only one resolved value through the `RECON_INTEL_GITLAB_READ_TOKEN` environment name; they do not disclose which fallback supplied it.
+The preferred GitHub Actions secret is `RECON_INTEL_GITLAB_READ_TOKEN`, dedicated to this purpose and scoped only to the GitLab project’s repository-read capability. The existing full-scope GitLab secrets are both valid for the same project and are **not backwards**: `GITLAB_TOKEN` is the compatibility/default discovery fallback, while `OPERATOR_GITLAB_TOKEN` is preferred for a manually authorized reconciliation operation. Discovery resolves `RECON_INTEL_GITLAB_READ_TOKEN` → `GITLAB_TOKEN` → `OPERATOR_GITLAB_TOKEN`; manual reconciliation resolves `RECON_INTEL_GITLAB_READ_TOKEN` → `OPERATOR_GITLAB_TOKEN` → `GITLAB_TOKEN`. The workflows read only one resolved value through the `RECON_INTEL_GITLAB_READ_TOKEN` environment name and do not disclose which fallback supplied it.
 
 The manual reconciliation push and pull-request step prefer `GITHUB_ALLOW_GITLAB` and fall back to the job token. This GitHub credential is used only in the manually dispatched writer job; scheduled discovery does not access it. Discovery first uses a short-lived `GIT_ASKPASS` helper for one allowlisted Git fetch. If GitLab permits the REST project and repository endpoints but denies Git-over-HTTPS transport, discovery falls back to the read-only GitLab branch, merge-base, and topology comparison endpoints. The fallback emits only commit IDs and a normalized state; it does not expose the credential or read repository content.
 

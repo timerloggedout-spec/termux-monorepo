@@ -51,6 +51,10 @@ class ReconIntelReconcileWorkflowTests(unittest.TestCase):
         self.assertIn("secrets.GITLAB_TOKEN", self.workflow)
         self.assertIn("secrets.OPERATOR_GITLAB_TOKEN", self.workflow)
         self.assertIn("secrets.GITHUB_ALLOW_GITLAB", self.workflow)
+        self.assertIn(
+            "secrets.RECON_INTEL_GITLAB_READ_TOKEN || secrets.OPERATOR_GITLAB_TOKEN || secrets.GITLAB_TOKEN",
+            self.workflow,
+        )
         self.assertIn("GIT_ASKPASS", self.workflow)
         self.assertNotIn("glpat-", self.workflow)
         self.assertNotIn("ghp_", self.workflow)

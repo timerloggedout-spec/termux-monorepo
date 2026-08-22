@@ -23,6 +23,31 @@ class ReconIntelPolicyTests(unittest.TestCase):
         self.assertEqual(["master"], self.policy["discovery"]["allowed_gitlab_refs"])
         self.assertEqual(15, self.policy["discovery"]["active_pr_schedule_minutes"])
 
+    def test_encodes_verified_credential_roles_without_values(self) -> None:
+        credentials = self.policy["credentials"]
+        self.assertEqual(
+            ["RECON_INTEL_GITLAB_READ_TOKEN", "GITLAB_TOKEN", "OPERATOR_GITLAB_TOKEN"],
+            credentials["gitlab_discovery_precedence"],
+        )
+        self.assertEqual(
+            ["RECON_INTEL_GITLAB_READ_TOKEN", "OPERATOR_GITLAB_TOKEN", "GITLAB_TOKEN"],
+            credentials["gitlab_manual_reconciliation_precedence"],
+        )
+        self.assertEqual(["GITHUB_ALLOW_GITLAB", "github.token"], credentials["github_manual_writer_precedence"])
+        self.assertTrue(credentials["credential_values_must_not_be_logged"])
+
+    def test_parallel_coordination_is_mandatory_and_has_one_writer_per_tuple(self) -> None:
+        parallel = self.policy["parallel_coordination"]
+        self.assertTrue(parallel["mandatory"])
+        self.assertTrue(parallel["one_corrective_write_lane_per_sha_tuple"])
+        self.assertTrue(parallel["review_is_allowed_in_shadow_mode"])
+        self.assertTrue(parallel["reconciliation_requires_exact_fresh_sha_tuple"])
+        self.assertEqual("deny", parallel["unknown_provider_default"])
+        self.assertEqual(
+            {"diverged", "no-common-ancestor", "not-configured", "external-access-denied"},
+            set(parallel["hold_states"]),
+        )
+
     def test_every_state_has_exactly_one_safe_lane_definition(self) -> None:
         states = self.policy["lease_states"]
         expected = {

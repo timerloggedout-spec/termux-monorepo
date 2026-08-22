@@ -6,11 +6,33 @@
     "gitlab": "a-group2180532/termux-monorepo",
     "gitlab_ref": "master"
   },
+  "credentials": {
+    "gitlab_discovery_precedence": [
+      "RECON_INTEL_GITLAB_READ_TOKEN",
+      "GITLAB_TOKEN",
+      "OPERATOR_GITLAB_TOKEN"
+    ],
+    "gitlab_manual_reconciliation_precedence": [
+      "RECON_INTEL_GITLAB_READ_TOKEN",
+      "OPERATOR_GITLAB_TOKEN",
+      "GITLAB_TOKEN"
+    ],
+    "github_manual_writer_precedence": ["GITHUB_ALLOW_GITLAB", "github.token"],
+    "credential_values_must_not_be_logged": true
+  },
   "discovery": {
     "allowed_gitlab_refs": ["master"],
     "active_pr_schedule_minutes": 15,
     "idle_schedule_cron": "17 */6 * * *",
     "allow_scheduled_repository_writes": false
+  },
+  "parallel_coordination": {
+    "mandatory": true,
+    "one_corrective_write_lane_per_sha_tuple": true,
+    "review_is_allowed_in_shadow_mode": true,
+    "reconciliation_requires_exact_fresh_sha_tuple": true,
+    "hold_states": ["diverged", "no-common-ancestor", "not-configured", "external-access-denied"],
+    "unknown_provider_default": "deny"
   },
   "lease_states": {
     "aligned": {

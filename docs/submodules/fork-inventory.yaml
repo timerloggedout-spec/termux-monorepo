@@ -1,6 +1,6 @@
 version: 1
-updated_at: "2026-08-15T00:00:00Z"
-updated_by: "Manus"
+updated_at: "2026-08-21T00:00:00Z"
+updated_by: "ChatGPT/GitHub review"
 status: reviewed
 candidates:
   - id: termux-mcp-server_fork
@@ -50,6 +50,25 @@ candidates:
       DeepSeek compatibility is preserved as a template/adapter. Its persistent
       shell behavior must not bypass the canonical hub policy or execute arbitrary
       unreviewed jobs.
+
+  - id: batteries_fork
+    repository: timerloggedout-spec/batteries_fork
+    source_repository: leanprover-community/batteries
+    source_url: https://github.com/timerloggedout-spec/batteries_fork.git
+    revision: 36cc05ca2d0e469bfbeea9437f460e19238e885e
+    branch: main
+    target_path: refTemplates/smods/batteries_fork
+    intended_role: lean4_foundation_library_and_experimental_dependency
+    runtime: Lean 4 / Lake
+    license: Apache-2.0
+    nested_submodules: false
+    status: approved_for_submodule
+    notes: >-
+      User-owned fork of leanprover-community/batteries. Pin the fork rather than
+      upstream moving main. Upstream was two commits ahead at review time, including
+      the v4.34.0-rc2 toolchain bump; advance only after validating Lean compatibility.
+      Development experiments should live in research first and graduate into applied
+      integration only when a concrete dependency is demonstrated.
 
 exclusions:
   - category: generated_or_sensitive_state

@@ -13,7 +13,7 @@ reviewers:
     role: executor
     status: executing
 related_issues: [192, 175]
-related_prs: [193, 81, 92, 143, 72, 232, 261, 266, 267, 269, 277, 278, 282, 283, 284, 285, 298, 301, 303, 305]
+related_prs: [193, 81, 92, 143, 72, 232, 261, 266, 267, 269, 277, 278, 282, 283, 284, 285, 298, 301, 303, 305, 312, 313]
 gates_required: [repo-gate, termux-smoke]
 ---
 
@@ -147,3 +147,12 @@ Issue #192 has verified GitHub-native cross-references to Issue #175, PR #193, t
 - Decision: Retain B3 `model` as a protected `${{ vars.GH_AW_MODEL_AGENT_COPILOT || 'gpt-5-mini' }}` expression. `gpt-5-mini` is the next low-cost candidate supported by GitHub Copilot documentation and listed in the runtime small-model alias set. Repository or organization administrators can still change only `GH_AW_MODEL_AGENT_COPILOT` to recover from later model retirement or policy changes without modifying workflow source or granting a new capability.
 - Alternatives considered: Retain the rejected hard-coded Claude Haiku fallback; use the generic `auto` alias, which resolved to unavailable `claude-sonnet-5` in controlled run `32533160934`; rely on a runtime Actions variable, which this integration cannot currently manage; or add a secret/provider fallback, which is outside the B3 no-secret boundary. The protected variable-with-GPT-5-mini fallback is selected for one bounded validation run.
 - Safety: The override accepts only a repository/organization configuration value, never issue, PR, comment, review, artifact, or workflow-dispatch data. It does not alter permissions, tools, triggers, safe outputs, AI-credit caps, turn limits, repository-write authority, or external-provider configuration. B4 and B5 remain separately held.
+
+
+### 2026-08-22 — Manus AI — B3 runtime evidence concluded; B6 baseline refreshed
+
+- Disposition: **B3 source remediation complete; runtime report generation externally gated**
+- Evidence: PRs #301, #303, #305, #312, and #313 progressively established the no-secret Copilot inference path, failure-issue suppression, protected model override, and a bounded fallback. Controlled runs `32532446858`, `32533160934`, `32551298813`, and `32551779478` each reached the agent but received `model_not_supported_error` for their resolved subscription model. Activation, detection, safe outputs, and conclusion succeeded on every post-permission run; no run reported AI-credit use or created an unsafe repository side effect.
+- Decision: Retain the compiled, protected `GH_AW_MODEL_AGENT_COPILOT` override and the documented `gpt-5-mini` fallback. Suspend additional source-level model changes and B3 retries. Resumption requires an administrator to set that protected Actions variable to an actually subscription-enabled model or to change the applicable Copilot model policy. This integration cannot list or modify Actions variables (`403 Resource not accessible by integration`).
+- B6 evidence: Current-master actionlint run `32551982607` confirmed the narrowed six-finding advisory baseline: two generated-lock `queue: max` compatibility diagnostics and four SC2028 diagnostics in held PR #276. The scoped B3 `copilot-requests` compatibility filter remains verified and does not mask those six findings.
+- Safety: No new secret, tool, provider, trigger, repository-write authority, AI-credit cap, external service, or direct-push capability is authorized. B4, B5, and PR #276 remain held; B6 remains advisory pending toolchain compatibility and separate writer-authority decisions.

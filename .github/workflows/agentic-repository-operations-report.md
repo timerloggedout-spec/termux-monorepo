@@ -9,6 +9,7 @@ permissions:
   pull-requests: read
   copilot-requests: write
 engine: copilot
+model: claude-haiku-4.5
 network: defaults
 tools:
   github:

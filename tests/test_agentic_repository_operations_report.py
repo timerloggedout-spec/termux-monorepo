@@ -36,7 +36,7 @@ class AgenticRepositoryOperationsReportTests(unittest.TestCase):
         self.assertIn("issues: read", frontmatter)
         self.assertIn("pull-requests: read", frontmatter)
         self.assertIn("copilot-requests: write", frontmatter)
-        self.assertNotIn("model:", frontmatter)
+        self.assertIn("model: claude-haiku-4.5", frontmatter)
         self.assertIn("max-ai-credits: 40", frontmatter)
         self.assertIn("max-daily-ai-credits: 80", frontmatter)
         self.assertIn("max-turns: 4", frontmatter)

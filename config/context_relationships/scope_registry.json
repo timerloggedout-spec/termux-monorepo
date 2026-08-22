@@ -56,6 +56,13 @@
       "labels": []
     },
     {
+      "id": "development-performance",
+      "title": "Repository development-performance evidence",
+      "path_globs": ["docs/evaluations/**", ".github/workflows/*development*evaluation*.yml", ".github/workflows/swe-reference-evaluation.yml", "scripts/ci/*development*evaluation*.py", "scripts/ci/swe_evaluation_contract.py", "tests/test_*development*evaluation*.py", "tests/test_swe_evaluation_contract.py", "tests/test_development_performance_workflows.py"],
+      "aliases": ["development performance", "repository evaluation", "SWE reference", "evaluation manifests"],
+      "labels": []
+    },
+    {
       "id": "context-relationships",
       "title": "Context relationship graph implementation",
       "path_globs": ["archwiz/context_relationships/**", "config/context_relationships/**", "workspace/llm_map/context_relationships/**"],

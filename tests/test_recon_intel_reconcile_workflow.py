@@ -47,6 +47,14 @@ class ReconIntelReconcileWorkflowTests(unittest.TestCase):
         self.assertIn("Reusing open reconciliation PR", self.workflow)
         self.assertIn("Implements: AR-17", self.workflow)
 
+    def test_existing_secret_names_are_used_without_committing_values(self) -> None:
+        self.assertIn("secrets.GITLAB_TOKEN", self.workflow)
+        self.assertIn("secrets.OPERATOR_GITLAB_TOKEN", self.workflow)
+        self.assertIn("secrets.GITHUB_ALLOW_GITLAB", self.workflow)
+        self.assertIn("GIT_ASKPASS", self.workflow)
+        self.assertNotIn("glpat-", self.workflow)
+        self.assertNotIn("ghp_", self.workflow)
+
 
 if __name__ == "__main__":
     unittest.main()

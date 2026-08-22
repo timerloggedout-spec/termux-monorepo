@@ -48,9 +48,9 @@ Provider comments, review text, checkbox notices, quota messages, rate-limit not
 
 ## GitLab credential boundary
 
-The optional `RECON_INTEL_GITLAB_READ_TOKEN` GitHub Actions secret must be dedicated to this purpose and scoped only to the GitLab project’s repository-read capability. It is not the Manus GitLab connector credential and must not be a broad administrator/API credential.
+The preferred GitHub Actions secret is `RECON_INTEL_GITLAB_READ_TOKEN`, dedicated to this purpose and scoped only to the GitLab project’s repository-read capability. For compatibility with the existing repository configuration, discovery and reconciliation fall back in order to `GITLAB_TOKEN` and `OPERATOR_GITLAB_TOKEN`. The workflows read only one resolved value through the `RECON_INTEL_GITLAB_READ_TOKEN` environment name; they do not disclose which fallback supplied it.
 
-The discovery helper uses a short-lived `GIT_ASKPASS` helper for one fetch. The token is not written to the repository, remote URL, workflow summary, artifact, log message, GitHub check, PR body, provider payload, or generated documentation. If the secret is absent, discovery reports `not-configured`; if GitLab rejects the fetch, it reports `external-access-denied`. Both outcomes are safe and do not trigger a write.
+The manual reconciliation push and pull-request step prefer `GITHUB_ALLOW_GITLAB` and fall back to the job token. This GitHub credential is used only in the manually dispatched writer job; scheduled discovery does not access it. The discovery helper uses a short-lived `GIT_ASKPASS` helper for one fetch. Neither GitLab nor GitHub credential is written to the repository, remote URL, workflow summary, artifact, log message, GitHub check, PR body, provider payload, or generated documentation. If no GitLab secret resolves, discovery reports `not-configured`; if GitLab rejects the fetch, it reports `external-access-denied`. Both outcomes are safe and do not trigger a write.
 
 ## Manual reconciliation procedure
 

@@ -151,7 +151,7 @@ jobs:
       - name: Classify GitHub–GitLab ancestry
         id: classify
         env:
-          RECON_INTEL_GITLAB_READ_TOKEN: ${{ secrets.RECON_INTEL_GITLAB_READ_TOKEN }}
+          RECON_INTEL_GITLAB_READ_TOKEN: ${{ secrets.RECON_INTEL_GITLAB_READ_TOKEN || secrets.GITLAB_TOKEN || secrets.OPERATOR_GITLAB_TOKEN }}
         run: |
           set -euo pipefail
           python3 scripts/ci/recon_intel_discovery.py \

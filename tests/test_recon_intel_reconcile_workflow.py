@@ -50,7 +50,8 @@ class ReconIntelReconcileWorkflowTests(unittest.TestCase):
     def test_existing_secret_names_are_used_without_committing_values(self) -> None:
         self.assertIn("secrets.GITLAB_TOKEN", self.workflow)
         self.assertIn("secrets.OPERATOR_GITLAB_TOKEN", self.workflow)
-        self.assertIn("secrets.GITHUB_ALLOW_GITLAB", self.workflow)
+        self.assertIn("secrets.RECON_INTEL_GITHUB_WRITE_TOKEN", self.workflow)
+        self.assertNotIn("secrets.GITHUB_ALLOW_GITLAB", self.workflow)
         self.assertIn(
             "secrets.RECON_INTEL_GITLAB_READ_TOKEN || secrets.OPERATOR_GITLAB_TOKEN || secrets.GITLAB_TOKEN",
             self.workflow,

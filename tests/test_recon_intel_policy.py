@@ -33,7 +33,7 @@ class ReconIntelPolicyTests(unittest.TestCase):
             ["RECON_INTEL_GITLAB_READ_TOKEN", "OPERATOR_GITLAB_TOKEN", "GITLAB_TOKEN"],
             credentials["gitlab_manual_reconciliation_precedence"],
         )
-        self.assertEqual(["GITHUB_ALLOW_GITLAB", "github.token"], credentials["github_manual_writer_precedence"])
+        self.assertEqual(["RECON_INTEL_GITHUB_WRITE_TOKEN", "github.token"], credentials["github_manual_writer_precedence"])
         self.assertTrue(credentials["credential_values_must_not_be_logged"])
 
     def test_parallel_coordination_is_mandatory_and_has_one_writer_per_tuple(self) -> None:

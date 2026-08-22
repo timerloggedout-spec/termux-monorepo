@@ -97,7 +97,7 @@ jobs:
       - name: Prepare deterministic reconciliation branch without conflict synthesis
         id: prepare
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_ALLOW_GITLAB || github.token }}
+          GITHUB_TOKEN: ${{ secrets.RECON_INTEL_GITHUB_WRITE_TOKEN || github.token }}
           INPUT_GITHUB_SHA: ${{ github.event.inputs.github_sha }}
           INPUT_GITLAB_SHA: ${{ github.event.inputs.gitlab_sha }}
         run: |
@@ -142,7 +142,7 @@ jobs:
           GITHUB_SHA: ${{ github.event.inputs.github_sha }}
           GITLAB_SHA: ${{ github.event.inputs.gitlab_sha }}
         with:
-          github-token: ${{ secrets.GITHUB_ALLOW_GITLAB || github.token }}
+          github-token: ${{ secrets.RECON_INTEL_GITHUB_WRITE_TOKEN || github.token }}
           script: |
             const branch = process.env.BRANCH;
             const head = `${context.repo.owner}:${branch}`;

@@ -44,7 +44,9 @@ The lifecycle route is selected by event type, supported context, and trust. Pul
 
 ![Model availability and 3L0 routing](generated/model-routing-3l0.png)
 
-The current router implements **Gemini primary** selection for the requested role and evaluates secondary peers only after the appropriate primary budget is exhausted. It uses the local 3L0/ELO-like model-success matrix together with role suitability. OpenRouter availability is not assumed: the router uses a one-hour model-catalog cache, attempts a bounded live catalog poll when necessary, falls back to a stale cache when available, and finally permits only the proven legacy allowlist. Only free-model candidates that satisfy the selected catalog/allowlist rule can be ranked and budget-checked.[1] [2]
+The current execution router implements **Gemini primary** selection for the requested role and evaluates secondary peers only after the appropriate primary budget is exhausted. It uses the local 3L0/ELO-like model-success matrix together with role suitability. OpenRouter availability is not assumed: the router uses a one-hour model-catalog cache, attempts a bounded live catalog poll when necessary, falls back to a stale cache when available, and finally permits only the proven legacy allowlist. Only free-model candidates that satisfy the selected catalog/allowlist rule can be ranked and budget-checked.[1] [2]
+
+AR-17 adds a **Capability–Scope–Specialist observe mode** alongside this execution path. It normalizes declared candidates and emits a bounded recommendation, but it does not alter the selected provider/model, invoke another provider, create a branch, or change a peer gate. Before any candidate is scoreable, the observe path requires declared capability/effect, trusted provenance, enabled policy/credential, permitted availability state, quota headroom, and current-SHA or explicit branch-write confirmation where the effect requires it. A failed hard gate is an exclusion, never a score penalty that a benchmark can overcome.[1] [2]
 
 Omni/OmniRoute remains a guarded code path but is **temporarily decommissioned operationally**. The diagram therefore shows it as a policy-gated path, not as an active fallback. If all eligible free routes are exhausted, the router emits an explicit no-route/skip outcome rather than claiming a false fallback.[1]
 
@@ -68,6 +70,8 @@ The repository’s 3L0 matrix is a **local performance label** for role-aware ro
 | Public model boards | Contextual feature/reference signal. | Never sufficient alone to select a production route. |
 | Local 3L0/ELO and role suitability | Ranking input for the repository’s own workload categories. | Bounded selection input after availability and budget gates. |
 | Live availability and counters | Operational eligibility, cache/cooldown, and quota evidence. | May reject a higher-ranked model; never invent a route. |
+| Repository-local outcome evidence | Correctness/gate pass, substantive resolution, duplicate avoidance, safe-feedback time, cost, and coordinated asynchronous completion. | Primary score input once sufficient trusted samples exist; sparse historic 3L0 values remain low-confidence priors. |
+| AR-17 decision envelope | Capability, candidate exclusions, availability provenance, quota headroom, confidence, recommendation, and runner-up. | Observe-only; never contains secrets, provider/issue/review bodies, or command fragments. |
 
 ## 4. Peer-provider review orchestration
 
@@ -76,6 +80,8 @@ The repository’s 3L0 matrix is a **local performance label** for role-aware ro
 AR-15 establishes CodeRabbit as the verified default provider. Qodo and Devin are explicit policy opt-ins. The orchestrator coalesces superseded PR events, preserves current-SHA evidence requirements, and publishes incomplete provider evidence as **advisory** unless the explicit enforcement variable is enabled.[4]
 
 This distinction prevents routine provider latency from appearing as a workflow defect while still retaining a deliberate required-completion mode for future branch-protection policy. Operator markers are exact and authorized; nonmatching or stale comments remain status-only and cannot complete a current review cycle.
+
+Substantive trusted feedback can be relayed to an independent implementation specialist such as Jules, but that relay does not infer a provider-native branch write. CodeRabbit AutoFix, fix-CI, and conflict-resolution remain separate declared command-library capabilities: each requires the live target SHA, idempotency evidence, and the existing explicit branch-write confirmation. Qodo and Devin review bodies remain evidence rather than compound command content. This preserves provider-native remediation as a selectable specialist without turning arbitrary review text or links into a command.[4]
 
 ## 5. Autonomous-writer authority and rollback
 

@@ -146,8 +146,12 @@ models:
     original_parse_yaml = mr.parse_yaml
     monkeypatch.setattr(mr, "parse_yaml", lambda path: original_parse_yaml(str(matrix_file)) if "success" in path else {})
 
-    # Mock polling to say google/gemma-4-31b-it:free is available
-    monkeypatch.setattr(mr, "fetch_openrouter_free_models_cached", lambda: ["google/gemma-4-31b-it:free"])
+    # Mock polling to say google/gemma-4-31b-it:free is available.
+    monkeypatch.setattr(
+        mr,
+        "fetch_openrouter_free_models_cached_with_source",
+        lambda: (["google/gemma-4-31b-it:free"], "live"),
+    )
 
     # Redirect GITHUB_OUTPUT
     go_file = tmp_path / "github_output.txt"
@@ -168,3 +172,52 @@ models:
     assert "provider=openrouter" in outputs
     assert "model=google/gemma-4-31b-it:free" in outputs
     assert "skip=false" in outputs
+
+
+def test_main_emits_observe_decision_without_changing_legacy_selection(tmp_path, monkeypatch, capsys):
+    monkeypatch.setenv("ROLE", "triage")
+    monkeypatch.setenv("HAS_OMNI", "false")
+    monkeypatch.setenv("HAS_OPENROUTER", "true")
+    monkeypatch.setenv("HAS_GEMINI", "false")
+    monkeypatch.setenv("CAPABILITY_SPINE_OBSERVE", "true")
+    monkeypatch.setattr(mr, "COUNTER_DIR", str(tmp_path))
+    matrix_file = tmp_path / "model-success-matrix.yaml"
+    matrix_file.write_text(
+        "models:\n  \"google/gemma-4-31b-it:free\":\n    elo: 1300\n    role_suitability:\n      triage: 1.3\n"
+    )
+    original_parse_yaml = mr.parse_yaml
+    monkeypatch.setattr(mr, "parse_yaml", lambda path: original_parse_yaml(str(matrix_file)) if "success" in path else {})
+    monkeypatch.setattr(
+        mr,
+        "fetch_openrouter_free_models_cached_with_source",
+        lambda: (["google/gemma-4-31b-it:free"], "live"),
+    )
+    output_file = tmp_path / "github_output.txt"
+    monkeypatch.setenv("GITHUB_OUTPUT", str(output_file))
+
+    mr.main()
+
+    captured = capsys.readouterr()
+    assert "::set-output name=provider::openrouter" in captured.out
+    outputs = output_file.read_text()
+    assert "decision={" in outputs
+    assert '\"mode\":\"observe\"' in outputs
+    assert "decision_summary=observe capability=triage" in outputs
+
+
+def test_observe_feature_gate_keeps_execution_route_and_marks_decision_disabled(tmp_path, monkeypatch):
+    monkeypatch.setenv("ROLE", "triage")
+    monkeypatch.setenv("HAS_OMNI", "false")
+    monkeypatch.setenv("HAS_OPENROUTER", "false")
+    monkeypatch.setenv("HAS_GEMINI", "false")
+    monkeypatch.setenv("CAPABILITY_SPINE_OBSERVE", "false")
+    monkeypatch.setattr(mr, "COUNTER_DIR", str(tmp_path))
+    output_file = tmp_path / "github_output.txt"
+    monkeypatch.setenv("GITHUB_OUTPUT", str(output_file))
+
+    mr.main()
+
+    outputs = output_file.read_text()
+    assert 'decision={"schema_version": 1, "mode": "disabled"}' in outputs
+    assert "provider=none" in outputs
+    assert "skip=true" in outputs

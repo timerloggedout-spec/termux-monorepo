@@ -58,6 +58,7 @@
 | **B4** | Controlled issue-to-PR automation | One fixed-name bot branch with `create-pull-request` or a reviewed `gh-aw` safe-output path, limited to an approved generated artifact. | Explicit `contents: write`, `pull-requests: write`; restricted `add-paths`; branch ownership; duplicate/run-loop prevention; human review before merge. | No-change, update-existing-PR, duplicate-event, untrusted-issue-content, and workflow-file-change tests. |
 | **B5** | Repository/service dispatch | Typed `repository_dispatch` envelope for a concrete external capacity/service use case. | Same-repo first; strict event allowlist; JSON schema and payload size limits; no secret payloads; cross-repo token only if separately approved. | Schema rejection, replay/duplicate handling, allowed/denied event tests, and audit trail. |
 | **B6** | Security and quality advisory pilots | Implemented actionlint, dependency review, Scorecard, and CodeQL advisory controls; Super-Linter remains deferred. | Advisory/non-required first; no auto-fix or PR comments. CodeQL and Scorecard isolate `security-events: write`; Scorecard alone isolates `id-token: write` and guards its transitive container tag with a reviewed registry digest. | Baselines or first hosted run, false-positive review, runtime/cost measure, controlled-update test, and a decision to promote, update, or remove. |
+| **B7 / AR-17** | Capability–scope–specialist decision spine | Versioned candidate policy and secret-free observe-mode envelope shared by the existing routing and remediation owners. | Eligibility precedes scoring: declared capability/effect, trusted provenance, policy/secret gate, live availability, quota/cooldown, current-SHA evidence, and existing branch-write confirmation all must pass. The matrix cannot invoke a provider or alter a branch. | Deterministic eligibility/score/confidence/no-route tests; OpenRouter cache regression tests; shadow-only workflow evidence; two bounded evaluation cycles and an explicit ledger decision before any active-routing promotion. |
 
 ## Integration Checklist
 
@@ -70,6 +71,7 @@
 | B4 / AR-04 | **Blocked by design** | Requires separately accepted writer authority, provenance, stable-branch, and hostile-input tests. |
 | B5 / A-14 | **Deferred by design** | Requires a concrete approved external capacity/service case and typed dispatch envelope. |
 | B6 / X-01–X-04 | **Verified advisory set** | Actionlint, dependency review, Scorecard, and CodeQL are implemented and non-required. Scorecard’s controlled-update protocol passed its first `master` manual dispatch in [run #32332605273](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32332605273). |
+| B7 / AR-17 | **Executing observe-mode control** | A capability-first matrix consumes declared model/provider facts and emits a bounded decision recommendation only. Repository-local development outcomes outweigh public leaderboard priors; hard availability/provenance/scope failures remain non-rankable. Immediate rollback disables the observe-mode feature gate. |
 
 ## Agent Fork Compatibility Findings
 

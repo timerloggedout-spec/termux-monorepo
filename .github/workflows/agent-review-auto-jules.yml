@@ -76,6 +76,7 @@ jobs:
       session_id: ${{ steps.load-ctx.outputs.session_id }}
       source_id: ${{ steps.meta.outputs.source_id }}
       source_revision: ${{ steps.meta.outputs.source_revision }}
+      specialist_disposition: ${{ steps.meta.outputs.specialist_disposition }}
     steps:
       - name: Resolve PR metadata + context_key
         id: meta
@@ -123,6 +124,12 @@ jobs:
             const sourceRevision = `${sourceId}:${source.updated_at || source.submitted_at || source.created_at || context.runId}`;
             core.setOutput('source_id', sourceId);
             core.setOutput('source_revision', sourceRevision);
+            // A provider-native branch write is never inferred from review text. CodeRabbit
+            // remains eligible only through the trusted command library, live SHA validation,
+            // and explicit confirm_branch_write=true. This event has none of those inputs.
+            const specialistDisposition = 'independent_implementation_specialist';
+            core.setOutput('specialist_disposition', specialistDisposition);
+            core.notice(`specialist_disposition=${specialistDisposition}; provider-native branch actions remain separately confirmed.`);
             const { data: pr } = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -179,6 +186,7 @@ jobs:
             const sessionId = '${{ steps.load-ctx.outputs.session_id }}' || '';
             const sourceId = '${{ steps.meta.outputs.source_id }}';
             const sourceRevision = '${{ steps.meta.outputs.source_revision }}';
+            const specialistDisposition = '${{ steps.meta.outputs.specialist_disposition }}' || 'independent_implementation_specialist';
             const marker = '<!-- agent-auto-jules -->';
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
@@ -215,6 +223,7 @@ jobs:
               `context_key: ${contextKey}`,
               `source_id: ${sourceId}`,
               `source_revision: ${sourceRevision}`,
+              `specialist_disposition: ${specialistDisposition}`,
               sessionId ? `session_id: ${sessionId}` : '',
               `@jules **Auto-resolve** (heyVern lane / GHA agent-review-auto-jules) — do not wait for a human ping.`,
               ``,
@@ -234,8 +243,9 @@ jobs:
               `2. Prefer minimal diffs; preserve Sentinel 0o600/0o700 if those files are touched.`,
               `3. Push commits to branch \`${head}\`. Do not retarget away from the PR base without cause.`,
               `4. If conflicts with base exist, resolve them.`,
-              `5. Skip pure nits only if they conflict with security/gates; otherwise apply autofixes.`,
-              `6. **Non-empty diff required** — empty commits are rejected.`,
+              `5. CodeRabbit native AutoFix, fix-CI, and conflict actions are not inferred from this feedback. They require the separate trusted command-library dispatch, live SHA, and explicit branch-write confirmation.`,
+              `6. Skip pure nits only if they conflict with security/gates; otherwise apply minimal, independently validated fixes.`,
+              `7. **Non-empty diff required** — empty commits are rejected.`,
               ``,
               `Monikers: docs/ops/AGENT-MONIKERS.md`,
               `Agent: Grok (archW1z) orchestration · Profile: https://x.com/grok`,

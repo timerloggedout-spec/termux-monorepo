@@ -1,0 +1,118 @@
+name: gitlab-governed-sync
+
+# GitLab is treated as an external change source, not as an autonomous
+# bidirectional writer. The workflow detects divergence and prepares a
+# reviewable GitHub branch; it never force-pushes or overwrites either side.
+on:
+  workflow_dispatch:
+    inputs:
+      gitlab_ref:
+        description: GitLab ref to reconcile
+        required: true
+        default: master
+  schedule:
+    - cron: '17 */6 * * *'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: gitlab-governed-sync
+  cancel-in-progress: false
+
+env:
+  GITLAB_REMOTE: https://gitlab.com/a-group2180532/termux-monorepo.git
+  GITLAB_REF: ${{ inputs.gitlab_ref || 'master' }}
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout GitHub master
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - name: Fetch GitLab reference
+        id: fetch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git remote add gitlab "$GITLAB_REMOTE"
+          git fetch --no-tags gitlab "$GITLAB_REF"
+          git fetch origin master
+          echo "gitlab_sha=$(git rev-parse "gitlab/$GITLAB_REF")" >> "$GITHUB_OUTPUT"
+          echo "github_sha=$(git rev-parse origin/master)" >> "$GITHUB_OUTPUT"
+
+      - name: Classify divergence
+        id: classify
+        shell: bash
+        run: |
+          set -euo pipefail
+          GH="${{ steps.fetch.outputs.github_sha }}"
+          GL="${{ steps.fetch.outputs.gitlab_sha }}"
+          if git merge-base --is-ancestor "$GL" "$GH"; then
+            echo "state=gitlab-behind" >> "$GITHUB_OUTPUT"
+          elif git merge-base --is-ancestor "$GH" "$GL"; then
+            echo "state=gitlab-ahead" >> "$GITHUB_OUTPUT"
+          else
+            echo "state=diverged" >> "$GITHUB_OUTPUT"
+          fi
+          git log --oneline --decorate --left-right "$GH...$GL" | head -80
+
+      - name: Stop when already reconciled
+        if: steps.classify.outputs.state == 'gitlab-behind'
+        run: echo "GitLab contains no commits absent from GitHub master."
+
+      - name: Prepare reconciliation branch
+        if: steps.classify.outputs.state == 'gitlab-ahead' || steps.classify.outputs.state == 'diverged'
+        shell: bash
+        run: |
+          set -euo pipefail
+          GH="${{ steps.fetch.outputs.github_sha }}"
+          GL="${{ steps.fetch.outputs.gitlab_sha }}"
+          BRANCH="sync/gitlab/${GH:0:8}-${GL:0:8}"
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
+            echo "Existing reconciliation branch: $BRANCH"
+          else
+            git checkout -b "$BRANCH" "$GH"
+            if ! git merge --no-ff --no-edit "gitlab/$GITLAB_REF"; then
+              git merge --abort || true
+              echo "GitLab and GitHub histories require manual conflict resolution."
+              exit 2
+            fi
+            git push --set-upstream origin "$BRANCH"
+          fi
+          echo "SYNC_BRANCH=$BRANCH" >> "$GITHUB_ENV"
+
+      - name: Open reconciliation PR when absent
+        if: steps.classify.outputs.state == 'gitlab-ahead' || steps.classify.outputs.state == 'diverged'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_SHA: ${{ steps.fetch.outputs.github_sha }}
+          GL_SHA: ${{ steps.fetch.outputs.gitlab_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh pr list --base master --head "$SYNC_BRANCH" --state open --json number --jq 'length' | grep -q '^0$'; then
+            gh pr create \
+              --base master \
+              --head "$SYNC_BRANCH" \
+              --title "sync(gitlab): reconcile external commits ${GL_SHA:0:12}" \
+              --body-file - <<EOF
+          ## Governed GitLab reconciliation
+
+          GitLab ref: \`$GITLAB_REF\`
+
+          GitHub master: \`$GH_SHA\`
+          GitLab ref: \`$GL_SHA\`
+
+          This PR was prepared by the governed sync controller. It does not force-push, overwrite GitLab, or bypass repository gates. Review and merge through the normal master path.
+
+          If the histories diverged, conflicts must be resolved manually; the controller fails closed.
+          EOF
+          else
+            echo "An open reconciliation PR already exists for $SYNC_BRANCH."
+          fi

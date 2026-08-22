@@ -1,0 +1,134 @@
+name: agent-platform-coordination
+
+# Coordinate review ownership across GitHub and GitLab without making either
+# platform a blind bidirectional writer. This is a coordination/lease check;
+# it does not invoke CodeRabbit or push code.
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+concurrency:
+  group: agent-platform-coordination-${{ github.event.pull_request.number || github.run_id }}-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  coordinate:
+    runs-on: ubuntu-latest
+    env:
+      GITLAB_REMOTE: https://gitlab.com/a-group2180532/termux-monorepo.git
+    steps:
+      - name: Checkout GitHub ref
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Establish platform review lease
+        id: lease
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+          GH_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "$GITLAB_TOKEN" ]; then
+            echo "GitLab token is not configured; coordination remains advisory."
+            echo "state=unknown" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          auth_header="PRIVATE-TOKEN: ${GITLAB_TOKEN}"
+          git -c http.extraheader="$auth_header" fetch --no-tags "$GITLAB_REMOTE" \
+            refs/heads/master:refs/remotes/gitlab/master
+          gitlab_sha="$(git rev-parse refs/remotes/gitlab/master)"
+
+          echo "github_sha=$GH_SHA" >> "$GITHUB_OUTPUT"
+          echo "gitlab_sha=$gitlab_sha" >> "$GITHUB_OUTPUT"
+
+          if [ "$GH_SHA" = "$gitlab_sha" ]; then
+            state=aligned
+          elif git merge-base --is-ancestor "$gitlab_sha" "$GH_SHA"; then
+            state=github-ahead
+          elif git merge-base --is-ancestor "$GH_SHA" "$gitlab_sha"; then
+            state=gitlab-ahead
+          else
+            state=diverged
+          fi
+          echo "state=$state" >> "$GITHUB_OUTPUT"
+          echo "Review lease state: $state (GitHub=$GH_SHA GitLab=$gitlab_sha)"
+
+      - name: Apply optional coordination labels
+        if: github.event.pull_request.number != '' && steps.lease.outputs.state != 'unknown'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE: ${{ steps.lease.outputs.state }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh pr edit "$PR_NUMBER" --add-label "agent-sync:$STATE" || true
+          case "$STATE" in
+            github-ahead|aligned)
+              gh pr edit "$PR_NUMBER" --add-label "coderabbit:github-primary" || true
+              ;;
+            gitlab-ahead)
+              gh pr edit "$PR_NUMBER" --add-label "coderabbit:gitlab-primary" || true
+              ;;
+            diverged)
+              gh pr edit "$PR_NUMBER" --add-label "coderabbit:hold" || true
+              ;;
+          esac
+
+      - name: Publish idempotent coordination record
+        if: github.event.pull_request.number != '' && steps.lease.outputs.state != 'unknown'
+        uses: actions/github-script@v7
+        env:
+          STATE: ${{ steps.lease.outputs.state }}
+          GH_SHA: ${{ steps.lease.outputs.github_sha }}
+          GL_SHA: ${{ steps.lease.outputs.gitlab_sha }}
+        with:
+          script: |
+            const marker = '<!-- agent-platform-coordination -->';
+            const pr = context.payload.pull_request.number;
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr,
+              per_page: 100,
+            });
+            const body = [
+              marker,
+              '### Agent-platform coordination lease',
+              '',
+              `State: **${process.env.STATE}**`,
+              `GitHub head: \`${process.env.GH_SHA}\``,
+              `GitLab master: \`${process.env.GL_SHA}\``,
+              '',
+              'This record coordinates review ownership only. It does not trigger CodeRabbit, push code, or authorize cross-platform writes.',
+              '',
+              '**Lane rule:** only the platform named `*-primary` should be permitted to perform automated corrective writes for this revision. The other platform is review/shadow-only until the revision changes or ownership is explicitly transferred.',
+              '',
+              'For `diverged`, automated corrective writes are held until reconciliation is completed.',
+            ].join('\n');
+            const existing = comments.find(c => c.user?.login === 'github-actions[bot]' && c.body?.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr,
+                body,
+              });
+            }

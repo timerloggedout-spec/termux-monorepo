@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "93cb7fcb5f26c7e1fa0989ace81c32f313adc51b828a0abbbc609adff5231f74",
-  "workflow_count": 42,
+  "source_fingerprint": "a5b295658c7507d3b61f40834a2a2dfd8d83eacbcc9953979059cdce5eb7e181",
+  "workflow_count": 45,
   "workflows": [
     {
       "action_pins": [
@@ -403,6 +403,24 @@
     },
     {
       "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: development-performance-contract-${{ github.workflow }}-${{ github.ref }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "validate"
+      ],
+      "name": "Development performance contracts",
+      "path": ".github/workflows/development-performance-contract.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
         "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683"
       ],
       "authority": "read-only-or-advisory",
@@ -752,6 +770,26 @@
     {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: repository-development-evaluation-${{ github.event.pull_request.number || inputs.pr_number }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "collect"
+      ],
+      "name": "Repository development evaluation",
+      "path": ".github/workflows/repository-development-evaluation.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
         "github/codeql-action/upload-sarif@ff2f1c621b7f889edc0d3c761ac2e6a3f8cdb0dd",
         "ossf/scorecard-action@2d1146689b8cda280b9bc96326124645441f03bc"
       ],
@@ -788,6 +826,25 @@
       "triggers": [
         "pull_request",
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: swe-reference-evaluation-${{ inputs.benchmark }}-${{ inputs.split }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "disabled",
+        "evaluate"
+      ],
+      "name": "SWE reference evaluation",
+      "path": ".github/workflows/swe-reference-evaluation.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },

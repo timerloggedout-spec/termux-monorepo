@@ -135,7 +135,7 @@ Use implementation feedback, review outcomes, and newly discovered evidence to u
 
 ## 5. Relationship to #175
 
-Issue #175 is the current operator-priority and master functional-gate reference. Its rules require small green rebased PRs, no force-push to master, and repo-gate + termux-smoke for merges (or explicitly documented non-blocking treatment). It also places documentation/comms work in P3 while preserving the operator rules as hard constraints.
+Issue #175 is the current operator-priority and master functional-gate reference. Its rules require small green rebased PRs, no force-push to master, and repo-gate + termux-smoke for merges. It also places documentation/comms work in P3 while preserving the operator rules as hard constraints.
 
 Accordingly, this proposal is intentionally **documentation/specification-first**. It does not bypass #175 by treating the vocabulary as an implementation permission. Any executable index generator, compression integration, or workflow change should be a later proposal item/PR that cites its item ID and passes the applicable gates.
 
@@ -173,7 +173,9 @@ The objective is a stable semantic layer that can point into those systems rathe
 9. Keep operator/security constraints from being weakened by compression or automation.
 10. Treat external research as evidence to evaluate, not as an automatic repository truth.
 
-## 8. Proposed next research pass
+## 8. Proposed next research pass (illustrative, not yet tracked)
+
+The following are candidate future research directions that are not yet itemized as NSE-* entries in ITEMS.md and would need their own item before being treated as proposal work:
 
 - Audit #320's linked issues (#309, #182, #126, #304, #196, #177, #208, #274) and map terminology overlap.
 - Inventory existing index schemas and identify authoritative-vs-derived boundaries.

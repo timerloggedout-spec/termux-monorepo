@@ -47,7 +47,7 @@ Use the proposal's notation keys as stable semantic anchors for context-relation
 
 ## NSE-006 — Operator/CI governance coupling
 
-Align implementation with #175's live operator rules: no force-push to master; prefer small green rebased PRs; require `repo-gate` + `termux-smoke` (or documented non-blocking status); keep changes extractable; and treat the notation registry as documentation/specification until separately accepted for execution.
+Align implementation with #175's live operator rules: no force-push to master; prefer small green rebased PRs; require `repo-gate` + `termux-smoke`; keep changes extractable; and treat the notation registry as documentation/specification until separately accepted for execution.
 
 ## NSE-007 — Validation and drift detection
 

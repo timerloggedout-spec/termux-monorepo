@@ -43,6 +43,18 @@ jobs:
           has-openrouter: ${{ secrets.OPENROUTER_API_KEY != '' }}
           has-gemini: ${{ secrets.GEMINI_API_KEY != '' }}
 
+      - name: Record capability-spine observe decision
+        env:
+          DECISION_SUMMARY: ${{ steps.router.outputs.decision-summary }}
+        run: |
+          {
+            echo '## Capability–Scope–Specialist observe mode'
+            echo
+            echo 'Execution selection remains unchanged during AR-18 observation.'
+            echo
+            printf '%s\n' "${DECISION_SUMMARY:-capability decision unavailable}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Skip comment when no capacity
         if: steps.router.outputs.skip == 'true'
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0

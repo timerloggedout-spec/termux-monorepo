@@ -1,6 +1,6 @@
 # B6 — Advisory GitHub Actions Lint Pilot
 
-**Status:** Implemented, current baseline rechecked on 2026-08-21; retained as an advisory control.
+**Status:** Implemented, current baseline rechecked on 2026-08-22; retained as an advisory control.
 **Ledger item:** X-01 / B6
 **Workflow:** `.github/workflows/actionlint-advisory.yml`
 
@@ -21,7 +21,7 @@ The B6 pilot performs a narrow GitHub Actions syntax, expression, and ShellCheck
 
 ## Current Baseline and Disposition
 
-The first hosted baseline recorded 26 findings across eight files. That historical count predates subsequent AR-14, AR-15, and workflow reliability remediation, so it is not a current promotion metric. After the safe baseline fixes merged in PR #298, the remaining advisory signal was six findings: two generated-lock `queue: max` compatibility diagnostics and four findings in held PR #276 workflow code. The B3 remediation adds the officially documented `copilot-requests: write` permission, which actionlint v1.7.12—the latest release at review time—does not yet recognize; upstream issue #686 remains open. The repository therefore uses one path- and message-specific compatibility filter for that exact generated B3 lock diagnostic. Its lint subprocess returns nonzero only when unsuppressed findings exist; this is a normal advisory outcome, not an infrastructure failure. The workflow records `clean`, `findings`, or `not-run` explicitly so the job summary retains that distinction.
+The first hosted baseline recorded 26 findings across eight files. That historical count predates subsequent AR-14, AR-15, and workflow reliability remediation, so it is not a current promotion metric. The controlled current-master run [`32551982607`](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32551982607) confirms the residual advisory signal is six findings: two generated-lock `queue: max` compatibility diagnostics and four findings in held PR #276 workflow code. The B3 remediation adds the officially documented `copilot-requests: write` permission, which actionlint v1.7.12—the latest release at review time—does not yet recognize; upstream issue #686 remains open. The repository therefore uses one path- and message-specific compatibility filter for that exact generated B3 lock diagnostic. The fresh run confirms that the filter suppresses only the unsupported permission diagnostic and does not mask the two `queue` diagnostics. Its lint subprocess returns nonzero only when unsuppressed findings exist; this is a normal advisory outcome, not an infrastructure failure. The workflow records `clean`, `findings`, or `not-run` explicitly so the job summary retains that distinction.
 
 | Affected file | Current findings | Disposition |
 |---|---:|---|
@@ -37,7 +37,7 @@ The historical findings in `agent-jules-on-issues.yml`, `gemini-dispatch.yml`, `
 
 ## Promotion Decision
 
-Do **not** promote this check to required status yet. First, merge and re-run the B3 compatibility filter; then reassess the six unsuppressed residual findings. Promotion requires actionlint support for `copilot-requests` so the scoped filter can be removed, a toolchain-compatible disposition for the two generated-lock `queue` entries, and a separately accepted resolution for the four PR #276 writer-workflow findings—or a documented decision that advisory operation remains the appropriate steady state. Remove the workflow if its pinned compiler/tool version cannot be maintained or if the residual false-positive rate becomes unacceptable.
+Do **not** promote this check to required status yet. The current-master run has verified the B3 compatibility filter and leaves six unsuppressed residual findings. Promotion requires actionlint support for `copilot-requests` so the scoped filter can be removed, a toolchain-compatible disposition for the two generated-lock `queue` entries, and a separately accepted resolution for the four PR #276 writer-workflow findings—or a documented decision that advisory operation remains the appropriate steady state. Remove the workflow if its pinned compiler/tool version cannot be maintained or if the residual false-positive rate becomes unacceptable.
 
 ## References
 
@@ -45,6 +45,6 @@ Do **not** promote this check to required status yet. First, merge and re-run th
 [2]: [actionlint repository](https://github.com/rhysd/actionlint)
 [3]: [actionlint v1.7.12 revision](https://github.com/rhysd/actionlint/commit/914e7df21a07ef503a81201c76d2b11c789d3fca)
 [4]: [actionlint v1.7.12 usage guide](https://github.com/rhysd/actionlint/blob/v1.7.12/docs/usage.md)
-[5]: [latest hosted advisory run](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32526383015)
+[5]: [current master advisory run](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32551982607)
 [6]: [actionlint issue #686: Copilot permission support](https://github.com/rhysd/actionlint/issues/686)
 [7]: [GitHub Docs: Creating GitHub Agentic Workflows](https://docs.github.com/en/copilot/how-tos/github-agentic-workflows/creating-github-agentic-workflows)

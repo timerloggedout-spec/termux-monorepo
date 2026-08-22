@@ -73,17 +73,21 @@ jobs:
           set -euo pipefail
           GH="${{ steps.fetch.outputs.github_sha }}"
           GL="${{ steps.fetch.outputs.gitlab_sha }}"
-          BRANCH="sync/gitlab/${GL:0:12}"
-          git checkout -b "$BRANCH" "$GH"
-          if ! git merge --no-ff --no-edit "gitlab/$GITLAB_REF"; then
-            git merge --abort || true
-            echo "GitLab and GitHub histories require manual conflict resolution."
-            exit 2
+          BRANCH="sync/gitlab/${GH:0:8}-${GL:0:8}"
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
+            echo "Existing reconciliation branch: $BRANCH"
+          else
+            git checkout -b "$BRANCH" "$GH"
+            if ! git merge --no-ff --no-edit "gitlab/$GITLAB_REF"; then
+              git merge --abort || true
+              echo "GitLab and GitHub histories require manual conflict resolution."
+              exit 2
+            fi
+            git push --set-upstream origin "$BRANCH"
           fi
-          git push --set-upstream origin "$BRANCH"
           echo "SYNC_BRANCH=$BRANCH" >> "$GITHUB_ENV"
 
-      - name: Open reconciliation PR
+      - name: Open reconciliation PR when absent
         if: steps.classify.outputs.state == 'gitlab-ahead' || steps.classify.outputs.state == 'diverged'
         env:
           GH_TOKEN: ${{ github.token }}
@@ -92,9 +96,23 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          gh pr create \
-            --base master \
-            --head "$SYNC_BRANCH" \
-            --title "sync(gitlab): reconcile external commits ${GL_SHA:0:12}" \
-            --body "## Governed GitLab reconciliation\n\nGitLab ref: \
-\`$GITLAB_REF\`\n\nGitHub master: \`$GH_SHA\`\nGitLab ref: \`$GL_SHA\`\n\nThis PR was prepared by the governed sync controller. It does not force-push, overwrite GitLab, or bypass repository gates. Review and merge through the normal master path.\n\nIf the histories diverged, conflicts must be resolved manually; the controller fails closed."
+          if gh pr list --base master --head "$SYNC_BRANCH" --state open --json number --jq 'length' | grep -q '^0$'; then
+            gh pr create \
+              --base master \
+              --head "$SYNC_BRANCH" \
+              --title "sync(gitlab): reconcile external commits ${GL_SHA:0:12}" \
+              --body-file - <<EOF
+          ## Governed GitLab reconciliation
+
+          GitLab ref: \`$GITLAB_REF\`
+
+          GitHub master: \`$GH_SHA\`
+          GitLab ref: \`$GL_SHA\`
+
+          This PR was prepared by the governed sync controller. It does not force-push, overwrite GitLab, or bypass repository gates. Review and merge through the normal master path.
+
+          If the histories diverged, conflicts must be resolved manually; the controller fails closed.
+          EOF
+          else
+            echo "An open reconciliation PR already exists for $SYNC_BRANCH."
+          fi

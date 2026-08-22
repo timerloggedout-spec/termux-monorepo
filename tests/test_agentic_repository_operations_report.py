@@ -37,7 +37,7 @@ class AgenticRepositoryOperationsReportTests(unittest.TestCase):
         self.assertIn("pull-requests: read", frontmatter)
         self.assertIn("copilot-requests: write", frontmatter)
         self.assertIn(
-            "model: ${{ vars.GH_AW_MODEL_AGENT_COPILOT || 'claude-haiku-4.5' }}",
+            "model: ${{ vars.GH_AW_MODEL_AGENT_COPILOT || 'gpt-5-mini' }}",
             frontmatter,
         )
         self.assertIn("max-ai-credits: 40", frontmatter)
@@ -80,7 +80,7 @@ class AgenticRepositoryOperationsReportTests(unittest.TestCase):
             r"safe_outputs:\n(?:.*\n){0,10}?\s+permissions:\n\s+issues: write",
         )
         self.assertIn(
-            "COPILOT_MODEL: ${{ vars.GH_AW_MODEL_AGENT_COPILOT || 'claude-haiku-4.5' }}",
+            "COPILOT_MODEL: ${{ vars.GH_AW_MODEL_AGENT_COPILOT || 'gpt-5-mini' }}",
             self.lock,
         )
         self.assertNotIn("contents: write", self.lock)

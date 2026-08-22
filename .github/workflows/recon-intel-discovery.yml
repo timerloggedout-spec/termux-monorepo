@@ -109,6 +109,7 @@ jobs:
     timeout-minutes: 8
     permissions:
       contents: read
+      pull-requests: read
       checks: write
     strategy:
       fail-fast: false
@@ -122,31 +123,51 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Resolve selected GitHub revision without executing PR code
+      - name: Resolve selected GitHub revision through the GitHub API
         id: github-target
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
           TARGET_PR_NUMBER: ${{ matrix.target.pr_number }}
           TARGET_GITHUB_SHA: ${{ matrix.target.github_sha }}
-        run: |
-          set -euo pipefail
-          if [ "$TARGET_PR_NUMBER" = "0" ]; then
-            resolved_sha="$(git rev-parse HEAD)"
-          else
-            case "$TARGET_PR_NUMBER" in
-              ''|*[!0-9]*) echo "Invalid target PR number." >&2; exit 1 ;;
-            esac
-            git fetch --no-tags --no-recurse-submodules origin \
-              "+refs/pull/${TARGET_PR_NUMBER}/head:refs/recon-intel/github/pr/${TARGET_PR_NUMBER}"
-            resolved_sha="$(git rev-parse "refs/recon-intel/github/pr/${TARGET_PR_NUMBER}")"
-          fi
-          case "$TARGET_GITHUB_SHA" in
-            ''|*[!0-9a-f]*) echo "Invalid target GitHub SHA." >&2; exit 1 ;;
-          esac
-          if [ "$resolved_sha" != "$TARGET_GITHUB_SHA" ]; then
-            echo "Target changed during discovery; refusing stale comparison." >&2
-            exit 1
-          fi
-          echo "github_sha=$resolved_sha" >> "$GITHUB_OUTPUT"
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        with:
+          script: |
+            const targetPrNumber = (process.env.TARGET_PR_NUMBER || '').trim();
+            const expectedSha = (process.env.TARGET_GITHUB_SHA || '').trim();
+            const defaultBranch = (process.env.DEFAULT_BRANCH || '').trim();
+            if (!/^[0-9a-f]{7,64}$/i.test(expectedSha)) {
+              core.setFailed('Invalid target GitHub SHA.');
+              return;
+            }
+            let resolvedSha;
+            if (targetPrNumber === '0') {
+              const { data: branch } = await github.rest.repos.getBranch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                branch: defaultBranch,
+              });
+              resolvedSha = branch.commit.sha;
+            } else {
+              if (!/^[1-9][0-9]*$/.test(targetPrNumber)) {
+                core.setFailed('Invalid target PR number.');
+                return;
+              }
+              const { data: pr } = await github.rest.pulls.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: Number(targetPrNumber),
+              });
+              if (pr.state !== 'open' || pr.draft || pr.head.repo?.full_name !== `${context.repo.owner}/${context.repo.repo}`) {
+                core.setFailed('Target pull request is no longer an eligible same-repository review target.');
+                return;
+              }
+              resolvedSha = pr.head.sha;
+            }
+            if (resolvedSha !== expectedSha) {
+              core.setFailed('Target changed during discovery; refusing stale comparison.');
+              return;
+            }
+            core.setOutput('github_sha', resolvedSha);
 
       - name: Classify GitHub–GitLab ancestry
         id: classify

@@ -22,6 +22,7 @@ class ReconIntelWorkflowTests(unittest.TestCase):
         self.assertNotIn("issues.updateComment", self.workflow)
         self.assertNotIn("pulls.create", self.workflow)
         self.assertNotIn("git.createRef", self.workflow)
+        self.assertIn("pull-requests: read", self.workflow)
 
     def test_schedule_and_idle_probe_do_not_expand_write_authority(self) -> None:
         self.assertIn("- cron: '*/15 * * * *'", self.workflow)
@@ -29,11 +30,14 @@ class ReconIntelWorkflowTests(unittest.TestCase):
         self.assertIn("allow_scheduled_repository_writes", (ROOT / ".github" / "agentic" / "recon-intel-policy.json").read_text(encoding="utf-8"))
         self.assertIn("This workflow is read-only", self.workflow)
 
-    def test_workflow_uses_trusted_default_branch_and_never_checks_out_pr_code(self) -> None:
+    def test_workflow_uses_trusted_default_branch_and_never_fetches_or_executes_pr_code(self) -> None:
         self.assertIn("ref: ${{ github.event.repository.default_branch }}", self.workflow)
         self.assertIn("persist-credentials: false", self.workflow)
-        self.assertIn("refs/pull/${TARGET_PR_NUMBER}/head:refs/recon-intel/github/pr/${TARGET_PR_NUMBER}", self.workflow)
+        self.assertIn("Resolve selected GitHub revision through the GitHub API", self.workflow)
+        self.assertIn("github.rest.pulls.get", self.workflow)
         self.assertIn("Target changed during discovery; refusing stale comparison.", self.workflow)
+        self.assertNotIn("refs/pull/", self.workflow)
+        self.assertNotIn("git fetch", self.workflow)
 
     def test_gitlab_ref_and_manual_pr_input_are_allowlisted(self) -> None:
         self.assertIn("options: [master]", self.workflow)

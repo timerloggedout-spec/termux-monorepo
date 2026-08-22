@@ -7,6 +7,7 @@ on:
       - ".github/actions/**"
       - "actionlint.yaml"
       - ".actionlint.yaml"
+      - ".github/actionlint.yaml"
   workflow_dispatch:
 
 permissions: {}
@@ -57,16 +58,25 @@ jobs:
         id: lint
         continue-on-error: true
         run: |
+          set +e
           set -o pipefail
           "$RUNNER_TEMP/actionlint" -color 2>&1 | tee "$RUNNER_TEMP/actionlint-report.txt"
           status=${PIPESTATUS[0]}
-          echo "status=$status" >> "$GITHUB_OUTPUT"
+          set -e
+          if [ "$status" -eq 0 ]; then
+            outcome=clean
+          else
+            outcome=findings
+          fi
+          printf 'status=%s\n' "$status" >> "$GITHUB_OUTPUT"
+          printf 'outcome=%s\n' "$outcome" >> "$GITHUB_OUTPUT"
           exit "$status"
 
       - name: Publish advisory summary
         if: always()
         env:
-          ACTIONLINT_STATUS: ${{ steps.lint.outputs.status || 'infrastructure-error' }}
+          ACTIONLINT_STATUS: ${{ steps.lint.outputs.status || 'not-run' }}
+          ACTIONLINT_OUTCOME: ${{ steps.lint.outputs.outcome || 'not-run' }}
         run: |
           {
             echo "## Advisory GitHub Actions lint"
@@ -77,6 +87,7 @@ jobs:
             echo "|---|---|"
             echo "| actionlint version | v1.7.12 |"
             echo "| source revision | \`914e7df21a07ef503a81201c76d2b11c789d3fca\` |"
+            echo "| lint outcome | \`${ACTIONLINT_OUTCOME}\` |"
             echo "| lint exit status | \`${ACTIONLINT_STATUS}\` |"
             echo "| policy | advisory; no auto-fix and no pull-request comments |"
             echo

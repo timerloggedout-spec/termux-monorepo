@@ -58,8 +58,8 @@ class JulesOnIssuesWorkflowTests(unittest.TestCase):
         self.assertIn("core.setOutput('auth_error', 'true')", label)
         self.assertIn("steps.trust.outputs.authorized == 'true'", label)
 
-    def test_each_jules_execution_job_uses_only_immutable_action_revisions(self) -> None:
-        self.assertNotIn("actions/github-script@v7", self.workflow)
+    def test_execution_uses_immutable_github_actions_and_not_legacy_jules_action(self) -> None:
+        self.assertNotIn("google-labs-code/jules-action@", self.workflow)
         self.assertNotIn("google-labs-code/jules-invoke@v1", self.workflow)
         for job in JULES_JOBS:
             uses = re.findall(
@@ -70,11 +70,19 @@ class JulesOnIssuesWorkflowTests(unittest.TestCase):
             self.assertGreaterEqual(len(uses), 2, job)
             for reference in uses:
                 self.assertRegex(reference, r"^[^@\s]+@[0-9a-f]{40}$", reference)
-            self.assertIn(
-                "google-labs-code/jules-action@"
-                "bff7875eaa123cac6742b7cfc51005b95ba4d566",
-                self.job_block(job),
-            )
+
+    def test_api_lane_discovers_source_checks_branch_and_fails_on_http_errors(self) -> None:
+        for job in JULES_JOBS:
+            block = self.step_block(job, "Invoke Jules API when configured")
+            self.assertIn("id: jules-api", block)
+            self.assertIn("steps.api-key.outputs.available == 'true'", block)
+            self.assertIn("continue-on-error: true", block)
+            self.assertIn("/v1alpha/sources", block)
+            self.assertIn("githubRepo.owner + \"/\" + .githubRepo.repo", block)
+            self.assertIn("master-staging", block)
+            self.assertIn("--fail-with-body", block)
+            self.assertIn("sourceContext", block)
+            self.assertIn("automationMode", block)
 
     def test_secret_gate_and_failed_invocation_use_bounded_paths(self) -> None:
         for job in JULES_JOBS:

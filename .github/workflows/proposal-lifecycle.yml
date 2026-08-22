@@ -29,10 +29,12 @@ jobs:
       - run: python3 scripts/proposals/validate_registry.py
       - name: Summarize active proposals
         run: |
-          echo "## Active proposals" >> "$GITHUB_STEP_SUMMARY"
-          echo '```yaml' >> "$GITHUB_STEP_SUMMARY"
-          sed -n '1,120p' docs/proposals/registry.yaml >> "$GITHUB_STEP_SUMMARY"
-          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo "## Active proposals"
+            echo '```yaml'
+            sed -n '1,120p' docs/proposals/registry.yaml
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
 
   vote-hygiene:
     if: github.event_name == 'pull_request'

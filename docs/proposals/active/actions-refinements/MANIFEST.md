@@ -13,7 +13,7 @@ reviewers:
     role: executor
     status: executing
 related_issues: [192, 175]
-related_prs: [193, 81, 92, 143, 72, 232, 261, 266, 267, 269, 277, 278, 282, 283, 284, 285]
+related_prs: [193, 81, 92, 143, 72, 232, 261, 266, 267, 269, 277, 278, 282, 283, 284, 285, 298, 301, 303, 305, 312, 313]
 gates_required: [repo-gate, termux-smoke]
 ---
 
@@ -138,3 +138,37 @@ Issue #192 has verified GitHub-native cross-references to Issue #175, PR #193, t
 - Evidence: PR #285; the approved documentation plan, the default-branch workflow inventory, `scripts/model_router.py`, the 3L0 model-success matrix, the local leaderboard policy, AR-10/AR-15 provider controls, and the current writer/reconciliation lanes.
 - Decision: Publish layered Mermaid decision trees, rendered artifacts, a generated workflow catalog, and a deterministic freshness verifier. Extend the existing `workflow-surface-policy.yml` only with a `contents: read` job that checks committed artifacts and uploads a seven-day review preview.
 - Safety: The verifier parses trusted repository control-plane files as data only. It does not execute workflow YAML, invoke a provider, read a secret, write a branch/PR/comment, change permissions, or turn arbitrary issue/review content into a command. Autonomous writers are documented as a high-impact capability with explicit preconditions, provenance, postconditions, bounded rollback, circuit breaker, and review requirements—not granted new runtime authority.
+
+
+### 2026-08-22 — Manus AI — B3 runtime-model governance correction
+
+- Disposition: **post-merge corrective review accepted for bounded implementation**
+- Evidence: PR #301 added the documented no-secret `copilot-requests: write` inference path and suppressed framework failure issues; PR #303 removed unavailable `gpt-4.1-mini`; PR #305 selected `claude-haiku-4.5` after the controlled run reflected it as available. PR #305 review thread `r3834159148` correctly identified that the runtime model decision also needed a proposal-level record and a configuration-only recovery path. The governed Claude Haiku retry `32551298813` nevertheless received the same `model_not_supported_error`; the repository Actions-variable endpoint returns `403` to this integration identity.
+- Decision: Retain B3 `model` as a protected `${{ vars.GH_AW_MODEL_AGENT_COPILOT || 'gpt-5-mini' }}` expression. `gpt-5-mini` is the next low-cost candidate supported by GitHub Copilot documentation and listed in the runtime small-model alias set. Repository or organization administrators can still change only `GH_AW_MODEL_AGENT_COPILOT` to recover from later model retirement or policy changes without modifying workflow source or granting a new capability.
+- Alternatives considered: Retain the rejected hard-coded Claude Haiku fallback; use the generic `auto` alias, which resolved to unavailable `claude-sonnet-5` in controlled run `32533160934`; rely on a runtime Actions variable, which this integration cannot currently manage; or add a secret/provider fallback, which is outside the B3 no-secret boundary. The protected variable-with-GPT-5-mini fallback is selected for one bounded validation run.
+- Safety: The override accepts only a repository/organization configuration value, never issue, PR, comment, review, artifact, or workflow-dispatch data. It does not alter permissions, tools, triggers, safe outputs, AI-credit caps, turn limits, repository-write authority, or external-provider configuration. B4 and B5 remain separately held.
+
+
+### 2026-08-22 — Manus AI — B3 runtime evidence concluded; B6 baseline refreshed
+
+- Disposition: **B3 source remediation complete; runtime report generation externally gated**
+- Evidence: PRs #301, #303, #305, #312, and #313 progressively established the no-secret Copilot inference path, failure-issue suppression, protected model override, and a bounded fallback. Controlled runs `32532446858`, `32533160934`, `32551298813`, and `32551779478` each reached the agent but received `model_not_supported_error` for their resolved subscription model. Activation, detection, safe outputs, and conclusion succeeded on every post-permission run; no run reported AI-credit use or created an unsafe repository side effect.
+- Decision: Retain the compiled, protected `GH_AW_MODEL_AGENT_COPILOT` override and the documented `gpt-5-mini` fallback. Suspend additional source-level model changes and B3 retries. Resumption requires an administrator to set that protected Actions variable to an actually subscription-enabled model or to change the applicable Copilot model policy. This integration cannot list or modify Actions variables (`403 Resource not accessible by integration`).
+- B6 evidence: Current-master actionlint run `32551982607` confirmed the narrowed six-finding advisory baseline: two generated-lock `queue: max` compatibility diagnostics and four SC2028 diagnostics in held PR #276. The scoped B3 `copilot-requests` compatibility filter remains verified and does not mask those six findings.
+- Safety: No new secret, tool, provider, trigger, repository-write authority, AI-credit cap, external service, or direct-push capability is authorized. B4, B5, and PR #276 remain held; B6 remains advisory pending toolchain compatibility and separate writer-authority decisions.
+
+### 2026-08-22 — Manus AI — AR-17 RECON INTEL cross-platform provider coordination
+
+- Disposition: **operator-approved for bounded implementation**
+- Evidence: The approved RECON INTEL plan; direct GitHub metadata for PR #311; the verified Issue #175 → PR #311 native cross-reference; the Issue #192 evidence record; the bounded file-review timeline for `peer-review-orchestrator.yml`; and the current AR-11 provider-command boundary. The local context-relationship index was queried with exact root `pr:311`, depth `2`, and max nodes `50`, but contains no root because its published coverage predates the PR; live GitHub evidence controls that root.
+- Decision: Implement a read-first reconnaissance layer that emits a fresh GitHub/GitLab SHA tuple and policy version, classifies aligned, GitHub-ahead, GitLab-ahead, diverged, no-common-ancestor, not-configured, and external-access-denied states, and assigns at most one corrective-write lane. CodeRabbit, Jules, Gemini, Qodo, Devin, and future providers may review only as policy permits; a corrective write requires a current exact lease and the established provider route. GitHub `master` remains the promotion spine.
+- Safety: Scheduled discovery has no repository, PR, label, comment, provider-invocation, or GitLab-write authority. GitLab access is dedicated read-only transport/API access and is never logged, embedded in a URL, persisted, or shared with providers. Reconciliation preparation is a separately scoped, explicit manual apply that requires an exact fresh SHA tuple, allowlisted source ref, clean ancestry, normal GitHub review, and no force push, automatic merge, history rewrite, or synthetic conflict resolution. Generated relationship graph artifacts remain untouched.
+
+### 2026-08-22 — Manus AI — AR-18 Evolutionary Capability Spine
+
+- Disposition: **accepted for one observe-mode, contract-first implementation PR**.
+- Evidence: The approved capability–scope–specialist plan, `scripts/model_router.py`, `routing-priority.yaml`, `llm-peers.yaml`, local 3L0/leaderboard schemas, `gemini-dispatch.yml`, `gemini-after-peers.yml`, the peer-review orchestrator, the provider command library, and the dependency-phase evaluator. The fresh baseline is `origin/master` at `8648fa72af57acad6afee84c8b67cc842171990f`; Issue #192 remains open. The current graph index is explicitly stale/bounded (`master-staging`, history page 1, 14 parser failures), so it remains a discovery aid rather than present-lineage authority.
+- Decision: Introduce a versioned capability-candidate and secret-free specialist-decision envelope in observe mode. The existing event classifier, peer evidence/cooldown gate, provider command library, remediation lanes, and dependency evaluator retain their specialized ownership. The shared contract may recommend an eligible specialist but cannot itself invoke a provider, write a branch, alter a provider configuration, or become a generic dispatcher.
+- Performance policy: Repository-local correctness, substantive resolution quality, duplicate/noise avoidance, safe-feedback time, resource efficiency, and coordinated asynchronous completion receive greater influence than public leaderboard features. Availability, policy, provenance, current-SHA evidence, quota/cooldown, and branch-write confirmation are hard gates, not score offsets.
+- Copilot posture: A protected model expression is a candidate hint only. A runtime `model_not_supported_error`, policy denial, or unknown effective availability blocks Copilot selection. B3 source and runs remain suspended until administrator-managed policy/configuration evidence exists.
+- Safety and rollback: No free-form CodeRabbit compound command or review-body forwarding is authorized. CodeRabbit’s existing declared AutoFix/fix-CI/conflict actions retain their explicit branch-write confirmation, live-SHA, idempotency, and trusted-library requirements. Initial rollback is a feature-gate return to the existing provider routing; B3, B4/AR-04, B5/A-14, and PR #276 remain held.

@@ -7,11 +7,13 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW = ROOT / ".github/workflows/actionlint-advisory.yml"
+CONFIG = ROOT / ".github/actionlint.yaml"
 
 
 class ActionlintAdvisoryWorkflowTests(unittest.TestCase):
     def setUp(self) -> None:
         self.workflow = WORKFLOW.read_text(encoding="utf-8")
+        self.config = CONFIG.read_text(encoding="utf-8")
 
     def test_trigger_is_limited_to_workflow_changes_and_manual_dispatch(self) -> None:
         self.assertIn("on:\n  pull_request:\n    paths:", self.workflow)
@@ -20,11 +22,24 @@ class ActionlintAdvisoryWorkflowTests(unittest.TestCase):
             '      - ".github/actions/**"',
             '      - "actionlint.yaml"',
             '      - ".actionlint.yaml"',
+            '      - ".github/actionlint.yaml"',
         ):
             self.assertIn(expected_path, self.workflow)
         self.assertIn("  workflow_dispatch:", self.workflow)
         for rejected_event in ("push:", "issues:", "issue_comment:", "repository_dispatch:"):
             self.assertNotIn(rejected_event, self.workflow)
+
+    def test_copilot_permission_compatibility_filter_is_path_specific(self) -> None:
+        self.assertIn(
+            ".github/workflows/agentic-repository-operations-report.lock.yml:",
+            self.config,
+        )
+        self.assertIn(
+            'unknown permission scope "copilot-requests"\\. all available permission scopes are .+',
+            self.config,
+        )
+        self.assertEqual(self.config.count("ignore:"), 1)
+        self.assertNotIn(".github/workflows/**/*.yml", self.config)
 
     def test_permissions_are_read_only_and_credentials_are_not_persisted(self) -> None:
         self.assertIn("permissions: {}", self.workflow)
@@ -63,6 +78,12 @@ class ActionlintAdvisoryWorkflowTests(unittest.TestCase):
         self.assertIn("continue-on-error: true", self.workflow)
         self.assertIn("This B6 pilot is non-blocking.", self.workflow)
         self.assertIn("advisory; no auto-fix and no pull-request comments", self.workflow)
+        self.assertIn("set +e", self.workflow)
+        self.assertIn("outcome=findings", self.workflow)
+        self.assertIn("printf 'outcome=%s\\n' \"$outcome\" >> \"$GITHUB_OUTPUT\"", self.workflow)
+        self.assertIn("ACTIONLINT_OUTCOME: ${{ steps.lint.outputs.outcome || 'not-run' }}", self.workflow)
+        self.assertIn("| lint outcome | \\`${ACTIONLINT_OUTCOME}\\` |", self.workflow)
+        self.assertNotIn("infrastructure-error", self.workflow)
         for forbidden in (
             "gh pr comment",
             "github.rest.issues.createComment",

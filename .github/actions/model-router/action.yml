@@ -27,6 +27,18 @@ inputs:
     description: '"true" if GEMINI_API_KEY is set'
     required: false
     default: 'true'
+  capability-spine-observe:
+    description: 'Emit AR-18 shadow decision data only; it never changes the execution route'
+    required: false
+    default: 'true'
+  target-sha:
+    description: 'Optional already-validated PR head SHA for a PR-scoped observe decision'
+    required: false
+    default: ''
+  current-sha:
+    description: 'Optional trusted current SHA used to validate target-sha; required when target-sha is supplied'
+    required: false
+    default: ''
 
 outputs:
   provider:
@@ -41,6 +53,12 @@ outputs:
   reason:
     description: 'Human-readable selection reason'
     value: ${{ steps.pick.outputs.reason }}
+  decision:
+    description: 'Secret-free AR-18 observe-mode capability decision envelope'
+    value: ${{ steps.pick.outputs.decision }}
+  decision-summary:
+    description: 'One-line AR-18 observe-mode decision summary'
+    value: ${{ steps.pick.outputs.decision_summary }}
 
 runs:
   using: composite
@@ -59,7 +77,7 @@ runs:
         restore-keys: model-router-${{ steps.date.outputs.key }}
         enableCrossOsArchive: true
 
-    - name: Pick provider + model (Gemini PRIMARY → peer Omni ↔ OpenRouter secondary)
+    - name: Pick provider + model plus observe-mode capability decision
       id: pick
       shell: bash
       env:
@@ -67,6 +85,9 @@ runs:
         HAS_OMNI: ${{ inputs.has-omni }}
         HAS_OPENROUTER: ${{ inputs.has-openrouter }}
         HAS_GEMINI: ${{ inputs.has-gemini }}
+        CAPABILITY_SPINE_OBSERVE: ${{ inputs.capability-spine-observe }}
+        TARGET_SHA: ${{ inputs.target-sha }}
+        CURRENT_SHA: ${{ inputs.current-sha }}
       run: |
         python3 scripts/model_router.py
 

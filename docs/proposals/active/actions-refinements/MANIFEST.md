@@ -13,7 +13,7 @@ reviewers:
     role: executor
     status: executing
 related_issues: [192, 175]
-related_prs: [193, 81, 92, 143, 72, 232, 261, 266, 267, 269, 277, 278, 282, 283, 284, 285]
+related_prs: [193, 81, 92, 143, 72, 232, 261, 266, 267, 269, 277, 278, 282, 283, 284, 285, 298, 301, 303, 305]
 gates_required: [repo-gate, termux-smoke]
 ---
 
@@ -138,3 +138,12 @@ Issue #192 has verified GitHub-native cross-references to Issue #175, PR #193, t
 - Evidence: PR #285; the approved documentation plan, the default-branch workflow inventory, `scripts/model_router.py`, the 3L0 model-success matrix, the local leaderboard policy, AR-10/AR-15 provider controls, and the current writer/reconciliation lanes.
 - Decision: Publish layered Mermaid decision trees, rendered artifacts, a generated workflow catalog, and a deterministic freshness verifier. Extend the existing `workflow-surface-policy.yml` only with a `contents: read` job that checks committed artifacts and uploads a seven-day review preview.
 - Safety: The verifier parses trusted repository control-plane files as data only. It does not execute workflow YAML, invoke a provider, read a secret, write a branch/PR/comment, change permissions, or turn arbitrary issue/review content into a command. Autonomous writers are documented as a high-impact capability with explicit preconditions, provenance, postconditions, bounded rollback, circuit breaker, and review requirements—not granted new runtime authority.
+
+
+### 2026-08-22 — Manus AI — B3 runtime-model governance correction
+
+- Disposition: **post-merge corrective review accepted for bounded implementation**
+- Evidence: PR #301 added the documented no-secret `copilot-requests: write` inference path and suppressed framework failure issues; PR #303 removed unavailable `gpt-4.1-mini`; PR #305 selected `claude-haiku-4.5` after the controlled run reflected it as available. PR #305 review thread `r3834159148` correctly identified that the runtime model decision also needed a proposal-level record and a configuration-only recovery path.
+- Decision: Set B3 `model` to `${{ vars.GH_AW_MODEL_AGENT_COPILOT || 'claude-haiku-4.5' }}`. The reviewed Claude Haiku fallback preserves the model that the repository runtime reported as available. Repository or organization administrators can change only `GH_AW_MODEL_AGENT_COPILOT` to recover from later model retirement or policy changes without modifying workflow source or granting a new capability.
+- Alternatives considered: Retain a hard-coded model, which would require a code PR for every subscription-policy change; use the generic `auto` alias, which resolved to unavailable `claude-sonnet-5` in controlled run `32533160934`; or add a secret/provider fallback, which is outside the B3 no-secret boundary. The variable-with-reviewed-fallback option is selected.
+- Safety: The override accepts only a repository/organization configuration value, never issue, PR, comment, review, artifact, or workflow-dispatch data. It does not alter permissions, tools, triggers, safe outputs, AI-credit caps, turn limits, repository-write authority, or external-provider configuration. B4 and B5 remain separately held.

@@ -1,7 +1,7 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-08-19T04:00:00Z"
-updated_by: Manus AI
+updated_at: "2026-08-22T20:30:00Z"
+updated_by: ChatGPT
 
 proposals:
   - id: context-relationship-graph
@@ -170,6 +170,7 @@ proposals:
     related_issues: [192, 175]
     related_prs: [193, 81, 92, 143, 72, 232]
     gates_required: [repo-gate, termux-smoke]
+
   - id: linguist-machine-parity
     title: "Linguist README machine-parity enhancement"
     author: Manus AI
@@ -202,4 +203,20 @@ proposals:
         status: executing
     related_prs: [248]
     related_branches: [manus/dependency-phase-automation]
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: notation-sets-evolution
+    title: "Notation Sets, Living Lexicon, and Cross-Domain Semantic Index"
+    author: ChatGPT
+    status: posted
+    priority: P1
+    path: active/notation-sets/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: [320, 309, 182, 175]
+    related_prs: []
+    related_branches:
+      - docs/notation-sets-evolution
     gates_required: [repo-gate, termux-smoke]

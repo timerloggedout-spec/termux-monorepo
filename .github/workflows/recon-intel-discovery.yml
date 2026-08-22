@@ -1,0 +1,253 @@
+name: RECON INTEL discovery
+
+# Read-first, metadata-only GitHub–GitLab reconnaissance. This workflow runs only
+# trusted default-branch code, never checks out pull-request code, and has no
+# permission to mutate repository content, issues, pull requests, labels, or
+# provider state.
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, ready_for_review, reopened]
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: Optional open same-repository pull-request number; blank selects active PRs or the idle default-branch probe.
+        required: false
+        type: string
+      gitlab_ref:
+        description: Allowlisted GitLab source ref.
+        required: false
+        default: master
+        type: choice
+        options: [master]
+
+concurrency:
+  group: recon-intel-${{ github.event.pull_request.number || github.event.inputs.pr_number || github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  select-targets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      targets: ${{ steps.targets.outputs.targets }}
+      gitlab_ref: ${{ steps.targets.outputs.gitlab_ref }}
+    steps:
+      - name: Select bounded trusted-repository targets
+        id: targets
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          REQUESTED_PR_NUMBER: ${{ github.event.inputs.pr_number || '' }}
+          REQUESTED_GITLAB_REF: ${{ github.event.inputs.gitlab_ref || 'master' }}
+        with:
+          script: |
+            const requested = (process.env.REQUESTED_PR_NUMBER || '').trim();
+            const gitlabRef = (process.env.REQUESTED_GITLAB_REF || 'master').trim();
+            if (gitlabRef !== 'master') {
+              core.setFailed('RECON INTEL only permits the GitLab master ref.');
+              return;
+            }
+            const ownRepo = `${context.repo.owner}/${context.repo.repo}`;
+            const targetFromPr = pr => ({
+              pr_number: String(pr.number),
+              github_sha: pr.head.sha,
+            });
+            let targets = [];
+            if (context.payload.pull_request) {
+              const pr = context.payload.pull_request;
+              if (!pr.draft && pr.head.repo?.full_name === ownRepo) {
+                targets = [targetFromPr(pr)];
+              } else {
+                core.info('Fork or draft pull request: RECON INTEL does not fetch an untrusted head.');
+              }
+            } else if (requested) {
+              if (!/^\d+$/.test(requested) || Number(requested) <= 0) {
+                core.setFailed('pr_number must be a positive decimal integer.');
+                return;
+              }
+              const { data: pr } = await github.rest.pulls.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: Number(requested),
+              });
+              if (pr.state !== 'open' || pr.draft || pr.head.repo?.full_name !== ownRepo) {
+                core.setFailed('pr_number must identify an open, non-draft, same-repository pull request.');
+                return;
+              }
+              targets = [targetFromPr(pr)];
+            } else {
+              const { data: openPrs } = await github.rest.pulls.list({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open',
+                per_page: 100,
+              });
+              targets = openPrs
+                .filter(pr => !pr.draft && pr.head.repo?.full_name === ownRepo)
+                .map(targetFromPr);
+              const now = new Date();
+              const idleProbe = now.getUTCMinutes() === 0 && now.getUTCHours() % 6 === 0;
+              if (!targets.length && idleProbe) {
+                targets = [{ pr_number: '0', github_sha: context.sha }];
+              }
+            }
+            core.setOutput('targets', JSON.stringify(targets));
+            core.setOutput('gitlab_ref', gitlabRef);
+            core.info(`Selected ${targets.length} bounded RECON INTEL target(s).`);
+
+  discover:
+    needs: select-targets
+    if: needs.select-targets.outputs.targets != '[]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      contents: read
+      checks: write
+    strategy:
+      fail-fast: false
+      matrix:
+        target: ${{ fromJSON(needs.select-targets.outputs.targets) }}
+    steps:
+      - name: Check out trusted default-branch control plane
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Resolve selected GitHub revision without executing PR code
+        id: github-target
+        env:
+          TARGET_PR_NUMBER: ${{ matrix.target.pr_number }}
+          TARGET_GITHUB_SHA: ${{ matrix.target.github_sha }}
+        run: |
+          set -euo pipefail
+          if [ "$TARGET_PR_NUMBER" = "0" ]; then
+            resolved_sha="$(git rev-parse HEAD)"
+          else
+            case "$TARGET_PR_NUMBER" in
+              ''|*[!0-9]*) echo "Invalid target PR number." >&2; exit 1 ;;
+            esac
+            git fetch --no-tags --no-recurse-submodules origin \
+              "+refs/pull/${TARGET_PR_NUMBER}/head:refs/recon-intel/github/pr/${TARGET_PR_NUMBER}"
+            resolved_sha="$(git rev-parse "refs/recon-intel/github/pr/${TARGET_PR_NUMBER}")"
+          fi
+          case "$TARGET_GITHUB_SHA" in
+            ''|*[!0-9a-f]*) echo "Invalid target GitHub SHA." >&2; exit 1 ;;
+          esac
+          if [ "$resolved_sha" != "$TARGET_GITHUB_SHA" ]; then
+            echo "Target changed during discovery; refusing stale comparison." >&2
+            exit 1
+          fi
+          echo "github_sha=$resolved_sha" >> "$GITHUB_OUTPUT"
+
+      - name: Classify GitHub–GitLab ancestry
+        id: classify
+        env:
+          RECON_INTEL_GITLAB_READ_TOKEN: ${{ secrets.RECON_INTEL_GITLAB_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          python3 scripts/ci/recon_intel_discovery.py \
+            --github-sha "${{ steps.github-target.outputs.github_sha }}" \
+            --gitlab-ref "${{ needs.select-targets.outputs.gitlab_ref }}"
+
+      - name: Record SHA-bound RECON INTEL lease check
+        if: steps.classify.outputs.state != ''
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          GITHUB_SHA: ${{ steps.classify.outputs.github_sha }}
+          GITLAB_SHA: ${{ steps.classify.outputs.gitlab_sha }}
+          GITLAB_REF: ${{ steps.classify.outputs.gitlab_ref }}
+          STATE: ${{ steps.classify.outputs.state }}
+          LANE: ${{ steps.classify.outputs.lane }}
+          POLICY_VERSION: ${{ steps.classify.outputs.policy_version }}
+          DETAIL: ${{ steps.classify.outputs.detail }}
+        with:
+          script: |
+            const githubSha = process.env.GITHUB_SHA;
+            const gitlabSha = process.env.GITLAB_SHA || 'unavailable';
+            const gitlabRef = process.env.GITLAB_REF || 'master';
+            const state = process.env.STATE;
+            const lane = process.env.LANE;
+            const policyVersion = process.env.POLICY_VERSION;
+            const detail = process.env.DETAIL || 'No additional detail supplied.';
+            const externalId = `recon-intel:${policyVersion}:${gitlabRef}:${gitlabSha}`;
+            const conclusion = ['aligned', 'github-ahead', 'gitlab-ahead'].includes(state)
+              ? 'success'
+              : 'neutral';
+            const output = {
+              title: `RECON INTEL ${state}`,
+              summary: [
+                `state: ${state}`,
+                `lane: ${lane}`,
+                `github_sha: ${githubSha}`,
+                `gitlab_sha: ${gitlabSha}`,
+                `gitlab_ref: ${gitlabRef}`,
+                `policy_version: ${policyVersion}`,
+                'metadata_only: true',
+              ].join('\\n'),
+              text: detail,
+            };
+            const { data } = await github.rest.checks.listForRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: githubSha,
+              per_page: 100,
+            });
+            const existing = data.check_runs
+              .filter(check => check.name === 'RECON INTEL lease' && check.external_id?.startsWith('recon-intel:'))
+              .sort((left, right) => new Date(right.completed_at || right.started_at || 0) - new Date(left.completed_at || left.started_at || 0))[0];
+            const payload = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: 'RECON INTEL lease',
+              head_sha: githubSha,
+              status: 'completed',
+              conclusion,
+              external_id: externalId,
+              output,
+            };
+            if (existing) {
+              await github.rest.checks.update({ ...payload, check_run_id: existing.id });
+              core.info(`Updated RECON INTEL lease check ${existing.id}.`);
+            } else {
+              const created = await github.rest.checks.create(payload);
+              core.info(`Created RECON INTEL lease check ${created.data.id}.`);
+            }
+
+      - name: Publish bounded metadata-only summary
+        if: always()
+        env:
+          TARGET_PR_NUMBER: ${{ matrix.target.pr_number }}
+          GITHUB_SHA: ${{ steps.classify.outputs.github_sha || steps.github-target.outputs.github_sha }}
+          GITLAB_SHA: ${{ steps.classify.outputs.gitlab_sha || '' }}
+          GITLAB_REF: ${{ steps.classify.outputs.gitlab_ref || needs.select-targets.outputs.gitlab_ref }}
+          STATE: ${{ steps.classify.outputs.state || 'external-access-denied' }}
+          LANE: ${{ steps.classify.outputs.lane || 'access-denied' }}
+          POLICY_VERSION: ${{ steps.classify.outputs.policy_version || 'recon-intel-v1' }}
+          DETAIL: ${{ steps.classify.outputs.detail || 'Discovery did not produce a complete metadata record.' }}
+        run: |
+          {
+            echo "## RECON INTEL discovery"
+            echo
+            echo "| Field | Value |"
+            echo "|---|---|"
+            echo "| GitHub target | ${TARGET_PR_NUMBER} |"
+            echo "| GitHub SHA | \`${GITHUB_SHA}\` |"
+            echo "| GitLab ref | \`${GITLAB_REF}\` |"
+            echo "| GitLab SHA | \`${GITLAB_SHA:-unavailable}\` |"
+            echo "| State | \`${STATE}\` |"
+            echo "| Corrective-write lane | \`${LANE}\` |"
+            echo "| Policy | \`${POLICY_VERSION}\` |"
+            echo
+            echo "${DETAIL}"
+            echo
+            echo "This workflow is read-only: it does not create branches, pull requests, labels, comments, provider requests, or GitLab writes."
+          } >> "$GITHUB_STEP_SUMMARY"

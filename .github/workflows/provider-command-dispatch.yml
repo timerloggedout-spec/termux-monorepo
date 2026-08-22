@@ -28,6 +28,15 @@ on:
         required: false
         default: false
         type: boolean
+      gitlab_sha:
+        description: Required current GitLab SHA for a branch-changing provider action
+        required: false
+        type: string
+      policy_version:
+        description: Required RECON INTEL policy version for a branch-changing provider action
+        required: false
+        default: recon-intel-v1
+        type: string
   repository_dispatch:
     types: [provider-command]
 
@@ -56,6 +65,8 @@ jobs:
           INPUT_ACTION: ${{ github.event.inputs.action || github.event.client_payload.action }}
           INPUT_HEAD_SHA: ${{ github.event.inputs.head_sha || github.event.client_payload.head_sha }}
           INPUT_CONFIRM_BRANCH_WRITE: ${{ github.event.inputs.confirm_branch_write || github.event.client_payload.confirm_branch_write || 'false' }}
+          INPUT_GITLAB_SHA: ${{ github.event.inputs.gitlab_sha || github.event.client_payload.gitlab_sha || '' }}
+          INPUT_POLICY_VERSION: ${{ github.event.inputs.policy_version || github.event.client_payload.policy_version || 'recon-intel-v1' }}
         with:
           github-token: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
           script: |
@@ -64,6 +75,8 @@ jobs:
             const action = (process.env.INPUT_ACTION || '').trim().toLowerCase();
             const requestedSha = (process.env.INPUT_HEAD_SHA || '').trim();
             const confirmBranchWrite = String(process.env.INPUT_CONFIRM_BRANCH_WRITE).toLowerCase() === 'true';
+            const requestedGitlabSha = (process.env.INPUT_GITLAB_SHA || '').trim();
+            const policyVersion = (process.env.INPUT_POLICY_VERSION || '').trim();
             const marker = '<!-- operator-provider-command:v1 -->';
             const operatorLogins = new Set((process.env.OPERATOR_EXECUTOR_LOGINS || "")
               .split(",").map(value => value.trim().toLowerCase()).filter(Boolean));
@@ -132,6 +145,30 @@ jobs:
             if (pr.head.sha !== requestedSha) {
               core.setFailed(`Stale head SHA: expected ${requestedSha}, current ${pr.head.sha}.`);
               return;
+            }
+            if (command.requires_confirm_branch_write) {
+              if (!/^[0-9a-f]{7,64}$/i.test(requestedGitlabSha) || !/^recon-intel-v\d+$/.test(policyVersion)) {
+                core.setFailed('A valid gitlab_sha and recon-intel policy_version are required for a branch-changing provider action.');
+                return;
+              }
+              const { data: checks } = await github.rest.checks.listForRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: requestedSha,
+                per_page: 100,
+              });
+              const expectedExternalId = `recon-intel:${policyVersion}:master:${requestedGitlabSha}`;
+              const lease = checks.check_runs
+                .filter(check => check.name === 'RECON INTEL lease' && check.external_id === expectedExternalId)
+                .sort((left, right) => new Date(right.completed_at || right.started_at || 0) - new Date(left.completed_at || left.started_at || 0))[0];
+              const leaseSummary = lease?.output?.summary || '';
+              const leaseState = leaseSummary.match(/^state:\s*(.+?)\s*$/m)?.[1]?.trim() || '';
+              const leaseLane = leaseSummary.match(/^lane:\s*(.+?)\s*$/m)?.[1]?.trim() || '';
+              const leaseHeadSha = leaseSummary.match(/^github_sha:\s*(.+?)\s*$/m)?.[1]?.trim() || '';
+              if (!lease || leaseState === '' || leaseLane !== 'github-primary' || leaseHeadSha !== requestedSha) {
+                core.setFailed('No matching current RECON INTEL github-primary lease exists for this branch-changing provider action.');
+                return;
+              }
             }
             const comments = await github.paginate(github.rest.issues.listComments, {
               owner: context.repo.owner,

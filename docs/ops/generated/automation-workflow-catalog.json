@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "417a19dc9ce5df371373410f2cb647a1ae1cfe361bef631880bf59c0fdea7d8d",
-  "workflow_count": 40,
+  "source_fingerprint": "bdcd2a217fe80951f5fcdabb4518fc406fc21811a1c9397663c866dacee8c516",
+  "workflow_count": 42,
   "workflows": [
     {
       "action_pins": [
@@ -646,6 +646,47 @@
       "schedules": [],
       "triggers": [
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3"
+      ],
+      "authority": "bounded-state-write",
+      "concurrency": "group: recon-intel-${{ github.event.pull_request.number || github.event.inputs.pr_number || github.ref }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "discover",
+        "select-targets"
+      ],
+      "name": "RECON INTEL discovery",
+      "path": ".github/workflows/recon-intel-discovery.yml",
+      "schedules": [
+        "*/15 * * * *"
+      ],
+      "triggers": [
+        "pull_request_target",
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3"
+      ],
+      "authority": "writer",
+      "concurrency": "group: recon-intel-reconcile-${{ github.event.repository.default_branch }} cancel-in-progress: false",
+      "domain": "reconciliation-publishing",
+      "jobs": [
+        "reconcile"
+      ],
+      "name": "RECON INTEL reconciliation apply",
+      "path": ".github/workflows/recon-intel-reconcile.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },

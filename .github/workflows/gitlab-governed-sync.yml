@@ -16,7 +16,6 @@ on:
 permissions:
   contents: write
   pull-requests: write
-  issues: write
 
 concurrency:
   group: gitlab-governed-sync
@@ -99,15 +98,3 @@ jobs:
             --title "sync(gitlab): reconcile external commits ${GL_SHA:0:12}" \
             --body "## Governed GitLab reconciliation\n\nGitLab ref: \
 \`$GITLAB_REF\`\n\nGitHub master: \`$GH_SHA\`\nGitLab ref: \`$GL_SHA\`\n\nThis PR was prepared by the governed sync controller. It does not force-push, overwrite GitLab, or bypass repository gates. Review and merge through the normal master path.\n\nIf the histories diverged, conflicts must be resolved manually; the controller fails closed."
-
-      - name: Record failed divergence as an issue
-        if: failure() && (steps.classify.outputs.state == 'gitlab-ahead' || steps.classify.outputs.state == 'diverged')
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_SHA: ${{ steps.fetch.outputs.github_sha }}
-          GL_SHA: ${{ steps.fetch.outputs.gitlab_sha }}
-        shell: bash
-        run: |
-          gh issue create \
-            --title "ops(sync): GitLab reconciliation requires manual resolution" \
-            --body "GitLab ref \`$GITLAB_REF\` is not cleanly reconciled with GitHub master. GitHub=$GH_SHA GitLab=$GL_SHA. The sync controller failed closed and made no force update."

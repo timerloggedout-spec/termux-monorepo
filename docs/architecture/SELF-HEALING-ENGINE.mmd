@@ -1,0 +1,41 @@
+flowchart TD
+    E[Event Sources\nGitHub Actions / repo-gate / termux-smoke / Dependabot / runtime] --> I[Failure Ingestion\nnormalize / dedupe / correlate / fingerprint]
+    I --> INC[Incident Model\nID / SHA / severity / evidence / authority]
+    INC --> D[Diagnosis Engine]
+    D --> P[Remediation Planner]
+    P --> X[Dynamic Dispatcher]
+
+    X --> CAP[Capability Matching]
+    X --> AUTH[Authority / Policy Check]
+    X --> AV[Availability / Workload]
+    X --> MB[MoneyBall + 3L0 LeaderBoards\nmatrices / manager signals]
+    CAP --> SEL[Worker Selection]
+    AUTH --> SEL
+    AV --> SEL
+    MB --> SEL
+
+    SEL --> GH[GitHub Worker]
+    SEL --> TX[Termux Worker]
+    SEL --> RW[Remote Worker]
+
+    GH --> SB[Repair Sandbox]
+    TX --> SB
+    RW --> SB
+    SB --> V[Verification\ntargeted tests / repo-gate / termux-smoke / security / regression]
+    V -->|PASS| PG[Promotion Gate]
+    V -->|FAIL| R[Retry / Re-diagnose / Escalate]
+    R --> D
+    PG -->|AUTO| M[Promote / Merge]
+    PG -->|HITL| H[Human / Operator]
+    M --> MON[Post-merge Monitor]
+    H --> MON
+    MON -->|REGRESSION| RB[Rollback / Escalate]
+    MON -->|HEALTHY| RES[Resolved]
+    RES --> K[Knowledge / Evidence]
+    K --> D
+
+    DB[Dependabot] --> I
+    AZ[ArchW1z TUI] -. client projection .-> X
+    DT[deepcli-TUI] -. client projection .-> X
+
+    classDef p0 fill:none,stroke-width:3px;

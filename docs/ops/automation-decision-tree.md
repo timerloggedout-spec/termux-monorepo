@@ -46,7 +46,7 @@ The lifecycle route is selected by event type, supported context, and trust. Pul
 
 The current execution router implements **Gemini primary** selection for the requested role and evaluates secondary peers only after the appropriate primary budget is exhausted. It uses the local 3L0/ELO-like model-success matrix together with role suitability. OpenRouter availability is not assumed: the router uses a one-hour model-catalog cache, attempts a bounded live catalog poll when necessary, falls back to a stale cache when available, and finally permits only the proven legacy allowlist. Only free-model candidates that satisfy the selected catalog/allowlist rule can be ranked and budget-checked.[1] [2]
 
-AR-17 adds a **Capability–Scope–Specialist observe mode** alongside this execution path. It normalizes declared candidates and emits a bounded recommendation, but it does not alter the selected provider/model, invoke another provider, create a branch, or change a peer gate. Before any candidate is scoreable, the observe path requires declared capability/effect, trusted provenance, enabled policy/credential, permitted availability state, quota headroom, and current-SHA or explicit branch-write confirmation where the effect requires it. A failed hard gate is an exclusion, never a score penalty that a benchmark can overcome.[1] [2]
+AR-18 adds a **Capability–Scope–Specialist observe mode** alongside this execution path. It normalizes declared candidates and emits a bounded recommendation, but it does not alter the selected provider/model, invoke another provider, create a branch, or change a peer gate. Before any candidate is scoreable, the observe path requires declared capability/effect, trusted provenance, enabled policy/credential, permitted availability state, quota headroom, and current-SHA or explicit branch-write confirmation where the effect requires it. A failed hard gate is an exclusion, never a score penalty that a benchmark can overcome.[1] [2]
 
 Omni/OmniRoute remains a guarded code path but is **temporarily decommissioned operationally**. The diagram therefore shows it as a policy-gated path, not as an active fallback. If all eligible free routes are exhausted, the router emits an explicit no-route/skip outcome rather than claiming a false fallback.[1]
 
@@ -71,7 +71,7 @@ The repository’s 3L0 matrix is a **local performance label** for role-aware ro
 | Local 3L0/ELO and role suitability | Ranking input for the repository’s own workload categories. | Bounded selection input after availability and budget gates. |
 | Live availability and counters | Operational eligibility, cache/cooldown, and quota evidence. | May reject a higher-ranked model; never invent a route. |
 | Repository-local outcome evidence | Correctness/gate pass, substantive resolution, duplicate avoidance, safe-feedback time, cost, and coordinated asynchronous completion. | Primary score input once sufficient trusted samples exist; sparse historic 3L0 values remain low-confidence priors. |
-| AR-17 decision envelope | Capability, candidate exclusions, availability provenance, quota headroom, confidence, recommendation, and runner-up. | Observe-only; never contains secrets, provider/issue/review bodies, or command fragments. |
+| AR-18 decision envelope | Capability, candidate exclusions, availability provenance, quota headroom, confidence, recommendation, and runner-up. | Observe-only; never contains secrets, provider/issue/review bodies, or command fragments. |
 
 ## 4. Peer-provider review orchestration
 

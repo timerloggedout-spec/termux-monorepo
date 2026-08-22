@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Dynamic model router with AR-17 observe-mode capability decisions.
+"""Dynamic model router with AR-18 observe-mode capability decisions.
 
 The provider/model execution route intentionally remains the existing Gemini-primary
-path in this release. AR-17 only emits a bounded decision envelope so repository
+path in this release. AR-18 only emits a bounded decision envelope so repository
 outcomes can be measured before any active-routing policy changes.
 """
 
@@ -201,7 +201,7 @@ def write_output(name, value):
         return
     with open(output_path, "a", encoding="utf-8") as handle:
         if "\n" in value:
-            handle.write(f"{name}<<AR17_EOF\n{value}\nAR17_EOF\n")
+            handle.write(f"{name}<<AR18_EOF\n{value}\nAR18_EOF\n")
         else:
             handle.write(f"{name}={value}\n")
 
@@ -220,7 +220,7 @@ def emit_decision(
     target_sha=None,
     current_sha=None,
 ):
-    """Emit AR-17 shadow data without affecting the legacy selected route."""
+    """Emit AR-18 shadow data without affecting the legacy selected route."""
     if os.environ.get("CAPABILITY_SPINE_OBSERVE", "true").lower() != "true":
         write_output("decision", json.dumps({"schema_version": 2, "mode": "disabled"}))
         write_output("decision_summary", "capability-spine observe mode disabled")
@@ -352,7 +352,7 @@ def main():
         current_sha=os.environ.get("CURRENT_SHA") or None,
     )
 
-    # Existing execution selection stays unchanged in AR-17 observe mode.
+    # Existing execution selection stays unchanged in AR-18 observe mode.
     if has_gemini:
         gemini_candidates = []
         for model in role_residuals.get(role, []):

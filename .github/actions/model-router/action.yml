@@ -28,7 +28,7 @@ inputs:
     required: false
     default: 'true'
   capability-spine-observe:
-    description: 'Emit AR-17 shadow decision data only; it never changes the execution route'
+    description: 'Emit AR-18 shadow decision data only; it never changes the execution route'
     required: false
     default: 'true'
   target-sha:
@@ -54,10 +54,10 @@ outputs:
     description: 'Human-readable selection reason'
     value: ${{ steps.pick.outputs.reason }}
   decision:
-    description: 'Secret-free AR-17 observe-mode capability decision envelope'
+    description: 'Secret-free AR-18 observe-mode capability decision envelope'
     value: ${{ steps.pick.outputs.decision }}
   decision-summary:
-    description: 'One-line AR-17 observe-mode decision summary'
+    description: 'One-line AR-18 observe-mode decision summary'
     value: ${{ steps.pick.outputs.decision_summary }}
 
 runs:

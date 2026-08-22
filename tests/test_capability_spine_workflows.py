@@ -27,7 +27,7 @@ def test_all_existing_router_consumers_publish_only_the_bounded_summary():
         source = workflow.read_text(encoding="utf-8")
         assert "Record capability-spine observe decision" in source, workflow
         assert "steps.router.outputs.decision-summary" in source, workflow
-        assert "Execution selection remains unchanged during AR-17 observation." in source or \
+        assert "Execution selection remains unchanged during AR-18 observation." in source or \
             "The verified peer gate and existing second-pass execution route remain authoritative." in source
         assert "steps.router.outputs.provider" in source, workflow
 

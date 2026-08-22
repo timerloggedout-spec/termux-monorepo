@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Capability, scope, and specialist decision helpers for AR-17 observe mode.
+"""Capability, scope, and specialist decision helpers for AR-18 observe mode.
 
 The module is intentionally pure. It consumes declared candidate facts and emits
 bounded decision data; callers retain every provider, GitHub, and file mutation
@@ -202,7 +202,7 @@ def decide(
 ) -> dict[str, Any]:
     """Return a stable bounded observation without executing a specialist."""
     if mode != OBSERVE_MODE:
-        raise ValueError("AR-17 accepts observe mode only")
+        raise ValueError("AR-18 accepts observe mode only")
     all_candidates = list(candidates)[:MAX_CANDIDATES]
     eligible = [candidate for candidate in all_candidates if candidate["eligible"]]
     eligible.sort(

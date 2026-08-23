@@ -1,6 +1,6 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-08-23T06:00:00Z"
+updated_at: "2026-08-23T06:10:00Z"
 updated_by: Grok (Administrator)
 
 proposals:
@@ -224,7 +224,7 @@ proposals:
   - id: archwiz-ui-protocol
     title: "ArchW1z Termux UI over shared agentic protocols"
     author: ChatGPT
-    status: proposed
+    status: posted
     priority: P1
     path: active/archwiz-ui-protocol/
     reviewers:
@@ -235,6 +235,6 @@ proposals:
         role: author
         status: posted
     related_issues: [292]
-    related_prs: []
+    related_prs: [329]
     related_branches: [proposal/archwiz-ui-protocol-clean]
     gates_required: [repo-gate, termux-smoke]

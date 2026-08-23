@@ -1,43 +1,21 @@
 name: 'HTTP LLM Invoke'
 description: |
   OpenAI-compatible chat/completions for OmniRoute or OpenRouter peers.
-  Posts result as a PR/issue comment. FREE paths only.
-  Base URL: explicit input → catalog defaults. https + host allow-list only.
-
+  FREE paths only. OpenRouter free means :free OR zero prompt+completion pricing.
 inputs:
-  provider:
-    description: 'omni | openrouter'
-    required: true
-  model:
-    description: 'Model id (e.g. auto/best-free or meta-llama/...:free)'
-    required: true
-  role:
-    description: 'triage | review | invoke'
-    required: true
-  target_number:
-    description: 'PR or issue number to comment on'
-    required: true
-  prompt:
-    description: 'User prompt text'
-    required: true
-  api_key:
-    description: 'Provider API key'
-    required: true
-  base_url:
-    description: 'Optional OpenAI-compat base URL (…/v1). Empty → catalog default.'
-    required: false
-    default: ''
-  github_token:
-    description: 'Token for gh comment API'
-    required: true
-  repository:
-    description: 'owner/repo'
-    required: true
-
+  provider: { description: 'omni | openrouter', required: true }
+  model: { description: 'Model id', required: true }
+  role: { description: 'triage | review | invoke', required: true }
+  target_number: { description: 'PR or issue number', required: true }
+  prompt: { description: 'User prompt text', required: true }
+  api_key: { description: 'Provider API key', required: true }
+  base_url: { description: 'Optional OpenAI-compatible base URL', required: false, default: '' }
+  github_token: { description: 'Token for gh comment API', required: true }
+  repository: { description: 'owner/repo', required: true }
 runs:
   using: composite
   steps:
-    - name: Call LLM + comment
+    - name: Call LLM + comment + telemetry
       shell: bash
       env:
         PROVIDER: ${{ inputs.provider }}
@@ -51,87 +29,38 @@ runs:
         REPO: ${{ inputs.repository }}
       run: |
         set -euo pipefail
-        if [ -z "${API_KEY}" ]; then
-          echo "::warning::No API key for provider=$PROVIDER"
-          exit 0
-        fi
-        if ! [[ "${TARGET:-}" =~ ^[0-9]+$ ]]; then
-          echo "::warning::Invalid target number; skip comment"
-          exit 0
-        fi
-
-        # Catalog defaults (ADE — no human paste required)
+        START_NS=$(date +%s%N)
+        STATUS=failed
+        ERROR_CLASS="unknown"
+        REQUESTS_USED=1
+        if [ -z "${API_KEY}" ]; then ERROR_CLASS="auth"; echo "::warning::No API key for $PROVIDER"; exit 0; fi
+        if ! [[ "${TARGET:-}" =~ ^[0-9]+$ ]]; then ERROR_CLASS="policy"; echo "::warning::Invalid target number"; exit 0; fi
         DEFAULT_OMNI="https://cloud.omniroute.online/v1"
         DEFAULT_OR="https://openrouter.ai/api/v1"
-
-        case "$PROVIDER" in
-          omni) CATALOG="$DEFAULT_OMNI" ;;
-          openrouter) CATALOG="$DEFAULT_OR" ;;
-          *) echo "::error::Unknown provider $PROVIDER"; exit 1 ;;
-        esac
-
-        RAW="${BASE_URL:-$CATALOG}"
-        # Strip trailing slash
-        RAW="${RAW%/}"
-
-        # SEC: https only + host allow-list (never POST Bearer to arbitrary hosts)
+        case "$PROVIDER" in omni) CATALOG="$DEFAULT_OMNI";; openrouter) CATALOG="$DEFAULT_OR";; *) echo "::error::Unknown provider $PROVIDER"; exit 1;; esac
+        RAW="${BASE_URL:-$CATALOG}"; RAW="${RAW%/}"
         ALLOW_HOSTS="cloud.omniroute.online openrouter.ai api.openrouter.ai"
-        if [[ ! "$RAW" =~ ^https:// ]]; then
-          echo "::error::base_url must be https:// (got scheme-less or http)"
-          exit 0
-        fi
+        if [[ ! "$RAW" =~ ^https:// ]]; then echo "::error::base_url must be https://"; exit 0; fi
         HOST=$(echo "$RAW" | sed -E 's|^https://([^/]+).*|\1|' | tr '[:upper:]' '[:lower:]')
-        OK=0
-        for h in $ALLOW_HOSTS; do
-          if [ "$HOST" = "$h" ]; then OK=1; break; fi
-        done
-        if [ "$OK" != 1 ]; then
-          echo "::error::base_url host '$HOST' not in allow-list ($ALLOW_HOSTS); using catalog default"
-          RAW="$CATALOG"
-        fi
+        OK=0; for h in $ALLOW_HOSTS; do [ "$HOST" = "$h" ] && OK=1 && break; done
+        if [ "$OK" != 1 ]; then echo "::error::host '$HOST' not allow-listed; using catalog default"; RAW="$CATALOG"; fi
         BASE="$RAW"
-
         case "$PROVIDER" in
-          omni)
-            TITLE="termux-monorepo-${ROLE}-omni"
-            MARKER="<!-- omni-${ROLE} -->"
-            HEAD="### 🌐 OmniRoute ${ROLE} (\`${MODEL}\`)"
-            EGG="<!-- matrix: valley-hunt via omni free aggregation / 3L0 labels pending -->"
-            ;;
+          omni) TITLE="termux-monorepo-${ROLE}-omni"; MARKER="<!-- omni-${ROLE} -->"; HEAD="### 🌐 OmniRoute ${ROLE} (\`${MODEL}\`)"; EGG="<!-- matrix: valley-hunt via omni free aggregation / 3L0 labels pending -->";;
           openrouter)
-            if [[ "$MODEL" != *:free ]]; then
-              echo "::error::OpenRouter path requires :free model id (got $MODEL)"
-              exit 0
-            fi
-            TITLE="termux-monorepo-${ROLE}-or"
-            MARKER="<!-- openrouter-${ROLE} -->"
-            HEAD="### 🔀 OpenRouter ${ROLE} (\`${MODEL}\`)"
-            EGG="<!-- matrix: peer free path; public boards=features; 3L0=our labels -->"
-            ;;
+            case "$MODEL" in *:free|stealth/ox-alpha) ;; *) echo "::error::OpenRouter rejected non-free model '$MODEL'"; exit 0;; esac
+            TITLE="termux-monorepo-${ROLE}-or"; MARKER="<!-- openrouter-${ROLE} -->"; HEAD="### 🔀 OpenRouter ${ROLE} (\`${MODEL}\`)"; EGG="<!-- matrix: peer free path; public boards=features; 3L0=our labels -->";;
         esac
-
-        RESP=$(curl -sS --retry 3 --retry-connrefused --retry-delay 2 --connect-timeout 15 --max-time 90 -X POST "${BASE}/chat/completions" \
-          -H "Authorization: Bearer ${API_KEY}" \
-          -H "Content-Type: application/json" \
-          -H "HTTP-Referer: https://github.com/${REPO}" \
-          -H "X-Title: ${TITLE}" \
-          -d "$(jq -n --arg m "$MODEL" --arg p "$PROMPT" '{model:$m,messages:[{role:"user",content:$p}],max_tokens:1800}')" \
-          || echo '{"error":{"message":"curl transport failure"}}')
-
+        RESP=$(curl -sS --retry 3 --retry-connrefused --retry-delay 2 --connect-timeout 15 --max-time 90 -X POST "${BASE}/chat/completions" -H "Authorization: Bearer ${API_KEY}" -H "Content-Type: application/json" -H "HTTP-Referer: https://github.com/${REPO}" -H "X-Title: ${TITLE}" -d "$(jq -n --arg m "$MODEL" --arg p "$PROMPT" '{model:$m,messages:[{role:"user",content:$p}],max_tokens:1800}')" || echo '{"error":{"message":"curl transport failure"}}')
         TEXT=$(echo "$RESP" | jq -r '.choices[0].message.content // .choices[0].message.reasoning // empty' 2>/dev/null || true)
         ERR=$(echo "$RESP" | jq -r '.error.message // empty' 2>/dev/null || true)
         if [ -z "$TEXT" ]; then
-          echo "::warning::${PROVIDER} empty response: ${ERR:-no content}"
-          TEXT="⚠️ ${PROVIDER} returned no content. ${ERR}"
-        fi
-
-        BODY=$(printf '%s\n%s\n%s\n\n%s\n\n%s\n%s\n' \
-          "$MARKER" \
-          "$HEAD" \
-          "$EGG" \
-          "$TEXT" \
-          '---' \
-          "_Peer router: Omni ↔ OpenRouter by desired model; Gemini residual. role=${ROLE}_")
-
-        gh api "repos/${REPO}/issues/${TARGET}/comments" -f body="$BODY" >/dev/null || \
-          echo "::warning::Failed to post comment on #${TARGET}"
+          case "$ERR" in *429*|*rate*|*limit*) ERROR_CLASS="rate_limit";; *auth*|*key*|*401*|*403*) ERROR_CLASS="auth";; *timeout*|*curl*) ERROR_CLASS="transport";; *) ERROR_CLASS="provider";; esac
+          echo "::warning::${PROVIDER} empty response: ${ERR:-no content}"; TEXT="⚠️ ${PROVIDER} returned no content. ${ERR}"
+        else STATUS=succeeded; ERROR_CLASS="none"; fi
+        END_NS=$(date +%s%N); LATENCY_MS=$(( (END_NS - START_NS) / 1000000 ))
+        mkdir -p /tmp/model-performance
+        jq -n --arg timestamp "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --arg repository "$REPO" --arg workflow "${GITHUB_WORKFLOW:-unknown}" --arg run_id "${GITHUB_RUN_ID:-unknown}" --arg run_attempt "${GITHUB_RUN_ATTEMPT:-1}" --arg head_sha "${GITHUB_SHA:-unknown}" --arg provider "$PROVIDER" --arg model "$MODEL" --arg role "$ROLE" --arg route_status "$STATUS" --arg error_class "$ERROR_CLASS" --argjson latency_ms "$LATENCY_MS" --argjson requests_used "$REQUESTS_USED" '{timestamp:$timestamp,repository:$repository,workflow:$workflow,run_id:$run_id,run_attempt:($run_attempt|tonumber),head_sha:$head_sha,provider:$provider,model:$model,role:$role,route_status:$route_status,latency_ms:$latency_ms,requests_used:$requests_used,error_class:$error_class}' >> /tmp/model-performance/observations.ndjson
+        { echo '### Model invocation telemetry'; echo; echo "- provider: \`$PROVIDER\`"; echo "- model: \`$MODEL\`"; echo "- role: \`$ROLE\`"; echo "- status: \`$STATUS\`"; echo "- latency_ms: \`$LATENCY_MS\`"; echo "- error_class: \`$ERROR_CLASS\`"; } >> "$GITHUB_STEP_SUMMARY"
+        BODY=$(printf '%s\n%s\n%s\n\n%s\n\n%s\n%s\n' "$MARKER" "$HEAD" "$EGG" "$TEXT" '---' "_Peer router invocation: provider=${PROVIDER}, model=${MODEL}, role=${ROLE}_")
+        gh api "repos/${REPO}/issues/${TARGET}/comments" -f body="$BODY" >/dev/null || echo "::warning::Failed to post comment on #${TARGET}"

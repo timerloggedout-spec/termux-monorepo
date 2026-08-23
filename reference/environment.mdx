@@ -1,0 +1,87 @@
+---
+title: "Environment Variables and Configuration"
+sidebarTitle: "Environment"
+description: "Environment variables and configuration for the Termux Monorepo. Covers task variables, DeepSeek API setup, and Python dependency requirements."
+---
+
+The Termux Monorepo relies on environment variables to configure tasks, agents, and API access. This page documents every known variable, where it is used, and how to set it correctly in a Termux environment.
+
+## Task environment variables
+
+The multi-agent system reads these variables when provisioning and running agents. They are typically set before calling `run_agent.sh` or `provision_agent.py`.
+
+| Variable | Purpose | Example |
+| --- | --- | --- |
+| `TASK_ID` | Unique identifier for the current task | `TASK_ID=refactor-2024-06-01` |
+| `REFACTOR_GOAL` | Human-readable description of the refactoring objective | `REFACTOR_GOAL="Migrate to JSONL indices"` |
+| `TARGET_FILE` | Primary file the agent should modify | `TARGET_FILE=central_mapper_v420.py` |
+| `TASK_WORKSPACE` | Directory where the agent performs its work | `TASK_WORKSPACE=~/workspace/llm_map` |
+
+### Fallback mechanism
+
+If `TASK_ID` is not set, the system falls back to reading `current_task.txt` in the working directory. Keep this file updated when running agents outside of an explicit task shell.
+
+```bash
+export TASK_ID="session-cleanup-42"
+echo "$TASK_ID" > current_task.txt
+```
+
+## DeepSeek API configuration
+
+DeepCLI and the DeepSeek proxy require API credentials. Store your key securely and never commit it to git.
+
+| Variable | Purpose |
+| --- | --- |
+| `DEEPSEEK_API_KEY` | Authentication key for DeepSeek API requests |
+
+Set it in your shell profile or a local `.env` file that is listed in `.gitignore`:
+
+```bash
+export DEEPSEEK_API_KEY="sk-..."
+```
+
+DeepCLI also uses the `.deepcli/` directory in your home folder for session storage and configuration. Do not commit this directory.
+
+## Python dependencies
+
+Install the core Python dependencies before running any monorepo tool:
+
+```bash
+pip install -r requirements-base.txt
+```
+
+The base requirements include:
+
+- `curl-cffi` (HTTP requests with browser-like TLS)
+- `requests` (standard HTTP client)
+- `websockets` (real-time communication)
+
+## Node.js dependencies
+
+The Cedar MCP server and other Node-based tools in `termux-multi-agent/` require Node.js. Install dependencies with:
+
+```bash
+npm install
+```
+
+## Configuration checklist
+
+<Steps>
+  <Step title="Install Python deps">
+    Run `pip install -r requirements-base.txt` in the monorepo root.
+  </Step>
+  <Step title="Set the DeepSeek key">
+    Export `DEEPSEEK_API_KEY` or create a local `.env` file.
+  </Step>
+  <Step title="Initialize the agent database">
+    Run `cd termux-multi-agent && python run.py` to create the agent tables.
+  </Step>
+  <Step title="Export task variables">
+    Set `TASK_ID`, `REFACTOR_GOAL`, `TARGET_FILE`, and `TASK_WORKSPACE` before dispatching work.
+  </Step>
+</Steps>
+
+## Next steps
+
+- Read the [Command reference](/reference/commands) for the full list of CLI tools
+- Review [CI gates](/reference/gates) for the mandatory checks before merging

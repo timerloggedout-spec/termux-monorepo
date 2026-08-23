@@ -16,8 +16,13 @@ peers:
   openrouter:
     enabled_env: OPENROUTER_API_KEY
     default_base: https://openrouter.ai/api/v1
-    require_free_suffix: true
+    # free = :free suffix OR zero-price (stealth/ox-alpha). See is_free_openrouter_model.
+    require_free_suffix: false
     models:
+      - id: stealth/ox-alpha
+        roles: [triage, review, invoke]
+        soft_limits: { triage: 80, review: 80, invoke: 80 }
+        notes: "1M-ctx free stealth model; free by pricing not :free suffix"
       - id: google/gemma-4-31b-it:free
         roles: [triage, review, invoke]
         soft_limits: { triage: 80, review: 80, invoke: 80 }
@@ -55,3 +60,12 @@ peers:
         soft_limits: { triage: 1400, review: 1400, invoke: 1400 }
       - id: gemini-3-flash
         soft_limits: { triage: 1400, review: 1400, invoke: 1400 }
+
+  felo:
+    enabled_env: FELO_AI_API  # also accept FELO_API_KEY
+    default_base: https://openapi.felo.ai/api/v1
+    notes: "OpenAI-compatible Felo platform; optional secondary free/tool path"
+    models:
+      - id: claude-sonnet-4-6
+        roles: [review, invoke]
+        soft_limits: { triage: 40, review: 40, invoke: 40 }

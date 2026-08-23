@@ -1,0 +1,68 @@
+---
+title: "CI Gates: repo_gate and termux_smoke"
+sidebarTitle: "CI Gates"
+description: "Mandatory CI gates for the Termux Monorepo: repo_gate.py and termux_smoke.py. Both must pass before any merge to master."
+---
+
+Every merge to `master` in the Termux Monorepo must pass two mandatory CI gates. This page explains what each gate checks, how to run them locally, and the ArchWiz-Gate concept that ties them together.
+
+## Mandatory gates
+
+Run both scripts from the monorepo root before opening or merging any PR:
+
+```bash
+python3 scripts/ci/repo_gate.py
+python3 scripts/ci/termux_smoke.py
+```
+
+Both must exit with code `0`. If either fails, the merge is blocked.
+
+| Gate | Script | Purpose |
+| --- | --- | --- |
+| Repo gate | `scripts/ci/repo_gate.py` | Validates repository structure, file naming, and policy compliance |
+| Termux smoke | `scripts/ci/termux_smoke.py` | Runs smoke tests to verify Termux-specific functionality |
+
+## ArchWiz-Gate concept
+
+The ArchWiz-Gate, documented in `docs/ARCHW1Z-GATE.md`, is the umbrella framework that enforces these two gates. It defines the contract between the monorepo and the CI system: no commit reaches `master` unless both gates are green.
+
+## Sentinel 5-gate verification
+
+ArchWiz includes a deeper verification layer in `archwiz/sentinel.py`. Sentinel runs five internal gates before a change is considered safe to promote:
+
+| Gate | Checks |
+| --- | --- |
+| File integrity | Hash verification and corruption detection for tracked files |
+| Naming | Compliance with monorepo naming conventions |
+| Duplicate | Detection of duplicate files or redundant code blocks |
+| Probe | Runtime probing of critical paths and imports |
+| Shockwave | Impact analysis to catch unintended side effects |
+
+Run Sentinel manually with:
+
+```bash
+python3 archwiz/sentinel.py
+```
+
+<Warning>
+  Both `repo_gate.py` and `termux_smoke.py` must pass with exit code `0` before any merge to `master`. Do not bypass or skip either gate, even for urgent fixes. If a gate fails, fix the root cause and rerun.
+</Warning>
+
+## Running gates in CI
+
+For GitHub Actions or other CI systems, add both scripts as sequential steps:
+
+```yaml
+- name: Repo Gate
+  run: python3 scripts/ci/repo_gate.py
+
+- name: Termux Smoke
+  run: python3 scripts/ci/termux_smoke.py
+```
+
+If either step fails, the workflow should stop and the PR must not merge.
+
+## Next steps
+
+- Read the [Command reference](/reference/commands) for the full list of CLI tools
+- Review [Security boundaries](/governance/security) for credential and artifact rules that gates enforce

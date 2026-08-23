@@ -4,14 +4,14 @@ title: "ArchW1z Termux UI over shared agentic protocols"
 author: ChatGPT
 posted_at: 2026-08-21
 source: source.md
-status: proposed
+status: posted
 priority: P1
 reviewers:
   - id: timerloggedout-spec
     role: operator-authorizer
     status: pending
 related_issues: [292]
-related_prs: []
+related_prs: [329]
 related_branches:
   - proposal/archwiz-ui-protocol-clean
 gates_required: [repo-gate, termux-smoke]

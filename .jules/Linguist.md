@@ -14,7 +14,7 @@ Cache sorted mappings and compile all dynamic regex matchers globally at initial
 
 ## 2026-08-04 - Single-Pass Alternation Regex vs Sequential Pattern Evaluation
 **Learning:**
-Executing sequential `.sub()` calls for N individual regex patterns across document lines creates massive O(N_terms * N_lines) overhead and unnecessary function frame allocations. Combining all dictionary substitution terms into a single compiled regex pattern with word-boundary alternations (`\b(term1|term2|...)\b`) allows Python's C-level regex engine to match any term in a single pass O(1_regex * N_lines). In CedrLang document translation, this reduced document compilation latency from 31.4ms to 7.3ms (~4.3x speedup).
+Executing sequential `.sub()` calls for N individual regex patterns across document lines creates massive O(N_terms * N_lines) overhead and unnecessary function frame allocations. Combining all dictionary substitution terms into a single compiled regex pattern with word-boundary alternations (`\\b(term1|term2|...)\\b`) allows Python's C-level regex engine to match any term in a single pass O(1_regex * N_lines). In CedrLang document translation, this reduced document compilation latency from 31.4ms to 7.3ms (~4.3x speedup).
 
 **Action:**
 Combine dictionary substitutions into single compiled regex patterns with alternations and dictionary lookups in the match callback instead of executing sequential regex substitution loops.
@@ -25,3 +25,17 @@ In line-by-line document translation pipelines where structural syntax protectio
 
 **Action:**
 In line-level transformation utilities, always perform a fast-path term existence pre-check (`matcher.search(line)`) before executing multi-pattern placeholder protection or DOM parsing pipelines.
+
+## 2026-08-23 - Phased 1337 Diaspora Recovery / PR #154
+**Learning:**
+PR #154 contains the provenance-backed historical `to_1337speak()` experiment. The Jules review comment at `discussion_r3754718523` describes a sparse randomized substitution rate with a **70% probability threshold**, intended to introduce character-level variability while retaining decompression to human-readable form. This is a rollout parameter, not an INDEX confidence score.
+
+**Action:**
+Restore the behavior as an explicit reversible phase in `workspace/compression_sandbox/cedrlang/phase_codec.py`. Keep canonical CedrLang/Grimoire semantics upstream; mutate only known compressed tokens; normalize known variants before canonical decompilation; seed RNGs for reproducibility; and ratchet the probability only after round-trip, quality, latency, and ambiguity measurements. Initial phase is `p=0.70`.
+
+**Provenance:**
+- PR #154 review comment `discussion_r3754718523`
+- `dc8c08d` — CedrLang v2 compilation / strict token protection
+- `1103d832` / `51023b87` / `7a6e5a7` — cached mappings, Caveman, single-pass regex optimization
+- `4eb9f830` / `267fecc` — fast-path term search
+- #196 — `AGENTS.hum.md` round-trip milestone

@@ -1,0 +1,80 @@
+name: OpenRouter free catalog sync
+
+# Consolidates live free-model polling (shared with scripts/model_router.py).
+# Daily + manual: refresh docs/schemas/openrouter-free-catalog.json and open a PR on drift.
+
+on:
+  schedule:
+    - cron: "17 12 * * *"  # 12:17 UTC daily
+  workflow_dispatch:
+    inputs:
+      force_pr:
+        description: "Open PR even if catalog unchanged"
+        type: boolean
+        default: false
+
+permissions: {}
+
+concurrency:
+  group: openrouter-free-catalog-sync
+  cancel-in-progress: true
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: true
+
+      - name: Poll OpenRouter free catalog
+        id: poll
+        run: |
+          set -euo pipefail
+          python3 scripts/poll_openrouter_free_catalog.py \
+            --out docs/schemas/openrouter-free-catalog.json \
+            | tee /tmp/drift.json
+          echo "changed=$(python3 -c 'import json; print(str(json.load(open("/tmp/drift.json"))["changed"]).lower())')" >> "$GITHUB_OUTPUT"
+          echo "ox=$(python3 -c 'import json; print(str(json.load(open("/tmp/drift.json"))["ox_alpha_present"]).lower())')" >> "$GITHUB_OUTPUT"
+          python3 -c 'import json; d=json.load(open("/tmp/drift.json")); print(f"added={len(d[\"added\"])} removed={len(d[\"removed\"])} ox={d[\"ox_alpha_present\"]}")' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Detect git drift
+        id: git
+        run: |
+          if git diff --quiet -- docs/schemas/openrouter-free-catalog.json; then
+            echo "dirty=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "dirty=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Open/update catalog PR
+        if: steps.git.outputs.dirty == 'true' || inputs.force_pr == true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          BRANCH="chore/openrouter-free-catalog-$(date -u +%Y%m%d)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$BRANCH"
+          git add docs/schemas/openrouter-free-catalog.json
+          git commit -m "chore(providers): refresh OpenRouter free catalog snapshot" || exit 0
+          git push -u origin "$BRANCH" --force-with-lease
+          if ! gh pr list --head "$BRANCH" --state open --json number --jq 'length' | grep -q '^0$'; then
+            echo "PR already open for $BRANCH"
+          else
+            gh pr create \
+              --title "chore(providers): refresh OpenRouter free catalog" \
+              --body "$(cat <<'BODY'
+          ## Summary
+          Automated refresh of \`docs/schemas/openrouter-free-catalog.json\` from the live OpenRouter models API.
+
+          Free rule: \`:free\` suffix **or** zero prompt+completion pricing (includes \`stealth/ox-alpha\`).
+
+          Source of truth shared with \`scripts/model_router.py\` / \`scripts/poll_openrouter_free_catalog.py\`.
+          BODY
+          )"
+          fi

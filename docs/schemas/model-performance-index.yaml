@@ -1,0 +1,87 @@
+# Execution-backed model performance index
+# This is an observation ledger, not a routing authority.
+# A model cannot earn a performance score from a declared preference alone.
+# Every scored observation must identify an actual provider/model invocation.
+
+version: 1
+updated_at: "2026-08-23"
+
+identity:
+  key: [provider, model, role]
+  run_key: [repository, workflow, run_id, attempt, head_sha, provider, model, role]
+
+required_observation_fields:
+  - timestamp
+  - repository
+  - workflow
+  - run_id
+  - run_attempt
+  - head_sha
+  - provider
+  - model
+  - role
+  - route_status       # attempted | skipped | failed | succeeded
+  - latency_ms
+  - requests_used
+
+quality_fields:
+  - task_success        # true | false | unknown
+  - reviewer_acceptance # true | false | unknown
+  - human_override     # true | false | unknown
+  - tokens_in
+  - tokens_out
+  - error_class
+  - fallback_from
+  - fallback_to
+
+rules:
+  - id: actual-use-only
+    description: "A model receives performance credit only after an attempted invocation."
+  - id: skipped-is-not-failure
+    description: "Unavailable credentials, quota gates, duplicate gates, and policy skips are capacity observations, not model failures."
+  - id: provider-failure-is-distinct
+    description: "HTTP/auth/rate-limit/provider failures are recorded separately from task-quality failures."
+  - id: one-run-one-observation
+    description: "The same run/model/role/head SHA is de-duplicated."
+  - id: cold-start-separate
+    description: "First-use latency is retained and can be compared with warm invocations."
+  - id: public-rank-is-feature
+    description: "OpenRouter/LMSYS/Artificial Analysis rankings may enrich a row but cannot manufacture our score."
+
+metrics:
+  utilization:
+    attempted: "count(route_status in [failed,succeeded])"
+    success_rate: "succeeded / attempted"
+    provider_failure_rate: "provider_failures / attempted"
+  efficiency:
+    median_latency_ms: "median(latency_ms for attempted)"
+    p95_latency_ms: "p95(latency_ms for attempted)"
+    median_requests_used: "median(requests_used for attempted)"
+  quality:
+    task_success_rate: "task_success_true / known_task_success"
+    reviewer_acceptance_rate: "reviewer_acceptance_true / known_reviewer_acceptance"
+  routing:
+    share_of_attempts: "model_attempts / all_attempts_for_role"
+    fallback_rate: "fallback_attempts / attempted"
+
+score:
+  name: execution_score_v1
+  formula: "0.55*task_success_rate + 0.20*reviewer_acceptance_rate + 0.15*latency_score + 0.10*single_request_score"
+  minimum_attempts: 5
+  cold_start_minimum_attempts: 2
+  note: "Scores remain provisional below minimum sample sizes."
+
+initial_targets:
+  - stealth/ox-alpha
+  - meta-llama/llama-3.3-70b-instruct:free
+  - google/gemma-3-12b-it:free
+  - qwen/qwen3-coder:free
+  - deepseek/deepseek-r1:free
+  - gemini-3.5-flash
+  - gemini-3-flash
+
+collection:
+  storage: "GitHub Actions artifacts + generated JSON"
+  source_of_truth: "execution observations"
+  publication: "docs/ops/generated/model-performance-index.json"
+  refresh: "every invocation; aggregate on demand"

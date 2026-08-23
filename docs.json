@@ -1,0 +1,83 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "name": "Termux Monorepo",
+  "description": "Documentation for the Termux-based multi-agent automation monorepo, including ArchWiz, DeepCLI, agent orchestration, governance, and context relationship indexing.",
+  "theme": "maple",
+  "colors": {
+    "primary": "#0D9373"
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Overview",
+        "groups": [
+          {
+            "group": "Start Here",
+            "pages": [
+              "README",
+              "docs/RECON",
+              "docs/ARCHW1Z-STATUS",
+              "docs/ARCHW1Z-GATE",
+              "docs/ARCHW1Z-OPERATOR-CHECKLIST"
+            ]
+          },
+          {
+            "group": "Architecture",
+            "pages": [
+              "docs/ICM-ARCHITECT-INTEGRATION",
+              "docs/CONSENSUS",
+              "docs/PORTABILITY",
+              "docs/TERMUX-SMOKE"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Engineering",
+        "groups": [
+          {
+            "group": "Development",
+            "pages": [
+              "AGENTS",
+              "CONTRIBUTING",
+              "docs/PR-SUMMARY-PROCESS",
+              "docs/SECURITY-REMEDIATION"
+            ]
+          },
+          {
+            "group": "Context & Knowledge",
+            "pages": [
+              "docs/icm/CLAUDE",
+              "docs/icm/processes/CONTEXT",
+              "docs/icm/effects/CONTEXT",
+              "docs/icm/objects/knowledge/context-relationship-index"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Governance",
+        "groups": [
+          {
+            "group": "Proposals",
+            "pages": [
+              "docs/proposals/README",
+              "docs/proposals/PROCESS",
+              "docs/proposals/active/notation-sets/MANIFEST",
+              "docs/proposals/active/notation-sets/ITEMS",
+              "docs/proposals/active/notation-sets/source"
+            ]
+          },
+          {
+            "group": "Living Systems",
+            "pages": [
+              "docs/proposals/active/context-relationship-graph/ITEMS",
+              "docs/proposals/active/context-relationship-graph/MANIFEST",
+              "docs/proposals/active/actions-refinements/source"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,6 +1,6 @@
 version: 1
-updated_at: "2026-08-21T00:00:00Z"
-updated_by: "ChatGPT/GitHub review"
+updated_at: "2026-08-23T00:00:00Z"
+updated_by: "Grok (Administrator)"
 status: reviewed
 candidates:
   - id: termux-mcp-server_fork
@@ -69,6 +69,23 @@ candidates:
       the v4.34.0-rc2 toolchain bump; advance only after validating Lean compatibility.
       Development experiments should live in research first and graduate into applied
       integration only when a concrete dependency is demonstrated.
+
+  - id: lego_fork
+    repository: timerloggedout-spec/lego_fork
+    source_url: https://github.com/timerloggedout-spec/lego_fork.git
+    revision: 074f334b71f47552b01d07b78fb6c01fd2c47c0e
+    branch: main
+    target_path: refTemplates/smods/lego_fork
+    intended_role: composition_template_for_teams_rosters
+    runtime: Go (reference only; not monorepo runtime dependency)
+    license: unverified_at_pin
+    nested_submodules: false
+    status: approved_for_submodule
+    notes: >-
+      Customizable LEGO composition template: pieces → inventories → available sets.
+      Complementary method for Teams/Rosters/MoneyBall selection (wait when pieces
+      incomplete; assemble only complete sets toward trunk). Pin advances via PR.
+      Gitlink mode=160000 requires local `git submodule add` after registry merge.
 
 exclusions:
   - category: generated_or_sensitive_state

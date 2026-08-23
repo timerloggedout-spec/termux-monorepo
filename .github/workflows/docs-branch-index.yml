@@ -1,0 +1,77 @@
+name: docs-branch-index
+
+on:
+  schedule:
+    # Daily 06:15 UTC — keep docs-lane inventory fresh without PR noise
+    - cron: "15 6 * * *"
+  workflow_dispatch:
+  push:
+    branches: [master]
+    paths:
+      - "docs/proposals/registry.yaml"
+      - "scripts/ops/generate_docs_branch_index.py"
+      - ".github/workflows/docs-branch-index.yml"
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: docs-branch-index-master
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    name: regenerate DOCS-BRANCH-INDEX
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: master
+          fetch-depth: 1
+          persist-credentials: true
+
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: "3.12"
+
+      - name: Generate docs-branch index
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
+        run: |
+          set -euo pipefail
+          python3 scripts/ops/generate_docs_branch_index.py
+
+      - name: Commit index delta
+        run: |
+          set -euo pipefail
+          git add docs/ops/DOCS-BRANCH-INDEX.md
+          if git diff --cached --quiet; then
+            echo "No docs-branch-index delta."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -s -m "chore(docs): refresh DOCS-BRANCH-INDEX" \
+            -m "Automated inventory of docs/* debate lanes." \
+            -m "Agent-Identity: GitHub Actions docs-branch-index" \
+            -m "Refs: #175"
+          git push origin HEAD:master
+
+      - name: Summary
+        run: |
+          set -euo pipefail
+          {
+            echo "## Docs-branch index"
+            echo
+            if [ -f docs/ops/DOCS-BRANCH-INDEX.md ]; then
+              # first 40 lines for step summary
+              sed -n '1,40p' docs/ops/DOCS-BRANCH-INDEX.md
+            else
+              echo "(missing DOCS-BRANCH-INDEX.md)"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"

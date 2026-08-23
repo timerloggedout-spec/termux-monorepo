@@ -1,22 +1,20 @@
-<!-- LinguistProjection: generated; source=docs/icm/_shared/CONTEXT.hum.md; mode=machine-grimoire-seed-v1; structural-exceptions=fenced-code,markdown-link-destinations -->
-
 # ICM Map Maintenance References
 
 One job: hold stable rules and blank starters used by the `maintenance/` pipeline. This shelf is the factory; it is not a stage output and should not accumulate per-update decisions.
 
 ## Inputs
 
-- Root map contract: [`../§08§.md`](../CONTEXT.md)
-- Maintenance pipeline: [`../maintenance/§08§.md`](../maintenance/CONTEXT.md)
+- Root map contract: [`../CONTEXT.md`](../CONTEXT.md)
+- Maintenance pipeline: [`../maintenance/CONTEXT.md`](../maintenance/CONTEXT.md)
 
 ## Contents
 
-| §0b§ | Use |
+| File | Use |
 |---|---|
 | [`maintenance-rules.md`](maintenance-rules.md) | Scope, canonical-source, one-way-reference, and no-code-refactor rules. |
 | [`source-inventory-template.md`](source-inventory-template.md) | Blank inventory copied into `01_inventory/output/` for each update. |
 | [`verification-checklist.md`](verification-checklist.md) | Stable walk-test and verification conditions used in `03_verify`. |
 
-## §0e§ check
+## Human check
 
-Edit this shelf only when a rule or blank template should apply to future maintenance runs. Put run-specific decisions in a stage `output/` §0b§ instead.
+Edit this shelf only when a rule or blank template should apply to future maintenance runs. Put run-specific decisions in a stage `output/` file instead.

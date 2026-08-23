@@ -2,7 +2,14 @@
 
 ## P0.1 Incident primitive
 
+**Status:** implemented (code) — `she/incident.py`  
+**PR slice:** `feat/she-p01-incident-primitive` / #294
+
 Define stable incident identity, lifecycle state, provenance, evidence references, authority scope, transition history, and terminal/escalation states.
+
+- Module: `she.incident` (`Incident`, `IncidentState`, `Transition`)
+- Tests: `tests/test_she_incident.py`
+- Durable JSON via `to_mapping` / `from_mapping`
 
 ## P0.2 Event ingestion
 

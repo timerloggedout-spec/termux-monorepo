@@ -165,12 +165,72 @@ llm_providers:
       chat_completions: "/api/chat/completions"
       models: "/api/models"
 
-  # Additional providers can be added here
-  # Example:
-  # openai:
-  #   enabled: false
-  #   api_key_env: "OPENAI_API_KEY"
-  #   base_url: "https://api.openai.com"
-  #   models:
-  #     - "gpt-4"
-  #     - "gpt-3.5-turbo"
+  openrouter:
+    enabled: true
+    api_key_env: "OPENROUTER_API_KEY"
+    auth_method: "bearer"
+    base_url: "https://openrouter.ai/api/v1"
+    rate_limit: 20
+    timeout: 120
+    retry_attempts: 3
+    retry_delay: 1
+    max_tokens: 131072
+    temperature: 0.7
+    top_p: 0.9
+    models:
+      - id: "stealth/ox-alpha"
+        name: "Ox Alpha"
+        max_tokens: 131072
+        context_tokens: 1048576
+        pricing: "free"
+      - id: "meta-llama/llama-3.3-70b-instruct:free"
+        name: "Llama 3.3 70B Instruct (free)"
+        max_tokens: 32768
+        pricing: "free"
+      - id: "google/gemma-4-31b-it:free"
+        name: "Gemma 4 31B IT (free)"
+        max_tokens: 32768
+        pricing: "free"
+      - id: "qwen/qwen3-coder:free"
+        name: "Qwen3 Coder (free)"
+        max_tokens: 32768
+        pricing: "free"
+    features:
+      - chat_completions
+      - streaming
+      - reasoning
+    headers:
+      Content-Type: "application/json"
+      Accept: "application/json"
+    endpoints:
+      chat_completions: "/chat/completions"
+      models: "/models"
+
+  felo:
+    enabled: true
+    api_key_env: "FELO_AI_API"
+    auth_method: "bearer"
+    base_url: "https://openapi.felo.ai/api/v1"
+    rate_limit: 60
+    timeout: 120
+    retry_attempts: 3
+    retry_delay: 1
+    max_tokens: 32768
+    temperature: 0.7
+    top_p: 0.9
+    models:
+      - id: "claude-sonnet-4-6"
+        name: "Claude Sonnet 4.6 (via Felo)"
+        max_tokens: 32768
+        pricing: "plan"
+    features:
+      - chat_completions
+      - streaming
+      - tools
+    headers:
+      Content-Type: "application/json"
+      Accept: "application/json"
+    endpoints:
+      chat_completions: "/chat/completions"
+      models: "/models"
+    notes: "Secret FELO_AI_API (alias FELO_API_KEY). OpenAI-compatible path."

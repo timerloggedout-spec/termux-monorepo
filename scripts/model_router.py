@@ -22,10 +22,34 @@ KEY_VAL_RE = re.compile(r'^("[^"]+"|\'[^\']+\'|[^:]+):\s*(.*)$')
 LEGACY_MODELS = {
     "meta-llama/llama-3.3-70b-instruct:free",
     "google/gemma-3-12b-it:free",
+    "google/gemma-4-31b-it:free",
+    "google/gemma-4-26b-a4b-it:free",
     "qwen/qwen3-coder:free",
     "deepseek/deepseek-r1:free",
+    "cohere/north-mini-code:free",
+    "stealth/ox-alpha",  # free by pricing ($0/$0), no :free suffix
     "auto/best-free",
 }
+
+
+def is_free_openrouter_model(model_id, pricing=None):
+    """True for :free suffix OR zero prompt+completion pricing (e.g. stealth/ox-alpha)."""
+    if not model_id:
+        return False
+    if model_id.endswith(":free"):
+        return True
+    if pricing is None:
+        return model_id in {
+            "stealth/ox-alpha",
+            "google/lyria-3-clip-preview",
+            "google/lyria-3-pro-preview",
+        }
+    try:
+        return float(pricing.get("prompt", 1.0)) == 0.0 and float(
+            pricing.get("completion", 1.0)
+        ) == 0.0
+    except (TypeError, ValueError):
+        return False
 
 
 def parse_yaml(filepath):
@@ -117,10 +141,7 @@ def fetch_openrouter_free_models():
             model_id = model.get("id", "")
             pricing = model.get("pricing", {})
             try:
-                free = model_id.endswith(":free") or (
-                    float(pricing.get("prompt", 0.0)) == 0.0
-                    and float(pricing.get("completion", 0.0)) == 0.0
-                )
+                free = is_free_openrouter_model(model_id, pricing)
             except (ValueError, TypeError):
                 free = model_id.endswith(":free")
             if free and model_id:
@@ -293,6 +314,7 @@ def main():
 
     limits = {
         "omni/auto/best-free": {"triage": 400, "review": 250, "invoke": 400},
+        "openrouter/stealth/ox-alpha": {"triage": 80, "review": 80, "invoke": 80},
         "openrouter/meta-llama/llama-3.3-70b-instruct:free": {"triage": 80, "review": 80, "invoke": 80},
         "openrouter/google/gemma-3-12b-it:free": {"triage": 80, "review": 80, "invoke": 80},
         "openrouter/qwen/qwen3-coder:free": {"triage": 60, "review": 60, "invoke": 60},
@@ -310,6 +332,7 @@ def main():
     role_peers = {
         "triage": [
             ("omni", "auto/best-free"),
+            ("openrouter", "stealth/ox-alpha"),
             ("openrouter", "google/gemma-4-31b-it:free"),
             ("openrouter", "google/gemma-4-26b-a4b-it:free"),
             ("openrouter", "meta-llama/llama-3.3-70b-instruct:free"),
@@ -317,6 +340,7 @@ def main():
         ],
         "review": [
             ("omni", "auto/best-free"),
+            ("openrouter", "stealth/ox-alpha"),
             ("openrouter", "cohere/north-mini-code:free"),
             ("openrouter", "google/gemma-4-31b-it:free"),
             ("openrouter", "qwen/qwen3-coder:free"),
@@ -325,6 +349,7 @@ def main():
         ],
         "invoke": [
             ("omni", "auto/best-free"),
+            ("openrouter", "stealth/ox-alpha"),
             ("openrouter", "google/gemma-4-31b-it:free"),
             ("openrouter", "google/gemma-4-26b-a4b-it:free"),
             ("openrouter", "meta-llama/llama-3.3-70b-instruct:free"),
@@ -352,7 +377,6 @@ def main():
         current_sha=os.environ.get("CURRENT_SHA") or None,
     )
 
-    # Existing execution selection stays unchanged in AR-18 observe mode.
     if has_gemini:
         gemini_candidates = []
         for model in role_residuals.get(role, []):
@@ -381,7 +405,7 @@ def main():
             continue
         if provider == "openrouter" and not has_openrouter:
             continue
-        if provider == "openrouter" and not model.endswith(":free"):
+        if provider == "openrouter" and not is_free_openrouter_model(model):
             sys.stderr.write(f"Warning: non-free model ID '{model}' skipped.\n")
             continue
         if provider == "openrouter":

@@ -15,6 +15,7 @@ REQUIRED = {
     "refTemplates/smods/termux-mcp-server_fork": "https://github.com/timerloggedout-spec/termux-mcp-server_fork.git",
     "refTemplates/smods/mcp-android-ssh_fork": "https://github.com/timerloggedout-spec/mcp-android-ssh_fork.git",
     "refTemplates/smods/term_mcp_deepseek_fork": "https://github.com/timerloggedout-spec/term_mcp_deepseek_fork-.git",
+    "refTemplates/smods/batteries_fork": "https://github.com/timerloggedout-spec/batteries_fork.git",
 }
 
 

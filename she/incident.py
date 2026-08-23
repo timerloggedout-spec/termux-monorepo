@@ -9,7 +9,7 @@ stdlib-only. No network. JSON-serializable for evidence stores.
 """
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass, field
+from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from enum import Enum
 from typing import Any, Mapping

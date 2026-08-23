@@ -16,7 +16,8 @@ except ImportError:
         sys.path.insert(0, termux_mcp_dir)
         try:
             from termux_mcp_server import mcp
-        except ImportError:
+        except ImportError as exc:
+            print(f"Import of termux_mcp_server failed: {exc}", file=sys.stderr)
             mcp = None
     else:
         mcp = None

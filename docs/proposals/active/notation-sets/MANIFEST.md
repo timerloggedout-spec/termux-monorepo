@@ -28,6 +28,12 @@ Establish #320 as the proposal/specification layer for a canonical, continuously
 
 `LINGUIST-LINEAGE.md` records #320 as the semantic research/specification surface within the broader Linguist/CEDRlang/Grimoire lineage. Historical implementation issues remain provenance/evidence; governed successors and projection surfaces retain their own authority boundaries.
 
+## Master alignment / diaspora recovery
+
+`docs/linguist/MASTER-ALIGNMENT.md` is the current master-first recovery plan. `workspace/compression_sandbox/cedrlang/phase_codec.py` restores the PR #154 `to_1337speak()` experiment as NSE-019: an explicit reversible phase with an initial **70% probability threshold**. The threshold is intentionally a rollout control for incrementally increasing usage, not a semantic/index confidence score or a claim of optimality.
+
+The recovery preserves the later `dc8c08d`/#196 CedrLang v2 baseline, strict technical-token protection, Caveman/Grimoire performance lineage, and AGENTS.hum round-trip rather than replaying historical commits wholesale.
+
 ## Research basis
 
 This revision integrates two prior research sessions:
@@ -62,11 +68,18 @@ These additions remain governed by NSE-008 (evolution ledger). The proposal rema
 - Disposition: documentation reconciliation
 - Notes: Added `LINGUIST-LINEAGE.md` to distinguish historical Linguist evidence (#126/#154/#177/#196/#208/#218/#228), governed reconciliation (#274/#275), projection work (#304), and the #320/NSE semantic research layer. Added PR #324 and the Mintlify notation-sets docs branch to manifest provenance.
 
+### 2026-08-23 — master-first diaspora recovery
+
+- Disposition: implementation seed + proposal update
+- Notes: Confirmed PR #154 review `discussion_r3754718523` as the source of the 70% `to_1337speak()` threshold. Added NSE-019 and a reversible phase codec on `master`, with deterministic tests and strict scope to known compressed tokens. Added ICM and Linguist master-alignment documentation. Canonical CedrLang remains the truth layer.
+
 ## Checklist (process)
 
 - [x] Registered in `docs/proposals/registry.yaml`
 - [x] ITEMS.md itemized
 - [x] Linguist lineage/provenance map added
+- [x] Master-first diaspora recovery item recorded (NSE-019)
+- [x] Recovery fixture + tests added
 - [ ] At least one non-author review recorded
 - [ ] Status → accepted before execution merges
 - [ ] PRs cite `Implements: <ITEM-ID>`
@@ -78,6 +91,7 @@ These additions remain governed by NSE-008 (evolution ledger). The proposal rema
 - ITEMS: ./ITEMS.md
 - Source: ./source.md
 - Linguist lineage: ./LINGUIST-LINEAGE.md
+- Master alignment: ../../../linguist/MASTER-ALIGNMENT.md
 - Issue #320: https://github.com/timerloggedout-spec/termux-monorepo/issues/320
 - Issue #309: https://github.com/timerloggedout-spec/termux-monorepo/issues/309
 - Issue #182: https://github.com/timerloggedout-spec/termux-monorepo/issues/182

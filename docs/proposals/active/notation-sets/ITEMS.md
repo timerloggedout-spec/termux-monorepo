@@ -150,6 +150,22 @@ Primary RQ: *Does constrained, tokenizer-aware span-level multilingual rendering
 
 Controls: (1) English-only canonical; (2) each language alone, professionally translated; (3) best single-language oracle (lowest-token monolingual); (4) translate-to-min-token language; (5) random-switch control (same switch count, random locations — if it matches ADLM, the gain is a tokenizer artifact, not semantic compression); (6) natural bilingual code-switch; (7) symbol-only/glossary-only; (8) ADLM policy. Tokenizer-specific and model-specific policy: token counts may transfer, comprehension behavior often will not.
 
+## NSE-019 — Linguist PR #154 phased 1337 diaspora recovery
+
+Recover the historical `to_1337speak()` behavior documented in PR #154 as a **phased, reversible surface codec**. The historical review describes a sparse randomized substitution rate with a **70% probability threshold** and requires the output to remain de-compressible to human-readable form. The recovery implementation lives in `workspace/compression_sandbox/cedrlang/phase_codec.py` and is intentionally isolated from canonical CedrLang mappings.
+
+Phase contract:
+
+- initial substitution probability: `0.70` per eligible character;
+- deterministic reproduction is available through a seeded RNG;
+- only known compressed dictionary tokens are mutated;
+- ordinary prose, numbers, URLs, paths, Markdown structure, and unknown tokens remain untouched;
+- `from_1337speak()` normalizes known variants before canonical decompilation;
+- probability is a migration/rollout control and may be increased only after round-trip, quality, latency, and ambiguity measurements;
+- the historical 70% value is provenance-backed, but is not by itself evidence of optimality.
+
+This is the first implementation slice for restoring the Linguist/CedrLang diaspora. Follow-on work must reconcile it with `AGENTS.md` ↔ `AGENTS.hum.md`, INDEX Taxonomy, Caveman/Grimoire, and ICM/README projections without making the compressed surface the canonical truth layer.
+
 ## Acceptance criteria
 
 - #320, #309, #182, and #175 are explicitly connected in the proposal registry/source; related issues expanded to include #126, #304, #196, #177, #208, #274 (per #309/#182 maps).
@@ -161,4 +177,5 @@ Controls: (1) English-only canonical; (2) each language alone, professionally tr
 - Compression preserves semantic category, directionality, composition order, identity, and domain scope (NSE-002 contract).
 - Existing repository indexes are integration targets, not discarded.
 - The proposal remains malleable by design (NSE-004 loop, NSE-008 ledger) — it is intended to be continuously modified as research and implementation evolve.
+- The phased diaspora implementation remains reversible, isolated, and test-backed; the 70% threshold is treated as an initial rollout control, not a universal optimum.
 - Execution work remains gated by proposal acceptance and `repo-gate` + `termux-smoke`.

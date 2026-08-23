@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "source": "live",
-  "polled_at": "2026-08-23T11:22:00Z",
+  "polled_at": "2026-08-23T11:54:00Z",
   "count": 22,
   "ids": [
     "cohere/north-mini-code:free",
@@ -28,7 +28,16 @@
     "z-ai/glm-5.2:free"
   ],
   "models": [
-    {"id": "stealth/ox-alpha", "name": "Ox Alpha", "context_length": 1048576, "pricing": {"prompt": "0", "completion": "0"}}
+    {
+      "id": "stealth/ox-alpha",
+      "name": "Ox Alpha",
+      "context_length": 1048576,
+      "pricing": { "prompt": "0", "completion": "0" }
+    }
   ],
-  "notes": "Full model details refreshed by scripts/poll_openrouter_free_catalog.py / openrouter-free-catalog-sync.yml"
+  "policy": {
+    "seed_semantics": "bootstrap_only",
+    "refresh": "every_poll_and_every_router_use",
+    "free_rule": ":free_suffix_or_zero_price"
+  }
 }

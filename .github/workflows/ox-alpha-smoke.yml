@@ -1,0 +1,63 @@
+name: OX Alpha live smoke
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_number:
+        description: 'Existing PR or issue number for the bounded smoke result'
+        required: true
+        type: string
+      role:
+        description: 'Workload role'
+        required: true
+        default: review
+        type: choice
+        options: [triage, review, invoke]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  ox-alpha:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+
+      - name: Build bounded smoke prompt
+        id: prompt
+        env:
+          TARGET: ${{ inputs.target_number }}
+          ROLE: ${{ inputs.role }}
+        run: |
+          set -euo pipefail
+          {
+            echo 'prompt<<EOF'
+            echo "You are the OX Alpha live-canary for termux-monorepo. Role=${ROLE}. Target=${TARGET}."
+            echo 'Return ONE concise response. Do not modify files. Evaluate only the requested repository task and state whether your answer is confident.'
+            echo 'This invocation is a performance measurement; do not fabricate tool access or execution.'
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Invoke OpenRouter stealth/ox-alpha
+        uses: ./.github/actions/http-llm-invoke
+        with:
+          provider: openrouter
+          model: stealth/ox-alpha
+          role: ${{ inputs.role }}
+          target_number: ${{ inputs.target_number }}
+          api_key: ${{ secrets.OPENROUTER_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          prompt: ${{ steps.prompt.outputs.prompt }}
+
+      - name: Upload execution observation
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: model-performance-${{ github.run_id }}
+          path: /tmp/model-performance/observations.ndjson
+          if-no-files-found: ignore

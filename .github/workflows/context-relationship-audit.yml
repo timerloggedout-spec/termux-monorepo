@@ -1,0 +1,119 @@
+name: Context Relationship + Lead/Lag Audit
+
+# This is an evolving evidence collector. It does not decide correctness or merge code.
+# It records the temporal relationship between context/dispatch leads and verification lags.
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review, closed]
+  pull_request_review:
+    types: [submitted, edited, dismissed]
+  pull_request_review_comment:
+    types: [created, edited, deleted]
+  issues:
+    types: [opened, edited, closed, reopened]
+  issue_comment:
+    types: [created, edited, deleted]
+  workflow_run:
+    workflows: ["Audit Cycle — Single PR Feed-Forward", "Repository development evaluation", "Continuous Evaluation — MoneyBall MVT"]
+    types: [completed]
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "Optional PR to audit"
+        required: false
+        type: string
+      issue_number:
+        description: "Optional issue to audit"
+        required: false
+        type: string
+      context_key:
+        description: "Stable task/context correlation key"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  issues: read
+  pull-requests: read
+  checks: read
+  actions: read
+
+concurrency:
+  group: context-relationship-audit-${{ github.event.pull_request.number || github.event.issue.number || inputs.pr_number || inputs.issue_number || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  index:
+    name: Build append-only temporal evidence
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      CONTEXT_KEY: ${{ inputs.context_key || '' }}
+      EXPERIMENT_ID: ${{ vars.CURRENT_EXPERIMENT_ID || '' }}
+    steps:
+      - name: Checkout SSOT source
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Build context relationship and lead/lag index
+        env:
+          PR_NUMBER: ${{ inputs.pr_number || github.event.pull_request.number || '' }}
+          ISSUE_NUMBER: ${{ inputs.issue_number || github.event.issue.number || '' }}
+        run: |
+          set -euo pipefail
+          python3 scripts/ci/context_relationship_index.py \
+            --pr "${PR_NUMBER:-}" \
+            --issue "${ISSUE_NUMBER:-}" \
+            --head-sha "${{ github.event.pull_request.head.sha || github.sha }}"
+
+      - name: Validate index structure
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('evaluation-results/context-relationship-index.json')
+          d = json.loads(p.read_text())
+          required = {'schema','observed_at','repository','source_sha','lead_events','lag_events','lead_lag_pairs','limitations'}
+          missing = required - d.keys()
+          if missing:
+              raise SystemExit(f'missing required fields: {sorted(missing)}')
+          if d['schema'] != 'context-relationship-index/v1':
+              raise SystemExit('unexpected schema')
+          print('index valid:', len(d['lead_events']), 'leads;', len(d['lag_events']), 'lags;', len(d['lead_lag_pairs']), 'pairs')
+          PY
+
+      - name: Publish audit summary
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          d = json.loads(Path('evaluation-results/context-relationship-index.json').read_text())
+          print('# Context Relationship + Lead/Lag Audit')
+          print('')
+          print(f"- Source SHA: `{d['source_sha'] or 'unknown'}`")
+          print(f"- Event: `{d['event_name']}`")
+          print(f"- Leads: **{len(d['lead_events'])}**")
+          print(f"- Lags: **{len(d['lag_events'])}**")
+          print(f"- Temporal pairs: **{len(d['lead_lag_pairs'])}**")
+          print('- Causality: **not inferred**')
+          print('- Identity: **uncertain when shared PAT provenance is unavailable**')
+          PY
+
+      - name: Upload immutable evidence artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: context-relationship-audit-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evaluation-results/context-relationship-index.json
+          if-no-files-found: error
+          retention-days: 30
+          include-hidden-files: false

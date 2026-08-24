@@ -1,7 +1,7 @@
 name: Context Relationship + Lead/Lag Audit
 
-# This is an evolving evidence collector. It does not decide correctness or merge code.
-# It records the temporal relationship between context/dispatch leads and verification lags.
+# Evolving evidence collector: context leads -> execution -> verification lags.
+# It does not decide correctness or merge code.
 
 on:
   push:
@@ -69,10 +69,10 @@ jobs:
           ISSUE_NUMBER: ${{ inputs.issue_number || github.event.issue.number || '' }}
         run: |
           set -euo pipefail
-          python3 scripts/ci/context_relationship_index.py \
-            --pr "${PR_NUMBER:-}" \
-            --issue "${ISSUE_NUMBER:-}" \
-            --head-sha "${{ github.event.pull_request.head.sha || github.sha }}"
+          ARGS=(--head-sha "${{ github.event.pull_request.head.sha || github.sha }}")
+          if [ -n "${PR_NUMBER}" ]; then ARGS+=(--pr "${PR_NUMBER}"); fi
+          if [ -n "${ISSUE_NUMBER}" ]; then ARGS+=(--issue "${ISSUE_NUMBER}"); fi
+          python3 scripts/ci/context_relationship_index.py "${ARGS[@]}"
 
       - name: Validate index structure
         run: |

@@ -1,10 +1,11 @@
 """SHE metrics helpers — durable aggregation from Actions job timestamps.
 
 No network. No dependency on the deprecated /timing endpoint.
-Duration is derived from job (and optional step) started_at / completed_at.
+Duration/queue derived from job started_at / completed_at / queued_at.
 """
 
 from she.metrics.job_timestamps import (
+    DEFAULT_FAILURE_CONCLUSIONS,
     JobDuration,
     RunJobStats,
     WorkflowWindowStats,
@@ -13,9 +14,11 @@ from she.metrics.job_timestamps import (
     duration_ms_from_job,
     duration_ms_from_jobs,
     parse_iso_ms,
+    queue_ms_from_job,
 )
 
 __all__ = [
+    "DEFAULT_FAILURE_CONCLUSIONS",
     "JobDuration",
     "RunJobStats",
     "WorkflowWindowStats",
@@ -24,4 +27,5 @@ __all__ = [
     "duration_ms_from_job",
     "duration_ms_from_jobs",
     "parse_iso_ms",
+    "queue_ms_from_job",
 ]

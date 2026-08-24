@@ -1,0 +1,104 @@
+name: Team MVT — simultaneous provider lanes
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_number:
+        description: 'Issue/PR receiving lane receipts'
+        required: true
+        default: '337'
+        type: string
+      cohort:
+        description: 'Repository ref used for the benchmark'
+        required: true
+        default: 'HEAD'
+        type: string
+  issues:
+    types: [edited]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  lane:
+    if: github.event_name != 'issues' || github.event.issue.number == 337
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        lane: [a-ox-openrouter, b-other-openrouter, c-felo-prompt-variant, d-omni-peer]
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Poll live catalogs
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          FELO_AI_API: ${{ secrets.FELO_AI_API }}
+        run: python3 scripts/provider_model_catalog.py --output /tmp/catalog.json
+
+      - name: Select lane model and prompt
+        id: lane
+        env:
+          LANE: ${{ matrix.lane }}
+          COHORT: ${{ inputs.cohort || 'HEAD' }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os
+          d=json.load(open('/tmp/catalog.json',encoding='utf-8'))
+          lane=os.environ['LANE']; cohort=os.environ['COHORT']
+          def free(r): return r['pricing_classification']=='free_zero_price' or r['free_suffix']
+          if lane=='a-ox-openrouter':
+              provider='openrouter'; rows=[r for r in d['models'] if r['provider']==provider and r['id']=='stealth/ox-alpha']; variant='same-task-a'; prompt='Analyze issue #337 as a team-orchestration benchmark. Identify the most important correctness risk, one concrete improvement, and how to validate it. Do not fabricate repository access.'
+          elif lane=='b-other-openrouter':
+              provider='openrouter'; rows=[r for r in d['models'] if r['provider']==provider and r['id']!='stealth/ox-alpha' and free(r)]; variant='same-task-b'; prompt='Independently analyze issue #337 as a team-orchestration benchmark. Identify the most important correctness risk, one concrete improvement, and how to validate it. Do not fabricate repository access.'
+          elif lane=='c-felo-prompt-variant':
+              provider='felo'; rows=[r for r in d['models'] if r['provider']==provider and free(r)] or [r for r in d['models'] if r['provider']==provider]; variant='adversarial-c'; prompt='Act as a skeptical experiment scientist. Analyze issue #337, actively search for confounders in simultaneous LLM testing, attribution, scoring, and rollback protection. Give a falsifiable improvement and a validation test.'
+          else:
+              provider='omni'; rows=[{'id':'auto'}]; variant='synthesis-d'; prompt='Act as the integration manager. Analyze issue #337 and propose how four simultaneous model lanes should be compared without rewarding speed over correctness. Define the minimum evidence required to promote or cull a manager.'
+          if not rows: raise SystemExit(f'no live candidate for {lane}')
+          model=rows[0]['id']
+          out=os.environ['GITHUB_OUTPUT']
+          with open(out,'a') as f:
+              f.write(f'provider={provider}\nmodel={model}\nvariant={variant}\n')
+              f.write('prompt<<EOF\n'+prompt+'\nEOF\n')
+          print(f'{lane}: {provider}/{model} variant={variant} cohort={cohort}')
+          PY
+
+      - name: Invoke lane
+        uses: ./.github/actions/http-llm-invoke
+        with:
+          provider: ${{ steps.lane.outputs.provider }}
+          model: ${{ steps.lane.outputs.model }}
+          role: review
+          target_number: ${{ inputs.target_number || '337' }}
+          api_key: ${{ steps.lane.outputs.provider == 'felo' && secrets.FELO_AI_API || steps.lane.outputs.provider == 'openrouter' && secrets.OPENROUTER_API_KEY || secrets.OMNI_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          prompt: ${{ steps.lane.outputs.prompt }}
+          experiment_id: team-mvt-${{ github.run_id }}-${{ matrix.lane }}
+          prompt_variant: ${{ steps.lane.outputs.variant }}
+
+      - name: Write lane manifest
+        if: always()
+        run: |
+          mkdir -p /tmp/evaluation
+          cat > /tmp/evaluation/lane.json <<EOF
+          {"schema":"team-mvt/v1","run_id":"${GITHUB_RUN_ID}","lane":"${{ matrix.lane }}","provider":"${{ steps.lane.outputs.provider }}","model":"${{ steps.lane.outputs.model }}","prompt_variant":"${{ steps.lane.outputs.variant }}","cohort":"${{ inputs.cohort || 'HEAD' }}"}
+          EOF
+
+      - name: Upload lane evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: team-mvt-${{ github.run_id }}-${{ matrix.lane }}
+          path: |
+            /tmp/evaluation/lane.json
+            /tmp/model-performance/observations.ndjson
+          if-no-files-found: ignore

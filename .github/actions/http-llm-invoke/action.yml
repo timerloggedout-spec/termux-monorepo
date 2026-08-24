@@ -1,7 +1,7 @@
 name: 'HTTP LLM Invoke'
 description: |
   OpenAI-compatible chat/completions for OmniRoute, OpenRouter peers, or Felo.
-  Model identity is data; access/pricing evidence is recorded separately.
+  Model identity is data; access/pricing/quota evidence is recorded separately.
 inputs:
   provider: { description: 'omni | openrouter | felo', required: true }
   model: { description: 'Model id', required: true }
@@ -14,7 +14,7 @@ inputs:
   repository: { description: 'owner/repo', required: true }
   experiment_id: { description: 'Stable MVT experiment identity', required: false, default: '' }
   prompt_variant: { description: 'Prompt variant identifier', required: false, default: '' }
-  max_tokens: { description: 'Requested maximum response tokens; not a model capability limit', required: false, default: '131072' }
+  max_tokens: { description: 'Requested maximum response tokens; not a model capability limit. Default is the provider/model maximum requested by the experiment.', required: false, default: '131072' }
   post_comment: { description: 'Post model output to the target issue/PR', required: false, default: 'true' }
 runs:
   using: composite
@@ -63,10 +63,10 @@ runs:
           openrouter) TITLE="termux-monorepo-${ROLE}-or"; MARKER="<!-- openrouter-${ROLE} -->"; HEAD="### 🔀 OpenRouter ${ROLE} (\`${MODEL}\`)"; EGG="<!-- matrix: peer route; public boards=features; 3L0=our labels -->";;
           felo) TITLE="termux-monorepo-${ROLE}-felo"; MARKER="<!-- felo-${ROLE} -->"; HEAD="### 🔎 Felo ${ROLE} (\`${MODEL}\`)"; EGG="<!-- matrix: Felo peer route; 3L0=our labels -->";;
         esac
-        RESPONSE_FILE=$(mktemp); trap 'rm -f "$RESPONSE_FILE"' EXIT
+        RESPONSE_FILE=$(mktemp); HEADERS_FILE=$(mktemp); trap 'rm -f "$RESPONSE_FILE" "$HEADERS_FILE"' EXIT
         PAYLOAD=$(jq -n --arg m "$MODEL" --arg p "$PROMPT" --argjson mt "$MAX_TOKENS" '{model:$m,messages:[{role:"user",content:$p}],max_tokens:$mt,stream:false}')
         set +e
-        HTTP_STATUS=$(curl -sS --connect-timeout 15 --max-time 900 -o "$RESPONSE_FILE" -w '%{http_code}' -X POST "${BASE}/chat/completions" -H "Authorization: Bearer ${API_KEY}" -H "Content-Type: application/json" -H "Accept: application/json" -H "HTTP-Referer: https://github.com/${REPO}" -H "X-Title: ${TITLE}" -d "$PAYLOAD")
+        HTTP_STATUS=$(curl -sS --connect-timeout 15 -D "$HEADERS_FILE" -o "$RESPONSE_FILE" -w '%{http_code}' -X POST "${BASE}/chat/completions" -H "Authorization: Bearer ${API_KEY}" -H "Content-Type: application/json" -H "Accept: application/json" -H "HTTP-Referer: https://github.com/${REPO}" -H "X-Title: ${TITLE}" -H "X-Request-Id: ${EXPERIMENT_ID}" -d "$PAYLOAD")
         CURL_EXIT=$?
         set -e
         RESP=$(cat "$RESPONSE_FILE" 2>/dev/null || true)
@@ -80,6 +80,9 @@ runs:
         RESPONSE_MODEL="${RESPONSE_MODEL:-$MODEL}"; TOKENS_IN="${TOKENS_IN:-0}"; TOKENS_OUT="${TOKENS_OUT:-0}"; FINISH_REASON="${FINISH_REASON:-unknown}"
         COMPLETION_CAPPED=false
         if [ "$FINISH_REASON" = "length" ] || { [ "$TOKENS_OUT" -ge "$MAX_TOKENS" ] && [ "$MAX_TOKENS" -gt 0 ]; }; then COMPLETION_CAPPED=true; fi
+        # Preserve only operational response metadata. Never persist credentials.
+        HEADER_METADATA=$(awk 'BEGIN{IGNORECASE=1}/^(x-request-id|x-ratelimit-|retry-after|x-credit-|x-quota-|x-remaining-|x-usage-)/{gsub(/\r/,""); print}' "$HEADERS_FILE" | tr '\n' ';' | cut -c1-2000)
+        REQUEST_ID=$(printf '%s' "$HEADER_METADATA" | sed -n 's/.*x-request-id:[[:space:]]*\([^;]*\).*/\1/ip' | head -1 | cut -c1-200)
         if [ "$CURL_EXIT" -ne 0 ]; then
           if [ "$CURL_EXIT" = "28" ]; then ERROR_CLASS="timeout_partial";
           elif [ "$CURL_EXIT" = "6" ] || [ "$CURL_EXIT" = "7" ]; then ERROR_CLASS="transport";
@@ -87,8 +90,10 @@ runs:
         elif [ -z "$TEXT" ]; then
           if [ "$HTTP_STATUS" = "429" ]; then ERROR_CLASS="rate_limit";
           elif [ "$HTTP_STATUS" = "401" ] || [ "$HTTP_STATUS" = "403" ]; then ERROR_CLASS="auth";
+          elif [ "$HTTP_STATUS" = "402" ]; then ERROR_CLASS="quota";
           elif [[ "$HTTP_STATUS" =~ ^5[0-9][0-9]$ ]]; then ERROR_CLASS="transport";
           elif printf '%s' "$ERR" | grep -Eiq 'rate|limit'; then ERROR_CLASS="rate_limit";
+          elif printf '%s' "$ERR" | grep -Eiq 'credit|quota|insufficient'; then ERROR_CLASS="quota";
           elif printf '%s' "$ERR" | grep -Eiq 'auth|key|unauthor|forbidden'; then ERROR_CLASS="auth";
           else ERROR_CLASS="provider"; fi
         else STATUS=succeeded; ERROR_CLASS="none"; fi
@@ -97,12 +102,12 @@ runs:
           echo "::warning::${PROVIDER} invocation not complete: HTTP ${HTTP_STATUS}; curl_exit=${CURL_EXIT}; bytes=${RESPONSE_BYTES}; ${SAFE_ERR}"
           TEXT="⚠️ ${PROVIDER} invocation incomplete. HTTP ${HTTP_STATUS}; curl_exit=${CURL_EXIT}; bytes=${RESPONSE_BYTES}."
         elif [ "$COMPLETION_CAPPED" = true ]; then
-          echo "::warning::${PROVIDER} response reached the configured output ceiling (${MAX_TOKENS}); correctness/completeness remains unverified."
+          echo "::warning::${PROVIDER} response reached the requested output ceiling (${MAX_TOKENS}); correctness/completeness remains unverified."
         fi
         END_NS=$(date +%s%N); LATENCY_MS=$(( (END_NS - START_NS) / 1000000 ))
         mkdir -p /tmp/model-performance
-        jq -n --arg timestamp "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --arg repository "$REPO" --arg workflow "${GITHUB_WORKFLOW:-unknown}" --arg run_id "${GITHUB_RUN_ID:-unknown}" --arg run_attempt "${GITHUB_RUN_ATTEMPT:-1}" --arg head_sha "${GITHUB_SHA:-unknown}" --arg provider "$PROVIDER" --arg requested_model "$MODEL" --arg response_model "$RESPONSE_MODEL" --arg role "$ROLE" --arg route_status "$STATUS" --arg error_class "$ERROR_CLASS" --arg http_status "$HTTP_STATUS" --arg error_summary "$(printf '%s' "${ERR:-}" | tr '\n' ' ' | cut -c1-500)" --arg experiment_id "$EXPERIMENT_ID" --arg prompt_variant "$PROMPT_VARIANT" --arg finish_reason "$FINISH_REASON" --argjson latency_ms "$LATENCY_MS" --argjson requests_used "$REQUESTS_USED" --argjson curl_exit "$CURL_EXIT" --argjson response_bytes "$RESPONSE_BYTES" --argjson tokens_in "${TOKENS_IN:-0}" --argjson tokens_out "${TOKENS_OUT:-0}" --argjson max_tokens "$MAX_TOKENS" --argjson completion_capped "$COMPLETION_CAPPED" '{timestamp:$timestamp,repository:$repository,workflow:$workflow,run_id:$run_id,run_attempt:($run_attempt|tonumber),head_sha:$head_sha,provider:$provider,requested_model:$requested_model,response_model:$response_model,role:$role,route_status:$route_status,http_status:$http_status,latency_ms:$latency_ms,requests_used:$requests_used,response_bytes:$response_bytes,tokens_in:$tokens_in,tokens_out:$tokens_out,max_tokens:$max_tokens,completion_capped:$completion_capped,finish_reason:$finish_reason,curl_exit:$curl_exit,error_class:$error_class,error_summary:$error_summary,experiment_id:$experiment_id,prompt_variant:$prompt_variant}' >> /tmp/model-performance/observations.ndjson
-        { echo '### Model invocation telemetry'; echo; echo "- provider: \`$PROVIDER\`"; echo "- requested_model: \`$MODEL\`"; echo "- response_model: \`$RESPONSE_MODEL\`"; echo "- status: \`$STATUS\`"; echo "- http_status: \`$HTTP_STATUS\`"; echo "- finish_reason: \`$FINISH_REASON\`"; echo "- completion_capped: \`$COMPLETION_CAPPED\`"; echo "- requested_max_tokens: \`$MAX_TOKENS\`"; echo "- response_bytes: \`$RESPONSE_BYTES\`"; echo "- latency_ms: \`$LATENCY_MS\`"; echo "- requests_used: \`$REQUESTS_USED\`"; echo "- tokens_in: \`$TOKENS_IN\`"; echo "- tokens_out: \`$TOKENS_OUT\`"; echo "- error_class: \`$ERROR_CLASS\`"; } >> "$GITHUB_STEP_SUMMARY"
+        jq -n --arg timestamp "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --arg repository "$REPO" --arg workflow "${GITHUB_WORKFLOW:-unknown}" --arg run_id "${GITHUB_RUN_ID:-unknown}" --arg run_attempt "${GITHUB_RUN_ATTEMPT:-1}" --arg head_sha "${GITHUB_SHA:-unknown}" --arg provider "$PROVIDER" --arg requested_model "$MODEL" --arg response_model "$RESPONSE_MODEL" --arg role "$ROLE" --arg route_status "$STATUS" --arg error_class "$ERROR_CLASS" --arg http_status "$HTTP_STATUS" --arg error_summary "$(printf '%s' "${ERR:-}" | tr '\n' ' ' | cut -c1-500)" --arg experiment_id "$EXPERIMENT_ID" --arg prompt_variant "$PROMPT_VARIANT" --arg finish_reason "$FINISH_REASON" --arg request_id "$REQUEST_ID" --arg header_metadata "$HEADER_METADATA" --argjson latency_ms "$LATENCY_MS" --argjson requests_used "$REQUESTS_USED" --argjson curl_exit "$CURL_EXIT" --argjson response_bytes "$RESPONSE_BYTES" --argjson tokens_in "${TOKENS_IN:-0}" --argjson tokens_out "${TOKENS_OUT:-0}" --argjson max_tokens "$MAX_TOKENS" --argjson completion_capped "$COMPLETION_CAPPED" '{timestamp:$timestamp,repository:$repository,workflow:$workflow,run_id:$run_id,run_attempt:($run_attempt|tonumber),head_sha:$head_sha,provider:$provider,requested_model:$requested_model,response_model:$response_model,role:$role,route_status:$route_status,http_status:$http_status,latency_ms:$latency_ms,requests_used:$requests_used,response_bytes:$response_bytes,tokens_in:$tokens_in,tokens_out:$tokens_out,max_tokens:$max_tokens,completion_capped:$completion_capped,finish_reason:$finish_reason,request_id:$request_id,response_headers:$header_metadata,curl_exit:$curl_exit,error_class:$error_class,error_summary:$error_summary,experiment_id:$experiment_id,prompt_variant:$prompt_variant}' >> /tmp/model-performance/observations.ndjson
+        { echo '### Model invocation telemetry'; echo; echo "- provider: \`$PROVIDER\`"; echo "- requested_model: \`$MODEL\`"; echo "- response_model: \`$RESPONSE_MODEL\`"; echo "- status: \`$STATUS\`"; echo "- http_status: \`$HTTP_STATUS\`"; echo "- finish_reason: \`$FINISH_REASON\`"; echo "- completion_capped: \`$COMPLETION_CAPPED\`"; echo "- requested_max_tokens: \`$MAX_TOKENS\`"; echo "- response_bytes: \`$RESPONSE_BYTES\`"; echo "- latency_ms: \`$LATENCY_MS\`"; echo "- requests_used: \`$REQUESTS_USED\`"; echo "- tokens_in: \`$TOKENS_IN\`"; echo "- tokens_out: \`$TOKENS_OUT\`"; echo "- error_class: \`$ERROR_CLASS\`"; echo "- request_id: \`${REQUEST_ID:-unreported}\`"; echo "- rate/quota response metadata: \`${HEADER_METADATA:-unreported}\`"; } >> "$GITHUB_STEP_SUMMARY"
         if [ "$POST_COMMENT" = "true" ]; then
           BODY=$(printf '%s\n%s\n%s\n\n%s\n\n%s\n%s\n' "$MARKER" "$HEAD" "$EGG" "$TEXT" '---' "_Peer router invocation: provider=${PROVIDER}, requested=${MODEL}, response=${RESPONSE_MODEL}, role=${ROLE}, experiment=${EXPERIMENT_ID}, variant=${PROMPT_VARIANT}, http=${HTTP_STATUS}, finish=${FINISH_REASON}, capped=${COMPLETION_CAPPED}_")
           gh api "repos/${REPO}/issues/${TARGET}/comments" -f body="$BODY" >/dev/null || echo "::warning::Failed to post comment on #${TARGET}"

@@ -22,52 +22,33 @@ Operate the repository as an agentic development environment. The objective is c
 
 Latency is primarily a control/diagnostic signal. Long execution is acceptable when useful evidence is accumulating. Repeated identical activity, no-progress intervals, retry storms, deadlocks, or exhausted provider quotas are stall/loop signals.
 
-## Output policy
+## Universal resource/model policy
 
-Never impose an arbitrary artificial response ceiling merely to make a benchmark finish faster. The request may use the highest response capacity the provider/model metadata supports; the current production default is **131072 requested output tokens (128 Ki tokens)** for the OpenAI-compatible invocation action. This is a requested maximum, not a claim that every provider/model supports it. Provider/model capability and actual `finish_reason`, output tokens, and truncation are recorded independently.
+Apply the same evidence model to **every** provider, API/library, model, agent, router, catalog, quota system, and execution lane. No provider gets a hardcoded exception merely because it is currently favored.
 
-A provider rejection of a large requested maximum is evidence to classify, not a reason to silently lower the experiment ceiling. If a specific experiment deliberately varies output length, that is an explicit MVT dimension and must record its justification.
+Poll authoritative availability/catalog metadata whenever supported. New models/libraries/providers become eligible candidates automatically; disappeared or unavailable entries become stale/unavailable observations. Preserve historical identities so longitudinal MVT results remain comparable.
+
+Never encode an arbitrary application-level response, concurrency, provider count, or model-count ceiling. Requested output may use the highest capability reported by current provider/model metadata; current production invocation requests 131072 output tokens (128 Ki tokens) when the provider accepts the parameter. This is not a universal capability claim. Actual provider/model capability, request acceptance, finish reason, output tokens, truncation, and errors are independent observations. If an experiment intentionally varies output length or concurrency, that is an explicit MVT dimension with a recorded justification, not a hidden budget.
+
+Do not use a generic "budget" abstraction to silently constrain work. Provider quotas, credits, rate limits, runner capacity, API limits, and account entitlements are distinct resources and must be measured independently. A platform limit is infrastructure evidence, not an application policy ceiling.
 
 ## Continuous loop
 
 ```text
-OBSERVE -> CLASSIFY -> WAIT/STEER/RETRY -> VERIFY -> PROMOTE OR QUARANTINE -> FEED FORWARD
+OBSERVE -> CLASSIFY -> WAIT/STEER/RETRY -> VERIFY -> PROMOTE OR QUARANTINE -> FEED FORWARD -> REPEAT UNTIL DESIRED OUTCOME IS CONFIRMED
 ```
 
-### Observe
+The loop does not terminate because one command returned successfully. It terminates when the requested outcome is verified, or when a documented terminal condition makes the desired outcome impossible without new authority/input. Multiple workflow runs, experiments, retries, refinements, and manager changes are expected within a cycle.
 
-For every relevant GitHub event, capture:
+## Observe
 
-- event type/action and event timestamp
-- workflow run ID, attempt, job ID and step
-- repository SHA/ref and workflow revision
-- manager policy and agent/provider/model identity when available
-- prompt/context variant and experiment ID
-- artifact IDs and log evidence
-- outcome status and warnings/errors
-- lead/lag timestamps
-- request count and provider/quota/rate-limit evidence
+For every relevant GitHub event and every provider request, capture event type/action and timestamp, workflow run/attempt/job/step, repository SHA/ref and workflow revision, manager policy and agent/provider/model identity, prompt/context variant and experiment ID, artifact/log evidence, outcome/warnings/errors, lead/lag timestamps, request count, catalog revision, and provider/quota/rate-limit evidence. Record cooldown/debounce state and why admission/wait/skip occurred. Never infer success from workflow/job `success` alone.
 
-Never infer success from a workflow/job `success` alone.
+## Classify
 
-### Classify
+Use separate states for dispatch/event/run/job/provider request/response, provider capability, pricing, trial, account entitlement, quota, model execution, response completeness, correctness, tests, integration, manager/orchestration, context/prompt quality, and infrastructure. Use `PASS`, `FAIL`, `UNKNOWN`, `WARNING`, `SKIPPED`, or `STALLED` with notes. Do not collapse policy health, catalog availability, entitlement, execution, and task correctness.
 
-Use separate states for:
-
-- dispatch requested / event observed / run created / job started / provider request / response received
-- provider capability, public pricing, documented trial, account entitlement, and quota
-- model execution
-- response completeness
-- correctness
-- tests
-- integration
-- manager/orchestration
-- context/prompt quality
-- infrastructure
-
-Use `PASS`, `FAIL`, `UNKNOWN`, `WARNING`, `SKIPPED`, or `STALLED` with notes. A disabled paid probe can be policy-healthy while its capability remains unknown. A documented free trial can be a positive catalog/access observation while an individual request failure remains an execution failure. Do not collapse those states.
-
-### MVT population, dynamic libraries, and quota-aware lanes
+## MVT population, dynamic libraries, and quota-aware lanes
 
 Treat the experiment as a categorical/subcategory matrix:
 
@@ -75,58 +56,43 @@ Treat the experiment as a categorical/subcategory matrix:
 provider × model × prompt × manager × cohort × sequencing
 ```
 
-The provider/model library is **live data**, not a fixed roster. Every evaluation polls provider catalogs and generates the current eligible MVT population. Newly discovered eligible models are incorporated automatically; disappeared models are recorded as stale/unavailable evidence. OX Alpha is a selectable treatment identified from catalog/documentation evidence, not a permanent router architecture rule.
+This is extensible. Future dimensions may include task type, repository scope, validation class, bug-bounty/help-wanted/CTF treatment, reviewer, tool-chain, context strategy, and other experimentally justified factors.
 
-Do not encode a local `max-parallel` ceiling merely to simplify the experiment. GitHub's matrix engine defaults to maximizing parallel execution according to runner availability. GitHub nevertheless has platform/account constraints (including a documented 256-job matrix limit); those are infrastructure limits, not a reason to hardcode an application-level parallelism number. The manager is responsible for admission, sequencing, cooldown, quota, and culling policy.
+The provider/model/library population is live data, not a fixed roster. Poll current catalogs/availability and generate the eligible MVT population. Newly discovered eligible models are incorporated automatically; disappeared models are recorded as stale/unavailable evidence. OX Alpha and any other model are selectable treatments, never permanent router rules.
 
-Every provider request must produce telemetry containing provider, model, experiment/lane identity, request count, response status, quota/rate-limit evidence, and timestamps. Never assume a quota amount from a secret's existence; record observed entitlement/capacity evidence and reconcile it against provider documentation when available.
+Do not encode a local `max-parallel` ceiling merely to simplify experiments. Expand simultaneous lanes according to current eligible population, runner availability, provider admission, quota, cooldown, and manager policy. Platform limits are infrastructure constraints, not application policy ceilings. The manager owns dynamic admission, sequencing, cooldown, quota, culling, and promotion.
 
-### Provider quota/account evidence
+Every provider request must produce telemetry containing provider, model, experiment/lane identity, request count, response status, timestamps, and safe quota/rate-limit evidence when exposed. This applies to all libraries/providers/models. Never assume a quota from a secret's existence; record observed entitlement/capacity and reconcile it against authoritative documentation.
 
-Prefer authoritative live account/quota endpoints when the provider documents them. If no documented account endpoint is available, do not invent one. Capture safe operational response headers (`x-ratelimit-*`, `x-credit-*`, `x-quota-*`, `x-remaining-*`, `retry-after`, request IDs) when exposed by the provider. Persist no authorization headers or secrets.
+## Provider quota/account evidence
 
-For Felo, keep these evidence classes separate:
+Prefer authoritative live account/quota endpoints when documented. If none is documented, do not invent one. Capture safe response headers such as `x-ratelimit-*`, `x-credit-*`, `x-quota-*`, `x-remaining-*`, `retry-after`, and request IDs when exposed; never persist authorization headers or secrets.
 
-- documented model/trial capability
-- documented public/free-credit entitlement
-- authenticated account balance if an authoritative endpoint exposes it
-- request-observed credit/quota/rate-limit evidence
-- actual model execution
+For every provider keep separate evidence classes: documented capability; documented public/free-credit entitlement; authenticated account balance when an authoritative endpoint exists; request-observed credit/quota/rate-limit evidence; and actual execution.
 
-The current Felo OX Alpha documentation identifies `ox-alpha` as a free-trial route with 1M context and 128K maximum output. Felo's public Harness documentation describes 200 daily free credits for Free Standard Search API accounts. That public entitlement is **not automatically treated as the authenticated account's remaining balance**.
+For Felo, public documentation identifies `ox-alpha` as a free-trial route with 1M context and 128K maximum output, and public documentation describes 200 daily free credits for applicable Free Standard Search API accounts. Treat those as documented entitlement evidence, not the authenticated account's current remaining balance. If an authoritative authenticated balance endpoint exists, poll it and reconcile it after each request/cycle; otherwise maintain explicit `balance_unknown` while logging every request's observable quota metadata.
 
-### Adaptive waiting
+## Adaptive waiting and multiple-run cycles
 
-Do not use a fixed short timeout merely because a response is slow.
+Do not use a fixed short timeout merely because a response is slow. Wait while progress/evidence changes; re-check run/job state and timestamps; extend useful long-running work within platform/task constraints; detect stalls via lack of state/log/artifact progress, repeated identical retries, deadlocks, or deadline exhaustion; retry only when informative; prefer a fresh experiment variant when better than identical regeneration; preserve every attempt; and run multiple validation cycles for orchestration/provider changes. After each run inspect jobs -> steps -> logs -> artifacts -> receipts -> resulting SHA/status before deciding to wait, steer, retry, refine, or promote. Latency is diagnostic; correctness is promotion priority.
 
-- Wait while progress/evidence is changing.
-- Re-check run/job state and timestamps before acting.
-- Extend waiting for long-running useful work within the platform/task constraints.
-- Detect stalls using lack of state/log/artifact progress, repeated identical retries, deadlocks, or deadline exhaustion.
-- Retry only when the failure class is retryable and the retry is likely to add information.
-- Prefer a fresh experiment variant when regeneration is more informative than an identical retry.
-- Preserve every attempt and its evidence.
-- Latency is diagnostic; correctness remains the promotion priority.
+## Existing cooldown intelligence is feed-forward
 
-### Existing cooldown intelligence is feed-forward
+Before inventing timing policy, inspect prior SSOTs, decision matrices, agent responses, command libraries, cooldowns, debounces, quota gates, and orchestration receipts. Historical values are evidence, not immutable constants. Ingest prior observations; distinguish provider cooldown from orchestration debounce; avoid re-admission during known cooldown unless deliberately experimenting; record why waiting/skipping occurred; adapt when evidence disproves old timing; cull low-ROI treatments while retaining evidence; and reintroduce treatments when new availability/capability evidence changes expected value.
 
-Before inventing a new timing policy, inspect and reuse the repository's prior cooldown/quota evidence. The production SSOT already documents prior CodeRabbit cooldown handling, Jules summon debounce, peer-review waits, continuous-ops sweep debounce, response-lag indexing, and Jules dual-quota gates. These are **historical operational evidence**, not automatically immutable constants.
+## Reconnaissance before implementation
 
-The manager should:
+Before changing production orchestration, inspect **all relevant existing skills and process artifacts**, not just this skill. Search `.agents/skills/`, context-relationship graph skills including naming variants, SSOTs, decision matrices, Mermaid/process diagrams, command libraries, agent-manager documents, provider adapters, cooldown/quota code, and recent agent-authored commits. The repository currently contains the canonical `context-relationship-graph` skill; use its verified-vs-candidate discipline. Do not rely on a remembered filename when GitHub can establish canonical spelling/path.
 
-1. ingest prior cooldown observations;
-2. distinguish provider/API cooldown from agent orchestration debounce;
-3. avoid re-summoning a provider/agent while its known cooldown is active;
-4. record the reason for waiting/skipping;
-5. adapt the policy when new observations prove the old timing inadequate.
+Treat other agents' recent commits, comments, reviews, workflow artifacts, and command outputs as operational intelligence. Agent attribution requires provenance/confidence evidence; shared-PAT GitHub identity alone is insufficient.
 
-### Steering
+## Steering
 
-When steering is available, send a bounded correction that references the current evidence. Do not erase or rewrite prior attempts. A steering action must produce a new event/observation and remain linked to the preceding attempt.
+When steering is available, send a bounded correction referencing current evidence. Do not erase prior attempts. A steering action produces a new linked observation.
 
-### ChronoMancer/time-loop compatibility
+## ChronoMancer/time-loop compatibility
 
-Chat-session time loops may consolidate a winning continuation into an earlier conversational trunk while preserving the original branches. GitHub must translate this into provenance-preserving artifacts:
+Chat-session time loops may consolidate a winning continuation into an earlier conversational trunk while preserving original branches. GitHub should translate the concept into provenance-preserving artifacts:
 
 ```text
 X
@@ -135,9 +101,9 @@ X
 └── attempt C -> SHA C <- promoted trunk
 ```
 
-Never rewrite Git history solely to make the timeline appear linear. Promotion means selecting the validated successor, not deleting unsuccessful evidence.
+Never rewrite Git history solely to make the timeline appear linear. Promotion selects the validated successor; it does not delete unsuccessful evidence.
 
-### Context-ingestion efficiency
+## Context-ingestion efficiency
 
 Construct prompts from stable context plus relevant delta:
 
@@ -145,36 +111,35 @@ Construct prompts from stable context plus relevant delta:
 stable context + new delta + unresolved findings + relevant history
 ```
 
-Track context scope, token/size estimates when available, historical depth, exclusions, and why a variation was selected. Avoid repeatedly shipping unchanged history. Prompt variations require an explicit experimental justification.
+Track context scope, token/size estimates when available, historical depth, exclusions, and why each variation was selected. Avoid repeatedly shipping unchanged history. Prompt variations require explicit experimental justification. Relationship graphs should connect issues, PRs, commits, comments, reviews, files, workflow runs, jobs, provider/model observations, and manager decisions with evidence class and temporal bounds.
 
-### GitHub audit model
+## GitHub audit model
 
-Maintain one continuous audit PR/specimen where practical. Audit every event on that PR and feed findings forward. Automated workflows are the default; there is **no manual audit gate** in the production loop. A human may inspect or steer, but the system must continue without synchronous approval when policy allows.
+Maintain one continuous audit PR/specimen where practical. Audit every event on that PR and feed findings forward. Automated workflows are the default; there is **no manual audit gate** in the production loop. A human may inspect or steer, but the system continues without synchronous approval when policy permits.
 
-### Regression rule
+## Regression rule
 
-No rollback of evidence. A later improvement must reference the prior observation and preserve its artifacts. A regression is a new finding that triggers diagnosis and a successor change.
+No rollback of evidence. Later improvements reference prior observations and preserve artifacts. A regression is a new finding that triggers diagnosis and a successor change. Never label a change green merely because an error disappeared if the requested outcome remains unverified.
 
-### Promotion gate
+## Promotion gate and task outcome
 
-A candidate is promotable only when the evidence supports the requested task outcome and correctness/integration gates. Provider availability, HTTP 200, workflow success, response length, or low latency are not sufficient.
+A candidate is promotable only when evidence supports the requested task outcome and correctness/integration gates. Provider availability, HTTP 200, workflow success, response length, low latency, or resource efficiency are not sufficient.
 
-Task outcome should be represented as `PASS` or `FAIL` with notes when verification is possible, and related evidence should separately capture correctness, warning/error rate and severity, relevant complexity/Big-O or compute considerations, integration/test status, and rework.
+Represent task outcome as `PASS / FAIL + notes` when verification is possible, while separately recording correctness, warning/error rate and severity, relevant complexity/Big-O or compute, integration/test status, rework/feedback cycles, context efficiency, request/quota efficiency, and latency. Preserve `UNKNOWN` when verification is unavailable.
 
-## Continual update contract
+## Continual update contract: the 12-step production loop
 
-When this skill is used in production:
-
-1. Inspect current GitHub state before acting.
-2. Read recent commits from other agents before editing.
-3. Search historical SSOT/decision matrices/cooldown records before inventing a new mechanism.
-4. Verify current provider catalogs/documentation before classifying access.
-5. Check run timestamp vs. tested SHA and workflow revision before interpreting results.
-6. Make the smallest evidence-backed improvement.
+1. Inspect current GitHub state.
+2. Read other agents' recent commits, comments, reviews, and artifacts.
+3. Search historical SSOTs, decision matrices, Mermaid/process records, cooldowns, command libraries, and related skills before inventing a mechanism.
+4. Verify current provider/library/model catalogs and authoritative documentation.
+5. Check SHA ↔ run ↔ workflow-revision correlation before interpreting results.
+6. Make the smallest evidence-backed improvement that advances the desired outcome.
 7. Commit the improvement with a specific message.
-8. Wait for resulting automation using adaptive observation rather than a fixed short timeout.
-9. Inspect jobs, steps, logs, artifacts and receipts.
-10. Record what was proven and what remains unproven.
-11. Update this skill when the process itself improves.
+8. Wait adaptively; do not confuse elapsed time with failure.
+9. Inspect jobs -> steps -> logs -> artifacts -> receipts and every relevant provider request.
+10. Record what was proven, disproven, changed, and what remains unproven.
+11. Update this skill and related SSOT/graph documentation when the process itself improves.
+12. **LOOP — repeat until the desired outcome is confirmed**, running multiple validation cycles and continuing to improve rather than stopping at the first green-looking signal.
 
 The skill is a living operational contract, not a frozen tutorial.

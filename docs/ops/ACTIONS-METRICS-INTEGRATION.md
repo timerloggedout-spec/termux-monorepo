@@ -1,6 +1,6 @@
 # Actions Metrics Integration — Reference vs Duplicate
 
-**Status:** research + operator policy (2026-08-24, Timing API clarified)  
+**Status:** research + operator policy (2026-08-24, Timing API clarified + job-timestamp module)  
 **Owner:** ArchW1z / evidence-led-monorepo-ops
 
 ## Reality check (no Performance Metrics API)
@@ -29,6 +29,21 @@ GET /repos/{owner}/{repo}/actions/runs/{run_id}/jobs
 ```
 
 Compute `duration_ms = completed_at - started_at` (or sum step durations). This path is not deprecated and is what `gh-workflow-stats` and similar tools already use.
+
+## In-repo pure aggregator (SHE)
+
+Module: **`she.metrics.job_timestamps`** (SHE 0.3.2+)
+
+| Function | Role |
+|----------|------|
+| `duration_ms_from_job(job)` | Single job `started_at` → `completed_at` |
+| `duration_ms_from_jobs(jobs)` | Wall span min(start) → max(complete) |
+| `aggregate_run_job_stats(payload)` | One run: failed_jobs, avg/median job ms, wall ms |
+| `aggregate_workflow_window([...])` | Multi-run: failure_rate_pct, avg durations |
+
+Pure stdlib. Accepts already-fetched jobs payloads (no network). Tests: `tests/test_she_job_timestamps.py`.
+
+Caller still owns the HTTP fetch (`gh api` / Octokit); SHE only normalizes timestamps into priority-matrix-compatible stats.
 
 ## Recommended architecture for this monorepo
 
@@ -62,17 +77,16 @@ Reconstruct the same signals with the **durable** public API:
 | Workflow list | `GET /repos/{owner}/{repo}/actions/workflows` | |
 | Org/repo usage summary | billing platform usage endpoint | no per-workflow breakdown |
 
-**Aggregation recipe (stdlib or gh + jq):**
+**Aggregation recipe:**
 
 1. Page runs for the target workflow(s) in the desired window.
-2. For each completed run, count `conclusion == failure` vs total.
-3. Compute average duration from job `started_at` / `completed_at` (not the timing endpoint).
-4. Emit a row compatible with the CSV schema so SHE / priority matrix can consume either source.
+2. For each run, fetch jobs; pass payload to `aggregate_run_job_stats` / `aggregate_workflow_window`.
+3. Emit a row compatible with the CSV schema so SHE / priority matrix can consume either source.
 
 Community helpers that already do this style of work:
 
 - `fchimpan/gh-workflow-stats` (gh extension — success rate + execution time from runs/jobs)
-- Custom scripts that walk runs → jobs → steps (rate-limit aware)
+- In-repo: `she.metrics.job_timestamps`
 
 ### 3. Reference, do not re-duplicate numbers in prose
 
@@ -85,8 +99,9 @@ Community helpers that already do this style of work:
 A scheduled workflow that:
 
 1. Uses `gh api` / Octokit to aggregate the last N days via **runs + jobs** only.
-2. Writes a fresh `actions-metrics-*-$(date +%F).csv` under `docs/ops/generated/`.
-3. Opens a PR or commits directly under authority gate (same pattern as context-relationship index bots).
+2. Feeds payloads into `she.metrics.job_timestamps`.
+3. Writes a fresh `actions-metrics-*-$(date +%F).csv` under `docs/ops/generated/`.
+4. Opens a PR or commits directly under authority gate (same pattern as context-relationship index bots).
 
 Until that exists, operator export + commit remains the authoritative path.
 
@@ -95,7 +110,7 @@ Until that exists, operator export + commit remains the authoritative path.
 - **P0.2 ingest** already consumes individual Actions events → Incident.
 - Aggregated failure rates from CSVs / reconstructed metrics feed the **priority matrix** and canary selection for `intents_for_workflow_failure`.
 - Live token-bearing re-run (next P0.3 wire) uses `run_id` from a concrete failed run, not the aggregate percentage.
-- Duration for canary selection should come from job timestamps, not the deprecated timing endpoint.
+- Duration for canary selection should come from job timestamps (`she.metrics`), not the deprecated timing endpoint.
 
 ## Anti-patterns
 

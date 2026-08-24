@@ -6,15 +6,16 @@ on:
       target_number:
         description: 'Existing PR or issue number for the bounded smoke result'
         required: true
+        default: '337'
         type: string
       provider:
         description: 'Provider selected for this experiment'
         required: true
         default: openrouter
         type: choice
-        options: [openrouter]
+        options: [openrouter, felo]
       model:
-        description: 'Provider model id; selected experiment candidate, not hardcoded policy'
+        description: 'Provider model id; selected experiment candidate, not routing policy'
         required: true
         default: stealth/ox-alpha
         type: string
@@ -44,6 +45,26 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Poll live provider catalogs
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          FELO_AI_API: ${{ secrets.FELO_AI_API }}
+        run: |
+          set -euo pipefail
+          python3 scripts/provider_model_catalog.py --output /tmp/model-catalog/catalog.json
+          echo '### Live provider catalog' >> "$GITHUB_STEP_SUMMARY"
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          p='/tmp/model-catalog/catalog.json'
+          d=json.load(open(p, encoding='utf-8'))
+          print(f"Observed: `{d['observed_at']}`")
+          for row in d['models']:
+              if row['pricing_classification'] == 'free_zero_price' or row['free_suffix']:
+                  print(f"- 🟢 `{row['provider']}/{row['id']}` — {row['pricing_classification']}")
+          for err in d['errors']:
+              print(f"- ⚠️ `{err['provider']}` catalog: {err['error']}")
+          PY
+
       - name: Resolve experiment selection
         id: selection
         env:
@@ -65,7 +86,7 @@ jobs:
             [ -z "${EXTRA:-}" ] || { echo 'Too many arguments'; exit 1; }
           fi
           case "$TARGET" in ''|*[!0-9]*) echo 'Invalid target'; exit 1;; esac
-          case "$PROVIDER" in openrouter) ;; *) echo "Provider '$PROVIDER' is not enabled by this canary"; exit 1;; esac
+          case "$PROVIDER" in openrouter|felo) ;; *) echo "Provider '$PROVIDER' is not enabled"; exit 1;; esac
           case "$MODEL" in ''|*[[:space:]]*) echo 'Invalid model'; exit 1;; esac
           case "$ROLE" in triage|review|invoke) ;; *) echo 'Invalid role'; exit 1;; esac
           echo "target=$TARGET" >> "$GITHUB_OUTPUT"
@@ -98,7 +119,7 @@ jobs:
           model: ${{ steps.selection.outputs.model }}
           role: ${{ steps.selection.outputs.role }}
           target_number: ${{ steps.selection.outputs.target }}
-          api_key: ${{ secrets.OPENROUTER_API_KEY }}
+          api_key: ${{ steps.selection.outputs.provider == 'felo' && secrets.FELO_AI_API || secrets.OPENROUTER_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           prompt: ${{ steps.prompt.outputs.prompt }}
@@ -108,7 +129,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: model-performance-${{ github.run_id }}
-          path: /tmp/model-performance/observations.ndjson
+          path: |
+            /tmp/model-performance/observations.ndjson
+            /tmp/model-catalog/catalog.json
           if-no-files-found: ignore
 
       - name: Confirm canary launch
@@ -122,4 +145,4 @@ jobs:
           MODEL: ${{ steps.selection.outputs.model }}
         run: |
           gh api "repos/${REPO}/issues/${TARGET}/comments" \
-            -f body="🧪 model canary dispatched: ${PROVIDER}/${MODEL}. Run: https://github.com/${REPO}/actions/runs/${RUN_ID}" >/dev/null
+            -f body="🧪 model canary dispatched: ${PROVIDER}/${MODEL}. Live catalogs polled. Run: https://github.com/${REPO}/actions/runs/${RUN_ID}" >/dev/null

@@ -19,11 +19,6 @@ on:
         default: free-capacity-first
         type: choice
         options: [baseline-peer-first, free-capacity-first, parallel-then-integrate]
-      probe_felo_ox_alpha:
-        description: 'Force an explicit Felo OX Alpha probe (documented free-trial candidate)'
-        required: true
-        default: false
-        type: boolean
   schedule:
     - cron: '*/15 * * * *'
   push:
@@ -41,34 +36,90 @@ permissions:
   pull-requests: write
 
 jobs:
-  experiment:
+  discover:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a # v5.0.0
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Poll live provider catalogs and account-facing response metadata
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          FELO_AI_API: ${{ secrets.FELO_AI_API }}
+          OMNI_API_KEY: ${{ secrets.OMNI_API_KEY }}
+        run: |
+          set -euo pipefail
+          python3 scripts/provider_model_catalog.py --providers openrouter,felo,omni --output /tmp/model-catalog.json
+          echo '### Live provider catalog' >> "$GITHUB_STEP_SUMMARY"
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          d=json.load(open('/tmp/model-catalog.json', encoding='utf-8'))
+          print(f"Observed: `{d['observed_at']}`")
+          for r in d['models']:
+              eligible=(r['pricing_classification']=='free_zero_price' or r['free_suffix'] or r['access_classification']=='free_trial')
+              if eligible:
+                  print(f"- 🔬 {r['provider']}/{r['id']} [price={r['pricing_classification']}; access={r['access_classification']}; source={r.get('access_source') or r['raw_source']}]")
+          for e in d['errors']:
+              print(f"- ⚠️ {e['provider']}: {e['error']}")
+          PY
+
+      - name: Build dynamic MVT matrix from current eligible library
+        id: matrix
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, re
+          d=json.load(open('/tmp/model-catalog.json', encoding='utf-8'))
+          rows=[]
+          seen=set()
+          for r in d['models']:
+              eligible=(r['pricing_classification']=='free_zero_price' or r['free_suffix'] or r['access_classification']=='free_trial')
+              if not eligible:
+                  continue
+              provider=r['provider']; model=r['id']
+              key=(provider,model)
+              if key in seen:
+                  continue
+              seen.add(key)
+              safe=re.sub(r'[^A-Za-z0-9_.-]+','-',model).strip('-')[:90] or 'model'
+              is_ox='ox-alpha' in model.lower()
+              if provider=='felo' and is_ox:
+                  variant='adversarial-ox-alpha'
+                  quota_class='free-trial'
+              elif provider=='felo':
+                  variant='daily-credit-mvt'
+                  quota_class='daily-credit'
+              elif provider=='openrouter' and is_ox:
+                  variant='baseline-ox-alpha'
+                  quota_class='free-zero'
+              else:
+                  variant='independent-peer'
+                  quota_class='free-zero'
+              rows.append({'lane':f'{provider}-{safe}','provider':provider,'model':model,'prompt_variant':variant,'quota_class':quota_class})
+          rows.sort(key=lambda x:(x['provider'],x['model']))
+          matrix=json.dumps({'include':rows},separators=(',',':'))
+          print('matrix='+matrix)
+          print(f'matrix_count={len(rows)}')
+          PY
+          COUNT=$(grep '^matrix_count=' "$GITHUB_OUTPUT" | tail -1 | cut -d= -f2)
+          echo "Dynamic candidates: ${COUNT}" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload catalog snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: provider-catalog-${{ github.run_id }}
+          path: /tmp/model-catalog.json
+
+  experiment:
+    needs: discover
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      max-parallel: 5
-      matrix:
-        include:
-          - lane: A-openrouter-ox
-            provider: openrouter
-            model_selector: ox-alpha
-            prompt_variant: baseline
-          - lane: B-openrouter-peer
-            provider: openrouter
-            model_selector: other-free
-            prompt_variant: independent
-          - lane: C-felo-ox
-            provider: felo
-            model_selector: ox-alpha
-            prompt_variant: adversarial
-          - lane: D-omni-peer
-            provider: omni
-            model_selector: free-or-zero
-            prompt_variant: synthesis
-          - lane: E-felo-peer-daily
-            provider: felo
-            model_selector: other-free
-            prompt_variant: daily-quota-mvt
+      matrix: ${{ fromJSON(needs.discover.outputs.matrix) }}
 
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a # v5.0.0
@@ -93,61 +144,36 @@ jobs:
           echo "manager=$MANAGER" >> "$GITHUB_OUTPUT"
           echo "refs=$REFS" >> "$GITHUB_OUTPUT"
 
-      - name: Poll live provider catalogs
+      - name: Poll live catalog again before invocation
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           FELO_AI_API: ${{ secrets.FELO_AI_API }}
           OMNI_API_KEY: ${{ secrets.OMNI_API_KEY }}
         run: |
           set -euo pipefail
-          python3 scripts/provider_model_catalog.py --providers openrouter,felo,omni --output /tmp/model-catalog.json
-          echo '### Live provider catalog' >> "$GITHUB_STEP_SUMMARY"
-          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
-          import json
-          d=json.load(open('/tmp/model-catalog.json', encoding='utf-8'))
-          print(f"Observed: `{d['observed_at']}`")
-          for r in d['models']:
-              if r['pricing_classification']=='free_zero_price' or r['free_suffix'] or r['access_classification']=='free_trial' or 'ox-alpha' in r['id'].lower():
-                  print(f"- 🔬 {r['provider']}/{r['id']} [price={r['pricing_classification']}; access={r['access_classification']}; source={r.get('access_source') or r['raw_source']}]")
-          for e in d['errors']:
-              print(f"- ⚠️ {e['provider']}: {e['error']}")
-          PY
+          python3 scripts/provider_model_catalog.py --providers "${{ matrix.provider }}" --output /tmp/model-catalog.json
 
-      - name: Select lane candidate without failing unavailable lanes
+      - name: Verify dynamic candidate is still eligible
         id: candidate
         env:
           PROVIDER: ${{ matrix.provider }}
-          SELECTOR: ${{ matrix.model_selector }}
-          PROBE_FELO_OX: ${{ inputs.probe_felo_ox_alpha || 'false' }}
+          MODEL: ${{ matrix.model }}
         run: |
           set -euo pipefail
-          MODEL=$(python3 - "$PROVIDER" "$SELECTOR" "$PROBE_FELO_OX" <<'PY'
-          import json,sys
+          python3 - <<'PY'
+          import json,os,sys
           d=json.load(open('/tmp/model-catalog.json', encoding='utf-8'))
-          p,selector,probe=sys.argv[1:]
-          rows=[r for r in d['models'] if r['provider']==p]
-          free=[r for r in rows if r['pricing_classification']=='free_zero_price' or r['free_suffix'] or r['access_classification']=='free_trial']
-          if selector=='ox-alpha':
-              pick=[r for r in rows if r['id'].lower() in ('ox-alpha','stealth/ox-alpha')][:1]
-              if not pick and p=='felo' and probe.lower()=='true':
-                  pick=[r for r in rows if 'ox-alpha' in r['id'].lower()][:1]
-          elif selector=='other-free':
-              pick=[r for r in free if 'ox-alpha' not in r['id'].lower()][:1]
-          else:
-              pick=free[:1]
-          print(pick[0]['id'] if pick else '')
+          p=os.environ['PROVIDER']; m=os.environ['MODEL']
+          rows=[r for r in d['models'] if r['provider']==p and r['id']==m]
+          if not rows:
+              print(f'::notice::{p}/{m} disappeared from live catalog; recording stale-candidate skip')
+              print('eligible=false')
+              raise SystemExit(0)
+          r=rows[0]
+          eligible=(r['pricing_classification']=='free_zero_price' or r['free_suffix'] or r['access_classification']=='free_trial')
+          print(f"{p}/{m}: eligible={eligible} pricing={r['pricing_classification']} access={r['access_classification']}")
+          print(f'eligible={str(eligible).lower()}')
           PY
-          )
-          if [ -n "$MODEL" ]; then
-            echo "selection_status=selected" >> "$GITHUB_OUTPUT"
-            echo "selection_reason=eligible_live_catalog_or_documented_trial_candidate" >> "$GITHUB_OUTPUT"
-            echo "Selected $PROVIDER/$MODEL"
-          else
-            echo "selection_status=skipped" >> "$GITHUB_OUTPUT"
-            echo "selection_reason=no_eligible_live_candidate_or_probe_disabled" >> "$GITHUB_OUTPUT"
-            echo "::notice::No eligible live candidate for $PROVIDER/$SELECTOR; recording a capacity/catalog skip rather than a model failure."
-          fi
-          echo "model=$MODEL" >> "$GITHUB_OUTPUT"
 
       - name: Snapshot repository history without mutation
         env:
@@ -167,34 +193,34 @@ jobs:
         id: prompt
         env:
           PROVIDER: ${{ matrix.provider }}
-          MODEL: ${{ steps.candidate.outputs.model || 'UNRESOLVED' }}
+          MODEL: ${{ matrix.model }}
           MANAGER: ${{ steps.cohort.outputs.manager }}
           REFS: ${{ steps.cohort.outputs.refs }}
           VARIANT: ${{ matrix.prompt_variant }}
+          QUOTA_CLASS: ${{ matrix.quota_class }}
         run: |
           set -euo pipefail
           {
             echo 'prompt<<EOF'
-            echo "You are one player in the termux-monorepo Agent Team Moneyball experiment. Manager=${MANAGER}. Provider=${PROVIDER}. Model=${MODEL}. PromptVariant=${VARIANT}. Cohort refs=${REFS}."
+            echo "You are one player in the termux-monorepo Agent Team Moneyball experiment. Manager=${MANAGER}. Provider=${PROVIDER}. Model=${MODEL}. PromptVariant=${VARIANT}. QuotaClass=${QUOTA_CLASS}. Cohort refs=${REFS}."
             case "$VARIANT" in
-              baseline) echo 'Critique issue #337. Give one concrete improvement, one risk, and a PASS/FAIL assessment of whether the orchestration concept is operationally testable. Do not fabricate tool access.';;
-              independent) echo 'Independently identify the highest-risk engineering defect in the #337 continuous audit concept. Give a PASS/FAIL assessment and evidence required to change it.';;
-              adversarial) echo 'Adversarial MVT variant: attempt to falsify the #337 measurement system. Identify one counterexample, one guard, and PASS/FAIL. Explicitly distinguish provider capability, documented free-trial access, account quota, and public pricing.';;
-              synthesis) echo 'Synthesize the likely team-level improvement from #337 while explicitly separating model failure, provider failure, dispatch failure, and manager failure. Give PASS/FAIL.';;
-              daily-quota-mvt) echo 'Use this as a fifth MVT treatment for Felo daily included quota. Evaluate a different repository-specific orchestration question than the OX Alpha lane. Record whether the result is useful and whether any quota/rate-limit evidence is observed.';;
+              baseline-ox-alpha) echo 'Evaluate issue #337 as the baseline OX Alpha treatment. Give one concrete improvement, one risk, and PASS/FAIL. Do not fabricate tool access.';;
+              adversarial-ox-alpha) echo 'Adversarial OX Alpha treatment: attempt to falsify the #337 measurement system. Identify one counterexample, one guard, and PASS/FAIL. Distinguish provider capability, trial access, account quota, and pricing.';;
+              daily-credit-mvt) echo 'Felo daily-credit MVT treatment. Evaluate a different repository-specific orchestration question than the OX Alpha treatment. Record usefulness and any quota/rate-limit evidence.';;
+              *) echo 'Independent peer treatment. Identify the highest-risk engineering defect in #337, give PASS/FAIL, and name evidence required to change the result.';;
             esac
-            echo 'This is a controlled benchmark. Correctness and working outcome outrank latency. Do not modify files.'
+            echo 'Correctness and integrated working outcome outrank latency. Do not modify files.'
             echo 'EOF'
           } >> "$GITHUB_OUTPUT"
 
-      - name: Invoke live candidate
+      - name: Invoke live candidate with uncapped provider/model response capability
         id: invoke
-        if: steps.candidate.outputs.model != ''
+        if: steps.candidate.outputs.eligible == 'true'
         continue-on-error: true
         uses: ./.github/actions/http-llm-invoke
         with:
           provider: ${{ matrix.provider }}
-          model: ${{ steps.candidate.outputs.model }}
+          model: ${{ matrix.model }}
           role: review
           target_number: ${{ inputs.target_number || '337' }}
           api_key: ${{ matrix.provider == 'felo' && secrets.FELO_AI_API || matrix.provider == 'omni' && secrets.OMNI_API_KEY || secrets.OPENROUTER_API_KEY }}
@@ -220,19 +246,18 @@ jobs:
         if: always()
         env:
           PROVIDER: ${{ matrix.provider }}
-          MODEL: ${{ steps.candidate.outputs.model }}
-          SELECTION_STATUS: ${{ steps.candidate.outputs.selection_status }}
-          SELECTION_REASON: ${{ steps.candidate.outputs.selection_reason }}
+          MODEL: ${{ matrix.model }}
           MANAGER: ${{ steps.cohort.outputs.manager }}
           RUN_ID: ${{ github.run_id }}
           LANE: ${{ matrix.lane }}
           VARIANT: ${{ matrix.prompt_variant }}
+          QUOTA_CLASS: ${{ matrix.quota_class }}
         run: |
           set -euo pipefail
           python3 - <<'PY'
           import json,os,pathlib
           p=pathlib.Path('/tmp/evaluation/manifest.json'); refs=pathlib.Path('/tmp/evaluation/resolved-refs.unique.txt')
-          p.write_text(json.dumps({'schema':'team-evaluation/v4','run_id':os.environ['RUN_ID'],'lane':os.environ['LANE'],'manager':os.environ['MANAGER'],'provider':os.environ['PROVIDER'],'model':os.environ.get('MODEL') or None,'selection_status':os.environ['SELECTION_STATUS'],'selection_reason':os.environ['SELECTION_REASON'],'prompt_variant':os.environ['VARIANT'],'refs':refs.read_text().splitlines() if refs.exists() else []},indent=2)+'\n')
+          p.write_text(json.dumps({'schema':'team-evaluation/v5','run_id':os.environ['RUN_ID'],'lane':os.environ['LANE'],'manager':os.environ['MANAGER'],'provider':os.environ['PROVIDER'],'model':os.environ['MODEL'],'prompt_variant':os.environ['VARIANT'],'quota_class':os.environ['QUOTA_CLASS'],'refs':refs.read_text().splitlines() if refs.exists() else []},indent=2)+'\n')
           PY
 
       - name: Upload immutable evaluation ledger
@@ -253,8 +278,8 @@ jobs:
           TARGET: ${{ inputs.target_number || '337' }}
           RUN_ID: ${{ github.run_id }}
           PROVIDER: ${{ matrix.provider }}
-          MODEL: ${{ steps.candidate.outputs.model || 'UNRESOLVED' }}
+          MODEL: ${{ matrix.model }}
           LANE: ${{ matrix.lane }}
-          STATUS: ${{ steps.candidate.outputs.selection_status || 'unresolved' }}
+          STATUS: ${{ steps.candidate.outputs.eligible || 'unresolved' }}
         run: |
-          gh api "repos/${REPO}/issues/${TARGET}/comments" -f body="🧪 MVT lane receipt: ${LANE}; ${PROVIDER}/${MODEL}; status=${STATUS}; run=${RUN_ID}; live catalog polled; immutable cohort preserved. Outcome is recorded separately from route execution." >/dev/null || true
+          gh api "repos/${REPO}/issues/${TARGET}/comments" -f body="🧪 MVT lane receipt: ${LANE}; ${PROVIDER}/${MODEL}; eligible=${STATUS}; run=${RUN_ID}; live catalog re-polled; dynamic matrix; immutable cohort preserved. Outcome is recorded separately from route execution." >/dev/null || true

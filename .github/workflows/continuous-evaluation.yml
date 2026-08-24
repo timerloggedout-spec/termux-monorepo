@@ -1,0 +1,121 @@
+name: Continuous Team Evaluation
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_number:
+        description: 'Issue/PR receiving the experiment ledger'
+        required: true
+        default: '337'
+        type: string
+      refs:
+        description: 'Comma-separated historical refs/SHA values to evaluate'
+        required: true
+        default: 'HEAD,HEAD~1,HEAD~2'
+        type: string
+      provider_models:
+        description: 'Comma-separated provider/model pairs, e.g. openrouter/stealth/ox-alpha,felo/claude-sonnet-4-6'
+        required: true
+        default: 'openrouter/stealth/ox-alpha'
+        type: string
+      manager:
+        description: 'Manager policy identifier'
+        required: true
+        default: baseline-peer-first
+        type: choice
+        options: [baseline-peer-first, free-capacity-first, parallel-then-integrate]
+  schedule:
+    - cron: '*/30 * * * *'
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  experiment:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        ref: [HEAD]
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Resolve experiment cohort
+        id: cohort
+        env:
+          EVENT: ${{ github.event_name }}
+          INPUT_REFS: ${{ inputs.refs }}
+          INPUT_MANAGER: ${{ inputs.manager }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT" = "workflow_dispatch" ]; then
+            REFS="$INPUT_REFS"; MANAGER="$INPUT_MANAGER"
+          else
+            REFS="HEAD"; MANAGER="scheduled-observation"
+          fi
+          echo "manager=$MANAGER" >> "$GITHUB_OUTPUT"
+          echo "refs=$REFS" >> "$GITHUB_OUTPUT"
+
+      - name: Poll provider catalogs before experiment
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          FELO_AI_API: ${{ secrets.FELO_AI_API }}
+        run: |
+          set -euo pipefail
+          python3 scripts/provider_model_catalog.py --output /tmp/model-catalog.json
+
+      - name: Snapshot repository history without mutation
+        env:
+          REFS: ${{ steps.cohort.outputs.refs }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/evaluation
+          IFS=',' read -ra ITEMS <<< "$REFS"
+          for ref in "${ITEMS[@]}"; do
+            ref=$(echo "$ref" | xargs)
+            [ -n "$ref" ] || continue
+            git rev-parse "$ref^{commit}" >> /tmp/evaluation/resolved-refs.txt
+          done
+          sort -u /tmp/evaluation/resolved-refs.txt > /tmp/evaluation/resolved-refs.unique.txt
+          cp /tmp/model-catalog.json /tmp/evaluation/model-catalog.json
+
+      - name: Produce immutable evaluation manifest
+        env:
+          MANAGER: ${{ steps.cohort.outputs.manager }}
+          RUN_ID: ${{ github.run_id }}
+          TARGET: ${{ inputs.target_number }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, pathlib
+          p=pathlib.Path('/tmp/evaluation/manifest.json')
+          p.write_text(json.dumps({
+            'schema':'team-evaluation/v1',
+            'manager':os.environ['MANAGER'],
+            'run_id':os.environ['RUN_ID'],
+            'target':os.environ.get('TARGET','337'),
+            'refs':pathlib.Path('/tmp/evaluation/resolved-refs.unique.txt').read_text().splitlines(),
+          }, indent=2)+'\n')
+          PY
+
+      - name: Upload evaluation ledger
+        uses: actions/upload-artifact@v4
+        with:
+          name: team-evaluation-${{ github.run_id }}-${{ matrix.ref }}
+          path: /tmp/evaluation
+
+      - name: Record evaluation receipt
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          TARGET: ${{ inputs.target_number }}
+          RUN_ID: ${{ github.run_id }}
+          MANAGER: ${{ steps.cohort.outputs.manager }}
+        run: |
+          gh api "repos/${REPO}/issues/${TARGET}/comments" -f body="🧪 Team evaluation receipt: manager=${MANAGER}, run=${RUN_ID}. Historical refs were resolved and snapshotted without force-push or rotation loss. Provider catalogs were polled before the cohort." >/dev/null

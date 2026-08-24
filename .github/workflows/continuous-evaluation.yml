@@ -20,7 +20,7 @@ on:
         type: choice
         options: [baseline-peer-first, free-capacity-first, parallel-then-integrate]
       probe_felo_ox_alpha:
-        description: 'Force an explicit Felo OX Alpha probe (normally eligible from documented free-trial metadata)'
+        description: 'Force an explicit Felo OX Alpha probe (documented free-trial candidate)'
         required: true
         default: false
         type: boolean
@@ -46,7 +46,7 @@ jobs:
     timeout-minutes: 30
     strategy:
       fail-fast: false
-      max-parallel: 4
+      max-parallel: 5
       matrix:
         include:
           - lane: A-openrouter-ox
@@ -65,9 +65,13 @@ jobs:
             provider: omni
             model_selector: free-or-zero
             prompt_variant: synthesis
+          - lane: E-felo-peer-daily
+            provider: felo
+            model_selector: other-free
+            prompt_variant: daily-quota-mvt
 
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a # v5.0.0
         with:
           persist-credentials: false
           fetch-depth: 0
@@ -177,6 +181,7 @@ jobs:
               independent) echo 'Independently identify the highest-risk engineering defect in the #337 continuous audit concept. Give a PASS/FAIL assessment and evidence required to change it.';;
               adversarial) echo 'Adversarial MVT variant: attempt to falsify the #337 measurement system. Identify one counterexample, one guard, and PASS/FAIL. Explicitly distinguish provider capability, documented free-trial access, account quota, and public pricing.';;
               synthesis) echo 'Synthesize the likely team-level improvement from #337 while explicitly separating model failure, provider failure, dispatch failure, and manager failure. Give PASS/FAIL.';;
+              daily-quota-mvt) echo 'Use this as a fifth MVT treatment for Felo daily included quota. Evaluate a different repository-specific orchestration question than the OX Alpha lane. Record whether the result is useful and whether any quota/rate-limit evidence is observed.';;
             esac
             echo 'This is a controlled benchmark. Correctness and working outcome outrank latency. Do not modify files.'
             echo 'EOF'
@@ -197,7 +202,7 @@ jobs:
           repository: ${{ github.repository }}
           experiment_id: "${{ github.run_id }}:${{ matrix.lane }}:${{ matrix.prompt_variant }}"
           prompt_variant: ${{ matrix.prompt_variant }}
-          max_tokens: '4096'
+          max_tokens: '131072'
           post_comment: 'false'
           prompt: ${{ steps.prompt.outputs.prompt }}
 
@@ -227,7 +232,7 @@ jobs:
           python3 - <<'PY'
           import json,os,pathlib
           p=pathlib.Path('/tmp/evaluation/manifest.json'); refs=pathlib.Path('/tmp/evaluation/resolved-refs.unique.txt')
-          p.write_text(json.dumps({'schema':'team-evaluation/v3','run_id':os.environ['RUN_ID'],'lane':os.environ['LANE'],'manager':os.environ['MANAGER'],'provider':os.environ['PROVIDER'],'model':os.environ.get('MODEL') or None,'selection_status':os.environ['SELECTION_STATUS'],'selection_reason':os.environ['SELECTION_REASON'],'prompt_variant':os.environ['VARIANT'],'refs':refs.read_text().splitlines() if refs.exists() else []},indent=2)+'\n')
+          p.write_text(json.dumps({'schema':'team-evaluation/v4','run_id':os.environ['RUN_ID'],'lane':os.environ['LANE'],'manager':os.environ['MANAGER'],'provider':os.environ['PROVIDER'],'model':os.environ.get('MODEL') or None,'selection_status':os.environ['SELECTION_STATUS'],'selection_reason':os.environ['SELECTION_REASON'],'prompt_variant':os.environ['VARIANT'],'refs':refs.read_text().splitlines() if refs.exists() else []},indent=2)+'\n')
           PY
 
       - name: Upload immutable evaluation ledger

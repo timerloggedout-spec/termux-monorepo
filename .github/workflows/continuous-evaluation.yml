@@ -75,15 +75,11 @@ jobs:
         run: |
           set -euo pipefail
           if [ "$EVENT" = "workflow_dispatch" ]; then
-            REFS="$INPUT_REFS"; MANAGER="$INPUT_MANAGER"
+            REFS="$INPUT_REFS"
+            MANAGER="$INPUT_MANAGER"
           else
             REFS="HEAD"
-            MANAGER=$(python3 - <<'PY'
-            import time
-            policies=['baseline-peer-first','free-capacity-first','parallel-then-integrate']
-            print(policies[(int(time.time()) // 900) % len(policies)])
-            PY
-            )
+            MANAGER=$(python3 -c "import time; p=['baseline-peer-first','free-capacity-first','parallel-then-integrate']; print(p[(int(time.time())//900)%len(p)])")
           fi
           echo "manager=$MANAGER" >> "$GITHUB_OUTPUT"
           echo "refs=$REFS" >> "$GITHUB_OUTPUT"
@@ -213,6 +209,7 @@ jobs:
           python3 - <<'PY'
           import json,os,pathlib
           p=pathlib.Path('/tmp/evaluation/manifest.json')
+          refs=pathlib.Path('/tmp/evaluation/resolved-refs.unique.txt')
           p.write_text(json.dumps({
             'schema':'team-evaluation/v2','run_id':os.environ['RUN_ID'],
             'lane':os.environ['LANE'],'manager':os.environ['MANAGER'],
@@ -220,7 +217,7 @@ jobs:
             'selection_status':os.environ['SELECTION_STATUS'],
             'selection_reason':os.environ['SELECTION_REASON'],
             'prompt_variant':os.environ['VARIANT'],
-            'refs':pathlib.Path('/tmp/evaluation/resolved-refs.unique.txt').read_text().splitlines(),
+            'refs':refs.read_text().splitlines() if refs.exists() else [],
           },indent=2)+'\n')
           PY
 
@@ -244,6 +241,6 @@ jobs:
           PROVIDER: ${{ matrix.provider }}
           MODEL: ${{ steps.candidate.outputs.model || 'UNRESOLVED' }}
           LANE: ${{ matrix.lane }}
-          STATUS: ${{ steps.candidate.outputs.selection_status }}
+          STATUS: ${{ steps.candidate.outputs.selection_status || 'unresolved' }}
         run: |
           gh api "repos/${REPO}/issues/${TARGET}/comments" -f body="🧪 MVT lane receipt: ${LANE}; ${PROVIDER}/${MODEL}; status=${STATUS}; run=${RUN_ID}; live catalog polled; immutable cohort preserved. Outcome is recorded separately from route execution." >/dev/null || true

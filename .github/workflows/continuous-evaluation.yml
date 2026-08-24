@@ -38,6 +38,7 @@ permissions:
 jobs:
   experiment:
     runs-on: ubuntu-latest
+    timeout-minutes: 3
     strategy:
       fail-fast: false
       max-parallel: 4
@@ -75,8 +76,7 @@ jobs:
         run: |
           set -euo pipefail
           if [ "$EVENT" = "workflow_dispatch" ]; then
-            REFS="$INPUT_REFS"
-            MANAGER="$INPUT_MANAGER"
+            REFS="$INPUT_REFS"; MANAGER="$INPUT_MANAGER"
           else
             REFS="HEAD"
             MANAGER=$(python3 -c "import time; p=['baseline-peer-first','free-capacity-first','parallel-then-integrate']; print(p[(int(time.time())//900)%len(p)])")
@@ -117,12 +117,9 @@ jobs:
           p,selector=sys.argv[1:]
           rows=[r for r in d['models'] if r['provider']==p]
           free=[r for r in rows if r['pricing_classification']=='free_zero_price' or r['free_suffix']]
-          if selector=='ox-alpha':
-              pick=[r for r in rows if r['id']=='stealth/ox-alpha'][:1]
-          elif selector=='other-free':
-              pick=[r for r in free if r['id']!='stealth/ox-alpha'][:1]
-          else:
-              pick=free[:1]
+          if selector=='ox-alpha': pick=[r for r in rows if r['id']=='stealth/ox-alpha'][:1]
+          elif selector=='other-free': pick=[r for r in free if r['id']!='stealth/ox-alpha'][:1]
+          else: pick=free[:1]
           print(pick[0]['id'] if pick else '')
           PY
           )
@@ -145,8 +142,7 @@ jobs:
           mkdir -p /tmp/evaluation
           IFS=',' read -ra ITEMS <<< "$REFS"
           for ref in "${ITEMS[@]}"; do
-            ref=$(echo "$ref" | xargs)
-            [ -n "$ref" ] || continue
+            ref=$(echo "$ref" | xargs); [ -n "$ref" ] || continue
             git rev-parse "$ref^{commit}" >> /tmp/evaluation/resolved-refs.txt
           done
           sort -u /tmp/evaluation/resolved-refs.txt > /tmp/evaluation/resolved-refs.unique.txt
@@ -208,17 +204,8 @@ jobs:
           set -euo pipefail
           python3 - <<'PY'
           import json,os,pathlib
-          p=pathlib.Path('/tmp/evaluation/manifest.json')
-          refs=pathlib.Path('/tmp/evaluation/resolved-refs.unique.txt')
-          p.write_text(json.dumps({
-            'schema':'team-evaluation/v2','run_id':os.environ['RUN_ID'],
-            'lane':os.environ['LANE'],'manager':os.environ['MANAGER'],
-            'provider':os.environ['PROVIDER'],'model':os.environ.get('MODEL') or None,
-            'selection_status':os.environ['SELECTION_STATUS'],
-            'selection_reason':os.environ['SELECTION_REASON'],
-            'prompt_variant':os.environ['VARIANT'],
-            'refs':refs.read_text().splitlines() if refs.exists() else [],
-          },indent=2)+'\n')
+          p=pathlib.Path('/tmp/evaluation/manifest.json'); refs=pathlib.Path('/tmp/evaluation/resolved-refs.unique.txt')
+          p.write_text(json.dumps({'schema':'team-evaluation/v2','run_id':os.environ['RUN_ID'],'lane':os.environ['LANE'],'manager':os.environ['MANAGER'],'provider':os.environ['PROVIDER'],'model':os.environ.get('MODEL') or None,'selection_status':os.environ['SELECTION_STATUS'],'selection_reason':os.environ['SELECTION_REASON'],'prompt_variant':os.environ['VARIANT'],'refs':refs.read_text().splitlines() if refs.exists() else []},indent=2)+'\n')
           PY
 
       - name: Upload immutable evaluation ledger

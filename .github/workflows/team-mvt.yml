@@ -123,6 +123,7 @@ jobs:
           prompt: ${{ steps.lane.outputs.prompt }}
           experiment_id: team-mvt-${{ github.run_id }}-${{ steps.manager.outputs.manager }}-${{ matrix.lane }}
           prompt_variant: ${{ steps.lane.outputs.variant }}
+          post_comment: 'false'
 
       - name: Write lane manifest
         if: always()

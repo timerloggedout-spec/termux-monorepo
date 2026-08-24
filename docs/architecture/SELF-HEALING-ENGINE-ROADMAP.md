@@ -31,13 +31,15 @@ Observer only: pure construction; no network, no persistence. Stable fingerprint
 
 ## P0.3 L0 recovery
 
-**Status:** implemented (planner) — `she/recovery/l0.py`
+**Status:** implemented (planner + executor intents) — `she/recovery/l0.py` · `she/recovery/executor.py`
 
 Deterministic recovery **without source mutation**: retry, restart, reconnect, refresh, regenerate transient state, reacquire locks, safe rollback of ephemeral state.
 
 - `L0Plan` + `plan_l0_recovery(incident)` → ordered actions + authority scope
+- `L0ExecutionPlan` + `plan_l0_execution(plan)` → Actions / Termux intent shapes
 - Security/Dependabot signals → `observe_only` (no auto-retry)
-- Executor wire-up (Actions re-run, Termux control) is the next increment
+- Canary helper: `intents_for_workflow_failure` (agentic-report / CE class)
+- Live Actions re-run bridge (token-bearing job) is the next thin wire
 
 ## P0.4 Dynamic dispatcher
 

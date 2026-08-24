@@ -1,6 +1,6 @@
 ---
 name: review-loop
-description: Evidence-first continuous review loop for agentic GitHub development. Reconstruct prior work, correlate events to SHAs and runs, ingest reviews/comments/artifacts, classify proven versus candidate findings, apply minimal improvements, validate repeatedly, and feed results forward.
+description: Evidence-first continuous review loop for agentic GitHub development. Reconstruct prior work, correlate events to SHAs and runs, discover relevant skills, ingest reviews/comments/artifacts, apply bilateral critique, classify proven versus candidate findings, implement minimal improvements, validate repeatedly, and feed results forward.
 ---
 
 # Review Loop
@@ -12,18 +12,24 @@ Review is an operational feedback loop, not a final human checkpoint. The loop s
 ## Required sequence
 
 1. **Recon** — inspect current branch/SHA, recent commits, open PRs/issues, reviews/comments, workflow runs, artifacts, relevant `.agents/skills/`, SSOTs, decision matrices, Mermaid/process records, provider/library adapters, cooldown/quota policy, command libraries, and related templates/proposals.
-2. **Relationship mapping** — use the canonical context-relationship graph discipline. Start with exact roots/permalinks; distinguish verified relationships from candidates; preserve evidence URLs and temporal bounds.
-3. **Agent attribution** — use explicit agent identity, co-author/signoff, workflow actor, tool output, or other provenance. Do not attribute work solely from a shared GitHub PAT identity.
-4. **SHA/run binding** — correlate tested SHA, workflow revision, run, attempt, job, step, artifact, review, and resulting commit before interpreting feedback.
-5. **Review ingestion** — classify substantive findings separately from provider-control notices, cooldown notices, stale/superseded comments, and duplicate feedback. Historical repository work demonstrates that provider-control comments can create unwanted Jules feedback loops; those controls must not be mistaken for substantive review.
-6. **Prior-art cherry-pick analysis** — search existing branches, PRs, commits, comments, reviews, templates, and proposals for already-solved or partially-solved mechanisms. Prefer the smallest compatible existing implementation over re-invention. Preserve provenance when transplanting a solution.
-7. **Change selection** — rank findings by correctness risk, severity, reproducibility, expected information gain, regression risk, and resource/quota impact. Latency is a diagnostic factor, not a correctness override.
-8. **Implement** — make the smallest evidence-backed change. Do not silently narrow provider/model capability, concurrency, or output capacity to make the run appear successful.
-9. **Validate** — execute multiple runs per cycle when a change affects orchestration, routing, provider/model selection, quotas, concurrency, or feedback behavior. Inspect jobs → steps → logs → artifacts → receipts.
-10. **Review again** — consume new provider/agent reviews and workflow evidence after the change. Do not stop at the first green signal.
-11. **Promote/cull** — promote only when the desired task outcome and correctness/integration gates are verified. Cull low-ROI treatments while preserving their evidence; do not delete unsuccessful attempts.
-12. **Feed forward** — update the adaptive-feedback skill, SSOT, relationship graph, experiment lineage, or other process documentation when the review itself teaches a new reusable rule.
-13. **LOOP** — repeat until the desired outcome is confirmed or a documented terminal condition requires new input.
+2. **Discover skills** — search repository-native skill indexes/utilities and, when appropriate, external skill catalogs. Inspect candidate skill source, scope, permissions, provenance, maintenance/reputation evidence, and overlap before adopting. Prefer the smallest reusable mechanism; record discovered-but-rejected skills as candidates when useful. Never silently replace repository-native policy with an external skill.
+3. **Relationship mapping** — use the canonical context-relationship graph discipline. Start with exact roots/permalinks; distinguish verified relationships from candidates; preserve evidence URLs and temporal bounds.
+4. **Agent attribution** — use explicit agent identity, co-author/signoff, workflow actor, tool output, or other provenance. Do not attribute work solely from a shared GitHub PAT identity.
+5. **SHA/run binding** — correlate tested SHA, workflow revision, run, attempt, job, step, artifact, review, and resulting commit before interpreting feedback.
+6. **Review ingestion** — classify substantive findings separately from provider-control notices, cooldown notices, stale/superseded comments, and duplicate feedback. Historical repository work demonstrates that provider-control comments can create unwanted Jules feedback loops; those controls must not be mistaken for substantive review.
+7. **Prior-art cherry-pick analysis** — search existing branches, PRs, commits, comments, reviews, templates, and proposals for already-solved or partially-solved mechanisms. Prefer the smallest compatible existing implementation over re-invention. Preserve provenance when transplanting a solution.
+8. **Bilateral critique** — create at least two perspectives when the change is consequential: (A) implementation/maintainer critique asks what is wrong, incomplete, fragile, or regressive; (B) adversarial/external-perspective critique asks what assumptions, alternative architectures, provider behavior, ecosystem knowledge, or counterexamples may be missing. Treat disagreements as hypotheses. Resolve by repository evidence, authoritative documentation, targeted experiment, or explicit UNKNOWN—not consensus.
+9. **Change selection** — rank findings by correctness risk, severity, reproducibility, expected information gain, regression risk, and resource/quota impact. Latency is a diagnostic factor, not a correctness override.
+10. **Implement** — make the smallest evidence-backed change. Do not silently narrow provider/model capability, concurrency, or output capacity to make the run appear successful.
+11. **Validate** — execute multiple runs per cycle when a change affects orchestration, routing, provider/model selection, quotas, concurrency, or feedback behavior. Inspect jobs → steps → logs → artifacts → receipts.
+12. **Review again** — consume new provider/agent reviews and workflow evidence after the change. Do not stop at the first green signal.
+13. **Promote/cull** — promote only when the desired task outcome and correctness/integration gates are verified. Cull low-ROI treatments while preserving their evidence; do not delete unsuccessful attempts.
+14. **Feed forward** — update the adaptive-feedback skill, evidence-led-monorepo-ops skill, SSOT, relationship graph, experiment lineage, or other process documentation when the review itself teaches a new reusable rule. Record the observation and validation evidence supporting the update.
+15. **LOOP** — repeat until the desired outcome is confirmed or a documented terminal condition requires new input.
+
+## No-HITL continuous operating posture
+
+When repository policy and tool authority permit autonomous execution, do not turn review findings into a manual approval gate. Continue through discovery, implementation, validation, and iteration automatically. Human input remains a source of goals/constraints rather than a required synchronous checkpoint. Safety, authority, branch protection, credential, and platform controls remain actual constraints and must be recorded as such rather than simulated as human approval.
 
 ## Review classification
 
@@ -40,10 +46,31 @@ INFRASTRUCTURE
 SECURITY
 CORRECTNESS
 REGRESSION
+SKILL_CANDIDATE
+PROCESS_IMPROVEMENT
 UNKNOWN
 ```
 
-A provider-control comment may be operationally important without being a code finding. A cooldown may justify waiting without implying failure. An environment failure may be a run failure without proving the implementation is incorrect.
+A provider-control comment may be operationally important without being a code finding. A cooldown may justify waiting without implying failure. An environment failure may be a run failure without proving the implementation is incorrect. A skill candidate is not adopted merely because it exists.
+
+## Skill adoption evidence
+
+For each adopted or rejected external/repository skill, where available record:
+
+```text
+skill_name
+source
+version/revision
+capabilities
+permissions/tool access
+overlap with existing skills
+novel mechanism
+validation experiment
+adoption/rejection reason
+supersedes/relation
+```
+
+Keep the skill discovery process itself evidence-led. Re-run discovery as the repository evolves because new skills and new versions are part of the available treatment population.
 
 ## Historical intelligence
 
@@ -54,6 +81,7 @@ The repository contains prior implementations worth reusing, including:
 - Provider review request automation and bounded peer-review waits.
 - Decision-tree/control-plane documentation from the Issue #192 workstream.
 - Self-Healing Engine P0.1 incident identity, P0.2 observer ingestion, and P0.3 deterministic L0 recovery intent planning.
+- `termux-multi-agent/templates/skillopt_core.py`, an earlier rollout/skill-training prototype whose ELO/duration/success ideas are historical input rather than a complete modern promotion criterion.
 
 These are evidence-backed prior mechanisms. Inspect their current implementation and validation state before introducing a parallel mechanism.
 

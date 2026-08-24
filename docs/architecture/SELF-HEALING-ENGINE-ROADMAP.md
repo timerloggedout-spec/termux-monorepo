@@ -13,20 +13,31 @@ Define stable incident identity, lifecycle state, provenance, evidence reference
 
 ## P0.2 Event ingestion
 
-**Status:** implemented (observer) — `she/ingest/actions.py`  
-**PR slice:** `feat/she-p02-actions-ingest`
+**Status:** implemented (observer complete) — `she/ingest/`  
+**PR slices:** #345 Actions · #346 repo-gate · stacked Dependabot + termux-smoke
 
-Normalize GitHub Actions failures, repo-gate, termux-smoke, Dependabot signals, tests, runtime health events, and agent failures into the incident fabric.
+Normalize GitHub Actions failures, repo-gate, termux-smoke, Dependabot signals into the incident fabric.
 
-- Module: `she.ingest.actions` (`normalize_workflow_run_payload`, `incident_from_workflow_run`, `fingerprint_workflow_run`)
-- Tests: `tests/test_she_ingest_actions.py`
-- Observer only: pure construction of `Incident` from payload; no network, no persistence, no side effects.
-- Stable fingerprint for optional later dedupe / known-fix lookup.
-- Next increments: repo-gate / Dependabot normalizers, evidence store, optional webhook receiver.
+| Module | Entry points |
+|--------|----------------|
+| `she.ingest.actions` | workflow_run / job → Incident |
+| `she.ingest.repo_gate` | gate/check failure → Incident |
+| `she.ingest.termux_smoke` | smoke result → Incident |
+| `she.ingest.dependabot` | alert/advisory → Incident |
+
+Observer only: pure construction; no network, no persistence. Stable fingerprints for dedupe / known-fix.
+
+**Vendor framing:** prefer no vendoring; note upstreams when useful (e.g. MSFT SWE-bench-Live for eval research). Not a promotion gate.
 
 ## P0.3 L0 recovery
 
-Implement deterministic recovery without source mutation: retry, restart, reconnect, refresh, regenerate transient state, reacquire locks, and safe rollback.
+**Status:** implemented (planner) — `she/recovery/l0.py`
+
+Deterministic recovery **without source mutation**: retry, restart, reconnect, refresh, regenerate transient state, reacquire locks, safe rollback of ephemeral state.
+
+- `L0Plan` + `plan_l0_recovery(incident)` → ordered actions + authority scope
+- Security/Dependabot signals → `observe_only` (no auto-retry)
+- Executor wire-up (Actions re-run, Termux control) is the next increment
 
 ## P0.4 Dynamic dispatcher
 

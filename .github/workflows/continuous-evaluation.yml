@@ -19,6 +19,11 @@ on:
         default: free-capacity-first
         type: choice
         options: [baseline-peer-first, free-capacity-first, parallel-then-integrate]
+      probe_felo_ox_alpha:
+        description: 'Explicitly probe Felo OX Alpha even if public pricing is paid/unknown'
+        required: true
+        default: false
+        type: boolean
   schedule:
     - cron: '*/15 * * * *'
   push:
@@ -52,9 +57,9 @@ jobs:
             provider: openrouter
             model_selector: other-free
             prompt_variant: independent
-          - lane: C-felo-ox-variant
+          - lane: C-felo-peer
             provider: felo
-            model_selector: ox-alpha
+            model_selector: free-or-zero
             prompt_variant: adversarial
           - lane: D-omni-peer
             provider: omni
@@ -109,15 +114,16 @@ jobs:
         env:
           PROVIDER: ${{ matrix.provider }}
           SELECTOR: ${{ matrix.model_selector }}
+          PROBE_FELO_OX: ${{ inputs.probe_felo_ox_alpha || 'false' }}
         run: |
           set -euo pipefail
-          MODEL=$(python3 - "$PROVIDER" "$SELECTOR" <<'PY'
+          MODEL=$(python3 - "$PROVIDER" "$SELECTOR" "$PROBE_FELO_OX" <<'PY'
           import json,sys
           d=json.load(open('/tmp/model-catalog.json', encoding='utf-8'))
-          p,selector=sys.argv[1:]
+          p,selector,probe=sys.argv[1:]
           rows=[r for r in d['models'] if r['provider']==p]
           free=[r for r in rows if r['pricing_classification']=='free_zero_price' or r['free_suffix']]
-          if selector=='ox-alpha':
+          if selector=='ox-alpha' and (p!='felo' or probe.lower()=='true'):
               pick=[r for r in rows if 'ox-alpha' in r['id'].lower()][:1]
           elif selector=='other-free':
               pick=[r for r in free if 'ox-alpha' not in r['id'].lower()][:1]
@@ -132,7 +138,7 @@ jobs:
             echo "Selected $PROVIDER/$MODEL"
           else
             echo "selection_status=skipped" >> "$GITHUB_OUTPUT"
-            echo "selection_reason=no_eligible_live_candidate" >> "$GITHUB_OUTPUT"
+            echo "selection_reason=no_eligible_live_candidate_or_probe_disabled" >> "$GITHUB_OUTPUT"
             echo "::notice::No eligible live candidate for $PROVIDER/$SELECTOR; recording a capacity/catalog skip rather than a model failure."
           fi
           echo "model=$MODEL" >> "$GITHUB_OUTPUT"
@@ -191,6 +197,16 @@ jobs:
           prompt_variant: ${{ matrix.prompt_variant }}
           post_comment: 'false'
           prompt: ${{ steps.prompt.outputs.prompt }}
+
+      - name: Expose invocation telemetry in audit logs
+        if: always()
+        run: |
+          if [ -f /tmp/model-performance/observations.ndjson ]; then
+            echo '### Immutable invocation observation'
+            cat /tmp/model-performance/observations.ndjson
+          else
+            echo '### No provider invocation observation (lane skipped)'
+          fi
 
       - name: Write immutable experiment manifest
         if: always()

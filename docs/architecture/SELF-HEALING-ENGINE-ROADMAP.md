@@ -13,7 +13,16 @@ Define stable incident identity, lifecycle state, provenance, evidence reference
 
 ## P0.2 Event ingestion
 
+**Status:** implemented (observer) — `she/ingest/actions.py`  
+**PR slice:** `feat/she-p02-actions-ingest`
+
 Normalize GitHub Actions failures, repo-gate, termux-smoke, Dependabot signals, tests, runtime health events, and agent failures into the incident fabric.
+
+- Module: `she.ingest.actions` (`normalize_workflow_run_payload`, `incident_from_workflow_run`, `fingerprint_workflow_run`)
+- Tests: `tests/test_she_ingest_actions.py`
+- Observer only: pure construction of `Incident` from payload; no network, no persistence, no side effects.
+- Stable fingerprint for optional later dedupe / known-fix lookup.
+- Next increments: repo-gate / Dependabot normalizers, evidence store, optional webhook receiver.
 
 ## P0.3 L0 recovery
 

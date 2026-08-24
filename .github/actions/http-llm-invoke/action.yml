@@ -45,7 +45,12 @@ runs:
         DEFAULT_OMNI="https://cloud.omniroute.online/v1"
         DEFAULT_OR="https://openrouter.ai/api/v1"
         DEFAULT_FELO="https://openapi.felo.ai/api/v1"
-        case "$PROVIDER" in omni) CATALOG="$DEFAULT_OMNI";; openrouter) CATALOG="$DEFAULT_OR";; felo) CATALOG="$DEFAULT_FELO";; *) echo "::error::Unknown provider $PROVIDER"; exit 1;; esac
+        case "$PROVIDER" in
+          omni) CATALOG="$DEFAULT_OMNI" ;;
+          openrouter) CATALOG="$DEFAULT_OR" ;;
+          felo) CATALOG="$DEFAULT_FELO" ;;
+          *) echo "::error::Unknown provider $PROVIDER"; exit 1 ;;
+        esac
         RAW="${BASE_URL:-$CATALOG}"; RAW="${RAW%/}"
         ALLOW_HOSTS="cloud.omniroute.online openrouter.ai api.openrouter.ai openapi.felo.ai"
         if [[ ! "$RAW" =~ ^https:// ]]; then echo "::error::base_url must be https://"; exit 0; fi
@@ -72,16 +77,13 @@ runs:
         RESPONSE_MODEL="${RESPONSE_MODEL:-$MODEL}"
         TOKENS_IN="${TOKENS_IN:-0}"; TOKENS_OUT="${TOKENS_OUT:-0}"
         if [ -z "$TEXT" ]; then
-          case "$HTTP_STATUS" in
-            429) ERROR_CLASS="rate_limit";;
-            401|403) ERROR_CLASS="auth";;
-            408|5*|000) ERROR_CLASS="transport";;
-            *)
-              if printf '%s' "$ERR" | grep -Eiq 'rate|limit'; then ERROR_CLASS="rate_limit";
-              elif printf '%s' "$ERR" | grep -Eiq 'auth|key|unauthor|forbidden'; then ERROR_CLASS="auth";
-              elif printf '%s' "$ERR" | grep -Eiq 'timeout|curl|connection'; then ERROR_CLASS="transport";
-              else ERROR_CLASS="provider"; fi;;
-          esac
+          if [ "$HTTP_STATUS" = "429" ]; then ERROR_CLASS="rate_limit";
+          elif [ "$HTTP_STATUS" = "401" ] || [ "$HTTP_STATUS" = "403" ]; then ERROR_CLASS="auth";
+          elif [ "$HTTP_STATUS" = "408" ] || [[ "$HTTP_STATUS" =~ ^5[0-9][0-9]$ ]] || [ "$HTTP_STATUS" = "000" ]; then ERROR_CLASS="transport";
+          elif printf '%s' "$ERR" | grep -Eiq 'rate|limit'; then ERROR_CLASS="rate_limit";
+          elif printf '%s' "$ERR" | grep -Eiq 'auth|key|unauthor|forbidden'; then ERROR_CLASS="auth";
+          elif printf '%s' "$ERR" | grep -Eiq 'timeout|curl|connection'; then ERROR_CLASS="transport";
+          else ERROR_CLASS="provider"; fi
           SAFE_ERR=$(printf '%s' "${ERR:-no content}" | tr '\n' ' ' | cut -c1-500)
           echo "::warning::${PROVIDER} empty response: HTTP ${HTTP_STATUS}; ${SAFE_ERR}"
           TEXT="⚠️ ${PROVIDER} returned no content. HTTP ${HTTP_STATUS}. ${SAFE_ERR}"

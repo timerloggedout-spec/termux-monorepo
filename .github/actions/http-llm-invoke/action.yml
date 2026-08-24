@@ -12,6 +12,8 @@ inputs:
   base_url: { description: 'Optional OpenAI-compatible base URL', required: false, default: '' }
   github_token: { description: 'Token for gh comment API', required: true }
   repository: { description: 'owner/repo', required: true }
+  experiment_id: { description: 'Stable MVT experiment identity', required: false, default: '' }
+  prompt_variant: { description: 'Prompt variant identifier', required: false, default: '' }
 runs:
   using: composite
   steps:
@@ -27,6 +29,8 @@ runs:
         BASE_URL: ${{ inputs.base_url }}
         GH_TOKEN: ${{ inputs.github_token }}
         REPO: ${{ inputs.repository }}
+        EXPERIMENT_ID: ${{ inputs.experiment_id }}
+        PROMPT_VARIANT: ${{ inputs.prompt_variant }}
       run: |
         set -euo pipefail
         START_NS=$(date +%s%N)
@@ -73,7 +77,7 @@ runs:
         else STATUS=succeeded; ERROR_CLASS="none"; fi
         END_NS=$(date +%s%N); LATENCY_MS=$(( (END_NS - START_NS) / 1000000 ))
         mkdir -p /tmp/model-performance
-        jq -n --arg timestamp "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --arg repository "$REPO" --arg workflow "${GITHUB_WORKFLOW:-unknown}" --arg run_id "${GITHUB_RUN_ID:-unknown}" --arg run_attempt "${GITHUB_RUN_ATTEMPT:-1}" --arg head_sha "${GITHUB_SHA:-unknown}" --arg provider "$PROVIDER" --arg requested_model "$MODEL" --arg response_model "$RESPONSE_MODEL" --arg role "$ROLE" --arg route_status "$STATUS" --arg error_class "$ERROR_CLASS" --arg http_status "$HTTP_STATUS" --arg error_summary "$(printf '%s' "${ERR:-}" | tr '\n' ' ' | cut -c1-500)" --argjson latency_ms "$LATENCY_MS" --argjson requests_used "$REQUESTS_USED" '{timestamp:$timestamp,repository:$repository,workflow:$workflow,run_id:$run_id,run_attempt:($run_attempt|tonumber),head_sha:$head_sha,provider:$provider,requested_model:$requested_model,response_model:$response_model,role:$role,route_status:$route_status,http_status:$http_status,latency_ms:$latency_ms,requests_used:$requests_used,error_class:$error_class,error_summary:$error_summary}' >> /tmp/model-performance/observations.ndjson
-        { echo '### Model invocation telemetry'; echo; echo "- provider: \`$PROVIDER\`"; echo "- requested_model: \`$MODEL\`"; echo "- response_model: \`$RESPONSE_MODEL\`"; echo "- role: \`$ROLE\`"; echo "- status: \`$STATUS\`"; echo "- http_status: \`$HTTP_STATUS\`"; echo "- latency_ms: \`$LATENCY_MS\`"; echo "- requests_used: \`$REQUESTS_USED\`"; echo "- error_class: \`$ERROR_CLASS\`"; } >> "$GITHUB_STEP_SUMMARY"
-        BODY=$(printf '%s\n%s\n%s\n\n%s\n\n%s\n%s\n' "$MARKER" "$HEAD" "$EGG" "$TEXT" '---' "_Peer router invocation: provider=${PROVIDER}, requested=${MODEL}, response=${RESPONSE_MODEL}, role=${ROLE}, http=${HTTP_STATUS}_")
+        jq -n --arg timestamp "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --arg repository "$REPO" --arg workflow "${GITHUB_WORKFLOW:-unknown}" --arg run_id "${GITHUB_RUN_ID:-unknown}" --arg run_attempt "${GITHUB_RUN_ATTEMPT:-1}" --arg head_sha "${GITHUB_SHA:-unknown}" --arg provider "$PROVIDER" --arg requested_model "$MODEL" --arg response_model "$RESPONSE_MODEL" --arg role "$ROLE" --arg route_status "$STATUS" --arg error_class "$ERROR_CLASS" --arg http_status "$HTTP_STATUS" --arg error_summary "$(printf '%s' "${ERR:-}" | tr '\n' ' ' | cut -c1-500)" --arg experiment_id "$EXPERIMENT_ID" --arg prompt_variant "$PROMPT_VARIANT" --argjson latency_ms "$LATENCY_MS" --argjson requests_used "$REQUESTS_USED" '{timestamp:$timestamp,repository:$repository,workflow:$workflow,run_id:$run_id,run_attempt:($run_attempt|tonumber),head_sha:$head_sha,provider:$provider,requested_model:$requested_model,response_model:$response_model,role:$role,route_status:$route_status,http_status:$http_status,latency_ms:$latency_ms,requests_used:$requests_used,error_class:$error_class,error_summary:$error_summary,experiment_id:$experiment_id,prompt_variant:$prompt_variant}' >> /tmp/model-performance/observations.ndjson
+        { echo '### Model invocation telemetry'; echo; echo "- provider: \`$PROVIDER\`"; echo "- requested_model: \`$MODEL\`"; echo "- response_model: \`$RESPONSE_MODEL\`"; echo "- role: \`$ROLE\`"; echo "- status: \`$STATUS\`"; echo "- http_status: \`$HTTP_STATUS\`"; echo "- latency_ms: \`$LATENCY_MS\`"; echo "- requests_used: \`$REQUESTS_USED\`"; echo "- experiment_id: \`$EXPERIMENT_ID\`"; echo "- prompt_variant: \`$PROMPT_VARIANT\`"; echo "- error_class: \`$ERROR_CLASS\`"; } >> "$GITHUB_STEP_SUMMARY"
+        BODY=$(printf '%s\n%s\n%s\n\n%s\n\n%s\n%s\n' "$MARKER" "$HEAD" "$EGG" "$TEXT" '---' "_Peer router invocation: provider=${PROVIDER}, requested=${MODEL}, response=${RESPONSE_MODEL}, role=${ROLE}, experiment=${EXPERIMENT_ID}, variant=${PROMPT_VARIANT}, http=${HTTP_STATUS}_")
         gh api "repos/${REPO}/issues/${TARGET}/comments" -f body="$BODY" >/dev/null || echo "::warning::Failed to post comment on #${TARGET}"

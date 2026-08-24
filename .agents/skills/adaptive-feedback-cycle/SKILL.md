@@ -67,7 +67,7 @@ Use separate states for:
 
 Use `PASS`, `FAIL`, `UNKNOWN`, `WARNING`, `SKIPPED`, or `STALLED` with notes. A disabled paid probe can be policy-healthy while its capability remains unknown. A documented free trial can be a positive catalog/access observation while an individual request failure remains an execution failure. Do not collapse those states.
 
-### MVT population and quota-aware lanes
+### MVT population, dynamic libraries, and quota-aware lanes
 
 Treat the experiment as a categorical/subcategory matrix:
 
@@ -75,15 +75,25 @@ Treat the experiment as a categorical/subcategory matrix:
 provider × model × prompt × manager × cohort × sequencing
 ```
 
-Add explicit treatment lanes when capacity permits. The current team evaluation has five simultaneous lanes:
+The provider/model library is **live data**, not a fixed roster. Every evaluation polls provider catalogs and generates the current eligible MVT population. Newly discovered eligible models are incorporated automatically; disappeared models are recorded as stale/unavailable evidence. OX Alpha is a selectable treatment identified from catalog/documentation evidence, not a permanent router architecture rule.
 
-1. OpenRouter OX Alpha.
-2. OpenRouter independent free/zero-price peer.
-3. Felo OX Alpha.
-4. Omni/free-or-zero peer when available.
-5. Felo independent non-OX peer using the included daily quota opportunity.
+Do not encode a local `max-parallel` ceiling merely to simplify the experiment. GitHub's matrix engine defaults to maximizing parallel execution according to runner availability. GitHub nevertheless has platform/account constraints (including a documented 256-job matrix limit); those are infrastructure limits, not a reason to hardcode an application-level parallelism number. The manager is responsible for admission, sequencing, cooldown, quota, and culling policy.
 
 Every provider request must produce telemetry containing provider, model, experiment/lane identity, request count, response status, quota/rate-limit evidence, and timestamps. Never assume a quota amount from a secret's existence; record observed entitlement/capacity evidence and reconcile it against provider documentation when available.
+
+### Provider quota/account evidence
+
+Prefer authoritative live account/quota endpoints when the provider documents them. If no documented account endpoint is available, do not invent one. Capture safe operational response headers (`x-ratelimit-*`, `x-credit-*`, `x-quota-*`, `x-remaining-*`, `retry-after`, request IDs) when exposed by the provider. Persist no authorization headers or secrets.
+
+For Felo, keep these evidence classes separate:
+
+- documented model/trial capability
+- documented public/free-credit entitlement
+- authenticated account balance if an authoritative endpoint exposes it
+- request-observed credit/quota/rate-limit evidence
+- actual model execution
+
+The current Felo OX Alpha documentation identifies `ox-alpha` as a free-trial route with 1M context and 128K maximum output. Felo's public Harness documentation describes 200 daily free credits for Free Standard Search API accounts. That public entitlement is **not automatically treated as the authenticated account's remaining balance**.
 
 ### Adaptive waiting
 
@@ -91,12 +101,24 @@ Do not use a fixed short timeout merely because a response is slow.
 
 - Wait while progress/evidence is changing.
 - Re-check run/job state and timestamps before acting.
-- Extend waiting for long-running useful work within the configured task/run ceiling.
+- Extend waiting for long-running useful work within the platform/task constraints.
 - Detect stalls using lack of state/log/artifact progress, repeated identical retries, deadlocks, or deadline exhaustion.
 - Retry only when the failure class is retryable and the retry is likely to add information.
 - Prefer a fresh experiment variant when regeneration is more informative than an identical retry.
 - Preserve every attempt and its evidence.
 - Latency is diagnostic; correctness remains the promotion priority.
+
+### Existing cooldown intelligence is feed-forward
+
+Before inventing a new timing policy, inspect and reuse the repository's prior cooldown/quota evidence. The production SSOT already documents prior CodeRabbit cooldown handling, Jules summon debounce, peer-review waits, continuous-ops sweep debounce, response-lag indexing, and Jules dual-quota gates. These are **historical operational evidence**, not automatically immutable constants.
+
+The manager should:
+
+1. ingest prior cooldown observations;
+2. distinguish provider/API cooldown from agent orchestration debounce;
+3. avoid re-summoning a provider/agent while its known cooldown is active;
+4. record the reason for waiting/skipping;
+5. adapt the policy when new observations prove the old timing inadequate.
 
 ### Steering
 
@@ -145,13 +167,14 @@ When this skill is used in production:
 
 1. Inspect current GitHub state before acting.
 2. Read recent commits from other agents before editing.
-3. Verify current provider catalogs/documentation before classifying access.
-4. Check run timestamp vs. tested SHA and workflow revision before interpreting results.
-5. Make the smallest evidence-backed improvement.
-6. Commit the improvement with a specific message.
-7. Wait for resulting automation using adaptive observation rather than a fixed short timeout.
-8. Inspect jobs, steps, logs, artifacts and receipts.
-9. Record what was proven and what remains unproven.
-10. Update this skill when the process itself improves.
+3. Search historical SSOT/decision matrices/cooldown records before inventing a new mechanism.
+4. Verify current provider catalogs/documentation before classifying access.
+5. Check run timestamp vs. tested SHA and workflow revision before interpreting results.
+6. Make the smallest evidence-backed improvement.
+7. Commit the improvement with a specific message.
+8. Wait for resulting automation using adaptive observation rather than a fixed short timeout.
+9. Inspect jobs, steps, logs, artifacts and receipts.
+10. Record what was proven and what remains unproven.
+11. Update this skill when the process itself improves.
 
 The skill is a living operational contract, not a frozen tutorial.

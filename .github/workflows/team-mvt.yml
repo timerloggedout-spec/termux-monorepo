@@ -15,6 +15,13 @@ on:
         type: string
   issues:
     types: [edited]
+  push:
+    branches: [master]
+    paths:
+      - '.github/workflows/team-mvt.yml'
+      - '.github/actions/http-llm-invoke/action.yml'
+      - 'scripts/provider_model_catalog.py'
+      - 'scripts/model_performance_index.py'
 
 permissions:
   contents: read
@@ -64,8 +71,7 @@ jobs:
               provider='omni'; rows=[{'id':'auto'}]; variant='synthesis-d'; prompt='Act as the integration manager. Analyze issue #337 and propose how four simultaneous model lanes should be compared without rewarding speed over correctness. Define the minimum evidence required to promote or cull a manager.'
           if not rows: raise SystemExit(f'no live candidate for {lane}')
           model=rows[0]['id']
-          out=os.environ['GITHUB_OUTPUT']
-          with open(out,'a') as f:
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:
               f.write(f'provider={provider}\nmodel={model}\nvariant={variant}\n')
               f.write('prompt<<EOF\n'+prompt+'\nEOF\n')
           print(f'{lane}: {provider}/{model} variant={variant} cohort={cohort}')

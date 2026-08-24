@@ -1,0 +1,96 @@
+name: Audit Cycle — Single PR Feed-Forward
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review, converted_to_draft, review_requested, review_request_removed]
+  issue_comment:
+    types: [created, edited]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR to audit'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  pull-requests: read
+  issues: write
+
+concurrency:
+  group: audit-cycle-${{ github.event.pull_request.number || github.event.issue.number || inputs.pr_number }}
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    if: >-
+      (github.event_name == 'pull_request') ||
+      (github.event_name == 'workflow_dispatch') ||
+      (github.event_name == 'issue_comment' && github.event.issue.pull_request)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Resolve audited PR and event identity
+        id: context
+        env:
+          EVENT: ${{ github.event_name }}
+          PR_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number || inputs.pr_number }}
+          ACTION: ${{ github.event.action }}
+          SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          case "$PR_NUMBER" in ''|*[!0-9]*) echo 'invalid PR number'; exit 1;; esac
+          {
+            echo "pr_number=$PR_NUMBER"
+            echo "event=$EVENT"
+            echo "action=$ACTION"
+            echo "head_sha=$SHA"
+            echo "observed_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Capture repository audit receipt
+        env:
+          PR_NUMBER: ${{ steps.context.outputs.pr_number }}
+          HEAD_SHA: ${{ steps.context.outputs.head_sha }}
+          EVENT: ${{ steps.context.outputs.event }}
+          ACTION: ${{ steps.context.outputs.action }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/audit
+          git rev-parse HEAD > /tmp/audit/checked_out_sha.txt
+          git status --porcelain > /tmp/audit/worktree_status.txt
+          git diff --stat "${HEAD_SHA}^" "${HEAD_SHA}" > /tmp/audit/head_diff_stat.txt 2>&1 || true
+          cat > /tmp/audit/event.json <<EOF
+          {"schema":"audit-cycle/v1","pr":${PR_NUMBER},"event":"${EVENT}","action":"${ACTION}","head_sha":"${HEAD_SHA}","observed_at":"$(date -u +%Y-%m-%dT%H:%M:%SZ)"}
+          EOF
+
+      - name: Static correctness gates
+        run: |
+          set -euo pipefail
+          python3 -m py_compile scripts/model_performance_index.py scripts/provider_model_catalog.py
+          test -f .github/actions/http-llm-invoke/action.yml
+          test -f .github/workflows/continuous-evaluation.yml
+          test -f docs/schemas/model-performance-index.yaml
+
+      - name: Upload append-only audit receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: audit-cycle-${{ steps.context.outputs.pr_number }}-${{ github.run_id }}
+          path: /tmp/audit
+          if-no-files-found: error
+
+      - name: Feed-forward audit receipt to PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ steps.context.outputs.pr_number }}
+          RUN_ID: ${{ github.run_id }}
+          EVENT: ${{ steps.context.outputs.event }}
+          ACTION: ${{ steps.context.outputs.action }}
+          HEAD_SHA: ${{ steps.context.outputs.head_sha }}
+        run: |
+          gh api "repos/${REPO}/issues/${PR_NUMBER}/comments" -f body="🔬 Audit-cycle receipt: event=${EVENT}/${ACTION}; head=${HEAD_SHA}; run=${RUN_ID}. Static correctness gates passed. This receipt is evidence for the feed-forward audit; it is not a model-quality score." >/dev/null || true

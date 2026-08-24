@@ -5,12 +5,6 @@ on:
     types: [opened, reopened, synchronize, ready_for_review, converted_to_draft, review_requested, review_request_removed]
   issue_comment:
     types: [created, edited]
-  workflow_dispatch:
-    inputs:
-      pr_number:
-        description: 'PR to audit'
-        required: true
-        type: string
 
 permissions:
   contents: read
@@ -18,14 +12,13 @@ permissions:
   issues: write
 
 concurrency:
-  group: audit-cycle-${{ github.event.pull_request.number || github.event.issue.number || inputs.pr_number }}
+  group: audit-cycle-${{ github.event.pull_request.number || github.event.issue.number }}
   cancel-in-progress: false
 
 jobs:
   audit:
     if: >-
       ((github.event_name == 'pull_request') ||
-      (github.event_name == 'workflow_dispatch') ||
       (github.event_name == 'issue_comment' && github.event.issue.pull_request &&
        !contains(github.event.comment.body, '🔬 Audit-cycle receipt:')))
     runs-on: ubuntu-latest
@@ -39,7 +32,7 @@ jobs:
         id: context
         env:
           EVENT: ${{ github.event_name }}
-          PR_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number || inputs.pr_number }}
+          PR_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number }}
           ACTION: ${{ github.event.action }}
           SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
@@ -66,7 +59,7 @@ jobs:
           git status --porcelain > /tmp/audit/worktree_status.txt
           git diff --stat "${HEAD_SHA}^" "${HEAD_SHA}" > /tmp/audit/head_diff_stat.txt 2>&1 || true
           cat > /tmp/audit/event.json <<EOF
-          {"schema":"audit-cycle/v1","pr":${PR_NUMBER},"event":"${EVENT}","action":"${ACTION}","head_sha":"${HEAD_SHA}","observed_at":"$(date -u +%Y-%m-%dT%H:%M:%SZ)"}
+          {"schema":"audit-cycle/v2","pr":${PR_NUMBER},"event":"${EVENT}","action":"${ACTION}","head_sha":"${HEAD_SHA}","observed_at":"$(date -u +%Y-%m-%dT%H:%M:%SZ)"}
           EOF
 
       - name: Static correctness gates
@@ -76,6 +69,7 @@ jobs:
           test -f .github/actions/http-llm-invoke/action.yml
           test -f .github/workflows/continuous-evaluation.yml
           test -f docs/schemas/model-performance-index.yaml
+          test -f .agents/skills/adaptive-feedback-cycle/SKILL.md
 
       - name: Upload append-only audit receipt
         uses: actions/upload-artifact@v4
@@ -94,4 +88,4 @@ jobs:
           ACTION: ${{ steps.context.outputs.action }}
           HEAD_SHA: ${{ steps.context.outputs.head_sha }}
         run: |
-          gh api "repos/${REPO}/issues/${PR_NUMBER}/comments" -f body="🔬 Audit-cycle receipt: event=${EVENT}/${ACTION}; head=${HEAD_SHA}; run=${RUN_ID}. Static correctness gates passed. This receipt is evidence for the feed-forward audit; it is not a model-quality score." >/dev/null || true
+          gh api "repos/${REPO}/issues/${PR_NUMBER}/comments" -f body="🔬 Audit-cycle receipt: event=${EVENT}/${ACTION}; head=${HEAD_SHA}; run=${RUN_ID}. Automated correctness gates passed. This receipt is evidence for the feed-forward audit; it is not a model-quality score." >/dev/null || true

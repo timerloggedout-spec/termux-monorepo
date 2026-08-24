@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""Build a deterministic, redacted temporal context/lead-lag index from GitHub event data.
-
-This tool deliberately does not infer agent identity from the repository owner. It records
-only the evidence available to the workflow and leaves uncertain attribution explicit.
-"""
+"""Build a deterministic, redacted temporal context/lead-lag index from GitHub event data."""
 from __future__ import annotations
 
 import argparse
@@ -21,8 +17,7 @@ def now() -> str:
 def run_gh(*args: str) -> object:
     env = os.environ.copy()
     env.setdefault("GH_PAGER", "cat")
-    raw = subprocess.check_output(["gh", *args], env=env, text=True)
-    return json.loads(raw)
+    return json.loads(subprocess.check_output(["gh", *args], env=env, text=True))
 
 
 def parse_time(value: str | None) -> datetime | None:
@@ -41,16 +36,26 @@ def seconds_between(a: str | None, b: str | None) -> float | None:
 def classify_event(event: dict) -> str:
     kind = event.get("event") or event.get("type") or "unknown"
     action = event.get("action") or ""
-    if kind in {"push", "pull_request", "issues", "issue_comment", "pull_request_review", "pull_request_review_comment"}:
-        return f"{kind}:{action}"
-    return str(kind)
+    return f"{kind}:{action}" if action else str(kind)
+
+
+def optional_int(value: str | None) -> int | None:
+    if value in (None, ""):
+        return None
+    try:
+        parsed = int(value)
+    except ValueError as exc:
+        raise SystemExit(f"invalid integer: {value!r}") from exc
+    if parsed < 1:
+        raise SystemExit("number must be positive")
+    return parsed
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", default="evaluation-results/context-relationship-index.json")
-    parser.add_argument("--pr", type=int)
-    parser.add_argument("--issue", type=int)
+    parser.add_argument("--pr")
+    parser.add_argument("--issue")
     parser.add_argument("--head-sha", default=os.getenv("GITHUB_SHA", ""))
     args = parser.parse_args()
 
@@ -59,16 +64,11 @@ def main() -> int:
     event = json.loads(Path(event_path).read_text()) if event_path and Path(event_path).exists() else {}
     observed_at = now()
 
-    pr_number = args.pr or event.get("pull_request", {}).get("number")
-    issue_number = args.issue or event.get("issue", {}).get("number")
+    pr_number = optional_int(args.pr) or event.get("pull_request", {}).get("number")
+    issue_number = optional_int(args.issue) or event.get("issue", {}).get("number")
     head_sha = args.head_sha or event.get("pull_request", {}).get("head", {}).get("sha") or event.get("after", "")
 
-    lead_events = []
-    lag_events = []
-
-    # The triggering event is always a lead observation. Its exact payload remains in GitHub;
-    # this index stores only stable identifiers and timestamps.
-    lead_events.append({
+    lead_events = [{
         "kind": "github_event",
         "class": classify_event(event),
         "observed_at": observed_at,
@@ -76,12 +76,13 @@ def main() -> int:
         "run_id": os.getenv("GITHUB_RUN_ID"),
         "run_attempt": os.getenv("GITHUB_RUN_ATTEMPT"),
         "head_sha": head_sha,
-    })
+    }]
+    lag_events = []
 
     if repo and pr_number:
         try:
             pr = run_gh("pr", "view", str(pr_number), "--repo", repo,
-                        "--json", "number,headRefOid,createdAt,updatedAt,mergedAt,closedAt,state,reviews,commits,changedFiles")
+                        "--json", "number,headRefOid,createdAt,updatedAt,mergedAt,closedAt,state")
             lead_events.append({"kind": "pull_request", "number": pr["number"], "observed_at": observed_at,
                                 "source_sha": pr.get("headRefOid"), "created_at": pr.get("createdAt")})
             if pr.get("mergedAt"):
@@ -107,8 +108,6 @@ def main() -> int:
         except Exception as exc:
             lead_events.append({"kind": "comment_query_warning", "observed_at": observed_at, "message": str(exc)[:300]})
 
-    # GitHub check runs are lag/evidence signals: they tell us whether an attempted change
-    # actually verified. We intentionally retain conclusion rather than converting it to a score.
     if repo and head_sha:
         try:
             checks = run_gh("api", f"repos/{repo}/commits/{head_sha}/check-runs", "--paginate")
@@ -127,8 +126,6 @@ def main() -> int:
         except Exception as exc:
             lag_events.append({"kind": "check_query_warning", "observed_at": observed_at, "message": str(exc)[:300]})
 
-    # Pair each lead with the first later lag event. This is a diagnostic temporal index,
-    # not a causal claim.
     pairs = []
     for lead in lead_events:
         lead_time = lead.get("observed_at") or lead.get("created_at")
@@ -158,12 +155,8 @@ def main() -> int:
         "event_name": os.getenv("GITHUB_EVENT_NAME", "unknown"),
         "workflow_run_id": os.getenv("GITHUB_RUN_ID"),
         "workflow_run_attempt": os.getenv("GITHUB_RUN_ATTEMPT"),
-        "correlation": {
-            "pr_number": pr_number,
-            "issue_number": issue_number,
-            "context_key": os.getenv("CONTEXT_KEY"),
-            "experiment_id": os.getenv("EXPERIMENT_ID"),
-        },
+        "correlation": {"pr_number": pr_number, "issue_number": issue_number,
+                        "context_key": os.getenv("CONTEXT_KEY"), "experiment_id": os.getenv("EXPERIMENT_ID")},
         "lead_events": lead_events,
         "lag_events": lag_events,
         "lead_lag_pairs": pairs,

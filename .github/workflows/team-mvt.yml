@@ -13,6 +13,8 @@ on:
         required: true
         default: 'HEAD'
         type: string
+  schedule:
+    - cron: '*/15 * * * *'
   issues:
     types: [edited]
   push:
@@ -27,6 +29,10 @@ permissions:
   contents: read
   issues: write
   pull-requests: write
+
+concurrency:
+  group: team-mvt-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   lane:
@@ -43,6 +49,28 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
 
+      - name: Resolve manager cohort
+        id: manager
+        env:
+          EVENT: ${{ github.event_name }}
+          INPUT_COHORT: ${{ inputs.cohort }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT" = "workflow_dispatch" ]; then
+            MANAGER="parallel-then-integrate"
+            COHORT="${INPUT_COHORT:-HEAD}"
+          else
+            SLOT=$((10#$(date -u +%M) / 15 % 3))
+            case "$SLOT" in
+              0) MANAGER="baseline-peer-first";;
+              1) MANAGER="free-capacity-first";;
+              2) MANAGER="parallel-then-integrate";;
+            esac
+            COHORT="HEAD"
+          fi
+          echo "manager=$MANAGER" >> "$GITHUB_OUTPUT"
+          echo "cohort=$COHORT" >> "$GITHUB_OUTPUT"
+
       - name: Poll live catalogs
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
@@ -53,28 +81,33 @@ jobs:
         id: lane
         env:
           LANE: ${{ matrix.lane }}
-          COHORT: ${{ inputs.cohort || 'HEAD' }}
+          COHORT: ${{ steps.manager.outputs.cohort }}
+          MANAGER: ${{ steps.manager.outputs.manager }}
         run: |
           set -euo pipefail
           python3 - <<'PY'
           import json, os
           d=json.load(open('/tmp/catalog.json',encoding='utf-8'))
-          lane=os.environ['LANE']; cohort=os.environ['COHORT']
+          lane=os.environ['LANE']; cohort=os.environ['COHORT']; manager=os.environ['MANAGER']
           def free(r): return r['pricing_classification']=='free_zero_price' or r['free_suffix']
           if lane=='a-ox-openrouter':
-              provider='openrouter'; rows=[r for r in d['models'] if r['provider']==provider and r['id']=='stealth/ox-alpha']; variant='same-task-a'; prompt='Analyze issue #337 as a team-orchestration benchmark. Identify the most important correctness risk, one concrete improvement, and how to validate it. Do not fabricate repository access.'
+              provider='openrouter'; rows=[r for r in d['models'] if r['provider']==provider and r['id']=='stealth/ox-alpha']; variant='same-task-a'
+              prompt=f'Manager={manager}. Cohort={cohort}. Analyze issue #337 as a team-orchestration benchmark. Identify the most important correctness risk, one concrete improvement, and how to validate it. Do not fabricate repository access.'
           elif lane=='b-other-openrouter':
-              provider='openrouter'; rows=[r for r in d['models'] if r['provider']==provider and r['id']!='stealth/ox-alpha' and free(r)]; variant='same-task-b'; prompt='Independently analyze issue #337 as a team-orchestration benchmark. Identify the most important correctness risk, one concrete improvement, and how to validate it. Do not fabricate repository access.'
+              provider='openrouter'; rows=[r for r in d['models'] if r['provider']==provider and r['id']!='stealth/ox-alpha' and free(r)]; variant='same-task-b'
+              prompt=f'Manager={manager}. Cohort={cohort}. Independently analyze issue #337 as a team-orchestration benchmark. Identify the most important correctness risk, one concrete improvement, and how to validate it. Do not fabricate repository access.'
           elif lane=='c-felo-prompt-variant':
-              provider='felo'; rows=[r for r in d['models'] if r['provider']==provider and free(r)] or [r for r in d['models'] if r['provider']==provider]; variant='adversarial-c'; prompt='Act as a skeptical experiment scientist. Analyze issue #337, actively search for confounders in simultaneous LLM testing, attribution, scoring, and rollback protection. Give a falsifiable improvement and a validation test.'
+              provider='felo'; rows=[r for r in d['models'] if r['provider']==provider and free(r)] or [r for r in d['models'] if r['provider']==provider]; variant='adversarial-c'
+              prompt=f'Manager={manager}. Cohort={cohort}. Act as a skeptical experiment scientist. Analyze issue #337, actively search for confounders in simultaneous LLM testing, attribution, scoring, and rollback protection. Give a falsifiable improvement and a validation test.'
           else:
-              provider='omni'; rows=[{'id':'auto'}]; variant='synthesis-d'; prompt='Act as the integration manager. Analyze issue #337 and propose how four simultaneous model lanes should be compared without rewarding speed over correctness. Define the minimum evidence required to promote or cull a manager.'
+              provider='omni'; rows=[{'id':'auto'}]; variant='synthesis-d'
+              prompt=f'Manager={manager}. Cohort={cohort}. Act as the integration manager. Analyze issue #337 and propose how four simultaneous model lanes should be compared without rewarding speed over correctness. Define the minimum evidence required to promote or cull a manager.'
           if not rows: raise SystemExit(f'no live candidate for {lane}')
           model=rows[0]['id']
           with open(os.environ['GITHUB_OUTPUT'],'a') as f:
               f.write(f'provider={provider}\nmodel={model}\nvariant={variant}\n')
               f.write('prompt<<EOF\n'+prompt+'\nEOF\n')
-          print(f'{lane}: {provider}/{model} variant={variant} cohort={cohort}')
+          print(f'{lane}: {provider}/{model} variant={variant} manager={manager} cohort={cohort}')
           PY
 
       - name: Invoke lane
@@ -88,15 +121,18 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           prompt: ${{ steps.lane.outputs.prompt }}
-          experiment_id: team-mvt-${{ github.run_id }}-${{ matrix.lane }}
+          experiment_id: team-mvt-${{ github.run_id }}-${{ steps.manager.outputs.manager }}-${{ matrix.lane }}
           prompt_variant: ${{ steps.lane.outputs.variant }}
 
       - name: Write lane manifest
         if: always()
+        env:
+          MANAGER: ${{ steps.manager.outputs.manager }}
+          COHORT: ${{ steps.manager.outputs.cohort }}
         run: |
           mkdir -p /tmp/evaluation
           cat > /tmp/evaluation/lane.json <<EOF
-          {"schema":"team-mvt/v1","run_id":"${GITHUB_RUN_ID}","lane":"${{ matrix.lane }}","provider":"${{ steps.lane.outputs.provider }}","model":"${{ steps.lane.outputs.model }}","prompt_variant":"${{ steps.lane.outputs.variant }}","cohort":"${{ inputs.cohort || 'HEAD' }}"}
+          {"schema":"team-mvt/v2","run_id":"${GITHUB_RUN_ID}","lane":"${{ matrix.lane }}","provider":"${{ steps.lane.outputs.provider }}","model":"${{ steps.lane.outputs.model }}","prompt_variant":"${{ steps.lane.outputs.variant }}","manager":"${MANAGER}","cohort":"${COHORT}"}
           EOF
 
       - name: Upload lane evidence

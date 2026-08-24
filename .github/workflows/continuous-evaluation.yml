@@ -21,6 +21,8 @@ on:
         options: [baseline-peer-first, free-capacity-first, parallel-then-integrate]
   schedule:
     - cron: '*/30 * * * *'
+  issues:
+    types: [edited]
   push:
     branches: [master]
     paths:
@@ -37,6 +39,8 @@ permissions:
 
 jobs:
   experiment:
+    if: >-
+      github.event_name != 'issues' || github.event.issue.number == 337
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false

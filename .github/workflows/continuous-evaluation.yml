@@ -13,32 +13,36 @@ on:
         required: true
         default: 'HEAD,HEAD~1,HEAD~2'
         type: string
-      provider_models:
-        description: 'Comma-separated provider/model pairs, e.g. openrouter/stealth/ox-alpha,felo/claude-sonnet-4-6'
-        required: true
-        default: 'openrouter/stealth/ox-alpha'
-        type: string
       manager:
         description: 'Manager policy identifier'
         required: true
-        default: baseline-peer-first
+        default: free-capacity-first
         type: choice
         options: [baseline-peer-first, free-capacity-first, parallel-then-integrate]
   schedule:
     - cron: '*/30 * * * *'
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/provider_model_catalog.py'
+      - 'scripts/model_performance_index.py'
+      - '.github/actions/http-llm-invoke/action.yml'
+      - '.github/workflows/continuous-evaluation.yml'
+      - 'docs/ops/AGENT-TEAM-ORCHESTRATION.md'
 
 permissions:
   contents: read
   issues: write
+  pull-requests: write
 
 jobs:
   experiment:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      max-parallel: 3
+      max-parallel: 2
       matrix:
-        ref: [HEAD]
+        provider: [openrouter, felo]
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
@@ -56,18 +60,54 @@ jobs:
           if [ "$EVENT" = "workflow_dispatch" ]; then
             REFS="$INPUT_REFS"; MANAGER="$INPUT_MANAGER"
           else
-            REFS="HEAD"; MANAGER="scheduled-observation"
+            REFS="HEAD"; MANAGER="free-capacity-first"
           fi
           echo "manager=$MANAGER" >> "$GITHUB_OUTPUT"
           echo "refs=$REFS" >> "$GITHUB_OUTPUT"
 
-      - name: Poll provider catalogs before experiment
+      - name: Poll live provider catalogs
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           FELO_AI_API: ${{ secrets.FELO_AI_API }}
         run: |
           set -euo pipefail
           python3 scripts/provider_model_catalog.py --output /tmp/model-catalog.json
+          echo '### Live provider catalog' >> "$GITHUB_STEP_SUMMARY"
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          d=json.load(open('/tmp/model-catalog.json', encoding='utf-8'))
+          print(f"Observed: `{d['observed_at']}`")
+          for r in d['models']:
+              if r['pricing_classification']=='free_zero_price' or r['free_suffix']:
+                  print(f"- 🟢 {r['provider']}/{r['id']}")
+          for e in d['errors']:
+              print(f"- ⚠️ {e['provider']}: {e['error']}")
+          PY
+
+      - name: Select live model candidate
+        id: candidate
+        env:
+          PROVIDER: ${{ matrix.provider }}
+        run: |
+          set -euo pipefail
+          MODEL=$(python3 - "$PROVIDER" <<'PY'
+          import json,sys
+          d=json.load(open('/tmp/model-catalog.json', encoding='utf-8'))
+          p=sys.argv[1]
+          rows=[r for r in d['models'] if r['provider']==p]
+          if p=='openrouter':
+              ox=[r for r in rows if r['id']=='stealth/ox-alpha']
+              free=[r for r in rows if r['pricing_classification']=='free_zero_price' or r['free_suffix']]
+              pick=(ox or free or rows)[:1]
+          else:
+              free=[r for r in rows if r['pricing_classification']=='free_zero_price' or r['free_suffix']]
+              pick=(free or rows)[:1]
+          if not pick: raise SystemExit(f'no live model for {p}')
+          print(pick[0]['id'])
+          PY
+          )
+          echo "model=$MODEL" >> "$GITHUB_OUTPUT"
+          echo "Selected $PROVIDER/$MODEL"
 
       - name: Snapshot repository history without mutation
         env:
@@ -84,38 +124,72 @@ jobs:
           sort -u /tmp/evaluation/resolved-refs.txt > /tmp/evaluation/resolved-refs.unique.txt
           cp /tmp/model-catalog.json /tmp/evaluation/model-catalog.json
 
-      - name: Produce immutable evaluation manifest
+      - name: Build reproducible benchmark prompt
+        id: prompt
         env:
+          PROVIDER: ${{ matrix.provider }}
+          MODEL: ${{ steps.candidate.outputs.model }}
+          MANAGER: ${{ steps.cohort.outputs.manager }}
+          REFS: ${{ steps.cohort.outputs.refs }}
+        run: |
+          set -euo pipefail
+          {
+            echo 'prompt<<EOF'
+            echo "You are one player in the termux-monorepo Agent Team Moneyball experiment. Manager=${MANAGER}. Provider=${PROVIDER}. Model=${MODEL}. Cohort refs=${REFS}."
+            echo 'Give a concise architectural critique of the continuous-evaluation idea in issue #337. Identify one concrete improvement and one risk. Do not claim tool access, do not modify files, and do not fabricate evidence.'
+            echo 'This is a controlled benchmark. Judge the orchestration design, not popularity of the model.'
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Invoke live candidate
+        uses: ./.github/actions/http-llm-invoke
+        with:
+          provider: ${{ matrix.provider }}
+          model: ${{ steps.candidate.outputs.model }}
+          role: review
+          target_number: ${{ inputs.target_number || '337' }}
+          api_key: ${{ matrix.provider == 'felo' && secrets.FELO_AI_API || secrets.OPENROUTER_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          prompt: ${{ steps.prompt.outputs.prompt }}
+
+      - name: Write experiment manifest
+        env:
+          PROVIDER: ${{ matrix.provider }}
+          MODEL: ${{ steps.candidate.outputs.model }}
           MANAGER: ${{ steps.cohort.outputs.manager }}
           RUN_ID: ${{ github.run_id }}
-          TARGET: ${{ inputs.target_number }}
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import json, os, pathlib
+          import json,os,pathlib
           p=pathlib.Path('/tmp/evaluation/manifest.json')
           p.write_text(json.dumps({
-            'schema':'team-evaluation/v1',
-            'manager':os.environ['MANAGER'],
-            'run_id':os.environ['RUN_ID'],
-            'target':os.environ.get('TARGET','337'),
+            'schema':'team-evaluation/v2','run_id':os.environ['RUN_ID'],
+            'manager':os.environ['MANAGER'],'provider':os.environ['PROVIDER'],
+            'model':os.environ['MODEL'],
             'refs':pathlib.Path('/tmp/evaluation/resolved-refs.unique.txt').read_text().splitlines(),
-          }, indent=2)+'\n')
+          },indent=2)+'\n')
           PY
 
-      - name: Upload evaluation ledger
+      - name: Upload immutable evaluation ledger
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: team-evaluation-${{ github.run_id }}-${{ matrix.ref }}
-          path: /tmp/evaluation
+          name: team-evaluation-${{ github.run_id }}-${{ matrix.provider }}
+          path: |
+            /tmp/evaluation
+            /tmp/model-performance/observations.ndjson
+          if-no-files-found: ignore
 
       - name: Record evaluation receipt
-        if: github.event_name == 'workflow_dispatch'
+        if: github.event_name != 'schedule'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
-          TARGET: ${{ inputs.target_number }}
+          TARGET: ${{ inputs.target_number || '337' }}
           RUN_ID: ${{ github.run_id }}
-          MANAGER: ${{ steps.cohort.outputs.manager }}
+          PROVIDER: ${{ matrix.provider }}
+          MODEL: ${{ steps.candidate.outputs.model }}
         run: |
-          gh api "repos/${REPO}/issues/${TARGET}/comments" -f body="🧪 Team evaluation receipt: manager=${MANAGER}, run=${RUN_ID}. Historical refs were resolved and snapshotted without force-push or rotation loss. Provider catalogs were polled before the cohort." >/dev/null
+          gh api "repos/${REPO}/issues/${TARGET}/comments" -f body="🧪 Team evaluation: ${PROVIDER}/${MODEL}; run=${RUN_ID}; live catalog polled; immutable cohort snapshot preserved." >/dev/null

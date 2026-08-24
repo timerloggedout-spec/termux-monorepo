@@ -33,15 +33,29 @@ Chooses a coordinated plan: sequencing, parallelism, waiting, escalation, and cu
 
 ### Router
 
-Selects an eligible provider/model from the current catalog. Model IDs such as `stealth/ox-alpha` are **data**, not architecture. No model should be hardcoded as a special route when it can be selected from catalog state.
+Selects an eligible provider/model from the current live catalog. Model IDs are **data**, not architecture. No model should be hardcoded as a permanent special route when it can be selected from catalog state.
 
 ### Specialists
 
-Gemini CLI, OpenRouter peers, OmniRoute, Jules, and other agents are specialists. Jules is an escalation/specialist worker, not the default sink for every task.
+Gemini CLI, OpenRouter peers, OmniRoute, Jules, Felo models, and other agents are specialists. Jules is an escalation/specialist worker, not the default sink for every task.
 
 ### Evidence collector
 
 Records actual invocations and outcomes. A declared route earns no performance credit until it actually executes.
+
+## Dynamic libraries and parallelism
+
+The provider/model library is continuously expanding. `continuous-evaluation.yml` therefore builds its MVT matrix from the **live provider catalogs on every run** instead of maintaining a fixed five-model list.
+
+A newly discovered eligible model can become a treatment automatically; a disappeared model becomes stale/unavailable evidence rather than a permanent routing failure.
+
+The workflow deliberately does **not** specify `strategy.max-parallel`. GitHub's default behavior maximizes matrix jobs according to runner availability. GitHub still imposes platform/account limits, including a documented maximum of 256 matrix jobs per workflow run; those are platform constraints, not an application-imposed concurrency ceiling. The manager should optimize admission, quota, cooldown, and sequencing rather than encode an arbitrary local `max-parallel` number.
+
+The long-term matrix is:
+
+`project + scope + task + cohort + provider + model + prompt + manager + sequencing + validation`
+
+This permits simultaneous A..Z lanes when capacity and task independence justify them while retaining the ability to wait when downstream context depends on another lane.
 
 ## Synchrony, not fallback drift
 
@@ -57,7 +71,32 @@ The intended behavior is cooperative orchestration:
 
 "Fallback" should not mean a permanent hierarchy such as Gemini-primary → OpenRouter-secondary → Jules. It should mean **dynamic recovery from unavailable capacity or an unmet capability**.
 
-The conductor must prevent duplicate work, conflicting writers, stale-SHA work, and needless parallel prompt consumption.
+The conductor must prevent duplicate work, conflicting writers, stale-SHA work, needless parallel prompt consumption, and quota waste.
+
+## Adaptive waiting / steering
+
+Latency is primarily a **lead/lag and control signal**, not a correctness score.
+
+A long-running task should continue while it produces useful state change, evidence, computation, or a changing response. A manager should distinguish:
+
+- progressing → keep waiting
+- useful new evidence → keep waiting
+- slow but active → keep waiting
+- repeated identical state → investigate loop
+- no evidence + repeated action → steer/retry conditionally
+- verified failure → diagnose and route
+
+There is no arbitrary short request timeout in the HTTP invocation action. Provider/model output is requested up to the currently observed capability rather than a fixed 4096-token ceiling; actual `finish_reason`, output tokens, and provider constraints remain separate observations.
+
+## Live provider/quota evidence
+
+Catalog polling is dynamic and provenance-bearing. It records model IDs, context, published pricing/access classifications, documented trial evidence, discovery timestamps, and safe provider response metadata.
+
+For Felo, the current official OX Alpha documentation identifies model `ox-alpha` as a free-trial route with 1M context and 128K maximum output. The public Felo Harness documentation also documents 200 daily free credits for Free Standard accounts for Search API; **account-level remaining balance is not assumed from that public entitlement**. Account/quota state must be treated as observed only when the authenticated provider API or response headers actually exposes it.
+
+Every invocation records safe operational metadata such as request ID, rate-limit/quota/credit response headers when present, HTTP status, tokens, completion state, and error class. Credentials are never persisted.
+
+If an authoritative Felo account/balance endpoint becomes documented or discoverable, the catalog/manager should add it as an explicit account-observation source rather than guessing a dashboard endpoint.
 
 ## Agent attribution
 
@@ -97,13 +136,33 @@ Recommended experiment identity:
 
 This permits multivariate testing of manager policies, model mixes, prompt budgets, concurrency, and sequencing.
 
+## Task outcome and evidence quality
+
+`PASS/FAIL` is the task-level outcome and must carry notes/evidence. It is not interchangeable with route execution status.
+
+An observation should distinguish, where relevant:
+
+- task outcome: PASS / FAIL / UNKNOWN
+- correctness / working state
+- tests and verification
+- warnings/errors and severity
+- integration status
+- relevant Big-O / compute characteristics
+- requests/tokens/quota consumption
+- context/prompt efficiency
+- human intervention
+- latency
+- provider/dispatch/manager failure class
+
+Latency never upgrades a wrong result. A slow verified result can outrank a fast incorrect result.
+
 ## Promotion / culling
 
 Managers should be promoted only after sufficient observations and should be compared on confidence intervals or equivalent uncertainty-aware statistics. Do not crown a model after one successful run.
 
 Cherry-pick useful policies into the next experiment generation. Cull policies that repeatedly waste requests, create conflicts, require excessive human intervention, or fail to integrate results.
 
-## OpenRouter promotional capacity
+## OpenRouter / Felo promotional capacity
 
 Promotional/free capacity is an experiment opportunity, not a hardcoded route. The catalog must record promotion metadata when available:
 

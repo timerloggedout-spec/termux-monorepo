@@ -66,7 +66,7 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
 
-      - name: Resolve experiment cohort
+      - name: Resolve experiment cohort and rotating manager
         id: cohort
         env:
           EVENT: ${{ github.event_name }}
@@ -77,7 +77,13 @@ jobs:
           if [ "$EVENT" = "workflow_dispatch" ]; then
             REFS="$INPUT_REFS"; MANAGER="$INPUT_MANAGER"
           else
-            REFS="HEAD"; MANAGER="free-capacity-first"
+            REFS="HEAD"
+            MANAGER=$(python3 - <<'PY'
+            import time
+            policies=['baseline-peer-first','free-capacity-first','parallel-then-integrate']
+            print(policies[(int(time.time()) // 900) % len(policies)])
+            PY
+            )
           fi
           echo "manager=$MANAGER" >> "$GITHUB_OUTPUT"
           echo "refs=$REFS" >> "$GITHUB_OUTPUT"
@@ -86,9 +92,10 @@ jobs:
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           FELO_AI_API: ${{ secrets.FELO_AI_API }}
+          OMNI_API_KEY: ${{ secrets.OMNI_API_KEY }}
         run: |
           set -euo pipefail
-          python3 scripts/provider_model_catalog.py --output /tmp/model-catalog.json
+          python3 scripts/provider_model_catalog.py --providers openrouter,felo,omni --output /tmp/model-catalog.json
           echo '### Live provider catalog' >> "$GITHUB_STEP_SUMMARY"
           python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
           import json
@@ -101,7 +108,7 @@ jobs:
               print(f"- ⚠️ {e['provider']}: {e['error']}")
           PY
 
-      - name: Select lane candidate
+      - name: Select lane candidate without failing unavailable lanes
         id: candidate
         env:
           PROVIDER: ${{ matrix.provider }}
@@ -120,12 +127,19 @@ jobs:
               pick=[r for r in free if r['id']!='stealth/ox-alpha'][:1]
           else:
               pick=free[:1]
-          if not pick: raise SystemExit(f'NO_ELIGIBLE_MODEL provider={p} selector={selector}')
-          print(pick[0]['id'])
+          print(pick[0]['id'] if pick else '')
           PY
           )
+          if [ -n "$MODEL" ]; then
+            echo "selection_status=selected" >> "$GITHUB_OUTPUT"
+            echo "selection_reason=eligible_live_catalog_candidate" >> "$GITHUB_OUTPUT"
+            echo "Selected $PROVIDER/$MODEL"
+          else
+            echo "selection_status=skipped" >> "$GITHUB_OUTPUT"
+            echo "selection_reason=no_eligible_live_candidate" >> "$GITHUB_OUTPUT"
+            echo "::notice::No eligible live candidate for $PROVIDER/$SELECTOR; recording a capacity skip rather than a model failure."
+          fi
           echo "model=$MODEL" >> "$GITHUB_OUTPUT"
-          echo "Selected $PROVIDER/$MODEL"
 
       - name: Snapshot repository history without mutation
         env:
@@ -146,7 +160,7 @@ jobs:
         id: prompt
         env:
           PROVIDER: ${{ matrix.provider }}
-          MODEL: ${{ steps.candidate.outputs.model }}
+          MODEL: ${{ steps.candidate.outputs.model || 'UNRESOLVED' }}
           MANAGER: ${{ steps.cohort.outputs.manager }}
           REFS: ${{ steps.cohort.outputs.refs }}
           VARIANT: ${{ matrix.prompt_variant }}
@@ -167,6 +181,7 @@ jobs:
 
       - name: Invoke live candidate
         id: invoke
+        if: steps.candidate.outputs.model != ''
         continue-on-error: true
         uses: ./.github/actions/http-llm-invoke
         with:
@@ -186,7 +201,9 @@ jobs:
         if: always()
         env:
           PROVIDER: ${{ matrix.provider }}
-          MODEL: ${{ steps.candidate.outputs.model || 'UNRESOLVED' }}
+          MODEL: ${{ steps.candidate.outputs.model }}
+          SELECTION_STATUS: ${{ steps.candidate.outputs.selection_status }}
+          SELECTION_REASON: ${{ steps.candidate.outputs.selection_reason }}
           MANAGER: ${{ steps.cohort.outputs.manager }}
           RUN_ID: ${{ github.run_id }}
           LANE: ${{ matrix.lane }}
@@ -199,7 +216,9 @@ jobs:
           p.write_text(json.dumps({
             'schema':'team-evaluation/v2','run_id':os.environ['RUN_ID'],
             'lane':os.environ['LANE'],'manager':os.environ['MANAGER'],
-            'provider':os.environ['PROVIDER'],'model':os.environ['MODEL'],
+            'provider':os.environ['PROVIDER'],'model':os.environ.get('MODEL') or None,
+            'selection_status':os.environ['SELECTION_STATUS'],
+            'selection_reason':os.environ['SELECTION_REASON'],
             'prompt_variant':os.environ['VARIANT'],
             'refs':pathlib.Path('/tmp/evaluation/resolved-refs.unique.txt').read_text().splitlines(),
           },indent=2)+'\n')
@@ -225,5 +244,6 @@ jobs:
           PROVIDER: ${{ matrix.provider }}
           MODEL: ${{ steps.candidate.outputs.model || 'UNRESOLVED' }}
           LANE: ${{ matrix.lane }}
+          STATUS: ${{ steps.candidate.outputs.selection_status }}
         run: |
-          gh api "repos/${REPO}/issues/${TARGET}/comments" -f body="🧪 MVT lane receipt: ${LANE}; ${PROVIDER}/${MODEL}; run=${RUN_ID}; live catalog polled; immutable cohort preserved. Outcome is recorded separately from route execution." >/dev/null || true
+          gh api "repos/${REPO}/issues/${TARGET}/comments" -f body="🧪 MVT lane receipt: ${LANE}; ${PROVIDER}/${MODEL}; status=${STATUS}; run=${RUN_ID}; live catalog polled; immutable cohort preserved. Outcome is recorded separately from route execution." >/dev/null || true

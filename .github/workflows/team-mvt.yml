@@ -14,7 +14,7 @@ on:
         default: 'HEAD'
         type: string
   schedule:
-    - cron: '*/15 * * * *'
+    - cron: '* * * * *'
   issues:
     types: [edited]
   push:

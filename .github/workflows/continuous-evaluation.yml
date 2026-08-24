@@ -52,9 +52,9 @@ jobs:
             provider: openrouter
             model_selector: other-free
             prompt_variant: independent
-          - lane: C-felo-variant
+          - lane: C-felo-ox-variant
             provider: felo
-            model_selector: free-or-zero
+            model_selector: ox-alpha
             prompt_variant: adversarial
           - lane: D-omni-peer
             provider: omni
@@ -98,8 +98,8 @@ jobs:
           d=json.load(open('/tmp/model-catalog.json', encoding='utf-8'))
           print(f"Observed: `{d['observed_at']}`")
           for r in d['models']:
-              if r['pricing_classification']=='free_zero_price' or r['free_suffix']:
-                  print(f"- 🟢 {r['provider']}/{r['id']}")
+              if r['pricing_classification']=='free_zero_price' or r['free_suffix'] or 'ox-alpha' in r['id'].lower():
+                  print(f"- 🟢/🔬 {r['provider']}/{r['id']} [{r['pricing_classification']}]")
           for e in d['errors']:
               print(f"- ⚠️ {e['provider']}: {e['error']}")
           PY
@@ -117,9 +117,12 @@ jobs:
           p,selector=sys.argv[1:]
           rows=[r for r in d['models'] if r['provider']==p]
           free=[r for r in rows if r['pricing_classification']=='free_zero_price' or r['free_suffix']]
-          if selector=='ox-alpha': pick=[r for r in rows if r['id']=='stealth/ox-alpha'][:1]
-          elif selector=='other-free': pick=[r for r in free if r['id']!='stealth/ox-alpha'][:1]
-          else: pick=free[:1]
+          if selector=='ox-alpha':
+              pick=[r for r in rows if 'ox-alpha' in r['id'].lower()][:1]
+          elif selector=='other-free':
+              pick=[r for r in free if 'ox-alpha' not in r['id'].lower()][:1]
+          else:
+              pick=free[:1]
           print(pick[0]['id'] if pick else '')
           PY
           )
@@ -130,7 +133,7 @@ jobs:
           else
             echo "selection_status=skipped" >> "$GITHUB_OUTPUT"
             echo "selection_reason=no_eligible_live_candidate" >> "$GITHUB_OUTPUT"
-            echo "::notice::No eligible live candidate for $PROVIDER/$SELECTOR; recording a capacity skip rather than a model failure."
+            echo "::notice::No eligible live candidate for $PROVIDER/$SELECTOR; recording a capacity/catalog skip rather than a model failure."
           fi
           echo "model=$MODEL" >> "$GITHUB_OUTPUT"
 
@@ -164,7 +167,7 @@ jobs:
             case "$VARIANT" in
               baseline) echo 'Critique issue #337. Give one concrete improvement, one risk, and a PASS/FAIL assessment of whether the orchestration concept is operationally testable. Do not fabricate tool access.';;
               independent) echo 'Independently identify the highest-risk engineering defect in the #337 continuous audit concept. Give a PASS/FAIL assessment and evidence required to change it.';;
-              adversarial) echo 'Act as an adversarial reviewer of #337. Try to falsify the proposed measurement system. Identify one counterexample, one guard, and PASS/FAIL.';;
+              adversarial) echo 'Adversarial MVT variant: attempt to falsify the #337 measurement system. Identify one counterexample, one guard, and PASS/FAIL. Explicitly distinguish provider capability from public pricing.';;
               synthesis) echo 'Synthesize the likely team-level improvement from #337 while explicitly separating model failure, provider failure, dispatch failure, and manager failure. Give PASS/FAIL.';;
             esac
             echo 'This is a controlled benchmark. Correctness and working outcome outrank latency. Do not modify files.'

@@ -13,6 +13,8 @@ on:
         default: review
         type: choice
         options: [triage, review, invoke]
+  issue_comment:
+    types: [created]
 
 permissions:
   contents: read
@@ -21,34 +23,59 @@ permissions:
 
 jobs:
   ox-alpha:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'issue_comment' && github.event.issue.pull_request &&
+       startsWith(github.event.comment.body, '/run-ox-alpha'))
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           persist-credentials: false
 
+      - name: Resolve target
+        id: target
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          DISPATCH_TARGET: ${{ inputs.target_number }}
+          COMMENT_TARGET: ${{ github.event.issue.number }}
+          DISPATCH_ROLE: ${{ inputs.role }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            TARGET="$DISPATCH_TARGET"
+            ROLE="$DISPATCH_ROLE"
+          else
+            TARGET="$COMMENT_TARGET"
+            ROLE="review"
+          fi
+          case "$TARGET" in ''|*[!0-9]*) echo 'Invalid target'; exit 1;; esac
+          echo "target=$TARGET" >> "$GITHUB_OUTPUT"
+          echo "role=$ROLE" >> "$GITHUB_OUTPUT"
+
       - name: Build bounded smoke prompt
         id: prompt
         env:
-          TARGET: ${{ inputs.target_number }}
-          ROLE: ${{ inputs.role }}
+          TARGET: ${{ steps.target.outputs.target }}
+          ROLE: ${{ steps.target.outputs.role }}
+          HEAD_SHA: ${{ github.sha }}
         run: |
           set -euo pipefail
           {
             echo 'prompt<<EOF'
-            echo "You are the OX Alpha live-canary for termux-monorepo. Role=${ROLE}. Target=${TARGET}."
+            echo "You are the OX Alpha live-canary for termux-monorepo. Role=${ROLE}. Target=${TARGET}. Repository SHA=${HEAD_SHA}."
             echo 'Return ONE concise response. Do not modify files. Evaluate only the requested repository task and state whether your answer is confident.'
             echo 'This invocation is a performance measurement; do not fabricate tool access or execution.'
             echo 'EOF'
           } >> "$GITHUB_OUTPUT"
 
-      - name: Invoke OpenRouter stealth/ox-alpha
+      - name: Invoke selected OX Alpha canary
         uses: ./.github/actions/http-llm-invoke
         with:
           provider: openrouter
           model: stealth/ox-alpha
-          role: ${{ inputs.role }}
-          target_number: ${{ inputs.target_number }}
+          role: ${{ steps.target.outputs.role }}
+          target_number: ${{ steps.target.outputs.target }}
           api_key: ${{ secrets.OPENROUTER_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
@@ -61,3 +88,14 @@ jobs:
           name: model-performance-${{ github.run_id }}
           path: /tmp/model-performance/observations.ndjson
           if-no-files-found: ignore
+
+      - name: Confirm canary launch
+        if: github.event_name == 'issue_comment'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          TARGET: ${{ steps.target.outputs.target }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          gh api "repos/${REPO}/issues/${TARGET}/comments" \
+            -f body="🧪 OX Alpha canary dispatched. Run: https://github.com/${REPO}/actions/runs/${RUN_ID}" >/dev/null

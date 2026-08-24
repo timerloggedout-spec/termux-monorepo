@@ -13,6 +13,11 @@ on:
         required: true
         default: 'HEAD'
         type: string
+      ox_model:
+        description: 'Optional OpenRouter model selected for lane A; blank selects the live Ox Alpha candidate'
+        required: false
+        default: ''
+        type: string
   schedule:
     - cron: '*/15 * * * *'
   issues:
@@ -83,34 +88,44 @@ jobs:
           LANE: ${{ matrix.lane }}
           COHORT: ${{ steps.manager.outputs.cohort }}
           MANAGER: ${{ steps.manager.outputs.manager }}
+          OX_MODEL: ${{ inputs.ox_model }}
         run: |
           set -euo pipefail
           python3 - <<'PY'
           import json, os
           d=json.load(open('/tmp/catalog.json',encoding='utf-8'))
-          lane=os.environ['LANE']; cohort=os.environ['COHORT']; manager=os.environ['MANAGER']
+          lane=os.environ['LANE']; cohort=os.environ['COHORT']; manager=os.environ['MANAGER']; requested=os.environ.get('OX_MODEL','').strip()
           def free(r): return r['pricing_classification']=='free_zero_price' or r['free_suffix']
+          provider=''; rows=[]; variant=''; prompt=''; eligible='true'; skip_reason=''
           if lane=='a-ox-openrouter':
-              provider='openrouter'; rows=[r for r in d['models'] if r['provider']==provider and r['id']=='stealth/ox-alpha']; variant='same-task-a'
+              provider='openrouter'
+              if requested:
+                  rows=[r for r in d['models'] if r['provider']==provider and r['id']==requested]
+              else:
+                  rows=[r for r in d['models'] if r['provider']==provider and ('ox-alpha' in str(r['id']).lower() or 'ox alpha' in str(r.get('name','')).lower())]
+              variant='same-task-a'
               prompt=f'Manager={manager}. Cohort={cohort}. Analyze issue #337 as a team-orchestration benchmark. Identify the most important correctness risk, one concrete improvement, and how to validate it. Do not fabricate repository access.'
           elif lane=='b-other-openrouter':
-              provider='openrouter'; rows=[r for r in d['models'] if r['provider']==provider and r['id']!='stealth/ox-alpha' and free(r)]; variant='same-task-b'
+              provider='openrouter'; rows=[r for r in d['models'] if r['provider']==provider and not ('ox-alpha' in str(r['id']).lower() or 'ox alpha' in str(r.get('name','')).lower()) and free(r)]; variant='same-task-b'
               prompt=f'Manager={manager}. Cohort={cohort}. Independently analyze issue #337 as a team-orchestration benchmark. Identify the most important correctness risk, one concrete improvement, and how to validate it. Do not fabricate repository access.'
           elif lane=='c-felo-prompt-variant':
-              provider='felo'; rows=[r for r in d['models'] if r['provider']==provider and free(r)] or [r for r in d['models'] if r['provider']==provider]; variant='adversarial-c'
+              provider='felo'; rows=[r for r in d['models'] if r['provider']==provider and free(r)]; variant='adversarial-c'
+              if not rows:
+                  eligible='false'; skip_reason='no dynamically observed Felo free/zero-price candidate; do not spend paid quota'; model=''
               prompt=f'Manager={manager}. Cohort={cohort}. Act as a skeptical experiment scientist. Analyze issue #337, actively search for confounders in simultaneous LLM testing, attribution, scoring, and rollback protection. Give a falsifiable improvement and a validation test.'
           else:
               provider='omni'; rows=[{'id':'auto'}]; variant='synthesis-d'
               prompt=f'Manager={manager}. Cohort={cohort}. Act as the integration manager. Analyze issue #337 and propose how four simultaneous model lanes should be compared without rewarding speed over correctness. Define the minimum evidence required to promote or cull a manager.'
-          if not rows: raise SystemExit(f'no live candidate for {lane}')
-          model=rows[0]['id']
+          if eligible=='true' and not rows: raise SystemExit(f'no live candidate for {lane}')
+          model=rows[0]['id'] if rows else ''
           with open(os.environ['GITHUB_OUTPUT'],'a') as f:
-              f.write(f'provider={provider}\nmodel={model}\nvariant={variant}\n')
+              f.write(f'provider={provider}\nmodel={model}\nvariant={variant}\neligible={eligible}\nskip_reason={skip_reason}\n')
               f.write('prompt<<EOF\n'+prompt+'\nEOF\n')
-          print(f'{lane}: {provider}/{model} variant={variant} manager={manager} cohort={cohort}')
+          print(f'{lane}: {provider}/{model or "SKIP"} variant={variant} manager={manager} eligible={eligible} reason={skip_reason}')
           PY
 
       - name: Invoke lane
+        if: steps.lane.outputs.eligible == 'true'
         uses: ./.github/actions/http-llm-invoke
         with:
           provider: ${{ steps.lane.outputs.provider }}
@@ -133,7 +148,7 @@ jobs:
         run: |
           mkdir -p /tmp/evaluation
           cat > /tmp/evaluation/lane.json <<EOF
-          {"schema":"team-mvt/v2","run_id":"${GITHUB_RUN_ID}","lane":"${{ matrix.lane }}","provider":"${{ steps.lane.outputs.provider }}","model":"${{ steps.lane.outputs.model }}","prompt_variant":"${{ steps.lane.outputs.variant }}","manager":"${MANAGER}","cohort":"${COHORT}"}
+          {"schema":"team-mvt/v3","run_id":"${GITHUB_RUN_ID}","lane":"${{ matrix.lane }}","provider":"${{ steps.lane.outputs.provider }}","model":"${{ steps.lane.outputs.model }}","prompt_variant":"${{ steps.lane.outputs.variant }}","manager":"${MANAGER}","cohort":"${COHORT}","eligible":"${{ steps.lane.outputs.eligible }}","skip_reason":"${{ steps.lane.outputs.skip_reason }}"}
           EOF
 
       - name: Upload lane evidence

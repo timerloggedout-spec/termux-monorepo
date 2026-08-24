@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Poll live provider model catalogs and normalize free/zero-price candidates.
+"""Poll live provider model catalogs and normalize access/quota evidence.
 
 Catalog state is evidence, not routing policy. Provider model pages may expose
 free-trial/account-entitled routes that are not represented by /v1/models
@@ -13,7 +13,7 @@ import json
 import os
 import urllib.request
 
-UA = "termux-monorepo-provider-catalog/3"
+UA = "termux-monorepo-provider-catalog/4"
 ENDPOINTS = {
     "openrouter": "https://openrouter.ai/api/v1/models",
     "felo": "https://openapi.felo.ai/api/v1/models",
@@ -24,26 +24,29 @@ SECRETS = {
     "felo": "FELO_AI_API",
     "omni": "OMNI_API_KEY",
 }
-
-# Explicit provider documentation is allowed to augment a catalog, but is
-# never allowed to overwrite live pricing evidence. Felo currently documents
-# OX Alpha as a free-trial model with public model id `ox-alpha` and 128K max
-# output. This is an access classification, not a claim about account quota.
 DOCUMENTED_TRIAL_MODELS = {
     ("felo", "ox-alpha"): {
         "access_classification": "free_trial",
         "source": "https://openapi.felo.ai/models/stealth/ox-alpha",
         "source_observed": "2026-08-24",
+        "max_output_tokens": 128_000,
+        "context_length": 1_000_000,
     }
 }
 
 
-def get_json(url: str, token: str | None = None) -> dict:
+def get_json(url: str, token: str | None = None) -> tuple[dict, dict]:
     req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "application/json"})
     if token:
         req.add_header("Authorization", f"Bearer {token}")
     with urllib.request.urlopen(req, timeout=30) as response:
-        return json.load(response)
+        # Preserve only operational quota/rate-limit metadata; never persist auth headers.
+        headers = {}
+        for key, value in response.headers.items():
+            lower = key.lower()
+            if lower.startswith(("x-ratelimit-", "x-credit-", "x-quota-", "x-remaining-", "x-usage-")) or lower in {"retry-after", "x-request-id"}:
+                headers[lower] = value
+        return json.load(response), headers
 
 
 def price_classification(data: dict) -> str:
@@ -60,8 +63,8 @@ def price_classification(data: dict) -> str:
     return "unknown"
 
 
-def poll(provider: str, token: str) -> list[dict]:
-    payload = get_json(ENDPOINTS[provider], token)
+def poll(provider: str, token: str) -> tuple[list[dict], dict]:
+    payload, response_headers = get_json(ENDPOINTS[provider], token)
     rows = []
     seen: set[str] = set()
     for item in payload.get("data", []):
@@ -81,11 +84,9 @@ def poll(provider: str, token: str) -> list[dict]:
             "access_source_observed": trial.get("source_observed"),
             "free_suffix": str(model_id).endswith(":free"),
             "context_length": item.get("context_length"),
+            "max_output_tokens": item.get("max_output_tokens"),
             "raw_source": f"{provider}:/v1/models",
         })
-
-    # Some provider documentation can advertise a trial route even when the
-    # catalog omits it. Keep it as an explicit, provenance-bearing candidate.
     for (trial_provider, model_id), trial in DOCUMENTED_TRIAL_MODELS.items():
         if trial_provider != provider or model_id in seen:
             continue
@@ -99,11 +100,11 @@ def poll(provider: str, token: str) -> list[dict]:
             "access_source": trial["source"],
             "access_source_observed": trial["source_observed"],
             "free_suffix": False,
-            "context_length": 1_000_000,
-            "max_output_tokens": 128_000,
+            "context_length": trial["context_length"],
+            "max_output_tokens": trial["max_output_tokens"],
             "raw_source": f"{provider}:/v1/models + documented-model-page",
         })
-    return rows
+    return rows, response_headers
 
 
 def main() -> int:
@@ -116,6 +117,7 @@ def main() -> int:
     rows: list[dict] = []
     errors: list[dict] = []
     providers = [p.strip() for p in args.providers.split(",") if p.strip()]
+    provider_observations: dict[str, dict] = {}
 
     for provider in providers:
         env_name = SECRETS.get(provider)
@@ -127,12 +129,20 @@ def main() -> int:
             errors.append({"provider": provider, "error": "missing_secret", "secret_env": env_name})
             continue
         try:
-            rows.extend(poll(provider, token))
+            provider_rows, headers = poll(provider, token)
+            rows.extend(provider_rows)
+            provider_observations[provider] = {
+                "catalog_observed_at": observed_at,
+                "response_headers": headers,
+                "account_endpoint": None,
+                "account_endpoint_status": "not_documented",
+                "quota_note": "Account-level balance/quota is not asserted unless exposed by an authoritative provider endpoint or response metadata.",
+            }
         except Exception as exc:
             errors.append({"provider": provider, "error": type(exc).__name__, "message": str(exc)[:500]})
 
     document = {
-        "schema": "provider-model-catalog/v3",
+        "schema": "provider-model-catalog/v4",
         "observed_at": observed_at,
         "providers": providers,
         "promotion": {
@@ -141,6 +151,7 @@ def main() -> int:
             "source": None,
             "note": "Promotion/quota expiry must be refreshed from authoritative provider evidence; model-page trial status is separate from account-level daily quota.",
         },
+        "provider_observations": provider_observations,
         "models": rows,
         "errors": errors,
     }
@@ -149,10 +160,12 @@ def main() -> int:
         json.dump(document, fh, indent=2, sort_keys=True)
         fh.write("\n")
 
-    free = [r for r in rows if r["pricing_classification"] == "free_zero_price" or r["free_suffix"] or r["access_classification"] == "free_trial"]
-    print(f"catalog_models={len(rows)} free_or_zero_or_trial={len(free)} errors={len(errors)}")
-    for row in free:
-        print(f"FREE/TRIAL {row['provider']}/{row['id']} [{row['access_classification']}]")
+    eligible = [r for r in rows if r["pricing_classification"] == "free_zero_price" or r["free_suffix"] or r["access_classification"] == "free_trial"]
+    print(f"catalog_models={len(rows)} eligible_free_zero_trial={len(eligible)} errors={len(errors)}")
+    for provider, observation in provider_observations.items():
+        print(f"ACCOUNT_METADATA {provider}: {json.dumps(observation['response_headers'], sort_keys=True)}")
+    for row in eligible:
+        print(f"ELIGIBLE {row['provider']}/{row['id']} [{row['access_classification']}; max_output={row.get('max_output_tokens')}; context={row.get('context_length')}]")
     return 0 if rows or not providers else 1
 
 

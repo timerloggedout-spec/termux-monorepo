@@ -20,9 +20,7 @@ on:
         type: choice
         options: [baseline-peer-first, free-capacity-first, parallel-then-integrate]
   schedule:
-    - cron: '*/30 * * * *'
-  issues:
-    types: [edited]
+    - cron: '*/15 * * * *'
   push:
     branches: [master]
     paths:
@@ -39,14 +37,29 @@ permissions:
 
 jobs:
   experiment:
-    if: >-
-      github.event_name != 'issues' || github.event.issue.number == 337
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      max-parallel: 2
+      max-parallel: 4
       matrix:
-        provider: [openrouter, felo]
+        include:
+          - lane: A-openrouter-ox
+            provider: openrouter
+            model_selector: ox-alpha
+            prompt_variant: baseline
+          - lane: B-openrouter-peer
+            provider: openrouter
+            model_selector: other-free
+            prompt_variant: independent
+          - lane: C-felo-variant
+            provider: felo
+            model_selector: free-or-zero
+            prompt_variant: adversarial
+          - lane: D-omni-peer
+            provider: omni
+            model_selector: free-or-zero
+            prompt_variant: synthesis
+
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
@@ -88,25 +101,26 @@ jobs:
               print(f"- ⚠️ {e['provider']}: {e['error']}")
           PY
 
-      - name: Select live model candidate
+      - name: Select lane candidate
         id: candidate
         env:
           PROVIDER: ${{ matrix.provider }}
+          SELECTOR: ${{ matrix.model_selector }}
         run: |
           set -euo pipefail
-          MODEL=$(python3 - "$PROVIDER" <<'PY'
+          MODEL=$(python3 - "$PROVIDER" "$SELECTOR" <<'PY'
           import json,sys
           d=json.load(open('/tmp/model-catalog.json', encoding='utf-8'))
-          p=sys.argv[1]
+          p,selector=sys.argv[1:]
           rows=[r for r in d['models'] if r['provider']==p]
-          if p=='openrouter':
-              ox=[r for r in rows if r['id']=='stealth/ox-alpha']
-              free=[r for r in rows if r['pricing_classification']=='free_zero_price' or r['free_suffix']]
-              pick=(ox or free or rows)[:1]
+          free=[r for r in rows if r['pricing_classification']=='free_zero_price' or r['free_suffix']]
+          if selector=='ox-alpha':
+              pick=[r for r in rows if r['id']=='stealth/ox-alpha'][:1]
+          elif selector=='other-free':
+              pick=[r for r in free if r['id']!='stealth/ox-alpha'][:1]
           else:
-              free=[r for r in rows if r['pricing_classification']=='free_zero_price' or r['free_suffix']]
-              pick=(free or rows)[:1]
-          if not pick: raise SystemExit(f'no live model for {p}')
+              pick=free[:1]
+          if not pick: raise SystemExit(f'NO_ELIGIBLE_MODEL provider={p} selector={selector}')
           print(pick[0]['id'])
           PY
           )
@@ -128,41 +142,55 @@ jobs:
           sort -u /tmp/evaluation/resolved-refs.txt > /tmp/evaluation/resolved-refs.unique.txt
           cp /tmp/model-catalog.json /tmp/evaluation/model-catalog.json
 
-      - name: Build reproducible benchmark prompt
+      - name: Build MVT prompt
         id: prompt
         env:
           PROVIDER: ${{ matrix.provider }}
           MODEL: ${{ steps.candidate.outputs.model }}
           MANAGER: ${{ steps.cohort.outputs.manager }}
           REFS: ${{ steps.cohort.outputs.refs }}
+          VARIANT: ${{ matrix.prompt_variant }}
         run: |
           set -euo pipefail
           {
             echo 'prompt<<EOF'
-            echo "You are one player in the termux-monorepo Agent Team Moneyball experiment. Manager=${MANAGER}. Provider=${PROVIDER}. Model=${MODEL}. Cohort refs=${REFS}."
-            echo 'Give a concise architectural critique of the continuous-evaluation idea in issue #337. Identify one concrete improvement and one risk. Do not claim tool access, do not modify files, and do not fabricate evidence.'
-            echo 'This is a controlled benchmark. Judge the orchestration design, not popularity of the model.'
+            echo "You are one player in the termux-monorepo Agent Team Moneyball experiment. Manager=${MANAGER}. Provider=${PROVIDER}. Model=${MODEL}. PromptVariant=${VARIANT}. Cohort refs=${REFS}."
+            case "$VARIANT" in
+              baseline) echo 'Critique issue #337. Give one concrete improvement, one risk, and a PASS/FAIL assessment of whether the orchestration concept is operationally testable. Do not fabricate tool access.';;
+              independent) echo 'Independently identify the highest-risk engineering defect in the #337 continuous audit concept. Give a PASS/FAIL assessment and evidence required to change it.';;
+              adversarial) echo 'Act as an adversarial reviewer of #337. Try to falsify the proposed measurement system. Identify one counterexample, one guard, and PASS/FAIL.';;
+              synthesis) echo 'Synthesize the likely team-level improvement from #337 while explicitly separating model failure, provider failure, dispatch failure, and manager failure. Give PASS/FAIL.';;
+            esac
+            echo 'This is a controlled benchmark. Correctness and working outcome outrank latency. Do not modify files.'
             echo 'EOF'
           } >> "$GITHUB_OUTPUT"
 
       - name: Invoke live candidate
+        id: invoke
+        continue-on-error: true
         uses: ./.github/actions/http-llm-invoke
         with:
           provider: ${{ matrix.provider }}
           model: ${{ steps.candidate.outputs.model }}
           role: review
           target_number: ${{ inputs.target_number || '337' }}
-          api_key: ${{ matrix.provider == 'felo' && secrets.FELO_AI_API || secrets.OPENROUTER_API_KEY }}
+          api_key: ${{ matrix.provider == 'felo' && secrets.FELO_AI_API || matrix.provider == 'omni' && secrets.OMNI_API_KEY || secrets.OPENROUTER_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
+          experiment_id: "${{ github.run_id }}:${{ matrix.lane }}:${{ matrix.prompt_variant }}"
+          prompt_variant: ${{ matrix.prompt_variant }}
+          post_comment: 'false'
           prompt: ${{ steps.prompt.outputs.prompt }}
 
-      - name: Write experiment manifest
+      - name: Write immutable experiment manifest
+        if: always()
         env:
           PROVIDER: ${{ matrix.provider }}
-          MODEL: ${{ steps.candidate.outputs.model }}
+          MODEL: ${{ steps.candidate.outputs.model || 'UNRESOLVED' }}
           MANAGER: ${{ steps.cohort.outputs.manager }}
           RUN_ID: ${{ github.run_id }}
+          LANE: ${{ matrix.lane }}
+          VARIANT: ${{ matrix.prompt_variant }}
         run: |
           set -euo pipefail
           python3 - <<'PY'
@@ -170,8 +198,9 @@ jobs:
           p=pathlib.Path('/tmp/evaluation/manifest.json')
           p.write_text(json.dumps({
             'schema':'team-evaluation/v2','run_id':os.environ['RUN_ID'],
-            'manager':os.environ['MANAGER'],'provider':os.environ['PROVIDER'],
-            'model':os.environ['MODEL'],
+            'lane':os.environ['LANE'],'manager':os.environ['MANAGER'],
+            'provider':os.environ['PROVIDER'],'model':os.environ['MODEL'],
+            'prompt_variant':os.environ['VARIANT'],
             'refs':pathlib.Path('/tmp/evaluation/resolved-refs.unique.txt').read_text().splitlines(),
           },indent=2)+'\n')
           PY
@@ -180,20 +209,21 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: team-evaluation-${{ github.run_id }}-${{ matrix.provider }}
+          name: team-evaluation-${{ github.run_id }}-${{ matrix.lane }}
           path: |
             /tmp/evaluation
             /tmp/model-performance/observations.ndjson
           if-no-files-found: ignore
 
       - name: Record evaluation receipt
-        if: github.event_name != 'schedule'
+        if: always() && github.event_name != 'schedule'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
           TARGET: ${{ inputs.target_number || '337' }}
           RUN_ID: ${{ github.run_id }}
           PROVIDER: ${{ matrix.provider }}
-          MODEL: ${{ steps.candidate.outputs.model }}
+          MODEL: ${{ steps.candidate.outputs.model || 'UNRESOLVED' }}
+          LANE: ${{ matrix.lane }}
         run: |
-          gh api "repos/${REPO}/issues/${TARGET}/comments" -f body="🧪 Team evaluation: ${PROVIDER}/${MODEL}; run=${RUN_ID}; live catalog polled; immutable cohort snapshot preserved." >/dev/null
+          gh api "repos/${REPO}/issues/${TARGET}/comments" -f body="🧪 MVT lane receipt: ${LANE}; ${PROVIDER}/${MODEL}; run=${RUN_ID}; live catalog polled; immutable cohort preserved. Outcome is recorded separately from route execution." >/dev/null || true

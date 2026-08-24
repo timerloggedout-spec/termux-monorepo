@@ -1,6 +1,7 @@
 """Self-Healing Engine (SHE) — control-plane primitives.
 
-P0.1 incident · P0.2 ingest observers · P0.3 L0 recovery planner + executor.
+P0.1 incident · P0.2 ingest observers · P0.3 L0 recovery planner + executor
+· job-timestamp metrics (durable duration after Timing API deprecation).
 """
 
 from she.incident import (
@@ -15,6 +16,15 @@ from she.ingest.actions import (
     fingerprint_workflow_run,
     incident_from_workflow_run,
     normalize_workflow_run_payload,
+)
+from she.metrics.job_timestamps import (
+    JobDuration,
+    RunJobStats,
+    WorkflowWindowStats,
+    aggregate_run_job_stats,
+    aggregate_workflow_window,
+    duration_ms_from_job,
+    duration_ms_from_jobs,
 )
 from she.recovery.executor import (
     L0_TARGETS,
@@ -35,6 +45,13 @@ __all__ = [
     "fingerprint_workflow_run",
     "incident_from_workflow_run",
     "normalize_workflow_run_payload",
+    "JobDuration",
+    "RunJobStats",
+    "WorkflowWindowStats",
+    "aggregate_run_job_stats",
+    "aggregate_workflow_window",
+    "duration_ms_from_job",
+    "duration_ms_from_jobs",
     "L0_ACTIONS",
     "L0Plan",
     "plan_l0_recovery",
@@ -45,4 +62,4 @@ __all__ = [
     "intents_for_workflow_failure",
 ]
 
-__version__ = "0.3.1"
+__version__ = "0.3.2"

@@ -1,14 +1,12 @@
-# Execution-backed model performance index
-# This is an observation ledger, not a routing authority.
-# A model cannot earn a performance score from a declared preference alone.
-# Every scored observation must identify an actual provider/model invocation.
-
-version: 1
-updated_at: "2026-08-23"
+# Execution-backed model/team performance index.
+# Observation ledger, not routing authority. Actual execution is required for credit.
+version: 2
+updated_at: "2026-08-24"
 
 identity:
-  key: [provider, model, role]
-  run_key: [repository, workflow, run_id, attempt, head_sha, provider, model, role]
+  player_key: [provider, model, role]
+  observation_key: [repository, workflow, run_id, attempt, head_sha, provider, model, role, experiment_id, prompt_variant]
+  manager_key: [manager_id, policy_version]
 
 required_observation_fields:
   - timestamp
@@ -18,67 +16,91 @@ required_observation_fields:
   - run_attempt
   - head_sha
   - provider
-  - model
+  - requested_model
+  - response_model
   - role
-  - route_status       # attempted | skipped | failed | succeeded
+  - route_status
+  - http_status
   - latency_ms
   - requests_used
 
-quality_fields:
-  - task_success        # true | false | unknown
-  - reviewer_acceptance # true | false | unknown
-  - human_override     # true | false | unknown
-  - tokens_in
-  - tokens_out
-  - error_class
+outcome_fields:
+  task_outcome: "PASS | FAIL | UNKNOWN"
+  task_outcome_notes: "short evidence-backed explanation"
+  correctness: "0..1 | unknown"
+  integration_success: "0..1 | unknown"
+  reviewer_acceptance: "0..1 | unknown"
+  warnings: "count or structured list"
+  errors: "count or structured list"
+  max_error_severity: "none | info | warning | error | critical"
+  complexity_assessment:
+    relevant: "true | false | unknown"
+    time_big_o: "string | unknown"
+    compute_class: "low | medium | high | unknown"
+    evidence: "short justification"
+  human_override: "true | false | unknown"
+
+routing_fields:
+  - experiment_id
+  - manager_id
+  - policy_version
+  - prompt_variant
   - fallback_from
   - fallback_to
+  - attribution_confidence
 
 rules:
   - id: actual-use-only
-    description: "A model receives performance credit only after an attempted invocation."
-  - id: skipped-is-not-failure
-    description: "Unavailable credentials, quota gates, duplicate gates, and policy skips are capacity observations, not model failures."
-  - id: provider-failure-is-distinct
-    description: "HTTP/auth/rate-limit/provider failures are recorded separately from task-quality failures."
-  - id: one-run-one-observation
-    description: "The same run/model/role/head SHA is de-duplicated."
-  - id: cold-start-separate
-    description: "First-use latency is retained and can be compared with warm invocations."
-  - id: public-rank-is-feature
-    description: "OpenRouter/LMSYS/Artificial Analysis rankings may enrich a row but cannot manufacture our score."
-
-metrics:
-  utilization:
-    attempted: "count(route_status in [failed,succeeded])"
-    success_rate: "succeeded / attempted"
-    provider_failure_rate: "provider_failures / attempted"
-  efficiency:
-    median_latency_ms: "median(latency_ms for attempted)"
-    p95_latency_ms: "p95(latency_ms for attempted)"
-    median_requests_used: "median(requests_used for attempted)"
-  quality:
-    task_success_rate: "task_success_true / known_task_success"
-    reviewer_acceptance_rate: "reviewer_acceptance_true / known_reviewer_acceptance"
-  routing:
-    share_of_attempts: "model_attempts / all_attempts_for_role"
-    fallback_rate: "fallback_attempts / attempted"
+    description: "A player receives performance credit only after an attempted provider invocation."
+  - id: outcome-first
+    description: "Correctness and integrated working outcome dominate speed. A fast incorrect result cannot outrank a slower correct result."
+  - id: latency-is-diagnostic
+    description: "Latency is primarily a diagnostic signal for loops, stalls, retries, provider degradation, and operational efficiency; it is a low-weight tiebreaker."
+  - id: pass-fail-required-for-rank
+    description: "A rankable task needs an evidence-backed PASS/FAIL outcome; UNKNOWN remains provisional."
+  - id: skipped-is-not-model-failure
+    description: "Capacity, policy, duplicate, credential, and admission skips are dispatch/capacity observations, not model-quality failures."
+  - id: provider-failure-distinct
+    description: "Transport, auth, rate-limit, and provider errors are distinct from correctness or task-quality failures."
+  - id: manager-failure-distinct
+    description: "Bad decomposition, duplicate work, stale context, conflicting writes, or bad prompt design are orchestration findings and must not be charged blindly to the model."
+  - id: complexity-is-task-dependent
+    description: "Big-O/compute complexity is recorded only when relevant to the task; it does not automatically penalize a model."
+  - id: immutable-evidence
+    description: "Raw observations remain append-only; aggregates may be regenerated."
+  - id: attribution-confidence
+    description: "GitHub actor identity is not sufficient when a PAT signs on behalf of multiple agents; attribution is inferred with confidence."
+  - id: historical-cohort
+    description: "Historical repository refs are immutable experiment cohorts; experiments never rewrite the audited source history."
 
 score:
-  name: execution_score_v1
-  formula: "0.55*task_success_rate + 0.20*reviewer_acceptance_rate + 0.15*latency_score + 0.10*single_request_score"
+  name: execution_score_v2
+  weights:
+    correctness: 0.50
+    integration_success: 0.25
+    reviewer_acceptance: 0.15
+    task_outcome: 0.05
+    latency: 0.05
+  latency_role: "low-weight tiebreaker/diagnostic; never allowed to compensate for correctness failure"
   minimum_attempts: 5
-  cold_start_minimum_attempts: 2
-  note: "Scores remain provisional below minimum sample sizes."
+  note: "Scores below minimum sample size are provisional. Missing quality evidence is UNKNOWN, not zero."
 
-initial_targets:
-  - stealth/ox-alpha
-  - meta-llama/llama-3.3-70b-instruct:free
-  - google/gemma-3-12b-it:free
-  - qwen/qwen3-coder:free
-  - deepseek/deepseek-r1:free
-  - gemini-3.5-flash
-  - gemini-3-flash
+experiment_design:
+  lanes:
+    - openrouter_ox_alpha
+    - openrouter_other_candidate
+    - felo_variant
+    - other_provider
+  dimensions:
+    - manager
+    - provider
+    - model
+    - prompt_variant
+    - repository_cohort
+    - task_family
+    - sequencing
+    - concurrency
+  objective: "maximize correct integrated outcomes while minimizing wasted effort, context, retries, conflicts, and human intervention"
 
 collection:
   storage: "GitHub Actions artifacts + generated JSON"

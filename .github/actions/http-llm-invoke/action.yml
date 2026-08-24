@@ -40,16 +40,13 @@ runs:
         ERROR_CLASS="unknown"
         REQUESTS_USED=1
         HTTP_STATUS=0
+        CURL_EXIT=0
         if [ -z "${API_KEY}" ]; then ERROR_CLASS="auth"; echo "::warning::No API key for $PROVIDER"; exit 0; fi
         if ! [[ "${TARGET:-}" =~ ^[0-9]+$ ]]; then ERROR_CLASS="policy"; echo "::warning::Invalid target number"; exit 0; fi
-        DEFAULT_OMNI="https://cloud.omniroute.online/v1"
-        DEFAULT_OR="https://openrouter.ai/api/v1"
-        DEFAULT_FELO="https://openapi.felo.ai/api/v1"
+        DEFAULT_OMNI="https://cloud.omniroute.online/v1"; DEFAULT_OR="https://openrouter.ai/api/v1"; DEFAULT_FELO="https://openapi.felo.ai/api/v1"
         case "$PROVIDER" in
-          omni) CATALOG="$DEFAULT_OMNI" ;;
-          openrouter) CATALOG="$DEFAULT_OR" ;;
-          felo) CATALOG="$DEFAULT_FELO" ;;
-          *) echo "::error::Unknown provider $PROVIDER"; exit 1 ;;
+          omni) CATALOG="$DEFAULT_OMNI";; openrouter) CATALOG="$DEFAULT_OR";; felo) CATALOG="$DEFAULT_FELO";;
+          *) echo "::error::Unknown provider $PROVIDER"; exit 1;;
         esac
         RAW="${BASE_URL:-$CATALOG}"; RAW="${RAW%/}"
         ALLOW_HOSTS="cloud.omniroute.online openrouter.ai api.openrouter.ai openapi.felo.ai"
@@ -59,40 +56,45 @@ runs:
         if [ "$OK" != 1 ]; then echo "::error::host '$HOST' not allow-listed; using catalog default"; RAW="$CATALOG"; fi
         BASE="$RAW"
         case "$PROVIDER" in
-          omni) TITLE="termux-monorepo-${ROLE}-omni"; MARKER="<!-- omni-${ROLE} -->"; HEAD="### 🌐 OmniRoute ${ROLE} (\`${MODEL}\`)"; EGG="<!-- matrix: valley-hunt via omni aggregation / 3L0 labels pending -->" ;;
-          openrouter) TITLE="termux-monorepo-${ROLE}-or"; MARKER="<!-- openrouter-${ROLE} -->"; HEAD="### 🔀 OpenRouter ${ROLE} (\`${MODEL}\`)"; EGG="<!-- matrix: peer route; public boards=features; 3L0=our labels -->" ;;
-          felo) TITLE="termux-monorepo-${ROLE}-felo"; MARKER="<!-- felo-${ROLE} -->"; HEAD="### 🔎 Felo ${ROLE} (\`${MODEL}\`)"; EGG="<!-- matrix: Felo peer route; 3L0=our labels -->" ;;
+          omni) TITLE="termux-monorepo-${ROLE}-omni"; MARKER="<!-- omni-${ROLE} -->"; HEAD="### 🌐 OmniRoute ${ROLE} (\`${MODEL}\`)"; EGG="<!-- matrix: valley-hunt via omni aggregation / 3L0 labels pending -->";;
+          openrouter) TITLE="termux-monorepo-${ROLE}-or"; MARKER="<!-- openrouter-${ROLE} -->"; HEAD="### 🔀 OpenRouter ${ROLE} (\`${MODEL}\`)"; EGG="<!-- matrix: peer route; public boards=features; 3L0=our labels -->";;
+          felo) TITLE="termux-monorepo-${ROLE}-felo"; MARKER="<!-- felo-${ROLE} -->"; HEAD="### 🔎 Felo ${ROLE} (\`${MODEL}\`)"; EGG="<!-- matrix: Felo peer route; 3L0=our labels -->";;
         esac
-        RESPONSE_FILE=$(mktemp)
-        trap 'rm -f "$RESPONSE_FILE"' EXIT
-        # Exactly one provider request. stream=false is explicit so an OpenAI-
-        # compatible SSE response cannot leave curl waiting for connection close.
+        RESPONSE_FILE=$(mktemp); trap 'rm -f "$RESPONSE_FILE"' EXIT
         PAYLOAD=$(jq -n --arg m "$MODEL" --arg p "$PROMPT" '{model:$m,messages:[{role:"user",content:$p}],max_tokens:1800,stream:false}')
-        HTTP_STATUS=$(curl -sS --connect-timeout 15 --max-time 90 -o "$RESPONSE_FILE" -w '%{http_code}' -X POST "${BASE}/chat/completions" -H "Authorization: Bearer ${API_KEY}" -H "Content-Type: application/json" -H "HTTP-Referer: https://github.com/${REPO}" -H "X-Title: ${TITLE}" -d "$PAYLOAD" || HTTP_STATUS=000)
+        set +e
+        HTTP_STATUS=$(curl -sS --connect-timeout 15 --max-time 90 -o "$RESPONSE_FILE" -w '%{http_code}' -X POST "${BASE}/chat/completions" -H "Authorization: Bearer ${API_KEY}" -H "Content-Type: application/json" -H "Accept: application/json" -H "HTTP-Referer: https://github.com/${REPO}" -H "X-Title: ${TITLE}" -d "$PAYLOAD")
+        CURL_EXIT=$?
+        set -e
         RESP=$(cat "$RESPONSE_FILE" 2>/dev/null || true)
+        RESPONSE_BYTES=$(wc -c < "$RESPONSE_FILE" | tr -d ' ')
         TEXT=$(echo "$RESP" | jq -r '.choices[0].message.content // .choices[0].message.reasoning // empty' 2>/dev/null || true)
         ERR=$(echo "$RESP" | jq -r '.error.message // .error // empty' 2>/dev/null || true)
         RESPONSE_MODEL=$(echo "$RESP" | jq -r '.model // empty' 2>/dev/null || true)
         TOKENS_IN=$(echo "$RESP" | jq -r '.usage.prompt_tokens // .usage.input_tokens // 0' 2>/dev/null || true)
         TOKENS_OUT=$(echo "$RESP" | jq -r '.usage.completion_tokens // .usage.output_tokens // 0' 2>/dev/null || true)
-        RESPONSE_MODEL="${RESPONSE_MODEL:-$MODEL}"
-        TOKENS_IN="${TOKENS_IN:-0}"; TOKENS_OUT="${TOKENS_OUT:-0}"
-        if [ -z "$TEXT" ]; then
+        RESPONSE_MODEL="${RESPONSE_MODEL:-$MODEL}"; TOKENS_IN="${TOKENS_IN:-0}"; TOKENS_OUT="${TOKENS_OUT:-0}"
+        if [ "$CURL_EXIT" -ne 0 ]; then
+          if [ "$CURL_EXIT" = "28" ]; then ERROR_CLASS="timeout_partial";
+          elif [ "$CURL_EXIT" = "6" ] || [ "$CURL_EXIT" = "7" ]; then ERROR_CLASS="transport";
+          else ERROR_CLASS="transport"; fi
+        elif [ -z "$TEXT" ]; then
           if [ "$HTTP_STATUS" = "429" ]; then ERROR_CLASS="rate_limit";
           elif [ "$HTTP_STATUS" = "401" ] || [ "$HTTP_STATUS" = "403" ]; then ERROR_CLASS="auth";
-          elif [ "$HTTP_STATUS" = "408" ] || [[ "$HTTP_STATUS" =~ ^5[0-9][0-9]$ ]] || [ "$HTTP_STATUS" = "000" ]; then ERROR_CLASS="transport";
+          elif [[ "$HTTP_STATUS" =~ ^5[0-9][0-9]$ ]]; then ERROR_CLASS="transport";
           elif printf '%s' "$ERR" | grep -Eiq 'rate|limit'; then ERROR_CLASS="rate_limit";
           elif printf '%s' "$ERR" | grep -Eiq 'auth|key|unauthor|forbidden'; then ERROR_CLASS="auth";
-          elif printf '%s' "$ERR" | grep -Eiq 'timeout|curl|connection'; then ERROR_CLASS="transport";
           else ERROR_CLASS="provider"; fi
-          SAFE_ERR=$(printf '%s' "${ERR:-no content}" | tr '\n' ' ' | cut -c1-500)
-          echo "::warning::${PROVIDER} empty response: HTTP ${HTTP_STATUS}; ${SAFE_ERR}"
-          TEXT="⚠️ ${PROVIDER} returned no content. HTTP ${HTTP_STATUS}. ${SAFE_ERR}"
         else STATUS=succeeded; ERROR_CLASS="none"; fi
+        if [ "$STATUS" != "succeeded" ]; then
+          SAFE_ERR=$(printf '%s' "${ERR:-curl_exit=${CURL_EXIT}; response_bytes=${RESPONSE_BYTES}; no complete content}" | tr '\n' ' ' | cut -c1-500)
+          echo "::warning::${PROVIDER} invocation not complete: HTTP ${HTTP_STATUS}; curl_exit=${CURL_EXIT}; bytes=${RESPONSE_BYTES}; ${SAFE_ERR}"
+          TEXT="⚠️ ${PROVIDER} invocation incomplete. HTTP ${HTTP_STATUS}; curl_exit=${CURL_EXIT}; bytes=${RESPONSE_BYTES}."
+        fi
         END_NS=$(date +%s%N); LATENCY_MS=$(( (END_NS - START_NS) / 1000000 ))
         mkdir -p /tmp/model-performance
-        jq -n --arg timestamp "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --arg repository "$REPO" --arg workflow "${GITHUB_WORKFLOW:-unknown}" --arg run_id "${GITHUB_RUN_ID:-unknown}" --arg run_attempt "${GITHUB_RUN_ATTEMPT:-1}" --arg head_sha "${GITHUB_SHA:-unknown}" --arg provider "$PROVIDER" --arg requested_model "$MODEL" --arg response_model "$RESPONSE_MODEL" --arg role "$ROLE" --arg route_status "$STATUS" --arg error_class "$ERROR_CLASS" --arg http_status "$HTTP_STATUS" --arg error_summary "$(printf '%s' "${ERR:-}" | tr '\n' ' ' | cut -c1-500)" --arg experiment_id "$EXPERIMENT_ID" --arg prompt_variant "$PROMPT_VARIANT" --argjson latency_ms "$LATENCY_MS" --argjson requests_used "$REQUESTS_USED" --argjson tokens_in "${TOKENS_IN:-0}" --argjson tokens_out "${TOKENS_OUT:-0}" '{timestamp:$timestamp,repository:$repository,workflow:$workflow,run_id:$run_id,run_attempt:($run_attempt|tonumber),head_sha:$head_sha,provider:$provider,requested_model:$requested_model,response_model:$response_model,role:$role,route_status:$route_status,http_status:$http_status,latency_ms:$latency_ms,requests_used:$requests_used,tokens_in:$tokens_in,tokens_out:$tokens_out,error_class:$error_class,error_summary:$error_summary,experiment_id:$experiment_id,prompt_variant:$prompt_variant}' >> /tmp/model-performance/observations.ndjson
-        { echo '### Model invocation telemetry'; echo; echo "- provider: \`$PROVIDER\`"; echo "- requested_model: \`$MODEL\`"; echo "- response_model: \`$RESPONSE_MODEL\`"; echo "- role: \`$ROLE\`"; echo "- status: \`$STATUS\`"; echo "- http_status: \`$HTTP_STATUS\`"; echo "- latency_ms: \`$LATENCY_MS\`"; echo "- requests_used: \`$REQUESTS_USED\`"; echo "- tokens_in: \`$TOKENS_IN\`"; echo "- tokens_out: \`$TOKENS_OUT\`"; echo "- experiment_id: \`$EXPERIMENT_ID\`"; echo "- prompt_variant: \`$PROMPT_VARIANT\`"; echo "- error_class: \`$ERROR_CLASS\`"; } >> "$GITHUB_STEP_SUMMARY"
+        jq -n --arg timestamp "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --arg repository "$REPO" --arg workflow "${GITHUB_WORKFLOW:-unknown}" --arg run_id "${GITHUB_RUN_ID:-unknown}" --arg run_attempt "${GITHUB_RUN_ATTEMPT:-1}" --arg head_sha "${GITHUB_SHA:-unknown}" --arg provider "$PROVIDER" --arg requested_model "$MODEL" --arg response_model "$RESPONSE_MODEL" --arg role "$ROLE" --arg route_status "$STATUS" --arg error_class "$ERROR_CLASS" --arg http_status "$HTTP_STATUS" --arg error_summary "$(printf '%s' "${ERR:-}" | tr '\n' ' ' | cut -c1-500)" --arg experiment_id "$EXPERIMENT_ID" --arg prompt_variant "$PROMPT_VARIANT" --argjson latency_ms "$LATENCY_MS" --argjson requests_used "$REQUESTS_USED" --argjson curl_exit "$CURL_EXIT" --argjson response_bytes "$RESPONSE_BYTES" --argjson tokens_in "${TOKENS_IN:-0}" --argjson tokens_out "${TOKENS_OUT:-0}" '{timestamp:$timestamp,repository:$repository,workflow:$workflow,run_id:$run_id,run_attempt:($run_attempt|tonumber),head_sha:$head_sha,provider:$provider,requested_model:$requested_model,response_model:$response_model,role:$role,route_status:$route_status,http_status:$http_status,latency_ms:$latency_ms,requests_used:$requests_used,curl_exit:$curl_exit,response_bytes:$response_bytes,tokens_in:$tokens_in,tokens_out:$tokens_out,error_class:$error_class,error_summary:$error_summary,experiment_id:$experiment_id,prompt_variant:$prompt_variant}' >> /tmp/model-performance/observations.ndjson
+        { echo '### Model invocation telemetry'; echo; echo "- provider: \`$PROVIDER\`"; echo "- requested_model: \`$MODEL\`"; echo "- response_model: \`$RESPONSE_MODEL\`"; echo "- status: \`$STATUS\`"; echo "- http_status: \`$HTTP_STATUS\`"; echo "- curl_exit: \`$CURL_EXIT\`"; echo "- response_bytes: \`$RESPONSE_BYTES\`"; echo "- latency_ms: \`$LATENCY_MS\`"; echo "- requests_used: \`$REQUESTS_USED\`"; echo "- tokens_in: \`$TOKENS_IN\`"; echo "- tokens_out: \`$TOKENS_OUT\`"; echo "- error_class: \`$ERROR_CLASS\`"; } >> "$GITHUB_STEP_SUMMARY"
         if [ "$POST_COMMENT" = "true" ]; then
           BODY=$(printf '%s\n%s\n%s\n\n%s\n\n%s\n%s\n' "$MARKER" "$HEAD" "$EGG" "$TEXT" '---' "_Peer router invocation: provider=${PROVIDER}, requested=${MODEL}, response=${RESPONSE_MODEL}, role=${ROLE}, experiment=${EXPERIMENT_ID}, variant=${PROMPT_VARIANT}, http=${HTTP_STATUS}_")
           gh api "repos/${REPO}/issues/${TARGET}/comments" -f body="$BODY" >/dev/null || echo "::warning::Failed to post comment on #${TARGET}"

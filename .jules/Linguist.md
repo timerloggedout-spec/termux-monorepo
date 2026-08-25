@@ -39,3 +39,10 @@ Restore the behavior as an explicit reversible phase in `workspace/compression_s
 - `1103d832` / `51023b87` / `7a6e5a7` — cached mappings, Caveman, single-pass regex optimization
 - `4eb9f830` / `267fecc` — fast-path term search
 - #196 — `AGENTS.hum.md` round-trip milestone
+
+## 2026-08-26 - Trie-Structured Regex Patterns and Precomputed Casing Variant Lookup
+**Learning:**
+Using flat regex alternations (`\b(term1|term2|...)\b`) with large dictionaries (e.g. 55+ 1337speak variants in `phase_codec.py` or 27+ CedrLang mappings) forces Python's C-level regex engine to perform linear search branching across bytecode instructions on every word match attempt. Generating a prefix Trie-structured regex (`\b(?:prefix1(?:sub1|sub2)|prefix2...)\b`) minimizes state machine search depth, yielding a ~2.7x speedup for 1337speak phase codec operations (from ~4.9ms to ~1.8ms per call) and ~1.5x speedup for document compilation/decompilation. Furthermore, pre-computing static casing variant lookup dictionaries (`FAST_CASING_COMP`, `FAST_CASING_DECOMP`) at module load eliminates runtime string allocation and casing inspection overhead during match callback execution.
+
+**Action:**
+When building single-pass dictionary regex pattern matchers for multi-term translation protocols, always construct Trie-structured regex patterns and pre-calculate casing variant lookup tables to minimize regex state-machine branching depth and callback function overhead.

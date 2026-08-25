@@ -63,9 +63,41 @@ def _build_variant_index(tokens: Sequence[str]) -> Dict[str, str]:
     return index
 
 
+def _build_trie_regex(words: Sequence[str]) -> str:
+    """Build a Trie-structured regular expression to minimize regex engine branching depth."""
+    class TrieNode:
+        def __init__(self):
+            self.children: Dict[str, TrieNode] = {}
+            self.is_end = False
+
+    root = TrieNode()
+    for w in words:
+        node = root
+        for char in w:
+            node = node.children.setdefault(char, TrieNode())
+        node.is_end = True
+
+    def _to_regex(node: TrieNode) -> str:
+        if node.is_end and not node.children:
+            return ''
+        alt = []
+        for char, child in sorted(node.children.items()):
+            child_reg = _to_regex(child)
+            alt.append(re.escape(char) + child_reg)
+        if len(alt) == 1:
+            res = alt[0]
+        else:
+            res = '(?:' + '|'.join(alt) + ')'
+        if node.is_end:
+            res = '(?:' + res + ')?'
+        return res
+
+    return r'\b' + _to_regex(root) + r'\b'
+
+
 VARIANT_INDEX = _build_variant_index(CANONICAL_TOKENS)
 VARIANT_REGEX = re.compile(
-    r"\b(?:" + "|".join(sorted((re.escape(k) for k in VARIANT_INDEX), key=len, reverse=True)) + r")\b",
+    _build_trie_regex(sorted(VARIANT_INDEX.keys())),
     re.IGNORECASE,
 )
 

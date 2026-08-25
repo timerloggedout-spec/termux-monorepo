@@ -82,13 +82,20 @@ jobs:
           from pathlib import Path
           p = Path('evaluation-results/context-relationship-index.json')
           d = json.loads(p.read_text())
-          required = {'schema','observed_at','repository','source_sha','lead_events','lag_events','lead_lag_pairs','limitations'}
+          required = {'schema','observed_at','repository','source_sha','lead_events','lag_events','lead_lag_pairs','limitations','evidence_matrix'}
           missing = required - d.keys()
           if missing:
               raise SystemExit(f'missing required fields: {sorted(missing)}')
           if d['schema'] != 'context-relationship-index/v1':
               raise SystemExit('unexpected schema')
-          print('index valid:', len(d['lead_events']), 'leads;', len(d['lag_events']), 'lags;', len(d['lead_lag_pairs']), 'pairs')
+          matrix = d['evidence_matrix']
+          if matrix.get('schema') != 'context-relationship-evidence-matrix/v1':
+              raise SystemExit('unexpected evidence matrix schema')
+          if matrix.get('decision_support_only') is not True:
+              raise SystemExit('evidence matrix must remain decision support only')
+          if matrix.get('scope', {}).get('fuzzy_fallback') is not False:
+              raise SystemExit('evidence matrix must preserve exact-root behavior')
+          print('index valid:', len(d['lead_events']), 'leads;', len(d['lag_events']), 'lags;', len(d['lead_lag_pairs']), 'pairs;', len(matrix.get('records', [])), 'matrix records')
           PY
 
       - name: Publish audit summary
@@ -104,9 +111,13 @@ jobs:
           print(f"- Event: `{d['event_name']}`")
           print(f"- Leads: **{len(d['lead_events'])}**")
           print(f"- Lags: **{len(d['lag_events'])}**")
+          matrix = d['evidence_matrix']
           print(f"- Temporal pairs: **{len(d['lead_lag_pairs'])}**")
+          print(f"- Matrix records: **{len(matrix['records'])}** (**{len(matrix['verified_records'])} verified**; **{len(matrix['candidate_records'])} candidate/quarantined**)")
+          print(f"- Coverage gaps: **{len(matrix['coverage']['gaps'])}**")
           print('- Causality: **not inferred**')
           print('- Identity: **uncertain when shared PAT provenance is unavailable**')
+          print('- Matrix authority: **decision support only; no provider, routing, or write effect**')
           PY
 
       - name: Upload immutable evidence artifact

@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "a5b295658c7507d3b61f40834a2a2dfd8d83eacbcc9953979059cdce5eb7e181",
-  "workflow_count": 45,
+  "source_fingerprint": "e3c86182d4c80901c8b140479ee674d2b638502af030a18b3a920b64f273a5c8",
+  "workflow_count": 55,
   "workflows": [
     {
       "action_pins": [
@@ -87,16 +87,14 @@
     },
     {
       "action_pins": [
-        "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b",
-        "google-labs-code/jules-action@bff7875eaa123cac6742b7cfc51005b95ba4d566"
+        "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
       ],
       "authority": "bounded-state-write",
       "concurrency": "group: jules-issue-${{ github.event.issue.number || github.run_id }} cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
         "event-received",
-        "jules-on-label",
-        "jules-on-mention"
+        "jules-on-label"
       ],
       "name": "Jules on Issues (label / @jules)",
       "path": ".github/workflows/agent-jules-on-issues.yml",
@@ -157,6 +155,24 @@
     },
     {
       "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "bounded-state-write",
+      "concurrency": "group: audit-cycle-${{ github.event.pull_request.number || github.event.issue.number }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "audit"
+      ],
+      "name": "Audit Cycle \u2014 Single PR Feed-Forward",
+      "path": ".github/workflows/audit-cycle.yml",
+      "schedules": [],
+      "triggers": [
+        "issue_comment",
+        "pull_request"
+      ]
+    },
+    {
+      "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
         "github/codeql-action/analyze@ff2f1c621b7f889edc0d3c761ac2e6a3f8cdb0dd",
         "github/codeql-action/init@ff2f1c621b7f889edc0d3c761ac2e6a3f8cdb0dd"
@@ -195,6 +211,34 @@
       "triggers": [
         "pull_request",
         "push"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: context-relationship-audit-${{ github.event.pull_request.number || github.event.issue.number || inputs.pr_number || inputs.issue_number || github.ref }} cancel-in-progress: false",
+      "domain": "governance-relationships",
+      "jobs": [
+        "index"
+      ],
+      "name": "Context Relationship + Lead/Lag Audit",
+      "path": ".github/workflows/context-relationship-audit.yml",
+      "schedules": [
+        "17 * * * *"
+      ],
+      "triggers": [
+        "issue_comment",
+        "issues",
+        "pull_request",
+        "pull_request_review",
+        "pull_request_review_comment",
+        "push",
+        "schedule",
+        "workflow_dispatch",
+        "workflow_run"
       ]
     },
     {
@@ -289,6 +333,28 @@
       "schedules": [],
       "triggers": [
         "pull_request",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "writer",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "discover",
+        "experiment"
+      ],
+      "name": "Continuous Team Evaluation",
+      "path": ".github/workflows/continuous-evaluation.yml",
+      "schedules": [
+        "*/15 * * * *"
+      ],
+      "triggers": [
+        "push",
+        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -421,6 +487,28 @@
     },
     {
       "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
+      ],
+      "authority": "writer",
+      "concurrency": "group: docs-branch-index-master cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "refresh"
+      ],
+      "name": "docs-branch-index",
+      "path": ".github/workflows/docs-branch-index.yml",
+      "schedules": [
+        "15 6 * * *"
+      ],
+      "triggers": [
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
         "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683"
       ],
       "authority": "read-only-or-advisory",
@@ -541,6 +629,27 @@
     },
     {
       "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
+      ],
+      "authority": "writer",
+      "concurrency": "group: github-telemetry-snapshot cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "snapshot"
+      ],
+      "name": "github-telemetry-snapshot",
+      "path": ".github/workflows/github-telemetry-snapshot.yml",
+      "schedules": [
+        "17 3 * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
         "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683"
       ],
       "authority": "read-only-or-advisory",
@@ -581,6 +690,26 @@
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
       "authority": "writer",
+      "concurrency": "group: openrouter-free-catalog-sync cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "poll"
+      ],
+      "name": "OpenRouter free catalog sync",
+      "path": ".github/workflows/openrouter-free-catalog-sync.yml",
+      "schedules": [
+        "17 12 * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "writer",
       "concurrency": "group: ops-gitlink-lego-fork cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
@@ -590,6 +719,42 @@
       "path": ".github/workflows/ops-gitlink-lego-fork.yml",
       "schedules": [],
       "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "guard"
+      ],
+      "name": "Orchestration Regression Guard",
+      "path": ".github/workflows/orchestration-regression-guard.yml",
+      "schedules": [],
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "writer",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "canary"
+      ],
+      "name": "Model live canary",
+      "path": ".github/workflows/ox-alpha-smoke.yml",
+      "schedules": [],
+      "triggers": [
+        "issue_comment",
         "workflow_dispatch"
       ]
     },
@@ -790,6 +955,27 @@
     {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
+      ],
+      "authority": "writer",
+      "concurrency": "group: repository-observatory-master cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "index"
+      ],
+      "name": "repository observatory",
+      "path": ".github/workflows/repository-observatory.yml",
+      "schedules": [
+        "17 4 * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
         "github/codeql-action/upload-sarif@ff2f1c621b7f889edc0d3c761ac2e6a3f8cdb0dd",
         "ossf/scorecard-action@2d1146689b8cda280b9bc96326124645441f03bc"
       ],
@@ -845,6 +1031,28 @@
       "path": ".github/workflows/swe-reference-evaluation.yml",
       "schedules": [],
       "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "writer",
+      "concurrency": "group: team-mvt-${{ github.workflow }}-${{ github.ref }} cancel-in-progress: false",
+      "domain": "peer-provider-review",
+      "jobs": [
+        "lane"
+      ],
+      "name": "Team MVT \u2014 simultaneous provider lanes",
+      "path": ".github/workflows/team-mvt.yml",
+      "schedules": [
+        "*/15 * * * *"
+      ],
+      "triggers": [
+        "issues",
+        "push",
+        "schedule",
         "workflow_dispatch"
       ]
     },

@@ -47,6 +47,11 @@ The work extends the existing local context graph rather than treating it as aut
 - Disposition: accepted
 - Notes: Reconciliation confirmed PR #232 was merged into `master` and is present in the current `master-staging` spine. The previous ICM-07 deferral is therefore historical context, not a block on this successor implementation.
 
+### 2026-08-25 — Manus
+
+- Disposition: accepted for CRG-14 implementation with AR-19 as the tightly coupled Issue #192 consumer.
+- Notes: The **Context Relationship Evidence Matrix** is a deterministic, metadata-only projection of the existing canonical graph and read-only lead/lag audit, not a second datastore, central orchestrator, or authorization surface. The scope includes a tested repair for `gh api --paginate` output normalization after live audit evidence exposed concatenated JSON parsing. The implementation must disclose bounded/stale graph coverage, keep verified and candidate relationships separate, persist no raw discussion bodies or secrets, and remain decision-support only. It cannot authorize provider commands, routing promotion, branch writes, generated-index hand edits, B3 retries, B4/B5, or PR #276.
+
 ## Checklist
 
 - [x] Registered in `docs/proposals/registry.yaml`

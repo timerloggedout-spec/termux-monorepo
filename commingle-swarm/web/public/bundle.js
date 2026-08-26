@@ -273,21 +273,33 @@
   // src/components/ManagerConsole.tsx
   var ManagerConsole = (reRender2) => {
     let planText = 'Click "Propose trade" to generate an allocation plan via the node.';
+    let isProposing = false;
     const propose = async () => {
-      const trade = { asset: "ETH/USDT", direction: "buy", totalSize: 5, strategyId: "S1" };
-      const resp = await proposeTrade(trade);
-      planText = JSON.stringify(resp, null, 2);
+      if (isProposing) return;
+      isProposing = true;
       reRender2();
+      try {
+        const trade = { asset: "ETH/USDT", direction: "buy", totalSize: 5, strategyId: "S1" };
+        const resp = await proposeTrade(trade);
+        planText = JSON.stringify(resp, null, 2);
+      } catch (e2) {
+        planText = "Failed to generate allocation plan.";
+      } finally {
+        isProposing = false;
+        reRender2();
+      }
     };
     return () => b`
     <section style="margin-top:16px;">
       <h2>Manager console</h2>
       <button
         aria-label="Propose trade allocation plan"
-        style="padding:8px 12px; background:#1e2738; color:#eaf0ff; border:0; border-radius:6px; cursor:pointer;"
+        aria-busy=${isProposing ? "true" : "false"}
+        ?disabled=${isProposing}
+        style="padding:8px 12px; background:#1e2738; color:#eaf0ff; border:0; border-radius:6px; cursor:${isProposing ? "not-allowed" : "pointer"}; opacity:${isProposing ? 0.7 : 1};"
         @click=${propose}
       >
-        Propose trade
+        ${isProposing ? "Proposing trade..." : "Propose trade"}
       </button>
       <pre
         aria-live="polite"

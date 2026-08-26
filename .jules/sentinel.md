@@ -1,0 +1,4 @@
+## 2026-08-26 - GitHub Actions Hardening and Untrusted Input Sanitization
+**Vulnerability:** GitHub Actions workflows exposed permissions globally, used unpinned third-party actions by major tags, and referenced untrusted event payload context (`github.event.issue.body`, `github.event.issue.title`) directly in inline run scripts, opening potential prompt injection and supply chain risks.
+**Learning:** Assigning minimal top-level permissions (`permissions: {}`) and explicit job-level scopes reduces GHA execution privilege surface. Mappings untrusted payload variables to environment variables (`env:`) prevents script injection. SHA-pinning action versions prevents supply-chain tampering.
+**Prevention:** Always enforce explicit job permissions, SHA pin third-party GitHub Actions, pass issue/PR context via `env:`, and add `continue-on-error: true` for quota-limited external API calls.

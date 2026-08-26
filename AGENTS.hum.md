@@ -13,6 +13,10 @@ This file provides guidance to agents when working with code in this repository.
 7. [`docs/proposals/AGENTIC-PERMISSIONS.md`](docs/proposals/AGENTIC-PERMISSIONS.md) — human-only edges
 8. [`docs/CONSENSUS.md`](docs/CONSENSUS.md) — tiers, merit path, CRDT, optional Raft-strict
 
+After this governance sequence, use [`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md) to route the task to one verified component or process card before loading deeper source.
+
+For any nontrivial code, workflow, consolidation, or documentation change, perform bounded context reconnaissance with [`docs/icm/processes/context-relationship-reconnaissance.md`](docs/icm/processes/context-relationship-reconnaissance.md) and the project-local [context-relationship-graph skill](.agents/skills/context-relationship-graph/SKILL.md). Query `workspace/llm_map/context_relationships/` by an exact file, symbol, PR, issue, label, scope, or direct GitHub issue/comment/review permalink when the index is current; use the file-review timeline for a focused review history. Keep **verified evidence** (including native timeline events) separate from scored **candidates**; candidates prompt review and never justify an asserted fact or an autonomous GitHub write. Do not rebuild or edit the generated index manually—use its trusted workflow or an explicitly authorized operator build.
+
 Optional: `CLAUDE.md`, `CONTRIBUTING.md`.
 
 ## Hard Rules
@@ -40,7 +44,6 @@ registry.yaml → pick todo item → branch from master
 
 Credential rotation and history rewrite require Operator (human) authorization.
 See `docs/SECURITY-REMEDIATION.md`.
-
 ---
 
 # Technical Documentation

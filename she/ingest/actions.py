@@ -53,6 +53,8 @@ def normalize_workflow_run_payload(payload: Mapping[str, Any]) -> dict[str, Any]
     if isinstance(wr, Mapping):
         run = wr
         repo_obj = payload.get("repository") or {}
+    elif "action" in payload or "event" in payload:
+        raise ValueError("no workflow_run object found in webhook payload")
     else:
         run = payload
         repo_obj = payload.get("repository") or {}

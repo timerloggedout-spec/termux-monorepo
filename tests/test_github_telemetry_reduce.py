@@ -23,16 +23,16 @@ def test_reduce_from_jobs_files(tmp_path: Path):
     }
     f = tmp_path / "jobs-100.json"
     f.write_text(json.dumps({"data": jobs}), encoding="utf-8")
-    out = tmp_path / "out"
+    out_dir = tmp_path / "out"
 
     class Args:
         jobs_file = [f]
         jobs_glob = ""
         window_label = "test"
-        out = out
+        out = out_dir
 
     assert reduce_main(Args()) == 0
-    reports = list(out.glob("actions-performance-reconstructed-*.json"))
+    reports = list(out_dir.glob("actions-performance-reconstructed-*.json"))
     assert len(reports) == 1
     body = json.loads(reports[0].read_text(encoding="utf-8"))
     assert body["failure_rate_pct"] == 100.0
@@ -46,8 +46,8 @@ def test_reconcile_review_mode(tmp_path: Path):
         ".github/workflows/agentic-repository-operations-report.lock.yml,100.00,187958,6,5\n",
         encoding="utf-8",
     )
-    derived = tmp_path / "derived.json"
-    derived.write_text(
+    derived_file = tmp_path / "derived.json"
+    derived_file.write_text(
         json.dumps(
             {
                 "failure_rate_pct": 100.0,
@@ -60,7 +60,7 @@ def test_reconcile_review_mode(tmp_path: Path):
 
     class Args:
         csv = csv_path
-        derived = derived
+        derived = derived_file
         tolerance_pp = 2.0
 
     assert reconcile_main(Args()) == 0

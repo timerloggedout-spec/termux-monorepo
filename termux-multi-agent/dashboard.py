@@ -31,14 +31,14 @@ _last_file_mtime = 0
 
 def read_latest_telemetry():
     """
-    Optimized telemetry parser using state tracking, seek/tell incremental I/O,
-    and sorted list caching to avoid redundant file reads and re-sorting during UI ticks.
+    Optimized telemetry parser using state tracking and seek/tell operations
+    to perform incremental I/O, yielding massive performance gains on large log streams.
     """
     global _last_file_pos, _active_jobs_cache, _sorted_telemetry_cache, _last_file_ino, _last_file_mtime
     if not os.path.exists(TELEMETRY_LOG):
         # Reset cache if file is missing
         _active_jobs_cache = {}
-        _sorted_telemetry_cache = []
+        _sorted_telemetry_cache = None
         _last_file_pos = 0
         _last_file_ino = None
         _last_file_mtime = 0
@@ -49,14 +49,6 @@ def read_latest_telemetry():
         file_size = stat_info.st_size
         file_ino = stat_info.st_ino
         file_mtime = stat_info.st_mtime
-
-        # Fast-path return: if log file metadata matches previous read and sorted cache exists, return immediately
-        if (_sorted_telemetry_cache is not None and
-            file_size == _last_file_pos and
-            file_mtime == _last_file_mtime and
-            _last_file_ino is not None and
-            _last_file_ino == file_ino):
-            return _sorted_telemetry_cache
 
         # If file was truncated, recreated, or replaced, reset position and cache
         if (file_size < _last_file_pos or
@@ -69,6 +61,14 @@ def read_latest_telemetry():
             _last_file_ino = file_ino
             _last_file_mtime = file_mtime
 
+        # Bolt Optimization: short-circuit file I/O and re-sorting if file metadata is unchanged
+        if (_sorted_telemetry_cache is not None and
+            file_size == _last_file_pos and
+            file_mtime == _last_file_mtime and
+            file_ino == _last_file_ino):
+            return _sorted_telemetry_cache
+
+        new_entries = False
         with open(TELEMETRY_LOG, "r") as f:
             if _last_file_pos > 0:
                 f.seek(_last_file_pos)
@@ -93,17 +93,19 @@ def read_latest_telemetry():
                     entry = json.loads(line)
                     target = entry.get("target") or "System"
                     _active_jobs_cache[target] = entry
-                    _sorted_telemetry_cache = None
+                    new_entries = True
                 except json.JSONDecodeError:
                     continue
+
+        _last_file_mtime = file_mtime
+        if new_entries or _sorted_telemetry_cache is None:
+            _sorted_telemetry_cache = sorted(_active_jobs_cache.values(), key=lambda x: x.get("timestamp", ""))
     except Exception:
         # Fallback to returning current cache on file access or read errors
-        pass
+        if _sorted_telemetry_cache is not None:
+            return _sorted_telemetry_cache
 
-    # Sort by timestamp so the list ordering is consistent/predictable
-    if _sorted_telemetry_cache is None:
-        _sorted_telemetry_cache = sorted(_active_jobs_cache.values(), key=lambda x: x.get("timestamp", ""))
-    return _sorted_telemetry_cache
+    return _sorted_telemetry_cache if _sorted_telemetry_cache is not None else sorted(_active_jobs_cache.values(), key=lambda x: x.get("timestamp", ""))
 
 def make_dashboard():
     # Read data

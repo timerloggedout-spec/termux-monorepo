@@ -2,28 +2,35 @@
   "$schema": "https://mintlify.com/docs.json",
   "name": "Termux Monorepo",
   "theme": "mint",
-  "navigation": [
-    {
-      "group": "Overview",
-      "pages": [
-        "README"
-      ]
-    },
-    {
-      "group": "Documentation",
-      "pages": [
-        "docs/RECON",
-        "docs/CONSENSUS",
-        "docs/SECURITY-REMEDIATION",
-        "docs/TERMUX-SMOKE",
-        "docs/ARCHW1Z-GATE",
-        "docs/ARCHW1Z-OPERATOR-CHECKLIST",
-        "docs/ARCHW1Z-STATUS",
-        "docs/AGENTIC-BUILDERS-VS-REVIEWERS",
-        "docs/AGENTIC-CICD-FREE-TIER",
-        "docs/PR-SUMMARY-LOG",
-        "docs/PR-SUMMARY-PROCESS"
-      ]
-    }
-  ]
+  "colors": {
+    "primary": "#16A34A",
+    "light": "#4ADE80",
+    "dark": "#15803D"
+  },
+  "navigation": {
+    "groups": [
+      {
+        "group": "Overview",
+        "pages": [
+          "README"
+        ]
+      },
+      {
+        "group": "Documentation",
+        "pages": [
+          "docs/RECON",
+          "docs/CONSENSUS",
+          "docs/SECURITY-REMEDIATION",
+          "docs/TERMUX-SMOKE",
+          "docs/ARCHW1Z-GATE",
+          "docs/ARCHW1Z-OPERATOR-CHECKLIST",
+          "docs/ARCHW1Z-STATUS",
+          "docs/AGENTIC-BUILDERS-VS-REVIEWERS",
+          "docs/AGENTIC-CICD-FREE-TIER",
+          "docs/PR-SUMMARY-LOG",
+          "docs/PR-SUMMARY-PROCESS"
+        ]
+      }
+    ]
+  }
 }

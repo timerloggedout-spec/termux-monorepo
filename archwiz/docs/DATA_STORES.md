@@ -7,20 +7,20 @@ date: 2026-07-18
 Authoritative map of every JSON/DB file in the ecosystem.
 
 ## Session Store
-- **Path:** `~/.deepcli/session_store/<sid>.json` (or `primary/`, `secondary/`)
+- **Path:** `~/.deepcli/session_store/{sid}.json` (or `primary/`, `secondary/`)
 - **Format:** JSON list of message dicts with `role`, `content`, `thinking_content`
 - **Writers:** `core.py._cache_save()`, `import_session.py`
 - **Readers:** `context_graph_builder.py`, TUI, `dispatch_pipeline.py`
 - **Sample query:**
 \`\`\`python
 import json
-msgs = json.load(open('~/.deepcli/session_store/<sid>.json'))
+msgs = json.load(open('~/.deepcli/session_store/{sid}.json'))
 for m in msgs:
     print(m['role'], m['content'][:80])
 \`\`\`
 
 ## Export Directories
-- **Path:** `~/synthegration_exports/<uuid>/`
+- **Path:** `~/synthegration_exports/{uuid}/`
 - **Format:** `manifest.json` (list of code blocks), `session.json` (full history)
 - **Writers:** `dispatch_pipeline.update_all()`, `batch_export_all.py`
 - **Readers:** `session_digest.py`, `pointer_index.py`, `lexicon_harvest.py`

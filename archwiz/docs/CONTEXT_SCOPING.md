@@ -50,13 +50,13 @@ Three pre‑computed tensors support fast graph‑based expansion:
 
 ## Integration Points
 
-- **`deepcli send`** — a future `deepcli context <sid>` command will load the
+- **`deepcli send`** — a future `deepcli context {sid}` command will load the
   pre‑built context pack and inject it into the prompt.
 - **TUI** — when opening a session, the dashboard can offer a one‑key
   “send context to LLM” action.
 - **Dispatch hook** — `dispatch_pipeline.update_all()` can pre‑build a
   context pack for every new session and cache it in
-  `~/.cache/context/<sid>.json`.
+  `~/.cache/context/{sid}.json`.
 
 ## See Also
 

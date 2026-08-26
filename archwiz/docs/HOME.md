@@ -18,14 +18,14 @@ date: 2026-07-18
 |-------|-------------|
 | `deepcli send` | Send prompt to DeepSeek API |
 | `tui` | Interactive session browser |
-| `archaeo <file>` | File provenance & lifecycle |
-| `oracle <file>` | Shockwave impact analysis |
+| `archaeo [file]` | File provenance & lifecycle |
+| `oracle [file]` | Shockwave impact analysis |
 | `promote` | Promotion protocol enforcement |
 | `map-build` | Rebuild LLM index + AST |
 | `map-func` | Extract function definitions |
 | `fore` | ForeSight metrics |
-| `funcfind <q>` | Search function index |
-| `dep <file>` | Dependency tree |
+| `funcfind [q]` | Search function index |
+| `dep [file]` | Dependency tree |
 | `workflow` | Quick reference card |
 
 ## Projects

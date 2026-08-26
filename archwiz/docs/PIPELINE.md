@@ -21,10 +21,10 @@ DeepSeek API
   ▼
 core.get_history() → _cache_save()
   │
-  ├─► ~/.deepcli/session_store/<sid>.json
+  ├─► ~/.deepcli/session_store/{sid}.json
   │
   └─► dispatch_pipeline.update_all()
-        ├─► Export dir: synthegration_exports/<sid>/session.json
+        ├─► Export dir: synthegration_exports/{sid}/session.json
         ├─► Lexicon: harvest_session(sid)
         └─► Codex: CodexIndex.index_conversation(sid, msgs)
 \`\`\`

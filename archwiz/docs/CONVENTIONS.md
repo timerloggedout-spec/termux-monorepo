@@ -40,7 +40,7 @@ No file is modified without a timestamped backup and a log entry in `master_task
 ## Pattern 2: Output Folders as Handoffs
 
 Stages communicate through files on disk, not memory:
-- Stage N writes to `synthegration_exports/<sid>/session.json`
+- Stage N writes to `synthegration_exports/{sid}/session.json`
 - Stage N+1 reads that file
 - A human can edit the file between stages; the next stage picks up the changes
 
@@ -171,13 +171,13 @@ All mappers (`build_final_all_profile.py`, `comprehensive_fast.py`) read from it
 
 | Need | Tool |
 |------|------|
-| File lifecycle | `archaeo <file>` |
-| Impact check | `oracle <file>` |
+| File lifecycle | `archaeo [file]` |
+| Impact check | `oracle [file]` |
 | Promote change | `promote` |
-| Session context | `context_graph_builder.py --session <id>` |
-| Code block origin | `forensic_toolchain.py scout <file>` |
-| Similarity check | `forensic_toolchain.py similar <text>` |
-| Restore file | `restore_version.py <file>` |
+| Session context | `context_graph_builder.py --session [id]` |
+| Code block origin | `forensic_toolchain.py scout [file]` |
+| Similarity check | `forensic_toolchain.py similar [text]` |
+| Restore file | `restore_version.py [file]` |
 | Orphan commands | `find_orphan_commands.py` |
 
 ---

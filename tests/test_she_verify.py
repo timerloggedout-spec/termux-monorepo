@@ -21,19 +21,19 @@ FIXED = datetime(2026, 8, 27, 15, 0, tzinfo=UTC)
 
 
 def _inc(**overrides) -> Incident:
-    kwargs = dict(
-        source="github.actions",
-        event_provenance="workflow_run:repo-gate:failure",
-        repository="timerloggedout-spec/termux-monorepo",
-        ref="refs/heads/master",
-        sha="13c02d434ed612b02478247f34b74cfc83079953",
-        severity="high",
-        classification="gate-failure",
-        fingerprint="repo-gate:python-syntax",
-        authority_scope=["L0-retry"],
-        at=FIXED,
-        incident_id="inc-verify-001",
-    )
+    kwargs = {
+        "source": "github.actions",
+        "event_provenance": "workflow_run:repo-gate:failure",
+        "repository": "timerloggedout-spec/termux-monorepo",
+        "ref": "refs/heads/master",
+        "sha": "13c02d434ed612b02478247f34b74cfc83079953",
+        "severity": "high",
+        "classification": "gate-failure",
+        "fingerprint": "repo-gate:python-syntax",
+        "authority_scope": ["L0-retry"],
+        "at": FIXED,
+        "incident_id": "inc-verify-001",
+    }
     kwargs.update(overrides)
     return Incident.create(**kwargs)
 
@@ -112,6 +112,22 @@ class SheVerifyTests(TestCase):
     def test_unknown_outcome_rejected(self):
         with self.assertRaisesRegex(VerificationError, "unknown outcome"):
             CheckSpec.from_mapping({"gate": "repo-gate", "required": True, "outcome": "green"})
+
+    def test_direct_empty_plan_rejected(self):
+        with self.assertRaisesRegex(VerificationError, "empty checks"):
+            VerificationPlan(incident_id="x", sha="y", checks=())
+
+    def test_duplicate_gate_rejected(self):
+        with self.assertRaisesRegex(VerificationError, "duplicate gate"):
+            VerificationPlan(
+                incident_id="x",
+                sha="y",
+                checks=(
+                    CheckSpec(gate="repo-gate", required=True),
+                    CheckSpec(gate="termux-smoke", required=True),
+                    CheckSpec(gate="repo-gate", required=True),
+                ),
+            )
 
 
 if __name__ == "__main__":

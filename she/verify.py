@@ -10,8 +10,9 @@ stdlib-only.
 """
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass, field
-from typing import Any, Mapping
+from typing import Any
 
 from she.incident import Incident, IncidentState
 from she.sandbox import SandboxPlan
@@ -79,6 +80,23 @@ class CheckSpec:
         )
 
 
+def _validate_checks(checks: tuple[CheckSpec, ...]) -> None:
+    if not checks:
+        raise VerificationError("verification plan cannot have empty checks")
+    seen: set[str] = set()
+    for spec in checks:
+        if spec.gate not in VERIFICATION_GATES:
+            raise VerificationError(f"unknown gate: {spec.gate!r}")
+        if spec.gate in seen:
+            raise VerificationError(f"duplicate gate: {spec.gate!r}")
+        seen.add(spec.gate)
+        if spec.outcome not in CHECK_OUTCOMES:
+            raise VerificationError(f"unknown outcome: {spec.outcome!r}")
+    required = {c.gate for c in checks if c.required}
+    if not DUAL_GATES.issubset(required):
+        raise VerificationError("dual gates repo-gate + termux-smoke must be required")
+
+
 @dataclass(frozen=True)
 class VerificationPlan:
     """Explicit healing-evidence contract for one incident."""
@@ -90,6 +108,11 @@ class VerificationPlan:
     live: bool = False
     constraints: tuple[str, ...] = ()
     metadata: dict[str, Any] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        _validate_checks(self.checks)
+        if self.promotion_ready and self.live:
+            raise VerificationError("live plans cannot be promotion_ready")
 
     def required_gates(self) -> frozenset[str]:
         return frozenset(c.gate for c in self.checks if c.required)
@@ -111,9 +134,6 @@ class VerificationPlan:
         if not isinstance(raw_checks, list):
             raise VerificationError("checks must be a list")
         checks = tuple(CheckSpec.from_mapping(c) for c in raw_checks)
-        required = {c.gate for c in checks if c.required}
-        if not DUAL_GATES.issubset(required):
-            raise VerificationError("dual gates repo-gate + termux-smoke must be required")
         return cls(
             incident_id=str(data["incident_id"]),
             sha=str(data.get("sha") or ""),
@@ -154,14 +174,19 @@ def plan_verification(
             f"verification not applicable for terminal state {incident.state.value}"
         )
 
+    security = _is_security(incident)
     checks = [
         CheckSpec(gate="repo-gate", required=True),
         CheckSpec(gate="termux-smoke", required=True),
         CheckSpec(gate="domain-tests", required=True),
         CheckSpec(
             gate="security-checks",
-            required=_is_security(incident),
-            notes="required for dependabot/security fingerprints" if _is_security(incident) else "advisory",
+            required=security,
+            notes=(
+                "required for dependabot/security fingerprints"
+                if security
+                else "advisory"
+            ),
         ),
         CheckSpec(gate="regression-invariants", required=True),
     ]
@@ -169,7 +194,12 @@ def plan_verification(
     if not DUAL_GATES.issubset(required):
         raise VerificationError("dual gates must remain required")
 
-    evidence_dir = sandbox.evidence_dir if sandbox is not None else f".she/evidence/{incident.incident_id}"
+    if sandbox is not None:
+        evidence_dir = sandbox.evidence_dir
+        sandbox_branch = sandbox.branch
+    else:
+        evidence_dir = f".she/evidence/{incident.incident_id}"
+        sandbox_branch = ""
     return VerificationPlan(
         incident_id=incident.incident_id,
         sha=incident.sha,
@@ -189,7 +219,7 @@ def plan_verification(
             "source": incident.source,
             "state": incident.state.value,
             "evidence_dir": evidence_dir,
-            "sandbox_branch": sandbox.branch if sandbox is not None else "",
+            "sandbox_branch": sandbox_branch,
             "required_gates": sorted(required),
         },
     )
@@ -200,6 +230,7 @@ def apply_check_results(
     results: Mapping[str, Mapping[str, Any]],
 ) -> VerificationPlan:
     """Record outcomes onto an existing plan. Cannot drop required gates."""
+    _validate_checks(plan.checks)
     by_gate = {c.gate: c for c in plan.checks}
     updated: list[CheckSpec] = []
     for gate, spec in by_gate.items():
@@ -216,9 +247,8 @@ def apply_check_results(
                 notes=str(payload.get("notes") or spec.notes),
             )
         )
-    required_pass = all(
-        c.outcome == "pass" for c in updated if c.required
-    )
+    _validate_checks(tuple(updated))
+    required_pass = all(c.outcome == "pass" for c in updated if c.required)
     any_fail = any(c.outcome == "fail" for c in updated if c.required)
     promotion_ready = required_pass and not any_fail and not plan.live
     return VerificationPlan(

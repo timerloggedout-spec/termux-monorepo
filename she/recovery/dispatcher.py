@@ -11,7 +11,7 @@ from typing import Any, Mapping, Sequence
 
 from she.recovery.l0 import L0_ACTIONS, L0Plan
 
-# Capability table: action → required authority tokens.
+# Capability table: action → required authority tokens (all must be present).
 CAPABILITIES: dict[str, frozenset[str]] = {
     "retry": frozenset({"L0-retry"}),
     "restart": frozenset({"L0-retry"}),
@@ -65,7 +65,7 @@ class DispatchDecision:
 def _authorized(action: str, authority: Sequence[str]) -> bool:
     needed = CAPABILITIES.get(action, frozenset({"L0-observe"}))
     have = set(authority)
-    return bool(needed & have)
+    return needed.issubset(have)
 
 
 def rank_actions(
@@ -115,7 +115,7 @@ def dispatch_l0_plan(
         authority=auth,
         moneyball_score=moneyball_score,
     )
-    if not selected:
+    if not selected and _authorized("observe_only", auth):
         selected = ("observe_only",)
     return DispatchDecision(
         incident_id=plan.incident_id,

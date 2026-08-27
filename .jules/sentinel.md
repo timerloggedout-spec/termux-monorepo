@@ -12,3 +12,8 @@
 **Vulnerability:** Key collision in `get_session` caused by truncating bearer tokens to 20 chars, causing distinct accounts sharing prefix strings to reuse the same cached `Session` instance. In addition, direct mutation of `s.headers` with one-shot `X-Ds-Pow-Response` headers polluted subsequent requests on shared sessions.
 **Learning:** Naive string truncation for dictionary keys creates subtle collision risks across distinct credentials. Mutating persistent `Session.headers` directly for single-use headers leaks authentication/challenge tokens across unrelated API requests.
 **Prevention:** Use SHA-256 digests over full token and cookie pairs to generate session cache keys (`_session_cache_key`), and always construct request-scoped header dictionaries without mutating shared session instances.
+
+## 2026-08-15 - Path Traversal Containment in Local Bridge Servers
+**Vulnerability:** Unsanitized working directory (`cwd`) parameter accepted in HTTP request payloads in `bin/obsidian_server.py`, allowing callers to execute shell commands outside the intended `$HOME` directory sandbox boundary.
+**Learning:** Accepting client-specified working directory paths in local bridge HTTP handlers without realpath resolution and base boundary checks allows arbitrary filesystem traversal. In addition, importing top-level server scripts that execute server loops immediately on import hinders automated test isolation.
+**Prevention:** Always resolve paths with `os.path.realpath` and enforce `os.path.commonpath([base_dir, resolved_path]) == base_dir` validation. Always wrap server execution entrypoints in `if __name__ == '__main__':`.

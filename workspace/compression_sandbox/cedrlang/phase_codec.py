@@ -63,9 +63,49 @@ def _build_variant_index(tokens: Sequence[str]) -> Dict[str, str]:
     return index
 
 
+def _build_trie_regex(words: Iterable[str]) -> str:
+    """Construct a Trie-structured regex pattern from words to optimize prefix branching."""
+    trie: dict = {}
+    for w in words:
+        curr = trie
+        for char in w.lower():
+            curr = curr.setdefault(char, {})
+        curr[""] = None
+
+    def _trie_to_regex(node: dict) -> str:
+        if not node:
+            return ""
+        ending = "" in node
+        chars = [k for k in node if k != ""]
+        if not chars:
+            return ""
+
+        children = []
+        for char in chars:
+            sub = _trie_to_regex(node[char])
+            if sub:
+                children.append(re.escape(char) + sub)
+            else:
+                children.append(re.escape(char))
+
+        if len(children) == 1:
+            res = children[0]
+        else:
+            res = "(?:" + "|".join(children) + ")"
+
+        if ending:
+            if len(children) == 1 and not children[0].startswith("(?:"):
+                res = f"(?:{res})?"
+            else:
+                res = f"{res}?"
+        return res
+
+    return r"\b(?:" + _trie_to_regex(trie) + r")\b"
+
+
 VARIANT_INDEX = _build_variant_index(CANONICAL_TOKENS)
 VARIANT_REGEX = re.compile(
-    r"\b(?:" + "|".join(sorted((re.escape(k) for k in VARIANT_INDEX), key=len, reverse=True)) + r")\b",
+    _build_trie_regex(VARIANT_INDEX.keys()),
     re.IGNORECASE,
 )
 

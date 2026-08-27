@@ -45,7 +45,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      max-parallel: 4
+      # No fixed application-level concurrency ceiling. The experiment population
+      # is governed by dynamic admission, quota/cooldown, dependencies, and the
+      # runner/platform limits supplied by GitHub.
       matrix:
         lane: [a-ox-openrouter, b-other-openrouter, c-felo-prompt-variant, d-omni-peer]
     steps:

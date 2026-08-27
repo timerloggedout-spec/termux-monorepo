@@ -9,19 +9,34 @@ class AutomatedContextCollector:
     def __init__(self, workspace_root):
         self.workspace = os.path.abspath(workspace_root)
 
-    def find_dependent_files(self, file_relative_path):
+    def find_dependent_files(self, file_relative_path, conn=None):
+        """
+        Find files in the workspace dependent on or referenced by the target file.
+        Accepts an optional open sqlite3.Connection to reuse existing connection handles and minimize disk I/O.
+        Combines edge queries with UNION to halve query roundtrips.
+        """
         base_name = os.path.splitext(file_relative_path)[0]
         related_files = set()
-        with sqlite3.connect(DB_PATH) as conn:
+        close_conn = False
+        if conn is None:
+            conn = sqlite3.connect(DB_PATH)
+            close_conn = True
+
+        try:
             cursor = conn.cursor()
-            cursor.execute("SELECT target_file FROM edges WHERE source_file = ? OR target_file LIKE ?",
-                           (file_relative_path, f"%{base_name}%"))
+            cursor.execute(
+                """
+                SELECT target_file FROM edges WHERE source_file = ? OR target_file LIKE ?
+                UNION
+                SELECT source_file FROM edges WHERE target_file = ? OR source_file LIKE ?
+                """,
+                (file_relative_path, f"%{base_name}%", file_relative_path, f"%{base_name}%")
+            )
             for row in cursor.fetchall():
                 related_files.add(row[0])
-            cursor.execute("SELECT source_file FROM edges WHERE target_file = ? OR source_file LIKE ?",
-                           (file_relative_path, f"%{base_name}%"))
-            for row in cursor.fetchall():
-                related_files.add(row[0])
+        finally:
+            if close_conn:
+                conn.close()
 
         valid_dependencies = []
         for ref in related_files:

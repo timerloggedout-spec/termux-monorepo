@@ -44,7 +44,7 @@ Deterministic recovery **without source mutation**: retry, restart, reconnect, r
 ## P0.4 Dynamic dispatcher
 
 **Status:** implemented (code) — `she/recovery/dispatcher.py` · #375  
-**Package:** SHE `0.4.0` on master
+**Package:** SHE `0.4.0` on master (dispatcher); SHE `0.5.0` after P0.4.1 wire
 
 Select temporary worker roles from capability, authority, availability, workload, historical performance, environment compatibility, cost/quota, and MoneyBall/3L0 scoring signals.
 
@@ -52,7 +52,7 @@ MoneyBall/3L0 are decision-support inputs only; hard authority and policy constr
 
 ### P0.4.1 Dispatch → Actions bridge (dry-run wire)
 
-**Status:** open PR #378 (`feat/she-p0.5-dispatch-bridge`) — not yet merged  
+**Status:** implemented — #378 merged `eac116b` (`dispatch_then_bridge`)  
 **Note:** branch/title historically said “P0.5”; roadmap reserves **P0.5** for repair sandbox. This slice is the thin ranking→command-plan wire.
 
 - `dispatch_then_bridge(plan, …)` ranks via `dispatch_l0_plan`, then plans Actions commands
@@ -61,7 +61,7 @@ MoneyBall/3L0 are decision-support inputs only; hard authority and policy constr
 
 ## P0.5 Repair sandbox
 
-**Status:** not started
+**Status:** next slice — not started
 
 Provide isolated branches/worktrees, bounded execution, scoped credentials, reproducible environments, and evidence capture.
 

@@ -2,7 +2,8 @@
 
 P0.1 incident · P0.2 ingest observers · P0.3 L0 recovery planner + executor
 + Actions re-run bridge (dry-run default) · job-timestamp metrics · P0.4 dispatcher
-· P0.4.1 dispatch→bridge dry-run wire · P0.5 repair sandbox planner.
+· P0.4.1 dispatch→bridge dry-run wire · P0.5 repair sandbox planner
+· P0.6 verification planner.
 """
 
 from she.incident import (
@@ -62,6 +63,17 @@ from she.sandbox import (
     plan_repair_sandbox,
     sandbox_branch_name,
 )
+from she.verify import (
+    CHECK_OUTCOMES,
+    DUAL_GATES,
+    VERIFICATION_GATES,
+    CheckSpec,
+    VerificationError,
+    VerificationPlan,
+    apply_check_results,
+    plan_verification,
+    summarize_results,
+)
 
 __all__ = [
     "ALLOWED_TRANSITIONS",
@@ -109,6 +121,15 @@ __all__ = [
     "live_sandbox_enabled",
     "plan_repair_sandbox",
     "sandbox_branch_name",
+    "CHECK_OUTCOMES",
+    "DUAL_GATES",
+    "VERIFICATION_GATES",
+    "CheckSpec",
+    "VerificationError",
+    "VerificationPlan",
+    "apply_check_results",
+    "plan_verification",
+    "summarize_results",
 ]
 
-__version__ = "0.6.0"
+__version__ = "0.7.0"

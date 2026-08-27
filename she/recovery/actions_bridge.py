@@ -1,8 +1,9 @@
-"""SHE P0.3 — Actions re-run bridge (command plan + optional live wire).
+"""SHE P0.3/P0.5 — Actions re-run bridge (command plan + optional live wire).
 
 Maps L0Intent targets to GitHub Actions re-run API shapes.
 
 - Pure by default: emit command plans / HTTP descriptions only.
+- P0.5: dispatch_l0_plan ranks actions before commands are planned.
 - Live execution requires SHE_L0_LIVE=1 and a token (GITHUB_TOKEN / GH_TOKEN).
 - Never mutates repository source; only workflow run re-runs / cancels.
 
@@ -19,7 +20,9 @@ import subprocess
 from dataclasses import dataclass, field
 from typing import Any, Mapping, Sequence
 
-from she.recovery.executor import L0ExecutionPlan, L0Intent, L0_TARGETS
+from she.recovery.dispatcher import DispatchDecision, dispatch_l0_plan
+from she.recovery.executor import L0ExecutionPlan, L0Intent, L0_TARGETS, plan_l0_execution
+from she.recovery.l0 import L0Plan
 
 
 @dataclass(frozen=True)
@@ -55,15 +58,19 @@ class ActionsBridgeResult:
     executed: bool
     outcomes: tuple[dict[str, Any], ...]
     mutates_source: bool = False
+    dispatch: dict[str, Any] | None = None
 
     def to_mapping(self) -> dict[str, Any]:
-        return {
+        body = {
             "incident_id": self.incident_id,
             "commands": [c.to_mapping() for c in self.commands],
             "executed": self.executed,
             "outcomes": list(self.outcomes),
             "mutates_source": self.mutates_source,
         }
+        if self.dispatch is not None:
+            body["dispatch"] = dict(self.dispatch)
+        return body
 
 
 def _path_for_intent(intent: L0Intent, owner: str, repo: str) -> str | None:
@@ -170,6 +177,7 @@ def execute_actions_bridge(
     owner: str,
     repo: str,
     force_live: bool | None = None,
+    dispatch: Mapping[str, Any] | None = None,
 ) -> ActionsBridgeResult:
     """Plan commands; execute only when live gate is open.
 
@@ -208,6 +216,78 @@ def execute_actions_bridge(
         executed=executed,
         outcomes=tuple(outcomes),
         mutates_source=False,
+        dispatch=dict(dispatch) if dispatch is not None else None,
+    )
+
+
+def filter_execution_plan_by_dispatch(
+    execution_plan: L0ExecutionPlan,
+    decision: DispatchDecision,
+) -> L0ExecutionPlan:
+    """Keep only intents whose action was selected by the dispatcher."""
+    allowed = set(decision.selected)
+    kept = tuple(i for i in execution_plan.intents if i.action in allowed)
+    meta = dict(execution_plan.metadata)
+    meta["dispatch"] = decision.to_mapping()
+    meta["filtered_out"] = [
+        i.action for i in execution_plan.intents if i.action not in allowed
+    ]
+    return L0ExecutionPlan(
+        incident_id=execution_plan.incident_id,
+        intents=kept,
+        max_attempts=execution_plan.max_attempts,
+        mutates_source=False,
+        metadata=meta,
+    )
+
+
+def dispatch_then_bridge(
+    plan: L0Plan,
+    *,
+    owner: str,
+    repo: str,
+    run_id: int | None = None,
+    workflow_id: str | None = None,
+    authority: Sequence[str] | None = None,
+    moneyball_score: float | None = None,
+    force_live: bool | None = None,
+) -> ActionsBridgeResult:
+    """P0.5 dry-run wire: rank with dispatch_l0_plan, then plan Actions commands.
+
+    The dispatcher `live` flag is recorded only. Network side effects still
+    require SHE_L0_LIVE=1 (or force_live=True) inside execute_actions_bridge.
+    MoneyBall may defer aggressive actions; it cannot grant authority.
+    """
+    do_live = live_enabled() if force_live is None else bool(force_live)
+    decision = dispatch_l0_plan(
+        plan,
+        authority=authority,
+        moneyball_score=moneyball_score,
+        live=do_live,
+    )
+    ranked = L0Plan(
+        incident_id=plan.incident_id,
+        actions=decision.selected,
+        max_attempts=plan.max_attempts,
+        reason=plan.reason,
+        authority_scope=tuple(authority)
+        if authority is not None
+        else plan.authority_scope,
+        mutates_source=False,
+        metadata=dict(plan.metadata or {}),
+    )
+    execution_plan = plan_l0_execution(
+        ranked,
+        run_id=run_id,
+        workflow_id=workflow_id,
+        extra_metadata={"dispatch": decision.to_mapping()},
+    )
+    return execute_actions_bridge(
+        execution_plan,
+        owner=owner,
+        repo=repo,
+        force_live=force_live,
+        dispatch=decision.to_mapping(),
     )
 
 
@@ -220,7 +300,11 @@ def bridge_workflow_failure(
     workflow_id: str | None = None,
     force_live: bool | None = None,
 ) -> ActionsBridgeResult:
-    """Canary helper: intents_for_workflow_failure → Actions bridge."""
+    """Canary helper: intents_for_workflow_failure → Actions bridge.
+
+    Unfiltered P0.3 path kept for regression. Prefer dispatch_then_bridge
+    for new callers that must honor dispatcher authority.
+    """
     from she.recovery.executor import intents_for_workflow_failure
 
     plan = intents_for_workflow_failure(

@@ -1,15 +1,18 @@
-"""SHE P0.3 — L0 recovery (no source mutation).
+"""SHE P0.3/P0.5 — L0 recovery (no source mutation).
 
 Deterministic recovery plans: retry, restart, reconnect, refresh,
 regenerate transient state, reacquire locks, safe rollback of ephemeral state.
 Actions bridge: command plans + optional live re-run (SHE_L0_LIVE=1).
+P0.5 wires dispatch_l0_plan ranking into the dry-run bridge.
 """
 
 from she.recovery.actions_bridge import (
     ActionsBridgeResult,
     ActionsCommand,
     bridge_workflow_failure,
+    dispatch_then_bridge,
     execute_actions_bridge,
+    filter_execution_plan_by_dispatch,
     live_enabled,
     plan_actions_commands,
 )
@@ -40,5 +43,7 @@ __all__ = [
     "plan_actions_commands",
     "execute_actions_bridge",
     "bridge_workflow_failure",
+    "dispatch_then_bridge",
+    "filter_execution_plan_by_dispatch",
     "live_enabled",
 ]

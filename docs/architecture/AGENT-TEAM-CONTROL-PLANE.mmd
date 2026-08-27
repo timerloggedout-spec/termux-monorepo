@@ -1,0 +1,54 @@
+```mermaid
+flowchart TD
+    S[SCOUT\nproviders + models] --> C[TEAM CANDIDATES]
+    C --> OA[OpenRouter / OX-Alpha]
+    C --> DS[DeepSeek]
+    C --> GM[Gemini]
+    OA --> MVT[MVT]
+    DS --> MVT
+    GM --> MVT
+    MVT --> MX[provider × model × prompt\n× manager × cohort × sequencing]
+    MX --> T[TELEMETRY]
+    T --> L[SHA → run → job → step\n→ logs → artifacts]
+    L --> R[BILATERAL REVIEW]
+    R --> K[RETAIN]
+    R --> X[CULL / QUARANTINE]
+    K --> MB[MONEYBALL / 3L0]
+    X --> MB
+    MB --> A[TEAM ADMISSION]
+    A --> SS[SKILL SYNTHESIS]
+    SS --> B[BIUDL]
+    B --> S
+```
+
+# Agent Team Control Plane
+
+This chart is the canonical compact view of the evolving agent-team development loop. It complements the detailed SSOTs and skills rather than replacing them.
+
+## Evidence contract
+
+A node transition is not proof of success. Promotion requires attributable evidence. In particular, an HTTP success, workflow success, review acknowledgement, low latency, or large response is not by itself a successful task outcome.
+
+The telemetry lineage is:
+
+`SHA → workflow run → job → step → logs/artifacts → outcome → review → promotion decision`.
+
+## Team population
+
+Scout discovers provider/model candidates. Manager/MoneyBall/3L0 scores them using observed evidence. OX-Alpha, DeepSeek, Gemini and future providers are population members, not permanent hardcoded winners.
+
+## BIUDL
+
+BIUDL means broad integration → focused development lane → thin validated slice → feed-forward synthesis → broaden. A successful thin slice is promoted only with evidence and then becomes reusable team knowledge.
+
+## Related canonical sources
+
+- `.agents/skills/evidence-led-monorepo-ops/SKILL.md`
+- `.agents/skills/review-loop/SKILL.md`
+- `.agents/skills/adaptive-feedback-cycle/SKILL.md`
+- `.agents/skills/context-relationship-graph/SKILL.md`
+- `.agents/skills/gemini-performance-psychology/SKILL.md`
+- `docs/ops/AGENT-TEAM-ORCHESTRATION.md`
+- `docs/ops/AGENT-TEAM-DEVELOPMENT-LANES.md`
+- `docs/ops/ACTIONS-METRICS-INTEGRATION.md`
+- `docs/architecture/SELF-HEALING-ENGINE-ROADMAP.md`

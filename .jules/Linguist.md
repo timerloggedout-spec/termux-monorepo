@@ -26,6 +26,13 @@ In line-by-line document translation pipelines where structural syntax protectio
 **Action:**
 In line-level transformation utilities, always perform a fast-path term existence pre-check (`matcher.search(line)`) before executing multi-pattern placeholder protection or DOM parsing pipelines.
 
+## 2026-08-27 - Trie-Structured Regex Alternation and Precomputed Casing Tables
+**Learning:**
+While flat regex alternations (`\b(term1|term2|...)\b`) collapse sequential `.sub()` calls into a single pass, long flat alternations with overlapping or common token prefixes (e.g., `procurement`/`procurements`, `curation`/`curations`, `emerging technology`/`emerging technologies`) cause redundant state evaluation and backtracking depth in the regex engine. Building Trie-structured regular expressions (`\b(?:p(?:r0cur3(?:s)?)|...)\b`) collapses shared prefix branches, reducing regex engine state space. Paired with precomputed casing lookup tables (`FAST_CASING_COMP` / `FAST_CASING_DECOMP`), this eliminates runtime casing string inspections (`apply_casing`/`is_capitalized`), reducing `decompile_doc` latency from 3.43ms to 2.34ms (~1.46x speedup) and `from_1337speak` latency from 36.48us to 20.64us (~1.77x speedup).
+
+**Action:**
+Construct Trie-structured prefix regexes for token dictionary matching and pre-populate casing lookup tables at module load time to maximize C-level regex traversal speed and bypass string casing inspection overhead.
+
 ## 2026-08-23 - Phased 1337 Diaspora Recovery / PR #154
 **Learning:**
 PR #154 contains the provenance-backed historical `to_1337speak()` experiment. The Jules review comment at `discussion_r3754718523` describes a sparse randomized substitution rate with a **70% probability threshold**, intended to introduce character-level variability while retaining decompression to human-readable form. This is a rollout parameter, not an INDEX confidence score.

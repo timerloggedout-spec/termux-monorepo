@@ -31,7 +31,7 @@ Observer only: pure construction; no network, no persistence. Stable fingerprint
 
 ## P0.3 L0 recovery
 
-**Status:** implemented (planner + executor intents) — `she/recovery/l0.py` · `she/recovery/executor.py`
+**Status:** implemented (planner + executor intents + Actions bridge dry-run) — `she/recovery/`
 
 Deterministic recovery **without source mutation**: retry, restart, reconnect, refresh, regenerate transient state, reacquire locks, safe rollback of ephemeral state.
 
@@ -39,15 +39,29 @@ Deterministic recovery **without source mutation**: retry, restart, reconnect, r
 - `L0ExecutionPlan` + `plan_l0_execution(plan)` → Actions / Termux intent shapes
 - Security/Dependabot signals → `observe_only` (no auto-retry)
 - Canary helper: `intents_for_workflow_failure` (agentic-report / CE class)
-- Live Actions re-run bridge (token-bearing job) is the next thin wire
+- Actions bridge: `plan_actions_commands` / `execute_actions_bridge` (live behind `SHE_L0_LIVE=1`)
 
 ## P0.4 Dynamic dispatcher
 
+**Status:** implemented (code) — `she/recovery/dispatcher.py` · #375  
+**Package:** SHE `0.4.0` on master
+
 Select temporary worker roles from capability, authority, availability, workload, historical performance, environment compatibility, cost/quota, and MoneyBall/3L0 scoring signals.
 
-MoneyBall/3L0 are decision-support inputs only; hard authority and policy constraints always dominate ranking.
+MoneyBall/3L0 are decision-support inputs only; hard authority and policy constraints always dominate ranking. Capability checks use **subset** (`needed.issubset(have)`), never intersection.
+
+### P0.4.1 Dispatch → Actions bridge (dry-run wire)
+
+**Status:** open PR #378 (`feat/she-p0.5-dispatch-bridge`) — not yet merged  
+**Note:** branch/title historically said “P0.5”; roadmap reserves **P0.5** for repair sandbox. This slice is the thin ranking→command-plan wire.
+
+- `dispatch_then_bridge(plan, …)` ranks via `dispatch_l0_plan`, then plans Actions commands
+- Default remains dry-run; network still requires `SHE_L0_LIVE=1`
+- Unfiltered `bridge_workflow_failure` kept for P0.3 regression
 
 ## P0.5 Repair sandbox
+
+**Status:** not started
 
 Provide isolated branches/worktrees, bounded execution, scoped credentials, reproducible environments, and evidence capture.
 

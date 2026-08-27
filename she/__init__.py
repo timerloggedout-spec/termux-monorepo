@@ -1,7 +1,7 @@
 """Self-Healing Engine (SHE) — control-plane primitives.
 
 P0.1 incident · P0.2 ingest observers · P0.3 L0 recovery planner + executor
-+ Actions re-run bridge (dry-run default) · job-timestamp metrics.
++ Actions re-run bridge (dry-run default) · job-timestamp metrics · P0.4 dispatcher.
 """
 
 from she.incident import (
@@ -33,6 +33,13 @@ from she.recovery.actions_bridge import (
     bridge_workflow_failure,
     execute_actions_bridge,
     plan_actions_commands,
+)
+from she.recovery.dispatcher import (
+    CAPABILITIES,
+    DispatchDecision,
+    dispatch_from_mapping,
+    dispatch_l0_plan,
+    rank_actions,
 )
 from she.recovery.executor import (
     L0_TARGETS,
@@ -74,6 +81,11 @@ __all__ = [
     "plan_actions_commands",
     "execute_actions_bridge",
     "bridge_workflow_failure",
+    "CAPABILITIES",
+    "DispatchDecision",
+    "rank_actions",
+    "dispatch_l0_plan",
+    "dispatch_from_mapping",
 ]
 
-__version__ = "0.3.3"
+__version__ = "0.4.0"

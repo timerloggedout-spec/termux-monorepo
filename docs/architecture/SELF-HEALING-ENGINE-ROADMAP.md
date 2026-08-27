@@ -61,9 +61,15 @@ MoneyBall/3L0 are decision-support inputs only; hard authority and policy constr
 
 ## P0.5 Repair sandbox
 
-**Status:** next slice — not started
+**Status:** implemented (planner) — `she/sandbox.py` · package `0.6.0`
 
-Provide isolated branches/worktrees, bounded execution, scoped credentials, reproducible environments, and evidence capture.
+Isolated workspace contract for later L1 repair. Observer-only in this slice: no git mutation, no network.
+
+- `SandboxPlan` + `plan_repair_sandbox(incident)` → branch, worktree path, credential profile, env profile, evidence dir
+- Branch namespace: `she/repair/<incident>-<fingerprint>`
+- Dependabot / security signals → `credential_profile=none`
+- Live materialization gated by `SHE_SANDBOX_LIVE=1` and **not implemented** here
+- Tests: `tests/test_she_sandbox.py`
 
 ## P0.6 Verification
 

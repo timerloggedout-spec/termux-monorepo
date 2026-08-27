@@ -1,54 +1,82 @@
 ```mermaid
 flowchart TD
-    S[SCOUT\nproviders + models] --> C[TEAM CANDIDATES]
+    B[BROAD] --> I[INTEGRATE]
+    I --> V[VALIDATE]
+    V --> D[DEVELOP]
+    D --> L[LEARN]
+    L --> B
+
+    L --> S[SCOUT POPULATION]
+    S --> C[TEAM CANDIDATES]
     C --> OA[OpenRouter / OX-Alpha]
     C --> DS[DeepSeek]
     C --> GM[Gemini]
-    OA --> MVT[MVT]
-    DS --> MVT
-    GM --> MVT
-    MVT --> MX[provider × model × prompt\n× manager × cohort × sequencing]
+    C --> F[Future providers/models]
+
+    OA --> E[MVT / DOE]
+    DS --> E
+    GM --> E
+    F --> E
+    E --> MX[provider × model × prompt\n× manager × cohort × sequencing]
     MX --> T[TELEMETRY]
-    T --> L[SHA → run → job → step\n→ logs → artifacts]
-    L --> R[BILATERAL REVIEW]
-    R --> K[RETAIN]
-    R --> X[CULL / QUARANTINE]
+    T --> R[SHA → run → job → step\n→ logs → artifacts]
+    R --> CR[BILATERAL REVIEW]
+    CR --> K[RETAIN / PROMOTE]
+    CR --> X[CULL / QUARANTINE\nprovenance preserved]
     K --> MB[MONEYBALL / 3L0]
     X --> MB
     MB --> A[TEAM ADMISSION]
-    A --> SS[SKILL SYNTHESIS]
-    SS --> B[BIUDL]
-    B --> S
+    A --> SS[SKILL / SSOT SYNTHESIS]
+    SS --> L
 ```
 
-# Agent Team Control Plane
+# Agent Team Control Plane — BIUDL
 
-This chart is the canonical compact view of the evolving agent-team development loop. It complements the detailed SSOTs and skills rather than replacing them.
-
-## Evidence contract
-
-A node transition is not proof of success. Promotion requires attributable evidence. In particular, an HTTP success, workflow success, review acknowledgement, low latency, or large response is not by itself a successful task outcome.
-
-The telemetry lineage is:
-
-`SHA → workflow run → job → step → logs/artifacts → outcome → review → promotion decision`.
-
-## Team population
-
-Scout discovers provider/model candidates. Manager/MoneyBall/3L0 scores them using observed evidence. OX-Alpha, DeepSeek, Gemini and future providers are population members, not permanent hardcoded winners.
+This chart is the canonical compact orientation view of the evolving agent-team development loop. It complements, rather than replaces, detailed SSOTs, workflows, skills, experiments, and historical decision records.
 
 ## BIUDL
 
-BIUDL means broad integration → focused development lane → thin validated slice → feed-forward synthesis → broaden. A successful thin slice is promoted only with evidence and then becomes reusable team knowledge.
+**BIUDL = Broad → Integrate → Validate → Develop → Learn.**
 
-## Related canonical sources
+The loop is intentionally cyclic: learning changes the next broad baseline. A thin validated slice is therefore an intermediate state, not the final destination.
+
+## Evidence contract
+
+A node transition is not proof of success. HTTP success, workflow success, review acknowledgement, low latency, or response size are observations. Task outcome remains separately classified (`PASS`, `FAIL`, `UNKNOWN`, or another documented state).
+
+Correctness has priority over latency. Resource/quota state is a capacity signal, not a quality score.
+
+## Control-plane roles
+
+Scout discovers candidates and proposes missions; it does not grant routing authority. Managers/MoneyBall/3L0 make promotion decisions from attributable evidence. Experiment lanes apply DOE/MVT designs. Telemetry establishes SHA-to-runtime lineage. Bilateral review challenges both implementation and conclusions. Synthesis feeds verified learning into skills and SSOTs.
+
+## Dynamic population
+
+OX-Alpha, DeepSeek, Gemini, and future providers/models are selectable population members rather than permanent hardcoded winners. Discovery, availability, pricing, quota, capability, and runtime evidence should be observed dynamically.
+
+## Culling
+
+Culling is a state transition, not deletion. Preserve identity, attempts, scores, contributions, reviews, and provenance. Future wallet/reward/community-pot accounting must consume this contribution history without changing the performance evidence.
+
+## Research and oversight
+
+Scout missions may propose provider research, code reconnaissance, performance tests, regression investigations, and oversight/security evaluation cohorts such as Bug Bounty, Help Wanted, CTF, developer-skill, and security-skill tasks. These are evidence-producing evaluation populations, not automatic trust grants.
+
+## Runtime evidence lineage
+
+`SHA → workflow run → job → step → logs/artifacts → outcome → review → promotion decision`.
+
+## Related systems
 
 - `.agents/skills/evidence-led-monorepo-ops/SKILL.md`
 - `.agents/skills/review-loop/SKILL.md`
 - `.agents/skills/adaptive-feedback-cycle/SKILL.md`
 - `.agents/skills/context-relationship-graph/SKILL.md`
 - `.agents/skills/gemini-performance-psychology/SKILL.md`
-- `docs/ops/AGENT-TEAM-ORCHESTRATION.md`
+- `.agents/skills/multivariate-doe/SKILL.md`
 - `docs/ops/AGENT-TEAM-DEVELOPMENT-LANES.md`
+- `docs/ops/SCOUT-MISSIONS.md`
+- `docs/ops/SCOUT-ROSTER.md`
 - `docs/ops/ACTIONS-METRICS-INTEGRATION.md`
+- `docs/architecture/AGENT-TEAM-CONTROL-PLANE.mmd`
 - `docs/architecture/SELF-HEALING-ENGINE-ROADMAP.md`

@@ -79,12 +79,18 @@ class RequestHandler(http.server.BaseHTTPRequestHandler):
 
         # Sanitize working directory against path traversal outside $HOME
         home_base = os.path.realpath(os.environ.get('HOME', '/tmp'))
+        cwd = home_base
         try:
-            resolved_cwd = os.path.realpath(raw_cwd)
-            if os.path.commonpath([home_base, resolved_cwd]) == home_base and os.path.isdir(resolved_cwd):
-                cwd = resolved_cwd
+            # Validate raw_cwd relative to home_base
+            norm_raw = os.path.normpath(str(raw_cwd))
+            if os.path.isabs(norm_raw):
+                target_path = os.path.realpath(norm_raw)
             else:
-                cwd = home_base
+                target_path = os.path.realpath(os.path.join(home_base, norm_raw))
+
+            # CodeQL sanitizer guard: check realpath boundary alignment
+            if target_path.startswith(home_base) and os.path.commonpath([home_base, target_path]) == home_base and os.path.isdir(target_path):
+                cwd = target_path
         except Exception:
             cwd = home_base
 

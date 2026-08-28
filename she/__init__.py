@@ -3,7 +3,7 @@
 P0.1 incident · P0.2 ingest observers · P0.3 L0 recovery planner + executor
 + Actions re-run bridge (dry-run default) · job-timestamp metrics · P0.4 dispatcher
 · P0.4.1 dispatch→bridge dry-run wire · P0.5 repair sandbox planner
-· P0.6 verification planner · P0.7 repair-PR planner.
+· P0.6 verification planner · P0.7 repair-PR planner · P0.8 learning planner.
 """
 
 from she.incident import (
@@ -18,6 +18,13 @@ from she.ingest.actions import (
     fingerprint_workflow_run,
     incident_from_workflow_run,
     normalize_workflow_run_payload,
+)
+from she.learn import (
+    OUTCOMES,
+    LearnError,
+    LearningRecord,
+    live_learn_enabled,
+    plan_learning,
 )
 from she.metrics.job_timestamps import (
     JobDuration,
@@ -142,6 +149,11 @@ __all__ = [
     "RepairPRPlan",
     "live_repair_pr_enabled",
     "plan_repair_pr",
+    "OUTCOMES",
+    "LearnError",
+    "LearningRecord",
+    "live_learn_enabled",
+    "plan_learning",
 ]
 
-__version__ = "0.8.0"
+__version__ = "0.9.0"

@@ -86,7 +86,7 @@ Convert repo-gate, termux-smoke, domain tests, security checks, regression check
 
 ## P0.7 Autonomous repair PRs
 
-**Status:** implemented (planner + P0.7.1 bindings) — `she/repair_pr.py` · package `0.8.0` · #383
+**Status:** implemented (planner + P0.7.1 bindings) — `she/repair_pr.py` · package `0.8.0` · #383 `43fcab0`
 
 Planner produces **metadata for inspectable repair PRs**. It does not create branches, commits, or pull requests.
 
@@ -101,7 +101,17 @@ Planner produces **metadata for inspectable repair PRs**. It does not create bra
 
 ## P0.8 Learning
 
-Persist successful and failed remediation patterns with provenance and verification history.
+**Status:** implemented (planner) — `she/learn.py` · package `0.9.0`
+
+Persist successful and failed remediation patterns with provenance and verification history — **as an in-memory contract**. This slice does not write a store.
+
+- `LearningRecord` + `plan_learning(incident, verification=?, outcome=?)`
+- Dual gates must be present on the bound verification plan (subset)
+- Security/Dependabot → `observe` and never `reusable`
+- `reusable` only when outcome is `success` and verification is `promotion_ready`
+- `from_mapping` forces `reusable=False` / `live=False` / `persisted=False`
+- Live persistence gated by `SHE_LEARN_LIVE=1` and **not implemented** here
+- Tests: `tests/test_she_learn.py`
 
 ## P0.9 Evolutionary repair
 

@@ -181,14 +181,15 @@ This invocation is a performance measurement; do not fabricate execution or repo
               'workflow':'Model live canary',
               'run_id':int(os.environ['RUN_ID']),
               'event':os.environ['EVENT_NAME'],
-              'actor':os.environ.get('GITHUB_ACTOR'),
+              'github_actor':os.environ.get('GITHUB_ACTOR'),
               'sha':os.environ['HEAD_SHA'],
               'target_number':int(os.environ['TARGET']),
               'provider':os.environ['PROVIDER'],
               'model':os.environ['MODEL'],
               'role':os.environ['ROLE'],
               'catalog_pricing_classification':catalog.get('pricing_classification'),
-              'provenance_confidence':'high',
+              'attribution_confidence':'medium',
+              'attribution_basis':['workflow_run','repository_sha','target','provider_model'],
               'credential_material_included':False,
           }
           with open('/tmp/model-performance/provenance.json','w',encoding='utf-8') as fh:

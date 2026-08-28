@@ -3,7 +3,7 @@
 P0.1 incident · P0.2 ingest observers · P0.3 L0 recovery planner + executor
 + Actions re-run bridge (dry-run default) · job-timestamp metrics · P0.4 dispatcher
 · P0.4.1 dispatch→bridge dry-run wire · P0.5 repair sandbox planner
-· P0.6 verification planner.
+· P0.6 verification planner · P0.7 repair-PR planner.
 """
 
 from she.incident import (
@@ -53,6 +53,13 @@ from she.recovery.executor import (
     plan_l0_execution,
 )
 from she.recovery.l0 import L0_ACTIONS, L0Plan, plan_l0_recovery
+from she.repair_pr import (
+    REQUIRED_TESTS,
+    RepairPRError,
+    RepairPRPlan,
+    live_repair_pr_enabled,
+    plan_repair_pr,
+)
 from she.sandbox import (
     CREDENTIAL_PROFILES,
     ENV_PROFILES,
@@ -130,6 +137,11 @@ __all__ = [
     "apply_check_results",
     "plan_verification",
     "summarize_results",
+    "REQUIRED_TESTS",
+    "RepairPRError",
+    "RepairPRPlan",
+    "live_repair_pr_enabled",
+    "plan_repair_pr",
 ]
 
-__version__ = "0.7.0"
+__version__ = "0.8.0"

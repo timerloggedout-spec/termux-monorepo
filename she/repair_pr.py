@@ -203,4 +203,4 @@ def plan_repair_pr(
             "verification_ready": verification.promotion_ready,
             "live_flag_honored": live_repair_pr_enabled(),
         },
-    }
+    )

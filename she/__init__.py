@@ -3,9 +3,18 @@
 P0.1 incident · P0.2 ingest observers · P0.3 L0 recovery planner + executor
 + Actions re-run bridge (dry-run default) · job-timestamp metrics · P0.4 dispatcher
 · P0.4.1 dispatch→bridge dry-run wire · P0.5 repair sandbox planner
-· P0.6 verification planner · P0.7 repair-PR planner.
+· P0.6 verification planner · P0.7 repair-PR planner · P0.9 evolutionary planner.
 """
 
+from she.evolve import (
+    HYPOTHESIS_KINDS,
+    EvolutionPlan,
+    EvolveError,
+    ExperimentSpec,
+    Hypothesis,
+    live_evolve_enabled,
+    plan_evolution,
+)
 from she.incident import (
     ALLOWED_TRANSITIONS,
     TERMINAL_STATES,
@@ -142,6 +151,13 @@ __all__ = [
     "RepairPRPlan",
     "live_repair_pr_enabled",
     "plan_repair_pr",
+    "HYPOTHESIS_KINDS",
+    "EvolveError",
+    "Hypothesis",
+    "ExperimentSpec",
+    "EvolutionPlan",
+    "live_evolve_enabled",
+    "plan_evolution",
 ]
 
-__version__ = "0.8.0"
+__version__ = "0.10.0"

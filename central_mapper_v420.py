@@ -4,7 +4,7 @@ CENTRAL MAPPER – The One Ring of your ~/ directory indexing.
 Integrates ast-grep, bloat detection, provenance tracking, and LLM-optimised output.
 Built by the best, for the best (you). 
 """
-import os, json, hashlib, subprocess, time, re, sys
+import os, json, hashlib, subprocess, time, re, sys, shutil
 from pathlib import Path
 from datetime import datetime, timezone
 
@@ -55,20 +55,19 @@ class CentralMapper:
         self.state_file.write_text(json.dumps(self.state, indent=2))
 
     def check_ast_grep(self):
-        """Check if ast-grep is available, install if possible."""
+        """Check if ast-grep is available using shutil.which."""
+        cmd = shutil.which('ast-grep')
+        if not cmd:
+            print("[!] ast-grep binary not found. AST features disabled.")
+            return False
         try:
-            subprocess.run(['sg', '--version'], capture_output=True, check=True, timeout=5)
-            return True
-        except (FileNotFoundError, subprocess.CalledProcessError):
-            print("[!] ast-grep not found. Attempting pip install ast-grep...")
-            try:
-                subprocess.run([sys.executable, '-m', 'pip', 'install', 'ast-grep'], 
-                               check=True, capture_output=True, timeout=60)
-                print("[✓] ast-grep installed via pip.")
+            res = subprocess.run([cmd, '--version'], capture_output=True, text=True, timeout=5)
+            if res.returncode == 0 and 'ast-grep' in res.stdout.lower():
                 return True
-            except Exception as e:
-                print(f"[✗] Could not install ast-grep: {e}. AST features disabled.")
-                return False
+        except Exception:
+            pass
+        print("[!] ast-grep verification failed. AST features disabled.")
+        return False
 
     def get_ast_sig(self, filepath: Path, lang: str) -> dict:
         """Use ast-grep to extract a compact signature: funcs, classes, imports."""

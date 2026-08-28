@@ -166,6 +166,10 @@ Phase contract:
 
 This is the first implementation slice for restoring the Linguist/CedrLang diaspora. Follow-on work must reconcile it with `AGENTS.md` ↔ `AGENTS.hum.md`, INDEX Taxonomy, Caveman/Grimoire, and ICM/README projections without making the compressed surface the canonical truth layer.
 
+## NSE-021 — Category-theoretic notation taxonomy and cross-domain mapping
+
+Formalize core category theory notations (morphisms `f: A → B`, composition `g ∘ f` or `g f`, diagrammatic composition `f ; g` or `f >>= g`, Hom-sets `Hom_C(A, B)` / `C(A, B)`, identity `id_A` / `1_A`, functors `F: C → D`, natural transformations `α: F ⇒ G`, opposite category `C^op`, product `×` / coproduct `⊔` or `+` dualities, exponential objects `Y^X`) and map parallel concepts across Set Theory, Formal Logic, Type Theory / Functional Programming, and Order Theory (Posets). Integrates with Grimoire compression optimizations (#309, #182) and cross-domain semantic issue maps (#126, #304, #196, #177, #208, #274).
+
 ## Acceptance criteria
 
 - #320, #309, #182, and #175 are explicitly connected in the proposal registry/source; related issues expanded to include #126, #304, #196, #177, #208, #274 (per #309/#182 maps).

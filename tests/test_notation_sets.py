@@ -1,59 +1,66 @@
-import pytest
+"""Notation-sets proposal tests — taxonomy, six frameworks, NSE-015 IR, docs refs."""
 from pathlib import Path
-
-# Category-theoretic notation definitions & cross-domain mappings
 
 CATEGORY_THEORY_NOTATION = {
     "morphism": {
         "symbol": "f: A → B",
         "domain_type": "source",
         "codomain_type": "target",
-        "meaning": "f is an arrow from object A to object B"
+        "meaning": "f is an arrow from object A to object B",
     },
     "composition": {
         "symbol": "g ∘ f",
         "alt_symbol": "g f",
         "order": "right_to_left",
-        "meaning": "composition g after f"
+        "meaning": "composition g after f",
     },
     "diagrammatic_composition": {
         "symbol": "f ; g",
-        "alt_symbol": "f >>= g",
         "order": "left_to_right",
-        "meaning": "composition f then g"
+        "meaning": "composition f then g",
+    },
+    "monad_bind": {
+        "symbol": "f >>= g",
+        "class": "domain_specific_fp",
+        "meaning": "Haskell/FP bind; not universal diagrammatic composition",
     },
     "hom_set": {
         "symbol": "Hom_C(A, B)",
         "alt_symbol": "C(A, B)",
-        "meaning": "collection of all arrows from A to B"
+        "meaning": "collection of all arrows from A to B",
     },
     "identity": {
         "symbol": "id_A",
         "alt_symbol": "1_A",
-        "meaning": "mandatory identity arrow on object A"
+        "meaning": "mandatory identity arrow on object A",
     },
     "functor": {
         "symbol": "F: C → D",
-        "meaning": "structure-preserving map between categories C and D"
+        "meaning": "structure-preserving map between categories C and D",
     },
     "natural_transformation": {
         "symbol": "α: F ⇒ G",
-        "meaning": "mapping between functors F and G"
+        "meaning": "mapping between functors F and G",
     },
     "opposite_category": {
         "symbol": "C^op",
-        "meaning": "category C with all arrows reversed"
+        "meaning": "category C with all arrows reversed",
+    },
+    "product": {
+        "symbol": "A × B",
+        "dual_of": "A ⊔ B",
+        "meaning": "categorical product dual of coproduct",
     },
     "coproduct": {
         "symbol": "A ⊔ B",
         "alt_symbol": "A + B",
         "dual_of": "A × B",
-        "meaning": "categorical sum / coproduct dual of product"
+        "meaning": "categorical sum / coproduct dual of product",
     },
     "exponential_object": {
         "symbol": "Y^X",
-        "meaning": "internal object of arrows from X to Y"
-    }
+        "meaning": "internal object of arrows from X to Y",
+    },
 }
 
 CROSS_DOMAIN_MAPPINGS = [
@@ -61,60 +68,79 @@ CROSS_DOMAIN_MAPPINGS = [
         "framework": "Category Theory",
         "arrow": "f: A → B",
         "composition": "g ∘ f",
-        "identity": "id_A"
+        "identity": "id_A",
     },
     {
         "framework": "Set Theory",
         "arrow": "f: X → Y",
         "composition": "(g ∘ f)(x) = g(f(x))",
-        "identity": "I(x) = x"
+        "identity": "I(x) = x",
     },
     {
         "framework": "Formal Logic",
         "arrow": "A ⇒ B",
         "composition": "(A ⇒ B) ∧ (B ⇒ C) ⇒ (A ⇒ C)",
-        "identity": "A ⇒ A"
+        "identity": "A ⇒ A",
     },
     {
         "framework": "Type Theory & Functional Programming",
         "arrow": "f :: A -> B",
         "composition": "g . f",
-        "identity": "id"
+        "identity": "id",
     },
     {
         "framework": "Order Theory (Posets)",
         "arrow": "x ≤ y",
         "composition": "x ≤ y ∧ y ≤ z ⇒ x ≤ z",
-        "identity": "x ≤ x"
-    }
+        "identity": "x ≤ x",
+    },
+    {
+        "framework": "Lambda Lang (Λ)",
+        "arrow": "atom / conceptual token",
+        "composition": "atom sequencing / handoff",
+        "identity": "stable atom id",
+    },
 ]
 
 
 def canonical_ir_encode(item_type: str, **params) -> str:
-    """Encode category theory notation into Grimoire Canonical IR (NSE-015)."""
+    """Encode category theory notation into Grimoire Canonical IR (NSE-015).
+
+    Functor form is F:<src-cat>:<tgt-cat> (no label field).
+    """
     if item_type == "object":
         return f"O:{params['id']}"
-    elif item_type == "morphism":
+    if item_type == "morphism":
         return f"M:{params['src']}:{params['tgt']}:{params['label']}"
-    elif item_type == "composition":
+    if item_type == "composition":
         return f"COMP({params['m1']},{params['m2']})"
-    elif item_type == "identity":
+    if item_type == "identity":
         return f"ID({params['obj']})"
-    elif item_type == "functor":
-        return f"F:{params['src_cat']}:{params['tgt_cat']}:{params['label']}"
-    elif item_type == "natural_transformation":
+    if item_type == "functor":
+        return f"F:{params['src_cat']}:{params['tgt_cat']}"
+    if item_type == "natural_transformation":
         return f"NAT:{params['src_fun']}:{params['tgt_fun']}:{params['label']}"
-    else:
-        raise ValueError(f"Unknown item type: {item_type}")
+    raise ValueError(f"Unknown item type: {item_type}")
 
 
 def test_category_theory_notation_completeness():
     required_keys = {
-        "morphism", "composition", "diagrammatic_composition",
-        "hom_set", "identity", "functor", "natural_transformation",
-        "opposite_category", "coproduct", "exponential_object"
+        "morphism",
+        "composition",
+        "diagrammatic_composition",
+        "monad_bind",
+        "hom_set",
+        "identity",
+        "functor",
+        "natural_transformation",
+        "opposite_category",
+        "product",
+        "coproduct",
+        "exponential_object",
     }
     assert required_keys.issubset(set(CATEGORY_THEORY_NOTATION.keys()))
+    assert "alt_symbol" not in CATEGORY_THEORY_NOTATION["diagrammatic_composition"]
+    assert CATEGORY_THEORY_NOTATION["monad_bind"]["class"] == "domain_specific_fp"
 
 
 def test_cross_domain_mapping_frameworks():
@@ -124,7 +150,8 @@ def test_cross_domain_mapping_frameworks():
         "Set Theory",
         "Formal Logic",
         "Type Theory & Functional Programming",
-        "Order Theory (Posets)"
+        "Order Theory (Posets)",
+        "Lambda Lang (Λ)",
     }
     assert frameworks == expected_frameworks
 
@@ -132,7 +159,6 @@ def test_cross_domain_mapping_frameworks():
 def test_canonical_ir_encoding_and_structure():
     obj_a = canonical_ir_encode("object", id="A")
     obj_b = canonical_ir_encode("object", id="B")
-    obj_c = canonical_ir_encode("object", id="C")
 
     assert obj_a == "O:A"
     assert obj_b == "O:B"
@@ -149,10 +175,12 @@ def test_canonical_ir_encoding_and_structure():
     id_a = canonical_ir_encode("identity", obj="A")
     assert id_a == "ID(A)"
 
-    func = canonical_ir_encode("functor", src_cat="C", tgt_cat="D", label="F")
-    assert func == "F:C:D:F"
+    func = canonical_ir_encode("functor", src_cat="C", tgt_cat="D")
+    assert func == "F:C:D"
 
-    nat_trans = canonical_ir_encode("natural_transformation", src_fun="F", tgt_fun="G", label="alpha")
+    nat_trans = canonical_ir_encode(
+        "natural_transformation", src_fun="F", tgt_fun="G", label="alpha"
+    )
     assert nat_trans == "NAT:F:G:alpha"
 
 
@@ -169,14 +197,14 @@ def test_proposal_source_and_items_file_references():
     items_text = items_file.read_text()
     mdx_text = mdx_file.read_text()
 
-    # Verify key issue references in proposal sources
     for issue in ["#320", "#309", "#182", "#126", "#304", "#196", "#177", "#208", "#274"]:
         assert issue in source_text or issue in mdx_text
 
-    # Verify NSE-021 item presence
-    assert "NSE-021" in items_text
-    assert "NSE-021" in mdx_text
+    for nse in ["NSE-020", "NSE-021", "NSE-022", "NSE-023"]:
+        assert nse in items_text
+        assert nse in mdx_text
 
-    # Verify cross-domain framework names in source
-    for fw in ["Set Theory", "Formal Logic", "Type Theory", "Order Theory"]:
+    for fw in ["Set Theory", "Formal Logic", "Type Theory", "Order Theory", "Lambda Lang"]:
         assert fw in source_text
+
+    assert "batteries_fork" in items_text or "batteries_fork" in source_text

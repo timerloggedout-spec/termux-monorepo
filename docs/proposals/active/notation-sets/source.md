@@ -22,7 +22,7 @@ The repository already contains several index families, including `archwiz/CONCE
 
 ## 2. Notation research seed from #320
 
-#320 identifies core category-theoretic structures and maps parallel notation across category theory, set theory, formal logic, type theory / functional programming, and order theory (posets).
+Issue `#320` identifies core category-theoretic structures and maps parallel notation across category theory, set theory, formal logic, type theory / functional programming, order theory (posets), and (follow-up) **Lambda Lang (Λ)** A2A atoms.
 
 ### 2.1 Core Category Theory Notation
 
@@ -30,7 +30,8 @@ A category $\mathcal{C}$ consists of a collection of objects ($A, B, C$) and mor
 
 - **Morphism Assignment:** $f: A \to B$ (arrow with domain/source $A$ and codomain/target $B$).
 - **Composition:** $g \circ f$ or $g f$ (if $f: A \to B$ and $g: B \to C$, then $g \circ f: A \to C$; read "g after f").
-- **Diagrammatic Composition:** $f ; g$ or $f \gg= g$ (read "f then g"; left-to-right ordering).
+- **Diagrammatic Composition:** $f ; g$ only (read "f then g"; left-to-right ordering). **Not** Monad bind.
+- **Monad bind (domain-specific FP):** $f \gg= g$ — Haskell/FP sequencing with context; **must not collapse** into general diagrammatic composition.
 - **Hom-Set:** $\text{Hom}_{\mathcal{C}}(A, B)$ or $\mathcal{C}(A, B)$ (collection of all arrows pointing from $A$ to $B$).
 - **Identity:** $\text{id}_A$ or $1_A$ (mandatory arrow mapping an object to itself without modification).
 - **Functor:** $F: \mathcal{C} \to \mathcal{D}$ (structure-preserving map between categories transforming objects and morphisms).
@@ -42,17 +43,22 @@ A category $\mathcal{C}$ consists of a collection of objects ($A, B, C$) and mor
 - **The "Co-" Prefix / Duals:** Structural dual achieved by reversing arrows (e.g., Products $\times$ dualize to Coproducts $\sqcup$ or $+$, Limits dualize to Colimits).
 - **Exponential Objects ($Y^X$):** Internal object of arrows from $X$ to $Y$, structurally matching the set-theoretic total functions $|Y|^{|X|}$.
 
-### 2.3 Cross-Domain Notation Mapping Table
+### 2.3 Cross-Domain Notation Mapping Table (six frameworks)
 
 | Framework | Arrow / Mapping Notation | Composition Notation | Identity Concept |
 |---|---|---|---|
 | **Category Theory** | $f: A \to B$ | $g \circ f$ (or $f ; g$) | $\text{id}_A$ |
 | **Set Theory** | $f: X \to Y$ (Functions) | $(g \circ f)(x) = g(f(x))$ | $I(x) = x$ |
 | **Formal Logic** | $A \implies B$ (Implication) | If $A \implies B$ and $B \implies C$, then $A \implies C$ (Hypothetical Syllogism) | $A \implies A$ (Tautology) |
-| **Type Theory & FP** | $f :: A \to B$ (Types) | $g . f$ (or $f >>> g$) | $id$ |
+| **Type Theory & FP** | $f :: A \to B$ (Types) | $g . f$ (or $f >>> g$); bind $>>=$ is **not** general composition | $id$ |
 | **Order Theory (Posets)** | $x \le y$ (Relations) | If $x \le y$ and $y \le z$, then $x \le z$ (Transitivity) | $x \le x$ (Reflexivity) |
+| **Lambda Lang (Λ)** | atom / conceptual token (A2A) | atom sequencing / handoff (protocol-defined) | stable atom id / no-op atom |
 
 The important research constraint is **semantic non-collapse**. Similar glyphs or analogous relationships across fields do not automatically imply identical semantics. The index therefore records both the shared structural relation and the domain boundary.
+
+### 2.4 LEAN / Mathlib pointer (NSE-023)
+
+NSE-015 names Lean Mathlib as a candidate machine-checked constraint layer. **Repository tree status:** `batteries_fork` (and `batteries/`) are **absent** on current master. Document the gap; do not claim an in-tree batteries integration until an extract-only import PR lands.
 
 ## 3. Living lexicon / dictionary model
 
@@ -83,7 +89,7 @@ provenance:
 status: active
 confidence: reviewed
 first_seen: 2026-08-22
-last_verified: 2026-08-22
+last_verified: 2026-08-28
 ```
 
 This is deliberately a specification shape, not a claim that the repository currently implements this exact schema.
@@ -189,18 +195,17 @@ The objective is a stable semantic layer that can point into those systems rathe
 
 ## 8. Proposed next research pass (illustrative, not yet tracked)
 
-The following are candidate future research directions that are not yet itemized as NSE-* entries in ITEMS.md and would need their own item before being treated as proposal work:
-
 - Audit #320's linked issues (#309, #182, #126, #304, #196, #177, #208, #274) and map terminology overlap.
 - Inventory existing index schemas and identify authoritative-vs-derived boundaries.
 - Compare `ALIAS_INDEX`, `CONCEPT_INDEX`, `POINTER_INDEX`, `TOOL_INDEX`, and the context-relationship index for collision/overlap.
 - Prototype a notation registry fixture and validator without changing runtime behavior.
 - Define the minimum relation vocabulary required by #309 compression.
 - Add a generated cross-reference view only after the source-of-truth model is accepted.
+- Extract-only LEAN/batteries import only after NSE-023 gap is accepted and a dedicated small PR is opened.
 
 ## 9. Provenance
 
-- GitHub Issue #320 — Notation Sets (created 2026-08-22).
+- GitHub Issue #320 — Notation Sets (created 2026-08-22); Lambda Lang follow-up 2026-08-28.
 - GitHub Issue #309 — referenced by #320 as the Grimoire compression work.
 - GitHub Issue #182 — referenced by #320 as related Grimoire work.
 - GitHub Issue #175 — OPERATOR priority matrix and master functional gate; current governance constraint.

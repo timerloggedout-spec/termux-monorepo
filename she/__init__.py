@@ -3,7 +3,7 @@
 P0.1 incident · P0.2 ingest observers · P0.3 L0 recovery planner + executor
 + Actions re-run bridge (dry-run default) · job-timestamp metrics · P0.4 dispatcher
 · P0.4.1 dispatch→bridge dry-run wire · P0.5 repair sandbox planner
-· P0.6 verification planner · P0.7 repair-PR planner.
+· P0.6 verification planner · P0.7 repair-PR planner · P0.10 promotion-decision.
 """
 
 from she.incident import (
@@ -28,6 +28,13 @@ from she.metrics.job_timestamps import (
     duration_ms_from_job,
     duration_ms_from_jobs,
     queue_ms_from_job,
+)
+from she.promote import (
+    DECISIONS,
+    PromotionDecision,
+    PromotionError,
+    live_promote_enabled,
+    plan_promotion,
 )
 from she.recovery.actions_bridge import (
     ActionsBridgeResult,
@@ -142,6 +149,11 @@ __all__ = [
     "RepairPRPlan",
     "live_repair_pr_enabled",
     "plan_repair_pr",
+    "DECISIONS",
+    "PromotionDecision",
+    "PromotionError",
+    "live_promote_enabled",
+    "plan_promotion",
 ]
 
-__version__ = "0.8.0"
+__version__ = "0.11.0"

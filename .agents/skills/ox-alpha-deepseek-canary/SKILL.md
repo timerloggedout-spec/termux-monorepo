@@ -22,8 +22,16 @@ Evaluate `stealth/ox-alpha` as an experimental worker for the DeepSeek/Termux in
 
 - Title: maximum 1,000 characters.
 - Body: maximum 12,000 characters.
+- These are **safety/context bounds**, not model-output ceilings; they prevent uncontrolled repository text from becoming an unbounded prompt injection surface.
 - Explicitly label repository-derived text as untrusted data.
 - Never include tokens, cookies, session files, authorization headers, or secret values.
+
+## Output policy
+
+- Do not impose an artificial local output-token ceiling.
+- Use the provider/model capability default exposed by the invocation action unless a provider, quota, safety, or task-specific constraint requires another value.
+- Record the requested and observed token counts plus `finish_reason`.
+- If the provider truncates a response, record `completion_capped` and do not treat truncation as a correctness win.
 
 ## Outcome taxonomy
 

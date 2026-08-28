@@ -80,7 +80,7 @@ class Hypothesis:
         }
 
     @classmethod
-def from_mapping(cls, data: Mapping[str, Any]) -> Hypothesis:
+    def from_mapping(cls, data: Mapping[str, Any]) -> Hypothesis:
         gates = tuple(str(x) for x in (data.get("required_gates") or ()))
         return cls(
             kind=str(data.get("kind") or ""),
@@ -287,7 +287,6 @@ def plan_evolution(
     sandbox = sandbox or plan_repair_sandbox(incident)
     verification = verification or plan_verification(incident, sandbox=sandbox)
     _bind_children(incident, sandbox, verification)
-    # Bind L1 repair-PR planner as a child contract without materializing a PR.
     repair = plan_repair_pr(incident, sandbox=sandbox, verification=verification)
     gates = tuple(sorted(set(verification.required_gates()) | set(repair.required_tests) | DUAL_GATES))
     if not DUAL_GATES.issubset(gates):

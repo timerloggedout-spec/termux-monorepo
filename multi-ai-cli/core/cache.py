@@ -1,4 +1,4 @@
-import json, os, sys
+import json, os, re, sys
 from pathlib import Path
 from typing import List, Dict, Optional
 
@@ -13,19 +13,21 @@ if not CACHE_DIR.is_symlink():
 
 def cache_path(session_id: str) -> str:
     """Validate and sanitize session_id against path traversal attacks."""
-    if ".." in str(session_id) or str(session_id).startswith("/") or "\\" in str(session_id):
+    sid_str = str(session_id)
+    if ".." in sid_str or sid_str.startswith("/") or "\\" in sid_str or os.path.isabs(sid_str):
         raise ValueError("Invalid file path")
 
     base_real = os.path.realpath(str(CACHE_DIR))
-    safe_id = "".join(c if c.isalnum() or c in "-_." else "_" for c in str(session_id))
-    path = os.path.join(base_real, f"{safe_id}.json")
+    safe_id = re.sub(r"[^a-zA-Z0-9_\-\.]", "_", sid_str)
+    filename = os.path.basename(f"{safe_id}.json")
+    path = os.path.join(base_real, filename)
 
     p = Path(path)
     if p.is_symlink():
         raise ValueError("Symlink cache path rejected for security")
 
     target_real = os.path.realpath(path)
-    if os.path.commonpath([base_real, target_real]) != base_real:
+    if not target_real.startswith(base_real) or os.path.commonpath([base_real, target_real]) != base_real:
         raise ValueError("Invalid file path")
 
     return target_real

@@ -166,28 +166,14 @@ Phase contract:
 
 This is the first implementation slice for restoring the Linguist/CedrLang diaspora. Follow-on work must reconcile it with `AGENTS.md` ↔ `AGENTS.hum.md`, INDEX Taxonomy, Caveman/Grimoire, and ICM/README projections without making the compressed surface the canonical truth layer.
 
-## NSE-020 — Mapping Pointer Index and 100% Lossless Round-Trip
-
-Define and audit the mapping-pointer-index / lossless round-trip contract for Linguist/CedrLang surfaces. Historical 70% phased substitution remains an intentional rollout control; exact `encode_lossless` / `decode_lossless` sidecar mode is the acceptance bar for 100% recovery. Implementation pointers: `workspace/compression_sandbox/cedrlang/phase_codec.py`, `archwiz/mapping_pointer_index.py`, `scripts/linguist/index_alignment.py`, `docs/proposals/active/notation-sets/ROUNDTRIP-IMPLEMENTATION.md`, `NSE-020-MAPPING-POINTER-ROUNDTRIP.md`.
-
 ## NSE-021 — Category-theoretic notation taxonomy and cross-domain mapping
 
-Formalize core category theory notations (morphisms `f: A → B`, composition `g ∘ f` or `g f`, diagrammatic composition `f ; g` only, Hom-sets `Hom_C(A, B)` / `C(A, B)`, identity `id_A` / `1_A`, functors `F: C → D`, natural transformations `α: F ⇒ G`, opposite category `C^op`, product `×` / coproduct `⊔` or `+` dualities, exponential objects `Y^X`) and map parallel concepts across Set Theory, Formal Logic, Type Theory / Functional Programming, Order Theory (Posets), and **Lambda Lang (Λ)** A2A atoms. Monad bind `>>=` is **domain-specific FP syntax**, not a universal synonym for diagrammatic composition (non-collapse). Integrates with Grimoire compression (#309, #182) and cross-domain maps (#126, #304, #196, #177, #208, #274).
-
-## NSE-022 — Lambda Lang (Λ) A2A compressed communication protocol
-
-Register Lambda Lang as a **sixth** notation framework for agent-to-agent (A2A) interaction: token-compressed conceptual atoms (340+ reported in external skill literature), specialized operational domains (code execution, evolution, state, trust metrics), and higher information density than free-form natural language. **Semantic non-collapse:** Λ atoms are not CT morphisms, not JSON schema fields, and not English. Links NSE-011 ADLM, NSE-012 codebooks, NSE-016 agent-native compressed medium. Provenance: #320 follow-up comment (2026-08-28). External market/skill pages are evidence to evaluate, not in-repo truth. Implementation remains a later small PR; this item is the research registration.
-
-## NSE-023 — LEAN / Mathlib constraint oracle (batteries_fork gap)
-
-Machine-checked constraints for notation/IR validation. NSE-015 already names Lean Mathlib as a structural library candidate. **Tree status (master probe):** path filter `batteries` → **no `batteries_fork` (or batteries) tree objects present**. Document the gap; do not invent a submodule in this slice. Optional external reference only until an extract-only import PR lands. Separate research lane from CT taxonomy and Lambda Lang registration.
+Formalize core category theory notations (morphisms `f: A → B`, composition `g ∘ f` or `g f`, diagrammatic composition `f ; g` or `f >>= g`, Hom-sets `Hom_C(A, B)` / `C(A, B)`, identity `id_A` / `1_A`, functors `F: C → D`, natural transformations `α: F ⇒ G`, opposite category `C^op`, product `×` / coproduct `⊔` or `+` dualities, exponential objects `Y^X`) and map parallel concepts across Set Theory, Formal Logic, Type Theory / Functional Programming, and Order Theory (Posets). Integrates with Grimoire compression optimizations (#309, #182) and cross-domain semantic issue maps (#126, #304, #196, #177, #208, #274).
 
 ## Acceptance criteria
 
 - #320, #309, #182, and #175 are explicitly connected in the proposal registry/source; related issues expanded to include #126, #304, #196, #177, #208, #274 (per #309/#182 maps).
-- Canonical notation is separated from aliases and domain-specific syntax (`>>=` ≠ diagrammatic composition).
-- Six frameworks in the cross-domain table: CT, Set, Logic, TT/FP, Posets, **Lambda Lang (Λ)**.
-- NSE-020, NSE-022, NSE-023 appear in both ITEMS and the proposal index.
+- Canonical notation is separated from aliases and domain-specific syntax.
 - Human density, tokenizer efficiency, and LLM concept-delivery efficiency are reported as distinct layers.
 - The glossary/index design has provenance, lifecycle, and codebook-scope semantics; codebooks are layered and context-conditioned (universal / model-tokenizer / language-script / domain / repo / team / author / session).
 - Agent communication uses the compressed form as medium with a canonical-IR truth layer; external info is transmuted + compressed into indexes/libraries/dictionaries on ingest.
@@ -196,5 +182,4 @@ Machine-checked constraints for notation/IR validation. NSE-015 already names Le
 - Existing repository indexes are integration targets, not discarded.
 - The proposal remains malleable by design (NSE-004 loop, NSE-008 ledger) — it is intended to be continuously modified as research and implementation evolve.
 - The phased diaspora implementation remains reversible, isolated, and test-backed; the 70% threshold is treated as an initial rollout control, not a universal optimum.
-- LEAN/batteries integration is research-registered with an explicit tree-gap note until extract-only import.
 - Execution work remains gated by proposal acceptance and `repo-gate` + `termux-smoke`.

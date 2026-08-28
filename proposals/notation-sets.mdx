@@ -11,18 +11,16 @@ The `notation-sets` proposal establishes a canonical, continuously evolving nota
 
 - **Proposal status:** `posted` (not accepted) — execution remains gated by `repo-gate` + `termux-smoke`.
 - **Malleable by design:** revisions are additive and attributed via the evolution ledger (NSE-004 loop, NSE-008 ledger). This is a revision pass, not a freeze.
-- **Latest revision:** PR #390 — NSE-021 CT taxonomy; NSE-022 Lambda Lang; NSE-023 LEAN gap; NSE-020 index body alignment.
+- **Latest revision:** [PR #324](https://github.com/timerloggedout-spec/termux-monorepo/pull/324) — integrated language-density + ADLM + grimoire research (NSE-009 → NSE-018).
 
 ## Research basis
 
-This revision integrates prior research sessions plus operator-directed #320 follow-ups:
+This revision integrates two prior research sessions:
 
-- **Language information density & ADLM** — Coupé et al. 2019; Petrov et al. EMNLP 2023; FLORES-200; tiktoken; Adaptive Dynamic Language Mixing with canonical-IR truth layer.
-- **Grimoire compression & category-theoretic IR** — layered compression stack; canonical IR for category theory; per-corpus dictionary training.
-- **Lambda Lang (Λ)** — A2A compressed conceptual atoms (#320 follow-up); non-collapse vs CT/JSON/NL.
-- **LEAN / Mathlib** — constraint oracle candidate; `batteries_fork` absent on master (documented gap).
+- **Language information density & ADLM** — Coupé et al. 2019 (cross-language convergence near ~39 bits/s); Petrov et al. EMNLP 2023 (tokenizer inequity across scripts); FLORES-200; tiktoken; Adaptive Dynamic Language Mixing as a tokenizer- and model-specific semantic codec with a canonical-IR truth layer.
+- **Grimoire compression & category-theoretic IR** — layered compression stack (zstd, LZ4, Brotli, FastCDC, xdelta3, CBOR, Parquet); canonical IR for category theory; per-corpus dictionary training.
 
-See NSE-009 → NSE-023 in the full proposal.
+See NSE-009 → NSE-018 in the full proposal.
 
 ## Item index
 
@@ -49,8 +47,6 @@ See NSE-009 → NSE-023 in the full proposal.
 | NSE-019 | Linguist PR #154 phased 1337 diaspora recovery |
 | NSE-020 | Mapping Pointer Index and 100% Lossless Round-Trip |
 | NSE-021 | Category-theoretic notation taxonomy and cross-domain mapping |
-| NSE-022 | Lambda Lang (Λ) A2A compressed communication protocol |
-| NSE-023 | LEAN / Mathlib constraint oracle (batteries_fork gap) |
 
 ## Related issues
 

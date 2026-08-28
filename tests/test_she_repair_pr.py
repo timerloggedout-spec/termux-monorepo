@@ -6,13 +6,8 @@ from datetime import UTC, datetime
 from unittest import TestCase, main
 
 from she.incident import Incident, IncidentState
-from she.repair_pr import (
-    DUAL_GATES,
-    RepairPRError,
-    RepairPRPlan,
-    plan_repair_pr,
-)
-from she.verify import DUAL_GATES as VERIFY_DUAL
+from she.repair_pr import RepairPRError, RepairPRPlan, plan_repair_pr
+from she.verify import DUAL_GATES
 
 FIXED = datetime(2026, 8, 27, 15, 0, tzinfo=UTC)
 
@@ -38,8 +33,7 @@ def _inc(**overrides) -> Incident:
 class SheRepairPRTests(TestCase):
     def test_dual_gates_required(self):
         plan = plan_repair_pr(_inc())
-        self.assertTrue(VERIFY_DUAL.issubset(plan.required_tests))
-        self.assertTrue(DUAL_GATES.issubset(plan.required_tests) if hasattr(plan, "required_tests") else True)
+        self.assertTrue(DUAL_GATES.issubset(plan.required_tests))
         self.assertFalse(plan.promotion_ready)
         self.assertFalse(plan.live)
         self.assertFalse(plan.mutates_source)
@@ -64,7 +58,7 @@ class SheRepairPRTests(TestCase):
     def test_round_trip_keeps_dual_gates(self):
         plan = plan_repair_pr(_inc())
         restored = RepairPRPlan.from_mapping(json.loads(json.dumps(plan.to_mapping())))
-        self.assertTrue(VERIFY_DUAL.issubset(restored.required_tests))
+        self.assertTrue(DUAL_GATES.issubset(restored.required_tests))
         self.assertFalse(restored.promotion_ready)
         self.assertFalse(restored.live)
 

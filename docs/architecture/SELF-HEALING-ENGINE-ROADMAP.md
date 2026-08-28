@@ -101,11 +101,37 @@ Planner produces **metadata for inspectable repair PRs**. It does not create bra
 
 ## P0.8 Learning
 
+**Status:** open / held — #384 (`feat/she-p08-learning-planner`)
+`mergeable_state=unstable` (cancelled non-gate checks). Dual gates on that SHA are green. No force-merge.
+
 Persist successful and failed remediation patterns with provenance and verification history.
+
+- Planned module: `she/learn.py` (`LearningRecord`, `plan_learning`)
+- Live persistence gated by `SHE_LEARN_LIVE=1` and not implemented in the held slice
 
 ## P0.9 Evolutionary repair
 
+**Status:** open / held — #385 (`feat/she-p09-evolutionary-repair-planner`)
+`mergeable_state=unstable` (cancelled DeepSeek). Dual gates on that SHA are green. No force-merge. Independent of #384.
+
 L2: novel failures produce competing hypotheses, isolated experiments, benchmarks, candidate repairs, and gated promotion.
+
+- Planned module: `she/evolve.py` (`EvolutionPlan`, `plan_evolution`)
+- Live evolution gated by `SHE_EVOLVE_LIVE=1` and not implemented in the held slice
+
+## P0.10 Promotion decision
+
+**Status:** implemented (planner) — `she/promote.py` · package `0.11.0`
+
+Observer-only decision of whether a bound verification + repair-PR contract may later merge. Does not merge.
+
+- `PromotionDecision` + `plan_promotion(incident, verification=?, repair=?, check_results=?)`
+- Dual gates always required (subset)
+- Security/Dependabot → `observe-only`
+- HTTP 200 / `inconclusive` / `pending` cannot promote
+- `from_mapping` fail-closed (`decision=hold`, `promotion_ready=False`, `live=False`)
+- Live merge gated by `SHE_PROMOTE_LIVE=1` and **not implemented** here
+- Tests: `tests/test_she_promote.py`
 
 ## Priority boundary
 

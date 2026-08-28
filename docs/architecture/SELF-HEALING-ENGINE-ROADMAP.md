@@ -101,11 +101,27 @@ Planner produces **metadata for inspectable repair PRs**. It does not create bra
 
 ## P0.8 Learning
 
+**Status:** open / held — #384 (`feat/she-p08-learning-planner`)  
+`mergeable_state=unstable` (cancelled non-gate checks). Dual gates on that SHA are green. No force-merge.
+
 Persist successful and failed remediation patterns with provenance and verification history.
+
+- Planned module: `she/learn.py` (`LearningRecord`, `plan_learning`)
+- Live persistence gated by `SHE_LEARN_LIVE=1` and not implemented in the held slice
 
 ## P0.9 Evolutionary repair
 
+**Status:** implemented (planner) — `she/evolve.py` · package `0.10.0`
+
 L2: novel failures produce competing hypotheses, isolated experiments, benchmarks, candidate repairs, and gated promotion.
+
+- `EvolutionPlan` + `plan_evolution(incident, sandbox=?, verification=?)`
+- Five isolated hypotheses; one experiment each under `she/evolve/<id>/<kind>`
+- Dual gates always required (subset) on plan, hypotheses, and experiments
+- Security/Dependabot → observe-only
+- `from_mapping` fail-closed (`live=False`, `mutates_source=False`, `promotion_ready=False`)
+- Live evolution gated by `SHE_EVOLVE_LIVE=1` and **not implemented** here
+- Tests: `tests/test_she_evolve.py`
 
 ## Priority boundary
 

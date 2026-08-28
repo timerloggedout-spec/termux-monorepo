@@ -7,7 +7,8 @@ from unittest import TestCase, main
 
 from she.incident import Incident, IncidentState
 from she.repair_pr import RepairPRError, RepairPRPlan, plan_repair_pr
-from she.verify import DUAL_GATES
+from she.sandbox import plan_repair_sandbox
+from she.verify import DUAL_GATES, plan_verification
 
 FIXED = datetime(2026, 8, 27, 15, 0, tzinfo=UTC)
 
@@ -67,6 +68,20 @@ class SheRepairPRTests(TestCase):
         data["required_tests"] = [t for t in data["required_tests"] if t != "repo-gate"]
         with self.assertRaisesRegex(RepairPRError, "dual gates"):
             RepairPRPlan.from_mapping(data)
+
+    def test_from_mapping_rejects_tampered_rollback(self):
+        data = plan_repair_pr(_inc()).to_mapping()
+        data["rollback_sha"] = "deadbeef" * 5
+        with self.assertRaisesRegex(RepairPRError, "rollback_sha must match sha"):
+            RepairPRPlan.from_mapping(data)
+
+    def test_rejects_mismatched_child_plans(self):
+        a = _inc()
+        b = _inc(incident_id="inc-repair-002", sha="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        sandbox_b = plan_repair_sandbox(b)
+        verify_b = plan_verification(b, sandbox=sandbox_b)
+        with self.assertRaisesRegex(RepairPRError, "must match incident"):
+            plan_repair_pr(a, sandbox=sandbox_b, verification=verify_b)
 
     def test_body_binds_incident_and_rollback(self):
         inc = _inc()

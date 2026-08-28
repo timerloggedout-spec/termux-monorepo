@@ -86,14 +86,15 @@ Convert repo-gate, termux-smoke, domain tests, security checks, regression check
 
 ## P0.7 Autonomous repair PRs
 
-**Status:** implemented (planner) — `she/repair_pr.py` · package `0.8.0`
+**Status:** implemented (planner + P0.7.1 bindings) — `she/repair_pr.py` · package `0.8.0` · #383
 
-L1 repairs produce inspectable commits/PRs with incident linkage, evidence, tests, and rollback context.
+Planner produces **metadata for inspectable repair PRs**. It does not create branches, commits, or pull requests.
 
 - `RepairPRPlan` + `plan_repair_pr(incident, sandbox=?, verification=?)`
 - Dual gates always required tests (subset)
 - Security/Dependabot → observe-only (no repair PR)
-- Branch stays in `she/repair/` namespace; rollback SHA bound to incident SHA
+- Branch stays in `she/repair/` namespace; `rollback_sha` must equal source `sha`
+- Supplied sandbox/verification plans must match incident id + SHA
 - `from_mapping` forces `promotion_ready=False` / `live=False` / `mutates_source=False`
 - Live PR creation gated by `SHE_REPAIR_PR_LIVE=1` and **not implemented** here
 - Tests: `tests/test_she_repair_pr.py`

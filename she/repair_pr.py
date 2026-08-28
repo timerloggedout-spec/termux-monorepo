@@ -66,6 +66,8 @@ class RepairPRPlan:
 
     def __post_init__(self) -> None:
         needed = set(self.required_tests)
+        if self.rollback_sha != self.sha:
+            raise RepairPRError("rollback_sha must match sha")
         if not DUAL_GATES.issubset(needed):
             raise RepairPRError("dual gates repo-gate + termux-smoke must be required tests")
         if not self.incident_id:
@@ -98,16 +100,17 @@ class RepairPRPlan:
     @classmethod
     def from_mapping(cls, data: Mapping[str, Any]) -> RepairPRPlan:
         tests = tuple(str(x) for x in (data.get("required_tests") or ()))
+        sha = str(data.get("sha") or "")
         return cls(
             incident_id=str(data["incident_id"]),
-            sha=str(data.get("sha") or ""),
+            sha=sha,
             branch=str(data["branch"]),
             base_ref=str(data.get("base_ref") or "refs/heads/master"),
             title=str(data.get("title") or ""),
             body=str(data.get("body") or ""),
             evidence_uris=tuple(str(x) for x in (data.get("evidence_uris") or ())),
             required_tests=tests,
-            rollback_sha=str(data.get("rollback_sha") or data.get("sha") or ""),
+            rollback_sha=str(data.get("rollback_sha") or sha),
             promotion_ready=False,
             live=False,
             mutates_source=False,
@@ -142,6 +145,21 @@ def _draft_body(
     )
 
 
+def _bind_child_plans(
+    incident: Incident,
+    sandbox: SandboxPlan,
+    verification: VerificationPlan,
+) -> None:
+    if sandbox.incident_id != incident.incident_id:
+        raise RepairPRError("sandbox incident_id must match incident")
+    if sandbox.base_sha != incident.sha:
+        raise RepairPRError("sandbox base_sha must match incident sha")
+    if verification.incident_id != incident.incident_id:
+        raise RepairPRError("verification incident_id must match incident")
+    if verification.sha != incident.sha:
+        raise RepairPRError("verification sha must match incident sha")
+
+
 def plan_repair_pr(
     incident: Incident,
     *,
@@ -164,6 +182,7 @@ def plan_repair_pr(
 
     sandbox = sandbox or plan_repair_sandbox(incident)
     verification = verification or plan_verification(incident, sandbox=sandbox)
+    _bind_child_plans(incident, sandbox, verification)
     tests = tuple(sorted(REQUIRED_TESTS | verification.required_gates()))
     if not DUAL_GATES.issubset(tests):
         raise RepairPRError("dual gates must remain required tests")

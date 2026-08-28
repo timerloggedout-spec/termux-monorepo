@@ -101,7 +101,7 @@ Planner produces **metadata for inspectable repair PRs**. It does not create bra
 
 ## P0.8 Learning
 
-**Status:** implemented (planner) — `she/learn.py` · package `0.9.0`
+**Status:** implemented (planner) — `she/learn.py` · package `0.9.0` · #384
 
 Persist successful and failed remediation patterns with provenance and verification history — **as an in-memory contract**. This slice does not write a store.
 
@@ -115,7 +115,21 @@ Persist successful and failed remediation patterns with provenance and verificat
 
 ## P0.9 Evolutionary repair
 
-L2: novel failures produce competing hypotheses, isolated experiments, benchmarks, candidate repairs, and gated promotion.
+**Status:** implemented (planner) — `she/evolve.py` · package `0.10.0`
+
+L2: novel failures produce competing hypotheses, isolated experiments, benchmarks, candidate repairs, and gated promotion — **as an inspectable contract**. This slice does not mutate git.
+
+- `EvolutionPlan` + `plan_evolution(incident, sandbox=?, verification=?)`
+- Five isolated hypotheses; one experiment each under `she/evolve/`
+- Dual gates always required (subset) on plan, hypotheses, and experiments
+- Security/Dependabot → observe-only
+- `from_mapping` fail-closed (`live=False`, `mutates_source=False`, `promotion_ready=False`)
+- Live evolution gated by `SHE_EVOLVE_LIVE=1` and **not implemented** here
+- Tests: `tests/test_she_evolve.py`
+
+## P0.10 Promotion decision
+
+Observer-only promotion contract. Hold unless dual gates pass on the current SHA. HTTP 200 / inconclusive / pending cannot promote. Live merge gated by `SHE_PROMOTE_LIVE=1`.
 
 ## Priority boundary
 

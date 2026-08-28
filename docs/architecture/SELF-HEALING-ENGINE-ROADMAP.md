@@ -73,7 +73,7 @@ Isolated workspace contract for later L1 repair. Observer-only in this slice: no
 
 ## P0.6 Verification
 
-**Status:** implemented (planner) — `she/verify.py` · package `0.7.0`
+**Status:** implemented (planner) — `she/verify.py` · package `0.7.0` · #381
 
 Convert repo-gate, termux-smoke, domain tests, security checks, regression checks, and invariants into explicit healing evidence.
 
@@ -86,7 +86,18 @@ Convert repo-gate, termux-smoke, domain tests, security checks, regression check
 
 ## P0.7 Autonomous repair PRs
 
-L1 repairs produce inspectable commits/PRs with incident linkage, evidence, tests, and rollback context.
+**Status:** implemented (planner + P0.7.1 bindings) — `she/repair_pr.py` · package `0.8.0` · #383
+
+Planner produces **metadata for inspectable repair PRs**. It does not create branches, commits, or pull requests.
+
+- `RepairPRPlan` + `plan_repair_pr(incident, sandbox=?, verification=?)`
+- Dual gates always required tests (subset)
+- Security/Dependabot → observe-only (no repair PR)
+- Branch stays in `she/repair/` namespace; `rollback_sha` must equal source `sha`
+- Supplied sandbox/verification plans must match incident id + SHA
+- `from_mapping` forces `promotion_ready=False` / `live=False` / `mutates_source=False`
+- Live PR creation gated by `SHE_REPAIR_PR_LIVE=1` and **not implemented** here
+- Tests: `tests/test_she_repair_pr.py`
 
 ## P0.8 Learning
 

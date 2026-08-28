@@ -61,7 +61,7 @@ MoneyBall/3L0 are decision-support inputs only; hard authority and policy constr
 
 ## P0.5 Repair sandbox
 
-**Status:** implemented (planner) — `she/sandbox.py` · package `0.6.0`
+**Status:** implemented (planner) — `she/sandbox.py` · package `0.6.0` · #380 `13c02d4`
 
 Isolated workspace contract for later L1 repair. Observer-only in this slice: no git mutation, no network.
 
@@ -73,7 +73,16 @@ Isolated workspace contract for later L1 repair. Observer-only in this slice: no
 
 ## P0.6 Verification
 
+**Status:** implemented (planner) — `she/verify.py` · package `0.7.0`
+
 Convert repo-gate, termux-smoke, domain tests, security checks, regression checks, and invariants into explicit healing evidence.
+
+- `VerificationPlan` + `plan_verification(incident, sandbox=?)` → required check set
+- Dual gates (`repo-gate` + `termux-smoke`) are **always required** (subset check)
+- Dependabot/security fingerprints require `security-checks`
+- `apply_check_results` records outcomes; HTTP 200 / `inconclusive` cannot promote
+- No live workflow dispatch in this slice
+- Tests: `tests/test_she_verify.py`
 
 ## P0.7 Autonomous repair PRs
 

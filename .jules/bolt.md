@@ -26,10 +26,10 @@ Always cache raw numeric epoch timestamps (`mtime_ts`) alongside formatted date 
 
 ## 2026-08-28 - Fast Executable Pre-Flight Checks via `shutil.which` Over Subprocess Fallback Shelling
 **Learning:**
-In `central_mapper_v420.py`, testing CLI tool availability (`check_ast_grep`) by executing `subprocess.run(['sg', ...])` caused severe runtime delays (~3.9 seconds per run). On standard Linux systems, `sg` resolves to `/usr/bin/sg` (the system group switch utility) rather than `ast-grep` (`sg`), resulting in interactive command hangs and subsequent 5-second timeout delays followed by failed `pip install` subprocess invocations. Replacing subprocess shelling with an upfront `shutil.which('ast-grep')` check before invoking executable binaries reduces detection overhead from ~3.9s to <0.001s (~4000x speedup).
+In `central_mapper_v420.py`, testing CLI tool availability (`check_ast_grep`) by executing `subprocess.run(['sg', ...])` caused severe runtime delays (~3.9 seconds per run). On standard Linux systems, `sg` resolves to `/usr/bin/sg` (the system group switch utility) rather than `ast-grep` (`sg`), resulting in interactive command hangs and subsequent 5-second timeout delays followed by failed `pip install` subprocess invocations. Replacing subprocess shelling with an upfront `shutil.which('ast-grep')` check before invoking executable binaries reduces detection overhead from ~3.9s to sub-millisecond speeds (~4000x speedup).
 
 **Action:**
-Always verify tool existence upfront using `shutil.which('<exact-binary-name>')` before attempting subprocess execution, and avoid using short tool aliases (like `sg`) when probing system binary availability.
+Always verify tool existence upfront using `shutil.which(binary_name)` before attempting subprocess execution, and avoid using short tool aliases (like `sg`) when probing system binary availability.
 
 ## 2026-08-19 - Incremental File Hashing and Map-Based Fallback Resolution in Monorepo Indexing
 **Learning:**

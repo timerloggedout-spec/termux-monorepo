@@ -206,7 +206,8 @@ def main() -> None:
     os.environ.setdefault("MULTI_AI_CACHE_DIR", args.cache_dir)
     os.makedirs(args.cache_dir, exist_ok=True)
     try:
-        os.chmod(args.cache_dir, 0o700)
+        if not os.path.islink(args.cache_dir):
+            os.chmod(args.cache_dir, 0o700)
     except Exception:
         pass
 
@@ -243,7 +244,8 @@ def main() -> None:
         with open(output_path, "w", encoding="utf-8") as f:
             json.dump(safe, f, indent=2)
     try:
-        os.chmod(output_path, 0o600)
+        if not Path(output_path).is_symlink():
+            os.chmod(output_path, 0o600)
     except Exception:
         pass
 

@@ -2,6 +2,7 @@ import sqlite3
 import os
 import re
 import subprocess
+import shutil
 
 DB_PATH = "local_repo.db"
 
@@ -56,6 +57,8 @@ class AutomatedContextCollector:
             pattern = "function $NAME($$ $) { $$$ }"
         else:
             return f"/* Structural stub context for file: {file_relative_path} */"
+        if not shutil.which('ast-grep'):
+            return f"// Unable to trace AST module boundary map for {file_relative_path}"
         try:
             output = subprocess.check_output(["ast-grep", "scan", "--pattern", pattern, "--json", abs_path], text=True)
             import json

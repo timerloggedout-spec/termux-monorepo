@@ -5,7 +5,8 @@ P0.1 incident · P0.2 ingest observers · P0.3 L0 recovery planner + executor
 · P0.4.1 dispatch→bridge dry-run wire · P0.5 repair sandbox planner
 · P0.6 verification planner · P0.7 repair-PR planner · P0.8 learning planner
 · P0.9 evolutionary-repair planner · P0.10 promotion-decision planner
-· P0.11 append-only evidence ledger · P0.12 attestation digest.
+· P0.11 append-only evidence ledger · P0.12 attestation digest
+· P0.13 attestation replay verifier.
 """
 
 from she.attest import (
@@ -100,6 +101,13 @@ from she.repair_pr import (
     RepairPRPlan,
     live_repair_pr_enabled,
     plan_repair_pr,
+)
+from she.replay import (
+    VERDICTS,
+    ReplayError,
+    ReplayVerdict,
+    live_replay_enabled,
+    plan_replay,
 )
 from she.sandbox import (
     CREDENTIAL_PROFILES,
@@ -212,6 +220,11 @@ __all__ = [
     "digest_mapping",
     "live_attest_enabled",
     "plan_attestation",
+    "VERDICTS",
+    "ReplayError",
+    "ReplayVerdict",
+    "live_replay_enabled",
+    "plan_replay",
 ]
 
-__version__ = "0.13.0"
+__version__ = "0.14.0"

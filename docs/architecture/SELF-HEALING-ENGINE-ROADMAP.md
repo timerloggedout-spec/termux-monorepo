@@ -155,7 +155,7 @@ Append-only evidence contract binding incident → verification → promotion �
 
 ## P0.12 Attestation digest
 
-**Status:** implemented (planner) — `she/attest.py` · package `0.13.0`
+**Status:** implemented (planner) — `she/attest.py` · package `0.13.0` · #399 `65327e1`
 
 Observer-only SHA-256 digest of the planned evidence ledger. Still no live signing, persist, network, or git mutation.
 
@@ -165,6 +165,20 @@ Observer-only SHA-256 digest of the planned evidence ledger. Still no live signi
 - `from_mapping` fail-closed (`signed=False`, `live=False`, `persisted=False`)
 - Live signing gated by `SHE_ATTEST_LIVE=1` and **not implemented** here
 - Tests: `tests/test_she_attest.py`
+
+## P0.13 Attestation replay
+
+**Status:** implemented (planner) — `she/replay.py` · package `0.14.0`
+
+Observer-only recomputation of the P0.12 digest against a planned ledger. Still no live signing, persist, network, or git mutation.
+
+- `ReplayVerdict` + `plan_replay(incident, attestation=?, ledger=?)`
+- Dual gates always required (subset)
+- Security/Dependabot → observe-only verdict
+- Digest mismatch → `hold` (never promote)
+- `from_mapping` fail-closed (`verdict=hold`, `live=False`, `signed=False`)
+- Live replay gated by `SHE_REPLAY_LIVE=1` and **not implemented** here
+- Tests: `tests/test_she_replay.py`
 
 ## Priority boundary
 

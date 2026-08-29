@@ -106,7 +106,7 @@ class SheReplayTests(TestCase):
             plan_replay(a, attestation=plan_attestation(b))
 
     def test_mismatch_when_digest_tampered(self):
-        inc = _inc(check_results := None)
+        inc = _inc()
         att = plan_attestation(inc, check_results=_PASS)
         replay = plan_replay(inc, attestation=att)
         self.assertEqual(replay.verdict, "mismatch")

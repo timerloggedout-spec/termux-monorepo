@@ -142,7 +142,7 @@ Observer-only promotion contract. Hold unless dual gates pass on the current SHA
 
 ## P0.11 Evidence ledger
 
-**Status:** implemented (planner) — `she/ledger.py` · package `0.12.0`
+**Status:** implemented (planner) — `she/ledger.py` · package `0.12.0` · #398 `5d9cac7`
 
 Append-only evidence contract binding incident → verification → promotion → learning. Still observer-only; no live git mutation and no disk persist.
 
@@ -152,6 +152,19 @@ Append-only evidence contract binding incident → verification → promotion �
 - `from_mapping` fail-closed (`persisted=False`, `live=False`, `mutates_source=False`)
 - Live persist gated by `SHE_LEDGER_LIVE=1` and **not implemented** here
 - Tests: `tests/test_she_ledger.py`
+
+## P0.12 Attestation digest
+
+**Status:** implemented (planner) — `she/attest.py` · package `0.13.0`
+
+Observer-only SHA-256 digest of the planned evidence ledger. Still no live signing, persist, network, or git mutation.
+
+- `Attestation` + `plan_attestation(incident, ledger=?)`
+- Dual gates always required (subset)
+- Security/Dependabot → observe-only decision
+- `from_mapping` fail-closed (`signed=False`, `live=False`, `persisted=False`)
+- Live signing gated by `SHE_ATTEST_LIVE=1` and **not implemented** here
+- Tests: `tests/test_she_attest.py`
 
 ## Priority boundary
 

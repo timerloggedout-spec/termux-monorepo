@@ -115,7 +115,7 @@ Persist successful and failed remediation patterns with provenance and verificat
 
 ## P0.9 Evolutionary repair
 
-**Status:** implemented (planner) — `she/evolve.py` · package `0.10.0`
+**Status:** implemented (planner) — `she/evolve.py` · package `0.10.0` · #394 `0185811`
 
 L2: novel failures produce competing hypotheses, isolated experiments, benchmarks, candidate repairs, and gated promotion — **as an inspectable contract**. This slice does not mutate git.
 
@@ -129,7 +129,29 @@ L2: novel failures produce competing hypotheses, isolated experiments, benchmark
 
 ## P0.10 Promotion decision
 
-Observer-only promotion contract. Hold unless dual gates pass on the current SHA. HTTP 200 / inconclusive / pending cannot promote. Live merge gated by `SHE_PROMOTE_LIVE=1`.
+**Status:** implemented (planner) — `she/promote.py` · package `0.11.0` · #395 `1c1b7cc`
+
+Observer-only promotion contract. Hold unless dual gates pass on the current SHA. HTTP 200 / inconclusive / pending cannot promote.
+
+- `PromotionDecision` + `plan_promotion(incident, verification=?)`
+- Dual gates always required (subset) on the bound verification plan
+- Security/Dependabot → observe-only / no promote
+- `from_mapping` fail-closed (`live=False`, `promotion_ready=False`)
+- Live merge gated by `SHE_PROMOTE_LIVE=1` and **not implemented** here
+- Tests: `tests/test_she_promote.py`
+
+## P0.11 Evidence ledger
+
+**Status:** implemented (planner) — `she/ledger.py` · package `0.12.0`
+
+Append-only evidence contract binding incident → verification → promotion → learning. Still observer-only; no live git mutation and no disk persist.
+
+- `EvidenceLedger` + `plan_ledger(incident, verification=?, promotion=?, learning=?)`
+- Dual gates always required (subset)
+- Security/Dependabot → observe-only decision
+- `from_mapping` fail-closed (`persisted=False`, `live=False`, `mutates_source=False`)
+- Live persist gated by `SHE_LEDGER_LIVE=1` and **not implemented** here
+- Tests: `tests/test_she_ledger.py`
 
 ## Priority boundary
 

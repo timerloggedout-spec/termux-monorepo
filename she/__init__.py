@@ -4,7 +4,8 @@ P0.1 incident · P0.2 ingest observers · P0.3 L0 recovery planner + executor
 + Actions re-run bridge (dry-run default) · job-timestamp metrics · P0.4 dispatcher
 · P0.4.1 dispatch→bridge dry-run wire · P0.5 repair sandbox planner
 · P0.6 verification planner · P0.7 repair-PR planner · P0.8 learning planner
-· P0.9 evolutionary-repair planner · P0.10 promotion-decision planner.
+· P0.9 evolutionary-repair planner · P0.10 promotion-decision planner
+· P0.11 append-only evidence ledger.
 """
 
 from she.evolve import (
@@ -35,6 +36,14 @@ from she.learn import (
     LearningRecord,
     live_learn_enabled,
     plan_learning,
+)
+from she.ledger import (
+    ENTRY_KINDS,
+    EvidenceLedger,
+    LedgerEntry,
+    LedgerError,
+    live_ledger_enabled,
+    plan_ledger,
 )
 from she.metrics.job_timestamps import (
     JobDuration,
@@ -183,6 +192,12 @@ __all__ = [
     "PromotionDecision",
     "live_promote_enabled",
     "plan_promotion",
+    "ENTRY_KINDS",
+    "LedgerError",
+    "LedgerEntry",
+    "EvidenceLedger",
+    "live_ledger_enabled",
+    "plan_ledger",
 ]
 
-__version__ = "0.11.0"
+__version__ = "0.12.0"

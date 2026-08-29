@@ -22,7 +22,7 @@ The repository already contains several index families, including `archwiz/CONCE
 
 ## 2. Notation research seed from #320
 
-#320 identifies core category-theoretic structures and maps parallel notation across category theory, set theory, formal logic, type theory / functional programming, and order theory (posets).
+Issue #320 identifies core category-theoretic structures and maps parallel notation across category theory, set theory, formal logic, type theory / functional programming, and order theory (posets).
 
 ### 2.1 Core Category Theory Notation
 
@@ -30,7 +30,7 @@ A category $\mathcal{C}$ consists of a collection of objects ($A, B, C$) and mor
 
 - **Morphism Assignment:** $f: A \to B$ (arrow with domain/source $A$ and codomain/target $B$).
 - **Composition:** $g \circ f$ or $g f$ (if $f: A \to B$ and $g: B \to C$, then $g \circ f: A \to C$; read "g after f").
-- **Diagrammatic Composition:** $f ; g$ or $f \gg= g$ (read "f then g"; left-to-right ordering).
+- **Diagrammatic Composition:** $f ; g$ or $f \gg g$ (read "f then g"; left-to-right ordering). Monadic bind ($m \gg= f$) is a domain-specific functional programming analogue.
 - **Hom-Set:** $\text{Hom}_{\mathcal{C}}(A, B)$ or $\mathcal{C}(A, B)$ (collection of all arrows pointing from $A$ to $B$).
 - **Identity:** $\text{id}_A$ or $1_A$ (mandatory arrow mapping an object to itself without modification).
 - **Functor:** $F: \mathcal{C} \to \mathcal{D}$ (structure-preserving map between categories transforming objects and morphisms).

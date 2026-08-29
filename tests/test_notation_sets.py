@@ -18,7 +18,8 @@ CATEGORY_THEORY_NOTATION = {
     },
     "diagrammatic_composition": {
         "symbol": "f ; g",
-        "alt_symbol": "f >>= g",
+        "alt_symbol": "f >> g",
+        "fp_analogue": "m >>= f",
         "order": "left_to_right",
         "meaning": "composition f then g"
     },
@@ -43,6 +44,11 @@ CATEGORY_THEORY_NOTATION = {
     "opposite_category": {
         "symbol": "C^op",
         "meaning": "category C with all arrows reversed"
+    },
+    "product": {
+        "symbol": "A × B",
+        "dual_of": "A ⊔ B",
+        "meaning": "categorical product"
     },
     "coproduct": {
         "symbol": "A ⊔ B",
@@ -101,7 +107,7 @@ def canonical_ir_encode(item_type: str, **params) -> str:
     elif item_type == "identity":
         return f"ID({params['obj']})"
     elif item_type == "functor":
-        return f"F:{params['src_cat']}:{params['tgt_cat']}:{params['label']}"
+        return f"F:{params['src_cat']}:{params['tgt_cat']}"
     elif item_type == "natural_transformation":
         return f"NAT:{params['src_fun']}:{params['tgt_fun']}:{params['label']}"
     else:
@@ -112,7 +118,7 @@ def test_category_theory_notation_completeness():
     required_keys = {
         "morphism", "composition", "diagrammatic_composition",
         "hom_set", "identity", "functor", "natural_transformation",
-        "opposite_category", "coproduct", "exponential_object"
+        "opposite_category", "product", "coproduct", "exponential_object"
     }
     assert required_keys.issubset(set(CATEGORY_THEORY_NOTATION.keys()))
 
@@ -149,8 +155,8 @@ def test_canonical_ir_encoding_and_structure():
     id_a = canonical_ir_encode("identity", obj="A")
     assert id_a == "ID(A)"
 
-    func = canonical_ir_encode("functor", src_cat="C", tgt_cat="D", label="F")
-    assert func == "F:C:D:F"
+    func = canonical_ir_encode("functor", src_cat="C", tgt_cat="D")
+    assert func == "F:C:D"
 
     nat_trans = canonical_ir_encode("natural_transformation", src_fun="F", tgt_fun="G", label="alpha")
     assert nat_trans == "NAT:F:G:alpha"

@@ -4,13 +4,21 @@ import shutil
 from pathlib import Path
 import pytest
 
+def _get_dc():
+    try:
+        import deepcli.deepcli.core as dc
+        return dc
+    except ModuleNotFoundError:
+        import deepcli.core as dc
+        return dc
+
 def test_sentinel_privileges_enforcement(tmp_path, monkeypatch):
     # Set up test directories under tmp_path
     test_config_dir = tmp_path / ".deepcli"
     test_config_file = test_config_dir / "config.json"
 
     # Mock CONFIG_DIR and CONFIG_FILE in deepcli.deepcli.core
-    import deepcli.deepcli.core as dc
+    dc = _get_dc()
     monkeypatch.setattr(dc, "CONFIG_DIR", test_config_dir)
     monkeypatch.setattr(dc, "CONFIG_FILE", test_config_file)
 
@@ -57,7 +65,7 @@ def test_sentinel_privileges_enforcement(tmp_path, monkeypatch):
 
 def test_sentinel_privileges_symlink_safety(tmp_path, monkeypatch):
     # Ensure that symlinks are skipped and not followed / modified
-    import deepcli.deepcli.core as dc
+    dc = _get_dc()
 
     # Create a dummy target file
     target_file = tmp_path / "target_file.txt"
@@ -80,7 +88,7 @@ def test_sentinel_privileges_symlink_safety(tmp_path, monkeypatch):
 
 def test_sentinel_privileges_path_traversal_prevention(tmp_path, monkeypatch):
     # Ensure that path traversal attempts are detected and raise ValueError or are sanitized.
-    import deepcli.deepcli.core as dc
+    dc = _get_dc()
 
     # Mocking ~/.deepcli path
     monkeypatch.setattr(os.path, "expanduser", lambda path: path.replace("~", str(tmp_path)))
@@ -113,7 +121,7 @@ def test_sentinel_privileges_path_traversal_prevention(tmp_path, monkeypatch):
 
 
 def test_sentinel_session_cache_key_collision_and_header_isolation(tmp_path, monkeypatch):
-    import deepcli.deepcli.core as dc
+    dc = _get_dc()
 
     # 1. Test session cache key uniqueness across tokens sharing prefixes
     token1 = "token_prefix_1234567890_AAA"

@@ -18,6 +18,7 @@ class TermuxTelemetryLogger:
         with open(TELEMETRY_LOG, "a") as f:
             f.write(json.dumps(log_entry) + "\n")
         try:
-            os.chmod(TELEMETRY_LOG, 0o600)
+            if not os.path.islink(TELEMETRY_LOG):
+                os.chmod(TELEMETRY_LOG, 0o600)
         except Exception:
             pass

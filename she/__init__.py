@@ -5,9 +5,17 @@ P0.1 incident · P0.2 ingest observers · P0.3 L0 recovery planner + executor
 · P0.4.1 dispatch→bridge dry-run wire · P0.5 repair sandbox planner
 · P0.6 verification planner · P0.7 repair-PR planner · P0.8 learning planner
 · P0.9 evolutionary-repair planner · P0.10 promotion-decision planner
-· P0.11 append-only evidence ledger.
+· P0.11 append-only evidence ledger · P0.12 attestation digest.
 """
 
+from she.attest import (
+    DIGEST_ALGO,
+    Attestation,
+    AttestError,
+    digest_mapping,
+    live_attest_enabled,
+    plan_attestation,
+)
 from she.evolve import (
     HYPOTHESIS_KINDS,
     EvolutionPlan,
@@ -198,6 +206,12 @@ __all__ = [
     "EvidenceLedger",
     "live_ledger_enabled",
     "plan_ledger",
+    "DIGEST_ALGO",
+    "AttestError",
+    "Attestation",
+    "digest_mapping",
+    "live_attest_enabled",
+    "plan_attestation",
 ]
 
-__version__ = "0.12.0"
+__version__ = "0.13.0"

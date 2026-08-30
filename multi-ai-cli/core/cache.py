@@ -1,58 +1,23 @@
-import json, os, re, sys
+import json, os, sys
 from pathlib import Path
 from typing import List, Dict, Optional
 
 CACHE_DIR = Path.home() / ".multi-ai-cache"
-CACHE_DIR.mkdir(parents=True, exist_ok=True)
-if not CACHE_DIR.is_symlink():
-    try:
-        CACHE_DIR.chmod(0o700)
-    except Exception:
-        pass
-
+CACHE_DIR.mkdir(exist_ok=True)
 
 def cache_path(session_id: str) -> str:
-    """Validate and sanitize session_id against path traversal attacks."""
-    sid_str = str(session_id)
-    if ".." in sid_str or sid_str.startswith("/") or "\\" in sid_str or os.path.isabs(sid_str):
-        raise ValueError("Invalid file path")
-
-    base_real = os.path.realpath(str(CACHE_DIR))
-    safe_id = re.sub(r"[^a-zA-Z0-9_\-\.]", "_", sid_str)
-    filename = os.path.basename(f"{safe_id}.json")
-    path = os.path.join(base_real, filename)
-
-    p = Path(path)
-    if p.is_symlink():
-        raise ValueError("Symlink cache path rejected for security")
-
-    target_real = os.path.realpath(path)
-    if not target_real.startswith(base_real) or os.path.commonpath([base_real, target_real]) != base_real:
-        raise ValueError("Invalid file path")
-
-    return target_real
-
+    return str(CACHE_DIR / f"{session_id}.json")
 
 def cache_load(session_id: str) -> Optional[List[Dict]]:
-    path = cache_path(session_id)
-    if os.path.exists(path):
-        with open(path, "r", encoding="utf-8") as f:
+    p = cache_path(session_id)
+    if os.path.exists(p):
+        with open(p) as f:
             return json.load(f)
     return None
 
-
 def cache_save(session_id: str, messages: List[Dict]):
-    path = cache_path(session_id)
-    with open(path, "w", encoding="utf-8") as f:
+    with open(cache_path(session_id), "w") as f:
         json.dump(messages, f, indent=2)
-
-    p_file = Path(path)
-    if p_file.exists() and not p_file.is_symlink():
-        try:
-            p_file.chmod(0o600)
-        except Exception:
-            pass
-
     # === DISPATCH HOOK — additive, never blocks save ===
     try:
         import importlib.util

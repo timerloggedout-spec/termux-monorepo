@@ -22,7 +22,7 @@ The repository already contains several index families, including `archwiz/CONCE
 
 ## 2. Notation research seed from #320
 
-Issue #320 identifies core category-theoretic structures and maps parallel notation across category theory, set theory, formal logic, type theory / functional programming, and order theory (posets).
+Issue `#320` identifies core category-theoretic structures and maps parallel notation across category theory, set theory, formal logic, type theory / functional programming, and order theory (posets).
 
 ### 2.1 Core Category Theory Notation
 
@@ -30,7 +30,8 @@ A category $\mathcal{C}$ consists of a collection of objects ($A, B, C$) and mor
 
 - **Morphism Assignment:** $f: A \to B$ (arrow with domain/source $A$ and codomain/target $B$).
 - **Composition:** $g \circ f$ or $g f$ (if $f: A \to B$ and $g: B \to C$, then $g \circ f: A \to C$; read "g after f").
-- **Diagrammatic Composition:** $f ; g$ or $f \gg g$ (read "f then g"; left-to-right ordering). Monadic bind ($m \gg= f$) is a domain-specific functional programming analogue.
+- **Diagrammatic Composition:** $f ; g$ (read "f then g"; generic left-to-right ordering). In Lean Mathlib, $f \gg g$ is a domain-specific categorical composition notation; it is not promoted here to a universal alias.
+- **Haskell Monad Bind:** $m \gg= f$ is domain-specific Haskell Monad bind syntax. It is not a generic synonym for categorical composition.
 - **Hom-Set:** $\text{Hom}_{\mathcal{C}}(A, B)$ or $\mathcal{C}(A, B)$ (collection of all arrows pointing from $A$ to $B$).
 - **Identity:** $\text{id}_A$ or $1_A$ (mandatory arrow mapping an object to itself without modification).
 - **Functor:** $F: \mathcal{C} \to \mathcal{D}$ (structure-preserving map between categories transforming objects and morphisms).
@@ -40,7 +41,7 @@ A category $\mathcal{C}$ consists of a collection of objects ($A, B, C$) and mor
 
 - **Opposite Category ($\mathcal{C}^{\text{op}}$):** Same category with all arrows reversed.
 - **The "Co-" Prefix / Duals:** Structural dual achieved by reversing arrows (e.g., Products $\times$ dualize to Coproducts $\sqcup$ or $+$, Limits dualize to Colimits).
-- **Exponential Objects ($Y^X$):** Internal object of arrows from $X$ to $Y$, structurally matching the set-theoretic total functions $|Y|^{|X|}$.
+- **Exponential Objects ($Y^X$):** Internal object of arrows from $X$ to $Y$, defined only when the relevant exponential exists, such as in a cartesian closed category. In `Set`, the corresponding set-theoretic function space has cardinality $|Y|^{|X|}$.
 
 ### 2.3 Cross-Domain Notation Mapping Table
 

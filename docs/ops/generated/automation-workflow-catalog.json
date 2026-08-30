@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "e3c86182d4c80901c8b140479ee674d2b638502af030a18b3a920b64f273a5c8",
-  "workflow_count": 55,
+  "source_fingerprint": "9b0c8a4a45ef6e10909f0c9f7740524e91b0fc76d5c2ec1dbdd0baefd6c2128d",
+  "workflow_count": 56,
   "workflows": [
     {
       "action_pins": [
@@ -683,6 +683,22 @@
       "triggers": [
         "pull_request",
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "contract"
+      ],
+      "name": "Notation Sets Contract",
+      "path": ".github/workflows/notation-sets-contract.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push"
       ]
     },
     {

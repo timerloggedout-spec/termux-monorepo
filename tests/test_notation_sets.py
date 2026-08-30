@@ -171,12 +171,12 @@ def test_proposal_source_and_items_file_references():
     assert items_file.exists()
     assert mdx_file.exists()
 
-    source_text = source_file.read_text()
-    items_text = items_file.read_text()
-    mdx_text = mdx_file.read_text()
+    source_text = source_file.read_text(encoding="utf-8")
+    items_text = items_file.read_text(encoding="utf-8")
+    mdx_text = mdx_file.read_text(encoding="utf-8")
 
     # Verify key issue references in proposal sources
-    for issue in ["#320", "#309", "#182", "#126", "#304", "#196", "#177", "#208", "#274"]:
+    for issue in ["#320", "#309", "#182", "#175", "#126", "#304", "#196", "#177", "#208", "#274"]:
         assert issue in source_text or issue in mdx_text
 
     # Verify NSE-021 item presence

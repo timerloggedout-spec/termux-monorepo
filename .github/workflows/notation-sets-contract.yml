@@ -1,0 +1,31 @@
+name: Notation Sets Contract
+
+on:
+  pull_request:
+    paths:
+      - "docs/proposals/active/notation-sets/**"
+      - "proposals/notation-sets.mdx"
+      - "tests/test_notation_sets.py"
+      - "scripts/ci/validate_notation_sets_contract.py"
+  push:
+    paths:
+      - "docs/proposals/active/notation-sets/**"
+      - "proposals/notation-sets.mdx"
+      - "tests/test_notation_sets.py"
+      - "scripts/ci/validate_notation_sets_contract.py"
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate notation-set contract
+        run: python3 scripts/ci/validate_notation_sets_contract.py
+      - name: Validate test module syntax
+        run: python3 -m py_compile tests/test_notation_sets.py

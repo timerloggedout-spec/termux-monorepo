@@ -86,7 +86,7 @@ Convert repo-gate, termux-smoke, domain tests, security checks, regression check
 
 ## P0.7 Autonomous repair PRs
 
-**Status:** implemented (planner + P0.7.1 bindings) — `she/repair_pr.py` · package `0.8.0` · #383 `43fcab0`
+**Status:** implemented (planner + P0.7.1 bindings) — `she/repair_pr.py` · package `0.8.0` · #383
 
 Planner produces **metadata for inspectable repair PRs**. It does not create branches, commits, or pull requests.
 
@@ -101,84 +101,11 @@ Planner produces **metadata for inspectable repair PRs**. It does not create bra
 
 ## P0.8 Learning
 
-**Status:** implemented (planner) — `she/learn.py` · package `0.9.0` · #384
-
-Persist successful and failed remediation patterns with provenance and verification history — **as an in-memory contract**. This slice does not write a store.
-
-- `LearningRecord` + `plan_learning(incident, verification=?, outcome=?)`
-- Dual gates must be present on the bound verification plan (subset)
-- Security/Dependabot → `observe` and never `reusable`
-- `reusable` only when outcome is `success` and verification is `promotion_ready`
-- `from_mapping` forces `reusable=False` / `live=False` / `persisted=False`
-- Live persistence gated by `SHE_LEARN_LIVE=1` and **not implemented** here
-- Tests: `tests/test_she_learn.py`
+Persist successful and failed remediation patterns with provenance and verification history.
 
 ## P0.9 Evolutionary repair
 
-**Status:** implemented (planner) — `she/evolve.py` · package `0.10.0` · #394 `0185811`
-
-L2: novel failures produce competing hypotheses, isolated experiments, benchmarks, candidate repairs, and gated promotion — **as an inspectable contract**. This slice does not mutate git.
-
-- `EvolutionPlan` + `plan_evolution(incident, sandbox=?, verification=?)`
-- Five isolated hypotheses; one experiment each under `she/evolve/`
-- Dual gates always required (subset) on plan, hypotheses, and experiments
-- Security/Dependabot → observe-only
-- `from_mapping` fail-closed (`live=False`, `mutates_source=False`, `promotion_ready=False`)
-- Live evolution gated by `SHE_EVOLVE_LIVE=1` and **not implemented** here
-- Tests: `tests/test_she_evolve.py`
-
-## P0.10 Promotion decision
-
-**Status:** implemented (planner) — `she/promote.py` · package `0.11.0` · #395 `1c1b7cc`
-
-Observer-only promotion contract. Hold unless dual gates pass on the current SHA. HTTP 200 / inconclusive / pending cannot promote.
-
-- `PromotionDecision` + `plan_promotion(incident, verification=?)`
-- Dual gates always required (subset) on the bound verification plan
-- Security/Dependabot → observe-only / no promote
-- `from_mapping` fail-closed (`live=False`, `promotion_ready=False`)
-- Live merge gated by `SHE_PROMOTE_LIVE=1` and **not implemented** here
-- Tests: `tests/test_she_promote.py`
-
-## P0.11 Evidence ledger
-
-**Status:** implemented (planner) — `she/ledger.py` · package `0.12.0` · #398 `5d9cac7`
-
-Append-only evidence contract binding incident → verification → promotion → learning. Still observer-only; no live git mutation and no disk persist.
-
-- `EvidenceLedger` + `plan_ledger(incident, verification=?, promotion=?, learning=?)`
-- Dual gates always required (subset)
-- Security/Dependabot → observe-only decision
-- `from_mapping` fail-closed (`persisted=False`, `live=False`, `mutates_source=False`)
-- Live persist gated by `SHE_LEDGER_LIVE=1` and **not implemented** here
-- Tests: `tests/test_she_ledger.py`
-
-## P0.12 Attestation digest
-
-**Status:** implemented (planner) — `she/attest.py` · package `0.13.0` · #399 `65327e1`
-
-Observer-only SHA-256 digest of the planned evidence ledger. Still no live signing, persist, network, or git mutation.
-
-- `Attestation` + `plan_attestation(incident, ledger=?)`
-- Dual gates always required (subset)
-- Security/Dependabot → observe-only decision
-- `from_mapping` fail-closed (`signed=False`, `live=False`, `persisted=False`)
-- Live signing gated by `SHE_ATTEST_LIVE=1` and **not implemented** here
-- Tests: `tests/test_she_attest.py`
-
-## P0.13 Attestation replay
-
-**Status:** implemented (planner) — `she/replay.py` · package `0.14.0`
-
-Observer-only recomputation of the P0.12 digest against a planned ledger. Still no live signing, persist, network, or git mutation.
-
-- `ReplayVerdict` + `plan_replay(incident, attestation=?, ledger=?)`
-- Dual gates always required (subset)
-- Security/Dependabot → observe-only verdict
-- Digest mismatch → `hold` (never promote)
-- `from_mapping` fail-closed (`verdict=hold`, `live=False`, `signed=False`)
-- Live replay gated by `SHE_REPLAY_LIVE=1` and **not implemented** here
-- Tests: `tests/test_she_replay.py`
+L2: novel failures produce competing hypotheses, isolated experiments, benchmarks, candidate repairs, and gated promotion.
 
 ## Priority boundary
 

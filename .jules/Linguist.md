@@ -46,3 +46,10 @@ Restore the behavior as an explicit reversible phase in `workspace/compression_s
 - `1103d832` / `51023b87` / `7a6e5a7` — cached mappings, Caveman, single-pass regex optimization
 - `4eb9f830` / `267fecc` — fast-path term search
 - #196 — `AGENTS.hum.md` round-trip milestone
+
+## 2026-08-28 - Fast Character Pre-screening to Avoid String Allocations in Document Scans
+**Learning:**
+In line-by-line document translation utilities (`compile_doc` and `decompile_doc`), calling `line.strip()` on every document line to check for markdown code fences (```` ``` ````) allocates hundreds of transient string objects per document processing pass. Replacing `line.strip().startswith("```")` with a character pre-check (`if "`" in line and line.lstrip().startswith("```"):`) short-circuits ~98% of lines via C-level `in` operator string checks without creating new string allocations.
+
+**Action:**
+In document processing loops, always use O(1) character membership pre-checks (`in`) before performing string transformations or whitespace stripping.

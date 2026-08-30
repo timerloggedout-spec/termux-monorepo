@@ -6,7 +6,7 @@ P0.1 incident · P0.2 ingest observers · P0.3 L0 recovery planner + executor
 · P0.6 verification planner · P0.7 repair-PR planner · P0.8 learning planner
 · P0.9 evolutionary-repair planner · P0.10 promotion-decision planner
 · P0.11 append-only evidence ledger · P0.12 attestation digest
-· P0.13 attestation replay verifier.
+· P0.13 attestation replay verifier · P0.14 publication planner.
 """
 
 from she.attest import (
@@ -70,6 +70,13 @@ from she.promote import (
     PromotionError,
     live_promote_enabled,
     plan_promotion,
+)
+from she.publish import (
+    ACTIONS as PUBLISH_ACTIONS,
+    PublicationPlan,
+    PublishError,
+    live_publish_enabled,
+    plan_publication,
 )
 from she.recovery.actions_bridge import (
     ActionsBridgeResult,
@@ -225,6 +232,11 @@ __all__ = [
     "ReplayVerdict",
     "live_replay_enabled",
     "plan_replay",
+    "PUBLISH_ACTIONS",
+    "PublishError",
+    "PublicationPlan",
+    "live_publish_enabled",
+    "plan_publication",
 ]
 
-__version__ = "0.14.0"
+__version__ = "0.15.0"

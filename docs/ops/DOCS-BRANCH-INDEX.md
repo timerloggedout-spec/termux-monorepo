@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-08-30T11:54:31Z` UTC  
+**Generated:** `2026-08-27T17:37:57Z` UTC
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 25 docs-lane branch(es)
+**Count:** 22 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -27,7 +27,6 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/mintlify-nav-complete`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/mintlify-nav-complete) | `c731fc0077cd` | — | — | orphan lane |
 | [`docs/mintlify-notation-sets-page`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/mintlify-notation-sets-page) | `df1f534e1c22` | — | — | orphan lane |
 | [`docs/notation-sets-evolution`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/notation-sets-evolution) | `25dbe5778683` | — | `timerloggedout-spec` | registered; no open PR |
-| [`docs/nse-022-023-lambda-lean-extract`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/nse-022-023-lambda-lean-extract) | `e588a84c04bf` | — | — | orphan lane |
 | [`docs/ops-docs-branch-index-automation`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/ops-docs-branch-index-automation) | `17961df7b0c5` | — | — | orphan lane |
 | [`docs/pr-scope-discipline-ce22`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/pr-scope-discipline-ce22) | `a68300477966` | [#67](https://github.com/timerloggedout-spec/termux-monorepo/pull/67)→`master` | — | PR without registry link |
 | [`docs/promote-archwiz-to-master`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/promote-archwiz-to-master) | `70bfdeff314a` | — | — | orphan lane |
@@ -35,8 +34,6 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/record-issue-192-promotion`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/record-issue-192-promotion) | `64f2a4139a83` | — | — | orphan lane |
 | [`docs/rl-05-status-2026-08-09`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/rl-05-status-2026-08-09) | `736a459ba488` | — | — | orphan lane |
 | [`docs/rl-board-2026-08-10`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/rl-board-2026-08-10) | `439bc48d63a2` | — | — | orphan lane |
-| [`docs/she-p010-roadmap-catchup`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/she-p010-roadmap-catchup) | `231a3193d34f` | — | — | orphan lane |
-| [`docs/she-roadmap-p04-p05-status`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/she-roadmap-p04-p05-status) | `9c318f5c2307` | — | — | orphan lane |
 | [`docs/termux-mcp-lean-template`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/termux-mcp-lean-template) | `b6487c77d8e0` | — | — | orphan lane |
 
 <!-- END:docs-branch-index -->

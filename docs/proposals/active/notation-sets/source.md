@@ -22,21 +22,36 @@ The repository already contains several index families, including `archwiz/CONCE
 
 ## 2. Notation research seed from #320
 
-#320 identifies parallel structures across category theory, set theory, formal logic, type theory/functional programming, and order theory. Its category-theory seed includes:
+Issue `#320` identifies core category-theoretic structures and maps parallel notation across category theory, set theory, formal logic, type theory / functional programming, and order theory (posets).
 
-| Semantic role | Category-theory seed | Research classification |
-|---|---|---|
-| morphism/function | `f: A → B` | canonical in source domain |
-| composition | `g ∘ f` | canonical category-theory composition |
-| left-to-right composition | `f ; g` | cross-domain/notation variant |
-| bind-like composition | `f >>= g` | domain-specific functional syntax; not a universal synonym |
-| hom-set | `Hom_C(A,B)` / `C(A,B)` | canonical family |
-| identity | `id_A` / `1_A` | canonical family |
-| functor | `F: C → D` | canonical |
-| natural transformation | `α: F ⇒ G` | canonical |
-| opposite category | `C^op` | canonical dualization notation |
-| product/coproduct | `×` / coproduct variants | dual construction; preserve categorical context |
-| exponential | `Y^X` | context-sensitive internal-object notation |
+### 2.1 Core Category Theory Notation
+
+A category $\mathcal{C}$ consists of a collection of objects ($A, B, C$) and morphisms (arrows) between them:
+
+- **Morphism Assignment:** $f: A \to B$ (arrow with domain/source $A$ and codomain/target $B$).
+- **Composition:** $g \circ f$ or $g f$ (if $f: A \to B$ and $g: B \to C$, then $g \circ f: A \to C$; read "g after f").
+- **Diagrammatic Composition:** $f ; g$ (read "f then g"; generic left-to-right ordering). In Lean Mathlib, $f \gg g$ is a domain-specific categorical composition notation; it is not promoted here to a universal alias.
+- **Haskell Monad Bind:** $m \gg= f$ is domain-specific Haskell Monad bind syntax. It is not a generic synonym for categorical composition.
+- **Hom-Set:** $\text{Hom}_{\mathcal{C}}(A, B)$ or $\mathcal{C}(A, B)$ (collection of all arrows pointing from $A$ to $B$).
+- **Identity:** $\text{id}_A$ or $1_A$ (mandatory arrow mapping an object to itself without modification).
+- **Functor:** $F: \mathcal{C} \to \mathcal{D}$ (structure-preserving map between categories transforming objects and morphisms).
+- **Natural Transformation:** $\alpha: F \implies G$ (mapping between functors providing a bridge between structural paths).
+
+### 2.2 Advanced & Dual Notations
+
+- **Opposite Category ($\mathcal{C}^{\text{op}}$):** Same category with all arrows reversed.
+- **The "Co-" Prefix / Duals:** Structural dual achieved by reversing arrows (e.g., Products $\times$ dualize to Coproducts $\sqcup$ or $+$, Limits dualize to Colimits).
+- **Exponential Objects ($Y^X$):** Internal object of arrows from $X$ to $Y$, defined only when the relevant exponential exists, such as in a cartesian closed category. In `Set`, the corresponding set-theoretic function space has cardinality $|Y|^{|X|}$.
+
+### 2.3 Cross-Domain Notation Mapping Table
+
+| Framework | Arrow / Mapping Notation | Composition Notation | Identity Concept |
+|---|---|---|---|
+| **Category Theory** | $f: A \to B$ | $g \circ f$ (or $f ; g$) | $\text{id}_A$ |
+| **Set Theory** | $f: X \to Y$ (Functions) | $(g \circ f)(x) = g(f(x))$ | $I(x) = x$ |
+| **Formal Logic** | $A \implies B$ (Implication) | If $A \implies B$ and $B \implies C$, then $A \implies C$ (Hypothetical Syllogism) | $A \implies A$ (Tautology) |
+| **Type Theory & FP** | $f :: A \to B$ (Types) | $g . f$ (or $f >>> g$) | $id$ |
+| **Order Theory (Posets)** | $x \le y$ (Relations) | If $x \le y$ and $y \le z$, then $x \le z$ (Transitivity) | $x \le x$ (Reflexivity) |
 
 The important research constraint is **semantic non-collapse**. Similar glyphs or analogous relationships across fields do not automatically imply identical semantics. The index therefore records both the shared structural relation and the domain boundary.
 

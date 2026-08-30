@@ -166,6 +166,14 @@ Phase contract:
 
 This is the first implementation slice for restoring the Linguist/CedrLang diaspora. Follow-on work must reconcile it with `AGENTS.md` ↔ `AGENTS.hum.md`, INDEX Taxonomy, Caveman/Grimoire, and ICM/README projections without making the compressed surface the canonical truth layer.
 
+## NSE-020 — Mapping Pointer Index and 100% Lossless Round-Trip
+
+Establish automated cross-index synchronization between `archwiz/POINTER_INDEX.md`, `workspace/llm_map/ALIAS_INDEX.md`, and ICM context relationship indices. Enforce 100% lossless round-trip compiling and decompiling across notation transformations, ensuring that semantic information, casing, line breaks, and protective placeholders are preserved end-to-end.
+
+## NSE-021 — Category-theoretic notation taxonomy and cross-domain mapping
+
+Formalize core category theory notations (morphisms `f: A → B`, composition `g ∘ f` or `g f`, diagrammatic composition `f ; g` or `f >> g`, Hom-sets `Hom_C(A, B)` / `C(A, B)`, identity `id_A` / `1_A`, functors `F: C → D`, natural transformations `α: F ⇒ G`, opposite category `C^op`, product `×` / coproduct `⊔` or `+` dualities, exponential objects `Y^X`) and map parallel concepts across Set Theory, Formal Logic, Type Theory / Functional Programming, and Order Theory (Posets). Integrates with Grimoire compression optimizations (#309, #182) and cross-domain semantic issue maps (#126, #304, #196, #177, #208, #274). Monadic bind (`>>=`) is mapped as a domain-specific FP analogue.
+
 ## Acceptance criteria
 
 - #320, #309, #182, and #175 are explicitly connected in the proposal registry/source; related issues expanded to include #126, #304, #196, #177, #208, #274 (per #309/#182 maps).

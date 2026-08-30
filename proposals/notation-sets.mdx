@@ -5,22 +5,22 @@ description: "Canonical, continuously evolving notation vocabulary, living lexic
 
 # Notation Sets, Living Lexicon, and Cross-Domain Semantic Index
 
-The `notation-sets` proposal establishes a canonical, continuously evolving notation vocabulary supporting Grimoire compression (#309/#182) and cross-domain semantic indexing. It separates canonical notation from domain aliases and domain-specific syntax, connects the vocabulary to the repository's existing pointer/concept/tool/context indexes, and defines a research-driven evolution loop so the glossary stays synchronized with implementation and operator governance.
+The `notation-sets` proposal establishes a canonical, continuously evolving notation vocabulary supporting Grimoire compression (`#309`/`#182`) and cross-domain semantic indexing. It separates canonical notation from domain aliases and domain-specific syntax, connects the vocabulary to the repository's existing pointer/concept/tool/context indexes, and defines a research-driven evolution loop so the glossary stays synchronized with implementation and operator governance.
 
 ## Status
 
-- **Proposal status:** `posted` (not accepted) — execution remains gated by `repo-gate` + `termux-smoke`.
+- **Proposal status:** `posted` (not accepted) - execution remains gated by `repo-gate` + `termux-smoke`.
 - **Malleable by design:** revisions are additive and attributed via the evolution ledger (NSE-004 loop, NSE-008 ledger). This is a revision pass, not a freeze.
-- **Latest revision:** [PR #324](https://github.com/timerloggedout-spec/termux-monorepo/pull/324) — integrated language-density + ADLM + grimoire research (NSE-009 → NSE-018).
+- **Latest revision:** [PR 390](https://github.com/timerloggedout-spec/termux-monorepo/pull/390) - formalized category-theoretic notation, cross-domain mappings, and proposal/test alignment while continuing the living-lexicon research line.
 
 ## Research basis
 
 This revision integrates two prior research sessions:
 
-- **Language information density & ADLM** — Coupé et al. 2019 (cross-language convergence near ~39 bits/s); Petrov et al. EMNLP 2023 (tokenizer inequity across scripts); FLORES-200; tiktoken; Adaptive Dynamic Language Mixing as a tokenizer- and model-specific semantic codec with a canonical-IR truth layer.
-- **Grimoire compression & category-theoretic IR** — layered compression stack (zstd, LZ4, Brotli, FastCDC, xdelta3, CBOR, Parquet); canonical IR for category theory; per-corpus dictionary training.
+- **Language information density & ADLM** - Coupé et al. 2019 (cross-language convergence near ~39 bits/s); Petrov et al. EMNLP 2023 (tokenizer inequity across scripts); FLORES-200; tiktoken; Adaptive Dynamic Language Mixing as a tokenizer- and model-specific semantic codec with a canonical-IR truth layer.
+- **Grimoire compression & category-theoretic IR** - layered compression stack (zstd, LZ4, Brotli, FastCDC, xdelta3, CBOR, Parquet); canonical IR for category theory; per-corpus dictionary training.
 
-See NSE-009 → NSE-018 in the full proposal.
+See NSE-009 to NSE-021 in the full proposal.
 
 ## Item index
 
@@ -44,6 +44,9 @@ See NSE-009 → NSE-018 in the full proposal.
 | NSE-016 | Agent-native compressed communication |
 | NSE-017 | Domain-specific / repo-specific / author-org codec considerations |
 | NSE-018 | Falsifiable research question and control conditions |
+| NSE-019 | Linguist PR `#154` phased 1337 diaspora recovery |
+| NSE-020 | Mapping Pointer Index and 100% Lossless Round-Trip |
+| NSE-021 | Category-theoretic notation taxonomy and cross-domain mapping |
 
 ## Related issues
 

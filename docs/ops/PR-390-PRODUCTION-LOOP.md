@@ -30,6 +30,12 @@ A large negative diff is **not automatically a rollback**. Compare against `mast
 4. intentional replacement → retain only with an explicit tested successor;
 5. superseded artifact → archive with source SHA, timestamp, reason, and replacement.
 
+### MVT / branch experimentation
+
+Branch switching is an experimental capability, not a reason to rewrite history. The MVT workflow accepts a candidate branch, tag, or commit SHA plus a baseline and records their resolved SHAs, merge-base, ahead/behind counts, timestamps, changed paths, validation suite, and immutable experiment identifier. Candidate refs are never mutated by the experiment workflow.
+
+Use MVT to test one commit/change at a time where possible. Treat each candidate SHA as a separate evidence cycle. Compare measured behavior before promoting a candidate into the production branch. The experiment artifact is evidence, not an authorization to merge.
+
 ### Implement
 
 Prefer small, auditable commits. Never manufacture historical telemetry. Never restore a secret, credential, or private mapping payload into the public repository.
@@ -39,6 +45,8 @@ For the Linguist/CedrLang lineage, the #154 70% `to_1337speak()` value is an ini
 ### Wait / validate
 
 A commit is not complete until the relevant GitHub checks have actually run and their terminal states have been re-fetched. A skipped provider, stale review, or missing run is `UNVERIFIED`, not green.
+
+For MVT, validate the candidate and baseline under the same suite and record the exact resolved SHAs. Never compare moving branch names without resolving them to immutable commits.
 
 ### Re-fetch / repeat
 
@@ -60,6 +68,7 @@ The loop stops only when:
 - `.github/workflows/pr390-master-realign.yml` — non-rewriting `master` convergence for PR #390.
 - `.github/workflows/master-deletion-recovery.yml` — recovery of authoritative source/docs/tests without blind telemetry regeneration.
 - `.github/workflows/agent-continuous-ops.yml` — unattended agent progression and debounce/loop controls.
+- `.github/workflows/agent-mvt-experiment.yml` — dynamic branch/commit MVT comparison and validation.
 - `.github/workflows/agent-feedback-linear-sync.yml` — review feedback projection into Linear.
 
 ## Provenance anchors

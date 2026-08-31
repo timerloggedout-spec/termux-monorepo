@@ -1,0 +1,169 @@
+name: Agent MVT experiment loop
+
+# Experimental control-plane lane for branch/commit Design-of-Experiments.
+# It NEVER mutates refs. Candidate refs are checked out independently, measured,
+# and recorded so commits can be compared without turning branch switching into
+# history rewriting. This complements Continuous agent ops rather than replacing it.
+
+on:
+  workflow_dispatch:
+    inputs:
+      candidate_ref:
+        description: 'Candidate branch, tag, or commit SHA to test'
+        required: true
+        type: string
+      baseline_ref:
+        description: 'Baseline branch, tag, or commit SHA'
+        required: false
+        default: 'master'
+        type: string
+      experiment_id:
+        description: 'Stable experiment identifier'
+        required: true
+        type: string
+      suite:
+        description: 'Validation suite: smoke, contract, or full'
+        required: false
+        default: 'smoke'
+        type: choice
+        options: [smoke, contract, full]
+      compare_only:
+        description: 'Compare metadata only; do not execute candidate tests'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: agent-mvt-${{ inputs.experiment_id }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  experiment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.candidate_ref }}
+          fetch-depth: 0
+
+      - name: Resolve candidate and baseline
+        id: refs
+        env:
+          CANDIDATE_REF: ${{ inputs.candidate_ref }}
+          BASELINE_REF: ${{ inputs.baseline_ref }}
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --prune origin "$BASELINE_REF"
+          candidate_sha="$(git rev-parse HEAD)"
+          baseline_sha="$(git rev-parse "origin/$BASELINE_REF" 2>/dev/null || git rev-parse "$BASELINE_REF")"
+          merge_base="$(git merge-base "$candidate_sha" "$baseline_sha")"
+          ahead="$(git rev-list --count "$baseline_sha..$candidate_sha")"
+          behind="$(git rev-list --count "$candidate_sha..$baseline_sha")"
+          candidate_time="$(git show -s --format=%cI "$candidate_sha")"
+          baseline_time="$(git show -s --format=%cI "$baseline_sha")"
+          printf 'candidate_sha=%s\n' "$candidate_sha" >> "$GITHUB_OUTPUT"
+          printf 'baseline_sha=%s\n' "$baseline_sha" >> "$GITHUB_OUTPUT"
+          printf 'merge_base=%s\n' "$merge_base" >> "$GITHUB_OUTPUT"
+          printf 'ahead=%s\n' "$ahead" >> "$GITHUB_OUTPUT"
+          printf 'behind=%s\n' "$behind" >> "$GITHUB_OUTPUT"
+          printf 'candidate_time=%s\n' "$candidate_time" >> "$GITHUB_OUTPUT"
+          printf 'baseline_time=%s\n' "$baseline_time" >> "$GITHUB_OUTPUT"
+          {
+            echo "## MVT reference resolution"
+            echo "- experiment: \`${{ inputs.experiment_id }}\`"
+            echo "- candidate: \`$candidate_sha\`"
+            echo "- baseline: \`$baseline_sha\`"
+            echo "- merge-base: \`$merge_base\`"
+            echo "- ahead/behind: \`${ahead}/${behind}\`"
+            echo "- candidate timestamp: \`$candidate_time\`"
+            echo "- baseline timestamp: \`$baseline_time\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Compare changed paths
+        env:
+          BASELINE_SHA: ${{ steps.refs.outputs.baseline_sha }}
+          CANDIDATE_SHA: ${{ steps.refs.outputs.candidate_sha }}
+        run: |
+          set -euo pipefail
+          git diff --name-status "$BASELINE_SHA" "$CANDIDATE_SHA" | tee mvt-path-diff.txt
+          {
+            echo
+            echo '### Changed-path classification seed'
+            echo 'The diff is evidence only; deletion is not automatically classified as rollback.'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Install test dependencies
+        if: ${{ !inputs.compare_only }}
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then python -m pip install -r requirements.txt; fi
+
+      - name: Smoke validation
+        if: ${{ !inputs.compare_only && inputs.suite == 'smoke' }}
+        run: |
+          set -euo pipefail
+          if [ -x ./scripts/ops/repo-gate.sh ]; then ./scripts/ops/repo-gate.sh; fi
+          if [ -x ./scripts/ops/termux-smoke.sh ]; then ./scripts/ops/termux-smoke.sh; fi
+          python -m compileall -q .
+
+      - name: Contract validation
+        if: ${{ !inputs.compare_only && (inputs.suite == 'contract' || inputs.suite == 'full') }}
+        run: |
+          set -euo pipefail
+          if [ -f tests/test_notation_sets.py ]; then python -m pytest -q tests/test_notation_sets.py; fi
+          if [ -f tests/test_she_recovery_contract.py ]; then python -m pytest -q tests/test_she_recovery_contract.py; fi
+          if [ -f tests/test_phase_codec.py ]; then python -m pytest -q tests/test_phase_codec.py; fi
+
+      - name: Full validation
+        if: ${{ !inputs.compare_only && inputs.suite == 'full' }}
+        run: |
+          set -euo pipefail
+          python -m pytest -q
+
+      - name: Emit immutable experiment record
+        env:
+          EXPERIMENT_ID: ${{ inputs.experiment_id }}
+          SUITE: ${{ inputs.suite }}
+          COMPARE_ONLY: ${{ inputs.compare_only }}
+          CANDIDATE_SHA: ${{ steps.refs.outputs.candidate_sha }}
+          BASELINE_SHA: ${{ steps.refs.outputs.baseline_sha }}
+          MERGE_BASE: ${{ steps.refs.outputs.merge_base }}
+          AHEAD: ${{ steps.refs.outputs.ahead }}
+          BEHIND: ${{ steps.refs.outputs.behind }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          record = {
+              'schema_version': 'agent-mvt-v1',
+              'experiment_id': os.environ['EXPERIMENT_ID'],
+              'observed_at': datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z'),
+              'candidate_sha': os.environ['CANDIDATE_SHA'],
+              'baseline_sha': os.environ['BASELINE_SHA'],
+              'merge_base': os.environ['MERGE_BASE'],
+              'ahead': int(os.environ['AHEAD']),
+              'behind': int(os.environ['BEHIND']),
+              'suite': os.environ['SUITE'],
+              'compare_only': os.environ['COMPARE_ONLY'].lower() == 'true',
+          }
+          with open('mvt-experiment.json', 'w', encoding='utf-8') as fh:
+              json.dump(record, fh, indent=2, sort_keys=True)
+              fh.write('\n')
+          print(json.dumps(record, sort_keys=True))
+          PY
+
+      - name: Upload experiment evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: mvt-${{ inputs.experiment_id }}-${{ steps.refs.outputs.candidate_sha }}
+          if-no-files-found: error
+          retention-days: 30
+          path: |
+            mvt-experiment.json
+            mvt-path-diff.txt

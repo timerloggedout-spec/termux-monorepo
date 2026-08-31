@@ -6,17 +6,17 @@ except ImportError:
 
 from .base import ChatBackend
 
-class MistralWebBackend(ChatBackend):
+class KimiWebBackend(ChatBackend):
     """
-    Headless Web API Backend for Mistral AI.
+    Headless Web API Backend for Moonshot Kimi.
     Bypasses browser automation by emulating internal web endpoints.
     """
     def __init__(self, session_manager):
         self.session_manager = session_manager
-        self.base_url = "https://chat.mistral.ai/api/chat"
+        self.base_url = "https://kimi.moonshot.cn/api/chat"
         
         # Load cookies from session manager or environment
-        self.cookies = session_manager.get_token("mistral_cookies")
+        self.cookies = session_manager.get_token("kimi_cookies")
         if isinstance(self.cookies, str):
             try:
                 self.cookies = json.loads(self.cookies)
@@ -30,8 +30,8 @@ class MistralWebBackend(ChatBackend):
         headers = {
             "accept": "*/*",
             "content-type": "application/json",
-            "origin": "https://chat.mistral.ai",
-            "referer": "https://chat.mistral.ai/",
+            "origin": "https://kimi.moonshot.cn",
+            "referer": "https://kimi.moonshot.cn/",
             "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
         }
 
@@ -40,7 +40,7 @@ class MistralWebBackend(ChatBackend):
         messages.append({"role": "user", "content": message})
 
         payload = {
-            "model": "mistral-large-latest",
+            "model": "kimi-v1",
             "messages": messages,
             "stream": True
         }
@@ -70,7 +70,7 @@ class MistralWebBackend(ChatBackend):
                         except:
                             continue
             
-            return full_response.strip() if full_response else "[No content returned from Mistral]"
+            return full_response.strip() if full_response else "[No content returned from Kimi]"
 
         except Exception as e:
-            return f"Error calling Mistral Web API: {str(e)}"
+            return f"Error calling Kimi Web API: {str(e)}"

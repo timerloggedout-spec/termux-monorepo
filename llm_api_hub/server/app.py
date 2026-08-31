@@ -34,6 +34,16 @@ from pydantic import BaseModel, ConfigDict, Field
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 MULTI_AI_CLI = REPO_ROOT / "multi-ai-cli"
+
+# Ensure multi-ai-cli is in path for core imports
+if str(MULTI_AI_CLI) not in sys.path:
+    sys.path.insert(0, str(MULTI_AI_CLI))
+
+try:
+    from core import provider_checklist, provider_registry
+except ImportError:
+    provider_checklist = None
+    provider_registry = None
 DEFAULT_HOST = os.environ.get("LLM_API_HUB_HOST", "127.0.0.1")
 DEFAULT_PORT = int(os.environ.get("LLM_API_HUB_PORT", "8787"))
 REQUEST_TIMEOUT = float(os.environ.get("LLM_API_HUB_TIMEOUT", "120"))
@@ -70,6 +80,8 @@ class ChatCompletionRequest(BaseModel):
     # Optional hub extension. It is ignored by upstream providers and can be
     # used by callers that want multi-turn wrapper session persistence.
     session_id: Optional[str] = None
+    search: Optional[bool] = False
+    thinking: Optional[bool] = True
 
 
 class HubRuntime:
@@ -99,11 +111,15 @@ class HubRuntime:
     def complete_wrapper(self, provider: str, request: ChatCompletionRequest) -> str:
         dispatcher = self._get_dispatcher()
         prompt = messages_to_prompt(request.messages)
+        kwargs = {
+            "search": request.search,
+            "thinking": request.thinking,
+        }
         try:
             if request.session_id:
-                return str(dispatcher.send(provider, prompt, request.session_id))
+                return str(dispatcher.send(provider, prompt, request.session_id, **kwargs))
             backend = dispatcher.get_backend(provider)
-            return str(backend.send_message(prompt, []))
+            return str(backend.send_message(prompt, [], **kwargs))
         except HubError:
             raise
         except Exception as exc:
@@ -127,6 +143,10 @@ class HubRuntime:
         elif provider == "openai":
             base_url = os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1")
             api_key = os.environ.get("OPENAI_API_KEY")
+            extra_headers = {}
+        elif provider == "xai":
+            base_url = os.environ.get("XAI_BASE_URL", "https://api.x.ai/v1")
+            api_key = os.environ.get("XAI_API_KEY")
             extra_headers = {}
         else:
             raise HubError(400, f"unsupported upstream provider '{provider}'", code="unsupported_provider")
@@ -310,13 +330,19 @@ def validate_auth(request: Request) -> None:
 
 
 def configured_models() -> List[str]:
-    models = ["wrapper/deepseek", "wrapper/mistral", "wrapper/claude", "wrapper/gemini", "wrapper/colab"]
+    models = [
+        "wrapper/deepseek", "wrapper/mistral", "wrapper/grok", 
+        "wrapper/claude", "wrapper/gemini", "wrapper/colab",
+        "wrapper/perplexity", "wrapper/kimi"
+    ]
     if os.environ.get("OPENROUTER_API_KEY"):
         models.append("openrouter/<model>")
     if os.environ.get("OPENAI_API_KEY"):
         models.append("openai/<model>")
     if os.environ.get("ANTHROPIC_API_KEY"):
         models.append("anthropic/<model>")
+    if os.environ.get("XAI_API_KEY"):
+        models.append("xai/<model>")
     return models
 
 
@@ -348,6 +374,41 @@ def health() -> Dict[str, Any]:
     }
 
 
+@app.get("/v1/providers")
+def list_providers(request: Request) -> List[Dict[str, Any]]:
+    validate_auth(request)
+    if not provider_checklist:
+        raise HubError(501, "provider checklist is not available", code="not_implemented")
+    return provider_checklist.public_view(provider_checklist.load_state())
+
+
+class TransitionRequest(BaseModel):
+    state: str
+    account: Optional[str] = None
+    reason: Optional[str] = None
+
+
+@app.post("/v1/providers/{provider_id}/transition")
+def transition_provider(provider_id: str, request: TransitionRequest, raw_request: Request) -> Dict[str, Any]:
+    validate_auth(raw_request)
+    if not provider_checklist:
+        raise HubError(501, "provider checklist is not available", code="not_implemented")
+    
+    state = provider_checklist.load_state()
+    try:
+        updated = provider_checklist.transition(
+            state, 
+            provider_id, 
+            request.state, 
+            account=request.account, 
+            reason=request.reason
+        )
+        provider_checklist.save_state(updated)
+        return {"status": "success", "provider_id": provider_id, "state": request.state}
+    except ValueError as exc:
+        raise HubError(400, str(exc), code="invalid_transition")
+
+
 @app.get("/v1/models")
 def models(request: Request) -> Dict[str, Any]:
     validate_auth(request)
@@ -361,13 +422,95 @@ def models(request: Request) -> Dict[str, Any]:
     }
 
 
+class SearchRequest(BaseModel):
+    q: str
+    provider: Optional[str] = "perplexity"
+
+
+@app.post("/v1/search")
+def search(request: SearchRequest, raw_request: Request) -> Dict[str, Any]:
+    """Perform a web search using a supported provider."""
+    validate_auth(raw_request)
+    provider = request.provider.strip()
+    if provider not in {"perplexity", "deepseek", "grok", "kimi"}:
+        raise HubError(400, f"provider '{provider}' does not support dedicated search", code="unsupported_search")
+    
+    # We use handle_completion with search=True and a prompt designed for search
+    hub_request = ChatCompletionRequest(
+        model=f"wrapper/{provider}",
+        messages=[ChatMessage(role="user", content=request.q)],
+        search=True,
+        thinking=False
+    )
+    response = handle_completion(hub_request)
+    
+    # For now, we return the full response. 
+    # In the future, we can extract citations/snippets.
+    return {
+        "query": request.q,
+        "provider": provider,
+        "results": response.get("choices", [{}])[0].get("message", {}).get("content", ""),
+        "raw": response
+    }
+
+
 @app.post("/v1/chat/completions")
 def chat_completions(request: ChatCompletionRequest, raw_request: Request) -> Any:
     validate_auth(raw_request)
+    return handle_completion(request)
+
+@app.post("/v1/messages")
+def anthropic_messages(request: ChatCompletionRequest, raw_request: Request) -> Any:
+    """Anthropic-native Messages API compatibility."""
+    validate_auth(raw_request)
+    response = handle_completion(request)
+    if isinstance(response, dict) and "choices" in response:
+        content = response["choices"][0]["message"]["content"]
+        return {
+            "id": response["id"],
+            "type": "message",
+            "role": "assistant",
+            "content": [{"type": "text", "text": content}],
+            "model": response["model"],
+            "usage": response.get("usage", {"input_tokens": 0, "output_tokens": 0})
+        }
+    return response
+
+@app.post("/v1/models/{model_name}:generateContent")
+def google_generate_content(model_name: str, request_data: Dict[str, Any], raw_request: Request) -> Any:
+    """Google Gemini-native generateContent API compatibility."""
+    validate_auth(raw_request)
+    messages = []
+    for part in request_data.get("contents", []):
+        role = "user" if part.get("role") == "user" else "assistant"
+        content = ""
+        for p in part.get("parts", []):
+            if "text" in p:
+                content += p["text"]
+        messages.append(ChatMessage(role=role, content=content))
+    
+    hub_request = ChatCompletionRequest(model=model_name, messages=messages)
+    response = handle_completion(hub_request)
+    
+    if isinstance(response, dict) and "choices" in response:
+        content = response["choices"][0]["message"]["content"]
+        return {
+            "candidates": [{
+                "content": {"parts": [{"text": content}], "role": "model"},
+                "finishReason": "STOP"
+            }],
+            "usageMetadata": {
+                "promptTokenCount": response.get("usage", {}).get("prompt_tokens", 0),
+                "candidatesTokenCount": response.get("usage", {}).get("completion_tokens", 0)
+            }
+        }
+    return response
+
+def handle_completion(request: ChatCompletionRequest) -> Any:
     model = request.model.strip()
     if model.startswith("wrapper/"):
         provider = model.split("/", 1)[1]
-        if provider not in {"deepseek", "mistral", "claude", "gemini", "colab"}:
+        if provider not in {"deepseek", "mistral", "grok", "claude", "gemini", "colab", "perplexity", "kimi"}:
             raise HubError(400, f"unknown wrapper model '{model}'", code="unknown_model")
         text = runtime.complete_wrapper(provider, request)
         response = completion_response(model, text)
@@ -377,6 +520,8 @@ def chat_completions(request: ChatCompletionRequest, raw_request: Request) -> An
         response = runtime.complete_upstream("openai", request)
     elif model.startswith("anthropic/"):
         response = runtime.complete_upstream("anthropic", request)
+    elif model.startswith("xai/"):
+        response = runtime.complete_upstream("xai", request)
     elif "/" not in model and os.environ.get("OPENROUTER_API_KEY"):
         response = runtime.complete_upstream("openrouter", request)
     else:

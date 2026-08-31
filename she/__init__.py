@@ -3,9 +3,29 @@
 P0.1 incident · P0.2 ingest observers · P0.3 L0 recovery planner + executor
 + Actions re-run bridge (dry-run default) · job-timestamp metrics · P0.4 dispatcher
 · P0.4.1 dispatch→bridge dry-run wire · P0.5 repair sandbox planner
-· P0.6 verification planner · P0.7 repair-PR planner.
+· P0.6 verification planner · P0.7 repair-PR planner · P0.8 learning planner
+· P0.9 evolutionary-repair planner · P0.10 promotion-decision planner
+· P0.11 append-only evidence ledger · P0.12 attestation digest
+· P0.13 attestation replay verifier.
 """
 
+from she.attest import (
+    DIGEST_ALGO,
+    Attestation,
+    AttestError,
+    digest_mapping,
+    live_attest_enabled,
+    plan_attestation,
+)
+from she.evolve import (
+    HYPOTHESIS_KINDS,
+    EvolutionPlan,
+    EvolveError,
+    ExperimentSpec,
+    Hypothesis,
+    live_evolve_enabled,
+    plan_evolution,
+)
 from she.incident import (
     ALLOWED_TRANSITIONS,
     TERMINAL_STATES,
@@ -19,6 +39,21 @@ from she.ingest.actions import (
     incident_from_workflow_run,
     normalize_workflow_run_payload,
 )
+from she.learn import (
+    OUTCOMES,
+    LearnError,
+    LearningRecord,
+    live_learn_enabled,
+    plan_learning,
+)
+from she.ledger import (
+    ENTRY_KINDS,
+    EvidenceLedger,
+    LedgerEntry,
+    LedgerError,
+    live_ledger_enabled,
+    plan_ledger,
+)
 from she.metrics.job_timestamps import (
     JobDuration,
     RunJobStats,
@@ -28,6 +63,13 @@ from she.metrics.job_timestamps import (
     duration_ms_from_job,
     duration_ms_from_jobs,
     queue_ms_from_job,
+)
+from she.promote import (
+    DECISIONS,
+    PromotionDecision,
+    PromotionError,
+    live_promote_enabled,
+    plan_promotion,
 )
 from she.recovery.actions_bridge import (
     ActionsBridgeResult,
@@ -59,6 +101,13 @@ from she.repair_pr import (
     RepairPRPlan,
     live_repair_pr_enabled,
     plan_repair_pr,
+)
+from she.replay import (
+    VERDICTS,
+    ReplayError,
+    ReplayVerdict,
+    live_replay_enabled,
+    plan_replay,
 )
 from she.sandbox import (
     CREDENTIAL_PROFILES,
@@ -142,6 +191,40 @@ __all__ = [
     "RepairPRPlan",
     "live_repair_pr_enabled",
     "plan_repair_pr",
+    "OUTCOMES",
+    "LearnError",
+    "LearningRecord",
+    "live_learn_enabled",
+    "plan_learning",
+    "HYPOTHESIS_KINDS",
+    "EvolveError",
+    "Hypothesis",
+    "ExperimentSpec",
+    "EvolutionPlan",
+    "live_evolve_enabled",
+    "plan_evolution",
+    "DECISIONS",
+    "PromotionError",
+    "PromotionDecision",
+    "live_promote_enabled",
+    "plan_promotion",
+    "ENTRY_KINDS",
+    "LedgerError",
+    "LedgerEntry",
+    "EvidenceLedger",
+    "live_ledger_enabled",
+    "plan_ledger",
+    "DIGEST_ALGO",
+    "AttestError",
+    "Attestation",
+    "digest_mapping",
+    "live_attest_enabled",
+    "plan_attestation",
+    "VERDICTS",
+    "ReplayError",
+    "ReplayVerdict",
+    "live_replay_enabled",
+    "plan_replay",
 ]
 
-__version__ = "0.8.0"
+__version__ = "0.14.0"

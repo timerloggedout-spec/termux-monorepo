@@ -1,0 +1,38 @@
+name: PR #390 master realignment
+
+# Narrow, auditable alignment loop for the long-lived Jules production branch.
+# It only merges current master into PR #390's branch; it never force-pushes or
+# rewrites history. Conflicts stop the job for human/Jules resolution.
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pr390-master-realign
+  cancel-in-progress: true
+
+jobs:
+  realign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: jules-225739920541251220-691fb33f
+      - name: Merge current master without rewriting history
+        run: |
+          set -euo pipefail
+          git fetch origin master --no-tags
+          git config user.name 'timerloggedout-spec'
+          git config user.email 'timerloggedout-spec@users.noreply.github.com'
+          if git merge-base --is-ancestor origin/master HEAD; then
+            echo 'PR branch already contains master.'
+            exit 0
+          fi
+          git merge --no-edit --no-ff origin/master -m 'realign PR #390 with master'
+          git push origin HEAD:jules-225739920541251220-691fb33f

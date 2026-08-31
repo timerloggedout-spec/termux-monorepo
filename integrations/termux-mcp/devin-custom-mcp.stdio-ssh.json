@@ -1,0 +1,14 @@
+{
+  "name": "termux",
+  "description": "Control an Android phone via Termux MCP over SSH",
+  "transport": "STDIO",
+  "command": "ssh",
+  "args": [
+    "-p",
+    "8022",
+    "<PHONE_SSH_USER>@<PHONE_HOST>",
+    "<PHONE_TERMUX_DIR>/integrations/termux-mcp/.venv/bin/python",
+    "<PHONE_TERMUX_DIR>/integrations/termux-mcp/serve.py"
+  ],
+  "env": {}
+}

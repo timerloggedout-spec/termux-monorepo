@@ -182,6 +182,11 @@ def plan_promotion(
             },
         )
 
+    if verification is not None:
+        if verification.incident_id != incident.incident_id:
+            raise PromotionError("verification incident_id must match incident")
+        if verification.sha != incident.sha:
+            raise PromotionError("verification sha must match incident sha")
     verification = verification or plan_verification(incident)
     if check_results:
         verification = apply_check_results(verification, check_results)

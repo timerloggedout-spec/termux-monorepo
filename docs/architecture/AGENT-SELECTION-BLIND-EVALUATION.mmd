@@ -1,0 +1,23 @@
+```mermaid
+flowchart TD
+    A[Candidate population] --> B[Randomized / opaque treatment assignment]
+    B --> C[BLINDED EVALUATOR VIEW]
+    C --> D[Execute treatment]
+    D --> E[Evidence freeze]
+    E --> F[Blind correctness evaluation]
+    F --> G{PASS / FAIL / UNKNOWN / PARTIAL}
+    G --> H[UNBLIND attribution]
+    H --> I[MONEYBALL / 3L0]
+    I --> J[BIUDL LEARN]
+    J --> A
+
+    B -. protected mapping .-> P[(Provenance mapping)]
+    D --> P
+    E --> P
+    F --> P
+    H --> P
+```
+
+# Blind Agent Selection — Evaluation Boundary
+
+This diagram shows the evaluation boundary: identity is hidden where feasible, but provenance remains reconstructable. Unblinding occurs after evidence is frozen unless a documented safety, debugging, quota, or operational exception requires earlier access.

@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "e3c86182d4c80901c8b140479ee674d2b638502af030a18b3a920b64f273a5c8",
-  "workflow_count": 55,
+  "source_fingerprint": "3ac19fff64c3ff1647dfef01058e2f02f34b8a7a70ce26215af95910e8ec8f75",
+  "workflow_count": 59,
   "workflows": [
     {
       "action_pins": [
@@ -102,6 +102,21 @@
       "triggers": [
         "issue_comment",
         "issues"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: agent-mvt-${{ inputs.experiment_id }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "experiment"
+      ],
+      "name": "Agent MVT experiment loop",
+      "path": ".github/workflows/agent-mvt-experiment.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
       ]
     },
     {
@@ -686,6 +701,21 @@
       ]
     },
     {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: master-deletion-recovery-${{ github.ref_name }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "recover"
+      ],
+      "name": "Master deletion recovery",
+      "path": ".github/workflows/master-deletion-recovery.yml",
+      "schedules": [],
+      "triggers": [
+        "push"
+      ]
+    },
+    {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
@@ -775,6 +805,41 @@
         "issue_comment",
         "pull_request_review",
         "pull_request_target"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: pr-production-ledger-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "ledger"
+      ],
+      "name": "PR production ledger",
+      "path": ".github/workflows/pr-production-ledger.yml",
+      "schedules": [],
+      "triggers": [
+        "issue_comment",
+        "pull_request_review",
+        "pull_request_target"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: pr390-master-realign cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "realign"
+      ],
+      "name": "PR",
+      "path": ".github/workflows/pr390-master-realign.yml",
+      "schedules": [],
+      "triggers": [
+        "push",
+        "workflow_dispatch"
       ]
     },
     {

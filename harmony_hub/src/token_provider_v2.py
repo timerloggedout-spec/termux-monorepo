@@ -8,6 +8,8 @@ VAULT = VAULT_DIR / 'vault.json'
 
 def _load_json(path):
     if path.exists():
+        if path.is_symlink():
+            raise ValueError(f"Symlink vault path rejected for security: {path}")
         with open(path) as f:
             return json.load(f)
     return None
@@ -57,12 +59,16 @@ def get_token(account='primary'):
         raise ValueError(f"Unknown account: {account}")
 
     if token:
+        if VAULT.is_symlink():
+            raise ValueError(f"Symlink vault path rejected for security: {VAULT}")
+        VAULT_DIR.mkdir(mode=0o700, parents=True, exist_ok=True)
         # Save to vault
         current = _load_json(VAULT) or {}
         current[account] = token
         with open(VAULT, 'w') as f:
             json.dump(current, f)
-        os.chmod(VAULT, 0o600)
+        if not VAULT.is_symlink():
+            os.chmod(VAULT, 0o600)
         return token
 
     raise RuntimeError(f"No token found for account '{account}'")

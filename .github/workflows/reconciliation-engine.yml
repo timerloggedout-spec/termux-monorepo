@@ -1,0 +1,96 @@
+name: Production Reconciliation Engine
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_ref:
+        description: 'Candidate branch, tag, or SHA to reconcile against base_ref'
+        required: true
+        type: string
+      base_ref:
+        description: 'Baseline branch, tag, or SHA'
+        required: true
+        default: master
+        type: string
+      mode:
+        description: 'Observe only or prepare a safe reconciliation PR'
+        required: true
+        default: observe
+        type: choice
+        options: [observe, prepare]
+  schedule:
+    - cron: '17 * * * *'
+
+permissions:
+  contents: read
+  pull-requests: read
+  issues: read
+  actions: read
+
+concurrency:
+  group: reconciliation-${{ github.event.inputs.target_ref || github.ref }}-${{ github.event.inputs.base_ref || 'master' }}
+  cancel-in-progress: false
+
+jobs:
+  recon:
+    name: Resolve refs and classify drift
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout control-plane
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - name: Resolve immutable refs
+        id: refs
+        env:
+          TARGET_REF: ${{ github.event.inputs.target_ref || github.ref }}
+          BASE_REF: ${{ github.event.inputs.base_ref || 'master' }}
+        run: |
+          set -euo pipefail
+          git fetch --prune origin '+refs/heads/*:refs/remotes/origin/*' '+refs/tags/*:refs/tags/*'
+          target_sha="$(git rev-parse "$TARGET_REF^{commit}")"
+          base_sha="$(git rev-parse "$BASE_REF^{commit}")"
+          merge_base="$(git merge-base "$target_sha" "$base_sha")"
+          ahead="$(git rev-list --count "$base_sha".."$target_sha")"
+          behind="$(git rev-list --count "$target_sha".."$base_sha")"
+          changed="$(git diff --name-only "$base_sha" "$target_sha" | wc -l | tr -d ' ')"
+          {
+            echo "target_sha=$target_sha"
+            echo "base_sha=$base_sha"
+            echo "merge_base=$merge_base"
+            echo "ahead=$ahead"
+            echo "behind=$behind"
+            echo "changed=$changed"
+          } >> "$GITHUB_OUTPUT"
+          printf '%s\n' "target_sha=$target_sha" "base_sha=$base_sha" "merge_base=$merge_base" "ahead=$ahead" "behind=$behind" "changed=$changed"
+
+      - name: Classify reconciliation state
+        env:
+          AHEAD: ${{ steps.refs.outputs.ahead }}
+          BEHIND: ${{ steps.refs.outputs.behind }}
+        run: |
+          set -euo pipefail
+          if [ "$BEHIND" = 0 ]; then
+            echo 'state=aligned' >> "$GITHUB_STEP_SUMMARY"
+          elif git merge-base --is-ancestor "${{ steps.refs.outputs.base_sha }}" "${{ steps.refs.outputs.target_sha }}"; then
+            echo 'state=candidate-ahead' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'state=diverged-or-behind' >> "$GITHUB_STEP_SUMMARY"
+            echo 'Safe default: stop. No force-push, reset, or automatic conflict resolution.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+          printf '## Reconciliation evidence\n- target: `%s`\n- baseline: `%s`\n- merge-base: `%s`\n- ahead: `%s`\n- behind: `%s`\n- changed paths: `%s`\n' '${{ steps.refs.outputs.target_sha }}' '${{ steps.refs.outputs.base_sha }}' '${{ steps.refs.outputs.merge_base }}' '${{ steps.refs.outputs.ahead }}' '${{ steps.refs.outputs.behind }}' '${{ steps.refs.outputs.changed }}' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Run canonical gates when target is self-contained
+        if: steps.refs.outputs.behind == '0'
+        run: |
+          set -euo pipefail
+          if [ -x scripts/repo_gate.py ]; then python scripts/repo_gate.py; fi
+          if [ -x scripts/termux_smoke.py ]; then python scripts/termux_smoke.py; fi
+
+      - name: Explicitly refuse mutation from observer
+        run: |
+          set -euo pipefail
+          echo 'Observer mode: this workflow never mutates refs.'
+          echo 'Preparation/promotion remains a separately reviewed operation.'

@@ -10,7 +10,15 @@ def test_sentinel_privileges_enforcement(tmp_path, monkeypatch):
     test_config_file = test_config_dir / "config.json"
 
     # Mock CONFIG_DIR and CONFIG_FILE in deepcli.deepcli.core
-    import deepcli.deepcli.core as dc
+    def _get_dc():
+        try:
+            import deepcli.deepcli.core as dc
+            return dc
+        except ImportError:
+            import deepcli.core as dc
+            return dc
+
+    dc = _get_dc()
     monkeypatch.setattr(dc, "CONFIG_DIR", test_config_dir)
     monkeypatch.setattr(dc, "CONFIG_FILE", test_config_file)
 
@@ -57,7 +65,15 @@ def test_sentinel_privileges_enforcement(tmp_path, monkeypatch):
 
 def test_sentinel_privileges_symlink_safety(tmp_path, monkeypatch):
     # Ensure that symlinks are skipped and not followed / modified
-    import deepcli.deepcli.core as dc
+    def _get_dc():
+        try:
+            import deepcli.deepcli.core as dc
+            return dc
+        except ImportError:
+            import deepcli.core as dc
+            return dc
+
+    dc = _get_dc()
 
     # Create a dummy target file
     target_file = tmp_path / "target_file.txt"
@@ -80,7 +96,15 @@ def test_sentinel_privileges_symlink_safety(tmp_path, monkeypatch):
 
 def test_sentinel_privileges_path_traversal_prevention(tmp_path, monkeypatch):
     # Ensure that path traversal attempts are detected and raise ValueError or are sanitized.
-    import deepcli.deepcli.core as dc
+    def _get_dc():
+        try:
+            import deepcli.deepcli.core as dc
+            return dc
+        except ImportError:
+            import deepcli.core as dc
+            return dc
+
+    dc = _get_dc()
 
     # Mocking ~/.deepcli path
     monkeypatch.setattr(os.path, "expanduser", lambda path: path.replace("~", str(tmp_path)))
@@ -113,7 +137,15 @@ def test_sentinel_privileges_path_traversal_prevention(tmp_path, monkeypatch):
 
 
 def test_sentinel_session_cache_key_collision_and_header_isolation(tmp_path, monkeypatch):
-    import deepcli.deepcli.core as dc
+    def _get_dc():
+        try:
+            import deepcli.deepcli.core as dc
+            return dc
+        except ImportError:
+            import deepcli.core as dc
+            return dc
+
+    dc = _get_dc()
 
     # 1. Test session cache key uniqueness across tokens sharing prefixes
     token1 = "token_prefix_1234567890_AAA"
@@ -157,3 +189,38 @@ def test_sentinel_session_cache_key_collision_and_header_isolation(tmp_path, mon
     # Shared session headers in _session should NOT contain X-Ds-Pow-Response
     sess_after = dc.get_session(token1)
     assert "X-Ds-Pow-Response" not in sess_after.headers
+
+
+def test_sentinel_cmd_export_symlink_safety(tmp_path, monkeypatch):
+    import argparse
+    def _get_cli():
+        try:
+            import deepcli.deepcli.cli as cli
+            return cli
+        except ImportError:
+            import deepcli.cli as cli
+            return cli
+
+    cli = _get_cli()
+    monkeypatch.setattr(cli, "get_token", lambda: "mock_token")
+    monkeypatch.setattr(cli, "load_config", lambda: {"last_session": "sess_123"})
+    monkeypatch.setattr(cli, "export_json", lambda token, sid: '{"messages": []}')
+
+    # Test normal export creates 0o600 file
+    export_file = tmp_path / "export.json"
+    args = argparse.Namespace(session="sess_123", format="json", output=str(export_file))
+    cli.cmd_export(args)
+    assert export_file.exists()
+    if os.name != "nt":
+        assert (export_file.stat().st_mode & 0o777) == 0o600
+
+    # Test symlink target export is rejected
+    target_file = tmp_path / "target.json"
+    target_file.write_text("sensitvedata")
+    symlink_export = tmp_path / "symlink_export.json"
+    symlink_export.symlink_to(target_file)
+
+    args_symlink = argparse.Namespace(session="sess_123", format="json", output=str(symlink_export))
+    cli.cmd_export(args_symlink)
+    # Content of target_file should remain untouched
+    assert target_file.read_text() == "sensitvedata"

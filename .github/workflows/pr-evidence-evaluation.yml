@@ -43,18 +43,23 @@ jobs:
           script: |
             const prNumber = Number(context.payload.pull_request?.number || context.payload.issue?.number || context.payload.review?.pull_request_url?.match(/pulls\/(\d+)/)?.[1] || context.payload.comment?.pull_request_url?.match(/pulls\/(\d+)/)?.[1] || context.payload.inputs?.pr_number || '${{ inputs.pr_number }}');
             if (!prNumber) throw new Error('PR number is required');
-
             const owner = context.repo.owner;
             const repo = context.repo.repo;
-            const pr = (await github.rest.pulls.get({ owner, repo, pull_number: prNumber })).data;
-            const reviews = await github.paginate(github.rest.pulls.listReviews, { owner, repo, pull_number: prNumber, per_page: 100 });
-            const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number: prNumber, per_page: 100 });
-            const reviewComments = await github.paginate(github.rest.pulls.listReviewComments, { owner, repo, pull_number: prNumber, per_page: 100 });
-            const checks = await github.paginate(github.rest.checks.listForRef, { owner, repo, ref: pr.head.sha, per_page: 100 });
-            const comparison = (await github.rest.repos.compareCommitsWithBasehead({
-              owner, repo, basehead: `${context.repo.default_branch}...${pr.head.sha}`, per_page: 100,
-            })).data;
-
+            const safePaginate = async (fn, params, label) => {
+              try { return await github.paginate(fn, params); }
+              catch (error) { core.warning(`${label} unavailable: ${error.message}`); return []; }
+            };
+            const safeCall = async (fn, params, label, fallback) => {
+              try { return (await fn(params)).data; }
+              catch (error) { core.warning(`${label} unavailable: ${error.message}`); return fallback; }
+            };
+            const pr = await safeCall(github.rest.pulls.get, { owner, repo, pull_number: prNumber }, 'PR metadata', null);
+            if (!pr) throw new Error(`Unable to read PR #${prNumber}`);
+            const reviews = await safePaginate(github.rest.pulls.listReviews, { owner, repo, pull_number: prNumber, per_page: 100 }, 'reviews');
+            const comments = await safePaginate(github.rest.issues.listComments, { owner, repo, issue_number: prNumber, per_page: 100 }, 'issue comments');
+            const reviewComments = await safePaginate(github.rest.pulls.listReviewComments, { owner, repo, pull_number: prNumber, per_page: 100 }, 'inline review comments');
+            const checks = await safePaginate(github.rest.checks.listForRef, { owner, repo, ref: pr.head.sha, per_page: 100 }, 'checks');
+            const comparison = await safeCall(github.rest.repos.compareCommitsWithBasehead, { owner, repo, basehead: `${context.repo.default_branch}...${pr.head.sha}`, per_page: 100 }, 'master comparison', { ahead_by: null, behind_by: null });
             const now = Date.now();
             const currentSha = pr.head.sha;
             const shaIn = text => typeof text === 'string' && text.includes(currentSha);
@@ -69,12 +74,10 @@ jobs:
               return 1;
             };
             const normalize = text => String(text || '').toLowerCase().replace(/\s+/g, ' ').replace(/`[^`]+`/g, '`x`').trim();
-
             const currentReviews = reviews.filter(r => r.commit_id === currentSha || (r.commit_id == null && new Date(r.submitted_at || r.updated_at || r.created_at || 0).getTime() >= new Date(pr.updated_at).getTime() - 60 * 60 * 1000));
             const approvals = currentReviews.filter(r => r.state === 'APPROVED').length;
             const changeRequests = currentReviews.filter(r => r.state === 'CHANGES_REQUESTED').length;
             const substantiveReviews = currentReviews.filter(r => substantive(r.body));
-
             const findingMap = new Map();
             for (const c of [...reviewComments, ...comments]) {
               const body = c.body || '';
@@ -86,13 +89,11 @@ jobs:
             }
             const currentFindings = [...findingMap.values()].filter(f => f.current);
             const weightedFindings = currentFindings.reduce((sum, f) => sum + f.weight, 0);
-
             const terminal = checks.filter(c => c.status === 'completed');
             const passing = terminal.filter(c => ['success', 'neutral', 'skipped'].includes(c.conclusion));
             const failed = terminal.filter(c => ['failure', 'timed_out', 'action_required'].includes(c.conclusion));
             const pending = checks.filter(c => c.status !== 'completed');
             const validationScore = checks.length === 0 ? 0 : Math.round(20 * (passing.length / checks.length));
-
             const linkedIssueRefs = `${pr.title}\n${pr.body || ''}`.match(/#\d+/g) || [];
             const cycleComments = comments.filter(c => /cycle_id:\s*pr-/i.test(c.body || '') && /head_sha:/i.test(c.body || ''));
             const currentCycles = cycleComments.filter(c => shaIn(c.body || ''));
@@ -103,12 +104,11 @@ jobs:
             const reviewScore = Math.max(0, Math.min(25, 12 + approvals * 4 - Math.min(20, weightedFindings * 2) + Math.min(9, substantiveReviews.length * 2)));
             const score = Math.max(0, Math.min(100, relevanceScore + reviewScore + validationScore + continuityScore + freshnessScore));
             const classification = failed.length ? 'ACTION_REQUIRED' : pending.length ? 'UNVERIFIED_PENDING_CHECKS' : currentFindings.length ? 'ACTION_REQUIRED' : score >= 70 ? 'STRONG_EVIDENCE' : 'INSUFFICIENT_EVIDENCE';
-
             const summary = [
               '<!-- pr-evidence-evaluation:v1 -->',
               `pr: #${prNumber}`,
               `head_sha: ${currentSha}`,
-              `master_compare: ${comparison.ahead_by || 0} ahead / ${comparison.behind_by || 0} behind`,
+              `master_compare: ${comparison.ahead_by ?? 'unverified'} ahead / ${comparison.behind_by ?? 'unverified'} behind`,
               `score: ${score}/100`,
               `classification: ${classification}`,
               `weights: relevance=35 review=25 validation=20 continuity=10 freshness=10 size=0`,
@@ -119,6 +119,5 @@ jobs:
               '',
               'This is an evidence score, not merge authorization. Re-fetch after every new head SHA and repeat the cycle.',
             ].join('\n');
-
             core.summary.addRaw(summary).write();
             core.info(summary);

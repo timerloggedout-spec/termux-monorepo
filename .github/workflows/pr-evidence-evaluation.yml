@@ -96,14 +96,18 @@ jobs:
             const validationScore = checks.length === 0 ? 0 : Math.round(20 * (passing.length / checks.length));
             const linkedIssueRefs = `${pr.title}\n${pr.body || ''}`.match(/#\d+/g) || [];
             const cycleComments = comments.filter(c => /cycle_id:\s*pr-/i.test(c.body || '') && /head_sha:/i.test(c.body || ''));
-            const currentCycles = cycleComments.filter(c => shaIn(c.body || ''));
+            const currentCycleComments = cycleComments.filter(c => shaIn(c.body || ''));
+            const currentCycles = currentCycleComments.filter(c => /state:\s*(?!pending_operator_action\b)/i.test(c.body || ''));
+            const providerPending = currentCycleComments.some(c => /state:\s*pending_operator_action\b/i.test(c.body || '') && /required_providers:/i.test(c.body || ''));
+            const providerCompleted = currentCycleComments.some(c => /provider:|action:\s*(review|complete|completed)/i.test(c.body || '') && /(?:completed|approved|passed|review_complete)/i.test(c.body || ''));
             const continuityScore = Math.min(10, currentCycles.length * 2 + (substantiveReviews.length ? 4 : 0));
             const freshnessHours = Math.max(0, (now - new Date(pr.updated_at).getTime()) / 3600000);
             const freshnessScore = freshnessHours <= 6 ? 10 : freshnessHours <= 24 ? 7 : freshnessHours <= 72 ? 4 : 1;
             const relevanceScore = Math.min(35, Math.min(20, linkedIssueRefs.length * 4) + Math.min(15, substantiveReviews.length * 3));
             const reviewScore = Math.max(0, Math.min(25, 12 + approvals * 4 - Math.min(20, weightedFindings * 2) + Math.min(9, substantiveReviews.length * 2)));
             const score = Math.max(0, Math.min(100, relevanceScore + reviewScore + validationScore + continuityScore + freshnessScore));
-            const classification = failed.length ? 'ACTION_REQUIRED' : pending.length ? 'UNVERIFIED_PENDING_CHECKS' : currentFindings.length ? 'ACTION_REQUIRED' : score >= 70 ? 'STRONG_EVIDENCE' : 'INSUFFICIENT_EVIDENCE';
+            let classification = failed.length ? 'ACTION_REQUIRED' : pending.length ? 'UNVERIFIED_PENDING_CHECKS' : currentFindings.length ? 'ACTION_REQUIRED' : score >= 70 ? 'STRONG_EVIDENCE' : 'INSUFFICIENT_EVIDENCE';
+            if (providerPending && !providerCompleted) classification = 'UNVERIFIED_PROVIDER_PENDING';
             const summary = [
               '<!-- pr-evidence-evaluation:v1 -->',
               `pr: #${prNumber}`,
@@ -114,7 +118,7 @@ jobs:
               `weights: relevance=35 review=25 validation=20 continuity=10 freshness=10 size=0`,
               `review_state: substantive=${substantiveReviews.length} approvals=${approvals} changes_requested=${changeRequests} current_findings_weight=${weightedFindings}`,
               `validation: checks=${checks.length} passing=${passing.length} pending=${pending.length} failed=${failed.length}`,
-              `cycles: total=${cycleComments.length} current_sha=${currentCycles.length}`,
+              `cycles: total=${cycleComments.length} current_sha=${currentCycleComments.length} provider_pending=${providerPending}`,
               `size_context_only: commits=${pr.commits} files=${pr.changed_files} additions=${pr.additions} deletions=${pr.deletions}`,
               '',
               'This is an evidence score, not merge authorization. Re-fetch after every new head SHA and repeat the cycle.',

@@ -23,7 +23,7 @@ on:
 permissions:
   contents: read
   pull-requests: read
-  issues: read
+  issues: write
   checks: read
 
 concurrency:
@@ -121,3 +121,6 @@ jobs:
             ].join('\n');
             core.summary.addRaw(summary).write();
             core.info(summary);
+            if (context.eventName === 'issue_comment' && context.payload.comment?.body?.startsWith('/evaluate')) {
+              await github.rest.issues.createComment({ owner, repo, issue_number: prNumber, body: summary });
+            }

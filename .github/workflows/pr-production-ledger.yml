@@ -60,7 +60,8 @@ jobs:
             }
 
             const { data: pr } = await retryApi(() => github.rest.pulls.get({ owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber }));
-            const { data: comparison } = await retryApi(() => github.rest.repos.compareCommitsWithBasehead({ owner: context.repo.owner, repo: context.repo.repo, basehead: `${context.repo.default_branch}...${pr.head.sha}`, per_page: 100 }));
+            const baseRef = pr.base?.ref || pr.base?.sha;
+            const { data: comparison } = await retryApi(() => github.rest.repos.compareCommitsWithBasehead({ owner: context.repo.owner, repo: context.repo.repo, basehead: `${baseRef}...${pr.head.sha}`, per_page: 100 }));
             const commits = await retryApi(() => github.paginate(github.rest.pulls.listCommits, { owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber, per_page: 100 }));
             const reviews = await retryApi(() => github.paginate(github.rest.pulls.listReviews, { owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber, per_page: 100 }));
             const reviewComments = await retryApi(() => github.paginate(github.rest.pulls.listReviewComments, { owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber, per_page: 100 }));

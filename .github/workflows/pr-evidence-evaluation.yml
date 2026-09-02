@@ -1,0 +1,129 @@
+name: PR evidence evaluation
+
+# Read-only continuous evaluation. Quality is evidence-weighted: current-SHA
+# diffs, substantive reviews, review-cycle continuity, and validation dominate
+# raw commit/file counts. This workflow never checks out or executes PR code.
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+  pull_request_review:
+    types: [submitted, edited, dismissed]
+  pull_request_review_comment:
+    types: [created, edited, deleted]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to evaluate'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  pull-requests: read
+  issues: read
+  checks: read
+
+concurrency:
+  group: pr-evidence-${{ github.event.pull_request.number || inputs.pr_number || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Evaluate current-SHA evidence
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const prNumber = Number(context.payload.pull_request?.number || context.payload.review?.pull_request_url?.match(/pulls\/(\d+)/)?.[1] || context.payload.comment?.pull_request_url?.match(/pulls\/(\d+)/)?.[1] || context.payload.inputs?.pr_number || '${{ inputs.pr_number }}');
+            if (!prNumber) throw new Error('PR number is required');
+
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const pr = (await github.rest.pulls.get({ owner, repo, pull_number: prNumber })).data;
+            const reviews = await github.paginate(github.rest.pulls.listReviews, { owner, repo, pull_number: prNumber, per_page: 100 });
+            const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number: prNumber, per_page: 100 });
+            const reviewComments = await github.paginate(github.rest.pulls.listReviewComments, { owner, repo, pull_number: prNumber, per_page: 100 });
+            const checks = await github.paginate(github.rest.checks.listForRef, { owner, repo, ref: pr.head.sha, per_page: 100 });
+            const comparison = (await github.rest.repos.compareCommitsWithBasehead({
+              owner, repo, basehead: `${context.repo.default_branch}...${pr.head.sha}`, per_page: 100,
+            })).data;
+
+            const now = Date.now();
+            const currentSha = pr.head.sha;
+            const shortSha = currentSha.slice(0, 12);
+            const shaIn = text => typeof text === 'string' && text.includes(currentSha);
+            const substantive = text => {
+              const body = String(text || '').trim();
+              return body.length >= 180 || /\b(high|medium|correctness|security|bug|regression|performance|reliability|contract|must|should)\b/i.test(body);
+            };
+            const findingWeight = text => {
+              const body = String(text || '');
+              if (/\b(high|security|correctness|critical|blocker)\b/i.test(body)) return 10;
+              if (/\b(medium|reliability|maintainability|regression)\b/i.test(body)) return 5;
+              return 1;
+            };
+            const normalize = text => String(text || '').toLowerCase().replace(/\s+/g, ' ').replace(/`[^`]+`/g, '`x`').trim();
+
+            // Reviews are evidence only when they apply to the current head.
+            const currentReviews = reviews.filter(r => r.commit_id === currentSha || r.commit_id == null && new Date(r.submitted_at || r.updated_at || r.created_at || 0).getTime() >= new Date(pr.updated_at).getTime() - 60 * 60 * 1000);
+            const approvals = currentReviews.filter(r => r.state === 'APPROVED').length;
+            const changeRequests = currentReviews.filter(r => r.state === 'CHANGES_REQUESTED').length;
+            const substantiveReviews = currentReviews.filter(r => substantive(r.body));
+
+            // Collapse duplicate review findings; retain the strongest weight.
+            const findingMap = new Map();
+            for (const c of [...reviewComments, ...comments]) {
+              const body = c.body || '';
+              if (!substantive(body)) continue;
+              const key = `${c.path || 'conversation'}:${normalize(body).slice(0, 500)}`;
+              const weight = findingWeight(body);
+              const previous = findingMap.get(key);
+              if (!previous || weight > previous.weight) findingMap.set(key, { weight, current: shaIn(body) || c.commit_id === currentSha, body });
+            }
+            const findings = [...findingMap.values()];
+            const currentFindings = findings.filter(f => f.current);
+            const weightedFindings = currentFindings.reduce((sum, f) => sum + f.weight, 0);
+
+            const terminal = checks.filter(c => c.status === 'completed');
+            const passing = terminal.filter(c => ['success', 'neutral', 'skipped'].includes(c.conclusion));
+            const failed = terminal.filter(c => ['failure', 'timed_out', 'action_required'].includes(c.conclusion));
+            const pending = checks.filter(c => c.status !== 'completed');
+            const validationScore = checks.length === 0 ? 0 : Math.round(20 * (passing.length / checks.length));
+
+            const linkedIssueRefs = `${pr.title}\n${pr.body || ''}`.match(/#\d+/g) || [];
+            const cycleComments = comments.filter(c => /cycle_id:\s*pr-/i.test(c.body || '') && /head_sha:/i.test(c.body || ''));
+            const currentCycles = cycleComments.filter(c => shaIn(c.body || ''));
+            const continuityScore = Math.min(10, currentCycles.length * 2 + (substantiveReviews.length ? 4 : 0));
+            const freshnessHours = Math.max(0, (now - new Date(pr.updated_at).getTime()) / 3600000);
+            const freshnessScore = freshnessHours <= 6 ? 10 : freshnessHours <= 24 ? 7 : freshnessHours <= 72 ? 4 : 1;
+
+            // Relevance is inferred from explicit issue/proposal linkage plus review coverage,
+            // not from PR size. Size metadata is reported but contributes zero quality points.
+            const relevanceScore = Math.min(35, Math.min(20, linkedIssueRefs.length * 4) + Math.min(15, substantiveReviews.length * 3));
+            const reviewScore = Math.max(0, Math.min(25, 12 + approvals * 4 - Math.min(20, weightedFindings * 2) + Math.min(9, substantiveReviews.length * 2)));
+            const score = Math.max(0, Math.min(100, relevanceScore + reviewScore + validationScore + continuityScore + freshnessScore));
+
+            const classification = failed.length ? 'ACTION_REQUIRED' : pending.length ? 'UNVERIFIED_PENDING_CHECKS' : currentFindings.length ? 'ACTION_REQUIRED' : score >= 70 ? 'STRONG_EVIDENCE' : 'INSUFFICIENT_EVIDENCE';
+            const summary = [
+              '<!-- pr-evidence-evaluation:v1 -->',
+              `pr: #${prNumber}`,
+              `head_sha: ${currentSha}`,
+              `master_compare: ${comparison.ahead_by || 0} ahead / ${comparison.behind_by || 0} behind`,
+              `score: ${score}/100`,
+              `classification: ${classification}`,
+              `weights: relevance=35 review=25 validation=20 continuity=10 freshness=10 size=0`,
+              `review_state: substantive=${substantiveReviews.length} approvals=${approvals} changes_requested=${changeRequests} current_findings_weight=${weightedFindings}`,
+              `validation: checks=${checks.length} passing=${passing.length} pending=${pending.length} failed=${failed.length}`,
+              `cycles: total=${cycleComments.length} current_sha=${currentCycles.length}`,
+              `size_context_only: commits=${pr.commits} files=${pr.changed_files} additions=${pr.additions} deletions=${pr.deletions}`,
+              '',
+              'This is an evidence score, not merge authorization. Re-fetch after every new head SHA and repeat the cycle.',
+            ].join('\n');
+
+            core.summary.addRaw(summary).write();
+            core.setOutput('score', String(score));
+            core.info(summary);

@@ -1,5 +1,8 @@
 name: Production Reconciliation Engine
 
+# Observer-only control plane. It resolves refs and classifies repository drift.
+# It never checks out or executes candidate/PR code and never mutates refs.
+
 on:
   workflow_dispatch:
     inputs:
@@ -13,11 +16,11 @@ on:
         default: master
         type: string
       mode:
-        description: 'Observe only or prepare a safe reconciliation PR'
+        description: 'Observe only; mutation requires a separately reviewed workflow'
         required: true
         default: observe
         type: choice
-        options: [observe, prepare]
+        options: [observe]
   schedule:
     - cron: '17 * * * *'
 
@@ -36,7 +39,7 @@ jobs:
     name: Resolve refs and classify drift
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout control-plane
+      - name: Checkout control-plane only
         uses: actions/checkout@v4
         with:
           ref: master
@@ -72,25 +75,43 @@ jobs:
           BEHIND: ${{ steps.refs.outputs.behind }}
         run: |
           set -euo pipefail
-          if [ "$BEHIND" = 0 ]; then
-            echo 'state=aligned' >> "$GITHUB_STEP_SUMMARY"
-          elif git merge-base --is-ancestor "${{ steps.refs.outputs.base_sha }}" "${{ steps.refs.outputs.target_sha }}"; then
-            echo 'state=candidate-ahead' >> "$GITHUB_STEP_SUMMARY"
+          if [ "$AHEAD" = 0 ] && [ "$BEHIND" = 0 ]; then
+            state='identical'
+          elif [ "$BEHIND" = 0 ]; then
+            state='candidate-ahead'
+          elif [ "$AHEAD" = 0 ]; then
+            state='behind'
           else
-            echo 'state=diverged-or-behind' >> "$GITHUB_STEP_SUMMARY"
-            echo 'Safe default: stop. No force-push, reset, or automatic conflict resolution.' >> "$GITHUB_STEP_SUMMARY"
+            state='diverged'
           fi
-          printf '## Reconciliation evidence\n- target: `%s`\n- baseline: `%s`\n- merge-base: `%s`\n- ahead: `%s`\n- behind: `%s`\n- changed paths: `%s`\n' '${{ steps.refs.outputs.target_sha }}' '${{ steps.refs.outputs.base_sha }}' '${{ steps.refs.outputs.merge_base }}' '${{ steps.refs.outputs.ahead }}' '${{ steps.refs.outputs.behind }}' '${{ steps.refs.outputs.changed }}' >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo "state=$state"
+            echo "## Reconciliation evidence"
+            echo "- target: \`${{ steps.refs.outputs.target_sha }}\`"
+            echo "- baseline: \`${{ steps.refs.outputs.base_sha }}\`"
+            echo "- merge-base: \`${{ steps.refs.outputs.merge_base }}\`"
+            echo "- ahead: \`${{ steps.refs.outputs.ahead }}\`"
+            echo "- behind: \`${{ steps.refs.outputs.behind }}\`"
+            echo "- changed paths: \`${{ steps.refs.outputs.changed }}\`"
+            echo "- state: **$state**"
+          } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Run canonical gates when target is self-contained
-        if: steps.refs.outputs.behind == '0'
+          if [ "$state" = 'diverged' ]; then
+            echo 'Safe default: STOP. Require reviewed reconciliation strategy; no force-push, reset, or automatic conflict resolution.' >> "$GITHUB_STEP_SUMMARY"
+          elif [ "$state" = 'behind' ]; then
+            echo 'Safe default: STOP. Candidate lacks baseline history; require explicit reconciliation authorization.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Record changed-path manifest
+        env:
+          BASE_SHA: ${{ steps.refs.outputs.base_sha }}
+          TARGET_SHA: ${{ steps.refs.outputs.target_sha }}
         run: |
           set -euo pipefail
-          if [ -x scripts/repo_gate.py ]; then python scripts/repo_gate.py; fi
-          if [ -x scripts/termux_smoke.py ]; then python scripts/termux_smoke.py; fi
+          echo '### Changed paths (deterministic)' >> "$GITHUB_STEP_SUMMARY"
+          git diff --name-status "$BASE_SHA" "$TARGET_SHA" | sed -n '1,500p' >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Explicitly refuse mutation from observer
+      - name: Refuse mutation and candidate execution
         run: |
           set -euo pipefail
-          echo 'Observer mode: this workflow never mutates refs.'
-          echo 'Preparation/promotion remains a separately reviewed operation.'
+          echo 'Observer-only invariant: no candidate checkout, candidate execution, force-push, reset, or automatic conflict resolution.'

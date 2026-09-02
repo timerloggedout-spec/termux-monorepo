@@ -1,12 +1,21 @@
 import os
+import sys
 from pathlib import Path
 import pytest
 
+def _get_mc():
+    try:
+        import multi_ai_cli.core.cache as mc
+        return mc
+    except ModuleNotFoundError:
+        sys.path.insert(0, os.path.abspath("multi-ai-cli"))
+        import core.cache as mc
+        return mc
 
 def test_multi_ai_cache_privileges_enforcement(tmp_path, monkeypatch):
     test_cache_dir = tmp_path / ".multi-ai-cache"
 
-    import core.cache as mc
+    mc = _get_mc()
     monkeypatch.setattr(mc, "CACHE_DIR", test_cache_dir)
 
     test_cache_dir.mkdir(parents=True, exist_ok=True)
@@ -38,7 +47,7 @@ def test_multi_ai_cache_symlink_safety(tmp_path, monkeypatch):
     test_cache_dir = tmp_path / ".multi-ai-cache"
     test_cache_dir.mkdir(parents=True, exist_ok=True)
 
-    import core.cache as mc
+    mc = _get_mc()
     monkeypatch.setattr(mc, "CACHE_DIR", test_cache_dir)
 
     target_file = tmp_path / "sensitive_target.txt"
@@ -61,7 +70,7 @@ def test_multi_ai_cache_path_traversal_prevention(tmp_path, monkeypatch):
     test_cache_dir = tmp_path / ".multi-ai-cache"
     test_cache_dir.mkdir(parents=True, exist_ok=True)
 
-    import core.cache as mc
+    mc = _get_mc()
     monkeypatch.setattr(mc, "CACHE_DIR", test_cache_dir)
 
     with pytest.raises(ValueError):

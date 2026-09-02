@@ -4,11 +4,20 @@ import shutil
 from pathlib import Path
 import pytest
 
+def _get_nc():
+    try:
+        import nexuscli.core.api as nc
+        return nc
+    except ModuleNotFoundError:
+        sys.path.insert(0, os.path.abspath("nexuscli"))
+        import core.api as nc
+        return nc
+
 def test_nexuscli_privileges_enforcement(tmp_path, monkeypatch):
+    nc = _get_nc()
     test_config_dir = tmp_path / ".nexuscli"
     test_config_file = test_config_dir / "config.json"
 
-    import nexuscli.core.api as nc
     monkeypatch.setattr(nc, "CONFIG_DIR", test_config_dir)
     monkeypatch.setattr(nc, "CONFIG_FILE", test_config_file)
 
@@ -47,7 +56,7 @@ def test_nexuscli_privileges_enforcement(tmp_path, monkeypatch):
 
 
 def test_nexuscli_privileges_symlink_safety(tmp_path, monkeypatch):
-    import nexuscli.core.api as nc
+    nc = _get_nc()
 
     target_file = tmp_path / "target_file.txt"
     target_file.write_text("sensitvedata")
@@ -65,7 +74,7 @@ def test_nexuscli_privileges_symlink_safety(tmp_path, monkeypatch):
 
 
 def test_nexuscli_privileges_path_traversal_prevention(tmp_path, monkeypatch):
-    import nexuscli.core.api as nc
+    nc = _get_nc()
 
     monkeypatch.setattr(os.path, "expanduser", lambda path: path.replace("~", str(tmp_path)))
 

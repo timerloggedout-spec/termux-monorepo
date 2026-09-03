@@ -51,8 +51,8 @@ jobs:
           pr_json="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}")"
           base_sha="$(jq -r .base.sha <<<"$pr_json")"
           head_sha="$(jq -r .head.sha <<<"$pr_json")"
-          merge_base="$(git merge-base "$base_sha" "$head_sha")"
           git fetch --no-tags --prune origin "refs/pull/${PR_NUMBER}/head:refs/remotes/origin/pr-${PR_NUMBER}"
+          merge_base="$(git merge-base "$base_sha" "$head_sha")"
 
           mapfile -t commits < <(git rev-list --reverse "$merge_base..$head_sha")
           commit_count=${#commits[@]}
@@ -73,7 +73,6 @@ jobs:
             fi
             read -r add del files < <(awk 'BEGIN{a=0;d=0;f=0} {if($1~/^[0-9]+$/)a+=$1;if($2~/^[0-9]+$/)d+=$2;f++} END{print a,d,f+0}' <<<"$stats")
             gross_add=$((gross_add + add)); gross_del=$((gross_del + del))
-            subject="$(git log -1 --format=%s "$sha")"
             if [[ "$files" -eq 0 ]]; then
               empty_count=$((empty_count + 1)); empty_shas+=("$sha")
             elif [[ "$add" -eq 0 && "$del" -eq 0 ]]; then
@@ -91,8 +90,6 @@ jobs:
           if (( commit_count > 0 )); then noop_pct=$(( (empty_count + metadata_only_count) * 100 / commit_count )); else noop_pct=0; fi
           if (( gross_churn > 0 )); then realization_pct=$(( final_delta * 100 / gross_churn )); else realization_pct=0; fi
 
-          # Discussion/review/check telemetry. Fail soft: evidence gaps must not
-          # masquerade as zero activity.
           comments_json="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" 2>/dev/null || echo '[]')"
           reviews_json="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/reviews?per_page=100" 2>/dev/null || echo '[]')"
           review_comments_json="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/comments?per_page=100" 2>/dev/null || echo '[]')"
@@ -102,12 +99,11 @@ jobs:
           actionable_comment_count="$(jq '[.[] | select((.body // "") | test("(^|\\n)\\s*(fix|change|update|remove|add|please|must|should)\\b"; "i"))] | length' <<<"$comments_json" 2>/dev/null || echo 0)"
           approvals="$(jq '[.[] | select(.state == "APPROVED")] | length' <<<"$reviews_json" 2>/dev/null || echo 0)"
           changes_requested="$(jq '[.[] | select(.state == "CHANGES_REQUESTED")] | length' <<<"$reviews_json" 2>/dev/null || echo 0)"
-
-          checks_json="$(gh api "repos/${GITHUB_REPOSITORY}/commits/${head_sha}/check-runs?per_page=100" 2>/dev/null || echo '{"check_runs":[]}')"
-          check_total="$(jq '.check_runs | length' <<<"$checks_json")"
-          check_success="$(jq '[.check_runs[] | select(.conclusion == "success")] | length' <<<"$checks_json")"
-          check_failure="$(jq '[.check_runs[] | select(.conclusion == "failure")] | length' <<<"$checks_json")"
-          check_pending="$(jq '[.check_runs[] | select(.status != "completed")] | length' <<<"$checks_json")"
+          checks_json="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/commits/${head_sha}/check-runs?per_page=100" 2>/dev/null || echo '{"check_runs":[]}')"
+          check_total="$(jq '[.[] | .check_runs[]?] | length' <<<"$checks_json")"
+          check_success="$(jq '[.[] | .check_runs[]? | select(.conclusion == "success")] | length' <<<"$checks_json")"
+          check_failure="$(jq '[.[] | .check_runs[]? | select(.conclusion == "failure")] | length' <<<"$checks_json")"
+          check_pending="$(jq '[.[] | .check_runs[]? | select(.status != "completed")] | length' <<<"$checks_json")"
 
           {
             echo "base_sha=$base_sha"; echo "head_sha=$head_sha"; echo "merge_base=$merge_base"

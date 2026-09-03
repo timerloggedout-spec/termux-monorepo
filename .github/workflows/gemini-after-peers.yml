@@ -97,7 +97,7 @@ jobs:
             core.setOutput('peer_body', (stateComment?.body || '').slice(0, 1800));
 
       # Trusted composite actions from default branch (workflow_run privilege)
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         if: steps.pr.outputs.skip != 'true'
         with:
           persist-credentials: false

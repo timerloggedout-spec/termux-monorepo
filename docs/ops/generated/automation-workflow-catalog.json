@@ -27,12 +27,12 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "95954741ebb8b72d1de79c718f919c06c9a269e0499533aeee66a16b87756060",
+  "source_fingerprint": "9fa34464430817408ac2d13ef33d6c75aab60b50fb69865a5322fe8c3cb82b5b",
   "workflow_count": 59,
   "workflows": [
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
         "actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff"
       ],
       "authority": "read-only-or-advisory",
@@ -170,7 +170,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683"
       ],
       "authority": "bounded-state-write",
       "concurrency": "group: audit-cycle-${{ github.event.pull_request.number || github.event.issue.number }} cancel-in-progress: false",
@@ -188,7 +188,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
         "github/codeql-action/analyze@ff2f1c621b7f889edc0d3c761ac2e6a3f8cdb0dd",
         "github/codeql-action/init@ff2f1c621b7f889edc0d3c761ac2e6a3f8cdb0dd"
       ],
@@ -211,7 +211,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
         "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
       ],
       "authority": "writer",
@@ -230,7 +230,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
         "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
       ],
       "authority": "read-only-or-advisory",
@@ -258,7 +258,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
         "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
       ],
       "authority": "writer",
@@ -276,7 +276,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
         "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
       ],
       "authority": "read-only-or-advisory",
@@ -294,7 +294,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
         "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
       ],
       "authority": "writer",
@@ -313,7 +313,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
         "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
       ],
       "authority": "writer",
@@ -334,7 +334,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
         "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
       ],
       "authority": "read-only-or-advisory",
@@ -353,7 +353,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683"
       ],
       "authority": "writer",
       "concurrency": "",
@@ -466,7 +466,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
         "actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294"
       ],
       "authority": "read-only-or-advisory",
@@ -484,7 +484,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683"
       ],
       "authority": "read-only-or-advisory",
       "concurrency": "group: development-performance-contract-${{ github.workflow }}-${{ github.ref }} cancel-in-progress: true",
@@ -502,7 +502,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
         "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
       ],
       "authority": "writer",
@@ -544,7 +544,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
         "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b",
         "google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489"
       ],
@@ -587,7 +587,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
         "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b",
         "google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489"
       ],
@@ -606,7 +606,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
         "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b",
         "google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489"
       ],
@@ -625,7 +625,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
         "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b",
         "google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489"
       ],
@@ -644,7 +644,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
         "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
       ],
       "authority": "writer",
@@ -717,7 +717,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683"
       ],
       "authority": "writer",
       "concurrency": "group: openrouter-free-catalog-sync cancel-in-progress: true",
@@ -737,7 +737,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683"
       ],
       "authority": "writer",
       "concurrency": "group: ops-gitlink-lego-fork cancel-in-progress: false",
@@ -754,7 +754,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683"
       ],
       "authority": "read-only-or-advisory",
       "concurrency": "",
@@ -772,7 +772,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683"
       ],
       "authority": "writer",
       "concurrency": "",
@@ -899,7 +899,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
         "actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3"
       ],
       "authority": "bounded-state-write",
@@ -922,7 +922,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
         "actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3"
       ],
       "authority": "writer",
@@ -999,7 +999,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
         "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b",
         "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
       ],
@@ -1019,7 +1019,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
         "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
       ],
       "authority": "writer",
@@ -1040,7 +1040,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
         "github/codeql-action/upload-sarif@ff2f1c621b7f889edc0d3c761ac2e6a3f8cdb0dd",
         "ossf/scorecard-action@2d1146689b8cda280b9bc96326124645441f03bc"
       ],
@@ -1082,7 +1082,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
         "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
       ],
       "authority": "read-only-or-advisory",
@@ -1101,7 +1101,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683"
       ],
       "authority": "writer",
       "concurrency": "group: team-mvt-${{ github.workflow }}-${{ github.ref }} cancel-in-progress: false",
@@ -1140,7 +1140,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
         "actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093",
         "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
       ],
@@ -1160,7 +1160,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
         "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
         "dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d"
       ],

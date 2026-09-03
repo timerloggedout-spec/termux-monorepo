@@ -487,14 +487,18 @@ jobs:
               comment.body.includes(`cycle_id: ${process.env.CYCLE_ID}`) &&
               comment.body.includes(`head_sha: ${process.env.HEAD_SHA}`)
             ).sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))[0];
-            if (existing) {
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner, repo: context.repo.repo, comment_id: existing.id, body,
-              });
-            } else {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, body,
-              });
+            try {
+              if (existing) {
+                await github.rest.issues.updateComment({
+                  owner: context.repo.owner, repo: context.repo.repo, comment_id: existing.id, body,
+                });
+              } else {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, body,
+                });
+              }
+            } catch (err) {
+              core.warning(`Failed to publish peer state comment on PR #${prNumber}: ${err.message}`);
             }
 
       - name: Dispatch verified second pass
@@ -589,24 +593,28 @@ jobs:
                 core.info(`${provider}: review already requested for ${cycleId}`);
                 continue;
               }
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: prNumber,
-                body: [
-                  command,
-                  '',
-                  marker,
-                  `cycle_id: ${cycleId}`,
-                  `head_sha: ${headSha}`,
-                  `provider: ${provider}`,
-                  'action: trigger_review',
-                  'request_actor: OPERATOR',
-                  '',
-                  'Autonomous OPERATOR-token request for a current-SHA provider review. A command request is not review completion; await provider evidence.',
-                ].join('\n'),
-              });
-              core.info(`${provider}: requested review for ${cycleId}`);
+              try {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  body: [
+                    command,
+                    '',
+                    marker,
+                    `cycle_id: ${cycleId}`,
+                    `head_sha: ${headSha}`,
+                    `provider: ${provider}`,
+                    'action: trigger_review',
+                    'request_actor: OPERATOR',
+                    '',
+                    'Autonomous OPERATOR-token request for a current-SHA provider review. A command request is not review completion; await provider evidence.',
+                  ].join('\n'),
+                });
+                core.info(`${provider}: requested review for ${cycleId}`);
+              } catch (err) {
+                core.warning(`Failed to trigger review comment for ${provider} on PR #${prNumber}: ${err.message}`);
+              }
               await new Promise(resolve => setTimeout(resolve, 1200));
             }
 

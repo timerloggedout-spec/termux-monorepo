@@ -1,0 +1,178 @@
+name: PR Change Effectiveness Ledger
+
+# Trusted control-plane telemetry. It inspects Git objects as data and never
+# executes pull-request source, tests, build scripts, or dependencies.
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Optional PR number to inspect'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: pr-change-effectiveness-${{ github.event.pull_request.number || inputs.pr_number || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  ledger:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout trusted control-plane
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 0
+
+      - name: Measure complete PR change history
+        id: measure
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "${PR_NUMBER}" ]]; then
+            echo 'PR number is required.' >&2
+            exit 1
+          fi
+
+          # Fetch PR objects only. Nothing from the PR is executed.
+          git fetch --no-tags --prune origin "refs/pull/${PR_NUMBER}/head:refs/remotes/origin/pr-${PR_NUMBER}"
+          read -r BASE_SHA HEAD_SHA < <(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq '[.base.sha, .head.sha] | @tsv')
+          MERGE_BASE="$(git merge-base "$BASE_SHA" "$HEAD_SHA")"
+          mapfile -t COMMITS < <(git rev-list --reverse "$MERGE_BASE..$HEAD_SHA")
+          COMMIT_COUNT=${#COMMITS[@]}
+          EMPTY_COUNT=0
+          EFFECTIVE_COUNT=0
+          GROSS_ADD=0
+          GROSS_DEL=0
+          EMPTY_LIST=()
+
+          for sha in "${COMMITS[@]}"; do
+            parent="$(git rev-parse "${sha}^" 2>/dev/null || true)"
+            if [[ -n "$parent" ]]; then
+              read -r add del files < <(git diff --numstat "$parent" "$sha" | awk '
+                BEGIN {a=0;d=0;f=0}
+                { if ($1 ~ /^[0-9]+$/) a += $1; if ($2 ~ /^[0-9]+$/) d += $2; f++ }
+                END {print a,d,f+0}')
+            else
+              read -r add del files < <(git diff --numstat --root "$sha" | awk '
+                BEGIN {a=0;d=0;f=0}
+                { if ($1 ~ /^[0-9]+$/) a += $1; if ($2 ~ /^[0-9]+$/) d += $2; f++ }
+                END {print a,d,f+0}')
+            fi
+            GROSS_ADD=$((GROSS_ADD + add))
+            GROSS_DEL=$((GROSS_DEL + del))
+            if [[ "$files" -eq 0 ]]; then
+              EMPTY_COUNT=$((EMPTY_COUNT + 1))
+              EMPTY_LIST+=("$sha")
+            else
+              EFFECTIVE_COUNT=$((EFFECTIVE_COUNT + 1))
+            fi
+          done
+
+          read -r FINAL_ADD FINAL_DEL FINAL_FILES < <(git diff --numstat "$BASE_SHA" "$HEAD_SHA" | awk '
+            BEGIN {a=0;d=0;f=0}
+            { if ($1 ~ /^[0-9]+$/) a += $1; if ($2 ~ /^[0-9]+$/) d += $2; f++ }
+            END {print a,d,f+0}')
+
+          AHEAD=$(git rev-list --count "$BASE_SHA..$HEAD_SHA")
+          BEHIND=$(git rev-list --count "$HEAD_SHA..$BASE_SHA")
+          CHURN=$((GROSS_ADD + GROSS_DEL))
+          NET_DELTA=$((FINAL_ADD + FINAL_DEL))
+          if [[ "$COMMIT_COUNT" -gt 0 ]]; then NOOP_PCT=$((EMPTY_COUNT * 100 / COMMIT_COUNT)); else NOOP_PCT=0; fi
+          if [[ "$CHURN" -gt 0 ]]; then REALIZATION_PCT=$((NET_DELTA * 100 / CHURN)); else REALIZATION_PCT=0; fi
+
+          {
+            echo "base_sha=$BASE_SHA"
+            echo "head_sha=$HEAD_SHA"
+            echo "merge_base=$MERGE_BASE"
+            echo "commit_count=$COMMIT_COUNT"
+            echo "empty_commit_count=$EMPTY_COUNT"
+            echo "effective_commit_count=$EFFECTIVE_COUNT"
+            echo "gross_additions=$GROSS_ADD"
+            echo "gross_deletions=$GROSS_DEL"
+            echo "final_additions=$FINAL_ADD"
+            echo "final_deletions=$FINAL_DEL"
+            echo "final_changed_files=$FINAL_FILES"
+            echo "ahead=$AHEAD"
+            echo "behind=$BEHIND"
+            echo "noop_percent=$NOOP_PCT"
+            echo "realization_percent=$REALIZATION_PCT"
+          } >> "$GITHUB_OUTPUT"
+
+          printf '%s\n' "${EMPTY_LIST[@]:-}" > empty-commits.txt
+
+      - name: Publish evidence summary
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
+          BASE_SHA: ${{ steps.measure.outputs.base_sha }}
+          HEAD_SHA: ${{ steps.measure.outputs.head_sha }}
+          MERGE_BASE: ${{ steps.measure.outputs.merge_base }}
+          COMMIT_COUNT: ${{ steps.measure.outputs.commit_count }}
+          EMPTY_COUNT: ${{ steps.measure.outputs.empty_commit_count }}
+          EFFECTIVE_COUNT: ${{ steps.measure.outputs.effective_commit_count }}
+          GROSS_ADD: ${{ steps.measure.outputs.gross_additions }}
+          GROSS_DEL: ${{ steps.measure.outputs.gross_deletions }}
+          FINAL_ADD: ${{ steps.measure.outputs.final_additions }}
+          FINAL_DEL: ${{ steps.measure.outputs.final_deletions }}
+          FINAL_FILES: ${{ steps.measure.outputs.final_changed_files }}
+          AHEAD: ${{ steps.measure.outputs.ahead }}
+          BEHIND: ${{ steps.measure.outputs.behind }}
+          NOOP_PCT: ${{ steps.measure.outputs.noop_percent }}
+          REALIZATION_PCT: ${{ steps.measure.outputs.realization_percent }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          marker='<!-- pr-change-effectiveness-ledger:v1 -->'
+          state='🟢 EFFECTIVE_DIFF_PRESENT'
+          if [[ "$FINAL_FILES" -eq 0 ]]; then state='❌ NO_EFFECTIVE_DIFF'; fi
+          noop='No empty commits observed.'
+          if [[ "$EMPTY_COUNT" -gt 0 ]]; then noop="⚠️ ${EMPTY_COUNT} empty/no-op commit(s) observed."; fi
+          body="${marker}
+          ## PR Change Effectiveness Ledger
+
+          **Measured head:** \\`${HEAD_SHA}\\`  
+          **Measured base:** \\`${BASE_SHA}\\`  
+          **Merge base:** \\`${MERGE_BASE}\\`
+
+          | Signal | Value |
+          |---|---:|
+          | commits in PR range | ${COMMIT_COUNT} |
+          | commits with no file delta | ${EMPTY_COUNT} |
+          | commits with file delta | ${EFFECTIVE_COUNT} |
+          | no-op commit rate | ${NOOP_PCT}% |
+          | gross additions across commits | ${GROSS_ADD} |
+          | gross deletions across commits | ${GROSS_DEL} |
+          | final additions vs base | ${FINAL_ADD} |
+          | final deletions vs base | ${FINAL_DEL} |
+          | final changed files | ${FINAL_FILES} |
+          | churn → retained final diff | ${REALIZATION_PCT}% |
+          | ahead / behind base | ${AHEAD} / ${BEHIND} |
+
+          **Interpretation:** commit count is context, not quality. Empty commits are explicitly measured, not silently treated as productive work. Gross churn describes work performed across history; the final base→head diff describes what remains. Review/comment/check evidence must be evaluated separately and tied to this measured head SHA.
+
+          **State:** ${state}; ${noop}
+
+          Generated: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+          existing=$(gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" --jq '.[] | select(.body | contains("'"$marker"'")) | [.id,.body] | @tsv' | head -n1 || true)
+          if [[ -n "$existing" ]]; then
+            id="${existing%%$'\t'*}"
+            gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/comments/${id}" -f body="$body" >/dev/null
+          else
+            gh api --method POST "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" -f body="$body" >/dev/null
+          fi
+
+          if [[ "$FINAL_FILES" -eq 0 ]]; then
+            exit 1
+          fi

@@ -27,9 +27,28 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "e3c86182d4c80901c8b140479ee674d2b638502af030a18b3a920b64f273a5c8",
-  "workflow_count": 55,
+  "source_fingerprint": "6326135323d22b9c7e3c930240755e44b21ec9b5ce39a16d485033f999c478c9",
+  "workflow_count": 62,
   "workflows": [
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a0"
+      ],
+      "authority": "bounded-state-write",
+      "concurrency": "group: action-effectiveness-${{ github.event.pull_request.number || github.event.issue.number || inputs.pr_number || github.run_id }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "ledger"
+      ],
+      "name": "Action Effectiveness Ledger",
+      "path": ".github/workflows/action-effectiveness-ledger.yml",
+      "schedules": [],
+      "triggers": [
+        "issue_comment",
+        "pull_request_target",
+        "workflow_dispatch"
+      ]
+    },
     {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
@@ -102,6 +121,21 @@
       "triggers": [
         "issue_comment",
         "issues"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: agent-mvt-${{ inputs.experiment_id }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "experiment"
+      ],
+      "name": "Agent MVT experiment loop",
+      "path": ".github/workflows/agent-mvt-experiment.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
       ]
     },
     {
@@ -196,20 +230,18 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
-        "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
-      "authority": "writer",
-      "concurrency": "group: commit-diff-watcher-${{ github.event.pull_request.number || github.sha }} cancel-in-progress: true",
+      "authority": "bounded-state-write",
+      "concurrency": "group: direct-master-empty-commit-${{ github.sha }} cancel-in-progress: true",
       "domain": "agentic-development",
       "jobs": [
-        "watch-diffs"
+        "watch"
       ],
-      "name": "\ud83d\udee1\ufe0f Commit & PR Diff Watcher",
+      "name": "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher",
       "path": ".github/workflows/commit-diff-watcher.yml",
       "schedules": [],
       "triggers": [
-        "pull_request",
         "push"
       ]
     },
@@ -650,6 +682,24 @@
     },
     {
       "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "sanitize-and-publish"
+      ],
+      "name": "Hex Moneyball Evidence",
+      "path": ".github/workflows/hex-moneyball-evidence.yml",
+      "schedules": [],
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
         "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683"
       ],
       "authority": "read-only-or-advisory",
@@ -770,6 +820,62 @@
       ],
       "name": "Peer review orchestrator",
       "path": ".github/workflows/peer-review-orchestrator.yml",
+      "schedules": [],
+      "triggers": [
+        "issue_comment",
+        "pull_request_review",
+        "pull_request_target"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "writer",
+      "concurrency": "group: pr-change-effectiveness-${{ github.event.pull_request.number || inputs.pr_number || github.run_id }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "ledger"
+      ],
+      "name": "PR Change Effectiveness Ledger",
+      "path": ".github/workflows/pr-change-effectiveness-ledger.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request_target",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "group: pr-evidence-${{ github.event.pull_request.number || github.event.issue.number || inputs.pr_number || github.run_id }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "evaluate"
+      ],
+      "name": "PR evidence evaluation",
+      "path": ".github/workflows/pr-evidence-evaluation.yml",
+      "schedules": [],
+      "triggers": [
+        "issue_comment",
+        "pull_request_review",
+        "pull_request_review_comment",
+        "pull_request_target",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: pr-production-ledger-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "ledger"
+      ],
+      "name": "PR production ledger",
+      "path": ".github/workflows/pr-production-ledger.yml",
       "schedules": [],
       "triggers": [
         "issue_comment",
@@ -909,6 +1015,24 @@
       "path": ".github/workflows/reconcile-repository-surface.yml",
       "schedules": [
         "23 5 * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: reconciliation-${{ github.event.inputs.target_ref || github.ref }}-${{ github.event.inputs.base_ref || 'master' }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "recon"
+      ],
+      "name": "Production Reconciliation Engine",
+      "path": ".github/workflows/reconciliation-engine.yml",
+      "schedules": [
+        "17 * * * *"
       ],
       "triggers": [
         "schedule",

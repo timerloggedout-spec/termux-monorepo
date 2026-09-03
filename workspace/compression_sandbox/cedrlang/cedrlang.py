@@ -330,24 +330,31 @@ def apply_casing(src: str, dst: str) -> str:
         return capitalize_word(dst)
     return lowercase_word(dst)
 
+def _sub_cb_comp(m: re.Match[str]) -> str:
+    val = m.group(0)
+    res = FAST_CASING_COMP.get(val)
+    if res is not None:
+        return res
+    return apply_casing(val, COMP_DICT[val.lower()])
+
+
+def _sub_cb_decomp(m: re.Match[str]) -> str:
+    val = m.group(0)
+    res = FAST_CASING_DECOMP.get(val)
+    if res is not None:
+        return res
+    return apply_casing(val, DECOMP_DICT[val.lower()])
+
+
 def translate_text_raw(text: str, to_compressed: bool) -> str:
     """
     Perform dictionary mapping translations preserving casing in a single pass.
     Performance Optimization: Trie-structured regex matching combined with precomputed casing lookup tables
     bypasses runtime casing inspections and reduces regex branching depth, boosting substitution speed.
     """
-    pattern = COMP_SINGLE_REGEX if to_compressed else DECOMP_SINGLE_REGEX
-    lookup = FAST_CASING_COMP if to_compressed else FAST_CASING_DECOMP
-    mapping_dict = COMP_DICT if to_compressed else DECOMP_DICT
-
-    def _sub_cb(m: re.Match[str]) -> str:
-        val = m.group(0)
-        res = lookup.get(val)
-        if res is not None:
-            return res
-        return apply_casing(val, mapping_dict[val.lower()])
-
-    return pattern.sub(_sub_cb, text)
+    if to_compressed:
+        return COMP_SINGLE_REGEX.sub(_sub_cb_comp, text)
+    return DECOMP_SINGLE_REGEX.sub(_sub_cb_decomp, text)
 
 def translate_line(line: str, to_compressed: bool) -> str:
     """Translate a single line protecting syntax and structures with fast-path character checks."""
@@ -427,37 +434,53 @@ def translate_line(line: str, to_compressed: bool) -> str:
 
 def compile_doc(text: str) -> str:
     """Compile human-readable markdown into CedrLang compressed markdown."""
-    lines = text.splitlines(keepends=True) if isinstance(text, str) else []
+    if not isinstance(text, str) or not text:
+        return ""
+    lines = text.splitlines(keepends=True)
     compiled_lines = []
     in_fenced_code = False
+    matcher = COMP_SINGLE_REGEX
 
     for line in lines:
-        stripped = line.strip()
-        if stripped.startswith("```"):
-            in_fenced_code = not in_fenced_code
-            compiled_lines.append(line)
-        elif in_fenced_code:
+        if "```" in line:
+            if line.lstrip().startswith("```"):
+                in_fenced_code = not in_fenced_code
+                compiled_lines.append(line)
+                continue
+
+        if in_fenced_code:
             compiled_lines.append(line)
         else:
-            compiled_lines.append(translate_line(line, to_compressed=True))
+            if not matcher.search(line):
+                compiled_lines.append(line)
+            else:
+                compiled_lines.append(translate_line(line, to_compressed=True))
 
     return "".join(compiled_lines)
 
 def decompile_doc(text: str) -> str:
     """Decompile CedrLang compressed markdown into human-readable markdown."""
-    lines = text.splitlines(keepends=True) if isinstance(text, str) else []
+    if not isinstance(text, str) or not text:
+        return ""
+    lines = text.splitlines(keepends=True)
     decompiled_lines = []
     in_fenced_code = False
+    matcher = DECOMP_SINGLE_REGEX
 
     for line in lines:
-        stripped = line.strip()
-        if stripped.startswith("```"):
-            in_fenced_code = not in_fenced_code
-            decompiled_lines.append(line)
-        elif in_fenced_code:
+        if "```" in line:
+            if line.lstrip().startswith("```"):
+                in_fenced_code = not in_fenced_code
+                decompiled_lines.append(line)
+                continue
+
+        if in_fenced_code:
             decompiled_lines.append(line)
         else:
-            decompiled_lines.append(translate_line(line, to_compressed=False))
+            if not matcher.search(line):
+                decompiled_lines.append(line)
+            else:
+                decompiled_lines.append(translate_line(line, to_compressed=False))
 
     return "".join(decompiled_lines)
 

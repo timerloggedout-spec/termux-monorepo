@@ -1,0 +1,196 @@
+name: Action Effectiveness Ledger
+
+# Trusted control-plane telemetry. Reads GitHub metadata and Git objects as data;
+# never executes pull-request source, tests, build scripts, or dependencies.
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+  issue_comment:
+    types: [created]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to inspect'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  pull-requests: read
+  issues: write
+  checks: read
+
+concurrency:
+  group: action-effectiveness-${{ github.event.pull_request.number || github.event.issue.number || inputs.pr_number || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  ledger:
+    if: >-
+      github.event_name != 'issue_comment' ||
+      (github.event.issue.pull_request && startsWith(github.event.comment.body, '/ledger'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout trusted control-plane
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Measure action-to-effect chain
+        id: measure
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number || inputs.pr_number }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ -n "$PR_NUMBER" ]] || { echo 'PR number required' >&2; exit 1; }
+
+          pr_json="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}")"
+          base_sha="$(jq -r .base.sha <<<"$pr_json")"
+          head_sha="$(jq -r .head.sha <<<"$pr_json")"
+          git fetch --no-tags --prune origin "refs/pull/${PR_NUMBER}/head:refs/remotes/origin/pr-${PR_NUMBER}"
+          merge_base="$(git merge-base "$base_sha" "$head_sha")"
+
+          mapfile -t commits < <(git rev-list --reverse "$merge_base..$head_sha")
+          commit_count=${#commits[@]}
+          empty_count=0
+          metadata_only_count=0
+          effective_count=0
+          gross_add=0
+          gross_del=0
+          metadata_shas=()
+          empty_shas=()
+
+          for sha in "${commits[@]}"; do
+            parent="$(git rev-parse "${sha}^" 2>/dev/null || true)"
+            if [[ -n "$parent" ]]; then
+              stats="$(git diff --numstat "$parent" "$sha")"
+            else
+              stats="$(git diff --numstat --root "$sha")"
+            fi
+            read -r add del files < <(awk 'BEGIN{a=0;d=0;f=0} {if($1~/^[0-9]+$/)a+=$1;if($2~/^[0-9]+$/)d+=$2;f++} END{print a,d,f+0}' <<<"$stats")
+            gross_add=$((gross_add + add)); gross_del=$((gross_del + del))
+            if [[ "$files" -eq 0 ]]; then
+              empty_count=$((empty_count + 1)); empty_shas+=("$sha")
+            elif [[ "$add" -eq 0 && "$del" -eq 0 ]]; then
+              metadata_only_count=$((metadata_only_count + 1)); metadata_shas+=("$sha")
+            else
+              effective_count=$((effective_count + 1))
+            fi
+          done
+
+          read -r final_add final_del final_files < <(git diff --numstat "$base_sha" "$head_sha" | awk 'BEGIN{a=0;d=0;f=0} {if($1~/^[0-9]+$/)a+=$1;if($2~/^[0-9]+$/)d+=$2;f++} END{print a,d,f+0}')
+          ahead=$(git rev-list --count "$base_sha..$head_sha")
+          behind=$(git rev-list --count "$head_sha..$base_sha")
+          gross_churn=$((gross_add + gross_del))
+          final_delta=$((final_add + final_del))
+          if (( commit_count > 0 )); then noop_pct=$(( (empty_count + metadata_only_count) * 100 / commit_count )); else noop_pct=0; fi
+          if (( gross_churn > 0 )); then realization_pct=$(( final_delta * 100 / gross_churn )); else realization_pct=0; fi
+
+          comments_json="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" 2>/dev/null || echo '[]')"
+          reviews_json="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/reviews?per_page=100" 2>/dev/null || echo '[]')"
+          review_comments_json="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/comments?per_page=100" 2>/dev/null || echo '[]')"
+          comment_count="$(jq 'length' <<<"$comments_json")"
+          review_count="$(jq 'length' <<<"$reviews_json")"
+          review_comment_count="$(jq 'length' <<<"$review_comments_json")"
+          actionable_comment_count="$(jq '[.[] | select((.body // "") | test("(^|\\n)\\s*(fix|change|update|remove|add|please|must|should)\\b"; "i"))] | length' <<<"$comments_json" 2>/dev/null || echo 0)"
+          approvals="$(jq '[.[] | select(.state == "APPROVED")] | length' <<<"$reviews_json" 2>/dev/null || echo 0)"
+          changes_requested="$(jq '[.[] | select(.state == "CHANGES_REQUESTED")] | length' <<<"$reviews_json" 2>/dev/null || echo 0)"
+          checks_json="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/commits/${head_sha}/check-runs?per_page=100" 2>/dev/null || echo '{"check_runs":[]}')"
+          check_total="$(jq '[.[] | .check_runs[]?] | length' <<<"$checks_json")"
+          check_success="$(jq '[.[] | .check_runs[]? | select(.conclusion == "success")] | length' <<<"$checks_json")"
+          check_failure="$(jq '[.[] | .check_runs[]? | select(.conclusion == "failure")] | length' <<<"$checks_json")"
+          check_pending="$(jq '[.[] | .check_runs[]? | select(.status != "completed")] | length' <<<"$checks_json")"
+
+          {
+            echo "base_sha=$base_sha"; echo "head_sha=$head_sha"; echo "merge_base=$merge_base"
+            echo "commit_count=$commit_count"; echo "empty_count=$empty_count"; echo "metadata_only_count=$metadata_only_count"; echo "effective_count=$effective_count"
+            echo "gross_add=$gross_add"; echo "gross_del=$gross_del"; echo "final_add=$final_add"; echo "final_del=$final_del"; echo "final_files=$final_files"
+            echo "ahead=$ahead"; echo "behind=$behind"; echo "noop_pct=$noop_pct"; echo "realization_pct=$realization_pct"
+            echo "comment_count=$comment_count"; echo "review_count=$review_count"; echo "review_comment_count=$review_comment_count"; echo "actionable_comment_count=$actionable_comment_count"
+            echo "approvals=$approvals"; echo "changes_requested=$changes_requested"; echo "check_total=$check_total"; echo "check_success=$check_success"; echo "check_failure=$check_failure"; echo "check_pending=$check_pending"
+          } >> "$GITHUB_OUTPUT"
+
+          printf '%s\n' "${empty_shas[@]:-}" > empty-commits.txt
+          printf '%s\n' "${metadata_shas[@]:-}" > metadata-only-commits.txt
+
+      - name: Publish idempotent effectiveness ledger
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number || inputs.pr_number }}
+          BASE_SHA: ${{ steps.measure.outputs.base_sha }}
+          HEAD_SHA: ${{ steps.measure.outputs.head_sha }}
+          MERGE_BASE: ${{ steps.measure.outputs.merge_base }}
+          COMMIT_COUNT: ${{ steps.measure.outputs.commit_count }}
+          EMPTY_COUNT: ${{ steps.measure.outputs.empty_count }}
+          METADATA_COUNT: ${{ steps.measure.outputs.metadata_only_count }}
+          EFFECTIVE_COUNT: ${{ steps.measure.outputs.effective_count }}
+          GROSS_ADD: ${{ steps.measure.outputs.gross_add }}
+          GROSS_DEL: ${{ steps.measure.outputs.gross_del }}
+          FINAL_ADD: ${{ steps.measure.outputs.final_add }}
+          FINAL_DEL: ${{ steps.measure.outputs.final_del }}
+          FINAL_FILES: ${{ steps.measure.outputs.final_files }}
+          AHEAD: ${{ steps.measure.outputs.ahead }}
+          BEHIND: ${{ steps.measure.outputs.behind }}
+          NOOP_PCT: ${{ steps.measure.outputs.noop_pct }}
+          REALIZATION_PCT: ${{ steps.measure.outputs.realization_pct }}
+          COMMENT_COUNT: ${{ steps.measure.outputs.comment_count }}
+          REVIEW_COUNT: ${{ steps.measure.outputs.review_count }}
+          REVIEW_COMMENT_COUNT: ${{ steps.measure.outputs.review_comment_count }}
+          ACTIONABLE_COMMENTS: ${{ steps.measure.outputs.actionable_comment_count }}
+          APPROVALS: ${{ steps.measure.outputs.approvals }}
+          CHANGES_REQUESTED: ${{ steps.measure.outputs.changes_requested }}
+          CHECK_TOTAL: ${{ steps.measure.outputs.check_total }}
+          CHECK_SUCCESS: ${{ steps.measure.outputs.check_success }}
+          CHECK_FAILURE: ${{ steps.measure.outputs.check_failure }}
+          CHECK_PENDING: ${{ steps.measure.outputs.check_pending }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          marker='<!-- action-effectiveness-ledger:v1 -->'
+          state='🟢 EFFECTIVE'
+          if [[ "$FINAL_FILES" -eq 0 ]]; then state='🔴 NO_EFFECTIVE_DIFF';
+          elif [[ "$CHECK_FAILURE" -gt 0 || "$CHANGES_REQUESTED" -gt 0 ]]; then state='🟠 NEEDS_RECONCILIATION';
+          elif [[ "$CHECK_PENDING" -gt 0 ]]; then state='🟡 VALIDATION_PENDING'; fi
+          body="$marker
+          ## 🧬 Action Effectiveness Ledger
+
+          **Measured head:** \\`${HEAD_SHA}\\`
+          **Base:** \\`${BASE_SHA}\\`
+          **Merge base:** \\`${MERGE_BASE}\\`
+
+          | Dimension | Measurement |
+          |---|---:|
+          | PR-range commits | ${COMMIT_COUNT} |
+          | empty/tree-no-op commits | ${EMPTY_COUNT} |
+          | metadata-only commits | ${METADATA_COUNT} |
+          | effective code/tree commits | ${EFFECTIVE_COUNT} |
+          | no-op + metadata rate | ${NOOP_PCT}% |
+          | gross additions / deletions | ${GROSS_ADD} / ${GROSS_DEL} |
+          | final additions / deletions | ${FINAL_ADD} / ${FINAL_DEL} |
+          | final changed files | ${FINAL_FILES} |
+          | churn → retained diff | ${REALIZATION_PCT}% |
+          | ahead / behind | ${AHEAD} / ${BEHIND} |
+          | conversation comments | ${COMMENT_COUNT} |
+          | reviews / inline review comments | ${REVIEW_COUNT} / ${REVIEW_COMMENT_COUNT} |
+          | heuristic actionable comments | ${ACTIONABLE_COMMENTS} |
+          | approvals / changes requested | ${APPROVALS} / ${CHANGES_REQUESTED} |
+          | checks: total / pass / fail / pending | ${CHECK_TOTAL} / ${CHECK_SUCCESS} / ${CHECK_FAILURE} / ${CHECK_PENDING} |
+
+          ### Interpretation
+          Commit volume and discussion volume are **context, not quality**. Empty and metadata-only commits are measured separately from effective tree changes. Gross churn measures historical activity; final base→head delta measures retained change. Review/comment/check activity is evidence only when tied to the measured head and an observable outcome.
+
+          **State:** ${state}
+
+          This comment is updated in place on subsequent evidence cycles; it is not a new progress comment per action.
+
+          Generated: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          existing="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" --jq '.[] | select(.body | contains("'"$marker"'")) | .id' | head -n1 || true)"
+          if [[ -n "$existing" ]]; then
+            gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/comments/${existing}" -f body="$body" >/dev/null
+          else
+            gh api --method POST "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" -f body="$body" >/dev/null
+          fi

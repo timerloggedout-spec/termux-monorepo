@@ -1,216 +1,77 @@
-name: '🛡️ Commit & PR Diff Watcher'
+name: '🛡️ Direct Master Empty-Commit Watcher'
 
+# PR history/diff measurement lives in pr-change-effectiveness-ledger.yml.
+# This workflow is deliberately narrow: it catches empty automated commits
+# pushed directly to protected branches. It does not duplicate PR analysis.
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
   push:
     branches:
       - 'master'
       - 'master-staging'
 
 concurrency:
-  group: commit-diff-watcher-${{ github.event.pull_request.number || github.sha }}
+  group: direct-master-empty-commit-${{ github.sha }}
   cancel-in-progress: true
 
-permissions: {}
+permissions:
+  contents: read
+  issues: write
 
 jobs:
-  watch-diffs:
-    name: 'Check for empty diffs/commits'
+  watch:
+    name: 'Check direct pushes for empty automated commits'
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
-      issues: write
+    timeout-minutes: 5
     steps:
+<<<<<<< HEAD
       - name: Checkout repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+=======
+      - name: Checkout trusted repository history
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+>>>>>>> origin/master
         with:
           fetch-depth: 0
 
-      - name: Analyze commits & diffs
-        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
-        with:
-          script: |
-            const execSync = require('child_process').execSync;
-            const eventName = context.eventName;
-            let prNumber = null;
-            let commits = [];
-            let isPrEmpty = false;
+      - name: Analyze pushed commits
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          empty=()
+          while read -r sha; do
+            [[ -z "$sha" ]] && continue
+            parent="$(git rev-parse "${sha}^" 2>/dev/null || true)"
+            files=0
+            if [[ -n "$parent" ]]; then
+              files="$(git diff --name-only "$parent" "$sha" | wc -l | tr -d ' ')"
+            else
+              files="$(git diff-tree --root --no-commit-id --name-only -r "$sha" | wc -l | tr -d ' ')"
+            fi
+            if [[ "$files" -eq 0 ]]; then
+              author="$(git show -s --format='%an <%ae>' "$sha")"
+              empty+=("$sha $author")
+            fi
+          done < <(git rev-list --reverse "${{ github.event.before }}..${{ github.sha }}")
 
-            if (eventName === 'pull_request') {
-              prNumber = context.payload.pull_request.number;
+          if [[ "${#empty[@]}" -eq 0 ]]; then
+            echo 'No empty direct-push commits observed.'
+            exit 0
+          fi
 
-              // Fetch latest PR details at runtime to get accurate changed_files
-              const { data: prDetails } = await github.rest.pulls.get({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: prNumber,
-              });
+          body='<!-- direct-master-empty-commit-watcher:v2 -->
+          ## 🛡️ Empty direct-push commit detected
 
-              const changedFiles = prDetails.changed_files;
-              if (changedFiles === 0) {
-                isPrEmpty = true;
-              }
+          The pushed range contains commit(s) with no file-tree delta:
 
-              // Only check the latest head commit to avoid history-rewrite/rebase lock-ins on old empty commits
-              const headSha = context.payload.pull_request.head.sha;
-              try {
-                const { data: headCommit } = await github.rest.repos.getCommit({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  ref: headSha,
-                });
-                commits = [{
-                  sha: headSha,
-                  message: headCommit.commit.message,
-                  author_login: headCommit.author?.login,
-                  author_email: headCommit.commit.author?.email,
-                }];
-              } catch (headErr) {
-                core.error(`Failed to fetch head commit ${headSha}: ${headErr.message}`);
-              }
-            } else if (eventName === 'push') {
-              commits = (context.payload.commits || []).map(c => ({
-                sha: c.id,
-                message: c.message,
-                author_login: c.author?.username,
-                author_email: c.author?.email,
-              }));
-            }
+          '
+          for item in "${empty[@]}"; do
+            body+="- \\`${item%% *}\\` — ${item#* }\n"
+          done
+          body+='\nPR commit effectiveness is measured by `pr-change-effectiveness-ledger.yml`; this watcher only covers direct pushes to protected branches.'
 
-            core.info(`Found ${commits.length} commit(s) to analyze.`);
-
-            const agentLogins = [
-              'google-labs-jules', 'jules', 'devin-ai-integration', 'coderabbitai',
-              'github-actions', 'copilot', 'gitar-bot', 'blocksorg'
-            ];
-
-            const isAgent = (login, email) => {
-              const l = (login || '').toLowerCase();
-              const e = (email || '').toLowerCase();
-
-              // Exact matching of known bot logins
-              if (agentLogins.includes(l)) return true;
-
-              // Standard GitHub Apps suffix
-              if (l.endsWith('[bot]')) return true;
-
-              // Check if login starts or ends with "bot" or "jules" via standard automation delimiters to avoid false matching on human names
-              if (/[-_](bot|jules)$|^(bot|jules)[-_]/i.test(login || '')) return true;
-
-              // Known bot email patterns (works even when no GitHub login is linked)
-              if (e.includes('[bot]@') || (e.endsWith('@users.noreply.github.com') && agentLogins.some(a => e.startsWith(a) || e.includes(`+${a}`))) || (e.endsWith('@github.com') && l.includes('bot'))) return true;
-
-              return false;
-            };
-
-            let emptyAgentCommits = [];
-
-            for (const commit of commits) {
-              const isCommitAgent = isAgent(
-                commit.author_login,
-                commit.author_email
-              );
-
-              if (isCommitAgent) {
-                let filesChanged = 0;
-                let checkMethod = 'none';
-                try {
-                  // Try local git first
-                  const output = execSync(`git show --name-only --format="" ${commit.sha}`).toString().trim();
-                  filesChanged = output ? output.split('\n').filter(Boolean).length : 0;
-                  checkMethod = 'local_git';
-                } catch (gitErr) {
-                  core.info(`Local git check failed or commit not found locally for ${commit.sha}. Falling back to GitHub API...`);
-                  // Fallback to GitHub API
-                  try {
-                    const { data: fullCommit } = await github.rest.repos.getCommit({
-                      owner: context.repo.owner,
-                      repo: context.repo.repo,
-                      ref: commit.sha,
-                    });
-                    filesChanged = fullCommit.files ? fullCommit.files.length : 0;
-                    checkMethod = 'github_api';
-                  } catch (apiErr) {
-                    core.info(`GitHub API fallback failed for commit ${commit.sha}: ${apiErr.message}`);
-                    // If both fail, we default to 1 file changed to be safe (fail-open on transient API/auth errors).
-                    filesChanged = 1;
-                  }
-                }
-
-                core.info(`Commit ${commit.sha} (${checkMethod}): ${filesChanged} file(s) changed.`);
-                if (filesChanged === 0) {
-                  core.warning(`Empty commit from agent detected: ${commit.sha} ("${commit.message.split('\n')[0]}")`);
-                  emptyAgentCommits.push(commit);
-                }
-              }
-            }
-
-            // On pull_request, fail if the PR as a whole has 0 changed files.
-            // On push, fail if an agent pushed any empty commits directly to the default branch.
-            const shouldFail = isPrEmpty || (eventName === 'push' && emptyAgentCommits.length > 0);
-
-            if (shouldFail) {
-              const marker = '<!-- empty-diff-watcher-warning -->';
-              let body = [
-                marker,
-                '### 🛡️ Commit & PR Diff Watcher Warning',
-                '',
-                '⚠️ **Empty Commit or Empty PR Diff Detected!**',
-                ''
-              ];
-
-              if (isPrEmpty) {
-                body.push('- The pull request has **0 changed files**.');
-              }
-              if (eventName === 'push' && emptyAgentCommits.length > 0) {
-                body.push('- The following empty commit(s) were pushed by automated agents/bots directly to protected branch:');
-                for (const c of emptyAgentCommits) {
-                  body.push(`  - \`${c.sha.slice(0, 7)}\` by \`${c.author_login || 'agent'}\`: *"${c.message.split('\n')[0]}"*`);
-                }
-              }
-
-              body.push('');
-              body.push('Empty commits or empty diff PRs from automated agents are blocked to protect CI/CD resources and pipeline hygiene.');
-              body.push('Please push a commit containing actual file modifications to proceed.');
-
-              const fullComment = body.join('\n');
-
-              if (prNumber) {
-                try {
-                  // Post or update comment on the PR (idempotently and safely)
-                  const comments = await github.paginate(github.rest.issues.listComments, {
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    issue_number: prNumber,
-                    per_page: 50,
-                  });
-                  const existingWarning = comments.find(c => c.body && c.body.includes(marker));
-                  if (existingWarning) {
-                    await github.rest.issues.updateComment({
-                      owner: context.repo.owner,
-                      repo: context.repo.repo,
-                      comment_id: existingWarning.id,
-                      body: fullComment,
-                    });
-                    core.info(`Updated existing warning comment ${existingWarning.id}`);
-                  } else {
-                    await github.rest.issues.createComment({
-                      owner: context.repo.owner,
-                      repo: context.repo.repo,
-                      issue_number: prNumber,
-                      body: fullComment,
-                    });
-                    core.info('Posted new warning comment');
-                  }
-                } catch (commentErr) {
-                  // Catch write errors gracefully if GITHUB_TOKEN has read-only permission (e.g. from fork PRs)
-                  core.warning(`Could not post or update warning comment on PR #${prNumber} (e.g., read-only GITHUB_TOKEN on fork PR): ${commentErr.message}`);
-                }
-              }
-
-              core.setFailed('Action Refinements: Blocked empty commits/diffs from automated agents.');
-            } else {
-              core.info('All commits and diffs look valid.');
-            }
+          # Issue #1 is intentionally not targeted: direct-push telemetry is
+          # logged in the workflow run rather than generating noisy PR comments.
+          printf '%b\n' "$body"
+          exit 1

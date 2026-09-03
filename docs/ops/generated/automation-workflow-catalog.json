@@ -27,9 +27,28 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "9fa34464430817408ac2d13ef33d6c75aab60b50fb69865a5322fe8c3cb82b5b",
-  "workflow_count": 59,
+  "source_fingerprint": "a7472972ab94ec5095824012a702ffa764002d5c0f89f00f9282356a6538ddb8",
+  "workflow_count": 62,
   "workflows": [
+    {
+      "action_pins": [
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683"
+      ],
+      "authority": "bounded-state-write",
+      "concurrency": "group: action-effectiveness-${{ github.event.pull_request.number || github.event.issue.number || inputs.pr_number || github.run_id }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "ledger"
+      ],
+      "name": "Action Effectiveness Ledger",
+      "path": ".github/workflows/action-effectiveness-ledger.yml",
+      "schedules": [],
+      "triggers": [
+        "issue_comment",
+        "pull_request_target",
+        "workflow_dispatch"
+      ]
+    },
     {
       "action_pins": [
         "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
@@ -211,20 +230,18 @@
     },
     {
       "action_pins": [
-        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
-        "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683"
       ],
-      "authority": "writer",
-      "concurrency": "group: commit-diff-watcher-${{ github.event.pull_request.number || github.sha }} cancel-in-progress: true",
+      "authority": "bounded-state-write",
+      "concurrency": "group: direct-master-empty-commit-${{ github.sha }} cancel-in-progress: true",
       "domain": "agentic-development",
       "jobs": [
-        "watch-diffs"
+        "watch"
       ],
-      "name": "\ud83d\udee1\ufe0f Commit & PR Diff Watcher",
+      "name": "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher",
       "path": ".github/workflows/commit-diff-watcher.yml",
       "schedules": [],
       "triggers": [
-        "pull_request",
         "push"
       ]
     },
@@ -668,6 +685,24 @@
         "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683"
       ],
       "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "sanitize-and-publish"
+      ],
+      "name": "Hex Moneyball Evidence",
+      "path": ".github/workflows/hex-moneyball-evidence.yml",
+      "schedules": [],
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683"
+      ],
+      "authority": "read-only-or-advisory",
       "concurrency": "group: hub-job-validate-${{ github.ref }} cancel-in-progress: true",
       "domain": "agentic-development",
       "jobs": [
@@ -698,21 +733,6 @@
       "triggers": [
         "pull_request",
         "workflow_dispatch"
-      ]
-    },
-    {
-      "action_pins": [],
-      "authority": "writer",
-      "concurrency": "group: master-deletion-recovery-${{ github.ref_name }} cancel-in-progress: true",
-      "domain": "agentic-development",
-      "jobs": [
-        "recover"
-      ],
-      "name": "Master deletion recovery",
-      "path": ".github/workflows/master-deletion-recovery.yml",
-      "schedules": [],
-      "triggers": [
-        "push"
       ]
     },
     {
@@ -809,6 +829,43 @@
     },
     {
       "action_pins": [
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683"
+      ],
+      "authority": "writer",
+      "concurrency": "group: pr-change-effectiveness-${{ github.event.pull_request.number || inputs.pr_number || github.run_id }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "ledger"
+      ],
+      "name": "PR Change Effectiveness Ledger",
+      "path": ".github/workflows/pr-change-effectiveness-ledger.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request_target",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "group: pr-evidence-${{ github.event.pull_request.number || github.event.issue.number || inputs.pr_number || github.run_id }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "evaluate"
+      ],
+      "name": "PR evidence evaluation",
+      "path": ".github/workflows/pr-evidence-evaluation.yml",
+      "schedules": [],
+      "triggers": [
+        "issue_comment",
+        "pull_request_review",
+        "pull_request_review_comment",
+        "pull_request_target",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
         "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
       ],
       "authority": "read-only-or-advisory",
@@ -824,22 +881,6 @@
         "issue_comment",
         "pull_request_review",
         "pull_request_target"
-      ]
-    },
-    {
-      "action_pins": [],
-      "authority": "writer",
-      "concurrency": "group: pr390-master-realign cancel-in-progress: true",
-      "domain": "agentic-development",
-      "jobs": [
-        "realign"
-      ],
-      "name": "PR",
-      "path": ".github/workflows/pr390-master-realign.yml",
-      "schedules": [],
-      "triggers": [
-        "push",
-        "workflow_dispatch"
       ]
     },
     {
@@ -974,6 +1015,24 @@
       "path": ".github/workflows/reconcile-repository-surface.yml",
       "schedules": [
         "23 5 * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: reconciliation-${{ github.event.inputs.target_ref || github.ref }}-${{ github.event.inputs.base_ref || 'master' }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "recon"
+      ],
+      "name": "Production Reconciliation Engine",
+      "path": ".github/workflows/reconciliation-engine.yml",
+      "schedules": [
+        "17 * * * *"
       ],
       "triggers": [
         "schedule",

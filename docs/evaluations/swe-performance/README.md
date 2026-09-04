@@ -1,32 +1,70 @@
-# Optional SWE Reference Evidence
+# SWE Agent Evaluation
 
 **Implements:** THUB-007  
-**Status:** Optional bounded reference adapter; repository-local development evidence remains primary.
+**Status:** External/reference evaluation family; repository-local development evidence remains primary.
 
-The `swe-reference-evaluation.yml` workflow exists only to create a redacted, one-instance reference manifest from the pinned `mini-swe-agent_fork`. It is not a production agent runner, a routing authority, a benchmark leaderboard, or a path to automated merging.
+This evaluation surface connects the user-owned `SWE-agent_fork` and `mini-swe-agent_fork` repositories to the Agent Evaluation Framework (AEF), without turning either fork or an external benchmark leaderboard into routing authority.
 
-## Invocation Boundary
+## Reference implementations
 
-The workflow is manual only. It executes an external reference run only when both controls are true:
+- [`timerloggedout-spec/SWE-agent_fork`](https://github.com/timerloggedout-spec/SWE-agent_fork) — full SWE-agent reference cohort.
+- [`timerloggedout-spec/mini-swe-agent_fork`](https://github.com/timerloggedout-spec/mini-swe-agent_fork) — lightweight SWE-agent reference cohort and existing bounded adapter.
+- Historical branch: `feat/swe-performance-evaluation` — retained as lineage evidence. It was 342 commits behind current `master` when reconciled; its useful evaluation implementation was integrated/reworked rather than merged wholesale.
 
-| Control | Owner | Purpose |
-|---|---|---|
-| `run_external_reference=true` workflow-dispatch input | Operator | Makes the individual request explicit. |
-| `SWE_REFERENCE_EVALUATION_ENABLED=true` repository variable | Repository administrator | Enables the controlled external-reference lane. |
+See `docs/evaluations/swe-performance/COHORTS.md` for the cohort matrix and MoneyBall/3L0 treatment schema.
 
-If either control is absent, the workflow records safe non-execution. It neither clones the reference nor reads a provider credential.
+## Benchmark boundary
 
-## Credential and Output Boundary
+SWE-bench is a benchmark for real-world software-engineering issues: an environment is prepared, an agent/model produces a patch, and the patch is evaluated against repository tests. The current public family includes Full, Lite, Verified, Multimodal, and Multilingual variants. SWE-bench-Live provides an additional live, multi-language/multi-OS research direction.
 
-`SWE_EVALUATION_API_KEY` is deliberately mapped **only** to the one bounded benchmark process. Checkout, cloning, dependency installation, package build hooks, manifest creation, artifact upload, and all disabled-path steps run without the provider credential. No provider key is job-scoped.
+External benchmark results are **reference evidence**. They are not interchangeable with this repository's own correctness, review-resolution, coordination, regression, tool-boundary, or resource evidence.
 
-Each enabled run is restricted to one `0:1` instance and emits at most a redacted manifest. The workflow never uploads prompts, trajectories, source patches, prediction files, logs, raw review content, or credentials. A zero-exit reference run must have exactly one prediction record; otherwise manifest construction fails closed. `agent-run-complete` denotes only that the bounded agent produced evidence, not that SWE-bench resolved the task.
+## Invocation boundary
 
-## Result Handling
+The existing `swe-reference-evaluation.yml` remains a bounded reference adapter. It must pin the external implementation revision and emit a redacted manifest. A successful agent process means only that an evaluation artifact was produced; it does not mean the task was solved.
 
-Only audited redacted manifests may be committed below `docs/evaluations/swe-performance/results/`. GitHub Actions artifacts expire after fourteen days. No result may be used to override repository-local correctness, review-resolution, duplicate-avoidance, feedback-time, coordination, or resource-cost evidence.
+The long-term direction is agentic/continuous evaluation through the AEF + BIUDL loop rather than a human-only benchmark switch. Any credential-bearing external run must remain explicitly isolated and fail closed when required credentials or evidence are absent.
 
-## References
+## Result handling
 
-[1]: https://github.com/timerloggedout-spec/SWE-agent_fork "SWE-agent fork"
-[2]: https://github.com/timerloggedout-spec/mini-swe-agent_fork "mini-SWE-agent fork"
+Results must be reproducible and attributable:
+
+`source state → benchmark/task version → treatment assignment → agent/provider/model → execution → evidence freeze → evaluator → outcome → MoneyBall/3L0 update`
+
+Record task outcome separately from latency, token count, quota, cost, retries, and availability. Do not use a single aggregate percentage as the sole admission/culling criterion.
+
+## #390 is a case study, not the benchmark
+
+PR #390 is a quick repository-history scenario that exposed the **churn problem**. It is therefore a stress-test/use-case seed for context reconstruction, event-volume handling, relationship discovery, and change-effectiveness measurement—not a claim that a large PR/comment history is itself a SWE-bench task.
+
+The existing `benchmarks/repository-history/pr-390.yaml` is the bounded seed. Its evidence should remain linked to the source PR/SHA/run graph and should not be inflated into a quality score merely because the history is large.
+
+## BIUDL / MoneyBall
+
+```text
+BROAD → discover agents, forks, datasets, environments, tasks
+  ↓
+INTEGRATE → register/pin treatments and adapters
+  ↓
+VALIDATE → deterministic + blinded + trajectory + tool-boundary evidence
+  ↓
+DEVELOP → improve agent, prompt, manager, tools, orchestration
+  ↓
+LEARN → update MoneyBall/3L0, skills, SSOT, cohort registry
+  └────────────────────────────────────────────→ BROAD
+```
+
+Culling preserves provenance. Promotion requires replicated evidence where practical. New benchmark variants, agents, providers, or environments enter as new treatments/cohorts instead of overwriting historical observations.
+
+## Related artifacts
+
+- `docs/architecture/AGENT-EVALUATION-FRAMEWORK.md`
+- `docs/evaluations/swe-performance/COHORTS.md`
+- `docs/evaluations/development-performance/SUITE.md`
+- `.github/workflows/swe-reference-evaluation.yml`
+- `scripts/ci/swe_evaluation_contract.py`
+- `benchmarks/repository-history/pr-390.yaml`
+- `docs/ops/LEAD-LAG-INDEX.md`
+- `docs/ops/SCOUT-MISSIONS.md`
+- `docs/ops/SCOUT-ROSTER.md`
+- `.agents/skills/adaptive-feedback-cycle/SKILL.md`

@@ -4,7 +4,7 @@
 
 The Agent Evaluation Framework (AEF) is the measurement layer for the Agentic Development Environment. It turns agent development, provider/model experiments, repository-history replay, Actions execution, and oversight tasks into reproducible evaluation units.
 
-This is broader than a model benchmark: the system evaluates **agents, managers, prompts, tools, orchestration policies, and development environments**.
+This is broader than a model benchmark: the system evaluates **agents, managers, prompts, tools, orchestration policies, providers/models, and development environments**.
 
 ## Evaluation unit
 
@@ -32,10 +32,14 @@ Latency, token count, quota, cost, retries, and availability are secondary measu
 
 | Family | What it measures |
 |---|---|
+| SWE-agent reference | software-engineering agent treatments using pinned user-owned SWE-agent forks |
+| SWE-bench family | standardized real-world issue-to-patch resolution |
 | Deterministic regression | preservation of known-good behavior |
 | Repository-history replay | ability to solve previously observed development tasks |
+| Custom environment | performance under repository-specific tool/runtime conditions |
 | Tool/API boundary | schema correctness, error handling, retry behavior |
 | Agent trajectory | planning, sequencing, recovery, unnecessary-loop rate |
+| Cognitive regression | degradation after context, prompt, tool, or orchestration changes |
 | Patch quality | tests, regressions, scope, maintainability |
 | Orchestration | manager/team policy and lane coordination |
 | Provider/model | treatment performance under controlled tasks |
@@ -43,11 +47,19 @@ Latency, token count, quota, cost, retries, and availability are secondary measu
 | Long-horizon | stability across repeated development cycles |
 | Adversarial | robustness against misleading context and failure conditions |
 
+## SWE fork cohort
+
+The user-owned `timerloggedout-spec/SWE-agent_fork` and `timerloggedout-spec/mini-swe-agent_fork` are first-class **reference treatments**. They are not copied into this monorepo and are not routing authorities. Each run should pin an exact fork revision and retain upstream/fork lineage.
+
+The historical `feat/swe-performance-evaluation` branch is preserved as lineage evidence. Current master reconciled its useful implementation without wholesale-merging a stale branch.
+
+See `docs/evaluations/swe-performance/COHORTS.md` for the cohort matrix and admission/culling rules.
+
 ## DOE/MVT integration
 
 AEF consumes experiment designs from the MVT/DOE layer. Factors may include:
 
-`provider × model × prompt × manager × cohort × sequencing × evaluator × blindness condition`
+`agent × provider × model × prompt × manager × cohort × sequencing × evaluator × blindness condition`
 
 Use full factorial designs when practical; otherwise use justified fractional-factorial, orthogonal-array, Plackett-Burman, sequential, or adaptive designs. The design choice itself is evidence and must be recorded.
 
@@ -65,9 +77,9 @@ For paired tasks, prefer paired treatment comparisons. For many factors, estimat
 
 ## #390 use case
 
-PR #390 is a useful repository-history benchmark candidate because it contains a real agent-generated documentation/test change and a large event/comment history. It must **not** be treated as a benchmark merely because it is large or agent-authored. A benchmark extraction should define a bounded task instance, freeze the source context, establish objective success criteria, and preserve the source SHA/PR/run evidence.
+PR #390 is a **quick repository-history churn case study**, not a canonical SWE-bench instance. It highlighted why event/comment volume, context reconstruction, relationship discovery, and change-effectiveness must be measured without confusing activity with value.
 
-A suitable replay cohort can measure:
+A bounded replay cohort can measure:
 
 1. context ingestion and reconstruction;
 2. notation/proposal consistency;
@@ -77,7 +89,7 @@ A suitable replay cohort can measure:
 6. review-quality findings;
 7. final patch correctness.
 
-The 2,500-comment history is itself a stress-test dimension, not a quality score. fileciteturn139file0L2-L2
+Large comment/event history is a stress dimension, not a quality score. The benchmark seed is `benchmarks/repository-history/pr-390.yaml` and must remain linked to source SHA/PR/run evidence.
 
 ## Agent-team evaluation
 
@@ -102,11 +114,11 @@ BROAD
   ↓
 INTEGRATE
   ↓
-VALIDATE  ← Agent Evaluation Framework
+VALIDATE  ← Agent Evaluation Framework + benchmark cohorts
   ↓
 DEVELOP
   ↓
-LEARN
+LEARN  ← MoneyBall / 3L0 + provenance
   └────────→ improved BROAD
 ```
 
@@ -119,10 +131,12 @@ AEF is therefore not a leaderboard alone. It is the **validation substrate for c
 - `docs/ops/LEAD-LAG-INDEX.md`
 - `docs/ops/SCOUT-MISSIONS.md`
 - `docs/ops/SCOUT-ROSTER.md`
+- `docs/evaluations/swe-performance/README.md`
+- `docs/evaluations/swe-performance/COHORTS.md`
 - `.agents/skills/multivariate-doe/SKILL.md`
 - `.agents/skills/blind-agent-evaluation/SKILL.md`
 - `.agents/skills/evidence-led-monorepo-ops/SKILL.md`
 - `.agents/skills/adaptive-feedback-cycle/SKILL.md`
 - Issue #337 — Continuous Evaluation
 - Issue #342 — Evaluations / LeaderBoards / 3L0
-- Issue #390 — notation-set history/replay candidate
+- Issue #390 — notation-set history/replay case study

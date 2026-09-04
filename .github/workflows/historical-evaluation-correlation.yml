@@ -7,7 +7,8 @@ on:
     branches: [master]
     paths:
       - 'scripts/github/historical_event_correlation.py'
-      - '.github/workflows/historical-evaluation-correlation.yml'
+      - 'scripts/ci/automation_docs.py'
+      - '.github/workflows/**'
       - '.agents/skills/**'
       - 'docs/architecture/**'
       - 'docs/ops/**'
@@ -26,16 +27,19 @@ jobs:
   correlate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a # v5.0.0
         with:
           fetch-depth: 0
           persist-credentials: false
+      - name: Validate automation documentation freshness
+        run: python3 scripts/ci/automation_docs.py --check
       - name: Snapshot and correlate repository history
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          python3 scripts/github/historical_event_correlation.py --repo "$GITHUB_REPOSITORY" --out artifacts/github-history --pages 5
+          python3 -m py_compile scripts/github/historical_event_correlation.py
+          python3 scripts/github/historical_event_correlation.py --repo "$GITHUB_REPOSITORY" --out artifacts/github-history --pages 5 --nested-pages 1
       - name: Validate documented workflow references
         run: |
           set -euo pipefail
@@ -48,10 +52,10 @@ jobs:
               for m in re.findall(r'\.github/workflows/([A-Za-z0-9_.-]+\.ya?ml)',text):
                   if m not in workflows: missing.append(f'{p}: {m}')
           if missing:
-              print('::warning::Stale workflow references detected')
+              print('::error::Stale workflow references detected')
               print('\n'.join(missing))
-          else:
-              print('All documented workflow filenames resolve.')
+              raise SystemExit(1)
+          print('All documented workflow filenames resolve.')
           PY
       - name: Publish immutable correlation artifact
         uses: actions/upload-artifact@v4

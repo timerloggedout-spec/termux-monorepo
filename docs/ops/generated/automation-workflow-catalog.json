@@ -27,12 +27,12 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "6e89ff317ada836f710e528fff45d5f86670925016ba50f74e7da344d96e0523",
+  "source_fingerprint": "8b7f7499c31c124d1bd93e8e24ac213a090f385a622aca4533dfec708f2db241",
   "workflow_count": 64,
   "workflows": [
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a0"
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
       "authority": "bounded-state-write",
       "concurrency": "group: action-effectiveness-${{ github.event.pull_request.number || github.event.issue.number || inputs.pr_number || github.run_id }} cancel-in-progress: true",
@@ -207,7 +207,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a0"
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
       "authority": "writer",
       "concurrency": "group: automation-docs-refresh cancel-in-progress: false",
@@ -719,7 +719,9 @@
       ]
     },
     {
-      "action_pins": [],
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
       "authority": "read-only-or-advisory",
       "concurrency": "group: historical-evaluation-correlation cancel-in-progress: false",
       "domain": "agentic-development",

@@ -13,6 +13,14 @@ def _get_nc():
         import core.api as nc
         return nc
 
+def _get_nc_main():
+    import importlib
+    try:
+        return importlib.import_module("nexuscli.cli.main")
+    except ModuleNotFoundError:
+        sys.path.insert(0, os.path.abspath("nexuscli"))
+        return importlib.import_module("cli.main")
+
 def test_nexuscli_privileges_enforcement(tmp_path, monkeypatch):
     nc = _get_nc()
     test_config_dir = tmp_path / ".nexuscli"
@@ -98,3 +106,58 @@ def test_nexuscli_privileges_path_traversal_prevention(tmp_path, monkeypatch):
 
     acc_path_str = nc._cache_path("session1", account="acc$#*!123")
     assert "acc____123" in acc_path_str
+
+
+def test_nexuscli_cli_symlink_safety(tmp_path, monkeypatch):
+    nc_main = _get_nc_main()
+
+    # Test cmd_export on symlink target
+    target_file = tmp_path / "sensitive_target.txt"
+    target_file.write_text("sensitive content")
+    if os.name != "nt":
+        target_file.chmod(0o644)
+
+    symlink_file = tmp_path / "symlink_export.txt"
+    symlink_file.symlink_to(target_file)
+
+    class ArgsExport:
+        session_id = "session_1"
+        last = False
+        format = "json"
+        output = str(symlink_file)
+
+    monkeypatch.setattr(nc_main, "get_token", lambda: "fake_token")
+    monkeypatch.setattr(nc_main, "export_json", lambda token, sid: "exported_data")
+
+    nc_main.cmd_export(ArgsExport())
+
+    # Verify sensitive target content and permissions were unchanged
+    assert target_file.read_text() == "sensitive content"
+    if os.name != "nt":
+        assert (target_file.stat().st_mode & 0o777) == 0o644
+
+    # Test cmd_new_session on symlink config dir/file
+    fake_home = tmp_path / "home"
+    monkeypatch.setattr(Path, "home", lambda: fake_home)
+
+    target_cfg = tmp_path / "target_cfg.json"
+    target_cfg.write_text("{}")
+    if os.name != "nt":
+        target_cfg.chmod(0o644)
+
+    nexus_dir = fake_home / ".nexuscli"
+    nexus_dir.mkdir(parents=True, exist_ok=True)
+    cfg_symlink = nexus_dir / "config.json"
+    cfg_symlink.symlink_to(target_cfg)
+
+    class ArgsNew:
+        model = "expert"
+        save = True
+
+    monkeypatch.setattr(nc_main, "create_session", lambda token, model_type: "sess_123")
+
+    nc_main.cmd_new_session(ArgsNew())
+
+    assert target_cfg.read_text() == "{}"
+    if os.name != "nt":
+        assert (target_cfg.stat().st_mode & 0o777) == 0o644

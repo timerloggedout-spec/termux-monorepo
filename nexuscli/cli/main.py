@@ -13,18 +13,30 @@ from rich.panel import Panel
 from rich.prompt import Prompt
 
 # Add parent directory to path for imports
-sys.path.insert(0, str(Path(__file__).parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent.resolve()))
 
-from core.api import (
-    get_token,
-    create_session,
-    fetch_sessions,
-    get_history,
-    stream_completion,
-    send_message,
-    export_markdown,
-    export_json,
-)
+try:
+    from nexuscli.core.api import (
+        get_token,
+        create_session,
+        fetch_sessions,
+        get_history,
+        stream_completion,
+        send_message,
+        export_markdown,
+        export_json,
+    )
+except ModuleNotFoundError:
+    from core.api import (
+        get_token,
+        create_session,
+        fetch_sessions,
+        get_history,
+        stream_completion,
+        send_message,
+        export_markdown,
+        export_json,
+    )
 
 console = Console()
 
@@ -64,9 +76,13 @@ def cmd_new_session(args):
     console.print(f"[green]New session created: {session_id}[/]")
     if args.save:
         cfg_path = Path.home() / ".nexuscli" / "config.json"
+        if cfg_path.parent.is_symlink() or cfg_path.is_symlink():
+            console.print("[red]Error: Target config path or directory is a symlink.[/]")
+            return
         cfg_path.parent.mkdir(parents=True, exist_ok=True)
         try:
-            cfg_path.parent.chmod(0o700)
+            if not cfg_path.parent.is_symlink():
+                cfg_path.parent.chmod(0o700)
         except Exception:
             pass
         cfg = {}
@@ -75,7 +91,8 @@ def cmd_new_session(args):
         cfg["last_session"] = session_id
         cfg_path.write_text(json.dumps(cfg, indent=2))
         try:
-            cfg_path.chmod(0o600)
+            if not cfg_path.is_symlink():
+                cfg_path.chmod(0o600)
         except Exception:
             pass
         console.print("[yellow]Saved as last_session.[/]")
@@ -167,10 +184,15 @@ def cmd_export(args):
         content = export_json(token, session_id)
 
     if args.output:
-        with open(args.output, "w") as f:
+        out_path = Path(args.output)
+        if out_path.is_symlink():
+            console.print(f"[red]Error: Output path {args.output} is a symlink.[/]")
+            return
+        with open(out_path, "w") as f:
             f.write(content)
         try:
-            os.chmod(args.output, 0o600)
+            if not out_path.is_symlink():
+                os.chmod(out_path, 0o600)
         except Exception:
             pass
         console.print(f"[green]Exported to {args.output}[/]")

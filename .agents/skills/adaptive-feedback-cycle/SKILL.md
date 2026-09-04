@@ -9,6 +9,14 @@ description: Continuously improve agentic GitHub development by observing workfl
 
 Operate the repository as an agentic development environment. The objective is compounding production improvements, not merely fast responses or green workflow badges.
 
+## Historical evaluation scope
+
+**Every observable GitHub event is eligible for continuous historical evaluation.** Do not use a single issue, PR, benchmark, or incident as the historical boundary. The minimum population is issues, issue comments, pull requests, commits, reviews, review comments, branches, workflow runs, jobs, steps, artifacts, benchmark cases, fork lineage, and their temporal relationships. A case study such as #390 is a stress specimen for a particular failure mode; it is not the corpus boundary.
+
+The canonical join substrate is SHA/refs + stable GitHub object IDs + workflow/run/job/artifact IDs + timestamps. Preserve both positive and negative attempts. A missing correlation is evidence of an observability gap, not permission to discard the event.
+
+`.github/workflows/historical-evaluation-correlation.yml` produces periodic immutable correlation snapshots and checks workflow references documented under `docs/`. `docs/ops/ACTIONS-HISTORICAL-CORRELATION.md` defines the matrix. The historical ledger answers **what happened**; AEF/MVT/DOE answers **under which treatment and with what outcome**.
+
 ## Non-negotiable priority
 
 1. Correct, working implementation.
@@ -30,8 +38,6 @@ Poll authoritative availability/catalog metadata whenever supported. Discover ne
 
 Never encode an arbitrary application-level response, concurrency, provider count, model-count, benchmark-instance, or fork-count ceiling. Requested output may use the highest capability reported by current provider/model metadata; current production invocation requests 131072 output tokens (128 Ki tokens) when the provider accepts the parameter. This is not a universal capability claim. Actual provider/model capability, request acceptance, finish reason, output tokens, truncation, and errors are independent observations. If an experiment intentionally varies output length or concurrency, that is an explicit MVT dimension with a recorded justification, not a hidden budget.
 
-Do not use a generic "budget" abstraction to silently constrain work. Provider quotas, credits, rate limits, runner capacity, API limits, account entitlements, dataset availability, and benchmark platform limits are distinct resources and must be measured independently. A platform limit is infrastructure evidence, not an application policy ceiling.
-
 ## Continuous loop
 
 ```text
@@ -43,6 +49,17 @@ The loop does not terminate because one command returned successfully. It termin
 ## Observe
 
 For every relevant GitHub event and every provider request, capture event type/action and timestamp, workflow run/attempt/job/step, repository SHA/ref and workflow revision, manager policy and agent/provider/model identity, prompt/context variant and experiment ID, artifact/log evidence, outcome/warnings/errors, lead/lag timestamps, request count, catalog revision, and provider/quota/rate-limit evidence. Record cooldown/debounce state and why admission/wait/skip occurred. Never infer success from workflow/job `success` alone.
+
+For each event class, build explicit edges rather than only a flat activity log:
+
+```text
+issue/comment <-> PR/review/comment <-> commit/SHA <-> workflow/run/job/step <-> artifact
+       \                                              /
+        \-> benchmark/task/treatment -> evaluator -> outcome
+branch/ref/fork lineage ----------------------------^ 
+```
+
+This graph is longitudinal: later evidence may update the evaluation of an earlier event, but never rewrite the original observation.
 
 ## Classify
 
@@ -60,18 +77,6 @@ This is extensible. Future dimensions may include task type, repository scope, v
 
 The provider/model/library/agent/benchmark population is live data, not a fixed roster. Poll current catalogs/availability and generate the eligible MVT population. Newly discovered eligible models, agents, benchmark variants, and user-owned reference forks are incorporated into Scout/cohort discovery automatically; disappeared entries are recorded as stale/unavailable evidence. OX Alpha and any other model are selectable treatments, never permanent router rules.
 
-Do not encode a local `max-parallel` ceiling merely to simplify experiments. Expand simultaneous lanes according to current eligible population, runner availability, provider admission, quota, cooldown, benchmark/environment capacity, and manager policy. Platform limits are infrastructure constraints, not application policy ceilings. The manager owns dynamic admission, sequencing, cooldown, quota, culling, and promotion.
-
-Every provider request must produce telemetry containing provider, model, experiment/lane identity, request count, response status, timestamps, and safe quota/rate-limit evidence when exposed. This applies to all libraries/providers/models. Never assume a quota from a secret's existence; record observed entitlement/capacity and reconcile it against authoritative documentation.
-
-## Provider quota/account evidence
-
-Prefer authoritative live account/quota endpoints when documented. If none is documented, do not invent one. Capture safe response headers such as `x-ratelimit-*`, `x-credit-*`, `x-quota-*`, `x-remaining-*`, `retry-after`, and request IDs when exposed; never persist authorization headers or secrets.
-
-For every provider keep separate evidence classes: documented capability; documented public/free-credit entitlement; authenticated account balance when an authoritative endpoint exists; request-observed credit/quota/rate-limit evidence; and actual execution.
-
-For Felo, public documentation identifies `ox-alpha` as a free-trial route with 1M context and 128K maximum output, and public documentation describes 200 daily free credits for applicable Free Standard Search API accounts. Treat those as documented entitlement evidence, not the authenticated account's current remaining balance. If an authoritative authenticated balance endpoint exists, poll it and reconcile it after each request/cycle; otherwise maintain explicit `balance_unknown` while logging every request's observable quota metadata.
-
 ## Adaptive waiting and multiple-run cycles
 
 Do not use a fixed short timeout merely because a response is slow. Wait while progress/evidence changes; re-check run/job state and timestamps; extend useful long-running work within platform/task constraints; detect stalls via lack of state/log/artifact progress, repeated identical retries, deadlocks, or deadline exhaustion; retry only when informative; prefer a fresh experiment variant when better than identical regeneration; preserve every attempt; and run multiple validation cycles for orchestration/provider changes. After each run inspect jobs -> steps -> logs -> artifacts -> receipts -> resulting SHA/status before deciding to wait, steer, retry, refine, or promote. Latency is diagnostic; correctness is promotion priority.
@@ -82,44 +87,13 @@ Before inventing timing policy, inspect prior SSOTs, decision matrices, agent re
 
 ## Reconnaissance before implementation
 
-Before changing production orchestration, inspect **all relevant existing skills and process artifacts**, not just this skill. Search `.agents/skills/`, context-relationship graph skills including naming variants, SSOTs, decision matrices, Mermaid/process diagrams, command libraries, agent-manager documents, provider adapters, cooldown/quota code, benchmark registries, evaluation contracts, and recent agent-authored commits. The repository currently contains the canonical `context-relationship-graph` skill; use its verified-vs-candidate discipline. Do not rely on a remembered filename when GitHub can establish canonical spelling/path.
+Before changing production orchestration, inspect **all relevant existing skills and process artifacts**, not just this skill. Search `.agents/skills/`, context-relationship graph skills including naming variants, SSOTs, decision matrices, Mermaid/process diagrams, command libraries, agent-manager documents, provider adapters, cooldown/quota code, benchmark registries, evaluation contracts, and recent agent-authored commits. Treat workflow definitions and documentation that references them as coupled artifacts.
 
-Treat other agents' recent commits, comments, reviews, workflow artifacts, and command outputs as operational intelligence. Agent attribution requires provenance/confidence evidence; shared-PAT GitHub identity alone is insufficient.
-
-## Steering
-
-When steering is available, send a bounded correction referencing current evidence. Do not erase prior attempts. A steering action produces a new linked observation.
-
-## ChronoMancer/time-loop compatibility
-
-Chat-session time loops may consolidate a winning continuation into an earlier conversational trunk while preserving original branches. GitHub should translate the concept into provenance-preserving artifacts:
-
-```text
-X
-├── attempt A -> SHA A
-├── attempt B -> SHA B
-└── attempt C -> SHA C <- promoted trunk
-```
-
-Never rewrite Git history solely to make the timeline appear linear. Promotion selects the validated successor; it does not delete unsuccessful evidence.
-
-## Context-ingestion efficiency
-
-Construct prompts from stable context plus relevant delta:
-
-```text
-stable context + new delta + unresolved findings + relevant history
-```
-
-Track context scope, token/size estimates when available, historical depth, exclusions, and why each variation was selected. Avoid repeatedly shipping unchanged history. Prompt variations require explicit experimental justification. Relationship graphs should connect issues, PRs, commits, comments, reviews, files, workflow runs, jobs, provider/model observations, benchmark/fork lineage, and manager decisions with evidence class and temporal bounds.
+Treat other agents' recent commits, comments, reviews, and workflow artifacts as operational intelligence. Agent attribution requires provenance/confidence evidence; shared-PAT GitHub identity alone is insufficient.
 
 ## GitHub audit model
 
-Maintain one continuous audit PR/specimen where practical. Audit every event on that PR and feed findings forward. Automated workflows are the default; there is **no manual audit gate** in the production loop. A human may inspect or steer, but the system continues without synchronous approval when policy permits.
-
-## Regression rule
-
-No rollback of evidence. Later improvements reference prior observations and preserve artifacts. A regression is a new finding that triggers diagnosis and a successor change. Never label a change green merely because an error disappeared if the requested outcome remains unverified.
+Maintain one continuous audit PR/specimen where practical. Audit **every event**, not merely the current PR or a selected case study, and feed findings forward. Automated workflows are the default; there is **no manual audit gate** in the production loop. A human may inspect or steer, but the system continues without synchronous approval when policy permits.
 
 ## Promotion gate and task outcome
 

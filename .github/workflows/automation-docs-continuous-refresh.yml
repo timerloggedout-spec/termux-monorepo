@@ -1,0 +1,50 @@
+name: Automation Documentation Continuous Refresh
+
+on:
+  schedule:
+    - cron: '17 * * * *'
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/ci/automation_docs.py'
+      - '.github/workflows/**'
+      - '.github/actions/**'
+      - 'scripts/model_router.py'
+      - 'docs/schemas/**'
+      - 'docs/ops/OPERATOR_INTERACTIVE_ACTIONS.md'
+      - 'docs/ops/automation-decision-tree.md'
+      - 'docs/ops/diagrams/**'
+      - 'docs/proposals/active/actions-refinements/**'
+      - 'docs/proposals/active/rate-limit-rotation/**'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: automation-docs-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a0 # v5.0.0
+        with:
+          fetch-depth: 0
+      - name: Regenerate automation catalog
+        run: python3 scripts/ci/automation_docs.py --write
+      - name: Validate generated catalog
+        run: python3 scripts/ci/automation_docs.py --check
+      - name: Commit generated automation documentation
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- docs/ops/generated; then
+            echo 'Automation documentation already current.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/ops/generated
+          git commit -m 'docs(ops): refresh generated automation catalog'
+          git push

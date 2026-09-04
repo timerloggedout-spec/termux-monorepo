@@ -36,7 +36,9 @@ Apply the same evidence model to **every** provider, API/library, model, agent, 
 
 Poll authoritative availability/catalog metadata whenever supported. Discover new models/libraries/providers and relevant user-owned forks automatically; newly discovered candidates enter Scout research and cohort classification rather than silently becoming production routing rules. Disappeared or unavailable entries become stale/unavailable observations. Preserve historical identities so longitudinal MVT results remain comparable.
 
-Never encode an arbitrary application-level response, concurrency, provider count, model-count, benchmark-instance, or fork-count ceiling. Requested output may use the highest capability reported by current provider/model metadata; current production invocation requests 131072 output tokens (128 Ki tokens) when the provider accepts the parameter. This is not a universal capability claim. Actual provider/model capability, request acceptance, finish reason, output tokens, truncation, and errors are independent observations. If an experiment intentionally varies output length or concurrency, that is an explicit MVT dimension with a recorded justification, not a hidden budget.
+Never encode an arbitrary application-level response, concurrency, provider count, model-count, benchmark-instance, or fork-count ceiling. Requested output may use the highest capability reported by current provider/model metadata; current production invocation requests 131072 output tokens (128 Ki tokens) when the provider accepts the parameter. Actual provider/model capability, request acceptance, finish reason, output tokens, truncation, and errors are independent observations.
+
+Do not use a generic budget abstraction to silently constrain work. Provider quotas, credits, rate limits, runner capacity, API limits, account entitlements, dataset availability, and benchmark platform limits are distinct resources and must be measured independently. Platform limits are infrastructure evidence, not application policy ceilings.
 
 ## Continuous loop
 
@@ -46,20 +48,20 @@ OBSERVE -> CLASSIFY -> WAIT/STEER/RETRY -> VERIFY -> PROMOTE OR QUARANTINE -> FE
 
 The loop does not terminate because one command returned successfully. It terminates when the requested outcome is verified, or when a documented terminal condition makes the desired outcome impossible without new authority/input. Multiple workflow runs, experiments, retries, refinements, and manager changes are expected within a cycle.
 
-## Observe
+## Observe and correlation graph
 
-For every relevant GitHub event and every provider request, capture event type/action and timestamp, workflow run/attempt/job/step, repository SHA/ref and workflow revision, manager policy and agent/provider/model identity, prompt/context variant and experiment ID, artifact/log evidence, outcome/warnings/errors, lead/lag timestamps, request count, catalog revision, and provider/quota/rate-limit evidence. Record cooldown/debounce state and why admission/wait/skip occurred. Never infer success from workflow/job `success` alone.
+For every relevant GitHub event and every provider request, capture event type/action and timestamp, workflow run/attempt/job/step, repository SHA/ref and workflow revision, manager policy and agent/provider/model identity, prompt/context variant and experiment ID, artifact/log evidence, outcome/warnings/errors, lead/lag timestamps, request count, catalog revision, and provider/quota/rate-limit evidence. Record cooldown/debounce state and why admission/wait/skip occurred. Never infer success from workflow/job success alone.
 
-For each event class, build explicit edges rather than only a flat activity log:
+Build explicit longitudinal edges rather than a flat activity list:
 
 ```text
 issue/comment <-> PR/review/comment <-> commit/SHA <-> workflow/run/job/step <-> artifact
        \                                              /
         \-> benchmark/task/treatment -> evaluator -> outcome
-branch/ref/fork lineage ----------------------------^ 
+branch/ref/fork lineage ----------------------------^
 ```
 
-This graph is longitudinal: later evidence may update the evaluation of an earlier event, but never rewrite the original observation.
+Later evidence can update the evaluation of an earlier event, but never rewrites the original observation.
 
 ## Classify
 
@@ -67,33 +69,58 @@ Use separate states for dispatch/event/run/job/provider request/response, provid
 
 ## MVT population, dynamic libraries, benchmarks, and quota-aware lanes
 
-Treat the experiment as a categorical/subcategory matrix:
+Treat the experiment as:
 
-```text
-agent × provider × model × prompt × manager × cohort × sequencing
-```
+`agent × provider × model × prompt × manager × cohort × sequencing`
 
-This is extensible. Future dimensions may include task type, repository scope, validation class, bug-bounty/help-wanted/CTF treatment, reviewer, tool-chain, context strategy, benchmark family/version, environment image, fork revision, and other experimentally justified factors.
+Future dimensions may include task type, repository scope, validation class, oversight cohort, reviewer, tool-chain, context strategy, benchmark family/version, environment image, fork revision, evaluator, and blindness condition.
 
-The provider/model/library/agent/benchmark population is live data, not a fixed roster. Poll current catalogs/availability and generate the eligible MVT population. Newly discovered eligible models, agents, benchmark variants, and user-owned reference forks are incorporated into Scout/cohort discovery automatically; disappeared entries are recorded as stale/unavailable evidence. OX Alpha and any other model are selectable treatments, never permanent router rules.
+The population is live data. Poll current catalogs/availability and generate eligible treatments. Newly discovered eligible models, agents, benchmark variants, and user-owned reference forks enter Scout/cohort discovery automatically; disappeared entries remain historical stale/unavailable observations.
+
+Do not encode a local `max-parallel` ceiling merely to simplify experiments. Admission follows current eligible population, runner availability, provider admission, quota, cooldown, benchmark/environment capacity, and manager policy. GitHub/platform limits remain infrastructure constraints.
+
+## Provider quota/account evidence
+
+Prefer authoritative live account/quota endpoints when documented. If none is documented, do not invent one. Capture safe response headers such as `x-ratelimit-*`, `x-credit-*`, `x-quota-*`, `x-remaining-*`, `retry-after`, and request IDs when exposed; never persist authorization headers or secrets.
+
+For every provider keep separate evidence classes: documented capability; documented public/free-credit entitlement; authenticated account balance when an authoritative endpoint exists; request-observed credit/quota/rate-limit evidence; and actual execution. Never infer an account balance from documentation or the presence of a secret.
 
 ## Adaptive waiting and multiple-run cycles
 
-Do not use a fixed short timeout merely because a response is slow. Wait while progress/evidence changes; re-check run/job state and timestamps; extend useful long-running work within platform/task constraints; detect stalls via lack of state/log/artifact progress, repeated identical retries, deadlocks, or deadline exhaustion; retry only when informative; prefer a fresh experiment variant when better than identical regeneration; preserve every attempt; and run multiple validation cycles for orchestration/provider changes. After each run inspect jobs -> steps -> logs -> artifacts -> receipts -> resulting SHA/status before deciding to wait, steer, retry, refine, or promote. Latency is diagnostic; correctness is promotion priority.
+Wait while useful evidence/progress changes. Re-check run/job state and timestamps; extend useful long-running work within platform/task constraints; detect stalls from lack of state/log/artifact progress, repeated identical retries, deadlocks, or deadline exhaustion; retry only when informative; prefer a fresh experiment variant when better than identical regeneration; preserve every attempt; and run multiple validation cycles for orchestration/provider changes.
 
-## Existing cooldown intelligence is feed-forward
-
-Before inventing timing policy, inspect prior SSOTs, decision matrices, agent responses, command libraries, cooldowns, debounces, quota gates, and orchestration receipts. Historical values are evidence, not immutable constants. Ingest prior observations; distinguish provider cooldown from orchestration debounce; avoid re-admission during known cooldown unless deliberately experimenting; record why waiting/skipping occurred; adapt when evidence disproves old timing; cull low-ROI treatments while retaining evidence; and reintroduce treatments when new availability/capability evidence changes expected value.
+After each run inspect **jobs -> steps -> logs -> artifacts -> receipts -> resulting SHA/status** before deciding to wait, steer, retry, refine, or promote.
 
 ## Reconnaissance before implementation
 
-Before changing production orchestration, inspect **all relevant existing skills and process artifacts**, not just this skill. Search `.agents/skills/`, context-relationship graph skills including naming variants, SSOTs, decision matrices, Mermaid/process diagrams, command libraries, agent-manager documents, provider adapters, cooldown/quota code, benchmark registries, evaluation contracts, and recent agent-authored commits. Treat workflow definitions and documentation that references them as coupled artifacts.
+Before changing production orchestration, inspect all relevant `.agents/skills/`, context-relationship graph variants, SSOTs, decision matrices, Mermaid/process diagrams, command libraries, agent-manager documents, provider adapters, cooldown/quota code, benchmark registries, evaluation contracts, fork lineage, and recent agent-authored commits. Treat workflow definitions and documentation that references them as coupled artifacts.
 
 Treat other agents' recent commits, comments, reviews, and workflow artifacts as operational intelligence. Agent attribution requires provenance/confidence evidence; shared-PAT GitHub identity alone is insufficient.
 
+## Steering and provenance
+
+When steering is available, send a bounded correction referencing current evidence. Never erase prior attempts. A steering action produces a new linked observation. Translate conversational time-loop concepts into provenance-preserving Git history:
+
+```text
+X
+├── attempt A -> SHA A
+├── attempt B -> SHA B
+└── attempt C -> SHA C <- promoted trunk
+```
+
+Promotion selects the validated successor; it does not delete unsuccessful evidence or rewrite history merely to make the timeline linear.
+
+## Context-ingestion efficiency
+
+Construct prompts from stable context + new delta + unresolved findings + relevant history. Track context scope, historical depth, exclusions, and why each variation was selected. Avoid repeatedly shipping unchanged history. Relationship graphs connect issues, PRs, commits, comments, reviews, files, workflow runs, jobs, provider/model observations, benchmark/fork lineage, and manager decisions with evidence class and temporal bounds.
+
 ## GitHub audit model
 
-Maintain one continuous audit PR/specimen where practical. Audit **every event**, not merely the current PR or a selected case study, and feed findings forward. Automated workflows are the default; there is **no manual audit gate** in the production loop. A human may inspect or steer, but the system continues without synchronous approval when policy permits.
+Maintain one continuous audit PR/specimen where practical. Audit **every event**, not merely the current PR or a selected case study, and feed findings forward. Automated workflows are the default; there is **no manual audit gate** in the production loop.
+
+## Regression rule
+
+Never roll back or erase evidence. A regression is a new finding that triggers diagnosis and a successor change. Never label a change green merely because an error disappeared if the requested outcome remains unverified.
 
 ## Promotion gate and task outcome
 

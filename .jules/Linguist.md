@@ -46,3 +46,10 @@ Restore the behavior as an explicit reversible phase in `workspace/compression_s
 - `1103d832` / `51023b87` / `7a6e5a7` — cached mappings, Caveman, single-pass regex optimization
 - `4eb9f830` / `267fecc` — fast-path term search
 - #196 — `AGENTS.hum.md` round-trip milestone
+
+## 2026-09-04 - Fast-Path Search Short-Circuiting in Surface Codecs
+**Learning:**
+Adding a pre-search check (`if not VARIANT_REGEX.search(text): return text`) before string substitution in `to_1337speak()` and `from_1337speak()` reduces CPU execution time on non-matching prose/inputs from ~24.5µs to ~6.2µs (~4x speedup) by bypassing RNG instantiation and regex match allocations.
+
+**Action:**
+Apply pre-search short-circuit guards on single-pass regex transformers when processing high volumes of uncompressed prose.

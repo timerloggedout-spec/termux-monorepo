@@ -24,13 +24,13 @@ Latency is primarily a control/diagnostic signal. Long execution is acceptable w
 
 ## Universal resource/model policy
 
-Apply the same evidence model to **every** provider, API/library, model, agent, router, catalog, quota system, and execution lane. No provider gets a hardcoded exception merely because it is currently favored.
+Apply the same evidence model to **every** provider, API/library, model, agent, router, catalog, quota system, execution lane, benchmark, dataset, environment, and user-owned fork that may become a treatment or implementation reference. No provider, agent, or fork gets a hardcoded exception merely because it is currently favored.
 
-Poll authoritative availability/catalog metadata whenever supported. New models/libraries/providers become eligible candidates automatically; disappeared or unavailable entries become stale/unavailable observations. Preserve historical identities so longitudinal MVT results remain comparable.
+Poll authoritative availability/catalog metadata whenever supported. Discover new models/libraries/providers and relevant user-owned forks automatically; newly discovered candidates enter Scout research and cohort classification rather than silently becoming production routing rules. Disappeared or unavailable entries become stale/unavailable observations. Preserve historical identities so longitudinal MVT results remain comparable.
 
-Never encode an arbitrary application-level response, concurrency, provider count, or model-count ceiling. Requested output may use the highest capability reported by current provider/model metadata; current production invocation requests 131072 output tokens (128 Ki tokens) when the provider accepts the parameter. This is not a universal capability claim. Actual provider/model capability, request acceptance, finish reason, output tokens, truncation, and errors are independent observations. If an experiment intentionally varies output length or concurrency, that is an explicit MVT dimension with a recorded justification, not a hidden budget.
+Never encode an arbitrary application-level response, concurrency, provider count, model-count, benchmark-instance, or fork-count ceiling. Requested output may use the highest capability reported by current provider/model metadata; current production invocation requests 131072 output tokens (128 Ki tokens) when the provider accepts the parameter. This is not a universal capability claim. Actual provider/model capability, request acceptance, finish reason, output tokens, truncation, and errors are independent observations. If an experiment intentionally varies output length or concurrency, that is an explicit MVT dimension with a recorded justification, not a hidden budget.
 
-Do not use a generic "budget" abstraction to silently constrain work. Provider quotas, credits, rate limits, runner capacity, API limits, and account entitlements are distinct resources and must be measured independently. A platform limit is infrastructure evidence, not an application policy ceiling.
+Do not use a generic "budget" abstraction to silently constrain work. Provider quotas, credits, rate limits, runner capacity, API limits, account entitlements, dataset availability, and benchmark platform limits are distinct resources and must be measured independently. A platform limit is infrastructure evidence, not an application policy ceiling.
 
 ## Continuous loop
 
@@ -46,21 +46,21 @@ For every relevant GitHub event and every provider request, capture event type/a
 
 ## Classify
 
-Use separate states for dispatch/event/run/job/provider request/response, provider capability, pricing, trial, account entitlement, quota, model execution, response completeness, correctness, tests, integration, manager/orchestration, context/prompt quality, and infrastructure. Use `PASS`, `FAIL`, `UNKNOWN`, `WARNING`, `SKIPPED`, or `STALLED` with notes. Do not collapse policy health, catalog availability, entitlement, execution, and task correctness.
+Use separate states for dispatch/event/run/job/provider request/response, provider capability, pricing, trial, account entitlement, quota, model execution, response completeness, correctness, tests, integration, manager/orchestration, context/prompt quality, infrastructure, benchmark/dataset version, and fork lineage. Use `PASS`, `FAIL`, `UNKNOWN`, `WARNING`, `SKIPPED`, or `STALLED` with notes. Do not collapse policy health, catalog availability, entitlement, execution, task correctness, or benchmark validity.
 
-## MVT population, dynamic libraries, and quota-aware lanes
+## MVT population, dynamic libraries, benchmarks, and quota-aware lanes
 
 Treat the experiment as a categorical/subcategory matrix:
 
 ```text
-provider × model × prompt × manager × cohort × sequencing
+agent × provider × model × prompt × manager × cohort × sequencing
 ```
 
-This is extensible. Future dimensions may include task type, repository scope, validation class, bug-bounty/help-wanted/CTF treatment, reviewer, tool-chain, context strategy, and other experimentally justified factors.
+This is extensible. Future dimensions may include task type, repository scope, validation class, bug-bounty/help-wanted/CTF treatment, reviewer, tool-chain, context strategy, benchmark family/version, environment image, fork revision, and other experimentally justified factors.
 
-The provider/model/library population is live data, not a fixed roster. Poll current catalogs/availability and generate the eligible MVT population. Newly discovered eligible models are incorporated automatically; disappeared models are recorded as stale/unavailable evidence. OX Alpha and any other model are selectable treatments, never permanent router rules.
+The provider/model/library/agent/benchmark population is live data, not a fixed roster. Poll current catalogs/availability and generate the eligible MVT population. Newly discovered eligible models, agents, benchmark variants, and user-owned reference forks are incorporated into Scout/cohort discovery automatically; disappeared entries are recorded as stale/unavailable evidence. OX Alpha and any other model are selectable treatments, never permanent router rules.
 
-Do not encode a local `max-parallel` ceiling merely to simplify experiments. Expand simultaneous lanes according to current eligible population, runner availability, provider admission, quota, cooldown, and manager policy. Platform limits are infrastructure constraints, not application policy ceilings. The manager owns dynamic admission, sequencing, cooldown, quota, culling, and promotion.
+Do not encode a local `max-parallel` ceiling merely to simplify experiments. Expand simultaneous lanes according to current eligible population, runner availability, provider admission, quota, cooldown, benchmark/environment capacity, and manager policy. Platform limits are infrastructure constraints, not application policy ceilings. The manager owns dynamic admission, sequencing, cooldown, quota, culling, and promotion.
 
 Every provider request must produce telemetry containing provider, model, experiment/lane identity, request count, response status, timestamps, and safe quota/rate-limit evidence when exposed. This applies to all libraries/providers/models. Never assume a quota from a secret's existence; record observed entitlement/capacity and reconcile it against authoritative documentation.
 
@@ -82,7 +82,7 @@ Before inventing timing policy, inspect prior SSOTs, decision matrices, agent re
 
 ## Reconnaissance before implementation
 
-Before changing production orchestration, inspect **all relevant existing skills and process artifacts**, not just this skill. Search `.agents/skills/`, context-relationship graph skills including naming variants, SSOTs, decision matrices, Mermaid/process diagrams, command libraries, agent-manager documents, provider adapters, cooldown/quota code, and recent agent-authored commits. The repository currently contains the canonical `context-relationship-graph` skill; use its verified-vs-candidate discipline. Do not rely on a remembered filename when GitHub can establish canonical spelling/path.
+Before changing production orchestration, inspect **all relevant existing skills and process artifacts**, not just this skill. Search `.agents/skills/`, context-relationship graph skills including naming variants, SSOTs, decision matrices, Mermaid/process diagrams, command libraries, agent-manager documents, provider adapters, cooldown/quota code, benchmark registries, evaluation contracts, and recent agent-authored commits. The repository currently contains the canonical `context-relationship-graph` skill; use its verified-vs-candidate discipline. Do not rely on a remembered filename when GitHub can establish canonical spelling/path.
 
 Treat other agents' recent commits, comments, reviews, workflow artifacts, and command outputs as operational intelligence. Agent attribution requires provenance/confidence evidence; shared-PAT GitHub identity alone is insufficient.
 
@@ -111,7 +111,7 @@ Construct prompts from stable context plus relevant delta:
 stable context + new delta + unresolved findings + relevant history
 ```
 
-Track context scope, token/size estimates when available, historical depth, exclusions, and why each variation was selected. Avoid repeatedly shipping unchanged history. Prompt variations require explicit experimental justification. Relationship graphs should connect issues, PRs, commits, comments, reviews, files, workflow runs, jobs, provider/model observations, and manager decisions with evidence class and temporal bounds.
+Track context scope, token/size estimates when available, historical depth, exclusions, and why each variation was selected. Avoid repeatedly shipping unchanged history. Prompt variations require explicit experimental justification. Relationship graphs should connect issues, PRs, commits, comments, reviews, files, workflow runs, jobs, provider/model observations, benchmark/fork lineage, and manager decisions with evidence class and temporal bounds.
 
 ## GitHub audit model
 

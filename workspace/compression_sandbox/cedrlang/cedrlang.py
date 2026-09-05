@@ -143,6 +143,7 @@ def apply_casing(src: str, dst: str) -> str:
 # ------------------------------------------------------------
 # Pre-compile standard symbol replacements once globally
 SYMBOL_REGEXES = {phrase: re.compile(re.escape(phrase), re.IGNORECASE) for phrase in SYMBOL_MAP}
+SYMBOL_ANY_MATCHER = re.compile("|".join(re.escape(phrase) for phrase in SYMBOL_MAP), re.IGNORECASE)
 
 # Pre-compile general utility patterns
 INLINE_CODE_PATTERN = re.compile(r'`[^`]+`')
@@ -253,9 +254,10 @@ def compress(text: str, aggressive: bool = True) -> str:
 
     result = text[:]  # start with original case
 
-    # symbol replacement (case‑insensitive, word boundaries) using pre-compiled patterns
-    for phrase, pattern in SYMBOL_REGEXES.items():
-        result = pattern.sub(SYMBOL_MAP[phrase], result)
+    # Fast-path optimization: check if any symbol phrases exist before looping
+    if SYMBOL_ANY_MATCHER.search(result):
+        for phrase, pattern in SYMBOL_REGEXES.items():
+            result = pattern.sub(SYMBOL_MAP[phrase], result)
 
     if not aggressive:
         return result.strip()
@@ -263,11 +265,11 @@ def compress(text: str, aggressive: bool = True) -> str:
     # strip stopwords (caveman style)
     words = result.split()
     filtered = [w for w in words if w.lower() not in STOPWORDS]
-    result = " ".join(filtered)
+    result = " ".join(filtered).strip()
 
-    # remove duplicate spaces & punctuation trimming
-    result = SPACES_PATTERN.sub(' ', result).strip()
-    result = PUNCTUATION_PATTERN.sub('', result)
+    # O(1) trailing punctuation trimming
+    if result and result[-1] in ".,!?;:":
+        result = result[:-1]
     return result
 
 
@@ -276,10 +278,11 @@ def compress(text: str, aggressive: bool = True) -> str:
 # ------------------------------------------------------------
 def caveman(text: str, max_up: bool = False) -> str:
     t = text.upper() if max_up else text
-    for phrase, pattern in SYMBOL_REGEXES.items():
-        t = pattern.sub(SYMBOL_MAP[phrase], t)
+    if SYMBOL_ANY_MATCHER.search(t):
+        for phrase, pattern in SYMBOL_REGEXES.items():
+            t = pattern.sub(SYMBOL_MAP[phrase], t)
     words = [w for w in t.split() if w.lower() not in STOPWORDS]
-    return SPACES_PATTERN.sub(' ', " ".join(words)).strip()
+    return " ".join(words).strip()
 
 
 # ------------------------------------------------------------
@@ -363,12 +366,18 @@ def translate_line(line: str, to_compressed: bool) -> str:
         placeholders.append((ph, val))
         return ph
 
+    def add_ph_match(m: re.Match[str]) -> str:
+        val = m.group(0)
+        ph = f"§§PL_{len(placeholders)}§§"
+        placeholders.append((ph, val))
+        return ph
+
     # Fast-path checks: skip regex passes if special markdown characters are not present in line
     if "`" in line:
-        line = INLINE_CODE_PATTERN.sub(lambda m: add_placeholder(m.group(0)), line)
+        line = INLINE_CODE_PATTERN.sub(add_ph_match, line)
 
     if "<" in line:
-        line = HTML_TAG_PATTERN.sub(lambda m: add_placeholder(m.group(0)), line)
+        line = HTML_TAG_PATTERN.sub(add_ph_match, line)
 
     if "[" in line:
         def link_repl(match):
@@ -407,10 +416,10 @@ def translate_line(line: str, to_compressed: bool) -> str:
         line = BOLD_PATTERN_UNDER1.sub(bold_repl_under1, line)
 
     if "/" in line or "." in line or "~" in line:
-        line = PATH_REGEX.sub(lambda m: add_placeholder(m.group(0)), line)
+        line = PATH_REGEX.sub(add_ph_match, line)
 
     if "." in line:
-        line = DECIMAL_PATTERN.sub(lambda m: add_placeholder(m.group(0)), line)
+        line = DECIMAL_PATTERN.sub(add_ph_match, line)
 
     # Perform main translations on the remaining unprotected text
     line = translate_text_raw(line, to_compressed)
@@ -432,8 +441,7 @@ def compile_doc(text: str) -> str:
     in_fenced_code = False
 
     for line in lines:
-        stripped = line.strip()
-        if stripped.startswith("```"):
+        if "```" in line and line.lstrip().startswith("```"):
             in_fenced_code = not in_fenced_code
             compiled_lines.append(line)
         elif in_fenced_code:
@@ -450,8 +458,7 @@ def decompile_doc(text: str) -> str:
     in_fenced_code = False
 
     for line in lines:
-        stripped = line.strip()
-        if stripped.startswith("```"):
+        if "```" in line and line.lstrip().startswith("```"):
             in_fenced_code = not in_fenced_code
             decompiled_lines.append(line)
         elif in_fenced_code:

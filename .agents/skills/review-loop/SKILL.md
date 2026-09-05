@@ -125,3 +125,7 @@ A later failure creates a new finding and successor attempt. Preserve the previo
 ## Closeout
 
 Do not report "fixed" until the desired behavior is verified. State what was proven, what remains unproven, what prior work was reused, and which new observations should feed the next cycle.
+
+## Feed-forward (2026-09-05)
+
+ML pipeline observe-mode stages are in `ml_pipelines/` and should be consulted during recon for PR lane overlap and Actions skip vs failure.

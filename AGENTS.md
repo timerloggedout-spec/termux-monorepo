@@ -10,6 +10,8 @@ This file provides guidance to agents when working with code in this repository.
 4. [`docs/PR-SUMMARY-PROCESS.md`](docs/PR-SUMMARY-PROCESS.md) — who may rewrite PR bodies (multi-agent)
 5. [`docs/ARCHW1Z-GATE.md`](docs/ARCHW1Z-GATE.md) — repo-gate + termux-smoke
 6. [`docs/ARCHW1Z-STATUS.md`](docs/ARCHW1Z-STATUS.md) — living board
+6b. [`docs/ops/ISSUE-175-MATRIX.yaml`](docs/ops/ISSUE-175-MATRIX.yaml) — operator matrix
+6c. [`ml_pipelines/`](ml_pipelines/) — observe-mode GitHub ML pipelines
 7. [`docs/proposals/AGENTIC-PERMISSIONS.md`](docs/proposals/AGENTIC-PERMISSIONS.md) — human-only edges
 8. [`docs/CONSENSUS.md`](docs/CONSENSUS.md) — tiers, merit path, CRDT, optional Raft-strict
 

@@ -27,9 +27,28 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "e3c86182d4c80901c8b140479ee674d2b638502af030a18b3a920b64f273a5c8",
-  "workflow_count": 55,
+  "source_fingerprint": "61ff567051fa7803ac9341d13bb37d40bedcc4d828b2836ff00f83b13d7abdd7",
+  "workflow_count": 65,
   "workflows": [
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a0"
+      ],
+      "authority": "bounded-state-write",
+      "concurrency": "group: action-effectiveness-${{ github.event.pull_request.number || github.event.issue.number || inputs.pr_number || github.run_id }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "ledger"
+      ],
+      "name": "Action Effectiveness Ledger",
+      "path": ".github/workflows/action-effectiveness-ledger.yml",
+      "schedules": [],
+      "triggers": [
+        "issue_comment",
+        "pull_request_target",
+        "workflow_dispatch"
+      ]
+    },
     {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
@@ -47,6 +66,21 @@
       "triggers": [
         "pull_request",
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "group: actions-run-watcher-${{ github.event.workflow_run.id }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "notify-failure"
+      ],
+      "name": "Actions Run Watcher \u2014 incident notification",
+      "path": ".github/workflows/actions-run-watcher.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_run"
       ]
     },
     {
@@ -102,6 +136,21 @@
       "triggers": [
         "issue_comment",
         "issues"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: agent-mvt-${{ inputs.experiment_id }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "experiment"
+      ],
+      "name": "Agent MVT experiment loop",
+      "path": ".github/workflows/agent-mvt-experiment.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
       ]
     },
     {
@@ -173,6 +222,26 @@
     },
     {
       "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a0"
+      ],
+      "authority": "writer",
+      "concurrency": "group: automation-docs-refresh cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "refresh"
+      ],
+      "name": "Automation Documentation Continuous Refresh",
+      "path": ".github/workflows/automation-docs-continuous-refresh.yml",
+      "schedules": [
+        "17 * * * *"
+      ],
+      "triggers": [
+        "push",
+        "schedule"
+      ]
+    },
+    {
+      "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
         "github/codeql-action/analyze@ff2f1c621b7f889edc0d3c761ac2e6a3f8cdb0dd",
         "github/codeql-action/init@ff2f1c621b7f889edc0d3c761ac2e6a3f8cdb0dd"
@@ -196,20 +265,18 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
-        "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
-      "authority": "writer",
-      "concurrency": "group: commit-diff-watcher-${{ github.event.pull_request.number || github.sha }} cancel-in-progress: true",
+      "authority": "bounded-state-write",
+      "concurrency": "group: direct-master-empty-commit-${{ github.sha }} cancel-in-progress: true",
       "domain": "agentic-development",
       "jobs": [
-        "watch-diffs"
+        "watch"
       ],
-      "name": "\ud83d\udee1\ufe0f Commit & PR Diff Watcher",
+      "name": "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher",
       "path": ".github/workflows/commit-diff-watcher.yml",
       "schedules": [],
       "triggers": [
-        "pull_request",
         "push"
       ]
     },
@@ -650,6 +717,42 @@
     },
     {
       "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "sanitize-and-publish"
+      ],
+      "name": "Hex Moneyball Evidence",
+      "path": ".github/workflows/hex-moneyball-evidence.yml",
+      "schedules": [],
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: historical-evaluation-correlation cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "correlate"
+      ],
+      "name": "Historical Evaluation Correlation",
+      "path": ".github/workflows/historical-evaluation-correlation.yml",
+      "schedules": [
+        "7 * * * *"
+      ],
+      "triggers": [
+        "push",
+        "schedule"
+      ]
+    },
+    {
+      "action_pins": [
         "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683"
       ],
       "authority": "read-only-or-advisory",
@@ -770,6 +873,62 @@
       ],
       "name": "Peer review orchestrator",
       "path": ".github/workflows/peer-review-orchestrator.yml",
+      "schedules": [],
+      "triggers": [
+        "issue_comment",
+        "pull_request_review",
+        "pull_request_target"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "writer",
+      "concurrency": "group: pr-change-effectiveness-${{ github.event.pull_request.number || inputs.pr_number || github.run_id }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "ledger"
+      ],
+      "name": "PR Change Effectiveness Ledger",
+      "path": ".github/workflows/pr-change-effectiveness-ledger.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request_target",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "group: pr-evidence-${{ github.event.pull_request.number || github.event.issue.number || inputs.pr_number || github.run_id }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "evaluate"
+      ],
+      "name": "PR evidence evaluation",
+      "path": ".github/workflows/pr-evidence-evaluation.yml",
+      "schedules": [],
+      "triggers": [
+        "issue_comment",
+        "pull_request_review",
+        "pull_request_review_comment",
+        "pull_request_target",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: pr-production-ledger-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "ledger"
+      ],
+      "name": "PR production ledger",
+      "path": ".github/workflows/pr-production-ledger.yml",
       "schedules": [],
       "triggers": [
         "issue_comment",
@@ -918,6 +1077,24 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
+      "concurrency": "group: reconciliation-${{ github.event.inputs.target_ref || github.ref }}-${{ github.event.inputs.base_ref || 'master' }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "recon"
+      ],
+      "name": "Production Reconciliation Engine",
+      "path": ".github/workflows/reconciliation-engine.yml",
+      "schedules": [
+        "17 * * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
       "concurrency": "group: repo-gate-${{ github.ref }} cancel-in-progress: true",
       "domain": "validation-security",
       "jobs": [
@@ -1042,6 +1219,7 @@
       "concurrency": "group: team-mvt-${{ github.workflow }}-${{ github.ref }} cancel-in-progress: false",
       "domain": "peer-provider-review",
       "jobs": [
+        "evaluate",
         "lane"
       ],
       "name": "Team MVT \u2014 simultaneous provider lanes",

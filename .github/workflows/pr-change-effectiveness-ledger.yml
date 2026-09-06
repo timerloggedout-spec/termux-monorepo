@@ -141,9 +141,9 @@ jobs:
           body="${marker}
           ## PR Change Effectiveness Ledger
 
-          **Measured head:** \\`${HEAD_SHA}\\`  
-          **Measured base:** \\`${BASE_SHA}\\`  
-          **Merge base:** \\`${MERGE_BASE}\\`
+          **Measured head:** \`${HEAD_SHA}\`
+          **Measured base:** \`${BASE_SHA}\`
+          **Merge base:** \`${MERGE_BASE}\`
 
           | Signal | Value |
           |---|---:|

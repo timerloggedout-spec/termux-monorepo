@@ -47,6 +47,18 @@ This audit provides visibility into merged branches, open development lanes, and
 - **Justification in Git/PR History:** Package structure refactoring created a nested `deepcli/deepcli` module structure while test imports retained legacy flat package paths.
 - **Remediation Action:** Resolved by updating `test_sentinel_privileges.py` to import `deepcli.deepcli.core`.
 
+### [AUDIT-006] Context collector relative path resolution and ast-grep missing pre-screen
+- **Type:** Unhandled Edge Case / Test Failure
+- **Description:** `src/context_collector.py` and `termux-multi-agent/src/context_collector.py` failed during test execution when target paths were outside `Path.home()` or when `ast-grep` was missing.
+- **Justification in Git/PR History:** Temporary directory paths during pytest execution fall outside `/home/jules`, causing `ValueError` in `relative_to()`.
+- **Remediation Action:** Hardened `_get_cached_signatures` and `assemble_minimized_bundle` to handle non-home subpaths gracefully and added `shutil.which('ast-grep')` pre-screening.
+
+### [AUDIT-007] Mismatched verification contract handling in plan_promotion
+- **Type:** Contract Error Handling / Test Failure
+- **Description:** `she/promote.py` passed mismatched verification plans to `plan_repair_pr` before validating contract alignment, raising `RepairPRError` instead of `PromotionError`.
+- **Justification in Git/PR History:** Validation sequence executed child plan binding after sub-plan construction rather than checking incoming contract preconditions.
+- **Remediation Action:** Added early contract validation checks in `plan_promotion` to ensure `PromotionError` is raised directly on contract mismatch.
+
 ## 4. Local Git Repository Merges (Recent)
 ```
 No merge commits found in recent logs.

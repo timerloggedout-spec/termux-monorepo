@@ -82,6 +82,7 @@ jobs:
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           FELO_AI_API: ${{ secrets.FELO_AI_API }}
+          OMNI_API_KEY: ${{ secrets.OMNI_API_KEY }}
         run: python3 scripts/provider_model_catalog.py --output /tmp/catalog.json
 
       - name: Select lane model and prompt
@@ -97,8 +98,8 @@ jobs:
           import json, os
           d=json.load(open('/tmp/catalog.json',encoding='utf-8'))
           lane=os.environ['LANE']; cohort=os.environ['COHORT']; manager=os.environ['MANAGER']; requested=os.environ.get('OX_MODEL','').strip()
-          def free(r): return r['pricing_classification']=='free_zero_price' or r['free_suffix']
-          provider=''; rows=[]; variant=''; prompt=''; eligible='true'; skip_reason=''
+          def free(r): return r['pricing_classification']=='free_zero_price' or r['free_suffix'] or r.get('access_classification')=='free_trial'
+          provider=''; rows=[]; variant=''; prompt=''; eligible='true'; skip_reason=''; max_tokens='131072'
           if lane=='a-ox-openrouter':
               provider='openrouter'
               if requested:
@@ -112,18 +113,29 @@ jobs:
               prompt=f'Manager={manager}. Cohort={cohort}. Independently analyze issue #337 as a team-orchestration benchmark. Identify the most important correctness risk, one concrete improvement, and how to validate it. Do not fabricate repository access.'
           elif lane=='c-felo-prompt-variant':
               provider='felo'; rows=[r for r in d['models'] if r['provider']==provider and free(r)]; variant='adversarial-c'
-              if not rows:
-                  eligible='false'; skip_reason='no dynamically observed Felo free/zero-price candidate; do not spend paid quota'; model=''
               prompt=f'Manager={manager}. Cohort={cohort}. Act as a skeptical experiment scientist. Analyze issue #337, actively search for confounders in simultaneous LLM testing, attribution, scoring, and rollback protection. Give a falsifiable improvement and a validation test.'
           else:
               provider='omni'; rows=[{'id':'auto'}]; variant='synthesis-d'
               prompt=f'Manager={manager}. Cohort={cohort}. Act as the integration manager. Analyze issue #337 and propose how four simultaneous model lanes should be compared without rewarding speed over correctness. Define the minimum evidence required to promote or cull a manager.'
-          if eligible=='true' and not rows: raise SystemExit(f'no live candidate for {lane}')
+
+          if not rows:
+              eligible='false'
+              if lane=='a-ox-openrouter':
+                  skip_reason='no dynamically observed OX Alpha candidate for the selected OpenRouter catalog; do not substitute a different model'
+              elif lane=='b-other-openrouter':
+                  skip_reason='no dynamically observed free/zero-price OpenRouter peer; do not spend paid quota'
+              elif lane=='c-felo-prompt-variant':
+                  skip_reason='no dynamically observed Felo free/zero-price/trial candidate; do not spend paid quota'
+          else:
+              reported_max=rows[0].get('max_output_tokens')
+              if isinstance(reported_max, (int, float)) and reported_max > 0:
+                  max_tokens=str(int(reported_max))
+
           model=rows[0]['id'] if rows else ''
           with open(os.environ['GITHUB_OUTPUT'],'a') as f:
-              f.write(f'provider={provider}\nmodel={model}\nvariant={variant}\neligible={eligible}\nskip_reason={skip_reason}\n')
+              f.write(f'provider={provider}\nmodel={model}\nvariant={variant}\neligible={eligible}\nskip_reason={skip_reason}\nmax_tokens={max_tokens}\n')
               f.write('prompt<<EOF\n'+prompt+'\nEOF\n')
-          print(f'{lane}: {provider}/{model or "SKIP"} variant={variant} manager={manager} eligible={eligible} reason={skip_reason}')
+          print(f'{lane}: {provider}/{model or "SKIP"} variant={variant} manager={manager} eligible={eligible} max_tokens={max_tokens} reason={skip_reason}')
           PY
 
       - name: Invoke lane
@@ -140,6 +152,7 @@ jobs:
           prompt: ${{ steps.lane.outputs.prompt }}
           experiment_id: team-mvt-${{ github.run_id }}-${{ steps.manager.outputs.manager }}-${{ matrix.lane }}
           prompt_variant: ${{ steps.lane.outputs.variant }}
+          max_tokens: ${{ steps.lane.outputs.max_tokens }}
           post_comment: 'false'
 
       - name: Write lane manifest
@@ -150,7 +163,7 @@ jobs:
         run: |
           mkdir -p /tmp/evaluation
           cat > /tmp/evaluation/lane.json <<EOF
-          {"schema":"team-mvt/v3","run_id":"${GITHUB_RUN_ID}","lane":"${{ matrix.lane }}","provider":"${{ steps.lane.outputs.provider }}","model":"${{ steps.lane.outputs.model }}","prompt_variant":"${{ steps.lane.outputs.variant }}","manager":"${MANAGER}","cohort":"${COHORT}","eligible":"${{ steps.lane.outputs.eligible }}","skip_reason":"${{ steps.lane.outputs.skip_reason }}"}
+          {"schema":"team-mvt/v3","run_id":"${GITHUB_RUN_ID}","lane":"${{ matrix.lane }}","provider":"${{ steps.lane.outputs.provider }}","model":"${{ steps.lane.outputs.model }}","prompt_variant":"${{ steps.lane.outputs.variant }}","manager":"${MANAGER}","cohort":"${COHORT}","eligible":"${{ steps.lane.outputs.eligible }}","skip_reason":"${{ steps.lane.outputs.skip_reason }}","max_tokens":"${{ steps.lane.outputs.max_tokens }}"}
           EOF
 
       - name: Upload lane evidence

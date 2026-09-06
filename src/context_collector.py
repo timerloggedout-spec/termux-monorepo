@@ -2,6 +2,7 @@ import sqlite3
 import os
 import re
 import subprocess
+import shutil
 
 DB_PATH = "local_repo.db"
 
@@ -48,6 +49,8 @@ class AutomatedContextCollector:
         return valid_dependencies
 
     def generate_ast_skeleton(self, file_relative_path):
+        if not shutil.which("ast-grep"):
+            return f"// Unable to trace AST module boundary map for {file_relative_path}"
         abs_path = os.path.join(self.workspace, file_relative_path)
         ext = os.path.splitext(file_relative_path)[1]
         if ext == '.py':

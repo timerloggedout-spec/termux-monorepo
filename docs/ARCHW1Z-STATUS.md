@@ -3,7 +3,7 @@
 > Living recon. Updated as gates land and PRs resolve.
 > Sources: ChatGPT Critical-Eval, ChatGPT-initial, ChatGPT_droidApp, live branch/PR inventory.
 
-**Last update:** 2026-08-04 — docs promotion to master in progress
+**Last update:** 2026-09-05 — ML pipelines init + Issue #175 matrix (observe-mode)
 
 ---
 

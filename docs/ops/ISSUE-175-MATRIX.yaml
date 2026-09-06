@@ -1,0 +1,66 @@
+version: 1
+issue: 175
+title: OPERATOR priority matrix + master functional gate
+updated_at: "2026-09-05T00:17:00Z"
+updated_by: Grok (Administrator)
+master_sha: 51d8ac94e0cd6112930885f1ed67ad80b24ac3bc
+operator_rules:
+  no_force_push_master: true
+  small_green_rebased_prs: true
+  repo_gate_and_termux_smoke: true
+  reject_class_3_4: true
+  gitlab_non_blocking: true
+  maximize_actions: true
+  jules_continue_only: true
+tiers:
+  P0: Unblock CI / Ops / Resilience
+  P1: Security / Hygiene
+  P2: Providers / Manus / Routing
+  P3: Comms / Teams / Docs
+items:
+  master-functional-gate:
+    id: master-functional-gate
+    title: repo_gate.py + termux_smoke
+    status: LIVE
+    priority: P0
+  ml-pipelines-init:
+    id: ml-pipelines-init
+    title: GitHub ML Pipelines init
+    status: OPEN
+    priority: P0
+    related_issue: 213
+  providers-manus:
+    id: providers-manus
+    title: Providers RE + Manus computer-replay
+    status: HOT
+    priority: P2
+    related_issue: 265
+  she-engine:
+    id: she-engine
+    title: Self-Healing Engine first factory workload
+    status: OPEN
+    priority: P0
+    related_issue: 294
+  ox-alpha-deepseek:
+    id: ox-alpha-deepseek
+    title: OX-Alpha DeepSeek/deepcli integration
+    status: OPEN
+    priority: P0
+    related_issue: 408
+  actions-hygiene:
+    id: actions-hygiene
+    title: Actions hygiene and dispatch triage
+    status: MONITOR
+    priority: P0
+    related_issue: 268
+  dependabot:
+    id: dependabot
+    title: Dependabot signals
+    status: OPEN
+    priority: P1
+    related_issue: 202
+  lane-minesweeper:
+    id: lane-minesweeper
+    title: Jules PR lane minesweeper
+    status: OPEN
+    priority: P0

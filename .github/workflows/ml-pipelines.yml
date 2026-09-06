@@ -1,0 +1,51 @@
+name: ML Pipelines (observe-mode)
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "ml_pipelines/**"
+      - "scripts/ml/**"
+      - "tests/ml_pipelines/**"
+      - "docs/ops/ISSUE-175-MATRIX.yaml"
+      - ".github/workflows/ml-pipelines.yml"
+  push:
+    branches: [master]
+    paths:
+      - "ml_pipelines/**"
+      - "scripts/ml/**"
+      - "tests/ml_pipelines/**"
+      - "docs/ops/ISSUE-175-MATRIX.yaml"
+      - ".github/workflows/ml-pipelines.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  observe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Validate matrix
+        run: python3 scripts/ml/validate_matrix.py
+      - name: Run observe-mode pipelines
+        run: python3 scripts/ml/run_pipelines.py --snapshot ml_pipelines/fixtures/ops-snapshot.json > /tmp/ml-envelope.json
+      - name: Unit tests
+        run: python3 -m unittest discover -s tests/ml_pipelines -p 'test_*.py'
+      - name: Forbid raw secrets in envelope
+        run: |
+          set -euo pipefail
+          if grep -Eiq '"(token|secret|password|cookie|authorization|api_key|prompt|completion)"[[:space:]]*:' /tmp/ml-envelope.json; then
+            echo 'envelope contains a forbidden field' >&2
+            exit 1
+          fi
+      - name: Upload envelope
+        uses: actions/upload-artifact@v4
+        with:
+          name: ml-pipelines-envelope-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/ml-envelope.json
+          if-no-files-found: error
+          retention-days: 14

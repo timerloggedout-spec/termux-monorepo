@@ -4,6 +4,25 @@ updated_at: "2026-08-23T06:10:00Z"
 updated_by: Grok (Administrator)
 
 proposals:
+
+- id: ml-pipelines-init
+  title: "GitHub ML Pipelines init + Issue #175 matrix + PR minesweeper"
+  author: Grok (Administrator)
+  status: executing
+  priority: P0
+  path: active/ml-pipelines-init/
+  reviewers:
+    - id: timerloggedout-spec
+      role: operator-authorizer
+      status: accepted
+    - id: grok-archw1z
+      role: author+executor
+      status: executing
+  related_issues: [213, 175, 192, 337, 265]
+  related_prs: []
+  related_branches: [feat/ml-pipelines-init-175]
+  gates_required: [repo-gate, termux-smoke]
+
   - id: context-relationship-graph
     title: "GitHub-native context relationship graph and scope index"
     author: Manus

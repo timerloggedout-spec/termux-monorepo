@@ -68,3 +68,7 @@ When a change is under active review, also run the **review-loop** skill sequenc
 - Treating monthly Copilot quota exhaustion as "runs should not fire".
 - Ranking purely by failure rate without volume or authority context.
 - Opening broad PRs that mix P0.3 live wire with unrelated refactors.
+
+## 2026-09-05 addition
+
+Use `.agents/skills/pr-minesweeper` plus `ml_pipelines` for live PR lane overlap. MoneyBall scores remain decision-support only.

@@ -1,0 +1,84 @@
+name: Actions Run Watcher — incident notification
+
+on:
+  workflow_run:
+    types: [completed]
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: actions-run-watcher-${{ github.event.workflow_run.id }}
+  cancel-in-progress: false
+
+jobs:
+  notify-failure:
+    if: >-
+      github.event.workflow_run.conclusion == 'failure' ||
+      github.event.workflow_run.conclusion == 'timed_out' ||
+      github.event.workflow_run.conclusion == 'cancelled' ||
+      github.event.workflow_run.conclusion == 'action_required'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Create or update incident notification
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
+          WORKFLOW_NAME: ${{ github.event.workflow_run.name }}
+          CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+          REPOSITORY: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          fp="gha:${WORKFLOW_NAME,,}:${CONCLUSION,,}:${HEAD_SHA:0:12}"
+          title="[Actions Incident] ${WORKFLOW_NAME}: ${CONCLUSION}"
+          body=$(cat <<EOF
+          ## GitHub Actions incident
+
+          **Classification:** ${CONCLUSION}
+          **Workflow:** ${WORKFLOW_NAME}
+          **Run:** ${RUN_ID} (attempt ${RUN_ATTEMPT})
+          **SHA:** ${HEAD_SHA}
+          **Branch:** ${HEAD_BRANCH}
+          **Fingerprint:** \`${fp}\`
+
+          Evidence: ${RUN_URL}
+
+          This notification is observation/notification only; remediation remains governed by the Self-Healing Engine authority and verification gates.
+          EOF
+          )
+
+          existing=$(gh issue list --repo "$REPOSITORY" --state open --search "in:title \"[Actions Incident] ${WORKFLOW_NAME}: ${CONCLUSION}\"" --json number --limit 10)
+          number=$(python3 -c 'import json,sys; d=json.load(sys.stdin); print(d[0]["number"] if d else "")' <<<"$existing")
+          if [ -n "$number" ]; then
+            gh issue comment "$number" --repo "$REPOSITORY" --body "$body"
+          else
+            gh issue create --repo "$REPOSITORY" --title "$title" --body "$body" --label automation,ci
+          fi
+
+      - name: Emit structured incident receipt
+        env:
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          WORKFLOW_NAME: ${{ github.event.workflow_run.name }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          print(json.dumps({
+              "schema": "actions-run-watcher/v1",
+              "run_id": os.environ["RUN_ID"],
+              "workflow": os.environ["WORKFLOW_NAME"],
+              "conclusion": os.environ["CONCLUSION"],
+              "head_sha": os.environ["HEAD_SHA"],
+              "run_url": os.environ["RUN_URL"],
+              "observer_only": True,
+          }, sort_keys=True))
+          PY

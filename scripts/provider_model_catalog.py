@@ -83,8 +83,10 @@ def poll(provider: str, token: str) -> tuple[list[dict], dict]:
             "access_source": trial.get("source"),
             "access_source_observed": trial.get("source_observed"),
             "free_suffix": str(model_id).endswith(":free"),
-            "context_length": item.get("context_length"),
-            "max_output_tokens": item.get("max_output_tokens"),
+            # Provider catalogs are authoritative when present; documented
+            # trial metadata fills gaps rather than overriding live evidence.
+            "context_length": item.get("context_length") or trial.get("context_length"),
+            "max_output_tokens": item.get("max_output_tokens") or trial.get("max_output_tokens"),
             "raw_source": f"{provider}:/v1/models",
         })
     for (trial_provider, model_id), trial in DOCUMENTED_TRIAL_MODELS.items():

@@ -47,6 +47,7 @@ jobs:
       fail-fast: false
       matrix:
         lane: [a-ox-felo, b-other-openrouter, c-felo-prompt-variant, d-omni-peer]
+        trial: [1, 2, 3]
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
@@ -82,10 +83,11 @@ jobs:
           OMNI_API_KEY: ${{ secrets.OMNI_API_KEY }}
         run: python3 scripts/provider_model_catalog.py --output /tmp/catalog.json
 
-      - name: Select lane model and prompt
+      - name: Select DOE treatment
         id: lane
         env:
           LANE: ${{ matrix.lane }}
+          TRIAL: ${{ matrix.trial }}
           COHORT: ${{ steps.manager.outputs.cohort }}
           MANAGER: ${{ steps.manager.outputs.manager }}
           OX_MODEL: ${{ inputs.ox_model }}
@@ -94,51 +96,49 @@ jobs:
           python3 - <<'PY'
           import json, os
           d=json.load(open('/tmp/catalog.json',encoding='utf-8'))
-          lane=os.environ['LANE']; cohort=os.environ['COHORT']; manager=os.environ['MANAGER']; requested=os.environ.get('OX_MODEL','').strip()
+          lane=os.environ['LANE']; trial=int(os.environ['TRIAL']); cohort=os.environ['COHORT']; manager=os.environ['MANAGER']; requested=os.environ.get('OX_MODEL','').strip()
           def free(r): return r['pricing_classification']=='free_zero_price' or r['free_suffix'] or r.get('access_classification')=='free_trial'
           def missing_secret(provider): return any(e.get('provider') == provider and e.get('error') == 'missing_secret' for e in d.get('errors', []))
-          provider=''; rows=[]; variant=''; prompt=''; eligible='true'; skip_reason=''; max_tokens='131072'
+          lane_index={'a-ox-felo':0,'b-other-openrouter':1,'c-felo-prompt-variant':2,'d-omni-peer':3}[lane]
+          sequence_slot=(trial-1+lane_index) % 4
+          provider=''; rows=[]; variant=''; prompt=''; eligible='true'; skip_reason=''; max_tokens='131072'; hypothesis=''; task_role=''
           if lane=='a-ox-felo':
-              provider='felo'
-              model_id=requested or 'ox-alpha'
+              provider='felo'; model_id=requested or 'ox-alpha'
               rows=[r for r in d['models'] if r['provider']==provider and r['id']==model_id and free(r)]
-              variant='same-task-a'
-              prompt=f'Manager={manager}. Cohort={cohort}. Analyze issue #337 as a team-orchestration benchmark. Identify the most important correctness risk, one concrete improvement, and how to validate it. Do not fabricate repository access.'
+              variant='same-task-a'; task_role='same-task-treatment'; hypothesis='Felo OX Alpha can solve the canonical orchestration task with correctness evidence under the live trial route.'
+              prompt=f'Manager={manager}. Cohort={cohort}. Trial={trial}. Treatment=A. Analyze issue #337 as a team-orchestration benchmark. Identify the most important correctness risk, one concrete improvement, and how to validate it. Do not fabricate repository access.'
           elif lane=='b-other-openrouter':
-              provider='openrouter'; rows=[r for r in d['models'] if r['provider']==provider and not ('ox-alpha' in str(r['id']).lower() or 'ox alpha' in str(r.get('name','')).lower()) and free(r)]; variant='same-task-b'
-              prompt=f'Manager={manager}. Cohort={cohort}. Independently analyze issue #337 as a team-orchestration benchmark. Identify the most important correctness risk, one concrete improvement, and how to validate it. Do not fabricate repository access.'
+              provider='openrouter'; rows=[r for r in d['models'] if r['provider']==provider and not ('ox-alpha' in str(r['id']).lower() or 'ox alpha' in str(r.get('name','')).lower()) and free(r)]; variant='same-task-b'; task_role='same-task-control'; hypothesis='A dynamically admitted free OpenRouter peer provides a valid same-task control for the OX Alpha treatment.'
+              prompt=f'Manager={manager}. Cohort={cohort}. Trial={trial}. Treatment=B. Independently analyze issue #337 as a team-orchestration benchmark. Identify the most important correctness risk, one concrete improvement, and how to validate it. Do not fabricate repository access.'
           elif lane=='c-felo-prompt-variant':
-              provider='felo'; rows=[r for r in d['models'] if r['provider']==provider and r['id']=='ox-alpha' and free(r)]; variant='adversarial-c'
-              prompt=f'Manager={manager}. Cohort={cohort}. Act as a skeptical experiment scientist. Analyze issue #337, actively search for confounders in simultaneous LLM testing, attribution, scoring, and rollback protection. Give a falsifiable improvement and a validation test.'
+              provider='felo'; rows=[r for r in d['models'] if r['provider']==provider and r['id']=='ox-alpha' and free(r)]; variant='adversarial-c'; task_role='adversarial-review'; hypothesis='An adversarial reviewer prompt exposes orchestration confounders that a same-task treatment may miss.'
+              prompt=f'Manager={manager}. Cohort={cohort}. Trial={trial}. Treatment=C. Act as a skeptical experiment scientist. Analyze issue #337, actively search for confounders in simultaneous LLM testing, attribution, scoring, and rollback protection. Give a falsifiable improvement and a validation test.'
           else:
-              provider='omni'; rows=[{'id':'auto'}]; variant='synthesis-d'
-              prompt=f'Manager={manager}. Cohort={cohort}. Act as the integration manager. Analyze issue #337 and propose how four simultaneous model lanes should be compared without rewarding speed over correctness. Define the minimum evidence required to promote or cull a manager.'
+              provider='omni'; rows=[{'id':'auto'}]; variant='synthesis-d'; task_role='integration-manager'; hypothesis='An integration-manager treatment can define evidence gates that prevent speed from outranking correctness across lanes.'
+              prompt=f'Manager={manager}. Cohort={cohort}. Trial={trial}. Treatment=D. Act as the integration manager. Analyze issue #337 and propose how simultaneous model lanes should be compared without rewarding speed over correctness. Define the minimum evidence required to promote or cull a manager.'
               if missing_secret('omni'):
-                  rows=[]
-                  eligible='false'
-                  skip_reason='OMNI_API_KEY is not available to this run; do not emit a fake Omni lane'
+                  rows=[]; eligible='false'; skip_reason='OMNI_API_KEY is not available to this run; do not emit a fake Omni lane'
 
           if not rows:
               eligible='false'
-              if lane=='a-ox-felo':
-                  skip_reason=skip_reason or 'no dynamically observed Felo OX Alpha free-trial candidate; do not substitute a different model'
-              elif lane=='b-other-openrouter':
-                  skip_reason=skip_reason or 'no dynamically observed free/zero-price OpenRouter peer; do not spend paid quota'
-              elif lane=='c-felo-prompt-variant':
-                  skip_reason=skip_reason or 'no dynamically observed Felo OX Alpha trial candidate for the adversarial prompt variant'
+              if lane=='a-ox-felo': skip_reason=skip_reason or 'no dynamically observed Felo OX Alpha free-trial candidate; do not substitute a different model'
+              elif lane=='b-other-openrouter': skip_reason=skip_reason or 'no dynamically observed free/zero-price OpenRouter peer; do not spend paid quota'
+              elif lane=='c-felo-prompt-variant': skip_reason=skip_reason or 'no dynamically observed Felo OX Alpha trial candidate for the adversarial prompt variant'
           else:
               reported_max=rows[0].get('max_output_tokens')
-              if isinstance(reported_max, (int, float)) and reported_max > 0:
-                  max_tokens=str(int(reported_max))
+              if isinstance(reported_max, (int, float)) and reported_max > 0: max_tokens=str(int(reported_max))
 
           model=rows[0]['id'] if rows else ''
+          treatment=f'{lane}:trial-{trial}'
+          experiment_id=f'team-mvt-{os.environ.get("GITHUB_RUN_ID","local")}-{manager}-{treatment}'
           with open(os.environ['GITHUB_OUTPUT'],'a') as f:
-              f.write(f'provider={provider}\nmodel={model}\nvariant={variant}\neligible={eligible}\nskip_reason={skip_reason}\nmax_tokens={max_tokens}\n')
+              for k,v in {'provider':provider,'model':model,'variant':variant,'eligible':eligible,'skip_reason':skip_reason,'max_tokens':max_tokens,'task_role':task_role,'hypothesis':hypothesis,'sequence_slot':str(sequence_slot),'treatment':treatment,'experiment_id':experiment_id}.items(): f.write(f'{k}={v}\n')
               f.write('prompt<<EOF\n'+prompt+'\nEOF\n')
-          print(f'{lane}: {provider}/{model or "SKIP"} variant={variant} manager={manager} eligible={eligible} max_tokens={max_tokens} reason={skip_reason}')
+          print(json.dumps({'lane':lane,'trial':trial,'provider':provider,'model':model or 'SKIP','variant':variant,'manager':manager,'eligible':eligible,'max_tokens':max_tokens,'sequence_slot':sequence_slot,'hypothesis':hypothesis,'skip_reason':skip_reason},sort_keys=True))
           PY
 
       - name: Invoke lane
+        id: invoke
         if: steps.lane.outputs.eligible == 'true'
         uses: ./.github/actions/http-llm-invoke
         with:
@@ -150,7 +150,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           prompt: ${{ steps.lane.outputs.prompt }}
-          experiment_id: team-mvt-${{ github.run_id }}-${{ steps.manager.outputs.manager }}-${{ matrix.lane }}
+          experiment_id: ${{ steps.lane.outputs.experiment_id }}
           prompt_variant: ${{ steps.lane.outputs.variant }}
           max_tokens: ${{ steps.lane.outputs.max_tokens }}
           post_comment: 'false'
@@ -162,16 +162,68 @@ jobs:
           COHORT: ${{ steps.manager.outputs.cohort }}
         run: |
           mkdir -p /tmp/evaluation
-          cat > /tmp/evaluation/lane.json <<EOF
-          {"schema":"team-mvt/v3","run_id":"${GITHUB_RUN_ID}","lane":"${{ matrix.lane }}","provider":"${{ steps.lane.outputs.provider }}","model":"${{ steps.lane.outputs.model }}","prompt_variant":"${{ steps.lane.outputs.variant }}","manager":"${MANAGER}","cohort":"${COHORT}","eligible":"${{ steps.lane.outputs.eligible }}","skip_reason":"${{ steps.lane.outputs.skip_reason }}","max_tokens":"${{ steps.lane.outputs.max_tokens }}"}
-          EOF
+          python3 - <<'PY'
+          import json, os
+          lane=os.environ['LANE']; trial=os.environ['TRIAL'] if 'TRIAL' in os.environ else '${{ matrix.trial }}'
+          invoke='${{ steps.invoke.outcome }}' if '${{ steps.lane.outputs.eligible }}' == 'true' else 'skipped'
+          data={
+            'schema':'team-mvt/v4','run_id':'${{ github.run_id }}','lane':lane,'trial':int(trial),
+            'provider':'${{ steps.lane.outputs.provider }}','model':'${{ steps.lane.outputs.model }}',
+            'prompt_variant':'${{ steps.lane.outputs.variant }}','task_role':'${{ steps.lane.outputs.task_role }}',
+            'hypothesis':'''${{ steps.lane.outputs.hypothesis }}''','manager':os.environ['MANAGER'],
+            'cohort':os.environ['COHORT'],'eligible':'${{ steps.lane.outputs.eligible }}',
+            'execution_status':invoke,'skip_reason':'''${{ steps.lane.outputs.skip_reason }}''',
+            'max_tokens':'${{ steps.lane.outputs.max_tokens }}','sequence_slot':int('${{ steps.lane.outputs.sequence_slot }}'),
+            'treatment_id':'${{ steps.lane.outputs.treatment }}','experiment_id':'${{ steps.lane.outputs.experiment_id }}',
+            'task_outcome':'UNKNOWN','correctness':'UNKNOWN','integration':'UNKNOWN','regression':'UNKNOWN'
+          }
+          with open('/tmp/evaluation/lane.json','w',encoding='utf-8') as f: json.dump(data,f,sort_keys=True,indent=2)
+          PY
 
       - name: Upload lane evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: team-mvt-${{ github.run_id }}-${{ matrix.lane }}
+          name: team-mvt-${{ github.run_id }}-${{ matrix.lane }}-trial-${{ matrix.trial }}
           path: |
             /tmp/evaluation/lane.json
             /tmp/model-performance/observations.ndjson
           if-no-files-found: ignore
+
+  evaluate:
+    if: always()
+    needs: lane
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Download lane evidence
+        uses: actions/download-artifact@v4
+        with:
+          pattern: team-mvt-${{ github.run_id }}-*-trial-*
+          path: /tmp/team-mvt
+          merge-multiple: false
+
+      - name: Evaluate DOE evidence boundary
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import glob, json, os
+          paths=glob.glob('/tmp/team-mvt/**/lane.json', recursive=True)
+          rows=[json.load(open(p,encoding='utf-8')) for p in paths]
+          eligible=[r for r in rows if r['eligible']=='true']
+          executed=[r for r in eligible if r['execution_status']=='success']
+          failed=[r for r in eligible if r['execution_status']=='failure']
+          skipped=[r for r in rows if r['eligible']!='true']
+          trials={r['lane'] for r in rows}
+          if len(rows) < 12: raise SystemExit(f'FAIL: expected 12 DOE cells, found {len(rows)}')
+          print(json.dumps({'schema':'team-mvt-evaluation/v1','cells':len(rows),'eligible':len(eligible),'executed':len(executed),'execution_failures':len(failed),'skipped':len(skipped),'lanes':sorted(trials),'promotion_ready':False,'reason':'task correctness/evaluator evidence remains UNKNOWN until independent evaluation'},sort_keys=True))
+          os.makedirs('/tmp/evaluation',exist_ok=True)
+          with open('/tmp/evaluation/summary.json','w') as f: json.dump({'schema':'team-mvt-evaluation/v1','cells':len(rows),'eligible':len(eligible),'executed':len(executed),'execution_failures':len(failed),'skipped':len(skipped),'promotion_ready':False},f,indent=2)
+          PY
+
+      - name: Upload evaluation summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: team-mvt-${{ github.run_id }}-evaluation
+          path: /tmp/evaluation/summary.json

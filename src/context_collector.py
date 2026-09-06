@@ -1,13 +1,51 @@
 import sqlite3
 import os
 import re
+import shutil
 import subprocess
+from pathlib import Path
 
 DB_PATH = "local_repo.db"
 
 class AutomatedContextCollector:
     def __init__(self, workspace_root):
         self.workspace = os.path.abspath(workspace_root)
+
+    def _get_cached_signatures(self, file_path):
+        """Return function signatures from func_index.jsonl if the file hasn't changed."""
+        import hashlib, json
+        func_index = Path.home() / 'workspace/llm_map/func_index.jsonl'
+        if not func_index.exists():
+            return None
+        abs_p = Path(file_path)
+        if not abs_p.is_absolute():
+            abs_p = Path(self.workspace) / file_path
+        if not abs_p.exists():
+            return None
+        current_hash = hashlib.sha256(abs_p.read_bytes()).hexdigest()[:16]
+        cache_file = Path.home() / '.cache/sig_cache' / f'{abs_p.name}.{current_hash}.json'
+        if cache_file.exists():
+            with open(cache_file) as cf:
+                return json.load(cf)
+
+        try:
+            rel_file_str = str(abs_p.relative_to(Path.home()))
+        except ValueError:
+            rel_file_str = str(abs_p)
+
+        # Build and cache
+        sigs = []
+        with open(func_index) as fi:
+            for line in fi:
+                entry = json.loads(line)
+                if entry.get('file') == rel_file_str:
+                    sigs.append(f"{entry['name']} line {entry['line']}: {entry.get('sig','')[:80]}")
+        if sigs:
+            cache_file.parent.mkdir(parents=True, exist_ok=True)
+            with open(cache_file, 'w') as cf:
+                json.dump(sigs, cf)
+            return sigs
+        return None
 
     def find_dependent_files(self, file_relative_path, conn=None):
         """
@@ -48,6 +86,8 @@ class AutomatedContextCollector:
         return valid_dependencies
 
     def generate_ast_skeleton(self, file_relative_path):
+        if not shutil.which('ast-grep'):
+            return f"// Unable to trace AST module boundary map for {file_relative_path}"
         abs_path = os.path.join(self.workspace, file_relative_path)
         ext = os.path.splitext(file_relative_path)[1]
         if ext == '.py':
@@ -78,12 +118,25 @@ class AutomatedContextCollector:
         Returns:
         	str: Formatted architecture context containing dependency skeletons and the active file source.
         """
+        mode = os.environ.get("CONTEXT_MODE", "full")
+        target_path = os.path.join(self.workspace, active_target_file)
+        if mode == "minimized":
+            sigs = self._get_cached_signatures(active_target_file)
+            target_code = "\n".join(sigs) if sigs else "# No signatures"
+        elif mode == "compact":
+            with open(target_path) as f:
+                target_code = f.read()[:2048]
+            sigs = self._get_cached_signatures(active_target_file)
+            if sigs:
+                target_code += "\n\n" + "\n".join(sigs)
+        else:
+            with open(target_path) as f:
+                target_code = f.read()
+
         dependencies = self.find_dependent_files(active_target_file)
         bundle = ["=== CODEBASE ARCHITECTURE SUBSTRUCTURE CONTEXT ==="]
         for dep in dependencies:
             skeleton = self.generate_ast_skeleton(dep)
             bundle.append(f'\n<file path="{dep}" layout="dependent_skeleton">\n{skeleton}\n')
-        with open(os.path.join(self.workspace, active_target_file), 'r') as f:
-            full_source = f.read()
-        bundle.append(f'\n<file path="{active_target_file}" layout="active_target_edit_zone">\n{full_source}\n')
+        bundle.append(f'\n<file path="{active_target_file}" layout="active_target_edit_zone">\n{target_code}\n')
         return "\n".join(bundle)

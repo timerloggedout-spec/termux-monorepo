@@ -2,6 +2,7 @@ import sqlite3
 import os
 import re
 import subprocess
+import shutil
 
 DB_PATH = "local_repo.db"
 
@@ -39,15 +40,24 @@ class AutomatedContextCollector:
                 conn.close()
 
         valid_dependencies = []
+        extensions = ('.py', '.js', '.mjs', '.rs', '.sh')
         for ref in related_files:
-            for ext in ['.py', '.js', '.mjs', '.rs', '.sh']:
-                check_path = ref if ref.endswith(ext) else f"{ref}{ext}"
-                if os.path.exists(os.path.join(self.workspace, check_path)) and check_path != file_relative_path:
+            if ref == file_relative_path:
+                continue
+            if ref.endswith(extensions):
+                if os.path.exists(os.path.join(self.workspace, ref)):
+                    valid_dependencies.append(ref)
+                continue
+            for ext in extensions:
+                check_path = f"{ref}{ext}"
+                if check_path != file_relative_path and os.path.exists(os.path.join(self.workspace, check_path)):
                     valid_dependencies.append(check_path)
                     break
         return valid_dependencies
 
     def generate_ast_skeleton(self, file_relative_path):
+        if not shutil.which("ast-grep"):
+            return f"// Unable to trace AST module boundary map for {file_relative_path}"
         abs_path = os.path.join(self.workspace, file_relative_path)
         ext = os.path.splitext(file_relative_path)[1]
         if ext == '.py':

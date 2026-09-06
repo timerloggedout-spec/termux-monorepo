@@ -104,10 +104,15 @@ def _build_trie_regex(words: Iterable[str]) -> str:
 
 
 VARIANT_INDEX = _build_variant_index(CANONICAL_TOKENS)
+FAST_VARIANT_INDEX = {k.lower(): v for k, v in VARIANT_INDEX.items()}
 VARIANT_REGEX = re.compile(
     _build_trie_regex(VARIANT_INDEX.keys()),
     re.IGNORECASE,
 )
+
+
+def _from_1337_repl(match: re.Match[str]) -> str:
+    return FAST_VARIANT_INDEX[match.group(0).lower()]
 
 
 def to_1337speak(
@@ -144,11 +149,7 @@ def from_1337speak(text: str) -> str:
     """Normalize known randomized variants back to canonical compressed tokens."""
     if not text:
         return text
-
-    def replace(match: re.Match[str]) -> str:
-        return VARIANT_INDEX[match.group(0).lower()]
-
-    return VARIANT_REGEX.sub(replace, text)
+    return VARIANT_REGEX.sub(_from_1337_repl, text)
 
 
 def compile_phase(text: str, canonical_compiler) -> str:

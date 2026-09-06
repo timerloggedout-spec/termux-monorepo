@@ -14,9 +14,9 @@ on:
         default: 'HEAD'
         type: string
       ox_model:
-        description: 'Optional OpenRouter model selected for lane A; blank selects the live Ox Alpha candidate'
+        description: 'Optional Felo OX Alpha model id; blank selects the live documented trial candidate'
         required: false
-        default: ''
+        default: 'ox-alpha'
         type: string
   schedule:
     - cron: '*/15 * * * *'
@@ -45,11 +45,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      # No fixed application-level concurrency ceiling. The experiment population
-      # is governed by dynamic admission, quota/cooldown, dependencies, and the
-      # runner/platform limits supplied by GitHub.
       matrix:
-        lane: [a-ox-openrouter, b-other-openrouter, c-felo-prompt-variant, d-omni-peer]
+        lane: [a-ox-felo, b-other-openrouter, c-felo-prompt-variant, d-omni-peer]
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
@@ -100,19 +97,17 @@ jobs:
           lane=os.environ['LANE']; cohort=os.environ['COHORT']; manager=os.environ['MANAGER']; requested=os.environ.get('OX_MODEL','').strip()
           def free(r): return r['pricing_classification']=='free_zero_price' or r['free_suffix'] or r.get('access_classification')=='free_trial'
           provider=''; rows=[]; variant=''; prompt=''; eligible='true'; skip_reason=''; max_tokens='131072'
-          if lane=='a-ox-openrouter':
-              provider='openrouter'
-              if requested:
-                  rows=[r for r in d['models'] if r['provider']==provider and r['id']==requested]
-              else:
-                  rows=[r for r in d['models'] if r['provider']==provider and ('ox-alpha' in str(r['id']).lower() or 'ox alpha' in str(r.get('name','')).lower())]
+          if lane=='a-ox-felo':
+              provider='felo'
+              model_id=requested or 'ox-alpha'
+              rows=[r for r in d['models'] if r['provider']==provider and r['id']==model_id and free(r)]
               variant='same-task-a'
               prompt=f'Manager={manager}. Cohort={cohort}. Analyze issue #337 as a team-orchestration benchmark. Identify the most important correctness risk, one concrete improvement, and how to validate it. Do not fabricate repository access.'
           elif lane=='b-other-openrouter':
               provider='openrouter'; rows=[r for r in d['models'] if r['provider']==provider and not ('ox-alpha' in str(r['id']).lower() or 'ox alpha' in str(r.get('name','')).lower()) and free(r)]; variant='same-task-b'
               prompt=f'Manager={manager}. Cohort={cohort}. Independently analyze issue #337 as a team-orchestration benchmark. Identify the most important correctness risk, one concrete improvement, and how to validate it. Do not fabricate repository access.'
           elif lane=='c-felo-prompt-variant':
-              provider='felo'; rows=[r for r in d['models'] if r['provider']==provider and free(r)]; variant='adversarial-c'
+              provider='felo'; rows=[r for r in d['models'] if r['provider']==provider and r['id']=='ox-alpha' and free(r)]; variant='adversarial-c'
               prompt=f'Manager={manager}. Cohort={cohort}. Act as a skeptical experiment scientist. Analyze issue #337, actively search for confounders in simultaneous LLM testing, attribution, scoring, and rollback protection. Give a falsifiable improvement and a validation test.'
           else:
               provider='omni'; rows=[{'id':'auto'}]; variant='synthesis-d'
@@ -120,12 +115,12 @@ jobs:
 
           if not rows:
               eligible='false'
-              if lane=='a-ox-openrouter':
-                  skip_reason='no dynamically observed OX Alpha candidate for the selected OpenRouter catalog; do not substitute a different model'
+              if lane=='a-ox-felo':
+                  skip_reason='no dynamically observed Felo OX Alpha free-trial candidate; do not substitute a different model'
               elif lane=='b-other-openrouter':
                   skip_reason='no dynamically observed free/zero-price OpenRouter peer; do not spend paid quota'
               elif lane=='c-felo-prompt-variant':
-                  skip_reason='no dynamically observed Felo free/zero-price/trial candidate; do not spend paid quota'
+                  skip_reason='no dynamically observed Felo OX Alpha trial candidate for the adversarial prompt variant'
           else:
               reported_max=rows[0].get('max_output_tokens')
               if isinstance(reported_max, (int, float)) and reported_max > 0:

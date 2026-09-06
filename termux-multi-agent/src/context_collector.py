@@ -13,6 +13,10 @@ class AutomatedContextCollector:
         func_index = Path.home() / 'workspace/llm_map/func_index.jsonl'
         if not func_index.exists():
             return None
+        try:
+            rel_file_str = str(Path(file_path).relative_to(Path.home()))
+        except ValueError:
+            rel_file_str = str(file_path)
         current_hash = hashlib.sha256(Path(file_path).read_bytes()).hexdigest()[:16]
         cache_file = Path.home() / '.cache/sig_cache' / f'{Path(file_path).name}.{current_hash}.json'
         if cache_file.exists():
@@ -23,7 +27,7 @@ class AutomatedContextCollector:
         with open(func_index) as fi:
             for line in fi:
                 entry = json.loads(line)
-                if entry['file'] == str(Path(file_path).relative_to(Path.home())):
+                if entry['file'] == rel_file_str:
                     sigs.append(f"{entry['name']} line {entry['line']}: {entry.get('sig','')[:80]}")
         if sigs:
             cache_file.parent.mkdir(parents=True, exist_ok=True)
@@ -99,14 +103,22 @@ class AutomatedContextCollector:
         mode = os.environ.get("CONTEXT_MODE", "full")
         target_path = os.path.join(self.workspace, active_target_file)
         if mode == "minimized":
-            sigs = self._get_cached_signatures(Path(target_path).relative_to(Path.home()))
+            sigs = self._get_cached_signatures(target_path)
             target_code = "\n".join(sigs) if sigs else "# No signatures"
         elif mode == "compact":
             with open(target_path) as f:
                 target_code = f.read()[:2048]
-            sigs = self._get_cached_signatures(Path(target_path).relative_to(Path.home()))
+            sigs = self._get_cached_signatures(target_path)
             if sigs:
                 target_code += "\n\n" + "\n".join(sigs)
         else:
             with open(target_path) as f:
                 target_code = f.read()
+
+        dependencies = self.find_dependent_files(active_target_file)
+        bundle = ["=== CODEBASE ARCHITECTURE SUBSTRUCTURE CONTEXT ==="]
+        for dep in dependencies:
+            skeleton = self.generate_ast_skeleton(dep)
+            bundle.append(f'\n<file path="{dep}" layout="dependent_skeleton">\n{skeleton}\n')
+        bundle.append(f'\n<file path="{active_target_file}" layout="active_target_edit_zone">\n{target_code}\n')
+        return "\n".join(bundle)

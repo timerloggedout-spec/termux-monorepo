@@ -59,7 +59,7 @@ jobs:
           if [ -n "$number" ]; then
             gh issue comment "$number" --repo "$REPOSITORY" --body "$body"
           else
-            gh issue create --repo "$REPOSITORY" --title "$title" --body "$body" --label automation,ci
+            gh issue create --repo "$REPOSITORY" --title "$title" --body "$body"
           fi
 
       - name: Emit structured incident receipt

@@ -160,11 +160,13 @@ jobs:
         env:
           MANAGER: ${{ steps.manager.outputs.manager }}
           COHORT: ${{ steps.manager.outputs.cohort }}
+          LANE: ${{ matrix.lane }}
+          TRIAL: ${{ matrix.trial }}
         run: |
           mkdir -p /tmp/evaluation
           python3 - <<'PY'
           import json, os
-          lane=os.environ['LANE']; trial=os.environ['TRIAL'] if 'TRIAL' in os.environ else '${{ matrix.trial }}'
+          lane=os.environ['LANE']; trial=os.environ['TRIAL']
           invoke='${{ steps.invoke.outcome }}' if '${{ steps.lane.outputs.eligible }}' == 'true' else 'skipped'
           data={
             'schema':'team-mvt/v4','run_id':'${{ github.run_id }}','lane':lane,'trial':int(trial),
@@ -215,9 +217,9 @@ jobs:
           executed=[r for r in eligible if r['execution_status']=='success']
           failed=[r for r in eligible if r['execution_status']=='failure']
           skipped=[r for r in rows if r['eligible']!='true']
-          trials={r['lane'] for r in rows}
+          lanes={r['lane'] for r in rows}
           if len(rows) < 12: raise SystemExit(f'FAIL: expected 12 DOE cells, found {len(rows)}')
-          print(json.dumps({'schema':'team-mvt-evaluation/v1','cells':len(rows),'eligible':len(eligible),'executed':len(executed),'execution_failures':len(failed),'skipped':len(skipped),'lanes':sorted(trials),'promotion_ready':False,'reason':'task correctness/evaluator evidence remains UNKNOWN until independent evaluation'},sort_keys=True))
+          print(json.dumps({'schema':'team-mvt-evaluation/v1','cells':len(rows),'eligible':len(eligible),'executed':len(executed),'execution_failures':len(failed),'skipped':len(skipped),'lanes':sorted(lanes),'promotion_ready':False,'reason':'task correctness/evaluator evidence remains UNKNOWN until independent evaluation'},sort_keys=True))
           os.makedirs('/tmp/evaluation',exist_ok=True)
           with open('/tmp/evaluation/summary.json','w') as f: json.dump({'schema':'team-mvt-evaluation/v1','cells':len(rows),'eligible':len(eligible),'executed':len(executed),'execution_failures':len(failed),'skipped':len(skipped),'promotion_ready':False},f,indent=2)
           PY

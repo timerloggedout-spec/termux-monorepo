@@ -98,3 +98,12 @@ def test_nexuscli_privileges_path_traversal_prevention(tmp_path, monkeypatch):
 
     acc_path_str = nc._cache_path("session1", account="acc$#*!123")
     assert "acc____123" in acc_path_str
+
+
+def test_nexuscli_upload_file_path_traversal_prevention():
+    nc = _get_nc()
+    with pytest.raises(ValueError, match="Invalid file path"):
+        nc.upload_file("token", "session_123", "../../../etc/passwd")
+
+    with pytest.raises(ValueError, match="Invalid file path"):
+        nc.upload_file("token", "session_123", "foo/../bar.txt")

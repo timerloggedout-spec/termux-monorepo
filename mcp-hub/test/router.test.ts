@@ -92,8 +92,16 @@ test("a known server resolves and forwards once authenticated", async () => {
         }),
       })
     );
-    assert.notEqual(response.status, 401, "a valid token must not be rejected");
-    assert.notEqual(response.status, 404, "a known server must not 404");
+    assert.equal(
+      response.status,
+      200,
+      `a valid token against a known server should forward and succeed, got ${response.status}`
+    );
+    const contentType = response.headers.get("content-type") ?? "";
+    assert.ok(
+      contentType.includes("application/json") || contentType.includes("text/event-stream"),
+      `expected an MCP JSON-RPC or SSE response, got content-type '${contentType}'`
+    );
   } finally {
     if (previousToken === undefined) {
       delete process.env.MCP_AUTH_TOKEN;

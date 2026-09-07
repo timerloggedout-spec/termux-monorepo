@@ -32,12 +32,12 @@ The version-one delivery uses existing Termux, GitHub, and Tailscale resources. 
 
 ## Addendum: mcp-hub as an explicit operator-directed exception
 
-Version one above (and PR #221's `hub_mcp` implementation) deliberately deferred
-direct interactive agent transport and avoided any public SSH/HTTP surface
-reaching the device. `mcp-hub/` (introduced in PR #442, see
-[`mcp-hub/README.md`](../../mcp-hub/README.md)) is a **separate, later, and
-intentional exception to that default**: the operator has stated a hard
-requirement for a persistent public access point, so `mcp-hub` exists as a
+Version one above (and [PR #221][6]'s `hub_mcp` implementation) deliberately
+deferred direct interactive agent transport and avoided any public SSH/HTTP
+surface reaching the device. [`mcp-hub/`][5] (introduced in PR #442) is a
+**separate, later, and intentional exception to that default**: the operator
+has stated a hard requirement for a persistent public access point, so
+`mcp-hub` exists as a
 public Vercel HTTP surface (bearer-token gated via `withMcpAuth`, fails closed
 without `MCP_AUTH_TOKEN`) that fronts the `termux-mcp` / `android-mcp`
 capabilities.

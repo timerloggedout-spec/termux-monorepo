@@ -17,9 +17,10 @@ export function withMcpAuth(handler: McpHandler): McpHandler {
     }
 
     const authorization = request.headers.get("authorization");
-    const providedToken = authorization?.startsWith("Bearer ")
-      ? authorization.slice("Bearer ".length)
-      : undefined;
+    const providedToken =
+      authorization?.slice(0, "Bearer ".length).toLowerCase() === "bearer "
+        ? authorization.slice("Bearer ".length)
+        : undefined;
 
     if (!providedToken || !tokensMatch(providedToken, configuredToken)) {
       return new Response("Unauthorized", {

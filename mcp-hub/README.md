@@ -95,15 +95,19 @@ domain allows — subdomains of `vercel.app` are one-level project slugs
 itself. If a custom domain is ever attached to this project, an alias like
 `mcp.yourdomain.com` pointing at the *same* project is possible and would
 still be "one deployment" — it would just be a nicer front door over the
-same `/mcp/termux` and `/mcp/android` routes, not a replacement for them.
+same routes, not a replacement for them. `vercel.json` already defines two
+equivalent rewrites — `/mcp/:server` and `/mcp-hub/:server`, both landing on
+`/api/mcp/:server` — so `/mcp/termux` and `/mcp-hub/termux` are two spellings
+of the same endpoint today, no custom domain required.
 
 ## Path pattern instead of one file per host
 
 `/mcp/:server` is a Vercel rewrite wildcard, not a fixed list — every
 `/mcp/<anything>` request lands on the single dynamic function at
 `api/mcp/[server].ts`, which looks `<anything>` up in an in-code registry
-map and delegates to that submodule's handler, after `withMcpAuth` clears
-the request. Adding a future MCP is a submodule + one registry-map line —
+map and delegates to that submodule's handler, after `withMcpAuth`
+authenticates the request (validates the Bearer token; does not modify or
+"clear" it). Adding a future MCP is a submodule + one registry-map line —
 no new file, no `vercel.json` edit.
 
 ## One remaining manual step

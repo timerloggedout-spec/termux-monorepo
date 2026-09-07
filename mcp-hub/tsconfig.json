@@ -9,5 +9,10 @@
     "noEmit": true,
     "types": ["node"]
   },
-  "include": ["api/**/*.ts", "termux-mcp/api/**/*.ts", "android-mcp/api/**/*.ts"]
+  "include": [
+    "api/**/*.ts",
+    "tests/**/*.ts",
+    "termux-mcp/api/**/*.ts",
+    "android-mcp/api/**/*.ts"
+  ]
 }

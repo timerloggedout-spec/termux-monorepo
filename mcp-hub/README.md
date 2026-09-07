@@ -19,7 +19,7 @@ only adds the routing layer on top.
 
 ## Layout
 
-```
+```text
 mcp-hub/
   termux-mcp/       git submodule -> github.com/timerloggedout-spec/termux-mcp
   android-mcp/      git submodule -> github.com/timerloggedout-spec/android-mcp
@@ -35,6 +35,9 @@ mcp-hub/
 
 - `https://<project>.vercel.app/mcp/termux`
 - `https://<project>.vercel.app/mcp/android`
+
+Both endpoints require `Authorization: Bearer <token>`, where the deployment's
+token is configured through the `MCP_AUTH_TOKEN` environment variable.
 
 ## Hosts and their real status
 

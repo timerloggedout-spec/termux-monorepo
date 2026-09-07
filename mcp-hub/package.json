@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vercel dev",
-    "test": "echo \"No tests yet\" && exit 0"
+    "test": "tsx --test --test-force-exit tests/routes.test.ts"
   },
   "keywords": ["mcp", "termux", "android", "vercel", "hub"],
   "author": "timerloggedout-spec",
@@ -17,6 +17,8 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@types/node": "^22.13.10"
+    "@types/node": "^22.13.10",
+    "tsx": "^4.23.13",
+    "vercel": "^59.11.7"
   }
 }

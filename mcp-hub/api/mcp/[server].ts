@@ -1,14 +1,14 @@
-import { withMcpAuth } from "../auth";
+import { withMcpAuth } from "../auth.js";
 import {
   GET as termuxGET,
   POST as termuxPOST,
   DELETE as termuxDELETE,
-} from "../../termux-mcp/api/server";
+} from "../../termux-mcp/api/server.js";
 import {
   GET as androidGET,
   POST as androidPOST,
   DELETE as androidDELETE,
-} from "../../android-mcp/api/server";
+} from "../../android-mcp/api/server.js";
 
 type Handler = (request: Request) => Response | Promise<Response>;
 

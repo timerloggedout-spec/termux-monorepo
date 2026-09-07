@@ -163,3 +163,12 @@ def test_sentinel_session_cache_key_collision_and_header_isolation(tmp_path, mon
     # Shared session headers in _session should NOT contain X-Ds-Pow-Response
     sess_after = dc.get_session(token1)
     assert "X-Ds-Pow-Response" not in sess_after.headers
+
+
+def test_upload_file_path_traversal_prevention():
+    dc = _get_dc()
+    with pytest.raises(ValueError, match="Invalid file path"):
+        dc.upload_file("token", "session_123", "../../../etc/passwd")
+
+    with pytest.raises(ValueError, match="Invalid file path"):
+        dc.upload_file("token", "session_123", "foo/../bar.txt")

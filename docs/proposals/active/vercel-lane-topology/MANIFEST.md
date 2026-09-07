@@ -4,7 +4,7 @@ title: "Vercel deployment lane topology: legacy project fate, mcp-multi-host ret
 author: Claude
 posted_at: 2026-09-07
 source: (none - direct proposal)
-status: posted
+status: accepted
 priority: P1
 reviewers:
   - id: Claude
@@ -26,8 +26,8 @@ One paragraph: mcp-hub now ships as its own dedicated Vercel project (see mcp-hu
 
 | ID | Role | Status | At | Notes |
 |----|------|--------|-----|-------|
-| Claude | author+driver | posted | 2026-09-07 | Opened proposal; self-executing the two reversible, Tier 1-2 items now under merit path (see CONSENSUS.md); holding VLT-001 for Tier 3 (quorum: second agent OR Operator) because it is a destructive, likely-irreversible action (deleting or repointing a live Vercel project) touching a project whose current root is the subject of an existing credential-exposure finding. |
-| (open) | reviewer | requested | | Any agent picking up registry.yaml next, or the Operator, may record a VOTE in DEBATE.md for VLT-001. |
+| Claude | author+driver | accepted | 2026-09-07 | Opened proposal; self-executed the two reversible, Tier 1-2 items under merit path (see CONSENSUS.md); held VLT-001 for Tier 3 pending a second agent or Operator. |
+| Operator (timerloggedout-spec) | reviewer+approver | accepted | 2026-09-07 | Direct chat authorization for VLT-001 after the peer-review pipeline was invoked twice and produced no substantive position (see DEBATE.md "Peer-review outcome"). Recorded VOTE in DEBATE.md. |
 
 ## Review log
 
@@ -36,15 +36,20 @@ One paragraph: mcp-hub now ships as its own dedicated Vercel project (see mcp-hu
 - Disposition: posted
 - Notes: Registering per PROCESS.md ingest→register→itemize lifecycle. See ITEMS.md for the three items and DEBATE.md for driver evidence. VLT-002 and VLT-003 are being executed in the same PR as this manifest since they are reversible/no-risk (repo archive is reversible via unarchive; a new docs file has no blast radius). VLT-001 is NOT executed here — proposed only, pending a second mind or Operator per Tier 3.
 
+### 2026-09-07 — Claude (closing)
+
+- Disposition: accepted
+- Notes: Invoked `@gemini-cli`/`@deepseek-ci` twice for VLT-001; found and fixed a real repo-wide dispatch bug (`scripts/model_router.py` module-invocation, master `da89bab9`) along the way, but neither channel produced a substantive position (see DEBATE.md). Operator then gave direct authorization to resolve VLT-001 without further waiting. Executed: repointed the legacy project's Root Directory from `deepseek-cli` to `demo-portal/public` via the Vercel API, seeded with a real placeholder commit (`4abf90f1`), verified and redeployed. All three items now executed.
+
 ## Checklist (process)
 
 - [x] Registered in `docs/proposals/registry.yaml`
 - [x] ITEMS.md itemized
-- [ ] At least one non-author review recorded (open — see Reviewers table)
-- [ ] Status -> accepted before VLT-001 execution merges
-- [x] PRs cite `Implements: <ITEM-ID>` (this PR carries VLT-002, VLT-003)
+- [x] At least one non-author review recorded (Operator decision, see Reviewers table)
+- [x] Status -> accepted before VLT-001 execution merges
+- [x] PRs cite `Implements: <ITEM-ID>` (this PR carries VLT-002, VLT-003; VLT-001 implemented via master commit `4abf90f1` + out-of-band API call)
 - [x] Gates green on merge (docs-only change; repo-gate / proposal-lifecycle apply)
-- [ ] Closed + moved to `closed/` when terminal (VLT-001 still open)
+- [ ] Closed + moved to `closed/` when terminal (leave in `active/` for one more review cycle before archiving the folder)
 
 ## Links
 

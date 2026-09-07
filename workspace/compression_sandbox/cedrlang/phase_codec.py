@@ -126,6 +126,9 @@ def to_1337speak(
         raise ValueError("probability must be between 0.0 and 1.0")
     if not text or probability == 0.0:
         return text
+    # Fast-path optimization: check if any matching tokens exist before evaluating RNG or regex sub
+    if not VARIANT_REGEX.search(text):
+        return text
     rng = rng or random.Random()
 
     def replace(match: re.Match[str]) -> str:
@@ -143,6 +146,9 @@ def to_1337speak(
 def from_1337speak(text: str) -> str:
     """Normalize known randomized variants back to canonical compressed tokens."""
     if not text:
+        return text
+    # Fast-path optimization: check if any matching variants exist before executing regex sub
+    if not VARIANT_REGEX.search(text):
         return text
 
     def replace(match: re.Match[str]) -> str:

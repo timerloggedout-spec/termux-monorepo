@@ -109,6 +109,9 @@ VARIANT_REGEX = re.compile(
     re.IGNORECASE,
 )
 
+_DEFAULT_RNG = random.Random()
+LEET_CHARS = set("aeiostAEIOST")
+
 
 def to_1337speak(
     text: str,
@@ -126,15 +129,14 @@ def to_1337speak(
         raise ValueError("probability must be between 0.0 and 1.0")
     if not text or probability == 0.0:
         return text
-    rng = rng or random.Random()
+    rng = rng or _DEFAULT_RNG
 
     def replace(match: re.Match[str]) -> str:
         token = match.group(0)
         chars = list(token)
         for i, char in enumerate(chars):
-            replacement = LEET_MAP.get(char.lower())
-            if replacement and rng.random() < probability:
-                chars[i] = replacement
+            if char in LEET_CHARS and rng.random() < probability:
+                chars[i] = LEET_MAP[char.lower()]
         return "".join(chars)
 
     return VARIANT_REGEX.sub(replace, text)

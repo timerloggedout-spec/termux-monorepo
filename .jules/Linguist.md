@@ -46,3 +46,10 @@ Restore the behavior as an explicit reversible phase in `workspace/compression_s
 - `1103d832` / `51023b87` / `7a6e5a7` — cached mappings, Caveman, single-pass regex optimization
 - `4eb9f830` / `267fecc` — fast-path term search
 - #196 — `AGENTS.hum.md` round-trip milestone
+
+## 2026-09-06 - Pre-Screening Multi-Pattern Loops and Trailing Slice Optimization
+**Learning:**
+Executing individual `re.Pattern.sub()` pre-checks (`pattern.search()` before `pattern.sub()`) on every single regex pass is counterproductive (~30% slowdown) because C-level `re.Pattern.sub()` already performs an internal scan and short-circuits without calling callbacks when no matches are found. However, pre-screening a multi-pattern loop (e.g., 30 symbol patterns in `compress` and `caveman`) using a single combined `SYMBOL_ANY_MATCHER.search(text)` short-circuits all 30 pattern passes in O(1) time when no symbols exist. Additionally, replacing `re.compile(r'[.,!?;:]$').sub('', s)` with O(1) string tail check `if s and s[-1] in ".,!?;:": s = s[:-1]` yields a ~160x speedup for trailing punctuation trimming and avoids full-string regex scans.
+
+**Action:**
+Use a single pre-screening matcher to guard multi-pattern regex loops, and replace single-character positional regex replacements (such as trailing punctuation anchors) with O(1) string slicing checks.

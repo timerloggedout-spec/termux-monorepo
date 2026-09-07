@@ -30,9 +30,29 @@ The version-one delivery uses existing Termux, GitHub, and Tailscale resources. 
 | Private bridge host | An always-on user-controlled computer joined to the tailnet. | Deferred until such a host is available. |
 | Authenticated Cloudflare Access tunnel | Cloudflare account, active domain/site, access policy, and `cloudflared` client on both ends. | Deferred; no public quick tunnel. |
 
+## Addendum: mcp-hub as an explicit operator-directed exception
+
+Version one above (and [PR #221][6]'s `hub_mcp` implementation) deliberately
+deferred direct interactive agent transport and avoided any public SSH/HTTP
+surface reaching the device. [`mcp-hub/`][5] (introduced in PR #442) is a
+**separate, later, and intentional exception to that default**: the operator
+has stated a hard requirement for a persistent public access point, so
+`mcp-hub` exists as a
+public Vercel HTTP surface (bearer-token gated via `withMcpAuth`, fails closed
+without `MCP_AUTH_TOKEN`) that fronts the `termux-mcp` / `android-mcp`
+capabilities.
+
+This does not supersede or amend the decision above — `hub_mcp`'s
+signed-job-envelope model remains the governed/audited path for anything that
+should not be reachable from the open internet. The two are a deliberate
+split, not a contradiction: `hub_mcp` = governed/private, `mcp-hub` = public/
+persistent, chosen per capability rather than one replacing the other.
+
 ## References
 
 [1]: https://tailscale.com/docs/reference/tailscale-api "Tailscale API"
 [2]: https://tailscale.com/docs/reference/trust-credentials "Tailscale trust credentials"
 [3]: https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/use-cases/ssh/ssh-cloudflared-authentication/ "Cloudflare Access SSH"
 [4]: https://firebase.google.com/docs/auth/web/multi-factor "Firebase multi-factor authentication"
+[5]: ../../mcp-hub/README.md "mcp-hub: public persistent access point (PR #442)"
+[6]: https://github.com/timerloggedout-spec/termux-monorepo/pull/221 "PR #221: governed Termux agentic hub (hub_mcp)"

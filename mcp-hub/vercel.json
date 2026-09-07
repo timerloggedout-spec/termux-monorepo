@@ -1,0 +1,11 @@
+{
+  "rewrites": [
+    { "source": "/mcp/:server", "destination": "/api/mcp/:server" },
+    { "source": "/mcp-hub/:server", "destination": "/api/mcp/:server" }
+  ],
+  "functions": {
+    "api/mcp/[server].ts": {
+      "maxDuration": 60
+    }
+  }
+}

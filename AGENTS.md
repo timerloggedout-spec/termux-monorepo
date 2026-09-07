@@ -464,10 +464,44 @@ python3 archwiz/mirror.py
 
 ## Open Work & Priorities
 
-### Active PRs (as of 2026-08-01)
-1. **PR #1 `critical-proposal`** - Critical eval + roadmap (mergeable as docs)
-2. **PR #2 `timerloggedout-spec-patch-1`** - GHA Rust (narrow scope before merge)
-3. **PR #3 `agent/repository-hygiene`** (draft) - Untrack session stores (**priority security**)
+### Active PRs (as of 2026-08-01) — superseded, kept for history
+
+The three PRs originally listed here (#1, #2, #3) predate the current
+`docs/proposals/` process and mcp-hub work below; do not use this list to
+gauge current backlog state. Query `registry.yaml` and the live PR list
+instead — this section is a historical snapshot, not a dashboard.
+
+### 2026-09 operator-authorized session — bounded changes log
+
+Per `docs/proposals/AGENTIC-PERMISSIONS.md` ("merge when allowed" is agent-
+capable; `.github/workflows/**` needs an Operator PAT, not an app token),
+one session did the following under direct, explicit chat authorization
+from the Operator (repeated across multiple messages — not inferred):
+
+- Diagnosed and fixed the CI root cause behind near-universal PR check
+  failures: `actions/github-script`'s `context.repo` has no `default_branch`
+  field, so `compareCommitsWithBasehead` was called with `undefined`,
+  producing 404s. Fixed in both `pr-production-ledger.yml` and
+  `pr-evidence-evaluation.yml` by using the already-fetched `pr.base.ref`
+  instead. Landed as PR #445 (needed an Operator PAT — app tokens are
+  correctly rejected for workflow-file writes, see `AGENTIC-PERMISSIONS.md`).
+- Closed #6, #7, #8 as superseded (diffed each against current `master` and
+  cited the independently-shipped replacement in the close comment) and
+  #121 as a broken bot placeholder.
+- Merged #34 (skyhook integration) into its base `termux-smoke` after
+  re-verifying `agentic termux smoke` and `hygiene + portability gate` were
+  green on the head commit; no `Implements: <ITEM-ID>` was on the original
+  PR (predates the proposals process) — noted rather than backfilled.
+- Consolidated `termux-mcp` + `android-mcp` + `mcp-multi-host` into
+  `mcp-hub/` (submodule-based, single Vercel deployment, dynamic
+  `api/mcp/[server].ts` router) — see PR #442 and
+  `mcp-hub/README.md`'s "Relationship to `hub_mcp`" section, which documents
+  why this public endpoint is a deliberate, later exception to the
+  no-public-transport default in
+  `docs/architecture/transport-and-identity-decision.md`.
+
+This entry exists so the provenance trail for these decisions lives in the
+repo itself, not only in chat history that later compacts away.
 
 ### Active Branches (Critical Evaluation)
 
@@ -538,6 +572,12 @@ python3 archwiz/mirror.py
 - Check WASM file paths and commit hash
 - Review workflow logs in GitHub Actions
 - Ensure session cache is properly configured
+- If a check fails near-uniformly across unrelated PRs, suspect the
+  reusable workflow itself before the PRs: `context.repo` in
+  `actions/github-script` only has `{owner, repo}` — no `default_branch`.
+  Fixed once already (PR #445) by using `pr.base.ref`; if a similar
+  `undefined` shows up in a `compareCommitsWithBasehead` call elsewhere,
+  it's the same class of bug.
 
 ## Additional Resources
 

@@ -162,23 +162,21 @@ jobs:
           set -euo pipefail
           python3 - <<'PY'
           import json, os
-          from pathlib import Path
           d=json.load(open('/tmp/model-catalog.json', encoding='utf-8'))
           p=os.environ['PROVIDER']; m=os.environ['MODEL']
           rows=[r for r in d['models'] if r['provider']==p and r['id']==m]
-          output=Path(os.environ['GITHUB_OUTPUT'])
           if not rows:
               reason='stale-or-unavailable'
               print(f'::notice::{p}/{m} disappeared from live catalog; recording candidate skip ({reason})')
-              output.write_text(f'eligible=false\nskip_reason={reason}\n', encoding='utf-8', append=True) if hasattr(Path, 'write_text') else None
+              print(f'eligible=false')
+              print(f'skip_reason={reason}')
               raise SystemExit(0)
           r=rows[0]
           eligible=(r['pricing_classification']=='free_zero_price' or r['free_suffix'] or r['access_classification']=='free_trial')
           reason='eligible' if eligible else 'catalog-no-longer-eligible'
           print(f"{p}/{m}: eligible={eligible} pricing={r['pricing_classification']} access={r['access_classification']} reason={reason}")
-          with output.open('a', encoding='utf-8') as fh:
-              fh.write(f'eligible={str(eligible).lower()}\n')
-              fh.write(f'skip_reason={reason}\n')
+          print(f'eligible={str(eligible).lower()}')
+          print(f'skip_reason={reason}')
           PY
 
       - name: Snapshot repository history without mutation

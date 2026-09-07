@@ -46,6 +46,11 @@ Establish a Termux-first Agentic Hub for the BLU B160V by adding the approved us
 - Disposition: implementation submitted
 - Notes: PR #221 targets `master-staging`. Submodule integrity, hub protocol tests, feature-scoped repo gate, and Termux smoke all passed. The full comparison against `origin/master` retains three unrelated inherited syntax failures, documented in the PR body.
 
+### 2026-08-18 — user / Manus
+
+- Disposition: P1 scope addition in progress
+- Notes: The Operator directed that the SWE-agent and mini-SWE-agent references be used as starters in an extensible suite for measuring this repository’s development performance. THUB-007 therefore treats SWE references as pinned adapters, not as the benchmark target. The first repository adapter is GitHub-native and credential-free; optional reference adapters remain manual, bounded, and redacted. No scheduled model workload, credential creation/rotation, or device-control dependency is permitted. Pull-request review and gates remain required before any integration claim.
+
 ## Checklist (process)
 
 - [x] Registered in `docs/proposals/registry.yaml`

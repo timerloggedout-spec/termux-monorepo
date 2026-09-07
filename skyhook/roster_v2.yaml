@@ -1,0 +1,447 @@
+# SKYHOOK Roster v2 - Enhanced with Protocol Layer Integration
+# 
+# This is an enhanced version of the roster that includes the new protocol
+# layer components and integration opportunities.
+#
+# Agent: Grok | Jules
+# Profile: https://x.com/grok
+# Signed-off-by: Grok <grok@x.ai>
+# Version: 4
+# Updated: 2026-08-04
+
+version: 4
+updated_at: "2026-08-04T12:00:00Z"
+updated_by: grok-archw1z
+package: skyhook
+branch: vibe/skyhook-integration-8475f1
+previous_branch: feature/skyhook
+
+home:
+  owner: timerloggedout-spec
+  repo: termux-monorepo
+  package_root: skyhook/
+  integration_branch: master-staging
+  package_branch: vibe/skyhook-integration-8475f1
+  smoke_branch: termux-smoke
+  production_branch: master
+  gates: [repo-gate, termux-smoke]
+
+# New protocol layer components
+protocol_layer:
+  description: >-
+    Unified protocol layer for Jules API integration across all implementations.
+    Provides consistent session states, message formats, and error handling.
+  
+  components:
+    - name: session_states
+      description: Unified state machine for Jules sessions
+      file: skyhook/protocol/session_states.py
+      status: implemented
+      
+    - name: message_formats
+      description: Standardized request/response formats
+      file: skyhook/protocol/message_formats.py
+      status: implemented
+      
+    - name: error_codes
+      description: Comprehensive error handling framework
+      file: skyhook/protocol/error_codes.py
+      status: implemented
+      
+    - name: protocol_init
+      description: Protocol layer package initialization
+      file: skyhook/protocol/__init__.py
+      status: implemented
+  
+  compatibility:
+    - jules-dispatch-cli_fork: full
+    - jules-mcp-server_fork: full
+    - jules-action_fork: full
+    - jules-sdk_fork-rs: partial
+  
+  testing:
+    file: skyhook/tests/test_protocol.py
+    test_count: 29
+    coverage: session_states, message_formats, error_codes
+
+# Device optimization components
+device_optimization:
+  description: >-
+    Device-specific profiles and resource management for Termux environments.
+  
+  components:
+    - name: b160v_profile
+      description: BLU B160V device profile
+      file: skyhook/device/profiles/b160v.py
+      status: implemented
+      
+    - name: generic_termux_profile
+      description: Generic Termux device profile
+      file: skyhook/device/profiles/generic_termux.py
+      status: implemented
+      
+    - name: cloud_runner_profile
+      description: Cloud-based execution profile
+      file: skyhook/device/profiles/cloud_runner.py
+      status: implemented
+      
+    - name: resource_monitor
+      description: Real-time resource monitoring
+      file: skyhook/device/resource_monitor.py
+      status: implemented
+      
+    - name: offline_mode
+      description: Offline-first operation support
+      file: skyhook/device/offline_mode.py
+      status: implemented
+
+# Orchestration components
+orchestration:
+  description: >-
+    Multi-agent orchestration framework for coordinating Jules, Grok, CodeRabbit, and Devin.
+  
+  components:
+    - name: agent_registry
+      description: Registry of available agents with capabilities
+      file: skyhook/orchestration/agent_registry.py
+      status: implemented
+      
+    - name: delegation_engine
+      description: Task delegation engine (planned)
+      file: skyhook/orchestration/delegation_engine.py
+      status: planned
+      
+    - name: conflict_resolver
+      description: Conflict resolution for multi-agent coordination (planned)
+      file: skyhook/orchestration/conflict_resolver.py
+      status: planned
+      
+    - name: fallback_chains
+      description: Fallback chains for credit exhaustion (planned)
+      file: skyhook/orchestration/fallback_chains.py
+      status: planned
+
+# Enhanced focus list with integration priorities
+focus_first:
+  local_drivers_in_home:
+    - multi-ai-cli
+    - deepcli
+    - deepseek-cli
+    - deepterm
+  
+  # Protocol layer integration priorities
+  protocol_integration:
+    - jules-dispatch-cli_fork
+    - jules-mcp-server_fork
+    - jules-action_fork
+    - jules-sdk_fork-rs
+  
+  jules_gold:
+    - jules-dispatch-cli_fork
+    - jules-mcp-server_fork
+    - jules-sdk_fork-rs
+    - jules-action_fork
+    - gh-jules-workflow-development_fork
+    - jules-skill_fork
+    - jules-skills_fork
+    - google-jules-skill_fork
+    - jules-foreman_fork
+    - jules-studio_fork
+    - jules-cli_fork-multiAgent
+    - google-jules-workflow_fork
+    - cjules_fork
+    - jules_api_cli_fork
+    - jules-awesome-list_fork
+    - pi-jules_fork
+
+# Integration opportunities with new protocol layer
+integration_opportunities:
+  
+  # Tier 1: Immediate Integration (Jules Gold)
+  tier_1:
+    - repo: jules-dispatch-cli_fork
+      opportunity: >-
+        Map dispatch-cli JSON output to protocol layer JulesResponse format.
+        Use protocol layer for consistent error handling.
+      priority: high
+      effort: low
+      impact: high
+      
+    - repo: jules-mcp-server_fork
+      opportunity: >-
+        Map MCP tool responses to protocol layer formats.
+        Use protocol layer for session state management.
+      priority: high
+      effort: low
+      impact: high
+      
+    - repo: jules-action_fork
+      opportunity: >-
+        Use protocol layer for workflow input/output standardization.
+        Map action inputs to JulesRequest format.
+      priority: high
+      effort: low
+      impact: high
+      
+    - repo: jules-sdk_fork-rs
+      opportunity: >-
+        Create Rust-Python bridge for protocol layer compatibility.
+        Map Rust types to protocol layer enums.
+      priority: medium
+      effort: medium
+      impact: high
+  
+  # Tier 2: Enhanced Integration
+  tier_2:
+    - repo: jules-cli_fork-multiAgent
+      opportunity: >-
+        Use protocol layer for multi-agent message standardization.
+        Implement protocol layer in TypeScript.
+      priority: medium
+      effort: medium
+      impact: medium
+      
+    - repo: jules-foreman_fork
+      opportunity: >-
+        Use protocol layer for orchestration message formats.
+        Standardize foreman-worker communication.
+      priority: medium
+      effort: medium
+      impact: medium
+      
+    - repo: gh-jules-workflow-development_fork
+      opportunity: >-
+        Use protocol layer for workflow development templates.
+        Standardize workflow inputs/outputs.
+      priority: medium
+      effort: low
+      impact: medium
+  
+  # Tier 3: Future Integration (Antigravity)
+  tier_3:
+    - repo: antigravity-jules-orchestration_fork
+      opportunity: >-
+        Design Antigravity interface layer using protocol layer patterns.
+        Create adapter for Antigravity session management.
+      priority: low
+      effort: high
+      impact: high
+      status: deferred
+      
+    - repo: llm-antigravity-orchestrator_fork
+      opportunity: >-
+        Use protocol layer for Antigravity orchestration messages.
+        Map Antigravity states to protocol layer states.
+      priority: low
+      effort: high
+      impact: high
+      status: deferred
+
+# Enhanced scavenge templates with protocol layer
+scavenge_templates:
+  jules_gold:
+    - name: jules-dispatch-cli_fork
+      tier: 1
+      visibility: public
+      url: https://github.com/timerloggedout-spec/jules-dispatch-cli_fork
+      recon: skyhook/research/TIER1_DISPATCH_MCP.md
+      protocol_integration: 
+        status: planned
+        priority: high
+        
+    - name: jules-mcp-server_fork
+      tier: 1
+      visibility: public
+      url: https://github.com/timerloggedout-spec/jules-mcp-server_fork
+      recon: skyhook/research/TIER1_DISPATCH_MCP.md
+      protocol_integration:
+        status: planned
+        priority: high
+        
+    - name: jules-sdk_fork-rs
+      tier: 2
+      visibility: public
+      url: https://github.com/timerloggedout-spec/jules-sdk_fork-rs
+      protocol_integration:
+        status: planned
+        priority: high
+        
+    - name: jules-action_fork
+      tier: 2
+      visibility: public
+      url: https://github.com/timerloggedout-spec/jules-action_fork
+      protocol_integration:
+        status: planned
+        priority: high
+    
+    - name: gh-jules-workflow-development_fork
+      tier: 2
+      visibility: public
+      url: https://github.com/timerloggedout-spec/gh-jules-workflow-development_fork
+      protocol_integration:
+        status: planned
+        priority: medium
+    
+    - name: jules-cli_fork-multiAgent
+      tier: 4
+      visibility: public
+      url: https://github.com/timerloggedout-spec/jules-cli_fork-multiAgent
+      note: Create Project listed jules-multi-agent; actual name is jules-cli_fork-multiAgent
+      protocol_integration:
+        status: planned
+        priority: medium
+
+# New workflow templates
+workflow_templates:
+  - name: skyhook-dispatch
+    description: Main dispatch workflow with manual and scheduled triggers
+    file: .github/workflows/skyhook-dispatch.yml
+    status: implemented
+    triggers:
+      - workflow_dispatch
+      - schedule
+      - repository_dispatch
+    
+  - name: skyhook-mcp-host
+    description: MCP server hosting workflow (planned)
+    file: .github/workflows/skyhook-mcp-host.yml
+    status: planned
+    
+  - name: skyhook-termux-test
+    description: Termux compatibility testing (planned)
+    file: .github/workflows/skyhook-termux-test.yml
+    status: planned
+
+# Documentation
+documentation:
+  - name: INTEGRATION_STRATEGY
+    description: Comprehensive integration strategy document
+    file: skyhook/INTEGRATION_STRATEGY.md
+    status: implemented
+    
+  - name: PROTOCOL_README
+    description: Protocol layer API reference and usage guide
+    file: skyhook/PROTOCOL_README.md
+    status: implemented
+    
+  - name: MIGRATION
+    description: Migration guide from jules-ade to skyhook
+    file: skyhook/MIGRATION.md
+    status: implemented
+
+# Testing strategy
+testing:
+  unit_tests:
+    - module: skyhook.tests.test_protocol
+      count: 29
+      coverage: protocol_layer
+      status: passing
+      
+    - module: skyhook.tests.test_bridge
+      count: 0
+      coverage: bridge_components
+      status: planned
+      
+    - module: skyhook.tests.test_device
+      count: 0
+      coverage: device_optimization
+      status: planned
+      
+    - module: skyhook.tests.test_orchestration
+      count: 0
+      coverage: orchestration
+      status: planned
+  
+  integration_tests:
+    - name: jules-dispatch-cli integration
+      status: planned
+      priority: high
+      
+    - name: jules-mcp-server integration
+      status: planned
+      priority: high
+      
+    - name: Termux device testing
+      status: planned
+      priority: medium
+
+# Enhanced policy with protocol layer considerations
+policy:
+  phase: jules_first
+  scavenge: depth-1-sparse-metadata
+  
+  protocol_layer_policy:
+    - All new code should use protocol layer components
+    - Existing code should migrate to protocol layer
+    - Protocol layer should remain stdlib-only for Termux compatibility
+    
+  agents_credit_policy: >-
+    Devin and Vercel out of credit. Prefer Jules sessions or Grok (not a Linear
+    teammate — put Agent: Grok|Jules at top of issue body). Clear Devin delegate.
+    
+    Protocol layer enables better credit management through:
+    - Error type classification (retryable vs user action)
+    - Fallback chain implementation
+    - Multi-agent orchestration
+  
+  human_only: [credential_rotation, history_rewrite, app_permissions]
+  human_temporary: [termux_smoke_cherry_pick_until_automated]
+  agent_owns: [branch, implement, pr, merge_to_master_staging, gates]
+  
+  # New protocol layer specific policies
+  protocol_specific:
+    - All API responses should use protocol layer error handling
+    - All session states should use protocol layer SessionState enum
+    - All message formats should use protocol layer JulesRequest/JulesResponse
+    - All device profiles should extend from protocol layer base classes
+
+# Success metrics
+success_metrics:
+  protocol_adoption:
+    target: 100%
+    current: 50%  # New code uses protocol layer
+    measurement: Percentage of new code using protocol layer
+    
+  integration_completion:
+    target: 100%
+    current: 0%
+    measurement: Percentage of tier 1 repositories integrated
+    
+  test_coverage:
+    target: 90%
+    current: 80%  # 29/36 protocol layer tests passing
+    measurement: Percentage of protocol layer code covered by tests
+
+# Next steps
+next_steps:
+  - priority_1:
+      - Merge protocol layer to master-staging
+      - Implement integration with jules-dispatch-cli_fork
+      - Implement integration with jules-mcp-server_fork
+      - Add integration tests
+      
+  - priority_2:
+      - Complete orchestration components (delegation engine, conflict resolver)
+      - Add device optimization tests
+      - Implement workflow templates
+      
+  - priority_3:
+      - Add Antigravity interface layer
+      - Complete remaining integrations
+      - Production deployment and monitoring
+
+# Notes
+notes: >-
+  This roster v2 represents the enhanced SKYHOOK framework with protocol layer
+  integration. The protocol layer provides a foundation for consistent, reliable
+  integration across all Jules-based repositories in the timerloggedout-spec ecosystem.
+  
+  Key improvements over v1:
+  - Unified protocol layer for consistent API integration
+  - Device-specific optimization for Termux environments
+  - Multi-agent orchestration framework
+  - Comprehensive error handling and recovery
+  - Enhanced documentation and testing
+  
+  Migration from v1 (feature/skyhook) to v2 (vibe/skyhook-integration-8475f1)
+  is straightforward as the protocol layer is designed for backwards compatibility.

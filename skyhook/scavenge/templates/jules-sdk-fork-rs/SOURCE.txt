@@ -1,0 +1,11 @@
+name: jules-sdk-fork-rs
+tier: 2
+role: rust_sdk
+owner_repo: timerloggedout-spec/jules-sdk-fork-rs
+upstream_hint: google-labs-code/jules-sdk
+status: pending_private_verify
+steal:
+  - session lifecycle API shape
+  - fleet/parallel helper patterns
+non_goals:
+  - requiring Rust toolchain on Termux CI for doctor

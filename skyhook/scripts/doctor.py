@@ -1,0 +1,124 @@
+#!/usr/bin/env python3
+"""Offline health check for skyhook (stdlib only, no network)."""
+
+from __future__ import annotations
+
+import ast
+import json
+import sys
+import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+MONOREPO = ROOT.parent
+
+
+def ok(msg: str) -> None:
+    print(f"[ok] {msg}")
+
+
+def fail(msg: str) -> None:
+    print(f"[FAIL] {msg}")
+
+
+def check_layout() -> bool:
+    required = [
+        ROOT / "README.md",
+        ROOT / "AGENTS.md",
+        ROOT / "roster.yaml",
+        ROOT / "research" / "GOLD_FORK_RECON.md",
+        ROOT / "research" / "DEFERRED_ANTIGRAVITY.md",
+        ROOT / "bridge" / "config.py",
+        ROOT / "bridge" / "dispatch.py",
+        ROOT / "scripts" / "doctor.py",
+        ROOT / "tasks" / "queue",
+        ROOT / "tests" / "test_bridge.py",
+    ]
+    good = True
+    for path in required:
+        if not path.exists():
+            fail(f"missing {path.relative_to(MONOREPO)}")
+            good = False
+        else:
+            ok(f"found {path.relative_to(MONOREPO)}")
+    return good
+
+
+def check_compile() -> bool:
+    good = True
+    for py in list((ROOT / "bridge").glob("*.py")) + list((ROOT / "tests").glob("*.py")):
+        try:
+            ast.parse(py.read_text(encoding="utf-8"), filename=str(py))
+            ok(f"compile {py.relative_to(MONOREPO)}")
+        except SyntaxError as e:
+            fail(f"syntax {py}: {e}")
+            good = False
+    try:
+        ast.parse(Path(__file__).read_text(encoding="utf-8"), filename=__file__)
+        ok("compile scripts/doctor.py")
+    except SyntaxError as e:
+        fail(f"syntax doctor.py: {e}")
+        good = False
+    return good
+
+
+def check_bridge_logic() -> bool:
+    sys.path.insert(0, str(ROOT))
+    try:
+        from bridge.config import load_config
+        from bridge.dispatch import plan_task
+    except Exception as e:
+        fail(f"import bridge: {e}")
+        return False
+
+    cfg = load_config()
+    ok(f"home_repo={cfg.home_repo}")
+    ok(f"default_branch={cfg.default_branch}")
+    ok(f"jules_api_key_present={cfg.jules_api_key_present}")
+
+    plan = plan_task("doctor-sample", "noop", starting_branch="master", config=cfg)
+    if cfg.prefer_staging and plan.starting_branch != "master-staging":
+        fail(f"prefer_staging rewrite failed: {plan.starting_branch}")
+        return False
+    ok(f"plan branch={plan.starting_branch}")
+    return True
+
+
+def check_unit_tests() -> bool:
+    loader = unittest.TestLoader()
+    suite = loader.discover(str(ROOT / "tests"), pattern="test_*.py")
+    result = unittest.TextTestRunner(verbosity=1).run(suite)
+    if result.wasSuccessful():
+        ok(f"unit tests passed ({result.testsRun} run)")
+        return True
+    fail(f"unit tests failed failures={len(result.failures)} errors={len(result.errors)}")
+    return False
+
+
+def check_tasks() -> bool:
+    queue = ROOT / "tasks" / "queue"
+    files = list(queue.glob("*.yaml")) + list(queue.glob("*.yml"))
+    if not files:
+        fail("no task yaml in tasks/queue")
+        return False
+    ok(f"task files={len(files)}")
+    return True
+
+
+def main() -> int:
+    print("skyhook doctor (offline)")
+    print(f"package root: {ROOT}")
+    results = [
+        check_layout(),
+        check_compile(),
+        check_bridge_logic(),
+        check_unit_tests(),
+        check_tasks(),
+    ]
+    payload = {"ok": all(results), "package": "skyhook"}
+    print(json.dumps(payload))
+    return 0 if payload["ok"] else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

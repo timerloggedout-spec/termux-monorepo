@@ -1,0 +1,7 @@
+{
+  "title": "TER-20: Resolve Sentinel #18 credential 0o600/0o700 conflicts",
+  "source_repo": "timerloggedout-spec/termux-monorepo",
+  "starting_branch": "master-staging",
+  "require_plan_approval": false,
+  "prompt": "You are working in timerloggedout-spec/termux-monorepo.\n\nGoal: Unblock and land Sentinel credential permission hardening (PR #18 / Linear TER-19/TER-20).\n\nContext:\n- Branch feature/secure-credentials-permissions-15653439001895422600 had merge conflicts after other work landed.\n- PR #18 should target master-staging (gate spine: repo-gate → termux-smoke → master).\n- Preserve os.open(..., 0o600) for credential/session files and 0o700 for parent dirs.\n- Do not weaken security patterns. Do not commit secrets or session stores.\n\nTasks:\n1. Rebase or merge master-staging into the feature branch (or recreate equivalent changes cleanly on a branch off master-staging).\n2. Resolve conflicts in deepcli and any cache/config paths.\n3. Ensure py_compile / existing tests relevant to the change still pass.\n4. Open or update a PR against master-staging with Implements: TER-20.\n5. Summarize conflict resolutions in the PR body.\n\nNon-goals: history rewrite, credential rotation (Operator-only), wholesale unrelated refactors.\n"
+}

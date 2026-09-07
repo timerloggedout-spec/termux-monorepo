@@ -1,0 +1,10 @@
+name: gh-jules-workflow-development_fork
+tier: 2
+role: gh_workflows
+owner_repo: timerloggedout-spec/gh-jules-workflow-development_fork
+status: pending_private_verify
+steal:
+  - workflow triggers that enqueue Jules sessions
+  - branch defaults → master-staging
+non_goals:
+  - bypassing repo-gate / termux-smoke

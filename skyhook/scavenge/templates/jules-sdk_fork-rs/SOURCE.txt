@@ -1,0 +1,13 @@
+name: jules-sdk_fork-rs
+tier: 2
+role: rust_sdk
+owner_repo: timerloggedout-spec/jules-sdk_fork-rs
+url: https://github.com/timerloggedout-spec/jules-sdk_fork-rs
+default_branch: main
+visibility: public
+note: Roster previously misspelled as jules-sdk-fork-rs (hyphen). Correct name uses underscore before rs.
+status: url_verified_pending_deep_recon
+steal:
+  - production Rust client patterns for Jules API (streaming, middleware, CLI)
+non_goals:
+  - requiring Rust toolchain on Termux for skyhook doctor

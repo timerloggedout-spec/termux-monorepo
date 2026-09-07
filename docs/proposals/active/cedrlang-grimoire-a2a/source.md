@@ -16,7 +16,9 @@ A mapper is an immutable, versioned mapping from a normalized eligible token or 
 
 ## Coverage and 70% Target
 
-The measurable 70% target is **not** an estimated tokenizer claim. It is `replaced_eligible_tokens / total_eligible_tokens` across the allowed CIR fields. Structural keys, schema/version fields, digests, IDs, safety constraints, and escaped protected literals are excluded from the denominator. A report includes the numerator, denominator, exclusions, mapper ID, mapper version, canonical digest, and calculated ratio. The codec can enforce a caller-selected minimum target and fails closed when the threshold is not reached.
+The measurable 70% target is **not** an estimated tokenizer claim. It is `replaced_eligible_tokens / total_eligible_tokens` across the allowed CIR fields. Structural keys, schema/version fields, digests, IDs, safety constraints, and deliberately protected literals are excluded from the denominator. A report includes the numerator, denominator, exclusions, mapper ID, mapper version, canonical digest, and calculated ratio. The codec can enforce a caller-selected minimum target and fails closed when the threshold is not reached.
+
+The initial set of protected literals is bootstrap-only: it preserves readable review material while the repository lacks an approved contact-point inventory, deterministic projection generator, and production mapper. It must not become a permanent prohibition on Grimoire coverage for paths, names, or values. A later accepted migration must classify those forms as mapper-eligible or record a narrow, reviewable reason to leave each literal visible. Secrets remain excluded from public repository content, not merely from coverage measurement.
 
 ## A2A Envelope
 
@@ -32,4 +34,4 @@ The decision is based on the bounded graph rooted at PR #177, all-state title in
 
 ## Pending Approval Boundary
 
-This record governs only the deterministic local foundation. It does **not** authorize a private mapper service, a public obfuscation claim, authenticated transport, CEDARscript/CID integration, external installation, or a migration of agent-contact documents. `RESEARCH.md` records the outstanding custody, canonical-source, transport, coverage, baseline-remediation, review, and vote requirements. The proposal is `in_review`; it cannot advance to `accepted` until requested findings are resolved and the required non-author review and acceptance evidence are recorded.
+This record governs only the deterministic local foundation. It does **not** authorize a private mapper service, a public obfuscation claim, authenticated transport, CEDARscript/CID integration, external installation, or a migration of agent-contact documents. `RESEARCH.md` records the outstanding custody, canonical-source, transport, coverage, baseline-remediation, review, and vote requirements. Any accepted migration must enforce the bootstrap-only literal boundary rather than retain a permanent blanket exclusion for paths, names, or values. The proposal is `in_review`; it cannot advance to `accepted` until requested findings are resolved and the required non-author review and acceptance evidence are recorded.

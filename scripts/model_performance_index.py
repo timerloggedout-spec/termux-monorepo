@@ -13,29 +13,21 @@ VALID_STATUS = {"attempted", "failed", "succeeded", "skipped"}
 VALID_OUTCOME = {"PASS", "FAIL", "UNKNOWN", None}
 
 
-def percentile(values, p):
+def percentile_fast(values, p):
+    """Fast percentile calculation for pre-sorted numeric lists."""
     if not values:
         return None
-    values = sorted(values)
-    if len(values) == 1:
+    n = len(values)
+    if n == 1:
         return values[0]
-    rank = (len(values) - 1) * p
-    lo, hi = math.floor(rank), math.ceil(rank)
+    rank = (n - 1) * p
+    lo = int(rank)
+    hi = lo + 1 if lo < n - 1 else lo
     return values[lo] if lo == hi else values[lo] + (values[hi] - values[lo]) * (rank - lo)
 
 
-def rate(values):
-    known = [v for v in values if isinstance(v, (bool, int, float)) and not isinstance(v, bool) or isinstance(v, bool)]
-    return sum(float(v) for v in known) / len(known) if known else None
-
-
-def numeric_rate(values):
-    known = [float(v) for v in values if isinstance(v, (int, float)) and not isinstance(v, bool)]
-    return sum(known) / len(known) if known else None
-
-
 def main():
-    rows = []
+    unique = {}
     for line in sys.stdin:
         if not line.strip():
             continue
@@ -45,10 +37,8 @@ def main():
         outcome = row.get("task_outcome", "UNKNOWN")
         if outcome not in VALID_OUTCOME:
             raise SystemExit("invalid task_outcome")
-        rows.append(row)
 
-    unique = {}
-    for row in rows:
+        # Deduplicate on the fly to avoid secondary list iteration
         key = row.get("experiment_id") or (
             row.get("repository"), row.get("workflow"), row.get("run_id"),
             row.get("run_attempt"), row.get("head_sha"), row.get("provider"),
@@ -62,26 +52,91 @@ def main():
         groups[(row.get("provider"), row.get("requested_model") or row.get("model"), row.get("role"))].append(row)
 
     result = {"schema_version": 2, "observations": len(unique), "models": []}
-    for (provider, model, role), items in sorted(groups.items()):
-        attempted = [x for x in items if x["route_status"] in {"attempted", "failed", "succeeded"}]
-        succeeded = [x for x in attempted if x["route_status"] == "succeeded"]
-        lat = [x["latency_ms"] for x in attempted if isinstance(x.get("latency_ms"), (int, float))]
-        req = [x["requests_used"] for x in attempted if isinstance(x.get("requests_used"), (int, float))]
 
-        correctness = numeric_rate([x.get("correctness") for x in succeeded])
-        integration = numeric_rate([x.get("integration_success") for x in succeeded])
-        acceptance = numeric_rate([x.get("reviewer_acceptance") for x in succeeded])
-        outcome_values = [1.0 if x.get("task_outcome") == "PASS" else 0.0 for x in succeeded if x.get("task_outcome") in {"PASS", "FAIL"}]
-        outcome = sum(outcome_values) / len(outcome_values) if outcome_values else None
+    # Optimize group processing with single-pass metric accumulation
+    for (provider, model, role), items in sorted(groups.items()):
+        attempted_count = 0
+        succeeded_count = 0
+        skipped_count = 0
+        provider_failures = 0
+        warnings = 0
+        errors = 0
+
+        lat = []
+        req = []
+        correctness_vals = []
+        integration_vals = []
+        acceptance_vals = []
+        outcome_vals = []
+
+        task_pass = 0
+        task_fail = 0
+
+        for x in items:
+            st = x.get("route_status")
+            if st == "skipped":
+                skipped_count += 1
+                continue
+            if st not in {"attempted", "failed", "succeeded"}:
+                continue
+
+            attempted_count += 1
+            if x.get("error_class") in {"auth", "rate_limit", "provider", "transport"}:
+                provider_failures += 1
+
+            w = x.get("warning_count")
+            if w:
+                warnings += int(w)
+            e = x.get("error_count")
+            if e:
+                errors += int(e)
+
+            l = x.get("latency_ms")
+            if isinstance(l, (int, float)):
+                lat.append(l)
+
+            r = x.get("requests_used")
+            if isinstance(r, (int, float)):
+                req.append(r)
+
+            if st == "succeeded":
+                succeeded_count += 1
+                c = x.get("correctness")
+                if isinstance(c, (int, float)) and not isinstance(c, bool):
+                    correctness_vals.append(float(c))
+
+                i_s = x.get("integration_success")
+                if isinstance(i_s, (int, float)) and not isinstance(i_s, bool):
+                    integration_vals.append(float(i_s))
+
+                r_a = x.get("reviewer_acceptance")
+                if isinstance(r_a, (int, float)) and not isinstance(r_a, bool):
+                    acceptance_vals.append(float(r_a))
+
+                to = x.get("task_outcome")
+                if to == "PASS":
+                    task_pass += 1
+                    outcome_vals.append(1.0)
+                elif to == "FAIL":
+                    task_fail += 1
+                    outcome_vals.append(0.0)
+
+        correctness = sum(correctness_vals) / len(correctness_vals) if correctness_vals else None
+        integration = sum(integration_vals) / len(integration_vals) if integration_vals else None
+        acceptance = sum(acceptance_vals) / len(acceptance_vals) if acceptance_vals else None
+        outcome = sum(outcome_vals) / len(outcome_vals) if outcome_vals else None
 
         quality_values = [x for x in (correctness, integration, acceptance, outcome) if x is not None]
         quality = statistics.mean(quality_values) if quality_values else None
 
-        # Latency is deliberately weak. It is useful for spotting loops/stalls,
-        # but cannot rescue a correctness or integration failure.
-        latency_score = None
+        # Sort lat in-place for fast p95 percentile calculation
         if lat:
-            latency_score = 1 / (1 + percentile(lat, .95) / 5000)
+            lat.sort()
+            p95_lat = percentile_fast(lat, 0.95)
+            latency_score = 1 / (1 + p95_lat / 5000)
+        else:
+            p95_lat = None
+            latency_score = None
 
         score = None
         if quality is not None:
@@ -94,33 +149,28 @@ def main():
                 + .05 * (latency_score if latency_score is not None else fallback)
             )
 
-        task_pass = sum(x.get("task_outcome") == "PASS" for x in succeeded)
-        task_fail = sum(x.get("task_outcome") == "FAIL" for x in succeeded)
-        warnings = sum(int(x.get("warning_count", 0) or 0) for x in attempted)
-        errors = sum(int(x.get("error_count", 0) or 0) for x in attempted)
-
         result["models"].append({
             "provider": provider,
             "model": model,
             "role": role,
-            "attempts": len(attempted),
-            "succeeded": len(succeeded),
-            "skipped": sum(x["route_status"] == "skipped" for x in items),
-            "provider_failures": sum(x.get("error_class") in {"auth", "rate_limit", "provider", "transport"} for x in attempted),
-            "success_rate": len(succeeded) / len(attempted) if attempted else None,
+            "attempts": attempted_count,
+            "succeeded": succeeded_count,
+            "skipped": skipped_count,
+            "provider_failures": provider_failures,
+            "success_rate": succeeded_count / attempted_count if attempted_count else None,
             "correctness_rate": correctness,
             "integration_success_rate": integration,
             "task_success_rate": outcome,
             "task_pass": task_pass,
             "task_fail": task_fail,
             "reviewer_acceptance_rate": acceptance,
-            "warning_rate": warnings / len(attempted) if attempted else None,
-            "error_rate": errors / len(attempted) if attempted else None,
+            "warning_rate": warnings / attempted_count if attempted_count else None,
+            "error_rate": errors / attempted_count if attempted_count else None,
             "median_latency_ms": statistics.median(lat) if lat else None,
-            "p95_latency_ms": percentile(lat, .95) if lat else None,
+            "p95_latency_ms": p95_lat,
             "median_requests_used": statistics.median(req) if req else None,
             "execution_score_v2": score,
-            "sample_status": "provisional" if len(attempted) < 5 else "rankable",
+            "sample_status": "provisional" if attempted_count < 5 else "rankable",
             "scoring_policy": "50_correctness_25_integration_15_acceptance_5_outcome_5_latency"
         })
 

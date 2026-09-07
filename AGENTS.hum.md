@@ -503,6 +503,24 @@ from the Operator (repeated across multiple messages — not inferred):
 This entry exists so the provenance trail for these decisions lives in the
 repo itself, not only in chat history that later compacts away.
 
+### Agentic Development Authors (provenance lane)
+
+Commits/PRs attributed to the human account (`timerloggedout-spec`) are not
+necessarily hand-typed by a human. This repo's normal operating mode has
+multiple AI agent sessions acting through that account's PAT/OAuth token —
+that's how an agent signs a commit or opens a PR here, since there is no
+separate bot identity for most of them (unlike `google-labs-jules[bot]`,
+`ecc-tools[bot]`, `coderabbitai[bot]`, which do have distinct GitHub App
+identities). Treat a `timerloggedout-spec`-authored PR as agentic WIP by
+default, not as off-limits personal work — the same tiers and gates in
+`docs/CONSENSUS.md` and `docs/proposals/AGENTIC-PERMISSIONS.md` apply to it
+as to anything else, and any agent with PAT access has standing authority
+to review, advance, or close it, same as it would for its own PR. When it
+matters which agent actually did the work (a provenance question, not an
+authorization question), check the proposal's own review log or the
+session/commit message for an explicit self-identification — don't infer
+authorship from the GitHub username alone.
+
 ### Active Branches (Critical Evaluation)
 
 **High Priority:**

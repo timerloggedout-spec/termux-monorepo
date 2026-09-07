@@ -59,7 +59,7 @@ jobs:
             const comments = await safePaginate(github.rest.issues.listComments, { owner, repo, issue_number: prNumber, per_page: 100 }, 'issue comments');
             const reviewComments = await safePaginate(github.rest.pulls.listReviewComments, { owner, repo, pull_number: prNumber, per_page: 100 }, 'inline review comments');
             const checks = await safePaginate(github.rest.checks.listForRef, { owner, repo, ref: pr.head.sha, per_page: 100 }, 'checks');
-            const comparison = await safeCall(github.rest.repos.compareCommitsWithBasehead, { owner, repo, basehead: `${context.repo.default_branch}...${pr.head.sha}`, per_page: 100 }, 'master comparison', { ahead_by: null, behind_by: null });
+            const comparison = await safeCall(github.rest.repos.compareCommitsWithBasehead, { owner, repo, basehead: `${pr.base.ref}...${pr.head.sha}`, per_page: 100 }, 'master comparison', { ahead_by: null, behind_by: null });
             const now = Date.now();
             const currentSha = pr.head.sha;
             const shaIn = text => typeof text === 'string' && text.includes(currentSha);

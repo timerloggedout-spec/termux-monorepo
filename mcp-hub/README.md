@@ -36,6 +36,33 @@ mcp-hub/
 - `https://<project>.vercel.app/mcp/termux`
 - `https://<project>.vercel.app/mcp/android`
 
+## Hosts and their real status
+
+This table (and the machine-readable version in `catalog.json`) used to live
+in a separate `mcp-multi-host` repo. That repo had no server code of its own
+— it was just this table plus a client-config snippet, kept in sync by hand
+in a second place. It's folded in here instead: one hub, one catalog, one
+place that can drift out of date instead of two.
+
+| ID | Repo | Status |
+|----|------|--------|
+| `termux-mcp` | [termux-mcp](https://github.com/timerloggedout-spec/termux-mcp) | Live today at `termux-mcp.vercel.app/mcp` (its own standalone project). Moves to `/mcp/termux` on this hub once the Root Directory switch below happens. |
+| `android-mcp` | [android-mcp](https://github.com/timerloggedout-spec/android-mcp) | Never deployed — no `android-mcp.vercel.app` project exists. This hub is now the deploy path instead of standing up a second project. |
+| `github-remote` | GitHub-hosted | Externally hosted, not part of this deployment: `https://api.githubcopilot.com/mcp/` |
+| `gh-aw-mcpg` | [gh-aw-mcpg_fork](https://github.com/timerloggedout-spec/gh-aw-mcpg_fork) | Fork present, not folded into this hub yet |
+
+## Can this be a subdomain instead of `/mcp/*` paths?
+
+Short answer: this hub already satisfies "one deployment, not one project per
+server" — that part doesn't need a subdomain. A literal subdomain like
+`mcp.termux-monorepo.vercel.app` isn't something Vercel's free `vercel.app`
+domain allows — subdomains of `vercel.app` are one-level project slugs
+(`<project>.vercel.app`), not further subdividable by anyone but Vercel
+itself. If a custom domain is ever attached to this project, an alias like
+`mcp.yourdomain.com` pointing at the *same* project is possible and would
+still be "one deployment" — it would just be a nicer front door over the
+same `/mcp/termux` and `/mcp/android` routes, not a replacement for them.
+
 ## One remaining manual step
 
 This folder is designed to become the **Root Directory** of the existing
@@ -62,6 +89,7 @@ confirm they respond like the previous standalone deployments did.
 2. Add `mcp-hub/api/<name>.ts` re-exporting that server's handler, same
    pattern as `termux.ts` / `android.ts`.
 3. Add a rewrite + function entry for it in `vercel.json`.
-4. Update `mcp-multi-host`'s `catalog.json` with the new `/mcp/<name>` URL.
+4. Add an entry to this folder's own `catalog.json` with the new `/mcp/<name>` URL.
 
-No new Vercel project, no new secrets — it rides on this one deployment.
+No new Vercel project, no new secrets, no second repo to keep in sync — it
+rides on this one deployment and this one catalog.

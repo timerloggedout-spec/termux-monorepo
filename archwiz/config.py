@@ -32,10 +32,14 @@ _defaults: dict = {
 
 class Config:
     def __init__(self):
-        USER_CONFIG_DIR.mkdir(mode=0o700, parents=True, exist_ok=True)
+        if USER_CONFIG_DIR.is_symlink():
+            raise ValueError(f"Symlink USER_CONFIG_DIR rejected: {USER_CONFIG_DIR}")
+        self._mkdir(USER_CONFIG_DIR, mode=0o700)
         self._cfg = dict(_defaults)
 
         # Load persisted user config, silently retire broken files
+        if USER_CONFIG_FILE.is_symlink():
+            raise ValueError(f"Symlink USER_CONFIG_FILE rejected: {USER_CONFIG_FILE}")
         if USER_CONFIG_FILE.exists():
             try:
                 data = json.loads(USER_CONFIG_FILE.read_text())
@@ -86,7 +90,14 @@ class Config:
         self._cfg.setdefault("log_dir",             _defaults["log_dir"])
 
     def _mkdir(self, p: Path, mode: int = 0o700) -> Path:
+        if p.is_symlink():
+            raise ValueError(f"Target directory is a symlink: {p}")
         p.mkdir(mode=mode, parents=True, exist_ok=True)
+        if not p.is_symlink():
+            try:
+                p.chmod(mode)
+            except Exception:
+                pass
         return p
 
     # ------------------------------------------------------------------
@@ -94,8 +105,14 @@ class Config:
     # ------------------------------------------------------------------
 
     def save(self):
+        if USER_CONFIG_FILE.is_symlink():
+            raise ValueError(f"Target config file is a symlink: {USER_CONFIG_FILE}")
         USER_CONFIG_FILE.write_text(json.dumps(self._cfg, indent=2))
-        USER_CONFIG_FILE.chmod(0o600)
+        if not USER_CONFIG_FILE.is_symlink():
+            try:
+                USER_CONFIG_FILE.chmod(0o600)
+            except Exception:
+                pass
 
     def get(self, key, default=None):
         return self._cfg.get(key, default)
@@ -189,10 +206,16 @@ def get_session_store() -> Path:
 
 
 def set_tokens_dir(path):
+    p = Path(path)
+    if ".." in p.parts:
+        raise ValueError(f"Path traversal detected in tokens dir: {path}")
     _config.set("multi_ai_tokens_dir", str(path))
 
 
 def set_session_store(path):
+    p = Path(path)
+    if ".." in p.parts:
+        raise ValueError(f"Path traversal detected in session store: {path}")
     _config.set("session_store", str(path))
 
 

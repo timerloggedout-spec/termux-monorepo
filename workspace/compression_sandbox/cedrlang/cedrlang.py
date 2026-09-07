@@ -432,8 +432,8 @@ def compile_doc(text: str) -> str:
     in_fenced_code = False
 
     for line in lines:
-        stripped = line.strip()
-        if stripped.startswith("```"):
+        # Fast-path pre-check: avoid string stripping allocations unless backticks are present
+        if "`" in line and line.lstrip().startswith("```"):
             in_fenced_code = not in_fenced_code
             compiled_lines.append(line)
         elif in_fenced_code:
@@ -450,8 +450,8 @@ def decompile_doc(text: str) -> str:
     in_fenced_code = False
 
     for line in lines:
-        stripped = line.strip()
-        if stripped.startswith("```"):
+        # Fast-path pre-check: avoid string stripping allocations unless backticks are present
+        if "`" in line and line.lstrip().startswith("```"):
             in_fenced_code = not in_fenced_code
             decompiled_lines.append(line)
         elif in_fenced_code:

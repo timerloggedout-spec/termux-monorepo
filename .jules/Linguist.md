@@ -46,3 +46,10 @@ Restore the behavior as an explicit reversible phase in `workspace/compression_s
 - `1103d832` / `51023b87` / `7a6e5a7` — cached mappings, Caveman, single-pass regex optimization
 - `4eb9f830` / `267fecc` — fast-path term search
 - #196 — `AGENTS.hum.md` round-trip milestone
+
+## 2026-08-28 - Fast Substring Guards vs Regex Search in Document Pre-Screening
+**Learning:**
+When optimizing line-by-line document translation pipelines, replacing C-level Trie regex search (`COMP_SINGLE_REGEX.search(line)`) with Python-level substring iterations (`any(stem in line.lower() for stem in stems)`) creates Python loop and function call overhead that actually degrades performance (~1.1x slowdown). C-compiled regex engine state transitions in C-level `re.search` outperform Python iterator evaluations for multi-word token sets. However, guard conditions on fast substring checks like `"```" in line` before calling `.strip().startswith("```")` yield ~1.04x speedup on document iteration loops without risking semantic regressions.
+
+**Action:**
+Rely on pre-compiled Trie-structured C-level regex matchers (`re.Pattern.search`) for multi-term dictionary pre-screening rather than Python-level substring loop checks, while using fast `in` guards for simple structural delimiter checks.

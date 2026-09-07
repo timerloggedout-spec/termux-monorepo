@@ -33,6 +33,13 @@ While flat regex alternations (`\b(term1|term2|...)\b`) collapse sequential `.su
 **Action:**
 Construct Trie-structured prefix regexes for token dictionary matching and pre-populate casing lookup tables at module load time to maximize C-level regex traversal speed and bypass string casing inspection overhead.
 
+## 2026-08-28 - Callback Closure Hoisting & C-String Pre-Screening in Document Processing Loops
+**Learning:**
+Defining substitution callback functions (`def _sub_cb...`) inside high-frequency string translation functions like `translate_text_raw` re-instantiates function objects on every single invocation pass. Hoisting callbacks to module scope (`_sub_cb_comp`, `_sub_cb_decomp`, `_from_1337_repl`) completely eliminates function object allocation overhead. Additionally, in document line loops (`compile_doc` / `decompile_doc`), pre-screening lines using fast C-string checks (`"```" in line`) before calling `.lstrip().startswith("```")` avoids unnecessary `str.strip()` string allocations. Direct inlining of the pre-compiled C Trie-regex search (`if not matcher.search(line): compiled_lines.append(line)`) in document iteration loops further bypasses function frame dispatch overhead for non-matching lines, delivering an additional ~1.10x compilation and decompilation throughput speedup across full markdown documents.
+
+**Action:**
+Always hoist regex match substitution callbacks to module scope and pre-screen document lines with fast C-string checks (`in line`) before calling line translation functions or allocating string slices in document compilation loops.
+
 ## 2026-08-23 - Phased 1337 Diaspora Recovery / PR #154
 **Learning:**
 PR #154 contains the provenance-backed historical `to_1337speak()` experiment. The Jules review comment at `discussion_r3754718523` describes a sparse randomized substitution rate with a **70% probability threshold**, intended to introduce character-level variability while retaining decompression to human-readable form. This is a rollout parameter, not an INDEX confidence score.

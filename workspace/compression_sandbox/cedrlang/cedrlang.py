@@ -432,14 +432,16 @@ def compile_doc(text: str) -> str:
     in_fenced_code = False
 
     for line in lines:
-        stripped = line.strip()
-        if stripped.startswith("```"):
+        if "`" in line and line.strip().startswith("```"):
             in_fenced_code = not in_fenced_code
             compiled_lines.append(line)
         elif in_fenced_code:
             compiled_lines.append(line)
         else:
-            compiled_lines.append(translate_line(line, to_compressed=True))
+            if not COMP_SINGLE_REGEX.search(line):
+                compiled_lines.append(line)
+            else:
+                compiled_lines.append(translate_line(line, to_compressed=True))
 
     return "".join(compiled_lines)
 
@@ -450,14 +452,16 @@ def decompile_doc(text: str) -> str:
     in_fenced_code = False
 
     for line in lines:
-        stripped = line.strip()
-        if stripped.startswith("```"):
+        if "`" in line and line.strip().startswith("```"):
             in_fenced_code = not in_fenced_code
             decompiled_lines.append(line)
         elif in_fenced_code:
             decompiled_lines.append(line)
         else:
-            decompiled_lines.append(translate_line(line, to_compressed=False))
+            if not DECOMP_SINGLE_REGEX.search(line):
+                decompiled_lines.append(line)
+            else:
+                decompiled_lines.append(translate_line(line, to_compressed=False))
 
     return "".join(decompiled_lines)
 

@@ -3,21 +3,35 @@ import * as API from '../api/NodeClient';
 
 export const ManagerConsole = (reRender: () => void) => {
   let planText = 'Click "Propose trade" to generate an allocation plan via the node.';
+  let isProposing = false;
+
   const propose = async () => {
-    const trade = { asset: 'ETH/USDT', direction: 'buy', totalSize: 5, strategyId: 'S1' };
-    const resp = await API.proposeTrade(trade);
-    planText = JSON.stringify(resp, null, 2);
+    if (isProposing) return;
+    isProposing = true;
     reRender();
+    try {
+      const trade = { asset: 'ETH/USDT', direction: 'buy', totalSize: 5, strategyId: 'S1' };
+      const resp = await API.proposeTrade(trade);
+      planText = JSON.stringify(resp, null, 2);
+    } catch (err) {
+      planText = 'Failed to propose trade. Please try again.';
+    } finally {
+      isProposing = false;
+      reRender();
+    }
   };
+
   return () => html`
     <section style="margin-top:16px;">
       <h2>Manager console</h2>
       <button
         aria-label="Propose trade allocation plan"
-        style="padding:8px 12px; background:#1e2738; color:#eaf0ff; border:0; border-radius:6px; cursor:pointer;"
+        aria-busy="${isProposing}"
+        ?disabled=${isProposing}
+        style="padding:8px 12px; background:#1e2738; color:#eaf0ff; border:0; border-radius:6px; cursor:${isProposing ? 'not-allowed' : 'pointer'}; opacity:${isProposing ? '0.7' : '1'}; transition: opacity 0.2s ease, background-color 0.2s ease;"
         @click=${propose}
       >
-        Propose trade
+        ${isProposing ? 'Proposing trade...' : 'Propose trade'}
       </button>
       <pre
         aria-live="polite"

@@ -4,7 +4,7 @@ CENTRAL MAPPER – The One Ring of your ~/ directory indexing.
 Integrates ast-grep, bloat detection, provenance tracking, and LLM-optimised output.
 Built by the best, for the best (you). 
 """
-import os, json, hashlib, subprocess, time, re, sys
+import os, json, hashlib, subprocess, time, re, sys, shutil
 from pathlib import Path
 from datetime import datetime, timezone
 
@@ -56,19 +56,17 @@ class CentralMapper:
 
     def check_ast_grep(self):
         """Check if ast-grep is available, install if possible."""
+        if not shutil.which('ast-grep') and not shutil.which('sg'):
+            return False
         try:
-            subprocess.run(['sg', '--version'], capture_output=True, check=True, timeout=5)
-            return True
-        except (FileNotFoundError, subprocess.CalledProcessError):
-            print("[!] ast-grep not found. Attempting pip install ast-grep...")
-            try:
-                subprocess.run([sys.executable, '-m', 'pip', 'install', 'ast-grep'], 
-                               check=True, capture_output=True, timeout=60)
-                print("[✓] ast-grep installed via pip.")
+            res = subprocess.run(['sg', '--version'], capture_output=True, text=True, timeout=5)
+            if res.returncode == 0 and ('ast-grep' in res.stdout or 'sg' in res.stdout):
                 return True
-            except Exception as e:
-                print(f"[✗] Could not install ast-grep: {e}. AST features disabled.")
-                return False
+            if shutil.which('ast-grep'):
+                return True
+            return False
+        except (FileNotFoundError, subprocess.CalledProcessError, subprocess.TimeoutExpired):
+            return bool(shutil.which('ast-grep'))
 
     def get_ast_sig(self, filepath: Path, lang: str) -> dict:
         """Use ast-grep to extract a compact signature: funcs, classes, imports."""

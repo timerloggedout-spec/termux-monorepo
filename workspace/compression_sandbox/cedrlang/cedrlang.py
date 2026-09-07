@@ -239,6 +239,23 @@ for human, comp in SORTED_MAPPINGS_DECOMP:
     FAST_CASING_DECOMP[capitalize_word(comp)] = capitalize_word(human)
     FAST_CASING_DECOMP[comp.upper()] = uppercase_word(human)
 
+# Precomputed decompilation fast-path char filter sets
+# Identifies digits / special chars present across compressed Grimoire tokens (e.g., '0', '1', '3', '4', '5', '7', '_')
+# and pure-alphabetic exceptions (e.g., 'scry') to bypass regex engine search on lines containing zero compressed candidates.
+_decomp_specials = set()
+_decomp_alpha_exceptions = set()
+
+for _, comp in MAPPINGS:
+    tok = comp.lower()
+    specials = [c for c in tok if c in '0123456789_']
+    if specials:
+        _decomp_specials.update(specials)
+    else:
+        _decomp_alpha_exceptions.add(tok)
+
+DECOMP_SPECIAL_TUPLE: Tuple[str, ...] = tuple(_decomp_specials)
+DECOMP_EXCEPTIONS_TUPLE: Tuple[str, ...] = tuple(_decomp_alpha_exceptions)
+
 
 # ------------------------------------------------------------
 # 2. Compressor (v1 prompt compression)
@@ -352,9 +369,24 @@ def translate_text_raw(text: str, to_compressed: bool) -> str:
 def translate_line(line: str, to_compressed: bool) -> str:
     """Translate a single line protecting syntax and structures with fast-path character checks."""
     # Fast-path optimization: check if any translatable terms exist on the line before running placeholder regexes
-    matcher = COMP_SINGLE_REGEX if to_compressed else DECOMP_SINGLE_REGEX
-    if not matcher.search(line):
-        return line
+    if to_compressed:
+        if not COMP_SINGLE_REGEX.search(line):
+            return line
+    else:
+        # C-level character pre-screen for decompilation before regex search
+        has_decomp_candidate = False
+        for c in DECOMP_SPECIAL_TUPLE:
+            if c in line:
+                has_decomp_candidate = True
+                break
+        if not has_decomp_candidate:
+            line_lower = line.lower()
+            for exc in DECOMP_EXCEPTIONS_TUPLE:
+                if exc in line_lower:
+                    has_decomp_candidate = True
+                    break
+        if not has_decomp_candidate or not DECOMP_SINGLE_REGEX.search(line):
+            return line
 
     placeholders = []
 

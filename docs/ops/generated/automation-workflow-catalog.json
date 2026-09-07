@@ -27,12 +27,12 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "61ff567051fa7803ac9341d13bb37d40bedcc4d828b2836ff00f83b13d7abdd7",
+  "source_fingerprint": "67d5a03c3b43197a4a809687c95131215b1cc989eb47c8ed395592e640cff2e2",
   "workflow_count": 65,
   "workflows": [
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a0"
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
       "authority": "bounded-state-write",
       "concurrency": "group: action-effectiveness-${{ github.event.pull_request.number || github.event.issue.number || inputs.pr_number || github.run_id }} cancel-in-progress: true",
@@ -222,7 +222,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a0"
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
       "authority": "writer",
       "concurrency": "group: automation-docs-refresh cancel-in-progress: false",

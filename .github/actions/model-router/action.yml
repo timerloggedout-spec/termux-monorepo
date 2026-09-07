@@ -89,7 +89,7 @@ runs:
         TARGET_SHA: ${{ inputs.target-sha }}
         CURRENT_SHA: ${{ inputs.current-sha }}
       run: |
-        python3 scripts/model_router.py
+        python3 -m scripts.model_router
 
     - name: Save per-model counters
       if: steps.pick.outputs.skip != 'true'

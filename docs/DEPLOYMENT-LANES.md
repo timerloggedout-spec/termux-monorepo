@@ -9,7 +9,7 @@ is created; update it whenever a lane's purpose or Root Directory changes.
 | Vercel project | Source repo | Root Directory | Purpose | Owning proposal/PR | Status |
 |---|---|---|---|---|---|
 | mcp-hub | termux-monorepo | `mcp-hub` | Public, bearer-token-gated MCP router serving `termux-mcp` and `android-mcp` as submodules via dynamic `/mcp/:server` routes | PR #442, docs/proposals/active/vercel-lane-topology | live, production branch `master` |
-| (unnamed legacy project) | termux-monorepo | `deepseek-cli` | Pre-existing, undocumented at time of writing — the folder it serves is the same one named in `docs/CREDENTIAL-EXPOSURE.md` | docs/proposals/active/vercel-lane-topology (VLT-001, open) | fate undecided — see VLT-001 |
+| termux-monorepo | termux-monorepo | `deepseek-cli` | Pre-existing, undocumented at time of writing — the folder it serves is the same one named in `docs/CREDENTIAL-EXPOSURE.md` | docs/proposals/active/vercel-lane-topology (VLT-001, open) | fate undecided — see VLT-001 |
 
 ## Why lanes, not one project
 

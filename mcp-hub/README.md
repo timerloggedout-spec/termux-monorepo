@@ -37,8 +37,13 @@ mcp-hub/
 
 ## Endpoints (once deployed)
 
-- `https://<project>.vercel.app/mcp/termux`
-- `https://<project>.vercel.app/mcp/android`
+`https://<project>.vercel.app/mcp(-hub)/{termux, android, ...}` — both the
+short `/mcp/` prefix and the `/mcp-hub/` prefix resolve to the same dynamic
+router (`vercel.json` carries both rewrites), so either is a valid way to
+address a host:
+
+- `https://<project>.vercel.app/mcp/termux` or `/mcp-hub/termux`
+- `https://<project>.vercel.app/mcp/android` or `/mcp-hub/android`
 
 Both endpoints require `Authorization: Bearer <token>`, where the deployment's
 token is configured through the `MCP_AUTH_TOKEN` environment variable.

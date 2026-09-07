@@ -17,6 +17,14 @@ test("vercel.json rewrites every /mcp/:server path to the single dynamic router"
     ),
     "expected one generic /mcp/:server -> /api/mcp/:server rewrite, not one per host"
   );
+
+  assert.ok(
+    vercelConfig.rewrites.some(
+      (rewrite) =>
+        rewrite.source === "/mcp-hub/:server" && rewrite.destination === "/api/mcp/:server"
+    ),
+    "expected the /mcp-hub/:server alias to resolve to the same router"
+  );
 });
 
 test("GET, POST, DELETE are exported as functions from the dynamic router", () => {

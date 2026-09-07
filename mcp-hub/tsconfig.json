@@ -2,16 +2,16 @@
   "compilerOptions": {
     "target": "ES2022",
     "module": "ESNext",
-    "moduleResolution": "bundler",
-    "strict": true,
+    "moduleResolution": "Bundler",
     "esModuleInterop": true,
+    "strict": true,
     "skipLibCheck": true,
     "noEmit": true,
     "types": ["node"]
   },
   "include": [
     "api/**/*.ts",
-    "tests/**/*.ts",
+    "test/**/*.ts",
     "termux-mcp/api/**/*.ts",
     "android-mcp/api/**/*.ts"
   ]

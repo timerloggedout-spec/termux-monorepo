@@ -21,13 +21,17 @@ only adds the routing layer on top.
 
 ```text
 mcp-hub/
-  termux-mcp/       git submodule -> github.com/timerloggedout-spec/termux-mcp
-  android-mcp/      git submodule -> github.com/timerloggedout-spec/android-mcp
+  termux-mcp/        git submodule -> github.com/timerloggedout-spec/termux-mcp
+  android-mcp/       git submodule -> github.com/timerloggedout-spec/android-mcp
   api/
-    termux.ts       re-exports termux-mcp's handler
-    android.ts      re-exports android-mcp's handler
-  package.json      shared deps (mcp-handler, zod) the wrappers need to build
-  vercel.json       routes /mcp/termux and /mcp/android to the wrappers
+    auth.ts          withMcpAuth: timing-safe Bearer token check
+    mcp/[server].ts  one dynamic router: /api/mcp/<server> dispatches by
+                      name through a registry map, wrapped in withMcpAuth
+  test/
+    router.test.ts   covers server dispatch, unknown-server 404, and all
+                      three auth outcomes (401 / 503 / forwarded)
+  package.json       deps (mcp-handler, zod) + vercel/tsx dev tools
+  vercel.json        one rewrite: /mcp/:server -> /api/mcp/:server
   tsconfig.json
 ```
 
@@ -66,6 +70,15 @@ itself. If a custom domain is ever attached to this project, an alias like
 still be "one deployment" — it would just be a nicer front door over the
 same `/mcp/termux` and `/mcp/android` routes, not a replacement for them.
 
+## Path pattern instead of one file per host
+
+`/mcp/:server` is a Vercel rewrite wildcard, not a fixed list — every
+`/mcp/<anything>` request lands on the single dynamic function at
+`api/mcp/[server].ts`, which looks `<anything>` up in an in-code registry
+map and delegates to that submodule's handler, after `withMcpAuth` clears
+the request. Adding a future MCP is a submodule + one registry-map line —
+no new file, no `vercel.json` edit.
+
 ## One remaining manual step
 
 This folder is designed to become the **Root Directory** of the existing
@@ -74,14 +87,26 @@ Directory → `mcp-hub`). That's a one-time dashboard change — nobody has done
 it yet, so the endpoints above are not live yet. Until then, this is
 reviewable code with no production effect.
 
+Checked via this PR's own preview deployment: the project's Root Directory
+is currently `deepseek-cli`, not the repo root — a different, unrelated
+folder. Worth knowing before flipping it: that folder is where this repo's
+documented credential exposure lives (`docs/CREDENTIAL-EXPOSURE.md` —
+committed browser profile data with live session state). Repointing Root
+Directory to `mcp-hub` stops deploying that folder, which is a net
+improvement, but confirm nothing currently depends on whatever
+`deepseek-cli`'s deployment outputs before switching.
+
 If a Vercel token/PAT is provided instead, the same change can be made via
 the Vercel API (`PATCH /v10/projects/{id}` with `rootDirectory: "mcp-hub"`)
-without needing dashboard access.
+without needing dashboard access. Either way, `MCP_AUTH_TOKEN` needs to be
+set as an environment variable on the project before it's genuinely usable —
+without it every request gets a 503, by design (fail closed, not open).
 
 After the Root Directory switch, the next push (or this PR's preview
 redeploy) is the real test: check the build log for successful submodule
-checkout, then hit both endpoints with an `initialize` MCP handshake to
-confirm they respond like the previous standalone deployments did.
+checkout, then hit both endpoints with an `initialize` MCP handshake
+(including the Bearer token) to confirm they respond like the previous
+standalone deployment did.
 
 ## Adding a future MCP
 
@@ -89,10 +114,12 @@ confirm they respond like the previous standalone deployments did.
    equivalent if `git submodule` isn't available in your environment:
    `git update-index --add --cacheinfo 160000,<sha>,mcp-hub/<name>` plus a
    matching entry in the repo's `.gitmodules`).
-2. Add `mcp-hub/api/<name>.ts` re-exporting that server's handler, same
-   pattern as `termux.ts` / `android.ts`.
-3. Add a rewrite + function entry for it in `vercel.json`.
-4. Add an entry to this folder's own `catalog.json` with the new `/mcp/<name>` URL.
+2. Import that submodule's `GET`/`POST`/`DELETE` at the top of
+   `api/mcp/[server].ts` and add one line to the `registry` map there —
+   `withMcpAuth` already covers it, nothing extra needed for auth.
+3. Add an entry to this folder's `catalog.json` with the new `/mcp/<name>`
+   URL.
 
-No new Vercel project, no new secrets, no second repo to keep in sync — it
-rides on this one deployment and this one catalog.
+No new Vercel project, no new secrets, no new file, no `vercel.json` edit,
+no second repo to keep in sync — it rides on this one deployment, this one
+router, and this one catalog.

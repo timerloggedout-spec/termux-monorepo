@@ -1,13 +1,9 @@
 {
   "rewrites": [
-    { "source": "/mcp/termux", "destination": "/api/termux" },
-    { "source": "/mcp/android", "destination": "/api/android" }
+    { "source": "/mcp/:server", "destination": "/api/mcp/:server" }
   ],
   "functions": {
-    "api/termux.ts": {
-      "maxDuration": 60
-    },
-    "api/android.ts": {
+    "api/mcp/[server].ts": {
       "maxDuration": 60
     }
   }

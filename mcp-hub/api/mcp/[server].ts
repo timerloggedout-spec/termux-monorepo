@@ -44,25 +44,48 @@ function unknownServerResponse(server: string | undefined): Response {
   );
 }
 
+// Every submodule handler is createMcpHandler(...) with no basePath override,
+// so it only recognizes requests whose pathname is literally "/mcp" (that's
+// where each was designed to be mounted standalone). Forwarded as-is, a
+// request arriving here as "/mcp/termux" or "/mcp-hub/termux" fails that
+// internal check and the submodule silently 404s its own generic response -
+// not our unknownServerResponse, which never runs for a *known* server.
+// Rewriting the path back to "/mcp" before delegating makes each submodule
+// see exactly the URL shape it was built for, regardless of the outer prefix.
+function asMcpRequest(request: Request): Request {
+  const url = new URL(request.url);
+  url.pathname = "/mcp";
+  const hasBody = request.method !== "GET" && request.method !== "HEAD";
+  const init: RequestInit & { duplex?: "half" } = {
+    method: request.method,
+    headers: request.headers,
+    body: hasBody ? request.body : undefined,
+  };
+  // Node's fetch (undici) requires an explicit duplex mode whenever a
+  // streaming body is attached to a Request/RequestInit.
+  if (hasBody) init.duplex = "half";
+  return new Request(url, init);
+}
+
 const dispatchGET: Handler = async (request) => {
   const server = resolveServer(request);
   const entry = server ? registry[server] : undefined;
   if (!entry) return unknownServerResponse(server);
-  return entry.GET(request);
+  return entry.GET(asMcpRequest(request));
 };
 
 const dispatchPOST: Handler = async (request) => {
   const server = resolveServer(request);
   const entry = server ? registry[server] : undefined;
   if (!entry) return unknownServerResponse(server);
-  return entry.POST(request);
+  return entry.POST(asMcpRequest(request));
 };
 
 const dispatchDELETE: Handler = async (request) => {
   const server = resolveServer(request);
   const entry = server ? registry[server] : undefined;
   if (!entry) return unknownServerResponse(server);
-  return entry.DELETE(request);
+  return entry.DELETE(asMcpRequest(request));
 };
 
 // withMcpAuth wraps the whole dispatch, including the unknown-server case:

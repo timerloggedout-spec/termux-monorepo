@@ -17,6 +17,28 @@ implementations, history, and CI (`ci.yml`, `vercel-deploy.yml` in each stay
 as-is and keep working independently if ever needed standalone). This hub
 only adds the routing layer on top.
 
+## Relationship to `hub_mcp`
+
+This repo is not the same thing as [`hub_mcp/`](../hub_mcp), and one does not
+replace the other:
+
+- **`hub_mcp`** (added in [PR #221](https://github.com/timerloggedout-spec/termux-monorepo/pull/221))
+  is the governed, signed job-envelope model: no public endpoint, capability
+  tiers, replay prevention, redacted result envelopes. It's the accepted
+  version-one path documented in
+  [`docs/architecture/transport-and-identity-decision.md`](../docs/architecture/transport-and-identity-decision.md),
+  which explicitly deferred any public-facing transport.
+- **`mcp-hub`** (this repo, [PR #442](https://github.com/timerloggedout-spec/termux-monorepo/pull/442))
+  is a deliberate, later exception to that default: the operator has a hard
+  requirement for a persistent public access point, so this exists as a
+  public Vercel HTTP surface, gated by a bearer token (`withMcpAuth` /
+  `MCP_AUTH_TOKEN`, fails closed with 503 if unset) rather than by network
+  boundary.
+
+Pick per capability, not by habit: anything that doesn't need to be public
+belongs behind `hub_mcp`'s job-envelope model, not bolted onto this router.
+See the architecture doc's addendum for the full reasoning.
+
 ## Layout
 
 ```text

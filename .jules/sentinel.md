@@ -17,3 +17,8 @@
 **Vulnerability:** Unsanitized working directory (`cwd`) parameter accepted in HTTP request payloads in `bin/obsidian_server.py`, allowing callers to execute shell commands outside the intended `$HOME` directory sandbox boundary.
 **Learning:** Accepting client-specified working directory paths in local bridge HTTP handlers without realpath resolution and base boundary checks allows arbitrary filesystem traversal. In addition, importing top-level server scripts that execute server loops immediately on import hinders automated test isolation.
 **Prevention:** Always resolve paths with `os.path.realpath` and enforce `os.path.commonpath([base_dir, resolved_path]) == base_dir` validation. Always wrap server execution entrypoints in `if __name__ == '__main__':`.
+
+## 2026-08-16 - Cross-Platform Path Traversal and Symlink Hijacking Prevention in Session Configuration
+**Vulnerability:** Unsanitized token path strings and unvalidated symlinks in `multi-ai-cli/core/session_manager.py` could allow malicious config settings or symlinks to read arbitrary files from the filesystem when loading credentials.
+**Learning:** Naive string checks for directory separators like `\\` break cross-platform compatibility on Windows where `\\` is a standard path separator. Using `Path(token_str).parts` allows checking for `..` path components safely across OS platforms without false positives.
+**Prevention:** Validate `".." in Path(token_str).parts` for path traversal detection, and verify `Path(p).is_symlink()` before opening user configuration or token files.

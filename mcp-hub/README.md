@@ -57,18 +57,22 @@ mcp-hub/
   tsconfig.json
 ```
 
-## Endpoints (once deployed)
+## Endpoints (live)
 
-`https://<project>.vercel.app/mcp(-hub)/{termux, android, ...}` — both the
-short `/mcp/` prefix and the `/mcp-hub/` prefix resolve to the same dynamic
-router (`vercel.json` carries both rewrites), so either is a valid way to
-address a host:
+Deployed as its own Vercel project (`mcp-hub`, not a Root-Directory takeover
+of the pre-existing generic `termux-monorepo` project — that project hosts a
+different, unrelated lane and was left untouched; see "Why a separate Vercel
+project" below):
 
-- `https://<project>.vercel.app/mcp/termux` or `/mcp-hub/termux`
-- `https://<project>.vercel.app/mcp/android` or `/mcp-hub/android`
+- `https://mcp-hub-lime.vercel.app/mcp/termux` or `/mcp-hub/termux`
+- `https://mcp-hub-lime.vercel.app/mcp/android` or `/mcp-hub/android`
 
-Both endpoints require `Authorization: Bearer <token>`, where the deployment's
-token is configured through the `MCP_AUTH_TOKEN` environment variable.
+Both the `/mcp/` and `/mcp-hub/` prefixes resolve to the same dynamic router
+(`vercel.json` carries both rewrites) — either is a valid way to address a
+host. Both endpoints require `Authorization: Bearer <token>`, where the
+token is the project's `MCP_AUTH_TOKEN` environment variable. Verified live
+with a real `initialize` handshake against both hosts, through both prefixes,
+and confirmed a missing/wrong token still gets a 401.
 
 ## Hosts and their real status
 
@@ -80,8 +84,8 @@ place that can drift out of date instead of two.
 
 | ID | Repo | Status |
 |----|------|--------|
-| `termux-mcp` | [termux-mcp](https://github.com/timerloggedout-spec/termux-mcp) | Live today at `termux-mcp.vercel.app/mcp` (its own standalone project). Moves to `/mcp/termux` on this hub once the Root Directory switch below happens. |
-| `android-mcp` | [android-mcp](https://github.com/timerloggedout-spec/android-mcp) | Never deployed — no `android-mcp.vercel.app` project exists. This hub is now the deploy path instead of standing up a second project. |
+| `termux-mcp` | [termux-mcp](https://github.com/timerloggedout-spec/termux-mcp) | Still independently live at `termux-mcp.vercel.app/mcp` (untouched standalone project) *and* now live at `/mcp/termux` on this hub — both work, hub is the recommended one going forward. |
+| `android-mcp` | [android-mcp](https://github.com/timerloggedout-spec/android-mcp) | Never had its own standalone deployment — this hub is its only live deployment, at `/mcp/android`. |
 | `github-remote` | GitHub-hosted | Externally hosted, not part of this deployment: `https://api.githubcopilot.com/mcp/` |
 | `gh-aw-mcpg` | [gh-aw-mcpg_fork](https://github.com/timerloggedout-spec/gh-aw-mcpg_fork) | Fork present, not folded into this hub yet |
 
@@ -110,34 +114,52 @@ authenticates the request (validates the Bearer token; does not modify or
 "clear" it). Adding a future MCP is a submodule + one registry-map line —
 no new file, no `vercel.json` edit.
 
-## One remaining manual step
+## Why a separate Vercel project
 
-This folder is designed to become the **Root Directory** of the existing
-`termux-monorepo` Vercel project (Project Settings → General → Root
-Directory → `mcp-hub`). That's a one-time dashboard change — nobody has done
-it yet, so the endpoints above are not live yet. Until then, this is
-reviewable code with no production effect.
+Earlier drafts of this doc planned to repoint the existing, pre-existing
+`termux-monorepo` Vercel project's Root Directory at `mcp-hub`. That plan
+changed: this repo hosts several distinct production lanes, and a
+project's Root Directory is a single value, not a list — hijacking the one
+existing generic project for `mcp-hub` would just move the "only one lane
+gets to be deployed" problem instead of fixing it, and would still depend
+on `master` always carrying whatever the pre-existing project actually
+serves. Vercel's own supported pattern for a monorepo with multiple
+independently-deployable lanes is multiple projects against the same
+GitHub repo, each with its own Root Directory — so `mcp-hub` got its own
+dedicated project instead. This also sidesteps the fact that changing an
+*existing* project's production branch isn't exposed by Vercel's public API
+at all (confirmed against Vercel's own engineering responses) — a brand
+new project just declares its production branch (`master`) at creation.
 
-Checked via this PR's own preview deployment: the project's Root Directory
-is currently `deepseek-cli`, not the repo root — a different, unrelated
-folder. Worth knowing before flipping it: that folder is where this repo's
-documented credential exposure lives (`docs/CREDENTIAL-EXPOSURE.md` —
-committed browser profile data with live session state). Repointing Root
-Directory to `mcp-hub` stops deploying that folder, which is a net
-improvement, but confirm nothing currently depends on whatever
-`deepseek-cli`'s deployment outputs before switching.
+The pre-existing `termux-monorepo` Vercel project (currently rooted at
+`deepseek-cli`, where `docs/CREDENTIAL-EXPOSURE.md`'s committed browser
+profile data lives) was left untouched — repointing or retiring it is a
+separate decision for whoever owns that lane, not something this PR forces.
 
-If a Vercel token/PAT is provided instead, the same change can be made via
-the Vercel API (`PATCH /v10/projects/{id}` with `rootDirectory: "mcp-hub"`)
-without needing dashboard access. Either way, `MCP_AUTH_TOKEN` needs to be
-set as an environment variable on the project before it's genuinely usable —
-without it every request gets a 503, by design (fail closed, not open).
+Two real bugs only surfaced once this was actually deployed and hit with a
+live request, not by reading the code:
 
-After the Root Directory switch, the next push (or this PR's preview
-redeploy) is the real test: check the build log for successful submodule
-checkout, then hit both endpoints with an `initialize` MCP handshake
-(including the Bearer token) to confirm they respond like the previous
-standalone deployment did.
+1. `mcp-hub/package.json` sets `"type": "module"`, so Node's ESM loader
+   resolves relative imports literally — `tsconfig`'s
+   `moduleResolution: "Bundler"` let extensionless imports (`"../auth"`)
+   pass type-checking, but Vercel's zero-config build doesn't bundle these
+   functions into one file, so it crashed at invocation with
+   `ERR_MODULE_NOT_FOUND`. Fixed by adding explicit `.js` extensions.
+2. Both `termux-mcp` and `android-mcp` call `createMcpHandler(...)` with no
+   `basePath` override, so each only recognizes requests whose path is
+   literally `/mcp` (its hardcoded default). Forwarded as-is through this
+   router, a request that actually arrives as `/mcp/termux` failed that
+   internal check and the submodule returned its own silent 404 — never
+   reaching this router's own `unknownServerResponse`, since that only
+   fires for names *absent* from the registry. Fixed by rewriting the
+   forwarded request's path back to `/mcp` before delegating.
+
+Also disabled Vercel's own "Deployment Protection" (SSO wall) on the new
+project — it defaults to protecting every `*.vercel.app` URL behind a
+Vercel login, which would have made the endpoint unreachable by any real
+MCP client regardless of the `MCP_AUTH_TOKEN` check. That check is the
+intended gate now; the platform-level one was redundant with it for this
+project's purpose.
 
 ## Adding a future MCP
 

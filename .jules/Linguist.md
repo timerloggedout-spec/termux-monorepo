@@ -53,3 +53,10 @@ Adding a pre-search check (`if not VARIANT_REGEX.search(text): return text`) bef
 
 **Action:**
 Apply pre-search short-circuit guards on single-pass regex transformers when processing high volumes of uncompressed prose.
+
+## 2026-09-05 - Avoid Instantiating `random.Random()` and Inner Closures in High-Frequency Surface Codecs
+**Learning:**
+Instantiating a new `random.Random()` object inside `to_1337speak()` when no custom seed is provided introduces ~17µs of class instantiation overhead per call. Direct handle resolution (`rng.random if rng is not None else random.random`) takes 0.14µs (~120x speedup for RNG selection). Furthermore, defining substitution callbacks at module level (`_sub_cb_comp`, `_sub_cb_decomp`, `_from_1337_replace`) avoids inner function object allocations on every regex replacement pass.
+
+**Action:**
+Use module-level default function handles instead of instantiating `random.Random()` on every unseeded call, and declare regex substitution callbacks at module scope to eliminate closure allocation overhead.

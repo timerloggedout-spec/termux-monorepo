@@ -330,24 +330,30 @@ def apply_casing(src: str, dst: str) -> str:
         return capitalize_word(dst)
     return lowercase_word(dst)
 
+def _sub_cb_comp(m: re.Match[str]) -> str:
+    val = m.group(0)
+    res = FAST_CASING_COMP.get(val)
+    if res is not None:
+        return res
+    return apply_casing(val, COMP_DICT[val.lower()])
+
+def _sub_cb_decomp(m: re.Match[str]) -> str:
+    val = m.group(0)
+    res = FAST_CASING_DECOMP.get(val)
+    if res is not None:
+        return res
+    return apply_casing(val, DECOMP_DICT[val.lower()])
+
 def translate_text_raw(text: str, to_compressed: bool) -> str:
     """
     Perform dictionary mapping translations preserving casing in a single pass.
-    Performance Optimization: Trie-structured regex matching combined with precomputed casing lookup tables
-    bypasses runtime casing inspections and reduces regex branching depth, boosting substitution speed.
+    Performance Optimization: Pre-bound top-level module callbacks combined with Trie-structured
+    regex matching and precomputed casing lookup tables bypass runtime casing inspections, closure creation,
+    and regex branching depth, boosting substitution speed.
     """
     pattern = COMP_SINGLE_REGEX if to_compressed else DECOMP_SINGLE_REGEX
-    lookup = FAST_CASING_COMP if to_compressed else FAST_CASING_DECOMP
-    mapping_dict = COMP_DICT if to_compressed else DECOMP_DICT
-
-    def _sub_cb(m: re.Match[str]) -> str:
-        val = m.group(0)
-        res = lookup.get(val)
-        if res is not None:
-            return res
-        return apply_casing(val, mapping_dict[val.lower()])
-
-    return pattern.sub(_sub_cb, text)
+    cb = _sub_cb_comp if to_compressed else _sub_cb_decomp
+    return pattern.sub(cb, text)
 
 def translate_line(line: str, to_compressed: bool) -> str:
     """Translate a single line protecting syntax and structures with fast-path character checks."""
@@ -427,13 +433,19 @@ def translate_line(line: str, to_compressed: bool) -> str:
 
 def compile_doc(text: str) -> str:
     """Compile human-readable markdown into CedrLang compressed markdown."""
+    if not text:
+        return ""
+    # Document-level fast-path optimization: short-circuit if no translatable terms exist in text
+    if not COMP_SINGLE_REGEX.search(text):
+        return text
+
     lines = text.splitlines(keepends=True) if isinstance(text, str) else []
     compiled_lines = []
     in_fenced_code = False
 
     for line in lines:
-        stripped = line.strip()
-        if stripped.startswith("```"):
+        # Fast-path backtick check avoids line.strip() allocation on lines without code fences
+        if "`" in line and line.strip().startswith("```"):
             in_fenced_code = not in_fenced_code
             compiled_lines.append(line)
         elif in_fenced_code:
@@ -445,13 +457,19 @@ def compile_doc(text: str) -> str:
 
 def decompile_doc(text: str) -> str:
     """Decompile CedrLang compressed markdown into human-readable markdown."""
+    if not text:
+        return ""
+    # Document-level fast-path optimization: short-circuit if no compressed terms exist in text
+    if not DECOMP_SINGLE_REGEX.search(text):
+        return text
+
     lines = text.splitlines(keepends=True) if isinstance(text, str) else []
     decompiled_lines = []
     in_fenced_code = False
 
     for line in lines:
-        stripped = line.strip()
-        if stripped.startswith("```"):
+        # Fast-path backtick check avoids line.strip() allocation on lines without code fences
+        if "`" in line and line.strip().startswith("```"):
             in_fenced_code = not in_fenced_code
             decompiled_lines.append(line)
         elif in_fenced_code:

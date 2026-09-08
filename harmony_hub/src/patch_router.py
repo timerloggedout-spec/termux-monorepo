@@ -69,10 +69,9 @@ with open(target, 'w') as f:
             flags |= os.O_NOFOLLOW
 
         fd = os.open(str(tmp_path), flags, 0o600)
-        with open(fd, 'w') as f:
-            f.write(script)
-
         try:
+            with open(fd, 'w') as f:
+                f.write(script)
             result = subprocess.run([sys.executable, str(tmp_path), target], capture_output=True, text=True)
             return result.returncode == 0
         finally:

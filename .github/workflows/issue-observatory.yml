@@ -1,0 +1,109 @@
+name: Issue Observatory — similarity, refinement, lifecycle evidence
+
+on:
+  schedule:
+    - cron: '37 * * * *'
+  workflow_dispatch:
+  issues:
+    types: [opened, edited, labeled, unlabeled, closed, reopened]
+  issue_comment:
+    types: [created, edited]
+  pull_request:
+    types: [opened, edited, synchronize, reopened, closed]
+  workflow_run:
+    types: [completed]
+
+permissions:
+  contents: read
+  issues: read
+  pull-requests: read
+  actions: read
+
+concurrency:
+  group: issue-observatory
+  cancel-in-progress: false
+
+env:
+  OBSERVATORY_LIMIT: '100'
+
+jobs:
+  observe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout observer
+        uses: actions/checkout@v4
+
+      - name: Collect bounded issue evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p observatory
+          gh api --paginate \
+            -H 'Accept: application/vnd.github+json' \
+            "/repos/${REPOSITORY}/issues?state=all&per_page=${OBSERVATORY_LIMIT}" \
+            --jq '.[] | select(.pull_request == null) | {number,title,body,labels:[.labels[].name],state,updated_at,html_url}' \
+            > observatory/issues.ndjson
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          src = Path('observatory/issues.ndjson')
+          rows = [json.loads(x) for x in src.read_text().splitlines() if x.strip()]
+          Path('observatory/issues.json').write_text(json.dumps(rows, indent=2, sort_keys=True) + '\n')
+          print(f'issues={len(rows)}')
+          PY
+
+      - name: Compute explainable relations
+        run: |
+          python3 scripts/ops/issue_observatory.py < observatory/issues.json > observatory/relations.json
+
+      - name: Deterministic accuracy check
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, subprocess
+          from pathlib import Path
+          data = json.loads(Path('observatory/issues.json').read_text())
+          expected = json.loads(Path('observatory/relations.json').read_text())
+          rerun = subprocess.check_output(['python3','scripts/ops/issue_observatory.py'], input=json.dumps(data).encode())
+          actual = json.loads(rerun)
+          assert expected == actual, 'matcher is not deterministic'
+          assert actual['schema'] == 'issue-observatory/matcher-v1'
+          for item in actual['candidates']:
+              assert 0.0 <= item['score'] <= 1.0
+              assert item['evidence'], 'candidate lacks evidence'
+          print(f"deterministic=true candidates={actual['count']}")
+          PY
+
+      - name: Emit lifecycle receipt
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          SHA: ${{ github.sha }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          receipt = {
+            'schema': 'issue-observatory/receipt-v1',
+            'event': os.environ['EVENT_NAME'],
+            'run_id': int(os.environ['RUN_ID']),
+            'head_sha': os.environ['SHA'],
+            'issues_file': 'observatory/issues.json',
+            'relations_file': 'observatory/relations.json',
+            'observer_only': True,
+          }
+          Path('observatory/receipt.json').write_text(json.dumps(receipt, indent=2, sort_keys=True) + '\n')
+          print(json.dumps(receipt, sort_keys=True))
+          PY
+
+      - name: Upload evidence artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: issue-observatory-${{ github.run_id }}
+          path: observatory/
+          retention-days: 14
+          if-no-files-found: error

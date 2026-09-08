@@ -16,6 +16,7 @@ on:
       - 'docs/ops/diagrams/**'
       - 'docs/proposals/active/actions-refinements/**'
       - 'docs/proposals/active/rate-limit-rotation/**'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -28,23 +29,56 @@ jobs:
   refresh:
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           fetch-depth: 0
+
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "20"
+
+      - name: Render Mermaid decision trees (mmdc)
+        run: |
+          set -euo pipefail
+          mkdir -p docs/ops/generated
+          # Pin mermaid-cli for reproducible renders; npx avoids permanent install
+          MMDC="npx --yes @mermaid-js/mermaid-cli@11.4.2"
+          count=0
+          for src in docs/ops/diagrams/*.mmd; do
+            [ -f "$src" ] || continue
+            stem=$(basename "$src" .mmd)
+            out="docs/ops/generated/${stem}.png"
+            echo "mmdc: $src -> $out"
+            $MMDC -i "$src" -o "$out" -b transparent -s 2
+            count=$((count + 1))
+          done
+          if [ "$count" -eq 0 ]; then
+            echo "ERROR: no .mmd sources found under docs/ops/diagrams/" >&2
+            exit 1
+          fi
+          echo "Rendered $count diagram(s)."
+
       - name: Regenerate automation catalog
         run: python3 scripts/ci/automation_docs.py --write
-      - name: Validate generated catalog
+
+      - name: Validate generated catalog + diagram assets
         run: python3 scripts/ci/automation_docs.py --check
-      - name: Commit generated automation documentation
+
+      - name: Commit generated automation documentation + renders
         run: |
           set -euo pipefail
           if git diff --quiet -- docs/ops/generated; then
-            echo 'Automation documentation already current.'
+            echo 'Automation documentation and diagram renders already current.'
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add docs/ops/generated
-          git commit -m 'docs(ops): refresh generated automation catalog'
+          git commit -m 'docs(ops): refresh generated automation catalog + mmdc renders'
           git push

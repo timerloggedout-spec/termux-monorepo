@@ -1,1 +1,33 @@
-LOADING_FROM_LOCAL_FILE_FAILED_USE_REAL_CONTENT
+{
+  "material_change_rules": {
+    "documentation_required": [
+      ".github/workflows/",
+      ".github/actions/",
+      "scripts/model_router.py",
+      "scripts/ci/automation_docs.py",
+      "docs/schemas/model-success-matrix.yaml",
+      "docs/schemas/llm-leaderboard-matrix.yaml",
+      "docs/schemas/model-rotation.yaml",
+      "docs/schemas/routing-priority.yaml",
+      "docs/ops/OPERATOR_INTERACTIVE_ACTIONS.md",
+      "docs/ops/automation-decision-tree.md",
+      "docs/ops/diagrams/",
+      "docs/proposals/active/actions-refinements/",
+      "docs/proposals/active/rate-limit-rotation/"
+    ],
+    "high_impact": [
+      ".github/workflows/**",
+      ".github/actions/**",
+      "scripts/model_router.py",
+      "docs/schemas/model-success-matrix.yaml",
+      "docs/schemas/llm-leaderboard-matrix.yaml",
+      "docs/schemas/model-rotation.yaml",
+      "docs/schemas/routing-priority.yaml",
+      "docs/ops/OPERATOR_INTERACTIVE_ACTIONS.md"
+    ]
+  },
+  "schema_version": 1,
+  "source_fingerprint": "8eb6b3a72e2280101fcf887428b59325a58a249a4f6821193b885f62e71133d2",
+  "workflow_count": 66,
+  "workflows": []
+}

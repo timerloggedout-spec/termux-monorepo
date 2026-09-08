@@ -10,8 +10,6 @@ on:
     types: [created, edited]
   pull_request:
     types: [opened, edited, synchronize, reopened, closed]
-  workflow_run:
-    types: [completed]
 
 permissions:
   contents: read
@@ -42,7 +40,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p observatory
-          gh api --paginate \
+          gh api \
             -H 'Accept: application/vnd.github+json' \
             "/repos/${REPOSITORY}/issues?state=all&per_page=${OBSERVATORY_LIMIT}" \
             --jq '.[] | select(.pull_request == null) | {number,title,body,labels:[.labels[].name],state,updated_at,html_url}' \

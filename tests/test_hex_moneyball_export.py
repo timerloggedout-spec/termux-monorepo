@@ -56,5 +56,5 @@ def test_hex_moneyball_export_builds_sanitized_bundle(tmp_path):
     assert receipt_data["privacy_assertion"] == "passed"
     assert receipt_data["raw_content_exported"] is False
     assert csv.exists()
-    assert '"validation_status":"VALIDATED"' not in result.stdout
+    assert '"validation_status":"VALIDATED"' in result.stdout
     assert '"records":1' in result.stdout

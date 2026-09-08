@@ -164,6 +164,16 @@ The preserved pre-rebuild branch [`archive/pr232-pre-master-rebuild-20260817`](h
 
 ---
 
+## 9. Powered by autonomous AI employees
+
+This project uses [CellCog](https://cellcog.ai/invitation/l19hdRGY9dTh) autonomous AI employees for continuous integration, PR review, and engineering operations. Unlike code-completion chat assistants, standing AI workers operate across persistent sessions with their own cloud environments, tool execution, and team channels.
+
+- **Overview and landing page:** [timerloggedout-spec.github.io](https://timerloggedout-spec.github.io/)
+- **Live development and preview portal (work in progress):** [termux-monorepo.vercel.app](https://termux-monorepo.vercel.app/)
+- **500 bonus platform credits:** sign up through the [community partner invitation](https://cellcog.ai/invitation/l19hdRGY9dTh) to receive 500 bonus credits on your first purchase and deploy your own engineering agents.
+
+---
+
 ## References
 
 [1]: https://github.com/timerloggedout-spec/termux-monorepo/blob/master/workspace/compression_sandbox/cedrlang/cid.py "CID pointer implementation"

@@ -69,6 +69,8 @@ permissions: {}
 
 env:
   HARNESS_PATH_RE: '(^|/)(\.claude|\.codex|\.agents|\.hermes|\.pi)(/|$)|(^|/)(hooks|mcp|skills)(/|$)|SKILL\.md$|AGENTS\.md$|CLAUDE\.md$|ecc-tools\.ya?ml$'
+  # Privileged comment identity when available; else GITHUB_TOKEN (same chain as continuous-ops)
+  ECC_OPS_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
 
 jobs:
   # ─── A. PR harness path → /ecc-tools audit ───────────────────────────────
@@ -87,15 +89,20 @@ jobs:
       - name: Lean /ecc-tools audit
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         with:
+          github-token: ${{ env.ECC_OPS_TOKEN }}
           script: |
             const pr = context.payload.pull_request;
             const marker = '<!-- ecc-tools-ops:audit -->';
             const debounceMs = 6 * 60 * 60 * 1000;
+            const isOpsAuthor = (c) => {
+              const login = (c.user?.login || '').toLowerCase();
+              return login === 'github-actions[bot]' || login.includes('ecc-ops') || login.includes('timerloggedout');
+            };
             const comments = await github.paginate(github.rest.issues.listComments, {
               owner: context.repo.owner, repo: context.repo.repo,
               issue_number: pr.number, per_page: 100,
             });
-            const prior = comments.filter(c => c.body?.includes(marker))
+            const prior = comments.filter(c => c.body?.includes(marker) && isOpsAuthor(c))
               .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
             if (prior && Date.now() - new Date(prior.created_at) < debounceMs) {
               core.info(`#${pr.number} debounced`); return;
@@ -135,11 +142,16 @@ jobs:
           FORCE: ${{ github.event.inputs.force || 'false' }}
           MAX_PRS: ${{ github.event.inputs.max_prs || '10' }}
         with:
+          github-token: ${{ env.ECC_OPS_TOKEN }}
           script: |
             const force = process.env.FORCE === 'true';
             const maxPrs = Math.min(Number(process.env.MAX_PRS) || 10, 20);
             const debounceMs = 12 * 60 * 60 * 1000;
             const re = new RegExp(process.env.HARNESS_PATH_RE || '', 'i');
+            const isOpsAuthor = (c) => {
+              const login = (c.user?.login || '').toLowerCase();
+              return login === 'github-actions[bot]' || login.includes('ecc-ops') || login.includes('timerloggedout');
+            };
             const prs = await github.paginate(github.rest.pulls.list, {
               owner: context.repo.owner, repo: context.repo.repo,
               state: 'open', sort: 'updated', direction: 'desc', per_page: 50,
@@ -164,7 +176,7 @@ jobs:
                 owner: context.repo.owner, repo: context.repo.repo,
                 issue_number: pr.number, per_page: 100,
               });
-              const prior = comments.filter(c => c.body?.includes(marker))
+              const prior = comments.filter(c => c.body?.includes(marker) && isOpsAuthor(c))
                 .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
               if (prior && !force && Date.now() - new Date(prior.created_at) < debounceMs) continue;
               await github.rest.issues.createComment({
@@ -193,15 +205,20 @@ jobs:
       - name: Batch analyze+doctor on #175
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         with:
+          github-token: ${{ env.ECC_OPS_TOKEN }}
           script: |
             const issueNumber = 175;
             const marker = '<!-- ecc-tools-ops:full-cycle-lite -->';
             const debounceMs = 12 * 60 * 60 * 1000;
+            const isOpsAuthor = (c) => {
+              const login = (c.user?.login || '').toLowerCase();
+              return login === 'github-actions[bot]' || login.includes('ecc-ops') || login.includes('timerloggedout');
+            };
             const comments = await github.paginate(github.rest.issues.listComments, {
               owner: context.repo.owner, repo: context.repo.repo,
               issue_number: issueNumber, per_page: 50,
             });
-            const prior = comments.filter(c => c.body?.includes(marker))
+            const prior = comments.filter(c => c.body?.includes(marker) && isOpsAuthor(c))
               .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
             if (prior && Date.now() - new Date(prior.created_at) < debounceMs) {
               core.info('#175 debounced'); return;
@@ -241,9 +258,22 @@ jobs:
           INPUT_ISSUE: ${{ github.event.inputs.issue_number || '' }}
           INPUT_FORCE: ${{ github.event.inputs.force || 'false' }}
         with:
+          github-token: ${{ env.ECC_OPS_TOKEN }}
           script: |
             const force = process.env.INPUT_FORCE === 'true';
-            let issueNumber = Number(process.env.INPUT_ISSUE) || 175;
+            const requestedIssue = (process.env.INPUT_ISSUE || '').trim();
+            let issueNumber = 175;
+            if (context.eventName === 'workflow_dispatch' && requestedIssue) {
+              const parsedIssue = Number(requestedIssue);
+              if (
+                !/^[1-9]\d*$/.test(requestedIssue) ||
+                !Number.isSafeInteger(parsedIssue) ||
+                String(parsedIssue) !== requestedIssue
+              ) {
+                throw new Error('issue_number must be a canonical positive integer');
+              }
+              issueNumber = parsedIssue;
+            }
             if (context.eventName === 'issues' || context.eventName === 'issue_comment') {
               issueNumber = context.payload.issue?.number || issueNumber;
             }
@@ -251,7 +281,7 @@ jobs:
             let commands = [];
 
             const parseOps = (body) => {
-              const m = (body || '').match(/\/ecc-tools-ops\s+([\w-]+)/i);
+              const m = (body || '').match(/\/(?:ecc-tools-ops|ecc ops)\s+([\w-]+)/i);
               return m ? m[1].toLowerCase() : null;
             };
 
@@ -270,6 +300,10 @@ jobs:
 
             if (!commands.length) return;
 
+            const isOpsAuthor = (c) => {
+              const login = (c.user?.login || '').toLowerCase();
+              return login === 'github-actions[bot]' || login.includes('ecc-ops') || login.includes('timerloggedout');
+            };
             const comments = await github.paginate(github.rest.issues.listComments, {
               owner: context.repo.owner, repo: context.repo.repo,
               issue_number: issueNumber, per_page: 100,
@@ -280,7 +314,8 @@ jobs:
               : `<!-- ecc-tools-ops:${commands[0]} -->`;
             const recent = commands.some(cmd => {
               const p = comments.filter(c =>
-                c.body?.includes(`<!-- ecc-tools-ops:${cmd} -->`) || c.body?.includes(batchMarker))
+                isOpsAuthor(c) &&
+                (c.body?.includes(`<!-- ecc-tools-ops:${cmd} -->`) || c.body?.includes(batchMarker)))
                 .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
               return p && !force && Date.now() - new Date(p.created_at) < debounceMs;
             });
@@ -314,10 +349,11 @@ jobs:
       - name: Lean /ecc-tools on this PR
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         with:
+          github-token: ${{ env.ECC_OPS_TOKEN }}
           script: |
             const prNumber = context.payload.issue.number;
             const body = context.payload.comment?.body || '';
-            const m = body.match(/\/ecc-tools-ops\s+([\w-]+)/i);
+            const m = body.match(/\/(?:ecc-tools-ops|ecc ops)\s+([\w-]+)/i);
             const c = m ? m[1].toLowerCase() : 'audit';
             try {
               await github.rest.reactions.createForIssueComment({
@@ -370,6 +406,7 @@ jobs:
       - name: Lean ack (ECC scope only)
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         with:
+          github-token: ${{ env.ECC_OPS_TOKEN }}
           script: |
             const prNumber = context.payload.issue.number;
             const ack = '<!-- ecc-tools-ops-ack -->';

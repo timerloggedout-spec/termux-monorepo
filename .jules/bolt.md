@@ -37,3 +37,10 @@ In stream-processing analytics tools like `scripts/model_performance_index.py`, 
 
 **Action:**
 Avoid intermediate multi-pass list filtering when computing metrics over grouped datasets. Perform deduplication on stream entry and accumulate all metrics in a single iteration loop.
+
+## 2026-09-08 - Upfront Pre-Parsing of Event Timestamps in Lead-Lag Temporal Indexing
+**Learning:**
+In CI lead-lag event correlation (`scripts/ci/context_relationship_index.py`), re-evaluating `correlatable_lag` and invoking `parse_time` inside an $O(N \times M)$ nested loop re-parsed identical ISO timestamp strings repeatedly, causing redundant `datetime` object allocations and quadratic CPU overhead. Pre-filtering correlatable lag events and parsing `datetime` timestamps once upfront reduced string parsing operations to $O(N + M)$ and allowed tracking minimum time deltas using scalar comparisons without intermediate list allocations.
+
+**Action:**
+In nested event-matching loops, always pre-filter valid events and pre-parse string timestamps into native datetime objects before entering the outer matching loop.

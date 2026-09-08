@@ -200,9 +200,8 @@ def check_connectors_suite(report: SmokeReport) -> None:
             report.add(
                 CheckResult(
                     "connectors-suite",
-                    "NOTE",
-                    "connectors present but no local connector-suite runner is tracked on this branch",
-                    required=False,
+                    "FAIL",
+                    "connectors present but scripts/ci/termux_smoke/connectors/smoke_connectors.py missing",
                 )
             )
         else:

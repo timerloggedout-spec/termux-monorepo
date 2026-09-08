@@ -1,0 +1,105 @@
+{
+  "collected_at": "2026-08-25T03:58:01.269451+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 32806892485,
+    "endpoint": ".../runs/32806892485/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 97678655664,
+        "run_id": 32806892485,
+        "workflow_name": "Peer review orchestrator",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32806892485",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAWvhoAsA",
+        "head_sha": "446469164bdbf4051eb65a7b1c89a379320ea154",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/97678655664",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32806892485/job/97678655664",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-25T03:54:01Z",
+        "started_at": "2026-08-25T03:54:05Z",
+        "completed_at": "2026-08-25T03:54:14Z",
+        "name": "collect-peer-responses",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-25T03:54:06Z",
+            "completed_at": "2026-08-25T03:54:07Z"
+          },
+          {
+            "name": "Collect controls and provider response evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-25T03:54:07Z",
+            "completed_at": "2026-08-25T03:54:10Z"
+          },
+          {
+            "name": "Resolve authorized state publisher",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-25T03:54:10Z",
+            "completed_at": "2026-08-25T03:54:10Z"
+          },
+          {
+            "name": "Publish SHA-bound peer response state",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-25T03:54:10Z",
+            "completed_at": "2026-08-25T03:54:11Z"
+          },
+          {
+            "name": "Dispatch verified second pass",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 5,
+            "started_at": "2026-08-25T03:54:11Z",
+            "completed_at": "2026-08-25T03:54:11Z"
+          },
+          {
+            "name": "Request supported provider reviews through OPERATOR",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-25T03:54:11Z",
+            "completed_at": "2026-08-25T03:54:11Z"
+          },
+          {
+            "name": "Record pending provider review policy",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-08-25T03:54:11Z",
+            "completed_at": "2026-08-25T03:54:11Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-08-25T03:54:11Z",
+            "completed_at": "2026-08-25T03:54:11Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/97678655664",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000021266,
+        "runner_name": "GitHub Actions 1000021266",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

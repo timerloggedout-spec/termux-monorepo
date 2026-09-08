@@ -1,0 +1,100 @@
+221	feat(hub): add governed Termux agentic hub	feature/termux-agentic-hub	OPEN	2026-08-15T10:07:32Z
+220	⚡ Bolt: optimize datetime parsing and model router execution	bolt-perf-optimizations-15790717343466138866	OPEN	2026-08-15T08:01:30Z
+219	🛡️ Sentinel: Fix path traversal risk in account cache path	sentinel-harden-cache-path-account-9858042245649941064	OPEN	2026-08-15T07:38:43Z
+218	📖 Linguist: optimize CedrLang document translation with single-pass combined regex	perf/cedrlang-single-pass-regex-15882572024041502551	MERGED	2026-08-14T23:33:26Z
+217	fix(tests): update import path in test_sentinel_privileges and update audit docs	jules-10860501094381520395-732bb1e0	MERGED	2026-08-14T23:31:16Z
+216	feat(deepcli): preserve WAF cookie in persistent sessions	feature/deepseek-waf-persistent-session	MERGED	2026-08-14T20:49:15Z
+215	hotfix: DeepSeek CI — kill soft-skip, hard-fail, contents:write, ARCHWIZ primary	hotfix/deepseek-hard-fail-no-softskip	MERGED	2026-08-14T15:57:29Z
+212	hotfix: DeepSeek CI — pull_request_review_comment + pip verify	hotfix/deepseek-ci-review-comment	MERGED	2026-08-14T13:57:56Z
+211	🛡️ Sentinel: Fix path traversal vulnerability in session cache path builder	jules-17811186755726420080-8fc3a425	MERGED	2026-08-14T07:32:18Z
+210	hotfix: DeepSeek-CI comment triggers and dependency fix	hotfix/ci-comment-1786692230	CLOSED	2026-08-14T07:23:56Z
+209	hotfix: DeepSeek-CI comment triggers and dependency fix	hotfix/ci-comment-1786691223	CLOSED	2026-08-14T07:07:11Z
+208	📖 Linguist: optimize compile overhead and add procurement mappings	jules-2574645897473246620-c73f5f02	MERGED	2026-08-13T23:37:29Z
+207	deepCore test and haiku response	feat/deepcore-test-haiku-6055281599233888310	MERGED	2026-08-13T23:22:35Z
+206	fix(deepseek): null-guard create_chat_session when data["data"] is None	fix/deepseek-create-chat-session-nullguard	MERGED	2026-08-13T23:11:22Z
+205	feat(ops): implement v2 disposition schema and branch audit report	jules-2707077858576905053-6e8130e3	MERGED	2026-08-13T23:11:19Z
+204	fix(deepseek-ci): consume #184 credential catalog + cookie imports (stop soft-skip)	fix/deepseek-credential-probe-184	MERGED	2026-08-13T22:58:27Z
+203	fix(deepcli): issue_comment replies for deepCore + register l337S33k	ops/deepcore-issue-comment-reply-l337s33k	MERGED	2026-08-13T22:40:46Z
+199	build(deps): bump the pip group across 1 directory with 3 updates	dependabot/pip/_1-Projects/a/pip-e8c35e66d3	MERGED	2026-08-13T20:45:57Z
+198	Create dependabot.yml	reverse_engineering-and-3x9l017_D3v/watchlist-and-exceptions	MERGED	2026-08-13T20:44:18Z
+196	📖 Linguist: implement CedrLang v2 compilation	jules-8311972480156399434-f49664a8	MERGED	2026-08-13T14:59:35Z
+194	🛡️ Sentinel: Fix Command Injection in MCP Server Tool Execution	jules-2888738922379511665-fd1b8f1a	MERGED	2026-08-13T07:21:45Z
+193	feat(gha): implement actions refinements and empty commit watcher	master-staging-1107353267763572049	MERGED	2026-08-12T21:07:16Z
+191	ops(connectors): #184 credential activation catalog (last-used + secrets map)	ops/credential-activation-184	MERGED	2026-08-12T19:04:55Z
+190	docs: add AGENTS.md reference to README header	docs/readme-agents-reference	MERGED	2026-08-12T17:42:30Z
+189	docs: restore comprehensive AGENTS.md with governance and technical s…	docs/agents-md-comprehensive	MERGED	2026-08-12T17:31:09Z
+188	Docs/agents md comprehensive	docs/agents-md-comprehensive	CLOSED	2026-08-12T17:12:48Z
+187	⚡ Bolt: Incremental state-tracking telemetry parser performance optimization	jules-18029638198170202712-76e2cdc1	MERGED	2026-08-12T08:17:47Z
+186	🛡️ Sentinel: Fix local privilege restrictions and symlink safety	sentinel-privilege-restrictions-16877168996669109419	MERGED	2026-08-12T07:40:26Z
+178	ops: clean lag-index + SSOT + emoji fix onto master (supersedes dirty #156/#153)	ops/rebase-clean-156-153	MERGED	2026-08-11T23:47:36Z
+177	📖 Linguist: Optimize document token compression protocol	jules-1495461354256476986-ae20f73a	OPEN	2026-08-11T23:21:13Z
+176	Explore priority matrix and master functional gate status	jules-9367184884023395199-ec282237	MERGED	2026-08-11T22:29:06Z
+174	feat(ci): wire DeepSeek web-wrapper into GitHub Actions with session …	feat/gh-actions/deepseek-integrates-itself	MERGED	2026-08-11T21:11:30Z
+173	ci(jules): unconditional skip-on-push — final residual 0-job fix	ci/jules-unconditional-skip-on-push	MERGED	2026-08-11T21:07:15Z
+172	ci(jules): remove job concurrency entirely — final fix for residual 0-job push failures (#172)	ops/jules-remove-concurrency-final	MERGED	2026-08-11T19:38:13Z
+171	ci(jules): eliminate residual 0-job push failures — concurrency never touches issue payload	ops/jules-concurrency-no-issue-access	MERGED	2026-08-11T19:34:08Z
+170	ci(jules): fully safe concurrency group — stop residual 0-job push failures	ops/jules-concurrency-safe-expr	MERGED	2026-08-11T19:22:28Z
+169	ci(jules): move concurrency to job level — stop residual 0-job push failures	ops/jules-concurrency-job-level	MERGED	2026-08-11T19:19:05Z
+168	ci(jules): safe concurrency group for push — stop residual 0-job failures	ops/jules-push-concurrency-safe	MERGED	2026-08-11T19:16:28Z
+167	ci(jules): push no-op guard — stop 0-job failure on every push	ops/jules-push-noop-guard	MERGED	2026-08-11T19:12:07Z
+166	Deepcore Test & Agentic Haiku	jules-haiku-test-18200393848927605610	CLOSED	2026-08-11T09:41:42Z
+165	⚡ Bolt: Optimize PWA components with factory closures and reRender callback	jules-3254466231027190902-9947774b	MERGED	2026-08-11T09:08:06Z
+163	feat(ci): DeepSeek agentic parity — deepCore moniker, comment triggers, multi-secret probe	ops/deepseek-agentic-moniker-secret	MERGED	2026-08-11T08:05:17Z
+162	feat(ci): DeepSeek CI safe path (multi-ai-cli + deepcli) — Fixes #109	feat/deepseek-ci-safe-109	MERGED	2026-08-11T06:17:16Z
+161	ops: agent monikers (@heyVern / @sparkFlux) + high-perf continuous-ops rewrite	ops/monikers-and-continuous-ops-perf	MERGED	2026-08-11T05:56:21Z
+160	ops(continuous-ops): catch 4-day stalls, failures, loops, and approval requests	jules-15323815183277779859-78d041cf	CLOSED	2026-08-11T05:18:41Z
+156	feat: upgrade GHA continuous ops cron with dynamic response lag index and fix emoji reactions bug	fix/dynamic-continuous-ops-cron-5720376583248325329	CLOSED	2026-08-11T00:55:37Z
+154	📖 Linguist: Overhaul CedrLang v2 compression, map grimoire & build AGENTS.hum.md	jules-2617305464768520619-aa21aaf1	OPEN	2026-08-10T23:40:57Z
+153	Consolidate upgrades and timing quotas SSOT	jules-5458954567256735255-3cc21bcb	CLOSED	2026-08-10T23:13:55Z
+151	ops(connectors): authorize inventory + expand peer soft budgets 2x+	ops/connectors-authorize-expand-capacity	MERGED	2026-08-10T20:11:34Z
+149	ops(pipes): review-signal alignment docs + disposition matrix (#146)	ops/review-signal-alignment-146	MERGED	2026-08-10T17:38:38Z
+148	ops(jules): context_key persistence + continue-only auto-jules (#145)	ops/jules-session-management-145	OPEN	2026-08-10T17:38:34Z
+147	Programmatic session management via Actions Workflows	jules-17257168954055571445-0978545e	OPEN	2026-08-10T17:37:55Z
+144	Jules 3359099756114716988 8a9652be	jules-3359099756114716988-8a9652be	MERGED	2026-08-10T15:28:38Z
+143	Integrate MCP Agent Mail Coordination Layer in GitHub Actions	jules-14387055473036742921-a1c3cf6d	OPEN	2026-08-10T15:24:47Z
+142	⚡ Bolt: Optimize telemetry parsing with state-tracking and seek/tell	jules-13583310724671355149-5b65227f	OPEN	2026-08-10T07:43:01Z
+141	🛡️ Sentinel: [MEDIUM] Fix local privilege restrictions and prevent symlink hijacking	sentinel/local-privilege-restrictions-7494953203873633494	CLOSED	2026-08-10T07:38:37Z
+140	🎨 Palette: Stateful & Reactive PWA UX with Manual Vault Refresh & Accessibility	palette-pwa-reactive-ux-17363121820248065992	OPEN	2026-08-10T07:22:48Z
+139	📝 CodeRabbit Chat: Align OpenRouter Routing With Supported Models	coderabbitai/chat/567ed5b	MERGED	2026-08-10T06:46:19Z
+138	ci(ops): Continuous agent ops — 24/7 unattended PR advancement	feat/continuous-agent-ops	MERGED	2026-08-10T06:45:46Z
+137	feat(ci): integrate DeepSeek v4-Pro CI with peer routing and security controls (rebased)	fix/deepseek-ci-rebase-134	OPEN	2026-08-10T06:09:45Z
+136	docs(rate-limit-rotation): RL-05 executing after #123; add RL-18 DeepSeek hold	docs/rl-board-2026-08-10	MERGED	2026-08-10T05:27:02Z
+135	📝 CodeRabbit Chat: Align OpenRouter Routing with Supported Models	coderabbitai/chat/73559f1	OPEN	2026-08-10T04:37:58Z
+134	feat(ci): integrate DeepSeek v4-Pro CI with peer routing, caching, and security controls	jules-1836679097993804434-63742b66	CLOSED	2026-08-10T04:22:54Z
+133	Diagnose Issue #129 and Verify Codebase Integrity	jules-11451681596732133032-fee850bf	OPEN	2026-08-10T04:14:54Z
+132	Jules 3359099756114716988 8a9652be	jules-3359099756114716988-8a9652be	CLOSED	2026-08-10T04:14:14Z
+131	feat(multi-agent): implement MoneyBall agent roster & betting arena	jules-5118449608716874585-f16551c8	OPEN	2026-08-10T04:05:37Z
+128	📝 CodeRabbit Chat: Register Leaderboard Aggregation Proposal and Scope	coderabbitai/chat/bdcfe3f	MERGED	2026-08-10T02:48:18Z
+127	📝 CodeRabbit Chat: Add Leaderboard Protocol Proposal and DeepSeek MoE Policy Items	coderabbitai/chat/bdcfe3f	CLOSED	2026-08-10T02:47:45Z
+126	📖 Linguist: optimize agentic communication compiler	linguist-agentic-compression-perf-13775007783316480470	CLOSED	2026-08-09T23:13:19Z
+125	analyze agentic workflows and peer coordination rules	jules-12292744322971487197-f3d564f8	OPEN	2026-08-09T22:42:25Z
+123	Model Availability Polling and ELO-Based Dynamic Routing	jules-3359099756114716988-8a9652be	MERGED	2026-08-09T21:52:54Z
+121	Jules 15347835481072433758 75bb5a32	jules-15347835481072433758-75bb5a32	OPEN	2026-08-09T20:21:46Z
+120	fix(ci): Session && Context Management — durable work context without auth-session leaks (#118)	fix/session-context-management-118	MERGED	2026-08-09T19:04:35Z
+116	Deep core/feat/reverse engineered deepseek wasm gh worflows	deep_core/feat/reverse_engineered_deepseek_wasm_gh-worflows	CLOSED	2026-08-09T17:23:02Z
+115	ci: fix Devin threads on deepseek-ci (quota guards, ESM solver, gitignore, heredoc)	fix/deepseek-ci-devin-threads	MERGED	2026-08-09T16:39:46Z
+114	ci: DeepSeek CI workflow with shared peer routing + opt-in web-wrapper	ci/deepseek-peer-routing-workflow	CLOSED	2026-08-09T16:31:17Z
+113	Update .coderabbit.yaml	timerloggedout-spec-patch-4/coderabbitai_yaml	MERGED	2026-08-09T16:04:29Z
+112	ci: DeepSeek CI workflow (peer Omni ↔ OpenRouter + opt-in web-wrapper)	timerloggedout-spec-patch-3/feat/deep_core-init	MERGED	2026-08-09T15:46:50Z
+111	docs(rate-limit-rotation): RL-05 status after peer wire + #104 approval	docs/rl-05-status-2026-08-09	CLOSED	2026-08-09T15:41:46Z
+108	🎨 Palette: Refactor Commingle Swarm PWA Reactivity & UX	palette-pwa-ux-refactor-10982374116280510134	OPEN	2026-08-09T07:31:42Z
+107	[CLOSED - superseded by #142] ⚡ Bolt: Optimize telemetry parsing with incremental I/O	bolt-telemetry-optimization-1970989343525795534	CLOSED	2026-08-09T07:30:59Z
+106	🛡️ Sentinel: Fix local privilege exposure and path traversal in DeepCLI	jules-2691021271237147321-7a30476c	CLOSED	2026-08-09T07:25:20Z
+105	fix(routing): exhaustive fallback and specificity signing for peer router	fix-model-router-exhaustive-fallback-5450365102026496177	CLOSED	2026-08-09T03:50:20Z
+104	fix(comms): resolve OpenRouter free model selection failure and add robust fallback	jules-12161437624324795566-f922e7b4	CLOSED	2026-08-09T02:21:41Z
+103	feat(comms): CAVEMAN-micro seed + success matrix + dual-file + CLAUDE.md Cheat_Code	feature/caveman-micro-seed-matrices	OPEN	2026-08-09T01:01:40Z
+102	fix(after-peers): enable OpenRouter/Omni peer capacity on second-pass	fix/after-peers-enable-or-omni	MERGED	2026-08-09T00:28:14Z
+101	feat(routing): Omni ↔ OpenRouter peer selection by desired model + auto endpoints	feature/peer-omni-openrouter-routing	MERGED	2026-08-08T23:56:54Z
+100	feat(routing): Omni ↔ OpenRouter peer selection by desired model + auto endpoints	feature/omni-first-primary-routing	CLOSED	2026-08-08T23:12:08Z
+97	feat(routing): FB-01 OpenRouter free-tier invoke + leaderboard matrix (#94)	feature/fb-01-openrouter-invoke-free	MERGED	2026-08-08T22:34:27Z
+93	feat(quota): model rotation + OpenRouter fallback (fixes #86 #87 #88)	feature/rate-limit-model-rotation-openrouter	MERGED	2026-08-08T18:23:36Z
+92	sec(workflows): harden permissions, pin SHAs, and fix prompt injection	timerloggedout/ter-69-67-120-secure-and-optimize-gha-workflows-11057082102884077388	OPEN	2026-08-08T14:48:06Z
+85	🛡️ Sentinel: enforce local privilege restrictions on deepcli configurations	sentinel/deepcli-privilege-restrictions-15131132121060765729	OPEN	2026-08-08T07:43:19Z
+84	🎨 Palette: Callback-Driven PWA State Reactivity and Micro-UX	jules-5337317287194452659-19f1d79f	OPEN	2026-08-08T07:37:12Z
+83	⚡ Bolt: Optimize telemetry parsing with state-tracking and seek/tell	jules-11423580203011499799-40c3bb80	OPEN	2026-08-08T07:29:33Z
+82	feat: integrate termux and phone mcp servers in monorepo	feature/integrate-mcp-servers-5681892105987975673	OPEN	2026-08-08T01:59:55Z
+81	ci: promote Gemini quota-gate + agent workflows to master (event triggers)	ci/promote-workflows-to-master	OPEN	2026-08-07T21:52:05Z
+80	ci: promote Gemini + quota-gate + Jules workflows from master-staging to master	master-staging	CLOSED	2026-08-07T21:49:41Z
+79	Update .coderabbit.yaml	timerloggedout-spec-patch-2	MERGED	2026-08-07T12:16:48Z
+78	Coderabbitai/autofix/40feea7	coderabbitai/autofix/40feea7	CLOSED	2026-08-07T11:56:14Z
+77	⚡ Bolt: telemetry parser incremental I/O and deferred rich imports	jules-579305096289475229-1f35e6cd	OPEN	2026-08-07T07:40:26Z

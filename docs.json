@@ -1,0 +1,73 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "name": "Termux Monorepo",
+  "theme": "luma",
+  "colors": {
+    "primary": "#0D9373",
+    "light": "#0D9373",
+    "dark": "#0D9373"
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "index",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Concepts",
+            "pages": [
+              "concepts/architecture"
+            ]
+          },
+          {
+            "group": "Components",
+            "pages": [
+              "components/archwiz",
+              "components/deepcli",
+              "components/multi-agent",
+              "components/cli-synthegration",
+              "components/central-mapper"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/first-session",
+              "guides/autonomous-tasks",
+              "guides/index-rebuild",
+              "guides/forensics"
+            ]
+          },
+          {
+            "group": "Governance",
+            "pages": [
+              "governance/proposals",
+              "governance/consensus",
+              "governance/security"
+            ]
+          },
+          {
+            "group": "Proposals",
+            "pages": [
+              "proposals/notation-sets"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "reference/commands",
+              "reference/environment",
+              "reference/gates"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

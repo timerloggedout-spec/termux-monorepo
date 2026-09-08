@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/EVIDENCE-ENVELOPE.schema.json",
+  "title": "Reconciliation Evidence Envelope",
+  "description": "Canonical, SHA-bound evidence record shared by reconciliation, MVT/DOE, recovery, review, and platform adapters.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "experiment_id",
+    "source",
+    "source_id",
+    "commit_sha",
+    "baseline_sha",
+    "observed_at",
+    "status",
+    "outcome",
+    "provenance",
+    "confidence"
+  ],
+  "properties": {
+    "experiment_id": { "type": "string", "minLength": 1 },
+    "source": { "type": "string", "minLength": 1 },
+    "source_id": { "type": "string", "minLength": 1 },
+    "commit_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "baseline_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "observed_at": { "type": "string", "format": "date-time" },
+    "event_at": { "type": "string", "format": "date-time" },
+    "status": {
+      "type": "string",
+      "enum": ["observed", "running", "passed", "failed", "skipped", "blocked", "superseded"]
+    },
+    "outcome": { "type": "string", "minLength": 1 },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {
+        "kind": { "type": "string", "enum": ["github", "linear", "notion", "hex", "vercel", "forensic", "manual", "other"] },
+        "url": { "type": "string", "format": "uri" },
+        "workflow": { "type": "string" },
+        "run_id": { "type": ["integer", "string"] },
+        "job_id": { "type": ["integer", "string"] }
+      }
+    },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "supersedes": { "type": "string" },
+    "notes": { "type": "string" }
+  }
+}

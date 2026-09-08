@@ -1,0 +1,36 @@
+name: hub job validation
+
+on:
+  pull_request:
+    paths:
+      - "hub_mcp/**"
+      - "tests/hub_mcp/**"
+      - "scripts/ci/hub_job_validate.py"
+  push:
+    branches: [master-staging]
+    paths:
+      - "hub_mcp/**"
+      - "tests/hub_mcp/**"
+      - "scripts/ci/hub_job_validate.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hub-job-validate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: schema and policy validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 1
+          submodules: false
+
+      - name: Run deterministic hub protocol tests
+        run: python3 scripts/ci/hub_job_validate.py

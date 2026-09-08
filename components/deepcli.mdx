@@ -1,0 +1,99 @@
+---
+title: "DeepCLI: DeepSeek Session Management CLI"
+sidebarTitle: "DeepCLI"
+description: "Manage DeepSeek sessions with DeepCLI: create conversations, send prompts, fork threads, export history, and integrate with GitHub Actions CI/CD."
+---
+
+DeepCLI is the DeepSeek-oriented command-line interface for the Termux Monorepo. It lets you create conversations, send prompts with optional reasoning mode, list and browse session history, fork threads at any message, and export chats in multiple formats. DeepCLI also integrates with GitHub Actions to trigger AI workflows on pull request events.
+
+## Entry points
+
+DeepCLI exposes four primary entry points in the `deepcli/` directory:
+
+- **`deepcli.py`** — Main interactive CLI for session management
+- **`deepapi.py`** — Programmatic API wrapper for scripted access
+- **`deepseek_proxy.py`** — Proxy layer for request routing and rate handling
+- **`ci_mode.py`** — CI/CD integration script for GitHub Actions
+
+## Session commands
+
+Use the following commands to create, interact with, and manage DeepSeek sessions.
+
+<CodeGroup>
+
+```bash Create a new session
+./deepcli.py new
+```
+
+```bash Send a prompt
+./deepcli.py send "Hello"
+```
+
+```bash Enable reasoning mode
+./deepcli.py send "Explain quantum computing" --thinking
+```
+
+```bash List all sessions
+./deepcli.py list
+```
+
+```bash View session history
+./deepcli.py history --session <id>
+```
+
+```bash Export a session to JSON
+./deepcli.py export --format json --output chat.json
+```
+
+```bash Fork a conversation at a message
+./deepcli.py fork --session <id> --message-id <msg>
+```
+
+</CodeGroup>
+
+## Thinking mode
+
+Add the `--thinking` flag to any `send` command to enable DeepSeek reasoning mode. This asks the model to expose its chain of thought before delivering the final answer, which is useful for debugging prompts or validating complex reasoning tasks.
+
+```bash
+./deepcli.py send "Refactor this function for performance" --thinking
+```
+
+## Conversation forking
+
+Forking lets you branch a conversation at an earlier message without losing the original thread. Specify the session ID and the message ID where you want the branch to start. The forked session receives a new ID and inherits all messages up to the fork point.
+
+```bash
+./deepcli.py fork --session abc123 --message-id msg_42
+```
+
+## Export formats
+
+DeepCLI supports exporting session history for archival or further processing. Use the `export` command with `--format json` to write a structured JSON file, or specify another supported format. The `--output` flag controls the destination path.
+
+```bash
+./deepcli.py export --format json --output chat.json
+```
+
+## CI/CD integration
+
+DeepCLI integrates with GitHub Actions through `ci_mode.py`. Configure your workflow to trigger on pull request events (open, synchronize, close). The CI script can automatically send prompts, export results, and post summaries back to the pull request thread.
+
+<Steps>
+  <Step title="Add the workflow file">
+    Create `.github/workflows/deepcli.yml` in your repository and reference `deepcli/ci_mode.py`.
+  </Step>
+  <Step title="Set the trigger events">
+    Configure the workflow to run on `pull_request` events: `opened`, `synchronize`, and `closed`.
+  </Step>
+  <Step title="Pass secrets">
+    Provide the `DEEPSEEK_API_KEY` as a repository secret so `ci_mode.py` can authenticate.
+  </Step>
+  <Step title="Review outputs">
+    The workflow exports session results as artifacts and optionally posts a summary comment to the PR.
+  </Step>
+</Steps>
+
+<Note>
+  CI mode uses `deepseek_proxy.py` for request routing, which helps manage rate limits and retries during automated runs.
+</Note>

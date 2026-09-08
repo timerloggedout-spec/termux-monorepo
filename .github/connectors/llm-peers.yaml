@@ -1,5 +1,5 @@
-# Peer policy: Omni \u2194 OpenRouter nearly equal free-tier peers.
-# Selection = desired model + soft-budget headroom. Gemini = residual only.
+# LEADER 2026-08-20 (issue #272): Gemini PRIMARY for best roles.
+# Omni ↔ OpenRouter secondary free-tier peers. Soft budgets = real free-tier RPD (no soft room).
 
 peers:
   omni:
@@ -16,8 +16,13 @@ peers:
   openrouter:
     enabled_env: OPENROUTER_API_KEY
     default_base: https://openrouter.ai/api/v1
-    require_free_suffix: true
+    # free = :free suffix OR zero-price (stealth/ox-alpha). See is_free_openrouter_model.
+    require_free_suffix: false
     models:
+      - id: stealth/ox-alpha
+        roles: [triage, review, invoke]
+        soft_limits: { triage: 80, review: 80, invoke: 80 }
+        notes: "1M-ctx free stealth model; free by pricing not :free suffix"
       - id: google/gemma-4-31b-it:free
         roles: [triage, review, invoke]
         soft_limits: { triage: 80, review: 80, invoke: 80 }
@@ -41,17 +46,26 @@ peers:
         soft_limits: { triage: 60, review: 60, invoke: 60 }
   gemini:
     enabled_env: GEMINI_API_KEY
-    residual_only: true
+    residual_only: false  # LEADER: primary for best roles
     models:
       - id: gemini-3.1-flash-lite
-        soft_limits: { triage: 450, review: 450, invoke: 450 }
+        soft_limits: { triage: 1400, review: 1400, invoke: 1400 }
       - id: gemini-3.5-flash-lite
-        soft_limits: { triage: 450, review: 450, invoke: 450 }
+        soft_limits: { triage: 1400, review: 1400, invoke: 1400 }
       - id: gemini-2.5-flash-lite
-        soft_limits: { triage: 20, review: 20, invoke: 20 }
+        soft_limits: { triage: 1000, review: 1000, invoke: 1000 }
       - id: gemini-3.5-flash
-        soft_limits: { triage: 20, review: 20, invoke: 20 }
+        soft_limits: { triage: 1400, review: 1400, invoke: 1400 }
       - id: gemini-2.5-flash
-        soft_limits: { triage: 20, review: 20, invoke: 20 }
+        soft_limits: { triage: 1400, review: 1400, invoke: 1400 }
       - id: gemini-3-flash
-        soft_limits: { triage: 20, review: 20, invoke: 20 }
+        soft_limits: { triage: 1400, review: 1400, invoke: 1400 }
+
+  felo:
+    enabled_env: FELO_AI_API  # also accept FELO_API_KEY
+    default_base: https://openapi.felo.ai/api/v1
+    notes: "OpenAI-compatible Felo platform; optional secondary free/tool path"
+    models:
+      - id: claude-sonnet-4-6
+        roles: [review, invoke]
+        soft_limits: { triage: 40, review: 40, invoke: 40 }

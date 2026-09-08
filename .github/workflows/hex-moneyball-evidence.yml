@@ -1,0 +1,53 @@
+name: Hex Moneyball Evidence
+
+on:
+  workflow_dispatch:
+    inputs:
+      source:
+        description: 'NDJSON event stream to sanitize'
+        required: true
+        default: 'agent_telemetry_stream.json'
+        type: string
+  push:
+    branches: [master]
+    paths:
+      - 'agent_telemetry_stream.json'
+      - 'scripts/hex_moneyball_export.py'
+      - 'docs/ops/HEX-MONEYBALL-INTEGRATION.md'
+
+permissions:
+  contents: read
+
+jobs:
+  sanitize-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Sanitize evidence for Hex
+        env:
+          SOURCE: ${{ inputs.source || 'agent_telemetry_stream.json' }}
+        run: |
+          set -euo pipefail
+          test -f "$SOURCE"
+          mkdir -p /tmp/hex-moneyball
+          python3 scripts/hex_moneyball_export.py "$SOURCE" /tmp/hex-moneyball/evidence.ndjson
+
+      - name: Assert privacy boundary
+        run: |
+          set -euo pipefail
+          if grep -Eiq '"(message|prompt|completion|tool_payload|api_key|token|secret)"[[:space:]]*:' /tmp/hex-moneyball/evidence.ndjson; then
+            echo 'Sanitized evidence contains a forbidden raw-content/credential field' >&2
+            exit 1
+          fi
+
+      - name: Publish evidence artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hex-moneyball-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/hex-moneyball/evidence.ndjson
+          if-no-files-found: error
+          retention-days: 14

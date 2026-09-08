@@ -1,0 +1,117 @@
+---
+title: "Rebuild the Knowledge Indices"
+sidebarTitle: "Index Rebuild"
+description: "Learn when and how to rebuild the Termux Monorepo knowledge indices, including the combined pipeline and individual build scripts for AST and dependency graphs."
+---
+
+The Termux Monorepo maintains a set of knowledge indices that map code structure, function signatures, file relationships, and dependency graphs. You should rebuild these indices after large refactors, new component imports, or any change that alters the AST shape of the codebase. This guide covers the full rebuild pipeline, individual scripts, and how to query the results.
+
+### When to rebuild
+
+Rebuild the indices when any of the following occur:
+
+- You add, remove, or rename a module or package
+- Function signatures change across multiple files
+- You merge a refactor that touches imports or cross-file references
+- The `llm_index.jsonl`, `func_index.jsonl`, `file_graph.json`, or `deps.jsonl` files are older than the latest commit
+
+### Combined rebuild pipeline
+
+The fastest way to regenerate everything is the chained command used by the Central Mapper:
+
+<CodeGroup>
+
+```bash
+map-build && map-func && fore
+```
+
+</CodeGroup>
+
+This runs the AST index builder, the function index builder, and the forensic linker in sequence. Expected output:
+
+```text
+[map-build] Indexed 1,247 files in 4.2s
+[map-func] Extracted 8,903 function signatures
+[fore] Linked 3,212 cross references
+```
+
+### Individual build scripts
+
+If you only need to update one layer, run the specific script directly.
+
+**Build all indices from scratch:**
+
+<CodeGroup>
+
+```bash
+python3 workspace/llm_map/build_all.py
+```
+
+</CodeGroup>
+
+**Build the LLM-readable index:**
+
+<CodeGroup>
+
+```bash
+python3 workspace/llm_map/build_llm_index.py
+```
+
+</CodeGroup>
+
+**Build the AST index from existing sources:**
+
+<CodeGroup>
+
+```bash
+python3 workspace/llm_map/build_ast_index_from_existing.py
+```
+
+</CodeGroup>
+
+**Build the dependency graph (fast):**
+
+<CodeGroup>
+
+```bash
+python3 workspace/llm_map/build_graph_fast.py
+```
+
+</CodeGroup>
+
+### Querying the index
+
+After rebuilding, use `archivist.py` to search the knowledge base for files, functions, or relationships.
+
+<CodeGroup>
+
+```bash
+python3 archwiz/archivist.py --query "function:dispatch_task"
+python3 archwiz/archivist.py --query "file:archwiz.py" --relationships
+```
+
+</CodeGroup>
+
+Expected output:
+
+```text
+[archivist] 3 matches for "function:dispatch_task"
+  - archwiz/dispatch_task.py:42  dispatch_task(task_id, dry_run=False)
+  - archwiz/autonomous_runner.py:88  runner.dispatch(task_id)
+  - tests/test_dispatch.py:15  test_dispatch_ok()
+```
+
+<Tip>
+  Use the context-relationship-graph skill for reconnaissance before making changes. Run `archivist.py --graph --file <target>` to see which files depend on your target so you can plan impact before you edit.
+</Tip>
+
+<Note>
+  The index files live in `workspace/llm_map/`:
+
+  - `llm_index.jsonl` — file-level metadata for LLM context
+  - `func_index.jsonl` — function signatures and docstrings
+  - `file_graph.json` — file-to-file reference graph
+  - `deps.jsonl` — import and module dependency list
+</Note>
+
+For a deeper investigation of what changed after a rebuild, see the [Forensics guide](/guides/forensics). To understand how the mapper fits into the overall system, read the [Central Mapper component](/components/central-mapper) overview.

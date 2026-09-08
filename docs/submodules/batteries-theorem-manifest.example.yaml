@@ -1,0 +1,17 @@
+# Example only. Do not treat this file as a verified theorem cache.
+# A real manifest entry must be produced by a reproducible check.
+version: 1
+status: example
+entries:
+  - id: batteries.<stable-name>
+    source: timerloggedout-spec/batteries_fork
+    revision: 36cc05ca2d0e469bfbeea9437f460e19238e885e
+    lean_toolchain: v4.34.0-rc1
+    import: Batteries.<module>
+    kind: theorem
+    goal_shape: "<normalized proposition shape>"
+    prerequisites: []
+    adapter: null
+    verified: false
+    verified_at: null
+    notes: "Replace with a real candidate only after local compilation and provenance capture."

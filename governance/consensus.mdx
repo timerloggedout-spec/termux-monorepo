@@ -1,0 +1,56 @@
+---
+title: "Consensus Tiers and the CRDT Model"
+sidebarTitle: "Consensus"
+description: "Understand the Termux Monorepo consensus tiers, CRDT model, and optional Raft-strict mode. Learn how agreement is reached and why banned PRs are blocked."
+---
+
+The Termux Monorepo uses a tiered consensus system to decide when a change is safe to merge. This page explains the merit path, the CRDT model for distributed agreement, and the optional Raft-strict mode for high-stakes decisions.
+
+## Consensus tiers
+
+Consensus is not a single vote. It is a graduated path built on recorded debate and demonstrated merit. The tiers are documented in `docs/CONSENSUS.md`.
+
+<Steps>
+  <Step title="Propose">
+    Post the idea in `docs/proposals/registry.yaml` and open debate in `DEBATE.md`.
+  </Step>
+  <Step title="Demonstrate">
+    Show working code, test results, or impact analysis. Cite `Implements: <ITEM-ID>` on every commit.
+  </Step>
+  <Step title="Resolve">
+    Record objections and resolutions. Consensus is reached when debate closes with no outstanding blocking concerns.
+  </Step>
+  <Step title="Merge">
+    Only after consensus is recorded may the change proceed through the ARCHW1Z gate.
+  </Step>
+</Steps>
+
+## CRDT model
+
+The monorepo uses a Conflict-free Replicated Data Type (CRDT) model for proposal state. This means:
+
+- Multiple agents can update proposal metadata concurrently
+- Conflicts resolve automatically without a central lock
+- The `registry.yaml` and `DEBATE.md` files are the source of truth
+
+## Optional Raft-strict mode
+
+For changes that affect gates, credentials, or core infrastructure, you can enable Raft-strict mode. This requires a quorum of maintainers to agree before the proposal advances. Use this sparingly; it is documented in `docs/CONSENSUS.md`.
+
+## Banned PRs
+
+The following pull requests are permanently banned from wholesale merge. Do not attempt to merge them as-is:
+
+- **PR #6 / TER-9**: Blocked by the consensus system
+- **PR #2 / Rust CI**: Blocked by the consensus system
+
+If you need functionality from a banned PR, open a new proposal, reference the original, and earn fresh consensus.
+
+## PR body rewrite rule
+
+All PR summaries must follow the multi-agent roster format from `docs/PR-SUMMARY-PROCESS.md`. Summaries must list the agents involved and their roles. A single-agent monopoly is not acceptable.
+
+## Next steps
+
+- Follow the [Proposal process](/governance/proposals) to open a new change
+- Read [Security boundaries](/governance/security) before proposing gate or credential changes

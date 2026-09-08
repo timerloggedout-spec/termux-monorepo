@@ -113,6 +113,21 @@ jobs:
           has-omni: ${{ secrets.OMNI_API_KEY != '' || secrets.OMNIROUTE_API_KEY != '' }}
           has-openrouter: ${{ secrets.OPENROUTER_API_KEY != '' }}
           has-gemini: ${{ secrets.GEMINI_API_KEY != '' }}
+          target-sha: ${{ steps.pr.outputs.head_sha }}
+          current-sha: ${{ steps.pr.outputs.head_sha }}
+
+      - name: Record capability-spine observe decision
+        if: steps.pr.outputs.skip != 'true'
+        env:
+          DECISION_SUMMARY: ${{ steps.router.outputs.decision-summary }}
+        run: |
+          {
+            echo '## Capability–Scope–Specialist observe mode'
+            echo
+            echo 'The verified peer gate and existing second-pass execution route remain authoritative.'
+            echo
+            printf '%s\n' "${DECISION_SUMMARY:-capability decision unavailable}"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Build second-pass prompt (API diff)
         id: rev_ctx

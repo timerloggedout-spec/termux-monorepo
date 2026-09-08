@@ -6,9 +6,9 @@
 # ADE / BIUDL: base URLs are auto-discovered from secrets or the catalog below.
 # Never require a human to paste an endpoint for production free paths.
 
-version: 2
-updated_at: "2026-08-08T23:55:00Z"
-policy: free_tier_peer_by_model
+version: 3
+updated_at: "2026-08-22T05:00:00Z"
+policy: capability_scope_specialist_observe
 
 peers:
   - id: omni
@@ -67,10 +67,39 @@ selection_rule: |
     2. Else residual Gemini soft budgets.
     3. Else skip + comment (never hard-fail CI on quota).
 
+capability_scope_specialist:
+  mode: observe
+  rollback: set capability-spine-observe: 'false' on each model-router action call, or set CAPABILITY_SPINE_OBSERVE=false only for direct script execution; current execution routing remains unchanged
+  requested_capabilities: [triage, review, invoke, security_analysis, implementation, test, autofix, fix_ci, resolve_merge_conflict, conflict_resolution]
+  authority_effects: [read_only_analysis, review_request, branch_write, stacked_pull_request, provider_configuration]
+  hard_gates:
+    - declared_capability_and_effect
+    - trusted_provenance_and_policy_gate
+    - live_or_conservative_catalog_availability
+    - quota_and_cooldown_headroom
+    - current_sha_evidence_when_pr_scoped
+    - explicit_confirm_branch_write_for_branch_effects
+  decision_envelope:
+    schema_version: 2
+    contains: [mode, capability, state, recommendation, runner_up, candidate_availability, quota, evidence_confidence, score_components]
+    excludes: [secrets, raw_issue_bodies, raw_review_bodies, command_fragments]
+  specialist_boundaries:
+    coderabbit: declared library actions only; branch effects remain explicit-confirmation operations
+    qodo_and_devin: trusted review evidence only unless a separately declared provider action is approved
+    jules: independent implementation specialist; not the default recipient when a native provider action is eligible
+    copilot: candidate only after effective execution-identity availability is confirmed; blocked or unknown availability fails closed
+
 matrix_semantics:
+  repository_outcomes: primary routing evidence; capture correctness, substantive resolution, duplicate avoidance, safe-feedback time, cost, and coordinated asynchronous completion
+  evidence_confidence: sample count, recency, provenance, and decision-version metadata; sparse evidence remains low confidence
+  public_boards: contextual features only (llm-leaderboard-matrix.yaml), never a sole production authority
+  initial_weights:
+    repository_outcomes: 0.55
+    evidence_confidence: 0.15
+    public_inference: 0.15
+    availability_and_headroom: 0.15
   valleys: under-ranked free models that win on OUR harness (loss landscape)
   labels: our success metrics + 3L0 / ELO++
-  public_boards: features only (llm-leaderboard-matrix.yaml)
 
 related_issues: [91, 94, 86, 88, 93, 97, 100]
 stack: 99

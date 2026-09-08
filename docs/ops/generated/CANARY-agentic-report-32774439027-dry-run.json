@@ -1,0 +1,39 @@
+{
+  "label": "l0_actions_bridge_canary",
+  "mode": "dry_run",
+  "SHE_L0_LIVE": null,
+  "incident_id": "canary-agentic-report-32774439027",
+  "workflow": ".github/workflows/agentic-repository-operations-report.lock.yml",
+  "run_id": 32774439027,
+  "run_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32774439027",
+  "conclusion": "failure",
+  "event": "workflow_dispatch",
+  "owner": "timerloggedout-spec",
+  "repo": "termux-monorepo",
+  "planned_commands": [
+    {
+      "method": "POST",
+      "path": "repos/timerloggedout-spec/termux-monorepo/actions/runs/32774439027/rerun-failed-jobs",
+      "intent_target": "actions_rerun_failed_jobs",
+      "dry_run": true,
+      "description": "retry → actions_rerun_failed_jobs run_id=32774439027"
+    },
+    {
+      "method": "NONE",
+      "path": "",
+      "intent_target": "cache_refresh",
+      "dry_run": true,
+      "description": "non-Actions target cache_refresh — skipped by Actions bridge"
+    },
+    {
+      "method": "POST",
+      "path": "repos/timerloggedout-spec/termux-monorepo/actions/runs/32774439027/rerun",
+      "intent_target": "actions_rerun_workflow",
+      "dry_run": true,
+      "description": "restart → actions_rerun_workflow run_id=32774439027"
+    }
+  ],
+  "executed": false,
+  "mutates_source": false,
+  "note": "Quota ≠ run prevention: activation may succeed while Copilot/CLI step fails. Live wire requires SHE_L0_LIVE=1."
+}

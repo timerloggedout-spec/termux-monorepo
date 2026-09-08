@@ -46,6 +46,7 @@ pipeline_log.jsonl
 *.mp3
 *.wav
 *.png
+!docs/ops/generated/*.png
 *.jpg
 *.jpeg
 *.gif
@@ -123,6 +124,10 @@ deepseek-cli/browser-data-account2-v2/
 cli-synthegration/workspace/correlation/
 cli-synthegration/workspace/provenance/
 cli-synthegration/codex/
+
+# === Hub-local execution state ===
+.hub_mcp/
+# Redacted job result envelopes may be reviewed under hub_mcp/results/.
 
 # === Build artifacts and caches ===
 workspace/maxc/target/

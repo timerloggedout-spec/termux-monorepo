@@ -293,11 +293,11 @@ def get_pow_challenge(token: str, target_path="/api/v0/chat/completion") -> dict
 
 
 def upload_file(token: str, session_id: str, file_path: str) -> Optional[str]:
+    if ".." in str(file_path) or (not Path(file_path).is_absolute() and ".." in Path(file_path).parts):
+        raise ValueError("Invalid file path")
     if not Path(file_path).exists():
         console.print(f"[red]File not found: {file_path}[/]")
         return None
-    if ".." in file_path or Path(file_path).is_absolute() is False and ".." in Path(file_path).parts:
-        raise ValueError("Invalid file path")
 
     challenge = get_pow_challenge(token, "/api/v0/file/upload_file")
     pow_header = solve_pow(challenge)

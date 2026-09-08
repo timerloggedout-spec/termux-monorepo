@@ -1,0 +1,90 @@
+---
+title: "ArchWiz: The Central Automation Cockpit"
+sidebarTitle: "ArchWiz"
+description: "Explore ArchWiz, the central automation cockpit with 28 tools across 7 categories for forensic analysis, autonomous operation, and knowledge management."
+---
+
+ArchWiz is the central automation cockpit of the Termux Monorepo. It provides 28 specialized tools organized into 7 categories, giving you a unified interface for forensic analysis, autonomous task execution, verification, and knowledge management. Launch the cockpit from the repository root to access the interactive dashboard.
+
+## Launch the cockpit
+
+```bash
+python3 archwiz/archwiz.py
+```
+
+When you run this command, ArchWiz opens an interactive dashboard with 16 primary options and 3 mode toggles that let you switch between operational contexts without leaving the cockpit.
+
+## Tool categories
+
+<AccordionGroup>
+  <Accordion title="Cockpit & Pipeline">
+    <ul>
+  <li><strong>archwiz.py</strong> — Main dashboard and entry point for the cockpit</li>
+  <li><strong>dispatch\_task.py</strong> — Dispatch a task to the autonomous runner</li>
+  <li><strong>debug\_daemon.py</strong> — Background debugging and log aggregation</li>
+  <li><strong>probe.py</strong> — Inspect runtime state and active processes</li>
+  <li><strong>mirror.py</strong> — Mirror and sync cockpit state across sessions</li>
+</ul>
+  </Accordion>
+
+  <Accordion title="Forensic & Version Control">
+    <ul>
+  <li><strong>forensic\_toolchain.py</strong> — Run the full forensic analysis pipeline</li>
+  <li><strong>correlation\_scout.py</strong> — Find cross-file correlations and shared symbols</li>
+  <li><strong>fragment\_matcher.py</strong> — Match code fragments across the repository</li>
+  <li><strong>dangle\_detector.py</strong> — Detect dangling references and orphaned code</li>
+  <li><strong>timeline\_editor.py</strong> — Edit and replay commit timelines</li>
+</ul>
+  </Accordion>
+
+  <Accordion title="Autonomous Operation">
+    <ul>
+  <li><strong>autonomous\_runner.py</strong> — Execute autonomous agent workflows</li>
+  <li><strong>narrative.py</strong> — Generate narrative summaries of agent runs</li>
+  <li><strong>session\_digest.py</strong> — Summarize session activity and outcomes</li>
+  <li><strong>archivist.py</strong> — Archive completed sessions and artifacts</li>
+</ul>
+  </Accordion>
+
+  <Accordion title="Verification & Testing">
+    <ul>
+  <li><strong>sentinel.py</strong> — 5-gate verification system for changes</li>
+  <li><strong>validate\_promotion.py</strong> — Validate and promote changes through gates</li>
+</ul>
+  </Accordion>
+
+  <Accordion title="Knowledge & Memory">
+    <ul>
+  <li><strong>archivist.py</strong> — Maintain the knowledge archive and indices</li>
+  <li><strong>session\_digest.py</strong> — Build searchable session summaries</li>
+</ul>
+  </Accordion>
+
+  <Accordion title="Documentation Pipeline">
+    <ul>
+  <li><strong>narrative.py</strong> — Produce human-readable run narratives</li>
+  <li><strong>timeline\_editor.py</strong> — Document change timelines for review</li>
+</ul>
+  </Accordion>
+</AccordionGroup>
+
+## Quick commands
+
+ArchWiz also exposes several shell-level shortcuts you can run directly from the repository root without opening the dashboard:
+
+```bash
+archaeo <file>           # Research file history and provenance
+oracle <file>            # Check impact before making a change
+dispatch <task>          # Make a change through the autonomous runner
+validate_promotion.py    # Validate and promote a change through gates
+```
+
+## Dashboard modes
+
+The cockpit offers 3 mode toggles that change the visible toolset and default actions:
+
+1. **Forensic mode** — Surfaces timeline, correlation, and fragment tools
+2. **Autonomous mode** — Prioritizes runner, dispatch, and narrative tools
+3. **Verification mode** — Highlights sentinel gates and validation workflows
+
+Switch modes at runtime to adapt the cockpit to your current task without restarting.

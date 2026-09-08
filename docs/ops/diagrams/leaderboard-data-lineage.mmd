@@ -1,0 +1,30 @@
+flowchart TD
+  classDef external fill:#f3e8fd,stroke:#7b1fa2,color:#2b0c3d
+  classDef state fill:#e8f0fe,stroke:#1a73e8,color:#102a43
+  classDef guard fill:#fef7e0,stroke:#b06000,color:#4a2c00
+  classDef good fill:#e6f4ea,stroke:#188038,color:#102a43
+  classDef stop fill:#f1f3f4,stroke:#5f6368,color:#202124
+
+  public[Public leaderboard references: context features only]:::external
+  local[Local model-success matrix: 3L0/ELO and role suitability]:::state
+  availability[OpenRouter catalog poll, cache, stale cache, or proven fallback]:::external
+  budgets[Per-provider/model role usage counters and free-tier ceilings]:::guard
+  policy[Routing policy: free tier, role, prompt bound, declared peers]:::guard
+
+  public --> context[Contextual feature signal]:::state
+  local --> score[Role-aware local ranking label]:::state
+  availability --> eligible[Availability and free-model eligibility]:::guard
+  budgets --> eligible
+  policy --> eligible
+
+  context --> combine[Selection inputs assembled]:::state
+  score --> combine
+  eligible --> combine
+  combine --> route{Eligible candidate remains after policy and budget gates?}:::guard
+  route -->|yes| selected[Chosen provider/model with non-secret route reason]:::good
+  route -->|no| skip[Explicit no eligible route]:::stop
+  selected --> outcome[Completion, latency, request usage, cooldown, and route outcome]:::good
+  outcome --> evidence[Normalized operational evidence]:::state
+  evidence --> future[Future score update or experiment review only under accepted policy]:::guard
+
+  public -. never sole authority .-> route

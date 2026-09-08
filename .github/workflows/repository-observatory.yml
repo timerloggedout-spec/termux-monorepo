@@ -1,0 +1,69 @@
+name: repository observatory
+
+on:
+  schedule:
+    - cron: '17 4 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: repository-observatory-master
+  cancel-in-progress: false
+
+jobs:
+  index:
+    name: index owned and starred repositories
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: master
+          fetch-depth: 1
+          persist-credentials: true
+
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: '3.12'
+
+      - name: Build repository index
+        env:
+          REPOSITORY_OBSERVATORY_TOKEN: ${{ secrets.REPOSITORY_OBSERVATORY_TOKEN || github.token }}
+        run: |
+          set -euo pipefail
+          python scripts/github/repository_observatory.py \
+            --owner "$GITHUB_REPOSITORY_OWNER" \
+            --output workspace/llm_map/repositories/repository-index.json \
+            --markdown docs/repositories/matrix.md
+
+      - name: Publish summary
+        run: |
+          set -euo pipefail
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          data = json.loads(Path('workspace/llm_map/repositories/repository-index.json').read_text())
+          print('## Repository Observatory')
+          print()
+          print(f"Observed: `{data['observed_at']}`")
+          print()
+          for key, value in data['counts'].items():
+              print(f'- **{key}:** {value}')
+          PY
+
+      - name: Commit canonical index delta
+        run: |
+          set -euo pipefail
+          git add workspace/llm_map/repositories/repository-index.json docs/repositories/matrix.md
+          if git diff --cached --quiet; then
+            echo 'No repository-observatory delta to publish.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -s -m 'chore(observatory): refresh repository index' \
+            -m 'Agent-Identity: GitHub Actions Repository Observatory' \
+            -m 'Source: GitHub owned and starred repository metadata'
+          git push origin HEAD:master

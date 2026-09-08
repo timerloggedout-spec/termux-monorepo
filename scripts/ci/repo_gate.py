@@ -2,9 +2,9 @@
 """
 repo_gate.py — cheap, device-friendly hygiene gate for termux-monorepo.
 
-ArchWiz invariant gate (P0 spine).
+ArchW1z invariant gate (P0 spine).
 
-Design constraints (including the PR #2 requirement to limit local Android Termux device resource use):
+Design constraints (from PR #2 discussion: "Limit local, Android Termux, device, resources, usage."):
 
   * stdlib only, no pip installs, no network, no toolchains
   * no Rust/cargo build, no Chromium, no adb, no termux-api

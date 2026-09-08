@@ -1,0 +1,221 @@
+name: Repository development evaluation
+
+# Implements: THUB-007
+# Measures redacted, same-repository development evidence. It does not invoke a
+# model, mutate GitHub state, access provider credentials, or use a device runner.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, closed]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "Same-repository pull request number to evaluate"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  pull-requests: read
+  issues: read
+  checks: read
+
+concurrency:
+  group: repository-development-evaluation-${{ github.event.pull_request.number || inputs.pr_number }}
+  cancel-in-progress: true
+
+jobs:
+  collect:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.fork == false
+    name: collect redacted PR evidence
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 1
+          submodules: false
+
+      - name: Collect lifecycle and automation metrics
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
+          AUTOMATION_MARKER_PUBLISHER_LOGINS: ${{ vars.AUTOMATION_MARKER_PUBLISHER_LOGINS || format('github-actions[bot],{0}', github.repository_owner) }}
+        with:
+          script: |
+            const fs = require('fs');
+            const prNumber = Number(process.env.PR_NUMBER);
+            if (!Number.isInteger(prNumber) || prNumber < 1) {
+              core.setFailed('pr_number must be a positive integer');
+              return;
+            }
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const trustedPublishers = new Set(
+              (process.env.AUTOMATION_MARKER_PUBLISHER_LOGINS || '')
+                .split(',').map(value => value.trim().toLowerCase()).filter(Boolean)
+            );
+            const { data: pr } = await github.rest.pulls.get({owner, repo, pull_number: prNumber});
+            if (pr.head.repo?.fork) {
+              core.setFailed('Fork pull requests are not evaluated by this same-repository adapter');
+              return;
+            }
+
+            const reviews = await github.paginate(github.rest.pulls.listReviews, {
+              owner, repo, pull_number: prNumber, per_page: 100,
+            });
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner, repo, issue_number: prNumber, per_page: 100,
+            });
+            const checkRuns = await github.paginate(github.rest.checks.listForRef, {
+              owner, repo, ref: pr.head.sha, per_page: 100,
+            });
+
+            const latestChecks = new Map();
+            for (const check of checkRuns) {
+              const providerId = check.app?.id || check.app?.slug || 'unknown';
+              const identity = `${providerId}:${check.name}`;
+              const previous = latestChecks.get(identity);
+              const checkTime = new Date(check.completed_at || check.started_at || check.created_at || 0).getTime();
+              const previousTime = new Date(
+                previous?.completed_at || previous?.started_at || previous?.created_at || 0
+              ).getTime();
+              if (!previous || checkTime >= previousTime) latestChecks.set(identity, check);
+            }
+            const checkCounts = {success: 0, failure: 0, cancelled: 0, pending: 0};
+            for (const check of latestChecks.values()) {
+              if (check.status !== 'completed') {
+                checkCounts.pending += 1;
+              } else if (['success', 'skipped'].includes(check.conclusion)) {
+                checkCounts.success += 1;
+              } else if (check.conclusion === 'cancelled') {
+                checkCounts.cancelled += 1;
+              } else {
+                checkCounts.failure += 1;
+              }
+            }
+
+            let unresolvedThreadCount = null;
+            let resolvedThreadCount = 0;
+            try {
+              let after = null;
+              do {
+                const response = await github.graphql(`
+                  query($owner: String!, $repo: String!, $number: Int!, $after: String) {
+                    repository(owner: $owner, name: $repo) {
+                      pullRequest(number: $number) {
+                        reviewThreads(first: 100, after: $after) {
+                          nodes { isResolved }
+                          pageInfo { hasNextPage endCursor }
+                        }
+                      }
+                    }
+                  }`, {owner, repo, number: prNumber, after});
+                const threads = response.repository.pullRequest.reviewThreads;
+                unresolvedThreadCount = (unresolvedThreadCount || 0) +
+                  threads.nodes.filter(thread => !thread.isResolved).length;
+                resolvedThreadCount += threads.nodes.filter(thread => thread.isResolved).length;
+                after = threads.pageInfo.hasNextPage ? threads.pageInfo.endCursor : null;
+              } while (after);
+            } catch (error) {
+              core.info(`reviewThreads unavailable: ${error.message}`);
+              unresolvedThreadCount = null;
+              resolvedThreadCount = 0;
+            }
+
+            const markers = [
+              '<!-- continuous-agent-ops -->',
+              '<!-- peer-review-ready -->',
+              '<!-- peer-orch-coderabbit-autofix -->',
+            ];
+            const markerComments = comments.filter(comment =>
+              trustedPublishers.has((comment.user?.login || '').toLowerCase()) &&
+              typeof comment.body === 'string' && markers.some(marker => comment.body.includes(marker))
+            ).sort((left, right) => new Date(left.created_at) - new Date(right.created_at));
+            const markerFingerprints = new Set();
+            let duplicateAutomationMarkerCount = 0;
+            for (const comment of markerComments) {
+              const marker = markers.find(value => comment.body.includes(value));
+              const author = (comment.user?.login || '').toLowerCase();
+              const fingerprint = `${author}:${marker}`;
+              if (markerFingerprints.has(fingerprint)) duplicateAutomationMarkerCount += 1;
+              markerFingerprints.add(fingerprint);
+            }
+            const state = pr.merged_at ? 'merged' : pr.state === 'closed' ? 'closed' : 'open';
+            const raw = {
+              subject_type: 'pull-request',
+              subject_key: `pr-${prNumber}`,
+              source_revision: pr.head.sha,
+              adapter: 'repository-pr-lifecycle',
+              collected_at: new Date().toISOString(),
+              lifecycle: {
+                state,
+                opened_at: pr.created_at,
+                updated_at: pr.updated_at,
+                closed_at: pr.closed_at || null,
+                merged_at: pr.merged_at || null,
+              },
+              metrics: {
+                commit_count: pr.commits,
+                changed_file_count: pr.changed_files,
+                additions: pr.additions,
+                deletions: pr.deletions,
+                review_count: reviews.length,
+                unresolved_thread_count: unresolvedThreadCount,
+                check_success_count: checkCounts.success,
+                check_failure_count: checkCounts.failure,
+                check_cancelled_count: checkCounts.cancelled,
+                check_pending_count: checkCounts.pending,
+                automation_marker_count: markerComments.length,
+                first_automation_response_at: markerComments[0]?.created_at || null,
+                resolved_thread_count: resolvedThreadCount,
+                duplicate_automation_marker_count: duplicateAutomationMarkerCount,
+              },
+            };
+            fs.mkdirSync('evaluation-results', {recursive: true});
+            fs.writeFileSync('evaluation-results/raw-repository-evidence.json', JSON.stringify(raw, null, 2));
+            core.info(`Collected redacted evidence for PR #${prNumber}; checks=${latestChecks.size}, markers=${markerComments.length}`);
+
+      - name: Build and audit canonical manifest
+        run: |
+          set -euo pipefail
+          python3 scripts/ci/repository_development_evaluation.py manifest \
+            --input evaluation-results/raw-repository-evidence.json \
+            --output evaluation-results/repository-development-manifest.json
+          rm -f evaluation-results/raw-repository-evidence.json
+          python3 scripts/ci/repository_development_evaluation.py audit \
+            evaluation-results/repository-development-manifest.json
+
+      - name: Publish advisory evaluation summary
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          manifest = json.loads(Path('evaluation-results/repository-development-manifest.json').read_text())
+          metrics = manifest['metrics']
+          summary = [
+              '## Repository development evaluation',
+              '',
+              f"- Subject: `{manifest['subject_key']}`",
+              f"- State: `{manifest['lifecycle']['state']}`",
+              f"- Changes: {metrics['commit_count']} commits, {metrics['changed_file_count']} files, +{metrics['additions']} / -{metrics['deletions']}",
+              f"- Checks: {metrics['check_success_count']} success, {metrics['check_failure_count']} failure, {metrics['check_cancelled_count']} cancelled, {metrics['check_pending_count']} pending",
+              f"- Reviews: {metrics['review_count']}; threads: {metrics['resolved_thread_count']} resolved / {metrics['unresolved_thread_count']} unresolved",
+              f"- Trusted automation markers: {metrics['automation_marker_count']} ({metrics['duplicate_automation_marker_count']} duplicate fingerprints)",
+          ]
+          Path('evaluation-results/summary.md').write_text('\n'.join(summary) + '\n')
+          PY
+          cat evaluation-results/summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload redacted evaluation evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: repository-development-evaluation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evaluation-results/repository-development-manifest.json
+            evaluation-results/summary.md
+          if-no-files-found: error
+          retention-days: 30
+          include-hidden-files: false

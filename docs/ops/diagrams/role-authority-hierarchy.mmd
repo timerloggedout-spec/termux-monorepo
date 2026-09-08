@@ -1,0 +1,36 @@
+flowchart TB
+  classDef human fill:#e8f0fe,stroke:#1a73e8,color:#102a43
+  classDef token fill:#fef7e0,stroke:#b06000,color:#4a2c00
+  classDef auto fill:#e6f4ea,stroke:#188038,color:#102a43
+  classDef writer fill:#fce8e6,stroke:#c5221f,color:#4a1010
+  classDef external fill:#f3e8fd,stroke:#7b1fa2,color:#2b0c3d
+  classDef hold fill:#f1f3f4,stroke:#5f6368,color:#202124
+
+  operator[Repository operator / human approver]:::human
+  maintainer[Trusted collaborator / reviewer]:::human
+  operator --> policy[Accepted policy, capability charters, kill switches]:::human
+  maintainer --> review[PR review and protected-branch checks]:::human
+
+  policy --> gh[GitHub workflow token: least job permissions]:::token
+  policy --> optoken[OPERATOR token lane: exact allowlisted action only]:::token
+  policy --> provider[Configured external provider credential]:::token
+
+  gh --> reader[Read-only/advisory workflow]:::auto
+  gh --> statewriter[Bounded issue/PR/check state writer]:::writer
+  gh --> fixedwriter[Fixed-path or fixed-ref repository writer]:::writer
+  optoken --> peerrequest[Provider request/acknowledgement state]:::writer
+  provider --> model[Gemini or OpenRouter invocation]:::external
+  provider --> reviewer[CodeRabbit / opt-in peer review]:::external
+
+  reader --> evidence[Summaries, checks, artifacts, catalogs]:::auto
+  statewriter --> evidence
+  fixedwriter --> postcheck[Postcondition + rollback boundary]:::writer
+  peerrequest --> evidence
+  model --> evidence
+  reviewer --> evidence
+
+  fixedwriter --> charter{Accepted writer tier and fixed scope?}:::hold
+  charter -->|no| blocked[Separate acceptance / hold]:::hold
+  charter -->|yes| postcheck
+  postcheck --> review
+  evidence --> review

@@ -66,6 +66,10 @@ Do not persist PR, issue, timeline-event, review, comment, or Linear description
 
 If a typed selector or direct permalink has no exact root, return no match; do not fall back to unrelated fuzzy results. If a query reaches the node limit, disclose the bound instead of silently widening the graph.
 
+## Current bounded record
+
+For AR-11 provider command library review on 2026-08-20, the exact root `pr:278` was queried at depth `2` with a maximum of `30` nodes. The canonical index returned no matching root, verified timeline, or candidates because the newly opened PR was not yet in published index coverage. The result is recorded in the proposal manifest and process card; no generated index file was edited, and no relationship was inferred.
+
 ## Closeout standard
 
 Summarize the chosen root, verified timeline, relevant candidate links, evidence locations, index/history bounds, and any required follow-up. If no relationship is found, say so precisely rather than inferring one from naming similarity.

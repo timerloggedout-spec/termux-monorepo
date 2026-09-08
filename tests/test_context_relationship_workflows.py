@@ -81,3 +81,18 @@ def test_all_context_index_writers_are_pinned_to_staging_and_share_one_lock():
     assert "group: context-relationship-writer-master-staging" in publisher
     assert "group: context-relationship-writer-master-staging" in reconciliation
     assert "group: context-relationship-writer-master-staging" in backfill
+
+
+def test_audit_workflow_embeds_a_read_only_exact_root_evidence_matrix():
+    content = workflow("context-relationship-audit.yml")
+
+    assert "contents: read" in content
+    assert "checks: read" in content
+    assert "persist-credentials: false" in content
+    assert "context-relationship-evidence-matrix/v1" in content
+    assert "decision_support_only" in content
+    assert "fuzzy_fallback" in content
+    assert "actions/upload-artifact" in content
+    assert "contents: write" not in content
+    assert "pull_request_target" not in content
+    assert "git push" not in content

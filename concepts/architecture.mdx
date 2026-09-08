@@ -1,0 +1,36 @@
+---
+title: "Termux Monorepo Architecture Overview"
+sidebarTitle: "Architecture"
+description: "Understand the six core components of the Termux Monorepo, how they integrate with DeepSeek on Android, and the role of ICM in multi-agent automation."
+---
+
+The Termux Monorepo is designed as a microservices-style system that runs natively inside Termux on Android. It orchestrates AI-powered development workflows through six specialized components that share a common runtime environment and coordinate via the filesystem, environment variables, and JSON indices. The primary operator surface is Android/Termux, while Linux servers and cloud CI provide secondary support for validation and remote execution.
+
+## Platform and runtime
+
+The monorepo targets Termux on Android as its primary platform. Python 3 serves as the dominant runtime, with selective use of Node.js for MCP servers, Bash for automation scripts, and Rust for performance-critical modules. All components operate within the Termux filesystem and rely on standard Unix tooling available through `pkg`.
+
+## Core components
+
+The monorepo contains six interdependent components, each responsible for a distinct layer of the automation stack.
+
+| Component | Directory | Role |
+| --- | --- | --- |
+| ArchWiz | `archwiz/` | Central automation cockpit with 28 tools for forensic analysis, verification, and knowledge management |
+| DeepCLI | `deepcli/` | DeepSeek-oriented CLI for session creation, prompt sending, conversation branching, and export |
+| Termux Multi-Agent | `termux-multi-agent/` | Agent provisioning, task dispatch, and orchestration with environment-driven configuration |
+| CLI Synthegration | `cli-synthegration/` | Conversation synthesis, branching, and session export with account and token management |
+| Central Mapper | `workspace/llm_map/` | AST indexing and dependency graph generation for codebase forensics and navigation |
+| Governance | `docs/proposals/`, `docs/icm/` | Proposal tracking, consensus tiers, and the ICM system map |
+
+## DeepSeek API integration
+
+The monorepo integrates with the DeepSeek API through multiple entry points. DeepCLI (`deepcli.py`) provides the primary interactive interface, while `deepapi.py` and `deepseek_proxy.py` support programmatic and proxied access. The `--thinking` flag enables reasoning mode on supported models. Conversation history, branching, and exports flow through CLI Synthegration into the session archive (`synthegration_exports/`), which currently holds 3,281 exported sessions.
+
+## ICM and system mapping
+
+The Interpretable Context Methodology (ICM) system map lives in `docs/icm/CLAUDE.md` and defines how context is structured, traced, and validated across the monorepo. Central Mapper builds the concrete indices (`llm_index.jsonl`, `func_index.jsonl`, `file_graph.json`, `deps.jsonl`) that make the ICM actionable. Together, they let you query the codebase by symbol, dependency, or task relationship rather than by filename alone.
+
+## Operator posture
+
+You operate the monorepo from an Android device running Termux. Local commands like `archaeo`, `oracle`, and `dispatch` run in this environment. CI gates (`repo_gate.py`, `termux_smoke.py`) validate changes before merge, and GitHub Actions can trigger DeepCLI workflows on pull request events. Cloud and Linux surfaces exist for remote validation, but the authoritative runtime remains the Termux shell on your device.

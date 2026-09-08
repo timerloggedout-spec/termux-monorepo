@@ -1,0 +1,38 @@
+name: submodule integrity
+
+on:
+  pull_request:
+    paths:
+      - ".gitmodules"
+      - "refTemplates/smods/**"
+      - "docs/submodules/**"
+      - "scripts/ci/submodule_integrity.py"
+  push:
+    branches: [master-staging]
+    paths:
+      - ".gitmodules"
+      - "refTemplates/smods/**"
+      - "docs/submodules/**"
+      - "scripts/ci/submodule_integrity.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: submodule-integrity-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: governed fork pins
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 1
+          submodules: false
+
+      - name: Validate manifest and Git links
+        run: python3 scripts/ci/submodule_integrity.py

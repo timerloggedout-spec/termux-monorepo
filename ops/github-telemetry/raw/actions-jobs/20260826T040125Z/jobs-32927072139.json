@@ -1,0 +1,65 @@
+{
+  "collected_at": "2026-08-26T04:01:35.616722+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 32927072139,
+    "endpoint": ".../runs/32927072139/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 98052020158,
+        "run_id": 32927072139,
+        "workflow_name": "Agent feedback \u2192 Linear subtasks",
+        "head_branch": "jules-10084428392175563811-0a1b8c44",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32927072139",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1FsXvg",
+        "head_sha": "afaa79f3d84bb3be24d07b854c37b667ebe674bc",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98052020158",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32927072139/job/98052020158",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:36:20Z",
+        "started_at": "2026-08-26T03:36:24Z",
+        "completed_at": "2026-08-26T03:36:27Z",
+        "name": "sync-linear",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:36:25Z",
+            "completed_at": "2026-08-26T03:36:25Z"
+          },
+          {
+            "name": "Sync to Linear",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:36:25Z",
+            "completed_at": "2026-08-26T03:36:26Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:36:26Z",
+            "completed_at": "2026-08-26T03:36:26Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98052020158",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024226,
+        "runner_name": "GitHub Actions 1000024226",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

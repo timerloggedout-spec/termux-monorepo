@@ -1,5 +1,5 @@
 schema_version: 1
-assessment_date: 2026-08-18
+assessment_date: 2026-08-20
 policy: >-
   DeepWiki and agent-generated claims are discovery aids. They may be cited only
   alongside primary evidence and never authorize candidate adoption, workflow
@@ -9,12 +9,13 @@ sources:
   - source_id: DEEPWIKI_DIRECT
     source_type: direct DeepWiki page
     url: https://deepwiki.com/timerloggedout-spec/termux-monorepo
-    result: not_verifiable
-    observed_at: 2026-08-18
+    result: confirmed
+    observed_at: 2026-08-20
     observation: >-
-      The page was reachable but reported "Repository Not Indexed". It supplied
-      no code-structure, template, Gantt, dependency, or automation claims.
-    action: do not use for capability claims; recheck only after indexing completes
+      The page returned an indexed, source-linked repository snapshot with
+      navigable documentation topics and a visible refresh window. The indexed
+      source reference can lag the current default branch.
+    action: use for discovery and source navigation only; corroborate every material claim against current repository source, commits, workflows, or review evidence before adoption
 
   - source_id: DEEPWIKI_NAMED_BRANCH
     source_type: repository branch with DeepWiki in its name
@@ -48,16 +49,16 @@ sources:
     source_type: Devin/agent evidence
     result: not_used
     observation: >-
-      No Devin output was needed because direct source and repository metadata
-      were available. The direct DeepWiki page offered an "Index your code with
-      Devin" control, but no indexing request was submitted.
-    action: if used later, record the exact claim and validate it against source
+      No generated Devin Wiki assertion was used as primary evidence. The
+      repository now carries .devin/wiki.json to steer future Wiki coverage,
+      but the configuration is not an export, synchronization, or writer API.
+    action: if generated content is used later, record the exact claim and validate it against current primary source
 
 claim_reconciliation:
   - claim_id: DW-001
     claim: A DeepWiki index exists and can be used to assess this repository.
-    status: contradicted
-    reason: The direct page explicitly reports that the repository is not indexed.
+    status: confirmed
+    reason: The 2026-08-20 recheck returned an indexed, source-linked repository snapshot; its ref freshness remains subject to validation.
 
   - claim_id: DW-002
     claim: The deepwiki-named branch itself supplies DeepWiki capability evidence.

@@ -8,9 +8,10 @@
 # - Long-term: A/B + randomized selection to hunt low valleys / saddles
 #
 # Related: #94 #86 #88 #91 · Termux-Multi-Agents/*
+# 2026-08-23: stealth/ox-alpha added; free = :free OR zero pricing
 
 version: 1
-updated_at: "2026-08-08T22:30:00Z"
+updated_at: "2026-08-23T11:20:00Z"
 updated_by: grok
 policy: free_tier_only
 
@@ -18,7 +19,7 @@ public_boards:
   # Snapshot references — refresh best-effort; never sole routing authority
   - id: openrouter-free-collection
     url: https://openrouter.ai/collections/free-models
-    notes: "Live free model roster rotates; always filter :free"
+    notes: "Live free roster; free = :free suffix OR zero pricing (ox-alpha)"
   - id: lmsys-arena
     url: https://lmarena.ai/
     notes: "Chatbot Arena Elo — general preference, not our harness"
@@ -36,6 +37,10 @@ public_boards:
 immediate_role_picks:
   triage:
     preferred:
+      - id: stealth/ox-alpha
+        context_tokens: 1048576
+        max_requests: 1
+        strength: [coding, agentic, long-context, reasoning]
       - id: meta-llama/llama-3.3-70b-instruct:free
         context_tokens: 131000
         max_requests: 1
@@ -46,6 +51,10 @@ immediate_role_picks:
         strength: [fast, general]
   review:
     preferred:
+      - id: stealth/ox-alpha
+        context_tokens: 1048576
+        max_requests: 1
+        strength: [coding, agentic, long-context, reasoning]
       - id: qwen/qwen3-coder:free
         context_tokens: 262000
         max_requests: 1
@@ -60,6 +69,10 @@ immediate_role_picks:
         strength: [reasoning]
   invoke:
     preferred:
+      - id: stealth/ox-alpha
+        context_tokens: 1048576
+        max_requests: 1
+        strength: [coding, agentic, long-context, reasoning]
       - id: meta-llama/llama-3.3-70b-instruct:free
         context_tokens: 131000
         max_requests: 1
@@ -87,7 +100,8 @@ our_success_metrics:
 
 constraints:
   cost: free_only
-  openrouter_suffix_required: ":free"
+  openrouter_free_rule: ":free_suffix_or_zero_price"
+  # openrouter_suffix_required retired 2026-08-23 — stealth/ox-alpha is free without :free
   reject_paid_routes: true
   max_prompt_chars:
     triage: 4000

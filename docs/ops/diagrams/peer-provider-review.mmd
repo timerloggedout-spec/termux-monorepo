@@ -1,0 +1,37 @@
+flowchart TD
+  classDef event fill:#e8f0fe,stroke:#1a73e8,color:#102a43
+  classDef guard fill:#fef7e0,stroke:#b06000,color:#4a2c00
+  classDef good fill:#e6f4ea,stroke:#188038,color:#102a43
+  classDef pending fill:#f3e8fd,stroke:#7b1fa2,color:#2b0c3d
+  classDef stop fill:#f1f3f4,stroke:#5f6368,color:#202124
+
+  start[Supported PR lifecycle, new issue comment, or submitted review]:::event
+  start --> route{Target is an eligible same-repository PR and non-superseded run?}:::guard
+  route -->|no| ignore[Ignore or coalesce obsolete event]:::stop
+  route -->|yes| policy[Load provider policy and current head SHA]:::good
+  policy --> providers{Required provider set}:::guard
+  providers --> default[Default: verified CodeRabbit]:::good
+  providers --> optin[Optional: Qodo and Devin only when explicitly configured]:::pending
+
+  default --> marker{Authorized OPERATOR marker with exact action, provider, cycle, and SHA?}:::guard
+  optin --> marker
+  marker -->|existing exact request| dedupe[Reuse idempotent request state]:::good
+  marker -->|no request| request[Create bounded provider request evidence]:::good
+
+  request --> observe[Collect review, check, or inline-comment evidence]:::pending
+  dedupe --> observe
+  observe --> current{Evidence is provider-bound and matches current SHA?}:::guard
+  current -->|no| stale[Status-only observation; cannot complete cycle]:::stop
+  current -->|yes| complete[Mark provider completed for current cycle]:::good
+
+  complete --> wait{All configured providers complete?}:::guard
+  wait -->|yes| second[Eligible second pass or downstream review route]:::good
+  wait -->|no| cooldown{Provider cooldown or bounded retry evidence?}:::guard
+  cooldown -->|yes| pending[Publish visible cooldown/pending state]:::pending
+  cooldown -->|no| pending
+
+  pending --> enforce{PEER_ENFORCE_PROVIDER_COMPLETION explicitly true?}:::guard
+  enforce -->|no| advisory[Advisory pending: workflow succeeds with state summary]:::good
+  enforce -->|yes| required[Deliberate required pending state; no fake completion]:::stop
+
+  second --> final[Publish SHA-bound completion summary]:::good

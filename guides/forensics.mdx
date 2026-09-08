@@ -1,0 +1,140 @@
+---
+title: "Trace Code Provenance with ArchWiz Forensics"
+sidebarTitle: "Forensics"
+description: "Learn how to research file history, check change impact, trace provenance with forensic tools, and resurrect lost code in the Termux Monorepo."
+---
+
+ArchWiz includes a dedicated forensic toolchain for tracing where code came from, assessing the impact of a change before you make it, and recovering lost implementations. This guide walks you through a complete forensic investigation using the provenance and restoration tools available in the monorepo.
+
+<Steps>
+  <Step title="Research file history with archaeo">
+    Start any investigation by pulling the full history of a target file. `archaeo` shows commits, authors, and message summaries.
+
+    <CodeGroup>
+
+    ```bash
+    archaeo src/auth/middleware.py
+    ```
+
+    </CodeGroup>
+
+    Expected output:
+
+    ```text
+    [archaeo] 14 commits for src/auth/middleware.py
+    a1e4c8d  2025-01-10  alice  "Add JWT validation"
+    7f3a9b2  2025-01-08  bob    "Refactor auth flow"
+    3d8e1f0  2025-01-05  alice  "Initial middleware scaffold"
+    ```
+  </Step>
+  <Step title="Check impact before changing with oracle">
+    Before you edit a file, run `oracle` to see which other files and tests depend on it.
+
+    <CodeGroup>
+
+    ```bash
+    oracle src/auth/middleware.py
+    ```
+
+    </CodeGroup>
+
+    Expected output:
+
+    ```text
+    [oracle] 7 dependents for src/auth/middleware.py
+    src/api/routes.py
+    src/api/handlers/login.py
+    tests/test_auth.py
+    tests/test_middleware.py
+    docs/proposals/active/auth-42/ITEMS.md
+    ```
+  </Step>
+  <Step title="Run the forensic toolchain">
+    Use `forensic_toolchain.py` to perform a full provenance scan. It orchestrates the fragment matcher, similarity scan, and correlation scout in one pass.
+
+    <CodeGroup>
+
+    ```bash
+    python3 archwiz/forensic_toolchain.py --target src/auth/middleware.py --depth 3
+    ```
+
+    </CodeGroup>
+
+    Expected output:
+
+    ```text
+    [forensic_toolchain] Starting scan: src/auth/middleware.py
+    [fragment_matcher] 4 function fragments tracked
+    [similarity_scan] 2 near-duplicate blocks found
+    [correlation_scout] 3 path migrations detected
+    ```
+  </Step>
+  <Step title="Trace file-path changes with correlation_scout">
+    When a file has moved or been renamed, `correlation_scout.py` traces its path across history and links the old and new locations.
+
+    <CodeGroup>
+
+    ```bash
+    python3 archwiz/correlation_scout.py --file src/auth/middleware.py --show-migrations
+    ```
+
+    </CodeGroup>
+
+    Expected output:
+
+    ```text
+    [correlation_scout] Path migrations for src/auth/middleware.py
+    2025-01-05  src/utils/auth.py        -> src/auth/middleware.py
+    2024-12-20  src/legacy/auth_old.py    -> src/utils/auth.py
+    ```
+  </Step>
+  <Step title="Match function-level provenance with fragment_matcher">
+    Drill down to individual functions to see when they were introduced, modified, or copied from another file.
+
+    <CodeGroup>
+
+    ```bash
+    python3 archwiz/fragment_matcher.py --file src/auth/middleware.py --function validate_token
+    ```
+
+    </CodeGroup>
+
+    Expected output:
+
+    ```text
+    [fragment_matcher] Function: validate_token
+    Origin: src/utils/auth.py @ commit 3d8e1f0
+    Migrated: src/auth/middleware.py @ commit 7f3a9b2
+    Last modified: 2025-01-10 @ a1e4c8d
+    ```
+  </Step>
+  <Step title="Resurrect lost code with restore_version">
+    If a function or file was deleted or broken in a recent commit, use `restore_version.py` to recover a known-good version.
+
+    <CodeGroup>
+
+    ```bash
+    python3 archwiz/restore_version.py --file src/auth/middleware.py --commit a1e4c8d --dry-run
+    python3 archwiz/restore_version.py --file src/auth/middleware.py --commit a1e4c8d
+    ```
+
+    </CodeGroup>
+
+    Expected output:
+
+    ```text
+    [restore_version] Dry-run: would restore src/auth/middleware.py from a1e4c8d
+    [restore_version] Restored src/auth/middleware.py from a1e4c8d
+    ```
+  </Step>
+</Steps>
+
+<Warning>
+  Always run `oracle` before restoring an old version. Restoring code without checking dependents can reintroduce outdated interfaces that break downstream modules.
+</Warning>
+
+<Tip>
+  Combine forensics with the knowledge indices for deeper reconnaissance. After running `archaeo` and `oracle`, query the index with `archivist.py --file <target> --relationships` to see the full dependency graph and cross-reference the historical timeline with structural impact.
+</Tip>
+
+For more on querying the knowledge base, see the [Index rebuild guide](/guides/index-rebuild). To understand how ArchWiz fits into the broader system, read the [ArchWiz component](/components/archwiz) overview.

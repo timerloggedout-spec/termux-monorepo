@@ -61,7 +61,14 @@ with open(target, 'w') as f:
             print("Temporary script path is a symlink", file=sys.stderr)
             return False
 
-        fd = os.open(str(tmp_path), os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+        if tmp_path.exists():
+            tmp_path.unlink()
+
+        flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL
+        if hasattr(os, "O_NOFOLLOW"):
+            flags |= os.O_NOFOLLOW
+
+        fd = os.open(str(tmp_path), flags, 0o600)
         with open(fd, 'w') as f:
             f.write(script)
 

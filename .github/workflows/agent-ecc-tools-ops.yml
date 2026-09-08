@@ -1,20 +1,13 @@
 name: ECC Tools comment-command ops
 
-# Full ADE surface — same class as continuous-ops (@coderabbitai) and jules lanes (@jules).
-# Actions posts /ecc-tools slash comments; the installed GitHub App executes hosted work.
+# Full ADE surface — continuous-ops / jules / coderabbit class.
+# Actions posts lean slash/@ comments; Apps execute. Dual-gate merges.
 #
-# Surfaces (not a single issue):
-#   1. Open PR sweep — harness-touching PRs get /ecc-tools audit
-#   2. pull_request path filter — agent config / skills / hooks / MCP changes
-#   3. Any issue — label ecc-tools|ecc|ECC or operator /ecc-tools-ops comment
-#   4. Schedule — matrix cycle (#175) + PR harness sweep
-#   5. ecc-tools[bot] activity — ack + dual-gate note
-#   6. workflow_dispatch — single issue OR sweep-prs
+# Token policy: marker + command + one meta line. Batch multi-cmd into ONE comment.
+# CodeRabbit co-triggers are operator-gated (or quiet ecc-bot PR only for review).
+# Never schedule-fire @coderabbitai autofix (branch-write requires explicit ask).
 #
-# Commands: analyze | setup | audit | doctor | repair | full-cycle
-# Dual-gate remains merge authority. Never auto-merge App PRs.
-#
-# SECURITY: empty default permissions; markers debounce; no secrets in if:
+# Surfaces: PR path audit | PR sweep | matrix #175 | any issue | PR operator | bot ack
 
 on:
   schedule:
@@ -22,36 +15,28 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'issue = post on one issue; sweep-prs = harness PR audit sweep'
+        description: 'sweep-prs | issue'
         required: true
         default: 'sweep-prs'
         type: choice
-        options:
-          - sweep-prs
-          - issue
+        options: [sweep-prs, issue]
       command:
-        description: 'Command when mode=issue (full-cycle = analyze+setup+audit+doctor)'
+        description: 'issue mode command'
         required: false
         default: 'analyze'
         type: choice
-        options:
-          - analyze
-          - setup
-          - audit
-          - doctor
-          - repair
-          - full-cycle
+        options: [analyze, setup, audit, doctor, repair, full-cycle, cr-review, cr-autofix]
       issue_number:
-        description: 'Issue number when mode=issue (default 175 matrix)'
+        description: 'issue mode target'
         required: false
         default: '175'
       force:
-        description: 'Ignore debounce markers'
+        description: 'Ignore debounce'
         required: false
         default: false
         type: boolean
       max_prs:
-        description: 'Max PRs to touch in sweep mode'
+        description: 'sweep-prs cap'
         required: false
         default: '10'
   issues:
@@ -85,7 +70,7 @@ env:
   HARNESS_PATH_RE: '(^|/)(\.claude|\.codex|\.agents|\.hermes|\.pi)(/|$)|(^|/)(hooks|mcp|skills)(/|$)|SKILL\.md$|AGENTS\.md$|CLAUDE\.md$|ecc-tools\.ya?ml$'
 
 jobs:
-  # ─── A. PR harness path event → audit on that PR ─────────────────────────
+  # ─── A. PR harness path → lean /ecc-tools audit ─────────────────────────
   pr-harness-audit:
     if: |
       github.event_name == 'pull_request' &&
@@ -98,7 +83,7 @@ jobs:
       pull-requests: write
       issues: write
     steps:
-      - name: Post /ecc-tools audit on harness-touching PR
+      - name: Lean /ecc-tools audit
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         with:
           script: |
@@ -106,54 +91,33 @@ jobs:
             const marker = '<!-- ecc-tools-ops:audit -->';
             const debounceMs = 6 * 60 * 60 * 1000;
             const comments = await github.paginate(github.rest.issues.listComments, {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: pr.number,
-              per_page: 100,
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: pr.number, per_page: 100,
             });
-            const prior = comments
-              .filter(c => c.body?.includes(marker))
+            const prior = comments.filter(c => c.body?.includes(marker))
               .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
-            if (prior && (Date.now() - new Date(prior.created_at).getTime()) < debounceMs) {
-              core.info(`PR #${pr.number}: audit debounced`);
-              return;
+            if (prior && Date.now() - new Date(prior.created_at) < debounceMs) {
+              core.info(`#${pr.number} debounced`); return;
             }
-            // Confirm at least one changed file matches harness surface
             const files = await github.paginate(github.rest.pulls.listFiles, {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: pr.number,
-              per_page: 100,
+              owner: context.repo.owner, repo: context.repo.repo,
+              pull_number: pr.number, per_page: 100,
             });
             const re = new RegExp(process.env.HARNESS_PATH_RE || '', 'i');
             const hits = files.filter(f => re.test(f.filename));
-            if (hits.length === 0) {
-              core.info(`PR #${pr.number}: path filter fired but no harness file in listFiles — skip`);
-              return;
-            }
-            const sample = hits.slice(0, 8).map(f => f.filename).join(', ');
+            if (!hits.length) { core.info(`#${pr.number} no harness files`); return; }
+            // LEAN: marker + command + one meta line
             await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
+              owner: context.repo.owner, repo: context.repo.repo,
               issue_number: pr.number,
               body: [
                 marker,
                 '/ecc-tools audit',
-                '',
-                '**Agent-Identity:** github-actions (agent-ecc-tools-ops / pr-harness-audit)',
-                `**Timestamp:** ${new Date().toISOString()}`,
-                `**PR:** #${pr.number} \`${pr.head.ref}\` → \`${pr.base.ref}\``,
-                `**Harness paths:** ${sample}`,
-                '',
-                'Repo-side trigger: pull_request paths matched agent/harness surfaces.',
-                'ECC Tools App executes the audit. Dual-gate remains merge authority.',
-                '',
-                'Refs: https://github.com/apps/ecc-tools',
+                `<!-- meta:gha ecc-ops lane=pr-path pr=${pr.number} n=${hits.length} -->`,
               ].join('\n'),
             });
-            core.info(`Posted /ecc-tools audit on PR #${pr.number}`);
 
-  # ─── B. Schedule + dispatch sweep of open harness PRs ────────────────────
+  # ─── B. PR sweep (schedule + dispatch) ───────────────────────────────────
   sweep-prs:
     if: |
       github.event_name == 'schedule' ||
@@ -165,7 +129,7 @@ jobs:
       pull-requests: write
       issues: write
     steps:
-      - name: Sweep open PRs for harness surfaces → /ecc-tools audit
+      - name: Sweep harness PRs (lean)
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
           FORCE: ${{ github.event.inputs.force || 'false' }}
@@ -174,181 +138,105 @@ jobs:
           script: |
             const force = process.env.FORCE === 'true';
             const maxPrs = Math.min(Number(process.env.MAX_PRS) || 10, 20);
-            const marker = '<!-- ecc-tools-ops:audit -->';
             const debounceMs = 12 * 60 * 60 * 1000;
             const re = new RegExp(process.env.HARNESS_PATH_RE || '', 'i');
-
             const prs = await github.paginate(github.rest.pulls.list, {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              state: 'open',
-              sort: 'updated',
-              direction: 'desc',
-              per_page: 50,
+              owner: context.repo.owner, repo: context.repo.repo,
+              state: 'open', sort: 'updated', direction: 'desc', per_page: 50,
             });
-
-            const eligible = prs.filter(p => !p.draft && !p.head.repo?.fork);
             let acted = 0;
             const report = [];
-
-            for (const pr of eligible) {
+            for (const pr of prs.filter(p => !p.draft && !p.head.repo?.fork)) {
               if (acted >= maxPrs) break;
-
-              let files;
+              let files = [];
               try {
                 files = await github.paginate(github.rest.pulls.listFiles, {
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  pull_number: pr.number,
-                  per_page: 100,
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  pull_number: pr.number, per_page: 100,
                 });
-              } catch (e) {
-                core.info(`PR #${pr.number} files skip: ${e.message}`);
-                continue;
-              }
-
+              } catch (e) { continue; }
               const hits = files.filter(f => re.test(f.filename));
-              const isEccBot = (pr.user?.login || '').toLowerCase().includes('ecc-tools');
-              if (hits.length === 0 && !isEccBot) continue;
-
+              const isEcc = (pr.user?.login || '').toLowerCase().includes('ecc-tools');
+              if (!hits.length && !isEcc) continue;
+              const cmd = isEcc ? 'doctor' : 'audit';
+              const marker = `<!-- ecc-tools-ops:${cmd} -->`;
               const comments = await github.paginate(github.rest.issues.listComments, {
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: pr.number,
-                per_page: 100,
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: pr.number, per_page: 100,
               });
-              const prior = comments
-                .filter(c => c.body?.includes(marker))
+              const prior = comments.filter(c => c.body?.includes(marker))
                 .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
-              if (prior && !force) {
-                const age = Date.now() - new Date(prior.created_at).getTime();
-                if (age < debounceMs) {
-                  core.info(`PR #${pr.number}: debounced`);
-                  continue;
-                }
-              }
-
-              const sample = hits.slice(0, 6).map(f => f.filename).join(', ') || '(ecc-tools bot PR)';
-              const cmd = isEccBot ? 'doctor' : 'audit';
-              const cmdMarker = `<!-- ecc-tools-ops:${cmd} -->`;
-
+              if (prior && !force && Date.now() - new Date(prior.created_at) < debounceMs) continue;
               await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
+                owner: context.repo.owner, repo: context.repo.repo,
                 issue_number: pr.number,
                 body: [
-                  cmdMarker,
+                  marker,
                   `/ecc-tools ${cmd}`,
-                  '',
-                  '**Agent-Identity:** github-actions (agent-ecc-tools-ops / sweep-prs)',
-                  `**Timestamp:** ${new Date().toISOString()}`,
-                  `**PR:** #${pr.number} @${pr.user?.login} \`${pr.head.ref}\` → \`${pr.base.ref}\``,
-                  `**Why:** ${isEccBot ? 'ecc-tools[bot] PR lifecycle' : 'harness-path files in diff'}`,
-                  `**Paths:** ${sample}`,
-                  '',
-                  'Continuous PR sweep (continuous-ops class). App executes; dual-gate merges.',
-                  'Refs: https://github.com/apps/ecc-tools',
+                  `<!-- meta:gha ecc-ops lane=sweep pr=${pr.number} -->`,
                 ].join('\n'),
               });
-
-              acted += 1;
-              report.push(`#${pr.number} → /ecc-tools ${cmd}`);
-              core.info(`Posted /ecc-tools ${cmd} on PR #${pr.number}`);
-              await new Promise(r => setTimeout(r, 1200));
+              acted++; report.push(`#${pr.number}:${cmd}`);
+              await new Promise(r => setTimeout(r, 800));
             }
+            core.summary.addHeading('ecc sweep').addRaw(`acted ${acted}`).addList(report.length ? report : ['none']).write();
 
-            core.summary
-              .addHeading('ECC Tools PR sweep')
-              .addRaw(`Acted on **${acted}** PR(s).`)
-              .addList(report.length ? report : ['(none eligible)'])
-              .write();
-
-  # ─── C. Schedule matrix cycle on #175 (ops tracker) — additive, not exclusive ─
+  # ─── C. Matrix #175 sparse (batched lean) ────────────────────────────────
   matrix-cycle:
     if: github.event_name == 'schedule'
     runs-on: ubuntu-latest
-    timeout-minutes: 6
+    timeout-minutes: 5
     permissions:
       contents: read
       issues: write
     steps:
-      - name: Post sparse free-tier cycle on priority matrix #175
+      - name: Batch analyze+doctor on #175
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         with:
           script: |
             const issueNumber = 175;
-            const commands = ['analyze', 'doctor'];
+            const marker = '<!-- ecc-tools-ops:full-cycle-lite -->';
             const debounceMs = 12 * 60 * 60 * 1000;
             const comments = await github.paginate(github.rest.issues.listComments, {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issueNumber,
-              per_page: 100,
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: issueNumber, per_page: 50,
             });
-            const posted = [];
-            for (const cmd of commands) {
-              const marker = `<!-- ecc-tools-ops:${cmd} -->`;
-              const prior = comments
-                .filter(c => c.body?.includes(marker))
-                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
-              if (prior && (Date.now() - new Date(prior.created_at).getTime()) < debounceMs) {
-                core.info(`#${issueNumber} /ecc-tools ${cmd}: debounced`);
-                continue;
-              }
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: issueNumber,
-                body: [
-                  marker,
-                  `/ecc-tools ${cmd}`,
-                  '',
-                  '**Agent-Identity:** github-actions (agent-ecc-tools-ops / matrix-cycle)',
-                  `**Timestamp:** ${new Date().toISOString()}`,
-                  '**Surface:** priority matrix #175 (ops tracker — one of many targets)',
-                  '',
-                  'Scheduled free-tier cycle. Full ADE also covers harness PRs + any labeled issue.',
-                  'Refs: https://github.com/apps/ecc-tools',
-                ].join('\n'),
-              });
-              posted.push(cmd);
-              await new Promise(r => setTimeout(r, 1500));
+            const prior = comments.filter(c => c.body?.includes(marker))
+              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
+            if (prior && Date.now() - new Date(prior.created_at) < debounceMs) {
+              core.info('#175 debounced'); return;
             }
-            core.info(`Matrix #175 posted: ${posted.join(',') || '(none)'}`);
+            // ONE comment, TWO commands — half the posts vs separate comments
+            await github.rest.issues.createComment({
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: issueNumber,
+              body: [
+                marker,
+                '/ecc-tools analyze',
+                '/ecc-tools doctor',
+                '<!-- meta:gha ecc-ops lane=matrix -->',
+              ].join('\n'),
+            });
 
-  # ─── D. Any issue: label or operator comment ─────────────────────────────
+  # ─── D. Any issue: label / operator / dispatch ───────────────────────────
   issue-commands:
     if: |
-      github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'issue' ||
-      (
-        github.event_name == 'issues' &&
-        github.event.action == 'labeled' &&
-        (
-          github.event.label.name == 'ecc-tools' ||
-          github.event.label.name == 'ecc' ||
-          github.event.label.name == 'ECC'
-        )
-      ) ||
-      (
-        github.event_name == 'issue_comment' &&
-        !github.event.issue.pull_request &&
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'issue') ||
+      (github.event_name == 'issues' && github.event.action == 'labeled' &&
+        (github.event.label.name == 'ecc-tools' || github.event.label.name == 'ecc' || github.event.label.name == 'ECC')) ||
+      (github.event_name == 'issue_comment' && !github.event.issue.pull_request &&
         github.event.sender.type == 'User' &&
         contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association) &&
-        (
-          startsWith(github.event.comment.body, '/ecc-tools-ops') ||
-          startsWith(github.event.comment.body, '/ecc ops') ||
-          contains(github.event.comment.body, '<!-- request-ecc-tools-ops -->')
-        )
-      )
+        (startsWith(github.event.comment.body, '/ecc-tools-ops') || startsWith(github.event.comment.body, '/ecc ops') ||
+         contains(github.event.comment.body, '<!-- request-ecc-tools-ops -->')))
     runs-on: ubuntu-latest
     timeout-minutes: 8
     permissions:
       contents: read
       issues: write
-      pull-requests: read
+      pull-requests: write
     steps:
-      - name: Resolve target + commands
-        id: plan
+      - name: Resolve + post lean (batch when multi)
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
           INPUT_COMMAND: ${{ github.event.inputs.command || '' }}
@@ -361,123 +249,89 @@ jobs:
             if (context.eventName === 'issues' || context.eventName === 'issue_comment') {
               issueNumber = context.payload.issue?.number || issueNumber;
             }
-
-            let commands = [];
             const inputCmd = (process.env.INPUT_COMMAND || '').trim();
+            let commands = [];
+            let crCmd = null; // CodeRabbit co-trigger (operator only)
+
+            const parseOps = (body) => {
+              const m = (body || '').match(/\/ecc-tools-ops\s+([\w-]+)/i);
+              return m ? m[1].toLowerCase() : null;
+            };
+
             if (context.eventName === 'workflow_dispatch') {
               if (inputCmd === 'full-cycle') commands = ['analyze', 'setup', 'audit', 'doctor'];
+              else if (inputCmd === 'cr-review') crCmd = '@coderabbitai review';
+              else if (inputCmd === 'cr-autofix') crCmd = '@coderabbitai autofix';
               else if (['analyze', 'setup', 'audit', 'doctor', 'repair'].includes(inputCmd)) commands = [inputCmd];
               else commands = ['analyze'];
             } else if (context.eventName === 'issues') {
               commands = ['analyze', 'setup', 'audit'];
-            } else if (context.eventName === 'issue_comment') {
-              const body = context.payload.comment?.body || '';
-              const match = body.match(/\/ecc-tools-ops\s+(\w+)/i);
-              if (match && ['analyze', 'setup', 'audit', 'doctor', 'repair', 'full'].includes(match[1].toLowerCase())) {
-                const c = match[1].toLowerCase();
-                commands = c === 'full' ? ['analyze', 'setup', 'audit', 'doctor'] : [c];
-              } else {
-                commands = ['analyze'];
-              }
             } else {
-              commands = ['analyze'];
+              const c = parseOps(context.payload.comment?.body);
+              if (c === 'full') commands = ['analyze', 'setup', 'audit', 'doctor'];
+              else if (c === 'cr-review') crCmd = '@coderabbitai review';
+              else if (c === 'cr-autofix' || c === 'cr-auto-fix') crCmd = '@coderabbitai autofix';
+              else if (['analyze', 'setup', 'audit', 'doctor', 'repair'].includes(c)) commands = [c];
+              else commands = ['analyze'];
             }
-
-            core.setOutput('issue_number', String(issueNumber));
-            core.setOutput('commands', JSON.stringify(commands));
-            core.setOutput('force', force ? 'true' : 'false');
-
-      - name: Post /ecc-tools commands (debounced)
-        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
-        env:
-          ISSUE_NUMBER: ${{ steps.plan.outputs.issue_number }}
-          COMMANDS_JSON: ${{ steps.plan.outputs.commands }}
-          FORCE: ${{ steps.plan.outputs.force }}
-        with:
-          script: |
-            const issueNumber = Number(process.env.ISSUE_NUMBER);
-            const commands = JSON.parse(process.env.COMMANDS_JSON || '[]');
-            const force = process.env.FORCE === 'true';
-            const debounceMs = 12 * 60 * 60 * 1000;
 
             const comments = await github.paginate(github.rest.issues.listComments, {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issueNumber,
-              per_page: 100,
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: issueNumber, per_page: 100,
             });
+            const debounceMs = 12 * 60 * 60 * 1000;
 
-            const posted = [];
-            const skipped = [];
-
-            for (const cmd of commands) {
-              const marker = `<!-- ecc-tools-ops:${cmd} -->`;
-              const prior = comments
-                .filter(c => c.body?.includes(marker))
+            // Batch ECC commands into ONE comment
+            if (commands.length) {
+              const batchMarker = commands.length > 1
+                ? '<!-- ecc-tools-ops:batch -->'
+                : `<!-- ecc-tools-ops:${commands[0]} -->`;
+              const prior = comments.filter(c => c.body?.includes(batchMarker) ||
+                commands.every(cmd => comments.some(x => x.body?.includes(`<!-- ecc-tools-ops:${cmd} -->`))))
                 .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
-              if (prior && !force) {
-                const age = Date.now() - new Date(prior.created_at).getTime();
-                if (age < debounceMs) {
-                  skipped.push(`${cmd} (${Math.round(age / 3600000)}h)`);
-                  continue;
-                }
-              }
-
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: issueNumber,
-                body: [
-                  marker,
-                  `/ecc-tools ${cmd}`,
-                  '',
-                  '**Agent-Identity:** github-actions (agent-ecc-tools-ops / issue-commands)',
-                  `**Timestamp:** ${new Date().toISOString()}`,
-                  `**Trigger:** ${context.eventName}`,
-                  `**Issue:** #${issueNumber}`,
-                  '',
-                  'Any-issue lane (label or /ecc-tools-ops). App executes; dual-gate merges.',
-                  'Refs: https://github.com/apps/ecc-tools',
-                ].join('\n'),
+              // simpler debounce: any of the cmd markers recent
+              const recent = commands.some(cmd => {
+                const p = comments.filter(c => c.body?.includes(`<!-- ecc-tools-ops:${cmd} -->`) || c.body?.includes(batchMarker))
+                  .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
+                return p && !force && Date.now() - new Date(p.created_at) < debounceMs;
               });
-              posted.push(cmd);
-              await new Promise(r => setTimeout(r, 1500));
-            }
-
-            if (posted.length > 0) {
-              try {
-                await github.rest.reactions.createForIssue({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
+              if (!recent) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner, repo: context.repo.repo,
                   issue_number: issueNumber,
-                  content: 'eyes',
+                  body: [
+                    batchMarker,
+                    ...commands.map(c => `/ecc-tools ${c}`),
+                    `<!-- meta:gha ecc-ops lane=issue n=${issueNumber} -->`,
+                  ].join('\n'),
                 });
-              } catch (e) {
-                core.info(`Reaction skip: ${e.message}`);
               }
             }
 
-            core.summary
-              .addHeading('ECC Tools issue commands')
-              .addRaw(`Issue **#${issueNumber}**`)
-              .addList([
-                `Posted: ${posted.length ? posted.map(c => '/ecc-tools ' + c).join(', ') : '(none)'}`,
-                `Skipped: ${skipped.length ? skipped.join(', ') : '(none)'}`,
-              ])
-              .write();
+            // CodeRabbit: separate lean comment (App parses @ mention)
+            if (crCmd) {
+              const crMarker = crCmd.includes('autofix')
+                ? '<!-- ecc-tools-ops:cr-autofix -->'
+                : '<!-- ecc-tools-ops:cr-review -->';
+              const prior = comments.filter(c => c.body?.includes(crMarker))
+                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
+              if (!prior || force || Date.now() - new Date(prior.created_at) >= debounceMs) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  issue_number: issueNumber,
+                  body: [crMarker, crCmd, '<!-- meta:gha ecc-ops lane=cr-co -->'].join('\n'),
+                });
+              }
+            }
 
-  # ─── E. Operator comment on a PR: /ecc-tools-ops <cmd> ───────────────────
+  # ─── E. PR operator /ecc-tools-ops (incl. cr-*) ──────────────────────────
   pr-operator-command:
     if: |
-      github.event_name == 'issue_comment' &&
-      github.event.issue.pull_request &&
+      github.event_name == 'issue_comment' && github.event.issue.pull_request &&
       github.event.sender.type == 'User' &&
       contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association) &&
-      (
-        startsWith(github.event.comment.body, '/ecc-tools-ops') ||
-        startsWith(github.event.comment.body, '/ecc ops') ||
-        contains(github.event.comment.body, '<!-- request-ecc-tools-ops -->')
-      )
+      (startsWith(github.event.comment.body, '/ecc-tools-ops') || startsWith(github.event.comment.body, '/ecc ops') ||
+       contains(github.event.comment.body, '<!-- request-ecc-tools-ops -->'))
     runs-on: ubuntu-latest
     timeout-minutes: 6
     permissions:
@@ -485,92 +339,95 @@ jobs:
       pull-requests: write
       issues: write
     steps:
-      - name: Post operator-requested /ecc-tools on this PR
+      - name: Lean operator post on PR
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         with:
           script: |
             const prNumber = context.payload.issue.number;
             const body = context.payload.comment?.body || '';
-            const match = body.match(/\/ecc-tools-ops\s+(\w+)/i);
-            let commands = ['audit'];
-            if (match && ['analyze', 'setup', 'audit', 'doctor', 'repair', 'full'].includes(match[1].toLowerCase())) {
-              const c = match[1].toLowerCase();
-              commands = c === 'full' ? ['analyze', 'setup', 'audit', 'doctor'] : [c];
-            }
+            const m = body.match(/\/ecc-tools-ops\s+([\w-]+)/i);
+            const c = m ? m[1].toLowerCase() : 'audit';
             try {
               await github.rest.reactions.createForIssueComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: context.payload.comment.id,
-                content: 'eyes',
+                owner: context.repo.owner, repo: context.repo.repo,
+                comment_id: context.payload.comment.id, content: 'eyes',
               });
-            } catch (e) {
-              core.info(`Reaction skip: ${e.message}`);
-            }
-            for (const cmd of commands) {
-              const marker = `<!-- ecc-tools-ops:${cmd} -->`;
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: prNumber,
-                body: [
-                  marker,
-                  `/ecc-tools ${cmd}`,
-                  '',
-                  '**Agent-Identity:** github-actions (agent-ecc-tools-ops / pr-operator-command)',
-                  `**Timestamp:** ${new Date().toISOString()}`,
-                  `**PR:** #${prNumber}`,
-                  'Operator-requested on this PR. App executes; dual-gate merges.',
-                ].join('\n'),
-              });
-              await new Promise(r => setTimeout(r, 1200));
-            }
+            } catch (_) {}
 
-  # ─── F. ecc-tools[bot] comment on PR → ack ───────────────────────────────
+            let lines = [];
+            if (c === 'cr-review') {
+              lines = ['<!-- ecc-tools-ops:cr-review -->', '@coderabbitai review', '<!-- meta:gha ecc-ops lane=pr-op -->'];
+            } else if (c === 'cr-autofix' || c === 'cr-auto-fix') {
+              // Explicit operator only — never from schedule
+              lines = ['<!-- ecc-tools-ops:cr-autofix -->', '@coderabbitai autofix', '<!-- meta:gha ecc-ops lane=pr-op -->'];
+            } else if (c === 'full') {
+              lines = [
+                '<!-- ecc-tools-ops:batch -->',
+                '/ecc-tools analyze',
+                '/ecc-tools setup',
+                '/ecc-tools audit',
+                '/ecc-tools doctor',
+                `<!-- meta:gha ecc-ops lane=pr-op pr=${prNumber} -->`,
+              ];
+            } else {
+              const cmd = ['analyze', 'setup', 'audit', 'doctor', 'repair'].includes(c) ? c : 'audit';
+              lines = [
+                `<!-- ecc-tools-ops:${cmd} -->`,
+                `/ecc-tools ${cmd}`,
+                `<!-- meta:gha ecc-ops lane=pr-op pr=${prNumber} -->`,
+              ];
+            }
+            await github.rest.issues.createComment({
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: prNumber, body: lines.join('\n'),
+            });
+
+  # ─── F. ecc-tools[bot] → lean ack + optional quiet CR review ─────────────
   acknowledge-ecc-pr:
     if: |
-      github.event_name == 'issue_comment' &&
-      github.event.issue.pull_request &&
+      github.event_name == 'issue_comment' && github.event.issue.pull_request &&
       github.event.comment.user.type == 'Bot' &&
-      (
-        github.event.comment.user.login == 'ecc-tools[bot]' ||
-        contains(github.event.comment.user.login, 'ecc-tools')
-      )
+      (github.event.comment.user.login == 'ecc-tools[bot]' || contains(github.event.comment.user.login, 'ecc-tools'))
     runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: write
       issues: write
     steps:
-      - name: Acknowledge ECC App PR activity (idempotent)
+      - name: Lean ack (+ CR review if quiet)
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         with:
           script: |
             const prNumber = context.payload.issue.number;
-            const marker = '<!-- ecc-tools-ops-ack -->';
+            const ack = '<!-- ecc-tools-ops-ack -->';
+            const crMarker = '<!-- ecc-tools-ops:cr-review -->';
             const comments = await github.paginate(github.rest.issues.listComments, {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              per_page: 50,
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: prNumber, per_page: 50,
             });
-            if (comments.some(c => c.body?.includes(marker))) {
-              core.info('Already acknowledged');
-              return;
+            if (!comments.some(c => c.body?.includes(ack))) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: prNumber,
+                body: [
+                  ack,
+                  'ECC App activity — dual-gate merges; review skills/hooks before merge.',
+                  '<!-- meta:gha ecc-ops lane=ack -->',
+                ].join('\n'),
+              });
             }
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              body: [
-                marker,
-                '**ECC Tools App activity observed** (agent-ecc-tools-ops).',
-                '',
-                '- Review generated skills / manifests / hooks before merge.',
-                '- Dual-gate (`repo_gate` + `termux_smoke`) is merge authority.',
-                '- Align with root `AGENTS.md` + snake_case Python truth.',
-                '- Historical PR #12 was conditional — do not repeat generator defects.',
-                '',
-                'Disposition only; no auto-merge from this lane.',
-              ].join('\n'),
-            });
+            // If CodeRabbit has been quiet 6h+, lean incremental review (not autofix)
+            const crBot = comments.filter(c => (c.user?.login || '').toLowerCase().includes('coderabbit'))
+              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
+            const crOps = comments.filter(c => c.body?.includes(crMarker))
+              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
+            const quietMs = 6 * 60 * 60 * 1000;
+            const crQuiet = !crBot || Date.now() - new Date(crBot.created_at) > quietMs;
+            const opsFresh = crOps && Date.now() - new Date(crOps.created_at) < quietMs;
+            if (crQuiet && !opsFresh) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: prNumber,
+                body: [crMarker, '@coderabbitai review', '<!-- meta:gha ecc-ops lane=ack-cr -->'].join('\n'),
+              });
+            }

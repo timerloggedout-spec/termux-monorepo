@@ -17,12 +17,16 @@ REF = re.compile(r"(?:#|issues/|pull/)(\d+)", re.I)
 TOKEN = re.compile(r"[a-z0-9][a-z0-9_./-]{1,}")
 
 
-def tokens(text: str) -> set[str]:
-    return {x for x in TOKEN.findall((text or "").lower()) if x not in STOP}
+def text(value: object) -> str:
+    return value if isinstance(value, str) else ""
 
 
-def refs(text: str) -> set[str]:
-    return set(REF.findall(text or ""))
+def tokens(value: object) -> set[str]:
+    return {x for x in TOKEN.findall(text(value).lower()) if x not in STOP}
+
+
+def refs(value: object) -> set[str]:
+    return set(REF.findall(text(value)))
 
 
 def jaccard(a: set[str], b: set[str]) -> float:
@@ -30,19 +34,22 @@ def jaccard(a: set[str], b: set[str]) -> float:
     return len(a & b) / len(u) if u else 0.0
 
 
-def path_similarity(a: list[str], b: list[str]) -> float:
-    aa = {str(PurePosixPath(x)) for x in a}
-    bb = {str(PurePosixPath(x)) for x in b}
+def path_similarity(a: object, b: object) -> float:
+    aa = {str(PurePosixPath(x)) for x in (a if isinstance(a, list) else []) if isinstance(x, str)}
+    bb = {str(PurePosixPath(x)) for x in (b if isinstance(b, list) else []) if isinstance(x, str)}
     return jaccard(aa, bb)
 
 
 def candidate(a: dict, b: dict) -> dict | None:
-    ta, tb = tokens(a.get("title", "") + " " + a.get("body", "")), tokens(b.get("title", "") + " " + b.get("body", ""))
-    title = jaccard(tokens(a.get("title", "")), tokens(b.get("title", "")))
+    ta = tokens(text(a.get("title")) + " " + text(a.get("body")))
+    tb = tokens(text(b.get("title")) + " " + text(b.get("body")))
+    title = jaccard(tokens(a.get("title")), tokens(b.get("title")))
     body = jaccard(ta, tb)
-    paths = path_similarity(a.get("changed_paths", []), b.get("changed_paths", []))
-    shared_refs = refs(a.get("body", "")) & refs(b.get("body", ""))
-    labels = set(a.get("labels", [])) & set(b.get("labels", []))
+    paths = path_similarity(a.get("changed_paths"), b.get("changed_paths"))
+    shared_refs = refs(a.get("body")) & refs(b.get("body"))
+    labels_a = a.get("labels") if isinstance(a.get("labels"), list) else []
+    labels_b = b.get("labels") if isinstance(b.get("labels"), list) else []
+    labels = {x for x in labels_a if isinstance(x, str)} & {x for x in labels_b if isinstance(x, str)}
     score = min(1.0, 0.45 * title + 0.25 * body + 0.20 * paths + 0.05 * bool(shared_refs) + 0.05 * bool(labels))
     if score < 0.35:
         return None

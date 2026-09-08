@@ -1,8 +1,17 @@
 """Route a patch request to the most appropriate tool."""
 import sys, os, subprocess
+from pathlib import Path
 
 def apply_patch(target: str, patch_content: str, method: str = "auto") -> bool:
     """Apply a patch to a file. method: 'auto', 'cedar', 'sed', 'python'."""
+    target_path = Path(target)
+    if ".." in target_path.parts:
+        print("Path traversal detected in target path", file=sys.stderr)
+        return False
+    if target_path.is_symlink():
+        print("Symlink targets are not allowed for patch execution", file=sys.stderr)
+        return False
+
     if method == "auto":
         # Prefer CEDARscript for structured diffs, sed for simple substitutions, PYEOF for complex
         if "ADD_IMPORT" in patch_content or "MODIFY FUNCTION" in patch_content:
@@ -47,9 +56,18 @@ with open(target) as f:
 with open(target, 'w') as f:
     f.write(content)
 """
-        tmp = os.path.join(os.path.dirname(target), "_patch_tmp.py")
-        with open(tmp, 'w') as f:
+        tmp_path = Path(os.path.dirname(target) or ".") / "_patch_tmp.py"
+        if tmp_path.is_symlink():
+            print("Temporary script path is a symlink", file=sys.stderr)
+            return False
+
+        fd = os.open(str(tmp_path), os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+        with open(fd, 'w') as f:
             f.write(script)
-        result = subprocess.run([sys.executable, tmp, target], capture_output=True, text=True)
-        os.unlink(tmp)
-        return result.returncode == 0
+
+        try:
+            result = subprocess.run([sys.executable, str(tmp_path), target], capture_output=True, text=True)
+            return result.returncode == 0
+        finally:
+            if tmp_path.exists() and not tmp_path.is_symlink():
+                tmp_path.unlink()

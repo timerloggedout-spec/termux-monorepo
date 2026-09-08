@@ -22,3 +22,8 @@
 **Vulnerability:** Unsanitized token path strings and unvalidated symlinks in `multi-ai-cli/core/session_manager.py` could allow malicious config settings or symlinks to read arbitrary files from the filesystem when loading credentials.
 **Learning:** Naive string checks for directory separators like `\\` break cross-platform compatibility on Windows where `\\` is a standard path separator. Using `Path(token_str).parts` allows checking for `..` path components safely across OS platforms without false positives.
 **Prevention:** Validate `".." in Path(token_str).parts` for path traversal detection, and verify `Path(p).is_symlink()` before opening user configuration or token files.
+
+## 2026-08-17 - Symlink Hijacking and Path Traversal Prevention in Patch Routers
+**Vulnerability:** In `harmony_hub/src/patch_router.py`, `apply_patch` allowed arbitrary targets without path traversal validation (`..`) or symlink checks, enabling attackers or crafted patches to overwrite system or sensitive files outside the workspace. In addition, temporary python patch execution scripts were created with default umask permissions and unvalidated symlink checks.
+**Learning:** Utilities that accept patch files or target file paths must enforce strict validation against symlink targets and path traversal before invoking script processes. Creating temporary execution files without restricted permissions (`0o600`) or symlink guards allows local privilege escalation or arbitrary script injection.
+**Prevention:** Validate `".." not in target_path.parts`, enforce `not target_path.is_symlink()`, write temporary scripts with `os.open` mode `0o600`, and clean up temporary execution scripts securely inside a `finally` block.

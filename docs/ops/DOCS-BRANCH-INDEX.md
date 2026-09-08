@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-09-07T19:18:13Z` UTC  
+**Generated:** `2026-09-08T11:18:57Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 28 docs-lane branch(es)
+**Count:** 30 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -20,6 +20,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/ar08-issue175-status-alignment`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/ar08-issue175-status-alignment) | `7048b361fd1d` | — | — | orphan lane |
 | [`docs/automation-decision-trees`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/automation-decision-trees) | `ed0fe8bd0b5e` | — | — | orphan lane |
 | [`docs/cedrlang-obfuscation-boundary`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/cedrlang-obfuscation-boundary) | `d6aaf4691d45` | [#302](https://github.com/timerloggedout-spec/termux-monorepo/pull/302)→`master-staging` | — | PR without registry link |
+| [`docs/deepseek-capture-pipeline`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/deepseek-capture-pipeline) | `c70fb1bbd9f8` | — | — | orphan lane |
 | [`docs/issue-192-action-integration-intake`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/issue-192-action-integration-intake) | `b749928140f7` | — | — | orphan lane |
 | [`docs/kai9000-orchestrator-correlated`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/kai9000-orchestrator-correlated) | `a92e6f15da7f` | — | — | orphan lane |
 | [`docs/kai9000-provenance-correct`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/kai9000-provenance-correct) | `73dad86dd7b2` | — | — | orphan lane |
@@ -40,6 +41,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/rl-board-2026-08-10`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/rl-board-2026-08-10) | `439bc48d63a2` | — | — | orphan lane |
 | [`docs/she-p010-roadmap-catchup`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/she-p010-roadmap-catchup) | `231a3193d34f` | — | — | orphan lane |
 | [`docs/she-roadmap-p04-p05-status`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/she-roadmap-p04-p05-status) | `9c318f5c2307` | — | — | orphan lane |
+| [`docs/sync-agents-hum-md`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/sync-agents-hum-md) | `056fc8ac7d0f` | — | — | orphan lane |
 | [`docs/termux-mcp-lean-template`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/termux-mcp-lean-template) | `b6487c77d8e0` | — | — | orphan lane |
 
 <!-- END:docs-branch-index -->

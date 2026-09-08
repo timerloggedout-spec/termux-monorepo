@@ -10,7 +10,6 @@ from __future__ import annotations
 import json
 import re
 import sys
-from collections import Counter
 from pathlib import PurePosixPath
 
 STOP = {"the", "and", "for", "with", "this", "that", "from", "into", "are", "was", "have", "has", "will", "not"}

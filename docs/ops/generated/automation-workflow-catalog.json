@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "67d5a03c3b43197a4a809687c95131215b1cc989eb47c8ed395592e640cff2e2",
-  "workflow_count": 65,
+  "source_fingerprint": "287907fa12ebdd4942ac705c3e23705bc3bae92811f39df13b82bf717470bc05",
+  "workflow_count": 66,
   "workflows": [
     {
       "action_pins": [
@@ -99,6 +99,34 @@
         "17 * * * *"
       ],
       "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
+      ],
+      "authority": "writer",
+      "concurrency": "group: ecc-tools-ops-${{ github.event.pull_request.number || github.event.issue.number || github.event.inputs.mode || github.run_id }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "acknowledge-ecc-pr",
+        "issue-commands",
+        "matrix-cycle",
+        "pr-harness-audit",
+        "pr-operator-command",
+        "sweep-prs"
+      ],
+      "name": "ECC Tools comment-command ops",
+      "path": ".github/workflows/agent-ecc-tools-ops.yml",
+      "schedules": [
+        "23 6,18 * * *"
+      ],
+      "triggers": [
+        "issue_comment",
+        "issues",
+        "pull_request",
         "schedule",
         "workflow_dispatch"
       ]

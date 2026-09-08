@@ -9,6 +9,7 @@ name: ECC Tools comment-command ops
 #
 # Surfaces: PR path audit | PR sweep | matrix #175 | any issue | PR operator | ecc-bot ack
 # Token policy: marker + command(s) + one meta line; batch multi-cmd into one comment.
+# Saturated conversations (≥2500 comments): overflow to a thin tracking issue — never skip the target.
 
 on:
   schedule:
@@ -69,11 +70,9 @@ permissions: {}
 
 env:
   HARNESS_PATH_RE: '(^|/)(\.claude|\.codex|\.agents|\.hermes|\.pi)(/|$)|(^|/)(hooks|mcp|skills)(/|$)|SKILL\.md$|AGENTS\.md$|CLAUDE\.md$|ecc-tools\.ya?ml$'
-  # Privileged comment identity when available; else GITHUB_TOKEN (same chain as continuous-ops)
   ECC_OPS_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
 
 jobs:
-  # ─── A. PR harness path → /ecc-tools audit ───────────────────────────────
   pr-harness-audit:
     if: |
       github.event_name == 'pull_request' &&
@@ -114,17 +113,32 @@ jobs:
             const re = new RegExp(process.env.HARNESS_PATH_RE || '', 'i');
             const hits = files.filter(f => re.test(f.filename));
             if (!hits.length) { core.info(`#${pr.number} no harness files`); return; }
-            await github.rest.issues.createComment({
-              owner: context.repo.owner, repo: context.repo.repo,
-              issue_number: pr.number,
-              body: [
-                marker,
-                '/ecc-tools audit',
-                `<!-- meta:gha ecc-ops lane=pr-path pr=${pr.number} n=${hits.length} -->`,
-              ].join('\n'),
-            });
+            const body = [
+              marker,
+              '/ecc-tools audit',
+              `<!-- meta:gha ecc-ops lane=pr-path pr=${pr.number} n=${hits.length} -->`,
+            ].join('\n');
+            try {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: pr.number, body,
+              });
+            } catch (err) {
+              const saturated = err?.status === 403 && /2500 comments|Commenting is disabled/i.test(String(err.message || err));
+              if (!saturated) throw err;
+              core.warning(`#${pr.number} saturated — overflow tracking issue`);
+              await github.rest.issues.create({
+                owner: context.repo.owner, repo: context.repo.repo,
+                title: `ecc-tools ops: PR #${pr.number} /audit`,
+                body: [
+                  `Overflow for **PR #${pr.number}** (conversation ≥2500 comments).`,
+                  '', body, '',
+                  `Parent: https://github.com/${context.repo.owner}/${context.repo.repo}/pull/${pr.number}`,
+                ].join('\n'),
+                labels: ['ecc-tools'],
+              });
+            }
 
-  # ─── B. PR sweep (schedule + dispatch) ───────────────────────────────────
   sweep-prs:
     if: |
       github.event_name == 'schedule' ||
@@ -152,6 +166,40 @@ jobs:
               const login = (c.user?.login || '').toLowerCase();
               return login === 'github-actions[bot]' || login.includes('ecc-ops') || login.includes('timerloggedout');
             };
+            const isCommentSaturated = (err) =>
+              err?.status === 403 && /2500 comments|Commenting is disabled/i.test(String(err.message || err));
+            async function deliverEcc(prNumber, cmd, marker, lane) {
+              const body = [
+                marker,
+                `/ecc-tools ${cmd}`,
+                `<!-- meta:gha ecc-ops lane=${lane} pr=${prNumber} -->`,
+              ].join('\n');
+              try {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  issue_number: prNumber, body,
+                });
+                return { channel: 'pr-comment', ref: prNumber };
+              } catch (err) {
+                if (!isCommentSaturated(err)) throw err;
+                core.warning(`#${prNumber} conversation saturated (≥2500 comments) — overflow tracking issue`);
+                const { data: issue } = await github.rest.issues.create({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  title: `ecc-tools ops: PR #${prNumber} /${cmd}`,
+                  body: [
+                    `Overflow surface for **PR #${prNumber}** (conversation ≥2500 comments — GitHub blocks further issue comments).`,
+                    '',
+                    marker,
+                    `/ecc-tools ${cmd}`,
+                    `<!-- meta:gha ecc-ops lane=${lane}-overflow pr=${prNumber} -->`,
+                    '',
+                    `Parent: https://github.com/${context.repo.owner}/${context.repo.repo}/pull/${prNumber}`,
+                  ].join('\n'),
+                  labels: ['ecc-tools'],
+                });
+                return { channel: 'overflow-issue', ref: issue.number };
+              }
+            }
             const prs = await github.paginate(github.rest.pulls.list, {
               owner: context.repo.owner, repo: context.repo.repo,
               state: 'open', sort: 'updated', direction: 'desc', per_page: 50,
@@ -172,28 +220,28 @@ jobs:
               if (!hits.length && !isEcc) continue;
               const cmd = isEcc ? 'doctor' : 'audit';
               const marker = `<!-- ecc-tools-ops:${cmd} -->`;
-              const comments = await github.paginate(github.rest.issues.listComments, {
-                owner: context.repo.owner, repo: context.repo.repo,
-                issue_number: pr.number, per_page: 100,
-              });
-              const prior = comments.filter(c => c.body?.includes(marker) && isOpsAuthor(c))
-                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
+              let prior = null;
+              try {
+                const comments = await github.paginate(github.rest.issues.listComments, {
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  issue_number: pr.number, per_page: 100,
+                });
+                prior = comments.filter(c => c.body?.includes(marker) && isOpsAuthor(c))
+                  .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
+              } catch (_) {}
               if (prior && !force && Date.now() - new Date(prior.created_at) < debounceMs) continue;
-              await github.rest.issues.createComment({
-                owner: context.repo.owner, repo: context.repo.repo,
-                issue_number: pr.number,
-                body: [
-                  marker,
-                  `/ecc-tools ${cmd}`,
-                  `<!-- meta:gha ecc-ops lane=sweep pr=${pr.number} -->`,
-                ].join('\n'),
-              });
-              acted++; report.push(`#${pr.number}:${cmd}`);
+              try {
+                const delivered = await deliverEcc(pr.number, cmd, marker, 'sweep');
+                acted++;
+                report.push(`#${pr.number}:${cmd}@${delivered.channel}${delivered.channel === 'overflow-issue' ? '#' + delivered.ref : ''}`);
+              } catch (err) {
+                core.error(`#${pr.number} deliver failed: ${err.message}`);
+                report.push(`#${pr.number}:ERROR`);
+              }
               await new Promise(r => setTimeout(r, 800));
             }
             core.summary.addHeading('ecc sweep').addRaw(`acted ${acted}`).addList(report.length ? report : ['none']).write();
 
-  # ─── C. Matrix #175 sparse (batched lean) ────────────────────────────────
   matrix-cycle:
     if: github.event_name == 'schedule'
     runs-on: ubuntu-latest
@@ -223,18 +271,16 @@ jobs:
             if (prior && Date.now() - new Date(prior.created_at) < debounceMs) {
               core.info('#175 debounced'); return;
             }
-            await github.rest.issues.createComment({
-              owner: context.repo.owner, repo: context.repo.repo,
-              issue_number: issueNumber,
-              body: [
-                marker,
-                '/ecc-tools analyze',
-                '/ecc-tools doctor',
-                '<!-- meta:gha ecc-ops lane=matrix -->',
-              ].join('\n'),
-            });
+            try {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: [marker, '/ecc-tools analyze', '/ecc-tools doctor', '<!-- meta:gha ecc-ops lane=matrix -->'].join('\n'),
+              });
+            } catch (err) {
+              core.error(`matrix #175 post failed: ${err.message}`);
+            }
 
-  # ─── D. Any issue: label / operator / dispatch ───────────────────────────
   issue-commands:
     if: |
       (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'issue') ||
@@ -265,11 +311,7 @@ jobs:
             let issueNumber = 175;
             if (context.eventName === 'workflow_dispatch' && requestedIssue) {
               const parsedIssue = Number(requestedIssue);
-              if (
-                !/^[1-9]\d*$/.test(requestedIssue) ||
-                !Number.isSafeInteger(parsedIssue) ||
-                String(parsedIssue) !== requestedIssue
-              ) {
+              if (!/^[1-9]\d*$/.test(requestedIssue) || !Number.isSafeInteger(parsedIssue) || String(parsedIssue) !== requestedIssue) {
                 throw new Error('issue_number must be a canonical positive integer');
               }
               issueNumber = parsedIssue;
@@ -279,12 +321,10 @@ jobs:
             }
             const inputCmd = (process.env.INPUT_COMMAND || '').trim();
             let commands = [];
-
             const parseOps = (body) => {
               const m = (body || '').match(/\/(?:ecc-tools-ops|ecc ops)\s+([\w-]+)/i);
               return m ? m[1].toLowerCase() : null;
             };
-
             if (context.eventName === 'workflow_dispatch') {
               if (inputCmd === 'full-cycle') commands = ['analyze', 'setup', 'audit', 'doctor'];
               else if (['analyze', 'setup', 'audit', 'doctor', 'repair'].includes(inputCmd)) commands = [inputCmd];
@@ -297,9 +337,7 @@ jobs:
               else if (['analyze', 'setup', 'audit', 'doctor', 'repair'].includes(c)) commands = [c];
               else commands = ['analyze'];
             }
-
             if (!commands.length) return;
-
             const isOpsAuthor = (c) => {
               const login = (c.user?.login || '').toLowerCase();
               return login === 'github-actions[bot]' || login.includes('ecc-ops') || login.includes('timerloggedout');
@@ -309,29 +347,23 @@ jobs:
               issue_number: issueNumber, per_page: 100,
             });
             const debounceMs = 12 * 60 * 60 * 1000;
-            const batchMarker = commands.length > 1
-              ? '<!-- ecc-tools-ops:batch -->'
-              : `<!-- ecc-tools-ops:${commands[0]} -->`;
+            const batchMarker = commands.length > 1 ? '<!-- ecc-tools-ops:batch -->' : `<!-- ecc-tools-ops:${commands[0]} -->`;
             const recent = commands.some(cmd => {
-              const p = comments.filter(c =>
-                isOpsAuthor(c) &&
-                (c.body?.includes(`<!-- ecc-tools-ops:${cmd} -->`) || c.body?.includes(batchMarker)))
+              const p = comments.filter(c => isOpsAuthor(c) && (c.body?.includes(`<!-- ecc-tools-ops:${cmd} -->`) || c.body?.includes(batchMarker)))
                 .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
               return p && !force && Date.now() - new Date(p.created_at) < debounceMs;
             });
             if (recent) { core.info(`#${issueNumber} debounced`); return; }
+            const body = [batchMarker, ...commands.map(c => `/ecc-tools ${c}`), `<!-- meta:gha ecc-ops lane=issue n=${issueNumber} -->`].join('\n');
+            try {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber, body,
+              });
+            } catch (err) {
+              core.error(`#${issueNumber} post failed: ${err.message}`);
+            }
 
-            await github.rest.issues.createComment({
-              owner: context.repo.owner, repo: context.repo.repo,
-              issue_number: issueNumber,
-              body: [
-                batchMarker,
-                ...commands.map(c => `/ecc-tools ${c}`),
-                `<!-- meta:gha ecc-ops lane=issue n=${issueNumber} -->`,
-              ].join('\n'),
-            });
-
-  # ─── E. PR operator /ecc-tools-ops (ECC only) ────────────────────────────
   pr-operator-command:
     if: |
       github.event_name == 'issue_comment' && github.event.issue.pull_request &&
@@ -352,8 +384,8 @@ jobs:
           github-token: ${{ env.ECC_OPS_TOKEN }}
           script: |
             const prNumber = context.payload.issue.number;
-            const body = context.payload.comment?.body || '';
-            const m = body.match(/\/(?:ecc-tools-ops|ecc ops)\s+([\w-]+)/i);
+            const bodyIn = context.payload.comment?.body || '';
+            const m = bodyIn.match(/\/(?:ecc-tools-ops|ecc ops)\s+([\w-]+)/i);
             const c = m ? m[1].toLowerCase() : 'audit';
             try {
               await github.rest.reactions.createForIssueComment({
@@ -361,37 +393,34 @@ jobs:
                 comment_id: context.payload.comment.id, content: 'eyes',
               });
             } catch (_) {}
-
-            // Reject non-ECC ops keywords (cr-*, jules, etc.) — other lanes own those
             if (c.startsWith('cr-') || c === 'jules' || c.includes('coderabbit')) {
-              core.notice(`Ignored non-ECC ops token '${c}' — continuous-ops / jules lanes own those`);
+              core.notice(`Ignored non-ECC ops token '${c}'`);
               return;
             }
-
             let lines;
             if (c === 'full') {
-              lines = [
-                '<!-- ecc-tools-ops:batch -->',
-                '/ecc-tools analyze',
-                '/ecc-tools setup',
-                '/ecc-tools audit',
-                '/ecc-tools doctor',
-                `<!-- meta:gha ecc-ops lane=pr-op pr=${prNumber} -->`,
-              ];
+              lines = ['<!-- ecc-tools-ops:batch -->', '/ecc-tools analyze', '/ecc-tools setup', '/ecc-tools audit', '/ecc-tools doctor', `<!-- meta:gha ecc-ops lane=pr-op pr=${prNumber} -->`];
             } else {
               const cmd = ['analyze', 'setup', 'audit', 'doctor', 'repair'].includes(c) ? c : 'audit';
-              lines = [
-                `<!-- ecc-tools-ops:${cmd} -->`,
-                `/ecc-tools ${cmd}`,
-                `<!-- meta:gha ecc-ops lane=pr-op pr=${prNumber} -->`,
-              ];
+              lines = [`<!-- ecc-tools-ops:${cmd} -->`, `/ecc-tools ${cmd}`, `<!-- meta:gha ecc-ops lane=pr-op pr=${prNumber} -->`];
             }
-            await github.rest.issues.createComment({
-              owner: context.repo.owner, repo: context.repo.repo,
-              issue_number: prNumber, body: lines.join('\n'),
-            });
+            const body = lines.join('\n');
+            try {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: prNumber, body,
+              });
+            } catch (err) {
+              const saturated = err?.status === 403 && /2500 comments|Commenting is disabled/i.test(String(err.message || err));
+              if (!saturated) throw err;
+              await github.rest.issues.create({
+                owner: context.repo.owner, repo: context.repo.repo,
+                title: `ecc-tools ops: PR #${prNumber} (operator)`,
+                body: [`Overflow for **PR #${prNumber}**.`, '', body, '', `Parent: https://github.com/${context.repo.owner}/${context.repo.repo}/pull/${prNumber}`].join('\n'),
+                labels: ['ecc-tools'],
+              });
+            }
 
-  # ─── F. ecc-tools[bot] → lean ack only (no other apps) ───────────────────
   acknowledge-ecc-pr:
     if: |
       github.event_name == 'issue_comment' && github.event.issue.pull_request &&
@@ -418,12 +447,12 @@ jobs:
               core.info('Already acknowledged');
               return;
             }
-            await github.rest.issues.createComment({
-              owner: context.repo.owner, repo: context.repo.repo,
-              issue_number: prNumber,
-              body: [
-                ack,
-                'ECC App activity — dual-gate merges; review skills/hooks before merge.',
-                '<!-- meta:gha ecc-ops lane=ack -->',
-              ].join('\n'),
-            });
+            try {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: prNumber,
+                body: [ack, 'ECC App activity — dual-gate merges; review skills/hooks before merge.', '<!-- meta:gha ecc-ops lane=ack -->'].join('\n'),
+              });
+            } catch (err) {
+              core.warning(`ack #${prNumber}: ${err.message}`);
+            }

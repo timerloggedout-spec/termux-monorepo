@@ -1,0 +1,280 @@
+name: ECC Tools comment-command ops
+
+# Repo-side automation for ECC Tools slash commands.
+# Same pattern as continuous-ops (@coderabbitai) and jules-on-issues (@jules):
+# Actions posts the comment; the installed GitHub App executes hosted work.
+#
+# Commands:
+#   /ecc-tools analyze | setup | audit | doctor | repair
+#
+# Free tier: issue-comment triggered only (no App-side push/PR auto-triggers).
+# Pro unlocks App-side auto-triggers; this workflow still useful for explicit cycles.
+# Dual-gate (repo-gate + termux-smoke) remains merge authority — never auto-merge App PRs.
+#
+# SECURITY:
+# - default permissions empty; jobs grant minimal write
+# - markers prevent comment loops
+# - no secrets in if: expressions
+# - issue/comment text is never treated as executable instruction for this job
+
+on:
+  schedule:
+    # Twice daily — free tier has limited analyses/mo; keep sparse by default
+    - cron: '23 6,18 * * *'
+  workflow_dispatch:
+    inputs:
+      command:
+        description: 'ECC Tools slash command (without leading path noise)'
+        required: true
+        default: 'analyze'
+        type: choice
+        options:
+          - analyze
+          - setup
+          - audit
+          - doctor
+          - repair
+          - full-cycle
+      issue_number:
+        description: 'Target issue number (default 175 priority matrix)'
+        required: false
+        default: '175'
+      force:
+        description: 'Ignore debounce markers and re-post'
+        required: false
+        default: 'false'
+        type: boolean
+  issues:
+    types: [labeled]
+  issue_comment:
+    types: [created]
+
+concurrency:
+  group: ecc-tools-ops-${{ github.event.inputs.issue_number || github.event.issue.number || '175' }}
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  # Operator / schedule / label lane — posts /ecc-tools commands as comments
+  post-ecc-commands:
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      (
+        github.event_name == 'issues' &&
+        github.event.action == 'labeled' &&
+        (
+          github.event.label.name == 'ecc-tools' ||
+          github.event.label.name == 'ecc' ||
+          github.event.label.name == 'ECC'
+        )
+      ) ||
+      (
+        github.event_name == 'issue_comment' &&
+        !github.event.issue.pull_request &&
+        github.event.sender.type == 'User' &&
+        contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association) &&
+        (
+          startsWith(github.event.comment.body, '/ecc-tools-ops') ||
+          startsWith(github.event.comment.body, '/ecc ops') ||
+          contains(github.event.comment.body, '<!-- request-ecc-tools-ops -->')
+        )
+      )
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: read
+    steps:
+      - name: Resolve target issue + command set
+        id: plan
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        env:
+          INPUT_COMMAND: ${{ github.event.inputs.command || '' }}
+          INPUT_ISSUE: ${{ github.event.inputs.issue_number || '' }}
+          INPUT_FORCE: ${{ github.event.inputs.force || 'false' }}
+        with:
+          script: |
+            const force = process.env.INPUT_FORCE === 'true';
+            let issueNumber = Number(process.env.INPUT_ISSUE) || 175;
+            if (context.eventName === 'issues' || context.eventName === 'issue_comment') {
+              issueNumber = context.payload.issue?.number || issueNumber;
+            }
+
+            let commands = [];
+            const inputCmd = (process.env.INPUT_COMMAND || '').trim();
+            if (context.eventName === 'workflow_dispatch') {
+              if (inputCmd === 'full-cycle') {
+                commands = ['analyze', 'setup', 'audit', 'doctor'];
+              } else if (['analyze', 'setup', 'audit', 'doctor', 'repair'].includes(inputCmd)) {
+                commands = [inputCmd];
+              } else {
+                commands = ['analyze'];
+              }
+            } else if (context.eventName === 'schedule') {
+              // Sparse free-tier cycle: analyze + doctor only on schedule
+              commands = ['analyze', 'doctor'];
+            } else if (context.eventName === 'issues') {
+              commands = ['analyze', 'setup', 'audit'];
+            } else if (context.eventName === 'issue_comment') {
+              const body = context.payload.comment?.body || '';
+              const match = body.match(/\/ecc-tools-ops\s+(\w+)/i);
+              if (match && ['analyze', 'setup', 'audit', 'doctor', 'repair', 'full'].includes(match[1].toLowerCase())) {
+                const c = match[1].toLowerCase();
+                commands = c === 'full' ? ['analyze', 'setup', 'audit', 'doctor'] : [c];
+              } else {
+                commands = ['analyze'];
+              }
+            } else {
+              commands = ['analyze'];
+            }
+
+            core.setOutput('issue_number', String(issueNumber));
+            core.setOutput('commands', JSON.stringify(commands));
+            core.setOutput('force', force ? 'true' : 'false');
+            core.info(`issue=#${issueNumber} commands=${commands.join(',')} force=${force}`);
+
+      - name: Post /ecc-tools commands (debounced)
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        env:
+          ISSUE_NUMBER: ${{ steps.plan.outputs.issue_number }}
+          COMMANDS_JSON: ${{ steps.plan.outputs.commands }}
+          FORCE: ${{ steps.plan.outputs.force }}
+        with:
+          script: |
+            const issueNumber = Number(process.env.ISSUE_NUMBER);
+            const commands = JSON.parse(process.env.COMMANDS_JSON || '[]');
+            const force = process.env.FORCE === 'true';
+            const markerPrefix = '<!-- ecc-tools-ops:';
+            const debounceMs = 12 * 60 * 60 * 1000; // 12h per command on same issue
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              per_page: 100,
+            });
+
+            const posted = [];
+            const skipped = [];
+
+            for (const cmd of commands) {
+              const marker = `${markerPrefix}${cmd} -->`;
+              const prior = comments
+                .filter(c => c.body?.includes(marker))
+                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
+
+              if (prior && !force) {
+                const age = Date.now() - new Date(prior.created_at).getTime();
+                if (age < debounceMs) {
+                  skipped.push(`${cmd} (debounced ${Math.round(age / 3600000)}h)`);
+                  core.info(`Skip /ecc-tools ${cmd}: debounced`);
+                  continue;
+                }
+              }
+
+              const body = [
+                marker,
+                `/ecc-tools ${cmd}`,
+                '',
+                '**Agent-Identity:** github-actions (agent-ecc-tools-ops)',
+                `**Timestamp:** ${new Date().toISOString()}`,
+                `**Trigger:** ${context.eventName}${context.payload?.inputs ? ' / workflow_dispatch' : ''}`,
+                `**Issue:** #${issueNumber}`,
+                '',
+                'Repo-side comment-command automation. ECC Tools GitHub App executes hosted analysis / setup / audit / doctor / repair.',
+                'Dual-gate (repo-gate + termux-smoke) remains merge authority — do not auto-merge App-generated PRs.',
+                'Prior residual: `.claude/ecc-tools.json` · historical PR #12 was conditional.',
+                '',
+                'Refs: https://github.com/apps/ecc-tools · https://ecc.tools',
+              ].join('\n');
+
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body,
+              });
+
+              posted.push(cmd);
+              core.info(`Posted /ecc-tools ${cmd} on #${issueNumber}`);
+              // brief spacing so App webhook fan-out is less bursty
+              await new Promise(r => setTimeout(r, 1500));
+            }
+
+            // eyes reaction on issue when we posted something
+            if (posted.length > 0) {
+              try {
+                await github.rest.reactions.createForIssue({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issueNumber,
+                  content: 'eyes',
+                });
+              } catch (e) {
+                core.info(`Reaction skip: ${e.message}`);
+              }
+            }
+
+            core.summary
+              .addHeading('ECC Tools comment-command ops')
+              .addRaw(`Issue **#${issueNumber}**`)
+              .addList([
+                `Posted: ${posted.length ? posted.map(c => '`/ecc-tools ' + c + '`').join(', ') : '(none)'}`,
+                `Skipped: ${skipped.length ? skipped.join(', ') : '(none)'}`,
+              ])
+              .write();
+
+            core.setOutput('posted', posted.join(','));
+            core.setOutput('skipped', skipped.join(','));
+
+  # Optional: when ecc-tools[bot] opens a PR, inventory + note dual-gate rule
+  acknowledge-ecc-pr:
+    if: |
+      github.event_name == 'issue_comment' &&
+      github.event.issue.pull_request &&
+      github.event.comment.user.type == 'Bot' &&
+      (
+        github.event.comment.user.login == 'ecc-tools[bot]' ||
+        contains(github.event.comment.user.login, 'ecc-tools')
+      )
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Acknowledge ECC App PR activity (idempotent)
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        with:
+          script: |
+            const prNumber = context.payload.issue.number;
+            const marker = '<!-- ecc-tools-ops-ack -->';
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              per_page: 50,
+            });
+            if (comments.some(c => c.body?.includes(marker))) {
+              core.info('Already acknowledged');
+              return;
+            }
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: [
+                marker,
+                '**ECC Tools App activity observed** (agent-ecc-tools-ops).',
+                '',
+                '- Review generated skills / manifests / hooks before merge.',
+                '- Dual-gate (`repo_gate` + `termux_smoke`) is merge authority.',
+                '- Prefer alignment with root `AGENTS.md` + snake_case Python truth.',
+                '- Historical PR #12 was conditional (fences, truncation, model pins) — do not repeat those defects.',
+                '',
+                'Operator: disposition only; no auto-merge from this lane.',
+              ].join('\n'),
+            });

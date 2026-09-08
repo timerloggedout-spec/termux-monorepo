@@ -53,3 +53,10 @@ Adding a pre-search check (`if not VARIANT_REGEX.search(text): return text`) bef
 
 **Action:**
 Apply pre-search short-circuit guards on single-pass regex transformers when processing high volumes of uncompressed prose.
+
+## 2026-09-08 - Top-Level Static Callbacks & RNG Pre-Resolution in High-Frequency Regex Sub
+**Learning:**
+In high-frequency text translation pipelines (such as CedrLang `translate_text_raw` and `to_1337speak`), instantiating inner callback functions (`_sub_cb`) or performing repeated attribute lookups (`rng.random`) on every match evaluation introduces measurable function frame creation and attribute dispatch overhead. Defining dedicated top-level static callbacks (`_sub_cb_comp` and `_sub_cb_decomp`) for `COMP_SINGLE_REGEX.sub` and `DECOMP_SINGLE_REGEX.sub` and pre-resolving `rng_rand = rng.random if rng is not None else random.random` outside the match callback reduces execution latency in surface codec substitutions while preserving code clarity.
+
+**Action:**
+Avoid nested callback definitions and repeated object attribute lookups inside high-frequency `re.sub` callbacks; elevate callbacks to module-level static functions and pre-resolve object methods beforehand.

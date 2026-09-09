@@ -36,7 +36,7 @@ jobs:
           fetch-depth: 1
 
       - name: Validate exporter
-        run: python3 -m pytest -q tests/test_hex_moneyball_export.py
+        run: python3 -m unittest -q tests/test_hex_moneyball_export.py
 
       - name: Sanitize evidence for Hex
         env:

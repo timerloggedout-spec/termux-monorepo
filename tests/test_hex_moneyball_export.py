@@ -1,3 +1,4 @@
+import csv
 import json
 import subprocess
 import sys
@@ -26,7 +27,7 @@ class HexMoneyballExportTest(unittest.TestCase):
                 encoding="utf-8",
             )
             ndjson = root / "bundle.ndjson"
-            csv = root / "bundle.csv"
+            csv_path = root / "bundle.csv"
             receipt = root / "receipt.json"
 
             result = subprocess.run(
@@ -36,7 +37,7 @@ class HexMoneyballExportTest(unittest.TestCase):
                     str(source),
                     str(ndjson),
                     "--csv",
-                    str(csv),
+                    str(csv_path),
                     "--receipt",
                     str(receipt),
                     "--snapshot-id",
@@ -61,7 +62,23 @@ class HexMoneyballExportTest(unittest.TestCase):
             self.assertEqual(receipt_data["validation_status"], "VALIDATED")
             self.assertEqual(receipt_data["privacy_assertion"], "passed")
             self.assertFalse(receipt_data["raw_content_exported"])
-            self.assertTrue(csv.exists())
+
+            self.assertTrue(csv_path.exists())
+            with csv_path.open(newline="", encoding="utf-8") as stream:
+                reader = csv.DictReader(stream)
+                self.assertEqual(
+                    reader.fieldnames,
+                    [
+                        "contract_version", "snapshot_id", "timestamp", "level",
+                        "agent_id", "target", "attempt_no", "message_sha256",
+                        "message_present",
+                    ],
+                )
+                rows = list(reader)
+            self.assertEqual(rows[0]["snapshot_id"], "run-1-attempt-1")
+            self.assertEqual(rows[0]["message_present"], "true")
+            self.assertEqual(len(rows), 1)
+
             self.assertIn('"validation_status":"VALIDATED"', result.stdout)
             self.assertIn('"records":1', result.stdout)
 

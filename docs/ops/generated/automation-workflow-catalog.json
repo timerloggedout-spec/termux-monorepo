@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "a19a580dd5a30ba0a4652159d4c78b4e00d2cbab291d029da804806361ec1f06",
-  "workflow_count": 66,
+  "source_fingerprint": "4f4688bf4406034c588cee9b96a4611e19dcec047e10bd869e9487d8d14123c8",
+  "workflow_count": 67,
   "workflows": [
     {
       "action_pins": [
@@ -813,6 +813,25 @@
       "schedules": [],
       "triggers": [
         "pull_request",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "writer",
+      "concurrency": "group: merge-promotion-${{ inputs.pr_number || github.ref }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "promote",
+        "refresh-catalog"
+      ],
+      "name": "Merge Promotion Steward",
+      "path": ".github/workflows/merge-promotion-steward.yml",
+      "schedules": [],
+      "triggers": [
+        "push",
         "workflow_dispatch"
       ]
     },

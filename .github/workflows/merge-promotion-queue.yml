@@ -1,5 +1,6 @@
 name: Merge Promotion Queue
 
+# Catalog-refresh trigger bootstrap: this file is observer-only.
 on:
   schedule:
     - cron: '47 * * * *'

@@ -1,0 +1,138 @@
+name: Merge Promotion Steward
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "Open PR number to promote into master"
+        required: true
+        type: string
+      expected_head_sha:
+        description: "Exact PR head SHA observed after final verification"
+        required: true
+        type: string
+      merge_method:
+        description: "GitHub merge method"
+        required: false
+        default: squash
+        type: choice
+        options:
+          - squash
+          - merge
+          - rebase
+
+permissions:
+  contents: write
+  pull-requests: write
+  checks: read
+
+concurrency:
+  group: merge-promotion-${{ inputs.pr_number }}
+  cancel-in-progress: false
+
+jobs:
+  promote:
+    name: Verify and promote PR
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Verify exact PR identity and mergeability
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+          EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
+        run: |
+          set -euo pipefail
+          pr_json="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}")"
+          state="$(jq -r '.state' <<<"$pr_json")"
+          base="$(jq -r '.base.ref' <<<"$pr_json")"
+          head_sha="$(jq -r '.head.sha' <<<"$pr_json")"
+          draft="$(jq -r '.draft' <<<"$pr_json")"
+          mergeable="$(jq -r '.mergeable' <<<"$pr_json")"
+
+          [[ "$state" == "open" ]] || { echo "PR is not open: $state"; exit 1; }
+          [[ "$base" == "master" ]] || { echo "Refusing non-master promotion: $base"; exit 1; }
+          [[ "$draft" == "false" ]] || { echo "Refusing draft PR"; exit 1; }
+          [[ "$head_sha" == "$EXPECTED_HEAD_SHA" ]] || {
+            echo "HEAD SHA moved: expected $EXPECTED_HEAD_SHA, observed $head_sha"; exit 1;
+          }
+          [[ "$mergeable" != "false" ]] || { echo "GitHub reports PR is not mergeable"; exit 1; }
+
+          echo "Verified PR #${PR_NUMBER} at ${head_sha} -> master"
+
+      - name: Require clean current-head checks
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+          EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
+        run: |
+          set -euo pipefail
+          current="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/head" --jq '.sha')"
+          [[ "$current" == "$EXPECTED_HEAD_SHA" ]] || {
+            echo "PR HEAD changed during promotion: $current"; exit 1;
+          }
+
+          checks="$(gh api "repos/${GITHUB_REPOSITORY}/commits/${EXPECTED_HEAD_SHA}/check-runs?per_page=100")"
+          total="$(jq '.total_count' <<<"$checks")"
+          [[ "$total" -gt 0 ]] || { echo "No check-runs found for exact head SHA"; exit 1; }
+
+          bad="$(jq -r '[.check_runs[] | select(.status == "completed") | select(.conclusion == "failure" or .conclusion == "timed_out" or .conclusion == "action_required")] | length' <<<"$checks")"
+          [[ "$bad" == "0" ]] || { echo "Exact-head check-runs contain failures: $bad"; jq -r '.check_runs[] | select(.status == "completed") | select(.conclusion == "failure" or .conclusion == "timed_out" or .conclusion == "action_required") | [.name,.conclusion] | @tsv' <<<"$checks"; exit 1; }
+
+          for required in "repo gate" "termux smoke"; do
+            count="$(jq --arg needle "$required" '[.check_runs[] | select((.name|ascii_downcase|contains($needle)) and .status == "completed" and .conclusion == "success")] | length' <<<"$checks")"
+            [[ "$count" -gt 0 ]] || { echo "Missing successful core gate: $required"; exit 1; }
+          done
+
+          echo "Exact-head checks are clean; core gates are green."
+
+      - name: Reject active change requests
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+        run: |
+          set -euo pipefail
+          reviews="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/reviews?per_page=100")"
+          changes="$(jq '[.[] | select(.state == "CHANGES_REQUESTED")] | length' <<<"$reviews")"
+          [[ "$changes" == "0" ]] || { echo "Active changes-requested reviews: $changes"; exit 1; }
+          echo "No active CHANGES_REQUESTED review remains."
+
+      - name: Merge exact verified head
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+          EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
+          MERGE_METHOD: ${{ inputs.merge_method }}
+        run: |
+          set -euo pipefail
+          gh pr merge "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --"$MERGE_METHOD" --delete-branch=false
+
+          merged="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq '.merged')"
+          merged_at="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq '.merged_at')"
+          merge_sha="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq '.merge_commit_sha // empty')"
+          [[ "$merged" == "true" ]] || { echo "Merge command returned but PR is not merged"; exit 1; }
+          [[ -n "$merged_at" && "$merged_at" != "null" ]] || { echo "Missing merged_at receipt"; exit 1; }
+
+          master_sha="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/heads/master" --jq '.object.sha')"
+          [[ -n "$master_sha" ]] || { echo "Unable to resolve master SHA after merge"; exit 1; }
+
+          {
+            echo "## Merge Promotion Receipt"
+            echo "- PR: #${PR_NUMBER}"
+            echo "- expected_head_sha: ${EXPECTED_HEAD_SHA}"
+            echo "- merge_commit_sha: ${merge_sha}"
+            echo "- master_sha_after_merge: ${master_sha}"
+            echo "- merged_at: ${merged_at}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Comment promotion receipt
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+          EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
+        run: |
+          set -euo pipefail
+          merge_sha="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq '.merge_commit_sha // empty')"
+          master_sha="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/heads/master" --jq '.object.sha')"
+          gh pr comment "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --body "<!-- merge-promotion-steward -->\n### Merge Promotion Receipt\n- verified PR head: \`${EXPECTED_HEAD_SHA}\`\n- merge commit: \`${merge_sha}\`\n- master after merge: \`${master_sha}\`\n- steward run: \`${GITHUB_RUN_ID}\`\n\nPromotion was performed only after exact-head verification, core gate checks, and review disposition checks."

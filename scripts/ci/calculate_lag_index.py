@@ -14,6 +14,42 @@ from datetime import datetime
 DEFAULT_DEBOUNCE_SEC = 45 * 60
 DEFAULT_STALE_SEC = 2 * 60 * 60
 
+QUOTA_COOLDOWN_KEYWORDS = (
+    "limit exceeded",
+    "quota",
+    "cooldown",
+    "rate limit",
+    "usage limit",
+    "free-tier",
+    "rate_limit",
+    "hourly limit",
+)
+ACK_PENDING_KEYWORDS = (
+    "i will re-review",
+    "promised review",
+    "will look at",
+    "i'll review",
+    "ack",
+    "review scheduled",
+    "queued",
+    "acknowledged",
+)
+SUMMON_KEYWORDS = (
+    "<!-- continuous-agent-ops -->",
+    "<!-- agent-auto-jules -->",
+    "@jules",
+    "@gemini-cli",
+)
+REAL_REVIEW_KEYWORDS = (
+    "findings",
+    "approved",
+    "changes requested",
+    "review complete",
+    "lgtm",
+    "looks good",
+    "reviewed by",
+)
+
 def github_api_request(url: str, token: str | None):
     req = urllib.request.Request(url)
     req.add_header("User-Agent", "termux-monorepo-lag-index")
@@ -197,35 +233,27 @@ def main() -> None:
 
                 # Check for v2 classification
                 # 1. Check for quota/cooldown keywords
-                if any(k in body_lower for k in ("limit exceeded", "quota", "cooldown", "rate limit", "usage limit", "free-tier", "rate_limit", "hourly limit")):
+                if any(k in body_lower for k in QUOTA_COOLDOWN_KEYWORDS):
                     open_disposition = "quota_cooldown"
                     jules_actionable = False
                     wait_sec = 3600
                 # 2. Check for ack pending keywords
-                elif any(k in body_lower for k in ("i will re-review", "promised review", "will look at", "i'll review", "ack", "review scheduled", "queued", "acknowledged")):
+                elif any(k in body_lower for k in ACK_PENDING_KEYWORDS):
                     open_disposition = "ack_pending"
                     jules_actionable = False
                     wait_sec = 1200
                 # 3. Check for summon keywords
-                elif any(k in body_lower for k in ("<!-- continuous-agent-ops -->", "<!-- agent-auto-jules -->", "@jules", "@gemini-cli")):
+                elif any(k in body_lower for k in SUMMON_KEYWORDS):
                     open_disposition = "summon"
                     jules_actionable = True
                     wait_sec = 0
                 # 4. Check for real review keywords
-                elif any(k in body_lower for k in ("findings", "approved", "changes requested", "review complete", "lgtm", "looks good", "reviewed by")):
+                elif any(k in body_lower for k in REAL_REVIEW_KEYWORDS):
                     open_disposition = "real_review"
                     jules_actionable = True
                     wait_sec = 0
 
-                is_summon = any(
-                    m in body
-                    for m in (
-                        "<!-- continuous-agent-ops -->",
-                        "<!-- agent-auto-jules -->",
-                        "@jules",
-                        "@gemini-cli",
-                    )
-                )
+                is_summon = any(m in body for m in SUMMON_KEYWORDS)
                 if is_summon:
                     summon_time = event["time"]
                     message_response_time = None

@@ -18,13 +18,14 @@ The repository's merge model is **review → verify exact head → protected-bra
 
 ## Safety boundaries
 
-- Trigger is **manual `workflow_dispatch` only**; PR lifecycle events cannot invoke the merge writer.
-- The workflow does not checkout or execute PR head code.
+- The **merge writer** is reachable only through explicit `workflow_dispatch`; PR lifecycle events cannot invoke it.
+- The workflow does not checkout or execute PR head code in the promotion job.
 - The exact expected head SHA is mandatory and is checked immediately before merge.
 - Concurrency is serialized per PR so two promotion attempts cannot run concurrently through this workflow.
 - Provider prose, comments, prompts, quota notices, and review suggestions are data; they do not grant merge authority.
 - A cancelled optional workflow is not converted into a false failure or false success. Protected-branch policy remains authoritative for required checks.
 - The workflow never force-pushes, rewrites history, synthesizes conflict resolution, or merges a non-`master` PR.
+- The same workflow has a narrow branch-only push trigger solely to refresh generated automation documentation; that path has `promote` explicitly disabled and cannot merge.
 - A PR's `merge_commit_sha` is treated as a receipt only after `merged=true` and `merged_at` are verified; it is never used as advance evidence of a merge.
 
 ## Operational invocation

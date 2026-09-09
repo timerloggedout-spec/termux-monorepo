@@ -15,6 +15,13 @@ on:
       - 'scripts/hex_moneyball_export.py'
       - 'tests/test_hex_moneyball_export.py'
       - 'docs/ops/HEX-MONEYBALL-INTEGRATION.md'
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'agent_telemetry_stream.json'
+      - 'scripts/hex_moneyball_export.py'
+      - 'tests/test_hex_moneyball_export.py'
+      - 'docs/ops/HEX-MONEYBALL-INTEGRATION.md'
 
 permissions:
   contents: read
@@ -23,7 +30,7 @@ jobs:
   sanitize-and-publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a # v5.0.0
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           persist-credentials: false
           fetch-depth: 1
@@ -35,8 +42,8 @@ jobs:
         env:
           SOURCE: ${{ inputs.source || 'agent_telemetry_stream.json' }}
           SNAPSHOT_ID: ${{ github.run_id }}-${{ github.run_attempt }}
-          SOURCE_SHA: ${{ github.sha }}
-          SOURCE_REF: ${{ github.ref_name }}
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          SOURCE_REF: ${{ github.head_ref || github.ref_name }}
         run: |
           set -euo pipefail
           test -f "$SOURCE"
@@ -54,8 +61,8 @@ jobs:
       - name: Assert privacy and receipt boundary
         env:
           EXPECTED_SNAPSHOT_ID: ${{ github.run_id }}-${{ github.run_attempt }}
-          EXPECTED_SOURCE_SHA: ${{ github.sha }}
-          EXPECTED_SOURCE_REF: ${{ github.ref_name }}
+          EXPECTED_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          EXPECTED_SOURCE_REF: ${{ github.head_ref || github.ref_name }}
         run: |
           set -euo pipefail
           python3 - <<'PY'

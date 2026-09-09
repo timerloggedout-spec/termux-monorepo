@@ -31,24 +31,41 @@ on:
       - 'docs/proposals/active/rate-limit-rotation/**'
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: automation-docs-refresh-${{ github.event.pull_request.number || github.ref_name }}
+  group: automation-docs-refresh-${{ github.event.pull_request.head.ref || github.ref_name }}
   cancel-in-progress: false
 
 jobs:
-  refresh:
+  validate-pull-request:
     if: >-
-      github.actor != 'github-actions[bot]' &&
-      (github.event_name != 'pull_request' ||
-      github.event.pull_request.head.repo.full_name == github.repository)
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           fetch-depth: 0
-          ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: Regenerate automation catalog in workspace
+        run: python3 scripts/ci/automation_docs.py --write
+      - name: Validate generated catalog
+        run: python3 scripts/ci/automation_docs.py --check
+
+  refresh-trusted:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref_name }}
           token: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
       - name: Regenerate automation catalog
         run: python3 scripts/ci/automation_docs.py --write

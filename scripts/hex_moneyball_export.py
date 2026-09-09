@@ -65,7 +65,12 @@ def write_csv(path: Path, records: list[dict[str, Any]]) -> None:
     with path.open("w", newline="", encoding="utf-8") as dst:
         writer = csv.DictWriter(dst, fieldnames=FIELDNAMES, extrasaction="ignore")
         writer.writeheader()
-        writer.writerows(records)
+        for record in records:
+            row = {
+                key: str(value).lower() if isinstance(value, bool) else value
+                for key, value in record.items()
+            }
+            writer.writerow(row)
 
 
 def main() -> int:

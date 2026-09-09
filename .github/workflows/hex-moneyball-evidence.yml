@@ -23,7 +23,7 @@ jobs:
   sanitize-and-publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a # v5.0.0
         with:
           persist-credentials: false
           fetch-depth: 1
@@ -51,23 +51,79 @@ jobs:
             --pagination-exhausted not_applicable \
             --corpus-complete not_applicable
 
-      - name: Assert privacy boundary
+      - name: Assert privacy and receipt boundary
+        env:
+          EXPECTED_SNAPSHOT_ID: ${{ github.run_id }}-${{ github.run_attempt }}
+          EXPECTED_SOURCE_SHA: ${{ github.sha }}
+          EXPECTED_SOURCE_REF: ${{ github.ref_name }}
         run: |
           set -euo pipefail
-          if grep -Eiq '"(message|prompt|completion|tool_payload|api_key|token|secret|credential)"[[:space:]]*:' /tmp/hex-moneyball/evidence.ndjson; then
-            echo 'Sanitized evidence contains a forbidden raw-content/credential field' >&2
-            exit 1
-          fi
           python3 - <<'PY'
-          import csv, json
+          import csv
+          import json
+          import os
           from pathlib import Path
-          receipt = json.loads(Path('/tmp/hex-moneyball/receipt.json').read_text())
+
+          root = Path('/tmp/hex-moneyball')
+          forbidden = {
+              'message', 'prompt', 'completion', 'tool_payload',
+              'api_key', 'token', 'secret', 'credential',
+          }
+          allowed_record_fields = {
+              'contract_version', 'snapshot_id', 'timestamp', 'level',
+              'agent_id', 'target', 'attempt_no', 'message_sha256',
+              'message_present',
+          }
+
+          def assert_safe_object(obj, label):
+              if isinstance(obj, dict):
+                  bad = forbidden.intersection(obj)
+                  assert not bad, f'{label}: forbidden fields: {sorted(bad)}'
+                  for value in obj.values():
+                      assert_safe_object(value, label)
+              elif isinstance(obj, list):
+                  for value in obj:
+                      assert_safe_object(value, label)
+
+          ndjson = root / 'evidence.ndjson'
+          records = []
+          with ndjson.open(encoding='utf-8') as f:
+              for line in f:
+                  if not line.strip():
+                      continue
+                  record = json.loads(line)
+                  assert set(record) <= allowed_record_fields
+                  assert_safe_object(record, 'evidence.ndjson')
+                  records.append(record)
+
+          receipt_path = root / 'receipt.json'
+          receipt = json.loads(receipt_path.read_text(encoding='utf-8'))
+          assert_safe_object(receipt, 'receipt.json')
           assert receipt['validation_status'] == 'VALIDATED'
           assert receipt['privacy_assertion'] == 'passed'
           assert receipt['raw_content_exported'] is False
-          with Path('/tmp/hex-moneyball/evidence.csv').open(newline='') as f:
-              rows = list(csv.DictReader(f))
-          assert len(rows) == receipt['records']
+          assert receipt['records'] == len(records)
+          assert receipt['snapshot_id'] == os.environ['EXPECTED_SNAPSHOT_ID']
+          assert receipt['source_sha'] == os.environ['EXPECTED_SOURCE_SHA']
+          assert receipt['source_ref'] == os.environ['EXPECTED_SOURCE_REF']
+          assert receipt['pagination_exhausted'] == 'not_applicable'
+          assert receipt['corpus_complete'] == 'not_applicable'
+
+          csv_path = root / 'evidence.csv'
+          with csv_path.open(newline='', encoding='utf-8') as f:
+              reader = csv.DictReader(f)
+              headers = reader.fieldnames or []
+              assert headers == [
+                  'contract_version', 'snapshot_id', 'timestamp', 'level',
+                  'agent_id', 'target', 'attempt_no', 'message_sha256',
+                  'message_present',
+              ]
+              csv_rows = list(reader)
+          assert len(csv_rows) == len(records)
+          assert not forbidden.intersection(headers)
+          for row in csv_rows:
+              assert None not in row
+              assert_safe_object(row, 'evidence.csv')
           PY
 
       - name: Publish evidence artifact

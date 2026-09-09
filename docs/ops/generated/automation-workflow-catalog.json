@@ -27,7 +27,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "efd2c46a3ac41b4efcc59f40478be1282fd4de53f49574cf0a39d1ca3cc845de",
+  "source_fingerprint": "146eba1900869762dda00107a3ef2a2ee548655365ef09c8e2e4116472757e35",
   "workflow_count": 66,
   "workflows": [
     {
@@ -745,7 +745,9 @@
       ]
     },
     {
-      "action_pins": [],
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
       "authority": "read-only-or-advisory",
       "concurrency": "",
       "domain": "agentic-development",
@@ -756,6 +758,7 @@
       "path": ".github/workflows/hex-moneyball-evidence.yml",
       "schedules": [],
       "triggers": [
+        "pull_request",
         "push",
         "workflow_dispatch"
       ]

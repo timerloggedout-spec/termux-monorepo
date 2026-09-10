@@ -13,7 +13,7 @@ jobs:
       - name: Remove temporary workflow before generation
         run: rm -f .github/workflows/_steward-regenerate-481.yml
       - name: Regenerate deterministic automation documentation
-        run: python3 scripts/ci/automation_docs.py
+        run: python3 scripts/ci/automation_docs.py --write
       - name: Commit generated outputs and remove temporary workflow
         run: |
           git config user.name 'github-actions[bot]'

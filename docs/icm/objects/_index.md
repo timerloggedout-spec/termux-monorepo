@@ -11,5 +11,6 @@
 | [Provider Routing Governance](knowledge/provider-routing.md) | knowledge | live | initiated | reviewing provider-routing evidence, proposing a provider observation, or preparing later workflow work |
 | [ICM Reference Inputs](knowledge/reference-inputs.md) | knowledge | live | verified | selecting or updating an external ICM reference without treating it as repository runtime |
 | [Interpretable Context Methodology Reference](knowledge/interpretable-context-methodology.md) | knowledge | live | verified | designing a recurring ICM workspace, using workspace-builder patterns, or updating the methodology reference |
+| [Cost of Remembering](knowledge/cost-of-remembering.md) | knowledge | live | verified | measuring filesystem-memory token/cost vs long-context, citing LongMemEval evidence, or advancing the owned fork |
 | [Workspace Artifact Estate](knowledge/workspace-artifact-estate.md) | knowledge | leftover | verified | classifying nested `workspace/` Markdown, text, JSONL, generated products, or stale artifacts |
 | [Change Control](governance/change-control.md) | governance | live | verified | changing tracked source/docs, proposal state, branch flow, or validation requirements |

@@ -2,6 +2,20 @@
 
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/timerloggedout-spec/termux-monorepo)
 
+<!-- partner-banner:start (edit docs/PARTNERS.md to add a partner; keep this block to four badges + two lines) -->
+<p align="center">
+  <a href="https://cellcog.ai/invitation/l19hdRGY9dTh"><img src="https://img.shields.io/badge/Powered_by-CellCog_AI_employees-2e7e7e?style=for-the-badge" alt="Powered by CellCog AI employees"></a>
+  <a href="https://cellcog.ai/invitation/l19hdRGY9dTh"><img src="https://img.shields.io/badge/500_bonus_credits-claim_via_invitation-f5b800?style=for-the-badge" alt="500 bonus credits via invitation"></a>
+  <a href="https://termux-monorepo.vercel.app/"><img src="https://img.shields.io/badge/Preview_portal-Vercel_%28WIP%29-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Preview portal on Vercel (work in progress)"></a>
+  <a href="https://timerloggedout-spec.github.io/"><img src="https://img.shields.io/badge/Landing_page-GitHub_Pages-1e6fd9?style=for-the-badge&logo=github&logoColor=white" alt="Landing page on GitHub Pages"></a>
+</p>
+
+> **Powered by autonomous AI employees.** This project uses [CellCog](https://cellcog.ai/invitation/l19hdRGY9dTh) AI employees for continuous integration, PR review, and engineering operations. Standing AI workers run across persistent sessions with their own cloud environments, tool execution, and team channels. Sign up through the [community partner invitation](https://cellcog.ai/invitation/l19hdRGY9dTh) to receive **500 bonus credits** on your first purchase. See the [landing page](https://timerloggedout-spec.github.io/) and the [preview portal (WIP)](https://termux-monorepo.vercel.app/).
+>
+> Developer partners are registered in [`docs/PARTNERS.md`](docs/PARTNERS.md); each entry is a badge, one line, and a link, so new lanes (cloud hosting, dev tools, compute) slot in without redesigning this banner.
+<!-- partner-banner:end -->
+
+
 > **C×O operator guide.** Build deliberately. Preserve evidence. Keep the Android/Termux target first; treat every other environment as a simulation, review surface, or constrained support plane.
 
 This repository is a mixed research, automation, and agentic-development monorepo. It is not a one-command product installer. Use it as an **evidence-led operating system for change**: enter through the smallest authoritative map, establish the relevant boundary, make a bounded change, and leave a validation trail.

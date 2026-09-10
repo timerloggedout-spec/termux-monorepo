@@ -53,6 +53,8 @@ def sanitize(event: dict[str, Any], snapshot_id: str | None = None) -> dict[str,
         "target": event.get("target"),
         "attempt_no": event.get("attempt"),
     }
+    if snapshot_id:
+        out["snapshot_id"] = snapshot_id
     if isinstance(message, str):
         out["message_sha256"] = sha256_text(message)
         out["message_present"] = True
@@ -77,8 +79,12 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("input", type=Path)
     parser.add_argument("output", type=Path)
-    parser.add_argument("--csv", type=Path)
-    parser.add_argument("--receipt", type=Path)
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("input", type=Path)
+    parser.add_argument("output", type=Path)
+    parser.add_argument("--csv", type=Path, default=None)
+    parser.add_argument("--receipt", type=Path, default=None)
     parser.add_argument("--snapshot-id", default=None)
     parser.add_argument("--source-sha", default=None)
     parser.add_argument("--source-ref", default=None)
@@ -92,32 +98,46 @@ def main() -> int:
     if args.receipt:
         args.receipt.parent.mkdir(parents=True, exist_ok=True)
 
-    records: list[dict[str, Any]] = []
-    with args.input.open("r", encoding="utf-8") as src:
-        for line in src:
-            if not line.strip():
-                continue
-            event = json.loads(line)
-            if not isinstance(event, dict):
-                raise ValueError("NDJSON event must be an object")
-            record = sanitize(event, args.snapshot_id)
-            if FORBIDDEN_FIELDS.intersection(record):
-                raise ValueError("forbidden raw-content field reached sanitized record")
-            records.append(record)
+    count = 0
+    csv_file = None
+    csv_writer = None
 
-    with args.output.open("w", encoding="utf-8") as dst:
-        for record in records:
-            dst.write(json.dumps(record, separators=(",", ":"), sort_keys=True) + "\n")
+    try:
+        if args.csv:
+            csv_file = args.csv.open("w", newline="", encoding="utf-8")
+            csv_writer = csv.DictWriter(csv_file, fieldnames=FIELDNAMES, extrasaction="ignore")
+            csv_writer.writeheader()
 
-    if args.csv:
-        write_csv(args.csv, records)
+        with args.input.open("r", encoding="utf-8") as src, args.output.open("w", encoding="utf-8") as dst:
+            for line in src:
+                if not line.strip():
+                    continue
+                event = json.loads(line)
+                if not isinstance(event, dict):
+                    raise ValueError("NDJSON event must be an object")
+                record = sanitize(event, args.snapshot_id)
+                if FORBIDDEN_FIELDS.intersection(record):
+                    raise ValueError("forbidden raw-content field reached sanitized record")
+
+                dst.write(json.dumps(record, separators=(",", ":"), sort_keys=True) + "\n")
+                count += 1
+
+                if csv_writer is not None:
+                    row = {
+                        key: str(value).lower() if isinstance(value, bool) else value
+                        for key, value in record.items()
+                    }
+                    csv_writer.writerow(row)
+    finally:
+        if csv_file is not None:
+            csv_file.close()
 
     receipt = {
         "contract_version": CONTRACT,
         "validation_status": "VALIDATED",
         "privacy_assertion": "passed",
         "raw_content_exported": False,
-        "records": len(records),
+        "records": count,
         "snapshot_id": args.snapshot_id,
         "source_sha": args.source_sha,
         "source_ref": args.source_ref,

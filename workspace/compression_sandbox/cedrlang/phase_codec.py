@@ -129,14 +129,14 @@ def to_1337speak(
     # Fast-path optimization: check if any matching tokens exist before evaluating RNG or regex sub
     if not VARIANT_REGEX.search(text):
         return text
-    rng_rand = rng.random if rng is not None else random.random
+    rng = rng or random.Random()
 
     def replace(match: re.Match[str]) -> str:
         token = match.group(0)
         chars = list(token)
         for i, char in enumerate(chars):
             replacement = LEET_MAP.get(char.lower())
-            if replacement and rng_rand() < probability:
+            if replacement and rng.random() < probability:
                 chars[i] = replacement
         return "".join(chars)
 

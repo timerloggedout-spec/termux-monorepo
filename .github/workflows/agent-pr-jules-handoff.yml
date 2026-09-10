@@ -12,10 +12,9 @@ jobs:
   handoff:
     if: >-
       github.event_name == 'issue_comment' && github.event.issue.pull_request &&
-      contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association) &&
       (
-        (github.event.comment.user.type == 'User') ||
-        contains(fromJSON('["github-actions[bot]"]'), github.event.comment.user.login)
+        (github.event.comment.user.type == 'User' && contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association)) ||
+        (github.event.comment.user.type == 'Bot' && contains(fromJSON('["github-actions[bot]"]'), github.event.comment.user.login))
       ) &&
       (startsWith(github.event.comment.body, '@jules') || startsWith(github.event.comment.body, '@Jules'))
     runs-on: ubuntu-latest

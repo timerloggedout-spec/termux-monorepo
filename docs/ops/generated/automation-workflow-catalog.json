@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "403ab61b0ab541dc00b0252f373d878fba28ac0ae3ecb5c39e3bc269a11bb9b6",
-  "workflow_count": 66,
+  "source_fingerprint": "c429074b9574efa90dbae299834882cbbca4cf866f08ffcfbdcc1332aa9123b2",
+  "workflow_count": 68,
   "workflows": [
     {
       "action_pins": [
@@ -253,10 +253,11 @@
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
       "authority": "writer",
-      "concurrency": "group: automation-docs-refresh-${{ github.event.pull_request.number || github.ref_name }} cancel-in-progress: false",
+      "concurrency": "group: automation-docs-refresh-${{ github.event.pull_request.head.ref || github.ref_name }} cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
-        "refresh"
+        "refresh-trusted",
+        "validate-pull-request"
       ],
       "name": "Automation Documentation Continuous Refresh",
       "path": ".github/workflows/automation-docs-continuous-refresh.yml",
@@ -815,6 +816,45 @@
       "schedules": [],
       "triggers": [
         "pull_request",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: merge-promotion-queue cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "inventory"
+      ],
+      "name": "Merge Promotion Queue",
+      "path": ".github/workflows/merge-promotion-queue.yml",
+      "schedules": [
+        "47 * * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "writer",
+      "concurrency": "group: merge-promotion-${{ inputs.pr_number || github.ref }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "promote",
+        "refresh-catalog"
+      ],
+      "name": "Merge Promotion Steward",
+      "path": ".github/workflows/merge-promotion-steward.yml",
+      "schedules": [],
+      "triggers": [
+        "push",
         "workflow_dispatch"
       ]
     },

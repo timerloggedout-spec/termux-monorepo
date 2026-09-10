@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "c864808d0556d63decefdb84c77dc1684c547598aaeee2bd7f29668724faf0d3",
-  "workflow_count": 68,
+  "source_fingerprint": "b6cf0e0898582d0497d945da51bd0516e999eb37697353fa6664db30e169d0f5",
+  "workflow_count": 69,
   "workflows": [
     {
       "action_pins": [
@@ -179,6 +179,23 @@
       "schedules": [],
       "triggers": [
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "handoff",
+        "mutation"
+      ],
+      "name": "Agent PR Jules Handoff",
+      "path": ".github/workflows/agent-pr-jules-handoff.yml",
+      "schedules": [],
+      "triggers": [
+        "issue_comment",
+        "pull_request"
       ]
     },
     {

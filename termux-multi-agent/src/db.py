@@ -46,7 +46,8 @@ def init_db():
             )''')
         conn.commit()
     try:
-        os.chmod(DB_PATH, 0o600)
+        if not os.path.islink(DB_PATH):
+            os.chmod(DB_PATH, 0o600)
     except Exception:
         pass
 

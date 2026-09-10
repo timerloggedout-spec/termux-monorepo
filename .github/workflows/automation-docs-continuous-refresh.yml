@@ -4,7 +4,7 @@ on:
   schedule:
     - cron: '17 * * * *'
   push:
-    branches: [master, ops/merge-promotion-queue]
+    branches: [master]
     paths:
       - 'scripts/ci/automation_docs.py'
       - '.github/workflows/**'

@@ -53,3 +53,10 @@ Adding a pre-search check (`if not VARIANT_REGEX.search(text): return text`) bef
 
 **Action:**
 Apply pre-search short-circuit guards on single-pass regex transformers when processing high volumes of uncompressed prose.
+
+## 2026-09-10 - Closure Allocation Elimination and Direct RNG Handle Resolution
+**Learning:**
+Defining inner callback functions inside high-frequency string substitution functions (e.g. `_sub_cb` in `translate_text_raw` or `replace` in `from_1337speak`) creates Python closure function object allocations on every execution frame. Lifting callbacks to module-level functions (`_sub_cb_comp`, `_sub_cb_decomp`, `_from_1337_replace`) eliminates per-call closure creation overhead. Additionally, in `to_1337speak()`, avoiding `random.Random()` object creation when unseeded by resolving `rng.random if rng is not None else random.random` directly reduces execution latency on 1337speak surface encoding by ~25% (from 43.7µs to 32.7µs per invocation).
+
+**Action:**
+Extract nested substitution callbacks to module scope where possible and resolve default RNG method references directly instead of instantiating new `random.Random()` generator objects on every function invocation.

@@ -15,6 +15,27 @@ from pathlib import Path
 from typing import Any
 
 CONTRACT = "3l0.moneyball.v1"
+FORBIDDEN_FIELDS = {
+    "message",
+    "prompt",
+    "completion",
+    "tool_payload",
+    "api_key",
+    "token",
+    "secret",
+    "credential",
+}
+FIELDNAMES = [
+    "contract_version",
+    "snapshot_id",
+    "timestamp",
+    "level",
+    "agent_id",
+    "target",
+    "attempt_no",
+    "message_sha256",
+    "message_present",
+]
 
 
 def sha256_text(value: str) -> str:
@@ -25,6 +46,7 @@ def sanitize(event: dict[str, Any], snapshot_id: str | None = None) -> dict[str,
     message = event.get("message")
     out = {
         "contract_version": CONTRACT,
+        "snapshot_id": snapshot_id,
         "timestamp": event.get("timestamp"),
         "level": event.get("level"),
         "agent_id": event.get("agent"),
@@ -41,66 +63,93 @@ def sanitize(event: dict[str, Any], snapshot_id: str | None = None) -> dict[str,
     return {k: v for k, v in out.items() if v is not None}
 
 
+def write_csv(path: Path, records: list[dict[str, Any]]) -> None:
+    with path.open("w", newline="", encoding="utf-8") as dst:
+        writer = csv.DictWriter(dst, fieldnames=FIELDNAMES, extrasaction="ignore")
+        writer.writeheader()
+        for record in records:
+            row = {
+                key: str(value).lower() if isinstance(value, bool) else value
+                for key, value in record.items()
+            }
+            writer.writerow(row)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("input", type=Path)
+    parser.add_argument("output", type=Path)
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("input", type=Path)
     parser.add_argument("output", type=Path)
     parser.add_argument("--csv", type=Path, default=None)
     parser.add_argument("--receipt", type=Path, default=None)
-    parser.add_argument("--snapshot-id", type=str, default=None)
-    parser.add_argument("--source-sha", type=str, default=None)
-    parser.add_argument("--source-ref", type=str, default=None)
+    parser.add_argument("--snapshot-id", default=None)
+    parser.add_argument("--source-sha", default=None)
+    parser.add_argument("--source-ref", default=None)
+    parser.add_argument("--pagination-exhausted", choices=("true", "false", "not_applicable"), default="not_applicable")
+    parser.add_argument("--corpus-complete", choices=("true", "false", "not_applicable"), default="not_applicable")
     args = parser.parse_args()
+
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    if args.csv:
+        args.csv.parent.mkdir(parents=True, exist_ok=True)
+    if args.receipt:
+        args.receipt.parent.mkdir(parents=True, exist_ok=True)
 
     count = 0
     csv_file = None
     csv_writer = None
 
-    if args.csv:
-        args.csv.parent.mkdir(parents=True, exist_ok=True)
-        csv_file = args.csv.open("w", encoding="utf-8", newline="")
-
     try:
+        if args.csv:
+            csv_file = args.csv.open("w", newline="", encoding="utf-8")
+            csv_writer = csv.DictWriter(csv_file, fieldnames=FIELDNAMES, extrasaction="ignore")
+            csv_writer.writeheader()
+
         with args.input.open("r", encoding="utf-8") as src, args.output.open("w", encoding="utf-8") as dst:
             for line in src:
                 if not line.strip():
                     continue
                 event = json.loads(line)
-                sanitized = sanitize(event, snapshot_id=args.snapshot_id)
-                dst.write(json.dumps(sanitized, separators=(",", ":")) + "\n")
+                if not isinstance(event, dict):
+                    raise ValueError("NDJSON event must be an object")
+                record = sanitize(event, args.snapshot_id)
+                if FORBIDDEN_FIELDS.intersection(record):
+                    raise ValueError("forbidden raw-content field reached sanitized record")
+
+                dst.write(json.dumps(record, separators=(",", ":"), sort_keys=True) + "\n")
                 count += 1
 
-                if csv_file is not None:
-                    if csv_writer is None:
-                        csv_writer = csv.DictWriter(csv_file, fieldnames=list(sanitized.keys()))
-                        csv_writer.writeheader()
-                    csv_writer.writerow(sanitized)
+                if csv_writer is not None:
+                    row = {
+                        key: str(value).lower() if isinstance(value, bool) else value
+                        for key, value in record.items()
+                    }
+                    csv_writer.writerow(row)
     finally:
         if csv_file is not None:
             csv_file.close()
 
-    if args.receipt:
-        args.receipt.parent.mkdir(parents=True, exist_ok=True)
-        receipt_data = {
-            "contract_version": CONTRACT,
-            "snapshot_id": args.snapshot_id,
-            "source_sha": args.source_sha,
-            "source_ref": args.source_ref,
-            "validation_status": "VALIDATED",
-            "privacy_assertion": "passed",
-            "raw_content_exported": False,
-            "records": count,
-        }
-        with args.receipt.open("w", encoding="utf-8") as rf:
-            json.dump(receipt_data, rf, indent=2)
-            rf.write("\n")
-
-    print(json.dumps({
+    receipt = {
         "contract_version": CONTRACT,
         "validation_status": "VALIDATED",
+        "privacy_assertion": "passed",
+        "raw_content_exported": False,
         "records": count,
-        "output": str(args.output)
-    }, separators=(",", ":")))
+        "snapshot_id": args.snapshot_id,
+        "source_sha": args.source_sha,
+        "source_ref": args.source_ref,
+        "pagination_exhausted": args.pagination_exhausted,
+        "corpus_complete": args.corpus_complete,
+        "output": str(args.output),
+        "csv_output": str(args.csv) if args.csv else None,
+    }
+    if args.receipt:
+        args.receipt.write_text(json.dumps(receipt, separators=(",", ":"), sort_keys=True) + "\n", encoding="utf-8")
+
+    print(json.dumps(receipt, separators=(",", ":"), sort_keys=True))
     return 0
 
 

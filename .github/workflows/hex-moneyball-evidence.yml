@@ -13,6 +13,14 @@ on:
     paths:
       - 'agent_telemetry_stream.json'
       - 'scripts/hex_moneyball_export.py'
+      - 'tests/test_hex_moneyball_export.py'
+      - 'docs/ops/HEX-MONEYBALL-INTEGRATION.md'
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'agent_telemetry_stream.json'
+      - 'scripts/hex_moneyball_export.py'
+      - 'tests/test_hex_moneyball_export.py'
       - 'docs/ops/HEX-MONEYBALL-INTEGRATION.md'
 
 permissions:
@@ -24,30 +32,112 @@ jobs:
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
           fetch-depth: 1
+
+      - name: Validate exporter
+        run: python3 -m unittest -q tests/test_hex_moneyball_export.py
 
       - name: Sanitize evidence for Hex
         env:
           SOURCE: ${{ inputs.source || 'agent_telemetry_stream.json' }}
+          SNAPSHOT_ID: ${{ github.run_id }}-${{ github.run_attempt }}
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          SOURCE_REF: ${{ github.head_ref || github.ref_name }}
         run: |
           set -euo pipefail
           test -f "$SOURCE"
           mkdir -p /tmp/hex-moneyball
-          python3 scripts/hex_moneyball_export.py "$SOURCE" /tmp/hex-moneyball/evidence.ndjson
+          python3 scripts/hex_moneyball_export.py "$SOURCE" \
+            /tmp/hex-moneyball/evidence.ndjson \
+            --csv /tmp/hex-moneyball/evidence.csv \
+            --receipt /tmp/hex-moneyball/receipt.json \
+            --snapshot-id "$SNAPSHOT_ID" \
+            --source-sha "$SOURCE_SHA" \
+            --source-ref "$SOURCE_REF" \
+            --pagination-exhausted not_applicable \
+            --corpus-complete not_applicable
 
-      - name: Assert privacy boundary
+      - name: Assert privacy and receipt boundary
+        env:
+          EXPECTED_SNAPSHOT_ID: ${{ github.run_id }}-${{ github.run_attempt }}
+          EXPECTED_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          EXPECTED_SOURCE_REF: ${{ github.head_ref || github.ref_name }}
         run: |
           set -euo pipefail
-          if grep -Eiq '"(message|prompt|completion|tool_payload|api_key|token|secret)"[[:space:]]*:' /tmp/hex-moneyball/evidence.ndjson; then
-            echo 'Sanitized evidence contains a forbidden raw-content/credential field' >&2
-            exit 1
-          fi
+          python3 - <<'PY'
+          import csv
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path('/tmp/hex-moneyball')
+          forbidden = {
+              'message', 'prompt', 'completion', 'tool_payload',
+              'api_key', 'token', 'secret', 'credential',
+          }
+          allowed_record_fields = {
+              'contract_version', 'snapshot_id', 'timestamp', 'level',
+              'agent_id', 'target', 'attempt_no', 'message_sha256',
+              'message_present',
+          }
+
+          def assert_safe_object(obj, label):
+              if isinstance(obj, dict):
+                  bad = forbidden.intersection(obj)
+                  assert not bad, f'{label}: forbidden fields: {sorted(bad)}'
+                  for value in obj.values():
+                      assert_safe_object(value, label)
+              elif isinstance(obj, list):
+                  for value in obj:
+                      assert_safe_object(value, label)
+
+          ndjson = root / 'evidence.ndjson'
+          records = []
+          with ndjson.open(encoding='utf-8') as f:
+              for line in f:
+                  if not line.strip():
+                      continue
+                  record = json.loads(line)
+                  assert set(record) <= allowed_record_fields
+                  assert_safe_object(record, 'evidence.ndjson')
+                  records.append(record)
+
+          receipt_path = root / 'receipt.json'
+          receipt = json.loads(receipt_path.read_text(encoding='utf-8'))
+          assert_safe_object(receipt, 'receipt.json')
+          assert receipt['validation_status'] == 'VALIDATED'
+          assert receipt['privacy_assertion'] == 'passed'
+          assert receipt['raw_content_exported'] is False
+          assert receipt['records'] == len(records)
+          assert receipt['snapshot_id'] == os.environ['EXPECTED_SNAPSHOT_ID']
+          assert receipt['source_sha'] == os.environ['EXPECTED_SOURCE_SHA']
+          assert receipt['source_ref'] == os.environ['EXPECTED_SOURCE_REF']
+          assert receipt['pagination_exhausted'] == 'not_applicable'
+          assert receipt['corpus_complete'] == 'not_applicable'
+
+          csv_path = root / 'evidence.csv'
+          with csv_path.open(newline='', encoding='utf-8') as f:
+              reader = csv.DictReader(f)
+              headers = reader.fieldnames or []
+              assert headers == [
+                  'contract_version', 'snapshot_id', 'timestamp', 'level',
+                  'agent_id', 'target', 'attempt_no', 'message_sha256',
+                  'message_present',
+              ]
+              csv_rows = list(reader)
+          assert len(csv_rows) == len(records)
+          assert not forbidden.intersection(headers)
+          for row in csv_rows:
+              assert None not in row
+              assert_safe_object(row, 'evidence.csv')
+          PY
 
       - name: Publish evidence artifact
         uses: actions/upload-artifact@v4
         with:
           name: hex-moneyball-evidence-${{ github.run_id }}-${{ github.run_attempt }}
-          path: /tmp/hex-moneyball/evidence.ndjson
+          path: /tmp/hex-moneyball/
           if-no-files-found: error
           retention-days: 14

@@ -10,7 +10,7 @@ reviewers:
   - id: agent-automation
     role: author+driver
     status: posted
-related_prs: []
+related_prs: [492]
 related_branches: [docs/proposals/agentic-scoped-access-and-tier4-review]
 gates_required: []
 ---

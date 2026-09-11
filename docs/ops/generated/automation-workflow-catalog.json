@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "c97d63535b3a7e07391415b9715c1a487a379af80fe6c59fcfa7bc35355312ea",
-  "workflow_count": 69,
+  "source_fingerprint": "046e09bf2f16b9275ccf58d865782c861b2456ab878d871e6036caaacb594905",
+  "workflow_count": 70,
   "workflows": [
     {
       "action_pins": [
@@ -268,6 +268,23 @@
         "pull_request",
         "push",
         "schedule"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "bounded-state-write",
+      "concurrency": "group: cellcog-engineering-health cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "cellcog"
+      ],
+      "name": "CellCog engineering health",
+      "path": ".github/workflows/cellcog-engineering-health.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
       ]
     },
     {

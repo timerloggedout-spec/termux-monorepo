@@ -27,3 +27,8 @@
 **Vulnerability:** In `harmony_hub/src/patch_router.py`, `apply_patch` allowed arbitrary targets without path traversal validation (`..`) or symlink checks, enabling attackers or crafted patches to overwrite system or sensitive files outside the workspace. In addition, temporary python patch execution scripts were created with default umask permissions and unvalidated symlink checks.
 **Learning:** Utilities that accept patch files or target file paths must enforce strict validation against symlink targets and path traversal before invoking script processes. Creating temporary execution files without restricted permissions (`0o600`) or symlink guards allows local privilege escalation or arbitrary script injection.
 **Prevention:** Validate `".." not in target_path.parts`, enforce `not target_path.is_symlink()`, write temporary scripts with `os.open` mode `0o600`, and clean up temporary execution scripts securely inside a `finally` block.
+
+## 2026-09-09 - Symlink Hijacking Prevention in Activity Listener Script Sandbox
+**Vulnerability:** In `archwiz/activity_listener.py`, auto-executed code block scripts written into `SANDBOX` ran `script.chmod(0o755)` without checking whether `script` was a symlink, allowing local symlink hijacking.
+**Learning:** Creating temporary execution scripts in shared or local user directories without verifying `is_symlink()` allows local users to pre-create symlinks pointing to sensitive system files, causing `chmod` or `write_text` to modify permissions on unexpected target files.
+**Prevention:** Always check `script.is_symlink()` before writing or executing temporary scripts, and wrap top-level polling loops in `if __name__ == '__main__':` to allow safe test module imports.

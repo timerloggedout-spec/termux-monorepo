@@ -102,3 +102,35 @@ def test_archwiz_path_traversal_prevention(tmp_path, monkeypatch):
 
         with pytest.raises(ValueError, match="Path traversal detected"):
             ac.set_session_store(path)
+
+
+def test_activity_listener_symlink_safety(tmp_path, monkeypatch):
+    import archwiz.activity_listener as al
+
+    sandbox_dir = tmp_path / "sandbox"
+    monkeypatch.setattr(al, "SANDBOX", sandbox_dir)
+
+    target_file = tmp_path / "target_script.sh"
+    target_file.write_text("echo unsafe")
+    if os.name != "nt":
+        target_file.chmod(0o644)
+
+    sandbox_dir.mkdir(parents=True, exist_ok=True)
+
+    # Force script path to point to a symlink
+    symlink_script = sandbox_dir / "block_000000.sh"
+    symlink_script.symlink_to(target_file)
+
+    def mock_now():
+        class FixedTime:
+            def strftime(self, fmt):
+                return "000000"
+        return FixedTime()
+
+    monkeypatch.setattr(al, "datetime", type("MockDateTime", (), {"now": staticmethod(mock_now)}))
+
+    with pytest.raises(ValueError, match="Symlink execution script rejected"):
+        al.run_code("echo test")
+
+    if os.name != "nt":
+        assert (target_file.stat().st_mode & 0o777) == 0o644

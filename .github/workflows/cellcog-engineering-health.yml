@@ -12,17 +12,22 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'smoke = key/SDK only; health = smoke + dashboard refresh prompt'
+        description: smoke = key/SDK only; health = smoke + dashboard refresh prompt
         required: true
         default: smoke
         type: choice
-        options: [smoke, health]
+        options:
+          - smoke
+          - health
       chat_tier:
-        description: 'CellCog tier (flash for smoke, core/max for health)'
+        description: CellCog tier (flash for smoke, core/max for health)
         required: true
         default: flash
         type: choice
-        options: [flash, core, max]
+        options:
+          - flash
+          - core
+          - max
 
 permissions:
   contents: read
@@ -75,11 +80,10 @@ jobs:
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import os, json, sys
+          import os, sys
           from datetime import datetime, timezone
           from cellcog import CellCogClient
 
-          key = os.environ["CELLCOG_API_KEY"]
           tier = os.environ.get("CHAT_TIER", "flash")
           sha = os.environ.get("HEAD_SHA", "unknown")[:12]
           run_id = os.environ.get("RUN_ID", "local")
@@ -118,7 +122,6 @@ jobs:
               f.write(f"- sha: `{sha}`\n")
               f.write(f"- message (truncated):\n\n```\n{str(msg)[:1500]}\n```\n")
 
-          # Soft success signal for downstream
           out = os.environ.get("GITHUB_OUTPUT")
           if out:
               with open(out, "a", encoding="utf-8") as f:
@@ -127,7 +130,7 @@ jobs:
           PY
 
       - name: Engineering-health refresh prompt
-        if: inputs.mode == 'health'
+        if: ${{ inputs.mode == 'health' }}
         env:
           CELLCOG_API_KEY: ${{ secrets.CELLCOG_API_KEY }}
           CHAT_TIER: ${{ inputs.chat_tier }}
@@ -143,7 +146,7 @@ jobs:
 
           tier = os.environ.get("CHAT_TIER", "core")
           if tier == "flash":
-              tier = "core"  # health work needs at least core
+              tier = "core"
           sha = os.environ.get("HEAD_SHA", "unknown")[:12]
           run_id = os.environ.get("RUN_ID", "local")
           repo = os.environ.get("REPO", "timerloggedout-spec/termux-monorepo")

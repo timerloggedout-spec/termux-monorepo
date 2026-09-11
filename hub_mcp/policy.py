@@ -51,6 +51,11 @@ class CapabilitySpec:
         if arguments and not self.accepts_arguments:
             raise PolicyError(f"Capability {self.name!r} does not accept arguments")
 
+        if ".." in repository.parts:
+            raise PolicyError(f"Path traversal in repository path {repository} rejected for security")
+        if repository.is_symlink():
+            raise PolicyError(f"Symlink repository path {repository} rejected for security")
+
         replacement = {
             "{repository}": str(repository),
         }

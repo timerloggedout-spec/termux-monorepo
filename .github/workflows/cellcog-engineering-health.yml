@@ -1,213 +1,58 @@
-name: CellCog engineering health
+name: Engineering health (script)
 
-# Thin CellCog integration lane for termux-monorepo.
-# - Smoke: validates CELLCOG_API_KEY + Python SDK reachability.
-# - Health: optional prompt to refresh the engineering-health dashboard app.
-# Dashboard SSOT: https://cellcog.ai/app/6aa08a02bf7d52bfa976cd2e/dashboard/engineering-health/
-#
-# Prerequisites: repository secret CELLCOG_API_KEY (added ~2026-09-07).
-# First slice is dispatch-only; schedule can be enabled after a green smoke.
+# 100% automated engineering-health snapshot.
+# ZERO CellCog / LLM agent credits — GitHub API + local Python only.
+# Script: scripts/ci/engineering_health.py
+# Optional human view (not written by this job):
+#   https://cellcog.ai/app/6aa08a02bf7d52bfa976cd2e/dashboard/engineering-health/
 
 on:
   workflow_dispatch:
-    inputs:
-      mode:
-        description: smoke = key/SDK only; health = smoke + dashboard refresh prompt
-        required: true
-        default: smoke
-        type: choice
-        options:
-          - smoke
-          - health
-      chat_tier:
-        description: CellCog tier (flash for smoke, core/max for health)
-        required: true
-        default: flash
-        type: choice
-        options:
-          - flash
-          - core
-          - max
+  schedule:
+    - cron: '17 * * * *'  # hourly, minute 17
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/ci/engineering_health.py'
+      - '.github/workflows/cellcog-engineering-health.yml'
 
 permissions:
   contents: read
-  issues: write
+  actions: read
 
 concurrency:
-  group: cellcog-engineering-health
-  cancel-in-progress: false
+  group: engineering-health-script
+  cancel-in-progress: true
 
 jobs:
-  cellcog:
-    name: CellCog ${{ inputs.mode }}
+  snapshot:
+    name: engineering-health snapshot
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           persist-credentials: false
           fetch-depth: 1
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Run pure script (no CellCog)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          ENGINEERING_HEALTH_OUT: ${{ runner.temp }}/engineering-health
+        run: |
+          set -euo pipefail
+          python3 scripts/ci/engineering_health.py --out-dir "$ENGINEERING_HEALTH_OUT"
+          {
+            echo '### Engineering health (zero CellCog credits)'
+            echo
+            cat "$ENGINEERING_HEALTH_OUT/snapshot.md"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload snapshot artifact
+        uses: actions/upload-artifact@v4
         with:
-          python-version: '3.12'
-
-      - name: Install CellCog SDK
-        run: |
-          set -euo pipefail
-          python3 -m pip install --upgrade pip
-          python3 -m pip install 'cellcog>=2.0'
-
-      - name: Require CELLCOG_API_KEY
-        env:
-          CELLCOG_API_KEY: ${{ secrets.CELLCOG_API_KEY }}
-        run: |
-          set -euo pipefail
-          if [ -z "${CELLCOG_API_KEY:-}" ]; then
-            echo '::error::CELLCOG_API_KEY secret is missing or empty. Add it under repository secrets.'
-            exit 1
-          fi
-          echo 'CELLCOG_API_KEY is present (value not logged).'
-
-      - name: CellCog smoke
-        id: smoke
-        env:
-          CELLCOG_API_KEY: ${{ secrets.CELLCOG_API_KEY }}
-          CHAT_TIER: ${{ inputs.chat_tier }}
-          HEAD_SHA: ${{ github.sha }}
-          RUN_ID: ${{ github.run_id }}
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          import os, sys
-          from datetime import datetime, timezone
-          from cellcog import CellCogClient
-
-          tier = os.environ.get("CHAT_TIER", "flash")
-          sha = os.environ.get("HEAD_SHA", "unknown")[:12]
-          run_id = os.environ.get("RUN_ID", "local")
-          ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-
-          client = CellCogClient(agent_provider="openclaw")
-          prompt = (
-              "You are a monorepo integration canary for timerloggedout-spec/termux-monorepo. "
-              f"Repository SHA={sha}. Actions run_id={run_id}. UTC={ts}. "
-              "Reply with exactly one line: cellcog-ok <ISO-UTC-timestamp> <sha-prefix>. "
-              "Do not modify any files or call external tools."
-          )
-          try:
-              result = client.create_chat(
-                  prompt=prompt,
-                  task_label="monorepo-cellcog-smoke",
-                  chat_mode="agent",
-                  chat_tier=tier,
-                  delivery="wait_for_completion",
-                  timeout=600,
-              )
-          except Exception as e:
-              print(f"::error::CellCog smoke failed: {e}")
-              sys.exit(1)
-
-          msg = (result or {}).get("message") or (result or {}).get("status") or str(result)
-          status = (result or {}).get("status", "unknown")
-          print("### CellCog smoke result", flush=True)
-          print(f"status={status}", flush=True)
-          print(msg[:4000] if isinstance(msg, str) else msg, flush=True)
-
-          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as f:
-              f.write("### CellCog smoke\n")
-              f.write(f"- status: `{status}`\n")
-              f.write(f"- tier: `{tier}`\n")
-              f.write(f"- sha: `{sha}`\n")
-              f.write(f"- message (truncated):\n\n```\n{str(msg)[:1500]}\n```\n")
-
-          out = os.environ.get("GITHUB_OUTPUT")
-          if out:
-              with open(out, "a", encoding="utf-8") as f:
-                  f.write(f"status={status}\n")
-                  f.write("ok=true\n")
-          PY
-
-      - name: Engineering-health refresh prompt
-        if: ${{ inputs.mode == 'health' }}
-        env:
-          CELLCOG_API_KEY: ${{ secrets.CELLCOG_API_KEY }}
-          CHAT_TIER: ${{ inputs.chat_tier }}
-          HEAD_SHA: ${{ github.sha }}
-          RUN_ID: ${{ github.run_id }}
-          REPO: ${{ github.repository }}
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          import os, sys
-          from datetime import datetime, timezone
-          from cellcog import CellCogClient
-
-          tier = os.environ.get("CHAT_TIER", "core")
-          if tier == "flash":
-              tier = "core"
-          sha = os.environ.get("HEAD_SHA", "unknown")[:12]
-          run_id = os.environ.get("RUN_ID", "local")
-          repo = os.environ.get("REPO", "timerloggedout-spec/termux-monorepo")
-          ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-
-          dashboard = "https://cellcog.ai/app/6aa08a02bf7d52bfa976cd2e/dashboard/engineering-health/"
-          prompt = f"""
-You maintain the engineering-health dashboard for {repo}.
-
-Context:
-- Dashboard URL (SSOT): {dashboard}
-- Monorepo SHA: {sha}
-- Actions run: {run_id}
-- UTC: {ts}
-
-Task:
-1. Summarize what an engineering-health view should show for this monorepo
-   (dual gates: repo-gate + termux-smoke, SHE version, open PR mergeability,
-   Actions hygiene, priority matrix signals).
-2. Produce a concise update suitable for the dashboard (KPI cards + short status
-   narrative). If you can update the existing CellCog app dashboard at the URL
-   above, do so; otherwise return a structured markdown snapshot the operator
-   can paste.
-3. Do not invent green/red status you cannot verify. Prefer "unknown / not
-   polled" over false certainty.
-
-Return a short structured response with sections: Snapshot, Recommended KPIs,
-Dashboard action taken (or not).
-""".strip()
-
-          client = CellCogClient(agent_provider="openclaw")
-          try:
-              result = client.create_chat(
-                  prompt=prompt,
-                  task_label="monorepo-engineering-health",
-                  chat_mode="agent",
-                  chat_tier=tier,
-                  delivery="wait_for_completion",
-                  timeout=1200,
-              )
-          except Exception as e:
-              print(f"::error::CellCog health prompt failed: {e}")
-              sys.exit(1)
-
-          msg = (result or {}).get("message") or str(result)
-          status = (result or {}).get("status", "unknown")
-          print("### CellCog engineering-health result", flush=True)
-          print(f"status={status}", flush=True)
-          print(msg[:8000] if isinstance(msg, str) else msg, flush=True)
-
-          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as f:
-              f.write("\n### Engineering-health refresh\n")
-              f.write(f"- status: `{status}`\n")
-              f.write(f"- dashboard: {dashboard}\n")
-              f.write(f"- message (truncated):\n\n```\n{str(msg)[:3000]}\n```\n")
-          PY
-
-      - name: Receipt
-        if: always()
-        env:
-          MODE: ${{ inputs.mode }}
-          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: |
-          echo "CellCog lane mode=${MODE} finished. Run: ${RUN_URL}" >> "$GITHUB_STEP_SUMMARY"
+          name: engineering-health-${{ github.run_id }}
+          path: ${{ runner.temp }}/engineering-health/
+          if-no-files-found: error
+          retention-days: 14

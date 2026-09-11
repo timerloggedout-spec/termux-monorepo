@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "c429074b9574efa90dbae299834882cbbca4cf866f08ffcfbdcc1332aa9123b2",
-  "workflow_count": 68,
+  "source_fingerprint": "c97d63535b3a7e07391415b9715c1a487a379af80fe6c59fcfa7bc35355312ea",
+  "workflow_count": 69,
   "workflows": [
     {
       "action_pins": [
@@ -948,6 +948,21 @@
         "issue_comment",
         "pull_request_review",
         "pull_request_target"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "pin"
+      ],
+      "name": "pin-cor-ae-submodules",
+      "path": ".github/workflows/pin-cor-ae-submodules.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
       ]
     },
     {

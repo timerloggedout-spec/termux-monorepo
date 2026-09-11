@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-09-10T11:19:25Z` UTC  
+**Generated:** `2026-09-11T11:20:56Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 31 docs-lane branch(es)
+**Count:** 33 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -20,12 +20,14 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/ar08-issue175-status-alignment`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/ar08-issue175-status-alignment) | `7048b361fd1d` | — | — | orphan lane |
 | [`docs/automation-decision-trees`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/automation-decision-trees) | `ed0fe8bd0b5e` | — | — | orphan lane |
 | [`docs/cedrlang-obfuscation-boundary`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/cedrlang-obfuscation-boundary) | `d6aaf4691d45` | [#302](https://github.com/timerloggedout-spec/termux-monorepo/pull/302)→`master-staging` | — | PR without registry link |
+| [`docs/claude-md-primary-entry`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/claude-md-primary-entry) | `ad716d0c806e` | [#488](https://github.com/timerloggedout-spec/termux-monorepo/pull/488)→`master` | — | PR without registry link |
 | [`docs/deepseek-capture-pipeline`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/deepseek-capture-pipeline) | `c70fb1bbd9f8` | — | — | orphan lane |
 | [`docs/hex-non-ai-trial-lane`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/hex-non-ai-trial-lane) | `252dae071c8d` | [#462](https://github.com/timerloggedout-spec/termux-monorepo/pull/462)→`master` | — | PR without registry link |
 | [`docs/issue-192-action-integration-intake`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/issue-192-action-integration-intake) | `b749928140f7` | — | — | orphan lane |
 | [`docs/kai9000-orchestrator-correlated`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/kai9000-orchestrator-correlated) | `a92e6f15da7f` | — | — | orphan lane |
 | [`docs/kai9000-provenance-correct`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/kai9000-provenance-correct) | `73dad86dd7b2` | — | — | orphan lane |
 | [`docs/kimi-cloud-offload-evaluation`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/kimi-cloud-offload-evaluation) | `992fd89db9d4` | — | `kimi-cloud-offload`, `grok-archw1z` | registered; no open PR |
+| [`docs/mcp-hub-risk-split`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/mcp-hub-risk-split) | `87d1d7491b7b` | [#482](https://github.com/timerloggedout-spec/termux-monorepo/pull/482)→`master` | — | PR without registry link |
 | [`docs/mintlify-docs-json`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/mintlify-docs-json) | `10094f0f3ac8` | — | — | orphan lane |
 | [`docs/mintlify-nav-complete`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/mintlify-nav-complete) | `c731fc0077cd` | — | — | orphan lane |
 | [`docs/mintlify-notation-sets-page`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/mintlify-notation-sets-page) | `df1f534e1c22` | — | — | orphan lane |

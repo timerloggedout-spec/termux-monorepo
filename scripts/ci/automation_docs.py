@@ -134,6 +134,16 @@ def _section(lines: list[str], key: str) -> list[str]:
     return result
 
 
+RE_NAME = re.compile(r"^name:\s*(.*?)\s*(?:#.*)?$")
+RE_CRON = re.compile(r"cron:\s*[\"']?([^\"'#]+)")
+RE_TRIGGER = re.compile(r"^\s{2}([A-Za-z0-9_]+):(?:\s|$)")
+RE_JOB = re.compile(r"^  ([A-Za-z0-9_-]+):\s*$")
+RE_PINS = re.compile(r"uses:\s*([^\s#]+@[0-9a-f]{40})")
+RE_AUTH_WRITER = re.compile(r"(?:contents|pull-requests):\s*write")
+RE_AUTH_BOUNDED = re.compile(r"issues:\s*write|checks:\s*write")
+RE_AUTH_ADVISORY = re.compile(r"security-events:\s*write|id-token:\s*write")
+
+
 def _top_scalar(lines: list[str], key: str) -> str:
     pattern = re.compile(rf"^{re.escape(key)}:\s*(.*?)\s*(?:#.*)?$")
     for line in lines:
@@ -159,11 +169,11 @@ def _domain(path: str, name: str) -> str:
 
 
 def _authority(text: str) -> str:
-    if re.search(r"(?:contents|pull-requests):\s*write", text):
+    if RE_AUTH_WRITER.search(text):
         return "writer"
-    if re.search(r"issues:\s*write|checks:\s*write", text):
+    if RE_AUTH_BOUNDED.search(text):
         return "bounded-state-write"
-    if re.search(r"security-events:\s*write|id-token:\s*write", text):
+    if RE_AUTH_ADVISORY.search(text):
         return "advisory-publisher"
     return "read-only-or-advisory"
 
@@ -172,46 +182,102 @@ def _triggers(lines: list[str]) -> tuple[str, ...]:
     on_lines = _section(lines, "on")
     values: list[str] = []
     for line in on_lines:
-        match = re.match(r"^\s{2}([A-Za-z0-9_]+):(?:\s|$)", line)
+        match = RE_TRIGGER.match(line)
         if match:
             values.append(match.group(1))
     return tuple(sorted(set(values)))
 
 
-def _schedules(lines: list[str]) -> tuple[str, ...]:
-    return tuple(sorted(re.findall(r"cron:\s*[\"']?([^\"'#]+)", "\n".join(lines))))
+def _schedules(text: str) -> tuple[str, ...]:
+    return tuple(sorted(RE_CRON.findall(text)))
 
 
 def _jobs(lines: list[str]) -> tuple[str, ...]:
     jobs = _section(lines, "jobs")
-    values = [match.group(1) for line in jobs if (match := re.match(r"^  ([A-Za-z0-9_-]+):\s*$", line))]
+    values = [match.group(1) for line in jobs if (match := RE_JOB.match(line))]
     return tuple(sorted(set(values)))
 
 
 def _pins(text: str) -> tuple[str, ...]:
-    values = re.findall(r"uses:\s*([^\s#]+@[0-9a-f]{40})", text)
+    values = RE_PINS.findall(text)
     return tuple(sorted(set(values)))
 
 
-def parse_workflow(path: Path, root: Path = ROOT) -> WorkflowRecord:
-    text = path.read_text(encoding="utf-8")
+def parse_workflow(
+    path: Path,
+    root: Path = ROOT,
+    content_bytes: bytes | None = None,
+) -> WorkflowRecord:
+    if content_bytes is not None:
+        text = content_bytes.decode("utf-8")
+    else:
+        text = path.read_text(encoding="utf-8")
     lines = text.splitlines()
     relative = path.relative_to(root).as_posix()
-    name = _top_scalar(lines, "name") or path.stem
-    concurrency = ""
-    concurrency_lines = _section(lines, "concurrency")
-    if concurrency_lines:
-        concurrency = " ".join(line.strip() for line in concurrency_lines if line.strip())
+
+    name = ""
+    concurrency_lines: list[str] = []
+    on_lines: list[str] = []
+    jobs_lines: list[str] = []
+
+    active_section = None
+    for line in lines:
+        if not name and line.startswith("name:"):
+            match = RE_NAME.match(line)
+            if match:
+                name = match.group(1).strip(" '\"")
+
+        if line.startswith("concurrency:"):
+            active_section = "concurrency"
+            continue
+        elif line.startswith("on:"):
+            active_section = "on"
+            continue
+        elif line.startswith("jobs:"):
+            active_section = "jobs"
+            continue
+        elif line and not line.startswith((" ", "\t", "#")):
+            active_section = None
+
+        if active_section == "concurrency":
+            concurrency_lines.append(line)
+        elif active_section == "on":
+            on_lines.append(line)
+        elif active_section == "jobs":
+            jobs_lines.append(line)
+
+    if not name:
+        name = path.stem
+
+    concurrency = " ".join(l.strip() for l in concurrency_lines if l.strip()) if concurrency_lines else ""
+
+    triggers = []
+    for l in on_lines:
+        match = RE_TRIGGER.match(l)
+        if match:
+            triggers.append(match.group(1))
+    triggers_tuple = tuple(sorted(set(triggers)))
+
+    jobs = []
+    for l in jobs_lines:
+        match = RE_JOB.match(l)
+        if match:
+            jobs.append(match.group(1))
+    jobs_tuple = tuple(sorted(set(jobs)))
+
+    schedules_tuple = _schedules(text)
+    pins_tuple = _pins(text)
+
     return WorkflowRecord(
         path=relative,
         name=name,
         domain=_domain(relative, name),
-        triggers=_triggers(lines),
-        schedules=_schedules(lines),
+        triggers=triggers_tuple,
+        schedules=schedules_tuple,
         concurrency=concurrency,
         authority=_authority(text),
-        jobs=_jobs(lines),
-        action_pins=_pins(text),
+        jobs=jobs_tuple,
+        action_pins=pins_tuple,
     )
 
 
@@ -221,12 +287,19 @@ def control_plane_paths(root: Path = ROOT) -> list[Path]:
     return sorted(paths)
 
 
-def fingerprint(paths: Iterable[Path], root: Path = ROOT) -> str:
+def fingerprint(
+    paths: Iterable[Path],
+    root: Path = ROOT,
+    content_cache: dict[Path, bytes] | None = None,
+) -> str:
     digest = hashlib.sha256()
     for path in sorted(paths):
         digest.update(path.relative_to(root).as_posix().encode("utf-8"))
         digest.update(b"\0")
-        digest.update(path.read_bytes())
+        if content_cache and path in content_cache:
+            digest.update(content_cache[path])
+        else:
+            digest.update(path.read_bytes())
         digest.update(b"\0")
     return digest.hexdigest()
 
@@ -255,11 +328,16 @@ def diagram_asset_manifest(root: Path = ROOT) -> dict[str, object]:
 
 def build_catalog(root: Path = ROOT) -> dict[str, object]:
     workflow_paths = sorted((root / WORKFLOW_DIR).glob("*.yml"))
-    records = [asdict(parse_workflow(path, root)) for path in workflow_paths]
+    content_cache: dict[Path, bytes] = {}
+    records = []
+    for path in workflow_paths:
+        data = path.read_bytes()
+        content_cache[path] = data
+        records.append(asdict(parse_workflow(path, root, content_bytes=data)))
     paths = control_plane_paths(root)
     return {
         "schema_version": SCHEMA_VERSION,
-        "source_fingerprint": fingerprint(paths, root),
+        "source_fingerprint": fingerprint(paths, root, content_cache=content_cache),
         "workflow_count": len(records),
         "workflows": records,
         "material_change_rules": {

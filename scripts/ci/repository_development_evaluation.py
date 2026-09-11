@@ -60,9 +60,14 @@ def canonical_payload(payload: dict[str, Any]) -> dict[str, Any]:
     return {key: value for key, value in payload.items() if key != "result_digest"}
 
 
-def digest(payload: dict[str, Any]) -> str:
-    serialized = json.dumps(canonical_payload(payload), sort_keys=True, separators=(",", ":"))
-    return hashlib.sha256(serialized.encode("utf-8")).hexdigest()
+def canonical_json(payload: dict[str, Any]) -> str:
+    return json.dumps(canonical_payload(payload), sort_keys=True, separators=(",", ":"))
+
+
+def digest(payload: dict[str, Any], serialized_canonical: str | None = None) -> str:
+    if serialized_canonical is None:
+        serialized_canonical = canonical_json(payload)
+    return hashlib.sha256(serialized_canonical.encode("utf-8")).hexdigest()
 
 
 def timestamp(value: Any, field: str) -> datetime:
@@ -112,7 +117,8 @@ def validate(payload: dict[str, Any]) -> None:
     if not isinstance(payload, dict):
         raise ContractError("manifest root must be an object")
     exact_fields(payload, EXPECTED, "manifest")
-    if SECRET.search(json.dumps(payload, sort_keys=True)):
+    serialized_canonical = canonical_json(payload)
+    if SECRET.search(serialized_canonical):
         raise ContractError("manifest contains a credential-shaped value")
     if payload["schema_version"] != SCHEMA_VERSION:
         raise ContractError("unsupported schema_version")
@@ -172,7 +178,7 @@ def validate(payload: dict[str, Any]) -> None:
     if check_total == 0:
         raise ContractError("metrics must describe at least one check state")
     required_string(payload, "result_digest", DIGEST)
-    if payload["result_digest"] != digest(payload):
+    if payload["result_digest"] != digest(payload, serialized_canonical=serialized_canonical):
         raise ContractError("result_digest does not match canonical manifest")
 
 
@@ -181,7 +187,8 @@ def build(raw: dict[str, Any]) -> dict[str, Any]:
         raise ContractError("raw evidence root must be an object")
     exact_fields(raw, RAW_EXPECTED, "raw evidence")
     payload = {"schema_version": SCHEMA_VERSION, **raw}
-    payload["result_digest"] = digest(payload)
+    serialized_canonical = canonical_json(payload)
+    payload["result_digest"] = digest(payload, serialized_canonical=serialized_canonical)
     validate(payload)
     return payload
 

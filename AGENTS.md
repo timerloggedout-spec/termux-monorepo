@@ -48,6 +48,8 @@ python3 scripts/ci/termux_smoke.py
 
 Prefer `docs/icm/CLAUDE.md` route tables. Secondary indexes: `archwiz/TOOL_INDEX.md`, `archwiz/CONCEPT_INDEX.md`, `workspace/llm_map/` (generated — do not hand-edit).
 
+For any nontrivial code, workflow, consolidation, or documentation change, perform bounded context reconnaissance with [`docs/icm/processes/context-relationship-reconnaissance.md`](docs/icm/processes/context-relationship-reconnaissance.md) and the project-local [context-relationship-graph skill](.agents/skills/context-relationship-graph/SKILL.md). Keep **verified evidence** separate from scored **candidates**.
+
 ## Hard rules (mirror of CLAUDE.md)
 
 - Target `master` for integration.

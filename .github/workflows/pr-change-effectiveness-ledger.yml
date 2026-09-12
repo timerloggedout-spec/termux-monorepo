@@ -69,13 +69,13 @@ jobs:
                 { if ($1 ~ /^[0-9]+$/) a += $1; if ($2 ~ /^[0-9]+$/) d += $2; f++ }
                 END {print a,d,f+0}')
             fi
-            GROSS_ADD=$((GROSS_ADD + add))
-            GROSS_DEL=$((GROSS_DEL + del))
             if [[ "$files" -eq 0 ]]; then
               EMPTY_COUNT=$((EMPTY_COUNT + 1))
               EMPTY_LIST+=("$sha")
             else
               EFFECTIVE_COUNT=$((EFFECTIVE_COUNT + 1))
+              GROSS_ADD=$((GROSS_ADD + add))
+              GROSS_DEL=$((GROSS_DEL + del))
             fi
           done
 
@@ -138,32 +138,33 @@ jobs:
           if [[ "$FINAL_FILES" -eq 0 ]]; then state='❌ NO_EFFECTIVE_DIFF'; fi
           noop='No empty commits observed.'
           if [[ "$EMPTY_COUNT" -gt 0 ]]; then noop="⚠️ ${EMPTY_COUNT} empty/no-op commit(s) observed."; fi
-          body="${marker}
-          ## PR Change Effectiveness Ledger
 
-          **Measured head:** \\`${HEAD_SHA}\\`  
-          **Measured base:** \\`${BASE_SHA}\\`  
-          **Merge base:** \\`${MERGE_BASE}\\`
-
-          | Signal | Value |
-          |---|---:|
-          | commits in PR range | ${COMMIT_COUNT} |
-          | commits with no file delta | ${EMPTY_COUNT} |
-          | commits with file delta | ${EFFECTIVE_COUNT} |
-          | no-op commit rate | ${NOOP_PCT}% |
-          | gross additions across commits | ${GROSS_ADD} |
-          | gross deletions across commits | ${GROSS_DEL} |
-          | final additions vs base | ${FINAL_ADD} |
-          | final deletions vs base | ${FINAL_DEL} |
-          | final changed files | ${FINAL_FILES} |
-          | churn → retained final diff | ${REALIZATION_PCT}% |
-          | ahead / behind base | ${AHEAD} / ${BEHIND} |
-
-          **Interpretation:** commit count is context, not quality. Empty commits are explicitly measured, not silently treated as productive work. Gross churn describes work performed across history; the final base→head diff describes what remains. Review/comment/check evidence must be evaluated separately and tied to this measured head SHA.
-
-          **State:** ${state}; ${noop}
-
-          Generated: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          # printf-style assembly: backticks never enter bare bash parsing.
+          # Prior form used \\` inside a double-quoted assignment; the unescaped
+          # backtick started command substitution and left Measured * as bare '\'.
+          generated="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          nl=$'\n'
+          body="${marker}${nl}"
+          body+="## PR Change Effectiveness Ledger${nl}${nl}"
+          body+="**Measured head:** \`${HEAD_SHA}\`${nl}"
+          body+="**Measured base:** \`${BASE_SHA}\`${nl}"
+          body+="**Merge base:** \`${MERGE_BASE}\`${nl}${nl}"
+          body+="| Signal | Value |${nl}"
+          body+="|---|---:|${nl}"
+          body+="| commits in PR range | ${COMMIT_COUNT} |${nl}"
+          body+="| commits with no file delta | ${EMPTY_COUNT} |${nl}"
+          body+="| commits with file delta | ${EFFECTIVE_COUNT} |${nl}"
+          body+="| no-op commit rate | ${NOOP_PCT}% |${nl}"
+          body+="| gross additions across commits | ${GROSS_ADD} |${nl}"
+          body+="| gross deletions across commits | ${GROSS_DEL} |${nl}"
+          body+="| final additions vs base | ${FINAL_ADD} |${nl}"
+          body+="| final deletions vs base | ${FINAL_DEL} |${nl}"
+          body+="| final changed files | ${FINAL_FILES} |${nl}"
+          body+="| churn → retained final diff | ${REALIZATION_PCT}% |${nl}"
+          body+="| ahead / behind base | ${AHEAD} / ${BEHIND} |${nl}${nl}"
+          body+="**Interpretation:** commit count is context, not quality. Empty commits are explicitly measured, not silently treated as productive work. Gross churn describes work performed across history; the final base→head diff describes what remains. Review/comment/check evidence must be evaluated separately and tied to this measured head SHA.${nl}${nl}"
+          body+="**State:** ${state}; ${noop}${nl}${nl}"
+          body+="Generated: ${generated}"
 
           existing=$(gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" --jq '.[] | select(.body | contains("'"$marker"'")) | [.id,.body] | @tsv' | head -n1 || true)
           if [[ -n "$existing" ]]; then

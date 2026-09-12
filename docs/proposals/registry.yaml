@@ -1,7 +1,7 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-08-23T06:10:00Z"
-updated_by: Grok (Administrator)
+updated_at: "2026-09-11T19:08:00Z"
+updated_by: agent-automation
 
 proposals:
   - id: context-relationship-graph
@@ -266,3 +266,31 @@ proposals:
     related_prs: [447]
     related_branches: [docs/proposals/demo-portal]
     gates_required: [repo-gate, termux-smoke]
+
+  - id: agentic-scoped-access
+    title: "Agentic scoped access: per-agent scoped tokens instead of shared full-scope credentials"
+    author: agent-automation
+    status: posted
+    priority: P2
+    path: active/agentic-scoped-access/
+    reviewers:
+      - id: agent-automation
+        role: author+driver
+        status: posted
+    related_prs: [492]
+    related_branches: [docs/proposals/agentic-scoped-access-and-tier4-review]
+    gates_required: []
+
+  - id: tier4-scope-review
+    title: "Tier 4 scope review: pre-authorized allowlist for repeatable Operator-approved actions"
+    author: agent-automation
+    status: posted
+    priority: P2
+    path: active/tier4-scope-review/
+    reviewers:
+      - id: agent-automation
+        role: author+driver
+        status: posted
+    related_prs: [492]
+    related_branches: [docs/proposals/agentic-scoped-access-and-tier4-review]
+    gates_required: []

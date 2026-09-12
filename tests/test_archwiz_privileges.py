@@ -134,3 +134,35 @@ def test_activity_listener_symlink_safety(tmp_path, monkeypatch):
 
     if os.name != "nt":
         assert (target_file.stat().st_mode & 0o777) == 0o644
+
+
+def test_live_view_symlink_safety(tmp_path, monkeypatch):
+    import archwiz.live_view as lv
+
+    monkeypatch.setattr(lv, "HOME", tmp_path)
+
+    target_file = tmp_path / "target_live_view_script.sh"
+    target_file.write_text("echo unsafe live_view")
+    if os.name != "nt":
+        target_file.chmod(0o644)
+
+    sandbox_activity_listener = tmp_path / "sandbox" / "activity_listener"
+    sandbox_activity_listener.mkdir(parents=True, exist_ok=True)
+
+    symlink_script = sandbox_activity_listener / "block_000000.sh"
+    symlink_script.symlink_to(target_file)
+
+    def mock_now():
+        class FixedTime:
+            def strftime(self, fmt):
+                return "000000"
+        return FixedTime()
+
+    monkeypatch.setattr(lv, "datetime", type("MockDateTime", (), {"now": staticmethod(mock_now)}))
+
+    with pytest.raises(ValueError, match="Symlink execution script rejected"):
+        lv.execute_block("echo test")
+
+    if os.name != "nt":
+        assert (target_file.stat().st_mode & 0o777) == 0o644
+        assert target_file.read_text() == "echo unsafe live_view"

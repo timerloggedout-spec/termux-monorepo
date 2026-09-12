@@ -20,6 +20,8 @@ BRANCH_WRITE_EFFECTS = {
     "stacked_pull_request",
     "provider_configuration",
 }
+# Pre-computed valid effects union to avoid set allocation overhead per gate check
+VALID_EFFECTS = READ_ONLY_EFFECTS | BRANCH_WRITE_EFFECTS
 
 
 def _clamp(value: float, low: float = 0.0, high: float = 1.0) -> float:
@@ -66,7 +68,7 @@ def _hard_gate_reason(
     """Return the first failed authorization gate; successful gates return None."""
     if not capability or capability not in declared_capabilities:
         return "requested capability is not declared for this specialist"
-    if effect not in READ_ONLY_EFFECTS | BRANCH_WRITE_EFFECTS:
+    if effect not in VALID_EFFECTS:
         return "candidate effect is not declared by the capability policy"
     if not provenance.get("trusted") or not provenance.get("declared_source"):
         return "candidate provenance is not trusted and declared"

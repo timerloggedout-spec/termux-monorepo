@@ -41,3 +41,39 @@ Tier 0-2 covers documentation and design items (ARO-1, ARO-2, ARO-4, ARO-5 ledge
 ## 5. Recommendation
 
 Adopt ARO-1..ARO-6 as scoped; do not attempt to flip any workflow's permissions or add secrets as part of this PR; route the actual grant through Operator review per Tier 4, using `deepseek-ci.yml` as the closest working precedent for how a code-writing workflow should be shaped (elevated token, path-scoped triggers, concurrency guards, hard-fail on missing credentials).
+
+## 6. Extension (2026-09-13) — HuggingFace wiring, CellCog/Hex verification, connector inventory
+
+### 6.1 HuggingFace auth pattern and where it slots in
+
+`scripts/provider_model_catalog.py` already has a clean, three-line-per-provider pattern: an `ENDPOINTS` dict (provider → `/v1/models`-shaped URL), a `SECRETS` dict (provider → GitHub secret name), and a single `poll()` function that does `Authorization: Bearer {token}` against an OpenAI-compatible `/v1/models` endpoint. HuggingFace now exposes exactly that shape through its Inference Providers router (`https://router.huggingface.co/v1/models`, `Authorization: Bearer HF_TOKEN`), which is OpenAI-compatible by design — no bespoke client needed. The concrete wiring is: add `"huggingface": "https://router.huggingface.co/v1/models"` to `ENDPOINTS` and `"huggingface": "HF_TOKEN"` to `SECRETS`, then add a `has-huggingface` input to `.github/actions/model-router` alongside the existing `has-omni` / `has-openrouter` inputs so `gemini-invoke` / `gemini-review` / `gemini-triage` can route to it.
+
+Critically, this slots HuggingFace into the SAME role family that OpenRouter and Omni already occupy — `invoke`/`review`/`triage`, job-level `contents: read` only. Wiring HuggingFace in does not, by itself, give it code-writing ability; it inherits the exact comment-only ceiling documented in section 2.2 until ARO-3's developer-role workflow exists and is Operator-approved to include it. No new secret is created by this item — `HF_TOKEN` provisioning is deferred to the Operator, same as every other provider credential in this repo.
+
+### 6.2 CellCog and Hex — verified, not assumed
+
+Both are real, named, already-integrated systems in this org — neither was invented from the buzzwords, and neither is currently an MCP connector:
+
+- **CellCog** (`https://cellcog.ai`) is a partner/analytics product, not a code-writing agent. It appears in `docs/PARTNERS.md` as an affiliate partner ("Autonomous AI employees" category, owner: Marketing/Chloe) and drives `.github/workflows/cellcog-engineering-health.yml`, whose own header states "ZERO CellCog / LLM agent credits — GitHub API + local Python only" and whose catalog authority is `read-only-or-advisory`. The workflow publishes a snapshot artifact; an optional human dashboard view lives at `cellcog.ai/app/.../dashboard/engineering-health/`, but nothing writes back into CellCog.
+- **Hex** (hex.tech, referenced as `docs/ops/HEX-MONEYBALL-INTEGRATION.md`) is the analytics/evidence layer for the Agent Team Moneyball / 3L0 system — contract `3l0.moneyball.v1`. GitHub Actions remains the execution/orchestration plane; Hex only consumes sanitized evidence artifacts (`.github/workflows/hex-moneyball-evidence.yml`, authority `read-only-or-advisory`) and never becomes an execution authority. A complementary bridge document, `docs/ops/WOLFRAM-HEX-BRIDGE.md`, notes an experimental "Hex Custom External App → official Wolfram Cloud MCP" path for mathematical verification, explicitly marked as subject to verification in the actual Hex workspace — i.e. not a confirmed, working MCP connector yet.
+
+Neither system appears anywhere in `mcp-hub/catalog.json`. Adding either there would be speculative without a verified endpoint/credential, so ARO-8 only documents their real, current role.
+
+### 6.3 Connector/provider inventory: current vs. target
+
+Current MCP Hub registry (`mcp-hub/catalog.json`, v0.2.0, folded in from the standalone `mcp-multi-host` repo) lists exactly four hosts:
+
+| Host | Transport | Status |
+|---|---|---|
+| `termux-mcp` | streamable-http | live (standalone, pending hub root-directory switch) |
+| `android-mcp` | streamable-http | not deployed (pending hub root-directory switch) |
+| `github-remote` | http | hosted by GitHub (`api.githubcopilot.com/mcp/`) |
+| `gh-aw-mcpg` | gateway | fork synced, not yet folded into this hub |
+
+A separate, non-overlapping system, `hub_mcp` (PR #221), is the governed signed job-envelope model — no public endpoint, capability tiers, replay prevention — and is explicitly the accepted default; `mcp-hub` (PR #442) is a deliberate exception for a public HTTP surface, gated by a bearer token.
+
+Reasonable target additions, in priority order: (1) HuggingFace — once ARO-7's router endpoint is live and credentialed, it is a natural `mcp-hub` or catalog entry since it is already OpenAI-compatible; (2) CellCog / Hex — only if either publishes a verified, stable API contract suitable for wrapping as an MCP server; today neither does, so they are correctly out of scope for `mcp-hub/catalog.json` and are tracked as "verified but not wired" per section 6.2. ARO-9 publishes this table as a doc; it does not modify `mcp-hub/catalog.json`.
+
+### 6.4 Governance note for this extension
+
+ARO-7..ARO-9 stay within Tier 0-2 (documentation, script/workflow input additions with no permission escalation). No secret is created, no workflow permission block is widened, and no MCP host is registered without a verified endpoint. ARO-10 mirrors ARO-6's closeout mechanics for the extended item set.

@@ -266,3 +266,20 @@ proposals:
     related_prs: [447]
     related_branches: [docs/proposals/demo-portal]
     gates_required: [repo-gate, termux-smoke]
+
+  - id: codespaces-enablement
+    title: "Codespaces prebuilds (cost decision) + org-wide standard-piece gaps from the gaps-and-opportunities sweep"
+    author: gaps-and-opportunities-subagent
+    status: posted
+    priority: P2
+    path: active/codespaces-enablement/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: pending
+      - id: gaps-and-opportunities-subagent
+        role: author+driver
+        status: posted
+    related_prs: [499]
+    related_branches: [gaps-opps/add-devcontainer-codespaces, docs/proposals/codespaces-enablement]
+    gates_required: [repo-gate, termux-smoke]

@@ -29,16 +29,22 @@ from typing import Any
 API = "https://api.github.com"
 UA = "termux-monorepo-engineering-health/1.0"
 
+# Bolt optimization: Pre-allocate frozen set constants and header template at module load time
+# to avoid per-request/per-loop allocation and hashing overhead.
+BASE_HEADERS: dict[str, str] = {
+    "Accept": "application/vnd.github+json",
+    "X-GitHub-Api-Version": "2022-11-28",
+    "User-Agent": UA,
+}
+RED_CONCLUSIONS: frozenset[str] = frozenset({"failure", "timed_out", "cancelled"})
+PENDING_STATUSES: frozenset[str] = frozenset({"queued", "in_progress", "waiting", "requested", "pending"})
+NON_FAILED_CONCLUSIONS: frozenset[str | None] = frozenset({None, "success", "skipped", "neutral"})
+
 
 def _headers(token: str | None) -> dict[str, str]:
-    h = {
-        "Accept": "application/vnd.github+json",
-        "X-GitHub-Api-Version": "2022-11-28",
-        "User-Agent": UA,
-    }
-    if token:
-        h["Authorization"] = f"Bearer {token}"
-    return h
+    if not token:
+        return BASE_HEADERS
+    return {**BASE_HEADERS, "Authorization": f"Bearer {token}"}
 
 
 def gh_get(path: str, token: str | None, params: dict[str, str] | None = None) -> Any:
@@ -82,13 +88,14 @@ def summarize_run(run: dict[str, Any] | None) -> dict[str, Any]:
 
 def gate_label(summary: dict[str, Any]) -> str:
     st, conc = summary.get("status"), summary.get("conclusion")
-    if st == "completed" and conc == "success":
-        return "green"
-    if st == "completed" and conc in ("failure", "timed_out", "cancelled"):
-        return "red"
-    if st in ("queued", "in_progress", "waiting", "requested", "pending"):
+    if st == "completed":
+        if conc == "success":
+            return "green"
+        if conc in RED_CONCLUSIONS:
+            return "red"
+    elif st in PENDING_STATUSES:
         return "pending"
-    if st == "missing":
+    elif st == "missing":
         return "unknown"
     return "unknown"
 
@@ -129,19 +136,24 @@ def collect(owner: str, repo: str, branch: str, token: str | None) -> dict[str, 
         token,
         {"branch": default_branch, "per_page": "15"},
     )
+    # Bolt optimization: Collect recent_runs and failed_recent in a single pass to eliminate intermediate list allocations
     hygiene = []
+    failed_recent = []
     for run in recent_runs.get("workflow_runs") or []:
-        hygiene.append(
-            {
-                "name": run.get("name"),
-                "status": run.get("status"),
-                "conclusion": run.get("conclusion"),
-                "event": run.get("event"),
-                "html_url": run.get("html_url"),
-                "head_sha": (run.get("head_sha") or "")[:12],
-                "created_at": run.get("created_at"),
-            }
-        )
+        st = run.get("status")
+        conc = run.get("conclusion")
+        item = {
+            "name": run.get("name"),
+            "status": st,
+            "conclusion": conc,
+            "event": run.get("event"),
+            "html_url": run.get("html_url"),
+            "head_sha": (run.get("head_sha") or "")[:12],
+            "created_at": run.get("created_at"),
+        }
+        hygiene.append(item)
+        if st == "completed" and conc not in NON_FAILED_CONCLUSIONS:
+            failed_recent.append(item)
 
     dual = {
         "repo_gate": {**repo_gate, "label": gate_label(repo_gate)},
@@ -166,12 +178,7 @@ def collect(owner: str, repo: str, branch: str, token: str | None) -> dict[str, 
         },
         "actions_hygiene": {
             "recent_runs": hygiene,
-            "failed_recent": [
-                r
-                for r in hygiene
-                if r.get("status") == "completed"
-                and r.get("conclusion") not in (None, "success", "skipped", "neutral")
-            ],
+            "failed_recent": failed_recent,
         },
         "cellcog_dashboard_ref": {
             "url": "https://cellcog.ai/app/6aa08a02bf7d52bfa976cd2e/dashboard/engineering-health/",

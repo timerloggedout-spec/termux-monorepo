@@ -1,0 +1,50 @@
+version: 1
+issue: 503
+title: Vendor gitmodules existence audit
+captured_at: "2026-09-13T04:20:00Z"
+captured_by: Grok (Administrator)
+method: HTTPS HEAD of github.com API repos (metadata only)
+note: Gates never init submodules. This audit is observe-mode.
+entries:
+  - path: multi-ai-cli/vendors/CLIProxyAPI
+    url: https://github.com/timerloggedout-spec/CLIProxyAPI.git
+    http_status: 200
+    status: LIVE
+  - path: multi-ai-cli/vendors/gpt4free
+    url: https://github.com/timerloggedout-spec/gpt4free.git
+    http_status: 200
+    status: LIVE
+  - path: multi-ai-cli/vendors/ai-manus
+    url: https://github.com/timerloggedout-spec/ai-manus.git
+    http_status: 200
+    status: LIVE
+  - path: multi-ai-cli/vendors/Chapito
+    url: https://github.com/timerloggedout-spec/Chapito.git
+    http_status: 200
+    status: LIVE
+  - path: refTemplates/smods/icm-architect_fork
+    url: https://github.com/timerloggedout-spec/icm-architect_fork.git
+    http_status: 200
+    status: LIVE
+  - path: refTemplates/smods/batteries_fork
+    url: https://github.com/timerloggedout-spec/batteries_fork.git
+    http_status: 200
+    status: LIVE
+  - path: refTemplates/smods/lego_fork
+    url: https://github.com/timerloggedout-spec/lego_fork.git
+    http_status: 200
+    status: LIVE
+  - path: mcp-hub/termux-mcp
+    url: https://github.com/timerloggedout-spec/termux-mcp.git
+    http_status: 200
+    status: LIVE
+  - path: mcp-hub/android-mcp
+    url: https://github.com/timerloggedout-spec/android-mcp.git
+    http_status: 200
+    status: LIVE
+  - path: refTemplates/smods/term_mcp_deepseek_fork
+    url: https://github.com/timerloggedout-spec/term_mcp_deepseek_fork-.git
+    http_status: 200
+    status: LIVE
+    note: Trailing hyphen is the real repo name, not a typo. term_mcp_deepseek_fork (no hyphen) is 404.
+recommendation: no .gitmodules mutation in this PR; hyphen is correct; vendors flagged pending in #175 are now live

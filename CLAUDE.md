@@ -45,6 +45,9 @@ registry.yaml → pick todo item → branch from master
 | Session SSOT | `docs/schemas/session-ssot.md` |
 | Provider caps | `docs/schemas/provider-capabilities.md` |
 | Technical deep-dive (optional) | `AGENTS.md` |
+| Issue #175 matrix | `docs/ops/ISSUE-175-MATRIX.yaml` |
+| ML pipelines (observe-mode) | `ml_pipelines/` |
+| PR minesweeper | `docs/ops/PR-MINESWEEPER.md` |
 
 ## ICM + RinDig reference pins (smods)
 

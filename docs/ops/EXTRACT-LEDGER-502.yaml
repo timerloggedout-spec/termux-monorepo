@@ -1,0 +1,40 @@
+version: 1
+issue: 502
+title: Mega-PR extract ledger for dirty parents 263/264
+updated_at: "2026-09-13T04:20:00Z"
+updated_by: Grok (Administrator)
+master_sha: fd00745ec6cdcb28edb5bbba37236a3ea70248be
+rule: extract-only, never wholesale merge
+parents:
+  - number: 264
+    title: Master staging
+    state: CLOSED
+    disposition: SUPERSEDED
+    note: Parent already closed. No further extract. Ledger retained for #337 evidence.
+  - number: 263
+    title: Manus/context relationship graph
+    state: OPEN
+    disposition: DIRTY_HOLD
+    mergeable: CONFLICTING
+    note: Do not merge wholesale. ICM process card already lives on master.
+slices:
+  - id: EX-263-A
+    component: docs/icm/processes/context-relationship-reconnaissance.md
+    status: LANDED
+    evidence: present on master HEAD fd00745e
+  - id: EX-263-B
+    component: .agents/skills/context-relationship-graph
+    status: LANDED
+    evidence: present on master
+  - id: EX-263-C
+    component: remaining unique graph index / generated map
+    status: HOLD
+    reason: needs component-level diff vs master before extract
+  - id: EX-432-A
+    component: ml_pipelines observe-mode package
+    status: EXTRACTING
+    successor_branch: feat/ml-pipelines-observe-v2-175
+    supersedes_pr: 432
+acceptance:
+  zero_net_new_dirty_on_master: true
+  close_502_when: both parents closed-superseded and unique slices landed or rejected

@@ -1,0 +1,5 @@
+{"event_id":"evt-1","session_id":"task-self-demo","turn_id":1,"ts":"2026-09-13T04:00:00Z","type":"prompt","actor":"user","payload":{"text":"list open PRs"},"stream_seq":1,"raw_ref":"captures/demo/NNNN.json"}
+{"event_id":"evt-2","session_id":"task-self-demo","turn_id":1,"ts":"2026-09-13T04:00:01Z","type":"thinking","actor":"agent","payload":{"text":"classify then extract"},"stream_seq":2,"raw_ref":"captures/demo/NNNN.json"}
+{"event_id":"evt-3","session_id":"task-self-demo","turn_id":1,"ts":"2026-09-13T04:00:02Z","type":"action","actor":"agent","payload":{"tool":"github.list_pull_requests","args":{"state":"open"}},"stream_seq":3,"raw_ref":"captures/demo/NNNN.json"}
+{"event_id":"evt-4","session_id":"task-self-demo","turn_id":1,"ts":"2026-09-13T04:00:03Z","type":"response","actor":"agent","payload":{"text":"432 DIRTY_HOLD; 264 closed"},"stream_seq":4,"raw_ref":"captures/demo/NNNN.json"}
+{"event_id":"evt-dup","session_id":"task-self-demo","turn_id":1,"ts":"2026-09-13T04:00:03Z","type":"response","actor":"agent","payload":{"text":"dup"},"stream_seq":4,"raw_ref":"captures/demo/NNNN.json"}

@@ -1,0 +1,9 @@
+id: blocksorg
+title: "blocksorg automation"
+issue: 337
+class: automation-bot
+surface: "blocksorg[bot] workflow_run"
+observe_only: true
+may_write_master: false
+attribution_rule: explicit-signoff-or-bot-login
+shared_pat_identity: timerloggedout-spec

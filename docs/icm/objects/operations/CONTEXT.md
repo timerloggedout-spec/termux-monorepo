@@ -20,6 +20,10 @@ One job: route a change touching monorepo operational tooling to the smallest ca
 |---|---|---|
 | [`archwiz.md`](archwiz.md) | changing the cockpit, forensic, autonomous, verification, or knowledge tool surface | the named tool’s source and probe/test boundary |
 | [`optional-visual-review.md`](optional-visual-review.md) | reviewing initiated CCTV cards, proposing a file-backed stage mirror or human checkpoint, or scoping later publication | the canonical source artifact and the separate renderer/publication gate |
+| [`ml-pipelines.md`](ml-pipelines.md) | scoring PRs/issues/Actions in observe-mode or binding Issue #175 | `ml_pipelines/` and the dual gates |
+| [`pr-minesweeper.md`](pr-minesweeper.md) | classifying overlapping Jules/Linguist/Sentinel/Bolt PRs | dispositions, never merge commands |
+| [`extract-ledger.md`](extract-ledger.md) | extracting dirty mega-PRs #263/#264/#432 | `docs/ops/EXTRACT-LEDGER-502.yaml` |
+| [`manus-harvester.md`](manus-harvester.md) | scaffolding self-session computer-replay | `probes/manus/harvester/` |
 
 ## Outputs
 

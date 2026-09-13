@@ -1,0 +1,6 @@
+id: extract
+title: "Extract-only dirty mega-PR lane"
+issue: 502
+observe_only: true
+may_write_master: false
+parents: [263, 264, 432]

@@ -68,3 +68,48 @@ When a change is under active review, also run the **review-loop** skill sequenc
 - Treating monthly Copilot quota exhaustion as "runs should not fire".
 - Ranking purely by failure rate without volume or authority context.
 - Opening broad PRs that mix P0.3 live wire with unrelated refactors.
+
+## Retroactive automation-review cadence (added after PR #390 / issue #507)
+
+**Lesson learned:** PR #390 ("docs: formalize category-theoretic notation sets and cross-domain mappings")
+ran past 2500 issue comments before anyone flagged it, auto-overflowing into issue #507
+("ecc-tools ops: PR #390 /audit"). Root cause (see incident evidence below): `peer-review-orchestrator.yml`
+listens on both `pull_request_target: [opened, synchronize, ...]` and `issue_comment: [created]` with no
+exclusion for comments it posts itself. Its own `<!-- operator-provider-review:v1 -->` /
+`<!-- agent-peer-response-state:v2 -->` state comments (posted under the `github.repository_owner` login,
+the default `OPERATOR_EXECUTOR_LOGINS`/`PEER_STATE_PUBLISHER_LOGINS`) satisfy the workflow's own
+`relevantEvent` check (`isCurrentProviderRequest` / `isCurrentOperatorAcknowledgement`), so each state
+comment is itself a qualifying `issue_comment` event that re-invokes the workflow. Combined with CodeRabbit
+hourly rate-limiting (which does not pause the requester), the cycle self-sustained for days at a
+~3–10 minute cadence purely from automation talking to automation — not from any human or bot misbehaving
+individually.
+
+**Why "wait for the next reactive overflow issue" is not enough:** overflow issues like #507 only fire
+*after* the comment ceiling is hit (2500 on this host). By then the loop has usually run for days and the
+thread is unreadable. Nothing upstream samples *healthy-looking* recently-merged/closed PRs for the same
+self-triggering pattern before it snowballs.
+
+**Proposed lightweight cadence — periodic retroactive automation review:**
+
+1. **Cadence:** run monthly, or after every ~25 merged/closed PRs (whichever comes first) on
+   `timerloggedout-spec/termux-monorepo`.
+2. **Sample:** pull issue comments + review timelines for a random/recent slice of merged or closed PRs
+   (not just open ones — loops can run to completion silently on PRs that eventually merge).
+3. **Look for:** comment-count outliers relative to repo baseline, repeat bodies from the same bot/account
+   within short (<15 min) windows, and any workflow whose `on:` block includes `issue_comment` /
+   `pull_request_review` / `pull_request_review_comment` without an explicit actor/marker exclusion for its
+   own posts.
+4. **File findings, don't just react:** record each finding as a flagged issue (tag: `automation-misbehavior`)
+   citing the workflow file/line and the specific trigger gap, same evidence bar as this incident report —
+   file path, line number, and the exact unguarded condition. Route the fix to Operator/Tier-4 (workflow
+   edits under `.github/workflows/**` are out of scope for L0/L1 automation itself, matching the
+   anti-sprawl posture above).
+5. **Track as a P0 class:** add `comment-loop` / `self-trigger` as a recognized signal in the P0
+   classification table above once a second occurrence is confirmed, so it graduates from "one-off
+   incident" to "known class we actively sample for."
+
+**Incident evidence:** PR #390 (root cause diagnosed read-only, no edits made to the PR, issue #507, or any
+`.github/workflows/**` file); `.github/workflows/peer-review-orchestrator.yml` — `on:` block
+(`pull_request_target` + `issue_comment: [created]`), `relevantEvent` gate and `isCurrentProviderRequest`
+helper, and the "Request supported provider reviews through OPERATOR" step that posts the
+self-qualifying comment under the default operator login.

@@ -35,10 +35,41 @@ def get(path: str, token: str) -> Any:
         return json.load(response)
 
 
+def collect_reviews(repo: str, token: str, nested_pages: int, number: int) -> tuple[str, int, list[Any], str | None]:
+    rows, err = paged(f"/repos/{repo}/pulls/{number}/reviews", token, nested_pages)
+    return "reviews", number, rows, err
+
+
+def collect_run_detail(repo: str, token: str, nested_pages: int, run_id: int) -> tuple[int, list[Any], list[Any], dict[int, list[Any]], list[dict[str, str]]]:
+    local_errors: list[dict[str, str]] = []
+    jobs, err = paged(f"/repos/{repo}/actions/runs/{run_id}/jobs", token, nested_pages)
+    if err:
+        local_errors.append({"entity": f"run:{run_id}:jobs", "error": err})
+    artifacts, err = paged(f"/repos/{repo}/actions/runs/{run_id}/artifacts", token, nested_pages)
+    if err:
+        local_errors.append({"entity": f"run:{run_id}:artifacts", "error": err})
+    steps: dict[int, list[Any]] = {}
+    # GitHub API's GET /actions/runs/{run_id}/jobs response already includes 'steps' on each job object.
+    # Check 'steps' in job dict first to bypass redundant single-job API calls, falling back to job endpoint if absent.
+    for job in jobs:
+        jid = job.get("id")
+        if jid is None:
+            continue
+        if "steps" in job and isinstance(job.get("steps"), list):
+            steps[jid] = job["steps"]
+        else:
+            try:
+                detail = get(f"/repos/{repo}/actions/jobs/{jid}", token)
+                steps[jid] = detail.get("steps", []) if isinstance(detail, dict) else []
+            except Exception as exc:
+                local_errors.append({"entity": f"job:{jid}:steps", "error": f"{type(exc).__name__}: {exc}"})
+    return run_id, jobs, artifacts, steps, local_errors
+
+
 def paged(path: str, token: str, pages: int) -> tuple[list[Any], str | None]:
     out: list[Any] = []
+    sep = "&" if "?" in path else "?"
     for page in range(1, pages + 1):
-        sep = "&" if "?" in path else "?"
         try:
             batch = get(f"{path}{sep}per_page=100&page={page}", token)
         except Exception as exc:  # Preserve partial evidence; do not erase prior data.
@@ -107,35 +138,9 @@ def main() -> None:
     review_targets = [p.get("number") for p in pulls if p.get("number") is not None]
     run_targets = [r.get("id") for r in runs if r.get("id") is not None]
 
-    def collect_reviews(number: int) -> tuple[str, int, list[Any], str | None]:
-        rows, err = paged(f"/repos/{repo}/pulls/{number}/reviews", token, args.nested_pages)
-        return "reviews", number, rows, err
-
-    def collect_run_detail(run_id: int) -> tuple[int, list[Any], list[Any], dict[int, list[Any]], list[dict[str, str]]]:
-        local_errors: list[dict[str, str]] = []
-        jobs, err = paged(f"/repos/{repo}/actions/runs/{run_id}/jobs", token, args.nested_pages)
-        if err:
-            local_errors.append({"entity": f"run:{run_id}:jobs", "error": err})
-        artifacts, err = paged(f"/repos/{repo}/actions/runs/{run_id}/artifacts", token, args.nested_pages)
-        if err:
-            local_errors.append({"entity": f"run:{run_id}:artifacts", "error": err})
-        steps: dict[int, list[Any]] = {}
-        # Step summaries are fetched separately because the connector/API shape
-        # exposes them on the job endpoint; keep a normalized step collection.
-        for job in jobs:
-            jid = job.get("id")
-            if jid is None:
-                continue
-            try:
-                detail = get(f"/repos/{repo}/actions/jobs/{jid}", token)
-                steps[jid] = detail.get("steps", []) if isinstance(detail, dict) else []
-            except Exception as exc:
-                local_errors.append({"entity": f"job:{jid}:steps", "error": f"{type(exc).__name__}: {exc}"})
-        return run_id, jobs, artifacts, steps, local_errors
-
     data["entities"]["reviews"] = {}
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
-        for _, number, rows, err in pool.map(collect_reviews, review_targets):
+        for _, number, rows, err in pool.map(lambda num: collect_reviews(repo, token, args.nested_pages, num), review_targets):
             data["entities"]["reviews"][str(number)] = rows
             if err:
                 errors.append({"entity": f"reviews:{number}", "error": err})
@@ -144,7 +149,7 @@ def main() -> None:
     data["entities"]["run_artifacts"] = {}
     data["entities"]["job_steps"] = {}
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
-        for run_id, jobs, artifacts, steps, local_errors in pool.map(collect_run_detail, run_targets):
+        for run_id, jobs, artifacts, steps, local_errors in pool.map(lambda rid: collect_run_detail(repo, token, args.nested_pages, rid), run_targets):
             data["entities"]["run_jobs"][str(run_id)] = jobs
             data["entities"]["run_artifacts"][str(run_id)] = artifacts
             for job_id, rows in steps.items():

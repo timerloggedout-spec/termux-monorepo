@@ -1,7 +1,7 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-08-21T00:00:00Z"
-updated_by: Manus
+updated_at: "2026-09-11T19:00:00Z"
+updated_by: timerloggedout-spec
 
 proposals:
   - id: context-relationship-graph
@@ -222,4 +222,18 @@ proposals:
     related_issues: [117, 175, 274]
     related_prs: [154, 177, 275]
     related_branches: [feature/linguist-contact-projections]
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: agent-routing-orchestrator-scope
+    title: "Multi-model Agent Routing Orchestrator: closing the code-writing permission gap"
+    author: timerloggedout-spec
+    status: draft
+    priority: P1
+    path: active/agent-routing-orchestrator-scope/
+    reviewers:
+      - id: timerloggedout-spec
+        role: author
+        status: posted
+    related_prs: []
+    related_branches: [proposal/agent-routing-orchestrator-scope]
     gates_required: [repo-gate, termux-smoke]

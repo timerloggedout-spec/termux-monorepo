@@ -53,7 +53,7 @@ class ColabBackend(ChatBackend):
                         for c in json.load(f):
                             self.session.cookies.set(c["name"], c["value"], domain=c.get("domain", ".google.com"), path=c.get("path", "/"))
 
-    def send_message(self, message: str, context: list[dict]) -> str:
+    def send_message(self, message: str, context: list[dict], **kwargs) -> str:
         self._ensure_session()
         nb_resp = self.session.get(f"https://colab.research.google.com/api/contents/{self.notebook_id}")
         nb = nb_resp.json()

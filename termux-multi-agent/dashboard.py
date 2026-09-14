@@ -3,7 +3,9 @@ import time
 import os
 import json
 import sys
+import requests
 from datetime import datetime
+from pathlib import Path
 
 try:
     from rich.console import Console, Group
@@ -27,6 +29,45 @@ _active_jobs_cache = {}
 _last_file_pos = 0
 _last_file_ino = None
 _last_file_mtime = 0
+
+def check_infrastructure():
+    infra = {}
+    
+    # Hub Status
+    hub_url = os.environ.get("LLM_API_HUB_BASE", "http://127.0.0.1:8787/v1").replace("/v1", "/health")
+    try:
+        resp = requests.get(hub_url, timeout=0.5)
+        if resp.status_code == 200:
+            infra["Hub"] = ("ONLINE", "green")
+        else:
+            infra["Hub"] = ("ERROR", "red")
+    except:
+        infra["Hub"] = ("OFFLINE", "dim red")
+
+    # ML Ingestion Status
+    ml_latest = Path("/home/ubuntu/termux-monorepo/data/ml_ingestion/latest.json")
+    if ml_latest.exists():
+        try:
+            with open(ml_latest, "r") as f:
+                data = json.load(f)
+                ts = data.get("timestamp", "unknown")
+                infra["ML Pipeline"] = (f"READY ({ts})", "green")
+        except:
+            infra["ML Pipeline"] = ("CORRUPT", "red")
+    else:
+        infra["ML Pipeline"] = ("NO DATA", "dim yellow")
+        
+    return infra
+
+def fetch_provider_status():
+    hub_url = os.environ.get("LLM_API_HUB_BASE", "http://127.0.0.1:8787/v1").replace("/v1", "/v1/providers")
+    try:
+        resp = requests.get(hub_url, timeout=0.3)
+        if resp.status_code == 200:
+            return resp.json()
+    except:
+        pass
+    return []
 
 def read_latest_telemetry():
     """
@@ -94,6 +135,7 @@ def read_latest_telemetry():
 def make_dashboard():
     # Read data
     jobs = read_latest_telemetry()
+    infra = check_infrastructure()
 
     # Header info
     now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -106,6 +148,41 @@ def make_dashboard():
         box=ROUNDED,
         border_style="yellow",
         expand=True,
+    )
+
+    # Infra Panel
+    infra_text = Text()
+    for name, (status, color) in infra.items():
+        infra_text.append(f"{name}: ", style="bold")
+        infra_text.append(f"{status}  ", style=color)
+    
+    infra_panel = Panel(
+        infra_text,
+        title="Infrastructure Status",
+        box=ROUNDED,
+        border_style="blue",
+        expand=True
+    )
+
+    # Provider Panel
+    providers = fetch_provider_status()
+    provider_text = Text()
+    if not providers:
+        provider_text.append("Waiting for Hub connection...", style="italic dim")
+    else:
+        for p in providers:
+            p_id = p.get("provider_id", "???")
+            state = p.get("state", "not_started")
+            color = "green" if state == "connected" else "yellow" if state == "connecting" else "dim"
+            provider_text.append(f"{p_id}: ", style="bold")
+            provider_text.append(f"{state.upper()}  ", style=color)
+
+    provider_panel = Panel(
+        provider_text,
+        title="Provider Lifecycle",
+        box=ROUNDED,
+        border_style="magenta",
+        expand=True
     )
 
     if not jobs:
@@ -127,6 +204,8 @@ def make_dashboard():
         return Panel(
             Group(
                 header_panel,
+                infra_panel,
+                provider_panel,
                 body_panel
             ),
             box=ROUNDED,
@@ -189,6 +268,8 @@ def make_dashboard():
     return Panel(
         Group(
             header_panel,
+            infra_panel,
+            provider_panel,
             table,
             footer_text
         ),

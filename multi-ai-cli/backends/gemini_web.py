@@ -55,7 +55,7 @@ class GeminiWebBackend(ChatBackend):
             if self.token:
                 self.session.headers["Authorization"] = f"Bearer {self.token}"
 
-    def send_message(self, message: str, context: list[dict]) -> str:
+    def send_message(self, message: str, context: list[dict], **kwargs) -> str:
         self._ensure_session()
         payload = {"contents": [{"role": "user", "parts": [{"text": message}]}]}
         resp = self.session.post("https://gemini.google.com/api/chat", json=payload)

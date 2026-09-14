@@ -47,7 +47,7 @@ class ClaudeWebBackend(ChatBackend):
     def is_available(self):
         return bool(self.token)
 
-    def send_message(self, message: str, context: list[dict]) -> str:
+    def send_message(self, message: str, context: list[dict], **kwargs) -> str:
         if not self.session:
             self.session = curl_requests.Session()
             h = {

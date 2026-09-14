@@ -35,6 +35,12 @@ replaced eligible tokens / total eligible tokens
 
 It is a codec-coverage metric, not a claim about proprietary model tokenization, compression ratio, encryption strength, or resistance to reverse engineering. Reports record the mapper metadata, canonical digest, numerator, denominator, coverage ratio, and excluded fields. A caller may set a threshold and receive a failure when it is not met.
 
+### Bootstrap-only literal boundary
+
+The initial foundation leaves agent-contact documents and their path, name, and value-bearing content in readable canonical form because no approved source inventory, projection generator, or production mapper exists yet. This is a **bootstrap and reviewability constraint**, not a permanent rule against obfuscating paths, names, or values.
+
+A later accepted agent-contact migration must treat those forms as candidate Grimoire coverage. It may transform path components, names, values, and other approved lexical content through the authorized mapper, while preserving only the minimum structural metadata needed for deterministic reconstruction, safety review, and routing. The migration must state every deliberate literal exception and its reason; a blanket rule that paths, names, and values must remain literal is not permitted. Raw credentials, keys, tokens, and other secret material remain outside public repository content regardless of encoding.
+
 ## Local A2A Envelope
 
 The initial Agent2Agent contract is local validation only. An envelope carries its protocol version, message ID, sender role, recipient role, correlation ID, intent, mapper ID/version, encoded payload, canonical digest, issuance time, TTL, and one of three states: `PENDING`, `ACK`, or `NACK`. Serialized envelopes use an exact field set: unknown fields, omitted fields, non-object payloads, and non-JSON-serializable payloads are rejected before record decoding is attempted.
@@ -69,7 +75,7 @@ CEDARscript / CID / patch router
 
 ## Implementation Reference
 
-The initial implementation is `workspace/compression_sandbox/cedrlang/protocol.py`. Its focused tests are `tests/test_cedrlang_protocol.py`. The bounded codec, coverage, A2A, evidence, and compatibility scope is tracked as proposal `cedrlang-grimoire-a2a`, items `LGA-01`, `LGA-02`, `LGA-03`, `LGA-04`, and `LGA-06`; later migration work must receive separately scoped work items.
+The initial implementation is `workspace/compression_sandbox/cedrlang/protocol.py`. Its focused tests are `tests/test_cedrlang_protocol.py`. The bounded codec, coverage, A2A, evidence, and compatibility scope is tracked as proposal `cedrlang-grimoire-a2a`, items `LGA-01`, `LGA-02`, `LGA-03`, `LGA-04`, and `LGA-06`; later migration work must receive separately scoped work items. That work must apply the bootstrap-only literal boundary above rather than treating path, name, or value content as permanently out of scope.
 
 ## References
 

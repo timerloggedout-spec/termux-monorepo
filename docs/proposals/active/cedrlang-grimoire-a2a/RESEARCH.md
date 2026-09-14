@@ -11,6 +11,7 @@
 | R-03 | Which A2A transport and authentication model is acceptable after the local envelope foundation? | Authn/authz model, replay/fuzz tests, bounded idempotency-store ownership, failure semantics, key custody, privacy assessment, and transport threat model. | Operator + security reviewer | Open |
 | R-04 | What operational meaning, if any, should the 70% coverage target have? | Representative approved CIR corpus, declared eligibility policy, independent measurement, quality/error analysis, and lower-bound failure behavior. | Linguist reviewer + operator | Open |
 | R-05 | How are inherited repository-gate and proposal-registry blockers resolved or formally exempted? | Fix PR or explicit operator disposition, rerun evidence, and updated status board. | Repository maintainer | Open |
+| R-06 | How will the contact-point migration cover paths, names, and values through Grimoire rather than leaving them permanently literal? | Approved source inventory, eligibility matrix, literal-exception register with reasons, mapper/projection tests, coverage evidence, rollback, and secret-handling proof. | Operator + Linguist reviewer + documentation owner | Open |
 
 ## Required Independent Review
 
@@ -20,7 +21,7 @@ A non-author reviewer must evaluate the following before the proposal status can
 2. The lossless claim is constrained to canonical-record reconstruction with the authorized mapper; no public-obfuscation security claim is made.
 3. The test suite covers mapper collisions, literal symbol preservation, integrity tampering, coverage threshold failure, TTL expiry, state transitions, and replay conflict.
 4. The publication links and relationship diagrams distinguish verified evidence from candidate history and disclose the partial historical index window.
-5. Any follow-on agent-contact migration has a separately accepted work item.
+5. Any follow-on agent-contact migration has a separately accepted work item and implements the bootstrap-only literal boundary: paths, names, and values are candidate Grimoire coverage, with every retained literal justified in an explicit exception register.
 
 ## Vote Record
 

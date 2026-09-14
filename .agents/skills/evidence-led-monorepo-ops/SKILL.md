@@ -113,3 +113,26 @@ self-triggering pattern before it snowballs.
 (`pull_request_target` + `issue_comment: [created]`), `relevantEvent` gate and `isCurrentProviderRequest`
 helper, and the "Request supported provider reviews through OPERATOR" step that posts the
 self-qualifying comment under the default operator login.
+
+**Addendum — origin of the `issue_comment` trigger (verified, read-only recheck):** the `issue_comment`
+trigger on `peer-review-orchestrator.yml` did not exist at file creation (commit `e942fb1`, "feat(ci):
+peer-review gate…") — the original `on:` block was `pull_request` only. It was introduced in commit
+`94bb347b33b94c6d8b6b0aa2c6154763c58cf8da` ("ci(peer): gate second pass on verified interactive
+responses"), merged via **PR #241** ("ci(peer): gate routed review on authorized interactive responses",
+branch `manus/interactive-peer-gate`). That commit carries an explicit agent trailer —
+`Agent-Identity: Manus` / `Signed-off-by: Manus <manus@manus.im>` — i.e. it was authored by a **Manus**
+agent, not a ChatGPT-driven one. No self-comment/actor-exclusion guard was added alongside the new
+trigger in that same PR, which is the specific gap #390/#507 later exploited. So: the "introduced by an
+AI-agent-driven PR" part of the owner's note checks out with a citable commit/PR, but the specific
+attribution is **Manus (PR #241)**, not ChatGPT — the two should not be conflated.
+
+Separately, `.github/workflows/pr-production-ledger.yml` was checked and is **not** part of this incident:
+it was only created on 2026-08-30 (commit `9cfbcb37c7`, well after the #390 loop pattern existed), all
+three of its commits are authored by the human account `timerloggedout-spec` (no agent trailers), and
+neither file references the other. It does listen for `issue_comment` too, but it declares
+`permissions: contents: read / pull-requests: read / issues: read / checks: read` (no `write` anywhere)
+and contains no comment-posting call — structurally it cannot re-trigger itself the way
+`peer-review-orchestrator.yml` does. One genuine bug was found in its history (commit `d63f7ca98b`: a
+`context.repo.default_branch` field that doesn't exist on `actions/github-script`'s context, causing
+near-universal 404s), but it is unrelated to comment-loop behavior and was authored and fixed by the same
+human account — no agent attribution applies there.

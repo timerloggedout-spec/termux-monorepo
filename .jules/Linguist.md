@@ -60,3 +60,10 @@ Defining inner callback functions inside high-frequency string substitution func
 
 **Action:**
 Extract nested substitution callbacks to module scope where possible and resolve default RNG method references directly instead of instantiating new `random.Random()` generator objects on every function invocation.
+
+## 2026-09-15 - Non-Capturing Trie Regex Root Groups and Code Fence Character Guarding
+**Learning:**
+Using capturing parentheses in root Trie regex patterns (`\b(...)` vs `\b(?:...)`) forces Python's regex engine to allocate match tuple capturing groups on every match, adding unnecessary overhead during regex matching loops. Switching `build_trie_regex` to construct root non-capturing groups `\b(?:...)\b` eliminates group allocation overhead. Additionally, guarding `line.strip().startswith('```')` with a cheap fast-path character check (`if "`" in line:`) avoids redundant `strip()` string allocations across document compilation loops.
+
+**Action:**
+Ensure all Trie-structured regex builders use non-capturing groups `(?:...)` at the root level, and prepend cheap character checks before invoking line string stripping methods in document iteration loops.

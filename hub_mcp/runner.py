@@ -23,6 +23,8 @@ class ReplayStore:
     def _load(self) -> set[str]:
         if not self.path.exists():
             return set()
+        if self.path.is_symlink():
+            raise JobValidationError(f"Symlink replay store path {self.path} rejected for security")
         try:
             data = json.loads(self.path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError) as exc:
@@ -37,18 +39,41 @@ class ReplayStore:
     def record(self, job_id: str) -> None:
         entries = self._load()
         entries.add(job_id)
+        if self.path.is_symlink():
+            raise JobValidationError(f"Symlink replay store path {self.path} rejected for security")
+        if self.path.parent.is_symlink():
+            raise JobValidationError(f"Symlink replay directory {self.path.parent} rejected for security")
         self.path.parent.mkdir(parents=True, exist_ok=True)
+        if not self.path.parent.is_symlink():
+            try:
+                os.chmod(self.path.parent, 0o700)
+            except OSError:
+                pass
         with tempfile.NamedTemporaryFile(
             mode="w", encoding="utf-8", delete=False, dir=self.path.parent, prefix=".processed-"
         ) as handle:
+            if not Path(handle.name).is_symlink():
+                try:
+                    os.chmod(handle.name, 0o600)
+                except OSError:
+                    pass
             json.dump(sorted(entries), handle, indent=2)
             handle.write("\n")
             temporary_path = Path(handle.name)
         os.replace(temporary_path, self.path)
+        if self.path.exists() and not self.path.is_symlink():
+            try:
+                os.chmod(self.path, 0o600)
+            except OSError:
+                pass
 
 
 def execute(job: Job, repository: Path, replay_store: ReplayStore) -> ResultEnvelope:
     """Execute one approved capability without a shell and record it exactly once."""
+    if ".." in repository.parts:
+        raise JobValidationError(f"Path traversal in repository path {repository} rejected for security")
+    if repository.is_symlink():
+        raise JobValidationError(f"Symlink repository path {repository} rejected for security")
     if replay_store.contains(job.job_id):
         raise JobValidationError(f"Replay rejected for job_id {job.job_id}")
     spec = get_capability(job.capability)

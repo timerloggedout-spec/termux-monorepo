@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "c864808d0556d63decefdb84c77dc1684c547598aaeee2bd7f29668724faf0d3",
-  "workflow_count": 68,
+  "source_fingerprint": "f1178a13c73180e18cbfa073658163c29d99f5db3f4062920b4f65792b057747",
+  "workflow_count": 70,
   "workflows": [
     {
       "action_pins": [
@@ -253,10 +253,11 @@
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
       "authority": "writer",
-      "concurrency": "group: automation-docs-refresh cancel-in-progress: false",
+      "concurrency": "group: automation-docs-refresh-${{ github.event.pull_request.head.ref || github.ref_name }} cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
-        "refresh"
+        "refresh-trusted",
+        "validate-pull-request"
       ],
       "name": "Automation Documentation Continuous Refresh",
       "path": ".github/workflows/automation-docs-continuous-refresh.yml",
@@ -264,8 +265,30 @@
         "17 * * * *"
       ],
       "triggers": [
+        "pull_request",
         "push",
         "schedule"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: engineering-health-script cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "snapshot"
+      ],
+      "name": "Engineering health (script)",
+      "path": ".github/workflows/cellcog-engineering-health.yml",
+      "schedules": [
+        "17 * * * *"
+      ],
+      "triggers": [
+        "push",
+        "schedule",
+        "workflow_dispatch"
       ]
     },
     {
@@ -757,6 +780,7 @@
       "path": ".github/workflows/hex-moneyball-evidence.yml",
       "schedules": [],
       "triggers": [
+        "pull_request",
         "push",
         "workflow_dispatch"
       ]
@@ -945,6 +969,21 @@
         "issue_comment",
         "pull_request_review",
         "pull_request_target"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "pin"
+      ],
+      "name": "pin-cor-ae-submodules",
+      "path": ".github/workflows/pin-cor-ae-submodules.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
       ]
     },
     {

@@ -52,9 +52,14 @@ def canonical_payload(payload: dict[str, Any]) -> dict[str, Any]:
     return {key: value for key, value in payload.items() if key != "result_digest"}
 
 
-def digest(payload: dict[str, Any]) -> str:
-    serialized = json.dumps(canonical_payload(payload), sort_keys=True, separators=(",", ":"))
-    return hashlib.sha256(serialized.encode("utf-8")).hexdigest()
+def canonical_json(payload: dict[str, Any]) -> str:
+    return json.dumps(canonical_payload(payload), sort_keys=True, separators=(",", ":"))
+
+
+def digest(payload: dict[str, Any], serialized_canonical: str | None = None) -> str:
+    if serialized_canonical is None:
+        serialized_canonical = canonical_json(payload)
+    return hashlib.sha256(serialized_canonical.encode("utf-8")).hexdigest()
 
 
 def parse_timestamp(value: Any, field: str) -> datetime:
@@ -92,7 +97,8 @@ def validate(payload: dict[str, Any]) -> None:
     unknown = set(payload) - EXPECTED_FIELDS
     if missing or unknown:
         raise ContractError(f"missing={sorted(missing)} unknown={sorted(unknown)}")
-    if SECRET.search(json.dumps(payload, sort_keys=True)):
+    serialized_canonical = canonical_json(payload)
+    if SECRET.search(serialized_canonical):
         raise ContractError("manifest contains a credential-shaped value")
     if payload["schema_version"] != SCHEMA_VERSION:
         raise ContractError("unsupported schema_version")
@@ -138,7 +144,7 @@ def validate(payload: dict[str, Any]) -> None:
     elif state != "agent-run-failed":
         raise ContractError("failed runs require agent-run-failed")
     require_string(payload, "result_digest", DIGEST)
-    if payload["result_digest"] != digest(payload):
+    if payload["result_digest"] != digest(payload, serialized_canonical=serialized_canonical):
         raise ContractError("result_digest does not match the canonical manifest")
 
 
@@ -176,7 +182,8 @@ def build_manifest(arguments: argparse.Namespace) -> dict[str, Any]:
         "benchmark_resolved_instances": None,
         "evaluation_state": "agent-run-complete" if arguments.runner_exit_code == 0 else "agent-run-failed",
     }
-    payload["result_digest"] = digest(payload)
+    serialized = canonical_json(payload)
+    payload["result_digest"] = digest(payload, serialized_canonical=serialized)
     validate(payload)
     return payload
 

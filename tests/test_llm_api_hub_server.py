@@ -78,6 +78,22 @@ class HubServerTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("data: [DONE]", response.text)
 
+    def test_session_id_path_traversal_is_rejected(self):
+        module = load_app()
+        client = TestClient(module.app)
+
+        for invalid_sid in ["../etc/passwd", "..\\boot.ini", "/absolute/path", "subdir/file"]:
+            response = client.post(
+                "/v1/chat/completions",
+                json={
+                    "model": "wrapper/deepseek",
+                    "messages": [{"role": "user", "content": "hello"}],
+                    "session_id": invalid_sid,
+                },
+            )
+            self.assertEqual(response.status_code, 400)
+            self.assertEqual(response.json()["error"]["code"], "invalid_session_id")
+
     def test_optional_bearer_auth_is_enforced(self):
         module = load_app()
         client = TestClient(module.app)

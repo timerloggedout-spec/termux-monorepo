@@ -3,6 +3,7 @@ name: Automation Documentation Continuous Refresh
 on:
   schedule:
     - cron: '17 * * * *'
+  workflow_dispatch:
   push:
     branches: [master]
     paths:
@@ -16,35 +17,122 @@ on:
       - 'docs/ops/diagrams/**'
       - 'docs/proposals/active/actions-refinements/**'
       - 'docs/proposals/active/rate-limit-rotation/**'
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'scripts/ci/automation_docs.py'
+      - '.github/workflows/**'
+      - '.github/actions/**'
+      - 'scripts/model_router.py'
+      - 'docs/schemas/**'
+      - 'docs/ops/OPERATOR_INTERACTIVE_ACTIONS.md'
+      - 'docs/ops/automation-decision-tree.md'
+      - 'docs/ops/diagrams/**'
+      - 'docs/proposals/active/actions-refinements/**'
+      - 'docs/proposals/active/rate-limit-rotation/**'
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: automation-docs-refresh
+  group: automation-docs-refresh-${{ github.event.pull_request.head.ref || github.ref_name }}
   cancel-in-progress: false
 
 jobs:
-  refresh:
-    if: github.actor != 'github-actions[bot]'
+  validate-pull-request:
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           fetch-depth: 0
-      - name: Regenerate automation catalog
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "20"
+      - name: Render Mermaid decision trees (mmdc)
+        run: |
+          set -euo pipefail
+          mkdir -p docs/ops/generated
+          MMDC="npx --yes @mermaid-js/mermaid-cli@11.4.2"
+          count=0
+          for src in docs/ops/diagrams/*.mmd; do
+            [ -f "$src" ] || continue
+            stem=$(basename "$src" .mmd)
+            out="docs/ops/generated/${stem}.png"
+            echo "mmdc: $src -> $out"
+            $MMDC -i "$src" -o "$out" -b transparent -s 2
+            count=$((count + 1))
+          done
+          if [ "$count" -eq 0 ]; then
+            echo "WARN: no .mmd sources under docs/ops/diagrams/ (skip render)"
+          else
+            echo "Rendered $count diagram(s)."
+          fi
+      - name: Regenerate automation catalog in workspace
         run: python3 scripts/ci/automation_docs.py --write
       - name: Validate generated catalog
         run: python3 scripts/ci/automation_docs.py --check
-      - name: Commit generated automation documentation
+
+  refresh-trusted:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref_name }}
+          token: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "20"
+      - name: Render Mermaid decision trees (mmdc)
+        run: |
+          set -euo pipefail
+          mkdir -p docs/ops/generated
+          MMDC="npx --yes @mermaid-js/mermaid-cli@11.4.2"
+          count=0
+          for src in docs/ops/diagrams/*.mmd; do
+            [ -f "$src" ] || continue
+            stem=$(basename "$src" .mmd)
+            out="docs/ops/generated/${stem}.png"
+            echo "mmdc: $src -> $out"
+            $MMDC -i "$src" -o "$out" -b transparent -s 2
+            count=$((count + 1))
+          done
+          if [ "$count" -eq 0 ]; then
+            echo "WARN: no .mmd sources under docs/ops/diagrams/ (skip render)"
+          else
+            echo "Rendered $count diagram(s)."
+          fi
+      - name: Regenerate automation catalog
+        run: python3 scripts/ci/automation_docs.py --write
+      - name: Validate generated catalog + diagram assets
+        run: python3 scripts/ci/automation_docs.py --check
+      - name: Commit generated automation documentation + renders
         run: |
           set -euo pipefail
           if git diff --quiet -- docs/ops/generated; then
-            echo 'Automation documentation already current.'
+            echo 'Automation documentation and diagram renders already current.'
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add docs/ops/generated
-          git commit -m 'docs(ops): refresh generated automation catalog'
+          git commit -m 'docs(ops): refresh generated automation catalog + mmdc renders'
           git push

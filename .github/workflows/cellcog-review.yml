@@ -1,0 +1,194 @@
+name: CellCog review
+
+# Self-contained agentic PR reviewer backed by the CellCog Python SDK.
+# Joins the existing peer roster (CodeRabbit/Devin/Gemini/OpenRouter-Omni) as an
+# independent, ADVISORY (non-blocking) lane — modeled on deepseek-ci.yml, with the
+# reviewer logic inline via `python3 - <<PY` (same convention as agent-context-store).
+#
+# Requires repo secret CELLCOG_API_KEY (a CellCog API key; acts as the account and
+# bills its credits). Optional repo var CELLCOG_CHAT_TIER (flash|core|max; default max).
+# The key is read only from the environment and is never logged, echoed, or committed.
+#
+# Implements: AR-20 (Issue #192 action-integration refinements).
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  issue_comment:
+    types: [created]
+  workflow_dispatch:
+    inputs:
+      event_payload:
+        description: 'JSON event payload (optional)'
+        required: false
+        default: '{}'
+
+concurrency:
+  group: cellcog-review-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  cellcog-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # PR + dispatch always; issue_comment only for a non-bot @cellcog mention on a PR.
+    # Parentheses required: && binds tighter than || in GHA expressions.
+    if: >-
+      (github.event_name != 'issue_comment') ||
+      (
+        github.event.issue.pull_request != null &&
+        github.event.comment.user.type != 'Bot' &&
+        (contains(github.event.comment.body, '@cellcog') || contains(github.event.comment.body, '@CellCog'))
+      )
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
+      GITHUB_EVENT: ${{ github.event.inputs.event_payload != '' && github.event.inputs.event_payload || toJson(github.event) }}
+      CELLCOG_API_KEY: ${{ secrets.CELLCOG_API_KEY }}
+      CELLCOG_CHAT_TIER: ${{ vars.CELLCOG_CHAT_TIER || 'max' }}
+    steps:
+      - name: Guard - CELLCOG_API_KEY present
+        id: guard
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${CELLCOG_API_KEY:-}" ]; then
+            echo "::warning::CELLCOG_API_KEY secret is not set; skipping CellCog review."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup Python
+        if: steps.guard.outputs.skip != 'true'
+        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b  # v5.3.0
+        with:
+          python-version: '3.11'
+
+      - name: Install CellCog SDK
+        if: steps.guard.outputs.skip != 'true'
+        run: |
+          python -m pip install --upgrade pip
+          pip install -U cellcog
+
+      - name: Run CellCog reviewer
+        if: steps.guard.outputs.skip != 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, subprocess, sys
+
+          NL = chr(10)
+          MARKER = os.environ.get('CELLCOG_MARKER', '<!-- cellcog-review -->')
+          DIFF_CAP = 20000
+
+          def warn(m): print('::warning::' + m)
+          def notice(m): print('::notice::' + m)
+
+          def gh(args):
+              # Run gh; return (rc, stdout). Never raises. Never echoes secrets.
+              try:
+                  p = subprocess.run(['gh', *args], capture_output=True, text=True, check=False)
+                  if p.returncode != 0:
+                      warn('gh ' + args[0] + ' rc=' + str(p.returncode) + ' ' + p.stderr.strip()[:200])
+                  return p.returncode, p.stdout
+              except FileNotFoundError:
+                  warn('gh CLI not available'); return 127, ''
+
+          def event():
+              raw = os.environ.get('GITHUB_EVENT', '{}')
+              try:
+                  return json.loads(raw) if raw.strip() else {}
+              except json.JSONDecodeError:
+                  return {}
+
+          def pr_number(ev):
+              pr = ev.get('pull_request') or {}
+              if pr.get('number'): return int(pr['number'])
+              iss = ev.get('issue') or {}
+              if iss.get('pull_request') and iss.get('number'): return int(iss['number'])
+              return None
+
+          def diff(repo, n):
+              rc, out = gh(['api', 'repos/' + repo + '/pulls/' + str(n),
+                            '-H', 'Accept: application/vnd.github.v3.diff'])
+              return out[:DIFF_CAP] if rc == 0 else ''
+
+          def build_prompt(repo, n, d):
+              lines = [
+                  'You are the CellCog reviewer for ' + repo + ' PR #' + str(n) + '.',
+                  'Peers (CodeRabbit/Devin) may have reviewed already. Be concise - ONE response.',
+                  'Focus on gaps peers miss and merge-blocking risk, per this repo AGENTS.md:',
+                  '  1. Secret/permission hygiene: chmod 0o600/0o700 on session/cred files;',
+                  '     no Class 3/4 artifacts (session stores, cookies, tokens) entering git.',
+                  '  2. Whether repo_gate.py + termux_smoke.py assumptions still hold.',
+                  '  3. Workflow least-privilege + pinned action SHAs if .github/ is touched.',
+                  '  4. Residual correctness/security risk before merge.',
+                  'Do NOT restate every style nit. Prefer a short, prioritized comment.',
+                  '',
+                  'Unified diff (truncated to ' + str(DIFF_CAP) + ' chars):',
+                  d,
+              ]
+              return NL.join(lines)
+
+          def review_text(prompt):
+              try:
+                  from cellcog import CellCogClient
+              except ImportError:
+                  warn('cellcog SDK not installed; skipping'); return None
+              tier = os.environ.get('CELLCOG_CHAT_TIER', 'max')
+              try:
+                  client = CellCogClient(agent_provider='openclaw')
+                  result = client.create_chat(prompt=prompt, chat_mode='agent',
+                                              chat_tier=tier, delivery='wait_for_completion',
+                                              task_label='pr-review')
+              except Exception as exc:
+                  name = type(exc).__name__
+                  if name == 'PaymentRequiredError':
+                      warn('CellCog: insufficient credits; skipping')
+                      return '__SKIP__CellCog review skipped - account is low on credits.'
+                  if name == 'MaxConcurrencyError':
+                      warn('CellCog: max parallel chats; skipping')
+                      return '__SKIP__CellCog review skipped - parallel-chat limit reached; retries next event.'
+                  warn('CellCog SDK error (' + name + '); skipping'); return None
+              if isinstance(result, dict):
+                  return result.get('message') or result.get('response') or json.dumps(result)[:4000]
+              return str(result)
+
+          def post(repo, n, body):
+              rc, out = gh(['api', '--paginate', 'repos/' + repo + '/issues/' + str(n) + '/comments',
+                            '--jq', '.[] | select(.body | contains("' + MARKER + '")) | .id'])
+              existing = out.strip().splitlines()[0] if (rc == 0 and out.strip()) else ''
+              if existing:
+                  gh(['api', '-X', 'PATCH', 'repos/' + repo + '/issues/comments/' + existing, '-f', 'body=' + body])
+              else:
+                  gh(['api', '-X', 'POST', 'repos/' + repo + '/issues/' + str(n) + '/comments', '-f', 'body=' + body])
+
+          def main():
+              if not os.environ.get('CELLCOG_API_KEY'):
+                  warn('CELLCOG_API_KEY not set'); return 0
+              repo = os.environ.get('GITHUB_REPOSITORY', '')
+              ev = event(); n = pr_number(ev)
+              if not repo or not n:
+                  warn('no PR number resolvable from event; skipping'); return 0
+              text = review_text(build_prompt(repo, n, diff(repo, n)))
+              if text is None:
+                  return 0
+              if text.startswith('__SKIP__'):
+                  body = MARKER + NL + '### CellCog review' + NL + NL + 'WARNING: ' + text[len('__SKIP__'):]
+              else:
+                  body = (MARKER + NL + '### CellCog review (Agent - Max)' + NL + NL + text + NL + NL
+                          + '---' + NL + '_Autonomous CellCog reviewer. Non-blocking; advisory before merge._')
+              post(repo, n, body)
+              notice('CellCog review posted on PR #' + str(n))
+              return 0
+
+          sys.exit(main())
+          PY

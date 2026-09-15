@@ -1,0 +1,63 @@
+name: Skill Quality Lane
+
+# Deterministic, read-only structural evaluation for SKILL.md and .skill packages.
+on:
+  push:
+    branches:
+      - "ops/skill-quality-lane"
+  pull_request:
+    paths:
+      - ".agents/skills/**/SKILL.md"
+      - ".github/skills/**/SKILL.md"
+      - "docs/ops/skills/**/SKILL.md"
+      - "*.skill"
+      - "scripts/ci/evaluate_skills.py"
+      - "tests/test_skill_evaluation.py"
+      - "docs/ops/SKILL-EVALUATION.md"
+      - "docs/ops/SKILL-EVALUATION-EVIDENCE.schema.json"
+      - ".github/workflows/skill-quality-lane.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: skill-quality-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout candidate revision
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Validate evidence schema JSON
+        run: python -m json.tool docs/ops/SKILL-EVALUATION-EVIDENCE.schema.json >/dev/null
+
+      - name: Compile evaluator and tests
+        run: python -m py_compile scripts/ci/evaluate_skills.py tests/test_skill_evaluation.py
+
+      - name: Run deterministic skill evaluator
+        run: python scripts/ci/evaluate_skills.py --json | tee skill-evaluation.json
+
+      - name: Run focused evaluator tests
+        run: python -m unittest tests.test_skill_evaluation -v
+
+      - name: Check source diff whitespace hygiene
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: git diff --check "$BASE_SHA" "$HEAD_SHA" -- .agents .github docs scripts tests
+
+      - name: Publish deterministic evidence artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: skill-quality-evidence
+          path: skill-evaluation.json
+          if-no-files-found: error

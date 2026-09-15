@@ -1,6 +1,6 @@
 # Skills Inventory (termux-monorepo)
 
-**Version:** 2026-09-15 · **Last refreshed SHA:** `fdd42ec2` (#482)  
+**Version:** 2026-09-15 · **Last refreshed SHA:** `a7c132e9` (#539)  
 **Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)  
 **Ops loop trigger words:** `continue`, `BIUDL`, `maximize actions`, `/continue`
 
@@ -12,7 +12,7 @@
 |------|------------|------|----------|
 | **Admin / Grok Administrator** | `evidence-led-monorepo-ops` + `adaptive-wait` | `termux-monorepo-agentic-governance` + `review-loop` | `adaptive-feedback-cycle`, `production-reconciliation` |
 | **Collaborator / Codespace agent** | `adaptive-feedback-cycle` | dual-gate (`repo_gate` + `termux_smoke`) + conventions | `review-loop` |
-| **Evaluator** | `blind-agent-evaluation` + `multivariate-doe` | `pr-evidence-evaluation` + `mvt-experiment` | `evidence-envelope` |
+| **Evaluator** | `blind-agent-evaluation` + `multivariate-doe` | `skill-evaluation` + `pr-evidence-evaluation` + `mvt-experiment` | `evidence-envelope` |
 | **Governance / proposal** | `termux-monorepo-agentic-governance` | `docs/CONSENSUS.md` + `docs/proposals/AGENTIC-PERMISSIONS.md` | `review-loop` |
 | **Discovery / extend** | `find-skills` | skills.sh leaderboard + this inventory | — |
 
@@ -27,6 +27,7 @@
 | **production-reconciliation** | `.github/skills/production-reconciliation/SKILL.md` | RECON → PLAN → IMPLEMENT → COMMIT → **WAIT** → VALIDATE → RE-FETCH → CLASSIFY → RECORD |
 | **context-relationship-graph** | `.agents/skills/context-relationship-graph/SKILL.md` | File/PR/issue/timeline graph; verified vs candidate edges |
 | **termux-monorepo-agentic-governance** | `.agents/skills/termux-monorepo-agentic-governance/SKILL.md` | Permissions, consensus tiers, PR triage bounds |
+| **skill-evaluation** | `.agents/skills/skill-evaluation/SKILL.md` | Deterministic evaluation of `SKILL.md` and packaged `.skill` definitions |
 
 ## Adaptive WAIT (non-negotiable)
 
@@ -82,7 +83,7 @@ Prefer high-install, reputable sources (vercel-labs, anthropics). Inspect before
 
 Skill content that other sessions must load **must** live on **master** under `.agents/skills/<name>/SKILL.md`. Chat-only or local-only copies are not sufficient.
 
-When process improves: edit inventory + skill body in one PR, dual-gate, squash-merge, refresh local mirrors.
+When process improves: edit inventory + skill body in one PR, dual-gate, squash-merge, refresh local mirrors. Skill-definition changes also require the deterministic **Skill Quality Lane** before promotion.
 
-Implements: skills navigator SSOT · adaptive-wait SSOT  
+Implements: skills navigator SSOT · adaptive-wait SSOT · skill-definition quality lane  
 BIUDL.

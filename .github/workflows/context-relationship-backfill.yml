@@ -1,5 +1,8 @@
 name: context relationship historical backfill
 
+# This writer is deliberately bounded and master-anchored. It resumes from the
+# canonical manifest, validates the complete artifact set, and only then pushes
+# a corpus delta to master. A complete run must never publish stale artifacts.
 on:
   schedule:
     - cron: '23 * * * *'
@@ -66,8 +69,9 @@ jobs:
       - name: Stop cleanly when canonical corpus is complete
         if: steps.page.outputs.complete == 'true'
         run: |
+          set -euo pipefail
           echo 'Historical corpus reports next_start_page=null; no continuation required.'
-          exit 0
+          echo 'No build-summary.json is read or published because no processing window ran.'
 
       - name: Build one bounded historical relationship-index window
         if: steps.page.outputs.complete != 'true'
@@ -91,45 +95,115 @@ jobs:
             --max-cochange-pairs-per-commit 100 \
             --full-refresh
 
-      - name: Validate continuation metadata
+      - name: Validate continuation metadata and artifact set
         if: steps.page.outputs.complete != 'true'
+        env:
+          HISTORY_START_PAGE: ${{ steps.page.outputs.start_page }}
+          SOURCE_SHA: ${{ steps.page.outputs.source_sha }}
         run: |
           set -euo pipefail
           python - <<'PY'
           import hashlib
           import json
+          import re
           from pathlib import Path
 
           root = Path('workspace/llm_map/context_relationships')
+          required = {
+              'build-summary.json', 'edges.jsonl', 'github-report.json', 'manifest.json',
+              'matrix.json', 'merge-report.json', 'nodes.jsonl', 'source-report.json',
+          }
+          actual = {path.name for path in root.iterdir() if path.is_file()}
+          allowed = required | {'checkpoint.json'}
+          unexpected = actual - allowed
+          missing = required - actual
+          if missing:
+              raise SystemExit(f'missing required canonical artifacts: {sorted(missing)}')
+          if unexpected:
+              raise SystemExit(f'unexpected/stale canonical artifacts remain: {sorted(unexpected)}')
+
           manifest = json.loads((root / 'manifest.json').read_text(encoding='utf-8'))
           summary = json.loads((root / 'build-summary.json').read_text(encoding='utf-8'))
+          github_report = json.loads((root / 'github-report.json').read_text(encoding='utf-8'))
           start = int('${{ steps.page.outputs.start_page }}')
           next_page = manifest.get('history_window', {}).get('next_start_page')
           if next_page is not None and int(next_page) <= start:
               raise SystemExit(f'next_start_page did not advance: start={start} next={next_page}')
+
+          expected_repo = f"${{ github.repository }}"
+          if manifest.get('repository') != expected_repo:
+              raise SystemExit(f"manifest repository mismatch: {manifest.get('repository')!r} != {expected_repo!r}")
+          if manifest.get('default_branch') != 'master':
+              raise SystemExit(f"manifest default_branch must be master, got {manifest.get('default_branch')!r}")
+          if manifest.get('schema_version') != '1.0':
+              raise SystemExit('manifest schema_version mismatch')
+          if not re.fullmatch(r'[0-9a-f]{64}', str(manifest.get('scope_registry_sha256', ''))):
+              raise SystemExit('manifest scope_registry_sha256 is missing or malformed')
+          if not re.fullmatch(r'[0-9a-f]{64}', str(manifest.get('schema_sha256', ''))):
+              raise SystemExit('manifest schema_sha256 is missing or malformed')
+          if not re.fullmatch(r'[0-9a-f]{64}', str(manifest.get('input_sha256', ''))):
+              raise SystemExit('manifest input_sha256 is missing or malformed')
+
+          scope_sha = hashlib.sha256(Path('config/context_relationships/scope_registry.json').read_bytes()).hexdigest()
+          schema_sha = hashlib.sha256(Path('config/context_relationships/schema.json').read_bytes()).hexdigest()
+          if manifest['scope_registry_sha256'] != scope_sha:
+              raise SystemExit('manifest scope registry hash does not match the checked-in contract')
+          if manifest['schema_sha256'] != schema_sha:
+              raise SystemExit('manifest schema hash does not match the checked-in contract')
+          if summary.get('repository') != expected_repo or summary.get('ref') != 'master':
+              raise SystemExit('build-summary repository/ref metadata does not match the backfill contract')
+          if summary.get('node_count') != manifest.get('node_count'):
+              raise SystemExit('build-summary node_count disagrees with manifest')
+          if summary.get('edge_count') != manifest.get('edge_count'):
+              raise SystemExit('build-summary edge_count disagrees with manifest')
+          if summary.get('verified_edge_count') != manifest.get('verified_edge_count'):
+              raise SystemExit('build-summary verified_edge_count disagrees with manifest')
+          if summary.get('candidate_edge_count') != manifest.get('candidate_edge_count'):
+              raise SystemExit('build-summary candidate_edge_count disagrees with manifest')
           summary_window = summary.get('history_window', {})
           if summary_window.get('start_page') not in (start, str(start)):
               raise SystemExit('build-summary start_page does not match the resumed page')
+          report_window = github_report.get('history_window', {})
+          if report_window.get('start_page') not in (start, str(start)):
+              raise SystemExit('github-report start_page does not match the resumed page')
+
+          node_count = sum(1 for line in (root / 'nodes.jsonl').read_text(encoding='utf-8').splitlines() if line.strip())
+          edge_count = sum(1 for line in (root / 'edges.jsonl').read_text(encoding='utf-8').splitlines() if line.strip())
+          matrix = json.loads((root / 'matrix.json').read_text(encoding='utf-8'))
+          if node_count != manifest['node_count'] or edge_count != manifest['edge_count']:
+              raise SystemExit('canonical JSONL record counts disagree with manifest')
+          if len(matrix.get('rows', [])) > edge_count:
+              raise SystemExit('matrix row count cannot exceed canonical edge count')
+
+          checkpoint_eligible = bool(summary.get('checkpoint_eligible', True))
+          if checkpoint_eligible != ('checkpoint.json' in actual):
+              raise SystemExit('checkpoint artifact presence disagrees with checkpoint_eligible')
+
           print(json.dumps({
               'source_sha': '${{ steps.page.outputs.source_sha }}',
               'start_page': start,
               'next_start_page': next_page,
-              'manifest_sha': hashlib.sha256((root / 'manifest.json').read_bytes()).hexdigest(),
-              'summary_sha': hashlib.sha256((root / 'build-summary.json').read_bytes()).hexdigest(),
+              'manifest_sha256': hashlib.sha256((root / 'manifest.json').read_bytes()).hexdigest(),
+              'input_sha256': manifest['input_sha256'],
+              'schema_sha256': manifest['schema_sha256'],
+              'scope_registry_sha256': manifest['scope_registry_sha256'],
+              'node_count': node_count,
+              'edge_count': edge_count,
+              'checkpoint_eligible': checkpoint_eligible,
           }, indent=2))
           PY
 
-      - name: Publish backfill coverage summary
-        if: always()
+      - name: Publish backfill coverage summary for a completed window
+        if: always() && steps.page.outputs.complete != 'true'
         run: |
           set -euo pipefail
           {
             echo '## Context relationship historical backfill'
             echo
-            echo 'This workflow resumes from the canonical master manifest and publishes one bounded window per run.'
+            echo 'One bounded window was processed from the canonical master manifest.'
             echo
             echo '```json'
-            cat workspace/llm_map/context_relationships/build-summary.json 2>/dev/null || true
+            cat workspace/llm_map/context_relationships/build-summary.json
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 

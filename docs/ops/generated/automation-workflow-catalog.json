@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "c429074b9574efa90dbae299834882cbbca4cf866f08ffcfbdcc1332aa9123b2",
-  "workflow_count": 68,
+  "source_fingerprint": "f1178a13c73180e18cbfa073658163c29d99f5db3f4062920b4f65792b057747",
+  "workflow_count": 70,
   "workflows": [
     {
       "action_pins": [
@@ -268,6 +268,27 @@
         "pull_request",
         "push",
         "schedule"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: engineering-health-script cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "snapshot"
+      ],
+      "name": "Engineering health (script)",
+      "path": ".github/workflows/cellcog-engineering-health.yml",
+      "schedules": [
+        "17 * * * *"
+      ],
+      "triggers": [
+        "push",
+        "schedule",
+        "workflow_dispatch"
       ]
     },
     {
@@ -948,6 +969,21 @@
         "issue_comment",
         "pull_request_review",
         "pull_request_target"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "pin"
+      ],
+      "name": "pin-cor-ae-submodules",
+      "path": ".github/workflows/pin-cor-ae-submodules.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
       ]
     },
     {

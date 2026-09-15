@@ -208,7 +208,7 @@ def build_trie_regex(words: List[str]) -> str:
                 res = f"{res}?"
         return res
 
-    return r'\b(' + _trie_to_regex(trie) + r')\b'
+    return r'\b(?:' + _trie_to_regex(trie) + r')\b'
 
 # Single-pass Trie-structured regex pattern matching (Massive ~1.6x - 2.7x Speed Boost)
 # Instead of performing N sequential regex sub calls or flat alternations,
@@ -440,11 +440,13 @@ def compile_doc(text: str) -> str:
     in_fenced_code = False
 
     for line in lines:
-        stripped = line.strip()
-        if stripped.startswith("```"):
-            in_fenced_code = not in_fenced_code
-            compiled_lines.append(line)
-        elif in_fenced_code:
+        if "`" in line:
+            stripped = line.strip()
+            if stripped.startswith("```"):
+                in_fenced_code = not in_fenced_code
+                compiled_lines.append(line)
+                continue
+        if in_fenced_code:
             compiled_lines.append(line)
         else:
             compiled_lines.append(translate_line(line, to_compressed=True))
@@ -458,11 +460,13 @@ def decompile_doc(text: str) -> str:
     in_fenced_code = False
 
     for line in lines:
-        stripped = line.strip()
-        if stripped.startswith("```"):
-            in_fenced_code = not in_fenced_code
-            decompiled_lines.append(line)
-        elif in_fenced_code:
+        if "`" in line:
+            stripped = line.strip()
+            if stripped.startswith("```"):
+                in_fenced_code = not in_fenced_code
+                decompiled_lines.append(line)
+                continue
+        if in_fenced_code:
             decompiled_lines.append(line)
         else:
             decompiled_lines.append(translate_line(line, to_compressed=False))

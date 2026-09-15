@@ -1,0 +1,48 @@
+# SHE Dashboard Architecture
+
+```mermaid
+flowchart TD
+    GH[GitHub commits / PRs / issues / reviews / checks]
+    ACT[GitHub Actions]
+    LED[pr-production-ledger.yml]
+    BACK[context-relationship-backfill.yml]
+    CORPUS[Historical Evidence Corpus]
+    RED[SHE pure reducers]
+    SNAP[Versioned dashboard snapshots]
+    VERCEL[Vercel interactive SHE]
+    PAGES[GitHub Pages static mirror]
+    HEX[Hex analysis cockpit]
+    MVT[DOE / MVT]
+    MB[Moneyball / 3L0]
+    LEARN[Learning / Manager Evolution]
+
+    GH --> ACT
+    ACT --> LED
+    ACT --> BACK
+    LED --> CORPUS
+    BACK --> CORPUS
+    GH --> CORPUS
+    CORPUS --> RED
+    RED --> SNAP
+    SNAP --> VERCEL
+    SNAP --> PAGES
+    SNAP --> HEX
+    CORPUS --> MVT
+    MVT --> MB
+    CORPUS --> MB
+    MB --> LEARN
+    LEARN -. policy improvement .-> ACT
+
+    RENDER[Render / n8n examples]
+    RENDER -. reference only .-> ACT
+```
+
+## Invariants
+
+1. Git history/corpus remains the durable evidence authority.
+2. Actions collect and transform; they do not erase history.
+3. SHE reducers are deterministic and network-free.
+4. Dashboard projections must carry source SHA, snapshot ID, generation time, and coverage state.
+5. Hex is optional analysis, never the system of record.
+6. Render/n8n examples are optional visual/automation references, never a free-scope dependency.
+7. Partial corpus state is first-class UI state.

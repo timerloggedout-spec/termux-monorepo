@@ -208,7 +208,7 @@ def build_trie_regex(words: List[str]) -> str:
                 res = f"{res}?"
         return res
 
-    return r'\b(' + _trie_to_regex(trie) + r')\b'
+    return r'\b(?:' + _trie_to_regex(trie) + r')\b'
 
 # Single-pass Trie-structured regex pattern matching (Massive ~1.6x - 2.7x Speed Boost)
 # Instead of performing N sequential regex sub calls or flat alternations,
@@ -330,24 +330,32 @@ def apply_casing(src: str, dst: str) -> str:
         return capitalize_word(dst)
     return lowercase_word(dst)
 
+def _sub_cb_comp(m: re.Match[str]) -> str:
+    """Top-level substitution callback for compression; eliminates inner closure allocations."""
+    val = m.group(0)
+    res = FAST_CASING_COMP.get(val)
+    if res is not None:
+        return res
+    return apply_casing(val, COMP_DICT[val.lower()])
+
+def _sub_cb_decomp(m: re.Match[str]) -> str:
+    """Top-level substitution callback for decompilation; eliminates inner closure allocations."""
+    val = m.group(0)
+    res = FAST_CASING_DECOMP.get(val)
+    if res is not None:
+        return res
+    return apply_casing(val, DECOMP_DICT[val.lower()])
+
 def translate_text_raw(text: str, to_compressed: bool) -> str:
     """
     Perform dictionary mapping translations preserving casing in a single pass.
     Performance Optimization: Trie-structured regex matching combined with precomputed casing lookup tables
-    bypasses runtime casing inspections and reduces regex branching depth, boosting substitution speed.
+    and top-level substitution callbacks (`_sub_cb_comp`, `_sub_cb_decomp`) bypasses runtime casing inspections,
+    reduces regex branching depth, and eliminates closure allocation overhead on every substitution pass.
     """
     pattern = COMP_SINGLE_REGEX if to_compressed else DECOMP_SINGLE_REGEX
-    lookup = FAST_CASING_COMP if to_compressed else FAST_CASING_DECOMP
-    mapping_dict = COMP_DICT if to_compressed else DECOMP_DICT
-
-    def _sub_cb(m: re.Match[str]) -> str:
-        val = m.group(0)
-        res = lookup.get(val)
-        if res is not None:
-            return res
-        return apply_casing(val, mapping_dict[val.lower()])
-
-    return pattern.sub(_sub_cb, text)
+    cb = _sub_cb_comp if to_compressed else _sub_cb_decomp
+    return pattern.sub(cb, text)
 
 def translate_line(line: str, to_compressed: bool) -> str:
     """Translate a single line protecting syntax and structures with fast-path character checks."""
@@ -371,7 +379,7 @@ def translate_line(line: str, to_compressed: bool) -> str:
         line = HTML_TAG_PATTERN.sub(lambda m: add_placeholder(m.group(0)), line)
 
     if "[" in line:
-        def link_repl(match):
+        def link_repl(match: re.Match[str]) -> str:
             text = match.group(1)
             url = match.group(2)
             translated_text = translate_text_raw(text, to_compressed)
@@ -379,12 +387,12 @@ def translate_line(line: str, to_compressed: bool) -> str:
         line = LINK_PATTERN.sub(link_repl, line)
 
     if "*" in line:
-        def bold_repl_2(match):
+        def bold_repl_2(match: re.Match[str]) -> str:
             text = match.group(1)
             translated_text = translate_text_raw(text, to_compressed)
             return add_placeholder(f"**{translated_text}**")
 
-        def bold_repl_1(match):
+        def bold_repl_1(match: re.Match[str]) -> str:
             text = match.group(1)
             translated_text = translate_text_raw(text, to_compressed)
             return add_placeholder(f"*{translated_text}*")
@@ -393,12 +401,12 @@ def translate_line(line: str, to_compressed: bool) -> str:
         line = BOLD_PATTERN_1.sub(bold_repl_1, line)
 
     if "_" in line:
-        def bold_repl_under2(match):
+        def bold_repl_under2(match: re.Match[str]) -> str:
             text = match.group(1)
             translated_text = translate_text_raw(text, to_compressed)
             return add_placeholder(f"____{translated_text}____")  # double underline wrapper to keep distinct
 
-        def bold_repl_under1(match):
+        def bold_repl_under1(match: re.Match[str]) -> str:
             text = match.group(1)
             translated_text = translate_text_raw(text, to_compressed)
             return add_placeholder(f"_{translated_text}_")
@@ -432,11 +440,13 @@ def compile_doc(text: str) -> str:
     in_fenced_code = False
 
     for line in lines:
-        stripped = line.strip()
-        if stripped.startswith("```"):
-            in_fenced_code = not in_fenced_code
-            compiled_lines.append(line)
-        elif in_fenced_code:
+        if "`" in line:
+            stripped = line.strip()
+            if stripped.startswith("```"):
+                in_fenced_code = not in_fenced_code
+                compiled_lines.append(line)
+                continue
+        if in_fenced_code:
             compiled_lines.append(line)
         else:
             compiled_lines.append(translate_line(line, to_compressed=True))
@@ -450,11 +460,13 @@ def decompile_doc(text: str) -> str:
     in_fenced_code = False
 
     for line in lines:
-        stripped = line.strip()
-        if stripped.startswith("```"):
-            in_fenced_code = not in_fenced_code
-            decompiled_lines.append(line)
-        elif in_fenced_code:
+        if "`" in line:
+            stripped = line.strip()
+            if stripped.startswith("```"):
+                in_fenced_code = not in_fenced_code
+                decompiled_lines.append(line)
+                continue
+        if in_fenced_code:
             decompiled_lines.append(line)
         else:
             decompiled_lines.append(translate_line(line, to_compressed=False))

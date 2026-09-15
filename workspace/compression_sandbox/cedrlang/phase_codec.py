@@ -110,6 +110,11 @@ VARIANT_REGEX = re.compile(
 )
 
 
+def _from_1337_replace(match: re.Match[str]) -> str:
+    """Top-level replacement callback for normalization back to canonical tokens."""
+    return VARIANT_INDEX[match.group(0).lower()]
+
+
 def to_1337speak(
     text: str,
     probability: float = INITIAL_SUBSTITUTION_PROBABILITY,
@@ -129,14 +134,16 @@ def to_1337speak(
     # Fast-path optimization: check if any matching tokens exist before evaluating RNG or regex sub
     if not VARIANT_REGEX.search(text):
         return text
-    rng = rng or random.Random()
+
+    # Direct RNG handle resolution: avoid allocating new random.Random() instances when unseeded
+    rand_val = rng.random if rng is not None else random.random
 
     def replace(match: re.Match[str]) -> str:
         token = match.group(0)
         chars = list(token)
         for i, char in enumerate(chars):
             replacement = LEET_MAP.get(char.lower())
-            if replacement and rng.random() < probability:
+            if replacement and rand_val() < probability:
                 chars[i] = replacement
         return "".join(chars)
 
@@ -151,10 +158,7 @@ def from_1337speak(text: str) -> str:
     if not VARIANT_REGEX.search(text):
         return text
 
-    def replace(match: re.Match[str]) -> str:
-        return VARIANT_INDEX[match.group(0).lower()]
-
-    return VARIANT_REGEX.sub(replace, text)
+    return VARIANT_REGEX.sub(_from_1337_replace, text)
 
 
 def compile_phase(text: str, canonical_compiler) -> str:

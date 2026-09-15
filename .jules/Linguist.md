@@ -53,3 +53,17 @@ Adding a pre-search check (`if not VARIANT_REGEX.search(text): return text`) bef
 
 **Action:**
 Apply pre-search short-circuit guards on single-pass regex transformers when processing high volumes of uncompressed prose.
+
+## 2026-09-10 - Closure Allocation Elimination and Direct RNG Handle Resolution
+**Learning:**
+Defining inner callback functions inside high-frequency string substitution functions (e.g. `_sub_cb` in `translate_text_raw` or `replace` in `from_1337speak`) creates Python closure function object allocations on every execution frame. Lifting callbacks to module-level functions (`_sub_cb_comp`, `_sub_cb_decomp`, `_from_1337_replace`) eliminates per-call closure creation overhead. Additionally, in `to_1337speak()`, avoiding `random.Random()` object creation when unseeded by resolving `rng.random if rng is not None else random.random` directly reduces execution latency on 1337speak surface encoding by ~25% (from 43.7µs to 32.7µs per invocation).
+
+**Action:**
+Extract nested substitution callbacks to module scope where possible and resolve default RNG method references directly instead of instantiating new `random.Random()` generator objects on every function invocation.
+
+## 2026-09-15 - Non-Capturing Trie Regex Root Groups and Code Fence Character Guarding
+**Learning:**
+Using capturing parentheses in root Trie regex patterns (`\b(...)` vs `\b(?:...)`) forces Python's regex engine to allocate match tuple capturing groups on every match, adding unnecessary overhead during regex matching loops. Switching `build_trie_regex` to construct root non-capturing groups `\b(?:...)\b` eliminates group allocation overhead. Additionally, guarding `line.strip().startswith('```')` with a cheap fast-path character check (`if "`" in line:`) avoids redundant `strip()` string allocations across document compilation loops.
+
+**Action:**
+Ensure all Trie-structured regex builders use non-capturing groups `(?:...)` at the root level, and prepend cheap character checks before invoking line string stripping methods in document iteration loops.

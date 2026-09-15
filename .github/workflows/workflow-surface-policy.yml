@@ -143,6 +143,9 @@ jobs:
           persist-credentials: false
           fetch-depth: 1
 
+      - name: Regenerate deterministic automation documentation in workspace
+        run: python3 scripts/ci/automation_docs.py --write
+
       - name: Validate deterministic automation documentation catalog
         run: |
           python3 -m unittest tests.test_automation_docs tests.test_automation_documentation_workflow

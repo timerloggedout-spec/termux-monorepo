@@ -32,6 +32,21 @@ LEGACY_MODELS = {
     "auto/best-free",
 }
 
+# Module-level constant set and tuple to avoid re-allocation during catalog filtering loops
+KNOWN_FREE_MODELS_WITHOUT_PRICING = {
+    "stealth/ox-alpha",
+    "google/lyria-3-clip-preview",
+    "google/lyria-3-pro-preview",
+}
+
+PREFERRED_EXTRA = (
+    "stealth/ox-alpha",
+    "z-ai/glm-5.2:free",
+    "nvidia/nemotron-3.5-lightning:free",
+    "poolside/laguna-s-2.1:free",
+    "cohere/north-mini-code:free",
+)
+
 
 def is_free_openrouter_model(model_id, pricing=None):
     if not model_id:
@@ -39,11 +54,7 @@ def is_free_openrouter_model(model_id, pricing=None):
     if model_id.endswith(":free"):
         return True
     if pricing is None:
-        return model_id in {
-            "stealth/ox-alpha",
-            "google/lyria-3-clip-preview",
-            "google/lyria-3-pro-preview",
-        }
+        return model_id in KNOWN_FREE_MODELS_WITHOUT_PRICING
     try:
         return float(pricing.get("prompt", 1.0)) == 0.0 and float(
             pricing.get("completion", 1.0)
@@ -132,16 +143,9 @@ def expand_openrouter_peers(base_peers, free_models):
         return list(base_peers)
     curated = list(base_peers)
     seen = {model for provider, model in curated if provider == "openrouter"}
-    preferred_extra = [
-        "stealth/ox-alpha",
-        "z-ai/glm-5.2:free",
-        "nvidia/nemotron-3.5-lightning:free",
-        "poolside/laguna-s-2.1:free",
-        "cohere/north-mini-code:free",
-    ]
     ordered = []
     free_set = set(free_models)
-    for mid in preferred_extra:
+    for mid in PREFERRED_EXTRA:
         if mid in free_set and mid not in seen:
             ordered.append(mid)
             seen.add(mid)

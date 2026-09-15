@@ -1,7 +1,20 @@
 # Skills Inventory (termux-monorepo)
 
+**Version:** 2026-09-15 · **Last refreshed SHA:** `fdd42ec2` (#482)  
 **Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)  
 **Ops loop trigger words:** `continue`, `BIUDL`, `maximize actions`, `/continue`
+
+> **Single navigation SSOT.** Update this file + any changed skill body in the same PR. Chat-only skill content is not loadable by other sessions.
+
+## Role load matrix
+
+| Role | Load first | Then | Optional |
+|------|------------|------|----------|
+| **Admin / Grok Administrator** | `evidence-led-monorepo-ops` + `adaptive-wait` | `termux-monorepo-agentic-governance` + `review-loop` | `adaptive-feedback-cycle`, `production-reconciliation` |
+| **Collaborator / Codespace agent** | `adaptive-feedback-cycle` | dual-gate (`repo_gate` + `termux_smoke`) + conventions | `review-loop` |
+| **Evaluator** | `blind-agent-evaluation` + `multivariate-doe` | `pr-evidence-evaluation` + `mvt-experiment` | `evidence-envelope` |
+| **Governance / proposal** | `termux-monorepo-agentic-governance` | `docs/CONSENSUS.md` + `docs/proposals/AGENTIC-PERMISSIONS.md` | `review-loop` |
+| **Discovery / extend** | `find-skills` | skills.sh leaderboard + this inventory | — |
 
 ## Active ops skills (load these)
 
@@ -46,10 +59,17 @@ Local Grok project mirrors (this chat environment):
 | workflow-orchestration | `.github/skills/workflow-orchestration/SKILL.md` |
 | action-effectiveness-ledger | `.github/skills/action-effectiveness-ledger/SKILL.md` |
 
+## External ecosystem (skills.sh / agentskills.io)
+
+Discovery meta-skill: `find-skills` (`.agents/skills/find-skills/SKILL.md`).  
+CLI: `npx skills find <query>` · `npx skills add <owner/repo@skill>`.  
+Prefer high-install, reputable sources (vercel-labs, anthropics). Inspect before install; project-local by default. Never auto-grant global permissions.
+
 ## Entry fold (AGENTS.md → CLAUDE.md)
 
 - **#488 MERGED** (2026-09-11): CLAUDE.md primary; AGENTS.md demoted.
 - **#534**: AGENTS.md pure Linguist/CedrLang stub; hard rules in CLAUDE.md only.
+- **#537**: README fast-start leads with CLAUDE.md; skills inventory + deploy lanes linked.
 
 ## Backfill / stall context (ops)
 
@@ -62,5 +82,7 @@ Local Grok project mirrors (this chat environment):
 
 Skill content that other sessions must load **must** live on **master** under `.agents/skills/<name>/SKILL.md`. Chat-only or local-only copies are not sufficient.
 
-Implements: adaptive-wait SSOT  
+When process improves: edit inventory + skill body in one PR, dual-gate, squash-merge, refresh local mirrors.
+
+Implements: skills navigator SSOT · adaptive-wait SSOT  
 BIUDL.

@@ -94,32 +94,38 @@ jobs:
           if (( gross_churn > 0 )); then realization_pct=$(( final_delta * 100 / gross_churn)); else realization_pct=0; fi
 
           # --slurp is intentional: gh api --paginate emits one JSON array per page.
-          # Never silently turn an API failure into zero evidence.
-          comments_json="$(gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100")"
-          reviews_json="$(gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/reviews?per_page=100")"
-          review_comments_json="$(gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/comments?per_page=100")"
-          commits_json="$(gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/commits?per_page=100")"
-          checks_json="$(gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/commits/${head_sha}/check-runs?per_page=100")"
+          # Fail closed: an API failure aborts rather than fabricating zero activity.
+          comments_pages="$(gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100")"
+          reviews_pages="$(gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/reviews?per_page=100")"
+          review_comments_pages="$(gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/comments?per_page=100")"
+          commits_pages="$(gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/commits?per_page=100")"
+          checks_pages="$(gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/commits/${head_sha}/check-runs?per_page=100")"
 
-          comment_count="$(jq 'add | length' <<<"$comments_json")"
-          review_count="$(jq 'add | length' <<<"$reviews_json")"
-          review_comment_count="$(jq 'add | length' <<<"$review_comments_json")"
-          actionable_comment_count="$(jq 'add | [.[] | select((.body // "") | test("(^|\\n)\\s*(fix|change|update|remove|add|please|must|should|address|resolve)\\b"; "i"))] | length' <<<"$comments_json")"
-          approvals="$(jq 'add | [.[] | select(.state == "APPROVED")] | length' <<<"$reviews_json")"
-          changes_requested="$(jq 'add | [.[] | select(.state == "CHANGES_REQUESTED")] | length' <<<"$reviews_json")"
-          check_total="$(jq 'map(.check_runs[]) | length' <<<"$checks_json")"
-          check_success="$(jq 'map(.check_runs[]) | map(select(.conclusion == "success")) | length' <<<"$checks_json")"
-          check_failure="$(jq 'map(.check_runs[]) | map(select(.conclusion == "failure")) | length' <<<"$checks_json")"
-          check_pending="$(jq 'map(.check_runs[]) | map(select(.status != "completed")) | length' <<<"$checks_json")"
+          comments_json="$(jq -c 'add' <<<"$comments_pages")"
+          reviews_json="$(jq -c 'add' <<<"$reviews_pages")"
+          review_comments_json="$(jq -c 'add' <<<"$review_comments_pages")"
+          commits_json="$(jq -c 'add' <<<"$commits_pages")"
+
+          comment_count="$(jq 'length' <<<"$comments_json")"
+          review_count="$(jq 'length' <<<"$reviews_json")"
+          review_comment_count="$(jq 'length' <<<"$review_comments_json")"
+          actionable_comment_count="$(jq '[.[] | select((.body // "") | test("(^|\\n)\\s*(fix|change|update|remove|add|please|must|should|address|resolve)\\b"; "i"))] | length' <<<"$comments_json")"
+          approvals="$(jq '[.[] | select(.state == "APPROVED")] | length' <<<"$reviews_json")"
+          changes_requested="$(jq '[.[] | select(.state == "CHANGES_REQUESTED")] | length' <<<"$reviews_json")"
+          check_total="$(jq 'map(.check_runs[]) | length' <<<"$checks_pages")"
+          check_success="$(jq 'map(.check_runs[]) | map(select(.conclusion == "success")) | length' <<<"$checks_pages")"
+          check_failure="$(jq 'map(.check_runs[]) | map(select(.conclusion == "failure")) | length' <<<"$checks_pages")"
+          check_pending="$(jq 'map(.check_runs[]) | map(select(.status != "completed")) | length' <<<"$checks_pages")"
 
           # Action-effect correlation is temporal follow-through, not causal attribution.
-          # Signal events exclude the ledger's own marker and obvious provider quota chatter.
+          # We deliberately suppress obvious provider/rate-limit/ledger noise, while retaining
+          # explicit review/comment actions. The final 32 correlations are kept for inspectability;
+          # aggregate counts cover the full bounded PR history.
           correlation_json="$(jq -n \
             --argjson comments "$comments_json" \
             --argjson reviews "$reviews_json" \
             --argjson inline "$review_comments_json" \
             --argjson commits "$commits_json" '
-              def parse_time: fromdateiso8601;
               def actionable($body): ($body // "") | test("(^|\\n)\\s*(fix|change|update|remove|add|please|must|should|address|resolve|request|review)\\b"; "i");
               def bot_noise($body): ($body // "") | test("(usage limits|rate limit|review limit reached|auto-generated comment: release notes|<!-- action-effectiveness-ledger:)"; "i");
               def event($kind;$id;$created;$body): {kind:$kind,id:$id,at:$created,body:$body};
@@ -131,21 +137,22 @@ jobs:
               | ($commits | map({sha:.sha, at:(.commit.committer.date // .commit.author.date)} ) | sort_by(.at)) as $cs
               | [$events[] as $e
                  | ($cs | map(select((.at|fromdateiso8601) > ($e.at|fromdateiso8601))) | .[0]) as $next
-                 | {kind:$e.kind,id:$e.id,at:$e.at,associated_commit_sha:($next.sha // null),associated_commit_at:($next.at // null),lag_minutes:(if $next then ((($next.at|fromdateiso8601)-($e.at|fromdateiso8601))/60|floor) else null end)}
+                 | {kind:$e.kind,id:$e.id,at:$e.at,associated_commit_sha:($next.sha // null),associated_commit_at:($next.at // null),lag_minutes:(if $next then ((($next.at|fromdateiso8601)-($e.at|fromdateiso8601))/60|floor) else null end),relationship:(if $next then "FOLLOWED_BY_COMMIT" else "NO_LATER_COMMIT_IN_RANGE" end)}
                 ]
+              | {all:., recent:(.[-32:])}
             '
           )"
 
-          event_count="$(jq 'length' <<<"$correlation_json")"
-          followed_count="$(jq '[.[] | select(.associated_commit_sha != null)] | length' <<<"$correlation_json")"
+          event_count="$(jq '.all | length' <<<"$correlation_json")"
+          followed_count="$(jq '[.all[] | select(.associated_commit_sha != null)] | length' <<<"$correlation_json")"
           followthrough_pct=0
           if (( event_count > 0 )); then followthrough_pct=$(( followed_count * 100 / event_count )); fi
-          first_followthrough_sha="$(jq -r 'map(select(.associated_commit_sha != null)) | .[0].associated_commit_sha // ""' <<<"$correlation_json")"
-          median_lag_minutes="$(jq -r 'map(select(.lag_minutes != null) | .lag_minutes) | if length == 0 then "" else sort | .[length/2|floor] end' <<<"$correlation_json")"
+          first_followthrough_sha="$(jq -r '.all | map(select(.associated_commit_sha != null)) | .[0].associated_commit_sha // ""' <<<"$correlation_json")"
+          median_lag_minutes="$(jq -r '.all | map(select(.lag_minutes != null) | .lag_minutes) | if length == 0 then 0 else sort | .[length/2|floor] end' <<<"$correlation_json")"
+          recent_events_json="$(jq -c '.recent | map(del(.body))' <<<"$correlation_json")"
 
           # Read the previous stable ledger state, if present. This creates an explicit
           # longitudinal baseline without appending a new comment on every cycle.
-          marker='<!-- action-effectiveness-ledger:v2 '
           existing="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" --jq '.[] | select(.body | startswith("<!-- action-effectiveness-ledger:v2 ")) | .id' | head -n1 || true)"
           previous_json='{}'
           if [[ -n "$existing" ]]; then
@@ -153,7 +160,6 @@ jobs:
             previous_json="$(grep -o '<!-- action-effectiveness-ledger:v2 {.*} -->' <<<"$previous_body" | head -n1 | sed 's/^<!-- action-effectiveness-ledger:v2 //; s/ -->$//' || echo '{}')"
           fi
 
-          prev_head="$(jq -r '.head_sha // ""' <<<"$previous_json")"
           prev_final_delta="$(jq -r '.final_delta // 0' <<<"$previous_json")"
           prev_behind="$(jq -r '.behind // 0' <<<"$previous_json")"
           prev_failure="$(jq -r '.check_failure // 0' <<<"$previous_json")"
@@ -185,11 +191,11 @@ jobs:
             --argjson ahead "$ahead" --argjson behind "$behind" --argjson noop_pct "$noop_pct" --argjson realization_pct "$realization_pct" \
             --argjson comment_count "$comment_count" --argjson review_count "$review_count" --argjson review_comment_count "$review_comment_count" --argjson actionable_comments "$actionable_comment_count" --argjson approvals "$approvals" --argjson changes_requested "$changes_requested" \
             --argjson check_total "$check_total" --argjson check_success "$check_success" --argjson check_failure "$check_failure" --argjson check_pending "$check_pending" \
-            --argjson event_count "$event_count" --argjson followed_count "$followed_count" --argjson followthrough_pct "$followthrough_pct" --argjson median_lag_minutes "${median_lag_minutes:-0}" \
+            --argjson event_count "$event_count" --argjson followed_count "$followed_count" --argjson followthrough_pct "$followthrough_pct" --argjson median_lag_minutes "$median_lag_minutes" --argjson recent_events "$recent_events_json" \
             --argjson delta_final "$delta_final" --argjson delta_behind "$delta_behind" --argjson delta_failure "$delta_failure" --argjson delta_pending "$delta_pending" --argjson delta_events "$delta_events" --argjson delta_followed "$delta_followed" \
             --argjson history "$history_json" \
             --arg state "$state" --arg first_followthrough_sha "$first_followthrough_sha" \
-            '{version:2,observed_at:$observed_at,base_sha:$base_sha,head_sha:$head_sha,merge_base:$merge_base,head_repo:$head_repo,state:$state,commit_count:$commit_count,empty_count:$empty_count,metadata_count:$metadata_count,effective_count:$effective_count,gross_add:$gross_add,gross_del:$gross_del,final_add:$final_add,final_del:$final_del,final_files:$final_files,final_delta:$final_delta,ahead:$ahead,behind:$behind,noop_pct:$noop_pct,realization_pct:$realization_pct,comment_count:$comment_count,review_count:$review_count,review_comment_count:$review_comment_count,actionable_comments:$actionable_comments,approvals:$approvals,changes_requested:$changes_requested,check_total:$check_total,check_success:$check_success,check_failure:$check_failure,check_pending:$check_pending,event_count:$event_count,followed_count:$followed_count,followthrough_pct:$followthrough_pct,median_lag_minutes:$median_lag_minutes,first_followthrough_sha:$first_followthrough_sha,delta:{final_delta:$delta_final,behind:$delta_behind,check_failure:$delta_failure,check_pending:$delta_pending,event_count:$delta_events,followed_count:$delta_followed},history:$history}')"
+            '{version:2,observed_at:$observed_at,base_sha:$base_sha,head_sha:$head_sha,merge_base:$merge_base,head_repo:$head_repo,state:$state,commit_count:$commit_count,empty_count:$empty_count,metadata_count:$metadata_count,effective_count:$effective_count,gross_add:$gross_add,gross_del:$gross_del,final_add:$final_add,final_del:$final_del,final_files:$final_files,final_delta:$final_delta,ahead:$ahead,behind:$behind,noop_pct:$noop_pct,realization_pct:$realization_pct,comment_count:$comment_count,review_count:$review_count,review_comment_count:$review_comment_count,actionable_comments:$actionable_comments,approvals:$approvals,changes_requested:$changes_requested,check_total:$check_total,check_success:$check_success,check_failure:$check_failure,check_pending:$check_pending,event_count:$event_count,followed_count:$followed_count,followthrough_pct:$followthrough_pct,median_lag_minutes:$median_lag_minutes,first_followthrough_sha:$first_followthrough_sha,recent_events:$recent_events,delta:{final_delta:$delta_final,behind:$delta_behind,check_failure:$delta_failure,check_pending:$delta_pending,event_count:$delta_events,followed_count:$delta_followed},history:$history}')"
 
           {
             echo "state_json=$state_json"
@@ -226,7 +232,9 @@ jobs:
             "| No-op + metadata rate | " + (.noop_pct|tostring) + "% | — |\n" +
             "| Churn → retained diff | " + (.realization_pct|tostring) + "% | — |\n\n" +
             "### Interpretation\n" +
-            "Action volume is not effectiveness. The ledger walks the complete merge-base→head commit range, separates empty commits from 0/0 metadata-only evidence, correlates actionable review/comment events to the first later commit, and records explicit deltas against the previous observation. **Temporal follow-through is association, not causal attribution.** Current-head checks and review state remain the validation layer.\n\n" +
+            "Action volume is not effectiveness. The ledger walks the complete merge-base→head commit range, separates empty commits from 0/0 metadata-only evidence, correlates bounded actionable review/comment events to the first later commit, and records explicit deltas against the previous observation. **Temporal follow-through is association, not causal attribution.** Current-head checks and review state remain the validation layer.\n\n" +
+            "### Recent correlated events\n" +
+            (if (.recent_events|length) == 0 then "None in the bounded event set." else "The machine-readable marker retains the latest " + ((.recent_events|length)|tostring) + " event correlations (bodies intentionally omitted)." end) + "\n\n" +
             "### First associated commit\n" +
             (if .first_followthrough_sha == "" then "None observed in the current PR range." else "`" + .first_followthrough_sha + "`" end) + "\n\n" +
             "### Longitudinal window\n" +

@@ -1,7 +1,7 @@
 name: Action Effectiveness Ledger
 
 # Trusted control-plane telemetry. Reads GitHub metadata and Git objects as data;
-# never executes pull-request source, tests, build scripts, or dependencies.
+# never checks out or executes pull-request source, tests, build scripts, or dependencies.
 on:
   pull_request_target:
     types: [opened, synchronize, reopened, ready_for_review]
@@ -46,13 +46,28 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          [[ -n "$PR_NUMBER" ]] || { echo 'PR number required' >&2; exit 1; }
+          [[ "$PR_NUMBER" =~ ^[0-9]+$ ]] || { echo "invalid PR number" >&2; exit 1; }
 
           pr_json="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}")"
-          base_sha="$(jq -r .base.sha <<<"$pr_json")"
-          head_sha="$(jq -r .head.sha <<<"$pr_json")"
-          head_repo="$(jq -r .head.repo.full_name // empty <<<"$pr_json")"
-          git fetch --no-tags --prune origin "refs/pull/${PR_NUMBER}/head:refs/remotes/origin/pr-${PR_NUMBER}"
+          base_sha="$(jq -r '.base.sha' <<<"$pr_json")"
+          head_sha="$(jq -r '.head.sha' <<<"$pr_json")"
+          head_repo="$(jq -r '.head.repo.full_name // empty' <<<"$pr_json")"
+
+          # actions/checkout fetches the trusted control-plane revision, not the PR head.
+          # Acquire the exact immutable base/head objects explicitly before merge-base work.
+          # This avoids depending on branch names or on the synthetic PR ref being retained.
+          if ! git cat-file -e "${base_sha}^{commit}" 2>/dev/null; then
+            git fetch --no-tags origin "$base_sha"
+          fi
+          if ! git cat-file -e "${head_sha}^{commit}" 2>/dev/null; then
+            if [[ "$head_repo" == "$GITHUB_REPOSITORY" ]]; then
+              git fetch --no-tags origin "refs/pull/${PR_NUMBER}/head:refs/remotes/origin/pr-${PR_NUMBER}"
+            else
+              git fetch --no-tags "https://github.com/${head_repo}.git" "$head_sha"
+            fi
+          fi
+          git cat-file -e "${base_sha}^{commit}" || { echo "base SHA unavailable: $base_sha" >&2; exit 1; }
+          git cat-file -e "${head_sha}^{commit}" || { echo "head SHA unavailable: $head_sha" >&2; exit 1; }
           merge_base="$(git merge-base "$base_sha" "$head_sha")"
 
           mapfile -t commits < <(git rev-list --reverse "$merge_base..$head_sha")
@@ -62,11 +77,9 @@ jobs:
           effective_count=0
           gross_add=0
           gross_del=0
-          metadata_shas=()
-          empty_shas=()
 
-          # Immutable commit ledger: classify every commit in the complete PR range.
-          # 0/0 is diagnostic metadata-only evidence, not a claim about binary semantics.
+          # Complete commit-range accounting. 0/0 is diagnostic metadata-only evidence,
+          # not an absolute semantic claim about binary changes.
           for sha in "${commits[@]}"; do
             parent="$(git rev-parse "${sha}^" 2>/dev/null || true)"
             if [[ -n "$parent" ]]; then
@@ -75,11 +88,12 @@ jobs:
               stats="$(git diff --numstat --root "$sha")"
             fi
             read -r add del files < <(awk 'BEGIN{a=0;d=0;f=0} {if($1~/^[0-9]+$/)a+=$1;if($2~/^[0-9]+$/)d+=$2;f++} END{print a,d,f+0}' <<<"$stats")
-            gross_add=$((gross_add + add)); gross_del=$((gross_del + del))
+            gross_add=$((gross_add + add))
+            gross_del=$((gross_del + del))
             if [[ "$files" -eq 0 ]]; then
-              empty_count=$((empty_count + 1)); empty_shas+=("$sha")
+              empty_count=$((empty_count + 1))
             elif [[ "$add" -eq 0 && "$del" -eq 0 ]]; then
-              metadata_only_count=$((metadata_only_count + 1)); metadata_shas+=("$sha")
+              metadata_only_count=$((metadata_only_count + 1))
             else
               effective_count=$((effective_count + 1))
             fi
@@ -93,23 +107,23 @@ jobs:
           if (( commit_count > 0 )); then noop_pct=$(( (empty_count + metadata_only_count) * 100 / commit_count )); else noop_pct=0; fi
           if (( gross_churn > 0 )); then realization_pct=$(( final_delta * 100 / gross_churn)); else realization_pct=0; fi
 
-          # --slurp is intentional: gh api --paginate emits one JSON array per page.
-          # Fail closed: an API failure aborts rather than fabricating zero activity.
+          # --slurp is required because gh api --paginate emits one JSON array per page.
+          # Fail closed on API errors; normalize empty collections to [].
           comments_pages="$(gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100")"
           reviews_pages="$(gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/reviews?per_page=100")"
           review_comments_pages="$(gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/comments?per_page=100")"
           commits_pages="$(gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/commits?per_page=100")"
           checks_pages="$(gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/commits/${head_sha}/check-runs?per_page=100")"
 
-          comments_json="$(jq -c 'add' <<<"$comments_pages")"
-          reviews_json="$(jq -c 'add' <<<"$reviews_pages")"
-          review_comments_json="$(jq -c 'add' <<<"$review_comments_pages")"
-          commits_json="$(jq -c 'add' <<<"$commits_pages")"
+          comments_json="$(jq -c 'add // []' <<<"$comments_pages")"
+          reviews_json="$(jq -c 'add // []' <<<"$reviews_pages")"
+          review_comments_json="$(jq -c 'add // []' <<<"$review_comments_pages")"
+          commits_json="$(jq -c 'add // []' <<<"$commits_pages")"
 
           comment_count="$(jq 'length' <<<"$comments_json")"
           review_count="$(jq 'length' <<<"$reviews_json")"
           review_comment_count="$(jq 'length' <<<"$review_comments_json")"
-          actionable_comment_count="$(jq '[.[] | select((.body // "") | test("(^|\\n)\\s*(fix|change|update|remove|add|please|must|should|address|resolve)\\b"; "i"))] | length' <<<"$comments_json")"
+          actionable_comment_count="$(jq '[.[] | select((.body // "") | test("(^|\\n)\\s*(fix|change|update|remove|add|please|must|should|address|resolve|request|review)\\b"; "i"))] | length' <<<"$comments_json")"
           approvals="$(jq '[.[] | select(.state == "APPROVED")] | length' <<<"$reviews_json")"
           changes_requested="$(jq '[.[] | select(.state == "CHANGES_REQUESTED")] | length' <<<"$reviews_json")"
           check_total="$(jq 'map(.check_runs[]) | length' <<<"$checks_pages")"
@@ -117,10 +131,7 @@ jobs:
           check_failure="$(jq 'map(.check_runs[]) | map(select(.conclusion == "failure")) | length' <<<"$checks_pages")"
           check_pending="$(jq 'map(.check_runs[]) | map(select(.status != "completed")) | length' <<<"$checks_pages")"
 
-          # Action-effect correlation is temporal follow-through, not causal attribution.
-          # We deliberately suppress obvious provider/rate-limit/ledger noise, while retaining
-          # explicit review/comment actions. The final 32 correlations are kept for inspectability;
-          # aggregate counts cover the full bounded PR history.
+          # Temporal follow-through is association, not causal attribution.
           correlation_json="$(jq -n \
             --argjson comments "$comments_json" \
             --argjson reviews "$reviews_json" \
@@ -128,13 +139,13 @@ jobs:
             --argjson commits "$commits_json" '
               def actionable($body): ($body // "") | test("(^|\\n)\\s*(fix|change|update|remove|add|please|must|should|address|resolve|request|review)\\b"; "i");
               def bot_noise($body): ($body // "") | test("(usage limits|rate limit|review limit reached|auto-generated comment: release notes|<!-- action-effectiveness-ledger:)"; "i");
-              def event($kind;$id;$created;$body): {kind:$kind,id:$id,at:$created,body:$body};
+              def event($kind;$id;$at): {kind:$kind,id:$id,at:$at};
               ([
-                ($comments[] | select(((.body // "") | bot_noise) | not) | select(actionable(.body)) | event("issue_comment";(.id|tostring);.created_at;.body)),
-                ($reviews[] | select(.state != "PENDING") | event("review";(.id|tostring);.submitted_at;(.body // ""))),
-                ($inline[] | select(((.body // "") | bot_noise) | not) | select(actionable(.body)) | event("review_comment";(.id|tostring);.created_at;.body))
+                ($comments[] | select(((.body // "") | bot_noise) | not) | select(actionable(.body)) | select(.created_at != null) | event("issue_comment";(.id|tostring);.created_at)),
+                ($reviews[] | select(.state != "PENDING") | select(.submitted_at != null) | event("review";(.id|tostring);.submitted_at)),
+                ($inline[] | select(((.body // "") | bot_noise) | not) | select(actionable(.body)) | select(.created_at != null) | event("review_comment";(.id|tostring);.created_at))
               ] | sort_by(.at)) as $events
-              | ($commits | map({sha:.sha, at:(.commit.committer.date // .commit.author.date)} ) | sort_by(.at)) as $cs
+              | ($commits | map({sha:.sha, at:(.commit.committer.date // .commit.author.date)}) | map(select(.at != null)) | sort_by(.at)) as $cs
               | [$events[] as $e
                  | ($cs | map(select((.at|fromdateiso8601) > ($e.at|fromdateiso8601))) | .[0]) as $next
                  | {kind:$e.kind,id:$e.id,at:$e.at,associated_commit_sha:($next.sha // null),associated_commit_at:($next.at // null),lag_minutes:(if $next then ((($next.at|fromdateiso8601)-($e.at|fromdateiso8601))/60|floor) else null end),relationship:(if $next then "FOLLOWED_BY_COMMIT" else "NO_LATER_COMMIT_IN_RANGE" end)}
@@ -151,9 +162,8 @@ jobs:
           median_lag_minutes="$(jq -r '.all | map(select(.lag_minutes != null) | .lag_minutes) | if length == 0 then 0 else sort | .[length/2|floor] end' <<<"$correlation_json")"
           recent_events_json="$(jq -c '.recent | map(del(.body))' <<<"$correlation_json")"
 
-          # Read the previous stable ledger state, if present. This creates an explicit
-          # longitudinal baseline without appending a new comment on every cycle.
-          existing="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" --jq '.[] | select(.body | startswith("<!-- action-effectiveness-ledger:v2 ")) | .id' | head -n1 || true)"
+          # Recover the previous v2 marker for longitudinal comparison. If absent, baseline is zero.
+          existing="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" --jq '.[] | select((.body // "") | startswith("<!-- action-effectiveness-ledger:v2 ")) | .id' | head -n1 || true)"
           previous_json='{}'
           if [[ -n "$existing" ]]; then
             previous_body="$(gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${existing}" --jq .body)"
@@ -175,9 +185,13 @@ jobs:
           delta_followed=$((followed_count - prev_followed))
 
           state='🟢 EFFECTIVE'
-          if [[ "$final_files" -eq 0 ]]; then state='🔴 NO_EFFECTIVE_DIFF';
-          elif [[ "$check_failure" -gt 0 || "$changes_requested" -gt 0 ]]; then state='🟠 NEEDS_RECONCILIATION';
-          elif [[ "$check_pending" -gt 0 ]]; then state='🟡 VALIDATION_PENDING'; fi
+          if [[ "$final_files" -eq 0 ]]; then
+            state='🔴 NO_EFFECTIVE_DIFF'
+          elif [[ "$check_failure" -gt 0 || "$changes_requested" -gt 0 ]]; then
+            state='🟠 NEEDS_RECONCILIATION'
+          elif [[ "$check_pending" -gt 0 ]]; then
+            state='🟡 VALIDATION_PENDING'
+          fi
 
           history_json="$(jq -c --arg head "$head_sha" --arg base "$base_sha" --arg at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
             --argjson fd "$final_delta" --argjson b "$behind" --argjson ev "$event_count" --argjson fo "$followed_count" --argjson de "$delta_final" --argjson db "$delta_behind" --argjson df "$delta_failure" --argjson dp "$delta_pending" --argjson dv "$delta_events" --argjson dfo "$delta_followed" \
@@ -211,9 +225,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          marker='<!-- action-effectiveness-ledger:v2'
           body="$(jq -r '
-            "'"$marker"'" + " " + tojson + " -->\n\n" +
+            "<!-- action-effectiveness-ledger:v2 " + tojson + " -->\n\n" +
             "## 🧬 Action → Effect Longitudinal Ledger\n\n" +
             "**State:** " + .state + "  \n" +
             "**Measured head:** `" + .head_sha + "`  \n" +
@@ -232,13 +245,13 @@ jobs:
             "| No-op + metadata rate | " + (.noop_pct|tostring) + "% | — |\n" +
             "| Churn → retained diff | " + (.realization_pct|tostring) + "% | — |\n\n" +
             "### Interpretation\n" +
-            "Action volume is not effectiveness. The ledger walks the complete merge-base→head commit range, separates empty commits from 0/0 metadata-only evidence, correlates bounded actionable review/comment events to the first later commit, and records explicit deltas against the previous observation. **Temporal follow-through is association, not causal attribution.** Current-head checks and review state remain the validation layer.\n\n" +
+            "Activity is not effectiveness. The ledger measures the complete merge-base→head commit range, distinguishes empty commits from diagnostic 0/0 metadata-only evidence, correlates actionable review/comment events to later commits, and records explicit deltas against the previous observation. Temporal follow-through is association, not causal attribution. Current-head checks and review state remain validation evidence.\n\n" +
             "### Recent correlated events\n" +
-            (if (.recent_events|length) == 0 then "None in the bounded event set." else "The machine-readable marker retains the latest " + ((.recent_events|length)|tostring) + " event correlations (bodies intentionally omitted)." end) + "\n\n" +
+            (if (.recent_events|length) == 0 then "None in the bounded event set." else "The marker retains the latest " + ((.recent_events|length)|tostring) + " event correlations; bodies are intentionally omitted." end) + "\n\n" +
             "### First associated commit\n" +
             (if .first_followthrough_sha == "" then "None observed in the current PR range." else "`" + .first_followthrough_sha + "`" end) + "\n\n" +
             "### Longitudinal window\n" +
-            "Rolling history retains the latest 12 observations in the machine-readable marker above; the comment is updated in place to avoid comment amplification.\n\n" +
+            "Rolling history retains the latest 12 observations in the machine-readable marker. The comment is updated in place to prevent comment amplification.\n\n" +
             "Generated: " + .observed_at
           ' <<< "$STATE_JSON")"
 

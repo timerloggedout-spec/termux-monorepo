@@ -33,9 +33,13 @@ The repository already has an automated documentation catalog and diagram asset 
 
 - `docs/ops/ACTIONS-METRICS-INTEGRATION.md` — durable Actions timing methodology.
 - `she/metrics/job_timestamps.py` — pure Actions duration reducer.
-- `she/metrics/agent_throughput.py` — pure multi-agent throughput reducer.
-- `docs/ops/AGENT-THROUGHPUT-METRICS.md` — ATES/WTCV evaluation policy.
-- `docs/ops/AGENT-THROUGHPUT-EVENT.schema.json` — JSONL event schema.
+- `she/metrics/agent_throughput.py` — Phase A ATES/WTCV reducer.
+- `tests/test_she_agent_throughput.py` — focused ATES fixtures and missing-evidence invariants.
+- `.github/workflows/agent-quality-lane.yml` — visible documentation/policy/schema/test quality check.
+- `scripts/ci/verify_agent_quality.py` — deterministic static quality verifier.
+- `docs/ops/AGENT-THROUGHPUT-METRICS.md` — ATES/WTCV evaluation policy and phased review model.
+- `docs/ops/AGENT-OBSERVABILITY-PRIORITY-DECISION.md` — P0/P1/P2 provider, Docker, and Codespaces decisions.
+- `docs/ops/AGENTIC-INTEGRATION-PLAN-STATUS.md` — current implementation/evidence state and next transitions.
 
 ## Hex boundary
 

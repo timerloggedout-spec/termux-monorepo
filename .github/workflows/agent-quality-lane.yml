@@ -36,11 +36,21 @@ jobs:
       - name: Verify agent telemetry quality contract
         run: python scripts/ci/verify_agent_quality.py
 
-      - name: Check diff whitespace hygiene
+      - name: Check source diff whitespace hygiene
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-        run: git diff --check "$BASE_SHA" "$HEAD_SHA"
+        run: |
+          # Markdown hard-breaks intentionally use two trailing spaces. Keep the
+          # strict diff check on executable/configuration surfaces instead of
+          # mistaking that documentation syntax for source-code whitespace.
+          git diff --check "$BASE_SHA" "$HEAD_SHA" -- \
+            ':(glob)**/*.py' \
+            ':(glob)**/*.yml' \
+            ':(glob)**/*.yaml' \
+            ':(glob)**/*.json' \
+            ':(glob)**/*.toml' \
+            ':(glob)**/*.sh'
 
       - name: Compile telemetry Python sources
         run: python -m compileall -q she/metrics scripts/ci tests/test_she_agent_throughput.py

@@ -1,8 +1,9 @@
 name: Agent Runtime Stall Watch
 
-# Observer-only watchdog for queued/in-progress Actions runs. It never reruns,
-# cancels, merges, or mutates candidate work. Its purpose is to turn silent
-# waiting into explicit, reviewable evidence.
+# Observer-only watchdog for queued/in-progress Actions runs and declared
+# scheduled workflows that fail to admit a run. It never reruns, cancels,
+# merges, or mutates candidate work. Its purpose is to turn silent waiting
+# into explicit, reviewable evidence.
 on:
   schedule:
     - cron: '*/10 * * * *'
@@ -22,6 +23,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      - name: Checkout watch contract
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
       - name: Collect runtime observations
         id: observe
         env:
@@ -33,20 +40,18 @@ jobs:
           import os
           import subprocess
           from datetime import datetime, timezone
+          from pathlib import Path
 
           now = datetime.now(timezone.utc)
           owner, repo = os.environ['GITHUB_REPOSITORY'].split('/', 1)
-          data = subprocess.check_output([
-              'gh', 'api', f'repos/{owner}/{repo}/actions/runs',
-              '--paginate', '-f', 'per_page=100', '-f', 'status=queued'
-          ], text=True)
-          queued = json.loads(data).get('workflow_runs', [])
 
-          data = subprocess.check_output([
-              'gh', 'api', f'repos/{owner}/{repo}/actions/runs',
-              '--paginate', '-f', 'per_page=100', '-f', 'status=in_progress'
-          ], text=True)
-          active = json.loads(data).get('workflow_runs', [])
+          def api(path):
+              return json.loads(subprocess.check_output(
+                  ['gh', 'api', path], text=True
+              ))
+
+          queued = api(f'repos/{owner}/{repo}/actions/runs?per_page=100&status=queued').get('workflow_runs', [])
+          active = api(f'repos/{owner}/{repo}/actions/runs?per_page=100&status=in_progress').get('workflow_runs', [])
 
           # These are diagnostic thresholds, not retry permissions. The watcher
           # deliberately errs toward reporting a possible stall rather than
@@ -90,7 +95,42 @@ jobs:
                   'expected_effect': 'terminal workflow result',
               })
 
+          # Admission is different from queueing: a scheduled workflow can be
+          # due while having zero workflow runs. The contract is intentionally
+          # explicit rather than guessing cron cadence from arbitrary YAML.
+          watch_contract = json.loads(Path('.github/agent-runtime-watch.json').read_text(encoding='utf-8'))
+          for target in watch_contract.get('scheduled_workflows', []):
+              workflow_name = target['workflow_name']
+              interval = float(target['expected_interval_minutes'])
+              grace = float(target.get('grace_minutes', 0))
+              runs = api(
+                  f'repos/{owner}/{repo}/actions/workflows/'
+                  f'{target["workflow_file"]}/runs?per_page=1'
+              ).get('workflow_runs', [])
+              last = runs[0] if runs else None
+              last_seen = (last.get('created_at') if last else None)
+              elapsed = age_minutes(last_seen) if last_seen else None
+              threshold = interval + grace
+              admission_stall = last is None or elapsed >= threshold
+              observations.append({
+                  'cohort_id': f"admission:{workflow_name}",
+                  'run_id': last.get('id') if last else None,
+                  'attempt': last.get('run_attempt', 1) if last else None,
+                  'workflow': workflow_name,
+                  'sha': last.get('head_sha') if last else None,
+                  'ref': last.get('head_branch') if last else None,
+                  'state': 'not_admitted' if admission_stall else 'admitted',
+                  'age_minutes': round(elapsed, 3) if elapsed is not None else None,
+                  'classification': 'ADMISSION_STALL_CANDIDATE' if admission_stall else 'HEALTHY_SCHEDULED_ADMISSION',
+                  'expected_effect': 'scheduled workflow run admission',
+                  'expected_interval_minutes': interval,
+                  'grace_minutes': grace,
+                  'last_run_id': last.get('id') if last else None,
+                  'last_run_created_at': last_seen,
+              })
+
           report = {
+              'schema': 'agent-runtime-stall-observation/v2',
               'generated_at': now.isoformat().replace('+00:00', 'Z'),
               'thresholds_minutes': {
                   'queued': queue_threshold_min,
@@ -106,7 +146,7 @@ jobs:
           PY
 
       - name: Publish stall observation artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: agent-runtime-stall-observation-${{ github.run_id }}
           path: runtime-stall-observation.json

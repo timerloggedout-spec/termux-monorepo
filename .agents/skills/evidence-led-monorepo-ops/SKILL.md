@@ -1,70 +1,112 @@
 ---
 name: evidence-led-monorepo-ops
-description: Continuous evidence-led admin ops on timerloggedout-spec/termux-monorepo (and similar agentic monorepos). Triggers on priority matrix, master gates, SHE progress, Manus/provider RE, dirty PR triage, Actions hygiene, or when the operator says continue, BIUDL, or maximize actions. Use for live state pulls, dispositions, small-green extracts, and iterative process improvement documented as skills.
+description: Continuous evidence-led admin ops on timerloggedout-spec/termux-monorepo (and similar agentic monorepos). Triggers on priority matrix, master gates, SHE progress, Manus/provider RE, dirty PR triage, Actions hygiene, or when the operator says continue, BIUDL, maximize actions, or /continue. Use for live state pulls, dispositions, small-green extracts, adaptive WAIT, and iterative process improvement documented as skills. Load this skill in every admin session.
 ---
 
 # Skill: evidence-led-monorepo-ops
 
-**Owner:** ArchW1z / operator continuous admin on timerloggedout-spec/termux-monorepo (and similar agentic monorepos).
+**Owner:** ArchW1z / Grok Administrator continuous admin on timerloggedout-spec/termux-monorepo.
 
-**Triggers:** priority matrix, master gates, SHE progress, Manus/provider RE, dirty PR triage, Actions hygiene, "continue", "BIUDL", "maximize actions", full telemetry requests, multi-P0.* handling.
+**Triggers:** priority matrix, master gates, SHE progress, Manus/provider RE, dirty PR triage, Actions hygiene, `continue`, `BIUDL`, `maximize actions`, `/continue`, full telemetry, multi-P0.* handling.
 
-**Canonical doc path (same content):** `docs/ops/skills/evidence-led-monorepo-ops/SKILL.md`
+**Canonical paths (keep in sync):**
+- `.agents/skills/evidence-led-monorepo-ops/SKILL.md` ← **agent load path**
+- `docs/ops/skills/evidence-led-monorepo-ops/SKILL.md` ← human/docs mirror
+- `docs/ops/SKILLS-INVENTORY.md` ← full skill table + adaptive WAIT
 
-**Complements:** `.agents/skills/review-loop` (evidence-first review sequence), `adaptive-feedback-cycle`, `context-relationship-graph`.
+**Complements:** `adaptive-feedback-cycle`, `review-loop`, `production-reconciliation`, `context-relationship-graph`, `termux-monorepo-agentic-governance`.
+
+**Primary agent entry:** `CLAUDE.md` (not `AGENTS.md` — Linguist stub only).
 
 ## Posture (non-negotiable)
 
-- **Evidence over anecdote.** Every prioritization must cite live rows, run histories, or committed telemetry artifacts.
-- **Full telemetry over isolated canary.** agentic-report is one example from the first row of the performance table — never treat it as the only signal. Correlate *every* row.
-- **Quota ≠ run prevention.** Workflow activation (schedule/dispatch + daily AIC guardrail) can succeed while the agent step fails on Copilot/CLI quota. Separate activation success from agent failure.
-- **Authority > ranking.** MoneyBall / 3L0 / leaderboard scores are decision-support only. Hard authority, policy, and human gates always dominate.
-- **Anti-sprawl.** No source mutation in L0. Prefer thin stacked PRs. No vendoring of upstreams as promotion gates.
-- **Multiple P0.** Handle concurrent P0.* classes by fingerprint/classification (workflow-failure, gate-failure, smoke-failure, observe-only for security).
+- **Evidence over anecdote.** Cite live SHAs, check runs, run histories, or committed artifacts.
+- **Extract-only.** Never wholesale-merge dirty mega-PRs. One intent per PR.
+- **Dual-gate before merge.** `agentic termux smoke` + `hygiene + portability gate` (or `repo_gate` + `termux_smoke`).
+- **Adaptive WAIT.** After dispatch/commit: re-check jobs→steps→logs→artifacts. Do concurrent non-conflicting work. Do not treat `queued`/`in_progress` as terminal.
+- **Authority > ranking.** MoneyBall/3L0 are decision-support only.
+- **Anti-sprawl.** Thin stacked PRs. No L0 source mutation without authority.
+- **Identity.** `Agent-Identity: Grok (Administrator)` on dispositions.
 
-## Primary surfaces
+## Core loop (every `/continue` / BIUDL cycle)
 
-| Surface | URL / path | Use |
-|---------|------------|-----|
-| Actions performance (UI export) | `/actions/metrics/performance` | Job failure % + avg runtime; export CSV |
-| Actions minutes | same page, total-minutes tab | Consumption ranking |
-| Workflow runs | `/actions/workflows/<file>` | Per-workflow history |
-| SHE | `she/` + `docs/architecture/SELF-HEALING-ENGINE-ROADMAP.md` | P0.1–P0.3 status |
-| Telemetry snapshots | `docs/ops/generated/actions-metrics-*-YYYY-MM-DD.csv` | Dated ground truth |
-| Collect/reduce CLI | `python -m ops.github_telemetry` | Locally reconstructed metrics |
+1. **Pull live state**
+   - `github___list_commits` master (latest 5–10)
+   - `github___list_pull_requests` open, sort=updated desc
+   - Key issues (`#175` priority matrix, `#522` backfill, `#265` Manus)
+   - Critical path reads when needed
 
-## Workflow (evidence-led loop)
+2. **Validate gates**
+   - Candidate PRs: `get` + `get_check_runs`
+   - Require dual-gate success before merge
+   - Dirty / conflicted → **HOLD** or **extract** on fresh branch from master
 
-1. **Pull state** — list open PRs/issues, recent master commits, Actions runs for high-failure workflows, committed CSVs.
-2. **Correlate rows** — join job-failures CSV + total-minutes CSV + per-workflow run pages. Rank by (failure_rate × volume) then by authority class.
-3. **Disposition** — for each P0 class emit: status, evidence links, next thin increment, authority gate required.
-4. **Advance SHE** — only L0 intents that do not mutate source; live token-bearing re-run is the next wire after planner+executor intents.
-5. **Leave trail** — commit dated CSVs or correlation notes under `docs/ops/generated/`; update skill if process improved.
-6. **No sprawl** — one focused branch/PR per thin slice; squash-merge only after green gates.
+3. **Triage**
+   - Prefer: security/perf 1–5 file extracts, docs stubs, admission fixes
+   - HOLD: mega-PRs (#523, #527, #142, …), staging-base, conflicted wholesale
+   - Extract method: re-read master file → apply intent-only delta → new branch → dual-gate → squash
 
-When a change is under active review, also run the **review-loop** skill sequence (recon → SHA/run binding → classify findings → smallest fix → re-validate → feed forward).
+4. **Act**
+   - Squash-merge only when dual-gate green + scope clean
+   - Update this skill / inventory when process improves
+   - Leave trail in commits and project memory
 
-## P0 classification (current)
+5. **Adaptive WAIT**
+   - Align with `adaptive-feedback-cycle` + `production-reconciliation`
+   - Stall classes: admission / queue / execution / effect / pagination / routing loop
+   - Multi-pass: re-poll after disposition before closing cycle
 
-| Class | Example signal | L0 target |
-|-------|----------------|-----------|
-| workflow-failure | agentic-report 100%, continuous-evaluation ~48% | `actions_rerun_failed_jobs` / `actions_rerun_workflow` |
-| gate-failure | repo-gate / termux-smoke | `actions_rerun_workflow` / `termux_restart_worker` |
-| phase-sync fragility | dependency-phase-project-sync high % | observe + bounded retry |
-| security / Dependabot | alerts | `observe_only` |
-| high-volume low-failure | peer-review-orchestrator, Jules, Gemini | keep as promotion signals |
+6. **Feed forward**
+   - Record durable facts in project memory
+   - Update skill body when operator corrects or a new reusable rule appears
 
-## Skill evolution rules
+## Current production anchors (refresh on each cycle)
 
-- When operator corrects ("it's a SINGLE EXAMPLE from the first row"), update this skill immediately and commit.
-- Prefer reference to live CSVs / API aggregation over re-duplicating numbers in prose.
-- Iterative dated CSV snapshots are valuable for time-series; do not delete prior exports.
-- Document any new programmatic integration path in `docs/ops/ACTIONS-METRICS-INTEGRATION.md`.
-- Derived metrics must be labeled `locally_reconstructed` (no claim of UI Performance Metrics API parity).
+| Item | State (2026-09-15) |
+|------|--------------------|
+| Master HEAD | `39b35549` (#534) |
+| Codespace agent lane | #530 + #531 MERGED |
+| AGENTS→CLAUDE fold | #488 + #534; CLAUDE.md primary |
+| Skills inventory | `docs/ops/SKILLS-INVENTORY.md` |
+| Backfill admission | schedule `23 * * * *` on `context-relationship-backfill.yml`; default page **2** (stalled since 2026-08-19) |
+| #526 audit | Landed; Tanka abandoned temporary quota — findings valid |
+| HOLD mega | #523, #527, #142, #455 conflicted, staging #48 |
+| Dual gates | `agentic termux smoke` + `hygiene + portability gate` |
+
+## P0 classification
+
+| Class | Signal | Action |
+|-------|--------|--------|
+| workflow-failure | high failure % × volume | rerun failed jobs / disposition |
+| gate-failure | smoke/hygiene red | fix extract or hold |
+| admission-stall | 0 runs on scheduled workflow | add schedule or dispatch (done for backfill) |
+| comment-loop / self-trigger | bot↔bot issue_comment storms | observe; Tier-4 workflow fix |
+| security | path traversal, Dependabot | extract fix + dual-gate |
+| dirty-mega | 20+ files / thousands of lines | extract-only |
+
+## Extract recipe (conflicted or dirty PR)
+
+1. Do **not** force-update conflicted branch.
+2. `create_branch` from current **master**.
+3. `get_file_contents` of target path on **master**.
+4. Apply **intent-only** delta (no catalog/generated churn).
+5. Open PR → adaptive WAIT for dual-gate → squash-merge.
+6. Leave original PR open as superseded-candidate.
+
+## Manus / external
+
+- Park until restore window. Newest Drive `.manustask` is operator-managed.
+- Do not block monorepo extracts on external quota.
 
 ## Anti-patterns
 
-- Fixating on one canary workflow while ignoring the rest of the performance table.
-- Treating monthly Copilot quota exhaustion as "runs should not fire".
-- Ranking purely by failure rate without volume or authority context.
-- Opening broad PRs that mix P0.3 live wire with unrelated refactors.
+- Wholesale merge of dirty/conflicted PRs
+- Closing cycle without dual-gate evidence
+- Treating `AGENTS.md` as primary entry
+- Sleep-only WAIT with no concurrent useful work
+- Acting on quota_cooldown / provider-control as if real_review
+- Duplicating skill content only in chat — **always commit to master**
+
+## Skill maintenance
+
+When process improves: edit **both** canonical paths in one PR, merge to master, so every session (this chat, Codespaces, other Grok threads) loads the same skill from the repo.

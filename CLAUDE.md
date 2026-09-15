@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-**Primary agent entry for this repository.** Load this first. Do not start from root `AGENTS.md`.
+**Primary agent entry for this repository.** Load this first. Do not start from root `AGENTS.md` (Linguist/CedrLang stub only).
 
 ## Governance sequence (read in order)
 
@@ -9,6 +9,7 @@
 3. [`docs/proposals/PROCESS.md`](docs/proposals/PROCESS.md) — post / debate / consensus / close
 4. [`docs/ARCHW1Z-GATE.md`](docs/ARCHW1Z-GATE.md) — dual gates
 5. [`docs/proposals/AGENTIC-PERMISSIONS.md`](docs/proposals/AGENTIC-PERMISSIONS.md) — human-only edges
+6. [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md) — adaptive wait + ops skills
 
 Then route the task with **[`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md)** — one verified component or process card before loading deeper source.
 
@@ -32,6 +33,19 @@ registry.yaml → pick todo item → branch from master
   → update ITEMS.md status
 ```
 
+## Adaptive WAIT (ops)
+
+After dispatch / commit / merge attempt:
+
+1. **WAIT** is a stage — re-check jobs → steps → logs → artifacts.
+2. Do concurrent non-conflicting work; do not treat `queued`/`in_progress` as terminal.
+3. Stall classes: admission / queue / execution / effect / pagination / routing loop.
+4. Promote only when dual gates green **and** task outcome verified.
+
+Canonical skill: `.agents/skills/adaptive-feedback-cycle/SKILL.md`
+Companion: `.github/skills/production-reconciliation/SKILL.md` (WAIT → VALIDATE → RE-FETCH)
+Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
+
 ## Quick pointers
 
 | Need | Path |
@@ -42,9 +56,10 @@ registry.yaml → pick todo item → branch from master
 | Status | `docs/ARCHW1Z-STATUS.md` |
 | Permissions / human edges | `docs/proposals/AGENTIC-PERMISSIONS.md` |
 | ICM task routing | `docs/icm/CLAUDE.md` |
+| Skills + adaptive wait | `docs/ops/SKILLS-INVENTORY.md` |
 | Session SSOT | `docs/schemas/session-ssot.md` |
 | Provider caps | `docs/schemas/provider-capabilities.md` |
-| Technical deep-dive (optional) | `AGENTS.md` |
+| Linguist / CedrLang surface only | `AGENTS.md` |
 
 ## ICM + RinDig reference pins (smods)
 

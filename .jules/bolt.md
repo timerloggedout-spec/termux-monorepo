@@ -37,3 +37,10 @@ In stream-processing analytics tools like `scripts/model_performance_index.py`, 
 
 **Action:**
 Avoid intermediate multi-pass list filtering when computing metrics over grouped datasets. Perform deduplication on stream entry and accumulate all metrics in a single iteration loop.
+
+## 2026-09-14 - Embedded Payloads over N+1 HTTP Requests in GitHub API Harvesters
+**Learning:**
+In GitHub API ingestion workflows (`historical_event_correlation.py`), the jobs listing endpoint (`GET /repos/{repo}/actions/runs/{run_id}/jobs`) already embeds step summaries in each job payload (`job["steps"]`). Issuing individual HTTP requests (`GET /repos/{repo}/actions/jobs/{jid}`) for every job resulted in N redundant network roundtrips per workflow run. Extracting embedded steps directly from the job dict bypasses single-job endpoint calls entirely.
+
+**Action:**
+Always check for embedded child arrays in GitHub API parent endpoints before executing separate per-item HTTP GET calls.

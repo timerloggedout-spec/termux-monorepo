@@ -1,0 +1,114 @@
+name: Agent Runtime Stall Watch
+
+# Observer-only watchdog for queued/in-progress Actions runs. It never reruns,
+# cancels, merges, or mutates candidate work. Its purpose is to turn silent
+# waiting into explicit, reviewable evidence.
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: agent-runtime-stall-watch
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    name: detect stalled runtime states
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Collect runtime observations
+        id: observe
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          import subprocess
+          from datetime import datetime, timezone
+
+          now = datetime.now(timezone.utc)
+          owner, repo = os.environ['GITHUB_REPOSITORY'].split('/', 1)
+          data = subprocess.check_output([
+              'gh', 'api', f'repos/{owner}/{repo}/actions/runs',
+              '--paginate', '-f', 'per_page=100', '-f', 'status=queued'
+          ], text=True)
+          queued = json.loads(data).get('workflow_runs', [])
+
+          data = subprocess.check_output([
+              'gh', 'api', f'repos/{owner}/{repo}/actions/runs',
+              '--paginate', '-f', 'per_page=100', '-f', 'status=in_progress'
+          ], text=True)
+          active = json.loads(data).get('workflow_runs', [])
+
+          # These are diagnostic thresholds, not retry permissions. The watcher
+          # deliberately errs toward reporting a possible stall rather than
+          # silently declaring a run healthy.
+          queue_threshold_min = 20
+          active_threshold_min = 45
+          observations = []
+
+          def age_minutes(value):
+              stamp = datetime.fromisoformat(value.replace('Z', '+00:00'))
+              return max(0.0, (now - stamp).total_seconds() / 60.0)
+
+          for run in queued:
+              age = age_minutes(run['created_at'])
+              observations.append({
+                  'cohort_id': f"{run['id']}:{run.get('run_attempt', 1)}",
+                  'run_id': run['id'],
+                  'attempt': run.get('run_attempt', 1),
+                  'workflow': run.get('name'),
+                  'sha': run.get('head_sha'),
+                  'ref': run.get('head_branch'),
+                  'state': 'queued',
+                  'age_minutes': round(age, 3),
+                  'classification': 'QUEUE_STALL_CANDIDATE' if age >= queue_threshold_min else 'HEALTHY_WAIT',
+                  'expected_effect': 'workflow admission',
+              })
+
+          for run in active:
+              start = run.get('run_started_at') or run.get('created_at')
+              age = age_minutes(start)
+              observations.append({
+                  'cohort_id': f"{run['id']}:{run.get('run_attempt', 1)}",
+                  'run_id': run['id'],
+                  'attempt': run.get('run_attempt', 1),
+                  'workflow': run.get('name'),
+                  'sha': run.get('head_sha'),
+                  'ref': run.get('head_branch'),
+                  'state': 'in_progress',
+                  'age_minutes': round(age, 3),
+                  'classification': 'EXECUTION_STALL_CANDIDATE' if age >= active_threshold_min else 'HEALTHY_WAIT',
+                  'expected_effect': 'terminal workflow result',
+              })
+
+          report = {
+              'generated_at': now.isoformat().replace('+00:00', 'Z'),
+              'thresholds_minutes': {
+                  'queued': queue_threshold_min,
+                  'in_progress': active_threshold_min,
+              },
+              'observation_count': len(observations),
+              'observations': observations,
+              'policy': 'observer_only_no_automatic_retry',
+          }
+          with open('runtime-stall-observation.json', 'w', encoding='utf-8') as handle:
+              json.dump(report, handle, indent=2, sort_keys=True)
+          print(json.dumps(report, indent=2, sort_keys=True))
+          PY
+
+      - name: Publish stall observation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-runtime-stall-observation-${{ github.run_id }}
+          path: runtime-stall-observation.json
+          if-no-files-found: error
+          retention-days: 14

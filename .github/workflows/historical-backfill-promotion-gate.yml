@@ -1,0 +1,39 @@
+name: historical backfill promotion gate
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  require-current-backfill-complete:
+    name: require current staging backfill completion
+    runs-on: ubuntu-latest
+    steps:
+      - name: Inspect authoritative master-staging corpus
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api repos/${GITHUB_REPOSITORY}/contents/workspace/llm_map/context_relationships/manifest.json?ref=master-staging \
+            --jq '.content' | base64 -d > /tmp/manifest.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path('/tmp/manifest.json').read_text())
+          window = data.get('history_window', {})
+          nxt = window.get('next_start_page')
+          observed = data.get('latest_observed_at')
+          print(f'authoritative master-staging latest_observed_at={observed}')
+          print(f'authoritative master-staging next_start_page={nxt}')
+          if nxt is not None:
+              raise SystemExit(
+                  'PROMOTION BLOCKED: current master-staging historical backfill is not complete; '
+                  f'next_start_page={nxt}. PR #523 must not start a new authoritative layer yet.'
+              )
+          print('PROMOTION ALLOWED: master-staging reports next_start_page=null.')
+          PY

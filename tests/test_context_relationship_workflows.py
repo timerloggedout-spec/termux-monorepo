@@ -43,17 +43,19 @@ def test_reconciliation_is_bounded_and_explicitly_refreshes_history():
     assert "pull_request_target" not in content
 
 
-def test_historical_backfill_is_manual_resumable_and_page_bounded():
+def test_historical_backfill_is_automated_current_master_resumable_and_page_bounded():
     content = workflow("context-relationship-backfill.yml")
 
     assert "workflow_dispatch:" in content
-    assert "schedule:" not in content
-    assert "history_start_page" in content
+    assert "schedule:" in content
+    assert "ref: master" in content
+    assert "history_start_page" not in content
     assert "--history-start-page" in content
     assert "--full-refresh" in content
     assert "next_start_page" in content
     assert "contents: write" in content
-    assert "pull_request_target" not in content
+    assert "git push origin HEAD:master" in content
+    assert "master-staging" not in content
     assert "Implements: CRG-10" in content
 
 
@@ -72,7 +74,7 @@ def test_linear_freshness_workflow_is_manual_read_only_and_metadata_only():
     assert "issueUpdate" not in content
 
 
-def test_all_context_index_writers_are_pinned_to_staging_and_share_one_lock():
+def test_context_index_writers_have_explicit_lineage_and_non_overlapping_locks():
     publisher = workflow("context-relationship-publish.yml")
     reconciliation = workflow("context-relationship-reconcile.yml")
     backfill = workflow("context-relationship-backfill.yml")
@@ -80,7 +82,25 @@ def test_all_context_index_writers_are_pinned_to_staging_and_share_one_lock():
     assert "ref: master-staging" in publisher
     assert "group: context-relationship-writer-master-staging" in publisher
     assert "group: context-relationship-writer-master-staging" in reconciliation
-    assert "group: context-relationship-writer-master-staging" in backfill
+    assert "ref: master" in backfill
+    assert "group: context-relationship-writer-master" in backfill
+    assert "master-staging" not in backfill
+
+
+def test_backfill_progression_watcher_is_observer_only_and_captures_runtime_state():
+    content = workflow("context-relationship-backfill-watcher.yml")
+
+    assert "workflow_run:" in content
+    assert "requested" in content
+    assert "in_progress" in content
+    assert "completed" in content
+    assert "actions: read" in content
+    assert "contents: read" in content
+    assert "observer_only" in content
+    assert "actions/upload-artifact" in content
+    assert "issues: write" not in content
+    assert "git push" not in content
+    assert "rerun" not in content.lower()
 
 
 def test_audit_workflow_embeds_a_read_only_exact_root_evidence_matrix():

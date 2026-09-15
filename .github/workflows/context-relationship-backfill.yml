@@ -1,18 +1,19 @@
 name: context relationship historical backfill
 
+# This writer is deliberately bounded and master-anchored. It resumes from the
+# canonical manifest, validates the complete artifact set, and only then pushes
+# a corpus delta to master. A complete run must never publish stale artifacts.
 on:
+  schedule:
+    - cron: '23 * * * *'
   workflow_dispatch:
     inputs:
-      history_start_page:
-        description: 'GitHub REST history page to start. Resume with the next page reported in build-summary.json.'
-        type: string
-        default: '1'
       max_items:
-        description: 'Maximum issues and pull requests per family in this explicit page window.'
+        description: 'Maximum issues and pull requests per family in this bounded continuation window.'
         type: string
         default: '100'
       max_commits:
-        description: 'Maximum commits in this explicit history window.'
+        description: 'Maximum commits in this bounded continuation window.'
         type: string
         default: '100'
 
@@ -22,18 +23,18 @@ permissions:
   pull-requests: read
 
 concurrency:
-  group: context-relationship-writer-master-staging
+  group: context-relationship-writer-master
   cancel-in-progress: false
 
 jobs:
   backfill:
-    name: operator-controlled historical graph backfill
+    name: autonomous current-master historical graph continuation
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
-          ref: master-staging
+          ref: master
           fetch-depth: 1
           persist-credentials: true
 
@@ -41,19 +42,52 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Build one historical relationship-index window
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          HISTORY_START_PAGE: ${{ inputs.history_start_page }}
-          MAX_ITEMS: ${{ inputs.max_items }}
-          MAX_COMMITS: ${{ inputs.max_commits }}
+      - name: Resolve resumable page from canonical manifest
+        id: page
         run: |
           set -euo pipefail
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          import subprocess
+          from pathlib import Path
+
+          manifest = Path('workspace/llm_map/context_relationships/manifest.json')
+          if not manifest.exists():
+              start_page = 1
+              complete = False
+          else:
+              data = json.loads(manifest.read_text(encoding='utf-8'))
+              next_page = data.get('history_window', {}).get('next_start_page')
+              start_page = int(next_page) if next_page is not None else 0
+              complete = next_page is None
+
+          print(f"start_page={start_page}")
+          print(f"complete={'true' if complete else 'false'}")
+          print(f"source_sha={subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()}")
+          PY
+
+      - name: Stop cleanly when canonical corpus is complete
+        if: steps.page.outputs.complete == 'true'
+        run: |
+          set -euo pipefail
+          echo 'Historical corpus reports next_start_page=null; no continuation required.'
+          echo 'No build-summary.json is read or published because no processing window ran.'
+
+      - name: Build one bounded historical relationship-index window
+        if: steps.page.outputs.complete != 'true'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          HISTORY_START_PAGE: ${{ steps.page.outputs.start_page }}
+          MAX_ITEMS: ${{ inputs.max_items || '100' }}
+          MAX_COMMITS: ${{ inputs.max_commits || '100' }}
+        run: |
+          set -euo pipefail
+          test "$HISTORY_START_PAGE" -ge 1
           python -m archwiz.context_relationships.build_index \
             --root . \
             --owner "$GITHUB_REPOSITORY_OWNER" \
             --repo "${GITHUB_REPOSITORY#*/}" \
-            --ref master-staging \
+            --ref master \
             --history-start-page "$HISTORY_START_PAGE" \
             --max-items "$MAX_ITEMS" \
             --max-commits "$MAX_COMMITS" \
@@ -61,13 +95,112 @@ jobs:
             --max-cochange-pairs-per-commit 100 \
             --full-refresh
 
-      - name: Publish backfill coverage summary
+      - name: Validate continuation metadata and artifact set
+        if: steps.page.outputs.complete != 'true'
+        env:
+          HISTORY_START_PAGE: ${{ steps.page.outputs.start_page }}
+          SOURCE_SHA: ${{ steps.page.outputs.source_sha }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib
+          import json
+          import re
+          from pathlib import Path
+
+          root = Path('workspace/llm_map/context_relationships')
+          required = {
+              'build-summary.json', 'edges.jsonl', 'github-report.json', 'manifest.json',
+              'matrix.json', 'merge-report.json', 'nodes.jsonl', 'source-report.json',
+          }
+          actual = {path.name for path in root.iterdir() if path.is_file()}
+          allowed = required | {'checkpoint.json'}
+          unexpected = actual - allowed
+          missing = required - actual
+          if missing:
+              raise SystemExit(f'missing required canonical artifacts: {sorted(missing)}')
+          if unexpected:
+              raise SystemExit(f'unexpected/stale canonical artifacts remain: {sorted(unexpected)}')
+
+          manifest = json.loads((root / 'manifest.json').read_text(encoding='utf-8'))
+          summary = json.loads((root / 'build-summary.json').read_text(encoding='utf-8'))
+          github_report = json.loads((root / 'github-report.json').read_text(encoding='utf-8'))
+          start = int('${{ steps.page.outputs.start_page }}')
+          next_page = manifest.get('history_window', {}).get('next_start_page')
+          if next_page is not None and int(next_page) <= start:
+              raise SystemExit(f'next_start_page did not advance: start={start} next={next_page}')
+
+          expected_repo = f"${{ github.repository }}"
+          if manifest.get('repository') != expected_repo:
+              raise SystemExit(f"manifest repository mismatch: {manifest.get('repository')!r} != {expected_repo!r}")
+          if manifest.get('default_branch') != 'master':
+              raise SystemExit(f"manifest default_branch must be master, got {manifest.get('default_branch')!r}")
+          if manifest.get('schema_version') != '1.0':
+              raise SystemExit('manifest schema_version mismatch')
+          if not re.fullmatch(r'[0-9a-f]{64}', str(manifest.get('scope_registry_sha256', ''))):
+              raise SystemExit('manifest scope_registry_sha256 is missing or malformed')
+          if not re.fullmatch(r'[0-9a-f]{64}', str(manifest.get('schema_sha256', ''))):
+              raise SystemExit('manifest schema_sha256 is missing or malformed')
+          if not re.fullmatch(r'[0-9a-f]{64}', str(manifest.get('input_sha256', ''))):
+              raise SystemExit('manifest input_sha256 is missing or malformed')
+
+          scope_sha = hashlib.sha256(Path('config/context_relationships/scope_registry.json').read_bytes()).hexdigest()
+          schema_sha = hashlib.sha256(Path('config/context_relationships/schema.json').read_bytes()).hexdigest()
+          if manifest['scope_registry_sha256'] != scope_sha:
+              raise SystemExit('manifest scope registry hash does not match the checked-in contract')
+          if manifest['schema_sha256'] != schema_sha:
+              raise SystemExit('manifest schema hash does not match the checked-in contract')
+          if summary.get('repository') != expected_repo or summary.get('ref') != 'master':
+              raise SystemExit('build-summary repository/ref metadata does not match the backfill contract')
+          if summary.get('node_count') != manifest.get('node_count'):
+              raise SystemExit('build-summary node_count disagrees with manifest')
+          if summary.get('edge_count') != manifest.get('edge_count'):
+              raise SystemExit('build-summary edge_count disagrees with manifest')
+          if summary.get('verified_edge_count') != manifest.get('verified_edge_count'):
+              raise SystemExit('build-summary verified_edge_count disagrees with manifest')
+          if summary.get('candidate_edge_count') != manifest.get('candidate_edge_count'):
+              raise SystemExit('build-summary candidate_edge_count disagrees with manifest')
+          summary_window = summary.get('history_window', {})
+          if summary_window.get('start_page') not in (start, str(start)):
+              raise SystemExit('build-summary start_page does not match the resumed page')
+          report_window = github_report.get('history_window', {})
+          if report_window.get('start_page') not in (start, str(start)):
+              raise SystemExit('github-report start_page does not match the resumed page')
+
+          node_count = sum(1 for line in (root / 'nodes.jsonl').read_text(encoding='utf-8').splitlines() if line.strip())
+          edge_count = sum(1 for line in (root / 'edges.jsonl').read_text(encoding='utf-8').splitlines() if line.strip())
+          matrix = json.loads((root / 'matrix.json').read_text(encoding='utf-8'))
+          if node_count != manifest['node_count'] or edge_count != manifest['edge_count']:
+              raise SystemExit('canonical JSONL record counts disagree with manifest')
+          if len(matrix.get('rows', [])) > edge_count:
+              raise SystemExit('matrix row count cannot exceed canonical edge count')
+
+          checkpoint_eligible = bool(summary.get('checkpoint_eligible', True))
+          if checkpoint_eligible != ('checkpoint.json' in actual):
+              raise SystemExit('checkpoint artifact presence disagrees with checkpoint_eligible')
+
+          print(json.dumps({
+              'source_sha': '${{ steps.page.outputs.source_sha }}',
+              'start_page': start,
+              'next_start_page': next_page,
+              'manifest_sha256': hashlib.sha256((root / 'manifest.json').read_bytes()).hexdigest(),
+              'input_sha256': manifest['input_sha256'],
+              'schema_sha256': manifest['schema_sha256'],
+              'scope_registry_sha256': manifest['scope_registry_sha256'],
+              'node_count': node_count,
+              'edge_count': edge_count,
+              'checkpoint_eligible': checkpoint_eligible,
+          }, indent=2))
+          PY
+
+      - name: Publish backfill coverage summary for a completed window
+        if: always() && steps.page.outputs.complete != 'true'
         run: |
           set -euo pipefail
           {
             echo '## Context relationship historical backfill'
             echo
-            echo "Resume only when \`history_window.next_start_page\` is non-null."
+            echo 'One bounded window was processed from the canonical master manifest.'
             echo
             echo '```json'
             cat workspace/llm_map/context_relationships/build-summary.json
@@ -75,6 +208,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Commit canonical historical delta
+        if: steps.page.outputs.complete != 'true' && success()
         run: |
           set -euo pipefail
           git add workspace/llm_map/context_relationships
@@ -84,8 +218,8 @@ jobs:
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git commit -s -m 'chore(context): backfill relationship history' \
+          git commit -s -m 'chore(context): continue historical relationship backfill' \
             -m 'Implements: CRG-10' \
             -m 'Agent-Identity: GitHub Actions Context Indexer' \
-            -m 'Task-Ref: CRG-10'
-          git push origin HEAD:master-staging
+            -m 'Task-Ref: #522'
+          git push origin HEAD:master

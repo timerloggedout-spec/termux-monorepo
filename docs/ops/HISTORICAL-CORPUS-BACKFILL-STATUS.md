@@ -1,7 +1,7 @@
 # Historical Corpus Actions Backfill — Live Status
 
-**Tracking:** #522
-**Authority:** `workspace/llm_map/context_relationships/manifest.json`
+**Tracking:** #522  
+**Authority:** `workspace/llm_map/context_relationships/manifest.json`  
 **Rule:** `next_start_page` must reach `null` before the corpus can be called complete.
 
 ## Master — canonical production corpus
@@ -46,30 +46,40 @@ Observed manifest: **2026-09-07T12:33:24Z**
 | Timeline cross-references | 14 |
 | Next page | **2** |
 
-GitHub compare currently classifies `master...master-staging` as **diverged**, with the staging branch 50 commits ahead and 455 behind current master. Therefore the larger corpus is useful evidence but **must not be promoted wholesale**.
+GitHub compare previously classified `master...master-staging` as **diverged**, with staging 50 commits ahead and 455 behind current master. Therefore the larger corpus is useful evidence but **must not be promoted wholesale**.
 
 ## Control-plane finding
 
-`.github/workflows/context-relationship-backfill.yml` is deliberately manual and page-bounded, which is correct for a historical collector. The current implementation, however, checks out `master-staging` and pushes its generated corpus back to that branch.
+The historical collector was previously operator-dispatched and resumed against `master-staging`. That was an automation defect for a system whose canonical source is `master`.
 
-That is now the primary operational defect: the continuation target is stale/diverged from the canonical branch.
+The successor workflow is now implemented on the collaboration branch:
 
-## Correct continuation model
+- scheduled + explicit dispatch;
+- current `master` checkout;
+- `next_start_page` read from the canonical manifest;
+- one bounded continuation window per run;
+- page-advance validation;
+- manifest/summary hashes emitted in run evidence;
+- direct canonical delta commit to `master` after validation;
+- concurrency lock on the canonical writer;
+- no `master-staging` read/promotion path.
+
+**Runtime status:** the successor workflow has been **COMMITTED**, but no new backfill Actions run is claimed by this document. `next_start_page = 2` remains the latest observed corpus state until an actual run proves otherwise.
+
+## Continuation model
 
 ```text
-current master SHA
+canonical master SHA
       |
-      +--> fresh bounded backfill ref
+      +--> read manifest.next_start_page
                 |
-                +--> page N
+                +--> bounded page N
                 |
-                +--> validate corpus
+                +--> validate advancement + hashes
                 |
-                +--> record next_start_page
+                +--> commit corpus delta to master
                 |
-                +--> review/promote only the corpus delta
-                |
-                +--> next bounded ref
+                +--> next scheduled continuation
 ```
 
 Do not:
@@ -78,18 +88,18 @@ Do not:
 - infer completeness from node/edge growth;
 - turn missing history into zeroes;
 - overwrite prior evidence;
-- skip the manifest/checkpoint validation between windows.
+- skip manifest/checkpoint validation between windows.
 
-## Promotion gate
+## Promotion/validation invariants
 
-A bounded continuation is promotable only when:
+A bounded continuation is valid only when:
 
 1. source SHA/ref is recorded;
 2. start and next pages are recorded;
 3. manifest/input/schema hashes are preserved;
-4. corpus reconciliation passes;
+4. corpus reconciliation/metadata validation passes;
 5. the diff is limited to the intended corpus delta and required metadata;
-6. the resulting branch is based on current master;
+6. the resulting commit is based on current master;
 7. the resulting `next_start_page` is retained for the next continuation.
 
 ## SHE contract
@@ -106,6 +116,9 @@ SHE should render:
 
 The dashboard must not silently substitute the larger staging corpus for master.
 
-## Current next action
+## Current state
 
-**Resume at page `2`, but first replace the stale `master-staging` continuation target with a fresh current-master lineage.** The exact historical collection cannot be executed from this conversation because the available GitHub connector exposes workflow inspection/write primitives but not a workflow-dispatch operation. The control-plane change should therefore be made before the next operator dispatch rather than pretending a run occurred.
+**Canonical evidence:** partial, next page `2`.  
+**Automation:** successor implemented on the integration branch.  
+**Execution:** not yet observed.  
+**Completion:** not established.

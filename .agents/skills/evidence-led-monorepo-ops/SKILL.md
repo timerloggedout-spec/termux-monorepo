@@ -58,7 +58,7 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 
 6. **Feed forward**
    - Record durable facts in project memory
-   - Update skill body when operator corrects or a new reusable rule appears
+   - Update skill body when process improves or a new reusable rule appears
 
 ## Current production anchors (refresh on each cycle)
 
@@ -81,8 +81,26 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 | gate-failure | smoke/hygiene red | fix extract or hold |
 | admission-stall | 0 runs on scheduled workflow | add schedule or dispatch (done for backfill) |
 | comment-loop / self-trigger | bot↔bot issue_comment storms | observe; Tier-4 workflow fix |
+| reviewer-noise | quota/billing/availability/status chatter without a task failure | classify as provider-state telemetry; do not promote to code failure |
 | security | path traversal, Dependabot | extract fix + dual-gate |
 | dirty-mega | 20+ files / thousands of lines | extract-only |
+
+## Retroactive benchmark and reviewer-noise rule
+
+**#390 is a benchmark specimen, not a historical boundary.** Preserve it as the canonical regression case for comment-loop/self-trigger analysis while continuously evaluating later and earlier GitHub objects. #509 operationalized the lesson as a retroactive-review process; its merged change is now part of the historical evidence corpus.
+
+For every retrospective slice, classify automation-generated activity before interpreting volume as failure:
+
+- `actionable_finding`: evidence-backed defect or process gap tied to a reproducible condition.
+- `provider_state`: quota, billing, unavailable integration, permission, or rate-limit state.
+- `reviewer_noise`: informational/status output that does not establish a repository defect or failed task.
+- `execution_failure`: a task/run actually started and failed, with bound run/step evidence.
+- `not_executed`: admission, availability, cooldown, quota, or routing prevented execution; **never relabel this as `execution_failure`**.
+- `self_trigger_candidate`: a reactive listener plus a matching self-posting path; do not flag read-only listeners merely because they consume comments.
+
+When evaluating #390-like behavior, correlate issue comments, review submissions/comments, workflow runs, jobs/steps, artifacts, commits, PRs, and actor/provider state by immutable IDs plus SHA/ref and timestamps. The objective is to detect causal loops and repeated automation without allowing reviewer/provider chatter to contaminate effectiveness metrics.
+
+Retroactive review should be **continuous**, with periodic sampling as a backstop; it must not wait for an overflow issue such as #507. New findings feed the historical correlation ledger, Context Relationship Graph, Effectiveness Ledger, and subsequent BIUDL/Scout evaluation rather than generating duplicate noise issues for already-classified provider state.
 
 ## Extract recipe (conflicted or dirty PR)
 
@@ -105,6 +123,7 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 - Treating `AGENTS.md` as primary entry
 - Sleep-only WAIT with no concurrent useful work
 - Acting on quota_cooldown / provider-control as if real_review
+- Treating ECC-tools/Codex/Qodo status chatter as independent task failures without execution evidence
 - Duplicating skill content only in chat — **always commit to master**
 
 ## Skill maintenance

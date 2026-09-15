@@ -48,6 +48,25 @@ it now costs nothing.
 
 **Asking**: Operator/owner sign-off on whether to enable prebuilds now, defer, or skip entirely.
 
+## Codespaces-scoped secrets vs. Actions secrets (self-audit addendum)
+
+The original task also asked this proposal to weigh Codespaces-scoped secrets against
+Actions secrets specifically. Cross-referencing rather than duplicating: the Agentic Ops room
+(sibling, PR/security sweep) already has **PR #492** open — "agentic-scoped-access" — covering
+per-agent scoped credentials, runtime-injected secrets, and single-function OAuth grants. That
+is the right home for the secrets-scoping model generally, including whether a repo's
+`Codespaces secrets` (visible only inside a Codespace, separate scope from `Actions secrets`
+used by workflow runs) should hold anything an agent needs at dev-container-boot time.
+
+For this proposal's narrower scope: PR #499 (merged) intentionally does not reference or
+require any secret — `postCreateCommand: bash setup.sh` runs unauthenticated. If/when a future
+devcontainer iteration needs a secret (e.g. an API key for local testing), it should go through
+Codespaces-scoped secrets (repo or org level, Settings → Codespaces), not the Actions secrets
+store — the two are separate GitHub secret scopes with separate exposure surfaces, and mixing
+them (e.g. reusing an Actions secret inside a Codespace) would widen that secret's blast radius
+unnecessarily. No such secret is needed today, so no action is proposed here beyond this note;
+follow PR #492 for the general scoped-credentials model.
+
 ## Decision 2 (informational — not owner-gated, logged for traceability): standard-piece gaps
 
 These were found while building the capability checklist (see `docs/gaps-and-opportunities/capability-checklist.md`

@@ -1,6 +1,6 @@
 # Skills Inventory (termux-monorepo)
 
-**Version:** 2026-09-15 · **Last refreshed SHA:** `fdd42ec2` (#482)  
+**Version:** 2026-09-15 · **BIUDL feed-forward:** reviewer-noise classification + #390 benchmark continuity  
 **Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)  
 **Ops loop trigger words:** `continue`, `BIUDL`, `maximize actions`, `/continue`
 
@@ -20,7 +20,7 @@
 
 | Skill | Path | Role |
 |-------|------|------|
-| **evidence-led-monorepo-ops** | `.agents/skills/evidence-led-monorepo-ops/SKILL.md` (+ `docs/ops/skills/…`) | Live state, dual-gate, extract-only, priority matrix, dispositions |
+| **evidence-led-monorepo-ops** | `.agents/skills/evidence-led-monorepo-ops/SKILL.md` (+ `docs/ops/skills/…`) | Live state, dual-gate, extract-only, retroactive benchmark review, reviewer-noise classification |
 | **adaptive-wait** | `.agents/skills/adaptive-wait/SKILL.md` (+ `docs/ops/skills/…`) | **WAIT stage SSOT** — poll checks, stall classes, active-wait, dual-gate before promote |
 | **adaptive-feedback-cycle** | `.agents/skills/adaptive-feedback-cycle/SKILL.md` | Full OBSERVE → CLASSIFY → WAIT/STEER/RETRY → VERIFY → PROMOTE → FEED FORWARD |
 | **review-loop** | `.agents/skills/review-loop/SKILL.md` | SHA/run binding, bilateral critique, no-HITL continuous review |
@@ -39,9 +39,11 @@
 5. Promote only when dual gates green **and** task outcome verified.
 6. Preserve every attempt (provenance); never rewrite history to linearize.
 
-Local Grok project mirrors (this chat environment):
-- `/home/workdir/.grok/skills/evidence-led-monorepo-ops/SKILL.md`
-- `/home/workdir/.grok/skills/adaptive-wait/SKILL.md`
+## Retroactive benchmark rule
+
+**PR #390 remains a benchmark specimen, not the historical evaluation boundary.** #509's merged retroactive-review lesson is incorporated into `evidence-led-monorepo-ops`: evaluate historical GitHub objects continuously and classify automation activity before converting comment volume into failure evidence.
+
+Minimum activity taxonomy: `actionable_finding`, `provider_state`, `reviewer_noise`, `execution_failure`, `not_executed`, `self_trigger_candidate`. In particular, ECC-tools/Codex/Qodo quota, billing, availability, permission, and status chatter is provider-state/reviewer-noise unless bound execution evidence demonstrates an actual task failure.
 
 ## Supporting skills (repo)
 
@@ -59,30 +61,11 @@ Local Grok project mirrors (this chat environment):
 | workflow-orchestration | `.github/skills/workflow-orchestration/SKILL.md` |
 | action-effectiveness-ledger | `.github/skills/action-effectiveness-ledger/SKILL.md` |
 
-## External ecosystem (skills.sh / agentskills.io)
-
-Discovery meta-skill: `find-skills` (`.agents/skills/find-skills/SKILL.md`).  
-CLI: `npx skills find <query>` · `npx skills add <owner/repo@skill>`.  
-Prefer high-install, reputable sources (vercel-labs, anthropics). Inspect before install; project-local by default. Never auto-grant global permissions.
-
-## Entry fold (AGENTS.md → CLAUDE.md)
-
-- **#488 MERGED** (2026-09-11): CLAUDE.md primary; AGENTS.md demoted.
-- **#534**: AGENTS.md pure Linguist/CedrLang stub; hard rules in CLAUDE.md only.
-- **#537**: README fast-start leads with CLAUDE.md; skills inventory + deploy lanes linked.
-
-## Backfill / stall context (ops)
-
-- Historical corpus stalled at **`next_start_page=2`** since **~2026-08-19**.
-- **Admission stall** fixed on master (#534): schedule `23 * * * *` on `context-relationship-backfill.yml`.
-- **#526** audit landed; Tanka abandoned temporary quota — findings valid.
-- **#523** / **#527** remain **HOLD** (mega).
-
 ## Cross-session rule
 
-Skill content that other sessions must load **must** live on **master** under `.agents/skills/<name>/SKILL.md`. Chat-only or local-only copies are not sufficient.
+Skill content that other sessions must load **must** live on master under `.agents/skills/<name>/SKILL.md`. Chat-only or local-only copies are not sufficient.
 
 When process improves: edit inventory + skill body in one PR, dual-gate, squash-merge, refresh local mirrors.
 
-Implements: skills navigator SSOT · adaptive-wait SSOT  
+Implements: skills navigator SSOT · adaptive-wait SSOT · retroactive benchmark continuity · reviewer-noise classification  
 BIUDL.

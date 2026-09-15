@@ -87,6 +87,22 @@ def test_context_index_writers_have_explicit_lineage_and_non_overlapping_locks()
     assert "master-staging" not in backfill
 
 
+def test_backfill_progression_watcher_is_observer_only_and_captures_runtime_state():
+    content = workflow("context-relationship-backfill-watcher.yml")
+
+    assert "workflow_run:" in content
+    assert "requested" in content
+    assert "in_progress" in content
+    assert "completed" in content
+    assert "actions: read" in content
+    assert "contents: read" in content
+    assert "observer_only" in content
+    assert "actions/upload-artifact" in content
+    assert "issues: write" not in content
+    assert "git push" not in content
+    assert "rerun" not in content.lower()
+
+
 def test_audit_workflow_embeds_a_read_only_exact_root_evidence_matrix():
     content = workflow("context-relationship-audit.yml")
 

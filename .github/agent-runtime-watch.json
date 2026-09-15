@@ -1,0 +1,11 @@
+{
+  "schema": "agent-runtime-watch/v1",
+  "scheduled_workflows": [
+    {
+      "workflow_file": ".github/workflows/context-relationship-backfill.yml",
+      "workflow_name": "context relationship historical backfill",
+      "expected_interval_minutes": 60,
+      "grace_minutes": 15
+    }
+  ]
+}

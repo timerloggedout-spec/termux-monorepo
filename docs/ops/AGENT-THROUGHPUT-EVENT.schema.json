@@ -18,9 +18,19 @@
     "tokens_in": {"type": "number", "minimum": 0},
     "tokens_out": {"type": "number", "minimum": 0},
     "complexity_score": {"type": "number", "minimum": 0},
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "additions": {"type": "number", "minimum": 0},
+        "deletions": {"type": "number", "minimum": 0},
+        "files_changed": {"type": "number", "minimum": 0},
+        "complexity_score": {"type": "number", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
     "gha_run_id": {"type": "integer", "minimum": 1},
     "gha_run_attempt": {"type": "integer", "minimum": 1},
     "source_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"}
   },
-  "additionalProperties": true
+  "additionalProperties": false
 }

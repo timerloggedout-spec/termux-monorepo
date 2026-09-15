@@ -30,10 +30,11 @@ class AgentThroughputTest(unittest.TestCase):
         metrics = reduce_events([
             {
                 "timestamp": "2026-09-14T10:00:00Z",
+                "agent_id": "a",
                 "event": "task_completed",
                 "metrics": {"additions": 9, "deletions": 1, "files_changed": 1},
             },
-            {"timestamp": "2026-09-14T10:01:00Z", "event": "task_started"},
+            {"timestamp": "2026-09-14T10:01:00Z", "agent_id": "a", "event": "task_started"},
         ], sequential_baseline_sec=120)
         self.assertIsNotNone(metrics.wtcv_per_min)
         self.assertIsNotNone(metrics.ates)
@@ -41,16 +42,16 @@ class AgentThroughputTest(unittest.TestCase):
 
     def test_missing_complexity_does_not_fabricate_weighted_metrics(self):
         metrics = reduce_events([
-            {"timestamp": "2026-09-14T10:00:00Z", "event": "task_completed", "complexity_score": 2},
-            {"timestamp": "2026-09-14T10:01:00Z", "event": "task_completed"},
+            {"timestamp": "2026-09-14T10:00:00Z", "agent_id": "a", "event": "task_completed", "complexity_score": 2},
+            {"timestamp": "2026-09-14T10:01:00Z", "agent_id": "a", "event": "task_completed"},
         ], sequential_baseline_sec=120)
         self.assertIsNone(metrics.wtcv_per_min)
         self.assertIsNone(metrics.ates)
 
     def test_missing_baseline_does_not_fabricate_ates(self):
         metrics = reduce_events([
-            {"timestamp": "2026-09-14T10:00:00Z", "event": "task_completed", "complexity_score": 2},
-            {"timestamp": "2026-09-14T10:01:00Z", "event": "task_completed", "complexity_score": 2},
+            {"timestamp": "2026-09-14T10:00:00Z", "agent_id": "a", "event": "task_completed", "complexity_score": 2},
+            {"timestamp": "2026-09-14T10:01:00Z", "agent_id": "a", "event": "task_completed", "complexity_score": 2},
         ])
         self.assertIsNone(metrics.parallel_yield)
         self.assertIsNone(metrics.ates)

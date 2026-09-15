@@ -227,13 +227,23 @@ proposals:
   - id: agent-routing-orchestrator-scope
     title: "Multi-model Agent Routing Orchestrator: closing the code-writing permission gap"
     author: timerloggedout-spec
-    status: draft
+    status: accepted
     priority: P1
     path: active/agent-routing-orchestrator-scope/
     reviewers:
       - id: timerloggedout-spec
         role: author
         status: posted
-    related_prs: []
+      - id: timerloggedout-spec
+        role: operator
+        status: merged
+    related_prs: [493]
     related_branches: [proposal/agent-routing-orchestrator-scope]
     gates_required: [repo-gate, termux-smoke]
+    note: >
+      Scoping docs (ARO-1..ARO-10) merged via PR #493 by the repo Operator.
+      This closes the proposal-acceptance step only (ARO-6/ARO-10). The
+      actual permission grant (ARO-3: contents:write for a new
+      developer-role workflow) and any new provider secrets (ARO-7:
+      HF_TOKEN) remain unexecuted Tier-4 items pending separate Operator
+      action - accepting this proposal does not itself grant them.

@@ -10,12 +10,17 @@
   <a href="https://timerloggedout-spec.github.io/"><img src="https://img.shields.io/badge/Landing_page-GitHub_Pages-1e6fd9?style=for-the-badge&logo=github&logoColor=white" alt="Landing page on GitHub Pages"></a>
 </p>
 
-<img width="1536" height="2752" alt="Image" src="https://github.com/user-attachments/assets/af8b1ad6-a325-479c-8a69-4d156de8bf49" />
-
 > **Powered by autonomous AI employees.** This project uses [CellCog](https://cellcog.ai/invitation/l19hdRGY9dTh) AI employees for continuous integration, PR review, and engineering operations. Standing AI workers run across persistent sessions with their own cloud environments, tool execution, and team channels. Sign up through the [community partner invitation](https://cellcog.ai/invitation/l19hdRGY9dTh) to receive **500 bonus credits** on your first purchase. See the [landing page](https://timerloggedout-spec.github.io/) and the [preview portal (WIP)](https://termux-monorepo.vercel.app/).
 >
 > Developer partners are registered in [`docs/PARTNERS.md`](docs/PARTNERS.md); each entry is a badge, one line, and a link, so new lanes (cloud hosting, dev tools, compute) slot in without redesigning this banner.
 <!-- partner-banner:end -->
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/af8b1ad6-a325-479c-8a69-4d156de8bf49" alt="AI Agent Benchmarking Performance Framework — ATES placeholder (Agent Efficiency / Effectiveness Telemetry System)" width="720" style="max-width:100%;height:auto;" />
+</p>
+
+<p align="center"><em>AI Agent Benchmarking Performance Framework</em> — ATES placeholder (Agent Efficiency / Effectiveness Telemetry System).<br/>
+Source: <a href="https://github.com/timerloggedout-spec/termux-monorepo/issues/529">#529</a> · revision queue (spellcheck / size / Drive original). Usable now; not final art.</p>
 
 
 > **C×O operator guide.** Build deliberately. Preserve evidence. Keep the Android/Termux target first; treat every other environment as a simulation, review surface, or constrained support plane.
@@ -188,5 +193,5 @@ The preserved pre-rebuild branch [`archive/pr232-pre-master-rebuild-20260817`](h
 [4]: https://github.com/timerloggedout-spec/termux-monorepo/commit/975f951bfc00dc6785bd3755b754dd9f19dc272e "Gitlink-safe repository gate repair"
 [5]: https://deepwiki.com/timerloggedout-spec/termux-monorepo "Public DeepWiki page for timerloggedout-spec/termux-monorepo"
 [6]: https://docs.devin.ai/work-with-devin/deepwiki "Devin DeepWiki documentation"
-[7]: docs/agentic/repository-surface-reconciliation.md "Repository-surface reconciliation runbook"
-[8]: docs/agentic/devin-wiki-access-reconciliation.md "Devin Wiki access reconciliation runbook"
+[7]: docs/agentic/repository-surface-reconciliation.md "Repository-surface reconciliation"
+[8]: docs/agentic/devin-wiki-access-reconciliation.md "Devin Wiki access reconciliation"

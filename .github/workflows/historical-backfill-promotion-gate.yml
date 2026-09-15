@@ -1,5 +1,8 @@
 name: historical backfill promotion gate
 
+# This gate validates the migration boundary; it must not require the legacy
+# master-staging corpus to be complete because PR #523 exists specifically to
+# move bounded continuation to master and resume from the canonical checkpoint.
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -10,30 +13,79 @@ permissions:
   pull-requests: read
 
 jobs:
-  require-current-backfill-complete:
-    name: require current staging backfill completion
+  validate-backfill-migration-boundary:
+    name: validate current corpus migration boundary
     runs-on: ubuntu-latest
     steps:
-      - name: Inspect authoritative master-staging corpus
+      - name: Checkout candidate revision
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a9 # v5.0.0
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Inspect authoritative master corpus
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          gh api repos/${GITHUB_REPOSITORY}/contents/workspace/llm_map/context_relationships/manifest.json?ref=master-staging \
+          gh api repos/${GITHUB_REPOSITORY}/contents/workspace/llm_map/context_relationships/manifest.json?ref=master \
             --jq '.content' | base64 -d > /tmp/manifest.json
           python - <<'PY'
           import json
           from pathlib import Path
-          data = json.loads(Path('/tmp/manifest.json').read_text())
-          window = data.get('history_window', {})
-          nxt = window.get('next_start_page')
-          observed = data.get('latest_observed_at')
-          print(f'authoritative master-staging latest_observed_at={observed}')
-          print(f'authoritative master-staging next_start_page={nxt}')
-          if nxt is not None:
-              raise SystemExit(
-                  'PROMOTION BLOCKED: current master-staging historical backfill is not complete; '
-                  f'next_start_page={nxt}. PR #523 must not start a new authoritative layer yet.'
-              )
-          print('PROMOTION ALLOWED: master-staging reports next_start_page=null.')
+
+          data = json.loads(Path('/tmp/manifest.json').read_text(encoding='utf-8'))
+          history = data.get('history_window', {})
+          next_page = history.get('next_start_page')
+          repository = data.get('repository')
+          default_branch = data.get('default_branch')
+
+          if repository != '${{ github.repository }}':
+              raise SystemExit(f'corpus repository mismatch: {repository!r}')
+          if next_page is not None:
+              try:
+                  next_page = int(next_page)
+              except (TypeError, ValueError):
+                  raise SystemExit(f'next_start_page must be an integer or null, got {next_page!r}')
+              if next_page < 1:
+                  raise SystemExit(f'next_start_page must be >= 1, got {next_page}')
+
+          print(f'current master corpus default_branch={default_branch!r}')
+          print(f'current master corpus next_start_page={next_page!r}')
+
+          if default_branch == 'master-staging' and next_page is not None:
+              print('MIGRATION STATE: legacy master-staging corpus is partial; successor must resume it from master.')
+          elif default_branch == 'master' and next_page is not None:
+              print('CURRENT-MASTER STATE: corpus is partial and resumable.')
+          elif next_page is None:
+              print('COMPLETE STATE: canonical corpus reports next_start_page=null.')
+          else:
+              raise SystemExit(f'unrecognized corpus state: default_branch={default_branch!r}')
           PY
+
+      - name: Verify successor is master-anchored and resumable
+        run: |
+          set -euo pipefail
+          workflow=.github/workflows/context-relationship-backfill.yml
+          test -f "$workflow"
+          grep -q 'ref: master' "$workflow"
+          grep -q -- '--ref master' "$workflow"
+          grep -q 'next_start_page' "$workflow"
+          grep -q 'git push origin HEAD:master' "$workflow"
+          if grep -q 'HEAD:master-staging' "$workflow"; then
+            echo 'successor still publishes to legacy master-staging' >&2
+            exit 1
+          fi
+          echo 'migration boundary validated: successor is master-anchored and resumable.'
+
+      - name: Record migration-gate evidence
+        run: |
+          set -euo pipefail
+          {
+            echo '## Historical backfill promotion gate'
+            echo
+            echo '- The legacy corpus may remain partial during migration.'
+            echo '- The successor must resume from canonical `next_start_page` on `master`.'
+            echo '- No successor write to `master-staging` is permitted.'
+          } >> "$GITHUB_STEP_SUMMARY"

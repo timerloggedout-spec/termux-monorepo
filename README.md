@@ -10,13 +10,17 @@
   <a href="https://timerloggedout-spec.github.io/"><img src="https://img.shields.io/badge/Landing_page-GitHub_Pages-1e6fd9?style=for-the-badge&logo=github&logoColor=white" alt="Landing page on GitHub Pages"></a>
 </p>
 
-<img width="1536" height="2752" alt="Image" src="https://github.com/user-attachments/assets/af8b1ad6-a325-479c-8a69-4d156de8bf49" />
-
 > **Powered by autonomous AI employees.** This project uses [CellCog](https://cellcog.ai/invitation/l19hdRGY9dTh) AI employees for continuous integration, PR review, and engineering operations. Standing AI workers run across persistent sessions with their own cloud environments, tool execution, and team channels. Sign up through the [community partner invitation](https://cellcog.ai/invitation/l19hdRGY9dTh) to receive **500 bonus credits** on your first purchase. See the [landing page](https://timerloggedout-spec.github.io/) and the [preview portal (WIP)](https://termux-monorepo.vercel.app/).
 >
 > Developer partners are registered in [`docs/PARTNERS.md`](docs/PARTNERS.md); each entry is a badge, one line, and a link, so new lanes (cloud hosting, dev tools, compute) slot in without redesigning this banner.
 <!-- partner-banner:end -->
 
+> **ATES attention surface (blocked on good asset).**  
+> **AI Agent Benchmarking Performance Framework** — *ATES* (Agent Efficiency / Effectiveness Telemetry System; acronym in progress).  
+> Intended as the top-of-README attention-grabber for agent throughput / evaluation / evidence-led ops.
+>
+> **Asset status (2026-09-15):** the PNG currently on Drive (`1NfDzhjnY9Bc419gIRYgnUCpJdlL30hgD`, 5 627 668 bytes, 1536×2752) and both GitHub user-attachment uploads (`af8b1ad6-…`, `c4e2b99c-…`) are **byte-identical and corrupt** — PNG has valid IHDR/IEND but truncated/garbled IDAT streams (`unrecognized data stream contents` / ImageMagick `bad adaptive filter`). **Do not embed until a clean re-export lands.**  
+> Track: [#529](https://github.com/timerloggedout-spec/termux-monorepo/issues/529) · Drive: [full-res when fixed](https://drive.google.com/file/d/1NfDzhjnY9Bc419gIRYgnUCpJdlL30hgD/view?usp=drivesdk).
 
 > **C×O operator guide.** Build deliberately. Preserve evidence. Keep the Android/Termux target first; treat every other environment as a simulation, review surface, or constrained support plane.
 
@@ -39,14 +43,30 @@ Start with **one** of these routes. Do not load the entire repository merely bec
 
 | Need | Start here | What it owns |
 |---|---|---|
-| Understand a component, make a change, or assess first-order impact | [`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md) | Repository-native ICM system map, objects, processes, and impact routes. |
-| Read root governance and navigation | [`AGENTS.md`](AGENTS.md) | Repository-level development guidance, architecture navigation, and constraints. |
+| **Agent / operator entry (primary)** | [`CLAUDE.md`](CLAUDE.md) | Governance, hard rules, dual gates, adaptive WAIT, skills inventory pointer. **Load this first.** |
+| Task routing (one verified card) | [`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md) | Repository-native ICM system map, objects, processes, and impact routes. |
+| Linguist / CedrLang surface only | [`AGENTS.md`](AGENTS.md) | Deprecated as primary entry — retained as Linguist compression target + tooling compatibility. |
 | Maintain the ICM map itself | [`docs/icm/maintenance/CLAUDE.md`](docs/icm/maintenance/CLAUDE.md) | Inventory → human design review → verification → promotion procedure. |
 | Operate or inspect the ArchWiz surface | [`archwiz/TOOL_INDEX.md`](archwiz/TOOL_INDEX.md) | Named cockpit, forensic, autonomous, verification, and knowledge tools. |
 | Review open proposal governance | [`docs/proposals/`](docs/proposals/) | Registered active proposals, operator policy notes, and validation structure. |
+| Skills + adaptive WAIT | [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md) | Ops skill table, admission/queue stalls, evidence-led loop. |
+| Deployment lanes (Vercel / Pages) | [`docs/DEPLOYMENT-LANES.md`](docs/DEPLOYMENT-LANES.md) | Live Vercel projects, Pages status, hosting identity rules. |
 | Review safety and tracked-state debt | [`docs/CREDENTIAL-EXPOSURE.md`](docs/CREDENTIAL-EXPOSURE.md) | Credential exposure findings and safe remediation boundary. |
 
-The root README is an entry point, not a duplicate source of truth. When it conflicts with a maintained subsystem map, **the subsystem’s cited canonical source wins**.
+The root README is an entry point, not a duplicate source of truth. **Primary agent entry is [`CLAUDE.md`](CLAUDE.md)** (AGENTS.md is Linguist-only after #488/#534). When this file conflicts with a maintained subsystem map, **the subsystem’s cited canonical source wins**.
+
+---
+
+## 0.1 Public surfaces — Vercel & GitHub Pages
+
+| Surface | URL | Status (see [`docs/DEPLOYMENT-LANES.md`](docs/DEPLOYMENT-LANES.md)) |
+|---|---|---|
+| **Vercel — termux-monorepo** | https://termux-monorepo.vercel.app/ | **LIVE** showcase / preview portal (`demo-portal/public`). WIP content; rate-limit noise on PR checks is non-blocking. |
+| **Vercel — mcp-hub** | (MCP router) | **LIVE** bearer-gated MCP for `termux-mcp` / `android-mcp`. |
+| **GitHub Pages** | https://timerloggedout-spec.github.io/ | Landing / static publication. Pages for repo docs remains candidate unless a reviewed workflow enables it. |
+| **DeepWiki** | https://deepwiki.com/timerloggedout-spec/termux-monorepo | Discovery only — never authority to change source. |
+
+Vercel is the only currently documented **live application-hosting** lane. One Vercel project per independently deployable root. Do not treat a badge or reachable URL as proof of the intended SHA without verification evidence.
 
 ---
 
@@ -188,5 +208,5 @@ The preserved pre-rebuild branch [`archive/pr232-pre-master-rebuild-20260817`](h
 [4]: https://github.com/timerloggedout-spec/termux-monorepo/commit/975f951bfc00dc6785bd3755b754dd9f19dc272e "Gitlink-safe repository gate repair"
 [5]: https://deepwiki.com/timerloggedout-spec/termux-monorepo "Public DeepWiki page for timerloggedout-spec/termux-monorepo"
 [6]: https://docs.devin.ai/work-with-devin/deepwiki "Devin DeepWiki documentation"
-[7]: docs/agentic/repository-surface-reconciliation.md "Repository-surface reconciliation runbook"
-[8]: docs/agentic/devin-wiki-access-reconciliation.md "Devin Wiki access reconciliation runbook"
+[7]: docs/agentic/repository-surface-reconciliation.md "Repository-surface reconciliation"
+[8]: docs/agentic/devin-wiki-access-reconciliation.md "Devin Wiki access reconciliation"

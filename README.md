@@ -15,15 +15,12 @@
 > Developer partners are registered in [`docs/PARTNERS.md`](docs/PARTNERS.md); each entry is a badge, one line, and a link, so new lanes (cloud hosting, dev tools, compute) slot in without redesigning this banner.
 <!-- partner-banner:end -->
 
-<p align="center">
-  <a href="https://drive.google.com/file/d/1NfDzhjnY9Bc419gIRYgnUCpJdlL30hgD/view?usp=drivesdk">
-    <img src="https://github.com/user-attachments/assets/af8b1ad6-a325-479c-8a69-4d156de8bf49" alt="AI Agent Benchmarking Performance Framework — ATES (Agent Efficiency / Effectiveness Telemetry System). Attention-grabber for agent throughput, evaluation, and evidence-led ops." width="720" style="max-width:100%;height:auto;" />
-  </a>
-</p>
-
-<p align="center"><strong>AI Agent Benchmarking Performance Framework</strong><br/>
-<em>ATES</em> — Agent Efficiency / Effectiveness Telemetry System (acronym in progress).<br/>
-Full-resolution source: <a href="https://drive.google.com/file/d/1NfDzhjnY9Bc419gIRYgnUCpJdlL30hgD/view?usp=drivesdk">Google Drive</a> · tracked in <a href="https://github.com/timerloggedout-spec/termux-monorepo/issues/529">#529</a> (revision / size / spellcheck queue).</p>
+> **ATES attention surface (blocked on good asset).**  
+> **AI Agent Benchmarking Performance Framework** — *ATES* (Agent Efficiency / Effectiveness Telemetry System; acronym in progress).  
+> Intended as the top-of-README attention-grabber for agent throughput / evaluation / evidence-led ops.
+>
+> **Asset status (2026-09-15):** the PNG currently on Drive (`1NfDzhjnY9Bc419gIRYgnUCpJdlL30hgD`, 5 627 668 bytes, 1536×2752) and both GitHub user-attachment uploads (`af8b1ad6-…`, `c4e2b99c-…`) are **byte-identical and corrupt** — PNG has valid IHDR/IEND but truncated/garbled IDAT streams (`unrecognized data stream contents` / ImageMagick `bad adaptive filter`). **Do not embed until a clean re-export lands.**  
+> Track: [#529](https://github.com/timerloggedout-spec/termux-monorepo/issues/529) · Drive: [full-res when fixed](https://drive.google.com/file/d/1NfDzhjnY9Bc419gIRYgnUCpJdlL30hgD/view?usp=drivesdk).
 
 > **C×O operator guide.** Build deliberately. Preserve evidence. Keep the Android/Termux target first; treat every other environment as a simulation, review surface, or constrained support plane.
 

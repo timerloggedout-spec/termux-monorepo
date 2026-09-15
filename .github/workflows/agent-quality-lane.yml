@@ -1,0 +1,42 @@
+name: Agent Quality Lane
+
+# Read-only quality control for the agent telemetry implementation. This lane
+# validates documentation, policy invariants, schema shape, and focused reducer
+# tests; it does not execute agent prompts, tool payloads, or repository secrets.
+on:
+  pull_request:
+    paths:
+      - "she/metrics/**"
+      - "tests/test_she_agent_throughput.py"
+      - "docs/ops/AGENT-THROUGHPUT-*.md"
+      - "docs/ops/AGENT-OBSERVABILITY-PRIORITY-DECISION.md"
+      - "docs/ops/AGENT-THROUGHPUT-EVENT.schema.json"
+      - "scripts/ci/verify_agent_quality.py"
+      - ".github/workflows/agent-quality-lane.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agent-quality-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout candidate revision
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+
+      - name: Verify agent telemetry quality contract
+        run: python scripts/ci/verify_agent_quality.py
+
+      - name: Validate event schema JSON
+        run: python -m json.tool docs/ops/AGENT-THROUGHPUT-EVENT.schema.json >/dev/null
+
+      - name: Run focused ATES reducer tests
+        run: python -m unittest tests.test_she_agent_throughput -v

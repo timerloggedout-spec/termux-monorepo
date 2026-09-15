@@ -19,7 +19,7 @@ WAIT is now an **active-work state**, not idle sleep. While one cohort is waitin
 
 This is currently a **promotion/runtime sequencing issue, not an unexplained collector stall**.
 
-The authoritative `master` manifest is still the older corpus snapshot from August 19 and explicitly reports `start_page = 1` and `next_start_page = 2`. It also still carries the legacy `default_branch = master-staging`. cite-not-applicable
+The authoritative `master` manifest is still the older corpus snapshot from August 19 and explicitly reports `start_page = 1` and `next_start_page = 2`. It also still carries the legacy `default_branch = master-staging`.
 
 The new continuation writer and its legacy-branch migration compatibility exist on PR #523, but they are not authoritative until #523 is deliberately promoted. Therefore no honest claim can be made that page 2 has executed on `master` yet.
 

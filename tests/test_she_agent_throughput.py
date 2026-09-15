@@ -1,6 +1,11 @@
+import json
 import unittest
+from pathlib import Path
 
 from she.metrics.agent_throughput import reduce_events
+
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 class AgentThroughputTest(unittest.TestCase):
@@ -48,6 +53,15 @@ class AgentThroughputTest(unittest.TestCase):
         self.assertIsNone(metrics.wtcv_per_min)
         self.assertIsNone(metrics.ates)
 
+    def test_malformed_timestamp_does_not_abort_valid_duration(self):
+        metrics = reduce_events([
+            {"timestamp": "2026-09-14T10:00:00Z", "agent_id": "a", "event": "task_started"},
+            {"timestamp": "not-a-timestamp", "agent_id": "a", "event": "handoff", "latency_ms": 10},
+            {"timestamp": "2026-09-14T10:01:00Z", "agent_id": "a", "event": "task_completed", "complexity_score": 1},
+        ])
+        self.assertEqual(metrics.workflow_minutes, 1.0)
+        self.assertEqual(metrics.completed_tasks, 1)
+
     def test_missing_baseline_does_not_fabricate_ates(self):
         metrics = reduce_events([
             {"timestamp": "2026-09-14T10:00:00Z", "agent_id": "a", "event": "task_completed", "complexity_score": 2},
@@ -55,6 +69,31 @@ class AgentThroughputTest(unittest.TestCase):
         ])
         self.assertIsNone(metrics.parallel_yield)
         self.assertIsNone(metrics.ates)
+
+
+class AgentThroughputSchemaTest(unittest.TestCase):
+    """Protect the telemetry boundary against undeclared sensitive fields."""
+
+    def test_schema_is_closed_and_forbidden_fields_are_not_allowlisted(self):
+        schema = json.loads(
+            (ROOT / "docs/ops/AGENT-THROUGHPUT-EVENT.schema.json").read_text(encoding="utf-8")
+        )
+        self.assertFalse(schema["additionalProperties"])
+        properties = schema["properties"]
+        self.assertIn("metrics", properties)
+        for forbidden in ("prompt", "completion", "credentials", "tool_payload", "secret", "message_body"):
+            self.assertNotIn(forbidden, properties)
+
+    def test_structural_metrics_extension_is_closed(self):
+        schema = json.loads(
+            (ROOT / "docs/ops/AGENT-THROUGHPUT-EVENT.schema.json").read_text(encoding="utf-8")
+        )
+        metrics = schema["properties"]["metrics"]
+        self.assertFalse(metrics["additionalProperties"])
+        self.assertEqual(
+            set(metrics["properties"]),
+            {"additions", "deletions", "files_changed", "complexity_score"},
+        )
 
 
 if __name__ == "__main__":

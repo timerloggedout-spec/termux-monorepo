@@ -57,6 +57,8 @@ def test_historical_backfill_is_automated_current_master_resumable_and_page_boun
     assert "git push origin HEAD:master" in content
     assert "master-staging" not in content
     assert "Implements: CRG-10" in content
+    assert "PAGINATION_STALL_CANDIDATE" in content
+    assert "context-relationship-pagination-observation-" in content
 
 
 def test_linear_freshness_workflow_is_manual_read_only_and_metadata_only():
@@ -103,6 +105,22 @@ def test_backfill_progression_watcher_is_observer_only_and_captures_runtime_stat
     assert "rerun" not in content.lower()
 
 
+def test_runtime_stall_watch_classifies_declared_admission_targets_without_mutation():
+    content = workflow("agent-runtime-stall-watch.yml")
+    contract = (ROOT / ".github/agent-runtime-watch.json").read_text()
+
+    assert "ADMISSION_STALL_CANDIDATE" in content
+    assert "HEALTHY_SCHEDULED_ADMISSION" in content
+    assert "expected_interval_minutes" in content
+    assert ".github/agent-runtime-watch.json" in content
+    assert "observer_only_no_automatic_retry" in content
+    assert "context relationship historical backfill" in contract
+    assert "expected_interval_minutes" in contract
+    assert "contents: read" in content
+    assert "git push" not in content
+    assert "rerun" not in content.lower()
+
+
 def test_audit_workflow_embeds_a_read_only_exact_root_evidence_matrix():
     content = workflow("context-relationship-audit.yml")
 
@@ -115,4 +133,3 @@ def test_audit_workflow_embeds_a_read_only_exact_root_evidence_matrix():
     assert "actions/upload-artifact" in content
     assert "contents: write" not in content
     assert "pull_request_target" not in content
-    assert "git push" not in content

@@ -1,80 +1,49 @@
 # Agentic Integration Watch Receipt — 2026-09-15
 
-## Observed head
+## Date / corpus freshness
 
-PR #523: `ops/automate-historical-backfill-ates-she`  
-Head: `c3043ed91a626b10c42b9ff6bfe0c59e1affd5fe`  
-Base: `master` at `7d10d33d154eada1184c1826000eaad5fa52b23f`  
-PR state: OPEN / non-draft / mergeable
+Today is `2026-09-15`.
 
-## WAIT → WATCH → VALIDATE result
+The latest `master` commit is `7d10d33d154eada1184c1826000eaad5fa52b23f`, committed `2026-09-15T03:33:00Z`. The repository itself is actively receiving commits today; the stale date is the **corpus snapshot**, not the repository head.
 
-The watcher did not stop at queued/in-progress states. Successive polls were performed after each corrective commit.
+The authoritative `master` corpus snapshot is stale at `latest_observed_at=2026-08-19T07:53:15Z` with `next_start_page=2`. `master-staging` has a newer snapshot from `2026-09-07T12:33:24.770669Z`, but it also remains at `next_start_page=2`.
 
-### Quality-lane defect caught and corrected
+## Critical promotion-order correction
 
-The first Agent Quality Lane run (`34935771668`) failed in the focused ATES fixture: the structural-complexity test omitted `agent_id`, so parallel yield correctly remained unavailable. The fixture was corrected rather than weakening the reducer.
+PR #523 must NOT establish the new master-anchored continuation layer while the existing `master-staging` backfill remains incomplete.
 
-A later quality run (`34935846611`) passed. A subsequent current-head quality run (`34936352648`) also passed after the diff-whitespace check was refined to preserve intentional Markdown hard-break syntax while retaining strict source/config checks.
+The staging writer was previously manual-only. It has now been changed to:
 
-### Current-head substantive checks
+- trigger on `master-staging` pushes as well as manual dispatch;
+- resolve the next page from the existing staging manifest;
+- never restart at page 1 when a continuation page exists;
+- validate page advancement, canonical artifact set, hashes, metadata, and record counts;
+- publish only validated corpus deltas back to `master-staging`.
 
-| Workflow | Run | Result |
-|---|---:|---|
-| Agent Quality Lane | 34936352648 | SUCCESS |
-| repo gate | 34936352542 | SUCCESS |
-| context relationship validation | 34936352587 | SUCCESS |
-| Workflow Surface Evidence | 34936352594 | SUCCESS |
-| Workflow Surface Policy | 34936352566 | SUCCESS |
-| Automation Documentation Continuous Refresh | 34936352567 | SUCCESS |
-| Repository development evaluation | 34936352563 | SUCCESS |
-| termux smoke | 34936352527 | SUCCESS |
-| Advisory GitHub Actions lint | 34936352581 | SUCCESS |
-| Advisory CodeQL analysis | 34936352559 | SUCCESS |
-| Gemini Dispatch | 34936352768 | SUCCESS |
-| Audit Cycle — Single PR Feed-Forward | 34936352588 | SUCCESS |
-| ECC Tools comment-command ops | 34936352621 | SUCCESS |
-| DeepSeek CI – Agentic Automation | 34936352597 | CANCELLED |
+PR #523 now contains `historical-backfill-promotion-gate.yml`, which reads the authoritative `master-staging` manifest and explicitly fails while `next_start_page` is non-null.
 
-The cancelled DeepSeek result is retained as **CANCELLED**, not coerced to success. Other earlier cohort cancellations were also observed during rapid push/review churn; they are evidence of concurrency behavior, not validation failures.
+Therefore the required order is:
 
-## Review finding closure
+`master-staging page 2 continuation → validate → repeat until next_start_page=null → promotion gate passes → only then promote #523 → fresh master continuation layer resumes from the completed authoritative corpus.`
 
-The prior CodeRabbit review identified four actionable areas. The review threads are now resolved/outdated, and the implementation addresses them:
+## WAIT → WATCH → VALIDATE
 
-1. **Historical backfill:** explicit completion handling prevents stale summary publication; pre-commit validation checks required artifacts, repository/ref, schema/scope hashes, input-hash shape, counts, history-window alignment, and checkpoint consistency.
-2. **Telemetry privacy:** the event schema is closed with `additionalProperties: false`; structural metrics are an explicit closed extension; forbidden sensitive field names are not allowlisted and regression coverage protects the boundary.
-3. **Timestamp resilience:** malformed timestamps are skipped by the pure duration reducer while valid timestamps remain usable; a regression fixture proves this behavior.
-4. **ATES documentation:** reducer symbols are documented, formulas have explanatory comments, structural complexity fallback is covered, and the no-speed-gate policy is verified by the quality lane.
+Do not classify page 2 as executed from a commit, a workflow file, mergeability, or elapsed time. Page execution requires an actual Actions run with immutable run/attempt/SHA/ref identity, job/step evidence, and an authoritative corpus effect.
 
-A fresh repository review comment was posted against the current head with the observed validation evidence. No approval or merge action was implied.
+If the staging run remains queued/in-progress without progress, classify it as an admission/queue/execution/heartbeat/effect/pagination stall using the production-reconciliation skill before considering any retry.
 
-## ATES interpretation
+## Current PR state
 
-ATES is **Phase A IMPLEMENTED**. It is not a future/fancy feature. The current reducer is the measurement primitive. The next phase is runtime evidence emission and immutable run/attempt/SHA linkage.
+PR #523 remains OPEN, non-draft, and unmerged. Current head after the promotion guard/documentation updates is `8c1af3e80c753a6d5f64ce35a6ec2434a5f626e6`; base remains `master` at `7d10d33d154eada1184c1826000eaad5fa52b23f`.
 
-The review layering remains:
+## Parallel collaborator boundary
 
-`PR REVIEW → CHECKS → ACTION→EFFECT → ATES/WTCV → LONGITUDINAL RECORD`
+Tanka may continue Phase B/C/D/E work and review in parallel. Tanka must not merge #523, rewrite history, bypass the historical-backfill promotion gate, or claim page-2 execution without runtime/effect evidence.
 
-ATES is an additive observation after correctness evidence, not a replacement for review and not a merge gate.
+## Existing validation evidence
 
-## Environment interpretation
+The prior current-head quality and repository checks were observed successful where recorded in the earlier receipt. The cancelled DeepSeek run remains CANCELLED. Vercel deployment-rate-limit failures are provider/deployment status, not evidence that the historical collector executed or failed.
 
-Docker and Codespaces are intentionally distinct:
+## State discipline
 
-- Docker: reproducible automation substrate, isolated experiments, CI execution, environment fingerprints.
-- Codespaces: interactive sandbox, development, debugging, exploratory agent workflows, reproduction.
-- Shared environment contracts may be compared; purposes are not collapsed.
-
-## Historical corpus state
-
-Canonical corpus remains **PARTIAL_CONTINUATION_REQUIRED** with the latest documented `next_start_page = 2`. The backfill workflow is implemented but its autonomous runtime must still be observed on `master` before being classified EXECUTED. No corpus completion is claimed.
-
-## Evidence discipline
-
-This receipt distinguishes:
-
-`COMMITTED ≠ EXECUTED ≠ VALIDATED ≠ PROMOTED`
-
-The current PR is COMMITTED and its current-head checks are VALIDATED where listed above. It remains OPEN and therefore is not PROMOTED.
+`COMMITTED != EXECUTED != VALIDATED != PROMOTED`.

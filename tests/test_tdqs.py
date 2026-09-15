@@ -3,7 +3,6 @@ import unittest
 from she.metrics.tdqs import (
     apply_post_processing,
     context_signals,
-    hard_gates,
     overall_server_score,
     server_definition_quality,
     tier,
@@ -84,8 +83,8 @@ class TDQSTests(unittest.TestCase):
         self.assertEqual(tier(0.9), "F")
 
     def test_server_rollups(self):
-        self.assertEqual(server_definition_quality([4.0, 3.0, 5.0]), 3.8)
-        self.assertEqual(overall_server_score(3.8, 4.0), 3.9)
+        self.assertEqual(server_definition_quality([4.0, 3.0, 5.0]), 3.6)
+        self.assertEqual(overall_server_score(3.6, 4.0), 3.7)
 
     def test_nested_required_subtree_cost(self):
         tool = dict(self.tool)

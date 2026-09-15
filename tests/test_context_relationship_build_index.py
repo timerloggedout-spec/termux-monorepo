@@ -167,7 +167,6 @@ def test_build_index_retains_prior_history_when_later_collection_omits_it(monkey
     assert '"external_id":"232"' in (output / "nodes.jsonl").read_text()
 
 
-
 def test_build_index_does_not_advance_checkpoint_for_incomplete_collection(monkeypatch, tmp_path):
     repository = {"owner": "example", "name": "repo", "default_branch": "main"}
     source_seed = {
@@ -192,3 +191,28 @@ def test_build_index_does_not_advance_checkpoint_for_incomplete_collection(monke
 
     assert summary["checkpoint_eligible"] is False
     assert builder.load_checkpoint(output / "checkpoint.json", "example", "repo", "main") == "2026-08-18T12:00:00Z"
+
+
+def test_load_canonical_history_allows_only_explicit_master_staging_migration(tmp_path):
+    output = tmp_path / "index"
+    output.mkdir()
+    (output / "manifest.json").write_text(
+        '{"schema_version":"1.0","repository":"example/repo","default_branch":"master-staging"}\n',
+        encoding="utf-8",
+    )
+    (output / "nodes.jsonl").write_text(
+        '{"id":"repository:example/repo","kind":"repository","external_id":"example/repo","attributes":{}}\n',
+        encoding="utf-8",
+    )
+    (output / "edges.jsonl").write_text("", encoding="utf-8")
+
+    migrated = builder.load_canonical_history(output, "example", "repo", "master")
+    assert migrated is not None
+    assert migrated["repository"]["default_branch"] == "master"
+
+    try:
+        builder.load_canonical_history(output, "example", "repo", "release")
+    except builder.CompilationError as exc:
+        assert "different repository or ref" in str(exc)
+    else:
+        raise AssertionError("non-master ref unexpectedly accepted staging history")

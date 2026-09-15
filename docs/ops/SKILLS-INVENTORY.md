@@ -8,7 +8,8 @@
 | Skill | Path | Role |
 |-------|------|------|
 | **evidence-led-monorepo-ops** | `.agents/skills/evidence-led-monorepo-ops/SKILL.md` (+ `docs/ops/skills/…`) | Live state, dual-gate, extract-only, priority matrix, dispositions |
-| **adaptive-feedback-cycle** | `.agents/skills/adaptive-feedback-cycle/SKILL.md` | OBSERVE → CLASSIFY → **WAIT/STEER/RETRY** → VERIFY → PROMOTE → FEED FORWARD |
+| **adaptive-wait** | `.agents/skills/adaptive-wait/SKILL.md` (+ `docs/ops/skills/…`) | **WAIT stage SSOT** — poll checks, stall classes, active-wait, dual-gate before promote |
+| **adaptive-feedback-cycle** | `.agents/skills/adaptive-feedback-cycle/SKILL.md` | Full OBSERVE → CLASSIFY → WAIT/STEER/RETRY → VERIFY → PROMOTE → FEED FORWARD |
 | **review-loop** | `.agents/skills/review-loop/SKILL.md` | SHA/run binding, bilateral critique, no-HITL continuous review |
 | **production-reconciliation** | `.github/skills/production-reconciliation/SKILL.md` | RECON → PLAN → IMPLEMENT → COMMIT → **WAIT** → VALIDATE → RE-FETCH → CLASSIFY → RECORD |
 | **context-relationship-graph** | `.agents/skills/context-relationship-graph/SKILL.md` | File/PR/issue/timeline graph; verified vs candidate edges |
@@ -16,7 +17,7 @@
 
 ## Adaptive WAIT (non-negotiable)
 
-From `adaptive-feedback-cycle` + `production-reconciliation`:
+**Load:** `.agents/skills/adaptive-wait/SKILL.md` (cross-session master SSOT).
 
 1. After any dispatch/commit/merge request: **WAIT** is a stage, not idle sleep.
 2. Re-check run/job state and timestamps; do concurrent non-conflicting work.
@@ -25,8 +26,9 @@ From `adaptive-feedback-cycle` + `production-reconciliation`:
 5. Promote only when dual gates green **and** task outcome verified.
 6. Preserve every attempt (provenance); never rewrite history to linearize.
 
-Local Grok project skill (this chat environment):
-`/home/workdir/.grok/skills/evidence-led-monorepo-ops/SKILL.md`
+Local Grok project mirrors (this chat environment):
+- `/home/workdir/.grok/skills/evidence-led-monorepo-ops/SKILL.md`
+- `/home/workdir/.grok/skills/adaptive-wait/SKILL.md`
 
 ## Supporting skills (repo)
 
@@ -47,14 +49,18 @@ Local Grok project skill (this chat environment):
 ## Entry fold (AGENTS.md → CLAUDE.md)
 
 - **#488 MERGED** (2026-09-11): CLAUDE.md primary; AGENTS.md demoted.
-- Follow-up: AGENTS.md is a **Linguist/CedrLang stub only**; hard rules live in CLAUDE.md.
+- **#534**: AGENTS.md pure Linguist/CedrLang stub; hard rules in CLAUDE.md only.
 
 ## Backfill / stall context (ops)
 
-- Historical corpus / context-relationship backfill stalled at **`next_start_page=2`** since **~2026-08-19**.
-- Root cause class: **admission stall** — `context-relationship-backfill.yml` on master has **no schedule**, only `workflow_dispatch` → 0 auto-runs (#526 audit).
-- **#526** audit findings **landed** (`docs/ops/AUDIT-FINDINGS-PR523.md`). Independent audit; Tanka abandoned follow-through on temporary quota (operator note 2026-09-15).
-- **#523** / **#527** remain **HOLD** (mega); extract schedule/admission only when dual-gate safe.
+- Historical corpus stalled at **`next_start_page=2`** since **~2026-08-19**.
+- **Admission stall** fixed on master (#534): schedule `23 * * * *` on `context-relationship-backfill.yml`.
+- **#526** audit landed; Tanka abandoned temporary quota — findings valid.
+- **#523** / **#527** remain **HOLD** (mega).
 
-Implements: skills-inventory / agents-linguist-stub  
+## Cross-session rule
+
+Skill content that other sessions must load **must** live on **master** under `.agents/skills/<name>/SKILL.md`. Chat-only or local-only copies are not sufficient.
+
+Implements: adaptive-wait SSOT  
 BIUDL.

@@ -165,18 +165,27 @@ jobs:
         run: |
           mkdir -p /tmp/evaluation
           python3 - <<'PY'
-          import json, os
-          lane=os.environ['LANE']; trial=os.environ['TRIAL']
-          invoke='${{ steps.invoke.outcome }}' if '${{ steps.lane.outputs.eligible }}' == 'true' else 'skipped'
+          import glob, json, os
+          lane=os.environ['LANE']; trial=int(os.environ['TRIAL'])
+          eligible='${{ steps.lane.outputs.eligible }}'
+          execution_status='skipped'
+          telemetry={}
+          observations=glob.glob('/tmp/model-performance/observations.ndjson')
+          if eligible == 'true' and observations:
+              with open(observations[-1], encoding='utf-8') as f:
+                  lines=[line.strip() for line in f if line.strip()]
+              if lines:
+                  telemetry=json.loads(lines[-1])
+                  execution_status='success' if telemetry.get('route_status') == 'succeeded' else 'failure'
           data={
-            'schema':'team-mvt/v4','run_id':'${{ github.run_id }}','lane':lane,'trial':int(trial),
+            'schema':'team-mvt/v5','run_id':'${{ github.run_id }}','lane':lane,'trial':trial,
             'provider':'${{ steps.lane.outputs.provider }}','model':'${{ steps.lane.outputs.model }}',
             'prompt_variant':'${{ steps.lane.outputs.variant }}','task_role':'${{ steps.lane.outputs.task_role }}',
             'hypothesis':'''${{ steps.lane.outputs.hypothesis }}''','manager':os.environ['MANAGER'],
-            'cohort':os.environ['COHORT'],'eligible':'${{ steps.lane.outputs.eligible }}',
-            'execution_status':invoke,'skip_reason':'''${{ steps.lane.outputs.skip_reason }}''',
-            'max_tokens':'${{ steps.lane.outputs.max_tokens }}','sequence_slot':int('${{ steps.lane.outputs.sequence_slot }}'),
-            'treatment_id':'${{ steps.lane.outputs.treatment }}','experiment_id':'${{ steps.lane.outputs.experiment_id }}',
+            'cohort':os.environ['COHORT'],'eligible':eligible,'execution_status':execution_status,
+            'skip_reason':'''${{ steps.lane.outputs.skip_reason }}''','max_tokens':'${{ steps.lane.outputs.max_tokens }}',
+            'sequence_slot':int('${{ steps.lane.outputs.sequence_slot }}'),'treatment_id':'${{ steps.lane.outputs.treatment }}',
+            'experiment_id':'${{ steps.lane.outputs.experiment_id }}','telemetry':telemetry,
             'task_outcome':'UNKNOWN','correctness':'UNKNOWN','integration':'UNKNOWN','regression':'UNKNOWN'
           }
           with open('/tmp/evaluation/lane.json','w',encoding='utf-8') as f: json.dump(data,f,sort_keys=True,indent=2)
@@ -219,9 +228,10 @@ jobs:
           skipped=[r for r in rows if r['eligible']!='true']
           lanes={r['lane'] for r in rows}
           if len(rows) < 12: raise SystemExit(f'FAIL: expected 12 DOE cells, found {len(rows)}')
-          print(json.dumps({'schema':'team-mvt-evaluation/v1','cells':len(rows),'eligible':len(eligible),'executed':len(executed),'execution_failures':len(failed),'skipped':len(skipped),'lanes':sorted(lanes),'promotion_ready':False,'reason':'task correctness/evaluator evidence remains UNKNOWN until independent evaluation'},sort_keys=True))
+          summary={'schema':'team-mvt-evaluation/v2','cells':len(rows),'eligible':len(eligible),'executed':len(executed),'execution_failures':len(failed),'skipped':len(skipped),'lanes':sorted(lanes),'promotion_ready':False,'reason':'task correctness/evaluator evidence remains UNKNOWN until independent evaluation'}
+          print(json.dumps(summary,sort_keys=True))
           os.makedirs('/tmp/evaluation',exist_ok=True)
-          with open('/tmp/evaluation/summary.json','w') as f: json.dump({'schema':'team-mvt-evaluation/v1','cells':len(rows),'eligible':len(eligible),'executed':len(executed),'execution_failures':len(failed),'skipped':len(skipped),'promotion_ready':False},f,indent=2)
+          with open('/tmp/evaluation/summary.json','w') as f: json.dump(summary,f,indent=2)
           PY
 
       - name: Upload evaluation summary

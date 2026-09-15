@@ -23,13 +23,17 @@ The research candidates should be compared as **parallel adapters/providers agai
 
 ## Why Langfuse deserves attention
 
-Langfuse supports datasets, experiments, scores, live traces, and OpenTelemetry-based experiment ingestion. Its experiment model is especially relevant to manager tournaments because the same dataset can be replayed across conditions and evaluated consistently. citeturn0search0turn0search1turn0search3turn0search4
+Langfuse supports datasets, experiments, scores, live traces, and OpenTelemetry-based experiment ingestion. Its experiment model is especially relevant to manager tournaments because the same dataset can be replayed across conditions and evaluated consistently.
+
+Research links: https://langfuse.com/docs/evaluation/overview · https://langfuse.com/docs/evaluation/experiments/experiments-via-opentelemetry · https://langfuse.com/docs/evaluation/experiments/data-model
 
 **Best fit here:** export the sanitized agent execution event stream into an adapter that can associate a cohort/experiment ID with traces and scores. Keep GitHub corpus/receipts authoritative and treat Langfuse as a research surface.
 
 ## Why Phoenix deserves a parallel lane
 
-Phoenix is open source, uses OpenTelemetry/OpenInference, and combines tracing, evaluations, datasets, and experiments. Its experiment workflow explicitly compares versions against the same dataset and evaluation criteria; it also supports repetitions and dataset splits, which are useful for variance/consistency analysis in manager tournaments. citeturn1search1turn1search4turn1search7turn1search10
+Phoenix is open source, uses OpenTelemetry/OpenInference, and combines tracing, evaluations, datasets, and experiments. Its experiment workflow explicitly compares versions against the same dataset and evaluation criteria; it also supports repetitions and dataset splits, which are useful for variance/consistency analysis in manager tournaments.
+
+Research links: https://arize.com/docs/phoenix · https://arize.com/docs/phoenix/get-started/get-started-datasets-and-experiments · https://arize.com/docs/phoenix/datasets-and-experiments/how-to-experiments
 
 **Best fit here:** a Docker/self-hostable research lane that consumes the same sanitized events and cohort definitions as the Langfuse adapter. Do not choose between Phoenix and Langfuse before a like-for-like comparison exists.
 
@@ -44,14 +48,16 @@ C_structural = ln(1 + additions + deletions) × sqrt(files_changed)
 Then add optional providers without changing the base metric contract:
 
 ```text
-C_explicit        = declared task complexity when available
-C_structural      = churn/files fallback
-C_ast              = Tree-sitter structural features
-C_ccn_multilang   = Lizard CCN/NLOC/token/parameter features
-C_python          = Radon CCN/Halstead/maintainability features
+C_explicit       = declared task complexity when available
+C_structural     = churn/files fallback
+C_ast            = Tree-sitter structural features
+C_ccn_multilang  = Lizard CCN/NLOC/token/parameter features
+C_python         = Radon CCN/Halstead/maintainability features
 ```
 
-Lizard provides NLOC, cyclomatic complexity, token count, and parameter count across many languages. Radon provides Python cyclomatic complexity plus raw, Halstead, and maintainability metrics. Tree-sitter provides concrete syntax trees suitable for structural analysis. citeturn1search0turn1search3turn0search7turn0search15
+Lizard provides NLOC, cyclomatic complexity, token count, and parameter count across many languages. Radon provides Python cyclomatic complexity plus raw, Halstead, and maintainability metrics. Tree-sitter provides concrete syntax trees suitable for structural analysis.
+
+Research links: https://github.com/terryyin/lizard · https://radon.readthedocs.io/en/latest/ · https://tree-sitter.github.io/tree-sitter/using-parsers/2-basic-parsing.html
 
 These are **feature providers**, not competing truth sources. The reducer should preserve provider name, version, raw features, derived complexity, and confidence so future formulas can be compared without rewriting history.
 

@@ -13,6 +13,7 @@ The research candidates should be compared as **parallel adapters/providers agai
 | OpenTelemetry | neutral trace/span transport | GitHub Actions + agent invocation boundary | P0 | canonical interoperability layer |
 | Langfuse | traces, datasets, experiments, scores | optional experiment/eval adapter | P1 | observational; no source-of-truth authority |
 | Phoenix | open-source tracing, evals, datasets, experiments | optional experiment/eval adapter; Docker-friendly lab | P1 | observational; no source-of-truth authority |
+| **Glama TDQS** | MCP/connector tool-definition quality | AEF tool-definition evaluation lane | **P1** | observational; no merge-quality authority |
 | Tree-sitter | structural syntax trees | complexity feature provider | P1 | measurement only |
 | Lizard | multi-language NLOC/CCN/token/parameter metrics | fast baseline complexity provider | P1 | measurement only |
 | Radon | Python CCN/Halstead/maintainability metrics | Python-specific complexity provider | P1 | measurement only |
@@ -20,6 +21,60 @@ The research candidates should be compared as **parallel adapters/providers agai
 | Codespaces | reproducible interactive developer/agent environment | operator/agent reproduction lane | P2 | environment, not evidence source |
 | MASEval / agent benchmark suites | multi-agent evaluation patterns | future manager tournament cohorts | P2 | research input; adopt only after local evidence schema mapping |
 | Langfuse/Phoenix external adapters | vendor-specific persistence/UX | adapters over canonical JSONL/OTEL events | P2 | never replace canonical corpus |
+
+## TDQS lane
+
+Glama's **Tool Definition Quality Score (TDQS)** is now explicitly represented
+as a tool-definition evaluation provider. It measures the quality of what an
+agent sees when selecting/invoking a tool, not whether the tool's runtime
+behavior is correct.
+
+The six dimensions are:
+
+- Purpose Clarity — 25%
+- Usage Guidelines — 20%
+- Behavioral Transparency — 20%
+- Parameter Semantics — 15%
+- Conciseness & Structure — 10%
+- Contextual Completeness — 10%
+
+The monorepo implementation is intentionally split:
+
+```text
+MCP / connector definition
+          │
+          ▼
+   she/metrics/tdqs.py
+   deterministic signals
+   hard gates + aggregation
+          │
+          ▼
+  external/evaluator lane
+  six LLM rubric dimensions
+          │
+          ▼
+       TDQS evidence
+          │
+          ▼
+    AEF / MoneyBall
+```
+
+This prevents TDQS from becoming a hidden model-ranking mechanism. Missing
+runtime observations remain missing evidence; TDQS does not become a zero, a
+merge gate, or a substitute for task outcome.
+
+Upstream provenance:
+
+- `glama-ai/tool-definition-quality-score`
+- `timerloggedout-spec/tool-definition-quality-score_fork`
+- `https://glama.ai/blog/2026-04-03-tool-definition-quality-score-tdqs`
+- `https://glama.ai/mcp/methodology`
+
+The fork is a reference specification, not a vendored dependency. Its
+changelog records the six-dimension rubric, server coherence, and later
+shadowing-risk work; the monorepo keeps the deterministic portion locally so
+inputs, hashes, and historical evidence remain under the repository's own
+contracts.
 
 ## Why Langfuse deserves attention
 
@@ -68,23 +123,23 @@ For a bounded comparable task cohort:
 ```text
                     SAME TASK COHORT
                            │
-          ┌────────────────┼────────────────┐
-          ▼                ▼                ▼
-       GitHub JSONL     Langfuse          Phoenix
-       canonical        adapter           adapter
-          │                │                │
-          └────────────┬───┴───────┬────────┘
-                       ▼           ▼
-                 SAME EVIDENCE  SAME EVALS
-                       │           │
-                       └─────┬─────┘
-                             ▼
+          ┌────────────────┼───────────────────┐
+          ▼                ▼                   ▼
+       GitHub JSONL     TDQS evaluator     Langfuse/Phoenix
+       canonical        tool-definition    optional adapters
+          │                │                   │
+          └────────────────┼───────────────────┘
+                           ▼
+                    SAME EVIDENCE / EVALS
+                           │
+                           ▼
                     3L0 / Moneyball reducer
 ```
 
 Compare:
 
 - task completion and final acceptance;
+- tool-definition quality and schema clarity;
 - time-to-integration;
 - feedback cycles;
 - useful vs duplicate actions/tokens;
@@ -118,25 +173,32 @@ Credentials remain external to the image/workspace. Broad PAT/connector scope is
 
 Canonical JSONL event schema + runtime watcher + immutable SHA/run linkage.
 
-### Phase B — complexity
+### Phase B — tool-definition quality
+
+TDQS deterministic context extraction, hard gates, input hashing, and rollups.
+The LLM rubric remains an evaluator/provider boundary. TDQS observations join the
+AEF evidence record without becoming an execution-quality gate.
+
+### Phase C — complexity
 
 Structural fallback + Lizard/Radon providers; Tree-sitter as the language-neutral structural expansion.
 
-### Phase C — parallel evaluation
+### Phase D — parallel evaluation
 
-Run equivalent cohorts through GitHub-only, Langfuse-adapter, and Phoenix-adapter paths.
+Run equivalent cohorts through GitHub-only, TDQS, Langfuse-adapter, and Phoenix-adapter paths.
 
-### Phase D — environment parity
+### Phase E — environment parity
 
 Docker and Codespaces reproduction lanes; classify environment failures independently.
 
-### Phase E — manager tournament
+### Phase F — manager tournament
 
 Compare orchestration policies, not isolated model leaderboard scores. Retain experiment history, cull weak policies, and preserve useful behaviors.
 
 ## Non-goals
 
 - no speed-only merge gate;
+- no TDQS-only merge gate;
 - no vendor becomes the canonical evidence source;
 - no synthetic zeroes for missing complexity/telemetry;
 - no causal attribution from trace timing alone;

@@ -1,11 +1,14 @@
 name: context relationship historical backfill
 
 # Transitional staging writer. It resumes from the canonical manifest rather
-# than restarting at page 1. A push trigger lets the existing staging backfill
-# finish before the master-anchored continuation in PR #523 is promoted.
+# than restarting at page 1. A push trigger and hourly safety schedule let the
+# existing staging backfill finish before the master-anchored continuation in
+# PR #523 is promoted.
 on:
   push:
     branches: [master-staging]
+  schedule:
+    - cron: '37 * * * *'
   workflow_dispatch:
     inputs:
       max_items:

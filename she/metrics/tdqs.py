@@ -7,7 +7,7 @@ tiering, and server-level rollups. It deliberately does not call a model,
 network service, or provider. The six rubric dimension values must come from a
 separately recorded evaluator when a full TDQS score is produced.
 
-Source contract: glama-ai/tool-definition-quality-score (TDQS v1.x), with
+Source contract: glama-ai/tool-definition-quality-score TDQS v1.3, with
 provenance recorded in ``docs/architecture/TOOL-DEFINITION-QUALITY-SCORE.md``.
 """
 from __future__ import annotations
@@ -16,8 +16,11 @@ import hashlib
 import json
 import math
 from dataclasses import asdict, dataclass
+from decimal import Decimal, ROUND_HALF_UP
 from typing import Any, Mapping
 
+
+TDQS_SPEC_VERSION = "1.3"
 
 DIMENSION_WEIGHTS: dict[str, int] = {
     "purpose_clarity": 25,
@@ -31,6 +34,11 @@ DIMENSION_WEIGHTS: dict[str, int] = {
 
 def _canonical(value: Any) -> str:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+
+
+def _round1(value: Decimal) -> float:
+    """TDQS v1.2 integer half-up rounding to one decimal place."""
+    return float(value.quantize(Decimal("0.1"), rounding=ROUND_HALF_UP))
 
 
 def _definition_fields(tool: Mapping[str, Any]) -> dict[str, Any]:
@@ -60,8 +68,8 @@ def _walk_required(
     visited: frozenset[str] = frozenset(),
 ) -> tuple[int, int, int, bool]:
     """Return required-field count, depth, union choices, nested-object flag."""
-    if not schema:
-        return 0, 0, 0, False
+    if not schema or depth > 10:
+        return 0, depth, 0, False
 
     if "$ref" in schema:
         ref = schema.get("$ref")
@@ -72,9 +80,11 @@ def _walk_required(
         return 0, depth, 0, False
 
     branch_counts: list[tuple[int, int, int, bool]] = []
+    branch_key: str | None = None
     for key in ("oneOf", "anyOf"):
         branches = schema.get(key)
         if isinstance(branches, list):
+            branch_key = key
             for branch in branches:
                 if isinstance(branch, Mapping):
                     branch_counts.append(_walk_required(branch, root, depth=depth, visited=visited))
@@ -87,10 +97,10 @@ def _walk_required(
     if branch_counts:
         chosen = max(branch_counts, key=lambda item: item[0])
         required_count, max_depth, unions, nested = chosen
-        # Nullable unions are not invocation choices in TDQS.
+        branches = schema.get(branch_key or "oneOf") or []
         non_null_branches = [
             branch
-            for branch in (schema.get("oneOf") or schema.get("anyOf") or [])
+            for branch in branches
             if not (isinstance(branch, Mapping) and branch.get("type") == "null")
         ]
         union_choices = max(0, len(non_null_branches) - 1)
@@ -124,16 +134,6 @@ def _walk_required(
             return _walk_required(items, root, depth=depth + 1, visited=visited)
 
     return 1 if depth > 0 else 0, depth, 0, nested_object
-
-
-def _iter_required_properties(schema: Mapping[str, Any] | None) -> list[tuple[str, Mapping[str, Any]]]:
-    if not isinstance(schema, Mapping):
-        return []
-    properties = schema.get("properties")
-    required = schema.get("required")
-    if not isinstance(properties, Mapping) or not isinstance(required, list):
-        return []
-    return [(name, properties[name]) for name in required if isinstance(name, str) and isinstance(properties.get(name), Mapping)]
 
 
 @dataclass(frozen=True)
@@ -187,6 +187,10 @@ def context_signals(tool: Mapping[str, Any]) -> TDQSContextSignals:
     title = tool.get("title")
     title_is_meaningful = bool(title and str(title) != name and len(str(title)) > len(name))
 
+    # v1.3 hashes the definition fields including the full output schema.
+    # The v1.3 evaluator also receives the output schema itself, not only a
+    # has-output-schema boolean; this module records both the schema and the
+    # structural signal while leaving LLM evaluation to the evaluator lane.
     fields = _definition_fields(tool)
     serialized = _canonical(fields).encode("utf-8")
     input_hash = hashlib.sha256(serialized).hexdigest()[:16]
@@ -229,7 +233,7 @@ def tier(score: float) -> str:
 
 
 def weighted_score(dimensions: Mapping[str, float]) -> float:
-    """Aggregate the six 1–5 rubric dimensions into TDQS, rounded to 1 decimal."""
+    """Aggregate six 1–5 rubric dimensions using TDQS v1.2 half-up rounding."""
     missing = set(DIMENSION_WEIGHTS) - set(dimensions)
     extra = set(dimensions) - set(DIMENSION_WEIGHTS)
     if missing or extra:
@@ -237,7 +241,8 @@ def weighted_score(dimensions: Mapping[str, float]) -> float:
     for name, value in dimensions.items():
         if not math.isfinite(float(value)) or not 1.0 <= float(value) <= 5.0:
             raise ValueError(f"{name} must be within 1–5")
-    return round(sum(float(dimensions[name]) * weight for name, weight in DIMENSION_WEIGHTS.items()) / 100, 1)
+    weighted = sum(Decimal(str(dimensions[name])) * Decimal(weight) for name, weight in DIMENSION_WEIGHTS.items())
+    return _round1(weighted / Decimal(100))
 
 
 def hard_gates(tool: Mapping[str, Any]) -> dict[str, Any]:
@@ -246,7 +251,7 @@ def hard_gates(tool: Mapping[str, Any]) -> dict[str, Any]:
     name = str(tool.get("name") or "").strip().lower()
     title = str(tool.get("title") or "").strip().lower()
     missing_description = not description
-    tautological = bool(description and description.lower() in {name, title} - {""})
+    tautological = bool(description and description.lower() in {candidate for candidate in (name, title) if candidate})
     return {
         "missing_description": missing_description,
         "tautological_description": tautological,
@@ -268,16 +273,19 @@ def apply_post_processing(tool: Mapping[str, Any], dimensions: Mapping[str, floa
 
 
 def server_definition_quality(tool_scores: list[float]) -> float:
-    """Glama's server-level definition-quality rollup: 60% mean + 40% minimum."""
+    """Glama server-level definition-quality rollup: 60% mean + 40% minimum."""
     if not tool_scores:
         raise ValueError("at least one tool score is required")
     if any(not 1.0 <= float(score) <= 5.0 for score in tool_scores):
         raise ValueError("tool scores must be within 1–5")
-    return round(0.6 * (sum(tool_scores) / len(tool_scores)) + 0.4 * min(tool_scores), 1)
+    mean = sum((Decimal(str(score)) for score in tool_scores), Decimal(0)) / Decimal(len(tool_scores))
+    combined = Decimal("0.6") * mean + Decimal("0.4") * min(Decimal(str(score)) for score in tool_scores)
+    return _round1(combined)
 
 
 def overall_server_score(definition_quality: float, coherence: float) -> float:
     """Combine TDQS definition quality (70%) with server coherence (30%)."""
     if not (1.0 <= float(definition_quality) <= 5.0 and 1.0 <= float(coherence) <= 5.0):
         raise ValueError("server component scores must be within 1–5")
-    return round(0.7 * float(definition_quality) + 0.3 * float(coherence), 1)
+    combined = Decimal("0.7") * Decimal(str(definition_quality)) + Decimal("0.3") * Decimal(str(coherence))
+    return _round1(combined)

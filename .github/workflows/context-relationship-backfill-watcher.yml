@@ -8,7 +8,6 @@ on:
 permissions:
   actions: read
   contents: read
-  issues: write
 
 concurrency:
   group: context-relationship-backfill-watcher-${{ github.event.workflow_run.id }}
@@ -35,12 +34,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          jobs_json=$(gh api "repos/${REPOSITORY}/actions/runs/${RUN_ID}/jobs?per_page=100")
-          artifacts_json=$(gh api "repos/${REPOSITORY}/actions/runs/${RUN_ID}/artifacts?per_page=100")
-          JOBS_JSON="$jobs_json" ARTIFACTS_JSON="$artifacts_json" python3 - <<'PY' > runtime-observation.json
+          gh api "repos/${REPOSITORY}/actions/runs/${RUN_ID}/jobs?per_page=100" > jobs.json
+          gh api "repos/${REPOSITORY}/actions/runs/${RUN_ID}/artifacts?per_page=100" > artifacts.json
+          python3 - <<'PY'
           import json, os
-          jobs = json.loads(os.environ["JOBS_JSON"])
-          artifacts = json.loads(os.environ["ARTIFACTS_JSON"])
+          jobs = json.load(open("jobs.json", encoding="utf-8"))
+          artifacts = json.load(open("artifacts.json", encoding="utf-8"))
           observation = {
               "schema": "context-relationship-backfill-watcher/v1",
               "run_id": int(os.environ["RUN_ID"]),
@@ -52,9 +51,17 @@ jobs:
               "head_branch": os.environ["HEAD_BRANCH"],
               "run_url": os.environ["RUN_URL"],
               "jobs": [
-                  {"name": j.get("name"), "status": j.get("status"), "conclusion": j.get("conclusion"),
-                   "started_at": j.get("started_at"), "completed_at": j.get("completed_at"),
-                   "steps": [{"name": s.get("name"), "status": s.get("status"), "conclusion": s.get("conclusion")} for s in (j.get("steps") or [])]}
+                  {
+                      "name": j.get("name"),
+                      "status": j.get("status"),
+                      "conclusion": j.get("conclusion"),
+                      "started_at": j.get("started_at"),
+                      "completed_at": j.get("completed_at"),
+                      "steps": [
+                          {"name": s.get("name"), "status": s.get("status"), "conclusion": s.get("conclusion")}
+                          for s in (j.get("steps") or [])
+                      ],
+                  }
                   for j in jobs.get("jobs", [])
               ],
               "artifacts": [
@@ -63,12 +70,9 @@ jobs:
               ],
               "observer_only": True,
           }
-          print(json.dumps(observation, indent=2, sort_keys=True))
-          PY
-          JOBS_JSON="$jobs_json" ARTIFACTS_JSON="$artifacts_json" python3 - <<'PY'
-          import json, os
-          jobs = json.loads(os.environ["JOBS_JSON"])
-          artifacts = json.loads(os.environ["ARTIFACTS_JSON"])
+          with open("runtime-observation.json", "w", encoding="utf-8") as f:
+              json.dump(observation, f, indent=2, sort_keys=True)
+              f.write("\n")
           summary = {
               "job_count": len(jobs.get("jobs", [])),
               "jobs": [{"name": j.get("name"), "status": j.get("status"), "conclusion": j.get("conclusion")} for j in jobs.get("jobs", [])],
@@ -78,42 +82,25 @@ jobs:
           with open("runtime-summary.json", "w", encoding="utf-8") as f:
               json.dump(summary, f, indent=2, sort_keys=True)
               f.write("\n")
+          print(json.dumps(observation, sort_keys=True))
           PY
 
-      - name: Publish watcher receipt
-        env:
-          GH_TOKEN: ${{ github.token }}
-          REPOSITORY: ${{ github.repository }}
-          RUN_ID: ${{ github.event.workflow_run.id }}
-          RUN_URL: ${{ github.event.workflow_run.html_url }}
-          STATUS: ${{ github.event.workflow_run.status }}
-          CONCLUSION: ${{ github.event.workflow_run.conclusion }}
-          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+      - name: Publish watcher summary
+        if: always()
         run: |
           set -euo pipefail
-          body=$(python3 - <<'PY'
-          import json, os
-          summary = json.load(open("runtime-summary.json", encoding="utf-8"))
-          print(f"## Backfill runtime observation — run {os.environ['RUN_ID']}\n")
-          print(f"- **Status:** `{os.environ['STATUS']}`")
-          print(f"- **Conclusion:** `{os.environ.get('CONCLUSION') or 'pending'}`")
-          print(f"- **SHA:** `{os.environ['HEAD_SHA']}`")
-          print(f"- **Jobs:** {summary['job_count']}")
-          for job in summary['jobs']:
-              print(f"  - `{job['name']}` — `{job['status']}` / `{job['conclusion'] or 'pending'}`")
-          print(f"- **Artifacts:** {summary['artifact_count']}")
-          for artifact in summary['artifacts']:
-              print(f"  - `{artifact['name']}` (expired={artifact['expired']})")
-          print(f"\nEvidence: {os.environ['RUN_URL']}\n\nObserver only; this watcher does not rerun or mutate the backfill.")
-          PY
-          )
-          existing=$(gh issue list --repo "$REPOSITORY" --state open --search 'in:title "[Backfill Watch] Context relationship historical continuation"' --json number --limit 1)
-          number=$(python3 -c 'import json,sys; d=json.load(sys.stdin); print(d[0]["number"] if d else "")' <<<"$existing")
-          if [ -n "$number" ]; then
-            gh issue comment "$number" --repo "$REPOSITORY" --body "$body"
-          else
-            gh issue create --repo "$REPOSITORY" --title '[Backfill Watch] Context relationship historical continuation' --body "$body"
-          fi
+          {
+            echo '## Context relationship backfill runtime observation'
+            echo
+            echo "- Run: ${{ github.event.workflow_run.id }} (attempt ${{ github.event.workflow_run.run_attempt }})"
+            echo "- Event: ${{ github.event.action }}"
+            echo "- Status: ${{ github.event.workflow_run.status }}"
+            echo "- Conclusion: ${{ github.event.workflow_run.conclusion || 'pending' }}"
+            echo "- SHA: ${{ github.event.workflow_run.head_sha }}"
+            echo "- Evidence: ${{ github.event.workflow_run.html_url }}"
+            echo
+            cat runtime-summary.json 2>/dev/null || true
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload structured watcher observation
         if: always()

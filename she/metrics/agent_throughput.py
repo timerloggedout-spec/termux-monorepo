@@ -84,8 +84,22 @@ def _complexity(entry: Mapping[str, Any]) -> float | None:
 
 
 def _duration(events: list[Mapping[str, Any]]) -> float:
-    """Return the wall-clock span covered by timestamped events."""
-    stamps = [_ts(str(e["timestamp"])) for e in events if e.get("timestamp")]
+    """Return the wall-clock span covered by valid timestamped events.
+
+    A malformed timestamp is isolated to its record. Valid timestamps still
+    provide useful workflow duration evidence instead of aborting the reduction.
+    """
+    stamps: list[datetime] = []
+    for event in events:
+        value = event.get("timestamp")
+        if not value:
+            continue
+        try:
+            stamps.append(_ts(str(value)))
+        except ValueError:
+            # Ingestion should reject malformed records when possible; the pure
+            # reducer remains resilient so one bad event cannot erase valid data.
+            continue
     if len(stamps) < 2:
         return 0.0
     return max(0.0, (max(stamps) - min(stamps)).total_seconds())
@@ -145,6 +159,7 @@ def reduce_events(
         # Sequential baseline is only valid when explicitly supplied; never infer
         # one from the observed parallel run because that would bias the metric.
         eta = _positive(sequential_baseline_sec) / (len(agents) * workflow_sec)
+    # ATES is a diagnostic composite. It is never used as a merge-quality gate.
     ates = wtcv * max(0.0, 1.0 - rpi) * eta if wtcv is not None and eta is not None else None
 
     input_tokens = sum(_positive(e.get("tokens_in")) for e in rows)

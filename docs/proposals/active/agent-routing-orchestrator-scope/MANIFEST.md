@@ -4,7 +4,7 @@ title: "Multi-model Agent Routing Orchestrator: closing the code-writing permiss
 author: timerloggedout-spec
 posted_at: 2026-09-11
 source: source.md
-status: draft
+status: accepted
 priority: P1
 reviewers: []
 related_prs: []
@@ -37,6 +37,11 @@ This proposal scopes — it does not implement — closing the gap that keeps Op
 
 - Disposition: commented
 - Notes: extended with ARO-7..ARO-10 (HuggingFace wiring, CellCog/Hex verification, connector inventory). Still draft; still awaiting non-author review or Operator per Tier 3.
+
+### 2026-09-14 — registry closeout
+
+- Disposition: accepted
+- Notes: PR #493 merged by the repo Operator (timerloggedout-spec), satisfying Tier 3 acceptance for this scoping proposal. Status moved to `accepted` in this file and in `docs/proposals/registry.yaml`. This closes ARO-6/ARO-10 only — the Tier-4 items (ARO-3 permission grant, ARO-7 HF_TOKEN secret) remain unexecuted and still require separate, explicit Operator action.
 
 ## Checklist (process)
 

@@ -1,6 +1,7 @@
 import unittest
 
 from she.metrics.tdqs import (
+    TDQS_SPEC_VERSION,
     apply_post_processing,
     context_signals,
     overall_server_score,
@@ -31,7 +32,8 @@ class TDQSTests(unittest.TestCase):
             "annotations": {"readOnlyHint": True, "openWorldHint": False},
         }
 
-    def test_context_signals_are_deterministic(self):
+    def test_spec_version_and_context_signals_are_deterministic(self):
+        self.assertEqual(TDQS_SPEC_VERSION, "1.3")
         first = context_signals(self.tool)
         second = context_signals(self.tool)
         self.assertEqual(first, second)
@@ -46,6 +48,10 @@ class TDQSTests(unittest.TestCase):
         self.assertTrue(first.has_output_schema)
         self.assertTrue(first.has_annotations)
         self.assertEqual(len(first.input_hash), 16)
+
+        changed = dict(self.tool)
+        changed["outputSchema"] = {"type": "object", "properties": {"other": {"type": "string"}}}
+        self.assertNotEqual(first.input_hash, context_signals(changed).input_hash)
 
     def test_missing_description_is_hard_gate(self):
         tool = dict(self.tool, description=" ")
@@ -70,12 +76,14 @@ class TDQSTests(unittest.TestCase):
         self.assertIn("Tautological Description", result["flags"])
         self.assertEqual(result["score"], 4.3)
 
-    def test_weighted_score_and_tiers(self):
+    def test_weighted_score_uses_half_up_rounding(self):
         dimensions = {name: 3 for name in (
             "purpose_clarity", "usage_guidelines", "behavioral_transparency",
             "parameter_semantics", "conciseness_structure", "contextual_completeness",
         )}
-        self.assertEqual(weighted_score(dimensions), 3.0)
+        dimensions["purpose_clarity"] = 3.2
+        # Exact weighted result is 3.05; TDQS v1.2+ rounds ties upward to 3.1.
+        self.assertEqual(weighted_score(dimensions), 3.1)
         self.assertEqual(tier(3.5), "A")
         self.assertEqual(tier(3.0), "B")
         self.assertEqual(tier(2.0), "C")

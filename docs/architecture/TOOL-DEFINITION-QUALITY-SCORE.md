@@ -57,10 +57,11 @@ MCP / connector tool definition
 ## Upstream provenance
 
 The upstream framework is maintained by `glama-ai/tool-definition-quality-score`
-and the methodology is published by Glama. The repository describes TDQS as
-an open framework for scoring how well an MCP tool definition communicates to
-an AI agent and specifies the rubric, prompts, aggregation formulas, and
-operational practices.
+and the methodology is published by Glama. The current upstream changelog is
+**TDQS v1.3 (2026-09-03)**. v1.3 passes the full `outputSchema` to the tool
+scoring evaluator; v1.2 added deterministic integer half-up rounding and the
+`definitionBytes` context signal; v1.1 added shadowing risk and invocation-cost
+signals.
 
 Reference:
 
@@ -71,9 +72,10 @@ Reference:
 The user's fork is retained as a research/reference fork:
 `timerloggedout-spec/tool-definition-quality-score_fork`.
 
-The fork currently contains the upstream specification and changelog rather
-than an independent runtime implementation. We therefore do **not** treat the
-fork as a dependency that must be vendored into the monorepo.
+The fork's changelog currently records v1.1, while the upstream reference has
+advanced through v1.3. We therefore track the upstream version explicitly and
+do **not** treat the fork as a runtime dependency that silently freezes the
+rubric.
 
 ## Rubric
 
@@ -90,13 +92,13 @@ TDQS scores six dimensions from 1–5:
 
 The deterministic aggregation is implemented locally in
 `she/metrics/tdqs.py`. Missing descriptions are a hard gate at 1.0/D; a
-purely tautological description caps Purpose Clarity at 2.0.
+purely tautological description caps Purpose Clarity at 2.0. Composite scores
+use TDQS v1.2+ integer half-up rounding, not Python's banker rounding.
 
 At server level, definition quality is calculated as 60% mean TDQS + 40%
 minimum TDQS. Glama's overall server score then combines definition quality
-(70%) with server coherence (30%). These rollups are implemented as pure
-functions so an evaluator can be swapped without rewriting the measurement
-layer.
+(70%) with server coherence (30%). These rollups are pure functions so an
+evaluator can be swapped without rewriting the measurement layer.
 
 ## Deterministic context signals
 
@@ -117,8 +119,10 @@ rubric:
 - deterministic definition input hash.
 
 `input_hash` is the cache/provenance boundary: a changed tool definition is a
-new evaluation input. The module is network-free and never fabricates an LLM
-score.
+new evaluation input. In v1.3 the evaluator must receive the **full output
+schema**, not merely a `hasOutputSchema` boolean; the local module records the
+schema as part of the hashed definition and leaves LLM evaluation to the
+explicit evaluator lane.
 
 ## Evaluation record contract
 
@@ -199,7 +203,9 @@ credentialed MCP capture is later available.
 
 - deterministic context extraction has focused tests;
 - hard gates and rollups are reproducible without network access;
-- upstream provenance is recorded;
+- upstream provenance/version is recorded;
+- v1.3 full-output-schema semantics are preserved at the evaluator boundary;
+- v1.2 half-up rounding is deterministic;
 - TDQS remains distinct from ATES/WTCV and task outcome;
 - a future evaluator can attach six dimension scores without changing the
   canonical schema;

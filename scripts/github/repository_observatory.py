@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """Build a provenance-aware index of owned and starred GitHub repositories.
 
-Canonical output is JSON. Markdown views are deliberately generated from the
-same normalized records so the data can later feed the context relationship
-graph, research seeding, and integration-candidate workflows.
+GitHub metadata is the fact layer. Classification is deterministic and explicitly
+marked as inference. JSON is canonical; Markdown is a generated projection.
 """
 from __future__ import annotations
 
@@ -11,14 +10,19 @@ import argparse
 import json
 import os
 import sys
+import time
+import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 API = "https://api.github.com"
-UA = "termux-monorepo-repository-observatory/1.0"
+UA = "termux-monorepo-repository-observatory/2.0"
+SCHEMA_VERSION = "1.1"
+MAX_PAGES = 100
+RETRIES = 3
 
 
 def now() -> str:
@@ -36,13 +40,30 @@ def get_json(path: str, token: str, params: dict[str, Any] | None = None) -> Any
             "User-Agent": UA,
         },
     )
-    with urllib.request.urlopen(req, timeout=30) as response:  # nosec B310: fixed GitHub API host
-        return json.loads(response.read().decode("utf-8"))
+    last_error: Exception | None = None
+    for attempt in range(RETRIES):
+        try:
+            with urllib.request.urlopen(req, timeout=30) as response:  # nosec B310: fixed API host
+                return json.loads(response.read().decode("utf-8"))
+        except urllib.error.HTTPError as exc:
+            # Retry transient server/rate-limit responses, but fail fast on auth/not-found.
+            if exc.code not in {429, 500, 502, 503, 504} or attempt == RETRIES - 1:
+                raise
+            last_error = exc
+            retry_after = exc.headers.get("Retry-After")
+            delay = min(int(retry_after), 60) if retry_after and retry_after.isdigit() else 2**attempt
+            time.sleep(delay)
+        except (urllib.error.URLError, TimeoutError) as exc:
+            if attempt == RETRIES - 1:
+                raise
+            last_error = exc
+            time.sleep(2**attempt)
+    raise RuntimeError(f"GitHub API request failed: {path}: {last_error}")
 
 
 def paginate(path: str, token: str, params: dict[str, Any] | None = None) -> list[dict[str, Any]]:
     out: list[dict[str, Any]] = []
-    for page in range(1, 101):
+    for page in range(1, MAX_PAGES + 1):
         page_params = dict(params or {})
         page_params.update({"per_page": 100, "page": page})
         payload = get_json(path, token, page_params)
@@ -50,8 +71,8 @@ def paginate(path: str, token: str, params: dict[str, Any] | None = None) -> lis
             raise RuntimeError(f"expected list from {path}")
         out.extend(item for item in payload if isinstance(item, dict))
         if len(payload) < 100:
-            break
-    return out
+            return out
+    raise RuntimeError(f"pagination exceeded {MAX_PAGES} pages for {path}")
 
 
 def topics(repo: dict[str, Any]) -> list[str]:
@@ -60,14 +81,9 @@ def topics(repo: dict[str, Any]) -> list[str]:
 
 def classify(repo: dict[str, Any], provenance: list[str]) -> dict[str, Any]:
     text = " ".join(
-        [
-            str(repo.get("name", "")),
-            str(repo.get("description") or ""),
-            " ".join(topics(repo)),
-        ]
+        [str(repo.get("name", "")), str(repo.get("description") or ""), " ".join(topics(repo))]
     ).lower()
-    domains: list[str] = []
-    for key, labels in {
+    domain_terms = {
         "agent": ["agents", "agent"],
         "ai": ["ai", "llm", "machine-learning", "deepseek", "openai"],
         "context": ["context", "knowledge-graph", "knowledge", "rag"],
@@ -75,11 +91,10 @@ def classify(repo: dict[str, Any], provenance: list[str]) -> dict[str, Any]:
         "termux": ["termux", "android"],
         "security": ["security", "forensics", "supply-chain"],
         "developer-tools": ["cli", "developer-tools", "devtools"],
-    }.items():
-        if any(label in text for label in labels):
-            domains.append(key)
+    }
+    domains = sorted(key for key, labels in domain_terms.items() if any(label in text for label in labels))
     if not domains:
-        domains.append("unclassified")
+        domains = ["unclassified"]
 
     role = ["reference"] if "starred" in provenance else ["owned"]
     if repo.get("fork"):
@@ -89,7 +104,7 @@ def classify(repo: dict[str, Any], provenance: list[str]) -> dict[str, Any]:
     if repo.get("archived"):
         role.append("archived")
 
-    integration = []
+    integration: list[str] = []
     if repo.get("fork"):
         integration.append("upstream-comparison")
     if any(x in text for x in ["github-action", "github-actions", "workflow"]):
@@ -110,7 +125,7 @@ def classify(repo: dict[str, Any], provenance: list[str]) -> dict[str, Any]:
 def normalize(repo: dict[str, Any], provenance: list[str], observed_at: str) -> dict[str, Any]:
     owner = repo.get("owner") or {}
     upstream = repo.get("parent") or {}
-    record = {
+    return {
         "id": f"github:repository:{repo.get('full_name')}",
         "full_name": repo.get("full_name"),
         "name": repo.get("name"),
@@ -135,31 +150,25 @@ def normalize(repo: dict[str, Any], provenance: list[str], observed_at: str) -> 
         "classification": classify(repo, provenance),
         "observed_at": observed_at,
     }
-    return record
 
 
 def markdown(records: list[dict[str, Any]], observed_at: str) -> str:
     lines = [
-        "# Repository Observatory",
-        "",
+        "# Repository Observatory", "",
         "> Generated from GitHub repository and starring metadata. JSON is canonical; this file is a navigation projection.",
-        "",
-        f"Observed: `{observed_at}`",
-        "",
-        "## Navigation",
-        "",
-        "- [Owned repositories](#owned)",
-        "- [Starred repositories](#starred)",
-        "- [Research seeds](#research-seeds)",
-        "- [Integration candidates](#integration-candidates)",
-        "",
+        "", f"Observed: `{observed_at}`", "",
+        "## Navigation", "",
+        "- [Owned repositories](#owned)", "- [Starred repositories](#starred)",
+        "- [Research seeds](#research-seeds)", "- [Integration candidates](#integration-candidates)", "",
     ]
+
     def table(title: str, rows: list[dict[str, Any]]) -> None:
         lines.extend([f"## {title}", "", "| Repository | Provenance | Domains | Research | Integration |", "|---|---|---|---|---|"])
-        for r in rows:
-            c = r["classification"]
+        for record in rows:
+            c = record["classification"]
             lines.append(
-                f"| [{r['full_name']}]({r['html_url']}) | {', '.join(r['provenance'])} | {', '.join(c['domains'])} | {c['research_value']} | {', '.join(c['integration']) or '—'} |"
+                f"| [{record['full_name']}]({record['html_url']}) | {', '.join(record['provenance'])} | "
+                f"{', '.join(c['domains'])} | {c['research_value']} | {', '.join(c['integration']) or '—'} |"
             )
         lines.append("")
 
@@ -174,27 +183,7 @@ def markdown(records: list[dict[str, Any]], observed_at: str) -> str:
     return "\n".join(lines) + "\n"
 
 
-def main() -> int:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--owner", required=True)
-    parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--markdown", type=Path, required=True)
-    parser.add_argument("--token-env", default="REPOSITORY_OBSERVATORY_TOKEN")
-    args = parser.parse_args()
-    token = os.environ.get(args.token_env) or os.environ.get("GITHUB_TOKEN")
-    if not token:
-        print(f"missing {args.token_env} or GITHUB_TOKEN", file=sys.stderr)
-        return 2
-
-    observed_at = now()
-    me = get_json("/user", token)
-    login = me.get("login") if isinstance(me, dict) else None
-    if login != args.owner:
-        raise RuntimeError(f"authenticated GitHub user is {login!r}, expected {args.owner!r}")
-
-    owned = [r for r in paginate("/user/repos", token, {"affiliation": "owner", "sort": "updated", "direction": "desc"}) if r.get("owner", {}).get("login") == args.owner]
-    starred = paginate("/user/starred", token, {"sort": "updated", "direction": "desc"})
-
+def build_payload(owner: str, login: str, owned: list[dict[str, Any]], starred: list[dict[str, Any]], observed_at: str) -> dict[str, Any]:
     merged: dict[str, dict[str, Any]] = {}
     for repo in owned:
         full_name = repo.get("full_name")
@@ -210,11 +199,11 @@ def main() -> int:
         else:
             merged[full_name] = normalize(repo, ["starred"], observed_at)
 
-    records = sorted(merged.values(), key=lambda r: (r["classification"]["domains"], r["full_name"].lower()))
-    payload = {
-        "schema_version": "1.0",
-        "builder": "termux-monorepo.repository_observatory@1.0",
-        "repository": f"{args.owner}/termux-monorepo",
+    records = sorted(merged.values(), key=lambda r: (tuple(r["classification"]["domains"]), r["full_name"].lower()))
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "builder": "termux-monorepo.repository_observatory@2.0",
+        "repository": f"{owner}/termux-monorepo",
         "observed_at": observed_at,
         "authenticated_user": login,
         "counts": {
@@ -222,13 +211,50 @@ def main() -> int:
             "starred": sum("starred" in r["provenance"] for r in records),
             "both": sum(set(["owned", "starred"]).issubset(r["provenance"]) for r in records),
             "research_seeds": sum(r["classification"]["research_value"] == "high" for r in records),
+            "integration_candidates": sum(bool(r["classification"]["integration"]) or r["classification"]["submodule_candidate"] for r in records),
         },
         "repositories": records,
     }
+
+
+def main(argv: list[str] | None = None, fetch: Callable[..., Any] = get_json) -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--owner", required=True)
+    parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--markdown", type=Path, required=True)
+    parser.add_argument("--token-env", default="REPOSITORY_OBSERVATORY_TOKEN")
+    args = parser.parse_args(argv)
+    token = os.environ.get(args.token_env) or os.environ.get("GITHUB_TOKEN")
+    if not token:
+        print(f"missing {args.token_env} or GITHUB_TOKEN", file=sys.stderr)
+        return 2
+
+    observed_at = now()
+    me = fetch("/user", token)
+    login = me.get("login") if isinstance(me, dict) else None
+    if login != args.owner:
+        raise RuntimeError(f"authenticated GitHub user is {login!r}, expected {args.owner!r}")
+
+    def pages(path: str, params: dict[str, Any]) -> list[dict[str, Any]]:
+        out: list[dict[str, Any]] = []
+        for page in range(1, MAX_PAGES + 1):
+            page_params = dict(params, per_page=100, page=page)
+            payload = fetch(path, token, page_params)
+            if not isinstance(payload, list):
+                raise RuntimeError(f"expected list from {path}")
+            out.extend(x for x in payload if isinstance(x, dict))
+            if len(payload) < 100:
+                return out
+        raise RuntimeError(f"pagination exceeded {MAX_PAGES} pages for {path}")
+
+    owned = [r for r in pages("/user/repos", {"affiliation": "owner", "sort": "updated", "direction": "desc"}) if r.get("owner", {}).get("login") == args.owner]
+    starred = pages("/user/starred", {"sort": "updated", "direction": "desc"})
+    payload = build_payload(args.owner, login, owned, starred, observed_at)
+
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.markdown.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    args.markdown.write_text(markdown(records, observed_at), encoding="utf-8")
+    args.markdown.write_text(markdown(payload["repositories"], observed_at), encoding="utf-8")
     print(json.dumps(payload["counts"], sort_keys=True))
     return 0
 

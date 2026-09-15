@@ -76,7 +76,10 @@ def load_canonical_history(output: Path, owner: str, repo: str, ref: str) -> dic
         raise CompilationError("canonical manifest must be an object")
     if manifest.get("schema_version") != "1.0":
         raise CompilationError("canonical history schema version is not supported")
-    if manifest.get("repository") != f"{owner}/{repo}" or manifest.get("default_branch") != ref:
+    repository_matches = manifest.get("repository") == f"{owner}/{repo}"
+    branch_matches = manifest.get("default_branch") == ref
+    legacy_master_migration = ref == "master" and manifest.get("default_branch") == "master-staging"
+    if not repository_matches or not (branch_matches or legacy_master_migration):
         raise CompilationError("canonical history belongs to a different repository or ref")
     canonical_nodes = read_jsonl(nodes_path)
     canonical_edges = read_jsonl(edges_path)

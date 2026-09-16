@@ -131,3 +131,10 @@ Retroactive review is **continuous**, with periodic sampling as a backstop; it m
 ## Skill maintenance
 
 When process improves: edit **both** canonical paths in one PR, merge to master, so every session (this chat, Codespaces, other Grok threads) loads the same skill from the repo.
+
+## 2026-09-16 addition
+
+Use `.agents/skills/pr-minesweeper` plus `ml_pipelines` for live PR lane overlap.
+MoneyBall scores remain decision-support only. Dirty PR #432 is superseded by a
+master-rebased observe-mode package; do not wholesale-merge the stale branch.
+

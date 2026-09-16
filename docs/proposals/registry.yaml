@@ -1,9 +1,27 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-09-11T19:08:00Z"
-updated_by: agent-automation
+updated_at: "2026-09-16T06:20:00Z"
+updated_by: Grok (Administrator)
 
 proposals:
+  - id: ml-pipelines-init
+    title: "GitHub ML Pipelines init + Issue #175 matrix + PR minesweeper"
+    author: Grok (Administrator)
+    status: executing
+    priority: P0
+    path: active/ml-pipelines-init/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: grok-archw1z
+        role: author+executor
+        status: executing
+    related_issues: [213, 175, 192, 337, 265, 522]
+    related_prs: [432]
+    related_branches: [feat/ml-pipelines-rebase-175]
+    gates_required: [repo-gate, termux-smoke]
+
   - id: context-relationship-graph
     title: "GitHub-native context relationship graph and scope index"
     author: Manus

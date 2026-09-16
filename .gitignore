@@ -100,6 +100,9 @@ forensic-indexer/
 CTranslate2/
 refTemplates/
 models/
+# Observe-mode pipeline scoring code is not weight dumps.
+!ml_pipelines/models/
+!ml_pipelines/models/**
 storage/
 concat_work_*/
 go/

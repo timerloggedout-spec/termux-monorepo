@@ -27,6 +27,9 @@
 | **production-reconciliation** | `.github/skills/production-reconciliation/SKILL.md` | RECON → PLAN → IMPLEMENT → COMMIT → **WAIT** → VALIDATE → RE-FETCH → CLASSIFY → RECORD |
 | **context-relationship-graph** | `.agents/skills/context-relationship-graph/SKILL.md` | File/PR/issue/timeline graph; verified vs candidate edges |
 | **termux-monorepo-agentic-governance** | `.agents/skills/termux-monorepo-agentic-governance/SKILL.md` | Permissions, consensus tiers, PR triage bounds |
+| **ml-pipelines** | `.agents/skills/ml-pipelines/SKILL.md` | Observe-mode GitHub ML DAG, MoneyBall export, envelope redaction |
+| **issue-175-matrix** | `.agents/skills/issue-175-matrix/SKILL.md` | OPERATOR priority matrix catalog + fail-closed YAML |
+| **pr-minesweeper** | `.agents/skills/pr-minesweeper/SKILL.md` | Duplicate-lane / dirty-mega PR dispositions (read-only) |
 
 ## Adaptive WAIT (non-negotiable)
 
@@ -64,6 +67,9 @@ Minimum activity taxonomy: `actionable_finding`, `provider_state`, `reviewer_noi
 | pr-evidence-evaluation | `.github/skills/pr-evidence-evaluation/SKILL.md` |
 | workflow-orchestration | `.github/skills/workflow-orchestration/SKILL.md` |
 | action-effectiveness-ledger | `.github/skills/action-effectiveness-ledger/SKILL.md` |
+| ml-pipelines | `.agents/skills/ml-pipelines/SKILL.md` |
+| issue-175-matrix | `.agents/skills/issue-175-matrix/SKILL.md` |
+| pr-minesweeper | `.agents/skills/pr-minesweeper/SKILL.md` |
 
 ## Entry fold (AGENTS.md → CLAUDE.md)
 

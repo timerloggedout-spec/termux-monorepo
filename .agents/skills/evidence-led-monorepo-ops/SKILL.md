@@ -7,79 +7,34 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 
 **Owner:** ArchW1z / Grok Administrator continuous admin on timerloggedout-spec/termux-monorepo.
 
-**Triggers:** priority matrix, master gates, SHE progress, Manus/provider RE, dirty PR triage, Actions hygiene, `continue`, `BIUDL`, `maximize actions`, `/continue`, full telemetry, multi-P0.* handling.
-
 **Canonical paths (keep in sync):**
 - `.agents/skills/evidence-led-monorepo-ops/SKILL.md` ← **agent load path**
 - `docs/ops/skills/evidence-led-monorepo-ops/SKILL.md` ← human/docs mirror
 - `docs/ops/SKILLS-INVENTORY.md` ← full skill table + adaptive WAIT
 
-**Complements:** `adaptive-feedback-cycle`, `review-loop`, `production-reconciliation`, `context-relationship-graph`, `termux-monorepo-agentic-governance`.
+**Primary agent entry:** `CLAUDE.md`.
 
-**Primary agent entry:** `CLAUDE.md` (not `AGENTS.md` — Linguist stub only).
+## Posture
 
-## Posture (non-negotiable)
+- Evidence over anecdote. Extract-only. Dual-gate before merge.
+- Extra-red ≠ dual-gate. Behind-master dual-gate green ≠ auto-merge.
+- Identity: `Agent-Identity: Grok (Administrator)`.
 
-- **Evidence over anecdote.** Cite live SHAs, check runs, run histories, or committed artifacts.
-- **Extract-only.** Never wholesale-merge dirty mega-PRs. One intent per PR.
-- **Dual-gate before merge.** `agentic termux smoke` + `hygiene + portability gate` (or `repo_gate` + `termux_smoke`).
-- **Adaptive WAIT.** After dispatch/commit: re-check jobs→steps→logs→artifacts. Do concurrent non-conflicting work. Do not treat `queued`/`in_progress` as terminal.
-- **Authority > ranking.** MoneyBall/3L0 are decision-support only.
-- **Anti-sprawl.** Thin stacked PRs. No L0 source mutation without authority.
-- **Identity.** `Agent-Identity: Grok (Administrator)` on dispositions.
-- **Extra-red ≠ dual-gate.** Dual-gate green plus `validate-pull-request` / `validate-registry` red → HOLD wholesale; extract intent only.
-- **Behind-master dual-gate green ≠ auto-merge.** Rebase/extract onto current master first.
+## Current production anchors (2026-09-16T22:08Z)
 
-## Core loop (every `/continue` / BIUDL cycle)
-
-1. **Pull live state** — commits, open PRs, #175 / #522 / #265, critical paths.
-2. **Validate gates** — require dual-gate success; ignore skipped `issue_comment` listeners.
-3. **Triage** — prefer 1–5 file security/perf/docs/skill extracts; HOLD megas.
-4. **Act** — squash only when dual-gate green + scope clean + no extra-red on same intent.
-5. **Adaptive WAIT** — stall classes including comment-storm-skip.
-6. **Feed forward** — commit skill/inventory; do not leave SSOT in chat only.
-
-## Current production anchors (refresh on each cycle)
-
-| Item | State (2026-09-16T21:20Z) |
-|------|--------------------|
-| Master HEAD | `72fe741f` (#556 squash; prior `abdd7925` #555, `7f5c78d2` #554) |
-| Landed extracts | #553 colab-cli; #554 lag-index; #555/#556 skill anchors |
-| Codespace agent lane | #530 + #531 MERGED; #545 multi-lane **HOLD** |
-| AGENTS→CLAUDE fold | #488 + #534; CLAUDE.md primary |
-| Skills inventory | `docs/ops/SKILLS-INVENTORY.md` |
-| Backfill admission | schedule `23 * * * *`; default page **2** (stalled since 2026-08-19) |
-| HOLD mega | #523, #527, #142, #455 conflicted, staging #48 |
-| Closed superseded | #550 colab-cli; #551 lag-index (intent landed #553/#554) |
-| Extra-red HOLD | #549 ML rebase (#175): dual-gate green, `validate-pull-request` + `validate-registry` red; #432 dirty sibling |
-| #543 / #545 | skill-quality + multi-lane HOLD |
-| Dual gates | smoke + hygiene; skipped `issue_comment` is not evidence |
-| Merge promotion queue | schedule `47 * * * *` run 35146657772 **FAILED** on master `72fe741f`: jq `sort_by` mixed boolean/string keys. Fix in this extract. |
-| Master scheduled | Context Relationship audit success on `72fe741f`; comment-storm-skip on Gemini/DeepSeek/Jules |
-
-## P0 classification
-
-Includes `reviewer-noise` and `comment-storm-skip`. #390 is a benchmark specimen. `not_executed` is never `execution_failure`.
+| Item | State |
+|------|-------|
+| Master HEAD | `263c3dd9` (advanced under #559; prior `ff81cb6b` #557) |
+| Dual gates on `ff81cb6b` | smoke 35151853839 + hygiene 35151853836 **success** |
+| #559 | dirty / superseded-candidate after master move |
+| Extra-red HOLD | #549 ML (#175); #432 sibling |
+| HOLD mega | #523 #527 #142 #455 #48 #543 #545 |
+| Hist-eval | 35155850816 setup fail: shortened checkout SHA. This extract pins full SHA. |
+| Observatory sibling | `repository-observatory.yml` still short SHA — next extract |
+| Comment-storm-skip | Gemini/Jules `issue_comment` skipped ≠ gate |
 
 ## Extract recipe
 
-1. Do **not** force-update conflicted branch.
-2. `create_branch` from current **master**.
-3. Re-read target path on master; apply intent-only delta.
-4. Open PR → adaptive WAIT dual-gate → squash.
-5. Leave original as superseded-candidate.
+Create branch from current master. Do not force-update dirty branches.
 
-## Manus / external
-
-Park until restore window. Do not block monorepo extracts on external quota.
-
-## Anti-patterns
-
-- Wholesale merge of dirty/conflicted/behind-master PRs
-- Closing cycle without dual-gate evidence
-- Treating skipped `issue_comment` listeners as dual-gate results
-- Chat-only skill content
-
-## Skill maintenance
-
-Edit **both** canonical paths + inventory in one PR, dual-gate, squash to master.
+BIUDL. Agent-Identity: Grok (Administrator)

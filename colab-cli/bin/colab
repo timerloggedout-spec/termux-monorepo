@@ -42,19 +42,19 @@ def cli():
 @click.option('--name', default='sandbox', help='Name of the sandbox session')
 def start(runtime, name):
     """Start a new Colab sandbox with SSH and code-server."""
+    if ".." in name or "/" in name or "\\" in name:
+        click.echo("❌ Invalid sandbox name (path traversal detected).", err=True)
+        sys.exit(1)
     click.echo(f"🚀 Launching Colab sandbox: {name} ({runtime})")
     sandbox_dir = Path(config['colab']['workspace_root']) / name
     sandbox_dir.mkdir(parents=True, exist_ok=True)
 
-    # Use colab-ssh to launch (it has its own CLI)
-    # We'll call it via subprocess, passing our SSH key and workspace
     cmd = [
         sys.executable, "-m", "colab_ssh", "launch",
         "--runtime", runtime,
         "--ssh-key", config['colab']['ssh']['key_path'],
         "--workspace", str(sandbox_dir)
     ]
-    # Also add cookie file if exists
     cookie_path = Path(config['colab']['auth']['cookie_file']).expanduser()
     if cookie_path.exists():
         cmd.extend(["--cookies", str(cookie_path)])
@@ -63,8 +63,6 @@ def start(runtime, name):
         subprocess.run(cmd, check=True)
         click.echo(f"✅ Sandbox '{name}' running. SSH tunnel active on localhost:22")
         click.echo(f"   Workspace: {sandbox_dir}")
-        # Optionally start code-server via colabcode
-        # We'll integrate that later.
     except subprocess.CalledProcessError as e:
         click.echo(f"❌ Failed to start sandbox: {e}", err=True)
         sys.exit(1)
@@ -73,9 +71,10 @@ def start(runtime, name):
 @click.argument('sandbox_name')
 def stop(sandbox_name):
     """Stop a running sandbox."""
+    if ".." in sandbox_name or "/" in sandbox_name or "\\" in sandbox_name:
+        click.echo("❌ Invalid sandbox name (path traversal detected).", err=True)
+        sys.exit(1)
     click.echo(f"🛑 Stopping sandbox: {sandbox_name}")
-    # Kill colab_ssh processes for this sandbox (based on name)
-    # We'll use pkill with a pattern; improve later.
     subprocess.run(["pkill", "-f", f"colab_ssh.*{sandbox_name}"], check=False)
     click.echo("✅ Sandbox stopped.")
 
@@ -84,6 +83,10 @@ def stop(sandbox_name):
 @click.option('--version', default=None, help='Version tag for promotion')
 def promote(sandbox_name, version):
     """Promote a sandbox to production (graduation)."""
+    if ".." in sandbox_name or "/" in sandbox_name or "\\" in sandbox_name:
+        click.echo("❌ Invalid sandbox name (path traversal detected).", err=True)
+        sys.exit(1)
+
     source = Path(config['colab']['workspace_root']) / sandbox_name
     if not source.exists():
         click.echo(f"❌ Sandbox '{sandbox_name}' not found.", err=True)
@@ -94,27 +97,43 @@ def promote(sandbox_name, version):
     target = Path(config['colab']['production_root']) / f"{sandbox_name}-{version}"
     click.echo(f"📦 Promoting {sandbox_name} -> {target.name}")
 
-    # Copy workspace
     shutil.copytree(source, target, symlinks=False, ignore_dangling_symlinks=True)
 
-    # Run validation script
     validate_script = BASE_DIR / "scripts" / "validate.sh"
     if validate_script.exists():
         subprocess.run([str(validate_script), str(target)], check=False)
     else:
         click.echo("⚠️ No validation script found; skipping.")
 
-    # Update latest symlink
     latest = Path(config['colab']['production_root']) / "latest"
-    if latest.exists() or latest.is_symlink():
+    if latest.is_symlink():
         latest.unlink()
+    elif latest.exists():
+        click.echo(f"❌ Target 'latest' exists and is not a symlink.", err=True)
+        sys.exit(1)
     latest.symlink_to(target)
 
-    # Log
-    log_file = BASE_DIR / "logs" / "promotions.log"
-    log_file.parent.mkdir(exist_ok=True)
+    log_dir = BASE_DIR / "logs"
+    log_dir.mkdir(parents=True, exist_ok=True)
+    if not log_dir.is_symlink():
+        try:
+            log_dir.chmod(0o700)
+        except Exception:
+            pass
+
+    log_file = log_dir / "promotions.log"
+    if log_file.is_symlink():
+        click.echo("❌ log_file is a symlink; aborting log write to prevent symlink hijacking.", err=True)
+        sys.exit(1)
+
     with open(log_file, "a") as f:
         f.write(f"{datetime.now().isoformat()} Promoted {sandbox_name} -> {target.name}\n")
+
+    if not log_file.is_symlink():
+        try:
+            log_file.chmod(0o600)
+        except Exception:
+            pass
 
     click.echo(f"✅ Promoted to {target} (symlink 'latest' updated).")
 

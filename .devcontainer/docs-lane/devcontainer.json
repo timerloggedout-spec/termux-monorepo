@@ -1,0 +1,63 @@
+// termux-monorepo — Codespaces Infrastructure: parallel agent-role lanes
+//
+// This is the DOCS / MINTLIFY lane — lightweight, fast build, no heavy
+// tooling. It is one of several sibling lanes under this same
+// .devcontainer/ directory:
+//   - ../devcontainer.json          -> BASH/ops agent lane (default, #530/#531)
+//   - ./devcontainer.json           -> this file (docs / Mintlify)
+//   - ../governance-lane/           -> PR-triage / governance lane
+//   - ../general-dev/               -> general dev/build lane (full stack)
+//
+// Maps to docs/ops/SKILLS-INVENTORY.md role load matrix: Discovery / Docs
+// role — no Python/Rust/apt-heavy toolchain, no setup.sh, no submodule
+// init. Just Node + the Mintlify CLI (invoked via npx, no persistent
+// global install) for fast doc preview/build cycles.
+{
+  "name": "termux-monorepo-docs-lane",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:20-bullseye",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "configureZshAsDefaultShell": false,
+      "installOhMyZsh": false,
+      "upgradePackages": true
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "postCreateCommand": "bash -c 'export ARCHWIZ_ENV=codespace-docs; echo \"[codespace:docs-lane] installing Mintlify CLI (npx, no persistent global install)\"; npx --yes mint --version || true; echo \"[codespace:docs-lane] ready — run: npx mint dev\"'",
+  "postStartCommand": "bash -c 'echo \"[codespace:docs-lane] ready: $(date -u +%Y-%m-%dT%H:%M:%SZ) ARCHWIZ_ENV=$ARCHWIZ_ENV\"'",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "unifiedjs.vscode-mdx",
+        "davidanson.vscode-markdownlint",
+        "redhat.vscode-yaml",
+        "esbenp.prettier-vscode",
+        "GitHub.copilot"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "files.watcherExclude": {
+          "**/.git/objects/**": true,
+          "**/.git/subtree-cache/**": true,
+          "**/node_modules/**": true
+        }
+      }
+    },
+    "codespaces": {
+      "repositories": {}
+    }
+  },
+  "remoteEnv": {
+    "ARCHWIZ_ENV": "codespace-docs",
+    "CODESPACE_AGENT": "1",
+    "CODESPACE_LANE": "docs"
+  },
+  "forwardPorts": [3000],
+  "hostRequirements": {
+    "cpus": 2,
+    "memory": "4gb",
+    "storage": "32gb"
+  },
+  "shutdownAction": "stopContainer"
+}

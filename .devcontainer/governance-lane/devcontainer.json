@@ -1,0 +1,66 @@
+{
+  // =====================================================================================
+  // Codespaces Multi-Lane Infrastructure: PR-Triage / Governance Lane
+  // Sibling to:
+  //   - .devcontainer/devcontainer.json (Root / BASH / Ops Agent Lane - #530/#531)
+  //   - .devcontainer/docs-lane/devcontainer.json (Docs / Mintlify Lane)
+  //   - .devcontainer/general-dev/devcontainer.json (General Dev / Build Lane)
+  //
+  // Role Matrix Mapping (docs/ops/SKILLS-INVENTORY.md):
+  //   - Role: Governance / proposal
+  //   - Load first: termux-monorepo-agentic-governance
+  //   - Then: docs/CONSENSUS.md + docs/proposals/AGENTIC-PERMISSIONS.md
+  //   - Optional: review-loop
+  // =====================================================================================
+  "name": "termux-monorepo-governance-lane",
+  "image": "mcr.microsoft.com/devcontainers/base:bullseye",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "configureZshAsDefaultShell": false,
+      "installOhMyZsh": false,
+      "upgradePackages": true
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/git:1": {
+      "version": "latest"
+    }
+  },
+  "postCreateCommand": "bash -c 'export ARCHWIZ_ENV=codespace-governance; export DEBIAN_FRONTEND=noninteractive; sudo apt-get update -qq && sudo apt-get install -y -qq jq ripgrep git-extras 2>/dev/null || true; echo \"[governance-lane] PR-triage & provenance tools ready\"; echo \"========================================================================\"; echo \"GOVERNANCE LANE ACTIVE\"; echo \"Please load the following skills/docs first:\"; echo \"  - Skill: termux-monorepo-agentic-governance\"; echo \"  - Doc: docs/CONSENSUS.md\"; echo \"  - Doc: docs/proposals/AGENTIC-PERMISSIONS.md\"; echo \"========================================================================\"'",
+  "postStartCommand": "bash -c 'echo \"[codespace] governance lane ready: $(date -u +%Y-%m-%dT%H:%M:%SZ) ARCHWIZ_ENV=$ARCHWIZ_ENV\"'",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "GitHub.vscode-pull-request-github",
+        "GitHub.copilot",
+        "eamodio.gitlens",
+        "redhat.vscode-yaml",
+        "davidanson.vscode-markdownlint"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "files.watcherExclude": {
+          "**/.git/objects/**": true,
+          "**/.git/subtree-cache/**": true,
+          "**/node_modules/**": true,
+          "**/.venv/**": true
+        }
+      }
+    },
+    "codespaces": {
+      "repositories": {}
+    }
+  },
+  "remoteEnv": {
+    "ARCHWIZ_ENV": "codespace-governance",
+    "CODESPACE_AGENT": "1",
+    "CODESPACE_LANE": "governance"
+  },
+  "forwardPorts": [],
+  "hostRequirements": {
+    "cpus": 2,
+    "memory": "4gb",
+    "storage": "32gb"
+  },
+  "shutdownAction": "stopContainer"
+}

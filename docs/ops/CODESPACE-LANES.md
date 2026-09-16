@@ -5,7 +5,7 @@
 
 ## Why this exists
 
-VS Code and GitHub Codespaces support multiple devcontainer configurations per repository via `.devcontainer/<name>/devcontainer.json`. Instead of forcing every agent and collaborator into a single heavy container, this repository now ships **4 parallel lanes** mapped directly to the role load matrix defined in [docs/ops/SKILLS-INVENTORY.md](SKILLS-INVENTORY.md).
+VS Code and GitHub Codespaces support multiple devcontainer configurations per repository via `.devcontainer/<name>/devcontainer.json`. Instead of forcing every agent and collaborator into a single heavy container, this repository now ships **5 parallel lanes** mapped directly to the role load matrix defined in [docs/ops/SKILLS-INVENTORY.md](SKILLS-INVENTORY.md).
 
 This extends, rather than replaces, the production agent lane established in #530/#531 (see [docs/ops/CODESPACE-AGENT-LANE.md](CODESPACE-AGENT-LANE.md) for that lane's full operator card).
 
@@ -17,6 +17,18 @@ This extends, rather than replaces, the production agent lane established in #53
 | **Docs / Mintlify** | `.devcontainer/docs-lane/devcontainer.json` | `javascript-node:20-bullseye` | Discovery / Docs | Lightweight, fast build, Node + Mintlify CLI only. No Python/Rust/apt-heavy tooling, no `setup.sh`, no submodule init. |
 | **PR-Triage / Governance** | `.devcontainer/governance-lane/devcontainer.json` | `base:bullseye` | Governance / proposal | git/gh CLI heavy, provenance-checking tools; prints a reminder to load `termux-monorepo-agentic-governance` + `docs/CONSENSUS.md` + `docs/proposals/AGENTIC-PERMISSIONS.md` on start. |
 | **General Dev/Build** | `.devcontainer/general-dev/devcontainer.json` | `python:1-3.12-bullseye` | Collaborator / Codespace agent | Full monorepo code stack (same toolchain as default lane) plus a startup check of the dual-gate helpers (`scripts/ci/repo_gate.py`, `scripts/ci/termux_smoke.py`) so the lane is build/test-ready immediately. |
+| **Oracle** | `.devcontainer/oracle/devcontainer.json` | `python:1-3.12-bullseye` | Evaluator | Tooled for judging *other* agents' work, not authoring it: `scripts/ci/oracle_watch.sh` runs the adaptive-wait WAIT→WATCH→VALIDATE→RE-FETCH→COMPARE→CLASSIFY→RECORD→REPEAT loop against a PR's CI check runs, plus a lightweight commit/trailer provenance check. Prints reminders to load `blind-agent-evaluation`, `multivariate-doe`, `pr-evidence-evaluation`, `mvt-experiment`, and `adaptive-wait` on start. |
+
+## The Oracle (Evaluator lane persona)
+
+The Evaluator lane's persona is named **Oracle**, following this org's existing agent-persona naming convention (see [`harmony_hub/config/GRIMOIRE_DICTIONARY.md`](../../harmony_hub/config/GRIMOIRE_DICTIONARY.md) — Chronomancer, Linguist, Bidder, Scout, Harvester). "Oracle" is evocative of watch/scry/judge, matching this lane's purpose: it evaluates and classifies other agents' PRs rather than producing its own changes. The **documented role-matrix mapping stays "Evaluator"** throughout this doc and `SKILLS-INVENTORY.md` for traceability — "Oracle" is the in-repo directory name and runtime persona only.
+
+Its core tool, [`scripts/ci/oracle_watch.sh`](../../scripts/ci/oracle_watch.sh), is a standalone script (also usable outside Codespaces) that:
+
+1. **CAPTURE**s the target PR's head SHA, title, and expected effect (all required checks green + mergeable).
+2. Runs a lightweight **provenance/trailer check** on the PR's commits (flags short/boilerplate commit bodies — a nod to this org's Manus/Jules trailer-verification methodology, not a full re-implementation of it).
+3. Loops **WAIT → WATCH → VALIDATE → COMPARE → CLASSIFY → RECORD** per the [`adaptive-wait`](../../.agents/skills/adaptive-wait/SKILL.md) skill's stall classes (admission/queue/execution), never treating `queued`/`in_progress` as terminal.
+4. Exits with a distinct code per verdict (`0`=PASS, `1`=FAIL, `2`=STALLED, `3`=TIMEOUT) and prints an "Oracle verdict:" line suitable for pasting into a PR review comment.
 
 ## Create a Codespace on a specific lane
 

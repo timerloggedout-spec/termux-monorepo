@@ -1,0 +1,73 @@
+// ============================================================================
+// The Oracle — Evaluator Lane
+// ============================================================================
+// Codespaces lane for the Evaluator role (docs/ops/SKILLS-INVENTORY.md role
+// matrix: blind-agent-evaluation, pr-evidence-evaluation, mvt-experiment).
+// Tooled for judging OTHER agents' work — not authoring it: CI check-run
+// polling, provenance/trailer verification, stall classification — built
+// around the WAIT -> WATCH -> VALIDATE -> RE-FETCH -> COMPARE -> CLASSIFY ->
+// RECORD -> REPEAT discipline from .agents/skills/adaptive-wait/SKILL.md.
+//
+// Sibling lanes in this same .devcontainer directory:
+//   - ../devcontainer.json       -> BASH/Ops Agent lane (Admin, #530/#531)
+//   - ../docs-lane/              -> Docs/Mintlify lane (Discovery/Docs)
+//   - ../governance-lane/        -> PR-Triage/Governance lane (Governance)
+//   - ../general-dev/            -> General dev/build lane (Collaborator)
+//   - ./ (this file)             -> Oracle lane (Evaluator)
+//
+// Persona name "Oracle" follows this org's existing agent-persona naming
+// convention (see harmony_hub/config/GRIMOIRE_DICTIONARY.md — Chronomancer,
+// Linguist, Bidder, Scout, Harvester); Oracle is evocative of watch / scry /
+// judge. The documented role-matrix mapping stays "Evaluator" for
+// traceability back to docs/ops/SKILLS-INVENTORY.md.
+{
+  "name": "termux-monorepo-oracle-lane",
+  "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bullseye",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "configureZshAsDefaultShell": false,
+      "installOhMyZsh": false,
+      "upgradePackages": true
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "postCreateCommand": "bash -c 'export ARCHWIZ_ENV=codespace-oracle; export DEBIAN_FRONTEND=noninteractive; sudo apt-get update -qq && sudo apt-get install -y -qq jq ripgrep 2>/dev/null || true; python3 -m pip install --quiet --upgrade pip; chmod +x scripts/ci/oracle_watch.sh 2>/dev/null || true; echo \"🔮 [oracle-lane] The Oracle awakens — watch-and-evaluate tools ready\"; echo \"========================================================================\"; echo \"Load first: .agents/skills/blind-agent-evaluation/SKILL.md + .agents/skills/multivariate-doe/SKILL.md\"; echo \"Then: .github/skills/pr-evidence-evaluation/SKILL.md + .github/skills/mvt-experiment/SKILL.md\"; echo \"Adaptive-wait discipline (WAIT->WATCH->VALIDATE->RE-FETCH->COMPARE->CLASSIFY->RECORD->REPEAT): .agents/skills/adaptive-wait/SKILL.md\"; echo \"Run: scripts/ci/oracle_watch.sh <pr-number>  — the Oracle'\"'\"'s watch-and-evaluate loop over a PR'\"'\"'s check runs + lightweight provenance check\"; echo \"========================================================================\"'",
+  "postStartCommand": "bash -c 'echo \"[oracle-lane] ready: $(date -u +%Y-%m-%dT%H:%M:%SZ) ARCHWIZ_ENV=$ARCHWIZ_ENV\"; echo \"🔮 the Oracle watches.\"'",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "GitHub.vscode-pull-request-github",
+        "GitHub.copilot",
+        "ms-python.python",
+        "eamodio.gitlens",
+        "redhat.vscode-yaml"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "files.watcherExclude": {
+          "**/.git/objects/**": true,
+          "**/.git/subtree-cache/**": true,
+          "**/node_modules/**": true,
+          "**/.venv/**": true
+        }
+      }
+    },
+    "codespaces": {
+      "repositories": {}
+    }
+  },
+  "remoteEnv": {
+    "ARCHWIZ_ENV": "codespace-oracle",
+    "CODESPACE_AGENT": "1",
+    "CODESPACE_LANE": "oracle",
+    "CODESPACE_PERSONA": "Oracle"
+  },
+  "forwardPorts": [],
+  "hostRequirements": {
+    "cpus": 2,
+    "memory": "4gb",
+    "storage": "32gb"
+  },
+  "shutdownAction": "stopContainer"
+}

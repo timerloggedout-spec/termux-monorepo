@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a # v5.0.0
         with:
           ref: master
           fetch-depth: 1
@@ -27,6 +27,10 @@ jobs:
       - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
         with:
           python-version: '3.12'
+
+      - name: Test repository observatory
+        working-directory: scripts/github
+        run: python -m unittest -v test_repository_observatory.py
 
       - name: Build repository index
         env:
@@ -38,6 +42,27 @@ jobs:
             --output workspace/llm_map/repositories/repository-index.json \
             --markdown docs/repositories/matrix.md
 
+      - name: Validate generated artifacts
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path('workspace/llm_map/repositories/repository-index.json').read_text())
+          required = {'schema_version', 'builder', 'repository', 'observed_at', 'authenticated_user', 'snapshot_hash', 'counts', 'repositories'}
+          missing = required - data.keys()
+          if missing:
+              raise SystemExit(f'missing required fields: {sorted(missing)}')
+          if len(data['snapshot_hash']) != 64:
+              raise SystemExit('snapshot_hash must be a SHA-256 hex digest')
+          if data['authenticated_user'] != data['repository'].split('/', 1)[0]:
+              raise SystemExit('authenticated user does not match repository owner')
+          for repo in data['repositories']:
+              if not repo.get('id') or not repo.get('full_name') or not repo.get('provenance'):
+                  raise SystemExit(f'invalid repository record: {repo.get("full_name")}')
+          print(f"validated {len(data['repositories'])} repository records")
+          PY
+
       - name: Publish summary
         run: |
           set -euo pipefail
@@ -48,6 +73,7 @@ jobs:
           print('## Repository Observatory')
           print()
           print(f"Observed: `{data['observed_at']}`")
+          print(f"Snapshot: `{data['snapshot_hash'][:12]}`")
           print()
           for key, value in data['counts'].items():
               print(f'- **{key}:** {value}')

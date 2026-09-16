@@ -97,6 +97,10 @@ class HubRuntime:
         return self._dispatcher
 
     def complete_wrapper(self, provider: str, request: ChatCompletionRequest) -> str:
+        if request.session_id:
+            sid = str(request.session_id)
+            if ".." in sid or "/" in sid or "\\" in sid or os.path.isabs(sid):
+                raise HubError(400, "invalid session_id: path traversal forbidden", code="invalid_session_id")
         dispatcher = self._get_dispatcher()
         prompt = messages_to_prompt(request.messages)
         try:

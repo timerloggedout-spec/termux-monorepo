@@ -57,3 +57,22 @@ def test_scaffold_account_symlink_safety(tmp_path, monkeypatch):
 
     with pytest.raises(ValueError, match="Symlink target rejected"):
         scaffold(str(cookies_file), "test_account")
+
+def test_scaffold_account_path_traversal_prevention(tmp_path, monkeypatch):
+    monkeypatch.setenv("HOME", str(tmp_path))
+
+    cookies_file = tmp_path / "cookies_valid.json"
+    cookies_data = [{"name": "ds_session_id", "value": "test_session_token_12345"}]
+    cookies_file.write_text(json.dumps(cookies_data))
+
+    invalid_account_names = [
+        "../traversal",
+        "../../etc/passwd",
+        "foo/../bar",
+        "account name with spaces",
+        "account;injection"
+    ]
+
+    for invalid_name in invalid_account_names:
+        with pytest.raises(ValueError, match="Invalid account name"):
+            scaffold(str(cookies_file), invalid_name)

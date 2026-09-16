@@ -118,3 +118,28 @@ def test_telemetry_incremental_correctness_and_positions(tmp_path, monkeypatch):
     # Verify correctness of updated value
     target_0_job = next(job for job in jobs_append if job["target"] == "file_0.py")
     assert target_0_job["level"] == "SUCCESS"
+
+
+def test_dashboard_status_tag_rendering(tmp_path, monkeypatch):
+    temp_log = tmp_path / "status_agent_telemetry_stream.json"
+    monkeypatch.setattr(dashboard, "TELEMETRY_LOG", str(temp_log))
+
+    monkeypatch.setattr(dashboard, "_last_file_pos", 0)
+    monkeypatch.setattr(dashboard, "_active_jobs_cache", {})
+    monkeypatch.setattr(dashboard, "_last_file_ino", None)
+    monkeypatch.setattr(dashboard, "_last_file_mtime", 0)
+
+    entries = [
+        {"target": "file1.py", "agent": "A", "attempt": 1, "level": "SUCCESS", "message": "Done", "timestamp": "2026-08-01 12:00:00"},
+        {"target": "file2.py", "agent": "B", "attempt": 1, "level": "ERROR", "message": "Failed syntax", "timestamp": "2026-08-01 12:00:01"},
+        {"target": "file3.py", "agent": "C", "attempt": 1, "level": "WARNING", "message": "Lint warning", "timestamp": "2026-08-01 12:00:02"},
+        {"target": "file4.py", "agent": "D", "attempt": 1, "level": "RETRY", "message": "Retrying run", "timestamp": "2026-08-01 12:00:03"},
+        {"target": "file5.py", "agent": "E", "attempt": 1, "level": "INFO", "message": "Running", "timestamp": "2026-08-01 12:00:04"},
+    ]
+
+    with open(temp_log, "w") as f:
+        for entry in entries:
+            f.write(json.dumps(entry) + "\n")
+
+    panel = dashboard.make_dashboard()
+    assert panel is not None

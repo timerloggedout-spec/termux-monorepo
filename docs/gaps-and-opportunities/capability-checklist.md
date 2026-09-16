@@ -19,7 +19,7 @@ current token scope (noted explicitly, never silently assumed either way)
 | Dependabot (`.github/dependabot.yml`) | ✅ present | ❌ absent | ❌ absent |
 | CODEOWNERS | ❌ absent (no `CODEOWNERS` at root or in `.github/`) | ❌ absent | ❌ absent |
 | Branch protection on default branch | ⚠️ likely absent — token returns "Resource not accessible by integration" on all three, and the Agentic Ops room independently hit the same 403 across repeated rechecks, which strengthens this from "unverifiable" to "most likely none configured" (still not 100% certain without direct admin-scope confirmation — could in principle be an App-permission gap rather than true absence). `allow_auto_merge` is `true` on termux-monorepo, `false` on the other two, consistent with no protection blocking auto-merge on the monorepo. Needs an Operator with admin scope for a final direct check (branch-protection changes are Tier 4 regardless of what's found). | ⚠️ same caveat | ⚠️ same caveat |
-| devcontainer / Codespaces config | ❌ absent — no `.devcontainer/` or root `devcontainer.json`. **PR #499 opened** to add one, scoped to the monorepo's actual stack (Python 3.12 base + Node 20 + Rust features, reusing the repo's own `setup.sh`). Codespaces prebuilds (cost-bearing) raised separately as a proposal, not bundled. | ❌ absent — smaller Next.js/Vercel API service, a follow-up devcontainer here is a light lift once the monorepo pattern lands | ❌ absent — same as termux-mcp |
+| devcontainer / Codespaces config | ✅ live and multi-lane. PR #499 (merged) added the base `.devcontainer/devcontainer.json`; PR #530/#531 (merged) turned it into the production Admin/BASH-agent lane with an operator card (`docs/ops/CODESPACE-AGENT-LANE.md`); **PR #545 (open)** adds 3 more parallel role-scoped lanes (docs-Mintlify, governance, general-dev) per `docs/ops/SKILLS-INVENTORY.md`'s role matrix. **Evaluator** role from that matrix explicitly has no lane yet (called out as a follow-up in #545, not silently dropped). Codespaces prebuilds (cost-bearing) remain a separate, still-open Operator decision (this proposal, PR #500). | ❌ absent — smaller Next.js/Vercel API service, a follow-up devcontainer here is a light lift once the monorepo pattern lands | ❌ absent — same as termux-mcp |
 | SECURITY.md | ✅ present at root | ❌ absent | ❌ absent |
 | Auto-merge configured (`allow_auto_merge`) | ✅ `true` | ❌ `false` | ❌ `false` |
 | Governance skill reference (`.agents/` tree, consensus/permissions docs) | ✅ full tree — `docs/proposals/`, `docs/CONSENSUS.md`, `docs/proposals/AGENTIC-PERMISSIONS.md`, `.agents/skills/` | ❌ no `.agents/` folder, no pointer to the org's governance model at all | ❌ same as termux-mcp |
@@ -43,15 +43,25 @@ these is lightweight (a short `AGENTS.md` pointing back at the monorepo's govern
 than a full copy; a small Dependabot config; a short SECURITY.md) — not a full port of the
 monorepo's apparatus. Proposed as follow-up work, not invented as urgent.
 
-## Other repos in the org (lighter pass — not in original task scope, flagged for awareness)
+## Other repos in the org — pass 2 (basic metadata check, not full capability inspection)
 
-Found via org-wide repo search, not deep-inspected this pass: `Geiger_fork`,
-`termux-monorepo-sparked`, `timerloggedout-spec.github.io`, `agentix_fork`, `gh-mcp_fork`,
-`mcp-multi-host`, `gh_mcp_server_fork`, `multi-ide-memory-compiler_fork`, `ArchWiz_fork`. Several
-are named `*_fork`, suggesting upstream-tracking forks rather than actively governed repos — the
-Agent Routing Orchestrator room's PR #442/445/446 work already covers `mcp-multi-host`'s
-disposition. Recommend a deep pass on these only if the owner wants the checklist to cover them;
-flagging their existence here so they're not silently excluded.
+All 10 remaining org repos now checked at least at the metadata level (fork/archived status,
+last push, presence of governance/CI files). Accurate signal, not padding — most of these are
+genuinely low-priority for this checklist, and the checklist says so plainly rather than
+inventing gaps to look thorough:
+
+| Repo | Status | Notes |
+|---|---|---|
+| `termux-monorepo-sparked` | **Deprecated** | Description states "Moved to Research-Astute/termux-monorepo" — not an active surface, exclude from future passes. |
+| `mcp-multi-host` | **Archived** | Already disposed of by the Agent Routing Orchestrator room (their PR #442/445/446 work). No action needed from this room. |
+| `timerloggedout-spec.github.io` | **Active, real surface** | The org's marketing landing page (GitHub Pages, static HTML/JS, no build step). No CI workflow, no CODEOWNERS, no SECURITY.md, no Dependabot — but it's a static site with no dependencies to patch and no PR-merge risk beyond content; the standard checklist items matter far less here than on code repos. Worth a CODEOWNERS file only if more than one person edits it. |
+| `Geiger_fork`, `motion-script_fork`, `multi-ide-memory-compiler_fork`, `ArchWiz_fork` | Vendor/upstream forks | Own descriptions self-identify as forks of external projects (async task-execution lib, browser animation lib, cross-IDE memory compiler, prompt-to-3D generator). Not this org's original governance surface — CI/CODEOWNERS/etc. gaps here reflect the upstream project, not a gap in *this org's* practice. No action recommended. |
+| `agentix_fork`, `gh-mcp_fork`, `gh_mcp_server_fork` | Vendor forks (MCP tooling) | Forks of `nixedge/agentix`, `shuymn/gh-mcp`, `kousen/gh_mcp_server` respectively — imported MCP-ecosystem tooling. Same reasoning as above; not flagged as org gaps. |
+
+Net: of the 13 total org repos, 3 (termux-monorepo, termux-mcp, android-mcp) are the org's own
+actively-governed surfaces and get full checklist treatment above; 1 (github.io) is a real but
+low-risk static surface; 2 are deprecated/archived and out of scope; 7 are vendor forks where
+governance gaps are upstream's business, not this org's.
 
 ## What a recurring cadence would look like
 

@@ -41,18 +41,20 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 
 ## Current production anchors (refresh on each cycle)
 
-| Item | State (2026-09-16T17:16Z) |
+| Item | State (2026-09-16T19:13Z) |
 |------|--------------------|
-| Master HEAD | `56f0edee` (docs-branch-index bot; prior `5b40df04` #548, `6df9b66a` #547, `97c66653` #546) |
-| Codespace agent lane | #530 + #531 MERGED; #545 multi-lane **HOLD** (hygiene red, smoke green) |
+| Master HEAD | `7f5c78d2` (#554 squash; prior `921f532c` #553, `56f0edee` docs-branch-index) |
+| Landed extracts | #553 colab-cli security; #554 lag-index keywords |
+| Codespace agent lane | #530 + #531 MERGED; #545 multi-lane **HOLD** |
 | AGENTS→CLAUDE fold | #488 + #534; CLAUDE.md primary |
 | Skills inventory | `docs/ops/SKILLS-INVENTORY.md` |
 | Backfill admission | schedule `23 * * * *`; default page **2** (stalled since 2026-08-19) |
 | HOLD mega | #523, #527, #142, #455 conflicted, staging #48 |
-| Behind-master dual-gate green | #550 colab-cli security (2 files) + #551 lag-index keywords; extract onto `56f0edee` |
+| Superseded-candidates | #550 colab-cli; #551 lag-index (intent landed via #553/#554) |
 | Extra-red HOLD | #549 ML rebase (#175): dual-gate green, `validate-pull-request` + `validate-registry` red; #432 dirty sibling |
 | #543 / #545 | skill-quality + multi-lane HOLD |
 | Dual gates | smoke + hygiene; skipped `issue_comment` is not evidence |
+| Master scheduled | Continuous Team Evaluation / RECON / Team MVT success on `7f5c78d2` |
 
 ## P0 classification
 

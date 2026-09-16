@@ -1,6 +1,6 @@
 # Skills Inventory (termux-monorepo)
 
-**Version:** 2026-09-16 · **Last refreshed SHA:** `56f0edee` (docs-branch-index; post-#548)  
+**Version:** 2026-09-16 · **Last refreshed SHA:** `7f5c78d2` (#554; prior #553)  
 **Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)  
 **Ops loop trigger words:** `continue`, `BIUDL`, `maximize actions`, `/continue`
 
@@ -39,18 +39,19 @@
 5. Dual-gate green + extra-red (`validate-pull-request`, `validate-registry`) → HOLD wholesale.
 6. Dual-gate green on a **behind-master** SHA → extract/rebase, do not squash onto stale base.
 
-## Cycle snapshot (2026-09-16T17:16Z)
+## Cycle snapshot (2026-09-16T19:13Z)
 
-- Master `56f0edee`.
-- #550 / #551: dual-gate green on `5b40df04` base — extract onto current master.
+- Master `7f5c78d2` after #553 + #554 squash extracts.
+- #550 / #551: superseded-candidates (intent landed).
 - #549: dual-gate green + validate-PR/registry red — HOLD (#175 ML).
 - HOLD mega: #523 #527 #142 #455 #48.
 - #543 #545 HOLD.
+- Master scheduled RECON / Team MVT / Continuous Team Evaluation success on `7f5c78d2`.
 
 ## Entry fold
 
-- #488 / #534 / #537 / #542 / #546 / #547 / #548 landed.
-- This extract refreshes anchors after the docs-branch-index commit on `56f0edee`.
+- #488 / #534 / #537 / #542 / #546 / #547 / #548 / #553 / #554 landed.
+- This extract refreshes anchors after lag-index + colab-cli extracts.
 
 ## Cross-session rule
 

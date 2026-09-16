@@ -1,6 +1,6 @@
 # Skills Inventory (termux-monorepo)
 
-**Version:** 2026-09-15 · **Last refreshed SHA:** `fdd42ec2` (#482)
+**Version:** 2026-09-16 · **Last refreshed SHA:** `97c66653` (#546)
 **Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)
 **Ops loop trigger words:** `continue`, `BIUDL`, `maximize actions`, `/continue`
 
@@ -20,7 +20,7 @@
 
 | Skill | Path | Role |
 |-------|------|------|
-| **evidence-led-monorepo-ops** | `.agents/skills/evidence-led-monorepo-ops/SKILL.md` (+ `docs/ops/skills/…`) | Live state, dual-gate, extract-only, priority matrix, dispositions |
+| **evidence-led-monorepo-ops** | `.agents/skills/evidence-led-monorepo-ops/SKILL.md` (+ `docs/ops/skills/…`) | Live state, dual-gate, extract-only, retroactive benchmark review, reviewer-noise classification |
 | **adaptive-wait** | `.agents/skills/adaptive-wait/SKILL.md` (+ `docs/ops/skills/…`) | **WAIT stage SSOT** — poll checks, stall classes, active-wait, dual-gate before promote |
 | **adaptive-feedback-cycle** | `.agents/skills/adaptive-feedback-cycle/SKILL.md` | Full OBSERVE → CLASSIFY → WAIT/STEER/RETRY → VERIFY → PROMOTE → FEED FORWARD |
 | **review-loop** | `.agents/skills/review-loop/SKILL.md` | SHA/run binding, bilateral critique, no-HITL continuous review |
@@ -43,6 +43,12 @@ Local Grok project mirrors (this chat environment):
 - `/home/workdir/.grok/skills/evidence-led-monorepo-ops/SKILL.md`
 - `/home/workdir/.grok/skills/adaptive-wait/SKILL.md`
 
+## Retroactive benchmark rule
+
+**PR #390 remains a benchmark specimen, not the historical evaluation boundary.** Evaluate historical GitHub objects continuously and classify automation activity before converting comment volume into failure evidence.
+
+Minimum activity taxonomy: `actionable_finding`, `provider_state`, `reviewer_noise`, `execution_failure`, `not_executed`, `self_trigger_candidate`. ECC-tools/Codex/Qodo quota, billing, availability, permission, and status chatter is provider-state/reviewer-noise unless bound execution evidence demonstrates an actual task failure.
+
 ## Supporting skills (repo)
 
 | Skill | Path |
@@ -59,17 +65,13 @@ Local Grok project mirrors (this chat environment):
 | workflow-orchestration | `.github/skills/workflow-orchestration/SKILL.md` |
 | action-effectiveness-ledger | `.github/skills/action-effectiveness-ledger/SKILL.md` |
 
-## External ecosystem (skills.sh / agentskills.io)
-
-Discovery meta-skill: `find-skills` (`.agents/skills/find-skills/SKILL.md`).
-CLI: `npx skills find <query>` · `npx skills add <owner/repo@skill>`.
-Prefer high-install, reputable sources (vercel-labs, anthropics). Inspect before install; project-local by default. Never auto-grant global permissions.
-
 ## Entry fold (AGENTS.md → CLAUDE.md)
 
 - **#488 MERGED** (2026-09-11): CLAUDE.md primary; AGENTS.md demoted.
 - **#534**: AGENTS.md pure Linguist/CedrLang stub; hard rules in CLAUDE.md only.
 - **#537**: README fast-start leads with CLAUDE.md; skills inventory + deploy lanes linked.
+- **#542**: Linguist CedrLang document short-circuit + fence guard.
+- **#546**: reviewer-noise taxonomy + production anchors on master.
 
 ## Backfill / stall context (ops)
 
@@ -77,6 +79,8 @@ Prefer high-install, reputable sources (vercel-labs, anthropics). Inspect before
 - **Admission stall** fixed on master (#534): schedule `23 * * * *` on `context-relationship-backfill.yml`.
 - **#526** audit landed; Tanka abandoned temporary quota — findings valid.
 - **#523** / **#527** remain **HOLD** (mega).
+- **#544** superseded by **#546** (do not wholesale-merge).
+- **#543** HOLD for skill-quality evaluator extract; `validate-pull-request` still red on stale base.
 
 ## Cross-session rule
 
@@ -84,5 +88,5 @@ Skill content that other sessions must load **must** live on **master** under `.
 
 When process improves: edit inventory + skill body in one PR, dual-gate, squash-merge, refresh local mirrors.
 
-Implements: skills navigator SSOT · adaptive-wait SSOT
+Implements: skills navigator SSOT · adaptive-wait SSOT · retroactive benchmark continuity · reviewer-noise classification
 BIUDL.

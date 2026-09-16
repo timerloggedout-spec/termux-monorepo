@@ -147,3 +147,11 @@ def test_caveman_six_lines():
     # Test stopword stripping
     res4 = caveman("the quick brown fox", max_up=True)
     assert res4 == "QUICK BROWN FOX"
+
+def test_non_string_and_empty_inputs():
+    assert compile_doc("") == ""
+    assert decompile_doc("") == ""
+    assert compile_doc(None) == ""
+    assert decompile_doc(None) == ""
+    assert compile_doc(12345) == ""
+    assert decompile_doc(12345) == ""

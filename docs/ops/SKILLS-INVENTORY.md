@@ -1,6 +1,6 @@
 # Skills Inventory (termux-monorepo)
 
-**Version:** 2026-09-16 · **Last refreshed SHA:** `abdd7925` (#555; prior #554/#553)  
+**Version:** 2026-09-16 · **Last refreshed SHA:** `72fe741f` (#556; prior #555/#554/#553)  
 **Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)  
 **Ops loop trigger words:** `continue`, `BIUDL`, `maximize actions`, `/continue`
 
@@ -39,20 +39,20 @@
 5. Dual-gate green + extra-red (`validate-pull-request`, `validate-registry`) → HOLD wholesale.
 6. Dual-gate green on a **behind-master** SHA → extract/rebase, do not squash onto stale base.
 
-## Cycle snapshot (2026-09-16T20:15Z)
+## Cycle snapshot (2026-09-16T21:20Z)
 
-- Master `abdd7925` after #555 skill-anchor squash on #553/#554 extracts.
-- #550 / #551: superseded-candidates (intent landed).
+- Master `72fe741f` after #556 skill-anchor squash.
+- #550 / #551 **closed** as superseded (intent landed #553/#554).
 - #549: dual-gate green + validate-PR/registry red — HOLD (#175 ML).
 - HOLD mega: #523 #527 #142 #455 #48.
 - #543 #545 HOLD.
-- Context Relationship audit success on `abdd7925`; scheduled backfill in_progress.
-- comment-storm-skip on Gemini/DeepSeek/Jules `issue_comment` listeners.
+- Merge Promotion Queue scheduled run `35146657772` **failed** (`jq sort_by` mixed keys). Fix extract on this cycle.
+- Context Relationship audit success on `72fe741f`; comment-storm-skip on Gemini/DeepSeek/Jules `issue_comment` listeners.
 
 ## Entry fold
 
-- #488 / #534 / #537 / #542 / #546 / #547 / #548 / #553 / #554 / #555 landed.
-- This extract refreshes anchors after #555 onto current master.
+- #488 / #534 / #537 / #542 / #546 / #547 / #548 / #553 / #554 / #555 / #556 landed.
+- This extract refreshes anchors after #556 onto current master and repairs observer-only merge queue.
 
 ## Cross-session rule
 

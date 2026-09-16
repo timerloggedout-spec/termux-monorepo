@@ -1,6 +1,6 @@
 # Skills Inventory (termux-monorepo)
 
-**Version:** 2026-09-16 · **Last refreshed SHA:** `97c66653` (#546)
+**Version:** 2026-09-16 · **Last refreshed SHA:** `6df9b66a` (#547)
 **Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)
 **Ops loop trigger words:** `continue`, `BIUDL`, `maximize actions`, `/continue`
 
@@ -34,10 +34,11 @@
 
 1. After any dispatch/commit/merge request: **WAIT** is a stage, not idle sleep.
 2. Re-check run/job state and timestamps; do concurrent non-conflicting work.
-3. Stall classes: admission / queue / execution / effect / pagination / routing loop.
+3. Stall classes: admission / queue / execution / effect / pagination / routing loop / **comment-storm-skip**.
 4. Do not classify `queued`/`in_progress` as success or failure.
-5. Promote only when dual gates green **and** task outcome verified.
-6. Preserve every attempt (provenance); never rewrite history to linearize.
+5. Do not treat `issue_comment` listener **skipped** conclusions as gate results.
+6. Promote only when dual gates green **and** task outcome verified.
+7. Preserve every attempt (provenance); never rewrite history to linearize.
 
 Local Grok project mirrors (this chat environment):
 - `/home/workdir/.grok/skills/evidence-led-monorepo-ops/SKILL.md`
@@ -48,6 +49,8 @@ Local Grok project mirrors (this chat environment):
 **PR #390 remains a benchmark specimen, not the historical evaluation boundary.** Evaluate historical GitHub objects continuously and classify automation activity before converting comment volume into failure evidence.
 
 Minimum activity taxonomy: `actionable_finding`, `provider_state`, `reviewer_noise`, `execution_failure`, `not_executed`, `self_trigger_candidate`. ECC-tools/Codex/Qodo quota, billing, availability, permission, and status chatter is provider-state/reviewer-noise unless bound execution evidence demonstrates an actual task failure.
+
+`issue_comment` storms that complete as **skipped** on master (Gemini/DeepSeek/ECC/Jules dispatch) are `not_executed` + `reviewer_noise`, not `execution_failure`.
 
 ## Supporting skills (repo)
 
@@ -72,6 +75,7 @@ Minimum activity taxonomy: `actionable_finding`, `provider_state`, `reviewer_noi
 - **#537**: README fast-start leads with CLAUDE.md; skills inventory + deploy lanes linked.
 - **#542**: Linguist CedrLang document short-circuit + fence guard.
 - **#546**: reviewer-noise taxonomy + production anchors on master.
+- **#547**: skill anchors refreshed to `97c66653` post-#546; now master is `6df9b66a`.
 
 ## Backfill / stall context (ops)
 
@@ -81,6 +85,8 @@ Minimum activity taxonomy: `actionable_finding`, `provider_state`, `reviewer_noi
 - **#523** / **#527** remain **HOLD** (mega).
 - **#544** superseded by **#546** (do not wholesale-merge).
 - **#543** HOLD for skill-quality evaluator extract; `validate-pull-request` still red on stale base.
+- **#545** HOLD: `agentic termux smoke` success, `hygiene + portability gate` failure; behind master (`5134b6a7`).
+- **#455** / **#48** comment activity fans out skipped listeners on master — observe, do not merge wholesale.
 
 ## Cross-session rule
 

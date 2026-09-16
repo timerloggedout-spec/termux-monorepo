@@ -1,6 +1,6 @@
 # Skills Inventory (termux-monorepo)
 
-**Version:** 2026-09-16 · **Last refreshed SHA:** `263c3dd9` (master moved after #557/`ff81cb6b`)  
+**Version:** 2026-09-16 · **Last refreshed SHA:** `f1d59dc5` (#560)  
 **Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)
 
 ## Role load matrix
@@ -17,12 +17,13 @@
 | evidence-led-monorepo-ops | `.agents/skills/evidence-led-monorepo-ops/SKILL.md` |
 | adaptive-wait | `.agents/skills/adaptive-wait/SKILL.md` |
 
-## Cycle snapshot (2026-09-16T22:08Z)
+## Cycle snapshot (2026-09-16T23:01Z)
 
-- Master advanced to `263c3dd9` while #559 was in flight → dirty. Successor extract on this branch.
-- Dual-gate last proven on `ff81cb6b` (smoke 35151853839, hygiene 35151853836).
-- #549 extra-red HOLD (#175). Megas HOLD.
-- Hist-eval 35155850816: shortened checkout SHA. This extract pins full SHA.
-- Next extract: `repository-observatory.yml` same short-SHA class.
+- Master HEAD `f1d59dc5` (#560 hist-eval full checkout SHA).
+- Dual-gate: repo-gate 35156205878 success on HEAD; smoke/hygiene cited on #560.
+- #549 extra-red HOLD (#175). Megas HOLD. #561 generated-catalog HOLD.
+- This extract: pin full checkout SHA in `repository-observatory.yml`.
+- Docs-refresh 35160216999 mermaid fail is not a dual-gate.
+- Comment-storm-skip on Jules `#561` issue_comment listeners.
 
 BIUDL. Agent-Identity: Grok (Administrator)

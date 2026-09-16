@@ -41,7 +41,6 @@ CANONICAL_TOKENS: Tuple[str, ...] = (
     "gr1m01r3", "b1dd3r", "w4g3r", "chr0n0", "l1ngu15t", "sc0ut",
     "h4rv35t3r", "em_t3chs", "em_t3ch", "pr0cur3s", "pr0cur3", "cur473s",
     "cur473", "s0urc3s", "s0urc3", "4cqs", "4cq", "c0mp1s", "c0mp1",
-    "r3534rchs", "r3534rch", "c0nc3p7s", "c0nc3p7",
 )
 
 
@@ -116,17 +115,6 @@ def _from_1337_replace(match: re.Match[str]) -> str:
     return VARIANT_INDEX[match.group(0).lower()]
 
 
-def _replace_leet_100(match: re.Match[str]) -> str:
-    """Top-level replacement callback for 100% substitution probability fast-path."""
-    token = match.group(0)
-    chars = list(token)
-    for i, char in enumerate(chars):
-        replacement = LEET_MAP.get(char.lower())
-        if replacement:
-            chars[i] = replacement
-    return "".join(chars)
-
-
 def to_1337speak(
     text: str,
     probability: float = INITIAL_SUBSTITUTION_PROBABILITY,
@@ -146,9 +134,6 @@ def to_1337speak(
     # Fast-path optimization: check if any matching tokens exist before evaluating RNG or regex sub
     if not VARIANT_REGEX.search(text):
         return text
-
-    if probability == 1.0:
-        return VARIANT_REGEX.sub(_replace_leet_100, text)
 
     # Direct RNG handle resolution: avoid allocating new random.Random() instances when unseeded
     rand_val = rng.random if rng is not None else random.random

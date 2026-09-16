@@ -17,8 +17,8 @@ def test_zero_probability_is_identity():
 
 
 def test_full_probability_is_reversible():
-    source = "h4x pr0b3 gr1m01r3 l1ngu15t r3534rch c0nc3p7"
-    encoded = to_1337speak(source, probability=1.0)
+    source = "h4x pr0b3 gr1m01r3 l1ngu15t"
+    encoded = to_1337speak(source, probability=1.0, rng=random.Random(7))
     assert encoded != source
     assert from_1337speak(encoded) == source
 

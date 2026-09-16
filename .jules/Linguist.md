@@ -74,10 +74,3 @@ Calling line-by-line document translation and regex parsing on documents that co
 
 **Action:**
 Always perform document-level fast-path search short-circuiting before line splitting in document transformation routines, and restrict code fence start checks using full triple-backtick `"`"`"" substring guards.
-
-## 2026-10-01 - Stateful Line Context and Surface Codec Fast-Paths
-**Learning:**
-Defining inner helper functions (`add_placeholder`, `link_repl`, `bold_repl_*`) inside line-level loop functions (`translate_line`) creates multiple closure object allocations on every matched line frame during document compilation. Wrapping placeholder state in a reusable module-level context object (`LinePlaceholderContext`) with pre-bound method callbacks eliminates per-line closure allocations. Additionally, adding a 100% substitution probability fast-path (`_replace_leet_100`) in `to_1337speak` avoids `random.random()` RNG method calls on deterministic surface encoding passes.
-
-**Action:**
-Encapsulate multi-callback substitution state into module-level slot-based context classes to prevent closure allocations during line-by-line processing loops, and bypass RNG evaluation when probability parameters are 1.0.

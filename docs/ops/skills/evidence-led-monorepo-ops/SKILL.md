@@ -41,10 +41,10 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 
 ## Current production anchors (refresh on each cycle)
 
-| Item | State (2026-09-16T21:20Z) |
+| Item | State (2026-09-16T22:05Z) |
 |------|--------------------|
-| Master HEAD | `72fe741f` (#556 squash; prior `abdd7925` #555, `7f5c78d2` #554) |
-| Landed extracts | #553 colab-cli; #554 lag-index; #555/#556 skill anchors |
+| Master HEAD | `ff81cb6b` (#557 squash; prior `72fe741f` #556) |
+| Landed extracts | #553 colab-cli; #554 lag-index; #555/#556 skill anchors; #557 merge-queue jq + anchors |
 | Codespace agent lane | #530 + #531 MERGED; #545 multi-lane **HOLD** |
 | AGENTS→CLAUDE fold | #488 + #534; CLAUDE.md primary |
 | Skills inventory | `docs/ops/SKILLS-INVENTORY.md` |
@@ -53,9 +53,10 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 | Closed superseded | #550 colab-cli; #551 lag-index (intent landed #553/#554) |
 | Extra-red HOLD | #549 ML rebase (#175): dual-gate green, `validate-pull-request` + `validate-registry` red; #432 dirty sibling |
 | #543 / #545 | skill-quality + multi-lane HOLD |
-| Dual gates | smoke + hygiene; skipped `issue_comment` is not evidence |
-| Merge promotion queue | schedule `47 * * * *` run 35146657772 **FAILED** on master `72fe741f`: jq `sort_by` mixed boolean/string keys. Fix in this extract. |
-| Master scheduled | Context Relationship audit success on `72fe741f`; comment-storm-skip on Gemini/DeepSeek/Jules |
+| Dual gates | smoke + hygiene **success** on `ff81cb6b` (runs 35151853839 / 35151853836); skipped `issue_comment` is not evidence |
+| Merge promotion queue | schedule `47 * * * *`; last run 35146657772 failed on `72fe741f` (pre-#557 jq). Next schedule must prove pin. |
+| Hist-eval | run 35155850816 failed setup: shortened checkout SHA. This extract pins full `08c6903…a8`. |
+| Master scheduled | Context Relationship + Team MVT success on `ff81cb6b`; comment-storm-skip on Gemini/Jules |
 
 ## P0 classification
 

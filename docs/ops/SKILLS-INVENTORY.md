@@ -1,6 +1,6 @@
 # Skills Inventory (termux-monorepo)
 
-**Version:** 2026-09-16 · **Last refreshed SHA:** `72fe741f` (#556; prior #555/#554/#553)  
+**Version:** 2026-09-16 · **Last refreshed SHA:** `ff81cb6b` (#557; prior #556/#555/#554/#553)  
 **Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)  
 **Ops loop trigger words:** `continue`, `BIUDL`, `maximize actions`, `/continue`
 
@@ -39,20 +39,21 @@
 5. Dual-gate green + extra-red (`validate-pull-request`, `validate-registry`) → HOLD wholesale.
 6. Dual-gate green on a **behind-master** SHA → extract/rebase, do not squash onto stale base.
 
-## Cycle snapshot (2026-09-16T21:20Z)
+## Cycle snapshot (2026-09-16T22:05Z)
 
-- Master `72fe741f` after #556 skill-anchor squash.
-- #550 / #551 **closed** as superseded (intent landed #553/#554).
+- Master `ff81cb6b` after #557 merge-queue jq + skill-anchor squash.
+- Dual-gate green on that SHA: termux smoke 35151853839 + repo gate 35151853836.
 - #549: dual-gate green + validate-PR/registry red — HOLD (#175 ML).
 - HOLD mega: #523 #527 #142 #455 #48.
 - #543 #545 HOLD.
-- Merge Promotion Queue scheduled run `35146657772` **failed** (`jq sort_by` mixed keys). Fix extract on this cycle.
-- Context Relationship audit success on `72fe741f`; comment-storm-skip on Gemini/DeepSeek/Jules `issue_comment` listeners.
+- Hist-eval 35155850816 failed at setup (shortened actions/checkout SHA). This extract pins full SHA.
+- Merge Promotion Queue last scheduled run still 35146657772 on pre-#557 SHA; next `47 * * * *` must prove jq pin.
+- Context Relationship + Team MVT success on `ff81cb6b`; comment-storm-skip on Gemini/Jules listeners.
 
 ## Entry fold
 
-- #488 / #534 / #537 / #542 / #546 / #547 / #548 / #553 / #554 / #555 / #556 landed.
-- This extract refreshes anchors after #556 onto current master and repairs observer-only merge queue.
+- #488 / #534 / #537 / #542 / #546 / #547 / #548 / #553 / #554 / #555 / #556 / #557 landed.
+- This extract refreshes anchors after #557 and repairs hist-eval checkout pin.
 
 ## Cross-session rule
 

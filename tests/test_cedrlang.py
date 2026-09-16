@@ -111,8 +111,8 @@ def test_link_protection_and_translation():
 
 def test_emerging_technologies_procurement_mappings():
     # Test compilation of new mappings
-    orig = "We are researching emerging technology curation and procurement compliance."
-    expected = "We are researching em_t3ch cur473 and pr0cur3 c0mp1."
+    orig = "We research emerging technology curation and procurement concepts."
+    expected = "We r3534rch em_t3ch cur473 and pr0cur3 c0nc3p7s."
     compiled = compile_doc(orig)
     assert compiled == expected
 
@@ -127,9 +127,21 @@ def test_emerging_technologies_procurement_mappings():
     assert compile_doc("PROCUREMENT") == "PR0CUR3"
     assert decompile_doc("PR0CUR3") == "PROCUREMENT"
 
+    assert compile_doc("Research") == "R3534rch"
+    assert decompile_doc("R3534rch") == "Research"
+
+    assert compile_doc("Concept") == "C0nc3p7"
+    assert decompile_doc("C0nc3p7") == "Concept"
+
     # Test plurals
     assert compile_doc("Emerging Technologies") == "Em_t3chs"
     assert decompile_doc("Em_t3chs") == "Emerging Technologies"
+
+    assert compile_doc("Researches") == "R3534rchs"
+    assert decompile_doc("R3534rchs") == "Researches"
+
+    assert compile_doc("Concepts") == "C0nc3p7s"
+    assert decompile_doc("C0nc3p7s") == "Concepts"
 
 def test_caveman_six_lines():
     # Test without max_up (default)

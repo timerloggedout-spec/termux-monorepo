@@ -435,17 +435,18 @@ def translate_line(line: str, to_compressed: bool) -> str:
 
 def compile_doc(text: str) -> str:
     """Compile human-readable markdown into CedrLang compressed markdown."""
-    lines = text.splitlines(keepends=True) if isinstance(text, str) else []
+    if not isinstance(text, str) or not text or not COMP_SINGLE_REGEX.search(text):
+        return text if isinstance(text, str) else ""
+
+    lines = text.splitlines(keepends=True)
     compiled_lines = []
     in_fenced_code = False
 
     for line in lines:
-        if "`" in line:
-            stripped = line.strip()
-            if stripped.startswith("```"):
-                in_fenced_code = not in_fenced_code
-                compiled_lines.append(line)
-                continue
+        if "```" in line and line.strip().startswith("```"):
+            in_fenced_code = not in_fenced_code
+            compiled_lines.append(line)
+            continue
         if in_fenced_code:
             compiled_lines.append(line)
         else:
@@ -455,17 +456,18 @@ def compile_doc(text: str) -> str:
 
 def decompile_doc(text: str) -> str:
     """Decompile CedrLang compressed markdown into human-readable markdown."""
-    lines = text.splitlines(keepends=True) if isinstance(text, str) else []
+    if not isinstance(text, str) or not text or not DECOMP_SINGLE_REGEX.search(text):
+        return text if isinstance(text, str) else ""
+
+    lines = text.splitlines(keepends=True)
     decompiled_lines = []
     in_fenced_code = False
 
     for line in lines:
-        if "`" in line:
-            stripped = line.strip()
-            if stripped.startswith("```"):
-                in_fenced_code = not in_fenced_code
-                decompiled_lines.append(line)
-                continue
+        if "```" in line and line.strip().startswith("```"):
+            in_fenced_code = not in_fenced_code
+            decompiled_lines.append(line)
+            continue
         if in_fenced_code:
             decompiled_lines.append(line)
         else:

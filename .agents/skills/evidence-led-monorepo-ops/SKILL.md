@@ -20,18 +20,19 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 - Extra-red ≠ dual-gate. Behind-master dual-gate green ≠ auto-merge.
 - Identity: `Agent-Identity: Grok (Administrator)`.
 
-## Current production anchors (2026-09-16T22:08Z)
+## Current production anchors (2026-09-16T23:01Z)
 
 | Item | State |
 |------|-------|
-| Master HEAD | `263c3dd9` (advanced under #559; prior `ff81cb6b` #557) |
-| Dual gates on `ff81cb6b` | smoke 35151853839 + hygiene 35151853836 **success** |
-| #559 | dirty / superseded-candidate after master move |
+| Master HEAD | `f1d59dc5` (#560 squash; prior `263c3dd9` #558, `ff81cb6b` #557) |
+| Dual gates on `f1d59dc5` | repo-gate 35156205878 success; smoke 35156161622 + hygiene 35156161697 cited on #560 |
 | Extra-red HOLD | #549 ML (#175); #432 sibling |
 | HOLD mega | #523 #527 #142 #455 #48 #543 #545 |
-| Hist-eval | 35155850816 setup fail: shortened checkout SHA. This extract pins full SHA. |
-| Observatory sibling | `repository-observatory.yml` still short SHA — next extract |
+| HOLD generated drift | #561 Jules catalog-only; not lane SSOT |
+| Hist-eval | short SHA pinned in #560 |
+| Observatory | this extract pins full checkout SHA |
 | Comment-storm-skip | Gemini/Jules `issue_comment` skipped ≠ gate |
+| Docs-refresh | 35160216999 mermaid render fail — not dual-gate |
 
 ## Extract recipe
 

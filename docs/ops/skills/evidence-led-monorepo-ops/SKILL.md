@@ -62,17 +62,18 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 
 ## Current production anchors (refresh on each cycle)
 
-| Item | State (2026-09-16) |
+| Item | State (2026-09-16T04:14Z) |
 |------|--------------------|
-| Master HEAD | `5134b6a7` (#542 Linguist fast-path; #541 lane audit; #524 telemetry badges) |
+| Master HEAD | `97c66653` (#546 reviewer-noise + anchors; prior `5134b6a7` #542/#541/#524) |
 | Codespace agent lane | #530 + #531 MERGED; #545 multi-lane configs open |
 | AGENTS→CLAUDE fold | #488 + #534; CLAUDE.md primary |
 | Skills inventory | `docs/ops/SKILLS-INVENTORY.md` |
 | Backfill admission | schedule `23 * * * *` on `context-relationship-backfill.yml`; default page **2** (stalled since 2026-08-19) |
 | #526 audit | Landed; Tanka abandoned temporary quota — findings valid |
 | HOLD mega | #523, #527, #142, #455 conflicted, staging #48 |
-| Behind-master extracts | #543 skill-quality (dual-gate green, validate-PR red, base stale); #544 reviewer-noise (dual-gate green, base stale) |
-| Dual gates | `agentic termux smoke` + `hygiene + portability gate` |
+| Behind-master / extract | #543 skill-quality HOLD (dual-gate green, `validate-pull-request` red, base stale); #544 superseded by #546 |
+| Dual gates on `97c66653` | `termux smoke` success + `repo gate` success |
+| Immediate-fail master runs | `swe-reference-evaluation`, `historical-evaluation-correlation`, `agent-jules-on-issues`, `actions-run-watcher` — classify `not_executed` until job/step logs prove execution |
 
 ## P0 classification
 

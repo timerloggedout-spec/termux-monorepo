@@ -40,6 +40,7 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
    - Candidate PRs: `get` + `get_check_runs`
    - Require dual-gate success before merge
    - Dirty / conflicted / behind-master with extra failures → **HOLD** or **extract** on fresh branch from master
+   - Ignore `issue_comment` skipped listeners when scoring gates
 
 3. **Triage**
    - Prefer: security/perf 1–5 file extracts, docs stubs, admission fixes, skill-anchor refresh
@@ -53,7 +54,7 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 
 5. **Adaptive WAIT**
    - Align with `adaptive-feedback-cycle` + `production-reconciliation`
-   - Stall classes: admission / queue / execution / effect / pagination / routing loop
+   - Stall classes: admission / queue / execution / effect / pagination / routing loop / comment-storm-skip
    - Multi-pass: re-poll after disposition before closing cycle
 
 6. **Feed forward**
@@ -62,18 +63,18 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 
 ## Current production anchors (refresh on each cycle)
 
-| Item | State (2026-09-16T04:14Z) |
+| Item | State (2026-09-16T06:08Z) |
 |------|--------------------|
-| Master HEAD | `97c66653` (#546 reviewer-noise + anchors; prior `5134b6a7` #542/#541/#524) |
-| Codespace agent lane | #530 + #531 MERGED; #545 multi-lane configs open |
+| Master HEAD | `6df9b66a` (#547 anchor refresh; prior `97c66653` #546, `5134b6a7` #542/#541/#524) |
+| Codespace agent lane | #530 + #531 MERGED; #545 multi-lane **HOLD** (hygiene red, smoke green, base `5134b6a7`) |
 | AGENTS→CLAUDE fold | #488 + #534; CLAUDE.md primary |
 | Skills inventory | `docs/ops/SKILLS-INVENTORY.md` |
 | Backfill admission | schedule `23 * * * *` on `context-relationship-backfill.yml`; default page **2** (stalled since 2026-08-19) |
 | #526 audit | Landed; Tanka abandoned temporary quota — findings valid |
 | HOLD mega | #523, #527, #142, #455 conflicted, staging #48 |
-| Behind-master / extract | #543 skill-quality HOLD (dual-gate green, `validate-pull-request` red, base stale); #544 superseded by #546 |
-| Dual gates on `97c66653` | `termux smoke` success + `repo gate` success |
-| Immediate-fail master runs | `swe-reference-evaluation`, `historical-evaluation-correlation`, `agent-jules-on-issues`, `actions-run-watcher` — classify `not_executed` until job/step logs prove execution |
+| Behind-master / extract | #543 skill-quality HOLD; #544 superseded by #546; #545 hygiene HOLD |
+| Dual gates on `6df9b66a` | Prior extract dual-gate green on `954e2022` before squash; do not use skipped `issue_comment` runs as gate evidence |
+| Immediate-fail / skip master runs | `swe-reference-evaluation`, `historical-evaluation-correlation`, `agent-jules-on-issues`, `actions-run-watcher` immediate-fail → `not_executed` until logs prove execution; Gemini/DeepSeek/ECC/Jules `issue_comment` **skipped** → `comment-storm-skip` |
 
 ## P0 classification
 
@@ -83,6 +84,7 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 | gate-failure | smoke/hygiene red | fix extract or hold |
 | admission-stall | 0 runs on scheduled workflow | add schedule or dispatch (done for backfill) |
 | comment-loop / self-trigger | bot↔bot issue_comment storms | observe; Tier-4 workflow fix |
+| comment-storm-skip | many skipped listeners on master SHA | `not_executed` + `reviewer_noise`; do not merge or revert on that signal |
 | reviewer-noise | quota/billing/availability/status chatter without a task failure | classify as provider-state telemetry; do not promote to code failure |
 | security | path traversal, Dependabot | extract fix + dual-gate |
 | dirty-mega | 20+ files / thousands of lines | extract-only |
@@ -97,7 +99,7 @@ For every retrospective slice, classify automation-generated activity before int
 - `provider_state`: quota, billing, unavailable integration, permission, or rate-limit state.
 - `reviewer_noise`: informational/status output that does not establish a repository defect or failed task.
 - `execution_failure`: a task/run actually started and failed, with bound run/step evidence.
-- `not_executed`: admission, availability, cooldown, quota, or routing prevented execution; **never relabel this as `execution_failure`**.
+- `not_executed`: admission, availability, cooldown, quota, routing, or **skipped listener** prevented execution; **never relabel this as `execution_failure`**.
 - `self_trigger_candidate`: a reactive listener plus a matching self-posting path; do not flag read-only listeners merely because they consume comments.
 
 When evaluating #390-like behavior, correlate issue comments, review submissions/comments, workflow runs, jobs/steps, artifacts, commits, PRs, and actor/provider state by immutable IDs plus SHA/ref and timestamps. Detect causal loops without allowing reviewer/provider chatter to contaminate effectiveness metrics.
@@ -126,6 +128,7 @@ Retroactive review is **continuous**, with periodic sampling as a backstop; it m
 - Sleep-only WAIT with no concurrent useful work
 - Acting on quota_cooldown / provider-control as if real_review
 - Treating ECC-tools/Codex/Qodo status chatter as independent task failures without execution evidence
+- Treating skipped `issue_comment` listener runs as dual-gate results
 - Duplicating skill content only in chat — **always commit to master**
 
 ## Skill maintenance

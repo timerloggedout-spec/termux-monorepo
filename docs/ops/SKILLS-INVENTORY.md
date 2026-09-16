@@ -1,6 +1,6 @@
 # Skills Inventory (termux-monorepo)
 
-**Version:** 2026-09-16 · **Last refreshed SHA:** `5134b6a7` (#542)  
+**Version:** 2026-09-16 · **Last refreshed SHA:** `97c66653` (#546)  
 **Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)  
 **Ops loop trigger words:** `continue`, `BIUDL`, `maximize actions`, `/continue`
 
@@ -65,18 +65,13 @@ Minimum activity taxonomy: `actionable_finding`, `provider_state`, `reviewer_noi
 | workflow-orchestration | `.github/skills/workflow-orchestration/SKILL.md` |
 | action-effectiveness-ledger | `.github/skills/action-effectiveness-ledger/SKILL.md` |
 
-## External ecosystem (skills.sh / agentskills.io)
-
-Discovery meta-skill: `find-skills` (`.agents/skills/find-skills/SKILL.md`).  
-CLI: `npx skills find <query>` · `npx skills add <owner/repo@skill>`.  
-Prefer high-install, reputable sources (vercel-labs, anthropics). Inspect before install; project-local by default. Never auto-grant global permissions.
-
 ## Entry fold (AGENTS.md → CLAUDE.md)
 
 - **#488 MERGED** (2026-09-11): CLAUDE.md primary; AGENTS.md demoted.
 - **#534**: AGENTS.md pure Linguist/CedrLang stub; hard rules in CLAUDE.md only.
 - **#537**: README fast-start leads with CLAUDE.md; skills inventory + deploy lanes linked.
 - **#542**: Linguist CedrLang document short-circuit + fence guard.
+- **#546**: reviewer-noise taxonomy + production anchors on master.
 
 ## Backfill / stall context (ops)
 
@@ -84,7 +79,8 @@ Prefer high-install, reputable sources (vercel-labs, anthropics). Inspect before
 - **Admission stall** fixed on master (#534): schedule `23 * * * *` on `context-relationship-backfill.yml`.
 - **#526** audit landed; Tanka abandoned temporary quota — findings valid.
 - **#523** / **#527** remain **HOLD** (mega).
-- **#543** / **#544** are behind-master candidates; intent extracted onto a fresh master branch rather than wholesale-merged.
+- **#544** superseded by **#546** (do not wholesale-merge).
+- **#543** HOLD for skill-quality evaluator extract; `validate-pull-request` still red on stale base.
 
 ## Cross-session rule
 

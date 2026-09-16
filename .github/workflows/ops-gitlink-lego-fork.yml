@@ -1,0 +1,81 @@
+name: ops-gitlink-lego-fork
+
+# One-shot: create mode=160000 gitlink for refTemplates/smods/lego_fork on target branch.
+on:
+  workflow_dispatch:
+    inputs:
+      target_branch:
+        description: 'Branch to update'
+        required: true
+        default: 'leader/lego-fork-smod-template'
+      pin_sha:
+        description: 'lego_fork commit SHA to pin'
+        required: false
+        default: '074f334b71f47552b01d07b78fb6c01fd2c47c0e'
+
+permissions: {}
+
+concurrency:
+  group: ops-gitlink-lego-fork
+  cancel-in-progress: false
+
+jobs:
+  gitlink:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout target branch
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: ${{ github.event.inputs.target_branch }}
+          token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          submodules: false
+
+      - name: Add or refresh lego_fork gitlink
+        env:
+          PIN: ${{ github.event.inputs.pin_sha }}
+          BRANCH: ${{ github.event.inputs.target_branch }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          PATH_SM="refTemplates/smods/lego_fork"
+          URL="https://github.com/timerloggedout-spec/lego_fork.git"
+
+          if ! grep -q "refTemplates/smods/lego_fork" .gitmodules 2>/dev/null; then
+            {
+              echo '[submodule "refTemplates/smods/lego_fork"]'
+              echo "\tpath = ${PATH_SM}"
+              echo "\turl = ${URL}"
+              echo '\tbranch = main'
+              echo '\tshallow = true'
+            } >> .gitmodules
+          fi
+
+          if git ls-files --stage | grep -q "160000.*${PATH_SM}"; then
+            echo "Existing gitlink; aligning pin to ${PIN}"
+            git submodule update --init --depth 1 "${PATH_SM}" || true
+          else
+            git submodule add -f --depth 1 -b main "${URL}" "${PATH_SM}"
+          fi
+
+          git -C "${PATH_SM}" fetch --depth 1 origin "${PIN}" || git -C "${PATH_SM}" fetch origin main
+          git -C "${PATH_SM}" checkout "${PIN}"
+
+          git add .gitmodules
+          git add -f "${PATH_SM}"
+
+          MODE=$(git ls-files -s "${PATH_SM}" | awk '{print $1}')
+          echo "gitlink mode=${MODE} sha=$(git ls-files -s "${PATH_SM}" | awk '{print $2}')"
+          test "${MODE}" = "160000"
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit (already pinned)."
+            exit 0
+          fi
+
+          git commit -m "chore(submodule): gitlink lego_fork @ ${PIN}"
+          git push origin "HEAD:${BRANCH}"

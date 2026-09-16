@@ -1,0 +1,3 @@
+## 2026-09-01 - Reactive lit-html Component State & Accessibility Loops
+**Learning:** Reactive lit-html component closures require explicitly bound `reRender()` invocations inside `try/catch/finally` blocks during async action dispatches (`isProposing`, `isLoading`), combined with `aria-busy` and `?disabled` boolean bindings, to prevent duplicate action dispatches and provide responsive screen reader feedback.
+**Action:** Always wrap async dispatches in lit-html closure factories with state toggles and `finally { reRender(); }` blocks to enforce single-flight operations and accessible UI state transitions.

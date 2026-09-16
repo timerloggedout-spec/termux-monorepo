@@ -1,0 +1,236 @@
+# LLM Provider Connectors Configuration
+# This file defines the configuration for all LLM provider integrations
+
+llm_providers:
+  deepseek:
+    enabled: true
+    api_key_env: "DEEPSEEK_API_KEY"
+    auth_method: "bearer"
+    base_url: "https://api.deepseek.com"
+    rate_limit: 100
+    timeout: 60
+    retry_attempts: 3
+    retry_delay: 1
+    max_tokens: 32768
+    temperature: 0.7
+    top_p: 0.9
+    models:
+      - id: "deepseek-chat"
+        name: "DeepSeek Chat"
+        max_tokens: 32768
+        pricing: "free"
+
+      - id: "deepseek-coder"
+        name: "DeepSeek Coder"
+        max_tokens: 32768
+        pricing: "free"
+
+    features:
+      - chat_completions
+      - streaming
+      - thinking_mode
+      - code_completion
+
+    headers:
+      Content-Type: "application/json"
+      Accept: "application/json"
+
+    endpoints:
+      chat_completions: "/chat/completions"
+      models: "/models"
+
+    # DeepSeek-specific configuration
+    thinking_mode: true
+    pow_solver: true
+
+  mistral:
+    enabled: true
+    api_key_env: "MISTRAL_API_KEY"
+    auth_method: "bearer"
+    base_url: "https://api.mistral.ai"
+    rate_limit: 100
+    timeout: 60
+    retry_attempts: 3
+    retry_delay: 1
+    max_tokens: 32768
+    temperature: 0.7
+    top_p: 0.9
+    models:
+      - id: "mistral-tiny"
+        name: "Mistral Tiny"
+        max_tokens: 32768
+        pricing: "paid"
+
+      - id: "mistral-small"
+        name: "Mistral Small"
+        max_tokens: 32768
+        pricing: "paid"
+
+      - id: "mistral-medium"
+        name: "Mistral Medium"
+        max_tokens: 32768
+        pricing: "paid"
+
+      - id: "mistral-large"
+        name: "Mistral Large"
+        max_tokens: 32768
+        pricing: "paid"
+
+    features:
+      - chat_completions
+      - streaming
+      - embeddings
+
+    headers:
+      Content-Type: "application/json"
+      Accept: "application/json"
+
+    endpoints:
+      chat_completions: "/v1/chat/completions"
+      models: "/v1/models"
+      embeddings: "/v1/embeddings"
+
+  claude:
+    enabled: false
+    api_key_env: "CLAUDE_API_KEY"
+    base_url: "https://api.anthropic.com"
+    rate_limit: 100
+    timeout: 60
+    retry_attempts: 3
+    retry_delay: 1
+    max_tokens: 4096
+    temperature: 0.7
+    top_p: 0.9
+    models:
+      - id: "claude-3-haiku-20240307"
+        name: "Claude 3 Haiku"
+        max_tokens: 4096
+        pricing: "paid"
+
+      - id: "claude-3-sonnet-20240229"
+        name: "Claude 3 Sonnet"
+        max_tokens: 4096
+        pricing: "paid"
+
+      - id: "claude-3-opus-20240229"
+        name: "Claude 3 Opus"
+        max_tokens: 4096
+        pricing: "paid"
+
+    features:
+      - chat_completions
+      - streaming
+      - messages_api
+
+    headers:
+      Content-Type: "application/json"
+      Accept: "application/json"
+      Anthropic-Version: "2023-06-01"
+
+    endpoints:
+      chat_completions: "/v1/messages"
+      models: "/v1/models"
+
+  grok:
+    enabled: false
+    api_key_env: "GROK_API_KEY"
+    base_url: "https://api.grok.com"
+    rate_limit: 100
+    timeout: 60
+    retry_attempts: 3
+    retry_delay: 1
+    max_tokens: 8192
+    temperature: 0.7
+    top_p: 0.9
+    models:
+      - id: "grok-beta"
+        name: "Grok Beta"
+        max_tokens: 8192
+        pricing: "free"
+
+      - id: "grok-1"
+        name: "Grok 1"
+        max_tokens: 8192
+        pricing: "free"
+
+    features:
+      - chat_completions
+      - streaming
+
+    headers:
+      Content-Type: "application/json"
+      Accept: "application/json"
+
+    endpoints:
+      chat_completions: "/api/chat/completions"
+      models: "/api/models"
+
+  openrouter:
+    enabled: true
+    api_key_env: "OPENROUTER_API_KEY"
+    auth_method: "bearer"
+    base_url: "https://openrouter.ai/api/v1"
+    rate_limit: 20
+    timeout: 120
+    retry_attempts: 3
+    retry_delay: 1
+    max_tokens: 131072
+    temperature: 0.7
+    top_p: 0.9
+    models:
+      - id: "stealth/ox-alpha"
+        name: "Ox Alpha"
+        max_tokens: 131072
+        context_tokens: 1048576
+        pricing: "free"
+      - id: "meta-llama/llama-3.3-70b-instruct:free"
+        name: "Llama 3.3 70B Instruct (free)"
+        max_tokens: 32768
+        pricing: "free"
+      - id: "google/gemma-4-31b-it:free"
+        name: "Gemma 4 31B IT (free)"
+        max_tokens: 32768
+        pricing: "free"
+      - id: "qwen/qwen3-coder:free"
+        name: "Qwen3 Coder (free)"
+        max_tokens: 32768
+        pricing: "free"
+    features:
+      - chat_completions
+      - streaming
+      - reasoning
+    headers:
+      Content-Type: "application/json"
+      Accept: "application/json"
+    endpoints:
+      chat_completions: "/chat/completions"
+      models: "/models"
+
+  felo:
+    enabled: true
+    api_key_env: "FELO_AI_API"
+    auth_method: "bearer"
+    base_url: "https://openapi.felo.ai/api/v1"
+    rate_limit: 60
+    timeout: 120
+    retry_attempts: 3
+    retry_delay: 1
+    max_tokens: 32768
+    temperature: 0.7
+    top_p: 0.9
+    models:
+      - id: "claude-sonnet-4-6"
+        name: "Claude Sonnet 4.6 (via Felo)"
+        max_tokens: 32768
+        pricing: "plan"
+    features:
+      - chat_completions
+      - streaming
+      - tools
+    headers:
+      Content-Type: "application/json"
+      Accept: "application/json"
+    endpoints:
+      chat_completions: "/chat/completions"
+      models: "/models"
+    notes: "Secret FELO_AI_API (alias FELO_API_KEY). OpenAI-compatible path."

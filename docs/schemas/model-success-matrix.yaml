@@ -2,9 +2,22 @@
 # Phasing out weightings reliance on public leaderboards.
 # Perfect Trunk Builder & agentic performance matrix.
 
-version: 1
-updated_at: "2026-08-09T22:00:00Z"
-updated_by: jules
+version: 2
+updated_at: "2026-08-22T05:00:00Z"
+updated_by: Manus AI
+
+outcome_evidence:
+  mode: observe
+  authority: repository-local workflow evidence outranks public leaderboard priors after hard eligibility gates
+  required_dimensions: [correctness_gate_pass, substantive_review_resolution, duplicate_noise_avoidance, time_to_safe_feedback, cooldown_queue_efficiency, resource_cost, coordinated_async_completion]
+  required_provenance: [capability, declared_capabilities, effect, specialist, trusted_declared_source, policy_enabled, head_sha_when_pr_scoped, explicit_branch_write_confirmation_when_required, decision_schema_version, evidence_source, observed_at, sample_window]
+  hard_eligibility: [declared_capability, declared_effect, trusted_provenance, policy_enabled, current_sha_when_required, explicit_branch_write_confirmation_when_required, availability, quota]
+  confidence_rules:
+    no_samples: 0.0
+    historic_3l0_prior_only: 0.2
+    insufficient_samples: report_low_confidence_without_promoting_a_specialist
+  retention_boundary: store bounded metadata and aggregate outcomes only; never store raw issue, pull-request, or review bodies
+  promotion_rule: two controlled observe cycles and an Issue #192 ledger decision are required before active-routing changes
 
 models:
   # OpenRouter models

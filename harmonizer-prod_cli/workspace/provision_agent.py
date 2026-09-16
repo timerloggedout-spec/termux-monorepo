@@ -1,4 +1,6 @@
 import os
+import sys
+
 # Define the absolute blueprint dictionary map for our multi-agent stack
 FILES_BLUEPRINT = {
     # 1. System Config Prompt Assets
@@ -15,11 +17,7 @@ Analyze the provided modified source code and corresponding runtime logs.
 - If the tests pass and there are no logic holes, output exactly one word: PASS
 - If there are syntax anomalies or broken functional bounds, provide a concise bulleted list of bugs.""",
     "config/templates/cedar_diff.txt": """Return code updates matching the following pattern exactly:
-<<<<<<< SEARCH
-[Insert the exact lines of existing code to be changed]
-=======
-[Insert the exact new replacement code lines here]
->>>>>>> REPLACE""",
+[Insert the exact new replacement code lines here]""",
     # 2. Base Structural Framework Packages
     "src/__init__.py": "",
     "src/db.py": """import sqlite3
@@ -52,16 +50,16 @@ def init_db():
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS run_history (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                target_file TEXT,
-                attempt_number INTEGER,
-                patch_content TEXT,
-                error_log TEXT,
+                file_path TEXT,
+                attempt INTEGER,
+                coder_output TEXT,
+                critic_feedback TEXT,
                 verdict TEXT,
                 timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
             )''')
         conn.commit()
 
-def log_attempt_telemetry(target_file, attempt, patch, errors, verdict):
+def log_attempt_telemetry(file_path, attempt, coder_output, critic_feedback, verdict):
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
         cursor.execute(
@@ -70,7 +68,7 @@ def log_attempt_telemetry(target_file, attempt, patch, errors, verdict):
         )
         conn.commit()
 
-def index_project_file(workspace_root, relative_path):
+def index_project_file(workspace_root, relative_path, conn=None):
     abs_path = os.path.join(workspace_root, relative_path)
     ext = os.path.splitext(relative_path)[1]
     lang_map = {'.py': 'python', '.js': 'javascript', '.mjs': 'javascript', '.rs': 'rust'}
@@ -78,32 +76,52 @@ def index_project_file(workspace_root, relative_path):
     if not lang:
         return
     try:
+        # Run first ast-grep to scan nodes
         output = subprocess.check_output(["ast-grep", "scan", "--json", abs_path], text=True)
         nodes = json.loads(output)
-        with sqlite3.connect(DB_PATH) as conn:
-            cursor = conn.cursor()
-            for node in nodes:
-                node_id = f"{relative_path}:{node.get('range', {}).get('start', {}).get('line', 0)}"
-                cursor.execute(
-                    "INSERT OR REPLACE INTO nodes VALUES (?, ?, ?, ?, ?, ?)",
-                    (node_id, relative_path, lang, node.get('kind'), node.get('text', '')[:50],
-                     node.get('range', {}).get('start', {}).get('line', 0))
-                )
+
+        # Run second ast-grep to scan imports
         import_pattern = "import $MOD from '$PATH'" if lang == 'javascript' else "import $MOD"
         import_output = subprocess.check_output(
             ["ast-grep", "scan", "--pattern", import_pattern, "--json", abs_path], text=True
         )
         import_nodes = json.loads(import_output)
+
+        # Batch node database entries
+        node_data = []
+        for node in nodes:
+            node_id = f"{relative_path}:{node.get('range', {}).get('start', {}).get('line', 0)}"
+            node_data.append((
+                node_id, relative_path, lang, node.get('kind'), node.get('text', '')[:50],
+                node.get('range', {}).get('start', {}).get('line', 0)
+            ))
+
+        # Batch import edge database entries
+        edge_data = []
         for imp in import_nodes:
             imp_text = imp.get('text', '')
             quoted_paths = re.findall(r"['\"](.*?)['\"]", imp_text)
             for target in quoted_paths:
                 clean_target = target.lstrip('./').replace('.js', '').replace('.py', '')
-                cursor.execute(
-                    "INSERT OR IGNORE INTO edges VALUES (?, ?, ?)",
-                    (relative_path, clean_target, "imports")
-                )
-        conn.commit()
+                edge_data.append((relative_path, clean_target, "imports"))
+
+        # Database transaction using batch executemany for high performance
+        close_conn = False
+        if conn is None:
+            conn = sqlite3.connect(DB_PATH)
+            close_conn = True
+
+        try:
+            cursor = conn.cursor()
+            if node_data:
+                cursor.executemany("INSERT OR REPLACE INTO nodes VALUES (?, ?, ?, ?, ?, ?)", node_data)
+            if edge_data:
+                cursor.executemany("INSERT OR IGNORE INTO edges VALUES (?, ?, ?)", edge_data)
+            if close_conn:
+                conn.commit()
+        finally:
+            if close_conn:
+                conn.close()
     except Exception:
         pass""",
     "src/sandbox.py": """import subprocess
@@ -259,17 +277,20 @@ class AutomatedContextCollector:
     "src/orchestrator.py": """import os
 import re
 import json
-import requests
 import time
 import subprocess
+import sys
+from pathlib import Path
 from src.sandbox import execute_concurrent_tmux_job, check_job_status
 from src.parser import parse_compiler_logs
 from src.git_manager import AgentGitManager
 from src.telemetry import TermuxTelemetryLogger as Log
 from src.db import log_attempt_telemetry
 
-DEEPSEEK_API_KEY = os.environ.get("DEEPSEEK_API_KEY")
-CRITIC_API_KEY = os.environ.get("CRITIC_API_KEY")
+# Retargeted to llm_api_hub for provider abstraction
+REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(str(REPO_ROOT))
+from llm_api_hub.clients.openai_compat import chat_completions, assistant_text
 
 class TermuxAgentOrchestrator:
     def __init__(self, workspace_root):
@@ -282,22 +303,28 @@ class TermuxAgentOrchestrator:
             return f.read()
 
     def call_deepseek_v4_pro(self, system_prompt, user_prompt):
-        headers = {"Authorization": f"Bearer {DEEPSEEK_API_KEY}", "Content-Type": "application/json"}
-        payload = {"model": "deepseek-v4-pro",
-                   "messages": [{"role": "system", "content": system_prompt},
-                                {"role": "user", "content": user_prompt}],
-                   "temperature": 0.1}
-        r = requests.post("https://api.deepseek.com/v1/chat/completions", headers=headers, json=payload)
-        return r.json()['choices'][0]['message']['content']
+        \"\"\"Calls DeepSeek via the hub's wrapper or OpenAI-compatible route.\"\"\"
+        resp = chat_completions(
+            model="wrapper/deepseek",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt}
+            ],
+            temperature=0.1
+        )
+        return assistant_text(resp)
 
     def call_critic_judge(self, system_prompt, target_code, test_logs):
-        headers = {"Authorization": f"Bearer {CRITIC_API_KEY}", "Content-Type": "application/json"}
-        payload = {"model": "critic-judge-model",
-                   "messages": [{"role": "system", "content": system_prompt},
-                                {"role": "user", "content": f"CODE:\\n{target_code}\\n\\nLOGS:\\n{test_logs}"}],
-                   "temperature": 0.1}
-        r = requests.post("https://api.critic-provider.com/v1/completions", headers=headers, json=payload)
-        return r.json()['choices'][0]['message']['content']
+        \"\"\"Calls the critic judge via the hub's unified interface.\"\"\"
+        resp = chat_completions(
+            model="openai/critic-judge-model",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": f"CODE:\\n{target_code}\\n\\nLOGS:\\n{test_logs}"}
+            ],
+            temperature=0.1
+        )
+        return assistant_text(resp)
 
     def parse_and_apply_cedar_diff(self, file_relative_path, llm_response):
         abs_path = os.path.join(self.workspace, file_relative_path)
@@ -388,10 +415,23 @@ def main():
         print("[+] Re-run the script or trigger run_agent.sh to start the operational pipeline loop.")
         sys.exit(0)
 
-    for root, _, files in os.walk(workspace_path):
-        for file in files:
-            rel_path = os.path.relpath(os.path.join(root, file), workspace_path)
-            index_project_file(workspace_path, rel_path)
+    # 1nd3x 4ll pr0j3ct f1l3s (using a single shared sqlite3 connection for speed)
+    import sqlite3
+    from src.db import DB_PATH
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        for root, _, files in os.walk(workspace_path):
+            for file in files:
+                rel_path = os.path.relpath(os.path.join(root, file), workspace_path)
+                index_project_file(workspace_path, rel_path, conn=conn)
+        conn.commit()
+    except Exception:
+        pass
+    finally:
+        try:
+            conn.close()
+        except Exception:
+            pass
 
     target_file = "test_script.py"
     refactor_goal = "Refactor compute to intercept and handle ZeroDivisionError scenario profiles cleanly."
@@ -548,21 +588,20 @@ else
 fi"""
 }
 
-print("[*] Initiating deployment of the Termux multi-agent platform...")
+class TermuxAgentProvisioner:
+    def __init__(self, workspace_root):
+        self.workspace = os.path.abspath(workspace_root)
+        if not os.path.exists(self.workspace):
+            os.makedirs(self.workspace)
 
-# Process and write files dynamically
-for file_path, file_content in FILES_BLUEPRINT.items():
-    dir_name = os.path.dirname(file_path)
-    if dir_name and not os.path.exists(dir_name):
-        os.makedirs(dir_name, exist_ok=True)
+    def provision(self):
+        for path, content in FILES_BLUEPRINT.items():
+            full_path = os.path.join(self.workspace, path)
+            os.makedirs(os.path.dirname(full_path), exist_ok=True)
+            with open(full_path, "w") as f:
+                f.write(content)
+        print(f"Agent stack provisioned at {self.workspace}")
 
-    with open(file_path, "w") as target_file:
-        target_file.write(file_content.strip())
-    print(f" -> Created asset node: {file_path}")
-
-# Grant execution bounds onto the bash operational runner file script
-os.chmod("run_agent.sh", 0o755)
-
-print("\\n[+] Provision complete. System directory structural architecture successfully deployed!")
-print("[+] Step 1: Run 'python run.py' to initialize the workspace directory branch.")
-print("[+] Step 2: Configure your keys, then execute './run_agent.sh' to initialize the platform.")
+if __name__ == "__main__":
+    provisioner = TermuxAgentProvisioner("./agent_stack")
+    provisioner.provision()

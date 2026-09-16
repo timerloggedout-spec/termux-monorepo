@@ -1,0 +1,52 @@
+{
+  "base_branch": "master",
+  "evaluations": [
+    {
+      "idempotency_key": "DPH-000:3d564bcdc6845bff249030ad73eb57ab6901d0a7c01e96a12ccde5f514ecd4b7",
+      "phase_id": "DPH-000",
+      "project_item_id": "PVTI_fixture_000",
+      "project_status": "Done",
+      "pull_requests": [
+        900
+      ],
+      "reason": "merged PR, required checks, and project status agree",
+      "state": "complete"
+    },
+    {
+      "idempotency_key": "DPH-100:3d564bcdc6845bff249030ad73eb57ab6901d0a7c01e96a12ccde5f514ecd4b7",
+      "phase_id": "DPH-100",
+      "project_item_id": "PVTI_fixture_100",
+      "project_status": "Todo",
+      "pull_requests": [],
+      "reason": "all prerequisites and current evidence permit a claim",
+      "state": "ready"
+    },
+    {
+      "idempotency_key": "DPH-200:3d564bcdc6845bff249030ad73eb57ab6901d0a7c01e96a12ccde5f514ecd4b7",
+      "phase_id": "DPH-200",
+      "project_item_id": null,
+      "project_status": null,
+      "pull_requests": [],
+      "reason": "waiting on DPH-100",
+      "state": "waiting"
+    },
+    {
+      "idempotency_key": "DPH-300:3d564bcdc6845bff249030ad73eb57ab6901d0a7c01e96a12ccde5f514ecd4b7",
+      "phase_id": "DPH-300",
+      "project_item_id": null,
+      "project_status": null,
+      "pull_requests": [],
+      "reason": "waiting on DPH-200",
+      "state": "waiting"
+    }
+  ],
+  "plan_id": "gantt-dependency-phases",
+  "plan_sha256": "3d564bcdc6845bff249030ad73eb57ab6901d0a7c01e96a12ccde5f514ecd4b7",
+  "topological_order": [
+    "DPH-000",
+    "DPH-100",
+    "DPH-200",
+    "DPH-300"
+  ],
+  "valid": true
+}

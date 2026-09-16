@@ -28,7 +28,11 @@ def run_code(code):
     SANDBOX.mkdir(parents=True, exist_ok=True)
     ext = '.sh' if is_shell(code) else '.py'
     script = SANDBOX / f'block_{datetime.now().strftime("%H%M%S")}{ext}'
-    script.write_text(code); script.chmod(0o755)
+    if script.is_symlink():
+        raise ValueError(f"Symlink execution script rejected: {script}")
+    script.write_text(code)
+    if not script.is_symlink():
+        script.chmod(0o755)
     res = subprocess.run(['bash', str(script)] if ext == '.sh' else ['python3', str(script)],
                          capture_output=True, text=True, timeout=60, cwd=str(SANDBOX), stdin=subprocess.DEVNULL)
     return res.stdout + res.stderr
@@ -97,56 +101,48 @@ executed = set()
 if EXECUTED.exists():
     executed = set(l.strip() for l in EXECUTED.read_text().splitlines() if l.strip())
 
-last_msg_id = None
-while True:
-    try:
-        msgs = fetch()
-        # Every 30s, force a refresh to catch new messages
-        if time.time() - getattr(self, '_last_refresh', 0) > 30:
-            try:
-                msgs = get_history(token, session_id, force_refresh=True)
-                _last_refresh = time.time()
-            except Exception:
-                pass
-        if not msgs: time.sleep(15); continue
-        cur = str(msgs[-1].get('message_id', ''))
-        if cur == last_msg_id: time.sleep(5); continue
-        last_msg_id = cur
+def main():
+    executed = set()
+    if EXECUTED.exists():
+        executed = set(l.strip() for l in EXECUTED.read_text().splitlines() if l.strip())
 
-        for m in reversed(msgs):
-            if m.get('role', '').lower() != 'assistant': continue
-            mid = str(m.get('message_id', ''))
-            content = m.get('content', '')
-            for match in re.finditer(r'```(?:[a-z]*\n)?(.*?)```', content, re.DOTALL):
-                code = match.group(1).strip()
-                if len(code) < 30 or 'activity_listener' in code: continue
-                # Per‑block tracking
-                block_key = mid + ':' + hashlib.md5(code[:80].encode()).hexdigest()[:12]
-                if block_key in executed: continue
-
-                print(f"\n⚡ Auto‑executing...")
-                out = run_code(code)
-                print(out)
-                with open(AUTOEXEC, 'a') as f: f.write(f"[{datetime.now(timezone.utc).strftime('%H:%M:%S')}] {code[:50]}...\n{out}\n")
-                executed.add(block_key)
-                EXECUTED.write_text('\n'.join(executed))
-                send_chat(out)
-                break
-            break
-    except KeyboardInterrupt:
-        break
-    except json.JSONDecodeError:
-        # Corrupt cache – fetch fresh copy once
+    last_msg_id = None
+    while True:
         try:
-            msgs = get_history(token, session_id, force_refresh=True)
-            with open(CACHE_FILE, 'w') as f:
-                json.dump(msgs, f)
-        except Exception:
-            pass
-        time.sleep(5)
-    except Exception as e:
-        # Only log non‑JSON errors (real problems)
-        if 'Expecting' not in str(e) and 'Unterminated' not in str(e) and 'Invalid \\u' not in str(e):
-            with open(AUTOEXEC, 'a') as f:
-                f.write(f"[{datetime.now().strftime('%H:%M:%S')}] ❌ {e}\n")
-        time.sleep(10)
+            msgs = fetch()
+            if not msgs: time.sleep(15); continue
+            cur = str(msgs[-1].get('message_id', ''))
+            if cur == last_msg_id: time.sleep(5); continue
+            last_msg_id = cur
+
+            for m in reversed(msgs):
+                if m.get('role', '').lower() != 'assistant': continue
+                mid = str(m.get('message_id', ''))
+                content = m.get('content', '')
+                for match in re.finditer(r'```(?:[a-z]*\n)?(.*?)```', content, re.DOTALL):
+                    code = match.group(1).strip()
+                    if len(code) < 30 or 'activity_listener' in code: continue
+                    block_key = mid + ':' + hashlib.md5(code[:80].encode()).hexdigest()[:12]
+                    if block_key in executed: continue
+
+                    print(f"\n⚡ Auto‑executing...")
+                    out = run_code(code)
+                    print(out)
+                    with open(AUTOEXEC, 'a') as f: f.write(f"[{datetime.now(timezone.utc).strftime('%H:%M:%S')}] {code[:50]}...\n{out}\n")
+                    executed.add(block_key)
+                    EXECUTED.write_text('\n'.join(executed))
+                    send_chat(out)
+                    break
+                break
+        except KeyboardInterrupt:
+            break
+        except json.JSONDecodeError:
+            time.sleep(5)
+        except Exception as e:
+            if 'Expecting' not in str(e) and 'Unterminated' not in str(e) and 'Invalid \\u' not in str(e):
+                with open(AUTOEXEC, 'a') as f:
+                    f.write(f"[{datetime.now().strftime('%H:%M:%S')}] ❌ {e}\n")
+            time.sleep(10)
+
+if __name__ == '__main__':
+    main()

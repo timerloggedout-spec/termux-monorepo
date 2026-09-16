@@ -1,0 +1,60 @@
+{
+  "version": "0.2.0",
+  "updated": "2026-09-07T00:00:00Z",
+  "note": "Folded in from the standalone mcp-multi-host repo. Endpoints are relative because every host below now shares this one deployment instead of one Vercel project each.",
+  "hosts": [
+    {
+      "id": "termux-mcp",
+      "repo": "https://github.com/timerloggedout-spec/termux-mcp",
+      "submodule": "mcp-hub/termux-mcp",
+      "transport": "streamable-http",
+      "endpoints": {
+        "mcp": "/mcp/termux"
+      },
+      "tools": ["termux_status", "termux_run", "termux_pkg"],
+      "status": "live_standalone_pending_hub_root_directory_switch",
+      "note": "Currently live and responding at https://termux-mcp.vercel.app/mcp on its own standalone project. Will move to the relative path above once this hub becomes the deployment's Root Directory."
+    },
+    {
+      "id": "android-mcp",
+      "repo": "https://github.com/timerloggedout-spec/android-mcp",
+      "submodule": "mcp-hub/android-mcp",
+      "transport": "streamable-http",
+      "endpoints": {
+        "mcp": "/mcp/android"
+      },
+      "tools": ["android_status", "android_adb", "android_devices"],
+      "status": "not_deployed_pending_hub_root_directory_switch",
+      "note": "Standalone android-mcp.vercel.app was never deployed (no project on that name). This hub is now the deploy path instead of standing up a second project."
+    },
+    {
+      "id": "github-remote",
+      "transport": "http",
+      "endpoints": {
+        "mcp": "https://api.githubcopilot.com/mcp/"
+      },
+      "tools": ["toolsets: default|repos|issues|pull_requests|actions"],
+      "status": "hosted_by_github",
+      "note": "Externally hosted by GitHub, not part of this hub's deployment."
+    },
+    {
+      "id": "gh-aw-mcpg",
+      "repo": "https://github.com/timerloggedout-spec/gh-aw-mcpg_fork",
+      "transport": "gateway",
+      "note": "MCP Gateway fork — fronts multiple servers. Not yet folded into this hub.",
+      "status": "fork_synced"
+    }
+  ],
+  "client_snippets": {
+    "cursor": {
+      "mcpServers": {
+        "termux": { "url": "https://<hub-domain>/mcp/termux" },
+        "android": { "url": "https://<hub-domain>/mcp/android" },
+        "github": {
+          "type": "http",
+          "url": "https://api.githubcopilot.com/mcp/"
+        }
+      }
+    }
+  }
+}

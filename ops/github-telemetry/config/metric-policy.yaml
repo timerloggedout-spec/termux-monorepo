@@ -1,0 +1,66 @@
+# Governed metric definitions for locally reconstructed GitHub telemetry.
+# metric_version must bump when inclusion rules change (breaks comparability).
+version: 1
+metric_version: "actions-perf-v1"
+timezone: UTC
+
+actions:
+  failure_conclusions:
+    - failure
+    - timed_out
+  soft_failure_conclusions:  # counted optionally for ops visibility
+    - cancelled
+    - action_required
+  excluded_conclusions:
+    - skipped
+    - neutral
+  unfinished_statuses:
+    - queued
+    - in_progress
+    - waiting
+    - requested
+    - pending
+  rerun_view:
+    default: latest_attempt  # raw facts retain all attempts
+  latency_definition:
+    queue_ms: started_at - queued_at   # when queued_at present
+    runtime_ms: completed_at - started_at
+    wall_ms: max(completed_at) - min(started_at)  # multi-job run
+  windows_days:
+    - 7
+    - 30
+    - 90
+    - 365
+  dimensions:
+    - workflow
+    - job_name
+    - branch
+    - event
+    - runner_name
+    - conclusion
+
+traffic:
+  cadence: daily
+  retention_days_upstream: 14
+  retention_strategy: append_only
+  note: "Missed day = irreversible gap; collection is an SLO."
+
+stats:
+  commit_activity: weekly_last_year
+  code_frequency:
+    primary: stats/code_frequency
+    fallback_on_422: local_git_numstat
+
+provenance:
+  raw_snapshot_hash: required
+  source_url: required
+  source_collected_at: required
+  collector_version: required
+  label_derived: "locally_reconstructed"
+
+reconciliation:
+  ui_csv_paths:
+    - docs/ops/generated/actions-metrics-job-failures-*.csv
+    - docs/ops/generated/actions-metrics-total-minutes-*.csv
+  tolerance_failure_rate_pp: 2.0  # percentage points
+  tolerance_runtime_rel: 0.15    # relative

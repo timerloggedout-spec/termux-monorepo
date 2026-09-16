@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "description": "Permitted B3 agent safe output for a weekly repository operations report.",
+  "required_keys": ["type", "title", "body"],
+  "allowed_keys": ["type", "title", "body"],
+  "type": "create_issue",
+  "title_pattern": "^Repository operations report — [0-9]{4}-[0-9]{2}-[0-9]{2}$",
+  "required_headings": [
+    "## Scope",
+    "## Observations",
+    "## Evidence",
+    "## Risk flags",
+    "## Cost guardrail"
+  ],
+  "max_body_characters": 6000
+}

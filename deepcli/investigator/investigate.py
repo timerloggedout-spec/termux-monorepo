@@ -97,6 +97,7 @@ def scan_directory(root_dir, max_depth=None, pattern=None, extensions=None,
                 'path': full,
                 'size': st.st_size,
                 'mtime': time.ctime(st.st_mtime),
+                'mtime_ts': st.st_mtime,
                 'is_symlink': stat.S_ISLNK(st.st_mode),
                 'extension': Path(fname).suffix.lower() or '<none>',
                 'language': guess_language(full),
@@ -122,6 +123,7 @@ def investigate_path(path, **kwargs):
             'path': str(p),
             'size': st.st_size,
             'mtime': time.ctime(st.st_mtime),
+            'mtime_ts': st.st_mtime,
             'is_symlink': p.is_symlink(),
             'extension': p.suffix.lower() or '<none>',
             'language': guess_language(str(p)),
@@ -175,12 +177,15 @@ def analyze_and_print(entries, recent_days=7):
 
     for cat, files in categories.items():
         print(f"▸ {cat} ({len(files)} files)")
-        files_sorted = sorted(files, key=lambda x: time.strptime(x['mtime'], "%c"), reverse=True)
+        # Bolt Optimization: Use raw float timestamp mtime_ts to avoid expensive time.strptime parsing
+        files_sorted = sorted(files, key=lambda x: x.get('mtime_ts', 0), reverse=True)
         for f in files_sorted:
-            try:
-                mtime_ts = time.mktime(time.strptime(f['mtime'], "%c"))
-            except:
-                mtime_ts = 0
+            mtime_ts = f.get('mtime_ts')
+            if mtime_ts is None:
+                try:
+                    mtime_ts = time.mktime(time.strptime(f['mtime'], "%c"))
+                except Exception:
+                    mtime_ts = 0
             recent_marker = '🆕' if mtime_ts >= cutoff else '  '
             print(f"  {recent_marker} {f['path'][-60:]:60s}  {f['language']:12s}  {f['size']:>8d}  {f['mtime']}")
             if 'preview' in f and f['preview']:
@@ -189,8 +194,9 @@ def analyze_and_print(entries, recent_days=7):
 
     # Focused "Start Here" list
     print("⚡ Most Recent Files (last {} days) – start your investigation here:".format(recent_days))
-    recent = [e for e in entries if time.strptime(e['mtime'], "%c") >= time.gmtime(cutoff)]
-    recent.sort(key=lambda e: time.strptime(e['mtime'], "%c"), reverse=True)
+    # Bolt Optimization: Compare numeric epoch timestamps directly instead of parsing string representation
+    recent = [e for e in entries if e.get('mtime_ts', 0) >= cutoff]
+    recent.sort(key=lambda e: e.get('mtime_ts', 0), reverse=True)
     for r in recent[:15]:
         print(f"  🕒 {r['mtime']}  {r['language']:10s}  {r['path']}")
     print()

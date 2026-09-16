@@ -1,0 +1,103 @@
+name: context relationship Linear freshness
+
+on:
+  workflow_dispatch:
+    inputs:
+      max_issues:
+        description: 'Maximum Linear issues to inspect for explicit GitHub links.'
+        type: string
+        default: '100'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: context-relationship-linear-freshness-master-staging
+  cancel-in-progress: false
+
+jobs:
+  compare:
+    name: read-only Linear freshness comparison
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: master-staging
+          fetch-depth: 1
+          persist-credentials: false
+
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: '3.12'
+
+      - name: Fetch bounded Linear metadata and compare explicit GitHub links
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          MAX_ISSUES: ${{ inputs.max_issues }}
+          GITHUB_OWNER: ${{ github.repository_owner }}
+          GITHUB_REPO: ${{ github.event.repository.name }}
+        run: |
+          set -euo pipefail
+          if [ -z "${LINEAR_API_KEY:-}" ]; then
+            echo 'LINEAR_API_KEY is not configured; skipping read-only freshness comparison.' >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          python - <<'PY'
+          import json
+          import os
+          from urllib.request import Request, urlopen
+
+          query = '''query($first: Int!) {
+            issues(first: $first, orderBy: updatedAt) {
+              nodes { identifier title url updatedAt state { name } description }
+            }
+          }'''
+          request = Request(
+              'https://api.linear.app/graphql',
+              data=json.dumps({'query': query, 'variables': {'first': int(os.environ['MAX_ISSUES'])}}).encode(),
+              headers={'Content-Type': 'application/json', 'Authorization': os.environ['LINEAR_API_KEY']},
+          )
+          with urlopen(request, timeout=30) as response:  # nosec B310: fixed Linear GraphQL endpoint
+              payload = json.loads(response.read().decode())
+          if payload.get('errors'):
+              raise SystemExit(f"Linear query failed: {payload['errors']}")
+          issues = [
+              {
+                  'identifier': item.get('identifier'),
+                  'title': item.get('title'),
+                  'url': item.get('url'),
+                  'updatedAt': item.get('updatedAt'),
+                  'status': (item.get('state') or {}).get('name'),
+                  'description': item.get('description'),
+              }
+              for item in payload['data']['issues']['nodes']
+          ]
+          with open('/tmp/linear-context-issues.json', 'w', encoding='utf-8') as output:
+              json.dump({'issues': issues}, output)
+          PY
+          python -m archwiz.context_relationships.linear_freshness \
+            --index workspace/llm_map/context_relationships \
+            --linear-issues /tmp/linear-context-issues.json \
+            --owner "$GITHUB_OWNER" \
+            --repo "$GITHUB_REPO" \
+            --output /tmp/linear-freshness-report.json
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+
+          report = json.loads(Path('/tmp/linear-freshness-report.json').read_text(encoding='utf-8'))
+          print('## Context relationship Linear freshness')
+          print()
+          print('| State | Count |')
+          print('|---|---:|')
+          for state, count in report['counts'].items():
+              print(f'| {state} | {count} |')
+          print()
+          print('| Linear | State | GitHub targets | Graph updated |')
+          print('|---|---|---|---|')
+          for record in report['records']:
+              linear = f"[{record['linear_id']}]({record['linear_url']})" if record['linear_url'] else record['linear_id']
+              print(f"| {linear} | {record['status']} | {', '.join(record['github_targets'])} | {record['graph_updated_at'] or ''} |")
+          PY
+          rm -f /tmp/linear-context-issues.json /tmp/linear-freshness-report.json

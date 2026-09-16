@@ -1,0 +1,37 @@
+name: hub result audit
+
+on:
+  pull_request:
+    paths:
+      - "hub_mcp/results/**/*.json"
+      - "scripts/ci/hub_result_audit.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hub-result-audit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    name: result schema and redaction
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 1
+          submodules: false
+
+      - name: Audit submitted result envelopes
+        run: |
+          set -euo pipefail
+          if [ ! -d hub_mcp/results ]; then
+            echo "No result envelopes submitted."
+            exit 0
+          fi
+          while IFS= read -r -d '' envelope; do
+            python3 scripts/ci/hub_result_audit.py "$envelope"
+          done < <(find hub_mcp/results -type f -name '*.json' -print0)

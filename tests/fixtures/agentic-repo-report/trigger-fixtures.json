@@ -1,0 +1,21 @@
+{
+  "accepted": [
+    {
+      "event": "schedule",
+      "description": "The weekly report may run on its compiler-generated Monday schedule."
+    },
+    {
+      "event": "workflow_dispatch",
+      "description": "A controlled manual dispatch supports a non-production trial or operator-initiated report."
+    }
+  ],
+  "rejected": [
+    "issues",
+    "issue_comment",
+    "pull_request",
+    "pull_request_target",
+    "push",
+    "repository_dispatch",
+    "workflow_run"
+  ]
+}

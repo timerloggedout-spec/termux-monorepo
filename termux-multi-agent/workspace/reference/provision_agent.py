@@ -15,11 +15,7 @@ Analyze the provided modified source code and corresponding runtime logs.
 - If the tests pass and there are no logic holes, output exactly one word: PASS
 - If there are syntax anomalies or broken functional bounds, provide a concise bulleted list of bugs.""",
     "config/templates/cedar_diff.txt": """Return code updates matching the following pattern exactly:
-<<<<<<< SEARCH
-[Insert the exact lines of existing code to be changed]
-=======
 [Insert the exact new replacement code lines here]
->>>>>>> REPLACE""",
     # 2. Base Structural Framework Packages
     "src/__init__.py": "",
     "src/db.py": """import sqlite3

@@ -186,3 +186,33 @@ Optional formal subject      → profile raft-strict
 Merge concurrent facts       → CRDT (OR-Set / G-Set / counters)
 Merge authority              → never CRDT; use tiers
 ```
+
+---
+
+## 10. Proposal promotion & voting automation
+
+Proposals are **not** decided inside this file. This file is the constitution;
+`docs/proposals/` is the case docket.
+
+| Step | Where | Tool |
+|------|-------|------|
+| Ingest large external eval | docs/* branch + pointer on master | git |
+| Register | `registry.yaml` + `active/<id>/` | human/agent |
+| Debate | `DEBATE.md` (optional) + Review log | `scripts/proposals/record_vote.py` |
+| Promote status | registry + MANIFEST | `scripts/proposals/promote_proposal.py` |
+| CI hygiene | PRs touching `docs/proposals/**` | `.github/workflows/proposal-lifecycle.yml` |
+
+**Rules:**
+
+1. **Do not paste multi-KB proposals into CONSENSUS.md.** Keep a pointer + `active/<id>/`.
+2. **Votes** must appear as structured `VOTE:` blocks tied to a **term** (`subject/n`). Chat alone is void.
+3. **Status transitions** are forward-only unless `--force`; `accepted` requires `--evidence` (Tier 2–3).
+4. **Closing** moves `active/` → `closed/` and updates registry path (`promote_proposal.py --to closed --close-move`).
+5. Optional **debate branch** (e.g. `docs/kimi-cloud-offload-evaluation`) holds the full prose; master holds navigation + MANIFEST/ITEMS.
+
+```bash
+python3 scripts/proposals/validate_registry.py
+python3 scripts/proposals/record_vote.py --proposal <id> --term <id>/<subject>/1 \
+  --voter <you> --vote accept --reason "…"
+python3 scripts/proposals/promote_proposal.py --id <id> --to accepted --evidence "…"
+```

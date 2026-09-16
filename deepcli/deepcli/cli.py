@@ -12,6 +12,32 @@ from deepcli.core import (
 
 console = Console()
 
+def secure_permissions_recursively(root_path: Path):
+    """
+    Recursively set directory permissions to 0o700 and file permissions to 0o600
+    to protect sensitive credentials and configuration details as per SECURITY.md.
+    """
+    try:
+        if not root_path.exists():
+            return
+        if root_path.is_file():
+            root_path.chmod(0o600)
+            return
+
+        root_path.chmod(0o700)
+        for path in root_path.rglob("*"):
+            try:
+                if path.is_symlink():
+                    continue
+                if path.is_dir():
+                    path.chmod(0o700)
+                else:
+                    path.chmod(0o600)
+            except Exception:
+                pass
+    except Exception:
+        pass
+
 def cmd_import(args):
     profile_dir = args.dir or str(Path.cwd() / "browser-data")
     extract_script = Path(__file__).parent.parent / "extract-token.js"
@@ -23,6 +49,9 @@ def cmd_import(args):
             ["node", str(extract_script), profile_dir],
             capture_output=True, text=True, timeout=60
         )
+        # Recursively secure permissions of the browser profile data to prevent local leaks
+        secure_permissions_recursively(Path(profile_dir))
+
         if proc.returncode != 0:
             console.print(f"[red]Extraction failed: {proc.stderr.strip()}[/]")
             return

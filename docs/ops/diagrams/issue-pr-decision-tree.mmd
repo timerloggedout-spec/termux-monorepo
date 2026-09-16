@@ -1,0 +1,42 @@
+flowchart TD
+  classDef event fill:#e8f0fe,stroke:#1a73e8,color:#102a43
+  classDef safe fill:#e6f4ea,stroke:#188038,color:#102a43
+  classDef gate fill:#fef7e0,stroke:#b06000,color:#4a2c00
+  classDef write fill:#fce8e6,stroke:#c5221f,color:#4a1010
+  classDef stop fill:#f1f3f4,stroke:#5f6368,color:#202124
+
+  start[Issue, PR, review, comment, dispatch, or schedule event]:::event
+  start --> kind{Event family}:::gate
+
+  kind -->|PR lifecycle| prctx{Same repository, supported action, and non-draft route?}:::gate
+  prctx -->|no| prskip[Ignore or record no-op state]:::stop
+  prctx -->|yes| filter{Affected surface?}:::gate
+  filter -->|automation or policy| surface[Workflow-surface policy and peer-review route]:::safe
+  filter -->|source/test/docs| gates[Repository gates, path checks, and advisory controls]:::safe
+
+  kind -->|Issue or comment| issuectx{Trusted actor, repository association, and explicit supported trigger?}:::gate
+  issuectx -->|no| issuereject[No execution; untrusted content remains data]:::stop
+  issuectx -->|yes| command{Authorized label or marker command?}:::gate
+  command -->|no| triage[Bounded triage or advisory analysis route]:::safe
+  command -->|yes| capability{Within accepted agent/provider capability?}:::gate
+  capability -->|no| capabilityhold[Status-only diagnostic or separate acceptance hold]:::stop
+  capability -->|yes| agent[Per-issue concurrency, trusted prompt boundary, bounded agent route]:::safe
+
+  kind -->|Review/provider evidence| evidence{Current SHA, exact cycle, and accepted evidence type?}:::gate
+  evidence -->|no| stale[Status-only evidence; do not complete current cycle]:::stop
+  evidence -->|yes| advance[Advance bounded orchestration state]:::safe
+
+  kind -->|Manual dispatch or schedule| control{Inputs allowlisted and workflow capability chartered?}:::gate
+  control -->|no| controlhold[Fail closed]:::stop
+  control -->|yes| lane[Read-only report, bounded dispatch, or fixed-scope reconciler]:::safe
+
+  surface --> terminal{Result}:::gate
+  gates --> terminal
+  triage --> terminal
+  agent --> terminal
+  advance --> terminal
+  lane --> terminal
+  terminal -->|success or advisory| visible[Summary, check, artifact, or reviewable record]:::safe
+  terminal -->|wait or cooldown| pending[Visible pending state; bounded retry only]:::gate
+  terminal -->|writer preconditions met| writer[Fixed target, provenance, postcondition, rollback boundary]:::write
+  terminal -->|required failure| stop[Stop and surface actionable evidence]:::stop

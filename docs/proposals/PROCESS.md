@@ -55,3 +55,15 @@ All ITEMS terminal + Review log outcome + move active/ → closed/ + registry up
 5. Update ITEMS.md + registry when possible
 6. Never close P0 security without Operator evidence
 ```
+
+## Automation
+
+| Script | Role |
+|--------|------|
+| `scripts/proposals/validate_registry.py` | registry.yaml ↔ active/ consistency |
+| `scripts/proposals/record_vote.py` | append structured VOTE to DEBATE.md |
+| `scripts/proposals/promote_proposal.py` | status transitions + optional close move |
+| `.github/workflows/proposal-lifecycle.yml` | CI validate + PR checklist comment |
+
+Large external proposals may live on a **docs/** branch with a **pointer** on master
+(see `corrected_cloud_offload_evaluation.md` → `active/kimi-cloud-offload/`).

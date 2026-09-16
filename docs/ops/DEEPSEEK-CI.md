@@ -50,6 +50,8 @@ GitHub writes: `ARCHWIZ_GITHUB_TOKEN` → `OPERATOR_GITHUB_TOKEN` → `OPERATOR_
 
 Never use a GitHub PAT as DeepSeek model auth. Never use `DEEPSEEK_TOKEN` for `gh` / REST admin calls.
 
+**Getting a fresh value for any of the above**: see `docs/DEEPSEEK-CAPTURE-PIPELINE.md` for the actual working capture pipeline (manual on-device login via Termux:X11, then automatable cookie-normalize + token-extract steps). `code=40003 "Authorization Failed (invalid token)"` from `create_chat_session` means the value currently in `DEEPSEEK_TOKEN_PRIMARY`/`DEEPSEEK_COOKIES` is stale - most likely because the session was correctly rotated per `docs/CREDENTIAL-EXPOSURE.md`. Never resurrect a token/cookie from the already-exposed `deepcli/browser-data/` or `deepseek-cli/browser-data*/` directories to patch this - capture a fresh one instead.
+
 ## Security policy
 
 1. Auth: model secret only for model — never reuse `GITHUB_TOKEN` / OPERATOR as model auth.

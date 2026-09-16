@@ -1,0 +1,90 @@
+---
+title: "Get Started with the Termux Monorepo"
+sidebarTitle: "Quickstart"
+description: "Set up the Termux Monorepo on Android, initialize the multi-agent database, open the ArchWiz cockpit, and run your first DeepCLI session in five steps."
+---
+
+This guide takes you from a fresh Termux installation to a fully running monorepo with the ArchWiz cockpit open and your first DeepCLI session created. You will install dependencies, initialize the multi-agent database, launch the central automation cockpit, send a prompt through DeepCLI, and verify that the CI gates pass.
+
+<Steps>
+  <Step title="Install prerequisites">
+    Ensure Termux is up to date, then install the core Python dependencies. The base requirements include `curl-cffi`, `requests`, and `websockets`.
+
+    ```bash
+    pkg update && pkg upgrade
+    pip install -r requirements-base.txt
+    ```
+
+    <Tip>
+      If you encounter build errors, install `python-dev` and `clang` through `pkg` before retrying.
+    </Tip>
+  </Step>
+  <Step title="Initialize the multi-agent database">
+    Change into the `termux-multi-agent` directory and run the initialization script. This creates the local database that the agent orchestrator depends on.
+
+    ```bash
+    cd termux-multi-agent
+    python run.py
+    ```
+
+    <Note>
+      You only need to run this once. Subsequent starts use the existing database.
+    </Note>
+  </Step>
+  <Step title="Open the ArchWiz cockpit">
+    From the repository root, launch the central automation cockpit. This opens the interactive dashboard with access to 28 tools across 7 categories.
+
+    ```bash
+    python3 archwiz/archwiz.py
+    ```
+
+    Use the cockpit to navigate forensic tools, run autonomous agents, verify changes, and inspect knowledge indices.
+  </Step>
+  <Step title="Create your first DeepCLI session">
+    In a separate Termux session, create a new DeepCLI conversation and send an initial prompt.
+
+    ```bash
+    cd deepcli
+    ./deepcli.py new
+    ./deepcli.py send "Hello"
+    ```
+
+    To enable reasoning mode, add the `--thinking` flag:
+
+    ```bash
+    ./deepcli.py send "Explain quantum computing" --thinking
+    ```
+  </Step>
+  <Step title="Verify the gates pass">
+    Before any merge or significant change, run the two required CI gate scripts from the repository root.
+
+    ```bash
+    python3 scripts/ci/repo_gate.py
+    python3 scripts/ci/termux_smoke.py
+    ```
+
+    <Warning>
+      Both gates must pass. Do not skip the smoke test even if the repo gate succeeds.
+    </Warning>
+  </Step>
+</Steps>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="First Session Guide" icon="play" href="/guides/first-session">
+    Walk through a complete ArchWiz session with forensic and verification workflows.
+  </Card>
+
+  <Card title="Architecture Overview" icon="sitemap" href="/concepts/architecture">
+    Understand how the six core components interact.
+  </Card>
+
+  <Card title="Command Reference" icon="terminal" href="/reference/commands">
+    Look up quick commands like `archaeo`, `oracle`, `dispatch`, and more.
+  </Card>
+
+  <Card title="Autonomous Tasks" icon="bot" href="/guides/autonomous-tasks">
+    Learn how to dispatch and monitor autonomous agent tasks.
+  </Card>
+</CardGroup>

@@ -46,9 +46,10 @@ jobs:
         env:
           FORCE_ALL: ${{ github.event.inputs.force_all || 'false' }}
           MAX_PRS: ${{ github.event.inputs.max_prs || '8' }}
-          HAS_OPERATOR: ${{ secrets.OPERATOR_GITHUB_TOKEN != '' || secrets.OPERATOR_TOKEN != '' }}
+          HAS_OPERATOR: ${{ secrets.ARCHWIZ_GITHUB_TOKEN != '' || secrets.OPERATOR_GITHUB_TOKEN != '' || secrets.OPERATOR_TOKEN != '' }}
+          PEER_STATE_PUBLISHER_LOGINS: ${{ vars.PEER_STATE_PUBLISHER_LOGINS || github.repository_owner }}
         with:
-          github-token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const forceAll = process.env.FORCE_ALL === 'true';
             const maxPrs = Math.min(Number(process.env.MAX_PRS) || 8, 20);
@@ -68,6 +69,19 @@ jobs:
               return agentLogins.some(a => l.includes(a));
             };
             const isSelfNudge = (c) => c.body && c.body.includes(marker);
+            const peerStateMarker = '<!-- agent-peer-response-state:v2 -->';
+            const codeRabbitRequestMarker = '<!-- operator-coderabbit-review:v1 -->';
+            const publisherLogins = new Set((process.env.PEER_STATE_PUBLISHER_LOGINS || context.repo.owner)
+              .split(',').map(value => value.trim().toLowerCase()).filter(Boolean));
+            const parseField = (body, name) =>
+              (body || '').match(new RegExp(`^${name}:\\s*(.+?)\\s*$`, 'm'))?.[1]?.trim() || '';
+            const cooldownRetryAt = (body, updatedAt) => {
+              const match = (body || '').match(/next review available in:\s*\*\*(\d+)\s*(minute|minutes|hour|hours)\*\*/i);
+              if (!match) return null;
+              const multiplier = match[2].toLowerCase().startsWith('hour') ? 60 * 60 * 1000 : 60 * 1000;
+              const updated = Date.parse(updatedAt || '');
+              return Number.isFinite(updated) ? updated + Number(match[1]) * multiplier : null;
+            };
 
             const prs = await github.paginate(github.rest.pulls.list, {
               owner: context.repo.owner,
@@ -109,6 +123,55 @@ jobs:
                 issue_number: pr.number,
                 per_page: 100,
               });
+
+              const peerState = comments.filter(comment =>
+                publisherLogins.has((comment.user?.login || '').toLowerCase()) &&
+                comment.body?.includes(peerStateMarker) &&
+                parseField(comment.body, 'head_sha') === pr.head.sha
+              ).sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))[0];
+              const peerCycleId = parseField(peerState?.body, 'cycle_id');
+              const peerStateValue = parseField(peerState?.body, 'state');
+              const codeRabbitCooldown = comments.filter(comment =>
+                (comment.user?.login || '').toLowerCase() === 'coderabbitai[bot]' &&
+                /review limit reached|couldn[’']t start this review|next review available in/i.test(comment.body || '')
+              ).sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))[0];
+              const retryAt = codeRabbitCooldown && cooldownRetryAt(codeRabbitCooldown.body, codeRabbitCooldown.updated_at);
+              const retryKey = codeRabbitCooldown ? `${codeRabbitCooldown.id}:${codeRabbitCooldown.updated_at}` : '';
+              const retryAlreadyRequested = comments.some(comment =>
+                comment.body?.includes(codeRabbitRequestMarker) &&
+                comment.body.includes(`cycle_id: ${peerCycleId}`) &&
+                comment.body.includes('request_kind: cooldown_retry') &&
+                comment.body.includes(`cooldown_source: ${retryKey}`)
+              );
+              if (process.env.HAS_OPERATOR === 'true' &&
+                  peerStateValue === 'provider_cooldown' &&
+                  peerCycleId && retryAt && Date.now() >= retryAt && !retryAlreadyRequested) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: pr.number,
+                  body: [
+                    codeRabbitRequestMarker,
+                    `cycle_id: ${peerCycleId}`,
+                    'request_kind: cooldown_retry',
+                    `cooldown_source: ${retryKey}`,
+                    'request_actor: OPERATOR',
+                    '',
+                    '@coderabbitai full review',
+                    '',
+                    'The documented CodeRabbit cooldown has elapsed. This is an OPERATOR-token full-review retrigger for the active SHA; await substantive provider output.',
+                  ].join('\\n'),
+                });
+                acted += 1;
+                report.push(`#${pr.number} (CodeRabbit cooldown retry)`);
+                core.info(`PR #${pr.number}: OPERATOR retriggered CodeRabbit after cooldown`);
+                await new Promise(r => setTimeout(r, 1200));
+                continue;
+              }
+              if (['pending_operator_action', 'action_acknowledged', 'awaiting_provider_response', 'provider_cooldown'].includes(peerStateValue)) {
+                core.info(`PR #${pr.number}: waiting on peer contract (${peerStateValue})`);
+                continue;
+              }
 
               const lastOps = comments
                 .filter(isSelfNudge)

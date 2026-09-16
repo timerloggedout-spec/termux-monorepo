@@ -56,14 +56,14 @@ class RequestHandler(http.server.BaseHTTPRequestHandler):
 
         # 2. Parse Payload (JSON vs Raw String)
         cmd = ""
-        cwd = os.environ['HOME']
+        raw_cwd = os.environ.get('HOME', '/tmp')
         
         try:
             data = json.loads(body)
             # If it's a JSON object, look for cmd and cwd
             if isinstance(data, dict):
                 cmd = data.get('cmd', '')
-                cwd = data.get('cwd') or os.environ['HOME']
+                raw_cwd = data.get('cwd') or os.environ.get('HOME', '/tmp')
             else:
                 # Should not happen with valid client, but fallback
                 cmd = str(body)
@@ -76,6 +76,23 @@ class RequestHandler(http.server.BaseHTTPRequestHandler):
                  return
             # Fallback for backward compatibility (raw text command)
             cmd = body
+
+        # Sanitize working directory against path traversal outside $HOME
+        home_base = os.path.realpath(os.environ.get('HOME', '/tmp'))
+        cwd = home_base
+        try:
+            # Validate raw_cwd relative to home_base
+            norm_raw = os.path.normpath(str(raw_cwd))
+            if os.path.isabs(norm_raw):
+                target_path = os.path.realpath(norm_raw)
+            else:
+                target_path = os.path.realpath(os.path.join(home_base, norm_raw))
+
+            # CodeQL sanitizer guard: check realpath boundary alignment
+            if target_path.startswith(home_base) and os.path.commonpath([home_base, target_path]) == home_base and os.path.isdir(target_path):
+                cwd = target_path
+        except Exception:
+            cwd = home_base
 
         # Safety check: If cmd still looks like JSON (e.g. from else block), block it.
         if cmd.strip().startswith("{") and "cmd" in cmd:
@@ -101,9 +118,6 @@ class RequestHandler(http.server.BaseHTTPRequestHandler):
             if "-y" not in cmd_parts:
                 print(f"DEBUG: Auto-appending '-y' to command: {cmd}")
                 cmd += " -y"
-
-        if not os.path.exists(cwd):
-            cwd = os.environ['HOME']
 
         print(f"Executing: '{cmd}' in '{cwd}'")
         
@@ -200,10 +214,11 @@ class RequestHandler(http.server.BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         return
 
-print(f"Obsidian Bridge running on port {PORT}...")
-if not get_token():
-    print("CRITICAL: No token found. Requests will fail.")
-else:
-    print("Authentication enabled.")
+if __name__ == "__main__":
+    print(f"Obsidian Bridge running on port {PORT}...")
+    if not get_token():
+        print("CRITICAL: No token found. Requests will fail.")
+    else:
+        print("Authentication enabled.")
 
-ThreadingHTTPServer(('127.0.0.1', PORT), RequestHandler).serve_forever()
+    ThreadingHTTPServer(('127.0.0.1', PORT), RequestHandler).serve_forever()

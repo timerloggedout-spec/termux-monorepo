@@ -13,7 +13,7 @@ const renderManager = ManagerConsole(reRender);
 const renderClient = ClientPortal(reRender);
 
 const App = () => html`
-  <main style="min-height:100vh; padding:16px;">
+  <main aria-label="Commingle Swarm Dashboard" style="min-height:100vh; padding:16px;">
     <h1>Commingle Swarm</h1>
     ${renderManager()}
     ${renderClient()}

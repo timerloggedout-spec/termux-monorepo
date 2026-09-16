@@ -1,0 +1,44 @@
+name: Dependency Phase Validate
+
+on:
+  pull_request:
+    branches: [master]
+    paths:
+      - "docs/agentic/dependency-phases.json"
+      - "docs/agentic/phase-approvals.json"
+      - "scripts/agentic/**"
+      - "tests/test_dependency_phase_engine.py"
+      - ".github/workflows/dependency-phase-validate.yml"
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate canonical plan
+        run: python3 scripts/agentic/dependency_phases.py validate
+
+      - name: Run dependency-phase tests
+        run: python3 -m unittest discover -s tests -p 'test_*phase*.py'
+
+      - name: Render fixture projection
+        run: |
+          python3 scripts/agentic/dependency_phases.py \
+            --snapshot tests/fixtures/dependency_phases/ready.json \
+            render \
+            --markdown-output /tmp/DEPENDENCY_PHASES.md \
+            --mermaid-output /tmp/dependency-phases.mmd
+          test -s /tmp/DEPENDENCY_PHASES.md
+          test -s /tmp/dependency-phases.mmd

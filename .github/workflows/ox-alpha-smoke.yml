@@ -1,0 +1,148 @@
+name: Model live canary
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_number:
+        description: 'Existing PR or issue number for the bounded smoke result'
+        required: true
+        default: '337'
+        type: string
+      provider:
+        description: 'Provider selected for this experiment'
+        required: true
+        default: openrouter
+        type: choice
+        options: [openrouter, felo]
+      model:
+        description: 'Provider model id; selected experiment candidate, not routing policy'
+        required: true
+        default: stealth/ox-alpha
+        type: string
+      role:
+        description: 'Workload role'
+        required: true
+        default: review
+        type: choice
+        options: [triage, review, invoke]
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  canary:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'issue_comment' && github.event.issue.pull_request &&
+       startsWith(github.event.comment.body, '/run-model '))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+
+      - name: Poll live provider catalogs
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          FELO_AI_API: ${{ secrets.FELO_AI_API }}
+        run: |
+          set -euo pipefail
+          python3 scripts/provider_model_catalog.py --output /tmp/model-catalog/catalog.json
+          echo '### Live provider catalog' >> "$GITHUB_STEP_SUMMARY"
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          p='/tmp/model-catalog/catalog.json'
+          d=json.load(open(p, encoding='utf-8'))
+          print(f"Observed: `{d['observed_at']}`")
+          for row in d['models']:
+              if row['pricing_classification'] == 'free_zero_price' or row['free_suffix']:
+                  print(f"- 🟢 `{row['provider']}/{row['id']}` — {row['pricing_classification']}")
+          for err in d['errors']:
+              print(f"- ⚠️ `{err['provider']}` catalog: {err['error']}")
+          PY
+
+      - name: Resolve experiment selection
+        id: selection
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          DISPATCH_TARGET: ${{ inputs.target_number }}
+          DISPATCH_PROVIDER: ${{ inputs.provider }}
+          DISPATCH_MODEL: ${{ inputs.model }}
+          DISPATCH_ROLE: ${{ inputs.role }}
+          COMMENT_TARGET: ${{ github.event.issue.number }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            TARGET="$DISPATCH_TARGET"; PROVIDER="$DISPATCH_PROVIDER"; MODEL="$DISPATCH_MODEL"; ROLE="$DISPATCH_ROLE"
+          else
+            TARGET="$COMMENT_TARGET"
+            read -r COMMAND PROVIDER MODEL ROLE EXTRA <<< "$COMMENT_BODY"
+            [ "$COMMAND" = "/run-model" ] || { echo 'Invalid command'; exit 1; }
+            [ -z "${EXTRA:-}" ] || { echo 'Too many arguments'; exit 1; }
+          fi
+          case "$TARGET" in ''|*[!0-9]*) echo 'Invalid target'; exit 1;; esac
+          case "$PROVIDER" in openrouter|felo) ;; *) echo "Provider '$PROVIDER' is not enabled"; exit 1;; esac
+          case "$MODEL" in ''|*[[:space:]]*) echo 'Invalid model'; exit 1;; esac
+          case "$ROLE" in triage|review|invoke) ;; *) echo 'Invalid role'; exit 1;; esac
+          echo "target=$TARGET" >> "$GITHUB_OUTPUT"
+          echo "provider=$PROVIDER" >> "$GITHUB_OUTPUT"
+          echo "model=$MODEL" >> "$GITHUB_OUTPUT"
+          echo "role=$ROLE" >> "$GITHUB_OUTPUT"
+
+      - name: Build bounded canary prompt
+        id: prompt
+        env:
+          TARGET: ${{ steps.selection.outputs.target }}
+          PROVIDER: ${{ steps.selection.outputs.provider }}
+          MODEL: ${{ steps.selection.outputs.model }}
+          ROLE: ${{ steps.selection.outputs.role }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          {
+            echo 'prompt<<EOF'
+            echo "You are a live model canary for termux-monorepo. Provider=${PROVIDER}. Model=${MODEL}. Role=${ROLE}. Target=${TARGET}. Repository SHA=${HEAD_SHA}."
+            echo 'Return ONE concise response. Do not modify files. Evaluate only the bounded repository task and state whether your answer is confident.'
+            echo 'This invocation is a performance measurement; do not fabricate tool access or execution.'
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Invoke selected model
+        uses: ./.github/actions/http-llm-invoke
+        with:
+          provider: ${{ steps.selection.outputs.provider }}
+          model: ${{ steps.selection.outputs.model }}
+          role: ${{ steps.selection.outputs.role }}
+          target_number: ${{ steps.selection.outputs.target }}
+          api_key: ${{ steps.selection.outputs.provider == 'felo' && secrets.FELO_AI_API || secrets.OPENROUTER_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          prompt: ${{ steps.prompt.outputs.prompt }}
+
+      - name: Upload execution observation
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: model-performance-${{ github.run_id }}
+          path: |
+            /tmp/model-performance/observations.ndjson
+            /tmp/model-catalog/catalog.json
+          if-no-files-found: ignore
+
+      - name: Confirm canary launch
+        if: github.event_name == 'issue_comment'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          TARGET: ${{ steps.selection.outputs.target }}
+          RUN_ID: ${{ github.run_id }}
+          PROVIDER: ${{ steps.selection.outputs.provider }}
+          MODEL: ${{ steps.selection.outputs.model }}
+        run: |
+          gh api "repos/${REPO}/issues/${TARGET}/comments" \
+            -f body="🧪 model canary dispatched: ${PROVIDER}/${MODEL}. Live catalogs polled. Run: https://github.com/${REPO}/actions/runs/${RUN_ID}" >/dev/null

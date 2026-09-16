@@ -16,3 +16,31 @@ In Python 3.11+, `datetime.strptime` involves string format parsing overhead tha
 
 **Action:**
 Prefer `datetime.fromisoformat` over `datetime.strptime` when parsing standard ISO 8601 date strings.
+
+## 2026-08-18 - Epoch Timestamp Caching and String Slicing for Datetime Rendering
+**Learning:**
+Converting file stat timestamps (`st.st_mtime`) to `time.ctime()` strings and then repeatedly back-parsing them with `time.strptime(x['mtime'], "%c")` in loops during file sorting and age filtering causes severe CPU bottlenecks in filesystem scouting. Storing the raw numeric float timestamp (`mtime_ts`) directly in entry dicts allows O(1) float comparisons. Additionally, in high-frequency rendering loops, string slicing (`timestamp[11:19]`) on fixed-width ISO date strings avoids `strptime` overhead entirely.
+
+**Action:**
+Always cache raw numeric epoch timestamps (`mtime_ts`) alongside formatted date strings during file walks, and prefer string slicing over `strptime` when extracting fixed time substrings (`HH:MM:SS`) for display.
+
+## 2026-08-19 - Incremental File Hashing and Map-Based Fallback Resolution in Monorepo Indexing
+**Learning:**
+In monorepo mapping tools (`central_mapper_v420.py` & `mapper_graph.py`), computing SHA-256 hashes over every file regardless of state causes massive I/O bottlenecks during directory scanning. Reusing state-cached SHA hashes when `mtime` and `size` match avoids disk reads on unchanged files. Additionally, pre-compiling combined regex patterns and storing known filenames in an O(1) hash map for fallback import resolution eliminates repeated O(N) list scans and regex compilations per file.
+
+**Action:**
+Always check state metadata (`mtime` and `size`) before reading file contents for hashing, and construct filename lookup dictionaries once to replace linear searches during file dependency resolution.
+
+## 2026-09-05 - Stream Deduplication and Single-Pass Aggregation in Stream Processors
+**Learning:**
+In stream-processing analytics tools like `scripts/model_performance_index.py`, buffering all JSON lines into memory and executing repeated list comprehensions for each metric (`attempted`, `succeeded`, `lat`, `req`, `correctness`, `integration_success`, `task_outcome`, `warnings`, `errors`) creates quadratic iteration overhead and excessive memory allocation. Deduplicating on-the-fly during stream reading and computing all model group metrics in a single linear pass reduces overall processing time by over 50%.
+
+**Action:**
+Avoid intermediate multi-pass list filtering when computing metrics over grouped datasets. Perform deduplication on stream entry and accumulate all metrics in a single iteration loop.
+
+## 2026-09-14 - Embedded Payloads over N+1 HTTP Requests in GitHub API Harvesters
+**Learning:**
+In GitHub API ingestion workflows (`historical_event_correlation.py`), the jobs listing endpoint (`GET /repos/{repo}/actions/runs/{run_id}/jobs`) already embeds step summaries in each job payload (`job["steps"]`). Issuing individual HTTP requests (`GET /repos/{repo}/actions/jobs/{jid}`) for every job resulted in N redundant network roundtrips per workflow run. Extracting embedded steps directly from the job dict bypasses single-job endpoint calls entirely.
+
+**Action:**
+Always check for embedded child arrays in GitHub API parent endpoints before executing separate per-item HTTP GET calls.

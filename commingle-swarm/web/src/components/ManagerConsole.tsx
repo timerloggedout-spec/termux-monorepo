@@ -3,19 +3,41 @@ import * as API from '../api/NodeClient';
 
 export const ManagerConsole = (reRender: () => void) => {
   let planText = 'Click "Propose trade" to generate an allocation plan via the node.';
+  let isProposing = false;
+
   const propose = async () => {
-    const trade = { asset: 'ETH/USDT', direction: 'buy', totalSize: 5, strategyId: 'S1' };
-    const resp = await API.proposeTrade(trade);
-    planText = JSON.stringify(resp, null, 2);
+    if (isProposing) return;
+    isProposing = true;
     reRender();
+    try {
+      const trade = { asset: 'ETH/USDT', direction: 'buy', totalSize: 5, strategyId: 'S1' };
+      const resp = await API.proposeTrade(trade);
+      planText = JSON.stringify(resp, null, 2);
+    } catch (err) {
+      planText = 'Failed to propose trade. Please try again.';
+    } finally {
+      isProposing = false;
+      reRender();
+    }
   };
+
   return () => html`
-    <section style="margin-top:16px;">
+    <section role="region" aria-label="Manager console" style="margin-top:16px;">
       <h2>Manager console</h2>
-      <button style="padding:8px 12px; background:#1e2738; color:#eaf0ff; border:0; border-radius:6px;" @click=${propose}>
-        Propose trade
+      <button
+        aria-label="Propose trade allocation plan"
+        aria-busy="${isProposing}"
+        ?disabled=${isProposing}
+        style="padding:8px 12px; background:#1e2738; color:#eaf0ff; border:1px solid #313d52; border-radius:6px; cursor:${isProposing ? 'not-allowed' : 'pointer'}; opacity:${isProposing ? '0.7' : '1'}; transition: opacity 0.2s ease, background-color 0.2s ease; outline-color:#6366f1;"
+        @click=${propose}
+      >
+        ${isProposing ? 'Proposing trade...' : 'Propose trade'}
       </button>
-      <pre style="background:#121426; padding:12px; border-radius:8px; margin-top:12px;">${planText}</pre>
+      <pre
+        aria-live="polite"
+        aria-label="Trade proposal output"
+        style="background:#121426; padding:12px; border-radius:8px; margin-top:12px; border:1px solid #1e243b;"
+      >${planText}</pre>
     </section>
   `;
 };

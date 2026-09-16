@@ -14,7 +14,63 @@ Cache sorted mappings and compile all dynamic regex matchers globally at initial
 
 ## 2026-08-04 - Single-Pass Alternation Regex vs Sequential Pattern Evaluation
 **Learning:**
-Executing sequential `.sub()` calls for N individual regex patterns across document lines creates massive O(N_terms * N_lines) overhead and unnecessary function frame allocations. Combining all dictionary substitution terms into a single compiled regex pattern with word-boundary alternations (`\b(term1|term2|...)\b`) allows Python's C-level regex engine to match any term in a single pass O(1_regex * N_lines). In CedrLang document translation, this reduced document compilation latency from 31.4ms to 7.3ms (~4.3x speedup).
+Executing sequential `.sub()` calls for N individual regex patterns across document lines creates massive O(N_terms * N_lines) overhead and unnecessary function frame allocations. Combining all dictionary substitution terms into a single compiled regex pattern with word-boundary alternations (`\\b(term1|term2|...)\\b`) allows Python's C-level regex engine to match any term in a single pass O(1_regex * N_lines). In CedrLang document translation, this reduced document compilation latency from 31.4ms to 7.3ms (~4.3x speedup).
 
 **Action:**
 Combine dictionary substitutions into single compiled regex patterns with alternations and dictionary lookups in the match callback instead of executing sequential regex substitution loops.
+
+## 2026-08-05 - Fast-Path Term Pre-Search in Document Transformation Pipelines
+**Learning:**
+In line-by-line document translation pipelines where structural syntax protection (e.g. code fences, URLs, markdown formatting) involves multiple sequential regex evaluations, running placeholder extraction on lines that contain zero target translation terms is a massive CPU bottleneck. A single O(1) pre-search using a pre-compiled single-pass term matcher (`if not matcher.search(line): return line`) allows ~96% of document lines to bypass structural regex parsing entirely, reducing CedrLang compilation time per document from ~7.22ms to ~4.00ms.
+
+**Action:**
+In line-level transformation utilities, always perform a fast-path term existence pre-check (`matcher.search(line)`) before executing multi-pattern placeholder protection or DOM parsing pipelines.
+
+## 2026-08-27 - Trie-Structured Regex Alternation and Precomputed Casing Tables
+**Learning:**
+While flat regex alternations (`\b(term1|term2|...)\b`) collapse sequential `.sub()` calls into a single pass, long flat alternations with overlapping or common token prefixes (e.g., `procurement`/`procurements`, `curation`/`curations`, `emerging technology`/`emerging technologies`) cause redundant state evaluation and backtracking depth in the regex engine. Building Trie-structured regular expressions (`\b(?:p(?:r0cur3(?:s)?)|...)\b`) collapses shared prefix branches, reducing regex engine state space. Paired with precomputed casing lookup tables (`FAST_CASING_COMP` / `FAST_CASING_DECOMP`), this eliminates runtime casing string inspections (`apply_casing`/`is_capitalized`), reducing `decompile_doc` latency from 3.43ms to 2.34ms (~1.46x speedup) and `from_1337speak` latency from 36.48us to 20.64us (~1.77x speedup).
+
+**Action:**
+Construct Trie-structured prefix regexes for token dictionary matching and pre-populate casing lookup tables at module load time to maximize C-level regex traversal speed and bypass string casing inspection overhead.
+
+## 2026-08-23 - Phased 1337 Diaspora Recovery / PR #154
+**Learning:**
+PR #154 contains the provenance-backed historical `to_1337speak()` experiment. The Jules review comment at `discussion_r3754718523` describes a sparse randomized substitution rate with a **70% probability threshold**, intended to introduce character-level variability while retaining decompression to human-readable form. This is a rollout parameter, not an INDEX confidence score.
+
+**Action:**
+Restore the behavior as an explicit reversible phase in `workspace/compression_sandbox/cedrlang/phase_codec.py`. Keep canonical CedrLang/Grimoire semantics upstream; mutate only known compressed tokens; normalize known variants before canonical decompilation; seed RNGs for reproducibility; and ratchet the probability only after round-trip, quality, latency, and ambiguity measurements. Initial phase is `p=0.70`.
+
+**Provenance:**
+- PR #154 review comment `discussion_r3754718523`
+- `dc8c08d` — CedrLang v2 compilation / strict token protection
+- `1103d832` / `51023b87` / `7a6e5a7` — cached mappings, Caveman, single-pass regex optimization
+- `4eb9f830` / `267fecc` — fast-path term search
+- #196 — `AGENTS.hum.md` round-trip milestone
+
+## 2026-09-04 - Fast-Path Search Short-Circuiting in Surface Codecs
+**Learning:**
+Adding a pre-search check (`if not VARIANT_REGEX.search(text): return text`) before string substitution in `to_1337speak()` and `from_1337speak()` reduces CPU execution time on non-matching prose/inputs from ~24.5µs to ~6.2µs (~4x speedup) by bypassing RNG instantiation and regex match allocations.
+
+**Action:**
+Apply pre-search short-circuit guards on single-pass regex transformers when processing high volumes of uncompressed prose.
+
+## 2026-09-10 - Closure Allocation Elimination and Direct RNG Handle Resolution
+**Learning:**
+Defining inner callback functions inside high-frequency string substitution functions (e.g. `_sub_cb` in `translate_text_raw` or `replace` in `from_1337speak`) creates Python closure function object allocations on every execution frame. Lifting callbacks to module-level functions (`_sub_cb_comp`, `_sub_cb_decomp`, `_from_1337_replace`) eliminates per-call closure creation overhead. Additionally, in `to_1337speak()`, avoiding `random.Random()` object creation when unseeded by resolving `rng.random if rng is not None else random.random` directly reduces execution latency on 1337speak surface encoding by ~25% (from 43.7µs to 32.7µs per invocation).
+
+**Action:**
+Extract nested substitution callbacks to module scope where possible and resolve default RNG method references directly instead of instantiating new `random.Random()` generator objects on every function invocation.
+
+## 2026-09-15 - Non-Capturing Trie Regex Root Groups and Code Fence Character Guarding
+**Learning:**
+Using capturing parentheses in root Trie regex patterns (`\b(...)` vs `\b(?:...)`) forces Python's regex engine to allocate match tuple capturing groups on every match, adding unnecessary overhead during regex matching loops. Switching `build_trie_regex` to construct root non-capturing groups `\b(?:...)\b` eliminates group allocation overhead. Additionally, guarding `line.strip().startswith('```')` with a cheap fast-path character check (`if "`" in line:`) avoids redundant `strip()` string allocations across document compilation loops.
+
+**Action:**
+Ensure all Trie-structured regex builders use non-capturing groups `(?:...)` at the root level, and prepend cheap character checks before invoking line string stripping methods in document iteration loops.
+
+## 2026-09-20 - Document-Level Fast-Path Short-Circuiting and Fenced Code Guarding
+**Learning:**
+Calling line-by-line document translation and regex parsing on documents that contain zero target translatable terms introduces unnecessary CPU overhead and string allocations. By adding a single document-level pre-search check (`if not text or not COMP_SINGLE_REGEX.search(text): return text`) in `compile_doc` and `decompile_doc`, non-matching documents bypass line splitting and regex parsing entirely, reducing latency from ~0.7-2.6ms down to ~0.02ms (~35x-130x speedup). Furthermore, tightening the code fence line check to `"```" in line and line.strip().startswith("```")` prevents string `strip()` allocations on lines with single backticks (e.g., inline code markers).
+
+**Action:**
+Always perform document-level fast-path search short-circuiting before line splitting in document transformation routines, and restrict code fence start checks using full triple-backtick `"`"`"" substring guards.

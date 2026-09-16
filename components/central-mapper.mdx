@@ -1,0 +1,79 @@
+---
+title: "central-mapper"
+sidebarTitle: "Central Mapper"
+description: "Build and query AST indices and dependency graphs with Central Mapper. Rebuild 8,239 indexed files using map-build, map-func, and fore commands."
+---
+
+Central Mapper generates AST indices and dependency graphs for the Termux Monorepo. It parses source files, extracts function signatures, builds file-level graphs, and records cross-module dependencies so you can navigate the codebase by symbol and relationship rather than by directory tree. The indices live in `workspace/llm_map/` and currently cover **8,239 files**.
+
+## Key indices
+
+Central Mapper produces the following indices in `workspace/llm_map/`:
+
+| Index | File | Size | Contents |
+| --- | --- | --- | --- |
+| LLM index | `llm_index.jsonl` | varies | Full AST entries with symbol metadata and source locations |
+| Compact LLM index | `llm_index_compact.jsonl` | 1.99 MB | Deduplicated and compressed version of the LLM index |
+| Function index | `func_index.jsonl` | 287 KB | Function signatures, parameters, and return types |
+| Enriched index | `central_enriched.jsonl` | varies | Enriched records with semantic tags and task associations |
+| Task files index | `task_files_index.json` | varies | Mapping from task IDs to the files they touch |
+| File graph | `file_graph.json` | varies | Graph of file-level inclusion and import relationships |
+| Dependency index | `deps.jsonl` | varies | Cross-module dependency edges with direction and weight |
+
+## Build scripts and rebuild command
+
+Central Mapper provides three build scripts that you chain together to regenerate all indices:
+
+```bash
+map-build && map-func && fore
+```
+
+- **`map-build`** — Scans the repository, parses ASTs, and writes `llm_index.jsonl` and `llm_index_compact.jsonl`
+- **`map-func`** — Extracts function-level detail and produces `func_index.jsonl`
+- **`fore`** — Runs the forensic pass to build `file_graph.json`, `deps.jsonl`, and `central_enriched.jsonl`
+
+Run the full chain after any significant refactor, merge, or dependency change to keep the indices accurate.
+
+<Warning>
+  Rebuilding the full index set on a large repository can take several minutes on an Android device. Run it during low-activity periods or in a background Termux session.
+</Warning>
+
+## Directory structure
+
+The `workspace/llm_map/` directory is organized as follows:
+
+```text
+workspace/llm_map/
+├── llm_index.jsonl
+├── llm_index_compact.jsonl
+├── func_index.jsonl
+├── central_enriched.jsonl
+├── task_files_index.json
+├── file_graph.json
+├── deps.jsonl
+└── master_tasks.json
+```
+
+`master_tasks.json` is the task registry consumed by the Termux Multi-Agent system. Central Mapper updates `task_files_index.json` whenever tasks are modified so the agent orchestrator knows which files each task targets.
+
+## Querying the indices
+
+You can query the indices with standard Unix tools or through ArchWiz forensic modules. For example, to find all functions that reference a specific symbol:
+
+```bash
+rg "symbol_name" workspace/llm_map/func_index.jsonl
+```
+
+To inspect the dependency graph for a file:
+
+```bash
+python -c "import json; g=json.load(open('workspace/llm_map/file_graph.json')); print(json.dumps(g['src/core.py'], indent=2))"
+```
+
+<Note>
+  The indices are line-delimited JSON (JSONL) for streaming compatibility. Use `jq` or `rg` for fast queries without loading the entire file into memory.
+</Note>
+
+## Integration with ArchWiz
+
+ArchWiz uses Central Mapper indices for forensic and verification workflows. The `correlation_scout.py` and `fragment_matcher.py` tools read `file_graph.json` and `deps.jsonl` to find related files and orphaned fragments. When you run `oracle <file>` from the command line, it consults the dependency index to warn you about downstream impact before you make a change.

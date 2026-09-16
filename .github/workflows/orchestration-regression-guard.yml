@@ -1,0 +1,61 @@
+name: Orchestration Regression Guard
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+
+      - name: Assert control-plane files exist
+        run: |
+          set -euo pipefail
+          required=(
+            docs/ops/AGENT-TEAM-ORCHESTRATION.md
+            scripts/provider_model_catalog.py
+            scripts/model_performance_index.py
+            .github/actions/http-llm-invoke/action.yml
+            .github/workflows/ox-alpha-smoke.yml
+            .github/workflows/continuous-evaluation.yml
+          )
+          for path in "${required[@]}"; do
+            test -f "$path" || { echo "REGRESSION: missing $path"; exit 1; }
+          done
+
+      - name: Detect accidental control-plane deletion or rollback
+        run: |
+          set -euo pipefail
+          if git rev-parse HEAD^ >/dev/null 2>&1; then
+            critical=(
+              docs/ops/AGENT-TEAM-ORCHESTRATION.md
+              scripts/provider_model_catalog.py
+              scripts/model_performance_index.py
+              .github/actions/http-llm-invoke/action.yml
+              .github/workflows/ox-alpha-smoke.yml
+              .github/workflows/continuous-evaluation.yml
+            )
+            for path in "${critical[@]}"; do
+              if git diff --name-status HEAD^ HEAD -- "$path" | grep -q '^D'; then
+                echo "REGRESSION: control-plane file deleted: $path"
+                exit 1
+              fi
+            done
+          fi
+
+      - name: Validate catalog script syntax
+        run: python3 -m py_compile scripts/provider_model_catalog.py scripts/model_performance_index.py
+
+      - name: Emit progression receipt
+        run: |
+          echo "Progression guard passed for $GITHUB_SHA"
+          echo "Control-plane evidence is preserved; no rollback deletion detected."

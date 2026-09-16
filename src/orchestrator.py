@@ -1,7 +1,6 @@
 import os
 import re
 import json
-import requests
 import time
 import subprocess
 from src.sandbox import execute_concurrent_tmux_job, check_job_status
@@ -10,8 +9,12 @@ from src.git_manager import AgentGitManager
 from src.telemetry import TermuxTelemetryLogger as Log
 from src.db import log_attempt_telemetry
 
-DEEPSEEK_API_KEY = os.environ.get("DEEPSEEK_API_KEY")
-CRITIC_API_KEY = os.environ.get("CRITIC_API_KEY")
+# Retargeted to llm-api-hub for provider abstraction
+import sys
+from pathlib import Path
+REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(str(REPO_ROOT))
+from llm_api_hub.clients.openai_compat import chat_completions, assistant_text
 
 class TermuxAgentOrchestrator:
     def __init__(self, workspace_root):
@@ -24,22 +27,28 @@ class TermuxAgentOrchestrator:
             return f.read()
 
     def call_deepseek_v4_pro(self, system_prompt, user_prompt):
-        headers = {"Authorization": f"Bearer {DEEPSEEK_API_KEY}", "Content-Type": "application/json"}
-        payload = {"model": "deepseek-v4-pro",
-                   "messages": [{"role": "system", "content": system_prompt},
-                                {"role": "user", "content": user_prompt}],
-                   "temperature": 0.1}
-        r = requests.post("https://api.deepseek.com/v1/chat/completions", headers=headers, json=payload)
-        return r.json()['choices'][0]['message']['content']
+        """Calls DeepSeek via the hub's wrapper or OpenAI-compatible route."""
+        resp = chat_completions(
+            model="wrapper/deepseek",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt}
+            ],
+            temperature=0.1
+        )
+        return assistant_text(resp)
 
     def call_critic_judge(self, system_prompt, target_code, test_logs):
-        headers = {"Authorization": f"Bearer {CRITIC_API_KEY}", "Content-Type": "application/json"}
-        payload = {"model": "critic-judge-model",
-                   "messages": [{"role": "system", "content": system_prompt},
-                                {"role": "user", "content": f"CODE:\n{target_code}\n\nLOGS:\n{test_logs}"}],
-                   "temperature": 0.1}
-        r = requests.post("https://api.critic-provider.com/v1/completions", headers=headers, json=payload)
-        return r.json()['choices'][0]['message']['content']
+        """Calls the critic judge via the hub's unified interface."""
+        resp = chat_completions(
+            model="openai/critic-judge-model",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": f"CODE:\n{target_code}\n\nLOGS:\n{test_logs}"}
+            ],
+            temperature=0.1
+        )
+        return assistant_text(resp)
 
     def parse_and_apply_cedar_diff(self, file_relative_path, llm_response):
         abs_path = os.path.join(self.workspace, file_relative_path)

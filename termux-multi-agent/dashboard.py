@@ -24,6 +24,7 @@ else:
 
 # State-tracking cache and position pointers for incremental I/O performance optimization
 _active_jobs_cache = {}
+_sorted_telemetry_cache = None
 _last_file_pos = 0
 _last_file_ino = None
 _last_file_mtime = 0
@@ -33,10 +34,11 @@ def read_latest_telemetry():
     Optimized telemetry parser using state tracking and seek/tell operations
     to perform incremental I/O, yielding massive performance gains on large log streams.
     """
-    global _last_file_pos, _active_jobs_cache, _last_file_ino, _last_file_mtime
+    global _last_file_pos, _active_jobs_cache, _sorted_telemetry_cache, _last_file_ino, _last_file_mtime
     if not os.path.exists(TELEMETRY_LOG):
         # Reset cache if file is missing
         _active_jobs_cache = {}
+        _sorted_telemetry_cache = None
         _last_file_pos = 0
         _last_file_ino = None
         _last_file_mtime = 0
@@ -54,10 +56,19 @@ def read_latest_telemetry():
             _last_file_ino != file_ino or
             file_mtime < _last_file_mtime):
             _active_jobs_cache = {}
+            _sorted_telemetry_cache = None
             _last_file_pos = 0
             _last_file_ino = file_ino
             _last_file_mtime = file_mtime
 
+        # Bolt Optimization: short-circuit file I/O and re-sorting if file metadata is unchanged
+        if (_sorted_telemetry_cache is not None and
+            file_size == _last_file_pos and
+            file_mtime == _last_file_mtime and
+            file_ino == _last_file_ino):
+            return _sorted_telemetry_cache
+
+        new_entries = False
         with open(TELEMETRY_LOG, "r") as f:
             if _last_file_pos > 0:
                 f.seek(_last_file_pos)
@@ -82,14 +93,19 @@ def read_latest_telemetry():
                     entry = json.loads(line)
                     target = entry.get("target") or "System"
                     _active_jobs_cache[target] = entry
+                    new_entries = True
                 except json.JSONDecodeError:
                     continue
+
+        _last_file_mtime = file_mtime
+        if new_entries or _sorted_telemetry_cache is None:
+            _sorted_telemetry_cache = sorted(_active_jobs_cache.values(), key=lambda x: x.get("timestamp", ""))
     except Exception:
         # Fallback to returning current cache on file access or read errors
-        pass
+        if _sorted_telemetry_cache is not None:
+            return _sorted_telemetry_cache
 
-    # Sort by timestamp so the list ordering is consistent/predictable
-    return sorted(_active_jobs_cache.values(), key=lambda x: x.get("timestamp", ""))
+    return _sorted_telemetry_cache if _sorted_telemetry_cache is not None else sorted(_active_jobs_cache.values(), key=lambda x: x.get("timestamp", ""))
 
 def make_dashboard():
     # Read data
@@ -154,20 +170,27 @@ def make_dashboard():
         message = job.get("message", "")
         timestamp = job.get("timestamp", "")
         if timestamp:
-            # Format time if it has full date/time
-            try:
-                dt = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
-                timestamp = dt.strftime("%H:%M:%S")
-            except ValueError:
-                pass
+            # Bolt Optimization: Fast-path string slice formatting for HH:MM:SS
+            # Avoids datetime.strptime overhead in high-frequency dashboard rendering loops
+            if len(timestamp) >= 19 and timestamp[10] in (" ", "T"):
+                timestamp = timestamp[11:19]
+            elif not (len(timestamp) == 8 and timestamp[2] == ":" and timestamp[5] == ":"):
+                try:
+                    dt = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
+                    timestamp = dt.strftime("%H:%M:%S")
+                except ValueError:
+                    pass
 
         # Beautiful styled status tag
-        if level == "SUCCESS":
+        lvl_upper = str(level).upper()
+        if lvl_upper in ("SUCCESS", "PASS", "COMPLETED"):
             status_str = Text("SUCCESS", style="bold green")
-        elif level == "RETRY":
+        elif lvl_upper in ("RETRY", "RETRYING"):
             status_str = Text("RETRYING", style="bold yellow")
-        elif level == "CRITICAL":
-            status_str = Text("CRITICAL", style="bold red")
+        elif lvl_upper in ("WARNING", "WARN"):
+            status_str = Text("WARNING", style="bold yellow")
+        elif lvl_upper in ("CRITICAL", "ERROR", "FAILED", "FAIL"):
+            status_str = Text(lvl_upper, style="bold red")
         else:
             status_str = Text("PROCESSING", style="bold blue")
 

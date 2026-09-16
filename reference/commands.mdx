@@ -1,0 +1,145 @@
+---
+title: "Command Reference for the Termux Monorepo"
+sidebarTitle: "Commands"
+description: "Complete command reference for the Termux Monorepo. Covers ArchWiz, DeepCLI, multi-agent, mapper, and forensic tools with real examples."
+---
+
+The Termux Monorepo provides a suite of CLI tools for automation, AI interaction, agent orchestration, and code forensics. This page lists every key command by category with usage examples you can copy and run in Termux.
+
+## ArchWiz cockpit
+
+ArchWiz is the central automation cockpit with 28 tools across 7 categories. Use these commands to open the dashboard and run verification.
+
+| Command | Description |
+| --- | --- |
+| `python3 archwiz/archwiz.py` | Open the ArchWiz interactive cockpit dashboard |
+| `python3 archwiz/sentinel.py` | Run the 5-gate verification (file integrity, naming, duplicate, probe, shockwave) |
+| `python3 archwiz/autonomous_runner.py` | Launch the autonomous task runner |
+| `python3 archwiz/dispatch_task.py <task>` | Dispatch a task to the execution queue |
+| `python3 archwiz/forensic_toolchain.py` | Run the full forensic analysis toolchain |
+| `python3 archwiz/correlation_scout.py` | Discover cross-file correlations |
+| `python3 archwiz/fragment_matcher.py` | Match code fragments across the monorepo |
+| `python3 archwiz/archivist.py` | Archive completed sessions and outputs |
+| `python3 archwiz/session_digest.py` | Generate a digest of the current session |
+| `python3 archwiz/probe.py` | Probe system state and health |
+| `python3 archwiz/mirror.py` | Mirror external resources into the workspace |
+| `python3 archwiz/debug_daemon.py` | Start the debug daemon for live tracing |
+| `python3 archwiz/dangle_detector.py` | Detect dangling references and broken links |
+| `python3 archwiz/timeline_editor.py` | Edit and replay event timelines |
+| `python3 archwiz/narrative.py` | Generate narrative summaries from logs |
+
+## DeepCLI commands
+
+DeepCLI is the DeepSeek-oriented CLI for managing AI conversations. All commands are run through `deepcli/deepcli.py`.
+
+| Command | Description |
+| --- | --- |
+| `deepcli.py new` | Start a new chat session |
+| `deepcli.py send "prompt"` | Send a message to the current session |
+| `deepcli.py send "prompt" --thinking` | Send with reasoning mode enabled |
+| `deepcli.py list` | List all stored sessions |
+| `deepcli.py history --session <id>` | Show message history for a session |
+| `deepcli.py export --format json --output chat.json` | Export a session to JSON |
+| `deepcli.py fork --session <id> --message-id <msg>` | Fork a conversation at a specific message |
+
+### DeepCLI examples
+
+<CodeGroup>
+
+```bash Start a new session
+deepcli/deepcli.py new
+```
+
+```bash Send a prompt
+deepcli/deepcli.py send "Explain the mapper index format"
+```
+
+```bash Send with reasoning
+deepcli/deepcli.py send "Design a consensus tier" --thinking
+```
+
+```bash Export a session
+deepcli/deepcli.py export --format json --output chat.json
+```
+
+```bash Fork a conversation
+deepcli/deepcli.py fork --session abc123 --message-id 7
+```
+
+</CodeGroup>
+
+## Termux Multi-Agent commands
+
+The multi-agent system is provisioned and orchestrated from `termux-multi-agent/`.
+
+| Command | Description |
+| --- | --- |
+| `cd termux-multi-agent && python run.py` | Initialize the agent database and start the orchestrator |
+| `python termux-multi-agent/provision_agent.py` | Provision a new agent instance |
+| `python termux-multi-agent/dashboard.py` | Open the agent status dashboard |
+| `python termux-multi-agent/patch_files.py` | Apply file patches across agents |
+| `node termux-multi-agent/cedar-mcp-server.js` | Start the Cedar MCP server |
+| `run_agent.sh` | Run an agent with environment variables set |
+
+## Forensic and mapper commands
+
+Use these commands for code forensics and index rebuilding.
+
+| Command | Description |
+| --- | --- |
+| `archaeo <file>` | Research the full history of a file |
+| `oracle <file>` | Check impact before changing a file |
+| `dispatch <task>` | Make a change through the dispatch system |
+| `validate_promotion.py` | Validate a change and promote it |
+| `map-build && map-func && fore` | Rebuild AST indices, function indices, and run forensics |
+
+### Mapper and forensic examples
+
+<CodeGroup>
+
+```bash Research file history
+archaeo central_mapper_v420.py
+```
+
+```bash Check impact before editing
+oracle termux-multi-agent/run.py
+```
+
+```bash Dispatch a refactoring task
+dispatch "Refactor session digest to use JSONL output"
+```
+
+```bash Validate and promote
+python3 validate_promotion.py
+```
+
+```bash Rebuild all indices
+map-build && map-func && fore
+```
+
+</CodeGroup>
+
+## Quick command summary
+
+```bash
+# Cockpit
+python3 archwiz/archwiz.py
+
+# DeepSeek CLI
+deepcli/deepcli.py new
+deepcli/deepcli.py send "prompt"
+deepcli/deepcli.py export --format json --output chat.json
+
+# Agents
+cd termux-multi-agent && python run.py
+
+# Forensics
+archaeo <file>
+oracle <file>
+map-build && map-func && fore
+```
+
+## Next steps
+
+- See [Environment variables](/reference/environment) for the variables used by `run_agent.sh` and the multi-agent system
+- Read [CI gates](/reference/gates) for the mandatory checks before merging

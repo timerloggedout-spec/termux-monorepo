@@ -1,0 +1,59 @@
+name: pin-cor-ae-submodules
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  pin:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/rindig-cost-of-remembering-icm
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Pin cost-of-remembering_fork
+        run: |
+          if [ -d refTemplates/smods/cost-of-remembering_fork/.git ] || [ -f refTemplates/smods/cost-of-remembering_fork/.git ]; then
+            echo "cost-of-remembering_fork already present"
+          else
+            git submodule add -f --depth 1 -b main \
+              https://github.com/timerloggedout-spec/cost-of-remembering_fork.git \
+              refTemplates/smods/cost-of-remembering_fork
+          fi
+
+      - name: Pin AuditEngine_fork
+        run: |
+          if [ -d refTemplates/smods/AuditEngine_fork/.git ] || [ -f refTemplates/smods/AuditEngine_fork/.git ]; then
+            echo "AuditEngine_fork already present"
+          else
+            git submodule add -f --depth 1 -b main \
+              https://github.com/timerloggedout-spec/AuditEngine_fork.git \
+              refTemplates/smods/AuditEngine_fork
+          fi
+
+      - name: Verify pins
+        run: |
+          git submodule status refTemplates/smods/cost-of-remembering_fork refTemplates/smods/AuditEngine_fork
+          git ls-files -s refTemplates/smods/cost-of-remembering_fork refTemplates/smods/AuditEngine_fork
+
+      - name: Commit and push gitlinks
+        run: |
+          chmod +x scripts/icm/init-cost-of-remembering-submodule.sh scripts/icm/init-auditengine-submodule.sh || true
+          git add -f refTemplates/smods/cost-of-remembering_fork refTemplates/smods/AuditEngine_fork
+          git add scripts/icm/init-cost-of-remembering-submodule.sh scripts/icm/init-auditengine-submodule.sh || true
+          if git diff --cached --quiet; then
+            echo "Nothing to commit — pins may already exist"
+            exit 0
+          fi
+          git commit -m "chore(submodule): pin cost-of-remembering_fork + AuditEngine_fork"
+          git push origin HEAD:feat/rindig-cost-of-remembering-icm

@@ -1,0 +1,164 @@
+name: SWE reference evaluation
+
+# Implements: THUB-007
+# Optional, manual-only reference evidence. Repository-local development evidence
+# remains primary; this workflow is disabled unless both manual input and a trusted
+# repository variable explicitly permit an external reference run.
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_external_reference:
+        description: "Run one external reference instance; requires trusted repository enablement"
+        required: true
+        default: false
+        type: boolean
+      model_id:
+        description: "Provider model identifier; must not contain a credential"
+        required: true
+        type: string
+      benchmark:
+        description: "Small evaluation suite"
+        required: true
+        default: lite
+        type: choice
+        options: [lite, verified]
+      split:
+        description: "Dataset split"
+        required: true
+        default: dev
+        type: choice
+        options: [dev, test]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: swe-reference-evaluation-${{ inputs.benchmark }}-${{ inputs.split }}
+  cancel-in-progress: false
+
+jobs:
+  evaluate:
+    if: inputs.run_external_reference && vars.SWE_REFERENCE_EVALUATION_ENABLED == 'true'
+    name: bounded mini-SWE smoke evaluation
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      MINI_SWE_REVISION: a83fcae82d2a08f0ee0c688f9d137b3566c097f8
+      RUN_DIRECTORY: ${{ runner.temp }}/swe-evaluation
+    steps:
+      - name: Checkout repository without provider credentials
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 1
+          submodules: false
+
+      - name: Validate bounded invocation
+        env:
+          MODEL_ID: ${{ inputs.model_id }}
+        run: |
+          set -euo pipefail
+          if ! [[ "${MODEL_ID}" =~ ^[A-Za-z0-9][A-Za-z0-9._:/-]{0,191}$ ]]; then
+            echo "model_id must be a model identifier, not a secret or free-form command." >&2
+            exit 2
+          fi
+          if [[ "${MODEL_ID}" =~ (ghp|github_pat|sk-|tskey|AIza|client_secret|api[_-]?key) ]]; then
+            echo "model_id resembles a credential and is rejected." >&2
+            exit 2
+          fi
+
+      - name: Checkout pinned mini-SWE-agent reference without provider credentials
+        run: |
+          set -euo pipefail
+          git clone --filter=blob:none https://github.com/timerloggedout-spec/mini-swe-agent_fork.git reference
+          git -C reference checkout --detach "${MINI_SWE_REVISION}"
+          test "$(git -C reference rev-parse HEAD)" = "${MINI_SWE_REVISION}"
+
+      - name: Install pinned reference dependencies without provider credentials
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check --no-input --upgrade pip
+          python -m pip install --disable-pip-version-check --no-input ./reference
+
+      - name: Run one bounded benchmark instance
+        id: run
+        env:
+          MODEL_ID: ${{ inputs.model_id }}
+          SWE_EVALUATION_API_KEY: ${{ secrets.SWE_EVALUATION_API_KEY }}
+        run: |
+          set -uo pipefail
+          if [ -z "${SWE_EVALUATION_API_KEY}" ]; then
+            echo "SWE_EVALUATION_API_KEY is not configured for this explicitly enabled run." >&2
+            exit 78
+          fi
+          mkdir -p "${RUN_DIRECTORY}"
+          STARTED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          set +e
+          ANTHROPIC_API_KEY="${SWE_EVALUATION_API_KEY}" \
+          OPENAI_API_KEY="${SWE_EVALUATION_API_KEY}" \
+          mini-extra swebench \
+            --model "${MODEL_ID}" \
+            --subset "${{ inputs.benchmark }}" \
+            --split "${{ inputs.split }}" \
+            --slice "0:1" \
+            --workers 1 \
+            --output "${RUN_DIRECTORY}" \
+            --environment-class docker
+          RUNNER_EXIT_CODE=$?
+          set -e
+          FINISHED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          echo "started_at=${STARTED_AT}" >> "${GITHUB_OUTPUT}"
+          echo "finished_at=${FINISHED_AT}" >> "${GITHUB_OUTPUT}"
+          echo "runner_exit_code=${RUNNER_EXIT_CODE}" >> "${GITHUB_OUTPUT}"
+
+      - name: Build redacted result manifest
+        if: always()
+        env:
+          MODEL_ID: ${{ inputs.model_id }}
+        run: |
+          set -euo pipefail
+          mkdir -p evaluation-results
+          python3 scripts/ci/swe_evaluation_contract.py manifest \
+            --output evaluation-results/manifest.json \
+            --run-id "mini-swe-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" \
+            --reference mini-swe-agent \
+            --reference-revision "${MINI_SWE_REVISION}" \
+            --benchmark "${{ inputs.benchmark }}" \
+            --split "${{ inputs.split }}" \
+            --model-id "${MODEL_ID}" \
+            --started-at "${{ steps.run.outputs.started_at }}" \
+            --finished-at "${{ steps.run.outputs.finished_at }}" \
+            --runner-exit-code "${{ steps.run.outputs.runner_exit_code }}" \
+            --predictions "${RUN_DIRECTORY}/preds.json"
+          python3 scripts/ci/swe_evaluation_contract.py audit evaluation-results/manifest.json
+
+      - name: Upload redacted evaluation manifest
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: swe-evaluation-manifest-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evaluation-results/manifest.json
+          if-no-files-found: error
+          retention-days: 14
+          include-hidden-files: false
+
+      - name: Set evaluation outcome
+        if: always()
+        run: |
+          set -euo pipefail
+          exit "${{ steps.run.outputs.runner_exit_code }}"
+
+  disabled:
+    if: !(inputs.run_external_reference && vars.SWE_REFERENCE_EVALUATION_ENABLED == 'true')
+    name: external reference disabled
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Record safe non-execution
+        run: |
+          {
+            echo '## SWE reference evaluation disabled'
+            echo
+            echo 'No external package was cloned or installed, and no provider credential was exposed.'
+            echo 'Enable only with explicit manual input and the trusted SWE_REFERENCE_EVALUATION_ENABLED repository variable.'
+          } >> "$GITHUB_STEP_SUMMARY"

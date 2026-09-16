@@ -23,7 +23,7 @@ def detect(pasted_text: str):
             ratio = 1.0
         else:
             ratio = SequenceMatcher(None, pasted_text[:2000], existing[:2000]).ratio()
-        
+
         if ratio >= 0.80:
             results.append((ch, ratio, existing[:200]))
     

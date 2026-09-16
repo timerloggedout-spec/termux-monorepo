@@ -4,13 +4,21 @@ import shutil
 from pathlib import Path
 import pytest
 
+def _get_dc():
+    try:
+        import deepcli.deepcli.core as dc
+        return dc
+    except ModuleNotFoundError:
+        import deepcli.core as dc
+        return dc
+
 def test_sentinel_privileges_enforcement(tmp_path, monkeypatch):
+    dc = _get_dc()
     # Set up test directories under tmp_path
     test_config_dir = tmp_path / ".deepcli"
     test_config_file = test_config_dir / "config.json"
 
-    # Mock CONFIG_DIR and CONFIG_FILE in deepcli.deepcli.core
-    import deepcli.deepcli.core as dc
+    # Mock CONFIG_DIR and CONFIG_FILE in deepcli.core
     monkeypatch.setattr(dc, "CONFIG_DIR", test_config_dir)
     monkeypatch.setattr(dc, "CONFIG_FILE", test_config_file)
 
@@ -56,8 +64,7 @@ def test_sentinel_privileges_enforcement(tmp_path, monkeypatch):
 
 
 def test_sentinel_privileges_symlink_safety(tmp_path, monkeypatch):
-    # Ensure that symlinks are skipped and not followed / modified
-    import deepcli.deepcli.core as dc
+    dc = _get_dc()
 
     # Create a dummy target file
     target_file = tmp_path / "target_file.txt"
@@ -79,13 +86,12 @@ def test_sentinel_privileges_symlink_safety(tmp_path, monkeypatch):
 
 
 def test_sentinel_privileges_path_traversal_prevention(tmp_path, monkeypatch):
-    # Ensure that path traversal attempts are detected and raise ValueError or are sanitized.
-    import deepcli.deepcli.core as dc
+    dc = _get_dc()
 
     # Mocking ~/.deepcli path
     monkeypatch.setattr(os.path, "expanduser", lambda path: path.replace("~", str(tmp_path)))
 
-    # Test that malicious path traversal UUIDs/SIDs raise ValueError or get sanitized safely
+    # Test that malicious path traversal UUIDs/SIDs raise ValueError or are sanitized
     with pytest.raises(ValueError):
         dc._cache_path("../../../etc/passwd")
 
@@ -110,3 +116,59 @@ def test_sentinel_privileges_path_traversal_prevention(tmp_path, monkeypatch):
     # Safe account with special chars gets sanitized
     acc_path_str = dc._cache_path("session1", account="acc$#*!123")
     assert "acc____123" in acc_path_str
+
+
+def test_sentinel_session_cache_key_collision_and_header_isolation(tmp_path, monkeypatch):
+    dc = _get_dc()
+
+    # 1. Test session cache key uniqueness across tokens sharing prefixes
+    token1 = "token_prefix_1234567890_AAA"
+    token2 = "token_prefix_1234567890_BBB"
+    key1 = dc._session_cache_key(token1)
+    key2 = dc._session_cache_key(token2)
+    assert key1 != key2
+
+    # 2. Test get_session clears stale POW response header
+    sess = dc.get_session(token1)
+    sess.headers["X-Ds-Pow-Response"] = "stale_pow_header"
+
+    # Subsequent retrieval of same session must purge X-Ds-Pow-Response
+    retrieved_sess = dc.get_session(token1)
+    assert "X-Ds-Pow-Response" not in retrieved_sess.headers
+
+    # 3. Test upload_file header isolation on dummy file
+    dummy_file = tmp_path / "test.txt"
+    dummy_file.write_text("hello world")
+
+    # Mock get_pow_challenge, solve_pow, and http_requests.post
+    monkeypatch.setattr(dc, "get_pow_challenge", lambda token, path: {"challenge": "c"})
+    monkeypatch.setattr(dc, "solve_pow", lambda challenge: "fresh_pow_header")
+
+    captured_headers = {}
+
+    def mock_post(url, files, headers):
+        nonlocal captured_headers
+        captured_headers = headers
+        class MockResp:
+            def raise_for_status(self): pass
+            def json(self): return {"data": {"biz_data": {"id": "uploaded_file_id"}}}
+        return MockResp()
+
+    monkeypatch.setattr(dc.http_requests, "post", mock_post)
+
+    file_id = dc.upload_file(token1, "session_123", str(dummy_file))
+    assert file_id == "uploaded_file_id"
+    assert captured_headers.get("X-Ds-Pow-Response") == "fresh_pow_header"
+
+    # Shared session headers in _session should NOT contain X-Ds-Pow-Response
+    sess_after = dc.get_session(token1)
+    assert "X-Ds-Pow-Response" not in sess_after.headers
+
+
+def test_upload_file_path_traversal_prevention():
+    dc = _get_dc()
+    with pytest.raises(ValueError, match="Invalid file path"):
+        dc.upload_file("token", "session_123", "../../../etc/passwd")
+
+    with pytest.raises(ValueError, match="Invalid file path"):
+        dc.upload_file("token", "session_123", "foo/../bar.txt")

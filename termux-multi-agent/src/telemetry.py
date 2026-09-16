@@ -1,5 +1,6 @@
 import json
 import time
+import os
 
 TELEMETRY_LOG = "agent_telemetry_stream.json"
 
@@ -16,3 +17,7 @@ class TermuxTelemetryLogger:
                      "target": target_file, "attempt": attempt, "message": message}
         with open(TELEMETRY_LOG, "a") as f:
             f.write(json.dumps(log_entry) + "\n")
+        try:
+            os.chmod(TELEMETRY_LOG, 0o600)
+        except Exception:
+            pass

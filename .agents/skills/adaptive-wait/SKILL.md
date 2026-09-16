@@ -34,6 +34,7 @@ WAIT is a **methodological stage**, not sleep-only idle time. After any action t
 4. **Dual-gate before promote:** `agentic termux smoke` + `hygiene + portability gate` (or repo_gate + termux_smoke). Mergeable_state alone is insufficient.
 5. **Preserve provenance.** Every attempt stays addressable by SHA. Promotion selects a successor; it does not erase failed attempts.
 6. **Stall is a classification, not auto-retry permission.** Record stall class before any retry policy acts.
+7. **Skipped listeners are not gates.** `issue_comment` workflows that complete `skipped` on master do not substitute for dual-gate evidence.
 
 ## Stall classes
 
@@ -45,6 +46,7 @@ WAIT is a **methodological stage**, not sleep-only idle time. After any action t
 | **effect** | Workflow terminal success but expected effect (commit, artifact, page advance) missing |
 | **pagination** | Continuation run completes but `next_start_page` does not advance |
 | **routing loop** | Same SHA/input repeatedly cancels/fails without new diagnosis |
+| **comment-storm-skip** | Burst of `issue_comment` runs on master with `conclusion=skipped` (Gemini/DeepSeek/ECC/Jules). Classify `not_executed` + `reviewer_noise`. Do not treat as gate failure or gate success. |
 
 ## Procedure (every wait cohort)
 
@@ -65,6 +67,7 @@ WAIT is a **methodological stage**, not sleep-only idle time. After any action t
 bash sleep 25–45s   # adaptive, not fixed dogma
 github___pull_request_read method=get_check_runs
 # require agentic termux smoke success + hygiene + portability gate success
+# ignore skipped issue_comment listeners when scoring gates
 # then merge or hold
 ```
 
@@ -87,7 +90,7 @@ Promote (squash-merge) only when:
 
 - Dual gates **success**
 - Scope is extract-clean (or intentional docs/ops slice)
-- Task outcome verified (not merely HTTP 200 / workflow green)
+- Task outcome verified (not merely HTTP 200 / workflow green / skipped listener)
 
 Otherwise: HOLD, extract on fresh master branch, or CLASSIFY stall.
 

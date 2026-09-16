@@ -5,9 +5,30 @@
 **author**: gaps-and-opportunities investigation subagent
 **status**: posted
 **priority**: P2
-**related_prs**: [499]
-**related_branches**: [gaps-opps/add-devcontainer-codespaces]
+**related_prs**: [499, 530, 531]
+**related_branches**: [gaps-opps/add-devcontainer-codespaces, docs/proposals/codespaces-enablement]
 **gates_required**: [repo-gate, termux-smoke]
+
+## Status update (2026-09-16)
+
+The base devcontainer from PR #499 (merged 2026-09-14) has since been superseded/enhanced by
+two further merges: **PR #530** ("agent-ready `.devcontainer` + `setup.sh` for Grok BASH
+lanes") and **PR #531** ("production agent lane — ops card + postCreate tools"), both
+self-merged by the owner. Codespaces is now genuinely working on `master`: the current
+`.devcontainer/devcontainer.json` runs `setup.sh` + shallow submodule init, installs
+`jq`/`ripgrep`/`fd-find`/`shellcheck`, and there's an operator card at
+`docs/ops/CODESPACE-AGENT-LANE.md` describing the agent/collaborator/production-loop split.
+
+That doc explicitly confirms **prebuilds are still an open, deferred decision** ("Prebuilds /
+multi-repo permissions / extra secrets are optional follow-ups; empty `codespaces.repositories`
+is intentional until needed") — so Decision 1 below is not superseded, it's still the live ask.
+It also independently points at `docs/proposals/active/agentic-scoped-access/MANIFEST.md` (PR
+#492) for the Codespaces-secrets-vs-Actions-secrets question, consistent with the addendum
+already added to this proposal.
+
+**No duplication found or created**: #499 was the seed PR, #530/#531 built on top of it rather
+than around it, and this proposal's actual open ask (prebuilds cost decision) remains
+unaddressed by any of that follow-on work.
 
 ## Summary
 

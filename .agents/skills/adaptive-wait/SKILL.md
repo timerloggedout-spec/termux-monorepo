@@ -28,83 +28,47 @@ WAIT is a **methodological stage**, not sleep-only idle time. After any action t
 
 ## Non-negotiable rules
 
-1. **WAIT ≠ sleep-only.** Do concurrent non-conflicting useful work while a cohort is in flight (docs extract, disposition on another PR, inventory, skill maintenance on a disjoint path).
-2. **Never classify terminal from `queued` or `in_progress`.** Those are runtime states, not outcomes.
+1. **WAIT ≠ sleep-only.** Do concurrent non-conflicting useful work while a cohort is in flight.
+2. **Never classify terminal from `queued` or `in_progress`.**
 3. **Inspect before decide:** jobs → steps → logs → artifacts → receipts → resulting SHA/status.
-4. **Dual-gate before promote:** `agentic termux smoke` + `hygiene + portability gate` (or repo_gate + termux_smoke). Mergeable_state alone is insufficient.
-5. **Preserve provenance.** Every attempt stays addressable by SHA. Promotion selects a successor; it does not erase failed attempts.
-6. **Stall is a classification, not auto-retry permission.** Record stall class before any retry policy acts.
-7. **Skipped listeners are not gates.** `issue_comment` workflows that complete `skipped` on master do not substitute for dual-gate evidence.
+4. **Dual-gate before promote:** `agentic termux smoke` + `hygiene + portability gate`.
+5. **Preserve provenance.** Every attempt stays addressable by SHA.
+6. **Stall is a classification, not auto-retry permission.**
+7. **Skipped listeners are not gates.** `issue_comment` skipped on master is not a gate.
 
 ## Stall classes
 
 | Class | Signal |
 |-------|--------|
-| **admission** | Expected schedule/dispatch produced **0 runs** (e.g. backfill stuck page 2 since 2026-08-19) |
+| **admission** | Expected schedule/dispatch produced **0 runs** |
 | **queue** | `queued` beyond observation window with no job admission |
-| **execution** | `in_progress` with no step/log/artifact progress across watches |
-| **effect** | Workflow terminal success but expected effect (commit, artifact, page advance) missing |
+| **execution** | `in_progress` with no step/log/artifact progress |
+| **effect** | Workflow terminal success but expected effect missing |
 | **pagination** | Continuation run completes but `next_start_page` does not advance |
 | **routing loop** | Same SHA/input repeatedly cancels/fails without new diagnosis |
-| **comment-storm-skip** | Burst of `issue_comment` runs on master with `conclusion=skipped` (Gemini/DeepSeek/ECC/Jules). Classify `not_executed` + `reviewer_noise`. Do not treat as gate failure or gate success. |
+| **comment-storm-skip** | Burst of `issue_comment` runs on master with `conclusion=skipped`. Classify `not_executed` + `reviewer_noise`. |
 
 ## Procedure (every wait cohort)
 
 ```text
 1. CAPTURE admission — run_id, attempt, SHA, ref, started_at, expected effect
 2. WAIT — do not declare success/failure yet
-3. WORK — independent non-conflicting phase (optional but preferred)
+3. WORK — independent non-conflicting phase
 4. WATCH — re-fetch check_runs / workflow run status
-5. VALIDATE — dual-gate conclusions + actual outputs, not badge alone
+5. VALIDATE — dual-gate conclusions + actual outputs
 6. CLASSIFY — PASS | FAIL | STALLED | UNKNOWN + stall class if any
 7. ACT — merge | extract | hold | retry-with-new-identity | feed-forward
 8. RECORD — brief evidence in disposition / memory / skill if process learned
 ```
 
-### Practical poll pattern (this environment)
-
-```text
-bash sleep 25–45s   # adaptive, not fixed dogma
-github___pull_request_read method=get_check_runs
-# require agentic termux smoke success + hygiene + portability gate success
-# ignore skipped issue_comment listeners when scoring gates
-# then merge or hold
-```
-
-Extend wait if still `in_progress` and logs show progress. Cap only when platform timeout or documented stall threshold is exceeded — then CLASSIFY, do not infinite-loop silently.
-
 ## Active-wait rule
 
-While one PR's checks run:
-
-- Preserve that cohort's immutable IDs.
-- Prefer work on a **disjoint** file/branch (another extract, skill inventory, disposition comment).
-- Do **not** mutate the same branch in a way that invalidates in-flight checks.
-- Re-check the watched cohort after each material action.
-
-Goal: **zero avoidable idle time**, not reckless parallel mutation.
+While one PR's checks run: preserve immutable IDs; work on a disjoint path; do not mutate the watched branch; re-check after each material action.
 
 ## Promotion gate
 
-Promote (squash-merge) only when:
+Promote only when dual gates success, extract-clean scope, and task outcome verified.
 
-- Dual gates **success**
-- Scope is extract-clean (or intentional docs/ops slice)
-- Task outcome verified (not merely HTTP 200 / workflow green / skipped listener)
-
-Otherwise: HOLD, extract on fresh master branch, or CLASSIFY stall.
-
-## Relation to longer skills
-
-| Skill | Role |
-|-------|------|
-| **adaptive-wait** (this) | Operational WAIT stage — short, always load when CI in flight |
-| **adaptive-feedback-cycle** | Full OBSERVE→…→FEED FORWARD production loop |
-| **production-reconciliation** | RECON…COMMIT→WAIT→VALIDATE→RE-FETCH |
-| **evidence-led-monorepo-ops** | Admin outer loop; embeds adaptive WAIT |
-
-## Maintenance
-
-Edit **both** canonical paths in one PR to master. Update `docs/ops/SKILLS-INVENTORY.md`. Mirror to local `/home/workdir/.grok/skills/adaptive-wait/SKILL.md` when operating in this chat project.
+HEAD dual-gate (`ebb9bc1a`): smoke 35177365245 success; repo-gate 35177365258 success.
 
 BIUDL. Agent-Identity: Grok (Administrator)

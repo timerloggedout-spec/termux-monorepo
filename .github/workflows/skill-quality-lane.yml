@@ -43,7 +43,15 @@ jobs:
         run: python -m py_compile scripts/ci/evaluate_skills.py tests/test_skill_evaluation.py
 
       - name: Run deterministic skill evaluator
-        run: python scripts/ci/evaluate_skills.py --json | tee skill-evaluation.json
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          if [ -n "$BASE_SHA" ] && [ -n "$HEAD_SHA" ]; then
+            python scripts/ci/evaluate_skills.py --baseline-ref "$BASE_SHA" --head-ref "$HEAD_SHA" --json | tee skill-evaluation.json
+          else
+            python scripts/ci/evaluate_skills.py --json | tee skill-evaluation.json
+          fi
 
       - name: Run focused evaluator tests
         run: python -m unittest tests.test_skill_evaluation -v

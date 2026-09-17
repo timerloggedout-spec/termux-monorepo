@@ -69,6 +69,6 @@ While one PR's checks run: preserve immutable IDs; work on a disjoint path; do n
 
 Promote only when dual gates success, extract-clean scope, and task outcome verified.
 
-HEAD dual-gate (`d2c890ba`): smoke 35182262741 success; repo-gate 35182262757 success.
+HEAD observed (`33c186b3` after #573). Last dual-gate IDs remain ancestor `d2c890ba`: smoke 35182262741 success; repo-gate 35182262757 success. Re-verify dual-gate on this extract before promote.
 
 BIUDL. Agent-Identity: Grok (Administrator)

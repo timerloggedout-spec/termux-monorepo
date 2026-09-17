@@ -2,8 +2,9 @@ import tempfile
 import unittest
 import zipfile
 from pathlib import Path
+from unittest.mock import patch
 
-from scripts.ci.evaluate_skills import evaluate_package, evaluate_text
+from scripts.ci.evaluate_skills import changed_skill_paths, evaluate_package, evaluate_text
 
 GOOD = '''---
 name: example-skill
@@ -61,6 +62,13 @@ class SkillEvaluationTests(unittest.TestCase):
             result = evaluate_package(path)
             self.assertFalse(result["valid"])
             self.assertIn("archive_path", result["hard_failures"])
+
+    def test_changed_skill_paths_are_narrowly_gated(self):
+        fake = type("Completed", (), {"stdout": ".agents/skills/new/SKILL.md\nREADME.md\nfixture.skill\n"})()
+        with patch("scripts.ci.evaluate_skills.subprocess.run", return_value=fake) as run:
+            paths = changed_skill_paths("base", "head", Path("."))
+        self.assertEqual(paths, {".agents/skills/new/SKILL.md", "fixture.skill"})
+        run.assert_called_once()
 
 
 if __name__ == "__main__":

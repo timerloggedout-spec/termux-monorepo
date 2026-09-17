@@ -27,7 +27,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "f1178a13c73180e18cbfa073658163c29d99f5db3f4062920b4f65792b057747",
+  "source_fingerprint": "8b768e1d45c996355ba6d6d53ebbd205fe976a2c6ab687a75b912ad5f1aa30c1",
   "workflow_count": 70,
   "workflows": [
     {
@@ -76,7 +76,7 @@
       "jobs": [
         "notify-failure"
       ],
-      "name": "Actions Run Watcher \u2014 incident notification",
+      "name": "Actions Run Watcher — incident notification",
       "path": ".github/workflows/actions-run-watcher.yml",
       "schedules": [],
       "triggers": [
@@ -139,7 +139,7 @@
       "jobs": [
         "sync-linear"
       ],
-      "name": "Agent feedback \u2192 Linear subtasks",
+      "name": "Agent feedback → Linear subtasks",
       "path": ".github/workflows/agent-feedback-linear-sync.yml",
       "schedules": [],
       "triggers": [
@@ -190,7 +190,7 @@
         "detect-bot-feedback",
         "invoke-jules-api"
       ],
-      "name": "Agent review \u2192 auto Jules",
+      "name": "Agent review → auto Jules",
       "path": ".github/workflows/agent-review-auto-jules.yml",
       "schedules": [],
       "triggers": [
@@ -240,7 +240,7 @@
       "jobs": [
         "audit"
       ],
-      "name": "Audit Cycle \u2014 Single PR Feed-Forward",
+      "name": "Audit Cycle — Single PR Feed-Forward",
       "path": ".github/workflows/audit-cycle.yml",
       "schedules": [],
       "triggers": [
@@ -250,7 +250,9 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
       ],
       "authority": "writer",
       "concurrency": "group: automation-docs-refresh-${{ github.event.pull_request.head.ref || github.ref_name }} cancel-in-progress: false",
@@ -267,7 +269,8 @@
       "triggers": [
         "pull_request",
         "push",
-        "schedule"
+        "schedule",
+        "workflow_dispatch"
       ]
     },
     {
@@ -324,7 +327,7 @@
       "jobs": [
         "watch"
       ],
-      "name": "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher",
+      "name": "\ud83d\udee1️ Direct Master Empty-Commit Watcher",
       "path": ".github/workflows/commit-diff-watcher.yml",
       "schedules": [],
       "triggers": [
@@ -372,8 +375,11 @@
       ],
       "name": "context relationship historical backfill",
       "path": ".github/workflows/context-relationship-backfill.yml",
-      "schedules": [],
+      "schedules": [
+        "23 * * * *"
+      ],
       "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -490,7 +496,7 @@
       "jobs": [
         "deepseek-agent"
       ],
-      "name": "DeepSeek CI \u2013 Agentic Automation",
+      "name": "DeepSeek CI – Agentic Automation",
       "path": ".github/workflows/deepseek-ci.yml",
       "schedules": [],
       "triggers": [
@@ -700,7 +706,7 @@
       "jobs": [
         "invoke"
       ],
-      "name": "\u25b6\ufe0f Invoke (Gemini PRIMARY \u2192 peer Omni \u2194 OpenRouter secondary)",
+      "name": "▶️ Invoke (Gemini PRIMARY → peer Omni ↔ OpenRouter secondary)",
       "path": ".github/workflows/gemini-invoke.yml",
       "schedules": [],
       "triggers": [
@@ -719,7 +725,7 @@
       "jobs": [
         "review"
       ],
-      "name": "\ud83d\udd0d Gemini PR Review (Gemini PRIMARY \u2192 peer Omni \u2194 OpenRouter secondary)",
+      "name": "\ud83d\udd0d Gemini PR Review (Gemini PRIMARY → peer Omni ↔ OpenRouter secondary)",
       "path": ".github/workflows/gemini-review.yml",
       "schedules": [],
       "triggers": [
@@ -738,7 +744,7 @@
       "jobs": [
         "triage"
       ],
-      "name": "\ud83c\udff7\ufe0f Issue Triage (Gemini PRIMARY \u2192 peer Omni \u2194 OpenRouter secondary)",
+      "name": "\ud83c\udff7️ Issue Triage (Gemini PRIMARY → peer Omni ↔ OpenRouter secondary)",
       "path": ".github/workflows/gemini-triage.yml",
       "schedules": [],
       "triggers": [
@@ -1237,7 +1243,6 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
         "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
       ],
       "authority": "writer",
@@ -1328,7 +1333,7 @@
         "evaluate",
         "lane"
       ],
-      "name": "Team MVT \u2014 simultaneous provider lanes",
+      "name": "Team MVT — simultaneous provider lanes",
       "path": ".github/workflows/team-mvt.yml",
       "schedules": [
         "*/15 * * * *"

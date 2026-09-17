@@ -27,7 +27,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "f1178a13c73180e18cbfa073658163c29d99f5db3f4062920b4f65792b057747",
+  "source_fingerprint": "98cccc5eb35e33a0561b8fd79d19a16a785a0c003348c3f4e7b2855413bd2051",
   "workflow_count": 70,
   "workflows": [
     {
@@ -250,7 +250,9 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
       ],
       "authority": "writer",
       "concurrency": "group: automation-docs-refresh-${{ github.event.pull_request.head.ref || github.ref_name }} cancel-in-progress: false",
@@ -267,7 +269,8 @@
       "triggers": [
         "pull_request",
         "push",
-        "schedule"
+        "schedule",
+        "workflow_dispatch"
       ]
     },
     {
@@ -372,8 +375,11 @@
       ],
       "name": "context relationship historical backfill",
       "path": ".github/workflows/context-relationship-backfill.yml",
-      "schedules": [],
+      "schedules": [
+        "23 * * * *"
+      ],
       "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -786,7 +792,9 @@
       ]
     },
     {
-      "action_pins": [],
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
       "authority": "read-only-or-advisory",
       "concurrency": "group: historical-evaluation-correlation cancel-in-progress: false",
       "domain": "agentic-development",
@@ -1237,7 +1245,6 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
         "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
       ],
       "authority": "writer",

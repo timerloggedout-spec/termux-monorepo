@@ -6,11 +6,12 @@ import argparse
 import hashlib
 import json
 import re
+import subprocess
 import sys
 import zipfile
 from pathlib import Path
 
-VERSION = "1.0"
+VERSION = "1.1"
 SECRET_PATTERNS = [
     re.compile(r"(?:sk-[A-Za-z0-9]{20,}|gh[pousr]_[A-Za-z0-9_]{20,})"),
     re.compile(r"(?i)(?:api[_-]?key|token|password|secret)\s*[:=]\s*['\"][^'\"]{12,}['\"]"),
@@ -39,7 +40,17 @@ def dim(ok: bool) -> int:
 
 
 def failure(identity, source_kind, checks, code):
-    return {"path": identity, "source_kind": source_kind, "validator_version": VERSION, "input_sha256": None, "valid": False, "score": 0, "dimensions": {}, "checks": checks, "hard_failures": [code]}
+    return {
+        "path": identity,
+        "source_kind": source_kind,
+        "validator_version": VERSION,
+        "input_sha256": None,
+        "valid": False,
+        "score": 0,
+        "dimensions": {},
+        "checks": checks,
+        "hard_failures": [code],
+    }
 
 
 def evaluate_text(text: str, identity: str, source_kind: str, packaging_ok: bool = True):
@@ -75,15 +86,37 @@ def evaluate_text(text: str, identity: str, source_kind: str, packaging_ok: bool
         "integration_maintenance": dim(integration_ok),
         "packaging_hygiene": dim(packaging_ok and fences_ok and secrets_ok),
     }
-    weights = {"identity_clarity": 20, "procedure_completeness": 20, "safety_boundaries": 20, "verification_evidence": 20, "integration_maintenance": 10, "packaging_hygiene": 10}
+    weights = {
+        "identity_clarity": 20,
+        "procedure_completeness": 20,
+        "safety_boundaries": 20,
+        "verification_evidence": 20,
+        "integration_maintenance": 10,
+        "packaging_hygiene": 10,
+    }
     score = round(sum(dimensions[k] * weights[k] for k in dimensions) / 5)
     hard_failures = []
-    if not identity_ok: hard_failures.append("frontmatter_identity")
-    if not body: hard_failures.append("empty_body")
-    if not fences_ok: hard_failures.append("unbalanced_fences")
-    if not secrets_ok: hard_failures.append("secret_pattern")
-    if not packaging_ok: hard_failures.append("packaging")
-    return {"path": identity, "source_kind": source_kind, "validator_version": VERSION, "input_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(), "valid": not hard_failures, "score": score, "dimensions": dimensions, "checks": checks, "hard_failures": hard_failures}
+    if not identity_ok:
+        hard_failures.append("frontmatter_identity")
+    if not body:
+        hard_failures.append("empty_body")
+    if not fences_ok:
+        hard_failures.append("unbalanced_fences")
+    if not secrets_ok:
+        hard_failures.append("secret_pattern")
+    if not packaging_ok:
+        hard_failures.append("packaging")
+    return {
+        "path": identity,
+        "source_kind": source_kind,
+        "validator_version": VERSION,
+        "input_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
+        "valid": not hard_failures,
+        "score": score,
+        "dimensions": dimensions,
+        "checks": checks,
+        "hard_failures": hard_failures,
+    }
 
 
 def evaluate_package(path: Path):
@@ -94,17 +127,41 @@ def evaluate_package(path: Path):
                 return failure(str(path), ".skill", {"archive": "unsafe path"}, "archive_path")
             skills = [n for n in names if Path(n).name == "SKILL.md"]
             if len(skills) != 1:
-                return failure(str(path), ".skill", {"archive": f"expected exactly one SKILL.md, found {len(skills)}"}, "archive_skill_md")
+                return failure(
+                    str(path),
+                    ".skill",
+                    {"archive": f"expected exactly one SKILL.md, found {len(skills)}"},
+                    "archive_skill_md",
+                )
             text = zf.read(skills[0]).decode("utf-8")
             return evaluate_text(text, f"{path}::{skills[0]}", ".skill")
     except (zipfile.BadZipFile, UnicodeDecodeError) as exc:
         return failure(str(path), ".skill", {"archive": f"invalid: {exc}"}, "archive_invalid")
 
 
+def changed_skill_paths(base_ref: str, head_ref: str, root: Path) -> set[str]:
+    """Return changed skill-definition paths for regression gating on a PR."""
+    completed = subprocess.run(
+        ["git", "diff", "--name-only", f"{base_ref}..{head_ref}", "--", ".agents", ".github", "docs", "*.skill"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    paths = set()
+    for raw in completed.stdout.splitlines():
+        path = raw.strip()
+        if path.endswith("SKILL.md") or path.endswith(".skill"):
+            paths.add(path)
+    return paths
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("root", nargs="?", default=".")
     ap.add_argument("--json", action="store_true")
+    ap.add_argument("--baseline-ref", help="Base ref for PR regression gating; inventory remains complete")
+    ap.add_argument("--head-ref", default="HEAD", help="Head ref paired with --baseline-ref")
     args = ap.parse_args()
     root = Path(args.root).resolve()
     results = []
@@ -115,13 +172,36 @@ def main():
     for p in sorted(root.rglob("*.skill")):
         if ".git" not in p.parts:
             results.append(evaluate_package(p))
-    summary = {"validator_version": VERSION, "skills": len(results), "valid": sum(r["valid"] for r in results), "invalid": sum(not r["valid"] for r in results), "minimum_score": min((r["score"] for r in results), default=100)}
+
+    invalid = [r for r in results if not r["valid"]]
+    summary = {
+        "validator_version": VERSION,
+        "skills": len(results),
+        "valid": sum(r["valid"] for r in results),
+        "invalid": len(invalid),
+        "minimum_score": min((r["score"] for r in results), default=100),
+    }
+    regression_paths: set[str] = set()
+    regression_failures = []
+    if args.baseline_ref:
+        regression_paths = changed_skill_paths(args.baseline_ref, args.head_ref, root)
+        regression_failures = [r for r in invalid if r["path"] in regression_paths]
+    summary["changed_skill_definitions"] = len(regression_paths)
+    summary["regression_failures"] = len(regression_failures)
+    summary["baseline_gated"] = bool(args.baseline_ref)
+
     payload = {"summary": summary, "results": results}
-    print(json.dumps(payload, indent=2, sort_keys=True) if args.json else f"skills={summary['skills']} valid={summary['valid']} invalid={summary['invalid']} minimum_score={summary['minimum_score']}")
-    for r in results:
-        if not r["valid"]:
-            print(f"FAIL {r['path']}: {r['hard_failures']}", file=sys.stderr)
-    return 1 if summary["invalid"] else 0
+    print(json.dumps(payload, indent=2, sort_keys=True) if args.json else (
+        f"skills={summary['skills']} valid={summary['valid']} invalid={summary['invalid']} "
+        f"minimum_score={summary['minimum_score']} changed={summary['changed_skill_definitions']} "
+        f"regressions={summary['regression_failures']}"
+    ))
+    for r in invalid:
+        print(f"FAIL {r['path']}: {r['hard_failures']}", file=sys.stderr)
+    if args.baseline_ref:
+        return 1 if regression_failures else 0
+    return 1 if invalid else 0
+
 
 if __name__ == "__main__":
     raise SystemExit(main())

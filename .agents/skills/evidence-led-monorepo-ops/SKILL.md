@@ -20,19 +20,19 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 - Extra-red ≠ dual-gate. Behind-master dual-gate green ≠ auto-merge.
 - Identity: `Agent-Identity: Grok (Administrator)`.
 
-## Current production anchors (2026-09-17T02:08Z)
+## Current production anchors (2026-09-17T03:09Z)
 
 | Item | State |
 |------|-------|
-| Master HEAD | `d1ee07e8` (#563 squash; prior `3e43bd60` #561, `037ff6c1` #565) |
-| Dual gates on `d1ee07e8` | repo-gate 35169094011 success; termux smoke 35169093992 success |
+| Master HEAD | `5b8f06b0` (#567 GitHub MCP Docker self-host; prior `8fa3027b` #566, `d1ee07e8` #563) |
+| Dual gates on `5b8f06b0` | repo-gate 35176477812 success; termux smoke 35176477802 success |
 | Extra-red HOLD | #549 ML (#175); #432 sibling |
 | HOLD mega | #523 #527 #142 #455 #48 #543 #545 |
-| Landed this cycle | #563 Jules linguist NSE-020; #561 RL-19 catalog |
+| Landed this cycle | #567 MCP Docker lane; #566 skill anchors; #563 Jules linguist NSE-020 |
 | Observatory | full checkout SHA pinned in #562 |
 | Comment-storm-skip | Gemini/Jules/ECC `issue_comment` skipped ≠ gate |
 | Extra-red non-gate | Vercel deployment rate-limit on #545 (retry 24h) |
-| Non-gates | historical-eval / swe-reference-evaluation fail; mermaid docs-refresh — not dual-gate |
+| Non-gates | historical-eval / swe-reference-evaluation fail; mermaid docs-refresh; agent-jules-on-issues / actions-run-watcher startup_failure — not dual-gate |
 
 ## Extract recipe
 

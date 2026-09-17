@@ -21,23 +21,23 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 - Identity: `Agent-Identity: Grok (Administrator)`.
 - GitHub MCP write works as `timerloggedout-spec` even when local sandbox has no OPERATOR PAT / `gh`.
 
-## Current production anchors (2026-09-17T22:05Z)
+## Current production anchors (2026-09-17T23:12Z)
 
 | Item | State |
 |------|-------|
-| Master HEAD | `9f4c7fa2a5808` (`ops(skills): record #582 landing` #585) |
-| Just landed | #576 `4d532a9e5655`; #577 `92d704c0f8c8`; #579 `60a742a6d2f0`; #580 `96a04af3839d4`; #581 `d886560b8a546`; #582 `f779b9a2fd550`; #585 record landing `9f4c7fa2a5808` |
-| Dual gates last verified | Master push dual-gate on `f779b9a2`: smoke 35275507986 success; repo-gate 35275507908 success. #585 PR dual-gate: agentic termux smoke + hygiene + portability gate success. Parent `d886560` dual-gate: smoke 35269615266 + repo-gate 35269615325 |
-| Observe (not merged) | #583 Grafana MCP boundary. #584 MVT context-safe budget (`validate-pull-request` extra-red FAIL ≠ gate) |
+| Master HEAD | `11c56e46c0365` (`ops(skills): record #585 landing` #586) |
+| Just landed | #576 `4d532a9e5655`; #577 `92d704c0f8c8`; #579 `60a742a6d2f0`; #580 `96a04af3839d4`; #581 `d886560b8a546`; #582 `f779b9a2fd550`; #585 `9f4c7fa2a5808`; #586 record landing `11c56e46c0365` |
+| Dual gates last verified | #586 PR dual-gate: agentic termux smoke + hygiene + portability gate success. Parent `f779b9a2` master dual-gate: smoke 35275507986 + repo-gate 35275507908 success |
+| Observe (not merged) | #583 Grafana MCP. #584 MVT context-safe budget (`validate-pull-request` extra-red FAIL ≠ gate). #587 Jules date-only merged-branch-audit bump |
 | Extra-red HOLD | #549 ML (#175) dirty/behind base `6df9b66`; sibling #432 HOLD — extract later from live master |
 | HOLD mega | #523 #527 #545 #543 #455 #485 #483 #481 #474 #471 #466 #456 #453 |
 | Draft | #578 accounting/bidding schema pilot |
 | Comment-storm-skip | Gemini/Jules/ECC/`coderabbitai` `issue_comment` cancelled/success mix ≠ gate |
-| Extra-red non-gate | Vercel rate-limit historically on #545/#549 |
+| Extra-red non-gate | Vercel rate-limit historically on #545/#549; merge-promotion-queue inventory fail on master ≠ gate |
 | Non-gates | historical-eval / swe-reference-evaluation fail; mermaid docs-refresh; agent-jules-on-issues / actions-run-watcher startup_failure; OpenRouter free catalog sync fail |
 
 ## Extract recipe
 
-Create branch from current master. Do not force-update dirty branches. #549 remains dirty/behind — do not merge; extract later from `9f4c7fa2`.
+Create branch from current master. Do not force-update dirty branches. #549 remains dirty/behind — do not merge; extract later from `11c56e46`.
 
 BIUDL. Agent-Identity: Grok (Administrator)

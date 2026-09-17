@@ -1,25 +1,3 @@
-// ============================================================================
-// The Oracle — Evaluator Lane
-// ============================================================================
-// Codespaces lane for the Evaluator role (docs/ops/SKILLS-INVENTORY.md role
-// matrix: blind-agent-evaluation, pr-evidence-evaluation, mvt-experiment).
-// Tooled for judging OTHER agents' work — not authoring it: CI check-run
-// polling, provenance/trailer verification, stall classification — built
-// around the WAIT -> WATCH -> VALIDATE -> RE-FETCH -> COMPARE -> CLASSIFY ->
-// RECORD -> REPEAT discipline from .agents/skills/adaptive-wait/SKILL.md.
-//
-// Sibling lanes in this same .devcontainer directory:
-//   - ../devcontainer.json       -> BASH/Ops Agent lane (Admin, #530/#531)
-//   - ../docs-lane/              -> Docs/Mintlify lane (Discovery/Docs)
-//   - ../governance-lane/        -> PR-Triage/Governance lane (Governance)
-//   - ../general-dev/            -> General dev/build lane (Collaborator)
-//   - ./ (this file)             -> Oracle lane (Evaluator)
-//
-// Persona name "Oracle" follows this org's existing agent-persona naming
-// convention (see harmony_hub/config/GRIMOIRE_DICTIONARY.md — Chronomancer,
-// Linguist, Bidder, Scout, Harvester); Oracle is evocative of watch / scry /
-// judge. The documented role-matrix mapping stays "Evaluator" for
-// traceability back to docs/ops/SKILLS-INVENTORY.md.
 {
   "name": "termux-monorepo-oracle-lane",
   "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bullseye",

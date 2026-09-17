@@ -1,13 +1,3 @@
-// General dev/build lane — Codespaces Infrastructure multi-lane setup.
-// Sibling lanes in this same .devcontainer directory:
-//   - root .devcontainer/devcontainer.json      → BASH/ops agent lane (#530/#531, unchanged default)
-//   - .devcontainer/docs-lane/devcontainer.json  → lightweight Docs/Mintlify lane
-//   - .devcontainer/governance-lane/devcontainer.json → PR-triage/governance lane
-//   - .devcontainer/general-dev/devcontainer.json (this file) → full monorepo code stack
-//
-// Maps to docs/ops/SKILLS-INVENTORY.md role load matrix: Collaborator / Codespace agent role.
-// On start, load `adaptive-feedback-cycle`, then run the dual-gate
-// (`scripts/ci/repo_gate.py` + `scripts/ci/termux_smoke.py`) plus repo conventions.
 {
   "name": "termux-monorepo-general-dev-lane",
   "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bullseye",
@@ -18,7 +8,9 @@
       "installOhMyZsh": false,
       "upgradePackages": true
     },
-    "ghcr.io/devcontainers/features/node:1": { "version": "20" },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20"
+    },
     "ghcr.io/devcontainers/features/rust:1": {},
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },

@@ -1,17 +1,4 @@
 {
-  // =====================================================================================
-  // Codespaces Multi-Lane Infrastructure: PR-Triage / Governance Lane
-  // Sibling to:
-  //   - .devcontainer/devcontainer.json (Root / BASH / Ops Agent Lane - #530/#531)
-  //   - .devcontainer/docs-lane/devcontainer.json (Docs / Mintlify Lane)
-  //   - .devcontainer/general-dev/devcontainer.json (General Dev / Build Lane)
-  //
-  // Role Matrix Mapping (docs/ops/SKILLS-INVENTORY.md):
-  //   - Role: Governance / proposal
-  //   - Load first: termux-monorepo-agentic-governance
-  //   - Then: docs/CONSENSUS.md + docs/proposals/AGENTIC-PERMISSIONS.md
-  //   - Optional: review-loop
-  // =====================================================================================
   "name": "termux-monorepo-governance-lane",
   "image": "mcr.microsoft.com/devcontainers/base:bullseye",
   "features": {

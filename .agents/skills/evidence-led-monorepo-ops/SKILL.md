@@ -20,18 +20,18 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 - Extra-red ≠ dual-gate. Behind-master dual-gate green ≠ auto-merge.
 - Identity: `Agent-Identity: Grok (Administrator)`.
 
-## Current production anchors (2026-09-16T24:02Z)
+## Current production anchors (2026-09-17T00:40Z)
 
 | Item | State |
 |------|-------|
-| Master HEAD | `820ecd2f` (#562 squash; prior `f1d59dc5` #560, `263c3dd9` #558) |
-| Dual gates on `820ecd2f` | repo-gate 35160492303 success; termux smoke 35160492248 success |
-| Extra-red HOLD | #549 ML (#175); #432 sibling; #563 Jules linguist (1-file / unstable) |
+| Master HEAD | `f6009939` (#564 squash; prior `820ecd2f` #562, `f1d59dc5` #560) |
+| Dual gates on `f6009939` | repo-gate 35165001073 success; termux smoke 35165001074 success |
+| Extra-red HOLD | #549 ML (#175); #432 sibling; #563 Jules linguist (1-file + Vercel rate-limit) |
 | HOLD mega | #523 #527 #142 #455 #48 #543 #545 |
 | HOLD generated drift | #561 Jules catalog-only; not lane SSOT |
 | Observatory | full checkout SHA pinned in #562 |
 | Comment-storm-skip | Gemini/Jules/ECC `issue_comment` skipped ≠ gate |
-| Docs-refresh | mermaid render fail (35160492333) — not dual-gate |
+| Non-gates | historical-eval 35165001101 fail; mermaid docs-refresh — not dual-gate |
 
 ## Extract recipe
 

@@ -357,6 +357,65 @@ def translate_text_raw(text: str, to_compressed: bool) -> str:
     cb = _sub_cb_comp if to_compressed else _sub_cb_decomp
     return pattern.sub(cb, text)
 
+class LinePlaceholderContext:
+    """
+    Context object managing placeholder tracking and pre-bound substitution callbacks for line translation.
+    Performance Optimization: Reusing pre-bound method callbacks on a stateful context object avoids
+    per-line inner closure function object allocations (`def add_placeholder`, `def link_repl`, etc.),
+    reducing execution overhead and memory churn during document compilation.
+    """
+    __slots__ = ("placeholders", "to_compressed")
+
+    def __init__(self, to_compressed: bool):
+        self.placeholders: List[Tuple[str, str]] = []
+        self.to_compressed = to_compressed
+
+    def ph_group0(self, match: re.Match[str]) -> str:
+        ph = f"§§PL_{len(self.placeholders)}§§"
+        self.placeholders.append((ph, match.group(0)))
+        return ph
+
+    def link_repl(self, match: re.Match[str]) -> str:
+        text, url = match.group(1), match.group(2)
+        translated_text = translate_text_raw(text, self.to_compressed)
+        val = f"[{translated_text}]({url})"
+        ph = f"§§PL_{len(self.placeholders)}§§"
+        self.placeholders.append((ph, val))
+        return ph
+
+    def bold_repl_2(self, match: re.Match[str]) -> str:
+        text = match.group(1)
+        translated_text = translate_text_raw(text, self.to_compressed)
+        val = f"**{translated_text}**"
+        ph = f"§§PL_{len(self.placeholders)}§§"
+        self.placeholders.append((ph, val))
+        return ph
+
+    def bold_repl_1(self, match: re.Match[str]) -> str:
+        text = match.group(1)
+        translated_text = translate_text_raw(text, self.to_compressed)
+        val = f"*{translated_text}*"
+        ph = f"§§PL_{len(self.placeholders)}§§"
+        self.placeholders.append((ph, val))
+        return ph
+
+    def bold_repl_under2(self, match: re.Match[str]) -> str:
+        text = match.group(1)
+        translated_text = translate_text_raw(text, self.to_compressed)
+        val = f"____{translated_text}____"
+        ph = f"§§PL_{len(self.placeholders)}§§"
+        self.placeholders.append((ph, val))
+        return ph
+
+    def bold_repl_under1(self, match: re.Match[str]) -> str:
+        text = match.group(1)
+        translated_text = translate_text_raw(text, self.to_compressed)
+        val = f"_{translated_text}_"
+        ph = f"§§PL_{len(self.placeholders)}§§"
+        self.placeholders.append((ph, val))
+        return ph
+
+
 def translate_line(line: str, to_compressed: bool) -> str:
     """Translate a single line protecting syntax and structures with fast-path character checks."""
     # Fast-path optimization: check if any translatable terms exist on the line before running placeholder regexes
@@ -364,67 +423,37 @@ def translate_line(line: str, to_compressed: bool) -> str:
     if not matcher.search(line):
         return line
 
-    placeholders = []
-
-    def add_placeholder(val: str) -> str:
-        ph = f"§§PL_{len(placeholders)}§§"
-        placeholders.append((ph, val))
-        return ph
+    ctx = LinePlaceholderContext(to_compressed)
 
     # Fast-path checks: skip regex passes if special markdown characters are not present in line
     if "`" in line:
-        line = INLINE_CODE_PATTERN.sub(lambda m: add_placeholder(m.group(0)), line)
+        line = INLINE_CODE_PATTERN.sub(ctx.ph_group0, line)
 
     if "<" in line:
-        line = HTML_TAG_PATTERN.sub(lambda m: add_placeholder(m.group(0)), line)
+        line = HTML_TAG_PATTERN.sub(ctx.ph_group0, line)
 
     if "[" in line:
-        def link_repl(match: re.Match[str]) -> str:
-            text = match.group(1)
-            url = match.group(2)
-            translated_text = translate_text_raw(text, to_compressed)
-            return add_placeholder(f"[{translated_text}]({url})")
-        line = LINK_PATTERN.sub(link_repl, line)
+        line = LINK_PATTERN.sub(ctx.link_repl, line)
 
     if "*" in line:
-        def bold_repl_2(match: re.Match[str]) -> str:
-            text = match.group(1)
-            translated_text = translate_text_raw(text, to_compressed)
-            return add_placeholder(f"**{translated_text}**")
-
-        def bold_repl_1(match: re.Match[str]) -> str:
-            text = match.group(1)
-            translated_text = translate_text_raw(text, to_compressed)
-            return add_placeholder(f"*{translated_text}*")
-
-        line = BOLD_PATTERN_2.sub(bold_repl_2, line)
-        line = BOLD_PATTERN_1.sub(bold_repl_1, line)
+        line = BOLD_PATTERN_2.sub(ctx.bold_repl_2, line)
+        line = BOLD_PATTERN_1.sub(ctx.bold_repl_1, line)
 
     if "_" in line:
-        def bold_repl_under2(match: re.Match[str]) -> str:
-            text = match.group(1)
-            translated_text = translate_text_raw(text, to_compressed)
-            return add_placeholder(f"____{translated_text}____")  # double underline wrapper to keep distinct
-
-        def bold_repl_under1(match: re.Match[str]) -> str:
-            text = match.group(1)
-            translated_text = translate_text_raw(text, to_compressed)
-            return add_placeholder(f"_{translated_text}_")
-
-        line = BOLD_PATTERN_UNDER2.sub(bold_repl_under2, line)
-        line = BOLD_PATTERN_UNDER1.sub(bold_repl_under1, line)
+        line = BOLD_PATTERN_UNDER2.sub(ctx.bold_repl_under2, line)
+        line = BOLD_PATTERN_UNDER1.sub(ctx.bold_repl_under1, line)
 
     if "/" in line or "." in line or "~" in line:
-        line = PATH_REGEX.sub(lambda m: add_placeholder(m.group(0)), line)
+        line = PATH_REGEX.sub(ctx.ph_group0, line)
 
     if "." in line:
-        line = DECIMAL_PATTERN.sub(lambda m: add_placeholder(m.group(0)), line)
+        line = DECIMAL_PATTERN.sub(ctx.ph_group0, line)
 
     # Perform main translations on the remaining unprotected text
     line = translate_text_raw(line, to_compressed)
 
     # Restore placeholders in reverse order
-    for ph, orig in reversed(placeholders):
+    for ph, orig in reversed(ctx.placeholders):
         # Unwrap special double underline bold markup back to standard __text__
         if orig.startswith("____") and orig.endswith("____"):
             content = orig[4:-4]

@@ -55,43 +55,73 @@ def get_json(path: str, token: str, params: dict[str, Any] | None = None) -> Any
     raise RuntimeError(f"GitHub API request failed: {path}")
 
 
+# Pre-compiled classification terms to eliminate repeated collection allocations in loops
+DOMAIN_TERMS: dict[str, tuple[str, ...]] = {
+    "agent": ("agents", "agent"),
+    "ai": ("ai", "llm", "machine-learning", "deepseek", "openai"),
+    "context": ("context", "knowledge-graph", "knowledge", "rag"),
+    "research": ("research", "arxiv", "empirical", "science"),
+    "termux": ("termux", "android"),
+    "security": ("security", "forensics", "supply-chain"),
+    "developer-tools": ("cli", "developer-tools", "devtools"),
+}
+WORKFLOW_TERMS: tuple[str, ...] = ("github-action", "github-actions", "workflow")
+DEPENDENCY_TERMS: tuple[str, ...] = ("library", "framework", "sdk")
+RESEARCH_DOMAINS: set[str] = {"research", "context"}
+
+
 def topics(repo: dict[str, Any]) -> list[str]:
     return sorted({str(x).lower() for x in repo.get("topics", []) if isinstance(x, str)})
 
 
-def classify(repo: dict[str, Any], provenance: list[str]) -> dict[str, Any]:
-    text = " ".join([str(repo.get("name", "")), str(repo.get("description") or ""), " ".join(topics(repo))]).lower()
-    domain_terms = {
-        "agent": ["agents", "agent"], "ai": ["ai", "llm", "machine-learning", "deepseek", "openai"],
-        "context": ["context", "knowledge-graph", "knowledge", "rag"], "research": ["research", "arxiv", "empirical", "science"],
-        "termux": ["termux", "android"], "security": ["security", "forensics", "supply-chain"],
-        "developer-tools": ["cli", "developer-tools", "devtools"],
-    }
-    domains = sorted(key for key, labels in domain_terms.items() if any(label in text for label in labels)) or ["unclassified"]
+def classify(repo: dict[str, Any], provenance: list[str], repo_topics: list[str] | None = None) -> dict[str, Any]:
+    t_list = repo_topics if repo_topics is not None else topics(repo)
+    text = f"{repo.get('name', '')} {repo.get('description') or ''} {' '.join(t_list)}".lower()
+
+    domains = [key for key, labels in DOMAIN_TERMS.items() if any(label in text for label in labels)]
+    if not domains:
+        domains = ["unclassified"]
+    else:
+        domains.sort()
+
     role = ["reference"] if "starred" in provenance else ["owned"]
-    if repo.get("fork"): role.append("fork")
-    if repo.get("is_template"): role.append("template")
-    if repo.get("archived"): role.append("archived")
+    if repo.get("fork"):
+        role.append("fork")
+    if repo.get("is_template"):
+        role.append("template")
+    if repo.get("archived"):
+        role.append("archived")
+
     integration: list[str] = []
-    if repo.get("fork"): integration.append("upstream-comparison")
-    if any(x in text for x in ["github-action", "github-actions", "workflow"]): integration.append("workflow-candidate")
-    if any(x in text for x in ["library", "framework", "sdk"]): integration.append("dependency-candidate")
-    research = "high" if "research" in domains or "context" in domains else "medium"
-    return {"domains": sorted(set(domains)), "role": sorted(set(role)), "integration": sorted(set(integration)), "research_value": research,
-            "submodule_candidate": bool(repo.get("fork") or repo.get("is_template"))}
+    if repo.get("fork"):
+        integration.append("upstream-comparison")
+    if any(x in text for x in WORKFLOW_TERMS):
+        integration.append("workflow-candidate")
+    if any(x in text for x in DEPENDENCY_TERMS):
+        integration.append("dependency-candidate")
+
+    research = "high" if any(d in RESEARCH_DOMAINS for d in domains) else "medium"
+    return {
+        "domains": domains,
+        "role": sorted(set(role)),
+        "integration": sorted(integration),
+        "research_value": research,
+        "submodule_candidate": bool(repo.get("fork") or repo.get("is_template")),
+    }
 
 
 def normalize(repo: dict[str, Any], provenance: list[str]) -> dict[str, Any]:
     owner = repo.get("owner") or {}
     upstream = repo.get("parent") or {}
+    t_list = topics(repo)
     return {
         "id": f"github:repository:{repo.get('full_name')}", "full_name": repo.get("full_name"), "name": repo.get("name"),
         "html_url": repo.get("html_url"), "default_branch": repo.get("default_branch"), "description": repo.get("description"),
         "owner": owner.get("login"), "visibility": repo.get("visibility"), "private": bool(repo.get("private")),
         "fork": bool(repo.get("fork")), "archived": bool(repo.get("archived")), "is_template": bool(repo.get("is_template")),
-        "language": repo.get("language"), "topics": topics(repo), "stars": repo.get("stargazers_count", 0), "forks": repo.get("forks_count", 0),
+        "language": repo.get("language"), "topics": t_list, "stars": repo.get("stargazers_count", 0), "forks": repo.get("forks_count", 0),
         "updated_at": repo.get("updated_at"), "pushed_at": repo.get("pushed_at"), "created_at": repo.get("created_at"),
-        "upstream": upstream.get("full_name"), "provenance": sorted(set(provenance)), "classification": classify(repo, provenance),
+        "upstream": upstream.get("full_name"), "provenance": sorted(set(provenance)), "classification": classify(repo, provenance, repo_topics=t_list),
     }
 
 
@@ -99,16 +129,35 @@ def markdown(records: list[dict[str, Any]], observed_at: str) -> str:
     lines = ["# Repository Observatory", "", "> Generated from GitHub repository and starring metadata. JSON is canonical; this file is a navigation projection.", "",
              f"Observed: `{observed_at}`", "", "## Navigation", "", "- [Owned repositories](#owned)", "- [Starred repositories](#starred)",
              "- [Research seeds](#research-seeds)", "- [Integration candidates](#integration-candidates)", ""]
+
+    owned_rows: list[dict[str, Any]] = []
+    starred_rows: list[dict[str, Any]] = []
+    research_rows: list[dict[str, Any]] = []
+    integration_rows: list[dict[str, Any]] = []
+
+    for r in records:
+        prov = r["provenance"]
+        if "owned" in prov:
+            owned_rows.append(r)
+        if "starred" in prov:
+            starred_rows.append(r)
+        c = r["classification"]
+        if c["research_value"] == "high":
+            research_rows.append(r)
+        if c["submodule_candidate"] or c["integration"]:
+            integration_rows.append(r)
+
     def table(title: str, rows: list[dict[str, Any]]) -> None:
         lines.extend([f"## {title}", "", "| Repository | Provenance | Domains | Research | Integration |", "|---|---|---|---|---|"])
         for record in rows:
             c = record["classification"]
             lines.append(f"| [{record['full_name']}]({record['html_url']}) | {', '.join(record['provenance'])} | {', '.join(c['domains'])} | {c['research_value']} | {', '.join(c['integration']) or '—'} |")
         lines.append("")
-    table("Owned", [r for r in records if "owned" in r["provenance"]])
-    table("Starred", [r for r in records if "starred" in r["provenance"]])
-    table("Research seeds", [r for r in records if r["classification"]["research_value"] == "high"])
-    table("Integration candidates", [r for r in records if r["classification"]["submodule_candidate"] or r["classification"]["integration"]])
+
+    table("Owned", owned_rows)
+    table("Starred", starred_rows)
+    table("Research seeds", research_rows)
+    table("Integration candidates", integration_rows)
     return "\n".join(lines) + "\n"
 
 
@@ -116,14 +165,16 @@ def build_records(owned: list[dict[str, Any]], starred: list[dict[str, Any]]) ->
     merged: dict[str, dict[str, Any]] = {}
     for repo in owned:
         full_name = repo.get("full_name")
-        if full_name: merged[full_name] = normalize(repo, ["owned"])
+        if full_name:
+            merged[full_name] = normalize(repo, ["owned"])
     for repo in starred:
         full_name = repo.get("full_name")
-        if not full_name: continue
+        if not full_name:
+            continue
         if full_name in merged:
             provenance = sorted(set(merged[full_name]["provenance"] + ["starred"]))
             merged[full_name]["provenance"] = provenance
-            merged[full_name]["classification"] = classify(merged[full_name], provenance)
+            merged[full_name]["classification"] = classify(merged[full_name], provenance, repo_topics=merged[full_name].get("topics"))
         else:
             merged[full_name] = normalize(repo, ["starred"])
     return sorted(merged.values(), key=lambda r: (tuple(r["classification"]["domains"]), r["full_name"].lower()))
@@ -135,13 +186,34 @@ def snapshot_hash(records: list[dict[str, Any]]) -> str:
 
 
 def build_payload(owner: str, login: str, records: list[dict[str, Any]], observed_at: str) -> dict[str, Any]:
+    c_owned = 0
+    c_starred = 0
+    c_both = 0
+    c_research = 0
+    c_integration = 0
+
+    for r in records:
+        prov = set(r["provenance"])
+        has_owned = "owned" in prov
+        has_starred = "starred" in prov
+        if has_owned:
+            c_owned += 1
+        if has_starred:
+            c_starred += 1
+        if has_owned and has_starred:
+            c_both += 1
+
+        c = r["classification"]
+        if c["research_value"] == "high":
+            c_research += 1
+        if c["integration"] or c["submodule_candidate"]:
+            c_integration += 1
+
     return {
         "schema_version": SCHEMA_VERSION, "builder": "termux-monorepo.repository_observatory@2.1", "repository": f"{owner}/termux-monorepo",
         "observed_at": observed_at, "authenticated_user": login, "snapshot_hash": snapshot_hash(records),
-        "counts": {"owned": sum("owned" in r["provenance"] for r in records), "starred": sum("starred" in r["provenance"] for r in records),
-                   "both": sum({"owned", "starred"}.issubset(r["provenance"]) for r in records),
-                   "research_seeds": sum(r["classification"]["research_value"] == "high" for r in records),
-                   "integration_candidates": sum(bool(r["classification"]["integration"]) or r["classification"]["submodule_candidate"] for r in records)},
+        "counts": {"owned": c_owned, "starred": c_starred, "both": c_both,
+                   "research_seeds": c_research, "integration_candidates": c_integration},
         "repositories": records,
     }
 

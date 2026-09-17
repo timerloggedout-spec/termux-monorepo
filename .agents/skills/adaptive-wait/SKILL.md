@@ -34,7 +34,7 @@ WAIT is a **methodological stage**, not sleep-only idle time. After any action t
 4. **Dual-gate before promote:** `agentic termux smoke` + `hygiene + portability gate`.
 5. **Preserve provenance.** Every attempt stays addressable by SHA.
 6. **Stall is a classification, not auto-retry permission.**
-7. **Skipped listeners are not gates.** `issue_comment` skipped on master is not a gate.
+7. **Skipped listeners are not gates.** `issue_comment` skipped/cancelled on master is not a gate.
 
 ## Stall classes
 
@@ -46,7 +46,7 @@ WAIT is a **methodological stage**, not sleep-only idle time. After any action t
 | **effect** | Workflow terminal success but expected effect missing |
 | **pagination** | Continuation run completes but `next_start_page` does not advance |
 | **routing loop** | Same SHA/input repeatedly cancels/fails without new diagnosis |
-| **comment-storm-skip** | Burst of `issue_comment` runs on master with `conclusion=skipped`. Classify `not_executed` + `reviewer_noise`. |
+| **comment-storm-skip** | Burst of `issue_comment` runs on master with `conclusion=skipped` or cancelled-on-comment. Classify `not_executed` + `reviewer_noise`. |
 
 ## Procedure (every wait cohort)
 
@@ -69,6 +69,8 @@ While one PR's checks run: preserve immutable IDs; work on a disjoint path; do n
 
 Promote only when dual gates success, extract-clean scope, and task outcome verified.
 
-HEAD observed (`33c186b3` after #573). Last dual-gate IDs remain ancestor `d2c890ba`: smoke 35182262741 success; repo-gate 35182262757 success. Re-verify dual-gate on this extract before promote.
+HEAD observed (`67322f5036cc` docs-branch-index after #513/#575). Last dual-gate IDs remain ancestor `d2c890ba`: smoke 35182262741 success; repo-gate 35182262757 success. Re-verify dual-gate on this extract before promote.
+
+Session 2026-09-17T17:10Z concurrent work: GitHub MCP write as timerloggedout-spec; requested update-branch on #576/#577; skill-anchor extract from live master. Dual gates on #576 admitted queued/in_progress — not terminal.
 
 BIUDL. Agent-Identity: Grok (Administrator)

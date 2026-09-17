@@ -20,19 +20,18 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 - Extra-red ≠ dual-gate. Behind-master dual-gate green ≠ auto-merge.
 - Identity: `Agent-Identity: Grok (Administrator)`.
 
-## Current production anchors (2026-09-16T23:01Z)
+## Current production anchors (2026-09-16T24:02Z)
 
 | Item | State |
 |------|-------|
-| Master HEAD | `f1d59dc5` (#560 squash; prior `263c3dd9` #558, `ff81cb6b` #557) |
-| Dual gates on `f1d59dc5` | repo-gate 35156205878 success; smoke 35156161622 + hygiene 35156161697 cited on #560 |
-| Extra-red HOLD | #549 ML (#175); #432 sibling |
+| Master HEAD | `820ecd2f` (#562 squash; prior `f1d59dc5` #560, `263c3dd9` #558) |
+| Dual gates on `820ecd2f` | repo-gate 35160492303 success; termux smoke 35160492248 success |
+| Extra-red HOLD | #549 ML (#175); #432 sibling; #563 Jules linguist (1-file / unstable) |
 | HOLD mega | #523 #527 #142 #455 #48 #543 #545 |
 | HOLD generated drift | #561 Jules catalog-only; not lane SSOT |
-| Hist-eval | short SHA pinned in #560 |
-| Observatory | this extract pins full checkout SHA |
-| Comment-storm-skip | Gemini/Jules `issue_comment` skipped ≠ gate |
-| Docs-refresh | 35160216999 mermaid render fail — not dual-gate |
+| Observatory | full checkout SHA pinned in #562 |
+| Comment-storm-skip | Gemini/Jules/ECC `issue_comment` skipped ≠ gate |
+| Docs-refresh | mermaid render fail (35160492333) — not dual-gate |
 
 ## Extract recipe
 

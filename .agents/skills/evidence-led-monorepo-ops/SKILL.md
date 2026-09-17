@@ -20,21 +20,23 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 - Extra-red ≠ dual-gate. Behind-master dual-gate green ≠ auto-merge.
 - Identity: `Agent-Identity: Grok (Administrator)`.
 
-## Current production anchors (2026-09-17T00:40Z)
+## Current production anchors (2026-09-17T06:23Z)
 
 | Item | State |
 |------|-------|
-| Master HEAD | `f6009939` (#564 squash; prior `820ecd2f` #562, `f1d59dc5` #560) |
-| Dual gates on `f6009939` | repo-gate 35165001073 success; termux smoke 35165001074 success |
-| Extra-red HOLD | #549 ML (#175); #432 sibling; #563 Jules linguist (1-file + Vercel rate-limit) |
+| Master HEAD | `33c186b3` (#573 skill-anchor rebase after #572; prior `d2c890ba` #572 LIVE GitHub MCP URL SSOT) |
+| Dual gates last verified | repo-gate 35182262757 success; termux smoke 35182262741 success on ancestor `d2c890ba` |
+| Extra-red HOLD | #549 ML (#175) dirty/behind base `6df9b66`; sibling #432 HOLD |
 | HOLD mega | #523 #527 #142 #455 #48 #543 #545 |
-| HOLD generated drift | #561 Jules catalog-only; not lane SSOT |
-| Observatory | full checkout SHA pinned in #562 |
+| Landed prior | #573 skill anchors; #572 MCP URL SSOT; #571 mcp-docker URL-only; #568 skill anchors |
 | Comment-storm-skip | Gemini/Jules/ECC `issue_comment` skipped ≠ gate |
-| Non-gates | historical-eval 35165001101 fail; mermaid docs-refresh — not dual-gate |
+| Extra-red non-gate | Vercel deployment rate-limit on #545 and #549 (retry 24h) |
+| Non-gates | historical-eval / swe-reference-evaluation fail; mermaid docs-refresh; agent-jules-on-issues / actions-run-watcher startup_failure |
+| Live non-gate on HEAD | Historical Evaluation Correlation 35188283151 failure (schedule) |
+| Live success on HEAD | Continuous Team Evaluation 35185850905; RECON INTEL 35184666931 |
 
 ## Extract recipe
 
-Create branch from current master. Do not force-update dirty branches.
+Create branch from current master. Do not force-update dirty branches. #549 remains dirty/behind — do not merge; extract later.
 
 BIUDL. Agent-Identity: Grok (Administrator)

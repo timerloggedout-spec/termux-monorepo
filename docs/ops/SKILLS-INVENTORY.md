@@ -1,7 +1,7 @@
 # Skills Inventory (termux-monorepo)
 
-**Version:** 2026-09-15 · **Last refreshed SHA:** `a7c132e9` (#539)  
-**Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)  
+**Version:** 2026-09-15 · **Last refreshed SHA:** `a7c132e9` (#539)
+**Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)
 **Ops loop trigger words:** `continue`, `BIUDL`, `maximize actions`, `/continue`
 
 > **Single navigation SSOT.** Update this file + any changed skill body in the same PR. Chat-only skill content is not loadable by other sessions.
@@ -28,6 +28,16 @@
 | **context-relationship-graph** | `.agents/skills/context-relationship-graph/SKILL.md` | File/PR/issue/timeline graph; verified vs candidate edges |
 | **termux-monorepo-agentic-governance** | `.agents/skills/termux-monorepo-agentic-governance/SKILL.md` | Permissions, consensus tiers, PR triage bounds |
 | **skill-evaluation** | `.agents/skills/skill-evaluation/SKILL.md` | Deterministic evaluation of `SKILL.md` and packaged `.skill` definitions |
+
+## Skill-definition quality lane
+
+The deterministic evaluator scans repository `SKILL.md` definitions plus packaged `.skill` archives. It records the full inventory even when older definitions are already non-conformant, while PR execution uses a baseline-aware regression gate so pre-existing debt does not block unrelated changes.
+
+- Validator: `scripts/ci/evaluate_skills.py`
+- Workflow: `.github/workflows/skill-quality-lane.yml`
+- Evidence schema: `docs/ops/SKILL-EVALUATION-EVIDENCE.schema.json`
+- Gate rule: newly changed skill definitions must pass; baseline invalidity is reported, not silently rewritten.
+- `.skill` packages require a safe archive and exactly one `SKILL.md`.
 
 ## Adaptive WAIT (non-negotiable)
 
@@ -62,8 +72,8 @@ Local Grok project mirrors (this chat environment):
 
 ## External ecosystem (skills.sh / agentskills.io)
 
-Discovery meta-skill: `find-skills` (`.agents/skills/find-skills/SKILL.md`).  
-CLI: `npx skills find <query>` · `npx skills add <owner/repo@skill>`.  
+Discovery meta-skill: `find-skills` (`.agents/skills/find-skills/SKILL.md`).
+CLI: `npx skills find <query>` · `npx skills add <owner/repo@skill>`.
 Prefer high-install, reputable sources (vercel-labs, anthropics). Inspect before install; project-local by default. Never auto-grant global permissions.
 
 ## Entry fold (AGENTS.md → CLAUDE.md)
@@ -85,5 +95,5 @@ Skill content that other sessions must load **must** live on **master** under `.
 
 When process improves: edit inventory + skill body in one PR, dual-gate, squash-merge, refresh local mirrors. Skill-definition changes also require the deterministic **Skill Quality Lane** before promotion.
 
-Implements: skills navigator SSOT · adaptive-wait SSOT · skill-definition quality lane  
+Implements: skills navigator SSOT · adaptive-wait SSOT · skill-definition quality lane
 BIUDL.

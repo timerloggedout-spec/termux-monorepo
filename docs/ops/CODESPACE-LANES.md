@@ -30,6 +30,20 @@ Its core tool, [`scripts/ci/oracle_watch.sh`](../../scripts/ci/oracle_watch.sh),
 3. Loops **WAIT → WATCH → VALIDATE → COMPARE → CLASSIFY → RECORD** per the [`adaptive-wait`](../../.agents/skills/adaptive-wait/SKILL.md) skill's stall classes (admission/queue/execution), never treating `queued`/`in_progress` as terminal.
 4. Exits with a distinct code per verdict (`0`=PASS, `1`=FAIL, `2`=STALLED, `3`=TIMEOUT) and prints an "Oracle verdict:" line suitable for pasting into a PR review comment.
 
+## Skill loading per lane
+
+Every lane's `postCreateCommand` now prints a `[skills]` line naming its `docs/ops/SKILLS-INVENTORY.md` **Role load matrix** row (Admin / Collaborator / Evaluator / Governance / Discovery) and a same-session convenience snapshot of that row's current skills. The instruction is a **role-lookup**, not a pinned value: `SKILLS-INVENTORY.md` states its own version/SHA and changes frequently, so the authoritative source is always that file's live table for the printed role — the snapshot is a courtesy, not a substitute for checking it.
+
+| Lane | Role row in SKILLS-INVENTORY.md | Load first | Then | Optional |
+|---|---|---|---|---|
+| BASH/Ops Agent (default) | Admin / Grok Administrator | `evidence-led-monorepo-ops` + `adaptive-wait` | `termux-monorepo-agentic-governance` + `review-loop` | `adaptive-feedback-cycle`, `production-reconciliation` |
+| Docs / Mintlify | Discovery / extend | `find-skills` | skills.sh leaderboard + this inventory | — |
+| PR-Triage / Governance | Governance / proposal | `termux-monorepo-agentic-governance` | `docs/CONSENSUS.md` + `docs/proposals/AGENTIC-PERMISSIONS.md` | `review-loop` |
+| General Dev/Build | Collaborator / Codespace agent | `adaptive-feedback-cycle` | dual-gate (`repo_gate` + `termux_smoke`) + conventions | `review-loop` |
+| Oracle | Evaluator | `blind-agent-evaluation` + `multivariate-doe` | `pr-evidence-evaluation` + `mvt-experiment` | `evidence-envelope` |
+
+*(This table mirrors `SKILLS-INVENTORY.md`'s Role load matrix at time of writing. If the two ever disagree, `SKILLS-INVENTORY.md` is the source of truth — update this row in the same PR that changes the matrix, per its own "Single navigation SSOT" rule.)*
+
 ## Create a Codespace on a specific lane
 
 1. Navigate to the repository on GitHub.

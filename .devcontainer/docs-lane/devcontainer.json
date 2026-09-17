@@ -24,7 +24,7 @@
     },
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
-  "postCreateCommand": "bash -c 'export ARCHWIZ_ENV=codespace-docs; echo \"[codespace:docs-lane] installing Mintlify CLI (npx, no persistent global install)\"; npx --yes mint --version || true; echo \"[codespace:docs-lane] ready — run: npx mint dev\"'",
+  "postCreateCommand": "bash -c 'export ARCHWIZ_ENV=codespace-docs; echo \"[codespace:docs-lane] installing Mintlify CLI (npx, no persistent global install)\"; npx --yes mint --version || true; echo \"[codespace:docs-lane] ready — run: npx mint dev\"; echo \"[skills] role: Discovery / extend -- look up the current skill set in docs/ops/SKILLS-INVENTORY.md (Role load matrix table, do not hardcode a SHA); as of last check: load find-skills first, then the skills.sh leaderboard + this inventory\"'",
   "postStartCommand": "bash -c 'echo \"[codespace:docs-lane] ready: $(date -u +%Y-%m-%dT%H:%M:%SZ) ARCHWIZ_ENV=$ARCHWIZ_ENV\"'",
   "customizations": {
     "vscode": {

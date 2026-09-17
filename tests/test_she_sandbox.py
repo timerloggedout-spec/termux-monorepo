@@ -96,6 +96,39 @@ class SheSandboxTests(TestCase):
         with self.assertRaisesRegex(SandboxError, "sandbox branch"):
             SandboxPlan.from_mapping(data)
 
+    def test_path_traversal_prevention(self):
+        inc = _inc()
+        with self.assertRaisesRegex(SandboxError, "path traversal"):
+            plan_repair_sandbox(inc, worktree_root="../../etc")
+
+        with self.assertRaisesRegex(SandboxError, "path traversal"):
+            plan_repair_sandbox(inc, evidence_root="../tmp")
+
+        data = plan_repair_sandbox(inc).to_mapping()
+        data["worktree_path"] = ".she/worktrees/../passwd"
+        with self.assertRaisesRegex(SandboxError, "path traversal"):
+            SandboxPlan.from_mapping(data)
+
+    def test_symlink_rejection(self, tmp_path=None):
+        import tempfile
+        from pathlib import Path
+        inc = _inc()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_p = Path(tmpdir)
+            target = tmp_p / "target_dir"
+            target.mkdir()
+            symlink = tmp_p / "symlink_dir"
+            symlink.symlink_to(target)
+
+            with self.assertRaisesRegex(SandboxError, "symlink"):
+                plan_repair_sandbox(inc, worktree_root=str(symlink))
+
+            data = plan_repair_sandbox(inc).to_mapping()
+            data["worktree_path"] = str(symlink)
+            with self.assertRaisesRegex(SandboxError, "symlink"):
+                SandboxPlan.from_mapping(data)
+
 
 if __name__ == "__main__":
     main()

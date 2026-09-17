@@ -10,11 +10,12 @@ on:
       - ".agents/skills/**/SKILL.md"
       - ".github/skills/**/SKILL.md"
       - "docs/ops/skills/**/SKILL.md"
-      - "*.skill"
+      - "**/*.skill"
       - "scripts/ci/evaluate_skills.py"
       - "tests/test_skill_evaluation.py"
       - "docs/ops/SKILL-EVALUATION.md"
       - "docs/ops/SKILL-EVALUATION-EVIDENCE.schema.json"
+      - "docs/ops/SKILLS-INVENTORY.md"
       - ".github/workflows/skill-quality-lane.yml"
   workflow_dispatch:
 

@@ -1,7 +1,7 @@
 {
-  "version": "0.2.0",
-  "updated": "2026-09-07T00:00:00Z",
-  "note": "Folded in from the standalone mcp-multi-host repo. Endpoints are relative because every host below now shares this one deployment instead of one Vercel project each.",
+  "version": "0.3.0",
+  "updated": "2026-09-17T03:00:00Z",
+  "note": "Folded in from the standalone mcp-multi-host repo. Endpoints are relative because every host below now shares this one deployment instead of one Vercel project each. github-docker is an intentional exception — self-hosted Docker, not part of the Vercel surface.",
   "hosts": [
     {
       "id": "termux-mcp",
@@ -38,6 +38,20 @@
       "note": "Externally hosted by GitHub, not part of this hub's deployment."
     },
     {
+      "id": "github-docker",
+      "repo": "https://github.com/timerloggedout-spec/termux-monorepo",
+      "path": "mcp-docker/github-mcp",
+      "transport": "stdio|streamable-http",
+      "image": "ghcr.io/github/github-mcp-server:latest",
+      "endpoints": {
+        "stdio": "docker run -i --rm -e GITHUB_PERSONAL_ACCESS_TOKEN ghcr.io/github/github-mcp-server",
+        "http": "http://localhost:8082 (docker compose up; see mcp-docker/github-mcp/README.md)"
+      },
+      "tools": ["toolsets: default|repos|issues|pull_requests|actions|…"],
+      "status": "self_host_docs_ready",
+      "note": "SEPARATED lane. Official GitHub MCP Server via Docker. Not routed through Vercel mcp-hub. Use for local stdio or self-hosted Streamable HTTP. Corrected from outdated npm paste; do not use @modelcontextprotocol/server-github."
+    },
+    {
       "id": "gh-aw-mcpg",
       "repo": "https://github.com/timerloggedout-spec/gh-aw-mcpg_fork",
       "transport": "gateway",
@@ -53,6 +67,13 @@
         "github": {
           "type": "http",
           "url": "https://api.githubcopilot.com/mcp/"
+        },
+        "github-docker": {
+          "command": "docker",
+          "args": ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"],
+          "env": {
+            "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
+          }
         }
       }
     }

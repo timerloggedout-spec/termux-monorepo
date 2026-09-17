@@ -174,8 +174,12 @@ jobs:
               r=rows[0]
               eligible=(r['pricing_classification']=='free_zero_price' or r['free_suffix'] or r['access_classification']=='free_trial')
               reason='eligible' if eligible else 'catalog-no-longer-eligible'
-              print(f"{p}/{m}: eligible={eligible} pricing={r['pricing_classification']} access={r['access_classification']} reason={reason}")
-              output.write(f'eligible={str(eligible).lower()}\nskip_reason={reason}\n')
+              context=int(r.get('context_length') or 131072)
+              provider_max=int(r.get('max_output_tokens') or 131072)
+              safety_margin=2048
+              request_max=max(1, min(131072, provider_max, max(1, context-safety_margin)))
+              print(f"{p}/{m}: eligible={eligible} pricing={r['pricing_classification']} access={r['access_classification']} reason={reason} context={context} provider_max_output={provider_max} request_max_tokens={request_max}")
+              output.write(f'eligible={str(eligible).lower()}\nskip_reason={reason}\nrequest_max_tokens={request_max}\ncontext_length={context}\nprovider_max_output_tokens={provider_max}\n')
           PY
 
       - name: Snapshot repository history without mutation
@@ -216,7 +220,7 @@ jobs:
             echo 'EOF'
           } >> "$GITHUB_OUTPUT"
 
-      - name: Invoke live candidate with uncapped provider/model response capability
+      - name: Invoke live candidate with context-safe provider/model response capability
         id: invoke
         if: steps.candidate.outputs.eligible == 'true'
         continue-on-error: true
@@ -231,7 +235,7 @@ jobs:
           repository: ${{ github.repository }}
           experiment_id: "${{ github.run_id }}:${{ matrix.lane }}:${{ matrix.prompt_variant }}"
           prompt_variant: ${{ matrix.prompt_variant }}
-          max_tokens: '131072'
+          max_tokens: ${{ steps.candidate.outputs.request_max_tokens }}
           post_comment: 'false'
           prompt: ${{ steps.prompt.outputs.prompt }}
 

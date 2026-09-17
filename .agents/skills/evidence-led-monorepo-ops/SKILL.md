@@ -21,23 +21,22 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 - Identity: `Agent-Identity: Grok (Administrator)`.
 - GitHub MCP write works as `timerloggedout-spec` even when local sandbox has no OPERATOR PAT / `gh`.
 
-## Current production anchors (2026-09-17T17:10Z)
+## Current production anchors (2026-09-17T18:18Z)
 
 | Item | State |
 |------|-------|
-| Master HEAD | `67322f5036cc` (`chore(docs): refresh DOCS-BRANCH-INDEX`; prior `465aa83` #513 lockfile; `b1b242e` #575 skill anchors) |
-| Dual gates last verified | repo-gate 35182262757 success; termux smoke 35182262741 success on ancestor `d2c890ba` |
+| Master HEAD | `60a742a6d2f02` (`ops(skills): rebase SSOT anchors` #579 after #577/#576) |
+| Just landed | #576 Sentinel she.sandbox path/symlink harden `4d532a9e5655`; #577 Bolt observatory opt `92d704c0f8c8`; #579 skill anchors `60a742a6d2f0` |
+| Dual gates last verified | On pre-merge heads: #576 smoke+hygiene success; #577 smoke+hygiene success; #579 smoke 35251200546 + repo-gate 35251200551. Master push dual-gate on `60a742a6`: smoke 35257989201 + repo-gate 35257989263 queued (not terminal) |
 | Extra-red HOLD | #549 ML (#175) dirty/behind base `6df9b66`; sibling #432 HOLD — extract later from live master |
 | HOLD mega | #523 #527 #545 #543 #455 #485 #483 #481 #474 #471 #466 #456 #453 |
-| Small slices in flight | #576 Sentinel she.sandbox path/symlink harden (branch update requested); #577 Bolt observatory opt (branch update requested); draft #578 accounting pilot |
-| Landed prior | #513 commingle-swarm lockfile; #575/#573 skill anchors; #572 MCP URL SSOT |
+| Draft | #578 accounting/bidding schema pilot |
 | Comment-storm-skip | Gemini/Jules/ECC/`coderabbitai` `issue_comment` cancelled/success mix ≠ gate |
-| Extra-red non-gate | Vercel deployment rate-limit historically on #545/#549 |
+| Extra-red non-gate | Vercel rate-limit historically on #545/#549 |
 | Non-gates | historical-eval / swe-reference-evaluation fail; mermaid docs-refresh; agent-jules-on-issues / actions-run-watcher startup_failure; OpenRouter free catalog sync fail |
-| Live success on HEAD | Continuous Team Evaluation 35238831116; RECON INTEL 35237558161; Team MVT 35232418786; Context Relationship + Lead/Lag Audit |
 
 ## Extract recipe
 
-Create branch from current master. Do not force-update dirty branches. #549 remains dirty/behind — do not merge; extract later from `67322f5`.
+Create branch from current master. Do not force-update dirty branches. #549 remains dirty/behind — do not merge; extract later from `60a742a6`.
 
 BIUDL. Agent-Identity: Grok (Administrator)

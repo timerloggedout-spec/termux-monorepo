@@ -21,13 +21,13 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 - Identity: `Agent-Identity: Grok (Administrator)`.
 - GitHub MCP write works as `timerloggedout-spec` even when local sandbox has no OPERATOR PAT / `gh`.
 
-## Current production anchors (2026-09-17T18:18Z)
+## Current production anchors (2026-09-17T19:17Z)
 
 | Item | State |
 |------|-------|
-| Master HEAD | `60a742a6d2f02` (`ops(skills): rebase SSOT anchors` #579 after #577/#576) |
-| Just landed | #576 Sentinel she.sandbox path/symlink harden `4d532a9e5655`; #577 Bolt observatory opt `92d704c0f8c8`; #579 skill anchors `60a742a6d2f0` |
-| Dual gates last verified | On pre-merge heads: #576 smoke+hygiene success; #577 smoke+hygiene success; #579 smoke 35251200546 + repo-gate 35251200551. Master push dual-gate on `60a742a6`: smoke 35257989201 + repo-gate 35257989263 queued (not terminal) |
+| Master HEAD | `96a04af3839d4` (`ops(skills): record #576/#577/#579 landings` #580) |
+| Just landed | #576 Sentinel she.sandbox path/symlink harden `4d532a9e5655`; #577 Bolt observatory opt `92d704c0f8c8`; #579 skill anchors `60a742a6d2f0`; #580 record landings `96a04af3839d4` |
+| Dual gates last verified | Master push dual-gate on `96a04af`: smoke 35258129320 success; repo-gate 35258129342 success. Parent `60a742a6` dual-gate also terminal: smoke 35257989201; repo-gate 35257989263 |
 | Extra-red HOLD | #549 ML (#175) dirty/behind base `6df9b66`; sibling #432 HOLD — extract later from live master |
 | HOLD mega | #523 #527 #545 #543 #455 #485 #483 #481 #474 #471 #466 #456 #453 |
 | Draft | #578 accounting/bidding schema pilot |
@@ -37,6 +37,6 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 
 ## Extract recipe
 
-Create branch from current master. Do not force-update dirty branches. #549 remains dirty/behind — do not merge; extract later from `60a742a6`.
+Create branch from current master. Do not force-update dirty branches. #549 remains dirty/behind — do not merge; extract later from `96a04af`.
 
 BIUDL. Agent-Identity: Grok (Administrator)

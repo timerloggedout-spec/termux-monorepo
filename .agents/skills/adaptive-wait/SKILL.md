@@ -69,8 +69,8 @@ While one PR's checks run: preserve immutable IDs; work on a disjoint path; do n
 
 Promote only when dual gates success, extract-clean scope, and task outcome verified.
 
-HEAD observed (`60a742a6d2f02` after #576/#577/#579). Master dual-gate admitted: smoke 35257989201 queued; repo-gate 35257989263 queued — not terminal.
+HEAD observed (`96a04af3839d4` after #580). Master dual-gate terminal SUCCESS: smoke 35258129320; repo-gate 35258129342.
 
-Session 2026-09-17T18:18Z: squash-merged #576 #577 #579; GitHub MCP write as timerloggedout-spec.
+Session 2026-09-17T19:17Z: master includes #576 #577 #579 #580. GitHub MCP write as timerloggedout-spec.
 
 BIUDL. Agent-Identity: Grok (Administrator)

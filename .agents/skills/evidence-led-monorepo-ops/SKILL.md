@@ -21,13 +21,14 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 - Identity: `Agent-Identity: Grok (Administrator)`.
 - GitHub MCP write works as `timerloggedout-spec` even when local sandbox has no OPERATOR PAT / `gh`.
 
-## Current production anchors (2026-09-17T20:14Z)
+## Current production anchors (2026-09-17T21:05Z)
 
 | Item | State |
 |------|-------|
-| Master HEAD | `d886560b8a546` (`ops(skills): rebase SSOT anchors after #580` #581) |
-| Just landed | #576 Sentinel `4d532a9e5655`; #577 Bolt `92d704c0f8c8`; #579 skill anchors `60a742a6d2f0`; #580 record landings `96a04af3839d4`; #581 rebase anchors `d886560b8a546` |
-| Dual gates last verified | Parent `96a04af` master dual-gate: smoke 35258129320 success; repo-gate 35258129342 success. #581 PR dual-gate: smoke 35264128138 + hygiene 35264128181 success. Master push dual-gate on `d886560` admitted this session (not classified terminal yet) |
+| Master HEAD | `f779b9a2fd550` (`ops(skills): record #581 landing` #582) |
+| Just landed | #576 Sentinel `4d532a9e5655`; #577 Bolt `92d704c0f8c8`; #579 `60a742a6d2f0`; #580 `96a04af3839d4`; #581 `d886560b8a546`; #582 record landing `f779b9a2fd550` |
+| Dual gates last verified | Master push dual-gate on `d886560`: smoke 35269615266 success; repo-gate 35269615325 success. #582 PR dual-gate: agentic termux smoke + hygiene + portability gate success. Parent `96a04af` dual-gate: smoke 35258129320 + repo-gate 35258129342 |
+| Observe (not merged) | #583 Grafana MCP boundary (hygiene green; extra-red mix). #584 MVT context-safe budget (dual-gate green; `validate-pull-request` extra-red FAIL ≠ gate) |
 | Extra-red HOLD | #549 ML (#175) dirty/behind base `6df9b66`; sibling #432 HOLD — extract later from live master |
 | HOLD mega | #523 #527 #545 #543 #455 #485 #483 #481 #474 #471 #466 #456 #453 |
 | Draft | #578 accounting/bidding schema pilot |
@@ -37,6 +38,6 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 
 ## Extract recipe
 
-Create branch from current master. Do not force-update dirty branches. #549 remains dirty/behind — do not merge; extract later from `d886560`.
+Create branch from current master. Do not force-update dirty branches. #549 remains dirty/behind — do not merge; extract later from `f779b9a2`.
 
 BIUDL. Agent-Identity: Grok (Administrator)

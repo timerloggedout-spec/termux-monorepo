@@ -21,13 +21,13 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 - Identity: `Agent-Identity: Grok (Administrator)`.
 - GitHub MCP write works as `timerloggedout-spec` even when local sandbox has no OPERATOR PAT / `gh`.
 
-## Current production anchors (2026-09-17T19:17Z)
+## Current production anchors (2026-09-17T20:14Z)
 
 | Item | State |
 |------|-------|
-| Master HEAD | `96a04af3839d4` (`ops(skills): record #576/#577/#579 landings` #580) |
-| Just landed | #576 Sentinel she.sandbox path/symlink harden `4d532a9e5655`; #577 Bolt observatory opt `92d704c0f8c8`; #579 skill anchors `60a742a6d2f0`; #580 record landings `96a04af3839d4` |
-| Dual gates last verified | Master push dual-gate on `96a04af`: smoke 35258129320 success; repo-gate 35258129342 success. Parent `60a742a6` dual-gate also terminal: smoke 35257989201; repo-gate 35257989263 |
+| Master HEAD | `d886560b8a546` (`ops(skills): rebase SSOT anchors after #580` #581) |
+| Just landed | #576 Sentinel `4d532a9e5655`; #577 Bolt `92d704c0f8c8`; #579 skill anchors `60a742a6d2f0`; #580 record landings `96a04af3839d4`; #581 rebase anchors `d886560b8a546` |
+| Dual gates last verified | Parent `96a04af` master dual-gate: smoke 35258129320 success; repo-gate 35258129342 success. #581 PR dual-gate: smoke 35264128138 + hygiene 35264128181 success. Master push dual-gate on `d886560` admitted this session (not classified terminal yet) |
 | Extra-red HOLD | #549 ML (#175) dirty/behind base `6df9b66`; sibling #432 HOLD — extract later from live master |
 | HOLD mega | #523 #527 #545 #543 #455 #485 #483 #481 #474 #471 #466 #456 #453 |
 | Draft | #578 accounting/bidding schema pilot |
@@ -37,6 +37,6 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 
 ## Extract recipe
 
-Create branch from current master. Do not force-update dirty branches. #549 remains dirty/behind — do not merge; extract later from `96a04af`.
+Create branch from current master. Do not force-update dirty branches. #549 remains dirty/behind — do not merge; extract later from `d886560`.
 
 BIUDL. Agent-Identity: Grok (Administrator)

@@ -16,14 +16,15 @@ Promote only when dual gates success, extract-clean scope, and task outcome veri
 
 | Class | Severity | Notes |
 |-------|----------|-------|
-| **comment-storm** | **FAILURE** | issue_comment / bot / ledger fan-out that cancels useful jobs. Mitigate: concurrency by event_name, `cancel-in-progress: false` on ledgers. Landed #603 on `dc30bf83`. |
-| dual-gate red | FAILURE | Block promote |
+| **comment-storm** | **FAILURE** | issue_comment / bot / ledger fan-out that cancels useful jobs. Mitigate: concurrency by event_name, `cancel-in-progress: false` on ledgers. Landed #603. |
+| dual-gate red | FAILURE | Block promote. `validate-pull-request` still red on #608. |
 | update-branch-conflict | STALL | Extract-later; do not force dirty |
-| dirty-behind-master | STALL | Rebase/extract from live master |
-| extra-red | FAILURE (non-gate) | Fix root cause |
+| dirty-behind-master | STALL | #601/#549/#432 ML |
+| extra-red | FAILURE (non-gate) | Vercel mcp-hub rate-limit residual; Devin trial expired; CodeRabbit review rate limited |
+| **truncated-mcp-write** | **FAILURE** | #606 closed. Do not push 35k workflow via MCP. |
+| **ledger-syntax** | **FAILURE** | #608 open — chicken-egg until merge + master YAML is the fixed file. |
 
-HEAD after #603: `dc30bf83fc17b394510f99328f7a081b6a64f28c`. #601 ML dirty/behind — WAIT extract.
-
-Session 2026-09-18T17:03Z: merged #603; CodeRabbit `queue: max` rejected (invalid GHA concurrency key).
+Master HEAD: `d9e2d495384de3341b28bb6372bbc6223b722837` after #609 help-wanted + cadence docs.
+#607 skills SSOT observe. Do not comment-storm to wake CI.
 
 BIUDL. Agent-Identity: Grok (Administrator)

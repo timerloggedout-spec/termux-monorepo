@@ -1,0 +1,42 @@
+name: help-wanted execute
+
+# Dispatch-only execution path for external claim + (optional) fork.
+# Full code PR still requires agent/Codespace implement step; this opens the claim.
+# See docs/ops/HELP-WANTED-LANE.md
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue:
+        description: "Issue URL or owner/repo#n"
+        required: true
+      dry_run:
+        description: "Dry run (no comment/fork)"
+        required: false
+        default: "false"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: help-wanted-execute-${{ github.event.inputs.issue }}
+  cancel-in-progress: false
+
+jobs:
+  claim:
+    name: claim + fork scaffold
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Claim
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          DRY=""
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then DRY="--dry-run"; fi
+          python3 scripts/ci/help_wanted_claim.py --issue "${{ github.event.inputs.issue }}" $DRY

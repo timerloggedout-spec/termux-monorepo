@@ -1,58 +1,60 @@
 ---
 name: help-wanted-lane
-description: Select and execute external help-wanted / good-first-issue tasks. Complexity Perception Prediction Heuristics (CPPH). Oversight scout expansion. Triggers on help-wanted, good-first-issue, external contribution, task selection, or /continue when folding OSS help into workload. Load with evidence-led-monorepo-ops + adaptive-wait.
+description: Select AND EXECUTE external help-wanted / good-first-issue / mutual-thread tasks. Auto-claim + fork + PR on other repos is in scope. CPPH ranking. Oversight + evaluation lane. Triggers on help-wanted, external contribution, auto-PR, bounty-hunter precursor, or /continue. Load with evidence-led-monorepo-ops + adaptive-wait.
 ---
 
 # Skill: help-wanted-lane
 
-**Owner:** Grok Administrator / Oversight Scout population.
+**Owner:** Grok Administrator / Oversight Scout + Evaluation population.
 
 **Canonical paths:**
-- `.agents/skills/help-wanted-lane/SKILL.md` ← agent load path
-- `docs/ops/HELP-WANTED-LANE.md` ← operator card + CPPH
-- `scripts/ci/help_wanted_scout.py` ← ranking + catalog emitter
-- `.github/workflows/help-wanted-scout.yml` ← scheduled + dispatch scan
+- `.agents/skills/help-wanted-lane/SKILL.md`
+- `docs/ops/HELP-WANTED-LANE.md`
+- `scripts/ci/help_wanted_scout.py`
+- `scripts/ci/help_wanted_claim.py` ← claim + fork scaffold
+- `.github/workflows/help-wanted-scout.yml`
+- `.github/workflows/help-wanted-execute.yml` ← dispatch execution
 
-**Related:** `docs/ops/SCOUT-MISSIONS.md` (Oversight row), `docs/ops/SCOUT-ROSTER.md`, Issue #342 evaluations.
+## INTENT (non-negotiable)
 
-## Posture
+- **AUTO-PRs and working on other repos ARE the point.**
+- Other projects' Issues are **evaluation lanes** while we get real work done and help where wanted.
+- 2017 React UI (mac-s-g/github-help-wanted) is a **predecessor / superfluous** search surface — we scan FOSS to accelerate development, not rebuild that UI.
+- This lane is a **predecessor to bug & bounty hunter lanes** (already noted in monorepo issues).
+- Public Vercel / dashboard surfaces will show contribution stats and graphs.
 
-- External contribution is a **workload lane**, not ad-hoc. Select → rank (CPPH) → claim → PR → evidence.
-- Prefer unassigned `help wanted` / `good first issue` with clear acceptance criteria.
-- Dual-gate remains internal; external PRs follow target-repo norms + our evidence envelope.
-- Rate-limit aware: GitHub search 30/min unauth, higher with token. Debounce catalog writes.
-- Multi-platform later (GitLab / Bitbucket / Gitea). Provider interface stays abstract.
+## Operating loop (YOLO)
 
-## Complexity Perception Prediction Heuristics (CPPH)
+1. **Scout** → ranked catalog (CPPH).
+2. **Select** top-N by score + language + evaluation value.
+3. **Claim** → public comment on target issue (attribution).
+4. **Fork** (if needed) → branch → implement → **open PR on target repo**.
+5. **Evidence** → monorepo ledger / ACTION-EFFECTIVENESS + dashboard feed.
+6. Dual-gate remains for *our* monorepo changes only; external PRs follow target norms.
 
-Score each candidate issue 0–100 (higher = better fit for agent lane):
+## Mutual-thread anchors (user ↔ maintainer already engaged)
 
-| Signal | Weight | Rule |
-|--------|--------|------|
-| Label tier | 25 | `good first issue` / `good-first-issue` = 25; plain `help wanted` / `help-wanted` = 18; `beginner` / `easy` / `difficulty/easy` = 15; `up-for-grabs` = 12 |
-| Unassigned | 15 | no assignee → +15; single stale assignee → +5 |
-| Body clarity | 15 | has acceptance criteria / steps / "expected" / checklist → +15; body length 80–2000 chars preferred |
-| Activity freshness | 10 | updated < 30d → +10; < 90d → +6; > 365d → −5 |
-| Comment load | 10 | 0–3 comments → +10; 4–12 → +5; > 30 → −5 (noise) |
-| Repo health | 10 | stars 50–50k + recent push → +10; archived / zero activity → 0 |
-| Language match | 10 | matches preferred languages (Python, TypeScript, Go, Rust, Shell, Markdown) → +10 |
-| Linked work | 5 | no open linked PR that already solves it → +5 |
+| Repo / Issue | Note |
+|--------------|------|
+| [DioNanos/codex-termux#14](https://github.com/DioNanos/codex-termux/issues/14) | Extensive mutual comments; AGENTS.md /status; Termux Codex parity |
+| [GlassHaven/Haven#273](https://github.com/GlassHaven/Haven/issues/273) | Termux SAF / folder upload; long mutual thread |
+| [Kilo-Org/agentic-path#25](https://github.com/Kilo-Org/agentic-path/issues/25) | User comment: Path.kilo.ai + repeated integration failures |
+| [PubDeer/astro-loop#42](https://github.com/PubDeer/astro-loop/issues/42) | User bug/enhancement; maintainer replied |
+| [IBM/ibm-bob#2968](https://github.com/IBM/ibm-bob/issues/2968) | Mutual with IBM support on AGENTS.md init |
+| mac-s-g/github-help-wanted + `github-help-wanted_fork` | Label-search predecessor |
 
-Clamp 0–100. Emit ranked JSON catalog. Manager (or agent) picks top-N for execution.
+Prefer continuing threads we already touched when they still need code.
 
-## Operating loop
+## CPPH (unchanged core)
 
-1. Run scout (workflow or `python3 scripts/ci/help_wanted_scout.py`).
-2. Review `docs/ops/generated/help-wanted-catalog.json` (or stdout).
-3. Claim: comment on target issue, fork if needed, branch, implement, open PR with evidence.
-4. Track attribution in monorepo ledger / ACTION-EFFECTIVENESS when material.
-5. Prefer extract-only; never force-merge external.
+Label tier · unassigned · body clarity · freshness · comments · repo health · language · no competing PR → 0–100.
 
-## Seed anchors
+## Execution guards
 
-- Upstream: https://github.com/mac-s-g/github-help-wanted (React/Redux Semantic-UI help-wanted search UI)
-- Fork: https://github.com/timerloggedout-spec/github-help-wanted_fork
-- Labels of interest: `help wanted`, `help-wanted`, `good first issue`, `good-first-issue`, `up-for-grabs`, `beginner`, `hacktoberfest`
+- Rate limits + abuse avoidance: max N external PRs per day (config).
+- Claim comment required before heavy work.
+- Never force-merge external; never force-push others' default branches.
+- Secrets stay in Actions / Codespace secrets — never in issue text.
 
 ## BIUDL
 

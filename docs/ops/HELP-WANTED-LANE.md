@@ -1,75 +1,47 @@
-# Help-Wanted Lane (Production)
+# Help-Wanted Lane (Production) — EXECUTE
 
-**Status:** live via feat/help-wanted-lane  
-**Anchors:** [mac-s-g/github-help-wanted](https://github.com/mac-s-g/github-help-wanted) · [timerloggedout-spec/github-help-wanted_fork](https://github.com/timerloggedout-spec/github-help-wanted_fork)  
-**Scout family:** Oversight (see `docs/ops/SCOUT-MISSIONS.md`)  
-**Skill:** `.agents/skills/help-wanted-lane/SKILL.md`
+**Status:** expanding on feat/help-wanted-lane / PR #609  
+**Intent:** AUTO-PRs + real work on other repos. External issues = evaluation lanes + contribution.
 
-## Why this exists
+## Why
 
-Fold external open-source **help wanted** / **good first issue** work into the monorepo workload as a first-class lane. Select tasks, predict complexity, execute, and feed evidence back. Eventually expand parity to GitLab, Bitbucket, Gitea, and similar.
+Scan FOSS help-wanted / good-first-issue / mutual threads → rank (CPPH) → claim → implement → **open PR on the target repo**. Stats feed public Vercel/dashboard. Predecessor to bug & bounty hunter lanes. The 2017 React help-wanted UI is predecessor only — not our product surface.
 
-This is **not** a rewrite of the 2017 React help-wanted UI; it is an agentic selection + ranking + execution lane that can consume the same label surface those tools surface.
+## Mutual-thread anchors
 
-## Complexity Perception Prediction Heuristics (CPPH)
+| Thread | Link |
+|--------|------|
+| DioNanos/codex-termux#14 | https://github.com/DioNanos/codex-termux/issues/14 |
+| GlassHaven/Haven#273 | https://github.com/GlassHaven/Haven/issues/273 |
+| Kilo-Org/agentic-path#25 | https://github.com/Kilo-Org/agentic-path/issues/25 |
+| PubDeer/astro-loop#42 | https://github.com/PubDeer/astro-loop/issues/42 |
+| IBM/ibm-bob#2968 | https://github.com/IBM/ibm-bob/issues/2968 |
+| mac-s-g/github-help-wanted | https://github.com/mac-s-g/github-help-wanted |
+| Our fork | https://github.com/timerloggedout-spec/github-help-wanted_fork |
 
-| Signal | Weight | Rule |
-|--------|--------|------|
-| Label tier | 25 | `good first issue` = 25; `help wanted` = 18; beginner/easy = 15; up-for-grabs = 12 |
-| Unassigned | 15 | no assignee +15 |
-| Body clarity | 15 | acceptance criteria / steps / checklist +15 |
-| Freshness | 10 | updated <30d +10; <90d +6; >365d −5 |
-| Comment load | 10 | 0–3 +10; 4–12 +5; >30 −5 |
-| Repo health | 10 | active non-archived + stars band +10 |
-| Language match | 10 | preferred langs +10 |
-| No competing open PR | 5 | +5 |
-
-Score 0–100. Catalog ranked. Manager/agent selects top-N.
-
-### Preferred labels (GitHub)
-
-`help wanted`, `help-wanted`, `good first issue`, `good-first-issue`, `up-for-grabs`, `beginner`, `easy`, `difficulty/easy`, `hacktoberfest`, `contributions welcome`
-
-### Preferred languages (initial)
-
-Python, TypeScript, JavaScript, Go, Rust, Shell, Markdown, YAML
+User comment example (agentic-path#25): repeated Path.kilo.ai / app registration failures + no bot response — evaluation + possible contrib target.
 
 ## Components
 
 | Path | Role |
 |------|------|
 | `.agents/skills/help-wanted-lane/SKILL.md` | Agent load |
-| `scripts/ci/help_wanted_scout.py` | Search + CPPH rank + JSON catalog |
-| `.github/workflows/help-wanted-scout.yml` | Cron + workflow_dispatch |
-| `docs/ops/generated/help-wanted-catalog.json` | Last ranked snapshot (artifact or committed optionally) |
+| `scripts/ci/help_wanted_scout.py` | Search + CPPH rank |
+| `scripts/ci/help_wanted_claim.py` | Claim comment scaffold + fork check |
+| `.github/workflows/help-wanted-scout.yml` | Catalog cron |
+| `.github/workflows/help-wanted-execute.yml` | workflow_dispatch execute top-N |
+| Dashboard | Vercel SHE / public stats (follow-on) |
 
-## Operating rules (YOLO / no HITL)
+## YOLO rules
 
-1. Scout produces ranked candidates only. Does not open external PRs autonomously without explicit claim step.
-2. Claim via public comment on the target issue before heavy work.
-3. Keep monorepo dual-gate green; external contribution is orthogonal.
-4. Rate limits: respect GitHub Search API. Prefer authenticated token in Actions.
-5. Evidence: link monorepo PR or ledger entry when the external contribution is material to our learning loop.
+1. Scout ranks. Execute opens **external** PRs when selected.
+2. Always claim (comment) before coding.
+3. Cap concurrent external PRs (default 3/day) via workflow input.
+4. Evidence back to monorepo ledger + future dashboard graphs.
+5. Dual-gate only for monorepo-side files; external follows host repo.
 
-## Multi-platform roadmap
+## Multi-platform
 
-| Platform | Status | Notes |
-|----------|--------|-------|
-| GitHub | **P0 live** | Search API + labels |
-| GitLab | planned | Issues API + labels |
-| Bitbucket | planned | Issues / work items |
-| Gitea / Forgejo | planned | compatible issue labels |
+GitHub P0. GitLab / Bitbucket / Gitea additive later.
 
-Provider interface stays abstract in the scout script so parity is additive.
-
-## Relation to Oversight scout
-
-`docs/ops/SCOUT-MISSIONS.md` already lists Help Wanted under Oversight. This lane is the concrete execution surface for that mission: ranking heuristics, catalog, workflow, and skill so agents can load and act.
-
-## Seed interaction
-
-User and upstream author (mac-s-g) exchanged activity on the help-wanted surface; the fork exists under `timerloggedout-spec/github-help-wanted_fork`. Lane treats that history as provenance, not as a hard dependency.
-
-## BIUDL
-
-Agent-Identity: Grok (Administrator)
+BIUDL. Agent-Identity: Grok (Administrator)

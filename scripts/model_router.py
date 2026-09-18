@@ -316,6 +316,7 @@ def emit_decision(
     role_residuals,
     has_omni,
     has_openrouter,
+    has_felo,
     has_gemini,
     openrouter_models,
     openrouter_catalog_state,
@@ -340,6 +341,7 @@ def emit_decision(
     provider_flags = {
         "gemini": has_gemini,
         "omni": has_omni,
+        "felo": has_felo,
         "openrouter": has_openrouter,
     }
     pairs = [("gemini", model, False) for model in role_residuals.get(role, [])]
@@ -412,6 +414,7 @@ def main():
     role = os.environ.get("ROLE", "triage")
     has_omni = os.environ.get("HAS_OMNI", "false").lower() == "true"
     has_openrouter = os.environ.get("HAS_OPENROUTER", "false").lower() == "true"
+    has_felo = os.environ.get("HAS_FELO", "false").lower() == "true"
     has_gemini = os.environ.get("HAS_GEMINI", "true").lower() == "true"
     success_matrix = parse_yaml("docs/schemas/model-success-matrix.yaml")
     provider_catalog = load_provider_model_catalog(MODEL_CATALOG_FILE)
@@ -429,6 +432,7 @@ def main():
         ROLE_RESIDUALS,
         has_omni,
         has_openrouter,
+        has_felo,
         has_gemini,
         polled_free_models,
         catalog_state,

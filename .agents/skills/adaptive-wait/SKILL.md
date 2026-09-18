@@ -22,8 +22,8 @@ Promote only when dual gates success, extract-clean scope, and task outcome veri
 | dirty-behind-master | STALL | Rebase/extract from live master |
 | extra-red | FAILURE (non-gate) | Fix root cause |
 
-HEAD after #603: `dc30bf83fc17b394510f99328f7a081b6a64f28c`. #601 ML dirty/behind — WAIT extract.
+HEAD after #604: `20de2a5458698d805f97e77c8c2d4c204077a60a`. #603 ledger event_name split landed. peer-orch still cancelled on issue_comment until this extract.
 
-Session 2026-09-18T17:03Z: merged #603; CodeRabbit `queue: max` rejected (invalid GHA concurrency key).
+Session 2026-09-18T18:08Z: #605 Paper2Agent draft + CodeRabbit comment-storm cancelling peer-orch. #601 ML dirty HOLD.
 
 BIUDL. Agent-Identity: Grok (Administrator)

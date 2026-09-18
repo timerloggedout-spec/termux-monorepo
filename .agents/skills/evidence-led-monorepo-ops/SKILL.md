@@ -22,16 +22,17 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 - Identity: `Agent-Identity: Grok (Administrator)`.
 - GitHub MCP write works as `timerloggedout-spec` even when local sandbox has no OPERATOR PAT / `gh`.
 
-## Current production anchors (2026-09-18T17:03Z UTC)
+## Current production anchors (2026-09-18T18:08Z UTC)
 
 | Item | State |
 |------|-------|
-| Master HEAD | `dc30bf83fc17b394510f99328f7a081b6a64f28c` (#603 squash) |
-| Just landed | #603 comment-storm ledger fix. Prior: #602 catalog MD fingerprint; #600 skills SSOT. |
-| Observe | #583 Grafana MCP; #584 MVT budget. Jules #597/#598. |
-| Extra-red HOLD | #601 ML extract dirty/behind (`c082f533` base vs live `dc30bf83`). #549/#432 HOLD extract-later. |
+| Master HEAD | `20de2a5458698d805f97e77c8c2d4c204077a60a` (#604 skills after #603) |
+| Just landed | #604 skill record; #603 ledger event_name + cancel-in-progress:false |
+| This extract | peer-orch concurrency split by `github.event_name` (comment-storm was still cancelling collect) |
+| Observe | #605 Paper2Agent draft. #583 Grafana. #584 MVT. Jules #597/#598. |
+| Extra-red HOLD | #601 ML extract dirty/behind (`c082f533` vs live `20de2a54`). #549/#432 HOLD extract-later. |
 | HOLD mega | #523 #527 #545 #543 #455 #485 #483 #481 |
-| Draft | #578 accounting/bidding schema pilot |
+| Draft | #578 accounting; #605 Paper2Agent |
 
 ## Extract recipe
 

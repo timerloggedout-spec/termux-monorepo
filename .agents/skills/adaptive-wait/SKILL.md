@@ -69,10 +69,10 @@ While one PR's checks run: preserve immutable IDs; work on a disjoint path; do n
 
 Promote only when dual gates success, extract-clean scope, and task outcome verified.
 
-HEAD observed (`f779b9a2fd550` after #582). Master dual-gate on `d886560` terminal SUCCESS: smoke 35269615266; repo-gate 35269615325.
-#582 PR dual-gate SUCCESS: agentic termux smoke + hygiene + portability gate.
-Master dual-gate on `f779b9a2` admitted this session — not classified terminal yet.
+HEAD observed (`11c56e46c0365` after #586). Parent master dual-gate on `f779b9a2` terminal SUCCESS: smoke 35275507986; repo-gate 35275507908.
+#586 PR dual-gate SUCCESS: agentic termux smoke + hygiene + portability gate.
+Master dual-gate on `11c56e46` admitted this session — not classified terminal yet.
 
-Session 2026-09-17T21:05Z: squash-merged #582 onto master. GitHub MCP write as timerloggedout-spec.
+Session 2026-09-17T23:12Z: squash-merged #586 onto master. GitHub MCP write as timerloggedout-spec.
 
 BIUDL. Agent-Identity: Grok (Administrator)

@@ -109,10 +109,39 @@ VARIANT_REGEX = re.compile(
     re.IGNORECASE,
 )
 
+# Precomputed fast-path lookup table for 100% leet substitution
+FAST_1337_MAP_100: Dict[str, str] = {}
+for _token in VARIANT_INDEX.keys():
+    _chars = list(_token)
+    for _i, _char in enumerate(_chars):
+        if _char in LEET_MAP:
+            _chars[_i] = LEET_MAP[_char]
+    _full_leet = "".join(_chars)
+    FAST_1337_MAP_100[_token] = _full_leet
+    FAST_1337_MAP_100[_token.capitalize()] = _full_leet.capitalize()
+    FAST_1337_MAP_100[_token.upper()] = _full_leet.upper()
+
 
 def _from_1337_replace(match: re.Match[str]) -> str:
     """Top-level replacement callback for normalization back to canonical tokens."""
     return VARIANT_INDEX[match.group(0).lower()]
+
+
+def _sub_cb_100(match: re.Match[str]) -> str:
+    """Top-level 100% substitution callback; eliminates inner closure and list allocations."""
+    val = match.group(0)
+    res = FAST_1337_MAP_100.get(val)
+    if res is not None:
+        return res
+    low = val.lower()
+    res_low = FAST_1337_MAP_100.get(low)
+    if res_low is not None:
+        if val.isupper():
+            return res_low.upper()
+        if val[0].isupper():
+            return res_low.capitalize()
+        return res_low
+    return val
 
 
 def to_1337speak(
@@ -134,6 +163,10 @@ def to_1337speak(
     # Fast-path optimization: check if any matching tokens exist before evaluating RNG or regex sub
     if not VARIANT_REGEX.search(text):
         return text
+
+    # Fast-path optimization: when probability == 1.0, bypass RNG calls and list allocations
+    if probability == 1.0:
+        return VARIANT_REGEX.sub(_sub_cb_100, text)
 
     # Direct RNG handle resolution: avoid allocating new random.Random() instances when unseeded
     rand_val = rng.random if rng is not None else random.random

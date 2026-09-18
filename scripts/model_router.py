@@ -16,6 +16,7 @@ from scripts import capability_spine
 
 COUNTER_DIR = os.environ.get("COUNTER_DIR", "/tmp/model-router")
 MODEL_CATALOG_FILE = os.environ.get("MODEL_CATALOG_FILE", "/tmp/model-catalog/catalog.json")
+CAPABILITY_SURFACES_FILE = os.environ.get("CAPABILITY_SURFACES_FILE", "/tmp/model-catalog/capability-surfaces.json")
 KEY_VAL_RE = re.compile(r'^("[^"]+"|\'[^\']+\'|[^:]+):\s*(.*)$')
 
 # Proven-only fallback when the OpenRouter catalog cannot be fetched. Newly listed
@@ -249,6 +250,11 @@ def fetch_openrouter_free_models_cached():
 
 
 
+def load_capability_surface_catalog(path):
+    """Load normalized connector/tool/MCP/plugin/skill evidence for AR-18."""
+    return capability_spine.load_capability_surface_catalog(path)
+
+
 def load_provider_model_catalog(path):
     """Load the normalized provider-model catalog as observation evidence.
 
@@ -330,6 +336,7 @@ def emit_decision(
         write_output("decision_summary", "capability-spine observe mode disabled")
         return
 
+    surface_rows = load_capability_surface_catalog(CAPABILITY_SURFACES_FILE)
     catalog_models = openrouter_models
     catalog_state = openrouter_catalog_state
     if catalog_models is None:
@@ -401,6 +408,7 @@ def emit_decision(
                 limits=limits,
                 usage=get_usage(provider, model),
                 success_entry=success_entry,
+                surface_evidence=capability_spine.match_capability_surfaces(provider, model, surface_rows),
             )
         )
     decision = capability_spine.compact_envelope(

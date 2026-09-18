@@ -176,11 +176,11 @@ def test_capability_surface_join_is_observational_and_preserves_authority():
             "freshness": "current",
         }
     ]
-    matched = capability_spine.match_capability_surfaces(
+    matched = spine.match_capability_surfaces(
         "openrouter", "qwen/qwen3-coder:free", surfaces
     )
     assert matched[0]["kind"] == "mcp"
-    candidate = capability_spine.make_candidate(
+    candidate = spine.make_candidate(
         provider="openrouter",
         model="qwen/qwen3-coder:free",
         capability="review",
@@ -217,9 +217,9 @@ def test_capability_surface_catalog_loader_is_fail_soft(tmp_path):
             "freshness": "current",
         }],
     }))
-    rows = capability_spine.load_capability_surface_catalog(str(valid))
+    rows = spine.load_capability_surface_catalog(str(valid))
     assert rows[0]["kind"] == "skill"
     assert rows[0]["authority"] == "unknown"
     broken = tmp_path / "broken.json"
     broken.write_text("{not-json")
-    assert capability_spine.load_capability_surface_catalog(str(broken)) == []
+    assert spine.load_capability_surface_catalog(str(broken)) == []

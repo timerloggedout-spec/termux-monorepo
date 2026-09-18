@@ -1,6 +1,6 @@
 # Skills Inventory (termux-monorepo)
 
-**Version:** 2026-09-18 · **Last refreshed SHA:** post-#611 (63598624)
+**Version:** 2026-09-18 · **Last refreshed SHA:** post-#613 (`856b519f`)
 **Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)
 
 ## Role load matrix
@@ -28,13 +28,15 @@
 | Provider capability matrix | [`docs/schemas/provider-capabilities.md`](../schemas/provider-capabilities.md) |
 | MCP host catalog (incl. bifrost evaluation) | `mcp-hub/catalog.json` |
 | Bifrost proposal | `docs/proposals/active/bifrost-gateway-integration/` |
+| BIFROST-006 runbook | `docs/proposals/active/bifrost-gateway-integration/BENCHMARK-SMOKE.md` |
 
 ## Cycle snapshot (2026-09-18)
 
 - Help-wanted lane: skill + CPPH + scout + execute workflows; upstream vedantnimbarte/zero#81 shipped.
-- **#611 MERGED:** Bifrost integration slice (registry, catalog v0.3.2 evaluation host, provider-capabilities, ROUTING-ORCHESTRATION-MAP). No Bifrost source merge.
-- Backlog: BIFROST-005 gitlink decision; BIFROST-006 mocker/benchmark evidence.
+- **#611 MERGED:** Bifrost integration slice. No Bifrost source merge.
+- **#613 MERGED:** BIFROST-006 benchmark smoke runbook (results still pending).
 - Dual-gate still required for merge to master. Ledger intermittent (#608 class) is not dual-gate alone.
+- #614 Approxination extract WAIT dual-gate after update-branch onto `856b519f`.
 - Vercel deploy rate-limit observed on some PRs — non-blocking for docs/skills when gates green.
 
 BIUDL. Agent-Identity: Grok (Administrator)

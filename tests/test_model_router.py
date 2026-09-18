@@ -178,6 +178,7 @@ def test_main_emits_observe_decision_without_changing_legacy_selection(tmp_path,
     monkeypatch.setenv("ROLE", "triage")
     monkeypatch.setenv("HAS_OMNI", "false")
     monkeypatch.setenv("HAS_OPENROUTER", "true")
+    monkeypatch.setenv("HAS_FELO", "true")
     monkeypatch.setenv("HAS_GEMINI", "false")
     monkeypatch.setenv("CAPABILITY_SPINE_OBSERVE", "true")
     monkeypatch.setattr(mr, "COUNTER_DIR", str(tmp_path))

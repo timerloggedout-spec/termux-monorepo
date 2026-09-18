@@ -223,3 +223,26 @@ def test_capability_surface_catalog_loader_is_fail_soft(tmp_path):
     broken = tmp_path / "broken.json"
     broken.write_text("{not-json")
     assert spine.load_capability_surface_catalog(str(broken)) == []
+
+
+
+def test_surface_evidence_summary_preserves_provenance_and_freshness():
+    summary = spine.summarize_surface_evidence([
+        {
+            "kind": "tool",
+            "id": "repo-reader",
+            "evidence_refs": ["sha:abc", "sha:abc"],
+            "observed_at": "2026-09-18T20:00:00Z",
+            "freshness": "current",
+        },
+        {
+            "kind": "skill",
+            "id": "adaptive-wait",
+            "evidence_refs": ["sha:def"],
+            "observed_at": "2026-09-17T20:00:00Z",
+            "freshness": "stale",
+        },
+    ])
+    assert summary["source_count"] == 2
+    assert summary["evidence_refs"] == ["sha:abc", "sha:def"]
+    assert summary["freshness"] == ["current", "stale"]

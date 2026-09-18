@@ -18,25 +18,25 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 
 - Evidence over anecdote. Extract-only. Dual-gate before merge.
 - Extra-red ≠ dual-gate. Behind-master dual-gate green ≠ auto-merge.
+- **comment-storm is a FAILURE**, not skippable noise. Mitigate with concurrency groups + `cancel-in-progress: false` on SHA-bound ledgers. Do not treat cancelled ledger runs as green.
 - Identity: `Agent-Identity: Grok (Administrator)`.
 - GitHub MCP write works as `timerloggedout-spec` even when local sandbox has no OPERATOR PAT / `gh`.
 
-## Current production anchors (2026-09-18T16:10Z UTC / 09:10 PDT)
+## Current production anchors (2026-09-18T17:03Z UTC)
 
 | Item | State |
 |------|-------|
-| Master HEAD | `c082f53379d230f4617f201d32c114f198dd63a1` (`chore(docs): refresh DOCS-BRANCH-INDEX` by github-actions[bot]) |
-| Just landed | #576–#595 chain; #595 merged 2026-09-18T06:27:38Z as `ops(skills): record #594 landing onto d79562d1` (`6af1e12c`). Bot docs-index then advanced master to `c082f533`. |
-| Dual gates last verified | #595 PR dual-gate on `d91294b9`: smoke **35309791148** SUCCESS; hygiene **35309791199** SUCCESS. #594 PR dual-gate on `e124b434`: smoke **35306172380** SUCCESS; hygiene **35306172362** SUCCESS. Master dual-gate on `eefc068`: smoke **35301928043** SUCCESS; repo-gate **35301928066** SUCCESS. |
-| Observe (not merged) | #583 Grafana MCP dual-gate green + extra-red validate-PR ≠ gate. #584 MVT context-safe budget. #587 Jules date-only audit. #589 CedrLang placeholder: update-branch CONFLICTed vs `01083fcc`. #597 Sentinel symlink; #598 Bolt regex/telemetry. |
-| Extra-red HOLD | #549 ML (#175) dirty/behind base `6df9b66` head `d4f3faf8`; sibling #432 HOLD — extract later from live master `c082f533`. |
-| HOLD mega | #523 #527 #545 #543 #455 #485 #483 #481 #474 #471 |
+| Master HEAD | `dc30bf83fc17b394510f99328f7a081b6a64f28c` (#603 squash) |
+| Just landed | #603 comment-storm ledger fix. Prior: #602 catalog MD fingerprint; #600 skills SSOT. |
+| Observe | #583 Grafana MCP; #584 MVT budget. Jules #597/#598. |
+| Extra-red HOLD | #601 ML extract dirty/behind (`c082f533` base vs live `dc30bf83`). #549/#432 HOLD extract-later. |
+| HOLD mega | #523 #527 #545 #543 #455 #485 #483 #481 |
 | Draft | #578 accounting/bidding schema pilot |
-| Superseded extract | #596 record-#595 onto `6af1e12c` — behind `c082f533`, mergeable_state unstable. #599 automation catalog regen — dirty vs master. |
-| Non-gates | Historical Evaluation Correlation freshness fail; merge-promotion-queue inventory fail; mermaid docs-refresh; comment-storm-skip |
 
 ## Extract recipe
 
-Create branch from current master. Do not force-update dirty branches. Do not wholesale-merge HOLD mega. #549/#432 remain extract-later. #589 update-branch conflicted — extract CedrLang placeholder from live master if still valuable. #599 catalog freshness: regenerate on live master, do not merge dirty head.
+Create branch from current master. Do not force-update dirty branches. Do not wholesale-merge HOLD mega or #601/#549/#432.
+
+CodeRabbit `queue: max` on GHA concurrency is **not a valid key** (only `group` + `cancel-in-progress`). Do not apply.
 
 BIUDL. Agent-Identity: Grok (Administrator)

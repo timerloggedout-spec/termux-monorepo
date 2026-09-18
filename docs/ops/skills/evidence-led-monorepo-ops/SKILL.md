@@ -1,9 +1,9 @@
 Local docs mirror. Canonical agent load path: `.agents/skills/evidence-led-monorepo-ops/SKILL.md`.
 
-Master HEAD `ea5aa867645c4` after #588 (2026-09-18T00:12Z).
+Master HEAD `3d062325b62d5` after #590 (2026-09-18T01:26Z).
 HOLD: #549/#432 ML extract-later. HOLD mega unchanged.
-Master dual-gate on `11c56e46`: smoke 35285651963 + repo-gate 35285652100 success.
-#588 PR dual-gate success.
-Observe: #583 Grafana MCP; #584 MVT budget; #587 Jules date-only audit; #589 CedrLang extract (dual-gate green, rebase after #588).
+Master dual-gate on `3d062325`: smoke 35295241188 + repo-gate 35295241175 success.
+#590 PR dual-gate success: smoke 35290155849 + hygiene 35290155715.
+Observe: #583 Grafana MCP; #584 MVT budget; #587 Jules date-only audit; #589 CedrLang extract (dual-gate green, update-branch after #590).
 
 Agent-Identity: Grok (Administrator)

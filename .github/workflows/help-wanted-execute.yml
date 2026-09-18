@@ -2,8 +2,8 @@ name: help-wanted execute
 
 # PRIMARY: upstream-pr into author's repo.
 # FALLBACK / PARALLEL NOTICE only when primary blocked (see HELP-WANTED-PARALLEL.md).
-# Adaptive: schedule every 4h reads daily budget; skips when exhausted.
-# OPERATOR PAT order: OPERATOR_GITHUB_TOKEN | OPERATOR_TOKEN | ARCHWIZ_GITHUB_TOKEN
+# Adaptive: schedule every 4h + budget gate. Evidence receipts → Oversight feed.
+# OPERATOR PAT: OPERATOR_GITHUB_TOKEN | OPERATOR_TOKEN | ARCHWIZ_GITHUB_TOKEN
 
 on:
   schedule:
@@ -23,7 +23,7 @@ on:
         required: false
         default: adaptive-top1
       daily_budget:
-        description: Max upstream PRs per UTC day (adaptive ceiling)
+        description: Max upstream actions per UTC day
         required: false
         default: "3"
 
@@ -85,11 +85,9 @@ jobs:
           allow = "true"
           if remaining <= 0 and not issue:
               allow = "false"
-          # scheduled adaptive needs remaining budget
           if event == "schedule" and remaining <= 0:
               allow = "false"
 
-          # adaptive-top1 without explicit issue: pick from last catalog if present
           if allow == "true" and not issue and mode in ("adaptive-top1", "claim"):
               cat = Path("docs/ops/generated/help-wanted-catalog.json")
               if cat.exists():
@@ -168,10 +166,17 @@ jobs:
           python3 scripts/ci/help_wanted_claim.py --issue "${{ needs.budget.outputs.issue }}" $DRY
           echo "ok=true" >> "$GITHUB_OUTPUT"
 
-      - name: Record success toward budget
+      - name: Evidence + budget on success
         if: success() && github.event.inputs.dry_run != 'true'
+        env:
+          GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           set -euo pipefail
+          python3 scripts/ci/help_wanted_evidence.py \
+            --kind claim \
+            --issue "${{ needs.budget.outputs.issue }}" \
+            --ok true \
+            --run-url "$GITHUB_RUN_URL"
           python3 <<'PY'
           import json, datetime
           from pathlib import Path
@@ -198,12 +203,26 @@ jobs:
           print(json.dumps(data))
           PY
 
-      - name: Upload updated budget
+      - name: Evidence on failure
+        if: failure() && github.event.inputs.dry_run != 'true'
+        env:
+          GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          python3 scripts/ci/help_wanted_evidence.py \
+            --kind claim \
+            --issue "${{ needs.budget.outputs.issue }}" \
+            --ok false \
+            --run-url "$GITHUB_RUN_URL" || true
+
+      - name: Upload budget + evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: help-wanted-budget-after-claim
-          path: docs/ops/generated/help-wanted-daily-budget.json
+          name: help-wanted-execute-artifacts
+          path: |
+            docs/ops/generated/help-wanted-daily-budget.json
+            docs/ops/generated/help-wanted-evidence/
           retention-days: 30
           if-no-files-found: ignore
 
@@ -214,6 +233,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
       - name: Resolve operator token
         id: tok
         env:
@@ -234,6 +257,7 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.tok.outputs.token }}
           GITHUB_TOKEN: ${{ steps.tok.outputs.token }}
+          GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           set -euo pipefail
           gh repo fork vedantnimbarte/zero --clone=false --default-branch-only 2>/dev/null || true
@@ -284,4 +308,15 @@ jobs:
           git commit -m "docs(layout): refresh stale ponytail comments for flex and grid" || echo "nothing to commit"
           git push -u origin fix/stale-ponytail-comments-72 --force
           BODY="Fixes vedantnimbarte/zero#72. Updates two stale ponytail ledgers in layout.rs to match current flex/grid behavior. Opened via termux-monorepo help-wanted lane."
-          gh pr create --repo vedantnimbarte/zero --head timerloggedout-spec:fix/stale-ponytail-comments-72 --base main --title "docs(layout): refresh stale ponytail comments (flex + grid)" --body "$BODY" || gh pr list --repo vedantnimbarte/zero --head timerloggedout-spec:fix/stale-ponytail-comments-72
+          PR_URL=$(gh pr create --repo vedantnimbarte/zero --head timerloggedout-spec:fix/stale-ponytail-comments-72 --base main --title "docs(layout): refresh stale ponytail comments (flex + grid)" --body "$BODY" 2>/dev/null || true)
+          if [ -z "$PR_URL" ]; then
+            PR_URL=$(gh pr list --repo vedantnimbarte/zero --head timerloggedout-spec:fix/stale-ponytail-comments-72 --json url -q '.[0].url' 2>/dev/null || true)
+          fi
+          echo "PR_URL=$PR_URL"
+          cd "$GITHUB_WORKSPACE"
+          python3 scripts/ci/help_wanted_evidence.py \
+            --kind upstream_pr \
+            --issue "https://github.com/vedantnimbarte/zero/issues/72" \
+            --ok true \
+            --pr-url "${PR_URL:-https://github.com/vedantnimbarte/zero/pull/81}" \
+            --run-url "$GITHUB_RUN_URL"

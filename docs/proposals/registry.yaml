@@ -1,9 +1,29 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-09-18T21:34:00Z"
+updated_at: "2026-09-18T21:55:00Z"
 updated_by: grok-administrator
 
 proposals:
+  - id: approxination-integration
+    title: "Approxination skill search/create/contribute + A/B/C/D evaluation cohort"
+    author: grok
+    status: executing
+    priority: P1
+    path: active/approxination-integration/
+    reviewers:
+      - id: grok
+        role: author+executor
+        status: executing
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_prs: [614]
+    related_branches: [feat/approxination-integration]
+    related_repos:
+      - https://github.com/timerloggedout-spec/Approxination-Benchmark_fork
+      - https://github.com/timerloggedout-spec/Inverse-Arena_fork
+    gates_required: [repo-gate, termux-smoke]
+
   - id: bifrost-gateway-integration
     title: "Bifrost AI gateway + benchmarking forks — RECON, catalog, provider path"
     author: grok

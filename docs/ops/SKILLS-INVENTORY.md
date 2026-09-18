@@ -1,6 +1,6 @@
 # Skills Inventory (termux-monorepo)
 
-**Version:** 2026-09-18 · **Last refreshed SHA:** feat/help-wanted-lane
+**Version:** 2026-09-18 · **Last refreshed SHA:** post-#611 (63598624)
 **Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)
 
 ## Role load matrix
@@ -19,11 +19,22 @@
 | adaptive-wait | `.agents/skills/adaptive-wait/SKILL.md` |
 | help-wanted-lane | `.agents/skills/help-wanted-lane/SKILL.md` |
 
+## Routing / orchestration pointers (post-#611)
+
+| Need | Path |
+|------|------|
+| Three-plane map (review / chat / MCP) | [`docs/ops/ROUTING-ORCHESTRATION-MAP.md`](ROUTING-ORCHESTRATION-MAP.md) |
+| Model rotation + free-tier policy | [`docs/schemas/model-rotation.yaml`](../schemas/model-rotation.yaml) |
+| Provider capability matrix | [`docs/schemas/provider-capabilities.md`](../schemas/provider-capabilities.md) |
+| MCP host catalog (incl. bifrost evaluation) | `mcp-hub/catalog.json` |
+| Bifrost proposal | `docs/proposals/active/bifrost-gateway-integration/` |
+
 ## Cycle snapshot (2026-09-18)
 
-- Help-wanted lane landed on branch: skill + CPPH + scout script + workflow.
-- Anchors: mac-s-g/github-help-wanted + timerloggedout-spec/github-help-wanted_fork.
-- Oversight scout expansion (SCOUT-MISSIONS).
-- Dual-gate still required for merge to master.
+- Help-wanted lane: skill + CPPH + scout + execute workflows; upstream vedantnimbarte/zero#81 shipped.
+- **#611 MERGED:** Bifrost integration slice (registry, catalog v0.3.2 evaluation host, provider-capabilities, ROUTING-ORCHESTRATION-MAP). No Bifrost source merge.
+- Backlog: BIFROST-005 gitlink decision; BIFROST-006 mocker/benchmark evidence.
+- Dual-gate still required for merge to master. Ledger intermittent (#608 class) is not dual-gate alone.
+- Vercel deploy rate-limit observed on some PRs — non-blocking for docs/skills when gates green.
 
 BIUDL. Agent-Identity: Grok (Administrator)

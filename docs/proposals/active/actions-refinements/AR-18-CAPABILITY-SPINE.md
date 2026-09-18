@@ -151,13 +151,25 @@ This establishes the required distinction:
 
 `DISCOVERED ≠ DECLARED ≠ VALIDATED ≠ ELIGIBLE`
 
-The next adapter increment should generalize the same normalized population contract to the existing Felo/Omni/provider-catalog artifact rather than introducing another registry.
+### P1b — normalized provider-catalog population adapter (observe-only)
+
+The normalized scripts/provider_model_catalog.py artifact is now consumed by the same AR-18 candidate adapter when MODEL_CATALOG_FILE points at its generated catalog. This extends observation across the existing OpenRouter/Felo/Omni provider surfaces without introducing another registry.
+
+- Catalog rows are normalized as provider/model observations and joined into the existing candidate population.
+- OpenRouter rows continue to be limited to free/zero-price observations for this observe lane; Felo/Omni rows are accepted from the normalized catalog rather than hard-coded model names.
+- A catalog row does not create a capability declaration. Only an existing role declaration/success entry can supply that declaration for a catalog-only candidate.
+- Provider availability/credential state remains a separate gate; catalog presence alone cannot make a candidate executable or eligible.
+- The existing legacy execution roster and route selection remain unchanged.
+- The adapter is fail-soft: an absent/unreadable catalog falls back to the existing OpenRouter observation path.
+- Tests cover Felo/Omni catalog population and the invariant that discovery remains unvalidated until declared/validated.
+
+This closes the immediate catalog-normalization gap while preserving the larger dynamic-matrix direction. The next increment is to join connector/tool/MCP/skills evidence and provenance/freshness dimensions into the same candidate facts, still without creating a second source of truth.
 
 ### Current implementation gap
 
-AR-18 is intentionally observe-only, but its current candidate construction is narrower than the desired dynamic population: model_router.py has bootstrap role lists while the live OpenRouter catalog is already dynamic. That is useful evidence, not a reason to hard-code more names.
+AR-18 remains intentionally observe-only. The candidate population is now dynamic across the existing normalized provider catalog plus the compatibility OpenRouter live path, but capability admission is still intentionally narrower than the full desired join. Connector/tool/MCP bindings, task probes, current-SHA evidence, and richer provenance/freshness remain separate source dimensions to be joined into the same envelope.
 
-The next implementation increment should broaden the existing candidate adapter to consume normalized catalog, integration, tool, and evidence dimensions and emit the same AR-18 envelope. It should not replace the router, create a new registry, or make active-routing changes.
+The next implementation increment should broaden the existing candidate adapter to consume those normalized capability-surface and evidence dimensions. It should not replace the router, create a new registry, or make active-routing changes.
 
 ## Specialist-disposition contract
 

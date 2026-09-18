@@ -1,7 +1,7 @@
 Local docs mirror. Canonical agent load path: `.agents/skills/adaptive-wait/SKILL.md`.
 
-HEAD `f779b9a2fd550` after #582.
-Master dual-gate on `d886560` SUCCESS: smoke 35269615266; repo-gate 35269615325.
-Landed #576 #577 #579 #580 #581 #582.
+HEAD `dc30bf83fc17b394510f99328f7a081b6a64f28c` after #603.
+comment-storm = FAILURE class (mitigated on master ledger workflow).
+#601 dirty-behind-master — extract-later.
 
 Agent-Identity: Grok (Administrator)

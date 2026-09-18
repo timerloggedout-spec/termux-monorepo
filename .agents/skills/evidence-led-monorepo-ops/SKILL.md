@@ -18,26 +18,25 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 
 - Evidence over anecdote. Extract-only. Dual-gate before merge.
 - Extra-red ≠ dual-gate. Behind-master dual-gate green ≠ auto-merge.
+- **comment-storm is a FAILURE**, not skippable noise. Mitigate with concurrency groups + `cancel-in-progress: false` on SHA-bound ledgers. Do not treat cancelled ledger runs as green.
 - Identity: `Agent-Identity: Grok (Administrator)`.
 - GitHub MCP write works as `timerloggedout-spec` even when local sandbox has no OPERATOR PAT / `gh`.
 
-## Current production anchors (2026-09-17T21:05Z)
+## Current production anchors (2026-09-18T17:03Z UTC)
 
 | Item | State |
 |------|-------|
-| Master HEAD | `f779b9a2fd550` (`ops(skills): record #581 landing` #582) |
-| Just landed | #576 Sentinel `4d532a9e5655`; #577 Bolt `92d704c0f8c8`; #579 `60a742a6d2f0`; #580 `96a04af3839d4`; #581 `d886560b8a546`; #582 record landing `f779b9a2fd550` |
-| Dual gates last verified | Master push dual-gate on `d886560`: smoke 35269615266 success; repo-gate 35269615325 success. #582 PR dual-gate: agentic termux smoke + hygiene + portability gate success. Parent `96a04af` dual-gate: smoke 35258129320 + repo-gate 35258129342 |
-| Observe (not merged) | #583 Grafana MCP boundary (hygiene green; extra-red mix). #584 MVT context-safe budget (dual-gate green; `validate-pull-request` extra-red FAIL ≠ gate) |
-| Extra-red HOLD | #549 ML (#175) dirty/behind base `6df9b66`; sibling #432 HOLD — extract later from live master |
-| HOLD mega | #523 #527 #545 #543 #455 #485 #483 #481 #474 #471 #466 #456 #453 |
+| Master HEAD | `dc30bf83fc17b394510f99328f7a081b6a64f28c` (#603 squash) |
+| Just landed | #603 comment-storm ledger fix. Prior: #602 catalog MD fingerprint; #600 skills SSOT. |
+| Observe | #583 Grafana MCP; #584 MVT budget. Jules #597/#598. |
+| Extra-red HOLD | #601 ML extract dirty/behind (`c082f533` base vs live `dc30bf83`). #549/#432 HOLD extract-later. |
+| HOLD mega | #523 #527 #545 #543 #455 #485 #483 #481 |
 | Draft | #578 accounting/bidding schema pilot |
-| Comment-storm-skip | Gemini/Jules/ECC/`coderabbitai` `issue_comment` cancelled/success mix ≠ gate |
-| Extra-red non-gate | Vercel rate-limit historically on #545/#549 |
-| Non-gates | historical-eval / swe-reference-evaluation fail; mermaid docs-refresh; agent-jules-on-issues / actions-run-watcher startup_failure; OpenRouter free catalog sync fail |
 
 ## Extract recipe
 
-Create branch from current master. Do not force-update dirty branches. #549 remains dirty/behind — do not merge; extract later from `f779b9a2`.
+Create branch from current master. Do not force-update dirty branches. Do not wholesale-merge HOLD mega or #601/#549/#432.
+
+CodeRabbit `queue: max` on GHA concurrency is **not a valid key** (only `group` + `cancel-in-progress`). Do not apply.
 
 BIUDL. Agent-Identity: Grok (Administrator)

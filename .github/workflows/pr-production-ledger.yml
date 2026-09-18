@@ -4,6 +4,10 @@ name: PR production ledger
 # Never checks out or executes pull-request code.
 # The ledger is SHA-bound and uses status-aware retries so transient GitHub
 # transport/rate-limit/server failures do not masquerade as repository state.
+#
+# Failure class: comment-storm — do NOT use cancel-in-progress:true on
+# issue_comment fan-out; that cancels useful ledger evidence and is a failure
+# mode, not skippable noise.
 on:
   pull_request_target:
     types: [opened, synchronize, reopened, ready_for_review]
@@ -19,8 +23,10 @@ permissions:
   checks: read
 
 concurrency:
-  group: pr-production-ledger-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
-  cancel-in-progress: true
+  # Include event_name so comment storms do not cancel PR-sync ledger runs.
+  # cancel-in-progress:false — concurrent ledgers are cheap; cancelled ones are failures.
+  group: pr-production-ledger-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}-${{ github.event_name }}
+  cancel-in-progress: false
 
 jobs:
   ledger:
@@ -97,4 +103,4 @@ jobs:
               `checks_pending: ${pendingChecks.length}`,
               `checks_failed: ${failedChecks.length}`,
             ].join('\n');
-            await core.summary.addHeading(`PR #${prNumber} production ledger`).addRaw(ledger + '\n\n').addHeading('Latest evidence').addRaw(`- latest commit: ${latestCommit?.sha || 'n/a'} @ ${iso(latestCommit?.commit?.committer?.date || latestCommit?.commit?.author?.date)}\n`).addRaw(`- latest review: ${latestReview?.html_url || 'none'} @ ${iso(latestReview?.submitted_at)}\n`).addRaw(`- latest review comment: ${latestReviewComment?.html_url || 'none'} @ ${iso(latestReviewComment?.updated_at || latestReviewComment?.created_at)}\n`).addRaw(`- latest issue comment: ${latestIssueComment?.html_url || 'none'} @ ${iso(latestIssueComment?.updated_at || latestIssueComment?.created_at)}\n`).addHeading('Gate interpretation').addRaw(behind > 0 ? '⚠️ Branch is behind master; production alignment is incomplete.\n' : '✅ Branch is not behind master at ledger generation time.\n').addRaw(failedChecks.length ? `❌ ${failedChecks.length} failed check(s).\n` : '✅ No completed failing checks observed.\n').addRaw(pendingChecks.length ? `⏳ ${pendingChecks.length} check(s) still pending.\n` : '✅ No pending checks observed.\n').write();
+            await core.summary.addHeading(`PR #${prNumber} production ledger`).addRaw(ledger + '\n\n').addHeading('Latest evidence').addRaw(`- latest commit: ${latestCommit?.sha || 'n/a'} @ ${iso(latestCommit?.commit?.committer?.date || latestCommit?.commit?.author?.date)}\n`).addRaw(`- latest review: ${latestReview?.html_url || 'none'} @ ${iso(latestReview?.submitted_at)}\n`).addRaw(`- latest review comment: ${latestReviewComment?.html_url || 'none'} @ ${iso(latestReviewComment?.updated_at || latestReviewComment?.created_at)}\n`).addRaw(`- latest issue comment: ${latestIssueComment?.html_url || 'none'} @ ${iso(latestIssueComment?.updated_at || latestIssueComment?.created_at)}\n`).addHeading('Gate interpretation').addRaw(behind > 0 ? '⚠️ Branch is behind master; production alignment is incomplete.\n' : '✅ Branch is not behind master at ledger generation time.\n').addRaw(failedChecks.length ? `❌ ${failedChecks.length} failed check(s).\n` : '✅ No completed failing checks observed.\n').addRaw(pendingChecks.length ? `⏳ ${pendingChecks.length} check(s) still pending.\n' : '✅ No pending checks observed.\n').write();

@@ -1,8 +1,8 @@
 Local docs mirror. Canonical agent load path: `.agents/skills/evidence-led-monorepo-ops/SKILL.md`.
 
-Master HEAD `f779b9a2fd550` after #582 (2026-09-17T21:05Z).
-HOLD: #549/#432 ML extract-later. HOLD mega unchanged.
-Master dual-gate on `d886560`: smoke 35269615266 + repo-gate 35269615325 success.
-Observe: #583 Grafana MCP; #584 MVT budget (validate-PR extra-red ≠ gate).
+Master HEAD `dc30bf83fc17b394510f99328f7a081b6a64f28c` after #603 (2026-09-18T17:03Z UTC).
+comment-storm is a FAILURE. Ledger concurrency: cancel-in-progress false + event_name split.
+HOLD: #601/#549/#432 ML extract-later. HOLD mega unchanged.
+Do not apply CodeRabbit `queue: max` (invalid GHA concurrency key).
 
 Agent-Identity: Grok (Administrator)

@@ -1,42 +1,34 @@
 ---
 name: evidence-led-monorepo-ops
-description: Continuous evidence-led admin ops on timerloggedout-spec/termux-monorepo (and similar agentic monorepos). Triggers on priority matrix, master gates, SHE progress, Manus/provider RE, dirty PR triage, Actions hygiene, or when the operator says continue, BIUDL, maximize actions, or /continue. Use for live state pulls, dispositions, small-green extracts, adaptive WAIT, and iterative process improvement documented as skills. Load this skill in every admin session.
+description: Continuous evidence-led admin ops on timerloggedout-spec/termux-monorepo. Load every admin session.
 ---
 
 # Skill: evidence-led-monorepo-ops
 
-**Owner:** ArchW1z / Grok Administrator continuous admin on timerloggedout-spec/termux-monorepo.
-
-**Canonical paths (keep in sync):**
-- `.agents/skills/evidence-led-monorepo-ops/SKILL.md` ← **agent load path**
-- `docs/ops/skills/evidence-led-monorepo-ops/SKILL.md` ← human/docs mirror
-- `docs/ops/SKILLS-INVENTORY.md` ← full skill table + adaptive WAIT
-
-**Primary agent entry:** `CLAUDE.md`.
+**Owner:** Grok Administrator
+**Canonical:** `.agents/skills/evidence-led-monorepo-ops/SKILL.md`
+**Mirrors:** `docs/ops/skills/evidence-led-monorepo-ops/SKILL.md`
 
 ## Posture
 
 - Evidence over anecdote. Extract-only. Dual-gate before merge.
 - Extra-red ≠ dual-gate. Behind-master dual-gate green ≠ auto-merge.
-- **comment-storm is a FAILURE**, not skippable noise. Mitigate with concurrency groups + `cancel-in-progress: false` on SHA-bound ledgers. Do not treat cancelled ledger runs as green.
+- **comment-storm is a FAILURE.** Do not force-merge #608.
+- Do not MCP-write 35k workflow bodies (#606 abort).
 - Identity: `Agent-Identity: Grok (Administrator)`.
-- GitHub MCP write works as `timerloggedout-spec` even when local sandbox has no OPERATOR PAT / `gh`.
 
-## Current production anchors (2026-09-18T17:03Z UTC)
+## Production anchors (2026-09-18T23:15Z UTC)
 
 | Item | State |
 |------|-------|
-| Master HEAD | `dc30bf83fc17b394510f99328f7a081b6a64f28c` (#603 squash) |
-| Just landed | #603 comment-storm ledger fix. Prior: #602 catalog MD fingerprint; #600 skills SSOT. |
-| Observe | #583 Grafana MCP; #584 MVT budget. Jules #597/#598. |
-| Extra-red HOLD | #601 ML extract dirty/behind (`c082f533` base vs live `dc30bf83`). #549/#432 HOLD extract-later. |
-| HOLD mega | #523 #527 #545 #543 #455 #485 #483 #481 |
-| Draft | #578 accounting/bidding schema pilot |
+| Master HEAD | `fb382c4893ff07f413b1834f633081081f6973d7` (docs-branch-index bot) |
+| Landed | #609 help-wanted; #613 BIFROST-006; #614 Approxination |
+| Isolated green candidate | #617 proposal registry MANIFEST gate (validate-registry green; ledger extra-red) |
+| Observe | #618 Agentic-Agile docs; #605 Paper2Agent draft-adjacent |
+| Extra-red HOLD | #608 ledger SyntaxError chicken-egg |
+| ML HOLD dirty/behind | #601 #549 #432 — keep artifacts, extract later from live master |
+| HOLD mega | #523 #527 #455 #48 #543 #545 #485 #500 |
 
-## Extract recipe
-
-Create branch from current master. Do not force-update dirty branches. Do not wholesale-merge HOLD mega or #601/#549/#432.
-
-CodeRabbit `queue: max` on GHA concurrency is **not a valid key** (only `group` + `cancel-in-progress`). Do not apply.
+GitHub MCP cannot comment/PR foreign repos (403). Use Actions OPERATOR / help-wanted-execute for upstream-pr.
 
 BIUDL. Agent-Identity: Grok (Administrator)

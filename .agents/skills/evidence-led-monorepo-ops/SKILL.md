@@ -22,21 +22,25 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 - Identity: `Agent-Identity: Grok (Administrator)`.
 - GitHub MCP write works as `timerloggedout-spec` even when local sandbox has no OPERATOR PAT / `gh`.
 
-## Current production anchors (2026-09-18T17:03Z UTC)
+## Current production anchors (2026-09-18T22:08Z UTC)
 
 | Item | State |
 |------|-------|
-| Master HEAD | `dc30bf83fc17b394510f99328f7a081b6a64f28c` (#603 squash) |
-| Just landed | #603 comment-storm ledger fix. Prior: #602 catalog MD fingerprint; #600 skills SSOT. |
-| Observe | #583 Grafana MCP; #584 MVT budget. Jules #597/#598. |
-| Extra-red HOLD | #601 ML extract dirty/behind (`c082f533` base vs live `dc30bf83`). #549/#432 HOLD extract-later. |
-| HOLD mega | #523 #527 #545 #543 #455 #485 #483 #481 |
-| Draft | #578 accounting/bidding schema pilot |
+| Master HEAD | `a55a56894cfe95c2ed88446d6ef42df3bb47ee2a` (#614 squash) |
+| Just landed | #614 Approxination lane. #613 BIFROST-006 runbook. #612 inventory. #611 Bifrost. #609 help-wanted. |
+| Extract-later | #615 closed (inventory conflict after #614). This branch is the clean extract. |
+| Extra-red HOLD | #608 ledger SyntaxError chicken-egg — do not force-merge. #601/#549/#432 ML HOLD dirty/behind. |
+| HOLD mega | #523 #527 #455 #48 #543 #545 #485 #500 |
+| Draft | #605 Paper2Agent; #578 accounting/bidding |
 
 ## Extract recipe
 
 Create branch from current master. Do not force-update dirty branches. Do not wholesale-merge HOLD mega or #601/#549/#432.
 
+Do not MCP-write 35k workflow bodies. Do not comment-storm.
+
 CodeRabbit `queue: max` on GHA concurrency is **not a valid key** (only `group` + `cancel-in-progress`). Do not apply.
+
+GitHub MCP cannot comment/PR foreign repos (403). Use Actions OPERATOR / help-wanted-execute for upstream-pr.
 
 BIUDL. Agent-Identity: Grok (Administrator)

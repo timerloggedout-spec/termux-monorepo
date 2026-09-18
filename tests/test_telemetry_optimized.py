@@ -143,3 +143,31 @@ def test_dashboard_status_tag_rendering(tmp_path, monkeypatch):
 
     panel = dashboard.make_dashboard()
     assert panel is not None
+
+
+def test_telemetry_symlink_hijacking_prevention(tmp_path, monkeypatch):
+    import sys
+    from pathlib import Path
+
+    agent_path = str(Path(__file__).resolve().parents[1] / "termux-multi-agent")
+    if agent_path not in sys.path:
+        sys.path.insert(0, agent_path)
+    import src.telemetry as telemetry_mod
+
+    # Setup target file and symlink
+    target_file = tmp_path / "sensitive_target.txt"
+    target_file.write_text("SENSITIVE")
+
+    symlink_log = tmp_path / "symlink_telemetry.json"
+    symlink_log.symlink_to(target_file)
+
+    monkeypatch.setattr(dashboard, "TELEMETRY_LOG", str(symlink_log))
+    monkeypatch.setattr(telemetry_mod, "TELEMETRY_LOG", str(symlink_log))
+
+    # Test logger notify ignores symlink and does not write to target
+    telemetry_mod.TermuxTelemetryLogger.notify("INFO", "AgentA", "Test message")
+    assert target_file.read_text() == "SENSITIVE"
+
+    # Test dashboard reader ignores symlink and returns empty list
+    jobs = dashboard.read_latest_telemetry()
+    assert jobs == []

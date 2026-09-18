@@ -35,8 +35,8 @@ def read_latest_telemetry():
     to perform incremental I/O, yielding massive performance gains on large log streams.
     """
     global _last_file_pos, _active_jobs_cache, _sorted_telemetry_cache, _last_file_ino, _last_file_mtime
-    if not os.path.exists(TELEMETRY_LOG):
-        # Reset cache if file is missing
+    if not os.path.exists(TELEMETRY_LOG) or os.path.islink(TELEMETRY_LOG):
+        # Reset cache if file is missing or is a symlink (symlink hijacking guard)
         _active_jobs_cache = {}
         _sorted_telemetry_cache = None
         _last_file_pos = 0
@@ -45,6 +45,14 @@ def read_latest_telemetry():
         return []
 
     try:
+        if os.path.islink(os.path.abspath(TELEMETRY_LOG)):
+            _active_jobs_cache = {}
+            _sorted_telemetry_cache = None
+            _last_file_pos = 0
+            _last_file_ino = None
+            _last_file_mtime = 0
+            return []
+
         stat_info = os.stat(TELEMETRY_LOG)
         file_size = stat_info.st_size
         file_ino = stat_info.st_ino

@@ -15,6 +15,7 @@ import time
 from scripts import capability_spine
 
 COUNTER_DIR = os.environ.get("COUNTER_DIR", "/tmp/model-router")
+MODEL_CATALOG_FILE = os.environ.get("MODEL_CATALOG_FILE", "/tmp/model-catalog/catalog.json")
 KEY_VAL_RE = re.compile(r'^("[^"]+"|\'[^\']+\'|[^:]+):\s*(.*)$')
 
 # Proven-only fallback when the OpenRouter catalog cannot be fetched. Newly listed
@@ -247,6 +248,29 @@ def fetch_openrouter_free_models_cached():
     return fetch_openrouter_free_models_cached_with_source()[0]
 
 
+
+def load_provider_model_catalog(path):
+    """Load the normalized provider-model catalog as observation evidence.
+
+    Catalog discovery is deliberately separate from capability declaration. Rows
+    are returned as provider/model pairs with their source metadata so callers
+    can keep the population dynamic without creating a second registry.
+    """
+    if not path or not os.path.exists(path):
+        return []
+    try:
+        with open(path, "r", encoding="utf-8") as handle:
+            document = json.load(handle)
+    except (OSError, ValueError, TypeError, json.JSONDecodeError) as error:
+        sys.stderr.write(f"Warning: provider catalog is unreadable ({error}).\\n")
+        return []
+    rows = []
+    for row in document.get("models", []):
+        if not isinstance(row, dict) or not row.get("provider") or not row.get("id"):
+            continue
+        rows.append(row)
+    return rows
+
 def get_usage(provider, model):
     key = f"{provider}/{model}" if provider != "gemini" else model
     filename = os.path.join(COUNTER_DIR, key.replace("/", "_") + ".txt")
@@ -295,6 +319,7 @@ def emit_decision(
     has_gemini,
     openrouter_models,
     openrouter_catalog_state,
+    provider_catalog=None,
     target_sha=None,
     current_sha=None,
 ):
@@ -317,30 +342,36 @@ def emit_decision(
         "omni": has_omni,
         "openrouter": has_openrouter,
     }
-    pairs = [("gemini", model) for model in role_residuals.get(role, [])]
-    pairs.extend(role_peers.get(role, []))
+    pairs = [("gemini", model, False) for model in role_residuals.get(role, [])]
+    pairs.extend((provider, model, False) for provider, model in role_peers.get(role, []))
 
     # The observe population is broader than the legacy execution roster.
-    # Every currently observed free OpenRouter model is represented, but only
-    # models with a declared capability can become eligible.
-    for model in sorted(catalog_models):
-        pairs.append(("openrouter", model))
+    # Prefer the normalized provider catalog when supplied; OpenRouter's live
+    # fallback remains available for compatibility with existing callers.
+    catalog_rows = provider_catalog or []
+    if catalog_rows:
+        for row in catalog_rows:
+            provider = row["provider"]
+            model = row["id"]
+            if provider == "openrouter" and not is_free_openrouter_model(model, row.get("pricing")):
+                continue
+            pairs.append((provider, model, True))
+    else:
+        for model in sorted(catalog_models):
+            pairs.append(("openrouter", model, True))
 
     candidates = []
     seen = set()
-    for provider, model in pairs:
+    for provider, model, catalog_observed in pairs:
         key = (provider, model)
         if key in seen:
             continue
         seen.add(key)
         success_entry = success_matrix.get("models", {}).get(model, {})
-        # Catalog discovery is not itself a capability declaration. A model
-        # discovered live but absent from the role matrix remains observable and
-        # explicitly ineligible until a capability probe/admission records it.
-        declared_capabilities = {role} if (
-            provider != "openrouter"
-            or role in success_entry.get("role_suitability", {})
-        ) else set()
+        # Catalog discovery is not itself a capability declaration. Legacy
+        # routes retain their declarations; catalog-only rows need an explicit
+        # role declaration before they can enter the eligible population.
+        declared_capabilities = ({role} if role in success_entry.get("role_suitability", {}) else set()) if catalog_observed else {role}
         declared_source = (
             "llm-peers.yaml/model-success-matrix.yaml"
             if declared_capabilities
@@ -383,6 +414,7 @@ def main():
     has_openrouter = os.environ.get("HAS_OPENROUTER", "false").lower() == "true"
     has_gemini = os.environ.get("HAS_GEMINI", "true").lower() == "true"
     success_matrix = parse_yaml("docs/schemas/model-success-matrix.yaml")
+    provider_catalog = load_provider_model_catalog(MODEL_CATALOG_FILE)
 
     polled_free_models = None
     catalog_state = "unavailable"
@@ -400,6 +432,7 @@ def main():
         has_gemini,
         polled_free_models,
         catalog_state,
+        provider_catalog=provider_catalog,
         target_sha=os.environ.get("TARGET_SHA") or None,
         current_sha=os.environ.get("CURRENT_SHA") or None,
     )

@@ -21,23 +21,29 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 - Identity: `Agent-Identity: Grok (Administrator)`.
 - GitHub MCP write works as `timerloggedout-spec` even when local sandbox has no OPERATOR PAT / `gh`.
 
-## Current production anchors (2026-09-18T05:09Z PDT)
+## Current production anchors (2026-09-18T16:15Z UTC)
 
 | Item | State |
 |------|-------|
-| Master HEAD | `d79562d1ac5dfe08` (`ops(skills): record #593 landing onto 7be82b14` #594) |
-| Just landed | #576–#594 chain through `d79562d1` |
-| Dual gates last verified | #594 PR dual-gate on `e124b434`: smoke **35306172380** SUCCESS; hygiene **35306172362** SUCCESS. Master dual-gate on `eefc068`: smoke **35301928043** SUCCESS; repo-gate **35301928066** SUCCESS. Master push dual-gate on `d79562d1` admitted (in flight at record). |
-| Observe (not merged) | #583 Grafana MCP (dual-gate green on `a2d8415a` but `validate-pull-request` extra-red FAIL ≠ gate). #584 MVT context-safe budget. #587 Jules date-only audit bump. #589 Jules CedrLang placeholder: update-branch CONFLICTed vs `01083fcc` — extract later |
-| Extra-red HOLD | #549 ML (#175) dirty/behind base `6df9b66`; sibling #432 HOLD — extract later from live master `d79562d1` |
-| HOLD mega | #523 #527 #545 #543 #455 #485 #483 #481 #474 #471 #466 |
+| Master HEAD | `c082f53379d230f4617f201d32c114f198dd63a1` (`chore(docs): refresh DOCS-BRANCH-INDEX`) |
+| Just landed | #590–#595 skill-record chain through `6af1e12`; catalog repair `e24f08d` after truncated `9aa6475` |
+| Dual gates last verified | Master dual-gate on `eefc068`: smoke **35301928043** SUCCESS; repo-gate **35301928066** SUCCESS. #594 PR dual-gate on `e124b434`: smoke **35306172380**; hygiene **35306172362** |
+| Extract in flight | `feat/ml-pipelines-extract-c082f53` — observe-mode ML pipelines reconstructed from dirty #549 onto live master. Supersedes #549/#432 wholesale. |
+| Observe (not merged) | #596 skills-record (unstable). #597 Sentinel symlink. #598 Bolt regex. #583 Grafana MCP (extra-red validate-PR ≠ gate). #584 MVT budget. #589 CedrLang update-branch-conflict. |
+| Extra-red HOLD | Dirty #549 (this extract replaces it) / sibling #432 HOLD |
+| HOLD mega | #523 #527 #545 #543 #455 #485 #483 #481 #474 #471 #466 #500 |
 | Draft | #578 accounting/bidding schema pilot |
+| Extra-red non-gate | Historical-eval catalog freshness **35356132030**; merge-promotion-queue inventory; actions-run-watcher / agent-jules-on-issues / swe-reference-evaluation startup_failure; Vercel rate-limit |
 | Comment-storm-skip | Gemini/Jules/ECC/`coderabbitai` `issue_comment` cancelled/success mix ≠ gate |
-| Extra-red non-gate | actions-run-watcher / agent-jules-on-issues / swe-reference-evaluation startup_failure ≠ gate |
-| Non-gates | mermaid docs-refresh; OpenRouter free catalog sync fail; merge-promotion-queue inventory fail |
 
 ## Extract recipe
 
-Create branch from current master. Do not force-update dirty branches. #549 remains dirty/behind — do not merge; extract later from `d79562d1`. #589 update-branch conflicted — extract CedrLang placeholder change from live master if still valuable.
+Create branch from current master. Do not force-update dirty branches. Reconstruct ML observe-mode from #549 onto live HEAD instead of merging dirty `feat/ml-pipelines-rebase-175`. Catalog regen rides with the extract because `.github/workflows/ml-pipelines.yml` is new. #589 remains extract-later. MoneyBall scores never merge.
+
+## 2026-09-18 addition
+
+Use `.agents/skills/pr-minesweeper` plus `ml_pipelines` for live PR lane overlap.
+MoneyBall scores remain decision-support only. Dirty PR #432/#549 are superseded by a
+master-reconstructed observe-mode package; do not wholesale-merge the stale branches.
 
 BIUDL. Agent-Identity: Grok (Administrator)

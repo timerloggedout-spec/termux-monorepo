@@ -57,6 +57,8 @@ Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
 | Permissions / human edges | `docs/proposals/AGENTIC-PERMISSIONS.md` |
 | ICM task routing | `docs/icm/CLAUDE.md` |
 | Skills + adaptive wait | `docs/ops/SKILLS-INVENTORY.md` |
+| Issue #175 matrix | `docs/ops/ISSUE-175-MATRIX.yaml` |
+| Observe-mode ML pipelines | `ml_pipelines/` + `.agents/skills/ml-pipelines/SKILL.md` |
 | Session SSOT | `docs/schemas/session-ssot.md` |
 | Provider caps | `docs/schemas/provider-capabilities.md` |
 | Linguist / CedrLang surface only | `AGENTS.md` |

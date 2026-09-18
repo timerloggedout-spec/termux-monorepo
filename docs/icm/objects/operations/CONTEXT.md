@@ -20,6 +20,7 @@ One job: route a change touching monorepo operational tooling to the smallest ca
 |---|---|---|
 | [`archwiz.md`](archwiz.md) | changing the cockpit, forensic, autonomous, verification, or knowledge tool surface | the named tool’s source and probe/test boundary |
 | [`optional-visual-review.md`](optional-visual-review.md) | reviewing initiated CCTV cards, proposing a file-backed stage mirror or human checkpoint, or scoping later publication | the canonical source artifact and the separate renderer/publication gate |
+| [`ml-pipelines.md`](ml-pipelines.md) | scoring PRs/issues/Actions in observe-mode, binding Issue #175, or classifying overlapping agent PRs | `ml_pipelines/` plus dual gates; scores never merge |
 
 ## Outputs
 

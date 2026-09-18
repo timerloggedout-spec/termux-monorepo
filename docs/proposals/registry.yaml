@@ -1,9 +1,29 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-09-11T19:08:00Z"
-updated_by: agent-automation
+updated_at: "2026-09-18T21:34:00Z"
+updated_by: grok-administrator
 
 proposals:
+  - id: bifrost-gateway-integration
+    title: "Bifrost AI gateway + benchmarking forks — RECON, catalog, provider path"
+    author: grok
+    status: executing
+    priority: P1
+    path: active/bifrost-gateway-integration/
+    reviewers:
+      - id: grok
+        role: author+executor
+        status: executing
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_prs: [611]
+    related_branches: [docs/bifrost-gateway-recon-reconcile]
+    related_repos:
+      - https://github.com/timerloggedout-spec/bifrost_fork
+      - https://github.com/timerloggedout-spec/bifrost-benchmarking_fork
+    gates_required: [repo-gate, termux-smoke]
+
   - id: context-relationship-graph
     title: "GitHub-native context relationship graph and scope index"
     author: Manus

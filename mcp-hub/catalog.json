@@ -1,7 +1,7 @@
 {
-  "version": "0.3.1",
-  "updated": "2026-09-17T04:30:00Z",
-  "note": "github-remote is the LIVE GitHub-hosted MCP URL for URL-only agents. github-docker is optional self-host only. termux/android stay on Vercel hub — do not mix.",
+  "version": "0.3.2",
+  "updated": "2026-09-18T21:34:00Z",
+  "note": "github-remote is the LIVE GitHub-hosted MCP URL for URL-only agents. github-docker is optional self-host only. termux/android stay on Vercel hub — do not mix. bifrost is evaluation gateway (chat+MCP), not a replacement for github-remote.",
   "hosts": [
     {
       "id": "github-remote",
@@ -60,6 +60,22 @@
       "transport": "gateway",
       "note": "MCP Gateway fork — fronts multiple servers. Not yet folded into this hub.",
       "status": "fork_synced"
+    },
+    {
+      "id": "bifrost",
+      "repo": "https://github.com/timerloggedout-spec/bifrost_fork",
+      "upstream": "https://github.com/maximhq/bifrost",
+      "benchmarking_repo": "https://github.com/timerloggedout-spec/bifrost-benchmarking_fork",
+      "transport": "http|mcp",
+      "endpoints": {
+        "openai_compat": "http://localhost:8080/v1/chat/completions",
+        "mcp": "Bifrost native MCP gateway (tool calling / agent loop)",
+        "ui": "http://localhost:8080"
+      },
+      "tools": ["multi-provider chat", "MCP tool calling", "semantic cache", "governance/virtual-keys"],
+      "status": "evaluation",
+      "auth": "Provider keys held by Bifrost; callers use OpenAI-compat or MCP clients",
+      "note": "High-perf AI + MCP gateway candidate. NOT a replacement for github-remote. Measure with bifrost-benchmarking_fork (mocker + benchmark.go) vs OpenRouter/OX Alpha/llm_api_hub before any production promote. See docs/proposals/active/bifrost-gateway-integration/ and docs/ops/ROUTING-ORCHESTRATION-MAP.md."
     }
   ],
   "client_snippets": {
@@ -79,6 +95,10 @@
         "termux": { "url": "https://<hub-domain>/mcp/termux" },
         "android": { "url": "https://<hub-domain>/mcp/android" }
       }
+    },
+    "bifrost_openai_compat": {
+      "base_url": "http://localhost:8080/v1",
+      "note": "Drop-in OpenAI client; point base_url at Bifrost when self-hosted evaluation is running"
     }
   }
 }

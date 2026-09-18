@@ -39,6 +39,10 @@ inputs:
     description: 'Optional trusted current SHA used to validate target-sha; required when target-sha is supplied'
     required: false
     default: ''
+  capability-surfaces-file:
+    description: 'Optional normalized connector/tool/MCP/plugin/skill evidence artifact for AR-18 observe mode'
+    required: false
+    default: '/tmp/model-catalog/capability-surfaces.json'
 
 outputs:
   provider:
@@ -88,6 +92,7 @@ runs:
         CAPABILITY_SPINE_OBSERVE: ${{ inputs.capability-spine-observe }}
         TARGET_SHA: ${{ inputs.target-sha }}
         CURRENT_SHA: ${{ inputs.current-sha }}
+        CAPABILITY_SURFACES_FILE: ${{ inputs.capability-surfaces-file }}
       run: |
         python3 -m scripts.model_router
 

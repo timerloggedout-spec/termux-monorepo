@@ -44,3 +44,10 @@ In GitHub API ingestion workflows (`historical_event_correlation.py`), the jobs 
 
 **Action:**
 Always check for embedded child arrays in GitHub API parent endpoints before executing separate per-item HTTP GET calls.
+
+## 2026-09-18 - Pre-Compiled Phase Regex Reuse in Lifecycle Engines
+**Learning:**
+In dependency phase graph evaluation (`scripts/agentic/dependency_phase_engine.py` and `scripts/agentic/dependency_phases.py`), matching phase identifiers against project item titles and PR titles repeatedly recompiled regular expressions (`re.compile(rf"(?<![A-Z0-9-]){re.escape(phase_id)}(?![A-Z0-9-])")`) inside inner item/PR iteration loops across topological evaluation steps. Compiling the regex pattern once per phase and passing the compiled `re.Pattern` instance into matching helper functions eliminates $O(N \times M)$ regex string compilation overheads.
+
+**Action:**
+Pre-compile and pass compiled `re.Pattern` objects when filtering large lists of records by ID markers in lifecycle or rule engines.

@@ -21,15 +21,15 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 - Identity: `Agent-Identity: Grok (Administrator)`.
 - GitHub MCP write works as `timerloggedout-spec` even when local sandbox has no OPERATOR PAT / `gh`.
 
-## Current production anchors (2026-09-18T03:12Z)
+## Current production anchors (2026-09-18T05:09Z PDT)
 
 | Item | State |
 |------|-------|
-| Master HEAD | `7be82b14710044` (`ops(skills): record #592 landing onto eefc068` #593) |
-| Just landed | #576–#593 chain through `7be82b14` |
-| Dual gates last verified | Master dual-gate on `eefc068`: smoke **35301928043** SUCCESS; repo-gate **35301928066** SUCCESS. #592 PR dual-gate on `07cad51d`: smoke **35297909967**; hygiene **35297909831**. |
-| Observe (not merged) | #583 Grafana MCP (dual-gate green on `a2d8415a` but `validate-pull-request` extra-red FAIL ≠ gate; keep observe). #584 MVT context-safe budget (same extra-red class). #587 Jules date-only audit bump. #589 Jules CedrLang placeholder extract: update-branch CONFLICTed vs `01083fcc` — extract later, do not force |
-| Extra-red HOLD | #549 ML (#175) dirty/behind base `6df9b66`; sibling #432 HOLD — extract later from live master |
+| Master HEAD | `d79562d1ac5dfe08` (`ops(skills): record #593 landing onto 7be82b14` #594) |
+| Just landed | #576–#594 chain through `d79562d1` |
+| Dual gates last verified | #594 PR dual-gate on `e124b434`: smoke **35306172380** SUCCESS; hygiene **35306172362** SUCCESS. Master dual-gate on `eefc068`: smoke **35301928043** SUCCESS; repo-gate **35301928066** SUCCESS. Master push dual-gate on `d79562d1` admitted (in flight at record). |
+| Observe (not merged) | #583 Grafana MCP (dual-gate green on `a2d8415a` but `validate-pull-request` extra-red FAIL ≠ gate). #584 MVT context-safe budget. #587 Jules date-only audit bump. #589 Jules CedrLang placeholder: update-branch CONFLICTed vs `01083fcc` — extract later |
+| Extra-red HOLD | #549 ML (#175) dirty/behind base `6df9b66`; sibling #432 HOLD — extract later from live master `d79562d1` |
 | HOLD mega | #523 #527 #545 #543 #455 #485 #483 #481 #474 #471 #466 |
 | Draft | #578 accounting/bidding schema pilot |
 | Comment-storm-skip | Gemini/Jules/ECC/`coderabbitai` `issue_comment` cancelled/success mix ≠ gate |
@@ -38,6 +38,6 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 
 ## Extract recipe
 
-Create branch from current master. Do not force-update dirty branches. #549 remains dirty/behind — do not merge; extract later from `7be82b14`. #589 update-branch conflicted — extract CedrLang placeholder change from live master if still valuable.
+Create branch from current master. Do not force-update dirty branches. #549 remains dirty/behind — do not merge; extract later from `d79562d1`. #589 update-branch conflicted — extract CedrLang placeholder change from live master if still valuable.
 
 BIUDL. Agent-Identity: Grok (Administrator)

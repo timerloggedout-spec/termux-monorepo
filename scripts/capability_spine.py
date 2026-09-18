@@ -81,6 +81,58 @@ def _hard_gate_reason(
     return None
 
 
+def load_capability_surface_catalog(path: str | None) -> list[dict[str, Any]]:
+    """Load normalized connector/tool/MCP/plugin/skill observations.
+
+    Surface observations enrich candidate facts but never grant a capability or
+    authority. The file is an adapter over existing source-of-truth inventories,
+    not a second registry. Malformed/unreadable input fails soft.
+    """
+    import json
+    import os
+
+    if not path or not os.path.exists(path):
+        return []
+    try:
+        with open(path, "r", encoding="utf-8") as handle:
+            document = json.load(handle)
+    except (OSError, ValueError, TypeError, json.JSONDecodeError):
+        return []
+    rows = document.get("surfaces", []) if isinstance(document, dict) else []
+    if not isinstance(rows, list):
+        return []
+    normalized = []
+    for row in rows:
+        if not isinstance(row, dict) or not row.get("id") or not row.get("kind"):
+            continue
+        normalized.append({
+            "kind": row["kind"],
+            "id": row["id"],
+            "provider": row.get("provider"),
+            "model": row.get("model"),
+            "capabilities": list(row.get("capabilities") or []),
+            "availability": row.get("availability", "unknown"),
+            "authority": row.get("authority", "unknown"),
+            "evidence_refs": list(row.get("evidence_refs") or []),
+            "observed_at": row.get("observed_at"),
+            "freshness": row.get("freshness", "unknown"),
+        })
+    return normalized
+
+
+def match_capability_surfaces(
+    provider: str, model: str, surfaces: Iterable[dict[str, Any]]
+) -> list[dict[str, Any]]:
+    """Join surfaces to a specialist without making surface claims declarations."""
+    matched = []
+    for row in surfaces:
+        if row.get("provider") not in (None, provider):
+            continue
+        if row.get("model") not in (None, model):
+            continue
+        matched.append(row)
+    return matched
+
 def make_candidate(
     *,
     provider: str,
@@ -100,6 +152,7 @@ def make_candidate(
     limits: dict[str, dict[str, int]],
     usage: int,
     success_entry: dict[str, Any],
+    surface_evidence: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     """Create one candidate and expose hard-gate and score components.
 
@@ -157,6 +210,7 @@ def make_candidate(
         + 0.15 * availability_component
     )
 
+    surface_evidence = surface_evidence or []
     return {
         "specialist": {"provider": provider, "model": model},
         "capability": capability,
@@ -171,6 +225,7 @@ def make_candidate(
             "current_sha": current_sha if requires_current_sha else None,
         },
         "availability": availability,
+        "capability_surfaces": surface_evidence,
         "quota": {"used": usage, "limit": limit, "headroom": round(quota_headroom, 4)},
         "repository_evidence": {
             "kind": "historic_3l0_prior" if success_entry else "missing",
@@ -264,6 +319,7 @@ def compact_envelope(decision: dict[str, Any]) -> dict[str, Any]:
                 "provenance": candidate["provenance"],
                 "sha_binding": candidate["sha_binding"],
                 "availability": candidate["availability"],
+                "capability_surfaces": candidate.get("capability_surfaces", []),
                 "eligible": candidate["eligible"],
                 "exclusion": candidate["exclusion"],
                 "quota": candidate["quota"],

@@ -205,6 +205,61 @@ def test_main_emits_observe_decision_without_changing_legacy_selection(tmp_path,
     assert "decision_summary=observe capability=triage" in outputs
 
 
+
+def test_observe_population_includes_live_catalog_models_without_hardcoding_execution(tmp_path, monkeypatch):
+    monkeypatch.setenv("ROLE", "review")
+    monkeypatch.setenv("HAS_OMNI", "false")
+    monkeypatch.setenv("HAS_OPENROUTER", "true")
+    monkeypatch.setenv("HAS_GEMINI", "false")
+    monkeypatch.setenv("CAPABILITY_SPINE_OBSERVE", "true")
+    monkeypatch.setattr(mr, "COUNTER_DIR", str(tmp_path))
+
+    matrix_file = tmp_path / "model-success-matrix.yaml"
+    matrix_file.write_text(
+        "models:\n"
+        "  \"known/review:free\":\n"
+        "    elo: 1200\n"
+        "    role_suitability:\n"
+        "      review: 1.1\n"
+    )
+    original_parse_yaml = mr.parse_yaml
+    monkeypatch.setattr(
+        mr,
+        "parse_yaml",
+        lambda path: original_parse_yaml(str(matrix_file)) if "success" in path else {},
+    )
+    monkeypatch.setattr(
+        mr,
+        "fetch_openrouter_free_models_cached_with_source",
+        lambda: (
+            ["known/review:free", "newly-listed/model-x:free", "another/model-y:free"],
+            "live",
+        ),
+    )
+    output_file = tmp_path / "github_output.txt"
+    monkeypatch.setenv("GITHUB_OUTPUT", str(output_file))
+
+    mr.main()
+
+    decision_line = next(
+        line for line in output_file.read_text().splitlines() if line.startswith("decision=")
+    )
+    decision = json.loads(decision_line.split("=", 1)[1])
+    models = {item["specialist"]["model"] for item in decision["candidates"]}
+    assert "newly-listed/model-x:free" in models
+    assert "another/model-y:free" in models
+    discovered = next(
+        item for item in decision["candidates"]
+        if item["specialist"]["model"] == "newly-listed/model-x:free"
+    )
+    assert discovered["validation_status"] == "unvalidated"
+    assert discovered["eligible"] is False
+    assert discovered["exclusion"] == "requested capability is not declared for this specialist"
+    assert decision["population"]["candidate_count"] >= 3
+    assert decision["population"]["unvalidated_count"] >= 2
+    # Legacy execution remains independently selected from the existing route policy.
+    assert "provider=openrouter" in output_file.read_text()
+
 def test_observe_feature_gate_keeps_execution_route_and_marks_decision_disabled(tmp_path, monkeypatch):
     monkeypatch.setenv("ROLE", "triage")
     monkeypatch.setenv("HAS_OMNI", "false")

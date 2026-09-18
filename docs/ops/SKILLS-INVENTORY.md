@@ -1,13 +1,13 @@
 # Skills Inventory (termux-monorepo)
 
-**Version:** 2026-09-17 · **Last refreshed SHA:** `ebb9bc1a`
+**Version:** 2026-09-18 · **Last refreshed SHA:** `c082f533`
 **Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)
 
 ## Role load matrix
 
 | Role | Load first | Then |
 |------|------------|------|
-| **Admin / Grok Administrator** | `evidence-led-monorepo-ops` + `adaptive-wait` | `review-loop` |
+| **Admin / Grok Administrator** | `evidence-led-monorepo-ops` + `adaptive-wait` + `ml-pipelines` | `review-loop` + `pr-minesweeper` |
 | **Collaborator** | `adaptive-feedback-cycle` | dual-gate |
 
 ## Active ops skills
@@ -16,15 +16,19 @@
 |-------|------|
 | evidence-led-monorepo-ops | `.agents/skills/evidence-led-monorepo-ops/SKILL.md` |
 | adaptive-wait | `.agents/skills/adaptive-wait/SKILL.md` |
+| ml-pipelines | `.agents/skills/ml-pipelines/SKILL.md` |
+| issue-175-matrix | `.agents/skills/issue-175-matrix/SKILL.md` |
+| pr-minesweeper | `.agents/skills/pr-minesweeper/SKILL.md` |
 
-## Cycle snapshot (2026-09-17T04:05Z)
+## Cycle snapshot (2026-09-18T16:15Z)
 
-- Master HEAD `ebb9bc1a` (skill-anchor refresh after #568; dual-gate verified on this SHA).
-- Dual-gate: repo-gate 35177365258 + termux smoke 35177365245 success on HEAD.
-- #549 extra-red HOLD (#175 ML, mergeable_state=dirty). Sibling #432 HOLD.
-- Megas HOLD (#523 #527 #142 #455 #48 #543 #545).
-- Vercel rate-limit extra-red on #545/#549 is not a dual-gate.
-- Historical-eval / swe-reference-evaluation fail, mermaid docs-refresh, agent-jules-on-issues and actions-run-watcher startup_failure are not dual-gates.
-- Comment-storm-skip on Jules/Gemini/ECC `issue_comment` listeners.
+- Master HEAD `c082f533` (`chore(docs): refresh DOCS-BRANCH-INDEX`).
+- Dual-gate last terminal SUCCESS on `eefc068`: smoke **35301928043** + repo-gate **35301928066**. Later skill-record chain #590–#595 landed through `6af1e12`.
+- Catalog extra-red: Historical Evaluation Correlation run **35356132030** FAIL on `automation_docs.py --check` after truncated `9aa6475` + regen `e24f08d` + docs-index `c082f533`. Not a dual-gate. This extract regenerates the catalog with `ml-pipelines.yml`.
+- Dirty HOLD: #549 (superseded by this extract) / #432 ML init. Do **not** wholesale-merge.
+- HOLD mega: #523 #527 #545 #543 #455 #485 #483 #481 #474 #471 #466 #500.
+- Observe small-green: #596 skills-record (unstable), #597 Sentinel symlink, #598 Bolt regex, #599 catalog (dirty, superseded here).
+- Extra-red ≠ gate: `validate-pull-request`, Vercel rate-limit, merge-promotion-queue inventory, comment-storm-skip.
+- MoneyBall scores remain decision-support. Dual gates dominate.
 
 BIUDL. Agent-Identity: Grok (Administrator)

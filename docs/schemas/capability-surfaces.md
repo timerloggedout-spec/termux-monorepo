@@ -53,3 +53,7 @@ and:
 ## Source ownership
 
 This adapter consumes existing source-of-truth inventories including `docs/schemas/provider-capabilities.md`, `.github/connectors/`, repository-local `.agents/skills/`, provider command libraries, and other declared tool/MCP/plugin inventories. It must not duplicate or silently supersede those sources.
+
+### AR-18 projection
+
+The candidate envelope carries the matched `capability_surfaces` plus an `evidence` aggregate containing source count, de-duplicated evidence references, observation timestamps, and freshness states. This is a projection only: it does not convert documentation, surface presence, or freshness into validation.

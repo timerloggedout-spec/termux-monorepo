@@ -1,7 +1,8 @@
 Local docs mirror. Canonical agent load path: `.agents/skills/adaptive-wait/SKILL.md`.
 
-HEAD `3d062325b62d5` after #590.
-Master dual-gate on `3d062325` SUCCESS: smoke 35295241188; repo-gate 35295241175.
-Landed #576 #577 #579 #580 #581 #582 #585 #586 #588 #590.
+HEAD `01083fcc3c99e` after #591.
+Master dual-gate on `01083fcc` SUCCESS: smoke 35295339310; repo-gate 35295339344.
+Landed #576 #577 #579 #580 #581 #582 #585 #586 #588 #590 #591.
+#589 update-branch-conflict vs 01083fcc — extract-later.
 
 Agent-Identity: Grok (Administrator)

@@ -171,6 +171,39 @@ AR-18 remains intentionally observe-only. The candidate population is now dynami
 
 The next implementation increment should broaden the existing candidate adapter to consume those normalized capability-surface and evidence dimensions. It should not replace the router, create a new registry, or make active-routing changes.
 
+### P1c — capability-surface evidence join (observe-only)
+
+AR-18 now accepts an optional normalized `capability-surfaces/v1` artifact through
+`CAPABILITY_SURFACES_FILE`. The adapter joins existing connector, plugin, MCP,
+tool, and repository-local skill observations to provider/model candidates.
+
+- Surface observations are matched by optional provider/model join keys.
+- Surface capability claims enrich the candidate envelope but **never create the
+  AR-18 capability declaration**.
+- Availability and authority are carried as separate observations; neither grants
+  execution, repository-write, or promotion authority.
+- Evidence references, observation time, and freshness remain attached to the
+  matched surface so later validation can distinguish current from stale evidence.
+- Missing or malformed surface input fails soft to an empty join and leaves the
+  existing execution route unchanged.
+- The action exposes `capability-surfaces-file` for workflows that already produce
+  a normalized artifact; AR-18 does not invent a connector/MCP/tool/skills registry.
+- Focused tests cover MCP joining, authority preservation, and fail-soft loading.
+
+The normalized schema is documented in
+`docs/schemas/capability-surfaces.md`. Existing source owners remain authoritative:
+provider-capability declarations, connector manifests, skills, tool registries,
+provider command libraries, workflow telemetry, and provenance systems are joined
+rather than copied.
+
+This completes the first evidence-join increment while preserving the core invariant:
+
+`DISCOVERED ≠ DECLARED ≠ VALIDATED ≠ ELIGIBLE`
+
+and the independent authority boundary:
+
+`VALIDATED ≠ AUTHORIZED`
+
 ## Specialist-disposition contract
 
 The current feedback relay assigns `independent_implementation_specialist` when trusted substantive provider feedback reaches the Jules lane. This does not assert that CodeRabbit cannot repair its own findings. It records the actual authority condition: the current event does not include a command-library action, a live-SHA dispatch receipt, or the required explicit `confirm_branch_write=true` input. Therefore a native CodeRabbit branch write is not eligible to be inferred from review feedback.

@@ -13,7 +13,7 @@ from typing import Any
 
 SCHEMA_VERSION = 2
 OBSERVE_MODE = "observe"
-MAX_CANDIDATES = 16
+MAX_CANDIDATES = 64
 READ_ONLY_EFFECTS = {"read_only_analysis", "review_request"}
 BRANCH_WRITE_EFFECTS = {
     "branch_write",

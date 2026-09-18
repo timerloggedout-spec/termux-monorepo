@@ -319,6 +319,13 @@ def emit_decision(
     }
     pairs = [("gemini", model) for model in role_residuals.get(role, [])]
     pairs.extend(role_peers.get(role, []))
+
+    # The observe population is broader than the legacy execution roster.
+    # Every currently observed free OpenRouter model is represented, but only
+    # models with a declared capability can become eligible.
+    for model in sorted(catalog_models):
+        pairs.append(("openrouter", model))
+
     candidates = []
     seen = set()
     for provider, model in pairs:
@@ -326,15 +333,28 @@ def emit_decision(
         if key in seen:
             continue
         seen.add(key)
+        success_entry = success_matrix.get("models", {}).get(model, {})
+        # Catalog discovery is not itself a capability declaration. A model
+        # discovered live but absent from the role matrix remains observable and
+        # explicitly ineligible until a capability probe/admission records it.
+        declared_capabilities = {role} if (
+            provider != "openrouter"
+            or role in success_entry.get("role_suitability", {})
+        ) else set()
+        declared_source = (
+            "llm-peers.yaml/model-success-matrix.yaml"
+            if declared_capabilities
+            else "live-provider-catalog"
+        )
         candidates.append(
             capability_spine.make_candidate(
                 provider=provider,
                 model=model,
                 capability=role,
-                declared_capabilities={role},
+                declared_capabilities=declared_capabilities,
                 effect="read_only_analysis",
                 provenance={
-                    "declared_source": "llm-peers.yaml/model-success-matrix.yaml",
+                    "declared_source": declared_source,
                     "trusted": True,
                 },
                 policy_enabled=True,
@@ -347,7 +367,7 @@ def emit_decision(
                 openrouter_catalog_state=catalog_state,
                 limits=limits,
                 usage=get_usage(provider, model),
-                success_entry=success_matrix.get("models", {}).get(model, {}),
+                success_entry=success_entry,
             )
         )
     decision = capability_spine.compact_envelope(

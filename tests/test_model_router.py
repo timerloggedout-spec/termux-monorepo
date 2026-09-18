@@ -217,7 +217,7 @@ def test_observe_population_includes_live_catalog_models_without_hardcoding_exec
     matrix_file = tmp_path / "model-success-matrix.yaml"
     matrix_file.write_text(
         "models:\n"
-        "  \"known/review:free\":\n"
+        "  \"qwen/qwen3-coder:free\":\n"
         "    elo: 1200\n"
         "    role_suitability:\n"
         "      review: 1.1\n"
@@ -232,7 +232,7 @@ def test_observe_population_includes_live_catalog_models_without_hardcoding_exec
         mr,
         "fetch_openrouter_free_models_cached_with_source",
         lambda: (
-            ["known/review:free", "newly-listed/model-x:free", "another/model-y:free"],
+            ["qwen/qwen3-coder:free", "newly-listed/model-x:free", "another/model-y:free"],
             "live",
         ),
     )

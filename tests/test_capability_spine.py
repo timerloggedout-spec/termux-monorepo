@@ -158,3 +158,68 @@ def test_validation_status_is_explicit_and_population_is_reported():
     compact = spine.compact_envelope(decision)
     assert compact["population"]["validated_count"] == 1
     assert "validation_status" in compact["candidates"][0]
+
+
+
+def test_capability_surface_join_is_observational_and_preserves_authority():
+    surfaces = [
+        {
+            "kind": "mcp",
+            "id": "github-mcp",
+            "provider": "openrouter",
+            "model": "qwen/qwen3-coder:free",
+            "capabilities": ["repository_read", "issue_query"],
+            "availability": "available",
+            "authority": "read/query",
+            "evidence_refs": ["workflow://run/123"],
+            "observed_at": "2026-09-18T20:00:00Z",
+            "freshness": "current",
+        }
+    ]
+    matched = capability_spine.match_capability_surfaces(
+        "openrouter", "qwen/qwen3-coder:free", surfaces
+    )
+    assert matched[0]["kind"] == "mcp"
+    candidate = capability_spine.make_candidate(
+        provider="openrouter",
+        model="qwen/qwen3-coder:free",
+        capability="review",
+        declared_capabilities={"review"},
+        effect="read_only_analysis",
+        provenance={"declared_source": "test", "trusted": True},
+        policy_enabled=True,
+        requires_current_sha=False,
+        target_sha=None,
+        current_sha=None,
+        branch_write_confirmed=False,
+        has_provider=True,
+        openrouter_models={"qwen/qwen3-coder:free"},
+        openrouter_catalog_state="live",
+        limits={"openrouter/qwen/qwen3-coder:free": {"review": 1}},
+        usage=0,
+        success_entry={},
+        surface_evidence=matched,
+    )
+    assert candidate["eligible"] is True
+    assert candidate["capability_surfaces"][0]["authority"] == "read/query"
+    assert candidate["capability"] == "review"
+    assert "repository_write" not in candidate["capability_surfaces"][0]["capabilities"]
+
+
+def test_capability_surface_catalog_loader_is_fail_soft(tmp_path):
+    valid = tmp_path / "surfaces.json"
+    valid.write_text(json.dumps({
+        "schema": "capability-surfaces/v1",
+        "surfaces": [{
+            "kind": "skill",
+            "id": "adaptive-wait",
+            "capabilities": ["wait", "recheck"],
+            "freshness": "current",
+        }],
+    }))
+    rows = capability_spine.load_capability_surface_catalog(str(valid))
+    assert rows[0]["kind"] == "skill"
+    assert rows[0]["authority"] == "unknown"
+    broken = tmp_path / "broken.json"
+    broken.write_text("{not-json")
+    assert capability_spine.load_capability_surface_catalog(str(broken)) == []

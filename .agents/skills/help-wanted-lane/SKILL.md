@@ -11,11 +11,10 @@ description: Select AND EXECUTE external help-wanted / good-first-issue / mutual
 - `.agents/skills/help-wanted-lane/SKILL.md`
 - `docs/ops/HELP-WANTED-LANE.md`
 - `docs/ops/HELP-WANTED-PARALLEL.md`
-- `docs/ops/AGENT-MONIKERS.md`
 - `scripts/ci/help_wanted_scout.py`
 - `scripts/ci/help_wanted_claim.py`
-- `.github/workflows/help-wanted-scout.yml` (every 6h)
-- `.github/workflows/help-wanted-execute.yml` (dispatch + OPERATOR PAT)
+- `.github/workflows/help-wanted-scout.yml`
+- `.github/workflows/help-wanted-execute.yml`
 
 ## INTENT
 
@@ -24,31 +23,26 @@ description: Select AND EXECUTE external help-wanted / good-first-issue / mutual
 - External issues = evaluation lanes + real help.
 - Predecessor to bug & bounty hunter.
 
-## Delivery hierarchy (non-negotiable)
+## Live evidence (2026-09-18)
 
-1. **PRIMARY:** `upstream-pr` — open PR on the target/author repo.
-2. **FALLBACK:** `fork-offer` — only if upstream PR blocked/not allowed/failed.
-3. **PARALLEL NOTICE:** optional issue comment with commit URL **with** primary (or with fallback) — never a replacement for primary when primary works.
+- Lane merged: monorepo #609.
+- First upstream PR: [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) (`docs(layout): refresh stale ponytail comments`).
+- Cadence on master: scout 2h / execute 4h + daily budget (see `docs/ops/HELP-WANTED-LANE.md`).
 
-## Cadence / parallel
+## Delivery hierarchy
 
-- Scout: **every 6 hours**.
-- Execute: **dispatch only** until auto-batch.
-- Safe concurrent external writes: **2–3** (OPERATOR token pool).
-- Soft cap: **3 upstream PRs / token / day**.
+1. **PRIMARY:** `upstream-pr`
+2. **FALLBACK:** `fork-offer`
+3. **PARALLEL NOTICE:** optional; never a substitute for primary.
 
 ## Operating loop
 
 1. Scout → CPPH catalog
 2. Select top-N
 3. Claim
-4. **upstream-pr** (fallback/notice only if needed)
+4. **upstream-pr**
 5. Evidence → ledger / dashboard
 
-## Monikers
+Do not comment-storm our monorepo PRs to wake CI.
 
-Display only (`archW1z`, `opsSweep`, `heyVern`, …). Live pings stay `@jules` / `@gemini-cli` / etc.
-
-## BIUDL
-
-Agent-Identity: Grok (Administrator)
+BIUDL. Agent-Identity: Grok (Administrator)

@@ -138,6 +138,27 @@ def match_capability_surfaces(
     return matched
 
 
+
+def summarize_surface_evidence(surfaces: Iterable[dict[str, Any]]) -> dict[str, Any]:
+    """Aggregate immutable evidence metadata without claiming validation."""
+    rows = list(surfaces)
+    refs = []
+    observed_at = []
+    freshness = []
+    for row in rows:
+        refs.extend(str(ref) for ref in row.get("evidence_refs", []))
+        if row.get("observed_at"):
+            observed_at.append(row["observed_at"])
+        if row.get("freshness"):
+            freshness.append(row["freshness"])
+    return {
+        "source_count": len(rows),
+        "evidence_refs": sorted(set(refs)),
+        "observed_at": sorted(set(observed_at)),
+        "freshness": sorted(set(freshness)),
+    }
+
+
 def make_candidate(
     *,
     provider: str,
@@ -231,6 +252,7 @@ def make_candidate(
         },
         "availability": availability,
         "capability_surfaces": surface_evidence,
+        "evidence": summarize_surface_evidence(surface_evidence),
         "quota": {"used": usage, "limit": limit, "headroom": round(quota_headroom, 4)},
         "repository_evidence": {
             "kind": "historic_3l0_prior" if success_entry else "missing",
@@ -325,6 +347,7 @@ def compact_envelope(decision: dict[str, Any]) -> dict[str, Any]:
                 "sha_binding": candidate["sha_binding"],
                 "availability": candidate["availability"],
                 "capability_surfaces": candidate.get("capability_surfaces", []),
+                "evidence": candidate.get("evidence", {}),
                 "eligible": candidate["eligible"],
                 "exclusion": candidate["exclusion"],
                 "quota": candidate["quota"],

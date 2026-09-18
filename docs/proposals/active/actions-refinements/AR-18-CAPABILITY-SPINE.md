@@ -37,6 +37,110 @@ The AR-18 decision envelope is deliberately bounded and contains only structured
 
 The initial scoring policy gives repository-local outcomes 55% influence, evidence confidence/recency 15%, public leaderboard features 15%, and operational availability/headroom 15%. The current 3L0 matrix is treated as a low-confidence historic prior until controlled repository outcome samples are collected. Public leaderboard information remains a feature, not authority.
 
+## Paper2Agent transfer: extend the existing spine; do not create a second registry
+
+The September 2026 Paper2Agent result is useful here as a capability-discovery and validation pattern, not as a reason to introduce a parallel knowledge-agent registry. The repository already has the correct architectural center: Capability–Scope–Specialist.
+
+The canonical query is:
+
+> Who has the validated capability to perform X under Y constraints with Z evidence?
+
+The answer is a join across existing dynamic sources, not a fixed provider/model list.
+
+Capability identity is therefore a tuple:
+
+capability × scope × task × constraints × specialist × tools/connectors × environment × authority × evidence
+
+Provider and model remain important identity dimensions, but they are only two axes of the candidate population.
+
+### Multiple dynamic matrices
+
+These are projections over existing sources, not independent competing SSOTs:
+
+| Matrix | Rows × columns | Purpose | Existing evidence/source |
+|---|---|---|---|
+| Capability × Specialist | capability × provider/model/agent | Who can perform the requested role? | llm-peers.yaml, live provider catalog, model-success matrix, agent/integration inventory |
+| Capability × Tool/Connector | capability × tool/connector/plugin/MCP surface | What execution/tooling is actually required? | connector manifests, MCP/tool inventories, provider command library, skills inventory |
+| Capability × Scope/Authority | capability × effect/authority | What may the candidate do in this scope? | routing policy, command library, writer confirmation, policy gates |
+| Capability × Evidence | capability × evidence class/freshness/confidence | What proves the capability is usable now? | workflow runs, task probes, telemetry, validation receipts, provenance |
+| Task × Constraint × Specialist | task × constraints × candidate | Which candidate fits this exact job shape? | live catalog + policy + environment + quota/cooldown + current-SHA evidence |
+| Manager × Cohort × Sequence | manager policy × candidate cohort × orchestration sequence | Which team composition and coordination policy works? | continuous evaluation, ATES/WTCV/3L0, integrated outcome evidence |
+
+These matrices are intentionally dynamic and multi-dimensional. A candidate can be present in one projection and absent from another because availability, authority, tooling, evidence, or task constraints differ.
+
+### Candidate population: discover, do not enumerate
+
+Do not reduce the population to Gemini / Jules / OpenRouter / DeepSeek. Those names are examples of existing integration/provider/model surfaces, not the roster.
+
+The live population already spans dynamically discovered provider/model catalog entries; Felo/OX Alpha observations; OpenRouter models including newly listed free/zero-price models; OmniRoute aggregation; Gemini model lanes; Jules as an asynchronous implementation specialist; CodeRabbit, Devin, Qodo, Copilot and other review/implementation surfaces where their declared actions and evidence contracts permit; MCP/tool/connector capabilities; repository-local skills and deterministic tools; and future explicitly approved providers and models.
+
+The population must grow or shrink from observed catalogs and declared integration surfaces. Bootstrap priors are not the complete roster.
+
+### Capability admission remains evidence-first
+
+Paper2Agent's reproduce/test/diagnose/repair loop maps onto the existing admission discipline:
+
+DISCOVERED → DECLARED → AVAILABLE → TOOL-BOUND → PROBED → VALIDATED → ADMITTED
+
+Authority remains a separate state:
+
+OBSERVE → READ/QUERY → ANALYZE/REPRODUCE → PROPOSE → PREPARE → SANDBOX WRITE → REPOSITORY WRITE → PROMOTE
+
+Validation of a capability does not grant repository-write or merge authority.
+
+The evidence record should distinguish documented capability; declared connector/tool/plugin availability; authenticated credential presence; live catalog/request evidence; task-probe execution; correctness/result evidence; current-SHA binding; provenance and attribution confidence; quota/cooldown state; and authority/policy state.
+
+A provider 429, 403, timeout, missing credential, or unavailable connector is an admission/provider observation, not a model-quality failure.
+
+### Capability query envelope
+
+The existing AR-18 decision envelope can answer the canonical query without inventing a new capsule type:
+
+~~~yaml
+query:
+  capability: review
+  task: <bounded task shape>
+  scope: <repository|pr|issue|workspace|sandbox>
+  constraints:
+    - current_sha_required
+    - read_only
+    - max_latency
+    - quota_class
+  evidence_required:
+    - runtime_validation
+    - provenance
+    - current_sha
+  required_tools:
+    - <tool-or-connector>
+decision:
+  candidates: []
+  recommendation: null
+  exclusions: []
+  evidence_refs: []
+~~~
+
+This is a query/projection over the existing capability spine. It must not become a second source of truth.
+
+### Source-of-truth boundaries
+
+AR-18 should consume and correlate, rather than duplicate:
+
+1. Provider/model identity and live access: provider catalog + llm-peers.yaml.
+2. Declared capabilities/roles: routing policy + model-success matrix + specialist/integration declarations.
+3. Tools/connectors/MCP surfaces: existing connector manifests, tool inventories, skills, and provider command library.
+4. Execution evidence: workflow run/job/step/artifact telemetry and task outcomes.
+5. Attribution/provenance: existing provenance and context-relationship evidence.
+6. Authority: existing command/action contracts and explicit write confirmation.
+7. Team outcome: ATES/WTCV/3L0 and integrated acceptance evidence.
+
+No new KAC/agent registry is required for this research transfer.
+
+### Current implementation gap
+
+AR-18 is intentionally observe-only, but its current candidate construction is narrower than the desired dynamic population: model_router.py has bootstrap role lists while the live OpenRouter catalog is already dynamic. That is useful evidence, not a reason to hard-code more names.
+
+The next implementation increment should broaden the existing candidate adapter to consume normalized catalog, integration, tool, and evidence dimensions and emit the same AR-18 envelope. It should not replace the router, create a new registry, or make active-routing changes.
+
 ## Specialist-disposition contract
 
 The current feedback relay assigns `independent_implementation_specialist` when trusted substantive provider feedback reaches the Jules lane. This does not assert that CodeRabbit cannot repair its own findings. It records the actual authority condition: the current event does not include a command-library action, a live-SHA dispatch receipt, or the required explicit `confirm_branch_write=true` input. Therefore a native CodeRabbit branch write is not eligible to be inferred from review feedback.

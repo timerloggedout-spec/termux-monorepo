@@ -47,6 +47,7 @@ WAIT is a **methodological stage**, not sleep-only idle time. After any action t
 | **pagination** | Continuation run completes but `next_start_page` does not advance |
 | **routing loop** | Same SHA/input repeatedly cancels/fails without new diagnosis |
 | **comment-storm-skip** | Burst of `issue_comment` runs on master with `conclusion=skipped` or cancelled-on-comment. Classify `not_executed` + `reviewer_noise`. |
+| **update-branch-conflict** | `update_pull_request_branch` fails with merge conflict. Classify HOLD / extract-later. Do not force-push dirty head. |
 
 ## Procedure (every wait cohort)
 
@@ -69,10 +70,11 @@ While one PR's checks run: preserve immutable IDs; work on a disjoint path; do n
 
 Promote only when dual gates success, extract-clean scope, and task outcome verified.
 
-HEAD observed (`3d062325b62d5` after #590). Master dual-gate on `3d062325` terminal SUCCESS: smoke 35295241188; repo-gate 35295241175.
-#590 PR dual-gate SUCCESS: smoke 35290155849; hygiene 35290155715.
-Prior master dual-gate on `11c56e46` SUCCESS: smoke 35285651963; repo-gate 35285652100.
+HEAD observed (`01083fcc3c99e` after #591). Master dual-gate on `01083fcc` terminal SUCCESS: smoke 35295339310; repo-gate 35295339344.
+Prior master dual-gate on `3d062325` SUCCESS: smoke 35295241188; repo-gate 35295241175.
+#589 update-branch vs `01083fcc`: CONFLICTed — stall class `update-branch-conflict`; extract-later.
+Merge-promotion-queue inventory fail 35295788411 is extra-red non-gate.
 
-Session 2026-09-18T01:26Z: squash-merged #590 onto master. GitHub MCP write as timerloggedout-spec.
+Session 2026-09-18T02:04Z: recorded #591 landing. GitHub MCP write as timerloggedout-spec.
 
 BIUDL. Agent-Identity: Grok (Administrator)

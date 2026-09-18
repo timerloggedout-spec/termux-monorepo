@@ -20,23 +20,26 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 - Extra-red ≠ dual-gate. Behind-master dual-gate green ≠ auto-merge.
 - **comment-storm is a FAILURE**, not skippable noise. Mitigate with concurrency groups + `cancel-in-progress: false` on SHA-bound ledgers. Do not treat cancelled ledger runs as green.
 - Identity: `Agent-Identity: Grok (Administrator)`.
-- GitHub MCP write works as `timerloggedout-spec` even when local sandbox has no OPERATOR PAT / `gh`.
+- GitHub MCP write works as `timerloggedout-spec`. Do **not** MCP-write 35k workflow bodies (#606 abort class).
 
-## Current production anchors (2026-09-18T17:03Z UTC)
+## Current production anchors (2026-09-18T21:04Z UTC)
 
 | Item | State |
 |------|-------|
-| Master HEAD | `dc30bf83fc17b394510f99328f7a081b6a64f28c` (#603 squash) |
-| Just landed | #603 comment-storm ledger fix. Prior: #602 catalog MD fingerprint; #600 skills SSOT. |
-| Observe | #583 Grafana MCP; #584 MVT budget. Jules #597/#598. |
-| Extra-red HOLD | #601 ML extract dirty/behind (`c082f533` base vs live `dc30bf83`). #549/#432 HOLD extract-later. |
-| HOLD mega | #523 #527 #545 #543 #455 #485 #483 #481 |
-| Draft | #578 accounting/bidding schema pilot |
+| Master HEAD | `d9e2d495384de3341b28bb6372bbc6223b722837` |
+| Just landed | #609 help-wanted EXECUTE lane (merged). Cadence docs on master. #604/#603 prior. |
+| External first PR | [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) open |
+| Dual-gate red HOLD | #608 ledger SyntaxError chicken-egg (`pull_request_target` still runs older master YAML on some checks). Do not force-merge. |
+| Observe | #583 Grafana MCP; #584 MVT budget. Jules #597/#598. #605 Paper2Agent draft. |
+| Extra-red HOLD | #601/#549/#432 ML dirty/behind — extract-later. Keep ML files. |
+| HOLD mega | #523 #527 #545 #543 #455 #485 #48 #500 |
 
 ## Extract recipe
 
-Create branch from current master. Do not force-update dirty branches. Do not wholesale-merge HOLD mega or #601/#549/#432.
+Create branch from current master. Do not force-update dirty branches. Do not wholesale-merge HOLD mega or ML extracts.
 
-CodeRabbit `queue: max` on GHA concurrency is **not a valid key** (only `group` + `cancel-in-progress`). Do not apply.
+Peer-orch still `cancel-in-progress: true` without `event_name` split — extract-later via local git. Do not MCP-push the 35k YAML.
+
+CodeRabbit `queue: max` is invalid GHA concurrency — do not apply.
 
 BIUDL. Agent-Identity: Grok (Administrator)

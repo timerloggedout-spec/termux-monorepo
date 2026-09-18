@@ -297,3 +297,76 @@ def test_stale_target_sha_fails_closed_in_observe_decision_only(tmp_path, monkey
     assert '"exclusion":"current-SHA gate is missing or stale"' in outputs
     assert "provider=gemini" in outputs
     assert "skip=false" in outputs
+
+
+def test_observe_population_consumes_normalized_felo_omni_catalog_without_granting_capability(tmp_path, monkeypatch):
+    monkeypatch.setenv("ROLE", "review")
+    monkeypatch.setenv("HAS_OMNI", "true")
+    monkeypatch.setenv("HAS_OPENROUTER", "true")
+    monkeypatch.setenv("HAS_GEMINI", "false")
+    monkeypatch.setenv("CAPABILITY_SPINE_OBSERVE", "true")
+    monkeypatch.setattr(mr, "COUNTER_DIR", str(tmp_path))
+
+    matrix_file = tmp_path / "model-success-matrix.yaml"
+    matrix_file.write_text(
+        "models:\n"
+        "  \"qwen/qwen3-coder:free\":\n"
+        "    elo: 1200\n"
+        "    role_suitability:\n"
+        "      review: 1.1\n"
+    )
+    original_parse_yaml = mr.parse_yaml
+    monkeypatch.setattr(
+        mr,
+        "parse_yaml",
+        lambda path: original_parse_yaml(str(matrix_file)) if "success" in path else {},
+    )
+
+    catalog_file = tmp_path / "catalog.json"
+    catalog_file.write_text(json.dumps({
+        "schema": "provider-model-catalog/v4",
+        "models": [
+            {
+                "provider": "openrouter",
+                "id": "qwen/qwen3-coder:free",
+                "pricing": {"prompt": "0", "completion": "0"},
+                "pricing_classification": "free_zero_price",
+            },
+            {
+                "provider": "felo",
+                "id": "ox-alpha",
+                "access_classification": "free_trial",
+            },
+            {
+                "provider": "omni",
+                "id": "auto/best-free",
+                "access_classification": "catalog_pricing_only",
+            },
+        ],
+    }))
+    monkeypatch.setattr(mr, "MODEL_CATALOG_FILE", str(catalog_file))
+    monkeypatch.setattr(
+        mr,
+        "fetch_openrouter_free_models_cached_with_source",
+        lambda: (["qwen/qwen3-coder:free"], "live"),
+    )
+    output_file = tmp_path / "github_output.txt"
+    monkeypatch.setenv("GITHUB_OUTPUT", str(output_file))
+
+    mr.main()
+
+    decision_line = next(
+        line for line in output_file.read_text().splitlines() if line.startswith("decision=")
+    )
+    decision = json.loads(decision_line.split("=", 1)[1])
+    by_model = {
+        item["specialist"]["model"]: item
+        for item in decision["candidates"]
+    }
+    assert by_model["qwen/qwen3-coder:free"]["validation_status"] == "historic_prior_only"
+    assert by_model["ox-alpha"]["validation_status"] == "unvalidated"
+    assert by_model["ox-alpha"]["eligible"] is False
+    assert by_model["auto/best-free"]["validation_status"] == "unvalidated"
+    assert decision["population"]["candidate_count"] >= 3
+    assert decision["population"]["unvalidated_count"] >= 2
+    assert "provider=gemini" not in output_file.read_text()

@@ -135,3 +135,26 @@ def test_active_mode_is_rejected():
         assert "observe mode only" in str(error)
     else:
         raise AssertionError("active mode must be rejected")
+
+
+def test_validation_status_is_explicit_and_population_is_reported():
+    observed = candidate(
+        success_entry={},
+        declared_capabilities=set(),
+    )
+    validated = candidate(
+        success_entry={
+            "elo": 1250,
+            "role_suitability": {"review": 1.3},
+            "validation_status": "validated",
+        }
+    )
+    assert observed["validation_status"] == "unvalidated"
+    assert validated["validation_status"] == "validated"
+    decision = spine.decide(capability="review", candidates=[observed, validated])
+    assert decision["population"]["candidate_count"] == 2
+    assert decision["population"]["unvalidated_count"] == 1
+    assert decision["population"]["validated_count"] == 1
+    compact = spine.compact_envelope(decision)
+    assert compact["population"]["validated_count"] == 1
+    assert "validation_status" in compact["candidates"][0]

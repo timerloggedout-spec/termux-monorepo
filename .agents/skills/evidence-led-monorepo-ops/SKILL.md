@@ -21,23 +21,22 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 - Identity: `Agent-Identity: Grok (Administrator)`.
 - GitHub MCP write works as `timerloggedout-spec` even when local sandbox has no OPERATOR PAT / `gh`.
 
-## Current production anchors (2026-09-18T05:09Z PDT)
+## Current production anchors (2026-09-18T16:10Z UTC / 09:10 PDT)
 
 | Item | State |
 |------|-------|
-| Master HEAD | `d79562d1ac5dfe08` (`ops(skills): record #593 landing onto 7be82b14` #594) |
-| Just landed | #576–#594 chain through `d79562d1` |
-| Dual gates last verified | #594 PR dual-gate on `e124b434`: smoke **35306172380** SUCCESS; hygiene **35306172362** SUCCESS. Master dual-gate on `eefc068`: smoke **35301928043** SUCCESS; repo-gate **35301928066** SUCCESS. Master push dual-gate on `d79562d1` admitted (in flight at record). |
-| Observe (not merged) | #583 Grafana MCP (dual-gate green on `a2d8415a` but `validate-pull-request` extra-red FAIL ≠ gate). #584 MVT context-safe budget. #587 Jules date-only audit bump. #589 Jules CedrLang placeholder: update-branch CONFLICTed vs `01083fcc` — extract later |
-| Extra-red HOLD | #549 ML (#175) dirty/behind base `6df9b66`; sibling #432 HOLD — extract later from live master `d79562d1` |
-| HOLD mega | #523 #527 #545 #543 #455 #485 #483 #481 #474 #471 #466 |
+| Master HEAD | `c082f53379d230f4617f201d32c114f198dd63a1` (`chore(docs): refresh DOCS-BRANCH-INDEX` by github-actions[bot]) |
+| Just landed | #576–#595 chain; #595 merged 2026-09-18T06:27:38Z as `ops(skills): record #594 landing onto d79562d1` (`6af1e12c`). Bot docs-index then advanced master to `c082f533`. |
+| Dual gates last verified | #595 PR dual-gate on `d91294b9`: smoke **35309791148** SUCCESS; hygiene **35309791199** SUCCESS. #594 PR dual-gate on `e124b434`: smoke **35306172380** SUCCESS; hygiene **35306172362** SUCCESS. Master dual-gate on `eefc068`: smoke **35301928043** SUCCESS; repo-gate **35301928066** SUCCESS. |
+| Observe (not merged) | #583 Grafana MCP dual-gate green + extra-red validate-PR ≠ gate. #584 MVT context-safe budget. #587 Jules date-only audit. #589 CedrLang placeholder: update-branch CONFLICTed vs `01083fcc`. #597 Sentinel symlink; #598 Bolt regex/telemetry. |
+| Extra-red HOLD | #549 ML (#175) dirty/behind base `6df9b66` head `d4f3faf8`; sibling #432 HOLD — extract later from live master `c082f533`. |
+| HOLD mega | #523 #527 #545 #543 #455 #485 #483 #481 #474 #471 |
 | Draft | #578 accounting/bidding schema pilot |
-| Comment-storm-skip | Gemini/Jules/ECC/`coderabbitai` `issue_comment` cancelled/success mix ≠ gate |
-| Extra-red non-gate | actions-run-watcher / agent-jules-on-issues / swe-reference-evaluation startup_failure ≠ gate |
-| Non-gates | mermaid docs-refresh; OpenRouter free catalog sync fail; merge-promotion-queue inventory fail |
+| Superseded extract | #596 record-#595 onto `6af1e12c` — behind `c082f533`, mergeable_state unstable. #599 automation catalog regen — dirty vs master. |
+| Non-gates | Historical Evaluation Correlation freshness fail; merge-promotion-queue inventory fail; mermaid docs-refresh; comment-storm-skip |
 
 ## Extract recipe
 
-Create branch from current master. Do not force-update dirty branches. #549 remains dirty/behind — do not merge; extract later from `d79562d1`. #589 update-branch conflicted — extract CedrLang placeholder change from live master if still valuable.
+Create branch from current master. Do not force-update dirty branches. Do not wholesale-merge HOLD mega. #549/#432 remain extract-later. #589 update-branch conflicted — extract CedrLang placeholder from live master if still valuable. #599 catalog freshness: regenerate on live master, do not merge dirty head.
 
 BIUDL. Agent-Identity: Grok (Administrator)

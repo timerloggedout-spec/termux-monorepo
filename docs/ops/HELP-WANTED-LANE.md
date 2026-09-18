@@ -5,7 +5,7 @@
 
 ## Why
 
-Scan FOSS help-wanted / good-first-issue / mutual threads → rank (CPPH) → claim → implement → **open PR on the target repo** (or **fork-offer**). Stats → public Vercel/dashboard. Predecessor to bug & bounty hunter lanes. 2017 React help-wanted UI is predecessor only.
+Scan FOSS help-wanted / good-first-issue / mutual threads → rank (CPPH) → claim → implement → **open PR on the target (author) repo**. Stats → public Vercel/dashboard. Predecessor to bug & bounty hunter lanes. 2017 React help-wanted UI is predecessor only.
 
 ## Cadence
 
@@ -16,10 +16,11 @@ Scan FOSS help-wanted / good-first-issue / mutual threads → rank (CPPH) → cl
 | Safe parallel external writes | **2–3** concurrent (token pool) |
 | Soft daily cap | **3 upstream PRs / token / day** |
 
-## Delivery modes
+## Delivery hierarchy
 
-1. **upstream-pr** — PR into the author's repo (default when allowed).
-2. **fork-offer** — Keep branch on our fork; post issue comment with commit link so they can PR themselves.
+1. **PRIMARY — upstream-pr** — PR into the **author's** repo. This is the goal.
+2. **FALLBACK — fork-offer** — only if upstream PR is blocked/not allowed/failed: keep commit on our fork.
+3. **PARALLEL NOTICE** — optional issue comment with commit URL **alongside** an upstream PR (or with fallback), so maintainers have a pointer. **Not** a substitute for primary when primary works.
 
 ## Mutual-thread anchors
 
@@ -38,7 +39,7 @@ Scan FOSS help-wanted / good-first-issue / mutual threads → rank (CPPH) → cl
 | Path | Role |
 |------|------|
 | `.agents/skills/help-wanted-lane/SKILL.md` | Agent load |
-| `docs/ops/HELP-WANTED-PARALLEL.md` | Roster + parallel + fork-offer |
+| `docs/ops/HELP-WANTED-PARALLEL.md` | Roster + parallel + hierarchy |
 | `docs/ops/AGENT-MONIKERS.md` | Display monikers vs live `@` |
 | `scripts/ci/help_wanted_scout.py` | CPPH rank |
 | `scripts/ci/help_wanted_claim.py` | Claim + fork check |
@@ -51,11 +52,12 @@ Scan FOSS help-wanted / good-first-issue / mutual threads → rank (CPPH) → cl
 
 ## YOLO rules
 
-1. Scout ranks. Execute opens external PRs or fork-offers when selected.
+1. Scout ranks. Execute **opens upstream PRs** when selected.
 2. Always claim before coding.
-3. Cap concurrent external PRs; prefer fork-offer when upstream is hostile to drive-by PRs.
-4. Evidence → ledger + dashboard.
-5. Dual-gate for monorepo-side only.
+3. Cap concurrent external **upstream** PRs.
+4. Fallback / parallel notice only when needed — never demote primary by default.
+5. Evidence → ledger + dashboard.
+6. Dual-gate for monorepo-side only.
 
 ## Multi-platform
 

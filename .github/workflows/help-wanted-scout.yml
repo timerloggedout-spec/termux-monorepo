@@ -1,0 +1,60 @@
+name: help-wanted scout
+
+# Rank external help-wanted / good-first-issue candidates via CPPH.
+# Emits artifact catalog. Does not open external PRs.
+# See docs/ops/HELP-WANTED-LANE.md and .agents/skills/help-wanted-lane/SKILL.md
+
+on:
+  schedule:
+    # Every 6 hours
+    - cron: "27 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      max:
+        description: Max issues to rank
+        required: false
+        default: "25"
+      label:
+        description: Primary label phrase
+        required: false
+        default: "help wanted"
+      lang:
+        description: Optional language filter
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+concurrency:
+  group: help-wanted-scout
+  cancel-in-progress: true
+
+jobs:
+  scout:
+    name: CPPH rank help-wanted
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Run scout
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p docs/ops/generated
+          python3 scripts/ci/help_wanted_scout.py \
+            --max "${{ github.event.inputs.max || '25' }}" \
+            --label "${{ github.event.inputs.label || 'help wanted' }}" \
+            --lang "${{ github.event.inputs.lang || '' }}" \
+            --out docs/ops/generated/help-wanted-catalog.json
+
+      - name: Upload catalog artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: help-wanted-catalog
+          path: docs/ops/generated/help-wanted-catalog.json
+          retention-days: 14

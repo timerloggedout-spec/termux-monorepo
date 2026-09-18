@@ -1,0 +1,192 @@
+name: help-wanted execute
+
+# External claim + optional code PR via OPERATOR PAT secrets.
+# secrets.GITHUB_TOKEN is repo-scoped; third-party write needs OPERATOR_GITHUB_TOKEN
+# or OPERATOR_TOKEN or ARCHWIZ_GITHUB_TOKEN (repo Actions secrets — never logged).
+# See docs/ops/HELP-WANTED-LANE.md
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue:
+        description: "Issue URL or owner/repo#n"
+        required: true
+      dry_run:
+        description: "Dry run (no comment/fork/PR)"
+        required: false
+        default: "false"
+      mode:
+        description: "claim | claim-and-patch-zero-72"
+        required: false
+        default: "claim"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: help-wanted-execute-${{ github.event.inputs.issue }}
+  cancel-in-progress: false
+
+jobs:
+  claim:
+    name: claim + fork scaffold
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Resolve operator token
+        id: tok
+        env:
+          OPERATOR_GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+          OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
+          ARCHWIZ_GITHUB_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          TOKEN=""
+          if [ -n "${OPERATOR_GITHUB_TOKEN:-}" ]; then TOKEN="$OPERATOR_GITHUB_TOKEN"
+          elif [ -n "${OPERATOR_TOKEN:-}" ]; then TOKEN="$OPERATOR_TOKEN"
+          elif [ -n "${ARCHWIZ_GITHUB_TOKEN:-}" ]; then TOKEN="$ARCHWIZ_GITHUB_TOKEN"
+          else TOKEN="${GITHUB_TOKEN}"
+          fi
+          if [ -z "$TOKEN" ]; then
+            echo "No token available" >&2
+            exit 1
+          fi
+          # Do not echo token. Only length for evidence.
+          echo "token_len=${#TOKEN}" >> "$GITHUB_OUTPUT"
+          echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
+
+      - name: Claim
+        env:
+          GITHUB_TOKEN: ${{ steps.tok.outputs.token }}
+        run: |
+          set -euo pipefail
+          DRY=""
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then DRY="--dry-run"; fi
+          python3 scripts/ci/help_wanted_claim.py --issue "${{ github.event.inputs.issue }}" $DRY
+
+  patch-zero-72:
+    name: external PR zero#72 ponytail
+    if: github.event.inputs.mode == 'claim-and-patch-zero-72' && github.event.inputs.dry_run != 'true'
+    needs: claim
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Resolve operator token
+        id: tok
+        env:
+          OPERATOR_GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+          OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
+          ARCHWIZ_GITHUB_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          TOKEN=""
+          if [ -n "${OPERATOR_GITHUB_TOKEN:-}" ]; then TOKEN="$OPERATOR_GITHUB_TOKEN"
+          elif [ -n "${OPERATOR_TOKEN:-}" ]; then TOKEN="$OPERATOR_TOKEN"
+          elif [ -n "${ARCHWIZ_GITHUB_TOKEN:-}" ]; then TOKEN="$ARCHWIZ_GITHUB_TOKEN"
+          fi
+          if [ -z "$TOKEN" ]; then
+            echo "OPERATOR PAT required for external PR" >&2
+            exit 1
+          fi
+          echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
+
+      - name: Patch fork + open upstream PR
+        env:
+          GH_TOKEN: ${{ steps.tok.outputs.token }}
+          GITHUB_TOKEN: ${{ steps.tok.outputs.token }}
+        run: |
+          set -euo pipefail
+          # Ensure fork exists under actor
+          gh repo fork vedantnimbarte/zero --clone=false --default-branch-only 2>/dev/null || true
+          rm -rf /tmp/zero-work
+          gh repo clone timerloggedout-spec/zero /tmp/zero-work -- --depth 1
+          cd /tmp/zero-work
+          git config user.name "timerloggedout-spec"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git checkout -B fix/stale-ponytail-comments-72 origin/main
+
+          FILE=crates/zero-engine/src/layout.rs
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("crates/zero-engine/src/layout.rs")
+          t = p.read_text()
+          old_grid = """    /// ponytail: no named lines, `grid-area`, `auto-fit/minmax`, or alignment.
+              /// Rows beyond `grid-template-rows` are sized to their tallest item."""
+          new_grid = """    /// ponytail: `grid-template-areas` and `minmax()` are read; named lines,
+              /// full `grid-area` shorthand, and `auto-fit`/`auto-fill` sizing are not.
+              /// Rows beyond `grid-template-rows` are sized to their tallest item."""
+          old_flex = """    /// ponytail: no wrapping, no `flex-grow/shrink/basis`, no `justify-content` or
+              /// `align-items`, and no intrinsic content sizing. Items with an explicit main
+              /// size keep it; the rest split the leftover space equally (which is what
+              /// `flex: 1` does, and covers most real column/nav layouts)."""
+          new_flex = """    /// ponytail: `flex-wrap`, `justify-content`, `align-items`, `align-self`, and
+              /// `flex-grow` are read. Still missing: `flex-shrink`, `flex-basis`, and
+              /// intrinsic content sizing. Items with an explicit main size keep it; the
+              /// rest split leftover space (covers most real column/nav layouts)."""
+          # tolerate indent variants by normalizing search to exact file snippets
+          if old_grid not in t or old_flex not in t:
+              # fallback: line-based
+              lines = t.splitlines(True)
+              out = []
+              i = 0
+              while i < len(lines):
+                  line = lines[i]
+                  if "ponytail: no named lines" in line:
+                      out.append("    /// ponytail: `grid-template-areas` and `minmax()` are read; named lines,\n")
+                      out.append("    /// full `grid-area` shorthand, and `auto-fit`/`auto-fill` sizing are not.\n")
+                      i += 1
+                      if i < len(lines) and "Rows beyond" in lines[i]:
+                          out.append(lines[i]); i += 1
+                      continue
+                  if "ponytail: no wrapping, no" in line:
+                      out.append("    /// ponytail: `flex-wrap`, `justify-content`, `align-items`, `align-self`, and\n")
+                      out.append("    /// `flex-grow` are read. Still missing: `flex-shrink`, `flex-basis`, and\n")
+                      out.append("    /// intrinsic content sizing. Items with an explicit main size keep it; the\n")
+                      out.append("    /// rest split leftover space (covers most real column/nav layouts).\n")
+                      # skip original multi-line comment
+                      i += 1
+                      while i < len(lines) and lines[i].lstrip().startswith("///"):
+                          i += 1
+                      continue
+                  out.append(line)
+                  i += 1
+              t2 = "".join(out)
+          else:
+              t2 = t.replace(old_grid, new_grid).replace(old_flex, new_flex)
+          if t2 == t:
+              raise SystemExit("no ponytail comments patched — upstream may have changed")
+          p.write_text(t2)
+          print("patched ok")
+          PY
+
+          git add "$FILE"
+          git commit -m "docs(layout): refresh stale ponytail comments for flex and grid
+
+Fixes vedantnimbarte/zero#72.
+
+Lane: termux-monorepo help-wanted execute (OPERATOR PAT)."
+          git push -u origin fix/stale-ponytail-comments-72 --force-with-lease
+
+          # Open PR against upstream
+          gh pr create \
+            --repo vedantnimbarte/zero \
+            --head timerloggedout-spec:fix/stale-ponytail-comments-72 \
+            --base main \
+            --title "docs(layout): refresh stale ponytail comments (flex + grid)" \
+            --body "## Summary
+
+Fixes https://github.com/vedantnimbarte/zero/issues/72
+
+Updates two stale \`ponytail:\` ledgers in \`crates/zero-engine/src/layout.rs\` so they match current engine behavior:
+
+- **flex:** note \`flex-wrap\` / \`justify-content\` / \`align-items\` / \`align-self\` / \`flex-grow\` are read; still missing shrink/basis/intrinsic sizing
+- **grid:** note \`grid-template-areas\` and \`minmax()\` are read; named lines / full grid-area / auto-fit sizing still missing
+
+Opened via termux-monorepo help-wanted evaluation lane.
+"

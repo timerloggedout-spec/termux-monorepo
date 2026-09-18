@@ -1,99 +1,72 @@
 # Help-Wanted Parallel Capacity (SSOT)
 
-**Status:** live after #609 + OPERATOR execute success (zero#81).
+**Status:** adaptive cadence live (scout 2h / execute 4h budgeted).
 **Companion:** `HELP-WANTED-LANE.md` · `AGENT-MONIKERS.md` · skill `help-wanted-lane`.
 
-## How often it runs today
+## Delivery hierarchy — DO NOT FLATTEN
 
-| Workflow | Trigger | Cadence |
+| Priority | Mode | What |
+|----------|------|------|
+| **PRIMARY** | **upstream-pr** | Claim → branch → **PR into the author's repo** |
+| **FALLBACK** | **fork-offer** | Only if upstream PR blocked / not allowed / failed |
+| **PARALLEL NOTICE** | issue comment + commit URL | Optional **alongside** primary (or with fallback) |
+
+## Adaptive cadence (workbench benchmarks)
+
+| Workflow | Cadence | Notes |
 |----------|---------|--------|
-| `help-wanted-scout.yml` | `schedule` + dispatch | **Every 6 hours** (`cron: 27 */6 * * *`) |
-| `help-wanted-execute.yml` | **dispatch only** | On demand (no auto-spray) |
-| Continuous agent ops | hourly | Unrelated monorepo PR sweep (`17 * * * *`, max 8 PRs/run) |
+| Scout | **every 2 hours** (`17 */2 * * *`) | Was 6h; raise until rate-limit pain, then back off |
+| Execute | **every 4 hours** + dispatch | Budget gate; no spray when `remaining=0` |
+| Daily upstream budget | **3 / UTC day** (input `daily_budget`) | Tunable; ledger records used/success/fail |
 
-Scout ranks. Execute does not auto-fire top-N yet — intentional until daily caps + matrix are proven.
+**Finding the working limit:** increase cadence and budget until secondary rate limits or abuse signals appear; artifact benches (`help-wanted-scout-bench.json`, `help-wanted-daily-budget.json`) feed process tuning. Prefer production of **merged upstream value** over raw comment volume.
 
-## Delivery hierarchy (external) — DO NOT FLATTEN
+### Parallel notice (implementation sketch)
 
-| Priority | Mode | What happens |
-|----------|------|----------------|
-| **PRIMARY** | **upstream-pr** | Claim → branch on fork → **PR into the author's repo** |
-| **FALLBACK** | **fork-offer** | Only if upstream PR is blocked / not allowed / failed |
-| **PARALLEL NOTICE** | issue comment + commit URL | Optional **alongside** upstream-pr (or alone in fallback): points maintainers at our fork commit so they can pull / open their own PR |
+After a successful **upstream-pr** (or on fallback only):
 
-**upstream-pr is the default and the goal.**
+1. Resolve commit SHA on our fork branch.
+2. Post issue comment: claim context + `https://github.com/<fork>/commit/<sha>` (+ PR URL if primary succeeded).
+3. Never use notice as a substitute for primary when primary works.
 
-`fork-offer` is **not** a co-equal product mode. It is:
+### Upstream PR best practices (lane defaults)
 
-1. **Fallback** when we cannot open (or should not open) a PR on the target repo, **or**
-2. **Parallel notice** — extra signal on the issue thread linking the commit, while the real delivery remains the upstream PR when possible.
+- One issue → one focused PR; link `Fixes #n`.
+- Claim comment before code.
+- Minimal diff; match project style.
+- No force-push to upstream default; no secrets in bodies.
+- Cap concurrent upstream PRs (token pool 2–3).
 
-Proven primary path: [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81).
+### Identity trajectory (UI proposals)
 
-## Rosters (parallel workers)
+| Path | Status |
+|------|--------|
+| OPERATOR PAT in Actions | **Live** (proven zero#81) |
+| GitHub App installation tokens (OIDC / ephemeral ~1h) | Next — least standing privilege |
+| Fine-grained PAT roster slots | Expand parallel write pool |
 
-Display monikers are **not** live `@` pings (see `AGENT-MONIKERS.md`). Secrets stay in Actions.
+## Rosters
 
-| Slot | Display moniker | Identity / token surface | Parallel role |
-|------|-----------------|--------------------------|---------------|
-| 0 | `archW1z` | OPERATOR / Grok | Orchestration, dispatch, dual-gate |
-| 1 | `l337S33k` | Full-scope operator PAT (intended) | High-privilege external write |
-| 2 | `opsSweep` | GHA + OPERATOR_GITHUB_TOKEN | Claim + push + **upstream PR** |
-| 3 | `heyVern` | `@jules` (live) | Implement hard issues after claim |
-| 4 | `sparkFlux` | `@gemini-cli` | Optional alternate implementer |
-| 5 | `deepCore` | DeepSeek CI | Review external PR diffs |
-| 6 | `codeHound` | CodeRabbit | Review |
-| 7 | `peerGate` | GHA peer orch | Contract / state only |
+| Slot | Moniker | Surface |
+|------|---------|--------|
+| 0 | `archW1z` | OPERATOR / Grok |
+| 1 | `l337S33k` | Full-scope PAT (intended) |
+| 2 | `opsSweep` | GHA + OPERATOR_GITHUB_TOKEN |
+| 3 | `heyVern` | `@jules` |
+| 4 | `sparkFlux` | `@gemini-cli` |
+| 5–7 | `deepCore` / `codeHound` / `peerGate` | review / contract |
 
-**Token pool (Actions secrets, never logged):**
+Token order: `OPERATOR_GITHUB_TOKEN` → `OPERATOR_TOKEN` → `ARCHWIZ_GITHUB_TOKEN` → `GITHUB_TOKEN`.
 
-1. `OPERATOR_GITHUB_TOKEN`
-2. `OPERATOR_TOKEN`
-3. `ARCHWIZ_GITHUB_TOKEN`
-4. `GITHUB_TOKEN` (repo-scoped only — **cannot** claim third-party issues)
+## Limits
 
-Parallel external **write** capacity ≈ number of **distinct** fine-grained PATs with `issues:write` + `pull_requests:write` on public repos. Today effective write pool is **1–3** secrets; treat **safe concurrent external executes as 2–3** until more PATs are added to the roster.
-
-## Parallel limits (defaults)
-
-| Knob | Default | Why |
-|------|---------|-----|
-| Scout max issues / run | 25 | Search API + ranking cost |
-| Concurrent execute jobs | **2** | Secondary rate limits + abuse optics |
-| External **upstream PRs** / day / token | **3** | Politeness + abuse avoidance |
-| Fallback fork-offers (when primary blocked) | as needed | Not a parallel quota target |
-| Matrix max-parallel | 2 | When auto-batch lands |
-
-## Parallel app shape (next product surface)
-
-Not the 2017 React help-wanted UI. Our app:
-
-1. **Catalog** — scout artifacts every 6h (JSON + future Vercel graphs).
-2. **Roster board** — moniker slots, token health (len-only / last-success), daily budget remaining.
-3. **Queue** — ranked issues → assigned moniker → **always try upstream-pr first**.
-4. **Evidence** — claim URL, commit SHA, **upstream PR URL**, CPPH score → SHE / dashboard.
-5. **Identity** — GitHub App installation tokens (ephemeral) preferred long-term; PATs bridge until then.
-
-### Ephemeral tokens (preferred trajectory)
-
-| Kind | Lifetime | Fit |
-|------|----------|-----|
-| GitHub App installation access token | ~1h | Per-job mint in Actions |
-| Fine-grained PAT | long | Named roster slots |
-| Classic PAT | long | Legacy; rotate; never commit |
-| Codespace / device `gh auth` | session | Human / local implement |
-
-Do **not** put tokens in issues, PR bodies, or moniker docs.
-
-## Auto-batch (planned)
-
-1. Read top-N from scout (N ≤ daily budget).
-2. Matrix `max-parallel: 2`.
-3. Each cell: claim → **upstream-pr** → on hard failure only, fallback fork-offer and/or parallel notice comment.
-4. Ledger row for dashboard.
-
-Until then: dispatch `help-wanted-execute` (proven primary: zero#72 → PR #81).
+| Knob | Default |
+|------|--------|
+| Scout max | 40 |
+| Concurrent execute | 1 group (budget serializes day) |
+| Upstream PRs / day | 3 |
+| Safe parallel write tokens | 2–3 |
 
 ## BIUDL
 
-Agent-Identity: Grok (Administrator) · moniker display `archW1z`
+Agent-Identity: Grok (Administrator) · `archW1z`

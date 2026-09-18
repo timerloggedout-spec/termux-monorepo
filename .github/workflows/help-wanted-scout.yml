@@ -2,18 +2,18 @@ name: help-wanted scout
 
 # Rank external help-wanted / good-first-issue candidates via CPPH.
 # Emits artifact catalog. Does not open external PRs.
-# See docs/ops/HELP-WANTED-LANE.md and .agents/skills/help-wanted-lane/SKILL.md
+# Adaptive cadence: every 2h (was 6h) — raise/lower from workbench benchmarks.
+# See docs/ops/HELP-WANTED-LANE.md · HELP-WANTED-PARALLEL.md
 
 on:
   schedule:
-    # Every 6 hours
-    - cron: "27 */6 * * *"
+    - cron: "17 */2 * * *"
   workflow_dispatch:
     inputs:
       max:
         description: Max issues to rank
         required: false
-        default: "25"
+        default: "40"
       label:
         description: Primary label phrase
         required: false
@@ -34,7 +34,7 @@ jobs:
   scout:
     name: CPPH rank help-wanted
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
         with:
@@ -47,14 +47,30 @@ jobs:
           set -euo pipefail
           mkdir -p docs/ops/generated
           python3 scripts/ci/help_wanted_scout.py \
-            --max "${{ github.event.inputs.max || '25' }}" \
+            --max "${{ github.event.inputs.max || '40' }}" \
             --label "${{ github.event.inputs.label || 'help wanted' }}" \
             --lang "${{ github.event.inputs.lang || '' }}" \
             --out docs/ops/generated/help-wanted-catalog.json
+          python3 - <<'PY'
+          import json, datetime
+          from pathlib import Path
+          cat = json.loads(Path("docs/ops/generated/help-wanted-catalog.json").read_text())
+          bench = {
+            "kind": "help-wanted-scout-benchmark",
+            "ts": datetime.datetime.utcnow().isoformat() + "Z",
+            "count": cat.get("count") or len(cat.get("items") or []),
+            "query": cat.get("query"),
+            "top_scores": [i.get("score") for i in (cat.get("items") or [])[:5]],
+          }
+          Path("docs/ops/generated/help-wanted-scout-bench.json").write_text(json.dumps(bench, indent=2))
+          print(json.dumps(bench))
+          PY
 
-      - name: Upload catalog artifact
+      - name: Upload catalog + bench artifacts
         uses: actions/upload-artifact@v4
         with:
           name: help-wanted-catalog
-          path: docs/ops/generated/help-wanted-catalog.json
+          path: |
+            docs/ops/generated/help-wanted-catalog.json
+            docs/ops/generated/help-wanted-scout-bench.json
           retention-days: 14

@@ -1,30 +1,136 @@
 name: help-wanted execute
 
+# PRIMARY: upstream-pr into author's repo.
+# FALLBACK / PARALLEL NOTICE only when primary blocked (see HELP-WANTED-PARALLEL.md).
+# Adaptive: schedule every 4h reads daily budget; skips when exhausted.
+# OPERATOR PAT order: OPERATOR_GITHUB_TOKEN | OPERATOR_TOKEN | ARCHWIZ_GITHUB_TOKEN
+
 on:
+  schedule:
+    - cron: "41 */4 * * *"
   workflow_dispatch:
     inputs:
       issue:
-        description: Issue URL or owner/repo#n
-        required: true
+        description: Issue URL or owner/repo#n (required for manual; empty on schedule)
+        required: false
+        default: ""
       dry_run:
         description: Dry run no side effects
         required: false
         default: "false"
       mode:
-        description: claim or claim-and-patch-zero-72
+        description: claim | claim-and-patch-zero-72 | adaptive-top1
         required: false
-        default: claim
+        default: adaptive-top1
+      daily_budget:
+        description: Max upstream PRs per UTC day (adaptive ceiling)
+        required: false
+        default: "3"
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
-  group: help-wanted-execute-${{ github.event.inputs.issue }}
+  group: help-wanted-execute
   cancel-in-progress: false
 
 jobs:
+  budget:
+    name: adaptive budget gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      allow: ${{ steps.gate.outputs.allow }}
+      remaining: ${{ steps.gate.outputs.remaining }}
+      issue: ${{ steps.gate.outputs.issue }}
+      mode: ${{ steps.gate.outputs.mode }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Gate
+        id: gate
+        env:
+          INPUT_ISSUE: ${{ github.event.inputs.issue }}
+          INPUT_MODE: ${{ github.event.inputs.mode }}
+          INPUT_BUDGET: ${{ github.event.inputs.daily_budget }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          import json, os, datetime
+          from pathlib import Path
+
+          budget = int(os.environ.get("INPUT_BUDGET") or "3")
+          day = datetime.datetime.utcnow().strftime("%Y-%m-%d")
+          path = Path("docs/ops/generated/help-wanted-daily-budget.json")
+          path.parent.mkdir(parents=True, exist_ok=True)
+          data = {"day": day, "used": 0, "success": 0, "fail": 0, "events": []}
+          if path.exists():
+              try:
+                  prev = json.loads(path.read_text())
+                  if prev.get("day") == day:
+                      data = prev
+              except Exception:
+                  pass
+
+          used = int(data.get("used") or 0)
+          remaining = max(0, budget - used)
+          issue = (os.environ.get("INPUT_ISSUE") or "").strip()
+          mode = (os.environ.get("INPUT_MODE") or "adaptive-top1").strip() or "adaptive-top1"
+          event = os.environ.get("EVENT_NAME") or ""
+
+          allow = "true"
+          if remaining <= 0 and not issue:
+              allow = "false"
+          # scheduled adaptive needs remaining budget
+          if event == "schedule" and remaining <= 0:
+              allow = "false"
+
+          # adaptive-top1 without explicit issue: pick from last catalog if present
+          if allow == "true" and not issue and mode in ("adaptive-top1", "claim"):
+              cat = Path("docs/ops/generated/help-wanted-catalog.json")
+              if cat.exists():
+                  try:
+                      items = json.loads(cat.read_text()).get("items") or []
+                      if items:
+                          top = items[0]
+                          issue = top.get("html_url") or top.get("url") or ""
+                          mode = "claim"
+                  except Exception:
+                      pass
+              if not issue:
+                  allow = "false"
+
+          if event == "workflow_dispatch" and issue:
+              allow = "true"
+              if mode == "adaptive-top1":
+                  mode = "claim"
+
+          print(f"day={day} used={used} remaining={remaining} allow={allow} issue={issue!r} mode={mode}")
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"allow={allow}\n")
+              f.write(f"remaining={remaining}\n")
+              f.write(f"issue={issue}\n")
+              f.write(f"mode={mode}\n")
+          path.write_text(json.dumps(data, indent=2))
+          PY
+
+      - name: Upload budget snapshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: help-wanted-budget
+          path: docs/ops/generated/help-wanted-daily-budget.json
+          retention-days: 30
+          if-no-files-found: ignore
+
   claim:
     name: claim + fork scaffold
+    needs: budget
+    if: needs.budget.outputs.allow == 'true' && needs.budget.outputs.issue != ''
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -52,18 +158,59 @@ jobs:
           echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
 
       - name: Claim
+        id: claim
         env:
           GITHUB_TOKEN: ${{ steps.tok.outputs.token }}
         run: |
           set -euo pipefail
           DRY=""
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then DRY="--dry-run"; fi
-          python3 scripts/ci/help_wanted_claim.py --issue "${{ github.event.inputs.issue }}" $DRY
+          python3 scripts/ci/help_wanted_claim.py --issue "${{ needs.budget.outputs.issue }}" $DRY
+          echo "ok=true" >> "$GITHUB_OUTPUT"
+
+      - name: Record success toward budget
+        if: success() && github.event.inputs.dry_run != 'true'
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          import json, datetime
+          from pathlib import Path
+          day = datetime.datetime.utcnow().strftime("%Y-%m-%d")
+          path = Path("docs/ops/generated/help-wanted-daily-budget.json")
+          path.parent.mkdir(parents=True, exist_ok=True)
+          data = {"day": day, "used": 0, "success": 0, "fail": 0, "events": []}
+          if path.exists():
+              try:
+                  prev = json.loads(path.read_text())
+                  if prev.get("day") == day:
+                      data = prev
+              except Exception:
+                  pass
+          data["used"] = int(data.get("used") or 0) + 1
+          data["success"] = int(data.get("success") or 0) + 1
+          data.setdefault("events", []).append({
+            "ts": datetime.datetime.utcnow().isoformat() + "Z",
+            "kind": "claim",
+            "issue": "${{ needs.budget.outputs.issue }}",
+            "ok": True,
+          })
+          path.write_text(json.dumps(data, indent=2))
+          print(json.dumps(data))
+          PY
+
+      - name: Upload updated budget
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: help-wanted-budget-after-claim
+          path: docs/ops/generated/help-wanted-daily-budget.json
+          retention-days: 30
+          if-no-files-found: ignore
 
   patch-zero-72:
     name: external PR zero 72 ponytail
-    if: github.event.inputs.mode == 'claim-and-patch-zero-72' && github.event.inputs.dry_run != 'true'
-    needs: claim
+    if: needs.budget.outputs.mode == 'claim-and-patch-zero-72' && github.event.inputs.dry_run != 'true'
+    needs: [budget, claim]
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:

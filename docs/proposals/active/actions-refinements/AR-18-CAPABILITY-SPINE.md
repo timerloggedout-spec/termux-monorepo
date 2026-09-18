@@ -165,11 +165,16 @@ The normalized scripts/provider_model_catalog.py artifact is now consumed by the
 
 This closes the immediate catalog-normalization gap while preserving the larger dynamic-matrix direction. The next increment is to join connector/tool/MCP/skills evidence and provenance/freshness dimensions into the same candidate facts, still without creating a second source of truth.
 
-### Current implementation gap
+### Current boundary after P1c
 
-AR-18 remains intentionally observe-only. The candidate population is now dynamic across the existing normalized provider catalog plus the compatibility OpenRouter live path, but capability admission is still intentionally narrower than the full desired join. Connector/tool/MCP bindings, task probes, current-SHA evidence, and richer provenance/freshness remain separate source dimensions to be joined into the same envelope.
+AR-18 remains intentionally observe-only. Provider-model discovery and capability-surface
+evidence are now joined into the same candidate envelope, while task-probe outcomes,
+execution telemetry, and longitudinal attribution remain owned by their existing
+evidence systems. Those sources can be joined in later evaluation cycles without
+creating another registry.
 
-The next implementation increment should broaden the existing candidate adapter to consume those normalized capability-surface and evidence dimensions. It should not replace the router, create a new registry, or make active-routing changes.
+P1c does not change active routing, provider invocation, branch writes, or promotion.
+A surface observation is evidence for the canonical query, not a capability grant.
 
 ### P1c — capability-surface evidence join (observe-only)
 

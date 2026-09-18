@@ -103,6 +103,8 @@ models/
 # Observe-mode pipeline scoring code is not weight dumps.
 !ml_pipelines/models/
 !ml_pipelines/models/**
+ml_pipelines/models/**/__pycache__/
+ml_pipelines/models/**/*.pyc
 storage/
 concat_work_*/
 go/

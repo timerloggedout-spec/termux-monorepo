@@ -16,14 +16,16 @@ Promote only when dual gates success, extract-clean scope, and task outcome veri
 
 | Class | Severity | Notes |
 |-------|----------|-------|
-| **comment-storm** | **FAILURE** | issue_comment / bot / ledger fan-out that cancels useful jobs. Mitigate: concurrency by event_name, `cancel-in-progress: false` on ledgers. Landed #603 on `dc30bf83`. |
+| **comment-storm** | **FAILURE** | issue_comment / bot / ledger fan-out that cancels useful jobs. Mitigate: concurrency by event_name, `cancel-in-progress: false` on ledgers. Landed #603 on ledger. peer-orch split still pending after #606 abort. |
 | dual-gate red | FAILURE | Block promote |
 | update-branch-conflict | STALL | Extract-later; do not force dirty |
 | dirty-behind-master | STALL | Rebase/extract from live master |
 | extra-red | FAILURE (non-gate) | Fix root cause |
+| **truncated-mcp-write** | **FAILURE** | Contents API dropped 35k peer-orch YAML on #606. Closed. Re-extract with local git. |
 
-HEAD after #603: `dc30bf83fc17b394510f99328f7a081b6a64f28c`. #601 ML dirty/behind — WAIT extract.
+HEAD after #604: `20de2a5458698d805f97e77c8c2d4c204077a60a`.
+#606 closed unmerged (truncated workflow). #601 ML dirty HOLD.
 
-Session 2026-09-18T17:03Z: merged #603; CodeRabbit `queue: max` rejected (invalid GHA concurrency key).
+Session 2026-09-18T19:17Z: aborted #606; master untouched and still functional.
 
 BIUDL. Agent-Identity: Grok (Administrator)

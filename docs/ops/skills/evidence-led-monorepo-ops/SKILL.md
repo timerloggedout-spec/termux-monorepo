@@ -1,8 +1,9 @@
 Local docs mirror. Canonical agent load path: `.agents/skills/evidence-led-monorepo-ops/SKILL.md`.
 
-Master HEAD `dc30bf83fc17b394510f99328f7a081b6a64f28c` after #603 (2026-09-18T17:03Z UTC).
-comment-storm is a FAILURE. Ledger concurrency: cancel-in-progress false + event_name split.
-HOLD: #601/#549/#432 ML extract-later. HOLD mega unchanged.
-Do not apply CodeRabbit `queue: max` (invalid GHA concurrency key).
+Master HEAD `20de2a5458698d805f97e77c8c2d4c204077a60a` after #604.
+#606 closed: MCP truncated peer-orch YAML. Do not merge that branch.
+peer-orch event_name split still pending a full-file git write.
+HOLD: #601/#549/#432. HOLD mega unchanged.
+Do not apply CodeRabbit `queue: max`.
 
 Agent-Identity: Grok (Administrator)

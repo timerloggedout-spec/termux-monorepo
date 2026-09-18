@@ -21,21 +21,30 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 - **comment-storm is a FAILURE**, not skippable noise. Mitigate with concurrency groups + `cancel-in-progress: false` on SHA-bound ledgers. Do not treat cancelled ledger runs as green.
 - Identity: `Agent-Identity: Grok (Administrator)`.
 - GitHub MCP write works as `timerloggedout-spec` even when local sandbox has no OPERATOR PAT / `gh`.
+- **Do not rewrite 30k+ workflow YAML through MCP Contents API.** Session 2026-09-18T19:17Z truncated `.github/workflows/peer-review-orchestrator.yml` on #606. Closed unmerged.
 
-## Current production anchors (2026-09-18T17:03Z UTC)
+## Current production anchors (2026-09-18T19:17Z UTC)
 
 | Item | State |
 |------|-------|
-| Master HEAD | `dc30bf83fc17b394510f99328f7a081b6a64f28c` (#603 squash) |
-| Just landed | #603 comment-storm ledger fix. Prior: #602 catalog MD fingerprint; #600 skills SSOT. |
-| Observe | #583 Grafana MCP; #584 MVT budget. Jules #597/#598. |
-| Extra-red HOLD | #601 ML extract dirty/behind (`c082f533` base vs live `dc30bf83`). #549/#432 HOLD extract-later. |
+| Master HEAD | `20de2a5458698d805f97e77c8c2d4c204077a60a` (#604) |
+| Just landed | #604 skill record; #603 ledger event_name + cancel-in-progress:false |
+| Abort | #606 closed. Intended peer-orch `event_name` split NOT on master. Re-extract with local git. |
+| Observe | #605 Paper2Agent draft. #583 Grafana. #584 MVT. Jules #597/#598. |
+| Extra-red HOLD | #601 ML extract dirty/behind. #549/#432 HOLD extract-later. |
 | HOLD mega | #523 #527 #545 #543 #455 #485 #483 #481 |
-| Draft | #578 accounting/bidding schema pilot |
+| Draft | #578 accounting; #605 Paper2Agent |
 
 ## Extract recipe
 
-Create branch from current master. Do not force-update dirty branches. Do not wholesale-merge HOLD mega or #601/#549/#432.
+Create branch from current master. Do not force-update dirty branches. Do not wholesale-merge HOLD mega or #601/#549/#432. Do not merge #606.
+
+Intended peer-orch concurrency (apply via git, not truncated Contents writes):
+
+```yaml
+group: peer-orch-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}-${{ github.event_name }}
+cancel-in-progress: true
+```
 
 CodeRabbit `queue: max` on GHA concurrency is **not a valid key** (only `group` + `cancel-in-progress`). Do not apply.
 

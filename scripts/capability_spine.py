@@ -192,6 +192,7 @@ def make_candidate(
             "score": round(score, 4),
         },
         "eligible": exclusion is None and availability not in {"blocked", "unavailable"},
+        "validation_status": success_entry.get("validation_status", "historic_prior_only" if success_entry else "unvalidated"),
         "exclusion": exclusion,
     }
 
@@ -219,10 +220,19 @@ def decide(
     recommendation = eligible[0]["specialist"] if eligible else None
     runner_up = eligible[1]["specialist"] if len(eligible) > 1 else None
     state = "recommended" if recommendation else "no_eligible_specialist"
+    population = {
+        "source": "declared_routes_plus_live_catalog",
+        "candidate_count": len(all_candidates),
+        "eligible_count": len(eligible),
+        "unvalidated_count": sum(1 for candidate in all_candidates if candidate["validation_status"] == "unvalidated"),
+        "historic_prior_only_count": sum(1 for candidate in all_candidates if candidate["validation_status"] == "historic_prior_only"),
+        "validated_count": sum(1 for candidate in all_candidates if candidate["validation_status"] == "validated"),
+    }
     return {
         "schema_version": SCHEMA_VERSION,
         "mode": OBSERVE_MODE,
         "capability": capability,
+        "population": population,
         "state": state,
         "recommendation": recommendation,
         "runner_up": runner_up,
@@ -246,6 +256,7 @@ def compact_envelope(decision: dict[str, Any]) -> dict[str, Any]:
         "recommendation": decision["recommendation"],
         "runner_up": decision["runner_up"],
         "summary": decision["summary"],
+        "population": decision.get("population", {}),
         "candidates": [
             {
                 "specialist": candidate["specialist"],
@@ -258,6 +269,7 @@ def compact_envelope(decision: dict[str, Any]) -> dict[str, Any]:
                 "quota": candidate["quota"],
                 "repository_evidence": candidate["repository_evidence"],
                 "score_components": candidate["score_components"],
+                "validation_status": candidate["validation_status"],
             }
             for candidate in decision["candidates"]
         ],

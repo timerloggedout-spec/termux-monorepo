@@ -1,8 +1,9 @@
 # Bifrost Gateway Integration — RECON + Reconcile Plan
 
-**Status:** RECON complete · proposal draft · dual-gate pending  
+**Status:** RECON complete · integration slice landed on branch · dual-gate pending  
 **Author:** Grok (Administrator)  
 **Date:** 2026-09-18  
+**PR:** #611  
 **Forks:**
 - https://github.com/timerloggedout-spec/bifrost_fork (upstream: maximhq/bifrost)
 - https://github.com/timerloggedout-spec/bifrost-benchmarking_fork (upstream: maximhq/bifrost-benchmarking)
@@ -36,18 +37,14 @@ Benchmarking companion:
 
 **Not a fit for:** wholesale submodule of the entire multi-module Go workspace into master (size + dual-gate risk). Prefer thin integration.
 
-## Harmonious reconciliation (preferred)
+## Harmonious reconciliation — DONE on this branch
 
-1. **Registry row** — add `bifrost-gateway-integration` to `docs/proposals/registry.yaml` (this PR / follow-up).
-2. **Catalog entry** — extend `mcp-hub/catalog.json` with a `bifrost` host (self-host Docker / NPX or future Vercel/edge note). Status starts `evaluation`.
-3. **Provider-capabilities** — document Bifrost as a capability-bearing gateway (streaming, tools/MCP, failover, budgets).
-4. **Gitlink / pin (optional, later)** — if we need source-level reference, shallow pin under `refTemplates/` or `mcp-hub/` analogous to existing forks; never init in gates.
-5. **Benchmarking lane** — keep `bifrost-benchmarking_fork` as external evidence tool. Run against:
-   - Bifrost (self)
-   - current OpenRouter / OX Alpha paths
-   - mcp-hub relative endpoints
-   Produce `results.json` → feed Moneyball / ACTION-EFFECTIVENESS style evidence. Use mocker for cost-free runs.
-6. **No HITL YOLO** — any monorepo change stays small green PRs; dual-gate (`repo_gate.py` + `termux_smoke.py`) before merge. Upstream PRs to maximhq only via help-wanted-execute if we contribute fixes.
+1. **Registry row** — `bifrost-gateway-integration` in `docs/proposals/registry.yaml` ✅
+2. **Catalog entry** — `mcp-hub/catalog.json` v0.3.2 host `bifrost` status=`evaluation` ✅
+3. **Provider-capabilities** — docs/schemas + llm_api_hub/schemas matrices ✅
+4. **ROUTING-ORCHESTRATION-MAP.md** — three-plane SSOT (review / chat / MCP) ✅
+5. **Gitlink / pin** — backlog (BIFROST-005); gates never init submodules
+6. **Benchmarking lane** — backlog (BIFROST-006); keep bifrost-benchmarking_fork external
 
 ## Non-goals (this cycle)
 
@@ -58,17 +55,17 @@ Benchmarking companion:
 
 ## Evidence already gathered
 
-- bifrost_fork default SHA: `246ff5698b4606d06fa0506584cb38db5f1b4923`
+- bifrost_fork default SHA (RECON): `246ff5698b4606d06fa0506584cb38db5f1b4923`
 - bifrost-benchmarking_fork default SHA: `2c416fb234bf4abac25cf61f4470fc2528362afd`
-- AGENTS.md present and high-signal (agent-oriented layout, pool/debug tags, BifrostContext rules)
-- Go workspace requires modern Go (go.work notes 1.27 in fork AGENTS; go.mod in bench shows 1.24.1)
-- Zero existing code hits for “bifrost” in termux-monorepo (search 2026-09-18)
+- AGENTS.md present and high-signal on upstream fork
+- Zero prior code hits for “bifrost” in termux-monorepo before this proposal
+- Current chat routing: Gemini primary → OpenRouter free / Omni / Felo peers; wrappers via multi-ai-cli (incl. colab)
 
 ## Next discrete actions
 
-- [ ] Land this RECON + registry update (small PR)
-- [ ] Catalog + provider-capabilities delta (follow-up PR)
-- [ ] Optional: one mocker + benchmark smoke against local Bifrost in CI or Codespace (evidence artifact)
-- [ ] Adaptive-wait: dual-gate green before any promote
+- [x] Land RECON + registry + catalog + capabilities + orchestration map
+- [ ] Dual-gate green on #611 → merge
+- [ ] Optional: one mocker + benchmark smoke (BIFROST-006)
+- [ ] Adaptive-wait: do not force-merge on ledger-only red (#608 class)
 
 BIUDL. Agent-Identity: Grok (Administrator)

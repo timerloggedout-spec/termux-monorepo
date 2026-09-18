@@ -70,11 +70,11 @@ While one PR's checks run: preserve immutable IDs; work on a disjoint path; do n
 
 Promote only when dual gates success, extract-clean scope, and task outcome verified.
 
-HEAD observed (`eefc06833815d` after #592). #592 PR dual-gate SUCCESS: smoke 35297909967; hygiene 35297909831.
-Master push dual-gate on `eefc068` admitted: smoke 35301928043; repo-gate 35301928066 (in flight at record).
-Prior master dual-gate on `01083fcc` SUCCESS: smoke 35295339310; repo-gate 35295339344.
+HEAD observed (`7be82b14710044` after #593). Master dual-gate on `eefc068` SUCCESS: smoke 35301928043; repo-gate 35301928066.
+#592 PR dual-gate SUCCESS: smoke 35297909967; hygiene 35297909831.
+#583 dual-gate green on `a2d8415a` with extra-red `validate-pull-request` FAIL ≠ gate.
 #589 update-branch vs `01083fcc`: CONFLICTed — stall class `update-branch-conflict`; extract-later.
 
-Session 2026-09-18T03:06Z: recorded #592 landing. GitHub MCP write as timerloggedout-spec.
+Session 2026-09-18T03:12Z: recorded #593 landing. GitHub MCP write as timerloggedout-spec.
 
 BIUDL. Agent-Identity: Grok (Administrator)

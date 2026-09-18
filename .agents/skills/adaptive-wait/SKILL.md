@@ -12,15 +12,18 @@ While one PR's checks run: preserve immutable IDs; work on a disjoint path; do n
 
 Promote only when dual gates success, extract-clean scope, and task outcome verified.
 
-Stall classes include **comment-storm-skip**, **update-branch-conflict**, and **dirty-behind-master**.
+## Failure / stall classes (do not soft-pedal)
 
-HEAD observed (`c082f53379d230f4617f201d32c114f198dd63a1` after #595 + docs-branch-index bot). #595 PR dual-gate SUCCESS: smoke 35309791148; hygiene 35309791199.
-#594 PR dual-gate SUCCESS: smoke 35306172380; hygiene 35306172362.
-Master dual-gate on `eefc068` SUCCESS: smoke 35301928043; repo-gate 35301928066.
-#583 dual-gate green + extra-red validate-PR ≠ gate.
-#589 update-branch vs `01083fcc`: CONFLICTed — extract-later.
-#596 unstable/behind; #599 dirty — do not merge; extract catalog regen from live master if still failing.
+| Class | Severity | Notes |
+|-------|----------|-------|
+| **comment-storm** | **FAILURE** | issue_comment / bot / ledger fan-out that cancels useful jobs. Mitigate: concurrency by event_name, `cancel-in-progress: false` on ledgers. Landed #603 on `dc30bf83`. |
+| dual-gate red | FAILURE | Block promote |
+| update-branch-conflict | STALL | Extract-later; do not force dirty |
+| dirty-behind-master | STALL | Rebase/extract from live master |
+| extra-red | FAILURE (non-gate) | Fix root cause |
 
-Session 2026-09-18T16:10Z UTC: recorded live master `c082f533`. GitHub MCP write as timerloggedout-spec.
+HEAD after #603: `dc30bf83fc17b394510f99328f7a081b6a64f28c`. #601 ML dirty/behind — WAIT extract.
+
+Session 2026-09-18T17:03Z: merged #603; CodeRabbit `queue: max` rejected (invalid GHA concurrency key).
 
 BIUDL. Agent-Identity: Grok (Administrator)

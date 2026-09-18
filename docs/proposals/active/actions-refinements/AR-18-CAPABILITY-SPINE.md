@@ -135,6 +135,24 @@ AR-18 should consume and correlate, rather than duplicate:
 
 No new KAC/agent registry is required for this research transfer.
 
+### P1a — dynamic catalog population adapter (observe-only)
+
+The first implementation increment is now in place without changing execution routing.
+
+- `scripts/model_router.py` keeps the legacy execution roster untouched.
+- AR-18 observe mode now appends every currently observed free OpenRouter catalog model to the candidate population.
+- A live catalog observation does **not** create a capability declaration.
+- A discovered model absent from the role declaration/success matrix is emitted as `unvalidated` and fails the capability gate.
+- Candidate output records `validation_status`; population metrics distinguish unvalidated, historic-prior-only, and explicitly validated observations.
+- The observe population bound is 64 candidates so the envelope remains bounded while avoiding the old single-digit provider/model illustration.
+- Existing provider/model execution selection remains unchanged.
+
+This establishes the required distinction:
+
+`DISCOVERED ≠ DECLARED ≠ VALIDATED ≠ ELIGIBLE`
+
+The next adapter increment should generalize the same normalized population contract to the existing Felo/Omni/provider-catalog artifact rather than introducing another registry.
+
 ### Current implementation gap
 
 AR-18 is intentionally observe-only, but its current candidate construction is narrower than the desired dynamic population: model_router.py has bootstrap role lists while the live OpenRouter catalog is already dynamic. That is useful evidence, not a reason to hard-code more names.

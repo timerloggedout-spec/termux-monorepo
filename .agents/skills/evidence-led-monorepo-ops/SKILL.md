@@ -21,14 +21,14 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 - Identity: `Agent-Identity: Grok (Administrator)`.
 - GitHub MCP write works as `timerloggedout-spec` even when local sandbox has no OPERATOR PAT / `gh`.
 
-## Current production anchors (2026-09-17T23:12Z)
+## Current production anchors (2026-09-18T00:12Z)
 
 | Item | State |
 |------|-------|
-| Master HEAD | `11c56e46c0365` (`ops(skills): record #585 landing` #586) |
-| Just landed | #576 `4d532a9e5655`; #577 `92d704c0f8c8`; #579 `60a742a6d2f0`; #580 `96a04af3839d4`; #581 `d886560b8a546`; #582 `f779b9a2fd550`; #585 `9f4c7fa2a5808`; #586 record landing `11c56e46c0365` |
-| Dual gates last verified | #586 PR dual-gate: agentic termux smoke + hygiene + portability gate success. Parent `f779b9a2` master dual-gate: smoke 35275507986 + repo-gate 35275507908 success |
-| Observe (not merged) | #583 Grafana MCP. #584 MVT context-safe budget (`validate-pull-request` extra-red FAIL ≠ gate). #587 Jules date-only merged-branch-audit bump |
+| Master HEAD | `ea5aa867645c4` (`ops(skills): record #586 landing` #588) |
+| Just landed | #576 `4d532a9e5655`; #577 `92d704c0f8c8`; #579 `60a742a6d2f0`; #580 `96a04af3839d4`; #581 `d886560b8a546`; #582 `f779b9a2fd550`; #585 `9f4c7fa2a5808`; #586 `11c56e46c0365`; #588 `ea5aa867645c4` |
+| Dual gates last verified | Master push dual-gate on `11c56e46`: smoke **35285651963** success; repo-gate **35285652100** success. #588 PR dual-gate: agentic termux smoke + hygiene + portability gate success. Parent `f779b9a2` master dual-gate: smoke 35275507986 + repo-gate 35275507908 |
+| Observe (not merged) | #583 Grafana MCP. #584 MVT context-safe budget (`validate-pull-request` extra-red FAIL ≠ gate). #587 Jules date-only merged-branch-audit bump. #589 Jules CedrLang placeholder-callback extract (PR dual-gate green, base now behind after #588) |
 | Extra-red HOLD | #549 ML (#175) dirty/behind base `6df9b66`; sibling #432 HOLD — extract later from live master |
 | HOLD mega | #523 #527 #545 #543 #455 #485 #483 #481 #474 #471 #466 #456 #453 |
 | Draft | #578 accounting/bidding schema pilot |
@@ -38,6 +38,6 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 
 ## Extract recipe
 
-Create branch from current master. Do not force-update dirty branches. #549 remains dirty/behind — do not merge; extract later from `11c56e46`.
+Create branch from current master. Do not force-update dirty branches. #549 remains dirty/behind — do not merge; extract later from `ea5aa867`.
 
 BIUDL. Agent-Identity: Grok (Administrator)

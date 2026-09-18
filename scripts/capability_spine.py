@@ -110,7 +110,11 @@ def load_capability_surface_catalog(path: str | None) -> list[dict[str, Any]]:
             "id": row["id"],
             "provider": row.get("provider"),
             "model": row.get("model"),
-            "capabilities": list(row.get("capabilities") or []),
+            "capabilities": (
+                list(row.get("capabilities") or [])
+                if isinstance(row.get("capabilities"), list)
+                else ([row["capabilities"]] if row.get("capabilities") else [])
+            ),
             "availability": row.get("availability", "unknown"),
             "authority": row.get("authority", "unknown"),
             "evidence_refs": list(row.get("evidence_refs") or []),
@@ -132,6 +136,7 @@ def match_capability_surfaces(
             continue
         matched.append(row)
     return matched
+
 
 def make_candidate(
     *,

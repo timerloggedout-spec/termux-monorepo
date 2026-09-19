@@ -1,0 +1,97 @@
+name: help-wanted-followup
+
+# Timely relevance for external help-wanted PRs/issues we opened.
+# Foreign-repo webhooks need App install; until then: schedule + dispatch.
+
+on:
+  schedule:
+    # ~ every 2 hours
+    - cron: "17 */2 * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "poll | zero-81-revise"
+        required: false
+        default: "poll"
+
+concurrency:
+  group: help-wanted-followup
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  poll:
+    if: ${{ github.event_name == 'schedule' || github.event.inputs.mode == 'poll' || github.event.inputs.mode == '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Poll CHANGES_REQUESTED on our external PRs
+        env:
+          OPERATOR_GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+          OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
+          ARCHWIZ_GITHUB_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/ci/help_wanted_followup.py
+
+      - name: Commit evidence if any
+        run: |
+          if git diff --quiet docs/ops/generated/help-wanted-evidence 2>/dev/null; then
+            echo "no evidence delta"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/ops/generated/help-wanted-evidence || true
+          git commit -m "ops(help-wanted): follow-up evidence $(date -u +%Y-%m-%dT%H:%MZ)" || true
+          git push || true
+
+  zero-81-revise:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'zero-81-revise' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Revise zero#81 ponytail comments per maintainer review
+        env:
+          TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          git clone --depth=50 --branch fix/stale-ponytail-comments-72 \
+            "https://x-access-token:${TOKEN}@github.com/timerloggedout-spec/zero.git" work
+          cd work
+          python3 <<'PY'
+          from pathlib import Path
+          p = Path("crates/zero-engine/src/layout.rs")
+          t = p.read_text()
+          old_grid = """    /// ponytail: `grid-template-areas` and `minmax()` are read; named lines,\n    /// full `grid-area` shorthand, and `auto-fit`/`auto-fill` sizing are not.\n    /// Rows beyond `grid-template-rows` are sized to their tallest item."""
+          new_grid = """    /// ponytail: reads `grid-template-areas`, `minmax()`, `auto-fit`/`auto-fill`\n    /// (expand_tracks approx), numeric `grid-column`/`grid-row`, and named\n    /// `grid-area`. Missing: named lines, four-value `grid-area`, row spans in\n    /// `grid-template-areas`, and all alignment (`align-*` / `justify-*`).\n    /// Rows beyond `grid-template-rows` are sized to their tallest item."""
+          old_flex = """    /// ponytail: `flex-wrap`, `justify-content`, `align-items`, `align-self`, and\n    /// `flex-grow` are read. Still missing: `flex-shrink`, `flex-basis`, and\n    /// intrinsic content sizing. Items with an explicit main size keep it; the\n    /// rest split leftover space (covers most real column/nav layouts)."""
+          new_flex = """    /// ponytail: `flex-wrap`, `justify-content`, `align-items`, `align-self`,\n    /// `flex-grow`, `flex-shrink`, and `flex-basis` are read. Still missing:\n    /// intrinsic content sizing. Items with an explicit main size keep it; the\n    /// rest split leftover space (covers most real column/nav layouts)."""
+          if old_grid not in t or old_flex not in t:
+              raise SystemExit("expected comment blocks not found — already revised?")
+          p.write_text(t.replace(old_grid, new_grid).replace(old_flex, new_flex))
+          print("patched")
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add crates/zero-engine/src/layout.rs
+          git commit -m "fix(layout): accurate ponytail ledgers per review on #81
+
+          Flex: only intrinsic sizing still missing.
+          Grid: credit auto-fit/fill + named grid-area; note alignment + 4-value form.
+          "
+          git push origin fix/stale-ponytail-comments-72
+
+      - name: Update PR body (no auto-close #72)
+        env:
+          TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          curl -sS -X PATCH \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/vedantnimbarte/zero/pulls/81 \
+            -d '{"body":"Addresses part of vedantnimbarte/zero#72 (ponytail ledger accuracy only — does not close the full audit).\n\nRevises two `ponytail:` comments in `layout.rs` to match current flex/grid support after maintainer review.\n\nOpened via termux-monorepo help-wanted lane."}'

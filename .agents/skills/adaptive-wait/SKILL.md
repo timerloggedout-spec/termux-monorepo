@@ -1,29 +1,21 @@
 ---
 name: adaptive-wait
-description: Adaptive WAIT stage for agentic GitHub ops. After any dispatch, commit, rebase, or merge request — re-check jobs/steps/logs/artifacts, do concurrent non-conflicting work, classify stalls, and only promote when dual gates + task outcome are verified. Triggers when waiting on CI, after PR open/update, during /continue cycles, or when operator says wait adaptively. Cross-session SSOT — always load from master, never chat-only.
+description: Adaptive WAIT for agentic GitHub ops. Dual-gate before promote. Stay busy on disjoint work.
 ---
 
-# Skill: adaptive-wait
+Local mirror. Canonical is master `.agents/skills/adaptive-wait/SKILL.md`.
 
-**Owner:** ArchW1z / Grok Administrator  
-**Complements:** `evidence-led-monorepo-ops`, `adaptive-feedback-cycle`, `production-reconciliation`, `review-loop`
+Master: `16030fcfd26b3b4f3427fa5e098cbf7862b7f081`.
+#635 MERGED extract-only security (symlink token). Dual-gate green on merge SHA ancestry.
+#608 HOLD dirty/behind — do not merge (ledger extract already landed via #627).
+#629/#630 Jules dirty observe. #636 update-branch after #635.
+#632 behind. #633/#634 WAIT unstable record PRs.
 
-While one PR's checks run: preserve immutable IDs; work on a disjoint path; do not idle.
+This session (2026-09-19 12:07 PDT):
+- help-wanted-execute dry_run dispatched DioNanos/codex-termux#14.
+- #635 promoted after dual-gate verify; #636 left WAIT post-rebase.
+- No merge of #608/#629/#630.
+- No comment-storm.
+- Stay busy: session record from live master + dry_run dispatch + Copilot on #636.
 
-Promote only when dual gates success, extract-clean scope, and task outcome verified.
-
-## Failure / stall classes (do not soft-pedal)
-
-| Class | Severity | Notes |
-|-------|----------|-------|
-| **comment-storm** | **FAILURE** | issue_comment / bot / ledger fan-out that cancels useful jobs. Mitigate: concurrency by event_name, `cancel-in-progress: false` on ledgers. Landed #603 on `dc30bf83`. |
-| dual-gate red | FAILURE | Block promote |
-| update-branch-conflict | STALL | Extract-later; do not force dirty |
-| dirty-behind-master | STALL | Rebase/extract from live master |
-| extra-red | FAILURE (non-gate) | Fix root cause |
-
-HEAD after #603: `dc30bf83fc17b394510f99328f7a081b6a64f28c`. #601 ML dirty/behind — WAIT extract.
-
-Session 2026-09-18T17:03Z: merged #603; CodeRabbit `queue: max` rejected (invalid GHA concurrency key).
-
-BIUDL. Agent-Identity: Grok (Administrator)
+Agent-Identity: Grok (Administrator)

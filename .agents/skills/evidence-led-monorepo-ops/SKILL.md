@@ -1,42 +1,24 @@
 ---
 name: evidence-led-monorepo-ops
-description: Continuous evidence-led admin ops on timerloggedout-spec/termux-monorepo (and similar agentic monorepos). Triggers on priority matrix, master gates, SHE progress, Manus/provider RE, dirty PR triage, Actions hygiene, or when the operator says continue, BIUDL, maximize actions, or /continue. Use for live state pulls, dispositions, small-green extracts, adaptive WAIT, and iterative process improvement documented as skills. Load this skill in every admin session.
+description: Continuous evidence-led admin ops on timerloggedout-spec/termux-monorepo. Load every admin session.
 ---
 
-# Skill: evidence-led-monorepo-ops
+Local mirror. Canonical is master `.agents/skills/evidence-led-monorepo-ops/SKILL.md`.
 
-**Owner:** ArchW1z / Grok Administrator continuous admin on timerloggedout-spec/termux-monorepo.
+Master: `80bcad872194d69513c63e837fb23755961f7808`.
+#609/#613/#614/#627 MERGED. #627 extract-only of balanced pr-production-ledger onto live master.
+#608 HOLD extra-red / behind / dirty — do not force-merge (repair already extracted).
+#629/#630 Jules dirty observe. #601/#549/#432 ML HOLD dirty/behind. #605 Paper2Agent observe. #620 Jules Linguist observe.
+HOLD mega: #523 #527 #455 #48 #543 #545 #485 #500.
+Record PRs WAIT: #619 #622 #623 #624 #625 #626 #628 #632 #633 + this session.
 
-**Canonical paths (keep in sync):**
-- `.agents/skills/evidence-led-monorepo-ops/SKILL.md` ← **agent load path**
-- `docs/ops/skills/evidence-led-monorepo-ops/SKILL.md` ← human/docs mirror
-- `docs/ops/SKILLS-INVENTORY.md` ← full skill table + adaptive WAIT
+This session (2026-09-19 11:05 PDT):
+- Recon: master still `80bcad87` (#627 extract).
+- Ledger on live SHA GREEN: issue_comment runs 9378, 9379, 9382, 9384, 9386, 9389 success (cancelled siblings are comment-storm concurrency, not extra-red SyntaxError).
+- #633 session record open, mergeable_state unstable — dual-gate before promote. Hygiene + ledger checks on #633 succeeded.
+- Did not merge #608/#629/#630/#632/#633.
+- help-wanted-execute dry_run claim: prior 35457208607 SUCCESS on 80bcad87; this session re-queued DioNanos/codex-termux#14.
+- Dual-gate: record family still WAIT until #633 (or this PR) is clean-green, not just ledger-success.
+- No issue comments (comment-storm is a FAILURE).
 
-**Primary agent entry:** `CLAUDE.md`.
-
-## Posture
-
-- Evidence over anecdote. Extract-only. Dual-gate before merge.
-- Extra-red ≠ dual-gate. Behind-master dual-gate green ≠ auto-merge.
-- **comment-storm is a FAILURE**, not skippable noise. Mitigate with concurrency groups + `cancel-in-progress: false` on SHA-bound ledgers. Do not treat cancelled ledger runs as green.
-- Identity: `Agent-Identity: Grok (Administrator)`.
-- GitHub MCP write works as `timerloggedout-spec` even when local sandbox has no OPERATOR PAT / `gh`.
-
-## Current production anchors (2026-09-18T17:03Z UTC)
-
-| Item | State |
-|------|-------|
-| Master HEAD | `dc30bf83fc17b394510f99328f7a081b6a64f28c` (#603 squash) |
-| Just landed | #603 comment-storm ledger fix. Prior: #602 catalog MD fingerprint; #600 skills SSOT. |
-| Observe | #583 Grafana MCP; #584 MVT budget. Jules #597/#598. |
-| Extra-red HOLD | #601 ML extract dirty/behind (`c082f533` base vs live `dc30bf83`). #549/#432 HOLD extract-later. |
-| HOLD mega | #523 #527 #545 #543 #455 #485 #483 #481 |
-| Draft | #578 accounting/bidding schema pilot |
-
-## Extract recipe
-
-Create branch from current master. Do not force-update dirty branches. Do not wholesale-merge HOLD mega or #601/#549/#432.
-
-CodeRabbit `queue: max` on GHA concurrency is **not a valid key** (only `group` + `cancel-in-progress`). Do not apply.
-
-BIUDL. Agent-Identity: Grok (Administrator)
+Agent-Identity: Grok (Administrator)

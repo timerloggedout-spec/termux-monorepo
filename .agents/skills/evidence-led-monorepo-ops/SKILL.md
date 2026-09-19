@@ -1,42 +1,41 @@
 ---
 name: evidence-led-monorepo-ops
-description: Continuous evidence-led admin ops on timerloggedout-spec/termux-monorepo (and similar agentic monorepos). Triggers on priority matrix, master gates, SHE progress, Manus/provider RE, dirty PR triage, Actions hygiene, or when the operator says continue, BIUDL, maximize actions, or /continue. Use for live state pulls, dispositions, small-green extracts, adaptive WAIT, and iterative process improvement documented as skills. Load this skill in every admin session.
+description: Continuous evidence-led admin ops on timerloggedout-spec/termux-monorepo. Load every admin session.
 ---
 
 # Skill: evidence-led-monorepo-ops
 
-**Owner:** ArchW1z / Grok Administrator continuous admin on timerloggedout-spec/termux-monorepo.
-
-**Canonical paths (keep in sync):**
-- `.agents/skills/evidence-led-monorepo-ops/SKILL.md` ← **agent load path**
-- `docs/ops/skills/evidence-led-monorepo-ops/SKILL.md` ← human/docs mirror
-- `docs/ops/SKILLS-INVENTORY.md` ← full skill table + adaptive WAIT
-
-**Primary agent entry:** `CLAUDE.md`.
+**Owner:** Grok Administrator
+**Canonical:** `.agents/skills/evidence-led-monorepo-ops/SKILL.md`
 
 ## Posture
 
 - Evidence over anecdote. Extract-only. Dual-gate before merge.
 - Extra-red ≠ dual-gate. Behind-master dual-gate green ≠ auto-merge.
-- **comment-storm is a FAILURE**, not skippable noise. Mitigate with concurrency groups + `cancel-in-progress: false` on SHA-bound ledgers. Do not treat cancelled ledger runs as green.
+- **comment-storm is a FAILURE.** Do not force-merge #608.
+- GitHub MCP 403 on foreign comment/PR — use help-wanted-execute.
 - Identity: `Agent-Identity: Grok (Administrator)`.
-- GitHub MCP write works as `timerloggedout-spec` even when local sandbox has no OPERATOR PAT / `gh`.
 
-## Current production anchors (2026-09-18T17:03Z UTC)
+## Live anchors (2026-09-18T17:01 PDT / 00:01 UTC 19)
 
 | Item | State |
 |------|-------|
-| Master HEAD | `dc30bf83fc17b394510f99328f7a081b6a64f28c` (#603 squash) |
-| Just landed | #603 comment-storm ledger fix. Prior: #602 catalog MD fingerprint; #600 skills SSOT. |
-| Observe | #583 Grafana MCP; #584 MVT budget. Jules #597/#598. |
-| Extra-red HOLD | #601 ML extract dirty/behind (`c082f533` base vs live `dc30bf83`). #549/#432 HOLD extract-later. |
-| HOLD mega | #523 #527 #545 #543 #455 #485 #483 #481 |
-| Draft | #578 accounting/bidding schema pilot |
+| Master HEAD | `fb382c4893ff07f413b1834f633081081f6973d7` |
+| Landed | #609/#613/#614 MERGED |
+| WAIT dual-gate | #617 registry gate (validate-registry green; ledger extra-red SyntaxError) |
+| WAIT record | #619 skills-record OPEN (ledger extra-red) |
+| Observe | #620 Jules Linguist CedrLang; #605 Paper2Agent |
+| Extra-red HOLD | #608 ledger SyntaxError (do not force-merge). #601/#549/#432 ML HOLD dirty/behind |
+| HOLD mega | #523 #527 #455 #48 #543 #545 #485 #500 |
+| Closed unmerged | #606 |
+| Priority matrix | Issue #175 + Gaps #621 |
 
-## Extract recipe
+Ledger extra-red root: `actions/github-script` `SyntaxError: Unexpected end of input` on pr-production-ledger (still on master workflow). #608 is behind live master — extract a *new* ledger script fix from `fb382c48`, do not merge the dirty branch.
 
-Create branch from current master. Do not force-update dirty branches. Do not wholesale-merge HOLD mega or #601/#549/#432.
+## This session actions
 
-CodeRabbit `queue: max` on GHA concurrency is **not a valid key** (only `group` + `cancel-in-progress`). Do not apply.
+- Dual-gate check on #617/#619/#620 — no promote.
+- Dispatched `help-wanted-scout.yml` + `help-wanted-execute.yml` dry_run claim on DioNanos/codex-termux#14.
+- New skills record branch `ops/skills-record-20260918-2301pdt` (this file).
 
 BIUDL. Agent-Identity: Grok (Administrator)

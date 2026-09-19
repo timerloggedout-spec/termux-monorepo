@@ -1,19 +1,104 @@
 {
-  "generated_at": "2026-09-19T21:55:00Z",
+  "generated_at": "2026-09-19T23:23:04Z",
   "lane": "help-wanted",
-  "receipts": 5,
+  "receipts": 19,
   "kinds": {
-    "upstream_pr": 4,
-    "claim_skipped_closed": 1
+    "upstream_pr": 12,
+    "claim_skipped_closed": 1,
+    "followup_skip_idempotent": 6
   },
   "outcomes": {
-    "ok": 5
+    "ok": 19
   },
-  "pr_states": {
-    "open": 3,
-    "closed": 1
-  },
+  "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/Kilo-Org/agentic-path/pull/26",
+      "title": "help-wanted: stake + contribute for #25",
+      "number": 26,
+      "repo": "Kilo-Org/agentic-path",
+      "updated_at": "2026-09-19T23:07:32Z"
+    },
+    {
+      "html_url": "https://github.com/chahe-dridi/vscode-agent-bell/pull/225",
+      "title": "help-wanted: stake + contribute for #224",
+      "number": 225,
+      "repo": "chahe-dridi/vscode-agent-bell",
+      "updated_at": "2026-09-19T23:12:03Z"
+    },
+    {
+      "html_url": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
+      "title": "help-wanted: stake + contribute for #6",
+      "number": 7,
+      "repo": "mangiapanejohn-dev/MOBIUS-Searcher",
+      "updated_at": "2026-09-19T22:30:10Z"
+    },
+    {
+      "html_url": "https://github.com/E-Timileyin/Sail-CLI/pull/23",
+      "title": "help-wanted: stake + contribute for #20",
+      "number": 23,
+      "repo": "E-Timileyin/Sail-CLI",
+      "updated_at": "2026-09-19T21:17:40Z"
+    },
+    {
+      "html_url": "https://github.com/GlassHaven/Haven/pull/657",
+      "title": "help-wanted: stake + contribute for #273",
+      "number": 657,
+      "repo": "GlassHaven/Haven",
+      "updated_at": "2026-09-19T20:52:33Z"
+    },
+    {
+      "html_url": "https://github.com/vedantnimbarte/zero/pull/81",
+      "title": "docs(layout): refresh stale ponytail comments (flex + grid)",
+      "number": 81,
+      "repo": "vedantnimbarte/zero",
+      "updated_at": "2026-09-19T23:04:41Z"
+    },
+    {
+      "html_url": "https://github.com/OrionStarAI/EasyCode/pull/53",
+      "title": "Change project name from DeepV Code to Easy Code",
+      "number": 53,
+      "repo": "OrionStarAI/EasyCode",
+      "updated_at": "2026-09-11T03:26:17Z"
+    }
+  ],
+  "foreign_open_count": 7,
   "issues": {
+    "https://github.com/vedantnimbarte/zero/issues/72": [
+      {
+        "ts": "2026-09-18T20:31:37Z",
+        "kind": "upstream_pr",
+        "issue": "https://github.com/vedantnimbarte/zero/issues/72",
+        "ok": true,
+        "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
+        "run_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/35391893441",
+        "lane": "help-wanted",
+        "scout": "oversight",
+        "delivery": "upstream-pr-primary",
+        "note": "seed primary path success"
+      },
+      {
+        "ts": "2026-09-18T20:31:37Z",
+        "kind": "upstream_pr",
+        "issue": "https://github.com/vedantnimbarte/zero/issues/72",
+        "ok": true,
+        "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
+        "pr_state": "open",
+        "note": "seed primary",
+        "lane": "help-wanted",
+        "scout": "oversight",
+        "delivery": "upstream-pr-primary"
+      },
+      {
+        "ts": "2026-09-19T23:20:00Z",
+        "kind": "upstream_pr",
+        "issue": "https://github.com/vedantnimbarte/zero/issues/72",
+        "ok": true,
+        "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
+        "lane": "help-wanted",
+        "delivery": "upstream-pr-primary",
+        "note": "open; CHANGES_REQUESTED then revised"
+      }
+    ],
     "https://github.com/DioNanos/codex-termux/issues/14": [
       {
         "ts": "2026-09-19T19:20:00Z",
@@ -33,24 +118,20 @@
         "issue": "https://github.com/DioNanos/codex-termux/issues/14",
         "ok": true,
         "run_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/35469936538",
-        "note": "SKIP closed issue — neighbor-safe",
+        "note": "SKIP closed issue \u2014 neighbor-safe",
         "lane": "help-wanted",
         "scout": "oversight",
         "delivery": "n/a"
-      }
-    ],
-    "https://github.com/E-Timileyin/Sail-CLI/issues/20": [
+      },
       {
-        "ts": "2026-09-19T20:00:00Z",
+        "ts": "2026-09-19T23:20:00Z",
         "kind": "upstream_pr",
-        "issue": "https://github.com/E-Timileyin/Sail-CLI/issues/20",
+        "issue": "https://github.com/DioNanos/codex-termux/issues/14",
         "ok": true,
-        "pr_url": "https://github.com/E-Timileyin/Sail-CLI/pull/23",
-        "pr_state": "open",
-        "note": "stake PR",
+        "pr_url": "https://github.com/DioNanos/codex-termux/pull/27",
         "lane": "help-wanted",
-        "scout": "oversight",
-        "delivery": "upstream-pr-primary"
+        "delivery": "upstream-pr-primary",
+        "note": "PR closed; issue closed"
       }
     ],
     "https://github.com/GlassHaven/Haven/issues/273": [
@@ -65,20 +146,120 @@
         "lane": "help-wanted",
         "scout": "oversight",
         "delivery": "upstream-pr-primary"
+      },
+      {
+        "ts": "2026-09-19T23:20:00Z",
+        "kind": "upstream_pr",
+        "issue": "https://github.com/GlassHaven/Haven/issues/273",
+        "ok": true,
+        "pr_url": "https://github.com/GlassHaven/Haven/pull/657",
+        "lane": "help-wanted",
+        "delivery": "upstream-pr-primary",
+        "note": "open mutual stake"
       }
     ],
-    "https://github.com/vedantnimbarte/zero/issues/72": [
+    "https://github.com/E-Timileyin/Sail-CLI/issues/20": [
       {
-        "ts": "2026-09-18T20:31:37Z",
+        "ts": "2026-09-19T20:00:00Z",
         "kind": "upstream_pr",
-        "issue": "https://github.com/vedantnimbarte/zero/issues/72",
+        "issue": "https://github.com/E-Timileyin/Sail-CLI/issues/20",
         "ok": true,
-        "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
+        "pr_url": "https://github.com/E-Timileyin/Sail-CLI/pull/23",
         "pr_state": "open",
-        "note": "seed primary",
+        "note": "stake PR",
         "lane": "help-wanted",
         "scout": "oversight",
         "delivery": "upstream-pr-primary"
+      },
+      {
+        "ts": "2026-09-19T23:20:00Z",
+        "kind": "upstream_pr",
+        "issue": "https://github.com/E-Timileyin/Sail-CLI/issues/20",
+        "ok": true,
+        "pr_url": "https://github.com/E-Timileyin/Sail-CLI/pull/23",
+        "lane": "help-wanted",
+        "delivery": "upstream-pr-primary",
+        "note": "open stake"
+      }
+    ],
+    "https://github.com/Kilo-Org/agentic-path/issues/25": [
+      {
+        "ts": "2026-09-19T23:20:00Z",
+        "kind": "upstream_pr",
+        "issue": "https://github.com/Kilo-Org/agentic-path/issues/25",
+        "ok": true,
+        "pr_url": "https://github.com/Kilo-Org/agentic-path/pull/26",
+        "lane": "help-wanted",
+        "delivery": "upstream-pr-primary",
+        "note": "open stake"
+      }
+    ],
+    "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/issues/6": [
+      {
+        "ts": "2026-09-19T23:20:00Z",
+        "kind": "upstream_pr",
+        "issue": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/issues/6",
+        "ok": true,
+        "pr_url": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
+        "lane": "help-wanted",
+        "delivery": "upstream-pr-primary",
+        "note": "open stake"
+      }
+    ],
+    "https://github.com/chahe-dridi/vscode-agent-bell/issues/224": [
+      {
+        "ts": "2026-09-19T23:20:00Z",
+        "kind": "upstream_pr",
+        "issue": "https://github.com/chahe-dridi/vscode-agent-bell/issues/224",
+        "ok": true,
+        "pr_url": "https://github.com/chahe-dridi/vscode-agent-bell/pull/225",
+        "lane": "help-wanted",
+        "delivery": "upstream-pr-primary",
+        "note": "open stake"
+      }
+    ],
+    "https://github.com/vedantnimbarte/zero/pull/81": [
+      {
+        "ts": "2026-09-19T23:04:09Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup"
+      },
+      {
+        "ts": "2026-09-19T23:04:58Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup"
+      },
+      {
+        "ts": "2026-09-19T23:05:27Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup"
+      },
+      {
+        "ts": "2026-09-19T23:07:49Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup"
+      },
+      {
+        "ts": "2026-09-19T23:10:59Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup"
+      },
+      {
+        "ts": "2026-09-19T23:12:17Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup"
       }
     ]
   },
@@ -87,22 +268,12 @@
     "skip_closed_issues": true,
     "primary": "upstream-pr",
     "fallback": "fork-notice",
-    "respect_maintainer_routing": true
-  },
-  "freshness": {
-    "status": "live-cdn-2026-09-19",
-    "note": "Open CDN URL in browser. gh-pages branch published; enable Pages in Settings for github.io. Vercel Actions deploy pending token/link fix."
+    "foreign_only_followup": true,
+    "exclude_monorepo": true
   },
   "live": {
-    "cdn_jsdelivr": "https://cdn.jsdelivr.net/gh/timerloggedout-spec/termux-monorepo@master/apps/help-wanted-dashboard/index.html",
-    "cdn_githack": "https://raw.githack.com/timerloggedout-spec/termux-monorepo/master/apps/help-wanted-dashboard/index.html",
-    "github_pages_pending": "https://timerloggedout-spec.github.io/termux-monorepo/",
-    "github_pages_note": "gh-pages branch exists (deploy job success). Enable Settings → Pages → branch gh-pages once.",
-    "vercel_project": "help-wanted-dash",
-    "vercel_project_id": "prj_iS20meBbcNw6lsng2GHjO4I9gC78",
-    "vercel_url": null,
-    "deploy_workflow": "help-wanted-dashboard-deploy.yml",
-    "deploy_run": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/35471518570"
-  },
-  "dashboard": "apps/help-wanted-dashboard"
+    "dashboard": "https://timerloggedout-spec.github.io/help-wanted/",
+    "githack": "https://raw.githack.com/timerloggedout-spec/termux-monorepo/master/apps/help-wanted-dashboard/index.html",
+    "status_raw": "https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/ops/generated/help-wanted-status.json"
+  }
 }

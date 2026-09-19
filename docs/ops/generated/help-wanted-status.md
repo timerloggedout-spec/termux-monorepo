@@ -1,6 +1,6 @@
 # Help-Wanted Living Status
 
-_Generated 2026-09-19T23:23:04Z UTC · receipts=19 · foreign_open=7_
+_Generated 2026-09-19T23:23:18Z UTC · receipts=19 · foreign_open=7_
 
 ## Foreign open PRs (live search)
 

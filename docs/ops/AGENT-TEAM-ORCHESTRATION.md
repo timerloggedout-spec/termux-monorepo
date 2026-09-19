@@ -184,3 +184,31 @@ The scheduler should exploit a verified promotional window while it is open, but
 Agents should have clear bounded authority, observable decisions, and durable handoff state. Humans should be able to inspect why an agent was selected, what it consumed, what it produced, and why another agent was or was not invoked.
 
 The goal is an environment where agent autonomy and human UX reinforce each other rather than competing.
+
+
+## Agentic-Agile work contracts and waves
+
+The orchestration layer now adopts a thin Agentic-Agile process contract. A dispatchable unit should have an observable objective, bounded scope, explicit ownership, dependencies, acceptance evidence, negative constraints, authority tier, and runtime policy before wave admission.
+
+Independent units may execute in parallel only after ownership and dependency checks pass. Dependent work waits for an explicit review/evidence gate. A successful workflow termination is not itself a wave-completion proof.
+
+The canonical lifecycle is:
+
+`INTAKE → SPECIFY → DECOMPOSE → OWNERSHIP/DEPENDENCY CHECK → WAVE ADMISSION → PARALLEL EXECUTION → REVIEW GATE → EVIDENCE VALIDATION → INTEGRATION → RETROSPECTIVE → NEXT WAVE`
+
+The existing runtime observer remains nested inside execution:
+
+`ACT → WAIT → WATCH → VALIDATE → RE-FETCH → COMPARE → CLASSIFY → RECORD`
+
+Retrospectives should classify process gaps separately from task outcomes (specification, decomposition, execution, verification, integration, governance, and environment). Repeated findings should become durable skills, templates, tests, or workflow changes.
+
+See `docs/ops/AGENTIC-AGILE-PROCESS-INTEGRATION.md` for the adopted contract and gate rules.
+
+
+## Canonical phase-engine integration
+
+Agentic-Agile waves are implemented as a process layer over the existing dependency-phase control plane, not as a second scheduler. The canonical lifecycle state remains in `docs/agentic/dependency-phases.json`, `phase-approvals.json`, the deterministic phase engine, and current GitHub evidence.
+
+Accordingly, a future manager should ask the phase evaluator for readiness before dispatch, use its `ready/running/awaiting_review/blocked/complete` state as the lifecycle boundary, and derive wave membership from the existing dependency graph. Generated views and agent prose remain advisory.
+
+Do not create a competing `agentic-agile.yaml` or duplicate claim/idempotency protocol. Extend the phase engine when additional Agentic-Agile metadata is needed.

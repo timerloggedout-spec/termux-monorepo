@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-19T21:43:32Z",
+  "generated_at": "2026-09-19T21:55:00Z",
   "lane": "help-wanted",
   "receipts": 5,
   "kinds": {
@@ -90,19 +90,14 @@
     "respect_maintainer_routing": true
   },
   "freshness": {
-    "status": "backfilled-2026-09-19",
-    "note": "External stake PRs + closed-skip event. Actions artifact receipts still ephemeral until commit-on-success lands."
+    "status": "live-cdn-2026-09-19",
+    "note": "Open CDN URL in browser. gh-pages published; enable Pages for github.io."
   },
   "live": {
-    "vercel_project": "help-wanted-dash",
-    "vercel_project_id": "prj_iS20meBbcNw6lsng2GHjO4I9gC78",
-    "vercel_url": null,
-    "why_no_live_url": "MCP lacks Production Deploy permission on team. Operator must Deploy once in Vercel UI after Git connect + rootDirectory=apps/help-wanted-dashboard.",
-    "interim": {
-      "status_json": "https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/ops/generated/help-wanted-status.json",
-      "html_raw": "https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/apps/help-wanted-dashboard/index.html",
-      "github_tree": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/apps/help-wanted-dashboard"
-    }
+    "cdn_jsdelivr": "https://cdn.jsdelivr.net/gh/timerloggedout-spec/termux-monorepo@master/apps/help-wanted-dashboard/index.html",
+    "cdn_githack": "https://raw.githack.com/timerloggedout-spec/termux-monorepo/master/apps/help-wanted-dashboard/index.html",
+    "github_pages_pending": "https://timerloggedout-spec.github.io/termux-monorepo/",
+    "vercel_url": null
   },
   "dashboard": "apps/help-wanted-dashboard"
 }

@@ -6,6 +6,7 @@ Uses GITHUB_TOKEN / GH_TOKEN (OPERATOR PAT order resolved by workflow).
 
 Creates an explicit stake branch + opens PR against the author repo.
 PRIMARY = upstream PR. FALLBACK = issue notice + fork branch when PR blocked.
+Skips closed issues unless HELP_WANTED_ALLOW_CLOSED=1.
 
 Usage:
   python3 scripts/ci/help_wanted_contribute.py --issue https://github.com/o/r/issues/1
@@ -92,13 +93,10 @@ def _parse_fork_full_name(text: str, actor: str, repo: str) -> str | None:
 
 
 def _candidate_forks(actor: str, repo: str) -> list[str]:
-    names = [f"{actor}/{repo}_fork", f"{actor}/{repo}"]
-    # API: forks of upstream owned by actor
-    return names
+    return [f"{actor}/{repo}_fork", f"{actor}/{repo}"]
 
 
 def _resolve_existing_fork(owner: str, repo: str, actor: str) -> str | None:
-    # 1) list upstream forks filtered to actor (public + PAT-visible)
     try:
         forks = _api("GET", f"https://api.github.com/repos/{owner}/{repo}/forks?per_page=100")
         if isinstance(forks, list):
@@ -109,8 +107,6 @@ def _resolve_existing_fork(owner: str, repo: str, actor: str) -> str | None:
                     return full
     except urllib.error.HTTPError:
         pass
-
-    # 2) user repos named repo or repo_fork
     for name in (f"{repo}_fork", repo):
         try:
             meta = _api("GET", f"https://api.github.com/repos/{actor}/{name}")
@@ -120,8 +116,6 @@ def _resolve_existing_fork(owner: str, repo: str, actor: str) -> str | None:
         except urllib.error.HTTPError as e:
             if e.code != 404:
                 raise
-
-    # 3) user repo search (handles private-ish visibility better than public search)
     q = urllib.parse.quote(f"{repo} user:{actor} in:name fork:true")
     try:
         found = _api("GET", f"https://api.github.com/search/repositories?q={q}&per_page=10")
@@ -140,18 +134,13 @@ def ensure_fork(owner: str, repo: str, actor: str, token: str) -> str:
     existing = _resolve_existing_fork(owner, repo, actor)
     if existing:
         return existing
-
     gh_text = ""
     try:
-        r = run(
-            ["gh", "repo", "fork", f"{owner}/{repo}", "--clone=false", "--default-branch-only"],
-            check=False,
-        )
+        r = run(["gh", "repo", "fork", f"{owner}/{repo}", "--clone=false", "--default-branch-only"], check=False)
         gh_text = ((r.stderr or "") + "\n" + (r.stdout or "")).strip()
         parsed = _parse_fork_full_name(gh_text, actor, repo)
         if parsed:
             print(f"gh fork reported: {parsed}")
-            # confirm it exists; if 404, keep polling candidates
             existing = parsed
         elif r.returncode != 0 and "already exists" not in gh_text.lower():
             try:
@@ -165,19 +154,16 @@ def ensure_fork(owner: str, repo: str, actor: str, token: str) -> str:
         except urllib.error.HTTPError as e:
             if e.code not in (422, 403):
                 raise
-
     candidates = []
     if existing:
         candidates.append(existing)
     candidates.extend(_candidate_forks(actor, repo))
-    # unique preserve order
     seen: set[str] = set()
     uniq = []
     for c in candidates:
         if c not in seen:
             seen.add(c)
             uniq.append(c)
-
     for attempt in range(1, 13):
         resolved = _resolve_existing_fork(owner, repo, actor)
         if resolved:
@@ -207,14 +193,8 @@ def default_branch(owner: str, repo: str) -> str:
         return "main"
 
 
-def create_pr_api(
-    owner: str, repo: str, head: str, base: str, title: str, body: str
-) -> str:
-    out = _api(
-        "POST",
-        f"https://api.github.com/repos/{owner}/{repo}/pulls",
-        {"title": title, "head": head, "base": base, "body": body},
-    )
+def create_pr_api(owner: str, repo: str, head: str, base: str, title: str, body: str) -> str:
+    out = _api("POST", f"https://api.github.com/repos/{owner}/{repo}/pulls", {"title": title, "head": head, "base": base, "body": body})
     if isinstance(out, dict):
         return out.get("html_url") or ""
     return ""
@@ -235,6 +215,17 @@ def main() -> int:
     os.environ["GITHUB_TOKEN"] = token
 
     print(f"contribute LIVE: {owner}/{repo}#{number}", flush=True)
+
+    try:
+        meta = _api("GET", f"https://api.github.com/repos/{owner}/{repo}/issues/{number}")
+        if isinstance(meta, dict) and (meta.get("state") or "").lower() == "closed":
+            if os.environ.get("HELP_WANTED_ALLOW_CLOSED") != "1":
+                print(f"SKIP closed issue {owner}/{repo}#{number} (closed_at={meta.get('closed_at')})", file=sys.stderr)
+                print("::notice::contribute_skipped_closed=true")
+                return 0
+    except urllib.error.HTTPError as e:
+        print(f"issue meta check failed: {e.code}", file=sys.stderr)
+
     fork = ensure_fork(owner, repo, args.actor_fork, token)
     print(f"using fork: {fork}", flush=True)
     branch = f"help-wanted/issue-{number}"
@@ -256,15 +247,7 @@ def main() -> int:
             raise last_err
 
         run(["git", "config", "user.name", "timerloggedout-spec"], cwd=tmp)
-        run(
-            [
-                "git",
-                "config",
-                "user.email",
-                "41898282+github-actions[bot]@users.noreply.github.com",
-            ],
-            cwd=tmp,
-        )
+        run(["git", "config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com"], cwd=tmp)
         run(["git", "checkout", "-B", branch], cwd=tmp)
 
         stake = Path(tmp) / ".github" / "help-wanted-lane-stake.md"
@@ -284,14 +267,8 @@ the real fix; do not treat this as the final implementation.
             encoding="utf-8",
         )
         run(["git", "add", ".github/help-wanted-lane-stake.md"], cwd=tmp)
-        commit = run(
-            ["git", "commit", "-m", f"help-wanted: stake claim for #{number}"],
-            cwd=tmp,
-            check=False,
-        )
-        if commit.returncode != 0 and "nothing to commit" not in (
-            (commit.stdout or "") + (commit.stderr or "")
-        ):
+        commit = run(["git", "commit", "-m", f"help-wanted: stake claim for #{number}"], cwd=tmp, check=False)
+        if commit.returncode != 0 and "nothing to commit" not in ((commit.stdout or "") + (commit.stderr or "")):
             return 1
         run(["git", "push", "-u", "origin", branch, "--force"], cwd=tmp)
 
@@ -310,44 +287,12 @@ the real fix; do not treat this as the final implementation.
 
     pr_url = ""
     try:
-        pr = run(
-            [
-                "gh",
-                "pr",
-                "create",
-                "--repo",
-                f"{owner}/{repo}",
-                "--head",
-                head,
-                "--base",
-                base,
-                "--title",
-                title,
-                "--body",
-                body,
-            ],
-            check=False,
-        )
+        pr = run(["gh", "pr", "create", "--repo", f"{owner}/{repo}", "--head", head, "--base", base, "--title", title, "--body", body], check=False)
         combined = ((pr.stdout or "") + (pr.stderr or "")).strip()
         if pr.returncode == 0:
             pr_url = (pr.stdout or "").strip().splitlines()[-1] if pr.stdout else ""
         else:
-            listed = run(
-                [
-                    "gh",
-                    "pr",
-                    "list",
-                    "--repo",
-                    f"{owner}/{repo}",
-                    "--head",
-                    head,
-                    "--json",
-                    "url",
-                    "--jq",
-                    ".[0].url",
-                ],
-                check=False,
-            )
+            listed = run(["gh", "pr", "list", "--repo", f"{owner}/{repo}", "--head", head, "--json", "url", "--jq", ".[0].url"], check=False)
             existing = (listed.stdout or "").strip()
             if existing:
                 print(f"existing PR: {existing}")
@@ -361,11 +306,8 @@ the real fix; do not treat this as the final implementation.
                     if e.code == 422:
                         print("PR create 422 — treating as existing/ok", file=sys.stderr)
                         pr_url = "existing-422"
-                    elif e.code in (403, 401):
-                        print(f"PR create {e.code} — will FALLBACK notice", file=sys.stderr)
-                        pr_url = ""
                     else:
-                        print(f"PR create HTTP {e.code} — will FALLBACK notice", file=sys.stderr)
+                        print(f"PR create {e.code} — will FALLBACK notice", file=sys.stderr)
                         pr_url = ""
     except FileNotFoundError:
         try:
@@ -387,15 +329,10 @@ the real fix; do not treat this as the final implementation.
         f"- Fork branch: https://github.com/{fork}/tree/{branch}\n"
         f"- Stake file: `.github/help-wanted-lane-stake.md` on that branch\n"
         f"- Actor: timerloggedout-spec help-wanted execute\n\n"
-        f"Maintainers: open a PR from `{args.actor_fork}:{branch}` into this repo, "
-        f"or close if not wanted.\n"
+        f"Maintainers: open a PR from `{args.actor_fork}:{branch}` into this repo, or close if not wanted.\n"
     )
     try:
-        out = _api(
-            "POST",
-            f"https://api.github.com/repos/{owner}/{repo}/issues/{number}/comments",
-            {"body": notice},
-        )
+        out = _api("POST", f"https://api.github.com/repos/{owner}/{repo}/issues/{number}/comments", {"body": notice})
         curl = out.get("html_url") if isinstance(out, dict) else ""
         print(f"fallback notice: {curl}")
         print(f"::notice::fallback_notice={curl}")

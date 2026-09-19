@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "7461c7a191f95d5eb1df3787f57ba0708b66aeb6629191c8f1565768a94b7573",
-  "workflow_count": 70,
+  "source_fingerprint": "bb5389ccfcf5e357e08a28d000cf16f6f74b4e265795f5c58e2bc9b1bc17824d",
+  "workflow_count": 72,
   "workflows": [
     {
       "action_pins": [
@@ -773,6 +773,44 @@
       ]
     },
     {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: help-wanted-execute cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "budget",
+        "claim",
+        "patch-zero-72"
+      ],
+      "name": "help-wanted execute",
+      "path": ".github/workflows/help-wanted-execute.yml",
+      "schedules": [
+        "41 */4 * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: help-wanted-scout cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "scout"
+      ],
+      "name": "help-wanted scout",
+      "path": ".github/workflows/help-wanted-scout.yml",
+      "schedules": [
+        "17 */2 * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
@@ -1036,7 +1074,7 @@
         "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
       ],
       "authority": "read-only-or-advisory",
-      "concurrency": "group: pr-production-ledger-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }} cancel-in-progress: true",
+      "concurrency": "# Include event_name so comment storms do not cancel PR-sync ledger runs. # cancel-in-progress:false — concurrent ledgers are cheap; cancelled ones are failures. group: pr-production-ledger-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}-${{ github.event_name }} cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
         "ledger"

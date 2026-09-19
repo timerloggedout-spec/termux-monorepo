@@ -5,17 +5,16 @@ description: Adaptive WAIT for agentic GitHub ops. Dual-gate before promote. Sta
 
 Local mirror. Canonical is master `.agents/skills/adaptive-wait/SKILL.md`.
 
-Master: `16030fcfd26b3b4f3427fa5e098cbf7862b7f081`.
-#635 MERGED extract-only security (symlink token). Dual-gate green on merge SHA ancestry.
-#608 HOLD dirty/behind — do not merge (ledger extract already landed via #627).
-#629/#630 Jules dirty observe. #636 update-branch after #635.
-#632 behind. #633/#634 WAIT unstable record PRs.
+Master: `1b92899198570e3fda6d7a23578e59458a29daac`.
+#635/#636/#637/#485/#638/#640 MERGED this window. Dual-gate enforced.
+#608 HOLD dirty/behind. #629/#630 Jules dirty observe.
+ML HOLD: #601/#549/#432 extract-later only.
+#639 WAIT unstable until post-update-branch gates.
 
-This session (2026-09-19 12:07 PDT):
-- help-wanted-execute dry_run dispatched DioNanos/codex-termux#14.
-- #635 promoted after dual-gate verify; #636 left WAIT post-rebase.
-- No merge of #608/#629/#630.
-- No comment-storm.
-- Stay busy: session record from live master + dry_run dispatch + Copilot on #636.
+This session (2026-09-19 14:09 PDT):
+- #640 landed neighbor-safe (no claim spam / skip closed).
+- #639 update-branch queued onto 1b928991; stay busy with skills record.
+- Vercel rate-limit 24h remains advisory, not promote-blocker if gates green.
+- Stay busy: skills record + #639 rebase + mutual-thread inventory (astro-loop#42 open).
 
 Agent-Identity: Grok (Administrator)

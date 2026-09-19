@@ -21,6 +21,12 @@
     background: radial-gradient(1200px 600px at 10% -10%, #132033 0%, var(--bg) 55%);
     color: var(--text); min-height: 100vh;
   }
+  .site-nav { display:flex; flex-wrap:wrap; gap:0.75rem 1.25rem; align-items:center;
+    padding:0.65rem 1.75rem; border-bottom:1px solid var(--border); background:#0e141c; font-size:0.85rem; }
+  .site-nav a { color:var(--muted); font-weight:600; text-decoration:none; }
+  .site-nav a:hover { color:var(--accent); }
+  .site-nav .here { color:var(--accent); }
+  .site-nav .brand { color:var(--text); margin-right:0.5rem; }
   header {
     padding: 1.5rem 1.75rem 0.75rem; border-bottom: 1px solid var(--border);
     display: flex; flex-wrap: wrap; gap: 1rem; align-items: baseline; justify-content: space-between;
@@ -58,10 +64,18 @@
 </style>
 </head>
 <body>
+<nav class="site-nav" aria-label="Site">
+  <a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a>
+  <a href="https://timerloggedout-spec.github.io/">Marketing</a>
+  <a class="here" href="https://timerloggedout-spec.github.io/help-wanted/">Ops dashboard</a>
+  <a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a>
+  <a href="https://termux-monorepo.vercel.app">Preview portal</a>
+  <a href="https://timerloggedout-spec.github.io/termux-monorepo/">Project hub</a>
+</nav>
 <header>
   <div>
     <h1>Help-Wanted <span>Oversight</span> Dashboard</h1>
-    <div class="meta">termux-monorepo · evaluation lane · not MoneyBall admission</div>
+    <div class="meta">termux-monorepo · evaluation lane · not MoneyBall admission · not the marketing landing</div>
   </div>
   <div class="meta" id="generated">Loading…</div>
 </header>
@@ -85,7 +99,9 @@
   <footer>
     SSOT evidence: <code>docs/ops/generated/help-wanted-evidence/*.jsonl</code> ·
     Status board: <code>docs/ops/HELP-WANTED-STATUS.md</code> ·
-    This surface is a projection only.
+    Projection only ·
+    <a href="https://timerloggedout-spec.github.io/">Marketing home</a> ·
+    <a href="https://cellcog.ai/invitation/l19hdRGY9dTh">Partner invitation</a>
   </footer>
 </main>
 <script>
@@ -118,7 +134,6 @@ async function load() {
   ].map(([label, val, cls]) =>
     `<div class="card"><div class="label">${label}</div><div class="value ${cls}">${val}</div></div>`
   ).join('');
-
   const kinds = data.kinds || {};
   const maxK = Math.max(1, ...Object.values(kinds).map(Number));
   document.getElementById('kinds').innerHTML = Object.keys(kinds).length
@@ -126,7 +141,6 @@ async function load() {
         `<div class="bar-row"><div class="bar-label">${k}</div><div class="bar-track"><div class="bar-fill" style="width:${(100*v)/maxK}%"></div></div><div class="meta">${v}</div></div>`
       ).join('')
     : '<div class="meta">No kind data yet</div>';
-
   const rows = Object.entries(issues).sort((a,b) => a[0].localeCompare(b[0]));
   document.getElementById('issues').innerHTML = rows.length ? rows.map(([issue, events]) => {
     const last = events[events.length - 1] || {};
@@ -143,7 +157,6 @@ async function load() {
       <td>${links.join(' · ') || '—'}</td>
     </tr>`;
   }).join('') : '<tr><td colspan="5" class="meta">No issues tracked yet.</td></tr>';
-
   const pol = data.policy || {};
   const items = [
     pol.claim_idempotent && 'Claim once (idempotent marker)',

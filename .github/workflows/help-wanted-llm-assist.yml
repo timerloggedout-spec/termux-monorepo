@@ -1,0 +1,266 @@
+name: help-wanted-llm-assist
+
+# USE existing routing + Actions secrets (issue #184 inventory by NAME only).
+# Never read token values from issue bodies. Keys live in repo secrets.
+#
+# Flow: pick foreign open PR → model-router (invoke) → http-llm-invoke
+#        → comment on foreign PR with analysis → evidence receipt
+
+on:
+  schedule:
+    - cron: "23 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: "Foreign PR URL (empty = first CHANGES_REQUESTED foreign)"
+        required: false
+        default: ""
+  repository_dispatch:
+    types: [help-wanted-llm-assist]
+
+concurrency:
+  group: help-wanted-llm-assist
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  assist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve target foreign PR
+        id: target
+        env:
+          OPERATOR_GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+          OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
+          ARCHWIZ_GITHUB_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_PR: ${{ github.event.inputs.pr || github.event.client_payload.pr || '' }}
+        run: |
+          set -euo pipefail
+          export GITHUB_TOKEN="${OPERATOR_GITHUB_TOKEN:-${OPERATOR_TOKEN:-${ARCHWIZ_GITHUB_TOKEN:-$GITHUB_TOKEN}}}"
+          python3 <<'PY'
+          import json, os, re, urllib.parse, urllib.request
+          tok = os.environ["GITHUB_TOKEN"]
+          def api(path):
+              req = urllib.request.Request(
+                  "https://api.github.com" + path,
+                  headers={
+                      "Accept": "application/vnd.github+json",
+                      "Authorization": f"Bearer {tok}",
+                      "User-Agent": "help-wanted-llm-assist",
+                  },
+              )
+              with urllib.request.urlopen(req, timeout=45) as r:
+                  return json.loads(r.read().decode())
+          pr = (os.environ.get("INPUT_PR") or "").strip()
+          if pr:
+              m = re.search(r"github\.com/([^/]+)/([^/]+)/pull/(\d+)", pr)
+              if not m:
+                  raise SystemExit(f"bad pr url: {pr}")
+              owner, repo, num = m.group(1), m.group(2), m.group(3)
+          else:
+              q = urllib.parse.quote(
+                  "author:timerloggedout-spec is:pr is:open review:changes_requested "
+                  "-repo:timerloggedout-spec/termux-monorepo"
+              )
+              data = api(f"/search/issues?q={q}&per_page=5")
+              items = data.get("items") or []
+              if not items:
+                  q2 = urllib.parse.quote(
+                      "author:timerloggedout-spec is:pr is:open "
+                      "-repo:timerloggedout-spec/termux-monorepo"
+                  )
+                  items = (api(f"/search/issues?q={q2}&per_page=5").get("items") or [])
+              if not items:
+                  print("no foreign PR target")
+                  with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+                      f.write("skip=true\n")
+                  raise SystemExit(0)
+              it = items[0]
+              parts = (it.get("repository_url") or "").rstrip("/").split("/")
+              owner, repo, num = parts[-2], parts[-1], str(it["number"])
+          # load PR + issue context (bounded)
+          prd = api(f"/repos/{owner}/{repo}/pulls/{num}")
+          reviews = api(f"/repos/{owner}/{repo}/pulls/{num}/reviews")
+          review_bits = []
+          for r in reviews or []:
+              if r.get("state") == "CHANGES_REQUESTED":
+                  review_bits.append(((r.get("user") or {}).get("login"), (r.get("body") or "")[:1500]))
+          title = prd.get("title") or ""
+          body = (prd.get("body") or "")[:2000]
+          files = api(f"/repos/{owner}/{repo}/pulls/{num}/files")
+          file_list = ", ".join((f.get("filename") or "") for f in (files or [])[:20])
+          prompt = (
+              f"You are assisting the termux-monorepo help-wanted lane on a FOREIGN open PR.\n"
+              f"Repo: {owner}/{repo} PR #{num}\n"
+              f"Title: {title}\n"
+              f"Body:\n{body}\n\n"
+              f"Files touched: {file_list}\n\n"
+          )
+          if review_bits:
+              prompt += "CHANGES_REQUESTED reviews:\n"
+              for u, b in review_bits:
+                  prompt += f"@{u}:\n{b}\n\n"
+          prompt += (
+              "Task: Give a concrete next-patch plan (file-level) to satisfy the review or "
+              "to replace a stake-only PR with a real minimal fix. Be specific. No secrets. "
+              "Max 40 lines."
+          )
+          # write prompt for later step
+          open("/tmp/hw-llm-prompt.txt", "w").write(prompt)
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write("skip=false\n")
+              f.write(f"owner={owner}\n")
+              f.write(f"repo={repo}\n")
+              f.write(f"number={num}\n")
+              f.write(f"full={owner}/{repo}\n")
+          print(f"target {owner}/{repo}#{num}")
+          PY
+
+      - name: Detect secret presence (names only)
+        id: keys
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          OMNI_API_KEY: ${{ secrets.OMNI_API_KEY }}
+          OMNIROUTE_API_KEY: ${{ secrets.OMNIROUTE_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          echo "has_openrouter=$([ -n \"${OPENROUTER_API_KEY:-}\" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          echo "has_omni=$([ -n \"${OMNI_API_KEY:-}${OMNIROUTE_API_KEY:-}\" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          echo "has_gemini=$([ -n \"${GEMINI_API_KEY:-}\" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
+      - name: Model router (invoke)
+        id: route
+        if: steps.target.outputs.skip != 'true'
+        uses: ./.github/actions/model-router
+        with:
+          role: invoke
+          has-openrouter: ${{ steps.keys.outputs.has_openrouter }}
+          has-omni: ${{ steps.keys.outputs.has_omni }}
+          has-gemini: ${{ steps.keys.outputs.has_gemini }}
+
+      - name: Resolve API key for chosen provider
+        id: key
+        if: steps.target.outputs.skip != 'true' && steps.route.outputs.skip != 'true'
+        env:
+          PROVIDER: ${{ steps.route.outputs.provider }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          OMNI_API_KEY: ${{ secrets.OMNI_API_KEY }}
+          OMNIROUTE_API_KEY: ${{ secrets.OMNIROUTE_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          FELO_AI_API: ${{ secrets.FELO_AI_API }}
+        run: |
+          set -euo pipefail
+          P="${PROVIDER:-none}"
+          KEY=""
+          case "$P" in
+            openrouter) KEY="${OPENROUTER_API_KEY:-}" ;;
+            omni) KEY="${OMNI_API_KEY:-${OMNIROUTE_API_KEY:-}}" ;;
+            felo) KEY="${FELO_AI_API:-}" ;;
+            gemini)
+              echo "::notice::gemini selected — http-llm-invoke is openai-compatible peers; falling back openrouter if present"
+              KEY="${OPENROUTER_API_KEY:-}"
+              echo "provider=openrouter" >> "$GITHUB_OUTPUT"
+              echo "model=qwen/qwen3-coder:free" >> "$GITHUB_OUTPUT"
+              ;;
+            *) KEY="" ;;
+          esac
+          if [ -z "${KEY}" ] && [ -n "${OPENROUTER_API_KEY:-}" ]; then
+            KEY="$OPENROUTER_API_KEY"
+            echo "provider=openrouter" >> "$GITHUB_OUTPUT"
+            echo "model=${{ steps.route.outputs.model }}" >> "$GITHUB_OUTPUT"
+            # force free openrouter model if router picked gemini
+            if [[ "${{ steps.route.outputs.model }}" != *"/"* ]]; then
+              echo "model=qwen/qwen3-coder:free" >> "$GITHUB_OUTPUT"
+            fi
+          fi
+          if [ -z "${KEY}" ]; then
+            echo "::warning::No usable LLM API key in Actions secrets"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            echo "key=${KEY}" >> "$GITHUB_OUTPUT"
+            echo "::add-mask::${KEY}"
+            if [ -z "${{ steps.key.outputs.provider }}" ]; then
+              echo "provider=$P" >> "$GITHUB_OUTPUT"
+              echo "model=${{ steps.route.outputs.model }}" >> "$GITHUB_OUTPUT"
+            fi
+          fi
+
+      - name: HTTP LLM invoke on foreign PR
+        if: steps.target.outputs.skip != 'true' && steps.route.outputs.skip != 'true' && steps.key.outputs.skip != 'true'
+        uses: ./.github/actions/http-llm-invoke
+        with:
+          provider: ${{ steps.key.outputs.provider || steps.route.outputs.provider }}
+          model: ${{ steps.key.outputs.model || steps.route.outputs.model }}
+          role: invoke
+          target_number: ${{ steps.target.outputs.number }}
+          prompt: ${{ 'see file' }}
+          api_key: ${{ steps.key.outputs.key }}
+          github_token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+          repository: ${{ steps.target.outputs.full }}
+          post_comment: "true"
+          max_tokens: "2048"
+          experiment_id: help-wanted-llm-assist
+          prompt_variant: foreign-pr-plan
+
+      # Composite action reads PROMPT env from input; empty prompt if we only set file.
+      # Re-run invoke via inline when prompt file exists:
+      - name: Invoke with prompt file (reliable)
+        if: steps.target.outputs.skip != 'true' && steps.key.outputs.skip != 'true'
+        env:
+          PROVIDER: ${{ steps.key.outputs.provider || 'openrouter' }}
+          MODEL: ${{ steps.key.outputs.model || 'qwen/qwen3-coder:free' }}
+          API_KEY: ${{ steps.key.outputs.key }}
+          GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+          REPO: ${{ steps.target.outputs.full }}
+          TARGET: ${{ steps.target.outputs.number }}
+        run: |
+          set -euo pipefail
+          if [ -z "${API_KEY:-}" ]; then echo "no key"; exit 0; fi
+          PROMPT=$(cat /tmp/hw-llm-prompt.txt)
+          BASE="https://openrouter.ai/api/v1"
+          if [ "$PROVIDER" = "omni" ]; then BASE="https://cloud.omniroute.online/v1"; fi
+          PAYLOAD=$(jq -n --arg m "$MODEL" --arg p "$PROMPT" '{model:$m,messages:[{role:"user",content:$p}],max_tokens:2048,stream:false}')
+          RESP=$(curl -sS -X POST "${BASE}/chat/completions" \
+            -H "Authorization: Bearer ${API_KEY}" \
+            -H "Content-Type: application/json" \
+            -H "HTTP-Referer: https://github.com/timerloggedout-spec/termux-monorepo" \
+            -H "X-Title: help-wanted-llm-assist" \
+            -d "$PAYLOAD" || true)
+          TEXT=$(echo "$RESP" | jq -r '.choices[0].message.content // empty' 2>/dev/null || true)
+          if [ -z "$TEXT" ]; then
+            echo "::warning::empty model response: $(echo "$RESP" | head -c 400)"
+            exit 0
+          fi
+          BODY=$(printf '%s\n\n%s\n\n%s\n' \
+            "### Help-wanted LLM assist (\`${PROVIDER}\` / \`${MODEL}\`)" \
+            "$TEXT" \
+            "_Routed via monorepo model-router secrets — free-tier preferred. Not auto-applied._")
+          curl -sS -X POST \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${REPO}/issues/${TARGET}/comments" \
+            -d "$(jq -n --arg b "$BODY" '{body:$b}')" >/dev/null
+          echo "commented on ${REPO}#${TARGET}"
+          mkdir -p docs/ops/generated/help-wanted-evidence
+          DAY=$(date -u +%Y-%m-%d)
+          jq -nc --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --arg issue "https://github.com/${REPO}/pull/${TARGET}" \
+            --arg provider "$PROVIDER" --arg model "$MODEL" \
+            '{ts:$ts,kind:"llm_assist",issue:$issue,ok:true,provider:$provider,model:$model,lane:"help-wanted",scout:"oversight"}' \
+            >> "docs/ops/generated/help-wanted-evidence/${DAY}.jsonl"
+
+      - name: Upload evidence artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: help-wanted-llm-evidence
+          path: docs/ops/generated/help-wanted-evidence/
+          if-no-files-found: ignore

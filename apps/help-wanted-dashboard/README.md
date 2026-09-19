@@ -1,19 +1,14 @@
 # Help-Wanted Oversight Dashboard
 
-Public Vercel surface for the help-wanted lane (evaluation / Oversight — **not** MoneyBall admission).
+Static KPI surface for the help-wanted lane.
 
-## Source of truth
+## Live deploy
 
-| Layer | Path |
-|-------|------|
-| Evidence receipts | `docs/ops/generated/help-wanted-evidence/*.jsonl` |
-| Status board (docs) | `docs/ops/HELP-WANTED-STATUS.md` |
-| Machine status | `docs/ops/generated/help-wanted-status.json` |
-| Dashboard snapshot | `apps/help-wanted-dashboard/data/status.json` |
+See `docs/ops/HELP-WANTED-DASHBOARD.md` and workflow `help-wanted-dashboard-deploy.yml`.
 
-```bash
-python3 scripts/ci/help_wanted_status.py
-cp docs/ops/generated/help-wanted-status.json apps/help-wanted-dashboard/data/status.json
-```
+- **Vercel:** Actions job uses `secrets.VERCEL_TOKEN`
+- **GitHub Pages:** `gh-pages` branch → `https://timerloggedout-spec.github.io/termux-monorepo/`
 
-Vercel root directory: `apps/help-wanted-dashboard`.
+## Local
+
+Open `index.html` or serve the folder. Data: `data/status.json` (synced from `docs/ops/generated/help-wanted-status.json` on deploy).

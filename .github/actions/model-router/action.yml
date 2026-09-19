@@ -2,13 +2,8 @@ name: 'Model Router'
 description: |
   Select provider+model for a role (triage|review|invoke).
 
-  Logic chain (AGENT-TEAM-ORCHESTRATION):
-    live catalog (openrouter|felo|omni) → eligible free/zero/trial
-      → model-router pick (Gemini soft-budget primary when present)
-      → invocation telemetry → MoneyBall/3L0 post-success scoring
-
-  "Fallback" means dynamic recovery from unavailable capacity — not a frozen hierarchy.
-  FELO is a first-class peer when FELO_AI_API is set.
+  live catalogs (OR|Felo|Omni) → eligible → model-router → telemetry → MoneyBall post-success.
+  FELO first-class when FELO_AI_API present. Fallback = dynamic recovery, not frozen hierarchy.
 
 inputs:
   role:
@@ -31,15 +26,15 @@ inputs:
     required: false
     default: 'true'
   capability-spine-observe:
-    description: 'Emit AR-18 shadow decision data only; it never changes the execution route'
+    description: 'Emit AR-18 shadow decision data only'
     required: false
     default: 'true'
   target-sha:
-    description: 'Optional already-validated PR head SHA for a PR-scoped observe decision'
+    description: 'Optional PR head SHA'
     required: false
     default: ''
   current-sha:
-    description: 'Optional trusted current SHA used to validate target-sha; required when target-sha is supplied'
+    description: 'Optional current SHA'
     required: false
     default: ''
 
@@ -57,10 +52,10 @@ outputs:
     description: 'Human-readable selection reason'
     value: ${{ steps.pick.outputs.reason }}
   decision:
-    description: 'Secret-free AR-18 observe-mode capability decision envelope'
+    description: 'AR-18 observe envelope'
     value: ${{ steps.pick.outputs.decision }}
   decision-summary:
-    description: 'One-line AR-18 observe-mode decision summary'
+    description: 'AR-18 summary'
     value: ${{ steps.pick.outputs.decision_summary }}
   catalog-state:
     description: 'live | cached | unavailable'
@@ -74,16 +69,15 @@ runs:
       shell: bash
       run: echo "key=$(TZ=America/Los_Angeles date +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
 
-    - name: Restore per-model counters (per-branch best-effort)
-      id: restore
-      uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+    - name: Restore per-model counters
+      uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830
       with:
         path: /tmp/model-router
         key: model-router-${{ steps.date.outputs.key }}
         restore-keys: model-router-${{ steps.date.outputs.key }}
         enableCrossOsArchive: true
 
-    - name: Pick provider + model (live catalog fed)
+    - name: Pick provider + model (live catalog feed)
       id: pick
       shell: bash
       env:
@@ -99,12 +93,13 @@ runs:
         FELO_AI_API: ${{ secrets.FELO_AI_API }}
         OMNI_API_KEY: ${{ secrets.OMNI_API_KEY }}
         OMNIROUTE_API_KEY: ${{ secrets.OMNIROUTE_API_KEY }}
+        COUNTER_DIR: /tmp/model-router
       run: |
-        python3 -m scripts.model_router
+        python3 -m scripts.model_router_bootstrap
 
     - name: Save per-model counters
       if: steps.pick.outputs.skip != 'true'
-      uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+      uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830
       with:
         path: /tmp/model-router
         key: model-router-${{ steps.date.outputs.key }}-${{ github.run_id }}-${{ github.run_attempt }}

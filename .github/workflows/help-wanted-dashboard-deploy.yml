@@ -1,13 +1,14 @@
 name: help-wanted-dashboard-deploy
 
-# Operator: enable project Pages + publish gh-pages + mirror to user github.io
-# Primary readable CDN remains raw.githack (jsDelivr serves text/plain for .html).
+# Site map: marketing (/) ≠ ops (/help-wanted/) ≠ project hub (/termux-monorepo/)
+# See docs/ops/SITE-MAP.md
 
 on:
   push:
     branches: [master]
     paths:
       - "apps/help-wanted-dashboard/**"
+      - "apps/project-pages-hub/**"
       - "docs/ops/generated/help-wanted-status.json"
       - ".github/workflows/help-wanted-dashboard-deploy.yml"
   workflow_dispatch:
@@ -38,43 +39,27 @@ jobs:
           set -euo pipefail
           OWNER=timerloggedout-spec
           REPO=termux-monorepo
-          # Probe existing
           CODE=$(curl -sS -o /tmp/pages.json -w "%{http_code}" \
             -H "Authorization: Bearer $GH_TOKEN" \
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             "https://api.github.com/repos/$OWNER/$REPO/pages" || true)
           echo "GET pages => $CODE"
-          cat /tmp/pages.json || true
           if [ "$CODE" = "404" ]; then
-            echo "Creating Pages site from gh-pages branch..."
             curl -sS -X POST \
               -H "Authorization: Bearer $GH_TOKEN" \
               -H "Accept: application/vnd.github+json" \
               -H "X-GitHub-Api-Version: 2022-11-28" \
               "https://api.github.com/repos/$OWNER/$REPO/pages" \
-              -d '{"build_type":"legacy","source":{"branch":"gh-pages","path":"/"}}' \
-              | tee /tmp/pages-create.json
+              -d '{"build_type":"legacy","source":{"branch":"gh-pages","path":"/"}}' || true
           else
-            echo "Pages exists — ensuring source=gh-pages /"
             curl -sS -X PUT \
               -H "Authorization: Bearer $GH_TOKEN" \
               -H "Accept: application/vnd.github+json" \
               -H "X-GitHub-Api-Version: 2022-11-28" \
               "https://api.github.com/repos/$OWNER/$REPO/pages" \
-              -d '{"build_type":"legacy","source":{"branch":"gh-pages","path":"/"}}' \
-              | tee /tmp/pages-update.json || true
+              -d '{"build_type":"legacy","source":{"branch":"gh-pages","path":"/"}}' || true
           fi
-          CODE2=$(curl -sS -o /tmp/pages2.json -w "%{http_code}" \
-            -H "Authorization: Bearer $GH_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/$OWNER/$REPO/pages" || true)
-          echo "GET pages after => $CODE2"
-          cat /tmp/pages2.json || true
-          HTML=$(python3 -c "import json;d=json.load(open('/tmp/pages2.json'));print(d.get('html_url') or '')" 2>/dev/null || true)
-          echo "html_url=$HTML" >> "$GITHUB_OUTPUT"
-          echo "### Project Pages" >> "$GITHUB_STEP_SUMMARY"
-          echo "$HTML" >> "$GITHUB_STEP_SUMMARY"
 
   pages:
     name: publish-gh-pages
@@ -84,15 +69,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Prepare publish dir
+      - name: Prepare project hub (NOT full dashboard twin)
         run: |
           mkdir -p _site
-          cp -a apps/help-wanted-dashboard/. _site/
-          if [ -f docs/ops/generated/help-wanted-status.json ]; then
-            mkdir -p _site/data
-            cp docs/ops/generated/help-wanted-status.json _site/data/status.json
-          fi
+          cp apps/project-pages-hub/index.html _site/index.html
           touch _site/.nojekyll
+          printf '%s\n' 'Project hub. Canonical ops UI: https://timerloggedout-spec.github.io/help-wanted/' > _site/README.md
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
@@ -103,7 +85,7 @@ jobs:
           force_orphan: true
           user_name: github-actions[bot]
           user_email: github-actions[bot]@users.noreply.github.com
-          commit_message: "deploy(help-wanted-dashboard): ${{ github.sha }}"
+          commit_message: "deploy(project-hub): ${{ github.sha }}"
 
   user-site:
     name: mirror-user-github-io
@@ -113,7 +95,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Prepare help-wanted subtree
+      - name: Prepare help-wanted subtree (canonical dashboard)
         run: |
           mkdir -p _site
           cp -a apps/help-wanted-dashboard/. _site/
@@ -126,7 +108,6 @@ jobs:
       - name: Mirror to timerloggedout-spec.github.io/help-wanted
         uses: peaceiris/actions-gh-pages@v4
         with:
-          # Prefer operator PAT (repo scope on user pages repo); fall back GITHUB_TOKEN cannot write foreign repo
           personal_token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GH_PAT || secrets.GITHUB_TOKEN }}
           external_repository: timerloggedout-spec/timerloggedout-spec.github.io
           publish_dir: _site
@@ -139,7 +120,7 @@ jobs:
 
       - name: User-site URL
         run: |
-          echo "### User github.io mirror" >> "$GITHUB_STEP_SUMMARY"
+          echo "### Canonical ops dashboard" >> "$GITHUB_STEP_SUMMARY"
           echo "https://timerloggedout-spec.github.io/help-wanted/" >> "$GITHUB_STEP_SUMMARY"
 
   vercel:
@@ -169,6 +150,4 @@ jobs:
           fi
           ORG="${VERCEL_ORG_ID:-team_jKHy7m9xZrvrGP5cAlIMPs3S}"
           cd apps/help-wanted-dashboard
-          DEPLOY_URL=$(vercel deploy --prod --yes --token="$VERCEL_TOKEN" --scope="$ORG" 2>&1 | tee /tmp/v.txt | grep -Eo 'https://[^ ]+\.vercel\.app' | tail -n1 || true)
-          echo "### Vercel" >> "$GITHUB_STEP_SUMMARY"
-          echo "${DEPLOY_URL:-see logs}" >> "$GITHUB_STEP_SUMMARY"
+          vercel deploy --prod --yes --token="$VERCEL_TOKEN" --scope="$ORG" 2>&1 | tee /tmp/v.txt || true

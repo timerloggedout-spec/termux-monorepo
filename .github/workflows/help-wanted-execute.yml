@@ -1,9 +1,10 @@
 name: help-wanted execute
 
-# LIVE ONLY — no dry runs.
+# LIVE ONLY — no dry runs. Ever.
 # PRIMARY: claim comment + upstream PR into author's repo.
 # Parallel to SHE (evidence receipts for benchmarks only).
-# OPERATOR PAT: OPERATOR_GITHUB_TOKEN | OPERATOR_TOKEN | ARCHWIZ_GITHUB_TOKEN
+# OPERATOR PAT order: OPERATOR_GITHUB_TOKEN | OPERATOR_TOKEN | ARCHWIZ_GITHUB_TOKEN
+# Fail-closed when no issue selected.
 
 on:
   schedule:
@@ -11,7 +12,7 @@ on:
   workflow_dispatch:
     inputs:
       issue:
-        description: Issue URL or owner/repo#n (empty = adaptive scout top-1)
+        description: Issue URL or owner/repo#n (empty = adaptive scout top-1 / mutual preference)
         required: false
         default: ""
       mode:
@@ -19,7 +20,7 @@ on:
         required: false
         default: claim-and-pr
       daily_budget:
-        description: Max live contributes per UTC day
+        description: Max live contributes per UTC day (soft ceiling this runner)
         required: false
         default: "8"
 
@@ -59,7 +60,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          # Prefer OPERATOR token for search rate limits
           export GITHUB_TOKEN="${OPERATOR_GITHUB_TOKEN:-${OPERATOR_TOKEN:-${ARCHWIZ_GITHUB_TOKEN:-$GITHUB_TOKEN}}}"
           python3 <<'PY'
           import json, os, subprocess
@@ -70,40 +70,24 @@ jobs:
           day = datetime.now(timezone.utc).strftime("%Y-%m-%d")
           path = Path("docs/ops/generated/help-wanted-daily-budget.json")
           path.parent.mkdir(parents=True, exist_ok=True)
-          data = {"day": day, "used": 0, "success": 0, "fail": 0, "events": []}
-          # Budget is per-runner ephemeral unless restored from artifact; floor used at 0 each job.
-          # Soft ceiling still applies within a single matrix expansion later.
-
+          # Soft per-runner ceiling only (ephemeral). Evidence receipts are the durable ledger.
+          data = {"day": day, "used": 0, "success": 0, "fail": 0, "events": [], "note": "ephemeral-runner soft ceiling"}
+          remaining = budget
           issue = (os.environ.get("INPUT_ISSUE") or "").strip()
           mode = (os.environ.get("INPUT_MODE") or "claim-and-pr").strip() or "claim-and-pr"
           event = os.environ.get("EVENT_NAME") or ""
-          remaining = budget
+
+          MUTUAL = [
+              "https://github.com/DioNanos/codex-termux/issues/14",
+              "https://github.com/GlassHaven/Haven/issues/273",
+              "https://github.com/Kilo-Org/agentic-path/issues/25",
+              "https://github.com/PubDeer/astro-loop/issues/42",
+          ]
 
           if not issue:
-              # CRITICAL FIX: catalog is not on disk — scout inline every time
               out = Path("docs/ops/generated/help-wanted-catalog.json")
               out.parent.mkdir(parents=True, exist_ok=True)
-              subprocess.run(
-                  [
-                      "python3",
-                      "scripts/ci/help_wanted_scout.py",
-                      "--max",
-                      "20",
-                      "--label",
-                      "good first issue",
-                      "--out",
-                      str(out),
-                  ],
-                  check=False,
-              )
-              # fallback label if empty
-              items = []
-              if out.exists():
-                  try:
-                      items = json.loads(out.read_text()).get("items") or []
-                  except Exception:
-                      items = []
-              if not items:
+              for label in ("good first issue", "help wanted"):
                   subprocess.run(
                       [
                           "python3",
@@ -111,26 +95,31 @@ jobs:
                           "--max",
                           "20",
                           "--label",
-                          "help wanted",
+                          label,
                           "--out",
                           str(out),
                       ],
                       check=False,
                   )
-                  try:
-                      items = json.loads(out.read_text()).get("items") or []
-                  except Exception:
-                      items = []
-              if items:
-                  top = items[0]
-                  issue = top.get("url") or top.get("html_url") or ""
-                  print(f"inline scout top: score={top.get('score')} {issue}")
+                  items = []
+                  if out.exists():
+                      try:
+                          items = json.loads(out.read_text()).get("items") or []
+                      except Exception:
+                          items = []
+                  if items:
+                      top = items[0]
+                      issue = top.get("url") or top.get("html_url") or ""
+                      print(f"inline scout top: score={top.get('score')} {issue}")
+                      break
+              if not issue and MUTUAL:
+                  issue = MUTUAL[0]
+                  print(f"mutual fallback: {issue}")
 
-          allow = "true" if issue else "false"
           if mode == "claim-and-patch-zero-72" and not issue:
               issue = "https://github.com/vedantnimbarte/zero/issues/72"
-              allow = "true"
 
+          allow = "true" if issue else "false"
           print(f"day={day} remaining={remaining} allow={allow} issue={issue!r} mode={mode} event={event}")
           with open(os.environ["GITHUB_OUTPUT"], "a") as f:
               f.write(f"allow={allow}\n")
@@ -148,10 +137,9 @@ jobs:
           path: |
             docs/ops/generated/help-wanted-catalog.json
             docs/ops/generated/help-wanted-daily-budget.json
-          retention-days: 14
           if-no-files-found: ignore
 
-  no-op-guard:
+  fail_closed:
     name: fail-closed if nothing selected
     needs: budget
     if: needs.budget.outputs.allow != 'true'
@@ -182,24 +170,37 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          TOKEN=""
-          if [ -n "${OPERATOR_GITHUB_TOKEN:-}" ]; then TOKEN="$OPERATOR_GITHUB_TOKEN"
-          elif [ -n "${OPERATOR_TOKEN:-}" ]; then TOKEN="$OPERATOR_TOKEN"
-          elif [ -n "${ARCHWIZ_GITHUB_TOKEN:-}" ]; then TOKEN="$ARCHWIZ_GITHUB_TOKEN"
-          else TOKEN="${GITHUB_TOKEN}"
+          if [ -n "${OPERATOR_GITHUB_TOKEN:-}" ]; then
+            echo "src=OPERATOR_GITHUB_TOKEN"
+            echo "token=${OPERATOR_GITHUB_TOKEN}" >> "$GITHUB_OUTPUT"
+          elif [ -n "${OPERATOR_TOKEN:-}" ]; then
+            echo "src=OPERATOR_TOKEN"
+            echo "token=${OPERATOR_TOKEN}" >> "$GITHUB_OUTPUT"
+          elif [ -n "${ARCHWIZ_GITHUB_TOKEN:-}" ]; then
+            echo "src=ARCHWIZ_GITHUB_TOKEN"
+            echo "token=${ARCHWIZ_GITHUB_TOKEN}" >> "$GITHUB_OUTPUT"
+          elif [ -n "${GITHUB_TOKEN:-}" ]; then
+            echo "src=GITHUB_TOKEN"
+            echo "token=${GITHUB_TOKEN}" >> "$GITHUB_OUTPUT"
+          else
+            echo "No OPERATOR token" >&2
+            exit 1
           fi
-          if [ -z "$TOKEN" ]; then echo "No OPERATOR token" >&2; exit 1; fi
-          echo "token_len=${#TOKEN}" >> "$GITHUB_OUTPUT"
-          echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
+          echo "::add-mask::${OPERATOR_GITHUB_TOKEN:-}"
+          echo "::add-mask::${OPERATOR_TOKEN:-}"
+          echo "::add-mask::${ARCHWIZ_GITHUB_TOKEN:-}"
 
       - name: Live claim (no dry-run)
         env:
           GITHUB_TOKEN: ${{ steps.tok.outputs.token }}
+          GH_TOKEN: ${{ steps.tok.outputs.token }}
         run: |
           set -euo pipefail
+          # NEVER pass --dry-run
           python3 scripts/ci/help_wanted_claim.py --issue "${{ needs.budget.outputs.issue }}"
 
       - name: Evidence receipt
+        if: success()
         env:
           GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
@@ -210,6 +211,17 @@ jobs:
             --ok true \
             --run-url "$GITHUB_RUN_URL"
 
+      - name: Evidence receipt (fail)
+        if: failure()
+        env:
+          GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python3 scripts/ci/help_wanted_evidence.py \
+            --kind claim \
+            --issue "${{ needs.budget.outputs.issue }}" \
+            --ok false \
+            --run-url "$GITHUB_RUN_URL" || true
+
       - name: Upload evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -217,13 +229,14 @@ jobs:
           name: help-wanted-claim-evidence
           path: docs/ops/generated/help-wanted-evidence/
           retention-days: 30
+          if-no-files-found: ignore
 
   contribute:
     name: fork + commit + upstream PR
     needs: [budget, claim]
     if: needs.budget.outputs.allow == 'true' && needs.budget.outputs.mode == 'claim-and-pr'
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
         with:
@@ -238,10 +251,15 @@ jobs:
         run: |
           set -euo pipefail
           TOKEN="${OPERATOR_GITHUB_TOKEN:-${OPERATOR_TOKEN:-${ARCHWIZ_GITHUB_TOKEN:-}}}"
-          if [ -z "$TOKEN" ]; then echo "OPERATOR PAT required for upstream PR" >&2; exit 1; fi
-          echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
+          if [ -z "$TOKEN" ]; then
+            echo "OPERATOR PAT required for upstream PR (GITHUB_TOKEN cannot open external PRs reliably)" >&2
+            exit 1
+          fi
+          echo "token=${TOKEN}" >> "$GITHUB_OUTPUT"
+          echo "::add-mask::${TOKEN}"
 
       - name: Contribute (PRIMARY upstream-pr)
+        id: contrib
         env:
           GH_TOKEN: ${{ steps.tok.outputs.token }}
           GITHUB_TOKEN: ${{ steps.tok.outputs.token }}
@@ -249,11 +267,29 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/ci/help_wanted_contribute.py --issue "${{ needs.budget.outputs.issue }}"
+
+      - name: Evidence receipt (success)
+        if: success()
+        env:
+          GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
           python3 scripts/ci/help_wanted_evidence.py \
             --kind upstream_pr \
             --issue "${{ needs.budget.outputs.issue }}" \
             --ok true \
             --run-url "$GITHUB_RUN_URL"
+
+      - name: Evidence receipt (fail)
+        if: failure()
+        env:
+          GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python3 scripts/ci/help_wanted_evidence.py \
+            --kind upstream_pr \
+            --issue "${{ needs.budget.outputs.issue }}" \
+            --ok false \
+            --run-url "$GITHUB_RUN_URL" || true
 
       - name: Upload evidence
         if: always()
@@ -262,13 +298,14 @@ jobs:
           name: help-wanted-contribute-evidence
           path: docs/ops/generated/help-wanted-evidence/
           retention-days: 30
+          if-no-files-found: ignore
 
   patch-zero-72:
     name: external PR zero 72 ponytail
     if: needs.budget.outputs.mode == 'claim-and-patch-zero-72'
     needs: [budget, claim]
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
         with:
@@ -283,12 +320,12 @@ jobs:
           set -euo pipefail
           TOKEN="${OPERATOR_GITHUB_TOKEN:-${OPERATOR_TOKEN:-${ARCHWIZ_GITHUB_TOKEN:-}}}"
           if [ -z "$TOKEN" ]; then exit 1; fi
-          echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
+          echo "token=${TOKEN}" >> "$GITHUB_OUTPUT"
+          echo "::add-mask::${TOKEN}"
       - name: Patch + upstream PR
         env:
           GH_TOKEN: ${{ steps.tok.outputs.token }}
           GITHUB_TOKEN: ${{ steps.tok.outputs.token }}
         run: |
           set -euo pipefail
-          echo "Use prior zero#81 path or claim-and-pr for generic contributes"
           python3 scripts/ci/help_wanted_contribute.py --issue "https://github.com/vedantnimbarte/zero/issues/72"

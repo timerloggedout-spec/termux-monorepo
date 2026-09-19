@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Help-Wanted Lane · Oversight Dashboard</title>
+<style>
+  :root {
+    --bg: #0b0f14;
+    --panel: #121820;
+    --border: #1e2a38;
+    --text: #e6edf3;
+    --muted: #8b9cb3;
+    --ok: #3dd68c;
+    --fail: #f07178;
+    --accent: #59c2ff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    background: radial-gradient(1200px 600px at 10% -10%, #132033 0%, var(--bg) 55%);
+    color: var(--text); min-height: 100vh;
+  }
+  header {
+    padding: 1.5rem 1.75rem 0.75rem; border-bottom: 1px solid var(--border);
+    display: flex; flex-wrap: wrap; gap: 1rem; align-items: baseline; justify-content: space-between;
+  }
+  h1 { font-size: 1.25rem; margin: 0; letter-spacing: 0.02em; }
+  h1 span { color: var(--accent); font-weight: 600; }
+  .meta { color: var(--muted); font-size: 0.85rem; }
+  main { padding: 1.25rem 1.75rem 3rem; max-width: 1100px; margin: 0 auto; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.85rem; margin: 1rem 0 1.5rem; }
+  .card {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.1rem;
+  }
+  .card .label { color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .card .value { font-size: 1.75rem; font-weight: 700; margin-top: 0.35rem; }
+  .ok { color: var(--ok); } .fail { color: var(--fail); } .accent { color: var(--accent); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 0.65rem 0.5rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .pill {
+    display: inline-block; padding: 0.15rem 0.5rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600;
+    background: #1a2430; border: 1px solid var(--border);
+  }
+  .pill.ok { color: var(--ok); border-color: #245c40; }
+  .pill.fail { color: var(--fail); border-color: #5c2a30; }
+  .section-title { margin: 1.75rem 0 0.75rem; font-size: 1rem; }
+  ul.policy { margin: 0; padding-left: 1.1rem; color: var(--muted); line-height: 1.55; }
+  .bar-row { display: flex; align-items: center; gap: 0.6rem; margin: 0.35rem 0; }
+  .bar-label { width: 110px; color: var(--muted); font-size: 0.8rem; }
+  .bar-track { flex: 1; height: 10px; background: #1a2430; border-radius: 6px; overflow: hidden; }
+  .bar-fill { height: 100%; background: linear-gradient(90deg, #2b6cb0, var(--accent)); }
+  footer { color: var(--muted); font-size: 0.75rem; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .err { color: var(--fail); padding: 1rem; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Help-Wanted <span>Oversight</span> Dashboard</h1>
+    <div class="meta">termux-monorepo · evaluation lane · not MoneyBall admission</div>
+  </div>
+  <div class="meta" id="generated">Loading…</div>
+</header>
+<main>
+  <div class="grid" id="kpis"></div>
+  <h2 class="section-title">Outcomes by kind</h2>
+  <div class="card" id="kinds"></div>
+  <h2 class="section-title">Tracked issues</h2>
+  <div class="card" style="overflow-x:auto">
+    <table>
+      <thead>
+        <tr><th>Issue</th><th>Latest kind</th><th>OK</th><th>Last ts</th><th>Links</th></tr>
+      </thead>
+      <tbody id="issues"></tbody>
+    </table>
+  </div>
+  <h2 class="section-title">Neighbor policy</h2>
+  <div class="card">
+    <ul class="policy" id="policy"></ul>
+  </div>
+  <footer>
+    SSOT evidence: <code>docs/ops/generated/help-wanted-evidence/*.jsonl</code> ·
+    Status board: <code>docs/ops/HELP-WANTED-STATUS.md</code> ·
+    This surface is a projection only.
+  </footer>
+</main>
+<script>
+async function load() {
+  const urls = [
+    './data/status.json',
+    'https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/ops/generated/help-wanted-status.json',
+  ];
+  let data = null;
+  for (const u of urls) {
+    try {
+      const r = await fetch(u, { cache: 'no-store' });
+      if (r.ok) { data = await r.json(); break; }
+    } catch (e) {}
+  }
+  if (!data) {
+    document.getElementById('generated').textContent = 'Failed to load status';
+    document.getElementById('kpis').innerHTML = '<div class="err">Could not load status JSON.</div>';
+    return;
+  }
+  document.getElementById('generated').textContent = 'Generated ' + (data.generated_at || '—') + ' · receipts ' + (data.receipts || 0);
+  const ok = (data.outcomes && data.outcomes.ok) || 0;
+  const fail = (data.outcomes && data.outcomes.fail) || 0;
+  const issues = data.issues || {};
+  document.getElementById('kpis').innerHTML = [
+    ['Receipts', data.receipts || 0, 'accent'],
+    ['OK', ok, 'ok'],
+    ['Fail', fail, 'fail'],
+    ['Issues', Object.keys(issues).length, 'accent'],
+  ].map(([label, val, cls]) =>
+    `<div class="card"><div class="label">${label}</div><div class="value ${cls}">${val}</div></div>`
+  ).join('');
+
+  const kinds = data.kinds || {};
+  const maxK = Math.max(1, ...Object.values(kinds).map(Number));
+  document.getElementById('kinds').innerHTML = Object.keys(kinds).length
+    ? Object.entries(kinds).map(([k,v]) =>
+        `<div class="bar-row"><div class="bar-label">${k}</div><div class="bar-track"><div class="bar-fill" style="width:${(100*v)/maxK}%"></div></div><div class="meta">${v}</div></div>`
+      ).join('')
+    : '<div class="meta">No kind data yet</div>';
+
+  const rows = Object.entries(issues).sort((a,b) => a[0].localeCompare(b[0]));
+  document.getElementById('issues').innerHTML = rows.length ? rows.map(([issue, events]) => {
+    const last = events[events.length - 1] || {};
+    const okp = last.ok ? 'ok' : 'fail';
+    const links = [];
+    if (last.pr_url) links.push(`<a href="${last.pr_url}" target="_blank" rel="noopener">PR</a>`);
+    if (last.run_url) links.push(`<a href="${last.run_url}" target="_blank" rel="noopener">run</a>`);
+    if (issue.startsWith('http')) links.unshift(`<a href="${issue}" target="_blank" rel="noopener">issue</a>`);
+    return `<tr>
+      <td>${issue.startsWith('http') ? `<a href="${issue}" target="_blank" rel="noopener">${issue.replace('https://github.com/','')}</a>` : issue}</td>
+      <td><span class="pill">${last.kind || '—'}</span></td>
+      <td><span class="pill ${okp}">${last.ok === true ? 'ok' : last.ok === false ? 'fail' : '—'}</span></td>
+      <td class="meta">${last.ts || '—'}</td>
+      <td>${links.join(' · ') || '—'}</td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="5" class="meta">No issues tracked yet.</td></tr>';
+
+  const pol = data.policy || {};
+  const items = [
+    pol.claim_idempotent && 'Claim once (idempotent marker)',
+    pol.skip_closed_issues && 'Skip closed issues by default',
+    pol.primary && ('PRIMARY = ' + pol.primary),
+    pol.fallback && ('FALLBACK = ' + pol.fallback),
+    pol.respect_maintainer_routing && 'Respect maintainer routing (parity vs upstream vs feature forks)',
+    pol.note,
+  ].filter(Boolean);
+  document.getElementById('policy').innerHTML = items.map(i => `<li>${i}</li>`).join('') || '<li>See HELP-WANTED-STATUS.md</li>';
+}
+load();
+</script>
+</body>
+</html>

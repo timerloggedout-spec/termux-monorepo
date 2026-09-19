@@ -1,6 +1,6 @@
 # Skills Inventory (termux-monorepo)
 
-**Version:** 2026-09-18 · **Last refreshed SHA:** post-approxination-integration extract
+**Version:** 2026-09-18 · **Last refreshed SHA:** post-#614 (`a55a5689`)
 **Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)
 
 ## Role load matrix
@@ -30,14 +30,16 @@
 | Provider capability matrix | [`docs/schemas/provider-capabilities.md`](../schemas/provider-capabilities.md) |
 | MCP host catalog (incl. bifrost evaluation) | `mcp-hub/catalog.json` |
 | Bifrost proposal | `docs/proposals/active/bifrost-gateway-integration/` |
+| BIFROST-006 runbook | `docs/proposals/active/bifrost-gateway-integration/BENCHMARK-SMOKE.md` |
 | Approxination A/B/C/D cohort | `docs/evaluations/approxination/COHORT.md` |
 | Approxination ops | [`docs/ops/APPROXINATION-LANE.md`](APPROXINATION-LANE.md) |
 
 ## Cycle snapshot (2026-09-18)
 
 - Help-wanted lane: skill + CPPH + scout + execute workflows; upstream vedantnimbarte/zero#81 shipped.
-- **#611 MERGED:** Bifrost integration slice (registry, catalog v0.3.2 evaluation host, provider-capabilities, ROUTING-ORCHESTRATION-MAP). No Bifrost source merge.
-- **Approxination extract:** skill find/generate/feedback + A/B/C/D cohort card + proposal ITEMS (APPROX-001–004 done; gitlink + formal smoke backlog).
+- **#611 MERGED:** Bifrost integration slice. No Bifrost source merge.
+- **#613 MERGED:** BIFROST-006 benchmark smoke runbook (results still pending).
+- **#614 MERGED:** Approxination skill + A/B/C/D cohort + registry/inventory/fork pins (APPROX-001–004 done; gitlink + formal smoke backlog).
 - Dual-gate still required for merge to master. Ledger intermittent (#608 class) is not dual-gate alone.
 - Vercel deploy rate-limit observed on some PRs — non-blocking for docs/skills when gates green.
 

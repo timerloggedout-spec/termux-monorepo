@@ -16,14 +16,14 @@ Promote only when dual gates success, extract-clean scope, and task outcome veri
 
 | Class | Severity | Notes |
 |-------|----------|-------|
-| **comment-storm** | **FAILURE** | issue_comment / bot / ledger fan-out that cancels useful jobs. Mitigate: concurrency by event_name, `cancel-in-progress: false` on ledgers. Landed #603 on `dc30bf83`. |
+| **comment-storm** | **FAILURE** | issue_comment / bot / ledger fan-out that cancels useful jobs. Mitigate: concurrency by event_name, `cancel-in-progress: false` on ledgers. Landed #603. |
 | dual-gate red | FAILURE | Block promote |
-| update-branch-conflict | STALL | Extract-later; do not force dirty |
+| update-branch-conflict | STALL | Extract-later; do not force dirty. #615 closed this way. |
 | dirty-behind-master | STALL | Rebase/extract from live master |
-| extra-red | FAILURE (non-gate) | Fix root cause |
+| extra-red | FAILURE (non-gate) | Ledger #608 class / validate-registry; not dual-gate alone |
 
-HEAD after #603: `dc30bf83fc17b394510f99328f7a081b6a64f28c`. #601 ML dirty/behind — WAIT extract.
+Master HEAD: `a55a56894cfe95c2ed88446d6ef42df3bb47ee2a` (#614). #601/#549/#432 ML HOLD.
 
-Session 2026-09-18T17:03Z: merged #603; CodeRabbit `queue: max` rejected (invalid GHA concurrency key).
+Do not comment-storm. MCP 403 on foreign issue comments — execute via help-wanted-execute.yml.
 
 BIUDL. Agent-Identity: Grok (Administrator)

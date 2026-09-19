@@ -1,53 +1,63 @@
-# Help-Wanted Lane (Production) — EXECUTE
+# Help-Wanted Lane — INTENDED PURPOSE
 
-**Status:** LIVE + **adaptive cadence** + **neighbor-safe** (idempotent claims, skip closed).
-**Parallel / adaptive:** `docs/ops/HELP-WANTED-PARALLEL.md`
-**Living board:** `docs/ops/HELP-WANTED-STATUS.md` → generated `docs/ops/generated/help-wanted-status.md`
+**Status:** LIVE  
+**One sentence:** Scan FOSS help-wanted → rank → claim once → open **upstream PR** into the author’s repo → follow maintainer feedback → show evidence on the dashboard.
 
-## Why
+This is **not** a place for one-off hard-coded PR patch jobs. Those are noise.
 
-Scan FOSS → CPPH rank → claim **once** → **upstream PR into the author's repo**. Feed evidence into workbench benchmarks. Predecessor to bug & bounty hunter. 2017 React UI is predecessor only.
+## Pipeline (only this)
 
-## Working well with others
+```text
+scout (2h)          rank help-wanted / good-first-issue (CPPH)
+       │
+       ▼
+execute (4h)        claim (idempotent) → fork/patch → PRIMARY upstream PR
+       │              FALLBACK notice only if primary blocked
+       ▼
+followup (2h)       poll OUR open PRs with CHANGES_REQUESTED → notify + evidence
+       │
+       ▼
+dashboard           /help-wanted/ KPIs from evidence receipts
+```
+
+| Workflow | Does |
+|----------|------|
+| `help-wanted-scout` | Rank candidates. Optional chain → execute |
+| `help-wanted-execute` | LIVE claim + upstream PR. Always dispatches followup after contribute |
+| `help-wanted-followup` | **Only** poll CHANGES_REQUESTED on PRs we authored |
+| `help-wanted-dashboard-deploy` | Publish status UI |
+
+## Working with others
 
 | Rule | Behavior |
 |------|----------|
-| Claim idempotent | Re-runs do **not** re-post claim marker |
-| Closed issues | Default **skip** (claim + contribute) |
-| Maintainer routing | Respect “fix upstream / use feature fork” (e.g. codex-termux parity vs [codex-vl](https://github.com/DioNanos/codex-vl)) |
-| Stake ≠ final fix | Replace stake with real patch or close |
-| No spam | Prefer mutual threads still **open** and needing code |
+| Claim once | Marker; no spam re-claims |
+| Skip closed | Default |
+| PRIMARY | PR into **author’s** repo |
+| FALLBACK | Notice/link only if upstream PR blocked |
+| Follow-up | Generic poll — not per-repo special modes |
+| Mutual threads | Prefer still-open issues needing code |
 
-## Cadence (adaptive)
-
-| Piece | Frequency |
-|-------|-----------|
-| Scout | **Every 2h** + dispatch |
-| Execute | **Every 4h** + dispatch; daily budget gate |
-| Safe parallel writes | **2–3** concurrent (token pool) |
-
-## Delivery hierarchy
-
-1. **PRIMARY — upstream-pr** — author's repo.
-2. **FALLBACK — fork-offer / notice** — only if primary blocked.
-3. **PARALLEL NOTICE** — optional alongside primary.
-
-## Components
+## Scripts
 
 | Path | Role |
 |------|------|
-| `.agents/skills/help-wanted-lane/SKILL.md` | Agent load |
-| `docs/ops/HELP-WANTED-PARALLEL.md` | Roster + limits |
-| `docs/ops/HELP-WANTED-STATUS.md` | Living human-review surface |
-| `scripts/ci/help_wanted_scout.py` | CPPH |
+| `scripts/ci/help_wanted_scout.py` | CPPH rank |
 | `scripts/ci/help_wanted_claim.py` | Idempotent claim |
 | `scripts/ci/help_wanted_contribute.py` | Upstream PR + fallback |
+| `scripts/ci/help_wanted_followup.py` | CHANGES_REQUESTED poll |
 | `scripts/ci/help_wanted_evidence.py` | JSONL receipts |
 | `scripts/ci/help_wanted_status.py` | Board generator |
-| `.github/workflows/help-wanted-execute.yml` | Budgeted LIVE execute |
 
-## Token order
+## Tokens
 
-`OPERATOR_GITHUB_TOKEN` → `OPERATOR_TOKEN` → `ARCHWIZ_GITHUB_TOKEN` → `GITHUB_TOKEN`.
+`OPERATOR_GITHUB_TOKEN` → `OPERATOR_TOKEN` → `ARCHWIZ_GITHUB_TOKEN` → `GITHUB_TOKEN`
 
-BIUDL. Agent-Identity: Grok (Administrator)
+## Foreign signals
+
+`repository_dispatch` into **this** monorepo (`help-wanted-execute`, `help-wanted-followup`, …).  
+True webhooks *from* foreign repos need an App install there; until then schedule + dispatch is the path.
+
+See `HELP-WANTED-PARALLEL.md`, `HELP-WANTED-STATUS.md`, `HELP-WANTED-FOREIGN-HOOKS.md`.
+
+Agent-Identity: Grok (Administrator)

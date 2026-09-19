@@ -44,6 +44,20 @@ proposals:
       - https://github.com/timerloggedout-spec/bifrost-benchmarking_fork
     gates_required: [repo-gate, termux-smoke]
 
+  - id: mcp-hub-risk-split
+    title: "mcp-hub / hub_mcp risk split"
+    author: operator
+    status: executing
+    priority: P1
+    path: active/mcp-hub-risk-split/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_prs: [442]
+    related_branches: [docs/mcp-hub-risk-split]
+    gates_required: [repo-gate, termux-smoke]
+
   - id: context-relationship-graph
     title: "GitHub-native context relationship graph and scope index"
     author: Manus

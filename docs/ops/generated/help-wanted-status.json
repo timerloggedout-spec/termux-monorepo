@@ -1,14 +1,72 @@
 {
-  "generated_at": "2026-09-19T21:25:00Z",
+  "generated_at": "2026-09-19T21:43:32Z",
   "lane": "help-wanted",
-  "receipts": 1,
+  "receipts": 5,
   "kinds": {
-    "upstream_pr": 1
+    "upstream_pr": 4,
+    "claim_skipped_closed": 1
   },
   "outcomes": {
-    "ok": 1
+    "ok": 5
+  },
+  "pr_states": {
+    "open": 3,
+    "closed": 1
   },
   "issues": {
+    "https://github.com/DioNanos/codex-termux/issues/14": [
+      {
+        "ts": "2026-09-19T19:20:00Z",
+        "kind": "upstream_pr",
+        "issue": "https://github.com/DioNanos/codex-termux/issues/14",
+        "ok": true,
+        "pr_url": "https://github.com/DioNanos/codex-termux/pull/27",
+        "pr_state": "closed",
+        "note": "PRIMARY then issue closed; skip-closed enforced",
+        "lane": "help-wanted",
+        "scout": "oversight",
+        "delivery": "upstream-pr-primary"
+      },
+      {
+        "ts": "2026-09-19T21:17:14Z",
+        "kind": "claim_skipped_closed",
+        "issue": "https://github.com/DioNanos/codex-termux/issues/14",
+        "ok": true,
+        "run_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/35469936538",
+        "note": "SKIP closed issue — neighbor-safe",
+        "lane": "help-wanted",
+        "scout": "oversight",
+        "delivery": "n/a"
+      }
+    ],
+    "https://github.com/E-Timileyin/Sail-CLI/issues/20": [
+      {
+        "ts": "2026-09-19T20:00:00Z",
+        "kind": "upstream_pr",
+        "issue": "https://github.com/E-Timileyin/Sail-CLI/issues/20",
+        "ok": true,
+        "pr_url": "https://github.com/E-Timileyin/Sail-CLI/pull/23",
+        "pr_state": "open",
+        "note": "stake PR",
+        "lane": "help-wanted",
+        "scout": "oversight",
+        "delivery": "upstream-pr-primary"
+      }
+    ],
+    "https://github.com/GlassHaven/Haven/issues/273": [
+      {
+        "ts": "2026-09-19T19:30:00Z",
+        "kind": "upstream_pr",
+        "issue": "https://github.com/GlassHaven/Haven/issues/273",
+        "ok": true,
+        "pr_url": "https://github.com/GlassHaven/Haven/pull/657",
+        "pr_state": "open",
+        "note": "mutual thread stake",
+        "lane": "help-wanted",
+        "scout": "oversight",
+        "delivery": "upstream-pr-primary"
+      }
+    ],
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
         "ts": "2026-09-18T20:31:37Z",
@@ -16,11 +74,11 @@
         "issue": "https://github.com/vedantnimbarte/zero/issues/72",
         "ok": true,
         "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
-        "run_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/35391893441",
+        "pr_state": "open",
+        "note": "seed primary",
         "lane": "help-wanted",
         "scout": "oversight",
-        "delivery": "upstream-pr-primary",
-        "note": "seed primary path success"
+        "delivery": "upstream-pr-primary"
       }
     ]
   },
@@ -29,16 +87,22 @@
     "skip_closed_issues": true,
     "primary": "upstream-pr",
     "fallback": "fork-notice",
-    "respect_maintainer_routing": true,
-    "note": "Upstream-logic on parity forks → prefer upstream; features → designated forks (e.g. codex-vl)."
+    "respect_maintainer_routing": true
   },
-  "annotations": [
-    {
-      "note": "Proven PRIMARY: DioNanos/codex-termux#14 → PR #27 (closed-issue skip enforced after)"
-    },
-    {
-      "note": "Proven: GlassHaven/Haven#273 → PR #657"
+  "freshness": {
+    "status": "backfilled-2026-09-19",
+    "note": "External stake PRs + closed-skip event. Actions artifact receipts still ephemeral until commit-on-success lands."
+  },
+  "live": {
+    "vercel_project": "help-wanted-dash",
+    "vercel_project_id": "prj_iS20meBbcNw6lsng2GHjO4I9gC78",
+    "vercel_url": null,
+    "why_no_live_url": "MCP lacks Production Deploy permission on team. Operator must Deploy once in Vercel UI after Git connect + rootDirectory=apps/help-wanted-dashboard.",
+    "interim": {
+      "status_json": "https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/ops/generated/help-wanted-status.json",
+      "html_raw": "https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/apps/help-wanted-dashboard/index.html",
+      "github_tree": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/apps/help-wanted-dashboard"
     }
-  ],
+  },
   "dashboard": "apps/help-wanted-dashboard"
 }

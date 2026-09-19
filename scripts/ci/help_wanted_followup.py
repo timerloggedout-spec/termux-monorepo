@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""Poll open external PRs authored by us for CHANGES_REQUESTED; notify + evidence.
+"""Poll open FOREIGN PRs we authored for CHANGES_REQUESTED; notify + evidence.
 
-True webhooks on foreign repos require an App install on the target.
-Until then: schedule + workflow_dispatch is the timely path.
+Excludes timerloggedout-spec/termux-monorepo (internal). Help-wanted is external.
 """
 from __future__ import annotations
 
@@ -17,6 +16,10 @@ from pathlib import Path
 
 API = "https://api.github.com"
 AUTHOR = os.environ.get("HELP_WANTED_AUTHOR", "timerloggedout-spec")
+# Never follow up on our own monorepo PRs — those are not help-wanted foreign work.
+EXCLUDE_REPOS = {
+    "timerloggedout-spec/termux-monorepo",
+}
 TOKEN = (
     os.environ.get("OPERATOR_GITHUB_TOKEN")
     or os.environ.get("OPERATOR_TOKEN")
@@ -53,11 +56,23 @@ def api(method: str, path: str, body: dict | None = None):
 
 
 def search_changes_requested() -> list[dict]:
-    q = f"author:{AUTHOR} is:pr is:open review:changes_requested"
-    status, data = api("GET", f"/search/issues?q={urllib.parse.quote(q)}&per_page=20")
+    # -repo: excludes monorepo from search
+    q = (
+        f"author:{AUTHOR} is:pr is:open review:changes_requested "
+        f"-repo:timerloggedout-spec/termux-monorepo"
+    )
+    status, data = api("GET", f"/search/issues?q={urllib.parse.quote(q)}&per_page=30")
     if status != 200:
         return []
-    return data.get("items") or []
+    items = []
+    for it in data.get("items") or []:
+        repo_url = it.get("repository_url") or ""
+        parts = repo_url.rstrip("/").split("/")
+        full = f"{parts[-2]}/{parts[-1]}" if len(parts) >= 2 else ""
+        if full in EXCLUDE_REPOS:
+            continue
+        items.append(it)
+    return items
 
 
 def already_followed_up(owner: str, repo: str, number: int) -> bool:
@@ -73,11 +88,10 @@ def already_followed_up(owner: str, repo: str, number: int) -> bool:
 def post_followup(owner: str, repo: str, number: int, review_summary: str) -> str | None:
     body = (
         f"{MARKER}\n\n"
-        f"Detected **CHANGES_REQUESTED** on this open PR (help-wanted lane follow-up poll).\n\n"
+        f"Detected **CHANGES_REQUESTED** on this open external PR.\n\n"
         f"{review_summary}\n\n"
-        f"Next: revise the head branch and re-request review. "
-        f"This comment is idempotent (one per PR until resolved).\n\n"
-        f"— automated from `timerloggedout-spec/termux-monorepo` `help-wanted-followup`\n"
+        f"Next: revise the head branch and re-request review.\n\n"
+        f"— `timerloggedout-spec/termux-monorepo` help-wanted-followup\n"
     )
     status, data = api("POST", f"/repos/{owner}/{repo}/issues/{number}/comments", {"body": body})
     if status in (200, 201):
@@ -86,6 +100,8 @@ def post_followup(owner: str, repo: str, number: int, review_summary: str) -> st
 
 
 def latest_changes_review(owner: str, repo: str, number: int) -> str:
+    status, reviews = api("GET", f"/repos/{owner}/{repo}/pulls/{number}")
+    # reviews endpoint
     status, reviews = api("GET", f"/repos/{owner}/{repo}/pulls/{number}/reviews")
     if status != 200:
         return "(could not load reviews)"
@@ -112,11 +128,10 @@ def main() -> int:
         print("No token", file=sys.stderr)
         return 1
     items = search_changes_requested()
-    print(f"found {len(items)} open PRs with CHANGES_REQUESTED")
+    print(f"found {len(items)} FOREIGN open PRs with CHANGES_REQUESTED")
     rows = []
     for it in items:
         repo_url = it.get("repository_url") or ""
-        # https://api.github.com/repos/owner/repo
         parts = repo_url.rstrip("/").split("/")
         owner, repo = parts[-2], parts[-1]
         number = int(it["number"])
@@ -130,6 +145,7 @@ def main() -> int:
                     "issue": html,
                     "ok": True,
                     "lane": "help-wanted-followup",
+                    "foreign": True,
                 }
             )
             continue
@@ -145,6 +161,7 @@ def main() -> int:
                 "ok": ok,
                 "comment_url": url,
                 "lane": "help-wanted-followup",
+                "foreign": True,
             }
         )
     if rows:

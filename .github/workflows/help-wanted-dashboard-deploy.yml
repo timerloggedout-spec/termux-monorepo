@@ -1,0 +1,130 @@
+name: help-wanted-dashboard-deploy
+
+# Operator path: use monorepo VERCEL_TOKEN (full-scope) to ship static oversight UI.
+# Dual surface: Vercel production + GitHub Pages (gh-pages branch).
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "apps/help-wanted-dashboard/**"
+      - "docs/ops/generated/help-wanted-status.json"
+      - ".github/workflows/help-wanted-dashboard-deploy.yml"
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "vercel | pages | both"
+        required: false
+        default: "both"
+
+concurrency:
+  group: help-wanted-dashboard-deploy
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  vercel:
+    name: vercel-prod
+    if: ${{ github.event_name == 'push' || github.event.inputs.target == 'both' || github.event.inputs.target == 'vercel' || github.event.inputs.target == '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sync status snapshot into dashboard data
+        run: |
+          mkdir -p apps/help-wanted-dashboard/data
+          if [ -f docs/ops/generated/help-wanted-status.json ]; then
+            cp docs/ops/generated/help-wanted-status.json apps/help-wanted-dashboard/data/status.json
+          fi
+
+      - name: Install Vercel CLI
+        run: npm i -g vercel@39
+
+      - name: Deploy to Vercel (production)
+        id: vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          # Team from monorepo SSOT; override via secret if present
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_HELP_WANTED }}
+        run: |
+          set -euo pipefail
+          if [ -z "${VERCEL_TOKEN:-}" ]; then
+            echo "::error::VERCEL_TOKEN secret missing — cannot deploy"
+            exit 1
+          fi
+          ORG="${VERCEL_ORG_ID:-team_jKHy7m9xZrvrGP5cAlIMPs3S}"
+          # Prefer dedicated help-wanted project; fallback creates/links via name
+          PROJ="${VERCEL_PROJECT_ID:-prj_iS20meBbcNw6lsng2GHjO4I9gC78}"
+          echo "ORG=$ORG PROJ=$PROJ"
+          cd apps/help-wanted-dashboard
+          # Non-interactive link + prod deploy
+          vercel pull --yes --environment=production --token="$VERCEL_TOKEN" \
+            --scope="$ORG" 2>/dev/null || true
+          URL=$(vercel deploy --prod --yes --token="$VERCEL_TOKEN" \
+            --scope="$ORG" \
+            ${PROJ:+--prebuilt} 2>&1 | tee /tmp/vercel-out.txt | tail -n 30)
+          # Prefer explicit project id deploy without --prebuilt if no build output
+          DEPLOY_URL=$(vercel deploy --prod --yes --token="$VERCEL_TOKEN" \
+            --scope="$ORG" 2>&1 | tee /tmp/vercel-deploy.txt | grep -Eo 'https://[^ ]+\.vercel\.app' | tail -n1 || true)
+          if [ -z "$DEPLOY_URL" ]; then
+            cat /tmp/vercel-deploy.txt || true
+            echo "::warning::Could not parse vercel.app URL; check logs"
+          else
+            echo "deploy_url=$DEPLOY_URL" >> "$GITHUB_OUTPUT"
+            echo "### Vercel" >> "$GITHUB_STEP_SUMMARY"
+            echo "$DEPLOY_URL" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Record deploy URL artifact
+        if: always()
+        run: |
+          mkdir -p out
+          echo "${{ steps.vercel.outputs.deploy_url }}" > out/vercel-url.txt
+          cat /tmp/vercel-deploy.txt 2>/dev/null >> out/vercel-log.txt || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: help-wanted-vercel-deploy
+          path: out/
+          retention-days: 14
+
+  pages:
+    name: github-pages
+    if: ${{ github.event_name == 'push' || github.event.inputs.target == 'both' || github.event.inputs.target == 'pages' || github.event.inputs.target == '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare publish dir
+        run: |
+          mkdir -p _site
+          cp -a apps/help-wanted-dashboard/. _site/
+          if [ -f docs/ops/generated/help-wanted-status.json ]; then
+            mkdir -p _site/data
+            cp docs/ops/generated/help-wanted-status.json _site/data/status.json
+          fi
+          # Root redirect note
+          printf '%s\n' '<!DOCTYPE html><meta http-equiv="refresh" content="0;url=./">' > _site/404.html || true
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: _site
+          publish_branch: gh-pages
+          force_orphan: true
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com
+          commit_message: "deploy(help-wanted-dashboard): ${{ github.sha }}"
+
+      - name: Pages URL hint
+        run: |
+          echo "### GitHub Pages" >> "$GITHUB_STEP_SUMMARY"
+          echo "After first enable (Settings → Pages → Branch: gh-pages / root):" >> "$GITHUB_STEP_SUMMARY"
+          echo "https://timerloggedout-spec.github.io/termux-monorepo/" >> "$GITHUB_STEP_SUMMARY"

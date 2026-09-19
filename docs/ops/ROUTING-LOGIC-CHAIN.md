@@ -10,10 +10,11 @@ live_catalog_feed.py  → eligible free / zero-price / free_trial
         │
         ├──────────────────────────────┐
         ▼                              ▼
-model_router.py                  catalog-feed/latest.json
-  Gemini soft-budget primary       (MoneyBall / Scout evidence)
-  peers from LIVE eligible
-  FELO first-class when key set
+model_router_bootstrap               catalog-feed/latest.json
+  prepends live peers                  (MoneyBall / Scout evidence)
+  → model_router.py
+      Gemini soft-budget primary
+      peers from LIVE eligible + static residual
         │
         ▼
 http-llm-invoke / help-wanted-llm-assist
@@ -23,30 +24,20 @@ invocation telemetry (no secrets)
         │
         ▼
 MoneyBall / 3L0   ← scores AFTER repeated success (admission)
-                    does NOT pick the next HTTP model by itself
 ```
 
-## Deprecations
+## Composite action note
 
-| Old | New |
-|-----|-----|
-| Frozen Gemini→OR “fallback hierarchy” | Dynamic recovery from unavailable capacity |
-| Static ROLE_PEERS only | Live eligible peers + soft limits |
-| model-router without Felo | `HAS_FELO` + catalog poll |
-| MoneyBall as runtime picker | MoneyBall as post-success scorer |
+`.github/actions/model-router` cannot read `secrets.*` directly. Callers pass:
 
-## Secrets (names only)
-
-`OPENROUTER_API_KEY` · `FELO_AI_API` · `OMNI_API_KEY`/`OMNIROUTE_API_KEY` · `GEMINI_API_KEY`
+- `openrouter-api-key: ${{ secrets.OPENROUTER_API_KEY }}`
+- `felo-api-key: ${{ secrets.FELO_AI_API }}`
+- `omni-api-key: ${{ secrets.OMNI_API_KEY }}`
 
 ## Mayan / agile 13-phase
 
-No issue or doc titled **Mayan 13-phase** was found in `termux-monorepo` at this investigation.
-Closest control-plane sequences:
-
-- Admission: `DISCOVERED → … → MONEYBALL_SCORED → ACTIVE` (`SCOUT-MISSIONS`)
-- Orchestration: classify → split → concurrent → wait → integrate (`AGENT-TEAM-ORCHESTRATION`)
-
-If “Mayan 13-phase” lives in another issue/repo/Drive note, link it and we fold it into this chain.
+**Not found** under that title in termux-monorepo issues/docs (2026-09-19 search).
+Closest sequences: admission ladder in `SCOUT-MISSIONS`; orchestration steps in `AGENT-TEAM-ORCHESTRATION`.
+If the Mayan 13-phase issue lives elsewhere, link it.
 
 Agent-Identity: Grok (Administrator)

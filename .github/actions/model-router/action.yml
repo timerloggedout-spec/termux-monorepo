@@ -1,64 +1,60 @@
 name: 'Model Router'
 description: |
   Select provider+model for a role (triage|review|invoke).
-
-  live catalogs (OR|Felo|Omni) → eligible → model-router → telemetry → MoneyBall post-success.
-  FELO first-class when FELO_AI_API present. Fallback = dynamic recovery, not frozen hierarchy.
+  live catalogs (OR|Felo|Omni) → eligible → pick → telemetry → MoneyBall post-success.
 
 inputs:
   role:
     description: 'triage | review | invoke'
     required: true
   has-omni:
-    description: '"true" if OMNI_API_KEY or OMNIROUTE_API_KEY is set'
     required: false
     default: 'false'
   has-openrouter:
-    description: '"true" if OPENROUTER_API_KEY is set'
     required: false
     default: 'false'
   has-felo:
-    description: '"true" if FELO_AI_API is set'
     required: false
     default: 'false'
   has-gemini:
-    description: '"true" if GEMINI_API_KEY is set'
     required: false
     default: 'true'
+  openrouter-api-key:
+    description: 'OPENROUTER_API_KEY value (composite cannot read secrets.*)'
+    required: false
+    default: ''
+  felo-api-key:
+    description: 'FELO_AI_API value'
+    required: false
+    default: ''
+  omni-api-key:
+    description: 'OMNI_API_KEY or OMNIROUTE_API_KEY value'
+    required: false
+    default: ''
   capability-spine-observe:
-    description: 'Emit AR-18 shadow decision data only'
     required: false
     default: 'true'
   target-sha:
-    description: 'Optional PR head SHA'
     required: false
     default: ''
   current-sha:
-    description: 'Optional current SHA'
     required: false
     default: ''
 
 outputs:
   provider:
-    description: 'omni | openrouter | felo | gemini | none'
     value: ${{ steps.pick.outputs.provider }}
   model:
-    description: 'Model id to request'
     value: ${{ steps.pick.outputs.model }}
   skip:
-    description: '"true" if no capacity remains'
     value: ${{ steps.pick.outputs.skip }}
   reason:
-    description: 'Human-readable selection reason'
     value: ${{ steps.pick.outputs.reason }}
   decision:
-    description: 'AR-18 observe envelope'
     value: ${{ steps.pick.outputs.decision }}
   decision-summary:
-    description: 'AR-18 summary'
     value: ${{ steps.pick.outputs.decision_summary }}
   catalog-state:
-    description: 'live | cached | unavailable'
     value: ${{ steps.pick.outputs.catalog_state }}
 
 runs:
@@ -89,10 +85,9 @@ runs:
         CAPABILITY_SPINE_OBSERVE: ${{ inputs.capability-spine-observe }}
         TARGET_SHA: ${{ inputs.target-sha }}
         CURRENT_SHA: ${{ inputs.current-sha }}
-        OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-        FELO_AI_API: ${{ secrets.FELO_AI_API }}
-        OMNI_API_KEY: ${{ secrets.OMNI_API_KEY }}
-        OMNIROUTE_API_KEY: ${{ secrets.OMNIROUTE_API_KEY }}
+        OPENROUTER_API_KEY: ${{ inputs.openrouter-api-key }}
+        FELO_AI_API: ${{ inputs.felo-api-key }}
+        OMNI_API_KEY: ${{ inputs.omni-api-key }}
         COUNTER_DIR: /tmp/model-router
       run: |
         python3 -m scripts.model_router_bootstrap

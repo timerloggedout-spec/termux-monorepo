@@ -1,7 +1,10 @@
 name: help-wanted-llm-assist
 
-# USE Actions secrets by NAME (issue #184). Never token values from issue bodies.
-# model-router → OpenRouter/Omni free → comment on foreign PR.
+# LIVE catalog selection — NOT legacy model-router fallback chain.
+# NOT MoneyBall admission (MB scores providers after repeated success).
+#
+# providers: openrouter + felo + omni via scripts/provider_model_catalog.py
+# free = :free OR zero price OR free_trial (FELO ox-alpha path)
 
 on:
   schedule:
@@ -63,8 +66,8 @@ jobs:
                   q2 = urllib.parse.quote("author:timerloggedout-spec is:pr is:open -repo:timerloggedout-spec/termux-monorepo")
                   items = (api(f"/search/issues?q={q2}&per_page=5").get("items") or [])
               if not items:
-                  print("no foreign PR")
                   open(os.environ["GITHUB_OUTPUT"], "a").write("skip=true\n")
+                  print("no foreign PR")
                   raise SystemExit(0)
               it = items[0]
               parts = (it.get("repository_url") or "").rstrip("/").split("/")
@@ -84,7 +87,7 @@ jobs:
               prompt += "CHANGES_REQUESTED:\n"
               for u, b in review_bits:
                   prompt += f"@{u}:\n{b}\n\n"
-          prompt += "Give a concrete file-level next-patch plan (max 40 lines). No secrets."
+          prompt += "Concrete file-level next-patch plan (max 40 lines). No secrets."
           open("/tmp/hw-llm-prompt.txt", "w").write(prompt)
           with open(os.environ["GITHUB_OUTPUT"], "a") as f:
               f.write("skip=false\n")
@@ -92,35 +95,80 @@ jobs:
           print(f"target {owner}/{repo}#{num}")
           PY
 
-      - name: Detect secrets
-        id: keys
+      - name: Live catalog select (openrouter|felo|omni)
+        id: pick
+        if: steps.target.outputs.skip != 'true'
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          FELO_AI_API: ${{ secrets.FELO_AI_API }}
           OMNI_API_KEY: ${{ secrets.OMNI_API_KEY }}
           OMNIROUTE_API_KEY: ${{ secrets.OMNIROUTE_API_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          echo "has_openrouter=$([ -n \"${OPENROUTER_API_KEY:-}\" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
-          echo "has_omni=$([ -n \"${OMNI_API_KEY:-}${OMNIROUTE_API_KEY:-}\" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
-          echo "has_gemini=$([ -n \"${GEMINI_API_KEY:-}\" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          set -euo pipefail
+          # Unify omni env name for catalog script
+          export OMNI_API_KEY="${OMNI_API_KEY:-${OMNIROUTE_API_KEY:-}}"
+          python3 scripts/provider_model_catalog.py \
+            --providers openrouter,felo,omni \
+            --output /tmp/model-catalog/catalog.json || true
+          python3 <<'PY'
+          import json, os, re
+          from pathlib import Path
+          path = Path("/tmp/model-catalog/catalog.json")
+          if not path.exists():
+              print("no catalog")
+              open(os.environ["GITHUB_OUTPUT"], "a").write("skip=true\n")
+              raise SystemExit(0)
+          doc = json.loads(path.read_text())
+          rows = doc.get("models") or []
+          eligible = [
+              r for r in rows
+              if r.get("pricing_classification") == "free_zero_price"
+              or r.get("free_suffix")
+              or r.get("access_classification") == "free_trial"
+          ]
+          # Prefer coding-ish ids, then openrouter free, then any eligible
+          def score(r):
+              mid = (r.get("id") or "").lower()
+              s = 0
+              if any(k in mid for k in ("coder", "code", "qwen", "deepseek", "ox-alpha")):
+                  s += 50
+              if r.get("provider") == "openrouter":
+                  s += 20
+              if r.get("provider") == "felo":
+                  s += 15
+              if r.get("free_suffix") or r.get("pricing_classification") == "free_zero_price":
+                  s += 10
+              return s
+          eligible.sort(key=score, reverse=True)
+          if not eligible:
+              # last resort hard free list (still not MoneyBall)
+              if os.environ.get("OPENROUTER_API_KEY"):
+                  open(os.environ["GITHUB_OUTPUT"], "a").write(
+                      "skip=false\nprovider=openrouter\nmodel=qwen/qwen3-coder:free\n"
+                  )
+                  print("fallback list qwen3-coder:free")
+                  raise SystemExit(0)
+              open(os.environ["GITHUB_OUTPUT"], "a").write("skip=true\n")
+              print("no eligible free models")
+              raise SystemExit(0)
+          top = eligible[0]
+          provider = top["provider"]
+          model = top["id"]
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write("skip=false\n")
+              f.write(f"provider={provider}\n")
+              f.write(f"model={model}\n")
+          print(f"SELECTED {provider}/{model} score={score(top)} from {len(eligible)} eligible")
+          print(f"catalog_models={len(rows)} errors={len(doc.get('errors') or [])}")
+          PY
 
-      - name: Model router
-        id: route
-        if: steps.target.outputs.skip != 'true'
-        uses: ./.github/actions/model-router
-        with:
-          role: invoke
-          has-openrouter: ${{ steps.keys.outputs.has_openrouter }}
-          has-omni: ${{ steps.keys.outputs.has_omni }}
-          has-gemini: ${{ steps.keys.outputs.has_gemini }}
-
-      - name: Invoke LLM + comment on foreign PR
-        if: steps.target.outputs.skip != 'true'
+      - name: Invoke selected model + comment
+        if: steps.target.outputs.skip != 'true' && steps.pick.outputs.skip != 'true'
         env:
-          ROUTE_PROVIDER: ${{ steps.route.outputs.provider }}
-          ROUTE_MODEL: ${{ steps.route.outputs.model }}
-          ROUTE_SKIP: ${{ steps.route.outputs.skip }}
+          PROVIDER: ${{ steps.pick.outputs.provider }}
+          MODEL: ${{ steps.pick.outputs.model }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          FELO_AI_API: ${{ secrets.FELO_AI_API }}
           OMNI_API_KEY: ${{ secrets.OMNI_API_KEY }}
           OMNIROUTE_API_KEY: ${{ secrets.OMNIROUTE_API_KEY }}
           GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
@@ -128,36 +176,17 @@ jobs:
           TARGET: ${{ steps.target.outputs.number }}
         run: |
           set -euo pipefail
-          PROVIDER="${ROUTE_PROVIDER:-openrouter}"
-          MODEL="${ROUTE_MODEL:-qwen/qwen3-coder:free}"
-          KEY=""
-          BASE="https://openrouter.ai/api/v1"
-          case "$PROVIDER" in
-            omni)
-              KEY="${OMNI_API_KEY:-${OMNIROUTE_API_KEY:-}}"
-              BASE="https://cloud.omniroute.online/v1"
-              ;;
-            openrouter)
-              KEY="${OPENROUTER_API_KEY:-}"
-              ;;
-            gemini|none|*)
-              # openai-compatible path prefers OpenRouter free
-              KEY="${OPENROUTER_API_KEY:-}"
-              PROVIDER="openrouter"
-              if [[ "$MODEL" != */* ]] || [[ "$MODEL" != *:* && "$MODEL" != *ox-alpha* ]]; then
-                MODEL="qwen/qwen3-coder:free"
-              fi
-              BASE="https://openrouter.ai/api/v1"
-              ;;
+          case "${PROVIDER}" in
+            openrouter) KEY="${OPENROUTER_API_KEY:-}"; BASE="https://openrouter.ai/api/v1" ;;
+            felo) KEY="${FELO_AI_API:-}"; BASE="https://openapi.felo.ai/api/v1" ;;
+            omni) KEY="${OMNI_API_KEY:-${OMNIROUTE_API_KEY:-}}"; BASE="https://cloud.omniroute.online/v1" ;;
+            *) echo "unknown provider"; exit 0 ;;
           esac
-          if [ -z "${KEY}" ]; then
-            echo "::warning::No OPENROUTER/OMNI key in Actions secrets — cannot LLM-assist"
-            exit 0
-          fi
+          if [ -z "${KEY}" ]; then echo "::warning::missing key for ${PROVIDER}"; exit 0; fi
           echo "::add-mask::${KEY}"
           PROMPT=$(cat /tmp/hw-llm-prompt.txt)
           PAYLOAD=$(jq -n --arg m "$MODEL" --arg p "$PROMPT" '{model:$m,messages:[{role:"user",content:$p}],max_tokens:2048,stream:false}')
-          RESP=$(curl -sS --connect-timeout 20 -X POST "${BASE}/chat/completions" \
+          RESP=$(curl -sS --connect-timeout 25 -X POST "${BASE}/chat/completions" \
             -H "Authorization: Bearer ${KEY}" \
             -H "Content-Type: application/json" \
             -H "HTTP-Referer: https://github.com/timerloggedout-spec/termux-monorepo" \
@@ -165,25 +194,25 @@ jobs:
             -d "$PAYLOAD" || true)
           TEXT=$(echo "$RESP" | jq -r '.choices[0].message.content // empty' 2>/dev/null || true)
           if [ -z "$TEXT" ]; then
-            echo "::warning::empty model response: $(echo "$RESP" | tr '\n' ' ' | head -c 500)"
+            echo "::warning::empty response: $(echo "$RESP" | tr '\n' ' ' | head -c 500)"
             exit 0
           fi
           BODY=$(printf '%s\n\n%s\n\n%s\n' \
-            "### Help-wanted LLM assist (\`${PROVIDER}\` / \`${MODEL}\`)" \
+            "### Help-wanted LLM assist (live catalog: \`${PROVIDER}\` / \`${MODEL}\`)" \
             "$TEXT" \
-            "_Routed via monorepo secrets + model-router. Plan only — not auto-applied._")
+            "_Selection = live free/zero/trial catalog (openrouter|felo|omni). **Not** MoneyBall admission. Not legacy model-router residual chain._")
           curl -sS -X POST \
             -H "Authorization: Bearer ${GH_TOKEN}" \
             -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/${REPO}/issues/${TARGET}/comments" \
             -d "$(jq -n --arg b "$BODY" '{body:$b}')" >/dev/null
-          echo "commented on ${REPO}#${TARGET} via ${PROVIDER}/${MODEL}"
+          echo "commented ${REPO}#${TARGET} via ${PROVIDER}/${MODEL}"
           mkdir -p docs/ops/generated/help-wanted-evidence
           DAY=$(date -u +%Y-%m-%d)
           jq -nc --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
             --arg issue "https://github.com/${REPO}/pull/${TARGET}" \
             --arg provider "$PROVIDER" --arg model "$MODEL" \
-            '{ts:$ts,kind:"llm_assist",issue:$issue,ok:true,provider:$provider,model:$model,lane:"help-wanted"}' \
+            '{ts:$ts,kind:"llm_assist",issue:$issue,ok:true,provider:$provider,model:$model,lane:"help-wanted",selection:"live_catalog"}' \
             >> "docs/ops/generated/help-wanted-evidence/${DAY}.jsonl"
 
       - uses: actions/upload-artifact@v4

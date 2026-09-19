@@ -1,28 +1,34 @@
-# Help-wanted + models — USE THE KEYS
+# Help-wanted LLM selection (current)
 
-## Credential rule (issue #184)
+## What is NOT used
 
-- **Actions secrets by name** — never paste token values into issues, PRs, or chat.
-- Inventory SSOT: issue **#184** (names + last-used notes only).
-- LLM gate for free peers: **`OPENROUTER_API_KEY`** (also `OMNI_*`, `FELO_AI_API`, `GEMINI_API_KEY`).
-- GitHub write path: **`OPERATOR_GITHUB_TOKEN`** / `ARCHWIZ_GITHUB_TOKEN` / `OPERATOR_TOKEN`.
+| Thing | Why |
+|-------|-----|
+| **Legacy `model-router` residual/fallback chain** | Pre-FELO static Gemini→OR list; soft-budget “fallback” era |
+| **MoneyBall / 3L0 as runtime picker** | MoneyBall **scores** providers/agents **after repeated task success** — it does **not** pick the next HTTP model for a single help-wanted comment |
+| **HuggingFace as required gate** | Not part of live catalog path |
 
-If a value ever appears in an issue body, **rotate it** and keep only the secret name in docs.
+Help-wanted is **Oversight execute**, not MoneyBall admission (`SCOUT-MISSIONS.md`).
 
-## What uses models now
+## What IS used
 
-| Workflow | Secrets | Action |
-|----------|---------|--------|
-| `help-wanted-llm-assist.yml` | `OPENROUTER_API_KEY` (+ omni/felo), OPERATOR PAT | model-router → OpenRouter/Omni chat → comment on **foreign** PR |
-| claim / contribute / followup | OPERATOR PAT only | deterministic write path (never blocked on LLM quota) |
+```text
+provider_model_catalog.py
+  → openrouter + felo + omni /v1/models
+  → eligible = :free | zero price | free_trial
+  → rank (coder/qwen/deepseek/ox-alpha preference)
+  → chat/completions with matching secret
+```
 
-## Free-tier
+| Secret | Provider |
+|--------|----------|
+| `OPENROUTER_API_KEY` | openrouter |
+| `FELO_AI_API` | felo |
+| `OMNI_API_KEY` / `OMNIROUTE_API_KEY` | omni |
+| OPERATOR PAT | post comment on foreign PR |
 
-OpenRouter: `:free` suffix or zero pricing (`docs/schemas/model-rotation.yaml`).
-Quota miss → skip + notice, do not fail the lane.
+Catalog is **evidence**, not promotion. Promotion still follows:
 
-## Cadence
-
-- Schedule every 6h + `workflow_dispatch` + `repository_dispatch: help-wanted-llm-assist`
+`DISCOVERED → … → REPEATED_SUCCESS → MONEYBALL_SCORED → ACTIVE`
 
 Agent-Identity: Grok (Administrator)

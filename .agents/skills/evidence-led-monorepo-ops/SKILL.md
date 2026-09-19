@@ -1,6 +1,6 @@
 ---
 name: evidence-led-monorepo-ops
-description: Continuous evidence-led admin ops on timerloggedout-spec/termux-monorepo (and similar agentic monorepos). Triggers on priority matrix, master gates, SHE progress, Manus/provider RE, dirty PR triage, Actions hygiene, or when the operator says continue, BIUDL, maximize actions, or /continue. Use for live state pulls, dispositions, small-green extracts, adaptive WAIT, and iterative process improvement documented as skills. Load this skill in every admin session.
+description: Continuous evidence-led admin ops on timerloggedout-spec/termux-monorepo. Load every admin session.
 ---
 
 # Skill: evidence-led-monorepo-ops
@@ -22,18 +22,27 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 - Identity: `Agent-Identity: Grok (Administrator)`.
 - GitHub MCP write works as `timerloggedout-spec` even when local sandbox has no OPERATOR PAT / `gh`.
 
-## Current production anchors (2026-09-18T17:03Z UTC)
+## Current production anchors (2026-09-19T09:06 PDT)
 
 | Item | State |
 |------|-------|
-| Master HEAD | `dc30bf83fc17b394510f99328f7a081b6a64f28c` (#603 squash) |
-| Just landed | #603 comment-storm ledger fix. Prior: #602 catalog MD fingerprint; #600 skills SSOT. |
-| Observe | #583 Grafana MCP; #584 MVT budget. Jules #597/#598. |
-| Extra-red HOLD | #601 ML extract dirty/behind (`c082f533` base vs live `dc30bf83`). #549/#432 HOLD extract-later. |
-| HOLD mega | #523 #527 #545 #543 #455 #485 #483 #481 |
-| Draft | #578 accounting/bidding schema pilot |
+| Master HEAD | `dc45d50e66acd67e10e162bc08cecfb45af61e00` (docs-branch-index after `fb382c48`) |
+| Extra-red repair | #627 OPEN extract of balanced `pr-production-ledger` script. **Not merged.** Ledger still extra-red on master (`issue_comment` storm + SyntaxError path). |
+| HOLD | #608 dirty/behind — do not force-merge. |
+| WAIT dual-gate | #617 validate-registry green; do not promote while master ledger extra-red. |
+| Observe Jules | #629 Sentinel symlink (dirty). #630 dashboard rich fallback (dirty). #620 Linguist. |
+| ML HOLD | #601/#549/#432 dirty/behind. Keep pipelines. |
+| HOLD mega | #523 #527 #455 #48 #543 #545 #485 #500 |
+| Record PRs WAIT | #619 #622 #623 #624 #625 #626 #628 + this session |
 
-## Extract recipe
+## This session (2026-09-19 09:06 PDT)
+
+- Recon: master moved `fb382c48` → `dc45d50`. Ledger runs 9328–9335 on master still failure/cancelled on `issue_comment` (CodeRabbit/Vercel bots). comment-storm = FAILURE.
+- Dual-gate: do **not** merge #617/#623-family/#608/#629/#630 while extra-red.
+- #627 remains the extract repair path; Copilot re-requested.
+- help-wanted-execute.yml dry_run claim queued: GlassHaven/Haven#273.
+- Copilot requested on #629 and #630. Observe only — mergeable_state dirty.
+- No issue comments (comment-storm is a FAILURE).
 
 Create branch from current master. Do not force-update dirty branches. Do not wholesale-merge HOLD mega or #601/#549/#432.
 

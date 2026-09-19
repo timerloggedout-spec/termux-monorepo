@@ -1,6 +1,6 @@
 ---
 name: adaptive-wait
-description: Adaptive WAIT stage for agentic GitHub ops. After any dispatch, commit, rebase, or merge request — re-check jobs/steps/logs/artifacts, do concurrent non-conflicting work, classify stalls, and only promote when dual gates + task outcome are verified. Triggers when waiting on CI, after PR open/update, during /continue cycles, or when operator says wait adaptively. Cross-session SSOT — always load from master, never chat-only.
+description: Adaptive WAIT for agentic GitHub ops. Dual-gate before promote. Stay busy on disjoint work.
 ---
 
 # Skill: adaptive-wait
@@ -16,14 +16,19 @@ Promote only when dual gates success, extract-clean scope, and task outcome veri
 
 | Class | Severity | Notes |
 |-------|----------|-------|
-| **comment-storm** | **FAILURE** | issue_comment / bot / ledger fan-out that cancels useful jobs. Mitigate: concurrency by event_name, `cancel-in-progress: false` on ledgers. Landed #603 on `dc30bf83`. |
+| **comment-storm** | **FAILURE** | issue_comment / bot / ledger fan-out that cancels useful jobs. Mitigate: concurrency by event_name, `cancel-in-progress: false` on ledgers. Landed #603 on `dc30bf83`. Still firing on master `dc45d50` via CodeRabbit/Vercel comments. |
 | dual-gate red | FAILURE | Block promote |
 | update-branch-conflict | STALL | Extract-later; do not force dirty |
 | dirty-behind-master | STALL | Rebase/extract from live master |
-| extra-red | FAILURE (non-gate) | Fix root cause |
+| extra-red | FAILURE (non-gate) | Fix root cause — #627 extract WAIT |
 
-HEAD after #603: `dc30bf83fc17b394510f99328f7a081b6a64f28c`. #601 ML dirty/behind — WAIT extract.
+## This session (2026-09-19 09:06 PDT)
 
-Session 2026-09-18T17:03Z: merged #603; CodeRabbit `queue: max` rejected (invalid GHA concurrency key).
+- Master: `dc45d50e66acd67e10e162bc08cecfb45af61e00`.
+- #627 WAIT extra-red repair. #608 HOLD. #617 WAIT.
+- #629/#630 Jules dirty — observe, do not merge.
+- help-wanted-execute.yml dry_run claim queued for GlassHaven/Haven#273.
+- No comment-storm from this agent.
+- Stay busy: session record + Copilot + dry_run dispatch.
 
 BIUDL. Agent-Identity: Grok (Administrator)

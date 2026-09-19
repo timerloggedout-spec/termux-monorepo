@@ -1,44 +1,86 @@
 # Skills Inventory (termux-monorepo)
 
-**Version:** 2026-09-18 · **Last refreshed SHA:** post-approxination-integration extract
-**Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)
+**Version:** 2026-09-19 · **Master tip:** post-#640 neighbor-safe help-wanted  
+**Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)  
+**Collaborator short entry:** [`SKILLS.md`](../../SKILLS.md)
+
+## Collaborator access (parity)
+
+All skills below are **in-repo** under `.agents/skills/` or `.github/skills/`.  
+Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a second policy source.
+
+| Entry | Purpose |
+|-------|---------|
+| [`SKILLS.md`](../../SKILLS.md) | Short collaborator pointer |
+| This file | Full inventory + role matrix |
+| Each `**/SKILL.md` | Executable skill body |
 
 ## Role load matrix
 
 | Role | Load first | Then |
 |------|------------|------|
-| **Admin / Grok Administrator** | `evidence-led-monorepo-ops` + `adaptive-wait` | `review-loop` · `help-wanted-lane` · `approxination-lane` |
-| **Collaborator** | `adaptive-feedback-cycle` | dual-gate |
-| **Oversight / external contrib** | `help-wanted-lane` | evidence-led + adaptive-wait · `approxination-lane` |
-| **Evaluation / DOE** | `multivariate-doe` + `blind-agent-evaluation` | `approxination-lane` |
+| **Admin / Grok Administrator** | `evidence-led-monorepo-ops` + `adaptive-wait` | `review-loop` · `help-wanted-lane` · `approxination-lane` · `production-reconciliation` |
+| **Collaborator** | `adaptive-feedback-cycle` | dual-gate · `find-skills` |
+| **Oversight / external contrib** | `help-wanted-lane` | evidence-led + adaptive-wait · living status board |
+| **Evaluation / DOE** | `multivariate-doe` + `blind-agent-evaluation` | `approxination-lane` · `mvt-experiment` |
+| **CI / production recon** | `production-reconciliation` | `action-effectiveness-ledger` · `workflow-orchestration` |
 
-## Active ops skills
+## `.agents/skills/` (agent loadable)
 
 | Skill | Path |
 |-------|------|
-| evidence-led-monorepo-ops | `.agents/skills/evidence-led-monorepo-ops/SKILL.md` |
+| adaptive-feedback-cycle | `.agents/skills/adaptive-feedback-cycle/SKILL.md` |
 | adaptive-wait | `.agents/skills/adaptive-wait/SKILL.md` |
-| help-wanted-lane | `.agents/skills/help-wanted-lane/SKILL.md` |
 | approxination-lane | `.agents/skills/approxination-lane/SKILL.md` |
+| blind-agent-evaluation | `.agents/skills/blind-agent-evaluation/SKILL.md` |
+| context-relationship-graph | `.agents/skills/context-relationship-graph/SKILL.md` |
+| evidence-led-monorepo-ops | `.agents/skills/evidence-led-monorepo-ops/SKILL.md` |
+| find-skills | `.agents/skills/find-skills/SKILL.md` |
+| gemini-performance-psychology | `.agents/skills/gemini-performance-psychology/SKILL.md` |
+| help-wanted-lane | `.agents/skills/help-wanted-lane/SKILL.md` |
+| multivariate-doe | `.agents/skills/multivariate-doe/SKILL.md` |
+| review-loop | `.agents/skills/review-loop/SKILL.md` |
+| termux-monorepo | `.agents/skills/termux-monorepo/SKILL.md` |
+| termux-monorepo-agentic-governance | `.agents/skills/termux-monorepo-agentic-governance/SKILL.md` |
 
-## Routing / orchestration pointers (post-#611)
+## `.github/skills/` (CI / production)
+
+| Skill | Path |
+|-------|------|
+| action-effectiveness-ledger | `.github/skills/action-effectiveness-ledger/SKILL.md` |
+| evidence-envelope | `.github/skills/evidence-envelope/SKILL.md` |
+| evidence-provenance | `.github/skills/evidence-provenance/SKILL.md` |
+| forensic-recovery | `.github/skills/forensic-recovery/SKILL.md` |
+| mvt-experiment | `.github/skills/mvt-experiment/SKILL.md` |
+| pr-evidence-evaluation | `.github/skills/pr-evidence-evaluation/SKILL.md` |
+| production-reconciliation | `.github/skills/production-reconciliation/SKILL.md` |
+| workflow-orchestration | `.github/skills/workflow-orchestration/SKILL.md` |
+
+## Help-wanted companion docs
+
+| Doc | Role |
+|-----|------|
+| [`HELP-WANTED-LANE.md`](HELP-WANTED-LANE.md) | Production execute |
+| [`HELP-WANTED-PARALLEL.md`](HELP-WANTED-PARALLEL.md) | Roster + limits |
+| [`HELP-WANTED-STATUS.md`](HELP-WANTED-STATUS.md) | Living human-review surface |
+| [`HELP-WANTED-EVIDENCE-FEED.md`](HELP-WANTED-EVIDENCE-FEED.md) | Receipts → evaluation |
+| generated board | `docs/ops/generated/help-wanted-status.md` |
+
+## Routing / orchestration pointers
 
 | Need | Path |
 |------|------|
-| Three-plane map (review / chat / MCP) | [`docs/ops/ROUTING-ORCHESTRATION-MAP.md`](ROUTING-ORCHESTRATION-MAP.md) |
-| Model rotation + free-tier policy | [`docs/schemas/model-rotation.yaml`](../schemas/model-rotation.yaml) |
-| Provider capability matrix | [`docs/schemas/provider-capabilities.md`](../schemas/provider-capabilities.md) |
-| MCP host catalog (incl. bifrost evaluation) | `mcp-hub/catalog.json` |
-| Bifrost proposal | `docs/proposals/active/bifrost-gateway-integration/` |
-| Approxination A/B/C/D cohort | `docs/evaluations/approxination/COHORT.md` |
-| Approxination ops | [`docs/ops/APPROXINATION-LANE.md`](APPROXINATION-LANE.md) |
+| Three-plane map | [`ROUTING-ORCHESTRATION-MAP.md`](ROUTING-ORCHESTRATION-MAP.md) |
+| Model rotation | [`docs/schemas/model-rotation.yaml`](../schemas/model-rotation.yaml) |
+| Provider caps | [`docs/schemas/provider-capabilities.md`](../schemas/provider-capabilities.md) |
+| Approxination ops | [`APPROXINATION-LANE.md`](APPROXINATION-LANE.md) |
 
-## Cycle snapshot (2026-09-18)
+## Cycle snapshot (2026-09-19)
 
-- Help-wanted lane: skill + CPPH + scout + execute workflows; upstream vedantnimbarte/zero#81 shipped.
-- **#611 MERGED:** Bifrost integration slice (registry, catalog v0.3.2 evaluation host, provider-capabilities, ROUTING-ORCHESTRATION-MAP). No Bifrost source merge.
-- **Approxination extract:** skill find/generate/feedback + A/B/C/D cohort card + proposal ITEMS (APPROX-001–004 done; gitlink + formal smoke backlog).
-- Dual-gate still required for merge to master. Ledger intermittent (#608 class) is not dual-gate alone.
-- Vercel deploy rate-limit observed on some PRs — non-blocking for docs/skills when gates green.
+- **#638 MERGED:** LIVE help-wanted contribute (fork-ready, FALLBACK notice).
+- **#640 MERGED:** neighbor-safe — idempotent claims, skip closed, living status board.
+- Proven PRIMARY: DioNanos/codex-termux PR #27 (do **not** re-claim closed #14); Haven PR #657.
+- Maintainer routing (codex-termux): parity only; logic → upstream; features → [codex-vl](https://github.com/DioNanos/codex-vl).
+- Dual-gate still required for monorepo merges. External PRs follow target norms.
 
 BIUDL. Agent-Identity: Grok (Administrator)

@@ -13,7 +13,8 @@ catalog.
 | Agent entry + hard rules | [`CLAUDE.md`](CLAUDE.md) |
 | Task routing (one card) | [`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md) |
 | Dual gates | `python3 scripts/ci/repo_gate.py` · `python3 scripts/ci/termux_smoke.py` |
-| Skills inventory | [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md) |
+| Skills (collaborator entry) | [`SKILLS.md`](SKILLS.md) |
+| Skills inventory (full) | [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md) |
 | Adaptive wait / feedback loop | `.agents/skills/adaptive-feedback-cycle/SKILL.md` |
 
 Human-readable twin (when present): `AGENTS.hum.md`.

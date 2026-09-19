@@ -103,4 +103,20 @@ jobs:
               `checks_pending: ${pendingChecks.length}`,
               `checks_failed: ${failedChecks.length}`,
             ].join('\n');
+<<<<<<< HEAD
+            await core.summary
+              .addHeading(`PR #${prNumber} production ledger`)
+              .addRaw(ledger + '\n\n')
+              .addHeading('Latest evidence')
+              .addRaw(`- latest commit: ${latestCommit?.sha || 'n/a'} @ ${iso(latestCommit?.commit?.committer?.date || latestCommit?.commit?.author?.date)}\n`)
+              .addRaw(`- latest review: ${latestReview?.html_url || 'none'} @ ${iso(latestReview?.submitted_at)}\n`)
+              .addRaw(`- latest review comment: ${latestReviewComment?.html_url || 'none'} @ ${iso(latestReviewComment?.updated_at || latestReviewComment?.created_at)}\n`)
+              .addRaw(`- latest issue comment: ${latestIssueComment?.html_url || 'none'} @ ${iso(latestIssueComment?.updated_at || latestIssueComment?.created_at)}\n`)
+              .addHeading('Gate interpretation')
+              .addRaw(behind > 0 ? '⚠️ Branch is behind master; production alignment is incomplete.\n' : '✅ Branch is not behind master at ledger generation time.\n')
+              .addRaw(failedChecks.length ? `❌ ${failedChecks.length} failed check(s).\n` : '✅ No completed failing checks observed.\n')
+              .addRaw(pendingChecks.length ? `⏳ ${pendingChecks.length} check(s) still pending.\n` : '✅ No pending checks observed.\n')
+              .write();
+=======
             await core.summary.addHeading(`PR #${prNumber} production ledger`).addRaw(ledger + '\n\n').addHeading('Latest evidence').addRaw(`- latest commit: ${latestCommit?.sha || 'n/a'} @ ${iso(latestCommit?.commit?.committer?.date || latestCommit?.commit?.author?.date)}\n`).addRaw(`- latest review: ${latestReview?.html_url || 'none'} @ ${iso(latestReview?.submitted_at)}\n`).addRaw(`- latest review comment: ${latestReviewComment?.html_url || 'none'} @ ${iso(latestReviewComment?.updated_at || latestReviewComment?.created_at)}\n`).addRaw(`- latest issue comment: ${latestIssueComment?.html_url || 'none'} @ ${iso(latestIssueComment?.updated_at || latestIssueComment?.created_at)}\n`).addHeading('Gate interpretation').addRaw(behind > 0 ? '⚠️ Branch is behind master; production alignment is incomplete.\n' : '✅ Branch is not behind master at ledger generation time.\n').addRaw(failedChecks.length ? `❌ ${failedChecks.length} failed check(s).\n` : '✅ No completed failing checks observed.\n').addRaw(pendingChecks.length ? `⏳ ${pendingChecks.length} check(s) still pending.\n` : '✅ No pending checks observed.\n').write();
+>>>>>>> 1b168b4 (fix(security): prevent symlink hijacking in obsidian server token read)

@@ -9,6 +9,7 @@
 | Adaptive wait / feedback | `.agents/skills/adaptive-feedback-cycle/SKILL.md` |
 | Admin ops | `.agents/skills/evidence-led-monorepo-ops/SKILL.md` |
 | External contribute (help-wanted) | `.agents/skills/help-wanted-lane/SKILL.md` |
+| Issue / PR graph (evaluate–assign–threads) | `.agents/skills/github-issue-pr-graph/SKILL.md` |
 | Production WAIT → VALIDATE | `.github/skills/production-reconciliation/SKILL.md` |
 
 ## Layout (both trees are first-class)
@@ -22,6 +23,8 @@ SKILLS.md                           # this file — short collaborator entry
 
 Every skill directory must contain a `SKILL.md`. Inventory lists **all** of them so collaborators do not need private mirrors.
 
+Root `AGENTS.md` is removed. Start at `CLAUDE.md`.
+
 ## Role quick-load
 
 | Role | Load first |
@@ -29,6 +32,7 @@ Every skill directory must contain a `SKILL.md`. Inventory lists **all** of them
 | Collaborator | `adaptive-feedback-cycle` → dual-gate |
 | Admin / Grok | `evidence-led-monorepo-ops` + `adaptive-wait` |
 | Oversight / external PR | `help-wanted-lane` |
+| Issue/PR graph + threads | `github-issue-pr-graph` |
 | Evaluation / DOE | `multivariate-doe` + `blind-agent-evaluation` |
 
 Do not keep skill policy only in local `.grok/skills/` mirrors — **master is SSOT**.

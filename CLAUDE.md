@@ -1,6 +1,7 @@
 # CLAUDE.md
 
-**Primary agent entry for this repository.** Load this first. Do not start from root `AGENTS.md` (Linguist/CedrLang stub only).
+**Primary and only root agent entry for this repository.** Load this first.
+Root `AGENTS.md` is **deleted** (2026-09-19). Linguist / CedrLang practice surfaces live under docs and generated artifacts — not a second governance file.
 
 ## Governance sequence (read in order)
 
@@ -59,7 +60,10 @@ Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
 | Skills + adaptive wait | `docs/ops/SKILLS-INVENTORY.md` |
 | Session SSOT | `docs/schemas/session-ssot.md` |
 | Provider caps | `docs/schemas/provider-capabilities.md` |
-| Linguist / CedrLang surface only | `AGENTS.md` |
+| Issue/PR graph ops | `.agents/skills/github-issue-pr-graph/SKILL.md` |
+| Context relationship graph | `.agents/skills/context-relationship-graph/SKILL.md` |
+| Agent monikers / @-invoke | `docs/ops/AGENT-MONIKERS.md` |
+| DeepSeek CI invoke | `docs/ops/DEEPSEEK-CI.md` |
 
 ## ICM + RinDig reference pins (smods)
 

@@ -9,7 +9,8 @@ name: ECC Tools comment-command ops
 #
 # Surfaces: PR path audit | PR sweep | matrix #175 | any issue | PR operator | ecc-bot ack
 # Token policy: marker + command(s) + one meta line; batch multi-cmd into one comment.
-# Saturated conversations (≥2500 comments): overflow to a thin tracking issue — never skip the target.
+# Saturated conversations (≥2500 comments): overflow to ONE thin tracking issue (idempotent — never duplicate).
+# Once overflowed, further sweeps skip the parent PR unless force=true.
 
 on:
   schedule:
@@ -127,16 +128,37 @@ jobs:
               const saturated = err?.status === 403 && /2500 comments|Commenting is disabled/i.test(String(err.message || err));
               if (!saturated) throw err;
               core.warning(`#${pr.number} saturated — overflow tracking issue`);
-              await github.rest.issues.create({
-                owner: context.repo.owner, repo: context.repo.repo,
-                title: `ecc-tools ops: PR #${pr.number} /audit`,
-                body: [
-                  `Overflow for **PR #${pr.number}** (conversation ≥2500 comments).`,
-                  '', body, '',
-                  `Parent: https://github.com/${context.repo.owner}/${context.repo.repo}/pull/${pr.number}`,
-                ].join('\n'),
-                labels: ['ecc-tools'],
-              });
+              // Idempotent: reuse existing open overflow if present
+              let existing = null;
+              try {
+                const q = `repo:${context.repo.owner}/${context.repo.repo} is:issue is:open label:ecc-tools "ecc-tools ops: PR #${pr.number}"`;
+                const { data } = await github.rest.search.issuesAndPullRequests({ q, per_page: 5 });
+                const hits = (data.items || []).filter(i => !i.pull_request && (i.title || '').includes(`PR #${pr.number}`));
+                if (hits.length) {
+                  hits.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                  existing = hits[0];
+                }
+              } catch (_) {}
+              if (existing) {
+                core.info(`#${pr.number} already has overflow #${existing.number} — reusing`);
+                try {
+                  await github.rest.issues.createComment({
+                    owner: context.repo.owner, repo: context.repo.repo,
+                    issue_number: existing.number, body,
+                  });
+                } catch (_) {}
+              } else {
+                await github.rest.issues.create({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  title: `ecc-tools ops: PR #${pr.number} /audit`,
+                  body: [
+                    `Overflow for **PR #${pr.number}** (conversation ≥2500 comments).`,
+                    '', body, '',
+                    `Parent: https://github.com/${context.repo.owner}/${context.repo.repo}/pull/${pr.number}`,
+                  ].join('\n'),
+                  labels: ['ecc-tools'],
+                });
+              }
             }
 
   sweep-prs:
@@ -168,6 +190,21 @@ jobs:
             };
             const isCommentSaturated = (err) =>
               err?.status === 403 && /2500 comments|Commenting is disabled/i.test(String(err.message || err));
+            async function findExistingOverflow(prNumber) {
+              // Idempotent: one open overflow issue per parent PR
+              const q = `repo:${context.repo.owner}/${context.repo.repo} is:issue is:open label:ecc-tools "ecc-tools ops: PR #${prNumber}"`;
+              try {
+                const { data } = await github.rest.search.issuesAndPullRequests({ q, per_page: 5 });
+                const hits = (data.items || []).filter(i => !i.pull_request && (i.title || '').includes(`PR #${prNumber}`));
+                if (hits.length) {
+                  hits.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                  return hits[0];
+                }
+              } catch (e) {
+                core.warning(`overflow search failed: ${e.message}`);
+              }
+              return null;
+            }
             async function deliverEcc(prNumber, cmd, marker, lane) {
               const body = [
                 marker,
@@ -183,6 +220,19 @@ jobs:
               } catch (err) {
                 if (!isCommentSaturated(err)) throw err;
                 core.warning(`#${prNumber} conversation saturated (≥2500 comments) — overflow tracking issue`);
+                const existing = await findExistingOverflow(prNumber);
+                if (existing) {
+                  core.info(`#${prNumber} already has overflow #${existing.number} — reusing (idempotent)`);
+                  // Optional: nudge the existing overflow with a lean re-trigger comment
+                  try {
+                    await github.rest.issues.createComment({
+                      owner: context.repo.owner, repo: context.repo.repo,
+                      issue_number: existing.number,
+                      body: [marker, `/ecc-tools ${cmd}`, `<!-- meta:gha ecc-ops lane=${lane}-overflow-reuse pr=${prNumber} -->`].join('\n'),
+                    });
+                  } catch (_) {}
+                  return { channel: 'overflow-issue', ref: existing.number };
+                }
                 const { data: issue } = await github.rest.issues.create({
                   owner: context.repo.owner, repo: context.repo.repo,
                   title: `ecc-tools ops: PR #${prNumber} /${cmd}`,
@@ -220,6 +270,14 @@ jobs:
               if (!hits.length && !isEcc) continue;
               const cmd = isEcc ? 'doctor' : 'audit';
               const marker = `<!-- ecc-tools-ops:${cmd} -->`;
+              // Skip permanently saturated parents unless force (prevents daily overflow spam)
+              if (!force) {
+                const existingOv = await findExistingOverflow(pr.number);
+                if (existingOv) {
+                  core.info(`#${pr.number} already overflowed → #${existingOv.number}; skip (use force to re-trigger)`);
+                  continue;
+                }
+              }
               let prior = null;
               try {
                 const comments = await github.paginate(github.rest.issues.listComments, {
@@ -413,12 +471,33 @@ jobs:
             } catch (err) {
               const saturated = err?.status === 403 && /2500 comments|Commenting is disabled/i.test(String(err.message || err));
               if (!saturated) throw err;
-              await github.rest.issues.create({
-                owner: context.repo.owner, repo: context.repo.repo,
-                title: `ecc-tools ops: PR #${prNumber} (operator)`,
-                body: [`Overflow for **PR #${prNumber}**.`, '', body, '', `Parent: https://github.com/${context.repo.owner}/${context.repo.repo}/pull/${prNumber}`].join('\n'),
-                labels: ['ecc-tools'],
-              });
+              // Idempotent overflow
+              let existing = null;
+              try {
+                const q = `repo:${context.repo.owner}/${context.repo.repo} is:issue is:open label:ecc-tools "ecc-tools ops: PR #${prNumber}"`;
+                const { data } = await github.rest.search.issuesAndPullRequests({ q, per_page: 5 });
+                const hits = (data.items || []).filter(i => !i.pull_request && (i.title || '').includes(`PR #${prNumber}`));
+                if (hits.length) {
+                  hits.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                  existing = hits[0];
+                }
+              } catch (_) {}
+              if (existing) {
+                core.info(`operator: reusing overflow #${existing.number}`);
+                try {
+                  await github.rest.issues.createComment({
+                    owner: context.repo.owner, repo: context.repo.repo,
+                    issue_number: existing.number, body,
+                  });
+                } catch (_) {}
+              } else {
+                await github.rest.issues.create({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  title: `ecc-tools ops: PR #${prNumber} (operator)`,
+                  body: [`Overflow for **PR #${prNumber}**.`, '', body, '', `Parent: https://github.com/${context.repo.owner}/${context.repo.repo}/pull/${prNumber}`].join('\n'),
+                  labels: ['ecc-tools'],
+                });
+              }
             }
 
   acknowledge-ecc-pr:

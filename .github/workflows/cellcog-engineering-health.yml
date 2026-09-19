@@ -1,0 +1,58 @@
+name: Engineering health (script)
+
+# 100% automated engineering-health snapshot.
+# ZERO CellCog / LLM agent credits — GitHub API + local Python only.
+# Script: scripts/ci/engineering_health.py
+# Optional human view (not written by this job):
+#   https://cellcog.ai/app/6aa08a02bf7d52bfa976cd2e/dashboard/engineering-health/
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 * * * *'  # hourly, minute 17
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/ci/engineering_health.py'
+      - '.github/workflows/cellcog-engineering-health.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: engineering-health-script
+  cancel-in-progress: true
+
+jobs:
+  snapshot:
+    name: engineering-health snapshot
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Run pure script (no CellCog)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          ENGINEERING_HEALTH_OUT: ${{ runner.temp }}/engineering-health
+        run: |
+          set -euo pipefail
+          python3 scripts/ci/engineering_health.py --out-dir "$ENGINEERING_HEALTH_OUT"
+          {
+            echo '### Engineering health (zero CellCog credits)'
+            echo
+            cat "$ENGINEERING_HEALTH_OUT/snapshot.md"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload snapshot artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: engineering-health-${{ github.run_id }}
+          path: ${{ runner.temp }}/engineering-health/
+          if-no-files-found: error
+          retention-days: 14

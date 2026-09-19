@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "c429074b9574efa90dbae299834882cbbca4cf866f08ffcfbdcc1332aa9123b2",
-  "workflow_count": 68,
+  "source_fingerprint": "bb5389ccfcf5e357e08a28d000cf16f6f74b4e265795f5c58e2bc9b1bc17824d",
+  "workflow_count": 72,
   "workflows": [
     {
       "action_pins": [
@@ -76,7 +76,7 @@
       "jobs": [
         "notify-failure"
       ],
-      "name": "Actions Run Watcher \u2014 incident notification",
+      "name": "Actions Run Watcher — incident notification",
       "path": ".github/workflows/actions-run-watcher.yml",
       "schedules": [],
       "triggers": [
@@ -139,7 +139,7 @@
       "jobs": [
         "sync-linear"
       ],
-      "name": "Agent feedback \u2192 Linear subtasks",
+      "name": "Agent feedback → Linear subtasks",
       "path": ".github/workflows/agent-feedback-linear-sync.yml",
       "schedules": [],
       "triggers": [
@@ -190,7 +190,7 @@
         "detect-bot-feedback",
         "invoke-jules-api"
       ],
-      "name": "Agent review \u2192 auto Jules",
+      "name": "Agent review → auto Jules",
       "path": ".github/workflows/agent-review-auto-jules.yml",
       "schedules": [],
       "triggers": [
@@ -240,7 +240,7 @@
       "jobs": [
         "audit"
       ],
-      "name": "Audit Cycle \u2014 Single PR Feed-Forward",
+      "name": "Audit Cycle — Single PR Feed-Forward",
       "path": ".github/workflows/audit-cycle.yml",
       "schedules": [],
       "triggers": [
@@ -250,7 +250,9 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
       ],
       "authority": "writer",
       "concurrency": "group: automation-docs-refresh-${{ github.event.pull_request.head.ref || github.ref_name }} cancel-in-progress: false",
@@ -267,7 +269,29 @@
       "triggers": [
         "pull_request",
         "push",
-        "schedule"
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: engineering-health-script cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "snapshot"
+      ],
+      "name": "Engineering health (script)",
+      "path": ".github/workflows/cellcog-engineering-health.yml",
+      "schedules": [
+        "17 * * * *"
+      ],
+      "triggers": [
+        "push",
+        "schedule",
+        "workflow_dispatch"
       ]
     },
     {
@@ -303,7 +327,7 @@
       "jobs": [
         "watch"
       ],
-      "name": "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher",
+      "name": "\ud83d\udee1️ Direct Master Empty-Commit Watcher",
       "path": ".github/workflows/commit-diff-watcher.yml",
       "schedules": [],
       "triggers": [
@@ -351,8 +375,11 @@
       ],
       "name": "context relationship historical backfill",
       "path": ".github/workflows/context-relationship-backfill.yml",
-      "schedules": [],
+      "schedules": [
+        "23 * * * *"
+      ],
       "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -469,7 +496,7 @@
       "jobs": [
         "deepseek-agent"
       ],
-      "name": "DeepSeek CI \u2013 Agentic Automation",
+      "name": "DeepSeek CI – Agentic Automation",
       "path": ".github/workflows/deepseek-ci.yml",
       "schedules": [],
       "triggers": [
@@ -679,7 +706,7 @@
       "jobs": [
         "invoke"
       ],
-      "name": "\u25b6\ufe0f Invoke (Gemini PRIMARY \u2192 peer Omni \u2194 OpenRouter secondary)",
+      "name": "▶️ Invoke (Gemini PRIMARY → peer Omni ↔ OpenRouter secondary)",
       "path": ".github/workflows/gemini-invoke.yml",
       "schedules": [],
       "triggers": [
@@ -698,7 +725,7 @@
       "jobs": [
         "review"
       ],
-      "name": "\ud83d\udd0d Gemini PR Review (Gemini PRIMARY \u2192 peer Omni \u2194 OpenRouter secondary)",
+      "name": "\ud83d\udd0d Gemini PR Review (Gemini PRIMARY → peer Omni ↔ OpenRouter secondary)",
       "path": ".github/workflows/gemini-review.yml",
       "schedules": [],
       "triggers": [
@@ -717,7 +744,7 @@
       "jobs": [
         "triage"
       ],
-      "name": "\ud83c\udff7\ufe0f Issue Triage (Gemini PRIMARY \u2192 peer Omni \u2194 OpenRouter secondary)",
+      "name": "\ud83c\udff7️ Issue Triage (Gemini PRIMARY → peer Omni ↔ OpenRouter secondary)",
       "path": ".github/workflows/gemini-triage.yml",
       "schedules": [],
       "triggers": [
@@ -746,6 +773,44 @@
       ]
     },
     {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: help-wanted-execute cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "budget",
+        "claim",
+        "patch-zero-72"
+      ],
+      "name": "help-wanted execute",
+      "path": ".github/workflows/help-wanted-execute.yml",
+      "schedules": [
+        "41 */4 * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: help-wanted-scout cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "scout"
+      ],
+      "name": "help-wanted scout",
+      "path": ".github/workflows/help-wanted-scout.yml",
+      "schedules": [
+        "17 */2 * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
@@ -765,7 +830,9 @@
       ]
     },
     {
-      "action_pins": [],
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
       "authority": "read-only-or-advisory",
       "concurrency": "group: historical-evaluation-correlation cancel-in-progress: false",
       "domain": "agentic-development",
@@ -951,6 +1018,21 @@
       ]
     },
     {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "pin"
+      ],
+      "name": "pin-cor-ae-submodules",
+      "path": ".github/workflows/pin-cor-ae-submodules.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
@@ -992,7 +1074,7 @@
         "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
       ],
       "authority": "read-only-or-advisory",
-      "concurrency": "group: pr-production-ledger-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }} cancel-in-progress: true",
+      "concurrency": "# Include event_name so comment storms do not cancel PR-sync ledger runs. # cancel-in-progress:false — concurrent ledgers are cheap; cancelled ones are failures. group: pr-production-ledger-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}-${{ github.event_name }} cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
         "ledger"
@@ -1292,7 +1374,7 @@
         "evaluate",
         "lane"
       ],
-      "name": "Team MVT \u2014 simultaneous provider lanes",
+      "name": "Team MVT — simultaneous provider lanes",
       "path": ".github/workflows/team-mvt.yml",
       "schedules": [
         "*/15 * * * *"

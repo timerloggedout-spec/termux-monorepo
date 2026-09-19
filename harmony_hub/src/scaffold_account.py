@@ -1,13 +1,21 @@
 #!/usr/bin/env python3
 """Auto-scaffold a new account from a cookies JSON file."""
-import sys, json, os, shutil, datetime
+import sys, json, os, shutil, datetime, re
 from pathlib import Path
+
+SAFE_ACCOUNT_REGEX = re.compile(r"^[a-zA-Z0-9_-]+$")
+
+def _validate_account_name(account_name: str) -> None:
+    """Validate account name to prevent path traversal vectors."""
+    if not account_name or not SAFE_ACCOUNT_REGEX.match(account_name):
+        raise ValueError(f"Invalid account name '{account_name}': must contain only alphanumeric characters, underscores, or hyphens.")
 
 def _check_symlink(path: Path):
     if path.is_symlink():
         raise ValueError(f"Symlink target rejected for security: {path}")
 
 def scaffold(cookies_path: str, account_name: str):
+    _validate_account_name(account_name)
     cookies_file = Path(cookies_path)
     _check_symlink(cookies_file)
     if not cookies_file.exists():

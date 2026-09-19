@@ -1,12 +1,16 @@
 name: context relationship historical backfill
 
 on:
+  # Admission fix: schedule so the window is not stuck forever at next_start_page=2
+  # (stall observed ~2026-08-19; audit #526). Dispatch remains for operator resume.
+  schedule:
+    - cron: '23 * * * *'
   workflow_dispatch:
     inputs:
       history_start_page:
         description: 'GitHub REST history page to start. Resume with the next page reported in build-summary.json.'
         type: string
-        default: '1'
+        default: '2'
       max_items:
         description: 'Maximum issues and pull requests per family in this explicit page window.'
         type: string
@@ -44,9 +48,11 @@ jobs:
       - name: Build one historical relationship-index window
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          HISTORY_START_PAGE: ${{ inputs.history_start_page }}
-          MAX_ITEMS: ${{ inputs.max_items }}
-          MAX_COMMITS: ${{ inputs.max_commits }}
+          # Schedule path: default resume page 2 (corpus stuck since 2026-08-19).
+          # Dispatch path: use explicit input when provided.
+          HISTORY_START_PAGE: ${{ github.event.inputs.history_start_page || '2' }}
+          MAX_ITEMS: ${{ github.event.inputs.max_items || '100' }}
+          MAX_COMMITS: ${{ github.event.inputs.max_commits || '100' }}
         run: |
           set -euo pipefail
           python -m archwiz.context_relationships.build_index \

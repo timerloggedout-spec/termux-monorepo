@@ -31,6 +31,65 @@ LEGACY_MODELS = {
     "auto/best-free",
 }
 
+# Module-level constant set and dictionaries to eliminate allocation overhead per route evaluation
+KNOWN_FREE_MODELS_WITHOUT_PRICING = {
+    "stealth/ox-alpha",
+    "google/lyria-3-clip-preview",
+    "google/lyria-3-pro-preview",
+}
+
+LIMITS = {
+    "omni/auto/best-free": {"triage": 400, "review": 250, "invoke": 400},
+    "openrouter/stealth/ox-alpha": {"triage": 80, "review": 80, "invoke": 80},
+    "openrouter/meta-llama/llama-3.3-70b-instruct:free": {"triage": 80, "review": 80, "invoke": 80},
+    "openrouter/google/gemma-3-12b-it:free": {"triage": 80, "review": 80, "invoke": 80},
+    "openrouter/qwen/qwen3-coder:free": {"triage": 60, "review": 60, "invoke": 60},
+    "openrouter/deepseek/deepseek-r1:free": {"triage": 40, "review": 40, "invoke": 40},
+    "openrouter/google/gemma-4-31b-it:free": {"triage": 80, "review": 80, "invoke": 80},
+    "openrouter/google/gemma-4-26b-a4b-it:free": {"triage": 80, "review": 80, "invoke": 80},
+    "openrouter/cohere/north-mini-code:free": {"triage": 60, "review": 60, "invoke": 60},
+    "gemini-3.1-flash-lite": {"triage": 1400, "review": 1400, "invoke": 1400},
+    "gemini-3.5-flash-lite": {"triage": 1400, "review": 1400, "invoke": 1400},
+    "gemini-2.5-flash-lite": {"triage": 1000, "review": 1000, "invoke": 1000},
+    "gemini-3.5-flash": {"triage": 1400, "review": 1400, "invoke": 1400},
+    "gemini-2.5-flash": {"triage": 1400, "review": 1400, "invoke": 1400},
+    "gemini-3-flash": {"triage": 1400, "review": 1400, "invoke": 1400},
+}
+
+ROLE_PEERS = {
+    "triage": [
+        ("omni", "auto/best-free"),
+        ("openrouter", "stealth/ox-alpha"),
+        ("openrouter", "google/gemma-4-31b-it:free"),
+        ("openrouter", "google/gemma-4-26b-a4b-it:free"),
+        ("openrouter", "meta-llama/llama-3.3-70b-instruct:free"),
+        ("openrouter", "google/gemma-3-12b-it:free"),
+    ],
+    "review": [
+        ("omni", "auto/best-free"),
+        ("openrouter", "stealth/ox-alpha"),
+        ("openrouter", "cohere/north-mini-code:free"),
+        ("openrouter", "google/gemma-4-31b-it:free"),
+        ("openrouter", "qwen/qwen3-coder:free"),
+        ("openrouter", "meta-llama/llama-3.3-70b-instruct:free"),
+        ("openrouter", "deepseek/deepseek-r1:free"),
+    ],
+    "invoke": [
+        ("omni", "auto/best-free"),
+        ("openrouter", "stealth/ox-alpha"),
+        ("openrouter", "google/gemma-4-31b-it:free"),
+        ("openrouter", "google/gemma-4-26b-a4b-it:free"),
+        ("openrouter", "meta-llama/llama-3.3-70b-instruct:free"),
+        ("openrouter", "google/gemma-3-12b-it:free"),
+    ],
+}
+
+ROLE_RESIDUALS = {
+    "triage": ["gemini-3.1-flash-lite", "gemini-3.5-flash-lite", "gemini-2.5-flash-lite"],
+    "review": ["gemini-3.5-flash", "gemini-2.5-flash", "gemini-3-flash", "gemini-3.1-flash-lite"],
+    "invoke": ["gemini-3.1-flash-lite", "gemini-2.5-flash-lite"],
+}
+
 
 def is_free_openrouter_model(model_id, pricing=None):
     """True for :free suffix OR zero prompt+completion pricing (e.g. stealth/ox-alpha)."""
@@ -39,11 +98,7 @@ def is_free_openrouter_model(model_id, pricing=None):
     if model_id.endswith(":free"):
         return True
     if pricing is None:
-        return model_id in {
-            "stealth/ox-alpha",
-            "google/lyria-3-clip-preview",
-            "google/lyria-3-pro-preview",
-        }
+        return model_id in KNOWN_FREE_MODELS_WITHOUT_PRICING
     try:
         return float(pricing.get("prompt", 1.0)) == 0.0 and float(
             pricing.get("completion", 1.0)
@@ -59,10 +114,12 @@ def parse_yaml(filepath):
     path = []
     with open(filepath, "r", encoding="utf-8") as handle:
         for line in handle:
-            stripped = line.strip()
+            # Single-pass string stripping and indent calculation to eliminate duplicate lstrip calls
+            lstripped = line.lstrip()
+            stripped = lstripped.rstrip()
             if not stripped or stripped.startswith("#"):
                 continue
-            indent = len(line) - len(line.lstrip())
+            indent = len(line) - len(lstripped)
             while path and path[-1][0] >= indent:
                 path.pop()
             if not path:
@@ -312,62 +369,12 @@ def main():
     if has_openrouter:
         polled_free_models, catalog_state = fetch_openrouter_free_models_cached_with_source()
 
-    limits = {
-        "omni/auto/best-free": {"triage": 400, "review": 250, "invoke": 400},
-        "openrouter/stealth/ox-alpha": {"triage": 80, "review": 80, "invoke": 80},
-        "openrouter/meta-llama/llama-3.3-70b-instruct:free": {"triage": 80, "review": 80, "invoke": 80},
-        "openrouter/google/gemma-3-12b-it:free": {"triage": 80, "review": 80, "invoke": 80},
-        "openrouter/qwen/qwen3-coder:free": {"triage": 60, "review": 60, "invoke": 60},
-        "openrouter/deepseek/deepseek-r1:free": {"triage": 40, "review": 40, "invoke": 40},
-        "openrouter/google/gemma-4-31b-it:free": {"triage": 80, "review": 80, "invoke": 80},
-        "openrouter/google/gemma-4-26b-a4b-it:free": {"triage": 80, "review": 80, "invoke": 80},
-        "openrouter/cohere/north-mini-code:free": {"triage": 60, "review": 60, "invoke": 60},
-        "gemini-3.1-flash-lite": {"triage": 1400, "review": 1400, "invoke": 1400},
-        "gemini-3.5-flash-lite": {"triage": 1400, "review": 1400, "invoke": 1400},
-        "gemini-2.5-flash-lite": {"triage": 1000, "review": 1000, "invoke": 1000},
-        "gemini-3.5-flash": {"triage": 1400, "review": 1400, "invoke": 1400},
-        "gemini-2.5-flash": {"triage": 1400, "review": 1400, "invoke": 1400},
-        "gemini-3-flash": {"triage": 1400, "review": 1400, "invoke": 1400},
-    }
-    role_peers = {
-        "triage": [
-            ("omni", "auto/best-free"),
-            ("openrouter", "stealth/ox-alpha"),
-            ("openrouter", "google/gemma-4-31b-it:free"),
-            ("openrouter", "google/gemma-4-26b-a4b-it:free"),
-            ("openrouter", "meta-llama/llama-3.3-70b-instruct:free"),
-            ("openrouter", "google/gemma-3-12b-it:free"),
-        ],
-        "review": [
-            ("omni", "auto/best-free"),
-            ("openrouter", "stealth/ox-alpha"),
-            ("openrouter", "cohere/north-mini-code:free"),
-            ("openrouter", "google/gemma-4-31b-it:free"),
-            ("openrouter", "qwen/qwen3-coder:free"),
-            ("openrouter", "meta-llama/llama-3.3-70b-instruct:free"),
-            ("openrouter", "deepseek/deepseek-r1:free"),
-        ],
-        "invoke": [
-            ("omni", "auto/best-free"),
-            ("openrouter", "stealth/ox-alpha"),
-            ("openrouter", "google/gemma-4-31b-it:free"),
-            ("openrouter", "google/gemma-4-26b-a4b-it:free"),
-            ("openrouter", "meta-llama/llama-3.3-70b-instruct:free"),
-            ("openrouter", "google/gemma-3-12b-it:free"),
-        ],
-    }
-    role_residuals = {
-        "triage": ["gemini-3.1-flash-lite", "gemini-3.5-flash-lite", "gemini-2.5-flash-lite"],
-        "review": ["gemini-3.5-flash", "gemini-2.5-flash", "gemini-3-flash", "gemini-3.1-flash-lite"],
-        "invoke": ["gemini-3.1-flash-lite", "gemini-2.5-flash-lite"],
-    }
-
     emit_decision(
         role,
         success_matrix,
-        limits,
-        role_peers,
-        role_residuals,
+        LIMITS,
+        ROLE_PEERS,
+        ROLE_RESIDUALS,
         has_omni,
         has_openrouter,
         has_gemini,
@@ -379,13 +386,13 @@ def main():
 
     if has_gemini:
         gemini_candidates = []
-        for model in role_residuals.get(role, []):
+        for model in ROLE_RESIDUALS.get(role, []):
             model_entry = success_matrix.get("models", {}).get(model, {})
             score = model_entry.get("elo", 1000) * model_entry.get("role_suitability", {}).get(role, 1.0)
             gemini_candidates.append({"provider": "gemini", "model": model, "score": score})
         for candidate in sorted(gemini_candidates, key=lambda item: item["score"], reverse=True):
             model = candidate["model"]
-            limit = limits.get(model, {}).get(role, 1000)
+            limit = LIMITS.get(model, {}).get(role, 1000)
             used = get_usage("gemini", model)
             if used < limit:
                 new_used = increment_usage("gemini", model)
@@ -400,7 +407,7 @@ def main():
             sys.stderr.write(f"Gemini primary soft budget exhausted: {model} ({used}/{limit})\n")
 
     peer_candidates = []
-    for provider, model in role_peers.get(role, []):
+    for provider, model in ROLE_PEERS.get(role, []):
         if provider == "omni" and not has_omni:
             continue
         if provider == "openrouter" and not has_openrouter:
@@ -420,7 +427,7 @@ def main():
     for candidate in sorted(peer_candidates, key=lambda item: item["score"], reverse=True):
         provider = candidate["provider"]
         model = candidate["model"]
-        limit = limits.get(f"{provider}/{model}", {}).get(role, 40)
+        limit = LIMITS.get(f"{provider}/{model}", {}).get(role, 40)
         used = get_usage(provider, model)
         if used < limit:
             new_used = increment_usage(provider, model)

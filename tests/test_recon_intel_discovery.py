@@ -151,6 +151,48 @@ class ReconIntelDiscoveryTests(unittest.TestCase):
                 self.assertEqual(1, len(mirror_calls))
                 self.assertIn("share anchor", detail)
 
+    def test_create_askpass_sets_strict_permissions_and_prevents_symlinks(self) -> None:
+        import os
+        path = MODULE.create_askpass()
+        try:
+            self.assertTrue(path.exists())
+            self.assertFalse(path.is_symlink())
+            if os.name != "nt":
+                self.assertEqual(0o700, path.stat().st_mode & 0o777)
+        finally:
+            path.unlink(missing_ok=True)
+
+    def test_create_askpass_rejects_symlink(self) -> None:
+        original_tempfile = MODULE.tempfile.NamedTemporaryFile
+        target_file = ROOT / "tmp_symlink_target.txt"
+        target_file.write_text("target")
+        symlink_path = ROOT / "tmp_symlink_askpass"
+        if symlink_path.exists() or symlink_path.is_symlink():
+            symlink_path.unlink()
+        symlink_path.symlink_to(target_file)
+
+        class FakeNamedTemporaryFile:
+            def __init__(self, *args, **kwargs):
+                self.name = str(symlink_path)
+            def write(self, data):
+                pass
+            def flush(self):
+                pass
+            def close(self):
+                pass
+
+        try:
+            MODULE.tempfile.NamedTemporaryFile = FakeNamedTemporaryFile
+            with self.assertRaises(ValueError) as ctx:
+                MODULE.create_askpass()
+            self.assertIn("Symlink askpass script rejected", str(ctx.exception))
+        finally:
+            MODULE.tempfile.NamedTemporaryFile = original_tempfile
+            if symlink_path.exists() or symlink_path.is_symlink():
+                symlink_path.unlink()
+            if target_file.exists():
+                target_file.unlink()
+
 
 if __name__ == "__main__":
     unittest.main()

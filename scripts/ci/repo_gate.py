@@ -368,33 +368,50 @@ def check_secrets(report: Report, paths: list[str], index: dict[str, IndexEntry]
 def measure(index: list[IndexEntry]) -> dict[str, int]:
     device_symlinks = 0
     absolute_symlinks = 0
+    tracked_session_artifacts = 0
+    tracked_backup_files = 0
+    paths_with_spaces = 0
+    tracked_browser_profile_files = 0
+    tracked_browser_credential_stores = 0
+
+    blob_cache: dict[str, str] = {}
+
     for entry in index:
-        if not entry.is_symlink:
-            continue
-        target = symlink_target(entry)
-        if target.startswith(DEVICE_PATH_PREFIXES):
-            device_symlinks += 1
-        elif target.startswith("/"):
-            absolute_symlinks += 1
+        path = entry.path
+
+        if " " in path:
+            paths_with_spaces += 1
+
+        if entry.is_symlink:
+            target = blob_cache.get(entry.sha)
+            if target is None:
+                target = symlink_target(entry)
+                blob_cache[entry.sha] = target
+            if target.startswith(DEVICE_PATH_PREFIXES):
+                device_symlinks += 1
+            elif target.startswith("/"):
+                absolute_symlinks += 1
+
+        if SESSION_ARTIFACT_RE.search(path):
+            tracked_session_artifacts += 1
+
+        filename = path.rsplit("/", 1)[-1]
+        if BACKUP_RE.search(filename):
+            tracked_backup_files += 1
+
+        if BROWSER_PROFILE_RE.search(path):
+            tracked_browser_profile_files += 1
+            if BROWSER_CREDENTIAL_RE.search(path):
+                tracked_browser_credential_stores += 1
 
     return {
         "device_absolute_symlinks": device_symlinks,
         "other_absolute_symlinks": absolute_symlinks,
-        "tracked_session_artifacts": sum(
-            1 for e in index if SESSION_ARTIFACT_RE.search(e.path)
-        ),
-        "tracked_backup_files": sum(
-            1 for e in index if BACKUP_RE.search(Path(e.path).name)
-        ),
-        "paths_with_spaces": sum(1 for e in index if " " in e.path),
-        "tracked_browser_profile_files": sum(
-            1 for e in index if BROWSER_PROFILE_RE.search(e.path)
-        ),
-        "tracked_browser_credential_stores": sum(
-            1
-            for e in index
-            if BROWSER_PROFILE_RE.search(e.path) and BROWSER_CREDENTIAL_RE.search(e.path)
-        ),
+        "tracked_session_artifacts": tracked_session_artifacts,
+        "tracked_backup_files": tracked_backup_files,
+        "paths_with_spaces": paths_with_spaces,
+        "tracked_browser_profile_files": tracked_browser_profile_files,
+        "tracked_browser_credential_stores": tracked_browser_credential_stores,
     }
 
 

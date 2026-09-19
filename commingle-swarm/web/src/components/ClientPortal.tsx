@@ -23,14 +23,14 @@ export const ClientPortal = (reRender: () => void) => {
   setTimeout(load, 0);
 
   return () => html`
-    <section style="margin-top:16px;">
+    <section role="region" aria-label="Client portal" style="margin-top:16px;">
       <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
         <h2>Client portal</h2>
         <button
           aria-label="Refresh vault snapshot"
           aria-busy="${isLoading}"
           ?disabled=${isLoading}
-          style="padding:6px 12px; background:#1e2738; color:#eaf0ff; border:0; border-radius:6px; cursor:${isLoading ? 'not-allowed' : 'pointer'}; opacity:${isLoading ? '0.7' : '1'}; transition: opacity 0.2s ease;"
+          style="padding:6px 12px; background:#1e2738; color:#eaf0ff; border:1px solid #313d52; border-radius:6px; cursor:${isLoading ? 'not-allowed' : 'pointer'}; opacity:${isLoading ? '0.7' : '1'}; transition: opacity 0.2s ease; outline-color:#6366f1;"
           @click=${load}
         >
           ${isLoading ? 'Refreshing...' : 'Refresh'}
@@ -39,7 +39,7 @@ export const ClientPortal = (reRender: () => void) => {
       <pre
         aria-live="polite"
         aria-label="Vault snapshot output"
-        style="background:#121426; padding:12px; border-radius:8px;"
+        style="background:#121426; padding:12px; border-radius:8px; border:1px solid #1e243b;"
       >${vaultText}</pre>
     </section>
   `;

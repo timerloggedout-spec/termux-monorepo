@@ -32,7 +32,13 @@ jobs:
             "/repos/${GITHUB_REPOSITORY}/pulls?state=open&base=master&per_page=100" \
             > /tmp/merge-queue/pr-pages.json
 
-          jq -c '.[]' /tmp/merge-queue/pr-pages.json | while read -r pr; do
+          jq -c '
+            if type == "array" then
+              .[] | if type == "array" then .[] else . end
+            elif type == "object" then .
+            else empty
+            end
+          ' /tmp/merge-queue/pr-pages.json | while read -r pr; do
             number=$(jq -r '.number' <<<"$pr")
             head_sha=$(jq -r '.head.sha' <<<"$pr")
             head_ref=$(jq -r '.head.ref' <<<"$pr")
@@ -40,6 +46,9 @@ jobs:
             draft=$(jq -r '.draft' <<<"$pr")
             mergeable=$(jq -r '.mergeable' <<<"$pr")
             updated=$(jq -r '.updated_at' <<<"$pr")
+
+            [[ "$number" =~ ^[0-9]+$ ]] || continue
+            [[ -n "$head_sha" && "$head_sha" != "null" ]] || continue
 
             reviews=$(gh api \
               -H 'Accept: application/vnd.github+json' \
@@ -92,8 +101,12 @@ jobs:
               >> /tmp/merge-queue/candidates.ndjson
           done
 
-          jq -s 'sort_by(.disposition == "CANDIDATE" | not, .updated_at)' \
-            /tmp/merge-queue/candidates.ndjson > /tmp/merge-queue/merge-promotion-queue.json
+          if [[ ! -s /tmp/merge-queue/candidates.ndjson ]]; then
+            echo '[]' > /tmp/merge-queue/merge-promotion-queue.json
+          else
+            jq -s 'map(select(type == "object" and has("number"))) | sort_by([.disposition != "CANDIDATE", .updated_at])' \
+              /tmp/merge-queue/candidates.ndjson > /tmp/merge-queue/merge-promotion-queue.json
+          fi
 
           {
             echo '# Merge Promotion Queue'

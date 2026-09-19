@@ -182,12 +182,15 @@ def make_dashboard():
                     pass
 
         # Beautiful styled status tag
-        if level == "SUCCESS":
+        lvl_upper = str(level).upper()
+        if lvl_upper in ("SUCCESS", "PASS", "COMPLETED"):
             status_str = Text("SUCCESS", style="bold green")
-        elif level == "RETRY":
+        elif lvl_upper in ("RETRY", "RETRYING"):
             status_str = Text("RETRYING", style="bold yellow")
-        elif level == "CRITICAL":
-            status_str = Text("CRITICAL", style="bold red")
+        elif lvl_upper in ("WARNING", "WARN"):
+            status_str = Text("WARNING", style="bold yellow")
+        elif lvl_upper in ("CRITICAL", "ERROR", "FAILED", "FAIL"):
+            status_str = Text(lvl_upper, style="bold red")
         else:
             status_str = Text("PROCESSING", style="bold blue")
 

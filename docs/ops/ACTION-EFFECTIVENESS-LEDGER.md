@@ -37,7 +37,23 @@ Measure separately:
 
 These are evidence sources. They are not equivalent to completed work.
 
-### 3. Validation layer
+### 3. Action-effect correlation layer
+
+For each bounded actionable event, record:
+
+- immutable event identity and timestamp;
+- event kind (`issue_comment`, `review`, `review_comment`);
+- current base/head SHAs;
+- first later commit in the PR range, if any;
+- event→commit lag;
+- whether the associated commit was empty, metadata-only, or effective;
+- whether validation evidence exists on the resulting head.
+
+The association is **temporal follow-through**, not causal attribution. A later commit may have an unrelated cause; the ledger MUST NOT infer authorship, intent, or causality from time ordering alone.
+
+The machine-readable contract is `docs/ops/ACTION-EFFECT-EVENT.schema.json`.
+
+### 4. Validation layer
 
 At the measured head SHA, record:
 
@@ -67,6 +83,23 @@ Recommended classifications:
 - `PROVIDER_PENDING`
 - `UNVERIFIED`
 
+## Explicit ∆
+
+Every observation MUST be comparable with a prior observation anchored to an immutable head SHA.
+
+Primary deltas:
+
+- `∆final_delta`: change in retained base→head additions+deletions;
+- `∆behind`: change in commits behind the selected base;
+- `∆check_failure`: change in failed current-head checks;
+- `∆check_pending`: change in pending current-head checks;
+- `∆event_count`: newly observed actionable events;
+- `∆followed_count`: newly observed events with a later commit in the current PR range.
+
+Interpretation is directional, not intrinsically good/bad. For example, a positive `∆final_delta` can mean legitimate implementation progress or unnecessary churn; a negative `∆check_failure` is normally favorable, but only after re-fetching the same current head and confirming the check population.
+
+The ledger retains a bounded rolling history (latest 12 observations) in its stable PR comment so longitudinal state survives comment updates without recreating the #390 amplification failure mode.
+
 ## Delta metrics
 
 ### No-op rate
@@ -80,6 +113,12 @@ Use as a diagnostic signal, never as a standalone quality score.
 `final retained diff size / gross historical churn`
 
 This describes how much historical churn remains represented in the final tree. It is not a correctness score and should be interpreted alongside review and validation evidence.
+
+### Temporal follow-through
+
+`events followed by a later commit / actionable events`
+
+This measures whether discussion/review actions are followed by repository movement within the observed PR range. It is not a causal metric.
 
 ### Action yield
 
@@ -107,6 +146,8 @@ Compare the before/after state of the selected alignment signals: merge-base rel
 6. Keep measurement read-only with respect to PR source execution.
 7. Keep privileged mutation outside telemetry workflows.
 8. Record `COMMITTED`, `EXECUTED`, `VALIDATED`, and `PROMOTED` separately.
+9. Use temporal follow-through only as an association unless explicit provenance establishes causality.
+10. Preserve a machine-readable event contract so downstream systems can consume the same evidence without reparsing prose.
 
 ## Optimization loop
 

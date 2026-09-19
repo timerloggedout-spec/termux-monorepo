@@ -7,6 +7,18 @@ description: Build, query, validate, or operate a repository-native context rela
 
 Use a **metadata-only, evidence-backed graph** before nontrivial repository changes when related files, GitHub history, review threads, or prior decisions could affect the work.
 
+## Architectural position
+
+The relationship graph is the **historical evidence substrate**, not a model leaderboard and not a single PR receipt.
+
+`GitHub/Actions/provider provenance → relationship corpus → observations/cohorts → DOE/MVT → Moneyball/3L0 → learning/manager evolution`
+
+The canonical repository surface is:
+
+`workspace/llm_map/context_relationships/`
+
+Its `manifest.json`, `nodes.jsonl`, `edges.jsonl`, `matrix.json`, reports, and checkpoint describe collection coverage. A complete corpus is a sequence of bounded historical pages; a single page is never silently treated as full history.
+
 ## Operating sequence
 
 1. Read the repository’s agent instructions, proposal registry, and scope registry before collection. Use the existing canonical index only when its manifest/ref is current.
@@ -17,6 +29,24 @@ Use a **metadata-only, evidence-backed graph** before nontrivial repository chan
 6. Report **verified** relationships separately from **candidate** relationships. A candidate can direct investigation but must never be described as fact.
 7. Cite evidence URLs or source locations for every material verified connection. State collection bounds, omissions, parser failures, unresolved references, and historical coverage when they matter.
 8. Update the central index only through the trusted publisher, the manual bounded reconciler, or the manual history-page backfill. Never write GitHub or Linear content merely because a graph query found a relationship.
+
+## Historical corpus contract
+
+The historical backfill is explicit and resumable. Start from page `1`; inspect `history_window.next_start_page`; continue only while it is non-null.
+
+A backfill page is **complete for its declared window**, not globally complete. The corpus must retain:
+
+- collection timestamp and source/ref;
+- page/window bounds and continuation state;
+- PR/issue/commit/review/comment metadata;
+- exact evidence URLs and stable IDs;
+- parser/API failure counts;
+- excluded/sensitive path counts;
+- verified vs candidate relationship classification.
+
+Do not persist discussion bodies, session stores, browser profiles, credentials, tokens, or key material.
+
+Every PR/issue is an observation candidate. Not every PR needs a Markdown receipt. Receipts are human-readable projections of notable measurements or promotions.
 
 ## Repository commands
 
@@ -45,7 +75,7 @@ python -m archwiz.context_relationships.query \
   --depth 2 --max-nodes 25 --format mermaid --output /tmp/context.mmd
 ```
 
-Use the normal publisher for incremental updates. Use the manual reconciliation only for a bounded refresh. Use **context relationship historical backfill** for complete history in explicit pages: start from page `1`, inspect `history_window.next_start_page` in the summary, then manually resume only while it is non-null.
+Use the normal publisher for incremental updates. Use the manual reconciliation only for a bounded refresh. Use **context relationship historical backfill** for complete history in explicit pages.
 
 Use **context relationship Linear freshness** only as a manual, read-only comparison. It resolves explicit repository GitHub URLs in bounded Linear metadata, emits `current`, `stale`, `missing`, or `ambiguous`, and must never update Linear or publish Linear descriptions.
 
@@ -55,9 +85,17 @@ Run the deterministic contract before changing graph code:
 python -m pytest tests/test_context_relationship_*.py -q
 ```
 
-## Safety and interpretation
+## DOE/MVT / Moneyball handoff
 
-Do not persist PR, issue, timeline-event, review, comment, or Linear description bodies. Extract explicit internal reference tokens only in memory. Exclude session stores, browser profiles, credentials, tokens, key material, generated artifacts, oversized files, and any path in `config/context_relationships/scope_registry.json`. Keep API collection read-only; keep pull-request validation read-only and secret-free.
+The graph does not decide which provider/model/manager wins. It supplies provenance and relationship evidence to experiment cohorts.
+
+A valid experiment record binds:
+
+`experiment_id + baseline_sha + candidate_sha + treatment/policy + suite + observation + outcome + provenance + confidence`
+
+Moneyball/3L0 consumes these observations and compares integrated orchestration outcomes. It must not infer causality from comment volume, actor identity, or graph edge count.
+
+## Safety and interpretation
 
 | Relationship class | Meaning | Permitted claim |
 |---|---|---|
@@ -65,10 +103,6 @@ Do not persist PR, issue, timeline-event, review, comment, or Linear description
 | `candidate` | A bounded heuristic such as file co-change or lexical similarity suggests a connection. | Recommend review; do not assert causality, ownership, or intent. |
 
 If a typed selector or direct permalink has no exact root, return no match; do not fall back to unrelated fuzzy results. If a query reaches the node limit, disclose the bound instead of silently widening the graph.
-
-## Current bounded record
-
-For AR-11 provider command library review on 2026-08-20, the exact root `pr:278` was queried at depth `2` with a maximum of `30` nodes. The canonical index returned no matching root, verified timeline, or candidates because the newly opened PR was not yet in published index coverage. The result is recorded in the proposal manifest and process card; no generated index file was edited, and no relationship was inferred.
 
 ## Closeout standard
 

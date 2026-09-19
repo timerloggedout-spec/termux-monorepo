@@ -1,70 +1,23 @@
 ---
 name: evidence-led-monorepo-ops
-description: Continuous evidence-led admin ops on timerloggedout-spec/termux-monorepo (and similar agentic monorepos). Triggers on priority matrix, master gates, SHE progress, Manus/provider RE, dirty PR triage, Actions hygiene, or when the operator says continue, BIUDL, or maximize actions. Use for live state pulls, dispositions, small-green extracts, and iterative process improvement documented as skills.
+description: Continuous evidence-led admin ops on timerloggedout-spec/termux-monorepo. Load every admin session.
 ---
 
-# Skill: evidence-led-monorepo-ops
+Local mirror. Canonical is master `.agents/skills/evidence-led-monorepo-ops/SKILL.md`.
 
-**Owner:** ArchW1z / operator continuous admin on timerloggedout-spec/termux-monorepo (and similar agentic monorepos).
+Master: `16030fcfd26b3b4f3427fa5e098cbf7862b7f081`.
+#635 MERGED extract-only Obsidian symlink token reject (from dirty Jules #629).
+#627 already on ancestry. #608 HOLD dirty/behind — do not force-merge.
+#636 WAIT dual-gate green at open; update-branch after #635.
+#629/#630 Jules dirty observe. #601/#549/#432 ML HOLD dirty/behind. #605 Paper2Agent observe.
+HOLD mega: #523 #527 #455 #48 #543 #545 #485 #500.
+Record PRs WAIT: #619 #622 #623 #624 #625 #626 #628 #632 #633 #634 + this session.
 
-**Triggers:** priority matrix, master gates, SHE progress, Manus/provider RE, dirty PR triage, Actions hygiene, "continue", "BIUDL", "maximize actions", full telemetry requests, multi-P0.* handling.
+This session (2026-09-19 12:07 PDT):
+- Recon: master moved 80bcad87 → 16030fcf via #635 squash.
+- Dual gates GREEN on #635 (hygiene + termux smoke) before merge.
+- help-wanted-execute dry_run queued for DioNanos/codex-termux#14.
+- Did not merge #608/#629/#630/#632/#633/#634/#636 this tick after #635 land.
+- No issue comments (comment-storm is a FAILURE).
 
-**Canonical doc path (same content):** `docs/ops/skills/evidence-led-monorepo-ops/SKILL.md`
-
-**Complements:** `.agents/skills/review-loop` (evidence-first review sequence), `adaptive-feedback-cycle`, `context-relationship-graph`.
-
-## Posture (non-negotiable)
-
-- **Evidence over anecdote.** Every prioritization must cite live rows, run histories, or committed telemetry artifacts.
-- **Full telemetry over isolated canary.** agentic-report is one example from the first row of the performance table — never treat it as the only signal. Correlate *every* row.
-- **Quota ≠ run prevention.** Workflow activation (schedule/dispatch + daily AIC guardrail) can succeed while the agent step fails on Copilot/CLI quota. Separate activation success from agent failure.
-- **Authority > ranking.** MoneyBall / 3L0 / leaderboard scores are decision-support only. Hard authority, policy, and human gates always dominate.
-- **Anti-sprawl.** No source mutation in L0. Prefer thin stacked PRs. No vendoring of upstreams as promotion gates.
-- **Multiple P0.** Handle concurrent P0.* classes by fingerprint/classification (workflow-failure, gate-failure, smoke-failure, observe-only for security).
-
-## Primary surfaces
-
-| Surface | URL / path | Use |
-|---------|------------|-----|
-| Actions performance (UI export) | `/actions/metrics/performance` | Job failure % + avg runtime; export CSV |
-| Actions minutes | same page, total-minutes tab | Consumption ranking |
-| Workflow runs | `/actions/workflows/<file>` | Per-workflow history |
-| SHE | `she/` + `docs/architecture/SELF-HEALING-ENGINE-ROADMAP.md` | P0.1–P0.3 status |
-| Telemetry snapshots | `docs/ops/generated/actions-metrics-*-YYYY-MM-DD.csv` | Dated ground truth |
-| Collect/reduce CLI | `python -m ops.github_telemetry` | Locally reconstructed metrics |
-
-## Workflow (evidence-led loop)
-
-1. **Pull state** — list open PRs/issues, recent master commits, Actions runs for high-failure workflows, committed CSVs.
-2. **Correlate rows** — join job-failures CSV + total-minutes CSV + per-workflow run pages. Rank by (failure_rate × volume) then by authority class.
-3. **Disposition** — for each P0 class emit: status, evidence links, next thin increment, authority gate required.
-4. **Advance SHE** — only L0 intents that do not mutate source; live token-bearing re-run is the next wire after planner+executor intents.
-5. **Leave trail** — commit dated CSVs or correlation notes under `docs/ops/generated/`; update skill if process improved.
-6. **No sprawl** — one focused branch/PR per thin slice; squash-merge only after green gates.
-
-When a change is under active review, also run the **review-loop** skill sequence (recon → SHA/run binding → classify findings → smallest fix → re-validate → feed forward).
-
-## P0 classification (current)
-
-| Class | Example signal | L0 target |
-|-------|----------------|-----------|
-| workflow-failure | agentic-report 100%, continuous-evaluation ~48% | `actions_rerun_failed_jobs` / `actions_rerun_workflow` |
-| gate-failure | repo-gate / termux-smoke | `actions_rerun_workflow` / `termux_restart_worker` |
-| phase-sync fragility | dependency-phase-project-sync high % | observe + bounded retry |
-| security / Dependabot | alerts | `observe_only` |
-| high-volume low-failure | peer-review-orchestrator, Jules, Gemini | keep as promotion signals |
-
-## Skill evolution rules
-
-- When operator corrects ("it's a SINGLE EXAMPLE from the first row"), update this skill immediately and commit.
-- Prefer reference to live CSVs / API aggregation over re-duplicating numbers in prose.
-- Iterative dated CSV snapshots are valuable for time-series; do not delete prior exports.
-- Document any new programmatic integration path in `docs/ops/ACTIONS-METRICS-INTEGRATION.md`.
-- Derived metrics must be labeled `locally_reconstructed` (no claim of UI Performance Metrics API parity).
-
-## Anti-patterns
-
-- Fixating on one canary workflow while ignoring the rest of the performance table.
-- Treating monthly Copilot quota exhaustion as "runs should not fire".
-- Ranking purely by failure rate without volume or authority context.
-- Opening broad PRs that mix P0.3 live wire with unrelated refactors.
+Agent-Identity: Grok (Administrator)

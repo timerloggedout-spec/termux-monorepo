@@ -2,14 +2,13 @@ name: 'Model Router'
 description: |
   Select provider+model for a role (triage|review|invoke).
 
-  LEADER POLICY (2026-08-20, issue #272):
-    Gemini is PRIMARY for its best roles (review / triage / invoke).
-    OmniRoute and OpenRouter are secondary free-tier peers.
-    Selection = model desired + real free-tier headroom (no soft room).
-    Jules remains async Cloud VM builder.
+  Logic chain (AGENT-TEAM-ORCHESTRATION):
+    live catalog (openrouter|felo|omni) → eligible free/zero/trial
+      → model-router pick (Gemini soft-budget primary when present)
+      → invocation telemetry → MoneyBall/3L0 post-success scoring
 
-  FREE TIER ONLY on Omni + OpenRouter paths.
-  Soft budgets are per-branch best-effort (Actions cache).
+  "Fallback" means dynamic recovery from unavailable capacity — not a frozen hierarchy.
+  FELO is a first-class peer when FELO_AI_API is set.
 
 inputs:
   role:
@@ -21,6 +20,10 @@ inputs:
     default: 'false'
   has-openrouter:
     description: '"true" if OPENROUTER_API_KEY is set'
+    required: false
+    default: 'false'
+  has-felo:
+    description: '"true" if FELO_AI_API is set'
     required: false
     default: 'false'
   has-gemini:
@@ -42,7 +45,7 @@ inputs:
 
 outputs:
   provider:
-    description: 'omni | openrouter | gemini | none'
+    description: 'omni | openrouter | felo | gemini | none'
     value: ${{ steps.pick.outputs.provider }}
   model:
     description: 'Model id to request'
@@ -59,6 +62,9 @@ outputs:
   decision-summary:
     description: 'One-line AR-18 observe-mode decision summary'
     value: ${{ steps.pick.outputs.decision_summary }}
+  catalog-state:
+    description: 'live | cached | unavailable'
+    value: ${{ steps.pick.outputs.catalog_state }}
 
 runs:
   using: composite
@@ -77,17 +83,22 @@ runs:
         restore-keys: model-router-${{ steps.date.outputs.key }}
         enableCrossOsArchive: true
 
-    - name: Pick provider + model plus observe-mode capability decision
+    - name: Pick provider + model (live catalog fed)
       id: pick
       shell: bash
       env:
         ROLE: ${{ inputs.role }}
         HAS_OMNI: ${{ inputs.has-omni }}
         HAS_OPENROUTER: ${{ inputs.has-openrouter }}
+        HAS_FELO: ${{ inputs.has-felo }}
         HAS_GEMINI: ${{ inputs.has-gemini }}
         CAPABILITY_SPINE_OBSERVE: ${{ inputs.capability-spine-observe }}
         TARGET_SHA: ${{ inputs.target-sha }}
         CURRENT_SHA: ${{ inputs.current-sha }}
+        OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        FELO_AI_API: ${{ secrets.FELO_AI_API }}
+        OMNI_API_KEY: ${{ secrets.OMNI_API_KEY }}
+        OMNIROUTE_API_KEY: ${{ secrets.OMNIROUTE_API_KEY }}
       run: |
         python3 -m scripts.model_router
 

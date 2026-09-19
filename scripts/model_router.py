@@ -15,6 +15,8 @@ import time
 from scripts import capability_spine
 
 COUNTER_DIR = os.environ.get("COUNTER_DIR", "/tmp/model-router")
+MODEL_CATALOG_FILE = os.environ.get("MODEL_CATALOG_FILE", "/tmp/model-catalog/catalog.json")
+CAPABILITY_SURFACES_FILE = os.environ.get("CAPABILITY_SURFACES_FILE", "/tmp/model-catalog/capability-surfaces.json")
 KEY_VAL_RE = re.compile(r'^("[^"]+"|\'[^\']+\'|[^:]+):\s*(.*)$')
 
 # Proven-only fallback when the OpenRouter catalog cannot be fetched. Newly listed
@@ -247,6 +249,34 @@ def fetch_openrouter_free_models_cached():
     return fetch_openrouter_free_models_cached_with_source()[0]
 
 
+
+def load_capability_surface_catalog(path):
+    """Load normalized connector/tool/MCP/plugin/skill evidence for AR-18."""
+    return capability_spine.load_capability_surface_catalog(path)
+
+
+def load_provider_model_catalog(path):
+    """Load the normalized provider-model catalog as observation evidence.
+
+    Catalog discovery is deliberately separate from capability declaration. Rows
+    are returned as provider/model pairs with their source metadata so callers
+    can keep the population dynamic without creating a second registry.
+    """
+    if not path or not os.path.exists(path):
+        return []
+    try:
+        with open(path, "r", encoding="utf-8") as handle:
+            document = json.load(handle)
+    except (OSError, ValueError, TypeError, json.JSONDecodeError) as error:
+        sys.stderr.write(f"Warning: provider catalog is unreadable ({error}).\\n")
+        return []
+    rows = []
+    for row in document.get("models", []):
+        if not isinstance(row, dict) or not row.get("provider") or not row.get("id"):
+            continue
+        rows.append(row)
+    return rows
+
 def get_usage(provider, model):
     key = f"{provider}/{model}" if provider != "gemini" else model
     filename = os.path.join(COUNTER_DIR, key.replace("/", "_") + ".txt")
@@ -292,9 +322,11 @@ def emit_decision(
     role_residuals,
     has_omni,
     has_openrouter,
+    has_felo,
     has_gemini,
     openrouter_models,
     openrouter_catalog_state,
+    provider_catalog=None,
     target_sha=None,
     current_sha=None,
 ):
@@ -304,6 +336,7 @@ def emit_decision(
         write_output("decision_summary", "capability-spine observe mode disabled")
         return
 
+    surface_rows = load_capability_surface_catalog(CAPABILITY_SURFACES_FILE)
     catalog_models = openrouter_models
     catalog_state = openrouter_catalog_state
     if catalog_models is None:
@@ -315,26 +348,53 @@ def emit_decision(
     provider_flags = {
         "gemini": has_gemini,
         "omni": has_omni,
+        "felo": has_felo,
         "openrouter": has_openrouter,
     }
-    pairs = [("gemini", model) for model in role_residuals.get(role, [])]
-    pairs.extend(role_peers.get(role, []))
+    pairs = [("gemini", model, False) for model in role_residuals.get(role, [])]
+    pairs.extend((provider, model, False) for provider, model in role_peers.get(role, []))
+
+    # The observe population is broader than the legacy execution roster.
+    # Prefer the normalized provider catalog when supplied; OpenRouter's live
+    # fallback remains available for compatibility with existing callers.
+    catalog_rows = provider_catalog or []
+    if catalog_rows:
+        for row in catalog_rows:
+            provider = row["provider"]
+            model = row["id"]
+            if provider == "openrouter" and not is_free_openrouter_model(model, row.get("pricing")):
+                continue
+            pairs.append((provider, model, True))
+    else:
+        for model in sorted(catalog_models):
+            pairs.append(("openrouter", model, True))
+
     candidates = []
     seen = set()
-    for provider, model in pairs:
+    for provider, model, catalog_observed in pairs:
         key = (provider, model)
         if key in seen:
             continue
         seen.add(key)
+        success_entry = success_matrix.get("models", {}).get(model, {})
+        # Catalog discovery is not itself a capability declaration. Legacy
+        # routes retain their declarations; catalog-only rows need an explicit
+        # role declaration before they can enter the eligible population.
+        declared_capabilities = ({role} if role in success_entry.get("role_suitability", {}) else set()) if catalog_observed else {role}
+        declared_source = (
+            "llm-peers.yaml/model-success-matrix.yaml"
+            if declared_capabilities
+            else "live-provider-catalog"
+        )
         candidates.append(
             capability_spine.make_candidate(
                 provider=provider,
                 model=model,
                 capability=role,
-                declared_capabilities={role},
+                declared_capabilities=declared_capabilities,
                 effect="read_only_analysis",
                 provenance={
-                    "declared_source": "llm-peers.yaml/model-success-matrix.yaml",
+                    "declared_source": declared_source,
                     "trusted": True,
                 },
                 policy_enabled=True,
@@ -347,7 +407,8 @@ def emit_decision(
                 openrouter_catalog_state=catalog_state,
                 limits=limits,
                 usage=get_usage(provider, model),
-                success_entry=success_matrix.get("models", {}).get(model, {}),
+                success_entry=success_entry,
+                surface_evidence=capability_spine.match_capability_surfaces(provider, model, surface_rows),
             )
         )
     decision = capability_spine.compact_envelope(
@@ -361,8 +422,10 @@ def main():
     role = os.environ.get("ROLE", "triage")
     has_omni = os.environ.get("HAS_OMNI", "false").lower() == "true"
     has_openrouter = os.environ.get("HAS_OPENROUTER", "false").lower() == "true"
+    has_felo = os.environ.get("HAS_FELO", "false").lower() == "true"
     has_gemini = os.environ.get("HAS_GEMINI", "true").lower() == "true"
     success_matrix = parse_yaml("docs/schemas/model-success-matrix.yaml")
+    provider_catalog = load_provider_model_catalog(MODEL_CATALOG_FILE)
 
     polled_free_models = None
     catalog_state = "unavailable"
@@ -377,9 +440,11 @@ def main():
         ROLE_RESIDUALS,
         has_omni,
         has_openrouter,
+        has_felo,
         has_gemini,
         polled_free_models,
         catalog_state,
+        provider_catalog=provider_catalog,
         target_sha=os.environ.get("TARGET_SHA") or None,
         current_sha=os.environ.get("CURRENT_SHA") or None,
     )

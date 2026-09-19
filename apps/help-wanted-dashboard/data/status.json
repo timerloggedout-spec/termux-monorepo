@@ -1,16 +1,23 @@
 {
-  "generated_at": "2026-09-19T23:23:18Z",
+  "generated_at": "2026-09-19T23:23:58Z",
   "lane": "help-wanted",
-  "receipts": 19,
+  "receipts": 20,
   "kinds": {
     "upstream_pr": 12,
     "claim_skipped_closed": 1,
-    "followup_skip_idempotent": 6
+    "followup_skip_idempotent": 7
   },
   "outcomes": {
-    "ok": 19
+    "ok": 20
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/vigneshv1cky/alphadesk-terminal/pull/12",
+      "title": "help-wanted: stake + contribute for #10",
+      "number": 12,
+      "repo": "vigneshv1cky/alphadesk-terminal",
+      "updated_at": "2026-09-19T23:23:43Z"
+    },
     {
       "html_url": "https://github.com/Kilo-Org/agentic-path/pull/26",
       "title": "help-wanted: stake + contribute for #25",
@@ -61,7 +68,7 @@
       "updated_at": "2026-09-11T03:26:17Z"
     }
   ],
-  "foreign_open_count": 7,
+  "foreign_open_count": 8,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -260,6 +267,14 @@
         "issue": "https://github.com/vedantnimbarte/zero/pull/81",
         "ok": true,
         "lane": "help-wanted-followup"
+      },
+      {
+        "ts": "2026-09-19T23:23:42Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
       }
     ]
   },

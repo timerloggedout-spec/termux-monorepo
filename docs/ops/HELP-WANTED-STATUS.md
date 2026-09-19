@@ -2,58 +2,35 @@
 
 **SSOT board (generated):** `docs/ops/generated/help-wanted-status.md`  
 **Machine:** `docs/ops/generated/help-wanted-status.json`  
-**Receipts:** `docs/ops/generated/help-wanted-evidence/*.jsonl`
+**Receipts:** `docs/ops/generated/help-wanted-evidence/*.jsonl`  
+**Public dashboard:** `apps/help-wanted-dashboard/` → Vercel **help-wanted-oversight**
 
 Regenerate:
 
 ```bash
 python3 scripts/ci/help_wanted_status.py
+cp docs/ops/generated/help-wanted-status.json apps/help-wanted-dashboard/data/status.json
 ```
 
 ## Why this exists
 
 Help-wanted is an **Oversight + evaluation** arm that also produces real external PRs.
-Humans need a single place to see:
+This is **not** MoneyBall admission.
 
-- what was claimed
-- which upstream PRs opened (or fallback notices)
-- failures and why
-- whether we are being good neighbors (no claim spam, respect closed + maintainer routing)
-
-This is **not** MoneyBall admission. It is the human-review surface; a public Vercel dashboard can later read the JSON.
-
-## Working well with others (non-negotiable)
+## Working well with others
 
 | Rule | Behavior |
 |------|----------|
-| Claim idempotent | One claim marker per issue; re-runs skip post |
-| Closed issues | Default **skip** (no claim, no stake PR) |
-| Maintainer routing | If maintainers direct “fix upstream / use feature fork”, do not keep staking the parity fork |
-| Stake ≠ fix | Stake PRs document intent; replace with real patch or close |
-| Budget | Soft daily ceiling; prefer quality over volume |
-
-### Example — DioNanos/codex-termux#14
-
-Maintainer policy ([comment](https://github.com/DioNanos/codex-termux/issues/14#issuecomment-5231401407)):
-
-- **codex-termux** = Android/Termux **parity** with upstream; platform packaging/runtime only.
-- Upstream *logic* defects → report/fix **upstream** (benefits all platforms; sync picks up).
-- **[codex-vl](https://github.com/DioNanos/codex-vl)** = deliberate feature-delta fork (not for parity patches).
-
-`/init` AGENTS.md cache behavior was classified as upstream logic. Our help-wanted path must **not** keep re-claiming or staking that closed issue on the parity fork. Follow-up belongs upstream (or verification on current releases), not repeated stake noise.
+| Claim idempotent | One claim marker; re-runs skip post |
+| Closed issues | Default **skip** |
+| Maintainer routing | Prefer upstream / feature fork when directed |
+| Stake ≠ fix | Replace stake or close |
 
 ## Follow-up loop
 
-1. Scout ranks candidates (CPPH).
-2. Execute claims once → contributes PRIMARY upstream PR (or FALLBACK notice).
-3. Evidence receipt append-only JSONL.
-4. `help_wanted_status.py` rebuilds the living board.
-5. Humans (or agents) review board before re-dispatching the same issue.
-6. Schedule stays adaptive (scout ~2h / execute ~4h) with budget gate.
-
-## Dashboard (next)
-
-- Public Vercel page: counts, last-N issues, PR links, fail reasons.
-- Source of truth remains git JSON/JSONL under `docs/ops/generated/`.
+1. Scout → claim once → upstream PR (or FALLBACK)
+2. Evidence JSONL
+3. `help_wanted_status.py` rebuilds board + dashboard snapshot
+4. Vercel serves `apps/help-wanted-dashboard`
 
 BIUDL. Agent-Identity: Grok (Administrator)

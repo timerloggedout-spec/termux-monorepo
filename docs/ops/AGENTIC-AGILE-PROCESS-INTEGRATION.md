@@ -2,153 +2,169 @@
 
 ## Purpose
 
-This document adapts the public Agentic-Agile patterns from Microsoft's agentic-agile-template to the existing termux-monorepo Agentic Development Environment (ADE).
+This document adapts the public Agentic-Agile patterns from Microsoft's `agentic-agile-template` to the existing `termux-monorepo` Agentic Development Environment (ADE).
 
-The intent is integration, not replacement. The repository already has runtime observation, provenance, bounded authority, orchestration policy, and the WAIT → WATCH → VALIDATE → RE-FETCH → COMPARE → RECORD loop. Agentic-Agile adds a clearer work-contract and wave-governance layer around those capabilities.
+The key architectural decision is **adapter, not replacement**. The repository already has a deterministic dependency-phase control plane. Agentic-Agile supplies process vocabulary—specification, work-unit decomposition, parallel waves, review gates, and retrospectives—while the repository's existing phase engine remains the machine authority.
+
+## Canonical implementation boundary
+
+The authoritative lifecycle artifacts are already:
+
+- `docs/agentic/dependency-phases.json` — canonical phase/dependency policy.
+- `docs/agentic/phase-approvals.json` — explicit approval evidence.
+- `scripts/agentic/dependency_phase_engine.py` — pure validation/evaluation/rendering engine.
+- `scripts/agentic/dependency_phases.py` — lifecycle CLI.
+- `scripts/agentic/github_phase_adapter.py` — live GitHub evidence adapter.
+- `.github/workflows/dependency-phase-*.yml` — validation, evaluation, synchronization, and controlled dispatch.
+- `tests/test_dependency_phase_engine.py` — lifecycle invariants and fail-closed fixtures.
+
+Generated Markdown/Mermaid views, Project cards, dashboards, issue prose, and agent comments remain derived evidence/views rather than authority.
+
+This means Agentic-Agile **must not introduce a second canonical YAML plan, second dependency evaluator, or competing claim protocol**.
 
 ## Adopted principles
 
-| Agentic-Agile pattern | ADE implementation |
+| Agentic-Agile pattern | Existing ADE implementation |
 |---|---|
-| Specifications/contracts over open-ended prompts | Every dispatched unit records objective, scope, constraints, acceptance evidence, and negative constraints before execution. |
-| Independently executable work units | Work units declare file/path ownership and dependency edges before parallel admission. |
-| Parallel waves | Independent units may execute concurrently; dependent units wait for an explicit gate. |
-| Review gates | A wave cannot unlock its dependents from a completion claim alone; the gate requires observable evidence. |
-| Humans design, agents execute, both review | Agents operate inside bounded authority; review and promotion remain evidence-driven control points. |
-| Built-in governance | Authority, source ownership, writer leases, secret boundaries, and promotion rules are part of the execution contract. |
-| Continuous measurement | Existing ATES/WTCV/3L0/evidence lanes measure the partnership and the integrated outcome. |
-| Autonomy earned through evidence | Scope of autonomous execution expands only after repeated validated observations, not after a single green run. |
-| Retrospectives improve the system | Every completed wave should emit reusable process findings: spec gap, decomposition gap, routing gap, verification gap, or environment/provider failure. |
+| Specifications/contracts over open-ended prompts | Phase records define stable identity, description, dependencies, execution policy, required checks, approval requirements, and completion evidence before dispatch. |
+| Independently executable work units | Stable `phase_id` units with deterministic dependency evaluation and existing PR/file-claim coordination. |
+| Parallel waves | Independent ready phases may be admitted concurrently when their dependencies and ownership evidence permit it; dependent phases remain `waiting`. |
+| Review gates | `awaiting_review`, required checks, merged-PR evidence, and explicit approvals gate downstream evaluation. |
+| Humans design, agents execute, both review | Canonical plans and approval evidence are reviewable repository state; agent execution is bounded by the phase policy. |
+| Built-in governance | Prohibited actions, approval requirements, branch boundaries, claim idempotency, and least-privilege workflows are encoded in the existing control plane. |
+| Continuous measurement | Existing provenance, evidence, ATES/WTCV/3L0, and workflow telemetry remain the measurement layer. |
+| Autonomy earned through evidence | A phase becomes dispatchable only from deterministic current evidence; a completion claim cannot substitute for merged-PR/check evidence. |
+| Retrospectives improve the system | Repeated process findings should become changes to phase contracts, validators, workflows, tests, or skills rather than remaining conversational advice. |
 
-## Canonical work-unit contract
-
-A dispatchable unit SHOULD be representable as:
-
-```yaml
-id: <stable-work-id>
-objective: <observable outcome>
-scope:
-  paths: []
-  repositories: []
-  refs: []
-ownership:
-  writer: <agent-or-role>
-  readers: []
-dependencies: []
-wave: <integer>
-constraints:
-  negative: []
-acceptance:
-  checks: []
-  evidence: []
-authority:
-  tier: <bounded-tier>
-  promotion_required: <boolean>
-runtime:
-  manager: <policy-version>
-  provider: <provider>
-  model: <model-or-catalog-selector>
-```
-
-The contract is compatible with the existing evidence identity: manager + task + role + provider + model + workflow_run + head_sha.
-
-## Wave lifecycle
+## Agentic-Agile lifecycle mapped onto the ADE
 
 ```text
 INTAKE
   ↓
 SPECIFY
   ↓
-DECOMPOSE
+DECOMPOSE INTO PHASES
   ↓
-OWNERSHIP / DEPENDENCY CHECK
+DEPENDENCY / OWNERSHIP CHECK
   ↓
-WAVE ADMISSION
+WAVE ADMISSION (ready)
   ↓
-PARALLEL EXECUTION
+AGENT / HUMAN EXECUTION
   ↓
-REVIEW GATE
+REVIEW GATE (awaiting_review / blocked)
   ↓
 EVIDENCE VALIDATION
   ↓
-INTEGRATION
+INTEGRATION (merged PR + required checks)
   ↓
-RETROSPECTIVE
+RETROSPECTIVE / LEARNING RECORD
   ↓
 NEXT WAVE
 ```
 
-The runtime observation loop remains nested inside execution: ACT → WAIT → WATCH → VALIDATE → RE-FETCH → COMPARE → CLASSIFY → RECORD.
+The existing runtime observation loop remains nested inside execution:
 
-Thus a wave is not complete merely because its jobs terminate successfully. It completes when the resulting state satisfies its acceptance contract and the evidence is recorded.
+```text
+ACT → WAIT → WATCH → VALIDATE → RE-FETCH → COMPARE → CLASSIFY → RECORD
+```
 
-## Dependency and ownership rules
+A phase is therefore not complete because an agent says it is complete. The current evaluator requires the configured completion evidence, including merged-PR/check evidence and the repository's Project state, before dependents unlock.
 
-1. Two units in the same wave MUST NOT have overlapping write ownership unless an explicit writer lease permits it.
-2. A dependency MUST name the evidence or interface that unlocks the dependent unit.
-3. A completion comment, label, or route declaration is not sufficient evidence by itself.
-4. A stale SHA invalidates work whose acceptance depends on current repository state.
-5. Ambiguous ownership blocks parallel admission rather than silently choosing a writer.
-6. Integration files and shared contracts SHOULD be isolated into explicit foundation/integration waves.
-7. Failed execution is recorded as an observation and classified before retry; retry is a new controlled attempt, not a rewrite of history.
+## Work-unit contract
+
+The ADE phase contract is the normalized work-unit boundary. At minimum, a phase carries:
+
+- stable `phase_id`
+- human-readable title and description
+- explicit `depends_on` list
+- governing Project identity
+- explicit `approval_required` state
+- bounded execution mode and approved agent
+- required completion checks
+- merged-PR completion requirement
+
+Agent prompts may contain task-specific scope, negative constraints, file ownership, and acceptance details, but those are **derived from and subordinate to the canonical phase/proposal records**. They must not become a second source of lifecycle truth.
+
+## Wave and concurrency rules
+
+1. A phase with incomplete prerequisites remains `waiting`; it is not dispatched.
+2. An approval-required phase without explicit approval evidence remains `blocked`.
+3. An active claim or linked PR produces `running`/review states; it does not authorize duplicate execution.
+4. Independent ready phases may occupy the same execution wave when their scopes do not conflict and capacity permits.
+5. Shared-file ambiguity blocks parallel admission until ownership is explicit.
+6. A stale SHA or changed plan hash requires fresh evaluation before execution continues.
+7. Retries are new controlled observations; they do not overwrite the previous attempt.
+8. No automatic merge, proposal closure, submodule update, or approval inference is introduced by this methodology.
 
 ## Review-gate contract
 
-Each gate should answer four questions:
+Every gate should answer:
 
-- What changed? Compare the expected scope with the observed diff/state.
-- Does it satisfy the contract? Run the declared acceptance checks.
-- Can the next wave safely start? Verify dependency, interface, and ownership conditions.
-- What did we learn? Record process findings separately from task outcome.
+- **What changed?** Compare expected scope with observed PR/diff state.
+- **Does it satisfy the contract?** Evaluate required checks and completion evidence.
+- **Can the next wave safely start?** Re-evaluate dependencies, ownership, approvals, and current plan hash.
+- **What did we learn?** Record process findings separately from task outcome.
 
-Gate outcomes:
+The lifecycle engine already distinguishes:
 
-- OPEN — evidence incomplete.
-- PASS — acceptance evidence sufficient.
-- BLOCKED — dependency, authority, ownership, or environment prevents safe continuation.
-- FAIL — execution occurred but acceptance evidence is negative.
-- UNKNOWN — insufficient evidence to classify.
+- `invalid` — plan/schema/graph is unsafe; fail closed.
+- `waiting` — prerequisites incomplete.
+- `blocked` — approval/evidence/conflict prevents safe execution.
+- `ready` — current evidence permits one idempotent claim.
+- `running` — active claim or linked implementation exists.
+- `awaiting_review` — implementation exists but review/check evidence is incomplete.
+- `complete` — required completion evidence agrees.
 
-These states must remain distinct from workflow execution states such as queued, in-progress, cancelled, or successful.
+These lifecycle states must remain distinct from workflow transport states such as queued, in-progress, cancelled, or successful.
 
-## Retrospective schema
+## Retrospective / learning loop
 
-A retrospective SHOULD record:
+A completed wave should produce reusable process findings, classified at least as:
 
-| Field | Meaning |
+| Gap | Meaning |
 |---|---|
-| work_unit | Stable unit identity |
-| wave | Execution wave |
-| outcome | Contract result |
-| spec_gap | Missing/ambiguous requirement |
-| decomposition_gap | Hidden dependency or ownership collision |
-| execution_gap | Agent/provider/tool failure |
-| verification_gap | Missing or weak evidence |
-| integration_gap | Merge/conflict/reconciliation problem |
-| governance_gap | Authority or policy problem |
-| environment_gap | CI/runtime/network/tooling problem |
-| action | Concrete process change |
-| evidence_ref | Durable supporting evidence |
+| `spec_gap` | Requirement or acceptance contract was missing/ambiguous. |
+| `decomposition_gap` | Dependency, phase boundary, or ownership collision was hidden. |
+| `execution_gap` | Agent/provider/tool execution failed or stalled. |
+| `verification_gap` | Evidence was missing, weak, or incorrectly interpreted. |
+| `integration_gap` | Merge/reconciliation caused conflict or unexpected state. |
+| `governance_gap` | Authority, approval, branch, or policy boundary was wrong. |
+| `environment_gap` | CI, runtime, network, quota, or tooling condition affected execution. |
 
-Repeated retrospective findings SHOULD become skill, template, test, or workflow changes rather than remaining conversational advice.
+A repeated finding should become a durable repository change—validator rule, fixture, workflow guard, phase template, skill, or documentation update. This is the **continuous improvement loop**, not a separate task-management database.
 
-## What this changes in practice
+## Practical operating protocol
 
-1. Convert the human request into one or more bounded work units.
-2. Capture acceptance criteria and negative constraints before dispatch.
-3. Build a dependency graph and assign file/path ownership.
-4. Group independent units into waves.
-5. Admit a wave only after ownership/dependency checks pass.
+For future multi-agent work:
+
+1. Convert the human request into bounded phase/work units.
+2. Attach explicit acceptance evidence and negative constraints.
+3. Establish dependency edges and file/path ownership.
+4. Evaluate the canonical phase plan before dispatch.
+5. Admit independent ready units as a wave.
 6. Execute with the existing runtime watcher loop.
-7. Hold a review/evidence gate before unlocking dependent waves.
-8. Integrate once, then measure the integrated outcome.
-9. Record a retrospective and promote reusable process improvements into repository automation/skills.
-10. Treat autonomy as an evidence-backed capability that can expand or contract.
+7. Hold the review/evidence gate before unlocking dependents.
+8. Integrate once and measure the integrated outcome.
+9. Record the retrospective/learning signal.
+10. Promote repeated improvements into the phase engine, workflows, tests, or skills.
 
 ## Source and adaptation boundary
 
-The upstream reference is Microsoft's agentic-agile-template, particularly its Agentic-Agile Manifesto, universal agent entry point, evaluation framework, and epic/wave decomposition guidance.
+The upstream reference is Microsoft's `agentic-agile-template`, particularly its Agentic-Agile Manifesto, universal agent entry point, evaluation framework, and epic/wave decomposition guidance.
 
-This repository does not copy the upstream template wholesale. It retains ADE-specific controls for provenance, attribution confidence, dynamic provider catalogs, bounded authority, runtime observation, and Moneyball/3L0 measurement.
+The upstream methodology is a process input. The ADE retains its own canonical state, evidence model, attribution/provenance rules, provider catalog, bounded authority, and promotion gates.
 
-The upstream methodology is therefore a process input; the repository's observed runtime evidence remains the authority for claims about this ADE.
+No claim about upstream methodology is treated as evidence about ADE runtime performance. Runtime conclusions continue to require repository/workflow evidence.
+
+## Implementation consequence
+
+The next engineering increments should **extend the existing dependency-phase engine**, rather than create a parallel Agentic-Agile engine:
+
+1. Add optional work-unit metadata where the current phase schema lacks it.
+2. Add deterministic wave computation from the existing DAG.
+3. Add explicit file/path ownership validation where dispatch adapters need it.
+4. Add retrospective fields to the existing learning/evidence records.
+5. Expose the resulting wave/gate state through the existing generated status views.
+6. Validate each increment with the current dependency-phase unit suite and repository gates.
+
+This preserves one source of truth while importing the useful Agentic-Agile process mechanics.

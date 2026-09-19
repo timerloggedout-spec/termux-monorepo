@@ -1,5 +1,5 @@
 version: 1
-updated_at: "2026-08-23T00:00:00Z"
+updated_at: "2026-09-18T21:50:00Z"
 updated_by: "Grok (Administrator)"
 status: reviewed
 candidates:
@@ -86,6 +86,37 @@ candidates:
       Complementary method for Teams/Rosters/MoneyBall selection (wait when pieces
       incomplete; assemble only complete sets toward trunk). Pin advances via PR.
       Gitlink mode=160000 requires local `git submodule add` after registry merge.
+
+  - id: Approxination-Benchmark_fork
+    repository: timerloggedout-spec/Approxination-Benchmark_fork
+    source_url: https://github.com/timerloggedout-spec/Approxination-Benchmark_fork.git
+    revision: 3966c31b08d86976e41b90c68518f45316f28380
+    branch: main
+    target_path: refTemplates/smods/Approxination-Benchmark_fork
+    intended_role: tool_layer_abcd_evaluation_reference
+    runtime: Python stdlib + OpenRouter/Brave for formal runs
+    license: MIT
+    nested_submodules: false
+    status: reference_only_pending_gitlink
+    notes: >-
+      67-task LLM tool-calling benchmark with A/B/C/D modes, blind LLM judge, and ELO.
+      AEF Oversight family treatment. Do not init as submodule until APPROX-005;
+      cohort card lives under docs/evaluations/approxination/.
+
+  - id: Inverse-Arena_fork
+    repository: timerloggedout-spec/Inverse-Arena_fork
+    source_url: https://github.com/timerloggedout-spec/Inverse-Arena_fork.git
+    revision: 14ef79c8e51374bbc1a6236bc568e39e892671e5
+    branch: main
+    target_path: refTemplates/smods/Inverse-Arena_fork
+    intended_role: execution_evidence_skill_ranking_reference
+    runtime: Python (pyproject)
+    license: MIT
+    nested_submodules: false
+    status: reference_only_pending_gitlink
+    notes: >-
+      Pairwise execution-evidence skill ranking + fuzzy scoring + ELO. Powers
+      skill search/contribution via approx CLI / hosted arena. Reference treatment only.
 
 exclusions:
   - category: generated_or_sensitive_state

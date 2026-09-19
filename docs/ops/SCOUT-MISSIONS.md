@@ -14,6 +14,8 @@ Scout is a **population of scouts**, not a single provider roster script. Each s
 
 The implementation is `scripts/scout_missions.py`; it consumes the dynamic Scout roster and emits proposal-only mission records.
 
+**Help-wanted lane** (`.agents/skills/help-wanted-lane`, workflows `help-wanted-scout` / `help-wanted-execute`) is the **execute arm of Oversight**, not a sixth scout species. See `docs/ops/HELP-WANTED-EVIDENCE-FEED.md`.
+
 ## Oversight is a performance laboratory
 
 Issue #342 establishes the intended evaluation population: GitHub Help Wanted, bug bounties, CTF/OverTheWire-style challenges, curated challenge lists, developer interview skills, FreeCodeCamp certificates and additional evaluations. These should become **task families/cohorts**, not arbitrary labels attached to agents.
@@ -22,6 +24,8 @@ An oversight scout may propose a task. A manager selects the experiment. The res
 
 `task → provider/model/manager → request/run → result → correctness → review → score → feed-forward`.
 
+Live external outcomes (claim → **upstream-pr PRIMARY** → accept/close) are evaluation evidence for that pipeline. CPPH ranks **issues**; MoneyBall/3L0 ranks **providers/agents after repeated task success**. MVT/DOE lives primarily under the Performance scout; Oversight supplies **task material** for those experiments.
+
 ## Researching new free resources
 
 Provider discovery and free-resource discovery are team research. A source must carry provenance and observation time. `free`, `trial`, `zero-price`, quota, and promotional availability are resource/capacity classifications—not quality scores and not permanent routing winners.
@@ -29,6 +33,8 @@ Provider discovery and free-resource discovery are team research. A source must 
 A discovered model follows the normal admission progression:
 
 `DISCOVERED → CATALOG_VERIFIED → CREDENTIAL_AVAILABLE → REQUEST_PROBE → TASK_PROBE → REPEATED_SUCCESS → TEAM_ELIGIBLE → MONEYBALL_SCORED → ACTIVE`.
+
+Hex (or similar BI trials) may visualize evidence; they are **not** the durable scoring path. Durable metrics: SHE job timestamps, Actions runs/jobs, dated benches under `docs/ops/generated/` (`ACTIONS-METRICS-INTEGRATION.md`).
 
 ## Manager boundary
 
@@ -47,12 +53,15 @@ Broad team → focused scout/experiment lane → thin validated result → feed-
 ## Related SSOTs
 
 - `docs/ops/SCOUT-ROSTER.md`
+- `docs/ops/HELP-WANTED-EVIDENCE-FEED.md`
+- `docs/ops/HELP-WANTED-LANE.md`
 - `docs/ops/AGENT-TEAM-DEVELOPMENT-LANES.md`
 - `docs/ops/AGENT-TEAM-ORCHESTRATION.md`
 - `docs/ops/ACTIONS-METRICS-INTEGRATION.md`
 - `docs/architecture/AGENT-TEAM-CONTROL-PLANE.mmd`
 - `docs/ops/AGENT-EXPERIMENT-LINEAGE.md`
 - `.agents/skills/evidence-led-monorepo-ops/SKILL.md`
+- `.agents/skills/help-wanted-lane/SKILL.md`
 - `.agents/skills/review-loop/SKILL.md`
 - Issue #129 — Development Teams
 - Issue #337 — Continuous Evaluation

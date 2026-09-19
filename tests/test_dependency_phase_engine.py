@@ -11,6 +11,7 @@ sys.path.insert(0, str(ROOT / "scripts" / "agentic"))
 
 from dependency_phase_engine import (  # noqa: E402
     PlanValidationError,
+    compute_waves,
     evaluate_plan,
     render_mermaid,
     validate_plan,
@@ -79,6 +80,26 @@ def completed_snapshot() -> dict:
 
 
 class DependencyPhaseEngineTests(unittest.TestCase):
+    def test_compute_deterministic_waves(self) -> None:
+        plan = plan_fixture()
+        plan["phases"].append({
+            "phase_id": "DPH-200",
+            "title": "Independent work",
+            "description": "Independent lifecycle implementation.",
+            "depends_on": [],
+            "project": {"title_marker": "DPH-200"},
+            "approval_required": False,
+            "execution": {"mode": "agent_or_human", "preferred_agent": "jules"},
+            "completion": {"required_checks": ["repo-gate", "termux-smoke"], "merged_pr": True},
+        })
+        self.assertEqual({"DPH-000": 0, "DPH-100": 1, "DPH-200": 0}, compute_waves(plan["phases"]))
+
+    def test_report_exposes_wave_membership(self) -> None:
+        report = evaluate_plan(plan_fixture(), completed_snapshot())
+        waves = {entry["phase_id"]: entry["wave"] for entry in report["evaluations"]}
+        self.assertEqual({"DPH-000": 0, "DPH-100": 1}, waves)
+        self.assertEqual({"DPH-000": 0, "DPH-100": 1}, report["waves"])
+
     def test_rejects_dependency_cycle(self) -> None:
         plan = plan_fixture()
         plan["phases"][0]["depends_on"] = ["DPH-100"]

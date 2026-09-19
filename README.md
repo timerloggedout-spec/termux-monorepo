@@ -15,12 +15,13 @@
 > Developer partners are registered in [`docs/PARTNERS.md`](docs/PARTNERS.md); each entry is a badge, one line, and a link, so new lanes (cloud hosting, dev tools, compute) slot in without redesigning this banner.
 <!-- partner-banner:end -->
 
-> **ATES attention surface (blocked on good asset).**  
-> **AI Agent Benchmarking Performance Framework** — *ATES* (Agent Efficiency / Effectiveness Telemetry System; acronym in progress).  
-> Intended as the top-of-README attention-grabber for agent throughput / evaluation / evidence-led ops.
->
-> **Asset status (2026-09-15):** the PNG currently on Drive (`1NfDzhjnY9Bc419gIRYgnUCpJdlL30hgD`, 5 627 668 bytes, 1536×2752) and both GitHub user-attachment uploads (`af8b1ad6-…`, `c4e2b99c-…`) are **byte-identical and corrupt** — PNG has valid IHDR/IEND but truncated/garbled IDAT streams (`unrecognized data stream contents` / ImageMagick `bad adaptive filter`). **Do not embed until a clean re-export lands.**  
-> Track: [#529](https://github.com/timerloggedout-spec/termux-monorepo/issues/529) · Drive: [full-res when fixed](https://drive.google.com/file/d/1NfDzhjnY9Bc419gIRYgnUCpJdlL30hgD/view?usp=drivesdk).
+<p align="center">
+  <img src="docs/assets/ates-attention-placeholder.svg" alt="ATES — AI Agent Benchmarking Performance Framework (placeholder)" width="720" />
+</p>
+
+<p align="center"><strong>AI Agent Benchmarking Performance Framework</strong> — <em>ATES</em><br/>
+Agent Efficiency / Effectiveness Telemetry System (acronym in progress).<br/>
+<em>Placeholder graphic</em> — original Drive/GH PNG is corrupt (truncated IDAT). Pipeline: <a href="docs/ops/IMAGE-ASSET-PIPELINE.md"><code>docs/ops/IMAGE-ASSET-PIPELINE.md</code></a> · track <a href="https://github.com/timerloggedout-spec/termux-monorepo/issues/529">#529</a>.</p>
 
 > **C×O operator guide.** Build deliberately. Preserve evidence. Keep the Android/Termux target first; treat every other environment as a simulation, review surface, or constrained support plane.
 
@@ -51,6 +52,7 @@ Start with **one** of these routes. Do not load the entire repository merely bec
 | Review open proposal governance | [`docs/proposals/`](docs/proposals/) | Registered active proposals, operator policy notes, and validation structure. |
 | Skills + adaptive WAIT | [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md) | Ops skill table, admission/queue stalls, evidence-led loop. |
 | Deployment lanes (Vercel / Pages) | [`docs/DEPLOYMENT-LANES.md`](docs/DEPLOYMENT-LANES.md) | Live Vercel projects, Pages status, hosting identity rules. |
+| README / docs image optimize | [`docs/ops/IMAGE-ASSET-PIPELINE.md`](docs/ops/IMAGE-ASSET-PIPELINE.md) | Fail-closed resize + validate before embed. |
 | Review safety and tracked-state debt | [`docs/CREDENTIAL-EXPOSURE.md`](docs/CREDENTIAL-EXPOSURE.md) | Credential exposure findings and safe remediation boundary. |
 
 The root README is an entry point, not a duplicate source of truth. **Primary agent entry is [`CLAUDE.md`](CLAUDE.md)** (AGENTS.md is Linguist-only after #488/#534). When this file conflicts with a maintained subsystem map, **the subsystem’s cited canonical source wins**.

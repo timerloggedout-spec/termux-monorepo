@@ -1,7 +1,7 @@
 name: help-wanted-dashboard-deploy
 
-# Operator path: use monorepo VERCEL_TOKEN (full-scope) to ship static oversight UI.
-# Dual surface: Vercel production + GitHub Pages (gh-pages branch).
+# Operator: enable project Pages + publish gh-pages + mirror to user github.io
+# Primary readable CDN remains raw.githack (jsDelivr serves text/plain for .html).
 
 on:
   push:
@@ -13,9 +13,9 @@ on:
   workflow_dispatch:
     inputs:
       target:
-        description: "vercel | pages | both"
+        description: "pages | user-site | vercel | both | all"
         required: false
-        default: "both"
+        default: "all"
 
 concurrency:
   group: help-wanted-dashboard-deploy
@@ -27,76 +27,59 @@ permissions:
   id-token: write
 
 jobs:
-  vercel:
-    name: vercel-prod
-    if: ${{ github.event_name == 'push' || github.event.inputs.target == 'both' || github.event.inputs.target == 'vercel' || github.event.inputs.target == '' }}
+  enable-pages:
+    name: enable-project-pages
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Sync status snapshot into dashboard data
-        run: |
-          mkdir -p apps/help-wanted-dashboard/data
-          if [ -f docs/ops/generated/help-wanted-status.json ]; then
-            cp docs/ops/generated/help-wanted-status.json apps/help-wanted-dashboard/data/status.json
-          fi
-
-      - name: Install Vercel CLI
-        run: npm i -g vercel@39
-
-      - name: Deploy to Vercel (production)
-        id: vercel
+      - name: Create or update Pages site (branch gh-pages)
         env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          # Team from monorepo SSOT; override via secret if present
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_HELP_WANTED }}
+          GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          if [ -z "${VERCEL_TOKEN:-}" ]; then
-            echo "::error::VERCEL_TOKEN secret missing — cannot deploy"
-            exit 1
-          fi
-          ORG="${VERCEL_ORG_ID:-team_jKHy7m9xZrvrGP5cAlIMPs3S}"
-          # Prefer dedicated help-wanted project; fallback creates/links via name
-          PROJ="${VERCEL_PROJECT_ID:-prj_iS20meBbcNw6lsng2GHjO4I9gC78}"
-          echo "ORG=$ORG PROJ=$PROJ"
-          cd apps/help-wanted-dashboard
-          # Non-interactive link + prod deploy
-          vercel pull --yes --environment=production --token="$VERCEL_TOKEN" \
-            --scope="$ORG" 2>/dev/null || true
-          URL=$(vercel deploy --prod --yes --token="$VERCEL_TOKEN" \
-            --scope="$ORG" \
-            ${PROJ:+--prebuilt} 2>&1 | tee /tmp/vercel-out.txt | tail -n 30)
-          # Prefer explicit project id deploy without --prebuilt if no build output
-          DEPLOY_URL=$(vercel deploy --prod --yes --token="$VERCEL_TOKEN" \
-            --scope="$ORG" 2>&1 | tee /tmp/vercel-deploy.txt | grep -Eo 'https://[^ ]+\.vercel\.app' | tail -n1 || true)
-          if [ -z "$DEPLOY_URL" ]; then
-            cat /tmp/vercel-deploy.txt || true
-            echo "::warning::Could not parse vercel.app URL; check logs"
+          OWNER=timerloggedout-spec
+          REPO=termux-monorepo
+          # Probe existing
+          CODE=$(curl -sS -o /tmp/pages.json -w "%{http_code}" \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/$OWNER/$REPO/pages" || true)
+          echo "GET pages => $CODE"
+          cat /tmp/pages.json || true
+          if [ "$CODE" = "404" ]; then
+            echo "Creating Pages site from gh-pages branch..."
+            curl -sS -X POST \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/$OWNER/$REPO/pages" \
+              -d '{"build_type":"legacy","source":{"branch":"gh-pages","path":"/"}}' \
+              | tee /tmp/pages-create.json
           else
-            echo "deploy_url=$DEPLOY_URL" >> "$GITHUB_OUTPUT"
-            echo "### Vercel" >> "$GITHUB_STEP_SUMMARY"
-            echo "$DEPLOY_URL" >> "$GITHUB_STEP_SUMMARY"
+            echo "Pages exists — ensuring source=gh-pages /"
+            curl -sS -X PUT \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/$OWNER/$REPO/pages" \
+              -d '{"build_type":"legacy","source":{"branch":"gh-pages","path":"/"}}' \
+              | tee /tmp/pages-update.json || true
           fi
-
-      - name: Record deploy URL artifact
-        if: always()
-        run: |
-          mkdir -p out
-          echo "${{ steps.vercel.outputs.deploy_url }}" > out/vercel-url.txt
-          cat /tmp/vercel-deploy.txt 2>/dev/null >> out/vercel-log.txt || true
-
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: help-wanted-vercel-deploy
-          path: out/
-          retention-days: 14
+          CODE2=$(curl -sS -o /tmp/pages2.json -w "%{http_code}" \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/$OWNER/$REPO/pages" || true)
+          echo "GET pages after => $CODE2"
+          cat /tmp/pages2.json || true
+          HTML=$(python3 -c "import json;d=json.load(open('/tmp/pages2.json'));print(d.get('html_url') or '')" 2>/dev/null || true)
+          echo "html_url=$HTML" >> "$GITHUB_OUTPUT"
+          echo "### Project Pages" >> "$GITHUB_STEP_SUMMARY"
+          echo "$HTML" >> "$GITHUB_STEP_SUMMARY"
 
   pages:
-    name: github-pages
-    if: ${{ github.event_name == 'push' || github.event.inputs.target == 'both' || github.event.inputs.target == 'pages' || github.event.inputs.target == '' }}
+    name: publish-gh-pages
+    needs: [enable-pages]
+    if: ${{ github.event_name == 'push' || contains(fromJSON('["pages","both","all",""]'), github.event.inputs.target || 'all') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -109,8 +92,7 @@ jobs:
             mkdir -p _site/data
             cp docs/ops/generated/help-wanted-status.json _site/data/status.json
           fi
-          # Root redirect note
-          printf '%s\n' '<!DOCTYPE html><meta http-equiv="refresh" content="0;url=./">' > _site/404.html || true
+          touch _site/.nojekyll
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
@@ -123,8 +105,70 @@ jobs:
           user_email: github-actions[bot]@users.noreply.github.com
           commit_message: "deploy(help-wanted-dashboard): ${{ github.sha }}"
 
-      - name: Pages URL hint
+  user-site:
+    name: mirror-user-github-io
+    needs: [pages]
+    if: ${{ github.event_name == 'push' || contains(fromJSON('["user-site","both","all",""]'), github.event.inputs.target || 'all') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare help-wanted subtree
         run: |
-          echo "### GitHub Pages" >> "$GITHUB_STEP_SUMMARY"
-          echo "After first enable (Settings → Pages → Branch: gh-pages / root):" >> "$GITHUB_STEP_SUMMARY"
-          echo "https://timerloggedout-spec.github.io/termux-monorepo/" >> "$GITHUB_STEP_SUMMARY"
+          mkdir -p _site
+          cp -a apps/help-wanted-dashboard/. _site/
+          if [ -f docs/ops/generated/help-wanted-status.json ]; then
+            mkdir -p _site/data
+            cp docs/ops/generated/help-wanted-status.json _site/data/status.json
+          fi
+          touch _site/.nojekyll
+
+      - name: Mirror to timerloggedout-spec.github.io/help-wanted
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          # Prefer operator PAT (repo scope on user pages repo); fall back GITHUB_TOKEN cannot write foreign repo
+          personal_token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+          external_repository: timerloggedout-spec/timerloggedout-spec.github.io
+          publish_dir: _site
+          destination_dir: help-wanted
+          publish_branch: main
+          keep_files: true
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com
+          commit_message: "deploy(help-wanted): ${{ github.sha }}"
+
+      - name: User-site URL
+        run: |
+          echo "### User github.io mirror" >> "$GITHUB_STEP_SUMMARY"
+          echo "https://timerloggedout-spec.github.io/help-wanted/" >> "$GITHUB_STEP_SUMMARY"
+
+  vercel:
+    name: vercel-prod
+    if: ${{ github.event_name == 'push' || contains(fromJSON('["vercel","both","all"]'), github.event.inputs.target || 'all') }}
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - name: Sync status snapshot
+        run: |
+          mkdir -p apps/help-wanted-dashboard/data
+          if [ -f docs/ops/generated/help-wanted-status.json ]; then
+            cp docs/ops/generated/help-wanted-status.json apps/help-wanted-dashboard/data/status.json
+          fi
+      - name: Install Vercel CLI
+        run: npm i -g vercel@39
+      - name: Deploy to Vercel (production)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+        run: |
+          set -euo pipefail
+          if [ -z "${VERCEL_TOKEN:-}" ]; then
+            echo "::warning::VERCEL_TOKEN missing — skip"
+            exit 0
+          fi
+          ORG="${VERCEL_ORG_ID:-team_jKHy7m9xZrvrGP5cAlIMPs3S}"
+          cd apps/help-wanted-dashboard
+          DEPLOY_URL=$(vercel deploy --prod --yes --token="$VERCEL_TOKEN" --scope="$ORG" 2>&1 | tee /tmp/v.txt | grep -Eo 'https://[^ ]+\.vercel\.app' | tail -n1 || true)
+          echo "### Vercel" >> "$GITHUB_STEP_SUMMARY"
+          echo "${DEPLOY_URL:-see logs}" >> "$GITHUB_STEP_SUMMARY"

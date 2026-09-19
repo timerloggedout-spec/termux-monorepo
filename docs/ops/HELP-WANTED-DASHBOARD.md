@@ -1,35 +1,34 @@
 # Help-Wanted Oversight Dashboard — Live Surfaces
 
-**Lane:** Oversight / evaluation (not MoneyBall admission)
+**Skill:** `github-pages-operator` (`.agents/skills/github-pages-operator/SKILL.md`)
 
-## LIVE URLs (open in browser — no download)
+## Open in browser (rendered HTML)
 
-| Surface | URL |
-|---------|-----|
-| **jsDelivr (primary interim)** | https://cdn.jsdelivr.net/gh/timerloggedout-spec/termux-monorepo@master/apps/help-wanted-dashboard/index.html |
-| **raw.githack** | https://raw.githack.com/timerloggedout-spec/termux-monorepo/master/apps/help-wanted-dashboard/index.html |
-| Status JSON | https://cdn.jsdelivr.net/gh/timerloggedout-spec/termux-monorepo@master/docs/ops/generated/help-wanted-status.json |
-| GitHub tree | https://github.com/timerloggedout-spec/termux-monorepo/tree/master/apps/help-wanted-dashboard |
+| Priority | URL | Notes |
+|----------|-----|--------|
+| **1 GitHack** | https://raw.githack.com/timerloggedout-spec/termux-monorepo/master/apps/help-wanted-dashboard/index.html | Correct HTML MIME |
+| **2 User site** | https://timerloggedout-spec.github.io/help-wanted/ | After mirror job (PAT) |
+| **3 Project Pages** | https://timerloggedout-spec.github.io/termux-monorepo/ | After enable-pages job succeeds |
+| jsDelivr | https://cdn.jsdelivr.net/gh/timerloggedout-spec/termux-monorepo@master/apps/help-wanted-dashboard/index.html | Often **text/plain** → looks like raw source |
 
-CDN serves `index.html` + `data/status.json` with correct MIME so the KPIs load without Xed-Editor.
+Status JSON:  
+https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/ops/generated/help-wanted-status.json
 
-## Operator deploy paths
+## Operator deploy
 
-Workflow: `.github/workflows/help-wanted-dashboard-deploy.yml` (merged #645)
+Workflow: `.github/workflows/help-wanted-dashboard-deploy.yml`
 
-| Target | Status |
-|--------|--------|
-| **GitHub Pages job** | **SUCCESS** — published `gh-pages` branch `f6f52e0`. Enable once: Settings → Pages → Deploy from branch **gh-pages** / root → then `https://timerloggedout-spec.github.io/termux-monorepo/` |
-| **Vercel job** | Failed first run (token/link). Retry after confirming `VERCEL_TOKEN` on repo; optional `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID_HELP_WANTED=prj_iS20meBbcNw6lsng2GHjO4I9gC78` |
+Jobs:
 
-MCP cannot Production-Deploy (403). Actions + token is the Operator path. CDN is live **now** without waiting on Pages settings.
+1. **enable-project-pages** — POST/PUT Pages API (`OPERATOR_GITHUB_TOKEN` / `ARCHWIZ_GITHUB_TOKEN` preferred)
+2. **publish-gh-pages** — content on `gh-pages`
+3. **mirror-user-github-io** — `timerloggedout-spec.github.io/help-wanted/`
+4. **vercel-prod** — optional, `continue-on-error`
 
-## Keep current
+```bash
+gh workflow run help-wanted-dashboard-deploy.yml -f target=all
+```
 
-1. Commit evidence JSONL on success (not only Actions artifacts)
-2. Regenerate `docs/ops/generated/help-wanted-status.json`
-3. Push under watched paths → redeploy workflow
-
-Or `workflow_dispatch` `help-wanted-dashboard-deploy` with `target=both`.
+Credential inventory: issue **#184** (notes only; never paste secrets).
 
 Agent-Identity: Grok (Administrator) · BIUDL

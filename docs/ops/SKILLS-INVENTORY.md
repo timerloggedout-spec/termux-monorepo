@@ -1,6 +1,6 @@
 # Skills Inventory (termux-monorepo)
 
-**Version:** 2026-09-19 · **Master tip:** post-#640 neighbor-safe help-wanted  
+**Version:** 2026-09-19 · **Master tip:** post-#650 github-pages-operator  
 **Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)  
 **Collaborator short entry:** [`SKILLS.md`](../../SKILLS.md)
 
@@ -19,9 +19,10 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 
 | Role | Load first | Then |
 |------|------------|------|
-| **Admin / Grok Administrator** | `evidence-led-monorepo-ops` + `adaptive-wait` | `review-loop` · `help-wanted-lane` · `approxination-lane` · `production-reconciliation` |
+| **Admin / Grok Administrator** | `evidence-led-monorepo-ops` + `adaptive-wait` | `review-loop` · `help-wanted-lane` · `github-pages-operator` · `approxination-lane` |
 | **Collaborator** | `adaptive-feedback-cycle` | dual-gate · `find-skills` |
 | **Oversight / external contrib** | `help-wanted-lane` | evidence-led + adaptive-wait · living status board |
+| **Dashboard / Pages** | `github-pages-operator` | help-wanted-lane · deploy workflow |
 | **Evaluation / DOE** | `multivariate-doe` + `blind-agent-evaluation` | `approxination-lane` · `mvt-experiment` |
 | **CI / production recon** | `production-reconciliation` | `action-effectiveness-ledger` · `workflow-orchestration` |
 
@@ -37,6 +38,7 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 | evidence-led-monorepo-ops | `.agents/skills/evidence-led-monorepo-ops/SKILL.md` |
 | find-skills | `.agents/skills/find-skills/SKILL.md` |
 | gemini-performance-psychology | `.agents/skills/gemini-performance-psychology/SKILL.md` |
+| **github-pages-operator** | `.agents/skills/github-pages-operator/SKILL.md` |
 | help-wanted-lane | `.agents/skills/help-wanted-lane/SKILL.md` |
 | multivariate-doe | `.agents/skills/multivariate-doe/SKILL.md` |
 | review-loop | `.agents/skills/review-loop/SKILL.md` |
@@ -51,6 +53,7 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 | evidence-envelope | `.github/skills/evidence-envelope/SKILL.md` |
 | evidence-provenance | `.github/skills/evidence-provenance/SKILL.md` |
 | forensic-recovery | `.github/skills/forensic-recovery/SKILL.md` |
+| **github-pages-operator** | `.github/skills/github-pages-operator/SKILL.md` |
 | mvt-experiment | `.github/skills/mvt-experiment/SKILL.md` |
 | pr-evidence-evaluation | `.github/skills/pr-evidence-evaluation/SKILL.md` |
 | production-reconciliation | `.github/skills/production-reconciliation/SKILL.md` |
@@ -63,24 +66,14 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 | [`HELP-WANTED-LANE.md`](HELP-WANTED-LANE.md) | Production execute |
 | [`HELP-WANTED-PARALLEL.md`](HELP-WANTED-PARALLEL.md) | Roster + limits |
 | [`HELP-WANTED-STATUS.md`](HELP-WANTED-STATUS.md) | Living human-review surface |
+| [`HELP-WANTED-DASHBOARD.md`](HELP-WANTED-DASHBOARD.md) | Live surfaces + deploy |
 | [`HELP-WANTED-EVIDENCE-FEED.md`](HELP-WANTED-EVIDENCE-FEED.md) | Receipts → evaluation |
-| generated board | `docs/ops/generated/help-wanted-status.md` |
-
-## Routing / orchestration pointers
-
-| Need | Path |
-|------|------|
-| Three-plane map | [`ROUTING-ORCHESTRATION-MAP.md`](ROUTING-ORCHESTRATION-MAP.md) |
-| Model rotation | [`docs/schemas/model-rotation.yaml`](../schemas/model-rotation.yaml) |
-| Provider caps | [`docs/schemas/provider-capabilities.md`](../schemas/provider-capabilities.md) |
-| Approxination ops | [`APPROXINATION-LANE.md`](APPROXINATION-LANE.md) |
 
 ## Cycle snapshot (2026-09-19)
 
-- **#638 MERGED:** LIVE help-wanted contribute (fork-ready, FALLBACK notice).
-- **#640 MERGED:** neighbor-safe — idempotent claims, skip closed, living status board.
-- Proven PRIMARY: DioNanos/codex-termux PR #27 (do **not** re-claim closed #14); Haven PR #657.
-- Maintainer routing (codex-termux): parity only; logic → upstream; features → [codex-vl](https://github.com/DioNanos/codex-vl).
-- Dual-gate still required for monorepo merges. External PRs follow target norms.
+- **#650 MERGED:** github-pages-operator + enable Pages API + user-site mirror.
+- **#645/#646:** dashboard deploy workflow + CDN docs.
+- **Prefer GitHack** over jsDelivr for HTML (MIME).
+- Credential inventory: issue **#184** (notes only; no secret values in issues).
 
-BIUDL. Agent-Identity: Grok (Administrator)
+Agent-Identity: Grok (Administrator)

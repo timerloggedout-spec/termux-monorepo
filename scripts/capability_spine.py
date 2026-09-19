@@ -13,7 +13,7 @@ from typing import Any
 
 SCHEMA_VERSION = 2
 OBSERVE_MODE = "observe"
-MAX_CANDIDATES = 16
+MAX_CANDIDATES = 64
 READ_ONLY_EFFECTS = {"read_only_analysis", "review_request"}
 BRANCH_WRITE_EFFECTS = {
     "branch_write",
@@ -81,6 +81,84 @@ def _hard_gate_reason(
     return None
 
 
+def load_capability_surface_catalog(path: str | None) -> list[dict[str, Any]]:
+    """Load normalized connector/tool/MCP/plugin/skill observations.
+
+    Surface observations enrich candidate facts but never grant a capability or
+    authority. The file is an adapter over existing source-of-truth inventories,
+    not a second registry. Malformed/unreadable input fails soft.
+    """
+    import json
+    import os
+
+    if not path or not os.path.exists(path):
+        return []
+    try:
+        with open(path, "r", encoding="utf-8") as handle:
+            document = json.load(handle)
+    except (OSError, ValueError, TypeError, json.JSONDecodeError):
+        return []
+    rows = document.get("surfaces", []) if isinstance(document, dict) else []
+    if not isinstance(rows, list):
+        return []
+    normalized = []
+    for row in rows:
+        if not isinstance(row, dict) or not row.get("id") or not row.get("kind"):
+            continue
+        normalized.append({
+            "kind": row["kind"],
+            "id": row["id"],
+            "provider": row.get("provider"),
+            "model": row.get("model"),
+            "capabilities": (
+                list(row.get("capabilities") or [])
+                if isinstance(row.get("capabilities"), list)
+                else ([row["capabilities"]] if row.get("capabilities") else [])
+            ),
+            "availability": row.get("availability", "unknown"),
+            "authority": row.get("authority", "unknown"),
+            "evidence_refs": list(row.get("evidence_refs") or []),
+            "observed_at": row.get("observed_at"),
+            "freshness": row.get("freshness", "unknown"),
+        })
+    return normalized
+
+
+def match_capability_surfaces(
+    provider: str, model: str, surfaces: Iterable[dict[str, Any]]
+) -> list[dict[str, Any]]:
+    """Join surfaces to a specialist without making surface claims declarations."""
+    matched = []
+    for row in surfaces:
+        if row.get("provider") not in (None, provider):
+            continue
+        if row.get("model") not in (None, model):
+            continue
+        matched.append(row)
+    return matched
+
+
+
+def summarize_surface_evidence(surfaces: Iterable[dict[str, Any]]) -> dict[str, Any]:
+    """Aggregate immutable evidence metadata without claiming validation."""
+    rows = list(surfaces)
+    refs = []
+    observed_at = []
+    freshness = []
+    for row in rows:
+        refs.extend(str(ref) for ref in row.get("evidence_refs", []))
+        if row.get("observed_at"):
+            observed_at.append(row["observed_at"])
+        if row.get("freshness"):
+            freshness.append(row["freshness"])
+    return {
+        "source_count": len(rows),
+        "evidence_refs": sorted(set(refs)),
+        "observed_at": sorted(set(observed_at)),
+        "freshness": sorted(set(freshness)),
+    }
+
+
 def make_candidate(
     *,
     provider: str,
@@ -100,6 +178,7 @@ def make_candidate(
     limits: dict[str, dict[str, int]],
     usage: int,
     success_entry: dict[str, Any],
+    surface_evidence: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     """Create one candidate and expose hard-gate and score components.
 
@@ -157,6 +236,7 @@ def make_candidate(
         + 0.15 * availability_component
     )
 
+    surface_evidence = surface_evidence or []
     return {
         "specialist": {"provider": provider, "model": model},
         "capability": capability,
@@ -171,6 +251,8 @@ def make_candidate(
             "current_sha": current_sha if requires_current_sha else None,
         },
         "availability": availability,
+        "capability_surfaces": surface_evidence,
+        "evidence": summarize_surface_evidence(surface_evidence),
         "quota": {"used": usage, "limit": limit, "headroom": round(quota_headroom, 4)},
         "repository_evidence": {
             "kind": "historic_3l0_prior" if success_entry else "missing",
@@ -192,6 +274,7 @@ def make_candidate(
             "score": round(score, 4),
         },
         "eligible": exclusion is None and availability not in {"blocked", "unavailable"},
+        "validation_status": success_entry.get("validation_status", "historic_prior_only" if success_entry else "unvalidated"),
         "exclusion": exclusion,
     }
 
@@ -219,10 +302,19 @@ def decide(
     recommendation = eligible[0]["specialist"] if eligible else None
     runner_up = eligible[1]["specialist"] if len(eligible) > 1 else None
     state = "recommended" if recommendation else "no_eligible_specialist"
+    population = {
+        "source": "declared_routes_plus_live_catalog",
+        "candidate_count": len(all_candidates),
+        "eligible_count": len(eligible),
+        "unvalidated_count": sum(1 for candidate in all_candidates if candidate["validation_status"] == "unvalidated"),
+        "historic_prior_only_count": sum(1 for candidate in all_candidates if candidate["validation_status"] == "historic_prior_only"),
+        "validated_count": sum(1 for candidate in all_candidates if candidate["validation_status"] == "validated"),
+    }
     return {
         "schema_version": SCHEMA_VERSION,
         "mode": OBSERVE_MODE,
         "capability": capability,
+        "population": population,
         "state": state,
         "recommendation": recommendation,
         "runner_up": runner_up,
@@ -246,6 +338,7 @@ def compact_envelope(decision: dict[str, Any]) -> dict[str, Any]:
         "recommendation": decision["recommendation"],
         "runner_up": decision["runner_up"],
         "summary": decision["summary"],
+        "population": decision.get("population", {}),
         "candidates": [
             {
                 "specialist": candidate["specialist"],
@@ -253,11 +346,14 @@ def compact_envelope(decision: dict[str, Any]) -> dict[str, Any]:
                 "provenance": candidate["provenance"],
                 "sha_binding": candidate["sha_binding"],
                 "availability": candidate["availability"],
+                "capability_surfaces": candidate.get("capability_surfaces", []),
+                "evidence": candidate.get("evidence", {}),
                 "eligible": candidate["eligible"],
                 "exclusion": candidate["exclusion"],
                 "quota": candidate["quota"],
                 "repository_evidence": candidate["repository_evidence"],
                 "score_components": candidate["score_components"],
+                "validation_status": candidate["validation_status"],
             }
             for candidate in decision["candidates"]
         ],

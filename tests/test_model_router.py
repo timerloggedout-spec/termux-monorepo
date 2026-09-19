@@ -178,6 +178,7 @@ def test_main_emits_observe_decision_without_changing_legacy_selection(tmp_path,
     monkeypatch.setenv("ROLE", "triage")
     monkeypatch.setenv("HAS_OMNI", "false")
     monkeypatch.setenv("HAS_OPENROUTER", "true")
+    monkeypatch.setenv("HAS_FELO", "true")
     monkeypatch.setenv("HAS_GEMINI", "false")
     monkeypatch.setenv("CAPABILITY_SPINE_OBSERVE", "true")
     monkeypatch.setattr(mr, "COUNTER_DIR", str(tmp_path))
@@ -204,6 +205,61 @@ def test_main_emits_observe_decision_without_changing_legacy_selection(tmp_path,
     assert '\"mode\":\"observe\"' in outputs
     assert "decision_summary=observe capability=triage" in outputs
 
+
+
+def test_observe_population_includes_live_catalog_models_without_hardcoding_execution(tmp_path, monkeypatch):
+    monkeypatch.setenv("ROLE", "review")
+    monkeypatch.setenv("HAS_OMNI", "false")
+    monkeypatch.setenv("HAS_OPENROUTER", "true")
+    monkeypatch.setenv("HAS_GEMINI", "false")
+    monkeypatch.setenv("CAPABILITY_SPINE_OBSERVE", "true")
+    monkeypatch.setattr(mr, "COUNTER_DIR", str(tmp_path))
+
+    matrix_file = tmp_path / "model-success-matrix.yaml"
+    matrix_file.write_text(
+        "models:\n"
+        "  \"qwen/qwen3-coder:free\":\n"
+        "    elo: 1200\n"
+        "    role_suitability:\n"
+        "      review: 1.1\n"
+    )
+    original_parse_yaml = mr.parse_yaml
+    monkeypatch.setattr(
+        mr,
+        "parse_yaml",
+        lambda path: original_parse_yaml(str(matrix_file)) if "success" in path else {},
+    )
+    monkeypatch.setattr(
+        mr,
+        "fetch_openrouter_free_models_cached_with_source",
+        lambda: (
+            ["qwen/qwen3-coder:free", "newly-listed/model-x:free", "another/model-y:free"],
+            "live",
+        ),
+    )
+    output_file = tmp_path / "github_output.txt"
+    monkeypatch.setenv("GITHUB_OUTPUT", str(output_file))
+
+    mr.main()
+
+    decision_line = next(
+        line for line in output_file.read_text().splitlines() if line.startswith("decision=")
+    )
+    decision = json.loads(decision_line.split("=", 1)[1])
+    models = {item["specialist"]["model"] for item in decision["candidates"]}
+    assert "newly-listed/model-x:free" in models
+    assert "another/model-y:free" in models
+    discovered = next(
+        item for item in decision["candidates"]
+        if item["specialist"]["model"] == "newly-listed/model-x:free"
+    )
+    assert discovered["validation_status"] == "unvalidated"
+    assert discovered["eligible"] is False
+    assert discovered["exclusion"] == "requested capability is not declared for this specialist"
+    assert decision["population"]["candidate_count"] >= 3
+    assert decision["population"]["unvalidated_count"] >= 2
+    # Legacy execution remains independently selected from the existing route policy.
+    assert "provider=openrouter" in output_file.read_text()
 
 def test_observe_feature_gate_keeps_execution_route_and_marks_decision_disabled(tmp_path, monkeypatch):
     monkeypatch.setenv("ROLE", "triage")
@@ -242,3 +298,139 @@ def test_stale_target_sha_fails_closed_in_observe_decision_only(tmp_path, monkey
     assert '"exclusion":"current-SHA gate is missing or stale"' in outputs
     assert "provider=gemini" in outputs
     assert "skip=false" in outputs
+
+
+def test_observe_population_consumes_normalized_felo_omni_catalog_without_granting_capability(tmp_path, monkeypatch):
+    monkeypatch.setenv("ROLE", "review")
+    monkeypatch.setenv("HAS_OMNI", "true")
+    monkeypatch.setenv("HAS_OPENROUTER", "true")
+    monkeypatch.setenv("HAS_GEMINI", "false")
+    monkeypatch.setenv("CAPABILITY_SPINE_OBSERVE", "true")
+    monkeypatch.setattr(mr, "COUNTER_DIR", str(tmp_path))
+
+    matrix_file = tmp_path / "model-success-matrix.yaml"
+    matrix_file.write_text(
+        "models:\n"
+        "  \"qwen/qwen3-coder:free\":\n"
+        "    elo: 1200\n"
+        "    role_suitability:\n"
+        "      review: 1.1\n"
+    )
+    original_parse_yaml = mr.parse_yaml
+    monkeypatch.setattr(
+        mr,
+        "parse_yaml",
+        lambda path: original_parse_yaml(str(matrix_file)) if "success" in path else {},
+    )
+
+    catalog_file = tmp_path / "catalog.json"
+    catalog_file.write_text(json.dumps({
+        "schema": "provider-model-catalog/v4",
+        "models": [
+            {
+                "provider": "openrouter",
+                "id": "qwen/qwen3-coder:free",
+                "pricing": {"prompt": "0", "completion": "0"},
+                "pricing_classification": "free_zero_price",
+            },
+            {
+                "provider": "felo",
+                "id": "ox-alpha",
+                "access_classification": "free_trial",
+            },
+            {
+                "provider": "omni",
+                "id": "auto/best-free",
+                "access_classification": "catalog_pricing_only",
+            },
+        ],
+    }))
+    monkeypatch.setattr(mr, "MODEL_CATALOG_FILE", str(catalog_file))
+    monkeypatch.setattr(
+        mr,
+        "fetch_openrouter_free_models_cached_with_source",
+        lambda: (["qwen/qwen3-coder:free"], "live"),
+    )
+    output_file = tmp_path / "github_output.txt"
+    monkeypatch.setenv("GITHUB_OUTPUT", str(output_file))
+
+    mr.main()
+
+    decision_line = next(
+        line for line in output_file.read_text().splitlines() if line.startswith("decision=")
+    )
+    decision = json.loads(decision_line.split("=", 1)[1])
+    by_model = {
+        item["specialist"]["model"]: item
+        for item in decision["candidates"]
+    }
+    assert by_model["qwen/qwen3-coder:free"]["validation_status"] == "historic_prior_only"
+    assert by_model["ox-alpha"]["validation_status"] == "unvalidated"
+    assert by_model["ox-alpha"]["eligible"] is False
+    assert by_model["auto/best-free"]["validation_status"] == "unvalidated"
+    assert decision["population"]["candidate_count"] >= 3
+    assert decision["population"]["unvalidated_count"] >= 2
+    assert "provider=gemini" not in output_file.read_text()
+
+
+
+def test_observe_candidates_join_normalized_capability_surfaces_without_granting_authority(tmp_path, monkeypatch):
+    monkeypatch.setenv("ROLE", "review")
+    monkeypatch.setenv("HAS_OMNI", "false")
+    monkeypatch.setenv("HAS_OPENROUTER", "true")
+    monkeypatch.setenv("HAS_GEMINI", "false")
+    monkeypatch.setenv("CAPABILITY_SPINE_OBSERVE", "true")
+    monkeypatch.setattr(mr, "COUNTER_DIR", str(tmp_path))
+    monkeypatch.setattr(
+        mr,
+        "fetch_openrouter_free_models_cached_with_source",
+        lambda: (["qwen/qwen3-coder:free"], "live"),
+    )
+    monkeypatch.setattr(mr, "MODEL_CATALOG_FILE", str(tmp_path / "missing-catalog.json"))
+    surface_file = tmp_path / "surfaces.json"
+    surface_file.write_text(json.dumps({
+        "schema": "capability-surfaces/v1",
+        "observed_at": "2026-09-18T20:00:00Z",
+        "surfaces": [{
+            "kind": "mcp",
+            "id": "github-mcp",
+            "provider": "openrouter",
+            "model": "qwen/qwen3-coder:free",
+            "capabilities": ["repository_read"],
+            "availability": "available",
+            "authority": "read/query",
+            "evidence_refs": ["workflow://run/123"],
+            "freshness": "current",
+        }],
+    }))
+    monkeypatch.setattr(mr, "CAPABILITY_SURFACES_FILE", str(surface_file))
+    matrix_file = tmp_path / "model-success-matrix.yaml"
+    matrix_file.write_text(
+        "models:\n"
+        "  \"qwen/qwen3-coder:free\":\n"
+        "    elo: 1200\n"
+        "    role_suitability:\n"
+        "      review: 1.1\n"
+    )
+    original_parse_yaml = mr.parse_yaml
+    monkeypatch.setattr(
+        mr,
+        "parse_yaml",
+        lambda path: original_parse_yaml(str(matrix_file)) if "success" in path else {},
+    )
+    output_file = tmp_path / "github_output.txt"
+    monkeypatch.setenv("GITHUB_OUTPUT", str(output_file))
+
+    mr.main()
+
+    decision = json.loads(
+        next(line for line in output_file.read_text().splitlines() if line.startswith("decision=")).split("=", 1)[1]
+    )
+    candidate = next(
+        item for item in decision["candidates"]
+        if item["specialist"]["model"] == "qwen/qwen3-coder:free"
+    )
+    assert candidate["capability_surfaces"][0]["kind"] == "mcp"
+    assert candidate["capability_surfaces"][0]["authority"] == "read/query"
+    assert candidate["eligible"] is True
+    assert candidate["capability"] == "review"

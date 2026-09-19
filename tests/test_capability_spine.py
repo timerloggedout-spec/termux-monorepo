@@ -135,3 +135,114 @@ def test_active_mode_is_rejected():
         assert "observe mode only" in str(error)
     else:
         raise AssertionError("active mode must be rejected")
+
+
+def test_validation_status_is_explicit_and_population_is_reported():
+    observed = candidate(
+        success_entry={},
+        declared_capabilities=set(),
+    )
+    validated = candidate(
+        success_entry={
+            "elo": 1250,
+            "role_suitability": {"review": 1.3},
+            "validation_status": "validated",
+        }
+    )
+    assert observed["validation_status"] == "unvalidated"
+    assert validated["validation_status"] == "validated"
+    decision = spine.decide(capability="review", candidates=[observed, validated])
+    assert decision["population"]["candidate_count"] == 2
+    assert decision["population"]["unvalidated_count"] == 1
+    assert decision["population"]["validated_count"] == 1
+    compact = spine.compact_envelope(decision)
+    assert compact["population"]["validated_count"] == 1
+    assert "validation_status" in compact["candidates"][0]
+
+
+
+def test_capability_surface_join_is_observational_and_preserves_authority():
+    surfaces = [
+        {
+            "kind": "mcp",
+            "id": "github-mcp",
+            "provider": "openrouter",
+            "model": "qwen/qwen3-coder:free",
+            "capabilities": ["repository_read", "issue_query"],
+            "availability": "available",
+            "authority": "read/query",
+            "evidence_refs": ["workflow://run/123"],
+            "observed_at": "2026-09-18T20:00:00Z",
+            "freshness": "current",
+        }
+    ]
+    matched = spine.match_capability_surfaces(
+        "openrouter", "qwen/qwen3-coder:free", surfaces
+    )
+    assert matched[0]["kind"] == "mcp"
+    candidate = spine.make_candidate(
+        provider="openrouter",
+        model="qwen/qwen3-coder:free",
+        capability="review",
+        declared_capabilities={"review"},
+        effect="read_only_analysis",
+        provenance={"declared_source": "test", "trusted": True},
+        policy_enabled=True,
+        requires_current_sha=False,
+        target_sha=None,
+        current_sha=None,
+        branch_write_confirmed=False,
+        has_provider=True,
+        openrouter_models={"qwen/qwen3-coder:free"},
+        openrouter_catalog_state="live",
+        limits={"openrouter/qwen/qwen3-coder:free": {"review": 1}},
+        usage=0,
+        success_entry={},
+        surface_evidence=matched,
+    )
+    assert candidate["eligible"] is True
+    assert candidate["capability_surfaces"][0]["authority"] == "read/query"
+    assert candidate["capability"] == "review"
+    assert "repository_write" not in candidate["capability_surfaces"][0]["capabilities"]
+
+
+def test_capability_surface_catalog_loader_is_fail_soft(tmp_path):
+    valid = tmp_path / "surfaces.json"
+    valid.write_text(json.dumps({
+        "schema": "capability-surfaces/v1",
+        "surfaces": [{
+            "kind": "skill",
+            "id": "adaptive-wait",
+            "capabilities": ["wait", "recheck"],
+            "freshness": "current",
+        }],
+    }))
+    rows = spine.load_capability_surface_catalog(str(valid))
+    assert rows[0]["kind"] == "skill"
+    assert rows[0]["authority"] == "unknown"
+    broken = tmp_path / "broken.json"
+    broken.write_text("{not-json")
+    assert spine.load_capability_surface_catalog(str(broken)) == []
+
+
+
+def test_surface_evidence_summary_preserves_provenance_and_freshness():
+    summary = spine.summarize_surface_evidence([
+        {
+            "kind": "tool",
+            "id": "repo-reader",
+            "evidence_refs": ["sha:abc", "sha:abc"],
+            "observed_at": "2026-09-18T20:00:00Z",
+            "freshness": "current",
+        },
+        {
+            "kind": "skill",
+            "id": "adaptive-wait",
+            "evidence_refs": ["sha:def"],
+            "observed_at": "2026-09-17T20:00:00Z",
+            "freshness": "stale",
+        },
+    ])
+    assert summary["source_count"] == 2
+    assert summary["evidence_refs"] == ["sha:abc", "sha:def"]
+    assert summary["freshness"] == ["current", "stale"]

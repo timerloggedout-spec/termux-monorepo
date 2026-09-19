@@ -203,3 +203,12 @@ The existing runtime observer remains nested inside execution:
 Retrospectives should classify process gaps separately from task outcomes (specification, decomposition, execution, verification, integration, governance, and environment). Repeated findings should become durable skills, templates, tests, or workflow changes.
 
 See `docs/ops/AGENTIC-AGILE-PROCESS-INTEGRATION.md` for the adopted contract and gate rules.
+
+
+## Canonical phase-engine integration
+
+Agentic-Agile waves are implemented as a process layer over the existing dependency-phase control plane, not as a second scheduler. The canonical lifecycle state remains in `docs/agentic/dependency-phases.json`, `phase-approvals.json`, the deterministic phase engine, and current GitHub evidence.
+
+Accordingly, a future manager should ask the phase evaluator for readiness before dispatch, use its `ready/running/awaiting_review/blocked/complete` state as the lifecycle boundary, and derive wave membership from the existing dependency graph. Generated views and agent prose remain advisory.
+
+Do not create a competing `agentic-agile.yaml` or duplicate claim/idempotency protocol. Extend the phase engine when additional Agentic-Agile metadata is needed.

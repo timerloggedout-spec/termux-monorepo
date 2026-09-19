@@ -2,9 +2,8 @@ name: help-wanted execute
 
 # LIVE ONLY — no dry runs. Ever.
 # PRIMARY: claim comment + upstream PR into author's repo.
-# Parallel to SHE (evidence receipts for benchmarks only).
-# OPERATOR PAT order: OPERATOR_GITHUB_TOKEN | OPERATOR_TOKEN | ARCHWIZ_GITHUB_TOKEN
-# Fail-closed when no issue selected.
+# Interthread: after success → repository_dispatch help-wanted-followup poll.
+# Foreign: accepts repository_dispatch help-wanted-execute.
 
 on:
   schedule:
@@ -23,10 +22,14 @@ on:
         description: Max live contributes per UTC day (soft ceiling this runner)
         required: false
         default: "8"
+  repository_dispatch:
+    types:
+      - help-wanted-execute
+      - help-wanted-foreign-execute
 
 permissions:
   contents: read
-  actions: read
+  actions: write
 
 concurrency:
   group: help-wanted-execute
@@ -50,9 +53,9 @@ jobs:
       - name: Gate (inline scout when needed)
         id: gate
         env:
-          INPUT_ISSUE: ${{ github.event.inputs.issue }}
-          INPUT_MODE: ${{ github.event.inputs.mode }}
-          INPUT_BUDGET: ${{ github.event.inputs.daily_budget }}
+          INPUT_ISSUE: ${{ github.event.inputs.issue || github.event.client_payload.issue || '' }}
+          INPUT_MODE: ${{ github.event.inputs.mode || github.event.client_payload.mode || 'claim-and-pr' }}
+          INPUT_BUDGET: ${{ github.event.inputs.daily_budget || github.event.client_payload.daily_budget || '8' }}
           EVENT_NAME: ${{ github.event_name }}
           OPERATOR_GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
           OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
@@ -70,7 +73,6 @@ jobs:
           day = datetime.now(timezone.utc).strftime("%Y-%m-%d")
           path = Path("docs/ops/generated/help-wanted-daily-budget.json")
           path.parent.mkdir(parents=True, exist_ok=True)
-          # Soft per-runner ceiling only (ephemeral). Evidence receipts are the durable ledger.
           data = {"day": day, "used": 0, "success": 0, "fail": 0, "events": [], "note": "ephemeral-runner soft ceiling"}
           remaining = budget
           issue = (os.environ.get("INPUT_ISSUE") or "").strip()
@@ -89,16 +91,7 @@ jobs:
               out.parent.mkdir(parents=True, exist_ok=True)
               for label in ("good first issue", "help wanted"):
                   subprocess.run(
-                      [
-                          "python3",
-                          "scripts/ci/help_wanted_scout.py",
-                          "--max",
-                          "20",
-                          "--label",
-                          label,
-                          "--out",
-                          str(out),
-                      ],
+                      ["python3", "scripts/ci/help_wanted_scout.py", "--max", "20", "--label", label, "--out", str(out)],
                       check=False,
                   )
                   items = []
@@ -147,7 +140,7 @@ jobs:
     steps:
       - name: No issue selected
         run: |
-          echo "::error::help-wanted execute selected no issue (inline scout empty or inputs missing)"
+          echo "::error::help-wanted execute selected no issue"
           exit 1
 
   claim:
@@ -196,7 +189,6 @@ jobs:
           GH_TOKEN: ${{ steps.tok.outputs.token }}
         run: |
           set -euo pipefail
-          # NEVER pass --dry-run
           python3 scripts/ci/help_wanted_claim.py --issue "${{ needs.budget.outputs.issue }}"
 
       - name: Evidence receipt
@@ -206,10 +198,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/ci/help_wanted_evidence.py \
-            --kind claim \
-            --issue "${{ needs.budget.outputs.issue }}" \
-            --ok true \
-            --run-url "$GITHUB_RUN_URL"
+            --kind claim --issue "${{ needs.budget.outputs.issue }}" --ok true --run-url "$GITHUB_RUN_URL"
 
       - name: Evidence receipt (fail)
         if: failure()
@@ -217,10 +206,7 @@ jobs:
           GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           python3 scripts/ci/help_wanted_evidence.py \
-            --kind claim \
-            --issue "${{ needs.budget.outputs.issue }}" \
-            --ok false \
-            --run-url "$GITHUB_RUN_URL" || true
+            --kind claim --issue "${{ needs.budget.outputs.issue }}" --ok false --run-url "$GITHUB_RUN_URL" || true
 
       - name: Upload evidence
         if: always()
@@ -252,7 +238,7 @@ jobs:
           set -euo pipefail
           TOKEN="${OPERATOR_GITHUB_TOKEN:-${OPERATOR_TOKEN:-${ARCHWIZ_GITHUB_TOKEN:-}}}"
           if [ -z "$TOKEN" ]; then
-            echo "OPERATOR PAT required for upstream PR (GITHUB_TOKEN cannot open external PRs reliably)" >&2
+            echo "OPERATOR PAT required for upstream PR" >&2
             exit 1
           fi
           echo "token=${TOKEN}" >> "$GITHUB_OUTPUT"
@@ -275,10 +261,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/ci/help_wanted_evidence.py \
-            --kind upstream_pr \
-            --issue "${{ needs.budget.outputs.issue }}" \
-            --ok true \
-            --run-url "$GITHUB_RUN_URL"
+            --kind upstream_pr --issue "${{ needs.budget.outputs.issue }}" --ok true --run-url "$GITHUB_RUN_URL"
 
       - name: Evidence receipt (fail)
         if: failure()
@@ -286,10 +269,22 @@ jobs:
           GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           python3 scripts/ci/help_wanted_evidence.py \
-            --kind upstream_pr \
-            --issue "${{ needs.budget.outputs.issue }}" \
-            --ok false \
-            --run-url "$GITHUB_RUN_URL" || true
+            --kind upstream_pr --issue "${{ needs.budget.outputs.issue }}" --ok false --run-url "$GITHUB_RUN_URL" || true
+
+      - name: Interthread → followup poll
+        if: always()
+        env:
+          TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          # repository_dispatch foreign-hook compatible interthread
+          curl -sS -X POST \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/dispatches" \
+            -d '{"event_type":"help-wanted-followup","client_payload":{"mode":"poll","source":"execute","run_id":"${{ github.run_id }}"}}' \
+            || true
+          echo "dispatched help-wanted-followup"
 
       - name: Upload evidence
         if: always()

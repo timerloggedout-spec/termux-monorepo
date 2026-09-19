@@ -1,18 +1,23 @@
 name: help-wanted-followup
 
 # Timely relevance for external help-wanted PRs/issues we opened.
-# Foreign-repo webhooks need App install; until then: schedule + dispatch.
+# Interthread: repository_dispatch from execute/scout + foreign POSTs.
+# Schedule remains the safety net when App webhooks are absent.
 
 on:
   schedule:
-    # ~ every 2 hours
     - cron: "17 */2 * * *"
   workflow_dispatch:
     inputs:
       mode:
-        description: "poll | zero-81-revise"
+        description: "poll | zero-81-revise | chain-execute"
         required: false
         default: "poll"
+  repository_dispatch:
+    types:
+      - help-wanted-followup
+      - help-wanted-foreign
+      - help-wanted-changes-requested
 
 concurrency:
   group: help-wanted-followup
@@ -22,14 +27,34 @@ permissions:
   contents: write
   issues: write
   pull-requests: write
+  actions: write
 
 jobs:
+  resolve:
+    runs-on: ubuntu-latest
+    outputs:
+      mode: ${{ steps.m.outputs.mode }}
+    steps:
+      - id: m
+        run: |
+          set -euo pipefail
+          MODE="poll"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            MODE="${{ github.event.inputs.mode || 'poll' }}"
+          elif [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+            MODE="${{ github.event.client_payload.mode || 'poll' }}"
+          fi
+          echo "mode=$MODE" >> "$GITHUB_OUTPUT"
+          echo "resolved mode=$MODE event=${{ github.event_name }}"
+
   poll:
-    if: ${{ github.event_name == 'schedule' || github.event.inputs.mode == 'poll' || github.event.inputs.mode == '' }}
+    needs: resolve
+    if: needs.resolve.outputs.mode == 'poll' || needs.resolve.outputs.mode == ''
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+
       - name: Poll CHANGES_REQUESTED on our external PRs
         env:
           OPERATOR_GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
@@ -39,23 +64,26 @@ jobs:
         run: python3 scripts/ci/help_wanted_followup.py
 
       - name: Commit evidence if any
+        env:
+          TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
-          if git diff --quiet docs/ops/generated/help-wanted-evidence 2>/dev/null; then
+          if git status --porcelain docs/ops/generated/help-wanted-evidence 2>/dev/null | grep -q .; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add docs/ops/generated/help-wanted-evidence || true
+            git commit -m "ops(help-wanted): follow-up evidence $(date -u +%Y-%m-%dT%H:%MZ)" || true
+            git push "https://x-access-token:${TOKEN}@github.com/${{ github.repository }}.git" HEAD:master || true
+          else
             echo "no evidence delta"
-            exit 0
           fi
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/ops/generated/help-wanted-evidence || true
-          git commit -m "ops(help-wanted): follow-up evidence $(date -u +%Y-%m-%dT%H:%MZ)" || true
-          git push || true
 
   zero-81-revise:
-    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'zero-81-revise' }}
+    needs: resolve
+    if: needs.resolve.outputs.mode == 'zero-81-revise'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - name: Revise zero#81 ponytail comments per maintainer review
+      - name: Revise zero#81 if still needed
         env:
           TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
@@ -71,27 +99,59 @@ jobs:
           new_grid = """    /// ponytail: reads `grid-template-areas`, `minmax()`, `auto-fit`/`auto-fill`\n    /// (expand_tracks approx), numeric `grid-column`/`grid-row`, and named\n    /// `grid-area`. Missing: named lines, four-value `grid-area`, row spans in\n    /// `grid-template-areas`, and all alignment (`align-*` / `justify-*`).\n    /// Rows beyond `grid-template-rows` are sized to their tallest item."""
           old_flex = """    /// ponytail: `flex-wrap`, `justify-content`, `align-items`, `align-self`, and\n    /// `flex-grow` are read. Still missing: `flex-shrink`, `flex-basis`, and\n    /// intrinsic content sizing. Items with an explicit main size keep it; the\n    /// rest split leftover space (covers most real column/nav layouts)."""
           new_flex = """    /// ponytail: `flex-wrap`, `justify-content`, `align-items`, `align-self`,\n    /// `flex-grow`, `flex-shrink`, and `flex-basis` are read. Still missing:\n    /// intrinsic content sizing. Items with an explicit main size keep it; the\n    /// rest split leftover space (covers most real column/nav layouts)."""
-          if old_grid not in t or old_flex not in t:
-              raise SystemExit("expected comment blocks not found — already revised?")
-          p.write_text(t.replace(old_grid, new_grid).replace(old_flex, new_flex))
-          print("patched")
+          if old_grid not in t and old_flex not in t:
+              print("already revised — skip commit")
+              open("/tmp/skip", "w").write("1")
+          elif old_grid not in t or old_flex not in t:
+              raise SystemExit("partial match — manual inspect")
+          else:
+              p.write_text(t.replace(old_grid, new_grid).replace(old_flex, new_flex))
+              print("patched")
           PY
+          if [ -f /tmp/skip ]; then
+            echo "no push needed"
+            exit 0
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add crates/zero-engine/src/layout.rs
-          git commit -m "fix(layout): accurate ponytail ledgers per review on #81
-
-          Flex: only intrinsic sizing still missing.
-          Grid: credit auto-fit/fill + named grid-area; note alignment + 4-value form.
-          "
+          git commit -m "fix(layout): accurate ponytail ledgers per review on #81" || exit 0
           git push origin fix/stale-ponytail-comments-72
 
-      - name: Update PR body (no auto-close #72)
+      - name: Update PR body + comment + re-request review
         env:
           TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
+          set -euo pipefail
           curl -sS -X PATCH \
             -H "Authorization: Bearer $TOKEN" \
             -H "Accept: application/vnd.github+json" \
             https://api.github.com/repos/vedantnimbarte/zero/pulls/81 \
-            -d '{"body":"Addresses part of vedantnimbarte/zero#72 (ponytail ledger accuracy only — does not close the full audit).\n\nRevises two `ponytail:` comments in `layout.rs` to match current flex/grid support after maintainer review.\n\nOpened via termux-monorepo help-wanted lane."}'
+            -d '{"body":"Addresses part of vedantnimbarte/zero#72 (ponytail ledger accuracy only — does not close the full audit).\n\nRevises two `ponytail:` comments in `layout.rs` to match current flex/grid support after maintainer review.\n\nOpened via termux-monorepo help-wanted lane."}' || true
+          curl -sS -X POST \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/vedantnimbarte/zero/issues/81/comments \
+            -d '{"body":"### Help-wanted follow-up — termux-monorepo\n\nRevision pushed for review **5255144227** (accurate flex/grid ponytail ledgers).\nRe-requesting review from @vedantnimbarte.\n\n— `help-wanted-followup` / zero-81-revise"}' || true
+          curl -sS -X POST \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/vedantnimbarte/zero/pulls/81/requested_reviewers \
+            -d '{"reviewers":["vedantnimbarte"]}' || true
+
+  chain-execute:
+    needs: resolve
+    if: needs.resolve.outputs.mode == 'chain-execute'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch help-wanted execute (empty issue = scout top-1)
+        env:
+          TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          curl -sS -X POST \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/help-wanted-execute.yml/dispatches" \
+            -d '{"ref":"master","inputs":{"issue":"","mode":"claim-and-pr","daily_budget":"8"}}'
+          echo "chained execute dispatch"

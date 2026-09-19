@@ -66,10 +66,12 @@ Prefer continuing **open** threads we already touched when they still need code.
 | Repo / Issue | Note |
 |--------------|------|
 | DioNanos/codex-termux#14 | **Closed** — do not re-claim; maintainer: logic → upstream; features → codex-vl |
-| GlassHaven/Haven#273 | Mutual SAF / folder upload; stake PR may already exist |
-| Kilo-Org/agentic-path#25 | Integration failures thread |
-| PubDeer/astro-loop#42 | User bug/enhancement |
+| GlassHaven/Haven#273 | Mutual SAF / folder upload; prior execute this day — do not double-claim same cycle |
+| Kilo-Org/agentic-path#25 | Integration failures thread — **LIVE execute dispatched 2026-09-19 16:06 PDT** |
+| PubDeer/astro-loop#42 | User bug/enhancement — next open mutual if #25 already staked |
 
-## BIUDL
+## Session
+
+2026-09-19 16:06 PDT: execute workflow_dispatch `claim-and-pr` on Kilo-Org/agentic-path#25. LIVE only (no dry-run in workflow).
 
 Agent-Identity: Grok (Administrator)

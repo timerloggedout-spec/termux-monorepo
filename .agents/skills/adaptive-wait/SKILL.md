@@ -3,19 +3,28 @@ name: adaptive-wait
 description: Adaptive WAIT for agentic GitHub ops. Dual-gate before promote. Stay busy on disjoint work.
 ---
 
-Local mirror. Canonical is master `.agents/skills/adaptive-wait/SKILL.md`.
+# Skill: adaptive-wait
 
-Master: `16030fcfd26b3b4f3427fa5e098cbf7862b7f081`.
-#635 MERGED extract-only security (symlink token). Dual-gate green on merge SHA ancestry.
-#608 HOLD dirty/behind — do not merge (ledger extract already landed via #627).
-#629/#630 Jules dirty observe. #636 update-branch after #635.
-#632 behind. #633/#634 WAIT unstable record PRs.
+**Canonical:** `.agents/skills/adaptive-wait/SKILL.md` on master.
 
-This session (2026-09-19 12:07 PDT):
-- help-wanted-execute dry_run dispatched DioNanos/codex-termux#14.
-- #635 promoted after dual-gate verify; #636 left WAIT post-rebase.
-- No merge of #608/#629/#630.
-- No comment-storm.
-- Stay busy: session record from live master + dry_run dispatch + Copilot on #636.
+## Dual-gate
+
+Promote only when **both**:
+1. mergeable_state is `clean` (not dirty / behind / blocked).
+2. Required / hygiene checks are green (ignore Vercel hobby rate-limit + expired Devin trial as non-gates).
+
+Otherwise HOLD / WAIT / observe. Do not force-merge dirty PRs.
+
+## Session (2026-09-19 16:06 PDT)
+
+- Master HEAD: `1715f2f2`.
+- #648 dirty HOLD.
+- #649 Jules observe (1-line quota doc).
+- #641 dirty HOLD. #639 unstable WAIT. #608/#630 dirty observe.
+- help-wanted-execute LIVE `Kilo-Org/agentic-path#25` dispatched this session.
+- Prior execute GlassHaven/Haven#273 — do not double-claim same cycle.
+- DioNanos/codex-termux#14 CLOSED — skip.
+- Vercel hobby rate-limit 24h — not a merge blocker.
+- Stay busy: session record + live external execute + no comment-storm.
 
 Agent-Identity: Grok (Administrator)

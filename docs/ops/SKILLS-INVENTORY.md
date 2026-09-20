@@ -1,12 +1,12 @@
 # Skills Inventory (termux-monorepo)
 
-**Version:** 2026-09-19 · **Master tip:** post-#650 github-pages-operator  
-**Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)  
+**Version:** 2026-09-19 17:26 PDT · **Master tip:** `826dc1e4`
+**Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)
 **Collaborator short entry:** [`SKILLS.md`](../../SKILLS.md)
 
 ## Collaborator access (parity)
 
-All skills below are **in-repo** under `.agents/skills/` or `.github/skills/`.  
+All skills below are **in-repo** under `.agents/skills/` or `.github/skills/`.
 Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a second policy source.
 
 | Entry | Purpose |
@@ -69,11 +69,13 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 | [`HELP-WANTED-DASHBOARD.md`](HELP-WANTED-DASHBOARD.md) | Live surfaces + deploy |
 | [`HELP-WANTED-EVIDENCE-FEED.md`](HELP-WANTED-EVIDENCE-FEED.md) | Receipts → evaluation |
 
-## Cycle snapshot (2026-09-19)
+## Cycle snapshot (2026-09-19 17:26 PDT)
 
-- **#650 MERGED:** github-pages-operator + enable Pages API + user-site mirror.
-- **#645/#646:** dashboard deploy workflow + CDN docs.
-- **Prefer GitHack** over jsDelivr for HTML (MIME).
-- Credential inventory: issue **#184** (notes only; no secret values in issues).
+- Live master: `826dc1e4`.
+- #655: dual-gate jobs green; Vercel hobby rate-limit non-gate; base lag vs tip.
+- HOLD dirty: #648, #641. Observe Jules: #649, #657.
+- ML: keep #432/#601 extract-only (Issue #175).
+- Prefer GitHack over jsDelivr for HTML (MIME).
+- Credential inventory: issue **#184** (notes only; no secret values).
 
 Agent-Identity: Grok (Administrator)

@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-09-20T04:48:37Z",
+  "generated_at": "2026-09-20T04:53:10Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
-  "receipts": 21,
+  "receipts": 22,
   "kinds": {
     "upstream_pr": 12,
     "claim_skipped_closed": 1,
-    "followup_skip_idempotent": 8
+    "followup_skip_idempotent": 9
   },
   "outcomes": {
-    "ok": 21
+    "ok": 22
   },
   "foreign_open_prs": [
     {
@@ -88,19 +88,6 @@
   "foreign_open_count": 8,
   "tributes": [
     {
-      "pr_url": "https://github.com/markramm/pyrite/pull/198",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-20T04:04:11Z",
-      "providers": [],
-      "repo": "markramm/pyrite",
-      "number": 198,
-      "title": "help-wanted: stake + contribute for #192",
-      "state": "closed"
-    },
-    {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
         "upstream_pr",
@@ -113,15 +100,29 @@
         "followup_skip_idempotent",
         "followup_skip_idempotent",
         "followup_skip_idempotent",
+        "followup_skip_idempotent",
         "followup_skip_idempotent"
       ],
       "ok": true,
-      "last_ts": "2026-09-20T00:12:04Z",
+      "last_ts": "2026-09-20T04:52:56Z",
       "providers": [],
       "repo": "vedantnimbarte/zero",
       "number": 81,
       "title": "docs(layout): refresh stale ponytail comments (flex + grid)",
       "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/markramm/pyrite/pull/198",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-20T04:04:11Z",
+      "providers": [],
+      "repo": "markramm/pyrite",
+      "number": 198,
+      "title": "help-wanted: stake + contribute for #192",
+      "state": "closed"
     },
     {
       "pr_url": "https://github.com/vigneshv1cky/alphadesk-terminal/pull/12",
@@ -545,6 +546,14 @@
       },
       {
         "ts": "2026-09-20T00:12:04Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-20T04:52:56Z",
         "kind": "followup_skip_idempotent",
         "issue": "https://github.com/vedantnimbarte/zero/pull/81",
         "ok": true,

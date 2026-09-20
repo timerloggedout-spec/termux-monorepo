@@ -1,0 +1,6 @@
+id: 50_deploy
+name: DEPLOY
+purpose: |
+  Emit promote packets only when repo_gate + termux_smoke are green.
+halt_on: [FAILED]
+allows: [OK, SKIPPED]

@@ -1,0 +1,6 @@
+id: 30_train
+name: TRAIN
+purpose: |
+  Fit ranking weights for promote/wait/hold/extract lanes.
+halt_on: [FAILED]
+allows: [OK, SKIPPED]

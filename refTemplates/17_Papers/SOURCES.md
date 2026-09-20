@@ -1,5 +1,7 @@
 # Papers / identity / scanner sources
 
+**Intercom:** dense feedback is system-wide — `docs/ops/DENSE-FEEDBACK-INTERCOM.md` (not Paper2Agent-only).
+
 ## Source classes
 
 | Class | Resolver | Notes |
@@ -40,17 +42,17 @@
 
 ## Operator-seeded (2026-09-20)
 
-| id | title / note | url | linked_slots |
-|----|--------------|-----|--------------|
-| needle-3-cactus | Needle 3 — 8–29 MB foundation model; tool calls + extraction on-device | https://cactuscompute.com/needle | 01_Agent_Runtime, 15_Research |
-| cactus-needle-github | cactus-compute/needle source | https://github.com/cactus-compute/needle | 01_Agent_Runtime |
-| glm-inference-infra | GLM Paper2Agent template: dense feedback, Infra Agent, RSI path | https://z.ai/blog/glm-built-its-inference-infrastructure | 15_Research, Paper2Agent |
-| opencode-research-papers | arXiv + OpenAlex OpenCode plugin | https://github.com/saim-x/opencode-research-papers | 17_Papers, scanners |
-| openresearch-alphaxiv | Turn coding agents into research agents | https://github.com/alphaXiv/OpenResearch | 15_Research, jogyo |
-| papersflow-code-discovery | Paper → GitHub implementation finder | https://papersflow.ai | 17_Papers |
-| arxivatlas | Semantic arXiv canvas | https://github.com/Jaluus/ArXivAtlas | 17_Papers |
-| laya-convai | Laya (ConvAI Innovations) — watch surface | https://laya.convaiinnovations.com | watchlist |
-| typesafe-system-one | System One Models + JEV waitlist | https://typesafe.ai/blog/introducing-system-one-models-and-jev | watchlist |
-| yt-hygMRgnDD7w | Operator research video seed | https://youtu.be/hygMRgnDD7w | seed |
+| id | title / note | url | linked_slots | priority |
+|----|--------------|-----|--------------|----------|
+| **laya-convai** | Laya (ConvAI Innovations) | https://laya.convaiinnovations.com | 16_Org_Phased/laya | **HIGH** |
+| glm-inference-infra | GLM dense feedback → intercom + Paper2Agent | https://z.ai/blog/glm-built-its-inference-infrastructure | DENSE-FEEDBACK-INTERCOM, Paper2Agent | HIGH |
+| needle-3-cactus | Needle 3 on-device FM | https://cactuscompute.com/needle | 01_Agent_Runtime, 15_Research | normal |
+| cactus-needle-github | cactus-compute/needle | https://github.com/cactus-compute/needle | 01_Agent_Runtime | normal |
+| opencode-research-papers | arXiv + OpenAlex plugin | https://github.com/saim-x/opencode-research-papers | 17_Papers, scanners | normal |
+| openresearch-alphaxiv | Research agents | https://github.com/alphaXiv/OpenResearch | 15_Research | normal |
+| papersflow-code-discovery | Paper → GitHub | https://papersflow.ai | 17_Papers | normal |
+| arxivatlas | Semantic arXiv canvas | https://github.com/Jaluus/ArXivAtlas | 17_Papers | normal |
+| typesafe-system-one | System One + JEV waitlist | https://typesafe.ai/blog/introducing-system-one-models-and-jev | watchlist | watch |
+| yt-hygMRgnDD7w | Operator research video | https://youtu.be/hygMRgnDD7w | seed | seed |
 
-Scanners implement under `scripts/ci/refTemplates_*` per CONTINUOUS-EVAL — rate-limited, dual-gate, free-first.
+Scanners under `scripts/ci/refTemplates_*` — rate-limited, dual-gate, free-first.

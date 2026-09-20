@@ -27,10 +27,10 @@ SECRETS = {
     "openrouter": "OPENROUTER_API_KEY",
     "felo": "FELO_AI_API",
     "omni": "OMNI_API_KEY",
-    "huggingface": "HF_TOKEN",
+    "huggingface": "HUGGINGFACE_TOKEN",
 }
 SECRET_ALIASES = {
-    "huggingface": ("HF_TOKEN", "HUGGINGFACE_TOKEN", "HUGGING_FACE_HUB_TOKEN", "HF_API_TOKEN"),
+    "huggingface": ("HUGGINGFACE_TOKEN", "HUGGING_FACE_HUB_TOKEN", "HF_API_TOKEN"),
 }
 DOCUMENTED_TRIAL_MODELS = {
     ("felo", "ox-alpha"): {

@@ -13,7 +13,7 @@ import json
 import os
 import urllib.request
 
-UA = "termux-monorepo-provider-catalog/4"
+UA = "termux-monorepo-provider-catalog/5"
 ENDPOINTS = {
     "openrouter": "https://openrouter.ai/api/v1/models",
     "felo": "https://openapi.felo.ai/api/v1/models",
@@ -26,6 +26,9 @@ SECRETS = {
     "omni": "OMNI_API_KEY",
     "huggingface": "HF_TOKEN",
 }
+SECRET_ALIASES = {
+    "huggingface": ("HF_TOKEN", "HUGGINGFACE_TOKEN", "HUGGING_FACE_HUB_TOKEN", "HF_API_TOKEN"),
+}
 DOCUMENTED_TRIAL_MODELS = {
     ("felo", "ox-alpha"): {
         "access_classification": "free_trial",
@@ -37,12 +40,22 @@ DOCUMENTED_TRIAL_MODELS = {
 }
 
 
+def resolve_secret(provider: str) -> tuple[str | None, str | None]:
+    names = SECRET_ALIASES.get(provider) or (SECRETS.get(provider),)
+    for name in names:
+        if not name:
+            continue
+        token = os.environ.get(name)
+        if token:
+            return token, name
+    return None, SECRETS.get(provider)
+
+
 def get_json(url: str, token: str | None = None) -> tuple[dict, dict]:
     req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "application/json"})
     if token:
         req.add_header("Authorization", f"Bearer {token}")
     with urllib.request.urlopen(req, timeout=30) as response:
-        # Preserve only operational quota/rate-limit metadata; never persist auth headers.
         headers = {}
         for key, value in response.headers.items():
             lower = key.lower()
@@ -85,8 +98,6 @@ def poll(provider: str, token: str) -> tuple[list[dict], dict]:
             "access_source": trial.get("source"),
             "access_source_observed": trial.get("source_observed"),
             "free_suffix": str(model_id).endswith(":free"),
-            # Provider catalogs are authoritative when present; documented
-            # trial metadata fills gaps rather than overriding live evidence.
             "context_length": item.get("context_length") or trial.get("context_length"),
             "max_output_tokens": item.get("max_output_tokens") or trial.get("max_output_tokens"),
             "raw_source": f"{provider}:/v1/models",
@@ -124,13 +135,12 @@ def main() -> int:
     provider_observations: dict[str, dict] = {}
 
     for provider in providers:
-        env_name = SECRETS.get(provider)
         if provider not in ENDPOINTS:
             errors.append({"provider": provider, "error": "unsupported_provider"})
             continue
-        token = os.environ.get(env_name or "")
+        token, env_name = resolve_secret(provider)
         if not token:
-            errors.append({"provider": provider, "error": "missing_secret", "secret_env": env_name})
+            errors.append({"provider": provider, "error": "missing_secret", "secret_env": env_name, "aliases": list(SECRET_ALIASES.get(provider, ()))})
             continue
         try:
             provider_rows, headers = poll(provider, token)
@@ -138,6 +148,7 @@ def main() -> int:
             provider_observations[provider] = {
                 "catalog_observed_at": observed_at,
                 "response_headers": headers,
+                "secret_env_resolved": env_name,
                 "account_endpoint": None,
                 "account_endpoint_status": "not_documented",
                 "quota_note": "Account-level balance/quota is not asserted unless exposed by an authoritative provider endpoint or response metadata.",
@@ -146,7 +157,7 @@ def main() -> int:
             errors.append({"provider": provider, "error": type(exc).__name__, "message": str(exc)[:500]})
 
     document = {
-        "schema": "provider-model-catalog/v4",
+        "schema": "provider-model-catalog/v5",
         "observed_at": observed_at,
         "providers": providers,
         "promotion": {

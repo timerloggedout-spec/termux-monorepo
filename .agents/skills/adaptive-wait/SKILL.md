@@ -5,11 +5,10 @@ description: Adaptive WAIT for agentic GitHub ops. Dual-gate before promote. Sta
 
 Local mirror. Canonical is master `.agents/skills/adaptive-wait/SKILL.md`.
 
-Master HEAD this session: `ca86e98dcf7965605399a4d556e877ec519fe90c`.
-#672/#673/#674 WAIT — do not promote until dual-gate green on current HEAD.
-#648 dirty HOLD. #641 dirty HOLD. #649 Jules observe.
+Master HEAD this session: `9a3935f85793a3a89b5b2516c500754f24d09bd3`.
+#675 merged. Next dual-gate: HF alias announce branch.
+#672/#673 WAIT rebase onto 9a3935f8. #648 dirty HOLD. #641 dirty HOLD.
 ML mega extract-only. Vercel rate-limit non-gate.
-Non-gate failures on ca86e98d (historical-eval, automation-docs, team-mvt, jules-on-issues, actions-run-watcher) do not block dual-gate.
-Disjoint work: rebase observer backtick fix onto live master.
+Disjoint work: secret naming convention + catalog alias resolver.
 
 Agent-Identity: Grok (Administrator)

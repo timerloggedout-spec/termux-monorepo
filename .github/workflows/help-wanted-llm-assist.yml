@@ -9,6 +9,7 @@ name: help-wanted-llm-assist
 on:
   schedule:
     - cron: "23 */6 * * *"
+      timezone: 'UTC'
   workflow_dispatch:
     inputs:
       pr:

@@ -279,6 +279,24 @@ proposals:
     related_branches: [proposal/archwiz-ui-protocol-clean]
     gates_required: [repo-gate, termux-smoke]
 
+  - id: ml-pipeline-keep
+    title: "ML pipeline keep-alive DAG (extract-only vs #432/#601)"
+    author: grok
+    status: executing
+    priority: P1
+    path: active/ml-pipeline-keep/
+    reviewers:
+      - id: grok
+        role: author+executor
+        status: executing
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: [175, 432, 601]
+    related_prs: [682]
+    related_branches: [ops/ml-pipeline-keep-20260920]
+    gates_required: [repo-gate, termux-smoke]
+
   - id: vercel-lane-topology
     title: "Vercel deployment lane topology: legacy project fate, mcp-multi-host retirement, lanes registry"
     author: Claude

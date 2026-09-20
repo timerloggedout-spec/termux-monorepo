@@ -18,11 +18,13 @@ ENDPOINTS = {
     "openrouter": "https://openrouter.ai/api/v1/models",
     "felo": "https://openapi.felo.ai/api/v1/models",
     "omni": "https://cloud.omniroute.online/v1/models",
+    "huggingface": "https://router.huggingface.co/v1/models",
 }
 SECRETS = {
     "openrouter": "OPENROUTER_API_KEY",
     "felo": "FELO_AI_API",
     "omni": "OMNI_API_KEY",
+    "huggingface": "HF_TOKEN",
 }
 DOCUMENTED_TRIAL_MODELS = {
     ("felo", "ox-alpha"): {
@@ -111,7 +113,7 @@ def poll(provider: str, token: str) -> tuple[list[dict], dict]:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--providers", default="openrouter,felo,omni")
+    parser.add_argument("--providers", default="openrouter,felo,omni,huggingface")
     parser.add_argument("--output", default="/tmp/model-catalog/catalog.json")
     args = parser.parse_args()
 

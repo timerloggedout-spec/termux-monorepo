@@ -72,9 +72,9 @@ jobs:
         id: claim
         run: |
           set -euo pipefail
-          arguments=(--live --repo "${{ github.repository }}" dispatch --phase-id "$PHASE_ID" --issue "$ISSUE_NUMBER")
+          arguments=(--live --repo "${{ github.repository }}" dispatch --phase-id "$PHASE_ID" --issue "$ISSUE_NUMBER" --route-specialist "${{ steps.route.outputs.selected_specialist }}" --route-policy "${{ steps.route.outputs.manager_policy }}")
           if [ "$APPLY" = "true" ]; then
-            arguments=(--live --apply --repo "${{ github.repository }}" dispatch --phase-id "$PHASE_ID" --issue "$ISSUE_NUMBER")
+            arguments=(--live --apply --repo "${{ github.repository }}" dispatch --phase-id "$PHASE_ID" --issue "$ISSUE_NUMBER" --route-specialist "${{ steps.route.outputs.selected_specialist }}" --route-policy "${{ steps.route.outputs.manager_policy }}")
           fi
           python3 scripts/agentic/dependency_phases.py "${arguments[@]}" | tee claim.json
           echo "claimed=$(jq -r '.claimed' claim.json)" >> "$GITHUB_OUTPUT"

@@ -3,6 +3,7 @@ name: Merge Promotion Queue
 on:
   schedule:
     - cron: '47 * * * *'
+      timezone: 'UTC'
   workflow_dispatch:
 
 permissions:

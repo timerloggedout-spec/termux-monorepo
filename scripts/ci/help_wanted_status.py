@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
-"""Build living help-wanted status from evidence + live foreign PR search.
+"""Build living help-wanted status + Tribute ledger from evidence + live foreign PRs.
 
-Writes status json/md AND copies into apps/help-wanted-dashboard/data/status.json
-so Pages/CDN cannot serve a frozen snapshot while evidence advanced.
+Writes status json/md AND apps/help-wanted-dashboard/data/status.json.
 """
 from __future__ import annotations
 
 import argparse
 import json
 import os
-import urllib.error
 import urllib.parse
 import urllib.request
 from collections import Counter, defaultdict
@@ -64,9 +62,8 @@ def is_internal(issue: str) -> bool:
     return "timerloggedout-spec/termux-monorepo" in (issue or "")
 
 
-def live_foreign_prs() -> list[dict]:
-    """Open PRs we authored outside the monorepo."""
-    q = f"author:{AUTHOR} is:pr is:open -repo:timerloggedout-spec/termux-monorepo"
+def live_foreign_prs(state: str = "open") -> list[dict]:
+    q = f"author:{AUTHOR} is:pr is:{state} -repo:timerloggedout-spec/termux-monorepo"
     data = api_get(f"/search/issues?q={urllib.parse.quote(q)}&per_page=50")
     if not data:
         return []
@@ -83,10 +80,69 @@ def live_foreign_prs() -> list[dict]:
                 "title": it.get("title"),
                 "number": it.get("number"),
                 "repo": full,
+                "state": state,
                 "updated_at": it.get("updated_at"),
+                "tribute": True,
             }
         )
     return out
+
+
+def build_tributes(rows: list[dict], foreign_open: list[dict], foreign_closed: list[dict]) -> list[dict]:
+    """Ledger: each upstream PR attempt is a tribute to the foreign maintainer."""
+    by_pr: dict[str, dict] = {}
+    for r in rows:
+        pr = r.get("pr_url") or ""
+        if not pr or "pull" not in pr:
+            # followup may use issue=PR url
+            issue = str(r.get("issue") or "")
+            if "/pull/" in issue:
+                pr = issue
+            else:
+                continue
+        if AUTHOR in pr and "termux-monorepo" in pr:
+            continue
+        entry = by_pr.setdefault(
+            pr,
+            {
+                "pr_url": pr,
+                "kinds": [],
+                "ok": True,
+                "last_ts": r.get("ts"),
+                "providers": [],
+            },
+        )
+        entry["kinds"].append(r.get("kind"))
+        entry["ok"] = entry["ok"] and bool(r.get("ok", True))
+        if (r.get("ts") or "") >= (entry.get("last_ts") or ""):
+            entry["last_ts"] = r.get("ts")
+        if r.get("provider"):
+            entry["providers"].append(r.get("provider"))
+        if r.get("model"):
+            entry["model"] = r.get("model")
+
+    for p in foreign_open + foreign_closed:
+        pr = p.get("html_url") or ""
+        if not pr:
+            continue
+        entry = by_pr.setdefault(
+            pr,
+            {
+                "pr_url": pr,
+                "kinds": ["upstream_pr"],
+                "ok": True,
+                "last_ts": p.get("updated_at"),
+                "providers": [],
+            },
+        )
+        entry["repo"] = p.get("repo")
+        entry["number"] = p.get("number")
+        entry["title"] = p.get("title")
+        entry["state"] = p.get("state")
+
+    tributes = list(by_pr.values())
+    tributes.sort(key=lambda x: x.get("last_ts") or "", reverse=True)
+    return tributes
 
 
 def main() -> int:
@@ -94,10 +150,7 @@ def main() -> int:
     ap.add_argument("--evidence-dir", default="docs/ops/generated/help-wanted-evidence")
     ap.add_argument("--out-md", default="docs/ops/generated/help-wanted-status.md")
     ap.add_argument("--out-json", default="docs/ops/generated/help-wanted-status.json")
-    ap.add_argument(
-        "--dashboard-json",
-        default="apps/help-wanted-dashboard/data/status.json",
-    )
+    ap.add_argument("--dashboard-json", default="apps/help-wanted-dashboard/data/status.json")
     args = ap.parse_args()
 
     evid = Path(args.evidence_dir)
@@ -105,8 +158,6 @@ def main() -> int:
     if evid.is_dir():
         for p in sorted(evid.glob("*.jsonl")):
             rows.extend(load_jsonl(p))
-
-    # Drop internal monorepo noise from board projection
     rows = [r for r in rows if not is_internal(str(r.get("issue") or ""))]
 
     by_issue: dict[str, list[dict]] = defaultdict(list)
@@ -118,16 +169,22 @@ def main() -> int:
         kinds[r.get("kind") or "unknown"] += 1
         ok_c["ok" if r.get("ok") else "fail"] += 1
 
-    foreign = live_foreign_prs()
+    foreign = live_foreign_prs("open")
+    foreign_closed = live_foreign_prs("closed")
+    tributes = build_tributes(rows, foreign, foreign_closed)
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
     board = {
         "generated_at": now,
         "lane": "help-wanted",
+        "project": "help-wanted-with-tribute",
         "receipts": len(rows),
         "kinds": dict(kinds),
         "outcomes": dict(ok_c),
         "foreign_open_prs": foreign,
         "foreign_open_count": len(foreign),
+        "tributes": tributes,
+        "tribute_count": len(tributes),
         "issues": {
             k: sorted(v, key=lambda x: x.get("ts") or "") for k, v in by_issue.items()
         },
@@ -138,63 +195,70 @@ def main() -> int:
             "fallback": "fork-notice",
             "foreign_only_followup": True,
             "exclude_monorepo": True,
+            "tribute": "each upstream PR is a contributor tribute to the foreign maintainer",
         },
         "live": {
             "dashboard": "https://timerloggedout-spec.github.io/help-wanted/",
             "githack": "https://raw.githack.com/timerloggedout-spec/termux-monorepo/master/apps/help-wanted-dashboard/index.html",
             "status_raw": "https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/ops/generated/help-wanted-status.json",
+            "tribute_doc": "docs/ops/HELP-WANTED-TRIBUTE.md",
         },
+        "pipeline": [
+            "scout",
+            "execute",
+            "followup",
+            "llm-assist",
+            "rerequest",
+            "status-refresh",
+            "dashboard-deploy",
+        ],
     }
 
-    out_json = Path(args.out_json)
-    out_json.parent.mkdir(parents=True, exist_ok=True)
     text = json.dumps(board, indent=2) + "\n"
-    out_json.write_text(text, encoding="utf-8")
-
-    dash = Path(args.dashboard_json)
-    dash.parent.mkdir(parents=True, exist_ok=True)
-    dash.write_text(text, encoding="utf-8")
+    Path(args.out_json).parent.mkdir(parents=True, exist_ok=True)
+    Path(args.out_json).write_text(text, encoding="utf-8")
+    Path(args.dashboard_json).parent.mkdir(parents=True, exist_ok=True)
+    Path(args.dashboard_json).write_text(text, encoding="utf-8")
 
     lines = [
-        "# Help-Wanted Living Status",
+        "# Help-Wanted Living Status · with Tribute",
         "",
-        f"_Generated {now} UTC · receipts={len(rows)} · foreign_open={len(foreign)}_",
+        f"_Generated {now} UTC · receipts={len(rows)} · foreign_open={len(foreign)} · tributes={len(tributes)}_",
         "",
-        "## Foreign open PRs (live search)",
+        "## Tributes (contributor ledger)",
         "",
     ]
-    if foreign:
-        for p in foreign:
-            lines.append(f"- [{p.get('repo')}#{p.get('number')}]({p.get('html_url')}) — {p.get('title')}")
-    else:
-        lines.append("- (none or API unavailable)")
+    for t in tributes[:40]:
+        label = t.get("repo") and f"{t.get('repo')}#{t.get('number')}" or t.get("pr_url")
+        lines.append(
+            f"- [{label}]({t.get('pr_url')}) · state={t.get('state', '?')} · {t.get('title') or ''}"
+        )
     lines.extend(
         [
             "",
-            "## Outcomes",
-            f"- ok: **{ok_c.get('ok', 0)}** · fail: **{ok_c.get('fail', 0)}**",
-            f"- kinds: `{dict(kinds)}`",
+            "## Foreign open PRs",
             "",
-            "## Issues tracked (evidence)",
-            "",
-            "| Issue | Latest kind | ok | Last ts |",
-            "|-------|-------------|----|---------|",
         ]
     )
-    for issue, events in sorted(by_issue.items()):
-        last = events[-1]
-        lines.append(
-            f"| {issue} | {last.get('kind')} | {last.get('ok')} | {last.get('ts')} |"
-        )
-    lines.append("")
+    for p in foreign:
+        lines.append(f"- [{p.get('repo')}#{p.get('number')}]({p.get('html_url')}) — {p.get('title')}")
+    lines.extend(
+        [
+            "",
+            f"## Outcomes · ok={ok_c.get('ok', 0)} fail={ok_c.get('fail', 0)} kinds=`{dict(kinds)}`",
+            "",
+            "See docs/ops/HELP-WANTED-TRIBUTE.md",
+            "",
+        ]
+    )
     Path(args.out_md).write_text("\n".join(lines), encoding="utf-8")
     print(
         json.dumps(
             {
                 "receipts": len(rows),
                 "foreign_open": len(foreign),
-                "wrote": str(out_json),
-                "dashboard": str(dash),
+                "tributes": len(tributes),
+                "wrote": str(args.out_json),
             }
         )
     )

@@ -20,7 +20,8 @@ on:
         type: choice
         options: [baseline-peer-first, free-capacity-first, parallel-then-integrate]
   schedule:
-    - cron: '*/15 * * * *'
+    - cron: '7,22,37,52 * * * *'
+      timezone: 'UTC'
   push:
     branches: [master]
     paths:
@@ -29,6 +30,10 @@ on:
       - '.github/actions/http-llm-invoke/action.yml'
       - '.github/workflows/continuous-evaluation.yml'
       - 'docs/ops/AGENT-TEAM-ORCHESTRATION.md'
+
+concurrency:
+  group: continuous-evaluation-${{ github.ref }}
+  cancel-in-progress: false
 
 permissions:
   contents: read

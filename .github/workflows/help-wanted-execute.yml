@@ -8,6 +8,7 @@ name: help-wanted execute
 on:
   schedule:
     - cron: "41 */4 * * *"
+      timezone: 'UTC'
   workflow_dispatch:
     inputs:
       issue:

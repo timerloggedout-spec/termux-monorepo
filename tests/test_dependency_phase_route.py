@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import unittest
+from unittest.mock import patch
 
 from pathlib import Path
 import sys
@@ -38,7 +39,7 @@ def plan():
 
 class DependencyPhaseRouteTests(unittest.TestCase):
     def test_preferred_specialist_is_selected_only_when_available(self):
-        with unittest.mock.patch.dict("os.environ", {"ROUTE_JULES_AVAILABLE": "true"}, clear=False):
+        with patch.dict("os.environ", {"ROUTE_JULES_AVAILABLE": "true"}, clear=False):
             result = resolve_route(plan(), "DPH-100", ROSTER)
         self.assertEqual("routed", result["state"])
         self.assertEqual("jules", result["selected_specialist"])

@@ -23,6 +23,10 @@ on:
       - 'tests/test_hex_moneyball_export.py'
       - 'docs/ops/HEX-MONEYBALL-INTEGRATION.md'
 
+concurrency:
+  group: hex-moneyball-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 

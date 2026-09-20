@@ -46,7 +46,7 @@ class DependencyPhaseRouteTests(unittest.TestCase):
         self.assertEqual(["jules", "tembo", "mistral_vibe"], result["candidates"])
 
     def test_manager_router_uses_roster_fallback_without_invoking_it(self):
-        with unittest.mock.patch.dict(
+        with patch.dict(
             "os.environ",
             {"ROUTE_JULES_AVAILABLE": "false", "ROUTE_TEMBO_AVAILABLE": "true"},
             clear=False,

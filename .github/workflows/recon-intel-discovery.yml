@@ -9,7 +9,8 @@ on:
   pull_request_target:
     types: [opened, synchronize, ready_for_review, reopened]
   schedule:
-    - cron: '*/15 * * * *'
+    - cron: '7,22,37,52 * * * *'
+      timezone: 'UTC'
       timezone: 'UTC'
   workflow_dispatch:
     inputs:

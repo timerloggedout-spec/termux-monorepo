@@ -39,7 +39,7 @@ def plan():
 
 class DependencyPhaseRouteTests(unittest.TestCase):
     def test_preferred_specialist_is_selected_only_when_available(self):
-        with patch.dict("os.environ", {"ROUTE_JULES_AVAILABLE": "true"}, clear=False):
+        with patch.dict("os.environ", {"ROUTE_JULES_ADAPTER_READY": "true"}, clear=False):
             result = resolve_route(plan(), "DPH-100", ROSTER)
         self.assertEqual("routed", result["state"])
         self.assertEqual("jules", result["selected_specialist"])
@@ -48,7 +48,7 @@ class DependencyPhaseRouteTests(unittest.TestCase):
     def test_manager_router_uses_roster_fallback_without_invoking_it(self):
         with patch.dict(
             "os.environ",
-            {"ROUTE_JULES_AVAILABLE": "false", "ROUTE_TEMBO_AVAILABLE": "true"},
+            {"ROUTE_JULES_AVAILABLE": "false", "ROUTE_TEMBO_ADAPTER_READY": "true"},
             clear=False,
         ):
             result = resolve_route(plan(), "DPH-100", ROSTER)

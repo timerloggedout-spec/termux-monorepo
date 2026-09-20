@@ -47,7 +47,11 @@ jobs:
         contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association || github.event.review.author_association || github.event.issue.author_association)
       )
     runs-on: ubuntu-latest
-    permissions:
+    concurrency:
+  group: gemini-dispatch-${{ github.event.pull_request.number || github.event.issue.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
       contents: read
       issues: write
       pull-requests: write

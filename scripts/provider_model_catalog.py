@@ -4,6 +4,9 @@
 Catalog state is evidence, not routing policy. Provider model pages may expose
 free-trial/account-entitled routes that are not represented by /v1/models
 pricing, so those routes are recorded separately with explicit provenance.
+
+Documented cadence entitlements (hourly/daily/weekly/monthly/trial) are
+attached as metadata. They never invent remaining account balance.
 """
 from __future__ import annotations
 
@@ -13,7 +16,7 @@ import json
 import os
 import urllib.request
 
-UA = "termux-monorepo-provider-catalog/4"
+UA = "termux-monorepo-provider-catalog/5"
 ENDPOINTS = {
     "openrouter": "https://openrouter.ai/api/v1/models",
     "felo": "https://openapi.felo.ai/api/v1/models",
@@ -33,7 +36,54 @@ DOCUMENTED_TRIAL_MODELS = {
         "source_observed": "2026-08-24",
         "max_output_tokens": 128_000,
         "context_length": 1_000_000,
+        "cadence": "trial",
     }
+}
+# Public plan/page claims. Remaining balance is NEVER copied from these rows.
+DOCUMENTED_ENTITLEMENTS = {
+    "felo": [
+        {
+            "id": "search-api-free-standard",
+            "cadence": "daily",
+            "public_claim": "200 daily free credits (Free Standard Search API docs)",
+            "source": "docs/ops/FREE-QUOTA-WINDOWS.md",
+            "remaining_source": "authenticated_headers_or_account_api_only",
+        },
+        {
+            "id": "ox-alpha",
+            "cadence": "trial",
+            "public_claim": "documented free-trial model page",
+            "source": "https://openapi.felo.ai/models/stealth/ox-alpha",
+            "remaining_source": "catalog_plus_invocation",
+        },
+    ],
+    "openrouter": [
+        {
+            "id": ":free-suffix",
+            "cadence": "catalog",
+            "public_claim": "models whose id ends with :free",
+            "source": "https://openrouter.ai/api/v1/models",
+            "remaining_source": "catalog_pricing",
+        }
+    ],
+    "huggingface": [
+        {
+            "id": "router-free-zero",
+            "cadence": "catalog",
+            "public_claim": "only when poll classifies free_zero_price or free_trial",
+            "source": "https://router.huggingface.co/v1/models",
+            "remaining_source": "catalog_plus_headers",
+        }
+    ],
+    "omni": [
+        {
+            "id": "catalog-zero",
+            "cadence": "catalog",
+            "public_claim": "only when poll classifies free_zero_price",
+            "source": "https://cloud.omniroute.online/v1/models",
+            "remaining_source": "catalog_plus_headers",
+        }
+    ],
 }
 
 
@@ -42,7 +92,6 @@ def get_json(url: str, token: str | None = None) -> tuple[dict, dict]:
     if token:
         req.add_header("Authorization", f"Bearer {token}")
     with urllib.request.urlopen(req, timeout=30) as response:
-        # Preserve only operational quota/rate-limit metadata; never persist auth headers.
         headers = {}
         for key, value in response.headers.items():
             lower = key.lower()
@@ -84,9 +133,8 @@ def poll(provider: str, token: str) -> tuple[list[dict], dict]:
             "access_classification": trial.get("access_classification", "catalog_pricing_only"),
             "access_source": trial.get("source"),
             "access_source_observed": trial.get("source_observed"),
+            "cadence": trial.get("cadence", "catalog"),
             "free_suffix": str(model_id).endswith(":free"),
-            # Provider catalogs are authoritative when present; documented
-            # trial metadata fills gaps rather than overriding live evidence.
             "context_length": item.get("context_length") or trial.get("context_length"),
             "max_output_tokens": item.get("max_output_tokens") or trial.get("max_output_tokens"),
             "raw_source": f"{provider}:/v1/models",
@@ -103,6 +151,7 @@ def poll(provider: str, token: str) -> tuple[list[dict], dict]:
             "access_classification": trial["access_classification"],
             "access_source": trial["source"],
             "access_source_observed": trial["source_observed"],
+            "cadence": trial.get("cadence", "trial"),
             "free_suffix": False,
             "context_length": trial["context_length"],
             "max_output_tokens": trial["max_output_tokens"],
@@ -140,19 +189,21 @@ def main() -> int:
                 "response_headers": headers,
                 "account_endpoint": None,
                 "account_endpoint_status": "not_documented",
-                "quota_note": "Account-level balance/quota is not asserted unless exposed by an authoritative provider endpoint or response metadata.",
+                "documented_entitlements": DOCUMENTED_ENTITLEMENTS.get(provider, []),
+                "quota_note": "Account-level balance/quota is not asserted unless exposed by an authoritative provider endpoint or response metadata. Cadence entitlements are public claims only.",
             }
         except Exception as exc:
             errors.append({"provider": provider, "error": type(exc).__name__, "message": str(exc)[:500]})
 
     document = {
-        "schema": "provider-model-catalog/v4",
+        "schema": "provider-model-catalog/v5",
         "observed_at": observed_at,
         "providers": providers,
+        "cadence_classes": ["hourly", "daily", "weekly", "monthly", "trial", "catalog", "unknown"],
         "promotion": {
             "status": "observe_only",
             "expiry": None,
-            "source": None,
+            "source": "docs/ops/FREE-QUOTA-WINDOWS.md",
             "note": "Promotion/quota expiry must be refreshed from authoritative provider evidence; model-page trial status is separate from account-level daily quota.",
         },
         "provider_observations": provider_observations,
@@ -169,7 +220,7 @@ def main() -> int:
     for provider, observation in provider_observations.items():
         print(f"ACCOUNT_METADATA {provider}: {json.dumps(observation['response_headers'], sort_keys=True)}")
     for row in eligible:
-        print(f"ELIGIBLE {row['provider']}/{row['id']} [{row['access_classification']}; max_output={row.get('max_output_tokens')}; context={row.get('context_length')}]")
+        print(f"ELIGIBLE {row['provider']}/{row['id']} [{row['access_classification']}; cadence={row.get('cadence')}; max_output={row.get('max_output_tokens')}; context={row.get('context_length')}]")
     return 0 if rows or not providers else 1
 
 

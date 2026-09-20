@@ -3,6 +3,7 @@ name: fork sync audit
 on:
   schedule:
     - cron: "47 6 * * 1"
+      timezone: 'UTC'
   workflow_dispatch:
 
 permissions:

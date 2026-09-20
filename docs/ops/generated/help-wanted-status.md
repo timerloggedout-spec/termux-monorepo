@@ -1,11 +1,11 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-20T00:12:21Z UTC · receipts=21 · foreign_open=9 · tributes=18_
+_Generated 2026-09-20T04:48:37Z UTC · receipts=21 · foreign_open=8 · tributes=18_
 
 ## Tributes (contributor ledger)
 
+- [markramm/pyrite#198](https://github.com/markramm/pyrite/pull/198) · state=closed · help-wanted: stake + contribute for #192
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
-- [markramm/pyrite#198](https://github.com/markramm/pyrite/pull/198) · state=open · help-wanted: stake + contribute for #192
 - [vigneshv1cky/alphadesk-terminal#12](https://github.com/vigneshv1cky/alphadesk-terminal/pull/12) · state=open · help-wanted: stake + contribute for #10
 - [DioNanos/codex-termux#27](https://github.com/DioNanos/codex-termux/pull/27) · state=closed · help-wanted: stake + contribute for #14
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
@@ -25,7 +25,6 @@ _Generated 2026-09-20T00:12:21Z UTC · receipts=21 · foreign_open=9 · tributes
 
 ## Foreign open PRs
 
-- [markramm/pyrite#198](https://github.com/markramm/pyrite/pull/198) — help-wanted: stake + contribute for #192
 - [vigneshv1cky/alphadesk-terminal#12](https://github.com/vigneshv1cky/alphadesk-terminal/pull/12) — help-wanted: stake + contribute for #10
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) — help-wanted: stake + contribute for #25
 - [chahe-dridi/vscode-agent-bell#225](https://github.com/chahe-dridi/vscode-agent-bell/pull/225) — help-wanted: stake + contribute for #224

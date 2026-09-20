@@ -22,7 +22,7 @@ Hugging Face Hub, Transformers, and Inference Providers historically used differ
 
 ## Rule for agents
 
-1. Use the existing Hugging Face Actions secret names; do not invent or require `HF_TOKEN`.
+1. Use the existing Hugging Face Actions secret names; do not invent or require an unconfigured fourth name.
 2. Workflows may resolve aliases at runtime (see `scripts/provider_model_catalog.py`).
 3. Prefer free/zero-price or documented trial routes. Felo 200/day credits are a quota, not a license to skip catalog refresh.
 4. If a lane skips with `missing_secret`, check naming first — do not assume the token is absent.

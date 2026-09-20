@@ -42,6 +42,9 @@ jobs:
       ISSUE_NUMBER: ${{ github.event.client_payload.issue_number || inputs.issue_number }}
       APPLY: ${{ github.event_name == 'repository_dispatch' || inputs.apply }}
       JULES_ENABLED: ${{ secrets.JULES_API_KEY != '' }}
+      ROUTE_JULES_AVAILABLE: ${{ secrets.JULES_API_KEY != '' }}
+      ROUTE_TEMBO_AVAILABLE: ${{ secrets.TEMBO_API_KEY != '' }}
+      ROUTE_MISTRAL_VIBE_AVAILABLE: ${{ secrets.MISTRAL_VIBE_API_KEY != '' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4

@@ -4,6 +4,9 @@ This file is **operational metadata**, not routing policy.
 The live provider catalog (`scripts/provider_model_catalog.py`) remains authoritative for model IDs and observed pricing.
 Public plan pages describe *entitlements*; they do **not** prove remaining account balance.
 
+Last operator refresh: `2026-09-20T17:16Z` (session master `6b0fd29f`).
+Cadence classes hourly / daily / weekly / monthly / trial / catalog stay first-class free routes in addition to FELO whenever live classification says free/zero/trial.
+
 ## Cadence classes
 
 | Cadence | Meaning | How agents must treat it |
@@ -13,6 +16,7 @@ Public plan pages describe *entitlements*; they do **not** prove remaining accou
 | weekly | rolling 7d or week-boundary | same; never invent remaining |
 | monthly | calendar month or 30d | same |
 | trial | time-boxed $0 route | poll catalog until route leaves `free_zero_price` / `free_trial` |
+| catalog | listed $0 / `:free` suffix | re-poll `/v1/models`; listing can change without notice |
 
 FELO is one provider among peers. Every cadence class above is a first-class free route **when** live evidence classifies it as free/zero/trial.
 
@@ -36,7 +40,7 @@ Do **not** hardcode remaining credits. Do **not** substitute a paid model when a
 - `observed_at` (UTC)
 - provider + model id
 - `pricing_classification` + `access_classification`
-- cadence (`hourly`/`daily`/`weekly`/`monthly`/`trial`/`unknown`)
+- cadence (`hourly`/`daily`/`weekly`/`monthly`/`trial`/`catalog`/`unknown`)
 - safe response headers: `x-ratelimit-*`, `x-credit-*`, `x-quota-*`, `x-remaining-*`, `x-usage-*`, `retry-after`
 - HTTP status + error class
 - never persist credentials

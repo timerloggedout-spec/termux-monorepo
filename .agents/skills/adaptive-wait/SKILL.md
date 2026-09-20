@@ -5,10 +5,11 @@ description: Adaptive WAIT for agentic GitHub ops. Dual-gate before promote. Sta
 
 Local mirror. Canonical is master `.agents/skills/adaptive-wait/SKILL.md`.
 
-Master HEAD this session: `9a3935f85793a3a89b5b2516c500754f24d09bd3`.
-#675 merged. Next dual-gate: HF alias announce branch.
-#672/#673 WAIT rebase onto 9a3935f8. #648 dirty HOLD. #641 dirty HOLD.
+Master HEAD this session: `6b0fd29fe5eb8b75e4667a93da403ce0639af784`.
+#678 closed superseded. Dual-gate last green: `07c5b53f` termux-smoke + repo-gate.
+#672/#673 WAIT rebase. #648/#641 dirty HOLD.
+Jules #679/#680 unstable HOLD (rebase then dual-gate).
 ML mega extract-only. Vercel rate-limit non-gate.
-Disjoint work: secret naming convention + catalog alias resolver.
+Disjoint work: session record + free-quota cadence refresh stamp.
 
 Agent-Identity: Grok (Administrator)

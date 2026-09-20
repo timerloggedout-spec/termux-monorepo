@@ -111,13 +111,13 @@ jobs:
           {
             echo '# Merge Promotion Queue'
             echo
-            echo "Generated from \\`${GITHUB_SHA}\` at $(date -u +%Y-%m-%dT%H:%M:%SZ)."
+            echo "Generated from SHA ${GITHUB_SHA} at $(date -u +%Y-%m-%dT%H:%M:%SZ)."
             echo
             echo '> Observer-only: this workflow never merges, closes, labels, rebases, or dispatches the merge writer.'
             echo
             echo '| PR | Disposition | repo gate | smoke | SHA | Reason |'
             echo '|---:|---|---|---|---|---|'
-            jq -r '.[] | "| #\(.number) | \(.disposition) | \(.repo_gate) | \(.termux_smoke) | `\(.head_sha[0:12])` | \(.reason) |"' /tmp/merge-queue/merge-promotion-queue.json
+            jq -r '.[] | "| #\(.number) | \(.disposition) | \(.repo_gate) | \(.termux_smoke) | \(.head_sha[0:12]) | \(.reason) |"' /tmp/merge-queue/merge-promotion-queue.json
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Publish queue artifact

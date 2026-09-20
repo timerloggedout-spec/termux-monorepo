@@ -48,7 +48,7 @@ class DependencyPhaseRouteTests(unittest.TestCase):
     def test_manager_router_uses_roster_fallback_without_invoking_it(self):
         with patch.dict(
             "os.environ",
-            {"ROUTE_JULES_AVAILABLE": "false", "ROUTE_TEMBO_ADAPTER_READY": "true"},
+            {"ROUTE_JULES_ADAPTER_READY": "false", "ROUTE_TEMBO_ADAPTER_READY": "true"},
             clear=False,
         ):
             result = resolve_route(plan(), "DPH-100", ROSTER)
@@ -56,9 +56,9 @@ class DependencyPhaseRouteTests(unittest.TestCase):
         self.assertEqual("agent-roster-routing-v1", result["manager_policy"])
 
     def test_missing_adapter_does_not_fall_through_to_direct_jules(self):
-        with unittest.mock.patch.dict(
+        with patch.dict(
             "os.environ",
-            {"ROUTE_JULES_AVAILABLE": "false", "ROUTE_TEMBO_AVAILABLE": "false"},
+            {"ROUTE_JULES_AVAILABLE": "false", "ROUTE_TEMBO_ADAPTER_READY": "false"},
             clear=False,
         ):
             result = resolve_route(plan(), "DPH-100", ROSTER)

@@ -36,6 +36,11 @@ DOCUMENTED_TRIAL = {
     ("felo", "ox-alpha"): "free_trial",
 }
 
+# Module-level constant sets and tuples to eliminate per-call allocation overhead
+SPECIAL_FREE_MODELS = {"stealth/ox-alpha", "ox-alpha"}
+PREFER_KEYWORDS = ("coder", "code", "qwen", "deepseek", "ox-alpha", "llama", "gemma")
+REVIEW_KEYWORDS = ("coder", "code", "deepseek", "r1")
+
 
 def _token(provider: str) -> str | None:
     env = SECRET_ENV[provider]
@@ -54,7 +59,7 @@ def _is_free(model_id: str, pricing: dict | None, access: str | None = None) -> 
     if model_id.endswith(":free"):
         return True
     if not pricing:
-        return model_id in {"stealth/ox-alpha", "ox-alpha"}
+        return model_id in SPECIAL_FREE_MODELS
     try:
         return float(pricing.get("prompt", 1)) == 0.0 and float(pricing.get("completion", 1)) == 0.0
     except (TypeError, ValueError):
@@ -146,7 +151,13 @@ def load_eligible(
         states[p] = state
         all_rows.extend(rows)
 
-    eligible = [r for r in all_rows if r.get("free")]
+    eligible: list[dict[str, Any]] = []
+    by_p: dict[str, list[str]] = {}
+    for r in all_rows:
+        if r.get("free"):
+            eligible.append(r)
+            by_p.setdefault(r["provider"], []).append(r["id"])
+
     doc = {
         "schema": "live-catalog-feed/v1",
         "timestamp": time.time(),
@@ -154,12 +165,8 @@ def load_eligible(
         "provider_states": states,
         "models": all_rows,
         "eligible": eligible,
-        "eligible_ids_by_provider": {},
+        "eligible_ids_by_provider": by_p,
     }
-    by_p: dict[str, list[str]] = {}
-    for r in eligible:
-        by_p.setdefault(r["provider"], []).append(r["id"])
-    doc["eligible_ids_by_provider"] = by_p
 
     try:
         cache_path.write_text(json.dumps(doc), encoding="utf-8")
@@ -183,15 +190,14 @@ def load_eligible(
 def peer_candidates_for_role(role: str, feed: dict[str, Any]) -> list[tuple[str, str]]:
     """Build (provider, model) peers from live eligible, ranked for role."""
     eligible = feed.get("eligible") or []
-    prefer = ("coder", "code", "qwen", "deepseek", "ox-alpha", "llama", "gemma")
 
     def score(r: dict) -> int:
         mid = (r.get("id") or "").lower()
         s = 0
-        for i, k in enumerate(prefer):
+        for i, k in enumerate(PREFER_KEYWORDS):
             if k in mid:
                 s += 100 - i * 5
-        if role == "review" and any(k in mid for k in ("coder", "code", "deepseek", "r1")):
+        if role == "review" and any(k in mid for k in REVIEW_KEYWORDS):
             s += 30
         if r.get("provider") == "openrouter":
             s += 10

@@ -115,7 +115,7 @@ jobs:
               provider='felo'; rows=[r for r in d['models'] if r['provider']==provider and r['id']=='ox-alpha' and free(r)]; variant='adversarial-c'; task_role='adversarial-review'; hypothesis='An adversarial reviewer prompt exposes orchestration confounders that a same-task treatment may miss.'
               prompt=f'Manager={manager}. Cohort={cohort}. Trial={trial}. Treatment=C. Act as a skeptical experiment scientist. Analyze issue #337, actively search for confounders in simultaneous LLM testing, attribution, scoring, and rollback protection. Give a falsifiable improvement and a validation test.'
           elif lane=='d-omni-peer':
-              provider='omni'; rows=[{'id':'auto'}]; variant='synthesis-d'; task_role='integration-manager'; hypothesis='An integration-manager treatment can define evidence gates that prevent speed from outranking correctness across lanes.'
+              provider='omni'; rows=[r for r in d['models'] if r['provider']==provider and free(r)]; variant='synthesis-d'; task_role='integration-manager'; hypothesis='An integration-manager treatment can define evidence gates that prevent speed from outranking correctness across lanes.'
               prompt=f'Manager={manager}. Cohort={cohort}. Trial={trial}. Treatment=D. Act as the integration manager. Analyze issue #337 and propose how simultaneous model lanes should be compared without rewarding speed over correctness. Define the minimum evidence required to promote or cull a manager.'
               if missing_secret('omni'): rows=[]; eligible='false'; skip_reason='OMNI_API_KEY is not available to this run; do not emit a fake Omni lane'
           else:

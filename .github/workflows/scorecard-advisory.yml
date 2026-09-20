@@ -3,6 +3,7 @@ name: Advisory OpenSSF Scorecard
 on:
   schedule:
     - cron: "41 3 * * 1"
+      timezone: 'UTC'
   workflow_dispatch:
 
 permissions: {}

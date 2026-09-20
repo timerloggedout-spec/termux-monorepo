@@ -192,6 +192,11 @@ def dispatch_claim(plan: dict[str, Any], report: dict[str, Any], repo: str, phas
     if evaluation["state"] != "ready":
         raise CommandError(f"phase {phase_id} is {evaluation['state']}: {evaluation['reason']}")
     phase = _phase_by_id(plan, phase_id)
+    if apply and (not route_specialist or not route_policy):
+        raise CommandError("applied dispatch requires manager/router route provenance")
+    approved_agents = plan.get("policy", {}).get("dispatch_agents", [])
+    if route_specialist is not None and route_specialist not in approved_agents:
+        raise CommandError(f"route specialist {route_specialist} is not approved by the dependency-phase policy")
     wave = evaluation.get("wave")
     if not isinstance(wave, int) or wave < 0:
         raise CommandError(f"phase {phase_id} has no valid deterministic admission wave")

@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-09-20T14:11:03Z",
+  "generated_at": "2026-09-20T16:05:14Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
-  "receipts": 25,
+  "receipts": 26,
   "kinds": {
     "upstream_pr": 12,
     "claim_skipped_closed": 1,
-    "followup_skip_idempotent": 12
+    "followup_skip_idempotent": 13
   },
   "outcomes": {
-    "ok": 25
+    "ok": 26
   },
   "foreign_open_prs": [
     {
@@ -122,10 +122,11 @@
         "followup_skip_idempotent",
         "followup_skip_idempotent",
         "followup_skip_idempotent",
+        "followup_skip_idempotent",
         "followup_skip_idempotent"
       ],
       "ok": true,
-      "last_ts": "2026-09-20T13:13:25Z",
+      "last_ts": "2026-09-20T16:04:57Z",
       "providers": [],
       "repo": "vedantnimbarte/zero",
       "number": 81,
@@ -625,6 +626,14 @@
       },
       {
         "ts": "2026-09-20T13:13:25Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-20T16:04:57Z",
         "kind": "followup_skip_idempotent",
         "issue": "https://github.com/vedantnimbarte/zero/pull/81",
         "ok": true,

@@ -1,18 +1,22 @@
 # Laya — IMPLEMENTATION
 
 **Priority:** HIGH  
-**Phase:** IMPLEMENTATION  
-**Canonical repo:** https://github.com/NandhaKishorM/laya  
-**Product:** https://laya.convaiinnovations.com  
-**Package:** `pip install laya` (≥0.3.4)
+**Phase:** IMPLEMENTATION
 
-Multilingual non-autoregressive **System 1** decision engine: `choice` / `score` / `noul` in one forward pass (~33 ms). Router picks English / multilingual / typed-decisions checkpoints.
+## Surfaces (all required for full picture)
+
+| Surface | URL |
+|---------|-----|
+| **Code** | https://github.com/NandhaKishorM/laya |
+| **Live demo** | https://huggingface.co/spaces/convaiinnovations/laya-demo |
+| **Weights** | https://huggingface.co/convaiinnovations/laya |
+| **Product/docs** | https://laya.convaiinnovations.com |
+
+Package: `pip install laya`
 
 | Doc | Role |
 |-----|------|
-| `SOURCE.txt` | Canonical GitHub + HF |
-| `NOTES.md` | Surface + monorepo mapping |
-| `IMPLEMENTATION.md` | I1–I6 checklist |
-| `scripts/laya_decision_stub.py` | CI-safe mock / optional live |
-
-Dense intercom: `docs/ops/DENSE-FEEDBACK-INTERCOM.md`
+| `SOURCE.txt` | All four surfaces |
+| `NOTES.md` | Mapping + primitives |
+| `IMPLEMENTATION.md` | I1–I6 |
+| `scripts/laya_decision_stub.py` | CI mock / optional live |

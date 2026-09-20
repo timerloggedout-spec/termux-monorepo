@@ -1,17 +1,26 @@
 {
-  "generated_at": "2026-09-20T00:11:17Z",
+  "generated_at": "2026-09-20T00:12:21Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
-  "receipts": 20,
+  "receipts": 21,
   "kinds": {
     "upstream_pr": 12,
     "claim_skipped_closed": 1,
-    "followup_skip_idempotent": 7
+    "followup_skip_idempotent": 8
   },
   "outcomes": {
-    "ok": 20
+    "ok": 21
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/markramm/pyrite/pull/198",
+      "title": "help-wanted: stake + contribute for #192",
+      "number": 198,
+      "repo": "markramm/pyrite",
+      "state": "open",
+      "updated_at": "2026-09-20T00:11:51Z",
+      "tribute": true
+    },
     {
       "html_url": "https://github.com/vigneshv1cky/alphadesk-terminal/pull/12",
       "title": "help-wanted: stake + contribute for #10",
@@ -85,21 +94,8 @@
       "tribute": true
     }
   ],
-  "foreign_open_count": 8,
+  "foreign_open_count": 9,
   "tributes": [
-    {
-      "pr_url": "https://github.com/vigneshv1cky/alphadesk-terminal/pull/12",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-19T23:23:43Z",
-      "providers": [],
-      "repo": "vigneshv1cky/alphadesk-terminal",
-      "number": 12,
-      "title": "help-wanted: stake + contribute for #10",
-      "state": "open"
-    },
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
@@ -112,14 +108,41 @@
         "followup_skip_idempotent",
         "followup_skip_idempotent",
         "followup_skip_idempotent",
+        "followup_skip_idempotent",
         "followup_skip_idempotent"
       ],
       "ok": true,
-      "last_ts": "2026-09-19T23:23:42Z",
+      "last_ts": "2026-09-20T00:12:04Z",
       "providers": [],
       "repo": "vedantnimbarte/zero",
       "number": 81,
       "title": "docs(layout): refresh stale ponytail comments (flex + grid)",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/markramm/pyrite/pull/198",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-20T00:11:51Z",
+      "providers": [],
+      "repo": "markramm/pyrite",
+      "number": 198,
+      "title": "help-wanted: stake + contribute for #192",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/vigneshv1cky/alphadesk-terminal/pull/12",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-19T23:23:43Z",
+      "providers": [],
+      "repo": "vigneshv1cky/alphadesk-terminal",
+      "number": 12,
+      "title": "help-wanted: stake + contribute for #10",
       "state": "open"
     },
     {
@@ -321,7 +344,7 @@
       "state": "closed"
     }
   ],
-  "tribute_count": 17,
+  "tribute_count": 18,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -523,6 +546,14 @@
       },
       {
         "ts": "2026-09-19T23:23:42Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-20T00:12:04Z",
         "kind": "followup_skip_idempotent",
         "issue": "https://github.com/vedantnimbarte/zero/pull/81",
         "ok": true,

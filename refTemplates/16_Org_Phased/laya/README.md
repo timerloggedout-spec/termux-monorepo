@@ -1,9 +1,18 @@
-# Laya (ConvAI Innovations)
+# Laya — IMPLEMENTATION
 
-**Priority:** HIGH (operator-elevated 2026-09-20)  
-**Phase:** 1 — metadata + watch; not yet self-sustaining live pin  
-**Surface:** https://laya.convaiinnovations.com  
+**Priority:** HIGH  
+**Phase:** IMPLEMENTATION  
+**Canonical repo:** https://github.com/NandhaKishorM/laya  
+**Product:** https://laya.convaiinnovations.com  
+**Package:** `pip install laya` (≥0.3.4)
 
-Integrate early under Org phased + agent-runtime evaluation. Dense-feedback intercom applies to any Laya-related agent loop (local checks before promote).
+Multilingual non-autoregressive **System 1** decision engine: `choice` / `score` / `noul` in one forward pass (~33 ms). Router picks English / multilingual / typed-decisions checkpoints.
 
-See: `docs/ops/DENSE-FEEDBACK-INTERCOM.md`
+| Doc | Role |
+|-----|------|
+| `SOURCE.txt` | Canonical GitHub + HF |
+| `NOTES.md` | Surface + monorepo mapping |
+| `IMPLEMENTATION.md` | I1–I6 checklist |
+| `scripts/laya_decision_stub.py` | CI-safe mock / optional live |
+
+Dense intercom: `docs/ops/DENSE-FEEDBACK-INTERCOM.md`

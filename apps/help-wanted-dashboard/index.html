@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Help-Wanted · with Tribute</title>
+<style>
+  :root {
+    --bg: #0b0f14; --panel: #121820; --border: #1e2a38; --text: #e6edf3;
+    --muted: #8b9cb3; --ok: #3dd68c; --fail: #f07178; --accent: #59c2ff; --gold: #e6c07b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: ui-sans-serif, system-ui, sans-serif;
+    background: radial-gradient(1200px 600px at 10% -10%, #132033 0%, var(--bg) 55%);
+    color: var(--text); min-height: 100vh;
+  }
+  .site-nav { display:flex; flex-wrap:wrap; gap:0.75rem 1.25rem; align-items:center;
+    padding:0.65rem 1.75rem; border-bottom:1px solid var(--border); background:#0e141c; font-size:0.85rem; }
+  .site-nav a { color:var(--muted); font-weight:600; text-decoration:none; }
+  .site-nav a:hover, .site-nav .here { color:var(--accent); }
+  .site-nav .brand { color:var(--text); margin-right:0.5rem; }
+  header {
+    padding: 1.5rem 1.75rem 0.75rem; border-bottom: 1px solid var(--border);
+    display: flex; flex-wrap: wrap; gap: 1rem; align-items: baseline; justify-content: space-between;
+  }
+  h1 { font-size: 1.25rem; margin: 0; } h1 span { color: var(--accent); } h1 .gold { color: var(--gold); }
+  .meta { color: var(--muted); font-size: 0.85rem; }
+  main { padding: 1.25rem 1.75rem 3rem; max-width: 1100px; margin: 0 auto; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.85rem; margin: 1rem 0 1.5rem; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.1rem; }
+  .card .label { color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .card .value { font-size: 1.5rem; font-weight: 700; margin-top: 0.35rem; }
+  .ok { color: var(--ok); } .fail { color: var(--fail); } .accent { color: var(--accent); } .gold { color: var(--gold); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 0.65rem 0.5rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; }
+  a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
+  .pill { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600;
+    background: #1a2430; border: 1px solid var(--border); }
+  .section-title { margin: 1.75rem 0 0.75rem; font-size: 1rem; }
+  ul.policy { margin: 0; padding-left: 1.1rem; color: var(--muted); line-height: 1.55; }
+  footer { color: var(--muted); font-size: 0.75rem; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .err { color: var(--fail); padding: 1rem; }
+  .pipe { display:flex; flex-wrap:wrap; gap:0.4rem; margin-top:0.75rem; }
+  .pipe span { font-size:0.7rem; padding:0.2rem 0.5rem; border-radius:6px; border:1px solid var(--border); color:var(--muted); }
+</style>
+</head>
+<body>
+<nav class="site-nav" aria-label="Site">
+  <a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a>
+  <a href="https://timerloggedout-spec.github.io/">Marketing</a>
+  <a class="here" href="https://timerloggedout-spec.github.io/help-wanted/">Ops · Tribute</a>
+  <a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a>
+</nav>
+<header>
+  <div>
+    <h1>Help-Wanted <span>with</span> <span class="gold">Tribute</span></h1>
+    <div class="meta">Contributor tributes to foreign FOSS maintainers · scout → PR → followup → board</div>
+    <div class="pipe" id="pipeline"></div>
+  </div>
+  <div class="meta" id="generated">Loading…</div>
+</header>
+<main>
+  <div class="grid" id="kpis"></div>
+  <h2 class="section-title">Tributes (contributor ledger)</h2>
+  <div class="card" style="overflow-x:auto">
+    <table>
+      <thead><tr><th>Tribute PR</th><th>State</th><th>Title</th><th>Last</th></tr></thead>
+      <tbody id="tributes"></tbody>
+    </table>
+  </div>
+  <h2 class="section-title">Foreign open PRs</h2>
+  <div class="card" id="foreign"></div>
+  <h2 class="section-title">Tracked (evidence)</h2>
+  <div class="card" style="overflow-x:auto">
+    <table>
+      <thead><tr><th>Issue / PR</th><th>Kind</th><th>OK</th><th>Last ts</th><th>Links</th></tr></thead>
+      <tbody id="issues"></tbody>
+    </table>
+  </div>
+  <h2 class="section-title">Policy</h2>
+  <div class="card"><ul class="policy" id="policy"></ul></div>
+  <footer>Help-wanted with Tribute · not MoneyBall admission · <a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/HELP-WANTED-TRIBUTE.md">HELP-WANTED-TRIBUTE.md</a></footer>
+</main>
+<script>
+async function load() {
+  const bust = Date.now();
+  const urls = [
+    './data/status.json?t=' + bust,
+    'https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/ops/generated/help-wanted-status.json?t=' + bust,
+  ];
+  let data = null;
+  for (const u of urls) {
+    try {
+      const r = await fetch(u, { cache: 'no-store' });
+      if (r.ok) { data = await r.json(); break; }
+    } catch (e) {}
+  }
+  if (!data) {
+    document.getElementById('generated').textContent = 'Failed to load status';
+    document.getElementById('kpis').innerHTML = '<div class="err">Run help-wanted-status-refresh.</div>';
+    return;
+  }
+  const tributes = data.tributes || [];
+  const foreign = data.foreign_open_prs || [];
+  document.getElementById('generated').textContent =
+    'Generated ' + (data.generated_at || '—') +
+    ' · tributes ' + (data.tribute_count != null ? data.tribute_count : tributes.length) +
+    ' · foreign open ' + (data.foreign_open_count || foreign.length);
+  document.getElementById('pipeline').innerHTML = (data.pipeline || []).map(p =>
+    '<span>' + p + '</span>').join('');
+  const ok = (data.outcomes && data.outcomes.ok) || 0;
+  const fail = (data.outcomes && data.outcomes.fail) || 0;
+  document.getElementById('kpis').innerHTML = [
+    ['Tributes', data.tribute_count != null ? data.tribute_count : tributes.length, 'gold'],
+    ['Receipts', data.receipts || 0, 'accent'],
+    ['OK', ok, 'ok'],
+    ['Fail', fail, 'fail'],
+    ['Foreign open', foreign.length, 'accent'],
+  ].map(([label, val, cls]) =>
+    `<div class="card"><div class="label">${label}</div><div class="value ${cls}">${val}</div></div>`
+  ).join('');
+  document.getElementById('tributes').innerHTML = tributes.length ? tributes.map(t => {
+    const label = t.repo ? (t.repo + '#' + t.number) : (t.pr_url || '').replace('https://github.com/','');
+    return `<tr>
+      <td><a href="${t.pr_url}" target="_blank" rel="noopener">${label}</a></td>
+      <td><span class="pill">${t.state || '—'}</span></td>
+      <td>${t.title || '—'}</td>
+      <td class="meta">${t.last_ts || '—'}</td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="4" class="meta">No tributes yet</td></tr>';
+  document.getElementById('foreign').innerHTML = foreign.length
+    ? '<ul style="margin:0;padding-left:1.1rem">' + foreign.map(p =>
+        `<li><a href="${p.html_url}" target="_blank" rel="noopener">${p.repo}#${p.number}</a> — ${p.title || ''}</li>`
+      ).join('') + '</ul>'
+    : '<div class="meta">No open foreign PRs</div>';
+  const issues = data.issues || {};
+  const rows = Object.entries(issues).sort((a,b) => a[0].localeCompare(b[0]));
+  document.getElementById('issues').innerHTML = rows.length ? rows.map(([issue, events]) => {
+    const last = events[events.length - 1] || {};
+    const okp = last.ok ? 'ok' : 'fail';
+    const links = [];
+    if (last.pr_url) links.push(`<a href="${last.pr_url}" target="_blank" rel="noopener">PR</a>`);
+    if (last.run_url) links.push(`<a href="${last.run_url}" target="_blank" rel="noopener">run</a>`);
+    const label = issue.replace('https://github.com/', '');
+    return `<tr>
+      <td>${issue.startsWith('http') ? `<a href="${issue}" target="_blank" rel="noopener">${label}</a>` : issue}</td>
+      <td><span class="pill">${last.kind || '—'}</span></td>
+      <td><span class="pill ${okp}">${last.ok === true ? 'ok' : last.ok === false ? 'fail' : '—'}</span></td>
+      <td class="meta">${last.ts || '—'}</td>
+      <td>${links.join(' · ') || '—'}</td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="5" class="meta">No evidence yet</td></tr>';
+  const pol = data.policy || {};
+  document.getElementById('policy').innerHTML = [
+    pol.tribute,
+    pol.claim_idempotent && 'Claim once',
+    pol.skip_closed_issues && 'Skip closed issues',
+    pol.foreign_only_followup && 'Follow-up: foreign only',
+    pol.primary && ('PRIMARY = ' + pol.primary),
+  ].filter(Boolean).map(i => `<li>${i}</li>`).join('') || '<li>—</li>';
+}
+load();
+</script>
+</body>
+</html>

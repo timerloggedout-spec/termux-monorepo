@@ -1,43 +1,39 @@
-# Help-Wanted Lane (Production) — EXECUTE
+# Help-Wanted Lane — INTENDED PURPOSE
 
-**Status:** LIVE + **adaptive cadence**. First external PR: [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81).
-**Parallel / adaptive:** `docs/ops/HELP-WANTED-PARALLEL.md`
+**Status:** LIVE · **with Tribute** (contributor project)
+**One sentence:** Scan FOSS help-wanted → rank → claim once → open **upstream PR** (tribute to maintainer) → follow feedback → ledger on `/help-wanted/`.
 
-## Why
+See **`HELP-WANTED-TRIBUTE.md`** for the contributor ledger contract.
 
-Scan FOSS → CPPH rank → claim → **upstream PR into the author's repo**. Feed Actions evidence into workbench benchmarks. Predecessor to bug & bounty hunter. 2017 React UI is predecessor only.
+## Pipeline (complete)
 
-## Cadence (adaptive)
+```text
+scout (2h)       CPPH rank
+execute (4h)     claim → PRIMARY upstream PR (FALLBACK notice if blocked)
+followup (2h)    CHANGES_REQUESTED on foreign PRs only
+llm-assist       live catalog (OR|Felo|Omni) patch plans
+rerequest        re-request review after revise
+status-refresh   evidence + tributes → status.json
+dashboard        https://timerloggedout-spec.github.io/help-wanted/
+```
 
-| Piece | Frequency |
-|-------|-----------|
-| Scout | **Every 2h** (`17 */2 * * *`) + dispatch |
-| Execute | **Every 4h** + dispatch; **daily budget gate** (default 3 upstream actions/UTC day) |
-| Safe parallel writes | **2–3** concurrent (token pool) |
+| Workflow | Role |
+|----------|------|
+| `help-wanted-scout` | Rank |
+| `help-wanted-execute` | Claim + upstream PR |
+| `help-wanted-followup` | Foreign CHANGES_REQUESTED poll |
+| `help-wanted-llm-assist` | Live-catalog model plan on foreign PR |
+| `help-wanted-rerequest` | Re-request reviews |
+| `help-wanted-status-refresh` | Board + tributes + dashboard data |
+| `help-wanted-dashboard-deploy` | Pages / CDN |
 
-Tune up until rate-limit pain; bench artifacts: `help-wanted-scout-bench.json`, `help-wanted-daily-budget.json`.
+## Working with others
 
-## Delivery hierarchy
+Claim once · skip closed · PRIMARY upstream · no stake `Fixes #` · foreign-only followup.
 
-1. **PRIMARY — upstream-pr** — author's repo.
-2. **FALLBACK — fork-offer** — only if primary blocked.
-3. **PARALLEL NOTICE** — optional comment + commit URL alongside primary (or fallback).
+## Tokens
 
-## Components
+`OPERATOR_GITHUB_TOKEN` → `OPERATOR_TOKEN` → `ARCHWIZ_GITHUB_TOKEN` → `GITHUB_TOKEN`
+LLM assist: `OPENROUTER_API_KEY` / `FELO_AI_API` / `OMNI_*` (by name in Actions).
 
-| Path | Role |
-|------|------|
-| `.agents/skills/help-wanted-lane/SKILL.md` | Agent load |
-| `docs/ops/HELP-WANTED-PARALLEL.md` | Roster + adaptive limits |
-| `scripts/ci/help_wanted_scout.py` | CPPH |
-| `scripts/ci/help_wanted_claim.py` | Claim |
-| `.github/workflows/help-wanted-scout.yml` | 2h catalog |
-| `.github/workflows/help-wanted-execute.yml` | Budgeted execute |
-
-## Token order
-
-`OPERATOR_GITHUB_TOKEN` → `OPERATOR_TOKEN` → `ARCHWIZ_GITHUB_TOKEN` → `GITHUB_TOKEN`.
-
-Next identity: GitHub App + OIDC ephemeral tokens.
-
-BIUDL. Agent-Identity: Grok (Administrator)
+Agent-Identity: Grok (Administrator)

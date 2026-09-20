@@ -1,9 +1,7 @@
 name: help-wanted scout
 
 # Rank external help-wanted / good-first-issue candidates via CPPH.
-# Emits artifact catalog. Does not open external PRs.
-# Adaptive cadence: every 2h (was 6h) — raise/lower from workbench benchmarks.
-# See docs/ops/HELP-WANTED-LANE.md · HELP-WANTED-PARALLEL.md
+# Interthread: optional chain-execute via repository_dispatch after scout.
 
 on:
   schedule:
@@ -22,9 +20,18 @@ on:
         description: Optional language filter
         required: false
         default: ""
+      chain_execute:
+        description: "true = dispatch help-wanted-execute after scout"
+        required: false
+        default: "false"
+  repository_dispatch:
+    types:
+      - help-wanted-scout
+      - help-wanted-foreign-scout
 
 permissions:
   contents: read
+  actions: write
 
 concurrency:
   group: help-wanted-scout
@@ -40,37 +47,38 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Run scout
+      - name: Scout
         env:
+          OPERATOR_GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+          OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
+          ARCHWIZ_GITHUB_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MAX: ${{ github.event.inputs.max || github.event.client_payload.max || '40' }}
+          LABEL: ${{ github.event.inputs.label || github.event.client_payload.label || 'help wanted' }}
+          LANG: ${{ github.event.inputs.lang || github.event.client_payload.lang || '' }}
         run: |
           set -euo pipefail
+          export GITHUB_TOKEN="${OPERATOR_GITHUB_TOKEN:-${OPERATOR_TOKEN:-${ARCHWIZ_GITHUB_TOKEN:-$GITHUB_TOKEN}}}"
           mkdir -p docs/ops/generated
-          python3 scripts/ci/help_wanted_scout.py \
-            --max "${{ github.event.inputs.max || '40' }}" \
-            --label "${{ github.event.inputs.label || 'help wanted' }}" \
-            --lang "${{ github.event.inputs.lang || '' }}" \
-            --out docs/ops/generated/help-wanted-catalog.json
-          python3 - <<'PY'
-          import json, datetime
-          from pathlib import Path
-          cat = json.loads(Path("docs/ops/generated/help-wanted-catalog.json").read_text())
-          bench = {
-            "kind": "help-wanted-scout-benchmark",
-            "ts": datetime.datetime.utcnow().isoformat() + "Z",
-            "count": cat.get("count") or len(cat.get("items") or []),
-            "query": cat.get("query"),
-            "top_scores": [i.get("score") for i in (cat.get("items") or [])[:5]],
-          }
-          Path("docs/ops/generated/help-wanted-scout-bench.json").write_text(json.dumps(bench, indent=2))
-          print(json.dumps(bench))
-          PY
+          ARGS=(python3 scripts/ci/help_wanted_scout.py --max "$MAX" --label "$LABEL" --out docs/ops/generated/help-wanted-catalog.json)
+          if [ -n "${LANG:-}" ]; then ARGS+=(--lang "$LANG"); fi
+          "${ARGS[@]}"
 
-      - name: Upload catalog + bench artifacts
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: help-wanted-catalog
-          path: |
-            docs/ops/generated/help-wanted-catalog.json
-            docs/ops/generated/help-wanted-scout-bench.json
-          retention-days: 14
+          path: docs/ops/generated/help-wanted-catalog.json
+          if-no-files-found: ignore
+
+      - name: Interthread → execute (optional)
+        if: ${{ github.event.inputs.chain_execute == 'true' || github.event.client_payload.chain_execute == true }}
+        env:
+          TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          curl -sS -X POST \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/dispatches" \
+            -d '{"event_type":"help-wanted-execute","client_payload":{"mode":"claim-and-pr","source":"scout"}}'
+          echo "chained execute"

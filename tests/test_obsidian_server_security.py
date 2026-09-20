@@ -72,3 +72,20 @@ def test_obsidian_server_path_traversal_prevention(tmp_path, monkeypatch):
         mock_run.assert_called_once()
         _, kwargs = mock_run.call_args
         assert kwargs["cwd"] == str(fake_home)
+def test_obsidian_server_token_symlink_rejected(tmp_path, monkeypatch):
+    target_file = tmp_path / "secret_target.txt"
+    target_file.write_text("secret_token")
+
+    symlink_file = tmp_path / "symlink_token.txt"
+    symlink_file.symlink_to(target_file)
+
+    monkeypatch.setattr(obsidian_server, "TOKEN_FILE", str(symlink_file))
+
+    token = obsidian_server.get_token()
+    assert token is None
+
+    handler = create_handler()
+    handler.do_POST()
+
+    handler.send_response.assert_called_with(500)
+    assert b"Server Error: Token missing" in handler.wfile.data

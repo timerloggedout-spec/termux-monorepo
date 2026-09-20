@@ -19,9 +19,11 @@ This record explains how the monorepo applies the ICM method **without refactori
 | Compact form-selection and restructure method | [`../../../refTemplates/smods/icm-architect_fork/SKILL.md`](../../../refTemplates/smods/icm-architect_fork/SKILL.md) | Implemented through the pinned Architect reference |
 | Full conventions, example workspaces, and workspace-builder | [`../../../refTemplates/smods/interpretable-context-methodology_fork/README.md`](../../../refTemplates/smods/interpretable-context-methodology_fork/README.md) | Implemented through the pinned methodology companion |
 | Layered routing, canonical sources, and one-way dependencies | [`../../../refTemplates/smods/content-agent-routing-promptbase_fork/README.md`](../../../refTemplates/smods/content-agent-routing-promptbase_fork/README.md) | Applied in repository-native catalog/contracts; Promptbase remains a reference input |
+| Filesystem memory vs long-context evidence (token/cost) | [`../objects/knowledge/cost-of-remembering.md`](../objects/knowledge/cost-of-remembering.md) + `refTemplates/smods/cost-of-remembering_fork` | Implemented as knowledge card + owned fork; harness reference-only |
 | Optional file-backed visual stage mirror and human checkpoint | [`../_tv/README.md`](../_tv/README.md) and [`../../../refTemplates/smods/icm-cctv_fork/README.md`](../../../refTemplates/smods/icm-cctv_fork/README.md) | Initiated as native canonical card artifacts; renderer, polling, and publication remain separate scopes |
 | BLU B160V and free-services envelope | [`../objects/platform/blu-b160v-free-services.md`](../objects/platform/blu-b160v-free-services.md) | Applied as an operator-declared, re-verifiable design constraint; no device access implied |
 | Nested workspace artifact classification | [`../objects/knowledge/workspace-artifact-estate.md`](../objects/knowledge/workspace-artifact-estate.md) and [`../processes/workspace-artifact-triage.md`](../processes/workspace-artifact-triage.md) | Implemented without source-code refactoring |
+| Psychometric / ethics-engine assessment (AuditEngine) | Staged for adapt after this lane | Pending — adapt pass authorized after cost-of-remembering lands |
 
 ## Form selection
 
@@ -31,7 +33,7 @@ The other forms are intentionally not scaffolded: this repository is not a singl
 
 ## Selected sources
 
-The System map form and its walk test come from the installed [ICM Architect skill](../../../refTemplates/smods/icm-architect_fork/SKILL.md) and its [`references/system-map.md`](../../../refTemplates/smods/icm-architect_fork/references/system-map.md). The full methodology companion adds the published conventions, example workspaces, and workspace-builder at [`refTemplates/smods/interpretable-context-methodology_fork`](../../../refTemplates/smods/interpretable-context-methodology_fork/). The layered catalog/contract/factory/product distinction is grounded in Architect’s [`references/core.md`](../../../refTemplates/smods/icm-architect_fork/references/core.md), and the maintenance pipeline follows the full methodology’s emphasis on stage contracts, human-editable handoffs, and canonical sources.[1] [2]
+The System map form and its walk test come from the installed [ICM Architect skill](../../../refTemplates/smods/icm-architect_fork/SKILL.md) and its [`references/system-map.md`](../../../refTemplates/smods/icm-architect_fork/references/system-map.md). The full methodology companion adds the published conventions, example workspaces, and workspace-builder at [`refTemplates/smods/interpretable-context-methodology_fork`](../../../refTemplates/smods/interpretable-context-methodology_fork/). The layered catalog/contract/factory/product distinction is grounded in Architect’s [`references/core.md`](../../../refTemplates/smods/icm-architect_fork/references/core.md), and the maintenance pipeline follows the full methodology’s emphasis on stage contracts, human-editable handoffs, and canonical sources. Filesystem-memory cost evidence is supplied by the owned [cost-of-remembering_fork](https://github.com/timerloggedout-spec/cost-of-remembering_fork).[1] [2] [5]
 
 > **Deliberate boundary:** The ICM method structures the context and documentation supplied to editors. It does not supersede the monorepo’s runtime architecture, CI, GitHub review, or human authorization rules.
 
@@ -41,3 +43,5 @@ The System map form and its walk test come from the installed [ICM Architect ski
 [2]: https://github.com/RinDig/icm-architect "RinDig/icm-architect"
 [3]: https://github.com/RinDig/Content-Agent-Routing-Promptbase "RinDig/Content-Agent-Routing-Promptbase"
 [4]: https://github.com/timerloggedout-spec/icm-cctv_fork "timerloggedout-spec/icm-cctv_fork"
+[5]: https://github.com/timerloggedout-spec/cost-of-remembering_fork "timerloggedout-spec/cost-of-remembering_fork — filesystem memory evidence"
+[6]: https://github.com/RinDig/AuditEngine "RinDig/AuditEngine — staged for adapt"

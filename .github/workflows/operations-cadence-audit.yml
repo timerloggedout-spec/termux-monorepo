@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: operations-cadence-audit-\${{ github.event.pull_request.number || github.ref }}
+  group: operations-cadence-audit-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 permissions:
@@ -57,7 +57,7 @@ jobs:
       - name: Publish immutable cadence evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: operations-cadence-\${{ github.run_id }}-\${{ github.run_attempt }}
+          name: operations-cadence-${{ github.run_id }}-${{ github.run_attempt }}
           path: /tmp/operations-cadence/report.json
           if-no-files-found: error
           retention-days: 14

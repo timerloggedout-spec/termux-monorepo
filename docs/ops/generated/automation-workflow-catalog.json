@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "bb5389ccfcf5e357e08a28d000cf16f6f74b4e265795f5c58e2bc9b1bc17824d",
-  "workflow_count": 72,
+  "source_fingerprint": "3f1b209352bd80b6937bf05995579896881a3d2a4a8a062bd1ec10bbe9dbf2d5",
+  "workflow_count": 77,
   "workflows": [
     {
       "action_pins": [
@@ -774,12 +774,33 @@
     },
     {
       "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: help-wanted-dashboard-deploy cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "enable-pages",
+        "pages",
+        "user-site",
+        "vercel"
+      ],
+      "name": "help-wanted-dashboard-deploy",
+      "path": ".github/workflows/help-wanted-dashboard-deploy.yml",
+      "schedules": [],
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
       "authority": "read-only-or-advisory",
       "concurrency": "group: help-wanted-execute cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
         "budget",
         "claim",
+        "contribute",
+        "fail_closed",
         "patch-zero-72"
       ],
       "name": "help-wanted execute",
@@ -788,7 +809,61 @@
         "41 */4 * * *"
       ],
       "triggers": [
+        "repository_dispatch",
         "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: help-wanted-followup cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "poll"
+      ],
+      "name": "help-wanted-followup",
+      "path": ".github/workflows/help-wanted-followup.yml",
+      "schedules": [
+        "17 */2 * * *"
+      ],
+      "triggers": [
+        "repository_dispatch",
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: help-wanted-llm-assist cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "assist"
+      ],
+      "name": "help-wanted-llm-assist",
+      "path": ".github/workflows/help-wanted-llm-assist.yml",
+      "schedules": [
+        "23 */6 * * *"
+      ],
+      "triggers": [
+        "repository_dispatch",
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "rerequest"
+      ],
+      "name": "help-wanted-rerequest",
+      "path": ".github/workflows/help-wanted-rerequest.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },
@@ -806,8 +881,29 @@
         "17 */2 * * *"
       ],
       "triggers": [
+        "repository_dispatch",
         "schedule",
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: help-wanted-status-refresh cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "refresh"
+      ],
+      "name": "help-wanted-status-refresh",
+      "path": ".github/workflows/help-wanted-status-refresh.yml",
+      "schedules": [
+        "7 * * * *"
+      ],
+      "triggers": [
+        "repository_dispatch",
+        "schedule",
+        "workflow_dispatch",
+        "workflow_run"
       ]
     },
     {

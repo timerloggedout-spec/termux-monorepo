@@ -175,6 +175,7 @@ class DependencyPhaseEngineTests(unittest.TestCase):
         second = render_mermaid(deepcopy(plan_fixture()), deepcopy(report))
         self.assertEqual(first, second)
         self.assertIn("DPH_000 --> DPH_100", first)
+        self.assertIn("DPH-000<br/>Wave 0", first)
         self.assertIn("classDef complete", first)
 
     def test_malformed_policy_fails_closed_with_diagnostic(self) -> None:

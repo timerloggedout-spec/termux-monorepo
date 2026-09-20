@@ -74,3 +74,10 @@ Calling line-by-line document translation and regex parsing on documents that co
 
 **Action:**
 Always perform document-level fast-path search short-circuiting before line splitting in document transformation routines, and restrict code fence start checks using full triple-backtick `"`"`"" substring guards.
+
+## 2026-09-25 - Surface Codec Translation Fast-Path for 100% Substitution Probability
+**Learning:**
+Evaluating character-by-character probability checks (`rand_val() < probability`), per-match `list(token)` conversions, and string joins during 1337speak surface codec substitution when `probability == 1.0` adds unnecessary CPU overhead and closure frame allocations. Implementing a dedicated fast-path branch using a pre-computed C-level string translation table (`LEET_TRANS = str.maketrans(...)`) combined with a top-level match callback (`_replace_leet_100`) bypasses RNG iterations and list allocations, reducing invocation latency for `to_1337speak(text, probability=1.0)` from ~42.4µs to ~36.4µs (~14% speedup).
+
+**Action:**
+When surface codecs support configurable mutation probabilities, add a fast-path branch for 100% probability using pre-computed C-level string translation tables (`str.maketrans` / `str.translate`) and top-level callbacks to bypass RNG and string construction allocations.

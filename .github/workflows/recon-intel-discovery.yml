@@ -10,6 +10,7 @@ on:
     types: [opened, synchronize, ready_for_review, reopened]
   schedule:
     - cron: '*/15 * * * *'
+      timezone: 'UTC'
   workflow_dispatch:
     inputs:
       pr_number:

@@ -94,6 +94,17 @@ class DependencyPhaseCliTests(unittest.TestCase):
             with self.assertRaisesRegex(CommandError, "not the canonical issue"):
                 dispatch_claim(plan, report, "example/repo", "DPH-100", 99, apply=False)
 
+    def test_applied_dispatch_requires_manager_route_provenance(self) -> None:
+        plan = plan_fixture()
+        digest = plan_digest(plan)
+        report = {
+            "plan_sha256": digest,
+            "evaluations": [{"phase_id": "DPH-100", "state": "ready", "reason": "ready", "wave": 0, "idempotency_key": f"DPH-100:{digest}"}],
+        }
+        with self.assertRaisesRegex(CommandError, "route provenance"):
+            dispatch_claim(plan, report, "example/repo", "DPH-100", 12, apply=True)
+
+
     def test_dispatch_dry_run_uses_only_the_canonical_issue(self) -> None:
         plan = plan_fixture()
         digest = plan_digest(plan)

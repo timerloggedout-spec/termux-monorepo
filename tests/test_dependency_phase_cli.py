@@ -88,7 +88,7 @@ class DependencyPhaseCliTests(unittest.TestCase):
         digest = plan_digest(plan)
         report = {
             "plan_sha256": digest,
-            "evaluations": [{"phase_id": "DPH-100", "state": "ready", "reason": "ready", "idempotency_key": f"DPH-100:{digest}"}],
+            "evaluations": [{"phase_id": "DPH-100", "state": "ready", "reason": "ready", "wave": 0, "idempotency_key": f"DPH-100:{digest}"}],
         }
         with patch("dependency_phases.issues", return_value=[canonical_issue()]):
             with self.assertRaisesRegex(CommandError, "not the canonical issue"):
@@ -109,6 +109,7 @@ class DependencyPhaseCliTests(unittest.TestCase):
             result = dispatch_claim(plan, report, "example/repo", "DPH-100", 12, apply=False)
         self.assertFalse(result["claimed"])
         self.assertTrue(result["planned"])
+        self.assertEqual(0, result["wave"])
         post_comment.assert_called_once_with("example/repo", 12, unittest.mock.ANY, apply=False)
 
 

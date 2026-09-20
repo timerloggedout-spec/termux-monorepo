@@ -1,15 +1,15 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-20T19:04:38Z UTC · receipts=28 · foreign_open=10 · tributes=21_
+_Generated 2026-09-20T21:29:37Z UTC · receipts=28 · foreign_open=10 · tributes=21_
 
 ## Tributes (contributor ledger)
 
+- [markramm/pyrite#198](https://github.com/markramm/pyrite/pull/198) · state=closed · help-wanted: stake + contribute for #192
+- [vigneshv1cky/alphadesk-terminal#12](https://github.com/vigneshv1cky/alphadesk-terminal/pull/12) · state=closed · help-wanted: stake + contribute for #10
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [ennouaimi/invoicr#8](https://github.com/ennouaimi/invoicr/pull/8) · state=open · help-wanted: stake + contribute for #7
-- [vigneshv1cky/alphadesk-terminal#12](https://github.com/vigneshv1cky/alphadesk-terminal/pull/12) · state=closed · help-wanted: stake + contribute for #10
 - [shadcn-labs/ogimagecn#34](https://github.com/shadcn-labs/ogimagecn/pull/34) · state=open · help-wanted: stake + contribute for #33
 - [infagent/merl#43](https://github.com/infagent/merl/pull/43) · state=open · help-wanted: stake + contribute for #42
-- [markramm/pyrite#198](https://github.com/markramm/pyrite/pull/198) · state=closed · help-wanted: stake + contribute for #192
 - [DioNanos/codex-termux#27](https://github.com/DioNanos/codex-termux/pull/27) · state=closed · help-wanted: stake + contribute for #14
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20

@@ -3,19 +3,21 @@ name: adaptive-wait
 description: Adaptive WAIT for agentic GitHub ops. Dual-gate before promote. Stay busy on disjoint work.
 ---
 
-Local mirror. Canonical is master `.agents/skills/adaptive-wait/SKILL.md`.
+Canonical is master `.agents/skills/adaptive-wait/SKILL.md`.
 
-Master: `16030fcfd26b3b4f3427fa5e098cbf7862b7f081`.
-#635 MERGED extract-only security (symlink token). Dual-gate green on merge SHA ancestry.
-#608 HOLD dirty/behind — do not merge (ledger extract already landed via #627).
-#629/#630 Jules dirty observe. #636 update-branch after #635.
-#632 behind. #633/#634 WAIT unstable record PRs.
+Master HEAD this session: `826dc1e4bef62e2778e6bfb76bef38fbb21cb98c`.
+#648 dirty HOLD. #649 Jules observe. #641 dirty HOLD. #639 unstable WAIT.
+#655 dual-gate jobs green; Vercel rate-limit non-gate; base SHA lag vs live master.
+#657 Jules linguist fast-path observe (2 files).
+help-wanted-execute prior LIVE Kilo-Org/agentic-path#25 run 35475193850.
 
-This session (2026-09-19 12:07 PDT):
-- help-wanted-execute dry_run dispatched DioNanos/codex-termux#14.
-- #635 promoted after dual-gate verify; #636 left WAIT post-rebase.
-- No merge of #608/#629/#630.
-- No comment-storm.
-- Stay busy: session record from live master + dry_run dispatch + Copilot on #636.
+This session (2026-09-19 17:26 PDT):
+- Recon open PRs + #175 matrix.
+- Do not merge dirty HOLD slices.
+- New session record from live master 826dc1e4.
+- Copilot requested on #655.
+- Stay busy: inventory bump + skill anchors; no comment-storm.
+
+Promote only when dual gates green AND head is current-enough vs master.
 
 Agent-Identity: Grok (Administrator)

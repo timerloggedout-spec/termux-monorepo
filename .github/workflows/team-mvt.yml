@@ -139,16 +139,14 @@ jobs:
           print(json.dumps({'lane':lane,'trial':trial,'provider':provider,'model':model or 'SKIP','variant':variant,'manager':manager,'eligible':eligible,'max_tokens':max_tokens,'sequence_slot':sequence_slot,'hypothesis':hypothesis,'skip_reason':skip_reason},sort_keys=True))
           PY
 
-      - name: Invoke lane
-        id: invoke
-        if: steps.lane.outputs.eligible == 'true'
+      - name: Invoke Felo lane
+        if: steps.lane.outputs.eligible == 'true' && steps.lane.outputs.provider == 'felo'
         uses: ./.github/actions/http-llm-invoke
         with:
-          provider: ${{ steps.lane.outputs.provider }}
+          provider: felo
           model: ${{ steps.lane.outputs.model }}
           role: review
           target_number: ${{ inputs.target_number || '337' }}
-          api_key: ${{ steps.lane.outputs.provider == 'felo' && secrets.FELO_AI_API || steps.lane.outputs.provider == 'openrouter' && secrets.OPENROUTER_API_KEY || steps.lane.outputs.provider == 'huggingface' && (secrets.HUGGINGFACE_TOKEN || secrets.HUGGING_FACE_HUB_TOKEN || secrets.HF_API_TOKEN) || secrets.OMNI_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           prompt: ${{ steps.lane.outputs.prompt }}
@@ -156,6 +154,58 @@ jobs:
           prompt_variant: ${{ steps.lane.outputs.variant }}
           max_tokens: ${{ steps.lane.outputs.max_tokens }}
           post_comment: 'false'
+          api_key: ${{ secrets.FELO_AI_API }}
+
+      - name: Invoke OpenRouter lane
+        if: steps.lane.outputs.eligible == 'true' && steps.lane.outputs.provider == 'openrouter'
+        uses: ./.github/actions/http-llm-invoke
+        with:
+          provider: openrouter
+          model: ${{ steps.lane.outputs.model }}
+          role: review
+          target_number: ${{ inputs.target_number || '337' }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          prompt: ${{ steps.lane.outputs.prompt }}
+          experiment_id: ${{ steps.lane.outputs.experiment_id }}
+          prompt_variant: ${{ steps.lane.outputs.variant }}
+          max_tokens: ${{ steps.lane.outputs.max_tokens }}
+          post_comment: 'false'
+          api_key: ${{ secrets.OPENROUTER_API_KEY }}
+
+      - name: Invoke OmniRoute lane
+        if: steps.lane.outputs.eligible == 'true' && steps.lane.outputs.provider == 'omni'
+        uses: ./.github/actions/http-llm-invoke
+        with:
+          provider: omni
+          model: ${{ steps.lane.outputs.model }}
+          role: review
+          target_number: ${{ inputs.target_number || '337' }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          prompt: ${{ steps.lane.outputs.prompt }}
+          experiment_id: ${{ steps.lane.outputs.experiment_id }}
+          prompt_variant: ${{ steps.lane.outputs.variant }}
+          max_tokens: ${{ steps.lane.outputs.max_tokens }}
+          post_comment: 'false'
+          api_key: ${{ secrets.OMNI_API_KEY }}
+
+      - name: Invoke Hugging Face lane
+        if: steps.lane.outputs.eligible == 'true' && steps.lane.outputs.provider == 'huggingface'
+        uses: ./.github/actions/http-llm-invoke
+        with:
+          provider: huggingface
+          model: ${{ steps.lane.outputs.model }}
+          role: review
+          target_number: ${{ inputs.target_number || '337' }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          prompt: ${{ steps.lane.outputs.prompt }}
+          experiment_id: ${{ steps.lane.outputs.experiment_id }}
+          prompt_variant: ${{ steps.lane.outputs.variant }}
+          max_tokens: ${{ steps.lane.outputs.max_tokens }}
+          post_comment: 'false'
+          api_key: ${{ secrets.HUGGINGFACE_TOKEN || secrets.HUGGING_FACE_HUB_TOKEN || secrets.HF_API_TOKEN }}
 
       - name: Write lane manifest
         if: always()

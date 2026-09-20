@@ -1,166 +1,214 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Help-Wanted with Tribute — a living contributor ledger for upstream FOSS work.">
 <title>Help-Wanted · with Tribute</title>
 <style>
-  :root {
-    --bg: #0b0f14; --panel: #121820; --border: #1e2a38; --text: #e6edf3;
-    --muted: #8b9cb3; --ok: #3dd68c; --fail: #f07178; --accent: #59c2ff; --gold: #e6c07b;
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0; font-family: ui-sans-serif, system-ui, sans-serif;
-    background: radial-gradient(1200px 600px at 10% -10%, #132033 0%, var(--bg) 55%);
-    color: var(--text); min-height: 100vh;
-  }
-  .site-nav { display:flex; flex-wrap:wrap; gap:0.75rem 1.25rem; align-items:center;
-    padding:0.65rem 1.75rem; border-bottom:1px solid var(--border); background:#0e141c; font-size:0.85rem; }
-  .site-nav a { color:var(--muted); font-weight:600; text-decoration:none; }
-  .site-nav a:hover, .site-nav .here { color:var(--accent); }
-  .site-nav .brand { color:var(--text); margin-right:0.5rem; }
-  header {
-    padding: 1.5rem 1.75rem 0.75rem; border-bottom: 1px solid var(--border);
-    display: flex; flex-wrap: wrap; gap: 1rem; align-items: baseline; justify-content: space-between;
-  }
-  h1 { font-size: 1.25rem; margin: 0; } h1 span { color: var(--accent); } h1 .gold { color: var(--gold); }
-  .meta { color: var(--muted); font-size: 0.85rem; }
-  main { padding: 1.25rem 1.75rem 3rem; max-width: 1100px; margin: 0 auto; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.85rem; margin: 1rem 0 1.5rem; }
-  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.1rem; }
-  .card .label { color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; }
-  .card .value { font-size: 1.5rem; font-weight: 700; margin-top: 0.35rem; }
-  .ok { color: var(--ok); } .fail { color: var(--fail); } .accent { color: var(--accent); } .gold { color: var(--gold); }
-  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-  th, td { text-align: left; padding: 0.65rem 0.5rem; border-bottom: 1px solid var(--border); vertical-align: top; }
-  th { color: var(--muted); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; }
-  a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
-  .pill { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600;
-    background: #1a2430; border: 1px solid var(--border); }
-  .section-title { margin: 1.75rem 0 0.75rem; font-size: 1rem; }
-  ul.policy { margin: 0; padding-left: 1.1rem; color: var(--muted); line-height: 1.55; }
-  footer { color: var(--muted); font-size: 0.75rem; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); }
-  .err { color: var(--fail); padding: 1rem; }
-  .pipe { display:flex; flex-wrap:wrap; gap:0.4rem; margin-top:0.75rem; }
-  .pipe span { font-size:0.7rem; padding:0.2rem 0.5rem; border-radius:6px; border:1px solid var(--border); color:var(--muted); }
+  :root{--bg:#080b10;--panel:#10161f;--panel2:#0d131b;--border:#243140;--text:#edf3f8;--muted:#93a4b8;--accent:#65c7ff;--gold:#e9c779;--ok:#63d69b;--fail:#ff7b83;--shadow:0 18px 50px rgba(0,0,0,.24)}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:radial-gradient(1000px 500px at 8% -10%,#162638 0%,var(--bg) 60%);color:var(--text);font:15px/1.55 ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+  a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+  .site-nav{position:sticky;top:0;z-index:10;display:flex;flex-wrap:wrap;gap:.7rem 1.2rem;align-items:center;padding:.7rem 1.5rem;border-bottom:1px solid var(--border);background:rgba(8,11,16,.92);backdrop-filter:blur(10px)}
+  .site-nav a{color:var(--muted);font-weight:650;font-size:.84rem}.site-nav .brand{color:var(--text);margin-right:auto}.site-nav .here{color:var(--accent)}
+  header{border-bottom:1px solid var(--border);padding:2.2rem 1.5rem 1.4rem}
+  .hero{max-width:1120px;margin:auto;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1.5rem;align-items:end}
+  .eyebrow{color:var(--gold);font-size:.76rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+  h1{font-size:clamp(1.7rem,4vw,2.7rem);line-height:1.05;margin:.35rem 0 .65rem}h1 span{color:var(--accent)}h1 .gold{color:var(--gold)}
+  .lede{max-width:760px;color:var(--muted);font-size:1rem;margin:0}
+  .fresh{min-width:210px;padding:.85rem 1rem;border:1px solid var(--border);border-radius:12px;background:var(--panel2);box-shadow:var(--shadow)}
+  .fresh strong{display:block}.fresh small{color:var(--muted)}
+  main{max-width:1120px;margin:auto;padding:1.25rem 1.5rem 4rem}
+  .grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.8rem;margin:0 0 1.5rem}
+  .card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--border);border-radius:14px;padding:1rem 1.1rem;box-shadow:var(--shadow)}
+  .kpi .label{color:var(--muted);font-size:.7rem;text-transform:uppercase;letter-spacing:.08em}.kpi .value{font-size:1.55rem;font-weight:800;margin-top:.2rem}
+  .ok{color:var(--ok)}.fail{color:var(--fail)}.accent{color:var(--accent)}.gold{color:var(--gold)}
+  section{margin-top:2rem}.section-head{display:flex;justify-content:space-between;align-items:end;gap:1rem;margin-bottom:.7rem}.section-title{font-size:1.05rem;margin:0}.section-note{color:var(--muted);font-size:.78rem}
+  .toolbar{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:.7rem}.toolbar input,.toolbar select{min-height:38px;border:1px solid var(--border);border-radius:9px;background:#0a1017;color:var(--text);padding:.5rem .7rem}.toolbar input{flex:1;min-width:220px}
+  .pipe{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1rem}.pipe span,.pill{display:inline-flex;align-items:center;padding:.2rem .55rem;border-radius:999px;border:1px solid var(--border);background:#151e29;color:var(--muted);font-size:.72rem;font-weight:650}
+  .table-wrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:720px}.table th,.table td{text-align:left;padding:.72rem .55rem;border-bottom:1px solid var(--border);vertical-align:top}.table th{color:var(--muted);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em}.meta{color:var(--muted);font-size:.78rem}
+  .empty{color:var(--muted);padding:.4rem 0}.error{color:var(--fail)}
+  .foreign-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:.65rem}.foreign-item{padding:.8rem;border:1px solid var(--border);border-radius:10px;background:#0b1118}.foreign-item small{display:block;color:var(--muted);margin-top:.2rem}
+  .evolution{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem}.era{border-left:2px solid var(--border);padding:.2rem .85rem}.era time{color:var(--gold);font-size:.72rem;font-weight:800}.era h3{font-size:.9rem;margin:.25rem 0}.era p{color:var(--muted);font-size:.8rem;margin:0}
+  .policy{margin:0;padding-left:1.1rem;color:var(--muted)}.policy li{margin:.25rem 0}
+  footer{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--border);color:var(--muted);font-size:.75rem}
+  @media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.hero{grid-template-columns:1fr}.fresh{min-width:0}.evolution{grid-template-columns:1fr 1fr}}
+  @media(max-width:520px){.grid{grid-template-columns:1fr 1fr}.evolution{grid-template-columns:1fr}.site-nav{position:static;padding:.7rem 1rem}header,main{padding-left:1rem;padding-right:1rem}}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
-<nav class="site-nav" aria-label="Site">
+<nav class="site-nav" aria-label="Primary">
   <a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a>
   <a href="https://timerloggedout-spec.github.io/">Marketing</a>
-  <a class="here" href="https://timerloggedout-spec.github.io/help-wanted/">Ops · Tribute</a>
+  <a class="here" aria-current="page" href="https://timerloggedout-spec.github.io/help-wanted/">Ops · Tribute</a>
   <a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a>
 </nav>
+
 <header>
-  <div>
-    <h1>Help-Wanted <span>with</span> <span class="gold">Tribute</span></h1>
-    <div class="meta">Contributor tributes to foreign FOSS maintainers · scout → PR → followup → board</div>
-    <div class="pipe" id="pipeline"></div>
+  <div class="hero">
+    <div>
+      <div class="eyebrow">Contributor project · live evidence surface</div>
+      <h1>Help-Wanted <span>with</span> <span class="gold">Tribute</span></h1>
+      <p class="lede">Scan public FOSS help-wanted work, claim once, contribute upstream, follow maintainer feedback, and keep a durable ledger of the tribute attempts. This board reports evidence; it is not a MoneyBall admission score.</p>
+      <div class="pipe" id="pipeline" aria-label="Pipeline"></div>
+    </div>
+    <div class="fresh" aria-live="polite">
+      <strong id="freshness">Loading status…</strong>
+      <small id="generated">Fetching the latest snapshot.</small>
+    </div>
   </div>
-  <div class="meta" id="generated">Loading…</div>
 </header>
+
 <main>
-  <div class="grid" id="kpis"></div>
-  <h2 class="section-title">Tributes (contributor ledger)</h2>
-  <div class="card" style="overflow-x:auto">
-    <table>
-      <thead><tr><th>Tribute PR</th><th>State</th><th>Title</th><th>Last</th></tr></thead>
-      <tbody id="tributes"></tbody>
-    </table>
-  </div>
-  <h2 class="section-title">Foreign open PRs</h2>
-  <div class="card" id="foreign"></div>
-  <h2 class="section-title">Tracked (evidence)</h2>
-  <div class="card" style="overflow-x:auto">
-    <table>
-      <thead><tr><th>Issue / PR</th><th>Kind</th><th>OK</th><th>Last ts</th><th>Links</th></tr></thead>
-      <tbody id="issues"></tbody>
-    </table>
-  </div>
-  <h2 class="section-title">Policy</h2>
-  <div class="card"><ul class="policy" id="policy"></ul></div>
-  <footer>Help-wanted with Tribute · not MoneyBall admission · <a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/HELP-WANTED-TRIBUTE.md">HELP-WANTED-TRIBUTE.md</a></footer>
+  <section aria-labelledby="overview-title">
+    <div class="section-head"><h2 class="section-title" id="overview-title">Live board</h2><span class="section-note" id="summary">—</span></div>
+    <div class="grid" id="kpis" aria-live="polite"></div>
+  </section>
+
+  <section aria-labelledby="tribute-title">
+    <div class="section-head"><h2 class="section-title" id="tribute-title">Tribute ledger</h2><span class="section-note">One row per upstream PR attempt</span></div>
+    <div class="toolbar">
+      <label class="sr-only" for="tribute-search">Filter tributes</label>
+      <input id="tribute-search" type="search" placeholder="Filter by repository, PR, or title" autocomplete="off">
+      <label class="sr-only" for="tribute-state">Tribute state</label>
+      <select id="tribute-state"><option value="all">All states</option><option value="open">Open</option><option value="closed">Closed</option></select>
+    </div>
+    <div class="card table-wrap">
+      <table class="table"><thead><tr><th>Tribute PR</th><th>State</th><th>Title</th><th>Evidence</th><th>Last activity</th></tr></thead><tbody id="tributes"></tbody></table>
+    </div>
+  </section>
+
+  <section aria-labelledby="foreign-title">
+    <div class="section-head"><h2 class="section-title" id="foreign-title">Foreign open PRs</h2><span class="section-note">Live GitHub search, excluding this monorepo</span></div>
+    <div class="foreign-list" id="foreign"></div>
+  </section>
+
+  <section aria-labelledby="tracked-title">
+    <div class="section-head"><h2 class="section-title" id="tracked-title">Tracked evidence</h2><span class="section-note">Receipts grouped by issue / PR</span></div>
+    <div class="card table-wrap">
+      <table class="table"><thead><tr><th>Issue / PR</th><th>Latest kind</th><th>Result</th><th>Timestamp</th><th>Run</th></tr></thead><tbody id="issues"></tbody></table>
+    </div>
+  </section>
+
+  <section aria-labelledby="evolution-title">
+    <div class="section-head"><h2 class="section-title" id="evolution-title">Evolution 🧬</h2><span class="section-note">How this surface became a living contributor ledger</span></div>
+    <div class="evolution">
+      <article class="era"><time datetime="2026-09-19">2026-09-19 · origin</time><h3>Oversight dashboard</h3><p>Static KPI surface and status snapshot established for the Help-Wanted operational lane.</p><a href="https://github.com/timerloggedout-spec/termux-monorepo/commit/93a0a78185a1f9450adbd06586dd080110fcc525">View origin commit</a></article>
+      <article class="era"><time datetime="2026-09-19">2026-09-19 · live</time><h3>Pages + Vercel delivery</h3><p>Deployment automation and live CDN surfaces made the board operational rather than repository-only.</p><a href="https://github.com/timerloggedout-spec/termux-monorepo/commit/b97bf32b2a264beaac5cc78c5abc39b759af78d8">View deployment commit</a></article>
+      <article class="era"><time datetime="2026-09-19">2026-09-19 · freshness</time><h3>External PR backfill</h3><p>Live foreign PR discovery and freshness were added so the board could represent the actual upstream contribution surface.</p><a href="https://github.com/timerloggedout-spec/termux-monorepo/commit/bfcda8161b88b2a748774950c560bde676b496d2">View backfill commit</a></article>
+      <article class="era"><time datetime="2026-09-19">2026-09-19 · tribute</time><h3>Contributor ledger</h3><p>The lane crystallized around a simple contract: upstream PRs are contributor tributes, with evidence retained for closed and open attempts.</p><a href="https://github.com/timerloggedout-spec/termux-monorepo/commit/eb808e2ce44f1ee66903d65fc75715549e2ccda8">View tribute commit</a></article>
+    </div>
+  </section>
+
+  <section aria-labelledby="policy-title">
+    <div class="section-head"><h2 class="section-title" id="policy-title">Operating contract</h2></div>
+    <div class="card"><ul class="policy" id="policy"></ul></div>
+  </section>
+
+  <footer>Help-Wanted with Tribute · evidence surface, not MoneyBall admission · <a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/HELP-WANTED-TRIBUTE.md">HELP-WANTED-TRIBUTE.md</a> · <a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/HELP-WANTED-LANE.md">HELP-WANTED-LANE.md</a></footer>
 </main>
+
 <script>
+const $ = id => document.getElementById(id);
+const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const relativeTime = iso => {
+  if (!iso) return '—';
+  const d = new Date(iso), now = Date.now(), delta = Math.max(0, now - d.getTime());
+  const mins = Math.floor(delta / 60000);
+  if (mins < 1) return 'just now';
+  if (mins < 60) return mins + 'm ago';
+  const hours = Math.floor(mins / 60);
+  if (hours < 24) return hours + 'h ago';
+  const days = Math.floor(hours / 24);
+  return days + 'd ago';
+};
+let tributes = [];
+
+function renderTributes() {
+  const query = $('tribute-search').value.trim().toLowerCase();
+  const state = $('tribute-state').value;
+  const rows = tributes.filter(t => {
+    const hay = [t.repo, t.pr_url, t.title, t.state].join(' ').toLowerCase();
+    return (!query || hay.includes(query)) && (state === 'all' || (t.state || '').toLowerCase() === state);
+  });
+  $('tributes').innerHTML = rows.length ? rows.map(t => {
+    const href = t.pr_url || '#';
+    const stateText = t.state || '—';
+    const evidence = Array.isArray(t.kinds) ? t.kinds.length : 0;
+    return '<tr><td><a href="' + esc(href) + '" target="_blank" rel="noopener noreferrer">' + esc(t.repo ? t.repo + '#' + t.number : href.replace('https://github.com/','')) + '</a></td>' +
+      '<td><span class="pill">' + esc(stateText) + '</span></td><td>' + esc(t.title || '—') + '</td>' +
+      '<td class="meta">' + evidence + ' receipt' + (evidence === 1 ? '' : 's') + '</td><td class="meta" title="' + esc(t.last_ts || '') + '">' + esc(relativeTime(t.last_ts)) + '</td></tr>';
+  }).join('') : '<tr><td colspan="5" class="empty">No tributes match this filter.</td></tr>';
+}
+
+function renderForeign(rows) {
+  $('foreign').innerHTML = rows.length ? rows.map(p =>
+    '<article class="foreign-item"><a href="' + esc(p.html_url) + '" target="_blank" rel="noopener noreferrer">' +
+    esc(p.repo + '#' + p.number) + '</a><small>' + esc(p.title || '—') + ' · updated ' + esc(relativeTime(p.updated_at)) + '</small></article>'
+  ).join('') : '<div class="card empty">No open foreign PRs.</div>';
+}
+
+function renderIssues(issues) {
+  const rows = Object.entries(issues || {}).sort((a,b) => {
+    const ta = (a[1]?.[a[1].length - 1]?.ts || ''), tb = (b[1]?.[b[1].length - 1]?.ts || '');
+    return tb.localeCompare(ta);
+  });
+  $('issues').innerHTML = rows.length ? rows.map(([issue, events]) => {
+    const last = events[events.length - 1] || {};
+    const ok = last.ok === true, fail = last.ok === false;
+    const run = last.run_url ? '<a href="' + esc(last.run_url) + '" target="_blank" rel="noopener noreferrer">run</a>' : '—';
+    const label = issue.replace('https://github.com/','');
+    return '<tr><td><a href="' + esc(issue) + '" target="_blank" rel="noopener noreferrer">' + esc(label) + '</a></td>' +
+      '<td><span class="pill">' + esc(last.kind || '—') + '</span></td>' +
+      '<td><span class="pill ' + (ok ? 'ok' : fail ? 'fail' : '') + '">' + (ok ? 'ok' : fail ? 'fail' : '—') + '</span></td>' +
+      '<td class="meta" title="' + esc(last.ts || '') + '">' + esc(relativeTime(last.ts)) + '</td><td>' + run + '</td></tr>';
+  }).join('') : '<tr><td colspan="5" class="empty">No evidence receipts yet.</td></tr>';
+}
+
 async function load() {
   const bust = Date.now();
-  const urls = [
-    './data/status.json?t=' + bust,
-    'https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/ops/generated/help-wanted-status.json?t=' + bust,
-  ];
+  const sources = ['./data/status.json?t=' + bust,
+    'https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/ops/generated/help-wanted-status.json?t=' + bust];
   let data = null;
-  for (const u of urls) {
-    try {
-      const r = await fetch(u, { cache: 'no-store' });
-      if (r.ok) { data = await r.json(); break; }
-    } catch (e) {}
+  for (const url of sources) {
+    try { const r = await fetch(url, {cache:'no-store'}); if (r.ok) { data = await r.json(); break; } } catch (_) {}
   }
   if (!data) {
-    document.getElementById('generated').textContent = 'Failed to load status';
-    document.getElementById('kpis').innerHTML = '<div class="err">Run help-wanted-status-refresh.</div>';
+    $('freshness').textContent = 'Status unavailable';
+    $('generated').textContent = 'The board could not load its latest snapshot.';
+    $('kpis').innerHTML = '<div class="card error">Run help-wanted-status-refresh, then redeploy the dashboard.</div>';
     return;
   }
-  const tributes = data.tributes || [];
+  tributes = data.tributes || [];
   const foreign = data.foreign_open_prs || [];
-  document.getElementById('generated').textContent =
-    'Generated ' + (data.generated_at || '—') +
-    ' · tributes ' + (data.tribute_count != null ? data.tribute_count : tributes.length) +
-    ' · foreign open ' + (data.foreign_open_count || foreign.length);
-  document.getElementById('pipeline').innerHTML = (data.pipeline || []).map(p =>
-    '<span>' + p + '</span>').join('');
-  const ok = (data.outcomes && data.outcomes.ok) || 0;
-  const fail = (data.outcomes && data.outcomes.fail) || 0;
-  document.getElementById('kpis').innerHTML = [
-    ['Tributes', data.tribute_count != null ? data.tribute_count : tributes.length, 'gold'],
+  const outcomes = data.outcomes || {};
+  const ok = outcomes.ok || 0, fail = outcomes.fail || 0;
+  $('generated').textContent = 'Generated ' + (data.generated_at || '—') + ' · ' + (data.receipts || 0) + ' receipts';
+  $('freshness').textContent = data.generated_at ? relativeTime(data.generated_at) : 'Snapshot loaded';
+  $('summary').textContent = tributes.length + ' tribute records · ' + foreign.length + ' foreign open PRs';
+  $('pipeline').innerHTML = (data.pipeline || []).map(p => '<span>' + esc(p) + '</span>').join('');
+  const cards = [
+    ['Tributes', data.tribute_count ?? tributes.length, 'gold'],
     ['Receipts', data.receipts || 0, 'accent'],
     ['OK', ok, 'ok'],
     ['Fail', fail, 'fail'],
-    ['Foreign open', foreign.length, 'accent'],
-  ].map(([label, val, cls]) =>
-    `<div class="card"><div class="label">${label}</div><div class="value ${cls}">${val}</div></div>`
-  ).join('');
-  document.getElementById('tributes').innerHTML = tributes.length ? tributes.map(t => {
-    const label = t.repo ? (t.repo + '#' + t.number) : (t.pr_url || '').replace('https://github.com/','');
-    return `<tr>
-      <td><a href="${t.pr_url}" target="_blank" rel="noopener">${label}</a></td>
-      <td><span class="pill">${t.state || '—'}</span></td>
-      <td>${t.title || '—'}</td>
-      <td class="meta">${t.last_ts || '—'}</td>
-    </tr>`;
-  }).join('') : '<tr><td colspan="4" class="meta">No tributes yet</td></tr>';
-  document.getElementById('foreign').innerHTML = foreign.length
-    ? '<ul style="margin:0;padding-left:1.1rem">' + foreign.map(p =>
-        `<li><a href="${p.html_url}" target="_blank" rel="noopener">${p.repo}#${p.number}</a> — ${p.title || ''}</li>`
-      ).join('') + '</ul>'
-    : '<div class="meta">No open foreign PRs</div>';
-  const issues = data.issues || {};
-  const rows = Object.entries(issues).sort((a,b) => a[0].localeCompare(b[0]));
-  document.getElementById('issues').innerHTML = rows.length ? rows.map(([issue, events]) => {
-    const last = events[events.length - 1] || {};
-    const okp = last.ok ? 'ok' : 'fail';
-    const links = [];
-    if (last.pr_url) links.push(`<a href="${last.pr_url}" target="_blank" rel="noopener">PR</a>`);
-    if (last.run_url) links.push(`<a href="${last.run_url}" target="_blank" rel="noopener">run</a>`);
-    const label = issue.replace('https://github.com/', '');
-    return `<tr>
-      <td>${issue.startsWith('http') ? `<a href="${issue}" target="_blank" rel="noopener">${label}</a>` : issue}</td>
-      <td><span class="pill">${last.kind || '—'}</span></td>
-      <td><span class="pill ${okp}">${last.ok === true ? 'ok' : last.ok === false ? 'fail' : '—'}</span></td>
-      <td class="meta">${last.ts || '—'}</td>
-      <td>${links.join(' · ') || '—'}</td>
-    </tr>`;
-  }).join('') : '<tr><td colspan="5" class="meta">No evidence yet</td></tr>';
-  const pol = data.policy || {};
-  document.getElementById('policy').innerHTML = [
-    pol.tribute,
-    pol.claim_idempotent && 'Claim once',
-    pol.skip_closed_issues && 'Skip closed issues',
-    pol.foreign_only_followup && 'Follow-up: foreign only',
-    pol.primary && ('PRIMARY = ' + pol.primary),
-  ].filter(Boolean).map(i => `<li>${i}</li>`).join('') || '<li>—</li>';
+    ['Foreign open', foreign.length, 'accent']
+  ];
+  $('kpis').innerHTML = cards.map(([label,value,cls]) => '<div class="card kpi"><div class="label">' + label + '</div><div class="value ' + cls + '">' + esc(value) + '</div></div>').join('');
+  renderTributes(); renderForeign(foreign); renderIssues(data.issues);
+  const p = data.policy || {};
+  const policy = [
+    p.tribute, p.claim_idempotent && 'Claim once / idempotent', p.skip_closed_issues && 'Skip closed issues',
+    p.foreign_only_followup && 'Follow-up on foreign PRs only', p.primary && 'PRIMARY = ' + p.primary,
+    p.fallback && 'Fallback = ' + p.fallback
+  ].filter(Boolean);
+  $('policy').innerHTML = policy.map(x => '<li>' + esc(x) + '</li>').join('') || '<li>—</li>';
 }
+$('tribute-search').addEventListener('input', renderTributes);
+$('tribute-state').addEventListener('change', renderTributes);
 load();
 </script>
 </body>

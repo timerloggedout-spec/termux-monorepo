@@ -51,6 +51,20 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Resolve manager-approved specialist route
+        id: route
+        run: |
+          set -euo pipefail
+          python3 scripts/agentic/dependency_phase_route.py \
+            --plan docs/agentic/dependency-phases.json \
+            --phase-id "$PHASE_ID" | tee route.json
+          echo "selected_specialist=$(jq -r '.selected_specialist // empty' route.json)" >> "$GITHUB_OUTPUT"
+          echo "manager_policy=$(jq -r '.manager_policy' route.json)" >> "$GITHUB_OUTPUT"
+          if [ "$APPLY" = "true" ] && [ -z "$(jq -r '.selected_specialist // empty' route.json)" ]; then
+            echo "No available execution adapter for the manager-approved route." >&2
+            exit 1
+          fi
+
       - name: Revalidate and create idempotent claim
         id: claim
         run: |
@@ -64,19 +78,21 @@ jobs:
           echo "wave=$(jq -r '.wave' claim.json)" >> "$GITHUB_OUTPUT"
           echo "idempotency_key=$(jq -r '.idempotency_key' claim.json)" >> "$GITHUB_OUTPUT"
 
-      - name: Invoke Jules after successful claim
-        if: ${{ env.APPLY == 'true' && steps.claim.outputs.claimed == 'true' && env.JULES_ENABLED == 'true' }}
+      - name: Invoke Jules execution adapter after routed claim
+        if: ${{ env.APPLY == 'true' && steps.claim.outputs.claimed == 'true' && steps.route.outputs.selected_specialist == 'jules' }}
         uses: google-labs-code/jules-invoke@v1
         with:
           jules_api_key: ${{ secrets.JULES_API_KEY }}
           starting_branch: master
           prompt: |
-            Dependency phase ${{ env.PHASE_ID }} was admitted in deterministic wave ${{ steps.claim.outputs.wave }} with idempotency key ${{ steps.claim.outputs.idempotency_key }}.
+            Dependency phase ${{ env.PHASE_ID }} was admitted in deterministic wave ${{ steps.claim.outputs.wave }} through manager policy ${{ steps.route.outputs.manager_policy }} and routed to specialist ${{ steps.route.outputs.selected_specialist }} with idempotency key ${{ steps.claim.outputs.idempotency_key }}.
             Follow AGENTS.md and docs/agentic/dependency-phases.json. Read only the phase-relevant contracts and current issue #${{ env.ISSUE_NUMBER }}. Make the smallest reviewable change, target master, cite Implements: ${{ env.PHASE_ID }}, and open a PR. Do not merge, close proposals, update submodules, or alter Project configuration.
 
       - name: Upload claim record
         uses: actions/upload-artifact@v4
         with:
           name: dependency-phase-claim-${{ github.run_id }}
-          path: claim.json
+          path: |
+            claim.json
+            route.json
           if-no-files-found: error

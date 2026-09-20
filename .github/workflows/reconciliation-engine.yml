@@ -23,6 +23,7 @@ on:
         options: [observe]
   schedule:
     - cron: '17 * * * *'
+      timezone: 'UTC'
 
 permissions:
   contents: read

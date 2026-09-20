@@ -5,10 +5,10 @@ description: Adaptive WAIT for agentic GitHub ops. Dual-gate before promote. Sta
 
 Local mirror. Canonical is master `.agents/skills/adaptive-wait/SKILL.md`.
 
-Master HEAD this session: `9a3935f85793a3a89b5b2516c500754f24d09bd3`.
-#675 merged. Next dual-gate: HF alias announce branch.
-#672/#673 WAIT rebase onto 9a3935f8. #648 dirty HOLD. #641 dirty HOLD.
-ML mega extract-only. Vercel rate-limit non-gate.
-Disjoint work: secret naming convention + catalog alias resolver.
+Master HEAD: `0570db31`. Read `docs/ops/LANE-MATRIX.md` every WAIT cycle.
+#682 WAIT re-validate (registry fixed). #686 WAIT dual-gate.
+Do not treat Copilot review as a promote gate.
+Disjoint work while waiting: lane-matrix rewrite, foreign-repo eval, free-quota routes, skill SSOT.
+Mega PRs: promote if dual-gate green (size ≠ quality).
 
 Agent-Identity: Grok (Administrator)

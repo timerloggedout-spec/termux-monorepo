@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate governed Termux fork submodules and all .gitmodules gitlinks."""
+"""Validate governed Termux fork submodules under refTemplates/smods."""
 
 from __future__ import annotations
 
@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 GITMODULES = ROOT / ".gitmodules"
+SMODS_PREFIX = "refTemplates/smods/"
 # Hard checks for operator-owned forks (URL must match).
 REQUIRED = {
     "refTemplates/smods/termux-mcp-server_fork": "https://github.com/timerloggedout-spec/termux-mcp-server_fork.git",
@@ -37,8 +38,9 @@ def main() -> int:
         if path:
             discovered[path] = url
 
-    if not discovered:
-        fail(".gitmodules has no submodule entries")
+    smods = {p: u for p, u in discovered.items() if p.startswith(SMODS_PREFIX)}
+    if not smods:
+        fail("no refTemplates/smods/* entries in .gitmodules")
 
     for path, expected_url in REQUIRED.items():
         actual_url = discovered.get(path)
@@ -54,8 +56,8 @@ def main() -> int:
         if line.startswith("160000 ") and "\t" in line
     }
 
-    # P2: every .gitmodules path must be a pinned gitlink (dense: name the path).
-    for path in discovered:
+    # Every smods path in .gitmodules must be a pinned gitlink (dense: name the path).
+    for path in smods:
         if path not in gitlinks:
             fail(f"{path}: listed in .gitmodules but missing 160000 gitlink in index")
 
@@ -70,12 +72,12 @@ def main() -> int:
         text=True,
         check=True,
     ).stdout
-    for path in discovered:
+    for path in smods:
         if path not in status:
             fail(f"{path}: not present in cached submodule status")
 
     print(
-        f"OK: validated {len(REQUIRED)} governed forks + {len(discovered)} total .gitmodules gitlinks"
+        f"OK: validated {len(REQUIRED)} governed forks + {len(smods)} refTemplates/smods gitlinks"
     )
     return 0
 

@@ -3,6 +3,7 @@ name: Reconcile repository surface
 on:
   schedule:
     - cron: "23 5 * * *"
+      timezone: 'UTC'
   workflow_dispatch:
     inputs:
       apply:

@@ -10,11 +10,12 @@ Complementary orgs (including Research-Astute) and the Enterprise org integrate 
 4. No monorepo secret hard-dependency
 5. Promotion out of this directory into independent operation
 
-## Initial slots
+## Slots
 
-| Org / surface | Status |
-|---------------|--------|
-| Research-Astute | Phase 1 — metadata pending |
-| Enterprise (operator-controlled) | Phase 1 — await criteria |
+| Org / surface | Status | Priority |
+|---------------|--------|----------|
+| **Laya** (laya.convaiinnovations.com) | Phase 1 — metadata **landed** | **HIGH** |
+| Research-Astute | Phase 1 — metadata pending | normal |
+| Enterprise (operator-controlled) | Phase 1 — await criteria | normal |
 
-See `docs/ops/REFTEMPLATES-CONSOLIDATION.md` §5.
+Dense feedback applies to every phase promote: `docs/ops/DENSE-FEEDBACK-INTERCOM.md`.

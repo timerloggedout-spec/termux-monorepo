@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-20T04:54:25Z UTC · receipts=22 · foreign_open=8 · tributes=18_
+_Generated 2026-09-20T05:25:34Z UTC · receipts=23 · foreign_open=9 · tributes=19_
 
 ## Tributes (contributor ledger)
 
+- [infagent/merl#43](https://github.com/infagent/merl/pull/43) · state=open · help-wanted: stake + contribute for #42
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [markramm/pyrite#198](https://github.com/markramm/pyrite/pull/198) · state=closed · help-wanted: stake + contribute for #192
 - [vigneshv1cky/alphadesk-terminal#12](https://github.com/vigneshv1cky/alphadesk-terminal/pull/12) · state=open · help-wanted: stake + contribute for #10
@@ -25,6 +26,7 @@ _Generated 2026-09-20T04:54:25Z UTC · receipts=22 · foreign_open=8 · tributes
 
 ## Foreign open PRs
 
+- [infagent/merl#43](https://github.com/infagent/merl/pull/43) — help-wanted: stake + contribute for #42
 - [vigneshv1cky/alphadesk-terminal#12](https://github.com/vigneshv1cky/alphadesk-terminal/pull/12) — help-wanted: stake + contribute for #10
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) — help-wanted: stake + contribute for #25
 - [chahe-dridi/vscode-agent-bell#225](https://github.com/chahe-dridi/vscode-agent-bell/pull/225) — help-wanted: stake + contribute for #224
@@ -34,6 +36,6 @@ _Generated 2026-09-20T04:54:25Z UTC · receipts=22 · foreign_open=8 · tributes
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=22 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 9}`
+## Outcomes · ok=23 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 10}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

@@ -2,6 +2,9 @@
 
 **Updated:** 2026-09-19
 
+Full multi-lane matrix (waves, Paper2Agent, Bifrost, Mayan):  
+**`docs/ops/INTEGRATION-GRAPH-MATRIX.md`**
+
 ```text
 live catalogs (OpenRouter + Felo + Omni)
         │
@@ -33,11 +36,5 @@ MoneyBall / 3L0   ← scores AFTER repeated success (admission)
 - `openrouter-api-key: ${{ secrets.OPENROUTER_API_KEY }}`
 - `felo-api-key: ${{ secrets.FELO_AI_API }}`
 - `omni-api-key: ${{ secrets.OMNI_API_KEY }}`
-
-## Mayan / agile 13-phase
-
-**Not found** under that title in termux-monorepo issues/docs (2026-09-19 search).
-Closest sequences: admission ladder in `SCOUT-MISSIONS`; orchestration steps in `AGENT-TEAM-ORCHESTRATION`.
-If the Mayan 13-phase issue lives elsewhere, link it.
 
 Agent-Identity: Grok (Administrator)

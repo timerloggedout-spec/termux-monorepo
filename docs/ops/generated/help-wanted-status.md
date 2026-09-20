@@ -1,11 +1,11 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-20T18:11:08Z UTC · receipts=26 · foreign_open=9 · tributes=20_
+_Generated 2026-09-20T18:47:15Z UTC · receipts=27 · foreign_open=9 · tributes=20_
 
 ## Tributes (contributor ledger)
 
-- [vigneshv1cky/alphadesk-terminal#12](https://github.com/vigneshv1cky/alphadesk-terminal/pull/12) · state=closed · help-wanted: stake + contribute for #10
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
+- [vigneshv1cky/alphadesk-terminal#12](https://github.com/vigneshv1cky/alphadesk-terminal/pull/12) · state=closed · help-wanted: stake + contribute for #10
 - [shadcn-labs/ogimagecn#34](https://github.com/shadcn-labs/ogimagecn/pull/34) · state=open · help-wanted: stake + contribute for #33
 - [infagent/merl#43](https://github.com/infagent/merl/pull/43) · state=open · help-wanted: stake + contribute for #42
 - [markramm/pyrite#198](https://github.com/markramm/pyrite/pull/198) · state=closed · help-wanted: stake + contribute for #192
@@ -37,6 +37,6 @@ _Generated 2026-09-20T18:11:08Z UTC · receipts=26 · foreign_open=9 · tributes
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=26 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 13}`
+## Outcomes · ok=27 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 14}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

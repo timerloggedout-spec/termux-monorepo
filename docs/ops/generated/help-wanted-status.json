@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-09-20T18:11:08Z",
+  "generated_at": "2026-09-20T18:47:15Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
-  "receipts": 26,
+  "receipts": 27,
   "kinds": {
     "upstream_pr": 12,
     "claim_skipped_closed": 1,
-    "followup_skip_idempotent": 13
+    "followup_skip_idempotent": 14
   },
   "outcomes": {
-    "ok": 26
+    "ok": 27
   },
   "foreign_open_prs": [
     {
@@ -97,19 +97,6 @@
   "foreign_open_count": 9,
   "tributes": [
     {
-      "pr_url": "https://github.com/vigneshv1cky/alphadesk-terminal/pull/12",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-20T17:10:33Z",
-      "providers": [],
-      "repo": "vigneshv1cky/alphadesk-terminal",
-      "number": 12,
-      "title": "help-wanted: stake + contribute for #10",
-      "state": "closed"
-    },
-    {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
         "upstream_pr",
@@ -127,15 +114,29 @@
         "followup_skip_idempotent",
         "followup_skip_idempotent",
         "followup_skip_idempotent",
+        "followup_skip_idempotent",
         "followup_skip_idempotent"
       ],
       "ok": true,
-      "last_ts": "2026-09-20T16:04:57Z",
+      "last_ts": "2026-09-20T18:46:59Z",
       "providers": [],
       "repo": "vedantnimbarte/zero",
       "number": 81,
       "title": "docs(layout): refresh stale ponytail comments (flex + grid)",
       "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/vigneshv1cky/alphadesk-terminal/pull/12",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-20T17:10:33Z",
+      "providers": [],
+      "repo": "vigneshv1cky/alphadesk-terminal",
+      "number": 12,
+      "title": "help-wanted: stake + contribute for #10",
+      "state": "closed"
     },
     {
       "pr_url": "https://github.com/shadcn-labs/ogimagecn/pull/34",
@@ -625,6 +626,14 @@
       },
       {
         "ts": "2026-09-20T16:04:57Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-20T18:46:59Z",
         "kind": "followup_skip_idempotent",
         "issue": "https://github.com/vedantnimbarte/zero/pull/81",
         "ok": true,

@@ -415,7 +415,7 @@ def render_markdown(plan: dict[str, Any], report: dict[str, Any]) -> str:
         evaluation = evaluation_by_id[phase_id]
         prs = ", ".join(f"#{number}" for number in evaluation["pull_requests"]) or "—"
         project_status = evaluation["project_status"] or "unmapped"
-        lines.append(f"| {evaluation["wave"]} | `{phase_id}` | **{evaluation['state']}** | {project_status} | {prs} | {evaluation['reason']} |")
+        lines.append(f"| {evaluation['wave']} | `{phase_id}` | **{evaluation['state']}** | {project_status} | {prs} | {evaluation['reason']} |")
     lines.extend([
         "",
         "## Safety boundary",

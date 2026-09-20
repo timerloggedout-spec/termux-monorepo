@@ -1,129 +1,95 @@
 # refTemplates Continuous Evaluation — Prior Planning → Execution
 
-**Status:** ACTIVE planning + progressive implementation (PR #688+)  
+**Status:** ACTIVE — P0–P5 landed on PR #688; P6–P7 progressive  
 **Directive:** All `refTemplates/00_` → `∞_` slots continuously repopulated, upgraded, evaluated, submodule-integrated.  
-**Style:** BIUDL · recursive ELO · evidence-led · dual-gate
+**Style:** BIUDL · recursive ELO · evidence-led · dual-gate  
+**Related:** `PAPER2AGENT.md` · `RESEARCH-INTEGRATION-LANE.md` · `17_Papers/SOURCES.md`
 
 ---
 
-## 1. What exists today (scoring / tagging status)
+## 1. What exists (scoring / tagging status)
 
-| Asset | Path | Role | Gap |
-|-------|------|------|-----|
-| Submodule integrity | `scripts/ci/submodule_integrity.py` | Validates 4 governed `smods/` gitlinks | Does not cover full `smods/` set or `15_*` metadata |
-| Repo-dev evaluation | `scripts/ci/repository_development_evaluation.py` | PR lifecycle manifests (schema v2) | Not yet pointed at template slots |
-| RECON intel discovery | `scripts/ci/recon_intel_discovery.py` | GH↔GL topology (read-only) | Not template scoring |
-| Devin App reconcile | `scripts/agentic/reconcile_devin_wiki_access.py` | **Programmatic** grant of Devin GitHub App access across accessible repos | Access ≠ DeepWiki content indexed; no batch wiki scrape yet |
-| Repository observatory | `scripts/github/repository_observatory.py` | Repo surface observation | Extend for slot scoring |
-| Pre-GitHub scripts | (historical, pre-init) | Parsed `.md` headers → category reports | Lost in rm-not-git-rm; behavior to be rebuilt under `scripts/ci/refTemplates_*` |
+| Asset | Path | Role |
+|-------|------|------|
+| Inventory | `scripts/ci/refTemplates_inventory.py` | Walk 00→∞; SOURCE.txt contract; JSONL |
+| Score | `scripts/ci/refTemplates_score.py` | Tier A–D + L0–L6 fields + seed ELO |
+| DeepWiki batch | `scripts/ci/refTemplates_deepwiki_batch.py` | Public MCP harvest (dry-run default) |
+| Commit slice | `scripts/ci/refTemplates_commit_slice.py` | init→current considerations schema |
+| Submodule integrity | `scripts/ci/submodule_integrity.py` | Governed smods gitlinks (expand to all = P2 residual) |
+| Devin App reconcile | `scripts/agentic/reconcile_devin_wiki_access.py` | Programmatic App access for indexing eligibility |
+| Repo-dev evaluation | `scripts/ci/repository_development_evaluation.py` | PR lifecycle manifests |
+| Paper2Agent | `docs/ops/PAPER2AGENT.md` | GLM dense-feedback → monorepo mapping |
 
-**DeepWiki today:** Manual “add repo → index” in Devin UI. Operator wants **programmatic** coverage of hundreds of repos each cycle.  
-**Available levers:**
-1. `reconcile_devin_wiki_access.py --apply` — make all accessible repos eligible for provider indexing (already in-tree).
-2. Public DeepWiki MCP (`https://mcp.deepwiki.com/mcp`) — `read_wiki_structure` / `read_wiki_contents` / `ask_question` for **public** repos (no auth).
-3. No documented private DeepWiki write/index API — do not invent one; stay on documented App access + public MCP.
+**DeepWiki levers (no private invent):**
+1. `reconcile_devin_wiki_access.py --apply` — eligibility batch  
+2. Public MCP `https://mcp.deepwiki.com/mcp`  
+3. Boundary: access ≠ page indexed  
 
 ---
 
-## 2. Target architecture
+## 2. Architecture (landed)
 
 ```text
 refTemplates/
-├── 00_Index/ … ∞_*/          # continuous metadata + SOURCE + score cards
-├── 15_Research_Repo_Templates/
+├── 00_Index/ … 14_*
+├── 15_Research_Repo_Templates/   # + opencode-research-papers, cactus-needle
 ├── 16_Org_Phased/
-├── 17_Papers/                # NEW — cited research + implementation sources
-│   ├── README.md
-│   ├── SOURCES.md            # arxiv, gitxiv, ORCID, GRID.ac, Scholar, patents, Nature, …
-│   ├── citations/            # one file or JSONL per work
-│   └── scanners/             # notes + hooks for arxiv/gitxiv scanners
-└── smods/                    # live pins only after dual-gate + score threshold
+├── 17_Papers/                    # SOURCES = GitXiv successors + seeded research
+└── smods/
 
 scripts/ci/
-├── refTemplates_inventory.py     # walk 00→∞, assert SOURCE.txt, emit inventory JSONL
-├── refTemplates_score.py         # tier A–D + ELO fields from multi-signal input
-├── refTemplates_commit_slice.py  # init→current commit-window considerations
-└── refTemplates_deepwiki_batch.py  # public MCP harvest + merge with App-access report
-
-docs/ops/generated/refTemplates/
-├── inventory.jsonl
-├── scores.jsonl
-├── elo-pairs.jsonl
-└── deepwiki-batch-summary.json
+├── refTemplates_inventory.py
+├── refTemplates_score.py
+├── refTemplates_commit_slice.py
+└── refTemplates_deepwiki_batch.py
 ```
 
 ---
 
-## 3. Recursive ELO-style reviews
+## 3. Recursive ELO layers (L0–L6)
 
-**Not** a single top-level star count. Pairwise + multi-slice:
-
-| Layer | Input | Output |
+| Layer | Input | Status |
 |-------|-------|--------|
-| L0 surface | stars, forks, license, last push, topics | coarse prior |
-| L1 layout | README structure, src/tests/docs presence, CI files | scaffold fitness |
-| L2 agent surface | AGENTS.md, MCP, OpenCode plugin, markers | agent-ready score |
-| L3 commit slice | first N commits + recent M commits + midpoint | stability / intent drift |
-| L4 DeepWiki | structure + contents summary (public MCP or provider wiki) | doc density / architecture clarity |
-| L5 papers link | arxiv/gitxiv/ORCID/DOI cited in README or `17_Papers` | research grounding |
-| L6 Actions fit | dual-gate compatibility, secret-free, shallow-pin safe | promote eligibility |
-
-**ELO loop:** sample pairs within tier or across B→A candidates; update ratings from L1–L6 deltas; promote when rating + dual-gate green; demote when stale or secret-heavy.
-
-**Commit-slice evaluation surface:** for each candidate, consider *repo init → current* as the integration evaluation window — not only HEAD. Flags: history rewrite risk, license change, dependency explosion, abandoned after initial scaffold.
+| L0 surface | stars, forks, license | prior / future GH API |
+| L1 layout | SOURCE + README | score script |
+| L2 agent surface | markers, OpenCode, MCP | score heuristic |
+| L3 commit slice | init→current | commit_slice script |
+| L4 DeepWiki | public MCP structure | deepwiki_batch |
+| L5 papers | 17_Papers links | SOURCES seeded |
+| L6 Actions fit | dual-gate, secret-free | score heuristic |
 
 ---
 
-## 4. Papers section (`17_Papers`)
+## 4. Papers + scanners (GitXiv deprecated)
 
-Purpose: research **cited and used for implementation evaluation**, not a full bibliographic database.
+**Successors:** Hugging Face Papers, PapersFlow (+ MCP skills), alphaXiv OpenResearch, opencode-research-papers (arXiv+OpenAlex, no keys), ArXivAtlas, Connected Papers, Elicit, Consensus.
 
-| Source class | Examples | Use |
-|--------------|----------|-----|
-| Preprint | arXiv, GitXiv | method / pipeline papers behind templates |
-| Identity | ORCID, GRID.ac | author / org grounding |
-| Scholar | Google Scholar | citation checks |
-| Formal | Nature, patents | high-weight implementation claims |
-| Seeded | operator-supplied DOIs / URLs | first-class |
+**Operator seeds (2026-09-20):** Needle 3 / cactus-compute, GLM inference infra (Paper2Agent), opencode-research-papers, OpenResearch, PapersFlow, ArXivAtlas, Laya, TypeSafe System One waitlist, operator YT seed.
 
-Each citation record: `id`, `title`, `url`, `source_class`, `linked_slots[]`, `eval_notes`, `collected_at`.
-
-Scanners (progressive): thin wrappers that resolve arXiv abs/pdf and gitxiv pages into citation stubs; no bulk scrape without rate limits and dual-gate.
+See `refTemplates/17_Papers/SOURCES.md`.
 
 ---
 
-## 5. DeepWiki programmatic path (hundreds of repos)
+## 5. Execution order
 
-1. **Eligibility batch:** scheduled run of `reconcile_devin_wiki_access.py --apply` (operator-token lane) so all non-archived accessible repos get Devin App access → provider-managed indexing *eligible*.
-2. **Public content harvest:** for public repos, `refTemplates_deepwiki_batch.py` calls DeepWiki MCP `read_wiki_structure` (+ selective `read_wiki_contents`) → JSONL under `docs/ops/generated/refTemplates/`.
-3. **Merge into score:** L4 signal in `refTemplates_score.py`.
-4. **Boundary (documented in reconcile script):** App access does **not** prove a public DeepWiki page exists or refreshed. Report that explicitly; never invent a private index API.
-
----
-
-## 6. Execution order (Make it So)
-
-| Phase | Work | Gate |
-|-------|------|------|
-| **P0** | This doc + `17_Papers/` seed + expand inventory/score contracts | PR #688 dual-gate |
-| **P1** | `refTemplates_inventory.py` — walk slots, SOURCE.txt required, emit JSONL | CI path filter `refTemplates/**` |
-| **P2** | Expand `submodule_integrity.py` to all `smods/` in `.gitmodules` | dual-gate |
-| **P3** | `refTemplates_score.py` — tier + multi-layer fields; seed ELO pairs from current 15_* |
-| **P4** | `refTemplates_deepwiki_batch.py` — public MCP batch + merge report |
-| **P5** | `refTemplates_commit_slice.py` — init→current considerations |
-| **P6** | Papers scanners + ORCID/GRID hooks as thin resolvers |
-| **P7** | Cadence: scheduled inventory+score; promote B→A only on dual-gate |
+| Phase | Work | Status |
+|-------|------|--------|
+| **P0** | Policy + 17_Papers + contracts | **DONE** |
+| **P1** | inventory.py | **DONE** |
+| **P2** | Expand submodule_integrity to all smods | residual |
+| **P3** | score.py | **DONE** |
+| **P4** | deepwiki_batch.py | **DONE** (dry-run default) |
+| **P5** | commit_slice.py | **DONE** (schema + optional GH API) |
+| **P6** | Thin arXiv/OpenAlex resolvers into citations/ | next |
+| **P7** | Scheduled inventory+score; B→A on dual-gate only | next |
 
 ---
 
-## 7. Non-goals
+## 6. Non-goals
 
-- Browser automation against Devin private UI
-- Undocumented DeepWiki index-write endpoints
-- Auto-merge of submodule pins without dual-gate + score threshold
-- Full recursive clone of every candidate on every CI run
-
----
+- Browser automation against Devin private UI  
+- Undocumented DeepWiki index-write endpoints  
+- Auto-merge pins without dual-gate + score threshold  
+- Full recursive clone of every candidate on every CI run  
 
 **Agent-Identity:** Grok (Administrator) CXO  
-**Show-me:** existing Devin reconcile + submodule integrity + repo-dev eval are the spine; continuous ELO + papers + DeepWiki batch are the expansion.  

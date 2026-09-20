@@ -11,6 +11,7 @@ clock:
     OPS_CADENCE_TZ: UTC
     OPS_QUOTA_RESET_ANCHOR: monthly@00:00Z
     TZ: UTC
+  note: "UTC remains the sole machine clock. Calendar-day phases are eliminated except as pure metrics telemetry."
 
 scheduling:
   require_explicit_timezone: true
@@ -18,6 +19,7 @@ scheduling:
   avoid_top_of_hour: true
   preferred_minute_offsets: [7, 13, 17, 23, 27, 37, 43, 47, 53, 57]
   minimum_supported_interval_minutes: 5
+  arrhythmic_principle: "Timing without fixed rhythm. Prefer deliberate non-zero offsets and concurrent phase instances over predictable cadence loops. Stagger reduces self-inflicted bursts; it does not guarantee scheduler latency."
 
 concurrency:
   default_principle: "serialize conflicting writers; cancel stale observations; preserve long-running evidence"
@@ -30,26 +32,71 @@ concurrency:
   pull_request_synchronize:
     key: head_sha
     rule: "A new head supersedes stale review/observation work, but never cancels a distinct PR."
+  external_jobs:
+    rule: "Other agents' scheduled runs (2× hourly, free-quota lanes, trial/catalog) are situational inputs, not background noise. Include them in RECON scan."
+
+phase_lattice:
+  note: "Abstract concurrent phases. Multiple instances of any phase may run in parallel. No calendar-day binding."
+  phases:
+    - RECON
+    - PLAN
+    - MEASURE
+    - PROPOSAL_SCAN
+    - DEBATE
+    - SWEEP
+    - ACT
+    - COMMIT
+    - WAIT
+    - WATCH
+    - VALIDATE
+    - REFETCH_COMPARE
+    - RECORD_CLASSIFY
+  concurrency_model: "any subset may be active concurrently; leases protect writers; evidence identity remains workflow+run+event+issue/PR+head_sha+observed_at_utc"
 
 response_flow:
   issue: [RECEIVE, TRUST_BOUNDARY, DEDUPE, TRIAGE, ROUTE, ACT, WAIT, WATCH, VALIDATE, RECORD, REPEAT]
   pull_request: [RECEIVE, SNAPSHOT_SHA, TRUST_BOUNDARY, TRIAGE, CHECKS, REVIEW_LEASE, ACT, WAIT, WATCH, REFETCH, COMPARE, VALIDATE, RECORD, REPEAT]
-  rule: "Queued, running, or commented is never equivalent to validated."
+  recon_prior: [STARRED, FORKED, FOLLOWING, WATCHED, SUBMODULES, PROPOSALS_REGISTRY, DEBATE_LOGS, EXTERNAL_SCHEDULES]
+  rule: "Queued, running, or commented is never equivalent to validated. RECON is highly considerate and precedes focused action."
 
 operating_lenses:
   agile:
     unit: event-to-evidence-micro-cycle
     principle: "small batch, visible state, inspect/adapt before the next mutation"
-  musashi:
-    kan: "broad situational awareness: queue, quota, dependencies, competing writers, current SHA"
-    ken: "focused execution: one bounded task, one evidence target, one active write lease"
-    principle: "scan wide; act narrow; integrate once"
-  mayan_inspired:
-    note: "Planning metaphor only; GitHub remains the authoritative civil/technical clock."
-    kin: daily-operational-pulse
-    uinal: 20-day-pattern-review
-    tun: 360-day-architecture-review
-    research_cycle: 260-day-longitudinal-experiment-horizon
+  musashi_broad:
+    recon: "highly considerate scan of the whole situation: queue, SHA, quota, dependencies, competing writers, starred/forked/following/watched/submodules, active proposals, debate terms, external concurrent jobs"
+    focused_execution: "one bounded task, one evidence target, one active write lease after RECON"
+    principle: "scan wide and considerately; act narrow; integrate once. Timing without rhythm."
+  phase_lattice:
+    note: "13 abstract phases replace any day-bound planning metaphors. Concurrent/parallel instances allowed."
+  koestler_bisociation:
+    note: "Optional matrix intersections (unrelated fields → fresh design) remain available as a creativity lens; not a clock."
+
+proposals_and_debate:
+  home: docs/proposals/
+  registry: docs/proposals/registry.yaml
+  process: docs/proposals/PROCESS.md
+  consensus: docs/CONSENSUS.md
+  prior_sequence:
+    - scan active/ + registry.yaml
+    - scan DEBATE.md / Review logs for open terms
+    - scan starred / forked / following / watched repos and submodules for external research signals
+    - evaluate under CONSENSUS tiers before ACT
+  automation:
+    - scripts/proposals/validate_registry.py
+    - scripts/proposals/record_vote.py
+    - scripts/proposals/promote_proposal.py
+    - .github/workflows/proposal-lifecycle.yml
+  rule: "Proposals own intent; branches own measured evidence; votes attach to claims, not to existence of a branch."
+
+repository_sweep:
+  purpose: "First-class RECON/SWEEP phase. Inventory drift, orphaned proposals, concurrency leases, schedule timezone alignment, external job pressure."
+  surfaces:
+    - .github/workflows/**
+    - docs/proposals/active/** + registry.yaml + MANIFEST.md
+    - open PRs / issues with response leases
+    - free-quota / hourly / trial cadences running as external jobs
+  evidence: workflow + run + observed_at_utc + head_sha
 
 quota_aware_admission:
   reset_window:
@@ -72,7 +119,7 @@ security:
 observability:
   minimum_identity: [workflow, workflow_run, event, issue_or_pr, head_sha, observed_at_utc]
   state_model: [COMMITTED, EXECUTED, VALIDATED, PROMOTED]
-  rule: "Failures are observations. Retry only under an explicit admission policy."
+  rule: "Failures are observations. Retry only under an explicit admission policy. Dual-gate before promote."
 
 governance:
   default_mode: advisory_then_enforce

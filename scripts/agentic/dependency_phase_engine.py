@@ -363,7 +363,7 @@ def evaluate_plan(plan: dict[str, Any], snapshot: dict[str, Any] | None = None) 
 
 def _mermaid_label(phase: dict[str, Any], evaluation: dict[str, Any]) -> str:
     title = str(phase["title"]).replace('"', "'")
-    return f'{phase["phase_id"]}<br/>{title}<br/>{evaluation["state"]}'
+    return f'{phase["phase_id"]}<br/>Wave {evaluation["wave"]}<br/>{title}<br/>{evaluation["state"]}'
 
 
 def render_mermaid(plan: dict[str, Any], report: dict[str, Any]) -> str:
@@ -408,14 +408,14 @@ def render_markdown(plan: dict[str, Any], report: dict[str, Any]) -> str:
         render_mermaid(plan, report).rstrip(),
         "```",
         "",
-        "| Phase | State | GitHub Project status | Linked PRs | Reason |",
-        "|---|---|---|---|---|",
+        "| Wave | Phase | State | GitHub Project status | Linked PRs | Reason |",
+        "|---:|---|---|---|---|---|",
     ]
     for phase_id in report["topological_order"]:
         evaluation = evaluation_by_id[phase_id]
         prs = ", ".join(f"#{number}" for number in evaluation["pull_requests"]) or "—"
         project_status = evaluation["project_status"] or "unmapped"
-        lines.append(f"| `{phase_id}` | **{evaluation['state']}** | {project_status} | {prs} | {evaluation['reason']} |")
+        lines.append(f"| {evaluation['wave']} | `{phase_id}` | **{evaluation['state']}** | {project_status} | {prs} | {evaluation['reason']} |")
     lines.extend([
         "",
         "## Safety boundary",

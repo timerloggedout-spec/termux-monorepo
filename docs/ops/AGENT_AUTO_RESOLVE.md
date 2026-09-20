@@ -10,6 +10,10 @@ Workflows on **default branch `master`** so `pull_request_review` / review_comme
 | Same | Linear subtask under `PR #N agent feedback rollup` + `agent-feedback` |
 | CodeRabbit | `.coderabbit.yaml` autofix enabled |
 
+**Important:** These bots are **peer event sources**, not the primary promote route.
+Promote authority = dual-gate evidence + Grok Administrator (`docs/ops/LANE-MATRIX.md`, `docs/ops/PEER-REVIEW-ROUTING.md`).
+Copilot is optional peer only.
+
 Secrets: `LINEAR_API_KEY` (subtasks), optional `JULES_API_KEY`.
 
 Signed-off-by: Grok <grok@x.ai>

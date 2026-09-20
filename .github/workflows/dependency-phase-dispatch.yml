@@ -61,6 +61,7 @@ jobs:
           fi
           python3 scripts/agentic/dependency_phases.py "${arguments[@]}" | tee claim.json
           echo "claimed=$(jq -r '.claimed' claim.json)" >> "$GITHUB_OUTPUT"
+          echo "wave=$(jq -r '.wave' claim.json)" >> "$GITHUB_OUTPUT"
           echo "idempotency_key=$(jq -r '.idempotency_key' claim.json)" >> "$GITHUB_OUTPUT"
 
       - name: Invoke Jules after successful claim
@@ -70,7 +71,7 @@ jobs:
           jules_api_key: ${{ secrets.JULES_API_KEY }}
           starting_branch: master
           prompt: |
-            Dependency phase ${{ env.PHASE_ID }} was claimed with idempotency key ${{ steps.claim.outputs.idempotency_key }}.
+            Dependency phase ${{ env.PHASE_ID }} was admitted in deterministic wave ${{ steps.claim.outputs.wave }} with idempotency key ${{ steps.claim.outputs.idempotency_key }}.
             Follow AGENTS.md and docs/agentic/dependency-phases.json. Read only the phase-relevant contracts and current issue #${{ env.ISSUE_NUMBER }}. Make the smallest reviewable change, target master, cite Implements: ${{ env.PHASE_ID }}, and open a PR. Do not merge, close proposals, update submodules, or alter Project configuration.
 
       - name: Upload claim record

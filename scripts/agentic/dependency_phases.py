@@ -192,6 +192,9 @@ def dispatch_claim(plan: dict[str, Any], report: dict[str, Any], repo: str, phas
     if evaluation["state"] != "ready":
         raise CommandError(f"phase {phase_id} is {evaluation['state']}: {evaluation['reason']}")
     phase = _phase_by_id(plan, phase_id)
+    wave = evaluation.get("wave")
+    if not isinstance(wave, int) or wave < 0:
+        raise CommandError(f"phase {phase_id} has no valid deterministic admission wave")
     canonical_issues = [candidate for candidate in issues(repo) if phase_issue_matches(plan, phase, candidate)]
     if len(canonical_issues) != 1:
         raise CommandError(f"expected exactly one canonical issue for {phase_id}, found {len(canonical_issues)}")
@@ -210,7 +213,7 @@ def dispatch_claim(plan: dict[str, Any], report: dict[str, Any], repo: str, phas
         "The dispatcher revalidated prerequisites, approval evidence, current PR state, and project evidence before recording this claim.",
     ])
     result = post_issue_comment(repo, canonical_number, body, apply=apply)
-    return {"phase_id": phase_id, "claimed": bool(apply), "idempotency_key": key, **result}
+    return {"phase_id": phase_id, "claimed": bool(apply), "wave": wave, "idempotency_key": key, **result}
 
 
 def _parse_arguments(argv: list[str]) -> argparse.Namespace:

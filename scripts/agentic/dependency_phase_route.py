@@ -47,7 +47,7 @@ def _routing_table(text: str) -> dict[str, dict[str, Any]]:
 
 
 def _available(agent: str) -> bool:
-    return os.environ.get(f"ROUTE_{agent.upper()}_AVAILABLE", "false").lower() == "true"
+    return os.environ.get(f"ROUTE_{agent.upper()}_ADAPTER_READY", "false").lower() == "true"
 
 
 def resolve_route(plan: dict[str, Any], phase_id: str, roster_text: str) -> dict[str, Any]:

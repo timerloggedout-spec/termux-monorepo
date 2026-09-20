@@ -1,17 +1,26 @@
 {
-  "generated_at": "2026-09-20T11:24:15Z",
+  "generated_at": "2026-09-20T16:06:21Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
-  "receipts": 24,
+  "receipts": 26,
   "kinds": {
     "upstream_pr": 12,
     "claim_skipped_closed": 1,
-    "followup_skip_idempotent": 11
+    "followup_skip_idempotent": 13
   },
   "outcomes": {
-    "ok": 24
+    "ok": 26
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/shadcn-labs/ogimagecn/pull/34",
+      "title": "help-wanted: stake + contribute for #33",
+      "number": 34,
+      "repo": "shadcn-labs/ogimagecn",
+      "state": "open",
+      "updated_at": "2026-09-20T13:13:17Z",
+      "tribute": true
+    },
     {
       "html_url": "https://github.com/infagent/merl/pull/43",
       "title": "help-wanted: stake + contribute for #42",
@@ -72,7 +81,7 @@
       "number": 657,
       "repo": "GlassHaven/Haven",
       "state": "open",
-      "updated_at": "2026-09-19T20:52:33Z",
+      "updated_at": "2026-09-20T13:51:05Z",
       "tribute": true
     },
     {
@@ -94,7 +103,7 @@
       "tribute": true
     }
   ],
-  "foreign_open_count": 9,
+  "foreign_open_count": 10,
   "tributes": [
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
@@ -112,14 +121,29 @@
         "followup_skip_idempotent",
         "followup_skip_idempotent",
         "followup_skip_idempotent",
+        "followup_skip_idempotent",
+        "followup_skip_idempotent",
         "followup_skip_idempotent"
       ],
       "ok": true,
-      "last_ts": "2026-09-20T11:22:04Z",
+      "last_ts": "2026-09-20T16:04:57Z",
       "providers": [],
       "repo": "vedantnimbarte/zero",
       "number": 81,
       "title": "docs(layout): refresh stale ponytail comments (flex + grid)",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/shadcn-labs/ogimagecn/pull/34",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-20T13:13:17Z",
+      "providers": [],
+      "repo": "shadcn-labs/ogimagecn",
+      "number": 34,
+      "title": "help-wanted: stake + contribute for #33",
       "state": "open"
     },
     {
@@ -360,7 +384,7 @@
       "state": "closed"
     }
   ],
-  "tribute_count": 19,
+  "tribute_count": 20,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -594,6 +618,22 @@
       },
       {
         "ts": "2026-09-20T11:22:04Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-20T13:13:25Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-20T16:04:57Z",
         "kind": "followup_skip_idempotent",
         "issue": "https://github.com/vedantnimbarte/zero/pull/81",
         "ok": true,

@@ -3,12 +3,17 @@ name: evidence-led-monorepo-ops
 description: Continuous evidence-led admin ops on timerloggedout-spec/termux-monorepo. Load every admin session.
 ---
 
-Local mirror. Canonical is master `.agents/skills/evidence-led-monorepo-ops/SKILL.md`.
+Canonical: master `.agents/skills/evidence-led-monorepo-ops/SKILL.md`.
 
-Session 2026-09-19 20:55 PDT: live master `9a3935f8` (#675 dual-gate squash).
-#674 closed superseded. Dual-gate on #675: repo-gate SUCCESS + termux-smoke SUCCESS.
-#672/#673 WAIT rebase. HOLD dirty #648/#641. Jules observe #649/#630.
-ML #432/#601 extract-only.
-HF secret canonical: `HF_TOKEN` (aliases documented in docs/ops/SECRET-NAMING-CONVENTION.md).
+Session 2026-09-20 15:17 PDT: live master `fbfdb5a0`.
+**SSOT lane matrix:** `docs/ops/LANE-MATRIX.md` — rewrite every session.
+**Peer routing:** Copilot is optional peer — NOT a promote gate.
+**Mega policy:** size ≠ quality; promote when dual-gate green.
+#688/#689 WAIT (tip-aligned, mergeable unstable).
+#682 WAIT/EXTRACT on stale `0570db31` — keep ML DAG + tests.
+#687 HOLD-REBASE (stale matrix PR).
+#686 WAIT. #684 HOLD. #685 OBSERVE.
+Help-wanted foreign-repo eval is free-quota cadence, not a merge gate.
+Vercel/GitLab/Mintlify non-gate.
 
 Agent-Identity: Grok (Administrator)

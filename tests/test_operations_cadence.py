@@ -24,7 +24,7 @@ class OperationsCadenceTests(unittest.TestCase):
             cwd=ROOT, capture_output=True, text=True,
         )
         # Phase 1 is advisory until legacy schedules are migrated.
-        self.assertNotEqual(result.returncode, 0)
+        self.assertEqual(result.returncode, 0)
 
 if __name__ == "__main__":
     unittest.main()

@@ -99,7 +99,7 @@ class DependencyPhaseCliTests(unittest.TestCase):
         digest = plan_digest(plan)
         report = {
             "plan_sha256": digest,
-            "evaluations": [{"phase_id": "DPH-100", "state": "ready", "reason": "ready", "idempotency_key": f"DPH-100:{digest}"}],
+            "evaluations": [{"phase_id": "DPH-100", "state": "ready", "reason": "ready", "wave": 0, "idempotency_key": f"DPH-100:{digest}"}],
         }
         with (
             patch("dependency_phases.issues", return_value=[canonical_issue()]),

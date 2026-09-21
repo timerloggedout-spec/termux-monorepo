@@ -5,12 +5,12 @@ description: Adaptive WAIT for agentic GitHub ops. Dual-gate before promote. Sta
 
 Canonical: master `.agents/skills/adaptive-wait/SKILL.md`.
 
-Master HEAD this session: `ac0ed98c`.
+Master HEAD this session: `32c2fb4a`.
 Read `docs/ops/LANE-MATRIX.md` every WAIT cycle.
 Do not treat Copilot review as a promote gate.
 Vercel rate-limit ≠ dual-gate failure.
 #682 EXTRACT/WAIT (130-file keep-alive). Dual-gate was green on prior head; size still blocks wholesale promote.
-Disjoint work this cycle: #701 promote, #175 pulse, LANE-MATRIX rewrite, skill upgrades. No idle YOLO merge.
+Disjoint work this cycle: #703 promote, #175 pulse, LANE-MATRIX rewrite, skill upgrades. No idle YOLO merge.
 AVOID HITL YOLO YEET AUTOAPPROVE.
 
 Agent-Identity: Grok (Administrator)

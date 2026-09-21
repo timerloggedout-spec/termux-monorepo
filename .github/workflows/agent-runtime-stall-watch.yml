@@ -36,17 +36,28 @@ jobs:
 
           now = datetime.now(timezone.utc)
           owner, repo = os.environ['GITHUB_REPOSITORY'].split('/', 1)
-          data = subprocess.check_output([
-              'gh', 'api', f'repos/{owner}/{repo}/actions/runs',
-              '--paginate', '-f', 'per_page=100', '-f', 'status=queued'
-          ], text=True)
-          queued = json.loads(data).get('workflow_runs', [])
 
-          data = subprocess.check_output([
-              'gh', 'api', f'repos/{owner}/{repo}/actions/runs',
-              '--paginate', '-f', 'per_page=100', '-f', 'status=in_progress'
-          ], text=True)
-          active = json.loads(data).get('workflow_runs', [])
+          def workflow_runs(status):
+              data = subprocess.check_output([
+                  'gh', 'api', f'repos/{owner}/{repo}/actions/runs',
+                  '--method', 'GET',
+                  '--paginate',
+                  '--slurp',
+                  '-f', 'per_page=100',
+                  '-f', f'status={status}',
+              ], text=True)
+              pages = json.loads(data)
+              if isinstance(pages, dict):
+                  pages = [pages]
+              return [
+                  run
+                  for page in pages
+                  if isinstance(page, dict)
+                  for run in page.get('workflow_runs', [])
+              ]
+
+          queued = workflow_runs('queued')
+          active = workflow_runs('in_progress')
 
           # These are diagnostic thresholds, not retry permissions. The watcher
           # deliberately errs toward reporting a possible stall rather than

@@ -201,8 +201,13 @@ def context_signals(tool: Mapping[str, Any]) -> TDQSContextSignals:
     input_hash = hashlib.sha256(serialized).hexdigest()[:16]
 
     annotation_values = {
-        key: (bool(annotations[key]) if annotations and key in annotations else None)
-        for key in ("readOnlyHint", "destructiveHint", "idempotentHint", "openWorldHint")
+        output_key: (bool(annotations[input_key]) if annotations and input_key in annotations else None)
+        for input_key, output_key in (
+            ("readOnlyHint", "readOnly"),
+            ("destructiveHint", "destructive"),
+            ("idempotentHint", "idempotent"),
+            ("openWorldHint", "openWorld"),
+        )
     }
 
     return TDQSContextSignals(

@@ -61,7 +61,8 @@ runs:
         case "$PROVIDER" in
           omni) TITLE="termux-monorepo-${ROLE}-omni"; MARKER="<!-- omni-${ROLE} -->"; HEAD="### 🌐 OmniRoute ${ROLE} (\`${MODEL}\`)"; EGG="<!-- matrix: valley-hunt via omni aggregation / 3L0 labels pending -->";;
           openrouter) TITLE="termux-monorepo-${ROLE}-or"; MARKER="<!-- openrouter-${ROLE} -->"; HEAD="### 🔀 OpenRouter ${ROLE} (\`${MODEL}\`)"; EGG="<!-- matrix: peer route; public boards=features; 3L0=our labels -->";;
-          felo) TITLE="termux-monorepo-${ROLE}-felo"; MARKER="<!-- felo-${ROLE} -->"; HEAD="### 🔎 Felo ${ROLE} (\`${MODEL}\`)"; EGG="<!-- matrix: Felo peer route; 3L0=our labels -->";;\n          huggingface) TITLE="termux-monorepo-${ROLE}-hf"; MARKER="<!-- huggingface-${ROLE} -->"; HEAD="### 🤗 Hugging Face ${ROLE} (\`${MODEL}\`)"; EGG="<!-- matrix: HF Inference Providers umbrella route; provider/model provenance recorded -->";;
+          felo) TITLE="termux-monorepo-${ROLE}-felo"; MARKER="<!-- felo-${ROLE} -->"; HEAD="### 🔎 Felo ${ROLE} (\`${MODEL}\`)"; EGG="<!-- matrix: Felo peer route; 3L0=our labels -->";;
+          huggingface) TITLE="termux-monorepo-${ROLE}-hf"; MARKER="<!-- huggingface-${ROLE} -->"; HEAD="### 🤗 Hugging Face ${ROLE} (\`${MODEL}\`)"; EGG="<!-- matrix: HF Inference Providers umbrella route; provider/model provenance recorded -->";;
         esac
         RESPONSE_FILE=$(mktemp); HEADERS_FILE=$(mktemp); trap 'rm -f "$RESPONSE_FILE" "$HEADERS_FILE"' EXIT
         PAYLOAD=$(jq -n --arg m "$MODEL" --arg p "$PROMPT" --argjson mt "$MAX_TOKENS" '{model:$m,messages:[{role:"user",content:$p}],max_tokens:$mt,stream:false}')

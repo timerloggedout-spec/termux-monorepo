@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-09-19T10:58:37Z` UTC  
+**Generated:** `2026-09-20T11:23:29Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 48 docs-lane branch(es)
+**Count:** 50 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -27,10 +27,12 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/cedrlang-obfuscation-boundary`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/cedrlang-obfuscation-boundary) | `d6aaf4691d45` | — | — | orphan lane |
 | [`docs/certifications-roles-lane`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/certifications-roles-lane) | `f86e45ac2ae7` | — | — | orphan lane |
 | [`docs/claude-md-primary-entry`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/claude-md-primary-entry) | `ad716d0c806e` | — | — | orphan lane |
+| [`docs/codespace-bifrost-006-run`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/codespace-bifrost-006-run) | `3edb2bd66392` | [#671](https://github.com/timerloggedout-spec/termux-monorepo/pull/671)→`master` | — | PR without registry link |
 | [`docs/deepseek-capture-pipeline`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/deepseek-capture-pipeline) | `c70fb1bbd9f8` | — | — | orphan lane |
 | [`docs/github-mcp-url-only-clients`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/github-mcp-url-only-clients) | `54f17f18989f` | — | — | orphan lane |
 | [`docs/hex-non-ai-trial-lane`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/hex-non-ai-trial-lane) | `252dae071c8d` | — | — | orphan lane |
 | [`docs/image-asset-pipeline-ates-placeholder`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/image-asset-pipeline-ates-placeholder) | `b25d07a9b9ab` | [#540](https://github.com/timerloggedout-spec/termux-monorepo/pull/540)→`master` | — | PR without registry link |
+| [`docs/integration-graph-matrix-tensor`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/integration-graph-matrix-tensor) | `f243ed561efd` | — | — | orphan lane |
 | [`docs/issue-192-action-integration-intake`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/issue-192-action-integration-intake) | `b749928140f7` | — | — | orphan lane |
 | [`docs/kai9000-orchestrator-correlated`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/kai9000-orchestrator-correlated) | `a92e6f15da7f` | — | — | orphan lane |
 | [`docs/kai9000-provenance-correct`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/kai9000-provenance-correct) | `73dad86dd7b2` | — | — | orphan lane |
@@ -47,7 +49,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/pr-scope-discipline-ce22`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/pr-scope-discipline-ce22) | `a68300477966` | [#67](https://github.com/timerloggedout-spec/termux-monorepo/pull/67)→`master` | — | PR without registry link |
 | [`docs/promote-archwiz-to-master`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/promote-archwiz-to-master) | `70bfdeff314a` | — | — | orphan lane |
 | [`docs/proposals/agentic-scoped-access-and-tier4-review`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/proposals/agentic-scoped-access-and-tier4-review) | `7f39e156f87f` | — | `agent-automation`, `agent-automation` | registered; no open PR |
-| [`docs/proposals/codespaces-enablement`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/proposals/codespaces-enablement) | `fd10b9117d5f` | [#500](https://github.com/timerloggedout-spec/termux-monorepo/pull/500)→`master` | — | PR without registry link |
+| [`docs/proposals/codespaces-enablement`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/proposals/codespaces-enablement) | `0dc0c23dbb15` | [#500](https://github.com/timerloggedout-spec/termux-monorepo/pull/500)→`master` | — | PR without registry link |
 | [`docs/proposals/demo-portal`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/proposals/demo-portal) | `563c02aa8de5` | — | `Claude` | registered; no open PR |
 | [`docs/proposals/vercel-lane-topology`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/proposals/vercel-lane-topology) | `7b45afe7373e` | — | `Claude` | registered; no open PR |
 | [`docs/readme-agents-reference`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/readme-agents-reference) | `05ac94d4211f` | — | — | orphan lane |

@@ -24,7 +24,7 @@ FELO is one provider among peers. Every cadence class above is a first-class fre
 | Felo | `ox-alpha` LLM | trial | documented free-trial model page | catalog + invocation outcome |
 | OpenRouter | `:free` suffix models | catalog | $0 listed price | `/v1/models` pricing |
 | OpenRouter | `stealth/ox-alpha` | trial | historically $0/M; watch deadline 2026-08-24 was **observe-until-change** | live catalog |
-| Hugging Face | router free/zero models | catalog | only when poll classifies free | `HF_TOKEN` + router `/v1/models` |
+| Hugging Face | router free/zero models | catalog | only when poll classifies free | one of the configured Hugging Face secret names + router `/v1/models` |
 | OmniRoute | catalog $0 | catalog | only when poll classifies free | `OMNI_API_KEY` + `/v1/models` |
 | Gemini | soft budgets | hourly/daily | rotation YAML + quota-gate | `gemini-quota-gate` skip vs proceed |
 | GitHub Actions | public repo minutes | monthly | platform entitlement | Actions usage API; not a model route |

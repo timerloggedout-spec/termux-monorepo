@@ -1,0 +1,141 @@
+name: Lane matrix recursive sweep
+
+# Recurring inventory that age-buckets open PRs into PROMOTE/WAIT/HOLD/EXTRACT/OBSERVE
+# and writes docs/ops/generated/lane-matrix-status.{json,md}.
+# Optional debounced pulse on issue #175.
+#
+# Does NOT merge, close, rebase, or force-push.
+# Complements agent-continuous-ops (Jules), merge-promotion-queue (candidates),
+# and agent-ecc-tools-ops matrix-cycle (ECC-only).
+#
+# Agent-Identity: Grok (Administrator)
+
+on:
+  schedule:
+    # Every 6 hours — recursive progress surface
+    - cron: '11 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      comment_175:
+        description: 'Post debounced pulse on #175'
+        required: false
+        default: true
+        type: boolean
+      force_comment:
+        description: 'Ignore #175 debounce'
+        required: false
+        default: false
+        type: boolean
+      commit_artifacts:
+        description: 'Commit generated status to master if changed'
+        required: false
+        default: true
+        type: boolean
+
+permissions: {}
+
+concurrency:
+  group: lane-matrix-sweep
+  cancel-in-progress: false
+
+jobs:
+  sweep:
+    name: age-audit + lane inventory
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: master
+          fetch-depth: 1
+          persist-credentials: true
+
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: '3.12'
+
+      - name: Unit self-check
+        run: |
+          set -euo pipefail
+          python3 -m py_compile scripts/ops/lane_matrix_sweep.py
+          python3 - <<'PY'
+          from scripts.ops.lane_matrix_sweep import classify_pr, _age_bucket
+          from datetime import datetime, timezone
+          now = datetime(2026, 9, 21, tzinfo=timezone.utc)
+          assert _age_bucket(46) == "ancient"
+          assert _age_bucket(1) == "fresh"
+          sample = {
+              "number": 432,
+              "title": "feat(ml): wholesale",
+              "user": {"login": "timerloggedout-spec"},
+              "draft": False,
+              "base": {"ref": "master", "sha": "abc"},
+              "head": {"ref": "x", "sha": "def"},
+              "mergeable_state": "dirty",
+              "changed_files": 120,
+              "created_at": "2026-09-05T00:00:00Z",
+              "html_url": "https://example.test/432",
+          }
+          row = classify_pr(sample, "deadbeef", now)
+          assert row["lane"] == "EXTRACT", row
+          print("self-check ok")
+          PY
+
+      - name: Run lane-matrix sweep
+        id: sweep
+        env:
+          GITHUB_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          ARGS=(--json-out docs/ops/generated/lane-matrix-status.json --md-out docs/ops/generated/lane-matrix-status.md)
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            if [ "${{ github.event.inputs.comment_175 }}" = "true" ]; then
+              ARGS+=(--comment-175)
+            fi
+            if [ "${{ github.event.inputs.force_comment }}" = "true" ]; then
+              ARGS+=(--force-comment)
+            fi
+          else
+            # schedule always attempts debounced #175 pulse
+            ARGS+=(--comment-175)
+          fi
+          python3 scripts/ops/lane_matrix_sweep.py "${ARGS[@]}"
+          {
+            echo '## Lane matrix sweep'
+            echo
+            head -n 40 docs/ops/generated/lane-matrix-status.md
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit generated artifacts to master
+        if: |
+          always() &&
+          (github.event_name == 'schedule' || github.event.inputs.commit_artifacts == 'true')
+        run: |
+          set -euo pipefail
+          git add docs/ops/generated/lane-matrix-status.json docs/ops/generated/lane-matrix-status.md
+          if git diff --cached --quiet; then
+            echo 'No lane-matrix artifact delta.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'ops(lane-matrix): refresh generated status from recursive sweep' \
+            -m 'Agent-Identity: GitHub Actions lane-matrix-sweep' \
+            -m 'Observer only — dual-gate remains promote authority.'
+          git push origin HEAD:master
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: lane-matrix-status-${{ github.run_id }}
+          path: |
+            docs/ops/generated/lane-matrix-status.json
+            docs/ops/generated/lane-matrix-status.md
+          if-no-files-found: ignore
+          retention-days: 30

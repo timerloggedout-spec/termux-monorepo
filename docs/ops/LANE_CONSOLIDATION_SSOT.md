@@ -1,6 +1,6 @@
 # lane-consolidation-ssot — Master Coordination & Production Improvements Map
 
-**Date:** 2026-09-14
+**Date:** 2026-09-20
 **Status:** ACTIVE
 **Orchestration Profile:** Grok / Jules Automated Operations
 **Authority Level:** Production Consolidated SSOT
@@ -12,9 +12,9 @@
 To maximize return on investment (ROI) and maintain impeccable repository hygiene, this Single Source of Truth (SSOT) consolidates active and closed development lanes, aligns timing quotas and cooldowns, and maps open/closed pull requests and issues to clear, insulated scopes. Work tracked under `Implements: RL-19`.
 
 ### Core Targets
-- **Zero overlapping work-areas:** Delineate exact folder ownership to avoid multi-agent merge conflicts.
-- **Quota resilience:** Maximize utilization of free-tier AI pathways (Omni, OpenRouter, Gemini) without hitting hard rate limits (429).
-- **Consolidated dispatch pipeline:** Ensure all local command-line interfaces and background orchestrators map through config-rooted endpoints, enforcing strict privilege controls (Sentinel 0o600/0o700 limits).
+- **Zero overlapping work-areas:** Delineate exact folder ownership across the five Development Lanes to avoid multi-agent merge conflicts.
+- **Quota resilience & cooldown optimization:** Maximize utilization of free-tier AI pathways (Omni, OpenRouter, Gemini) without hitting hard rate limits (429) using Schema v2 disposition model.
+- **Consolidated dispatch pipeline:** Ensure all local command-line interfaces and background orchestrators map through config-rooted endpoints, enforcing strict privilege controls (Sentinel `0o600` file / `0o700` directory limits).
 
 ---
 
@@ -68,6 +68,7 @@ Model routing is controlled via `scripts/model_router.py` using dynamic ELO-base
 #### B. Agent Review Auto-Jules (`agent-review-auto-jules.yml`)
 - **Summon Debounce Window:** `20 minutes` per PR. Ensures Jules is not double-summoned by rapid succession review comments.
 - **Trigger Profiles:** Runs on any non-approved `pull_request_review` or review/issue comment created by a Bot (except our own markers).
+- **ACK Classification:** Checks Schema v2 disposition (`ack_pending` / `quota_cooldown`) before posting `@jules` summons to prevent premature runs on bot acknowledgement comments.
 
 #### C. Continuous Agent Ops Sweep (`agent-continuous-ops.yml`)
 - **Schedule Interval:** Every `2 hours` (scheduled cron: `17 */2 * * *`).
@@ -76,13 +77,7 @@ Model routing is controlled via `scripts/model_router.py` using dynamic ELO-base
 - **Sweep Capacity Cap:** Max `8` PRs processed per scheduled run (hard limit `20`) to respect API rate limits and quotas.
 
 ### 2.3 Dynamic Response Lags & Lag Indexing (PR #156)
-As merged in PR #156, the agent continuous operations workflow utilizes `scripts/ci/calculate_lag_index.py` to compile a historical response time lag index (`docs/ops/response_time_lag_index.json`), distinguishing between message acknowledgment ("I'm working on it") and actual programmatic responses to adaptively schedule and jump start stuck PRs.
-
-*Running locally/offline. Fallback defaults applied.*
-
-| PR/Issue | Message Response Lag | Programmatic Response Lag | Status |
-|---|---|---|---|
-| Default Fallback | 1.5 hours | 3.0 hours | Active |
+As merged in PR #156 and upgraded in Schema v2, the agent continuous operations workflow utilizes `scripts/ci/calculate_lag_index.py` to compile a historical response time lag index (`docs/ops/response_time_lag_index.json`), classifying thread comments into explicit dispositions (`summon`, `ack_pending`, `quota_cooldown`, `real_review`, `programmatic`) to adaptively schedule and jumpstart stuck PRs while ignoring non-actionable bot promises.
 
 ---
 
@@ -90,19 +85,17 @@ As merged in PR #156, the agent continuous operations workflow utilizes `scripts
 
 Based on live GitHub tracking and active repository branches, open and closed items are consolidated into clear development lanes.
 
-### 3.1 Open Pull Requests (Live Audit)
-1. **PR #149** (`ops(pipes): review-signal alignment docs + disposition matrix`): Focuses on aligning review signals and continuous-ops logic.
-2. **PR #148** (`ops(jules): context_key persistence + continue-only auto-jules`): Adds programmatic context and dual-quota gating limits (3 concurrent, 15/24 hours rolling) using cached context stores.
-3. **PR #147** (`Programmatic session management via Actions Workflows`): Wire automatic context tracking for Jules.
-4. **PR #143** (`Integrate MCP Agent Mail Coordination Layer in GitHub Actions`): Rust-based agent mailbox coordination in workflows.
-5. **PR #142** (`⚡ Bolt: Optimize telemetry parsing with state-tracking and seek/tell`): Optimizes real-time dashboard reading performance.
-6. **PR #141** (`🛡️ Sentinel: Fix local privilege restrictions and prevent symlink hijacking`): Security hardening of permission walkers.
-7. **PR #140** (`🎨 Palette: Stateful & Reactive PWA UX with Manual Vault Refresh`): Reactive web UI state for Commingle Swarm.
-8. **PR #137** (`feat(ci): integrate DeepSeek v4-Pro CI with peer routing`): Plumbs reverse-engineered web-wrapper and peer routes.
+### 3.1 Open & Superseded Pull Requests
+1. **PR #149** (`ops(pipes): review-signal alignment docs + disposition matrix`): Open (Grok) — aligns lag index disposition & PR review signals.
+2. **PR #148** (`ops(jules): context_key persistence + continue-only auto-jules`): Open (Jules) — dual-quota gating limits (3 concurrent, 15/24 hours rolling).
+3. **PR #147** (`Programmatic session management via Actions Workflows`): Open — automated context tracking for Jules.
+4. **PR #143** (`Integrate MCP Agent Mail Coordination Layer in GitHub Actions`): Merged via PR #203 — Rust-based agent mailbox coordination in workflows.
+5. **PR #142** (`⚡ Bolt: Optimize telemetry parsing with state-tracking and seek/tell`): Closed / Superseded by PR #187 (AUDIT-001).
+6. **PR #141** (`🛡️ Sentinel: Fix local privilege restrictions and prevent symlink hijacking`): Closed / Superseded by PR #186 (AUDIT-002).
+7. **PR #140** (`🎨 Palette: Stateful & Reactive PWA UX with Manual Vault Refresh`): Closed / Superseded by PR #165 & PR #193 (AUDIT-003).
+8. **PR #137** (`feat(ci): integrate DeepSeek v4-Pro CI with peer routing`): Plumbs reverse-engineered web-wrapper and peer routes with soft skip handling.
 9. **PR #135** (`📝 CodeRabbit Chat: Align OpenRouter Routing with Supported Models`): Adjusts OpenRouter free model catalogs.
-10. **PR #133** (`Diagnose Issue #129 and Verify Codebase Integrity`): Checks telemetry logs and system map.
-11. **PR #131** (`feat(multi-agent): implement MoneyBall agent roster`): Team roster bidding/betting arena algorithms.
-12. **PR #126** (`📖 Linguist: optimize agentic communication compiler`): CedrLang O(N) translation and markdown compression.
+10. **PR #131** (`feat(multi-agent): implement MoneyBall agent roster`): Merged into `src/team_manager.py` (AUDIT-006).
 
 ### 3.2 Active Issue Threads & Alignment
 - **Issue #59** (`🚨 CRITICAL: GitHub Actions Workflow Failures`): Resolves Gemini free-tier daily exhaustion via `continue-on-error: true`.
@@ -110,10 +103,10 @@ Based on live GitHub tracking and active repository branches, open and closed it
 - **Issue #86** (`Rate Limits and Model Rotations Optimizations`): Elevated model router budgets (Operator 2026-08-10).
 - **Issue #146** (`ops(pipes): Align review disposition`): Maps directly to PR #149 signal alignment.
 - **Issue #145** (`ops(jules): Programmatic session management`): Maps directly to PR #148 context keys.
-- **Issue #130** (`Model Performance diagnostics`): Addressed by Bolt's telemetry parsing optimizations (state-tracking + seek/tell).
-- **Issue #129** (`Development Teams & Emerging Tech Research`): Addressed by MoneyBall betting arena (PR #131).
+- **Issue #130** (`Model Performance diagnostics`): Addressed by Bolt's telemetry parsing optimizations (state-tracking + seek/tell, PR #187).
+- **Issue #129** (`Development Teams & Emerging Tech Research`): Addressed by MoneyBall betting arena (PR #131 / `src/team_manager.py`).
 - **Issue #124** (`Workflows @ call; received`): Tracks pending notifications during long-running GHA orchestrations.
-- **Issue #117** (`Agent2Agent Comms Proposal`): Solved by MCP Agent Mail composite GHA mailbox actions.
+- **Issue #117** (`Agent2Agent Comms Proposal`): Solved by MCP Agent Mail composite GHA mailbox actions (PR #203).
 - **Issue #110** (`Nested Searches`): Powered by Virtual FTS5 tables (`messages_fts` in `local_repo.db`).
 - **Issue #109** (`DeepSeek v4-Pro integration`): Tracked in PR #137 CI pipeline.
 
@@ -170,7 +163,7 @@ To keep work highly organized, all development is segregated into five independe
 - **Active Agent:** MoneyBall Scout / Betting Arena.
 
 ### Lane 5: Peer Routing, Context, & Workflows (Grok / Jules)
-- **Primary Scope:** `scripts/model_router.py`, `agent-review-auto-jules.yml`, `peer-review-orchestrator.yml`, `agent-continuous-ops.yml`.
+- **Primary Scope:** `scripts/model_router.py`, `agent-review-auto-jules.yml`, `peer-review-orchestrator.yml`, `agent-continuous-ops.yml`, `calculate_lag_index.py`.
 - **Core Guardrails:**
   - To prevent import-time crashes on environments lacking `rich` or third-party curl binaries (e.g., Termux NDK), CLI entrypoints MUST wrap checks in try-except fallbacks, and tests MUST handle gracefully.
   - Fallbacks for `curl_cffi` MUST override requests `__init__` and strip out custom `impersonate` keyword arguments.
@@ -212,13 +205,13 @@ To ensure clear scope boundaries and prevent unneeded re-work, all issues, PRs, 
 | **#130 / PR #142** | Telemetry parsing performance optimizations | Lane 1: Performance | MERGED via #187 | PR #142 closed as superseded (AUDIT-001) |
 | **#141** | Sentinel local privilege and symlink safety | Lane 2: Security | MERGED via #186 | PR #141 closed as superseded (AUDIT-002) |
 | **#154** | Linguist CedrLang v2 compression overhaul | Lane 1: Performance | MERGED via #196 | PR #154 closed as superseded (AUDIT-003) |
-| **#129 / PR #131** | MoneyBall agent roster & betting arena | Lane 4: Multi-Agent | MERGED | Built into `src/team_manager.py` |
-| **#117 / PR #143** | MCP Agent Mail coordination layer | Lane 4: Multi-Agent | MERGED via #203| Composite action active in `.github/actions/mcp-agent-mail/` |
+| **#129 / PR #131** | MoneyBall agent roster & betting arena | Lane 4: Multi-Agent | MERGED | Built into `src/team_manager.py` (AUDIT-006) |
+| **#117 / PR #143** | MCP Agent Mail coordination layer | Lane 4: Multi-Agent | MERGED via #203| Composite action active in `.github/actions/mcp-agent-mail/` (AUDIT-007) |
 
 ---
 
 *Consolidated & Approved by Grok Orchestration Engine (xAI) on behalf of the Termux Monorepo Operators, 2026.*
-*Audit Verified by Jules Agent - 2026-09-12 (Implements: RL-19).*
+*Audit Verified by Jules Agent - 2026-09-20 (Implements: RL-19).*
 
 ## Current Work & Dynamic Response Lags
 

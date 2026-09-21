@@ -81,7 +81,9 @@ jobs:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           FELO_AI_API: ${{ secrets.FELO_AI_API }}
           OMNI_API_KEY: ${{ secrets.OMNI_API_KEY }}
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HUGGINGFACE_TOKEN: ${{ secrets.HUGGINGFACE_TOKEN }}
+          HUGGING_FACE_HUB_TOKEN: ${{ secrets.HUGGING_FACE_HUB_TOKEN }}
+          HF_API_TOKEN: ${{ secrets.HF_API_TOKEN }}
         run: python3 scripts/provider_model_catalog.py --output /tmp/catalog.json
 
       - name: Select DOE treatment
@@ -113,13 +115,13 @@ jobs:
               provider='felo'; rows=[r for r in d['models'] if r['provider']==provider and r['id']=='ox-alpha' and free(r)]; variant='adversarial-c'; task_role='adversarial-review'; hypothesis='An adversarial reviewer prompt exposes orchestration confounders that a same-task treatment may miss.'
               prompt=f'Manager={manager}. Cohort={cohort}. Trial={trial}. Treatment=C. Act as a skeptical experiment scientist. Analyze issue #337, actively search for confounders in simultaneous LLM testing, attribution, scoring, and rollback protection. Give a falsifiable improvement and a validation test.'
           elif lane=='d-omni-peer':
-              provider='omni'; rows=[{'id':'auto'}]; variant='synthesis-d'; task_role='integration-manager'; hypothesis='An integration-manager treatment can define evidence gates that prevent speed from outranking correctness across lanes.'
+              provider='omni'; rows=[r for r in d['models'] if r['provider']==provider and free(r)]; variant='synthesis-d'; task_role='integration-manager'; hypothesis='An integration-manager treatment can define evidence gates that prevent speed from outranking correctness across lanes.'
               prompt=f'Manager={manager}. Cohort={cohort}. Trial={trial}. Treatment=D. Act as the integration manager. Analyze issue #337 and propose how simultaneous model lanes should be compared without rewarding speed over correctness. Define the minimum evidence required to promote or cull a manager.'
               if missing_secret('omni'): rows=[]; eligible='false'; skip_reason='OMNI_API_KEY is not available to this run; do not emit a fake Omni lane'
           else:
               provider='huggingface'; rows=[r for r in d['models'] if r['provider']==provider and free(r)]; variant='hf-provider-umbrella'; task_role='provider-umbrella-control'; hypothesis='Hugging Face Inference Providers provides a single-token multi-provider route whose provider selection can be measured independently from OpenRouter and Felo.'
               prompt=f'Manager={manager}. Cohort={cohort}. Trial={trial}. Treatment=E. Analyze issue #337 using Hugging Face Inference Providers as a provider-umbrella control. Identify one correctness risk, one routing/provider-selection consideration, and one validation test. Do not fabricate repository access.'
-              if missing_secret('huggingface'): rows=[]; eligible='false'; skip_reason='HF_TOKEN is not available to this run; do not emit a fake Hugging Face lane'
+              if missing_secret('huggingface'): rows=[]; eligible='false'; skip_reason='no configured Hugging Face credential name is available to this run; do not emit a fake Hugging Face lane'
           if not rows:
               eligible='false'
               if lane=='a-ox-felo': skip_reason=skip_reason or 'no dynamically observed Felo OX Alpha free-trial candidate; do not substitute a different model'
@@ -137,16 +139,14 @@ jobs:
           print(json.dumps({'lane':lane,'trial':trial,'provider':provider,'model':model or 'SKIP','variant':variant,'manager':manager,'eligible':eligible,'max_tokens':max_tokens,'sequence_slot':sequence_slot,'hypothesis':hypothesis,'skip_reason':skip_reason},sort_keys=True))
           PY
 
-      - name: Invoke lane
-        id: invoke
-        if: steps.lane.outputs.eligible == 'true'
+      - name: Invoke Felo lane
+        if: steps.lane.outputs.eligible == 'true' && steps.lane.outputs.provider == 'felo'
         uses: ./.github/actions/http-llm-invoke
         with:
-          provider: ${{ steps.lane.outputs.provider }}
+          provider: felo
           model: ${{ steps.lane.outputs.model }}
           role: review
           target_number: ${{ inputs.target_number || '337' }}
-          api_key: ${{ steps.lane.outputs.provider == 'felo' && secrets.FELO_AI_API || steps.lane.outputs.provider == 'openrouter' && secrets.OPENROUTER_API_KEY || steps.lane.outputs.provider == 'huggingface' && secrets.HF_TOKEN || secrets.OMNI_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           prompt: ${{ steps.lane.outputs.prompt }}
@@ -154,6 +154,58 @@ jobs:
           prompt_variant: ${{ steps.lane.outputs.variant }}
           max_tokens: ${{ steps.lane.outputs.max_tokens }}
           post_comment: 'false'
+          api_key: ${{ secrets.FELO_AI_API }}
+
+      - name: Invoke OpenRouter lane
+        if: steps.lane.outputs.eligible == 'true' && steps.lane.outputs.provider == 'openrouter'
+        uses: ./.github/actions/http-llm-invoke
+        with:
+          provider: openrouter
+          model: ${{ steps.lane.outputs.model }}
+          role: review
+          target_number: ${{ inputs.target_number || '337' }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          prompt: ${{ steps.lane.outputs.prompt }}
+          experiment_id: ${{ steps.lane.outputs.experiment_id }}
+          prompt_variant: ${{ steps.lane.outputs.variant }}
+          max_tokens: ${{ steps.lane.outputs.max_tokens }}
+          post_comment: 'false'
+          api_key: ${{ secrets.OPENROUTER_API_KEY }}
+
+      - name: Invoke OmniRoute lane
+        if: steps.lane.outputs.eligible == 'true' && steps.lane.outputs.provider == 'omni'
+        uses: ./.github/actions/http-llm-invoke
+        with:
+          provider: omni
+          model: ${{ steps.lane.outputs.model }}
+          role: review
+          target_number: ${{ inputs.target_number || '337' }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          prompt: ${{ steps.lane.outputs.prompt }}
+          experiment_id: ${{ steps.lane.outputs.experiment_id }}
+          prompt_variant: ${{ steps.lane.outputs.variant }}
+          max_tokens: ${{ steps.lane.outputs.max_tokens }}
+          post_comment: 'false'
+          api_key: ${{ secrets.OMNI_API_KEY }}
+
+      - name: Invoke Hugging Face lane
+        if: steps.lane.outputs.eligible == 'true' && steps.lane.outputs.provider == 'huggingface'
+        uses: ./.github/actions/http-llm-invoke
+        with:
+          provider: huggingface
+          model: ${{ steps.lane.outputs.model }}
+          role: review
+          target_number: ${{ inputs.target_number || '337' }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          prompt: ${{ steps.lane.outputs.prompt }}
+          experiment_id: ${{ steps.lane.outputs.experiment_id }}
+          prompt_variant: ${{ steps.lane.outputs.variant }}
+          max_tokens: ${{ steps.lane.outputs.max_tokens }}
+          post_comment: 'false'
+          api_key: ${{ secrets.HUGGINGFACE_TOKEN || secrets.HUGGING_FACE_HUB_TOKEN || secrets.HF_API_TOKEN }}
 
       - name: Write lane manifest
         if: always()

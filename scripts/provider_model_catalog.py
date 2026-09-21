@@ -27,7 +27,10 @@ SECRETS = {
     "openrouter": "OPENROUTER_API_KEY",
     "felo": "FELO_AI_API",
     "omni": "OMNI_API_KEY",
-    "huggingface": "HF_TOKEN",
+    "huggingface": "HUGGINGFACE_TOKEN",
+}
+SECRET_ALIASES = {
+    "huggingface": ("HUGGINGFACE_TOKEN", "HUGGING_FACE_HUB_TOKEN", "HF_API_TOKEN"),
 }
 DOCUMENTED_TRIAL_MODELS = {
     ("felo", "ox-alpha"): {
@@ -85,6 +88,17 @@ DOCUMENTED_ENTITLEMENTS = {
         }
     ],
 }
+
+
+def resolve_secret(provider: str) -> tuple[str | None, str | None]:
+    names = SECRET_ALIASES.get(provider) or (SECRETS.get(provider),)
+    for name in names:
+        if not name:
+            continue
+        token = os.environ.get(name)
+        if token:
+            return token, name
+    return None, SECRETS.get(provider)
 
 
 def get_json(url: str, token: str | None = None) -> tuple[dict, dict]:
@@ -173,13 +187,12 @@ def main() -> int:
     provider_observations: dict[str, dict] = {}
 
     for provider in providers:
-        env_name = SECRETS.get(provider)
         if provider not in ENDPOINTS:
             errors.append({"provider": provider, "error": "unsupported_provider"})
             continue
-        token = os.environ.get(env_name or "")
+        token, env_name = resolve_secret(provider)
         if not token:
-            errors.append({"provider": provider, "error": "missing_secret", "secret_env": env_name})
+            errors.append({"provider": provider, "error": "missing_secret", "secret_env": env_name, "aliases": list(SECRET_ALIASES.get(provider, ()))})
             continue
         try:
             provider_rows, headers = poll(provider, token)
@@ -187,6 +200,7 @@ def main() -> int:
             provider_observations[provider] = {
                 "catalog_observed_at": observed_at,
                 "response_headers": headers,
+                "secret_env_resolved": env_name,
                 "account_endpoint": None,
                 "account_endpoint_status": "not_documented",
                 "documented_entitlements": DOCUMENTED_ENTITLEMENTS.get(provider, []),

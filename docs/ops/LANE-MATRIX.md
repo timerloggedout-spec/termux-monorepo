@@ -1,8 +1,9 @@
 # LANE-MATRIX (living SSOT)
 
-**Session:** 2026-09-20 21:00 PDT  
+**Session:** 2026-09-20 23:09 PDT  
 **Agent-Identity:** Grok (Administrator)  
-**Live master:** `32c2fb4a` — #703 session SSOT after #701 (`ac0ed98c`)  
+**Live master tip:** `2ca852fb` — help-wanted bot refresh after #704 (`8c3cb748`)  
+**Last session SSOT on master:** `8c3cb748` (#704)  
 **Open issues:** 109  
 **Priority hub:** Issue #175
 
@@ -12,6 +13,9 @@ Rewrite this file every admin session. Copilot is optional peer, not a promote g
 
 | SHA | What |
 |-----|------|
+| `2ca852fb` | help-wanted live status refresh 2026-09-21T05:29Z |
+| `69905fcf` | help-wanted follow-up evidence 05:29Z |
+| `8c3cb748` | #704 session LANE-MATRIX 21:00 PDT |
 | `32c2fb4a` | #703 session LANE-MATRIX 20:00 PDT |
 | `ac0ed98c` | #701 session LANE-MATRIX after #700 |
 | `e46fbf00` | #700 session LANE-MATRIX after #679/#693 |
@@ -20,8 +24,8 @@ Rewrite this file every admin session. Copilot is optional peer, not a promote g
 
 ## Dual-gate contract
 
-1. `hygiene + portability gate` SUCCESS
-2. `agentic termux smoke` SUCCESS
+1. `repo gate` (`hygiene + portability`) SUCCESS
+2. `termux smoke` SUCCESS
 3. Vercel rate-limits are **non-gate**
 4. Copilot / CodeRabbit / Qodo / Devin = advisory
 5. GitLab / Mintlify = non-gate
@@ -32,7 +36,8 @@ Rewrite this file every admin session. Copilot is optional peer, not a promote g
 
 | PR | Lane | Why |
 |----|------|-----|
-| #682 | EXTRACT / WAIT | ML keep-alive DAG (#175). Dual-gate SUCCESS on prior head. 130 files. Do not wholesale-merge. Rebase onto `32c2fb4a` before any promote reconsider. Prefer slimmer `ml/pipelines/` child. |
+| #705 | WAIT | Prior 22:19 session SSOT. mergeable_state=unstable vs moving master. Do not YOLO. |
+| #682 | EXTRACT / WAIT | ML keep-alive DAG (#175). 130 files. Do not wholesale-merge. Rebase onto `2ca852fb` / `8c3cb748` before reconsider. Prefer slimmer `ml/pipelines/` child. |
 | #702 | OBSERVE | Gravitee API Management research seed |
 | #684 | HOLD / REBASE | unify Actions cadence; dirty vs tip |
 | #685 | OBSERVE | arrhythmic-zero-token-search proposal |
@@ -60,7 +65,8 @@ Rewrite this file every admin session. Copilot is optional peer, not a promote g
 
 ## Next cycle
 
-1. Leave #682 EXTRACT until sliced or dual-gate re-proven on `32c2fb4a` with a smaller surface.
+1. Leave #682 EXTRACT until sliced or dual-gate re-proven on tip with a smaller surface.
 2. Leave ML wholesale family EXTRACT-only.
-3. Pulse #175 once per session (done 21:00 PDT, comment 5755209367).
-4. Stay busy on disjoint SSOT / skill upgrades while CI waits. No HITL YOLO merge.
+3. Pulse #175 once per session (this session 23:09 PDT).
+4. Leave #705 WAIT; prefer this tip-based rewrite over merging unstable session PRs.
+5. Stay busy on disjoint SSOT / skill upgrades while CI waits. No HITL YOLO merge.

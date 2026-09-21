@@ -8,12 +8,26 @@ import sys
 import os
 import json
 from pathlib import Path
-from rich.console import Console
-from rich.panel import Panel
-from rich.prompt import Prompt
-
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
+
+try:
+    from rich.console import Console
+    from rich.panel import Panel
+    from rich.prompt import Prompt
+    console = Console()
+except ModuleNotFoundError:
+    class DummyConsole:
+        def print(self, *args, **kwargs): pass
+    class DummyPanel:
+        @classmethod
+        def fit(cls, *args, **kwargs): return "panel"
+    class DummyPrompt:
+        @classmethod
+        def ask(cls, *args, **kwargs): return "exit"
+    console = DummyConsole()
+    Panel = DummyPanel
+    Prompt = DummyPrompt
 
 from core.api import (
     get_token,
@@ -26,7 +40,6 @@ from core.api import (
     export_json,
 )
 
-console = Console()
 
 
 def print_banner():
@@ -167,10 +180,15 @@ def cmd_export(args):
         content = export_json(token, session_id)
 
     if args.output:
+        out_path = Path(args.output)
+        if out_path.is_symlink() or (out_path.parent.exists() and out_path.parent.is_symlink()):
+            console.print(f"[red]Output target cannot be a symlink: {args.output}[/]")
+            raise ValueError("Symlink targets are not permitted for exports")
         with open(args.output, "w") as f:
             f.write(content)
         try:
-            os.chmod(args.output, 0o600)
+            if not out_path.is_symlink():
+                os.chmod(args.output, 0o600)
         except Exception:
             pass
         console.print(f"[green]Exported to {args.output}[/]")

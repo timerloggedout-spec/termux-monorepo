@@ -178,6 +178,11 @@ def context_signals(tool: Mapping[str, Any]) -> TDQSContextSignals:
     coverage = round(params_with_descriptions / param_count * 100) if param_count else 100
 
     required_fields, depth, unions, nested = _walk_required(schema, schema or {})
+    nested = any(
+        isinstance(value, Mapping)
+        and (value.get("type") == "object" or isinstance(value.get("properties"), Mapping))
+        for value in properties.values()
+    ) or nested
     invocation_cost = required_fields + 2 * max(0, depth - 1) + 2 * unions
 
     output_schema = tool.get("outputSchema")

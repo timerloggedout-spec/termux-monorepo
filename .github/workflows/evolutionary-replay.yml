@@ -1,0 +1,40 @@
+name: Evolutionary Replay Tests
+
+on:
+  pull_request:
+    paths:
+      - "scripts/agent_evolution/**"
+      - "tests/agent_evolution/**"
+      - ".agents/skills/evolutionary-replay/**"
+      - "docs/ops/EVOLUTIONARY-REPLAY.md"
+      - "docs/ops/PAPER2AGENT.md"
+  push:
+    branches: [master]
+    paths:
+      - "scripts/agent_evolution/**"
+      - "tests/agent_evolution/**"
+      - ".agents/skills/evolutionary-replay/**"
+      - "docs/ops/EVOLUTIONARY-REPLAY.md"
+      - "docs/ops/PAPER2AGENT.md"
+
+permissions:
+  contents: read
+
+jobs:
+  unit:
+    name: replay simulator unit tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@e797f83bcb11b83ae66b0230d6156d7c80228e7c # v6.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Run replay tests
+        run: python -m unittest discover -s tests/agent_evolution -p 'test_*.py' -v

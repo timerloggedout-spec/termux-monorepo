@@ -19,9 +19,26 @@ TIMEZONE_RE = re.compile(r"""^\s*timezone:\s*['"]?([^'"\s]+)['"]?\s*$""")
 GROUP_RE = re.compile(r"""^\s+group:\s*(.+?)\s*(?:#.*)?$""")
 CANCEL_RE = re.compile(r"""^\s+cancel-in-progress:\s*(true|false)\s*(?:#.*)?$""")
 
-def event_present(text: str, event: str) -> bool:
-    return bool(re.search(rf"(?m)^\s{{2}}{re.escape(event)}:\s*(?:#.*)?$", text))
+def strip_yaml_comment(line: str) -> str:
+    """Strip an unquoted YAML comment without touching # inside quotes."""
+    quote = None
+    escaped = False
+    for i, ch in enumerate(line):
+        if escaped:
+            escaped = False
+            continue
+        if ch == "\\" and quote == '"':
+            escaped = True
+            continue
+        if ch in ("'", '"'):
+            quote = None if quote == ch else (ch if quote is None else quote)
+        elif ch == "#" and quote is None and (i == 0 or line[i - 1].isspace()):
+            return line[:i].rstrip()
+    return line.rstrip()
 
+def event_present(text: str, event: str) -> bool:
+    active = "\n".join(strip_yaml_comment(line) for line in text.splitlines())
+    return bool(re.search(rf"(?m)^\s{{2}}{re.escape(event)}:\s*$", active))
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--json", action="store_true")
@@ -38,7 +55,8 @@ def main() -> int:
         in_schedule = False
         schedule_indent = 0
         for i, line in enumerate(lines):
-            line = strip_yaml_comment(line)\n            if re.match(r"^  schedule:\s*$", line):
+            line = strip_yaml_comment(line)
+            if re.match(r"^  schedule:\s*$", line):
                 in_schedule, schedule_indent = True, 2
                 continue
             if in_schedule:
@@ -72,8 +90,9 @@ def main() -> int:
 
         events = {e: event_present(text, e) for e in ("pull_request", "pull_request_target", "issues", "issue_comment")}
         response_event = any(events.values())
-        group = GROUP_RE.search(text)
-        cancel = CANCEL_RE.search(text)
+        active_text = "\n".join(strip_yaml_comment(line) for line in lines)
+        group = GROUP_RE.search(active_text)
+        cancel = CANCEL_RE.search(active_text)
         if response_event and not re.search(r"(?m)^\s{0,2}concurrency:\s*$", active_text):
             findings.append(Finding("error", str(path.relative_to(ROOT)), "event-concurrency", "issue/PR response workflow needs an explicit concurrency group"))
         if response_event and group and not any(k in group.group(1) for k in ("github.event.issue.number", "github.event.pull_request.number")):

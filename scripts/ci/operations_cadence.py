@@ -34,6 +34,7 @@ def main() -> int:
         text = path.read_text(encoding="utf-8")
         lines = text.splitlines()
         schedules = []
+        generated_gh_aw = "# gh-aw-metadata:" in text
         in_schedule = False
         schedule_indent = 0
         for i, line in enumerate(lines):
@@ -61,8 +62,10 @@ def main() -> int:
                         tz = tm.group(1)
                         break
                 schedules.append({"cron": cron, "timezone": tz})
-                if tz != "UTC":
+                if tz != "UTC" and not generated_gh_aw:
                     findings.append(Finding("error", str(path.relative_to(ROOT)), "schedule-timezone", f"{cron!r} must declare timezone: UTC"))
+                elif tz != "UTC" and generated_gh_aw:
+                    findings.append(Finding("warning", str(path.relative_to(ROOT)), "generated-schedule-source", f"{cron!r} is compiler-owned by gh-aw; validate the source workflow rather than editing the generated lock file"))
                 minute = cron.split()[0] if cron.split() else ""
                 if minute in {"0", "*"}:
                     findings.append(Finding("warning", str(path.relative_to(ROOT)), "top-of-hour", f"{cron!r} may concentrate load; prefer a staggered minute"))

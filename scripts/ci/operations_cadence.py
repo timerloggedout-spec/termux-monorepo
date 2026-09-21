@@ -14,8 +14,8 @@ class Finding:
     code: str
     message: str
 
-CRON_RE = re.compile(r"""^\s*-\s*cron:\s*['"]([^'"]+)['"]\s*$""")
-TIMEZONE_RE = re.compile(r"""^\s*timezone:\s*['"]?([^'"\s]+)['"]?\s*$""")
+CRON_RE = re.compile(r"""^\s*-\s*cron:\s*['"]([^'"]+)['"]\s*(?:#.*)?$""")
+TIMEZONE_RE = re.compile(r"""^\s*timezone:\s*['"]?([^'"\s#]+)['"]?\s*(?:#.*)?$""")
 GROUP_RE = re.compile(r"""^\s+group:\s*(.+?)\s*(?:#.*)?$""")
 CANCEL_RE = re.compile(r"""^\s+cancel-in-progress:\s*(true|false)\s*(?:#.*)?$""")
 

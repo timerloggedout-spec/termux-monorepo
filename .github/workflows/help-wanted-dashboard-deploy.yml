@@ -1,0 +1,153 @@
+name: help-wanted-dashboard-deploy
+
+# Site map: marketing (/) ≠ ops (/help-wanted/) ≠ project hub (/termux-monorepo/)
+# See docs/ops/SITE-MAP.md
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "apps/help-wanted-dashboard/**"
+      - "apps/project-pages-hub/**"
+      - "docs/ops/generated/help-wanted-status.json"
+      - ".github/workflows/help-wanted-dashboard-deploy.yml"
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "pages | user-site | vercel | both | all"
+        required: false
+        default: "all"
+
+concurrency:
+  group: help-wanted-dashboard-deploy
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  enable-pages:
+    name: enable-project-pages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create or update Pages site (branch gh-pages)
+        env:
+          GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          OWNER=timerloggedout-spec
+          REPO=termux-monorepo
+          CODE=$(curl -sS -o /tmp/pages.json -w "%{http_code}" \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/$OWNER/$REPO/pages" || true)
+          echo "GET pages => $CODE"
+          if [ "$CODE" = "404" ]; then
+            curl -sS -X POST \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/$OWNER/$REPO/pages" \
+              -d '{"build_type":"legacy","source":{"branch":"gh-pages","path":"/"}}' || true
+          else
+            curl -sS -X PUT \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/$OWNER/$REPO/pages" \
+              -d '{"build_type":"legacy","source":{"branch":"gh-pages","path":"/"}}' || true
+          fi
+
+  pages:
+    name: publish-gh-pages
+    needs: [enable-pages]
+    if: ${{ github.event_name == 'push' || contains(fromJSON('["pages","both","all",""]'), github.event.inputs.target || 'all') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare project hub (NOT full dashboard twin)
+        run: |
+          mkdir -p _site
+          cp apps/project-pages-hub/index.html _site/index.html
+          touch _site/.nojekyll
+          printf '%s\n' 'Project hub. Canonical ops UI: https://timerloggedout-spec.github.io/help-wanted/' > _site/README.md
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: _site
+          publish_branch: gh-pages
+          force_orphan: true
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com
+          commit_message: "deploy(project-hub): ${{ github.sha }}"
+
+  user-site:
+    name: mirror-user-github-io
+    needs: [pages]
+    if: ${{ github.event_name == 'push' || contains(fromJSON('["user-site","both","all",""]'), github.event.inputs.target || 'all') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare help-wanted subtree (canonical dashboard)
+        run: |
+          mkdir -p _site
+          cp -a apps/help-wanted-dashboard/. _site/
+          if [ -f docs/ops/generated/help-wanted-status.json ]; then
+            mkdir -p _site/data
+            cp docs/ops/generated/help-wanted-status.json _site/data/status.json
+          fi
+          touch _site/.nojekyll
+
+      - name: Mirror to timerloggedout-spec.github.io/help-wanted
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+          external_repository: timerloggedout-spec/timerloggedout-spec.github.io
+          publish_dir: _site
+          destination_dir: help-wanted
+          publish_branch: main
+          keep_files: true
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com
+          commit_message: "deploy(help-wanted): ${{ github.sha }}"
+
+      - name: User-site URL
+        run: |
+          echo "### Canonical ops dashboard" >> "$GITHUB_STEP_SUMMARY"
+          echo "https://timerloggedout-spec.github.io/help-wanted/" >> "$GITHUB_STEP_SUMMARY"
+
+  vercel:
+    name: vercel-prod
+    if: ${{ github.event_name == 'push' || contains(fromJSON('["vercel","both","all"]'), github.event.inputs.target || 'all') }}
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - name: Sync status snapshot
+        run: |
+          mkdir -p apps/help-wanted-dashboard/data
+          if [ -f docs/ops/generated/help-wanted-status.json ]; then
+            cp docs/ops/generated/help-wanted-status.json apps/help-wanted-dashboard/data/status.json
+          fi
+      - name: Install Vercel CLI
+        run: npm i -g vercel@39
+      - name: Deploy to Vercel (production)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+        run: |
+          set -euo pipefail
+          if [ -z "${VERCEL_TOKEN:-}" ]; then
+            echo "::warning::VERCEL_TOKEN missing — skip"
+            exit 0
+          fi
+          ORG="${VERCEL_ORG_ID:-team_jKHy7m9xZrvrGP5cAlIMPs3S}"
+          cd apps/help-wanted-dashboard
+          vercel deploy --prod --yes --token="$VERCEL_TOKEN" --scope="$ORG" 2>&1 | tee /tmp/v.txt || true

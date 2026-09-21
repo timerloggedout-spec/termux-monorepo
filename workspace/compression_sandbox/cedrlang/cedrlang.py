@@ -357,63 +357,55 @@ def translate_text_raw(text: str, to_compressed: bool) -> str:
     cb = _sub_cb_comp if to_compressed else _sub_cb_decomp
     return pattern.sub(cb, text)
 
+
 class LinePlaceholderContext:
+    """Stateful context object managing placeholder tracking and pre-bound callback methods.
+
+    Eliminates inner function/lambda closure allocations on every call to translate_line.
+    `__slots__` eliminates instance attribute dictionary allocation overhead.
     """
-    Context object managing placeholder tracking and pre-bound substitution callbacks for line translation.
-    Performance Optimization: Reusing pre-bound method callbacks on a stateful context object avoids
-    per-line inner closure function object allocations (`def add_placeholder`, `def link_repl`, etc.),
-    reducing execution overhead and memory churn during document compilation.
-    """
+
     __slots__ = ("placeholders", "to_compressed")
 
     def __init__(self, to_compressed: bool):
         self.placeholders: List[Tuple[str, str]] = []
         self.to_compressed = to_compressed
 
-    def ph_group0(self, match: re.Match[str]) -> str:
+    def add_placeholder(self, val: str) -> str:
+        ph = f"§§PL_{len(self.placeholders)}§§"
+        self.placeholders.append((ph, val))
+        return ph
+
+    def raw_match_repl(self, match: re.Match[str]) -> str:
         ph = f"§§PL_{len(self.placeholders)}§§"
         self.placeholders.append((ph, match.group(0)))
         return ph
 
     def link_repl(self, match: re.Match[str]) -> str:
-        text, url = match.group(1), match.group(2)
+        text = match.group(1)
+        url = match.group(2)
         translated_text = translate_text_raw(text, self.to_compressed)
-        val = f"[{translated_text}]({url})"
-        ph = f"§§PL_{len(self.placeholders)}§§"
-        self.placeholders.append((ph, val))
-        return ph
+        return self.add_placeholder(f"[{translated_text}]({url})")
 
     def bold_repl_2(self, match: re.Match[str]) -> str:
         text = match.group(1)
         translated_text = translate_text_raw(text, self.to_compressed)
-        val = f"**{translated_text}**"
-        ph = f"§§PL_{len(self.placeholders)}§§"
-        self.placeholders.append((ph, val))
-        return ph
+        return self.add_placeholder(f"**{translated_text}**")
 
     def bold_repl_1(self, match: re.Match[str]) -> str:
         text = match.group(1)
         translated_text = translate_text_raw(text, self.to_compressed)
-        val = f"*{translated_text}*"
-        ph = f"§§PL_{len(self.placeholders)}§§"
-        self.placeholders.append((ph, val))
-        return ph
+        return self.add_placeholder(f"*{translated_text}*")
 
     def bold_repl_under2(self, match: re.Match[str]) -> str:
         text = match.group(1)
         translated_text = translate_text_raw(text, self.to_compressed)
-        val = f"____{translated_text}____"
-        ph = f"§§PL_{len(self.placeholders)}§§"
-        self.placeholders.append((ph, val))
-        return ph
+        return self.add_placeholder(f"____{translated_text}____")
 
     def bold_repl_under1(self, match: re.Match[str]) -> str:
         text = match.group(1)
         translated_text = translate_text_raw(text, self.to_compressed)
-        val = f"_{translated_text}_"
-        ph = f"§§PL_{len(self.placeholders)}§§"
-        self.placeholders.append((ph, val))
-        return ph
+        return self.add_placeholder(f"_{translated_text}_")
 
 
 def translate_line(line: str, to_compressed: bool) -> str:
@@ -427,10 +419,10 @@ def translate_line(line: str, to_compressed: bool) -> str:
 
     # Fast-path checks: skip regex passes if special markdown characters are not present in line
     if "`" in line:
-        line = INLINE_CODE_PATTERN.sub(ctx.ph_group0, line)
+        line = INLINE_CODE_PATTERN.sub(ctx.raw_match_repl, line)
 
     if "<" in line:
-        line = HTML_TAG_PATTERN.sub(ctx.ph_group0, line)
+        line = HTML_TAG_PATTERN.sub(ctx.raw_match_repl, line)
 
     if "[" in line:
         line = LINK_PATTERN.sub(ctx.link_repl, line)
@@ -443,11 +435,13 @@ def translate_line(line: str, to_compressed: bool) -> str:
         line = BOLD_PATTERN_UNDER2.sub(ctx.bold_repl_under2, line)
         line = BOLD_PATTERN_UNDER1.sub(ctx.bold_repl_under1, line)
 
-    if "/" in line or "." in line or "~" in line:
-        line = PATH_REGEX.sub(ctx.ph_group0, line)
+    # Fast-path check for file paths and filenames (e.g. script.py, /path/to/file.js)
+    if "/" in line or "\\" in line or "~" in line or "." in line:
+        line = PATH_REGEX.sub(ctx.raw_match_repl, line)
 
-    if "." in line:
-        line = DECIMAL_PATTERN.sub(ctx.ph_group0, line)
+    # Fast-path check for decimal floating point numbers
+    if "." in line and any(c.isdigit() for c in line):
+        line = DECIMAL_PATTERN.sub(ctx.raw_match_repl, line)
 
     # Perform main translations on the remaining unprotected text
     line = translate_text_raw(line, to_compressed)

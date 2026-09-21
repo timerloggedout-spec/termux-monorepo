@@ -1,29 +1,16 @@
 ---
 name: adaptive-wait
-description: Adaptive WAIT stage for agentic GitHub ops. After any dispatch, commit, rebase, or merge request — re-check jobs/steps/logs/artifacts, do concurrent non-conflicting work, classify stalls, and only promote when dual gates + task outcome are verified. Triggers when waiting on CI, after PR open/update, during /continue cycles, or when operator says wait adaptively. Cross-session SSOT — always load from master, never chat-only.
+description: Adaptive WAIT for agentic GitHub ops. Dual-gate before promote. Stay busy on disjoint work.
 ---
 
-# Skill: adaptive-wait
+Canonical: master `.agents/skills/adaptive-wait/SKILL.md`.
 
-**Owner:** ArchW1z / Grok Administrator  
-**Complements:** `evidence-led-monorepo-ops`, `adaptive-feedback-cycle`, `production-reconciliation`, `review-loop`
+Master HEAD this session: `32c2fb4a`.
+Read `docs/ops/LANE-MATRIX.md` every WAIT cycle.
+Do not treat Copilot review as a promote gate.
+Vercel rate-limit ≠ dual-gate failure.
+#682 EXTRACT/WAIT (130-file keep-alive). Dual-gate was green on prior head; size still blocks wholesale promote.
+Disjoint work this cycle: #703 promote, #175 pulse, LANE-MATRIX rewrite, skill upgrades. No idle YOLO merge.
+AVOID HITL YOLO YEET AUTOAPPROVE.
 
-While one PR's checks run: preserve immutable IDs; work on a disjoint path; do not idle.
-
-Promote only when dual gates success, extract-clean scope, and task outcome verified.
-
-## Failure / stall classes (do not soft-pedal)
-
-| Class | Severity | Notes |
-|-------|----------|-------|
-| **comment-storm** | **FAILURE** | issue_comment / bot / ledger fan-out that cancels useful jobs. Mitigate: concurrency by event_name, `cancel-in-progress: false` on ledgers. Landed #603 on `dc30bf83`. |
-| dual-gate red | FAILURE | Block promote |
-| update-branch-conflict | STALL | Extract-later; do not force dirty |
-| dirty-behind-master | STALL | Rebase/extract from live master |
-| extra-red | FAILURE (non-gate) | Fix root cause |
-
-HEAD after #603: `dc30bf83fc17b394510f99328f7a081b6a64f28c`. #601 ML dirty/behind — WAIT extract.
-
-Session 2026-09-18T17:03Z: merged #603; CodeRabbit `queue: max` rejected (invalid GHA concurrency key).
-
-BIUDL. Agent-Identity: Grok (Administrator)
+Agent-Identity: Grok (Administrator)

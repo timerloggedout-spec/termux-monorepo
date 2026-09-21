@@ -2,17 +2,20 @@
 
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/timerloggedout-spec/termux-monorepo)
 
-<!-- partner-banner:start (edit docs/PARTNERS.md to add a partner; keep this block to four badges + two lines) -->
+<!-- partner-banner:start (edit docs/PARTNERS.md to add a partner; one badge per ACTIVE lane, rows of three — Operator lifted the four-badge cap 2026-09-20) -->
 <p align="center">
-  <a href="https://cellcog.ai/invitation/l19hdRGY9dTh"><img src="https://img.shields.io/badge/Powered_by-CellCog_AI_employees-2e7e7e?style=for-the-badge" alt="Powered by CellCog AI employees"></a>
-  <a href="https://cellcog.ai/invitation/l19hdRGY9dTh"><img src="https://img.shields.io/badge/500_bonus_credits-claim_via_invitation-f5b800?style=for-the-badge" alt="500 bonus credits via invitation"></a>
+  <a href="https://cellcog.ai/invitation/l19hdRGY9dTh"><img src="https://img.shields.io/badge/CellCog-500_bonus_credits-2e7e7e?style=for-the-badge" alt="CellCog AI employees — 500 bonus credits via invitation"></a>
+  <a href="https://manus.im/invitation/5MHU34UJRBOTVC6?utm_source=invitation&utm_medium=social&utm_campaign=system_share"><img src="https://img.shields.io/badge/Manus_AI-invitation-111111?style=for-the-badge" alt="Manus AI invitation"></a>
+  <a href="https://polsia.com/?ref=B5K7S8NL"><img src="https://img.shields.io/badge/Polsia-referral_bonus-7c3aed?style=for-the-badge" alt="Polsia referral bonus"></a>
+  <br>
+  <a href="https://grafana.com/auth/sign-up?refCode=gr8WEigykKjVGTV"><img src="https://img.shields.io/badge/Grafana_Cloud-referral_sign--up-F46800?style=for-the-badge&logo=grafana&logoColor=white" alt="Grafana Cloud referral sign-up"></a>
   <a href="https://termux-monorepo.vercel.app/"><img src="https://img.shields.io/badge/Preview_portal-Vercel_%28WIP%29-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Preview portal on Vercel (work in progress)"></a>
   <a href="https://timerloggedout-spec.github.io/"><img src="https://img.shields.io/badge/Landing_page-GitHub_Pages-1e6fd9?style=for-the-badge&logo=github&logoColor=white" alt="Landing page on GitHub Pages"></a>
 </p>
 
 > **Powered by autonomous AI employees.** This project uses [CellCog](https://cellcog.ai/invitation/l19hdRGY9dTh) AI employees for continuous integration, PR review, and engineering operations. Standing AI workers run across persistent sessions with their own cloud environments, tool execution, and team channels. Sign up through the [community partner invitation](https://cellcog.ai/invitation/l19hdRGY9dTh) to receive **500 bonus credits** on your first purchase. See the [landing page](https://timerloggedout-spec.github.io/) and the [preview portal (WIP)](https://termux-monorepo.vercel.app/).
 >
-> Developer partners are registered in [`docs/PARTNERS.md`](docs/PARTNERS.md); each entry is a badge, one line, and a link, so new lanes (cloud hosting, dev tools, compute) slot in without redesigning this banner.
+> Ecosystem partners — referral, affiliate, and gifted-usage lanes — are registered in [`docs/PARTNERS.md`](docs/PARTNERS.md) (active lanes, pipeline, wallets). Partner links may be affiliate or referral links; new accounts may receive promotional credits, terms apply.
 <!-- partner-banner:end -->
 
 > **ATES attention surface (blocked on good asset).**  

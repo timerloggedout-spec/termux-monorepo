@@ -35,6 +35,16 @@ Chooses a coordinated plan: sequencing, parallelism, waiting, escalation, and cu
 
 Selects an eligible provider/model from the current live catalog. Model IDs are **data**, not architecture. No model should be hardcoded as a permanent special route when it can be selected from catalog state.
 
+### Dependency-phase admission routing
+
+Agentic-Agile dependency waves are **admission evidence**, not an execution-provider choice. The dependency-phase dispatcher must resolve a manager-approved specialist route before creating an execution claim. The route is resolved from the approved specialist allowlist plus `docs/schemas/agent-roster.yaml` capability routing and records a routing envelope before any specialist adapter runs.
+
+The control path is therefore:
+
+`dependency DAG → wave/readiness → manager policy → specialist route → execution adapter → evidence`
+
+A direct `ready → Jules` path is prohibited because Jules is one bounded specialist in the roster, not the manager or universal execution sink. If the selected specialist has no configured execution adapter, an applied dispatch must stop before claiming work rather than silently falling through to Jules.
+
 ### Specialists
 
 Gemini CLI, OpenRouter peers, OmniRoute, Jules, Felo models, and other agents are specialists. Jules is an escalation/specialist worker, not the default sink for every task.

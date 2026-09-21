@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-20  
 **Status:** ACTIVE (feat/refTemplates-research-consolidate)  
-**Directive:** BIUDL · no HITL · YOLO · YEET · AUTOAPPROVE  
+**Directive:** BIUDL · AVOID HITL YOLO MODE YEET AUTOAPPROVE  
 **Owner surface:** timerloggedout-spec/termux-monorepo  
 **Directed at:** Repository development first; complementary Orgs + Enterprise phased until self-sustaining.
 
@@ -111,7 +111,7 @@ Complementary orgs (including Research-Astute and the Enterprise one) integrate 
 
 ---
 
-## 6. Execution order (YOLO / YEET)
+## 6. Execution order (BIUDL continuous / dual-gate)
 
 1. **This document** lands on `feat/refTemplates-research-consolidate`.
 2. Create `refTemplates/00_Index/` + `15_Research_Repo_Templates/jogyo-research-lab/` metadata (SOURCE.txt → Yeachan-Heo/My-Jogyo + preferred fork note).
@@ -119,6 +119,8 @@ Complementary orgs (including Research-Astute and the Enterprise one) integrate 
 4. Wire inventory / integrity into Actions (reuse evidence-led patterns).
 5. When a user fork of My-Jogyo exists and dual-gate is ready → optional `smods/` pin.
 6. Org phase board in `docs/ops/`.
+
+Promote only when dual gates green and task outcome verified. No YOLO / YEET / AUTOAPPROVE.
 
 ---
 
@@ -132,4 +134,4 @@ Complementary orgs (including Research-Astute and the Enterprise one) integrate 
 ---
 
 **Agent-Identity:** Grok (Administrator) · CXO  
-**Style:** BIUDL · adaptive-wait · evidence-led  
+**Style:** BIUDL · AVOID HITL YOLO MODE YEET AUTOAPPROVE · adaptive-wait · evidence-led  

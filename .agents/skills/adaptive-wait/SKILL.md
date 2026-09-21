@@ -5,9 +5,12 @@ description: Adaptive WAIT for agentic GitHub ops. Dual-gate before promote. Sta
 
 Canonical: master `.agents/skills/adaptive-wait/SKILL.md`.
 
-Master HEAD this session: `2e4f59aa` (#707 landed).
+**BIUDL = Broad → Integrate → Validate → Develop → Learn.**
+Fully Continuous Automated Development Evaluation Environment.
+
+Master tip base: `cb995e76`. This cycle: ops/biudl-claude-primary-deprecate-agents-20260921.
 Read `docs/ops/LANE-MATRIX.md` every WAIT cycle.
+Primary entry: **`CLAUDE.md`** (root `AGENTS.md` deprecated redirect for Linguist/Jules only).
 #682 EXTRACT/WAIT (130 files). #684 HOLD.
-#705/#706/#709 SUPERSEDE vs post-#707 tip.
 AVOID HITL YOLO YEET AUTOAPPROVE.
 Agent-Identity: Grok (Administrator)

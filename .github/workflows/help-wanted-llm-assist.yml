@@ -100,69 +100,12 @@ jobs:
       - name: Live catalog select (openrouter|felo|omni)
         id: pick
         if: steps.target.outputs.skip != 'true'
-        env:
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-          FELO_AI_API: ${{ secrets.FELO_AI_API }}
-          OMNI_API_KEY: ${{ secrets.OMNI_API_KEY }}
-          OMNIROUTE_API_KEY: ${{ secrets.OMNIROUTE_API_KEY }}
-        run: |
-          set -euo pipefail
-          # Unify omni env name for catalog script
-          export OMNI_API_KEY="${OMNI_API_KEY:-${OMNIROUTE_API_KEY:-}}"
-          python3 scripts/provider_model_catalog.py \
-            --providers openrouter,felo,omni \
-            --output /tmp/model-catalog/catalog.json || true
-          python3 <<'PY'
-          import json, os, re
-          from pathlib import Path
-          path = Path("/tmp/model-catalog/catalog.json")
-          if not path.exists():
-              print("no catalog")
-              open(os.environ["GITHUB_OUTPUT"], "a").write("skip=true\n")
-              raise SystemExit(0)
-          doc = json.loads(path.read_text())
-          rows = doc.get("models") or []
-          eligible = [
-              r for r in rows
-              if r.get("pricing_classification") == "free_zero_price"
-              or r.get("free_suffix")
-              or r.get("access_classification") == "free_trial"
-          ]
-          # Prefer coding-ish ids, then openrouter free, then any eligible
-          def score(r):
-              mid = (r.get("id") or "").lower()
-              s = 0
-              if any(k in mid for k in ("coder", "code", "qwen", "deepseek", "ox-alpha")):
-                  s += 50
-              if r.get("provider") == "openrouter":
-                  s += 20
-              if r.get("provider") == "felo":
-                  s += 15
-              if r.get("free_suffix") or r.get("pricing_classification") == "free_zero_price":
-                  s += 10
-              return s
-          eligible.sort(key=score, reverse=True)
-          if not eligible:
-              # last resort hard free list (still not MoneyBall)
-              if os.environ.get("OPENROUTER_API_KEY"):
-                  open(os.environ["GITHUB_OUTPUT"], "a").write(
-                      "skip=false\nprovider=openrouter\nmodel=qwen/qwen3-coder:free\n"
-                  )
-                  print("fallback list qwen3-coder:free")
-                  raise SystemExit(0)
-              open(os.environ["GITHUB_OUTPUT"], "a").write("skip=true\n")
-              print("no eligible free models")
-              raise SystemExit(0)
-          top = eligible[0]
-          provider = top["provider"]
-          model = top["id"]
-          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
-              f.write("skip=false\n")
-              f.write(f"provider={provider}\n")
-              f.write(f"model={model}\n")
-          print(f"SELECTED {provider}/{model} score={score(top)} from {len(eligible)} eligible")
-          print(f"catalog_models={len(rows)} errors={len(doc.get('errors') or [])}")
-          PY
+        uses: ./.github/actions/provider-model-catalog
+        with:
+          openrouter-key: ${{ secrets.OPENROUTER_API_KEY }}
+          felo-key: ${{ secrets.FELO_AI_API }}
+          omni-key: ${{ secrets.OMNI_API_KEY }}
+          omniroute-key: ${{ secrets.OMNIROUTE_API_KEY }}
 
       - name: Invoke selected model + prepare comment
         id: invoke

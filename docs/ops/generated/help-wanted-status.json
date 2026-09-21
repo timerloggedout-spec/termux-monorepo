@@ -1,17 +1,26 @@
 {
-  "generated_at": "2026-09-21T04:56:06Z",
+  "generated_at": "2026-09-21T05:29:55Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
-  "receipts": 31,
+  "receipts": 32,
   "kinds": {
     "upstream_pr": 12,
     "claim_skipped_closed": 1,
-    "followup_skip_idempotent": 18
+    "followup_skip_idempotent": 19
   },
   "outcomes": {
-    "ok": 31
+    "ok": 32
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/Vasudev-ai/Focusflow/pull/15",
+      "title": "help-wanted: stake + contribute for #2",
+      "number": 15,
+      "repo": "Vasudev-ai/Focusflow",
+      "state": "open",
+      "updated_at": "2026-09-21T05:29:26Z",
+      "tribute": true
+    },
     {
       "html_url": "https://github.com/bmad-code-org/bmad-loop/pull/819",
       "title": "help-wanted: stake + contribute for #780",
@@ -112,7 +121,7 @@
       "tribute": true
     }
   ],
-  "foreign_open_count": 11,
+  "foreign_open_count": 12,
   "tributes": [
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
@@ -137,14 +146,28 @@
         "followup_skip_idempotent",
         "followup_skip_idempotent",
         "followup_skip_idempotent",
+        "followup_skip_idempotent",
         "followup_skip_idempotent"
       ],
       "ok": true,
-      "last_ts": "2026-09-21T04:54:20Z",
+      "last_ts": "2026-09-21T05:29:37Z",
       "providers": [],
       "repo": "vedantnimbarte/zero",
       "number": 81,
       "title": "docs(layout): refresh stale ponytail comments (flex + grid)",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/Vasudev-ai/Focusflow/pull/15",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-21T05:29:26Z",
+      "providers": [],
+      "repo": "Vasudev-ai/Focusflow",
+      "number": 15,
+      "title": "help-wanted: stake + contribute for #2",
       "state": "open"
     },
     {
@@ -424,7 +447,7 @@
       "state": "closed"
     }
   ],
-  "tribute_count": 22,
+  "tribute_count": 23,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -714,6 +737,14 @@
       },
       {
         "ts": "2026-09-21T04:54:20Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-21T05:29:37Z",
         "kind": "followup_skip_idempotent",
         "issue": "https://github.com/vedantnimbarte/zero/pull/81",
         "ok": true,

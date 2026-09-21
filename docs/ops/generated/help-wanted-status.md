@@ -1,10 +1,11 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-21T04:56:06Z UTC · receipts=31 · foreign_open=11 · tributes=22_
+_Generated 2026-09-21T05:29:55Z UTC · receipts=32 · foreign_open=12 · tributes=23_
 
 ## Tributes (contributor ledger)
 
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
+- [Vasudev-ai/Focusflow#15](https://github.com/Vasudev-ai/Focusflow/pull/15) · state=open · help-wanted: stake + contribute for #2
 - [bmad-code-org/bmad-loop#819](https://github.com/bmad-code-org/bmad-loop/pull/819) · state=open · help-wanted: stake + contribute for #780
 - [pyrite-wiki/pyrite#198](https://github.com/pyrite-wiki/pyrite/pull/198) · state=closed · help-wanted: stake + contribute for #192
 - [vigneshv1cky/alphadesk-terminal#12](https://github.com/vigneshv1cky/alphadesk-terminal/pull/12) · state=closed · help-wanted: stake + contribute for #10
@@ -29,6 +30,7 @@ _Generated 2026-09-21T04:56:06Z UTC · receipts=31 · foreign_open=11 · tribute
 
 ## Foreign open PRs
 
+- [Vasudev-ai/Focusflow#15](https://github.com/Vasudev-ai/Focusflow/pull/15) — help-wanted: stake + contribute for #2
 - [bmad-code-org/bmad-loop#819](https://github.com/bmad-code-org/bmad-loop/pull/819) — help-wanted: stake + contribute for #780
 - [ennouaimi/invoicr#8](https://github.com/ennouaimi/invoicr/pull/8) — help-wanted: stake + contribute for #7
 - [shadcn-labs/ogimagecn#34](https://github.com/shadcn-labs/ogimagecn/pull/34) — help-wanted: stake + contribute for #33
@@ -41,6 +43,6 @@ _Generated 2026-09-21T04:56:06Z UTC · receipts=31 · foreign_open=11 · tribute
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=31 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 18}`
+## Outcomes · ok=32 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 19}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

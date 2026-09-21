@@ -172,7 +172,6 @@ jobs:
           FELO_AI_API: ${{ secrets.FELO_AI_API }}
           OMNI_API_KEY: ${{ secrets.OMNI_API_KEY }}
           OMNIROUTE_API_KEY: ${{ secrets.OMNIROUTE_API_KEY }}
-          GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
           REPO: ${{ steps.target.outputs.full }}
           TARGET: ${{ steps.target.outputs.number }}
         run: |
@@ -202,12 +201,8 @@ jobs:
             "### Help-wanted LLM assist (live catalog: \`${PROVIDER}\` / \`${MODEL}\`)" \
             "$TEXT" \
             "_Selection = live free/zero/trial catalog (openrouter|felo|omni). **Not** MoneyBall admission. Not legacy model-router residual chain._")
-          curl -sS -X POST \
-            -H "Authorization: Bearer ${GH_TOKEN}" \
-            -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${REPO}/issues/${TARGET}/comments" \
-            -d "$(jq -n --arg b "$BODY" '{body:$b}')" >/dev/null
-          echo "commented ${REPO}#${TARGET} via ${PROVIDER}/${MODEL}"
+          printf '%s' "$BODY" > /tmp/hw-llm-body.txt
+          echo "prepared ${REPO}#${TARGET} via ${PROVIDER}/${MODEL}"
           mkdir -p docs/ops/generated/help-wanted-evidence
           DAY=$(date -u +%Y-%m-%d)
           jq -nc --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
@@ -216,6 +211,21 @@ jobs:
             '{ts:$ts,kind:"llm_assist",issue:$issue,ok:true,provider:$provider,model:$model,lane:"help-wanted",selection:"live_catalog"}' \
             >> "docs/ops/generated/help-wanted-evidence/${DAY}.jsonl"
 
+      - name: Post assist comment with scoped GitHub token
+        if: steps.target.outputs.skip != 'true' && steps.pick.outputs.skip != 'true'
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        env:
+          REPO: ${{ steps.target.outputs.full }}
+          TARGET: ${{ steps.target.outputs.number }}
+        with:
+          github-token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const [owner, repo] = process.env.REPO.split('/');
+            const issue_number = Number(process.env.TARGET);
+            const body = fs.readFileSync('/tmp/hw-llm-body.txt', 'utf8');
+            await github.rest.issues.createComment({ owner, repo, issue_number, body });
+            core.info('posted help-wanted assist comment');
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -48,7 +48,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.0.0
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
@@ -64,13 +64,18 @@ jobs:
           set -euo pipefail
           mkdir -p docs/ops/generated
           MMDC="npx --yes @mermaid-js/mermaid-cli@11.4.2"
+          PUPPETEER_CONFIG="$(mktemp)"
+          trap 'rm -f "$PUPPETEER_CONFIG"' EXIT
+          cat > "$PUPPETEER_CONFIG" <<'JSON'
+          {"args":["--no-sandbox","--disable-setuid-sandbox"]}
+          JSON
           count=0
           for src in docs/ops/diagrams/*.mmd; do
             [ -f "$src" ] || continue
             stem=$(basename "$src" .mmd)
             out="docs/ops/generated/${stem}.png"
             echo "mmdc: $src -> $out"
-            $MMDC -i "$src" -o "$out" -b transparent -s 2
+            $MMDC -p "$PUPPETEER_CONFIG" -i "$src" -o "$out" -b transparent -s 2
             count=$((count + 1))
           done
           if [ "$count" -eq 0 ]; then
@@ -90,7 +95,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.0.0
         with:
           fetch-depth: 0
           ref: ${{ github.ref_name }}
@@ -106,13 +111,18 @@ jobs:
           set -euo pipefail
           mkdir -p docs/ops/generated
           MMDC="npx --yes @mermaid-js/mermaid-cli@11.4.2"
+          PUPPETEER_CONFIG="$(mktemp)"
+          trap 'rm -f "$PUPPETEER_CONFIG"' EXIT
+          cat > "$PUPPETEER_CONFIG" <<'JSON'
+          {"args":["--no-sandbox","--disable-setuid-sandbox"]}
+          JSON
           count=0
           for src in docs/ops/diagrams/*.mmd; do
             [ -f "$src" ] || continue
             stem=$(basename "$src" .mmd)
             out="docs/ops/generated/${stem}.png"
             echo "mmdc: $src -> $out"
-            $MMDC -i "$src" -o "$out" -b transparent -s 2
+            $MMDC -p "$PUPPETEER_CONFIG" -i "$src" -o "$out" -b transparent -s 2
             count=$((count + 1))
           done
           if [ "$count" -eq 0 ]; then

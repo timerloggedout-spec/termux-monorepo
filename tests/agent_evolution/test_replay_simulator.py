@@ -43,7 +43,7 @@ class ReplaySimulatorTests(unittest.TestCase):
     def test_incumbent_is_always_a_candidate(self):
         simulator = ReplaySimulator(self.history())
         incumbent = ExplorationPolicy(max_active=1, min_score=100.0)
-        engine = EvolutionEngine(simulator, EvolutionConfig(generations=2, mutations_per_generation=4))
+        engine = EvolutionEngine(simulator, EvolutionConfig(generations=2, mutations_per_generation=4, min_improvement=0.1))
         selected, observations = engine.evolve(incumbent)
         self.assertEqual(selected.policy_id, incumbent.policy_id)
         self.assertGreaterEqual(len(observations), 1 + 2 * 5)

@@ -1,15 +1,41 @@
 # CLAUDE.md
 
-**Primary agent entry for this repository.** Load this first. Do not start from root `AGENTS.md` (Linguist/CedrLang stub only).
+**Primary agent entry for this repository.** Load this first.
+
+Root `AGENTS.md` is **deprecated** (Linguist / CedrLang / Jules compression stub only). Do not start from it. All hard rules and routing live here and in the governance sequence below.
+
+## BIUDL — operating motion
+
+**BIUDL = Broad → Integrate → Validate → Develop → Learn.**
+
+```text
+BROAD
+  ↓
+INTEGRATE
+  ↓
+VALIDATE
+  ↓
+DEVELOP
+  ↓
+LEARN
+  └────────────────→ BROAD (improved baseline)
+```
+
+BIUDL is the repository's compounding development motion: a broad system view selects a focused lane; the lane is integrated and validated with attributable evidence; proven work is developed into production code; learning is synthesized back into the broad baseline.
+
+Canonical chart: [`docs/architecture/AGENT-TEAM-CONTROL-PLANE.md`](docs/architecture/AGENT-TEAM-CONTROL-PLANE.md) + `.mmd`.
+
+This is the **Fully Continuous Automated Development Evaluation Environment** posture: dual-gate before promote, evidence-led, adaptive-wait, no HITL YOLO / YEET / AUTOAPPROVE merges. Size ≠ quality; mega-PRs stay EXTRACT.
 
 ## Governance sequence (read in order)
 
-1. **This file** — orientation + hard rules
+1. **This file** — orientation + hard rules + BIUDL
 2. [`docs/proposals/registry.yaml`](docs/proposals/registry.yaml) — what is active
 3. [`docs/proposals/PROCESS.md`](docs/proposals/PROCESS.md) — post / debate / consensus / close
 4. [`docs/ARCHW1Z-GATE.md`](docs/ARCHW1Z-GATE.md) — dual gates
 5. [`docs/proposals/AGENTIC-PERMISSIONS.md`](docs/proposals/AGENTIC-PERMISSIONS.md) — human-only edges
 6. [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md) — adaptive wait + ops skills
+7. [`docs/ops/LANE-MATRIX.md`](docs/ops/LANE-MATRIX.md) — living session SSOT (rewrite every admin cycle)
 
 Then route the task with **[`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md)** — one verified component or process card before loading deeper source.
 
@@ -24,6 +50,7 @@ Then route the task with **[`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md)** — one 
 - **No** wholesale merge of NO-GO mega-PRs (#2, #6) — extract-only.
 - **No** Class 3/4 artifacts in git (session stores, browser profiles, tokens).
 - Unposted chat is not consensus — write Review log or `DEBATE.md`.
+- **AVOID HITL YOLO MODE YEET AUTOAPPROVE.** Dual-gate green + verified task outcome required.
 
 ## Preferred execution loop
 
@@ -57,9 +84,11 @@ Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
 | Permissions / human edges | `docs/proposals/AGENTIC-PERMISSIONS.md` |
 | ICM task routing | `docs/icm/CLAUDE.md` |
 | Skills + adaptive wait | `docs/ops/SKILLS-INVENTORY.md` |
-| Session SSOT | `docs/schemas/session-ssot.md` |
+| Session / lane SSOT | `docs/ops/LANE-MATRIX.md` |
+| BIUDL control plane | `docs/architecture/AGENT-TEAM-CONTROL-PLANE.md` |
+| Session SSOT schema | `docs/schemas/session-ssot.md` |
 | Provider caps | `docs/schemas/provider-capabilities.md` |
-| Linguist / CedrLang surface only | `AGENTS.md` |
+| Linguist / CedrLang / Jules stub only | `AGENTS.md` (deprecated redirect) |
 
 ## ICM + RinDig reference pins (smods)
 
@@ -77,3 +106,9 @@ Gitlink ops: `workflow_dispatch` on `.github/workflows/ops-gitlink-lego-fork.yml
 ## Security
 
 Credential rotation and history rewrite require Operator (human) authorization. See `docs/SECURITY-REMEDIATION.md`.
+
+---
+
+**Agent-Identity:** Grok (Administrator)  
+**Style:** BIUDL · AVOID HITL YOLO MODE YEET AUTOAPPROVE · adaptive-wait · evidence-led  
+**Status change (2026-09-21):** Root `AGENTS.md` folded into this file and marked deprecated. Jules / Linguist / CedrLang lanes: treat `AGENTS.md` as redirect-only; load `CLAUDE.md` first.

@@ -43,6 +43,8 @@ jobs:
 
           if repository != '${{ github.repository }}':
               raise SystemExit(f'corpus repository mismatch: {repository!r}')
+          if default_branch not in {'master-staging', 'master'}:
+              raise SystemExit(f'unrecognized corpus default_branch: {default_branch!r}')
           if next_page is not None:
               try:
                   next_page = int(next_page)
@@ -59,7 +61,7 @@ jobs:
           elif default_branch == 'master' and next_page is not None:
               print('CURRENT-MASTER STATE: corpus is partial and resumable.')
           elif next_page is None:
-              print('COMPLETE STATE: canonical corpus reports next_start_page=null.')
+              print(f'COMPLETE STATE: recognized canonical corpus branch {default_branch!r} reports next_start_page=null.')
           else:
               raise SystemExit(f'unrecognized corpus state: default_branch={default_branch!r}')
           PY
@@ -69,14 +71,30 @@ jobs:
           set -euo pipefail
           workflow=.github/workflows/context-relationship-backfill.yml
           test -f "$workflow"
-          grep -q 'ref: master' "$workflow"
-          grep -q -- '--ref master' "$workflow"
-          grep -q 'next_start_page' "$workflow"
-          grep -q 'git push origin HEAD:master' "$workflow"
-          if grep -q 'HEAD:master-staging' "$workflow"; then
-            echo 'successor still publishes to legacy master-staging' >&2
-            exit 1
-          fi
+          python - <<'PY'
+          import re
+          from pathlib import Path
+
+          text = Path(".github/workflows/context-relationship-backfill.yml").read_text(encoding="utf-8")
+          exact_ref = re.compile(r"(?m)^\s+ref: master\s*$")
+          exact_backfill_ref = re.compile(r"(?m)^\s+--ref master\s*\\\s*$")
+          exact_push = re.compile(r"(?m)^\s*git push origin HEAD:master\s*$")
+
+          if not exact_ref.search(text):
+              raise SystemExit("successor checkout ref is not exactly master")
+          if not exact_backfill_ref.search(text):
+              raise SystemExit("successor backfill --ref is not exactly master")
+          if "next_start_page" not in text:
+              raise SystemExit("successor does not consume next_start_page")
+          if not exact_push.search(text):
+              raise SystemExit("successor push target is not exactly HEAD:master")
+          if re.search(r"(?m)^\s+ref: master-", text):
+              raise SystemExit("successor contains a suffixed checkout ref")
+          if re.search(r"(?m)^\s+--ref master-", text):
+              raise SystemExit("successor contains a suffixed backfill ref")
+          if re.search(r"(?m)^\s*git push origin HEAD:master-", text):
+              raise SystemExit("successor contains a suffixed push target")
+          PY
           echo 'migration boundary validated: successor is master-anchored and resumable.'
 
       - name: Record migration-gate evidence

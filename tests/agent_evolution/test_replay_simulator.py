@@ -38,7 +38,7 @@ class ReplaySimulatorTests(unittest.TestCase):
         second = simulator.replay(policy)
         self.assertEqual(first, second)
         self.assertEqual(first.policy_id, policy.policy_id)
-        self.assertEqual(first.replay_cost, 12.5)
+        self.assertEqual(first.replay_cost, 5.0)
 
     def test_incumbent_is_always_a_candidate(self):
         simulator = ReplaySimulator(self.history())

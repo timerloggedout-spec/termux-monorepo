@@ -53,6 +53,35 @@ class TDQSTests(unittest.TestCase):
         changed["outputSchema"] = {"type": "object", "properties": {"other": {"type": "string"}}}
         self.assertNotEqual(first.input_hash, context_signals(changed).input_hash)
 
+    def test_optional_nested_object_and_annotation_output_contract(self):
+        tool = dict(self.tool)
+        tool["inputSchema"] = {
+            "type": "object",
+            "properties": {
+                "optional": {"type": "object", "properties": {}},
+            },
+        }
+        tool["annotations"] = {
+            "readOnlyHint": True,
+            "destructiveHint": False,
+            "idempotentHint": True,
+            "openWorldHint": False,
+        }
+        signals = context_signals(tool)
+        self.assertTrue(signals.has_nested_objects)
+        self.assertEqual(signals.annotation_values, {
+            "readOnly": True,
+            "destructive": False,
+            "idempotent": True,
+            "openWorld": False,
+        })
+
+    def test_propertyless_schema_has_zero_depth(self):
+        tool = dict(self.tool)
+        tool["inputSchema"] = {"type": "object", "properties": {}}
+        signals = context_signals(tool)
+        self.assertEqual(signals.schema_depth, 0)
+
     def test_missing_description_is_hard_gate(self):
         tool = dict(self.tool, description=" ")
         result = apply_post_processing(tool, {})

@@ -5,14 +5,14 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 
 Canonical: master `.agents/skills/evidence-led-monorepo-ops/SKILL.md`.
 
-Session 2026-09-20 18:23 PDT: live master `3be36016` (#679 Sentinel + #693 Linguist).
+Session 2026-09-20 19:04 PDT: live master `e46fbf00` (#700 after #679+#693).
 **SSOT lane matrix:** `docs/ops/LANE-MATRIX.md` — rewrite every session.
 **Peer routing:** Copilot is optional peer — NOT a promote gate.
-**Mega policy:** size ≠ quality; promote when dual-gate green. Age alone ≠ promote.
+**Mega policy:** size ≠ quality; dual-gate green + 130 files still EXTRACT.
 Vercel 24h rate-limit is a **non-gate**.
-#682 WAIT/EXTRACT — rebase ML keep-alive onto `3be36016` (prior dual-gate green on `579dc2c0`).
+#682 EXTRACT/WAIT — rebase onto `e46fbf00`; dual-gate already green on prior head.
 #684 HOLD. Ancient wrong-base (#48/#69/#73) HOLD.
 #432/#549/#601 EXTRACT only. #630 minesweeper EXTRACT.
-#679/#693 landed this window — do not re-merge.
+#700 landed this window — do not re-merge.
 
 Agent-Identity: Grok (Administrator)

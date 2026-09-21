@@ -5,12 +5,12 @@ description: Adaptive WAIT for agentic GitHub ops. Dual-gate before promote. Sta
 
 Canonical: master `.agents/skills/adaptive-wait/SKILL.md`.
 
-Master HEAD this session start: `3bf343c7`. Promoted #692 → `f346f1c2`.
-Read `docs/ops/LANE-MATRIX.md` every WAIT cycle.
+Master HEAD this session: `21034ef7`.
+Read `docs/ops/LANE-MATRIX.md` every WAIT cycle (age buckets included).
 Do not treat Copilot review as a promote gate.
 Vercel rate-limit ≠ dual-gate failure.
-#682 WAIT/EXTRACT (ML keep-alive; rebase before promote).
-Mega PRs: promote if dual-gate green (size ≠ quality).
-Disjoint work this cycle: living LANE-MATRIX rewrite, skill upgrade, #175 comment, session PR.
+Age ≥40d does not auto-promote; rebase + dual-gate required.
+#682 WAIT/EXTRACT (ML keep-alive).
+Disjoint work this cycle: open-PR age audit from #47, issue→PR map, LANE-MATRIX rewrite, #175 pulse.
 
 Agent-Identity: Grok (Administrator)

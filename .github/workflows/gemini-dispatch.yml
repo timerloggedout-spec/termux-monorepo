@@ -48,10 +48,10 @@ jobs:
       )
     runs-on: ubuntu-latest
     concurrency:
-  group: gemini-dispatch-${{ github.event.pull_request.number || github.event.issue.number || github.ref }}
-  cancel-in-progress: true
+      group: gemini-dispatch-${{ github.event.pull_request.number || github.event.issue.number || github.ref }}
+      cancel-in-progress: true
 
-permissions:
+    permissions:
       contents: read
       issues: write
       pull-requests: write

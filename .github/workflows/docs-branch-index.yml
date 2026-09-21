@@ -4,6 +4,7 @@ on:
   schedule:
     # Daily 06:15 UTC — keep docs-lane inventory fresh without PR noise
     - cron: "15 6 * * *"
+      timezone: 'UTC'
   workflow_dispatch:
   push:
     branches: [master]

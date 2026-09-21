@@ -10,6 +10,7 @@ name: help-wanted-followup
 on:
   schedule:
     - cron: "17 */2 * * *"
+      timezone: 'UTC'
   workflow_dispatch:
   repository_dispatch:
     types:

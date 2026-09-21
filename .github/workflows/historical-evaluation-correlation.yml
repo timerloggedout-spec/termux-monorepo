@@ -3,6 +3,7 @@ name: Historical Evaluation Correlation
 on:
   schedule:
     - cron: '7 * * * *'
+      timezone: 'UTC'
   push:
     branches: [master]
     paths:

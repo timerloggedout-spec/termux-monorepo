@@ -10,6 +10,7 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '17 * * * *'  # hourly, minute 17
+      timezone: 'UTC'
   push:
     branches: [master]
     paths:

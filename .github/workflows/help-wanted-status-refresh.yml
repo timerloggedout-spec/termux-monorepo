@@ -6,6 +6,7 @@ name: help-wanted-status-refresh
 on:
   schedule:
     - cron: "7 * * * *"
+      timezone: 'UTC'
   workflow_dispatch:
   repository_dispatch:
     types: [help-wanted-status-refresh, help-wanted-followup]

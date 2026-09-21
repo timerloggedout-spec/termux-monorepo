@@ -12,6 +12,7 @@ on:
     types: [dependency-phase-reconcile]
   schedule:
     - cron: "23 5 * * *"
+      timezone: 'UTC'
   workflow_dispatch:
 
 concurrency:

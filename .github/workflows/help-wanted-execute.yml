@@ -8,6 +8,7 @@ name: help-wanted execute
 on:
   schedule:
     - cron: "41 */4 * * *"
+      timezone: 'UTC'
   workflow_dispatch:
     inputs:
       issue:
@@ -154,39 +155,10 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Resolve operator token
-        id: tok
-        env:
-          OPERATOR_GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
-          OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
-          ARCHWIZ_GITHUB_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          set -euo pipefail
-          if [ -n "${OPERATOR_GITHUB_TOKEN:-}" ]; then
-            echo "src=OPERATOR_GITHUB_TOKEN"
-            echo "token=${OPERATOR_GITHUB_TOKEN}" >> "$GITHUB_OUTPUT"
-          elif [ -n "${OPERATOR_TOKEN:-}" ]; then
-            echo "src=OPERATOR_TOKEN"
-            echo "token=${OPERATOR_TOKEN}" >> "$GITHUB_OUTPUT"
-          elif [ -n "${ARCHWIZ_GITHUB_TOKEN:-}" ]; then
-            echo "src=ARCHWIZ_GITHUB_TOKEN"
-            echo "token=${ARCHWIZ_GITHUB_TOKEN}" >> "$GITHUB_OUTPUT"
-          elif [ -n "${GITHUB_TOKEN:-}" ]; then
-            echo "src=GITHUB_TOKEN"
-            echo "token=${GITHUB_TOKEN}" >> "$GITHUB_OUTPUT"
-          else
-            echo "No OPERATOR token" >&2
-            exit 1
-          fi
-          echo "::add-mask::${OPERATOR_GITHUB_TOKEN:-}"
-          echo "::add-mask::${OPERATOR_TOKEN:-}"
-          echo "::add-mask::${ARCHWIZ_GITHUB_TOKEN:-}"
-
       - name: Live claim (no dry-run)
         env:
-          GITHUB_TOKEN: ${{ steps.tok.outputs.token }}
-          GH_TOKEN: ${{ steps.tok.outputs.token }}
+          GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           python3 scripts/ci/help_wanted_claim.py --issue "${{ needs.budget.outputs.issue }}"
@@ -228,27 +200,11 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Resolve operator token
-        id: tok
-        env:
-          OPERATOR_GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
-          OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
-          ARCHWIZ_GITHUB_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN }}
-        run: |
-          set -euo pipefail
-          TOKEN="${OPERATOR_GITHUB_TOKEN:-${OPERATOR_TOKEN:-${ARCHWIZ_GITHUB_TOKEN:-}}}"
-          if [ -z "$TOKEN" ]; then
-            echo "OPERATOR PAT required for upstream PR" >&2
-            exit 1
-          fi
-          echo "token=${TOKEN}" >> "$GITHUB_OUTPUT"
-          echo "::add-mask::${TOKEN}"
-
       - name: Contribute (PRIMARY upstream-pr)
         id: contrib
         env:
-          GH_TOKEN: ${{ steps.tok.outputs.token }}
-          GITHUB_TOKEN: ${{ steps.tok.outputs.token }}
+          GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
           GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           set -euo pipefail
@@ -305,22 +261,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
-      - name: Resolve operator token
-        id: tok
-        env:
-          OPERATOR_GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
-          OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
-          ARCHWIZ_GITHUB_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN }}
-        run: |
-          set -euo pipefail
-          TOKEN="${OPERATOR_GITHUB_TOKEN:-${OPERATOR_TOKEN:-${ARCHWIZ_GITHUB_TOKEN:-}}}"
-          if [ -z "$TOKEN" ]; then exit 1; fi
-          echo "token=${TOKEN}" >> "$GITHUB_OUTPUT"
-          echo "::add-mask::${TOKEN}"
       - name: Patch + upstream PR
         env:
-          GH_TOKEN: ${{ steps.tok.outputs.token }}
-          GITHUB_TOKEN: ${{ steps.tok.outputs.token }}
+          GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           python3 scripts/ci/help_wanted_contribute.py --issue "https://github.com/vedantnimbarte/zero/issues/72"

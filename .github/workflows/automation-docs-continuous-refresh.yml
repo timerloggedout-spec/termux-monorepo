@@ -3,6 +3,7 @@ name: Automation Documentation Continuous Refresh
 on:
   schedule:
     - cron: '17 * * * *'
+      timezone: 'UTC'
   workflow_dispatch:
   push:
     branches: [master]

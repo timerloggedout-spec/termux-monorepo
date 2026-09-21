@@ -19,7 +19,8 @@ on:
         default: 'ox-alpha'
         type: string
   schedule:
-    - cron: '*/15 * * * *'
+    - cron: '7,22,37,52 * * * *'
+      timezone: 'UTC'
   issues:
     types: [edited]
   push:

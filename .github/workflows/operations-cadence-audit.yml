@@ -1,0 +1,63 @@
+name: Operations Cadence Audit
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+      - 'docs/schemas/operations-cadence.yaml'
+      - 'docs/ops/OPERATIONS-CADENCE.md'
+      - 'scripts/ci/operations_cadence.py'
+      - 'tests/test_operations_cadence.py'
+  schedule:
+    - cron: '13 0 1 * *'
+      timezone: 'UTC'
+  workflow_dispatch:
+
+concurrency:
+  group: operations-cadence-audit-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout immutable source
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Run cadence contract tests
+        run: python3 -m unittest tests.test_operations_cadence
+
+      - name: Produce cadence inventory
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/operations-cadence
+          python3 scripts/ci/operations_cadence.py --mode advisory --json > /tmp/operations-cadence/report.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('/tmp/operations-cadence/report.json').read_text())
+          print('# Operations Cadence Audit')
+          print()
+          print(f"- Workflows observed: **{d['workflow_count']}**")
+          print(f"- Contract errors: **{sum(f['level']=='error' for f in d['findings'])}**")
+          print(f"- Advisory warnings: **{sum(f['level']=='warning' for f in d['findings'])}**")
+          print("- Canonical clock: **UTC**")
+          print("- Quota boundary: **monthly 00:00 UTC**")
+          for f in d['findings']:
+              print(f"- **{f['level'].upper()}** {f['path']} {f['code']} — {f['message']}")
+          PY
+
+      - name: Publish immutable cadence evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: operations-cadence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/operations-cadence/report.json
+          if-no-files-found: error
+          retention-days: 14

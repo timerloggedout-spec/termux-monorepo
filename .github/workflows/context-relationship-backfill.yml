@@ -5,6 +5,7 @@ on:
   # (stall observed ~2026-08-19; audit #526). Dispatch remains for operator resume.
   schedule:
     - cron: '23 * * * *'
+      timezone: 'UTC'
   workflow_dispatch:
     inputs:
       history_start_page:

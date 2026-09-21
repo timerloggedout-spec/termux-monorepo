@@ -21,6 +21,7 @@ on:
     types: [completed]
   schedule:
     - cron: "17 * * * *"
+      timezone: 'UTC'
   workflow_dispatch:
     inputs:
       pr_number:

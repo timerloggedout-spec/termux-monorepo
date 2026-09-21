@@ -1,0 +1,25 @@
+name: Provider model catalog
+description: Run the repository provider catalog with credentials isolated inside a JavaScript action process.
+inputs:
+  openrouter-key:
+    description: OpenRouter API credential.
+    required: false
+  felo-key:
+    description: Felo API credential.
+    required: false
+  omni-key:
+    description: Omni API credential.
+    required: false
+  omniroute-key:
+    description: OmniRoute API credential fallback.
+    required: false
+outputs:
+  skip:
+    description: Whether no eligible provider model was found.
+  provider:
+    description: Selected provider.
+  model:
+    description: Selected model.
+runs:
+  using: node20
+  main: main.js

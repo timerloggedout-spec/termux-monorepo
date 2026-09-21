@@ -1,0 +1,127 @@
+schema: termux.operations-cadence/v1
+
+clock:
+  canonical_timezone: UTC
+  quota_reset:
+    anchor: monthly
+    instant: "00:00:00Z"
+    basis: github-actions-metered-usage
+    rule: "Treat the GitHub billing boundary as UTC; never infer quota reset from operator-local time."
+  runtime_env:
+    OPS_CADENCE_TZ: UTC
+    OPS_QUOTA_RESET_ANCHOR: monthly@00:00Z
+    TZ: UTC
+  note: "UTC remains the sole machine clock. Calendar-day phases are eliminated except as pure metrics telemetry."
+
+scheduling:
+  require_explicit_timezone: true
+  preferred_timezone: UTC
+  avoid_top_of_hour: true
+  preferred_minute_offsets: [7, 13, 17, 23, 27, 37, 43, 47, 53, 57]
+  minimum_supported_interval_minutes: 5
+  arrhythmic_principle: "Timing without fixed rhythm. Prefer deliberate non-zero offsets and concurrent phase instances over predictable cadence loops. Stagger reduces self-inflicted bursts; it does not guarantee scheduler latency."
+
+concurrency:
+  default_principle: "serialize conflicting writers; cancel stale observations; preserve long-running evidence"
+  issue:
+    group: "ops-issue-${{ github.event.issue.number || github.run_id }}"
+    cancel_in_progress: false
+  pull_request:
+    group: "ops-pr-${{ github.event.pull_request.number || github.run_id }}"
+    cancel_in_progress: true
+  pull_request_synchronize:
+    key: head_sha
+    rule: "A new head supersedes stale review/observation work, but never cancels a distinct PR."
+  external_jobs:
+    rule: "Other agents' scheduled runs (2× hourly, free-quota lanes, trial/catalog) are situational inputs, not background noise. Include them in RECON scan."
+
+phase_lattice:
+  note: "Abstract concurrent phases. Multiple instances of any phase may run in parallel. No calendar-day binding."
+  phases:
+    - RECON
+    - PLAN
+    - MEASURE
+    - PROPOSAL_SCAN
+    - DEBATE
+    - SWEEP
+    - ACT
+    - COMMIT
+    - WAIT
+    - WATCH
+    - VALIDATE
+    - REFETCH_COMPARE
+    - RECORD_CLASSIFY
+  concurrency_model: "any subset may be active concurrently; leases protect writers; evidence identity remains workflow+run+event+issue/PR+head_sha+observed_at_utc"
+
+response_flow:
+  issue: [RECEIVE, TRUST_BOUNDARY, DEDUPE, TRIAGE, ROUTE, ACT, WAIT, WATCH, VALIDATE, RECORD, REPEAT]
+  pull_request: [RECEIVE, SNAPSHOT_SHA, TRUST_BOUNDARY, TRIAGE, CHECKS, REVIEW_LEASE, ACT, WAIT, WATCH, REFETCH, COMPARE, VALIDATE, RECORD, REPEAT]
+  recon_prior: [STARRED, FORKED, FOLLOWING, WATCHED, SUBMODULES, PROPOSALS_REGISTRY, DEBATE_LOGS, EXTERNAL_SCHEDULES]
+  rule: "Queued, running, or commented is never equivalent to validated. RECON is highly considerate and precedes focused action."
+
+operating_lenses:
+  agile:
+    unit: event-to-evidence-micro-cycle
+    principle: "small batch, visible state, inspect/adapt before the next mutation"
+  musashi_broad:
+    recon: "highly considerate scan of the whole situation: queue, SHA, quota, dependencies, competing writers, starred/forked/following/watched/submodules, active proposals, debate terms, external concurrent jobs"
+    focused_execution: "one bounded task, one evidence target, one active write lease after RECON"
+    principle: "scan wide and considerately; act narrow; integrate once. Timing without rhythm."
+  phase_lattice:
+    note: "13 abstract phases replace any day-bound planning metaphors. Concurrent/parallel instances allowed."
+  koestler_bisociation:
+    note: "Optional matrix intersections (unrelated fields → fresh design) remain available as a creativity lens; not a clock."
+
+proposals_and_debate:
+  home: docs/proposals/
+  registry: docs/proposals/registry.yaml
+  process: docs/proposals/PROCESS.md
+  consensus: docs/CONSENSUS.md
+  prior_sequence:
+    - scan active/ + registry.yaml
+    - scan DEBATE.md / Review logs for open terms
+    - scan starred / forked / following / watched repos and submodules for external research signals
+    - evaluate under CONSENSUS tiers before ACT
+  automation:
+    - scripts/proposals/validate_registry.py
+    - scripts/proposals/record_vote.py
+    - scripts/proposals/promote_proposal.py
+    - .github/workflows/proposal-lifecycle.yml
+  rule: "Proposals own intent; branches own measured evidence; votes attach to claims, not to existence of a branch."
+
+repository_sweep:
+  purpose: "First-class RECON/SWEEP phase. Inventory drift, orphaned proposals, concurrency leases, schedule timezone alignment, external job pressure."
+  surfaces:
+    - .github/workflows/**
+    - docs/proposals/active/** + registry.yaml + MANIFEST.md
+    - open PRs / issues with response leases
+    - free-quota / hourly / trial cadences running as external jobs
+  evidence: workflow + run + observed_at_utc + head_sha
+
+quota_aware_admission:
+  reset_window:
+    pre_reset: "observe and avoid unnecessary retries near exhaustion"
+    post_reset: "reconcile observed allowance before increasing parallelism"
+  evidence:
+    required: [provider, observed_at_utc, request_or_run_id]
+    rule: "Never infer remaining quota from public entitlement alone."
+  free_capacity:
+    rule: "Promotional/free capacity is an experiment lane, not a permanent route."
+
+security:
+  issue_and_comment_text: untrusted-data
+  pr_fork_code: untrusted-code
+  taint_model:
+    sources: [issue_title, issue_body, issue_comment, pull_request_title, pull_request_body, pull_request_diff]
+    sinks: [shell_command, provider_prompt, repository_write, secret_bearing_request]
+    principle: "Validate/normalize before crossing a sink."
+
+observability:
+  minimum_identity: [workflow, workflow_run, event, issue_or_pr, head_sha, observed_at_utc]
+  state_model: [COMMITTED, EXECUTED, VALIDATED, PROMOTED]
+  rule: "Failures are observations. Retry only under an explicit admission policy. Dual-gate before promote."
+
+governance:
+  default_mode: advisory_then_enforce
+  migration: [inventory_and_report, align_high_impact_writers, enforce_on_workflow_changes]
+  promotion: "Do not merge or promote automatically merely because cadence checks pass."

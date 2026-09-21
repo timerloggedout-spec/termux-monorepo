@@ -1,0 +1,21 @@
+name: LLM chat completion
+description: Call the selected help-wanted provider without exposing its API key as a workflow environment variable.
+inputs:
+  provider:
+    description: Provider identifier (openrouter, felo, omni).
+    required: true
+  model:
+    description: Provider model identifier.
+    required: true
+  prompt-path:
+    description: Path to the prompt file on the runner.
+    required: true
+  api-key:
+    description: Provider API credential. Passed as an action input and never exported by the workflow.
+    required: true
+outputs:
+  skip:
+    description: Whether invocation was skipped because the credential was unavailable.
+runs:
+  using: node20
+  main: main.js

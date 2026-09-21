@@ -15,9 +15,12 @@ class TermuxTelemetryLogger:
         print(f"{timestamp} {color_tag} [{agent_id}]{context_str}: {message}")
         log_entry = {"timestamp": timestamp, "level": level, "agent": agent_id,
                      "target": target_file, "attempt": attempt, "message": message}
+        if os.path.islink(TELEMETRY_LOG):
+            return
         with open(TELEMETRY_LOG, "a") as f:
             f.write(json.dumps(log_entry) + "\n")
-        try:
-            os.chmod(TELEMETRY_LOG, 0o600)
-        except Exception:
-            pass
+        if not os.path.islink(TELEMETRY_LOG):
+            try:
+                os.chmod(TELEMETRY_LOG, 0o600)
+            except Exception:
+                pass

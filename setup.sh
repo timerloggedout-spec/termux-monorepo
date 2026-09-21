@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 # setup.sh — bootstrap ArchWiz dependencies across environments.
-# Supports: Replit (no venv), Termux (no venv), local Linux/macOS (venv).
+# Supports: Codespaces (agent), Replit (no venv), Termux (no venv), local Linux/macOS (venv).
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # ---------- Detect environment ----------
 _detect_env() {
-    if [ -d /data/data/com.termux ]; then
+    if [ -n "${CODESPACES:-}" ] || [ "${CODESPACE_AGENT:-}" = "1" ] || [ "${ARCHWIZ_ENV:-}" = "codespace" ]; then
+        echo "codespace"
+    elif [ -d /data/data/com.termux ]; then
         echo "termux"
     elif [ -n "${REPL_ID:-}" ] || [ -n "${REPLIT_DOMAINS:-}" ] || [ -n "${REPLIT_DB_URL:-}" ]; then
         echo "replit"
@@ -20,6 +22,12 @@ echo "Environment detected: $ARCHWIZ_ENV"
 
 # ---------- Install Python deps ----------
 case "$ARCHWIZ_ENV" in
+  codespace)
+    # Codespace / agent lane: container system Python is already isolated.
+    echo "Installing Python libs (Codespace / agent)..."
+    python3 -m pip install --quiet --upgrade pip
+    python3 -m pip install --quiet -r "$SCRIPT_DIR/requirements-base.txt"
+    ;;
   termux)
     # Termux: pkg provides ruff; install Python libs system-wide
     echo "Installing Python libs (Termux)..."

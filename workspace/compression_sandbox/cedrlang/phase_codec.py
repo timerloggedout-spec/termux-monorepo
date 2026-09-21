@@ -33,6 +33,9 @@ LEET_MAP: Mapping[str, str] = {
     "t": "7",
 }
 
+# Pre-computed translation table for 100% probability fast-path translation
+LEET_TRANS = str.maketrans("aeiostAEIOST", "431057431057")
+
 # Canonical compressed forms from CedrLang's MAPPINGS. Keeping this registry
 # local avoids importing the large document compiler and makes the phase easy
 # to test/recover independently.
@@ -115,6 +118,11 @@ def _from_1337_replace(match: re.Match[str]) -> str:
     return VARIANT_INDEX[match.group(0).lower()]
 
 
+def _replace_leet_100(match: re.Match[str]) -> str:
+    """Fast-path 100% probability replacement callback using C-level str.translate."""
+    return match.group(0).translate(LEET_TRANS)
+
+
 def to_1337speak(
     text: str,
     probability: float = INITIAL_SUBSTITUTION_PROBABILITY,
@@ -134,6 +142,11 @@ def to_1337speak(
     # Fast-path optimization: check if any matching tokens exist before evaluating RNG or regex sub
     if not VARIANT_REGEX.search(text):
         return text
+
+    # Fast-path for probability=1.0: use pre-computed translation table and top-level callback
+    # Bypasses per-match list creation, inner closure allocation, and RNG evaluations
+    if probability == 1.0:
+        return VARIANT_REGEX.sub(_replace_leet_100, text)
 
     # Direct RNG handle resolution: avoid allocating new random.Random() instances when unseeded
     rand_val = rng.random if rng is not None else random.random

@@ -35,8 +35,8 @@ def read_latest_telemetry():
     to perform incremental I/O, yielding massive performance gains on large log streams.
     """
     global _last_file_pos, _active_jobs_cache, _sorted_telemetry_cache, _last_file_ino, _last_file_mtime
-    if not os.path.exists(TELEMETRY_LOG):
-        # Reset cache if file is missing
+    if not os.path.exists(TELEMETRY_LOG) or os.path.islink(TELEMETRY_LOG):
+        # Reset cache if file is missing or is a symlink
         _active_jobs_cache = {}
         _sorted_telemetry_cache = None
         _last_file_pos = 0
@@ -182,12 +182,15 @@ def make_dashboard():
                     pass
 
         # Beautiful styled status tag
-        if level == "SUCCESS":
+        lvl_upper = str(level).upper()
+        if lvl_upper in ("SUCCESS", "PASS", "COMPLETED"):
             status_str = Text("SUCCESS", style="bold green")
-        elif level == "RETRY":
+        elif lvl_upper in ("RETRY", "RETRYING"):
             status_str = Text("RETRYING", style="bold yellow")
-        elif level == "CRITICAL":
-            status_str = Text("CRITICAL", style="bold red")
+        elif lvl_upper in ("WARNING", "WARN"):
+            status_str = Text("WARNING", style="bold yellow")
+        elif lvl_upper in ("CRITICAL", "ERROR", "FAILED", "FAIL"):
+            status_str = Text(lvl_upper, style="bold red")
         else:
             status_str = Text("PROCESSING", style="bold blue")
 

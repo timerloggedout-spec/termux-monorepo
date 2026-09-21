@@ -1,0 +1,67 @@
+name: help-wanted-status-refresh
+
+# Rebuild status + dashboard data from evidence + live foreign PR search.
+# Keeps https://timerloggedout-spec.github.io/help-wanted/ current.
+
+on:
+  schedule:
+    - cron: "7 * * * *"
+  workflow_dispatch:
+  repository_dispatch:
+    types: [help-wanted-status-refresh, help-wanted-followup]
+  workflow_run:
+    workflows: ["help-wanted execute", "help-wanted-followup", "help-wanted scout"]
+    types: [completed]
+
+concurrency:
+  group: help-wanted-status-refresh
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Rebuild status → dashboard data
+        env:
+          OPERATOR_GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+          OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
+          ARCHWIZ_GITHUB_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          export GITHUB_TOKEN="${OPERATOR_GITHUB_TOKEN:-${OPERATOR_TOKEN:-${ARCHWIZ_GITHUB_TOKEN:-$GITHUB_TOKEN}}}"
+          python3 scripts/ci/help_wanted_status.py
+
+      - name: Commit if changed
+        env:
+          TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/ops/generated/help-wanted-status.json \
+                  docs/ops/generated/help-wanted-status.md \
+                  apps/help-wanted-dashboard/data/status.json || true
+          if git diff --staged --quiet; then
+            echo "no status delta"
+            exit 0
+          fi
+          git commit -m "ops(help-wanted): live status refresh $(date -u +%Y-%m-%dT%H:%MZ)"
+          git push "https://x-access-token:${TOKEN}@github.com/${{ github.repository }}.git" HEAD:master
+
+      - name: Deploy dashboard mirror
+        env:
+          TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          curl -sS -X POST \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/help-wanted-dashboard-deploy.yml/dispatches" \
+            -d '{"ref":"master","inputs":{"target":"user-site"}}' || true

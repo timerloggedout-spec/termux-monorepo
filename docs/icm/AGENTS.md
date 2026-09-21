@@ -11,7 +11,7 @@ Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect
 | [`objects/platform/`](objects/platform/CONTEXT.md) | The Android/Termux execution plane and its device/service boundary. |
 | [`objects/operations/`](objects/operations/CONTEXT.md) | ArchWiz and the bounded operational tool surface, including file-backed visual review. |
 | [`objects/knowledge/`](objects/knowledge/CONTEXT.md) | Navigation, routing governance, pinned reference inputs, methodology references, indices, and generated-map boundaries. |
-| [`objects/governance/`](objects/governance/CONTEXT.md) | Branch, proposal, validation, and approval constraints. |
+| [`objects/governance/`](objects/governance/CONTEXT.md) | F0rk, proposal, validation, and approval constraints. |
 | [`routing.md`](routing.md) | A separately owned nested provider-routing evidence resource; it is intentionally not a root alias. |
 | [`_tv/`](./_tv/README.md) | Initiated file-backed CCTV cards for human review; renderer and publication remain separate scopes. |
 | [`processes/`](processes/CONTEXT.md) | Real editor workflows with explicit inputs and outputs. |

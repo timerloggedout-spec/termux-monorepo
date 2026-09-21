@@ -50,9 +50,13 @@ except Exception:
     curl_requests = CurlRequestsFallback()
 
 import requests as http_requests
-from rich.console import Console
-
-console = Console()
+try:
+    from rich.console import Console
+    console = Console()
+except ModuleNotFoundError:
+    class DummyConsole:
+        def print(self, *args, **kwargs): pass
+    console = DummyConsole()
 
 # Configuration
 CONFIG_DIR = Path.home() / ".nexuscli"
@@ -60,12 +64,13 @@ CONFIG_FILE = CONFIG_DIR / "config.json"
 WASM_SOLVER = Path(__file__).parent.parent / "pow_solver.js"
 BASE_URL = "https://chat.deepseek.com"
 
-CONFIG_DIR.mkdir(parents=True, exist_ok=True)
 if not CONFIG_DIR.is_symlink():
-    try:
-        CONFIG_DIR.chmod(0o700)
-    except Exception:
-        pass
+    CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+    if not CONFIG_DIR.is_symlink():
+        try:
+            CONFIG_DIR.chmod(0o700)
+        except Exception:
+            pass
 
 # Persistent session (cookies preserved across API calls)
 _session: Optional[curl_requests.Session] = None
@@ -158,6 +163,14 @@ def load_config() -> Dict[str, Any]:
 
 
 def save_config(cfg: Dict[str, Any]):
+    if not CONFIG_DIR.is_symlink():
+        CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+        try:
+            CONFIG_DIR.chmod(0o700)
+        except Exception:
+            pass
+    if CONFIG_FILE.is_symlink():
+        raise ValueError("Config file target cannot be a symlink")
     CONFIG_FILE.write_text(json.dumps(cfg, indent=2))
     if CONFIG_FILE.exists() and not CONFIG_FILE.is_symlink():
         try:

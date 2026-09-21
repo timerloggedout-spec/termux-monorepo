@@ -140,3 +140,7 @@ RECON (considerate + external + proposals) → PLAN/MEASURE → ACT → COMMIT
 ```
 
 Build the future now. Arrhythmic. Concurrent. Evidence-led.
+
+## Generated workflow exception
+
+GitHub Agentic Workflows (gh-aw) may maintain a generated `.lock.yml` workflow whose schedule is derived from a source `.md` workflow. The generated lock file is compiler-owned and must not be hand-edited as the source of truth. The cadence auditor records this as a warning and applies the timezone contract to repository-authored workflow schedules; source-level gh-aw schedule semantics remain governed by the compiler.

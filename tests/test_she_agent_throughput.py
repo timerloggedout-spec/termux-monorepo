@@ -62,6 +62,22 @@ class AgentThroughputTest(unittest.TestCase):
         self.assertEqual(metrics.workflow_minutes, 1.0)
         self.assertEqual(metrics.completed_tasks, 1)
 
+    def test_invalid_complexity_evidence_remains_unavailable(self):
+        metrics = reduce_events([
+            {"timestamp": "2026-09-14T10:00:00Z", "agent_id": "a", "event": "task_completed", "complexity_score": "unknown"},
+            {"timestamp": "2026-09-14T10:01:00Z", "agent_id": "a", "event": "task_completed", "complexity_score": -1},
+        ], sequential_baseline_sec=120)
+        self.assertEqual(metrics.weighted_completion, 0)
+        self.assertIsNone(metrics.wtcv_per_min)
+        self.assertIsNone(metrics.ates)
+
+    def test_offset_naive_timestamps_are_excluded(self):
+        metrics = reduce_events([
+            {"timestamp": "2026-09-14T10:00:00", "agent_id": "a", "event": "task_started"},
+            {"timestamp": "2026-09-14T10:01:00Z", "agent_id": "a", "event": "task_completed", "complexity_score": 1},
+        ])
+        self.assertEqual(metrics.workflow_minutes, 0.0)
+
     def test_missing_baseline_does_not_fabricate_ates(self):
         metrics = reduce_events([
             {"timestamp": "2026-09-14T10:00:00Z", "agent_id": "a", "event": "task_completed", "complexity_score": 2},

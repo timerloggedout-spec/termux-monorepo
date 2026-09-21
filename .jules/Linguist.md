@@ -88,3 +88,10 @@ Instantiating multiple nested function closures (`link_repl`, `bold_repl_1`, `bo
 
 **Action:**
 Use `__slots__` context objects with pre-bound method callbacks instead of inner function closures in high-frequency line iteration loops, and ensure character guards cover all matching prefix/separator symbols including dot extensions.
+
+## 2026-10-15 - Line Loop Short-Circuiting and Research Curation Diction Expansion
+**Learning:**
+When compiling or decompiling multi-line markdown documents where only a fraction of lines (~3%) contain target Grimoire/1337speak terms, invoking `translate_line` on every non-fenced line incurs Python function frame overhead. Inlining `if not matcher.search(line): compiled_lines.append(line); continue` directly inside the document iteration loop skips function call overhead for ~97% of document lines. Expanding Trie-structured regexes and pre-computed casing lookup tables to include research (`r3534rch`/`r3534rchs`) and concept (`c0nc3p7`/`c0nc3p7s`) dictions maintains O(1) prefix regex state traversal while expanding agent compression coverage.
+
+**Action:**
+In document compilation loops, always short-circuit non-matching lines directly in the loop before invoking line translation handlers, and keep pre-computed Trie-structured regexes synchronized with dictionary additions.

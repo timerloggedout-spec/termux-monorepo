@@ -101,6 +101,10 @@ MAPPINGS = [
     ("acquisition", "4cq"),
     ("compliances", "c0mp1s"),
     ("compliance", "c0mp1"),
+    ("researches", "r3534rchs"),
+    ("research", "r3534rch"),
+    ("concepts", "c0nc3p7s"),
+    ("concept", "c0nc3p7"),
 ]
 
 # ------------------------------------------------------------
@@ -464,13 +468,14 @@ def compile_doc(text: str) -> str:
     lines = text.splitlines(keepends=True)
     compiled_lines = []
     in_fenced_code = False
+    matcher = COMP_SINGLE_REGEX
 
     for line in lines:
         if "```" in line and line.strip().startswith("```"):
             in_fenced_code = not in_fenced_code
             compiled_lines.append(line)
             continue
-        if in_fenced_code:
+        if in_fenced_code or not matcher.search(line):
             compiled_lines.append(line)
         else:
             compiled_lines.append(translate_line(line, to_compressed=True))
@@ -485,13 +490,14 @@ def decompile_doc(text: str) -> str:
     lines = text.splitlines(keepends=True)
     decompiled_lines = []
     in_fenced_code = False
+    matcher = DECOMP_SINGLE_REGEX
 
     for line in lines:
         if "```" in line and line.strip().startswith("```"):
             in_fenced_code = not in_fenced_code
             decompiled_lines.append(line)
             continue
-        if in_fenced_code:
+        if in_fenced_code or not matcher.search(line):
             decompiled_lines.append(line)
         else:
             decompiled_lines.append(translate_line(line, to_compressed=False))

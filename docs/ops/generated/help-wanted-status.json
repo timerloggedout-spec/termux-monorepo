@@ -1,17 +1,26 @@
 {
-  "generated_at": "2026-09-20T19:04:38Z",
+  "generated_at": "2026-09-21T01:24:33Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
-  "receipts": 28,
+  "receipts": 30,
   "kinds": {
     "upstream_pr": 12,
     "claim_skipped_closed": 1,
-    "followup_skip_idempotent": 15
+    "followup_skip_idempotent": 17
   },
   "outcomes": {
-    "ok": 28
+    "ok": 30
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/bmad-code-org/bmad-loop/pull/819",
+      "title": "help-wanted: stake + contribute for #780",
+      "number": 819,
+      "repo": "bmad-code-org/bmad-loop",
+      "state": "open",
+      "updated_at": "2026-09-20T22:43:23Z",
+      "tribute": true
+    },
     {
       "html_url": "https://github.com/ennouaimi/invoicr/pull/8",
       "title": "help-wanted: stake + contribute for #7",
@@ -81,7 +90,7 @@
       "number": 657,
       "repo": "GlassHaven/Haven",
       "state": "open",
-      "updated_at": "2026-09-20T13:51:05Z",
+      "updated_at": "2026-09-20T20:30:13Z",
       "tribute": true
     },
     {
@@ -103,8 +112,21 @@
       "tribute": true
     }
   ],
-  "foreign_open_count": 10,
+  "foreign_open_count": 11,
   "tributes": [
+    {
+      "pr_url": "https://github.com/bmad-code-org/bmad-loop/pull/819",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-20T22:43:23Z",
+      "providers": [],
+      "repo": "bmad-code-org/bmad-loop",
+      "number": 819,
+      "title": "help-wanted: stake + contribute for #780",
+      "state": "open"
+    },
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
@@ -125,15 +147,43 @@
         "followup_skip_idempotent",
         "followup_skip_idempotent",
         "followup_skip_idempotent",
+        "followup_skip_idempotent",
+        "followup_skip_idempotent",
         "followup_skip_idempotent"
       ],
       "ok": true,
-      "last_ts": "2026-09-20T19:03:42Z",
+      "last_ts": "2026-09-20T22:42:43Z",
       "providers": [],
       "repo": "vedantnimbarte/zero",
       "number": 81,
       "title": "docs(layout): refresh stale ponytail comments (flex + grid)",
       "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/markramm/pyrite/pull/198",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-20T20:40:26Z",
+      "providers": [],
+      "repo": "markramm/pyrite",
+      "number": 198,
+      "title": "help-wanted: stake + contribute for #192",
+      "state": "closed"
+    },
+    {
+      "pr_url": "https://github.com/vigneshv1cky/alphadesk-terminal/pull/12",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-20T20:36:17Z",
+      "providers": [],
+      "repo": "vigneshv1cky/alphadesk-terminal",
+      "number": 12,
+      "title": "help-wanted: stake + contribute for #10",
+      "state": "closed"
     },
     {
       "pr_url": "https://github.com/ennouaimi/invoicr/pull/8",
@@ -147,19 +197,6 @@
       "number": 8,
       "title": "help-wanted: stake + contribute for #7",
       "state": "open"
-    },
-    {
-      "pr_url": "https://github.com/vigneshv1cky/alphadesk-terminal/pull/12",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-20T17:10:33Z",
-      "providers": [],
-      "repo": "vigneshv1cky/alphadesk-terminal",
-      "number": 12,
-      "title": "help-wanted: stake + contribute for #10",
-      "state": "closed"
     },
     {
       "pr_url": "https://github.com/shadcn-labs/ogimagecn/pull/34",
@@ -186,19 +223,6 @@
       "number": 43,
       "title": "help-wanted: stake + contribute for #42",
       "state": "open"
-    },
-    {
-      "pr_url": "https://github.com/markramm/pyrite/pull/198",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-20T04:04:11Z",
-      "providers": [],
-      "repo": "markramm/pyrite",
-      "number": 198,
-      "title": "help-wanted: stake + contribute for #192",
-      "state": "closed"
     },
     {
       "pr_url": "https://github.com/DioNanos/codex-termux/pull/27",
@@ -399,7 +423,7 @@
       "state": "closed"
     }
   ],
-  "tribute_count": 21,
+  "tribute_count": 22,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -665,6 +689,22 @@
       },
       {
         "ts": "2026-09-20T19:03:42Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-20T22:26:02Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-20T22:42:43Z",
         "kind": "followup_skip_idempotent",
         "issue": "https://github.com/vedantnimbarte/zero/pull/81",
         "ok": true,

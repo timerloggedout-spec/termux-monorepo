@@ -143,3 +143,38 @@ def test_dashboard_status_tag_rendering(tmp_path, monkeypatch):
 
     panel = dashboard.make_dashboard()
     assert panel is not None
+
+
+def test_telemetry_symlink_hijacking_prevention(tmp_path, monkeypatch):
+    from src.telemetry import TermuxTelemetryLogger
+
+    # Create target secret file
+    secret_target = tmp_path / "secret.txt"
+    secret_target.write_text("sensitivedata")
+    if os.name != "nt":
+        secret_target.chmod(0o644)
+
+    # Create symlink pointing to target secret file
+    symlink_file = tmp_path / "symlink_agent_telemetry.json"
+    symlink_file.symlink_to(secret_target)
+
+    # Mock TELEMETRY_LOG in both telemetry logger and dashboard
+    monkeypatch.setattr("src.telemetry.TELEMETRY_LOG", str(symlink_file))
+    monkeypatch.setattr(dashboard, "TELEMETRY_LOG", str(symlink_file))
+
+    monkeypatch.setattr(dashboard, "_last_file_pos", 0)
+    monkeypatch.setattr(dashboard, "_active_jobs_cache", {})
+    monkeypatch.setattr(dashboard, "_last_file_ino", None)
+    monkeypatch.setattr(dashboard, "_last_file_mtime", 0)
+
+    # 1. Attempt notify write on symlink
+    TermuxTelemetryLogger.notify("INFO", "AgentX", "Malicious message", target_file="foo.py", attempt=1)
+
+    # Verify target file content and permissions were unchanged
+    assert secret_target.read_text() == "sensitivedata"
+    if os.name != "nt":
+        assert (secret_target.stat().st_mode & 0o777) == 0o644
+
+    # 2. Attempt dashboard read on symlink
+    jobs = dashboard.read_latest_telemetry()
+    assert jobs == []

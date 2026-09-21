@@ -16,8 +16,8 @@ class Finding:
 
 CRON_RE = re.compile(r"""^\s*-\s*cron:\s*['"]([^'"]+)['"]\s*$""")
 TIMEZONE_RE = re.compile(r"""^\s*timezone:\s*['"]?([^'"\s]+)['"]?\s*$""")
-GROUP_RE = re.compile(r"""^\s+group:\s*(.+?)\s*$""")
-CANCEL_RE = re.compile(r"""^\s+cancel-in-progress:\s*(true|false)\s*$""")
+GROUP_RE = re.compile(r"""^\s+group:\s*(.+?)\s*(?:#.*)?$""")
+CANCEL_RE = re.compile(r"""^\s+cancel-in-progress:\s*(true|false)\s*(?:#.*)?$""")
 
 def event_present(text: str, event: str) -> bool:
     return bool(re.search(rf"(?m)^\s{{2}}{re.escape(event)}:\s*(?:#.*)?$", text))
@@ -37,7 +37,7 @@ def main() -> int:
         in_schedule = False
         schedule_indent = 0
         for i, line in enumerate(lines):
-            if re.match(r"^  schedule:\s*$", line):
+            line = strip_yaml_comment(line)\n            if re.match(r"^  schedule:\s*$", line):
                 in_schedule, schedule_indent = True, 2
                 continue
             if in_schedule:
@@ -71,7 +71,7 @@ def main() -> int:
         response_event = any(events.values())
         group = GROUP_RE.search(text)
         cancel = CANCEL_RE.search(text)
-        if response_event and "concurrency:" not in text:
+        if response_event and not re.search(r"(?m)^\s{0,2}concurrency:\s*$", active_text):
             findings.append(Finding("error", str(path.relative_to(ROOT)), "event-concurrency", "issue/PR response workflow needs an explicit concurrency group"))
         if response_event and group and not any(k in group.group(1) for k in ("github.event.issue.number", "github.event.pull_request.number")):
             findings.append(Finding("warning", str(path.relative_to(ROOT)), "event-lease-key", "response concurrency should normally be keyed to issue/PR identity"))

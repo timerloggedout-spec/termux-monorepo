@@ -1,17 +1,26 @@
 {
-  "generated_at": "2026-09-21T19:27:57Z",
+  "generated_at": "2026-09-21T20:37:16Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
-  "receipts": 35,
+  "receipts": 36,
   "kinds": {
     "upstream_pr": 12,
     "claim_skipped_closed": 1,
-    "followup_skip_idempotent": 22
+    "followup_skip_idempotent": 23
   },
   "outcomes": {
-    "ok": 35
+    "ok": 36
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/olcf/olcf-test-harness/pull/280",
+      "title": "help-wanted: stake + contribute for #278",
+      "number": 280,
+      "repo": "olcf/olcf-test-harness",
+      "state": "open",
+      "updated_at": "2026-09-21T20:36:44Z",
+      "tribute": true
+    },
     {
       "html_url": "https://github.com/ussyalfaks/ahjoorxmr-contract/pull/872",
       "title": "help-wanted: stake + contribute for #871",
@@ -112,7 +121,7 @@
       "tribute": true
     }
   ],
-  "foreign_open_count": 11,
+  "foreign_open_count": 12,
   "tributes": [
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
@@ -141,14 +150,28 @@
         "followup_skip_idempotent",
         "followup_skip_idempotent",
         "followup_skip_idempotent",
+        "followup_skip_idempotent",
         "followup_skip_idempotent"
       ],
       "ok": true,
-      "last_ts": "2026-09-21T19:27:05Z",
+      "last_ts": "2026-09-21T20:36:56Z",
       "providers": [],
       "repo": "vedantnimbarte/zero",
       "number": 81,
       "title": "docs(layout): refresh stale ponytail comments (flex + grid)",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/olcf/olcf-test-harness/pull/280",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-21T20:36:44Z",
+      "providers": [],
+      "repo": "olcf/olcf-test-harness",
+      "number": 280,
+      "title": "help-wanted: stake + contribute for #278",
       "state": "open"
     },
     {
@@ -454,7 +477,7 @@
       "state": "closed"
     }
   ],
-  "tribute_count": 24,
+  "tribute_count": 25,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -776,6 +799,14 @@
       },
       {
         "ts": "2026-09-21T19:27:05Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-21T20:36:56Z",
         "kind": "followup_skip_idempotent",
         "issue": "https://github.com/vedantnimbarte/zero/pull/81",
         "ok": true,

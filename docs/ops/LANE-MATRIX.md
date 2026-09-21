@@ -1,9 +1,9 @@
 # LANE-MATRIX (living SSOT)
 
-**Session:** 2026-09-20 21:00 PDT  
+**Session:** 2026-09-21 09:19 PDT  
 **Agent-Identity:** Grok (Administrator)  
-**Live master:** `32c2fb4a` — #703 session SSOT after #701 (`ac0ed98c`)  
-**Open issues:** 109  
+**Live master:** `2d464c1b` — help-wanted live status refresh 2026-09-21T15:20Z  
+**Prior session notes:** tip `2ca852fb` / #704 `8c3cb748` already under this tip  
 **Priority hub:** Issue #175
 
 Rewrite this file every admin session. Copilot is optional peer, not a promote gate. Size ≠ quality. Promote when dual-gate is green **and** the diff is an extract, not a mega. Vercel rate-limit is non-gate. Age alone does not promote.
@@ -12,11 +12,12 @@ Rewrite this file every admin session. Copilot is optional peer, not a promote g
 
 | SHA | What |
 |-----|------|
-| `32c2fb4a` | #703 session LANE-MATRIX 20:00 PDT |
-| `ac0ed98c` | #701 session LANE-MATRIX after #700 |
-| `e46fbf00` | #700 session LANE-MATRIX after #679/#693 |
-| `3be36016` | #679 Sentinel: block telemetry stream symlink hijack |
-| `b041f746` | #693 Linguist: CedrLang translation slots + pre-bound callbacks |
+| `2d464c1b` | help-wanted live status 15:20Z |
+| `044716f0` | help-wanted follow-up evidence 15:20Z |
+| `98db978b` | DOCS-BRANCH-INDEX refresh |
+| `7a9eb5b1` | lane-matrix-sweep observer refresh |
+
+Human/admin session PRs #705/#706 are stale vs this tip — treat as SUPERSEDED by this rewrite once dual-gate is green here.
 
 ## Dual-gate contract
 
@@ -32,16 +33,17 @@ Rewrite this file every admin session. Copilot is optional peer, not a promote g
 
 | PR | Lane | Why |
 |----|------|-----|
-| #682 | EXTRACT / WAIT | ML keep-alive DAG (#175). Dual-gate SUCCESS on prior head. 130 files. Do not wholesale-merge. Rebase onto `32c2fb4a` before any promote reconsider. Prefer slimmer `ml/pipelines/` child. |
-| #702 | OBSERVE | Gravitee API Management research seed |
+| #707 | EXTRACT / REBASE | Sentinel nexuscli symlink hardening. Dual-gate SUCCESS on `6dd55b40`. Base was dirty vs `2d464c1b`; branch update requested this session. Promote only after dual-gate re-green on new head. |
+| #680 / #708 | OBSERVE | Bolt live_catalog_feed family (Jules). Overlapping catalog work — do not double-merge. |
+| #682 | EXTRACT / WAIT | ML keep-alive DAG (#175). 130 files. Dual-gate SUCCESS on prior head. Prefer slimmer `ml/pipelines/` child. |
+| #702 | OBSERVE | Gravitee observatory seed |
 | #684 | HOLD / REBASE | unify Actions cadence; dirty vs tip |
-| #685 | OBSERVE | arrhythmic-zero-token-search proposal |
+| #685 | OBSERVE | arrhythmic-zero-token-search |
 | #695 | OBSERVE | AlphaEvolve + Dream-RSI Paper2Agent |
 | #543 | OBSERVE | skill definition quality lane |
-| #680 | OBSERVE | Bolt live_catalog_feed (Jules) |
 | #630 | EXTRACT | Jules dashboard rich UI — minesweeper |
-| #263 | EXTRACT | Manus graph mega |
 | #432/#549/#601 | EXTRACT | ML wholesale family — keep-alive is #682 tree |
+| #705/#706 | SUPERSEDE | session SSOT rewrites on older tips |
 
 ## Ancient / wrong-base HOLD
 
@@ -51,7 +53,7 @@ Rewrite this file every admin session. Copilot is optional peer, not a promote g
 
 | Issue | Role | Linked |
 |-------|------|--------|
-| **#175** | OPERATOR matrix + dual-gate | #432 #549 #601 #682 (ML); #630 minesweeper |
+| **#175** | OPERATOR matrix + dual-gate | #432 #549 #601 #682 (ML); #630 minesweeper; #707 extract candidate |
 | #184 | Credential inventory (notes only) | secrets hygiene |
 | #117 | Agent2Agent / MCP Agent Mail | #143 |
 | #88/#91/#94 | routing | #48 family |
@@ -60,7 +62,7 @@ Rewrite this file every admin session. Copilot is optional peer, not a promote g
 
 ## Next cycle
 
-1. Leave #682 EXTRACT until sliced or dual-gate re-proven on `32c2fb4a` with a smaller surface.
-2. Leave ML wholesale family EXTRACT-only.
-3. Pulse #175 once per session (done 21:00 PDT, comment 5755209367).
-4. Stay busy on disjoint SSOT / skill upgrades while CI waits. No HITL YOLO merge.
+1. Wait for #707 rebase dual-gate; promote only if still extract-sized and green on `2d464c1b+`.
+2. Leave #682 EXTRACT until sliced.
+3. Pulse #175 this session.
+4. Stay busy on SSOT / skill upgrades while CI waits. No HITL YOLO merge.

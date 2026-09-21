@@ -63,6 +63,16 @@ def gh_get(url: str, token: str | None) -> dict | list:
         return json.loads(resp.read().decode("utf-8"))
 
 
+def gh_get_with_headers(url: str, token: str | None) -> tuple[dict | list, dict[str, str]]:
+    """Fetch JSON and preserve response headers for pagination-aware callers."""
+    headers = {"User-Agent": UA, "Accept": "application/vnd.github+json"}
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    req = Request(url, headers=headers)
+    with urlopen(req, timeout=30) as resp:
+        payload = json.loads(resp.read().decode("utf-8"))
+        return payload, {k.lower(): v for k, v in resp.headers.items()}
+
 def fetch_slice(full_name: str, token: str | None) -> dict:
     row = considerations_template(full_name)
     row["mode"] = "github_api"
@@ -91,14 +101,31 @@ def fetch_slice(full_name: str, token: str | None) -> dict:
                 row["flags"].append("archived")
             if (repo.get("stargazers_count") or 0) < 5:
                 row["flags"].append("low_stars")
-        # oldest: request with until far past via search is limited; use git commits page  last
-        # Best-effort: commits sorted by author-date desc already; fetch with per_page=1 from empty
+        # GitHub returns commits newest-first and exposes the final page through
+        # the Link response header. Preserve headers and follow rel="last" so
+        # first_commit is real metadata rather than an estimate.
+        commits_url = f"https://api.github.com/repos/{full_name}/commits?per_page=1"
         try:
-            # GitHub API: list commits returns newest first; for oldest use:
-            # https://api.github.com/repos/{}/commits?per_page=1 with Link header — skip if no token budget
-            pass
-        except Exception:
-            pass
+            page_payload, response_headers = gh_get_with_headers(commits_url, token)
+            last_url = None
+            for part in response_headers.get("link", "").split(","):
+                if 'rel="last"' in part:
+                    match = re.search(r"<([^>]+)>", part)
+                    if match:
+                        last_url = match.group(1)
+                    break
+            oldest_payload = page_payload
+            if last_url and last_url != commits_url:
+                oldest_payload, _oldest_headers = gh_get_with_headers(last_url, token)
+            if isinstance(oldest_payload, list) and oldest_payload:
+                c_first = oldest_payload[0]
+                row["first_commit"] = {
+                    "sha": c_first.get("sha"),
+                    "date": (c_first.get("commit") or {}).get("author", {}).get("date"),
+                    "message": ((c_first.get("commit") or {}).get("message") or "")[:120],
+                }
+        except (HTTPError, URLError, TimeoutError, json.JSONDecodeError):
+            row["flags"].append("first_commit_unavailable")
     except (HTTPError, URLError, TimeoutError, json.JSONDecodeError) as exc:
         row["flags"].append(f"api_error:{type(exc).__name__}")
         row["error"] = str(exc)[:200]

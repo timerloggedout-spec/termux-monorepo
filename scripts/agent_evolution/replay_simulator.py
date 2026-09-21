@@ -75,7 +75,7 @@ class DiscoveryHistory:
             "node_id": n.node_id, "parent_id": n.parent_id, "score": n.score,
             "cost": n.cost, "terminal": n.terminal, "action": n.action,
             "metadata": dict(n.metadata),
-        }, sort_keys=True) + "\\n" for n in self.nodes)
+        }, sort_keys=True) + "\n" for n in self.nodes)
 
 
 @dataclass(frozen=True)

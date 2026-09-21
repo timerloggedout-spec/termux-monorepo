@@ -17,10 +17,10 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     concurrency:
-  group: dependency-phase-validate-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+      group: dependency-phase-validate-${{ github.event.pull_request.number || github.ref }}
+      cancel-in-progress: true
 
-permissions:
+    permissions:
       contents: read
     steps:
       - name: Checkout

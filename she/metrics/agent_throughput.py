@@ -54,21 +54,32 @@ class ThroughputMetrics:
         return asdict(self)
 
 
+def _complexity_value(value: Any) -> float | None:
+    """Return valid non-negative complexity evidence, preserving invalidity."""
+    if value is None:
+        return None
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return None
+    return number if math.isfinite(number) and number >= 0 else None
+
+
 def _complexity(entry: Mapping[str, Any]) -> float | None:
     """Resolve explicit complexity, then the documented structural fallback.
 
-    Returning ``None`` is deliberate: missing complexity is evidence absence, not
-    zero work. A caller must not silently manufacture a complexity value.
+    Returning ``None`` is deliberate: missing or invalid complexity is evidence
+    absence, not zero work. A caller must not silently manufacture a value.
     """
     explicit = entry.get("complexity_score")
     if explicit is not None:
-        return _positive(explicit)
+        return _complexity_value(explicit)
 
     metrics = entry.get("metrics")
     if isinstance(metrics, Mapping):
         explicit = metrics.get("complexity_score")
         if explicit is not None:
-            return _positive(explicit)
+            return _complexity_value(explicit)
 
         # Structural fallback: logarithmic churn dampens verbosity while file
         # count prevents a single giant file from looking like trivial work.
@@ -76,9 +87,12 @@ def _complexity(entry: Mapping[str, Any]) -> float | None:
         deletions = metrics.get("deletions")
         files_changed = metrics.get("files_changed")
         if additions is not None and deletions is not None and files_changed is not None:
-            churn = _positive(additions) + _positive(deletions)
-            files = _positive(files_changed)
-            return math.log1p(churn) * math.sqrt(files)
+            additions_value = _complexity_value(additions)
+            deletions_value = _complexity_value(deletions)
+            files_value = _complexity_value(files_changed)
+            if additions_value is None or deletions_value is None or files_value is None:
+                return None
+            return math.log1p(additions_value + deletions_value) * math.sqrt(files_value)
 
     return None
 
@@ -95,11 +109,15 @@ def _duration(events: list[Mapping[str, Any]]) -> float:
         if not value:
             continue
         try:
-            stamps.append(_ts(str(value)))
+            stamp = _ts(str(value))
         except ValueError:
             # Ingestion should reject malformed records when possible; the pure
             # reducer remains resilient so one bad event cannot erase valid data.
             continue
+        if stamp.tzinfo is None or stamp.utcoffset() is None:
+            # The telemetry contract requires an explicit timezone/offset.
+            continue
+        stamps.append(stamp)
     if len(stamps) < 2:
         return 0.0
     return max(0.0, (max(stamps) - min(stamps)).total_seconds())

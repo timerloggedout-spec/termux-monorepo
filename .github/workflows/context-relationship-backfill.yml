@@ -57,7 +57,10 @@ jobs:
               complete = False
           else:
               data = json.loads(manifest.read_text(encoding='utf-8'))
-              next_page = data.get('history_window', {}).get('next_start_page')
+              window = data.get('history_window')
+              if not isinstance(window, dict) or 'next_start_page' not in window:
+                  raise SystemExit('canonical manifest is missing history_window.next_start_page')
+              next_page = window['next_start_page']
               start_page = int(next_page) if next_page is not None else 0
               complete = next_page is None
 

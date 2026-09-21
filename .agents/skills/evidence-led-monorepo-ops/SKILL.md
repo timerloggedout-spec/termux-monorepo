@@ -3,16 +3,12 @@ name: evidence-led-monorepo-ops
 description: Continuous evidence-led admin ops on timerloggedout-spec/termux-monorepo. Load every admin session.
 ---
 
-Canonical: master `.agents/skills/evidence-led-monorepo-ops/SKILL.md`.
+Local mirror. Canonical is master `.agents/skills/evidence-led-monorepo-ops/SKILL.md`.
 
-Session 2026-09-20 17:20 PDT: live master at start `3bf343c7`; #692 squash `f346f1c2`.
-**SSOT lane matrix:** `docs/ops/LANE-MATRIX.md` — rewrite every session.
-**Peer routing:** Copilot is optional peer — NOT a promote gate.
-**Mega policy:** size ≠ quality; promote when dual-gate green.
-Vercel 24h rate-limit is a **non-gate** (proven: #690 and #692 squash while Vercel statuses failed).
-#688/#689/#690/#691/#692 DONE this family.
-#682 WAIT/EXTRACT on stale `0570db31` — keep ML DAG + tests; rebase onto post-#692 master.
-#684 HOLD. #685 OBSERVE. #693 OBSERVE.
-Help-wanted foreign-repo eval is free-quota cadence, not a merge gate.
+Session 2026-09-20 ~18:00 PDT: live master `21034ef7` (#671 Codespace BIFROST path).
+Credential plane: issue #184 names/scopes only — raw PATs never in agent context.
+GitHub MCP connector operational (merge/PR/Actions). Codespace create = Operator UI or secrets-wired API.
+BIFROST-006 results.json still runtime after Codespace open.
+HOLD dirty #648/#641 class. No secret paste.
 
 Agent-Identity: Grok (Administrator)

@@ -10,6 +10,7 @@
 | **Agent (Grok / BASH lanes)** | Persistent Linux shell with `ARCHWIZ_ENV=codespace`, system Python, `gh`, Node 20, Rust, shallow submodules. No Termux device required for review, extract, gate, and PR work. |
 | **Collaborators** | Same `.devcontainer` → identical toolchain. Create from `master` → Code → Codespaces. No special branch required. |
 | **Production / dual gates** | Codespace can run `python3 scripts/ci/repo_gate.py` and `python3 scripts/ci/termux_smoke.py` (or the agentic smoke path) as a simulation/support plane. Evidence stays in PR checks; Codespace is the interactive/agent compute surface. |
+| **BIFROST-006** | Preferred host for mocker + Bifrost + Go benchmark smoke (see `docs/proposals/active/bifrost-gateway-integration/BENCHMARK-SMOKE.md`). |
 
 Android/Termux remains the **target** execution environment. Codespace is support / simulation / agent plane only.
 
@@ -24,6 +25,8 @@ Android/Termux remains the **target** execution environment. Codespace is suppor
    python3 -c "from archwiz import config; print(config.ARCHWIZ_ENV)"
    python3 scripts/ci/repo_gate.py --help || true
    ```
+
+Direct link pattern: open the repo → Code → Codespaces tab (or GitHub UI “New codespace”).
 
 ## Agent operating rules (no HITL)
 
@@ -42,7 +45,7 @@ Android/Termux remains the **target** execution environment. Codespace is suppor
 ## Boundaries
 
 - Codespace is **not** a substitute for Termux device capability claims.
-- Prebuilds / multi-repo permissions / extra secrets are optional follow-ups; empty `codespaces.repositories` is intentional until needed.
+- Prebuilds / multi-repo permissions / extra secrets are optional follow-ups; empty `codespaces.repositories` is intentional until needed. Prebuild cost decision lives in #500 / codespaces-enablement proposal — not auto-enabled here.
 - This file is the operator card; do not duplicate long rationale into README.
 
 Implements: codespace-agent-lane / #530 follow-on  

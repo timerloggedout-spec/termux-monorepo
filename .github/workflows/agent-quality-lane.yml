@@ -1,8 +1,4 @@
 name: Agent Quality Lane
-
-# Read-only quality control for agent telemetry and tool-definition quality.
-# This lane validates deterministic measurement code; it does not execute agent
-# prompts, provider calls, or tool payloads.
 on:
   pull_request:
     paths:
@@ -41,11 +37,14 @@ jobs:
         run: python scripts/ci/verify_agent_quality.py
 
       - name: Check source diff whitespace hygiene
+        if: github.event_name == 'pull_request'
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           set -euo pipefail
+          test -n "$BASE_SHA"
+          test -n "$HEAD_SHA"
           git diff --check "$BASE_SHA" "$HEAD_SHA" -- \
             ':(glob)**/*.py' \
             ':(glob)**/*.yml' \

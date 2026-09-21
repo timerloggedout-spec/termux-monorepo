@@ -44,3 +44,10 @@ In GitHub API ingestion workflows (`historical_event_correlation.py`), the jobs 
 
 **Action:**
 Always check for embedded child arrays in GitHub API parent endpoints before executing separate per-item HTTP GET calls.
+
+## 2026-09-21 - Module-Level Collection Caching and Single-Pass Aggregation in Live Catalog Feeds
+**Learning:**
+In high-frequency model catalog routers (`scripts/live_catalog_feed.py`), instantiating sets (`{"stealth/ox-alpha", "ox-alpha"}`) and tuples (`("coder", "code", ...)`) inside function calls like `_is_free` and `peer_candidates_for_role` incurs repeated runtime allocation overhead. Hoisting keyword tuples and sets to module-level constants eliminates object creation per catalog row. Additionally, consolidating candidate filtering and grouping into a single pass over catalog entries in `load_eligible` avoids multi-pass intermediate list iterations.
+
+**Action:**
+Hoist immutable keyword sets and ranking tuples to module-level scope in routing and catalog evaluation loops, and aggregate grouped dict mappings in a single pass over candidate rows.

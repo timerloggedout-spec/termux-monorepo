@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-09-21T15:20:52Z",
+  "generated_at": "2026-09-21T19:27:57Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
-  "receipts": 34,
+  "receipts": 35,
   "kinds": {
     "upstream_pr": 12,
     "claim_skipped_closed": 1,
-    "followup_skip_idempotent": 21
+    "followup_skip_idempotent": 22
   },
   "outcomes": {
-    "ok": 34
+    "ok": 35
   },
   "foreign_open_prs": [
     {
@@ -37,15 +37,6 @@
       "repo": "bmad-code-org/bmad-loop",
       "state": "open",
       "updated_at": "2026-09-20T22:43:23Z",
-      "tribute": true
-    },
-    {
-      "html_url": "https://github.com/ennouaimi/invoicr/pull/8",
-      "title": "help-wanted: stake + contribute for #7",
-      "number": 8,
-      "repo": "ennouaimi/invoicr",
-      "state": "open",
-      "updated_at": "2026-09-20T19:03:33Z",
       "tribute": true
     },
     {
@@ -121,7 +112,7 @@
       "tribute": true
     }
   ],
-  "foreign_open_count": 12,
+  "foreign_open_count": 11,
   "tributes": [
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
@@ -149,15 +140,29 @@
         "followup_skip_idempotent",
         "followup_skip_idempotent",
         "followup_skip_idempotent",
+        "followup_skip_idempotent",
         "followup_skip_idempotent"
       ],
       "ok": true,
-      "last_ts": "2026-09-21T15:20:30Z",
+      "last_ts": "2026-09-21T19:27:05Z",
       "providers": [],
       "repo": "vedantnimbarte/zero",
       "number": 81,
       "title": "docs(layout): refresh stale ponytail comments (flex + grid)",
       "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/ennouaimi/invoicr/pull/8",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-21T18:43:15Z",
+      "providers": [],
+      "repo": "ennouaimi/invoicr",
+      "number": 8,
+      "title": "help-wanted: stake + contribute for #7",
+      "state": "closed"
     },
     {
       "pr_url": "https://github.com/ussyalfaks/ahjoorxmr-contract/pull/872",
@@ -236,19 +241,6 @@
       "number": 12,
       "title": "help-wanted: stake + contribute for #10",
       "state": "closed"
-    },
-    {
-      "pr_url": "https://github.com/ennouaimi/invoicr/pull/8",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-20T19:03:33Z",
-      "providers": [],
-      "repo": "ennouaimi/invoicr",
-      "number": 8,
-      "title": "help-wanted: stake + contribute for #7",
-      "state": "open"
     },
     {
       "pr_url": "https://github.com/infagent/merl/pull/43",
@@ -776,6 +768,14 @@
       },
       {
         "ts": "2026-09-21T15:20:30Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-21T19:27:05Z",
         "kind": "followup_skip_idempotent",
         "issue": "https://github.com/vedantnimbarte/zero/pull/81",
         "ok": true,

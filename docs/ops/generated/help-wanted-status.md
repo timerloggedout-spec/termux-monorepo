@@ -1,16 +1,17 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-21T06:15:33Z UTC · receipts=32 · foreign_open=12 · tributes=23_
+_Generated 2026-09-21T15:20:52Z UTC · receipts=34 · foreign_open=12 · tributes=24_
 
 ## Tributes (contributor ledger)
 
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
+- [ussyalfaks/ahjoorxmr-contract#872](https://github.com/ussyalfaks/ahjoorxmr-contract/pull/872) · state=open · help-wanted: stake + contribute for #871
+- [shadcn-labs/ogimagecn#34](https://github.com/shadcn-labs/ogimagecn/pull/34) · state=closed · help-wanted: stake + contribute for #33
 - [Vasudev-ai/Focusflow#15](https://github.com/Vasudev-ai/Focusflow/pull/15) · state=open · help-wanted: stake + contribute for #2
 - [bmad-code-org/bmad-loop#819](https://github.com/bmad-code-org/bmad-loop/pull/819) · state=open · help-wanted: stake + contribute for #780
 - [pyrite-wiki/pyrite#198](https://github.com/pyrite-wiki/pyrite/pull/198) · state=closed · help-wanted: stake + contribute for #192
 - [vigneshv1cky/alphadesk-terminal#12](https://github.com/vigneshv1cky/alphadesk-terminal/pull/12) · state=closed · help-wanted: stake + contribute for #10
 - [ennouaimi/invoicr#8](https://github.com/ennouaimi/invoicr/pull/8) · state=open · help-wanted: stake + contribute for #7
-- [shadcn-labs/ogimagecn#34](https://github.com/shadcn-labs/ogimagecn/pull/34) · state=open · help-wanted: stake + contribute for #33
 - [infagent/merl#43](https://github.com/infagent/merl/pull/43) · state=open · help-wanted: stake + contribute for #42
 - [DioNanos/codex-termux#27](https://github.com/DioNanos/codex-termux/pull/27) · state=closed · help-wanted: stake + contribute for #14
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
@@ -30,10 +31,10 @@ _Generated 2026-09-21T06:15:33Z UTC · receipts=32 · foreign_open=12 · tribute
 
 ## Foreign open PRs
 
+- [ussyalfaks/ahjoorxmr-contract#872](https://github.com/ussyalfaks/ahjoorxmr-contract/pull/872) — help-wanted: stake + contribute for #871
 - [Vasudev-ai/Focusflow#15](https://github.com/Vasudev-ai/Focusflow/pull/15) — help-wanted: stake + contribute for #2
 - [bmad-code-org/bmad-loop#819](https://github.com/bmad-code-org/bmad-loop/pull/819) — help-wanted: stake + contribute for #780
 - [ennouaimi/invoicr#8](https://github.com/ennouaimi/invoicr/pull/8) — help-wanted: stake + contribute for #7
-- [shadcn-labs/ogimagecn#34](https://github.com/shadcn-labs/ogimagecn/pull/34) — help-wanted: stake + contribute for #33
 - [infagent/merl#43](https://github.com/infagent/merl/pull/43) — help-wanted: stake + contribute for #42
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) — help-wanted: stake + contribute for #25
 - [chahe-dridi/vscode-agent-bell#225](https://github.com/chahe-dridi/vscode-agent-bell/pull/225) — help-wanted: stake + contribute for #224
@@ -43,6 +44,6 @@ _Generated 2026-09-21T06:15:33Z UTC · receipts=32 · foreign_open=12 · tribute
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=32 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 19}`
+## Outcomes · ok=34 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 21}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

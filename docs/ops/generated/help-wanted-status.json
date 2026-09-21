@@ -1,17 +1,26 @@
 {
-  "generated_at": "2026-09-21T06:15:33Z",
+  "generated_at": "2026-09-21T15:20:52Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
-  "receipts": 32,
+  "receipts": 34,
   "kinds": {
     "upstream_pr": 12,
     "claim_skipped_closed": 1,
-    "followup_skip_idempotent": 19
+    "followup_skip_idempotent": 21
   },
   "outcomes": {
-    "ok": 32
+    "ok": 34
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/ussyalfaks/ahjoorxmr-contract/pull/872",
+      "title": "help-wanted: stake + contribute for #871",
+      "number": 872,
+      "repo": "ussyalfaks/ahjoorxmr-contract",
+      "state": "open",
+      "updated_at": "2026-09-21T15:20:14Z",
+      "tribute": true
+    },
     {
       "html_url": "https://github.com/Vasudev-ai/Focusflow/pull/15",
       "title": "help-wanted: stake + contribute for #2",
@@ -37,15 +46,6 @@
       "repo": "ennouaimi/invoicr",
       "state": "open",
       "updated_at": "2026-09-20T19:03:33Z",
-      "tribute": true
-    },
-    {
-      "html_url": "https://github.com/shadcn-labs/ogimagecn/pull/34",
-      "title": "help-wanted: stake + contribute for #33",
-      "number": 34,
-      "repo": "shadcn-labs/ogimagecn",
-      "state": "open",
-      "updated_at": "2026-09-20T13:13:17Z",
       "tribute": true
     },
     {
@@ -147,15 +147,43 @@
         "followup_skip_idempotent",
         "followup_skip_idempotent",
         "followup_skip_idempotent",
+        "followup_skip_idempotent",
+        "followup_skip_idempotent",
         "followup_skip_idempotent"
       ],
       "ok": true,
-      "last_ts": "2026-09-21T05:29:37Z",
+      "last_ts": "2026-09-21T15:20:30Z",
       "providers": [],
       "repo": "vedantnimbarte/zero",
       "number": 81,
       "title": "docs(layout): refresh stale ponytail comments (flex + grid)",
       "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/ussyalfaks/ahjoorxmr-contract/pull/872",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-21T15:20:14Z",
+      "providers": [],
+      "repo": "ussyalfaks/ahjoorxmr-contract",
+      "number": 872,
+      "title": "help-wanted: stake + contribute for #871",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/shadcn-labs/ogimagecn/pull/34",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-21T13:16:27Z",
+      "providers": [],
+      "repo": "shadcn-labs/ogimagecn",
+      "number": 34,
+      "title": "help-wanted: stake + contribute for #33",
+      "state": "closed"
     },
     {
       "pr_url": "https://github.com/Vasudev-ai/Focusflow/pull/15",
@@ -220,19 +248,6 @@
       "repo": "ennouaimi/invoicr",
       "number": 8,
       "title": "help-wanted: stake + contribute for #7",
-      "state": "open"
-    },
-    {
-      "pr_url": "https://github.com/shadcn-labs/ogimagecn/pull/34",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-20T13:13:17Z",
-      "providers": [],
-      "repo": "shadcn-labs/ogimagecn",
-      "number": 34,
-      "title": "help-wanted: stake + contribute for #33",
       "state": "open"
     },
     {
@@ -447,7 +462,7 @@
       "state": "closed"
     }
   ],
-  "tribute_count": 23,
+  "tribute_count": 24,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -745,6 +760,22 @@
       },
       {
         "ts": "2026-09-21T05:29:37Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-21T12:46:46Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-21T15:20:30Z",
         "kind": "followup_skip_idempotent",
         "issue": "https://github.com/vedantnimbarte/zero/pull/81",
         "ok": true,

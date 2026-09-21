@@ -334,3 +334,34 @@ proposals:
     related_prs: [492]
     related_branches: [docs/proposals/agentic-scoped-access-and-tier4-review]
     gates_required: []
+
+  - id: cost-of-remembering-integration
+    title: "RinDig cost-of-remembering_fork ICM evidence lane"
+    author: timerloggedout-spec
+    status: executing
+    priority: P1
+    path: active/cost-of-remembering-integration/
+    related_prs: [485]
+    related_branches:
+      - feat/rindig-cost-of-remembering-icm
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: mcp-hub-risk-split
+    title: "MCP hub risk split"
+    author: timerloggedout-spec
+    status: executing
+    priority: P2
+    path: active/mcp-hub-risk-split/
+    related_prs: []
+    related_branches: []
+    gates_required: []
+
+  - id: auditengine-adapt
+    title: "RinDig AuditEngine (Ethics Engine) adapt pass"
+    author: timerloggedout-spec
+    status: draft
+    priority: P2
+    path: active/auditengine-adapt/
+    related_prs: []
+    related_branches: []
+    gates_required: [repo-gate, termux-smoke]

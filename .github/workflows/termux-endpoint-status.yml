@@ -1,0 +1,45 @@
+name: Termux endpoint status
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/15 * * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: termux-endpoint-status
+  cancel-in-progress: true
+
+jobs:
+  status:
+    name: Validate published Termux endpoint
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Validate endpoint metadata
+        env:
+          ENDPOINT: ${{ vars.TERMUX_MCP_ENDPOINT }}
+          UPDATED_AT: ${{ vars.TERMUX_MCP_ENDPOINT_UPDATED_AT }}
+        run: |
+          set -euo pipefail
+          if [ -z "$ENDPOINT" ] || [ -z "$UPDATED_AT" ]; then
+            echo 'Termux endpoint variables are not published.'
+            exit 1
+          fi
+          case "$ENDPOINT" in
+            tcp://[A-Za-z0-9.-]*:[0-9]*) ;;
+            *) echo 'Invalid TERMUX_MCP_ENDPOINT format.'; exit 1 ;;
+          esac
+          python3 - "$UPDATED_AT" <<'PY'
+          import datetime as dt
+          import sys
+          stamp = dt.datetime.fromisoformat(sys.argv[1].replace('Z', '+00:00'))
+          age = (dt.datetime.now(dt.timezone.utc) - stamp.astimezone(dt.timezone.utc)).total_seconds()
+          print(f'endpoint={"[published]"} age_seconds={age:.0f}')
+          if age > 4200:
+              raise SystemExit('Published endpoint is older than the 60-minute free-tunnel window.')
+          if age < -300:
+              raise SystemExit('Published endpoint timestamp is unexpectedly in the future.')
+          PY

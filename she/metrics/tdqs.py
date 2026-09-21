@@ -111,7 +111,7 @@ def _walk_required(
         required = schema.get("required")
         required_names = required if isinstance(required, list) else []
         count = 1 if depth > 0 else 0
-        max_depth = max(1, depth) if properties is not None else depth
+        max_depth = max(1, depth) if properties else depth
         unions = 0
         nested = nested_object
         if isinstance(properties, Mapping):

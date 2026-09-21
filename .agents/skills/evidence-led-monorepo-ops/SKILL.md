@@ -5,15 +5,14 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 
 Canonical: master `.agents/skills/evidence-led-monorepo-ops/SKILL.md`.
 
-Session 2026-09-20 15:17 PDT: live master `fbfdb5a0`.
-**SSOT lane matrix:** `docs/ops/LANE-MATRIX.md` — rewrite every session.
+Session 2026-09-20 18:05 PDT: live master `21034ef7`. Open PRs=76. Oldest open PR #47 = 46d. Issue #175 = 40d.
+**SSOT lane matrix:** `docs/ops/LANE-MATRIX.md` — rewrite every session (includes age buckets).
 **Peer routing:** Copilot is optional peer — NOT a promote gate.
-**Mega policy:** size ≠ quality; promote when dual-gate green.
-#688/#689 WAIT (tip-aligned, mergeable unstable).
-#682 WAIT/EXTRACT on stale `0570db31` — keep ML DAG + tests.
-#687 HOLD-REBASE (stale matrix PR).
-#686 WAIT. #684 HOLD. #685 OBSERVE.
+**Mega policy:** size ≠ quality; promote when dual-gate green. Age alone ≠ promote.
+Vercel 24h rate-limit is a **non-gate**.
+#682 WAIT/EXTRACT — rebase ML keep-alive onto `21034ef7`.
+#684 HOLD. Ancient wrong-base (#48/#69/#73) HOLD.
+#432/#549/#601 EXTRACT only. #630 minesweeper EXTRACT.
 Help-wanted foreign-repo eval is free-quota cadence, not a merge gate.
-Vercel/GitLab/Mintlify non-gate.
 
 Agent-Identity: Grok (Administrator)

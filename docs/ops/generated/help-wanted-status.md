@@ -1,12 +1,12 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-21T01:24:33Z UTC · receipts=30 · foreign_open=11 · tributes=22_
+_Generated 2026-09-21T04:54:34Z UTC · receipts=31 · foreign_open=11 · tributes=22_
 
 ## Tributes (contributor ledger)
 
-- [bmad-code-org/bmad-loop#819](https://github.com/bmad-code-org/bmad-loop/pull/819) · state=open · help-wanted: stake + contribute for #780
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
-- [markramm/pyrite#198](https://github.com/markramm/pyrite/pull/198) · state=closed · help-wanted: stake + contribute for #192
+- [bmad-code-org/bmad-loop#819](https://github.com/bmad-code-org/bmad-loop/pull/819) · state=open · help-wanted: stake + contribute for #780
+- [pyrite-wiki/pyrite#198](https://github.com/pyrite-wiki/pyrite/pull/198) · state=closed · help-wanted: stake + contribute for #192
 - [vigneshv1cky/alphadesk-terminal#12](https://github.com/vigneshv1cky/alphadesk-terminal/pull/12) · state=closed · help-wanted: stake + contribute for #10
 - [ennouaimi/invoicr#8](https://github.com/ennouaimi/invoicr/pull/8) · state=open · help-wanted: stake + contribute for #7
 - [shadcn-labs/ogimagecn#34](https://github.com/shadcn-labs/ogimagecn/pull/34) · state=open · help-wanted: stake + contribute for #33
@@ -41,6 +41,6 @@ _Generated 2026-09-21T01:24:33Z UTC · receipts=30 · foreign_open=11 · tribute
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=30 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 17}`
+## Outcomes · ok=31 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 18}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

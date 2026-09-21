@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-09-21T01:24:33Z",
+  "generated_at": "2026-09-21T04:54:34Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
-  "receipts": 30,
+  "receipts": 31,
   "kinds": {
     "upstream_pr": 12,
     "claim_skipped_closed": 1,
-    "followup_skip_idempotent": 17
+    "followup_skip_idempotent": 18
   },
   "outcomes": {
-    "ok": 30
+    "ok": 31
   },
   "foreign_open_prs": [
     {
@@ -115,19 +115,6 @@
   "foreign_open_count": 11,
   "tributes": [
     {
-      "pr_url": "https://github.com/bmad-code-org/bmad-loop/pull/819",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-20T22:43:23Z",
-      "providers": [],
-      "repo": "bmad-code-org/bmad-loop",
-      "number": 819,
-      "title": "help-wanted: stake + contribute for #780",
-      "state": "open"
-    },
-    {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
         "upstream_pr",
@@ -149,10 +136,11 @@
         "followup_skip_idempotent",
         "followup_skip_idempotent",
         "followup_skip_idempotent",
+        "followup_skip_idempotent",
         "followup_skip_idempotent"
       ],
       "ok": true,
-      "last_ts": "2026-09-20T22:42:43Z",
+      "last_ts": "2026-09-21T04:54:20Z",
       "providers": [],
       "repo": "vedantnimbarte/zero",
       "number": 81,
@@ -160,14 +148,27 @@
       "state": "open"
     },
     {
-      "pr_url": "https://github.com/markramm/pyrite/pull/198",
+      "pr_url": "https://github.com/bmad-code-org/bmad-loop/pull/819",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-20T22:43:23Z",
+      "providers": [],
+      "repo": "bmad-code-org/bmad-loop",
+      "number": 819,
+      "title": "help-wanted: stake + contribute for #780",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/pyrite-wiki/pyrite/pull/198",
       "kinds": [
         "upstream_pr"
       ],
       "ok": true,
       "last_ts": "2026-09-20T20:40:26Z",
       "providers": [],
-      "repo": "markramm/pyrite",
+      "repo": "pyrite-wiki/pyrite",
       "number": 198,
       "title": "help-wanted: stake + contribute for #192",
       "state": "closed"
@@ -705,6 +706,14 @@
       },
       {
         "ts": "2026-09-20T22:42:43Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-21T04:54:20Z",
         "kind": "followup_skip_idempotent",
         "issue": "https://github.com/vedantnimbarte/zero/pull/81",
         "ok": true,

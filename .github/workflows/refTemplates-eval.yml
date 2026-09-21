@@ -5,13 +5,17 @@ on:
     paths:
       - "refTemplates/**"
       - "scripts/ci/refTemplates_*.py"
+      - "scripts/decision_engines.py"
+      - "scripts/laya_decision_stub.py"
       - ".github/workflows/refTemplates-eval.yml"
   pull_request:
     paths:
       - "refTemplates/**"
       - "scripts/ci/refTemplates_*.py"
+      - "scripts/decision_engines.py"
+      - "scripts/laya_decision_stub.py"
   schedule:
-    - cron: "17 6 * * *"  # daily light cadence
+    - cron: "17 6 * * *"
   workflow_dispatch:
 
 permissions:
@@ -40,10 +44,17 @@ jobs:
             --output docs/ops/generated/refTemplates/scores.jsonl
       - name: papers seed
         run: python3 scripts/ci/refTemplates_papers_seed.py
-      - name: commit-slice schema
+      - name: commit-slice (github API when token present)
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           python3 scripts/ci/refTemplates_commit_slice.py \
+            --github-api \
             --output docs/ops/generated/refTemplates/commit-slice.jsonl
+      - name: decision engines + laya stub
+        run: |
+          python3 scripts/decision_engines.py --list > docs/ops/generated/refTemplates/decision-engines.json
+          python3 scripts/laya_decision_stub.py --json > docs/ops/generated/refTemplates/laya-stub.json
       - name: deepwiki dry-run
         run: |
           python3 scripts/ci/refTemplates_deepwiki_batch.py \

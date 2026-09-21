@@ -5,9 +5,12 @@ description: Adaptive WAIT for agentic GitHub ops. Dual-gate before promote. Sta
 
 Canonical: master `.agents/skills/adaptive-wait/SKILL.md`.
 
-Master HEAD this session: `2e4f59aa` (#707 landed).
+Master HEAD this session: `16fb9ca9` (help-wanted on #710/`1bfcad2`).
 Read `docs/ops/LANE-MATRIX.md` every WAIT cycle.
-#682 EXTRACT/WAIT (130 files). #684 HOLD.
-#705/#706/#709 SUPERSEDE vs post-#707 tip.
+#711 WAIT. #682 EXTRACT/WAIT (130-file mega; keep-alive slice is `ml/pipelines/` + skills + ICM).
+#684 HOLD.
+#705/#706/#709 SUPERSEDE vs post-#710 tip.
 AVOID HITL YOLO YEET AUTOAPPROVE.
+Stay busy: skill mirrors, extract inventory, session SSOT — not idle poll loops.
+This environment: connector can push feature branches; WAIT on remote promote until dual-gate on the extract.
 Agent-Identity: Grok (Administrator)

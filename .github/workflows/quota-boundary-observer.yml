@@ -1,0 +1,66 @@
+name: Operations — quota boundary observer
+
+on:
+  schedule:
+    - cron: '53 23 28-31 * *'
+      timezone: 'UTC'
+    - cron: '7 0 1 * *'
+      timezone: 'UTC'
+  workflow_dispatch:
+
+concurrency:
+  group: quota-boundary-observer-${{ github.event.schedule || github.ref }}
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  observe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Capture UTC boundary evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          now_utc="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          today_utc="$(date -u +'%Y-%m-%d')"
+          tomorrow_utc="$(date -u -d 'tomorrow' +'%Y-%m-%d')"
+          month_start="false"
+          if [[ "$(date -u +'%d')" == "01" ]]; then
+            month_start="true"
+          fi
+
+          candidate_pre_boundary="false"
+          if [[ "$(date -u -d 'tomorrow' +'%d')" == "01" ]]; then
+            candidate_pre_boundary="true"
+          fi
+
+          mkdir -p /tmp/quota-boundary
+          cat > /tmp/quota-boundary/observation.json <<EOF
+          {
+            "schema": "termux.quota-boundary-observation/v1",
+            "observed_at_utc": "$now_utc",
+            "planning_anchor": "monthly@00:00Z",
+            "authoritative_quota_state": "UNKNOWN",
+            "provider_billing_cycle": "account-defined",
+            "month_start_observed": $month_start,
+            "candidate_pre_boundary": $candidate_pre_boundary,
+            "event_schedule": "${{ github.event.schedule || 'workflow_dispatch' }}",
+            "workflow": "${{ github.workflow }}",
+            "run_id": "${{ github.run_id }}",
+            "run_attempt": "${{ github.run_attempt }}",
+            "ref": "${{ github.ref }}",
+            "sha": "${{ github.sha }}",
+            "note": "Calendar timing is an operational anchor; quota reset requires authoritative provider/account evidence."
+          }
+          EOF
+
+          cat /tmp/quota-boundary/observation.json
+      - name: Publish boundary evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: quota-boundary-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/quota-boundary/observation.json
+          if-no-files-found: error
+          retention-days: 30

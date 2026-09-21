@@ -40,6 +40,21 @@ class ObservatoryTests(unittest.TestCase):
         self.assertEqual(len(records), 1)
         self.assertEqual(records[0]["provenance"], ["owned", "starred"])
 
+    def test_api_management_domains_are_classified_as_research(self):
+        repo = dict(BASE)
+        repo.update({
+            "name": "gravitee-api-management",
+            "description": "Open Source API Management with gateway and developer portal",
+            "topics": ["api-management", "gateway", "openapi", "kubernetes"],
+            "fork": True,
+            "parent": {"full_name": "gravitee-io/gravitee-api-management"},
+        })
+        result = classify(repo, ["owned"])
+        self.assertIn("api-management", result["domains"])
+        self.assertIn("kubernetes", result["domains"])
+        self.assertEqual(result["research_value"], "high")
+        self.assertIn("upstream-comparison", result["integration"])
+
     def test_snapshot_hash_is_stable(self):
         records = build_records([], [BASE])
         self.assertEqual(snapshot_hash(records), snapshot_hash(json.loads(json.dumps(records))))

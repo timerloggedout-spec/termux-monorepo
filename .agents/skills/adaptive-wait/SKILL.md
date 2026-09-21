@@ -3,12 +3,14 @@ name: adaptive-wait
 description: Adaptive WAIT for agentic GitHub ops. Dual-gate before promote. Stay busy on disjoint work.
 ---
 
-Local mirror. Canonical is master `.agents/skills/adaptive-wait/SKILL.md`.
+Canonical: master `.agents/skills/adaptive-wait/SKILL.md`.
 
-Master HEAD this session: `9a3935f85793a3a89b5b2516c500754f24d09bd3`.
-#675 merged. Next dual-gate: HF alias announce branch.
-#672/#673 WAIT rebase onto 9a3935f8. #648 dirty HOLD. #641 dirty HOLD.
-ML mega extract-only. Vercel rate-limit non-gate.
-Disjoint work: secret naming convention + catalog alias resolver.
+Master HEAD this session: `21034ef7`.
+Read `docs/ops/LANE-MATRIX.md` every WAIT cycle (age buckets included).
+Do not treat Copilot review as a promote gate.
+Vercel rate-limit ≠ dual-gate failure.
+Age ≥40d does not auto-promote; rebase + dual-gate required.
+#682 WAIT/EXTRACT (ML keep-alive).
+Disjoint work this cycle: open-PR age audit from #47, issue→PR map, LANE-MATRIX rewrite, #175 pulse.
 
 Agent-Identity: Grok (Administrator)

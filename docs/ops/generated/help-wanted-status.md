@@ -1,10 +1,11 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-21T23:17:25Z UTC · receipts=37 · foreign_open=12 · tributes=25_
+_Generated 2026-09-21T23:43:19Z UTC · receipts=38 · foreign_open=13 · tributes=26_
 
 ## Tributes (contributor ledger)
 
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
+- [umn-adc/ATLAS#42](https://github.com/umn-adc/ATLAS/pull/42) · state=open · help-wanted: stake + contribute for #31
 - [olcf/olcf-test-harness#280](https://github.com/olcf/olcf-test-harness/pull/280) · state=open · help-wanted: stake + contribute for #278
 - [ennouaimi/invoicr#8](https://github.com/ennouaimi/invoicr/pull/8) · state=closed · help-wanted: stake + contribute for #7
 - [ussyalfaks/ahjoorxmr-contract#872](https://github.com/ussyalfaks/ahjoorxmr-contract/pull/872) · state=open · help-wanted: stake + contribute for #871
@@ -32,6 +33,7 @@ _Generated 2026-09-21T23:17:25Z UTC · receipts=37 · foreign_open=12 · tribute
 
 ## Foreign open PRs
 
+- [umn-adc/ATLAS#42](https://github.com/umn-adc/ATLAS/pull/42) — help-wanted: stake + contribute for #31
 - [olcf/olcf-test-harness#280](https://github.com/olcf/olcf-test-harness/pull/280) — help-wanted: stake + contribute for #278
 - [ussyalfaks/ahjoorxmr-contract#872](https://github.com/ussyalfaks/ahjoorxmr-contract/pull/872) — help-wanted: stake + contribute for #871
 - [Vasudev-ai/Focusflow#15](https://github.com/Vasudev-ai/Focusflow/pull/15) — help-wanted: stake + contribute for #2
@@ -45,6 +47,6 @@ _Generated 2026-09-21T23:17:25Z UTC · receipts=37 · foreign_open=12 · tribute
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=37 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 24}`
+## Outcomes · ok=38 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 25}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

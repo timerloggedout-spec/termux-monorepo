@@ -5,13 +5,14 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 
 Canonical: master `.agents/skills/evidence-led-monorepo-ops/SKILL.md`.
 
-Session 2026-09-21 10:09 PDT: live master tip `2e4f59aa` after #707 squash.
+Session 2026-09-22 04:02 PDT: live master tip `ca7fd7c8`.
+Session pulse: ops/session-lane-matrix-20260922-0402.
 **SSOT lane matrix:** `docs/ops/LANE-MATRIX.md` — rewrite every session.
-**Peer routing:** Copilot is optional peer — NOT a promote gate.
-**Mega policy:** size ≠ quality; dual-gate green + 130 files still EXTRACT.
-Vercel 24h rate-limit is a **non-gate**.
-#682 EXTRACT/WAIT. #684 HOLD. #685/#695/#702 OBSERVE.
-#705/#706/#709 SUPERSEDE (older session rewrites vs post-#707 tip).
-#432/#549/#601 EXTRACT. #630 minesweeper.
-Skills co-loaded: adaptive-wait, approxination-lane.
+**BIUDL = Broad → Integrate → Validate → Develop → Learn.**
+#724 WAIT (status success, mergeable_state unstable, rebase onto tip in flight).
+#731/#730/#729/#728/#727/#726/#723/#722 SUPERSEDE.
+#733/#732 OBSERVE. #735 EXTRACT security. #725 OBSERVE/EXTRACT.
+#717/#714 WAIT. #630 minesweeper EXTRACT.
+Skills co-loaded: adaptive-wait, approxination-lane, github-pages-operator, stepie-stepwise-ops.
+AVOID HITL YOLO YEET AUTOAPPROVE.
 Agent-Identity: Grok (Administrator)

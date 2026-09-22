@@ -64,7 +64,7 @@ def is_internal(issue: str) -> bool:
 
 
 def lane_git_history() -> list[dict]:
-    paths = ['apps/help-wanted-dashboard/', 'docs/ops/HELP-WANTED-', '.agents/skills/help-wanted-lane/', '.github/workflows/help-wanted-', 'scripts/ci/help_wanted_']
+    paths = ['apps/help-wanted-dashboard/', 'docs/ops/HELP-WANTED-*', '.agents/skills/help-wanted-lane/', '.github/workflows/help-wanted-*', 'scripts/ci/help_wanted_*']
     try:
         raw = subprocess.check_output(['git','log','--date=iso-strict','--format=%H%x09%aI%x09%an%x09%s','--',*paths], text=True, stderr=subprocess.DEVNULL)
     except (OSError, subprocess.CalledProcessError):

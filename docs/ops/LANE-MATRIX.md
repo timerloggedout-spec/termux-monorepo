@@ -1,24 +1,23 @@
 # LANE-MATRIX (living SSOT)
 
-**Session:** 2026-09-21 16:13 PDT  
+**Session:** 2026-09-21 18:05 PDT  
 **Agent-Identity:** Grok (Administrator)  
-**Live master (base):** `cb995e76`  
-**This PR tip:** ops/biudl-claude-primary-deprecate-agents-20260921  
+**Live master (base):** `f1255c68`  
+**This PR tip:** ops/session-lane-matrix-20260921-1805  
 **Priority hub:** Issue #175
 
 Rewrite this file every admin session. Copilot is optional peer, not a promote gate. Size ≠ quality. Promote when dual-gate is green **and** the diff is an extract, not a mega. Vercel rate-limit is non-gate. Age alone does not promote.
 
 **BIUDL = Broad → Integrate → Validate → Develop → Learn.** Fully Continuous Automated Development Evaluation Environment. **AVOID HITL YOLO MODE YEET AUTOAPPROVE.**
 
-**Status change (this cycle):** Root `CLAUDE.md` is sole primary agent entry. Root `AGENTS.md` is **deprecated** (Linguist / CedrLang / Jules redirect-only). Content folded. All lanes (Jules, Linguist, Sentinel, Bolt, help-wanted, Codespace, ecc-tools, Stepie) load `CLAUDE.md` first.
-
 ## Landed this window (evidence)
 
 | SHA | What |
 |-----|------|
-| (pending dual-gate) | CLAUDE.md BIUDL expanded + AGENTS.md deprecated redirect |
-| (pending) | REFTEMPLATES directive corrected (no YOLO/YEET) |
-| `cb995e76` | prior tip |
+| `f1255c68` | help-wanted live status refresh 23:43Z (current tip) |
+| `27c73907` | help-wanted follow-up evidence 23:38Z |
+| `b88d2de8` | #718 MERGED — Gource/Core SeekLog + OPS-EVENT thin extract |
+| `dd3990fc` | #719 MERGED — BIUDL + CLAUDE.md primary + AGENTS.md deprecate |
 
 ## Dual-gate contract
 
@@ -29,19 +28,25 @@ Rewrite this file every admin session. Copilot is optional peer, not a promote g
 5. GitLab / Mintlify = non-gate
 6. Age alone does not promote; dual-gate + rebase onto live master does
 7. Size ≠ quality: dual-gate green + 130 files still EXTRACT
+8. `validate-pull-request` failure keeps mergeable unstable — WAIT, not YOLO
+9. GitHub `update_pull_request_branch` no-op when base already contains no new commits — treat as already on tip
 
 ## Tip-first active lanes
 
 | PR | Lane | Why |
 |----|------|-----|
-| #682 | EXTRACT / WAIT | ML keep-alive DAG (#175). 130 files. Prefer slimmer `ml/pipelines/` child. |
-| this | SSOT / BIUDL | CLAUDE primary + AGENTS deprecate + directive hygiene |
-| #680 / #708 | OBSERVE | Bolt live_catalog_feed family (Jules). Overlapping catalog work — do not double-merge. |
-| #702 | OBSERVE | Gravitee observatory seed |
-| #684 | HOLD / REBASE | unify Actions cadence; dirty vs tip |
-| #685 | OBSERVE | arrhythmic-zero-token-search |
+| this | SSOT pulse | 18:05 PDT rewrite; tip still `f1255c68` |
+| #722 | WAIT / SUPERSEDE | 17:01 pulse. Dual-gate SUCCESS on tip; mergeable_state unstable — do not YOLO |
+| #714 | WAIT | Stepie skill. Dual-gate SUCCESS + already on tip (`update branch` = no new base commits). `validate-pull-request` failed |
+| #717 | WAIT | Gantt/PM extract. Dual-gate SUCCESS + already on tip. mergeable unstable |
+| #713 | SUPERSEDE / EXTRACT | Slim ML CONFLICT vs tip — re-extract on `feat/ml-pipelines-slim-20260921-1805` |
+| #682 | EXTRACT | 130-file mega keep-alive DAG. Prefer slim child |
+| #721 | OBSERVE | Jules Linguist CedrLang. Dual-gate not promote |
+| #716/#712/#711 | SUPERSEDE | Stale session pulses |
+| #715 | OBSERVE | Jules consolidation |
 | #630 | EXTRACT | Jules dashboard rich UI — minesweeper |
-| #432/#549/#601 | EXTRACT | ML wholesale family — keep-alive is #682 tree |
+| #523 | EXTRACT / HOLD | Historical corpus mega + telemetry |
+| #680 | OBSERVE | Bolt live_catalog_feed |
 
 ## Ancient / wrong-base HOLD
 
@@ -51,7 +56,7 @@ Rewrite this file every admin session. Copilot is optional peer, not a promote g
 
 | Issue | Role | Linked |
 |-------|------|--------|
-| **#175** | OPERATOR matrix + dual-gate | #432 #549 #601 #682 (ML); #630 minesweeper |
+| **#175** | OPERATOR matrix + dual-gate | #432 #549 #601 #682 #713 (ML); #630 minesweeper; #714 Stepie |
 | #184 | Credential inventory (notes only) | secrets hygiene |
 | #117 | Agent2Agent / MCP Agent Mail | #143 |
 | #88/#91/#94 | routing | #48 family |
@@ -59,7 +64,7 @@ Rewrite this file every admin session. Copilot is optional peer, not a promote g
 
 ## Next cycle
 
-1. Dual-gate this PR; promote only when green + outcome verified.
-2. Leave #682 EXTRACT until sliced.
-3. Stay busy on SSOT / skill upgrades while CI waits. No HITL YOLO merge.
-4. Jules / Linguist: confirm AGENTS.md is redirect-only.
+1. Keep #714/#717 WAIT until mergeable_state is clean. Dual-gate already green on tip.
+2. Land slim ML re-extract on `feat/ml-pipelines-slim-20260921-1805`. Leave #682 mega EXTRACT.
+3. Observe #721 Jules; do not treat Linguist diction PRs as promote gates.
+4. Stay busy on SSOT / skill mirrors / Stepie RECON. No HITL YOLO merge.

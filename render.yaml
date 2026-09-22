@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: termux-monorepo-laya
+    runtime: python
+    plan: standard
+    buildCommand: pip install --upgrade pip && pip install "laya==0.3.5"
+    startCommand: python deploy/laya/server.py
+    healthCheckPath: /healthz
+    envVars:
+      - key: USE_TF
+        value: "0"
+      - key: LAYA_PRELOAD
+        value: "0"

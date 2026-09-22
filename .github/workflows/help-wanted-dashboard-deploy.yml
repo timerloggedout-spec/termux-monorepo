@@ -95,6 +95,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Refresh provenance-aware dashboard snapshot
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          python3 scripts/ci/help_wanted_status.py
+          python3 scripts/ci/verify_help_wanted_dashboard.py
+
       - name: Prepare help-wanted subtree (canonical dashboard)
         run: |
           mkdir -p _site
@@ -130,6 +138,14 @@ jobs:
     continue-on-error: true
     steps:
       - uses: actions/checkout@v4
+      - name: Refresh provenance-aware dashboard snapshot
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          python3 scripts/ci/help_wanted_status.py
+          python3 scripts/ci/verify_help_wanted_dashboard.py
+
       - name: Sync status snapshot
         run: |
           mkdir -p apps/help-wanted-dashboard/data

@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "3f1b209352bd80b6937bf05995579896881a3d2a4a8a062bd1ec10bbe9dbf2d5",
-  "workflow_count": 77,
+  "source_fingerprint": "efaac6b4b80c3c2dc03a16aa15acd12c1e1537f464a50a35eb984afca9bef348",
+  "workflow_count": 79,
   "workflows": [
     {
       "action_pins": [
@@ -74,7 +74,7 @@
       "concurrency": "group: actions-run-watcher-${{ github.event.workflow_run.id }} cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
-        "notify-failure"
+        "observe-completion"
       ],
       "name": "Actions Run Watcher — incident notification",
       "path": ".github/workflows/actions-run-watcher.yml",
@@ -1060,6 +1060,28 @@
     },
     {
       "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
+      "authority": "writer",
+      "concurrency": "group: lane-matrix-sweep cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "sweep"
+      ],
+      "name": "Lane matrix recursive sweep",
+      "path": ".github/workflows/ops-lane-matrix-sweep.yml",
+      "schedules": [
+        "11 */6 * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
       "authority": "read-only-or-advisory",
@@ -1336,6 +1358,26 @@
         "17 * * * *"
       ],
       "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "inventory-score"
+      ],
+      "name": "refTemplates continuous eval",
+      "path": ".github/workflows/refTemplates-eval.yml",
+      "schedules": [
+        "17 6 * * *"
+      ],
+      "triggers": [
+        "pull_request",
+        "push",
         "schedule",
         "workflow_dispatch"
       ]

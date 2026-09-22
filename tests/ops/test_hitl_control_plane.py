@@ -3,7 +3,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parents[2] / "scripts" / "ops"))
-from hitl_control_plane import bounded_replay, make_projection, propose_command, transition, to_gource
+from hitl_control_plane import bounded_replay, make_projection, propose_command, transition, to_gource, context_bundle, cadence_event, collaborator_plan, export_n8n_workflow, compare_snapshots
 
 class HITLControlPlaneTests(unittest.TestCase):
     def test_proposal_is_stable(self):
@@ -25,6 +25,26 @@ class HITLControlPlaneTests(unittest.TestCase):
         self.assertEqual(len(selected),2)
         self.assertEqual(p.event_count,2)
         self.assertTrue(p.snapshot_id.startswith("snapshot-"))
+
+    def test_context_preserves_verified_candidate_separation(self):
+        b=context_bundle(permalink="https://github.com/o/r/issues/1#issuecomment-2",verified_edges=["comment→pr"],candidate_edges=["author→collaborator"])
+        self.assertEqual(b["verified_edges"],["comment→pr"])
+        self.assertEqual(b["candidate_edges"],["author→collaborator"])
+        self.assertEqual(b["mutation_authority"],"none")
+
+    def test_cadence_and_collaborator_adapters(self):
+        self.assertEqual(cadence_event("o/r","s1","planning")["event_type"],"cadence.sprint")
+        self.assertEqual(collaborator_plan("o/r","alice","proposed")["attributes"]["sync_state"],"proposed")
+
+    def test_n8n_adapter_and_snapshot_diff_are_read_only(self):
+        cmd=propose_command("inspect-pr","pr:7")
+        wf=export_n8n_workflow(cmd)
+        self.assertEqual(wf["source_of_truth"],"GitHub + OPS-EVENT + evidence")
+        a=[{"event_id":"a"}]; b=[{"event_id":"b"}]
+        pa=make_projection(a,"abc1234","a"); pb=make_projection(b,"abc1234","b")
+        diff=compare_snapshots(pa,pb,a,b)
+        self.assertTrue(diff["read_only"])
+        self.assertEqual(diff["added"],["b"])
 
     def test_gource_same_range(self):
         e=[{"event_id":"e1","occurred_at":"2026-01-01T00:00:00Z","actor":{"id":"owner"},"scope":{"entity_id":"pr:7"}}]

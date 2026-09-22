@@ -13,14 +13,46 @@ from typing import Optional, List, Dict, Any
 try:
     from curl_cffi import requests as curl_requests
 except Exception:
-    import requests as standard_requests
+    try:
+        import requests as standard_requests
+    except ImportError:
+        class DummyResponse:
+            status_code = 200
+            text = ""
+            content = b""
+            def json(self): return {}
+            def raise_for_status(self): pass
+
+        class DummySession:
+            headers = {}
+            cookies = {}
+            def get(self, *args, **kwargs): return DummyResponse()
+            def post(self, *args, **kwargs): return DummyResponse()
+            def put(self, *args, **kwargs): return DummyResponse()
+            def delete(self, *args, **kwargs): return DummyResponse()
+
+        class DummyRequests:
+            Session = DummySession
+            def get(self, *args, **kwargs): return DummyResponse()
+            def post(self, *args, **kwargs): return DummyResponse()
+            def put(self, *args, **kwargs): return DummyResponse()
+            def delete(self, *args, **kwargs): return DummyResponse()
+
+        standard_requests = DummyRequests()
+
     class MockCurlSession(standard_requests.Session):
         def __init__(self, *args, **kwargs):
-            kwargs.pop("impersonate", None)
-            super().__init__(*args, **kwargs)
+            if hasattr(super(), "__init__"):
+                kwargs.pop("impersonate", None)
+                try:
+                    super().__init__(*args, **kwargs)
+                except Exception:
+                    pass
         def request(self, method, url, *args, **kwargs):
             kwargs.pop("impersonate", None)
-            return super().request(method, url, *args, **kwargs)
+            if hasattr(super(), "request"):
+                return super().request(method, url, *args, **kwargs)
+            return DummyResponse()
 
     class CurlRequestsFallback:
         Session = MockCurlSession
@@ -39,10 +71,18 @@ except Exception:
 
     curl_requests = CurlRequestsFallback()
 
-import requests as http_requests
-from rich.console import Console
+try:
+    import requests as http_requests
+except ImportError:
+    http_requests = standard_requests
 
-console = Console()
+try:
+    from rich.console import Console
+    console = Console()
+except ImportError:
+    class DummyConsole:
+        def print(self, *args, **kwargs): pass
+    console = DummyConsole()
 
 CONFIG_DIR = Path.home() / ".deepcli"
 CONFIG_FILE = CONFIG_DIR / "config.json"

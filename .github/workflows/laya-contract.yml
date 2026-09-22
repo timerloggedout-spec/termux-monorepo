@@ -1,0 +1,27 @@
+name: Laya Contract Checks
+on:
+  pull_request:
+    paths:
+      - "scripts/laya_decision_stub.py"
+      - "scripts/laya_sweep.py"
+      - "tests/test_laya_sweep.py"
+      - "deploy/laya/**"
+      - "render.yaml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Syntax
+        run: python -m py_compile scripts/laya_decision_stub.py scripts/laya_sweep.py deploy/laya/server.py
+      - name: Tests
+        run: python -m unittest tests.test_laya_sweep -v
+      - name: Mock sweep
+        run: python scripts/laya_sweep.py --output /tmp/laya.jsonl && test "$(wc -l < /tmp/laya.jsonl)" -eq 6

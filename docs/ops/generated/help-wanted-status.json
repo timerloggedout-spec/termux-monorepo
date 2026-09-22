@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-09-22T14:47:19Z",
+  "generated_at": "2026-09-22T16:56:56Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
-  "receipts": 42,
+  "receipts": 43,
   "kinds": {
     "upstream_pr": 12,
     "claim_skipped_closed": 1,
-    "followup_skip_idempotent": 29
+    "followup_skip_idempotent": 30
   },
   "outcomes": {
-    "ok": 42
+    "ok": 43
   },
   "foreign_open_prs": [
     {
@@ -166,10 +166,11 @@
         "followup_skip_idempotent",
         "followup_skip_idempotent",
         "followup_skip_idempotent",
+        "followup_skip_idempotent",
         "followup_skip_idempotent"
       ],
       "ok": true,
-      "last_ts": "2026-09-22T13:40:35Z",
+      "last_ts": "2026-09-22T16:56:39Z",
       "providers": [],
       "repo": "vedantnimbarte/zero",
       "number": 81,
@@ -914,6 +915,14 @@
         "ok": true,
         "lane": "help-wanted-followup",
         "foreign": true
+      },
+      {
+        "ts": "2026-09-22T16:56:39Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
       }
     ]
   },
@@ -934,7 +943,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "46cf1e7114dffa10084fe138c16b5eb2efb792c8",
+    "source_sha": "9a88c8cff3b0571d7ae65bc9a78351b0c8cdaac7",
     "source_ref": "master",
     "history_complete": true,
     "history_count": 1,
@@ -967,12 +976,12 @@
   },
   "evolution": [
     {
-      "sha": "46cf1e7114dffa10084fe138c16b5eb2efb792c8",
-      "short_sha": "46cf1e7114df",
-      "date": "2026-09-22T13:40:56Z",
+      "sha": "9a88c8cff3b0571d7ae65bc9a78351b0c8cdaac7",
+      "short_sha": "9a88c8cff3b0",
+      "date": "2026-09-22T16:56:39Z",
       "author": "github-actions[bot]",
-      "subject": "ops(help-wanted): live status refresh 2026-09-22T13:40Z",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/46cf1e7114dffa10084fe138c16b5eb2efb792c8"
+      "subject": "ops(help-wanted): follow-up evidence 2026-09-22T16:56Z",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/9a88c8cff3b0571d7ae65bc9a78351b0c8cdaac7"
     }
   ],
   "pipeline": [

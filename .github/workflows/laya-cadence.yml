@@ -1,0 +1,50 @@
+name: Laya CADENCE Sweep
+on:
+  workflow_dispatch:
+    inputs:
+      cohort:
+        description: "Cohort identifier"
+        required: true
+        default: "manual"
+  schedule:
+    - cron: "43 3 * * *"
+permissions:
+  contents: read
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: laya-live
+    env:
+      USE_TF: "0"
+      HF_HOME: \${{ github.workspace }}/.cache/huggingface
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/cache@v4
+        with:
+          path: .cache/huggingface
+          key: laya-cadence-\${{ runner.os }}-v035
+          restore-keys: laya-cadence-\${{ runner.os }}-
+      - name: Install Laya
+        run: python -m pip install "laya==0.3.5"
+      - name: Execute cohort sweep
+        run: |
+          mkdir -p artifacts/laya
+          cohort="\${{ inputs.cohort || format('scheduled-{0}', github.run_id) }}"
+          python scripts/laya_sweep.py --live --output "artifacts/laya/\${cohort}.jsonl"
+      - name: Validate cohort
+        run: |
+          python - <<'PY'
+          import json, glob
+          rows=[json.loads(x) for f in glob.glob("artifacts/laya/*.jsonl") for x in open(f)]
+          assert len(rows) >= 6 and all(r["mode"]=="live" for r in rows)
+          print("CADENCE cohort validated:", len(rows), "receipts")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: laya-cadence-\${{ github.run_id }}
+          path: artifacts/laya/
+          retention-days: 30

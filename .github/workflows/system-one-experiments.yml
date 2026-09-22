@@ -1,0 +1,51 @@
+name: System One Experiment Lanes
+
+on:
+  pull_request:
+    paths:
+      - "scripts/decision_engines.py"
+      - "scripts/laya_decision_stub.py"
+      - "scripts/system_one_experiment.py"
+      - "tests/test_system_one_experiment.py"
+      - "docs/ops/SYSTEM-ONE-EXPERIMENT-PLAN.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  system-one:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Unit tests
+        run: python -m unittest tests.test_system_one_experiment -v
+      - name: Run normalized cohort
+        run: |
+          mkdir -p artifacts/system-one
+          python scripts/system_one_experiment.py --cohort gha-${{ github.run_id }}-${{ github.run_attempt }} --output artifacts/system-one/decisions.jsonl
+      - name: Validate receipt contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          rows = [json.loads(x) for x in Path("artifacts/system-one/decisions.jsonl").read_text().splitlines()]
+          assert rows
+          assert all(r["schema_version"] == "system-one.v1" for r in rows)
+          assert all(r["experiment_id"].startswith("system-one:") for r in rows)
+          assert {r["lane_id"] for r in rows} == {"A", "B", "C"}
+          assert any(r["engine"] == "jev" and r["status"] == "UNAVAILABLE" for r in rows)
+          print("validated", len(rows), "receipts")
+          PY
+      - name: Publish experiment receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: system-one-experiment-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/system-one/decisions.jsonl
+          retention-days: 14

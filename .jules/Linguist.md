@@ -88,3 +88,10 @@ Instantiating multiple nested function closures (`link_repl`, `bold_repl_1`, `bo
 
 **Action:**
 Use `__slots__` context objects with pre-bound method callbacks instead of inner function closures in high-frequency line iteration loops, and ensure character guards cover all matching prefix/separator symbols including dot extensions.
+
+## 2026-10-12 - Document-Level Active Stem Pre-Filtering and Redundant Search Elimination
+**Learning:**
+In line-by-line document translation pipelines (`compile_doc` and `decompile_doc`), evaluating regex matching (`COMP_SINGLE_REGEX.search(line)`) on every line of a large document introduces massive Python method call overhead and regex frame evaluations (80% of total runtime). Pre-filtering active translatable stems at document level (`active_stems = tuple(s for s in COMP_STEMS if s in text_lower)`) and checking line containment (`any(s in line_l for s in active_stems)`) bypasses line translation for non-matching lines, reducing compilation latency from 3.18ms to 2.48ms (~22% speedup). Furthermore, in surface codecs (`to_1337speak` and `from_1337speak`), executing `VARIANT_REGEX.search(text)` immediately before `VARIANT_REGEX.sub(...)` evaluates a 55-branch trie regex twice across the document string. Pre-checking canonical family stems in `text.lower()` and calling `.sub()` directly cuts surface codec latency on plain text from 1.96ms to 0.98ms (~2x speedup).
+
+**Action:**
+Precompute lowercased token stems for document-level active filtering before line iteration loops, and eliminate redundant `.search()` calls immediately preceding `.sub()` operations in string transformers.

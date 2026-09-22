@@ -46,6 +46,14 @@ CANONICAL_TOKENS: Tuple[str, ...] = (
     "cur473", "s0urc3s", "s0urc3", "4cqs", "4cq", "c0mp1s", "c0mp1",
 )
 
+# Pre-computed family stems for fast-path active token pre-filtering in to_1337speak and from_1337speak
+CANONICAL_FAMILY_STEMS: Tuple[str, ...] = (
+    "h4x", "scry", "5cry", "pr0b", "3ch0", "l00p", "f0rk", "1nc4",
+    "c4st", "c45t", "c4s7", "gr1m", "b1dd", "w4g", "chr0", "l1ng",
+    "sc0u", "5c0u", "h4rv", "em_t", "em_7", "3m_t", "3m_7", "pr0c",
+    "cur4", "s0ur", "50ur", "4cq", "c0mp",
+)
+
 
 def _variants(token: str) -> Iterable[str]:
     """Yield all reversible leet variants for a canonical token."""
@@ -139,8 +147,10 @@ def to_1337speak(
         raise ValueError("probability must be between 0.0 and 1.0")
     if not text or probability == 0.0:
         return text
-    # Fast-path optimization: check if any matching tokens exist before evaluating RNG or regex sub
-    if not VARIANT_REGEX.search(text):
+
+    # Fast-path optimization: check if any matching token stems exist in text before evaluating 55-branch trie regex
+    tl = text.lower()
+    if not any(s in tl for s in CANONICAL_FAMILY_STEMS):
         return text
 
     # Fast-path for probability=1.0: use pre-computed translation table and top-level callback
@@ -167,8 +177,10 @@ def from_1337speak(text: str) -> str:
     """Normalize known randomized variants back to canonical compressed tokens."""
     if not text:
         return text
-    # Fast-path optimization: check if any matching variants exist before executing regex sub
-    if not VARIANT_REGEX.search(text):
+
+    # Fast-path optimization: check if any matching token stems exist before evaluating 55-branch trie regex sub
+    tl = text.lower()
+    if not any(s in tl for s in CANONICAL_FAMILY_STEMS):
         return text
 
     return VARIANT_REGEX.sub(_from_1337_replace, text)

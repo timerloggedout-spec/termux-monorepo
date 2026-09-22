@@ -144,3 +144,9 @@ Represent task outcome as `PASS / FAIL + notes` when verification is possible, w
 12. **LOOP — repeat until the desired outcome is confirmed**, running multiple validation cycles and continuing to improve rather than stopping at the first green-looking signal.
 
 The skill is a living operational contract, not a frozen tutorial.
+
+
+## Session stamp 2026-09-22 12:18 PDT
+
+Live master `d10a7a54`. ML keep-alive re-extract supersedes #724. ICM-CCTV projection added for Stepie 2087 step 10023.
+Operator ACTIVE. Dual-gate remains promote authority.

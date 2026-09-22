@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LanePacket",
+  "type": "object",
+  "required": [
+    "number",
+    "lane",
+    "score"
+  ],
+  "properties": {
+    "number": {
+      "type": "integer"
+    },
+    "lane": {
+      "enum": [
+        "promote",
+        "wait",
+        "hold",
+        "extract",
+        "observe",
+        "supersede"
+      ]
+    },
+    "score": {
+      "type": "number"
+    },
+    "why": {
+      "type": "string"
+    }
+  }
+}

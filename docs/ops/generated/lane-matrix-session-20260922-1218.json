@@ -1,0 +1,101 @@
+{
+  "master_sha": "d10a7a5472261a524bbdccf28db3702f82ea52e4",
+  "issue": 175,
+  "captured_at": "2026-09-22T19:18:00Z",
+  "cctv": {
+    "surface": "icm-cctv",
+    "n": 13,
+    "lanes": {
+      "extract": 2,
+      "hold": 3,
+      "wait": 4,
+      "supersede": 1,
+      "observe": 2,
+      "promote": 1
+    },
+    "operator": "ACTIVE",
+    "primary_goal": 2149,
+    "adjacent_goal": 2087,
+    "step": 10023
+  },
+  "rows": [
+    {
+      "pr": 682,
+      "lane": "extract",
+      "score": -21.0,
+      "why": "wholesale ML"
+    },
+    {
+      "pr": 630,
+      "lane": "extract",
+      "score": -17.25,
+      "why": "minesweeper dashboard"
+    },
+    {
+      "pr": 48,
+      "lane": "hold",
+      "score": -15.0,
+      "why": "llm-api-hub on master-staging"
+    },
+    {
+      "pr": 69,
+      "lane": "hold",
+      "score": -11.5,
+      "why": "debate dock stacked feature base"
+    },
+    {
+      "pr": 724,
+      "lane": "wait",
+      "score": 3.0,
+      "why": "ML slim extract wait"
+    },
+    {
+      "pr": 745,
+      "lane": "wait",
+      "score": 6.0,
+      "why": "12:10 pulse"
+    },
+    {
+      "pr": 744,
+      "lane": "supersede",
+      "score": 1.0,
+      "why": "stale pulse"
+    },
+    {
+      "pr": 739,
+      "lane": "hold",
+      "score": -6.0,
+      "why": "HITL control plane"
+    },
+    {
+      "pr": 740,
+      "lane": "observe",
+      "score": -2.5,
+      "why": "System One draft"
+    },
+    {
+      "pr": 717,
+      "lane": "wait",
+      "score": 4.5,
+      "why": "Gantt extract"
+    },
+    {
+      "pr": 714,
+      "lane": "wait",
+      "score": 4.0,
+      "why": "Stepie skill"
+    },
+    {
+      "pr": 735,
+      "lane": "observe",
+      "score": 0.25,
+      "why": "Sentinel symlink"
+    },
+    {
+      "pr": 707,
+      "lane": "promote",
+      "score": 10.5,
+      "why": "historical promote specimen"
+    }
+  ]
+}

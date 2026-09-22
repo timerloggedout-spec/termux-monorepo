@@ -1,17 +1,26 @@
 {
-  "generated_at": "2026-09-22T18:49:24Z",
+  "generated_at": "2026-09-22T19:54:36Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
-  "receipts": 43,
+  "receipts": 44,
   "kinds": {
     "upstream_pr": 12,
     "claim_skipped_closed": 1,
-    "followup_skip_idempotent": 30
+    "followup_skip_idempotent": 31
   },
   "outcomes": {
-    "ok": 43
+    "ok": 44
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/DeltaV-Station/Delta-v/pull/6534",
+      "title": "help-wanted: stake + contribute for #6533",
+      "number": 6534,
+      "repo": "DeltaV-Station/Delta-v",
+      "state": "open",
+      "updated_at": "2026-09-22T19:54:17Z",
+      "tribute": true
+    },
     {
       "html_url": "https://github.com/w1977-0/open-stream-saver/pull/3",
       "title": "help-wanted: stake + contribute for #1",
@@ -130,8 +139,21 @@
       "tribute": true
     }
   ],
-  "foreign_open_count": 13,
+  "foreign_open_count": 14,
   "tributes": [
+    {
+      "pr_url": "https://github.com/DeltaV-Station/Delta-v/pull/6534",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-22T19:54:17Z",
+      "providers": [],
+      "repo": "DeltaV-Station/Delta-v",
+      "number": 6534,
+      "title": "help-wanted: stake + contribute for #6533",
+      "state": "open"
+    },
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
@@ -167,10 +189,11 @@
         "followup_skip_idempotent",
         "followup_skip_idempotent",
         "followup_skip_idempotent",
+        "followup_skip_idempotent",
         "followup_skip_idempotent"
       ],
       "ok": true,
-      "last_ts": "2026-09-22T16:56:39Z",
+      "last_ts": "2026-09-22T19:54:16Z",
       "providers": [],
       "repo": "vedantnimbarte/zero",
       "number": 81,
@@ -532,7 +555,7 @@
       "state": "closed"
     }
   ],
-  "tribute_count": 28,
+  "tribute_count": 29,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -923,6 +946,14 @@
         "ok": true,
         "lane": "help-wanted-followup",
         "foreign": true
+      },
+      {
+        "ts": "2026-09-22T19:54:16Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
       }
     ]
   },
@@ -943,7 +974,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "0153acc2e0f400aca41cb5f45c910bbc065369fe",
+    "source_sha": "cfa07a95c8a77039d636c9cdb0be77b65d40a3f2",
     "source_ref": "master",
     "history_complete": true,
     "history_count": 1,
@@ -976,12 +1007,12 @@
   },
   "evolution": [
     {
-      "sha": "0153acc2e0f400aca41cb5f45c910bbc065369fe",
-      "short_sha": "0153acc2e0f4",
-      "date": "2026-09-22T16:57:49Z",
+      "sha": "cfa07a95c8a77039d636c9cdb0be77b65d40a3f2",
+      "short_sha": "cfa07a95c8a7",
+      "date": "2026-09-22T19:54:17Z",
       "author": "github-actions[bot]",
-      "subject": "ops(help-wanted): live status refresh 2026-09-22T16:57Z",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/0153acc2e0f400aca41cb5f45c910bbc065369fe"
+      "subject": "ops(help-wanted): follow-up evidence 2026-09-22T19:54Z",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/cfa07a95c8a77039d636c9cdb0be77b65d40a3f2"
     }
   ],
   "pipeline": [

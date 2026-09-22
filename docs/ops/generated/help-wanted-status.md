@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-22T18:49:24Z UTC · receipts=43 · foreign_open=13 · tributes=28_
+_Generated 2026-09-22T19:54:36Z UTC · receipts=44 · foreign_open=14 · tributes=29_
 
 ## Tributes (contributor ledger)
 
+- [DeltaV-Station/Delta-v#6534](https://github.com/DeltaV-Station/Delta-v/pull/6534) · state=open · help-wanted: stake + contribute for #6533
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [w1977-0/open-stream-saver#3](https://github.com/w1977-0/open-stream-saver/pull/3) · state=open · help-wanted: stake + contribute for #1
 - [ussyalfaks/ahjoorxmr-contract#872](https://github.com/ussyalfaks/ahjoorxmr-contract/pull/872) · state=closed · help-wanted: stake + contribute for #871
@@ -35,6 +36,7 @@ _Generated 2026-09-22T18:49:24Z UTC · receipts=43 · foreign_open=13 · tribute
 
 ## Foreign open PRs
 
+- [DeltaV-Station/Delta-v#6534](https://github.com/DeltaV-Station/Delta-v/pull/6534) — help-wanted: stake + contribute for #6533
 - [w1977-0/open-stream-saver#3](https://github.com/w1977-0/open-stream-saver/pull/3) — help-wanted: stake + contribute for #1
 - [umn-adc/ATLAS#42](https://github.com/umn-adc/ATLAS/pull/42) — help-wanted: stake + contribute for #31
 - [olcf/olcf-test-harness#280](https://github.com/olcf/olcf-test-harness/pull/280) — help-wanted: stake + contribute for #278
@@ -49,6 +51,6 @@ _Generated 2026-09-22T18:49:24Z UTC · receipts=43 · foreign_open=13 · tribute
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=43 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 30}`
+## Outcomes · ok=44 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 31}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

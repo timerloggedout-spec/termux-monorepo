@@ -151,6 +151,12 @@ jobs:
               .write();
 
 
+      - name: Validate EPS telemetry artifact
+        if: ${{ always() && hashFiles('eps-events.ndjson') != '' }}
+        shell: bash
+        run: |
+          python3 scripts/telemetry/validate_eps.py --unique eps-events.ndjson
+
       - name: Upload EPS telemetry artifact
         if: ${{ always() && hashFiles('eps-events.ndjson') != '' }}
         uses: actions/upload-artifact@v4.6.2

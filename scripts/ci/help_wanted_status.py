@@ -8,6 +8,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import subprocess
 import urllib.parse
 import urllib.request
 from collections import Counter, defaultdict
@@ -61,6 +62,26 @@ def load_jsonl(path: Path) -> list[dict]:
 def is_internal(issue: str) -> bool:
     return "timerloggedout-spec/termux-monorepo" in (issue or "")
 
+
+def lane_git_history() -> list[dict]:
+    paths = ['apps/help-wanted-dashboard/', 'docs/ops/HELP-WANTED-', '.agents/skills/help-wanted-lane/', '.github/workflows/help-wanted-', 'scripts/ci/help_wanted_']
+    try:
+        raw = subprocess.check_output(['git','log','--date=iso-strict','--format=%H%x09%aI%x09%an%x09%s','--',*paths], text=True, stderr=subprocess.DEVNULL)
+    except (OSError, subprocess.CalledProcessError):
+        return []
+    history = []
+    for line in raw.splitlines():
+        parts = line.split('\t', 3)
+        if len(parts) == 4:
+            sha, date, author, subject = parts
+            history.append({'sha': sha, 'short_sha': sha[:12], 'date': date, 'author': author, 'subject': subject, 'url': 'https://github.com/timerloggedout-spec/termux-monorepo/commit/' + sha})
+    return history
+
+def current_source_sha() -> str:
+    value = os.environ.get('GITHUB_SHA') or os.environ.get('SOURCE_SHA')
+    if value: return value
+    try: return subprocess.check_output(['git','rev-parse','HEAD'], text=True).strip()
+    except (OSError, subprocess.CalledProcessError): return ''
 
 def live_foreign_prs(state: str = "open") -> list[dict]:
     q = f"author:{AUTHOR} is:pr is:{state} -repo:timerloggedout-spec/termux-monorepo"
@@ -173,6 +194,8 @@ def main() -> int:
     foreign_closed = live_foreign_prs("closed")
     tributes = build_tributes(rows, foreign, foreign_closed)
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    history = lane_git_history()
+    source_sha = current_source_sha()
 
     board = {
         "generated_at": now,
@@ -203,6 +226,8 @@ def main() -> int:
             "status_raw": "https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/ops/generated/help-wanted-status.json",
             "tribute_doc": "docs/ops/HELP-WANTED-TRIBUTE.md",
         },
+        "control_surface": {"schema_version":"help-wanted.control-surface.v2","source_sha":source_sha,"source_ref":os.environ.get("GITHUB_REF_NAME","local"),"history_complete":True,"history_count":len(history),"lane_paths":["apps/help-wanted-dashboard/","docs/ops/HELP-WANTED-*",".agents/skills/help-wanted-lane/",".github/workflows/help-wanted-*","scripts/ci/help_wanted_*"],"authority":"GitHub commits, PRs, issues, reviews, checks, Actions and evidence JSONL","projection_only":True,"deployment":[{"name":"GitHub Pages user site","url":"https://timerloggedout-spec.github.io/help-wanted/","role":"canonical public static ops UI"},{"name":"Vercel","role":"interactive deployment lane","verification":"provider deployment evidence required"},{"name":"Project Pages","url":"https://timerloggedout-spec.github.io/termux-monorepo/","role":"project hub, not dashboard twin"}]},
+        "evolution": history,
         "pipeline": [
             "scout",
             "execute",

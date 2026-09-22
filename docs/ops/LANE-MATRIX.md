@@ -1,31 +1,31 @@
 # LANE-MATRIX (living SSOT)
 
-**Session:** 2026-09-21 16:13 PDT  
+**Session:** 2026-09-22 16:20 PDT  
 **Agent-Identity:** Grok (Administrator)  
-**Live master (base):** `cb995e76`  
-**This PR tip:** ops/biudl-claude-primary-deprecate-agents-20260921  
+**Live master (base):** `c623f304` (`ops(help-wanted): live status refresh 2026-09-22T23:16Z`)  
+**This PR tip:** ops/session-lane-matrix-20260922-1620  
 **Priority hub:** Issue #175
 
 Rewrite this file every admin session. Copilot is optional peer, not a promote gate. Size ≠ quality. Promote when dual-gate is green **and** the diff is an extract, not a mega. Vercel rate-limit is non-gate. Age alone does not promote.
 
 **BIUDL = Broad → Integrate → Validate → Develop → Learn.** Fully Continuous Automated Development Evaluation Environment. **AVOID HITL YOLO MODE YEET AUTOAPPROVE.**
 
-**Status change (this cycle):** Root `CLAUDE.md` is sole primary agent entry. Root `AGENTS.md` is **deprecated** (Linguist / CedrLang / Jules redirect-only). Content folded. All lanes (Jules, Linguist, Sentinel, Bolt, help-wanted, Codespace, ecc-tools, Stepie) load `CLAUDE.md` first.
+**Status change (this cycle):** HOLD retired as an operator idle state. WAIT / OBSERVE classify PRs. Operator stays ACTIVE and produces production extracts while gates run.
 
 ## Landed this window (evidence)
 
 | SHA | What |
 |-----|------|
-| (pending dual-gate) | CLAUDE.md BIUDL expanded + AGENTS.md deprecated redirect |
-| (pending) | REFTEMPLATES directive corrected (no YOLO/YEET) |
-| `cb995e76` | prior tip |
+| `c623f304` | help-wanted live status refresh (Actions bot) |
+| `f72bad96` | prior session tip referenced by #751 |
+| (pending dual-gate) | this pulse — SSOT + skill realign |
 
 ## Dual-gate contract
 
 1. `hygiene + portability gate` SUCCESS
 2. `agentic termux smoke` SUCCESS
 3. Vercel rate-limits are **non-gate**
-4. Copilot / CodeRabbit / Qodo / Devin = advisory
+4. Copilot / CodeRabbit / Qodo / Devin = advisory (CodeRabbit/Devin currently rate-limited / trial expired)
 5. GitLab / Mintlify = non-gate
 6. Age alone does not promote; dual-gate + rebase onto live master does
 7. Size ≠ quality: dual-gate green + 130 files still EXTRACT
@@ -34,32 +34,29 @@ Rewrite this file every admin session. Copilot is optional peer, not a promote g
 
 | PR | Lane | Why |
 |----|------|-----|
-| #682 | EXTRACT / WAIT | ML keep-alive DAG (#175). 130 files. Prefer slimmer `ml/pipelines/` child. |
-| this | SSOT / BIUDL | CLAUDE primary + AGENTS deprecate + directive hygiene |
-| #680 / #708 | OBSERVE | Bolt live_catalog_feed family (Jules). Overlapping catalog work — do not double-merge. |
-| #702 | OBSERVE | Gravitee observatory seed |
-| #684 | HOLD / REBASE | unify Actions cadence; dirty vs tip |
-| #685 | OBSERVE | arrhythmic-zero-token-search |
-| #630 | EXTRACT | Jules dashboard rich UI — minesweeper |
-| #432/#549/#601 | EXTRACT | ML wholesale family — keep-alive is #682 tree |
-
-## Ancient / wrong-base HOLD
-
-#47 OBSERVE/SUPERSEDED. #48 HOLD (base master-staging). #69 HOLD (feature base). #73 HOLD. #81 OBSERVE. #92 EXTRACT security slice. Do not close-as-superseded until extract lands.
+| **#753** | EXTRACT | Vercel master alias in sitemap. 4 files. Dual-gate jobs SUCCESS on head `d97cf6c3`. Vercel 24h rate-limit non-gate. Do not AUTOAPPROVE this cycle; rebase onto `c623f304` first. |
+| **#746** | EXTRACT / WAIT | Slim ML keep-alive + ICM-CCTV. validate-PR failed. Base stale vs `c623f304`. |
+| **#751** | SUPERSEDE | Prior 15:19 pulse vs older tip `f72bad96`. |
+| **#749 / #747 / #745** | SUPERSEDE | Older session pulses. |
+| **#750** | OBSERVE | Jules fallback imports. |
+| **#752** | OBSERVE | Termux MCP endpoint status (draft). |
+| **#682** | EXTRACT / WAIT | 130-file mega; prefer #746 child. |
+| **#48** | EXTRACT | Wrong-base (master-staging). HOLD retired. |
+| **#69** | EXTRACT | Feature-base debate dock. HOLD retired. |
+| **#587 / #543 / #67** | OBSERVE | Ancient / dirty vs tip. |
 
 ## Issue → PR map
 
 | Issue | Role | Linked |
 |-------|------|--------|
-| **#175** | OPERATOR matrix + dual-gate | #432 #549 #601 #682 (ML); #630 minesweeper |
-| #184 | Credential inventory (notes only) | secrets hygiene |
-| #117 | Agent2Agent / MCP Agent Mail | #143 |
-| #88/#91/#94 | routing | #48 family |
-| #50 | termux-smoke / master-staging gate | dual-gate ancestry |
+| **#175** | OPERATOR matrix + dual-gate | #746 #753 #682 |
+| **#184** | Credential inventory (**notes only**) | never paste secrets |
+| #48 / #69 | EXTRACT slices | rebase onto live master before promote |
+| #337 | Actions continuous eval | cadence, not merge |
 
 ## Next cycle
 
-1. Dual-gate this PR; promote only when green + outcome verified.
-2. Leave #682 EXTRACT until sliced.
-3. Stay busy on SSOT / skill upgrades while CI waits. No HITL YOLO merge.
-4. Jules / Linguist: confirm AGENTS.md is redirect-only.
+1. Rebase #753 onto `c623f304`; promote only after dual-gate re-green.
+2. Keep #746 EXTRACT until validate-PR is green on tip.
+3. Stay busy on SSOT / skill / Stepie while CI waits. No HITL YOLO merge.
+4. #184 remains notes-only. OPERATOR PAT is Actions secret — do not echo.

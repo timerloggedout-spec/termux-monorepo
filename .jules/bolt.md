@@ -44,3 +44,10 @@ In GitHub API ingestion workflows (`historical_event_correlation.py`), the jobs 
 
 **Action:**
 Always check for embedded child arrays in GitHub API parent endpoints before executing separate per-item HTTP GET calls.
+
+## 2026-09-22 - Upfront AST-Grep Binary Verification to Prevent System Group Binary Collisions and Process Execution Hangs
+**Learning:**
+In repository indexing and mapping tools (`central_mapper_v420.py`, `mapper_graph.py`, and `src/db.py`), executing `sg` subprocesses without validating that `sg` is actually `ast-grep` causes collisions with the standard Linux `/usr/bin/sg` (switch group) command. When `ast-grep` is not installed, unvalidated `subprocess.run(['sg', ...])` calls hang for 5-10 seconds per file waiting on `/usr/bin/sg` timeouts, or throw repeated exceptions inside file walks. Verifying `ast-grep` in binary `--version` output and caching the resolved executable path once eliminates process hangs and execution overhead.
+
+**Action:**
+Always verify that binary short names (e.g. `sg`) match the expected tool before invoking subprocesses, and cache resolved executable paths or binary existence checks at module/init level to bypass subprocess execution when dependencies are absent.

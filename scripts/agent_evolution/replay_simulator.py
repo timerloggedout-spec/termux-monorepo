@@ -206,14 +206,29 @@ class EvolutionEngine:
 
 
 def evidence_record(
-    *, task: str, manager: str, policy: ExplorationPolicy, result: ReplayResult,
-    history_size: int, online_execution: bool = False,
+    *,
+    task: str,
+    manager: str,
+    policy: ExplorationPolicy,
+    result: ReplayResult,
+    history_size: int,
+    online_execution: bool = False,
+    provider: str | None = None,
+    model: str | None = None,
+    workflow_run: str | None = None,
+    head_sha: str | None = None,
+    cohort: str | None = None,
 ) -> dict[str, Any]:
     """Create a safe, attribution-friendly observation for the existing ledger."""
     return {
         "schema": "agent.replay-evolution.v1",
         "task": task,
         "manager": manager,
+        "provider": provider,
+        "model": model,
+        "workflow_run": workflow_run,
+        "head_sha": head_sha,
+        "cohort": cohort,
         "policy_id": policy.policy_id,
         "history_nodes": history_size,
         "replay_score": result.score,
@@ -221,5 +236,9 @@ def evidence_record(
         "replay_cost": result.replay_cost,
         "terminal_count": result.terminal_count,
         "execution": "online" if online_execution else "replay_only",
-        "verification": "recorded_outcomes_only" if not online_execution else "external_gate_required",
+        "verification": (
+            "recorded_outcomes_only"
+            if not online_execution
+            else "external_gate_required"
+        ),
     }

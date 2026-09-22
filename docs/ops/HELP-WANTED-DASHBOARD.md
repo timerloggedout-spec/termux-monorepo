@@ -32,3 +32,18 @@ gh workflow run help-wanted-dashboard-deploy.yml -f target=all
 Credential inventory: issue **#184** (notes only; never paste secrets).
 
 Agent-Identity: Grok (Administrator) · BIUDL
+
+
+## Control-surface topology
+
+The public dashboard is now a provenance-aware projection rather than a static KPI page. The machine snapshot carries a `help-wanted.control-surface.v2` contract with source SHA, registered lane paths, complete commit history for those paths, and deployment topology. The UI exposes this as operator inspection/navigation plus a commit-derived evolution timeline.
+
+### Evidence flow
+
+`GitHub issues/PRs + Actions + evidence JSONL → help_wanted_status.py → versioned status snapshot → Pages/Vercel dashboard`
+
+The dashboard never writes inferred facts back to the repository. Browser controls are navigation into authoritative GitHub surfaces. Reachability of a deployment is not accepted as proof that the intended SHA was deployed; provider/source verification remains part of promotion evidence.
+
+### Additive-feature accounting
+
+A dashboard feature is considered accounted for when its implementation/contract path is covered by the registered lane history and the resulting snapshot records the source SHA. This deliberately includes workflow, skill, generator, contract, and UI changes—not only `index.html`.

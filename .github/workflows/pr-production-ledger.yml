@@ -135,6 +135,12 @@ jobs:
               JSON.stringify(epsEvent) + '\n',
               { encoding: 'utf8', flag: 'w' }
             );
+            // Validate the emitted envelope before artifact publication. This job intentionally
+            // does not checkout PR code, so validation stays inside the trusted ledger step.
+            if (epsEvent.schema_version !== 'eps.v1' || !epsEvent.event_id || !epsEvent.provenance?.source_ref || !epsEvent.entity_id || !epsEvent.entity_type) {
+              core.setFailed('EPS envelope validation failed');
+              return;
+            }
 
             await core.summary
               .addHeading(`PR #${prNumber} production ledger`)
@@ -150,12 +156,6 @@ jobs:
               .addRaw(pendingChecks.length ? `⏳ ${pendingChecks.length} check(s) still pending.\n` : '✅ No pending checks observed.\n')
               .write();
 
-
-      - name: Validate EPS telemetry artifact
-        if: ${{ always() && hashFiles('eps-events.ndjson') != '' }}
-        shell: bash
-        run: |
-          python3 scripts/telemetry/validate_eps.py --unique eps-events.ndjson
 
       - name: Upload EPS telemetry artifact
         if: ${{ always() && hashFiles('eps-events.ndjson') != '' }}

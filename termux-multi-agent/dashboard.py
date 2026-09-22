@@ -16,6 +16,48 @@ try:
 except ImportError:
     _has_rich = False
 
+    class Text:
+        def __init__(self, text="", style=None):
+            self.text = str(text)
+            self.style = style
+
+        def append(self, text, style=None):
+            self.text += str(text)
+
+        def __str__(self):
+            return self.text
+
+    class Panel:
+        def __init__(self, renderable, title=None, box=None, border_style=None, expand=True):
+            self.renderable = renderable
+            self.title = title
+
+    class Group:
+        def __init__(self, *renderables):
+            self.renderables = renderables
+
+    class Table:
+        def __init__(self, box=None, border_style=None, expand=True):
+            self.columns = []
+            self.rows = []
+
+        def add_column(self, name, **kwargs):
+            self.columns.append(name)
+
+        def add_row(self, *args):
+            self.rows.append(args)
+
+    class DummyConsole:
+        def clear(self):
+            pass
+
+        def print(self, *args, **kwargs):
+            pass
+
+    Console = DummyConsole
+    Live = None
+    ROUNDED = None
+
 TELEMETRY_LOG = "agent_telemetry_stream.json"
 if _has_rich:
     console = Console()

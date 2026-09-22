@@ -1,0 +1,33 @@
+name: Jev Live Adapter
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  jev:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: laya-live
+    env:
+      TYPESAFE_API_KEY: ${{ secrets.TYPESAFE_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Execute known System One API block
+        run: |
+          python - <<'PY'
+          from scripts.system_one_adapters import DecisionRequest, TypeSafeJevAdapter
+          req=DecisionRequest(
+            state={"body":"Production API is returning 503 errors."},
+            questions={"route":{"type":"choice","instructions":"Which category handles this?","criteria":{"technical":"bugs/outages","ops":"deployment/runtime failures","general":"other"}}},
+            experiment_id="jev-gha-${{ github.run_id }}",
+            lane_id="C",
+            category="ops",
+          )
+          result=TypeSafeJevAdapter().evaluate(req)
+          print(result)
+          if result.status != "OK":
+              raise SystemExit("Jev live adapter did not return OK: "+result.status)
+          PY

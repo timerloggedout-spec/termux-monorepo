@@ -58,7 +58,7 @@ class ReplaySimulatorTests(unittest.TestCase):
             "score": result.score,
             "execution": "replay_only",
         }
-        self.assertEqual(json.loads(json.dumps(record))["execution"], "replay_only")
+        self.assertEqual(json.loads(json.dumps(record))["execution"], "replay_only")\n\n    def test_evidence_preserves_experiment_lineage(self):\n        from scripts.agent_evolution.replay_simulator import evidence_record\n        simulator = ReplaySimulator(self.history())\n        policy = ExplorationPolicy()\n        result = simulator.replay(policy)\n        record = evidence_record(\n            task="orchestration", manager="manager-a", policy=policy, result=result,\n            history_size=5, provider="provider-a", model="model-a",\n            workflow_run="123", head_sha="abc", cohort="cohort-1",\n        )\n        self.assertEqual(record["policy_id"], policy.policy_id)\n        self.assertEqual(record["workflow_run"], "123")\n        self.assertEqual(record["head_sha"], "abc")\n        self.assertEqual(record["cohort"], "cohort-1")
 
 
 if __name__ == "__main__":

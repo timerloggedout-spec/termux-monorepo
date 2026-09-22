@@ -1,65 +1,83 @@
 # LANE-MATRIX (living SSOT)
 
-**Session:** 2026-09-21 16:13 PDT  
-**Agent-Identity:** Grok (Administrator)  
-**Live master (base):** `cb995e76`  
-**This PR tip:** ops/biudl-claude-primary-deprecate-agents-20260921  
+**Session:** 2026-09-22 15:19 PDT
+**Agent-Identity:** Grok (Administrator)
+**Live master (base):** `f72bad96` (`ops(help-wanted): live status refresh 2026-09-22T22:02Z`)
+**This PR tip:** `ops/session-lane-matrix-20260922-1519`
 **Priority hub:** Issue #175
 
 Rewrite this file every admin session. Copilot is optional peer, not a promote gate. Size ≠ quality. Promote when dual-gate is green **and** the diff is an extract, not a mega. Vercel rate-limit is non-gate. Age alone does not promote.
 
 **BIUDL = Broad → Integrate → Validate → Develop → Learn.** Fully Continuous Automated Development Evaluation Environment. **AVOID HITL YOLO MODE YEET AUTOAPPROVE.**
 
-**Status change (this cycle):** Root `CLAUDE.md` is sole primary agent entry. Root `AGENTS.md` is **deprecated** (Linguist / CedrLang / Jules redirect-only). Content folded. All lanes (Jules, Linguist, Sentinel, Bolt, help-wanted, Codespace, ecc-tools, Stepie) load `CLAUDE.md` first.
+**Operator posture:** ACTIVE participant. WAIT/OBSERVE classify *PRs*, not the operator. HOLD is retired — use EXTRACT or SUPERSEDE.
 
 ## Landed this window (evidence)
 
 | SHA | What |
 |-----|------|
-| (pending dual-gate) | CLAUDE.md BIUDL expanded + AGENTS.md deprecated redirect |
-| (pending) | REFTEMPLATES directive corrected (no YOLO/YEET) |
-| `cb995e76` | prior tip |
+| `f72bad96` | help-wanted live status refresh 2026-09-22T22:02Z (bot) |
+| `7a05922c` | help-wanted live status 19:54Z |
+| `4ae5bb29` | prior pulse land #748 |
+| `cf8d124` / `9a5beae` / `187e2f9` | #742 action-effect replay, #741 evolutionary corpus, #695 Paper2Agent |
+| `bf45b3e` | #733 help-wanted control surface v2 |
+| `4fa585e` | #732 EPS telemetry-first |
+
+Master LANE-MATRIX on tip was still the 2026-09-21 16:13 rewrite — this pulse refreshes SSOT onto live tip.
 
 ## Dual-gate contract
 
 1. `hygiene + portability gate` SUCCESS
 2. `agentic termux smoke` SUCCESS
-3. Vercel rate-limits are **non-gate**
-4. Copilot / CodeRabbit / Qodo / Devin = advisory
+3. Vercel rate-limits are **non-gate** (currently 24h on help-wanted-dash / mcp-hub / termux-monorepo / oversight)
+4. Copilot / CodeRabbit / Qodo / Devin = advisory (Devin trial expired; CodeRabbit rate-limited or bot-skipped)
 5. GitLab / Mintlify = non-gate
 6. Age alone does not promote; dual-gate + rebase onto live master does
-7. Size ≠ quality: dual-gate green + 130 files still EXTRACT
+7. Size ≠ quality: dual-gate green + large file count still EXTRACT
+8. `validate-pull-request` FAILURE blocks promote even when dual-gate is green
 
 ## Tip-first active lanes
 
 | PR | Lane | Why |
 |----|------|-----|
-| #682 | EXTRACT / WAIT | ML keep-alive DAG (#175). 130 files. Prefer slimmer `ml/pipelines/` child. |
-| this | SSOT / BIUDL | CLAUDE primary + AGENTS deprecate + directive hygiene |
-| #680 / #708 | OBSERVE | Bolt live_catalog_feed family (Jules). Overlapping catalog work — do not double-merge. |
-| #702 | OBSERVE | Gravitee observatory seed |
-| #684 | HOLD / REBASE | unify Actions cadence; dirty vs tip |
-| #685 | OBSERVE | arrhythmic-zero-token-search |
-| #630 | EXTRACT | Jules dashboard rich UI — minesweeper |
-| #432/#549/#601 | EXTRACT | ML wholesale family — keep-alive is #682 tree |
+| **#746** | EXTRACT / WAIT | slim ML keep-alive + ICM-CCTV. Dual-gate SUCCESS. `validate-pull-request` FAILURE. Behind live master (`d10a7a54` base vs `f72bad96`). Do not YOLO-merge. |
+| **#750** | OBSERVE | Jules fallback imports (`requests`/`rich`/`curl_cffi`). Fresh 22:13Z. Vercel-only combined status red. Rebase + dual-gate before extract. |
+| **#749** | SUPERSEDE | 14:04 pulse targeted `4ae5bb29`; master moved. |
+| **#747** / **#745** / **#744** / **#722–#731** | SUPERSEDE | stale LANE-MATRIX pulses |
+| **#740** | OBSERVE / DRAFT | Laya runtime + CADENCE + Jev adapter. Draft. Experiment only — do not promote while draft. |
+| **#682** | EXTRACT / WAIT | 130-file ML DAG parent of #746. Prefer the slimmer child. |
+| **#543** | OBSERVE | skill-quality lane |
+| **#587** | OBSERVE | timing quotas / merged-branch audit |
+| **#67** | OBSERVE | CE-22 PR scope discipline |
+| **#140** | OBSERVE | Palette PWA |
 
-## Ancient / wrong-base HOLD
+## Wrong-base EXTRACT (HOLD retired)
 
-#47 OBSERVE/SUPERSEDED. #48 HOLD (base master-staging). #69 HOLD (feature base). #73 HOLD. #81 OBSERVE. #92 EXTRACT security slice. Do not close-as-superseded until extract lands.
+- **#48** EXTRACT — base `master-staging`, not live `master`. Do not retarget this cycle. Slice onto master later.
+- **#69** EXTRACT — stacked on `feature/proposal-vote-promote`. Same rule.
+- **#47** OBSERVE / SUPERSEDED candidate.
+- Do not close-as-superseded until an extract lands on master.
 
 ## Issue → PR map
 
 | Issue | Role | Linked |
 |-------|------|--------|
-| **#175** | OPERATOR matrix + dual-gate | #432 #549 #601 #682 (ML); #630 minesweeper |
-| #184 | Credential inventory (notes only) | secrets hygiene |
-| #117 | Agent2Agent / MCP Agent Mail | #143 |
-| #88/#91/#94 | routing | #48 family |
-| #50 | termux-smoke / master-staging gate | dual-gate ancestry |
+| **#175** | OPERATOR matrix + dual-gate north star | #746 #682 #750 #740 |
+| **#184** | Credential inventory **notes only** | OPERATOR PAT lives in Actions secrets. No secret material in git. |
+| #337 | gh-Actions continuous evaluation | Vercel non-gate + validate-PR |
+| #439 | StepWise MCP | Stepie goal 2087 (1/12) + primary 2149 |
+| #48 family / #88 #91 #94 | routing | wrong-base EXTRACT |
+
+## Laya / Jev / CADENCE
+
+PR **#740** is the experiment surface (`feat/system-one-experiment-lanes`, draft). Keep it OBSERVE. Performance review belongs in check-run evidence after it leaves draft and rebases onto `f72bad96`. Do not merge draft experiment work as production.
 
 ## Next cycle
 
-1. Dual-gate this PR; promote only when green + outcome verified.
-2. Leave #682 EXTRACT until sliced.
-3. Stay busy on SSOT / skill upgrades while CI waits. No HITL YOLO merge.
-4. Jules / Linguist: confirm AGENTS.md is redirect-only.
+1. Keep #746 EXTRACT until `validate-pull-request` is green **and** it is rebased onto live master.
+2. Dual-gate #750 after rebase; then EXTRACT if small and green.
+3. Leave #48/#69 on wrong bases; extract later, do not force-retarget.
+4. Stay busy on SSOT / skill mirrors / Stepie notes while CI waits. No HITL YOLO merge.
+5. Vercel 24h rate-limit: do not treat red Vercel as a dual-gate miss.
+
+AVOID HITL YOLO YEET AUTOAPPROVE.

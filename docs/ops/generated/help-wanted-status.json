@@ -1,17 +1,26 @@
 {
-  "generated_at": "2026-09-22T11:38:54Z",
+  "generated_at": "2026-09-22T13:40:56Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
-  "receipts": 41,
+  "receipts": 42,
   "kinds": {
     "upstream_pr": 12,
     "claim_skipped_closed": 1,
-    "followup_skip_idempotent": 28
+    "followup_skip_idempotent": 29
   },
   "outcomes": {
-    "ok": 41
+    "ok": 42
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/w1977-0/open-stream-saver/pull/3",
+      "title": "help-wanted: stake + contribute for #1",
+      "number": 3,
+      "repo": "w1977-0/open-stream-saver",
+      "state": "open",
+      "updated_at": "2026-09-22T13:40:22Z",
+      "tribute": true
+    },
     {
       "html_url": "https://github.com/umn-adc/ATLAS/pull/42",
       "title": "help-wanted: stake + contribute for #31",
@@ -121,7 +130,7 @@
       "tribute": true
     }
   ],
-  "foreign_open_count": 12,
+  "foreign_open_count": 13,
   "tributes": [
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
@@ -156,14 +165,28 @@
         "followup_skip_idempotent",
         "followup_skip_idempotent",
         "followup_skip_idempotent",
+        "followup_skip_idempotent",
         "followup_skip_idempotent"
       ],
       "ok": true,
-      "last_ts": "2026-09-22T11:36:35Z",
+      "last_ts": "2026-09-22T13:40:35Z",
       "providers": [],
       "repo": "vedantnimbarte/zero",
       "number": 81,
       "title": "docs(layout): refresh stale ponytail comments (flex + grid)",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/w1977-0/open-stream-saver/pull/3",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-22T13:40:22Z",
+      "providers": [],
+      "repo": "w1977-0/open-stream-saver",
+      "number": 3,
+      "title": "help-wanted: stake + contribute for #1",
       "state": "open"
     },
     {
@@ -508,7 +531,7 @@
       "state": "closed"
     }
   ],
-  "tribute_count": 27,
+  "tribute_count": 28,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -883,6 +906,14 @@
         "ok": true,
         "lane": "help-wanted-followup",
         "foreign": true
+      },
+      {
+        "ts": "2026-09-22T13:40:35Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
       }
     ]
   },
@@ -901,6 +932,49 @@
     "status_raw": "https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/ops/generated/help-wanted-status.json",
     "tribute_doc": "docs/ops/HELP-WANTED-TRIBUTE.md"
   },
+  "control_surface": {
+    "schema_version": "help-wanted.control-surface.v2",
+    "source_sha": "f07612c99414bb67c2c3f1af38a4f80ae803f14a",
+    "source_ref": "master",
+    "history_complete": true,
+    "history_count": 1,
+    "lane_paths": [
+      "apps/help-wanted-dashboard/",
+      "docs/ops/HELP-WANTED-*",
+      ".agents/skills/help-wanted-lane/",
+      ".github/workflows/help-wanted-*",
+      "scripts/ci/help_wanted_*"
+    ],
+    "authority": "GitHub commits, PRs, issues, reviews, checks, Actions and evidence JSONL",
+    "projection_only": true,
+    "deployment": [
+      {
+        "name": "GitHub Pages user site",
+        "url": "https://timerloggedout-spec.github.io/help-wanted/",
+        "role": "canonical public static ops UI"
+      },
+      {
+        "name": "Vercel",
+        "role": "interactive deployment lane",
+        "verification": "provider deployment evidence required"
+      },
+      {
+        "name": "Project Pages",
+        "url": "https://timerloggedout-spec.github.io/termux-monorepo/",
+        "role": "project hub, not dashboard twin"
+      }
+    ]
+  },
+  "evolution": [
+    {
+      "sha": "f07612c99414bb67c2c3f1af38a4f80ae803f14a",
+      "short_sha": "f07612c99414",
+      "date": "2026-09-22T13:40:36Z",
+      "author": "github-actions[bot]",
+      "subject": "ops(help-wanted): follow-up evidence 2026-09-22T13:40Z",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/f07612c99414bb67c2c3f1af38a4f80ae803f14a"
+    }
+  ],
   "pipeline": [
     "scout",
     "execute",

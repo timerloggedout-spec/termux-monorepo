@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-09-22T09:53:46Z",
+  "generated_at": "2026-09-22T11:36:50Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
-  "receipts": 40,
+  "receipts": 41,
   "kinds": {
     "upstream_pr": 12,
     "claim_skipped_closed": 1,
-    "followup_skip_idempotent": 27
+    "followup_skip_idempotent": 28
   },
   "outcomes": {
-    "ok": 40
+    "ok": 41
   },
   "foreign_open_prs": [
     {
@@ -124,32 +124,6 @@
   "foreign_open_count": 12,
   "tributes": [
     {
-      "pr_url": "https://github.com/ussyalfaks/ahjoorxmr-contract/pull/872",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-22T07:24:42Z",
-      "providers": [],
-      "repo": "ussyalfaks/ahjoorxmr-contract",
-      "number": 872,
-      "title": "help-wanted: stake + contribute for #871",
-      "state": "closed"
-    },
-    {
-      "pr_url": "https://github.com/FasterThanAi/ai-lead-generation-mvp/pull/34",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-22T07:12:59Z",
-      "providers": [],
-      "repo": "FasterThanAi/ai-lead-generation-mvp",
-      "number": 34,
-      "title": "help-wanted: stake + contribute for #18",
-      "state": "closed"
-    },
-    {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
         "upstream_pr",
@@ -181,15 +155,42 @@
         "followup_skip_idempotent",
         "followup_skip_idempotent",
         "followup_skip_idempotent",
+        "followup_skip_idempotent",
         "followup_skip_idempotent"
       ],
       "ok": true,
-      "last_ts": "2026-09-22T05:23:15Z",
+      "last_ts": "2026-09-22T11:36:35Z",
       "providers": [],
       "repo": "vedantnimbarte/zero",
       "number": 81,
       "title": "docs(layout): refresh stale ponytail comments (flex + grid)",
       "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/ussyalfaks/ahjoorxmr-contract/pull/872",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-22T07:24:42Z",
+      "providers": [],
+      "repo": "ussyalfaks/ahjoorxmr-contract",
+      "number": 872,
+      "title": "help-wanted: stake + contribute for #871",
+      "state": "closed"
+    },
+    {
+      "pr_url": "https://github.com/FasterThanAi/ai-lead-generation-mvp/pull/34",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-22T07:12:59Z",
+      "providers": [],
+      "repo": "FasterThanAi/ai-lead-generation-mvp",
+      "number": 34,
+      "title": "help-wanted: stake + contribute for #18",
+      "state": "closed"
     },
     {
       "pr_url": "https://github.com/umn-adc/ATLAS/pull/42",
@@ -869,6 +870,14 @@
       },
       {
         "ts": "2026-09-22T05:23:15Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-22T11:36:35Z",
         "kind": "followup_skip_idempotent",
         "issue": "https://github.com/vedantnimbarte/zero/pull/81",
         "ok": true,

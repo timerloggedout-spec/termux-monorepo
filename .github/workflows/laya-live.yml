@@ -11,7 +11,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: laya-live-\${{ github.ref }}
+  group: laya-live-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   laya-live:
@@ -20,8 +20,8 @@ jobs:
     environment: laya-live
     env:
       USE_TF: "0"
-      LAYA_PRELOAD: \${{ inputs.preload || '0' }}
-      HF_HOME: \${{ github.workspace }}/.cache/huggingface
+      LAYA_PRELOAD: ${{ inputs.preload || '0' }}
+      HF_HOME: ${{ github.workspace }}/.cache/huggingface
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -30,9 +30,9 @@ jobs:
       - uses: actions/cache@v4
         with:
           path: .cache/huggingface
-          key: laya-\${{ runner.os }}-py312-v035-\${{ hashFiles('scripts/laya_decision_stub.py') }}
+          key: laya-${{ runner.os }}-py312-v035-${{ hashFiles('scripts/laya_decision_stub.py') }}
           restore-keys: |
-            laya-\${{ runner.os }}-py312-v035-
+            laya-${{ runner.os }}-py312-v035-
       - name: Install Laya runtime
         run: |
           python -m pip install --upgrade pip
@@ -53,6 +53,6 @@ jobs:
           PY
       - uses: actions/upload-artifact@v4
         with:
-          name: laya-live-\${{ github.run_id }}-\${{ github.run_attempt }}
+          name: laya-live-${{ github.run_id }}-${{ github.run_attempt }}
           path: artifacts/laya/
           retention-days: 30

@@ -83,6 +83,45 @@ def to_gource(events:Iterable[dict[str,Any]])->str:
 def projection_manifest(projection:Projection)->dict[str,Any]:
     return {"schema":"hitl.projection.v1","projection":asdict(projection)}
 
+def context_bundle(*, permalink:str, parent_url:str|None=None, author:str|None=None,
+                   changed_files:Iterable[str]=(), labels:Iterable[str]=(),
+                   verified_edges:Iterable[str]=(), candidate_edges:Iterable[str]=()) -> dict[str,Any]:
+    """Normalize a selected GitHub comment/PR/Issue into an immutable preview bundle."""
+    return {
+        "permalink":permalink, "parent_url":parent_url, "author":author,
+        "changed_files":sorted(set(changed_files)), "labels":sorted(set(labels)),
+        "verified_edges":sorted(set(verified_edges)),
+        "candidate_edges":sorted(set(candidate_edges)),
+        "mutation_authority":"none"
+    }
+
+def cadence_event(repo:str, sprint_id:str, phase:str, scope:Iterable[str]=()) -> dict[str,Any]:
+    return {"event_type":"cadence.sprint","scope":{"repo":repo,"entity_type":"sprint","entity_id":sprint_id},
+            "status":"observed","attributes":{"phase":phase,"scope":sorted(set(scope))}}
+
+def collaborator_plan(repo:str, collaborator_id:str, state:str, evidence_refs:Iterable[str]=()) -> dict[str,Any]:
+    allowed={"observed","explicit_intent","proposed","confirmed","declined"}
+    if state not in allowed: raise ValueError("invalid collaborator state")
+    return {"event_type":"collaborator.plan","scope":{"repo":repo,"entity_type":"collaborator","entity_id":collaborator_id},
+            "status":"draft" if state=="proposed" else "observed",
+            "attributes":{"sync_state":state,"evidence_refs":sorted(set(evidence_refs))}}
+
+def export_n8n_workflow(command:CommandProposal) -> dict[str,Any]:
+    """Export workflow topology only; never carries credentials or repository authority."""
+    nodes=[("trigger","command.proposed"),("enrich","context.resolve"),("branch","policy.check"),
+           ("approve","hitl.approval"),("dispatch","provider.dispatch"),("observe","runtime.observe"),
+           ("reconcile","evidence.reconcile")]
+    return {"schema":"hitl.n8n-adapter.v1","source_of_truth":"GitHub + OPS-EVENT + evidence",
+            "command_id":command.command_id,
+            "nodes":[{"id":n,"type":"hitl."+t} for n,t in nodes],
+            "edges":[{"from":nodes[i][0],"to":nodes[i+1][0]} for i in range(len(nodes)-1)]}
+
+def compare_snapshots(a:Projection,b:Projection,events_a:Iterable[dict[str,Any]],events_b:Iterable[dict[str,Any]]) -> dict[str,Any]:
+    ids_a={str(x.get("event_id")) for x in events_a}; ids_b={str(x.get("event_id")) for x in events_b}
+    return {"schema":"hitl.snapshot-diff.v1","snapshot_a":a.snapshot_id,"snapshot_b":b.snapshot_id,
+            "added":sorted(ids_b-ids_a),"removed":sorted(ids_a-ids_b),
+            "shared":len(ids_a & ids_b),"read_only":True}
+
 def main()->int:
     ap=argparse.ArgumentParser(); ap.add_argument("events",nargs="?"); ap.add_argument("--start",type=float,default=0); ap.add_argument("--stop",type=float,default=1); ap.add_argument("--gource",action="store_true"); ap.add_argument("--manifest",action="store_true")
     a=ap.parse_args(); raw=Path(a.events).read_text(encoding="utf-8") if a.events else ""

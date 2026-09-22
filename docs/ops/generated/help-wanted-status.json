@@ -1,17 +1,26 @@
 {
-  "generated_at": "2026-09-22T04:56:26Z",
+  "generated_at": "2026-09-22T05:23:34Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
-  "receipts": 39,
+  "receipts": 40,
   "kinds": {
     "upstream_pr": 12,
     "claim_skipped_closed": 1,
-    "followup_skip_idempotent": 26
+    "followup_skip_idempotent": 27
   },
   "outcomes": {
-    "ok": 39
+    "ok": 40
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/FasterThanAi/ai-lead-generation-mvp/pull/34",
+      "title": "help-wanted: stake + contribute for #18",
+      "number": 34,
+      "repo": "FasterThanAi/ai-lead-generation-mvp",
+      "state": "open",
+      "updated_at": "2026-09-22T05:23:07Z",
+      "tribute": true
+    },
     {
       "html_url": "https://github.com/umn-adc/ATLAS/pull/42",
       "title": "help-wanted: stake + contribute for #31",
@@ -130,7 +139,7 @@
       "tribute": true
     }
   ],
-  "foreign_open_count": 13,
+  "foreign_open_count": 14,
   "tributes": [
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
@@ -163,14 +172,28 @@
         "followup_skip_idempotent",
         "followup_skip_idempotent",
         "followup_skip_idempotent",
+        "followup_skip_idempotent",
         "followup_skip_idempotent"
       ],
       "ok": true,
-      "last_ts": "2026-09-22T04:54:19Z",
+      "last_ts": "2026-09-22T05:23:15Z",
       "providers": [],
       "repo": "vedantnimbarte/zero",
       "number": 81,
       "title": "docs(layout): refresh stale ponytail comments (flex + grid)",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/FasterThanAi/ai-lead-generation-mvp/pull/34",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-22T05:23:07Z",
+      "providers": [],
+      "repo": "FasterThanAi/ai-lead-generation-mvp",
+      "number": 34,
+      "title": "help-wanted: stake + contribute for #18",
       "state": "open"
     },
     {
@@ -502,7 +525,7 @@
       "state": "closed"
     }
   ],
-  "tribute_count": 26,
+  "tribute_count": 27,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -856,6 +879,14 @@
       },
       {
         "ts": "2026-09-22T04:54:19Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-22T05:23:15Z",
         "kind": "followup_skip_idempotent",
         "issue": "https://github.com/vedantnimbarte/zero/pull/81",
         "ok": true,

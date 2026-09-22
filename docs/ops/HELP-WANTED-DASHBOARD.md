@@ -10,7 +10,7 @@ Machine-readable discovery:
 
 ## Verified Vercel deployment
 
-https://help-wanted-oversight-8w13bl125-timerloggedout-5184s-projects.vercel.app/
+https://help-wanted-oversight-git-master-timerloggedout-5184s-projects.vercel.app/
 
 - State: READY
 - Source SHA: `44626f77baa64d49f452f25f6cf23ef992160ce0`
@@ -22,7 +22,7 @@ https://help-wanted-oversight-8w13bl125-timerloggedout-5184s-projects.vercel.app
 | Priority | URL | Notes |
 |---|---|---|
 | 1 | https://timerloggedout-spec.github.io/help-wanted/ | Canonical public static ops dashboard |
-| 2 | https://help-wanted-oversight-8w13bl125-timerloggedout-5184s-projects.vercel.app/ | Current READY Vercel deployment |
+| 2 | https://help-wanted-oversight-git-master-timerloggedout-5184s-projects.vercel.app/ | Vercel master branch alias |
 | 3 | https://raw.githack.com/timerloggedout-spec/termux-monorepo/master/apps/help-wanted-dashboard/index.html | HTML fallback |
 | 4 | https://timerloggedout-spec.github.io/termux-monorepo/ | Thin project hub, not dashboard twin |
 
@@ -36,4 +36,4 @@ Jobs: enable project Pages, publish project hub, mirror the user GitHub Pages da
 
 ## Sitemap boundary
 
-The XML sitemap contains only public dashboard destinations. Internal repository paths, Actions URLs, Vercel inspector URLs, and credential-bearing surfaces are deliberately excluded.
+The XML sitemap contains only public dashboard destinations: canonical GitHub Pages plus the Vercel master branch alias. Internal repository paths, Actions URLs, Vercel inspector URLs, and credential-bearing surfaces are deliberately excluded.

@@ -35,7 +35,9 @@
   table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
   th, td { text-align: left; padding: 0.65rem 0.5rem; border-bottom: 1px solid var(--border); vertical-align: top; }
   th { color: var(--muted); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; }
-  a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
+  a { color: var(--accent); text-decoration: none; border-radius: 4px; }
+  a:hover { text-decoration: underline; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .pill { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600;
     background: #1a2430; border: 1px solid var(--border); }
   .section-title { margin: 1.75rem 0 0.75rem; font-size: 1rem; }
@@ -66,7 +68,7 @@
   <h2 class="section-title">Tributes (contributor ledger)</h2>
   <div class="card" style="overflow-x:auto">
     <table>
-      <thead><tr><th>Tribute PR</th><th>State</th><th>Title</th><th>Last</th></tr></thead>
+      <thead><tr><th scope="col">Tribute PR</th><th scope="col">State</th><th scope="col">Title</th><th scope="col">Last</th></tr></thead>
       <tbody id="tributes"></tbody>
     </table>
   </div>
@@ -75,7 +77,7 @@
   <h2 class="section-title">Tracked (evidence)</h2>
   <div class="card" style="overflow-x:auto">
     <table>
-      <thead><tr><th>Issue / PR</th><th>Kind</th><th>OK</th><th>Last ts</th><th>Links</th></tr></thead>
+      <thead><tr><th scope="col">Issue / PR</th><th scope="col">Kind</th><th scope="col">OK</th><th scope="col">Last ts</th><th scope="col">Links</th></tr></thead>
       <tbody id="issues"></tbody>
     </table>
   </div>

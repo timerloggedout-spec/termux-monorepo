@@ -125,7 +125,7 @@ jobs:
               }
             };
             const stable = JSON.stringify([
-              epsEvent.event_type, epsEvent.occurred_at, epsEvent.source, epsEvent.repo,
+              epsEvent.event_type, epsEvent.source, epsEvent.repo,
               epsEvent.git_sha, epsEvent.run_id, epsEvent.run_attempt,
               epsEvent.entity_type, epsEvent.entity_id, epsEvent.status
             ]);

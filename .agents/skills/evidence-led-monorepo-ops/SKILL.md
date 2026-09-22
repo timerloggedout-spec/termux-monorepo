@@ -5,13 +5,13 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 
 Canonical: master `.agents/skills/evidence-led-monorepo-ops/SKILL.md`.
 
-Session 2026-09-21 10:09 PDT: live master tip `2e4f59aa` after #707 squash.
+Session 2026-09-22 12:18 PDT: live master tip `d10a7a54`.
 **SSOT lane matrix:** `docs/ops/LANE-MATRIX.md` — rewrite every session.
-**Peer routing:** Copilot is optional peer — NOT a promote gate.
+**Peer routing:** Copilot / CodeRabbit / Qodo / Devin = advisory — NOT promote gates.
 **Mega policy:** size ≠ quality; dual-gate green + 130 files still EXTRACT.
 Vercel 24h rate-limit is a **non-gate**.
-#682 EXTRACT/WAIT. #684 HOLD. #685/#695/#702 OBSERVE.
-#705/#706/#709 SUPERSEDE (older session rewrites vs post-#707 tip).
-#432/#549/#601 EXTRACT. #630 minesweeper.
-Skills co-loaded: adaptive-wait, approxination-lane.
+#724 SUPERSEDE (re-extract on this tip). #48 HOLD (master-staging). #69 HOLD (stacked feature).
+#682 EXTRACT. #630 minesweeper. #739 HITL HOLD. #740 DRAFT.
+Skills co-loaded: adaptive-wait, ml-pipeline-ops, icm-cctv-ops.
+**Operator ACTIVE.** WAIT classifies PRs, not the operator.
 Agent-Identity: Grok (Administrator)

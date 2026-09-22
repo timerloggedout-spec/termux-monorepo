@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IcmCctv",
+  "type": "object",
+  "required": [
+    "surface",
+    "n",
+    "lanes",
+    "operator"
+  ],
+  "properties": {
+    "surface": {
+      "const": "icm-cctv"
+    },
+    "n": {
+      "type": "integer"
+    },
+    "lanes": {
+      "type": "object"
+    },
+    "operator": {
+      "const": "ACTIVE"
+    },
+    "step": {
+      "type": "integer"
+    }
+  }
+}

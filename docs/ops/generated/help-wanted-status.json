@@ -1,26 +1,17 @@
 {
-  "generated_at": "2026-09-22T19:54:36Z",
+  "generated_at": "2026-09-22T21:18:08Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
-  "receipts": 44,
+  "receipts": 45,
   "kinds": {
     "upstream_pr": 12,
     "claim_skipped_closed": 1,
-    "followup_skip_idempotent": 31
+    "followup_skip_idempotent": 32
   },
   "outcomes": {
-    "ok": 44
+    "ok": 45
   },
   "foreign_open_prs": [
-    {
-      "html_url": "https://github.com/DeltaV-Station/Delta-v/pull/6534",
-      "title": "help-wanted: stake + contribute for #6533",
-      "number": 6534,
-      "repo": "DeltaV-Station/Delta-v",
-      "state": "open",
-      "updated_at": "2026-09-22T19:54:17Z",
-      "tribute": true
-    },
     {
       "html_url": "https://github.com/w1977-0/open-stream-saver/pull/3",
       "title": "help-wanted: stake + contribute for #1",
@@ -139,21 +130,8 @@
       "tribute": true
     }
   ],
-  "foreign_open_count": 14,
+  "foreign_open_count": 13,
   "tributes": [
-    {
-      "pr_url": "https://github.com/DeltaV-Station/Delta-v/pull/6534",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-22T19:54:17Z",
-      "providers": [],
-      "repo": "DeltaV-Station/Delta-v",
-      "number": 6534,
-      "title": "help-wanted: stake + contribute for #6533",
-      "state": "open"
-    },
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
@@ -190,15 +168,29 @@
         "followup_skip_idempotent",
         "followup_skip_idempotent",
         "followup_skip_idempotent",
+        "followup_skip_idempotent",
         "followup_skip_idempotent"
       ],
       "ok": true,
-      "last_ts": "2026-09-22T19:54:16Z",
+      "last_ts": "2026-09-22T21:17:50Z",
       "providers": [],
       "repo": "vedantnimbarte/zero",
       "number": 81,
       "title": "docs(layout): refresh stale ponytail comments (flex + grid)",
       "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/DeltaV-Station/Delta-v/pull/6534",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-22T20:50:03Z",
+      "providers": [],
+      "repo": "DeltaV-Station/Delta-v",
+      "number": 6534,
+      "title": "help-wanted: stake + contribute for #6533",
+      "state": "closed"
     },
     {
       "pr_url": "https://github.com/w1977-0/open-stream-saver/pull/3",
@@ -954,6 +946,14 @@
         "ok": true,
         "lane": "help-wanted-followup",
         "foreign": true
+      },
+      {
+        "ts": "2026-09-22T21:17:50Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
       }
     ]
   },
@@ -974,7 +974,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "cfa07a95c8a77039d636c9cdb0be77b65d40a3f2",
+    "source_sha": "e327c6afb15d315615c213c65bb28183fcf5eac5",
     "source_ref": "master",
     "history_complete": true,
     "history_count": 1,
@@ -1007,12 +1007,12 @@
   },
   "evolution": [
     {
-      "sha": "cfa07a95c8a77039d636c9cdb0be77b65d40a3f2",
-      "short_sha": "cfa07a95c8a7",
-      "date": "2026-09-22T19:54:17Z",
+      "sha": "e327c6afb15d315615c213c65bb28183fcf5eac5",
+      "short_sha": "e327c6afb15d",
+      "date": "2026-09-22T21:17:51Z",
       "author": "github-actions[bot]",
-      "subject": "ops(help-wanted): follow-up evidence 2026-09-22T19:54Z",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/cfa07a95c8a77039d636c9cdb0be77b65d40a3f2"
+      "subject": "ops(help-wanted): follow-up evidence 2026-09-22T21:17Z",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/e327c6afb15d315615c213c65bb28183fcf5eac5"
     }
   ],
   "pipeline": [

@@ -1,0 +1,31 @@
+name: hitl-control-plane-verify
+on:
+  pull_request:
+    paths:
+      - "docs/ops/OPS-EVENT-HITL.schema.json"
+      - "docs/ops/HITL-CONTROL-PLANE*"
+      - "scripts/ops/hitl_control_plane.py"
+      - "tests/ops/test_hitl_control_plane.py"
+      - "apps/ops-hitl-control-surface/**"
+      - ".github/workflows/hitl-control-plane-verify.yml"
+  push:
+    branches: [master, "feat/ops-hitl-control-plane"]
+permissions:
+  contents: read
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate JSON and Python
+        run: |
+          python -m json.tool docs/ops/OPS-EVENT-HITL.schema.json >/dev/null
+          python -m py_compile scripts/ops/hitl_control_plane.py tests/ops/test_hitl_control_plane.py
+          python -m unittest discover -s tests/ops -p 'test_hitl_control_plane.py'
+      - name: Validate surface contract
+        run: |
+          grep -q "dual-pane" apps/ops-hitl-control-surface/index.html
+          grep -q "ICM-CCTV" apps/ops-hitl-control-surface/index.html
+          grep -q "Gource parallel projection" apps/ops-hitl-control-surface/index.html
+          grep -q "Preview command" apps/ops-hitl-control-surface/index.html
+          grep -q "snapshot_id" docs/ops/HITL-CONTROL-PLANE.md

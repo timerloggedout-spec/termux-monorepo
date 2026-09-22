@@ -8,9 +8,10 @@ Canonical: master `.agents/skills/adaptive-wait/SKILL.md`.
 **BIUDL = Broad → Integrate → Validate → Develop → Learn.**
 Fully Continuous Automated Development Evaluation Environment.
 
-Master tip base: `cb995e76`. This cycle: ops/biudl-claude-primary-deprecate-agents-20260921.
-Read `docs/ops/LANE-MATRIX.md` every WAIT cycle.
-Primary entry: **`CLAUDE.md`** (root `AGENTS.md` deprecated redirect for Linguist/Jules only).
-#682 EXTRACT/WAIT (130 files). #684 HOLD.
+Master HEAD this session: `ca7fd7c8`.
+#724 WAIT gate-green (dual-gate SUCCESS; mergeable_state=unstable; already on tip — update-branch reported no new base commits).
+#737 and older session pulses SUPERSEDE vs 04:12 pulse.
+**Operator is ACTIVE.** Do not treat WAIT/HOLD/OBSERVE as operator idle. Stay busy: session SSOT, skill stamps, Stepie RECON, next EXTRACT (#735 / #630) while dual-gate mergeable settles.
+Primary entry: **`CLAUDE.md`**.
 AVOID HITL YOLO YEET AUTOAPPROVE.
 Agent-Identity: Grok (Administrator)

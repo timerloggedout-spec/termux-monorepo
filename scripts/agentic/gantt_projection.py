@@ -63,6 +63,60 @@ def _critical_path(phases: list[dict[str, Any]], durations: dict[str, int]) -> s
     return set(best_chain[sink])
 
 
+def _validate_report(report: dict[str, Any], phases: list[dict[str, Any]], plan: dict[str, Any]) -> None:
+    evaluations = report.get("evaluations")
+    if not isinstance(evaluations, list):
+        raise ValueError("report.evaluations must be a list")
+
+    phase_ids = {str(phase["phase_id"]) for phase in phases}
+    seen: set[str] = set()
+    required = {
+        "idempotency_key",
+        "phase_id",
+        "project_item_id",
+        "project_status",
+        "pull_requests",
+        "reason",
+        "state",
+    }
+    allowed_states = {"complete", "ready", "waiting", "blocked", "unknown"}
+
+    for index, item in enumerate(evaluations):
+        if not isinstance(item, dict):
+            raise ValueError(f"report.evaluations[{index}] must be an object")
+        missing = sorted(required - set(item))
+        if missing:
+            raise ValueError(
+                f"report.evaluations[{index}] missing required fields: " + ", ".join(missing)
+            )
+        phase_id = item["phase_id"]
+        if not isinstance(phase_id, str) or not phase_id:
+            raise ValueError(f"report.evaluations[{index}].phase_id must be a non-empty string")
+        if phase_id not in phase_ids:
+            raise ValueError(f"report.evaluations[{index}].phase_id is unknown: {phase_id}")
+        if phase_id in seen:
+            raise ValueError(f"report.evaluations contains duplicate phase_id: {phase_id}")
+        seen.add(phase_id)
+        if not isinstance(item["idempotency_key"], str) or not item["idempotency_key"]:
+            raise ValueError(f"report.evaluations[{index}].idempotency_key must be a non-empty string")
+        if not isinstance(item["pull_requests"], list) or any(
+            isinstance(pr, bool) or not isinstance(pr, int) for pr in item["pull_requests"]
+        ):
+            raise ValueError(f"report.evaluations[{index}].pull_requests must be a list of integers")
+        if not isinstance(item["reason"], str):
+            raise ValueError(f"report.evaluations[{index}].reason must be a string")
+        if item["state"] not in allowed_states:
+            raise ValueError(f"report.evaluations[{index}].state is invalid: {item['state']!r}")
+
+    if report.get("plan_id") not in (None, plan["plan_id"]):
+        raise ValueError("report.plan_id does not match the supplied plan")
+    if report.get("plan_sha256") not in (None, plan_digest(plan)):
+        raise ValueError("report.plan_sha256 does not match the supplied plan")
+    missing_phase_ids = sorted(phase_ids - seen)
+    if missing_phase_ids:
+        raise ValueError("report.evaluations is missing phase IDs: " + ", ".join(missing_phase_ids))
+
+
 def project(
     plan: dict[str, Any],
     report: dict[str, Any] | None = None,
@@ -77,13 +131,12 @@ def project(
     phases = plan["phases"]
     waves = compute_waves(phases)
     durations = _durations(phases, default_duration_days, duration_mapping)
-    critical = _critical_path(phases, durations) if start_date else set()
+    critical = _critical_path(phases, durations)
 
     evaluation_by_id: dict[str, dict[str, Any]] = {}
     if report:
-        for item in report.get("evaluations", []):
-            if isinstance(item, dict) and item.get("phase_id"):
-                evaluation_by_id[str(item["phase_id"])] = item
+        _validate_report(report, phases, plan)
+        evaluation_by_id = {str(item["phase_id"]): item for item in report["evaluations"]}
 
     by_id = {str(p["phase_id"]): p for p in phases}
     tasks: list[dict[str, Any]] = []
@@ -133,7 +186,7 @@ def render_mermaid_gantt(projection: dict[str, Any]) -> str:
 
     for task in projection["tasks"]:
         task_id = task["id"].replace("-", "_")
-        title = str(task["title"]).replace(":", " - ")
+        title = " ".join(str(task["title"]).split()).replace(":", " - ")
         marker = "crit, " if task["critical"] else ""
         lines.append(f"    {title} :{marker}{task_id}, {task['start']}, {task['duration_days']}d")
     return "\n".join(lines) + "\n"

@@ -103,6 +103,39 @@ jobs:
               `checks_pending: ${pendingChecks.length}`,
               `checks_failed: ${failedChecks.length}`,
             ].join('\n');
+            const epsEvent = {
+              schema_version: 'eps.v1',
+              event_type: 'pr.ledger_observed',
+              occurred_at: new Date().toISOString(),
+              source: 'github.actions.pr-production-ledger',
+              repo: `${context.repo.owner}/${context.repo.repo}`,
+              git_sha: pr.head.sha,
+              run_id: context.runId,
+              run_attempt: Number(process.env.GITHUB_RUN_ATTEMPT || 1),
+              entity_type: 'pull_request',
+              entity_id: `pr:${prNumber}`,
+              status: 'observed',
+              provenance: { source_ref: pr.html_url, source_kind: 'github_api', attribution_confidence: 1 },
+              attributes: {
+                base_sha: pr.base.sha, commits: commits.length, changed_files: changedFiles,
+                additions: pr.additions, deletions: pr.deletions, ahead_of_base: ahead,
+                behind_base: behind, checks_total: checks.length,
+                checks_pending: pendingChecks.length, checks_failed: failedChecks.length,
+                branch_alignment: behind > 0 ? 'BEHIND_MASTER' : 'ALIGNED_OR_AHEAD'
+              }
+            };
+            const stable = JSON.stringify([
+              epsEvent.event_type, epsEvent.occurred_at, epsEvent.source, epsEvent.repo,
+              epsEvent.git_sha, epsEvent.run_id, epsEvent.run_attempt,
+              epsEvent.entity_type, epsEvent.entity_id, epsEvent.status
+            ]);
+            epsEvent.event_id = `eps-${require('crypto').createHash('sha256').update(stable).digest('hex').slice(0, 32)}`;
+            require('fs').writeFileSync(
+              `${process.env.GITHUB_WORKSPACE}/eps-events.ndjson`,
+              JSON.stringify(epsEvent) + '\n',
+              { encoding: 'utf8', flag: 'w' }
+            );
+
             await core.summary
               .addHeading(`PR #${prNumber} production ledger`)
               .addRaw(ledger + '\n\n')
@@ -116,3 +149,13 @@ jobs:
               .addRaw(failedChecks.length ? `❌ ${failedChecks.length} failed check(s).\n` : '✅ No completed failing checks observed.\n')
               .addRaw(pendingChecks.length ? `⏳ ${pendingChecks.length} check(s) still pending.\n` : '✅ No pending checks observed.\n')
               .write();
+
+
+      - name: Upload EPS telemetry artifact
+        if: ${{ always() && hashFiles('eps-events.ndjson') != '' }}
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: eps-events-${{ github.run_id }}-${{ github.run_attempt }}
+          path: eps-events.ndjson
+          if-no-files-found: error
+          retention-days: 14

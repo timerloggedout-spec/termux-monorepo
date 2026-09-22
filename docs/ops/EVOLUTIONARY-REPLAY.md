@@ -100,3 +100,40 @@ The first production-facing experiment should use an existing, bounded agent-qua
 9. feed the new tree back into the history pool.
 
 This is the repository's **BIUDL** interpretation of recursive improvement: broad evidence -> focused replay experiment -> thin online validation -> feed-forward synthesis -> broadened evidence population.
+
+
+## Longitudinal evidence contract
+
+Replay evidence is an input to the existing Action→Effect / ATES / WTCV / TCV analysis layer, not a replacement for it. Preserve raw replay features and lineage so derived formulas can evolve without rewriting history.
+
+A replay observation should carry, where available:
+
+- manager
+- policy_id
+- task
+- provider
+- model
+- workflow_run
+- head_sha
+- cohort
+- history_size
+- replay_score
+- covered_nodes
+- replay_cost
+- terminal_count
+- execution
+- verification
+
+Recommended identity:
+
+manager + task + provider + model + workflow_run + head_sha + policy_id + cohort + history_revision
+
+This deliberately separates who/what/where/when from evaluator-derived features. ATES, WTCV, TCV, RPI, action density, parallel yield, TPV, CIE, delay, handoff latency, and complexity-adjusted measures can then be computed downstream using the repository's existing reducers and null semantics.
+
+### Manager tournament extension
+
+Once a sufficient history pool exists, manager candidates can be screened offline:
+
+history revision → incumbent + candidates → replay → raw evidence → existing reducers → fresh online cohort
+
+Do not rank managers on replay score alone. The online comparison must include integrated correctness/outcome, resource use, feedback cycles, conflicts, retries, and human intervention. A candidate that wins replay but loses the real task remains a failed candidate; a candidate that changes cost without changing outcome remains measurable rather than being collapsed into a single opaque agent score.

@@ -69,6 +69,11 @@ if command -v rish >/dev/null 2>&1; then
     else
       say shizuku_package not_detected
     fi
+    if rish -c 'pm path af.shizuku.plus.api' >/dev/null 2>&1; then
+      say shizuku_plus_package installed
+    else
+      say shizuku_plus_package not_detected
+    fi
     say accessibility_services "$(rish -c 'settings get secure enabled_accessibility_services' 2>/dev/null || printf unavailable)"
   else
     say shizuku rish_present_but_unavailable

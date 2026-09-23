@@ -447,7 +447,7 @@ def main() -> int:
         if args.write:
             write_outputs()
             return 0
-        return 2
+        return 0 if check_outputs() else 1
     except ValueError as exc:
         parser.error(str(exc))
     return 2

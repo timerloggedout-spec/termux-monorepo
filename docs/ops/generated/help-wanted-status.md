@@ -1,11 +1,11 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-22T23:16:57Z UTC · receipts=46 · foreign_open=14 · tributes=30_
+_Generated 2026-09-23T00:25:44Z UTC · receipts=46 · foreign_open=13 · tributes=30_
 
 ## Tributes (contributor ledger)
 
+- [sorotrail/SoroTrail#943](https://github.com/sorotrail/SoroTrail/pull/943) · state=closed · help-wanted: stake + contribute for #142
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
-- [sorotrail/SoroTrail#943](https://github.com/sorotrail/SoroTrail/pull/943) · state=open · help-wanted: stake + contribute for #142
 - [DeltaV-Station/Delta-v#6534](https://github.com/DeltaV-Station/Delta-v/pull/6534) · state=closed · help-wanted: stake + contribute for #6533
 - [w1977-0/open-stream-saver#3](https://github.com/w1977-0/open-stream-saver/pull/3) · state=open · help-wanted: stake + contribute for #1
 - [ussyalfaks/ahjoorxmr-contract#872](https://github.com/ussyalfaks/ahjoorxmr-contract/pull/872) · state=closed · help-wanted: stake + contribute for #871
@@ -37,7 +37,6 @@ _Generated 2026-09-22T23:16:57Z UTC · receipts=46 · foreign_open=14 · tribute
 
 ## Foreign open PRs
 
-- [sorotrail/SoroTrail#943](https://github.com/sorotrail/SoroTrail/pull/943) — help-wanted: stake + contribute for #142
 - [w1977-0/open-stream-saver#3](https://github.com/w1977-0/open-stream-saver/pull/3) — help-wanted: stake + contribute for #1
 - [umn-adc/ATLAS#42](https://github.com/umn-adc/ATLAS/pull/42) — help-wanted: stake + contribute for #31
 - [olcf/olcf-test-harness#280](https://github.com/olcf/olcf-test-harness/pull/280) — help-wanted: stake + contribute for #278

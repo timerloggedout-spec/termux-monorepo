@@ -1,10 +1,11 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-22T22:02:23Z UTC · receipts=45 · foreign_open=13 · tributes=29_
+_Generated 2026-09-23T00:34:20Z UTC · receipts=47 · foreign_open=13 · tributes=30_
 
 ## Tributes (contributor ledger)
 
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
+- [sorotrail/SoroTrail#943](https://github.com/sorotrail/SoroTrail/pull/943) · state=closed · help-wanted: stake + contribute for #142
 - [DeltaV-Station/Delta-v#6534](https://github.com/DeltaV-Station/Delta-v/pull/6534) · state=closed · help-wanted: stake + contribute for #6533
 - [w1977-0/open-stream-saver#3](https://github.com/w1977-0/open-stream-saver/pull/3) · state=open · help-wanted: stake + contribute for #1
 - [ussyalfaks/ahjoorxmr-contract#872](https://github.com/ussyalfaks/ahjoorxmr-contract/pull/872) · state=closed · help-wanted: stake + contribute for #871
@@ -50,6 +51,6 @@ _Generated 2026-09-22T22:02:23Z UTC · receipts=45 · foreign_open=13 · tribute
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=45 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 32}`
+## Outcomes · ok=47 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 34}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-09-22T22:02:23Z",
+  "generated_at": "2026-09-23T00:34:20Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
-  "receipts": 45,
+  "receipts": 47,
   "kinds": {
     "upstream_pr": 12,
     "claim_skipped_closed": 1,
-    "followup_skip_idempotent": 32
+    "followup_skip_idempotent": 34
   },
   "outcomes": {
-    "ok": 45
+    "ok": 47
   },
   "foreign_open_prs": [
     {
@@ -169,15 +169,30 @@
         "followup_skip_idempotent",
         "followup_skip_idempotent",
         "followup_skip_idempotent",
+        "followup_skip_idempotent",
+        "followup_skip_idempotent",
         "followup_skip_idempotent"
       ],
       "ok": true,
-      "last_ts": "2026-09-22T21:17:50Z",
+      "last_ts": "2026-09-23T00:32:12Z",
       "providers": [],
       "repo": "vedantnimbarte/zero",
       "number": 81,
       "title": "docs(layout): refresh stale ponytail comments (flex + grid)",
       "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/sorotrail/SoroTrail/pull/943",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-22T23:59:04Z",
+      "providers": [],
+      "repo": "sorotrail/SoroTrail",
+      "number": 943,
+      "title": "help-wanted: stake + contribute for #142",
+      "state": "closed"
     },
     {
       "pr_url": "https://github.com/DeltaV-Station/Delta-v/pull/6534",
@@ -547,7 +562,7 @@
       "state": "closed"
     }
   ],
-  "tribute_count": 29,
+  "tribute_count": 30,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -954,6 +969,22 @@
         "ok": true,
         "lane": "help-wanted-followup",
         "foreign": true
+      },
+      {
+        "ts": "2026-09-22T23:16:40Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-23T00:32:12Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
       }
     ]
   },
@@ -974,7 +1005,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "e29b6587c3dba4b0af561ae7a53baa06d0de2381",
+    "source_sha": "4ba0adda36f38a93e65f2dc1c2eb3aee009da29e",
     "source_ref": "master",
     "history_complete": true,
     "history_count": 1,
@@ -1007,12 +1038,12 @@
   },
   "evolution": [
     {
-      "sha": "e29b6587c3dba4b0af561ae7a53baa06d0de2381",
-      "short_sha": "e29b6587c3db",
-      "date": "2026-09-22T21:19:22Z",
+      "sha": "4ba0adda36f38a93e65f2dc1c2eb3aee009da29e",
+      "short_sha": "4ba0adda36f3",
+      "date": "2026-09-23T00:32:31Z",
       "author": "github-actions[bot]",
-      "subject": "ops(help-wanted): live status refresh 2026-09-22T21:19Z",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/e29b6587c3dba4b0af561ae7a53baa06d0de2381"
+      "subject": "ops(help-wanted): live status refresh 2026-09-23T00:32Z",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/4ba0adda36f38a93e65f2dc1c2eb3aee009da29e"
     }
   ],
   "pipeline": [

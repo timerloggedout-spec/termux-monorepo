@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-23T05:11:15Z",
+  "generated_at": "2026-09-23T05:54:54Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
   "receipts": 47,
@@ -12,15 +12,6 @@
     "ok": 47
   },
   "foreign_open_prs": [
-    {
-      "html_url": "https://github.com/limelitgeo/open/pull/32",
-      "title": "help-wanted: stake + contribute for #31",
-      "number": 32,
-      "repo": "limelitgeo/open",
-      "state": "open",
-      "updated_at": "2026-09-23T05:10:46Z",
-      "tribute": true
-    },
     {
       "html_url": "https://github.com/w1977-0/open-stream-saver/pull/3",
       "title": "help-wanted: stake + contribute for #1",
@@ -64,15 +55,6 @@
       "repo": "bmad-code-org/bmad-loop",
       "state": "open",
       "updated_at": "2026-09-20T22:43:23Z",
-      "tribute": true
-    },
-    {
-      "html_url": "https://github.com/infagent/merl/pull/43",
-      "title": "help-wanted: stake + contribute for #42",
-      "number": 43,
-      "repo": "infagent/merl",
-      "state": "open",
-      "updated_at": "2026-09-20T06:29:43Z",
       "tribute": true
     },
     {
@@ -130,20 +112,33 @@
       "tribute": true
     }
   ],
-  "foreign_open_count": 13,
+  "foreign_open_count": 11,
   "tributes": [
+    {
+      "pr_url": "https://github.com/infagent/merl/pull/43",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-23T05:51:15Z",
+      "providers": [],
+      "repo": "infagent/merl",
+      "number": 43,
+      "title": "help-wanted: stake + contribute for #42",
+      "state": "closed"
+    },
     {
       "pr_url": "https://github.com/limelitgeo/open/pull/32",
       "kinds": [
         "upstream_pr"
       ],
       "ok": true,
-      "last_ts": "2026-09-23T05:10:46Z",
+      "last_ts": "2026-09-23T05:49:23Z",
       "providers": [],
       "repo": "limelitgeo/open",
       "number": 32,
       "title": "help-wanted: stake + contribute for #31",
-      "state": "open"
+      "state": "closed"
     },
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
@@ -362,19 +357,6 @@
       "number": 12,
       "title": "help-wanted: stake + contribute for #10",
       "state": "closed"
-    },
-    {
-      "pr_url": "https://github.com/infagent/merl/pull/43",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-20T06:29:43Z",
-      "providers": [],
-      "repo": "infagent/merl",
-      "number": 43,
-      "title": "help-wanted: stake + contribute for #42",
-      "state": "open"
     },
     {
       "pr_url": "https://github.com/DioNanos/codex-termux/pull/27",
@@ -1018,7 +1000,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "cf1e76e676bb53a033f537c625a74c749812e64c",
+    "source_sha": "dc869ed32c6c41c5a6287558c9dd98c309a62a6d",
     "source_ref": "master",
     "history_complete": true,
     "history_count": 1,
@@ -1051,12 +1033,12 @@
   },
   "evolution": [
     {
-      "sha": "cf1e76e676bb53a033f537c625a74c749812e64c",
-      "short_sha": "cf1e76e676bb",
-      "date": "2026-09-23T05:10:58Z",
+      "sha": "dc869ed32c6c41c5a6287558c9dd98c309a62a6d",
+      "short_sha": "dc869ed32c6c",
+      "date": "2026-09-23T05:11:15Z",
       "author": "github-actions[bot]",
-      "subject": "ops(help-wanted): live status refresh 2026-09-23T05:10Z",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/cf1e76e676bb53a033f537c625a74c749812e64c"
+      "subject": "ops(help-wanted): live status refresh 2026-09-23T05:11Z",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/dc869ed32c6c41c5a6287558c9dd98c309a62a6d"
     }
   ],
   "pipeline": [

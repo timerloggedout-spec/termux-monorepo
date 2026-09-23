@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-23T13:39:09Z UTC · receipts=70 · foreign_open=11 · tributes=31_
+_Generated 2026-09-23T13:52:32Z UTC · receipts=70 · foreign_open=12 · tributes=32_
 
 ## Tributes (contributor ledger)
 
+- [C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend#587](https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587) · state=open · help-wanted: stake + contribute for #579
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -38,6 +39,7 @@ _Generated 2026-09-23T13:39:09Z UTC · receipts=70 · foreign_open=11 · tribute
 
 ## Foreign open PRs
 
+- [C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend#587](https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587) — help-wanted: stake + contribute for #579
 - [w1977-0/open-stream-saver#3](https://github.com/w1977-0/open-stream-saver/pull/3) — help-wanted: stake + contribute for #1
 - [umn-adc/ATLAS#42](https://github.com/umn-adc/ATLAS/pull/42) — help-wanted: stake + contribute for #31
 - [olcf/olcf-test-harness#280](https://github.com/olcf/olcf-test-harness/pull/280) — help-wanted: stake + contribute for #278

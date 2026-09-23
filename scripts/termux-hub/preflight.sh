@@ -23,6 +23,7 @@ fi
 if command -v rish >/dev/null 2>&1; then
   say shizuku_identity "$(rish -c 'id' 2>/dev/null || printf unavailable)"
   say shizuku_package "$(rish -c 'pm path moe.shizuku.privileged.api' 2>/dev/null || printf unavailable)"
+  say shizuku_plus_package "$(rish -c 'pm path af.shizuku.plus.api' 2>/dev/null || printf unavailable)"
   say accessibility "$(rish -c 'settings get secure enabled_accessibility_services' 2>/dev/null || printf unavailable)"
 fi
 

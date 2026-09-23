@@ -1,0 +1,30 @@
+{
+  "session": "2026-09-22T19:04:00-07:00",
+  "agent": "Grok (Administrator)",
+  "master_tip": "6c4e0c780e72306557e730dcf7213f16416f478d",
+  "pulse_branch": "ops/session-lane-matrix-20260922-1904",
+  "priority_issue": 175,
+  "extract_wait": [753, 746],
+  "pr_753_head": "4968ffdca3b534ad25c5def1da04551ddeada9b1",
+  "pr_753_base": "6c4e0c780e72306557e730dcf7213f16416f478d",
+  "pr_753_mergeable_state": "unstable",
+  "pr_753_combined_status": "failure",
+  "pr_753_status_note": "Vercel termux-monorepo + mcp-hub rate-limited 24h; help-wanted projects success; CodeRabbit approved",
+  "observe": [750, 755, 740, 617, 597, 598, 81],
+  "supersede": [757, 756, 754, 751, 749, 747, 745],
+  "extract_ancient": [48, 69],
+  "pr_48_base": "master-staging",
+  "pr_48_mergeable_state": "dirty",
+  "pr_69_base": "feature/proposal-vote-promote",
+  "pr_69_mergeable_state": "dirty",
+  "credentials_issue": 184,
+  "notes_only_credentials": true,
+  "autoapprove": false,
+  "dual_gate": ["hygiene + portability gate", "agentic termux smoke"],
+  "vercel_gate": false,
+  "stepie": {
+    "primary_goal": 2149,
+    "dev_goal": 2087,
+    "dev_progress": "1/12"
+  }
+}

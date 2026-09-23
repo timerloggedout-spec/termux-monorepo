@@ -84,3 +84,25 @@ Current state:
 - **Re-entry condition:** reconnect/reinstall MotherDuck, then run read-only authorization and metadata probes before restoring it to an active integration lane
 
 Do not silently substitute another provider and label it MotherDuck-compatible. Analytical workflows should target the repository-owned normalized evidence contract so the provider can be swapped without changing downstream consumers.
+
+
+## Live initialization ledger — 2026-09-23
+
+| Lane | State | Next bounded action |
+|---|---|---|
+| GitHub | AUTHORIZED / OBSERVED | reconcile PR #762 |
+| Linear | AUTHORIZED / OBSERVED | use TER-15 as integration anchor; avoid duplicate source-of-truth state |
+| Context7 / Firecrawl | EXPOSED | activate for concrete dependency/research tasks |
+| OpenAI Platform / Plugin Management | EXPOSED | keep credential setup explicit; use governance probes |
+| Vercel | AUTHORIZED / OBSERVED | preserve deployment evidence; investigate rate limits separately |
+| Render | AUTHORIZED / OBSERVED | use existing services; no duplicates |
+| DigitalOcean | AUTHORIZED / BLOCKED | maintenance before new Droplets |
+| Sprites | AUTHORIZED / OBSERVED | create only for concrete isolated execution |
+| Neon | EXPOSED / UNRESOLVED | resolve project ID, then read-only metadata probe |
+| Supabase | AUTHORIZED / OBSERVED | no project creation without concrete data requirement |
+| Airtable | AUTHORIZED / OBSERVED | structured evidence experiments only |
+| Hex | EXPOSED / BLOCKED | use authorized analytical alternatives |
+| Figma | AUTHORIZED / OBSERVED | read/inspection unless write entitlement established |
+| Hugging Face | AUTHORIZED / OBSERVED | research/model retrieval when task-relevant |
+| Lovable / Replit | AUTHORIZED / OBSERVED | bounded reproduction/build; GitHub remains canonical |
+| MotherDuck | EXCLUDED | no silent substitution |

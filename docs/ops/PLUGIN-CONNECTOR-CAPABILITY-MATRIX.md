@@ -56,7 +56,7 @@ Tool counts are the number of currently exposed actions for the provider in this
 |---|---:|---|
 | Neon | 113 | Postgres projects, branches, SQL, schema, migrations, diagnostics |
 | Airtable | 47 | bases, tables, records, automations, interfaces |
-| MotherDuck | 41 | data warehouse/query/visualization |
+| MotherDuck | excluded | intentionally uninstalled after a connector connection issue; not currently exposed |
 | Supabase | 28 | Postgres, auth, storage, edge functions, logs |
 | ClickHouse | 17 | Cloud services, schemas, SQL, diagnostics |
 | Hex | 4 | projects/threads/analysis surface |
@@ -209,3 +209,10 @@ The review itself is **read-only by default**. Repository changes are an explici
 ## Source notes
 
 This snapshot incorporates the uploaded stewardship/relationship/loop skill material and the live tool surface observed during the 2026-09-22 stewardship session. The attached `termux-mcp-project-steward` skill explicitly requires read-only preflight by default and an apply mode for requested repository writes; the context-relationship skill requires verified/candidate separation and evidence-backed updates; the attached Loopy skill defines bounded Observe → Choose → Act → Verify → Record → Repeat loops with named terminal states.
+
+
+## Current runtime exclusion — MotherDuck
+
+MotherDuck is intentionally excluded from the active connector surface because the connector was uninstalled after a connection issue. The absence of its tools in the current runtime is therefore expected. This matrix must not infer provider health, authentication status, or product quality from that absence.
+
+For the analytical evidence plane, use the remaining authorized/available repository lanes (ClickHouse, Hex, Neon, Supabase, Airtable) behind provider-neutral contracts. If MotherDuck is reinstalled later, require `EXPOSED → CONNECTED → AUTHORIZED → OBSERVED` evidence before restoring it to an active integration lane.

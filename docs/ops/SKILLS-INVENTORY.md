@@ -19,7 +19,7 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 
 | Role | Load first | Then |
 |------|------------|------|
-| **Admin / Grok Administrator** | `evidence-led-monorepo-ops` + `adaptive-wait` |
+| **Admin / Grok Administrator** | `evidence-led-monorepo-ops` + `adaptive-wait` | `review-loop` · `help-wanted-lane` · `github-pages-operator` · `approxination-lane` |
 | **Admin / Termux stewardship** | `termux-mcp-project-steward` + `adaptive-wait` | `context-relationship-graph` · `wingman-project-integration` |
 | **Wingman adaptation** | `wingman-project-integration` | `adaptive-wait` · `context-relationship-graph` | `review-loop` · `help-wanted-lane` · `github-pages-operator` · `approxination-lane` |
 | **Collaborator** | `adaptive-feedback-cycle` | dual-gate · `find-skills` |

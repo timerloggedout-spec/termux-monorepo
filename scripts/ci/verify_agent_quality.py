@@ -15,6 +15,10 @@ SOURCE = ROOT / "she/metrics/agent_throughput.py"
 SCHEMA = ROOT / "docs/ops/AGENT-THROUGHPUT-EVENT.schema.json"
 METRICS_DOC = ROOT / "docs/ops/AGENT-THROUGHPUT-METRICS.md"
 PRIORITY_DOC = ROOT / "docs/ops/AGENT-OBSERVABILITY-PRIORITY-DECISION.md"
+TDQS_SOURCE = ROOT / "she/metrics/tdqs.py"
+TDQS_SCHEMA = ROOT / "docs/ops/TDQS-EVIDENCE.schema.json"
+TDQS_DOC = ROOT / "docs/architecture/TOOL-DEFINITION-QUALITY-SCORE.md"
+IMPROVEMENT_POLICY = ROOT / "docs/ops/CONTINUOUS-IMPROVEMENT-POLICY.md"
 
 
 def require(condition: bool, message: str) -> None:
@@ -29,6 +33,10 @@ def main() -> None:
     require(SCHEMA.is_file(), f"missing event schema: {SCHEMA}")
     require(METRICS_DOC.is_file(), f"missing metrics contract: {METRICS_DOC}")
     require(PRIORITY_DOC.is_file(), f"missing observability priority record: {PRIORITY_DOC}")
+    require(TDQS_SOURCE.is_file(), f"missing TDQS reducer: {TDQS_SOURCE}")
+    require(TDQS_SCHEMA.is_file(), f"missing TDQS evidence schema: {TDQS_SCHEMA}")
+    require(TDQS_DOC.is_file(), f"missing TDQS integration document: {TDQS_DOC}")
+    require(IMPROVEMENT_POLICY.is_file(), f"missing continuous improvement policy: {IMPROVEMENT_POLICY}")
 
     source = SOURCE.read_text(encoding="utf-8")
     tree = ast.parse(source, filename=str(SOURCE))
@@ -58,10 +66,17 @@ def main() -> None:
 
     metrics_doc = METRICS_DOC.read_text(encoding="utf-8")
     priority_doc = PRIORITY_DOC.read_text(encoding="utf-8")
+    tdqs_source = TDQS_SOURCE.read_text(encoding="utf-8")
+    tdqs_doc = TDQS_DOC.read_text(encoding="utf-8")
+    improvement_policy = IMPROVEMENT_POLICY.read_text(encoding="utf-8")
     require("quality > time" in metrics_doc, "metrics contract must preserve quality-first policy")
     require("Phase A" in metrics_doc and "Phase B" in metrics_doc, "metrics phases A/B must be documented")
     require("COMMITTED" in metrics_doc and "VALIDATED" in metrics_doc, "evidence states must remain explicit")
     require("Codespaces" in priority_doc and "Docker" in priority_doc, "environment lanes must remain documented")
+    require("TDQS_SPEC_VERSION = \"1.3\"" in tdqs_source, "TDQS spec provenance must remain explicit")
+    require("ATES" in tdqs_doc and "AEF" in tdqs_doc, "TDQS semantic boundary must remain explicit")
+    require("Observe" in improvement_policy and "Recompare" in improvement_policy, "continuous learning loop must remain explicit")
+    require("Context Relationship Graph" in improvement_policy and "Jules" in improvement_policy, "curated external lessons must remain incorporated")
 
     print("QUALITY-LANE PASS: telemetry code is documented, policy-safe, and contract-linked")
 

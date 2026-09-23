@@ -23,12 +23,12 @@ REQUIRED = {
         "## Promotion boundary",
     ],
     ".agents/skills/evidence-led-monorepo-ops/SKILL.md": [
-    "## Operating contract",
-    "## 1. Reconstruct current state",
-    "## 2. Evidence hierarchy",
-    "## 3. Evidence identity",
-    "## 5. Adaptive WAIT integration",
-    "## 7. Promotion",
+        "## Operating contract",
+        "## 1. Reconstruct current state",
+        "## 2. Evidence hierarchy",
+        "## 3. Evidence identity",
+        "## 5. Adaptive WAIT integration",
+        "## 7. Promotion",
         "## 10. Closeout receipt",
     ],
 }

@@ -1,5 +1,5 @@
 {
-  "name": "termux-monorepo-agent",
+  "name": "termux-monorepo-general-dev-lane",
   "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bullseye",
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {
@@ -8,12 +8,14 @@
       "installOhMyZsh": false,
       "upgradePackages": true
     },
-    "ghcr.io/devcontainers/features/node:1": { "version": "20" },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20"
+    },
     "ghcr.io/devcontainers/features/rust:1": {},
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
-  "postCreateCommand": "bash -c 'export ARCHWIZ_ENV=codespace; export DEBIAN_FRONTEND=noninteractive; sudo apt-get update -qq && sudo apt-get install -y -qq jq ripgrep fd-find shellcheck 2>/dev/null || true; bash setup.sh || true; git submodule update --init --recursive --depth 1 || true; echo \"[codespace] production tools ready\"; echo \"[skills] role: Admin / Grok Administrator -- look up the current skill set in docs/ops/SKILLS-INVENTORY.md (Role load matrix table, do not hardcode a SHA); as of last check: load evidence-led-monorepo-ops + adaptive-wait first, then termux-monorepo-agentic-governance + review-loop\"'",
-  "postStartCommand": "bash -c 'echo \"[codespace] agent lane ready: $(date -u +%Y-%m-%dT%H:%M:%SZ) ARCHWIZ_ENV=$ARCHWIZ_ENV\"'",
+  "postCreateCommand": "bash -c 'export ARCHWIZ_ENV=codespace; export DEBIAN_FRONTEND=noninteractive; sudo apt-get update -qq && sudo apt-get install -y -qq jq ripgrep fd-find shellcheck 2>/dev/null || true; bash setup.sh || true; git submodule update --init --recursive --depth 1 || true; python3 scripts/ci/repo_gate.py --help > /dev/null 2>&1 || true; python3 scripts/ci/termux_smoke.py --help > /dev/null 2>&1 || true; echo \"[codespace] general-dev lane ready: dual-gate smoke helpers verified\"; echo \"[skills] role: Collaborator / Codespace agent -- look up the current skill set in docs/ops/SKILLS-INVENTORY.md (Role load matrix table, do not hardcode a SHA); as of last check: load adaptive-feedback-cycle first, then the dual-gate (repo_gate + termux_smoke) + conventions, optional review-loop\"'",
+  "postStartCommand": "bash -c 'echo \"[codespace] general-dev lane ready: $(date -u +%Y-%m-%dT%H:%M:%SZ) ARCHWIZ_ENV=$ARCHWIZ_ENV CODESPACE_LANE=$CODESPACE_LANE\"'",
   "customizations": {
     "vscode": {
       "extensions": [
@@ -42,7 +44,8 @@
   },
   "remoteEnv": {
     "ARCHWIZ_ENV": "codespace",
-    "CODESPACE_AGENT": "1"
+    "CODESPACE_AGENT": "1",
+    "CODESPACE_LANE": "general-dev"
   },
   "forwardPorts": [],
   "hostRequirements": {

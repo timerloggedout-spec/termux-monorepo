@@ -29,8 +29,9 @@ REQUIRED = {
     "## 3. Evidence identity",
     "## 5. Adaptive WAIT integration",
     "## 7. Promotion",
-    "## 10. Closeout receipt",
-]
+        "## 10. Closeout receipt",
+    ],
+}
 
 def tracked_paths() -> list[str]:
     out = subprocess.run(

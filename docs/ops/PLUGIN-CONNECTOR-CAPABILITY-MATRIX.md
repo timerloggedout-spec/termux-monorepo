@@ -216,3 +216,28 @@ This snapshot incorporates the uploaded stewardship/relationship/loop skill mate
 MotherDuck is intentionally excluded from the active connector surface because the connector was uninstalled after a connection issue. The absence of its tools in the current runtime is therefore expected. This matrix must not infer provider health, authentication status, or product quality from that absence.
 
 For the analytical evidence plane, use the remaining authorized/available repository lanes (ClickHouse, Hex, Neon, Supabase, Airtable) behind provider-neutral contracts. If MotherDuck is reinstalled later, require `EXPOSED → CONNECTED → AUTHORIZED → OBSERVED` evidence before restoring it to an active integration lane.
+
+
+## Live stewardship refresh — 2026-09-23
+
+A fresh runtime sweep found 1,960 exposed MCP connector actions. The historical 2026-09-22 provider-count snapshot is retained because provider grouping cannot be safely recomputed from tool-name prefixes alone.
+
+| Surface | Evidence | State |
+|---|---|---|
+| GitHub | repo/PR/check/workflow calls succeed; admin-capable | AUTHORIZED / OBSERVED |
+| Linear | Termux team, hardening project, active issues; TER-15 tracks integration | AUTHORIZED / OBSERVED |
+| Vercel | team + termux-monorepo project discovered; PR status has build-rate-limit failures | AUTHORIZED / OBSERVED |
+| Render | workspace + four Termux services discovered | AUTHORIZED / OBSERVED |
+| Supabase | organization discovered; zero projects returned | AUTHORIZED / OBSERVED |
+| Airtable | owner workspace discovered | AUTHORIZED / OBSERVED |
+| Figma | authenticated Starter/View seat | AUTHORIZED / OBSERVED |
+| Hugging Face | authenticated read-oriented scopes | AUTHORIZED / OBSERVED |
+| Lovable | owner workspace; max_mode enabled | AUTHORIZED / OBSERVED |
+| Replit | termux-monorepo app discovered | AUTHORIZED / OBSERVED |
+| Sprites | authenticated org; zero sprites | AUTHORIZED / OBSERVED |
+| Hex | blocked by Team/Enterprise plan requirement | EXPOSED / BLOCKED |
+| Neon | project ID unresolved for metadata probe | EXPOSED / UNRESOLVED |
+| DigitalOcean | Droplet ceiling reached | AUTHORIZED / BLOCKED |
+| MotherDuck | intentionally uninstalled; connector absent | EXCLUDED |
+
+PR #762 currently has head 5847b57d959b299ded26f3bd7ff4abae0f1c6a28, 12 commits, 8 changed files, 558 additions and 6 deletions; it remains open, draft and unmerged. repo gate, Repository development evaluation, and termux smoke succeeded for the fetched head; other PR-triggered runs include cancelled/skipped conclusions. Vercel status contexts currently report build-rate-limit failures and CodeRabbit is pending.

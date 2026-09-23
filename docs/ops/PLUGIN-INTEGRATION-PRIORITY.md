@@ -62,3 +62,10 @@ For repository changes compose with:
 `RECON → PLAN/MEASURE → ACT → COMMIT → WAIT → WATCH → VALIDATE → RE-FETCH → COMPARE → CLASSIFY → RECORD`
 
 No provider becomes “production integrated” from documentation alone.
+
+
+## Plugin-directory validation
+
+The live plugin directory was checked against the P0 lanes. It confirms installed/available surfaces including GitHub, Linear, Notion, Lovable, Neon, Supabase, Airtable, Replit, Vercel, OpenAI Developers, Scite, Hugging Face, and Exa. It also exposes additional candidates not currently connected in this session, including Datadog, Railway, Asana, Webflow, ClickUp, SharePoint, and meeting/document surfaces.
+
+**Production observability candidate:** Datadog is currently available for connection but is not connected in this session. It was surfaced for the observability lane; connecting it remains a user action. Do not mark the P0 observability lane integrated until a live authorized call and repository evidence path exist.

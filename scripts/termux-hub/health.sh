@@ -64,11 +64,23 @@ fi
 if command -v rish >/dev/null 2>&1; then
   if rish -c 'id' >/dev/null 2>&1; then
     say shizuku rish_ready
+    if rish -c 'pm path moe.shizuku.privileged.api' >/dev/null 2>&1; then
+      say shizuku_package installed
+    else
+      say shizuku_package not_detected
+    fi
+    say accessibility_services "$(rish -c 'settings get secure enabled_accessibility_services' 2>/dev/null || printf unavailable)"
   else
     say shizuku rish_present_but_unavailable
   fi
 else
   say shizuku rish_missing
+fi
+
+if [ -x "$HOME/.local/bin/termux-hub-mcp" ]; then
+  say mcp_entrypoint ready
+else
+  say mcp_entrypoint missing
 fi
 
 say result "$([ "$status" -eq 0 ] && printf READY || printf DEGRADED)"

@@ -1,0 +1,112 @@
+name: github-tagging-refresh
+
+# Multi-category tagging of owned + starred repos.
+# Autogenerates docs/ops/generated/github-tagging/* and commits on delta.
+# Companion to repository-observatory (index) — this lane is the filter surface.
+
+on:
+  schedule:
+    # Daily 05:41 UTC — offset from observatory 04:17 and telemetry 03:17
+    - cron: "41 5 * * *"
+  workflow_dispatch:
+    inputs:
+      max_star_pages:
+        description: Max starred pages (100 each)
+        type: string
+        default: "5"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: github-tagging-refresh-master
+  cancel-in-progress: false
+
+jobs:
+  tag:
+    name: tag-owned-and-starred
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: master
+          fetch-depth: 1
+          persist-credentials: true
+
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: "3.12"
+
+      - name: Unit tests (offline)
+        working-directory: scripts/github
+        run: python -m unittest -v test_github_tagging.py
+
+      - name: Build multi-category tagging artifacts
+        env:
+          GITHUB_TAGGING_TOKEN: ${{ secrets.REPOSITORY_OBSERVATORY_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || github.token }}
+          GITHUB_TOKEN: ${{ secrets.REPOSITORY_OBSERVATORY_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || github.token }}
+        run: |
+          set -euo pipefail
+          MAX="${{ inputs.max_star_pages || '5' }}"
+          python scripts/github/github_tagging.py \
+            --owner "$GITHUB_REPOSITORY_OWNER" \
+            --out-dir docs/ops/generated/github-tagging \
+            --max-star-pages "$MAX"
+
+      - name: Validate artifacts
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path("docs/ops/generated/github-tagging")
+          data = json.loads((root / "repos_tagged.json").read_text())
+          required = {"schema_version", "builder", "account", "generated_at", "repos_indexed", "snapshot_hash", "repos", "stats"}
+          missing = required - data.keys()
+          if missing:
+              raise SystemExit(f"missing fields: {sorted(missing)}")
+          if len(data["snapshot_hash"]) != 64:
+              raise SystemExit("snapshot_hash must be SHA-256 hex")
+          if data["repos_indexed"] < 1:
+              raise SystemExit("expected at least one owned repo")
+          if not (root / "repos_tagged.csv").exists():
+              raise SystemExit("missing CSV")
+          if not (root / "taxonomy.json").exists():
+              raise SystemExit("missing taxonomy.json")
+          print(f"validated {data['repos_indexed']} repos hash={data['snapshot_hash'][:12]}")
+          PY
+
+      - name: Summary
+        run: |
+          set -euo pipefail
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          data = json.loads(Path("docs/ops/generated/github-tagging/repos_tagged.json").read_text())
+          print("## GitHub multi-category tagging")
+          print()
+          print(f"Generated: `{data['generated_at']}`")
+          print(f"Snapshot: `{data['snapshot_hash'][:12]}`")
+          print(f"Owned indexed: **{data['repos_indexed']}**")
+          print(f"Stars sample: **{data.get('stars_indexed', 0)}**")
+          print()
+          print("### Priority")
+          for k, v in (data.get("stats") or {}).get("by_priority", {}).items():
+              print(f"- **{k}:** {v}")
+          PY
+
+      - name: Commit generated tagging delta
+        run: |
+          set -euo pipefail
+          git add docs/ops/generated/github-tagging/
+          if git diff --cached --quiet; then
+            echo "No github-tagging delta to publish."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -s -m "chore(tagging): refresh multi-category repo tags" \
+            -m "Agent-Identity: GitHub Actions github-tagging-refresh" \
+            -m "Source: owned + starred GitHub metadata; deterministic rule engine"
+          git push origin HEAD:master

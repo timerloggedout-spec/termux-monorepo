@@ -204,3 +204,58 @@ The first successful command should be a harmless identity/readiness probe, not 
 - No tunnel endpoints in tracked configuration.
 - No Shizuku privilege escalation through an unreviewed adapter.
 - Transport authentication and capability authorization remain separate gates.
+
+
+## Canonical governed MCP server
+
+The project-owned device server is now `termux_hub/mcp_server.py`. Install it on the device with:
+
+```bash
+cd "$HOME/termux-monorepo"
+sh scripts/termux-hub/install-mcp.sh
+sh scripts/termux-hub/preflight.sh
+```
+
+The server uses the current MCP Python SDK 2.2.0 and defaults to **stdio**. The SDK's current 2.x line supports stdio and Streamable HTTP; this project deliberately uses stdio over authenticated SSH first so the phone does not expose an HTTP MCP listener. citeturn7search0turn5search0
+
+Start it locally:
+
+```bash
+"$HOME/.local/bin/termux-hub-mcp"
+```
+
+The exposed tools are intentionally bounded:
+
+- `health`
+- `shell_readonly`
+- `android_battery`
+- `android_wifi`
+- `android_device_info`
+- `shizuku_readonly`
+
+`shell_readonly` does **not** accept a shell string. It accepts only exact argv combinations from the immutable allowlist. Shizuku access is likewise allowlisted and fails closed when `rish` is unavailable.
+
+### SSH → MCP collaborator command
+
+After the collaborator has a key authorized on the device:
+
+```json
+{
+  "mcpServers": {
+    "termux-hub": {
+      "command": "ssh",
+      "args": [
+        "-o", "BatchMode=yes",
+        "-o", "IdentitiesOnly=yes",
+        "-p", "8022",
+        "TERMUX_USER@termux-hub.tail4e1138.ts.net",
+        "$HOME/.local/bin/termux-hub-mcp"
+      ]
+    }
+  }
+}
+```
+
+The exact Termux username remains device-derived; it must come from `whoami` rather than being guessed or committed.
+
+This gives collaborators a real shell/Android MCP surface without making Desktop Commander part of the execution chain.

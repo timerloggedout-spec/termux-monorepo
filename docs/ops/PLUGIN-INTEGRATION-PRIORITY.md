@@ -69,3 +69,18 @@ No provider becomes “production integrated” from documentation alone.
 The live plugin directory was checked against the P0 lanes. It confirms installed/available surfaces including GitHub, Linear, Notion, Lovable, Neon, Supabase, Airtable, Replit, Vercel, OpenAI Developers, Scite, Hugging Face, and Exa. It also exposes additional candidates not currently connected in this session, including Datadog, Railway, Asana, Webflow, ClickUp, SharePoint, and meeting/document surfaces.
 
 **Production observability candidate:** Datadog is currently available for connection but is not connected in this session. It was surfaced for the observability lane; connecting it remains a user action. Do not mark the P0 observability lane integrated until a live authorized call and repository evidence path exist.
+
+
+## Connector exclusion — MotherDuck
+
+MotherDuck is intentionally **not active** in the current connector runtime. The connector was uninstalled after an unresolved connection issue. This is an explicit environment decision, not evidence that the provider itself is unavailable or defective.
+
+Current state:
+
+- **Runtime exposure:** absent
+- **Authorization:** not testable
+- **Repository adapter:** not required while the connector is absent
+- **Fallback analytical surfaces:** ClickHouse, Hex, Neon, Supabase, Airtable
+- **Re-entry condition:** reconnect/reinstall MotherDuck, then run read-only authorization and metadata probes before restoring it to an active integration lane
+
+Do not silently substitute another provider and label it MotherDuck-compatible. Analytical workflows should target the repository-owned normalized evidence contract so the provider can be swapped without changing downstream consumers.

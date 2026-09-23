@@ -79,3 +79,37 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 - Credential inventory: issue **#184** (notes only; no secret values).
 
 Agent-Identity: Grok (Administrator)
+
+
+## Connector / plugin parity extension — 2026-09-22
+
+The repository now tracks the live external-tool surface separately from repository-owned integrations.
+
+| Artifact | Role |
+|---|---|
+| `docs/ops/PLUGIN-CONNECTOR-CAPABILITY-MATRIX.md` | Current exposed provider/action inventory and state model |
+| `docs/ops/PLUGIN-INTEGRATION-PRIORITY.md` | Production multiplier ordering |
+| `.agents/skills/plugin-connector-parity/SKILL.md` | Collaborator/admin parity review |
+| `.github/skills/plugin-connector-parity/SKILL.md` | Production validation/promotion contract |
+| `.agents/skills/loopy-api-loop-library/SKILL.md` | Bounded repeatable workflow skill adapted from supplied Loopy export |
+
+### Live snapshot
+
+- 88 connector providers
+- 2,042 connector actions
+- 2,052 callable tools total
+- GitHub installation for `timerloggedout-spec` verified; `termux-monorepo` reports admin-capable repository permission.
+
+### Connector state model
+
+`EXPOSED → CONNECTED → AUTHORIZED → OBSERVED → ADAPTED → INTEGRATED → VALIDATED`
+
+Exposure is not authentication, authorization, runtime success, or repository integration.
+
+### Review invariant
+
+Use the repository reconciliation loop for external integrations:
+
+`RECON → PLAN/MEASURE → ACT → COMMIT → WAIT → WATCH → VALIDATE → RE-FETCH → COMPARE → CLASSIFY → RECORD → REPEAT`
+
+Keep provider capability inventory separate from repository-owned integration contracts. Never store secrets or private provider payloads in the matrix.

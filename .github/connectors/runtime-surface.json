@@ -1,0 +1,1540 @@
+{
+  "schema_version": "1.0",
+  "snapshot": "2026-09-23",
+  "repository": "timerloggedout-spec/termux-monorepo",
+  "branch": "ops/plugin-connector-parity-20260922",
+  "provider_count": 86,
+  "action_count": 1960,
+  "primary_owner": "Plugin Connector Steward",
+  "coordination": {
+    "github": "timerloggedout-spec/termux-monorepo",
+    "linear_issue": "TER-15"
+  },
+  "providers": [
+    {
+      "provider": "AI_Task_Brief_Builder",
+      "action_count": 3,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__AI_Task_Brief_Builder__extract_task_goal",
+        "mcp__AI_Task_Brief_Builder__build_test_requirements",
+        "mcp__AI_Task_Brief_Builder__generate_task_brief"
+      ]
+    },
+    {
+      "provider": "API_Impact_Mapper",
+      "action_count": 3,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__API_Impact_Mapper__extract_api_changes",
+        "mcp__API_Impact_Mapper__classify_breaking_changes",
+        "mcp__API_Impact_Mapper__generate_impact_map"
+      ]
+    },
+    {
+      "provider": "Agent_Ready",
+      "action_count": 2,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Agent_Ready__scan_site",
+        "mcp__Agent_Ready__get_scan"
+      ]
+    },
+    {
+      "provider": "Ahrefs",
+      "action_count": 135,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Ahrefs__site_explorer_organic_competitors",
+        "mcp__Ahrefs__social_media_activity_history",
+        "mcp__Ahrefs__site_explorer_crawled_pages",
+        "mcp__Ahrefs__web_analytics_source_channels_chart",
+        "mcp__Ahrefs__serp_overview",
+        "mcp__Ahrefs__site_explorer_refdomains_history",
+        "mcp__Ahrefs__gsc_metrics_by_country",
+        "mcp__Ahrefs__doc",
+        "mcp__Ahrefs__subscription_info_limits_and_usage",
+        "mcp__Ahrefs__web_analytics_languages",
+        "mcp__Ahrefs__web_analytics_countries",
+        "mcp__Ahrefs__site_explorer_pages_by_internal_links"
+      ]
+    },
+    {
+      "provider": "Airtable",
+      "action_count": 47,
+      "state": "AUTHORIZED/OBSERVED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Airtable__ping",
+        "mcp__Airtable__list_bases",
+        "mcp__Airtable__list_workspaces",
+        "mcp__Airtable__search_bases",
+        "mcp__Airtable__list_tables_for_base",
+        "mcp__Airtable__get_table_schema",
+        "mcp__Airtable__list_records_for_table",
+        "mcp__Airtable__list_record_comments",
+        "mcp__Airtable__create_record_comment",
+        "mcp__Airtable__create_records_for_table",
+        "mcp__Airtable__update_records_for_table",
+        "mcp__Airtable__delete_records_for_table"
+      ]
+    },
+    {
+      "provider": "AllTrails",
+      "action_count": 6,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__AllTrails__find_trails_near_location",
+        "mcp__AllTrails__find_trails_within_bounds",
+        "mcp__AllTrails__find_nearby_trails",
+        "mcp__AllTrails__search_trails_by_name",
+        "mcp__AllTrails__get_trail_details",
+        "mcp__AllTrails__get_trail_weather_overview"
+      ]
+    },
+    {
+      "provider": "All_Tide_Times",
+      "action_count": 1,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__All_Tide_Times__tides"
+      ]
+    },
+    {
+      "provider": "Alloy",
+      "action_count": 20,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Alloy__get_docker_setup",
+        "mcp__Alloy__get_binary_setup",
+        "mcp__Alloy__get_edge_manifest",
+        "mcp__Alloy__list_devices",
+        "mcp__Alloy__approve_device",
+        "mcp__Alloy__reject_device",
+        "mcp__Alloy__get_edge_config",
+        "mcp__Alloy__update_edge_config",
+        "mcp__Alloy__create_dev_device_key",
+        "mcp__Alloy__search_docs",
+        "mcp__Alloy__browse_mesh_storage",
+        "mcp__Alloy__get_mesh_file_download_url"
+      ]
+    },
+    {
+      "provider": "AnyBarcodeScanner",
+      "action_count": 1,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__AnyBarcodeScanner__product_scanner"
+      ]
+    },
+    {
+      "provider": "AutoMotion",
+      "action_count": 3,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__AutoMotion__list_brands",
+        "mcp__AutoMotion__find_locations",
+        "mcp__AutoMotion__get_booking_details"
+      ]
+    },
+    {
+      "provider": "Automations",
+      "action_count": 7,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Automations__create",
+        "mcp__Automations__list",
+        "mcp__Automations__list_event_sources",
+        "mcp__Automations__notify_parent",
+        "mcp__Automations__peek",
+        "mcp__Automations__run_now",
+        "mcp__Automations__update"
+      ]
+    },
+    {
+      "provider": "Base44",
+      "action_count": 19,
+      "state": "AUTHORIZED/OBSERVED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Base44__create_base44_app",
+        "mcp__Base44__edit_base44_app",
+        "mcp__Base44__list_user_apps",
+        "mcp__Base44__import_claude_design_from_url",
+        "mcp__Base44__list_entity_schemas",
+        "mcp__Base44__create_entity_schema",
+        "mcp__Base44__update_entity_schema",
+        "mcp__Base44__query_entities",
+        "mcp__Base44__create_entities",
+        "mcp__Base44__update_entities",
+        "mcp__Base44__run_command",
+        "mcp__Base44__read_file"
+      ]
+    },
+    {
+      "provider": "ClickHouse",
+      "action_count": 17,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__ClickHouse__get_clickpipe",
+        "mcp__ClickHouse__get_organizations",
+        "mcp__ClickHouse__run_select_query",
+        "mcp__ClickHouse__run_postgres_select_query",
+        "mcp__ClickHouse__list_postgres_slow_query_patterns",
+        "mcp__ClickHouse__get_postgres_slow_query_pattern_details",
+        "mcp__ClickHouse__get_postgres_metrics",
+        "mcp__ClickHouse__list_databases",
+        "mcp__ClickHouse__list_tables",
+        "mcp__ClickHouse__get_services_list",
+        "mcp__ClickHouse__get_organization_details",
+        "mcp__ClickHouse__get_service_details"
+      ]
+    },
+    {
+      "provider": "Cloudinary",
+      "action_count": 23,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Cloudinary__upload_asset",
+        "mcp__Cloudinary__asset_rename",
+        "mcp__Cloudinary__generate_archive",
+        "mcp__Cloudinary__download_asset_backup",
+        "mcp__Cloudinary__delete_asset",
+        "mcp__Cloudinary__list_images",
+        "mcp__Cloudinary__list_videos",
+        "mcp__Cloudinary__list_files",
+        "mcp__Cloudinary__get_asset_details",
+        "mcp__Cloudinary__asset_update",
+        "mcp__Cloudinary__list_tags",
+        "mcp__Cloudinary__delete_derived_assets"
+      ]
+    },
+    {
+      "provider": "Consensus",
+      "action_count": 2,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Consensus__search",
+        "mcp__Consensus__fetch"
+      ]
+    },
+    {
+      "provider": "Context7",
+      "action_count": 2,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Context7__resolve_library_id",
+        "mcp__Context7__query_docs"
+      ]
+    },
+    {
+      "provider": "Context_dev",
+      "action_count": 37,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Context_dev__get_brand",
+        "mcp__Context_dev__list_logs",
+        "mcp__Context_dev__get_log",
+        "mcp__Context_dev__get_news_search",
+        "mcp__Context_dev__parse_document",
+        "mcp__Context_dev__web_scrape_html",
+        "mcp__Context_dev__web_scrape_markdown",
+        "mcp__Context_dev__web_scrape_images",
+        "mcp__Context_dev__web_scrape_sitemap",
+        "mcp__Context_dev__web_crawl",
+        "mcp__Context_dev__web_extract",
+        "mcp__Context_dev__web_search"
+      ]
+    },
+    {
+      "provider": "Convex",
+      "action_count": 4,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Convex__start_convex_app",
+        "mcp__Convex__add_convex_to_existing_project",
+        "mcp__Convex__get_convex_scaling_guidance",
+        "mcp__Convex__get_runbook"
+      ]
+    },
+    {
+      "provider": "Courtroom5",
+      "action_count": 3,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Courtroom5__case_intake_assessment",
+        "mcp__Courtroom5__deadline_calculator",
+        "mcp__Courtroom5__next_step_guidance"
+      ]
+    },
+    {
+      "provider": "Descript",
+      "action_count": 8,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Descript__import_media",
+        "mcp__Descript__prompt_project_agent",
+        "mcp__Descript__publish_project",
+        "mcp__Descript__wait_for_job",
+        "mcp__Descript__list_jobs",
+        "mcp__Descript__cancel_job",
+        "mcp__Descript__list_projects",
+        "mcp__Descript__get_project"
+      ]
+    },
+    {
+      "provider": "DigitalOcean",
+      "action_count": 54,
+      "state": "AUTHORIZED/BLOCKED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__DigitalOcean__account_get_information",
+        "mcp__DigitalOcean__action_get",
+        "mcp__DigitalOcean__action_list",
+        "mcp__DigitalOcean__balance_get",
+        "mcp__DigitalOcean__billing_history_list",
+        "mcp__DigitalOcean__change_kernel_droplet",
+        "mcp__DigitalOcean__disable_backups_droplet",
+        "mcp__DigitalOcean__disable_backups_droplets_tag",
+        "mcp__DigitalOcean__droplet_action",
+        "mcp__DigitalOcean__droplet_backup_policy",
+        "mcp__DigitalOcean__droplet_create",
+        "mcp__DigitalOcean__droplet_delete"
+      ]
+    },
+    {
+      "provider": "Dovetail_Regulatory",
+      "action_count": 37,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Dovetail_Regulatory__get_organizations",
+        "mcp__Dovetail_Regulatory__get_devices",
+        "mcp__Dovetail_Regulatory__get_assistant_process",
+        "mcp__Dovetail_Regulatory__get_team_members",
+        "mcp__Dovetail_Regulatory__get_functional_groups",
+        "mcp__Dovetail_Regulatory__get_tasks",
+        "mcp__Dovetail_Regulatory__get_dashboard",
+        "mcp__Dovetail_Regulatory__list_data_keys",
+        "mcp__Dovetail_Regulatory__read_data_key_configuration",
+        "mcp__Dovetail_Regulatory__read_data_key",
+        "mcp__Dovetail_Regulatory__get_device",
+        "mcp__Dovetail_Regulatory__get_traceability_matrix"
+      ]
+    },
+    {
+      "provider": "Dropbox",
+      "action_count": 24,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Dropbox__check_job_status",
+        "mcp__Dropbox__check_upload_file_status",
+        "mcp__Dropbox__copy",
+        "mcp__Dropbox__create_file_request",
+        "mcp__Dropbox__create_folder",
+        "mcp__Dropbox__create_shared_link",
+        "mcp__Dropbox__delete",
+        "mcp__Dropbox__download_link",
+        "mcp__Dropbox__fetch",
+        "mcp__Dropbox__file_preview",
+        "mcp__Dropbox__get_file_metadata",
+        "mcp__Dropbox__get_file_request"
+      ]
+    },
+    {
+      "provider": "Endurance_Planner",
+      "action_count": 15,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Endurance_Planner__list_workouts",
+        "mcp__Endurance_Planner__get_workout",
+        "mcp__Endurance_Planner__list_templates",
+        "mcp__Endurance_Planner__list_weekly_plans",
+        "mcp__Endurance_Planner__get_weekly_plan",
+        "mcp__Endurance_Planner__create_workout",
+        "mcp__Endurance_Planner__update_workout",
+        "mcp__Endurance_Planner__update_workout_status",
+        "mcp__Endurance_Planner__delete_workout",
+        "mcp__Endurance_Planner__create_template",
+        "mcp__Endurance_Planner__update_template",
+        "mcp__Endurance_Planner__delete_template"
+      ]
+    },
+    {
+      "provider": "Engram",
+      "action_count": 8,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Engram__create_conversation",
+        "mcp__Engram__append_messages",
+        "mcp__Engram__search",
+        "mcp__Engram__get_conversation",
+        "mcp__Engram__list_conversations",
+        "mcp__Engram__delete_conversation",
+        "mcp__Engram__memory_status",
+        "mcp__Engram__whoami"
+      ]
+    },
+    {
+      "provider": "Exa",
+      "action_count": 2,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Exa__web_search_exa",
+        "mcp__Exa__web_fetch_exa"
+      ]
+    },
+    {
+      "provider": "Figma",
+      "action_count": 41,
+      "state": "AUTHORIZED/OBSERVED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Figma__get_screenshot",
+        "mcp__Figma__get_design_context",
+        "mcp__Figma__get_motion_context",
+        "mcp__Figma__get_metadata",
+        "mcp__Figma__get_variable_defs",
+        "mcp__Figma__get_figjam",
+        "mcp__Figma__generate_figma_design",
+        "mcp__Figma__generate_diagram",
+        "mcp__Figma__get_code_connect_map",
+        "mcp__Figma__generate_deck",
+        "mcp__Figma__whoami",
+        "mcp__Figma__weave_list_tools"
+      ]
+    },
+    {
+      "provider": "Firecrawl",
+      "action_count": 25,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Firecrawl__firecrawl_scrape",
+        "mcp__Firecrawl__firecrawl_map",
+        "mcp__Firecrawl__firecrawl_search",
+        "mcp__Firecrawl__firecrawl_search_feedback",
+        "mcp__Firecrawl__firecrawl_feedback",
+        "mcp__Firecrawl__firecrawl_crawl",
+        "mcp__Firecrawl__firecrawl_check_crawl_status",
+        "mcp__Firecrawl__firecrawl_agent",
+        "mcp__Firecrawl__firecrawl_agent_status",
+        "mcp__Firecrawl__firecrawl_interact",
+        "mcp__Firecrawl__firecrawl_interact_stop",
+        "mcp__Firecrawl__firecrawl_parse"
+      ]
+    },
+    {
+      "provider": "GitBook",
+      "action_count": 9,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__GitBook__list_sites",
+        "mcp__GitBook__get_site_structure",
+        "mcp__GitBook__get_page",
+        "mcp__GitBook__create_change_request",
+        "mcp__GitBook__submit_or_merge_change_request",
+        "mcp__GitBook__get_usage_guide",
+        "mcp__GitBook__search",
+        "mcp__GitBook__describe_operation",
+        "mcp__GitBook__invoke_operation"
+      ]
+    },
+    {
+      "provider": "GitHub",
+      "action_count": 89,
+      "state": "AUTHORIZED/OBSERVED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__GitHub__add_comment_to_issue",
+        "mcp__GitHub__add_issue_assignees",
+        "mcp__GitHub__add_issue_labels",
+        "mcp__GitHub__add_reaction_to_issue_comment",
+        "mcp__GitHub__add_reaction_to_pr",
+        "mcp__GitHub__add_reaction_to_pr_review_comment",
+        "mcp__GitHub__add_review_to_pr",
+        "mcp__GitHub__compare_commits",
+        "mcp__GitHub__convert_pull_request_to_draft",
+        "mcp__GitHub__create_blob",
+        "mcp__GitHub__create_branch",
+        "mcp__GitHub__create_commit"
+      ]
+    },
+    {
+      "provider": "Graffiticode",
+      "action_count": 7,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Graffiticode__create_item",
+        "mcp__Graffiticode__update_item",
+        "mcp__Graffiticode__render_item",
+        "mcp__Graffiticode__get_item",
+        "mcp__Graffiticode__get_spec",
+        "mcp__Graffiticode__list_languages",
+        "mcp__Graffiticode__get_language_info"
+      ]
+    },
+    {
+      "provider": "Grow_My_Website",
+      "action_count": 3,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Grow_My_Website__scan_website",
+        "mcp__Grow_My_Website__how_to_grow_website",
+        "mcp__Grow_My_Website__check_seo_issue"
+      ]
+    },
+    {
+      "provider": "HAPI_MCP_Registry",
+      "action_count": 3,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__HAPI_MCP_Registry__getV01Servers",
+        "mcp__HAPI_MCP_Registry__getV01ServersServerNameVersions",
+        "mcp__HAPI_MCP_Registry__getV01ServersServerNameVersionsVersion"
+      ]
+    },
+    {
+      "provider": "Hercules",
+      "action_count": 7,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Hercules__org_read",
+        "mcp__Hercules__app_list",
+        "mcp__Hercules__app_read",
+        "mcp__Hercules__app_create",
+        "mcp__Hercules__thread_list",
+        "mcp__Hercules__thread_read",
+        "mcp__Hercules__message_send"
+      ]
+    },
+    {
+      "provider": "Hex",
+      "action_count": 4,
+      "state": "EXPOSED/BLOCKED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Hex__search_projects",
+        "mcp__Hex__create_thread",
+        "mcp__Hex__get_thread",
+        "mcp__Hex__continue_thread"
+      ]
+    },
+    {
+      "provider": "Higgsfield",
+      "action_count": 77,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Higgsfield__get_profile",
+        "mcp__Higgsfield__track_skill_activation",
+        "mcp__Higgsfield__get_preset_instructions",
+        "mcp__Higgsfield__models_list",
+        "mcp__Higgsfield__models_search",
+        "mcp__Higgsfield__models_get",
+        "mcp__Higgsfield__models_recommend",
+        "mcp__Higgsfield__generate_image",
+        "mcp__Higgsfield__generate_video",
+        "mcp__Higgsfield__generate_audio",
+        "mcp__Higgsfield__generate_image_batch",
+        "mcp__Higgsfield__generate_video_batch"
+      ]
+    },
+    {
+      "provider": "Hot100_ai",
+      "action_count": 6,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Hot100_ai___hot100_chart",
+        "mcp__Hot100_ai___hot100_browse",
+        "mcp__Hot100_ai___hot100_search",
+        "mcp__Hot100_ai___hot100_project",
+        "mcp__Hot100_ai___hot100_browse_category",
+        "mcp__Hot100_ai___hot100_market_report"
+      ]
+    },
+    {
+      "provider": "Hugging_Face",
+      "action_count": 9,
+      "state": "AUTHORIZED/OBSERVED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Hugging_Face__hf_whoami",
+        "mcp__Hugging_Face__space_search",
+        "mcp__Hugging_Face__model_search",
+        "mcp__Hugging_Face__paper_search",
+        "mcp__Hugging_Face__dataset_search",
+        "mcp__Hugging_Face__hub_repo_details",
+        "mcp__Hugging_Face__hf_doc_search",
+        "mcp__Hugging_Face__hf_doc_fetch",
+        "mcp__Hugging_Face__hf_jobs"
+      ]
+    },
+    {
+      "provider": "Inductive",
+      "action_count": 2,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Inductive__list_available_models",
+        "mcp__Inductive__predict_properties"
+      ]
+    },
+    {
+      "provider": "Klaviyo",
+      "action_count": 264,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Klaviyo__get_campaign_report",
+        "mcp__Klaviyo__get_flow_report",
+        "mcp__Klaviyo__get_account_details",
+        "mcp__Klaviyo__get_campaigns",
+        "mcp__Klaviyo__get_campaign",
+        "mcp__Klaviyo__create_campaign",
+        "mcp__Klaviyo__assign_template_to_campaign_message",
+        "mcp__Klaviyo__get_flows",
+        "mcp__Klaviyo__get_flow",
+        "mcp__Klaviyo__get_lists",
+        "mcp__Klaviyo__get_list",
+        "mcp__Klaviyo__get_events"
+      ]
+    },
+    {
+      "provider": "Linear",
+      "action_count": 74,
+      "state": "AUTHORIZED/OBSERVED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Linear__get_attachment",
+        "mcp__Linear__prepare_attachment_upload",
+        "mcp__Linear__create_attachment_from_upload",
+        "mcp__Linear__create_attachment",
+        "mcp__Linear__delete_attachment",
+        "mcp__Linear__list_agent_skills",
+        "mcp__Linear__get_agent_skill",
+        "mcp__Linear__list_comments",
+        "mcp__Linear__save_comment",
+        "mcp__Linear__delete_comment",
+        "mcp__Linear__list_cycles",
+        "mcp__Linear__get_document"
+      ]
+    },
+    {
+      "provider": "LinkedIn",
+      "action_count": 1,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__LinkedIn__linkedin_search_people"
+      ]
+    },
+    {
+      "provider": "Lovable",
+      "action_count": 40,
+      "state": "AUTHORIZED/OBSERVED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Lovable__get_me",
+        "mcp__Lovable__list_workspaces",
+        "mcp__Lovable__get_workspace",
+        "mcp__Lovable__list_projects",
+        "mcp__Lovable__list_design_systems",
+        "mcp__Lovable__list_template_projects",
+        "mcp__Lovable__create_project",
+        "mcp__Lovable__initiate_project",
+        "mcp__Lovable__render_project_widget",
+        "mcp__Lovable__get_project",
+        "mcp__Lovable__set_project_visibility",
+        "mcp__Lovable__set_folder_visibility"
+      ]
+    },
+    {
+      "provider": "Lucid",
+      "action_count": 35,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Lucid__get_mcp_resource",
+        "mcp__Lucid__search",
+        "mcp__Lucid__fetch",
+        "mcp__Lucid__lucid_search_document",
+        "mcp__Lucid__lucid_create_document_share_link",
+        "mcp__Lucid__share_document_with_collaborators",
+        "mcp__Lucid__lucid_create_org_chart",
+        "mcp__Lucid__lucid_list_integrations",
+        "mcp__Lucid__lucid_import_integration_cards",
+        "mcp__Lucid__lucid_create_diagram_from_specification",
+        "mcp__Lucid__lucid_validate_diagram_specification",
+        "mcp__Lucid__lucid_create_diagram_from_mermaid"
+      ]
+    },
+    {
+      "provider": "Magic_Patterns",
+      "action_count": 23,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Magic_Patterns__list_design_systems",
+        "mcp__Magic_Patterns__get_editor_id_from_url",
+        "mcp__Magic_Patterns__get_inspiration_document",
+        "mcp__Magic_Patterns__get_design_status",
+        "mcp__Magic_Patterns__read_recent_message_history",
+        "mcp__Magic_Patterns__list_version_history",
+        "mcp__Magic_Patterns__get_artifact",
+        "mcp__Magic_Patterns__read_artifact_files",
+        "mcp__Magic_Patterns__get_design_system",
+        "mcp__Magic_Patterns__read_design_system_files",
+        "mcp__Magic_Patterns__create_design",
+        "mcp__Magic_Patterns__create_slide_deck"
+      ]
+    },
+    {
+      "provider": "Mermaid_Chart",
+      "action_count": 2,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Mermaid_Chart__display_mermaid",
+        "mcp__Mermaid_Chart__list_personal_diagrams"
+      ]
+    },
+    {
+      "provider": "Midpage_Legal_Research",
+      "action_count": 5,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Midpage_Legal_Research__search",
+        "mcp__Midpage_Legal_Research__analyzeCaseDocument",
+        "mcp__Midpage_Legal_Research__analyzeCaseDocket",
+        "mcp__Midpage_Legal_Research__searchLaws",
+        "mcp__Midpage_Legal_Research__analyzeLaw"
+      ]
+    },
+    {
+      "provider": "Mintlify_MCP",
+      "action_count": 19,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Mintlify_MCP__read",
+        "mcp__Mintlify_MCP__search",
+        "mcp__Mintlify_MCP__list_nodes",
+        "mcp__Mintlify_MCP__get_session_state",
+        "mcp__Mintlify_MCP__diff",
+        "mcp__Mintlify_MCP__edit_page",
+        "mcp__Mintlify_MCP__write_page",
+        "mcp__Mintlify_MCP__create_node",
+        "mcp__Mintlify_MCP__update_node",
+        "mcp__Mintlify_MCP__delete_node",
+        "mcp__Mintlify_MCP__move_node",
+        "mcp__Mintlify_MCP__update_config"
+      ]
+    },
+    {
+      "provider": "Mobbin",
+      "action_count": 3,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Mobbin__search_screens",
+        "mcp__Mobbin__search_flows",
+        "mcp__Mobbin__search_sections"
+      ]
+    },
+    {
+      "provider": "Neon",
+      "action_count": 106,
+      "state": "EXPOSED/UNRESOLVED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Neon__run_sql",
+        "mcp__Neon__run_sql_transaction",
+        "mcp__Neon__describe_table_schema",
+        "mcp__Neon__get_database_tables",
+        "mcp__Neon__prepare_database_migration",
+        "mcp__Neon__complete_database_migration",
+        "mcp__Neon__describe_branch",
+        "mcp__Neon__get_connection_string",
+        "mcp__Neon__get_neon_auth_config",
+        "mcp__Neon__explain_sql_statement",
+        "mcp__Neon__prepare_query_tuning",
+        "mcp__Neon__complete_query_tuning"
+      ]
+    },
+    {
+      "provider": "Newegg",
+      "action_count": 6,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Newegg__search_newegg_products",
+        "mcp__Newegg__browse_newegg_clearance",
+        "mcp__Newegg__get_newegg_combo_detail",
+        "mcp__Newegg__get_newegg_product_details",
+        "mcp__Newegg__browse_newegg_deals",
+        "mcp__Newegg__browse_newegg_shell_shocker"
+      ]
+    },
+    {
+      "provider": "Notion",
+      "action_count": 25,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Notion__search",
+        "mcp__Notion__fetch",
+        "mcp__Notion__notion_create_attachment",
+        "mcp__Notion__notion_create_file_upload",
+        "mcp__Notion__notion_download_attachment",
+        "mcp__Notion__notion_create_pages",
+        "mcp__Notion__notion_update_page",
+        "mcp__Notion__notion_move_pages",
+        "mcp__Notion__notion_duplicate_page",
+        "mcp__Notion__notion_create_database",
+        "mcp__Notion__notion_create_folder",
+        "mcp__Notion__notion_update_data_source"
+      ]
+    },
+    {
+      "provider": "OpenAI_Platform",
+      "action_count": 3,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__OpenAI_Platform__create_encrypted_openai_api_key",
+        "mcp__OpenAI_Platform__list_openai_api_key_targets",
+        "mcp__OpenAI_Platform__start_api_key_setup"
+      ]
+    },
+    {
+      "provider": "Opscotch",
+      "action_count": 44,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Opscotch__opscotch_generate_json_bootstrap_deployment_access",
+        "mcp__Opscotch__opscotch_generate_json_bootstrap_errorhandling",
+        "mcp__Opscotch__opscotch_generate_json_bootstrap_file",
+        "mcp__Opscotch__opscotch_generate_json_bootstrap_file_access",
+        "mcp__Opscotch__opscotch_generate_json_bootstrap_host",
+        "mcp__Opscotch__opscotch_generate_json_bootstrap_http_server",
+        "mcp__Opscotch__opscotch_generate_json_bootstrap_key",
+        "mcp__Opscotch__opscotch_generate_json_bootstrap_packaging",
+        "mcp__Opscotch__opscotch_generate_json_bootstrap_record",
+        "mcp__Opscotch__opscotch_generate_json_bootstrap_workflow",
+        "mcp__Opscotch__opscotch_generate_json_workflow_file",
+        "mcp__Opscotch__opscotch_generate_json_workflow_processor"
+      ]
+    },
+    {
+      "provider": "Parallel_Search",
+      "action_count": 2,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Parallel_Search__web_search",
+        "mcp__Parallel_Search__web_fetch"
+      ]
+    },
+    {
+      "provider": "Plugin_Management",
+      "action_count": 6,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Plugin_Management__get_app_permissions",
+        "mcp__Plugin_Management__get_plugin_dependencies",
+        "mcp__Plugin_Management__search_plugins",
+        "mcp__Plugin_Management__suggest_plugins",
+        "mcp__Plugin_Management__uninstall_app",
+        "mcp__Plugin_Management__update_app_permissions"
+      ]
+    },
+    {
+      "provider": "Product_Hunt",
+      "action_count": 7,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Product_Hunt__get_categories",
+        "mcp__Product_Hunt__get_products",
+        "mcp__Product_Hunt__find_alternatives",
+        "mcp__Product_Hunt__get_product_profile",
+        "mcp__Product_Hunt__search_launches",
+        "mcp__Product_Hunt__semantic_product_search",
+        "mcp__Product_Hunt__get_leaderboard"
+      ]
+    },
+    {
+      "provider": "Promocodes_com",
+      "action_count": 2,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Promocodes_com__show_docs",
+        "mcp__Promocodes_com__get_coupons"
+      ]
+    },
+    {
+      "provider": "Quo",
+      "action_count": 15,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Quo__list_users",
+        "mcp__Quo__send_message",
+        "mcp__Quo__send_group_message",
+        "mcp__Quo__send_bulk_messages",
+        "mcp__Quo__create_contact",
+        "mcp__Quo__update_contact",
+        "mcp__Quo__list_inboxes",
+        "mcp__Quo__list_contacts",
+        "mcp__Quo__get_contact",
+        "mcp__Quo__list_tasks",
+        "mcp__Quo__create_task",
+        "mcp__Quo__update_task"
+      ]
+    },
+    {
+      "provider": "Real_Random",
+      "action_count": 2,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Real_Random__random_single_number",
+        "mcp__Real_Random__random_item_picker"
+      ]
+    },
+    {
+      "provider": "Render",
+      "action_count": 22,
+      "state": "AUTHORIZED/OBSERVED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Render__create_cron_job",
+        "mcp__Render__create_key_value",
+        "mcp__Render__create_postgres",
+        "mcp__Render__create_static_site",
+        "mcp__Render__create_web_service",
+        "mcp__Render__get_deploy",
+        "mcp__Render__get_key_value",
+        "mcp__Render__get_metrics",
+        "mcp__Render__get_postgres",
+        "mcp__Render__get_selected_workspace",
+        "mcp__Render__get_service",
+        "mcp__Render__list_deploys"
+      ]
+    },
+    {
+      "provider": "Replit",
+      "action_count": 8,
+      "state": "AUTHORIZED/OBSERVED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Replit__ask_question",
+        "mcp__Replit__create_app_from_prompt",
+        "mcp__Replit__publish_app",
+        "mcp__Replit__get_publish_status",
+        "mcp__Replit__list_apps",
+        "mcp__Replit__resolve_app_by_name",
+        "mcp__Replit__search_apps",
+        "mcp__Replit__update_app_using_prompt"
+      ]
+    },
+    {
+      "provider": "Resend",
+      "action_count": 106,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Resend__get_tiptap_json_content",
+        "mcp__Resend__connect_to_editor",
+        "mcp__Resend__disconnect_from_editor",
+        "mcp__Resend__create_api_key",
+        "mcp__Resend__list_api_keys",
+        "mcp__Resend__update_api_key",
+        "mcp__Resend__remove_api_key",
+        "mcp__Resend__create_automation",
+        "mcp__Resend__update_automation",
+        "mcp__Resend__get_automation",
+        "mcp__Resend__duplicate_automation",
+        "mcp__Resend__remove_automation"
+      ]
+    },
+    {
+      "provider": "SciSpace",
+      "action_count": 2,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__SciSpace__search_papers",
+        "mcp__SciSpace__add_column"
+      ]
+    },
+    {
+      "provider": "Scite",
+      "action_count": 34,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Scite__search_literature",
+        "mcp__Scite__citation_graph",
+        "mcp__Scite__read_fulltext",
+        "mcp__Scite__report_citations",
+        "mcp__Scite__citation_report",
+        "mcp__Scite__search_patents",
+        "mcp__Scite__search_clinical_trials",
+        "mcp__Scite__get_clinical_trial",
+        "mcp__Scite__search_grants",
+        "mcp__Scite__get_grant",
+        "mcp__Scite__search_device510k",
+        "mcp__Scite__get_device510k"
+      ]
+    },
+    {
+      "provider": "Sent",
+      "action_count": 19,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Sent__templates_delete",
+        "mcp__Sent__contacts_create_many",
+        "mcp__Sent__templates_get",
+        "mcp__Sent__account_get",
+        "mcp__Sent__messages_get",
+        "mcp__Sent__dashboard_contacts",
+        "mcp__Sent__numbers_lookup",
+        "mcp__Sent__contacts_message_summary",
+        "mcp__Sent__dashboard_messages_sent",
+        "mcp__Sent__templates_get_by_name",
+        "mcp__Sent__templates_list",
+        "mcp__Sent__balance_get"
+      ]
+    },
+    {
+      "provider": "ShipStatic",
+      "action_count": 15,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__ShipStatic__deployments_upload",
+        "mcp__ShipStatic__deployments_list",
+        "mcp__ShipStatic__deployments_get",
+        "mcp__ShipStatic__deployments_set",
+        "mcp__ShipStatic__deployments_delete",
+        "mcp__ShipStatic__domains_set",
+        "mcp__ShipStatic__domains_list",
+        "mcp__ShipStatic__domains_get",
+        "mcp__ShipStatic__domains_records",
+        "mcp__ShipStatic__domains_dns",
+        "mcp__ShipStatic__domains_share",
+        "mcp__ShipStatic__domains_validate"
+      ]
+    },
+    {
+      "provider": "SiteTriage",
+      "action_count": 7,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__SiteTriage__diagnose_site",
+        "mcp__SiteTriage__dns_lookup",
+        "mcp__SiteTriage__dns_propagation",
+        "mcp__SiteTriage__ssl_check",
+        "mcp__SiteTriage__http_check",
+        "mcp__SiteTriage__email_auth_check",
+        "mcp__SiteTriage__domain_info"
+      ]
+    },
+    {
+      "provider": "Sixtyfour_Intelligence",
+      "action_count": 26,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Sixtyfour_Intelligence__sixtyfour_company_get_searchable_fields",
+        "mcp__Sixtyfour_Intelligence__sixtyfour_company_explore_field_values",
+        "mcp__Sixtyfour_Intelligence__sixtyfour_company_search",
+        "mcp__Sixtyfour_Intelligence__sixtyfour_company_next_page",
+        "mcp__Sixtyfour_Intelligence__sixtyfour_company_get_company_details",
+        "mcp__Sixtyfour_Intelligence__sixtyfour_people_get_searchable_fields",
+        "mcp__Sixtyfour_Intelligence__sixtyfour_people_explore_field_values",
+        "mcp__Sixtyfour_Intelligence__sixtyfour_people_search",
+        "mcp__Sixtyfour_Intelligence__sixtyfour_people_next_page",
+        "mcp__Sixtyfour_Intelligence__sixtyfour_people_get_person_details",
+        "mcp__Sixtyfour_Intelligence__sixtyfour_find_similar_start",
+        "mcp__Sixtyfour_Intelligence__sixtyfour_find_similar_status"
+      ]
+    },
+    {
+      "provider": "Softonic",
+      "action_count": 5,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Softonic__suggest_categories_for_search",
+        "mcp__Softonic__get_popular_programs",
+        "mcp__Softonic__get_best_programs",
+        "mcp__Softonic__get_unpopular_programs",
+        "mcp__Softonic__get_worst_programs"
+      ]
+    },
+    {
+      "provider": "Soracom_Knowledge",
+      "action_count": 3,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Soracom_Knowledge__get_document",
+        "mcp__Soracom_Knowledge__search_api_docs",
+        "mcp__Soracom_Knowledge__search_soracom_docs"
+      ]
+    },
+    {
+      "provider": "Sprites",
+      "action_count": 24,
+      "state": "AUTHORIZED/OBSERVED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Sprites__list_sprites",
+        "mcp__Sprites__create_sprite",
+        "mcp__Sprites__destroy_sprite",
+        "mcp__Sprites__exec_list",
+        "mcp__Sprites__exec",
+        "mcp__Sprites__exec_kill",
+        "mcp__Sprites__checkpoint_create",
+        "mcp__Sprites__checkpoint_list",
+        "mcp__Sprites__checkpoint_get",
+        "mcp__Sprites__checkpoint_restore",
+        "mcp__Sprites__policy_network_get",
+        "mcp__Sprites__policy_network_update"
+      ]
+    },
+    {
+      "provider": "Stocktwits",
+      "action_count": 13,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Stocktwits__get_following_feed",
+        "mcp__Stocktwits__get_message_volume",
+        "mcp__Stocktwits__get_message_volume_history",
+        "mcp__Stocktwits__get_sentiment",
+        "mcp__Stocktwits__get_sentiment_history",
+        "mcp__Stocktwits__get_symbol",
+        "mcp__Stocktwits__get_symbol_messages",
+        "mcp__Stocktwits__get_symbol_pulse",
+        "mcp__Stocktwits__get_trending_symbols",
+        "mcp__Stocktwits__get_user_messages",
+        "mcp__Stocktwits__get_watchlist_feed",
+        "mcp__Stocktwits__get_widget_registry"
+      ]
+    },
+    {
+      "provider": "Supabase",
+      "action_count": 28,
+      "state": "AUTHORIZED/OBSERVED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Supabase__search_docs",
+        "mcp__Supabase__list_organizations",
+        "mcp__Supabase__get_organization",
+        "mcp__Supabase__list_projects",
+        "mcp__Supabase__get_project",
+        "mcp__Supabase__get_cost",
+        "mcp__Supabase__confirm_cost",
+        "mcp__Supabase__create_project",
+        "mcp__Supabase__pause_project",
+        "mcp__Supabase__restore_project",
+        "mcp__Supabase__list_tables",
+        "mcp__Supabase__list_extensions"
+      ]
+    },
+    {
+      "provider": "Tally",
+      "action_count": 25,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Tally__set_form_title",
+        "mcp__Tally__update_text",
+        "mcp__Tally__configure_blocks",
+        "mcp__Tally__create_blocks",
+        "mcp__Tally__list_blocks",
+        "mcp__Tally__move_blocks",
+        "mcp__Tally__remove_blocks",
+        "mcp__Tally__remove_questions",
+        "mcp__Tally__remove_pages",
+        "mcp__Tally__reposition_questions",
+        "mcp__Tally__reposition_pages",
+        "mcp__Tally__set_column_layout"
+      ]
+    },
+    {
+      "provider": "Tavily",
+      "action_count": 5,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Tavily__tavily_search",
+        "mcp__Tavily__tavily_extract",
+        "mcp__Tavily__tavily_crawl",
+        "mcp__Tavily__tavily_map",
+        "mcp__Tavily__tavily_research"
+      ]
+    },
+    {
+      "provider": "Tessie",
+      "action_count": 8,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Tessie__list_vehicles",
+        "mcp__Tessie__get_vehicle_state",
+        "mcp__Tessie__lock",
+        "mcp__Tessie__unlock",
+        "mcp__Tessie__start_charging",
+        "mcp__Tessie__stop_charging",
+        "mcp__Tessie__start_climate",
+        "mcp__Tessie__stop_climate"
+      ]
+    },
+    {
+      "provider": "Todoist",
+      "action_count": 47,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Todoist__To_Do_List___Calendar__add_tasks",
+        "mcp__Todoist__To_Do_List___Calendar__complete_tasks",
+        "mcp__Todoist__To_Do_List___Calendar__uncomplete_tasks",
+        "mcp__Todoist__To_Do_List___Calendar__update_tasks",
+        "mcp__Todoist__To_Do_List___Calendar__reschedule_tasks",
+        "mcp__Todoist__To_Do_List___Calendar__find_tasks",
+        "mcp__Todoist__To_Do_List___Calendar__find_tasks_by_date",
+        "mcp__Todoist__To_Do_List___Calendar__find_completed_tasks",
+        "mcp__Todoist__To_Do_List___Calendar__add_projects",
+        "mcp__Todoist__To_Do_List___Calendar__update_projects",
+        "mcp__Todoist__To_Do_List___Calendar__find_projects",
+        "mcp__Todoist__To_Do_List___Calendar__project_management"
+      ]
+    },
+    {
+      "provider": "Trocafone",
+      "action_count": 2,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Trocafone__start_recommendation",
+        "mcp__Trocafone__search_products"
+      ]
+    },
+    {
+      "provider": "Typeform",
+      "action_count": 61,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Typeform__workspaces_list_workspaces",
+        "mcp__Typeform__accounts_list_accounts",
+        "mcp__Typeform__forms_public_create_form",
+        "mcp__Typeform__forms_public_delete_form",
+        "mcp__Typeform__forms_public_duplicate_form",
+        "mcp__Typeform__forms_public_get_capabilities",
+        "mcp__Typeform__forms_public_get_form",
+        "mcp__Typeform__forms_public_list_forms",
+        "mcp__Typeform__forms_public_patch_form",
+        "mcp__Typeform__forms_public_publish_form",
+        "mcp__Typeform__forms_public_update_form_metadata",
+        "mcp__Typeform__forms_public_validate_patch"
+      ]
+    },
+    {
+      "provider": "Vercel",
+      "action_count": 24,
+      "state": "AUTHORIZED/OBSERVED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Vercel__search_vercel_documentation",
+        "mcp__Vercel__deploy_to_vercel",
+        "mcp__Vercel__list_projects",
+        "mcp__Vercel__get_project",
+        "mcp__Vercel__list_deployments",
+        "mcp__Vercel__get_deployment",
+        "mcp__Vercel__get_deployment_build_logs",
+        "mcp__Vercel__get_runtime_logs",
+        "mcp__Vercel__get_runtime_errors",
+        "mcp__Vercel__list_agent_run_projects",
+        "mcp__Vercel__list_agent_runs",
+        "mcp__Vercel__get_agent_run"
+      ]
+    },
+    {
+      "provider": "Wispr_Flow",
+      "action_count": 14,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Wispr_Flow__get_account_info",
+        "mcp__Wispr_Flow__search_meetings",
+        "mcp__Wispr_Flow__get_meeting",
+        "mcp__Wispr_Flow__get_meeting_participants_enriched",
+        "mcp__Wispr_Flow__resolve_share_link",
+        "mcp__Wispr_Flow__search_scratchpad_notes",
+        "mcp__Wispr_Flow__get_scratchpad_note",
+        "mcp__Wispr_Flow__search_calendar_events",
+        "mcp__Wispr_Flow__resolve_calendar_link",
+        "mcp__Wispr_Flow__get_calendar_event",
+        "mcp__Wispr_Flow__get_meeting_by_calendar_id",
+        "mcp__Wispr_Flow__list_meeting_series"
+      ]
+    },
+    {
+      "provider": "Wolfram",
+      "action_count": 3,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__Wolfram__WolframContext",
+        "mcp__Wolfram__WolframLanguageEvaluator",
+        "mcp__Wolfram__WolframAlpha"
+      ]
+    },
+    {
+      "provider": "WorkOS",
+      "action_count": 4,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__WorkOS__whoami",
+        "mcp__WorkOS__list_operations",
+        "mcp__WorkOS__query",
+        "mcp__WorkOS__mutate"
+      ]
+    },
+    {
+      "provider": "idealista",
+      "action_count": 4,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__idealista__guide_idealista_chatgpt",
+        "mcp__idealista__get_howto",
+        "mcp__idealista__search_properties",
+        "mcp__idealista__property_detail"
+      ]
+    },
+    {
+      "provider": "onX_Offroad",
+      "action_count": 2,
+      "state": "EXPOSED",
+      "initialization_owner": "Plugin Connector Steward",
+      "validation_owner": "Repository Maintainers + Plugin Connector Steward",
+      "handoff": "Open/update the GitHub integration PR or Linear TER-15; include provider, action, intended capability, auth evidence, and validation receipt.",
+      "sample_actions": [
+        "mcp__onX_Offroad__get_offroad_trail_list",
+        "mcp__onX_Offroad__get_offroad_trail"
+      ]
+    }
+  ]
+}

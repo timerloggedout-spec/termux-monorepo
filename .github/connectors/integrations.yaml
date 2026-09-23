@@ -17,3 +17,28 @@ integrations:
     - aikido
     - sentry
     - copilot-pull-request
+
+# Live ChatGPT connector inventory is maintained separately so this registry
+# remains repository-owned integration contracts rather than a provider dump.
+chatgpt_connector_surface:
+  matrix: docs/ops/PLUGIN-CONNECTOR-CAPABILITY-MATRIX.md
+  priority: docs/ops/PLUGIN-INTEGRATION-PRIORITY.md
+  parity_skill:
+    agent: .agents/skills/plugin-connector-parity/SKILL.md
+    production: .github/skills/plugin-connector-parity/SKILL.md
+  snapshot:
+    observed_at: "2026-09-23"
+    connector_providers: 88
+    connector_tools: 2042
+    total_callable_tools: 2052
+    live_refresh_connector_tools: 1960
+    live_refresh_note: "Provider count intentionally not recomputed from tool-name prefixes; 2026-09-22 totals remain the historical snapshot."
+  state_model:
+    - exposed
+    - connected
+    - authorized
+    - observed
+    - adapted
+    - integrated
+    - validated
+  rule: "Exposure is not authentication, authorization, runtime success, or repository integration."

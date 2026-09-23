@@ -1,0 +1,69 @@
+name: Agent Quality Lane
+on:
+  pull_request:
+    paths:
+      - "she/metrics/**"
+      - "tests/test_she_agent_throughput.py"
+      - "tests/test_tdqs.py"
+      - "docs/ops/AGENT-THROUGHPUT-*.md"
+      - "docs/ops/AGENT-OBSERVABILITY-PRIORITY-DECISION.md"
+      - "docs/ops/AGENT-THROUGHPUT-EVENT.schema.json"
+      - "docs/ops/TDQS-EVIDENCE.schema.json"
+      - "docs/architecture/TOOL-DEFINITION-QUALITY-SCORE.md"
+      - "docs/proposals/active/notation-sets/TDQS.md"
+      - "scripts/ci/verify_agent_quality.py"
+      - ".github/workflows/agent-quality-lane.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agent-quality-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout candidate revision
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Verify agent telemetry quality contract
+        run: python scripts/ci/verify_agent_quality.py
+
+      - name: Check source diff whitespace hygiene
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          test -n "$BASE_SHA"
+          test -n "$HEAD_SHA"
+          git diff --check "$BASE_SHA" "$HEAD_SHA" -- \
+            ':(glob)**/*.py' \
+            ':(glob)**/*.yml' \
+            ':(glob)**/*.yaml' \
+            ':(glob)**/*.json' \
+            ':(glob)**/*.toml' \
+            ':(glob)**/*.sh'
+
+      - name: Compile measurement Python sources
+        run: python -m compileall -q she/metrics scripts/ci tests/test_she_agent_throughput.py tests/test_tdqs.py
+
+      - name: Validate event schema JSON
+        run: python -m json.tool docs/ops/AGENT-THROUGHPUT-EVENT.schema.json >/dev/null
+
+      - name: Validate TDQS evidence schema JSON
+        run: python -m json.tool docs/ops/TDQS-EVIDENCE.schema.json >/dev/null
+
+      - name: Run focused ATES reducer tests
+        run: python -m unittest tests.test_she_agent_throughput -v
+
+      - name: Run focused TDQS tests
+        run: python -m unittest tests.test_tdqs -v

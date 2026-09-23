@@ -18,7 +18,6 @@ import argparse
 import json
 import sys
 import time
-from pathlib import Path
 from typing import Any
 
 # Fact kinds that can hard-block (deterministic, no engine required)
@@ -64,12 +63,28 @@ def evaluate_facts(facts: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def _evidence_is_adverse(e: dict[str, Any]) -> bool:
+    kind = e.get("kind")
+    if kind == "test_failed":
+        return True
+    if kind == "command_exit_nonzero" and int(e.get("exit_code") or 0) != 0:
+        return True
+    if kind == "secret_detected":
+        return True
+    return False
+
+
 def mock_noul_advice(claim: str, state: dict[str, Any] | None = None) -> dict[str, Any]:
     """Offline stand-in for engine noul on 'is completion claim supported?'."""
     evidence = (state or {}).get("evidence") or []
-    supported = len(evidence) >= 1 and not any(
-        e.get("kind") in ("test_failed", "command_exit_nonzero") for e in evidence
+    adverse = any(_evidence_is_adverse(e) for e in evidence)
+    has_positive = any(
+        e.get("kind") in ("file_changed",) or (
+            e.get("kind") == "command_exit_nonzero" and int(e.get("exit_code") or 0) == 0
+        )
+        for e in evidence
     )
+    supported = has_positive and not adverse
     noul = 0.72 if supported else 0.28
     return {
         "noul": noul,

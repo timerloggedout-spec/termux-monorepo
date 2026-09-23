@@ -1,0 +1,123 @@
+name: BIFROST-006 benchmark smoke
+
+# Cost-free mocker path for gateway evidence. Does not require interactive Codespace.
+# Lands artifacts for evidence/ package.
+
+on:
+  workflow_dispatch:
+    inputs:
+      duration:
+        description: Smoke duration seconds
+        required: false
+        default: "15"
+      rate:
+        description: Target RPS
+        required: false
+        default: "20"
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+
+      - name: Clone benchmarking fork
+        run: |
+          set -euo pipefail
+          git clone --depth 1 https://github.com/timerloggedout-spec/bifrost-benchmarking_fork.git bench
+          cd bench
+          go mod tidy || true
+          ls -la
+
+      - name: Build mocker + benchmark
+        working-directory: bench
+        run: |
+          set -euo pipefail
+          if [ -d mocker ]; then
+            (cd mocker && go build -o ../mocker-bin . ) || (cd mocker && go build -o ../mocker-bin ./...)
+          fi
+          if [ -f benchmark.go ]; then
+            go build -o benchmark benchmark.go || go build -o benchmark .
+          elif [ -d . ]; then
+            go build -o benchmark . || true
+          fi
+          ls -la
+
+      - name: Start mocker
+        working-directory: bench
+        run: |
+          set -euo pipefail
+          if [ -x ./mocker-bin ]; then
+            ./mocker-bin -port 8000 &
+            echo $! > mocker.pid
+          elif [ -d mocker ]; then
+            (cd mocker && go run . -port 8000) &
+            echo $! > mocker.pid
+          else
+            echo "::warning::No mocker binary — skipping live mocker"
+          fi
+          sleep 2
+          curl -sS -o /dev/null -w "%{http_code}\n" http://127.0.0.1:8000/ || true
+
+      - name: Run benchmark (mocker path)
+        working-directory: bench
+        env:
+          DURATION: ${{ inputs.duration }}
+          RATE: ${{ inputs.rate }}
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          if [ -x ./benchmark ]; then
+            ./benchmark -provider mocker -rate "$RATE" -duration "$DURATION" \
+              -output evidence/results-mocker-smoke.json 2>&1 || \
+            ./benchmark -rate "$RATE" -duration "$DURATION" \
+              -output evidence/results-mocker-smoke.json 2>&1 || \
+            echo '{"status":"benchmark_cli_flags_unknown","note":"see logs"}' > evidence/results-mocker-smoke.json
+          else
+            echo '{"status":"no_benchmark_binary","go_files":'$(find . -name '*.go' | head -20 | jq -R -s -c 'split("\n")')'}' \
+              > evidence/results-mocker-smoke.json
+          fi
+          # Minimal self-check always written
+          python3 - <<'PY'
+import json, time, urllib.request
+from pathlib import Path
+out = Path("evidence/results-mocker-smoke.json")
+probe = {"ts_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "host": "gha-ubuntu", "lane": "BIFROST-006"}
+try:
+    r = urllib.request.urlopen("http://127.0.0.1:8000/", timeout=2)
+    probe["mocker_http"] = r.status
+except Exception as e:
+    probe["mocker_http_error"] = type(e).__name__
+# merge if existing json object
+try:
+    prev = json.loads(out.read_text()) if out.exists() else {}
+except Exception:
+    prev = {"raw": out.read_text()[:2000] if out.exists() else None}
+if isinstance(prev, dict):
+    prev.update({"probe": probe})
+    out.write_text(json.dumps(prev, indent=2))
+else:
+    out.write_text(json.dumps({"prev": prev, "probe": probe}, indent=2))
+print(out.read_text()[:2000])
+PY
+
+      - name: Upload evidence artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bifrost-006-evidence
+          path: bench/evidence/
+          if-no-files-found: warn
+
+      - name: Summary
+        working-directory: bench
+        run: |
+          echo "### BIFROST-006 smoke" >> "$GITHUB_STEP_SUMMARY"
+          echo "Artifact: bifrost-006-evidence" >> "$GITHUB_STEP_SUMMARY"
+          ls -la evidence/ >> "$GITHUB_STEP_SUMMARY" || true

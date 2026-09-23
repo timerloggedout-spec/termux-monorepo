@@ -5,12 +5,9 @@ description: Adaptive WAIT for agentic GitHub ops. Dual-gate before promote. Sta
 
 Canonical: master `.agents/skills/adaptive-wait/SKILL.md`.
 
-**BIUDL = Broad → Integrate → Validate → Develop → Learn.**
-Fully Continuous Automated Development Evaluation Environment.
-
-Master tip base: `cb995e76`. This cycle: ops/biudl-claude-primary-deprecate-agents-20260921.
-Read `docs/ops/LANE-MATRIX.md` every WAIT cycle.
-Primary entry: **`CLAUDE.md`** (root `AGENTS.md` deprecated redirect for Linguist/Jules only).
-#682 EXTRACT/WAIT (130 files). #684 HOLD.
+Master HEAD: `d8ad3521`. Extract **#753** WAIT dual-gate named jobs SUCCESS; combined status unstable = Vercel rate-limit non-gate.
+Extract **#746** WAIT. Pulse **session 23:32** branch `ops/session-lane-matrix-20260922-2332`.
+Older pulses SUPERSEDE. HOLD retired — use EXTRACT.
+Stay busy: rewrite LANE-MATRIX, Stepie notes, skill mirrors. Do not idle.
 AVOID HITL YOLO YEET AUTOAPPROVE.
 Agent-Identity: Grok (Administrator)

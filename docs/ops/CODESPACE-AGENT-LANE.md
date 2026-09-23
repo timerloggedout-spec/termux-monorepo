@@ -64,6 +64,7 @@ Default `GITHUB_TOKEN` in Actions usually **cannot** create Codespaces; that is 
 - Codespace is **not** a substitute for Termux device capability claims.
 - Prebuilds / multi-repo permissions / extra secrets are optional follow-ups; empty `codespaces.repositories` is intentional until needed. Prebuild cost decision lives in #500 / codespaces-enablement proposal — not auto-enabled here.
 - This file is the operator card; do not duplicate long rationale into README.
+- This is one of several parallel role-scoped lanes now shipped under `.devcontainer/`; see [`docs/ops/CODESPACE-LANES.md`](CODESPACE-LANES.md) for the full lane matrix (Docs/Mintlify, PR-Triage/Governance, General Dev/Build). This card stays the operator reference for the lane described above only.
 
 Implements: codespace-agent-lane / #530 follow-on  
 BIUDL.

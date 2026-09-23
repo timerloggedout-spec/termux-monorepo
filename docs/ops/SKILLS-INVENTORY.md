@@ -1,6 +1,6 @@
 # Skills Inventory (termux-monorepo)
 
-**Version:** 2026-09-19 17:26 PDT · **Master tip:** `826dc1e4`
+**Version:** 2026-09-23 01:21 PDT · **Master tip:** `2327859f0b2432631177346e93492e67cdc7b3d2`
 **Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)
 **Collaborator short entry:** [`SKILLS.md`](../../SKILLS.md)
 
@@ -25,6 +25,23 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 | **Dashboard / Pages** | `github-pages-operator` | help-wanted-lane · deploy workflow |
 | **Evaluation / DOE** | `multivariate-doe` + `blind-agent-evaluation` | `approxination-lane` · `mvt-experiment` |
 | **CI / production recon** | `production-reconciliation` | `action-effectiveness-ledger` · `workflow-orchestration` |
+
+
+
+## Adaptive-wait + evidence-led cluster
+
+| Skill | Primary responsibility | Pairing |
+|------|-------------------------|---------|
+| `adaptive-wait` | Evidence-driven asynchronous cadence, stall detection, disjoint work, terminal states | `adaptive-feedback-cycle` |
+| `evidence-led-monorepo-ops` | Current-SHA reconstruction, evidence hierarchy, provenance, mutation/promotion discipline | `adaptive-wait` |
+| `review-loop` | Review ingestion, attribution, repeated validation, feed-forward improvements | both |
+| `context-relationship-graph` | Verified/candidate relationship evidence and bounded history | evidence-led |
+| `production-reconciliation` | Ref/base reconciliation and current-state validation | adaptive-wait |
+| `evidence-envelope` + `evidence-provenance` | Normalized observation identity and cross-system vocabulary | evidence-led |
+| `action-effectiveness-ledger` | Measure action effect rather than activity volume | evidence-led |
+| `workflow-orchestration` | Modular Actions, retry/stale-event rules, terminal-state waiting | adaptive-wait |
+
+Focused discovery/audit companion: [`SKILL-DISCOVERY-MATRIX.md`](SKILL-DISCOVERY-MATRIX.md).
 
 ## `.agents/skills/` (agent loadable)
 
@@ -69,7 +86,7 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 | [`HELP-WANTED-DASHBOARD.md`](HELP-WANTED-DASHBOARD.md) | Live surfaces + deploy |
 | [`HELP-WANTED-EVIDENCE-FEED.md`](HELP-WANTED-EVIDENCE-FEED.md) | Receipts → evaluation |
 
-## Cycle snapshot (2026-09-19 17:26 PDT)
+## Cycle snapshot (2026-09-23 01:21 PDT)
 
 - Live master: `826dc1e4`.
 - #655: dual-gate jobs green; Vercel hobby rate-limit non-gate; base lag vs tip.
@@ -77,5 +94,7 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 - ML: keep #432/#601 extract-only (Issue #175).
 - Prefer GitHack over jsDelivr for HTML (MIME).
 - Credential inventory: issue **#184** (notes only; no secret values).
+- Skill discovery: 27 tracked `SKILL.md`/mirror paths; no tracked `.skill` archive in the current recursive master tree.
+- Adaptive-wait/evidence-led skills refreshed on the focused operations branch; promotion awaits current-SHA validation.
 
 Agent-Identity: Grok (Administrator)

@@ -1,7 +1,7 @@
 # Continuous Improvement Policy — ATES × TDQS × Evidence Ops
 
-**Policy status:** active learning contract  
-**Scope:** agent evaluation, tool-definition quality, repository administration, workflow orchestration  
+**Policy status:** active learning contract
+**Scope:** agent evaluation, tool-definition quality, repository administration, workflow orchestration
 **Principle:** templates, resources, prior implementations, reviews, and external skills are learning inputs for custom adaptation.
 
 ## 1. Learning loop

@@ -1,65 +1,89 @@
 # LANE-MATRIX (living SSOT)
 
-**Session:** 2026-09-21 16:13 PDT  
+**Session:** 2026-09-22 21:22 PDT  
 **Agent-Identity:** Grok (Administrator)  
-**Live master (base):** `cb995e76`  
-**This PR tip:** ops/biudl-claude-primary-deprecate-agents-20260921  
+**Live master (base):** `6c4e0c78`  
+**This PR tip:** `ops/session-lane-matrix-20260922-2122`  
 **Priority hub:** Issue #175
 
-Rewrite this file every admin session. Copilot is optional peer, not a promote gate. Size ≠ quality. Promote when dual-gate is green **and** the diff is an extract, not a mega. Vercel rate-limit is non-gate. Age alone does not promote.
+Rewrite this file every admin session. Copilot / CodeRabbit / Qodo / Devin are advisory, not promote gates. Size ≠ quality. Promote when dual-gate is green **and** the diff is an extract, not a mega. Vercel rate-limit is non-gate. Age alone does not promote.
 
 **BIUDL = Broad → Integrate → Validate → Develop → Learn.** Fully Continuous Automated Development Evaluation Environment. **AVOID HITL YOLO MODE YEET AUTOAPPROVE.**
 
-**Status change (this cycle):** Root `CLAUDE.md` is sole primary agent entry. Root `AGENTS.md` is **deprecated** (Linguist / CedrLang / Jules redirect-only). Content folded. All lanes (Jules, Linguist, Sentinel, Bolt, help-wanted, Codespace, ecc-tools, Stepie) load `CLAUDE.md` first.
+**Status change (this cycle):** `HOLD` retired as a lane state. Use **EXTRACT** (wrong-base / dirty / mega) or **WAIT** (dual-gate in flight) or **OBSERVE** / **SUPERSEDE**. Operator is ACTIVE. Pulse #759 (20:00) remains prior session; this pulse supersedes older session matrices (#758 and earlier) for SSOT text only — do not close extract product PRs.
 
 ## Landed this window (evidence)
 
-| SHA | What |
-|-----|------|
-| (pending dual-gate) | CLAUDE.md BIUDL expanded + AGENTS.md deprecated redirect |
-| (pending) | REFTEMPLATES directive corrected (no YOLO/YEET) |
-| `cb995e76` | prior tip |
+| SHA / PR | What |
+|----------|------|
+| `6c4e0c78` | live master tip (unchanged this pulse) |
+| #753 | Vercel master alias sitemap — EXTRACT on live master head `4968ffdc`; named dual-gate jobs not yet the promote pair in latest check page; Vercel 24h rate-limit **non-gate** |
+| #746 | slim ML keep-alive — EXTRACT / WAIT; combined status FAILURE is Vercel rate-limit + Devin trial skip |
+| #764 draft | Tailscale hub + collaborator bootstrap (issue #763) — OBSERVE draft |
+| #762 draft | plugin connector parity — OBSERVE draft |
+| #761 draft | Desktop Commander fork alternatives (issue #760) — OBSERVE draft |
 
 ## Dual-gate contract
 
-1. `hygiene + portability gate` SUCCESS
-2. `agentic termux smoke` SUCCESS
+1. `hygiene + portability gate` (`scripts/ci/repo_gate.py`) SUCCESS
+2. `agentic termux smoke` (`scripts/ci/termux_smoke.py`) SUCCESS
 3. Vercel rate-limits are **non-gate**
 4. Copilot / CodeRabbit / Qodo / Devin = advisory
 5. GitLab / Mintlify = non-gate
 6. Age alone does not promote; dual-gate + rebase onto live master does
-7. Size ≠ quality: dual-gate green + 130 files still EXTRACT
+7. Size ≠ quality: dual-gate green + large file count still EXTRACT
 
 ## Tip-first active lanes
 
 | PR | Lane | Why |
 |----|------|-----|
-| #682 | EXTRACT / WAIT | ML keep-alive DAG (#175). 130 files. Prefer slimmer `ml/pipelines/` child. |
-| this | SSOT / BIUDL | CLAUDE primary + AGENTS deprecate + directive hygiene |
-| #680 / #708 | OBSERVE | Bolt live_catalog_feed family (Jules). Overlapping catalog work — do not double-merge. |
-| #702 | OBSERVE | Gravitee observatory seed |
-| #684 | HOLD / REBASE | unify Actions cadence; dirty vs tip |
-| #685 | OBSERVE | arrhythmic-zero-token-search |
-| #630 | EXTRACT | Jules dashboard rich UI — minesweeper |
-| #432/#549/#601 | EXTRACT | ML wholesale family — keep-alive is #682 tree |
+| **#753** | EXTRACT / WAIT | On live master. Sitemap alias. Promote only after named dual-gate jobs SUCCESS + outcome verified. |
+| **#746** | EXTRACT / WAIT | Slim ML + ICM-CCTV. Combined status polluted by Vercel rate-limit. |
+| **this (#session 21:22)** | SSOT | LANE-MATRIX + skill pulse mirrors |
+| #759 | SUPERSEDE (SSOT) | Prior 20:00 pulse vs this rewrite |
+| #758 / #757 / #756 / #754 / #751 / #749 / #745 | SUPERSEDE | Older session matrices |
+| #764 / #762 / #761 | OBSERVE | Draft product lanes; do not merge drafts |
+| #755 | OBSERVE | Jules Linguist CedrLang codec |
+| #750 | OBSERVE | prior extract family |
+| #617 | EXTRACT | proposal registry manifest gate; stale base vs tip |
+| #597 / #598 / #587 | OBSERVE | Jules bot family; stale bases (`6af1e12c` / `9f4c7fa2`) |
+| #249 | OBSERVE | docs teams roster |
+| #81 | OBSERVE | CI promote workflows; stale |
+| #543 | OBSERVE | skill quality lane |
+| #752 | OBSERVE draft | Termux MCP endpoint status |
 
-## Ancient / wrong-base HOLD
+## Wrong-base EXTRACT (HOLD retired)
 
-#47 OBSERVE/SUPERSEDED. #48 HOLD (base master-staging). #69 HOLD (feature base). #73 HOLD. #81 OBSERVE. #92 EXTRACT security slice. Do not close-as-superseded until extract lands.
+| PR | Base | Action |
+|----|------|--------|
+| **#48** | `master-staging` | EXTRACT — do not merge onto master as-is; rebase or slice |
+| **#69** | `feature/proposal-vote-promote` | EXTRACT — dirty wrong-base |
+| #67 | stale master | EXTRACT docs slice |
+
+Do not close-as-superseded until an extract lands on live master.
 
 ## Issue → PR map
 
 | Issue | Role | Linked |
 |-------|------|--------|
-| **#175** | OPERATOR matrix + dual-gate | #432 #549 #601 #682 (ML); #630 minesweeper |
-| #184 | Credential inventory (notes only) | secrets hygiene |
-| #117 | Agent2Agent / MCP Agent Mail | #143 |
-| #88/#91/#94 | routing | #48 family |
-| #50 | termux-smoke / master-staging gate | dual-gate ancestry |
+| **#175** | OPERATOR matrix + dual-gate | #746 #753 session pulses |
+| **#184** | Credential inventory **notes-only** | no secret material in git; OPERATOR PAT is Actions secret |
+| #763 | Tailscale hub bootstrap | #764 draft |
+| #760 | Desktop Commander fork alts | #761 draft |
+| #337 | Actions continuous eval | advisory |
+| #439 | StepWise MCP | Stepie goal 2087 / 2149 |
+
+## Credentials (#184)
+
+Notes-only this pulse: OPERATOR token exists as Actions secret with admin scope. Do not echo values. Rotation remains human-only (`docs/SECURITY-REMEDIATION.md`). Connector surface (Notion / Linear / Vercel / Gmail / Drive) treated as possibly stale until a live tool call succeeds.
+
+## Stepie
+
+Goal **2087** termux-monorepo development: 1/12 completed (`Integrate Claude↔Grok MCP connection`). Primary planning goal remains **2149** Games Masters — Conductor duty. Pulse step `RECON + LANE-MATRIX session pulse` executed this cycle.
 
 ## Next cycle
 
-1. Dual-gate this PR; promote only when green + outcome verified.
-2. Leave #682 EXTRACT until sliced.
-3. Stay busy on SSOT / skill upgrades while CI waits. No HITL YOLO merge.
-4. Jules / Linguist: confirm AGENTS.md is redirect-only.
+1. Re-fetch named dual-gate jobs on #753 / #746. Promote neither until both gates SUCCESS and task outcome verified.
+2. Stay busy on SSOT / skill upgrades / draft OBSERVE lanes. No HITL YOLO merge.
+3. #48/#69 stay EXTRACT until rebased onto live master or sliced.
+4. Do not land session-matrix PRs over product extracts.

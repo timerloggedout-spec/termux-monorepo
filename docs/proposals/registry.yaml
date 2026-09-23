@@ -334,3 +334,21 @@ proposals:
     related_prs: [492]
     related_branches: [docs/proposals/agentic-scoped-access-and-tier4-review]
     gates_required: []
+
+  - id: arrhythmic-zero-token-search
+    title: "Arrhythmic Flow + Matrix Intersections for Zero-Token Web Search Wrappers"
+    author: grok
+    status: executing
+    priority: P1
+    path: active/arrhythmic-zero-token-search/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: grok
+        role: author+executor
+        status: executing
+    related_prs: [685]
+    related_issues: []
+    related_branches: [feat/arrhythmic-zero-token-search]
+    gates_required: [repo-gate, termux-smoke]

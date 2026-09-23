@@ -49,3 +49,8 @@ Do not keep connector policy only in a local mirror; **master is SSOT**.
 Fully Continuous Automated Development Evaluation Environment.
 **AVOID HITL YOLO MODE YEET AUTOAPPROVE.**
 Agent-Identity: Grok (Administrator)
+
+
+## Plugin Connector Surface
+
+For the complete live connector handoff registry, use `docs/ops/PLUGIN-CONNECTOR-SURFACE.md` and its machine-readable companion `.github/connectors/runtime-surface.json`. The primary coordination role is the **Plugin Connector Steward**; repository integration planning is anchored in Linear **TER-15**. Do not treat connector exposure as authorization or integration: promote only through the recorded capability-state model and validation evidence.

@@ -1,6 +1,6 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-09-18T21:55:00Z"
+updated_at: "2026-09-23T18:15:00Z"
 updated_by: grok-administrator
 
 proposals:
@@ -42,6 +42,50 @@ proposals:
     related_repos:
       - https://github.com/timerloggedout-spec/bifrost_fork
       - https://github.com/timerloggedout-spec/bifrost-benchmarking_fork
+    gates_required: [repo-gate, termux-smoke]
+
+
+  - id: auditengine-adapt
+    title: "RinDig AuditEngine (Ethics Engine) adapt pass"
+    author: timerloggedout-spec
+    status: draft
+    priority: P2
+    path: active/auditengine-adapt/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_prs: []
+    related_branches: []
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: cost-of-remembering-integration
+    title: "RinDig cost-of-remembering_fork ICM evidence lane"
+    author: timerloggedout-spec
+    status: executing
+    priority: P1
+    path: active/cost-of-remembering-integration/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_prs: []
+    related_branches:
+      - feat/rindig-cost-of-remembering-icm
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: mcp-hub-risk-split
+    title: "mcp-hub / hub_mcp risk split"
+    author: timerloggedout-spec
+    status: executing
+    priority: P1
+    path: active/mcp-hub-risk-split/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_prs: []
+    related_branches: []
     gates_required: [repo-gate, termux-smoke]
 
   - id: context-relationship-graph

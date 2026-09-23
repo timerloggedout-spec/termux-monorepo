@@ -14,7 +14,7 @@ PAIRS = {
     ".agents/skills/evidence-led-monorepo-ops/SKILL.md": "docs/ops/skills/evidence-led-monorepo-ops/SKILL.md",
 }
 REQUIRED = {
-    PAIRS.keys().__iter__().__next__(): [
+    ".agents/skills/adaptive-wait/SKILL.md": [
         "## Control objective",
         "## State machine",
         "## Adaptive cadence",
@@ -22,8 +22,7 @@ REQUIRED = {
         "## Evidence receipt",
         "## Promotion boundary",
     ],
-}
-REQUIRED[".agents/skills/evidence-led-monorepo-ops/SKILL.md"] = [
+    ".agents/skills/evidence-led-monorepo-ops/SKILL.md": [
     "## Operating contract",
     "## 1. Reconstruct current state",
     "## 2. Evidence hierarchy",

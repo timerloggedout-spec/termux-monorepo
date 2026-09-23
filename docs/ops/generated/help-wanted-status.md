@@ -1,12 +1,12 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-23T05:54:54Z UTC · receipts=47 · foreign_open=11 · tributes=31_
+_Generated 2026-09-23T07:45:14Z UTC · receipts=48 · foreign_open=11 · tributes=31_
 
 ## Tributes (contributor ledger)
 
+- [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [infagent/merl#43](https://github.com/infagent/merl/pull/43) · state=closed · help-wanted: stake + contribute for #42
 - [limelitgeo/open#32](https://github.com/limelitgeo/open/pull/32) · state=closed · help-wanted: stake + contribute for #31
-- [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [sorotrail/SoroTrail#943](https://github.com/sorotrail/SoroTrail/pull/943) · state=closed · help-wanted: stake + contribute for #142
 - [DeltaV-Station/Delta-v#6534](https://github.com/DeltaV-Station/Delta-v/pull/6534) · state=closed · help-wanted: stake + contribute for #6533
 - [w1977-0/open-stream-saver#3](https://github.com/w1977-0/open-stream-saver/pull/3) · state=open · help-wanted: stake + contribute for #1
@@ -50,6 +50,6 @@ _Generated 2026-09-23T05:54:54Z UTC · receipts=47 · foreign_open=11 · tribute
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=47 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 34}`
+## Outcomes · ok=48 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-09-23T05:54:54Z",
+  "generated_at": "2026-09-23T07:45:14Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
-  "receipts": 47,
+  "receipts": 48,
   "kinds": {
     "upstream_pr": 12,
     "claim_skipped_closed": 1,
-    "followup_skip_idempotent": 34
+    "followup_skip_idempotent": 35
   },
   "outcomes": {
-    "ok": 47
+    "ok": 48
   },
   "foreign_open_prs": [
     {
@@ -115,32 +115,6 @@
   "foreign_open_count": 11,
   "tributes": [
     {
-      "pr_url": "https://github.com/infagent/merl/pull/43",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-23T05:51:15Z",
-      "providers": [],
-      "repo": "infagent/merl",
-      "number": 43,
-      "title": "help-wanted: stake + contribute for #42",
-      "state": "closed"
-    },
-    {
-      "pr_url": "https://github.com/limelitgeo/open/pull/32",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-23T05:49:23Z",
-      "providers": [],
-      "repo": "limelitgeo/open",
-      "number": 32,
-      "title": "help-wanted: stake + contribute for #31",
-      "state": "closed"
-    },
-    {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
         "upstream_pr",
@@ -179,15 +153,42 @@
         "followup_skip_idempotent",
         "followup_skip_idempotent",
         "followup_skip_idempotent",
+        "followup_skip_idempotent",
         "followup_skip_idempotent"
       ],
       "ok": true,
-      "last_ts": "2026-09-23T00:32:12Z",
+      "last_ts": "2026-09-23T07:44:58Z",
       "providers": [],
       "repo": "vedantnimbarte/zero",
       "number": 81,
       "title": "docs(layout): refresh stale ponytail comments (flex + grid)",
       "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/infagent/merl/pull/43",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-23T05:51:15Z",
+      "providers": [],
+      "repo": "infagent/merl",
+      "number": 43,
+      "title": "help-wanted: stake + contribute for #42",
+      "state": "closed"
+    },
+    {
+      "pr_url": "https://github.com/limelitgeo/open/pull/32",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-23T05:49:23Z",
+      "providers": [],
+      "repo": "limelitgeo/open",
+      "number": 32,
+      "title": "help-wanted: stake + contribute for #31",
+      "state": "closed"
     },
     {
       "pr_url": "https://github.com/sorotrail/SoroTrail/pull/943",
@@ -980,6 +981,14 @@
         "ok": true,
         "lane": "help-wanted-followup",
         "foreign": true
+      },
+      {
+        "ts": "2026-09-23T07:44:58Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
       }
     ]
   },
@@ -1000,7 +1009,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "dc869ed32c6c41c5a6287558c9dd98c309a62a6d",
+    "source_sha": "07dfdf13fd10047b6ea9b5862bdf7eb248c6bc31",
     "source_ref": "master",
     "history_complete": true,
     "history_count": 1,
@@ -1033,12 +1042,12 @@
   },
   "evolution": [
     {
-      "sha": "dc869ed32c6c41c5a6287558c9dd98c309a62a6d",
-      "short_sha": "dc869ed32c6c",
-      "date": "2026-09-23T05:11:15Z",
+      "sha": "07dfdf13fd10047b6ea9b5862bdf7eb248c6bc31",
+      "short_sha": "07dfdf13fd10",
+      "date": "2026-09-23T07:44:59Z",
       "author": "github-actions[bot]",
-      "subject": "ops(help-wanted): live status refresh 2026-09-23T05:11Z",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/dc869ed32c6c41c5a6287558c9dd98c309a62a6d"
+      "subject": "ops(help-wanted): follow-up evidence 2026-09-23T07:44Z",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/07dfdf13fd10047b6ea9b5862bdf7eb248c6bc31"
     }
   ],
   "pipeline": [

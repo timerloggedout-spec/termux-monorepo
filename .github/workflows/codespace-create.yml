@@ -1,0 +1,89 @@
+name: Codespace create (dispatch)
+
+# Creates a Codespace on a ref using a PAT with `codespace` scope.
+# Credential plane: issue #184 (names/scopes). Value lives only in
+# Settings → Secrets → Actions as CODESPACE_CREATE_TOKEN.
+# Never commit or print the token.
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Branch or SHA (default master)
+        required: false
+        default: master
+      machine:
+        description: Machine type (basicLinux32gb | standardLinux32gb | premiumLinux)
+        required: false
+        default: basicLinux32gb
+      display_name:
+        description: Optional display name
+        required: false
+        default: agent-bifrost-006
+
+permissions:
+  contents: read
+
+jobs:
+  create:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Require secret
+        env:
+          HAS_TOKEN: ${{ secrets.CODESPACE_CREATE_TOKEN != '' }}
+        run: |
+          if [ "$HAS_TOKEN" != "true" ]; then
+            echo "::error::CODESPACE_CREATE_TOKEN secret is empty."
+            echo "Add a classic or fine-grained PAT with codespace scope"
+            echo "(see issue #184 inventory) under Settings → Secrets → Actions."
+            echo "Do not paste the value into issues, PR bodies, or chat."
+            exit 1
+          fi
+
+      - name: Create codespace
+        id: create
+        env:
+          GH_TOKEN: ${{ secrets.CODESPACE_CREATE_TOKEN }}
+          REF: ${{ inputs.ref }}
+          MACHINE: ${{ inputs.machine }}
+          DISPLAY: ${{ inputs.display_name }}
+        run: |
+          set -euo pipefail
+          body=$(jq -n \
+            --arg ref "$REF" \
+            --arg machine "$MACHINE" \
+            --arg name "$DISPLAY" \
+            '{ref: $ref, machine: {name: $machine}, display_name: $name}')
+          resp=$(curl -sS -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/codespaces" \
+            -d "$body")
+          echo "$resp" | jq '{name, id, state, machine: .machine.name, web_url, created_at}' || echo "$resp"
+          name=$(echo "$resp" | jq -r '.name // empty')
+          web=$(echo "$resp" | jq -r '.web_url // empty')
+          if [ -z "$name" ]; then
+            echo "::error::Codespace create failed — check PAT scopes (codespace) and billing."
+            echo "$resp" | jq . 2>/dev/null || echo "$resp"
+            exit 1
+          fi
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+          echo "web_url=$web" >> "$GITHUB_OUTPUT"
+          echo "### Codespace created" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **name:** \`$name\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **url:** $web" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **ref:** \`$REF\`" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: List codespaces (evidence)
+        env:
+          GH_TOKEN: ${{ secrets.CODESPACE_CREATE_TOKEN }}
+        run: |
+          curl -sS \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/codespaces" \
+            | jq '[.codespaces[]? | {name, state, machine: .machine.name, web_url, created_at}]' \
+            || true

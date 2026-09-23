@@ -14,7 +14,9 @@
 
 Android/Termux remains the **target** execution environment. Codespace is support / simulation / agent plane only.
 
-## Create (one-time)
+## Create paths
+
+### A) UI (always available)
 
 1. Repo → **Code** → **Codespaces** → **Create codespace on `master`**.
 2. Machine: default matches `hostRequirements` (4 CPU / 8 GB / 32 GB). Bump only if needed.
@@ -26,7 +28,22 @@ Android/Termux remains the **target** execution environment. Codespace is suppor
    python3 scripts/ci/repo_gate.py --help || true
    ```
 
-Direct link pattern: open the repo → Code → Codespaces tab (or GitHub UI “New codespace”).
+### B) API via workflow_dispatch (credential plane #184)
+
+PATs listed on issue **#184** include `codespace` scope. The **value** must live only in repo secrets — never in the issue body or chat.
+
+1. Settings → Secrets and variables → Actions → New repository secret:
+   - Name: `CODESPACE_CREATE_TOKEN`
+   - Value: a classic/fine-grained PAT with **codespace** (+ repo) scope from the #184 inventory
+2. Actions → **Codespace create (dispatch)** → Run workflow
+   - `ref`: `master` (or feature branch)
+   - `machine`: `basicLinux32gb` (default)
+   - `display_name`: e.g. `agent-bifrost-006`
+3. Job summary prints codespace `name` + `web_url`
+
+Workflow: `.github/workflows/codespace-create.yml`
+
+Default `GITHUB_TOKEN` in Actions usually **cannot** create Codespaces; that is why a dedicated PAT secret is required.
 
 ## Agent operating rules (no HITL)
 

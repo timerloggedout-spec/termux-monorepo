@@ -1,9 +1,10 @@
 name: Codespace create (dispatch)
 
-# Creates a Codespace on a ref using a PAT with `codespace` scope.
-# Credential plane: issue #184 (names/scopes). Value lives only in
-# Settings → Secrets → Actions as CODESPACE_CREATE_TOKEN.
-# Never commit or print the token.
+# Creates a Codespace via API using the monorepo privileged GH token chain.
+# SSOT precedence (same as deepseek-ci / help-wanted / dependency-phase):
+#   ARCHWIZ_GITHUB_TOKEN || OPERATOR_GITHUB_TOKEN || OPERATOR_TOKEN
+# Optional override: CODESPACE_CREATE_TOKEN (if set, wins)
+# Values live only in Settings → Secrets → Actions. Never print.
 
 on:
   workflow_dispatch:
@@ -29,22 +30,35 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Require secret
+      - name: Resolve token presence (names only)
+        id: tok
         env:
-          HAS_TOKEN: ${{ secrets.CODESPACE_CREATE_TOKEN != '' }}
+          HAS_CS: ${{ secrets.CODESPACE_CREATE_TOKEN != '' }}
+          HAS_ARCHWIZ: ${{ secrets.ARCHWIZ_GITHUB_TOKEN != '' }}
+          HAS_OP_GH: ${{ secrets.OPERATOR_GITHUB_TOKEN != '' }}
+          HAS_OP: ${{ secrets.OPERATOR_TOKEN != '' }}
         run: |
-          if [ "$HAS_TOKEN" != "true" ]; then
-            echo "::error::CODESPACE_CREATE_TOKEN secret is empty."
-            echo "Add a classic or fine-grained PAT with codespace scope"
-            echo "(see issue #184 inventory) under Settings → Secrets → Actions."
-            echo "Do not paste the value into issues, PR bodies, or chat."
+          set -euo pipefail
+          # Report which secret NAMES are non-empty — never values
+          echo "CODESPACE_CREATE_TOKEN present: $HAS_CS"
+          echo "ARCHWIZ_GITHUB_TOKEN present: $HAS_ARCHWIZ"
+          echo "OPERATOR_GITHUB_TOKEN present: $HAS_OP_GH"
+          echo "OPERATOR_TOKEN present: $HAS_OP"
+          if [ "$HAS_CS" = "true" ] || [ "$HAS_ARCHWIZ" = "true" ] || [ "$HAS_OP_GH" = "true" ] || [ "$HAS_OP" = "true" ]; then
+            echo "resolved=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "resolved=false" >> "$GITHUB_OUTPUT"
+            echo "::error::No privileged GH token secret present."
+            echo "Expected one of: CODESPACE_CREATE_TOKEN, ARCHWIZ_GITHUB_TOKEN,"
+            echo "OPERATOR_GITHUB_TOKEN, OPERATOR_TOKEN (repo Actions secrets)."
             exit 1
           fi
 
       - name: Create codespace
         id: create
         env:
-          GH_TOKEN: ${{ secrets.CODESPACE_CREATE_TOKEN }}
+          # Precedence matches monorepo SSOT; override first if set
+          GH_TOKEN: ${{ secrets.CODESPACE_CREATE_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
           REF: ${{ inputs.ref }}
           MACHINE: ${{ inputs.machine }}
           DISPLAY: ${{ inputs.display_name }}
@@ -61,24 +75,26 @@ jobs:
             -H "X-GitHub-Api-Version: 2022-11-28" \
             "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/codespaces" \
             -d "$body")
-          echo "$resp" | jq '{name, id, state, machine: .machine.name, web_url, created_at}' || echo "$resp"
+          echo "$resp" | jq '{name, id, state, machine: .machine.name, web_url, created_at, message, documentation_url}' 2>/dev/null || echo "$resp"
           name=$(echo "$resp" | jq -r '.name // empty')
           web=$(echo "$resp" | jq -r '.web_url // empty')
           if [ -z "$name" ]; then
-            echo "::error::Codespace create failed — check PAT scopes (codespace) and billing."
+            echo "::error::Codespace create failed — token may lack codespace scope, or billing/limit."
             echo "$resp" | jq . 2>/dev/null || echo "$resp"
             exit 1
           fi
           echo "name=$name" >> "$GITHUB_OUTPUT"
           echo "web_url=$web" >> "$GITHUB_OUTPUT"
-          echo "### Codespace created" >> "$GITHUB_STEP_SUMMARY"
-          echo "- **name:** \`$name\`" >> "$GITHUB_STEP_SUMMARY"
-          echo "- **url:** $web" >> "$GITHUB_STEP_SUMMARY"
-          echo "- **ref:** \`$REF\`" >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo "### Codespace created"
+            echo "- **name:** \`$name\`"
+            echo "- **url:** $web"
+            echo "- **ref:** \`$REF\`"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: List codespaces (evidence)
         env:
-          GH_TOKEN: ${{ secrets.CODESPACE_CREATE_TOKEN }}
+          GH_TOKEN: ${{ secrets.CODESPACE_CREATE_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
         run: |
           curl -sS \
             -H "Accept: application/vnd.github+json" \

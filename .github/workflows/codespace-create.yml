@@ -1,10 +1,9 @@
 name: Codespace create (dispatch)
 
 # Creates a Codespace via API using the monorepo privileged GH token chain.
-# SSOT precedence (same as deepseek-ci / help-wanted / dependency-phase):
-#   ARCHWIZ_GITHUB_TOKEN || OPERATOR_GITHUB_TOKEN || OPERATOR_TOKEN
-# Optional override: CODESPACE_CREATE_TOKEN (if set, wins)
-# Values live only in Settings → Secrets → Actions. Never print.
+# SSOT: ARCHWIZ_GITHUB_TOKEN || OPERATOR_GITHUB_TOKEN || OPERATOR_TOKEN
+# Optional override: CODESPACE_CREATE_TOKEN
+# Never print token values.
 
 on:
   workflow_dispatch:
@@ -39,7 +38,6 @@ jobs:
           HAS_OP: ${{ secrets.OPERATOR_TOKEN != '' }}
         run: |
           set -euo pipefail
-          # Report which secret NAMES are non-empty — never values
           echo "CODESPACE_CREATE_TOKEN present: $HAS_CS"
           echo "ARCHWIZ_GITHUB_TOKEN present: $HAS_ARCHWIZ"
           echo "OPERATOR_GITHUB_TOKEN present: $HAS_OP_GH"
@@ -47,28 +45,26 @@ jobs:
           if [ "$HAS_CS" = "true" ] || [ "$HAS_ARCHWIZ" = "true" ] || [ "$HAS_OP_GH" = "true" ] || [ "$HAS_OP" = "true" ]; then
             echo "resolved=true" >> "$GITHUB_OUTPUT"
           else
-            echo "resolved=false" >> "$GITHUB_OUTPUT"
             echo "::error::No privileged GH token secret present."
-            echo "Expected one of: CODESPACE_CREATE_TOKEN, ARCHWIZ_GITHUB_TOKEN,"
-            echo "OPERATOR_GITHUB_TOKEN, OPERATOR_TOKEN (repo Actions secrets)."
             exit 1
           fi
 
       - name: Create codespace
         id: create
         env:
-          # Precedence matches monorepo SSOT; override first if set
           GH_TOKEN: ${{ secrets.CODESPACE_CREATE_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
           REF: ${{ inputs.ref }}
           MACHINE: ${{ inputs.machine }}
           DISPLAY: ${{ inputs.display_name }}
         run: |
           set -euo pipefail
+          # GitHub API: machine is a STRING, not {name: ...}
           body=$(jq -n \
             --arg ref "$REF" \
             --arg machine "$MACHINE" \
             --arg name "$DISPLAY" \
-            '{ref: $ref, machine: {name: $machine}, display_name: $name}')
+            '{ref: $ref, machine: $machine, display_name: $name}')
+          echo "request body (no secrets): $body"
           resp=$(curl -sS -X POST \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${GH_TOKEN}" \
@@ -79,7 +75,7 @@ jobs:
           name=$(echo "$resp" | jq -r '.name // empty')
           web=$(echo "$resp" | jq -r '.web_url // empty')
           if [ -z "$name" ]; then
-            echo "::error::Codespace create failed — token may lack codespace scope, or billing/limit."
+            echo "::error::Codespace create failed"
             echo "$resp" | jq . 2>/dev/null || echo "$resp"
             exit 1
           fi

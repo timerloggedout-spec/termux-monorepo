@@ -3,15 +3,12 @@ name: evidence-led-monorepo-ops
 description: Continuous evidence-led admin ops on timerloggedout-spec/termux-monorepo. Load every admin session.
 ---
 
-Canonical: master `.agents/skills/evidence-led-monorepo-ops/SKILL.md`.
+Local mirror. Canonical is master `.agents/skills/evidence-led-monorepo-ops/SKILL.md`.
 
-Session 2026-09-21 10:09 PDT: live master tip `2e4f59aa` after #707 squash.
-**SSOT lane matrix:** `docs/ops/LANE-MATRIX.md` — rewrite every session.
-**Peer routing:** Copilot is optional peer — NOT a promote gate.
-**Mega policy:** size ≠ quality; dual-gate green + 130 files still EXTRACT.
-Vercel 24h rate-limit is a **non-gate**.
-#682 EXTRACT/WAIT. #684 HOLD. #685/#695/#702 OBSERVE.
-#705/#706/#709 SUPERSEDE (older session rewrites vs post-#707 tip).
-#432/#549/#601 EXTRACT. #630 minesweeper.
-Skills co-loaded: adaptive-wait, approxination-lane.
+Session 2026-09-23: Codespace API create proven (run 35837921144).
+Secrets SSOT: ARCHWIZ_GITHUB_TOKEN || OPERATOR_GITHUB_TOKEN (present).
+#184 names only — values in Actions secrets.
+Broadcast: docs/ops/CODESPACE-CREDENTIALS-SSOT.md
+BIFROST-006 evidence dir + bifrost-006-smoke.yml
+
 Agent-Identity: Grok (Administrator)

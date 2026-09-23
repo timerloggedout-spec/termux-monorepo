@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-23T00:34:20Z UTC · receipts=47 · foreign_open=13 · tributes=30_
+_Generated 2026-09-23T05:10:58Z UTC · receipts=47 · foreign_open=13 · tributes=31_
 
 ## Tributes (contributor ledger)
 
+- [limelitgeo/open#32](https://github.com/limelitgeo/open/pull/32) · state=open · help-wanted: stake + contribute for #31
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [sorotrail/SoroTrail#943](https://github.com/sorotrail/SoroTrail/pull/943) · state=closed · help-wanted: stake + contribute for #142
 - [DeltaV-Station/Delta-v#6534](https://github.com/DeltaV-Station/Delta-v/pull/6534) · state=closed · help-wanted: stake + contribute for #6533
@@ -24,7 +25,7 @@ _Generated 2026-09-23T00:34:20Z UTC · receipts=47 · foreign_open=13 · tribute
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
 - [mangiapanejohn-dev/MOBIUS-Searcher#7](https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7) · state=open · help-wanted: stake + contribute for #6
-- [chahe-dridi/vscode-agent-bell#225](https://github.com/chahe-dridi/vscode-agent-bell/pull/225) · state=open · help-wanted: stake + contribute for #224
+- [chahe-dridi/vscode-agent-bell#225](https://github.com/chahe-dridi/vscode-agent-bell/pull/225) · state=closed · help-wanted: stake + contribute for #224
 - [timerloggedout-spec/gh-aw_fork#1](https://github.com/timerloggedout-spec/gh-aw_fork/pull/1) · state=closed · ops(smoke-otel): agentless data-first — zero LLM / zero Copilot AIC
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) · state=open · Change project name from DeepV Code to Easy Code
 - [timerloggedout-spec/termux-mcp#1](https://github.com/timerloggedout-spec/termux-mcp/pull/1) · state=closed · fix(ci): pin actions/checkout and vercel CLI to immutable versions
@@ -37,6 +38,7 @@ _Generated 2026-09-23T00:34:20Z UTC · receipts=47 · foreign_open=13 · tribute
 
 ## Foreign open PRs
 
+- [limelitgeo/open#32](https://github.com/limelitgeo/open/pull/32) — help-wanted: stake + contribute for #31
 - [w1977-0/open-stream-saver#3](https://github.com/w1977-0/open-stream-saver/pull/3) — help-wanted: stake + contribute for #1
 - [umn-adc/ATLAS#42](https://github.com/umn-adc/ATLAS/pull/42) — help-wanted: stake + contribute for #31
 - [olcf/olcf-test-harness#280](https://github.com/olcf/olcf-test-harness/pull/280) — help-wanted: stake + contribute for #278
@@ -44,7 +46,6 @@ _Generated 2026-09-23T00:34:20Z UTC · receipts=47 · foreign_open=13 · tribute
 - [bmad-code-org/bmad-loop#819](https://github.com/bmad-code-org/bmad-loop/pull/819) — help-wanted: stake + contribute for #780
 - [infagent/merl#43](https://github.com/infagent/merl/pull/43) — help-wanted: stake + contribute for #42
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) — help-wanted: stake + contribute for #25
-- [chahe-dridi/vscode-agent-bell#225](https://github.com/chahe-dridi/vscode-agent-bell/pull/225) — help-wanted: stake + contribute for #224
 - [mangiapanejohn-dev/MOBIUS-Searcher#7](https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7) — help-wanted: stake + contribute for #6
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) — help-wanted: stake + contribute for #20
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) — help-wanted: stake + contribute for #273

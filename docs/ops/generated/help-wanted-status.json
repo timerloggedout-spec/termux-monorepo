@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-23T00:34:20Z",
+  "generated_at": "2026-09-23T05:10:58Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
   "receipts": 47,
@@ -12,6 +12,15 @@
     "ok": 47
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/limelitgeo/open/pull/32",
+      "title": "help-wanted: stake + contribute for #31",
+      "number": 32,
+      "repo": "limelitgeo/open",
+      "state": "open",
+      "updated_at": "2026-09-23T05:10:46Z",
+      "tribute": true
+    },
     {
       "html_url": "https://github.com/w1977-0/open-stream-saver/pull/3",
       "title": "help-wanted: stake + contribute for #1",
@@ -76,15 +85,6 @@
       "tribute": true
     },
     {
-      "html_url": "https://github.com/chahe-dridi/vscode-agent-bell/pull/225",
-      "title": "help-wanted: stake + contribute for #224",
-      "number": 225,
-      "repo": "chahe-dridi/vscode-agent-bell",
-      "state": "open",
-      "updated_at": "2026-09-19T23:12:03Z",
-      "tribute": true
-    },
-    {
       "html_url": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
       "title": "help-wanted: stake + contribute for #6",
       "number": 7,
@@ -132,6 +132,19 @@
   ],
   "foreign_open_count": 13,
   "tributes": [
+    {
+      "pr_url": "https://github.com/limelitgeo/open/pull/32",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-23T05:10:46Z",
+      "providers": [],
+      "repo": "limelitgeo/open",
+      "number": 32,
+      "title": "help-wanted: stake + contribute for #31",
+      "state": "open"
+    },
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
@@ -442,7 +455,7 @@
       "repo": "chahe-dridi/vscode-agent-bell",
       "number": 225,
       "title": "help-wanted: stake + contribute for #224",
-      "state": "open"
+      "state": "closed"
     },
     {
       "pr_url": "https://github.com/timerloggedout-spec/gh-aw_fork/pull/1",
@@ -562,7 +575,7 @@
       "state": "closed"
     }
   ],
-  "tribute_count": 30,
+  "tribute_count": 31,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -1005,7 +1018,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "4ba0adda36f38a93e65f2dc1c2eb3aee009da29e",
+    "source_sha": "cc92252183b626ff24e967150613ca22d246dd8c",
     "source_ref": "master",
     "history_complete": true,
     "history_count": 1,
@@ -1038,12 +1051,12 @@
   },
   "evolution": [
     {
-      "sha": "4ba0adda36f38a93e65f2dc1c2eb3aee009da29e",
-      "short_sha": "4ba0adda36f3",
-      "date": "2026-09-23T00:32:31Z",
+      "sha": "cc92252183b626ff24e967150613ca22d246dd8c",
+      "short_sha": "cc92252183b6",
+      "date": "2026-09-23T04:40:49Z",
       "author": "github-actions[bot]",
-      "subject": "ops(help-wanted): live status refresh 2026-09-23T00:32Z",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/4ba0adda36f38a93e65f2dc1c2eb3aee009da29e"
+      "subject": "ops(lane-matrix): refresh generated status from recursive sweep",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/cc92252183b626ff24e967150613ca22d246dd8c"
     }
   ],
   "pipeline": [

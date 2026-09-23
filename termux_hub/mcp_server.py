@@ -98,6 +98,7 @@ def health() -> str:
         "termux_api": False,
         "shizuku_rish": False,
         "shizuku_package": False,
+        "shizuku_plus_package": False,
     }
 
     if shutil.which("tailscale"):
@@ -123,6 +124,10 @@ def health() -> str:
         if result["shizuku_rish"]:
             result["shizuku_package"] = subprocess.run(
                 ["rish", "-c", "pm path moe.shizuku.privileged.api"],
+                capture_output=True,
+            ).returncode == 0
+            result["shizuku_plus_package"] = subprocess.run(
+                ["rish", "-c", "pm path af.shizuku.plus.api"],
                 capture_output=True,
             ).returncode == 0
 

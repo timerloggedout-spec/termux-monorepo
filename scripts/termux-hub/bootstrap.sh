@@ -64,6 +64,9 @@ if [ -d "$REPO_ROOT/scripts/termux-hub" ]; then
   mkdir -p "$HOME_DIR/.local/bin"
   cp "$REPO_ROOT/scripts/termux-hub/health.sh" "$HOME_DIR/.local/bin/termux-hub-health"
   chmod 700 "$HOME_DIR/.local/bin/termux-hub-health"
+  if [ -f "$REPO_ROOT/scripts/termux-hub/install-mcp.sh" ]; then
+    sh "$REPO_ROOT/scripts/termux-hub/install-mcp.sh"
+  fi
 fi
 
 # Optional Termux:Boot persistence. Do not assume Termux:Boot exists.

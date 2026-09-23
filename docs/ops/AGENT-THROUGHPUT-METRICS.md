@@ -1,6 +1,6 @@
 # Agent Throughput & Quality Metrics
 
-**Status:** adopted observational measurement contract  
+**Status:** adopted observational measurement contract
 **Principle:** **quality > time**. Throughput is a diagnostic dimension, never a merge-quality proxy by itself.
 
 ## Purpose

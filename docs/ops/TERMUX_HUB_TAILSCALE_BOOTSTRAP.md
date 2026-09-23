@@ -161,7 +161,7 @@ The project should verify boot behavior on the target Android build rather than 
 4. Use the `termux-hub` SSH profile above.
 5. Run the read-only health script:
    ```bash
-   ./scripts/termux-hub/health.sh
+   sh ./scripts/termux-hub/health.sh
    ```
 6. Record the output as operational evidence, after removing host/user identifiers where they are not needed.
 7. Only then enable the reviewed MCP client configuration.

@@ -1,0 +1,6 @@
+id: 10_ingest
+name: INGEST
+purpose: |
+  Normalize GitHub/Linear/Actions events into the feature store.
+halt_on: [FAILED]
+allows: [OK, SKIPPED]

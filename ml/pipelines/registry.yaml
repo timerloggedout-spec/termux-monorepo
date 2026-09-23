@@ -1,0 +1,27 @@
+version: 1
+id: ml-pipeline-keep
+issue: 175
+supersedes_extract_only: [432, 601]
+updated_at: "2026-09-20T17:20:00Z"
+updated_by: grok-administrator
+gates: [repo-gate, termux-smoke]
+stages:
+  - id: 00_recon
+    class: ml.pipelines.stages.s00_recon.stage.ReconStage
+  - id: 10_ingest
+    class: ml.pipelines.stages.s10_ingest.stage.IngestStage
+  - id: 20_features
+    class: ml.pipelines.stages.s20_features.stage.FeaturesStage
+  - id: 30_train
+    class: ml.pipelines.stages.s30_train.stage.TrainStage
+  - id: 40_evaluate
+    class: ml.pipelines.stages.s40_evaluate.stage.EvaluateStage
+  - id: 50_deploy
+    class: ml.pipelines.stages.s50_deploy.stage.DeployStage
+  - id: 60_monitor
+    class: ml.pipelines.stages.s60_monitor.stage.MonitorStage
+lanes:
+  promote: dual_gate_green
+  wait: unstable_or_in_progress
+  hold: dirty_or_minesweeper
+  extract: mega_pr_or_ml_wholesale

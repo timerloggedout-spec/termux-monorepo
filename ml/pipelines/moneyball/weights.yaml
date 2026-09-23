@@ -1,0 +1,20 @@
+version: 1
+# Higher is more promote-worthy. Dirty/mega strongly negative.
+weights:
+  dual_gate_green: 5.0
+  mergeable_clean: 3.0
+  files_small: 1.5
+  tests_present: 1.0
+  security_fix: 2.0
+  docs_only: 0.5
+  stale_base: -2.0
+  mergeable_dirty: -8.0
+  mergeable_unstable: -1.0
+  changed_files_over_40: -3.0
+  minesweeper_overlap: -6.0
+  ml_wholesale: -10.0
+  jules_bot: -0.25
+thresholds:
+  promote: 4.0
+  wait: 0.0
+  hold: -3.0

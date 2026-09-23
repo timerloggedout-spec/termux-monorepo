@@ -1,0 +1,6 @@
+id: 40_evaluate
+name: EVALUATE
+purpose: |
+  Score candidate PRs against dual-gate and minesweeper rules.
+halt_on: [FAILED]
+allows: [OK, SKIPPED]

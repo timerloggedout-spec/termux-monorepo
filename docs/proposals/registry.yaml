@@ -1,6 +1,6 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-09-18T21:55:00Z"
+updated_at: "2026-09-20T21:10:00Z"
 updated_by: grok-administrator
 
 proposals:
@@ -277,6 +277,64 @@ proposals:
     related_issues: [292]
     related_prs: [329]
     related_branches: [proposal/archwiz-ui-protocol-clean]
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: ml-pipeline-keep
+    title: "ML pipeline keep-alive DAG (extract-only vs #432/#601)"
+    author: grok
+    status: executing
+    priority: P1
+    path: active/ml-pipeline-keep/
+    reviewers:
+      - id: grok
+        role: author+executor
+        status: executing
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: [175, 432, 601]
+    related_prs: [682]
+    related_branches: [ops/ml-pipeline-keep-20260920]
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: cost-of-remembering-integration
+    title: "RinDig cost-of-remembering_fork ICM evidence lane"
+    author: timerloggedout-spec
+    status: executing
+    priority: P1
+    path: active/cost-of-remembering-integration/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_prs: []
+    related_branches: [feat/rindig-cost-of-remembering-icm]
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: mcp-hub-risk-split
+    title: "mcp-hub / hub_mcp risk split"
+    author: timerloggedout-spec
+    status: executing
+    priority: P1
+    path: active/mcp-hub-risk-split/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_prs: [442]
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: auditengine-adapt
+    title: "RinDig AuditEngine (Ethics Engine) adapt pass"
+    author: timerloggedout-spec
+    status: draft
+    priority: P2
+    path: active/auditengine-adapt/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_prs: []
     gates_required: [repo-gate, termux-smoke]
 
   - id: vercel-lane-topology

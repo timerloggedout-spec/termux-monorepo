@@ -1,0 +1,6 @@
+id: 60_monitor
+name: MONITOR
+purpose: |
+  Watch post-merge Actions; feed WAIT → VALIDATE → RE-FETCH.
+halt_on: [FAILED]
+allows: [OK, SKIPPED]

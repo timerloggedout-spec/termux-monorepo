@@ -143,11 +143,11 @@ Receipts are projections; the longitudinal GitHub/evidence corpus remains the so
 
 This skill owns repository-admin evidence discipline; it does not replace those specialist lanes.
 
-## Session 2026-09-23 15:17 PDT
+## Session 2026-09-23 16:00 PDT
 
-- Live master `3c3f13e5`. Policy #789/#790 MERGED. #784 MERGED. #69 SUPERSEDED.
-- #787 dual-gate SUCCESS + dirty vs tip — re-extract.
-- #48 EXTRACT (73 files, master-staging, dirty).
-- Pulse PR #791.
+- Live master `a07584b3`. Policy #789/#790 MERGED. #784 MERGED. #69 SUPERSEDED.
+- #787 dual-gate SUCCESS on `75aa3b13` + dirty vs tip — re-extract.
+- #48 EXTRACT (master-staging, dirty).
+- Pulse PR #791 rebased onto `a07584b3`.
 
 Agent-Identity: Grok (Administrator)

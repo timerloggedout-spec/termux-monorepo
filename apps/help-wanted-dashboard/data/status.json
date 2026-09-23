@@ -1,15 +1,18 @@
 {
-  "generated_at": "2026-09-23T07:45:55Z",
+  "generated_at": "2026-09-23T07:47:49Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
-  "receipts": 48,
+  "receipts": 59,
   "kinds": {
     "upstream_pr": 12,
     "claim_skipped_closed": 1,
-    "followup_skip_idempotent": 35
+    "followup_skip_idempotent": 35,
+    "followup_skip_cooldown": 3,
+    "followup_reengage": 6,
+    "followup_stale_nudge": 2
   },
   "outcomes": {
-    "ok": 48
+    "ok": 59
   },
   "foreign_open_prs": [
     {
@@ -27,7 +30,7 @@
       "number": 42,
       "repo": "umn-adc/ATLAS",
       "state": "open",
-      "updated_at": "2026-09-21T23:38:03Z",
+      "updated_at": "2026-09-23T07:47:26Z",
       "tribute": true
     },
     {
@@ -54,7 +57,7 @@
       "number": 819,
       "repo": "bmad-code-org/bmad-loop",
       "state": "open",
-      "updated_at": "2026-09-20T22:43:23Z",
+      "updated_at": "2026-09-23T07:47:19Z",
       "tribute": true
     },
     {
@@ -63,7 +66,7 @@
       "number": 26,
       "repo": "Kilo-Org/agentic-path",
       "state": "open",
-      "updated_at": "2026-09-19T23:07:32Z",
+      "updated_at": "2026-09-23T07:47:20Z",
       "tribute": true
     },
     {
@@ -72,7 +75,7 @@
       "number": 7,
       "repo": "mangiapanejohn-dev/MOBIUS-Searcher",
       "state": "open",
-      "updated_at": "2026-09-19T22:30:10Z",
+      "updated_at": "2026-09-23T07:47:33Z",
       "tribute": true
     },
     {
@@ -81,7 +84,7 @@
       "number": 23,
       "repo": "E-Timileyin/Sail-CLI",
       "state": "open",
-      "updated_at": "2026-09-19T21:17:40Z",
+      "updated_at": "2026-09-23T07:47:24Z",
       "tribute": true
     },
     {
@@ -90,7 +93,7 @@
       "number": 657,
       "repo": "GlassHaven/Haven",
       "state": "open",
-      "updated_at": "2026-09-20T20:30:13Z",
+      "updated_at": "2026-09-23T07:47:27Z",
       "tribute": true
     },
     {
@@ -99,7 +102,7 @@
       "number": 81,
       "repo": "vedantnimbarte/zero",
       "state": "open",
-      "updated_at": "2026-09-20T09:08:44Z",
+      "updated_at": "2026-09-23T07:47:28Z",
       "tribute": true
     },
     {
@@ -108,7 +111,7 @@
       "number": 53,
       "repo": "OrionStarAI/EasyCode",
       "state": "open",
-      "updated_at": "2026-09-11T03:26:17Z",
+      "updated_at": "2026-09-23T07:47:31Z",
       "tribute": true
     }
   ],
@@ -154,14 +157,151 @@
         "followup_skip_idempotent",
         "followup_skip_idempotent",
         "followup_skip_idempotent",
-        "followup_skip_idempotent"
+        "followup_skip_idempotent",
+        "followup_reengage"
       ],
       "ok": true,
-      "last_ts": "2026-09-23T07:44:58Z",
+      "last_ts": "2026-09-23T07:47:11Z",
       "providers": [],
       "repo": "vedantnimbarte/zero",
       "number": 81,
       "title": "docs(layout): refresh stale ponytail comments (flex + grid)",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/GlassHaven/Haven/pull/657",
+      "kinds": [
+        "upstream_pr",
+        "upstream_pr",
+        "followup_reengage"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-23T07:47:11Z",
+      "providers": [],
+      "repo": "GlassHaven/Haven",
+      "number": 657,
+      "title": "help-wanted: stake + contribute for #273",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/E-Timileyin/Sail-CLI/pull/23",
+      "kinds": [
+        "upstream_pr",
+        "upstream_pr",
+        "followup_reengage"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-23T07:47:11Z",
+      "providers": [],
+      "repo": "E-Timileyin/Sail-CLI",
+      "number": 23,
+      "title": "help-wanted: stake + contribute for #20",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/Kilo-Org/agentic-path/pull/26",
+      "kinds": [
+        "upstream_pr",
+        "followup_stale_nudge"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-23T07:47:11Z",
+      "providers": [],
+      "repo": "Kilo-Org/agentic-path",
+      "number": 26,
+      "title": "help-wanted: stake + contribute for #25",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
+      "kinds": [
+        "upstream_pr",
+        "followup_reengage"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-23T07:47:11Z",
+      "providers": [],
+      "repo": "mangiapanejohn-dev/MOBIUS-Searcher",
+      "number": 7,
+      "title": "help-wanted: stake + contribute for #6",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/w1977-0/open-stream-saver/pull/3",
+      "kinds": [
+        "followup_skip_cooldown"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-23T07:47:11Z",
+      "providers": [],
+      "repo": "w1977-0/open-stream-saver",
+      "number": 3,
+      "title": "help-wanted: stake + contribute for #1",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/umn-adc/ATLAS/pull/42",
+      "kinds": [
+        "followup_reengage"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-23T07:47:11Z",
+      "providers": [],
+      "repo": "umn-adc/ATLAS",
+      "number": 42,
+      "title": "help-wanted: stake + contribute for #31",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/olcf/olcf-test-harness/pull/280",
+      "kinds": [
+        "followup_skip_cooldown"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-23T07:47:11Z",
+      "providers": [],
+      "repo": "olcf/olcf-test-harness",
+      "number": 280,
+      "title": "help-wanted: stake + contribute for #278",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/Vasudev-ai/Focusflow/pull/15",
+      "kinds": [
+        "followup_skip_cooldown"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-23T07:47:11Z",
+      "providers": [],
+      "repo": "Vasudev-ai/Focusflow",
+      "number": 15,
+      "title": "help-wanted: stake + contribute for #2",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/bmad-code-org/bmad-loop/pull/819",
+      "kinds": [
+        "followup_reengage"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-23T07:47:11Z",
+      "providers": [],
+      "repo": "bmad-code-org/bmad-loop",
+      "number": 819,
+      "title": "help-wanted: stake + contribute for #780",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/OrionStarAI/EasyCode/pull/53",
+      "kinds": [
+        "followup_stale_nudge"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-23T07:47:11Z",
+      "providers": [],
+      "repo": "OrionStarAI/EasyCode",
+      "number": 53,
+      "title": "Change project name from DeepV Code to Easy Code",
       "state": "open"
     },
     {
@@ -217,19 +357,6 @@
       "state": "closed"
     },
     {
-      "pr_url": "https://github.com/w1977-0/open-stream-saver/pull/3",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-22T13:40:22Z",
-      "providers": [],
-      "repo": "w1977-0/open-stream-saver",
-      "number": 3,
-      "title": "help-wanted: stake + contribute for #1",
-      "state": "open"
-    },
-    {
       "pr_url": "https://github.com/ussyalfaks/ahjoorxmr-contract/pull/872",
       "kinds": [
         "upstream_pr"
@@ -256,32 +383,6 @@
       "state": "closed"
     },
     {
-      "pr_url": "https://github.com/umn-adc/ATLAS/pull/42",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-21T23:38:03Z",
-      "providers": [],
-      "repo": "umn-adc/ATLAS",
-      "number": 42,
-      "title": "help-wanted: stake + contribute for #31",
-      "state": "open"
-    },
-    {
-      "pr_url": "https://github.com/olcf/olcf-test-harness/pull/280",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-21T20:36:44Z",
-      "providers": [],
-      "repo": "olcf/olcf-test-harness",
-      "number": 280,
-      "title": "help-wanted: stake + contribute for #278",
-      "state": "open"
-    },
-    {
       "pr_url": "https://github.com/ennouaimi/invoicr/pull/8",
       "kinds": [
         "upstream_pr"
@@ -306,32 +407,6 @@
       "number": 34,
       "title": "help-wanted: stake + contribute for #33",
       "state": "closed"
-    },
-    {
-      "pr_url": "https://github.com/Vasudev-ai/Focusflow/pull/15",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-21T05:29:26Z",
-      "providers": [],
-      "repo": "Vasudev-ai/Focusflow",
-      "number": 15,
-      "title": "help-wanted: stake + contribute for #2",
-      "state": "open"
-    },
-    {
-      "pr_url": "https://github.com/bmad-code-org/bmad-loop/pull/819",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-20T22:43:23Z",
-      "providers": [],
-      "repo": "bmad-code-org/bmad-loop",
-      "number": 819,
-      "title": "help-wanted: stake + contribute for #780",
-      "state": "open"
     },
     {
       "pr_url": "https://github.com/pyrite-wiki/pyrite/pull/198",
@@ -374,60 +449,6 @@
       "state": "closed"
     },
     {
-      "pr_url": "https://github.com/GlassHaven/Haven/pull/657",
-      "kinds": [
-        "upstream_pr",
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-19T23:20:00Z",
-      "providers": [],
-      "repo": "GlassHaven/Haven",
-      "number": 657,
-      "title": "help-wanted: stake + contribute for #273",
-      "state": "open"
-    },
-    {
-      "pr_url": "https://github.com/E-Timileyin/Sail-CLI/pull/23",
-      "kinds": [
-        "upstream_pr",
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-19T23:20:00Z",
-      "providers": [],
-      "repo": "E-Timileyin/Sail-CLI",
-      "number": 23,
-      "title": "help-wanted: stake + contribute for #20",
-      "state": "open"
-    },
-    {
-      "pr_url": "https://github.com/Kilo-Org/agentic-path/pull/26",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-19T23:20:00Z",
-      "providers": [],
-      "repo": "Kilo-Org/agentic-path",
-      "number": 26,
-      "title": "help-wanted: stake + contribute for #25",
-      "state": "open"
-    },
-    {
-      "pr_url": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-19T23:20:00Z",
-      "providers": [],
-      "repo": "mangiapanejohn-dev/MOBIUS-Searcher",
-      "number": 7,
-      "title": "help-wanted: stake + contribute for #6",
-      "state": "open"
-    },
-    {
       "pr_url": "https://github.com/chahe-dridi/vscode-agent-bell/pull/225",
       "kinds": [
         "upstream_pr"
@@ -452,19 +473,6 @@
       "number": 1,
       "title": "ops(smoke-otel): agentless data-first \u2014 zero LLM / zero Copilot AIC",
       "state": "closed"
-    },
-    {
-      "pr_url": "https://github.com/OrionStarAI/EasyCode/pull/53",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-11T03:26:17Z",
-      "providers": [],
-      "repo": "OrionStarAI/EasyCode",
-      "number": 53,
-      "title": "Change project name from DeepV Code to Easy Code",
-      "state": "open"
     },
     {
       "pr_url": "https://github.com/timerloggedout-spec/termux-mcp/pull/1",
@@ -989,6 +997,149 @@
         "ok": true,
         "lane": "help-wanted-followup",
         "foreign": true
+      },
+      {
+        "ts": "2026-09-23T07:47:11Z",
+        "kind": "followup_reengage",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "comment_url": "https://github.com/vedantnimbarte/zero/pull/81#issuecomment-5791085090",
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "reengage",
+        "has_contributing": true,
+        "url_count": 1
+      }
+    ],
+    "https://github.com/w1977-0/open-stream-saver/pull/3": [
+      {
+        "ts": "2026-09-23T07:47:11Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/w1977-0/open-stream-saver/pull/3",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      }
+    ],
+    "https://github.com/umn-adc/ATLAS/pull/42": [
+      {
+        "ts": "2026-09-23T07:47:11Z",
+        "kind": "followup_reengage",
+        "issue": "https://github.com/umn-adc/ATLAS/pull/42",
+        "ok": true,
+        "comment_url": "https://github.com/umn-adc/ATLAS/pull/42#issuecomment-5791082487",
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "reengage",
+        "has_contributing": false,
+        "url_count": 1
+      }
+    ],
+    "https://github.com/olcf/olcf-test-harness/pull/280": [
+      {
+        "ts": "2026-09-23T07:47:11Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/olcf/olcf-test-harness/pull/280",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      }
+    ],
+    "https://github.com/Vasudev-ai/Focusflow/pull/15": [
+      {
+        "ts": "2026-09-23T07:47:11Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/Vasudev-ai/Focusflow/pull/15",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      }
+    ],
+    "https://github.com/bmad-code-org/bmad-loop/pull/819": [
+      {
+        "ts": "2026-09-23T07:47:11Z",
+        "kind": "followup_reengage",
+        "issue": "https://github.com/bmad-code-org/bmad-loop/pull/819",
+        "ok": true,
+        "comment_url": "https://github.com/bmad-code-org/bmad-loop/pull/819#issuecomment-5791083102",
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "reengage",
+        "has_contributing": true,
+        "url_count": 19
+      }
+    ],
+    "https://github.com/Kilo-Org/agentic-path/pull/26": [
+      {
+        "ts": "2026-09-23T07:47:11Z",
+        "kind": "followup_stale_nudge",
+        "issue": "https://github.com/Kilo-Org/agentic-path/pull/26",
+        "ok": true,
+        "comment_url": "https://github.com/Kilo-Org/agentic-path/pull/26#issuecomment-5791083503",
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "stale_nudge",
+        "has_contributing": true,
+        "url_count": 5
+      }
+    ],
+    "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7": [
+      {
+        "ts": "2026-09-23T07:47:11Z",
+        "kind": "followup_reengage",
+        "issue": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
+        "ok": true,
+        "comment_url": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7#issuecomment-5791083859",
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "reengage",
+        "has_contributing": true,
+        "url_count": 2
+      }
+    ],
+    "https://github.com/E-Timileyin/Sail-CLI/pull/23": [
+      {
+        "ts": "2026-09-23T07:47:11Z",
+        "kind": "followup_reengage",
+        "issue": "https://github.com/E-Timileyin/Sail-CLI/pull/23",
+        "ok": true,
+        "comment_url": "https://github.com/E-Timileyin/Sail-CLI/pull/23#issuecomment-5791084234",
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "reengage",
+        "has_contributing": true,
+        "url_count": 0
+      }
+    ],
+    "https://github.com/GlassHaven/Haven/pull/657": [
+      {
+        "ts": "2026-09-23T07:47:11Z",
+        "kind": "followup_reengage",
+        "issue": "https://github.com/GlassHaven/Haven/pull/657",
+        "ok": true,
+        "comment_url": "https://github.com/GlassHaven/Haven/pull/657#issuecomment-5791084725",
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "reengage",
+        "has_contributing": false,
+        "url_count": 0
+      }
+    ],
+    "https://github.com/OrionStarAI/EasyCode/pull/53": [
+      {
+        "ts": "2026-09-23T07:47:11Z",
+        "kind": "followup_stale_nudge",
+        "issue": "https://github.com/OrionStarAI/EasyCode/pull/53",
+        "ok": true,
+        "comment_url": "https://github.com/OrionStarAI/EasyCode/pull/53#issuecomment-5791085589",
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "stale_nudge",
+        "has_contributing": false,
+        "url_count": 0
       }
     ]
   },
@@ -1009,7 +1160,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "2a767d49aec77c411e05f7b5482ace61ebfc4716",
+    "source_sha": "2a476e22f032554da39ad2d110f6813076e1195a",
     "source_ref": "master",
     "history_complete": true,
     "history_count": 1,
@@ -1042,12 +1193,12 @@
   },
   "evolution": [
     {
-      "sha": "2a767d49aec77c411e05f7b5482ace61ebfc4716",
-      "short_sha": "2a767d49aec7",
-      "date": "2026-09-23T07:45:15Z",
+      "sha": "2a476e22f032554da39ad2d110f6813076e1195a",
+      "short_sha": "2a476e22f032",
+      "date": "2026-09-23T07:47:32Z",
       "author": "github-actions[bot]",
-      "subject": "ops(help-wanted): live status refresh 2026-09-23T07:45Z",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/2a767d49aec77c411e05f7b5482ace61ebfc4716"
+      "subject": "ops(help-wanted): follow-up evidence 2026-09-23T07:47Z",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/2a476e22f032554da39ad2d110f6813076e1195a"
     }
   ],
   "pipeline": [

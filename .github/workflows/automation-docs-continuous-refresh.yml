@@ -106,6 +106,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p docs/ops/generated
+          printf '%s\n' '{"args":["--no-sandbox","--disable-setuid-sandbox"]}' > /tmp/puppeteer-config.json
           MMDC="npx --yes @mermaid-js/mermaid-cli@11.4.2"
           count=0
           for src in docs/ops/diagrams/*.mmd; do

@@ -70,7 +70,7 @@ jobs:
             stem=$(basename "$src" .mmd)
             out="docs/ops/generated/${stem}.png"
             echo "mmdc: $src -> $out"
-            $MMDC -i "$src" -o "$out" -b transparent -s 2
+            $MMDC -i "$src" -o "$out" -b transparent -s 2 --puppeteerConfigFile /tmp/puppeteer-config.json
             count=$((count + 1))
           done
           if [ "$count" -eq 0 ]; then

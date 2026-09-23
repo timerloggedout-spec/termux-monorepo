@@ -1,65 +1,65 @@
 # LANE-MATRIX (living SSOT)
 
-**Session:** 2026-09-21 16:13 PDT  
+**Session:** 2026-09-23 15:07 PDT  
 **Agent-Identity:** Grok (Administrator)  
-**Live master (base):** `cb995e76`  
-**This PR tip:** ops/biudl-claude-primary-deprecate-agents-20260921  
-**Priority hub:** Issue #175
+**Live master (base):** `ad2a0a9c` (policy branch tip tracks master)  
+**Priority hub:** Issue #175  
+**Credential SSOT:** Issue #184 (names only; never paste secrets)
 
-Rewrite this file every admin session. Copilot is optional peer, not a promote gate. Size ≠ quality. Promote when dual-gate is green **and** the diff is an extract, not a mega. Vercel rate-limit is non-gate. Age alone does not promote.
+Rewrite this file every admin session. Copilot / CodeRabbit / Devin / Qodo are **advisory peers**, not promote gates. Size ≠ quality. Promote when dual-gate is green **and** the diff is an extract, not a mega. Vercel rate-limit is non-gate (#772). Age alone does not promote.
 
-**BIUDL = Broad → Integrate → Validate → Develop → Learn.** Fully Continuous Automated Development Evaluation Environment. **AVOID HITL YOLO MODE YEET AUTOAPPROVE.**
+**BIUDL = Broad → Integrate → Validate → Develop → Learn.**  
+**Operating posture:** Continuous Fully Automated Agentic Development Environment. Agents hold full scoped permissions (Actions secrets / OPERATOR / ARCHWIZ chain per #184) and **auto-promote** when dual-gate + task-outcome evidence is verified on the candidate SHA.  
+**Sovereignty:** ArchWiz cockpit + chat remain the human goal/constraint surface for build-request projects. Human input is not a synchronous merge checkpoint when authority and gates already permit agent execution.
 
-**Status change (this cycle):** Root `CLAUDE.md` is sole primary agent entry. Root `AGENTS.md` is **deprecated** (Linguist / CedrLang / Jules redirect-only). Content folded. All lanes (Jules, Linguist, Sentinel, Bolt, help-wanted, Codespace, ecc-tools, Stepie) load `CLAUDE.md` first.
+**Status change (this cycle):** Anti-YOLO / anti-AUTOAPPROVE directive language retired. HOLD is not an idle parking state. WAIT = evidence collection until promote conditions hold, then promote.
 
-## Landed this window (evidence)
+## Landed / active evidence
 
-| SHA | What |
-|-----|------|
-| (pending dual-gate) | CLAUDE.md BIUDL expanded + AGENTS.md deprecated redirect |
-| (pending) | REFTEMPLATES directive corrected (no YOLO/YEET) |
-| `cb995e76` | prior tip |
+| SHA / PR | What |
+|----------|------|
+| #784 `5f87e41e` | Debate-dock EXTRACT from #69 — dual-gate (repo gate + termux smoke) SUCCESS; Vercel RL non-gate |
+| this branch | Policy realignment: sovereignty + agent auto-approve |
+| help-wanted bots | Live status refresh advancing master tip |
 
 ## Dual-gate contract
 
-1. `hygiene + portability gate` SUCCESS
-2. `agentic termux smoke` SUCCESS
+1. `hygiene + portability gate` / `repo gate` SUCCESS
+2. `agentic termux smoke` / `termux smoke` SUCCESS
 3. Vercel rate-limits are **non-gate**
-4. Copilot / CodeRabbit / Qodo / Devin = advisory
+4. Copilot / CodeRabbit / Qodo / Devin = advisory only
 5. GitLab / Mintlify = non-gate
 6. Age alone does not promote; dual-gate + rebase onto live master does
-7. Size ≠ quality: dual-gate green + 130 files still EXTRACT
+7. Size ≠ quality: dual-gate green + large file count still EXTRACT unless sliced
 
 ## Tip-first active lanes
 
 | PR | Lane | Why |
 |----|------|-----|
-| #682 | EXTRACT / WAIT | ML keep-alive DAG (#175). 130 files. Prefer slimmer `ml/pipelines/` child. |
-| this | SSOT / BIUDL | CLAUDE primary + AGENTS deprecate + directive hygiene |
-| #680 / #708 | OBSERVE | Bolt live_catalog_feed family (Jules). Overlapping catalog work — do not double-merge. |
-| #702 | OBSERVE | Gravitee observatory seed |
-| #684 | HOLD / REBASE | unify Actions cadence; dirty vs tip |
-| #685 | OBSERVE | arrhythmic-zero-token-search |
-| #630 | EXTRACT | Jules dashboard rich UI — minesweeper |
-| #432/#549/#601 | EXTRACT | ML wholesale family — keep-alive is #682 tree |
+| #784 | PROMOTE (dual-gate green) | Debate dock EXTRACT; supersedes #69 |
+| #788 | EXTRACT | TER-15 Linear tests; base `master-staging` |
+| #48 | EXTRACT | Hub mega-PR; base `master-staging`; do not wholesale merge |
+| #787 / #746 | EXTRACT | ML keep-alive family; one green slice at a time |
+| #69 | SUPERSEDE after #784 | Wrong feature base |
 
-## Ancient / wrong-base HOLD
+## Ancient / wrong-base
 
-#47 OBSERVE/SUPERSEDED. #48 HOLD (base master-staging). #69 HOLD (feature base). #73 HOLD. #81 OBSERVE. #92 EXTRACT security slice. Do not close-as-superseded until extract lands.
+#47 OBSERVE/SUPERSEDED. #48 EXTRACT (base master-staging). #69 SUPERSEDE-after-#784. #73 OBSERVE. #81 OBSERVE. #92 EXTRACT security slice. Do not close-as-superseded until extract lands.
 
 ## Issue → PR map
 
 | Issue | Role | Linked |
 |-------|------|--------|
-| **#175** | OPERATOR matrix + dual-gate | #432 #549 #601 #682 (ML); #630 minesweeper |
-| #184 | Credential inventory (notes only) | secrets hygiene |
+| **#175** | OPERATOR matrix + dual-gate | #784 #787 #746 #48 |
+| #184 | Credential inventory (names only) | OPERATOR / ARCHWIZ secret chain |
 | #117 | Agent2Agent / MCP Agent Mail | #143 |
 | #88/#91/#94 | routing | #48 family |
 | #50 | termux-smoke / master-staging gate | dual-gate ancestry |
 
 ## Next cycle
 
-1. Dual-gate this PR; promote only when green + outcome verified.
-2. Leave #682 EXTRACT until sliced.
-3. Stay busy on SSOT / skill upgrades while CI waits. No HITL YOLO merge.
-4. Jules / Linguist: confirm AGENTS.md is redirect-only.
+1. Promote #784 when mergeable (rebase if base drifted).
+2. Close #69 as superseded after #784 lands.
+3. Slice #48 / #788 off master-staging only as green extracts.
+4. Stay busy on SSOT / skill upgrades while CI waits — WAIT is not idle.
+5. Do not request Copilot as a promote precondition.

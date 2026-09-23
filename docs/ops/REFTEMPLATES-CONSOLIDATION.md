@@ -1,8 +1,8 @@
 # REFTEMPLATES Consolidation — Narrow Slice + Research Lane + Actions Integration
 
-**Date:** 2026-09-20  
+**Date:** 2026-09-23 (policy realign)  
 **Status:** ACTIVE (feat/refTemplates-research-consolidate)  
-**Directive:** BIUDL · AVOID HITL YOLO MODE YEET AUTOAPPROVE  
+**Directive:** BIUDL · Continuous Fully Automated Agentic Development · Agent auto-promote on dual-gate + task outcome  
 **Owner surface:** timerloggedout-spec/termux-monorepo  
 **Directed at:** Repository development first; complementary Orgs + Enterprise phased until self-sustaining.
 
@@ -53,7 +53,7 @@ refTemplates/
 Rules:
 - Metadata-first (README + SOURCE.txt + preferred fork URL).
 - Live gitlinks only when a pin is required for Actions / agent runtime.
-- Pin intentionally; never auto-advance without dual-gate green.
+- Pin intentionally; promote when dual-gate green and task outcome verified.
 
 ---
 
@@ -84,9 +84,10 @@ All entries in the consolidated category must be visible to the existing cadence
 
 | Cadence surface | Integration |
 |-----------------|-------------|
-| Dual-gate | New metadata / gitlink changes ride the same green path; no special auto-merge |
+| Dual-gate | New metadata / gitlink changes ride the same green path |
 | evidence-led-monorepo-ops | Inventory + integrity checks for `refTemplates/` + `smods/` |
 | adaptive-wait | Submodule / sparse-checkout jobs stay behind dual gates |
+| review-loop | Continuous feedback; no synchronous HITL checkpoint when authority permits |
 | help-wanted / tribute | Research-template work can be claimed/foreign-followed like other lanes |
 | credential-router + live-catalog | No hardcoded provider keys; research agents use the same free-first routing |
 | ecc-tools overflow | Large template PRs still thin-track if comment volume warrants |
@@ -113,14 +114,14 @@ Complementary orgs (including Research-Astute and the Enterprise one) integrate 
 
 ## 6. Execution order (BIUDL continuous / dual-gate)
 
-1. **This document** lands on `feat/refTemplates-research-consolidate`.
+1. **This document** lands on policy realignment branch.
 2. Create `refTemplates/00_Index/` + `15_Research_Repo_Templates/jogyo-research-lab/` metadata (SOURCE.txt → Yeachan-Heo/My-Jogyo + preferred fork note).
 3. Expand remaining skeleton categories as metadata-only (no recursive bloat).
 4. Wire inventory / integrity into Actions (reuse evidence-led patterns).
 5. When a user fork of My-Jogyo exists and dual-gate is ready → optional `smods/` pin.
 6. Org phase board in `docs/ops/`.
 
-Promote only when dual gates green and task outcome verified. No YOLO / YEET / AUTOAPPROVE.
+Promote when dual gates green and task outcome verified. Agents auto-promote under full scoped authority (#184). Sovereignty cockpit = ArchWiz + chat for build-request projects.
 
 ---
 
@@ -128,10 +129,11 @@ Promote only when dual gates green and task outcome verified. No YOLO / YEET / A
 
 - Full recursive submodule update as default CI behavior
 - Treating `refTemplates` as the complete historical environment (it is a narrow slice)
-- Auto-merge of any pin without dual-gate
+- Promoting any pin without dual-gate + task-outcome evidence
 - Hard-coding model / provider keys inside research templates
+- Treating Copilot / human review as a synchronous promote gate when dual-gate already passes
 
 ---
 
 **Agent-Identity:** Grok (Administrator) · CXO  
-**Style:** BIUDL · AVOID HITL YOLO MODE YEET AUTOAPPROVE · adaptive-wait · evidence-led  
+**Style:** BIUDL · Continuous Fully Automated Agentic Development · adaptive-wait · evidence-led · review-loop  

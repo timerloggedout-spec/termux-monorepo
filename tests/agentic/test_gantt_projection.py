@@ -43,8 +43,10 @@ class GanttProjectionTests(unittest.TestCase):
         self.assertIn("crit", text)
 
     def test_mermaid_collapses_title_whitespace(self):
-        result = project({**PLAN, "phases": [{**PLAN["phases"][0], "title": "line one\nline two"}]})
-        self.assertIn("line one line two", render_mermaid_gantt({**result, "schedule_mode": "dependency-derived"}))
+        phases = [{**phase} for phase in PLAN["phases"]]
+        phases[0] = {**phases[0], "title": "line one\nline two"}
+        result = project({**PLAN, "phases": phases}, start_date=date(2026, 9, 22))
+        self.assertIn("line one line two", render_mermaid_gantt(result))
 
     def test_valid_report_projects_evaluation_state(self):
         result = project(PLAN, report=REPORT)

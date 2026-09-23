@@ -1,30 +1,36 @@
 name: Codespace create (dispatch)
 
-# Creates a Codespace via API using monorepo privileged GH token chain.
-# SSOT: ARCHWIZ_GITHUB_TOKEN || OPERATOR_GITHUB_TOKEN || OPERATOR_TOKEN
-# Optional: CODESPACE_CREATE_TOKEN. Never print values.
+# create | start | list — ARCHWIZ/OPERATOR secret chain. Never print values.
 
 on:
   workflow_dispatch:
     inputs:
+      action:
+        description: create | start | list
+        required: false
+        default: list
       ref:
-        description: Branch or SHA (default master)
+        description: Branch for create (default master)
         required: false
         default: master
       display_name:
-        description: Optional display name
+        description: Display name when creating
         required: false
         default: agent-bifrost-006
+      codespace_name:
+        description: Codespace name when action=start
+        required: false
+        default: agent-bifrost-006-5g7qvg7pqjggh4jqv
 
 permissions:
   contents: read
 
 jobs:
-  create:
+  run:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - name: Resolve token presence (names only)
+      - name: Resolve token
         env:
           HAS_CS: ${{ secrets.CODESPACE_CREATE_TOKEN != '' }}
           HAS_ARCHWIZ: ${{ secrets.ARCHWIZ_GITHUB_TOKEN != '' }}
@@ -32,16 +38,14 @@ jobs:
           HAS_OP: ${{ secrets.OPERATOR_TOKEN != '' }}
         run: |
           set -euo pipefail
-          echo "CODESPACE_CREATE_TOKEN present: $HAS_CS"
-          echo "ARCHWIZ_GITHUB_TOKEN present: $HAS_ARCHWIZ"
-          echo "OPERATOR_GITHUB_TOKEN present: $HAS_OP_GH"
-          echo "OPERATOR_TOKEN present: $HAS_OP"
+          echo "secrets present CS=$HAS_CS ARCHWIZ=$HAS_ARCHWIZ OP_GH=$HAS_OP_GH OP=$HAS_OP"
           if [ "$HAS_CS" != "true" ] && [ "$HAS_ARCHWIZ" != "true" ] && [ "$HAS_OP_GH" != "true" ] && [ "$HAS_OP" != "true" ]; then
-            echo "::error::No privileged GH token secret present."
+            echo "::error::No privileged GH token secret"
             exit 1
           fi
 
-      - name: List allowed machines
+      - name: List codespaces
+        if: ${{ inputs.action == 'list' || inputs.action == 'start' || inputs.action == 'create' }}
         env:
           GH_TOKEN: ${{ secrets.CODESPACE_CREATE_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
         run: |
@@ -49,52 +53,50 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${GH_TOKEN}" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
-            "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/codespaces/machines?ref=master" \
-            | jq '{machines: [.machines[]? | {name, display_name, prebuild_availability}]}' \
-            || true
+            "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/codespaces" \
+            | jq '[.codespaces[]? | {name, state, machine: .machine.name, web_url, created_at}]'
 
-      - name: Create codespace (default machine)
-        id: create
+      - name: Start codespace
+        if: ${{ inputs.action == 'start' }}
+        env:
+          GH_TOKEN: ${{ secrets.CODESPACE_CREATE_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
+          CS_NAME: ${{ inputs.codespace_name }}
+        run: |
+          set -euo pipefail
+          resp=$(curl -sS -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/user/codespaces/${CS_NAME}/start")
+          echo "$resp" | jq '{name, state, machine: .machine.name, web_url}' 2>/dev/null || echo "$resp"
+          state=$(echo "$resp" | jq -r '.state // empty')
+          if [ -z "$state" ]; then
+            echo "::error::Start failed for $CS_NAME"
+            echo "$resp" | jq . 2>/dev/null || echo "$resp"
+            exit 1
+          fi
+          echo "### Started \`$CS_NAME\` → $state" >> "$GITHUB_STEP_SUMMARY"
+          echo "URL: $(echo "$resp" | jq -r '.web_url')" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Create codespace
+        if: ${{ inputs.action == 'create' }}
         env:
           GH_TOKEN: ${{ secrets.CODESPACE_CREATE_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
           REF: ${{ inputs.ref }}
           DISPLAY: ${{ inputs.display_name }}
         run: |
           set -euo pipefail
-          # Omit machine → API picks repo default / first allowed
           body=$(jq -n --arg ref "$REF" --arg name "$DISPLAY" '{ref: $ref, display_name: $name}')
-          echo "request body: $body"
           resp=$(curl -sS -X POST \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${GH_TOKEN}" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/codespaces" \
             -d "$body")
-          echo "$resp" | jq '{name, id, state, machine: .machine.name, web_url, created_at, message}' 2>/dev/null || echo "$resp"
+          echo "$resp" | jq '{name, state, machine: .machine.name, web_url, message}' 2>/dev/null || echo "$resp"
           name=$(echo "$resp" | jq -r '.name // empty')
-          web=$(echo "$resp" | jq -r '.web_url // empty')
           if [ -z "$name" ]; then
-            echo "::error::Codespace create failed"
-            echo "$resp" | jq . 2>/dev/null || echo "$resp"
+            echo "::error::Create failed"
             exit 1
           fi
-          echo "name=$name" >> "$GITHUB_OUTPUT"
-          echo "web_url=$web" >> "$GITHUB_OUTPUT"
-          {
-            echo "### Codespace created"
-            echo "- **name:** \`$name\`"
-            echo "- **url:** $web"
-            echo "- **ref:** \`$REF\`"
-          } >> "$GITHUB_STEP_SUMMARY"
-
-      - name: List codespaces (evidence)
-        env:
-          GH_TOKEN: ${{ secrets.CODESPACE_CREATE_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
-        run: |
-          curl -sS \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${GH_TOKEN}" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/codespaces" \
-            | jq '[.codespaces[]? | {name, state, machine: .machine.name, web_url, created_at}]' \
-            || true
+          echo "### Created \`$name\`" >> "$GITHUB_STEP_SUMMARY"

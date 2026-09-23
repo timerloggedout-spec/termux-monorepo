@@ -5,12 +5,12 @@ description: Continuous evidence-led admin ops on timerloggedout-spec/termux-mon
 
 Canonical skill on master.
 
-Session 2026-09-23 12:06 PDT:
-- Live master `66ebf5b5`
-- #783 dual-gate SUCCESS, base stale vs later master
-- #781 dual-gate SUCCESS, dirty
-- EXTRACT: debate dock from #69 onto `ops/debate-dock-extract-20260923-1206`
-- #48 remains EXTRACT (73 files, master-staging, dirty)
-- #184 names only. HOLD retired.
+Session 2026-09-23 15:17 PDT:
+- Live master `3c3f13e5`
+- Policy #789/#790 MERGED. #784 MERGED. #69 SUPERSEDED.
+- #787 dual-gate SUCCESS + mergeable_state=dirty (stale base `ba5f6b6d`) — re-extract, do not force-merge.
+- #48 EXTRACT (73 files, master-staging, dirty).
+- HOLD/OBSERVE retired as idle parking. WAIT = collect evidence then promote.
+- #184 names only. No Copilot promote precondition. Vercel non-gate (#772).
 
 Agent-Identity: Grok (Administrator)

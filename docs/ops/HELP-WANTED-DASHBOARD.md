@@ -1,34 +1,39 @@
 # Help-Wanted Oversight Dashboard — Live Surfaces
 
-**Skill:** `github-pages-operator` (`.agents/skills/github-pages-operator/SKILL.md`)
+## Canonical public dashboard
 
-## Open in browser (rendered HTML)
+**GitHub Pages:** https://timerloggedout-spec.github.io/help-wanted/
+
+Machine-readable discovery:
+- `/help-wanted/sitemap.xml`
+- `/help-wanted/robots.txt`
+
+## Verified Vercel deployment
+
+https://help-wanted-oversight-8w13bl125-timerloggedout-5184s-projects.vercel.app/
+
+- State: READY
+- Source SHA: `44626f77baa64d49f452f25f6cf23ef992160ce0`
+- Project: `help-wanted-oversight`
+- This hostname is deployment-specific, not canonical. Re-verify before publishing a replacement link.
+
+## Other browser surfaces
 
 | Priority | URL | Notes |
-|----------|-----|--------|
-| **1 GitHack** | https://raw.githack.com/timerloggedout-spec/termux-monorepo/master/apps/help-wanted-dashboard/index.html | Correct HTML MIME |
-| **2 User site** | https://timerloggedout-spec.github.io/help-wanted/ | After mirror job (PAT) |
-| **3 Project Pages** | https://timerloggedout-spec.github.io/termux-monorepo/ | After enable-pages job succeeds |
-| jsDelivr | https://cdn.jsdelivr.net/gh/timerloggedout-spec/termux-monorepo@master/apps/help-wanted-dashboard/index.html | Often **text/plain** → looks like raw source |
+|---|---|---|
+| 1 | https://timerloggedout-spec.github.io/help-wanted/ | Canonical public static ops dashboard |
+| 2 | https://help-wanted-oversight-8w13bl125-timerloggedout-5184s-projects.vercel.app/ | Current READY Vercel deployment |
+| 3 | https://raw.githack.com/timerloggedout-spec/termux-monorepo/master/apps/help-wanted-dashboard/index.html | HTML fallback |
+| 4 | https://timerloggedout-spec.github.io/termux-monorepo/ | Thin project hub, not dashboard twin |
 
-Status JSON:  
-https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/ops/generated/help-wanted-status.json
+Status JSON: https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/ops/generated/help-wanted-status.json
 
 ## Operator deploy
 
 Workflow: `.github/workflows/help-wanted-dashboard-deploy.yml`
 
-Jobs:
+Jobs: enable project Pages, publish project hub, mirror the user GitHub Pages dashboard, and optionally deploy Vercel production.
 
-1. **enable-project-pages** — POST/PUT Pages API (`OPERATOR_GITHUB_TOKEN` / `ARCHWIZ_GITHUB_TOKEN` preferred)
-2. **publish-gh-pages** — content on `gh-pages`
-3. **mirror-user-github-io** — `timerloggedout-spec.github.io/help-wanted/`
-4. **vercel-prod** — optional, `continue-on-error`
+## Sitemap boundary
 
-```bash
-gh workflow run help-wanted-dashboard-deploy.yml -f target=all
-```
-
-Credential inventory: issue **#184** (notes only; never paste secrets).
-
-Agent-Identity: Grok (Administrator) · BIUDL
+The XML sitemap contains only public dashboard destinations. Internal repository paths, Actions URLs, Vercel inspector URLs, and credential-bearing surfaces are deliberately excluded.

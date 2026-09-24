@@ -1,0 +1,63 @@
+name: Termux bridge connectivity
+
+on:
+  workflow_dispatch:
+    inputs:
+      command:
+        description: "SSH command to execute on the authorized Termux device"
+        required: true
+        default: "printf 'termux bridge online\\n'; uname -a; id"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  connect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Read live bridge manifest
+        id: bridge
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/${{ github.repository }}/contents/ops/termux-bridge/current.json?ref=master" \
+            --jq '.content' | tr -d '\n' | base64 -d | tee bridge.json
+          python - <<'PY'
+          import json
+          d=json.load(open("bridge.json"))
+          if d.get("status") != "active":
+              raise SystemExit("bridge is not active")
+          if not d.get("endpoint") or not d.get("port") or not d.get("ssh_user"):
+              raise SystemExit("bridge manifest is incomplete; wait for Termux publisher")
+          print(f"host={d['endpoint']}") 
+          print(f"port={d['port']}")
+          print(f"user={d['ssh_user']}")
+          PY
+      - name: Install SSH identity
+        env:
+          SSH_KEY: ${{ secrets.TERMUX_MCP_SSH_PRIVATE_KEY }}
+        run: |
+          test -n "$SSH_KEY" || { echo "Missing TERMUX_MCP_SSH_PRIVATE_KEY repository secret"; exit 1; }
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/termux_mcp
+          chmod 600 ~/.ssh/termux_mcp
+      - name: Connect through current Pinggy endpoint
+        env:
+          COMMAND: ${{ inputs.command }}
+        run: |
+          host="$(python -c 'import json; print(json.load(open("bridge.json"))["endpoint"])')"
+          port="$(python -c 'import json; print(json.load(open("bridge.json"))["port"])')"
+          user="$(python -c 'import json; print(json.load(open("bridge.json"))["ssh_user"])')"
+          # Host-key verification is deliberately strict when TERMUX_MCP_KNOWN_HOSTS is configured.
+          if [ -n "${{ secrets.TERMUX_MCP_KNOWN_HOSTS }}" ]; then
+            printf '%s\n' "${{ secrets.TERMUX_MCP_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+            chmod 600 ~/.ssh/known_hosts
+            strict=yes
+          else
+            echo "::error::TERMUX_MCP_KNOWN_HOSTS is required; refusing TOFU SSH."
+            exit 1
+          fi
+          ssh -i ~/.ssh/termux_mcp -o IdentitiesOnly=yes -o StrictHostKeyChecking=$strict \
+            -o ServerAliveInterval=15 -o ConnectTimeout=15 -p "$port" "$user@$host" "$COMMAND"

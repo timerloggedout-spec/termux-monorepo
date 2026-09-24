@@ -278,7 +278,7 @@ def build_index(
         if temporal_snapshot["snapshot_id"] not in seen_ids:
             with lineage_path.open("a", encoding="utf-8") as handle:
                 handle.write(json.dumps(lineage_record, sort_keys=True) + "\n")
-            return summary
+    return summary
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:

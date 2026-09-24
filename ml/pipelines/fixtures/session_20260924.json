@@ -1,0 +1,189 @@
+{
+  "master_sha": "03ffb33b54b86b52cf8a11cc2f7db6d2d8061772",
+  "issue": 175,
+  "captured_at": "2026-09-24T21:10:00Z",
+  "operator": "ACTIVE",
+  "session": "2026-09-24-1402-PDT",
+  "dual_gate_on_master": {
+    "repo_gate": "success",
+    "termux_smoke": "success",
+    "run_repo_gate": 36058704829,
+    "run_termux_smoke": 36058704728
+  },
+  "prs": [
+    {
+      "number": 809,
+      "title": "GAMUT remote + wiki knowledge fabric",
+      "changed_files": 6,
+      "mergeable_state": "unstable",
+      "stale_base": true,
+      "tests": true,
+      "why": "rebase onto 03ffb33b then dual-gate"
+    },
+    {
+      "number": 806,
+      "title": "evaluation lanes + GitHub App capability evidence",
+      "changed_files": 5,
+      "mergeable_state": "unstable",
+      "stale_base": true,
+      "tests": true,
+      "why": "rebase onto live master"
+    },
+    {
+      "number": 787,
+      "title": "ML keep-alive DAG ICM-CCTV",
+      "changed_files": 103,
+      "mergeable_state": "unstable",
+      "stale_base": true,
+      "tests": true,
+      "keep_alive_parent": true,
+      "supersede": true,
+      "why": "re-extract onto 03ffb33b"
+    },
+    {
+      "number": 746,
+      "title": "ML slim keep-alive on stale tip",
+      "changed_files": 90,
+      "mergeable_state": "unstable",
+      "stale_base": true,
+      "tests": true,
+      "supersede": true,
+      "why": "superseded by this extract"
+    },
+    {
+      "number": 682,
+      "title": "ML wholesale DAG",
+      "changed_files": 130,
+      "mergeable_state": "dirty",
+      "ml_wholesale": true,
+      "tests": true,
+      "why": "size != quality"
+    },
+    {
+      "number": 48,
+      "title": "llm-api-hub",
+      "changed_files": 73,
+      "mergeable_state": "dirty",
+      "master_staging_base": true,
+      "why": "do not retarget to master"
+    },
+    {
+      "number": 788,
+      "title": "Linear client/sync coverage TER-15",
+      "changed_files": 22,
+      "mergeable_state": "unknown",
+      "master_staging_base": true,
+      "tests": true,
+      "why": "wrong-base master-staging"
+    },
+    {
+      "number": 630,
+      "title": "Jules dashboard rich UI",
+      "changed_files": 54,
+      "mergeable_state": "dirty",
+      "minesweeper": true,
+      "author": "google-labs-jules[bot]",
+      "why": "minesweeper"
+    },
+    {
+      "number": 804,
+      "title": "Sentinel context collector path traversal",
+      "changed_files": 4,
+      "mergeable_state": "unstable",
+      "security": true,
+      "author": "google-labs-jules[bot]",
+      "why": "observe security slice"
+    },
+    {
+      "number": 803,
+      "title": "Bolt log parse / registry regex",
+      "changed_files": 6,
+      "mergeable_state": "unstable",
+      "author": "google-labs-jules[bot]",
+      "why": "observe perf slice"
+    },
+    {
+      "number": 785,
+      "title": "Wingman wait-loop skills",
+      "changed_files": 10,
+      "mergeable_state": "unstable",
+      "dual_gate": "pending",
+      "tests": true,
+      "why": "wait-loop extract, do not collide"
+    },
+    {
+      "number": 617,
+      "title": "proposal registry gate",
+      "changed_files": 5,
+      "mergeable_state": "unstable",
+      "stale_base": true,
+      "tests": true,
+      "why": "rebase then dual-gate"
+    },
+    {
+      "number": 543,
+      "title": "skill quality lane",
+      "changed_files": 21,
+      "mergeable_state": "unstable",
+      "stale_base": true,
+      "tests": true,
+      "why": "extract quality checks"
+    },
+    {
+      "number": 587,
+      "title": "timing quotas",
+      "changed_files": 9,
+      "mergeable_state": "unstable",
+      "author": "google-labs-jules[bot]",
+      "why": "jules peer"
+    },
+    {
+      "number": 762,
+      "title": "plugin connector parity",
+      "changed_files": 12,
+      "draft": true,
+      "why": "keep draft"
+    },
+    {
+      "number": 764,
+      "title": "Termux hub Tailscale",
+      "changed_files": 18,
+      "draft": true,
+      "hitl_risk": true,
+      "why": "human device edge"
+    },
+    {
+      "number": 725,
+      "title": "evidence JSONL SeekLog",
+      "changed_files": 11,
+      "mergeable_state": "unstable",
+      "tests": true,
+      "why": "independent extract"
+    },
+    {
+      "number": 67,
+      "title": "PR scope discipline",
+      "changed_files": 2,
+      "docs_only": true,
+      "stale_base": true,
+      "why": "ancient docs"
+    },
+    {
+      "number": 432,
+      "title": "observe-mode GitHub ML pipelines",
+      "changed_files": 140,
+      "mergeable_state": "dirty",
+      "ml_wholesale": true,
+      "why": "wholesale no-go"
+    },
+    {
+      "number": 707,
+      "title": "historical promote specimen",
+      "changed_files": 3,
+      "mergeable_state": "clean",
+      "dual_gate": "green",
+      "tests": true,
+      "why": "historical promote specimen"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Skills Inventory (termux-monorepo)
 
-**Version:** 2026-09-19 17:26 PDT · **Master tip:** `826dc1e4`
+**Version:** 2026-09-24 14:02 PDT · **Master tip:** `03ffb33b`
 **Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)
 **Collaborator short entry:** [`SKILLS.md`](../../SKILLS.md)
 
@@ -40,6 +40,8 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 | gemini-performance-psychology | `.agents/skills/gemini-performance-psychology/SKILL.md` |
 | **github-pages-operator** | `.agents/skills/github-pages-operator/SKILL.md` |
 | help-wanted-lane | `.agents/skills/help-wanted-lane/SKILL.md` |
+| **icm-cctv-ops** | `.agents/skills/icm-cctv-ops/SKILL.md` |
+| **ml-pipeline-ops** | `.agents/skills/ml-pipeline-ops/SKILL.md` |
 | multivariate-doe | `.agents/skills/multivariate-doe/SKILL.md` |
 | review-loop | `.agents/skills/review-loop/SKILL.md` |
 | termux-monorepo | `.agents/skills/termux-monorepo/SKILL.md` |

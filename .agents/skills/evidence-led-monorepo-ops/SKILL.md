@@ -143,12 +143,14 @@ Receipts are projections; the longitudinal GitHub/evidence corpus remains the so
 
 This skill owns repository-admin evidence discipline; it does not replace those specialist lanes.
 
-## Session 2026-09-23 18:23 PDT
+## Session 2026-09-23 20:10 PDT
 
-- Live master `35cc9162` (#796 MERGED).
-- #794 dual-gate SUCCESS on `dfaa878f` (hygiene 107439827718, smoke 107439827444); update-branch vs tip in progress.
-- #787 dual-gate SUCCESS remains on stale `75aa3b13` + merge conflict — do not promote that SHA.
+- Live master `7ec65ebe` (#797 MERGED).
+- #794 MERGED `2982f05e` (FOSS foresight extract).
+- #797 dual-gate SUCCESS on `a669bfe6` (hygiene 107454518312, smoke 107454518735) then squash-merged.
+- Pulse #798 head `f3f5ee7a` OPEN on tip; mergeable_state=`unstable`; Vercel FAIL non-gate; dual-gate not SUCCESS-bound this cycle — do not promote yet.
+- #787 dual-gate SUCCESS remains on stale `75aa3b13` + mergeable_state=`dirty` — do not promote that SHA.
 - #48 EXTRACT (master-staging). #69 SUPERSEDED.
-- Pulse branch `ops/session-lane-matrix-20260923-1823` cut from live tip.
+- Pulse branch `ops/session-lane-matrix-20260923-2010` cut from live tip.
 
 Agent-Identity: Grok (Administrator)

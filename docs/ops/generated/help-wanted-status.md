@@ -1,6 +1,6 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-24T22:21:42Z UTC · receipts=164 · foreign_open=15 · tributes=37_
+_Generated 2026-09-24T23:28:13Z UTC · receipts=180 · foreign_open=16 · tributes=38_
 
 ## Tributes (contributor ledger)
 
@@ -19,6 +19,7 @@ _Generated 2026-09-24T22:21:42Z UTC · receipts=164 · foreign_open=15 · tribut
 - [ThinkLikeAFounder/pulsartrack#898](https://github.com/ThinkLikeAFounder/pulsartrack/pull/898) · state=open · help-wanted: stake + contribute for #896
 - [MergeFi/contracts#374](https://github.com/MergeFi/contracts/pull/374) · state=open · help-wanted: stake + contribute for #345
 - [EF-CHAIN/SendAm#492](https://github.com/EF-CHAIN/SendAm/pull/492) · state=open · help-wanted: stake + contribute for #465
+- [lonestill/onyx-launcher#45](https://github.com/lonestill/onyx-launcher/pull/45) · state=open · help-wanted: stake + contribute for #19
 - [vavallee/bindery#2770](https://github.com/vavallee/bindery/pull/2770) · state=closed · help-wanted: stake + contribute for #2769
 - [ApexChainx/ApexChainx-Contracts#689](https://github.com/ApexChainx/ApexChainx-Contracts/pull/689) · state=closed · help-wanted: stake + contribute for #659
 - [infagent/merl#43](https://github.com/infagent/merl/pull/43) · state=closed · help-wanted: stake + contribute for #42
@@ -44,6 +45,7 @@ _Generated 2026-09-24T22:21:42Z UTC · receipts=164 · foreign_open=15 · tribut
 
 ## Foreign open PRs
 
+- [lonestill/onyx-launcher#45](https://github.com/lonestill/onyx-launcher/pull/45) — help-wanted: stake + contribute for #19
 - [EF-CHAIN/SendAm#492](https://github.com/EF-CHAIN/SendAm/pull/492) — help-wanted: stake + contribute for #465
 - [MergeFi/contracts#374](https://github.com/MergeFi/contracts/pull/374) — help-wanted: stake + contribute for #345
 - [ThinkLikeAFounder/pulsartrack#898](https://github.com/ThinkLikeAFounder/pulsartrack/pull/898) — help-wanted: stake + contribute for #896
@@ -60,6 +62,6 @@ _Generated 2026-09-24T22:21:42Z UTC · receipts=164 · foreign_open=15 · tribut
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=164 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 104, 'followup_reengage': 8, 'followup_stale_nudge': 4}`
+## Outcomes · ok=180 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 118, 'followup_reengage': 10, 'followup_stale_nudge': 4}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

@@ -31,6 +31,8 @@ def snapshot_id(
     observed_at: str,
     history_start_page: int,
     history_next_start_page: int | None,
+    nodes_hash: str = "",
+    edges_hash: str = "",
 ) -> str:
     payload = {
         "repository": repository,
@@ -39,6 +41,8 @@ def snapshot_id(
         "observed_at": observed_at,
         "history_start_page": history_start_page,
         "history_next_start_page": history_next_start_page,
+        "nodes_hash": nodes_hash,
+        "edges_hash": edges_hash,
     }
     return "crg-" + content_hash(payload)[:20]
 
@@ -142,13 +146,11 @@ def build_snapshot(
     }:
         raise TemporalError(f"unsupported coverage state: {coverage}")
 
+    nodes_hash = content_hash(list(nodes))
+    edges_hash = content_hash(list(edges))
     sid = snapshot_id(
-        repository,
-        source_ref,
-        source_sha,
-        observed_at,
-        history_start_page,
-        history_next_start_page,
+        repository, source_ref, source_sha, observed_at,
+        history_start_page, history_next_start_page, nodes_hash, edges_hash,
     )
     return {
         "schema": TEMPORAL_SCHEMA,
@@ -166,8 +168,8 @@ def build_snapshot(
         "coverage": coverage,
         "node_count": len(nodes),
         "edge_count": len(edges),
-        "nodes_hash": content_hash(list(nodes)),
-        "edges_hash": content_hash(list(edges)),
+        "nodes_hash": nodes_hash,
+        "edges_hash": edges_hash,
         "delta": dict(delta or {}),
     }
 

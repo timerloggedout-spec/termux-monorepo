@@ -20,7 +20,6 @@ host="${endpoint%:*}"
 port="${endpoint##*:}"
 [[ "$host" != "$endpoint" && "$port" =~ ^[0-9]+$ ]] || { echo "invalid endpoint: $endpoint" >&2; exit 1; }
 
-# Do not publish credentials, private keys, or tunnel account tokens.
 payload="$(
   python - "$host" "$port" "$USER_NAME" <<'PY'
 import json, sys
@@ -41,12 +40,20 @@ PY
 )"
 
 tmp="$(mktemp)"
-trap 'rm -f "$tmp"' EXIT
+old="$(mktemp)"
+trap 'rm -f "$tmp" "$old"' EXIT
 printf '%s' "$payload" >"$tmp"
 
-sha="$(
-  gh api "repos/$REPO/contents/$PATH_IN_REPO?ref=$BRANCH" --jq '.sha' 2>/dev/null || true
-)"
+current_json="$(gh api "repos/$REPO/contents/$PATH_IN_REPO?ref=$BRANCH" --jq '.content' 2>/dev/null || true)"
+if [ -n "$current_json" ]; then
+  printf '%s' "$current_json" | tr -d '\n' | base64 -d >"$old" || true
+  if cmp -s "$tmp" "$old"; then
+    echo "bridge manifest already current"
+    exit 0
+  fi
+fi
+
+sha="$(gh api "repos/$REPO/contents/$PATH_IN_REPO?ref=$BRANCH" --jq '.sha' 2>/dev/null || true)"
 encoded="$(base64 -w 0 "$tmp")"
 
 args=(-X PUT "repos/$REPO/contents/$PATH_IN_REPO"

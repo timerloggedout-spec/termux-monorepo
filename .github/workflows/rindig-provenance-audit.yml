@@ -1,0 +1,39 @@
+name: RinDig Provenance Audit
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "47 5 * * 1"
+  push:
+    paths:
+      - config/rindig_sources.json
+      - scripts/ci/rindig_provenance_audit.py
+      - .gitmodules
+      - .github/workflows/rindig-provenance-audit.yml
+
+permissions:
+  contents: read
+
+jobs:
+  provenance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: false
+      - name: Audit RinDig provenance
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python3 scripts/ci/rindig_provenance_audit.py \
+            --registry config/rindig_sources.json \
+            --gitmodules .gitmodules \
+            --output /tmp/rindig-provenance.json
+      - name: Publish provenance evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: rindig-provenance-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/rindig-provenance.json
+          if-no-files-found: error
+          retention-days: 14

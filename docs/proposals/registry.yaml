@@ -378,3 +378,17 @@ proposals:
     related_prs: [492]
     related_branches: [docs/proposals/agentic-scoped-access-and-tier4-review]
     gates_required: []
+
+  - id: rindig-eduba-consolidation
+    title: "RinDig ICM + EDUBA repository consolidation"
+    author: timerloggedout-spec
+    status: executing
+    priority: P0
+    path: active/rindig-eduba-consolidation/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_prs: []
+    related_branches: [feat/rindig-eduba-consolidation]
+    gates_required: [repo-gate, termux-smoke]

@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "owner": "RinDig",
+  "repositories": [
+    {"id":"icm-architect","repository":"RinDig/icm-architect","default_branch":"main","integration":"submodule","owned_fork":"timerloggedout-spec/icm-architect_fork","path":"refTemplates/smods/icm-architect_fork","role":"ICM architecture skill"},
+    {"id":"interpretable-context-methodology","repository":"RinDig/Interpretable-Context-Methodology","default_branch":"main","integration":"submodule","owned_fork":"timerloggedout-spec/interpretable-context-methodology_fork","path":"refTemplates/smods/interpretable-context-methodology_fork","role":"ICM methodology and staged workspaces"},
+    {"id":"content-agent-routing-promptbase","repository":"RinDig/Content-Agent-Routing-Promptbase","default_branch":"main","integration":"submodule","owned_fork":"timerloggedout-spec/content-agent-routing-promptbase_fork","path":"refTemplates/smods/content-agent-routing-promptbase_fork","role":"Layered routing and canonical-source discipline"},
+    {"id":"cost-of-remembering","repository":"RinDig/cost-of-remembering","default_branch":"main","integration":"submodule","owned_fork":"timerloggedout-spec/cost-of-remembering_fork","path":"refTemplates/smods/cost-of-remembering_fork","role":"Filesystem-memory evidence and ICM cost model"},
+    {"id":"AuditEngine","repository":"RinDig/AuditEngine","default_branch":"main","integration":"submodule","owned_fork":"timerloggedout-spec/AuditEngine_fork","path":"refTemplates/smods/AuditEngine_fork","role":"EDUBA psychometric and ethics-engine assessment"},
+    {"id":"GPTmetrics","repository":"RinDig/GPTmetrics","default_branch":"main","integration":"submodule","owned_fork":"timerloggedout-spec/GPTmetrics_fork","path":"refTemplates/smods/GPTmetrics_fork","role":"LLM psychological assessment survey and scoring history"},
+    {"id":"Reddit-Evidence-Usage-and-Stance-Analysis-Elon-Musk-Discussion","repository":"RinDig/Reddit-Evidence-Usage-and-Stance-Analysis-Elon-Musk-Discussion","default_branch":"main","integration":"submodule","owned_fork":"timerloggedout-spec/Reddit-Evidence-Usage-and-Stance-Analysis-Elon-Musk-Discussion_fork","path":"refTemplates/smods/Reddit-Evidence-Usage-and-Stance-Analysis-Elon-Musk-Discussion_fork","role":"Evidence/stance research methodology; reference-only"},
+    {"id":"Animation-Workflow","repository":"RinDig/Animation-Workflow","default_branch":"main","integration":"reference","role":"Remotion production workflow"},
+    {"id":"lecture-deck-skill","repository":"RinDig/lecture-deck-skill","default_branch":"master","integration":"reference","role":"Animated lecture/workshop skill and EDUBA theme surface"},
+    {"id":"Moral-Foundations-Agent-Based-Model-MoralABM-","repository":"RinDig/Moral-Foundations-Agent-Based-Model-MoralABM-","default_branch":"main","integration":"reference","role":"Moral-foundations ABM research input"}
+  ],
+  "workflow_policy":{"discover_all_branches":true,"discover_all_workflows":true,"discover_all_branch_commits":true,"persist_full_history_as_artifact":true,"persist_secrets":false,"external_wiki_is_discovery_only":true}
+}

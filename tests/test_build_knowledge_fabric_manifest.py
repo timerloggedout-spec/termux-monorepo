@@ -15,7 +15,9 @@ def test_redacted_cross_repo_manifest(tmp_path):
     entry=result["repositories"][0]
     assert entry["repo"]=="o/a"
     assert entry["devinwiki"]["status"]=="provider-check-required"
-    assert entry["wiki_rs"]["status"]=="manifest-only"
+    assert entry["wiki_rs"]["status"]=="validation-and-manifest"
+    assert entry["deepwiki_rs"]["engine"]=="sopaco/deepwiki-rs"
+    assert entry["deepwiki_rs"]["release"]=="1.6.0"
     serialized=json.dumps(result).lower()
     assert "token" not in serialized
     assert "private_key" not in serialized

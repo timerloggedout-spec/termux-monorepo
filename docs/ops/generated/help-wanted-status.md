@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-24T04:51:09Z UTC · receipts=120 · foreign_open=13 · tributes=34_
+_Generated 2026-09-24T05:26:12Z UTC · receipts=120 · foreign_open=14 · tributes=35_
 
 ## Tributes (contributor ledger)
 
+- [vavallee/bindery#2770](https://github.com/vavallee/bindery/pull/2770) · state=open · help-wanted: stake + contribute for #2769
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -41,6 +42,7 @@ _Generated 2026-09-24T04:51:09Z UTC · receipts=120 · foreign_open=13 · tribut
 
 ## Foreign open PRs
 
+- [vavallee/bindery#2770](https://github.com/vavallee/bindery/pull/2770) — help-wanted: stake + contribute for #2769
 - [ThinkLikeAFounder/pulsartrack#898](https://github.com/ThinkLikeAFounder/pulsartrack/pull/898) — help-wanted: stake + contribute for #896
 - [C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend#587](https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587) — help-wanted: stake + contribute for #579
 - [w1977-0/open-stream-saver#3](https://github.com/w1977-0/open-stream-saver/pull/3) — help-wanted: stake + contribute for #1

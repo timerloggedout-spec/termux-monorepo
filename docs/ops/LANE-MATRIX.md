@@ -1,88 +1,58 @@
-# LANE-MATRIX (living SSOT)
+# LANE-MATRIX (policy SSOT)
 
-**Session:** 2026-09-24 10:07 PDT  
-**Agent-Identity:** Grok (Administrator)  
-**Live master (base):** `fdc5d534` (#808 MERGED — agent-quality-lane post-merge trigger)  
-**Priority hub:** Issue #175  
-**Credential SSOT:** Issue #184 (names only; never paste secrets)
+This file is **durable policy**, not a live dashboard.
 
-Rewrite this file every admin session. Copilot / CodeRabbit / Devin / Qodo are **advisory peers**, not promote gates. Vercel rate-limit is non-gate (#772). Age alone does not promote.
+Live inventory: [`docs/ops/generated/lane-matrix-status.md`](generated/lane-matrix-status.md)  
+Machine form: [`docs/ops/generated/lane-matrix-status.json`](generated/lane-matrix-status.json)  
+Writer: `.github/workflows/ops-lane-matrix-sweep.yml` + `scripts/ops/lane_matrix_sweep.py`  
+Priority issue: #175 is a **hub**, not a comment stream.  
+Credentials: #184 names-only.
 
-**BIUDL = Broad → Integrate → Validate → Develop → Learn.**  
-**Operating posture:** Continuous Fully Automated Agentic Development. Agents auto-promote when dual-gate + task-outcome evidence is verified on the candidate SHA.  
-**Sovereignty:** ArchWiz cockpit + chat remain the human goal/constraint surface.
+Do **not** open `ops/session-lane-matrix-*` PRs to restamp this file.  
+Do **not** post a recon comment on #175 every session.  
+Git history is a ledger. The generated artifact is the board.
 
-## Policy realign (still in force from 05:39 PDT)
+## What belongs where
 
-| Rule | Correct reading |
-|------|-----------------|
-| **Mega-merge** | **Allowed** when dual-gate SUCCESS + mergeable on the candidate SHA. |
-| **CodeRabbit ~100 files** | **Advisory review capacity** — not a repository promote ban. |
-| **Size ≠ quality** | File count is **context only**. |
-| **dirty / conflict** | **Hard block** until rebase/re-cut onto live base. |
-| **Vercel rate-limit** | Non-gate (#772). |
-| **HOLD / OBSERVE / WAIT** | Not idle parking. WAIT = collect evidence → promote when ready. |
+| Artifact | Role | How it changes |
+|----------|------|----------------|
+| This file | Dual-gate, mega-merge, Vercel, dirty-block rules | Rare policy PR |
+| `docs/ops/generated/lane-matrix-status.*` | Open-PR inventory + lane counts | Sweep commits to master (observer) |
+| Issue #175 | Durable operator intent | Edit the issue body when intent changes; no pulse comments |
+| Product PRs | Code / extracts / rebases | Dual-gate then promote |
+| Session chat | Human recon | Stays in chat; not a merge candidate |
 
-## Status this cycle
-
-- **#808 MERGED** `fdc5d534` — Agent Quality Lane now runs on `push` to `master` and `master-staging`. Dual-gate on `cbb6a3be`: repo-gate run `36024573291` SUCCESS, termux-smoke run `36024572948` SUCCESS. Combined `mergeable_state=unstable` was Vercel rate-limit only.
-- **#807 MERGED** `28cd7b24` — mega-merge + CodeRabbit advisory policy.
-- **#805 MERGED** `def12264` — llm-api-hub standalone core from #48 provenance.
-- **#810** pulse on superseded tip `28cd7b24` — close as SUPERSEDED after this pulse is dual-gated.
-- **#48** still open, base `master-staging`, `mergeable_state=dirty` → **not ready**. Remainder EXTRACT; core already on master via #805.
-- #69 SUPERSEDED after #784. #787 dirty EXTRACT until re-cut.
-
-## Landed this window (evidence)
-
-| SHA / PR | What |
-|----------|------|
-| `fdc5d534` / #808 | post-merge Agent Quality Lane trigger |
-| `28cd7b24` / #807 | mega-merge policy realign |
-| `def12264` / #805 | llm-api-hub standalone extract |
-| `7ec65ebe` / #797 | prior LANE-MATRIX pulse |
-| `2982f05e` / #794 | FOSS foresight extract |
-| #784 | Debate-dock; supersedes #69 |
-
-## Dual-gate contract
+## Dual-gate contract (promote authority)
 
 1. `hygiene + portability gate` / `repo gate` SUCCESS on **this** SHA
 2. `agentic termux smoke` / `termux smoke` SUCCESS on **this** SHA
-3. Vercel rate-limits are **non-gate**
+3. Vercel rate-limits are **non-gate** (#772)
 4. Copilot / CodeRabbit / Qodo / Devin = advisory only
-5. GitLab / Mintlify = non-gate
-6. Age alone does not promote
-7. **Mega OK** when dual-gate + mergeable; CodeRabbit 100-file limit is advisory
-8. `mergeable_state=dirty` **or merge conflict** blocks promote — rebase/re-extract
-9. Dual-gate SUCCESS on an older head does not authorize promote after master moves
-10. Combined commit status SUCCESS is not dual-gate; bind named jobs to **this** SHA
+5. Age, file count, and comment volume are context only
+6. Mega-merge is allowed when dual-gate SUCCESS **and** mergeable on the candidate SHA
+7. CodeRabbit ~100-file limit is advisory review capacity, not a promote ban
+8. `mergeable_state=dirty` or a merge conflict **blocks** promote until rebase/re-extract
+9. Dual-gate SUCCESS on an older head does not authorize a newer SHA
+10. Combined commit status is not dual-gate; bind the named jobs
 
-## Tip-first active lanes
+## Session recon is not a PR
 
-| PR | Lane | Why |
-|----|------|-----|
-| #808 | **MERGED** | post-merge quality lane; dual-gate on `cbb6a3be` |
-| #807 | **MERGED** | policy |
-| #805 | **MERGED** | hub standalone |
-| #48 | WAIT / conflict | dirty vs `master-staging`; extract remainder |
-| #810 | SUPERSEDE | pulse on pre-#808 tip |
-| #787 | WAIT / conflict | stale dual-gate SHA; re-cut onto tip |
-| #788 | open | TER-15 Linear; base `master-staging` |
-| #785 | open | Wingman submodule |
-| #69 | SUPERSEDED | Closed after #784 |
+A timestamped rewrite of who is dirty / superseded is stale before CI finishes.
 
-## Issue → PR map
+Agents must:
 
-| Issue | Role | Linked |
-|-------|------|--------|
-| **#175** | OPERATOR matrix + dual-gate | #808 MERGED; #48 dirty WAIT; this pulse |
-| #184 | Credential inventory (names only) | OPERATOR / ARCHWIZ / GH_PAT / VERCEL_TOKEN names |
-| #772 | Vercel rate-limit non-gate | mergeable_state instability |
-| #50 | termux-smoke / master-staging gate | dual-gate ancestry |
+- **Read** generated status + live GitHub API for current SHA
+- **Write** product or durable policy only
+- **Close** leftover `ops(session): … LANE-MATRIX` PRs as not-planned / superseded
+- **Never** treat HOLD / OBSERVE / WAIT as idle parking when product work exists
 
-## Next cycle
+Sweep classifies session-record titles as **SUPERSEDE**, not dual-gate WAIT.
 
-1. Dual-gate this policy pulse; promote if both named jobs SUCCESS on **this** SHA.
-2. #48: do not mega-merge while dirty. Remainder extract only.
-3. Close #810 as SUPERSEDED once this pulse is open (this PR).
-4. Re-cut #787 onto live tip when capacity allows.
-5. Stay busy on SSOT / production while CI waits — WAIT is not idle.
+## Known durable lanes (update only when the fact is durable)
+
+- #48 remainder EXTRACT; core already on master via #805. Dirty vs `master-staging` is a hard block.
+- #809 / #806 need rebase onto live `master` before any promote attempt.
+- #69 superseded by #784. #810 / #812 are historical pulses.
+- #772 documents Vercel mergeable_state noise.
+
+Agent-Identity: Grok (Administrator)

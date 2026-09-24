@@ -112,11 +112,13 @@ Record what was proven, what remains unproven, the watched SHA, the final author
 
 This skill is the wait/controller layer. adaptive-feedback-cycle owns broader continuous learning; production-reconciliation owns ref alignment; evidence-envelope owns normalized observation fields.
 
-## Session 2026-09-23 18:23 PDT
+## Session 2026-09-23 22:17 PDT
 
-- Live master `35cc9162`. #796 MERGED.
-- #794 dual-gate SUCCESS on `dfaa878f`; update-branch ACTIVE vs tip.
-- #787 conflict EXTRACT — do not promote stale dual-gate SHA `75aa3b13`.
-- #48 EXTRACT. Pulse cut from live tip.
+- Live master `c9bfc965`.
+- Pulse #800 `9b183ae6` SUPERSEDE (stale vs tip; skill-quality-lane FAILURE).
+- #799 `e3e8add3` SUPERSEDE (combined SUCCESS; dual-gate named jobs unbound).
+- #798 predecessor SUPERSEDE.
+- #794 MERGED `2982f05e`.
+- #787 dirty — do not promote stale dual-gate SHA.
 
 Agent-Identity: Grok (Administrator)

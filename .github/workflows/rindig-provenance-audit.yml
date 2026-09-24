@@ -2,12 +2,21 @@ name: RinDig Provenance Audit
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "47 5 * * 1"
-  push:
+  pull_request:
     paths:
       - config/rindig_sources.json
       - scripts/ci/rindig_provenance_audit.py
+      - scripts/ci/test_rindig_provenance_audit.py
+      - .gitmodules
+      - .github/workflows/rindig-provenance-audit.yml
+  schedule:
+    - cron: "47 5 * * 1"
+  push:
+    branches: [master]
+    paths:
+      - config/rindig_sources.json
+      - scripts/ci/rindig_provenance_audit.py
+      - scripts/ci/test_rindig_provenance_audit.py
       - .gitmodules
       - .github/workflows/rindig-provenance-audit.yml
 
@@ -22,6 +31,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: false
+      - name: Validate provenance classifier
+        run: |
+          python3 -m py_compile scripts/ci/rindig_provenance_audit.py
+          python3 scripts/ci/test_rindig_provenance_audit.py
       - name: Audit RinDig provenance
         env:
           GITHUB_TOKEN: ${{ github.token }}

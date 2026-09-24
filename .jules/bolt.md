@@ -44,3 +44,10 @@ In GitHub API ingestion workflows (`historical_event_correlation.py`), the jobs 
 
 **Action:**
 Always check for embedded child arrays in GitHub API parent endpoints before executing separate per-item HTTP GET calls.
+
+## 2026-09-24 - Exception Bypass via Prefix Guarding in Mixed-Format Stream Readers
+**Learning:**
+In mixed-format stream parsers (such as `scripts/ops/ops_event_seeklog.py` reading both JSONL and Gource custom log streams), unconditionally attempting `json.loads(line)` on non-JSON lines throws `JSONDecodeError` exceptions on every non-JSON line. Catching Python exceptions in high-volume loops is significantly slower than prefix checking. Adding a fast-path prefix guard (`line.startswith("{")`) before calling `json.loads` completely avoids exception handling on non-JSON lines.
+
+**Action:**
+Always use fast-path string prefix/suffix guards before calling `json.loads()` or `int()` in multi-format line processing loops to avoid exception creation overhead.

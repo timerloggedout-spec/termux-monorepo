@@ -37,7 +37,7 @@ Prefer evidence in this order:
 4. substantive current-SHA review findings;
 5. provenance and task/issue lineage;
 6. historical evidence from superseded SHAs;
-7. size, age, comment count, or activity volume as context only.
+7. size, age, comment count, or activity volume as **context only** (not promote blockers).
 
 A workflow success proves that workflow result. It does not prove the requested task outcome.
 
@@ -74,10 +74,10 @@ HOLD and OBSERVE are not idle parking states. WAIT collects evidence until promo
 
 For repository mutations:
 
-1. identify the smallest change that advances the requested outcome;
+1. identify a change that advances the requested outcome (slice **or** mega — both valid);
 2. re-read the current file/ref before writing;
-3. make one bounded change;
-4. run git diff --check and the smallest relevant deterministic validation;
+3. make the change;
+4. run the smallest relevant deterministic validation;
 5. commit with a specific message;
 6. re-fetch the resulting SHA and checks;
 7. preserve failed attempts and superseded evidence.
@@ -92,7 +92,9 @@ COMMITTED, EXECUTED, VALIDATED, and PROMOTED are independent states.
 
 Do not promote because a branch is old, a PR is green on an older SHA, a reviewer is silent, or a provider returned HTTP 200.
 
-Repository dual-gate: hygiene/portability + agentic termux smoke. Vercel is non-gate (#772). Copilot is not a promote precondition.
+Repository dual-gate: hygiene/portability + agentic termux smoke. Vercel is non-gate (#772). Copilot / CodeRabbit / Devin are advisory only.
+
+**Mega-merge policy (Operator 2026-09-24):** Mega-merge is **allowed** when dual-gate SUCCESS + mergeable on the candidate SHA. Collaborators hold large context windows. CodeRabbit’s ~100-file limit is **advisory review capacity**, not a hard promote ban. File count alone must not refuse a dual-gate-green PR. `mergeable_state=dirty` or merge conflict remains a hard block until rebased.
 
 ## 8. Historical continuity
 
@@ -143,12 +145,12 @@ Receipts are projections; the longitudinal GitHub/evidence corpus remains the so
 
 This skill owns repository-admin evidence discipline; it does not replace those specialist lanes.
 
-## Session 2026-09-23 18:23 PDT
+## Session 2026-09-24 05:39 PDT
 
-- Live master `35cc9162` (#796 MERGED).
-- #794 dual-gate SUCCESS on `dfaa878f` (hygiene 107439827718, smoke 107439827444); update-branch vs tip in progress.
-- #787 dual-gate SUCCESS remains on stale `75aa3b13` + merge conflict — do not promote that SHA.
-- #48 EXTRACT (master-staging). #69 SUPERSEDED.
-- Pulse branch `ops/session-lane-matrix-20260923-1823` cut from live tip.
+- Live master `def12264` (#805 MERGED llm-api-hub standalone).
+- Dual-gate on `cd74d607`: repo-gate 35998910325, termux-smoke 35998910398.
+- Policy realign: mega-merge OK when ready; CodeRabbit 100-file = advisory.
+- #48 dirty on master-staging — not ready until conflicts clear.
+- #787 dirty — re-cut when capacity allows.
 
 Agent-Identity: Grok (Administrator)

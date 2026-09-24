@@ -10,6 +10,15 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 API = "https://api.github.com"
+STATES = ("aligned", "upstream-ahead", "pin-behind", "fork-and-pin-drift", "unresolved")
+
+def classify_state(pinned, fork_head, upstream_head):
+    if pinned == fork_head == upstream_head: return "aligned"
+    if pinned == fork_head and fork_head != upstream_head: return "upstream-ahead"
+    if pinned != fork_head and fork_head == upstream_head: return "pin-behind"
+    if pinned != fork_head and fork_head != upstream_head: return "fork-and-pin-drift"
+    return "unresolved"
+
 
 def request(path):
     headers = {"Accept":"application/vnd.github+json","User-Agent":"termux-monorepo-rindig-provenance"}
@@ -61,11 +70,7 @@ def main():
         up=head(upstream,branch); fk=head(fork,branch)
         pinned=gitlink(e["path"],args.repo_root)
         cmp=compare_cross_repo(fork,upstream,branch)
-        if pinned == fk == up: state="aligned"
-        elif pinned == fk and fk != up: state="upstream-ahead"
-        elif pinned != fk and fk == up: state="pin-behind"
-        elif pinned != fk and fk != up: state="fork-and-pin-drift"
-        else: state="unresolved"
+        state=classify_state(pinned, fk, up)
         rows.append({"id":e["id"],"upstream":upstream,"fork":fork,"branch":branch,
                      "path":e["path"],"role":e["role"],"upstream_head":up,
                      "fork_head":fk,"pinned_sha":pinned,"state":state,"compare":cmp})
@@ -73,7 +78,7 @@ def main():
              "source":"GitHub REST API + local gitlink","repository":"timerloggedout-spec/termux-monorepo",
              "records":rows,
              "summary":{s:sum(1 for r in rows if r["state"]==s) for s in
-                        ["aligned","upstream-ahead","pin-behind","fork-and-pin-drift","unresolved"]}}
+                        STATES}}
     args.output.parent.mkdir(parents=True,exist_ok=True)
     args.output.write_text(json.dumps(payload,indent=2,sort_keys=True)+"\n")
     print(json.dumps(payload["summary"],sort_keys=True))

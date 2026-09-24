@@ -1,0 +1,174 @@
+{
+  "master_sha": "ba5f6b6de4589d27fb4f438ac19f94074038fc51",
+  "issue": 175,
+  "captured_at": "2026-09-23T20:14:00Z",
+  "operator": "ACTIVE",
+  "session": "2026-09-23-1314-PDT",
+  "prs": [
+    {
+      "number": 785,
+      "title": "Wingman wait-loop skills",
+      "changed_files": 10,
+      "mergeable_state": "unstable",
+      "dual_gate": "pending",
+      "why": "just opened wait-loop extract",
+      "tests": true
+    },
+    {
+      "number": 784,
+      "title": "debate dock extract of #69",
+      "changed_files": 16,
+      "mergeable_state": "unstable",
+      "dual_gate": "pending",
+      "stale_base": true,
+      "why": "corrective extract, base behind tip",
+      "tests": true
+    },
+    {
+      "number": 783,
+      "title": "session pulse 11:24",
+      "changed_files": 8,
+      "mergeable_state": "unstable",
+      "docs_only": true,
+      "supersede": true,
+      "stale_base": true,
+      "why": "older pulse"
+    },
+    {
+      "number": 781,
+      "title": "session pulse 10:37",
+      "changed_files": 6,
+      "mergeable_state": "unstable",
+      "docs_only": true,
+      "supersede": true,
+      "stale_base": true,
+      "why": "older pulse"
+    },
+    {
+      "number": 746,
+      "title": "ML slim keep-alive on stale tip",
+      "changed_files": 90,
+      "mergeable_state": "unstable",
+      "stale_base": true,
+      "tests": true,
+      "why": "re-extract onto live tip"
+    },
+    {
+      "number": 48,
+      "title": "llm-api-hub",
+      "changed_files": 73,
+      "mergeable_state": "dirty",
+      "master_staging_base": true,
+      "why": "do not retarget to master"
+    },
+    {
+      "number": 69,
+      "title": "debate dock stacked",
+      "changed_files": 22,
+      "mergeable_state": "dirty",
+      "stacked_feature_base": true,
+      "why": "slice already in #784"
+    },
+    {
+      "number": 630,
+      "title": "Jules dashboard rich UI",
+      "changed_files": 54,
+      "mergeable_state": "dirty",
+      "minesweeper": true,
+      "author": "google-labs-jules[bot]",
+      "why": "minesweeper"
+    },
+    {
+      "number": 768,
+      "title": "Sentinel harden",
+      "changed_files": 4,
+      "mergeable_state": "unstable",
+      "security": true,
+      "author": "google-labs-jules[bot]",
+      "why": "observe security slice"
+    },
+    {
+      "number": 762,
+      "title": "plugin connector parity",
+      "changed_files": 12,
+      "draft": true,
+      "why": "keep draft"
+    },
+    {
+      "number": 764,
+      "title": "Termux hub Tailscale",
+      "changed_files": 18,
+      "draft": true,
+      "hitl_risk": true,
+      "why": "human device edge"
+    },
+    {
+      "number": 617,
+      "title": "proposal registry gate",
+      "changed_files": 5,
+      "mergeable_state": "unstable",
+      "stale_base": true,
+      "tests": true,
+      "why": "rebase then dual-gate"
+    },
+    {
+      "number": 587,
+      "title": "timing quotas",
+      "changed_files": 9,
+      "mergeable_state": "unstable",
+      "author": "google-labs-jules[bot]",
+      "why": "jules peer"
+    },
+    {
+      "number": 543,
+      "title": "skill quality lane",
+      "changed_files": 21,
+      "mergeable_state": "unstable",
+      "stale_base": true,
+      "tests": true,
+      "why": "extract quality checks"
+    },
+    {
+      "number": 725,
+      "title": "evidence JSONL SeekLog",
+      "changed_files": 11,
+      "mergeable_state": "unstable",
+      "tests": true,
+      "why": "independent extract"
+    },
+    {
+      "number": 753,
+      "title": "vercel sitemap",
+      "changed_files": 3,
+      "mergeable_state": "unstable",
+      "docs_only": true,
+      "why": "vercel non-gate"
+    },
+    {
+      "number": 67,
+      "title": "PR scope discipline",
+      "changed_files": 2,
+      "docs_only": true,
+      "stale_base": true,
+      "why": "ancient docs"
+    },
+    {
+      "number": 682,
+      "title": "ML wholesale DAG",
+      "changed_files": 130,
+      "mergeable_state": "dirty",
+      "ml_wholesale": true,
+      "tests": true,
+      "why": "size != quality"
+    },
+    {
+      "number": 707,
+      "title": "historical promote specimen",
+      "changed_files": 3,
+      "mergeable_state": "clean",
+      "dual_gate": "green",
+      "tests": true,
+      "why": "historical promote specimen"
+    }
+  ]
+}

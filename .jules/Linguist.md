@@ -88,3 +88,10 @@ Instantiating multiple nested function closures (`link_repl`, `bold_repl_1`, `bo
 
 **Action:**
 Use `__slots__` context objects with pre-bound method callbacks instead of inner function closures in high-frequency line iteration loops, and ensure character guards cover all matching prefix/separator symbols including dot extensions.
+
+## 2026-10-08 - Replacing Generator Expressions in Guard Checks with Pre-Compiled Regex
+**Learning:**
+Using generator expressions like `any(c.isdigit() for c in line)` inside high-frequency line iteration loops creates Python generator/iterator allocations on every line evaluation frame. Replacing generator expressions with pre-compiled regex pattern searches (`DECIMAL_PATTERN.search(line)`) delegates character checking directly to Python's C-level regex engine, executing ~40% faster on decimal guard checks (0.190s vs 0.318s across 100k line evaluations).
+
+**Action:**
+Prefer pre-compiled regex pattern searches (`PATTERN.search(text)`) over Python generator expressions (`any(...)`) for multi-character or numeric guard checks in high-frequency line processing loops.

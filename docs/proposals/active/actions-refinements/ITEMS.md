@@ -25,6 +25,8 @@
 
 | AR-22 | Move GAMUT evaluation to remote GitHub-hosted execution behind a `gamut-evaluation` Environment, and extend the existing repository-surface/DevinWiki work into a remote all-repository knowledge-fabric inventory using short-lived GitHub App installation tokens and a wiki-rs adapter boundary. | P1 | ChatGPT | executing | Operator-approved 2026-09-24. GAMUT is the facebookresearch factual-completeness benchmark and remains observational; no Gamut customization is included. Knowledge discovery covers all repositories exposed by the App installation, but mutation remains separately gated. App keys/tokens and private Wiki content are never written to artifacts. |
 
+| AR-23 | Add the daily-brief `sopaco/deepwiki-rs` (Litho) engine beside the existing `sw-vibe-coding/wiki-rs` adapter: remote workspace validation, version-pinned explicit generation, all-repository scope selection, and secret/content-safe evidence boundaries. | P1 | ChatGPT | executing | Operator-approved 2026-09-24. wiki-rs remains coordination/storage; deepwiki-rs remains repository analysis/C4 generation; DevinWiki remains provider-managed. Scheduled runs validate without LLM spend; generation is manual and explicit. |
+
 ## Batch Rules
 
 The future implementation batch must be split by ownership and privilege rather than by marketplace category. No item may add an action by mutable tag; all third-party actions require a full commit SHA, license/maintenance review, minimal permissions, and a validation case. A pull request may implement only one accepted item or a tightly coupled pair whose test surface remains clear.

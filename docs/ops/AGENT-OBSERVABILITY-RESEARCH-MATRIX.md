@@ -204,3 +204,17 @@ Compare orchestration policies, not isolated model leaderboard scores. Retain ex
 - no causal attribution from trace timing alone;
 - no benchmark score treated as universal model quality;
 - no secret/PAT material in telemetry or artifacts.
+
+## External evaluation lane registry
+
+Gamut is now treated as **one optional adapter**, not a privileged routing lane. Two distinct current uses of the name require disambiguation: Gamut AI's governance/assurance frameworks (ATF/ACRS/MAESTRO) and the 2026 GAMUT factual-completeness research benchmark. The exact product/framework/benchmark identifier must be recorded before results enter the evidence corpus.
+
+The parallel alternatives are repository-native development evaluation, ATES/WTCV/TCV/TPV/RPI, TDQS, Langfuse, Phoenix, SWE-style reference suites, local project cohorts, and complexity providers. Each consumes the same bounded cohort/evidence contract and remains observational unless a separate promotion policy explicitly says otherwise.
+
+See docs/ops/AGENT-EVALUATION-LANE-REGISTRY.md for the admission, provenance, redaction, and comparison contract.
+
+## GitHub App capability boundary
+
+Issue #184 remains the credential SSOT by **name only**. PR #800 exposed a concrete failure mode: ECC Tools could produce analysis evidence but check publication was unavailable because the installed App lacked the required Checks permission. The repository therefore adds a manual, read-only capability probe rather than assuming that an App credential exists or that its installation permissions are current.
+
+The probe uses GitHub's official actions/create-github-app-token action with a repository configuration variable APP_CLIENT_ID and Actions secret APP_PRIVATE_KEY, then inspects the effective installation permissions. It requires Checks: write and never creates a check, comment, branch, commit, or PR. App permission changes still require the App/installation owner to approve them.

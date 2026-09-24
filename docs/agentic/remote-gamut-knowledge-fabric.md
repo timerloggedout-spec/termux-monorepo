@@ -12,15 +12,25 @@ No Termux execution is required.
 
 ## Knowledge fabric
 
-The remote controller enumerates all repositories exposed by the GitHub App installation, creates a redacted repository manifest, validates the external `sw-vibe-coding/wiki-rs` workspace remotely, and optionally probes Devin/DeepWiki indexing.
+The remote controller enumerates all repositories exposed by the GitHub App installation and creates a redacted repository manifest. The knowledge fabric has three complementary documentation/intelligence surfaces:
 
-The GitHub App token is created with `actions/create-github-app-token`, scoped to the current owner's installation, and is short-lived. No private key, installation token, wiki content, prompt, or provider page body is written to the artifact.
+1. **wiki-rs** — `sw-vibe-coding/wiki-rs`, used as the coordination/storage adapter boundary.
+2. **deepwiki-rs / Litho** — `sopaco/deepwiki-rs` 1.6.0, used as the remote Rust documentation/C4 generation engine.
+3. **DevinWiki / DeepWiki** — provider-managed external indexing, probed through `dwiki` when configured.
+
+`wiki-rs` and `deepwiki-rs` are deliberately not treated as substitutes. wiki-rs supplies storage/coordination primitives; deepwiki-rs analyzes repositories and generates architecture documentation. DevinWiki remains an external provider surface.
 
 ### wiki-rs
 
-`sw-vibe-coding/wiki-rs` is treated as the remote wiki engine/coordination adapter. Its documented architecture includes file, database, Git, browser, and ephemeral storage backends. The initial integration is deliberately an adapter boundary: remote build/test plus normalized manifest generation. It does not vendor or fork the project.
+The workflow clones and tests the upstream workspace remotely. Its documented storage model includes ephemeral, browser, export/import, server-file, server-database, and server-Git backends. The initial repository integration remains an adapter boundary: remote validation plus normalized manifest generation. It does not vendor or fork the project.
 
 The eventual write adapter should use the engine's concurrency contract rather than inventing another lock protocol.
+
+### deepwiki-rs / Litho
+
+Litho is a Rust multi-stage documentation engine that analyzes source structure, relationships, and architecture and produces C4-oriented documentation. The workflow pins the released crate to **1.6.0** for the explicit generation lane and also clones the upstream repository to run its workspace tests remotely.
+
+Generation is deliberately an explicit cost/privacy boundary. A scheduled run validates the engine but does not send repository source to an LLM. A manual run may set `generate_deepwiki=true`, choose `current` or `all` repositories, and provide the `DEEPWIKI_LLM_API_KEY` secret plus optional provider base URL/model variables. Generated source-derived documentation is not uploaded as an artifact.
 
 ### DevinWiki / DeepWiki
 
@@ -28,9 +38,11 @@ Devin/DeepWiki remains provider-managed. The controller records indexing status 
 
 Existing `reconcile-devin-wiki-access.yml` remains the App-access assignment controller.
 
-## Scope
+## Scope and boundaries
 
 - No Gamut customization proposal is carried forward.
 - No Codespace is required for scheduled evaluation; GitHub-hosted Actions is the reproducible remote boundary.
-- Codespaces remain useful for interactive wiki-rs development/debugging.
+- Codespaces remain useful for interactive wiki-rs/deepwiki-rs development and debugging.
 - Discovery is all-repository by App installation scope; mutation remains separately gated.
+- No generated wiki content is automatically committed or published by this lane.
+- Secrets and private keys are never written to artifacts.

@@ -1,10 +1,9 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-24T20:09:31Z UTC · receipts=149 · foreign_open=16 · tributes=37_
+_Generated 2026-09-24T21:30:56Z UTC · receipts=164 · foreign_open=15 · tributes=37_
 
 ## Tributes (contributor ledger)
 
-- [EF-CHAIN/SendAm#492](https://github.com/EF-CHAIN/SendAm/pull/492) · state=open · help-wanted: stake + contribute for #465
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -18,8 +17,9 @@ _Generated 2026-09-24T20:09:31Z UTC · receipts=149 · foreign_open=16 · tribut
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) · state=open · Change project name from DeepV Code to Easy Code
 - [C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend#587](https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587) · state=open · help-wanted: stake + contribute for #579
 - [ThinkLikeAFounder/pulsartrack#898](https://github.com/ThinkLikeAFounder/pulsartrack/pull/898) · state=open · help-wanted: stake + contribute for #896
-- [vavallee/bindery#2770](https://github.com/vavallee/bindery/pull/2770) · state=open · help-wanted: stake + contribute for #2769
 - [MergeFi/contracts#374](https://github.com/MergeFi/contracts/pull/374) · state=open · help-wanted: stake + contribute for #345
+- [EF-CHAIN/SendAm#492](https://github.com/EF-CHAIN/SendAm/pull/492) · state=open · help-wanted: stake + contribute for #465
+- [vavallee/bindery#2770](https://github.com/vavallee/bindery/pull/2770) · state=closed · help-wanted: stake + contribute for #2769
 - [ApexChainx/ApexChainx-Contracts#689](https://github.com/ApexChainx/ApexChainx-Contracts/pull/689) · state=closed · help-wanted: stake + contribute for #659
 - [infagent/merl#43](https://github.com/infagent/merl/pull/43) · state=closed · help-wanted: stake + contribute for #42
 - [limelitgeo/open#32](https://github.com/limelitgeo/open/pull/32) · state=closed · help-wanted: stake + contribute for #31
@@ -46,7 +46,6 @@ _Generated 2026-09-24T20:09:31Z UTC · receipts=149 · foreign_open=16 · tribut
 
 - [EF-CHAIN/SendAm#492](https://github.com/EF-CHAIN/SendAm/pull/492) — help-wanted: stake + contribute for #465
 - [MergeFi/contracts#374](https://github.com/MergeFi/contracts/pull/374) — help-wanted: stake + contribute for #345
-- [vavallee/bindery#2770](https://github.com/vavallee/bindery/pull/2770) — help-wanted: stake + contribute for #2769
 - [ThinkLikeAFounder/pulsartrack#898](https://github.com/ThinkLikeAFounder/pulsartrack/pull/898) — help-wanted: stake + contribute for #896
 - [C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend#587](https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587) — help-wanted: stake + contribute for #579
 - [w1977-0/open-stream-saver#3](https://github.com/w1977-0/open-stream-saver/pull/3) — help-wanted: stake + contribute for #1
@@ -61,6 +60,6 @@ _Generated 2026-09-24T20:09:31Z UTC · receipts=149 · foreign_open=16 · tribut
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=149 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 90, 'followup_reengage': 8, 'followup_stale_nudge': 3}`
+## Outcomes · ok=164 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 104, 'followup_reengage': 8, 'followup_stale_nudge': 4}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

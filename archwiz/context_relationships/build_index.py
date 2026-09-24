@@ -230,6 +230,7 @@ def build_index(
         write_json(staging_dir / "source-report.json", source_report)
         write_json(staging_dir / "github-report.json", github_report)
         write_json(staging_dir / "merge-report.json", merge_report)
+        write_json(staging_dir / "temporal-current.json", temporal_snapshot)
         checkpoint_eligible = bool(github_report.get("checkpoint_eligible", True))
         if checkpoint_eligible:
             write_checkpoint(staging_dir / "checkpoint.json", github_report["collected_at"], owner, repo, ref)
@@ -250,10 +251,34 @@ def build_index(
             "github_retries": github_report["retry_count"],
             "parser_failures": len(source_report["parser_failures"]),
             "excluded_history_paths": github_report["counts"].get("excluded_history_paths", 0),
+            "temporal_schema": temporal_snapshot["schema"],
+            "snapshot_id": temporal_snapshot["snapshot_id"],
+            "previous_snapshot_id": temporal_snapshot.get("previous_snapshot_id"),
+            "coverage": temporal_snapshot["coverage"],
+            "delta": temporal_snapshot["delta"],
         }
         write_json(staging_dir / "build-summary.json", summary)
         replace_artifacts(staging_dir, output)
-    return summary
+        snapshot_root = output / "temporal"
+        snapshot_dir = snapshot_root / "snapshots" / str(temporal_snapshot["snapshot_id"])
+        if not snapshot_dir.exists():
+            try:
+                write_snapshot(snapshot_root, snapshot=temporal_snapshot, nodes=nodes, edges=edges,
+                               lineage=build_lineage(previous_snapshot, temporal_snapshot))
+            except FileExistsError:
+                pass
+        lineage_path = snapshot_root / "lineage.jsonl"
+        lineage_path.parent.mkdir(parents=True, exist_ok=True)
+        lineage_record = build_lineage(previous_snapshot, temporal_snapshot)
+        seen_ids = set()
+        if lineage_path.exists():
+            for line in lineage_path.read_text(encoding="utf-8").splitlines():
+                if line.strip():
+                    seen_ids.add(str(json.loads(line).get("snapshot_id")))
+        if temporal_snapshot["snapshot_id"] not in seen_ids:
+            with lineage_path.open("a", encoding="utf-8") as handle:
+                handle.write(json.dumps(lineage_record, sort_keys=True) + "\n")
+            return summary
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:

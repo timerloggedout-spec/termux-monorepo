@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "status": "active",
+  "transport": "pinggy-tcp-over-ssh",
+  "endpoint": "fxzif-73-41-238-183.run.pinggy-free.link",
+  "port": 46627,
+  "ssh_user": null,
+  "remote_target": "127.0.0.1:8022",
+  "source": "device-runtime",
+  "expires_in_minutes": 60,
+  "note": "Ephemeral endpoint. The device publisher overwrites this manifest after every reconnect. SSH private keys are never stored here."
+}

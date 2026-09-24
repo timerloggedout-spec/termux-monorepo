@@ -13,6 +13,7 @@ API = "https://api.github.com"
 STATES = ("aligned", "upstream-ahead", "pin-behind", "fork-and-pin-drift", "unresolved")
 
 def classify_state(pinned, fork_head, upstream_head):
+    if pinned is None or fork_head is None or upstream_head is None: return "unresolved"
     if pinned == fork_head == upstream_head: return "aligned"
     if pinned == fork_head and fork_head != upstream_head: return "upstream-ahead"
     if pinned != fork_head and fork_head == upstream_head: return "pin-behind"

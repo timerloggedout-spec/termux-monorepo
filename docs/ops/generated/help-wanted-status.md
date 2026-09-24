@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-24T19:05:12Z UTC · receipts=149 · foreign_open=15 · tributes=36_
+_Generated 2026-09-24T20:09:00Z UTC · receipts=149 · foreign_open=16 · tributes=37_
 
 ## Tributes (contributor ledger)
 
+- [EF-CHAIN/SendAm#492](https://github.com/EF-CHAIN/SendAm/pull/492) · state=open · help-wanted: stake + contribute for #465
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -43,6 +44,7 @@ _Generated 2026-09-24T19:05:12Z UTC · receipts=149 · foreign_open=15 · tribut
 
 ## Foreign open PRs
 
+- [EF-CHAIN/SendAm#492](https://github.com/EF-CHAIN/SendAm/pull/492) — help-wanted: stake + contribute for #465
 - [MergeFi/contracts#374](https://github.com/MergeFi/contracts/pull/374) — help-wanted: stake + contribute for #345
 - [vavallee/bindery#2770](https://github.com/vavallee/bindery/pull/2770) — help-wanted: stake + contribute for #2769
 - [ThinkLikeAFounder/pulsartrack#898](https://github.com/ThinkLikeAFounder/pulsartrack/pull/898) — help-wanted: stake + contribute for #896

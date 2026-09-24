@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "purpose": "Standing source registry for the daily FOSS/emerging-technology foresight digest.",
+  "selection_policy": {
+    "prefer_primary": true,
+    "prefer_recent": true,
+    "preserve_uncertainty": true,
+    "require_source_provenance": true,
+    "five_item_target": true
+  },
+  "resource_families": [
+    {
+      "id": "otel",
+      "name": "OpenTelemetry",
+      "role": "neutral telemetry and interoperability",
+      "url": "https://opentelemetry.io/"
+    },
+    {
+      "id": "docker",
+      "name": "Docker",
+      "role": "reproducible execution substrate",
+      "url": "https://www.docker.com/"
+    },
+    {
+      "id": "tree_sitter",
+      "name": "Tree-sitter",
+      "role": "language-neutral structural analysis",
+      "url": "https://tree-sitter.github.io/tree-sitter/"
+    },
+    {
+      "id": "langfuse",
+      "name": "Langfuse",
+      "role": "open experiment and evaluation adapter",
+      "url": "https://langfuse.com/"
+    },
+    {
+      "id": "phoenix",
+      "name": "Phoenix",
+      "role": "open-source tracing and evaluation",
+      "url": "https://phoenix.arize.com/"
+    },
+    {
+      "id": "lizard",
+      "name": "Lizard",
+      "role": "multi-language complexity metrics",
+      "url": "https://github.com/terryyin/lizard"
+    },
+    {
+      "id": "radon",
+      "name": "Radon",
+      "role": "Python complexity and maintainability metrics",
+      "url": "https://radon.readthedocs.io/"
+    },
+    {
+      "id": "codespaces",
+      "name": "GitHub Codespaces",
+      "role": "interactive reproduction and development surface",
+      "url": "https://github.com/features/codespaces"
+    },
+    {
+      "id": "multi_agent_benchmarks",
+      "name": "Multi-agent benchmark research / MASEval-class suites",
+      "role": "manager and orchestration tournament research",
+      "url": "https://github.com/maseval/MASEval"
+    }
+  ],
+  "source_classes": [
+    "official_project_repository",
+    "official_release",
+    "technical_documentation",
+    "peer_reviewed_paper",
+    "preprint",
+    "standards_body",
+    "official_security_advisory",
+    "official_provider_catalog",
+    "government_or_public_research",
+    "reproducible_benchmark"
+  ]
+}

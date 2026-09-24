@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-24T11:46:11Z UTC · receipts=134 · foreign_open=14 · tributes=35_
+_Generated 2026-09-24T14:59:51Z UTC · receipts=134 · foreign_open=15 · tributes=36_
 
 ## Tributes (contributor ledger)
 
+- [MergeFi/contracts#374](https://github.com/MergeFi/contracts/pull/374) · state=open · help-wanted: stake + contribute for #345
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -42,6 +43,7 @@ _Generated 2026-09-24T11:46:11Z UTC · receipts=134 · foreign_open=14 · tribut
 
 ## Foreign open PRs
 
+- [MergeFi/contracts#374](https://github.com/MergeFi/contracts/pull/374) — help-wanted: stake + contribute for #345
 - [vavallee/bindery#2770](https://github.com/vavallee/bindery/pull/2770) — help-wanted: stake + contribute for #2769
 - [ThinkLikeAFounder/pulsartrack#898](https://github.com/ThinkLikeAFounder/pulsartrack/pull/898) — help-wanted: stake + contribute for #896
 - [C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend#587](https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587) — help-wanted: stake + contribute for #579

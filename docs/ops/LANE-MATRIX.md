@@ -2,15 +2,16 @@
 
 This file is **durable policy**, not a live dashboard.
 
-Live inventory: [`docs/ops/generated/lane-matrix-status.md`](generated/lane-matrix-status.md)  
-Machine form: [`docs/ops/generated/lane-matrix-status.json`](generated/lane-matrix-status.json)  
+**Open the live board:** [lane-matrix-status.md](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/generated/lane-matrix-status.md) · [JSON](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/generated/lane-matrix-status.json) · [sweep workflow](https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/ops-lane-matrix-sweep.yml)
+
+Live inventory on disk: [`docs/ops/generated/lane-matrix-status.md`](generated/lane-matrix-status.md)  
 Writer: `.github/workflows/ops-lane-matrix-sweep.yml` + `scripts/ops/lane_matrix_sweep.py`  
 Priority issue: #175 is a **hub**, not a comment stream.  
 Credentials: #184 names-only.
 
 Do **not** open `ops/session-lane-matrix-*` PRs to restamp this file.  
 Do **not** post a recon comment on #175 every session.  
-Git history is a ledger. The generated artifact is the board.
+Git history is a ledger. The generated artifact is the board. **Open that artifact.** Do not keep a pulse PR open to “hold the matrix open.”
 
 ## What belongs where
 
@@ -54,5 +55,6 @@ Sweep classifies session-record titles as **SUPERSEDE**, not dual-gate WAIT.
 - #809 / #806 need rebase onto live `master` before any promote attempt.
 - #69 superseded by #784. #810 / #812 are historical pulses.
 - #772 documents Vercel mergeable_state noise.
+- #814 landed the board-vs-ledger policy.
 
 Agent-Identity: Grok (Administrator)

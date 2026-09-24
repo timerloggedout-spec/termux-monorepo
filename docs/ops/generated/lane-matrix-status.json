@@ -1,26 +1,27 @@
 {
   "schema": "lane-matrix-sweep/v1",
-  "observed_at": "2026-09-24T17:06:37Z",
+  "observed_at": "2026-09-24T20:33:40Z",
   "repository": "timerloggedout-spec/termux-monorepo",
-  "master_sha": "28cd7b24f2552de94f13e1db6394edbb6987c009",
+  "master_sha": "8aeb902d0aa0d55671a6710399402e37e22268be",
   "counts": {
-    "open_prs": 115,
+    "open_prs": 89,
     "by_lane": {
-      "OBSERVE": 65,
+      "OBSERVE": 64,
       "HOLD": 15,
       "EXTRACT": 8,
-      "WAIT": 27
+      "WAIT": 1,
+      "SUPERSEDE": 1
     },
     "by_age": {
       "ancient": 11,
       "stale": 16,
       "mid": 16,
-      "fresh": 72
+      "fresh": 46
     }
   },
   "oldest": {
     "number": 47,
-    "days_open": 50.06,
+    "days_open": 50.2,
     "title": "feat(refTemplates): restore metadata-only skeleton (Option B recovery)",
     "lane": "OBSERVE"
   },
@@ -39,7 +40,7 @@
       "changed_files": -1,
       "created_at": "2026-08-05T15:44:30Z",
       "updated_at": "2026-09-03T16:31:48Z",
-      "days_open": 50.06,
+      "days_open": 50.2,
       "age_bucket": "ancient",
       "lane": "OBSERVE",
       "reasons": [
@@ -60,8 +61,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-08-05T16:39:27Z",
-      "updated_at": "2026-09-24T16:04:16Z",
-      "days_open": 50.02,
+      "updated_at": "2026-09-24T18:05:16Z",
+      "days_open": 50.16,
       "age_bucket": "ancient",
       "lane": "HOLD",
       "reasons": [
@@ -83,7 +84,7 @@
       "changed_files": -1,
       "created_at": "2026-08-06T07:08:58Z",
       "updated_at": "2026-08-19T05:50:09Z",
-      "days_open": 49.42,
+      "days_open": 49.56,
       "age_bucket": "ancient",
       "lane": "EXTRACT",
       "reasons": [
@@ -105,8 +106,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-08-06T18:01:55Z",
-      "updated_at": "2026-09-24T11:54:01Z",
-      "days_open": 48.96,
+      "updated_at": "2026-09-24T19:16:49Z",
+      "days_open": 49.11,
       "age_bucket": "ancient",
       "lane": "OBSERVE",
       "reasons": [
@@ -128,7 +129,7 @@
       "changed_files": -1,
       "created_at": "2026-08-07T03:18:32Z",
       "updated_at": "2026-09-03T19:55:27Z",
-      "days_open": 48.58,
+      "days_open": 48.72,
       "age_bucket": "ancient",
       "lane": "HOLD",
       "reasons": [
@@ -150,7 +151,7 @@
       "changed_files": -1,
       "created_at": "2026-08-07T21:52:05Z",
       "updated_at": "2026-09-23T00:44:57Z",
-      "days_open": 47.8,
+      "days_open": 47.95,
       "age_bucket": "ancient",
       "lane": "OBSERVE",
       "reasons": [
@@ -172,7 +173,7 @@
       "changed_files": -1,
       "created_at": "2026-08-08T14:48:06Z",
       "updated_at": "2026-08-27T02:05:48Z",
-      "days_open": 47.1,
+      "days_open": 47.24,
       "age_bucket": "ancient",
       "lane": "OBSERVE",
       "reasons": [
@@ -194,7 +195,7 @@
       "changed_files": -1,
       "created_at": "2026-08-09T01:01:40Z",
       "updated_at": "2026-09-22T11:46:13Z",
-      "days_open": 46.67,
+      "days_open": 46.81,
       "age_bucket": "ancient",
       "lane": "OBSERVE",
       "reasons": [
@@ -216,7 +217,7 @@
       "changed_files": -1,
       "created_at": "2026-08-09T22:42:25Z",
       "updated_at": "2026-08-19T07:31:29Z",
-      "days_open": 45.77,
+      "days_open": 45.91,
       "age_bucket": "ancient",
       "lane": "OBSERVE",
       "reasons": [
@@ -238,7 +239,7 @@
       "changed_files": -1,
       "created_at": "2026-08-10T07:22:48Z",
       "updated_at": "2026-09-23T21:34:22Z",
-      "days_open": 45.41,
+      "days_open": 45.55,
       "age_bucket": "ancient",
       "lane": "OBSERVE",
       "reasons": [
@@ -260,7 +261,7 @@
       "changed_files": -1,
       "created_at": "2026-08-10T15:24:47Z",
       "updated_at": "2026-08-19T13:45:47Z",
-      "days_open": 45.07,
+      "days_open": 45.21,
       "age_bucket": "ancient",
       "lane": "OBSERVE",
       "reasons": [
@@ -282,7 +283,7 @@
       "changed_files": -1,
       "created_at": "2026-08-19T01:04:48Z",
       "updated_at": "2026-09-23T00:44:53Z",
-      "days_open": 36.67,
+      "days_open": 36.81,
       "age_bucket": "stale",
       "lane": "OBSERVE",
       "reasons": [
@@ -304,7 +305,7 @@
       "changed_files": -1,
       "created_at": "2026-08-19T05:09:28Z",
       "updated_at": "2026-08-22T07:01:53Z",
-      "days_open": 36.5,
+      "days_open": 36.64,
       "age_bucket": "stale",
       "lane": "HOLD",
       "reasons": [
@@ -326,7 +327,7 @@
       "changed_files": -1,
       "created_at": "2026-08-19T07:57:32Z",
       "updated_at": "2026-09-21T12:56:28Z",
-      "days_open": 36.38,
+      "days_open": 36.53,
       "age_bucket": "stale",
       "lane": "OBSERVE",
       "reasons": [
@@ -348,7 +349,7 @@
       "changed_files": -1,
       "created_at": "2026-08-21T18:47:02Z",
       "updated_at": "2026-08-21T20:02:53Z",
-      "days_open": 33.93,
+      "days_open": 34.07,
       "age_bucket": "stale",
       "lane": "HOLD",
       "reasons": [
@@ -370,7 +371,7 @@
       "changed_files": -1,
       "created_at": "2026-08-22T03:49:49Z",
       "updated_at": "2026-08-27T17:45:37Z",
-      "days_open": 33.55,
+      "days_open": 33.7,
       "age_bucket": "stale",
       "lane": "OBSERVE",
       "reasons": [
@@ -392,7 +393,7 @@
       "changed_files": -1,
       "created_at": "2026-08-24T23:31:02Z",
       "updated_at": "2026-08-24T23:35:29Z",
-      "days_open": 30.73,
+      "days_open": 30.88,
       "age_bucket": "stale",
       "lane": "HOLD",
       "reasons": [
@@ -414,7 +415,7 @@
       "changed_files": -1,
       "created_at": "2026-08-25T03:48:46Z",
       "updated_at": "2026-09-03T16:31:43Z",
-      "days_open": 30.55,
+      "days_open": 30.7,
       "age_bucket": "stale",
       "lane": "HOLD",
       "reasons": [
@@ -436,7 +437,7 @@
       "changed_files": -1,
       "created_at": "2026-08-26T19:32:51Z",
       "updated_at": "2026-08-28T05:36:35Z",
-      "days_open": 28.9,
+      "days_open": 29.04,
       "age_bucket": "stale",
       "lane": "HOLD",
       "reasons": [
@@ -458,7 +459,7 @@
       "changed_files": -1,
       "created_at": "2026-08-28T05:37:08Z",
       "updated_at": "2026-08-30T11:56:02Z",
-      "days_open": 27.48,
+      "days_open": 27.62,
       "age_bucket": "stale",
       "lane": "HOLD",
       "reasons": [
@@ -480,7 +481,7 @@
       "changed_files": -1,
       "created_at": "2026-08-28T06:20:05Z",
       "updated_at": "2026-09-03T22:51:06Z",
-      "days_open": 27.45,
+      "days_open": 27.59,
       "age_bucket": "stale",
       "lane": "OBSERVE",
       "reasons": [
@@ -502,7 +503,7 @@
       "changed_files": -1,
       "created_at": "2026-08-29T07:34:23Z",
       "updated_at": "2026-08-29T21:08:28Z",
-      "days_open": 26.4,
+      "days_open": 26.54,
       "age_bucket": "stale",
       "lane": "OBSERVE",
       "reasons": [
@@ -524,7 +525,7 @@
       "changed_files": -1,
       "created_at": "2026-08-29T20:12:12Z",
       "updated_at": "2026-08-30T03:10:41Z",
-      "days_open": 25.87,
+      "days_open": 26.01,
       "age_bucket": "stale",
       "lane": "OBSERVE",
       "reasons": [
@@ -546,7 +547,7 @@
       "changed_files": -1,
       "created_at": "2026-08-30T08:03:36Z",
       "updated_at": "2026-09-03T20:03:43Z",
-      "days_open": 25.38,
+      "days_open": 25.52,
       "age_bucket": "stale",
       "lane": "OBSERVE",
       "reasons": [
@@ -568,7 +569,7 @@
       "changed_files": -1,
       "created_at": "2026-09-01T00:25:03Z",
       "updated_at": "2026-09-01T00:28:03Z",
-      "days_open": 23.7,
+      "days_open": 23.84,
       "age_bucket": "stale",
       "lane": "OBSERVE",
       "reasons": [
@@ -590,7 +591,7 @@
       "changed_files": -1,
       "created_at": "2026-09-01T07:25:31Z",
       "updated_at": "2026-09-03T11:35:01Z",
-      "days_open": 23.4,
+      "days_open": 23.55,
       "age_bucket": "stale",
       "lane": "OBSERVE",
       "reasons": [
@@ -612,7 +613,7 @@
       "changed_files": -1,
       "created_at": "2026-09-04T07:40:06Z",
       "updated_at": "2026-09-08T04:56:24Z",
-      "days_open": 20.39,
+      "days_open": 20.54,
       "age_bucket": "stale",
       "lane": "OBSERVE",
       "reasons": [
@@ -634,7 +635,7 @@
       "changed_files": -1,
       "created_at": "2026-09-05T00:25:48Z",
       "updated_at": "2026-09-21T12:56:43Z",
-      "days_open": 19.7,
+      "days_open": 19.84,
       "age_bucket": "mid",
       "lane": "EXTRACT",
       "reasons": [
@@ -656,7 +657,7 @@
       "changed_files": -1,
       "created_at": "2026-09-08T00:31:00Z",
       "updated_at": "2026-09-08T00:34:16Z",
-      "days_open": 16.69,
+      "days_open": 16.84,
       "age_bucket": "mid",
       "lane": "OBSERVE",
       "reasons": [
@@ -678,7 +679,7 @@
       "changed_files": -1,
       "created_at": "2026-09-08T02:37:19Z",
       "updated_at": "2026-09-22T18:59:17Z",
-      "days_open": 16.6,
+      "days_open": 16.75,
       "age_bucket": "mid",
       "lane": "OBSERVE",
       "reasons": [
@@ -700,7 +701,7 @@
       "changed_files": -1,
       "created_at": "2026-09-08T05:27:32Z",
       "updated_at": "2026-09-08T05:31:39Z",
-      "days_open": 16.49,
+      "days_open": 16.63,
       "age_bucket": "mid",
       "lane": "OBSERVE",
       "reasons": [
@@ -722,7 +723,7 @@
       "changed_files": -1,
       "created_at": "2026-09-08T22:09:30Z",
       "updated_at": "2026-09-08T22:31:12Z",
-      "days_open": 15.79,
+      "days_open": 15.93,
       "age_bucket": "mid",
       "lane": "OBSERVE",
       "reasons": [
@@ -744,7 +745,7 @@
       "changed_files": -1,
       "created_at": "2026-09-09T07:51:47Z",
       "updated_at": "2026-09-10T20:09:30Z",
-      "days_open": 15.39,
+      "days_open": 15.53,
       "age_bucket": "mid",
       "lane": "OBSERVE",
       "reasons": [
@@ -766,7 +767,7 @@
       "changed_files": -1,
       "created_at": "2026-09-09T22:39:34Z",
       "updated_at": "2026-09-09T23:00:50Z",
-      "days_open": 14.77,
+      "days_open": 14.91,
       "age_bucket": "mid",
       "lane": "OBSERVE",
       "reasons": [
@@ -788,7 +789,7 @@
       "changed_files": -1,
       "created_at": "2026-09-10T16:49:15Z",
       "updated_at": "2026-09-11T03:18:51Z",
-      "days_open": 14.01,
+      "days_open": 14.16,
       "age_bucket": "mid",
       "lane": "EXTRACT",
       "reasons": [
@@ -811,7 +812,7 @@
       "changed_files": -1,
       "created_at": "2026-09-12T20:52:28Z",
       "updated_at": "2026-09-19T23:12:43Z",
-      "days_open": 11.84,
+      "days_open": 11.99,
       "age_bucket": "mid",
       "lane": "OBSERVE",
       "reasons": [
@@ -833,7 +834,7 @@
       "changed_files": -1,
       "created_at": "2026-09-13T22:35:09Z",
       "updated_at": "2026-09-21T12:56:40Z",
-      "days_open": 10.77,
+      "days_open": 10.92,
       "age_bucket": "mid",
       "lane": "OBSERVE",
       "reasons": [
@@ -855,7 +856,7 @@
       "changed_files": -1,
       "created_at": "2026-09-15T04:27:38Z",
       "updated_at": "2026-09-22T11:46:07Z",
-      "days_open": 9.53,
+      "days_open": 9.67,
       "age_bucket": "mid",
       "lane": "OBSERVE",
       "reasons": [
@@ -877,7 +878,7 @@
       "changed_files": -1,
       "created_at": "2026-09-15T07:56:20Z",
       "updated_at": "2026-09-22T11:46:10Z",
-      "days_open": 9.38,
+      "days_open": 9.53,
       "age_bucket": "mid",
       "lane": "OBSERVE",
       "reasons": [
@@ -899,7 +900,7 @@
       "changed_files": -1,
       "created_at": "2026-09-15T19:02:51Z",
       "updated_at": "2026-09-15T23:51:00Z",
-      "days_open": 8.92,
+      "days_open": 9.06,
       "age_bucket": "mid",
       "lane": "OBSERVE",
       "reasons": [
@@ -920,8 +921,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-09-15T23:49:48Z",
-      "updated_at": "2026-09-24T11:53:59Z",
-      "days_open": 8.72,
+      "updated_at": "2026-09-24T19:17:00Z",
+      "days_open": 8.86,
       "age_bucket": "mid",
       "lane": "OBSERVE",
       "reasons": [
@@ -943,7 +944,7 @@
       "changed_files": -1,
       "created_at": "2026-09-16T06:09:50Z",
       "updated_at": "2026-09-21T12:56:31Z",
-      "days_open": 8.46,
+      "days_open": 8.6,
       "age_bucket": "mid",
       "lane": "EXTRACT",
       "reasons": [
@@ -965,7 +966,7 @@
       "changed_files": -1,
       "created_at": "2026-09-17T08:34:24Z",
       "updated_at": "2026-09-19T23:00:55Z",
-      "days_open": 7.36,
+      "days_open": 7.5,
       "age_bucket": "mid",
       "lane": "HOLD",
       "reasons": [
@@ -987,7 +988,7 @@
       "changed_files": -1,
       "created_at": "2026-09-17T20:48:50Z",
       "updated_at": "2026-09-22T18:59:32Z",
-      "days_open": 6.85,
+      "days_open": 6.99,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
@@ -1009,7 +1010,7 @@
       "changed_files": -1,
       "created_at": "2026-09-17T20:54:25Z",
       "updated_at": "2026-09-19T19:20:54Z",
-      "days_open": 6.84,
+      "days_open": 6.99,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
@@ -1030,8 +1031,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-09-17T22:18:05Z",
-      "updated_at": "2026-09-24T15:14:24Z",
-      "days_open": 6.78,
+      "updated_at": "2026-09-24T19:17:11Z",
+      "days_open": 6.93,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
@@ -1053,7 +1054,7 @@
       "changed_files": -1,
       "created_at": "2026-09-18T07:35:03Z",
       "updated_at": "2026-09-23T00:48:53Z",
-      "days_open": 6.4,
+      "days_open": 6.54,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
@@ -1075,7 +1076,7 @@
       "changed_files": -1,
       "created_at": "2026-09-18T07:59:14Z",
       "updated_at": "2026-09-23T00:47:52Z",
-      "days_open": 6.38,
+      "days_open": 6.52,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
@@ -1097,7 +1098,7 @@
       "changed_files": -1,
       "created_at": "2026-09-18T16:11:12Z",
       "updated_at": "2026-09-21T12:56:37Z",
-      "days_open": 6.04,
+      "days_open": 6.18,
       "age_bucket": "fresh",
       "lane": "EXTRACT",
       "reasons": [
@@ -1119,7 +1120,7 @@
       "changed_files": -1,
       "created_at": "2026-09-18T17:54:07Z",
       "updated_at": "2026-09-23T00:44:50Z",
-      "days_open": 5.97,
+      "days_open": 6.11,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
@@ -1141,7 +1142,7 @@
       "changed_files": -1,
       "created_at": "2026-09-18T23:10:21Z",
       "updated_at": "2026-09-24T15:14:00Z",
-      "days_open": 5.75,
+      "days_open": 5.89,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
@@ -1163,7 +1164,7 @@
       "changed_files": -1,
       "created_at": "2026-09-18T23:11:19Z",
       "updated_at": "2026-09-19T19:21:05Z",
-      "days_open": 5.75,
+      "days_open": 5.89,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
@@ -1185,7 +1186,7 @@
       "changed_files": -1,
       "created_at": "2026-09-19T07:57:46Z",
       "updated_at": "2026-09-22T22:17:17Z",
-      "days_open": 5.38,
+      "days_open": 5.52,
       "age_bucket": "fresh",
       "lane": "EXTRACT",
       "reasons": [
@@ -1208,7 +1209,7 @@
       "changed_files": -1,
       "created_at": "2026-09-19T20:10:55Z",
       "updated_at": "2026-09-19T21:09:49Z",
-      "days_open": 4.87,
+      "days_open": 5.02,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
@@ -1230,7 +1231,7 @@
       "changed_files": -1,
       "created_at": "2026-09-19T22:19:21Z",
       "updated_at": "2026-09-19T22:24:44Z",
-      "days_open": 4.78,
+      "days_open": 4.93,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
@@ -1252,7 +1253,7 @@
       "changed_files": -1,
       "created_at": "2026-09-20T01:22:07Z",
       "updated_at": "2026-09-20T01:22:37Z",
-      "days_open": 4.66,
+      "days_open": 4.8,
       "age_bucket": "fresh",
       "lane": "EXTRACT",
       "reasons": [
@@ -1275,7 +1276,7 @@
       "changed_files": -1,
       "created_at": "2026-09-20T08:03:28Z",
       "updated_at": "2026-09-21T15:11:11Z",
-      "days_open": 4.38,
+      "days_open": 4.52,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
@@ -1297,7 +1298,7 @@
       "changed_files": -1,
       "created_at": "2026-09-20T17:21:55Z",
       "updated_at": "2026-09-23T21:34:19Z",
-      "days_open": 3.99,
+      "days_open": 4.13,
       "age_bucket": "fresh",
       "lane": "WAIT",
       "reasons": [
@@ -1319,7 +1320,7 @@
       "changed_files": -1,
       "created_at": "2026-09-20T18:25:04Z",
       "updated_at": "2026-09-21T00:55:02Z",
-      "days_open": 3.95,
+      "days_open": 4.09,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
@@ -1341,7 +1342,7 @@
       "changed_files": -1,
       "created_at": "2026-09-20T19:51:50Z",
       "updated_at": "2026-09-21T01:22:40Z",
-      "days_open": 3.89,
+      "days_open": 4.03,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
@@ -1363,7 +1364,7 @@
       "changed_files": -1,
       "created_at": "2026-09-21T02:11:19Z",
       "updated_at": "2026-09-21T02:12:01Z",
-      "days_open": 3.62,
+      "days_open": 3.77,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
@@ -1385,57 +1386,13 @@
       "changed_files": -1,
       "created_at": "2026-09-21T08:07:29Z",
       "updated_at": "2026-09-21T08:08:12Z",
-      "days_open": 3.37,
+      "days_open": 3.52,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
         "bot-observe"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/708"
-    },
-    {
-      "number": 711,
-      "title": "ops(session): 2026-09-21 12:16 PDT LANE-MATRIX pulse (#175)",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "16fb9ca99e53",
-      "head_ref": "ops/session-lane-matrix-20260921-1216",
-      "head_sha": "58ced8001b7e",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-09-21T19:18:10Z",
-      "updated_at": "2026-09-21T20:15:43Z",
-      "days_open": 2.91,
-      "age_bucket": "fresh",
-      "lane": "WAIT",
-      "reasons": [
-        "session-record-dual-gate"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/711"
-    },
-    {
-      "number": 712,
-      "title": "ops(session): 2026-09-21 13:13 PDT LANE-MATRIX pulse (#175)",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "16fb9ca99e53",
-      "head_ref": "ops/session-lane-matrix-20260921-1313",
-      "head_sha": "2f48e3291a27",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-09-21T20:14:33Z",
-      "updated_at": "2026-09-21T21:18:34Z",
-      "days_open": 2.87,
-      "age_bucket": "fresh",
-      "lane": "WAIT",
-      "reasons": [
-        "session-record-dual-gate"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/712"
     },
     {
       "number": 714,
@@ -1451,7 +1408,7 @@
       "changed_files": -1,
       "created_at": "2026-09-21T22:10:35Z",
       "updated_at": "2026-09-22T22:17:33Z",
-      "days_open": 2.79,
+      "days_open": 2.93,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
@@ -1473,35 +1430,13 @@
       "changed_files": -1,
       "created_at": "2026-09-21T22:14:28Z",
       "updated_at": "2026-09-21T22:18:26Z",
-      "days_open": 2.79,
+      "days_open": 2.93,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
         "bot-observe"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/715"
-    },
-    {
-      "number": 722,
-      "title": "ops(session): 2026-09-21 17:01 PDT LANE-MATRIX pulse after #718 (#175)",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "f1255c68e2d9",
-      "head_ref": "ops/session-lane-matrix-20260921-1701",
-      "head_sha": "fb606137eceb",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-09-22T00:02:25Z",
-      "updated_at": "2026-09-22T21:24:21Z",
-      "days_open": 2.71,
-      "age_bucket": "fresh",
-      "lane": "WAIT",
-      "reasons": [
-        "session-record-dual-gate"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/722"
     },
     {
       "number": 724,
@@ -1517,7 +1452,7 @@
       "changed_files": -1,
       "created_at": "2026-09-22T01:07:41Z",
       "updated_at": "2026-09-22T19:27:18Z",
-      "days_open": 2.67,
+      "days_open": 2.81,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
@@ -1539,145 +1474,13 @@
       "changed_files": -1,
       "created_at": "2026-09-22T01:20:36Z",
       "updated_at": "2026-09-23T08:36:42Z",
-      "days_open": 2.66,
+      "days_open": 2.8,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
         "state:unknown"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/725"
-    },
-    {
-      "number": 726,
-      "title": "ops(session): 2026-09-21 18:26 PDT LANE-MATRIX pulse \u2014 #724 dual-gate green WAIT",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "f1255c68e2d9",
-      "head_ref": "ops/session-lane-matrix-20260921-1826",
-      "head_sha": "885786038e38",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-09-22T01:27:28Z",
-      "updated_at": "2026-09-22T21:24:19Z",
-      "days_open": 2.65,
-      "age_bucket": "fresh",
-      "lane": "WAIT",
-      "reasons": [
-        "session-record-dual-gate"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/726"
-    },
-    {
-      "number": 727,
-      "title": "ops(session): 2026-09-21 19:15 PDT LANE-MATRIX pulse \u2014 #724 WAIT (#175)",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "f1255c68e2d9",
-      "head_ref": "ops/session-lane-matrix-20260921-1915",
-      "head_sha": "7776e49b262d",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-09-22T02:16:48Z",
-      "updated_at": "2026-09-23T11:47:44Z",
-      "days_open": 2.62,
-      "age_bucket": "fresh",
-      "lane": "WAIT",
-      "reasons": [
-        "session-record-dual-gate"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/727"
-    },
-    {
-      "number": 728,
-      "title": "ops(session): 2026-09-21 20:08 PDT LANE-MATRIX pulse \u2014 #724 WAIT (#175)",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "f1255c68e2d9",
-      "head_ref": "ops/session-lane-matrix-20260921-2008",
-      "head_sha": "7699ec9e47e6",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-09-22T03:09:19Z",
-      "updated_at": "2026-09-22T21:24:16Z",
-      "days_open": 2.58,
-      "age_bucket": "fresh",
-      "lane": "WAIT",
-      "reasons": [
-        "session-record-dual-gate"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/728"
-    },
-    {
-      "number": 729,
-      "title": "ops(session): 2026-09-21 21:09 PDT LANE-MATRIX pulse \u2014 #724 WAIT (#175)",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "f1255c68e2d9",
-      "head_ref": "ops/session-lane-matrix-20260921-2109",
-      "head_sha": "3f378b821175",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-09-22T04:10:04Z",
-      "updated_at": "2026-09-22T21:23:53Z",
-      "days_open": 2.54,
-      "age_bucket": "fresh",
-      "lane": "WAIT",
-      "reasons": [
-        "session-record-dual-gate"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/729"
-    },
-    {
-      "number": 730,
-      "title": "ops(session): 2026-09-21 22:01 PDT LANE-MATRIX pulse \u2014 #724 WAIT tip 79825c9c (#175)",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "79825c9cc1b6",
-      "head_ref": "ops/session-lane-matrix-20260921-2201",
-      "head_sha": "ac4955b80309",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-09-22T05:02:02Z",
-      "updated_at": "2026-09-22T21:24:14Z",
-      "days_open": 2.5,
-      "age_bucket": "fresh",
-      "lane": "WAIT",
-      "reasons": [
-        "session-record-dual-gate"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/730"
-    },
-    {
-      "number": 731,
-      "title": "ops(session): 2026-09-21 23:29 PDT LANE-MATRIX pulse \u2014 #724 WAIT rebase (#175)",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "f9029fb04ba0",
-      "head_ref": "ops/session-lane-matrix-20260921-2329",
-      "head_sha": "b2364e337c2f",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-09-22T06:31:02Z",
-      "updated_at": "2026-09-22T21:24:12Z",
-      "days_open": 2.44,
-      "age_bucket": "fresh",
-      "lane": "WAIT",
-      "reasons": [
-        "session-record-dual-gate"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/731"
     },
     {
       "number": 734,
@@ -1693,7 +1496,7 @@
       "changed_files": -1,
       "created_at": "2026-09-22T07:23:48Z",
       "updated_at": "2026-09-22T07:27:02Z",
-      "days_open": 2.4,
+      "days_open": 2.55,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
@@ -1715,7 +1518,7 @@
       "changed_files": -1,
       "created_at": "2026-09-22T07:31:34Z",
       "updated_at": "2026-09-22T07:35:38Z",
-      "days_open": 2.4,
+      "days_open": 2.54,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
@@ -1737,57 +1540,13 @@
       "changed_files": -1,
       "created_at": "2026-09-22T08:12:19Z",
       "updated_at": "2026-09-22T08:15:59Z",
-      "days_open": 2.37,
+      "days_open": 2.51,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
         "bot-observe"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/736"
-    },
-    {
-      "number": 737,
-      "title": "ops(session): 2026-09-22 04:02 PDT LANE-MATRIX pulse \u2014 tip ca7fd7c8 #724 WAIT rebase (#175)",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "ca7fd7c88e65",
-      "head_ref": "ops/session-lane-matrix-20260922-0402",
-      "head_sha": "884ec4931941",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-09-22T11:03:10Z",
-      "updated_at": "2026-09-22T11:05:53Z",
-      "days_open": 2.25,
-      "age_bucket": "fresh",
-      "lane": "WAIT",
-      "reasons": [
-        "session-record-dual-gate"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/737"
-    },
-    {
-      "number": 738,
-      "title": "ops(session): 2026-09-22 04:12 PDT LANE-MATRIX pulse \u2014 tip ca7fd7c8 #724 gate-green WAIT (#175)",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "ca7fd7c88e65",
-      "head_ref": "ops/session-lane-matrix-20260922-0412",
-      "head_sha": "814d0a717970",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-09-22T11:14:06Z",
-      "updated_at": "2026-09-22T11:14:47Z",
-      "days_open": 2.24,
-      "age_bucket": "fresh",
-      "lane": "WAIT",
-      "reasons": [
-        "session-record-dual-gate"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/738"
     },
     {
       "number": 739,
@@ -1803,7 +1562,7 @@
       "changed_files": -1,
       "created_at": "2026-09-22T12:58:15Z",
       "updated_at": "2026-09-22T13:01:48Z",
-      "days_open": 2.17,
+      "days_open": 2.32,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
@@ -1825,35 +1584,13 @@
       "changed_files": -1,
       "created_at": "2026-09-22T13:05:01Z",
       "updated_at": "2026-09-22T20:05:41Z",
-      "days_open": 2.17,
+      "days_open": 2.31,
       "age_bucket": "fresh",
       "lane": "HOLD",
       "reasons": [
         "draft"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/740"
-    },
-    {
-      "number": 744,
-      "title": "ops(session): 2026-09-22 11:18 PDT LANE-MATRIX pulse \u2014 tip 0153acc2 #724 WAIT on-tip (#175)",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "0153acc2e0f4",
-      "head_ref": "ops/session-lane-matrix-20260922-1101",
-      "head_sha": "44626f77baa6",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-09-22T18:02:54Z",
-      "updated_at": "2026-09-22T19:27:35Z",
-      "days_open": 1.96,
-      "age_bucket": "fresh",
-      "lane": "WAIT",
-      "reasons": [
-        "session-record-dual-gate"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/744"
     },
     {
       "number": 746,
@@ -1869,57 +1606,13 @@
       "changed_files": -1,
       "created_at": "2026-09-22T19:25:17Z",
       "updated_at": "2026-09-23T20:25:33Z",
-      "days_open": 1.9,
+      "days_open": 2.05,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
         "state:unknown"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/746"
-    },
-    {
-      "number": 747,
-      "title": "ops(session): 2026-09-22 13:03 PDT LANE-MATRIX \u2014 HOLD retired, #746 EXTRACT (#175)",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "7a05922c92be",
-      "head_ref": "ops/session-lane-matrix-20260922-1303",
-      "head_sha": "795b9755ddc8",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-09-22T20:04:33Z",
-      "updated_at": "2026-09-22T21:06:05Z",
-      "days_open": 1.88,
-      "age_bucket": "fresh",
-      "lane": "WAIT",
-      "reasons": [
-        "session-record-dual-gate"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/747"
-    },
-    {
-      "number": 749,
-      "title": "ops(session): 2026-09-22 14:04 PDT LANE-MATRIX \u2014 tip 4ae5bb29 #746 WAIT (#175)",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "4ae5bb294b3f",
-      "head_ref": "ops/session-lane-matrix-20260922-1404",
-      "head_sha": "a09683a94b0b",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-09-22T21:05:40Z",
-      "updated_at": "2026-09-24T15:13:33Z",
-      "days_open": 1.83,
-      "age_bucket": "fresh",
-      "lane": "WAIT",
-      "reasons": [
-        "session-record-dual-gate"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/749"
     },
     {
       "number": 750,
@@ -1935,7 +1628,7 @@
       "changed_files": -1,
       "created_at": "2026-09-22T22:10:05Z",
       "updated_at": "2026-09-22T22:13:13Z",
-      "days_open": 1.79,
+      "days_open": 1.93,
       "age_bucket": "fresh",
       "lane": "EXTRACT",
       "reasons": [
@@ -1943,28 +1636,6 @@
         "minesweeper-title"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/750"
-    },
-    {
-      "number": 751,
-      "title": "ops(session): 2026-09-22 15:19 PDT LANE-MATRIX \u2014 tip f72bad96 #746 EXTRACT (#175)",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "f72bad962753",
-      "head_ref": "ops/session-lane-matrix-20260922-1519",
-      "head_sha": "01aa081bfa5d",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-09-22T22:20:51Z",
-      "updated_at": "2026-09-23T11:47:48Z",
-      "days_open": 1.78,
-      "age_bucket": "fresh",
-      "lane": "WAIT",
-      "reasons": [
-        "session-record-dual-gate"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/751"
     },
     {
       "number": 752,
@@ -1980,7 +1651,7 @@
       "changed_files": -1,
       "created_at": "2026-09-22T22:21:54Z",
       "updated_at": "2026-09-22T22:22:38Z",
-      "days_open": 1.78,
+      "days_open": 1.92,
       "age_bucket": "fresh",
       "lane": "HOLD",
       "reasons": [
@@ -2002,123 +1673,13 @@
       "changed_files": -1,
       "created_at": "2026-09-22T22:42:37Z",
       "updated_at": "2026-09-23T06:33:33Z",
-      "days_open": 1.77,
+      "days_open": 1.91,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
         "state:unknown"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/753"
-    },
-    {
-      "number": 754,
-      "title": "ops(session): 2026-09-22 16:20 PDT LANE-MATRIX \u2014 tip c623f304 #753 EXTRACT (#175)",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "c623f3046068",
-      "head_ref": "ops/session-lane-matrix-20260922-1620",
-      "head_sha": "2e55388892d1",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-09-22T23:21:24Z",
-      "updated_at": "2026-09-24T11:54:03Z",
-      "days_open": 1.74,
-      "age_bucket": "fresh",
-      "lane": "WAIT",
-      "reasons": [
-        "session-record-dual-gate"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/754"
-    },
-    {
-      "number": 756,
-      "title": "ops(session): 2026-09-22 17:27 PDT LANE-MATRIX \u2014 tip 409b0fe #753 EXTRACT (#175)",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "409b0fe53865",
-      "head_ref": "ops/session-lane-matrix-20260922-1727",
-      "head_sha": "991013d4de55",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-09-23T00:28:34Z",
-      "updated_at": "2026-09-23T21:34:13Z",
-      "days_open": 1.69,
-      "age_bucket": "fresh",
-      "lane": "WAIT",
-      "reasons": [
-        "session-record-dual-gate"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/756"
-    },
-    {
-      "number": 757,
-      "title": "ops(session): 2026-09-22 18:24 PDT LANE-MATRIX \u2014 tip 6c4e0c78 #753 EXTRACT (#175)",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "6c4e0c780e72",
-      "head_ref": "ops/session-lane-matrix-20260922-1824",
-      "head_sha": "f3244bb7a4ad",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-09-23T01:25:25Z",
-      "updated_at": "2026-09-23T21:34:09Z",
-      "days_open": 1.65,
-      "age_bucket": "fresh",
-      "lane": "WAIT",
-      "reasons": [
-        "session-record-dual-gate"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/757"
-    },
-    {
-      "number": 758,
-      "title": "ops(session): 2026-09-22 19:04 PDT LANE-MATRIX \u2014 tip 6c4e0c78 #753 EXTRACT (#175)",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "6c4e0c780e72",
-      "head_ref": "ops/session-lane-matrix-20260922-1904",
-      "head_sha": "b87eb48ade46",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-09-23T02:05:32Z",
-      "updated_at": "2026-09-23T21:34:07Z",
-      "days_open": 1.63,
-      "age_bucket": "fresh",
-      "lane": "WAIT",
-      "reasons": [
-        "session-record-dual-gate"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/758"
-    },
-    {
-      "number": 759,
-      "title": "ops(session): 2026-09-22 20:00 PDT LANE-MATRIX \u2014 tip 6c4e0c78 #753 EXTRACT (#175)",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "6c4e0c780e72",
-      "head_ref": "ops/session-lane-matrix-20260922-2000",
-      "head_sha": "a9cb99e2f319",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-09-23T03:01:48Z",
-      "updated_at": "2026-09-24T11:53:53Z",
-      "days_open": 1.59,
-      "age_bucket": "fresh",
-      "lane": "WAIT",
-      "reasons": [
-        "session-record-dual-gate"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/759"
     },
     {
       "number": 761,
@@ -2134,7 +1695,7 @@
       "changed_files": -1,
       "created_at": "2026-09-23T03:23:38Z",
       "updated_at": "2026-09-23T03:24:12Z",
-      "days_open": 1.57,
+      "days_open": 1.72,
       "age_bucket": "fresh",
       "lane": "HOLD",
       "reasons": [
@@ -2156,7 +1717,7 @@
       "changed_files": -1,
       "created_at": "2026-09-23T03:33:34Z",
       "updated_at": "2026-09-23T09:26:30Z",
-      "days_open": 1.56,
+      "days_open": 1.71,
       "age_bucket": "fresh",
       "lane": "HOLD",
       "reasons": [
@@ -2178,79 +1739,13 @@
       "changed_files": -1,
       "created_at": "2026-09-23T03:42:32Z",
       "updated_at": "2026-09-23T04:00:16Z",
-      "days_open": 1.56,
+      "days_open": 1.7,
       "age_bucket": "fresh",
       "lane": "HOLD",
       "reasons": [
         "draft"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/764"
-    },
-    {
-      "number": 765,
-      "title": "ops(session): 2026-09-22 21:22 PDT LANE-MATRIX \u2014 tip 6c4e0c78 #753 EXTRACT (#175)",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "6c4e0c780e72",
-      "head_ref": "ops/session-lane-matrix-20260922-2122",
-      "head_sha": "db3a28a9461b",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-09-23T04:23:08Z",
-      "updated_at": "2026-09-24T15:13:28Z",
-      "days_open": 1.53,
-      "age_bucket": "fresh",
-      "lane": "WAIT",
-      "reasons": [
-        "session-record-dual-gate"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/765"
-    },
-    {
-      "number": 766,
-      "title": "ops(session): 2026-09-22 22:10 PDT LANE-MATRIX \u2014 tip cc922521 #753 EXTRACT (#175)",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "cf1e76e676bb",
-      "head_ref": "ops/session-lane-matrix-20260922-2210",
-      "head_sha": "37ed79d3dd6d",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-09-23T05:11:13Z",
-      "updated_at": "2026-09-23T21:34:05Z",
-      "days_open": 1.5,
-      "age_bucket": "fresh",
-      "lane": "WAIT",
-      "reasons": [
-        "session-record-dual-gate"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/766"
-    },
-    {
-      "number": 767,
-      "title": "ops(session): 2026-09-22 23:32 PDT LANE-MATRIX \u2014 tip d8ad3521 #753 EXTRACT (#175)",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "d8ad35219b3f",
-      "head_ref": "ops/session-lane-matrix-20260922-2332",
-      "head_sha": "167aaaa9a3fd",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-09-23T06:33:18Z",
-      "updated_at": "2026-09-23T21:34:02Z",
-      "days_open": 1.44,
-      "age_bucket": "fresh",
-      "lane": "WAIT",
-      "reasons": [
-        "session-record-dual-gate"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/767"
     },
     {
       "number": 768,
@@ -2266,7 +1761,7 @@
       "changed_files": -1,
       "created_at": "2026-09-23T07:26:39Z",
       "updated_at": "2026-09-23T07:30:49Z",
-      "days_open": 1.4,
+      "days_open": 1.55,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
@@ -2288,57 +1783,13 @@
       "changed_files": -1,
       "created_at": "2026-09-23T07:36:29Z",
       "updated_at": "2026-09-24T15:14:06Z",
-      "days_open": 1.4,
+      "days_open": 1.54,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
         "state:unknown"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/769"
-    },
-    {
-      "number": 781,
-      "title": "ops(session): 2026-09-23 10:37 PDT LANE-MATRIX \u2014 tip eb4849ce EXTRACT (#175)",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "eb4849ce3ff4",
-      "head_ref": "ops/session-lane-matrix-20260923-1037",
-      "head_sha": "ef0aac97c16c",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-09-23T17:38:31Z",
-      "updated_at": "2026-09-24T15:13:38Z",
-      "days_open": 0.98,
-      "age_bucket": "fresh",
-      "lane": "WAIT",
-      "reasons": [
-        "session-record-dual-gate"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/781"
-    },
-    {
-      "number": 783,
-      "title": "ops(session): 2026-09-23 11:24 PDT LANE-MATRIX EXTRACT pulse (#175)",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "c9b26a53ef92",
-      "head_ref": "ops/session-lane-matrix-20260923-1124",
-      "head_sha": "9f94f6894d58",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-09-23T18:26:19Z",
-      "updated_at": "2026-09-23T18:26:51Z",
-      "days_open": 0.94,
-      "age_bucket": "fresh",
-      "lane": "WAIT",
-      "reasons": [
-        "session-record-dual-gate"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/783"
     },
     {
       "number": 785,
@@ -2354,7 +1805,7 @@
       "changed_files": -1,
       "created_at": "2026-09-23T20:09:52Z",
       "updated_at": "2026-09-24T15:13:43Z",
-      "days_open": 0.87,
+      "days_open": 1.02,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
@@ -2376,7 +1827,7 @@
       "changed_files": -1,
       "created_at": "2026-09-23T20:25:18Z",
       "updated_at": "2026-09-24T11:54:18Z",
-      "days_open": 0.86,
+      "days_open": 1.01,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
@@ -2397,8 +1848,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-09-23T21:15:02Z",
-      "updated_at": "2026-09-24T10:09:03Z",
-      "days_open": 0.83,
+      "updated_at": "2026-09-24T19:16:56Z",
+      "days_open": 0.97,
       "age_bucket": "fresh",
       "lane": "HOLD",
       "reasons": [
@@ -2420,7 +1871,7 @@
       "changed_files": -1,
       "created_at": "2026-09-23T23:45:31Z",
       "updated_at": "2026-09-23T23:46:14Z",
-      "days_open": 0.72,
+      "days_open": 0.87,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
@@ -2442,7 +1893,7 @@
       "changed_files": -1,
       "created_at": "2026-09-24T07:42:14Z",
       "updated_at": "2026-09-24T07:50:08Z",
-      "days_open": 0.39,
+      "days_open": 0.54,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
@@ -2464,7 +1915,7 @@
       "changed_files": -1,
       "created_at": "2026-09-24T07:50:46Z",
       "updated_at": "2026-09-24T07:54:11Z",
-      "days_open": 0.39,
+      "days_open": 0.53,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
@@ -2479,14 +1930,14 @@
       "bot": false,
       "draft": false,
       "base_ref": "master",
-      "base_sha": "1858846ab413",
+      "base_sha": "1ad58943f949",
       "head_ref": "ops/production-steward-20260924",
-      "head_sha": "27b658197e29",
+      "head_sha": "ed461514b286",
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-09-24T12:38:17Z",
-      "updated_at": "2026-09-24T12:39:55Z",
-      "days_open": 0.19,
+      "updated_at": "2026-09-24T20:01:38Z",
+      "days_open": 0.33,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
@@ -2495,42 +1946,20 @@
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/806"
     },
     {
-      "number": 808,
-      "title": "ci: run agent quality lane after master merges",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "28cd7b24f255",
-      "head_ref": "ops/ates-post-merge-quality-gate",
-      "head_sha": "cbb6a3be3238",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-09-24T12:48:11Z",
-      "updated_at": "2026-09-24T16:08:41Z",
-      "days_open": 0.18,
-      "age_bucket": "fresh",
-      "lane": "OBSERVE",
-      "reasons": [
-        "state:unknown"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/808"
-    },
-    {
       "number": 809,
       "title": "feat: move GAMUT remote and extend all-repo wiki knowledge fabric",
       "user": "timerloggedout-spec",
       "bot": false,
       "draft": false,
       "base_ref": "master",
-      "base_sha": "def122640bd1",
+      "base_sha": "1ad58943f949",
       "head_ref": "ops/remote-gamut-knowledge-fabric-20260924",
-      "head_sha": "f9c94f92f502",
+      "head_sha": "4d5c1c93a4d1",
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-09-24T12:49:05Z",
-      "updated_at": "2026-09-24T12:58:41Z",
-      "days_open": 0.18,
+      "updated_at": "2026-09-24T20:02:15Z",
+      "days_open": 0.32,
       "age_bucket": "fresh",
       "lane": "OBSERVE",
       "reasons": [
@@ -2539,32 +1968,34 @@
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/809"
     },
     {
-      "number": 810,
-      "title": "ops(session): 2026-09-24 09:01 PDT LANE-MATRIX \u2014 tip 28cd7b24 EXTRACT (#175)",
+      "number": 815,
+      "title": "feat(ops): open LANE-MATRIX as a live URL (board, not a pulse PR)",
       "user": "timerloggedout-spec",
       "bot": false,
       "draft": false,
       "base_ref": "master",
-      "base_sha": "28cd7b24f255",
-      "head_ref": "ops/session-lane-matrix-20260924-0901",
-      "head_sha": "e640795a19cc",
+      "base_sha": "8aeb902d0aa0",
+      "head_ref": "ops/open-lane-matrix-surface-20260924",
+      "head_sha": "81eb014a8668",
       "mergeable_state": "unknown",
       "changed_files": -1,
-      "created_at": "2026-09-24T16:04:04Z",
-      "updated_at": "2026-09-24T16:05:13Z",
-      "days_open": 0.04,
+      "created_at": "2026-09-24T20:33:29Z",
+      "updated_at": "2026-09-24T20:33:37Z",
+      "days_open": 0.0,
       "age_bucket": "fresh",
-      "lane": "WAIT",
+      "lane": "SUPERSEDE",
       "reasons": [
-        "session-record-dual-gate"
+        "session-record-not-a-promote-object"
       ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/810"
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/815"
     }
   ],
   "rules": {
     "promote": "dual-gate only (hygiene+portability + termux_smoke)",
     "age_alone": false,
     "vercel_rate_limit": "non-gate",
+    "session_pulses": "SUPERSEDE",
+    "issue_175_comments": "opt-in only",
     "ml_wholesale": [
       432,
       549,

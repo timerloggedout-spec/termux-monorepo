@@ -93,7 +93,7 @@ Promotion requires: current immutable SHA; current-base relationship verified; r
 
 Dual-gate status is necessary where the repository defines it, but it is not a substitute for task-outcome verification.
 
-Repository dual-gate: `hygiene + portability gate` + `agentic termux smoke`. Vercel rate-limit is non-gate (#772). Copilot / CodeRabbit / Devin are advisory only. `mergeable_state=dirty` is a hard block even when dual-gate is green — rebase/re-extract onto live tip.
+Repository dual-gate: `hygiene + portability gate` + `agentic termux smoke`. Vercel rate-limit is non-gate (#772). Copilot / CodeRabbit / Devin are advisory only. `mergeable_state=dirty` or a GitHub merge conflict is a hard block even when dual-gate is green — rebase/re-extract onto live tip.
 
 ## Terminal states
 
@@ -112,10 +112,10 @@ Record what was proven, what remains unproven, the watched SHA, the final author
 
 This skill is the wait/controller layer. adaptive-feedback-cycle owns broader continuous learning; production-reconciliation owns ref alignment; evidence-envelope owns normalized observation fields.
 
-## Session 2026-09-23 16:00 PDT
+## Session 2026-09-23 17:22 PDT
 
-- Live master `a07584b3`. #784 MERGED. #789/#790 MERGED. #69 SUPERSEDED.
-- #787 dual-gate SUCCESS on `75aa3b13`; dirty vs tip — re-extract.
-- #48 EXTRACT. Pulse PR #791 rebased onto live tip.
+- Live master `8713fe6a`. #795 MERGED. #791 already on master earlier.
+- #787 dual-gate SUCCESS on `75aa3b13`; update-branch **conflicted** — successor extract.
+- #794 rebase ACTIVE (`dfaa878f`). #48 EXTRACT. Pulse cut from live tip.
 
 Agent-Identity: Grok (Administrator)

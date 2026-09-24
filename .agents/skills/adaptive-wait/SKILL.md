@@ -95,6 +95,8 @@ Dual-gate status is necessary where the repository defines it, but it is not a s
 
 Repository dual-gate: `hygiene + portability gate` + `agentic termux smoke`. Vercel rate-limit is non-gate (#772). Copilot / CodeRabbit / Devin are advisory only. `mergeable_state=dirty` or a GitHub merge conflict is a hard block even when dual-gate is green — rebase/re-extract onto live tip.
 
+**Mega-merge (Operator 2026-09-24):** Allowed when dual-gate + mergeable. CodeRabbit ~100-file limit is advisory review capacity, not a promote ban. Size alone does not block.
+
 ## Terminal states
 
 - success — requested outcome verified;
@@ -112,11 +114,11 @@ Record what was proven, what remains unproven, the watched SHA, the final author
 
 This skill is the wait/controller layer. adaptive-feedback-cycle owns broader continuous learning; production-reconciliation owns ref alignment; evidence-envelope owns normalized observation fields.
 
-## Session 2026-09-23 18:23 PDT
+## Session 2026-09-24 05:39 PDT
 
-- Live master `35cc9162`. #796 MERGED.
-- #794 dual-gate SUCCESS on `dfaa878f`; update-branch ACTIVE vs tip.
-- #787 conflict EXTRACT — do not promote stale dual-gate SHA `75aa3b13`.
-- #48 EXTRACT. Pulse cut from live tip.
+- Live master `def12264`. #805 MERGED (dual-gate on `cd74d607`).
+- Policy: mega OK when ready; CodeRabbit 100-file advisory.
+- #48 dirty — WAIT until mergeable.
+- #787 dirty — re-cut later.
 
 Agent-Identity: Grok (Administrator)

@@ -1,7 +1,6 @@
 name: help-wanted-dashboard-deploy
 
-# Site map: marketing (/) ≠ ops (/help-wanted/) ≠ lanes (/help-wanted/lanes-and-scopes.html)
-# See docs/ops/SITE-MAP.md
+# marketing (/) ≠ Tribute (/help-wanted/) ≠ Matrix (/matrix/) ≠ project hub (/termux-monorepo/)
 
 on:
   push:
@@ -69,14 +68,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Prepare project hub (NOT full dashboard twin)
+      - name: Prepare project hub + matrix page
         run: |
-          mkdir -p _site
+          mkdir -p _site/data
           cp apps/project-pages-hub/index.html _site/index.html
+          cp apps/help-wanted-dashboard/matrix.html _site/matrix.html
+          if [ -f docs/ops/generated/lane-matrix-status.json ]; then
+            cp docs/ops/generated/lane-matrix-status.json _site/data/lane-matrix-status.json
+          fi
           touch _site/.nojekyll
-          printf '%s\n' 'Project hub. Canonical ops UI: https://timerloggedout-spec.github.io/help-wanted/' > _site/README.md
-
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
@@ -86,7 +86,7 @@ jobs:
           force_orphan: true
           user_name: github-actions[bot]
           user_email: github-actions[bot]@users.noreply.github.com
-          commit_message: "deploy(project-hub): ${{ github.sha }}"
+          commit_message: "deploy(project-hub+matrix): ${{ github.sha }}"
 
   user-site:
     name: mirror-user-github-io
@@ -95,7 +95,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - name: Refresh provenance-aware dashboard snapshot
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -103,37 +102,50 @@ jobs:
           set -euo pipefail
           python3 scripts/ci/help_wanted_status.py
           python3 scripts/ci/verify_help_wanted_dashboard.py
-
-      - name: Prepare help-wanted subtree (canonical dashboard + lanes page)
+      - name: Prepare Tribute subtree
         run: |
-          mkdir -p _site/data
-          cp -a apps/help-wanted-dashboard/. _site/
+          mkdir -p _tribute/data
+          cp -a apps/help-wanted-dashboard/. _tribute/
           if [ -f docs/ops/generated/help-wanted-status.json ]; then
-            cp docs/ops/generated/help-wanted-status.json _site/data/status.json
+            cp docs/ops/generated/help-wanted-status.json _tribute/data/status.json
           fi
-          if [ -f docs/ops/generated/lane-matrix-status.json ]; then
-            cp docs/ops/generated/lane-matrix-status.json _site/data/lane-matrix-status.json
-          fi
-          touch _site/.nojekyll
-
-      - name: Mirror to timerloggedout-spec.github.io/help-wanted
+          touch _tribute/.nojekyll
+      - name: Mirror Tribute to /help-wanted/
         uses: peaceiris/actions-gh-pages@v4
         with:
           personal_token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GH_PAT || secrets.GITHUB_TOKEN }}
           external_repository: timerloggedout-spec/timerloggedout-spec.github.io
-          publish_dir: _site
+          publish_dir: _tribute
           destination_dir: help-wanted
           publish_branch: main
           keep_files: true
           user_name: github-actions[bot]
           user_email: github-actions[bot]@users.noreply.github.com
           commit_message: "deploy(help-wanted): ${{ github.sha }}"
-
-      - name: User-site URL
+      - name: Prepare Matrix subtree
         run: |
-          echo "### Canonical ops dashboard" >> "$GITHUB_STEP_SUMMARY"
+          mkdir -p _matrix/data
+          cp apps/help-wanted-dashboard/matrix.html _matrix/index.html
+          if [ -f docs/ops/generated/lane-matrix-status.json ]; then
+            cp docs/ops/generated/lane-matrix-status.json _matrix/data/lane-matrix-status.json
+          fi
+          touch _matrix/.nojekyll
+      - name: Mirror Matrix to /matrix/
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+          external_repository: timerloggedout-spec/timerloggedout-spec.github.io
+          publish_dir: _matrix
+          destination_dir: matrix
+          publish_branch: main
+          keep_files: true
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com
+          commit_message: "deploy(matrix): ${{ github.sha }}"
+      - name: User-site URLs
+        run: |
           echo "https://timerloggedout-spec.github.io/help-wanted/" >> "$GITHUB_STEP_SUMMARY"
-          echo "https://timerloggedout-spec.github.io/help-wanted/lanes-and-scopes.html" >> "$GITHUB_STEP_SUMMARY"
+          echo "https://timerloggedout-spec.github.io/matrix/" >> "$GITHUB_STEP_SUMMARY"
 
   vercel:
     name: vercel-prod
@@ -149,7 +161,6 @@ jobs:
           set -euo pipefail
           python3 scripts/ci/help_wanted_status.py
           python3 scripts/ci/verify_help_wanted_dashboard.py
-
       - name: Sync status snapshot
         run: |
           mkdir -p apps/help-wanted-dashboard/data

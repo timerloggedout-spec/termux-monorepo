@@ -1,0 +1,82 @@
+name: GitHub App Capability Probe
+
+# Manual, read-only verification of an installed GitHub App's effective permissions.
+# This exists to turn the PR #800 Checks-publication failure into an observable
+# capability check. It does not create checks, comments, branches, commits, or PRs.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-app-capability-probe
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    name: Verify App installation permissions
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Validate credential inputs are configured
+        env:
+          APP_CLIENT_ID: ${{ vars.APP_CLIENT_ID }}
+          APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          test -n "${APP_CLIENT_ID}" || { echo "APP_CLIENT_ID repository variable is missing." >&2; exit 2; }
+          test -n "${APP_PRIVATE_KEY}" || { echo "APP_PRIVATE_KEY repository secret is missing." >&2; exit 2; }
+
+      - name: Mint short-lived installation token
+        id: app-token
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3 release
+        with:
+          client-id: ${{ vars.APP_CLIENT_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
+
+      - name: Inspect effective installation permissions
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import subprocess
+
+          data = json.loads(subprocess.check_output(["gh", "api", "/installation"], text=True))
+          permissions = data.get("permissions", {})
+          checks = permissions.get("checks")
+          metadata = permissions.get("metadata")
+          contents = permissions.get("contents")
+          pulls = permissions.get("pull_requests")
+
+          print(f"checks={checks}")
+          print(f"metadata={metadata}")
+          print(f"contents={contents}")
+          print(f"pull_requests={pulls}")
+
+          if checks != "write":
+              raise SystemExit(
+                  "BLOCKED: the installed App does not have Checks: write. "
+                  "Update the App registration and approve the installation permission change, "
+                  "then rerun this probe."
+              )
+          if metadata not in {"read", "write"}:
+              raise SystemExit("BLOCKED: Metadata permission is unavailable.")
+          PY
+
+      - name: Record bounded capability evidence
+        run: |
+          set -euo pipefail
+          {
+            echo "## GitHub App capability probe"
+            echo
+            echo "- Repository: ${GITHUB_REPOSITORY}"
+            echo "- SHA: ${GITHUB_SHA}"
+            echo "- Installation token: short-lived and runtime-only"
+            echo "- Required capability: Checks: write"
+            echo "- No repository mutation was attempted"
+          } >> "$GITHUB_STEP_SUMMARY"

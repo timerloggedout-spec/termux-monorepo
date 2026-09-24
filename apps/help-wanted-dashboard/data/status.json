@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-24T11:46:11Z",
+  "generated_at": "2026-09-24T13:47:50Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
   "receipts": 134,
@@ -15,6 +15,15 @@
     "ok": 134
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/MergeFi/contracts/pull/374",
+      "title": "help-wanted: stake + contribute for #345",
+      "number": 374,
+      "repo": "MergeFi/contracts",
+      "state": "open",
+      "updated_at": "2026-09-24T13:47:39Z",
+      "tribute": true
+    },
     {
       "html_url": "https://github.com/vavallee/bindery/pull/2770",
       "title": "help-wanted: stake + contribute for #2769",
@@ -142,8 +151,21 @@
       "tribute": true
     }
   ],
-  "foreign_open_count": 14,
+  "foreign_open_count": 15,
   "tributes": [
+    {
+      "pr_url": "https://github.com/MergeFi/contracts/pull/374",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-24T13:47:39Z",
+      "providers": [],
+      "repo": "MergeFi/contracts",
+      "number": 374,
+      "title": "help-wanted: stake + contribute for #345",
+      "state": "open"
+    },
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
@@ -717,7 +739,7 @@
       "state": "closed"
     }
   ],
-  "tribute_count": 35,
+  "tribute_count": 36,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -2001,7 +2023,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "8f6c596e396a6afedede74de7933682e77bda96d",
+    "source_sha": "def122640bd19d62f57d479d96d244aaec08b5b8",
     "source_ref": "master",
     "history_complete": true,
     "history_count": 1,
@@ -2034,12 +2056,12 @@
   },
   "evolution": [
     {
-      "sha": "8f6c596e396a6afedede74de7933682e77bda96d",
-      "short_sha": "8f6c596e396a",
-      "date": "2026-09-24T11:45:38Z",
-      "author": "github-actions[bot]",
-      "subject": "chore(docs): refresh DOCS-BRANCH-INDEX",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/8f6c596e396a6afedede74de7933682e77bda96d"
+      "sha": "def122640bd19d62f57d479d96d244aaec08b5b8",
+      "short_sha": "def122640bd1",
+      "date": "2026-09-24T05:40:19-07:00",
+      "author": "Founders' are 'found' to implement.",
+      "subject": "feat(llm-api-hub): extract standalone hub core from #48 (TER-71)",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/def122640bd19d62f57d479d96d244aaec08b5b8"
     }
   ],
   "pipeline": [

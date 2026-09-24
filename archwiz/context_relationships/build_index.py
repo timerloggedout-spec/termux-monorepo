@@ -21,6 +21,7 @@ try:
     )
     from .seed_merger import merge_seeds
     from .source_collector import collect_source_seed
+    from .temporal import TemporalError, build_lineage, build_snapshot, compare_snapshots, write_snapshot
 except ImportError:  # Supports direct script use.
     from compiler import CompilationError, compile_seed, write_artifacts
     from github_collector import (
@@ -31,6 +32,7 @@ except ImportError:  # Supports direct script use.
     )
     from seed_merger import merge_seeds
     from source_collector import collect_source_seed
+    from temporal import TemporalError, build_lineage, build_snapshot, compare_snapshots, write_snapshot
 
 BUILDER_ID = "archwiz.context_relationships.build_index@1.0"
 
@@ -174,6 +176,36 @@ def build_index(
     merged_seed, merge_report = merge_seeds(*seeds)
     merge_report["retained_history"] = historical_seed is not None
     nodes, edges, matrix, manifest = compile_seed(merged_seed, scope_registry, schema)
+    source_sha = os.environ.get("GITHUB_SHA", f"local:{ref}")
+    observed_at = str(github_report.get("collected_at") or manifest.get("generated_at") or "")
+    next_start_page = history_window.get("next_start_page")
+    coverage = "COMPLETE" if next_start_page is None else "PARTIAL_CONTINUATION_REQUIRED"
+    previous_snapshot = None
+    previous_snapshot_id = None
+    temporal_current_path = output / "temporal-current.json"
+    if temporal_current_path.exists():
+        try:
+            previous_snapshot = json.loads(temporal_current_path.read_text(encoding="utf-8"))
+            previous_snapshot_id = previous_snapshot.get("snapshot_id")
+        except (OSError, json.JSONDecodeError):
+            previous_snapshot = None
+            previous_snapshot_id = None
+    previous_nodes = read_jsonl(output / "nodes.jsonl") if (output / "nodes.jsonl").exists() else []
+    previous_edges = read_jsonl(output / "edges.jsonl") if (output / "edges.jsonl").exists() else []
+    delta = compare_snapshots(previous_nodes, previous_edges, nodes, edges) if previous_snapshot else {
+        "schema": "context-relationship-temporal/v1",
+        "counts": {"nodes_added": len(nodes), "nodes_removed": 0, "nodes_changed": 0,
+                   "edges_added": len(edges), "edges_removed": 0, "edges_changed": 0, "edges_reclassified": 0},
+    }
+    try:
+        temporal_snapshot = build_snapshot(
+            repository=f"{owner}/{repo}", source_ref=ref, source_sha=source_sha,
+            observed_at=observed_at, history_start_page=history_start_page,
+            history_next_start_page=next_start_page, nodes=nodes, edges=edges,
+            coverage=coverage, previous_snapshot_id=previous_snapshot_id, delta=delta,
+        )
+    except TemporalError as exc:
+        raise CompilationError(f"temporal evidence build failed: {exc}") from exc
     manifest.update(
         {
             "builder": BUILDER_ID,

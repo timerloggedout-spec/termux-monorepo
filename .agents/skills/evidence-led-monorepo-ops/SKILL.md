@@ -143,12 +143,12 @@ Receipts are projections; the longitudinal GitHub/evidence corpus remains the so
 
 This skill owns repository-admin evidence discipline; it does not replace those specialist lanes.
 
-## Session 2026-09-23 17:22 PDT
+## Session 2026-09-23 18:23 PDT
 
-- Live master `8713fe6a` (#795 RinDig provenance loop MERGED).
-- #787 dual-gate SUCCESS on `75aa3b13` + update-branch **merge conflict** vs tip — successor re-extract required.
-- #794 rebase in progress (`dfaa878f`); Vercel rate-limit non-gate.
+- Live master `35cc9162` (#796 MERGED).
+- #794 dual-gate SUCCESS on `dfaa878f` (hygiene 107439827718, smoke 107439827444); update-branch vs tip in progress.
+- #787 dual-gate SUCCESS remains on stale `75aa3b13` + merge conflict — do not promote that SHA.
 - #48 EXTRACT (master-staging). #69 SUPERSEDED.
-- Pulse branch `ops/session-lane-matrix-20260923-1722` cut from live tip.
+- Pulse branch `ops/session-lane-matrix-20260923-1823` cut from live tip.
 
 Agent-Identity: Grok (Administrator)

@@ -9,7 +9,7 @@ The observability stack is reorganized by dependency rather than by product cate
 - OpenTelemetry: neutral trace/span transport at the agent invocation boundary.
 - Docker: reproducible execution substrate for CI and agent jobs; useful for controlled experiments, isolated tooling, environment fingerprints, and reproducible failure reproduction.
 - Complexity scoring: explicit complexity plus the structural fallback is part of the measurement foundation. Tree-sitter is the preferred language-neutral structural expansion.
-- ATES Phase A: the pure reducer, event schema, focused tests, and quality verification are already implemented; subsequent phases instrument the runtime around this foundation.
+- ATES Phase A + B: the pure reducer, event schema, focused tests, quality verification, and a read-only `workflow_run` runtime evidence observer are implemented; ATES is the primary execution-measurement spine for the quality-first telemetry plane.
 
 **P1 — parallel evaluation and reproduction surfaces**
 
@@ -47,9 +47,9 @@ ATES is an observation inside this quality-first frame, not the objective functi
 
 Pure ATES/WTCV reducer, sanitized event schema, focused fixtures, missing-evidence invariants, structural complexity fallback, and a visible Actions quality check. No external telemetry dependency.
 
-### Phase B — emit
+### Phase B — emit **[IMPLEMENTED]**
 
-Teach eligible agent workflows to emit sanitized JSONL and publish a receipt alongside existing Action artifacts. Add immutable run/attempt/SHA linkage and environment fingerprints where available.
+The read-only `agent-throughput-evidence` observer watches eligible completed agent workflows, emits sanitized JSONL, reduces the observations through ATES, and publishes a receipt with immutable run/attempt/SHA linkage. It does not execute triggering code and does not infer missing complexity or a sequential baseline.
 
 ### Phase C — correlate
 

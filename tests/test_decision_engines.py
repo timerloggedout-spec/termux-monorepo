@@ -31,6 +31,7 @@ def test_matrix_policy_comparative():
     assert "HOLD" in m["invalid_agent_states"]
     assert "laya" in m["families"]
     assert "jev" in m["families"]
+    assert "min_score" in m["high_value_dims"]
 
 
 def test_select_free_only_excludes_hosted():
@@ -55,6 +56,15 @@ def test_select_hosted_applies_cost_penalty():
     jev = next(r for r in ranked if r["engine"] == "jev")
     assert "hosted_cost_penalty" in jev["reasons"]
     assert jev["score"] <= 0
+
+
+def test_select_min_score_drops_hosted_jev():
+    de = _load("decision_engines", ROOT / "scripts" / "decision_engines.py")
+    ranked = de.select(free_only=False, allow_hosted=True, min_score=1)
+    ids = {r["engine"] for r in ranked}
+    assert "jev" not in ids
+    assert "laya" in ids
+    assert all(r["score"] >= 1 for r in ranked)
 
 
 def test_recommend_pair_keeps_canny_gate():
@@ -92,6 +102,16 @@ def test_canny_allow_when_exit_zero():
     assert result["hard_block"] is False
     assert result["decision"] == "ALLOW"
     assert result["noul_advice"]["advice"] == "relax_allowed"
+    assert result["positives"]
+    assert result["positives"][0]["kind"] == "file_changed"
+
+
+def test_canny_file_changed_is_not_hard_block():
+    canny = _load("canny_completion_gate", ROOT / "scripts" / "canny_completion_gate.py")
+    facts = [{"kind": "file_changed", "paths": ["scripts/canny_completion_gate.py"]}]
+    ev = canny.evaluate_facts(facts)
+    assert ev["hard_block"] is False
+    assert ev["positives"][0]["kind"] == "file_changed"
 
 
 def test_canny_need_evidence_not_hold():

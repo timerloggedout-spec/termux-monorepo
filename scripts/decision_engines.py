@@ -228,6 +228,7 @@ def select(
     domain: str | None = None,
     family: str | None = None,
     allow_hosted: bool = False,
+    min_score: int | None = None,
 ) -> list[dict[str, Any]]:
     """Criteria-driven comparative selection. Returns ranked candidates with reasons."""
     ranked: list[dict[str, Any]] = []
@@ -257,6 +258,8 @@ def select(
             score -= 2
         if "multi_lang_weak" in reasons and lang == "multi":
             score -= 1
+        if min_score is not None and score < min_score:
+            continue
         ranked.append(
             {
                 "engine": eng["id"],
@@ -274,12 +277,14 @@ def recommend_pair(
     *,
     domain: str | None = None,
     allow_hosted: bool = False,
+    min_score: int | None = None,
 ) -> dict[str, Any]:
     """Pair a System-1 engine with the Canny completion gate (comparative)."""
     system1 = select(
         domain=domain,
         allow_hosted=allow_hosted,
         free_only=not allow_hosted,
+        min_score=min_score,
     )
     system1 = [r for r in system1 if r["engine"] != "canny_pattern"]
     gate = select(domain="done", self_host_required=True, family="policy")
@@ -310,6 +315,7 @@ def matrix_summary() -> dict[str, Any]:
             "domain_specialization",
             "dense_feedback",
             "family",
+            "min_score",
         ],
         "recon": {
             "awesome_jev_projects": "https://github.com/logicrw/awesome-jev-projects",
@@ -339,12 +345,17 @@ def main() -> int:
     parser.add_argument("--domain", default=None)
     parser.add_argument("--family", default=None)
     parser.add_argument("--max-options", type=int, default=None)
+    parser.add_argument("--min-score", type=int, default=None)
     args = parser.parse_args()
 
     if args.matrix:
         data = matrix_summary()
     elif args.recommend:
-        data = recommend_pair(domain=args.domain, allow_hosted=args.allow_hosted)
+        data = recommend_pair(
+            domain=args.domain,
+            allow_hosted=args.allow_hosted,
+            min_score=args.min_score,
+        )
     elif args.select:
         data = select(
             free_only=not args.allow_hosted,
@@ -354,6 +365,7 @@ def main() -> int:
             domain=args.domain,
             family=args.family,
             allow_hosted=args.allow_hosted,
+            min_score=args.min_score,
         )
     elif args.list:
         data = list_engines()

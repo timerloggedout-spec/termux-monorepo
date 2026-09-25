@@ -43,11 +43,16 @@ INVALID_AGENT_STATES = frozenset({"HOLD", "WAIT", "OBSERVE"})
 def evaluate_facts(facts: list[dict[str, Any]]) -> dict[str, Any]:
     """Deterministic fact evaluation. Only facts can hard-block."""
     blocks: list[dict[str, Any]] = []
+    positives: list[dict[str, Any]] = []
     for f in facts:
         if not f:
             continue
         kind = f.get("kind")
         if kind not in FACT_KINDS:
+            continue
+        if kind == "file_changed":
+            paths = f.get("paths") or f.get("detail") or []
+            positives.append({"kind": kind, "detail": paths})
             continue
         if kind == "command_exit_nonzero":
             if int(f.get("exit_code") or 0) != 0:
@@ -67,6 +72,7 @@ def evaluate_facts(facts: list[dict[str, Any]]) -> dict[str, Any]:
     return {
         "hard_block": bool(blocks),
         "blocks": blocks,
+        "positives": positives,
         "fact_count": len(facts),
         "mode": "facts_only",
     }
@@ -116,10 +122,12 @@ def gate(
         "claim": (claim or "")[:200],
         "hard_block": fact_result["hard_block"],
         "blocks": fact_result["blocks"],
+        "positives": fact_result["positives"],
         "ts": int(time.time()),
         "dense_feedback": {
             "ledger_entry": True,
             "fact_block": fact_result["hard_block"],
+            "positive_count": len(fact_result["positives"]),
             "reason": "facts_hard_block" if fact_result["hard_block"] else "facts_clear",
         },
     }

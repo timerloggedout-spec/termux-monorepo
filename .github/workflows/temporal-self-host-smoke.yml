@@ -1,0 +1,118 @@
+name: Temporal self-host smoke
+
+# FA-ADE: Temporal + hello workflow on GitHub runners — no operator CLI homework.
+on:
+  pull_request:
+    paths:
+      - 'mcp-docker/temporal/**'
+      - 'scripts/temporal/**'
+      - 'tests/test_temporal_hello_import.py'
+      - '.github/workflows/temporal-self-host-smoke.yml'
+      - 'docs/ops/TEMPORAL-LANGSMITH-ADAPTER.md'
+  push:
+    branches: [master]
+    paths:
+      - 'mcp-docker/temporal/**'
+      - 'scripts/temporal/**'
+      - '.github/workflows/temporal-self-host-smoke.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: temporal-self-host-smoke-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  structural:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+      - name: Structural import test (optional temporalio)
+        run: python3 -m unittest tests.test_temporal_hello_import -v
+      - name: Compose file present
+        run: test -f mcp-docker/temporal/docker-compose.yml
+
+  live-smoke:
+    runs-on: ubuntu-latest
+    needs: structural
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+
+      - name: Install Temporal CLI
+        run: |
+          set -euo pipefail
+          curl -sSf https://temporal.download/cli.sh | sh
+          echo "$HOME/.temporalio/bin" >> "$GITHUB_PATH"
+
+      - name: Start Temporal dev server
+        run: |
+          set -euo pipefail
+          temporal server start-dev --headless --ip 127.0.0.1 --port 7233 > /tmp/temporal-dev.log 2>&1 &
+          echo $! > /tmp/temporal-dev.pid
+          for i in $(seq 1 60); do
+            if temporal operator cluster health --address 127.0.0.1:7233 2>/dev/null; then
+              echo "Temporal healthy"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Temporal failed to become healthy"; tail -100 /tmp/temporal-dev.log; exit 1
+
+      - name: Install temporalio + run hello workflow from module
+        run: |
+          set -euo pipefail
+          python3 -m pip install --quiet 'temporalio>=1.7.0'
+          mkdir -p scripts/temporal
+          cat > scripts/temporal/_ci_hello.py <<'PY'
+          import asyncio, os, uuid
+          from datetime import timedelta
+          from temporalio import activity, workflow
+          from temporalio.client import Client
+          from temporalio.worker import Worker
+
+          @activity.defn
+          async def greet(name: str) -> str:
+              return f"hello, {name}"
+
+          @workflow.defn
+          class HelloWorkflow:
+              @workflow.run
+              async def run(self, name: str) -> str:
+                  return await workflow.execute_activity(
+                      greet, name, schedule_to_close_timeout=timedelta(seconds=30)
+                  )
+
+          async def main() -> None:
+              client = await Client.connect(os.environ["TEMPORAL_ADDRESS"])
+              tq = os.environ["TEMPORAL_TASK_QUEUE"]
+              async with Worker(client, task_queue=tq, workflows=[HelloWorkflow], activities=[greet]):
+                  result = await client.execute_workflow(
+                      HelloWorkflow.run,
+                      os.environ.get("TEMPORAL_HELLO_NAME", "ci"),
+                      id=f"hello-ci-{uuid.uuid4().hex[:12]}",
+                      task_queue=tq,
+                  )
+                  print(result)
+                  assert result.startswith("hello,"), result
+
+          if __name__ == "__main__":
+              asyncio.run(main())
+          PY
+          export TEMPORAL_ADDRESS=127.0.0.1:7233
+          export TEMPORAL_TASK_QUEUE=termux-agent-ci
+          export TEMPORAL_HELLO_NAME=ci-smoke
+          python3 scripts/temporal/_ci_hello.py
+
+      - name: Stop Temporal
+        if: always()
+        run: |
+          if [ -f /tmp/temporal-dev.pid ]; then
+            kill "$(cat /tmp/temporal-dev.pid)" || true
+          fi

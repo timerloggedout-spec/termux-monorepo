@@ -65,18 +65,8 @@ jobs:
       - name: Validate TDQS evidence schema JSON
         run: python -m json.tool docs/ops/TDQS-EVIDENCE.schema.json >/dev/null
 
-      - name: Install coverage tooling
-        run: python -m pip install --disable-pip-version-check --no-input coverage
+      - name: Run focused ATES reducer tests
+        run: python -m unittest tests.test_she_agent_throughput -v
 
-      - name: Run focused ATES reducer tests with coverage
-        run: |
-          coverage run --branch --source=she/metrics -m unittest tests.test_she_agent_throughput -v
-          coverage run --branch --source=she/metrics -a -m unittest tests.test_tdqs -v
-          coverage xml -o coverage.xml
-
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v5
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage.xml
-          fail_ci_if_error: false
+      - name: Run focused TDQS tests
+        run: python -m unittest tests.test_tdqs -v

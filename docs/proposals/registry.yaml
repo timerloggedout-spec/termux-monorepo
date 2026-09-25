@@ -1,27 +1,9 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-09-24T16:40:00Z"
+updated_at: "2026-09-23T18:15:00Z"
 updated_by: grok-administrator
 
 proposals:
-  - id: temporal-langsmith-adapter
-    title: "Temporal self-host + LangSmith Trajectories adapter (P1 observational)"
-    author: grok
-    status: executing
-    priority: P1
-    path: active/temporal-langsmith-adapter/
-    reviewers:
-      - id: grok
-        role: author+executor
-        status: executing
-      - id: timerloggedout-spec
-        role: operator-authorizer
-        status: requested
-    related_prs: []
-    related_branches:
-      - feat/temporal-langsmith-adapter
-    gates_required: [repo-gate, termux-smoke]
-
   - id: approxination-integration
     title: "Approxination skill search/create/contribute + A/B/C/D evaluation cohort"
     author: grok
@@ -61,6 +43,7 @@ proposals:
       - https://github.com/timerloggedout-spec/bifrost_fork
       - https://github.com/timerloggedout-spec/bifrost-benchmarking_fork
     gates_required: [repo-gate, termux-smoke]
+
 
   - id: auditengine-adapt
     title: "RinDig AuditEngine (Ethics Engine) adapt pass"

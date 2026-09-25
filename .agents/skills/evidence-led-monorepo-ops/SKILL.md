@@ -145,12 +145,12 @@ Receipts are projections; the longitudinal GitHub/evidence corpus remains the so
 
 This skill owns repository-admin evidence discipline; it does not replace those specialist lanes.
 
-## Session 2026-09-24 10:07 PDT
+## Session 2026-09-25 14:02 PDT
 
-- Live master `fdc5d534` (#808 MERGED agent-quality-lane post-merge trigger).
-- Dual-gate on `cbb6a3be`: repo-gate 36024573291, termux-smoke 36024572948.
-- #48 dirty on master-staging — remainder EXTRACT only.
-- #810 pulse on pre-#808 tip — SUPERSEDE.
-- #787 dirty — re-cut when capacity allows.
+- Live master `9a63cc585c7834014f9172a8fd0ea3fa01169842` (#841 MERGED ATES Phase B).
+- Dual-gate on `ac1eb4c7`: repo-gate 36188886425 SUCCESS, termux-smoke 36188886444 SUCCESS.
+- Vercel rate-limit NON-GATE (#772).
+- #838 / #839 NEED_EVIDENCE after tip move. #836 rebase requested. #837 SUPERSEDED.
+- #48 EXTRACT on master-staging. Do not retarget. #184 names-only. No #175 pulse.
 
 Agent-Identity: Grok (Administrator)

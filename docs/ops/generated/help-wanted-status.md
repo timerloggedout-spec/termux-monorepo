@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-25T23:18:34Z UTC · receipts=263 · foreign_open=17 · tributes=41_
+_Generated 2026-09-25T23:33:28Z UTC · receipts=263 · foreign_open=18 · tributes=42_
 
 ## Tributes (contributor ledger)
 
+- [Heliobond/frontend#614](https://github.com/Heliobond/frontend/pull/614) · state=open · help-wanted: stake + contribute for #587
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -43,10 +44,10 @@ _Generated 2026-09-25T23:18:34Z UTC · receipts=263 · foreign_open=17 · tribut
 - [timerloggedout-spec/mcp-multi-host#1](https://github.com/timerloggedout-spec/mcp-multi-host/pull/1) · state=closed · docs: point to termux-monorepo/mcp-hub as the new home for this catalog
 - [Research-Astute/manus-ui-research-hub#3](https://github.com/Research-Astute/manus-ui-research-hub/pull/3) · state=closed · chore: refresh research and development lane pins
 - [Research-Astute/manus-ui-research-hub#1](https://github.com/Research-Astute/manus-ui-research-hub/pull/1) · state=closed · ci: add hub policy and onboarding controls
-- [Research-Astute/manus-ui-adapter-lab#1](https://github.com/Research-Astute/manus-ui-adapter-lab/pull/1) · state=closed · ci: add deterministic adapter policy checks
 
 ## Foreign open PRs
 
+- [Heliobond/frontend#614](https://github.com/Heliobond/frontend/pull/614) — help-wanted: stake + contribute for #587
 - [UnityChainxx/StellarHunts#599](https://github.com/UnityChainxx/StellarHunts/pull/599) — help-wanted: stake + contribute for #519
 - [LibreUML/LibreUML#130](https://github.com/LibreUML/LibreUML/pull/130) — help-wanted: stake + contribute for #126
 - [lonestill/onyx-launcher#45](https://github.com/lonestill/onyx-launcher/pull/45) — help-wanted: stake + contribute for #19

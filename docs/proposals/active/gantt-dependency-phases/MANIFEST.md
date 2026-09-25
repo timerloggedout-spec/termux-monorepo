@@ -13,7 +13,7 @@ reviewers:
   - id: Manus AI
     role: executor
     status: executing
-related_prs: [248, 252, 253, 254, 257]
+related_prs: [248, 252, 253, 254, 257, 717, 774]
 related_branches:
   - master
 gates_required: [repo-gate, termux-smoke]
@@ -24,6 +24,10 @@ gates_required: [repo-gate, termux-smoke]
 ## Summary
 
 Implement a repository-native dependency-phase system that derives lifecycle state from a versioned phase plan, GitHub Project items, pull-request/check evidence, explicit approval records, and idempotent claims. Mermaid and Markdown reports are derived inspection views; they do not control dispatch or completion.
+
+**Live entry:** [`docs/agentic/README.md`](../../../agentic/README.md)  
+**Canonical plan:** [`docs/agentic/dependency-phases.json`](../../../agentic/dependency-phases.json)  
+**Generated status:** [`docs/agentic/DEPENDENCY_PHASES.md`](../../../agentic/DEPENDENCY_PHASES.md)
 
 ## Reviewers
 
@@ -51,6 +55,16 @@ Implement a repository-native dependency-phase system that derives lifecycle sta
 - Evidence: Applied reconciliation run [32220381734](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32220381734) completed successfully. It reconciled the four canonical phase issues (#246, #247, #255, and #259) as distinct items in user-owned Project #1, all currently `Todo`.
 - Governance: No phase was marked complete solely from Project status, no approval evidence was modified, and no proposal or phase issue was closed automatically.
 
+### 2026-09-23 — Grok (Administrator)
+
+- Disposition: executing (partial terminal)
+- Notes: Derived Gantt / dependency-waves projection consolidated via #717; post-merge adaptive-wait verify #774 (report plan_sha256 + mermaid test). Generated status shows DPH-000 **complete**, DPH-100 **ready**.
+
+### 2026-09-25 — Grok (Administrator)
+
+- Disposition: docs upgrade (this PR)
+- Notes: Evidence-led consolidation of stale design/ITEMS/backlog surfaces. Top-level `docs/GANTT_DEPENDENCY_PHASES_ACTIONS_DESIGN.md` marked historical/implemented. ITEMS statuses aligned to live evaluator evidence. No runtime mutation; no auto-close of proposal.
+
 ## Checklist (process)
 
 - [x] Registered in `docs/proposals/registry.yaml`
@@ -59,9 +73,12 @@ Implement a repository-native dependency-phase system that derives lifecycle sta
 - [x] Code and workflow review completed
 - [x] PR #248 opened with item references
 - [x] Gates green on merge
-- [ ] Closed + moved to `closed/` when terminal
+- [x] Core engine + workflows on master
+- [ ] DPH-100 claimed/applied under Operator Project write credential (when ready)
+- [ ] Closed + moved to `closed/` when all terminal items complete
 
 ## Links
 
 - ITEMS: ./ITEMS.md
-- Source: ./source.md
+- Live system: ../../../agentic/README.md
+- Design (historical): ../../../GANTT_DEPENDENCY_PHASES_ACTIONS_DESIGN.md

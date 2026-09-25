@@ -4,6 +4,18 @@ This directory contains a **repository-native lifecycle system** for dependency-
 
 > **Authority rule:** `dependency-phases.json`, current pull-request/check evidence, explicit approval evidence, and GitHub Project items jointly determine lifecycle state. Mermaid, Markdown, DeepWiki, dashboards, issue prose, and agent-generated summaries are derived views only.
 
+## Navigation SSOT (start here)
+
+| Need | Path |
+|---|---|
+| **This README** | Operator / agent entry for the phase system |
+| Canonical plan | [`dependency-phases.json`](dependency-phases.json) |
+| Generated status (do not edit) | [`DEPENDENCY_PHASES.md`](DEPENDENCY_PHASES.md) · [`dependency-phases.mmd`](dependency-phases.mmd) |
+| Proposal + ITEMS | [`../proposals/active/gantt-dependency-phases/`](../proposals/active/gantt-dependency-phases/) |
+| Historical design | [`../GANTT_DEPENDENCY_PHASES_ACTIONS_DESIGN.md`](../GANTT_DEPENDENCY_PHASES_ACTIONS_DESIGN.md) |
+| Template / PM catalog (inspiration) | [`PROJECT-MANAGEMENT-TEMPLATE-CATALOG.md`](PROJECT-MANAGEMENT-TEMPLATE-CATALOG.md) |
+| Primary repo entry | [`../../CLAUDE.md`](../../CLAUDE.md) |
+
 ## Components
 
 | Path | Purpose |
@@ -15,6 +27,15 @@ This directory contains a **repository-native lifecycle system** for dependency-
 | `scripts/agentic/dependency_phases.py` | Command-line interface for all lifecycle operations. |
 | `DEPENDENCY_PHASES.md` / `dependency-phases.mmd` | Generated inspection views. Never edit as canonical state. |
 | `.github/workflows/dependency-phase-*.yml` | Validation, read-only evaluation, manual Project sync, and controlled dispatch workflows. |
+
+## Automations (live)
+
+| Workflow | Role |
+|---|---|
+| `dependency-phase-validate.yml` | Schema / DAG / fixture validation (read-only; PR + dispatch) |
+| `dependency-phase-evaluate.yml` | Read-only evaluation + artifact upload (schedule + dispatch) |
+| `dependency-phase-project-sync.yml` | Dry-run default Project reconciliation; `--apply` only with Operator token |
+| `dependency-phase-dispatch.yml` | Controlled claim + optional Jules handoff (`repository_dispatch` / manual) |
 
 ## Lifecycle rules
 
@@ -123,3 +144,7 @@ python3 scripts/ci/termux_smoke.py
 python3 scripts/agentic/dependency_phases.py validate
 python3 -m unittest tests/test_dependency_phase_engine.py
 ```
+
+## Upgrade note (2026-09-25)
+
+Docs consolidated for navigation and status accuracy. Runtime behavior unchanged. See proposal MANIFEST review log for evidence trail.

@@ -38,22 +38,25 @@ def evaluate_facts(facts: list[dict[str, Any]]) -> dict[str, Any]:
     """Deterministic fact evaluation. Only facts can hard-block."""
     blocks: list[dict[str, Any]] = []
     for f in facts:
-        kind = (f or {}).get("kind")
+        if not f:
+            continue
+        kind = f.get("kind")
         if kind not in FACT_KINDS:
             continue
-        if kind == "file_changed" and f.get("paths"):
-            continue
-        if kind == "command_exit_nonzero" and int(f.get("exit_code") or 0) != 0:
-            blocks.append({"kind": kind, "detail": f.get("detail") or f.get("cmd")})
-        if kind == "command_failed_repeat" and int(f.get("count") or 0) >= 2:
+        if kind == "command_exit_nonzero":
+            if int(f.get("exit_code") or 0) != 0:
+                blocks.append({"kind": kind, "detail": f.get("detail") or f.get("cmd")})
+        elif kind == "test_failed":
             blocks.append({"kind": kind, "detail": f.get("detail")})
-        if kind == "test_failed":
-            blocks.append({"kind": kind, "detail": f.get("detail")})
-        if kind == "secret_detected":
+        elif kind == "command_failed_repeat":
+            if int(f.get("count") or 0) >= 2:
+                blocks.append({"kind": kind, "detail": f.get("detail")})
+        elif kind == "secret_detected":
             blocks.append({"kind": kind, "detail": "redacted"})
-        if kind == "diff_empty" and f.get("claimed_done"):
-            blocks.append({"kind": kind, "detail": "no diff since claim"})
-        if kind == "check_not_run_since_edit":
+        elif kind == "diff_empty":
+            if f.get("claimed_done"):
+                blocks.append({"kind": kind, "detail": "no diff since claim"})
+        elif kind == "check_not_run_since_edit":
             blocks.append({"kind": kind, "detail": f.get("check") or "required check"})
     return {
         "hard_block": bool(blocks),
@@ -63,27 +66,22 @@ def evaluate_facts(facts: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
-def _evidence_is_adverse(e: dict[str, Any]) -> bool:
-    kind = e.get("kind")
-    if kind == "test_failed":
-        return True
-    if kind == "command_exit_nonzero" and int(e.get("exit_code") or 0) != 0:
-        return True
-    if kind == "secret_detected":
-        return True
-    return False
-
-
 def mock_noul_advice(claim: str, state: dict[str, Any] | None = None) -> dict[str, Any]:
     """Offline stand-in for engine noul on 'is completion claim supported?'."""
     evidence = (state or {}).get("evidence") or []
-    adverse = any(_evidence_is_adverse(e) for e in evidence)
-    has_positive = any(
-        e.get("kind") in ("file_changed",) or (
-            e.get("kind") == "command_exit_nonzero" and int(e.get("exit_code") or 0) == 0
-        )
-        for e in evidence
-    )
+    # Single-pass evidence classification with early exit on adverse facts
+    adverse = False
+    has_positive = False
+    for e in evidence:
+        if not e:
+            continue
+        k = e.get("kind")
+        if k == "test_failed" or k == "secret_detected" or (k == "command_exit_nonzero" and int(e.get("exit_code") or 0) != 0):
+            adverse = True
+            break
+        if k == "file_changed" or (k == "command_exit_nonzero" and int(e.get("exit_code") or 0) == 0):
+            has_positive = True
+
     supported = has_positive and not adverse
     noul = 0.72 if supported else 0.28
     return {

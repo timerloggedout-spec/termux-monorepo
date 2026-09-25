@@ -13,7 +13,7 @@ reviewers:
   - id: Manus AI
     role: executor
     status: executing
-related_prs: [248, 252, 253, 254, 257, 717, 774]
+related_prs: [248, 252, 253, 254, 257, 717, 774, 828]
 related_branches:
   - master
 gates_required: [repo-gate, termux-smoke]
@@ -27,7 +27,8 @@ Implement a repository-native dependency-phase system that derives lifecycle sta
 
 **Live entry:** [`docs/agentic/README.md`](../../../agentic/README.md)  
 **Canonical plan:** [`docs/agentic/dependency-phases.json`](../../../agentic/dependency-phases.json)  
-**Generated status:** [`docs/agentic/DEPENDENCY_PHASES.md`](../../../agentic/DEPENDENCY_PHASES.md)
+**Generated status:** [`docs/agentic/DEPENDENCY_PHASES.md`](../../../agentic/DEPENDENCY_PHASES.md)  
+**Primary Collaborator entry:** [`CLAUDE.md`](../../../../CLAUDE.md) (root `AGENTS.md` is deprecated)
 
 ## Reviewers
 
@@ -46,24 +47,25 @@ Implement a repository-native dependency-phase system that derives lifecycle sta
 ### 2026-08-18 — Manus AI
 
 - Disposition: in_review
-- Notes: The full implementation passed `repo_gate.py --base origin/master-staging` and `termux_smoke.py`, with seven lifecycle/adapter unit tests passing. The live dry-run identified the canonical Project mapping. Issue #246 (`DPH-000`) and issue #247 (`DPH-100`) were created during reconciliation attempts; the authenticated integration token can read but lacks permission to add items to the user-owned Project. The existing Operator-token chain must therefore be selected for Project writes and have Projects write permission. Pull request #248 is open against `master-staging`.
+- Notes: The full implementation passed gates with lifecycle/adapter unit tests. Live dry-run identified Project mapping. Operator-token chain required for Project writes (Projects scope). PR #248 opened against `master-staging` at the time.
 
 ### 2026-08-19 — Manus AI
 
 - Disposition: executing
-- Notes: PR #248 merged the canonical lifecycle engine and four master-governed workflows. Follow-up PRs #252, #253, #254, and #257 respectively hardened read retries, replaced a timing-out GraphQL PR aggregate with targeted REST evidence, made issue creation use a structured REST response, and selected the Project-capable Operator credential for ProjectV2 writes.
-- Evidence: Applied reconciliation run [32220381734](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32220381734) completed successfully. It reconciled the four canonical phase issues (#246, #247, #255, and #259) as distinct items in user-owned Project #1, all currently `Todo`.
-- Governance: No phase was marked complete solely from Project status, no approval evidence was modified, and no proposal or phase issue was closed automatically.
+- Notes: PR #248 merged the canonical lifecycle engine and four master-governed workflows. Follow-ups #252–#257 hardened retries, REST evidence, issue creation, and Operator credential selection for ProjectV2 writes.
+- Evidence: Applied reconciliation run 32220381734 reconciled phase issues into Project #1.
+- Governance: No phase marked complete solely from Project status; no approval inference; no automatic proposal close.
 
 ### 2026-09-23 — Grok (Administrator)
 
 - Disposition: executing (partial terminal)
-- Notes: Derived Gantt / dependency-waves projection consolidated via #717; post-merge adaptive-wait verify #774 (report plan_sha256 + mermaid test). Generated status shows DPH-000 **complete**, DPH-100 **ready**.
+- Notes: Derived Gantt / dependency-waves via #717; post-merge adaptive-wait #774. Generated status: DPH-000 **complete**, DPH-100 **ready**.
 
 ### 2026-09-25 — Grok (Administrator)
 
-- Disposition: docs upgrade (this PR)
-- Notes: Evidence-led consolidation of stale design/ITEMS/backlog surfaces. Top-level `docs/GANTT_DEPENDENCY_PHASES_ACTIONS_DESIGN.md` marked historical/implemented. ITEMS statuses aligned to live evaluator evidence. No runtime mutation; no auto-close of proposal.
+- Disposition: docs upgrade (PR #828)
+- Notes: Evidence-led consolidation of stale design/ITEMS/backlog. Collaborator naming (Role / Name / Moniker); `AGENTS.md` deprecated redirect affirmed. #184: Projects access long present on Operator classic PATs (names-only inventory); not a capability gap — wire intended secret for apply.
+- Explicit: no runtime mutation; no auto-close; no secret values in tree or issues.
 
 ## Checklist (process)
 
@@ -74,7 +76,7 @@ Implement a repository-native dependency-phase system that derives lifecycle sta
 - [x] PR #248 opened with item references
 - [x] Gates green on merge
 - [x] Core engine + workflows on master
-- [ ] DPH-100 claimed/applied under Operator Project write credential (when ready)
+- [ ] DPH-100 claimed/applied under Operator Project write credential (when ready; dry-run first)
 - [ ] Closed + moved to `closed/` when all terminal items complete
 
 ## Links
@@ -82,3 +84,4 @@ Implement a repository-native dependency-phase system that derives lifecycle sta
 - ITEMS: ./ITEMS.md
 - Live system: ../../../agentic/README.md
 - Design (historical): ../../../GANTT_DEPENDENCY_PHASES_ACTIONS_DESIGN.md
+- Credentials (names-only): issue #184

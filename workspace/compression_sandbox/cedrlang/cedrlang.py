@@ -91,6 +91,10 @@ MAPPINGS = [
     ("acquisition", "4cq"),
     ("compliances", "c0mp1s"),
     ("compliance", "c0mp1"),
+    ("researches", "r3534rchs"),
+    ("research", "r3534rch"),
+    ("concepts", "c0nc3p7s"),
+    ("concept", "c0nc3p7"),
 ]
 
 def capitalize_word(w: str) -> str:
@@ -267,7 +271,7 @@ class LinePlaceholderContext:
     def bold_repl_under2(self, match: re.Match[str]) -> str:
         text = match.group(1)
         translated_text = translate_text_raw(text, self.to_compressed)
-        return self.add_placeholder(f"____{translated_text}____")
+        return self.add_placeholder(f"__{translated_text}__")
     def bold_repl_under1(self, match: re.Match[str]) -> str:
         text = match.group(1)
         translated_text = translate_text_raw(text, self.to_compressed)
@@ -296,9 +300,6 @@ def translate_line(line: str, to_compressed: bool) -> str:
         line = DECIMAL_PATTERN.sub(ctx.raw_match_repl, line)
     line = translate_text_raw(line, to_compressed)
     for ph, orig in reversed(ctx.placeholders):
-        if orig.startswith("____") and orig.endswith("____"):
-            content = orig[4:-4]
-            orig = f"__{content}__"
         line = line.replace(ph, orig)
     return line
 
@@ -309,7 +310,7 @@ def compile_doc(text: str) -> str:
     compiled_lines = []
     in_fenced_code = False
     for line in lines:
-        if "```" in line and line.strip().startswith("```"):
+        if "```" in line and line.lstrip(" \t").startswith("```"):
             in_fenced_code = not in_fenced_code
             compiled_lines.append(line)
             continue
@@ -326,7 +327,7 @@ def decompile_doc(text: str) -> str:
     decompiled_lines = []
     in_fenced_code = False
     for line in lines:
-        if "```" in line and line.strip().startswith("```"):
+        if "```" in line and line.lstrip(" \t").startswith("```"):
             in_fenced_code = not in_fenced_code
             decompiled_lines.append(line)
             continue

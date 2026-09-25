@@ -11,6 +11,7 @@ from ml.pipelines.keepalive_dag import (
     DagSpec,
     default_dag,
     iter_ready_nodes,
+    operator_dag,
     render_mermaid,
     validate_dag,
 )
@@ -46,6 +47,13 @@ class KeepaliveDagTest(unittest.TestCase):
             edges=(DagEdge("a", "missing"),),
         )
         self.assertTrue(any("missing target" in e for e in validate_dag(spec)))
+
+    def test_operator_extends_default(self) -> None:
+        spec = operator_dag()
+        self.assertEqual(validate_dag(spec), [])
+        self.assertTrue(spec.node_ids() >= default_dag().node_ids())
+        ready = iter_ready_nodes(spec, ["ingest_events", "schema_validate", "score_throughput", "write_ledger", "export_status"])
+        self.assertEqual(ready, ["recon_lanes"])
 
 
 if __name__ == "__main__":

@@ -31,7 +31,9 @@ class DagSpec:
         return {n.node_id for n in self.nodes}
 
 
-ALLOWED_KINDS = frozenset({"ingest", "validate", "score", "ledger", "export"})
+ALLOWED_KINDS = frozenset(
+    {"ingest", "validate", "score", "ledger", "export", "recon", "evaluate", "monitor"}
+)
 
 
 def default_dag() -> DagSpec:
@@ -57,6 +59,28 @@ def default_dag() -> DagSpec:
             "EXTRACT-only slice. Do not wholesale-merge #682/#746/#787/#817.",
             "No credentials. No remote model calls.",
         ),
+    )
+
+
+def operator_dag() -> DagSpec:
+    """Extended observe DAG used by `cli run`. Does not replace default_dag()."""
+    base = default_dag()
+    extra_nodes = (
+        DagNode("recon_lanes", "recon", "Classify open PRs with vocab v2"),
+        DagNode("evaluate_gates", "evaluate", "Bind dual-gate evidence to SHA"),
+        DagNode("monitor_cctv", "monitor", "Project ICM-CCTV JSON"),
+    )
+    extra_edges = (
+        DagEdge("export_status", "recon_lanes"),
+        DagEdge("recon_lanes", "evaluate_gates"),
+        DagEdge("evaluate_gates", "monitor_cctv"),
+    )
+    return DagSpec(
+        name="ml-keepalive-operator",
+        nodes=base.nodes + extra_nodes,
+        edges=base.edges + extra_edges,
+        mode="observe",
+        notes=base.notes + ("Lane vocab v2 after #836.",),
     )
 
 

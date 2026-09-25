@@ -20,6 +20,8 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 | Role | Load first | Then |
 |------|------------|------|
 | **Admin / Grok Administrator** | `evidence-led-monorepo-ops` + `adaptive-wait` | `review-loop` · `help-wanted-lane` · `github-pages-operator` · `approxination-lane` |
+| **Admin / Termux stewardship** | `termux-mcp-project-steward` + `adaptive-wait` | `context-relationship-graph` · `wingman-project-integration` |
+| **Wingman adaptation** | `wingman-project-integration` | `adaptive-wait` · `context-relationship-graph` | `review-loop` · `help-wanted-lane` · `github-pages-operator` · `approxination-lane` |
 | **Collaborator** | `adaptive-feedback-cycle` | dual-gate · `find-skills` |
 | **Oversight / external contrib** | `help-wanted-lane` | evidence-led + adaptive-wait · living status board |
 | **Dashboard / Pages** | `github-pages-operator` | help-wanted-lane · deploy workflow |
@@ -44,6 +46,8 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 | review-loop | `.agents/skills/review-loop/SKILL.md` |
 | termux-monorepo | `.agents/skills/termux-monorepo/SKILL.md` |
 | termux-monorepo-agentic-governance | `.agents/skills/termux-monorepo-agentic-governance/SKILL.md` |
+| termux-mcp-project-steward | `.agents/skills/termux-mcp-project-steward/SKILL.md` |
+| wingman-project-integration | `.agents/skills/wingman-project-integration/SKILL.md` |
 
 ## `.github/skills/` (CI / production)
 
@@ -93,3 +97,11 @@ Agent-Identity: Grok (Administrator)
 - workflow-orchestration — modular Actions and retry/stale-event discipline.
 
 See `docs/ops/SKILL-DISCOVERY-MATRIX.md` for focused discovery and session-scoped .skill provenance.
+
+## Wingman + supplied skill adoption
+
+- `refTemplates/smods/Wingman_fork` is pinned as the reviewed reference/customization/template source.
+- `termux-mcp-project-steward.skill` is adopted as `.agents/skills/termux-mcp-project-steward/SKILL.md`.
+- `context-relationship-graph_2.skill` matches the current repository relationship-graph contract.
+- Loopy Observe → Choose → Act → Verify → Record → Repeat semantics are adapted into the repository-native WAIT loop; no external runtime is required.
+- See `docs/ops/WINGMAN-FORK-INTEGRATION.md` and `docs/ops/WINGMAN-WAIT-LOOP.md`.

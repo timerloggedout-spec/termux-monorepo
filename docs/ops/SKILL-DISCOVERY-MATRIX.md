@@ -48,6 +48,14 @@ These uploaded packages are **session evidence, not repository SSOT**. They shou
 
 Use the smallest repository-native skill that fills the evidence gap. If an external skill is considered, record source, version/commit, scope, permissions, overlap, maintenance evidence, and the smallest safe adaptation before adoption.
 
+## Adopted session skills and Wingman
+
+- `termux-mcp-project-steward.skill` → adopted as `.agents/skills/termux-mcp-project-steward/SKILL.md`.
+- `context-relationship-graph_2.skill` → current repository relationship-graph contract.
+- The older duplicate `context-relationship-graph.skill` remains reference-only.
+- Loopy bounded Observe → Choose → Act → Verify → Record → Repeat semantics are adapted into the repository-native WAIT loop.
+- `timerloggedout-spec/Wingman_fork` is pinned at `a6d5cea2d48009b5555e138c8d6b8f620388fb1b` as a reference/customization/template resource.
+
 ## Current operating chain
 
 adaptive-wait -> adaptive-feedback-cycle -> evidence-led-monorepo-ops -> review-loop -> context-relationship-graph -> production-reconciliation -> evidence envelope/provenance -> workflow/effectiveness measurement

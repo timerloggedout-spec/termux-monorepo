@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "d2ca7cfc50b92c76c9ed63f19939613f9e7b105f46e795682e94f4ece250e18d",
-  "workflow_count": 89,
+  "source_fingerprint": "48e719c28dcafeeb1f9313aaf201faa6d9d1611010a35a879284b4270ac51719",
+  "workflow_count": 95,
   "workflows": [
     {
       "action_pins": [
@@ -212,6 +212,7 @@
       "schedules": [],
       "triggers": [
         "pull_request",
+        "push",
         "workflow_dispatch"
       ]
     },
@@ -231,6 +232,24 @@
         "issue_comment",
         "pull_request_review",
         "pull_request_review_comment"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: agent-runtime-stall-watch cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "watch"
+      ],
+      "name": "Agent Runtime Stall Watch",
+      "path": ".github/workflows/agent-runtime-stall-watch.yml",
+      "schedules": [
+        "*/10 * * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
       ]
     },
     {
@@ -443,11 +462,28 @@
     },
     {
       "action_pins": [
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: context-relationship-backfill-watcher-${{ github.event.workflow_run.id }} cancel-in-progress: false",
+      "domain": "governance-relationships",
+      "jobs": [
+        "observe"
+      ],
+      "name": "context relationship backfill watcher",
+      "path": ".github/workflows/context-relationship-backfill-watcher.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_run"
+      ]
+    },
+    {
+      "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
         "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
       ],
       "authority": "writer",
-      "concurrency": "group: context-relationship-writer-master-staging cancel-in-progress: false",
+      "concurrency": "group: context-relationship-writer-master cancel-in-progress: false",
       "domain": "governance-relationships",
       "jobs": [
         "backfill"
@@ -1044,6 +1080,24 @@
     },
     {
       "action_pins": [
+        "actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "validate-backfill-migration-boundary"
+      ],
+      "name": "historical backfill promotion gate",
+      "path": ".github/workflows/historical-backfill-promotion-gate.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
       "authority": "read-only-or-advisory",
@@ -1211,6 +1265,7 @@
       "path": ".github/workflows/orchestration-regression-guard.yml",
       "schedules": [],
       "triggers": [
+        "pull_request",
         "push",
         "workflow_dispatch"
       ]
@@ -1563,6 +1618,22 @@
       "concurrency": "",
       "domain": "agentic-development",
       "jobs": [
+        "validate"
+      ],
+      "name": "research-registry",
+      "path": ".github/workflows/research-registry.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
         "provenance"
       ],
       "name": "RinDig Provenance Audit",
@@ -1701,6 +1772,41 @@
       ]
     },
     {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: temporal-self-host-smoke-${{ github.event.pull_request.number || github.ref }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "live-smoke",
+        "structural"
+      ],
+      "name": "Temporal self-host smoke",
+      "path": ".github/workflows/temporal-self-host-smoke.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "health"
+      ],
+      "name": "Termux bridge connectivity",
+      "path": ".github/workflows/termux-bridge-connect.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
       "action_pins": [],
       "authority": "read-only-or-advisory",
       "concurrency": "group: termux-smoke-${{ github.ref }} cancel-in-progress: true",
@@ -1750,6 +1856,12 @@
         "automation-documentation",
         "route",
         "verify"
+      ],
+      "name": "Workflow Surface Policy",
+      "path": ".github/workflows/workflow-surface-policy.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request"
       ]
     }
   ]

@@ -187,6 +187,26 @@ ENGINES: dict[str, dict[str, Any]] = {
     },
 }
 
+# Bolt optimization: Precompute engine metadata and scores at module load time
+# to eliminate per-call string conversions, lowercasing, and iterations in select().
+for _eng in ENGINES.values():
+    _q = _eng.get("quality") or {}
+    _host = _eng.get("host")
+    _eng["_workflows_str"] = " ".join(_eng.get("workflows") or []).lower()
+    _eng["_multi_lang_str"] = str(_q.get("multi_lang", "")).lower()
+    _eng["_cardinality_degrades"] = "degrades" in str(_q.get("cardinality", ""))
+    _eng["_self_host"] = bool(_q.get("self_host", _host == "self"))
+    _base = 0
+    if _eng.get("phase") == "COMPARATIVE":
+        _base += 2
+    if _eng.get("phase") == "PATTERN":
+        _base += 3
+    if _host == "self":
+        _base += 2
+    if _eng.get("system_one_wire"):
+        _base += 1
+    _eng["_base_score"] = _base
+
 
 def list_engines() -> list[dict[str, Any]]:
     return list(ENGINES.values())
@@ -207,33 +227,22 @@ def select(
 ) -> list[dict[str, Any]]:
     """Criteria-driven comparative selection. Returns ranked candidates with reasons."""
     ranked: list[dict[str, Any]] = []
+    domain_lower = domain.lower() if domain else None
     for eng in ENGINES.values():
-        reasons: list[str] = []
-        q = eng.get("quality") or {}
         host = eng.get("host")
         if free_only and host == "hosted" and not allow_hosted:
             continue
-        if self_host_required and not q.get("self_host", host == "self"):
+        if self_host_required and not eng["_self_host"]:
             continue
-        if lang == "multi" and "multi" not in str(q.get("multi_lang", "")).lower():
+        reasons: list[str] = []
+        if lang == "multi" and "multi" not in eng["_multi_lang_str"]:
             if eng["id"] != "laya":
                 reasons.append("multi_lang_weak")
-        if max_options is not None and max_options > 20:
-            if "degrades" in str(q.get("cardinality", "")):
-                reasons.append("high_cardinality_risk")
-        if domain:
-            wfs = " ".join(eng.get("workflows") or []).lower()
-            if domain.lower() not in wfs and domain not in eng.get("id", ""):
-                reasons.append(f"domain_soft_miss:{domain}")
-        score = 0
-        if eng.get("phase") == "COMPARATIVE":
-            score += 2
-        if eng.get("phase") == "PATTERN":
-            score += 3
-        if host == "self":
-            score += 2
-        if eng.get("system_one_wire"):
-            score += 1
+        if max_options is not None and max_options > 20 and eng["_cardinality_degrades"]:
+            reasons.append("high_cardinality_risk")
+        if domain_lower and domain_lower not in eng["_workflows_str"] and domain not in eng["id"]:
+            reasons.append(f"domain_soft_miss:{domain}")
+        score = eng["_base_score"]
         if "high_cardinality_risk" in reasons:
             score -= 2
         if "multi_lang_weak" in reasons and lang == "multi":

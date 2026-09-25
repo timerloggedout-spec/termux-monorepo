@@ -1,10 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-25T14:11:10Z UTC · receipts=230 · foreign_open=18 · tributes=40_
+_Generated 2026-09-25T18:32:10Z UTC · receipts=230 · foreign_open=16 · tributes=40_
 
 ## Tributes (contributor ledger)
 
-- [Stellar-songifi/Lyricsflip_server#212](https://github.com/Stellar-songifi/Lyricsflip_server/pull/212) · state=open · help-wanted: stake + contribute for #108
+- [Stellar-songifi/Lyricsflip_server#212](https://github.com/Stellar-songifi/Lyricsflip_server/pull/212) · state=closed · help-wanted: stake + contribute for #108
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -16,7 +16,7 @@ _Generated 2026-09-25T14:11:10Z UTC · receipts=230 · foreign_open=18 · tribut
 - [Vasudev-ai/Focusflow#15](https://github.com/Vasudev-ai/Focusflow/pull/15) · state=open · help-wanted: stake + contribute for #2
 - [bmad-code-org/bmad-loop#819](https://github.com/bmad-code-org/bmad-loop/pull/819) · state=open · help-wanted: stake + contribute for #780
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) · state=open · Change project name from DeepV Code to Easy Code
-- [C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend#587](https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587) · state=open · help-wanted: stake + contribute for #579
+- [C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend#587](https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587) · state=closed · help-wanted: stake + contribute for #579
 - [ThinkLikeAFounder/pulsartrack#898](https://github.com/ThinkLikeAFounder/pulsartrack/pull/898) · state=open · help-wanted: stake + contribute for #896
 - [MergeFi/contracts#374](https://github.com/MergeFi/contracts/pull/374) · state=open · help-wanted: stake + contribute for #345
 - [EF-CHAIN/SendAm#492](https://github.com/EF-CHAIN/SendAm/pull/492) · state=open · help-wanted: stake + contribute for #465
@@ -47,13 +47,11 @@ _Generated 2026-09-25T14:11:10Z UTC · receipts=230 · foreign_open=18 · tribut
 
 ## Foreign open PRs
 
-- [Stellar-songifi/Lyricsflip_server#212](https://github.com/Stellar-songifi/Lyricsflip_server/pull/212) — help-wanted: stake + contribute for #108
 - [LibreUML/LibreUML#130](https://github.com/LibreUML/LibreUML/pull/130) — help-wanted: stake + contribute for #126
 - [lonestill/onyx-launcher#45](https://github.com/lonestill/onyx-launcher/pull/45) — help-wanted: stake + contribute for #19
 - [EF-CHAIN/SendAm#492](https://github.com/EF-CHAIN/SendAm/pull/492) — help-wanted: stake + contribute for #465
 - [MergeFi/contracts#374](https://github.com/MergeFi/contracts/pull/374) — help-wanted: stake + contribute for #345
 - [ThinkLikeAFounder/pulsartrack#898](https://github.com/ThinkLikeAFounder/pulsartrack/pull/898) — help-wanted: stake + contribute for #896
-- [C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend#587](https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587) — help-wanted: stake + contribute for #579
 - [w1977-0/open-stream-saver#3](https://github.com/w1977-0/open-stream-saver/pull/3) — help-wanted: stake + contribute for #1
 - [umn-adc/ATLAS#42](https://github.com/umn-adc/ATLAS/pull/42) — help-wanted: stake + contribute for #31
 - [olcf/olcf-test-harness#280](https://github.com/olcf/olcf-test-harness/pull/280) — help-wanted: stake + contribute for #278

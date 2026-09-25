@@ -28,7 +28,9 @@ EPS closes that gap incrementally without requiring every agent workflow to be r
 
 ### Phase 2 producers
 
-Eligible agent workflows add agent/task/provider/manager events using the same envelope. The existing Hex Moneyball grain contracts become EPS-compatible consumers rather than a parallel telemetry format.
+`.github/workflows/agent-throughput-evidence.yml` now observes the explicitly admitted Gemini/Jules/DeepSeek agent workflows and emits sanitized ATES JSONL plus reducer/receipt artifacts. The existing Hex Moneyball grain contracts become EPS-compatible consumers rather than a parallel telemetry format.
+
+The observer is read-only and source-independent: it does not checkout or execute the triggering SHA. Structural complexity is attached only when exactly one associated PR supplies concrete additions/deletions/files-changed evidence.
 
 ## Envelope
 

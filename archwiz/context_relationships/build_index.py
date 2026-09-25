@@ -258,15 +258,22 @@ def build_index(
             "delta": temporal_snapshot["delta"],
         }
         write_json(staging_dir / "build-summary.json", summary)
-        replace_artifacts(staging_dir, output)
+        # Persist immutable L2 evidence before publishing the mutable L1 view.
+        # If snapshot creation fails, canonical artifacts are not replaced.
         snapshot_root = output / "temporal"
         snapshot_dir = snapshot_root / "snapshots" / str(temporal_snapshot["snapshot_id"])
         if not snapshot_dir.exists():
             try:
-                write_snapshot(snapshot_root, snapshot=temporal_snapshot, nodes=nodes, edges=edges,
-                               lineage=build_lineage(previous_snapshot, temporal_snapshot))
+                write_snapshot(
+                    snapshot_root,
+                    snapshot=temporal_snapshot,
+                    nodes=nodes,
+                    edges=edges,
+                    lineage=build_lineage(previous_snapshot, temporal_snapshot),
+                )
             except FileExistsError:
                 pass
+        replace_artifacts(staging_dir, output)
         lineage_path = snapshot_root / "lineage.jsonl"
         lineage_path.parent.mkdir(parents=True, exist_ok=True)
         lineage_record = build_lineage(previous_snapshot, temporal_snapshot)

@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-25T18:37:04Z UTC · receipts=246 · foreign_open=16 · tributes=40_
+_Generated 2026-09-25T20:09:12Z UTC · receipts=246 · foreign_open=17 · tributes=41_
 
 ## Tributes (contributor ledger)
 
+- [UnityChainxx/StellarHunts#599](https://github.com/UnityChainxx/StellarHunts/pull/599) · state=open · help-wanted: stake + contribute for #519
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -43,10 +44,10 @@ _Generated 2026-09-25T18:37:04Z UTC · receipts=246 · foreign_open=16 · tribut
 - [Research-Astute/manus-ui-research-hub#3](https://github.com/Research-Astute/manus-ui-research-hub/pull/3) · state=closed · chore: refresh research and development lane pins
 - [Research-Astute/manus-ui-research-hub#1](https://github.com/Research-Astute/manus-ui-research-hub/pull/1) · state=closed · ci: add hub policy and onboarding controls
 - [Research-Astute/manus-ui-adapter-lab#1](https://github.com/Research-Astute/manus-ui-adapter-lab/pull/1) · state=closed · ci: add deterministic adapter policy checks
-- [search-astute-ly/manus-public-ui-research#1](https://github.com/search-astute-ly/manus-public-ui-research/pull/1) · state=closed · ci: add deterministic research policy checks
 
 ## Foreign open PRs
 
+- [UnityChainxx/StellarHunts#599](https://github.com/UnityChainxx/StellarHunts/pull/599) — help-wanted: stake + contribute for #519
 - [LibreUML/LibreUML#130](https://github.com/LibreUML/LibreUML/pull/130) — help-wanted: stake + contribute for #126
 - [lonestill/onyx-launcher#45](https://github.com/lonestill/onyx-launcher/pull/45) — help-wanted: stake + contribute for #19
 - [EF-CHAIN/SendAm#492](https://github.com/EF-CHAIN/SendAm/pull/492) — help-wanted: stake + contribute for #465

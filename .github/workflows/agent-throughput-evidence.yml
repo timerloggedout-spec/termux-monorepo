@@ -1,0 +1,222 @@
+name: Agent Throughput Evidence
+
+# Phase B ATES evidence producer.
+# This workflow is an observer: it reads completed runs/jobs and PR metadata,
+# emits sanitized JSONL, and publishes an immutable receipt. It never checks out
+# or executes the triggering workflow's SHA and never writes source/repository
+# state. workflow_run intentionally runs from the default branch; keep this file
+# on master before expecting live completion events.
+on:
+  workflow_run:
+    workflows:
+      - "🔀 Gemini Dispatch (free-tier agentic)"
+      - "Jules on Issues (label / @jules)"
+      - "Agent review → auto Jules"
+      - "DeepSeek CI – Agentic Automation"
+    types: [completed]
+
+permissions:
+  actions: read
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: agent-throughput-evidence-${{ github.event.workflow_run.id || github.run_id }}-${{ github.event.workflow_run.run_attempt || github.run_attempt }}
+  cancel-in-progress: false
+
+jobs:
+  emit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout observer implementation
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Collect trusted workflow metadata
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        env:
+          METADATA_PATH: ${{ runner.temp }}/agent-throughput-metadata.json
+        with:
+          script: |
+            const fs = require('fs');
+            const run = context.payload.workflow_run;
+            if (!run) {
+              core.setFailed('workflow_dispatch is supported only as a validation surface; no target run was supplied');
+              return;
+            }
+
+            const { owner, repo } = context.repo;
+            const jobs = await github.paginate(
+              github.rest.actions.listJobsForWorkflowRun,
+              { owner, repo, run_id: run.id, per_page: 100 }
+            );
+
+            let pulls = Array.isArray(run.pull_requests) ? run.pull_requests : [];
+            if (!pulls.length) {
+              try {
+                const response = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                  owner,
+                  repo,
+                  commit_sha: run.head_sha,
+                  per_page: 20
+                });
+                pulls = response.data || [];
+              } catch (error) {
+                core.warning(`PR association lookup unavailable: ${error.message}`);
+              }
+            }
+
+            let taskComplexity = null;
+            let pullRequest = null;
+            if (pulls.length === 1) {
+              pullRequest = pulls[0];
+              try {
+                const { data: pr } = await github.rest.pulls.get({
+                  owner,
+                  repo,
+                  pull_number: pullRequest.number
+                });
+                taskComplexity = {
+                  additions: pr.additions,
+                  deletions: pr.deletions,
+                  files_changed: pr.changed_files
+                };
+              } catch (error) {
+                core.warning(`PR structural evidence unavailable: ${error.message}`);
+              }
+            } else if (pulls.length > 1) {
+              core.notice(`Multiple PR associations (${pulls.length}); structural complexity remains missing.`);
+            }
+
+            const workflowName = String(run.name || '');
+            const identity = [
+              ['Gemini Dispatch', 'gemini'],
+              ['Jules on Issues', 'jules'],
+              ['Agent review → auto Jules', 'jules'],
+              ['DeepSeek CI', 'deepseek']
+            ].find(([needle]) => workflowName.includes(needle));
+
+            if (!identity) {
+              core.setFailed(`workflow is outside the explicit agent identity map: ${workflowName}`);
+              return;
+            }
+
+            const metadata = {
+              agent_id: identity[1],
+              workflow_run: {
+                id: run.id,
+                run_attempt: run.run_attempt || 1,
+                head_sha: run.head_sha,
+                created_at: run.created_at,
+                conclusion: run.conclusion,
+                name: run.name,
+                event: run.event,
+                html_url: run.html_url
+              },
+              jobs: jobs.map(job => ({
+                id: job.id,
+                name: job.name,
+                started_at: job.started_at,
+                completed_at: job.completed_at,
+                conclusion: job.conclusion
+              })),
+              task_complexity: taskComplexity,
+              pull_request_number: pullRequest?.number || null
+            };
+
+            fs.writeFileSync(process.env.METADATA_PATH, JSON.stringify(metadata, null, 2) + '\n', 'utf8');
+            await core.summary
+              .addHeading('ATES evidence observation')
+              .addRaw(`- workflow: ${run.name}\n`)
+              .addRaw(`- agent: ${identity[1]}\n`)
+              .addRaw(`- run: ${run.id} / attempt ${run.run_attempt || 1}\n`)
+              .addRaw(`- SHA: ${run.head_sha}\n`)
+              .addRaw(`- conclusion: ${run.conclusion}\n`)
+              .addRaw(`- jobs observed: ${jobs.length}\n`)
+              .addRaw(`- structural complexity: ${taskComplexity ? 'available' : 'missing'}\n`)
+              .write();
+
+      - name: Move metadata into workspace
+        run: cp "${{ runner.temp }}/agent-throughput-metadata.json" ./agent-throughput-metadata.json
+
+      - name: Emit sanitized ATES JSONL
+        run: |
+          python3 scripts/ci/emit_agent_throughput.py \
+            --metadata agent-throughput-metadata.json \
+            --output agent-throughput.ndjson
+
+      - name: Validate emitter tests
+        run: python3 -m unittest tests.test_emit_agent_throughput -v
+
+      - name: Reduce observed ATES metrics
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from she.metrics.agent_throughput import reduce_events
+
+          events = [
+              json.loads(line)
+              for line in Path("agent-throughput.ndjson").read_text(encoding="utf-8").splitlines()
+              if line.strip()
+          ]
+          metrics = reduce_events(events)
+          Path("agent-throughput-metrics.json").write_text(
+              json.dumps(metrics.to_dict(), sort_keys=True, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Build evidence receipt
+        env:
+          SOURCE_RUN_ID: ${{ github.event.workflow_run.id || '0' }}
+          SOURCE_RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt || '1' }}
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+
+          files = {}
+          for name in ("agent-throughput.ndjson", "agent-throughput-metrics.json"):
+              data = Path(name).read_bytes()
+              files[name] = {
+                  "bytes": len(data),
+                  "sha256": hashlib.sha256(data).hexdigest(),
+              }
+
+          receipt = {
+              "schema_version": "ates.evidence.v1",
+              "producer": "agent-throughput-evidence",
+              "source_run_id": int(os.environ["SOURCE_RUN_ID"]),
+              "source_run_attempt": int(os.environ["SOURCE_RUN_ATTEMPT"]),
+              "files": files,
+              "privacy": {
+                  "prompts": False,
+                  "completions": False,
+                  "credentials": False,
+                  "tool_payloads": False,
+              },
+              "ates_gate": "observational-only",
+              "baseline": "missing-unless-explicitly-declared",
+          }
+          Path("agent-throughput-receipt.json").write_text(
+              json.dumps(receipt, sort_keys=True, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Upload ATES evidence
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: agent-throughput-${{ github.event.workflow_run.id }}-${{ github.event.workflow_run.run_attempt }}
+          path: |
+            agent-throughput.ndjson
+            agent-throughput-metrics.json
+            agent-throughput-receipt.json
+          if-no-files-found: error
+          retention-days: 14

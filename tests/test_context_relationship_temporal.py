@@ -53,6 +53,22 @@ def test_compare_snapshots_reports_add_remove_change_and_reclassification():
     assert delta["edges_reclassified"] == ["e1"]
 
 
+def test_snapshot_identity_changes_when_graph_content_changes():
+    base = dict(
+        repository="example/repo",
+        source_ref="master",
+        source_sha="abc123",
+        observed_at="2026-09-24T01:00:00Z",
+        history_start_page=2,
+        history_next_start_page=3,
+        coverage="PARTIAL_CONTINUATION_REQUIRED",
+    )
+    first = build_snapshot(nodes=[node("a")], edges=[], **base)
+    changed = build_snapshot(nodes=[node("a", attributes={"title": "changed"})], edges=[], **base)
+    assert first["nodes_hash"] != changed["nodes_hash"]
+    assert first["snapshot_id"] != changed["snapshot_id"]
+
+
 def test_snapshot_is_deterministic_and_lineage_preserves_previous():
     snapshot = build_snapshot(
         repository="example/repo",

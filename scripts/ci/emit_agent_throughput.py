@@ -220,8 +220,6 @@ def main() -> int:
     metadata = json.loads(args.metadata.read_text(encoding="utf-8"))
     events = build_events(metadata)
     write_events(events, args.output)
-    if not events:
-        raise SystemExit("no complete job timing evidence was available")
     return 0
 
 

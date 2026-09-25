@@ -1,0 +1,48 @@
+name: Continuous CI Sweep
+on:
+  schedule:
+    - cron: '0 */6 * * *'   # every 6 hours
+  workflow_dispatch:
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  actions: read
+concurrency:
+  group: ci-sweep
+  cancel-in-progress: false
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Dispatch sweep to termux agent
+        env:
+          AGENT_URL: ${{ secrets.DEEPSEEK_AGENT_URL }}
+          AGENT_TOKEN: ${{ secrets.DEEPSEEK_AGENT_TOKEN }}
+        run: |
+          set -euo pipefail
+          TASK=$(cat <<'EOF'
+Execute ~/deepcli/tasks/workflow-sweep.md.
+Scope: all repos owned by timerloggedout-spec.
+Follow the evidence-led method: DISCOVER, CLASSIFY, PRIORITIZE, FIX, VALIDATE, REPORT.
+For each fix, open a PR — do not auto-merge. Post the final report as an issue comment
+on the newest open issue titled "CI Sweep" or open one if none exists.
+EOF
+)
+          jq -n --arg t "$TASK" '{task:$t, source:"gh-schedule:ci-sweep"}' \
+            > payload.json
+          INV=$(curl -sS -X POST "$AGENT_URL/v1/agent" \
+                  -H "Authorization: Bearer $AGENT_TOKEN" \
+                  -H 'Content-Type: application/json' \
+                  --data-binary @payload.json | jq -r '.invocation_id')
+          echo "invocation=$INV"
+          for i in $(seq 1 120); do
+            S=$(curl -sS "$AGENT_URL/v1/agent/status/$INV" \
+                  -H "Authorization: Bearer $AGENT_TOKEN")
+            P=$(echo "$S" | jq -r '.phase')
+            echo "[$i] $P"
+            [ "$P" = "done" ] && break
+            [ "$P" = "error" ] && break
+            sleep 15
+          done

@@ -1,9 +1,27 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-09-24T16:40:00Z"
+updated_at: "2026-09-25T21:10:00Z"
 updated_by: grok-administrator
 
 proposals:
+  - id: ml-keep-alive
+    title: "ML keep-alive DAG extract onto live master (Issue #175)"
+    author: grok
+    status: executing
+    priority: P0
+    path: active/ml-keep-alive/
+    reviewers:
+      - id: grok
+        role: author+executor
+        status: executing
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: [175, 772]
+    related_prs: [817, 787, 746, 682, 432]
+    related_branches: [feat/ml-pipelines-keepalive-20260925]
+    gates_required: [repo-gate, termux-smoke]
+
   - id: temporal-langsmith-adapter
     title: "Temporal self-host + LangSmith Trajectories adapter (P1 observational)"
     author: grok

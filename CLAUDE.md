@@ -1,8 +1,10 @@
 # CLAUDE.md
 
-**Primary agent entry for this repository.** Load this first.
+**Primary Collaborator entry for this repository.** Load this first.
 
 Root `AGENTS.md` is **deprecated** (Linguist / CedrLang / Jules compression stub only). Do not start from it. All hard rules and routing live here and in the governance sequence below.
+
+Collaborators are addressed by **Role**, **Name**, and **Moniker** — not by a generic `AGENTS.md` catalog.
 
 ## Posture — Fully Automated Agentic Development Environment (FA-ADE)
 
@@ -32,10 +34,10 @@ VALIDATE
 DEVELOP
   ↓
 LEARN
-  └────────────────→ BROAD (improved baseline)
+  └───────────────→ BROAD (improved baseline)
 ```
 
-BIUDL is the compounding development motion: broad system view selects a focused lane; the lane is integrated and validated with attributable evidence; proven work is developed into production; learning returns to the baseline.
+BIUDL is the compounding development motion: a broad system view selects a focused lane; the lane is integrated and validated with attributable evidence; proven work is developed into production; learning returns to the baseline.
 
 ## Governance sequence (read in order)
 
@@ -61,6 +63,7 @@ Then route the task with **[`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md)** — one 
 - **No** Class 3/4 artifacts in git (session stores, browser profiles, tokens).
 - Unposted chat is not consensus — write Review log or `DEBATE.md`.
 - **Agent auto-promote** when dual-gate green **and** task outcome verified. Do not block the loop on operator CLI steps that Actions / Codespaces / self-host surfaces can run.
+- Credential inventory is **names-only** in issues (see #184). Never paste secret values.
 
 ## Preferred execution loop
 
@@ -96,6 +99,8 @@ Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
 | ICM task routing | `docs/icm/CLAUDE.md` |
 | Skills + adaptive wait | `docs/ops/SKILLS-INVENTORY.md` |
 | Session / lane SSOT | `docs/ops/LANE-MATRIX.md` |
+| Dependency-phase system | `docs/agentic/README.md` |
+| Credential names inventory | issue #184 (no values) |
 | BIUDL control plane | `docs/architecture/AGENT-TEAM-CONTROL-PLANE.md` |
 | FA-ADE / auto-promote | `docs/ops/REFTEMPLATES-CONSOLIDATION.md` |
 | Session SSOT schema | `docs/schemas/session-ssot.md` |
@@ -108,7 +113,7 @@ Shallow gitlinks under `refTemplates/smods/` — reference only, not runtime con
 
 | Pin | Role |
 |-----|------|
-| `content-agent-routing-promptbase_fork` | Layered `CLAUDE.md` → CONTEXT routing (one agent, selective load) |
+| `content-agent-routing-promptbase_fork` | Layered `CLAUDE.md` → CONTEXT routing (one collaborator, selective load) |
 | `cost-of-remembering_fork` | Filesystem-memory cost evidence (~97% fewer tokens) |
 | `AuditEngine_fork` | Audit adapt surface |
 | `icm-architect_fork` | ICM hierarchy / cards method |
@@ -117,11 +122,12 @@ Gitlink ops: `workflow_dispatch` on `.github/workflows/ops-gitlink-lego-fork.yml
 
 ## Security
 
-Credential rotation and history rewrite require Operator (human) authorization. See `docs/SECURITY-REMEDIATION.md`.
+Credential rotation and history rewrite require Operator (human) authorization. See `docs/SECURITY-REMEDIATION.md`. Inventory and last-used evidence live in issue **#184** (names only).
 
 ---
 
-**Agent-Identity:** Grok (Administrator)  
+**Collaborator-Identity:** Grok (Administrator)  
 **Style:** BIUDL · Continuous Fully Automated Agentic Development (FA-ADE) · agent auto-promote on dual-gate + task outcome · adaptive-wait · evidence-led  
 **Status change (2026-09-24):** FA-ADE realign — agents execute to completion; dual-gate is automated evidence; HITL only on AGENTIC-PERMISSIONS edges.  
+**Status change (2026-09-25):** Collaborator / Role / Name / Moniker vocabulary affirmed; dependency-phase nav + #184 Projects note linked from `docs/agentic/`.  
 **Prior (2026-09-21):** Root `AGENTS.md` folded into this file and marked deprecated.

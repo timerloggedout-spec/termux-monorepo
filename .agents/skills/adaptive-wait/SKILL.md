@@ -80,7 +80,7 @@ Each cycle should be representable by a compact receipt:
       reviews: [<stable ids>]
       artifacts: [<stable ids>]
     delta: <what changed since prior observation>
-    decision: WAIT|BACKOFF|STEER|RETRY|STOP|PROMOTE
+    decision: BACKOFF|STEER|RETRY|STOP|PROMOTE|NEED_EVIDENCE
     reason: <evidence-backed reason>
     next_check: <authoritative condition>
     outcome: PASS|FAIL|UNKNOWN
@@ -114,11 +114,13 @@ Record what was proven, what remains unproven, the watched SHA, the final author
 
 This skill is the wait/controller layer. adaptive-feedback-cycle owns broader continuous learning; production-reconciliation owns ref alignment; evidence-envelope owns normalized observation fields.
 
-## Session 2026-09-24 10:07 PDT
+## Session 2026-09-25 13:00 PDT
 
-- Live master `fdc5d534`. #808 MERGED (dual-gate on `cbb6a3be`).
-- Pulse branch `ops/session-lane-matrix-20260924-1007` ACTIVE — wait current-SHA dual-gate.
-- #810 historical pulse — SUPERSEDE.
-- HOLD/OBSERVE not parking.
+- Master tip `4ae172a94540b9693eb1cf2415d03360694e9607`.
+- Open: #836 head `fb60b888` — NEED_EVIDENCE until named dual-gate SUCCESS on this SHA after rebase onto live master.
+- Do not pulse #175. Do not retarget #48.
+- HOLD/WAIT/OBSERVE invalid parking. Sweep vocab remapped in #836 (unmerged).
+- mergeable_state=unstable / Vercel rate-limit is non-gate.
+- Self-Integrate 36182171664 SUCCESS; 36182984489 ACTIVE at recon.
 
 Agent-Identity: Grok (Administrator)

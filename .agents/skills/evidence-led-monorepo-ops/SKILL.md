@@ -68,7 +68,7 @@ During asynchronous work, use .agents/skills/adaptive-wait/SKILL.md.
 - Stop on authoritative terminal state, stagnation, or a missing authority/input.
 - Bind conclusions to the SHA that produced the evidence.
 
-HOLD and OBSERVE are not idle parking states. WAIT collects evidence until promote conditions hold, then promote.
+HOLD / WAIT / OBSERVE are not idle parking states. Gate output is ALLOW | BLOCK | NEED_EVIDENCE.
 
 ## 6. Change discipline
 
@@ -125,7 +125,7 @@ Use a compact receipt shape:
     state: PASS|FAIL|UNKNOWN|WARNING|SKIPPED|STALLED
     outcome: PASS|FAIL|UNKNOWN
     provenance: <source/actor confidence>
-    decision: KEEP|RETRY|STEER|HOLD|PROMOTE|STOP
+    decision: KEEP|RETRY|STEER|NEED_EVIDENCE|PROMOTE|STOP
     reason: <evidence-backed reason>
     remaining: <unproven work>
 
@@ -145,12 +145,17 @@ Receipts are projections; the longitudinal GitHub/evidence corpus remains the so
 
 This skill owns repository-admin evidence discipline; it does not replace those specialist lanes.
 
-## Session 2026-09-24 10:07 PDT
+## Session 2026-09-25 13:00 PDT
 
-- Live master `fdc5d534` (#808 MERGED agent-quality-lane post-merge trigger).
-- Dual-gate on `cbb6a3be`: repo-gate 36024573291, termux-smoke 36024572948.
-- #48 dirty on master-staging — remainder EXTRACT only.
-- #810 pulse on pre-#808 tip — SUPERSEDE.
-- #787 dirty — re-cut when capacity allows.
+- Live master: `4ae172a94540b9693eb1cf2415d03360694e9607` (feat(actions): continuous self-integration loop).
+- Predecessor stamp `1aa2fc73` SUPERSEDED.
+- Open product PR #836 head `fb60b888` — NEED_EVIDENCE until named dual-gate SUCCESS on that SHA after rebase onto live master.
+- Vercel mergeable_state / rate-limit is NON-GATE (#772).
+- #48 EXTRACT remainder vs master-staging. Do not retarget.
+- #184 names-only. #175 hub — no pulse comments.
+- Linear team live: Termux-monorepo_linear. TER-71 / TER-15 In Progress. TER-336 / TER-332 Triage.
+- Self-Integrate run 36182171664 SUCCESS; run 36182984489 in_progress at recon.
+- Merge Promotion Queue run 36180489505 SUCCESS on `4ae172a9`.
+- Dual-gate names: `hygiene + portability gate` + `agentic termux smoke`.
 
 Agent-Identity: Grok (Administrator)

@@ -18,67 +18,46 @@ Long-running agents produce nested traces that are hard to read. LangSmith **Tra
 | LangSmith Trajectories | P1 | Readable path + online evals + dataset export (adapter) |
 | Langfuse / Phoenix | P1 | Parallel eval adapters (unchanged) |
 
-## Self-host first (available surfaces)
+## Self-host first (automated surfaces)
 
-### 1. Local single-binary (fastest)
+### 1. GitHub Actions smoke (primary)
 
-```bash
-# Install Temporal CLI (operator machine / Codespace)
-# https://docs.temporal.io/cli
-temporal server start-dev --ui-port 8080
-# UI: http://localhost:8080
-# Frontend: localhost:7233
-```
+Workflow: `.github/workflows/temporal-self-host-smoke.yml`
+
+Path-filtered + `workflow_dispatch`. Runner installs Temporal CLI, starts headless dev server, runs hello Workflow. Evidence = Actions run artifact/logs. **No operator CLI required.**
 
 ### 2. Docker Compose (repo surface)
 
 ```bash
-cd mcp-docker/temporal
-docker compose up -d
-# UI: http://localhost:8088
-# Frontend gRPC: localhost:7233
+cd mcp-docker/temporal && docker compose up -d
 ```
 
-Same separation rule as `mcp-docker/github-mcp/`: **not** folded into Vercel mcp-hub.
+Separated from Vercel mcp-hub (same rule as `mcp-docker/github-mcp/`).
 
 ### 3. Codespaces agent lane
 
-Use existing Codespace agent lane (`docs/ops/CODESPACE-AGENT-LANE.md`) to run:
-
-- Temporal dev server or Compose stack
-- Worker process from `scripts/temporal/`
-- Optional LangSmith tracing when `LANGSMITH_API_KEY` is present in the Codespace secret store
+Existing Codespace agent lane hosts Worker reproduction when needed.
 
 ### 4. Temporal Cloud Free Tier (optional later)
 
-Only after operator confirms signup and injects secrets. Not required for dual-gate or local smoke.
+Only after operator secrets exist. Not required for dual-gate or CI smoke.
 
-## LangSmith Trajectories (concepts)
+## LangSmith Trajectories
 
 | Concept | Shape | Use when |
 |---------|-------|----------|
-| Run | Single unit of work (span-like) | Debug one step |
-| Trace | Tree of runs for one operation | Full execution detail |
-| Thread | Sequence of traces (multi-turn) | Session linkage |
-| **Trajectory** | Flat ordered messages across the thread | Read the path the agent took |
+| Run | Single unit of work | Debug one step |
+| Trace | Tree of runs | Full execution detail |
+| Thread | Sequence of traces | Session linkage |
+| **Trajectory** | Flat ordered messages | Read the path the agent took |
 
-Enable tracing (capability-gated):
+Capability-gated env (secrets external):
 
-```bash
-export LANGSMITH_TRACING=true
-export LANGSMITH_API_KEY=lsv2_...   # external secret only
-# optional: LANGSMITH_PROJECT=termux-monorepo-agents
-```
+- `LANGSMITH_TRACING=true`
+- `LANGSMITH_API_KEY` (Actions secret / Codespace secret)
+- optional `LANGSMITH_PROJECT`
 
-Works with LangChain / LangGraph / Deep Agents and with SDK-style agents. Trajectories support online evaluators, annotation queues, and export to SFT datasets.
-
-## Temporal ↔ LangSmith plugin (Python)
-
-Experimental official plugin propagates context across Workers and avoids duplicate traces on replay.
-
-```bash
-pip install 'temporalio[langsmith]'   # or uv add temporalio[langsmith]
-```
+## Temporal ↔ LangSmith plugin
 
 ```python
 from temporalio.client import Client
@@ -90,38 +69,16 @@ client = await Client.connect(
 )
 ```
 
-Optional: `add_temporal_runs=True` to also surface Temporal operations in LangSmith. Default keeps application logic only.
-
-## Repo smoke
-
-```bash
-# Terminal A: temporal server start-dev   OR  docker compose -f mcp-docker/temporal/docker-compose.yml up
-# Terminal B:
-python3 scripts/temporal/hello_workflow.py
-```
-
-Env (all optional for structural smoke):
-
-| Variable | Purpose |
-|----------|---------|
-| `TEMPORAL_ADDRESS` | default `localhost:7233` |
-| `TEMPORAL_NAMESPACE` | default `default` |
-| `TEMPORAL_TASK_QUEUE` | default `termux-agent` |
-| `LANGSMITH_TRACING` | `true` to enable |
-| `LANGSMITH_API_KEY` | external only |
-| `LANGSMITH_PROJECT` | project name |
-
 ## Non-goals
 
-- No hard CI dependency on Temporal or LangSmith for `repo_gate` / `termux_smoke`.
-- No secrets or Class 3/4 artifacts in git.
+- No hard dual-gate dependency on Temporal or LangSmith.
+- No secrets in git.
 - No replacement of OTEL/ATES as source of truth.
-- Dual-gate green + verified outcome before promote.
+- FA-ADE: automation surfaces run the smoke; agents auto-promote on dual-gate + verified outcome.
 
 ## References
 
-- LangSmith Trajectories: https://www.langchain.com/blog/langsmith-trajectories-tracing
-- Observability concepts: https://docs.langchain.com/langsmith/observability-concepts
-- Temporal self-host: https://docs.temporal.io/self-hosted-guide
-- Temporal Python + LangSmith plugin: https://github.com/temporalio/sdk-python/tree/main/temporalio/contrib/langsmith
-- Local CLI: https://docs.temporal.io/cli
+- https://www.langchain.com/blog/langsmith-trajectories-tracing
+- https://docs.langchain.com/langsmith/observability-concepts
+- https://docs.temporal.io/self-hosted-guide
+- https://github.com/temporalio/sdk-python/tree/main/temporalio/contrib/langsmith

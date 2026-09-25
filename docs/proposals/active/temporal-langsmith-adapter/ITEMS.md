@@ -10,6 +10,8 @@
 | TLS-006 | Docker Compose self-host under `mcp-docker/temporal/` | **done** | official temporalio images |
 | TLS-007 | Minimal Python smoke (Workflow + Activity + optional LangSmithPlugin) | **done** | scripts/temporal/ |
 | TLS-008 | Integration Graph Matrix row | **done** | this PR |
-| TLS-009 | Dual-gate green on tip before promote | backlog | adaptive-wait; no YOLO merge |
+| TLS-009 | Dual-gate green on tip before promote | backlog | FA-ADE auto-promote when green |
 | TLS-010 | Optional Codespace worker runbook note | backlog | after TLS-009 |
 | TLS-011 | Optional Free Tier Cloud path (operator-confirmed only) | backlog | secrets external |
+| TLS-012 | GHA temporal-self-host-smoke (FA-ADE; no operator CLI) | **done** | this PR |
+| TLS-013 | CLAUDE.md FA-ADE realign + orchestration-regression-guard markers | **done** | this PR |

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/ORCHESTRATION-RECEIPT.schema.json",
+  "title": "Native Orchestration Receipt",
+  "description": "A compact projection of one orchestration cycle. Longitudinal evidence remains authoritative in the evidence and relationship corpora.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version","orchestration_id","cycle_id","attempt_id","action_id","event_id","actor","event","state","outcome","promotion","observed_at","repo","ref","sha","evidence_ids"],
+  "properties": {
+    "version": {"const": 1},
+    "orchestration_id": {"type":"string","minLength":1},
+    "cycle_id": {"type":"string","minLength":1},
+    "attempt_id": {"type":"string","minLength":1},
+    "action_id": {"type":"string","minLength":1},
+    "event_id": {"type":"string","minLength":1},
+    "actor": {"type":"string","minLength":1},
+    "provider": {"type":"string","minLength":1},
+    "model": {"type":"string","minLength":1},
+    "repo": {"type":"string","minLength":1},
+    "ref": {"type":"string","minLength":1},
+    "sha": {"type":"string","pattern":"^[0-9a-f]{40}$"},
+    "event": {"type":"string","minLength":1},
+    "state": {"enum":["DISPATCHED","QUEUED","RUNNING","WAITING","STEERED","RETRYING","COMPLETED","FAILED","CANCELLED"]},
+    "outcome": {"enum":["TASK_PASS","TASK_FAIL","UNKNOWN"]},
+    "promotion": {"enum":["PROMOTABLE","NOT_PROMOTABLE","UNKNOWN"]},
+    "decision": {"type":"string"},
+    "reason": {"type":"string"},
+    "evidence_ids": {"type":"array","items":{"type":"string","minLength":1}},
+    "observed_at": {"type":"string","format":"date-time"},
+    "remaining_unproven_work": {"type":"array","items":{"type":"string","minLength":1}}
+  }
+}

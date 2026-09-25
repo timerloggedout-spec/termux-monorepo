@@ -4,6 +4,9 @@ on:
     paths:
       - "she/metrics/**"
       - "tests/test_she_agent_throughput.py"
+      - "tests/test_emit_agent_throughput.py"
+      - "scripts/ci/emit_agent_throughput.py"
+      - ".github/workflows/agent-throughput-evidence.yml"
       - "tests/test_tdqs.py"
       - "docs/ops/AGENT-THROUGHPUT-*.md"
       - "docs/ops/AGENT-OBSERVABILITY-PRIORITY-DECISION.md"
@@ -57,7 +60,7 @@ jobs:
             ':(glob)**/*.sh'
 
       - name: Compile measurement Python sources
-        run: python -m compileall -q she/metrics scripts/ci tests/test_she_agent_throughput.py tests/test_tdqs.py
+        run: python -m compileall -q she/metrics scripts/ci tests/test_she_agent_throughput.py tests/test_emit_agent_throughput.py tests/test_tdqs.py
 
       - name: Validate event schema JSON
         run: python -m json.tool docs/ops/AGENT-THROUGHPUT-EVENT.schema.json >/dev/null
@@ -71,6 +74,7 @@ jobs:
       - name: Run focused ATES reducer tests with coverage
         run: |
           coverage run --branch --source=she/metrics -m unittest tests.test_she_agent_throughput -v
+          python -m unittest tests.test_emit_agent_throughput -v
           coverage run --branch --source=she/metrics -a -m unittest tests.test_tdqs -v
           coverage xml -o coverage.xml
 

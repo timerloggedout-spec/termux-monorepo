@@ -117,6 +117,21 @@ def test_invalid_coverage_and_page_are_rejected():
         )
 
 
+def test_coverage_state_must_match_continuation_state():
+    base = dict(
+        repository="example/repo",
+        source_ref="master",
+        source_sha="abc123",
+        observed_at="2026-09-24T01:00:00Z",
+        history_start_page=1,
+        nodes=[],
+        edges=[],
+    )
+    with pytest.raises(TemporalError):
+        build_snapshot(history_next_start_page=2, coverage="COMPLETE", **base)
+    with pytest.raises(TemporalError):
+        build_snapshot(history_next_start_page=None, coverage="PARTIAL_CONTINUATION_REQUIRED", **base)
+
 def test_snapshot_write_is_immutable(tmp_path):
     snapshot = build_snapshot(
         repository="example/repo",

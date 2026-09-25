@@ -46,25 +46,31 @@ jobs:
 
       - name: Determine historical continuation
         id: continuation
+        env:
+          REQUESTED_START_PAGE: ${{ github.event.inputs.history_start_page || '' }}
         run: |
           set -euo pipefail
+          if [ -n "$REQUESTED_START_PAGE" ]; then
+            echo "continue=true" >> "$GITHUB_OUTPUT"
+            echo "start_page=$REQUESTED_START_PAGE" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
           python - <<'PY' >> "$GITHUB_OUTPUT"
-import json
-from pathlib import Path
-manifest = Path('workspace/llm_map/context_relationships/manifest.json')
-if not manifest.exists():
-    print('continue=true')
-    print('start_page=1')
-else:
-    data = json.loads(manifest.read_text(encoding='utf-8'))
-    next_page = data.get('history_window', {}).get('next_start_page')
-    if next_page is None:
-        print('continue=false')
-    else:
-        print('continue=true')
-        print(f'start_page={next_page}')
+          import json
+          from pathlib import Path
+          manifest = Path('workspace/llm_map/context_relationships/manifest.json')
+          if not manifest.exists():
+              print('continue=true')
+              print('start_page=1')
+          else:
+              data = json.loads(manifest.read_text(encoding='utf-8'))
+              next_page = data.get('history_window', {}).get('next_start_page')
+              if next_page is None:
+                  print('continue=false')
+              else:
+                  print('continue=true')
+                  print(f'start_page={next_page}')
 PY
-
       - name: Build one historical relationship-index window
         if: steps.continuation.outputs.continue == 'true'
         env:

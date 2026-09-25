@@ -1,66 +1,66 @@
-# Lane matrix status (2026-09-25T17:06:44Z)
+# Lane matrix status (2026-09-25T21:31:43Z)
 
-- Master: `ea8e69f117238ef11509abf623882bb0fefef335`
-- Open PRs: **91**
-- Oldest: #47 (51.06d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
+- Master: `d741b4b2d2b393af170299ecda4b1941d2dc2352`
+- Open PRs: **93**
+- Oldest: #47 (51.24d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
 | Lane | Count |
 |------|------:|
-| EXTRACT | 8 |
-| HOLD | 16 |
-| OBSERVE | 66 |
-| WAIT | 1 |
+| CANDIDATE | 35 |
+| EXTRACT | 9 |
+| NEED_EVIDENCE | 16 |
+| SUPERSEDE | 33 |
 
 | Age bucket | Count |
 |------------|------:|
 | ancient | 11 |
-| fresh | 43 |
-| mid | 20 |
+| fresh | 44 |
+| mid | 21 |
 | stale | 17 |
 
-## Tip lanes (non-OBSERVE first)
+## Tip lanes (EXTRACT / CANDIDATE / NEED_EVIDENCE first)
 
 | PR | Days | Lane | Reasons | Title |
 |---:|-----:|------|---------|-------|
-| #48 | 51.02 | HOLD | wrong-base:master-staging | feat(llm-api-hub): OpenAI hub + standalone server  |
-| #65 | 50.42 | EXTRACT | bot-observe, minesweeper-title | 🎨 Palette: Add pulsing heartbeat and color-blind a |
-| #73 | 49.58 | HOLD | wrong-base:vibe/project-management-refresh-48caeb-staging | fix(connectors): resolve critical bugs in connecto |
-| #258 | 37.5 | HOLD | wrong-base:master-staging | feat(eval): add repository development performance |
-| #286 | 34.93 | HOLD | wrong-base:master-staging | feat(ops): evidence-gated autonomous staging progr |
-| #350 | 31.73 | HOLD | draft | fix(ops): give ox-alpha canary DeepSeek target con |
-| #354 | 31.55 | HOLD | wrong-base:feat/ox-alpha-deepseek-canary-context-v2 | fix(ops): bound all OX Alpha target context |
-| #373 | 29.9 | HOLD | draft | fix(ops): contextualize OX Alpha DeepSeek canary o |
-| #386 | 28.48 | HOLD | draft | feat(ops): DeepSeek/OX Alpha evidence-first canary |
-| #432 | 20.7 | EXTRACT | ml-wholesale-no-go | feat(ml): observe-mode GitHub ML pipelines + Issue |
-| #481 | 15.01 | EXTRACT | state:unknown, minesweeper-title | ops: make Jules PR handoffs observable |
-| #549 | 9.46 | EXTRACT | ml-wholesale-no-go | feat(ml): rebase observe-mode GitHub ML pipelines  |
-| #578 | 8.36 | HOLD | draft | feat(accounting): spreadsheet-first accounting/bid |
-| #601 | 7.04 | EXTRACT | ml-wholesale-no-go | feat(ml): extract observe-mode GitHub ML pipelines |
-| #630 | 6.38 | EXTRACT | bot-observe, minesweeper-title | fix(termux-multi-agent): add fallback rich UI clas |
-| #672 | 5.66 | EXTRACT | state:unknown, minesweeper-title | feat(ops): evolve Help-Wanted Tribute dashboard |
-| #682 | 4.99 | WAIT | ml-keep-alive-rebase-required | feat(ml): keep-alive pipeline DAG + operator skill |
-| #740 | 3.17 | HOLD | draft | feat: operationalize Laya runtime, CADENCE sweeps, |
-| #750 | 2.79 | EXTRACT | bot-observe, minesweeper-title | fix(core, dashboard): add fallback imports for req |
-| #752 | 2.78 | HOLD | draft | feat(ops): Termux MCP endpoint status workflow + P |
-| #761 | 2.57 | HOLD | draft | lane: Desktop Commander fork + Android execution a |
-| #762 | 2.56 | HOLD | draft | ops: map live plugin connector surface and parity  |
-| #764 | 2.56 | HOLD | draft | lane: connect Termux hub over Tailscale + repeatab |
-| #788 | 1.83 | HOLD | wrong-base:master-staging | test(archwiz): Linear client/sync coverage + Triag |
-| #829 | 0.67 | HOLD | draft | feat(multi-ai-cli): DeepTerm integration with Ping |
-| #47 | 51.06 | OBSERVE | ancient-no-auto-promote | feat(refTemplates): restore metadata-only skeleton |
-| #67 | 49.96 | OBSERVE | ancient-no-auto-promote | docs(ops): PR scope discipline — why src/db.py is  |
-| #81 | 48.8 | OBSERVE | ancient-no-auto-promote | ci: promote Gemini quota-gate + agent workflows to |
-| #92 | 48.1 | OBSERVE | bot-observe | sec(workflows): harden permissions, pin SHAs, and  |
-| #103 | 47.67 | OBSERVE | ancient-no-auto-promote | feat(comms): CAVEMAN-micro seed + success matrix + |
-| #125 | 46.77 | OBSERVE | bot-observe | analyze agentic workflows and peer coordination ru |
-| #140 | 46.41 | OBSERVE | bot-observe | 🎨 Palette: Stateful & Reactive PWA UX with Manual  |
-| #143 | 46.07 | OBSERVE | bot-observe | Integrate MCP Agent Mail Coordination Layer in Git |
-| #249 | 37.67 | OBSERVE | state:unknown | docs(teams): add roster, game-player, and context  |
-| #263 | 37.38 | OBSERVE | state:unknown | Manus/context relationship graph |
-| #311 | 34.55 | OBSERVE | state:unknown | feat(sync): govern GitLab reconciliation instead o |
-| #390 | 28.45 | OBSERVE | bot-observe | docs: formalize category-theoretic notation sets a |
-| #402 | 27.4 | OBSERVE | bot-observe | 🛡️ Sentinel: Fix symlink hijacking vulnerability o |
-| #404 | 26.87 | OBSERVE | state:unknown | sec(sentinel): skip chmod when cache/db/log path i |
-| #407 | 26.38 | OBSERVE | bot-observe | ⚡ Bolt: optimize Bellman-Ford graph search in arbi |
+| #65 | 50.6 | EXTRACT | bot-no-auto-promote, minesweeper-title | 🎨 Palette: Add pulsing heartbeat and color-blind a |
+| #432 | 20.88 | EXTRACT | ml-wholesale-no-go | feat(ml): observe-mode GitHub ML pipelines + Issue |
+| #481 | 15.2 | EXTRACT | state:unknown, minesweeper-title | ops: make Jules PR handoffs observable |
+| #549 | 9.64 | EXTRACT | ml-wholesale-no-go | feat(ml): rebase observe-mode GitHub ML pipelines  |
+| #601 | 7.22 | EXTRACT | ml-wholesale-no-go | feat(ml): extract observe-mode GitHub ML pipelines |
+| #630 | 6.57 | EXTRACT | bot-no-auto-promote, minesweeper-title | fix(termux-multi-agent): add fallback rich UI clas |
+| #672 | 5.84 | EXTRACT | state:unknown, minesweeper-title | feat(ops): evolve Help-Wanted Tribute dashboard |
+| #682 | 5.17 | EXTRACT | ml-keep-alive-rebase-required | feat(ml): keep-alive pipeline DAG + operator skill |
+| #750 | 2.97 | EXTRACT | bot-no-auto-promote, minesweeper-title | fix(core, dashboard): add fallback imports for req |
+| #249 | 37.85 | CANDIDATE | state:unknown | docs(teams): add roster, game-player, and context  |
+| #263 | 37.57 | CANDIDATE | state:unknown | Manus/context relationship graph |
+| #311 | 34.74 | CANDIDATE | state:unknown | feat(sync): govern GitLab reconciliation instead o |
+| #404 | 27.06 | CANDIDATE | state:unknown | sec(sentinel): skip chmod when cache/db/log path i |
+| #453 | 17.88 | CANDIDATE | state:unknown | feat(issues): canonical issue observatory + simila |
+| #455 | 17.79 | CANDIDATE | state:unknown | ci(docs): auto-render Mermaid diagrams with mmdc ( |
+| #456 | 17.67 | CANDIDATE | state:unknown | feat(ci): add advisory CellCog SDK PR-review lane  |
+| #500 | 13.03 | CANDIDATE | state:unknown | Gaps & Opportunities pass 1: capability checklist  |
+| #527 | 10.57 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
+| #540 | 10.1 | CANDIDATE | state:unknown | docs+ops: fail-closed image asset pipeline + ATES  |
+| #543 | 9.9 | CANDIDATE | state:unknown | feat(ops): add skill definition quality lane and d |
+| #583 | 8.03 | CANDIDATE | state:unknown | ci: integrate Grafana MCP service-account boundary |
+| #584 | 8.03 | CANDIDATE | state:unknown | fix(mvt): make live token budgets context-safe |
+| #605 | 7.15 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
+| #617 | 6.93 | CANDIDATE | state:unknown | fix(proposals): restore registry manifest gate |
+| #618 | 6.93 | CANDIDATE | state:unknown | docs: integrate Agentic-Agile wave governance |
+| #639 | 6.06 | CANDIDATE | state:unknown | fix(ci): mermaid-cli --no-sandbox on AppArmor GH r |
+| #684 | 5.13 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
+| #685 | 5.07 | CANDIDATE | state:unknown | feat(proposals): arrhythmic-zero-token-search — Mu |
+| #702 | 4.81 | CANDIDATE | state:unknown | feat(observatory): integrate Gravitee API Manageme |
+| #714 | 3.97 | CANDIDATE | state:unknown | feat(ops): stepie-stepwise-ops skill — production  |
+| #724 | 3.85 | CANDIDATE | state:unknown | feat(ml): slim keep-alive pipelines re-extract ont |
+| #725 | 3.84 | CANDIDATE | state:unknown | feat(ops): evidence JSONL → SeekLog converter + re |
+| #739 | 3.36 | CANDIDATE | state:unknown | feat(ops): unify replay and HITL control plane P0- |
+| #746 | 3.09 | CANDIDATE | state:unknown | feat(ml): slim keep-alive pipelines + ICM-CCTV on  |
+| #753 | 2.95 | CANDIDATE | state:unknown | fix(help-wanted): publish Vercel master alias in s |
+| #769 | 2.58 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
+| #785 | 2.06 | CANDIDATE | state:unknown | feat: integrate Wingman_fork as pinned template an |
+| #787 | 2.05 | CANDIDATE | state:unknown | feat(ml): keep-alive DAG + ICM-CCTV re-extract on  |
+| #806 | 1.37 | CANDIDATE | state:unknown | ops: harden evaluation lanes and GitHub App capabi |
+| #809 | 1.36 | CANDIDATE | state:unknown | feat: move GAMUT remote and extend all-repo wiki k |
 
-Observer only: does not merge. Dual-gate remains promote authority. Age alone ≠ promote.
+Writer only: does not merge. Dual-gate remains promote authority. HOLD/WAIT/OBSERVE are invalid parking. Age alone ≠ promote.

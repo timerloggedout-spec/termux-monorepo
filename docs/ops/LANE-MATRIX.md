@@ -36,6 +36,17 @@ Git history is a ledger. The generated artifact is the board. **Open that artifa
 9. Dual-gate SUCCESS on an older head does not authorize a newer SHA
 10. Combined commit status is not dual-gate; bind the named jobs
 
+## Lane vocabulary (sweep v2)
+
+| Lane | Meaning |
+|------|---------|
+| EXTRACT | Re-cut onto live master; do not wholesale-merge |
+| CANDIDATE | On master; dual-gate may promote if green |
+| NEED_EVIDENCE | Wrong-base / draft / dirty — missing rebase or checks |
+| SUPERSEDE | Session pulse, bot-only, or ancient no-auto |
+
+HOLD / WAIT / OBSERVE are **invalid parking**. Gate outputs remain ALLOW | BLOCK | NEED_EVIDENCE.
+
 ## Session recon is not a PR
 
 A timestamped rewrite of who is dirty / superseded is stale before CI finishes.
@@ -51,10 +62,11 @@ Sweep classifies session-record titles as **SUPERSEDE**, not dual-gate WAIT.
 
 ## Known durable lanes (update only when the fact is durable)
 
-- #48 remainder EXTRACT; core already on master via #805. Dirty vs `master-staging` is a hard block.
+- #48 remainder EXTRACT; core already on master via #805. Dirty vs `master-staging` is a hard block. Do not retarget.
 - #809 / #806 need rebase onto live `master` before any promote attempt.
 - #69 superseded by #784. #810 / #812 are historical pulses.
 - #772 documents Vercel mergeable_state noise.
 - #814 landed the board-vs-ledger policy.
+- #184 names-only credential inventory. Do not paste secret values.
 
 Agent-Identity: Grok (Administrator)

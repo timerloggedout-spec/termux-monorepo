@@ -11,6 +11,7 @@ The research candidates should be compared as **parallel adapters/providers agai
 | Candidate | Primary contribution | Integration target | Priority | Promotion stance |
 |---|---|---|---|---|
 | OpenTelemetry | neutral trace/span transport | GitHub Actions + agent invocation boundary | P0 | canonical interoperability layer |
+| **ATES runtime evidence** | run/job/task throughput observations | `workflow_run` observer + canonical JSONL | **P0** | primary execution-measurement spine; observational only |
 | Langfuse | traces, datasets, experiments, scores | optional experiment/eval adapter | P1 | observational; no source-of-truth authority |
 | Phoenix | open-source tracing, evals, datasets, experiments | optional experiment/eval adapter; Docker-friendly lab | P1 | observational; no source-of-truth authority |
 | **Glama TDQS** | MCP/connector tool-definition quality | AEF tool-definition evaluation lane | **P1** | observational; no merge-quality authority |

@@ -239,6 +239,10 @@ for human, comp in SORTED_MAPPINGS_DECOMP:
     FAST_CASING_DECOMP[capitalize_word(comp)] = capitalize_word(human)
     FAST_CASING_DECOMP[comp.upper()] = uppercase_word(human)
 
+# Precomputed active stem tuple filters for O(1) document-level pre-filtering and line fast-pathing
+COMP_STEMS: Tuple[str, ...] = tuple(set(parts[0].lower() for m in SORTED_MAPPINGS_COMP if (parts := m[0].split())))
+DECOMP_STEMS: Tuple[str, ...] = tuple(set(parts[0].lower() for m in SORTED_MAPPINGS_DECOMP if (parts := m[1].split())))
+
 
 # ------------------------------------------------------------
 # 2. Compressor (v1 prompt compression)
@@ -461,6 +465,11 @@ def compile_doc(text: str) -> str:
     if not isinstance(text, str) or not text or not COMP_SINGLE_REGEX.search(text):
         return text if isinstance(text, str) else ""
 
+    text_lower = text.lower()
+    active_stems = tuple(s for s in COMP_STEMS if s in text_lower)
+    if not active_stems:
+        return text
+
     lines = text.splitlines(keepends=True)
     compiled_lines = []
     in_fenced_code = False
@@ -473,7 +482,11 @@ def compile_doc(text: str) -> str:
         if in_fenced_code:
             compiled_lines.append(line)
         else:
-            compiled_lines.append(translate_line(line, to_compressed=True))
+            line_l = line.lower()
+            if any(s in line_l for s in active_stems):
+                compiled_lines.append(translate_line(line, to_compressed=True))
+            else:
+                compiled_lines.append(line)
 
     return "".join(compiled_lines)
 
@@ -481,6 +494,11 @@ def decompile_doc(text: str) -> str:
     """Decompile CedrLang compressed markdown into human-readable markdown."""
     if not isinstance(text, str) or not text or not DECOMP_SINGLE_REGEX.search(text):
         return text if isinstance(text, str) else ""
+
+    text_lower = text.lower()
+    active_stems = tuple(s for s in DECOMP_STEMS if s in text_lower)
+    if not active_stems:
+        return text
 
     lines = text.splitlines(keepends=True)
     decompiled_lines = []
@@ -494,7 +512,11 @@ def decompile_doc(text: str) -> str:
         if in_fenced_code:
             decompiled_lines.append(line)
         else:
-            decompiled_lines.append(translate_line(line, to_compressed=False))
+            line_l = line.lower()
+            if any(s in line_l for s in active_stems):
+                decompiled_lines.append(translate_line(line, to_compressed=False))
+            else:
+                decompiled_lines.append(line)
 
     return "".join(decompiled_lines)
 

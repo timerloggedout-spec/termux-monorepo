@@ -93,3 +93,12 @@ Agent-Identity: Grok (Administrator)
 - workflow-orchestration — modular Actions and retry/stale-event discipline.
 
 See `docs/ops/SKILL-DISCOVERY-MATRIX.md` for focused discovery and session-scoped .skill provenance.
+
+
+## Native orchestration contracts
+
+- orchestration-treatment-registry — comparable orchestration-pattern registry spanning TUI, CLI, GitHub, Devin, MCP, and agent surfaces.
+- Native schemas: `docs/ops/ORCHESTRATION-TREATMENT.schema.json` and `docs/ops/ORCHESTRATION-RECEIPT.schema.json`.
+- Architecture: `docs/ops/ORCHESTRATION-CONTRACTS.md`.
+
+The treatment registry composes existing evidence, wait, relationship, and workflow contracts; it does not replace them.

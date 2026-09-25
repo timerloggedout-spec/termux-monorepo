@@ -173,7 +173,7 @@ def reduce_events(
     density = action_count / active_sec if active_sec else 0.0
 
     eta = None
-    if sequential_baseline_sec is not None and agents > 0 and workflow_sec > 0:
+    if sequential_baseline_sec is not None and len(agents) > 0 and workflow_sec > 0:
         # Sequential baseline is only valid when explicitly supplied; never infer
         # one from the observed parallel run because that would bias the metric.
         eta = _positive(sequential_baseline_sec) / (len(agents) * workflow_sec)

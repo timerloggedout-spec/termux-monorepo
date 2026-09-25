@@ -44,27 +44,36 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Build one historical relationship-index window
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          HISTORY_START_PAGE: ${{ github.event.inputs.history_start_page || '' }}
-          MAX_ITEMS: ${{ github.event.inputs.max_items || '100' }}
-          MAX_COMMITS: ${{ github.event.inputs.max_commits || '100' }}
+      - name: Determine historical continuation
+        id: continuation
         run: |
           set -euo pipefail
-          if [ -z "$HISTORY_START_PAGE" ]; then
-            HISTORY_START_PAGE="$(python - <<'PY'
+          python - <<'PY' >> "$GITHUB_OUTPUT"
 import json
 from pathlib import Path
 manifest = Path('workspace/llm_map/context_relationships/manifest.json')
 if not manifest.exists():
-    print(1)
+    print('continue=true')
+    print('start_page=1')
 else:
     data = json.loads(manifest.read_text(encoding='utf-8'))
-    print(data.get('history_window', {}).get('next_start_page') or 1)
+    next_page = data.get('history_window', {}).get('next_start_page')
+    if next_page is None:
+        print('continue=false')
+    else:
+        print('continue=true')
+        print(f'start_page={next_page}')
 PY
-)"
-          fi
+
+      - name: Build one historical relationship-index window
+        if: steps.continuation.outputs.continue == 'true'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          HISTORY_START_PAGE: ${{ github.event.inputs.history_start_page || steps.continuation.outputs.start_page }}
+          MAX_ITEMS: ${{ github.event.inputs.max_items || '100' }}
+          MAX_COMMITS: ${{ github.event.inputs.max_commits || '100' }}
+        run: |
+          set -euo pipefail
           python -m archwiz.context_relationships.build_index \
             --root . \
             --owner "$GITHUB_REPOSITORY_OWNER" \
@@ -78,6 +87,7 @@ PY
             --full-refresh
 
       - name: Publish backfill coverage summary
+        if: steps.continuation.outputs.continue == 'true'
         run: |
           set -euo pipefail
           {
@@ -105,3 +115,12 @@ PY
             -m 'Agent-Identity: GitHub Actions Context Indexer' \
             -m 'Task-Ref: CRG-10'
           git push origin HEAD:master
+
+      - name: Publish completion state
+        if: steps.continuation.outputs.continue != 'true'
+        run: |
+          {
+            echo '## Context relationship historical backfill'
+            echo
+            echo 'Canonical historical corpus is already complete; no new page window was collected.'
+          } >> "$GITHUB_STEP_SUMMARY"

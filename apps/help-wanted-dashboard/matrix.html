@@ -42,9 +42,9 @@ async function load(){
   if(!data){document.getElementById('meta').textContent='Matrix unavailable.';return;}
   const counts=data.counts||{}, by=counts.by_lane||{};
   document.getElementById('meta').textContent='Observed '+(data.observed_at||'—')+' · '+(data.master_sha||'').slice(0,12)+' · '+(counts.open_prs||0)+' open PRs';
-  const cards=[['Open',counts.open_prs||0],['EXTRACT',by.EXTRACT||0],['WAIT',by.WAIT||0],['HOLD',by.HOLD||0],['SUPERSEDE',by.SUPERSEDE||0]];
+  const cards=[['Open',counts.open_prs||0],['EXTRACT',by.EXTRACT||0],['CANDIDATE',by.CANDIDATE||0],['NEED_EVIDENCE',by.NEED_EVIDENCE||0],['SUPERSEDE',by.SUPERSEDE||0]];
   document.getElementById('kpis').innerHTML=cards.map(([l,v])=>'<div class="card"><div class="label">'+esc(l)+'</div><div class="value">'+esc(v)+'</div></div>').join('');
-  const rank=l=>({EXTRACT:0,WAIT:1,HOLD:2,SUPERSEDE:3,OBSERVE:4}[l]??9);
+  const rank=l=>({EXTRACT:0,CANDIDATE:1,NEED_EVIDENCE:2,SUPERSEDE:3}[l]??9);
   const prs=[...(data.prs||[])].sort((a,b)=>rank(a.lane)-rank(b.lane)||(b.days_open||0)-(a.days_open||0));
   document.getElementById('rows').innerHTML=prs.map(p=>'<tr><td><a href="'+esc(p.html_url||'#')+'">#'+esc(p.number)+'</a></td><td><span class="pill">'+esc(p.lane)+'</span></td><td>'+esc(p.days_open)+'</td><td>'+esc((p.reasons||[]).join(', '))+'</td><td>'+esc(p.title||'')+'</td></tr>').join('')||'<tr><td colspan="5">No rows.</td></tr>';
 }

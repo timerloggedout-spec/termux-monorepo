@@ -41,7 +41,7 @@ A snapshot is deterministically bound to:
 - history start page;
 - history continuation page.
 
-The resulting stable identifier is `crg-<content hash prefix>`.
+The resulting stable identifier is `crg-<content hash prefix>`. The identity binds the graph content hashes as well as provenance/page bounds, so changed graph evidence cannot silently reuse an earlier immutable snapshot.
 
 ## Coverage
 

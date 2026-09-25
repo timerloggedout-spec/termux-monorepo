@@ -1,5 +1,7 @@
-"""Slim keep-alive ML pipeline package (AR-23 / MLP-KEEP-001)."""
+"""ml.pipelines: Keep-alive ML DAG for operator ranking.
 
-from .keepalive_dag import DagSpec, default_dag, render_mermaid, validate_dag
+Implements: MLP-KEEP-001
+"""
+from __future__ import annotations
 
-__all__ = ["DagSpec", "default_dag", "render_mermaid", "validate_dag"]
+__version__ = "0.5.0"

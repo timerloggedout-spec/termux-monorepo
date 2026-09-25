@@ -133,18 +133,27 @@ def build_snapshot(
     """Build a self-contained immutable observation descriptor."""
     if not repository or not source_ref or not source_sha or not observed_at:
         raise TemporalError("repository, source_ref, source_sha, and observed_at are required")
-    if history_start_page < 1:
-        raise TemporalError("history_start_page must be positive")
-    if history_next_start_page is not None and history_next_start_page < 1:
-        raise TemporalError("history_next_start_page must be positive or null")
-    if coverage not in {
+    if not isinstance(history_start_page, int) or isinstance(history_start_page, bool) or history_start_page < 1:
+        raise TemporalError("history_start_page must be a positive integer")
+    if history_next_start_page is not None and (
+        not isinstance(history_next_start_page, int)
+        or isinstance(history_next_start_page, bool)
+        or history_next_start_page < 1
+    ):
+        raise TemporalError("history_next_start_page must be a positive integer or null")
+    allowed_coverage = {
         "COMPLETE",
         "PARTIAL_CONTINUATION_REQUIRED",
         "PARTIAL_BOUNDARY",
         "FAILED",
         "UNVERIFIED",
-    }:
+    }
+    if coverage not in allowed_coverage:
         raise TemporalError(f"unsupported coverage state: {coverage}")
+    if coverage == "COMPLETE" and history_next_start_page is not None:
+        raise TemporalError("COMPLETE coverage requires history_next_start_page to be null")
+    if coverage == "PARTIAL_CONTINUATION_REQUIRED" and history_next_start_page is None:
+        raise TemporalError("PARTIAL_CONTINUATION_REQUIRED coverage requires a next_start_page")
 
     nodes_hash = content_hash(list(nodes))
     edges_hash = content_hash(list(edges))

@@ -15,6 +15,54 @@ try:
     _has_rich = True
 except ImportError:
     _has_rich = False
+    ROUNDED = None
+
+    class Text:
+        def __init__(self, text="", style=None):
+            self.text = str(text)
+            self.style = style
+
+        def append(self, text, style=None):
+            self.text += str(text)
+
+        def __str__(self):
+            return self.text
+
+        def __repr__(self):
+            return f"Text({self.text!r})"
+
+    class Panel:
+        def __init__(self, renderable, title=None, box=None, border_style=None, expand=True):
+            self.renderable = renderable
+            self.title = title
+
+    class Group:
+        def __init__(self, *renderables):
+            self.renderables = renderables
+
+    class Table:
+        def __init__(self, box=None, border_style=None, expand=True):
+            self.columns = []
+            self.rows = []
+
+        def add_column(self, name, **kwargs):
+            self.columns.append(name)
+
+        def add_row(self, *args):
+            self.rows.append(args)
+
+    class Live:
+        def __init__(self, renderable, refresh_per_second=1, screen=True):
+            self.renderable = renderable
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc_val, exc_tb):
+            pass
+
+        def update(self, renderable):
+            self.renderable = renderable
 
 TELEMETRY_LOG = "agent_telemetry_stream.json"
 if _has_rich:
@@ -35,8 +83,8 @@ def read_latest_telemetry():
     to perform incremental I/O, yielding massive performance gains on large log streams.
     """
     global _last_file_pos, _active_jobs_cache, _sorted_telemetry_cache, _last_file_ino, _last_file_mtime
-    if not os.path.exists(TELEMETRY_LOG):
-        # Reset cache if file is missing
+    if not os.path.exists(TELEMETRY_LOG) or os.path.islink(TELEMETRY_LOG):
+        # Reset cache if file is missing or is a symlink
         _active_jobs_cache = {}
         _sorted_telemetry_cache = None
         _last_file_pos = 0

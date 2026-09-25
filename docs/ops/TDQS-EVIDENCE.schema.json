@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TDQS Evidence Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "tool_identity",
+    "definition_input_hash",
+    "tdqs_spec_version",
+    "context_signals",
+    "dimension_scores",
+    "tdqs_score",
+    "tier"
+  ],
+  "properties": {
+    "tool_identity": {"type": "string", "minLength": 1},
+    "server_identity": {"type": "string"},
+    "source_ref": {"type": "string"},
+    "source_sha": {"type": "string"},
+    "definition_input_hash": {"type": "string", "pattern": "^[0-9a-f]{16}$"},
+    "captured_at": {"type": "string", "format": "date-time"},
+    "tdqs_spec_version": {"type": "string", "minLength": 1},
+    "evaluator_id": {"type": "string"},
+    "evaluator_model": {"type": "string"},
+    "rubric_version": {"type": "string"},
+    "context_signals": {"type": "object"},
+    "dimension_scores": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "purpose_clarity",
+        "usage_guidelines",
+        "behavioral_transparency",
+        "parameter_semantics",
+        "conciseness_structure",
+        "contextual_completeness"
+      ],
+      "properties": {
+        "purpose_clarity": {"type": "number", "minimum": 1, "maximum": 5},
+        "usage_guidelines": {"type": "number", "minimum": 1, "maximum": 5},
+        "behavioral_transparency": {"type": "number", "minimum": 1, "maximum": 5},
+        "parameter_semantics": {"type": "number", "minimum": 1, "maximum": 5},
+        "conciseness_structure": {"type": "number", "minimum": 1, "maximum": 5},
+        "contextual_completeness": {"type": "number", "minimum": 1, "maximum": 5}
+      }
+    },
+    "dimension_justifications": {"type": "object"},
+    "flags": {"type": "array", "items": {"type": "string"}},
+    "tdqs_score": {"type": "number", "minimum": 1, "maximum": 5},
+    "tier": {"type": "string", "enum": ["A", "B", "C", "D", "F"]},
+    "server_definition_quality": {"type": "number", "minimum": 1, "maximum": 5},
+    "server_coherence": {"type": "number", "minimum": 1, "maximum": 5},
+    "server_overall_score": {"type": "number", "minimum": 1, "maximum": 5},
+    "attribution_confidence": {"type": "number", "minimum": 0, "maximum": 1}
+  }
+}

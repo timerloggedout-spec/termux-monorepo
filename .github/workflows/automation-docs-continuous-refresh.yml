@@ -63,6 +63,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p docs/ops/generated
+          printf '%s\n' '{"args":["--no-sandbox","--disable-setuid-sandbox"]}' > /tmp/puppeteer-config.json
           MMDC="npx --yes @mermaid-js/mermaid-cli@11.4.2"
           count=0
           for src in docs/ops/diagrams/*.mmd; do
@@ -70,7 +71,7 @@ jobs:
             stem=$(basename "$src" .mmd)
             out="docs/ops/generated/${stem}.png"
             echo "mmdc: $src -> $out"
-            $MMDC -i "$src" -o "$out" -b transparent -s 2
+            $MMDC -i "$src" -o "$out" -b transparent -s 2 --puppeteerConfigFile /tmp/puppeteer-config.json
             count=$((count + 1))
           done
           if [ "$count" -eq 0 ]; then
@@ -105,6 +106,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p docs/ops/generated
+          printf '%s\n' '{"args":["--no-sandbox","--disable-setuid-sandbox"]}' > /tmp/puppeteer-config.json
           MMDC="npx --yes @mermaid-js/mermaid-cli@11.4.2"
           count=0
           for src in docs/ops/diagrams/*.mmd; do

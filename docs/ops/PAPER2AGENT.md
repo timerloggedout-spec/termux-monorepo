@@ -21,7 +21,7 @@ Loop: engineers set objectives & boundaries → agent hypothesizes & patches →
 
 | GLM dense-feedback idea | Our surface |
 |-------------------------|-------------|
-| Correctness feedback | dual-gate checks, submodule_integrity, inventory `--strict` |
+| Correctness feedback | dual-gate checks, submodule_integrity, inventory strict |
 | System behavior feedback | engineering_health, OTEL/spanmetrics, adaptive-wait |
 | Performance feedback | model_performance_index, free-catalog lag, Codespace smoke |
 | Infra Agent | Codespace agent lane + help-wanted LLM assist + evidence-led |
@@ -32,24 +32,56 @@ Loop: engineers set objectives & boundaries → agent hypothesizes & patches →
 
 ## 3. Paper2Agent process (operational)
 
-```text
 Paper / post (17_Papers citation)
-    → extract method + claims + code links (PapersFlow / HF Papers / OpenAlex)
+    → extract method + claims + code links
     → slot under 15_Research or pattern note under CONTINUOUS-EVAL
-    → define local checks (unit / inventory / integrity)
+    → define local checks
     → agent implements thin adapter (no secret hardcode)
     → dual-gate + evidence receipt
     → promote or hold with attributable reason
-```
 
-**Needle 3** (https://cactuscompute.com/needle) is a parallel seed for **resource-constrained** agent runtimes (8–29 MB, on-device tool call + extraction) → `01_Agent_Runtime` evaluation candidate.
+Needle 3 is a parallel seed for resource-constrained agent runtimes → 01_Agent_Runtime evaluation candidate.
 
 ---
 
-## 4. Non-goals
+## 4. AlphaEvolve + Dream-RSI extension
+
+The repo now adds a bounded **evolutionary replay** layer at scripts/agent_evolution/replay_simulator.py and documents it in docs/ops/EVOLUTIONARY-REPLAY.md.
+
+The integration adopts two research mechanisms:
+
+- **Evaluator-first evolution:** AlphaEvolve combines program proposals with automated evaluation and evolutionary selection. Here, the evaluator is an explicit experiment contract; it is not allowed to become an implicit model-quality score.
+- **History-as-simulator:** Dream-RSI replays alternative exploration policies against realized discovery trees, avoiding repeated online executions for the offline policy-selection phase. Here, replay is deterministic and read-only over recorded outcomes.
+
+The incumbent policy remains in every candidate set. This provides a replay-level non-regression invariant while preserving the existing online dual gate. A replay improvement is therefore **candidate evidence**, not production proof.
+
+The resulting extended process is:
+
+research source
+    → method extraction
+    → thin replay/evaluator adapter
+    → local dense feedback
+    → replay cohort / incumbent control
+    → bounded policy evolution
+    → fresh online cohort
+    → WAIT → WATCH → VALIDATE → RE-FETCH → COMPARE
+    → dual gate
+    → promote / hold
+    → append new discovery history
+
+External references:
+- AlphaEvolve: https://deepmind.google/blog/alphaevolve-a-gemini-powered-coding-agent-for-designing-advanced-algorithms/
+- Dream-RSI paper: https://arxiv.org/abs/2609.14858
+- Dream-RSI report/demo: https://dream-rsi.com/
+
+---
+
+## 5. Non-goals
 
 - Full recursive self-improvement without human objective lock
-- Claiming GLM numbers as our metrics
+- Claiming GLM, AlphaEvolve, or Dream-RSI numbers as our metrics
 - Secret-heavy research agents outside credential-router
+- Executing generated source code inside the replay simulator
+- Treating replay score as correctness or as an intelligence ranking
 
 **Agent-Identity:** Grok (Administrator) CXO

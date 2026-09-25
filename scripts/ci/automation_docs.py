@@ -395,8 +395,14 @@ def markdown_catalog(catalog: dict[str, object]) -> str:
 def rendered_outputs(root: Path = ROOT) -> tuple[str, str, str]:
     catalog = build_catalog(root)
     assets = diagram_asset_manifest(root)
-    json_text = json.dumps(catalog, indent=2, sort_keys=True) + "\n"
-    asset_text = json.dumps(assets, indent=2, sort_keys=True) + "\n"
+    # ensure_ascii=False: keep workflow display names (em dashes, arrows,
+    # emoji) as literal UTF-8 in the generated catalog instead of \uXXXX
+    # escapes. Round-tripping \uXXXX escapes through non-Python tooling
+    # (e.g. the GitHub Contents API) has repeatedly produced byte-level
+    # corruption of the escape sequences, which this check then flags as
+    # "stale" even though the semantic content is unchanged.
+    json_text = json.dumps(catalog, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
+    asset_text = json.dumps(assets, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
     return json_text, markdown_catalog(catalog), asset_text
 
 

@@ -1,51 +1,117 @@
 {
-  "generated_at": "2026-09-21T00:12:41Z",
+  "generated_at": "2026-09-25T22:16:06Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
-  "receipts": 30,
+  "receipts": 246,
   "kinds": {
     "upstream_pr": 12,
     "claim_skipped_closed": 1,
-    "followup_skip_idempotent": 17
+    "followup_skip_idempotent": 35,
+    "followup_skip_cooldown": 181,
+    "followup_reengage": 12,
+    "followup_stale_nudge": 5
   },
   "outcomes": {
-    "ok": 30
+    "ok": 246
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/UnityChainxx/StellarHunts/pull/599",
+      "title": "help-wanted: stake + contribute for #519",
+      "number": 599,
+      "repo": "UnityChainxx/StellarHunts",
+      "state": "open",
+      "updated_at": "2026-09-25T20:08:30Z",
+      "tribute": true
+    },
+    {
+      "html_url": "https://github.com/LibreUML/LibreUML/pull/130",
+      "title": "help-wanted: stake + contribute for #126",
+      "number": 130,
+      "repo": "LibreUML/LibreUML",
+      "state": "open",
+      "updated_at": "2026-09-25T05:24:08Z",
+      "tribute": true
+    },
+    {
+      "html_url": "https://github.com/lonestill/onyx-launcher/pull/45",
+      "title": "help-wanted: stake + contribute for #19",
+      "number": 45,
+      "repo": "lonestill/onyx-launcher",
+      "state": "open",
+      "updated_at": "2026-09-24T23:27:23Z",
+      "tribute": true
+    },
+    {
+      "html_url": "https://github.com/EF-CHAIN/SendAm/pull/492",
+      "title": "help-wanted: stake + contribute for #465",
+      "number": 492,
+      "repo": "EF-CHAIN/SendAm",
+      "state": "open",
+      "updated_at": "2026-09-24T20:08:47Z",
+      "tribute": true
+    },
+    {
+      "html_url": "https://github.com/MergeFi/contracts/pull/374",
+      "title": "help-wanted: stake + contribute for #345",
+      "number": 374,
+      "repo": "MergeFi/contracts",
+      "state": "open",
+      "updated_at": "2026-09-24T13:47:51Z",
+      "tribute": true
+    },
+    {
+      "html_url": "https://github.com/ThinkLikeAFounder/pulsartrack/pull/898",
+      "title": "help-wanted: stake + contribute for #896",
+      "number": 898,
+      "repo": "ThinkLikeAFounder/pulsartrack",
+      "state": "open",
+      "updated_at": "2026-09-23T23:09:20Z",
+      "tribute": true
+    },
+    {
+      "html_url": "https://github.com/w1977-0/open-stream-saver/pull/3",
+      "title": "help-wanted: stake + contribute for #1",
+      "number": 3,
+      "repo": "w1977-0/open-stream-saver",
+      "state": "open",
+      "updated_at": "2026-09-25T13:46:17Z",
+      "tribute": true
+    },
+    {
+      "html_url": "https://github.com/umn-adc/ATLAS/pull/42",
+      "title": "help-wanted: stake + contribute for #31",
+      "number": 42,
+      "repo": "umn-adc/ATLAS",
+      "state": "open",
+      "updated_at": "2026-09-25T18:36:08Z",
+      "tribute": true
+    },
+    {
+      "html_url": "https://github.com/olcf/olcf-test-harness/pull/280",
+      "title": "help-wanted: stake + contribute for #278",
+      "number": 280,
+      "repo": "olcf/olcf-test-harness",
+      "state": "open",
+      "updated_at": "2026-09-24T21:30:30Z",
+      "tribute": true
+    },
+    {
+      "html_url": "https://github.com/Vasudev-ai/Focusflow/pull/15",
+      "title": "help-wanted: stake + contribute for #2",
+      "number": 15,
+      "repo": "Vasudev-ai/Focusflow",
+      "state": "open",
+      "updated_at": "2026-09-24T11:44:35Z",
+      "tribute": true
+    },
     {
       "html_url": "https://github.com/bmad-code-org/bmad-loop/pull/819",
       "title": "help-wanted: stake + contribute for #780",
       "number": 819,
       "repo": "bmad-code-org/bmad-loop",
       "state": "open",
-      "updated_at": "2026-09-20T22:43:23Z",
-      "tribute": true
-    },
-    {
-      "html_url": "https://github.com/ennouaimi/invoicr/pull/8",
-      "title": "help-wanted: stake + contribute for #7",
-      "number": 8,
-      "repo": "ennouaimi/invoicr",
-      "state": "open",
-      "updated_at": "2026-09-20T19:03:33Z",
-      "tribute": true
-    },
-    {
-      "html_url": "https://github.com/shadcn-labs/ogimagecn/pull/34",
-      "title": "help-wanted: stake + contribute for #33",
-      "number": 34,
-      "repo": "shadcn-labs/ogimagecn",
-      "state": "open",
-      "updated_at": "2026-09-20T13:13:17Z",
-      "tribute": true
-    },
-    {
-      "html_url": "https://github.com/infagent/merl/pull/43",
-      "title": "help-wanted: stake + contribute for #42",
-      "number": 43,
-      "repo": "infagent/merl",
-      "state": "open",
-      "updated_at": "2026-09-20T06:29:43Z",
+      "updated_at": "2026-09-23T07:47:19Z",
       "tribute": true
     },
     {
@@ -54,16 +120,7 @@
       "number": 26,
       "repo": "Kilo-Org/agentic-path",
       "state": "open",
-      "updated_at": "2026-09-19T23:07:32Z",
-      "tribute": true
-    },
-    {
-      "html_url": "https://github.com/chahe-dridi/vscode-agent-bell/pull/225",
-      "title": "help-wanted: stake + contribute for #224",
-      "number": 225,
-      "repo": "chahe-dridi/vscode-agent-bell",
-      "state": "open",
-      "updated_at": "2026-09-19T23:12:03Z",
+      "updated_at": "2026-09-23T07:47:20Z",
       "tribute": true
     },
     {
@@ -72,7 +129,7 @@
       "number": 7,
       "repo": "mangiapanejohn-dev/MOBIUS-Searcher",
       "state": "open",
-      "updated_at": "2026-09-19T22:30:10Z",
+      "updated_at": "2026-09-25T18:36:11Z",
       "tribute": true
     },
     {
@@ -81,7 +138,7 @@
       "number": 23,
       "repo": "E-Timileyin/Sail-CLI",
       "state": "open",
-      "updated_at": "2026-09-19T21:17:40Z",
+      "updated_at": "2026-09-23T07:47:24Z",
       "tribute": true
     },
     {
@@ -90,7 +147,7 @@
       "number": 657,
       "repo": "GlassHaven/Haven",
       "state": "open",
-      "updated_at": "2026-09-20T20:30:13Z",
+      "updated_at": "2026-09-23T07:47:27Z",
       "tribute": true
     },
     {
@@ -99,7 +156,7 @@
       "number": 81,
       "repo": "vedantnimbarte/zero",
       "state": "open",
-      "updated_at": "2026-09-20T09:08:44Z",
+      "updated_at": "2026-09-23T07:47:28Z",
       "tribute": true
     },
     {
@@ -108,23 +165,23 @@
       "number": 53,
       "repo": "OrionStarAI/EasyCode",
       "state": "open",
-      "updated_at": "2026-09-11T03:26:17Z",
+      "updated_at": "2026-09-23T07:47:31Z",
       "tribute": true
     }
   ],
-  "foreign_open_count": 11,
+  "foreign_open_count": 17,
   "tributes": [
     {
-      "pr_url": "https://github.com/bmad-code-org/bmad-loop/pull/819",
+      "pr_url": "https://github.com/UnityChainxx/StellarHunts/pull/599",
       "kinds": [
         "upstream_pr"
       ],
       "ok": true,
-      "last_ts": "2026-09-20T22:43:23Z",
+      "last_ts": "2026-09-25T20:08:30Z",
       "providers": [],
-      "repo": "bmad-code-org/bmad-loop",
-      "number": 819,
-      "title": "help-wanted: stake + contribute for #780",
+      "repo": "UnityChainxx/StellarHunts",
+      "number": 599,
+      "title": "help-wanted: stake + contribute for #519",
       "state": "open"
     },
     {
@@ -149,10 +206,42 @@
         "followup_skip_idempotent",
         "followup_skip_idempotent",
         "followup_skip_idempotent",
-        "followup_skip_idempotent"
+        "followup_skip_idempotent",
+        "followup_skip_idempotent",
+        "followup_skip_idempotent",
+        "followup_skip_idempotent",
+        "followup_skip_idempotent",
+        "followup_skip_idempotent",
+        "followup_skip_idempotent",
+        "followup_skip_idempotent",
+        "followup_skip_idempotent",
+        "followup_skip_idempotent",
+        "followup_skip_idempotent",
+        "followup_skip_idempotent",
+        "followup_skip_idempotent",
+        "followup_skip_idempotent",
+        "followup_skip_idempotent",
+        "followup_skip_idempotent",
+        "followup_skip_idempotent",
+        "followup_skip_idempotent",
+        "followup_skip_idempotent",
+        "followup_reengage",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown"
       ],
       "ok": true,
-      "last_ts": "2026-09-20T22:42:43Z",
+      "last_ts": "2026-09-25T18:35:49Z",
       "providers": [],
       "repo": "vedantnimbarte/zero",
       "number": 81,
@@ -160,14 +249,538 @@
       "state": "open"
     },
     {
-      "pr_url": "https://github.com/markramm/pyrite/pull/198",
+      "pr_url": "https://github.com/GlassHaven/Haven/pull/657",
+      "kinds": [
+        "upstream_pr",
+        "upstream_pr",
+        "followup_reengage",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-25T18:35:49Z",
+      "providers": [],
+      "repo": "GlassHaven/Haven",
+      "number": 657,
+      "title": "help-wanted: stake + contribute for #273",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/E-Timileyin/Sail-CLI/pull/23",
+      "kinds": [
+        "upstream_pr",
+        "upstream_pr",
+        "followup_reengage",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-25T18:35:49Z",
+      "providers": [],
+      "repo": "E-Timileyin/Sail-CLI",
+      "number": 23,
+      "title": "help-wanted: stake + contribute for #20",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/Kilo-Org/agentic-path/pull/26",
+      "kinds": [
+        "upstream_pr",
+        "followup_stale_nudge",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-25T18:35:49Z",
+      "providers": [],
+      "repo": "Kilo-Org/agentic-path",
+      "number": 26,
+      "title": "help-wanted: stake + contribute for #25",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
+      "kinds": [
+        "upstream_pr",
+        "followup_reengage",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_reengage",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_reengage",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_reengage"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-25T18:35:49Z",
+      "providers": [],
+      "repo": "mangiapanejohn-dev/MOBIUS-Searcher",
+      "number": 7,
+      "title": "help-wanted: stake + contribute for #6",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/w1977-0/open-stream-saver/pull/3",
+      "kinds": [
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_stale_nudge",
+        "followup_skip_cooldown"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-25T18:35:49Z",
+      "providers": [],
+      "repo": "w1977-0/open-stream-saver",
+      "number": 3,
+      "title": "help-wanted: stake + contribute for #1",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/umn-adc/ATLAS/pull/42",
+      "kinds": [
+        "followup_reengage",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_reengage",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_reengage",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_reengage"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-25T18:35:49Z",
+      "providers": [],
+      "repo": "umn-adc/ATLAS",
+      "number": 42,
+      "title": "help-wanted: stake + contribute for #31",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/olcf/olcf-test-harness/pull/280",
+      "kinds": [
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_stale_nudge",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-25T18:35:49Z",
+      "providers": [],
+      "repo": "olcf/olcf-test-harness",
+      "number": 280,
+      "title": "help-wanted: stake + contribute for #278",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/Vasudev-ai/Focusflow/pull/15",
+      "kinds": [
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_stale_nudge",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-25T18:35:49Z",
+      "providers": [],
+      "repo": "Vasudev-ai/Focusflow",
+      "number": 15,
+      "title": "help-wanted: stake + contribute for #2",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/bmad-code-org/bmad-loop/pull/819",
+      "kinds": [
+        "followup_reengage",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-25T18:35:49Z",
+      "providers": [],
+      "repo": "bmad-code-org/bmad-loop",
+      "number": 819,
+      "title": "help-wanted: stake + contribute for #780",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/OrionStarAI/EasyCode/pull/53",
+      "kinds": [
+        "followup_stale_nudge",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-25T18:35:49Z",
+      "providers": [],
+      "repo": "OrionStarAI/EasyCode",
+      "number": 53,
+      "title": "Change project name from DeepV Code to Easy Code",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/ThinkLikeAFounder/pulsartrack/pull/898",
+      "kinds": [
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-25T18:35:49Z",
+      "providers": [],
+      "repo": "ThinkLikeAFounder/pulsartrack",
+      "number": 898,
+      "title": "help-wanted: stake + contribute for #896",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/MergeFi/contracts/pull/374",
+      "kinds": [
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-25T18:35:49Z",
+      "providers": [],
+      "repo": "MergeFi/contracts",
+      "number": 374,
+      "title": "help-wanted: stake + contribute for #345",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/EF-CHAIN/SendAm/pull/492",
+      "kinds": [
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-25T18:35:49Z",
+      "providers": [],
+      "repo": "EF-CHAIN/SendAm",
+      "number": 492,
+      "title": "help-wanted: stake + contribute for #465",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/lonestill/onyx-launcher/pull/45",
+      "kinds": [
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-25T18:35:49Z",
+      "providers": [],
+      "repo": "lonestill/onyx-launcher",
+      "number": 45,
+      "title": "help-wanted: stake + contribute for #19",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/LibreUML/LibreUML/pull/130",
+      "kinds": [
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-25T18:35:49Z",
+      "providers": [],
+      "repo": "LibreUML/LibreUML",
+      "number": 130,
+      "title": "help-wanted: stake + contribute for #126",
+      "state": "open"
+    },
+    {
+      "pr_url": "https://github.com/Stellar-songifi/Lyricsflip_server/pull/212",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-25T17:43:16Z",
+      "providers": [],
+      "repo": "Stellar-songifi/Lyricsflip_server",
+      "number": 212,
+      "title": "help-wanted: stake + contribute for #108",
+      "state": "closed"
+    },
+    {
+      "pr_url": "https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587",
+      "kinds": [
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown",
+        "followup_skip_cooldown"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-25T13:46:12Z",
+      "providers": [],
+      "repo": "C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend",
+      "number": 587,
+      "title": "help-wanted: stake + contribute for #579",
+      "state": "closed"
+    },
+    {
+      "pr_url": "https://github.com/vavallee/bindery/pull/2770",
+      "kinds": [
+        "followup_skip_cooldown",
+        "followup_skip_cooldown"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-24T17:09:53Z",
+      "providers": [],
+      "repo": "vavallee/bindery",
+      "number": 2770,
+      "title": "help-wanted: stake + contribute for #2769",
+      "state": "closed"
+    },
+    {
+      "pr_url": "https://github.com/ApexChainx/ApexChainx-Contracts/pull/689",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-23T19:59:38Z",
+      "providers": [],
+      "repo": "ApexChainx/ApexChainx-Contracts",
+      "number": 689,
+      "title": "help-wanted: stake + contribute for #659",
+      "state": "closed"
+    },
+    {
+      "pr_url": "https://github.com/infagent/merl/pull/43",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-23T05:51:15Z",
+      "providers": [],
+      "repo": "infagent/merl",
+      "number": 43,
+      "title": "help-wanted: stake + contribute for #42",
+      "state": "closed"
+    },
+    {
+      "pr_url": "https://github.com/limelitgeo/open/pull/32",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-23T05:49:23Z",
+      "providers": [],
+      "repo": "limelitgeo/open",
+      "number": 32,
+      "title": "help-wanted: stake + contribute for #31",
+      "state": "closed"
+    },
+    {
+      "pr_url": "https://github.com/sorotrail/SoroTrail/pull/943",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-22T23:59:04Z",
+      "providers": [],
+      "repo": "sorotrail/SoroTrail",
+      "number": 943,
+      "title": "help-wanted: stake + contribute for #142",
+      "state": "closed"
+    },
+    {
+      "pr_url": "https://github.com/DeltaV-Station/Delta-v/pull/6534",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-22T20:50:03Z",
+      "providers": [],
+      "repo": "DeltaV-Station/Delta-v",
+      "number": 6534,
+      "title": "help-wanted: stake + contribute for #6533",
+      "state": "closed"
+    },
+    {
+      "pr_url": "https://github.com/ussyalfaks/ahjoorxmr-contract/pull/872",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-22T07:24:42Z",
+      "providers": [],
+      "repo": "ussyalfaks/ahjoorxmr-contract",
+      "number": 872,
+      "title": "help-wanted: stake + contribute for #871",
+      "state": "closed"
+    },
+    {
+      "pr_url": "https://github.com/FasterThanAi/ai-lead-generation-mvp/pull/34",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-22T07:12:59Z",
+      "providers": [],
+      "repo": "FasterThanAi/ai-lead-generation-mvp",
+      "number": 34,
+      "title": "help-wanted: stake + contribute for #18",
+      "state": "closed"
+    },
+    {
+      "pr_url": "https://github.com/ennouaimi/invoicr/pull/8",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-21T18:43:15Z",
+      "providers": [],
+      "repo": "ennouaimi/invoicr",
+      "number": 8,
+      "title": "help-wanted: stake + contribute for #7",
+      "state": "closed"
+    },
+    {
+      "pr_url": "https://github.com/shadcn-labs/ogimagecn/pull/34",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-21T13:16:27Z",
+      "providers": [],
+      "repo": "shadcn-labs/ogimagecn",
+      "number": 34,
+      "title": "help-wanted: stake + contribute for #33",
+      "state": "closed"
+    },
+    {
+      "pr_url": "https://github.com/pyrite-wiki/pyrite/pull/198",
       "kinds": [
         "upstream_pr"
       ],
       "ok": true,
       "last_ts": "2026-09-20T20:40:26Z",
       "providers": [],
-      "repo": "markramm/pyrite",
+      "repo": "pyrite-wiki/pyrite",
       "number": 198,
       "title": "help-wanted: stake + contribute for #192",
       "state": "closed"
@@ -186,45 +799,6 @@
       "state": "closed"
     },
     {
-      "pr_url": "https://github.com/ennouaimi/invoicr/pull/8",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-20T19:03:33Z",
-      "providers": [],
-      "repo": "ennouaimi/invoicr",
-      "number": 8,
-      "title": "help-wanted: stake + contribute for #7",
-      "state": "open"
-    },
-    {
-      "pr_url": "https://github.com/shadcn-labs/ogimagecn/pull/34",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-20T13:13:17Z",
-      "providers": [],
-      "repo": "shadcn-labs/ogimagecn",
-      "number": 34,
-      "title": "help-wanted: stake + contribute for #33",
-      "state": "open"
-    },
-    {
-      "pr_url": "https://github.com/infagent/merl/pull/43",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-20T06:29:43Z",
-      "providers": [],
-      "repo": "infagent/merl",
-      "number": 43,
-      "title": "help-wanted: stake + contribute for #42",
-      "state": "open"
-    },
-    {
       "pr_url": "https://github.com/DioNanos/codex-termux/pull/27",
       "kinds": [
         "upstream_pr",
@@ -239,60 +813,6 @@
       "state": "closed"
     },
     {
-      "pr_url": "https://github.com/GlassHaven/Haven/pull/657",
-      "kinds": [
-        "upstream_pr",
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-19T23:20:00Z",
-      "providers": [],
-      "repo": "GlassHaven/Haven",
-      "number": 657,
-      "title": "help-wanted: stake + contribute for #273",
-      "state": "open"
-    },
-    {
-      "pr_url": "https://github.com/E-Timileyin/Sail-CLI/pull/23",
-      "kinds": [
-        "upstream_pr",
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-19T23:20:00Z",
-      "providers": [],
-      "repo": "E-Timileyin/Sail-CLI",
-      "number": 23,
-      "title": "help-wanted: stake + contribute for #20",
-      "state": "open"
-    },
-    {
-      "pr_url": "https://github.com/Kilo-Org/agentic-path/pull/26",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-19T23:20:00Z",
-      "providers": [],
-      "repo": "Kilo-Org/agentic-path",
-      "number": 26,
-      "title": "help-wanted: stake + contribute for #25",
-      "state": "open"
-    },
-    {
-      "pr_url": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-19T23:20:00Z",
-      "providers": [],
-      "repo": "mangiapanejohn-dev/MOBIUS-Searcher",
-      "number": 7,
-      "title": "help-wanted: stake + contribute for #6",
-      "state": "open"
-    },
-    {
       "pr_url": "https://github.com/chahe-dridi/vscode-agent-bell/pull/225",
       "kinds": [
         "upstream_pr"
@@ -303,7 +823,7 @@
       "repo": "chahe-dridi/vscode-agent-bell",
       "number": 225,
       "title": "help-wanted: stake + contribute for #224",
-      "state": "open"
+      "state": "closed"
     },
     {
       "pr_url": "https://github.com/timerloggedout-spec/gh-aw_fork/pull/1",
@@ -317,19 +837,6 @@
       "number": 1,
       "title": "ops(smoke-otel): agentless data-first \u2014 zero LLM / zero Copilot AIC",
       "state": "closed"
-    },
-    {
-      "pr_url": "https://github.com/OrionStarAI/EasyCode/pull/53",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-11T03:26:17Z",
-      "providers": [],
-      "repo": "OrionStarAI/EasyCode",
-      "number": 53,
-      "title": "Change project name from DeepV Code to Easy Code",
-      "state": "open"
     },
     {
       "pr_url": "https://github.com/timerloggedout-spec/termux-mcp/pull/1",
@@ -423,7 +930,7 @@
       "state": "closed"
     }
   ],
-  "tribute_count": 22,
+  "tribute_count": 41,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -710,6 +1217,2017 @@
         "ok": true,
         "lane": "help-wanted-followup",
         "foreign": true
+      },
+      {
+        "ts": "2026-09-21T04:54:20Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-21T05:29:37Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-21T12:46:46Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-21T15:20:30Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-21T19:27:05Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-21T20:36:56Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-21T23:16:46Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-21T23:38:09Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-22T04:54:19Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-22T05:23:15Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-22T11:36:35Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-22T13:40:35Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-22T16:56:39Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-22T19:54:16Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-22T21:17:50Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-22T23:16:40Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-23T00:32:12Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-23T07:44:58Z",
+        "kind": "followup_skip_idempotent",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true
+      },
+      {
+        "ts": "2026-09-23T07:47:11Z",
+        "kind": "followup_reengage",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "comment_url": "https://github.com/vedantnimbarte/zero/pull/81#issuecomment-5791085090",
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "reengage",
+        "has_contributing": true,
+        "url_count": 1
+      },
+      {
+        "ts": "2026-09-23T13:38:06Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T18:23:56Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T22:56:44Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T23:09:31Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T04:48:57Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T11:44:30Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T17:09:53Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T21:30:22Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T23:27:34Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T00:32:52Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T07:47:16Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T13:46:12Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T18:35:49Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/vedantnimbarte/zero/pull/81",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      }
+    ],
+    "https://github.com/w1977-0/open-stream-saver/pull/3": [
+      {
+        "ts": "2026-09-23T07:47:11Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/w1977-0/open-stream-saver/pull/3",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T13:38:06Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/w1977-0/open-stream-saver/pull/3",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T18:23:56Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/w1977-0/open-stream-saver/pull/3",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T22:56:44Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/w1977-0/open-stream-saver/pull/3",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T23:09:31Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/w1977-0/open-stream-saver/pull/3",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T04:48:57Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/w1977-0/open-stream-saver/pull/3",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T11:44:30Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/w1977-0/open-stream-saver/pull/3",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T17:09:53Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/w1977-0/open-stream-saver/pull/3",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T21:30:22Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/w1977-0/open-stream-saver/pull/3",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T23:27:34Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/w1977-0/open-stream-saver/pull/3",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T00:32:52Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/w1977-0/open-stream-saver/pull/3",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T07:47:16Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/w1977-0/open-stream-saver/pull/3",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T13:46:12Z",
+        "kind": "followup_stale_nudge",
+        "issue": "https://github.com/w1977-0/open-stream-saver/pull/3",
+        "ok": true,
+        "comment_url": "https://github.com/w1977-0/open-stream-saver/pull/3#issuecomment-5833459373",
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "stale_nudge",
+        "has_contributing": true,
+        "url_count": 1
+      },
+      {
+        "ts": "2026-09-25T18:35:49Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/w1977-0/open-stream-saver/pull/3",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      }
+    ],
+    "https://github.com/umn-adc/ATLAS/pull/42": [
+      {
+        "ts": "2026-09-23T07:47:11Z",
+        "kind": "followup_reengage",
+        "issue": "https://github.com/umn-adc/ATLAS/pull/42",
+        "ok": true,
+        "comment_url": "https://github.com/umn-adc/ATLAS/pull/42#issuecomment-5791082487",
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "reengage",
+        "has_contributing": false,
+        "url_count": 1
+      },
+      {
+        "ts": "2026-09-23T13:38:06Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/umn-adc/ATLAS/pull/42",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T18:23:56Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/umn-adc/ATLAS/pull/42",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T22:56:44Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/umn-adc/ATLAS/pull/42",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T23:09:31Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/umn-adc/ATLAS/pull/42",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T04:48:57Z",
+        "kind": "followup_reengage",
+        "issue": "https://github.com/umn-adc/ATLAS/pull/42",
+        "ok": true,
+        "comment_url": "https://github.com/umn-adc/ATLAS/pull/42#issuecomment-5807881966",
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "reengage",
+        "has_contributing": false,
+        "url_count": 1
+      },
+      {
+        "ts": "2026-09-24T11:44:30Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/umn-adc/ATLAS/pull/42",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T17:09:53Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/umn-adc/ATLAS/pull/42",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T21:30:22Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/umn-adc/ATLAS/pull/42",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T23:27:34Z",
+        "kind": "followup_reengage",
+        "issue": "https://github.com/umn-adc/ATLAS/pull/42",
+        "ok": true,
+        "comment_url": "https://github.com/umn-adc/ATLAS/pull/42#issuecomment-5823956185",
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "reengage",
+        "has_contributing": false,
+        "url_count": 1
+      },
+      {
+        "ts": "2026-09-25T00:32:52Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/umn-adc/ATLAS/pull/42",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T07:47:16Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/umn-adc/ATLAS/pull/42",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T13:46:12Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/umn-adc/ATLAS/pull/42",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T18:35:49Z",
+        "kind": "followup_reengage",
+        "issue": "https://github.com/umn-adc/ATLAS/pull/42",
+        "ok": true,
+        "comment_url": "https://github.com/umn-adc/ATLAS/pull/42#issuecomment-5837592474",
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "reengage",
+        "has_contributing": false,
+        "url_count": 1
+      }
+    ],
+    "https://github.com/olcf/olcf-test-harness/pull/280": [
+      {
+        "ts": "2026-09-23T07:47:11Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/olcf/olcf-test-harness/pull/280",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T13:38:06Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/olcf/olcf-test-harness/pull/280",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T18:23:56Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/olcf/olcf-test-harness/pull/280",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T22:56:44Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/olcf/olcf-test-harness/pull/280",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T23:09:31Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/olcf/olcf-test-harness/pull/280",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T04:48:57Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/olcf/olcf-test-harness/pull/280",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T11:44:30Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/olcf/olcf-test-harness/pull/280",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T17:09:53Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/olcf/olcf-test-harness/pull/280",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T21:30:22Z",
+        "kind": "followup_stale_nudge",
+        "issue": "https://github.com/olcf/olcf-test-harness/pull/280",
+        "ok": true,
+        "comment_url": "https://github.com/olcf/olcf-test-harness/pull/280#issuecomment-5822565482",
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "stale_nudge",
+        "has_contributing": false,
+        "url_count": 0
+      },
+      {
+        "ts": "2026-09-24T23:27:34Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/olcf/olcf-test-harness/pull/280",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T00:32:52Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/olcf/olcf-test-harness/pull/280",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T07:47:16Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/olcf/olcf-test-harness/pull/280",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T13:46:12Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/olcf/olcf-test-harness/pull/280",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T18:35:49Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/olcf/olcf-test-harness/pull/280",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      }
+    ],
+    "https://github.com/Vasudev-ai/Focusflow/pull/15": [
+      {
+        "ts": "2026-09-23T07:47:11Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/Vasudev-ai/Focusflow/pull/15",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T13:38:06Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/Vasudev-ai/Focusflow/pull/15",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T18:23:56Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/Vasudev-ai/Focusflow/pull/15",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T22:56:44Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/Vasudev-ai/Focusflow/pull/15",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T23:09:31Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/Vasudev-ai/Focusflow/pull/15",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T04:48:57Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/Vasudev-ai/Focusflow/pull/15",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T11:44:30Z",
+        "kind": "followup_stale_nudge",
+        "issue": "https://github.com/Vasudev-ai/Focusflow/pull/15",
+        "ok": true,
+        "comment_url": "https://github.com/Vasudev-ai/Focusflow/pull/15#issuecomment-5813429827",
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "stale_nudge",
+        "has_contributing": true,
+        "url_count": 2
+      },
+      {
+        "ts": "2026-09-24T17:09:53Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/Vasudev-ai/Focusflow/pull/15",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T21:30:22Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/Vasudev-ai/Focusflow/pull/15",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T23:27:34Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/Vasudev-ai/Focusflow/pull/15",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T00:32:52Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/Vasudev-ai/Focusflow/pull/15",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T07:47:16Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/Vasudev-ai/Focusflow/pull/15",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T13:46:12Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/Vasudev-ai/Focusflow/pull/15",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T18:35:49Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/Vasudev-ai/Focusflow/pull/15",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      }
+    ],
+    "https://github.com/bmad-code-org/bmad-loop/pull/819": [
+      {
+        "ts": "2026-09-23T07:47:11Z",
+        "kind": "followup_reengage",
+        "issue": "https://github.com/bmad-code-org/bmad-loop/pull/819",
+        "ok": true,
+        "comment_url": "https://github.com/bmad-code-org/bmad-loop/pull/819#issuecomment-5791083102",
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "reengage",
+        "has_contributing": true,
+        "url_count": 19
+      },
+      {
+        "ts": "2026-09-23T13:38:06Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/bmad-code-org/bmad-loop/pull/819",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T18:23:56Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/bmad-code-org/bmad-loop/pull/819",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T22:56:44Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/bmad-code-org/bmad-loop/pull/819",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T23:09:31Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/bmad-code-org/bmad-loop/pull/819",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T04:48:57Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/bmad-code-org/bmad-loop/pull/819",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T11:44:30Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/bmad-code-org/bmad-loop/pull/819",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T17:09:53Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/bmad-code-org/bmad-loop/pull/819",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T21:30:22Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/bmad-code-org/bmad-loop/pull/819",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T23:27:34Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/bmad-code-org/bmad-loop/pull/819",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T00:32:52Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/bmad-code-org/bmad-loop/pull/819",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T07:47:16Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/bmad-code-org/bmad-loop/pull/819",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T13:46:12Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/bmad-code-org/bmad-loop/pull/819",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T18:35:49Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/bmad-code-org/bmad-loop/pull/819",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      }
+    ],
+    "https://github.com/Kilo-Org/agentic-path/pull/26": [
+      {
+        "ts": "2026-09-23T07:47:11Z",
+        "kind": "followup_stale_nudge",
+        "issue": "https://github.com/Kilo-Org/agentic-path/pull/26",
+        "ok": true,
+        "comment_url": "https://github.com/Kilo-Org/agentic-path/pull/26#issuecomment-5791083503",
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "stale_nudge",
+        "has_contributing": true,
+        "url_count": 5
+      },
+      {
+        "ts": "2026-09-23T13:38:06Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/Kilo-Org/agentic-path/pull/26",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T18:23:56Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/Kilo-Org/agentic-path/pull/26",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T22:56:44Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/Kilo-Org/agentic-path/pull/26",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T23:09:31Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/Kilo-Org/agentic-path/pull/26",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T04:48:57Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/Kilo-Org/agentic-path/pull/26",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T11:44:30Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/Kilo-Org/agentic-path/pull/26",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T17:09:53Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/Kilo-Org/agentic-path/pull/26",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T21:30:22Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/Kilo-Org/agentic-path/pull/26",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T23:27:34Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/Kilo-Org/agentic-path/pull/26",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T00:32:52Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/Kilo-Org/agentic-path/pull/26",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T07:47:16Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/Kilo-Org/agentic-path/pull/26",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T13:46:12Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/Kilo-Org/agentic-path/pull/26",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T18:35:49Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/Kilo-Org/agentic-path/pull/26",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      }
+    ],
+    "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7": [
+      {
+        "ts": "2026-09-23T07:47:11Z",
+        "kind": "followup_reengage",
+        "issue": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
+        "ok": true,
+        "comment_url": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7#issuecomment-5791083859",
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "reengage",
+        "has_contributing": true,
+        "url_count": 2
+      },
+      {
+        "ts": "2026-09-23T13:38:06Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T18:23:56Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T22:56:44Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T23:09:31Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T04:48:57Z",
+        "kind": "followup_reengage",
+        "issue": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
+        "ok": true,
+        "comment_url": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7#issuecomment-5807882491",
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "reengage",
+        "has_contributing": true,
+        "url_count": 2
+      },
+      {
+        "ts": "2026-09-24T11:44:30Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T17:09:53Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T21:30:22Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T23:27:34Z",
+        "kind": "followup_reengage",
+        "issue": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
+        "ok": true,
+        "comment_url": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7#issuecomment-5823956693",
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "reengage",
+        "has_contributing": true,
+        "url_count": 2
+      },
+      {
+        "ts": "2026-09-25T00:32:52Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T07:47:16Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T13:46:12Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T18:35:49Z",
+        "kind": "followup_reengage",
+        "issue": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
+        "ok": true,
+        "comment_url": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7#issuecomment-5837593695",
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "reengage",
+        "has_contributing": true,
+        "url_count": 2
+      }
+    ],
+    "https://github.com/E-Timileyin/Sail-CLI/pull/23": [
+      {
+        "ts": "2026-09-23T07:47:11Z",
+        "kind": "followup_reengage",
+        "issue": "https://github.com/E-Timileyin/Sail-CLI/pull/23",
+        "ok": true,
+        "comment_url": "https://github.com/E-Timileyin/Sail-CLI/pull/23#issuecomment-5791084234",
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "reengage",
+        "has_contributing": true,
+        "url_count": 0
+      },
+      {
+        "ts": "2026-09-23T13:38:06Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/E-Timileyin/Sail-CLI/pull/23",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T18:23:56Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/E-Timileyin/Sail-CLI/pull/23",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T22:56:44Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/E-Timileyin/Sail-CLI/pull/23",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T23:09:31Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/E-Timileyin/Sail-CLI/pull/23",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T04:48:57Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/E-Timileyin/Sail-CLI/pull/23",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T11:44:30Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/E-Timileyin/Sail-CLI/pull/23",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T17:09:53Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/E-Timileyin/Sail-CLI/pull/23",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T21:30:22Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/E-Timileyin/Sail-CLI/pull/23",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T23:27:34Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/E-Timileyin/Sail-CLI/pull/23",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T00:32:52Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/E-Timileyin/Sail-CLI/pull/23",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T07:47:16Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/E-Timileyin/Sail-CLI/pull/23",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T13:46:12Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/E-Timileyin/Sail-CLI/pull/23",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T18:35:49Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/E-Timileyin/Sail-CLI/pull/23",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      }
+    ],
+    "https://github.com/GlassHaven/Haven/pull/657": [
+      {
+        "ts": "2026-09-23T07:47:11Z",
+        "kind": "followup_reengage",
+        "issue": "https://github.com/GlassHaven/Haven/pull/657",
+        "ok": true,
+        "comment_url": "https://github.com/GlassHaven/Haven/pull/657#issuecomment-5791084725",
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "reengage",
+        "has_contributing": false,
+        "url_count": 0
+      },
+      {
+        "ts": "2026-09-23T13:38:06Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/GlassHaven/Haven/pull/657",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T18:23:56Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/GlassHaven/Haven/pull/657",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T22:56:44Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/GlassHaven/Haven/pull/657",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T23:09:31Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/GlassHaven/Haven/pull/657",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T04:48:57Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/GlassHaven/Haven/pull/657",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T11:44:30Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/GlassHaven/Haven/pull/657",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T17:09:53Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/GlassHaven/Haven/pull/657",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T21:30:22Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/GlassHaven/Haven/pull/657",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T23:27:34Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/GlassHaven/Haven/pull/657",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T00:32:52Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/GlassHaven/Haven/pull/657",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T07:47:16Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/GlassHaven/Haven/pull/657",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T13:46:12Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/GlassHaven/Haven/pull/657",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T18:35:49Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/GlassHaven/Haven/pull/657",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      }
+    ],
+    "https://github.com/OrionStarAI/EasyCode/pull/53": [
+      {
+        "ts": "2026-09-23T07:47:11Z",
+        "kind": "followup_stale_nudge",
+        "issue": "https://github.com/OrionStarAI/EasyCode/pull/53",
+        "ok": true,
+        "comment_url": "https://github.com/OrionStarAI/EasyCode/pull/53#issuecomment-5791085589",
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "stale_nudge",
+        "has_contributing": false,
+        "url_count": 0
+      },
+      {
+        "ts": "2026-09-23T13:38:06Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/OrionStarAI/EasyCode/pull/53",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T18:23:56Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/OrionStarAI/EasyCode/pull/53",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T22:56:44Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/OrionStarAI/EasyCode/pull/53",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T23:09:31Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/OrionStarAI/EasyCode/pull/53",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T04:48:57Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/OrionStarAI/EasyCode/pull/53",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T11:44:30Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/OrionStarAI/EasyCode/pull/53",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T17:09:53Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/OrionStarAI/EasyCode/pull/53",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T21:30:22Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/OrionStarAI/EasyCode/pull/53",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T23:27:34Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/OrionStarAI/EasyCode/pull/53",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T00:32:52Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/OrionStarAI/EasyCode/pull/53",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T07:47:16Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/OrionStarAI/EasyCode/pull/53",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T13:46:12Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/OrionStarAI/EasyCode/pull/53",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T18:35:49Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/OrionStarAI/EasyCode/pull/53",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      }
+    ],
+    "https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587": [
+      {
+        "ts": "2026-09-23T18:23:56Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T22:56:44Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-23T23:09:31Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T04:48:57Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T11:44:30Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T17:09:53Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T21:30:22Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T23:27:34Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T00:32:52Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T07:47:16Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T13:46:12Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      }
+    ],
+    "https://github.com/ThinkLikeAFounder/pulsartrack/pull/898": [
+      {
+        "ts": "2026-09-23T23:09:31Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/ThinkLikeAFounder/pulsartrack/pull/898",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T04:48:57Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/ThinkLikeAFounder/pulsartrack/pull/898",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T11:44:30Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/ThinkLikeAFounder/pulsartrack/pull/898",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T17:09:53Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/ThinkLikeAFounder/pulsartrack/pull/898",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T21:30:22Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/ThinkLikeAFounder/pulsartrack/pull/898",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T23:27:34Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/ThinkLikeAFounder/pulsartrack/pull/898",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T00:32:52Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/ThinkLikeAFounder/pulsartrack/pull/898",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T07:47:16Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/ThinkLikeAFounder/pulsartrack/pull/898",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T13:46:12Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/ThinkLikeAFounder/pulsartrack/pull/898",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T18:35:49Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/ThinkLikeAFounder/pulsartrack/pull/898",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      }
+    ],
+    "https://github.com/vavallee/bindery/pull/2770": [
+      {
+        "ts": "2026-09-24T11:44:30Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/vavallee/bindery/pull/2770",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T17:09:53Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/vavallee/bindery/pull/2770",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      }
+    ],
+    "https://github.com/MergeFi/contracts/pull/374": [
+      {
+        "ts": "2026-09-24T17:09:53Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/MergeFi/contracts/pull/374",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T21:30:22Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/MergeFi/contracts/pull/374",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T23:27:34Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/MergeFi/contracts/pull/374",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T00:32:52Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/MergeFi/contracts/pull/374",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T07:47:16Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/MergeFi/contracts/pull/374",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T13:46:12Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/MergeFi/contracts/pull/374",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T18:35:49Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/MergeFi/contracts/pull/374",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      }
+    ],
+    "https://github.com/EF-CHAIN/SendAm/pull/492": [
+      {
+        "ts": "2026-09-24T21:30:22Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/EF-CHAIN/SendAm/pull/492",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-24T23:27:34Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/EF-CHAIN/SendAm/pull/492",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T00:32:52Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/EF-CHAIN/SendAm/pull/492",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T07:47:16Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/EF-CHAIN/SendAm/pull/492",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T13:46:12Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/EF-CHAIN/SendAm/pull/492",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T18:35:49Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/EF-CHAIN/SendAm/pull/492",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      }
+    ],
+    "https://github.com/lonestill/onyx-launcher/pull/45": [
+      {
+        "ts": "2026-09-24T23:27:34Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/lonestill/onyx-launcher/pull/45",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T00:32:52Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/lonestill/onyx-launcher/pull/45",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T07:47:16Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/lonestill/onyx-launcher/pull/45",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T13:46:12Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/lonestill/onyx-launcher/pull/45",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T18:35:49Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/lonestill/onyx-launcher/pull/45",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      }
+    ],
+    "https://github.com/LibreUML/LibreUML/pull/130": [
+      {
+        "ts": "2026-09-25T07:47:16Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/LibreUML/LibreUML/pull/130",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T13:46:12Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/LibreUML/LibreUML/pull/130",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
+      },
+      {
+        "ts": "2026-09-25T18:35:49Z",
+        "kind": "followup_skip_cooldown",
+        "issue": "https://github.com/LibreUML/LibreUML/pull/130",
+        "ok": true,
+        "lane": "help-wanted-followup",
+        "foreign": true,
+        "action": "skip"
       }
     ]
   },
@@ -728,6 +3246,49 @@
     "status_raw": "https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/ops/generated/help-wanted-status.json",
     "tribute_doc": "docs/ops/HELP-WANTED-TRIBUTE.md"
   },
+  "control_surface": {
+    "schema_version": "help-wanted.control-surface.v2",
+    "source_sha": "1817a95c41ba9df0455ce3f7680a8a70eafef135",
+    "source_ref": "master",
+    "history_complete": true,
+    "history_count": 1,
+    "lane_paths": [
+      "apps/help-wanted-dashboard/",
+      "docs/ops/HELP-WANTED-*",
+      ".agents/skills/help-wanted-lane/",
+      ".github/workflows/help-wanted-*",
+      "scripts/ci/help_wanted_*"
+    ],
+    "authority": "GitHub commits, PRs, issues, reviews, checks, Actions and evidence JSONL",
+    "projection_only": true,
+    "deployment": [
+      {
+        "name": "GitHub Pages user site",
+        "url": "https://timerloggedout-spec.github.io/help-wanted/",
+        "role": "canonical public static ops UI"
+      },
+      {
+        "name": "Vercel",
+        "role": "interactive deployment lane",
+        "verification": "provider deployment evidence required"
+      },
+      {
+        "name": "Project Pages",
+        "url": "https://timerloggedout-spec.github.io/termux-monorepo/",
+        "role": "project hub, not dashboard twin"
+      }
+    ]
+  },
+  "evolution": [
+    {
+      "sha": "1817a95c41ba9df0455ce3f7680a8a70eafef135",
+      "short_sha": "1817a95c41ba",
+      "date": "2026-09-25T15:09:04-07:00",
+      "author": "Founders' are 'found' to implement.",
+      "subject": "feat(ops): native orchestration treatment and receipt contracts (#839)",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/1817a95c41ba9df0455ce3f7680a8a70eafef135"
+    }
+  ],
   "pipeline": [
     "scout",
     "execute",

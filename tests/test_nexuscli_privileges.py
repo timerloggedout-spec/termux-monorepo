@@ -67,10 +67,46 @@ def test_nexuscli_privileges_symlink_safety(tmp_path, monkeypatch):
     symlink_file.symlink_to(target_file)
 
     monkeypatch.setattr(nc, "CONFIG_FILE", symlink_file)
-    nc.save_config({"token": "some_token"})
+    with pytest.raises(ValueError, match="Config file target cannot be a symlink"):
+        nc.save_config({"token": "some_token"})
 
     if os.name != "nt":
         assert (target_file.stat().st_mode & 0o777) == 0o644
+
+
+def test_nexuscli_cmd_export_symlink_safety(tmp_path, monkeypatch):
+    import importlib
+    import sys
+
+    # Import nexuscli.cli.main cleanly
+    nexus_cli_main = importlib.import_module("nexuscli.cli.main")
+
+    target_file = tmp_path / "export_target.txt"
+    target_file.write_text("sensitive")
+    symlink_export = tmp_path / "export_symlink.md"
+    symlink_export.symlink_to(target_file)
+
+    monkeypatch.setattr(nexus_cli_main, "get_token", lambda: "fake_token")
+    monkeypatch.setattr(nexus_cli_main, "export_markdown", lambda token, session_id: "# History")
+
+    class Args:
+        session_id = "sess_123"
+        last = False
+        format = "markdown"
+        output = str(symlink_export)
+
+    with pytest.raises(ValueError, match="Symlink targets are not permitted for exports"):
+        nexus_cli_main.cmd_export(Args())
+
+    # Normal export test to verify file creation and 0o600 permissions
+    valid_output = tmp_path / "valid_export.md"
+    Args.output = str(valid_output)
+    nexus_cli_main.cmd_export(Args())
+
+    assert valid_output.exists()
+    assert valid_output.read_text() == "# History"
+    if os.name != "nt":
+        assert (valid_output.stat().st_mode & 0o777) == 0o600
 
 
 def test_nexuscli_privileges_path_traversal_prevention(tmp_path, monkeypatch):

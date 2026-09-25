@@ -55,3 +55,13 @@ adaptive-wait -> adaptive-feedback-cycle -> evidence-led-monorepo-ops -> review-
 Promotion remains downstream of current-SHA task-outcome verification and the repository's dual gates.
 
 **Discovery note:** `SKILLS-INVENTORY.md` remains the repository navigator; this matrix is the focused discovery/audit companion for wait/evidence operations.
+
+## Native orchestration treatment layer
+
+| Cluster | Skill | Path | Role |
+|---|---|---|---|
+| Orchestration | orchestration-treatment-registry | `.agents/skills/orchestration-treatment-registry/SKILL.md` | normalize orchestration treatments and lifecycle receipts without parallel state machines |
+| Orchestration contract | treatment schema | `docs/ops/ORCHESTRATION-TREATMENT.schema.json` | source/strategy/wait/retry/evidence/validation contract |
+| Orchestration contract | receipt schema | `docs/ops/ORCHESTRATION-RECEIPT.schema.json` | shared execution-state/outcome/promotion projection |
+
+External loop/framework material remains candidate pattern evidence until explicit schema mapping, bounded implementation, deterministic validation, evidence capture, and promotion.

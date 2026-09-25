@@ -161,6 +161,7 @@ ENGINES: dict[str, dict[str, Any]] = {
         },
         "dense_feedback": ["model", "confidence", "usage"],
         "cost_note": "metered; never default under free-first policy",
+        "cost_penalty": 3,
     },
     "canny_pattern": {
         "id": "canny_pattern",
@@ -193,9 +194,11 @@ for _eng in ENGINES.values():
     _q = _eng.get("quality") or {}
     _host = _eng.get("host")
     _eng["_workflows_str"] = " ".join(_eng.get("workflows") or []).lower()
+    _eng["_family"] = str(_eng.get("family") or "").lower()
     _eng["_multi_lang_str"] = str(_q.get("multi_lang", "")).lower()
     _eng["_cardinality_degrades"] = "degrades" in str(_q.get("cardinality", ""))
     _eng["_self_host"] = bool(_q.get("self_host", _host == "self"))
+    _eng["_cost_penalty"] = int(_eng.get("cost_penalty") or 0)
     _base = 0
     if _eng.get("phase") == "COMPARATIVE":
         _base += 2
@@ -223,16 +226,20 @@ def select(
     lang: str = "en",
     max_options: int | None = None,
     domain: str | None = None,
+    family: str | None = None,
     allow_hosted: bool = False,
 ) -> list[dict[str, Any]]:
     """Criteria-driven comparative selection. Returns ranked candidates with reasons."""
     ranked: list[dict[str, Any]] = []
     domain_lower = domain.lower() if domain else None
+    family_lower = family.lower() if family else None
     for eng in ENGINES.values():
         host = eng.get("host")
         if free_only and host == "hosted" and not allow_hosted:
             continue
         if self_host_required and not eng["_self_host"]:
+            continue
+        if family_lower and eng["_family"] != family_lower:
             continue
         reasons: list[str] = []
         if lang == "multi" and "multi" not in eng["_multi_lang_str"]:
@@ -243,6 +250,9 @@ def select(
         if domain_lower and domain_lower not in eng["_workflows_str"] and domain not in eng["id"]:
             reasons.append(f"domain_soft_miss:{domain}")
         score = eng["_base_score"]
+        if host == "hosted":
+            score -= eng["_cost_penalty"]
+            reasons.append("hosted_cost_penalty")
         if "high_cardinality_risk" in reasons:
             score -= 2
         if "multi_lang_weak" in reasons and lang == "multi":
@@ -258,6 +268,28 @@ def select(
         )
     ranked.sort(key=lambda x: (-x["score"], x["engine"]))
     return ranked
+
+
+def recommend_pair(
+    *,
+    domain: str | None = None,
+    allow_hosted: bool = False,
+) -> dict[str, Any]:
+    """Pair a System-1 engine with the Canny completion gate (comparative)."""
+    system1 = select(
+        domain=domain,
+        allow_hosted=allow_hosted,
+        free_only=not allow_hosted,
+    )
+    system1 = [r for r in system1 if r["engine"] != "canny_pattern"]
+    gate = select(domain="done", self_host_required=True, family="policy")
+    return {
+        "policy": "comparative_pair_no_primary",
+        "system1": system1[:3],
+        "completion_gate": gate[:1],
+        "invalid_agent_states": ["HOLD", "WAIT", "OBSERVE"],
+        "valid_gate_decisions": ["ALLOW", "BLOCK", "NEED_EVIDENCE"],
+    }
 
 
 def matrix_summary() -> dict[str, Any]:
@@ -277,6 +309,7 @@ def matrix_summary() -> dict[str, Any]:
             "cost_per_decision",
             "domain_specialization",
             "dense_feedback",
+            "family",
         ],
         "recon": {
             "awesome_jev_projects": "https://github.com/logicrw/awesome-jev-projects",
@@ -286,6 +319,8 @@ def matrix_summary() -> dict[str, Any]:
             "as_of": "2026-09-23",
         },
         "engines": list(ENGINES.keys()),
+        "families": sorted({e.get("family") for e in ENGINES.values() if e.get("family")}),
+        "invalid_agent_states": ["HOLD", "WAIT", "OBSERVE"],
     }
 
 
@@ -296,16 +331,20 @@ def main() -> int:
     parser.add_argument("--json", action="store_true")
     parser.add_argument("--matrix", action="store_true")
     parser.add_argument("--select", action="store_true")
+    parser.add_argument("--recommend", action="store_true")
     parser.add_argument("--free-only", action="store_true", default=True)
     parser.add_argument("--allow-hosted", action="store_true")
     parser.add_argument("--self-host", action="store_true")
     parser.add_argument("--lang", default="en")
     parser.add_argument("--domain", default=None)
+    parser.add_argument("--family", default=None)
     parser.add_argument("--max-options", type=int, default=None)
     args = parser.parse_args()
 
     if args.matrix:
         data = matrix_summary()
+    elif args.recommend:
+        data = recommend_pair(domain=args.domain, allow_hosted=args.allow_hosted)
     elif args.select:
         data = select(
             free_only=not args.allow_hosted,
@@ -313,6 +352,7 @@ def main() -> int:
             lang=args.lang,
             max_options=args.max_options,
             domain=args.domain,
+            family=args.family,
             allow_hosted=args.allow_hosted,
         )
     elif args.list:

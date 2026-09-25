@@ -28,6 +28,9 @@ def test_matrix_policy_comparative():
     assert "kev-4b" in m["engines"]
     assert "canny_pattern" in m["engines"]
     assert "jev" in m["engines"]
+    assert "HOLD" in m["invalid_agent_states"]
+    assert "laya" in m["families"]
+    assert "jev" in m["families"]
 
 
 def test_select_free_only_excludes_hosted():
@@ -37,6 +40,32 @@ def test_select_free_only_excludes_hosted():
     assert "jev" not in ids
     assert "laya" in ids
     assert "canny_pattern" in ids
+
+
+def test_select_family_kev_only():
+    de = _load("decision_engines", ROOT / "scripts" / "decision_engines.py")
+    ranked = de.select(family="kev")
+    ids = {r["engine"] for r in ranked}
+    assert ids == {"kev-0.8b", "kev-4b", "kev-9b"}
+
+
+def test_select_hosted_applies_cost_penalty():
+    de = _load("decision_engines", ROOT / "scripts" / "decision_engines.py")
+    ranked = de.select(free_only=False, allow_hosted=True)
+    jev = next(r for r in ranked if r["engine"] == "jev")
+    assert "hosted_cost_penalty" in jev["reasons"]
+    assert jev["score"] <= 0
+
+
+def test_recommend_pair_keeps_canny_gate():
+    de = _load("decision_engines", ROOT / "scripts" / "decision_engines.py")
+    pair = de.recommend_pair(domain="route")
+    assert pair["policy"] == "comparative_pair_no_primary"
+    assert pair["completion_gate"][0]["engine"] == "canny_pattern"
+    assert "HOLD" in pair["invalid_agent_states"]
+    assert "NEED_EVIDENCE" in pair["valid_gate_decisions"]
+    sys1_ids = {r["engine"] for r in pair["system1"]}
+    assert "canny_pattern" not in sys1_ids
 
 
 def test_select_done_domain_prefers_canny():
@@ -63,3 +92,12 @@ def test_canny_allow_when_exit_zero():
     assert result["hard_block"] is False
     assert result["decision"] == "ALLOW"
     assert result["noul_advice"]["advice"] == "relax_allowed"
+
+
+def test_canny_need_evidence_not_hold():
+    canny = _load("canny_completion_gate", ROOT / "scripts" / "canny_completion_gate.py")
+    facts: list = []
+    result = canny.gate("I am done", facts=facts, state={"evidence": facts})
+    assert result["decision"] == "NEED_EVIDENCE"
+    assert result["decision"] not in canny.INVALID_AGENT_STATES
+    assert result["noul_advice"]["advice"] == "need_evidence"

@@ -44,10 +44,3 @@ In GitHub API ingestion workflows (`historical_event_correlation.py`), the jobs 
 
 **Action:**
 Always check for embedded child arrays in GitHub API parent endpoints before executing separate per-item HTTP GET calls.
-
-## 2026-09-25 - Module-Load Precomputation and Single-Pass Early Exits in Decision Engines
-**Learning:**
-In system-1 decision engine registries and completion gates (`scripts/decision_engines.py` & `scripts/canny_completion_gate.py`), executing repeated string lowerings, `.join()` calls, `str()` conversions, and multi-pass `any()` checks inside high-frequency selection loops creates substantial overhead. Pre-calculating static engine metadata (`_workflows_str`, `_multi_lang_str`, `_base_score`) at module load time and evaluating evidence in a single pass with early exit on adverse facts improves engine selection performance by ~33%.
-
-**Action:**
-Precompute static string/score metadata on catalog dictionaries at module initialization and replace multi-pass generator expressions with single-pass early-exit loops in decision gates.

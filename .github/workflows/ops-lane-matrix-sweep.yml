@@ -1,23 +1,28 @@
 name: Lane matrix recursive sweep
 
-# Inventory writer for docs/ops/generated/lane-matrix-status.{json,md}.
-# Observer only. Does NOT merge, close, rebase, force-push, or pulse #175
-# unless an operator explicitly dispatches comment_175=true.
+# Recurring inventory that age-buckets open PRs into PROMOTE/WAIT/HOLD/EXTRACT/OBSERVE
+# and writes docs/ops/generated/lane-matrix-status.{json,md}.
+# Optional debounced pulse on issue #175.
+#
+# Does NOT merge, close, rebase, or force-push.
+# Complements agent-continuous-ops (Jules), merge-promotion-queue (candidates),
+# and agent-ecc-tools-ops matrix-cycle (ECC-only).
 #
 # Agent-Identity: Grok (Administrator)
 
 on:
   schedule:
+    # Every 6 hours — recursive progress surface
     - cron: '11 */6 * * *'
   workflow_dispatch:
     inputs:
       comment_175:
-        description: 'Post a pulse on #175 (off by default — board is the artifact)'
+        description: 'Post debounced pulse on #175'
         required: false
-        default: false
+        default: true
         type: boolean
       force_comment:
-        description: 'Ignore #175 debounce (only with comment_175)'
+        description: 'Ignore #175 debounce'
         required: false
         default: false
         type: boolean
@@ -77,14 +82,6 @@ jobs:
           }
           row = classify_pr(sample, "deadbeef", now)
           assert row["lane"] == "EXTRACT", row
-          session = dict(sample)
-          session["number"] = 813
-          session["title"] = "ops(session): 2026-09-24 12:06 PDT LANE-MATRIX — tip"
-          session["mergeable_state"] = "unstable"
-          session["changed_files"] = 4
-          session["base"] = {"ref": "master", "sha": "abc"}
-          srow = classify_pr(session, "deadbeef", now)
-          assert srow["lane"] == "SUPERSEDE", srow
           print("self-check ok")
           PY
 
@@ -96,11 +93,16 @@ jobs:
         run: |
           set -euo pipefail
           ARGS=(--json-out docs/ops/generated/lane-matrix-status.json --md-out docs/ops/generated/lane-matrix-status.md)
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.comment_175 }}" = "true" ]; then
-            ARGS+=(--comment-175)
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            if [ "${{ github.event.inputs.comment_175 }}" = "true" ]; then
+              ARGS+=(--comment-175)
+            fi
             if [ "${{ github.event.inputs.force_comment }}" = "true" ]; then
               ARGS+=(--force-comment)
             fi
+          else
+            # schedule always attempts debounced #175 pulse
+            ARGS+=(--comment-175)
           fi
           python3 scripts/ops/lane_matrix_sweep.py "${ARGS[@]}"
           {

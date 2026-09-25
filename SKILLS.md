@@ -5,13 +5,11 @@
 | Need | Path |
 |------|------|
 | **Full inventory + role load matrix** | [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md) |
-| **Primary agent entry (BIUDL)** | [`CLAUDE.md`](CLAUDE.md) |
+| Primary agent entry | [`CLAUDE.md`](CLAUDE.md) |
 | Adaptive wait / feedback | `.agents/skills/adaptive-feedback-cycle/SKILL.md` |
 | Admin ops | `.agents/skills/evidence-led-monorepo-ops/SKILL.md` |
 | External contribute (help-wanted) | `.agents/skills/help-wanted-lane/SKILL.md` |
 | Production WAIT → VALIDATE | `.github/skills/production-reconciliation/SKILL.md` |
-
-Root `AGENTS.md` is **deprecated** (Linguist / Jules redirect only). Load `CLAUDE.md` first.
 
 ## Layout (both trees are first-class)
 
@@ -35,7 +33,4 @@ Every skill directory must contain a `SKILL.md`. Inventory lists **all** of them
 
 Do not keep skill policy only in local `.grok/skills/` mirrors — **master is SSOT**.
 
-**BIUDL = Broad → Integrate → Validate → Develop → Learn.**  
-Fully Continuous Automated Development Evaluation Environment.  
-AVOID HITL YOLO MODE YEET AUTOAPPROVE.  
-Agent-Identity: Grok (Administrator)
+BIUDL · Agent-Identity: Grok (Administrator)

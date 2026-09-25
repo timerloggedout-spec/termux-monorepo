@@ -79,17 +79,3 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 - Credential inventory: issue **#184** (notes only; no secret values).
 
 Agent-Identity: Grok (Administrator)
-
-
-## Adaptive-wait + evidence-led cluster
-
-- adaptive-wait — evidence-driven asynchronous cadence, stall detection, disjoint work, terminal states.
-- evidence-led-monorepo-ops — current-SHA reconstruction, evidence hierarchy, provenance, mutation/promotion discipline.
-- context-relationship-graph — exact-root metadata-only relationship evidence; verified/candidate separation.
-- review-loop — review ingestion and attribution.
-- production-reconciliation — ref/base reconciliation.
-- action-effectiveness-ledger — action-to-outcome measurement.
-- evidence-envelope + evidence-provenance — normalized observation identity.
-- workflow-orchestration — modular Actions and retry/stale-event discipline.
-
-See `docs/ops/SKILL-DISCOVERY-MATRIX.md` for focused discovery and session-scoped .skill provenance.

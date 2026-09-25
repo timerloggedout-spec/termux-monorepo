@@ -1,10 +1,6 @@
 {
   "version": 2,
   "cleanUrls": true,
-  "rewrites": [
-    { "source": "/matrix", "destination": "/matrix.html" },
-    { "source": "/lane-matrix", "destination": "/matrix.html" }
-  ],
   "headers": [
     {
       "source": "/data/(.*)",

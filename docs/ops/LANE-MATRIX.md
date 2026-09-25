@@ -1,60 +1,66 @@
-# LANE-MATRIX (policy SSOT)
+# LANE-MATRIX (living SSOT)
 
-This file is **durable policy**, not a live dashboard.
+**Session:** 2026-09-21 10:09 PDT  
+**Agent-Identity:** Grok (Administrator)  
+**Live master:** `2e4f59aa` — #707 Sentinel nexuscli squash onto `2d464c1b`  
+**Priority hub:** Issue #175
 
-**Open the live board:** [lane-matrix-status.md](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/generated/lane-matrix-status.md) · [JSON](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/generated/lane-matrix-status.json) · [sweep workflow](https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/ops-lane-matrix-sweep.yml)
+Rewrite this file every admin session. Copilot is optional peer, not a promote gate. Size ≠ quality. Promote when dual-gate is green **and** the diff is an extract, not a mega. Vercel rate-limit is non-gate. Age alone does not promote.
 
-Live inventory on disk: [`docs/ops/generated/lane-matrix-status.md`](generated/lane-matrix-status.md)  
-Writer: `.github/workflows/ops-lane-matrix-sweep.yml` + `scripts/ops/lane_matrix_sweep.py`  
-Priority issue: #175 is a **hub**, not a comment stream.  
-Credentials: #184 names-only.
+## Landed this window (evidence)
 
-Do **not** open `ops/session-lane-matrix-*` PRs to restamp this file.  
-Do **not** post a recon comment on #175 every session.  
-Git history is a ledger. The generated artifact is the board. **Open that artifact.** Do not keep a pulse PR open to “hold the matrix open.”
+| SHA | What |
+|-----|------|
+| `2e4f59aa` | #707 Sentinel: nexuscli symlink-safe export/config |
+| `2d464c1b` | help-wanted live status 15:20Z |
+| `044716f0` | help-wanted follow-up evidence 15:20Z |
+| `98db978b` | DOCS-BRANCH-INDEX refresh |
 
-## What belongs where
+#705/#706/#709 are stale session rewrites vs this tip — SUPERSEDE once this dual-gate is green.
 
-| Artifact | Role | How it changes |
-|----------|------|----------------|
-| This file | Dual-gate, mega-merge, Vercel, dirty-block rules | Rare policy PR |
-| `docs/ops/generated/lane-matrix-status.*` | Open-PR inventory + lane counts | Sweep commits to master (observer) |
-| Issue #175 | Durable operator intent | Edit the issue body when intent changes; no pulse comments |
-| Product PRs | Code / extracts / rebases | Dual-gate then promote |
-| Session chat | Human recon | Stays in chat; not a merge candidate |
+## Dual-gate contract
 
-## Dual-gate contract (promote authority)
+1. `hygiene + portability gate` SUCCESS
+2. `agentic termux smoke` SUCCESS
+3. Vercel rate-limits are **non-gate**
+4. Copilot / CodeRabbit / Qodo / Devin = advisory
+5. GitLab / Mintlify = non-gate
+6. Age alone does not promote; dual-gate + rebase onto live master does
+7. Size ≠ quality: dual-gate green + 130 files still EXTRACT
 
-1. `hygiene + portability gate` / `repo gate` SUCCESS on **this** SHA
-2. `agentic termux smoke` / `termux smoke` SUCCESS on **this** SHA
-3. Vercel rate-limits are **non-gate** (#772)
-4. Copilot / CodeRabbit / Qodo / Devin = advisory only
-5. Age, file count, and comment volume are context only
-6. Mega-merge is allowed when dual-gate SUCCESS **and** mergeable on the candidate SHA
-7. CodeRabbit ~100-file limit is advisory review capacity, not a promote ban
-8. `mergeable_state=dirty` or a merge conflict **blocks** promote until rebase/re-extract
-9. Dual-gate SUCCESS on an older head does not authorize a newer SHA
-10. Combined commit status is not dual-gate; bind the named jobs
+## Tip-first active lanes
 
-## Session recon is not a PR
+| PR | Lane | Why |
+|----|------|-----|
+| #682 | EXTRACT / WAIT | ML keep-alive DAG (#175). 130 files. Dual-gate SUCCESS on prior head. Prefer slimmer `ml/pipelines/` child. |
+| #680 / #708 | OBSERVE | Bolt live_catalog_feed family (Jules). Overlapping catalog work — do not double-merge. |
+| #702 | OBSERVE | Gravitee observatory seed |
+| #684 | HOLD / REBASE | unify Actions cadence; dirty vs tip |
+| #685 | OBSERVE | arrhythmic-zero-token-search |
+| #695 | OBSERVE | AlphaEvolve + Dream-RSI Paper2Agent |
+| #543 | OBSERVE | skill definition quality lane |
+| #630 | EXTRACT | Jules dashboard rich UI — minesweeper |
+| #432/#549/#601 | EXTRACT | ML wholesale family — keep-alive is #682 tree |
+| #705/#706/#709 | SUPERSEDE | session SSOT rewrites on older tips |
 
-A timestamped rewrite of who is dirty / superseded is stale before CI finishes.
+## Ancient / wrong-base HOLD
 
-Agents must:
+#47 OBSERVE/SUPERSEDED. #48 HOLD (base master-staging). #69 HOLD (feature base). #73 HOLD. #81 OBSERVE. #92 EXTRACT security slice. Do not close-as-superseded until extract lands.
 
-- **Read** generated status + live GitHub API for current SHA
-- **Write** product or durable policy only
-- **Close** leftover `ops(session): … LANE-MATRIX` PRs as not-planned / superseded
-- **Never** treat HOLD / OBSERVE / WAIT as idle parking when product work exists
+## Issue → PR map
 
-Sweep classifies session-record titles as **SUPERSEDE**, not dual-gate WAIT.
+| Issue | Role | Linked |
+|-------|------|--------|
+| **#175** | OPERATOR matrix + dual-gate | #432 #549 #601 #682 (ML); #630 minesweeper; #707 landed |
+| #184 | Credential inventory (notes only) | secrets hygiene |
+| #117 | Agent2Agent / MCP Agent Mail | #143 |
+| #88/#91/#94 | routing | #48 family |
+| #50 | termux-smoke / master-staging gate | dual-gate ancestry |
+| #21 | oldest production backlog | pre-matrix |
 
-## Known durable lanes (update only when the fact is durable)
+## Next cycle
 
-- #48 remainder EXTRACT; core already on master via #805. Dirty vs `master-staging` is a hard block.
-- #809 / #806 need rebase onto live `master` before any promote attempt.
-- #69 superseded by #784. #810 / #812 are historical pulses.
-- #772 documents Vercel mergeable_state noise.
-- #814 landed the board-vs-ledger policy.
-
-Agent-Identity: Grok (Administrator)
+1. Leave #682 EXTRACT until sliced.
+2. Pulse #175 (done 10:09 PDT, comment 5764466607).
+3. Wait dual-gate on this session PR before promote.
+4. Stay busy on SSOT / skill upgrades while CI waits. No HITL YOLO merge.

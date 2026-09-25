@@ -1,27 +1,9 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-09-24T16:40:00Z"
+updated_at: "2026-09-18T21:55:00Z"
 updated_by: grok-administrator
 
 proposals:
-  - id: temporal-langsmith-adapter
-    title: "Temporal self-host + LangSmith Trajectories adapter (P1 observational)"
-    author: grok
-    status: executing
-    priority: P1
-    path: active/temporal-langsmith-adapter/
-    reviewers:
-      - id: grok
-        role: author+executor
-        status: executing
-      - id: timerloggedout-spec
-        role: operator-authorizer
-        status: requested
-    related_prs: []
-    related_branches:
-      - feat/temporal-langsmith-adapter
-    gates_required: [repo-gate, termux-smoke]
-
   - id: approxination-integration
     title: "Approxination skill search/create/contribute + A/B/C/D evaluation cohort"
     author: grok
@@ -60,49 +42,6 @@ proposals:
     related_repos:
       - https://github.com/timerloggedout-spec/bifrost_fork
       - https://github.com/timerloggedout-spec/bifrost-benchmarking_fork
-    gates_required: [repo-gate, termux-smoke]
-
-  - id: auditengine-adapt
-    title: "RinDig AuditEngine (Ethics Engine) adapt pass"
-    author: timerloggedout-spec
-    status: draft
-    priority: P2
-    path: active/auditengine-adapt/
-    reviewers:
-      - id: timerloggedout-spec
-        role: operator-authorizer
-        status: accepted
-    related_prs: []
-    related_branches: []
-    gates_required: [repo-gate, termux-smoke]
-
-  - id: cost-of-remembering-integration
-    title: "RinDig cost-of-remembering_fork ICM evidence lane"
-    author: timerloggedout-spec
-    status: executing
-    priority: P1
-    path: active/cost-of-remembering-integration/
-    reviewers:
-      - id: timerloggedout-spec
-        role: operator-authorizer
-        status: accepted
-    related_prs: []
-    related_branches:
-      - feat/rindig-cost-of-remembering-icm
-    gates_required: [repo-gate, termux-smoke]
-
-  - id: mcp-hub-risk-split
-    title: "mcp-hub / hub_mcp risk split"
-    author: timerloggedout-spec
-    status: executing
-    priority: P1
-    path: active/mcp-hub-risk-split/
-    reviewers:
-      - id: timerloggedout-spec
-        role: operator-authorizer
-        status: accepted
-    related_prs: []
-    related_branches: []
     gates_required: [repo-gate, termux-smoke]
 
   - id: context-relationship-graph
@@ -396,16 +335,33 @@ proposals:
     related_branches: [docs/proposals/agentic-scoped-access-and-tier4-review]
     gates_required: []
 
-  - id: rindig-eduba-consolidation
-    title: "RinDig ICM + EDUBA repository consolidation"
+  - id: cost-of-remembering-integration
+    title: "RinDig cost-of-remembering_fork ICM evidence lane"
     author: timerloggedout-spec
     status: executing
-    priority: P0
-    path: active/rindig-eduba-consolidation/
-    reviewers:
-      - id: timerloggedout-spec
-        role: operator-authorizer
-        status: accepted
+    priority: P1
+    path: active/cost-of-remembering-integration/
+    related_prs: [485]
+    related_branches:
+      - feat/rindig-cost-of-remembering-icm
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: mcp-hub-risk-split
+    title: "MCP hub risk split"
+    author: timerloggedout-spec
+    status: executing
+    priority: P2
+    path: active/mcp-hub-risk-split/
     related_prs: []
-    related_branches: [feat/rindig-eduba-consolidation]
+    related_branches: []
+    gates_required: []
+
+  - id: auditengine-adapt
+    title: "RinDig AuditEngine (Ethics Engine) adapt pass"
+    author: timerloggedout-spec
+    status: draft
+    priority: P2
+    path: active/auditengine-adapt/
+    related_prs: []
+    related_branches: []
     gates_required: [repo-gate, termux-smoke]

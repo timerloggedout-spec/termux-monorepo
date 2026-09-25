@@ -24,9 +24,7 @@ def mock_predict(state: dict[str, Any], questions: dict[str, Any]) -> dict[str, 
         if qtype == "choice":
             criteria = list(((q or {}).get("criteria") or {}).keys()) or ["unknown"]
             pick = criteria[0]
-            denom = max(len(criteria) - 1, 1)
-            other_val = 0.3 / denom
-            dist = {c: (0.7 if c == pick else other_val) for c in criteria}
+            dist = {c: (0.7 if c == pick else 0.3 / max(len(criteria) - 1, 1)) for c in criteria}
             answers[key] = {
                 "choice": pick,
                 "distribution": dist,

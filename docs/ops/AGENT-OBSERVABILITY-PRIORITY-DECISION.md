@@ -13,8 +13,6 @@ The observability stack is reorganized by dependency rather than by product cate
 
 **P1 — parallel evaluation and reproduction surfaces**
 
-- Temporal (self-host FOSS first; optional Cloud Free Tier): durable Workflow/Activity substrate for long-running agents. Capability-gated; not a dual-gate dependency. Docker Compose under `mcp-docker/temporal/`; local `temporal server start-dev`.
-- LangSmith Trajectories: readable flat chronological path over multi-turn sessions (thread projection). Online evals, annotation queues, dataset/SFT export. Observational adapter only — never canonical corpus. Official Temporal Python `LangSmithPlugin` bridges Worker boundaries.
 - Langfuse: optional experiment/evaluation adapter over canonical JSONL/OTEL evidence.
 - Phoenix: parallel open-source experiment/evaluation adapter, with Docker as one possible reproducible lab substrate.
 - Lizard: fast multi-language CCN/NLOC/token/parameter feature provider.
@@ -57,7 +55,7 @@ Join execution events to GitHub run attempts, SHAs, PRs, Action→Effect events,
 
 ### Phase D — parallelize/reproduce
 
-Run equivalent telemetry through Langfuse, Phoenix, and (optional) LangSmith Trajectories adapters. Temporal self-host may host durable multi-turn execution for those cohorts. Use Docker/Codespaces for distinct reproduction/experiment purposes. Compare completeness, decision quality, cost, privacy surface, and variance.
+Run equivalent telemetry through Langfuse and Phoenix adapters, and use Docker/Codespaces for distinct reproduction/experiment purposes. Compare completeness, decision quality, cost, privacy surface, and variance.
 
 ### Phase E — compete
 

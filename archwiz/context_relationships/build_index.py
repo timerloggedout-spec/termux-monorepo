@@ -21,7 +21,6 @@ try:
     )
     from .seed_merger import merge_seeds
     from .source_collector import collect_source_seed
-    from .temporal import TemporalError, build_lineage, build_snapshot, compare_snapshots, write_snapshot
 except ImportError:  # Supports direct script use.
     from compiler import CompilationError, compile_seed, write_artifacts
     from github_collector import (
@@ -32,7 +31,6 @@ except ImportError:  # Supports direct script use.
     )
     from seed_merger import merge_seeds
     from source_collector import collect_source_seed
-    from temporal import TemporalError, build_lineage, build_snapshot, compare_snapshots, write_snapshot
 
 BUILDER_ID = "archwiz.context_relationships.build_index@1.0"
 
@@ -78,7 +76,10 @@ def load_canonical_history(output: Path, owner: str, repo: str, ref: str) -> dic
         raise CompilationError("canonical manifest must be an object")
     if manifest.get("schema_version") != "1.0":
         raise CompilationError("canonical history schema version is not supported")
-    if manifest.get("repository") != f"{owner}/{repo}" or manifest.get("default_branch") != ref:
+    repository_matches = manifest.get("repository") == f"{owner}/{repo}"
+    branch_matches = manifest.get("default_branch") == ref
+    legacy_master_migration = ref == "master" and manifest.get("default_branch") == "master-staging"
+    if not repository_matches or not (branch_matches or legacy_master_migration):
         raise CompilationError("canonical history belongs to a different repository or ref")
     canonical_nodes = read_jsonl(nodes_path)
     canonical_edges = read_jsonl(edges_path)
@@ -176,36 +177,6 @@ def build_index(
     merged_seed, merge_report = merge_seeds(*seeds)
     merge_report["retained_history"] = historical_seed is not None
     nodes, edges, matrix, manifest = compile_seed(merged_seed, scope_registry, schema)
-    source_sha = os.environ.get("GITHUB_SHA", f"local:{ref}")
-    observed_at = str(github_report.get("collected_at") or manifest.get("generated_at") or "")
-    next_start_page = history_window.get("next_start_page")
-    coverage = "COMPLETE" if next_start_page is None else "PARTIAL_CONTINUATION_REQUIRED"
-    previous_snapshot = None
-    previous_snapshot_id = None
-    temporal_current_path = output / "temporal-current.json"
-    if temporal_current_path.exists():
-        try:
-            previous_snapshot = json.loads(temporal_current_path.read_text(encoding="utf-8"))
-            previous_snapshot_id = previous_snapshot.get("snapshot_id")
-        except (OSError, json.JSONDecodeError):
-            previous_snapshot = None
-            previous_snapshot_id = None
-    previous_nodes = read_jsonl(output / "nodes.jsonl") if (output / "nodes.jsonl").exists() else []
-    previous_edges = read_jsonl(output / "edges.jsonl") if (output / "edges.jsonl").exists() else []
-    delta = compare_snapshots(previous_nodes, previous_edges, nodes, edges) if previous_snapshot else {
-        "schema": "context-relationship-temporal/v1",
-        "counts": {"nodes_added": len(nodes), "nodes_removed": 0, "nodes_changed": 0,
-                   "edges_added": len(edges), "edges_removed": 0, "edges_changed": 0, "edges_reclassified": 0},
-    }
-    try:
-        temporal_snapshot = build_snapshot(
-            repository=f"{owner}/{repo}", source_ref=ref, source_sha=source_sha,
-            observed_at=observed_at, history_start_page=history_start_page,
-            history_next_start_page=next_start_page, nodes=nodes, edges=edges,
-            coverage=coverage, previous_snapshot_id=previous_snapshot_id, delta=delta,
-        )
-    except TemporalError as exc:
-        raise CompilationError(f"temporal evidence build failed: {exc}") from exc
     manifest.update(
         {
             "builder": BUILDER_ID,
@@ -230,7 +201,6 @@ def build_index(
         write_json(staging_dir / "source-report.json", source_report)
         write_json(staging_dir / "github-report.json", github_report)
         write_json(staging_dir / "merge-report.json", merge_report)
-        write_json(staging_dir / "temporal-current.json", temporal_snapshot)
         checkpoint_eligible = bool(github_report.get("checkpoint_eligible", True))
         if checkpoint_eligible:
             write_checkpoint(staging_dir / "checkpoint.json", github_report["collected_at"], owner, repo, ref)
@@ -251,40 +221,9 @@ def build_index(
             "github_retries": github_report["retry_count"],
             "parser_failures": len(source_report["parser_failures"]),
             "excluded_history_paths": github_report["counts"].get("excluded_history_paths", 0),
-            "temporal_schema": temporal_snapshot["schema"],
-            "snapshot_id": temporal_snapshot["snapshot_id"],
-            "previous_snapshot_id": temporal_snapshot.get("previous_snapshot_id"),
-            "coverage": temporal_snapshot["coverage"],
-            "delta": temporal_snapshot["delta"],
         }
         write_json(staging_dir / "build-summary.json", summary)
-        # Persist immutable L2 evidence before publishing the mutable L1 view.
-        # If snapshot creation fails, canonical artifacts are not replaced.
-        snapshot_root = output / "temporal"
-        snapshot_dir = snapshot_root / "snapshots" / str(temporal_snapshot["snapshot_id"])
-        if not snapshot_dir.exists():
-            try:
-                write_snapshot(
-                    snapshot_root,
-                    snapshot=temporal_snapshot,
-                    nodes=nodes,
-                    edges=edges,
-                    lineage=build_lineage(previous_snapshot, temporal_snapshot),
-                )
-            except FileExistsError:
-                pass
         replace_artifacts(staging_dir, output)
-        lineage_path = snapshot_root / "lineage.jsonl"
-        lineage_path.parent.mkdir(parents=True, exist_ok=True)
-        lineage_record = build_lineage(previous_snapshot, temporal_snapshot)
-        seen_ids = set()
-        if lineage_path.exists():
-            for line in lineage_path.read_text(encoding="utf-8").splitlines():
-                if line.strip():
-                    seen_ids.add(str(json.loads(line).get("snapshot_id")))
-        if temporal_snapshot["snapshot_id"] not in seen_ids:
-            with lineage_path.open("a", encoding="utf-8") as handle:
-                handle.write(json.dumps(lineage_record, sort_keys=True) + "\n")
     return summary
 
 

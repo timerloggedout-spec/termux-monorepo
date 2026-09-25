@@ -2,8 +2,6 @@
 id: approxination-integration
 title: "Approxination skill search/create/contribute + A/B/C/D evaluation cohort"
 author: grok
-posted_at: 2026-09-23
-source: operator-maintained proposal
 status: executing
 priority: P1
 reviewers:
@@ -21,16 +19,6 @@ gates_required: [repo-gate, termux-smoke]
 
 # MANIFEST — Approxination Integration
 
-## Summary
+Tracks the bounded Approxination skill-search/create/contribute lane and its A/B/C/D evaluation cohort. The integration is treated as an AEF reference treatment rather than a wholesale source merge.
 
-Integrate Approxination skill search, creation, contribution, and A/B/C/D tool-layer evaluation as an AEF reference treatment. This is a reference/adaptation lane, not a wholesale source merge.
-
-## Boundary
-
-- no paid API spend in CI;
-- no automatic external deployment;
-- external skills/resources remain learning templates until locally adapted and validated.
-
-## Evidence
-
-See README.md and ITEMS.md. Keep the proposal registry entry and manifest synchronized.
+See `ITEMS.md` for the current execution checklist.

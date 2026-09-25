@@ -3,7 +3,12 @@
 
 Observer + artifact writer. Does NOT merge, close, rebase, or force-push.
 Produces docs/ops/generated/lane-matrix-status.json (+ optional markdown).
-#175 comments are opt-in only (--comment-175). The board is the artifact.
+Optional thin pulse comment on issue #175 (debounced by marker).
+
+Implements the recurring progress surface that complements:
+- agent-continuous-ops (Jules nudge)
+- merge-promotion-queue (observer candidates)
+- agent-ecc-tools-ops matrix-cycle (ECC only)
 
 Agent-Identity: Grok (Administrator)
 """
@@ -25,11 +30,12 @@ ISSUE_175 = 175
 MARKER = "<!-- lane-matrix-sweep:v1 -->"
 DEBOUNCE_HOURS = 11
 
+# Heuristic lane rules (size/age alone never promote)
 ML_WHOLESALE = {432, 549, 601}
 KEEP_ALIVE_ML = {682}
 MINESWEEPER_HINT = re.compile(r"jules|dashboard|89.?file|minesweeper", re.I)
 SECURITY_HINT = re.compile(r"sentinel|symlink|sec\(|security|chmod", re.I)
-SESSION_HINT = re.compile(r"ops\(session\)|ops\(skills\)|session record|LANE-MATRIX|lane-matrix", re.I)
+SESSION_HINT = re.compile(r"ops\(skills\)|session record|LANE-MATRIX|lane-matrix", re.I)
 BOT_LOGINS = (
     "google-labs-jules",
     "github-actions",
@@ -107,9 +113,6 @@ def classify_pr(pr: dict[str, Any], master_sha: str, now: datetime) -> dict[str,
     elif number in ML_WHOLESALE:
         lane = "EXTRACT"
         reasons.append("ml-wholesale-no-go")
-    elif SESSION_HINT.search(title):
-        lane = "SUPERSEDE"
-        reasons.append("session-record-not-a-promote-object")
     elif wrong_base:
         lane = "HOLD"
         reasons.append(f"wrong-base:{base_ref}")
@@ -122,6 +125,9 @@ def classify_pr(pr: dict[str, Any], master_sha: str, now: datetime) -> dict[str,
     elif SECURITY_HINT.search(title) and dirty:
         lane = "WAIT"
         reasons.append("security-extract-wait-dual-gate")
+    elif SESSION_HINT.search(title) and not dirty:
+        lane = "WAIT"
+        reasons.append("session-record-dual-gate")
     elif dirty:
         lane = "HOLD"
         reasons.append(f"dirty:{mergeable_state}")
@@ -280,7 +286,7 @@ def build_pulse(payload: dict[str, Any]) -> str:
             *[f"| {k} | {v} |" for k, v in sorted(by_lane.items())],
             "",
             "Artifact: `docs/ops/generated/lane-matrix-status.json`",
-            "Rules: dual-gate only; age ≠ promote; session pulses SUPERSEDE; no #175 heartbeat.",
+            "Rules: dual-gate only; age ≠ promote; ML wholesale EXTRACT; wrong-base HOLD.",
             "",
             "Agent-Identity: lane-matrix-sweep (GHA)",
         ]
@@ -296,9 +302,15 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument("--token", default=os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN") or "")
     parser.add_argument("--master-sha", default=os.environ.get("GITHUB_SHA", "unknown"))
-    parser.add_argument("--json-out", default="docs/ops/generated/lane-matrix-status.json")
-    parser.add_argument("--md-out", default="docs/ops/generated/lane-matrix-status.md")
-    parser.add_argument("--comment-175", action="store_true", help="Opt-in pulse on #175 (off by default)")
+    parser.add_argument(
+        "--json-out",
+        default="docs/ops/generated/lane-matrix-status.json",
+    )
+    parser.add_argument(
+        "--md-out",
+        default="docs/ops/generated/lane-matrix-status.md",
+    )
+    parser.add_argument("--comment-175", action="store_true", help="Post debounced pulse on #175")
     parser.add_argument("--force-comment", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args(argv)
@@ -327,14 +339,23 @@ def main(argv: list[str] | None = None) -> int:
     if rows:
         oldest = max(rows, key=lambda r: r["days_open"])
     else:
-        oldest = {"number": 0, "days_open": 0, "title": "(none)", "lane": "OBSERVE"}
+        oldest = {
+            "number": 0,
+            "days_open": 0,
+            "title": "(none)",
+            "lane": "OBSERVE",
+        }
 
     payload = {
         "schema": SCHEMA,
         "observed_at": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "repository": f"{args.owner}/{args.repo}",
         "master_sha": args.master_sha,
-        "counts": {"open_prs": len(rows), "by_lane": by_lane, "by_age": by_age},
+        "counts": {
+            "open_prs": len(rows),
+            "by_lane": by_lane,
+            "by_age": by_age,
+        },
         "oldest": {
             "number": oldest["number"],
             "days_open": oldest["days_open"],
@@ -346,8 +367,6 @@ def main(argv: list[str] | None = None) -> int:
             "promote": "dual-gate only (hygiene+portability + termux_smoke)",
             "age_alone": False,
             "vercel_rate_limit": "non-gate",
-            "session_pulses": "SUPERSEDE",
-            "issue_175_comments": "opt-in only",
             "ml_wholesale": sorted(ML_WHOLESALE),
             "ml_keep_alive": sorted(KEEP_ALIVE_ML),
         },

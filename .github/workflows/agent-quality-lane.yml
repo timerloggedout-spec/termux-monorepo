@@ -12,10 +12,7 @@ on:
       - "docs/architecture/TOOL-DEFINITION-QUALITY-SCORE.md"
       - "docs/proposals/active/notation-sets/TDQS.md"
       - "scripts/ci/verify_agent_quality.py"
-      - "docs/ops/CONTINUOUS-IMPROVEMENT-POLICY.md"
       - ".github/workflows/agent-quality-lane.yml"
-  push:
-    branches: [master, master-staging]
   workflow_dispatch:
 
 permissions:
@@ -78,5 +75,3 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage.xml
-          fail_ci_if_error: false

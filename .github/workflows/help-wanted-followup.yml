@@ -1,10 +1,11 @@
 name: help-wanted-followup
 
-# Dynamic follow-up on FOREIGN open PRs we authored:
-#   - CHANGES_REQUESTED after last marker
-#   - Maintainer comments/reviews after last marker (re-engage, cooldown)
-#   - Stale idle tributes + CONTRIBUTING.md recon + URL notes
-# See docs/ops/HELP-WANTED-LANE.md + HELP-WANTED-TRIBUTE.md
+# INTENDED PURPOSE (this workflow only):
+#   Poll open external PRs we authored for CHANGES_REQUESTED.
+#   Idempotent notify + evidence. No repo-specific patch jobs.
+#
+# Lane purpose lives in docs/ops/HELP-WANTED-LANE.md:
+#   scout → claim → upstream PR → followup → dashboard
 
 on:
   schedule:
@@ -27,20 +28,18 @@ permissions:
 
 jobs:
   poll:
-    name: poll + re-engage foreign PRs
+    name: poll CHANGES_REQUESTED
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
-      - name: Follow up (dynamic)
+      - name: Follow up on our open external PRs
         env:
           OPERATOR_GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
           OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
           ARCHWIZ_GITHUB_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          HELP_WANTED_REENGAGE_HOURS: "18"
-          HELP_WANTED_STALE_IDLE_HOURS: "72"
         run: python3 scripts/ci/help_wanted_followup.py
 
       - name: Commit evidence if any

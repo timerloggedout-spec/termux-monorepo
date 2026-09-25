@@ -76,7 +76,7 @@ jobs:
           summary = {
               "job_count": len(jobs.get("jobs", [])),
               "jobs": [{"name": j.get("name"), "status": j.get("status"), "conclusion": j.get("conclusion")} for j in jobs.get("jobs", [])],
-              "artifact_count": len(artifacts.get("artifacts", [])],
+              "artifact_count": len(artifacts.get("artifacts", [])),
               "artifacts": [{"name": a.get("name"), "expired": a.get("expired")} for a in artifacts.get("artifacts", [])],
           }
           with open("runtime-summary.json", "w", encoding="utf-8") as f:

@@ -38,6 +38,7 @@ Latency, token count, quota, cost, retries, and availability are secondary measu
 | Repository-history replay | ability to solve previously observed development tasks |
 | Custom environment | performance under repository-specific tool/runtime conditions |
 | Tool/API boundary | schema correctness, error handling, retry behavior |
+| **Tool-definition quality** | MCP/connector definition clarity and agent-facing schema semantics (TDQS) |
 | Agent trajectory | planning, sequencing, recovery, unnecessary-loop rate |
 | Cognitive regression | degradation after context, prompt, tool, or orchestration changes |
 | Patch quality | tests, regressions, scope, maintainability |
@@ -46,6 +47,14 @@ Latency, token count, quota, cost, retries, and availability are secondary measu
 | Oversight | Bug Bounty, Help Wanted, CTF, security/developer-skill validation cohorts |
 | Long-horizon | stability across repeated development cycles |
 | Adversarial | robustness against misleading context and failure conditions |
+
+## Tool-definition quality / TDQS
+
+TDQS is an **input-quality signal for the tool surface**, not a runtime tool-behavior score. The local deterministic implementation lives in `she/metrics/tdqs.py`; the six-dimension LLM rubric remains an explicit evaluator boundary so evaluator model/version, rubric version, justifications, and confidence can be preserved.
+
+TDQS must remain separate from ATES/WTCV/TCV and from task outcome. A tool can have an excellent definition and fail at runtime, or have a poor definition and still happen to execute correctly. The evidence record must preserve that distinction.
+
+See `docs/architecture/TOOL-DEFINITION-QUALITY-SCORE.md` and `docs/proposals/active/notation-sets/TDQS.md`.
 
 ## SWE fork cohort
 
@@ -128,6 +137,8 @@ AEF is therefore not a leaderboard alone. It is the **validation substrate for c
 
 - `docs/architecture/AGENT-TEAM-CONTROL-PLANE.mmd`
 - `docs/architecture/AGENT-SELECTION-BLIND-EVALUATION.md`
+- `docs/architecture/TOOL-DEFINITION-QUALITY-SCORE.md`
+- `docs/ops/AGENT-OBSERVABILITY-RESEARCH-MATRIX.md`
 - `docs/ops/LEAD-LAG-INDEX.md`
 - `docs/ops/SCOUT-MISSIONS.md`
 - `docs/ops/SCOUT-ROSTER.md`

@@ -1,31 +1,31 @@
-# Help-wanted follow-up (automation)
+# Help-wanted follow-up (timely relevance)
 
-**Status:** LIVE · refined 2026-09-23
+## Problem
 
-## What it does
+Opening the upstream PR is not the end. Maintainers leave **CHANGES_REQUESTED** / issue comments; without triggers those rot (e.g. vedantnimbarte/zero#81).
 
-Polls **all open foreign PRs** authored by `timerloggedout-spec` (not only `review:changes_requested`).
+## Triggers
 
-| Action | Trigger |
-|--------|---------|
-| `changes` | `CHANGES_REQUESTED` **after** our last follow-up marker |
-| `reengage` | Maintainer comment/review **after** last marker + ≥`REENGAGE_HOURS` (default 18) |
-| `stale_nudge` | PR idle ≥`STALE_IDLE_HOURS` (default 72) + cooldown |
-| `skip` | No new signal / still in cooldown |
+| Mechanism | Latency | Scope |
+|-----------|---------|--------|
+| `help-wanted-followup.yml` **schedule** `*/2h` | ≤ ~2h | All open PRs `author:timerloggedout-spec review:changes_requested` |
+| `workflow_dispatch` `mode=poll` | on demand | same |
+| `workflow_dispatch` `mode=zero-81-revise` | on demand | Apply known revision for zero#81 |
+| Foreign **webhooks** | near real-time | Requires GitHub App install on target repos (backlog) |
 
-Each non-skip posts a comment with:
+Monorepo-internal review already has `peer-review-orchestrator` (`pull_request_review`, `issue_comment`). External help-wanted targets do **not** fire those events into our repo.
 
-- Thread / review excerpt
-- **CONTRIBUTING.md** recon (if present in foreign repo)
-- URLs extracted from thread + docs
+## Models used so far (routing SSOT)
 
-## Scripts
+From `docs/ops/ROUTING-ORCHESTRATION-MAP.md` + `docs/schemas/model-rotation.yaml` / success matrix:
 
-- `scripts/ci/help_wanted_followup.py`
-- `scripts/ci/help_wanted_foreign_recon.py`
+| Plane | Models / providers selected in practice |
+|-------|------------------------------------------|
+| **Review / ops (GHA)** | Gemini family primary when quota allows (`gemini-*-flash` / rotation); OpenRouter **free** fallback (`:free` / zero price) — e.g. `qwen/qwen3-coder:free`, `deepseek/deepseek-r1:free`, `meta-llama/llama-3.3-70b-instruct:free`, `google/gemma-*-it:free` |
+| **Peer PR review** | CodeRabbit (default `REQUIRED_PROVIDERS`); optional Jules / other Apps via policy vars |
+| **Chat / llm_api_hub** | OpenRouter, multi-ai-cli wrappers (DeepSeek, Colab, …), engine aliases → OpenRouter |
+| **Help-wanted execute** | Deterministic scripts + OPERATOR PAT — **not** an LLM pick for claim/PR machinery |
 
-## Cadence
-
-`help-wanted-followup.yml` — cron `17 */2 * * *` + `repository_dispatch`.
+Free-tier rule unchanged: exhaustion → OpenRouter free only; never hard-fail CI on quota.
 
 Agent-Identity: Grok (Administrator)

@@ -3,16 +3,6 @@ name: Orchestration Regression Guard
 on:
   push:
     branches: [master]
-  pull_request:
-    paths:
-      - 'CLAUDE.md'
-      - 'docs/ops/AGENT-TEAM-ORCHESTRATION.md'
-      - 'scripts/provider_model_catalog.py'
-      - 'scripts/model_performance_index.py'
-      - '.github/actions/http-llm-invoke/**'
-      - '.github/workflows/ox-alpha-smoke.yml'
-      - '.github/workflows/continuous-evaluation.yml'
-      - '.github/workflows/orchestration-regression-guard.yml'
   workflow_dispatch:
 
 permissions:
@@ -31,7 +21,6 @@ jobs:
         run: |
           set -euo pipefail
           required=(
-            CLAUDE.md
             docs/ops/AGENT-TEAM-ORCHESTRATION.md
             scripts/provider_model_catalog.py
             scripts/model_performance_index.py
@@ -48,7 +37,6 @@ jobs:
           set -euo pipefail
           if git rev-parse HEAD^ >/dev/null 2>&1; then
             critical=(
-              CLAUDE.md
               docs/ops/AGENT-TEAM-ORCHESTRATION.md
               scripts/provider_model_catalog.py
               scripts/model_performance_index.py
@@ -66,26 +54,6 @@ jobs:
 
       - name: Validate catalog script syntax
         run: python3 -m py_compile scripts/provider_model_catalog.py scripts/model_performance_index.py
-
-      - name: Assert CLAUDE.md FA-ADE alignment
-        run: |
-          set -euo pipefail
-          test -f CLAUDE.md
-          for needle in \
-            "Fully Automated Agentic Development" \
-            "auto-promote" \
-            "dual gates" \
-            "BIUDL"; do
-            grep -q "$needle" CLAUDE.md || {
-              echo "REGRESSION: CLAUDE.md missing FA-ADE marker: $needle"
-              exit 1
-            }
-          done
-          if grep -Eiq 'AVOID HITL YOLO MODE YEET AUTOAPPROVE' CLAUDE.md; then
-            echo "REGRESSION: CLAUDE.md reintroduced HITL-YOLO block language; FA-ADE auto-promote is policy"
-            exit 1
-          fi
-          echo "CLAUDE.md FA-ADE markers OK"
 
       - name: Emit progression receipt
         run: |

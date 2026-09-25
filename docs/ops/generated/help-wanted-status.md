@@ -1,10 +1,9 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-25T22:16:06Z UTC · receipts=246 · foreign_open=17 · tributes=41_
+_Generated 2026-09-25T23:18:34Z UTC · receipts=263 · foreign_open=17 · tributes=41_
 
 ## Tributes (contributor ledger)
 
-- [UnityChainxx/StellarHunts#599](https://github.com/UnityChainxx/StellarHunts/pull/599) · state=open · help-wanted: stake + contribute for #519
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -21,6 +20,7 @@ _Generated 2026-09-25T22:16:06Z UTC · receipts=246 · foreign_open=17 · tribut
 - [EF-CHAIN/SendAm#492](https://github.com/EF-CHAIN/SendAm/pull/492) · state=open · help-wanted: stake + contribute for #465
 - [lonestill/onyx-launcher#45](https://github.com/lonestill/onyx-launcher/pull/45) · state=open · help-wanted: stake + contribute for #19
 - [LibreUML/LibreUML#130](https://github.com/LibreUML/LibreUML/pull/130) · state=open · help-wanted: stake + contribute for #126
+- [UnityChainxx/StellarHunts#599](https://github.com/UnityChainxx/StellarHunts/pull/599) · state=open · help-wanted: stake + contribute for #519
 - [Stellar-songifi/Lyricsflip_server#212](https://github.com/Stellar-songifi/Lyricsflip_server/pull/212) · state=closed · help-wanted: stake + contribute for #108
 - [C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend#587](https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587) · state=closed · help-wanted: stake + contribute for #579
 - [vavallee/bindery#2770](https://github.com/vavallee/bindery/pull/2770) · state=closed · help-wanted: stake + contribute for #2769
@@ -65,6 +65,6 @@ _Generated 2026-09-25T22:16:06Z UTC · receipts=246 · foreign_open=17 · tribut
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=246 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 181, 'followup_reengage': 12, 'followup_stale_nudge': 5}`
+## Outcomes · ok=263 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 198, 'followup_reengage': 12, 'followup_stale_nudge': 5}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

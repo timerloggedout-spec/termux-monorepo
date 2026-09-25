@@ -10,6 +10,9 @@ or any System One–compatible endpoint.
 
 Production use: agent "I am done" claims, PR dual-gate evidence,
 adaptive-wait completion. Never YOLO.
+
+Gate decisions: ALLOW | BLOCK | NEED_EVIDENCE.
+HOLD / WAIT / OBSERVE are invalid agent parking states — not gate outputs.
 """
 
 from __future__ import annotations
@@ -32,6 +35,9 @@ FACT_KINDS = frozenset(
         "check_not_run_since_edit",
     }
 )
+
+VALID_DECISIONS = frozenset({"ALLOW", "BLOCK", "NEED_EVIDENCE"})
+INVALID_AGENT_STATES = frozenset({"HOLD", "WAIT", "OBSERVE"})
 
 
 def evaluate_facts(facts: list[dict[str, Any]]) -> dict[str, Any]:
@@ -69,17 +75,20 @@ def evaluate_facts(facts: list[dict[str, Any]]) -> dict[str, Any]:
 def mock_noul_advice(claim: str, state: dict[str, Any] | None = None) -> dict[str, Any]:
     """Offline stand-in for engine noul on 'is completion claim supported?'."""
     evidence = (state or {}).get("evidence") or []
-    # Single-pass evidence classification with early exit on adverse facts
     adverse = False
     has_positive = False
     for e in evidence:
         if not e:
             continue
         k = e.get("kind")
-        if k == "test_failed" or k == "secret_detected" or (k == "command_exit_nonzero" and int(e.get("exit_code") or 0) != 0):
+        if k == "test_failed" or k == "secret_detected" or (
+            k == "command_exit_nonzero" and int(e.get("exit_code") or 0) != 0
+        ):
             adverse = True
             break
-        if k == "file_changed" or (k == "command_exit_nonzero" and int(e.get("exit_code") or 0) == 0):
+        if k == "file_changed" or (
+            k == "command_exit_nonzero" and int(e.get("exit_code") or 0) == 0
+        ):
             has_positive = True
 
     supported = has_positive and not adverse
@@ -87,7 +96,7 @@ def mock_noul_advice(claim: str, state: dict[str, Any] | None = None) -> dict[st
     return {
         "noul": noul,
         "confidence": 0.55,
-        "advice": "relax_allowed" if noul >= 0.6 else "hold_for_evidence",
+        "advice": "relax_allowed" if noul >= 0.6 else "need_evidence",
         "mode": "mock_noul",
         "claim_snippet": (claim or "")[:120],
     }
@@ -124,15 +133,16 @@ def gate(
         out["noul_advice"] = advice
         out["dense_feedback"]["noul_advice"] = advice.get("advice")
         out["dense_feedback"]["confidence"] = advice.get("confidence")
-        if advice.get("advice") == "hold_for_evidence":
-            out["decision"] = "HOLD"
-            out["dense_feedback"]["reason"] = "noul_hold"
+        if advice.get("advice") == "need_evidence":
+            out["decision"] = "NEED_EVIDENCE"
+            out["dense_feedback"]["reason"] = "noul_need_evidence"
         else:
             out["decision"] = "ALLOW"
             out["dense_feedback"]["reason"] = "facts_clear_noul_relax"
     else:
         out["decision"] = "ALLOW"
         out["dense_feedback"]["reason"] = "facts_clear_no_noul"
+    assert out["decision"] in VALID_DECISIONS
     return out
 
 

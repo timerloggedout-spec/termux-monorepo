@@ -5,6 +5,10 @@ Observer + artifact writer. Does NOT merge, close, rebase, or force-push.
 Produces docs/ops/generated/lane-matrix-status.json (+ optional markdown).
 #175 comments are opt-in only (--comment-175). The board is the artifact.
 
+Lanes (parking HOLD/WAIT/OBSERVE retired):
+  EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE
+Gate outputs remain ALLOW | BLOCK | NEED_EVIDENCE.
+
 Agent-Identity: Grok (Administrator)
 """
 from __future__ import annotations
@@ -20,10 +24,13 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-SCHEMA = "lane-matrix-sweep/v1"
+SCHEMA = "lane-matrix-sweep/v2"
 ISSUE_175 = 175
 MARKER = "<!-- lane-matrix-sweep:v1 -->"
 DEBOUNCE_HOURS = 11
+
+VALID_LANES = frozenset({"EXTRACT", "CANDIDATE", "NEED_EVIDENCE", "SUPERSEDE"})
+INVALID_PARKING = frozenset({"HOLD", "WAIT", "OBSERVE"})
 
 ML_WHOLESALE = {432, 549, 601}
 KEEP_ALIVE_ML = {682}
@@ -99,10 +106,10 @@ def classify_pr(pr: dict[str, Any], master_sha: str, now: datetime) -> dict[str,
     bot = _is_bot(user)
 
     reasons: list[str] = []
-    lane = "OBSERVE"
+    lane = "CANDIDATE"
 
     if number in KEEP_ALIVE_ML:
-        lane = "WAIT"
+        lane = "EXTRACT"
         reasons.append("ml-keep-alive-rebase-required")
     elif number in ML_WHOLESALE:
         lane = "EXTRACT"
@@ -111,33 +118,37 @@ def classify_pr(pr: dict[str, Any], master_sha: str, now: datetime) -> dict[str,
         lane = "SUPERSEDE"
         reasons.append("session-record-not-a-promote-object")
     elif wrong_base:
-        lane = "HOLD"
+        lane = "NEED_EVIDENCE"
         reasons.append(f"wrong-base:{base_ref}")
     elif draft:
-        lane = "HOLD"
+        lane = "NEED_EVIDENCE"
         reasons.append("draft")
     elif mega or (bot and dirty and isinstance(changed_files, int) and changed_files >= 20):
         lane = "EXTRACT"
         reasons.append("minesweeper-or-mega")
     elif SECURITY_HINT.search(title) and dirty:
-        lane = "WAIT"
-        reasons.append("security-extract-wait-dual-gate")
+        lane = "EXTRACT"
+        reasons.append("security-extract-need-dual-gate")
     elif dirty:
-        lane = "HOLD"
+        lane = "NEED_EVIDENCE"
         reasons.append(f"dirty:{mergeable_state}")
     elif bot:
-        lane = "OBSERVE"
-        reasons.append("bot-observe")
+        lane = "SUPERSEDE"
+        reasons.append("bot-no-auto-promote")
     elif days >= 40:
-        lane = "OBSERVE"
+        lane = "SUPERSEDE"
         reasons.append("ancient-no-auto-promote")
     else:
-        lane = "OBSERVE"
+        lane = "CANDIDATE"
         reasons.append(f"state:{mergeable_state}")
 
-    if MINESWEEPER_HINT.search(title) and lane == "OBSERVE":
+    if MINESWEEPER_HINT.search(title) and lane in {"CANDIDATE", "SUPERSEDE"}:
         lane = "EXTRACT"
         reasons.append("minesweeper-title")
+
+    if lane not in VALID_LANES:
+        lane = "NEED_EVIDENCE"
+        reasons.append("invalid-lane-remapped")
 
     return {
         "number": number,
@@ -218,6 +229,9 @@ def list_issue_comments(owner: str, repo: str, issue: int, token: str) -> list[d
     return data if isinstance(data, list) else []
 
 
+_LANE_RANK = {"EXTRACT": 0, "CANDIDATE": 1, "NEED_EVIDENCE": 2, "SUPERSEDE": 3}
+
+
 def build_markdown(payload: dict[str, Any]) -> str:
     lines = [
         f"# Lane matrix status ({payload['observed_at']})",
@@ -237,7 +251,7 @@ def build_markdown(payload: dict[str, Any]) -> str:
     lines.extend(
         [
             "",
-            "## Tip lanes (non-OBSERVE first)",
+            "## Tip lanes (EXTRACT / CANDIDATE / NEED_EVIDENCE first)",
             "",
             "| PR | Days | Lane | Reasons | Title |",
             "|---:|-----:|------|---------|-------|",
@@ -246,7 +260,7 @@ def build_markdown(payload: dict[str, Any]) -> str:
     prioritized = sorted(
         payload["prs"],
         key=lambda r: (
-            0 if r["lane"] != "OBSERVE" else 1,
+            _LANE_RANK.get(r["lane"], 9),
             -r["days_open"],
             r["number"],
         ),
@@ -259,7 +273,8 @@ def build_markdown(payload: dict[str, Any]) -> str:
         )
     lines.append("")
     lines.append(
-        "Observer only: does not merge. Dual-gate remains promote authority. Age alone ≠ promote."
+        "Writer only: does not merge. Dual-gate remains promote authority. "
+        "HOLD/WAIT/OBSERVE are invalid parking. Age alone ≠ promote."
     )
     return "\n".join(lines) + "\n"
 
@@ -281,6 +296,7 @@ def build_pulse(payload: dict[str, Any]) -> str:
             "",
             "Artifact: `docs/ops/generated/lane-matrix-status.json`",
             "Rules: dual-gate only; age ≠ promote; session pulses SUPERSEDE; no #175 heartbeat.",
+            "Lanes: EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE.",
             "",
             "Agent-Identity: lane-matrix-sweep (GHA)",
         ]
@@ -327,7 +343,7 @@ def main(argv: list[str] | None = None) -> int:
     if rows:
         oldest = max(rows, key=lambda r: r["days_open"])
     else:
-        oldest = {"number": 0, "days_open": 0, "title": "(none)", "lane": "OBSERVE"}
+        oldest = {"number": 0, "days_open": 0, "title": "(none)", "lane": "CANDIDATE"}
 
     payload = {
         "schema": SCHEMA,
@@ -339,7 +355,7 @@ def main(argv: list[str] | None = None) -> int:
             "number": oldest["number"],
             "days_open": oldest["days_open"],
             "title": oldest.get("title", ""),
-            "lane": oldest.get("lane", "OBSERVE"),
+            "lane": oldest.get("lane", "CANDIDATE"),
         },
         "prs": rows,
         "rules": {
@@ -348,6 +364,8 @@ def main(argv: list[str] | None = None) -> int:
             "vercel_rate_limit": "non-gate",
             "session_pulses": "SUPERSEDE",
             "issue_175_comments": "opt-in only",
+            "valid_lanes": sorted(VALID_LANES),
+            "invalid_parking": sorted(INVALID_PARKING),
             "ml_wholesale": sorted(ML_WHOLESALE),
             "ml_keep_alive": sorted(KEEP_ALIVE_ML),
         },

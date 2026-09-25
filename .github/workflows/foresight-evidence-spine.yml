@@ -1,0 +1,31 @@
+name: Foresight Evidence Spine
+
+on:
+  push:
+    branches:
+      - feature/foresight-evidence-spine
+  pull_request:
+    paths:
+      - 'foresight/**'
+      - 'data/foresight/**'
+      - 'tests/test_foresight_registry.py'
+      - 'docs/ops/FORESIGHT-EVIDENCE-SPINE.md'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: foresight registry tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: '3.12'
+      - name: Unit tests
+        run: python -m unittest tests/test_foresight_registry.py -v
+      - name: Registry smoke validation
+        run: |
+          python -m foresight.registry --registry data/foresight/resource-registry.jsonl init
+          python -m foresight.registry --registry data/foresight/resource-registry.jsonl validate

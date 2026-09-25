@@ -1,0 +1,19 @@
+# start 2026-09-25T18:17:30.342030+00:00 pid=32164
+
+▶ task: Return the authenticated GitHub login. Then call finish.
+
+── step 1/12 ──
+  (assistant): 'll check the authenticated GitHub user.
+
+GitHub login
+  ▶ gh({"argv": ["api", "user", "--jq", ".login"]})
+    ← {"rc": 0, "stdout": "timerloggedout-spec\n", "stderr": ""}
+── step 2/12 ──
+  (assistant): GitHub login
+  ▶ finish({"summary": "timerloggedout-spec"})
+
+✔ FINISH
+timerloggedout-spec
+
+
+# end rc=0 elapsed=10.01s

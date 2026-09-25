@@ -109,9 +109,14 @@ def _phase_by_id(plan: dict[str, Any], phase_id: str) -> dict[str, Any]:
     raise CommandError(f"unknown phase_id: {phase_id}")
 
 
-def _project_item_for_phase(phase_id: str, items: list[dict[str, Any]]) -> dict[str, Any] | None:
+def _phase_pattern(phase_id: str) -> re.Pattern[str]:
+    return re.compile(rf"(?<![A-Z0-9-]){re.escape(phase_id)}(?![A-Z0-9-])")
+
+
+def _project_item_for_phase(phase_id: str, items: list[dict[str, Any]], pattern: re.Pattern[str] | None = None) -> dict[str, Any] | None:
     """Resolve a Project item only from an exact canonical title marker."""
-    pattern = re.compile(rf"(?<![A-Z0-9-]){re.escape(phase_id)}(?![A-Z0-9-])")
+    if pattern is None:
+        pattern = _phase_pattern(phase_id)
     matches: list[dict[str, Any]] = []
     for item in items:
         content = item.get("content")
@@ -145,7 +150,8 @@ def sync_project(plan: dict[str, Any], report: dict[str, Any], repo: str, *, app
     for phase in plan["phases"]:
         phase_id = phase["phase_id"]
         evaluation = evaluation_by_id[phase_id]
-        item = _project_item_for_phase(phase_id, live_items)
+        pattern = _phase_pattern(phase_id)
+        item = _project_item_for_phase(phase_id, live_items, pattern)
         desired_status = _desired_project_status(evaluation["state"])
         canonical_issues = [candidate for candidate in live_issues if phase_issue_matches(plan, phase, candidate)]
         if len(canonical_issues) > 1:

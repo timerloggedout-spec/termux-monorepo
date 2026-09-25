@@ -64,6 +64,20 @@ except ImportError:
         def update(self, renderable):
             self.renderable = renderable
 
+    class Text:
+        def __init__(self, text="", style=None):
+            self.text = str(text)
+            self.style = style
+
+        def append(self, text, style=None):
+            self.text += str(text)
+
+        def __str__(self):
+            return self.text
+
+        def __repr__(self):
+            return self.text
+
 TELEMETRY_LOG = "agent_telemetry_stream.json"
 if _has_rich:
     console = Console()

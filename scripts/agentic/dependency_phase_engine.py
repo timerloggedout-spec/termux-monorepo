@@ -222,21 +222,28 @@ def require_valid_plan(plan: dict[str, Any]) -> None:
         raise PlanValidationError("plan validation failed:\n- " + "\n- ".join(errors))
 
 
-def _phase_text_matches(phase_id: str, candidate: dict[str, Any]) -> bool:
+def _phase_regex(phase_id: str) -> re.Pattern[str]:
+    return re.compile(rf"(?<![A-Z0-9-]){re.escape(phase_id)}(?![A-Z0-9-])")
+
+
+def _phase_text_matches(phase_id: str, candidate: dict[str, Any], pattern: re.Pattern[str] | None = None) -> bool:
+    if pattern is None:
+        pattern = _phase_regex(phase_id)
     text_parts = [str(candidate.get("title", "")), str(candidate.get("body", ""))]
     content = candidate.get("content")
     if isinstance(content, dict):
         text_parts.extend([str(content.get("title", "")), str(content.get("body", ""))])
-    return re.search(rf"(?<![A-Z0-9-]){re.escape(phase_id)}(?![A-Z0-9-])", "\n".join(text_parts)) is not None
+    return pattern.search("\n".join(text_parts)) is not None
 
 
-def _project_item_for_phase(phase_id: str, items: list[dict[str, Any]]) -> dict[str, Any] | None:
+def _project_item_for_phase(phase_id: str, items: list[dict[str, Any]], pattern: re.Pattern[str] | None = None) -> dict[str, Any] | None:
     """Resolve exactly one Project item from its canonical phase-marked title.
 
     Issue bodies may refer to prerequisite phases, so bodies are deliberately
     excluded from Project identity matching. They remain valid PR evidence.
     """
-    pattern = re.compile(rf"(?<![A-Z0-9-]){re.escape(phase_id)}(?![A-Z0-9-])")
+    if pattern is None:
+        pattern = _phase_regex(phase_id)
     matches: list[dict[str, Any]] = []
     for item in items:
         content = item.get("content")
@@ -250,8 +257,10 @@ def _project_item_for_phase(phase_id: str, items: list[dict[str, Any]]) -> dict[
     return matches[0] if matches else None
 
 
-def _pull_requests_for_phase(phase_id: str, pull_requests: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    return sorted((pr for pr in pull_requests if _phase_text_matches(phase_id, pr)), key=lambda pr: int(pr.get("number", 0)))
+def _pull_requests_for_phase(phase_id: str, pull_requests: list[dict[str, Any]], pattern: re.Pattern[str] | None = None) -> list[dict[str, Any]]:
+    if pattern is None:
+        pattern = _phase_regex(phase_id)
+    return sorted((pr for pr in pull_requests if _phase_text_matches(phase_id, pr, pattern)), key=lambda pr: int(pr.get("number", 0)))
 
 
 def _checks_passed(pull_requests: list[dict[str, Any]], required_checks: list[str]) -> bool:
@@ -302,9 +311,10 @@ def evaluate_plan(plan: dict[str, Any], snapshot: dict[str, Any] | None = None) 
     for phase_id in topological_order(plan["phases"]):
         phase = by_id[phase_id]
         dependencies = phase.get("depends_on", [])
-        item = _project_item_for_phase(phase_id, items)
+        pattern = _phase_regex(phase_id)
+        item = _project_item_for_phase(phase_id, items, pattern)
         project_status = item.get("status") if item else None
-        matching_prs = _pull_requests_for_phase(phase_id, pull_requests)
+        matching_prs = _pull_requests_for_phase(phase_id, pull_requests, pattern)
         pr_numbers = tuple(int(pr.get("number", 0)) for pr in matching_prs if pr.get("number") is not None)
         key = f"{phase_id}:{digest}"
 

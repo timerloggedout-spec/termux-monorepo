@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "48e719c28dcafeeb1f9313aaf201faa6d9d1611010a35a879284b4270ac51719",
-  "workflow_count": 95,
+  "source_fingerprint": "162f12826a002a10ff7e4bfb9ad7e07552a5e27a10cfca7ea3bd65ee8297c61c",
+  "workflow_count": 101,
   "workflows": [
     {
       "action_pins": [
@@ -254,6 +254,24 @@
     },
     {
       "action_pins": [
+        "actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09",
+        "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: agent-throughput-evidence-${{ github.event.workflow_run.id || github.run_id }}-${{ github.event.workflow_run.run_attempt || github.run_attempt }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "emit"
+      ],
+      "name": "Agent Throughput Evidence",
+      "path": ".github/workflows/agent-throughput-evidence.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_run"
+      ]
+    },
+    {
+      "action_pins": [
         "actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9",
         "actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9",
         "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
@@ -358,6 +376,24 @@
       ],
       "triggers": [
         "push",
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: ci-sweep cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "sweep"
+      ],
+      "name": "Continuous CI Sweep",
+      "path": ".github/workflows/ci-sweep.yml",
+      "schedules": [
+        "0 */6 * * *"
+      ],
+      "triggers": [
         "schedule",
         "workflow_dispatch"
       ]
@@ -642,6 +678,24 @@
     },
     {
       "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: dsa-${{ github.event.issue.number || github.event.pull_request.number || github.run_id }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "agent"
+      ],
+      "name": "DeepSeek Termux Agent",
+      "path": ".github/workflows/deepseek-termux-agent.yml",
+      "schedules": [],
+      "triggers": [
+        "issue_comment",
+        "issues",
+        "pull_request",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
       "authority": "bounded-state-write",
       "concurrency": "group: dependency-phase-dispatch-${{ github.repository }}-${{ github.event.client_payload.phase_id || inputs.phase_id }} cancel-in-progress: false",
       "domain": "validation-security",
@@ -778,6 +832,25 @@
       ],
       "name": "Evolutionary Replay Tests",
       "path": ".github/workflows/evolutionary-replay.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "test"
+      ],
+      "name": "Foresight Evidence Spine",
+      "path": ".github/workflows/foresight-evidence-spine.yml",
       "schedules": [],
       "triggers": [
         "pull_request",
@@ -1188,6 +1261,23 @@
       "path": ".github/workflows/merge-promotion-steward.yml",
       "schedules": [],
       "triggers": [
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: ml-keepalive-${{ github.ref }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "unittest"
+      ],
+      "name": "ml pipelines keep-alive",
+      "path": ".github/workflows/ml-pipelines-keepalive.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
         "push",
         "workflow_dispatch"
       ]
@@ -1684,6 +1774,24 @@
       "path": ".github/workflows/scorecard-advisory.yml",
       "schedules": [
         "41 3 * * 1"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: self-integrate cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "integrate"
+      ],
+      "name": "DeepSeek Self-Integrate",
+      "path": ".github/workflows/self-integrate.yml",
+      "schedules": [
+        "17 */4 * * *"
       ],
       "triggers": [
         "schedule",

@@ -32,6 +32,16 @@ SECRETS = {
 SECRET_ALIASES = {
     "huggingface": ("HUGGINGFACE_TOKEN", "HUGGING_FACE_HUB_TOKEN", "HF_API_TOKEN"),
 }
+
+# Module-level precomputed secret environment variable name tuples to avoid allocations in resolve_secret
+RESOLVE_SECRET_NAMES = {
+    p: SECRET_ALIASES.get(p) or (SECRETS.get(p),) for p in ENDPOINTS
+}
+
+# Module-level tuples/sets for fast response header filtering in get_json
+HEADER_PREFIXES = ("x-ratelimit-", "x-credit-", "x-quota-", "x-remaining-", "x-usage-")
+HEADER_EXACT = {"retry-after", "x-request-id"}
+
 DOCUMENTED_TRIAL_MODELS = {
     ("felo", "ox-alpha"): {
         "access_classification": "free_trial",
@@ -91,7 +101,7 @@ DOCUMENTED_ENTITLEMENTS = {
 
 
 def resolve_secret(provider: str) -> tuple[str | None, str | None]:
-    names = SECRET_ALIASES.get(provider) or (SECRETS.get(provider),)
+    names = RESOLVE_SECRET_NAMES.get(provider) or SECRET_ALIASES.get(provider) or (SECRETS.get(provider),)
     for name in names:
         if not name:
             continue
@@ -109,18 +119,29 @@ def get_json(url: str, token: str | None = None) -> tuple[dict, dict]:
         headers = {}
         for key, value in response.headers.items():
             lower = key.lower()
-            if lower.startswith(("x-ratelimit-", "x-credit-", "x-quota-", "x-remaining-", "x-usage-")) or lower in {"retry-after", "x-request-id"}:
+            if lower.startswith(HEADER_PREFIXES) or lower in HEADER_EXACT:
                 headers[lower] = value
         return json.load(response), headers
 
 
 def price_classification(data: dict) -> str:
-    pricing = data.get("pricing") or {}
+    pricing = data.get("pricing")
+    if not pricing or not isinstance(pricing, dict):
+        return "unknown"
+
+    p_val = pricing.get("prompt")
+    c_val = pricing.get("completion")
+
+    # Fast-path string/numeric equality checks before float conversion
+    if (p_val == "0" or p_val == "0.0" or p_val == 0) and (c_val == "0" or c_val == "0.0" or c_val == 0):
+        return "free_zero_price"
+
     try:
-        prompt = float(pricing.get("prompt", "nan"))
-        completion = float(pricing.get("completion", "nan"))
+        prompt = float(p_val)
+        completion = float(c_val)
     except (TypeError, ValueError):
         return "unknown"
+
     if prompt == 0 and completion == 0:
         return "free_zero_price"
     if prompt >= 0 and completion >= 0:
@@ -132,27 +153,45 @@ def poll(provider: str, token: str) -> tuple[list[dict], dict]:
     payload, response_headers = get_json(ENDPOINTS[provider], token)
     rows = []
     seen: set[str] = set()
+    raw_source = f"{provider}:/v1/models"
+
     for item in payload.get("data", []):
         model_id = item.get("id")
         if not model_id:
             continue
         seen.add(model_id)
-        trial = DOCUMENTED_TRIAL_MODELS.get((provider, model_id), {})
+        trial = DOCUMENTED_TRIAL_MODELS.get((provider, model_id))
+        if trial:
+            access_class = trial.get("access_classification", "catalog_pricing_only")
+            access_src = trial.get("source")
+            access_observed = trial.get("source_observed")
+            cadence = trial.get("cadence", "catalog")
+            ctx_len = item.get("context_length") or trial.get("context_length")
+            max_out = item.get("max_output_tokens") or trial.get("max_output_tokens")
+        else:
+            access_class = "catalog_pricing_only"
+            access_src = None
+            access_observed = None
+            cadence = "catalog"
+            ctx_len = item.get("context_length")
+            max_out = item.get("max_output_tokens")
+
         rows.append({
             "provider": provider,
             "id": model_id,
             "name": item.get("name"),
             "pricing": item.get("pricing") or {},
             "pricing_classification": price_classification(item),
-            "access_classification": trial.get("access_classification", "catalog_pricing_only"),
-            "access_source": trial.get("source"),
-            "access_source_observed": trial.get("source_observed"),
-            "cadence": trial.get("cadence", "catalog"),
+            "access_classification": access_class,
+            "access_source": access_src,
+            "access_source_observed": access_observed,
+            "cadence": cadence,
             "free_suffix": str(model_id).endswith(":free"),
-            "context_length": item.get("context_length") or trial.get("context_length"),
-            "max_output_tokens": item.get("max_output_tokens") or trial.get("max_output_tokens"),
-            "raw_source": f"{provider}:/v1/models",
+            "context_length": ctx_len,
+            "max_output_tokens": max_out,
+            "raw_source": raw_source,
         })
+
     for (trial_provider, model_id), trial in DOCUMENTED_TRIAL_MODELS.items():
         if trial_provider != provider or model_id in seen:
             continue
@@ -174,11 +213,11 @@ def poll(provider: str, token: str) -> tuple[list[dict], dict]:
     return rows, response_headers
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--providers", default="openrouter,felo,omni,huggingface")
     parser.add_argument("--output", default="/tmp/model-catalog/catalog.json")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     observed_at = dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
     rows: list[dict] = []

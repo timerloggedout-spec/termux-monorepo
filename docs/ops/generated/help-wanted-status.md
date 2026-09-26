@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-26T17:06:38Z UTC · receipts=316 · foreign_open=18 · tributes=44_
+_Generated 2026-09-26T19:51:11Z UTC · receipts=316 · foreign_open=19 · tributes=45_
 
 ## Tributes (contributor ledger)
 
+- [Agora-Events/agora#1518](https://github.com/Agora-Events/agora/pull/1518) · state=open · help-wanted: stake + contribute for #1423
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -43,10 +44,10 @@ _Generated 2026-09-26T17:06:38Z UTC · receipts=316 · foreign_open=18 · tribut
 - [timerloggedout-spec/gh-aw_fork#1](https://github.com/timerloggedout-spec/gh-aw_fork/pull/1) · state=closed · ops(smoke-otel): agentless data-first — zero LLM / zero Copilot AIC
 - [timerloggedout-spec/termux-mcp#1](https://github.com/timerloggedout-spec/termux-mcp/pull/1) · state=closed · fix(ci): pin actions/checkout and vercel CLI to immutable versions
 - [timerloggedout-spec/android-mcp#1](https://github.com/timerloggedout-spec/android-mcp/pull/1) · state=closed · fix(ci): pin actions/checkout and vercel CLI to immutable versions
-- [timerloggedout-spec/mcp-multi-host#1](https://github.com/timerloggedout-spec/mcp-multi-host/pull/1) · state=closed · docs: point to termux-monorepo/mcp-hub as the new home for this catalog
 
 ## Foreign open PRs
 
+- [Agora-Events/agora#1518](https://github.com/Agora-Events/agora/pull/1518) — help-wanted: stake + contribute for #1423
 - [SO4-Markets/so4-oracle#1143](https://github.com/SO4-Markets/so4-oracle/pull/1143) — help-wanted: stake + contribute for #906
 - [EF-CHAIN/SendAm#607](https://github.com/EF-CHAIN/SendAm/pull/607) — help-wanted: stake + contribute for #538
 - [Heliobond/frontend#614](https://github.com/Heliobond/frontend/pull/614) — help-wanted: stake + contribute for #587

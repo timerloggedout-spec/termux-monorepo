@@ -186,7 +186,7 @@ def _cache_save(session_id: str, messages: List[Dict[str, Any]], account: str = 
 # ---------- Config Helpers ----------
 
 def load_config() -> Dict[str, Any]:
-    if CONFIG_FILE.exists():
+    if CONFIG_FILE.exists() and not CONFIG_FILE.is_symlink():
         return json.loads(CONFIG_FILE.read_text())
     return {}
 

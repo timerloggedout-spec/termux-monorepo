@@ -35,6 +35,10 @@ SECRET_ENV = {
 DOCUMENTED_TRIAL = {
     ("felo", "ox-alpha"): "free_trial",
 }
+ZERO_PRICE_IDS = frozenset({"stealth/ox-alpha", "ox-alpha"})
+PREFER_KEYWORDS = ("coder", "code", "qwen", "deepseek", "ox-alpha", "llama", "gemma")
+REVIEW_KEYWORDS = ("coder", "code", "deepseek", "r1")
+PROVIDER_SCORE = {"felo": 12, "openrouter": 10, "omni": 8}
 
 
 def _token(provider: str) -> str | None:
@@ -54,11 +58,32 @@ def _is_free(model_id: str, pricing: dict | None, access: str | None = None) -> 
     if model_id.endswith(":free"):
         return True
     if not pricing:
-        return model_id in {"stealth/ox-alpha", "ox-alpha"}
+        return model_id in ZERO_PRICE_IDS
     try:
         return float(pricing.get("prompt", 1)) == 0.0 and float(pricing.get("completion", 1)) == 0.0
     except (TypeError, ValueError):
         return False
+
+
+def _pricing_classification(model_id: str, free: bool, access: str | None) -> str:
+    if not free:
+        return "other"
+    if access == "free_trial":
+        return "free_trial"
+    if model_id.endswith(":free"):
+        return "free_suffix"
+    return "free_zero_price"
+
+
+def _row(provider: str, mid: str, free: bool, access: str | None, context_length: Any, raw_source: str) -> dict[str, Any]:
+    return {
+        "provider": provider,
+        "id": mid,
+        "free": free,
+        "pricing_classification": _pricing_classification(mid, free, access),
+        "context_length": context_length,
+        "raw_source": raw_source,
+    }
 
 
 def poll_provider(provider: str) -> tuple[list[dict[str, Any]], str]:
@@ -89,33 +114,11 @@ def poll_provider(provider: str) -> tuple[list[dict[str, Any]], str]:
         pricing = item.get("pricing") or {}
         access = DOCUMENTED_TRIAL.get((provider, mid))
         free = _is_free(mid, pricing, access)
-        rows.append(
-            {
-                "provider": provider,
-                "id": mid,
-                "free": free,
-                "pricing_classification": (
-                    "free_zero_price"
-                    if free and not mid.endswith(":free") and access != "free_trial"
-                    else ("free_suffix" if mid.endswith(":free") else ("free_trial" if access == "free_trial" else "other"))
-                ),
-                "context_length": item.get("context_length"),
-                "raw_source": f"{provider}:/v1/models",
-            }
-        )
+        rows.append(_row(provider, mid, free, access, item.get("context_length"), f"{provider}:/v1/models"))
     for (p, mid), access in DOCUMENTED_TRIAL.items():
         if p != provider or mid in seen:
             continue
-        rows.append(
-            {
-                "provider": provider,
-                "id": mid,
-                "free": True,
-                "pricing_classification": "free_trial",
-                "context_length": 1_000_000,
-                "raw_source": f"{provider}:documented-trial",
-            }
-        )
+        rows.append(_row(provider, mid, True, access, 1_000_000, f"{provider}:documented-trial"))
     return rows, "live"
 
 
@@ -146,7 +149,14 @@ def load_eligible(
         states[p] = state
         all_rows.extend(rows)
 
-    eligible = [r for r in all_rows if r.get("free")]
+    eligible: list[dict[str, Any]] = []
+    by_p: dict[str, list[str]] = {}
+    for r in all_rows:
+        if not r.get("free"):
+            continue
+        eligible.append(r)
+        by_p.setdefault(r["provider"], []).append(r["id"])
+
     doc = {
         "schema": "live-catalog-feed/v1",
         "timestamp": time.time(),
@@ -154,12 +164,8 @@ def load_eligible(
         "provider_states": states,
         "models": all_rows,
         "eligible": eligible,
-        "eligible_ids_by_provider": {},
+        "eligible_ids_by_provider": by_p,
     }
-    by_p: dict[str, list[str]] = {}
-    for r in eligible:
-        by_p.setdefault(r["provider"], []).append(r["id"])
-    doc["eligible_ids_by_provider"] = by_p
 
     try:
         cache_path.write_text(json.dumps(doc), encoding="utf-8")
@@ -183,22 +189,16 @@ def load_eligible(
 def peer_candidates_for_role(role: str, feed: dict[str, Any]) -> list[tuple[str, str]]:
     """Build (provider, model) peers from live eligible, ranked for role."""
     eligible = feed.get("eligible") or []
-    prefer = ("coder", "code", "qwen", "deepseek", "ox-alpha", "llama", "gemma")
 
     def score(r: dict) -> int:
         mid = (r.get("id") or "").lower()
         s = 0
-        for i, k in enumerate(prefer):
+        for i, k in enumerate(PREFER_KEYWORDS):
             if k in mid:
                 s += 100 - i * 5
-        if role == "review" and any(k in mid for k in ("coder", "code", "deepseek", "r1")):
+        if role == "review" and any(k in mid for k in REVIEW_KEYWORDS):
             s += 30
-        if r.get("provider") == "openrouter":
-            s += 10
-        if r.get("provider") == "felo":
-            s += 12  # FELO wired as first-class peer
-        if r.get("provider") == "omni":
-            s += 8
+        s += PROVIDER_SCORE.get(r.get("provider") or "", 0)
         return s
 
     ranked = sorted(eligible, key=score, reverse=True)

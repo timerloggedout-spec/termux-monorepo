@@ -26,6 +26,8 @@
 | AR-22 | GAMUT remote evaluation + all-repo wiki knowledge fabric. Observational. No secret values. No private Wiki bodies. | P1 | Grok | executing | PR #809. Rebase onto live master before promote. |
 | AR-23 | ML keep-alive DAG re-extract onto live master (`ml/pipelines/`). Extract-only vs wholesale #432/#549/#601/#682/#746/#787/#817. ICM-CCTV projection. Vocab v2 after #836. Do not restamp LANE-MATRIX policy. | P0 | Grok | executing | Implements MLP-KEEP-001. Dual-gate on this SHA. Vercel non-gate (#772). |
 
+| AR-21 | Establish a provider-neutral agent evaluation lane registry and a manual GitHub App capability probe: keep Gamut and other external evaluators observational, disambiguate similarly named evaluation products, and verify effective App installation permissions before relying on Checks publication. | P1 | ChatGPT | executing | Operator-requested 2026-09-24. Uses Issue #184 as credential SSOT by name only; no secret values are committed. App probe is read-only and fails closed when Checks: write is absent. External evaluation adapters remain subordinate to repository-native evidence. |
+
 ## Batch Rules
 
 The future implementation batch must be split by ownership and privilege rather than by marketplace category. No item may add an action by mutable tag; all third-party actions require a full commit SHA, license/maintenance review, minimal permissions, and a validation case. A pull request may implement only one accepted item or a tightly coupled pair whose test surface remains clear.

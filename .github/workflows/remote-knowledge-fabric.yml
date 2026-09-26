@@ -1,0 +1,157 @@
+name: Remote knowledge fabric
+
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+    inputs:
+      include_devinwiki:
+        description: "Probe Devin/DeepWiki status where configured"
+        required: true
+        default: true
+        type: boolean
+      generate_deepwiki:
+        description: "Run deepwiki-rs generation (explicit LLM-cost boundary)"
+        required: true
+        default: false
+        type: boolean
+      deepwiki_scope:
+        description: "Generation scope: current repository or all installed repositories"
+        required: true
+        default: current
+        type: choice
+        options: [current, all]
+      deepwiki_target_language:
+        description: "Generated documentation language"
+        required: true
+        default: en
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: remote-knowledge-fabric-${{ github.repository_owner }}
+  cancel-in-progress: false
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Mint short-lived installation token
+        id: app-token
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3
+        with:
+          client-id: ${{ vars.APP_CLIENT_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          permission-contents: read
+          permission-metadata: read
+      - name: Discover installation repositories
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          set -euo pipefail
+          gh api --paginate /installation/repositories --jq '.repositories[] | {full_name, default_branch, archived, disabled, fork, has_wiki}' | jq -s '.' > repos.json
+      - name: Build redacted manifest
+        env:
+          INCLUDE_DEVIN: ${{ inputs.include_devinwiki || 'true' }}
+        run: |
+          set -euo pipefail
+          args=(--repos repos.json --output knowledge-fabric-manifest.json)
+          if [[ "${INCLUDE_DEVIN}" == "true" ]]; then args+=(--include-devin); fi
+          python3 scripts/agentic/build_knowledge_fabric_manifest.py "${args[@]}"
+      - name: Validate wiki-rs remotely
+        run: |
+          set -euo pipefail
+          git clone --depth 1 https://github.com/sw-vibe-coding/wiki-rs.git .wiki-rs
+          cargo test --manifest-path .wiki-rs/Cargo.toml --workspace
+      - name: Validate deepwiki-rs remotely
+        run: |
+          set -euo pipefail
+          git clone --depth 1 https://github.com/sopaco/deepwiki-rs.git .deepwiki-rs
+          cargo test --locked --manifest-path .deepwiki-rs/Cargo.toml --workspace
+      - name: Generate deepwiki-rs documentation
+        if: ${{ inputs.generate_deepwiki == true }}
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          DEEPWIKI_LLM_API_KEY: ${{ secrets.DEEPWIKI_LLM_API_KEY }}
+          DEEPWIKI_SCOPE: ${{ inputs.deepwiki_scope || 'current' }}
+          DEEPWIKI_TARGET_LANGUAGE: ${{ inputs.deepwiki_target_language || 'en' }}
+          DEEPWIKI_LLM_API_BASE_URL: ${{ vars.DEEPWIKI_LLM_API_BASE_URL }}
+          DEEPWIKI_MODEL: ${{ vars.DEEPWIKI_MODEL }}
+        run: |
+          set -euo pipefail
+          test -n "${DEEPWIKI_LLM_API_KEY}" || { echo "DEEPWIKI_LLM_API_KEY is required for generation" >&2; exit 1; }
+          cargo install deepwiki-rs --version 1.6.0 --locked
+          mkdir -p reports/deepwiki-rs workspaces
+          if [[ "${DEEPWIKI_SCOPE}" == "all" ]]; then
+            jq -r '.[].full_name' repos.json > deepwiki-targets.txt
+          else
+            printf '%s\n' "${GITHUB_REPOSITORY}" > deepwiki-targets.txt
+          fi
+          while IFS= read -r repo; do
+            slug="${repo//\//__}"
+            rm -rf "workspaces/${slug}" "reports/deepwiki-rs/${slug}"
+            gh repo clone "${repo}" "workspaces/${slug}" -- --depth 1
+            args=(-p "workspaces/${slug}" -o "reports/deepwiki-rs/${slug}" --target-language "${DEEPWIKI_TARGET_LANGUAGE}")
+            if [[ -n "${DEEPWIKI_LLM_API_BASE_URL}" ]]; then args+=(--llm-api-base-url "${DEEPWIKI_LLM_API_BASE_URL}"); fi
+            if [[ -n "${DEEPWIKI_MODEL}" ]]; then args+=(--model-efficient "${DEEPWIKI_MODEL}"); fi
+            deepwiki-rs "${args[@]}" --llm-api-key "${DEEPWIKI_LLM_API_KEY}"
+            printf '%s\n' "${repo}" >> reports/deepwiki-rs/completed.txt
+          done < deepwiki-targets.txt
+          # Generated documentation is intentionally not uploaded: it may contain source-derived content.
+      - name: Probe Devin/DeepWiki status
+        if: ${{ inputs.include_devinwiki || github.event_name == 'schedule' }}
+        env:
+          DEEPWIKI_TOKEN: ${{ secrets.DEEPWIKI_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p reports/devinwiki
+          if [[ -z "${DEEPWIKI_TOKEN}" ]]; then
+            echo '{"status":"not_configured"}' > reports/devinwiki/controller.json
+            exit 0
+          fi
+          cargo install dwiki --locked
+          jq -r '.[].full_name' repos.json | while IFS= read -r repo; do
+            slug="${repo//\//__}"
+            if result=$(DEEPWIKI_URL=https://mcp.devin.ai/mcp dwiki check "${repo}" --output json 2>/dev/null); then
+              printf '%s\n' "${result}" > "reports/devinwiki/${slug}.json"
+            else
+              printf '%s\n' '{"status":"check-failed"}' > "reports/devinwiki/${slug}.json"
+            fi
+          done
+      - name: Publish bounded summary
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          manifest=json.loads(Path("knowledge-fabric-manifest.json").read_text())
+          statuses=[]
+          for path in Path("reports/devinwiki").glob("*.json"):
+              try: statuses.append(json.loads(path.read_text()).get("indexed"))
+              except Exception: pass
+          print(f"repositories={manifest['count']}")
+          print(f"devinwiki_checked={len(statuses)}")
+          print(f"devinwiki_indexed_true={sum(v is True for v in statuses)}")
+          print("wiki_rs=validated")
+          print("deepwiki_rs=validated")
+          print(f"deepwiki_rs_generation={'requested' if Path('reports/deepwiki-rs/completed.txt').exists() else 'not-requested'}")
+          PY
+      - name: Upload bounded evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: knowledge-fabric-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            knowledge-fabric-manifest.json
+            reports/devinwiki/
+            reports/deepwiki-rs/completed.txt
+          if-no-files-found: error
+          retention-days: 14
+          include-hidden-files: false

@@ -42,6 +42,7 @@ CODE_ROLES = frozenset({"review", "code", "implement"})
 PROVIDER_SCORE = {"felo": 12, "openrouter": 10, "omni": 8}
 DEFAULT_TTL_SEC = 3600
 DEFAULT_PEER_LIMIT = 24
+DEFAULT_MIN_PEER_SCORE = 0
 
 
 def catalog_ttl_sec() -> int:
@@ -60,6 +61,15 @@ def catalog_peer_limit() -> int:
     except ValueError:
         return DEFAULT_PEER_LIMIT
     return max(0, limit)
+
+
+def catalog_min_peer_score() -> int:
+    raw = os.environ.get("CATALOG_MIN_PEER_SCORE", "")
+    try:
+        score = int(raw) if raw else DEFAULT_MIN_PEER_SCORE
+    except ValueError:
+        return DEFAULT_MIN_PEER_SCORE
+    return max(0, score)
 
 
 def _token(provider: str) -> str | None:
@@ -166,6 +176,7 @@ def load_eligible(
     cache_path = Path(cache_dir) / "live_catalog_feed.json"
     ttl = catalog_ttl_sec()
     peer_limit = catalog_peer_limit()
+    min_peer_score = catalog_min_peer_score()
 
     # fresh if younger than TTL (0 forces refresh)
     if ttl > 0 and cache_path.exists():
@@ -174,6 +185,7 @@ def load_eligible(
             if time.time() - float(cached.get("timestamp", 0)) < ttl:
                 cached["catalog_state"] = "cached"
                 cached["peer_limit"] = peer_limit
+                cached["min_peer_score"] = min_peer_score
                 return cached
         except (OSError, ValueError, TypeError, json.JSONDecodeError):
             pass
@@ -203,6 +215,7 @@ def load_eligible(
         "eligible_ids_by_provider": by_p,
         "ttl_sec": ttl,
         "peer_limit": peer_limit,
+        "min_peer_score": min_peer_score,
     }
 
     try:
@@ -219,6 +232,7 @@ def load_eligible(
             "eligible_ids_by_provider": by_p,
             "ttl_sec": ttl,
             "peer_limit": peer_limit,
+            "min_peer_score": min_peer_score,
         }
         (evid / "latest.json").write_text(json.dumps(slim, indent=2) + "\n", encoding="utf-8")
     except OSError:
@@ -233,9 +247,14 @@ def peer_candidates_for_role(role: str, feed: dict[str, Any]) -> list[tuple[str,
     limit = feed.get("peer_limit")
     if not isinstance(limit, int):
         limit = catalog_peer_limit()
+    min_score = feed.get("min_peer_score")
+    if not isinstance(min_score, int):
+        min_score = catalog_min_peer_score()
     out: list[tuple[str, str]] = []
     seen: set[tuple[str, str]] = set()
     for r in ranked:
+        if peer_score(role, r) < min_score:
+            continue
         key = (r["provider"], r["id"])
         if key in seen:
             continue
@@ -260,6 +279,7 @@ if __name__ == "__main__":
                 "provider_states": feed.get("provider_states"),
                 "ttl_sec": feed.get("ttl_sec"),
                 "peer_limit": feed.get("peer_limit"),
+                "min_peer_score": feed.get("min_peer_score"),
             }
         )
     )

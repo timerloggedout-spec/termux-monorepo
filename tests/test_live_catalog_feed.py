@@ -52,6 +52,17 @@ def test_catalog_peer_limit(monkeypatch) -> None:
     assert mod.catalog_peer_limit() == 0
 
 
+def test_catalog_min_peer_score(monkeypatch) -> None:
+    monkeypatch.delenv("CATALOG_MIN_PEER_SCORE", raising=False)
+    assert mod.catalog_min_peer_score() == 0
+    monkeypatch.setenv("CATALOG_MIN_PEER_SCORE", "50")
+    assert mod.catalog_min_peer_score() == 50
+    monkeypatch.setenv("CATALOG_MIN_PEER_SCORE", "nope")
+    assert mod.catalog_min_peer_score() == 0
+    monkeypatch.setenv("CATALOG_MIN_PEER_SCORE", "-4")
+    assert mod.catalog_min_peer_score() == 0
+
+
 def test_load_eligible_one_pass_grouping(tmp_path, monkeypatch) -> None:
     def fake_poll(provider: str):
         if provider == "openrouter":
@@ -74,6 +85,7 @@ def test_load_eligible_one_pass_grouping(tmp_path, monkeypatch) -> None:
     assert feed["provider_states"]["omni"] == "missing_secret"
     assert feed["ttl_sec"] == 3600
     assert feed["peer_limit"] == 24
+    assert feed["min_peer_score"] == 0
 
 
 def test_load_eligible_respects_zero_ttl(tmp_path, monkeypatch) -> None:
@@ -128,3 +140,16 @@ def test_peer_candidates_honor_limit(monkeypatch) -> None:
     peers = mod.peer_candidates_for_role("review", feed)
     assert len(peers) == 2
     assert peers[0] == ("openrouter", "qwen/coder:free")
+
+
+def test_peer_candidates_honor_min_score(monkeypatch) -> None:
+    monkeypatch.setattr(mod, "_token", lambda _p: None)
+    unnamed = {"provider": "omni", "id": "mystery-model"}
+    coder = {"provider": "openrouter", "id": "qwen/coder:free"}
+    assert mod.peer_score("chat", unnamed) == 8
+    feed = {
+        "min_peer_score": 20,
+        "eligible": [unnamed, coder],
+    }
+    peers = mod.peer_candidates_for_role("chat", feed)
+    assert peers == [("openrouter", "qwen/coder:free")]

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -27,6 +28,17 @@ def test_pricing_classification() -> None:
     assert mod._pricing_classification("paid", False, None) == "other"
 
 
+def test_catalog_ttl_sec(monkeypatch) -> None:
+    monkeypatch.delenv("CATALOG_TTL_SEC", raising=False)
+    assert mod.catalog_ttl_sec() == 3600
+    monkeypatch.setenv("CATALOG_TTL_SEC", "0")
+    assert mod.catalog_ttl_sec() == 0
+    monkeypatch.setenv("CATALOG_TTL_SEC", "nope")
+    assert mod.catalog_ttl_sec() == 3600
+    monkeypatch.setenv("CATALOG_TTL_SEC", "-5")
+    assert mod.catalog_ttl_sec() == 0
+
+
 def test_load_eligible_one_pass_grouping(tmp_path, monkeypatch) -> None:
     def fake_poll(provider: str):
         if provider == "openrouter":
@@ -47,6 +59,29 @@ def test_load_eligible_one_pass_grouping(tmp_path, monkeypatch) -> None:
         "felo": ["ox-alpha"],
     }
     assert feed["provider_states"]["omni"] == "missing_secret"
+    assert feed["ttl_sec"] == 3600
+
+
+def test_load_eligible_respects_zero_ttl(tmp_path, monkeypatch) -> None:
+    cache = tmp_path / "live_catalog_feed.json"
+    cache.write_text(json.dumps({"timestamp": 9_999_999_999, "eligible": []}), encoding="utf-8")
+
+    def fake_poll(provider: str):
+        return [mod._row(provider, f"{provider}/fresh:free", True, None, 1, f"{provider}:/v1/models")], "live"
+
+    monkeypatch.setenv("CATALOG_TTL_SEC", "0")
+    monkeypatch.setattr(mod, "poll_provider", fake_poll)
+    feed = mod.load_eligible(providers=["openrouter"], cache_dir=str(tmp_path))
+    assert feed["catalog_state"] == "live"
+    assert feed["eligible"][0]["id"] == "openrouter/fresh:free"
+
+
+def test_peer_score_code_roles() -> None:
+    coder = {"provider": "openrouter", "id": "qwen/coder:free"}
+    llama = {"provider": "openrouter", "id": "meta/llama-3:free"}
+    assert mod.peer_score("review", coder) > mod.peer_score("review", llama)
+    assert mod.peer_score("code", coder) == mod.peer_score("review", coder)
+    assert mod.peer_score("implement", coder) == mod.peer_score("review", coder)
 
 
 def test_peer_candidates_prefer_coder(monkeypatch) -> None:
@@ -61,3 +96,5 @@ def test_peer_candidates_prefer_coder(monkeypatch) -> None:
     peers = mod.peer_candidates_for_role("review", feed)
     assert peers[0] == ("openrouter", "qwen/coder:free")
     assert ("felo", "ox-alpha") in peers
+    peers_code = mod.peer_candidates_for_role("code", feed)
+    assert peers_code[0] == ("openrouter", "qwen/coder:free")

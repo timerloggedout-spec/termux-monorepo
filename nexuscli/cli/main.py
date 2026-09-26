@@ -8,8 +8,6 @@ import sys
 import os
 import json
 from pathlib import Path
-# Add parent directory to path for imports
-sys.path.insert(0, str(Path(__file__).parent.parent))
 
 try:
     from rich.console import Console
@@ -29,16 +27,37 @@ except ModuleNotFoundError:
     Panel = DummyPanel
     Prompt = DummyPrompt
 
-from core.api import (
-    get_token,
-    create_session,
-    fetch_sessions,
-    get_history,
-    stream_completion,
-    send_message,
-    export_markdown,
-    export_json,
-)
+# Add parent directory to sys.path if not already present
+parent_dir = str(Path(__file__).parent.parent)
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
+
+try:
+    from nexuscli.core.api import (
+        get_token,
+        create_session,
+        fetch_sessions,
+        get_history,
+        stream_completion,
+        send_message,
+        export_markdown,
+        export_json,
+        load_config,
+        save_config,
+    )
+except ModuleNotFoundError:
+    from core.api import (
+        get_token,
+        create_session,
+        fetch_sessions,
+        get_history,
+        stream_completion,
+        send_message,
+        export_markdown,
+        export_json,
+        load_config,
+        save_config,
+    )
 
 
 
@@ -76,21 +95,9 @@ def cmd_new_session(args):
     session_id = create_session(token, model_type=model_type)
     console.print(f"[green]New session created: {session_id}[/]")
     if args.save:
-        cfg_path = Path.home() / ".nexuscli" / "config.json"
-        cfg_path.parent.mkdir(parents=True, exist_ok=True)
-        try:
-            cfg_path.parent.chmod(0o700)
-        except Exception:
-            pass
-        cfg = {}
-        if cfg_path.exists():
-            cfg = json.loads(cfg_path.read_text())
+        cfg = load_config()
         cfg["last_session"] = session_id
-        cfg_path.write_text(json.dumps(cfg, indent=2))
-        try:
-            cfg_path.chmod(0o600)
-        except Exception:
-            pass
+        save_config(cfg)
         console.print("[yellow]Saved as last_session.[/]")
 
 
@@ -198,11 +205,8 @@ def cmd_export(args):
 
 def get_last_session():
     """Get the last session ID from config."""
-    cfg_path = Path.home() / ".nexuscli" / "config.json"
-    if cfg_path.exists():
-        cfg = json.loads(cfg_path.read_text())
-        return cfg.get("last_session")
-    return None
+    cfg = load_config()
+    return cfg.get("last_session")
 
 
 def main():

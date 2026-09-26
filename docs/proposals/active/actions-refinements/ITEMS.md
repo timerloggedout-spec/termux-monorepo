@@ -26,6 +26,8 @@
 | AR-22 | GAMUT remote evaluation + all-repo wiki knowledge fabric. Observational. No secret values. No private Wiki bodies. | P1 | Grok | executing | PR #809. Rebase onto live master before promote. |
 | AR-23 | ML keep-alive DAG re-extract onto live master (`ml/pipelines/`). Extract-only vs wholesale #432/#549/#601/#682/#746/#787/#817. ICM-CCTV projection. Vocab v2 after #836. Do not restamp LANE-MATRIX policy. | P0 | Grok | executing | Implements MLP-KEEP-001. Dual-gate on this SHA. Vercel non-gate (#772). |
 
+| AR-20 | Add an advisory, secret-gated CellCog SDK PR-review lane (`.github/workflows/cellcog-review.yml`) that joins the existing peer roster as an independent, non-blocking reviewer: gated on `CELLCOG_API_KEY`, least-privilege, pinned action SHAs, PR-number concurrency, an idempotent single-marker comment, and graceful-skip on credit/quota/SDK errors. | P2 | timerloggedout-spec (CellCog agent) | executing | Operator-authorized 2026-09-08 via the added `CELLCOG_API_KEY` secret. Reviewer logic is inline (no new third-party action); reads the key only from env and never logs, echoes, or commits it; posts one `<!-- cellcog-review -->` comment per PR. Does not write branches, merge PRs, execute issue/comment text, or gate the second pass. Promotion into the `peer-review-orchestrator` required-provider roster is out of scope. |
+
 ## Batch Rules
 
 The future implementation batch must be split by ownership and privilege rather than by marketplace category. No item may add an action by mutable tag; all third-party actions require a full commit SHA, license/maintenance review, minimal permissions, and a validation case. A pull request may implement only one accepted item or a tightly coupled pair whose test surface remains clear.

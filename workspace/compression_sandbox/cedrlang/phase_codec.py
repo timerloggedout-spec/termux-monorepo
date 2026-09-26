@@ -44,6 +44,7 @@ CANONICAL_TOKENS: Tuple[str, ...] = (
     "gr1m01r3", "b1dd3r", "w4g3r", "chr0n0", "l1ngu15t", "sc0ut",
     "h4rv35t3r", "em_t3chs", "em_t3ch", "pr0cur3s", "pr0cur3", "cur473s",
     "cur473", "s0urc3s", "s0urc3", "4cqs", "4cq", "c0mp1s", "c0mp1",
+    "r3534rchs", "r3534rch", "c0nc3p7s", "c0nc3p7",
 )
 
 

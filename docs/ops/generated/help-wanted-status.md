@@ -1,6 +1,6 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-26T11:25:28Z UTC · receipts=298 · foreign_open=18 · tributes=43_
+_Generated 2026-09-26T13:01:02Z UTC · receipts=298 · foreign_open=17 · tributes=43_
 
 ## Tributes (contributor ledger)
 
@@ -18,7 +18,7 @@ _Generated 2026-09-26T11:25:28Z UTC · receipts=298 · foreign_open=18 · tribut
 - [ThinkLikeAFounder/pulsartrack#898](https://github.com/ThinkLikeAFounder/pulsartrack/pull/898) · state=open · help-wanted: stake + contribute for #896
 - [MergeFi/contracts#374](https://github.com/MergeFi/contracts/pull/374) · state=open · help-wanted: stake + contribute for #345
 - [EF-CHAIN/SendAm#492](https://github.com/EF-CHAIN/SendAm/pull/492) · state=open · help-wanted: stake + contribute for #465
-- [lonestill/onyx-launcher#45](https://github.com/lonestill/onyx-launcher/pull/45) · state=open · help-wanted: stake + contribute for #19
+- [lonestill/onyx-launcher#45](https://github.com/lonestill/onyx-launcher/pull/45) · state=closed · help-wanted: stake + contribute for #19
 - [LibreUML/LibreUML#130](https://github.com/LibreUML/LibreUML/pull/130) · state=open · help-wanted: stake + contribute for #126
 - [Heliobond/frontend#614](https://github.com/Heliobond/frontend/pull/614) · state=open · help-wanted: stake + contribute for #587
 - [EF-CHAIN/SendAm#607](https://github.com/EF-CHAIN/SendAm/pull/607) · state=open · help-wanted: stake + contribute for #538
@@ -50,7 +50,6 @@ _Generated 2026-09-26T11:25:28Z UTC · receipts=298 · foreign_open=18 · tribut
 - [EF-CHAIN/SendAm#607](https://github.com/EF-CHAIN/SendAm/pull/607) — help-wanted: stake + contribute for #538
 - [Heliobond/frontend#614](https://github.com/Heliobond/frontend/pull/614) — help-wanted: stake + contribute for #587
 - [LibreUML/LibreUML#130](https://github.com/LibreUML/LibreUML/pull/130) — help-wanted: stake + contribute for #126
-- [lonestill/onyx-launcher#45](https://github.com/lonestill/onyx-launcher/pull/45) — help-wanted: stake + contribute for #19
 - [EF-CHAIN/SendAm#492](https://github.com/EF-CHAIN/SendAm/pull/492) — help-wanted: stake + contribute for #465
 - [MergeFi/contracts#374](https://github.com/MergeFi/contracts/pull/374) — help-wanted: stake + contribute for #345
 - [ThinkLikeAFounder/pulsartrack#898](https://github.com/ThinkLikeAFounder/pulsartrack/pull/898) — help-wanted: stake + contribute for #896

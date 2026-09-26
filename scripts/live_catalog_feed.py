@@ -38,7 +38,18 @@ DOCUMENTED_TRIAL = {
 ZERO_PRICE_IDS = frozenset({"stealth/ox-alpha", "ox-alpha"})
 PREFER_KEYWORDS = ("coder", "code", "qwen", "deepseek", "ox-alpha", "llama", "gemma")
 REVIEW_KEYWORDS = ("coder", "code", "deepseek", "r1")
+CODE_ROLES = frozenset({"review", "code", "implement"})
 PROVIDER_SCORE = {"felo": 12, "openrouter": 10, "omni": 8}
+DEFAULT_TTL_SEC = 3600
+
+
+def catalog_ttl_sec() -> int:
+    raw = os.environ.get("CATALOG_TTL_SEC", "")
+    try:
+        ttl = int(raw) if raw else DEFAULT_TTL_SEC
+    except ValueError:
+        return DEFAULT_TTL_SEC
+    return max(0, ttl)
 
 
 def _token(provider: str) -> str | None:
@@ -86,6 +97,18 @@ def _row(provider: str, mid: str, free: bool, access: str | None, context_length
     }
 
 
+def peer_score(role: str, row: dict[str, Any]) -> int:
+    mid = (row.get("id") or "").lower()
+    s = 0
+    for i, k in enumerate(PREFER_KEYWORDS):
+        if k in mid:
+            s += 100 - i * 5
+    if role in CODE_ROLES and any(k in mid for k in REVIEW_KEYWORDS):
+        s += 30
+    s += PROVIDER_SCORE.get(row.get("provider") or "", 0)
+    return s
+
+
 def poll_provider(provider: str) -> tuple[list[dict[str, Any]], str]:
     tok = _token(provider)
     if not tok:
@@ -131,12 +154,13 @@ def load_eligible(
     cache_dir = cache_dir or os.environ.get("COUNTER_DIR", "/tmp/model-router")
     Path(cache_dir).mkdir(parents=True, exist_ok=True)
     cache_path = Path(cache_dir) / "live_catalog_feed.json"
+    ttl = catalog_ttl_sec()
 
-    # fresh if < 1h
-    if cache_path.exists():
+    # fresh if younger than TTL (0 forces refresh)
+    if ttl > 0 and cache_path.exists():
         try:
             cached = json.loads(cache_path.read_text(encoding="utf-8"))
-            if time.time() - float(cached.get("timestamp", 0)) < 3600:
+            if time.time() - float(cached.get("timestamp", 0)) < ttl:
                 cached["catalog_state"] = "cached"
                 return cached
         except (OSError, ValueError, TypeError, json.JSONDecodeError):
@@ -165,6 +189,7 @@ def load_eligible(
         "models": all_rows,
         "eligible": eligible,
         "eligible_ids_by_provider": by_p,
+        "ttl_sec": ttl,
     }
 
     try:
@@ -179,6 +204,7 @@ def load_eligible(
             "provider_states": states,
             "eligible_count": len(eligible),
             "eligible_ids_by_provider": by_p,
+            "ttl_sec": ttl,
         }
         (evid / "latest.json").write_text(json.dumps(slim, indent=2) + "\n", encoding="utf-8")
     except OSError:
@@ -189,19 +215,7 @@ def load_eligible(
 def peer_candidates_for_role(role: str, feed: dict[str, Any]) -> list[tuple[str, str]]:
     """Build (provider, model) peers from live eligible, ranked for role."""
     eligible = feed.get("eligible") or []
-
-    def score(r: dict) -> int:
-        mid = (r.get("id") or "").lower()
-        s = 0
-        for i, k in enumerate(PREFER_KEYWORDS):
-            if k in mid:
-                s += 100 - i * 5
-        if role == "review" and any(k in mid for k in REVIEW_KEYWORDS):
-            s += 30
-        s += PROVIDER_SCORE.get(r.get("provider") or "", 0)
-        return s
-
-    ranked = sorted(eligible, key=score, reverse=True)
+    ranked = sorted(eligible, key=lambda r: peer_score(role, r), reverse=True)
     out: list[tuple[str, str]] = []
     seen: set[tuple[str, str]] = set()
     for r in ranked:
@@ -227,6 +241,7 @@ if __name__ == "__main__":
                 "eligible": len(feed.get("eligible") or []),
                 "by_provider": {k: len(v) for k, v in (feed.get("eligible_ids_by_provider") or {}).items()},
                 "provider_states": feed.get("provider_states"),
+                "ttl_sec": feed.get("ttl_sec"),
             }
         )
     )

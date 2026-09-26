@@ -51,3 +51,10 @@ In system-1 decision engine registries and completion gates (`scripts/decision_e
 
 **Action:**
 Precompute static string/score metadata on catalog dictionaries at module initialization and replace multi-pass generator expressions with single-pass early-exit loops in decision gates.
+
+## 2026-09-26 - Fast-Path Zero Matching and Pre-Allocated Secret Collections in Provider Catalog Polling
+**Learning:**
+When polling high-volume provider model catalogs, executing float conversions (`float(pricing.get("prompt"))`) on every catalog row creates string-to-float parsing overhead during price classification. Fast-pathing string and integer zero equality (`"0"`, `"0.0"`, `0`) avoids `float()` allocation frames for free models. Furthermore, precomputing provider secret environment variable tuples (`RESOLVE_SECRET_NAMES`) and header filter tuples (`HEADER_PREFIXES`) at module load time eliminates per-poll dictionary and tuple allocations.
+
+**Action:**
+Use fast-path string/int checks before float conversions in catalog pricing loops, and precompute secret environment lookup tuples at module load time.

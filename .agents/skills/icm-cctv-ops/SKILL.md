@@ -1,16 +1,14 @@
 ---
 name: icm-cctv-ops
-description: ICM-CCTV visualization projection for ops dashboards. Load on Stepie 2087 step 10023.
+description: ICM-CCTV projection of open PRs + lane vocab. Load with ml-pipeline-ops.
 ---
 
 # Skill: icm-cctv-ops
-
-Emit lane counts + PR rows as JSON. No secrets. Do not reorder primary Stepie goal 2149.
 
 ```text
 python3 -m ml.pipelines.cli cctv
 ```
 
-Contract: `docs/ops/ICM-CCTV.md`
-Session 2026-09-25 14:10 PDT. Live master `a3423d97`.
-Agent-Identity: Grok (Administrator)
+Cards live in `ml/pipelines/icm/cards.py`. Nested nav: CLAUDE.md → docs/icm → lane board → ML keep-alive.
+
+Do not treat CCTV JSON as promote authority. Dual-gate remains authority.

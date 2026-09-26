@@ -32,7 +32,7 @@ class DagSpec:
 
 
 ALLOWED_KINDS = frozenset(
-    {"ingest", "validate", "score", "ledger", "export", "recon", "evaluate", "monitor"}
+    {"ingest", "validate", "score", "ledger", "export", "recon", "evaluate", "monitor", "bind", "center"}
 )
 
 
@@ -68,19 +68,23 @@ def operator_dag() -> DagSpec:
     extra_nodes = (
         DagNode("recon_lanes", "recon", "Classify open PRs with vocab v2"),
         DagNode("evaluate_gates", "evaluate", "Bind dual-gate evidence to SHA"),
+        DagNode("bind_sha", "bind", "Require named jobs on THIS SHA"),
         DagNode("monitor_cctv", "monitor", "Project ICM-CCTV JSON"),
+        DagNode("command_center", "center", "Project operator command-center board"),
     )
     extra_edges = (
         DagEdge("export_status", "recon_lanes"),
         DagEdge("recon_lanes", "evaluate_gates"),
-        DagEdge("evaluate_gates", "monitor_cctv"),
+        DagEdge("evaluate_gates", "bind_sha"),
+        DagEdge("bind_sha", "monitor_cctv"),
+        DagEdge("monitor_cctv", "command_center"),
     )
     return DagSpec(
         name="ml-keepalive-operator",
         nodes=base.nodes + extra_nodes,
         edges=base.edges + extra_edges,
         mode="observe",
-        notes=base.notes + ("Lane vocab v2 after #836.",),
+        notes=base.notes + ("Lane vocab v2 after #836.", "Command-center v0.6.0.",),
     )
 
 

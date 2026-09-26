@@ -39,6 +39,19 @@ def test_catalog_ttl_sec(monkeypatch) -> None:
     assert mod.catalog_ttl_sec() == 0
 
 
+def test_catalog_peer_limit(monkeypatch) -> None:
+    monkeypatch.delenv("CATALOG_PEER_LIMIT", raising=False)
+    assert mod.catalog_peer_limit() == 24
+    monkeypatch.setenv("CATALOG_PEER_LIMIT", "3")
+    assert mod.catalog_peer_limit() == 3
+    monkeypatch.setenv("CATALOG_PEER_LIMIT", "0")
+    assert mod.catalog_peer_limit() == 0
+    monkeypatch.setenv("CATALOG_PEER_LIMIT", "nope")
+    assert mod.catalog_peer_limit() == 24
+    monkeypatch.setenv("CATALOG_PEER_LIMIT", "-2")
+    assert mod.catalog_peer_limit() == 0
+
+
 def test_load_eligible_one_pass_grouping(tmp_path, monkeypatch) -> None:
     def fake_poll(provider: str):
         if provider == "openrouter":
@@ -60,6 +73,7 @@ def test_load_eligible_one_pass_grouping(tmp_path, monkeypatch) -> None:
     }
     assert feed["provider_states"]["omni"] == "missing_secret"
     assert feed["ttl_sec"] == 3600
+    assert feed["peer_limit"] == 24
 
 
 def test_load_eligible_respects_zero_ttl(tmp_path, monkeypatch) -> None:
@@ -98,3 +112,19 @@ def test_peer_candidates_prefer_coder(monkeypatch) -> None:
     assert ("felo", "ox-alpha") in peers
     peers_code = mod.peer_candidates_for_role("code", feed)
     assert peers_code[0] == ("openrouter", "qwen/coder:free")
+
+
+def test_peer_candidates_honor_limit(monkeypatch) -> None:
+    monkeypatch.setattr(mod, "_token", lambda _p: None)
+    feed = {
+        "peer_limit": 2,
+        "eligible": [
+            {"provider": "openrouter", "id": "qwen/coder:free"},
+            {"provider": "felo", "id": "ox-alpha"},
+            {"provider": "openrouter", "id": "meta/llama-3:free"},
+            {"provider": "omni", "id": "gemma-free"},
+        ],
+    }
+    peers = mod.peer_candidates_for_role("review", feed)
+    assert len(peers) == 2
+    assert peers[0] == ("openrouter", "qwen/coder:free")

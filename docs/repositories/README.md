@@ -10,6 +10,8 @@ The Repository Observatory maintains a provenance-aware index of repositories ow
 - [`scripts/github/repository_observatory.py`](../../scripts/github/repository_observatory.py) — collector, normalizer, and deterministic classifier.
 - [`scripts/github/test_repository_observatory.py`](../../scripts/github/test_repository_observatory.py) — dependency-free unit tests.
 - [`.github/workflows/repository-observatory.yml`](../../.github/workflows/repository-observatory.yml) — scheduled/manual publisher and validation gate.
+- [`GRAVITEE-RESEARCH-SEED.md`](./GRAVITEE-RESEARCH-SEED.md) — provenance-aware Gravitee API Management research seed and integration boundary.
+- [`research-seeds/gravitee-api-management.json`](./research-seeds/gravitee-api-management.json) — machine-readable Gravitee research record.
 
 ## Production contract
 

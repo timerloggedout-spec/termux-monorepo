@@ -64,10 +64,13 @@ DOMAIN_TERMS: dict[str, tuple[str, ...]] = {
     "termux": ("termux", "android"),
     "security": ("security", "forensics", "supply-chain"),
     "developer-tools": ("cli", "developer-tools", "devtools"),
+    "api-management": ("api-management", "api management", "api-gateway", "api gateway", "gateway", "openapi", "asyncapi"),
+    "platform": ("platform", "developer-portal", "portal"),
+    "kubernetes": ("kubernetes", "helm", "operator", "container"),
 }
 WORKFLOW_TERMS: tuple[str, ...] = ("github-action", "github-actions", "workflow")
 DEPENDENCY_TERMS: tuple[str, ...] = ("library", "framework", "sdk")
-RESEARCH_DOMAINS: set[str] = {"research", "context"}
+RESEARCH_DOMAINS: set[str] = {"research", "context", "api-management", "platform", "kubernetes"}
 
 
 def topics(repo: dict[str, Any]) -> list[str]:

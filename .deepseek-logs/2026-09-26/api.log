@@ -1,0 +1,144 @@
+[server] gh_broker ready
+INFO:     Started server process [27201]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8800 (Press CTRL+C to quit)
+INFO:     127.0.0.1:46498 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46546 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46552 - "POST /gh HTTP/1.1" 200 OK
+INFO:     40.76.117.227:0 - "POST /v1/agent HTTP/1.1" 202 Accepted
+INFO:     40.76.117.227:0 - "GET /v1/agent/status/37609a15cd01 HTTP/1.1" 200 OK
+create_session status: 200, body: 
+{"code":0,"msg":"","data":{"biz_code":0,"biz_msg":"","biz_data":{"id":"f26ab181-
+3ef1-45e7-8b59-5776b7c3a09e","seq_id":212648967,"agent":"chat","model_type":"def
+ault","title":null,"title_type":"WIP","version":0,"current_message_id":null,"pin
+ned":false,"inserted_at":1790485767.74,"updated_at":17904857
+INFO:     127.0.0.1:46560 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+create_session status: 200, body: 
+{"code":0,"msg":"","data":{"biz_code":0,"biz_msg":"","biz_data":{"id":"32a78da7-
+2c46-472e-be0a-a1a04b05f2f1","seq_id":212648974,"agent":"chat","model_type":"def
+ault","title":null,"title_type":"WIP","version":0,"current_message_id":null,"pin
+ned":false,"inserted_at":1790485774.371,"updated_at":1790485
+INFO:     127.0.0.1:46564 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46566 - "POST /v1/files/read HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46568 - "POST /gh HTTP/1.1" 200 OK
+create_session status: 200, body: 
+{"code":0,"msg":"","data":{"biz_code":0,"biz_msg":"","biz_data":{"id":"bc51408a-
+1cfa-4b3a-8d21-84bb9c4f041a","seq_id":212648982,"agent":"chat","model_type":"def
+ault","title":null,"title_type":"WIP","version":0,"current_message_id":null,"pin
+ned":false,"inserted_at":1790485782.002,"updated_at":1790485
+INFO:     127.0.0.1:46570 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     40.76.117.227:0 - "GET /v1/agent/status/37609a15cd01 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46576 - "POST /v1/skills/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46578 - "POST /v1/files/glob HTTP/1.1" 200 OK
+create_session status: 200, body: 
+{"code":0,"msg":"","data":{"biz_code":0,"biz_msg":"","biz_data":{"id":"d29c8e1f-
+6ad8-4d3f-b820-c04d84adb010","seq_id":212648988,"agent":"chat","model_type":"def
+ault","title":null,"title_type":"WIP","version":0,"current_message_id":null,"pin
+ned":false,"inserted_at":1790485788.394,"updated_at":1790485
+INFO:     127.0.0.1:46580 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+create_session status: 200, body: 
+{"code":0,"msg":"","data":{"biz_code":0,"biz_msg":"","biz_data":{"id":"d9343df3-
+db08-4b58-a013-877996f985ef","seq_id":212648995,"agent":"chat","model_type":"def
+ault","title":null,"title_type":"WIP","version":0,"current_message_id":null,"pin
+ned":false,"inserted_at":1790485795.192,"updated_at":1790485
+INFO:     127.0.0.1:46582 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46584 - "POST /v1/skills/read/code-review HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46586 - "POST /v1/skills/read/automate-github-issues HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46588 - "POST /run HTTP/1.1" 200 OK
+INFO:     40.76.117.227:0 - "GET /v1/agent/status/37609a15cd01 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46596 - "POST /gh HTTP/1.1" 200 OK
+create_session status: 200, body: 
+{"code":0,"msg":"","data":{"biz_code":0,"biz_msg":"","biz_data":{"id":"55ff955d-
+21e2-47c6-b30a-c53fbeb151e7","seq_id":212649005,"agent":"chat","model_type":"def
+ault","title":null,"title_type":"WIP","version":0,"current_message_id":null,"pin
+ned":false,"inserted_at":1790485805.191,"updated_at":1790485
+INFO:     127.0.0.1:46600 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+create_session status: 200, body: 
+{"code":0,"msg":"","data":{"biz_code":0,"biz_msg":"","biz_data":{"id":"7e6c43e0-
+93b9-4fb7-bf11-a21672eb22ed","seq_id":212649012,"agent":"chat","model_type":"def
+ault","title":null,"title_type":"WIP","version":0,"current_message_id":null,"pin
+ned":false,"inserted_at":1790485812.032,"updated_at":1790485
+INFO:     127.0.0.1:46602 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46604 - "POST /run HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46608 - "POST /run HTTP/1.1" 200 OK
+INFO:     40.76.117.227:0 - "GET /v1/agent/status/37609a15cd01 HTTP/1.1" 200 OK
+create_session status: 200, body: 
+{"code":0,"msg":"","data":{"biz_code":0,"biz_msg":"","biz_data":{"id":"34b10460-
+3838-4ab6-8f21-ce0a4a09aa7f","seq_id":212649019,"agent":"chat","model_type":"def
+ault","title":null,"title_type":"WIP","version":0,"current_message_id":null,"pin
+ned":false,"inserted_at":1790485819.813,"updated_at":1790485
+INFO:     127.0.0.1:46614 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46616 - "POST /gh HTTP/1.1" 200 OK
+INFO:     40.76.117.227:0 - "GET /v1/agent/status/37609a15cd01 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46620 - "POST /v1/files/write HTTP/1.1" 200 OK
+create_session status: 200, body: 
+{"code":0,"msg":"","data":{"biz_code":0,"biz_msg":"","biz_data":{"id":"ef83c760-
+791f-4df9-9b3e-719997c34c13","seq_id":212649041,"agent":"chat","model_type":"def
+ault","title":null,"title_type":"WIP","version":0,"current_message_id":null,"pin
+ned":false,"inserted_at":1790485841.078,"updated_at":1790485
+INFO:     127.0.0.1:46624 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46626 - "POST /run HTTP/1.1" 403 Forbidden
+INFO:     127.0.0.1:46628 - "POST /run HTTP/1.1" 200 OK
+create_session status: 200, body: 
+{"code":0,"msg":"","data":{"biz_code":0,"biz_msg":"","biz_data":{"id":"f3b0393e-
+08f5-43e9-8610-4bac09fa99d0","seq_id":212649048,"agent":"chat","model_type":"def
+ault","title":null,"title_type":"WIP","version":0,"current_message_id":null,"pin
+ned":false,"inserted_at":1790485848.182,"updated_at":1790485
+INFO:     127.0.0.1:46630 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46632 - "POST /run HTTP/1.1" 200 OK
+INFO:     40.76.117.227:0 - "GET /v1/agent/status/37609a15cd01 HTTP/1.1" 200 OK
+create_session status: 200, body: 
+{"code":0,"msg":"","data":{"biz_code":0,"biz_msg":"","biz_data":{"id":"0614e617-
+f6b0-4713-a3c6-7703493e006d","seq_id":212649055,"agent":"chat","model_type":"def
+ault","title":null,"title_type":"WIP","version":0,"current_message_id":null,"pin
+ned":false,"inserted_at":1790485855.108,"updated_at":1790485
+INFO:     127.0.0.1:46636 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46638 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46640 - "POST /v1/files/list HTTP/1.1" 404 Not Found
+create_session status: 200, body: 
+{"code":0,"msg":"","data":{"biz_code":0,"biz_msg":"","biz_data":{"id":"20dbe488-
+9b9e-463c-b5dd-96ab2d942c08","seq_id":212649062,"agent":"chat","model_type":"def
+ault","title":null,"title_type":"WIP","version":0,"current_message_id":null,"pin
+ned":false,"inserted_at":1790485862.754,"updated_at":1790485
+INFO:     127.0.0.1:46644 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46646 - "POST /v1/files/list HTTP/1.1" 200 OK
+create_session status: 200, body: 
+{"code":0,"msg":"","data":{"biz_code":0,"biz_msg":"","biz_data":{"id":"2d57971b-
+f430-4920-94ef-741680c95811","seq_id":212649069,"agent":"chat","model_type":"def
+ault","title":null,"title_type":"WIP","version":0,"current_message_id":null,"pin
+ned":false,"inserted_at":1790485869.06,"updated_at":17904858
+INFO:     127.0.0.1:46650 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     40.76.117.227:0 - "GET /v1/agent/status/37609a15cd01 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46652 - "POST /v1/files/read HTTP/1.1" 404 Not Found
+create_session status: 200, body: 
+{"code":0,"msg":"","data":{"biz_code":0,"biz_msg":"","biz_data":{"id":"28edec99-
+13e7-4135-948c-737aa3433c45","seq_id":212649075,"agent":"chat","model_type":"def
+ault","title":null,"title_type":"WIP","version":0,"current_message_id":null,"pin
+ned":false,"inserted_at":1790485875.86,"updated_at":17904858
+INFO:     127.0.0.1:46654 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46656 - "POST /v1/files/read HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46658 - "POST /run HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46660 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46664 - "POST /v1/files/read HTTP/1.1" 200 OK
+create_session status: 200, body: 
+{"code":0,"msg":"","data":{"biz_code":0,"biz_msg":"","biz_data":{"id":"41ef9b4d-
+464f-4cd2-8cde-58f4c6ec1a5b","seq_id":212649084,"agent":"chat","model_type":"def
+ault","title":null,"title_type":"WIP","version":0,"current_message_id":null,"pin
+ned":false,"inserted_at":1790485884.297,"updated_at":1790485
+INFO:     127.0.0.1:46666 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46668 - "POST /v1/files/read HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46670 - "POST /run HTTP/1.1" 200 OK
+INFO:     40.76.117.227:0 - "GET /v1/agent/status/37609a15cd01 HTTP/1.1" 200 OK
+create_session status: 200, body: 
+{"code":0,"msg":"","data":{"biz_code":0,"biz_msg":"","biz_data":{"id":"a3cfdc39-
+89fa-4162-a270-07de37d41547","seq_id":212649091,"agent":"chat","model_type":"def
+ault","title":null,"title_type":"WIP","version":0,"current_message_id":null,"pin
+ned":false,"inserted_at":1790485891.728,"updated_at":1790485
+INFO:     127.0.0.1:46676 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46688 - "POST /gh HTTP/1.1" 200 OK
+INFO:     40.76.117.227:0 - "GET /v1/agent/status/37609a15cd01 HTTP/1.1" 200 OK
+INFO:     40.76.117.227:0 - "GET /v1/agent/status/37609a15cd01 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46754 - "POST /gh HTTP/1.1" 200 OK
+INFO:     40.76.117.227:0 - "GET /v1/agent/status/37609a15cd01 HTTP/1.1" 200 OK

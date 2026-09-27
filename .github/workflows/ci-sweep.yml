@@ -37,12 +37,41 @@ EOF
                   -H 'Content-Type: application/json' \
                   --data-binary @payload.json | jq -r '.invocation_id')
           echo "invocation=$INV"
+          echo "invocation=$INV" >> "$GITHUB_OUTPUT"
           for i in $(seq 1 120); do
             S=$(curl -sS "$AGENT_URL/v1/agent/status/$INV" \
                   -H "Authorization: Bearer $AGENT_TOKEN")
+            echo "$S" > agent_status.json
             P=$(echo "$S" | jq -r '.phase')
             echo "[$i] $P"
             [ "$P" = "done" ] && break
             [ "$P" = "error" ] && break
             sleep 15
           done
+
+      - name: Failure diagnostics
+        if: failure()
+        run: |
+          set -uo pipefail
+          echo "::group::Workflow failure context"
+          echo "event: ${{ github.event_name }}"
+          echo "actor: ${{ github.actor }}"
+          echo "run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo "::endgroup::"
+          for f in payload.json agent_status.json; do
+            if [ -f "$f" ]; then
+              echo "::group::--- $f ---"
+              cat "$f" || true
+              echo "::endgroup::"
+            fi
+          done
+
+      - name: Archive artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-sweep-${{ github.run_id }}
+          path: |
+            payload.json
+            agent_status.json
+          retention-days: 7

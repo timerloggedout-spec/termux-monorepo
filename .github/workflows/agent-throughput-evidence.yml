@@ -10,8 +10,6 @@ on:
   workflow_run:
     workflows:
       - "🔀 Gemini Dispatch (free-tier agentic)"
-      - "Jules on Issues (label / @jules)"
-      - "Agent review → auto Jules"
       - "DeepSeek CI – Agentic Automation"
     types: [completed]
 
@@ -35,6 +33,15 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
 
+      - name: Download ATES task-boundary evidence
+        id: task-boundary
+        continue-on-error: true
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: ates-task-boundary-${{ github.event.workflow_run.id }}
+          path: ${{ runner.temp }}/ates-task-boundary
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Collect trusted workflow metadata
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
@@ -91,11 +98,16 @@ jobs:
               core.notice(`Multiple PR associations (${pulls.length}); structural complexity remains missing.`);
             }
 
+            let taskBoundary = null;
+            try {
+              const boundaryPath = require('path').join(process.env.RUNNER_TEMP, 'ates-task-boundary', 'ates-task-boundary.json');
+              taskBoundary = JSON.parse(fs.readFileSync(boundaryPath, 'utf8'));
+            } catch (error) {
+              core.notice('No task-boundary artifact was available; execution identity remains incomplete.');
+            }
             const workflowName = String(run.name || '');
             const identity = [
               ['Gemini Dispatch', 'gemini'],
-              ['Jules on Issues', 'jules'],
-              ['Agent review → auto Jules', 'jules'],
               ['DeepSeek CI', 'deepseek']
             ].find(([needle]) => workflowName.includes(needle));
 
@@ -124,7 +136,8 @@ jobs:
                 conclusion: job.conclusion
               })),
               task_complexity: taskComplexity,
-              pull_request_number: pullRequest?.number || null
+              pull_request_number: pullRequest?.number || null,
+              task_boundary: taskBoundary
             };
 
             fs.writeFileSync(process.env.METADATA_PATH, JSON.stringify(metadata, null, 2) + '\n', 'utf8');

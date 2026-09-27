@@ -49,6 +49,14 @@ def _sha(value: Any) -> str:
     return value
 
 
+def _sha256(value: Any, field: str) -> str:
+    if not isinstance(value, str) or len(value) != 64:
+        raise ValueError(f"{field} must be a 64-character SHA-256 digest")
+    if any(ch not in "0123456789abcdef" for ch in value):
+        raise ValueError(f"{field} must be lowercase hexadecimal")
+    return value
+
+
 def _non_negative(value: Any) -> float:
     """Normalize a finite non-negative number."""
     try:
@@ -86,7 +94,7 @@ def _event_id(event: Mapping[str, Any]) -> str:
 def _base(metadata: Mapping[str, Any], agent_id: str, task_id: str) -> dict[str, Any]:
     """Build the common provenance fields for one sanitized event."""
     run = metadata["workflow_run"]
-    return {
+    event = {
         "timestamp": _iso(run["created_at"]),
         "event": "task_started",
         "agent_id": agent_id,
@@ -95,6 +103,18 @@ def _base(metadata: Mapping[str, Any], agent_id: str, task_id: str) -> dict[str,
         "gha_run_attempt": int(run.get("run_attempt", 1)),
         "source_sha": _sha(run["head_sha"]),
     }
+    boundary = metadata.get("task_boundary")
+    if isinstance(boundary, Mapping):
+        for field in ("cohort_id", "task_fingerprint", "task_contract_hash", "environment_fingerprint"):
+            value = boundary.get(field)
+            if value is not None:
+                if field == "cohort_id":
+                    if not isinstance(value, str) or not value:
+                        raise ValueError("cohort_id must be a non-empty string")
+                else:
+                    _sha256(value, field)
+                event[field] = value
+    return event
 
 
 def build_events(metadata: Mapping[str, Any]) -> list[dict[str, Any]]:
@@ -137,7 +157,12 @@ def build_events(metadata: Mapping[str, Any]) -> list[dict[str, Any]]:
         task_id = f"gha:{run['id']}:{run.get('run_attempt', 1)}:job:{job_id}"
         start = _iso(started)
         finish = _iso(completed)
-        status = _status(job.get("conclusion"))
+        conclusion = str(job.get("conclusion") or "").lower()
+        # A skipped job did not execute the agent task. Do not turn scheduler
+        # control-flow into a fake completed task or throughput observation.
+        if conclusion in {"skipped", "action_required"}:
+            continue
+        status = _status(conclusion)
 
         started_event = _base(metadata, agent_id, task_id)
         started_event.update({"timestamp": start, "event": "task_started"})
@@ -172,6 +197,7 @@ def validate_event(event: Mapping[str, Any]) -> None:
         "duration_ms", "latency_ms", "active_seconds", "inference_seconds",
         "tokens_in", "tokens_out", "complexity_score", "metrics",
         "gha_run_id", "gha_run_attempt", "source_sha", "event_id",
+        "cohort_id", "task_fingerprint", "task_contract_hash", "environment_fingerprint",
     }
     unknown = set(event) - allowed
     if unknown:

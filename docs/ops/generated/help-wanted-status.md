@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-27T18:24:26Z UTC · receipts=419 · foreign_open=22 · tributes=48_
+_Generated 2026-09-27T19:53:20Z UTC · receipts=419 · foreign_open=23 · tributes=49_
 
 ## Tributes (contributor ledger)
 
+- [KayStcx/KayStcx#104](https://github.com/KayStcx/KayStcx/pull/104) · state=open · help-wanted: stake + contribute for #85
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -43,10 +44,10 @@ _Generated 2026-09-27T18:24:26Z UTC · receipts=419 · foreign_open=22 · tribut
 - [pyrite-wiki/pyrite#198](https://github.com/pyrite-wiki/pyrite/pull/198) · state=closed · help-wanted: stake + contribute for #192
 - [vigneshv1cky/alphadesk-terminal#12](https://github.com/vigneshv1cky/alphadesk-terminal/pull/12) · state=closed · help-wanted: stake + contribute for #10
 - [DioNanos/codex-termux#27](https://github.com/DioNanos/codex-termux/pull/27) · state=closed · help-wanted: stake + contribute for #14
-- [chahe-dridi/vscode-agent-bell#225](https://github.com/chahe-dridi/vscode-agent-bell/pull/225) · state=closed · help-wanted: stake + contribute for #224
 
 ## Foreign open PRs
 
+- [KayStcx/KayStcx#104](https://github.com/KayStcx/KayStcx/pull/104) — help-wanted: stake + contribute for #85
 - [StayLitCodes/Vaultix#711](https://github.com/StayLitCodes/Vaultix/pull/711) — help-wanted: stake + contribute for #706
 - [mergepay/mergepay-web#552](https://github.com/mergepay/mergepay-web/pull/552) — help-wanted: stake + contribute for #546
 - [StellarLock/StellarLock#865](https://github.com/StellarLock/StellarLock/pull/865) — help-wanted: stake + contribute for #721

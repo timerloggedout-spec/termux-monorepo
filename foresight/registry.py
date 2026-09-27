@@ -10,28 +10,18 @@ from pathlib import Path
 from typing import Any, Iterable
 
 HORIZONS = {"H0", "H1", "H2", "H3"}
-EVIDENCE_STATUSES = {
-    "confirmed",
-    "research_finding",
-    "attributed_claim",
-    "early_signal",
-    "speculative",
-}
+EVIDENCE_STATUSES = {"confirmed", "research_finding", "attributed_claim", "early_signal", "speculative", "disputed"}
 DECISIONS = {"watch", "investigate", "prototype", "adopt", "reject", "defer"}
-
 PROCUREMENT_FIELDS = [
-    "license", "canonical_source", "maintenance", "portability",
-    "offline_capability", "interoperability", "reproducibility",
-    "provenance", "dependency_risk", "lock_in_risk", "security_surface",
-    "resource_cost", "operational_fit", "horizon", "confidence",
-    "decision_status",
+    "license", "canonical_source", "maintenance", "portability", "offline_capability",
+    "interoperability", "reproducibility", "provenance", "dependency_risk",
+    "lock_in_risk", "security_surface", "resource_cost", "operational_fit",
+    "horizon", "confidence", "decision_status",
 ]
-
 REQUIRED = [
-    "resource_id", "title", "category", "horizon",
-    "evidence_status", "summary", "source", "observed_at",
+    "resource_id", "item_id", "lane_id", "title", "category", "horizon",
+    "evidence_status", "summary", "source", "canonical_source", "observed_at",
 ]
-
 DEFAULT_REGISTRY = Path("data/foresight/resource-registry.jsonl")
 
 
@@ -51,10 +41,14 @@ def fingerprint(record: dict[str, Any]) -> str:
 
 def normalize(record: dict[str, Any]) -> dict[str, Any]:
     out = dict(record)
+    out.setdefault("resource_id", "")
+    out.setdefault("item_id", out.get("resource_id", ""))
+    out.setdefault("lane_id", out.get("category", "unclassified"))
     out.setdefault("observed_at", now_utc())
     out.setdefault("captured_at", now_utc())
     out.setdefault("source_type", "unknown")
     out.setdefault("source_version", None)
+    out.setdefault("version_or_commit", out.get("source_version"))
     out.setdefault("source_date", None)
     out.setdefault("evidence", [])
     out.setdefault("unresolved_questions", [])
@@ -63,6 +57,9 @@ def normalize(record: dict[str, Any]) -> dict[str, Any]:
     out.setdefault("termux_relevance", None)
     out.setdefault("procurement", {})
     out.setdefault("tags", [])
+    source = out.get("source")
+    if isinstance(source, dict):
+        out.setdefault("canonical_source", source.get("url"))
     out["horizon"] = str(out.get("horizon", "")).upper()
     out["evidence_status"] = str(out.get("evidence_status", "")).lower()
     out["confidence"] = float(out.get("confidence", 0.0))
@@ -75,20 +72,18 @@ def validate(record: dict[str, Any]) -> list[str]:
     for key in REQUIRED:
         if not record.get(key):
             errors.append(f"missing required field: {key}")
-
     if record.get("horizon") not in HORIZONS:
         errors.append("horizon must be one of H0/H1/H2/H3")
     if record.get("evidence_status") not in EVIDENCE_STATUSES:
         errors.append("invalid evidence_status")
-
     confidence = record.get("confidence")
     if not isinstance(confidence, (int, float)) or not 0 <= confidence <= 1:
         errors.append("confidence must be in [0,1]")
-
     source = record.get("source")
     if not isinstance(source, dict) or not source.get("url"):
         errors.append("source.url is required")
-
+    if record.get("canonical_source") != (source or {}).get("url"):
+        errors.append("canonical_source must match source.url")
     procurement = record.get("procurement", {})
     if not isinstance(procurement, dict):
         errors.append("procurement must be an object")
@@ -100,7 +95,6 @@ def validate(record: dict[str, Any]) -> list[str]:
             errors.append("procurement.horizon must be H0/H1/H2/H3")
         if procurement.get("decision_status") and procurement["decision_status"] not in DECISIONS:
             errors.append("invalid procurement.decision_status")
-
     return errors
 
 
@@ -142,7 +136,7 @@ def export_csv(records: Iterable[dict[str, Any]], destination: Path) -> None:
     records = list(records)
     destination.parent.mkdir(parents=True, exist_ok=True)
     columns = REQUIRED + [
-        "source_type", "source_version", "source_date",
+        "source_type", "source_version", "source_date", "version_or_commit",
         "why_it_matters", "practical_opportunity", "termux_relevance",
         "confidence", "evidence_hash",
     ] + PROCUREMENT_FIELDS
@@ -191,18 +185,17 @@ def main(argv: list[str] | None = None) -> int:
 
     radar = sub.add_parser("radar")
     radar.add_argument("--horizon", action="append", choices=sorted(HORIZONS))
+    radar.add_argument("--lane")
     def radar_cmd(a):
         allowed = set(a.horizon or HORIZONS)
-        for r in sorted(dedupe(load(a.registry)), key=lambda x: (x["horizon"], x["title"].lower())):
-            if r["horizon"] in allowed:
+        lane = a.lane
+        for r in sorted(dedupe(load(a.registry)), key=lambda x: (x["horizon"], x["lane_id"], x["title"].lower())):
+            if r["horizon"] in allowed and (lane is None or r["lane_id"] == lane):
                 print(json.dumps({
-                    "resource_id": r["resource_id"],
-                    "horizon": r["horizon"],
-                    "evidence_status": r["evidence_status"],
-                    "confidence": r["confidence"],
-                    "title": r["title"],
-                    "source": r["source"]["url"],
-                    "termux_relevance": r.get("termux_relevance"),
+                    "resource_id": r["resource_id"], "item_id": r["item_id"], "lane_id": r["lane_id"],
+                    "horizon": r["horizon"], "evidence_status": r["evidence_status"],
+                    "confidence": r["confidence"], "title": r["title"],
+                    "source": r["canonical_source"], "termux_relevance": r.get("termux_relevance"),
                     "decision_status": r.get("procurement", {}).get("decision_status"),
                 }, ensure_ascii=False))
         return 0

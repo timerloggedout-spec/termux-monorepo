@@ -40,7 +40,9 @@ EOF
                   --data-binary @payload.json | jq -r '.invocation_id')
           echo "invocation=$INV"
           echo "invocation=$INV" >> "$GITHUB_OUTPUT"
-          for i in $(seq 1 120); do
+          # 90 x 15s = 22.5min, inside the 25min step timeout so the loop
+          # exits via phase=done/error rather than being killed by the timeout.
+          for i in $(seq 1 90); do
             S=$(curl -sS --max-time 10 "$AGENT_URL/v1/agent/status/$INV" \
                   -H "Authorization: Bearer $AGENT_TOKEN")
             echo "$S" > agent_status.json

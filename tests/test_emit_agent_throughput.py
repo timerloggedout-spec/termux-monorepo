@@ -64,6 +64,11 @@ class AgentThroughputEmitterTests(unittest.TestCase):
         events = build_events(self.metadata(task_complexity=None))
         self.assertNotIn("metrics", events[-1])
 
+    def test_skipped_jobs_do_not_become_fake_completed_tasks(self):
+        data = self.metadata()
+        data["jobs"][0]["conclusion"] = "skipped"
+        self.assertEqual(build_events(data), [])
+
     def test_missing_job_timing_does_not_fabricate_duration(self):
         data = self.metadata()
         data["jobs"][0]["started_at"] = None

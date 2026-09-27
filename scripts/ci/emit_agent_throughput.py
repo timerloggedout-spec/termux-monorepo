@@ -157,7 +157,12 @@ def build_events(metadata: Mapping[str, Any]) -> list[dict[str, Any]]:
         task_id = f"gha:{run['id']}:{run.get('run_attempt', 1)}:job:{job_id}"
         start = _iso(started)
         finish = _iso(completed)
-        status = _status(job.get("conclusion"))
+        conclusion = str(job.get("conclusion") or "").lower()
+        # A skipped job did not execute the agent task. Do not turn scheduler
+        # control-flow into a fake completed task or throughput observation.
+        if conclusion in {"skipped", "action_required"}:
+            continue
+        status = _status(conclusion)
 
         started_event = _base(metadata, agent_id, task_id)
         started_event.update({"timestamp": start, "event": "task_started"})

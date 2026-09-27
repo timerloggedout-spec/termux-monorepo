@@ -7,6 +7,8 @@ Policy for issue #184. **Never commit secret values.** Rotate expired tokens off
 - Values live in GitHub Actions secrets / device keyrings only.
 - Classic PATs with unused admin scopes should be rotated to fine-grained tokens.
 - Expired fine-grained tokens must be deleted, not reused.
+- Machine-checkable copy lives in `data/ops/credential-surfaces.jsonl`.
+- Validator: `python3 scripts/ops/validate_credential_inventory.py`.
 
 ## Named surfaces (no values)
 
@@ -31,4 +33,4 @@ CodeRabbit, Qodo, Devin, Jules, Copilot, Vercel, Linear, Grok GitHub App are rev
 4. Rebind Actions secrets by name only.
 5. Record rotation date here without values.
 
-Last inventory pass: 2026-09-24 (names-only recon; no secret material).
+Last inventory pass: 2026-09-27 (names-only contract + validator; no secret material).

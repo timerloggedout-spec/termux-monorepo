@@ -3,8 +3,6 @@ name: evidence-led-monorepo-ops
 description: Continuous evidence-led admin operations for timerloggedout-spec/termux-monorepo. Reconstruct current state, bind actions to immutable SHAs, preserve provenance, and never confuse activity with verified outcome.
 ---
 
-# Evidence-Led Monorepo Operations
-
 Load this skill for every repository-admin session.
 
 ## Operating contract
@@ -145,14 +143,14 @@ Receipts are projections; the longitudinal GitHub/evidence corpus remains the so
 
 This skill owns repository-admin evidence discipline; it does not replace those specialist lanes.
 
-## Session 2026-09-26 20:14 PDT
+## Session 2026-09-26 21:14 PDT
 
-- Live master tip: `59f705357756e3` (`fix(self-integrate): POST retry + DSML v6`).
-- Prior product extract #856 MERGED as `70d53c4011e3` onto `573adddda966`.
-- Dual-gate on `59f70535`: repo-gate 36290788543 SUCCESS, termux-smoke 36290788546 SUCCESS.
-- Non-gate FAIL on same SHA: historical-evaluation-correlation 36290788530, automation-docs-continuous-refresh 36290788574, swe-reference-evaluation 36290787538, ci-sweep 36290787985.
+- Live master tip: `8086cea181eca` (#857 squash onto `59f705357756e3`).
+- Prior #856 MERGED `70d53c4011e3`. Product dual-gate still bound to `59f70535`:
+  repo-gate 36290788543 SUCCESS, termux-smoke 36290788546 SUCCESS.
+- #855 CLOSED SUPERSEDED (comment 5852544923).
 - Next: disjoint extract only. Do not pulse #175.
-- Dirty / do-not-merge-as-is: #630 #680 #818 #48 #850 #855.
-- #184 names-only. HOLD/WAIT/OBSERVE invalid parking. #69 closed.
+- Dirty: #630/#680/#818/#48/#850. #184 names-only. #69 closed.
+- HOLD/WAIT/OBSERVE invalid parking.
 
 Agent-Identity: Grok (Administrator)

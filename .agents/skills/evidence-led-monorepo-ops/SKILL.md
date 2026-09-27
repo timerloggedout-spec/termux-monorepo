@@ -145,14 +145,15 @@ Receipts are projections; the longitudinal GitHub/evidence corpus remains the so
 
 This skill owns repository-admin evidence discipline; it does not replace those specialist lanes.
 
-## Session 2026-09-26 20:14 PDT
+## Session 2026-09-27 15:14 PDT
 
-- Live master tip: `59f705357756e3` (`fix(self-integrate): POST retry + DSML v6`).
-- Prior product extract #856 MERGED as `70d53c4011e3` onto `573adddda966`.
-- Dual-gate on `59f70535`: repo-gate 36290788543 SUCCESS, termux-smoke 36290788546 SUCCESS.
-- Non-gate FAIL on same SHA: historical-evaluation-correlation 36290788530, automation-docs-continuous-refresh 36290788574, swe-reference-evaluation 36290787538, ci-sweep 36290787985.
-- Next: disjoint extract only. Do not pulse #175.
-- Dirty / do-not-merge-as-is: #630 #680 #818 #48 #850 #855.
+- Live master tip: `67bebdb7722cd1a0412c3abed07a17b74f0372e9` (help-wanted refresh 22:04Z).
+- Product tip behind refresh: `dc693dcdf4e097fd51aa8800222066557ead92c8`.
+- Dual-gate on `dc693dcd` PASS: repo-gate 36352842663, termux-smoke 36352842664.
+- #878 MERGED as `41aeb75e95312e225f6c56ecee8be732074c370f`. Foresight checkout now SUCCESS.
+- Foresight 36352842655 job 108714702254: checkout PASS, unit tests PASS, registry validation FAIL (non-gate).
+- Next: bounded foresight registry validation fix. Do not pulse #175.
+- Dirty / do-not-merge-as-is: #630 #680 #818 #48 #735 #736 #850.
 - #184 names-only. HOLD/WAIT/OBSERVE invalid parking. #69 closed.
 
 Agent-Identity: Grok (Administrator)

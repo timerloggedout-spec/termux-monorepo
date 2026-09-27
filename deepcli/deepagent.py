@@ -17,6 +17,13 @@ sys.path.insert(0, str(HOME))
 from deepcli.core import get_token, create_session, chat_completion  # noqa
 from src.gh_broker import GhBroker                                    # noqa
 
+# Hindsight memory (optional, env-gated)
+try:
+    from deepcli._v1_hindsight import build_hindsight_tools as _hs_build
+    _HINDSIGHT_AVAILABLE = True
+except Exception:
+    _HINDSIGHT_AVAILABLE = False
+
 _AUTOFIX_ENABLED = os.environ.get('AGENT_AUTOFIX', '1') == '1'
 MAX_STEPS = int(os.environ.get("AGENT_MAX_STEPS", "16"))
 IDLE_SLEEP = float(os.environ.get("AGENT_STEP_PACE", "3"))
@@ -110,6 +117,8 @@ TOOLS = [
         "name":"b64_decode",
         "description":"Decode a base64 string to UTF-8 text. Use after gh api ... --jq .content to get the file body. Args: data='<base64>'.",
         "parameters":{"type":"object","properties":{"data":{"type":"string"}},"required":["data"]}}},
+    *([] if not (_HINDSIGHT_AVAILABLE and os.environ.get("HINDSIGHT_BASE_URL"))
+        else [spec.schema for spec in _hs_build()]),
 {"type":"function","function":{
         "name":"finish",
         "description":"Call when done. Pass 'summary'. No tool calls after.",
@@ -687,6 +696,8 @@ DISPATCH = {
     "list_skills": _list_skills, "read_skill": _read_skill,
     "gh_put": _gh_put, "gh_worktree": _gh_worktree, "gh_edit_file": _gh_edit_file, "gh_get_file": _gh_get_file, "b64_decode": _b64_decode,
     "logs_sync": _logs_sync,
+    **({} if not (_HINDSIGHT_AVAILABLE and os.environ.get("HINDSIGHT_BASE_URL"))
+       else {spec.name: spec.handler for spec in _hs_build()}),
 }
 REQUIRED = {
     "gh":["argv"], "run":["argv"], "read_file":["path"], "write_file":["path","content"],
@@ -929,6 +940,13 @@ def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False
     SAFETY_CEILING = int(os.environ.get("AGENT_SAFETY_CEILING", "60"))
     NO_PROGRESS_LIMIT = int(os.environ.get("AGENT_NO_PROGRESS_LIMIT", "5"))
     msgs = [{"role":"user","content":task}]
+    if _HINDSIGHT_AVAILABLE and os.environ.get("HINDSIGHT_BASE_URL"):
+        try:
+            import asyncio as _aio
+            _hs = _hs_build()[0].client if hasattr(_hs_build()[0], "client") else None
+            # recall is invoked as a tool by the model; no eager recall here
+        except Exception:
+            pass
     sid = None
     parent_id = None
     seen_sigs = []          # signatures of (tool, args) to detect repeats
@@ -974,6 +992,18 @@ def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False
                     _elapsed = round(time.time() - _t0, 1)
                 except Exception:
                     _elapsed = 0.0
+                if _HINDSIGHT_AVAILABLE and os.environ.get("HINDSIGHT_BASE_URL"):
+                    try:
+                        _hooks = {s.name: s.handler for s in _hs_build()}
+                        if "hindsight_retain" in _hooks:
+                            import asyncio as _aio
+                            _aio.get_event_loop().create_task(
+                                _hooks["hindsight_retain"](
+                                    {"content": f"task: {task[:300]}\nsummary: {result.get('summary','')[:500]}"}
+                                )
+                            ) if False else None  # sync context; defer to Phase 3
+                    except Exception:
+                        pass
                 _autosnapshot("finish")
                 _notify("run", "✅ Agent done",
                         f"sid={sid[:12] if sid else '?'}  elapsed={_elapsed}s\n{result.get('summary','')[:200]}",

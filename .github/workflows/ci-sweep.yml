@@ -77,4 +77,5 @@ EOF
           path: |
             payload.json
             agent_status.json
+          if-no-files-found: ignore
           retention-days: 7

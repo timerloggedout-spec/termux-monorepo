@@ -3,10 +3,11 @@ name: stepie-stepwise-ops
 description: Stepie AKA StepWise MCP as production planning surface for termux-monorepo.
 ---
 
-Session 2026-09-24 10:07 PDT.
-Goal 2087 planning surface unchanged this cycle (no invented completion).
-Stepie does not merge. LANE-MATRIX classifies. adaptive-wait gates promote.
-#808 MERGED `fdc5d534`. #807 MERGED `28cd7b24`. #805 MERGED `def12264`.
-Pulse `ops/session-lane-matrix-20260924-1007` ACTIVE. #810 SUPERSEDE. #48 EXTRACT dirty. #69 SUPERSEDED.
+Session 2026-09-26 17:15 PDT.
+Stepie planning only — not merge authority.
+Task 1228: Promote dual-gate green #854 CedrLang extract — done (SHA `3a7143fdedfb`).
+#850 NEED_EVIDENCE (stale base, 101 files, #175 — do not pulse).
+#630/#680 BLOCK dirty. #48 stay on master-staging.
+#69 already closed 2026-09-23.
 
 Agent-Identity: Grok (Administrator)

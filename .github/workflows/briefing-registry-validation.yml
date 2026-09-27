@@ -1,0 +1,40 @@
+name: Briefing Registry Validation
+
+on:
+  push:
+    paths:
+      - "data/briefing/**"
+      - "schemas/briefing/**"
+      - "scripts/briefing/**"
+      - "docs/briefing/**"
+      - "docs/research/**"
+      - ".github/workflows/briefing-registry-validation.yml"
+  pull_request:
+    paths:
+      - "data/briefing/**"
+      - "schemas/briefing/**"
+      - "scripts/briefing/**"
+      - "docs/briefing/**"
+      - "docs/research/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate registry
+        run: python3 scripts/briefing/validate_registry.py
+      - name: Validate JSON
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          for p in Path("schemas/briefing").glob("*.json"):
+              json.loads(p.read_text())
+              print(f"valid JSON: {p}")
+          PY

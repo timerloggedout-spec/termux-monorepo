@@ -52,7 +52,8 @@ Gemini CLI, OpenRouter peers, OmniRoute, Jules, Felo models, and other agents ar
 ### Evidence collector
 
 Records actual invocations and outcomes. A declared route earns no performance credit until it actually executes.
-\n### Evaluation / PR boundary
+
+### Evaluation / PR boundary
 
 Continuous evaluation is a state/evidence loop, not a pull-request generator.
 

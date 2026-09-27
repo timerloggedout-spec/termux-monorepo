@@ -1,0 +1,38 @@
+name: Briefing Evidence Heartbeat
+
+on:
+  schedule:
+    - cron: "17 15 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-and-package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate registries
+        run: python3 scripts/briefing/validate_registry.py
+      - name: Build immutable registry manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/briefing-evidence
+          find data/briefing schemas/briefing docs/briefing docs/research config/foresight_digest_sources.json \
+            -type f -print0 | sort -z | xargs -0 sha256sum > /tmp/briefing-evidence/SHA256SUMS
+          {
+            echo "generated_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "repository=$GITHUB_REPOSITORY"
+            echo "sha=$GITHUB_SHA"
+            echo "ref=$GITHUB_REF"
+          } > /tmp/briefing-evidence/receipt.txt
+      - name: Upload evidence receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: briefing-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/briefing-evidence/
+          if-no-files-found: error
+          retention-days: 14

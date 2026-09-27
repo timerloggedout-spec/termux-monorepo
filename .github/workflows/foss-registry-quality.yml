@@ -30,14 +30,16 @@ jobs:
         run: python -m unittest tests.test_foss_registry -v
       - name: Emit registry receipt
         env:
-          SOURCE_SHA: ${{ github.sha }}
+          WORKFLOW_SHA: ${{ github.sha }}
+          SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || '' }}
           RUN_ID: ${{ github.run_id }}
         run: |
           python - <<'PY'
           import json,os
           from pathlib import Path
           d=json.loads(Path('docs/ops/FOSS-FORESIGHT-PROCUREMENT-REGISTRY.json').read_text())
-          r={'registry_id':d['registry_id'],'schema_version':d['schema_version'],'resource_count':len(d['resources']),'horizons':sorted({x['horizon'] for x in d['resources']}),'evidence_statuses':sorted({x['evidence_status'] for x in d['resources']}),'source_sha':os.environ['SOURCE_SHA'],'run_id':os.environ['RUN_ID']}
+          r={'registry_id':d['registry_id'],'schema_version':d['schema_version'],'resource_count':len(d['resources']),'horizons':sorted({x['horizon'] for x in d['resources']}),'evidence_statuses':sorted({x['evidence_status'] for x in d['resources']}),'workflow_sha':os.environ['WORKFLOW_SHA'],'source_head_sha':os.environ['SOURCE_HEAD_SHA'],'base_sha':os.environ['BASE_SHA'],'run_id':os.environ['RUN_ID']}
           Path('foss-registry-receipt.json').write_text(json.dumps(r,indent=2,sort_keys=True)+'\n')
           PY
       - name: Upload immutable receipt

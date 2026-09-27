@@ -38,6 +38,15 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Model router (Gemini PRIMARY → peer Omni ↔ OpenRouter secondary)
+        id: router
+        uses: ./.github/actions/model-router
+        with:
+          role: invoke
+          has-omni: ${{ secrets.OMNI_API_KEY != '' || secrets.OMNIROUTE_API_KEY != '' }}
+          has-openrouter: ${{ secrets.OPENROUTER_API_KEY != '' }}
+          has-gemini: ${{ secrets.GEMINI_API_KEY != '' }}
+
       - name: Emit ATES task-boundary identity
         env:
           AGENT_ID: gemini
@@ -49,8 +58,8 @@ jobs:
           BASE_SHA: ${{ github.sha }}
           RUNNER_IMAGE: ${{ env.ImageOS }}:${{ env.ImageVersion }}
           WORKFLOW: ${{ github.workflow }}
-          PROVIDER: unresolved
-          MODEL: unresolved
+          PROVIDER: ${{ steps.router.outputs.provider || 'unresolved' }}
+          MODEL: ${{ steps.router.outputs.model || 'unresolved' }}
         run: |
           set -euo pipefail
           jq -n \
@@ -79,14 +88,6 @@ jobs:
           path: ${{ runner.temp }}/ates-task-boundary.json
           if-no-files-found: ignore
           retention-days: 14
-      - name: Model router (Gemini PRIMARY → peer Omni ↔ OpenRouter secondary)
-        id: router
-        uses: ./.github/actions/model-router
-        with:
-          role: invoke
-          has-omni: ${{ secrets.OMNI_API_KEY != '' || secrets.OMNIROUTE_API_KEY != '' }}
-          has-openrouter: ${{ secrets.OPENROUTER_API_KEY != '' }}
-          has-gemini: ${{ secrets.GEMINI_API_KEY != '' }}
 
       - name: Record capability-spine observe decision
         env:

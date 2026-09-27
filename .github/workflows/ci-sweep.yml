@@ -32,14 +32,14 @@ EOF
 )
           jq -n --arg t "$TASK" '{task:$t, source:"gh-schedule:ci-sweep"}' \
             > payload.json
-          INV=$(curl -sS -X POST "$AGENT_URL/v1/agent" \
+          INV=$(curl -sS --max-time 30 -X POST "$AGENT_URL/v1/agent" \
                   -H "Authorization: Bearer $AGENT_TOKEN" \
                   -H 'Content-Type: application/json' \
                   --data-binary @payload.json | jq -r '.invocation_id')
           echo "invocation=$INV"
           echo "invocation=$INV" >> "$GITHUB_OUTPUT"
           for i in $(seq 1 120); do
-            S=$(curl -sS "$AGENT_URL/v1/agent/status/$INV" \
+            S=$(curl -sS --max-time 10 "$AGENT_URL/v1/agent/status/$INV" \
                   -H "Authorization: Bearer $AGENT_TOKEN")
             echo "$S" > agent_status.json
             P=$(echo "$S" | jq -r '.phase')

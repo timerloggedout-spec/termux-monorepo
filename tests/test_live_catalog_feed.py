@@ -110,6 +110,19 @@ def test_peer_score_code_roles() -> None:
     assert mod.peer_score("implement", coder) == mod.peer_score("review", coder)
 
 
+def test_rank_eligible_scores_once_and_does_not_mutate() -> None:
+    original = [
+        {"provider": "openrouter", "id": "meta/llama-3:free"},
+        {"provider": "openrouter", "id": "qwen/coder:free"},
+    ]
+    ranked = mod.rank_eligible("review", original)
+    assert "role_score" not in original[0]
+    assert ranked[0]["id"] == "qwen/coder:free"
+    assert ranked[0]["role_score"] == mod.peer_score("review", ranked[0])
+    assert ranked[1]["id"] == "meta/llama-3:free"
+    assert ranked[0]["role_score"] > ranked[1]["role_score"]
+
+
 def test_peer_candidates_prefer_coder(monkeypatch) -> None:
     monkeypatch.setattr(mod, "_token", lambda _p: None)
     feed = {

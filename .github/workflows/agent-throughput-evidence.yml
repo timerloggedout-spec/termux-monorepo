@@ -108,8 +108,6 @@ jobs:
             const workflowName = String(run.name || '');
             const identity = [
               ['Gemini Dispatch', 'gemini'],
-              ['Jules on Issues', 'jules'],
-              ['Agent review → auto Jules', 'jules'],
               ['DeepSeek CI', 'deepseek']
             ].find(([needle]) => workflowName.includes(needle));
 

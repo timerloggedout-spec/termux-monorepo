@@ -129,6 +129,7 @@ jobs:
           echo "invocation_id=$INV" >> "$GITHUB_OUTPUT"
 
       - name: Poll for completion
+        timeout-minutes: 22
         env:
           AGENT_URL: ${{ secrets.DEEPSEEK_AGENT_URL }}
           AGENT_TOKEN: ${{ secrets.DEEPSEEK_AGENT_TOKEN }}

@@ -17,6 +17,8 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Dispatch sweep to termux agent
+        id: dispatch
+        timeout-minutes: 25
         env:
           AGENT_URL: ${{ secrets.DEEPSEEK_AGENT_URL }}
           AGENT_TOKEN: ${{ secrets.DEEPSEEK_AGENT_TOKEN }}
@@ -32,14 +34,14 @@ EOF
 )
           jq -n --arg t "$TASK" '{task:$t, source:"gh-schedule:ci-sweep"}' \
             > payload.json
-          INV=$(curl -sS -X POST "$AGENT_URL/v1/agent" \
+          INV=$(curl -sS --max-time 30 -X POST "$AGENT_URL/v1/agent" \
                   -H "Authorization: Bearer $AGENT_TOKEN" \
                   -H 'Content-Type: application/json' \
                   --data-binary @payload.json | jq -r '.invocation_id')
           echo "invocation=$INV"
           echo "invocation=$INV" >> "$GITHUB_OUTPUT"
           for i in $(seq 1 120); do
-            S=$(curl -sS "$AGENT_URL/v1/agent/status/$INV" \
+            S=$(curl -sS --max-time 10 "$AGENT_URL/v1/agent/status/$INV" \
                   -H "Authorization: Bearer $AGENT_TOKEN")
             echo "$S" > agent_status.json
             P=$(echo "$S" | jq -r '.phase')
@@ -51,6 +53,7 @@ EOF
 
       - name: Failure diagnostics
         if: failure()
+        timeout-minutes: 5
         run: |
           set -uo pipefail
           echo "::group::Workflow failure context"
@@ -68,10 +71,11 @@ EOF
 
       - name: Archive artifacts
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.5.0
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.2
         with:
           name: ci-sweep-${{ github.run_id }}
           path: |
             payload.json
             agent_status.json
+          if-no-files-found: ignore
           retention-days: 7

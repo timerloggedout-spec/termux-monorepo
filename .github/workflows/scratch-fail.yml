@@ -1,0 +1,7 @@
+name: Scratch Fail
+on: [workflow_dispatch, push]
+jobs:
+  boom:
+    runs-on: ubuntu-latest
+    steps:
+      - run: exit 1

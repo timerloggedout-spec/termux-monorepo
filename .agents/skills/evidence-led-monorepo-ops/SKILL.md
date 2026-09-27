@@ -145,14 +145,13 @@ Receipts are projections; the longitudinal GitHub/evidence corpus remains the so
 
 This skill owns repository-admin evidence discipline; it does not replace those specialist lanes.
 
-## Session 2026-09-26 20:14 PDT
+## Session 2026-09-27 09:14 PDT
 
-- Live master tip: `59f705357756e3` (`fix(self-integrate): POST retry + DSML v6`).
-- Prior product extract #856 MERGED as `70d53c4011e3` onto `573adddda966`.
-- Dual-gate on `59f70535`: repo-gate 36290788543 SUCCESS, termux-smoke 36290788546 SUCCESS.
-- Non-gate FAIL on same SHA: historical-evaluation-correlation 36290788530, automation-docs-continuous-refresh 36290788574, swe-reference-evaluation 36290787538, ci-sweep 36290787985.
-- Next: disjoint extract only. Do not pulse #175.
-- Dirty / do-not-merge-as-is: #630 #680 #818 #48 #850 #855.
-- #184 names-only. HOLD/WAIT/OBSERVE invalid parking. #69 closed.
+- Live master tip: `e55e4a02b3284ea09a57877bcd56ea7b459b6bca` (help-wanted status refresh).
+- Dual-gate last PASS: `98542024eea518c50e24050a8bb5e1ca026573e2` — repo-gate 36309134419 SUCCESS, termux-smoke 36309134410 SUCCESS.
+- Product line includes #857 `8086cea181eca` and #856 `70d53c4011e3`.
+- #860 CLOSED SUPERSEDED (stale base `243de679` / head `e91451c297ee0dda`).
+- Dirty: #630/#680/#818/#48/#850/#735/#736. #184 names-only. #69 closed.
+- Do not pulse #175. HOLD/WAIT/OBSERVE invalid parking.
 
 Agent-Identity: Grok (Administrator)

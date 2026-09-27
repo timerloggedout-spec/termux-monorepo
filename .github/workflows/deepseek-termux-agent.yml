@@ -133,7 +133,9 @@ jobs:
         run: |
           set -uo pipefail
           echo '{"phase":"timeout"}' > agent_status_final.json
-          for i in $(seq 1 180); do
+          # 120 x 10s = 20min, inside the 25min job timeout so the
+          # timeout/error path can still emit agent_status_final.json.
+          for i in $(seq 1 120); do
             S=$(curl -sS --max-time 10 "$AGENT_URL/v1/agent/status/$INV" -H "Authorization: Bearer $AGENT_TOKEN" || echo '{"phase":"error"}')
             PHASE=$(echo "$S" | jq -r '.phase')
             IDLE=$(echo "$S" | jq -r '.idle_s // 0')

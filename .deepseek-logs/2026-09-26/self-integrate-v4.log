@@ -1,0 +1,60 @@
+
+▶ task: # TASK: Self-integrate — one workflow improvement
+
+## Canonical tool flow — follow exactly
+
+### Step 1: pick target
+    glob(path="~/.github/workflows", glob="*.yml")
+    gh(["run","list","--repo","timerloggedout-spec/termux-monorepo","--limit","20","--json","databaseId,name,conclusion,headBranch"])
+
+### Step 2: read the file (ONE CALL — no shell, no b64_decode)
+    gh_get_file(repo="timerloggedout-spec/termux-monorepo",
+                path=".github/workflows/deepseek-termux-agent.yml",
+                ref="master")
+
+The `content` field IS the full decoded text. The `sha` field is what
+gh_put will need — but gh_put auto-detects sha, so you do not need to
+pass it. Save the ORIGINAL content; you will need it for revert.
+
+### Step 3: pick ONE improvement
+- missing `if: failure()` step -> add
+- deprecated action version -> bump
+- missing `timeout-minutes:` on a job -> add
+- missing artifact upload of logs -> add
+
+If the file already satisfies all of these, try `ci-sweep.yml`. If both
+are clean, `finish` with improvement=null.
+
+### Step 4: apply via gh_put (ONE CALL — the only write path)
+    gh_put(repo="timerloggedout-spec/termux-monorepo",
+           path=".github/workflows/deepseek-termux-agent.yml",
+           content="<full new file body — original with exactly one change>",
+           message="chore(ci): <one-line diagnosis>",
+           branch="master")
+
+### Step 5: validate
+    gh(["workflow","run","deepseek-termux-agent.yml","--repo","timerloggedout-spec/termux-monorepo","--ref","master"])
+    sleep via run: run(["sleep","30"])
+    gh(["run","list","--repo","timerloggedout-spec/termux-monorepo","--workflow","deepseek-termux-agent.yml","--limit","1","--json","status,conclusion"])
+
+### Step 6: sync logs and finish
+    logs_sync()
+    finish(summary='{"file":"...","change":"...","validation":"passed|reverted|deferred"}')
+
+## Forbidden
+- Do NOT use `run` with sh/bash/base64. They are not allowlisted and never will be.
+- Do NOT try to pipe output through shell utilities.
+- If a tool fails, move to the next approach; do not retry the same call.
+
+## On failure
+If after 6 tool calls you cannot complete step 4, call finish with
+validation="deferred" and a one-sentence reason. That is a valid outcome.
+
+── step 1/<dynamic> ──
+create_session status: 200, body: 
+{"code":0,"msg":"","data":{"biz_code":0,"biz_msg":"","biz_d
+ata":{"id":"9ec6b4cf-14a9-4923-abf6-9442a0cee07b","seq_id":
+212652333,"agent":"chat","model_type":"default","title":nul
+l,"title_type":"WIP","version":0,"current_message_id":null,
+"pinned":false,"inserted_at":1790489133.24,"updated_at":179
+04891

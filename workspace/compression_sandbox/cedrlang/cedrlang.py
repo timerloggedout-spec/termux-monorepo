@@ -162,10 +162,11 @@ def build_trie_regex(words: List[str]) -> str:
         children = []
         for char in chars:
             sub = _trie_to_regex(node[char])
+            char_pat = f"[{char.lower()}{char.upper()}]" if char.isalpha() else re.escape(char)
             if sub:
-                children.append(re.escape(char) + sub)
+                children.append(char_pat + sub)
             else:
-                children.append(re.escape(char))
+                children.append(char_pat)
         if len(children) == 1:
             res = children[0]
         else:
@@ -179,9 +180,10 @@ def build_trie_regex(words: List[str]) -> str:
     return r'\b(?:' + _trie_to_regex(trie) + r')\b'
 
 COMP_DICT = {human.lower(): comp for human, comp in SORTED_MAPPINGS_COMP}
-COMP_SINGLE_REGEX = re.compile(build_trie_regex([human for human, _ in SORTED_MAPPINGS_COMP]), re.IGNORECASE)
+# Build ASCII case-insensitive Trie regex without re.IGNORECASE to avoid Unicode case-folding overhead
+COMP_SINGLE_REGEX = re.compile(build_trie_regex([human for human, _ in SORTED_MAPPINGS_COMP]))
 DECOMP_DICT = {comp.lower(): human for human, comp in SORTED_MAPPINGS_DECOMP}
-DECOMP_SINGLE_REGEX = re.compile(build_trie_regex([comp for _, comp in SORTED_MAPPINGS_DECOMP]), re.IGNORECASE)
+DECOMP_SINGLE_REGEX = re.compile(build_trie_regex([comp for _, comp in SORTED_MAPPINGS_DECOMP]))
 FAST_CASING_COMP: Dict[str, str] = {}
 for human, comp in SORTED_MAPPINGS_COMP:
     FAST_CASING_COMP[human.lower()] = lowercase_word(comp)

@@ -107,6 +107,23 @@
     "event_id": {
       "type": "string",
       "pattern": "^[0-9a-f]{32}$"
+    },
+    "cohort_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "task_fingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "task_contract_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "environment_fingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
     }
   },
   "additionalProperties": false

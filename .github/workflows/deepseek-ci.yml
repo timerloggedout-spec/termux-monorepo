@@ -95,6 +95,35 @@ jobs:
           token: ${{ env.OPERATOR_TOKEN }}
           persist-credentials: true
 
+      - name: Emit ATES task-boundary identity
+        env:
+          GITHUB_EVENT_JSON: ${{ env.GITHUB_EVENT }}
+        run: |
+          set -euo pipefail
+          task_kind=$(jq -r '.action // .event_name // .workflow_dispatch // "ci"' <<<"$GITHUB_EVENT_JSON")
+          task_text=$(jq -r '.comment.body // .issue.body // .pull_request.body // .pull_request.title // .inputs.event_payload // ""' <<<"$GITHUB_EVENT_JSON")
+          target_number=$(jq -r '.pull_request.number // .issue.number // ""' <<<"$GITHUB_EVENT_JSON")
+          target_kind=$(jq -r 'if .pull_request.number then "pull_request" elif .issue.number then "issue" else "workflow_dispatch" end' <<<"$GITHUB_EVENT_JSON")
+          jq -n \
+            --arg agent "deepseek" --arg kind "$task_kind" --arg target "$target_kind" \
+            --arg number "$target_number" --arg task "$task_text" --arg repo "$GITHUB_REPOSITORY" \
+            --arg sha "$GITHUB_SHA" --arg image "${ImageOS:-}:${ImageVersion:-}" \
+            --arg workflow "$GITHUB_WORKFLOW" --arg provider "deepseek-ci" \
+            --arg model "${DEEPSEEK_ACCOUNT:-unresolved}" \
+            '{agent_id:$agent,task_kind:$kind,target_kind:$target,target_number:$number,task_text:$task,repository:$repo,base_sha:$sha,runner_image:$image,workflow:$workflow,provider:$provider,model:$model}' \
+            > "$RUNNER_TEMP/ates-task-input.json"
+          python scripts/ci/write_agent_task_boundary.py \
+            --input "$RUNNER_TEMP/ates-task-input.json" \
+            --output "$RUNNER_TEMP/ates-task-boundary.json"
+
+      - name: Upload ATES task-boundary identity
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.5.0
+        with:
+          name: ates-task-boundary-${{ github.run_id }}
+          path: ${{ runner.temp }}/ates-task-boundary.json
+          if-no-files-found: ignore
+          retention-days: 14
       - name: Setup Node.js (for PoW WASM)
         uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af  # v4.1.0
         with:

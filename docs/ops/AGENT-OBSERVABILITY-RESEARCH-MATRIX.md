@@ -170,29 +170,38 @@ Credentials remain external to the image/workspace. Broad PAT/connector scope is
 
 ## Phase gates
 
-### Phase A — instrument
+### Phase A — contract + reducer **[IMPLEMENTED]**
 
-Canonical JSONL event schema + runtime watcher + immutable SHA/run linkage.
+Canonical JSONL event schema, pure ATES reducer, immutable SHA/run linkage, and
+missing-evidence semantics.
 
-### Phase B — tool-definition quality
+### Phase B — runtime evidence **[IMPLEMENTED]**
 
-TDQS deterministic context extraction, hard gates, input hashing, and rollups.
-The LLM rubric remains an evaluator/provider boundary. TDQS observations join the
-AEF evidence record without becoming an execution-quality gate.
+A read-only GitHub Actions `workflow_run` observer emits sanitized task lifecycle
+events and reducer artifacts. It never executes the triggering SHA.
 
-### Phase C — complexity
+### Phase C — comparable baseline **[IN PROGRESS]**
 
-Structural fallback + Lizard/Radon providers; Tree-sitter as the language-neutral structural expansion.
+Declare task-contract and environment fingerprints, measure explicit serial
+repetitions, store median task durations, and resolve a sequential baseline only
+from exact task fingerprints. Missing or incomparable tasks fail closed.
 
-### Phase D — parallel evaluation
+### Phase D — tool-definition + complexity providers
 
-Run equivalent cohorts through GitHub-only, TDQS, Langfuse-adapter, and Phoenix-adapter paths.
+TDQS deterministic context extraction, then structural/Lizard/Radon/Tree-sitter
+providers. Provider observations remain separate from ATES truth.
 
-### Phase E — environment parity
+### Phase E — parallel evaluation
 
-Docker and Codespaces reproduction lanes; classify environment failures independently.
+Run equivalent cohorts through GitHub-only, TDQS, Langfuse-adapter, and
+Phoenix-adapter paths.
 
-### Phase F — manager tournament
+### Phase F — environment parity
+
+Docker and Codespaces reproduction lanes; classify environment failures
+independently.
+
+### Phase G — manager tournament
 
 Compare orchestration policies, not isolated model leaderboard scores. Retain experiment history, cull weak policies, and preserve useful behaviors.
 

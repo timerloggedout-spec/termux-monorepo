@@ -44,9 +44,30 @@ class AgentThroughputEmitterTests(unittest.TestCase):
         self.assertEqual(events[-1]["source_sha"], "a" * 40)
         self.assertTrue(events[-1]["event_id"])
 
+    def test_task_boundary_fields_are_propagated_without_raw_task_text(self):
+        data = self.metadata()
+        data["task_boundary"] = {
+            "cohort_id": "repair-v1",
+            "task_fingerprint": "b" * 64,
+            "task_contract_hash": "c" * 64,
+            "environment_fingerprint": "d" * 64,
+        }
+        events = build_events(data)
+        for event in events:
+            self.assertEqual(event["cohort_id"], "repair-v1")
+            self.assertEqual(event["task_fingerprint"], "b" * 64)
+            self.assertEqual(event["task_contract_hash"], "c" * 64)
+            self.assertEqual(event["environment_fingerprint"], "d" * 64)
+            self.assertNotIn("task_text", event)
+
     def test_missing_complexity_stays_missing(self):
         events = build_events(self.metadata(task_complexity=None))
         self.assertNotIn("metrics", events[-1])
+
+    def test_skipped_jobs_do_not_become_fake_completed_tasks(self):
+        data = self.metadata()
+        data["jobs"][0]["conclusion"] = "skipped"
+        self.assertEqual(build_events(data), [])
 
     def test_missing_job_timing_does_not_fabricate_duration(self):
         data = self.metadata()

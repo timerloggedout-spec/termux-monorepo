@@ -30,8 +30,6 @@ on:
 
 permissions:
   contents: read
-  issues: write
-  pull-requests: write
 
 jobs:
   canary:
@@ -134,15 +132,20 @@ jobs:
             /tmp/model-catalog/catalog.json
           if-no-files-found: ignore
 
-      - name: Confirm canary launch
-        if: github.event_name == 'issue_comment'
+      - name: Record canary in run summary
+        if: always()
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ github.repository }}
-          TARGET: ${{ steps.selection.outputs.target }}
-          RUN_ID: ${{ github.run_id }}
           PROVIDER: ${{ steps.selection.outputs.provider }}
           MODEL: ${{ steps.selection.outputs.model }}
+          ROLE: ${{ steps.selection.outputs.role }}
+          TARGET: ${{ steps.selection.outputs.target }}
         run: |
-          gh api "repos/${REPO}/issues/${TARGET}/comments" \
-            -f body="🧪 model canary dispatched: ${PROVIDER}/${MODEL}. Live catalogs polled. Run: https://github.com/${REPO}/actions/runs/${RUN_ID}" >/dev/null
+          {
+            echo '### Canary observation'
+            echo "- target: #${TARGET}"
+            echo "- provider: ${PROVIDER}"
+            echo "- model: ${MODEL}"
+            echo "- role: ${ROLE}"
+            echo '- result transport: workflow artifact / telemetry'
+            echo '- issue/PR mutation: disabled by contract'
+          } >> "$GITHUB_STEP_SUMMARY"

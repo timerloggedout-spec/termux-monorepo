@@ -74,6 +74,41 @@ jobs:
             > agent_payload.json
           cat agent_payload.json
 
+      - name: Emit ATES task-boundary identity
+        env:
+          AGENT_ID: deepseek
+          TASK_KIND: agent_request
+          TARGET_KIND: ${{ github.event.pull_request.number && 'pull_request' || github.event.issue.number && 'issue' || 'workflow_dispatch' }}
+          TARGET_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number || '' }}
+          TASK_TEXT: ${{ github.event.inputs.task || github.event.comment.body || github.event.issue.body || github.event.pull_request.title || '' }}
+          REPOSITORY: ${{ github.repository }}
+          BASE_SHA: ${{ github.sha }}
+          RUNNER_IMAGE: ${{ env.ImageOS }}:${{ env.ImageVersion }}
+          WORKFLOW: ${{ github.workflow }}
+          PROVIDER: deepseek
+          MODEL: unresolved
+        run: |
+          set -euo pipefail
+          jq -n \
+            --arg agent "$AGENT_ID" --arg kind "$TASK_KIND" \
+            --arg target "$TARGET_KIND" --arg number "$TARGET_NUMBER" \
+            --arg task "$TASK_TEXT" --arg repo "$REPOSITORY" --arg sha "$BASE_SHA" \
+            --arg image "$RUNNER_IMAGE" --arg workflow "$WORKFLOW" \
+            --arg provider "$PROVIDER" --arg model "$MODEL" \
+            '{agent_id:$agent,task_kind:$kind,target_kind:$target,target_number:$number,task_text:$task,repository:$repo,base_sha:$sha,runner_image:$image,workflow:$workflow,provider:$provider,model:$model}' \
+            > "$RUNNER_TEMP/ates-task-input.json"
+          python scripts/ci/write_agent_task_boundary.py \
+            --input "$RUNNER_TEMP/ates-task-input.json" \
+            --output "$RUNNER_TEMP/ates-task-boundary.json"
+
+      - name: Upload ATES task-boundary identity
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.5.0
+        with:
+          name: ates-task-boundary-${{ github.run_id }}
+          path: ${{ runner.temp }}/ates-task-boundary.json
+          if-no-files-found: ignore
+          retention-days: 14
       - name: Start agent
         id: start
         env:

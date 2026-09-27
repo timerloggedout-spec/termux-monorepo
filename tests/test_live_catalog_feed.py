@@ -114,7 +114,7 @@ def test_rank_eligible_scores_once_and_does_not_mutate() -> None:
     original = [
         {"provider": "openrouter", "id": "meta/llama-3:free"},
         {"provider": "openrouter", "id": "qwen/coder:free"},
-    }
+    ]
     ranked = mod.rank_eligible("review", original)
     assert "role_score" not in original[0]
     assert ranked[0]["id"] == "qwen/coder:free"

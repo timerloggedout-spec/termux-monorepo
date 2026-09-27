@@ -5,6 +5,13 @@ on:
       - "she/metrics/**"
       - "tests/test_she_agent_throughput.py"
       - "tests/test_emit_agent_throughput.py"
+      - "scripts/ci/write_agent_task_boundary.py"
+      - "tests/test_write_agent_task_boundary.py"
+      - ".github/workflows/gemini-invoke.yml"
+      - ".github/workflows/deepseek-termux-agent.yml"
+      - ".github/workflows/deepseek-ci.yml"
+      - "tests/test_ates_baseline.py"
+      - "she/metrics/ates_baseline.py"
       - "scripts/ci/emit_agent_throughput.py"
       - ".github/workflows/agent-throughput-evidence.yml"
       - "tests/test_tdqs.py"
@@ -74,7 +81,7 @@ jobs:
       - name: Run focused ATES reducer tests with coverage
         run: |
           coverage run --branch --source=she/metrics -m unittest tests.test_she_agent_throughput -v
-          python -m unittest tests.test_emit_agent_throughput -v
+          python -m unittest tests.test_emit_agent_throughput tests.test_ates_baseline tests.test_write_agent_task_boundary -v
           coverage run --branch --source=she/metrics -a -m unittest tests.test_tdqs -v
           coverage xml -o coverage.xml
 

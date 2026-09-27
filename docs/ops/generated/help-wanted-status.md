@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-27T01:22:12Z UTC · receipts=355 · foreign_open=20 · tributes=46_
+_Generated 2026-09-27T05:46:01Z UTC · receipts=355 · foreign_open=21 · tributes=47_
 
 ## Tributes (contributor ledger)
 
+- [mergepay/mergepay-web#552](https://github.com/mergepay/mergepay-web/pull/552) · state=open · help-wanted: stake + contribute for #546
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -43,10 +44,10 @@ _Generated 2026-09-27T01:22:12Z UTC · receipts=355 · foreign_open=20 · tribut
 - [DioNanos/codex-termux#27](https://github.com/DioNanos/codex-termux/pull/27) · state=closed · help-wanted: stake + contribute for #14
 - [chahe-dridi/vscode-agent-bell#225](https://github.com/chahe-dridi/vscode-agent-bell/pull/225) · state=closed · help-wanted: stake + contribute for #224
 - [timerloggedout-spec/gh-aw_fork#1](https://github.com/timerloggedout-spec/gh-aw_fork/pull/1) · state=closed · ops(smoke-otel): agentless data-first — zero LLM / zero Copilot AIC
-- [timerloggedout-spec/termux-mcp#1](https://github.com/timerloggedout-spec/termux-mcp/pull/1) · state=closed · fix(ci): pin actions/checkout and vercel CLI to immutable versions
 
 ## Foreign open PRs
 
+- [mergepay/mergepay-web#552](https://github.com/mergepay/mergepay-web/pull/552) — help-wanted: stake + contribute for #546
 - [StellarLock/StellarLock#865](https://github.com/StellarLock/StellarLock/pull/865) — help-wanted: stake + contribute for #721
 - [Agora-Events/agora#1518](https://github.com/Agora-Events/agora/pull/1518) — help-wanted: stake + contribute for #1423
 - [SO4-Markets/so4-oracle#1143](https://github.com/SO4-Markets/so4-oracle/pull/1143) — help-wanted: stake + contribute for #906

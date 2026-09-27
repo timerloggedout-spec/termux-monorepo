@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-27T01:22:12Z",
+  "generated_at": "2026-09-27T05:46:01Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
   "receipts": 355,
@@ -15,6 +15,15 @@
     "ok": 355
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/mergepay/mergepay-web/pull/552",
+      "title": "help-wanted: stake + contribute for #546",
+      "number": 552,
+      "repo": "mergepay/mergepay-web",
+      "state": "open",
+      "updated_at": "2026-09-27T05:45:55Z",
+      "tribute": true
+    },
     {
       "html_url": "https://github.com/StellarLock/StellarLock/pull/865",
       "title": "help-wanted: stake + contribute for #721",
@@ -196,8 +205,21 @@
       "tribute": true
     }
   ],
-  "foreign_open_count": 20,
+  "foreign_open_count": 21,
   "tributes": [
+    {
+      "pr_url": "https://github.com/mergepay/mergepay-web/pull/552",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-27T05:45:55Z",
+      "providers": [],
+      "repo": "mergepay/mergepay-web",
+      "number": 552,
+      "title": "help-wanted: stake + contribute for #546",
+      "state": "open"
+    },
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
@@ -1125,7 +1147,7 @@
       "state": "closed"
     }
   ],
-  "tribute_count": 46,
+  "tribute_count": 47,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -4454,7 +4476,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "0f319b56fb69656a9378c270998b594853dd3c5c",
+    "source_sha": "4e2d07727bbcf637c3453a03d49263cc27772155",
     "source_ref": "master",
     "history_complete": true,
     "history_count": 1,
@@ -4487,12 +4509,12 @@
   },
   "evolution": [
     {
-      "sha": "0f319b56fb69656a9378c270998b594853dd3c5c",
-      "short_sha": "0f319b56fb69",
-      "date": "2026-09-27T00:36:07Z",
+      "sha": "4e2d07727bbcf637c3453a03d49263cc27772155",
+      "short_sha": "4e2d07727bbc",
+      "date": "2026-09-27T05:13:58Z",
       "author": "github-actions[bot]",
-      "subject": "ops(help-wanted): live status refresh 2026-09-27T00:36Z",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/0f319b56fb69656a9378c270998b594853dd3c5c"
+      "subject": "ops(lane-matrix): refresh generated status from recursive sweep",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/4e2d07727bbcf637c3453a03d49263cc27772155"
     }
   ],
   "pipeline": [

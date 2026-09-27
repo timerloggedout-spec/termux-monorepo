@@ -283,7 +283,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: team-evaluation-${{ github.run_id }}-${{ matrix.lane }}
+          name: team-evaluation-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.lane }}
           path: |
             /tmp/evaluation
             /tmp/model-performance/observations.ndjson

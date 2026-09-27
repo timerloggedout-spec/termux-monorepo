@@ -129,6 +129,17 @@ def peer_score(role: str, row: dict[str, Any]) -> int:
     return s
 
 
+def rank_eligible(role: str, eligible: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Attach role_score once and sort descending. Does not mutate input rows."""
+    scored: list[dict[str, Any]] = []
+    for row in eligible:
+        item = dict(row)
+        item["role_score"] = peer_score(role, item)
+        scored.append(item)
+    scored.sort(key=lambda r: r["role_score"], reverse=True)
+    return scored
+
+
 def poll_provider(provider: str) -> tuple[list[dict[str, Any]], str]:
     tok = _token(provider)
     if not tok:
@@ -243,7 +254,7 @@ def load_eligible(
 def peer_candidates_for_role(role: str, feed: dict[str, Any]) -> list[tuple[str, str]]:
     """Build (provider, model) peers from live eligible, ranked for role."""
     eligible = feed.get("eligible") or []
-    ranked = sorted(eligible, key=lambda r: peer_score(role, r), reverse=True)
+    ranked = rank_eligible(role, eligible)
     limit = feed.get("peer_limit")
     if not isinstance(limit, int):
         limit = catalog_peer_limit()
@@ -253,7 +264,7 @@ def peer_candidates_for_role(role: str, feed: dict[str, Any]) -> list[tuple[str,
     out: list[tuple[str, str]] = []
     seen: set[tuple[str, str]] = set()
     for r in ranked:
-        if peer_score(role, r) < min_score:
+        if r["role_score"] < min_score:
             continue
         key = (r["provider"], r["id"])
         if key in seen:

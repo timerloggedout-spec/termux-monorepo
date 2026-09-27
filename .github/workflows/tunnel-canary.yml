@@ -1,0 +1,19 @@
+name: Tunnel Canary
+on:
+  schedule: [{cron: '*/30 * * * *'}]
+  workflow_dispatch:
+permissions: {}
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Ping agent health
+        env:
+          URL: ${{ secrets.DEEPSEEK_AGENT_URL }}
+          TOK: ${{ secrets.DEEPSEEK_AGENT_TOKEN }}
+        run: |
+          set -e
+          code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 15 "$URL/health")
+          echo "health -> $code"
+          [ "$code" = "200" ] || { echo "::error::tunnel health $code"; exit 1; }

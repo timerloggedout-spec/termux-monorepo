@@ -2,7 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from foresight.registry import append, fingerprint, load, validate
+from foresight.registry import append, fingerprint, load, normalize, validate
 
 
 class ForesightRegistryTests(unittest.TestCase):
@@ -20,6 +20,12 @@ class ForesightRegistryTests(unittest.TestCase):
             "procurement": {"horizon": "H0", "decision_status": "watch"}
         }
 
+    def test_normalize_derives_stable_lane_and_item_identity(self):
+        r = normalize(self.record())
+        self.assertEqual(r["lane_id"], "testing")
+        self.assertEqual(r["item_id"], "test-1")
+        self.assertEqual(r["canonical_source"], "https://example.org/source")
+
     def test_append_validate_and_hash(self):
         with tempfile.TemporaryDirectory() as d:
             path = Path(d) / "resource-registry.jsonl"
@@ -32,6 +38,16 @@ class ForesightRegistryTests(unittest.TestCase):
         record = self.record()
         record["horizon"] = "H9"
         self.assertTrue(validate(record))
+
+    def test_invalid_canonical_source(self):
+        record = normalize(self.record())
+        record["canonical_source"] = "https://example.org/other"
+        self.assertTrue(validate(record))
+
+    def test_disputed_evidence_is_supported(self):
+        record = normalize(self.record())
+        record["evidence_status"] = "disputed"
+        self.assertEqual(validate(record), [])
 
     def test_hash_changes_when_record_changes(self):
         a = self.record()

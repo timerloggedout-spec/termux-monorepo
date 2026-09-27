@@ -170,7 +170,7 @@ jobs:
             fi
           done
 
-            - name: Archive artifacts
+      - name: Archive artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:

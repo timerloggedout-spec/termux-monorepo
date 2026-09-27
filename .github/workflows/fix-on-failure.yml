@@ -1,0 +1,67 @@
+name: Fix-on-Failure Agent
+on:
+  workflow_run:
+    workflows: ["*"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      run_id: {description: "specific run to fix", required: false, type: string}
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  actions: read
+
+concurrency:
+  # one fix-agent per failed run; concurrent fixes across different runs OK
+  group: fix-failure-${{ github.event.workflow_run.id || github.event.inputs.run_id || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  fix:
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'failure')
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Build payload
+        env:
+          RID: ${{ github.event.workflow_run.id || github.event.inputs.run_id }}
+          WN:  ${{ github.event.workflow_run.name || 'manual' }}
+          WB:  ${{ github.event.workflow_run.head_branch || 'master' }}
+          RU:  ${{ github.event.workflow_run.html_url || '' }}
+        run: |
+          set -euo pipefail
+          TASK="Fix the GitHub Actions failure in run $RID ('$WN' on branch $WB). Run URL: $RU.
+Method:
+1. gh run view $RID --log-failed --repo ${{ github.repository }} — identify the failing step.
+2. gh_get_file the failing workflow file at ref $WB.
+3. Diagnose: config error, dependency pin, deprecated action, YAML structure, missing secret, or code bug.
+4. Apply ONE fix via gh_worktree (branch=f'fix/ci-run-$RID', base=$WB) -> commit_push_pr with a precise title.
+5. Report the PR URL as your finish summary.
+If the failure is environmental (secret missing, quota) call finish with validation='deferred' and the reason. Never auto-merge."
+          jq -n --arg t "$TASK" --arg r "$RID" '{task:$t, source:("gh-fix-on-failure:"+$r)}' > payload.json
+          cat payload.json
+      - name: Dispatch to local agent
+        env:
+          URL: ${{ secrets.DEEPSEEK_AGENT_URL }}
+          TOK: ${{ secrets.DEEPSEEK_AGENT_TOKEN }}
+          RID: ${{ github.event.workflow_run.id || github.event.inputs.run_id }}
+        run: |
+          set -euo pipefail
+          INV=$(curl -sS --max-time 30 -X POST "$URL/v1/agent" \
+                  -H "Authorization: Bearer $TOK" \
+                  -H 'Content-Type: application/json' \
+                  --data-binary @payload.json | jq -r .invocation_id)
+          echo "invocation=$INV"
+          for i in $(seq 1 120); do
+            S=$(curl -sS --max-time 10 "$URL/v1/agent/status/$INV" -H "Authorization: Bearer $TOK")
+            P=$(echo "$S" | jq -r .phase)
+            echo "[$i] $P"
+            [ "$P" = "done" ] && break
+            [ "$P" = "error" ] && break
+            sleep 15
+          done
+          echo "$S" | jq -r '.tail | join("\n")' | tail -60

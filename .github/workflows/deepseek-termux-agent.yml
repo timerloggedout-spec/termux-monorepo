@@ -152,6 +152,24 @@ jobs:
           printf '**@deepseek agent reply**\n\n```\n%s\n```\n' "$BODY" > reply.md
           gh pr comment "$PR_NUMBER" --repo "$REPO" --body-file reply.md
 
+      - name: Failure diagnostics
+        if: failure()
+        run: |
+          set -uo pipefail
+          echo "::group::Workflow failure context"
+          echo "event: ${{ github.event_name }}"
+          echo "actor: ${{ github.actor }}"
+          echo "ref: ${{ github.ref }}"
+          echo "run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo "::endgroup::"
+          for f in agent_payload.json agent_start.json agent_status_final.json agent_tail.txt agent_summary.txt; do
+            if [ -f "$f" ]; then
+              echo "::group::--- $f ---"
+              cat "$f" || true
+              echo "::endgroup::"
+            fi
+          done
+
       - name: Archive artifacts
         if: always()
         uses: actions/upload-artifact@v4

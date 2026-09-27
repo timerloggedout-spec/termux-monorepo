@@ -1,0 +1,49 @@
+name: FOSS Foresight Registry Quality
+on:
+  pull_request:
+    paths:
+      - docs/ops/FOSS-FORESIGHT-PROCUREMENT-REGISTRY.json
+      - docs/ops/FOSS-FORESIGHT-PROGRAM.md
+      - docs/schemas/FOSS-RESOURCE-EVIDENCE.schema.json
+      - scripts/ci/verify_foss_registry.py
+      - tests/test_foss_registry.py
+  push:
+    branches: [master]
+    paths:
+      - docs/ops/FOSS-FORESIGHT-PROCUREMENT-REGISTRY.json
+      - docs/schemas/FOSS-RESOURCE-EVIDENCE.schema.json
+      - scripts/ci/verify_foss_registry.py
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with: {persist-credentials: false}
+      - name: Validate FOSS registry
+        run: python scripts/ci/verify_foss_registry.py
+      - name: Run registry contract tests
+        run: python -m unittest tests.test_foss_registry -v
+      - name: Emit registry receipt
+        env:
+          SOURCE_SHA: ${{ github.sha }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          d=json.loads(Path('docs/ops/FOSS-FORESIGHT-PROCUREMENT-REGISTRY.json').read_text())
+          r={'registry_id':d['registry_id'],'schema_version':d['schema_version'],'resource_count':len(d['resources']),'horizons':sorted({x['horizon'] for x in d['resources']}),'evidence_statuses':sorted({x['evidence_status'] for x in d['resources']}),'source_sha':os.environ['SOURCE_SHA'],'run_id':os.environ['RUN_ID']}
+          Path('foss-registry-receipt.json').write_text(json.dumps(r,indent=2,sort_keys=True)+'\n')
+          PY
+      - name: Upload immutable receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: foss-foresight-registry-receipt-${{ github.run_id }}
+          path: foss-registry-receipt.json
+          if-no-files-found: error
+          retention-days: 14

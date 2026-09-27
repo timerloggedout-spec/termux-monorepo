@@ -52,3 +52,24 @@ def test_token_provider_symlink_safety(tmp_path, monkeypatch):
     assert target_file.read_text() == "sensitive_content"
     if os.name != "nt":
         assert (target_file.stat().st_mode & 0o777) == 0o644
+
+
+def test_token_provider_symlink_dir_safety(tmp_path, monkeypatch):
+    real_dir = tmp_path / "real_dir"
+    real_dir.mkdir(parents=True, exist_ok=True)
+    symlink_vault_dir = tmp_path / ".synthegration"
+    symlink_vault_dir.symlink_to(real_dir)
+    test_vault_file = symlink_vault_dir / "vault.json"
+
+    upload_file = tmp_path / "deepseek-cli" / "upload-api.json"
+    upload_file.parent.mkdir(parents=True, exist_ok=True)
+    upload_file.write_text(json.dumps({"authorization": "test_bearer_token"}))
+
+    import token_provider_v2 as tp
+
+    monkeypatch.setattr(tp, "VAULT_DIR", symlink_vault_dir)
+    monkeypatch.setattr(tp, "VAULT", test_vault_file)
+    monkeypatch.setattr(Path, "home", lambda: tmp_path)
+
+    with pytest.raises(ValueError, match="Symlink vault directory rejected"):
+        tp.get_token("primary")

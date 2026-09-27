@@ -145,12 +145,14 @@ Receipts are projections; the longitudinal GitHub/evidence corpus remains the so
 
 This skill owns repository-admin evidence discipline; it does not replace those specialist lanes.
 
-## Session 2026-09-24 10:07 PDT
+## Session 2026-09-26 20:14 PDT
 
-- Live master `fdc5d534` (#808 MERGED agent-quality-lane post-merge trigger).
-- Dual-gate on `cbb6a3be`: repo-gate 36024573291, termux-smoke 36024572948.
-- #48 dirty on master-staging — remainder EXTRACT only.
-- #810 pulse on pre-#808 tip — SUPERSEDE.
-- #787 dirty — re-cut when capacity allows.
+- Live master tip: `59f705357756e3` (`fix(self-integrate): POST retry + DSML v6`).
+- Prior product extract #856 MERGED as `70d53c4011e3` onto `573adddda966`.
+- Dual-gate on `59f70535`: repo-gate 36290788543 SUCCESS, termux-smoke 36290788546 SUCCESS.
+- Non-gate FAIL on same SHA: historical-evaluation-correlation 36290788530, automation-docs-continuous-refresh 36290788574, swe-reference-evaluation 36290787538, ci-sweep 36290787985.
+- Next: disjoint extract only. Do not pulse #175.
+- Dirty / do-not-merge-as-is: #630 #680 #818 #48 #850 #855.
+- #184 names-only. HOLD/WAIT/OBSERVE invalid parking. #69 closed.
 
 Agent-Identity: Grok (Administrator)

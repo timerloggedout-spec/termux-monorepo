@@ -484,3 +484,12 @@ INFO:     127.0.0.1:39368 - "POST /gh HTTP/1.1" 200 OK
 INFO:     127.0.0.1:39372 - "POST /gh HTTP/1.1" 200 OK
 INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
 INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     52.154.131.100:0 - "POST /v1/agent HTTP/1.1" 202 Accepted
+INFO:     52.154.131.100:0 - "GET /v1/agent/status/734585fb7291 HTTP/1.1" 200 OK
+create_session status: 200, body: 
+{"code":0,"msg":"","data":{"biz_code":0,"biz_msg":"","biz_data":{"id":"9fab175f-
+8a22-4b8f-a812-51a7afb67517","seq_id":212708702,"agent":"chat","model_type":"def
+ault","title":null,"title_type":"WIP","version":0,"current_message_id":null,"pin
+ned":false,"inserted_at":1790545502.569,"updated_at":1790545
+INFO:     127.0.0.1:40076 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     52.154.131.100:0 - "GET /v1/agent/status/734585fb7291 HTTP/1.1" 200 OK

@@ -52,6 +52,22 @@ Gemini CLI, OpenRouter peers, OmniRoute, Jules, Felo models, and other agents ar
 ### Evidence collector
 
 Records actual invocations and outcomes. A declared route earns no performance credit until it actually executes.
+\n### Evaluation / PR boundary
+
+Continuous evaluation is a state/evidence loop, not a pull-request generator.
+
+Every observation may update the longitudinal catalog/evidence plane: provider/model eligibility, role routing, invocation telemetry, outcomes, attribution, rankings, and evaluation epochs. A moving live-master SHA is an observation dimension and does not justify opening another PR.
+
+**PR invariant:** create a PR only for a durable implementation or policy change. Do not create PRs for session recon/bind/stamp receipts, live-master refreshes, catalog observations, ranking recalculations, evaluation manifests, or repeated evidence-only skill updates.
+
+The canonical loop is:
+
+`action → observation → outcome → evidence/catalog → next selection → next evaluation`
+
+Evaluation identity must preserve `run_id + run_attempt + head_sha + manager + task/cohort + provider + model + role`. Preserve the catalog snapshot/hash used for each epoch so rankings remain reproducible without freezing runtime catalog state.
+
+The repository's PR scope guard closes session/evaluation-only PRs as **not planned** when they cross this boundary. That guard is containment; the evidence/ledger is the system of record.
+
 
 ## Dynamic libraries and parallelism
 

@@ -51,6 +51,7 @@ EOF
 
       - name: Failure diagnostics
         if: failure()
+        timeout-minutes: 5
         run: |
           set -uo pipefail
           echo "::group::Workflow failure context"

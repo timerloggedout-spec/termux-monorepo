@@ -24,8 +24,24 @@ jobs:
           set -euo pipefail
           TASK='Execute ~/deepcli/tasks/self-integrate.md. Do exactly ONE improvement this cycle. Follow the wait-valid loop. Sync logs at the end.'
           jq -n --arg t "$TASK" '{task:$t, source:"gh-schedule:self-integrate"}' > payload.json
-          INV=$(curl -sS -X POST "$AGENT_URL/v1/agent" -H "Authorization: Bearer $AGENT_TOKEN" \
-                  -H 'Content-Type: application/json' --data-binary @payload.json | jq -r .invocation_id)
+          INV=""
+          for attempt in 1 2 3 4 5 6; do
+            echo "::group::POST attempt $attempt"
+            RESP=$(curl -sS --max-time 30 -X POST "$AGENT_URL/v1/agent" \
+                     -H "Authorization: Bearer $AGENT_TOKEN" \
+                     -H 'Content-Type: application/json' \
+                     --data-binary @payload.json 2>&1) || true
+            echo "resp: $RESP"
+            echo "::endgroup::"
+            INV=$(echo "$RESP" | jq -r .invocation_id 2>/dev/null || echo "")
+            if [ -n "$INV" ] && [ "$INV" != "null" ]; then break; fi
+            echo "attempt $attempt failed, sleeping 15s"
+            sleep 15
+          done
+          if [ -z "$INV" ] || [ "$INV" = "null" ]; then
+            echo "::error::could not reach agent after 6 attempts"
+            exit 1
+          fi
           echo "invocation=$INV"
           for i in $(seq 1 120); do
             S=$(curl -sS "$AGENT_URL/v1/agent/status/$INV" -H "Authorization: Bearer $AGENT_TOKEN")

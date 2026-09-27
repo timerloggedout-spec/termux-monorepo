@@ -207,6 +207,8 @@ To ensure clear scope boundaries and prevent unneeded re-work, all issues, PRs, 
 | **#154** | Linguist CedrLang v2 compression overhaul | Lane 1: Performance | MERGED via #196 | PR #154 closed as superseded (AUDIT-003) |
 | **#129 / PR #131** | MoneyBall agent roster & betting arena | Lane 4: Multi-Agent | MERGED | Built into `src/team_manager.py` (AUDIT-006) |
 | **#117 / PR #143** | MCP Agent Mail coordination layer | Lane 4: Multi-Agent | MERGED via #203| Composite action active in `.github/actions/mcp-agent-mail/` (AUDIT-007) |
+| **#523 / Historical Backfill** | Context relationship historical backfill pipeline | Lane 5: Workflows | AUDITED | Gated via `historical-backfill-promotion-gate.yml` (AUDIT-009) |
+| **Stall Watcher** | Runtime stall taxonomy & detection expansion | Lane 5: Workflows | IN PROGRESS | Queue & execution candidates active; expanding admission detection (AUDIT-010) |
 
 ---
 

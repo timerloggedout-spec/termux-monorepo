@@ -67,6 +67,18 @@ This audit provides full production visibility into merged branches, open and cl
 - **Justification in Git/PR History:** Hard failure mode in early workflow triggers caused entire pipeline blocks on daily quota exhaustion.
 - **Remediation Action:** Configured `continue-on-error: true` for Gemini residual backups and model router soft-limit fallbacks.
 
+### [AUDIT-009] Historical Backfill Admission Stall on Master
+- **Type:** Admission Stall / Unscheduled Pipeline
+- **Description:** Historical backfill workflow (`context-relationship-backfill.yml`) on `master` branch recorded 0 total runs due to missing scheduled cron triggers and unpromoted `master-staging` changes.
+- **Justification in Git/PR History:** Context relationship backfill was manually executed on `master-staging` (page 2) but was never scheduled or promoted to `master`.
+- **Remediation Action:** Tracked via `historical-backfill-promotion-gate.yml` to block promotion until `master-staging` backfill reaches completion (`next_start_page: null`).
+
+### [AUDIT-010] Runtime Stall Taxonomy Classification Gap
+- **Type:** Observability & Stall Classification Gap
+- **Description:** `agent-runtime-stall-watch.yml` implements detection for `QUEUE_STALL_CANDIDATE` and `EXECUTION_STALL_CANDIDATE`, but lacks explicit labeled detection for `ADMISSION_STALL`, `EFFECT_STALL`, `PAGINATION_STALL`, or `ROUTING_LOOP`.
+- **Justification in Git/PR History:** Early watcher implementations focused on active queued/in-progress jobs without checking schedule gaps or pagination halting.
+- **Remediation Action:** Documented taxonomy gaps and mapped pagination checks to raise explicit exit statuses in `context-relationship-backfill.yml`.
+
 ## 4. Summary of Timing Quotas & Cooldown Enforcement
 - **Model Router Soft-Limits:** Elevated budgets (Omni: 400/250/400, OpenRouter free models: 80/80/80, Gemini backups: 450/450/450).
 - **GitHub Actions Debounces:** 480s max wait for peer bots, 45m autofix request throttle, 90s settle sleep, 20m auto-jules summon debounce, 90m continuous sweep window (max 8 PRs/run).

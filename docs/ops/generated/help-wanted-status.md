@@ -1,6 +1,6 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-28T20:33:55Z UTC · receipts=513 · foreign_open=24 · tributes=52_
+_Generated 2026-09-28T21:55:04Z UTC · receipts=513 · foreign_open=24 · tributes=53_
 
 ## Tributes (contributor ledger)
 
@@ -30,7 +30,8 @@ _Generated 2026-09-28T20:33:55Z UTC · receipts=513 · foreign_open=24 · tribut
 - [TrusTrove/TrusTrove-contract#860](https://github.com/TrusTrove/TrusTrove-contract/pull/860) · state=open · help-wanted: stake + contribute for #836
 - [olcf/olcf-test-harness#280](https://github.com/olcf/olcf-test-harness/pull/280) · state=closed · help-wanted: stake + contribute for #278
 - [umn-adc/ATLAS#42](https://github.com/umn-adc/ATLAS/pull/42) · state=closed · help-wanted: stake + contribute for #31
-- [lonestill/onyx-launcher#45](https://github.com/lonestill/onyx-launcher/pull/45) · state=closed · help-wanted: stake + contribute for #19
+- [lonestill/scope-launcher#45](https://github.com/lonestill/scope-launcher/pull/45) · state=closed · help-wanted: stake + contribute for #19
+- [https://github.com/lonestill/onyx-launcher/pull/45](https://github.com/lonestill/onyx-launcher/pull/45) · state=? · 
 - [UnityChainxx/StellarHunts#599](https://github.com/UnityChainxx/StellarHunts/pull/599) · state=closed · help-wanted: stake + contribute for #519
 - [Stellar-songifi/Lyricsflip_server#212](https://github.com/Stellar-songifi/Lyricsflip_server/pull/212) · state=closed · help-wanted: stake + contribute for #108
 - [C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend#587](https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587) · state=closed · help-wanted: stake + contribute for #579
@@ -43,7 +44,6 @@ _Generated 2026-09-28T20:33:55Z UTC · receipts=513 · foreign_open=24 · tribut
 - [ussyalfaks/ahjoorxmr-contract#872](https://github.com/ussyalfaks/ahjoorxmr-contract/pull/872) · state=closed · help-wanted: stake + contribute for #871
 - [FasterThanAi/ai-lead-generation-mvp#34](https://github.com/FasterThanAi/ai-lead-generation-mvp/pull/34) · state=closed · help-wanted: stake + contribute for #18
 - [ennouaimi/invoicr#8](https://github.com/ennouaimi/invoicr/pull/8) · state=closed · help-wanted: stake + contribute for #7
-- [shadcn-labs/ogimagecn#34](https://github.com/shadcn-labs/ogimagecn/pull/34) · state=closed · help-wanted: stake + contribute for #33
 
 ## Foreign open PRs
 

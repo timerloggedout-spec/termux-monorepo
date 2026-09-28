@@ -145,14 +145,15 @@ Receipts are projections; the longitudinal GitHub/evidence corpus remains the so
 
 This skill owns repository-admin evidence discipline; it does not replace those specialist lanes.
 
-## Session 2026-09-27 21:14 PDT
+## Session 2026-09-27 22:14 PDT
 
-- Live master tip at recon: `311077d15901e9e685c504e19b38cb0b5e6ae1c3` (timeout-minutes on payload/boundary steps).
-- Dual-gate PASS on that SHA: repo-gate 36376501676, termux-smoke 36376501566.
-- Vercel combined-status FAIL on stale PRs is #772 non-gate (rate-limited 24h).
+- Live master tip at recon: `2268e302d8b7b733a6e18ed285fa2c5f145a0cd8`.
+- Dual-gate PASS on that SHA: repo-gate 36380809139, termux-smoke 36380809228.
+- Predecessor stamp SHA `311077d1` / skill stamp `8670b2e5` superseded.
 - Dirty / do-not-merge-as-is (bases behind tip): #630 #680 #818 #48 #735 #736 #850 #880 #884.
 - #48 remains `master-staging` gate path; do not promote to master until staging dual-gate.
 - Do not pulse #175. #184 names-only. #69 closed.
 - Stepie planning only (primary goal 2158). No merge authority from planning surface.
+- This session: mermaid mmdc refresh-trusted missing puppeteer no-sandbox (job 108796012711 FAIL) — corrected on successor SHA.
 
 Agent-Identity: Grok (Administrator)

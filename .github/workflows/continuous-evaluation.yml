@@ -188,7 +188,7 @@ jobs:
           catalog_sha = hashlib.sha256(catalog).hexdigest()
           seed = ':'.join([os.environ.get('GITHUB_RUN_ID',''), os.environ.get('GITHUB_RUN_ATTEMPT','1'), head, '${{ matrix.provider }}', '${{ matrix.model }}', '${{ steps.cohort.outputs.manager }}', catalog_sha])
           epoch_id = 'eval-' + hashlib.sha256(seed.encode()).hexdigest()[:24]
-          Path('/tmp/evaluation/epoch.json').write_text(json.dumps({'schema':'evaluation-epoch/v1','epoch_id':epoch_id,'run_id':int(os.environ.get('GITHUB_RUN_ID','0')),'run_attempt':int(os.environ.get('GITHUB_RUN_ATTEMPT','1')),'head_sha':head,'catalog_sha256':catalog_sha,'provider':'${{ matrix.provider }}','model':'${{ matrix.model }}','manager':'${{ steps.cohort.outputs.manager }}'}, indent=2) + '\\n')
+          Path('/tmp/evaluation/epoch.json').write_text(json.dumps({'schema':'evaluation-epoch/v1','epoch_id':epoch_id,'run_id':int(os.environ.get('GITHUB_RUN_ID','0')),'run_attempt':int(os.environ.get('GITHUB_RUN_ATTEMPT','1')),'head_sha':head,'catalog_sha256':catalog_sha,'provider':'${{ matrix.provider }}','model':'${{ matrix.model }}','manager':'${{ steps.cohort.outputs.manager }}'}, indent=2) + '\n')
           print('epoch_id='+epoch_id)
           print('head_sha='+head)
           print('catalog_sha256='+catalog_sha)
@@ -276,7 +276,15 @@ jobs:
           python3 - <<'PY'
           import json,os,pathlib
           p=pathlib.Path('/tmp/evaluation/manifest.json'); refs=pathlib.Path('/tmp/evaluation/resolved-refs.unique.txt')
-          p.write_text(json.dumps({'schema':'team-evaluation/v6','run_id':os.environ['RUN_ID'],'lane':os.environ['LANE'],'manager':os.environ['MANAGER'],'provider':os.environ['PROVIDER'],'model':os.environ['MODEL'],'prompt_variant':os.environ['VARIANT'],'quota_class':os.environ['QUOTA_CLASS'],'epoch':json.loads(pathlib.Path('/tmp/evaluation/epoch.json').read_text()),'refs':refs.read_text().splitlines() if refs.exists() else []},indent=2)+'\n')
+          epoch_path=pathlib.Path('/tmp/evaluation/epoch.json')
+          epoch={}
+          if epoch_path.exists():
+              raw=epoch_path.read_text()
+              try:
+                  epoch=json.loads(raw)
+              except json.JSONDecodeError:
+                  epoch=json.JSONDecoder().raw_decode(raw.lstrip())[0]
+          p.write_text(json.dumps({'schema':'team-evaluation/v6','run_id':os.environ['RUN_ID'],'lane':os.environ['LANE'],'manager':os.environ['MANAGER'],'provider':os.environ['PROVIDER'],'model':os.environ['MODEL'],'prompt_variant':os.environ['VARIANT'],'quota_class':os.environ['QUOTA_CLASS'],'epoch':epoch,'refs':refs.read_text().splitlines() if refs.exists() else []},indent=2)+'\n')
           PY
 
       - name: Upload immutable evaluation ledger
@@ -288,4 +296,3 @@ jobs:
             /tmp/evaluation
             /tmp/model-performance/observations.ndjson
           if-no-files-found: ignore
-

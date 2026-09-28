@@ -1,16 +1,16 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-28T05:53:38Z UTC · receipts=465 · foreign_open=24 · tributes=51_
+_Generated 2026-09-27T23:03:23Z UTC · receipts=442 · foreign_open=23 · tributes=49_
 
 ## Tributes (contributor ledger)
 
-- [OBLIQ-in/OBLIQ-Website#39](https://github.com/OBLIQ-in/OBLIQ-Website/pull/39) · state=open · help-wanted: stake + contribute for #12
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
 - [mangiapanejohn-dev/MOBIUS-Searcher#7](https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7) · state=open · help-wanted: stake + contribute for #6
 - [w1977-0/open-stream-saver#3](https://github.com/w1977-0/open-stream-saver/pull/3) · state=open · help-wanted: stake + contribute for #1
+- [umn-adc/ATLAS#42](https://github.com/umn-adc/ATLAS/pull/42) · state=open · help-wanted: stake + contribute for #31
 - [olcf/olcf-test-harness#280](https://github.com/olcf/olcf-test-harness/pull/280) · state=open · help-wanted: stake + contribute for #278
 - [Vasudev-ai/Focusflow#15](https://github.com/Vasudev-ai/Focusflow/pull/15) · state=open · help-wanted: stake + contribute for #2
 - [bmad-code-org/bmad-loop#819](https://github.com/bmad-code-org/bmad-loop/pull/819) · state=open · help-wanted: stake + contribute for #780
@@ -27,8 +27,6 @@ _Generated 2026-09-28T05:53:38Z UTC · receipts=465 · foreign_open=24 · tribut
 - [mergepay/mergepay-web#552](https://github.com/mergepay/mergepay-web/pull/552) · state=open · help-wanted: stake + contribute for #546
 - [StayLitCodes/Vaultix#711](https://github.com/StayLitCodes/Vaultix/pull/711) · state=open · help-wanted: stake + contribute for #706
 - [KayStcx/KayStcx#104](https://github.com/KayStcx/KayStcx/pull/104) · state=open · help-wanted: stake + contribute for #85
-- [prime-radiant-inc/evener#2661](https://github.com/prime-radiant-inc/evener/pull/2661) · state=open · help-wanted: stake + contribute for #2627
-- [umn-adc/ATLAS#42](https://github.com/umn-adc/ATLAS/pull/42) · state=closed · help-wanted: stake + contribute for #31
 - [lonestill/onyx-launcher#45](https://github.com/lonestill/onyx-launcher/pull/45) · state=closed · help-wanted: stake + contribute for #19
 - [UnityChainxx/StellarHunts#599](https://github.com/UnityChainxx/StellarHunts/pull/599) · state=closed · help-wanted: stake + contribute for #519
 - [Stellar-songifi/Lyricsflip_server#212](https://github.com/Stellar-songifi/Lyricsflip_server/pull/212) · state=closed · help-wanted: stake + contribute for #108
@@ -44,11 +42,11 @@ _Generated 2026-09-28T05:53:38Z UTC · receipts=465 · foreign_open=24 · tribut
 - [ennouaimi/invoicr#8](https://github.com/ennouaimi/invoicr/pull/8) · state=closed · help-wanted: stake + contribute for #7
 - [shadcn-labs/ogimagecn#34](https://github.com/shadcn-labs/ogimagecn/pull/34) · state=closed · help-wanted: stake + contribute for #33
 - [pyrite-wiki/pyrite#198](https://github.com/pyrite-wiki/pyrite/pull/198) · state=closed · help-wanted: stake + contribute for #192
+- [vigneshv1cky/alphadesk-terminal#12](https://github.com/vigneshv1cky/alphadesk-terminal/pull/12) · state=closed · help-wanted: stake + contribute for #10
+- [DioNanos/codex-termux#27](https://github.com/DioNanos/codex-termux/pull/27) · state=closed · help-wanted: stake + contribute for #14
 
 ## Foreign open PRs
 
-- [OBLIQ-in/OBLIQ-Website#39](https://github.com/OBLIQ-in/OBLIQ-Website/pull/39) — help-wanted: stake + contribute for #12
-- [prime-radiant-inc/evener#2661](https://github.com/prime-radiant-inc/evener/pull/2661) — help-wanted: stake + contribute for #2627
 - [KayStcx/KayStcx#104](https://github.com/KayStcx/KayStcx/pull/104) — help-wanted: stake + contribute for #85
 - [StayLitCodes/Vaultix#711](https://github.com/StayLitCodes/Vaultix/pull/711) — help-wanted: stake + contribute for #706
 - [mergepay/mergepay-web#552](https://github.com/mergepay/mergepay-web/pull/552) — help-wanted: stake + contribute for #546
@@ -62,6 +60,7 @@ _Generated 2026-09-28T05:53:38Z UTC · receipts=465 · foreign_open=24 · tribut
 - [MergeFi/contracts#374](https://github.com/MergeFi/contracts/pull/374) — help-wanted: stake + contribute for #345
 - [ThinkLikeAFounder/pulsartrack#898](https://github.com/ThinkLikeAFounder/pulsartrack/pull/898) — help-wanted: stake + contribute for #896
 - [w1977-0/open-stream-saver#3](https://github.com/w1977-0/open-stream-saver/pull/3) — help-wanted: stake + contribute for #1
+- [umn-adc/ATLAS#42](https://github.com/umn-adc/ATLAS/pull/42) — help-wanted: stake + contribute for #31
 - [olcf/olcf-test-harness#280](https://github.com/olcf/olcf-test-harness/pull/280) — help-wanted: stake + contribute for #278
 - [Vasudev-ai/Focusflow#15](https://github.com/Vasudev-ai/Focusflow/pull/15) — help-wanted: stake + contribute for #2
 - [bmad-code-org/bmad-loop#819](https://github.com/bmad-code-org/bmad-loop/pull/819) — help-wanted: stake + contribute for #780
@@ -72,6 +71,6 @@ _Generated 2026-09-28T05:53:38Z UTC · receipts=465 · foreign_open=24 · tribut
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=465 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 385, 'followup_reengage': 16, 'followup_stale_nudge': 15, 'followup_changes': 1}`
+## Outcomes · ok=442 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 364, 'followup_reengage': 14, 'followup_stale_nudge': 15, 'followup_changes': 1}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

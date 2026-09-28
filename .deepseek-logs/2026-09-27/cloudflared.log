@@ -184,3 +184,18 @@
 2026-09-28T01:33:36Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.200.23:7844: connect: network is unreachable" connIndex=0 event=0 ip=198.41.200.23
 2026-09-28T01:33:36Z INF Retrying connection in up to 32s connIndex=0 event=0 ip=198.41.200.23
 2026-09-28T01:34:05Z ERR Connection terminated error="DialContext error: dial tcp 198.41.200.23:7844: connect: network is unreachable" connIndex=0
+2026-09-28T01:37:23Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.200.233
+2026-09-28T01:37:24Z ERR failed to serve incoming request error="Unauthorized: Tunnel not found"
+2026-09-28T01:37:24Z ERR Register tunnel error from server side error="Unauthorized: Tunnel not found" connIndex=0 event=0 ip=198.41.200.233
+2026-09-28T01:37:24Z INF Retrying connection in up to 32s connIndex=0 event=0 ip=198.41.200.233
+2026-09-28T01:37:38Z ERR Connection terminated error="Unauthorized: Tunnel not found" connIndex=0
+2026-09-28T01:40:03Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.200.233
+2026-09-28T01:40:04Z ERR failed to serve incoming request error="Unauthorized: Tunnel not found"
+2026-09-28T01:40:04Z ERR Register tunnel error from server side error="Unauthorized: Tunnel not found" connIndex=0 event=0 ip=198.41.200.233
+2026-09-28T01:40:04Z INF Retrying connection in up to 32s connIndex=0 event=0 ip=198.41.200.233
+2026-09-28T01:40:21Z ERR Connection terminated error="Unauthorized: Tunnel not found" connIndex=0
+2026-09-28T01:41:45Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.200.233
+2026-09-28T01:41:45Z ERR failed to serve incoming request error="Unauthorized: Tunnel not found"
+2026-09-28T01:41:45Z ERR Register tunnel error from server side error="Unauthorized: Tunnel not found" connIndex=0 event=0 ip=198.41.200.233
+2026-09-28T01:41:45Z INF Retrying connection in up to 32s connIndex=0 event=0 ip=198.41.200.233
+2026-09-28T01:41:47Z ERR Connection terminated error="Unauthorized: Tunnel not found" connIndex=0

@@ -4,9 +4,8 @@ on:
     workflows:
       - "DeepSeek Termux Agent"
       - "DeepSeek Self-Integrate"
-      - ".github/workflows/ci-sweep.yml"
+      - "Continuous CI Sweep"
       - "Tunnel Canary"
-      - "Scratch Fail"
     types: [completed]
   workflow_dispatch:
     inputs:

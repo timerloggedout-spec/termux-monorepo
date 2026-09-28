@@ -153,6 +153,7 @@ jobs:
           cat agent_status_final.json
 
       - name: Extract summary
+        timeout-minutes: 2
         run: |
           set -uo pipefail
           jq -r '.tail // [] | join("\n")' agent_status_final.json > agent_tail.txt

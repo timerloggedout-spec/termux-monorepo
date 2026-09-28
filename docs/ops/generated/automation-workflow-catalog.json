@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "565729b19a386295a1e4d4c51a1ff289c23a800105c28c8413b468cf5b5a32c4",
-  "workflow_count": 113,
+  "source_fingerprint": "4394114facbd282bd1af302fb50f8cb45d57580269198d3a04950f3c0ce7ca86",
+  "workflow_count": 114,
   "workflows": [
     {
       "action_pins": [
@@ -937,6 +937,21 @@
       ],
       "name": "Fly Diag",
       "path": ".github/workflows/fly-diag.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "diag"
+      ],
+      "name": "Fly Fast Diag",
+      "path": ".github/workflows/fly-fast-diag.yml",
       "schedules": [],
       "triggers": [
         "workflow_dispatch"

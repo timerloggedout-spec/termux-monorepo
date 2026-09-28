@@ -167,6 +167,7 @@ jobs:
 
       - name: Reply (issue_comment)
         if: github.event_name == 'issue_comment'
+        timeout-minutes: 5
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
@@ -179,6 +180,7 @@ jobs:
 
       - name: Reply (issue assigned)
         if: github.event_name == 'issues'
+        timeout-minutes: 5
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
@@ -190,6 +192,7 @@ jobs:
 
       - name: Reply (PR assigned)
         if: github.event_name == 'pull_request'
+        timeout-minutes: 5
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}

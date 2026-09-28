@@ -937,9 +937,18 @@ def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False
         else:
             sid = None
             print(f"  [session] fresh (key={key})")
+    # ── run-state resume (network-interrupt resilience) ──
+    resumed_state = None
+    if not fresh:
+        _st = session_store.load_run_state(key)
+        if _st and _st.get("msgs") and _st.get("step", 0) > 0:
+            resumed_state = _st
+            print(f"  [resume] checkpoint found: step={_st['step']} task='{(_st.get('task') or '')[:60]}'")
+
     SAFETY_CEILING = int(os.environ.get("AGENT_SAFETY_CEILING", "60"))
     NO_PROGRESS_LIMIT = int(os.environ.get("AGENT_NO_PROGRESS_LIMIT", "5"))
-    msgs = [{"role":"user","content":task}]
+    # Hindsight gate (from master): the client is constructed only if env set;
+    # reachability is checked at loop start.
     if _HINDSIGHT_AVAILABLE and os.environ.get("HINDSIGHT_BASE_URL"):
         try:
             import asyncio as _aio
@@ -947,11 +956,23 @@ def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False
             # recall is invoked as a tool by the model; no eager recall here
         except Exception:
             pass
-    sid = None
-    parent_id = None
-    seen_sigs = []          # signatures of (tool, args) to detect repeats
-    no_progress = 0
-    for step in range(SAFETY_CEILING):
+
+    # Checkpoint resume (from branch): hydrate loop state from prior run if
+    # the network-interrupt checkpoint exists, else start fresh.
+    if resumed_state:
+        msgs = resumed_state["msgs"]
+        sid = resumed_state.get("sid") or sid
+        parent_id = resumed_state.get("parent_id")
+        seen_sigs = resumed_state.get("seen_sigs") or []
+        step_offset = resumed_state.get("step", 0)
+        no_progress = 0
+    else:
+        msgs = [{"role":"user","content":task}]
+        parent_id = None
+        seen_sigs = []
+        step_offset = 0
+        no_progress = 0
+    for step in range(step_offset, SAFETY_CEILING):
         print(f"── step {step+1}/<dynamic> ──")
         if step > 0 and IDLE_SLEEP: time.sleep(IDLE_SLEEP)
         sid, content, calls, next_parent = _chat_once(
@@ -1009,6 +1030,8 @@ def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False
                 if sid and not dry_run:
                     session_store.save(key, sid, meta={"last_task": task[:200]})
                     print(f"  [session] saved {sid[:12]}\u2026 for key={key}")
+                try: session_store.clear_run_state(key)
+                except Exception: pass
                 try:
                     _elapsed = round(time.time() - _t0, 1)
                 except Exception:
@@ -1037,6 +1060,21 @@ def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False
             # no cap — see context size of the underlying model
             print(f"    ← {printable[:300]}")
             msgs.append({"role":"tool","tool_call_id":c["id"],"content":printable})
+        # ── checkpoint after each step ──
+        try:
+            session_store.save_run_state(key, {
+                "msgs": msgs,
+                "sid": sid,
+                "parent_id": parent_id,
+                "seen_sigs": seen_sigs[-20:],
+                "step": step + 1,
+                "task": task[:400],
+                "task_path": str(task_path) if task_path else None,
+                "saved_at": time.time(),
+            })
+        except Exception as _e:
+            print(f"    [checkpoint warn] {type(_e).__name__}: {_e}")
+
         if step_had_progress:
             no_progress = 0
         else:

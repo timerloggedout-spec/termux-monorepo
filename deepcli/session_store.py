@@ -89,3 +89,46 @@ if __name__ == "__main__":
         print("forgotten:", sys.argv[2])
     else:
         print("usage: session_store.py list | forget <key>")
+
+
+# ─── run-state checkpoint (network-interrupt resilience) ────────────
+
+RUNS_DIR_NAME = "runs"
+
+
+def _runs_dir(key: str) -> Path:
+    d = STORE.parent / RUNS_DIR_NAME / key
+    d.mkdir(parents=True, exist_ok=True)
+    try: d.chmod(0o700)
+    except Exception: pass
+    return d
+
+
+def save_run_state(key: str, state: dict) -> Path:
+    """Persist mid-loop state so a crashed run can resume. Atomic write."""
+    d = _runs_dir(key)
+    tmp = d / "state.json.tmp"
+    final = d / "state.json"
+    tmp.write_text(json.dumps(state, indent=2))
+    tmp.replace(final)
+    try: final.chmod(0o600)
+    except Exception: pass
+    return final
+
+
+def load_run_state(key: str) -> dict | None:
+    d = _runs_dir(key)
+    f = d / "state.json"
+    if not f.exists():
+        return None
+    try:
+        return json.loads(f.read_text())
+    except Exception:
+        return None
+
+
+def clear_run_state(key: str) -> None:
+    d = _runs_dir(key)
+    f = d / "state.json"
+    try: f.unlink()
+    except Exception: pass

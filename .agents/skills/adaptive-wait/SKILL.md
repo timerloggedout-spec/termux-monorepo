@@ -114,14 +114,13 @@ Record what was proven, what remains unproven, the watched SHA, the final author
 
 This skill is the wait/controller layer. adaptive-feedback-cycle owns broader continuous learning; production-reconciliation owns ref alignment; evidence-envelope owns normalized observation fields.
 
-## Session 2026-09-27 22:14 PDT
+## Session 2026-09-28 23:16 PDT
 
-- Live master at recon `2268e302d8b7b733a6e18ed285fa2c5f145a0cd8`.
-- Dual-gate PASS on that SHA (repo-gate 36380809139 / termux-smoke 36380809228).
-- Dual-gate on this successor SHA is the next wait target after push.
-- Dirty #630/#680/#818/#48/#735/#736/#850/#880/#884. Do not pulse #175.
-- Vercel combined-status FAIL is #772 non-gate, not dual-gate.
+- Live master at recon `13ff34de4a7bcca0f8eb6e2be7d3561b3e3f11a3`.
+- Dual-gate PASS on that SHA (repo-gate 36385477044 / termux-smoke 36385477005).
+- Next wait: dual-gate on this stamp SHA after push; #884 branch-update onto tip.
+- Dirty/extract: #884 #880 #850 #818 #809 #806 #48. Do not pulse #175.
+- Vercel combined-status FAIL is #772 non-gate.
 - HOLD/OBSERVE are not idle: wait collects evidence, then act.
-- Watched: automation-docs refresh-trusted job 108796012711 FAIL on mermaid without puppeteer no-sandbox.
 
 Agent-Identity: Grok (Administrator)

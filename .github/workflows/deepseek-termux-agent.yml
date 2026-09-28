@@ -114,6 +114,7 @@ jobs:
           retention-days: 14
       - name: Start agent
         id: start
+        timeout-minutes: 3
         env:
           AGENT_URL: ${{ secrets.DEEPSEEK_AGENT_URL }}
           AGENT_TOKEN: ${{ secrets.DEEPSEEK_AGENT_TOKEN }}

@@ -145,16 +145,14 @@ Receipts are projections; the longitudinal GitHub/evidence corpus remains the so
 
 This skill owns repository-admin evidence discipline; it does not replace those specialist lanes.
 
-## Session 2026-09-27 16:14 PDT
+## Session 2026-09-27 17:16 PDT
 
-- Live master tip: `d93a88f2d36a96be97746a49d6d486d7817217cd` (help-wanted refresh 23:03Z).
-- Dual-gate last PASS on product SHA `3ed4d8706f552576b6ddb293a523c233e35cc7df`: repo-gate 36357211908, termux-smoke 36357212033.
-- #881 MERGED (hindsight client tool scaffold) as `f0ea8e4263557d1c74625094ccc7e8de1dcc0ff1`; dual-gate PASS 36357164716 / 36357164658.
-- #879 recon stamp already on master (`5b67204e`).
-- Open #880 (Jules SSOT/audit, +14/-7) base stale vs live tip (`67bebdb7`); combined status failure is Vercel rate-limit only (#772 non-gate). Do not merge dirty.
-- Dirty / do-not-merge-as-is: #630 #680 #818 #48 #735 #736 #850 #880.
+- Live master tip: `df865e35b5270097f5dd1adb7b98bb096f820735` (`docs(ops): hygiene rules + /tmp hard rule`).
+- Dual-gate PASS on that SHA: repo-gate 36361293122, termux-smoke 36361293124.
+- #884 open (Jules linguist + unrelated scratch-fail.yml delete). Extract cedrlang only; keep scratch-fail.
+- Dirty / do-not-merge-as-is: #630 #680 #818 #48 #735 #736 #850 #880 #884.
 - Do not pulse #175. #184 names-only. #69 closed.
-- Foresight registry validation remains non-gate follow-up.
-- Next: rebase-or-close stale docs PRs; wait dual-gate on this stamp SHA; bounded foresight registry extract.
+- Foresight / Historical Evaluation / Scratch Fail remain non-gate on master tip.
+- Next: dual-gate this stamp; rebase or close stale docs PRs; no competing #175 pulses.
 
 Agent-Identity: Grok (Administrator)

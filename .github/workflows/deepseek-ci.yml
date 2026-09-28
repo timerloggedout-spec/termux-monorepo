@@ -173,6 +173,7 @@ jobs:
           key: deepseek-session-${{ github.repository_id }}-${{ github.ref }}-account1-${{ runner.os }}-${{ hashFiles('deepcli/session_manager.py') }}
 
       - name: Run DeepSeek CI Agent (Account-1 priority)
+        timeout-minutes: 40
         env:
           PYTHONPATH: ${{ github.workspace }}
           # runner.temp ONLY valid at step level — was the post-#174 master gate breaker

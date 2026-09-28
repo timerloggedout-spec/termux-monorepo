@@ -145,16 +145,15 @@ Receipts are projections; the longitudinal GitHub/evidence corpus remains the so
 
 This skill owns repository-admin evidence discipline; it does not replace those specialist lanes.
 
-## Session 2026-09-27 16:14 PDT
+## Session 2026-09-27 18:16 PDT
 
-- Live master tip: `d93a88f2d36a96be97746a49d6d486d7817217cd` (help-wanted refresh 23:03Z).
-- Dual-gate last PASS on product SHA `3ed4d8706f552576b6ddb293a523c233e35cc7df`: repo-gate 36357211908, termux-smoke 36357212033.
-- #881 MERGED (hindsight client tool scaffold) as `f0ea8e4263557d1c74625094ccc7e8de1dcc0ff1`; dual-gate PASS 36357164716 / 36357164658.
-- #879 recon stamp already on master (`5b67204e`).
-- Open #880 (Jules SSOT/audit, +14/-7) base stale vs live tip (`67bebdb7`); combined status failure is Vercel rate-limit only (#772 non-gate). Do not merge dirty.
-- Dirty / do-not-merge-as-is: #630 #680 #818 #48 #735 #736 #850 #880.
+- Live master tip: `1620a0701ad18a44de17c1812730f8ec492b25c4` (upload-artifact pin bump in deepseek-ci.yml).
+- Dual-gate PASS on that SHA: repo-gate 36364899982, termux-smoke 36364900011.
+- Prior session stamp #887 (`ops/session-recon-20260927-1716`) is stale vs live tip; do not promote dirty base.
+- scratch-fail.yml remains expected FAIL on master.
+- Dirty / do-not-merge-as-is: #630 #680 #818 #48 #735 #736 #850 #880 #884 #887.
+- #48 is an open PR targeting llm-api-hub / master-staging lineage; not dual-gate-ready on live master.
 - Do not pulse #175. #184 names-only. #69 closed.
-- Foresight registry validation remains non-gate follow-up.
-- Next: rebase-or-close stale docs PRs; wait dual-gate on this stamp SHA; bounded foresight registry extract.
+- Next: wait dual-gate on this stamp SHA; rebase or close stale docs PRs; bounded #884 extract only if merge-base is live tip.
 
 Agent-Identity: Grok (Administrator)

@@ -39,6 +39,7 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Build agent payload
+        timeout-minutes: 5
         env:
           EVENT_NAME: ${{ github.event_name }}
           COMMENT_BODY: ${{ github.event.comment.body }}
@@ -78,6 +79,7 @@ jobs:
           cat agent_payload.json
 
       - name: Emit ATES task-boundary identity
+        timeout-minutes: 5
         env:
           AGENT_ID: deepseek
           TASK_KIND: agent_request

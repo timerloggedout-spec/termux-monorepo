@@ -937,6 +937,14 @@ def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False
         else:
             sid = None
             print(f"  [session] fresh (key={key})")
+    # ── run-state resume (network-interrupt resilience) ──
+    resumed_state = None
+    if not fresh:
+        _st = session_store.load_run_state(key)
+        if _st and _st.get("msgs") and _st.get("step", 0) > 0:
+            resumed_state = _st
+            print(f"  [resume] checkpoint found: step={_st['step']} task='{(_st.get('task') or '')[:60]}'")
+
     SAFETY_CEILING = int(os.environ.get("AGENT_SAFETY_CEILING", "60"))
     NO_PROGRESS_LIMIT = int(os.environ.get("AGENT_NO_PROGRESS_LIMIT", "5"))
     # Hindsight gate (from master): the client is constructed only if env set;

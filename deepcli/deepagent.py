@@ -961,7 +961,28 @@ def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False
         if content:
             print(f"  (assistant): {content[:200]}")
         if not calls:
-            print(f"\n✔ done (no tool calls)\n{content}\n")
+            # No tool calls: model ended its turn. Treat as implicit finish
+            # so session is saved and snapshot runs. Same semantics as
+            # an explicit finish call.
+            print(f"\n✔ done (no tool calls — treating as implicit finish)\n{content}\n")
+            if sid and not dry_run:
+                session_store.save(key, sid, meta={"last_task": task[:200]})
+                print(f"  [session] saved {sid[:12]}\u2026 for key={key}")
+            try:
+                _elapsed = round(time.time() - _t0, 1)
+            except Exception:
+                _elapsed = 0.0
+            if not dry_run:
+                try:
+                    _autosnapshot("implicit_finish")
+                except Exception:
+                    pass
+                try:
+                    _notify("run", "\u2705 Agent done (implicit)",
+                            f"sid={sid[:12] if sid else '?'}  elapsed={_elapsed}s\n{content[:200]}",
+                            priority="high")
+                except Exception:
+                    pass
             return content
         am = {"role":"assistant","content":content or None,
               "tool_calls":[{"id":c["id"],"type":"function",

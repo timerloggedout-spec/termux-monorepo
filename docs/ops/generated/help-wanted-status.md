@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-28T15:21:46Z UTC · receipts=489 · foreign_open=24 · tributes=51_
+_Generated 2026-09-28T17:00:55Z UTC · receipts=489 · foreign_open=25 · tributes=32_
 
 ## Tributes (contributor ledger)
 
+- [TrusTrove/TrusTrove-contract#860](https://github.com/TrusTrove/TrusTrove-contract/pull/860) · state=open · help-wanted: stake + contribute for #836
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -28,25 +29,17 @@ _Generated 2026-09-28T15:21:46Z UTC · receipts=489 · foreign_open=24 · tribut
 - [KayStcx/KayStcx#104](https://github.com/KayStcx/KayStcx/pull/104) · state=open · help-wanted: stake + contribute for #85
 - [prime-radiant-inc/evener#2661](https://github.com/prime-radiant-inc/evener/pull/2661) · state=open · help-wanted: stake + contribute for #2627
 - [OBLIQ-in/OBLIQ-Website#39](https://github.com/OBLIQ-in/OBLIQ-Website/pull/39) · state=open · help-wanted: stake + contribute for #12
-- [umn-adc/ATLAS#42](https://github.com/umn-adc/ATLAS/pull/42) · state=closed · help-wanted: stake + contribute for #31
-- [lonestill/onyx-launcher#45](https://github.com/lonestill/onyx-launcher/pull/45) · state=closed · help-wanted: stake + contribute for #19
-- [UnityChainxx/StellarHunts#599](https://github.com/UnityChainxx/StellarHunts/pull/599) · state=closed · help-wanted: stake + contribute for #519
-- [Stellar-songifi/Lyricsflip_server#212](https://github.com/Stellar-songifi/Lyricsflip_server/pull/212) · state=closed · help-wanted: stake + contribute for #108
-- [C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend#587](https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587) · state=closed · help-wanted: stake + contribute for #579
-- [vavallee/bindery#2770](https://github.com/vavallee/bindery/pull/2770) · state=closed · help-wanted: stake + contribute for #2769
-- [ApexChainx/ApexChainx-Contracts#689](https://github.com/ApexChainx/ApexChainx-Contracts/pull/689) · state=closed · help-wanted: stake + contribute for #659
-- [infagent/merl#43](https://github.com/infagent/merl/pull/43) · state=closed · help-wanted: stake + contribute for #42
-- [limelitgeo/open#32](https://github.com/limelitgeo/open/pull/32) · state=closed · help-wanted: stake + contribute for #31
-- [sorotrail/SoroTrail#943](https://github.com/sorotrail/SoroTrail/pull/943) · state=closed · help-wanted: stake + contribute for #142
-- [DeltaV-Station/Delta-v#6534](https://github.com/DeltaV-Station/Delta-v/pull/6534) · state=closed · help-wanted: stake + contribute for #6533
-- [ussyalfaks/ahjoorxmr-contract#872](https://github.com/ussyalfaks/ahjoorxmr-contract/pull/872) · state=closed · help-wanted: stake + contribute for #871
-- [FasterThanAi/ai-lead-generation-mvp#34](https://github.com/FasterThanAi/ai-lead-generation-mvp/pull/34) · state=closed · help-wanted: stake + contribute for #18
-- [ennouaimi/invoicr#8](https://github.com/ennouaimi/invoicr/pull/8) · state=closed · help-wanted: stake + contribute for #7
-- [shadcn-labs/ogimagecn#34](https://github.com/shadcn-labs/ogimagecn/pull/34) · state=closed · help-wanted: stake + contribute for #33
-- [pyrite-wiki/pyrite#198](https://github.com/pyrite-wiki/pyrite/pull/198) · state=closed · help-wanted: stake + contribute for #192
+- [https://github.com/umn-adc/ATLAS/pull/42](https://github.com/umn-adc/ATLAS/pull/42) · state=? · 
+- [https://github.com/lonestill/onyx-launcher/pull/45](https://github.com/lonestill/onyx-launcher/pull/45) · state=? · 
+- [https://github.com/UnityChainxx/StellarHunts/pull/599](https://github.com/UnityChainxx/StellarHunts/pull/599) · state=? · 
+- [https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587](https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587) · state=? · 
+- [https://github.com/vavallee/bindery/pull/2770](https://github.com/vavallee/bindery/pull/2770) · state=? · 
+- [https://github.com/DioNanos/codex-termux/pull/27](https://github.com/DioNanos/codex-termux/pull/27) · state=? · 
+- [https://github.com/chahe-dridi/vscode-agent-bell/pull/225](https://github.com/chahe-dridi/vscode-agent-bell/pull/225) · state=? · 
 
 ## Foreign open PRs
 
+- [TrusTrove/TrusTrove-contract#860](https://github.com/TrusTrove/TrusTrove-contract/pull/860) — help-wanted: stake + contribute for #836
 - [OBLIQ-in/OBLIQ-Website#39](https://github.com/OBLIQ-in/OBLIQ-Website/pull/39) — help-wanted: stake + contribute for #12
 - [prime-radiant-inc/evener#2661](https://github.com/prime-radiant-inc/evener/pull/2661) — help-wanted: stake + contribute for #2627
 - [KayStcx/KayStcx#104](https://github.com/KayStcx/KayStcx/pull/104) — help-wanted: stake + contribute for #85

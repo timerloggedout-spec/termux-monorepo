@@ -126,7 +126,8 @@ def apply_casing(src: str, dst: str) -> str:
         return capitalize_word(dst)
     return lowercase_word(dst)
 
-SYMBOL_REGEXES = {phrase: re.compile(re.escape(phrase), re.IGNORECASE) for phrase in SYMBOL_MAP}
+SORTED_SYMBOLS = sorted(SYMBOL_MAP.items(), key=lambda x: len(x[0]), reverse=True)
+SYMBOL_PATTERNS = [(re.compile(re.escape(phrase), re.IGNORECASE), repl) for phrase, repl in SORTED_SYMBOLS]
 INLINE_CODE_PATTERN = re.compile(r'`[^`]+`')
 HTML_TAG_PATTERN = re.compile(r'<[^>]+>')
 LINK_PATTERN = re.compile(r'\[([^\]]+)\]\(([^)]+)\)')
@@ -198,9 +199,9 @@ for human, comp in SORTED_MAPPINGS_DECOMP:
 def compress(text: str, aggressive: bool = True) -> str:
     if not text:
         return ""
-    result = text[:]
-    for phrase, pattern in SYMBOL_REGEXES.items():
-        result = pattern.sub(SYMBOL_MAP[phrase], result)
+    result = text
+    for pattern, repl in SYMBOL_PATTERNS:
+        result = pattern.sub(repl, result)
     if not aggressive:
         return result.strip()
     words = result.split()
@@ -211,9 +212,11 @@ def compress(text: str, aggressive: bool = True) -> str:
     return result
 
 def caveman(text: str, max_up: bool = False) -> str:
+    if not text:
+        return ""
     t = text.upper() if max_up else text
-    for phrase, pattern in SYMBOL_REGEXES.items():
-        t = pattern.sub(SYMBOL_MAP[phrase], t)
+    for pattern, repl in SYMBOL_PATTERNS:
+        t = pattern.sub(repl, t)
     words = [w for w in t.split() if w.lower() not in STOPWORDS]
     return SPACES_PATTERN.sub(' ', " ".join(words)).strip()
 

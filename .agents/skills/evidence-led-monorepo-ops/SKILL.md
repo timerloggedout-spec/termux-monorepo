@@ -145,15 +145,13 @@ Receipts are projections; the longitudinal GitHub/evidence corpus remains the so
 
 This skill owns repository-admin evidence discipline; it does not replace those specialist lanes.
 
-## Session 2026-09-27 22:14 PDT
+## Session 2026-09-28 00:04 PDT
 
-- Live master tip at recon: `2268e302d8b7b733a6e18ed285fa2c5f145a0cd8`.
-- Dual-gate PASS on that SHA: repo-gate 36380809139, termux-smoke 36380809228.
-- Predecessor stamp SHA `311077d1` / skill stamp `8670b2e5` superseded.
-- Dirty / do-not-merge-as-is (bases behind tip): #630 #680 #818 #48 #735 #736 #850 #880 #884.
-- #48 remains `master-staging` gate path; do not promote to master until staging dual-gate.
-- Do not pulse #175. #184 names-only. #69 closed.
-- Stepie planning only (primary goal 2158). No merge authority from planning surface.
-- This session: mermaid mmdc refresh-trusted missing puppeteer no-sandbox (job 108796012711 FAIL) — corrected on successor SHA.
+- Live master tip at recon: `16db36d1f071513c577d70df55df264896413f2b` (#893 squash remove scratch-fail.yml).
+- Predecessor tip: `10fefad1bb6690dbfc7a0cb283a4e76667a7da35`.
+- Dual-gate last PASS on functional SHA `13ff34de4a7bcca0f8eb6e2be7d3561b3e3f11a3`: repo-gate 36385477044, termux-smoke 36385477005.
+- Wait dual-gate on 16db36d1. #892 stamp superseded.
+- Dirty/extract: #884/#880/#850/#818/#809/#806/#48. Do not pulse #175. #184 names-only. #69 closed.
+- Stepie planning only (primary goal 2158).
 
 Agent-Identity: Grok (Administrator)

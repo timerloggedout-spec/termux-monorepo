@@ -61389,3 +61389,430 @@ permissions:
 
   [session] saved c380f65f-346… for key=4df19d6945107844
 [2026-09-28T05:03:00-07:00] run 473 done — next in 5s
+
+▶ task: # TASK: Self-integrate — one workflow improvement
+
+## Tool flow — follow exactly, do not improvise
+
+### 1. Recon
+    list_skills()
+    glob(path="~/.github/workflows", glob="*.yml")
+    gh(["run","list","--repo","timerloggedout-spec/termux-monorepo","--limit","20","--json","databaseId,name,conclusion,headBranch"])
+
+### 2. Read the target (choose deepseek-termux-agent.yml unless already improved)
+    gh_get_file(repo="timerloggedout-spec/termux-monorepo",
+                path=".github/workflows/deepseek-termux-agent.yml",
+                ref="master")
+
+The `content` field is the FULL decoded text — do not assume it is truncated.
+If it is larger than the display, the actual string is complete. The size field
+tells you the true byte count.
+
+### 3. Pick ONE improvement
+- Missing `if: failure()` diagnostic step → add
+- Missing artifact upload → add
+- Deprecated action version → bump
+- Missing `timeout-minutes:` on a job → add
+If the file already satisfies all of these, move on to ci-sweep.yml. If both
+are clean, finish with improvement=null.
+
+### 4. Apply — USE gh_edit_file, NOT gh_put
+    gh_edit_file(
+      repo="timerloggedout-spec/termux-monorepo",
+      path=".github/workflows/deepseek-termux-agent.yml",
+      edits=[
+        {"old": "<exact existing multi-line snippet>",
+         "new": "<that snippet plus your addition>"}
+      ],
+      message="chore(ci): <one-line diagnosis>",
+      branch="master"
+    )
+
+Rules for edits:
+- `old` MUST be a substring that appears exactly once in the file.
+- `new` is the same text plus your change.
+- You do NOT need to provide the whole file.
+- If your first edit fails with "old not found", pick a smaller/more unique
+  snippet and try again. Do not retry the identical edit.
+
+### 5. Validate (light — do not block on this)
+
+If the file you changed has a `workflow_dispatch:` trigger with a `task` input,
+you MUST pass `-f task=...` or GitHub rejects with HTTP 422:
+
+    gh(["workflow","run","deepseek-termux-agent.yml",
+        "--repo","timerloggedout-spec/termux-monorepo","--ref","master",
+        "-f","task=validation ping from agent"])
+    run(["sleep","15"])
+    gh(["run","list","--repo","timerloggedout-spec/termux-monorepo",
+        "--workflow","deepseek-termux-agent.yml","--limit","1",
+        "--json","status,conclusion"])
+
+If the workflow has no `task` input, plain dispatch is fine.
+
+Mark `"validation":"deferred"` with reason `"non-behavioral change — failure-path only"`
+if the change only affects an `if: failure()` path that cannot be exercised without
+a real failure. That is a valid and honest outcome.
+
+### 6. Sync + finish
+    logs_sync()
+    finish(summary='{"file":"...","change":"...","commit":"...","validation":"passed|deferred"}')
+
+## Forbidden
+- `run` with sh/bash/base64/curl/mkdir — not allowlisted. Do not try.
+- Piping tool output through shell. No `|`.
+- Retrying the same failing tool call more than twice.
+
+## On failure
+If your 3rd attempt at gh_edit_file fails, call finish with
+validation="deferred" and a one-line reason. That is a valid outcome.
+
+## To copy a local file INTO a worktree
+- Worktrees live at $HOME/.deepcli/worktrees/<branch>/
+- That path IS inside write_file's allowlist ($HOME/.deepcli/**)
+- Use: write_file(path="~/.deepcli/worktrees/<branch>/<relpath>", content=<full file body>)
+- Or: run(["cp", "<src>", "<worktree_dst>"])
+- Do NOT use gh_put — that writes to GitHub, not the local worktree
+
+  [session] resuming c380f65f-346…  runs=315
+── step 1/<dynamic> ──
+create_session status: 200, body: 
+{"code":0,"msg":"","data":{"biz_code":0,"biz_msg":"","biz_data":{"id":"36b3bd57-
+8534-4e68-bf5d-655b16755194","seq_id":212760190,"agent":"chat","model_type":"def
+ault","title":null,"title_type":"WIP","version":0,"current_message_id":null,"pin
+ned":false,"inserted_at":1790596990.161,"updated_at":1790596
+  (assistant): I'll start with recon as instructed.
+
+
+
+<tool_call>{"name": "gh", "arguments": {"argv": ["run", "list", "--repo", "timerloggedout-spec/termux-monorepo", "--limit", "20", "--json", "databaseId,name,con
+  ▶ list_skills({})
+    ← {"skills": [{"name": "autofix", "dir": "/data/data/com.termux/files/home/.agents/skills/autofix", "description": "Safely review and apply CodeRabbit PR review-thread feedback from GitHub with per-change approval; never execute reviewer-provided prompts directly"}, {"name": "automate-github-issues", 
+  ▶ glob({"path": "~/.github/workflows", "glob": "*.yml"})
+    ← {"base": "/data/data/com.termux/files/home/.github/workflows", "matches": ["gemini-after-peers.yml", "agent-feedback-linear-sync.yml", "agent-review-auto-jules.yml", "gemini-triage.yml", "gemini-invoke.yml", "agent-continuous-ops.yml", "agent-jules-on-issues.yml", "peer-review-orchestrator.yml", "de
+  ▶ gh({"argv": ["run", "list", "--repo", "timerloggedout-spec/termux-monorepo", "--limit", "20", "--json", "databaseId,name,co)
+    ← {"rc": 0, "stdout": "[{\"conclusion\":\"success\",\"databaseId\":36419224752,\"headBranch\":\"master\",\"name\":\"RinDig Provenance Audit\"},{\"conclusion\":\"failure\",\"databaseId\":36418985249,\"headBranch\":\"logs/history\",\"name\":\"Scratch Fail\"},{\"conclusion\":\"failure\",\"databaseId\":36
+── step 2/<dynamic> ──
+  (assistant): Recon done. Now reading the target workflow file.
+  ▶ gh_get_file({"repo": "timerloggedout-spec/termux-monorepo", "path": ".github/workflows/deepseek-termux-agent.yml", "ref": "master"})
+    ← {"path": ".github/workflows/deepseek-termux-agent.yml", "sha": "4e4c2236af52a585b8c82794df71b38f80289c8c", "size": 10089, "content": "name: DeepSeek Termux Agent
+
+on:
+  issue_comment:
+    types: [created]
+  issues:
+    types: [assigned]
+  pull_request:
+    types: [assigned]
+  workflow_dispa
+── step 3/<dynamic> ──
+  (assistant): The file is already fully hygienic — it has `timeout-minutes` on the job and every step, `if: failure()` diagnostics, artifact uploads, and pinned non-deprecated action versions (checkout v4.2.2, uplo
+  ▶ gh_get_file({"repo": "timerloggedout-spec/termux-monorepo", "path": ".github/workflows/ci-sweep.yml", "ref": "master"})
+    ← {"path": ".github/workflows/ci-sweep.yml", "sha": "65c3442ee972f5cc49345ceb35c1f08fa3691c92", "size": 3249, "content": "name: Continuous CI Sweep
+on:
+  schedule:
+    - cron: '0 */6 * * *'   # every 6 hours
+  workflow_dispatch:
+permissions:
+  contents: write
+  issues: write
+  pull-requests: w
+── step 4/<dynamic> ──
+  (assistant): ci-sweep.yml is also fully clean: job-level `timeout-minutes: 30`, per-step timeouts, an `if: failure()` diagnostic step, an `if: always()` artifact upload with a pinned v4.6.2 SHA, and no deprecated 
+  ▶ logs_sync({})
+    ← {"rc": 0, "stdout": "{\"status\": \"synced\", \"files\": 80, \"bytes\": 3824529, \"commit\": \"12057dd8f69e\", \"prefix\": \".deepseek-logs/2026-09-28\"}
+", "stderr": ""}
+  ▶ finish({"summary": "{\"file\":null,\"change\":null,\"commit\":null,\"validation\":\"deferred\",\"reason\":\"both deepseek-termu)
+
+✔ FINISH
+{"file":null,"change":null,"commit":null,"validation":"deferred","reason":"both deepseek-termux-agent.yml and ci-sweep.yml already satisfy all hygiene checks (job+step timeout-minutes, if: failure() diagnostics, if: always() artifact uploads, pinned non-deprecated action versions) — no improvement applicable"}
+
+  [session] saved 36b3bd57-853… for key=4df19d6945107844
+[2026-09-28T05:05:45-07:00] run 474 done — next in 5s
+
+▶ task: # TASK: Self-integrate — one workflow improvement
+
+## Tool flow — follow exactly, do not improvise
+
+### 1. Recon
+    list_skills()
+    glob(path="~/.github/workflows", glob="*.yml")
+    gh(["run","list","--repo","timerloggedout-spec/termux-monorepo","--limit","20","--json","databaseId,name,conclusion,headBranch"])
+
+### 2. Read the target (choose deepseek-termux-agent.yml unless already improved)
+    gh_get_file(repo="timerloggedout-spec/termux-monorepo",
+                path=".github/workflows/deepseek-termux-agent.yml",
+                ref="master")
+
+The `content` field is the FULL decoded text — do not assume it is truncated.
+If it is larger than the display, the actual string is complete. The size field
+tells you the true byte count.
+
+### 3. Pick ONE improvement
+- Missing `if: failure()` diagnostic step → add
+- Missing artifact upload → add
+- Deprecated action version → bump
+- Missing `timeout-minutes:` on a job → add
+If the file already satisfies all of these, move on to ci-sweep.yml. If both
+are clean, finish with improvement=null.
+
+### 4. Apply — USE gh_edit_file, NOT gh_put
+    gh_edit_file(
+      repo="timerloggedout-spec/termux-monorepo",
+      path=".github/workflows/deepseek-termux-agent.yml",
+      edits=[
+        {"old": "<exact existing multi-line snippet>",
+         "new": "<that snippet plus your addition>"}
+      ],
+      message="chore(ci): <one-line diagnosis>",
+      branch="master"
+    )
+
+Rules for edits:
+- `old` MUST be a substring that appears exactly once in the file.
+- `new` is the same text plus your change.
+- You do NOT need to provide the whole file.
+- If your first edit fails with "old not found", pick a smaller/more unique
+  snippet and try again. Do not retry the identical edit.
+
+### 5. Validate (light — do not block on this)
+
+If the file you changed has a `workflow_dispatch:` trigger with a `task` input,
+you MUST pass `-f task=...` or GitHub rejects with HTTP 422:
+
+    gh(["workflow","run","deepseek-termux-agent.yml",
+        "--repo","timerloggedout-spec/termux-monorepo","--ref","master",
+        "-f","task=validation ping from agent"])
+    run(["sleep","15"])
+    gh(["run","list","--repo","timerloggedout-spec/termux-monorepo",
+        "--workflow","deepseek-termux-agent.yml","--limit","1",
+        "--json","status,conclusion"])
+
+If the workflow has no `task` input, plain dispatch is fine.
+
+Mark `"validation":"deferred"` with reason `"non-behavioral change — failure-path only"`
+if the change only affects an `if: failure()` path that cannot be exercised without
+a real failure. That is a valid and honest outcome.
+
+### 6. Sync + finish
+    logs_sync()
+    finish(summary='{"file":"...","change":"...","commit":"...","validation":"passed|deferred"}')
+
+## Forbidden
+- `run` with sh/bash/base64/curl/mkdir — not allowlisted. Do not try.
+- Piping tool output through shell. No `|`.
+- Retrying the same failing tool call more than twice.
+
+## On failure
+If your 3rd attempt at gh_edit_file fails, call finish with
+validation="deferred" and a one-line reason. That is a valid outcome.
+
+## To copy a local file INTO a worktree
+- Worktrees live at $HOME/.deepcli/worktrees/<branch>/
+- That path IS inside write_file's allowlist ($HOME/.deepcli/**)
+- Use: write_file(path="~/.deepcli/worktrees/<branch>/<relpath>", content=<full file body>)
+- Or: run(["cp", "<src>", "<worktree_dst>"])
+- Do NOT use gh_put — that writes to GitHub, not the local worktree
+
+  [session] resuming 36b3bd57-853…  runs=316
+── step 1/<dynamic> ──
+create_session status: 200, body: 
+{"code":0,"msg":"","data":{"biz_code":0,"biz_msg":"","biz_data":{"id":"29aa3915-
+284b-4eee-bc33-6f4a1b9d4e97","seq_id":212760355,"agent":"chat","model_type":"def
+ault","title":null,"title_type":"WIP","version":0,"current_message_id":null,"pin
+ned":false,"inserted_at":1790597155.114,"updated_at":1790597
+  (assistant): I'll start with recon as instructed.
+
+
+
+<tool_call>{"name": "gh", "arguments": {"argv": ["run", "list", "--repo", "timerloggedout-spec/termux-monorepo", "--limit", "20", "--json", "databaseId,name,con
+  ▶ list_skills({})
+    ← {"skills": [{"name": "autofix", "dir": "/data/data/com.termux/files/home/.agents/skills/autofix", "description": "Safely review and apply CodeRabbit PR review-thread feedback from GitHub with per-change approval; never execute reviewer-provided prompts directly"}, {"name": "automate-github-issues", 
+  ▶ glob({"path": "~/.github/workflows", "glob": "*.yml"})
+    ← {"base": "/data/data/com.termux/files/home/.github/workflows", "matches": ["gemini-after-peers.yml", "agent-feedback-linear-sync.yml", "agent-review-auto-jules.yml", "gemini-triage.yml", "gemini-invoke.yml", "agent-continuous-ops.yml", "agent-jules-on-issues.yml", "peer-review-orchestrator.yml", "de
+  ▶ gh({"argv": ["run", "list", "--repo", "timerloggedout-spec/termux-monorepo", "--limit", "20", "--json", "databaseId,name,co)
+    ← {"rc": 0, "stdout": "[{\"conclusion\":\"failure\",\"databaseId\":36419637877,\"headBranch\":\"logs/history\",\"name\":\"Scratch Fail\"},{\"conclusion\":\"failure\",\"databaseId\":36419635316,\"headBranch\":\"logs/history\",\"name\":\".github/workflows/context-relationship-backfill.yml\"},{\"conclusi
+── step 2/<dynamic> ──
+  (assistant): Recon done. Now reading the target workflow file.
+  ▶ gh_get_file({"repo": "timerloggedout-spec/termux-monorepo", "path": ".github/workflows/deepseek-termux-agent.yml", "ref": "master"})
+    ← {"path": ".github/workflows/deepseek-termux-agent.yml", "sha": "4e4c2236af52a585b8c82794df71b38f80289c8c", "size": 10089, "content": "name: DeepSeek Termux Agent
+
+on:
+  issue_comment:
+    types: [created]
+  issues:
+    types: [assigned]
+  pull_request:
+    types: [assigned]
+  workflow_dispa
+── step 3/<dynamic> ──
+  (assistant): The file is already fully improved — it has `timeout-minutes:` on the job and every step, a `Failure diagnostics` step with `if: failure()`, artifact uploads (`Upload ATES task-boundary identity` and 
+  ▶ gh_get_file({"repo": "timerloggedout-spec/termux-monorepo", "path": ".github/workflows/ci-sweep.yml", "ref": "master"})
+    ← {"path": ".github/workflows/ci-sweep.yml", "sha": "65c3442ee972f5cc49345ceb35c1f08fa3691c92", "size": 3249, "content": "name: Continuous CI Sweep
+on:
+  schedule:
+    - cron: '0 */6 * * *'   # every 6 hours
+  workflow_dispatch:
+permissions:
+  contents: write
+  issues: write
+  pull-requests: w
+── step 4/<dynamic> ──
+  (assistant): Both files are already clean — `ci-sweep.yml` also has job-level `timeout-minutes: 30`, per-step timeouts, an `if: failure()` diagnostic step, an `if: always()` artifact upload, and pinned current act
+
+✔ done (no tool calls — treating as implicit finish)
+Both files are already clean — `ci-sweep.yml` also has job-level `timeout-minutes: 30`, per-step timeouts, an `if: failure()` diagnostic step, an `if: always()` artifact upload, and pinned current action versions. Per the task instructions, I finish with `improvement=null`. No edits needed, so there's nothing to validate; syncing logs and finishing.
+
+  [session] saved 29aa3915-284… for key=4df19d6945107844
+[2026-09-28T05:06:29-07:00] run 475 done — next in 5s
+
+▶ task: # TASK: Self-integrate — one workflow improvement
+
+## Tool flow — follow exactly, do not improvise
+
+### 1. Recon
+    list_skills()
+    glob(path="~/.github/workflows", glob="*.yml")
+    gh(["run","list","--repo","timerloggedout-spec/termux-monorepo","--limit","20","--json","databaseId,name,conclusion,headBranch"])
+
+### 2. Read the target (choose deepseek-termux-agent.yml unless already improved)
+    gh_get_file(repo="timerloggedout-spec/termux-monorepo",
+                path=".github/workflows/deepseek-termux-agent.yml",
+                ref="master")
+
+The `content` field is the FULL decoded text — do not assume it is truncated.
+If it is larger than the display, the actual string is complete. The size field
+tells you the true byte count.
+
+### 3. Pick ONE improvement
+- Missing `if: failure()` diagnostic step → add
+- Missing artifact upload → add
+- Deprecated action version → bump
+- Missing `timeout-minutes:` on a job → add
+If the file already satisfies all of these, move on to ci-sweep.yml. If both
+are clean, finish with improvement=null.
+
+### 4. Apply — USE gh_edit_file, NOT gh_put
+    gh_edit_file(
+      repo="timerloggedout-spec/termux-monorepo",
+      path=".github/workflows/deepseek-termux-agent.yml",
+      edits=[
+        {"old": "<exact existing multi-line snippet>",
+         "new": "<that snippet plus your addition>"}
+      ],
+      message="chore(ci): <one-line diagnosis>",
+      branch="master"
+    )
+
+Rules for edits:
+- `old` MUST be a substring that appears exactly once in the file.
+- `new` is the same text plus your change.
+- You do NOT need to provide the whole file.
+- If your first edit fails with "old not found", pick a smaller/more unique
+  snippet and try again. Do not retry the identical edit.
+
+### 5. Validate (light — do not block on this)
+
+If the file you changed has a `workflow_dispatch:` trigger with a `task` input,
+you MUST pass `-f task=...` or GitHub rejects with HTTP 422:
+
+    gh(["workflow","run","deepseek-termux-agent.yml",
+        "--repo","timerloggedout-spec/termux-monorepo","--ref","master",
+        "-f","task=validation ping from agent"])
+    run(["sleep","15"])
+    gh(["run","list","--repo","timerloggedout-spec/termux-monorepo",
+        "--workflow","deepseek-termux-agent.yml","--limit","1",
+        "--json","status,conclusion"])
+
+If the workflow has no `task` input, plain dispatch is fine.
+
+Mark `"validation":"deferred"` with reason `"non-behavioral change — failure-path only"`
+if the change only affects an `if: failure()` path that cannot be exercised without
+a real failure. That is a valid and honest outcome.
+
+### 6. Sync + finish
+    logs_sync()
+    finish(summary='{"file":"...","change":"...","commit":"...","validation":"passed|deferred"}')
+
+## Forbidden
+- `run` with sh/bash/base64/curl/mkdir — not allowlisted. Do not try.
+- Piping tool output through shell. No `|`.
+- Retrying the same failing tool call more than twice.
+
+## On failure
+If your 3rd attempt at gh_edit_file fails, call finish with
+validation="deferred" and a one-line reason. That is a valid outcome.
+
+## To copy a local file INTO a worktree
+- Worktrees live at $HOME/.deepcli/worktrees/<branch>/
+- That path IS inside write_file's allowlist ($HOME/.deepcli/**)
+- Use: write_file(path="~/.deepcli/worktrees/<branch>/<relpath>", content=<full file body>)
+- Or: run(["cp", "<src>", "<worktree_dst>"])
+- Do NOT use gh_put — that writes to GitHub, not the local worktree
+
+  [session] resuming 29aa3915-284…  runs=317
+── step 1/<dynamic> ──
+create_session status: 200, body: 
+{"code":0,"msg":"","data":{"biz_code":0,"biz_msg":"","biz_data":{"id":"95efd715-
+b724-4cb6-9448-44bae2433ffa","seq_id":212760400,"agent":"chat","model_type":"def
+ault","title":null,"title_type":"WIP","version":0,"current_message_id":null,"pin
+ned":false,"inserted_at":1790597200.541,"updated_at":1790597
+/data/data/com.termux/files/home/.local/bin/deepagent:720: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": _dt.datetime.utcnow().isoformat(),
+  (assistant): I'll start with the recon steps.
+
+
+
+<tool_call>{"name": "gh", "arguments": {"argv": ["run", "list", "--repo", "timerloggedout-spec/termux-monorepo", "--limit", "20", "--json", "databaseId,name,conclus
+  ▶ list_skills({})
+    ← {"skills": [{"name": "autofix", "dir": "/data/data/com.termux/files/home/.agents/skills/autofix", "description": "Safely review and apply CodeRabbit PR review-thread feedback from GitHub with per-change approval; never execute reviewer-provided prompts directly"}, {"name": "automate-github-issues", 
+  ▶ glob({"path": "~/.github/workflows", "glob": "*.yml"})
+    ← {"base": "/data/data/com.termux/files/home/.github/workflows", "matches": ["gemini-after-peers.yml", "agent-feedback-linear-sync.yml", "agent-review-auto-jules.yml", "gemini-triage.yml", "gemini-invoke.yml", "agent-continuous-ops.yml", "agent-jules-on-issues.yml", "peer-review-orchestrator.yml", "de
+  ▶ gh({"argv": ["run", "list", "--repo", "timerloggedout-spec/termux-monorepo", "--limit", "20", "--json", "databaseId,name,co)
+    ← {"rc": 0, "stdout": "[{\"conclusion\":\"failure\",\"databaseId\":36419637877,\"headBranch\":\"logs/history\",\"name\":\"Scratch Fail\"},{\"conclusion\":\"failure\",\"databaseId\":36419635316,\"headBranch\":\"logs/history\",\"name\":\".github/workflows/context-relationship-backfill.yml\"},{\"conclusi
+── step 2/<dynamic> ──
+  (assistant): I have the recon data. Now let me read the target workflow file.
+
+<tool_call>{"name": "gh_get_file", "arguments": {"repo": "timerloggedout-spec/termux-monorepo", "path": ".github/workflows/deepseek-te
+  ▶ gh_get_file({"repo": "timerloggedout-spec/termux-monorepo", "path": ".github/workflows/deepseek-termux-agent.yml", "ref": "master"})
+    ← {"path": ".github/workflows/deepseek-termux-agent.yml", "sha": "4e4c2236af52a585b8c82794df71b38f80289c8c", "size": 10089, "content": "name: DeepSeek Termux Agent
+
+on:
+  issue_comment:
+    types: [created]
+  issues:
+    types: [assigned]
+  pull_request:
+    types: [assigned]
+  workflow_dispa
+── step 3/<dynamic> ──
+  (assistant): The file is already fully improved — it has `timeout-minutes` on the job and every step, `if: failure()` diagnostics, and artifact uploads, plus a note explicitly confirming it satisfies the hygiene c
+  ▶ gh_get_file({"path": ".github/workflows/ci-sweep.yml", "ref": "master", "repo": "timerloggedout-spec/termux-monorepo"})
+    ← {"path": ".github/workflows/ci-sweep.yml", "sha": "65c3442ee972f5cc49345ceb35c1f08fa3691c92", "size": 3249, "content": "name: Continuous CI Sweep
+on:
+  schedule:
+    - cron: '0 */6 * * *'   # every 6 hours
+  workflow_dispatch:
+permissions:
+  contents: write
+  issues: write
+  pull-requests: w
+── step 4/<dynamic> ──
+  (assistant): Both files are clean:
+- `deepseek-termux-agent.yml`: job-level `timeout-minutes: 25`, per-step `timeout-minutes`, `if: failure()` diagnostics, and artifact uploads (both `always()` and failure paths).
+  ▶ logs_sync({})
+    ← ERROR TimeoutExpired: Command '['/data/data/com.termux/files/usr/bin/python3', '/data/data/com.termux/files/home/deepcli/logs_sync.py']' timed out after 120 seconds
+── step 5/<dynamic> ──
+  (assistant): logs_sync timed out. Let me retry it once.
+  ▶ logs_sync({})
+    [repeat blocked — skipping duplicate call]
+    [no-progress 1/5]
+── step 6/<dynamic> ──
+  (assistant): logs_sync is not retryable and both target files are already clean — no edits were needed. I'll finish with `improvement=null`.
+  ▶ finish({"summary": "{\"file\":null,\"change\":null,\"commit\":null,\"validation\":\"deferred\",\"reason\":\"both deepseek-termu)
+
+✔ FINISH
+{"file":null,"change":null,"commit":null,"validation":"deferred","reason":"both deepseek-termux-agent.yml and ci-sweep.yml already satisfy all hygiene checks (job+step timeout-minutes, if: failure() diagnostics, artifact uploads, pinned action SHAs); no improvement needed; logs_sync timed out and is non-retryable"}
+
+  [session] saved 95efd715-b72… for key=4df19d6945107844
+[2026-09-28T05:09:35-07:00] run 476 done — next in 5s

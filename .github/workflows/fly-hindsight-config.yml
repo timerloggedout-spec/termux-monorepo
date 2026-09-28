@@ -40,7 +40,7 @@ jobs:
             HINDSIGHT_API_EMBEDDINGS_PROVIDER="google" \
             HINDSIGHT_API_EMBEDDINGS_API_KEY="$GEMINI_KEY" \
             HINDSIGHT_API_EMBEDDINGS_MODEL="text-embedding-004" \
-            HINDSIGHT_API_RERANKER_PROVIDER="none" \
+            HINDSIGHT_API_RERANKER_PROVIDER="rrf" \
             HINDSIGHT_BIND_HOST="0.0.0.0" \
             HINDSIGHT_BIND_PORT="8888"
 

@@ -1,0 +1,85 @@
+name: Fly Hindsight Config
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "apply | restart | status"
+        required: true
+        default: "apply"
+        type: choice
+        options: [apply, restart, status]
+
+jobs:
+  config:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install flyctl
+        run: curl -L https://fly.io/install.sh | sh
+
+      - name: Add flyctl to PATH
+        run: echo "$HOME/.fly/bin" >> $GITHUB_PATH
+
+      - name: Apply secrets + restart
+        if: ${{ github.event.inputs.action == 'apply' }}
+        env:
+          FLY_API_TOKEN:   ${{ secrets.Fly_io_ORG_TOKEN }}
+          OPENROUTER_KEY:  ${{ secrets.OPENROUTER_API_KEY }}
+          GEMINI_KEY:      ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          set -euo pipefail
+          [ -n "$OPENROUTER_KEY" ] || { echo "::error::OPENROUTER_API_KEY missing"; exit 1; }
+          [ -n "$GEMINI_KEY" ]     || { echo "::error::GEMINI_API_KEY missing"; exit 1; }
+
+          # 1. all required env for Hindsight
+          fly secrets set -a hindsight-termux \
+            HINDSIGHT_API_LLM_PROVIDER="openai" \
+            HINDSIGHT_API_LLM_API_KEY="$OPENROUTER_KEY" \
+            HINDSIGHT_API_LLM_BASE_URL="https://openrouter.ai/api/v1" \
+            HINDSIGHT_API_LLM_MODEL="openai/gpt-4o-mini" \
+            HINDSIGHT_API_EMBEDDINGS_PROVIDER="gemini" \
+            HINDSIGHT_API_EMBEDDINGS_API_KEY="$GEMINI_KEY" \
+            HINDSIGHT_API_EMBEDDINGS_MODEL="text-embedding-004" \
+            HINDSIGHT_API_RERANKER_PROVIDER="none" \
+            HINDSIGHT_BIND_HOST="0.0.0.0" \
+            HINDSIGHT_BIND_PORT="8888"
+
+          # 2. rolling restart to pick up secrets
+          fly machine restart -a hindsight-termux || true
+          sleep 20
+
+          # 3. wait for health
+          URL="https://hindsight-termux.fly.dev/health"
+          for i in $(seq 1 20); do
+            code=$(curl -sS -o /dev/null -w '%{http_code}' -m 10 "$URL" || echo 000)
+            echo "attempt $i: $code"
+            [ "$code" = "200" ] && break
+            sleep 10
+          done
+
+          # 4. logs so we can see any remaining error
+          echo "=== recent app logs ==="
+          fly logs -a hindsight-termux --no-tail 2>&1 | tail -40 || true
+
+      - name: Restart only
+        if: ${{ github.event.inputs.action == 'restart' }}
+        env:
+          FLY_API_TOKEN: ${{ secrets.Fly_io_ORG_TOKEN }}
+        run: |
+          fly machine restart -a hindsight-termux
+          sleep 20
+          fly status -a hindsight-termux
+
+      - name: Status
+        if: ${{ github.event.inputs.action == 'status' }}
+        env:
+          FLY_API_TOKEN: ${{ secrets.Fly_io_ORG_TOKEN }}
+        run: |
+          fly status -a hindsight-termux
+          echo "=== machines ==="
+          fly machine list -a hindsight-termux
+          echo "=== external probe ==="
+          curl -sS -m 20 -o /dev/null -w 'health: %{http_code} in %{time_total}s\n' \
+            https://hindsight-termux.fly.dev/health || true

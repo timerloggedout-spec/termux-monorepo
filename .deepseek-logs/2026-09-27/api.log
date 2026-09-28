@@ -222,3 +222,35 @@ INFO:     127.0.0.1:47260 - "POST /gh HTTP/1.1" 200 OK
 INFO:     127.0.0.1:47300 - "POST /gh HTTP/1.1" 200 OK
 INFO:     2601:205:4b03:5ff0:9045:e0c6:50f5:5786:0 - "GET /v1/models HTTP/1.1" 200 OK
 INFO:     127.0.0.1:47340 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47366 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47392 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47400 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47408 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47414 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "POST /v1/agent HTTP/1.1" 202 Accepted
+Exception in thread Thread-6 (_runner):
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.14/threading.py", line 1082, in _bootstrap_inner
+    self._context.run(self.run)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.14/threading.py", line 1024, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/deepcli/_v1_agent.py", line 100, in _runner
+    argv.append(task)
+    ^^^^
+UnboundLocalError: cannot access local variable 'argv' where it is not associated with a value
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47472 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47514 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47578 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47606 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47638 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47666 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47694 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK

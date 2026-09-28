@@ -24,6 +24,7 @@ jobs:
           AGENT_TOKEN: ${{ secrets.DEEPSEEK_AGENT_TOKEN }}
         run: |
           set -euo pipefail
+          if [ -z "${AGENT_URL:-}" ]; then echo "::error::DEEPSEEK_AGENT_URL not set"; exit 1; fi
           TASK=$(cat <<'EOF'
 Execute ~/deepcli/tasks/workflow-sweep.md.
 Scope: all repos owned by timerloggedout-spec.

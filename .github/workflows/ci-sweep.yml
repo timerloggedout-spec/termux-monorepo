@@ -53,6 +53,10 @@ EOF
             [ "$P" = "error" ] && break
             sleep 15
           done
+          if [ "$P" != "done" ]; then
+            echo "::error::sweep agent did not reach phase=done (terminal phase=$P); see agent_status.json artifact"
+            exit 1
+          fi
 
       - name: Failure diagnostics
         if: failure()

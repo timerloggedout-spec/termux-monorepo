@@ -111,6 +111,7 @@ jobs:
         if: always()
         timeout-minutes: 5
         uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.2
+        # timeout-minutes set above; step guarded by always() for boundary diagnostics
         with:
           name: ates-task-boundary-${{ github.run_id }}
           path: ${{ runner.temp }}/ates-task-boundary.json

@@ -1,0 +1,527 @@
+[server] gh_broker ready
+INFO:     Started server process [15671]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8800 (Press CTRL+C to quit)
+INFO:     127.0.0.1:39226 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39228 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39230 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39234 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39240 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39244 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39248 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39252 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39256 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39260 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39264 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39268 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39272 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39278 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39282 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39286 - "POST /gh HTTP/1.1" 200 OK
+INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39326 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39338 - "POST /gh HTTP/1.1" 200 OK
+INFO:     2601:205:4b03:5ff0:9045:e0c6:50f5:5786:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39436 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39456 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39496 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39510 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39526 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39576 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39590 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39630 - "POST /gh HTTP/1.1" 200 OK
+INFO:     2601:205:4b03:5ff0:9045:e0c6:50f5:5786:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39658 - "POST /gh HTTP/1.1" 200 OK
+INFO:     4.242.195.147:0 - "POST /v1/agent HTTP/1.1" 202 Accepted
+INFO:     4.242.195.147:0 - "GET /v1/agent/status/45317eca046b HTTP/1.1" 200 OK
+INFO:     4.242.195.147:0 - "GET /v1/agent/status/45317eca046b HTTP/1.1" 200 OK
+INFO:     4.242.195.147:0 - "GET /v1/agent/status/45317eca046b HTTP/1.1" 200 OK
+INFO:     4.242.195.147:0 - "GET /v1/agent/status/45317eca046b HTTP/1.1" 200 OK
+INFO:     2601:205:4b03:5ff0:9045:e0c6:50f5:5786:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40790 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41000 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41060 - "POST /gh HTTP/1.1" 200 OK
+INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41224 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41490 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41500 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41544 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41548 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41584 - "POST /gh HTTP/1.1" 200 OK
+INFO:     2601:205:4b03:5ff0:9045:e0c6:50f5:5786:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41742 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41748 - "POST /gh HTTP/1.1" 200 OK
+INFO:     2601:205:4b03:5ff0:9045:e0c6:50f5:5786:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42196 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42202 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42250 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42384 - "POST /gh HTTP/1.1" 200 OK
+INFO:     2601:205:4b03:5ff0:9045:e0c6:50f5:5786:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     2601:205:4b03:5ff0:9045:e0c6:50f5:5786:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42818 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42844 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42888 - "POST /gh HTTP/1.1" 200 OK
+INFO:     135.232.211.211:0 - "POST /v1/agent HTTP/1.1" 202 Accepted
+INFO:     135.232.211.211:0 - "GET /v1/agent/status/db9b276f6379 HTTP/1.1" 200 OK
+INFO:     135.232.211.211:0 - "GET /v1/agent/status/db9b276f6379 HTTP/1.1" 200 OK
+INFO:     135.232.211.211:0 - "GET /v1/agent/status/db9b276f6379 HTTP/1.1" 200 OK
+INFO:     2601:205:4b03:5ff0:9045:e0c6:50f5:5786:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43306 - "POST /gh HTTP/1.1" 200 OK
+INFO:     2601:205:4b03:5ff0:9045:e0c6:50f5:5786:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43622 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43626 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43632 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43636 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43656 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43684 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43710 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43736 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43764 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43790 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43820 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43846 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43856 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43862 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43870 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43888 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43906 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43932 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43962 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43994 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44022 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44050 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44074 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44082 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44112 - "POST /gh HTTP/1.1" 200 OK
+INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44134 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44144 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44150 - "POST /gh HTTP/1.1" 200 OK
+INFO:     13.86.240.219:0 - "POST /v1/agent HTTP/1.1" 202 Accepted
+INFO:     13.86.240.219:0 - "GET /v1/agent/status/4d8ec8e28299 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44170 - "POST /gh HTTP/1.1" 200 OK
+INFO:     13.86.240.219:0 - "GET /v1/agent/status/4d8ec8e28299 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44184 - "POST /gh HTTP/1.1" 200 OK
+INFO:     13.86.240.219:0 - "GET /v1/agent/status/4d8ec8e28299 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44206 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44230 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44258 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44278 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44304 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44326 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44348 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44380 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44400 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44414 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44428 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44444 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44456 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44468 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44478 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44504 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44518 - "POST /gh HTTP/1.1" 200 OK
+INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44530 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44548 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44572 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44602 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44632 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44662 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44686 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44714 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44740 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44762 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44766 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44772 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44780 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44790 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44796 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44802 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44808 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44824 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44844 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44872 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44898 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44926 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44958 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44986 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45012 - "POST /gh HTTP/1.1" 200 OK
+INFO:     2601:205:4b03:5ff0:9045:e0c6:50f5:5786:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45034 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45040 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45050 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45066 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45076 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45086 - "POST /gh HTTP/1.1" 200 OK
+INFO:     52.226.124.17:0 - "POST /v1/agent HTTP/1.1" 202 Accepted
+INFO:     52.226.124.17:0 - "GET /v1/agent/status/1714f004176f HTTP/1.1" 200 OK
+INFO:     52.226.124.17:0 - "GET /v1/agent/status/1714f004176f HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45106 - "POST /gh HTTP/1.1" 200 OK
+INFO:     52.226.124.17:0 - "GET /v1/agent/status/1714f004176f HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45116 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45146 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45176 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45208 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45240 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45264 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45286 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45312 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45336 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45362 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45372 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45388 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45398 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45408 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45420 - "POST /gh HTTP/1.1" 200 OK
+INFO:     2601:205:4b03:5ff0:9045:e0c6:50f5:5786:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45430 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45434 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.15.228.211:0 - "POST /v1/agent HTTP/1.1" 202 Accepted
+INFO:     20.15.228.211:0 - "GET /v1/agent/status/84ace0c740b7 HTTP/1.1" 200 OK
+INFO:     20.15.228.211:0 - "GET /v1/agent/status/84ace0c740b7 HTTP/1.1" 200 OK
+INFO:     20.15.228.211:0 - "GET /v1/agent/status/84ace0c740b7 HTTP/1.1" 200 OK
+INFO:     20.15.228.211:0 - "GET /v1/agent/status/84ace0c740b7 HTTP/1.1" 200 OK
+INFO:     20.15.228.211:0 - "GET /v1/agent/status/84ace0c740b7 HTTP/1.1" 200 OK
+INFO:     20.15.228.211:0 - "GET /v1/agent/status/84ace0c740b7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45590 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45612 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45670 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45694 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45700 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45822 - "POST /gh HTTP/1.1" 200 OK
+INFO:     2601:205:4b03:5ff0:9045:e0c6:50f5:5786:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46172 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46176 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46182 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46190 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46202 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46224 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46250 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46284 - "POST /gh HTTP/1.1" 200 OK
+INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46326 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46356 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46392 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46420 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46462 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46486 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46726 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46828 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46906 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46950 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46994 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47016 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47068 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47108 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47126 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47148 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47192 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47230 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47260 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47300 - "POST /gh HTTP/1.1" 200 OK
+INFO:     2601:205:4b03:5ff0:9045:e0c6:50f5:5786:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47340 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47366 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47392 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47400 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47408 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47414 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "POST /v1/agent HTTP/1.1" 202 Accepted
+Exception in thread Thread-6 (_runner):
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.14/threading.py", line 1082, in _bootstrap_inner
+    self._context.run(self.run)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.14/threading.py", line 1024, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/deepcli/_v1_agent.py", line 100, in _runner
+    argv.append(task)
+    ^^^^
+UnboundLocalError: cannot access local variable 'argv' where it is not associated with a value
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47472 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47514 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47578 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47606 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47638 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47666 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47694 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47724 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47752 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47778 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47792 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47808 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47820 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47832 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47846 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47862 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47888 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47918 - "POST /gh HTTP/1.1" 200 OK
+INFO:     2601:205:4b03:5ff0:9045:e0c6:50f5:5786:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47952 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47978 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48006 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48038 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48066 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48084 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48090 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48100 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48108 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48114 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48132 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48158 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48188 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48214 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48266 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48294 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48318 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48346 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48368 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48380 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48388 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48400 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48408 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48428 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48456 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     2601:205:4b03:5ff0:9045:e0c6:50f5:5786:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48508 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48538 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48570 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48606 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48636 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48660 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48684 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48698 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48712 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48722 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48730 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48746 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48788 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48794 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48804 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49072 - "POST /gh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49078 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49096 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49146 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49446 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     20.3.166.87:0 - "GET /v1/agent/status/5bae246bf5f1 HTTP/1.1" 200 OK
+INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     20.119.102.81:0 - "POST /v1/agent HTTP/1.1" 429 Too Many Requests
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50766 - "POST /gh HTTP/1.1" 200 OK
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     2601:205:4b03:5ff0:9045:e0c6:50f5:5786:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     2601:205:4b03:5ff0:9045:e0c6:50f5:5786:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     2601:205:4b03:5ff0:9045:e0c6:50f5:5786:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     20.119.102.81:0 - "GET /v1/agent/status/null HTTP/1.1" 404 Not Found
+INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     2601:205:4b03:5ff0:9045:e0c6:50f5:5786:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     2601:205:4b03:5ff0:9045:e0c6:50f5:5786:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     2601:205:4b03:5ff0:9045:e0c6:50f5:5786:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     2601:205:4b03:5ff0:9045:e0c6:50f5:5786:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     2601:205:4b03:5ff0:9045:e0c6:50f5:5786:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     2601:205:4b03:5ff0:9045:e0c6:50f5:5786:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     2601:205:4b03:5ff0:9045:e0c6:50f5:5786:0 - "GET /v1/models HTTP/1.1" 200 OK

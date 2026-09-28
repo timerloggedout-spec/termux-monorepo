@@ -1,0 +1,13 @@
+[2026-09-27T20:48:18-07:00] fetch + rebase net-resume onto origin/master
+Rebasing (1/2)Auto-merging deepcli/deepagent.py
+CONFLICT (content): Merge conflict in deepcli/deepagent.py
+error: could not apply e0731215... feat(deepagent): per-step checkpoint + resume on network interrupt
+hint: Resolve all conflicts manually, mark them as resolved with
+hint: "git add/rm <conflicted_files>", then run "git rebase --continue".
+hint: You can instead skip this commit: run "git rebase --skip".
+hint: To abort and get back to the state before "git rebase", run "git rebase --abort".
+hint: Disable this message with "git config set advice.mergeConflict false"
+Recorded preimage for 'deepcli/deepagent.py'
+Could not apply e0731215... # feat(deepagent): per-step checkpoint + resume on network interrupt
+[2026-09-27T20:48:21-07:00] clean rebase
+[2026-09-27T20:48:24-07:00] pushed net-resume

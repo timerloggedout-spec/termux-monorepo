@@ -63,3 +63,39 @@ into `deepagent.py`). After that, per-session knowledge is retained via
 
 There is a ForeSight lane already deployed. We are operating in the NOW.
 Future-state planning goes to ForeSight; current execution stays here.
+
+## Hard rule: never use /tmp on Termux
+
+There is no /tmp on Termux. Any script, command, or heredoc that writes to
+/tmp silently fails or errors. This has bitten us three times.
+
+Rule: all temp files go to `~/.deepcli/logs/` or `$TMPDIR` (= $PREFIX/tmp).
+The precheck helper and every generated script enforces this.
+
+Grep check for existing scripts:
+  grep -rn '/tmp/' ~/.local/bin/ ~/deepcli/*.py 2>/dev/null | grep -v '$TMPDIR'
+
+## Local Resource Hygiene is 1st Class
+
+Mandatory before heavy operations:
+  precheck <estimated_mb> <label>
+
+Floor: 500 MB free. Estimated × 2 headroom. Memory sanity for >200 MB ops.
+
+Wired into: servers-up, agent-keeper, tunnel-keeper-loop. Any future
+script that installs, clones, compiles, or writes >100 MB must call precheck.
+
+Periodic reporting:
+  disk-report [--notify]
+
+Runs every 100 keeper iterations (~8 min at full speed). Auto-notifies
+on the `resource` channel with a 30-min throttle.
+
+## Reclaimable without loss
+
+- ~/.cache/uv, pip, node-gyp, go-build — pure caches, re-downloaded on demand
+- ~/.deepcli/worktrees/* — merged PRs; keep only active ones
+- ~/.git gc --aggressive — compact git objects
+
+Never delete: ~/.deepcli/{session_store,refs,snapshots,logs,lib},
+~/synthegration_exports (ML pipeline data), ~/.password-store, ~/.gnupg

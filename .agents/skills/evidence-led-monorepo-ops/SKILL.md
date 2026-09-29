@@ -145,14 +145,15 @@ Receipts are projections; the longitudinal GitHub/evidence corpus remains the so
 
 This skill owns repository-admin evidence discipline; it does not replace those specialist lanes.
 
-## Session 2026-09-28 16:14 PDT
+## Session 2026-09-28 17:15 PDT
 
-- Live master tip: `8e4e3c777d6accd6efba337bb97b1579de32451f` (README runnable-link push after #902).
-- Dual-gate PASS on that SHA: repo-gate 36496894808 + termux-smoke 36496894780.
-- Predecessor #902 squash `15318e09` still dual-gate green on candidate `6b8fa262` (36484808630 / 36484808490).
-- Tunnel Canary scheduled fail 36496185804 / job 109176191755 is empty URL, not dual-gate.
-- Instant-fail path-unfiltered workflows on README-only push are noise.
-- #903 HOLD (empty-diff / ledger). #899 busy-agent skip still open. Do not merge #892/#894.
+- Live master tip: `8daeeb72d71ecdefa2f9cde6698426131117e474` (catalog/mmdc bot refresh after #904).
+- Dual-gate PASS on that SHA: repo-gate 36497249095 + termux-smoke 36497249115.
+- #904 squash `4efef68d` dual-gate PASS on master: 36497147812 / 36497147650.
+- Candidate evidence for #904 pre-merge: repo-gate 36497057302 + termux-smoke 36497057157 on `4df79c30`.
+- Tunnel scheduled fail 36496185804 / 109176191755 classified empty-URL skip, closed by #904.
+- Instant-fail path-unfiltered workflows on feature branches are noise.
+- #903 HOLD (empty-diff / ledger). #899 rebase in flight. Do not merge stale #892/#894.
 - Do not pulse #175. #184 names-only. Vercel combined-status is #772 non-gate.
 
 Agent-Identity: Grok (Administrator)

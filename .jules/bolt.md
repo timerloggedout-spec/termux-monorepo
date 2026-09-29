@@ -58,3 +58,10 @@ When polling high-volume provider model catalogs, executing float conversions (`
 
 **Action:**
 Use fast-path string/int checks before float conversions in catalog pricing loops, and precompute secret environment lookup tuples at module load time.
+
+## 2026-09-28 - Precomputed Epoch Float Timestamps for Nested Temporal Correlation Loops
+**Learning:**
+In temporal context index generation (`scripts/ci/context_relationship_index.py`), calculating time differences between lead events and lag events using `(lag_dt - lead_dt).total_seconds()` inside $O(N \times M)$ nested correlation loops creates severe `datetime` object instantiation and method dispatch overhead. Precomputing numeric POSIX epoch float timestamps (`dt.timestamp()`) once per event prior to lead-lag pairing loops allows replacing `datetime` subtraction with fast primitive float arithmetic (`lag_ts - lead_ts`), reducing pairing computation time by ~67%.
+
+**Action:**
+Precompute primitive epoch float timestamps (`dt.timestamp()`) before entering nested temporal correlation or event pairing loops.

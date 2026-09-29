@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "292e3103f51d7dfd0cf7b2e0a97c52c109b423908b51c2285b68b7f3981a9046",
-  "workflow_count": 113,
+  "source_fingerprint": "8e5f7fa0a9df95e4d3445c4a91720a3047b1f7b7960c07f0a069961c8f1fc48c",
+  "workflow_count": 114,
   "workflows": [
     {
       "action_pins": [
@@ -1118,7 +1118,7 @@
       "jobs": [
         "review"
       ],
-      "name": "🔍 Gemini PR Review (Gemini PRIMARY → peer Omni ↔ OpenRouter secondary)",
+      "name": "🔍 Optimized Multi-Provider PR Review",
       "path": ".github/workflows/gemini-review.yml",
       "schedules": [],
       "triggers": [
@@ -1665,6 +1665,26 @@
       "triggers": [
         "pull_request",
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: provider-availability cancel-in-progress: true",
+      "domain": "peer-provider-review",
+      "jobs": [
+        "probe"
+      ],
+      "name": "Provider availability continuity",
+      "path": ".github/workflows/provider-availability.yml",
+      "schedules": [
+        "7 */6 * * *"
+      ],
+      "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },

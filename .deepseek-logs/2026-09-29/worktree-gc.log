@@ -1,0 +1,10 @@
+[2026-09-27T19:49:36-07:00] worktree-gc start (apply=0)
+[2026-09-27T19:49:36-07:00] --- inventory ---
+[2026-09-27T19:49:39-07:00]   /data/data/com.termux/files/home/.deepcli/worktrees/net-resume  [net-resume]  254M  1h old
+[2026-09-27T19:49:40-07:00]   /data/data/com.termux/files/termux-mcp-worktrees/termux-mcp-connector  [feat/manus-termux-mcp-connector]  222M  1012h old
+[2026-09-27T19:49:42-07:00]   /data/data/com.termux/files/termux-pr-worktrees/termux-mcp-lean-template  [docs/termux-mcp-lean-template]  222M  998h old
+[2026-09-27T19:49:42-07:00] --- notes ---
+[2026-09-27T19:49:42-07:00]   merged branches: check each -- head status via gh
+[2026-09-27T19:49:42-07:00]   rule: remove worktrees >24h old whose branch is merged on origin
+[2026-09-27T19:49:42-07:00]   keep: active worktrees (<4h) and any with uncommitted changes
+[2026-09-27T19:49:42-07:00] worktree-gc done

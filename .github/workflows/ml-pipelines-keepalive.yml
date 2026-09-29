@@ -1,0 +1,32 @@
+name: ml pipelines keep-alive
+
+on:
+  pull_request:
+    paths:
+      - "ml/pipelines/**"
+      - ".github/workflows/ml-pipelines-keepalive.yml"
+  push:
+    branches: [master]
+    paths:
+      - "ml/pipelines/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ml-keepalive-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  unittest:
+    name: keep-alive unit tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          submodules: false
+      - name: stdlib unittest
+        run: python3 -m unittest discover -s ml/pipelines -p "test_*.py"

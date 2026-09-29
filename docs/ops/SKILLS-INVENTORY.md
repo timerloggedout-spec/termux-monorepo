@@ -1,6 +1,6 @@
 # Skills Inventory (termux-monorepo)
 
-**Version:** 2026-09-19 17:26 PDT · **Master tip:** `826dc1e4`
+**Version:** 2026-09-25 14:10 PDT · **Master tip:** `a3423d97`
 **Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)
 **Collaborator short entry:** [`SKILLS.md`](../../SKILLS.md)
 
@@ -19,7 +19,7 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 
 | Role | Load first | Then |
 |------|------------|------|
-| **Admin / Grok Administrator** | `evidence-led-monorepo-ops` + `adaptive-wait` | `review-loop` · `help-wanted-lane` · `github-pages-operator` · `approxination-lane` |
+| **Admin / Grok Administrator** | `evidence-led-monorepo-ops` + `adaptive-wait` + `ml-pipeline-ops` | `review-loop` · `help-wanted-lane` · `github-pages-operator` · `icm-cctv-ops` |
 | **Collaborator** | `adaptive-feedback-cycle` | dual-gate · `find-skills` |
 | **Oversight / external contrib** | `help-wanted-lane` | evidence-led + adaptive-wait · living status board |
 | **Dashboard / Pages** | `github-pages-operator` | help-wanted-lane · deploy workflow |
@@ -40,6 +40,8 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 | gemini-performance-psychology | `.agents/skills/gemini-performance-psychology/SKILL.md` |
 | **github-pages-operator** | `.agents/skills/github-pages-operator/SKILL.md` |
 | help-wanted-lane | `.agents/skills/help-wanted-lane/SKILL.md` |
+| **icm-cctv-ops** | `.agents/skills/icm-cctv-ops/SKILL.md` |
+| **ml-pipeline-ops** | `.agents/skills/ml-pipeline-ops/SKILL.md` |
 | multivariate-doe | `.agents/skills/multivariate-doe/SKILL.md` |
 | review-loop | `.agents/skills/review-loop/SKILL.md` |
 | termux-monorepo | `.agents/skills/termux-monorepo/SKILL.md` |
@@ -79,3 +81,26 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 - Credential inventory: issue **#184** (notes only; no secret values).
 
 Agent-Identity: Grok (Administrator)
+
+
+## Adaptive-wait + evidence-led cluster
+
+- adaptive-wait — evidence-driven asynchronous cadence, stall detection, disjoint work, terminal states.
+- evidence-led-monorepo-ops — current-SHA reconstruction, evidence hierarchy, provenance, mutation/promotion discipline.
+- context-relationship-graph — exact-root metadata-only relationship evidence; verified/candidate separation.
+- review-loop — review ingestion and attribution.
+- production-reconciliation — ref/base reconciliation.
+- action-effectiveness-ledger — action-to-outcome measurement.
+- evidence-envelope + evidence-provenance — normalized observation identity.
+- workflow-orchestration — modular Actions and retry/stale-event discipline.
+
+See `docs/ops/SKILL-DISCOVERY-MATRIX.md` for focused discovery and session-scoped .skill provenance.
+
+
+## Native orchestration contracts
+
+- orchestration-treatment-registry — comparable orchestration-pattern registry spanning TUI, CLI, GitHub, Devin, MCP, and agent surfaces.
+- Native schemas: `docs/ops/ORCHESTRATION-TREATMENT.schema.json` and `docs/ops/ORCHESTRATION-RECEIPT.schema.json`.
+- Architecture: `docs/ops/ORCHESTRATION-CONTRACTS.md`.
+
+The treatment registry composes existing evidence, wait, relationship, and workflow contracts; it does not replace them.

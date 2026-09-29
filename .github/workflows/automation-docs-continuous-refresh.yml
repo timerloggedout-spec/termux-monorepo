@@ -53,25 +53,29 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
           persist-credentials: false
+        timeout-minutes: 5
       - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
         with:
           python-version: "3.12"
+        timeout-minutes: 5
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: "20"
+        timeout-minutes: 5
       - name: Render Mermaid decision trees (mmdc)
+        timeout-minutes: 10
         run: |
           set -euo pipefail
           mkdir -p docs/ops/generated
-          echo '{"args": ["--no-sandbox"]}' > /tmp/puppeteer-config.json
-          MMDC="npx --yes @mermaid-js/mermaid-cli@11.4.2 -p /tmp/puppeteer-config.json"
+          printf '%s\n' '{"args":["--no-sandbox","--disable-setuid-sandbox"]}' > /tmp/puppeteer-config.json
+          MMDC="npx --yes @mermaid-js/mermaid-cli@11.4.2"
           count=0
           for src in docs/ops/diagrams/*.mmd; do
             [ -f "$src" ] || continue
             stem=$(basename "$src" .mmd)
             out="docs/ops/generated/${stem}.png"
             echo "mmdc: $src -> $out"
-            $MMDC -i "$src" -o "$out" -b transparent -s 2
+            $MMDC -i "$src" -o "$out" -b transparent -s 2 --puppeteerConfigFile /tmp/puppeteer-config.json
             count=$((count + 1))
           done
           if [ "$count" -eq 0 ]; then
@@ -80,8 +84,10 @@ jobs:
             echo "Rendered $count diagram(s)."
           fi
       - name: Regenerate automation catalog in workspace
+        timeout-minutes: 5
         run: python3 scripts/ci/automation_docs.py --write
       - name: Validate generated catalog
+        timeout-minutes: 5
         run: python3 scripts/ci/automation_docs.py --check
 
   refresh-trusted:
@@ -96,25 +102,29 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.ref_name }}
           token: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
+        timeout-minutes: 5
       - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
         with:
           python-version: "3.12"
+        timeout-minutes: 5
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: "20"
+        timeout-minutes: 5
       - name: Render Mermaid decision trees (mmdc)
+        timeout-minutes: 10
         run: |
           set -euo pipefail
           mkdir -p docs/ops/generated
-          echo '{"args": ["--no-sandbox"]}' > /tmp/puppeteer-config.json
-          MMDC="npx --yes @mermaid-js/mermaid-cli@11.4.2 -p /tmp/puppeteer-config.json"
+          printf '%s\n' '{"args":["--no-sandbox","--disable-setuid-sandbox"]}' > /tmp/puppeteer-config.json
+          MMDC="npx --yes @mermaid-js/mermaid-cli@11.4.2"
           count=0
           for src in docs/ops/diagrams/*.mmd; do
             [ -f "$src" ] || continue
             stem=$(basename "$src" .mmd)
             out="docs/ops/generated/${stem}.png"
             echo "mmdc: $src -> $out"
-            $MMDC -i "$src" -o "$out" -b transparent -s 2
+            $MMDC -i "$src" -o "$out" -b transparent -s 2 --puppeteerConfigFile /tmp/puppeteer-config.json
             count=$((count + 1))
           done
           if [ "$count" -eq 0 ]; then
@@ -123,10 +133,13 @@ jobs:
             echo "Rendered $count diagram(s)."
           fi
       - name: Regenerate automation catalog
+        timeout-minutes: 5
         run: python3 scripts/ci/automation_docs.py --write
       - name: Validate generated catalog + diagram assets
+        timeout-minutes: 5
         run: python3 scripts/ci/automation_docs.py --check
       - name: Commit generated automation documentation + renders
+        timeout-minutes: 5
         run: |
           set -euo pipefail
           if git diff --quiet -- docs/ops/generated; then

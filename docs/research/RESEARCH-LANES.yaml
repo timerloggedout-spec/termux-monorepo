@@ -1,0 +1,34 @@
+schema_version: "1.0"
+hub: termux-monorepo
+lanes:
+  - lane_id: foresight-radar
+    horizon: [H0, H1, H2, H3]
+    orgs: [termux-monorepo, Research-Astute]
+  - lane_id: agent-observability
+    orgs: [termux-monorepo, Research-Astute]
+    inputs: [OpenTelemetry, Docker, Tree-sitter, Langfuse, Phoenix, Lizard, Radon, Codespaces]
+  - lane_id: multi-agent-evaluation
+    orgs: [termux-monorepo, Research-Astute]
+    inputs: [MASEval, manager-tournaments, benchmark-suites]
+  - lane_id: reproducible-environments
+    orgs: [termux-monorepo, Research-Astute]
+    inputs: [Docker, devcontainers, Codespaces, environment-fingerprints]
+  - lane_id: local-edge-arm-android
+    orgs: [termux-monorepo, Research-Astute]
+    inputs: [open-weight-models, local-runtimes, ARM, Android, Termux]
+  - lane_id: agentic-security
+    orgs: [termux-monorepo, Research-Astute]
+    inputs: [OTel, sandboxing, provenance, tool-permissions]
+  - lane_id: malware-reverse-engineering
+    orgs: [termux-monorepo, Research-Astute]
+    issue_anchors: [236, 279, 306]
+    labels: [Ghidra, FORENSICS, Reverse_Engineering, Search'n'Re-Search]
+  - lane_id: provenance-supply-chain
+    orgs: [termux-monorepo, Research-Astute]
+    inputs: [SBOM, signatures, reproducible-builds, dependency-analysis]
+  - lane_id: accelerators-materials-energy
+    orgs: [termux-monorepo, Research-Astute]
+    inputs: [memory, energy, photonics, in-memory-compute, accelerators]
+  - lane_id: foss-developer-tools
+    orgs: [termux-monorepo, Research-Astute]
+    inputs: [Tree-sitter, Lizard, Radon, FOSS-runtimes]

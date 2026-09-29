@@ -32,3 +32,8 @@
 **Vulnerability:** In `archwiz/activity_listener.py`, auto-executed code block scripts written into `SANDBOX` ran `script.chmod(0o755)` without checking whether `script` was a symlink, allowing local symlink hijacking.
 **Learning:** Creating temporary execution scripts in shared or local user directories without verifying `is_symlink()` allows local users to pre-create symlinks pointing to sensitive system files, causing `chmod` or `write_text` to modify permissions on unexpected target files.
 **Prevention:** Always check `script.is_symlink()` before writing or executing temporary scripts, and wrap top-level polling loops in `if __name__ == '__main__':` to allow safe test module imports.
+
+## 2026-09-20 - Symlink Hijacking Prevention in Telemetry Log Stream Handlers
+**Vulnerability:** In `src/telemetry.py` and `termux-multi-agent/src/telemetry.py`, `TermuxTelemetryLogger.notify` opened and appended log entries to `TELEMETRY_LOG` ("agent_telemetry_stream.json") and applied `os.chmod(..., 0o600)` without validating whether `TELEMETRY_LOG` was a symlink, allowing local symlink hijacking. Similarly, `read_latest_telemetry` in `termux-multi-agent/dashboard.py` read telemetry from unvalidated symlink targets.
+**Learning:** Shared telemetry stream log files created in default working directories are vulnerable to symlink pre-creation by unprivileged local processes, which could redirect log appends and permission modifications to target files.
+**Prevention:** Check `os.path.islink(path)` before reading, writing, or adjusting permissions on telemetry stream log files.

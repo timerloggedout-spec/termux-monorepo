@@ -48,6 +48,33 @@ Do not persist discussion bodies, session stores, browser profiles, credentials,
 
 Every PR/issue is an observation candidate. Not every PR needs a Markdown receipt. Receipts are human-readable projections of notable measurements or promotions.
 
+## Temporal evidence layer
+
+The historical backfill now produces a second, append-only evidence layer under:
+
+`workspace/llm_map/context_relationships/temporal/`
+
+Each observation receives a deterministic `snapshot_id` bound to repository/ref, source SHA, observation time, and page bounds. Snapshot manifests retain:
+
+- source SHA/ref and observation timestamp;
+- history start/continuation pages;
+- explicit coverage state;
+- node/edge counts and content hashes;
+- previous snapshot identity;
+- structural delta counts.
+
+Snapshots are immutable. Re-running the same observation may reuse the existing snapshot but must never overwrite its contents.
+
+The temporal layer distinguishes:
+
+`source → relationship → observation → snapshot → lineage`
+
+A later observation may add, remove, change, or reclassify a relationship. This is a delta, not permission to rewrite the prior evidence.
+
+Use `temporal-current.json` for the latest materialized observation and `temporal/lineage.jsonl` for the append-only observation chain. The current graph remains the L1 relationship view; temporal snapshots are the L2 evidence/history layer consumed by SHE, longitudinal analysis, and future context reconstruction.
+
+Coverage is complete only when `history_window.next_start_page == null`. Node/edge growth alone never establishes historical completeness.
+
 ## Repository commands
 
 Run from the repository root. Query an exact issue, a specific permalink, or a bounded file-review timeline:

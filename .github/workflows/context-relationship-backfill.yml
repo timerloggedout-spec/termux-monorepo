@@ -1,16 +1,15 @@
 name: context relationship historical backfill
 
 on:
-  # Admission fix: schedule so the window is not stuck forever at next_start_page=2
-  # (stall observed ~2026-08-19; audit #526). Dispatch remains for operator resume.
+  # Historical collection is anchored to canonical master; continuation is page-bounded and resumable.
   schedule:
     - cron: '23 * * * *'
   workflow_dispatch:
     inputs:
       history_start_page:
-        description: 'GitHub REST history page to start. Resume with the next page reported in build-summary.json.'
+        description: 'Optional GitHub REST history page. Empty means resume from the canonical manifest.'
         type: string
-        default: '2'
+        default: ''
       max_items:
         description: 'Maximum issues and pull requests per family in this explicit page window.'
         type: string
@@ -26,7 +25,7 @@ permissions:
   pull-requests: read
 
 concurrency:
-  group: context-relationship-writer-master-staging
+  group: context-relationship-writer-master
   cancel-in-progress: false
 
 jobs:
@@ -37,7 +36,7 @@ jobs:
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
-          ref: master-staging
+          ref: master
           fetch-depth: 1
           persist-credentials: true
 
@@ -45,12 +44,38 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Determine historical continuation
+        id: continuation
+        env:
+          REQUESTED_START_PAGE: ${{ github.event.inputs.history_start_page || '' }}
+        run: |
+          set -euo pipefail
+          if [ -n "$REQUESTED_START_PAGE" ]; then
+            echo "continue=true" >> "$GITHUB_OUTPUT"
+            echo "start_page=$REQUESTED_START_PAGE" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          from pathlib import Path
+          manifest = Path('workspace/llm_map/context_relationships/manifest.json')
+          if not manifest.exists():
+              print('continue=true')
+              print('start_page=1')
+          else:
+              data = json.loads(manifest.read_text(encoding='utf-8'))
+              next_page = data.get('history_window', {}).get('next_start_page')
+              if next_page is None:
+                  print('continue=false')
+              else:
+                  print('continue=true')
+                  print(f'start_page={next_page}')
+PY
       - name: Build one historical relationship-index window
+        if: steps.continuation.outputs.continue == 'true'
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          # Schedule path: default resume page 2 (corpus stuck since 2026-08-19).
-          # Dispatch path: use explicit input when provided.
-          HISTORY_START_PAGE: ${{ github.event.inputs.history_start_page || '2' }}
+          HISTORY_START_PAGE: ${{ github.event.inputs.history_start_page || steps.continuation.outputs.start_page }}
           MAX_ITEMS: ${{ github.event.inputs.max_items || '100' }}
           MAX_COMMITS: ${{ github.event.inputs.max_commits || '100' }}
         run: |
@@ -59,7 +84,7 @@ jobs:
             --root . \
             --owner "$GITHUB_REPOSITORY_OWNER" \
             --repo "${GITHUB_REPOSITORY#*/}" \
-            --ref master-staging \
+            --ref master \
             --history-start-page "$HISTORY_START_PAGE" \
             --max-items "$MAX_ITEMS" \
             --max-commits "$MAX_COMMITS" \
@@ -68,6 +93,7 @@ jobs:
             --full-refresh
 
       - name: Publish backfill coverage summary
+        if: steps.continuation.outputs.continue == 'true'
         run: |
           set -euo pipefail
           {
@@ -94,4 +120,13 @@ jobs:
             -m 'Implements: CRG-10' \
             -m 'Agent-Identity: GitHub Actions Context Indexer' \
             -m 'Task-Ref: CRG-10'
-          git push origin HEAD:master-staging
+          git push origin HEAD:master
+
+      - name: Publish completion state
+        if: steps.continuation.outputs.continue != 'true'
+        run: |
+          {
+            echo '## Context relationship historical backfill'
+            echo
+            echo 'Canonical historical corpus is already complete; no new page window was collected.'
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -32,8 +32,6 @@ on:
 
 permissions:
   contents: read
-  issues: write
-  pull-requests: write
 
 concurrency:
   group: team-mvt-${{ github.workflow }}-${{ github.ref }}

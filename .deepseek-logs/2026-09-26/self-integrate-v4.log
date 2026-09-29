@@ -1,0 +1,99 @@
+
+▶ task: # TASK: Self-integrate — one workflow improvement
+
+## Canonical tool flow — follow exactly
+
+### Step 1: pick target
+    glob(path="~/.github/workflows", glob="*.yml")
+    gh(["run","list","--repo","timerloggedout-spec/termux-monorepo","--limit","20","--json","databaseId,name,conclusion,headBranch"])
+
+### Step 2: read the file (ONE CALL — no shell, no b64_decode)
+    gh_get_file(repo="timerloggedout-spec/termux-monorepo",
+                path=".github/workflows/deepseek-termux-agent.yml",
+                ref="master")
+
+The `content` field IS the full decoded text. The `sha` field is what
+gh_put will need — but gh_put auto-detects sha, so you do not need to
+pass it. Save the ORIGINAL content; you will need it for revert.
+
+### Step 3: pick ONE improvement
+- missing `if: failure()` step -> add
+- deprecated action version -> bump
+- missing `timeout-minutes:` on a job -> add
+- missing artifact upload of logs -> add
+
+If the file already satisfies all of these, try `ci-sweep.yml`. If both
+are clean, `finish` with improvement=null.
+
+### Step 4: apply via gh_put (ONE CALL — the only write path)
+    gh_put(repo="timerloggedout-spec/termux-monorepo",
+           path=".github/workflows/deepseek-termux-agent.yml",
+           content="<full new file body — original with exactly one change>",
+           message="chore(ci): <one-line diagnosis>",
+           branch="master")
+
+### Step 5: validate
+    gh(["workflow","run","deepseek-termux-agent.yml","--repo","timerloggedout-spec/termux-monorepo","--ref","master"])
+    sleep via run: run(["sleep","30"])
+    gh(["run","list","--repo","timerloggedout-spec/termux-monorepo","--workflow","deepseek-termux-agent.yml","--limit","1","--json","status,conclusion"])
+
+### Step 6: sync logs and finish
+    logs_sync()
+    finish(summary='{"file":"...","change":"...","validation":"passed|reverted|deferred"}')
+
+## Forbidden
+- Do NOT use `run` with sh/bash/base64. They are not allowlisted and never will be.
+- Do NOT try to pipe output through shell utilities.
+- If a tool fails, move to the next approach; do not retry the same call.
+
+## On failure
+If after 6 tool calls you cannot complete step 4, call finish with
+validation="deferred" and a one-sentence reason. That is a valid outcome.
+
+── step 1/<dynamic> ──
+create_session status: 200, body:
+{"code":0,"msg":"","data":{"biz_code":0,"biz_msg":"","biz_d
+ata":{"id":"9ec6b4cf-14a9-4923-abf6-9442a0cee07b","seq_id":
+212652333,"agent":"chat","model_type":"default","title":nul
+l,"title_type":"WIP","version":0,"current_message_id":null,
+"pinned":false,"inserted_at":1790489133.24,"updated_at":179
+04891
+  (assistant): 'll start by picking the target workflow file.
+
+
+<tool_call>{"name": "gh", "arguments": {"argv": ["run", "list", "--repo", "timerloggedout-spec/termux-monorepo", "--limit", "20", "--json", "databaseId
+  ▶ glob({"path": "~/.github/workflows", "glob": "*.yml"})
+    ← {"base": "/data/data/com.termux/files/home/.github/workflows", "matches": ["gemini-after-peers.yml", "agent-feedback-linear-sync.yml", "agent-review-auto-jules.yml", "gemini-triage.yml", "gemini-invoke.yml", "agent-continuous-ops.yml", "agent-jules-on-issues.yml", "peer-review-orchestrator.yml", "de
+  ▶ gh({"argv": ["run", "list", "--repo", "timerloggedout-spec/termux-monorepo", "--limit", "20", "--json", "databaseId,name,co)
+    ← {"rc": 0, "stdout": "[{\"conclusion\":\"success\",\"databaseId\":36298167971,\"headBranch\":\"master\",\"name\":\"help-wanted-dashboard-deploy\"},{\"conclusion\":\"success\",\"databaseId\":36298158561,\"headBranch\":\"master\",\"name\":\"help-wanted-status-refresh\"},{\"conclusion\":\"success\",\"da
+── step 2/<dynamic> ──
+  (assistant): 'll read the target workflow file now.
+
+<tool_call>{"name": "gh_get_file", "arguments": {"repo": "timerloggedout-spec/termux-monorepo", "path": ".github/workflows/deepseek-termux-agent.yml", "ref": "m
+  ▶ gh_get_file({"repo": "timerloggedout-spec/termux-monorepo", "path": ".github/workflows/deepseek-termux-agent.yml", "ref": "master"})
+    ← {"path": ".github/workflows/deepseek-termux-agent.yml", "sha": "4b1a02bbd5fcc8d80d84938af8332fb20432a93f", "size": 6452, "content": "name: DeepSeek Termux Agent\n\non:\n  issue_comment:\n    types: [created]\n  issues:\n    types: [assigned]\n  pull_request:\n    types: [assigned]\n  workflow_dispat
+── step 3/<dynamic> ──
+  (assistant): 'll read the file content — it was truncated. Let me fetch the remaining portion differently, but first let me get the full file via the repo tree. Actually, the content is truncated in the response.
+  ▶ read_file({"path": "~/.github/workflows/deepseek-termux-agent.yml", "max_bytes": 20000})
+    ← {"path": "/data/data/com.termux/files/home/.github/workflows/deepseek-termux-agent.yml", "content": "name: DeepSeek Termux Agent\n\non:\n  issue_comment:\n    types: [created]\n  issues:\n    types: [assigned]\n  pull_request:\n    types: [assigned]\n  workflow_dispatch:\n    inputs:\n      task:\n
+── step 4/<dynamic> ──
+  (assistant): have the file content. Now let me pick one improvement. Looking at the workflow, it has a `timeout-minutes: 25` already, but I notice there's no `if: failure()` step to upload logs/diagnostics on fail
+  ▶ read_file({"path": "~/.github/workflows/deepseek-termux-agent.yml", "max_bytes": 20000})
+    [repeat detected]
+    ← {"path": "/data/data/com.termux/files/home/.github/workflows/deepseek-termux-agent.yml", "content": "name: DeepSeek Termux Agent\n\non:\n  issue_comment:\n    types: [created]\n  issues:\n    types: [assigned]\n  pull_request:\n    types: [assigned]\n  workflow_dispatch:\n    inputs:\n      task:\n
+── step 5/<dynamic> ──
+  (assistant): have enough context. The workflow already has `timeout-minutes: 25`, so I'll add a missing `if: failure()` diagnostic step at the end of the job. Let me get the complete file content first — the read
+  ▶ read_file({"path": "~/.github/workflows/deepseek-termux-agent.yml", "max_bytes": 65536})
+    ← {"path": "/data/data/com.termux/files/home/.github/workflows/deepseek-termux-agent.yml", "content": "name: DeepSeek Termux Agent\n\non:\n  issue_comment:\n    types: [created]\n  issues:\n    types: [assigned]\n  pull_request:\n    types: [assigned]\n  workflow_dispatch:\n    inputs:\n      task:\n
+── step 6/<dynamic> ──
+  (assistant): need the complete file body before I can apply a change. The local read is truncated at 20 KB and even at 65536 bytes it truncates. Let me try fetching the remaining tail via a different approach — re
+  ▶ read_file({"path": "~/.github/workflows/deepseek-termux-agent.yml", "max_bytes": 200000})
+    ← {"path": "/data/data/com.termux/files/home/.github/workflows/deepseek-termux-agent.yml", "content": "name: DeepSeek Termux Agent\n\non:\n  issue_comment:\n    types: [created]\n  issues:\n    types: [assigned]\n  pull_request:\n    types: [assigned]\n  workflow_dispatch:\n    inputs:\n      task:\n
+── step 7/<dynamic> ──
+  (assistant): 've hit the tool-call budget for this task without obtaining the complete file body — every read path (`gh_get_file`, `read_file` at 20 KB / 64 KB / 200 KB) returns truncated content at the same offse
+  ▶ logs_sync({})
+    ← {"rc": 0, "stdout": "{\"status\": \"synced\", \"files\": 50, \"bytes\": 115402, \"commit\": \"243de679af59\", \"prefix\": \".deepseek-logs/2026-09-26\"}\n", "stderr": ""}
+  ▶ finish({"summary": "{\"file\":\".github/workflows/deepseek-termux-agent.yml\",\"change\":null,\"validation\":\"deferred\",\"rea)
+
+✔ FINISH
+{"file":".github/workflows/deepseek-termux-agent.yml","change":null,"validation":"deferred","reason":"All read paths truncate the workflow body at ~5KB, so a full-file gh_put with exactly one change cannot be safely constructed within budget."}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Skill evaluation evidence",
+  "type": "object",
+  "required": ["path", "source_kind", "validator_version", "valid", "score", "dimensions", "hard_failures"],
+  "properties": {
+    "path": {"type": "string", "minLength": 1},
+    "source_kind": {"enum": ["SKILL.md", ".skill"]},
+    "validator_version": {"type": "string", "minLength": 1},
+    "input_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+    "valid": {"type": "boolean"},
+    "score": {"type": "integer", "minimum": 0, "maximum": 100},
+    "dimensions": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 1, "maximum": 5}},
+    "checks": {"type": "object", "additionalProperties": {"type": "string"}},
+    "hard_failures": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}

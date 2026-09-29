@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Dynamic model router with AR-18 observe-mode capability decisions.
+"""Optimized model router with evidence-driven candidate selection.
 
-The provider/model execution route intentionally remains the existing Gemini-primary
-path in this release. AR-18 only emits a bounded decision envelope so repository
-outcomes can be measured before any active-routing policy changes.
+There is no provider hierarchy. Candidates are admitted by capability, credential,
+catalog, quota, and evidence gates, then selected by the active routing policy.
+Topology (single/series/dynamic/parallel/nested/co-working/volley) is an orchestration
+concern and is recorded as experiment metadata rather than encoded as provider rank.
 """
 
 import json
@@ -384,67 +385,56 @@ def main():
         current_sha=os.environ.get("CURRENT_SHA") or None,
     )
 
-    if has_gemini:
-        gemini_candidates = []
-        for model in ROLE_RESIDUALS.get(role, []):
+    routing_mode = os.environ.get("ROUTING_MODE", "single").strip().lower() or "single"
+    allowed_modes = {"single", "series", "dynamic", "parallel", "nested", "co-working", "volley"}
+    if routing_mode not in allowed_modes:
+        routing_mode = "single"
+
+    # One unified candidate pool. Provider identity never implies priority.
+    candidates = []
+    seen = set()
+    pools = [
+        ("gemini", ROLE_RESIDUALS.get(role, [])),
+        ("omni", [m for p, m in ROLE_PEERS.get(role, []) if p == "omni"]),
+        ("openrouter", [m for p, m in ROLE_PEERS.get(role, []) if p == "openrouter"]),
+    ]
+    provider_flags = {"gemini": has_gemini, "omni": has_omni, "openrouter": has_openrouter}
+    for provider, models in pools:
+        if not provider_flags.get(provider, False):
+            continue
+        for model in models:
+            key = (provider, model)
+            if key in seen:
+                continue
+            if provider == "openrouter":
+                permitted_models = polled_free_models if polled_free_models is not None else LEGACY_MODELS
+                if not is_free_openrouter_model(model) or model not in permitted_models:
+                    continue
+            seen.add(key)
             model_entry = success_matrix.get("models", {}).get(model, {})
             score = model_entry.get("elo", 1000) * model_entry.get("role_suitability", {}).get(role, 1.0)
-            gemini_candidates.append({"provider": "gemini", "model": model, "score": score})
-        for candidate in sorted(gemini_candidates, key=lambda item: item["score"], reverse=True):
-            model = candidate["model"]
-            limit = LIMITS.get(model, {}).get(role, 1000)
-            used = get_usage("gemini", model)
-            if used < limit:
-                new_used = increment_usage("gemini", model)
-                write_output("provider", "gemini")
-                write_output("model", model)
-                write_output("skip", "false")
-                write_output(
-                    "reason",
-                    f"role={role} gemini={model} used={new_used}/{limit} (ranked score={candidate['score']}) PRIMARY",
-                )
-                return
-            sys.stderr.write(f"Gemini primary soft budget exhausted: {model} ({used}/{limit})\n")
-
-    peer_candidates = []
-    for provider, model in ROLE_PEERS.get(role, []):
-        if provider == "omni" and not has_omni:
-            continue
-        if provider == "openrouter" and not has_openrouter:
-            continue
-        if provider == "openrouter" and not is_free_openrouter_model(model):
-            sys.stderr.write(f"Warning: non-free model ID '{model}' skipped.\n")
-            continue
-        if provider == "openrouter":
-            permitted_models = polled_free_models if polled_free_models is not None else LEGACY_MODELS
-            if model not in permitted_models:
-                sys.stderr.write(f"Warning: OpenRouter model {model} is not in the permitted catalog. Skipping.\n")
+            limit = LIMITS.get(model if provider == "gemini" else f"{provider}/{model}", {}).get(role, 40)
+            used = get_usage(provider, model)
+            if used >= limit:
+                sys.stderr.write(f"Candidate soft budget exhausted: {provider}/{model} ({used}/{limit})\n")
                 continue
-        model_entry = success_matrix.get("models", {}).get(model, {})
-        score = model_entry.get("elo", 1000) * model_entry.get("role_suitability", {}).get(role, 1.0)
-        peer_candidates.append({"provider": provider, "model": model, "score": score})
+            candidates.append({"provider": provider, "model": model, "score": score, "used": used, "limit": limit})
 
-    for candidate in sorted(peer_candidates, key=lambda item: item["score"], reverse=True):
-        provider = candidate["provider"]
-        model = candidate["model"]
-        limit = LIMITS.get(f"{provider}/{model}", {}).get(role, 40)
-        used = get_usage(provider, model)
-        if used < limit:
-            new_used = increment_usage(provider, model)
-            write_output("provider", provider)
-            write_output("model", model)
-            write_output("skip", "false")
-            write_output(
-                "reason",
-                f"role={role} peer={provider} model={model} used={new_used}/{limit} (ranked score={candidate['score']}) secondary",
-            )
-            return
-        sys.stderr.write(f"Peer soft budget exhausted: {provider}/{model} ({used}/{limit})\n")
+    candidates.sort(key=lambda item: (-item["score"], item["provider"], item["model"]))
+    if candidates:
+        selected = candidates[0]
+        new_used = increment_usage(selected["provider"], selected["model"])
+        write_output("provider", selected["provider"])
+        write_output("model", selected["model"])
+        write_output("skip", "false")
+        write_output("routing_mode", routing_mode)
+        write_output("reason", f"role={role} mode={routing_mode} selected={selected['provider']}/{selected['model']} score={selected['score']} usage={new_used}/{selected['limit']} candidates={len(candidates)}")
+        return
 
     write_output("provider", "none")
     write_output("model", "")
     write_output("skip", "true")
-    write_output("reason", f"all free paths exhausted (gemini primary + omni/openrouter secondary) role={role}")
+    write_output("routing_mode", routing_mode)\n    write_output("reason", f"no eligible candidate for role={role} mode={routing_mode}; admission/catalog/quota evidence exhausted")
 
 
 if __name__ == "__main__":
@@ -455,4 +445,4 @@ if __name__ == "__main__":
         write_output("provider", "none")
         write_output("model", "")
         write_output("skip", "true")
-        write_output("reason", f"Model Router crashed: {error}")
+        write_output("routing_mode", os.environ.get("ROUTING_MODE", "single"))\n        write_output("reason", f"Model Router crashed: {error}")

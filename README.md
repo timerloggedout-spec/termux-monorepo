@@ -1,5 +1,9 @@
 # TERMUX MONOREPO
 
+<img width="1408" height="768" alt="1000029613" src="https://github.com/user-attachments/assets/3dccedab-1c59-4b19-8042-2abc43f24ddf" />
+
+
+
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/timerloggedout-spec/termux-monorepo)
 
 <!-- partner-banner:start (edit docs/PARTNERS.md to add a partner; one badge per ACTIVE lane, rows of three — Operator lifted the four-badge cap 2026-09-20) -->

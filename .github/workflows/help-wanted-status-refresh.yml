@@ -53,7 +53,26 @@ jobs:
             exit 0
           fi
           git commit -m "ops(help-wanted): live status refresh $(date -u +%Y-%m-%dT%H:%MZ)"
-          git push "https://x-access-token:${TOKEN}@github.com/${{ github.repository }}.git" HEAD:master
+          remote="https://x-access-token:${TOKEN}@github.com/${{ github.repository }}.git"
+          git remote set-url origin "$remote"
+          attempt=1
+          while [ "$attempt" -le 5 ]; do
+            if git push origin HEAD:master; then
+              echo "pushed on attempt ${attempt}"
+              exit 0
+            fi
+            echo "push rejected (attempt ${attempt}); rebase onto origin/master"
+            git fetch origin master
+            if ! git rebase origin/master; then
+              echo "rebase conflict on generated status; abort and skip"
+              git rebase --abort || true
+              exit 0
+            fi
+            attempt=$((attempt + 1))
+            sleep $((attempt))
+          done
+          echo "push still raced after 5 attempts; next refresh will land it"
+          exit 0
 
       - name: Deploy dashboard mirror
         env:

@@ -2,7 +2,7 @@
 
 <img width="1408" height="768" alt="1000029613" src="https://github.com/user-attachments/assets/3dccedab-1c59-4b19-8042-2abc43f24ddf" />
 
-
+<img width="688" height="1539" alt="1000029616" src="https://github.com/user-attachments/assets/135dada3-82ca-42cd-9124-2ab00974ba41" />
 
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/timerloggedout-spec/termux-monorepo)
 

@@ -1,0 +1,89 @@
+name: Provider availability continuity
+
+# Continuous health/evidence plane for provider integrations already used by the
+# monorepo. This does not rotate keys or change routing policy.
+#
+# Semantics:
+#   credential_present = workflow secret is configured
+#   catalog_ok        = live provider catalog is reachable
+#   inference_ok      = minimal live inference succeeded
+#
+# Provider secrets are never printed, committed, or included in artifacts.
+
+on:
+  schedule:
+    - cron: "7 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      strict:
+        description: "Fail the workflow when a configured provider's required probe fails"
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: provider-availability
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      FELO_AI_API: ${{ secrets.FELO_AI_API }}
+      HUGGINGFACE_TOKEN: ${{ secrets.HUGGINGFACE_TOKEN || secrets.HUGGING_FACE_HUB_TOKEN || secrets.HF_API_TOKEN }}
+      GEMINI_HEALTH_MODEL: ${{ vars.GEMINI_HEALTH_MODEL || '' }}
+      OPENROUTER_HEALTH_MODEL: ${{ vars.OPENROUTER_HEALTH_MODEL || '' }}
+      STRICT: ${{ inputs.strict || 'false' }}
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Probe provider availability
+        run: |
+          set -euo pipefail
+          python3 scripts/provider_availability_probe.py
+          cat /tmp/provider-availability.json >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Validate configured-provider continuity
+        env:
+          STRICT: ${{ env.STRICT }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, sys
+          d=json.load(open('/tmp/provider-availability.json', encoding='utf-8'))
+          print("### Provider continuity")
+          failed=[]
+          for p in d["providers"]:
+              configured=p["credential_present"]
+              if not configured:
+                  print(f"- {p['provider']}: not configured (no secret); observation only")
+                  continue
+              # OpenRouter and Gemini have real inference probes.
+              required_inference=p["provider"] in {"openrouter","gemini"}
+              ok=p["inference_ok"] if required_inference else p["catalog_ok"]
+              print(f"- {p['provider']}: {'PASS' if ok else 'FAIL'}")
+              if not ok:
+                  failed.append(p["provider"])
+          if failed and os.environ.get("STRICT","false").lower()=="true":
+              raise SystemExit("Configured provider probe failures: " + ", ".join(failed))
+          if failed:
+              print("Non-strict mode: recording failures without changing routing policy.")
+          PY
+
+      - name: Publish immutable health evidence
+        if: always()
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: provider-availability-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/provider-availability.json
+          if-no-files-found: error
+          retention-days: 30

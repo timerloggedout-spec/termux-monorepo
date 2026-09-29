@@ -1,4 +1,4 @@
-name: '🔍 Gemini PR Review (Gemini PRIMARY → peer Omni ↔ OpenRouter secondary)'
+name: '🔍 Optimized Multi-Provider PR Review'
 
 on:
   workflow_call:
@@ -36,7 +36,7 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
 
-      - name: Model router (Gemini PRIMARY → peer Omni ↔ OpenRouter secondary)
+      - name: Optimized model router (evidence-driven candidate pool)
         id: router
         uses: ./.github/actions/model-router
         with:
@@ -76,7 +76,7 @@ jobs:
               owner: context.repo.owner, repo: context.repo.repo, issue_number: n,
               body: [
                 marker,
-                '⚠️ **Review** skipped — Gemini primary + Omni/OpenRouter secondary soft budgets exhausted.',
+                '⚠️ **Review** skipped — no eligible candidate remained after capability, catalog, quota, and evidence gates.',
                 `Reason: ${process.env.REASON || 'unknown'}`,
                 '',
                 'CodeRabbit / Jules may still review. Resets midnight Pacific.',
@@ -144,7 +144,7 @@ jobs:
           repository: ${{ github.repository }}
           prompt: ${{ steps.rev_ctx.outputs.prompt }}
 
-      - name: Run Gemini CLI PR review (PRIMARY)
+      - name: Run selected Gemini CLI review
         if: steps.router.outputs.skip != 'true' && steps.router.outputs.provider == 'gemini'
         uses: google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489 # v0.1.22
         continue-on-error: true

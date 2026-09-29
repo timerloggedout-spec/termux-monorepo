@@ -1,10 +1,9 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-29T08:23:13Z UTC · receipts=538 · foreign_open=24 · tributes=55_
+_Generated 2026-09-29T08:29:38Z UTC · receipts=562 · foreign_open=24 · tributes=55_
 
 ## Tributes (contributor ledger)
 
-- [Hugelidus/Pointcast#48](https://github.com/Hugelidus/Pointcast/pull/48) · state=closed · help-wanted: stake + contribute for #45
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -23,13 +22,14 @@ _Generated 2026-09-29T08:23:13Z UTC · receipts=538 · foreign_open=24 · tribut
 - [SO4-Markets/so4-oracle#1143](https://github.com/SO4-Markets/so4-oracle/pull/1143) · state=open · help-wanted: stake + contribute for #906
 - [Agora-Events/agora#1518](https://github.com/Agora-Events/agora/pull/1518) · state=open · help-wanted: stake + contribute for #1423
 - [StellarLock/StellarLock#865](https://github.com/StellarLock/StellarLock/pull/865) · state=open · help-wanted: stake + contribute for #721
-- [mergepay/mergepay-web#552](https://github.com/mergepay/mergepay-web/pull/552) · state=closed · help-wanted: stake + contribute for #546
 - [StayLitCodes/Vaultix#711](https://github.com/StayLitCodes/Vaultix/pull/711) · state=open · help-wanted: stake + contribute for #706
 - [KayStcx/KayStcx#104](https://github.com/KayStcx/KayStcx/pull/104) · state=open · help-wanted: stake + contribute for #85
 - [prime-radiant-inc/evener#2661](https://github.com/prime-radiant-inc/evener/pull/2661) · state=open · help-wanted: stake + contribute for #2627
 - [OBLIQ-in/OBLIQ-Website#39](https://github.com/OBLIQ-in/OBLIQ-Website/pull/39) · state=open · help-wanted: stake + contribute for #12
 - [TrusTrove/TrusTrove-contract#860](https://github.com/TrusTrove/TrusTrove-contract/pull/860) · state=open · help-wanted: stake + contribute for #836
 - [StellarCanary/Protocol-Canary#345](https://github.com/StellarCanary/Protocol-Canary/pull/345) · state=open · help-wanted: stake + contribute for #295
+- [Hugelidus/Pointcast#48](https://github.com/Hugelidus/Pointcast/pull/48) · state=closed · help-wanted: stake + contribute for #45
+- [mergepay/mergepay-web#552](https://github.com/mergepay/mergepay-web/pull/552) · state=closed · help-wanted: stake + contribute for #546
 - [olcf/olcf-test-harness#280](https://github.com/olcf/olcf-test-harness/pull/280) · state=closed · help-wanted: stake + contribute for #278
 - [umn-adc/ATLAS#42](https://github.com/umn-adc/ATLAS/pull/42) · state=closed · help-wanted: stake + contribute for #31
 - [lonestill/scope-launcher#45](https://github.com/lonestill/scope-launcher/pull/45) · state=closed · help-wanted: stake + contribute for #19
@@ -72,6 +72,6 @@ _Generated 2026-09-29T08:23:13Z UTC · receipts=538 · foreign_open=24 · tribut
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=538 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 454, 'followup_reengage': 19, 'followup_stale_nudge': 16, 'followup_changes': 1}`
+## Outcomes · ok=562 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 478, 'followup_reengage': 19, 'followup_stale_nudge': 16, 'followup_changes': 1}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

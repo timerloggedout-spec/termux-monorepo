@@ -1,0 +1,87 @@
+name: Deploy Hindsight on Fly.io
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "deploy | secrets | status | destroy"
+        required: true
+        default: "deploy"
+        type: choice
+        options: [deploy, secrets, status, destroy]
+      region:
+        description: "primary region"
+        required: false
+        default: "sjc"
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  fly:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install flyctl
+        run: curl -L https://fly.io/install.sh | sh
+
+      - name: Add flyctl to PATH
+        run: echo "$HOME/.fly/bin" >> $GITHUB_PATH
+
+      - name: Confirm auth
+        env:
+          FLY_API_TOKEN: ${{ secrets.Fly_io_ORG_TOKEN }}
+        run: fly auth whoami
+
+      - name: Deploy
+        if: ${{ github.event.inputs.action == 'deploy' }}
+        env:
+          FLY_API_TOKEN: ${{ secrets.Fly_io_ORG_TOKEN }}
+        run: |
+          set -e
+          mkdir -p deploy
+          # inline the Dockerfile + fly.toml
+          cat > deploy/Dockerfile <<'EOF'
+          FROM ghcr.io/vectorize-io/hindsight:latest-slim
+          EXPOSE 8888 9999
+          EOF
+
+          cat > deploy/fly.toml <<'EOF'
+          app = "hindsight-termux"
+          primary_region = "${{ github.event.inputs.region || 'sjc' }}"
+          [build]
+            dockerfile = "Dockerfile"
+          [env]
+            HINDSIGHT_BIND_HOST = "0.0.0.0"
+            HINDSIGHT_BIND_PORT = "8888"
+            HINDSIGHT_DATA_DIR = "/data"
+          [mounts]
+            source = "hindsight_data"
+            destination = "/data"
+          [http_service]
+            internal_port = 8888
+            force_https = true
+            auto_stop_machines = "stop"
+            auto_start_machines = true
+            min_machines_running = 0
+          [[vm]]
+            size = "shared-cpu-1x"
+            memory = "1024mb"
+          EOF
+
+          # create app if absent, then create volume, then deploy
+          cd deploy
+          fly apps create hindsight-termux --org personal 2>&1 || true
+          fly volumes create hindsight_data --region "${{ github.event.inputs.region || 'sjc' }}" --size 1 --yes 2>&1 || true
+          fly deploy --ha=false
+
+      - name: Status
+        if: ${{ github.event.inputs.action == 'status' }}
+        env:
+          FLY_API_TOKEN: ${{ secrets.Fly_io_ORG_TOKEN }}
+        run: |
+          fly apps list
+          fly status -a hindsight-termux || true
+          fly logs -a hindsight-termux --no-tail || true

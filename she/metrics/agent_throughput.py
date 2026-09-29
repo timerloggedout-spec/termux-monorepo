@@ -173,7 +173,7 @@ def reduce_events(
     density = action_count / active_sec if active_sec else 0.0
 
     eta = None
-    if sequential_baseline_sec is not None and agents and workflow_sec > 0:
+    if sequential_baseline_sec is not None and len(agents) > 0 and workflow_sec > 0:
         # Sequential baseline is only valid when explicitly supplied; never infer
         # one from the observed parallel run because that would bias the metric.
         eta = _positive(sequential_baseline_sec) / (len(agents) * workflow_sec)
@@ -203,7 +203,7 @@ def reduce_events(
         tool_actions=action_count,
         failed_actions=len(failed),
         retries=len(retries),
-        agents=len(agents) or 1,
+        agents=len(agents),
         tcv_tasks_per_min=round(tcv, 6),
         wtcv_per_min=round(wtcv, 6) if wtcv is not None else None,
         retry_penalty_ratio=round(rpi, 6),

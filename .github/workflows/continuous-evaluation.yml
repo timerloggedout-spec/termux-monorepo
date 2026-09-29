@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       target_number:
-        description: 'Issue/PR receiving the experiment ledger'
+        description: 'Issue/PR reference for the evaluation task (metadata only; no receipt comments)'
         required: true
         default: '337'
         type: string
@@ -32,8 +32,6 @@ on:
 
 permissions:
   contents: read
-  issues: write
-  pull-requests: write
 
 jobs:
   discover:
@@ -178,6 +176,24 @@ jobs:
               output.write(f'eligible={str(eligible).lower()}\nskip_reason={reason}\n')
           PY
 
+      - name: Create immutable evaluation epoch metadata
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/evaluation
+          python3 - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          catalog = Path('/tmp/model-catalog.json').read_bytes()
+          head = os.popen('git rev-parse HEAD').read().strip()
+          catalog_sha = hashlib.sha256(catalog).hexdigest()
+          seed = ':'.join([os.environ.get('GITHUB_RUN_ID',''), os.environ.get('GITHUB_RUN_ATTEMPT','1'), head, '${{ matrix.provider }}', '${{ matrix.model }}', '${{ steps.cohort.outputs.manager }}', catalog_sha])
+          epoch_id = 'eval-' + hashlib.sha256(seed.encode()).hexdigest()[:24]
+          Path('/tmp/evaluation/epoch.json').write_text(json.dumps({'schema':'evaluation-epoch/v1','epoch_id':epoch_id,'run_id':int(os.environ.get('GITHUB_RUN_ID','0')),'run_attempt':int(os.environ.get('GITHUB_RUN_ATTEMPT','1')),'head_sha':head,'catalog_sha256':catalog_sha,'provider':'${{ matrix.provider }}','model':'${{ matrix.model }}','manager':'${{ steps.cohort.outputs.manager }}'}, indent=2) + '\n')
+          print('epoch_id='+epoch_id)
+          print('head_sha='+head)
+          print('catalog_sha256='+catalog_sha)
+          PY
+
       - name: Snapshot repository history without mutation
         env:
           REFS: ${{ steps.cohort.outputs.refs }}
@@ -260,29 +276,23 @@ jobs:
           python3 - <<'PY'
           import json,os,pathlib
           p=pathlib.Path('/tmp/evaluation/manifest.json'); refs=pathlib.Path('/tmp/evaluation/resolved-refs.unique.txt')
-          p.write_text(json.dumps({'schema':'team-evaluation/v5','run_id':os.environ['RUN_ID'],'lane':os.environ['LANE'],'manager':os.environ['MANAGER'],'provider':os.environ['PROVIDER'],'model':os.environ['MODEL'],'prompt_variant':os.environ['VARIANT'],'quota_class':os.environ['QUOTA_CLASS'],'refs':refs.read_text().splitlines() if refs.exists() else []},indent=2)+'\n')
+          epoch_path=pathlib.Path('/tmp/evaluation/epoch.json')
+          epoch={}
+          if epoch_path.exists():
+              raw=epoch_path.read_text()
+              try:
+                  epoch=json.loads(raw)
+              except json.JSONDecodeError:
+                  epoch=json.JSONDecoder().raw_decode(raw.lstrip())[0]
+          p.write_text(json.dumps({'schema':'team-evaluation/v6','run_id':os.environ['RUN_ID'],'lane':os.environ['LANE'],'manager':os.environ['MANAGER'],'provider':os.environ['PROVIDER'],'model':os.environ['MODEL'],'prompt_variant':os.environ['VARIANT'],'quota_class':os.environ['QUOTA_CLASS'],'epoch':epoch,'refs':refs.read_text().splitlines() if refs.exists() else []},indent=2)+'\n')
           PY
 
       - name: Upload immutable evaluation ledger
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: team-evaluation-${{ github.run_id }}-${{ matrix.lane }}
+          name: team-evaluation-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.lane }}
           path: |
             /tmp/evaluation
             /tmp/model-performance/observations.ndjson
           if-no-files-found: ignore
-
-      - name: Record evaluation receipt
-        if: always() && github.event_name != 'schedule'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ github.repository }}
-          TARGET: ${{ inputs.target_number || '337' }}
-          RUN_ID: ${{ github.run_id }}
-          PROVIDER: ${{ matrix.provider }}
-          MODEL: ${{ matrix.model }}
-          LANE: ${{ matrix.lane }}
-          STATUS: ${{ steps.candidate.outputs.eligible || 'unresolved' }}
-        run: |
-          gh api "repos/${REPO}/issues/${TARGET}/comments" -f body="🧪 MVT lane receipt: ${LANE}; ${PROVIDER}/${MODEL}; eligible=${STATUS}; run=${RUN_ID}; live catalog re-polled; dynamic matrix; immutable cohort preserved. Outcome is recorded separately from route execution." >/dev/null || true

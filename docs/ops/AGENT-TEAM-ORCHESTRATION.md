@@ -25,6 +25,22 @@ The custom 3L0 score is an inference matrix, not a claim of objective model inte
 
 `$0` is therefore **not** the ROI metric. Free capacity is valuable only when its return on effort/time/context is better.
 
+## Contributor identity model
+
+Provider ecosystems are contributors to the ADE, but **contributor identity is not GitHub authorship**. The roster separates provider, agent, model, execution adapter, orchestration role, and research/evaluation lane.
+
+Required contributor lanes include:
+
+- **Gemini / Gemini CLI** — review, triage, implementation, research, evaluation
+- **OpenRouter** — routing, live catalog, inference, evaluation, benchmark
+- **FELO** — research, inference, benchmark, evaluation, adapter
+- **Hugging Face** — model, dataset, benchmark, evaluation, inference, research
+- existing Jules, CodeRabbit, DeepSeek, Devin, Copilot, Mistral, and operator lanes
+
+Contributor provenance must retain the provider/model/adapter/role dimensions alongside workflow run/job/step, triggering event, PR/issue, SHA, and attribution confidence. A model response incorporated into a commit does not establish provider authorship.
+
+The display-moniker SSOT is `docs/ops/AGENT-MONIKERS.md`; capability/routing declarations are in `docs/schemas/agent-roster.yaml`. See Issue #921 for the continuing moniker/role expansion track.
+
 ## Team roles
 
 ### Manager
@@ -52,6 +68,23 @@ Gemini CLI, OpenRouter peers, OmniRoute, Jules, Felo models, and other agents ar
 ### Evidence collector
 
 Records actual invocations and outcomes. A declared route earns no performance credit until it actually executes.
+
+### Evaluation / PR boundary
+
+Continuous evaluation is a state/evidence loop, not a pull-request generator.
+
+Every observation may update the longitudinal catalog/evidence plane: provider/model eligibility, role routing, invocation telemetry, outcomes, attribution, rankings, and evaluation epochs. A moving live-master SHA is an observation dimension and does not justify opening another PR.
+
+**PR invariant:** create a PR only for a durable implementation or policy change. Do not create PRs for session recon/bind/stamp receipts, live-master refreshes, catalog observations, ranking recalculations, evaluation manifests, or repeated evidence-only skill updates.
+
+The canonical loop is:
+
+`action → observation → outcome → evidence/catalog → next selection → next evaluation`
+
+Evaluation identity must preserve `run_id + run_attempt + head_sha + manager + task/cohort + provider + model + role`. Preserve the catalog snapshot/hash used for each epoch so rankings remain reproducible without freezing runtime catalog state.
+
+The repository's PR scope guard closes session/evaluation-only PRs as **not planned** when they cross this boundary. That guard is containment; the evidence/ledger is the system of record.
+
 
 ## Dynamic libraries and parallelism
 

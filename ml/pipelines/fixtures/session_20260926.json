@@ -1,0 +1,322 @@
+{
+  "master_sha": "8d36f149214f4a147932188bc424e7c29b8de444",
+  "observed_at": "2026-09-26T21:05:40Z",
+  "session": "20260926-2115Z-ml-command-center",
+  "issue": 175,
+  "counts": {
+    "open_prs": 91,
+    "by_lane": {
+      "SUPERSEDE": 33,
+      "NEED_EVIDENCE": 16,
+      "EXTRACT": 9,
+      "CANDIDATE": 33
+    },
+    "by_age": {
+      "ancient": 11,
+      "stale": 17,
+      "mid": 25,
+      "fresh": 38
+    }
+  },
+  "prs": [
+    {
+      "number": 48,
+      "title": "feat(llm-api-hub): OpenAI hub + standalone server + ADE/kai9000 split (TER-71)",
+      "base": {
+        "ref": "master-staging"
+      },
+      "user": {
+        "login": "timerloggedout-spec"
+      },
+      "draft": false,
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "why": "wrong-base:master-staging",
+      "reasons": [
+        "wrong-base:master-staging"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/48",
+      "head_ref": "ter-41-hub-server-standalone",
+      "wholesale": false,
+      "keep_alive": false
+    },
+    {
+      "number": 65,
+      "title": "\ud83c\udfa8 Palette: Add pulsing heartbeat and color-blind accessible symbols to telemetry dashboard",
+      "base": {
+        "ref": "master"
+      },
+      "user": {
+        "login": "google-labs-jules[bot]"
+      },
+      "draft": false,
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "why": "bot-no-auto-promote,minesweeper-title",
+      "reasons": [
+        "bot-no-auto-promote",
+        "minesweeper-title"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/65",
+      "head_ref": "jules-10011837884402998277-8685be83",
+      "wholesale": false,
+      "keep_alive": false
+    },
+    {
+      "number": 432,
+      "title": "feat(ml): observe-mode GitHub ML pipelines + Issue #175 matrix + PR minesweeper",
+      "base": {
+        "ref": "master"
+      },
+      "user": {
+        "login": "timerloggedout-spec"
+      },
+      "draft": false,
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "why": "ml-wholesale-no-go",
+      "reasons": [
+        "ml-wholesale-no-go"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/432",
+      "head_ref": "feat/ml-pipelines-init-175",
+      "wholesale": true,
+      "keep_alive": true
+    },
+    {
+      "number": 481,
+      "title": "ops: make Jules PR handoffs observable",
+      "base": {
+        "ref": "master"
+      },
+      "user": {
+        "login": "timerloggedout-spec"
+      },
+      "draft": false,
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "why": "state:unknown,minesweeper-title",
+      "reasons": [
+        "state:unknown",
+        "minesweeper-title"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/481",
+      "head_ref": "ops/agent-handoff-observability",
+      "wholesale": false,
+      "keep_alive": false
+    },
+    {
+      "number": 549,
+      "title": "feat(ml): rebase observe-mode GitHub ML pipelines onto master (#175)",
+      "base": {
+        "ref": "master"
+      },
+      "user": {
+        "login": "timerloggedout-spec"
+      },
+      "draft": false,
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "why": "ml-wholesale-no-go",
+      "reasons": [
+        "ml-wholesale-no-go"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/549",
+      "head_ref": "feat/ml-pipelines-rebase-175",
+      "wholesale": true,
+      "keep_alive": true
+    },
+    {
+      "number": 601,
+      "title": "feat(ml): extract observe-mode GitHub ML pipelines onto live master (#175)",
+      "base": {
+        "ref": "master"
+      },
+      "user": {
+        "login": "timerloggedout-spec"
+      },
+      "draft": false,
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "why": "ml-wholesale-no-go",
+      "reasons": [
+        "ml-wholesale-no-go"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/601",
+      "head_ref": "feat/ml-pipelines-extract-c082f53",
+      "wholesale": true,
+      "keep_alive": true
+    },
+    {
+      "number": 630,
+      "title": "fix(termux-multi-agent): add fallback rich UI classes in dashboard.py",
+      "base": {
+        "ref": "master"
+      },
+      "user": {
+        "login": "google-labs-jules[bot]"
+      },
+      "draft": false,
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "why": "bot-no-auto-promote,minesweeper-title",
+      "reasons": [
+        "bot-no-auto-promote",
+        "minesweeper-title"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/630",
+      "head_ref": "jules-15321990140816016778-cd751523",
+      "wholesale": false,
+      "keep_alive": false
+    },
+    {
+      "number": 672,
+      "title": "feat(ops): evolve Help-Wanted Tribute dashboard",
+      "base": {
+        "ref": "master"
+      },
+      "user": {
+        "login": "timerloggedout-spec"
+      },
+      "draft": false,
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "why": "state:unknown,minesweeper-title",
+      "reasons": [
+        "state:unknown",
+        "minesweeper-title"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/672",
+      "head_ref": "feat/help-wanted-dashboard-evolution",
+      "wholesale": false,
+      "keep_alive": false
+    },
+    {
+      "number": 680,
+      "title": "\u26a1 Bolt: optimize live_catalog_feed and add test coverage",
+      "base": {
+        "ref": "master"
+      },
+      "user": {
+        "login": "google-labs-jules[bot]"
+      },
+      "draft": false,
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "why": "bot-no-auto-promote",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/680",
+      "head_ref": "bolt-live-catalog-feed-optimization-7117823810492674030",
+      "wholesale": false,
+      "keep_alive": false
+    },
+    {
+      "number": 682,
+      "title": "feat(ml): keep-alive pipeline DAG + operator skills (Issue #175)",
+      "base": {
+        "ref": "master"
+      },
+      "user": {
+        "login": "timerloggedout-spec"
+      },
+      "draft": false,
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "why": "ml-keep-alive-rebase-required",
+      "reasons": [
+        "ml-keep-alive-rebase-required"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/682",
+      "head_ref": "ops/ml-pipeline-keep-20260920",
+      "wholesale": false,
+      "keep_alive": true
+    },
+    {
+      "number": 750,
+      "title": "fix(core, dashboard): add fallback imports for requests, rich, and curl_cffi",
+      "base": {
+        "ref": "master"
+      },
+      "user": {
+        "login": "google-labs-jules[bot]"
+      },
+      "draft": false,
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "why": "bot-no-auto-promote,minesweeper-title",
+      "reasons": [
+        "bot-no-auto-promote",
+        "minesweeper-title"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/750",
+      "head_ref": "jules-13467256833851733900-324583d3",
+      "wholesale": false,
+      "keep_alive": false
+    },
+    {
+      "number": 788,
+      "title": "test(archwiz): Linear client/sync coverage + Triage backlog reconciliation (TER-15)",
+      "base": {
+        "ref": "master-staging"
+      },
+      "user": {
+        "login": "timerloggedout-spec"
+      },
+      "draft": false,
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "why": "wrong-base:master-staging",
+      "reasons": [
+        "wrong-base:master-staging"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/788",
+      "head_ref": "timerloggedout/ter-15-linear-integration-ci-automation",
+      "wholesale": false,
+      "keep_alive": false
+    },
+    {
+      "number": 806,
+      "title": "ops: harden evaluation lanes and GitHub App capability evidence",
+      "base": {
+        "ref": "master"
+      },
+      "user": {
+        "login": "timerloggedout-spec"
+      },
+      "draft": false,
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "why": "state:unknown",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/806",
+      "head_ref": "ops/production-steward-20260924",
+      "wholesale": false,
+      "keep_alive": false
+    },
+    {
+      "number": 809,
+      "title": "feat: move GAMUT remote and extend all-repo wiki knowledge fabric",
+      "base": {
+        "ref": "master"
+      },
+      "user": {
+        "login": "timerloggedout-spec"
+      },
+      "draft": false,
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "why": "state:unknown",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/809",
+      "head_ref": "ops/remote-gamut-knowledge-fabric-20260924",
+      "wholesale": false,
+      "keep_alive": false
+    }
+  ]
+}

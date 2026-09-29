@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "d2ca7cfc50b92c76c9ed63f19939613f9e7b105f46e795682e94f4ece250e18d",
-  "workflow_count": 89,
+  "source_fingerprint": "97c862e76a20cee844bd4c44bf7e7417f4c47b4ee4a6219bb465ec30143b4ead",
+  "workflow_count": 115,
   "workflows": [
     {
       "action_pins": [
@@ -212,6 +212,7 @@
       "schedules": [],
       "triggers": [
         "pull_request",
+        "push",
         "workflow_dispatch"
       ]
     },
@@ -231,6 +232,43 @@
         "issue_comment",
         "pull_request_review",
         "pull_request_review_comment"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: agent-runtime-stall-watch cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "watch"
+      ],
+      "name": "Agent Runtime Stall Watch",
+      "path": ".github/workflows/agent-runtime-stall-watch.yml",
+      "schedules": [
+        "*/10 * * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09",
+        "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
+        "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: agent-throughput-evidence-${{ github.event.workflow_run.id || github.run_id }}-${{ github.event.workflow_run.run_attempt || github.run_attempt }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "emit"
+      ],
+      "name": "Agent Throughput Evidence",
+      "path": ".github/workflows/agent-throughput-evidence.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_run"
       ]
     },
     {
@@ -323,6 +361,41 @@
       ]
     },
     {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "validate-and-package"
+      ],
+      "name": "Briefing Evidence Heartbeat",
+      "path": ".github/workflows/briefing-evidence-heartbeat.yml",
+      "schedules": [
+        "17 15 * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "validate"
+      ],
+      "name": "Briefing Registry Validation",
+      "path": ".github/workflows/briefing-registry-validation.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
@@ -339,6 +412,26 @@
       ],
       "triggers": [
         "push",
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08"
+      ],
+      "authority": "writer",
+      "concurrency": "group: ci-sweep cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "sweep"
+      ],
+      "name": "Continuous CI Sweep",
+      "path": ".github/workflows/ci-sweep.yml",
+      "schedules": [
+        "0 */6 * * *"
+      ],
+      "triggers": [
         "schedule",
         "workflow_dispatch"
       ]
@@ -443,11 +536,28 @@
     },
     {
       "action_pins": [
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: context-relationship-backfill-watcher-${{ github.event.workflow_run.id }} cancel-in-progress: false",
+      "domain": "governance-relationships",
+      "jobs": [
+        "observe"
+      ],
+      "name": "context relationship backfill watcher",
+      "path": ".github/workflows/context-relationship-backfill-watcher.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_run"
+      ]
+    },
+    {
+      "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
         "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
       ],
       "authority": "writer",
-      "concurrency": "group: context-relationship-writer-master-staging cancel-in-progress: false",
+      "concurrency": "group: context-relationship-writer-master cancel-in-progress: false",
       "domain": "governance-relationships",
       "jobs": [
         "backfill"
@@ -543,7 +653,7 @@
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
-      "authority": "writer",
+      "authority": "read-only-or-advisory",
       "concurrency": "",
       "domain": "agentic-development",
       "jobs": [
@@ -558,6 +668,23 @@
       "triggers": [
         "push",
         "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "validate"
+      ],
+      "name": "Credential Inventory Validation",
+      "path": ".github/workflows/credential-inventory-validation.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push",
         "workflow_dispatch"
       ]
     },
@@ -586,7 +713,7 @@
         "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
         "actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af",
         "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b",
-        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+        "actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08"
       ],
       "authority": "writer",
       "concurrency": "group: deepseek-ci-${{ github.event.pull_request.number || github.event.issue.number || github.event.comment.id || github.run_id }} cancel-in-progress: true",
@@ -601,6 +728,27 @@
         "issue_comment",
         "pull_request",
         "pull_request_review_comment",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+        "actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08"
+      ],
+      "authority": "writer",
+      "concurrency": "group: dsa-${{ github.event.issue.number || github.event.pull_request.number || github.run_id }} cancel-in-progress: false # NOTE: job has timeout-minutes: 25 and every step has an explicit # timeout-minutes (in addition to the always()/failure() diagnostic # steps and artifact upload), so this workflow satisfies the CI # hygiene checks.",
+      "domain": "agentic-development",
+      "jobs": [
+        "agent"
+      ],
+      "name": "DeepSeek Termux Agent",
+      "path": ".github/workflows/deepseek-termux-agent.yml",
+      "schedules": [],
+      "triggers": [
+        "issue_comment",
+        "issues",
+        "pull_request",
         "workflow_dispatch"
       ]
     },
@@ -690,6 +838,21 @@
       ]
     },
     {
+      "action_pins": [],
+      "authority": "advisory-publisher",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "fly"
+      ],
+      "name": "Deploy Hindsight on Fly.io",
+      "path": ".github/workflows/deploy-hindsight.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
@@ -749,6 +912,99 @@
       ]
     },
     {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: fix-failure-${{ github.event.workflow_run.id || github.event.inputs.run_id || github.run_id }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "fix"
+      ],
+      "name": "Fix-on-Failure Agent",
+      "path": ".github/workflows/fix-on-failure.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch",
+        "workflow_run"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "diag"
+      ],
+      "name": "Fly Diag",
+      "path": ".github/workflows/fly-diag.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "diag"
+      ],
+      "name": "Fly Fast Diag",
+      "path": ".github/workflows/fly-fast-diag.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "config"
+      ],
+      "name": "Fly Hindsight Config",
+      "path": ".github/workflows/fly-hindsight-config.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "diag"
+      ],
+      "name": "Fly SSH Diag",
+      "path": ".github/workflows/fly-ssh-diag.yml",
+      "schedules": [],
+      "triggers": []
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "test"
+      ],
+      "name": "Foresight Evidence Spine",
+      "path": ".github/workflows/foresight-evidence-spine.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push"
+      ]
+    },
+    {
       "action_pins": [
         "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683"
       ],
@@ -765,6 +1021,25 @@
       ],
       "triggers": [
         "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "validate"
+      ],
+      "name": "FOSS Foresight Registry Quality",
+      "path": ".github/workflows/foss-registry-quality.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push",
         "workflow_dispatch"
       ]
     },
@@ -812,9 +1087,25 @@
       ]
     },
     {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "peer-provider-review",
+      "jobs": [
+        "smoke"
+      ],
+      "name": "Gemini Interactions API Smoke",
+      "path": ".github/workflows/gemini-interactions-smoke.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
         "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
         "google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489"
       ],
       "authority": "writer",
@@ -842,7 +1133,7 @@
       "jobs": [
         "review"
       ],
-      "name": "🔍 Gemini PR Review (Gemini PRIMARY → peer Omni ↔ OpenRouter secondary)",
+      "name": "🔍 Optimized Multi-Provider PR Review",
       "path": ".github/workflows/gemini-review.yml",
       "schedules": [],
       "triggers": [
@@ -1044,6 +1335,24 @@
     },
     {
       "action_pins": [
+        "actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "validate-backfill-migration-boundary"
+      ],
+      "name": "historical backfill promotion gate",
+      "path": ".github/workflows/historical-backfill-promotion-gate.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
       "authority": "read-only-or-advisory",
@@ -1139,16 +1448,33 @@
       ]
     },
     {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: ml-keepalive-${{ github.ref }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "unittest"
+      ],
+      "name": "ml pipelines keep-alive",
+      "path": ".github/workflows/ml-pipelines-keepalive.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
-      "authority": "writer",
-      "concurrency": "group: openrouter-free-catalog-sync cancel-in-progress: true",
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: openrouter-free-catalog-snapshot cancel-in-progress: true",
       "domain": "agentic-development",
       "jobs": [
         "poll"
       ],
-      "name": "OpenRouter free catalog sync",
+      "name": "OpenRouter free catalog snapshot",
       "path": ".github/workflows/openrouter-free-catalog-sync.yml",
       "schedules": [
         "17 12 * * *"
@@ -1211,6 +1537,7 @@
       "path": ".github/workflows/orchestration-regression-guard.yml",
       "schedules": [],
       "triggers": [
+        "pull_request",
         "push",
         "workflow_dispatch"
       ]
@@ -1219,7 +1546,7 @@
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
-      "authority": "writer",
+      "authority": "read-only-or-advisory",
       "concurrency": "",
       "domain": "agentic-development",
       "jobs": [
@@ -1287,7 +1614,7 @@
     },
     {
       "action_pins": [],
-      "authority": "bounded-state-write",
+      "authority": "read-only-or-advisory",
       "concurrency": "group: pr-evidence-${{ github.event.pull_request.number || github.event.issue.number || inputs.pr_number || github.run_id }} cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
@@ -1325,6 +1652,21 @@
     },
     {
       "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "guard"
+      ],
+      "name": "PR scope guard",
+      "path": ".github/workflows/pr-scope-guard.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request_target"
+      ]
+    },
+    {
+      "action_pins": [],
       "authority": "writer",
       "concurrency": "",
       "domain": "governance-relationships",
@@ -1338,6 +1680,26 @@
       "triggers": [
         "pull_request",
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: provider-availability cancel-in-progress: true",
+      "domain": "peer-provider-review",
+      "jobs": [
+        "probe"
+      ],
+      "name": "Provider availability continuity",
+      "path": ".github/workflows/provider-availability.yml",
+      "schedules": [
+        "7 */6 * * *"
+      ],
+      "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -1563,6 +1925,22 @@
       "concurrency": "",
       "domain": "agentic-development",
       "jobs": [
+        "validate"
+      ],
+      "name": "research-registry",
+      "path": ".github/workflows/research-registry.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
         "provenance"
       ],
       "name": "RinDig Provenance Audit",
@@ -1613,6 +1991,24 @@
       "path": ".github/workflows/scorecard-advisory.yml",
       "schedules": [
         "41 3 * * 1"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: self-integrate cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "integrate"
+      ],
+      "name": "DeepSeek Self-Integrate",
+      "path": ".github/workflows/self-integrate.yml",
+      "schedules": [
+        "17 */4 * * *"
       ],
       "triggers": [
         "schedule",
@@ -1681,7 +2077,7 @@
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
-      "authority": "writer",
+      "authority": "read-only-or-advisory",
       "concurrency": "group: team-mvt-${{ github.workflow }}-${{ github.ref }} cancel-in-progress: false",
       "domain": "peer-provider-review",
       "jobs": [
@@ -1701,6 +2097,41 @@
       ]
     },
     {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: temporal-self-host-smoke-${{ github.event.pull_request.number || github.ref }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "live-smoke",
+        "structural"
+      ],
+      "name": "Temporal self-host smoke",
+      "path": ".github/workflows/temporal-self-host-smoke.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "health"
+      ],
+      "name": "Termux bridge connectivity",
+      "path": ".github/workflows/termux-bridge-connect.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
       "action_pins": [],
       "authority": "read-only-or-advisory",
       "concurrency": "group: termux-smoke-${{ github.ref }} cancel-in-progress: true",
@@ -1714,6 +2145,24 @@
       "triggers": [
         "pull_request",
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "ping"
+      ],
+      "name": "Tunnel Canary",
+      "path": ".github/workflows/tunnel-canary.yml",
+      "schedules": [
+        "*/30 * * * *"
+      ],
+      "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -1750,6 +2199,12 @@
         "automation-documentation",
         "route",
         "verify"
+      ],
+      "name": "Workflow Surface Policy",
+      "path": ".github/workflows/workflow-surface-policy.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request"
       ]
     }
   ]

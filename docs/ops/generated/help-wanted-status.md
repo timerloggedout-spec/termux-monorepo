@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-29T01:57:44Z UTC · receipts=538 · foreign_open=25 · tributes=54_
+_Generated 2026-09-29T06:12:41Z UTC · receipts=538 · foreign_open=25 · tributes=55_
 
 ## Tributes (contributor ledger)
 
+- [Hugelidus/Pointcast#48](https://github.com/Hugelidus/Pointcast/pull/48) · state=open · help-wanted: stake + contribute for #45
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -22,7 +23,7 @@ _Generated 2026-09-29T01:57:44Z UTC · receipts=538 · foreign_open=25 · tribut
 - [SO4-Markets/so4-oracle#1143](https://github.com/SO4-Markets/so4-oracle/pull/1143) · state=open · help-wanted: stake + contribute for #906
 - [Agora-Events/agora#1518](https://github.com/Agora-Events/agora/pull/1518) · state=open · help-wanted: stake + contribute for #1423
 - [StellarLock/StellarLock#865](https://github.com/StellarLock/StellarLock/pull/865) · state=open · help-wanted: stake + contribute for #721
-- [mergepay/mergepay-web#552](https://github.com/mergepay/mergepay-web/pull/552) · state=open · help-wanted: stake + contribute for #546
+- [mergepay/mergepay-web#552](https://github.com/mergepay/mergepay-web/pull/552) · state=closed · help-wanted: stake + contribute for #546
 - [StayLitCodes/Vaultix#711](https://github.com/StayLitCodes/Vaultix/pull/711) · state=open · help-wanted: stake + contribute for #706
 - [KayStcx/KayStcx#104](https://github.com/KayStcx/KayStcx/pull/104) · state=open · help-wanted: stake + contribute for #85
 - [prime-radiant-inc/evener#2661](https://github.com/prime-radiant-inc/evener/pull/2661) · state=open · help-wanted: stake + contribute for #2627
@@ -43,17 +44,16 @@ _Generated 2026-09-29T01:57:44Z UTC · receipts=538 · foreign_open=25 · tribut
 - [sorotrail/SoroTrail#943](https://github.com/sorotrail/SoroTrail/pull/943) · state=closed · help-wanted: stake + contribute for #142
 - [DeltaV-Station/Delta-v#6534](https://github.com/DeltaV-Station/Delta-v/pull/6534) · state=closed · help-wanted: stake + contribute for #6533
 - [ussyalfaks/ahjoorxmr-contract#872](https://github.com/ussyalfaks/ahjoorxmr-contract/pull/872) · state=closed · help-wanted: stake + contribute for #871
-- [FasterThanAi/ai-lead-generation-mvp#34](https://github.com/FasterThanAi/ai-lead-generation-mvp/pull/34) · state=closed · help-wanted: stake + contribute for #18
 
 ## Foreign open PRs
 
+- [Hugelidus/Pointcast#48](https://github.com/Hugelidus/Pointcast/pull/48) — help-wanted: stake + contribute for #45
 - [StellarCanary/Protocol-Canary#345](https://github.com/StellarCanary/Protocol-Canary/pull/345) — help-wanted: stake + contribute for #295
 - [TrusTrove/TrusTrove-contract#860](https://github.com/TrusTrove/TrusTrove-contract/pull/860) — help-wanted: stake + contribute for #836
 - [OBLIQ-in/OBLIQ-Website#39](https://github.com/OBLIQ-in/OBLIQ-Website/pull/39) — help-wanted: stake + contribute for #12
 - [prime-radiant-inc/evener#2661](https://github.com/prime-radiant-inc/evener/pull/2661) — help-wanted: stake + contribute for #2627
 - [KayStcx/KayStcx#104](https://github.com/KayStcx/KayStcx/pull/104) — help-wanted: stake + contribute for #85
 - [StayLitCodes/Vaultix#711](https://github.com/StayLitCodes/Vaultix/pull/711) — help-wanted: stake + contribute for #706
-- [mergepay/mergepay-web#552](https://github.com/mergepay/mergepay-web/pull/552) — help-wanted: stake + contribute for #546
 - [StellarLock/StellarLock#865](https://github.com/StellarLock/StellarLock/pull/865) — help-wanted: stake + contribute for #721
 - [Agora-Events/agora#1518](https://github.com/Agora-Events/agora/pull/1518) — help-wanted: stake + contribute for #1423
 - [SO4-Markets/so4-oracle#1143](https://github.com/SO4-Markets/so4-oracle/pull/1143) — help-wanted: stake + contribute for #906

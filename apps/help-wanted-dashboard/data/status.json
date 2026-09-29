@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-29T01:57:44Z",
+  "generated_at": "2026-09-29T06:12:41Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
   "receipts": 538,
@@ -16,6 +16,15 @@
     "ok": 538
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/Hugelidus/Pointcast/pull/48",
+      "title": "help-wanted: stake + contribute for #45",
+      "number": 48,
+      "repo": "Hugelidus/Pointcast",
+      "state": "open",
+      "updated_at": "2026-09-29T06:12:27Z",
+      "tribute": true
+    },
     {
       "html_url": "https://github.com/StellarCanary/Protocol-Canary/pull/345",
       "title": "help-wanted: stake + contribute for #295",
@@ -68,15 +77,6 @@
       "repo": "StayLitCodes/Vaultix",
       "state": "open",
       "updated_at": "2026-09-27T19:08:11Z",
-      "tribute": true
-    },
-    {
-      "html_url": "https://github.com/mergepay/mergepay-web/pull/552",
-      "title": "help-wanted: stake + contribute for #546",
-      "number": 552,
-      "repo": "mergepay/mergepay-web",
-      "state": "open",
-      "updated_at": "2026-09-28T05:22:33Z",
       "tribute": true
     },
     {
@@ -244,6 +244,19 @@
   ],
   "foreign_open_count": 25,
   "tributes": [
+    {
+      "pr_url": "https://github.com/Hugelidus/Pointcast/pull/48",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-29T06:12:27Z",
+      "providers": [],
+      "repo": "Hugelidus/Pointcast",
+      "number": 48,
+      "title": "help-wanted: stake + contribute for #45",
+      "state": "open"
+    },
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
@@ -911,7 +924,7 @@
       "repo": "mergepay/mergepay-web",
       "number": 552,
       "title": "help-wanted: stake + contribute for #546",
-      "state": "open"
+      "state": "closed"
     },
     {
       "pr_url": "https://github.com/StayLitCodes/Vaultix/pull/711",
@@ -1447,7 +1460,7 @@
       "state": "closed"
     }
   ],
-  "tribute_count": 54,
+  "tribute_count": 55,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -6476,7 +6489,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "0b200f7ce7e7b0e22667ed7f01266fb3f12300d3",
+    "source_sha": "bd7d08bfe31a23c9d845880a1eda31a6217f1900",
     "source_ref": "master",
     "history_complete": true,
     "history_count": 1,
@@ -6509,12 +6522,12 @@
   },
   "evolution": [
     {
-      "sha": "0b200f7ce7e7b0e22667ed7f01266fb3f12300d3",
-      "short_sha": "0b200f7ce7e7",
-      "date": "2026-09-29T01:57:15Z",
+      "sha": "bd7d08bfe31a23c9d845880a1eda31a6217f1900",
+      "short_sha": "bd7d08bfe31a",
+      "date": "2026-09-29T05:39:09Z",
       "author": "github-actions[bot]",
-      "subject": "ops(help-wanted): live status refresh 2026-09-29T01:57Z",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/0b200f7ce7e7b0e22667ed7f01266fb3f12300d3"
+      "subject": "ops(lane-matrix): refresh generated status from recursive sweep",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/bd7d08bfe31a23c9d845880a1eda31a6217f1900"
     }
   ],
   "pipeline": [

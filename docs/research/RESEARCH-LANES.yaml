@@ -6,19 +6,19 @@ lanes:
     orgs: [termux-monorepo, Research-Astute]
   - lane_id: agent-observability
     orgs: [termux-monorepo, Research-Astute]
-    inputs: [OpenTelemetry, Docker, Tree-sitter, Langfuse, Phoenix, Lizard, Radon, Codespaces]
+    inputs: [OpenTelemetry, Docker, Tree-sitter, Langfuse, Phoenix, Lizard, Radon, Codespaces]\n    contributors: [gemini, openrouter, felo, huggingface]
   - lane_id: multi-agent-evaluation
     orgs: [termux-monorepo, Research-Astute]
-    inputs: [MASEval, manager-tournaments, benchmark-suites]
+    inputs: [MASEval, manager-tournaments, benchmark-suites]\n    contributors: [gemini, openrouter, felo, huggingface]
   - lane_id: reproducible-environments
     orgs: [termux-monorepo, Research-Astute]
     inputs: [Docker, devcontainers, Codespaces, environment-fingerprints]
   - lane_id: local-edge-arm-android
     orgs: [termux-monorepo, Research-Astute]
-    inputs: [open-weight-models, local-runtimes, ARM, Android, Termux]
+    inputs: [open-weight-models, local-runtimes, ARM, Android, Termux]\n    contributors: [huggingface, felo, openrouter]
   - lane_id: agentic-security
     orgs: [termux-monorepo, Research-Astute]
-    inputs: [OTel, sandboxing, provenance, tool-permissions]
+    inputs: [OTel, sandboxing, provenance, tool-permissions]\n    contributors: [gemini, openrouter, felo, huggingface]
   - lane_id: malware-reverse-engineering
     orgs: [termux-monorepo, Research-Astute]
     issue_anchors: [236, 279, 306]

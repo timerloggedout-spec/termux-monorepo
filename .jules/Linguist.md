@@ -102,3 +102,10 @@ Compiling Trie-structured regular expressions with the `re.IGNORECASE` flag in P
 
 **Action:**
 In high-performance regex matching pipelines over ASCII technical documents, compile explicit character class branches into Trie regex builders and omit `re.IGNORECASE` flags to delegate case matching directly to automaton state transitions.
+
+## 2026-10-04 - Invariant Token Pre-Filtering Set in Surface Codecs
+**Learning:**
+During high-frequency randomized surface codec substitutions (`to_1337speak`), executing character-by-character loop iterations, dictionary lookups, list allocations, and random number generator evaluations on matched tokens that contain zero eligible leet substitution characters (e.g., `pr0b3`, `h4x`, `3ch0`, `l00p`, `gr1m01r3`) creates significant CPU overhead (~25% of callback runtime). Precomputing an `O(1)` module-level set `VARIANTS_WITH_NO_ELIGIBLE` allows `_replace_leet_default` to short-circuit instantly for invariant tokens, bypassing list creation and RNG evaluations.
+
+**Action:**
+In randomized surface transformers, pre-filter non-mutable tokens using pre-computed module-scope sets to eliminate unnecessary allocations and RNG evaluations.

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-29T08:30:49Z",
+  "generated_at": "2026-09-29T15:06:13Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
   "receipts": 562,
@@ -16,6 +16,15 @@
     "ok": 562
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/tarantool/tarantool/pull/13285",
+      "title": "help-wanted: stake + contribute for #13284",
+      "number": 13285,
+      "repo": "tarantool/tarantool",
+      "state": "open",
+      "updated_at": "2026-09-29T15:05:55Z",
+      "tribute": true
+    },
     {
       "html_url": "https://github.com/StellarCanary/Protocol-Canary/pull/345",
       "title": "help-wanted: stake + contribute for #295",
@@ -67,7 +76,7 @@
       "number": 711,
       "repo": "StayLitCodes/Vaultix",
       "state": "open",
-      "updated_at": "2026-09-27T19:08:11Z",
+      "updated_at": "2026-09-29T12:56:51Z",
       "tribute": true
     },
     {
@@ -233,8 +242,21 @@
       "tribute": true
     }
   ],
-  "foreign_open_count": 24,
+  "foreign_open_count": 25,
   "tributes": [
+    {
+      "pr_url": "https://github.com/tarantool/tarantool/pull/13285",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-29T15:05:55Z",
+      "providers": [],
+      "repo": "tarantool/tarantool",
+      "number": 13285,
+      "title": "help-wanted: stake + contribute for #13284",
+      "state": "open"
+    },
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
@@ -1475,7 +1497,7 @@
       "state": "closed"
     }
   ],
-  "tribute_count": 55,
+  "tribute_count": 56,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -6720,7 +6742,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "7fe9e4eee5683cee68da93a1ddbf5e235bd748fe",
+    "source_sha": "d6bc6033422aa482dc2fff2871a26c8a2acc5ca6",
     "source_ref": "master",
     "history_complete": true,
     "history_count": 1,
@@ -6753,12 +6775,12 @@
   },
   "evolution": [
     {
-      "sha": "7fe9e4eee5683cee68da93a1ddbf5e235bd748fe",
-      "short_sha": "7fe9e4eee568",
-      "date": "2026-09-29T08:29:39Z",
+      "sha": "d6bc6033422aa482dc2fff2871a26c8a2acc5ca6",
+      "short_sha": "d6bc6033422a",
+      "date": "2026-09-29T12:52:24Z",
       "author": "github-actions[bot]",
-      "subject": "ops(help-wanted): live status refresh 2026-09-29T08:29Z",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/7fe9e4eee5683cee68da93a1ddbf5e235bd748fe"
+      "subject": "chore(docs): refresh DOCS-BRANCH-INDEX",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/d6bc6033422aa482dc2fff2871a26c8a2acc5ca6"
     }
   ],
   "pipeline": [

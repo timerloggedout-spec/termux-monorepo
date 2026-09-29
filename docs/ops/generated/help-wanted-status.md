@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-29T08:30:49Z UTC · receipts=562 · foreign_open=24 · tributes=55_
+_Generated 2026-09-29T15:06:13Z UTC · receipts=562 · foreign_open=25 · tributes=56_
 
 ## Tributes (contributor ledger)
 
+- [tarantool/tarantool#13285](https://github.com/tarantool/tarantool/pull/13285) · state=open · help-wanted: stake + contribute for #13284
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -43,10 +44,10 @@ _Generated 2026-09-29T08:30:49Z UTC · receipts=562 · foreign_open=24 · tribut
 - [limelit-co/open#32](https://github.com/limelit-co/open/pull/32) · state=closed · help-wanted: stake + contribute for #31
 - [sorotrail/SoroTrail#943](https://github.com/sorotrail/SoroTrail/pull/943) · state=closed · help-wanted: stake + contribute for #142
 - [DeltaV-Station/Delta-v#6534](https://github.com/DeltaV-Station/Delta-v/pull/6534) · state=closed · help-wanted: stake + contribute for #6533
-- [ussyalfaks/ahjoorxmr-contract#872](https://github.com/ussyalfaks/ahjoorxmr-contract/pull/872) · state=closed · help-wanted: stake + contribute for #871
 
 ## Foreign open PRs
 
+- [tarantool/tarantool#13285](https://github.com/tarantool/tarantool/pull/13285) — help-wanted: stake + contribute for #13284
 - [StellarCanary/Protocol-Canary#345](https://github.com/StellarCanary/Protocol-Canary/pull/345) — help-wanted: stake + contribute for #295
 - [TrusTrove/TrusTrove-contract#860](https://github.com/TrusTrove/TrusTrove-contract/pull/860) — help-wanted: stake + contribute for #836
 - [OBLIQ-in/OBLIQ-Website#39](https://github.com/OBLIQ-in/OBLIQ-Website/pull/39) — help-wanted: stake + contribute for #12

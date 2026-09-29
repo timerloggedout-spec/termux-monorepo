@@ -8,7 +8,7 @@ This document describes the free-tier-only autonomous / agentic development CI/C
 |-----------|------|--------|-----------------|
 | **Jules** (Google Labs) | Async autonomous coding agent (fix bugs, features, tests) | Integrated (`.Jules/`, `agent-review-auto-jules.yml`, `agent-jules-on-issues.yml`) | Introductory daily task limits |
 | **CodeRabbit** | AI PR review + autofix | Integrated (`.coderabbit.yaml`) | Free summaries + limited reviews; full free for public/OSS |
-| **Gemini CLI GitHub Action** | Issue triage, PR review, `@gemini-cli` on-demand teammate (**PRIMARY** free-tier path for those roles; Omni/OpenRouter secondary) | Integrated | Google AI Studio free quota — full RPD maximization, no soft room (issue #272) |
+| **Gemini CLI GitHub Action** | Issue triage, PR review, `@gemini-cli` on-demand teammate; one optimized candidate in the shared routing pool | Integrated | Google AI Studio free quota — observed/managed by routing and availability evidence |
 | **GitHub MCP Server** | Tool access for agents (issues/PRs/code) | Usable via Gemini settings | Fully free / OSS |
 | Render (Marketplace) | Deploy / self-healing hooks (noted in README) | Already installed per README | Free tier exists |
 

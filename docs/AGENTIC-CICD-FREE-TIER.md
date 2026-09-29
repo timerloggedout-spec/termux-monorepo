@@ -41,13 +41,14 @@ GitHub only runs `issues` / `issue_comment` workflows from the **default branch*
 - Fork PRs are excluded from automatic review triggers.
 - GEMINI.md encodes the same hard rules as AGENTS.md (no secrets in git, master-staging, gates) plus coordination rules.
 
-## Routing policy (LEADER 2026-08-20)
+## Routing policy (optimized routing)
 
 See issues **#272** and **#175**.
 
-- **Gemini is PRIMARY** for review / triage / invoke (maximize Official Agent Account free-tier RPD).
-- OmniRoute and OpenRouter are **secondary** free-tier peers.
-- Soft budgets aligned to real free-tier ceilings (~1000–1500 RPD Flash-class); **no artificial soft room**.
-- Quota skips post graceful comments; CI stays green (`continue-on-error`).
-- Jules remains the primary **async builder**; Gemini remains reviewer/triage/on-demand teammate.
-- Prefer **minimal / fat PRs** (stack related changes) to reduce PR sprawl and Qoda pressure.
+- Gemini, OmniRoute, OpenRouter, Jules, CodeRabbit, and other enabled contributors participate in a **shared candidate pool**; no provider/model is designated primary or secondary.
+- Admission uses capability, credential, live catalog, health, quota, task independence, freshness, and policy gates before scoring.
+- Selection is evidence-driven using role suitability, local 3L0/Moneyball observations, integrated outcome, context/time cost, retries, conflicts, and human intervention.
+- Topology is a first-class experiment variable: `single | series | dynamic | parallel | nested | co-working | volley`.
+- A capacity failure causes re-admission against the current candidate set; it does not trigger a fixed provider chain.
+- Quota skips remain explicit evidence; CI behavior is controlled separately from routing semantics.
+- Jules is an eligible async builder among the candidate pool, not a universal sink; Gemini is an eligible review/triage/invoke contributor, not a permanently privileged route.

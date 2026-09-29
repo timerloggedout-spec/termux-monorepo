@@ -1,10 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-29T21:03:55Z UTC · receipts=587 · foreign_open=25 · tributes=57_
+_Generated 2026-09-29T22:14:46Z UTC · receipts=587 · foreign_open=24 · tributes=57_
 
 ## Tributes (contributor ledger)
 
-- [inferstep/ATLAS#278](https://github.com/inferstep/ATLAS/pull/278) · state=open · help-wanted: stake + contribute for #277
+- [inferstep/ATLAS#278](https://github.com/inferstep/ATLAS/pull/278) · state=closed · help-wanted: stake + contribute for #277
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -47,7 +47,6 @@ _Generated 2026-09-29T21:03:55Z UTC · receipts=587 · foreign_open=25 · tribut
 
 ## Foreign open PRs
 
-- [inferstep/ATLAS#278](https://github.com/inferstep/ATLAS/pull/278) — help-wanted: stake + contribute for #277
 - [tarantool/tarantool#13285](https://github.com/tarantool/tarantool/pull/13285) — help-wanted: stake + contribute for #13284
 - [StellarCanary/Protocol-Canary#345](https://github.com/StellarCanary/Protocol-Canary/pull/345) — help-wanted: stake + contribute for #295
 - [TrusTrove/TrusTrove-contract#860](https://github.com/TrusTrove/TrusTrove-contract/pull/860) — help-wanted: stake + contribute for #836

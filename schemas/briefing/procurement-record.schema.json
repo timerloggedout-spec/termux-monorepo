@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/schemas/briefing/procurement-record.schema.json",
+  "title": "FOSS Procurement Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["resource_id","project","canonical_source","license","maintenance","portability","offline_capability","interoperability","reproducibility","provenance","dependency_risk","lock_in_risk","security_surface","resource_cost","operational_fit","horizon","confidence","decision_status","version_or_commit","observed_at"],
+  "properties": {
+    "resource_id":{"type":"string"},
+    "project":{"type":"string"},
+    "canonical_source":{"type":"string","format":"uri"},
+    "license":{"type":"string"},
+    "maintenance":{"type":"string"},
+    "portability":{"type":"object","additionalProperties":false,"required":["arm64_linux","x86_64_linux","android","termux","offline_airgapped"],"properties":{"arm64_linux":{"type":"string"},"x86_64_linux":{"type":"string"},"android":{"type":"string"},"termux":{"type":"string"},"offline_airgapped":{"type":"string"}}},
+    "offline_capability":{"type":"string"},
+    "interoperability":{"type":"string"},
+    "reproducibility":{"type":"string"},
+    "provenance":{"type":"string"},
+    "dependency_risk":{"type":"string"},
+    "lock_in_risk":{"type":"object","additionalProperties":false,"required":["runtime","evidence"],"properties":{"runtime":{"type":"string"},"evidence":{"type":"string"}}},
+    "security_surface":{"type":"string"},
+    "resource_cost":{"type":"string"},
+    "operational_fit":{"type":"string"},
+    "horizon":{"enum":["H0","H1","H2","H3"]},
+    "confidence":{"enum":["high","medium","low"]},
+    "decision_status":{"enum":["WATCH","INVESTIGATE","PROTOTYPE","ADOPT","REJECT","HOLD"]},
+    "version_or_commit":{"type":"string"},
+    "observed_at":{"type":"string"},
+    "unresolved_questions":{"type":"array","items":{"type":"string"}}
+  }
+}

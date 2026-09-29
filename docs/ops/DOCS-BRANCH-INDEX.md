@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-09-26T11:24:39Z` UTC  
+**Generated:** `2026-09-29T21:22:56Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 51 docs-lane branch(es)
+**Count:** 53 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -14,6 +14,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | Branch | SHA | Open PR(s) | Registry proposal(s) | Notes |
 |--------|-----|------------|----------------------|-------|
 | [`docs-lane-consolidation-audit-rl19-1863392865914587957`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs-lane-consolidation-audit-rl19-1863392865914587957) | `998ce3b2b9ca` | — | — | orphan lane |
+| [`docs-lane-consolidation-ssot-sync-16812143607083774304`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs-lane-consolidation-ssot-sync-16812143607083774304) | `34b0b447a5da` | [#852](https://github.com/timerloggedout-spec/termux-monorepo/pull/852)→`master` | — | PR without registry link |
 | [`docs/agent-team-formation-draft`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/agent-team-formation-draft) | `ce17762905eb` | [#249](https://github.com/timerloggedout-spec/termux-monorepo/pull/249)→`master` | — | PR without registry link |
 | [`docs/agentic-governance-skill`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/agentic-governance-skill) | `2a3d45578f88` | — | — | orphan lane |
 | [`docs/agents-linguist-stub-skills-inventory`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/agents-linguist-stub-skills-inventory) | `80b2abac8e35` | — | — | orphan lane |
@@ -46,6 +47,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/notation-sets-evolution`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/notation-sets-evolution) | `25dbe5778683` | — | `timerloggedout-spec` | registered; no open PR |
 | [`docs/nse-022-023-lambda-lean-extract`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/nse-022-023-lambda-lean-extract) | `e588a84c04bf` | — | — | orphan lane |
 | [`docs/ops-docs-branch-index-automation`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/ops-docs-branch-index-automation) | `17961df7b0c5` | — | — | orphan lane |
+| [`docs/paper2agent-scientific-factory-proposal-2026-09-29`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/paper2agent-scientific-factory-proposal-2026-09-29) | `f9923fd7bdfa` | — | `timerloggedout-spec` | registered; no open PR |
 | [`docs/pr-concept-consolidation-ledger-558`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/pr-concept-consolidation-ledger-558) | `0b4e0e61e65a` | — | — | orphan lane |
 | [`docs/pr-scope-discipline-ce22`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/pr-scope-discipline-ce22) | `a68300477966` | [#67](https://github.com/timerloggedout-spec/termux-monorepo/pull/67)→`master` | — | PR without registry link |
 | [`docs/promote-archwiz-to-master`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/promote-archwiz-to-master) | `70bfdeff314a` | — | — | orphan lane |

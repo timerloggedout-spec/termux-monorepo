@@ -10,19 +10,22 @@ The research candidates should be compared as **parallel adapters/providers agai
 
 | Candidate | Primary contribution | Integration target | Priority | Promotion stance |
 |---|---|---|---|---|
-| OpenTelemetry | neutral trace/span transport | GitHub Actions + agent invocation boundary | P0 | canonical interoperability layer |
-| **ATES runtime evidence** | run/job/task throughput observations | `workflow_run` observer + canonical JSONL | **P0** | primary execution-measurement spine; observational only |
-| Langfuse | traces, datasets, experiments, scores | optional experiment/eval adapter | P1 | observational; no source-of-truth authority |
-| Phoenix | open-source tracing, evals, datasets, experiments | optional experiment/eval adapter; Docker-friendly lab | P1 | observational; no source-of-truth authority |
-| **Glama TDQS** | MCP/connector tool-definition quality | AEF tool-definition evaluation lane | **P1** | observational; no merge-quality authority |
+| **Canonical JSONL + receipts** | repository-owned evidence source | runtime watcher / artifact ledger | **P0** | canonical evidence authority |
+| OpenTelemetry | neutral trace/span interoperability | agent invocation + Actions boundary | **P0** | transport/interoperability layer |
+| **ATES runtime evidence** | run/job/task throughput observations | workflow watcher + canonical JSONL | **P0** | observational execution spine |
+| **Complexity contract** | normalized task/code difficulty | structural + provider feature pipeline | **P0** | measurement foundation |
+| **Docker** | reproducible CI/research execution | instrument/evaluation parity harness | **P0** | environment substrate, not evidence source |
 | Tree-sitter | structural syntax trees | complexity feature provider | P1 | measurement only |
 | Lizard | multi-language NLOC/CCN/token/parameter metrics | fast baseline complexity provider | P1 | measurement only |
 | Radon | Python CCN/Halstead/maintainability metrics | Python-specific complexity provider | P1 | measurement only |
-| Docker | reproducible local/CI experiment environment | instrument/eval parity harness | P1 | environment, not evidence source |
-| Codespaces | reproducible interactive developer/agent environment | operator/agent reproduction lane | P2 | environment, not evidence source |
-| MASEval / agent benchmark suites | multi-agent evaluation patterns | future manager tournament cohorts | P2 | research input; adopt only after local evidence schema mapping |
-| Langfuse/Phoenix external adapters | vendor-specific persistence/UX | adapters over canonical JSONL/OTEL events | P2 | never replace canonical corpus |
-
+| Langfuse | traces, datasets, experiments, scores | optional experiment/eval adapter | P1 | observational; no source-of-truth authority |
+| Phoenix | open-source tracing, evals, datasets, experiments | optional experiment/eval adapter; Docker lab | P1 | observational; no source-of-truth authority |
+| **Glama TDQS** | MCP/connector tool-definition quality | AEF tool-definition evaluation lane | **P1** | observational; no merge-quality authority |
+| Codespaces | interactive reproduction | operator/agent reproduction lane | P1 | environment, not evidence source |
+| MCP security/provenance | identity, delegation, tool-schema admission | MCP gateway/policy layer | P1 | deny-by-default research/prototype lane |
+| MASEval / agent benchmark suites | multi-agent evaluation patterns | future manager tournament cohorts | P2 | research input; adopt only after local schema mapping |
+| Langfuse/Phoenix persistence UX | hosted/vendor-specific persistence | adapters over canonical events | P2 | never replace canonical corpus |
+| Edge/ARM/Android inference | local inference efficiency | device/runtime benchmark lane | P2 | benchmark/research only until reproducibility is demonstrated |
 ## TDQS lane
 
 Glama's **Tool Definition Quality Score (TDQS)** is now explicitly represented
@@ -168,31 +171,47 @@ Docker and Codespaces should form the environment-parity track:
 
 Credentials remain external to the image/workspace. Broad PAT/connector scope is not a reason to embed secrets in source, telemetry, or artifacts. The dangerous-operation boundary remains explicit.
 
+## Canonical evidence contract
+
+The repository-owned evidence contract is defined in [`AGENT-EVIDENCE-SUBSTRATE.md`](AGENT-EVIDENCE-SUBSTRATE.md). Provider integrations consume the same cohort/event contract and preserve source SHA, version, raw features, derived values, confidence, and evidence status.
+
+## Current-state rule
+
+Historical PR state must not be presented as current execution state. Re-fetch the live branch/commit before describing a PR, workflow, corpus, or promotion state. Observer/status commits are evidence epochs, not substitutes for the execution artifact they describe.
 ## Phase gates
 
-### Phase A — instrument
+### Phase A — contract + reducer **[IMPLEMENTED]**
 
-Canonical JSONL event schema + runtime watcher + immutable SHA/run linkage.
+Canonical JSONL event schema, pure ATES reducer, immutable SHA/run linkage, and
+missing-evidence semantics.
 
-### Phase B — tool-definition quality
+### Phase B — runtime evidence **[IMPLEMENTED]**
 
-TDQS deterministic context extraction, hard gates, input hashing, and rollups.
-The LLM rubric remains an evaluator/provider boundary. TDQS observations join the
-AEF evidence record without becoming an execution-quality gate.
+A read-only GitHub Actions `workflow_run` observer emits sanitized task lifecycle
+events and reducer artifacts. It never executes the triggering SHA.
 
-### Phase C — complexity
+### Phase C — comparable baseline **[IN PROGRESS]**
 
-Structural fallback + Lizard/Radon providers; Tree-sitter as the language-neutral structural expansion.
+Declare task-contract and environment fingerprints, measure explicit serial
+repetitions, store median task durations, and resolve a sequential baseline only
+from exact task fingerprints. Missing or incomparable tasks fail closed.
 
-### Phase D — parallel evaluation
+### Phase D — tool-definition + complexity providers
 
-Run equivalent cohorts through GitHub-only, TDQS, Langfuse-adapter, and Phoenix-adapter paths.
+TDQS deterministic context extraction, then structural/Lizard/Radon/Tree-sitter
+providers. Provider observations remain separate from ATES truth.
 
-### Phase E — environment parity
+### Phase E — parallel evaluation
 
-Docker and Codespaces reproduction lanes; classify environment failures independently.
+Run equivalent cohorts through GitHub-only, TDQS, Langfuse-adapter, and
+Phoenix-adapter paths.
 
-### Phase F — manager tournament
+### Phase F — environment parity
+
+Docker and Codespaces reproduction lanes; classify environment failures
+independently.
+
+### Phase G — manager tournament
 
 Compare orchestration policies, not isolated model leaderboard scores. Retain experiment history, cull weak policies, and preserve useful behaviors.
 

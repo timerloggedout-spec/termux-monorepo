@@ -17,11 +17,14 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Dispatch sweep to termux agent
+        id: dispatch
+        timeout-minutes: 25
         env:
           AGENT_URL: ${{ secrets.DEEPSEEK_AGENT_URL }}
           AGENT_TOKEN: ${{ secrets.DEEPSEEK_AGENT_TOKEN }}
         run: |
           set -euo pipefail
+          if [ -z "${AGENT_URL:-}" ]; then echo "::error::DEEPSEEK_AGENT_URL not set"; exit 1; fi
           TASK=$(cat <<'EOF'
 Execute ~/deepcli/tasks/workflow-sweep.md.
 Scope: all repos owned by timerloggedout-spec.
@@ -32,17 +35,56 @@ EOF
 )
           jq -n --arg t "$TASK" '{task:$t, source:"gh-schedule:ci-sweep"}' \
             > payload.json
-          INV=$(curl -sS -X POST "$AGENT_URL/v1/agent" \
+          INV=$(curl -sS --max-time 30 -X POST "$AGENT_URL/v1/agent" \
                   -H "Authorization: Bearer $AGENT_TOKEN" \
                   -H 'Content-Type: application/json' \
                   --data-binary @payload.json | jq -r '.invocation_id')
           echo "invocation=$INV"
-          for i in $(seq 1 120); do
-            S=$(curl -sS "$AGENT_URL/v1/agent/status/$INV" \
-                  -H "Authorization: Bearer $AGENT_TOKEN")
-            P=$(echo "$S" | jq -r '.phase')
+          echo "invocation=$INV" >> "$GITHUB_OUTPUT"
+          # 90 x 15s = 22.5min, inside the 25min step timeout so the loop
+          # exits via phase=done/error rather than being killed by the timeout.
+          P=timeout
+          for i in $(seq 1 90); do
+            S=$(curl -sS --max-time 10 "$AGENT_URL/v1/agent/status/$INV" \
+                  -H "Authorization: Bearer $AGENT_TOKEN" || echo '{"phase":"error"}')
+            echo "$S" > agent_status.json
+            P=$(echo "$S" | jq -r '.phase // "error"')
             echo "[$i] $P"
             [ "$P" = "done" ] && break
             [ "$P" = "error" ] && break
             sleep 15
           done
+          if [ "$P" != "done" ]; then
+            echo "::error::sweep agent did not reach phase=done (terminal phase=$P); see agent_status.json artifact"
+            exit 1
+          fi
+
+      - name: Failure diagnostics
+        if: failure()
+        timeout-minutes: 5
+        run: |
+          set -uo pipefail
+          echo "::group::Workflow failure context"
+          echo "event: ${{ github.event_name }}"
+          echo "actor: ${{ github.actor }}"
+          echo "run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo "::endgroup::"
+          for f in payload.json agent_status.json; do
+            if [ -f "$f" ]; then
+              echo "::group::--- $f ---"
+              cat "$f" || true
+              echo "::endgroup::"
+            fi
+          done
+
+      - name: Archive artifacts
+        if: always()
+        timeout-minutes: 5
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.2
+        with:
+          name: ci-sweep-${{ github.run_id }}
+          path: |
+            payload.json
+            agent_status.json
+          if-no-files-found: ignore
+          retention-days: 7

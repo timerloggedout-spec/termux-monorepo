@@ -12,12 +12,13 @@ Phase B closes that gap without rewriting every agent workflow.
 
 ## Producer
 
-`.github/workflows/agent-throughput-evidence.yml` observes completed runs for the explicitly admitted agent workflows:
+`.github/workflows/agent-throughput-evidence.yml` observes completed runs for agent workflows that can publish a task-boundary artifact:
 
-- Gemini Dispatch
-- Jules on Issues
-- Agent review → auto Jules
+- Gemini Invoke
+- DeepSeek Termux Agent
 - DeepSeek CI
+
+Jules dispatch remains outside the execution-time ATES corpus until the Jules service/session boundary can provide an attributable execution receipt.
 
 It uses the GitHub `workflow_run` observer boundary and reads completed job timings through the Actions API. The producer checks out only its own trusted default-branch implementation; it never executes the triggering run's code.
 
@@ -26,6 +27,9 @@ The resulting evidence contains:
 - `task_started`
 - `active_window`
 - `task_completed`
+- privacy-preserving task fingerprint
+- task-contract hash
+- environment fingerprint
 - run ID / attempt
 - source SHA
 - agent identity from the explicit workflow allowlist

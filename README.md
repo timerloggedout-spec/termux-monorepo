@@ -1,5 +1,29 @@
 # TERMUX MONOREPO
 
+```
++---------------------------------------------------------------------------------------------------------+
+|  ⚡ ARCHWIZ COCKPIT v4.0.0 [PROD BUILD]  |  TARGET: Android/Termux Surface  |  DUAL-GATE: ✅ GREEN       |
+|  SESSION: admin@termux-monorepo          |  BRANCHES: 397 Active            |  PRs: 61 Open / 341 Merged |
++---------------------------------------------------------------------------------------------------------+
+|  [1] 🤖 Swarm Autonomous Dispatch (Jules/Commingle)   [13] 🔄 Session Pipeline & Live Telemetry          |
+|  [2] 🔍 Deep RECON & Archaeology Sweep (ICM Routing)   [14] 📜 Narrative Feed & Execution Ledger         |
+|  [3] ⚡ Agent Shell v3 (Role-Aware Multi-Model)        [15] 🌾 Lexicon & AST Context Harvest             |
+|  [4] 📊 Real-Time Metrics & Performance Monitor        [16] 👁️ Live View & Interactive Preview Portal   |
+|  [5] 💾 System Backup & State Persistence              [17] 🔬 Forensic Toolchain & Pointer Indexer      |
+|  [6] 🔄 Ecosystem Refresh & Rebuild Indices            [18] 📝 Auto-Doc Pipeline (COMMIT_NOTES.md)       |
+|  [7] ⚙️ Profile & Environment Management              [19] 🚀 Promote Sandbox Workspace -> Master       |
+|  [8] 🛠️ StepWise MCP Automation Engine                 [20] 🛡️ Execute Dual-Gate CI Validation           |
++---------------------------------------------------------------------------------------------------------+
+|  >> PIPELINE: ACTIVE [auto]  |  MCP-HUB: CONNECTED  |  ICM ROUTER: ONLINE  |  "Ask && U $h411 π3c31ve"  |
++---------------------------------------------------------------------------------------------------------+
+```
+
+![1000029617](https://github.com/user-attachments/assets/0fb68186-bab6-495b-99d2-39fcb04cf8d1)
+
+<img width="1408" height="768" alt="1000029613" src="https://github.com/user-attachments/assets/3dccedab-1c59-4b19-8042-2abc43f24ddf" />
+
+<img width="688" height="1539" alt="1000029616" src="https://github.com/user-attachments/assets/135dada3-82ca-42cd-9124-2ab00974ba41" />
+
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/timerloggedout-spec/termux-monorepo)
 
 <!-- partner-banner:start (edit docs/PARTNERS.md to add a partner; one badge per ACTIVE lane, rows of three — Operator lifted the four-badge cap 2026-09-20) -->
@@ -12,6 +36,8 @@
   <a href="https://termux-monorepo.vercel.app/"><img src="https://img.shields.io/badge/Preview_portal-Vercel_%28WIP%29-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Preview portal on Vercel (work in progress)"></a>
   <a href="https://timerloggedout-spec.github.io/"><img src="https://img.shields.io/badge/Landing_page-GitHub_Pages-1e6fd9?style=for-the-badge&logo=github&logoColor=white" alt="Landing page on GitHub Pages"></a>
 </p>
+
+[runnable](https://runable.cloud/?refer_code=MVGL8T)
 
 > **Powered by autonomous AI employees.** This project uses [CellCog](https://cellcog.ai/invitation/l19hdRGY9dTh) AI employees for continuous integration, PR review, and engineering operations. Standing AI workers run across persistent sessions with their own cloud environments, tool execution, and team channels. Sign up through the [community partner invitation](https://cellcog.ai/invitation/l19hdRGY9dTh) to receive **500 bonus credits** on your first purchase. See the [landing page](https://timerloggedout-spec.github.io/) and the [preview portal (WIP)](https://termux-monorepo.vercel.app/).
 >

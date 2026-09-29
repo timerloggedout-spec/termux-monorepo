@@ -15,7 +15,7 @@
 | Agent | Role |
 |-------|------|
 | **CodeRabbit** | PR review + autofix suggestions (commit suggestion / autofix) |
-| **Gemini CLI** (our triage/review/invoke workflows) | Issue triage, PR comments, on-demand analysis — **PRIMARY** free-tier path for these roles (Omni/OpenRouter secondary; issue #272) |
+| **Gemini CLI** (our triage/review/invoke workflows) | Issue triage, PR comments, on-demand analysis; eligible shared-pool contributor (Omni/OpenRouter are also eligible) |
 | **Devin Review** (without Auto-Fix) | Comments only until Auto-Fix enabled |
 
 ## Coordination (no overlapping files)

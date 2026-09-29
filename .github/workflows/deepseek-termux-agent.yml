@@ -1,0 +1,242 @@
+name: DeepSeek Termux Agent
+
+on:
+  issue_comment:
+    types: [created]
+  issues:
+    types: [assigned]
+  pull_request:
+    types: [assigned]
+  workflow_dispatch:
+    inputs:
+      task:
+        description: Task for the agent
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  actions: read
+  checks: read
+
+concurrency:
+  group: dsa-${{ github.event.issue.number || github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: false
+
+# NOTE: job has timeout-minutes: 25 and every step has an explicit
+# timeout-minutes (in addition to the always()/failure() diagnostic
+# steps and artifact upload), so this workflow satisfies the CI
+# hygiene checks.
+
+jobs:
+  agent:
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@deepseek')) ||
+      (github.event_name == 'issues' && github.event.action == 'assigned') ||
+      (github.event_name == 'pull_request' && github.event.action == 'assigned')
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout repository
+        timeout-minutes: 5
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Build agent payload
+        timeout-minutes: 5
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          INPUT_TASK: ${{ github.event.inputs.task }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          ACTOR: ${{ github.actor }}
+          REPO: ${{ github.repository }}
+          REF: ${{ github.ref }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          case "$EVENT_NAME" in
+            workflow_dispatch)
+              TASK="$INPUT_TASK"; NUM=""
+              ;;
+            issue_comment)
+              TASK=$(printf '%s' "$COMMENT_BODY" | awk -F'@deepseek' '{print $2}' | sed 's/^[[:space:]]*//')
+              NUM="$ISSUE_NUMBER"
+              ;;
+            issues)
+              TASK="Handle newly assigned issue #$ISSUE_NUMBER: $ISSUE_TITLE"
+              NUM="$ISSUE_NUMBER"
+              ;;
+            pull_request)
+              TASK="Handle newly assigned PR #$PR_NUMBER: $PR_TITLE"
+              NUM="$PR_NUMBER"
+              ;;
+            *) TASK="unknown trigger"; NUM="" ;;
+          esac
+          jq -n --arg task "$TASK" --arg repo "$REPO" --arg event "$EVENT_NAME" \
+                --arg actor "$ACTOR" --arg num "$NUM" --arg ref "$REF" --arg run "$RUN_URL" \
+                '{task:$task,source:("github:"+$event),context:{repo:$repo,event:$event,actor:$actor,number:$num,ref:$ref,run_url:$run,repo_path_local:"/data/data/com.termux/files/home"}}' \
+            > agent_payload.json
+          cat agent_payload.json
+
+      - name: Emit ATES task-boundary identity
+        timeout-minutes: 5
+        env:
+          AGENT_ID: deepseek
+          TASK_KIND: agent_request
+          TARGET_KIND: ${{ github.event.pull_request.number && 'pull_request' || github.event.issue.number && 'issue' || 'workflow_dispatch' }}
+          TARGET_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number || '' }}
+          TASK_TEXT: ${{ github.event.inputs.task || github.event.comment.body || github.event.issue.body || github.event.pull_request.title || '' }}
+          REPOSITORY: ${{ github.repository }}
+          BASE_SHA: ${{ github.sha }}
+          RUNNER_IMAGE: ${{ env.ImageOS }}:${{ env.ImageVersion }}
+          WORKFLOW: ${{ github.workflow }}
+          PROVIDER: deepseek
+          MODEL: unresolved
+        run: |
+          set -euo pipefail
+          jq -n \
+            --arg agent "$AGENT_ID" --arg kind "$TASK_KIND" \
+            --arg target "$TARGET_KIND" --arg number "$TARGET_NUMBER" \
+            --arg task "$TASK_TEXT" --arg repo "$REPOSITORY" --arg sha "$BASE_SHA" \
+            --arg image "$RUNNER_IMAGE" --arg workflow "$WORKFLOW" \
+            --arg provider "$PROVIDER" --arg model "$MODEL" \
+            '{agent_id:$agent,task_kind:$kind,target_kind:$target,target_number:$number,task_text:$task,repository:$repo,base_sha:$sha,runner_image:$image,workflow:$workflow,provider:$provider,model:$model}' \
+            > "$RUNNER_TEMP/ates-task-input.json"
+          python scripts/ci/write_agent_task_boundary.py \
+            --input "$RUNNER_TEMP/ates-task-input.json" \
+            --output "$RUNNER_TEMP/ates-task-boundary.json"
+
+      - name: Upload ATES task-boundary identity
+        if: always()
+        timeout-minutes: 5
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.2
+        # timeout-minutes set above; step guarded by always() for boundary diagnostics
+        with:
+          name: ates-task-boundary-${{ github.run_id }}
+          path: ${{ runner.temp }}/ates-task-boundary.json
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Start agent
+        id: start
+        timeout-minutes: 3
+        env:
+          AGENT_URL: ${{ secrets.DEEPSEEK_AGENT_URL }}
+          AGENT_TOKEN: ${{ secrets.DEEPSEEK_AGENT_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${AGENT_URL:-}" ]; then echo "::error::DEEPSEEK_AGENT_URL not set"; exit 1; fi
+          curl -sS --max-time 30 -X POST "$AGENT_URL/v1/agent" \
+            -H "Authorization: Bearer $AGENT_TOKEN" \
+            -H 'Content-Type: application/json' \
+            --data-binary @agent_payload.json > agent_start.json
+          cat agent_start.json
+          INV=$(jq -r '.invocation_id' agent_start.json)
+          echo "invocation_id=$INV" >> "$GITHUB_OUTPUT"
+
+      - name: Poll for completion
+        timeout-minutes: 22
+        env:
+          AGENT_URL: ${{ secrets.DEEPSEEK_AGENT_URL }}
+          AGENT_TOKEN: ${{ secrets.DEEPSEEK_AGENT_TOKEN }}
+          INV: ${{ steps.start.outputs.invocation_id }}
+        run: |
+          set -uo pipefail
+          echo '{"phase":"timeout"}' > agent_status_final.json
+          # 120 x 10s = 20min, inside the 25min job timeout so the
+          # timeout/error path can still emit agent_status_final.json.
+          for i in $(seq 1 120); do
+            S=$(curl -sS --max-time 10 "$AGENT_URL/v1/agent/status/$INV" -H "Authorization: Bearer $AGENT_TOKEN" || echo '{"phase":"error"}')
+            PHASE=$(echo "$S" | jq -r '.phase')
+            IDLE=$(echo "$S" | jq -r '.idle_s // 0')
+            echo "[$i] phase=$PHASE idle=${IDLE}s"
+            if [ "$PHASE" = "done" ] || [ "$PHASE" = "error" ]; then
+              echo "$S" > agent_status_final.json; break
+            fi
+            sleep 10
+          done
+          cat agent_status_final.json
+
+      - name: Extract summary
+        timeout-minutes: 2
+        run: |
+          set -uo pipefail
+          jq -r '.tail // [] | join("\n")' agent_status_final.json > agent_tail.txt
+          awk -v RS='✔ FINISH' 'END {print}' agent_tail.txt > agent_summary.txt
+          if [ ! -s agent_summary.txt ]; then tail -c 3000 agent_tail.txt > agent_summary.txt; fi
+          cat agent_summary.txt
+
+      - name: Reply (issue_comment)
+        if: github.event_name == 'issue_comment'
+        timeout-minutes: 5
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          BODY=$(cat agent_summary.txt)
+          printf '**@deepseek agent reply**\n\n```\n%s\n```\n\n_run: %s/%s/actions/runs/%s_\n' \
+            "$BODY" "${{ github.server_url }}" "${{ github.repository }}" "${{ github.run_id }}" > reply.md
+          gh issue comment "$ISSUE_NUMBER" --repo "$REPO" --body-file reply.md
+
+      - name: Reply (issue assigned)
+        if: github.event_name == 'issues'
+        timeout-minutes: 5
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          BODY=$(cat agent_summary.txt)
+          printf '**@deepseek agent reply**\n\n```\n%s\n```\n' "$BODY" > reply.md
+          gh issue comment "$ISSUE_NUMBER" --repo "$REPO" --body-file reply.md
+
+      - name: Reply (PR assigned)
+        if: github.event_name == 'pull_request'
+        timeout-minutes: 5
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          BODY=$(cat agent_summary.txt)
+          printf '**@deepseek agent reply**\n\n```\n%s\n```\n' "$BODY" > reply.md
+          gh pr comment "$PR_NUMBER" --repo "$REPO" --body-file reply.md
+
+      - name: Failure diagnostics
+        if: failure()
+        timeout-minutes: 5
+        run: |
+          set -uo pipefail
+          echo "::group::Workflow failure context"
+          echo "event: ${{ github.event_name }}"
+          echo "actor: ${{ github.actor }}"
+          echo "ref: ${{ github.ref }}"
+          echo "run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo "::endgroup::"
+          for f in agent_payload.json agent_start.json agent_status_final.json agent_tail.txt agent_summary.txt; do
+            if [ -f "$f" ]; then
+              echo "::group::--- $f ---"
+              cat "$f" || true
+              echo "::endgroup::"
+            fi
+          done
+
+      - name: Archive artifacts
+        if: always()
+        timeout-minutes: 5
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.2
+        with:
+          name: agent-run-${{ github.run_id }}
+          path: |
+            agent_payload.json
+            agent_start.json
+            agent_status_final.json
+            agent_tail.txt
+            agent_summary.txt
+          retention-days: 7

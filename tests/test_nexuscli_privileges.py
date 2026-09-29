@@ -5,6 +5,8 @@ from pathlib import Path
 import pytest
 
 def _get_nc():
+    if os.path.abspath(".") not in sys.path:
+        sys.path.insert(0, os.path.abspath("."))
     try:
         import nexuscli.core.api as nc
         return nc
@@ -12,6 +14,14 @@ def _get_nc():
         sys.path.insert(0, os.path.abspath("nexuscli"))
         import core.api as nc
         return nc
+
+def _get_nexus_cli_main():
+    if os.path.abspath(".") not in sys.path:
+        sys.path.insert(0, os.path.abspath("."))
+    import importlib
+    nc = _get_nc()
+    sys.modules["core.api"] = nc
+    return importlib.import_module("nexuscli.cli.main")
 
 def test_nexuscli_privileges_enforcement(tmp_path, monkeypatch):
     nc = _get_nc()
@@ -75,11 +85,7 @@ def test_nexuscli_privileges_symlink_safety(tmp_path, monkeypatch):
 
 
 def test_nexuscli_cmd_export_symlink_safety(tmp_path, monkeypatch):
-    import importlib
-    import sys
-
-    # Import nexuscli.cli.main cleanly
-    nexus_cli_main = importlib.import_module("nexuscli.cli.main")
+    nexus_cli_main = _get_nexus_cli_main()
 
     target_file = tmp_path / "export_target.txt"
     target_file.write_text("sensitive")
@@ -143,3 +149,45 @@ def test_nexuscli_upload_file_path_traversal_prevention():
 
     with pytest.raises(ValueError, match="Invalid file path"):
         nc.upload_file("token", "session_123", "foo/../bar.txt")
+
+
+def test_nexuscli_cmd_new_session_symlink_safety(tmp_path, monkeypatch):
+    nc = _get_nc()
+    nexus_cli_main = _get_nexus_cli_main()
+
+    test_config_dir = tmp_path / ".nexuscli"
+    test_config_dir.mkdir(parents=True, exist_ok=True)
+
+    target_file = tmp_path / "symlink_target_config.json"
+    target_file.write_text("{}")
+    symlink_config = test_config_dir / "config.json"
+    symlink_config.symlink_to(target_file)
+
+    monkeypatch.setattr("nexuscli.core.api.CONFIG_DIR", test_config_dir)
+    monkeypatch.setattr("nexuscli.core.api.CONFIG_FILE", symlink_config)
+    try:
+        import core.api as core_nc
+        monkeypatch.setattr(core_nc, "CONFIG_DIR", test_config_dir)
+        monkeypatch.setattr(core_nc, "CONFIG_FILE", symlink_config)
+    except ModuleNotFoundError:
+        pass
+
+    monkeypatch.setattr(nexus_cli_main, "get_token", lambda: "fake_token")
+    monkeypatch.setattr(nexus_cli_main, "create_session", lambda token, model_type="expert": "sess_new_123")
+
+    class Args:
+        model = "expert"
+        save = True
+
+    with pytest.raises(ValueError, match="Config file target cannot be a symlink"):
+        nexus_cli_main.cmd_new_session(Args())
+
+    # Replace symlink with real config file and verify save & load works
+    symlink_config.unlink()
+    nexus_cli_main.cmd_new_session(Args())
+
+    assert symlink_config.exists()
+    assert not symlink_config.is_symlink()
+    assert nexus_cli_main.get_last_session() == "sess_new_123"
+    if os.name != "nt":
+        assert (symlink_config.stat().st_mode & 0o777) == 0o600

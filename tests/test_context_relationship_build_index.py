@@ -114,6 +114,8 @@ def test_build_index_publishes_only_canonical_artifacts_and_uses_checkpoint(monk
         "merge-report.json",
         "nodes.jsonl",
         "source-report.json",
+        "temporal-current.json",
+        "temporal",
     }
 
 

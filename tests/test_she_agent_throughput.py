@@ -78,6 +78,15 @@ class AgentThroughputTest(unittest.TestCase):
         ])
         self.assertEqual(metrics.workflow_minutes, 0.0)
 
+    def test_missing_agent_identity_does_not_fabricate_agent_count(self):
+        metrics = reduce_events([
+            {"timestamp": "2026-09-14T10:00:00Z", "event": "task_completed", "complexity_score": 2},
+            {"timestamp": "2026-09-14T10:01:00Z", "event": "task_started"},
+        ], sequential_baseline_sec=120)
+        self.assertEqual(metrics.agents, 0)
+        self.assertIsNone(metrics.parallel_yield)
+        self.assertIsNone(metrics.ates)
+
     def test_missing_baseline_does_not_fabricate_ates(self):
         metrics = reduce_events([
             {"timestamp": "2026-09-14T10:00:00Z", "agent_id": "a", "event": "task_completed", "complexity_score": 2},

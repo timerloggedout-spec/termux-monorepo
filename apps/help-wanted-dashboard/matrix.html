@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LANE-MATRIX</title>
+<meta name="description" content="LANE-MATRIX live board — monorepo PR lanes. Not nested under Tribute.">
+<style>
+:root{--bg:#080b10;--panel:#10161f;--line:#243140;--text:#edf3f8;--muted:#93a4b8;--blue:#65c7ff;--gold:#e9c779}
+*{box-sizing:border-box}body{margin:0;background:#080b10;color:var(--text);font:15px/1.5 system-ui,sans-serif}a{color:var(--blue);text-decoration:none}
+nav{display:flex;gap:1rem;align-items:center;padding:.7rem 1.2rem;border-bottom:1px solid var(--line)}nav .brand{margin-right:auto;font-weight:750;color:var(--text)}nav a{color:var(--muted);font-size:.84rem}
+main{max-width:1180px;margin:auto;padding:1.5rem 1.2rem 4rem}h1{margin:.2rem 0}.lede{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.7rem;margin:1.2rem 0}.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:1rem}.label{color:var(--muted);font-size:.68rem;text-transform:uppercase}.value{font-size:1.4rem;font-weight:800}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}table{width:100%;border-collapse:collapse;min-width:760px}th,td{text-align:left;padding:.6rem .5rem;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-size:.68rem;text-transform:uppercase}.pill{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:.12rem .45rem;font-size:.72rem}
+@media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">LANE-MATRIX</span>
+  <a href="https://timerloggedout-spec.github.io/help-wanted/">Tribute dashboard</a>
+  <a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/LANE-MATRIX.md">Policy</a>
+  <a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a>
+</nav>
+<main>
+  <p class="label">Live board · not a PR · not Tribute</p>
+  <h1>LANE-MATRIX</h1>
+  <p class="lede" id="meta">Loading matrix…</p>
+  <div class="grid" id="kpis"></div>
+  <div class="table-wrap"><table><thead><tr><th>PR</th><th>Lane</th><th>Days</th><th>Reason</th><th>Title</th></tr></thead><tbody id="rows"></tbody></table></div>
+</main>
+<script>
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function load(){
+  const sources=[
+    './data/lane-matrix-status.json?t='+Date.now(),
+    '/matrix/data/lane-matrix-status.json?t='+Date.now(),
+    'https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/ops/generated/lane-matrix-status.json?t='+Date.now()
+  ];
+  let data=null;
+  for(const u of sources){try{const r=await fetch(u,{cache:'no-store'});if(r.ok){data=await r.json();break}}catch(_){}}
+  if(!data){document.getElementById('meta').textContent='Matrix unavailable.';return;}
+  const counts=data.counts||{}, by=counts.by_lane||{};
+  document.getElementById('meta').textContent='Observed '+(data.observed_at||'—')+' · '+(data.master_sha||'').slice(0,12)+' · '+(counts.open_prs||0)+' open PRs';
+  const cards=[['Open',counts.open_prs||0],['EXTRACT',by.EXTRACT||0],['CANDIDATE',by.CANDIDATE||0],['NEED_EVIDENCE',by.NEED_EVIDENCE||0],['SUPERSEDE',by.SUPERSEDE||0]];
+  document.getElementById('kpis').innerHTML=cards.map(([l,v])=>'<div class="card"><div class="label">'+esc(l)+'</div><div class="value">'+esc(v)+'</div></div>').join('');
+  const rank=l=>({EXTRACT:0,CANDIDATE:1,NEED_EVIDENCE:2,SUPERSEDE:3}[l]??9);
+  const prs=[...(data.prs||[])].sort((a,b)=>rank(a.lane)-rank(b.lane)||(b.days_open||0)-(a.days_open||0));
+  document.getElementById('rows').innerHTML=prs.map(p=>'<tr><td><a href="'+esc(p.html_url||'#')+'">#'+esc(p.number)+'</a></td><td><span class="pill">'+esc(p.lane)+'</span></td><td>'+esc(p.days_open)+'</td><td>'+esc((p.reasons||[]).join(', '))+'</td><td>'+esc(p.title||'')+'</td></tr>').join('')||'<tr><td colspan="5">No rows.</td></tr>';
+}
+load();
+</script>
+</body>
+</html>

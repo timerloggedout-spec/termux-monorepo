@@ -1,0 +1,42 @@
+# Optimized Routing + Experiment Notation
+# Canonical vocabulary for manager/orchestrator/scout/classifier/operator routing.
+version: 1
+notation:
+  objective: "optimize integrated outcome under correctness, capability, cost, time, context, quota, conflict, retry, and intervention constraints"
+  topology:
+    single: "one selected execution participant"
+    series: "ordered stages where downstream context depends on upstream output"
+    dynamic: "recompute admission/selection as evidence changes"
+    parallel: "independent treatments execute concurrently"
+    nested: "a route invokes a bounded sub-orchestrator with its own policy"
+    co-working: "multiple participants collaborate on one shared task with explicit ownership boundaries"
+    volley: "bounded alternating passes between participants until a stop/evidence condition"
+  operators:
+    OPERATOR: "human-authorized control boundary; may set objective, constraints, acceptance, or stop conditions"
+    Orchestrator: "plans topology, partitions work, schedules participants, integrates evidence"
+    Scout: "discovers candidates, context, dependencies, and available evidence"
+    manager: "optimizes policy over task/cohort observations; controls admission, sequencing, concurrency, and culling"
+    classifier: "maps task/context to capabilities, risk, task family, and candidate eligibility"
+    mev: "measurement/evaluation vector; records outcome, effort, evidence, and attribution dimensions"
+    Jev: "joint evaluation vector across cooperating participants"
+    Kev: "knowledge/evidence vector used for context and decision provenance"
+    LAYA: "lane-aware yield/allocation signal; implementation may define concrete dimensions per experiment"
+  experiment_axes:
+    DoE:
+      factors: [provider, model, role, manager_policy, topology, prompt_variant, context_budget, concurrency, validation_policy, retry_policy]
+      principle: "change factors deliberately; preserve cohort identity and catalog snapshot"
+    MVT:
+      meaning: "minimum viable treatment"
+      rule: "smallest independently observable treatment that can falsify or support a routing hypothesis"
+  evidence:
+    hard_gate: "excludes a candidate; never converted into a compensating score"
+    observation: "records what actually happened"
+    outcome: "records integrated task result"
+    attribution: "records participant/provider/model/adapter confidence"
+    decision: "records why a topology/candidate was admitted or selected"
+  anti_patterns:
+    - "primary provider / secondary provider"
+    - "fixed fallback chain"
+    - "provider identity used as model quality"
+    - "declared route counted as execution"
+    - "latency treated as correctness"

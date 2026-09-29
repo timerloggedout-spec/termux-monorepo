@@ -25,7 +25,8 @@ jobs:
           TASK='Execute ~/deepcli/tasks/self-integrate.md. Do exactly ONE improvement this cycle. Follow the wait-valid loop. Sync logs at the end.'
           jq -n --arg t "$TASK" '{task:$t, source:"gh-schedule:self-integrate"}' > payload.json
           INV=""
-          for attempt in 1 2 3 4 5 6; do
+          LAST_BUSY=0
+          for attempt in 1 2 3 4 5 6 7 8; do
             echo "::group::POST attempt $attempt"
             RESP=$(curl -sS --max-time 30 -X POST "$AGENT_URL/v1/agent" \
                      -H "Authorization: Bearer $AGENT_TOKEN" \
@@ -33,13 +34,23 @@ jobs:
                      --data-binary @payload.json 2>&1) || true
             echo "resp: $RESP"
             echo "::endgroup::"
-            INV=$(echo "$RESP" | jq -r .invocation_id 2>/dev/null || echo "")
+            INV=$(echo "$RESP" | jq -r '.invocation_id // empty' 2>/dev/null || echo "")
+            ERR=$(echo "$RESP" | jq -r '.detail.error // empty' 2>/dev/null || echo "")
+            LAST_BUSY=0
             if [ -n "$INV" ] && [ "$INV" != "null" ]; then break; fi
-            echo "attempt $attempt failed, sleeping 15s"
-            sleep 15
+            if echo "$ERR $RESP" | grep -qi 'another agent run is active'; then
+              LAST_BUSY=1
+              echo "agent single-flight busy on attempt $attempt"
+            fi
+            echo "attempt $attempt failed, sleeping 20s"
+            sleep 20
           done
           if [ -z "$INV" ] || [ "$INV" = "null" ]; then
-            echo "::error::could not reach agent after 6 attempts"
+            if [ "$LAST_BUSY" = "1" ]; then
+              echo "::notice::DeepSeek agent busy (single-flight). Skip this cycle."
+              exit 0
+            fi
+            echo "::error::could not reach agent after retries"
             exit 1
           fi
           echo "invocation=$INV"

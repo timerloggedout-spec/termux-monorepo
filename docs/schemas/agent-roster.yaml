@@ -252,6 +252,7 @@ contributor_lanes:
     callable_identity: "@gemini-cli"
     attribution_boundary: "GitHub actor identity remains separate from Gemini/Gemini CLI provenance."
     adapters: [gemini-cli, gemini-interactions]
+    health_contract: {catalog: true, inference: true, cadence: "6h"}
 
   - id: openrouter
     display_moniker: routeMesh
@@ -260,6 +261,7 @@ contributor_lanes:
     callable_identity: "adapter-only"
     attribution_boundary: "Provider, model, and execution adapter are separate provenance dimensions."
     adapters: [openrouter-http]
+    health_contract: {catalog: true, inference: true, cadence: "6h"}
 
   - id: felo
     display_moniker: feloForge
@@ -268,6 +270,7 @@ contributor_lanes:
     callable_identity: "adapter-only"
     attribution_boundary: "FELO is a provider lane; account identity and GitHub authorship are separate."
     adapters: [felo-http]
+    health_contract: {catalog: true, inference: false, cadence: "6h"}
 
   - id: huggingface
     display_moniker: hfFoundry
@@ -276,6 +279,7 @@ contributor_lanes:
     callable_identity: "adapter-only"
     attribution_boundary: "Hugging Face Hub identity is separate from repository authorship and model identity."
     adapters: [huggingface-hub, huggingface-jobs]
+    health_contract: {catalog: true, inference: false, cadence: "6h"}
 
   - id: contributor_role_coordinator
     display_moniker: roleMesh

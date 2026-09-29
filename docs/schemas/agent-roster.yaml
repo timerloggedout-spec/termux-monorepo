@@ -221,24 +221,27 @@ agents:
 etiquette:
   - "Before burning a review slot: @coderabbitai rate limit"
   - "On cooldown: do not @coderabbitai full review; wait or use always-on agents"
-  - "Gemini skip comments are green CI; route review to CodeRabbit/Jules"
+  - "Gemini skip comments are green CI; re-run optimized admission across the candidate pool"
   - "Tembo credit exhaustion → human or Jules; do not re-ping Tembo"
   - "Auto-jules workflow already pings @jules on bot feedback — avoid duplicate pings"
 
 routing:
-  review:
-    primary: gemini
-    always_on: [coderabbit]
-    fallback: [coderabbit, devin]
-  build:
-    primary: jules
-    fallback: [tembo, mistral_vibe]
-  fix:
-    primary: jules
-    fallback: [tembo, grok]
-  orchestration:
-    primary: grok
-    fallback: [tembo]
+  invariant: "No provider/model is primary or secondary. Selection is evidence-driven and topology-aware."
+  policy:
+    objective: "maximize integrated outcome subject to correctness, capability, quota, latency, context, conflict, retry, and human-intervention costs"
+    topology_modes: [single, series, dynamic, parallel, nested, co-working, volley]
+    admission_gates: [capability, credential, catalog, health, quota, task_independence, freshness, policy]
+    selection_evidence: [success_matrix, live_catalog, availability_probe, invocation_telemetry, task_outcome, attribution]
+    recovery: "On failure or capacity loss, re-evaluate the candidate set; do not follow a fixed provider chain."
+  roles:
+    review:
+      candidate_pool: [gemini, coderabbit, devin, copilot, openrouter, felo]
+    build:
+      candidate_pool: [jules, tembo, mistral_vibe, gemini, openrouter]
+    fix:
+      candidate_pool: [jules, tembo, grok, gemini, openrouter]
+    orchestration:
+      candidate_pool: [grok, tembo, gemini, openrouter]
 
 
 # External contributor/provider lanes.
@@ -304,3 +307,10 @@ contributor_role_vocabulary:
   - documentation
   - evidence
   - orchestration
+  - classification
+  - admission
+  - availability
+  - routing_policy
+  - experiment_design
+  - topology
+  - coordination

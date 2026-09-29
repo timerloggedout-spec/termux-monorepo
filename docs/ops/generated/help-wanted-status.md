@@ -1,10 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-29T06:13:16Z UTC · receipts=538 · foreign_open=25 · tributes=55_
+_Generated 2026-09-29T08:23:13Z UTC · receipts=538 · foreign_open=24 · tributes=55_
 
 ## Tributes (contributor ledger)
 
-- [Hugelidus/Pointcast#48](https://github.com/Hugelidus/Pointcast/pull/48) · state=open · help-wanted: stake + contribute for #45
+- [Hugelidus/Pointcast#48](https://github.com/Hugelidus/Pointcast/pull/48) · state=closed · help-wanted: stake + contribute for #45
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -47,7 +47,6 @@ _Generated 2026-09-29T06:13:16Z UTC · receipts=538 · foreign_open=25 · tribut
 
 ## Foreign open PRs
 
-- [Hugelidus/Pointcast#48](https://github.com/Hugelidus/Pointcast/pull/48) — help-wanted: stake + contribute for #45
 - [StellarCanary/Protocol-Canary#345](https://github.com/StellarCanary/Protocol-Canary/pull/345) — help-wanted: stake + contribute for #295
 - [TrusTrove/TrusTrove-contract#860](https://github.com/TrusTrove/TrusTrove-contract/pull/860) — help-wanted: stake + contribute for #836
 - [OBLIQ-in/OBLIQ-Website#39](https://github.com/OBLIQ-in/OBLIQ-Website/pull/39) — help-wanted: stake + contribute for #12

@@ -35,3 +35,15 @@ scripts/ci/verify_foss_registry.py validates JSON, required fields, vocabulary, 
 
 ## Research lanes
 local/edge inference; ARM/Android measurements; MCP conformance; Docker/Codespaces/Nix parity; Tree-sitter/Lizard/Radon labeled complexity; Langfuse/Phoenix identical-cohort comparison; MASEval manager tournaments; Sigstore/SLSA provenance; Firecracker/gVisor sandbox experiments; NIST traceability implementation tracking.
+
+
+## 2026-09-29 upgrade bindings
+
+The registry now carries explicit research inputs for deterministic orchestration simulation, NIST traceability, MCP admission security, and ARM/Android inference evidence. These remain provenance-bearing candidates: the registry records evidence status and horizon rather than converting research results into universal claims.
+
+The implementation contracts are:
+- `docs/ops/MCP-ADMISSION-EVIDENCE.schema.json`
+- `docs/ops/EDGE-INFERENCE-EVIDENCE.schema.json`
+- `docs/ops/MANAGER-TOURNAMENT.schema.json`
+
+The daily digest should ingest these records before selecting new procurement or prototype work, while keeping canonical evidence in repository-owned JSONL/receipts.

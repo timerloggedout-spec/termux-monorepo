@@ -27,6 +27,19 @@ SUMMON_KEYWORDS = (
 REAL_REVIEW_KEYWORDS = (
     "findings", "approved", "changes requested", "review complete", "lgtm", "looks good", "reviewed by"
 )
+AGENT_LOGINS = (
+    "google-labs-jules",
+    "devin-ai-integration",
+    "coderabbitai",
+    "github-actions",
+    "copilot",
+    "gitar-bot",
+    "blocksorg",
+)
+
+def is_agent(username: str) -> bool:
+    u = (username or "").lower()
+    return any(a in u for a in AGENT_LOGINS)
 
 def github_api_request(url: str, token: str | None):
     req = urllib.request.Request(url)
@@ -149,19 +162,6 @@ def main() -> None:
     all_prs = open_prs + closed_prs
     all_message_lags: list[float] = []
     all_actual_lags: list[float] = []
-    agent_logins = [
-        "google-labs-jules",
-        "devin-ai-integration",
-        "coderabbitai",
-        "github-actions",
-        "copilot",
-        "gitar-bot",
-        "blocksorg",
-    ]
-
-    def is_agent(username: str) -> bool:
-        u = (username or "").lower()
-        return any(a in u for a in agent_logins)
 
     for pr in all_prs:
         pr_number = pr["number"]
@@ -207,6 +207,7 @@ def main() -> None:
             if event["type"] == "comment":
                 body = event["body"]
                 body_lower = body.lower()
+                is_summon = any(m in body_lower for m in SUMMON_KEYWORDS)
 
                 if any(k in body_lower for k in QUOTA_COOLDOWN_KEYWORDS):
                     open_disposition = "quota_cooldown"
@@ -216,7 +217,7 @@ def main() -> None:
                     open_disposition = "ack_pending"
                     jules_actionable = False
                     wait_sec = 1200
-                elif any(k in body_lower for k in SUMMON_KEYWORDS):
+                elif is_summon:
                     open_disposition = "summon"
                     jules_actionable = True
                     wait_sec = 0
@@ -225,7 +226,6 @@ def main() -> None:
                     jules_actionable = True
                     wait_sec = 0
 
-                is_summon = any(m in body for m in SUMMON_KEYWORDS)
                 if is_summon:
                     summon_time = event["time"]
                     message_response_time = None

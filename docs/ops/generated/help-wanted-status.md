@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-29T16:31:11Z UTC · receipts=587 · foreign_open=25 · tributes=56_
+_Generated 2026-09-29T21:03:55Z UTC · receipts=587 · foreign_open=25 · tributes=57_
 
 ## Tributes (contributor ledger)
 
+- [inferstep/ATLAS#278](https://github.com/inferstep/ATLAS/pull/278) · state=open · help-wanted: stake + contribute for #277
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -11,7 +12,7 @@ _Generated 2026-09-29T16:31:11Z UTC · receipts=587 · foreign_open=25 · tribut
 - [mangiapanejohn-dev/MOBIUS-Searcher#7](https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7) · state=open · help-wanted: stake + contribute for #6
 - [w1977-0/open-stream-saver#3](https://github.com/w1977-0/open-stream-saver/pull/3) · state=open · help-wanted: stake + contribute for #1
 - [Vasudev-ai/Focusflow#15](https://github.com/Vasudev-ai/Focusflow/pull/15) · state=open · help-wanted: stake + contribute for #2
-- [bmad-code-org/bmad-loop#819](https://github.com/bmad-code-org/bmad-loop/pull/819) · state=open · help-wanted: stake + contribute for #780
+- [bmad-code-org/bmad-loop#819](https://github.com/bmad-code-org/bmad-loop/pull/819) · state=closed · help-wanted: stake + contribute for #780
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) · state=open · Change project name from DeepV Code to Easy Code
 - [ThinkLikeAFounder/pulsartrack#898](https://github.com/ThinkLikeAFounder/pulsartrack/pull/898) · state=open · help-wanted: stake + contribute for #896
 - [MergeFi/contracts#374](https://github.com/MergeFi/contracts/pull/374) · state=open · help-wanted: stake + contribute for #345
@@ -43,10 +44,10 @@ _Generated 2026-09-29T16:31:11Z UTC · receipts=587 · foreign_open=25 · tribut
 - [infagent/merl#43](https://github.com/infagent/merl/pull/43) · state=closed · help-wanted: stake + contribute for #42
 - [limelit-co/open#32](https://github.com/limelit-co/open/pull/32) · state=closed · help-wanted: stake + contribute for #31
 - [sorotrail/SoroTrail#943](https://github.com/sorotrail/SoroTrail/pull/943) · state=closed · help-wanted: stake + contribute for #142
-- [DeltaV-Station/Delta-v#6534](https://github.com/DeltaV-Station/Delta-v/pull/6534) · state=closed · help-wanted: stake + contribute for #6533
 
 ## Foreign open PRs
 
+- [inferstep/ATLAS#278](https://github.com/inferstep/ATLAS/pull/278) — help-wanted: stake + contribute for #277
 - [tarantool/tarantool#13285](https://github.com/tarantool/tarantool/pull/13285) — help-wanted: stake + contribute for #13284
 - [StellarCanary/Protocol-Canary#345](https://github.com/StellarCanary/Protocol-Canary/pull/345) — help-wanted: stake + contribute for #295
 - [TrusTrove/TrusTrove-contract#860](https://github.com/TrusTrove/TrusTrove-contract/pull/860) — help-wanted: stake + contribute for #836
@@ -65,7 +66,6 @@ _Generated 2026-09-29T16:31:11Z UTC · receipts=587 · foreign_open=25 · tribut
 - [ThinkLikeAFounder/pulsartrack#898](https://github.com/ThinkLikeAFounder/pulsartrack/pull/898) — help-wanted: stake + contribute for #896
 - [w1977-0/open-stream-saver#3](https://github.com/w1977-0/open-stream-saver/pull/3) — help-wanted: stake + contribute for #1
 - [Vasudev-ai/Focusflow#15](https://github.com/Vasudev-ai/Focusflow/pull/15) — help-wanted: stake + contribute for #2
-- [bmad-code-org/bmad-loop#819](https://github.com/bmad-code-org/bmad-loop/pull/819) — help-wanted: stake + contribute for #780
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) — help-wanted: stake + contribute for #25
 - [mangiapanejohn-dev/MOBIUS-Searcher#7](https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7) — help-wanted: stake + contribute for #6
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) — help-wanted: stake + contribute for #20

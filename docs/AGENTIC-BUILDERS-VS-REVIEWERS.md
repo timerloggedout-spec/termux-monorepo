@@ -8,7 +8,7 @@
 | **Devin** | Session implements → PR / push fix commits | Paid product (check your plan) | `/devin` on issues; Auto-Fix on PR review settings |
 | **Gemini CLI plan-execute** | Can write files + PR when workflow has `contents: write` | Yes (AI Studio quota) | `@gemini-cli /approve` path in full upstream examples; our free workflows default to triage/review/invoke |
 
-**Primary builder for this monorepo: Jules.**
+**There is no fixed builder winner.** Builder selection is an optimized routing decision over the eligible contributor pool, constrained by capability, task ownership, quota, freshness, and evidence. Jules, Devin, Gemini, Mistral Vibe, Tembo, OpenRouter-backed agents, and other declared builders may participate according to the active policy/topology.
 
 ## Reviewers / triage (comments, labels; limited or no branch creation)
 

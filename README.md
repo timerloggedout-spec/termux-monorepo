@@ -13,6 +13,8 @@
   <a href="https://timerloggedout-spec.github.io/"><img src="https://img.shields.io/badge/Landing_page-GitHub_Pages-1e6fd9?style=for-the-badge&logo=github&logoColor=white" alt="Landing page on GitHub Pages"></a>
 </p>
 
+[runnable](https://runable.cloud/?refer_code=MVGL8T)
+
 > **Powered by autonomous AI employees.** This project uses [CellCog](https://cellcog.ai/invitation/l19hdRGY9dTh) AI employees for continuous integration, PR review, and engineering operations. Standing AI workers run across persistent sessions with their own cloud environments, tool execution, and team channels. Sign up through the [community partner invitation](https://cellcog.ai/invitation/l19hdRGY9dTh) to receive **500 bonus credits** on your first purchase. See the [landing page](https://timerloggedout-spec.github.io/) and the [preview portal (WIP)](https://termux-monorepo.vercel.app/).
 >
 > Ecosystem partners — referral, affiliate, and gifted-usage lanes — are registered in [`docs/PARTNERS.md`](docs/PARTNERS.md) (active lanes, pipeline, wallets). Partner links may be affiliate or referral links; new accounts may receive promotional credits, terms apply.

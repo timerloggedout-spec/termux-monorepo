@@ -114,12 +114,12 @@ Record what was proven, what remains unproven, the watched SHA, the final author
 
 This skill is the wait/controller layer. adaptive-feedback-cycle owns broader continuous learning; production-reconciliation owns ref alignment; evidence-envelope owns normalized observation fields.
 
-## Session 2026-09-28 17:15 PDT
+## Session 2026-09-28 19:14 PDT
 
-- Live master `8daeeb72d71ecdefa2f9cde6698426131117e474`.
-- Dual-gate PASS: repo-gate 36497249095 / termux-smoke 36497249115.
-- #904 merged. Watching #899 rebase onto live tip.
-- Instant-fail path-unfiltered workflows are noise.
-- #903 HOLD. Do not merge #892/#894. Do not pulse #175. #184 names-only.
+- Live master `9e6550a1ec368b8aa9d5d4e4f9213258ba1c72ec`.
+- Last dual-gate PASS: repo-gate 36508051962 / termux-smoke 36508051966 on `28d9e9ab`.
+- Watching this evidence-stamp PR dual-gate on the new candidate SHA.
+- Instant-fail path-unfiltered/event-mismatch workflows are noise.
+- #903 HOLD. Do not pulse #175. #184 names-only. Do not merge stale #892/#894/#906.
 
 Agent-Identity: Grok (Administrator)

@@ -145,15 +145,13 @@ Receipts are projections; the longitudinal GitHub/evidence corpus remains the so
 
 This skill owns repository-admin evidence discipline; it does not replace those specialist lanes.
 
-## Session 2026-09-28 17:15 PDT
+## Session 2026-09-28 19:14 PDT
 
-- Live master tip: `8daeeb72d71ecdefa2f9cde6698426131117e474` (catalog/mmdc bot refresh after #904).
-- Dual-gate PASS on that SHA: repo-gate 36497249095 + termux-smoke 36497249115.
-- #904 squash `4efef68d` dual-gate PASS on master: 36497147812 / 36497147650.
-- Candidate evidence for #904 pre-merge: repo-gate 36497057302 + termux-smoke 36497057157 on `4df79c30`.
-- Tunnel scheduled fail 36496185804 / 109176191755 classified empty-URL skip, closed by #904.
-- Instant-fail path-unfiltered workflows on feature branches are noise.
-- #903 HOLD (empty-diff / ledger). #899 rebase in flight. Do not merge stale #892/#894.
-- Do not pulse #175. #184 names-only. Vercel combined-status is #772 non-gate.
+- Live master tip: `9e6550a1ec368b8aa9d5d4e4f9213258ba1c72ec` (help-wanted live status refresh 2026-09-29T01:57Z).
+- Last dual-gate PASS on a content SHA: `28d9e9abd71e6265a53e803c40574e396225a63f` repo-gate 36508051962 + termux-smoke 36508051966.
+- Later master commits are scheduled help-wanted / dashboard bot refreshes; do not treat activity volume as a new dual-gate on 9e6550a1 until push-event gates re-run there.
+- #906 is superseded (stamped against d0f857e1). Do not merge stale #892/#894.
+- #903 HOLD (empty-diff / ledger). Do not pulse #175. #184 names-only. Vercel is #772 non-gate.
+- Instant-fail path-unfiltered/event-mismatch workflows on feature branches are noise, not dual-gate failures.
 
 Agent-Identity: Grok (Administrator)

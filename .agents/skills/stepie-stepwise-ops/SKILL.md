@@ -9,12 +9,12 @@ Stepie is the planning surface only. It does not confer merge authority.
 
 Promotion still requires current-SHA dual-gate (repo-gate + termux-smoke) plus task-outcome evidence. Vercel is non-gate (#772).
 
-## Session 2026-09-28 17:15 PDT
+## Session 2026-09-28 19:14 PDT
 
-- Live master `8daeeb72d71ecdefa2f9cde6698426131117e474`.
-- Dual-gate PASS 36497249095 / 36497249115.
+- Live master `9e6550a1ec368b8aa9d5d4e4f9213258ba1c72ec`.
+- Last dual-gate PASS 36508051962 / 36508051966 on `28d9e9ab`.
 - Planning only. No merge authority from this surface.
-- Next plan: promote #899 after rebase + dual-gate on the new candidate SHA.
-- #903 HOLD. Do not pulse #175. #184 names-only.
+- Next plan: promote this evidence-stamp after dual-gate on the candidate SHA; keep #903 HOLD.
+- Do not pulse #175. #184 names-only. Do not merge stale #892/#894/#906.
 
 Agent-Identity: Grok (Administrator)

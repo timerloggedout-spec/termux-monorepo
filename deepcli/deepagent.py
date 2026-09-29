@@ -118,7 +118,7 @@ TOOLS = [
         "description":"Decode a base64 string to UTF-8 text. Use after gh api ... --jq .content to get the file body. Args: data='<base64>'.",
         "parameters":{"type":"object","properties":{"data":{"type":"string"}},"required":["data"]}}},
     *([] if not (_HINDSIGHT_AVAILABLE and os.environ.get("HINDSIGHT_BASE_URL"))
-        else [spec.schema for spec in _hs_build()]),
+        else [{"type": "function", "function": {"name": spec.name, "description": spec.description, "parameters": spec.schema}} for spec in _hs_build()]),
 {"type":"function","function":{
         "name":"finish",
         "description":"Call when done. Pass 'summary'. No tool calls after.",

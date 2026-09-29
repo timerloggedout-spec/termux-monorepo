@@ -1,15 +1,9 @@
 #!/usr/bin/env python3
-"""Deterministic fixtures for the continuous-evaluation PR boundary.
-
-Also runnable/discoverable via ``python -m unittest`` and pytest: the
-fixtures are wrapped in :class:`PrScopeGuardTests` so CI discovery finds
-them instead of relying on the ``__main__`` block alone.
-"""
+"""Deterministic fixtures for the continuous-evaluation PR boundary."""
 
 from __future__ import annotations
 
 import re
-import unittest
 
 SESSION_TITLE = re.compile(
     r"^(?:SUPERSEDED:\s*)?ops\(skills\):\s*bind session\b|^ops\(session\)|^ops/session-",
@@ -54,16 +48,6 @@ def test_real_catalog_perf_pr_is_not_suppressed() -> None:
         "perf(catalog): rank peers with one peer_score pass per row",
         ["scripts/live_catalog_feed.py", "tests/test_live_catalog_feed.py"],
     )
-
-
-class PrScopeGuardTests(unittest.TestCase):
-    """unittest/pytest-discoverable wrappers around the fixture functions."""
-
-    def test_session_bind_is_suppressed(self) -> None:
-        test_session_bind_is_suppressed()
-
-    def test_real_catalog_perf_pr_is_not_suppressed(self) -> None:
-        test_real_catalog_perf_pr_is_not_suppressed()
 
 
 if __name__ == "__main__":

@@ -408,7 +408,8 @@ def main():
                 continue
             if provider == "openrouter":
                 permitted_models = polled_free_models if polled_free_models is not None else LEGACY_MODELS
-                if not is_free_openrouter_model(model) or model not in permitted_models:
+                # The live free catalog is authoritative for zero-priced models, including IDs without :free.
+                if model not in permitted_models:
                     continue
             seen.add(key)
             model_entry = success_matrix.get("models", {}).get(model, {})

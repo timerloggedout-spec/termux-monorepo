@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-28T21:55:04Z UTC · receipts=513 · foreign_open=24 · tributes=53_
+_Generated 2026-09-29T00:33:33Z UTC · receipts=513 · foreign_open=25 · tributes=54_
 
 ## Tributes (contributor ledger)
 
+- [StellarCanary/Protocol-Canary#345](https://github.com/StellarCanary/Protocol-Canary/pull/345) · state=open · help-wanted: stake + contribute for #295
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -43,10 +44,10 @@ _Generated 2026-09-28T21:55:04Z UTC · receipts=513 · foreign_open=24 · tribut
 - [DeltaV-Station/Delta-v#6534](https://github.com/DeltaV-Station/Delta-v/pull/6534) · state=closed · help-wanted: stake + contribute for #6533
 - [ussyalfaks/ahjoorxmr-contract#872](https://github.com/ussyalfaks/ahjoorxmr-contract/pull/872) · state=closed · help-wanted: stake + contribute for #871
 - [FasterThanAi/ai-lead-generation-mvp#34](https://github.com/FasterThanAi/ai-lead-generation-mvp/pull/34) · state=closed · help-wanted: stake + contribute for #18
-- [ennouaimi/invoicr#8](https://github.com/ennouaimi/invoicr/pull/8) · state=closed · help-wanted: stake + contribute for #7
 
 ## Foreign open PRs
 
+- [StellarCanary/Protocol-Canary#345](https://github.com/StellarCanary/Protocol-Canary/pull/345) — help-wanted: stake + contribute for #295
 - [TrusTrove/TrusTrove-contract#860](https://github.com/TrusTrove/TrusTrove-contract/pull/860) — help-wanted: stake + contribute for #836
 - [OBLIQ-in/OBLIQ-Website#39](https://github.com/OBLIQ-in/OBLIQ-Website/pull/39) — help-wanted: stake + contribute for #12
 - [prime-radiant-inc/evener#2661](https://github.com/prime-radiant-inc/evener/pull/2661) — help-wanted: stake + contribute for #2627

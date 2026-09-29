@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-28T21:55:04Z",
+  "generated_at": "2026-09-29T00:33:33Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
   "receipts": 513,
@@ -16,6 +16,15 @@
     "ok": 513
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/StellarCanary/Protocol-Canary/pull/345",
+      "title": "help-wanted: stake + contribute for #295",
+      "number": 345,
+      "repo": "StellarCanary/Protocol-Canary",
+      "state": "open",
+      "updated_at": "2026-09-29T00:33:23Z",
+      "tribute": true
+    },
     {
       "html_url": "https://github.com/TrusTrove/TrusTrove-contract/pull/860",
       "title": "help-wanted: stake + contribute for #836",
@@ -233,8 +242,21 @@
       "tribute": true
     }
   ],
-  "foreign_open_count": 24,
+  "foreign_open_count": 25,
   "tributes": [
+    {
+      "pr_url": "https://github.com/StellarCanary/Protocol-Canary/pull/345",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-09-29T00:33:23Z",
+      "providers": [],
+      "repo": "StellarCanary/Protocol-Canary",
+      "number": 345,
+      "title": "help-wanted: stake + contribute for #295",
+      "state": "open"
+    },
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
@@ -1401,7 +1423,7 @@
       "state": "closed"
     }
   ],
-  "tribute_count": 53,
+  "tribute_count": 54,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -6200,7 +6222,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "881038b5cd650989bab0a567b6a71e49f6536c5c",
+    "source_sha": "c796a4f8a9a371f6bf8d786b703a399d312dd2e4",
     "source_ref": "master",
     "history_complete": true,
     "history_count": 1,
@@ -6233,12 +6255,12 @@
   },
   "evolution": [
     {
-      "sha": "881038b5cd650989bab0a567b6a71e49f6536c5c",
-      "short_sha": "881038b5cd65",
-      "date": "2026-09-28T20:33:56Z",
+      "sha": "c796a4f8a9a371f6bf8d786b703a399d312dd2e4",
+      "short_sha": "c796a4f8a9a3",
+      "date": "2026-09-29T00:18:31Z",
       "author": "github-actions[bot]",
-      "subject": "ops(help-wanted): live status refresh 2026-09-28T20:33Z",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/881038b5cd650989bab0a567b6a71e49f6536c5c"
+      "subject": "docs(ops): refresh generated automation catalog + mmdc renders",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/c796a4f8a9a371f6bf8d786b703a399d312dd2e4"
     }
   ],
   "pipeline": [

@@ -8,8 +8,8 @@
 #   Gemini:             .github/actions/gemini-quota-gate (RPD counter + RPM via 429)
 #   Tembo:              platform credits; comment when exhausted
 #
-version: 1
-updated_at: "2026-08-07T03:45:00Z"
+version: 2
+updated_at: "2026-09-29T20:37:00Z"
 updated_by: grok
 
 agents:
@@ -239,3 +239,64 @@ routing:
   orchestration:
     primary: grok
     fallback: [tembo]
+
+
+# External contributor/provider lanes.
+# These records are identity/capability declarations, not GitHub authorship.
+# Provider credentials and account identifiers belong in runtime secret stores only.
+contributor_lanes:
+  - id: gemini
+    display_moniker: geminiMesh
+    kind: provider_agent_ecosystem
+    roles: [review, triage, implementation, research, evaluation]
+    callable_identity: "@gemini-cli"
+    attribution_boundary: "GitHub actor identity remains separate from Gemini/Gemini CLI provenance."
+    adapters: [gemini-cli, gemini-interactions]
+
+  - id: openrouter
+    display_moniker: routeMesh
+    kind: provider_catalog
+    roles: [routing, catalog, inference, evaluation, benchmark]
+    callable_identity: "adapter-only"
+    attribution_boundary: "Provider, model, and execution adapter are separate provenance dimensions."
+    adapters: [openrouter-http]
+
+  - id: felo
+    display_moniker: feloForge
+    kind: provider_research_inference
+    roles: [research, inference, benchmark, evaluation, adapter]
+    callable_identity: "adapter-only"
+    attribution_boundary: "FELO is a provider lane; account identity and GitHub authorship are separate."
+    adapters: [felo-http]
+
+  - id: huggingface
+    display_moniker: hfFoundry
+    kind: hub_model_dataset_evaluation
+    roles: [model, dataset, benchmark, evaluation, inference, research]
+    callable_identity: "adapter-only"
+    attribution_boundary: "Hugging Face Hub identity is separate from repository authorship and model identity."
+    adapters: [huggingface-hub, huggingface-jobs]
+
+  - id: contributor_role_coordinator
+    display_moniker: roleMesh
+    kind: orchestration_metadata
+    roles: [evidence, orchestration, documentation, integration]
+    callable_identity: "non-callable"
+    attribution_boundary: "Coordinates role/provenance metadata; does not imply provider execution."
+
+contributor_role_vocabulary:
+  - research
+  - evaluation
+  - benchmark
+  - inference
+  - routing
+  - catalog
+  - dataset
+  - adapter
+  - review
+  - triage
+  - implementation
+  - integration
+  - documentation
+  - evidence
+  - orchestration

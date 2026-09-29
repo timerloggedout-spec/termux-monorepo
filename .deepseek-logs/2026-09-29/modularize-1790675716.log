@@ -1,0 +1,213 @@
+
+▶ task: # TASK: Derive a package name from GRIMIORE, then split agent.py + deepagent.py
+
+## Step 0 — Locate the lexicon (do this FIRST)
+The lexicon may be spelled GRIMIORE (with I) or Grimoire (with O). Search BOTH.
+Match on file CONTENT (# GRIMOIRE OF L33TSP3@K or similar header), not filename.
+
+Search order, stop at first hit:
+1. run: find ~ -maxdepth 6 -iname '*grimiore*' -o -iname '*grimoire*' -not -path '*/.git/*'
+2. run: grep -rl --include='*.md' 'GRIMIORE\|GRIMOIRE' ~/harmony_hub/config 2>/dev/null | head -20
+3. gh_get_file repo=timerloggedout-spec/termux-monorepo path=harmony_hub/config/GRIMOIRE_DICTIONARY.md
+4. gh_get_file repo=timerloggedout-spec/termux-monorepo path=harmony_hub/config/grimoire/1337_D1CT10N4RY.md
+
+You have succeeded if you have read AT LEAST ONE of:
+- a file whose content starts with "# GRIMOIRE" or "# GRIMIORE"
+- the GRIMOIRE_DICTIONARY.md table
+
+ONLY abort if NO lexicon-like file exists anywhere. The absence of a file
+named exactly "Grimiore.md" does NOT count as "not found" if other lexicon
+sources exist.
+
+If truly not found, finish with:
+finish(summary='{"error":"no lexicon source anywhere","searched":[home,harmony_hub,repo]}')
+
+## Step 1 — Derive the package name from the lexicon
+GRIMOIRE_DICTIONARY.md has a 3-tier table: `| 1337SP3@K | Grimoire | Orchestra | Definition |`
+The **Orchestra** column is the plain-English naming tier. Pick ONE noun from
+the Orchestra column that describes a pair of loops (HTTP-loop + direct-loop).
+State your reasoning in one line.
+
+If GRIMOIRE_DICTIONARY.md is unreadable, use the 1337_D1CT10N4RY.md lexicon
+to construct a leet-safe name. Prefer an Orchestra-tier word if available.
+
+Validate the chosen name against:
+- lowercase ASCII [a-z0-9._-] only
+- first char is a letter
+- <= 100 chars
+- no leading -/_/.
+- not a Python stdlib module (ast, io, os, code, parser, types, copy,
+  select, socket, signal, subprocess, token, uuid, json, base64, typing,
+  logging, pathlib, tempfile, string, re, shutil, sys)
+- if the name is >= 3 chars and you want PyPI safety, use:
+    run: curl -s -o /dev/null -w '%{http_code}\n' https://pypi.org/pypi/<name>/json
+  404 = free, 200 = taken. DO NOT use `curl -I https://pypi.org/project/<name>`
+  — it follows redirects and always reports 200.
+
+If the first choice fails any check, pick the next-best from the same tier.
+
+## Step 2 — Target layout
+Given derived name PKG:
+
+~/deepcli/PKG/__init__.py
+~/deepcli/PKG/loop.py         # from deepagent.py: _chat_once, loop, __main__ block
+~/deepcli/PKG/tools.py        # TOOLS, DISPATCH, REQUIRED, execute, _log_tool_error
+~/deepcli/PKG/edit.py         # gh_put, gh_get_file, gh_edit_file, gh_worktree, b64_decode
+~/deepcli/PKG/lint.py         # _ruff_check, _ruff_autofix, _log_autofix
+~/deepcli/PKG/retry.py        # _retry_plan, _record_retry, _learned_offset, _RATE_MARKERS,
+                              #   _BURST_WAITS, _REST_BASE, _REST_JITTER
+~/deepcli/PKG/runtime.py      # _notify, _autosnapshot, _safe, _is_protected,
+                              #   READ_ALLOW, WRITE_ALLOW, MAX_RW_BYTES,
+                              #   RUN_ALLOWED_BINS, SKILL_ROOTS,
+                              #   PROTECTED_PATHS, WORKTREE_ROOT, _wt_*
+~/deepcli/PKG/http_loop.py    # from agent.py: the HTTP-hop loop body
+
+## Step 3 — Shims at original paths
+~/deepcli/deepagent.py becomes a shim:
+    from PKG.loop import loop, execute, TOOLS, DISPATCH   # noqa: F401
+    from PKG.loop import loop as _loop_main
+    if __name__ == "__main__":
+        _loop_main()
+~/deepcli/agent.py becomes the equivalent shim importing PKG.http_loop.
+
+## Step 4 — PROTECTED_PATHS update
+Extend PROTECTED_PATHS in PKG/runtime.py to include every file under
+~/deepcli/PKG/ AND keep ~/deepcli/deepagent.py + ~/deepcli/agent.py.
+
+## Invariants — verify before finishing
+1. cd ~/.deepcli/worktrees/<branch> && python3 -c "import deepagent, agent"   -> exit 0
+2. python3 -c "from PKG.loop import loop, execute, TOOLS, DISPATCH"           -> exit 0
+3. python3 -c "from PKG.edit import _gh_put, _gh_get_file, _gh_edit_file"     -> exit 0
+4. grep -c 'PROTECTED_PATHS' deepagent.py PKG/runtime.py                      -> both >= 1
+5. wc -l PKG/*.py                                                             -> none > 400
+6. python3 -m py_compile deepagent.py agent.py PKG/*.py                       -> exit 0
+
+## Method
+- gh_worktree action=create branch=refactor/split-agent-deepagent base=master
+- Edit in the worktree. Move symbols; do not duplicate.
+- Add `# noqa: F401` to shim re-exports.
+- gh_worktree action=commit_push_pr draft=true
+- Do NOT merge. Do NOT push to master.
+
+## Finish
+finish(summary='{"pkg":"<derived>","lexicon_source":"<path or gh ref>",
+  "lexicon_tier":"orchestra|grimoire|leet","lexicon_reasoning":"<one line>",
+  "branch":"refactor/split-agent-deepagent","pr":"<url>",
+  "files_added":N,"shims":2,"loc_max":N,"invariants":"6/6"}')
+
+  [session] fresh (forced, key=3c3546b64c03653b)
+── step 1/<dynamic> ──
+create_session status: 200, body: 
+{"code":0,"msg":"","data":{"biz_code":0,"biz_msg":"","biz_d
+ata":{"id":"906b30a4-ec84-4c72-904c-1089475b6f65","seq_id":
+212838923,"agent":"chat","model_type":"default","title":nul
+l,"title_type":"WIP","version":0,"current_message_id":null,
+"pinned":false,"inserted_at":1790675723.198,"updated_at":17
+90675
+/data/data/com.termux/files/home/.local/bin/deepagent:773: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": _dt.datetime.utcnow().isoformat(),
+/data/data/com.termux/files/home/.local/bin/deepagent:522: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": _dt.datetime.utcnow().isoformat(),
+/data/data/com.termux/files/home/.local/bin/deepagent:773: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": _dt.datetime.utcnow().isoformat(),
+/data/data/com.termux/files/home/.local/bin/deepagent:522: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": _dt.datetime.utcnow().isoformat(),
+/data/data/com.termux/files/home/.local/bin/deepagent:773: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": _dt.datetime.utcnow().isoformat(),
+  (assistant): I'll start by locating the lexicon file.
+
+
+<tool_call>{"name": "run", "argv": ["grep", "-rl", "--include=*.md", "GRIMIORE\\|GRIMOIRE", "/data/data/com.termux/files/home/harmony_hub/config"]}
+  ▶ run({})
+    ← ERROR run: missing required ['argv']
+  ▶ run({})
+    [repeat blocked — skipping duplicate call]
+── step 2/<dynamic> ──
+  ▶ run({"argv": ["find", "/data/data/com.termux/files/home", "-maxdepth", "6", "(", "-iname", "*grimiore*", "-o", "-iname", "*g)
+    ← {"rc": 0, "stdout": "/data/data/com.termux/files/home/harmony_hub/config/grimoire\n/data/data/com.termux/files/home/harmony_hub/config/GRIMOIRE_DICTIONARY.md\n/data/data/com.termux/files/home/.deepcli/worktrees/lane1-deadcode-hindsight-finish/harmony_hub/config/GRIMOIRE_DICTIONARY.md\n/data/data/com
+  ▶ run({"argv": ["grep", "-rl", "--include=*.md", "GRIMIORE", "/data/data/com.termux/files/home/harmony_hub/config"]})
+    ← {"rc": 1, "stdout": "", "stderr": ""}
+  ▶ gh_get_file({"repo": "timerloggedout-spec/termux-monorepo", "path": "harmony_hub/config/GRIMOIRE_DICTIONARY.md"})
+    ← {"path": "harmony_hub/config/GRIMOIRE_DICTIONARY.md", "sha": "b804ea0645a77d5d75d320a1889540b041b95aa1", "size": 1845, "content": "# \ud83e\ude84 GRIMOIRE DICTIONARY\n## 1337SP3@K \u2194 Grimoire \u2194 Orchestra\n\n| 1337SP3@K | Grimoire | Orchestra | Definition |\n|-----------|----------|---------
+  ▶ gh_get_file({"repo": "timerloggedout-spec/termux-monorepo", "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md"})
+    ← {"path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md", "sha": "427362c2bf4b47104335b3bfd192b0f25c41613f", "size": 1508, "content": "# \ud83e\ude84 GRIMOIRE OF L33TSP3@K \u2013 v2.0\nSacred text of the ArchWizard. Consult before every casting.\n\n## Character Substitutions\n| Letter | Variants |\
+── step 3/<dynamic> ──
+  (assistant): I found the lexicon. The GRIMOIRE_DICTIONARY.md table is readable. Now deriving the package name.
+
+The task needs a noun from the **Orchestra** column describing a pair of loops (HTTP-loop + direct-lo
+  ▶ run({"argv": ["curl", "-s", "-o", "/dev/null", "-w", "%{http_code}\n", "https://pypi.org/pypi/cadenza/json"]})
+    ← {"rc": 0, "stdout": "404\n", "stderr": ""}
+  ▶ run({"argv": ["curl", "-s", "-o", "/dev/null", "-w", "%{http_code}\n", "https://pypi.org/pypi/recapitulation/json"]})
+    ← {"rc": 0, "stdout": "404\n", "stderr": ""}
+  ▶ run({"argv": ["curl", "-s", "-o", "/dev/null", "-w", "%{http_code}\n", "https://pypi.org/pypi/scorebook/json"]})
+    ← {"rc": 0, "stdout": "200\n", "stderr": ""}
+  ▶ list_dir({"path": "/data/data/com.termux/files/home/deepcli"})
+    ← {"path": "/data/data/com.termux/files/home/deepcli", "entries": [{"name": "README.md", "type": "file", "size": 644}, {"name": "__pycache__", "type": "dir", "size": 4096}, {"name": "_add_health.py", "type": "file", "size": 553}, {"name": "_boot.sh", "type": "file", "size": 1309}, {"name": "_fix_re.py
+  ▶ gh_worktree({"action": "list"})
+    ← {"worktrees": [{"path": "/data/data/com.termux/files/home", "branch": "refs/heads/feat/gh-actions/deepseek-integrates-itself"}, {"path": "/data/data/com.termux/files/home/.deepcli/worktrees/lane1-deadcode-hindsight-finish", "branch": "refs/heads/lane1/deadcode-hindsight-finish"}, {"path": "/data/dat
+── step 4/<dynamic> ──
+  (assistant): `scorebook` is taken on PyPI (200). `cadenza` and `recapitulation` are free (404). Now let me read the actual source files. `deepagent.py` is 45KB (~1200 lines) so it likely needs splitting across loo
+  ▶ read_file({"path": "/data/data/com.termux/files/home/deepcli/deepagent.py<parameter>\n<invoke>"})
+    ← {"error": "not a file", "path": "/data/data/com.termux/files/home/deepcli/deepagent.py<parameter>\n<invoke>"}
+  ▶ read_file({"path": "/data/data/com.termux/files/home/deepcli/agent.py<parameter>\n<invoke>\n<calls>"})
+    ← {"error": "not a file", "path": "/data/data/com.termux/files/home/deepcli/agent.py<parameter>\n<invoke>\n<calls>"}
+── step 5/<dynamic> ──
+  (assistant): My tool calls got malformed. Let me read the files properly.
+  ▶ read_file({"path": "/data/data/com.termux/files/home/deepcli/deepagent.py", "max_bytes": 50000})
+    ← {"path": "/data/data/com.termux/files/home/deepcli/deepagent.py", "content": "#!/usr/bin/env python3\n\"\"\"deepagent.py \u2014 agent loop with DIRECT imports, no HTTP hop.\n\nSame tool semantics as agent.py, but:\n- imports deepcli.core, gh_broker, files/skills logic in-process\n- doesn't need serv
+  ▶ read_file({"path": "/data/data/com.termux/files/home/deepcli/agent.py", "max_bytes": 20000})
+    ← {"path": "/data/data/com.termux/files/home/deepcli/agent.py", "content": "#!/usr/bin/env python3\n\"\"\"agent.py \u2014 YOLO loop with gh, run, file ops, and skill access.\"\"\"\nimport json, os, sys, time, urllib.request\n\nHUB = os.environ.get(\"DSH_HUB\", \"http://127.0.0.1:8800\")\nTOK = open(os
+── step 6/<dynamic> ──
+  (assistant): Now I have both files. Let me create the worktree.
+  ▶ gh_worktree({"action": "create", "branch": "refactor/split-agent-deepagent", "base": "master"})
+    ← {"path": "/data/data/com.termux/files/home/.deepcli/worktrees/refactor-split-agent-deepagent", "branch": "refactor/split-agent-deepagent", "base": "master", "created": true}
+── step 7/<dynamic> ──
+    [retry burst #0 wait=0.3s] rate-limit text
+    [retry burst #0 wait=0.7s] rate-limit text
+  (assistant): Worktree created. Now I'll write the package. Choosing `recapitulation` (Orchestra tier, `l00p` → `Time Loop` → `Recapitulation`) — it's the only Orchestra noun that denotes a loop/re-entry cycle, and
+  ▶ write_file({"path": "/data/data/com.termux/files/home/.deepcli/worktrees/refactor-split-agent-deepagent/deepcli/recapitulation/__in)
+    ← {"path": "/data/data/com.termux/files/home/.deepcli/worktrees/refactor-split-agent-deepagent/deepcli/recapitulation/__init__.py", "bytes": 301}
+  ▶ write_file({"path": "/data/data/com.termux/files/home/.deepcli/worktrees/refactor-split-agent-deepagent/deepcli/recapitulation/runt)
+    ← {"path": "/data/data/com.termux/files/home/.deepcli/worktrees/refactor-split-agent-deepagent/deepcli/recapitulation/runtime.py", "bytes": 4602}
+── step 8/<dynamic> ──
+    [retry burst #0 wait=0.3s] rate-limit text
+    [retry burst #0 wait=0.7s] rate-limit text
+    [retry burst #0 wait=1.5s] rate-limit text
+    [retry burst #0 wait=3.0s] rate-limit text
+    [retry burst #0 wait=5.0s] rate-limit text
+    [retry rest #0 wait=41.0s] rate-limit text
+    [retry burst #1 wait=0.3s] rate-limit text
+    [retry burst #1 wait=0.7s] rate-limit text
+    [retry burst #1 wait=1.5s] rate-limit text
+    [retry burst #1 wait=3.0s] rate-limit text
+    [retry burst #1 wait=5.0s] rate-limit text
+    [retry rest #1 wait=38.1s] rate-limit text
+    [retry burst #2 wait=0.3s] rate-limit text
+    [retry burst #2 wait=0.7s] rate-limit text
+    [retry burst #2 wait=1.5s] rate-limit text
+    [retry burst #2 wait=3.0s] rate-limit text
+    [retry burst #2 wait=5.0s] rate-limit text
+    [retry rest #2 wait=28.3s] rate-limit text
+    [retry burst #3 wait=0.3s] rate-limit text
+    [retry burst #3 wait=0.7s] rate-limit text
+    [retry burst #3 wait=1.5s] rate-limit text
+    [retry burst #3 wait=3.0s] rate-limit text
+  (assistant): Now retry.py, lint.py, edit.py:
+  ▶ write_file({"path": "/data/data/com.termux/files/home/.deepcli/worktrees/refactor-split-agent-deepagent/deepcli/recapitulation/retr)
+    ← {"path": "/data/data/com.termux/files/home/.deepcli/worktrees/refactor-split-agent-deepagent/deepcli/recapitulation/retry.py", "bytes": 143}
+── step 9/<dynamic> ──
+    [retry burst #0 wait=0.3s] rate-limit text
+    [retry burst #0 wait=0.7s] rate-limit text
+    [retry burst #0 wait=1.5s] rate-limit text
+    [retry burst #0 wait=3.0s] rate-limit text
+    [retry burst #0 wait=5.0s] rate-limit text
+    [retry rest #0 wait=29.4s] rate-limit text
+    [retry burst #1 wait=0.3s] rate-limit text
+    [retry burst #1 wait=0.7s] rate-limit text
+    [retry burst #1 wait=1.5s] rate-limit text
+    [retry burst #1 wait=3.0s] rate-limit text
+
+✔ done (no tool calls — treating as implicit finish)
+
+
+  [session] saved 906b30a4-ec8… for key=3c3546b64c03653b

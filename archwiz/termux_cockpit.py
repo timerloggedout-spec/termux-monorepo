@@ -25,7 +25,7 @@ DIM = ESC + "2m"
 TRON = os.environ.get("ARCHWIZ_THEME", "tron").lower() == "tron"
 
 def c(code: str, value: object) -> str:
-    return f"{code}{value}{RESET}"
+    return f"{code}{value}{RESET}" if TRON else str(value)
 
 def clear() -> None:
     print("\033[2J\033[H", end="")
@@ -37,6 +37,12 @@ def run(path: Path, *args: str, cwd: Path | None = None) -> int:
     except OSError as exc:
         print(c(RED, f"execution failed: {exc}"))
         return 1
+
+def run_optional(target: Path) -> bool:
+    if not target.exists():
+        print(c(AMBER, f"not installed: {target}"))
+        return True
+    return run(target) == 0
 
 def gate(command: list[str]) -> int:
     try:
@@ -93,7 +99,9 @@ def menu() -> None:
     ])
 
 def action(choice: str) -> bool:
-    if choice == "1": return run(ARCHWIZ / "autonomous_runner.py", "--auto-approve") == 0
+    if choice == "1":
+        args = ("--auto-approve",) if os.environ.get("ARCHWIZ_MODE") == "auto" else ()
+        return run(ARCHWIZ / "autonomous_runner.py", *args) == 0
     if choice == "2": return run(ARCHWIZ / "archaeo_sweep.py") == 0
     if choice == "3": return run(ARCHWIZ / "agent_shell.py") == 0
     if choice == "4": return run(ARCHWIZ / "metrics_viewer.py") == 0
@@ -117,19 +125,19 @@ def action(choice: str) -> bool:
     if choice == "11": return run(ARCHWIZ / "import_session.py") == 0
     if choice == "12":
         target = LLM_MAP / "narrative.py"
-        return run(target) == 0 if target.exists() else True
+        return run_optional(target)
     if choice == "13":
         target = ARCHWIZ / "lexicon_harvest.py"
-        return run(target) == 0 if target.exists() else True
+        return run_optional(target)
     if choice == "14":
         target = ARCHWIZ / "forensic_toolchain.py"
-        return run(target) == 0 if target.exists() else True
+        return run_optional(target)
     if choice == "15":
         target = ARCHWIZ / "live_view.py"
-        return run(target) == 0 if target.exists() else True
+        return run_optional(target)
     if choice == "16":
         target = ARCHWIZ / "documentation_refresh.py"
-        return run(target) == 0 if target.exists() else True
+        return run_optional(target)
     if choice == "17": return run(LLM_MAP / "promote_workspace.py") == 0
     if choice == "18":
         a = gate(["python3", "scripts/ci/repo_gate.py", "--base", "origin/master"])
@@ -163,7 +171,9 @@ def main() -> int:
         except (EOFError, KeyboardInterrupt):
             print()
             return 0
-        if not action(choice): return 0
+        if choice in {"q", "0"}: return 0
+        if not action(choice):
+            print(c(RED, f"Action {choice} failed."))
         input(c(DIM, "\n  press ENTER to return to the matrix…"))
     return 0
 

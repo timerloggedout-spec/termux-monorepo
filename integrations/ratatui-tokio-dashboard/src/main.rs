@@ -45,13 +45,14 @@ async fn run(terminal: &mut ratatui::DefaultTerminal) -> io::Result<()> {
             break;
         };
 
-        let quit = matches!(event, AppEvent::Input(InputAction::Quit));
+        let mut quit = matches!(event, AppEvent::Input(InputAction::Quit));
         app.apply(event);
 
         while let Ok(event) = rx.try_recv() {
             let quit_now = matches!(event, AppEvent::Input(InputAction::Quit));
             app.apply(event);
             if quit_now {
+                quit = true;
                 break;
             }
         }

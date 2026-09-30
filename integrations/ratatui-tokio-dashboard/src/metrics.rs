@@ -125,18 +125,33 @@ fn read_command(root: &Path) -> Option<String> {
 }
 
 fn read_rss_kb(root: &Path) -> Option<u64> {
-    let text = fs::read_to_string(root.join("statm")).ok()?;
-    let pages = text.split_whitespace().nth(1)?.parse::<u64>().ok()?;
-    let page_size = 4096u64;
-    Some(pages.saturating_mul(page_size) / 1024)
+    let text = fs::read_to_string(root.join("status")).ok()?;
+    parse_vmrss_kb(&text)
+}
+
+fn parse_vmrss_kb(text: &str) -> Option<u64> {
+    text.lines().find_map(|line| {
+        let mut fields = line.split_whitespace();
+        if fields.next()? == "VmRSS:" {
+            fields.next()?.parse::<u64>().ok()
+        } else {
+            None
+        }
+    })
 }
 
 #[cfg(test)]
 mod tests {
+    use super::*;
+
     #[test]
-    fn process_rss_conversion_is_page_based() {
-        let pages = 10_u64;
-        let rss_kb = pages * 4096 / 1024;
-        assert_eq!(rss_kb, 40);
+    fn parses_vmrss_in_kib() {
+        let status = "Name:\ttermux\nVmRSS:\t16384 kB\n";
+        assert_eq!(parse_vmrss_kb(status), Some(16_384));
+    }
+
+    #[test]
+    fn missing_vmrss_is_unavailable() {
+        assert_eq!(parse_vmrss_kb("Name:\ttermux\n"), None);
     }
 }

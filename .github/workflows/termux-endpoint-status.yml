@@ -1,0 +1,88 @@
+name: Termux endpoint status
+
+# Validates published TERMUX_MCP_ENDPOINT metadata only.
+# Does NOT start tunnels, hold private keys, or execute device commands.
+# Tunnel lifecycle is owned by the B160V Termux keeper.
+
+on:
+  schedule:
+    # Every 30 minutes while free Pinggy is the transport (60 min TTL).
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+  repository_dispatch:
+    types: [termux-endpoint-refresh]
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: termux-endpoint-status
+  cancel-in-progress: true
+
+jobs:
+  validate-endpoint:
+    name: Validate TERMUX_MCP_ENDPOINT freshness
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check endpoint variable presence and format
+        env:
+          # These are repository Variables (not Secrets). Publisher sets them
+          # from device when gh auth is valid. Empty = publisher not yet live.
+          ENDPOINT: ${{ vars.TERMUX_MCP_ENDPOINT }}
+          UPDATED_AT: ${{ vars.TERMUX_MCP_ENDPOINT_UPDATED_AT }}
+        run: |
+          set -euo pipefail
+          echo "::group::Endpoint metadata"
+          if [ -z "${ENDPOINT:-}" ]; then
+            echo "TERMUX_MCP_ENDPOINT is unset or empty."
+            echo "Publisher runs on-device only after `gh auth status` succeeds."
+            echo "This is expected until B160V re-authenticates."
+            echo "::warning::TERMUX_MCP_ENDPOINT not published yet"
+            exit 0
+          fi
+          echo "endpoint=${ENDPOINT}"
+          echo "updated_at=${UPDATED_AT:-<missing>}"
+          echo "::endgroup::"
+
+          # Format: tcp://host:port (Pinggy free allocation pattern)
+          if ! echo "$ENDPOINT" | grep -Eq '^tcp://[A-Za-z0-9.-]+:[0-9]+$'; then
+            echo "::error::TERMUX_MCP_ENDPOINT failed format check: $ENDPOINT"
+            exit 1
+          fi
+
+          if [ -z "${UPDATED_AT:-}" ]; then
+            echo "::warning::TERMUX_MCP_ENDPOINT_UPDATED_AT missing; cannot age-check"
+            exit 0
+          fi
+
+          # Age check: free Pinggy TTL is 60 minutes. Flag if older than 90 min.
+          # Use python for portable ISO parsing.
+          python3 - <<'PY'
+          import os, sys
+          from datetime import datetime, timezone, timedelta
+          raw = os.environ.get("UPDATED_AT", "").strip()
+          try:
+              # Accept date -Iseconds style (with or without Z / offset)
+              ts = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+              if ts.tzinfo is None:
+                  ts = ts.replace(tzinfo=timezone.utc)
+          except Exception as e:
+              print(f"::warning::Could not parse UPDATED_AT={raw!r}: {e}")
+              sys.exit(0)
+          age = datetime.now(timezone.utc) - ts.astimezone(timezone.utc)
+          print(f"age_seconds={int(age.total_seconds())}")
+          if age > timedelta(minutes=90):
+              print(f"::warning::Endpoint metadata is stale (age {age}). Free Pinggy TTL is 60m; keeper should republish.")
+          else:
+              print("Endpoint metadata is within freshness window.")
+          PY
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "### Termux endpoint status" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Variable presence and format checked." >> "$GITHUB_STEP_SUMMARY"
+          echo "- Tunnel ownership remains on-device (B160V keeper)." >> "$GITHUB_STEP_SUMMARY"
+          echo "- No private keys or device shell execution in this workflow." >> "$GITHUB_STEP_SUMMARY"

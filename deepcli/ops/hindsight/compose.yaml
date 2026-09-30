@@ -1,0 +1,23 @@
+services:
+  hindsight:
+    image: ghcr.io/vectorize-io/hindsight:latest-slim
+    container_name: hindsight
+    restart: unless-stopped
+    ports:
+      - "8888:8888"
+    volumes:
+      - hindsight_data:/home/hindsight/.pg0
+    environment:
+      - HINDSIGHT_API_LLM_PROVIDER=${HINDSIGHT_API_LLM_PROVIDER:-gemini}
+      - HINDSIGHT_API_LLM_API_KEY=${HINDSIGHT_API_LLM_API_KEY:?set in .env}
+      - HINDSIGHT_API_LLM_MODEL=${HINDSIGHT_API_LLM_MODEL:-gemini-2.0-flash}
+      - HINDSIGHT_API_LLM_GEMINI_SERVICE_TIER=${HINDSIGHT_API_LLM_GEMINI_SERVICE_TIER:-on_demand}
+      - HINDSIGHT_API_FILE_PARSER=${HINDSIGHT_API_FILE_PARSER:-markitdown}
+      - HINDSIGHT_API_FILE_PARSER_ALLOWLIST=${HINDSIGHT_API_FILE_PARSER_ALLOWLIST:-markitdown}
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8888/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+volumes:
+  hindsight_data:

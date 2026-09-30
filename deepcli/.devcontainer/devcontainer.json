@@ -1,0 +1,22 @@
+{
+  "name": "termux-monorepo-hindsight",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "postCreateCommand": "pip install --upgrade pip && pip install ruff httpx && bash ops/hindsight/bootstrap.sh || true",
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-python.python", "redhat.vscode-yaml"]
+    }
+  },
+  "forwardPorts": [8888, 8800],
+  "hostRequirements": {
+    "cpus": 2,
+    "memory": "4gb",
+    "storage": "16gb"
+  },
+  "remoteEnv": {
+    "HINDSIGHT_BASE_URL": "http://localhost:8888"
+  }
+}

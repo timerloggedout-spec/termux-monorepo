@@ -1,0 +1,94 @@
+# ops/routing.yaml — quota-aware execution fabric
+# Principle: every durable unit of work is resumable, attributable,
+# replayable, schedulable onto any currently eligible lane.
+
+principle: >-
+  No lane is authoritative. The corpus lives in Git.
+  A provider loss is a capacity change, not a correctness change.
+
+lanes:
+  local_fts5:
+    cost_usd: 0
+    role: [recall_interactive, cache, offline]
+    capacity: disk-bound
+    always_on: true
+    drain_policy: none
+    circuit_breaker: never
+
+  codespaces:
+    cost_usd: 0
+    free_core_hours_per_month: 120
+    default_machine: 2-core
+    effective_hours: 60
+    role: [retain_batch_burst, index_rebuild, embedding_backfill]
+    always_on: false
+    drain_policy: export_to_git_before_stop
+    circuit_breaker: on_quota_exhausted
+
+  termux_native:
+    cost_usd: 0
+    role: [orchestration, control_plane, sdk_probe, recall_keyword]
+    capacity: device-bounded
+    always_on: true
+    circuit_breaker: on_mem_pressure_below_400mb
+
+  cloud_paid:
+    cost_usd_per_m_tokens_retain: 10.00
+    cost_usd_per_m_tokens_recall: 0.75
+    cost_usd_per_reflect_call: 0.05
+    role: [recall_interactive_fallback, reflect_fallback]
+    capacity: credit_balance
+    circuit_breaker: on_402
+
+routing_policy:
+  retain:    [local_fts5, codespaces, cloud_paid]
+  recall:    [local_fts5, codespaces, cloud_paid]
+  reflect:   [codespaces, cloud_paid]
+  embedding: [codespaces]
+
+hard_invariants:
+  - id: no_authoritative_lane
+    desc: Corpus + manifests live in Git; no lane owns source-of-truth.
+  - id: deterministic_items
+    desc: >
+      Every retained item carries {source_id, content_sha256, git_commit,
+      chunk_id, corpus_version} so replay is idempotent.
+  - id: circuit_break_on_cost
+    desc: 402/429/quota-exhausted demotes lane; queued intent preserved.
+  - id: export_before_migration
+    desc: No schema/provider change without prior bank export committed.
+  - id: lease_expiry
+    desc: Dead lane's in-flight work requeues after TTL.
+
+provider_registry:
+  codespaces:
+    status: accepted
+    eligibility:
+      card_required: false
+      public_https: true
+      arch: amd64
+      docker_supported: true
+    reject_reasons: []
+  oracle_ampere:
+    status: rejected
+    eligibility: {card_required: true, business_email_required: true}
+    reject_reasons: [payment_method_required, business_email_required]
+  koyeb:
+    status: rejected
+    eligibility: {card_required: true, free_tier_retired: true}
+    reject_reasons: [payment_method_required, insufficient_free_capacity]
+  fly_io:
+    status: rejected
+    eligibility: {card_required: true}
+    reject_reasons: [payment_method_required]
+
+provider_selection:
+  hard_constraints:
+    - no_payment_method_required
+    - public_https_or_ssh
+    - environment_secrets
+  soft_preferences:
+    - remaining_quota_desc
+    - stable_storage
+    - lower_cold_start
+    - healthy_last_24h

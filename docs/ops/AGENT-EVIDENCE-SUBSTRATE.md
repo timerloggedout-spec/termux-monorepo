@@ -380,3 +380,13 @@ Explicit operator/policy decision; no implicit merge or promotion.
 - no secret material in telemetry/artifacts
 - no automatic rerun merely to improve dashboard appearance
 - no promotion inferred from queued/in-progress status
+
+## 2026-09-29 briefing upgrade bindings
+
+The daily briefing now has explicit evidence contracts for three previously implicit dimensions:
+
+- `docs/ops/MCP-ADMISSION-EVIDENCE.schema.json` binds MCP server/tool admission to provenance, authorization, schema hashing, and policy evidence.
+- `docs/ops/EDGE-INFERENCE-EVIDENCE.schema.json` binds ARM/Android/local inference measurements to device ABI, model/runtime provenance, memory, latency, thermal, energy, offline state, and fallback.
+- `docs/ops/MANAGER-TOURNAMENT.schema.json` binds manager-policy comparison to a pinned task cohort, environment fingerprint, policy hashes, repetitions, and evaluation contract.
+
+These are observational/evaluation contracts. They do not replace correctness gates, create a vendor source of truth, or infer missing values.

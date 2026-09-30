@@ -1,4 +1,4 @@
-"""cli: python3 -m ml.pipelines.cli <status|run|lanes|cctv|matrix|explain|gate>"""
+"""cli: python3 -m ml.pipelines.cli <status|run|lanes|cctv|matrix|center|bind|drift|extract-plan|explain|gate>"""
 from __future__ import annotations
 
 import argparse
@@ -6,6 +6,10 @@ import json
 import sys
 from typing import Any
 
+from ml.pipelines.command_center.bind import bind
+from ml.pipelines.command_center.drift import drift_report
+from ml.pipelines.command_center.extract import plan_many
+from ml.pipelines.command_center.hub import emit_hub
 from ml.pipelines.contracts.gate import assert_promotable, block_reasons
 from ml.pipelines.lanes.classify import classify_pr
 from ml.pipelines.lib.engine import run_dag, summarize
@@ -34,6 +38,7 @@ def cmd_status(_: argparse.Namespace) -> int:
         "session": payload.get("session"),
         "fixture": latest_session_path().name,
         "vocab": ["EXTRACT", "CANDIDATE", "NEED_EVIDENCE", "SUPERSEDE"],
+        "version": "0.6.0",
     }, indent=2))
     return 0
 
@@ -41,7 +46,7 @@ def cmd_status(_: argparse.Namespace) -> int:
 def cmd_run(_: argparse.Namespace) -> int:
     context: dict[str, Any] = {"snapshot": _fixture()}
     results = run_dag(STAGES, context)
-    print(json.dumps({"summary": summarize(results), "lanes": context.get("lanes", []), "counts": context.get("lane_counts")}, indent=2))
+    print(json.dumps({"summary": summarize(results), "lanes": context.get("lanes", []), "counts": context.get("lane_counts"), "hub": context.get("hub", {}).get("kind")}, indent=2))
     return 0
 
 
@@ -61,6 +66,31 @@ def cmd_cctv(_: argparse.Namespace) -> int:
 
 def cmd_matrix(_: argparse.Namespace) -> int:
     print(json.dumps(PRIORITY, indent=2))
+    return 0
+
+
+def cmd_center(_: argparse.Namespace) -> int:
+    print(json.dumps(emit_hub(_fixture()), indent=2))
+    return 0
+
+
+def cmd_bind(_: argparse.Namespace) -> int:
+    payload = _fixture()
+    checks = payload.get("checks") or [
+        {"name": "repo gate", "conclusion": "success"},
+        {"name": "termux smoke", "conclusion": "success"},
+    ]
+    print(json.dumps(bind(str(payload.get("master_sha") or ""), checks), indent=2))
+    return 0
+
+
+def cmd_drift(_: argparse.Namespace) -> int:
+    print(json.dumps(drift_report(_fixture()["prs"]), indent=2))
+    return 0
+
+
+def cmd_extract_plan(_: argparse.Namespace) -> int:
+    print(json.dumps(plan_many(_fixture()["prs"]), indent=2))
     return 0
 
 
@@ -103,6 +133,10 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("lanes").set_defaults(fn=cmd_lanes)
     sub.add_parser("cctv").set_defaults(fn=cmd_cctv)
     sub.add_parser("matrix").set_defaults(fn=cmd_matrix)
+    sub.add_parser("center").set_defaults(fn=cmd_center)
+    sub.add_parser("bind").set_defaults(fn=cmd_bind)
+    sub.add_parser("drift").set_defaults(fn=cmd_drift)
+    sub.add_parser("extract-plan").set_defaults(fn=cmd_extract_plan)
     sub.add_parser("dag").set_defaults(fn=cmd_dag)
     explain_p = sub.add_parser("explain")
     explain_p.add_argument("number")

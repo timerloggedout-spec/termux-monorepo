@@ -11,7 +11,9 @@
     "preserve_confidence": true,
     "preserve_unresolved_questions": true,
     "permit_external_research_lanes": true,
-    "require_canonical_source": true
+    "require_canonical_source": true,
+    "preserve_evidence_status": true,
+    "require_version_or_commit": true
   },
   "resource_families": [
     {
@@ -91,6 +93,30 @@
       "name": "Software provenance / supply chain",
       "role": "SBOM, signatures, reproducible builds and dependency risk",
       "url": "https://slsa.dev/"
+    },
+    {
+      "id": "mcp_security",
+      "name": "MCP security/admission provenance",
+      "role": "tool identity, authorization, schema admission and audit evidence",
+      "url": "https://github.com/modelcontextprotocol"
+    },
+    {
+      "id": "orchbench",
+      "name": "OrchBench",
+      "role": "deterministic multi-agent orchestration-plan evaluation",
+      "url": "https://arxiv.org/abs/2607.25656"
+    },
+    {
+      "id": "nisto_ir8536",
+      "name": "NIST IR 8536",
+      "role": "interoperable provenance and traceability policy input",
+      "url": "https://csrc.nist.gov/pubs/ir/8536/final"
+    },
+    {
+      "id": "edge_inference_evidence",
+      "name": "Edge inference evidence lane",
+      "role": "ARM/Android/local-runtime reproducibility and energy/memory measurement",
+      "url": "https://github.com/ggml-org/llama.cpp"
     }
   ],
   "source_classes": [

@@ -8,8 +8,8 @@
 #   Gemini:             .github/actions/gemini-quota-gate (RPD counter + RPM via 429)
 #   Tembo:              platform credits; comment when exhausted
 #
-version: 1
-updated_at: "2026-08-07T03:45:00Z"
+version: 2
+updated_at: "2026-09-29T20:37:00Z"
 updated_by: grok
 
 agents:
@@ -221,21 +221,96 @@ agents:
 etiquette:
   - "Before burning a review slot: @coderabbitai rate limit"
   - "On cooldown: do not @coderabbitai full review; wait or use always-on agents"
-  - "Gemini skip comments are green CI; route review to CodeRabbit/Jules"
+  - "Gemini skip comments are green CI; re-run optimized admission across the candidate pool"
   - "Tembo credit exhaustion → human or Jules; do not re-ping Tembo"
   - "Auto-jules workflow already pings @jules on bot feedback — avoid duplicate pings"
 
 routing:
-  review:
-    primary: gemini
-    always_on: [coderabbit]
-    fallback: [coderabbit, devin]
-  build:
-    primary: jules
-    fallback: [tembo, mistral_vibe]
-  fix:
-    primary: jules
-    fallback: [tembo, grok]
-  orchestration:
-    primary: grok
-    fallback: [tembo]
+  invariant: "No provider/model is primary or secondary. Selection is evidence-driven and topology-aware."
+  policy:
+    objective: "maximize integrated outcome subject to correctness, capability, quota, latency, context, conflict, retry, and human-intervention costs"
+    topology_modes: [single, series, dynamic, parallel, nested, co-working, volley]
+    admission_gates: [capability, credential, catalog, health, quota, task_independence, freshness, policy]
+    selection_evidence: [success_matrix, live_catalog, availability_probe, invocation_telemetry, task_outcome, attribution]
+    recovery: "On failure or capacity loss, re-evaluate the candidate set; do not follow a fixed provider chain."
+  roles:
+    review:
+      candidate_pool: [gemini, coderabbit, devin, copilot, openrouter, felo]
+    build:
+      candidate_pool: [jules, tembo, mistral_vibe, gemini, openrouter]
+    fix:
+      candidate_pool: [jules, tembo, grok, gemini, openrouter]
+    orchestration:
+      candidate_pool: [grok, tembo, gemini, openrouter]
+
+
+# External contributor/provider lanes.
+# These records are identity/capability declarations, not GitHub authorship.
+# Provider credentials and account identifiers belong in runtime secret stores only.
+contributor_lanes:
+  - id: gemini
+    display_moniker: geminiMesh
+    kind: provider_agent_ecosystem
+    roles: [review, triage, implementation, research, evaluation]
+    callable_identity: "@gemini-cli"
+    attribution_boundary: "GitHub actor identity remains separate from Gemini/Gemini CLI provenance."
+    adapters: [gemini-cli, gemini-interactions]
+    health_contract: {catalog: true, inference: true, cadence: "6h"}
+
+  - id: openrouter
+    display_moniker: routeMesh
+    kind: provider_catalog
+    roles: [routing, catalog, inference, evaluation, benchmark]
+    callable_identity: "adapter-only"
+    attribution_boundary: "Provider, model, and execution adapter are separate provenance dimensions."
+    adapters: [openrouter-http]
+    health_contract: {catalog: true, inference: true, cadence: "6h"}
+
+  - id: felo
+    display_moniker: feloForge
+    kind: provider_research_inference
+    roles: [research, inference, benchmark, evaluation, adapter]
+    callable_identity: "adapter-only"
+    attribution_boundary: "FELO is a provider lane; account identity and GitHub authorship are separate."
+    adapters: [felo-http]
+    health_contract: {catalog: true, inference: false, cadence: "6h"}
+
+  - id: huggingface
+    display_moniker: hfFoundry
+    kind: hub_model_dataset_evaluation
+    roles: [model, dataset, benchmark, evaluation, inference, research]
+    callable_identity: "adapter-only"
+    attribution_boundary: "Hugging Face Hub identity is separate from repository authorship and model identity."
+    adapters: [huggingface-hub, huggingface-jobs]
+    health_contract: {catalog: true, inference: false, cadence: "6h"}
+
+  - id: contributor_role_coordinator
+    display_moniker: roleMesh
+    kind: orchestration_metadata
+    roles: [evidence, orchestration, documentation, integration]
+    callable_identity: "non-callable"
+    attribution_boundary: "Coordinates role/provenance metadata; does not imply provider execution."
+
+contributor_role_vocabulary:
+  - research
+  - evaluation
+  - benchmark
+  - inference
+  - routing
+  - catalog
+  - dataset
+  - adapter
+  - review
+  - triage
+  - implementation
+  - integration
+  - documentation
+  - evidence
+  - orchestration
+  - classification
+  - admission
+  - availability
+  - routing_policy
+  - experiment_design
+  - topology
+  - coordination

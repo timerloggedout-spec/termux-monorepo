@@ -122,8 +122,10 @@ impl DashboardState {
                 if let Some(current) = self.streams.get_mut(update.stream) {
                     let changed = *current != update;
                     *current = update;
-                    let throughput = self.streams.iter().map(|s| s.throughput).sum();
-                    push_history(&mut self.throughput_history, throughput);
+                    if update.stream == STREAM_COUNT.saturating_sub(1) {
+                        let throughput = self.streams.iter().map(|s| s.throughput).sum();
+                        push_history(&mut self.throughput_history, throughput);
+                    }
                     changed
                 } else {
                     false
@@ -214,11 +216,32 @@ mod tests {
     }
 
     #[test]
+    fn throughput_history_samples_once_per_stream_batch() {
+        let mut app = DashboardState::new();
+
+        for stream in 0..STREAM_COUNT {
+            assert!(app.apply(AppEvent::Stream(StreamUpdate {
+                stream,
+                latency_ms: 10,
+                throughput: (stream as u64) + 1,
+                active: true,
+            })));
+        }
+
+        assert_eq!(app.throughput_history.len(), 1);
+        assert_eq!(
+            app.throughput_history.back().copied(),
+            Some((1..=STREAM_COUNT as u64).sum())
+        );
+    }
+
+    #[test]
     fn history_is_bounded() {
         let mut app = DashboardState::new();
         for cpu in 0..(HISTORY_LEN + 10) {
             app.apply(AppEvent::Metrics(snapshot(cpu as u8)));
         }
         assert_eq!(app.cpu_history.len(), HISTORY_LEN);
+        assert_eq!(app.throughput_history.len(), HISTORY_LEN);
     }
 }

@@ -112,6 +112,15 @@ VARIANT_INDEX = _build_variant_index(CANONICAL_TOKENS)
 # Build ASCII case-insensitive Trie regex without re.IGNORECASE to avoid Unicode case-folding overhead
 VARIANT_REGEX = re.compile(_build_trie_regex(VARIANT_INDEX.keys()))
 
+# Module-level set of eligible leet characters
+ELIGIBLE_LEET_CHARS = set(LEET_MAP.keys())
+# Precompute set of token variants that contain zero eligible leet substitution characters.
+# For these invariant tokens (e.g., pr0b3, h4x, 3ch0), _replace_leet_default short-circuits instantly,
+# bypassing character iteration, list allocations, and random number generator evaluations.
+VARIANTS_WITH_NO_ELIGIBLE = {
+    v for v in VARIANT_INDEX.keys()
+    if not any(c in ELIGIBLE_LEET_CHARS for c in v.lower())
+}
 
 def _from_1337_replace(match: re.Match[str]) -> str:
     """Top-level replacement callback for normalization back to canonical tokens."""
@@ -126,6 +135,9 @@ def _replace_leet_100(match: re.Match[str]) -> str:
 def _replace_leet_default(match: re.Match[str]) -> str:
     """Top-level replacement callback for default 0.70 probability and unseeded RNG."""
     token = match.group(0)
+    # Fast-path O(1) guard: short-circuit if token contains no eligible leet characters
+    if token.lower() in VARIANTS_WITH_NO_ELIGIBLE:
+        return token
     chars = list(token)
     for i, char in enumerate(chars):
         replacement = LEET_MAP.get(char.lower())

@@ -294,7 +294,10 @@ def execute(call):
         return f"ERROR unknown tool: {fn}"
     try:
         return h(args)
+    except (PermissionError, FileNotFoundError) as e:
+        return f"BLOCKED: {type(e).__name__}: {e}"
     except Exception as e:
+        _log_tool_error(fn, args, e)
         return f"ERROR {type(e).__name__}: {e}"
 
 _RATELIMIT_MARKERS = (

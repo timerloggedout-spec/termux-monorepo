@@ -1,10 +1,9 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-30T16:25:05Z UTC · receipts=636 · foreign_open=24 · tributes=59_
+_Generated 2026-09-30T19:13:01Z UTC · receipts=660 · foreign_open=24 · tributes=59_
 
 ## Tributes (contributor ledger)
 
-- [laugh-tales/starpass-contracts#59](https://github.com/laugh-tales/starpass-contracts/pull/59) · state=open · help-wanted: stake + contribute for #28
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -20,7 +19,6 @@ _Generated 2026-09-30T16:25:05Z UTC · receipts=636 · foreign_open=24 · tribut
 - [Heliobond/frontend#614](https://github.com/Heliobond/frontend/pull/614) · state=open · help-wanted: stake + contribute for #587
 - [EF-CHAIN/SendAm#607](https://github.com/EF-CHAIN/SendAm/pull/607) · state=open · help-wanted: stake + contribute for #538
 - [SO4-Markets/so4-oracle#1143](https://github.com/SO4-Markets/so4-oracle/pull/1143) · state=open · help-wanted: stake + contribute for #906
-- [Agora-Events/agora#1518](https://github.com/Agora-Events/agora/pull/1518) · state=closed · help-wanted: stake + contribute for #1423
 - [StellarLock/StellarLock#865](https://github.com/StellarLock/StellarLock/pull/865) · state=open · help-wanted: stake + contribute for #721
 - [StayLitCodes/Vaultix#711](https://github.com/StayLitCodes/Vaultix/pull/711) · state=open · help-wanted: stake + contribute for #706
 - [KayStcx/KayStcx#104](https://github.com/KayStcx/KayStcx/pull/104) · state=open · help-wanted: stake + contribute for #85
@@ -28,8 +26,10 @@ _Generated 2026-09-30T16:25:05Z UTC · receipts=636 · foreign_open=24 · tribut
 - [OBLIQ-in/OBLIQ-Website#39](https://github.com/OBLIQ-in/OBLIQ-Website/pull/39) · state=open · help-wanted: stake + contribute for #12
 - [TrusTrove/TrusTrove-contract#860](https://github.com/TrusTrove/TrusTrove-contract/pull/860) · state=open · help-wanted: stake + contribute for #836
 - [StellarCanary/Protocol-Canary#345](https://github.com/StellarCanary/Protocol-Canary/pull/345) · state=open · help-wanted: stake + contribute for #295
-- [tarantool/tarantool#13285](https://github.com/tarantool/tarantool/pull/13285) · state=closed · help-wanted: stake + contribute for #13284
 - [Vikram-sardiwal/react-open-source#50](https://github.com/Vikram-sardiwal/react-open-source/pull/50) · state=open · help-wanted: stake + contribute for #16
+- [laugh-tales/starpass-contracts#59](https://github.com/laugh-tales/starpass-contracts/pull/59) · state=open · help-wanted: stake + contribute for #28
+- [Agora-Events/agora#1518](https://github.com/Agora-Events/agora/pull/1518) · state=closed · help-wanted: stake + contribute for #1423
+- [tarantool/tarantool#13285](https://github.com/tarantool/tarantool/pull/13285) · state=closed · help-wanted: stake + contribute for #13284
 - [inferstep/ATLAS#278](https://github.com/inferstep/ATLAS/pull/278) · state=closed · help-wanted: stake + contribute for #277
 - [bmad-code-org/bmad-loop#819](https://github.com/bmad-code-org/bmad-loop/pull/819) · state=closed · help-wanted: stake + contribute for #780
 - [Hugelidus/Pointcast#48](https://github.com/Hugelidus/Pointcast/pull/48) · state=closed · help-wanted: stake + contribute for #45
@@ -72,6 +72,6 @@ _Generated 2026-09-30T16:25:05Z UTC · receipts=636 · foreign_open=24 · tribut
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=636 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 550, 'followup_reengage': 19, 'followup_stale_nudge': 18, 'followup_changes': 1}`
+## Outcomes · ok=660 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 574, 'followup_reengage': 19, 'followup_stale_nudge': 18, 'followup_changes': 1}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

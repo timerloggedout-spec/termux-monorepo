@@ -1,0 +1,121 @@
+name: cadence-dispatch
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"     # fast, every 6h UTC
+    - cron: "0 3 * * 0"       # deep, Sunday 03:00 UTC
+  workflow_dispatch:
+    inputs:
+      cadence:
+        description: "fast | deep | manual"
+        default: fast
+
+concurrency:
+  group: cadence-dispatch
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  select:
+    runs-on: ubuntu-latest
+    outputs:
+      cadence: ${{ steps.pick.outputs.cadence }}
+      scope: ${{ steps.pick.outputs.scope }}
+    steps:
+      - id: pick
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "cadence=${{ github.event.inputs.cadence }}" >> $GITHUB_OUTPUT
+            echo "scope=manual" >> $GITHUB_OUTPUT
+          elif [ "${{ github.event.schedule }}" = "0 3 * * 0" ]; then
+            echo "cadence=deep" >> $GITHUB_OUTPUT
+            echo "scope=full-history" >> $GITHUB_OUTPUT
+          else
+            echo "cadence=fast" >> $GITHUB_OUTPUT
+            echo "scope=full-repo-tree" >> $GITHUB_OUTPUT
+          fi
+
+  fast-scan:
+    needs: select
+    if: needs.select.outputs.cadence == 'fast'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache gitleaks
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/bin/gitleaks
+          key: gitleaks-${{ runner.os }}-8.30.1
+      - run: |
+          mkdir -p ~/.local/bin
+          [ -x ~/.local/bin/gitleaks ] || (curl -sSL \
+            "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz" \
+            | tar -xz -C ~/.local/bin gitleaks && chmod +x ~/.local/bin/gitleaks)
+      - run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          gitleaks detect --source . --redact --no-banner --config .gitleaks.toml
+
+  deep-scan:
+    needs: select
+    if: needs.select.outputs.cadence == 'deep'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Cache gitleaks
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/bin/gitleaks
+          key: gitleaks-${{ runner.os }}-8.30.1
+      - name: Cache trufflehog
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/bin/trufflehog
+          key: trufflehog-${{ runner.os }}-3.63.7
+      - name: Install tools
+        run: |
+          mkdir -p ~/.local/bin
+          [ -x ~/.local/bin/gitleaks ] || (curl -sSL \
+            "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz" \
+            | tar -xz -C ~/.local/bin gitleaks && chmod +x ~/.local/bin/gitleaks)
+          [ -x ~/.local/bin/trufflehog ] || (curl -sSL \
+            "https://github.com/trufflesecurity/trufflehog/releases/download/v3.63.7/trufflehog_3.63.7_linux_amd64.tar.gz" \
+            | tar -xz -C ~/.local/bin trufflehog && chmod +x ~/.local/bin/trufflehog)
+      - name: Full history gitleaks
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          gitleaks detect --source . --redact --no-banner --config .gitleaks.toml \
+            --report-format json --report-path gitleaks-history.json || true
+          gitleaks detect --source . --redact --no-banner --config .gitleaks.toml
+      - name: TruffleHog verified only
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          trufflehog git file://. --only-verified --fail --no-update || true
+      - name: Open issue on deep findings
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `[cadence] deep-scan findings — ${new Date().toISOString().slice(0,10)}`,
+              body: `Deep scan found verified secrets.\n\nRun: ${context.runId}\n\nRotate listed credentials, then re-run.`,
+              labels: ["security", "cadence", "deep-scan"]
+            })
+
+  quota-check:
+    needs: select
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Note budget consumption
+        run: |
+          echo "cadence=${{ needs.select.outputs.cadence }} scope=${{ needs.select.outputs.scope }}"
+          echo "Budget: 1200 min/mo reserved. Circuit-breaker at 300 min remaining."

@@ -1,0 +1,32 @@
+title = "termux-monorepo secret scanning"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Docs, test fixtures, session transcripts"
+paths = [
+  '''session_store/.*\.json''',
+  '''.*\.md$''',
+  '''docs/.*''',
+  '''agent_workspaces/.*''',
+  '''.*test.*\.py$''',
+]
+regexes = [
+  '''ghp_xxxxxxxx+''',
+  '''test-token-\d+''',
+  '''Bearer eyJ[A-Za-z0-9_\-\.]+\.test''',
+]
+
+[[rules]]
+id = "internal-hindsight-key"
+description = "Hindsight hsk_ keys"
+regex = '''hsk_[a-z0-9_]{20,}'''
+entropy = 3.5
+tags = ["hindsight", "credential"]
+
+[[rules]]
+id = "internal-termux-pat"
+description = "Fine-grained GitHub PAT"
+regex = '''github_pat_[A-Za-z0-9_]{20,}'''
+tags = ["github", "credential"]

@@ -1,0 +1,39 @@
+min_version: 1.5.0
+
+pre-commit:
+  parallel: true
+  commands:
+    secrets:
+      tags: secrets
+      run: gitleaks protect --staged --redact --no-banner --config .gitleaks.toml
+      fail_text: "Secret detected. Rotate and re-stage."
+    secrets-entropy:
+      tags: secrets
+      run: |
+        changed=$(git diff --cached --name-only --diff-filter=ACM)
+        [ -z "$changed" ] && exit 0
+        python3 scripts/entropy_scan.py $changed
+      fail_text: "High-entropy string. Verify credential."
+    lint-python:
+      glob: "**/*.py"
+      run: ruff check --fix {staged_files} && git add {staged_files}
+    fmt-yaml:
+      glob: "**/*.{yml,yaml}"
+      run: python3 -c "import yaml,sys;[yaml.safe_load(open(f)) for f in sys.argv[1:]]" {staged_files}
+
+commit-msg:
+  commands:
+    conventional:
+      run: bash scripts/commit-msg.sh {1}
+
+pre-push:
+  parallel: true
+  commands:
+    trufflehog:
+      run: |
+        trufflehog git file://. --since-commit HEAD --results=verified,unknown --fail --no-update
+      fail_text: "TruffleHog found verified secrets."
+
+skip_output:
+  - meta
+  - execution

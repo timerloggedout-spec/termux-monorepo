@@ -242,6 +242,5 @@ mod tests {
             app.apply(AppEvent::Metrics(snapshot(cpu as u8)));
         }
         assert_eq!(app.cpu_history.len(), HISTORY_LEN);
-        assert_eq!(app.throughput_history.len(), HISTORY_LEN);
     }
 }

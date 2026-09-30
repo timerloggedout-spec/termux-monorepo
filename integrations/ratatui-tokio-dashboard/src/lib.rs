@@ -121,12 +121,16 @@ impl DashboardState {
                 changed
             }
             AppEvent::Stream(update) => {
-                if let Some(current) = self.streams.get_mut(update.stream) {
+                let stream_id = update.stream;
+                if let Some(current) = self.streams.get_mut(stream_id) {
                     let changed = *current != update;
                     *current = update;
-                    if update.stream == STREAM_COUNT.saturating_sub(1) {
+                    self.stream_batch_mask |= 1u8 << stream_id;
+                    let all_streams = (1u8 << STREAM_COUNT) - 1;
+                    if self.stream_batch_mask == all_streams {
                         let throughput = self.streams.iter().map(|s| s.throughput).sum();
                         push_history(&mut self.throughput_history, throughput);
+                        self.stream_batch_mask = 0;
                     }
                     changed
                 } else {

@@ -1,15 +1,15 @@
-name: Hindsight Deploy (Fly.io)
+name: Hindsight Deploy (Koyeb)
 
 on:
   workflow_dispatch:
     inputs:
       action:
-        description: 'deploy | destroy | status | logs'
+        description: 'deploy | destroy | status'
         required: false
         default: 'deploy'
   push:
     paths:
-      - 'deploy/fly/fly.toml'
+      - 'deploy/koyeb/**'
       - '.github/workflows/koyeb-hindsight-deploy.yml'
     branches: [master]
 
@@ -25,57 +25,89 @@ jobs:
     runs-on: ubuntu-latest
     environment: hindsight-prod
     env:
-      FLY_API_TOKEN: ${{ secrets.FLY_IO_ORG_TOKEN }}
-      FLY_ORG: personal
+      KOYEB_TOKEN: ${{ secrets.KOYEB_API_TOKEN }}
       APP_NAME: hindsight-deepagent
-      REGION: sjc
+      REGION: was
+      IMAGE: ghcr.io/vectorize-io/hindsight:0.5.1
 
     steps:
       - uses: actions/checkout@v4
 
-      - uses: superfly/flyctl-actions/setup-flyctl@master
-        with:
-          version: latest
-
       - name: Whoami
-        run: flyctl auth whoami
-
-      - name: Ensure app exists
         run: |
-          flyctl apps list | awk 'NR>1 {print $1}' | grep -qx "$APP_NAME" \
-            || flyctl apps create "$APP_NAME" --org "$FLY_ORG"
+          curl -sf -H "Authorization: Bearer $KOYEB_TOKEN" \
+            https://app.koyeb.com/v1/account | jq -r '.user.email // .organization.name'
 
-      - name: Ensure volume exists
+      - name: Check if app exists
+        id: check
         run: |
-          flyctl volumes list -a "$APP_NAME" | grep -q hindsight_data \
-            || flyctl volumes create hindsight_data --size 1 --region "$REGION" --yes -a "$APP_NAME"
+          exists=$(curl -sf -H "Authorization: Bearer $KOYEB_TOKEN" \
+            "https://app.koyeb.com/v1/apps?name=$APP_NAME" | jq -r '.apps | length')
+          echo "exists=$exists" >> $GITHUB_OUTPUT
 
-      - name: Push secrets
+      - name: Create app + service
+        if: steps.check.outputs.exists == '0'
         run: |
-          flyctl secrets set -a "$APP_NAME" \
-            HINDSIGHT_API_LLM_API_KEY="${{ secrets.OPENROUTER_API_KEY }}" \
-            HINDSIGHT_API_EMBEDDINGS_GOOGLE_API_KEY="${{ secrets.GEMINI_API_KEY }}" \
-            --stage
+          cat > /tmp/payload.json <<'JSON'
+          {
+            "app": {
+              "name": "hindsight-deepagent"
+            },
+            "service": {
+              "name": "api",
+              "type": "WEB",
+              "regions": ["was"],
+              "instance_types": [{"type": "free"}],
+              "ports": [{"port": 8888, "protocol": "http"}],
+              "routes": [{"path": "/", "port": 8888}],
+              "health_checks": [{"path": "/health", "port": 8888, "grace_period": 30}],
+              "docker": {"image": "ghcr.io/vectorize-io/hindsight:0.5.1"},
+              "env": [
+                {"key": "HINDSIGHT_API_PORT", "value": "8888"},
+                {"key": "HINDSIGHT_API_HOST", "value": "0.0.0.0"},
+                {"key": "HINDSIGHT_API_LLM_PROVIDER", "value": "openrouter"},
+                {"key": "HINDSIGHT_API_LLM_MODEL", "value": "meta-llama/llama-3.1-8b-instruct:free"},
+                {"key": "HINDSIGHT_API_LLM_API_KEY", "value": "${{ secrets.OPENROUTER_API_KEY }}"},
+                {"key": "HINDSIGHT_API_EMBEDDINGS_PROVIDER", "value": "google"},
+                {"key": "HINDSIGHT_API_EMBEDDINGS_MODEL", "value": "gemini-embedding-001"},
+                {"key": "HINDSIGHT_API_EMBEDDINGS_GOOGLE_API_KEY", "value": "${{ secrets.GEMINI_API_KEY }}"},
+                {"key": "HINDSIGHT_API_RERANKER_PROVIDER", "value": "rrf"}
+              ]
+            }
+          }
+          JSON
+          curl -sf -X POST "https://app.koyeb.com/v1/apps" \
+            -H "Authorization: Bearer $KOYEB_TOKEN" \
+            -H "Content-Type: application/json" \
+            --data-binary @/tmp/payload.json | jq -r '.app.name, .service.name'
 
-      - name: Deploy
-        run: flyctl deploy --remote-only -a "$APP_NAME" --config deploy/fly/fly.toml
+      - name: Get service URL
+        id: url
+        run: |
+          url=$(curl -sf -H "Authorization: Bearer $KOYEB_TOKEN" \
+            "https://app.koyeb.com/v1/apps/$APP_NAME" | \
+            jq -r '.app.domains[0].name // empty')
+          if [ -z "$url" ]; then
+            url="$APP_NAME.koyeb.app"
+          fi
+          echo "url=https://$url" >> $GITHUB_OUTPUT
 
       - name: Wait for health
         run: |
-          for i in $(seq 1 30); do
-            url="https://${APP_NAME}.fly.dev/health"
-            if curl -sf --max-time 5 "$url" >/dev/null 2>&1; then
-              echo "✓ healthy: $url"
+          URL="${{ steps.url.outputs.url }}/health"
+          for i in $(seq 1 40); do
+            if curl -sf --max-time 5 "$URL" >/dev/null 2>&1; then
+              echo "✓ healthy: $URL"
               exit 0
             fi
-            echo "  …($i/30) waiting"
+            echo "  …($i/40) waiting"
             sleep 6
           done
           echo "✗ health check never passed"; exit 1
 
       - name: Report
         run: |
-          echo "## Hindsight deployed" >> $GITHUB_STEP_SUMMARY
-          echo "- URL: https://${APP_NAME}.fly.dev" >> $GITHUB_STEP_SUMMARY
-          echo "- Dashboard: https://${APP_NAME}.fly.dev:9999" >> $GITHUB_STEP_SUMMARY
-          echo "- Region: ${REGION}" >> $GITHUB_STEP_SUMMARY
+          echo "## Hindsight deployed on Koyeb" >> $GITHUB_STEP_SUMMARY
+          echo "- URL: ${{ steps.url.outputs.url }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Region: $REGION" >> $GITHUB_STEP_SUMMARY
+          echo "- Image: $IMAGE" >> $GITHUB_STEP_SUMMARY

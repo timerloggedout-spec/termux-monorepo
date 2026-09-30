@@ -1,6 +1,24 @@
 #!/usr/bin/env bash
 set -euo pipefail
-# Bring up Hindsight slim in Docker. Idempotent.
+
+# Ensure docker daemon up
+if ! docker ps >/dev/null 2>&1; then
+  echo "[post-start] starting docker daemon"
+  sudo service docker start 2>&1 | tail -2 || \
+    sudo /usr/local/share/docker-init.sh 2>&1 | tail -5 || true
+  for i in $(seq 1 15); do
+    docker ps >/dev/null 2>&1 && break
+    sleep 2
+  done
+fi
+
+if ! docker ps >/dev/null 2>&1; then
+  echo "[post-start] docker daemon did not start"
+  sudo journalctl -u docker 2>&1 | tail -10 || true
+  exit 1
+fi
+
+# Hindsight
 if ! docker ps --format '{{.Names}}' | grep -q '^hindsight$'; then
   echo "[post-start] launching hindsight slim"
   docker run -d --name hindsight --restart unless-stopped \
@@ -15,7 +33,8 @@ if ! docker ps --format '{{.Names}}' | grep -q '^hindsight$'; then
     ghcr.io/vectorize-io/hindsight:latest-slim
   sleep 6
 fi
-for i in 1 2 3 4 5 6 7 8 9 10; do
+
+for i in $(seq 1 15); do
   if curl -fsS http://localhost:8888/health >/dev/null 2>&1; then
     echo "[post-start] hindsight healthy"
     curl -sS http://localhost:8888/health | head -c 200
@@ -24,4 +43,6 @@ for i in 1 2 3 4 5 6 7 8 9 10; do
   fi
   sleep 2
 done
-echo "[post-start] hindsight not ready; check: docker logs hindsight"
+
+echo "[post-start] hindsight not ready; logs:"
+docker logs hindsight 2>&1 | tail -20

@@ -1,14 +1,14 @@
 {
   "name": "termux-monorepo / hindsight-self-host",
-  "image": "mcr.microsoft.com/devcontainers/universal:2",
-  "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {
-      "version": "latest",
-      "moby": false,
-      "enableNonRootDocker": true
-    }
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "."
   },
-  "hostRequirements": { "cpus": 4, "memory": "8gb", "storage": "32gb" },
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "8gb",
+    "storage": "32gb"
+  },
   "forwardPorts": [8888, 8000, 8800],
   "portsAttributes": {
     "8888": { "label": "hindsight-api", "onAutoForward": "silent" },
@@ -16,7 +16,7 @@
     "8800": { "label": "deepcli-server", "onAutoForward": "silent" }
   },
   "postCreateCommand": "bash .devcontainer/post-create.sh",
-  "postStartCommand": "bash .devcontainer/post-start.sh",
+  "postStartCommand": "sudo service docker start && bash .devcontainer/post-start.sh",
   "remoteEnv": {
     "HINDSIGHT_BASE_URL": "http://localhost:8888",
     "KIMI_LOCAL_URL": "http://localhost:8000",

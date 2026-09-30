@@ -1,23 +1,20 @@
 #!/usr/bin/env bash
 set -euo pipefail
-echo "[post-create] installing toolchain"
-pip install --quiet --upgrade pip
-pip install --quiet ruff httpx pytest
-curl -sSL "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz" \
-  | sudo tar -xz -C /usr/local/bin gitleaks
-sudo chmod +x /usr/local/bin/gitleaks
-gitleaks version
 
-# Pre-seed hindsight api config (values filled from env secrets)
-mkdir -p ~/.hindsight
-cat > ~/.hindsight/env <<'HEOF'
-HINDSIGHT_API_LLM_PROVIDER=${HINDSIGHT_API_LLM_PROVIDER:-gemini}
-HINDSIGHT_API_LLM_MODEL=${HINDSIGHT_API_LLM_MODEL:-gemini-2.0-flash}
-HINDSIGHT_API_LLM_GEMINI_SERVICE_TIER=on_demand
-HINDSIGHT_API_FILE_PARSER=markitdown,iris
-HINDSIGHT_API_FILE_PARSER_ALLOWLIST=markitdown,iris
-HINDSIGHT_API_PORT=8888
-HEOF
-chmod 600 ~/.hindsight/env
+# pip tooling
+python3 -m pip install --quiet --upgrade pip || true
+python3 -m pip install --quiet ruff httpx pytest || true
+
+# gitleaks
+if ! command -v gitleaks >/dev/null 2>&1; then
+  _arch=$(dpkg --print-architecture 2>/dev/null || echo amd64)
+  case "$_arch" in
+    arm64) _gl=arm64 ;;
+    *)     _gl=x64 ;;
+  esac
+  curl -fsSL "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_${_gl}.tar.gz" \
+    | sudo tar -xz -C /usr/local/bin gitleaks || true
+  sudo chmod +x /usr/local/bin/gitleaks 2>/dev/null || true
+fi
 
 echo "[post-create] done"

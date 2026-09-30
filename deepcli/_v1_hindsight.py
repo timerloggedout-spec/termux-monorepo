@@ -39,8 +39,9 @@ from __future__ import annotations
 
 import json
 import os
+from collections.abc import Awaitable, Callable, Mapping, MutableMapping, Sequence
 from dataclasses import dataclass, field
-from typing import Any, Awaitable, Callable, Mapping, MutableMapping, Sequence
+from typing import Any
 
 import httpx
 
@@ -49,9 +50,9 @@ __all__ = [
     "HindsightError",
     "HindsightToolSpec",
     "build_hindsight_tools",
-    "retain",
     "recall",
     "reflect",
+    "retain",
 ]
 
 
@@ -128,7 +129,7 @@ class HindsightClient:
             await self._client.aclose()
         self._client = None
 
-    async def __aenter__(self) -> "HindsightClient":
+    async def __aenter__(self) -> HindsightClient:
         await self._http()
         return self
 

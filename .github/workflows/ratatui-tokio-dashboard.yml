@@ -40,6 +40,9 @@ jobs:
       - name: Format
         run: cargo fmt --check
 
+      - name: Resolve dependency graph
+        run: cargo generate-lockfile
+
       - name: Check
         run: cargo check --locked
 

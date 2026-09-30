@@ -80,7 +80,9 @@ fn read_memory() -> Option<(u64, u64, u8)> {
     let percent = if total == 0 {
         0
     } else {
-        ((used as f64 / total as f64) * 100.0).round().clamp(0.0, 100.0) as u8
+        ((used as f64 / total as f64) * 100.0)
+            .round()
+            .clamp(0.0, 100.0) as u8
     };
     Some((used, total, percent))
 }
@@ -105,7 +107,11 @@ fn read_processes() -> Vec<ProcessInfo> {
             let root = entry.path();
             let command = read_command(&root).unwrap_or_else(|| "unknown".to_string());
             let rss_kb = read_rss_kb(&root).unwrap_or_default();
-            Some(ProcessInfo { pid, command, rss_kb })
+            Some(ProcessInfo {
+                pid,
+                command,
+                rss_kb,
+            })
         })
         .collect::<Vec<_>>();
 

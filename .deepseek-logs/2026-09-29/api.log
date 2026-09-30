@@ -24,3 +24,110 @@ INFO:     2601:205:4b03:5ff0:1d3:17f0:2eaf:17ea:0 - "GET /v1/models HTTP/1.1" 20
 INFO:     2601:205:4b03:5ff0:1d3:17f0:2eaf:17ea:0 - "GET /v1/models HTTP/1.1" 200 OK
 INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
 INFO:     2601:205:4b03:5ff0:1d3:17f0:2eaf:17ea:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     2601:205:4b03:5ff0:1d3:17f0:2eaf:17ea:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     104.30.167.164:0 - "HEAD / HTTP/1.1" 404 Not Found
+INFO:     104.30.167.164:0 - "HEAD / HTTP/1.1" 404 Not Found
+INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     2601:205:4b03:5ff0:1d3:17f0:2eaf:17ea:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     2601:205:4b03:5ff0:1d3:17f0:2eaf:17ea:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     2601:205:4b03:5ff0:1d3:17f0:2eaf:17ea:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "POST /v1/agent HTTP/1.1" 202 Accepted
+Exception in thread Thread-1 (_runner):
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.14/threading.py", line 1082, in _bootstrap_inner
+    self._context.run(self.run)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.14/threading.py", line 1024, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/deepcli/_v1_agent.py", line 100, in _runner
+    argv.append(task)
+    ^^^^
+UnboundLocalError: cannot access local variable 'argv' where it is not associated with a value
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     2601:205:4b03:5ff0:1d3:17f0:2eaf:17ea:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     52.188.86.147:0 - "GET /v1/agent/status/be2220fe5290 HTTP/1.1" 200 OK
+INFO:     73.41.238.183:0 - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     2601:205:4b03:5ff0:1d3:17f0:2eaf:17ea:0 - "GET /v1/models HTTP/1.1" 200 OK

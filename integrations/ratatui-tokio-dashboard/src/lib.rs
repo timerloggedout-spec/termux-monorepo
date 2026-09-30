@@ -1,3 +1,5 @@
+pub mod metrics;
+
 use std::collections::VecDeque;
 use std::time::Instant;
 

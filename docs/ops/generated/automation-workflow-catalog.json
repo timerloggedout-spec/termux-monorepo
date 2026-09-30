@@ -27,7 +27,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "fb6373e3441c908d2ee435cdc7a2c1faec2637e5928f761733fd140fd160e2a4",
+  "source_fingerprint": "429a334bc2bc8e2bf46202dab394e1ea6cdb565221afd74552f78c7770836683",
   "workflow_count": 115,
   "workflows": [
     {
@@ -361,7 +361,10 @@
       ]
     },
     {
-      "action_pins": [],
+      "action_pins": [
+        "actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
       "authority": "read-only-or-advisory",
       "concurrency": "",
       "domain": "agentic-development",

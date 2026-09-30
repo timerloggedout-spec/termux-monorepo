@@ -50,22 +50,24 @@ def posterior(
     admission failures, unknown outcomes, and retries sharing an experiment
     identity must not silently become independent performance failures.
     """
-    belief = BetaBelief(alpha, beta)
+    # Performance Optimization: accumulate alpha and beta directly in local floats
+    # to avoid creating temporary BetaBelief instance allocations per observation.
+    cur_alpha, cur_beta = float(alpha), float(beta)
     seen: set[str] = set()
     for item in observations:
         if item.get("executed") is not True or item.get("attributed") is not True:
             continue
         experiment_id = item.get("experiment_id")
-        if experiment_id and experiment_id in seen:
-            continue
         if experiment_id:
+            if experiment_id in seen:
+                continue
             seen.add(experiment_id)
         outcome = item.get("outcome")
         if outcome is True:
-            belief = belief.update(True)
+            cur_alpha += 1.0
         elif outcome is False:
-            belief = belief.update(False)
-    return belief
+            cur_beta += 1.0
+    return BetaBelief(cur_alpha, cur_beta)
 
 
 def sample_beta(belief: BetaBelief, rng: random.Random) -> float:
@@ -103,9 +105,11 @@ def summarize_candidate(
 ) -> dict[str, Any]:
     belief = posterior(observations)
     rng = random.Random(seed)
+    # Performance Optimization: construct posterior dict directly and count executed observations in
+    # a single generator pass to avoid duplicate multi-pass iteration over observations and dataclass reflection.
     return {
         "candidate": candidate,
-        "posterior": asdict(belief),
+        "posterior": {"alpha": belief.alpha, "beta": belief.beta},
         "posterior_mean": belief.mean,
         "posterior_sd": math.sqrt(belief.variance),
         "thompson_sample": sample_beta(belief, rng),

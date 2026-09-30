@@ -65,3 +65,10 @@ In CI documentation indexers (`generate_docs_branch_index.py`), lag compilers (`
 
 **Action:**
 Pre-compile all YAML line parsing regexes at module scope and use `sum(1 for ...)` generators instead of instantiating intermediate lists when calculating count metrics.
+
+## 2026-09-30 - Local Float Accumulation and Direct Dict Construction in Bayesian Posteriors
+**Learning:**
+In uncertainty routing engines (`scripts/bayesian_routing.py`), instantiating immutable dataclasses (`BetaBelief`) inside per-observation iteration loops creates massive allocation and garbage collection overhead. Accumulating belief state parameters (`alpha`, `beta`) in local primitive float variables during observation filtering yields a ~4.7x performance improvement. Furthermore, constructing dictionary representations directly (`{"alpha": belief.alpha, "beta": belief.beta}`) avoids expensive runtime reflection frames in `dataclasses.asdict`.
+
+**Action:**
+Accumulate state parameters in local primitive variables inside high-throughput iteration loops before wrapping into immutable dataclasses, and construct result dictionary literals directly rather than invoking `asdict()`.

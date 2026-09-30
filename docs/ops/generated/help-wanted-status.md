@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-30T19:13:01Z UTC · receipts=660 · foreign_open=24 · tributes=59_
+_Generated 2026-09-30T21:01:09Z UTC · receipts=660 · foreign_open=25 · tributes=60_
 
 ## Tributes (contributor ledger)
 
+- [arsova-mx/OpenPoker#69](https://github.com/arsova-mx/OpenPoker/pull/69) · state=open · help-wanted: stake + contribute for #67
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -43,10 +44,10 @@ _Generated 2026-09-30T19:13:01Z UTC · receipts=660 · foreign_open=24 · tribut
 - [C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend#587](https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587) · state=closed · help-wanted: stake + contribute for #579
 - [vavallee/bindery#2770](https://github.com/vavallee/bindery/pull/2770) · state=closed · help-wanted: stake + contribute for #2769
 - [ApexChainx/ApexChainx-Contracts#689](https://github.com/ApexChainx/ApexChainx-Contracts/pull/689) · state=closed · help-wanted: stake + contribute for #659
-- [infagent/merl#43](https://github.com/infagent/merl/pull/43) · state=closed · help-wanted: stake + contribute for #42
 
 ## Foreign open PRs
 
+- [arsova-mx/OpenPoker#69](https://github.com/arsova-mx/OpenPoker/pull/69) — help-wanted: stake + contribute for #67
 - [laugh-tales/starpass-contracts#59](https://github.com/laugh-tales/starpass-contracts/pull/59) — help-wanted: stake + contribute for #28
 - [Vikram-sardiwal/react-open-source#50](https://github.com/Vikram-sardiwal/react-open-source/pull/50) — help-wanted: stake + contribute for #16
 - [StellarCanary/Protocol-Canary#345](https://github.com/StellarCanary/Protocol-Canary/pull/345) — help-wanted: stake + contribute for #295

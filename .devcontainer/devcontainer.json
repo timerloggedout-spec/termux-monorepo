@@ -1,13 +1,14 @@
 {
   "name": "termux-monorepo / hindsight-self-host",
-  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:2": {
       "version": "latest",
-      "enableNonRootDocker": "true"
+      "moby": false,
+      "enableNonRootDocker": true
     }
   },
-  "hostRequirements": { "cpus": 2, "memory": "4gb", "storage": "16gb" },
+  "hostRequirements": { "cpus": 4, "memory": "8gb", "storage": "32gb" },
   "forwardPorts": [8888, 8000, 8800],
   "portsAttributes": {
     "8888": { "label": "hindsight-api", "onAutoForward": "silent" },
@@ -16,23 +17,14 @@
   },
   "postCreateCommand": "bash .devcontainer/post-create.sh",
   "postStartCommand": "bash .devcontainer/post-start.sh",
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "ms-python.python",
-        "redhat.vscode-yaml",
-        "timonwong.shellcheck"
-      ]
-    }
-  },
   "remoteEnv": {
     "HINDSIGHT_BASE_URL": "http://localhost:8888",
     "KIMI_LOCAL_URL": "http://localhost:8000",
     "HINDSIGHT_API_LLM_PROVIDER": "gemini"
   },
   "secrets": {
-    "HINDSIGHT_API_LLM_API_KEY": { "description": "Google AI Studio key for Gemini free tier" },
-    "HINDSIGHT_API_KEY":          { "description": "Existing cloud key (read-only fallback)" },
-    "MOONSHOT_REFRESH_TOKEN":     { "description": "Kimi refresh_token from browser LocalStorage" }
+    "HINDSIGHT_API_LLM_API_KEY": { "description": "Google AI Studio key" },
+    "HINDSIGHT_API_KEY":          { "description": "Existing cloud key" },
+    "MOONSHOT_REFRESH_TOKEN":     { "description": "Kimi refresh_token" }
   }
 }

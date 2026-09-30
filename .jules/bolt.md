@@ -58,3 +58,10 @@ When polling high-volume provider model catalogs, executing float conversions (`
 
 **Action:**
 Use fast-path string/int checks before float conversions in catalog pricing loops, and precompute secret environment lookup tuples at module load time.
+
+## 2026-09-29 - Generator-Based Aggregation and Single-Pass Regex Parsing in Index & Lag Compilers
+**Learning:**
+In CI documentation indexers (`generate_docs_branch_index.py`), lag compilers (`calculate_lag_index.py`), and Scout mission proposal generators (`scout_missions.py`), executing inline regex compilation inside per-line iteration loops and creating intermediate list comprehensions (`[r for r in candidates if ...]`) solely for `len()` calls introduces unnecessary frame and memory allocation overhead. Pre-compiling YAML extraction regexes at module load time and utilizing `sum(1 for ...)` generator expressions eliminates allocation overhead and reduces line iteration runtime.
+
+**Action:**
+Pre-compile all YAML line parsing regexes at module scope and use `sum(1 for ...)` generators instead of instantiating intermediate lists when calculating count metrics.

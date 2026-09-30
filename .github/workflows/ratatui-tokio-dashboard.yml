@@ -1,0 +1,47 @@
+name: Ratatui Tokio dashboard
+
+on:
+  pull_request:
+    paths:
+      - "integrations/ratatui-tokio-dashboard/**"
+      - ".github/workflows/ratatui-tokio-dashboard.yml"
+  push:
+    branches: [master]
+    paths:
+      - "integrations/ratatui-tokio-dashboard/**"
+      - ".github/workflows/ratatui-tokio-dashboard.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ratatui-tokio-dashboard-\${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: integrations/ratatui-tokio-dashboard
+
+jobs:
+  rust:
+    name: fmt + check + test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install stable Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          components: rustfmt
+
+      - name: Format
+        run: cargo fmt --check
+
+      - name: Check
+        run: cargo check --locked
+
+      - name: Test
+        run: cargo test --locked

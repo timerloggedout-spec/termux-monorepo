@@ -8,7 +8,6 @@ import random
 import sys
 import json
 
-# Add root to path for config import
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from archwiz.config import ARCHWIZ_DIR, LOG_DIR, SESSION_STORE, WORKSPACE_DIR
 
@@ -32,38 +31,35 @@ def banner():
      ██║  ██║██║  ██║╚██████╗██║  ██║╚███╔███╔╝██║███████╗
      ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝ ╚══╝╚══╝ ╚═╝╚══════╝
     """ + N)
-    print(f"{G}\u26a1 ARCHWIZ DASHBOARD \u26a1{N}   {time.strftime('%c')}")
+    print(f"{G}⚡ ARCHWIZ DASHBOARD ⚡{N}   {time.strftime('%c')}")
     try:
         username = os.getlogin()
     except Exception:
         import getpass
         username = getpass.getuser()
     print(f"{W}session: {username}@{os.uname().nodename}{N}")
-    print(C + "\u2500" * 60 + N)
+    print(C + "─" * 60 + N)
 
 def get_pipeline_status():
-    status = f"{G}\u23fa ON{N}" if PIPELINE_ACTIVE else f"{R}\u23fb OFF{N}"
+    status = f"{G}⏺ ON{N}" if PIPELINE_ACTIVE else f"{R}⏸ OFF{N}"
     mode_str = f"[{PIPELINE_MODE}]"
     if PIPELINE_ACTIVE:
         plog = ARCHWIZ_DIR / 'autoexec.log'
         if plog.exists():
             lines = plog.read_text().splitlines()
             for line in reversed(lines):
-                if line.strip() and '\u274c' not in line and '#' not in line:
-                    last = line.strip()[:80]
-                    return f"  {status} {mode_str}  |  {C}{last}{N}"
+                if line.strip() and '❌' not in line and '#' not in line:
+                    return f"  {status} {mode_str}  |  {C}{line.strip()[:80]}{N}"
     return f"  {status} {mode_str}"
 
 def toggle_pipeline(mode=None):
     global PIPELINE_ACTIVE, PIPELINE_MODE
     if mode:
         PIPELINE_MODE = mode
-    
     control_script = ARCHWIZ_DIR / 'listener_control.py'
     if not control_script.exists():
         print(f"{R}Error: {control_script} not found.{N}")
         return
-
     if PIPELINE_ACTIVE:
         subprocess.run(['python3', str(control_script), 'stop'])
         print(f"{R}Pipeline stopped.{N}")
@@ -71,7 +67,7 @@ def toggle_pipeline(mode=None):
     else:
         env = os.environ.copy()
         env['ARCHWIZ_MODE'] = PIPELINE_MODE
-        subprocess.run(['python3', str(control_script), 'start'])
+        subprocess.run(['python3', str(control_script), 'start'], env=env)
         print(f"{G}Pipeline started in {PIPELINE_MODE} mode.{N}")
         PIPELINE_ACTIVE = True
     time.sleep(1)
@@ -80,8 +76,8 @@ def main():
     global PIPELINE_MODE
     banner()
     print(f"  PHASE: {Y}ACTIVE{N}  MODE: {Y}CONSOLIDATED{N}")
-    print(f"{get_pipeline_status()}")
-    print(C + "\u2500" * 60 + N)
+    print(get_pipeline_status())
+    print(C + "─" * 60 + N)
 
     while True:
         print(f"""
@@ -92,20 +88,21 @@ def main():
   {G}[5]{N} Backup State
   {G}[6]{N} Ecosystem Refresh (rebuild + sweep)
   {G}[7]{N} Manage Profiles
-  {G}[8]{N} Linear Sync (novel)
+  {G}[8]{N} Linear Sync
   {G}[9]{N} Timeline Editor
   {G}[10]{N} Task Builder
   {G}[11]{N} Restore Version
   {G}[12]{N} Health Check (dangles + mirror)
   {G}[13]{N} Session Pipeline (import + live)
   {G}[19]{N} Promote Workspace
+  {G}[20]{N} Termux Hyper-Forge Cockpit
   {G}[a]{N} Auto Mode  |  {G}[r]{N} Review Mode  |  {G}[p]{N} Toggle Pipeline
   {G}[0]{N} Quit
 """)
         try:
             choice = input(f"{C}>> {N}").strip().lower()
         except (EOFError, KeyboardInterrupt):
-            print()  # Ensure clean line alignment on interrupt exit
+            print()
             break
 
         if choice == '0':
@@ -134,8 +131,7 @@ def main():
             if not prof_dir.exists():
                 print(f"{Y}No profiles directory found.{N}")
             else:
-                profiles = sorted(f.replace('.json', '') for f in os.listdir(prof_dir) if f.endswith('.json'))
-                for idx, p in enumerate(profiles, 1):
+                for idx, p in enumerate(sorted(f.replace('.json', '') for f in os.listdir(prof_dir) if f.endswith('.json')), 1):
                     print(f"  {G}[{idx}]{N} {p}")
         elif choice == '8':
             subprocess.run(['python3', str(ARCHWIZ_DIR / 'linear_sync.py')])
@@ -154,16 +150,14 @@ def main():
             subprocess.run(['python3', str(ARCHWIZ_DIR / 'import_session.py')])
         elif choice == '19':
             subprocess.run(['python3', str(WORKSPACE_DIR / 'llm_map' / 'promote_workspace.py')])
+        elif choice == '20':
+            subprocess.run([sys.executable, str(ARCHWIZ_DIR / 'termux_cockpit.py')])
         elif choice == 'a':
             toggle_pipeline(mode='auto')
         elif choice == 'r':
             toggle_pipeline(mode='review')
         elif choice == 'p':
             toggle_pipeline()
-        elif choice == '0':
-            break
-
-    # Uniform, delightful exit signature for all exits (choice '0', Ctrl+C, Ctrl+D)
     print(G + random.choice([
         "ArchWiz signing off. Forge well.",
         "Until next cycle. Stay l33T.",

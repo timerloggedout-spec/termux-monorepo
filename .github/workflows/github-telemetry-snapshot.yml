@@ -73,14 +73,16 @@ jobs:
       - name: Summary
         run: |
           set -euo pipefail
+          shopt -s nullglob
           {
             echo "## GitHub telemetry snapshot"
             echo
             echo "Locally reconstructed metrics (not GitHub UI parity claim)."
             echo
-            if ls docs/ops/generated/actions-performance-reconstructed-*.json >/dev/null 2>&1; then
+            FILES=(docs/ops/generated/actions-performance-reconstructed-*.json)
+            if [ ${#FILES[@]} -gt 0 ]; then
               echo '```json'
-              cat docs/ops/generated/actions-performance-reconstructed-*.json | head -c 8000
+              head -c 8000 "${FILES[0]}" || true
               echo
               echo '```'
             else
@@ -102,5 +104,4 @@ jobs:
           git commit -s -m "chore(telemetry): GitHub operational snapshot" \
             -m "Locally reconstructed Actions performance + optional traffic/stats." \
             -m "Agent-Identity: GitHub Actions Telemetry Snapshot"
-          # Push only if on default branch after merge of this workflow; PR branch may lack write
           git push || echo "push skipped (expected on PR branches)"

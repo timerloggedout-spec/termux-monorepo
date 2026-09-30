@@ -99,6 +99,7 @@ def main():
   {G}[12]{N} Health Check (dangles + mirror)
   {G}[13]{N} Session Pipeline (import + live)
   {G}[19]{N} Promote Workspace
+  {G}[20]{N} Termux Hyper-Forge Cockpit
   {G}[a]{N} Auto Mode  |  {G}[r]{N} Review Mode  |  {G}[p]{N} Toggle Pipeline
   {G}[0]{N} Quit
 """)
@@ -154,6 +155,8 @@ def main():
             subprocess.run(['python3', str(ARCHWIZ_DIR / 'import_session.py')])
         elif choice == '19':
             subprocess.run(['python3', str(WORKSPACE_DIR / 'llm_map' / 'promote_workspace.py')])
+        elif choice == '20':
+            subprocess.run(['python3', str(ARCHWIZ_DIR / 'termux_cockpit.py')])
         elif choice == 'a':
             toggle_pipeline(mode='auto')
         elif choice == 'r':

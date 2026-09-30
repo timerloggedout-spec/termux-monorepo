@@ -3,7 +3,7 @@ use std::fs;
 use std::path::Path;
 
 #[derive(Debug, Clone, Copy)]
-struct CpuTimes {
+pub struct CpuTimes {
     total: u64,
     idle: u64,
 }

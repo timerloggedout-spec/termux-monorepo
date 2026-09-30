@@ -236,6 +236,24 @@ mod tests {
     }
 
     #[test]
+    fn throughput_history_is_bounded() {
+        let mut app = DashboardState::new();
+
+        for batch in 0..(HISTORY_LEN + 10) {
+            for stream in 0..STREAM_COUNT {
+                app.apply(AppEvent::Stream(StreamUpdate {
+                    stream,
+                    latency_ms: batch as u64,
+                    throughput: batch as u64 + stream as u64,
+                    active: true,
+                }));
+            }
+        }
+
+        assert_eq!(app.throughput_history.len(), HISTORY_LEN);
+    }
+
+    #[test]
     fn history_is_bounded() {
         let mut app = DashboardState::new();
         for cpu in 0..(HISTORY_LEN + 10) {

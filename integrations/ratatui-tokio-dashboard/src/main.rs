@@ -6,7 +6,7 @@ use std::time::Duration;
 use tokio::sync::mpsc;
 
 use ratatui_tokio_dashboard::{
-    metrics::sample_system, AppEvent, DashboardState, InputAction, StreamUpdate, STREAM_COUNT,
+    AppEvent, DashboardState, InputAction, STREAM_COUNT, StreamUpdate, metrics::sample_system,
 };
 
 struct TerminalGuard;
@@ -204,7 +204,11 @@ fn render(frame: &mut Frame<'_>, app: &DashboardState) {
 fn render_streams(frame: &mut Frame<'_>, app: &DashboardState, area: Rect) {
     let rows = app.streams.iter().map(|stream| {
         let marker = if stream.active { "●" } else { "○" };
-        let selected = if stream.stream == app.selected_stream { ">" } else { " " };
+        let selected = if stream.stream == app.selected_stream {
+            ">"
+        } else {
+            " "
+        };
 
         Row::new(vec![
             format!("{selected}{marker} stream-{}", stream.stream + 1),
@@ -293,8 +297,8 @@ fn render_processes(frame: &mut Frame<'_>, app: &DashboardState, area: Rect) {
 }
 
 fn render_runtime(frame: &mut Frame<'_>, app: &DashboardState, area: Rect) {
-    let split = Layout::vertical([Constraint::Percentage(45), Constraint::Percentage(55)])
-        .split(area);
+    let split =
+        Layout::vertical([Constraint::Percentage(45), Constraint::Percentage(55)]).split(area);
 
     let gauges = Layout::horizontal([Constraint::Percentage(50), Constraint::Percentage(50)])
         .spacing(1)
@@ -308,13 +312,11 @@ fn render_runtime(frame: &mut Frame<'_>, app: &DashboardState, area: Rect) {
     frame.render_widget(cpu, gauges[0]);
 
     let memory = Gauge::default()
-        .block(
-            Block::bordered().title(format!(
-                "MEMORY {} / {} MB",
-                app.memory_used_kb / 1024,
-                app.memory_total_kb / 1024
-            )),
-        )
+        .block(Block::bordered().title(format!(
+            "MEMORY {} / {} MB",
+            app.memory_used_kb / 1024,
+            app.memory_total_kb / 1024
+        )))
         .gauge_style(Style::default().fg(Color::Magenta))
         .label(format!("{}%", app.memory_percent))
         .ratio(f64::from(app.memory_percent) / 100.0);
@@ -354,7 +356,10 @@ fn truncate(value: &str, max: usize) -> String {
         return value.to_string();
     }
 
-    let mut result = value.chars().take(max.saturating_sub(1)).collect::<String>();
+    let mut result = value
+        .chars()
+        .take(max.saturating_sub(1))
+        .collect::<String>();
     result.push('…');
     result
 }

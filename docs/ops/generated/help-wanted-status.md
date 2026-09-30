@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-30T13:37:51Z UTC · receipts=636 · foreign_open=23 · tributes=58_
+_Generated 2026-09-30T15:18:36Z UTC · receipts=636 · foreign_open=24 · tributes=59_
 
 ## Tributes (contributor ledger)
 
+- [laugh-tales/starpass-contracts#59](https://github.com/laugh-tales/starpass-contracts/pull/59) · state=open · help-wanted: stake + contribute for #28
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -43,10 +44,10 @@ _Generated 2026-09-30T13:37:51Z UTC · receipts=636 · foreign_open=23 · tribut
 - [vavallee/bindery#2770](https://github.com/vavallee/bindery/pull/2770) · state=closed · help-wanted: stake + contribute for #2769
 - [ApexChainx/ApexChainx-Contracts#689](https://github.com/ApexChainx/ApexChainx-Contracts/pull/689) · state=closed · help-wanted: stake + contribute for #659
 - [infagent/merl#43](https://github.com/infagent/merl/pull/43) · state=closed · help-wanted: stake + contribute for #42
-- [limelit-co/open#32](https://github.com/limelit-co/open/pull/32) · state=closed · help-wanted: stake + contribute for #31
 
 ## Foreign open PRs
 
+- [laugh-tales/starpass-contracts#59](https://github.com/laugh-tales/starpass-contracts/pull/59) — help-wanted: stake + contribute for #28
 - [Vikram-sardiwal/react-open-source#50](https://github.com/Vikram-sardiwal/react-open-source/pull/50) — help-wanted: stake + contribute for #16
 - [StellarCanary/Protocol-Canary#345](https://github.com/StellarCanary/Protocol-Canary/pull/345) — help-wanted: stake + contribute for #295
 - [TrusTrove/TrusTrove-contract#860](https://github.com/TrusTrove/TrusTrove-contract/pull/860) — help-wanted: stake + contribute for #836

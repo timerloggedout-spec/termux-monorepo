@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "4edc0c69cde19e2493c11963407ad6adf7f18d63180871fdb79b2aef789fb2b9",
-  "workflow_count": 116,
+  "source_fingerprint": "fefeded79b178e000e7134c6c59ba25c60b3d9ce18c96be79722874cabece0b8",
+  "workflow_count": 117,
   "workflows": [
     {
       "action_pins": [
@@ -1755,6 +1755,25 @@
       "path": ".github/workflows/publish-wiki.yml",
       "schedules": [],
       "triggers": [
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "dtolnay/rust-toolchain@02cb101ec7c40f2c49e1d9714d64511d8e1b74de"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: ratatui-tokio-dashboard-\\${{ github.ref }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "rust"
+      ],
+      "name": "Ratatui Tokio dashboard",
+      "path": ".github/workflows/ratatui-tokio-dashboard.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
         "push",
         "workflow_dispatch"
       ]

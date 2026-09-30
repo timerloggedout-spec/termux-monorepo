@@ -1,0 +1,165 @@
+name: DeepSeek Termux Agent
+
+on:
+  issue_comment:
+    types: [created]
+  issues:
+    types: [assigned]
+  pull_request:
+    types: [assigned]
+  workflow_dispatch:
+    inputs:
+      task:
+        description: Task for the agent
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  actions: read
+  checks: read
+
+concurrency:
+  group: dsa-${{ github.event.issue.number || github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  agent:
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@deepseek')) ||
+      (github.event_name == 'issues' && github.event.action == 'assigned') ||
+      (github.event_name == 'pull_request' && github.event.action == 'assigned')
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Build agent payload
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          INPUT_TASK: ${{ github.event.inputs.task }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          ACTOR: ${{ github.actor }}
+          REPO: ${{ github.repository }}
+          REF: ${{ github.ref }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          case "$EVENT_NAME" in
+            workflow_dispatch)
+              TASK="$INPUT_TASK"; NUM=""
+              ;;
+            issue_comment)
+              TASK=$(printf '%s' "$COMMENT_BODY" | awk -F'@deepseek' '{print $2}' | sed 's/^[[:space:]]*//')
+              NUM="$ISSUE_NUMBER"
+              ;;
+            issues)
+              TASK="Handle newly assigned issue #$ISSUE_NUMBER: $ISSUE_TITLE"
+              NUM="$ISSUE_NUMBER"
+              ;;
+            pull_request)
+              TASK="Handle newly assigned PR #$PR_NUMBER: $PR_TITLE"
+              NUM="$PR_NUMBER"
+              ;;
+            *) TASK="unknown trigger"; NUM="" ;;
+          esac
+          jq -n --arg task "$TASK" --arg repo "$REPO" --arg event "$EVENT_NAME" \
+                --arg actor "$ACTOR" --arg num "$NUM" --arg ref "$REF" --arg run "$RUN_URL" \
+                '{task:$task,source:("github:"+$event),context:{repo:$repo,event:$event,actor:$actor,number:$num,ref:$ref,run_url:$run,repo_path_local:"/data/data/com.termux/files/home"}}' \
+            > agent_payload.json
+          cat agent_payload.json
+
+      - name: Start agent
+        id: start
+        env:
+          AGENT_URL: ${{ secrets.DEEPSEEK_AGENT_URL }}
+          AGENT_TOKEN: ${{ secrets.DEEPSEEK_AGENT_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${AGENT_URL:-}" ]; then echo "::error::DEEPSEEK_AGENT_URL not set"; exit 1; fi
+          curl -sS --max-time 30 -X POST "$AGENT_URL/v1/agent" \
+            -H "Authorization: Bearer $AGENT_TOKEN" \
+            -H 'Content-Type: application/json' \
+            --data-binary @agent_payload.json > agent_start.json
+          cat agent_start.json
+          INV=$(jq -r '.invocation_id' agent_start.json)
+          echo "invocation_id=$INV" >> "$GITHUB_OUTPUT"
+
+      - name: Poll for completion
+        env:
+          AGENT_URL: ${{ secrets.DEEPSEEK_AGENT_URL }}
+          AGENT_TOKEN: ${{ secrets.DEEPSEEK_AGENT_TOKEN }}
+          INV: ${{ steps.start.outputs.invocation_id }}
+        run: |
+          set -uo pipefail
+          echo '{"phase":"timeout"}' > agent_status_final.json
+          for i in $(seq 1 180); do
+            S=$(curl -sS --max-time 10 "$AGENT_URL/v1/agent/status/$INV" -H "Authorization: Bearer $AGENT_TOKEN" || echo '{"phase":"error"}')
+            PHASE=$(echo "$S" | jq -r '.phase')
+            IDLE=$(echo "$S" | jq -r '.idle_s // 0')
+            echo "[$i] phase=$PHASE idle=${IDLE}s"
+            if [ "$PHASE" = "done" ] || [ "$PHASE" = "error" ]; then
+              echo "$S" > agent_status_final.json; break
+            fi
+            sleep 10
+          done
+          cat agent_status_final.json
+
+      - name: Extract summary
+        run: |
+          set -uo pipefail
+          jq -r '.tail // [] | join("\n")' agent_status_final.json > agent_tail.txt
+          awk -v RS='✔ FINISH' 'END {print}' agent_tail.txt > agent_summary.txt
+          if [ ! -s agent_summary.txt ]; then tail -c 3000 agent_tail.txt > agent_summary.txt; fi
+          cat agent_summary.txt
+
+      - name: Reply (issue_comment)
+        if: github.event_name == 'issue_comment'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          BODY=$(cat agent_summary.txt)
+          printf '**@deepseek agent reply**\n\n```\n%s\n```\n\n_run: %s/%s/actions/runs/%s_\n' \
+            "$BODY" "${{ github.server_url }}" "${{ github.repository }}" "${{ github.run_id }}" > reply.md
+          gh issue comment "$ISSUE_NUMBER" --repo "$REPO" --body-file reply.md
+
+      - name: Reply (issue assigned)
+        if: github.event_name == 'issues'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          BODY=$(cat agent_summary.txt)
+          printf '**@deepseek agent reply**\n\n```\n%s\n```\n' "$BODY" > reply.md
+          gh issue comment "$ISSUE_NUMBER" --repo "$REPO" --body-file reply.md
+
+      - name: Reply (PR assigned)
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          BODY=$(cat agent_summary.txt)
+          printf '**@deepseek agent reply**\n\n```\n%s\n```\n' "$BODY" > reply.md
+          gh pr comment "$PR_NUMBER" --repo "$REPO" --body-file reply.md
+
+      - name: Archive artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-run-${{ github.run_id }}
+          path: |
+            agent_payload.json
+            agent_start.json
+            agent_status_final.json
+            agent_summary.txt
+          retention-days: 7

@@ -14,9 +14,7 @@ ELIGIBLE_ACCESS = {"free_zero_price", "free_trial"}
 
 
 def classify(row: dict) -> str:
-    if row.get("access_classification") in ELIGIBLE_ACCESS:
-        return "candidate"
-    if row.get("pricing_classification") == "free_zero_price" or row.get("free_suffix"):
+    if row.get("access_classification") in ELIGIBLE_ACCESS or row.get("pricing_classification") == "free_zero_price" or row.get("free_suffix"):
         return "candidate"
     return "observed"
 

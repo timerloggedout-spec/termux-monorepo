@@ -30,6 +30,13 @@ DOCS_REF_RE = re.compile(r"^refs/heads/(docs/.+|docs-lane-.+)$")
 MARKER_BEGIN = "<!-- BEGIN:docs-branch-index (generated; do not edit) -->"
 MARKER_END = "<!-- END:docs-branch-index -->"
 
+# Pre-compiled regex patterns for lightweight YAML registry parsing
+ID_RE = re.compile(r"^\s+- id:\s*(\S+)")
+SOURCE_BRANCH_RE = re.compile(r"^\s+source_branch:\s*(\S+)")
+RELATED_BRANCHES_RE = re.compile(r"^\s+related_branches:\s*")
+LIST_ITEM_RE = re.compile(r"^\s+-\s+(\S+)")
+KEY_VALUE_RE = re.compile(r"^\s+\w+:")
+
 
 def _token() -> str:
     return (
@@ -92,34 +99,34 @@ def load_registry_branch_map() -> dict[str, list[str]]:
     current_id: str | None = None
     in_related = False
     for line in text.splitlines():
-        m = re.match(r"^\s+- id:\s*(\S+)", line)
-        if m:
-            current_id = m.group(1).strip()
+        m_id = ID_RE.match(line)
+        if m_id:
+            current_id = m_id.group(1).strip()
             in_related = False
             continue
-        if current_id and re.match(r"^\s+source_branch:\s*(\S+)", line):
-            br = re.match(r"^\s+source_branch:\s*(\S+)", line)
-            if br:
-                mapping.setdefault(br.group(1).strip(), []).append(current_id)
-            continue
-        if current_id and re.match(r"^\s+related_branches:\s*", line):
-            rest = line.split(":", 1)[1].strip()
-            in_related = rest in ("", "[]") or rest.startswith("[")
-            if rest.startswith("[") and rest.endswith("]"):
-                inner = rest[1:-1].strip()
-                if inner:
-                    for part in inner.split(","):
-                        name = part.strip().strip("'\"")
-                        if name:
-                            mapping.setdefault(name, []).append(current_id)
-                in_related = False
-            continue
-        if in_related and current_id:
-            m2 = re.match(r"^\s+-\s+(\S+)", line)
-            if m2:
-                mapping.setdefault(m2.group(1).strip(), []).append(current_id)
-            elif re.match(r"^\s+\w+:", line):
-                in_related = False
+        if current_id:
+            m_src = SOURCE_BRANCH_RE.match(line)
+            if m_src:
+                mapping.setdefault(m_src.group(1).strip(), []).append(current_id)
+                continue
+            if RELATED_BRANCHES_RE.match(line):
+                rest = line.split(":", 1)[1].strip()
+                in_related = rest in ("", "[]") or rest.startswith("[")
+                if rest.startswith("[") and rest.endswith("]"):
+                    inner = rest[1:-1].strip()
+                    if inner:
+                        for part in inner.split(","):
+                            name = part.strip().strip("'\"")
+                            if name:
+                                mapping.setdefault(name, []).append(current_id)
+                    in_related = False
+                continue
+            if in_related:
+                m_list = LIST_ITEM_RE.match(line)
+                if m_list:
+                    mapping.setdefault(m_list.group(1).strip(), []).append(current_id)
+                elif KEY_VALUE_RE.match(line):
+                    in_related = False
     return mapping
 
 

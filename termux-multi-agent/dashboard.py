@@ -164,6 +164,11 @@ def make_dashboard():
     header_text = Text()
     header_text.append("⚡ TERMUX MULTI-AGENT PARALLEL TELEMETRY ⚡\n", style="bold yellow")
     header_text.append(f"Last Sync: {now_str}  |  File: {TELEMETRY_LOG}", style="dim")
+    if jobs:
+        passed_cnt = sum(1 for j in jobs if str(j.get("level", "")).upper() in ("SUCCESS", "PASS", "COMPLETED"))
+        failed_cnt = sum(1 for j in jobs if str(j.get("level", "")).upper() in ("CRITICAL", "ERROR", "FAILED", "FAIL"))
+        active_cnt = len(jobs) - passed_cnt - failed_cnt
+        header_text.append(f"\nJobs: {len(jobs)} Total  |  ✔ {passed_cnt} Passed  |  ✖ {failed_cnt} Failed  |  ⚙ {active_cnt} Active", style="dim cyan")
 
     header_panel = Panel(
         header_text,
@@ -232,15 +237,15 @@ def make_dashboard():
         # Beautiful styled status tag
         lvl_upper = str(level).upper()
         if lvl_upper in ("SUCCESS", "PASS", "COMPLETED"):
-            status_str = Text("SUCCESS", style="bold green")
+            status_str = Text("✔ SUCCESS", style="bold green")
         elif lvl_upper in ("RETRY", "RETRYING"):
-            status_str = Text("RETRYING", style="bold yellow")
+            status_str = Text("⚠ RETRYING", style="bold yellow")
         elif lvl_upper in ("WARNING", "WARN"):
-            status_str = Text("WARNING", style="bold yellow")
+            status_str = Text("⚠ WARNING", style="bold yellow")
         elif lvl_upper in ("CRITICAL", "ERROR", "FAILED", "FAIL"):
-            status_str = Text(lvl_upper, style="bold red")
+            status_str = Text(f"✖ {lvl_upper}", style="bold red")
         else:
-            status_str = Text("PROCESSING", style="bold blue")
+            status_str = Text("⚙ PROCESSING", style="bold blue")
 
         table.add_row(
             target,

@@ -202,6 +202,47 @@ async def list_models():
         ]
     })
 
+
+# ── Hindsight tool surface (Session 143 wiring)
+try:
+    from fastapi import APIRouter as _APIRouter
+    # Try both import shapes — works whether server.py is run as a script
+    # inside deepcli/ or imported as deepcli.server from repo root.
+    try:
+        from deepcli._v1_hindsight import build_hindsight_tools as _hindsight_tools
+    except Exception:
+        from _v1_hindsight import build_hindsight_tools as _hindsight_tools  # noqa
+
+    _hindsight_router = _APIRouter(prefix="/v1/hindsight", tags=["hindsight"])
+
+    @_hindsight_router.get("/tools")
+    async def _hindsight_tool_specs():
+        _specs = _hindsight_tools()
+        return {
+            "count": len(_specs),
+            "tools": [
+                {"name": s.name,
+                 "description": getattr(s, "description", ""),
+                 "schema": dict(getattr(s, "schema", {}) or {})}
+                for s in _specs
+            ],
+        }
+
+    @_hindsight_router.get("/health")
+    async def _hindsight_health():
+        import os as _os
+        return {
+            "base_url": _os.environ.get("HINDSIGHT_BASE_URL"),
+            "bank_id": _os.environ.get("HINDSIGHT_BANK_ID"),
+            "tools_available": len(_hindsight_tools()),
+        }
+
+    app.include_router(_hindsight_router)
+    print("[server] hindsight router mounted at /v1/hindsight")
+except Exception as _e:
+    print(f"[server] hindsight router skipped: {_e}")
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8800)

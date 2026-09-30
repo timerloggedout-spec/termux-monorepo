@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: hindsight-prod
     env:
-      FLY_API_TOKEN: ${{ secrets.Fly_io_ORG_TOKEN }}
+      FLY_API_TOKEN: ${{ secrets.FLY_IO_ORG_TOKEN }}
       FLY_ORG: personal
       APP_NAME: hindsight-deepagent
       REGION: sjc

@@ -43,10 +43,8 @@ pub fn sample_system(previous: &mut Option<CpuTimes>) -> SystemSnapshot {
 }
 
 fn read_cpu_times() -> Option<CpuTimes> {
-    let line = fs::read_to_string("/proc/stat")
-        .ok()?
-        .lines()
-        .find(|line| line.starts_with("cpu "))?;
+    let stat = fs::read_to_string("/proc/stat").ok()?;
+    let line = stat.lines().find(|line| line.starts_with("cpu "))?;
     let values: Vec<u64> = line
         .split_whitespace()
         .skip(1)
@@ -88,7 +86,8 @@ fn read_memory() -> Option<(u64, u64, u8)> {
 }
 
 fn read_load_1m() -> Option<f64> {
-    fs::read_to_string("/proc/loadavg")?
+    fs::read_to_string("/proc/loadavg")
+        .ok()?
         .split_whitespace()
         .next()?
         .parse()

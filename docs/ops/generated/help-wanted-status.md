@@ -1,6 +1,6 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-30T08:34:38Z UTC · receipts=636 · foreign_open=25 · tributes=58_
+_Generated 2026-09-30T13:37:51Z UTC · receipts=636 · foreign_open=23 · tributes=58_
 
 ## Tributes (contributor ledger)
 
@@ -19,7 +19,7 @@ _Generated 2026-09-30T08:34:38Z UTC · receipts=636 · foreign_open=25 · tribut
 - [Heliobond/frontend#614](https://github.com/Heliobond/frontend/pull/614) · state=open · help-wanted: stake + contribute for #587
 - [EF-CHAIN/SendAm#607](https://github.com/EF-CHAIN/SendAm/pull/607) · state=open · help-wanted: stake + contribute for #538
 - [SO4-Markets/so4-oracle#1143](https://github.com/SO4-Markets/so4-oracle/pull/1143) · state=open · help-wanted: stake + contribute for #906
-- [Agora-Events/agora#1518](https://github.com/Agora-Events/agora/pull/1518) · state=open · help-wanted: stake + contribute for #1423
+- [Agora-Events/agora#1518](https://github.com/Agora-Events/agora/pull/1518) · state=closed · help-wanted: stake + contribute for #1423
 - [StellarLock/StellarLock#865](https://github.com/StellarLock/StellarLock/pull/865) · state=open · help-wanted: stake + contribute for #721
 - [StayLitCodes/Vaultix#711](https://github.com/StayLitCodes/Vaultix/pull/711) · state=open · help-wanted: stake + contribute for #706
 - [KayStcx/KayStcx#104](https://github.com/KayStcx/KayStcx/pull/104) · state=open · help-wanted: stake + contribute for #85
@@ -27,7 +27,7 @@ _Generated 2026-09-30T08:34:38Z UTC · receipts=636 · foreign_open=25 · tribut
 - [OBLIQ-in/OBLIQ-Website#39](https://github.com/OBLIQ-in/OBLIQ-Website/pull/39) · state=open · help-wanted: stake + contribute for #12
 - [TrusTrove/TrusTrove-contract#860](https://github.com/TrusTrove/TrusTrove-contract/pull/860) · state=open · help-wanted: stake + contribute for #836
 - [StellarCanary/Protocol-Canary#345](https://github.com/StellarCanary/Protocol-Canary/pull/345) · state=open · help-wanted: stake + contribute for #295
-- [tarantool/tarantool#13285](https://github.com/tarantool/tarantool/pull/13285) · state=open · help-wanted: stake + contribute for #13284
+- [tarantool/tarantool#13285](https://github.com/tarantool/tarantool/pull/13285) · state=closed · help-wanted: stake + contribute for #13284
 - [Vikram-sardiwal/react-open-source#50](https://github.com/Vikram-sardiwal/react-open-source/pull/50) · state=open · help-wanted: stake + contribute for #16
 - [inferstep/ATLAS#278](https://github.com/inferstep/ATLAS/pull/278) · state=closed · help-wanted: stake + contribute for #277
 - [bmad-code-org/bmad-loop#819](https://github.com/bmad-code-org/bmad-loop/pull/819) · state=closed · help-wanted: stake + contribute for #780
@@ -48,7 +48,6 @@ _Generated 2026-09-30T08:34:38Z UTC · receipts=636 · foreign_open=25 · tribut
 ## Foreign open PRs
 
 - [Vikram-sardiwal/react-open-source#50](https://github.com/Vikram-sardiwal/react-open-source/pull/50) — help-wanted: stake + contribute for #16
-- [tarantool/tarantool#13285](https://github.com/tarantool/tarantool/pull/13285) — help-wanted: stake + contribute for #13284
 - [StellarCanary/Protocol-Canary#345](https://github.com/StellarCanary/Protocol-Canary/pull/345) — help-wanted: stake + contribute for #295
 - [TrusTrove/TrusTrove-contract#860](https://github.com/TrusTrove/TrusTrove-contract/pull/860) — help-wanted: stake + contribute for #836
 - [OBLIQ-in/OBLIQ-Website#39](https://github.com/OBLIQ-in/OBLIQ-Website/pull/39) — help-wanted: stake + contribute for #12
@@ -56,7 +55,6 @@ _Generated 2026-09-30T08:34:38Z UTC · receipts=636 · foreign_open=25 · tribut
 - [KayStcx/KayStcx#104](https://github.com/KayStcx/KayStcx/pull/104) — help-wanted: stake + contribute for #85
 - [StayLitCodes/Vaultix#711](https://github.com/StayLitCodes/Vaultix/pull/711) — help-wanted: stake + contribute for #706
 - [StellarLock/StellarLock#865](https://github.com/StellarLock/StellarLock/pull/865) — help-wanted: stake + contribute for #721
-- [Agora-Events/agora#1518](https://github.com/Agora-Events/agora/pull/1518) — help-wanted: stake + contribute for #1423
 - [SO4-Markets/so4-oracle#1143](https://github.com/SO4-Markets/so4-oracle/pull/1143) — help-wanted: stake + contribute for #906
 - [EF-CHAIN/SendAm#607](https://github.com/EF-CHAIN/SendAm/pull/607) — help-wanted: stake + contribute for #538
 - [Heliobond/frontend#614](https://github.com/Heliobond/frontend/pull/614) — help-wanted: stake + contribute for #587

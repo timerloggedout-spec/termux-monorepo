@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "2490cb25b414c12bb6bdf67b4d41bb26221af3800ab0d1d4e7051187c576b757",
-  "workflow_count": 115,
+  "source_fingerprint": "3d1450bf097e08e4fa10a7547a2db9fe1a769abbe4f07a40b5c7fb1fc0e58b4f",
+  "workflow_count": 116,
   "workflows": [
     {
       "action_pins": [
@@ -1408,6 +1408,22 @@
       "schedules": [],
       "triggers": [
         "pull_request",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: hindsight-deploy cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "deploy"
+      ],
+      "name": "Hindsight Deploy (Fly.io)",
+      "path": ".github/workflows/koyeb-hindsight-deploy.yml",
+      "schedules": [],
+      "triggers": [
+        "push",
         "workflow_dispatch"
       ]
     },

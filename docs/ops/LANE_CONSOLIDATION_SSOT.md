@@ -86,16 +86,20 @@ As merged in PR #156 and upgraded in Schema v2, the agent continuous operations 
 Based on live GitHub tracking and active repository branches, open and closed items are consolidated into clear development lanes.
 
 ### 3.1 Open & Superseded Pull Requests
-1. **PR #149** (`ops(pipes): review-signal alignment docs + disposition matrix`): Open (Grok) — aligns lag index disposition & PR review signals.
-2. **PR #148** (`ops(jules): context_key persistence + continue-only auto-jules`): Open (Jules) — dual-quota gating limits (3 concurrent, 15/24 hours rolling).
-3. **PR #147** (`Programmatic session management via Actions Workflows`): Open — automated context tracking for Jules.
-4. **PR #143** (`Integrate MCP Agent Mail Coordination Layer in GitHub Actions`): Merged via PR #203 — Rust-based agent mailbox coordination in workflows.
-5. **PR #142** (`⚡ Bolt: Optimize telemetry parsing with state-tracking and seek/tell`): Closed / Superseded by PR #187 (AUDIT-001).
-6. **PR #141** (`🛡️ Sentinel: Fix local privilege restrictions and prevent symlink hijacking`): Closed / Superseded by PR #186 (AUDIT-002).
-7. **PR #140** (`🎨 Palette: Stateful & Reactive PWA UX with Manual Vault Refresh`): Closed / Superseded by PR #165 & PR #193 (AUDIT-003).
-8. **PR #137** (`feat(ci): integrate DeepSeek v4-Pro CI with peer routing`): Plumbs reverse-engineered web-wrapper and peer routes with soft skip handling.
-9. **PR #135** (`📝 CodeRabbit Chat: Align OpenRouter Routing with Supported Models`): Adjusts OpenRouter free model catalogs.
-10. **PR #131** (`feat(multi-agent): implement MoneyBall agent roster`): Merged into `src/team_manager.py` (AUDIT-006).
+1. **PR #553** (`colab-cli path-traversal + symlink-hijack guards`): LANDED — hardens colab-cli sandbox security boundaries.
+2. **PR #554** (`lag-index keyword tuple hoist`): LANDED — optimizes lag index keyword allocations at module level.
+3. **PR #549** (`observe-mode ML rebase`): HELD (extra-red) — keeps MoneyBall & Issue #175 matrix package intent.
+4. **PR #543** (`skill definition quality lane`): HELD — skill definition quality lane + deployment map.
+5. **PR #149** (`ops(pipes): review-signal alignment docs + disposition matrix`): Open (Grok) — aligns lag index disposition & PR review signals.
+6. **PR #148** (`ops(jules): context_key persistence + continue-only auto-jules`): Open (Jules) — dual-quota gating limits (3 concurrent, 15/24 hours rolling).
+7. **PR #147** (`Programmatic session management via Actions Workflows`): Open — automated context tracking for Jules.
+8. **PR #143** (`Integrate MCP Agent Mail Coordination Layer in GitHub Actions`): Merged via PR #203 — Rust-based agent mailbox coordination in workflows.
+9. **PR #142** (`⚡ Bolt: Optimize telemetry parsing with state-tracking and seek/tell`): Closed / Superseded by PR #187 (AUDIT-001).
+10. **PR #141** (`🛡️ Sentinel: Fix local privilege restrictions and prevent symlink hijacking`): Closed / Superseded by PR #186 (AUDIT-002).
+11. **PR #140** (`🎨 Palette: Stateful & Reactive PWA UX with Manual Vault Refresh`): Closed / Superseded by PR #165 & PR #193 (AUDIT-003).
+12. **PR #137** (`feat(ci): integrate DeepSeek v4-Pro CI with peer routing`): Plumbs reverse-engineered web-wrapper and peer routes with soft skip handling.
+13. **PR #135** (`📝 CodeRabbit Chat: Align OpenRouter Routing with Supported Models`): Adjusts OpenRouter free model catalogs.
+14. **PR #131** (`feat(multi-agent): implement MoneyBall agent roster`): Merged into `src/team_manager.py` (AUDIT-006).
 
 ### 3.2 Active Issue Threads & Alignment
 - **Issue #59** (`🚨 CRITICAL: GitHub Actions Workflow Failures`): Resolves Gemini free-tier daily exhaustion via `continue-on-error: true`.

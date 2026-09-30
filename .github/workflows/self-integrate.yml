@@ -22,29 +22,56 @@ jobs:
           AGENT_TOKEN: ${{ secrets.DEEPSEEK_AGENT_TOKEN }}
         run: |
           set -euo pipefail
+          if [ -z "${AGENT_URL:-}" ]; then
+            echo "::notice::DEEPSEEK_AGENT_URL unset. Skip this cycle."
+            exit 0
+          fi
           TASK='Execute ~/deepcli/tasks/self-integrate.md. Do exactly ONE improvement this cycle. Follow the wait-valid loop. Sync logs at the end.'
           jq -n --arg t "$TASK" '{task:$t, source:"gh-schedule:self-integrate"}' > payload.json
           INV=""
-          for attempt in 1 2 3 4 5 6; do
+          LAST_BUSY=0
+          LAST_UNREACHABLE=0
+          for attempt in 1 2 3 4 5 6 7 8; do
             echo "::group::POST attempt $attempt"
-            RESP=$(curl -sS --max-time 30 -X POST "$AGENT_URL/v1/agent" \
+            HTTP_CODE=0
+            RESP=$(curl -sS --max-time 30 -o /tmp/ds-agent-body -w '%{http_code}' -X POST "$AGENT_URL/v1/agent" \
                      -H "Authorization: Bearer $AGENT_TOKEN" \
                      -H 'Content-Type: application/json' \
-                     --data-binary @payload.json 2>&1) || true
-            echo "resp: $RESP"
+                     --data-binary @payload.json) || HTTP_CODE=$?
+            if [ -f /tmp/ds-agent-body ]; then
+              BODY=$(cat /tmp/ds-agent-body)
+            else
+              BODY=""
+            fi
+            echo "http_or_curl=$RESP curl_exit=$HTTP_CODE"
+            echo "resp: $BODY"
             echo "::endgroup::"
-            INV=$(echo "$RESP" | jq -r .invocation_id 2>/dev/null || echo "")
+            INV=$(echo "$BODY" | jq -r '.invocation_id // empty' 2>/dev/null || echo "")
+            ERR=$(echo "$BODY" | jq -r '.detail.error // empty' 2>/dev/null || echo "")
+            LAST_BUSY=0
+            LAST_UNREACHABLE=0
             if [ -n "$INV" ] && [ "$INV" != "null" ]; then break; fi
-            echo "attempt $attempt failed, sleeping 15s"
-            sleep 15
+            if echo "$ERR $BODY" | grep -qi 'another agent run is active'; then
+              LAST_BUSY=1
+              echo "agent single-flight busy on attempt $attempt"
+            elif [ -z "$BODY" ] || echo "$BODY" | grep -qiE 'could not resolve|connection refused|timed out|Failed to connect'; then
+              LAST_UNREACHABLE=1
+              echo "agent unreachable on attempt $attempt"
+            fi
+            echo "attempt $attempt failed, sleeping 20s"
+            sleep 20
           done
           if [ -z "$INV" ] || [ "$INV" = "null" ]; then
-            echo "::error::could not reach agent after 6 attempts"
+            if [ "$LAST_BUSY" = "1" ] || [ "$LAST_UNREACHABLE" = "1" ]; then
+              echo "::notice::DeepSeek agent busy or unreachable. Skip this cycle."
+              exit 0
+            fi
+            echo "::error::could not reach agent after retries"
             exit 1
           fi
           echo "invocation=$INV"
           for i in $(seq 1 120); do
-            S=$(curl -sS "$AGENT_URL/v1/agent/status/$INV" -H "Authorization: Bearer $AGENT_TOKEN")
+            S=$(curl -sS --max-time 30 "$AGENT_URL/v1/agent/status/$INV" -H "Authorization: Bearer $AGENT_TOKEN" || true)
             P=$(echo "$S" | jq -r .phase)
             echo "[$i] $P"
             [ "$P" = "done" ] && break

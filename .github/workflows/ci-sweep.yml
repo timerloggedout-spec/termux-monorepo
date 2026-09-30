@@ -43,16 +43,21 @@ EOF
           echo "invocation=$INV" >> "$GITHUB_OUTPUT"
           # 90 x 15s = 22.5min, inside the 25min step timeout so the loop
           # exits via phase=done/error rather than being killed by the timeout.
+          P=timeout
           for i in $(seq 1 90); do
             S=$(curl -sS --max-time 10 "$AGENT_URL/v1/agent/status/$INV" \
-                  -H "Authorization: Bearer $AGENT_TOKEN")
+                  -H "Authorization: Bearer $AGENT_TOKEN" || echo '{"phase":"error"}')
             echo "$S" > agent_status.json
-            P=$(echo "$S" | jq -r '.phase')
+            P=$(echo "$S" | jq -r '.phase // "error"')
             echo "[$i] $P"
             [ "$P" = "done" ] && break
             [ "$P" = "error" ] && break
             sleep 15
           done
+          if [ "$P" != "done" ]; then
+            echo "::error::sweep agent did not reach phase=done (terminal phase=$P); see agent_status.json artifact"
+            exit 1
+          fi
 
       - name: Failure diagnostics
         if: failure()

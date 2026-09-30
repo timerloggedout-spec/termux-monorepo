@@ -145,15 +145,15 @@ Receipts are projections; the longitudinal GitHub/evidence corpus remains the so
 
 This skill owns repository-admin evidence discipline; it does not replace those specialist lanes.
 
-## Session 2026-09-27 22:14 PDT
+## Session 2026-09-28 17:15 PDT
 
-- Live master tip at recon: `2268e302d8b7b733a6e18ed285fa2c5f145a0cd8`.
-- Dual-gate PASS on that SHA: repo-gate 36380809139, termux-smoke 36380809228.
-- Predecessor stamp SHA `311077d1` / skill stamp `8670b2e5` superseded.
-- Dirty / do-not-merge-as-is (bases behind tip): #630 #680 #818 #48 #735 #736 #850 #880 #884.
-- #48 remains `master-staging` gate path; do not promote to master until staging dual-gate.
-- Do not pulse #175. #184 names-only. #69 closed.
-- Stepie planning only (primary goal 2158). No merge authority from planning surface.
-- This session: mermaid mmdc refresh-trusted missing puppeteer no-sandbox (job 108796012711 FAIL) — corrected on successor SHA.
+- Live master tip: `8daeeb72d71ecdefa2f9cde6698426131117e474` (catalog/mmdc bot refresh after #904).
+- Dual-gate PASS on that SHA: repo-gate 36497249095 + termux-smoke 36497249115.
+- #904 squash `4efef68d` dual-gate PASS on master: 36497147812 / 36497147650.
+- Candidate evidence for #904 pre-merge: repo-gate 36497057302 + termux-smoke 36497057157 on `4df79c30`.
+- Tunnel scheduled fail 36496185804 / 109176191755 classified empty-URL skip, closed by #904.
+- Instant-fail path-unfiltered workflows on feature branches are noise.
+- #903 HOLD (empty-diff / ledger). #899 rebase in flight. Do not merge stale #892/#894.
+- Do not pulse #175. #184 names-only. Vercel combined-status is #772 non-gate.
 
 Agent-Identity: Grok (Administrator)

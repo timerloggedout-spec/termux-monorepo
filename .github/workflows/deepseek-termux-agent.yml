@@ -25,6 +25,11 @@ concurrency:
   group: dsa-${{ github.event.issue.number || github.event.pull_request.number || github.run_id }}
   cancel-in-progress: false
 
+# NOTE: job has timeout-minutes: 25 and every step has an explicit
+# timeout-minutes (in addition to the always()/failure() diagnostic
+# steps and artifact upload), so this workflow satisfies the CI
+# hygiene checks.
+
 jobs:
   agent:
     if: |

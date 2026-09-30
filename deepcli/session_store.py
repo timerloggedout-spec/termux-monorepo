@@ -4,7 +4,7 @@ A task is identified by hash(path + first 500 chars of task text).
 Same task → same session (continuity). Different task → fresh session.
 Sessions expire after EXPIRE_DAYS of non-use.
 """
-import hashlib, json, time
+import hashlib, json, os, time
 from pathlib import Path
 
 STORE = Path.home() / ".deepcli" / "sessions.json"
@@ -17,7 +17,7 @@ def task_key(task_text: str, task_path: str | None = None) -> str:
 
 
 def _read() -> dict:
-    if not STORE.exists():
+    if not STORE.exists() or STORE.is_symlink():
         return {}
     try:
         return json.loads(STORE.read_text())
@@ -26,10 +26,22 @@ def _read() -> dict:
 
 
 def _write(data: dict) -> None:
+    if STORE.parent.is_symlink():
+        return
     STORE.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        if not STORE.parent.is_symlink():
+            STORE.parent.chmod(0o700)
+    except Exception:
+        pass
+
+    if STORE.is_symlink():
+        return
+
     STORE.write_text(json.dumps(data, indent=2))
     try:
-        STORE.chmod(0o600)
+        if not STORE.is_symlink():
+            STORE.chmod(0o600)
     except Exception:
         pass
 
@@ -97,10 +109,18 @@ RUNS_DIR_NAME = "runs"
 
 
 def _runs_dir(key: str) -> Path:
-    d = STORE.parent / RUNS_DIR_NAME / key
+    k_str = str(key)
+    if ".." in Path(k_str).parts or "/" in k_str or "\\" in k_str or os.path.isabs(k_str):
+        raise ValueError("Invalid key")
+    if STORE.parent.is_symlink():
+        raise ValueError("Parent directory is symlink")
+    d = STORE.parent / RUNS_DIR_NAME / k_str
+    if d.is_symlink():
+        raise ValueError("Runs directory is symlink")
     d.mkdir(parents=True, exist_ok=True)
-    try: d.chmod(0o700)
-    except Exception: pass
+    if not d.is_symlink():
+        try: d.chmod(0o700)
+        except Exception: pass
     return d
 
 
@@ -109,17 +129,20 @@ def save_run_state(key: str, state: dict) -> Path:
     d = _runs_dir(key)
     tmp = d / "state.json.tmp"
     final = d / "state.json"
+    if tmp.is_symlink() or final.is_symlink():
+        raise ValueError("State path is symlink")
     tmp.write_text(json.dumps(state, indent=2))
     tmp.replace(final)
-    try: final.chmod(0o600)
-    except Exception: pass
+    if not final.is_symlink():
+        try: final.chmod(0o600)
+        except Exception: pass
     return final
 
 
 def load_run_state(key: str) -> dict | None:
     d = _runs_dir(key)
     f = d / "state.json"
-    if not f.exists():
+    if not f.exists() or f.is_symlink():
         return None
     try:
         return json.loads(f.read_text())
@@ -130,5 +153,7 @@ def load_run_state(key: str) -> dict | None:
 def clear_run_state(key: str) -> None:
     d = _runs_dir(key)
     f = d / "state.json"
+    if f.is_symlink():
+        return
     try: f.unlink()
     except Exception: pass

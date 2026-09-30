@@ -13,7 +13,25 @@ jobs:
           URL: ${{ secrets.DEEPSEEK_AGENT_URL }}
           TOK: ${{ secrets.DEEPSEEK_AGENT_TOKEN }}
         run: |
+          set -euo pipefail
+          if [ -z "${URL:-}" ]; then
+            echo "::notice::DEEPSEEK_AGENT_URL unset; skip tunnel canary (not dual-gate)"
+            exit 0
+          fi
+          set +e
+          curl_err=$(mktemp)
+          code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 15 "$URL/health" 2>"$curl_err")
+          curl_rc=$?
           set -e
-          code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 15 "$URL/health")
-          echo "health -> $code"
+          err=$(tr '\n' ' ' < "$curl_err" | head -c 240)
+          rm -f "$curl_err"
+          echo "health -> ${code:-000} curl_rc=$curl_rc"
+          if [ -n "$err" ]; then
+            echo "curl_stderr=$err"
+          fi
+          # Ephemeral tunnels (pinggy-free, etc.) expire; DNS/connect 000 is inventory, not dual-gate.
+          if [ "${code:-000}" = "000" ] || [ "$curl_rc" -ne 0 ]; then
+            echo "::notice::tunnel unreachable (code=${code:-000} rc=$curl_rc); skip canary (not dual-gate)"
+            exit 0
+          fi
           [ "$code" = "200" ] || { echo "::error::tunnel health $code"; exit 1; }

@@ -25,6 +25,22 @@ The custom 3L0 score is an inference matrix, not a claim of objective model inte
 
 `$0` is therefore **not** the ROI metric. Free capacity is valuable only when its return on effort/time/context is better.
 
+## Contributor identity model
+
+Provider ecosystems are contributors to the ADE, but **contributor identity is not GitHub authorship**. The roster separates provider, agent, model, execution adapter, orchestration role, and research/evaluation lane.
+
+Required contributor lanes include:
+
+- **Gemini / Gemini CLI** — review, triage, implementation, research, evaluation
+- **OpenRouter** — routing, live catalog, inference, evaluation, benchmark
+- **FELO** — research, inference, benchmark, evaluation, adapter
+- **Hugging Face** — model, dataset, benchmark, evaluation, inference, research
+- existing Jules, CodeRabbit, DeepSeek, Devin, Copilot, Mistral, and operator lanes
+
+Contributor provenance must retain the provider/model/adapter/role dimensions alongside workflow run/job/step, triggering event, PR/issue, SHA, and attribution confidence. A model response incorporated into a commit does not establish provider authorship.
+
+The display-moniker SSOT is `docs/ops/AGENT-MONIKERS.md`; capability/routing declarations are in `docs/schemas/agent-roster.yaml`. See Issue #921 for the continuing moniker/role expansion track.
+
 ## Team roles
 
 ### Manager

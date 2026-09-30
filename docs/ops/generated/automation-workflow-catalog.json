@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "8e5f7fa0a9df95e4d3445c4a91720a3047b1f7b7960c07f0a069961c8f1fc48c",
-  "workflow_count": 114,
+  "source_fingerprint": "fb6373e3441c908d2ee435cdc7a2c1faec2637e5928f761733fd140fd160e2a4",
+  "workflow_count": 115,
   "workflows": [
     {
       "action_pins": [
@@ -1084,6 +1084,21 @@
         "pull_request",
         "pull_request_review",
         "pull_request_review_comment"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "peer-provider-review",
+      "jobs": [
+        "smoke"
+      ],
+      "name": "Gemini Interactions API Smoke",
+      "path": ".github/workflows/gemini-interactions-smoke.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
       ]
     },
     {

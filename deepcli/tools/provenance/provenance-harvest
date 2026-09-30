@@ -1,0 +1,123 @@
+#!/usr/bin/env python3
+"""Harvest DeepSeek session_store -> Hindsight bank with structured provenance.
+
+Each session becomes one retain() call with items carrying:
+  - content: session summary (first USER prompt + assistant reply head)
+  - metadata: session_id, message_count, first_ts, last_ts, roles, has_code
+
+Idempotent: skips sessions whose session_id is already in local ledger.
+"""
+import asyncio, hashlib, json, os, sys, time
+from pathlib import Path
+from datetime import datetime, timezone
+
+HOME = Path.home()
+STORE = HOME / ".deepcli/session_store"
+LEDGER = HOME / ".deepcli/logs/provenance/harvest-ledger.json"
+sys.path.insert(0, str(HOME / "deepcli"))
+sys.path.insert(0, str(HOME))
+
+from deepcli._v1_hindsight import HindsightClient  # noqa
+
+def _load_ledger() -> set:
+    if LEDGER.exists():
+        try:
+            return set(json.loads(LEDGER.read_text()))
+        except Exception:
+            return set()
+    return set()
+
+def _save_ledger(s: set) -> None:
+    LEDGER.parent.mkdir(parents=True, exist_ok=True)
+    LEDGER.write_text(json.dumps(sorted(s), indent=2))
+
+def _summarize(msgs: list) -> dict | None:
+    if not isinstance(msgs, list) or not msgs:
+        return None
+    user_msg = next((m for m in msgs if (m.get("role") or "").upper() == "USER"), None)
+    asst_msg = next((m for m in msgs if (m.get("role") or "").upper() == "ASSISTANT"), None)
+    if not user_msg and not asst_msg:
+        return None
+    prompt = ((user_msg or {}).get("content") or "")[:400].strip()
+    reply = ((asst_msg or {}).get("content") or "")[:600].strip()
+    ts_all = [m.get("inserted_at") for m in msgs if isinstance(m.get("inserted_at"), (int, float))]
+    roles = sorted({(m.get("role") or "?").upper() for m in msgs if isinstance(m, dict)})
+    has_code = "```" in (prompt + reply)
+    content = f"[DeepSeek session] prompt: {prompt}\n---\nreply: {reply}"
+    # Hindsight MemoryItem.metadata requires ALL values be strings.
+    _first_ts = ts_all[0] if ts_all else None
+    _last_ts = ts_all[-1] if ts_all else None
+    _ts_iso = None
+    if _first_ts:
+        try:
+            from datetime import datetime as _dt, timezone as _tz
+            _ts_iso = _dt.fromtimestamp(float(_first_ts), tz=_tz.utc).isoformat()
+        except Exception:
+            _ts_iso = None
+
+    return {
+        "content": content,
+        "timestamp": _ts_iso,
+        "metadata": {
+            "source": "session_store",
+            "message_count": str(len(msgs)),
+            "first_ts": str(_first_ts) if _first_ts is not None else "",
+            "last_ts": str(_last_ts) if _last_ts is not None else "",
+            "roles": ",".join(roles),
+            "has_code": "true" if has_code else "false",
+        },
+    }
+
+async def main() -> int:
+    only_new = "--new" in sys.argv
+    limit = None
+    for a in sys.argv[1:]:
+        if a.startswith("--limit="):
+            try: limit = int(a.split("=", 1)[1])
+            except ValueError: pass
+
+    seen = _load_ledger() if only_new else set()
+    files = sorted(STORE.glob("*.json"))
+    if limit:
+        files = files[:limit]
+    print(f"[harvest] store={STORE}  files={len(files)}  ledger={len(seen)}  only_new={only_new}")
+
+    client = HindsightClient()
+    ok = skipped = failed = 0
+
+    for f in files:
+        sid = f.stem
+        if only_new and sid in seen:
+            skipped += 1
+            continue
+        try:
+            msgs = json.loads(f.read_text())
+        except Exception:
+            failed += 1; continue
+        s = _summarize(msgs)
+        if not s:
+            failed += 1; continue
+        try:
+            _meta = {k: v for k, v in s["metadata"].items() if v is not None}
+            if s.get("timestamp"):
+                _meta["occurred_at"] = s["timestamp"]
+            r = await client.aretain(s["content"], metadata=_meta)
+            if isinstance(r, dict) and r.get("success"):
+                seen.add(sid); ok += 1
+                if ok % 25 == 0:
+                    _save_ledger(seen)
+                    print(f"  ...{ok} retained, {skipped} skipped, {failed} failed")
+            else:
+                failed += 1
+        except Exception as e:
+            print(f"  [fail] {sid[:8]}: {type(e).__name__}: {e}")
+            failed += 1
+        await asyncio.sleep(0.05)  # gentle pacing
+
+    _save_ledger(seen)
+    await client.aclose()
+    print(f"[harvest] done: ok={ok} skipped={skipped} failed={failed} ledger={len(seen)}")
+    return 0 if failed == 0 else 1
+
+if __name__ == "__main__":
+    sys.exit(asyncio.run(main()))

@@ -37,3 +37,8 @@
 **Vulnerability:** In `src/telemetry.py` and `termux-multi-agent/src/telemetry.py`, `TermuxTelemetryLogger.notify` opened and appended log entries to `TELEMETRY_LOG` ("agent_telemetry_stream.json") and applied `os.chmod(..., 0o600)` without validating whether `TELEMETRY_LOG` was a symlink, allowing local symlink hijacking. Similarly, `read_latest_telemetry` in `termux-multi-agent/dashboard.py` read telemetry from unvalidated symlink targets.
 **Learning:** Shared telemetry stream log files created in default working directories are vulnerable to symlink pre-creation by unprivileged local processes, which could redirect log appends and permission modifications to target files.
 **Prevention:** Check `os.path.islink(path)` before reading, writing, or adjusting permissions on telemetry stream log files.
+
+## 2026-09-21 - Atomic Low-Level Permission Creation for Sensitive Cache Files
+**Vulnerability:** High-level file creation (`open(path, "w")`) creates session cache files with default process umask permissions (`0o644`/`0o666`), briefly leaving sensitive message history world/group-readable before post-write `chmod(0o600)` executes.
+**Learning:** Standard `open()` does not allow specifying low-level file creation mode bits directly, resulting in a race window where created files inherit default umask permissions before explicit `chmod` calls.
+**Prevention:** Use `fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)` wrapped in `os.fdopen()` to guarantee atomic `0o600` permissions from the moment of file creation.

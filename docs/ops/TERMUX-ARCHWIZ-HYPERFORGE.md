@@ -28,6 +28,8 @@ Optional Tron-inspired display mode:
 
 No third-party Python package is required.
 
+Regression coverage lives in `tests/test_termux_cockpit.py` and exercises importability, dispatch routing, dual-gate semantics, state-only backup selection, and status reporting.
+
 ## Cockpit matrix
 
 The 20 slots are an operator navigation matrix, not a claim that every historical menu item is present under exactly that number in every legacy ArchWiz build.

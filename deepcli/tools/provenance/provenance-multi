@@ -1,0 +1,150 @@
+#!/usr/bin/env python3
+"""Multi-source provenance harvester: sessions, exports, codex, pointers.
+
+Sources:
+  1. ~/.deepcli/session_store/*.json      — every DeepSeek conversation
+  2. ~/synthegration_exports/*/messages.json — exported artifacts
+  3. ~/cli-synthegration/codex/codex_index.json — codex pointer index
+  4. ~/archwiz/pointer_index.json         — code-hash -> source pointer
+  5. ~/workspace/llm_map/func_index.jsonl — AST signatures
+"""
+import asyncio, json, os, sys
+from pathlib import Path
+
+HOME = Path.home()
+LEDGER = HOME / ".deepcli/logs/provenance/multi-ledger.json"
+sys.path.insert(0, str(HOME / "deepcli"))
+sys.path.insert(0, str(HOME))
+
+from deepcli._v1_hindsight import HindsightClient  # noqa
+
+def ledger() -> dict:
+    if LEDGER.exists():
+        try: return json.loads(LEDGER.read_text())
+        except Exception: return {}
+    return {}
+
+def save(l: dict) -> None:
+    LEDGER.parent.mkdir(parents=True, exist_ok=True)
+    LEDGER.write_text(json.dumps(l, indent=2, sort_keys=True))
+
+def s(v) -> str:
+    return "" if v is None else str(v)
+
+async def retain_item(c: HindsightClient, key: str, content: str, metadata: dict, l: dict) -> bool:
+    if l.get(key):
+        return False
+    try:
+        r = await c.aretain(content[:2000], metadata={k: s(v) for k, v in metadata.items()})
+        if isinstance(r, dict) and r.get("success"):
+            l[key] = 1
+            return True
+    except Exception as e:
+        print(f"  [fail] {key[:40]}: {type(e).__name__}: {str(e)[:100]}")
+    return False
+
+async def harvest_exports(c: HindsightClient, l: dict) -> int:
+    root = HOME / "synthegration_exports"
+    if not root.is_dir(): return 0
+    n = 0
+    for d in sorted(root.iterdir()):
+        if not d.is_dir(): continue
+        m = d / "messages.json"
+        if not m.exists(): continue
+        k = f"export:{d.name}"
+        if l.get(k): continue
+        try:
+            data = json.loads(m.read_text())
+        except Exception:
+            continue
+        msgs = data if isinstance(data, list) else data.get("messages", [])
+        if not msgs: continue
+        first_user = next((x for x in msgs if isinstance(x, dict) and (x.get("role") or "").upper() == "USER"), None)
+        first_asst = next((x for x in msgs if isinstance(x, dict) and (x.get("role") or "").upper() == "ASSISTANT"), None)
+        prompt = ((first_user or {}).get("content") or "")[:400]
+        reply = ((first_asst or {}).get("content") or "")[:400]
+        content = f"[Export] {d.name}\nprompt: {prompt}\n---\nreply: {reply}"
+        if await retain_item(c, k, content, {"source": "synthegration_export", "export_name": d.name, "message_count": len(msgs)}, l):
+            n += 1
+        if n % 50 == 0 and n:
+            save(l); print(f"  exports: {n} retained")
+    save(l)
+    return n
+
+async def harvest_codex(c: HindsightClient, l: dict) -> int:
+    p = HOME / "cli-synthegration/codex/codex_index.json"
+    if not p.exists(): return 0
+    try:
+        d = json.loads(p.read_text())
+    except Exception:
+        return 0
+    pointers = d.get("pointers", d) if isinstance(d, dict) else d
+    n = 0
+    items = pointers.items() if isinstance(pointers, dict) else enumerate(pointers or [])
+    for key, val in items:
+        k = f"codex:{key}"
+        if l.get(k): continue
+        content = f"[Codex] {key}\n{json.dumps(val)[:1200]}"
+        if await retain_item(c, k, content, {"source": "codex_index", "key": str(key)}, l):
+            n += 1
+    save(l)
+    return n
+
+async def harvest_pointers(c: HindsightClient, l: dict, batch: int = 50) -> int:
+    p = HOME / "archwiz/pointer_index.json"
+    if not p.exists(): return 0
+    try:
+        d = json.loads(p.read_text())
+    except Exception:
+        return 0
+    if not isinstance(d, dict): return 0
+    pending = [(k, v) for k, v in d.items() if not l.get(f"pointer:{k}")]
+    print(f"  pointers pending: {len(pending)} (batched {batch}/call)")
+    n = 0
+    for i in range(0, len(pending), batch):
+        chunk = pending[i:i+batch]
+        items = []
+        keys = []
+        for code_hash, loc in chunk:
+            k = f"pointer:{code_hash}"
+            content = f"[Pointer] hash={code_hash} -> session={loc.get('session_id','')} manifest_idx={loc.get('manifest_index','')}"
+            items.append({"content": content, "metadata": {
+                "source": "pointer_index",
+                "code_hash": str(code_hash),
+                "session_id": str(loc.get("session_id", "")),
+            }})
+            keys.append(k)
+        try:
+            # aretain sends one at a time, but we can call _post directly
+            _r = await c._post(
+                f"/v1/default/banks/{c.default_bank_id}/memories",
+                {"items": items},
+            )
+            if isinstance(_r, dict) and _r.get("success"):
+                for k in keys:
+                    l[k] = 1
+                n += len(chunk)
+                print(f"  pointers: {n}/{len(pending)} (+{len(chunk)})")
+        except Exception as e:
+            print(f"  [fail chunk] {type(e).__name__}: {str(e)[:120]}")
+        if n % 500 == 0 and n:
+            save(l)
+    save(l)
+    return n
+
+async def main() -> int:
+    l = ledger()
+    c = HindsightClient()
+    print(f"[multi] ledger={len(l)}")
+    n_exp = await harvest_exports(c, l)
+    print(f"[multi] exports: {n_exp}")
+    n_cx = await harvest_codex(c, l)
+    print(f"[multi] codex: {n_cx}")
+    n_pt = await harvest_pointers(c, l)
+    print(f"[multi] pointers: {n_pt}")
+    await c.aclose()
+    print(f"[multi] done ledger={len(l)}")
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(asyncio.run(main()))

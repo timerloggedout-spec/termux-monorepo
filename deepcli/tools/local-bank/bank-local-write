@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+"""Local FTS5 memory mirror. Search joins base table for `key`."""
+import json, sqlite3, sys
+from pathlib import Path
+
+DB = Path.home() / ".deepcli/bank-local.db"
+
+def con():
+    c = sqlite3.connect(DB)
+    c.execute("PRAGMA journal_mode=WAL")
+    return c
+
+def put(source: str, key: str, content: str, metadata: dict | None = None) -> bool:
+    c = con()
+    try:
+        c.execute(
+            "INSERT OR REPLACE INTO memory(source,key,content,metadata) VALUES(?,?,?,?)",
+            (source, key, content[:8000], json.dumps(metadata or {})),
+        )
+        c.commit(); return True
+    except Exception as e:
+        print(f"  [err] {e}", file=sys.stderr); return False
+    finally:
+        c.close()
+
+def search(query: str, limit: int = 20) -> list:
+    """Join memory_fts with memory to expose `key`."""
+    c = con()
+    try:
+        rows = c.execute(
+            """
+            SELECT m.source, m.key, substr(m.content, 1, 300)
+            FROM memory_fts f
+            JOIN memory m ON m.id = f.rowid
+            WHERE memory_fts MATCH ?
+            ORDER BY rank
+            LIMIT ?
+            """,
+            (query, limit),
+        ).fetchall()
+        return rows
+    except Exception as e:
+        print(f"  [err] {e}", file=sys.stderr); return []
+    finally:
+        c.close()
+
+def main():
+    if len(sys.argv) < 2:
+        print("usage: bank-local-write {search <q>|stats}")
+        sys.exit(1)
+    cmd = sys.argv[1]
+    if cmd == "search":
+        q = " ".join(sys.argv[2:]).strip()
+        if not q:
+            print("  (empty query)"); return
+        for src, key, snip in search(q, 20):
+            print(f"  [{src}] {key}  {snip[:120]!r}")
+    elif cmd == "stats":
+        c = con()
+        n = c.execute("SELECT COUNT(*) FROM memory").fetchone()[0]
+        srcs = c.execute(
+            "SELECT source, COUNT(*) FROM memory GROUP BY source ORDER BY 2 DESC"
+        ).fetchall()
+        print(f"  total: {n}")
+        for s, k in srcs:
+            print(f"    {s}: {k}")
+        c.close()
+    else:
+        print(f"  unknown command: {cmd}")
+
+if __name__ == "__main__":
+    main()

@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "12404ba1f34ec380f2f717ddf88b0e62ad18724842ada973448b87c641f83806",
-  "workflow_count": 113,
+  "source_fingerprint": "4edc0c69cde19e2493c11963407ad6adf7f18d63180871fdb79b2aef789fb2b9",
+  "workflow_count": 116,
   "workflows": [
     {
       "action_pins": [
@@ -361,7 +361,10 @@
       ]
     },
     {
-      "action_pins": [],
+      "action_pins": [
+        "actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
       "authority": "read-only-or-advisory",
       "concurrency": "",
       "domain": "agentic-development",
@@ -1087,6 +1090,21 @@
       ]
     },
     {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "peer-provider-review",
+      "jobs": [
+        "smoke"
+      ],
+      "name": "Gemini Interactions API Smoke",
+      "path": ".github/workflows/gemini-interactions-smoke.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
         "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b",
@@ -1118,7 +1136,7 @@
       "jobs": [
         "review"
       ],
-      "name": "🔍 Gemini PR Review (Gemini PRIMARY → peer Omni ↔ OpenRouter secondary)",
+      "name": "🔍 Optimized Multi-Provider PR Review",
       "path": ".github/workflows/gemini-review.yml",
       "schedules": [],
       "triggers": [
@@ -1394,6 +1412,22 @@
       ]
     },
     {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: hindsight-deploy cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "deploy"
+      ],
+      "name": "Hindsight Deploy (Koyeb)",
+      "path": ".github/workflows/koyeb-hindsight-deploy.yml",
+      "schedules": [],
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
       "action_pins": [
         "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
       ],
@@ -1665,6 +1699,26 @@
       "triggers": [
         "pull_request",
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: provider-availability cancel-in-progress: true",
+      "domain": "peer-provider-review",
+      "jobs": [
+        "probe"
+      ],
+      "name": "Provider availability continuity",
+      "path": ".github/workflows/provider-availability.yml",
+      "schedules": [
+        "7 */6 * * *"
+      ],
+      "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },

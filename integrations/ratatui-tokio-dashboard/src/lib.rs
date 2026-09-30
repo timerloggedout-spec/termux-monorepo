@@ -65,6 +65,7 @@ pub struct DashboardState {
     pub redraws: u64,
     pub skipped_draws: u64,
     pub last_update: Instant,
+    stream_batch_mask: u8,
 }
 
 impl DashboardState {
@@ -94,6 +95,7 @@ impl DashboardState {
             redraws: 0,
             skipped_draws: 0,
             last_update: Instant::now(),
+            stream_batch_mask: 0,
         }
     }
 
@@ -231,6 +233,26 @@ mod tests {
         }
 
         assert_eq!(app.throughput_history.len(), HISTORY_LEN);
+    }
+
+    #[test]
+    fn throughput_history_accepts_out_of_order_streams() {
+        let mut app = DashboardState::new();
+
+        for stream in [3, 0, 5, 2, 4, 1] {
+            assert!(app.apply(AppEvent::Stream(StreamUpdate {
+                stream,
+                latency_ms: 10,
+                throughput: (stream as u64) + 1,
+                active: true,
+            })));
+        }
+
+        assert_eq!(app.throughput_history.len(), 1);
+        assert_eq!(
+            app.throughput_history.back().copied(),
+            Some((1..=STREAM_COUNT as u64).sum())
+        );
     }
 
     #[test]

@@ -18,6 +18,7 @@ from pathlib import Path
 HS = os.environ.get("HINDSIGHT_BASE_URL", "http://localhost:8888").rstrip("/")
 KEY = os.environ.get("HINDSIGHT_API_KEY", "")
 BATCH_SIZE = int(os.environ.get("MVT_BATCH_SIZE", "8"))
+BATCH_HARD_TIMEOUT = int(os.environ.get("MVT_BATCH_TIMEOUT", "90"))
 LOG = Path("/tmp/mvt-seed.log")
 ACTIVE = Path("/tmp/hs-stack/active.json")
 
@@ -229,7 +230,13 @@ async def worker(name, hs_url, bank, queue, counters, pace):
         if bnum <= 5 or bnum % 20 == 0:
             log(f"  [{name}] batch #{bnum} size={len(items)} posting...")
         _t0 = time.time()
-        code, body = await post_batch(hs_url, bank, items)
+        try:
+            code, body = await asyncio.wait_for(
+                post_batch(hs_url, bank, items),
+                timeout=BATCH_HARD_TIMEOUT,
+            )
+        except asyncio.TimeoutError:
+            code, body = 0, f"local timeout {BATCH_HARD_TIMEOUT}s"
         _dt = time.time() - _t0
         if bnum <= 5 or bnum % 20 == 0 or code != 200:
             log(f"  [{name}] batch #{bnum} -> HTTP {code} ({_dt:.1f}s)")

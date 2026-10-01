@@ -36,7 +36,18 @@ actually observed:
     unquoted `if: !(...)` is a scanner error, not a boolean expression;
   * a block scalar whose first body line is not indented past its header;
   * a plain scalar value containing `: `, which the scanner reads as a nested
-    mapping ("mapping values are not allowed here").
+    mapping ("mapping values are not allowed here");
+  * a literal `\\n` / `\\r` / `\\t` escape in an unquoted scalar — a JSON body
+    pasted into YAML, where the author meant a newline and YAML keeps the two
+    characters. `\\n` is only an escape inside a double-quoted scalar, so in an
+    unquoted position it silently swallows the rest of the line and the next key
+    it was carrying. Quoted scalars are exempt in both styles: quoting is how an
+    author says "I mean the backslash".
+
+The same check covers the three surfaces where a silent parse failure does real
+damage: `.github/workflows/*.yml`, the control-plane schemas in `docs/schemas/`,
+and the research lane registry in `docs/research/` (a live dependency of
+`config/foresight_digest_sources.json`).
 
 It is validated to agree with a full YAML parse on every file in its scope across
 the repository (see tests/test_repo_gate_workflow_yaml.py). It is not a YAML parser
@@ -120,10 +131,13 @@ SECRET_PATTERNS = (
 # --------------------------------------------------------------------------- #
 
 # YAML surfaces where a parse failure is silent and high-impact: a workflow never
-# schedules a job, and a control-plane schema is read by policy gates and doc
-# generators that do not parse it.
+# schedules a job, a control-plane schema is read by policy gates and doc
+# generators that do not parse it, and docs/research/RESEARCH-LANES.yaml is the
+# live lane registry for config/foresight_digest_sources.json.
 CONTROL_PLANE_YAML_RE = re.compile(
-    r"^(?:\.github/workflows/[^/]+\.ya?ml|docs/schemas/[^/]+\.ya?ml)$"
+    r"^(?:\.github/workflows/[^/]+\.ya?ml"
+    r"|docs/schemas/[^/]+\.ya?ml"
+    r"|docs/research/[^/]+\.ya?ml)$"
 )
 
 # A block scalar header: an optional `- ` sequence marker, a mapping key, and a
@@ -152,6 +166,71 @@ PLAIN_VALUE_COLON_RE = re.compile(
     r"(?P<value>[^\s'\"|>\[\]{#*&!%@`].*)$"
 )
 TRAILING_COMMENT_RE = re.compile(r"\s+#.*$")
+# A YAML escape (`\n`, `\r`, `\t`) sitting in an unquoted scalar. Double-quoted is
+# the only style where those are real escapes; unquoted, they are two literal
+# characters, which is what a JSON body pasted into YAML looks like. YAML does not
+# reject it — the escape just eats the rest of the line, so
+# `inputs: [a, b]\n    contributors: [c]` carries the next key inside the value, or
+# fails to parse further down.
+LITERAL_ESCAPE_RE = re.compile(r"\\[nrt]")
+
+
+def literal_escape_fault(line: str) -> str | None:
+    """Return the offending `\\x` escape in `line`, or None.
+
+    Scans left to right tracking quoted-scalar state, so the rule fires only where
+    the escape is unquoted and therefore unintended: inside either quote style the
+    author has explicitly asked for the backslash (as a real escape in `"..."`, as
+    a literal character in `'...'`), and an escape inside a trailing comment is not
+    content at all.
+
+    A backslash that is itself preceded by an odd run of backslashes does not
+    introduce anything, and is skipped — `C:\\\\Users\\\\runner` is a path, not a `\\r`
+    escape. The same parity test every lexer uses.
+
+    Finally the escape has to sit where a swallowed newline would: at the end of
+    the line, in front of whitespace, or directly after a flow/sequence delimiter
+    (`]`, `}`, `,`) — the JSON-paste shape. A path like `C:\\temp` or a prose value
+    like `line one\\nline two` is left alone: a Windows path is not this class's
+    business, and a plain scalar holding a stray backslash still parses, so it is
+    not structural.
+    """
+    index = 0
+    in_single = in_double = False
+    while index < len(line):
+        char = line[index]
+        if in_double:
+            if char == "\\":
+                index += 2
+                continue
+            if char == '"':
+                in_double = False
+        elif in_single:
+            if char == "'":
+                if line[index + 1 : index + 2] == "'":
+                    index += 2
+                    continue
+                in_single = False
+        elif char == '"':
+            in_double = True
+        elif char == "'":
+            in_single = True
+        elif char == "#" and (index == 0 or line[index - 1] in " \t"):
+            break
+        elif char == "\\" and LITERAL_ESCAPE_RE.match(line, index):
+            preceding = 0
+            cursor = index - 1
+            while cursor >= 0 and line[cursor] == "\\":
+                preceding += 1
+                cursor -= 1
+            after = line[index + 2 : index + 3]
+            before = line[index - 1 : index]
+            if preceding % 2 == 0 and (
+                after == "" or after.isspace() or before in ("]", "}", ",")
+            ):
+                return line[index : index + 2]
+        index += 1
+    return None
 
 
 def indent_of(line: str) -> tuple[int, str]:
@@ -220,6 +299,14 @@ def yaml_structure_faults(text: str) -> list[str]:
             continue
         if "\t" in indent_text:
             faults.append(f"line {number}: tab used for indentation (YAML forbids tabs)")
+            continue
+        escape = literal_escape_fault(line)
+        if escape is not None:
+            faults.append(
+                f"line {number}: literal '\\{escape[1]}' escape in an unquoted scalar — "
+                f"YAML keeps the two characters, so this line no longer means what it says "
+                f"(a JSON body pasted into YAML?): {line.strip()[:60]!r}"
+            )
             continue
         if UNQUOTED_TAG_VALUE_RE.match(line):
             faults.append(

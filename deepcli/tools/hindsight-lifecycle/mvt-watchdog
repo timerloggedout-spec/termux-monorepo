@@ -1,0 +1,15 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# mvt-watchdog — runs every 5 min, ensures hs-stack watch + sovereign tick.
+_cs=$(cat "$HOME/.deepcli/cs-hindsight-name.txt" 2>/dev/null)
+[ -z "$_cs" ] && exit 0
+
+gh codespace ssh -c "$_cs" -- 'bash -lc "
+  # 1. Rotator alive?
+  if ! pgrep -f \"hs-stack.py watch\" >/dev/null 2>&1; then
+    setsid nohup python3 /tmp/hs-stack.py watch > /tmp/hs-stack-watch.log 2>&1 < /dev/null &
+  fi
+  # 2. Sovereign loop alive?
+  if ! pgrep -f \"sovereign-run.sh\" >/dev/null 2>&1 && ! pgrep -f \"sovereign-loop\" >/dev/null 2>&1; then
+    setsid nohup bash -c \"while true; do bash /tmp/sovereign-run.sh >> /tmp/sovereign.log 2>&1; sleep 300; done\" > /dev/null 2>&1 < /dev/null &
+  fi
+"' 2>/dev/null || true

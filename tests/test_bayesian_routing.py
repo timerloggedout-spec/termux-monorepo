@@ -2,9 +2,12 @@
 import importlib.util
 from pathlib import Path
 
-p = Path(__file__).resolve().parents[1] / "bayesian_routing.py"
+import sys
+
+p = Path(__file__).resolve().parents[1] / "scripts" / "bayesian_routing.py"
 spec = importlib.util.spec_from_file_location("bayesian_routing", p)
 m = importlib.util.module_from_spec(spec)
+sys.modules["bayesian_routing"] = m
 spec.loader.exec_module(m)
 
 b = m.posterior([
@@ -20,5 +23,5 @@ assert abs(b.mean - 0.5) < 1e-12
 x = m.BetaBelief(9, 1)
 y = m.BetaBelief(1, 9)
 assert m.probability_a_exceeds_b(x, y, draws=2000, seed=42) > 0.95
-assert m.expected_value_of_information(0.7, 0.9, 0.1) == 0.1
+assert abs(m.expected_value_of_information(0.7, 0.9, 0.1) - 0.1) < 1e-12
 print("bayesian routing tests: PASS")

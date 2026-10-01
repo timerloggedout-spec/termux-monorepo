@@ -20,48 +20,56 @@ This audit provides full production visibility into merged branches, open and cl
 ## 3. Discrepancies and Skipped Reviews Audit
 
 ### [AUDIT-001] PR #142 (Bolt Telemetry Optimization) left hanging after PR #187 merged
+- **Tag:** `[SKIPPED_REVIEW]`
 - **Type:** Skipped Review / Hanging Open PR
 - **Description:** PR #142 remains open on branch `bolt-telemetry-optimization-1970989343525795534`, but the underlying telemetry optimization feature was merged via PR #187 on master-staging.
 - **Justification in Git/PR History:** None documented. Original PR review was bypassed by opening a new rebased PR without closing the original.
 - **Remediation Action:** Close PR #142 as superseded by PR #187.
 
 ### [AUDIT-002] PR #141 (Sentinel Symlink Safety) left hanging after PR #186 merged
+- **Tag:** `[SKIPPED_REVIEW]`
 - **Type:** Skipped Review / Hanging Open PR
 - **Description:** PR #141 remains open on branch `sentinel-privilege-restrictions-16877168996669109419` while PR #186 was merged to address Sentinel permission hardening.
 - **Justification in Git/PR History:** None documented. Reviews on PR #141 were left unaddressed or bypassed by PR #186.
 - **Remediation Action:** Close PR #141 as superseded by PR #186.
 
 ### [AUDIT-003] PR #154 (Linguist Overhaul CedrLang v2) left hanging after PR #196 merged
+- **Tag:** `[SKIPPED_REVIEW]`
 - **Type:** Skipped Review / Hanging Open PR
 - **Description:** PR #154 remains open on branch `linguist-agentic-compression-perf-13775007783316480470` while PR #196 was merged to compile CedrLang v2.
 - **Justification in Git/PR History:** None documented. Overlapping scope between Linguist branches left PR #154 in a dangling open state.
 - **Remediation Action:** Close PR #154 as superseded by PR #196.
 
 ### [AUDIT-004] PR #174 (DeepSeek integration) premature execution on ACK comment
+- **Tag:** `[ERROR]`
 - **Type:** Premature Summon / Missed Real Review
 - **Description:** Jules triggered an auto-resolve run on CodeRabbit's acknowledgment comment ("I will re-review") rather than waiting for the substantive completed review findings.
 - **Justification in Git/PR History:** Incomplete classification of bot comments led the orchestrator to treat ACK as a real review.
 - **Remediation Action:** Updated `scripts/ci/calculate_lag_index.py` with Schema v2 disposition model (`ack_pending`, `quota_cooldown`, `summon`, `real_review`, `programmatic`) to block execution on `ack_pending` comments.
 
 ### [AUDIT-005] Test import path mismatch in test_sentinel_privileges.py
+- **Tag:** `[BUG]`
 - **Type:** Test Suite Import Failure
 - **Description:** `tests/test_sentinel_privileges.py` attempted to import `deepcli.core` directly instead of `deepcli.deepcli.core`, causing test failures when pytest was invoked.
 - **Justification in Git/PR History:** Package structure refactoring created a nested `deepcli/deepcli` module structure while test imports retained legacy flat package paths.
 - **Remediation Action:** Updated `tests/test_sentinel_privileges.py` to import `deepcli.deepcli.core`.
 
 ### [AUDIT-006] Issue #129 / PR #131 MoneyBall Roster Integration Scope Isolation
+- **Tag:** `[SCOPE_LEAK]`
 - **Type:** Scope Alignment & Roster Verification
 - **Description:** MoneyBall agent roster bidding and betting arena algorithms implemented in `src/team_manager.py` were tested without updating `roster.json` schema bindings.
 - **Justification in Git/PR History:** Rapid prototyping of betting arena algorithms preceded formal schema binding.
 - **Remediation Action:** Bound roster schema to `src/team_manager.py` under Lane 4 (Multi-Agent Team-Orchestration).
 
 ### [AUDIT-007] Issue #117 / PR #143 MCP Agent Mail Coordination Layer Integration
+- **Tag:** `[SKIPPED_REVIEW]`
 - **Type:** Workflow Layer Integration & Review
 - **Description:** Multi-agent mailbox communication requested in Issue #117 was implemented via Rust composite action under `.github/actions/mcp-agent-mail/`.
 - **Justification in Git/PR History:** Closed as merged via PR #203 after verifying local execution boundaries.
 - **Remediation Action:** Integrated into Lane 4 / Lane 5 GHA pipeline with strict privilege checks.
 
 ### [AUDIT-008] Issue #59 / PR #137 Gemini Daily Quota Exhaustion & Soft Skip
+- **Tag:** `[ERROR]`
 - **Type:** Quota Exhaustion & Error Handling
 - **Description:** Free-tier Gemini models hitting HTTP 429 rate limits caused pipeline failures in GitHub Actions workflows.
 - **Justification in Git/PR History:** Hard failure mode in early workflow triggers caused entire pipeline blocks on daily quota exhaustion.

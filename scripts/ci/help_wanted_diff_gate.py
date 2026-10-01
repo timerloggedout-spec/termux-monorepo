@@ -20,12 +20,12 @@ def api(url: str) -> Any:
     try:
         with urllib.request.urlopen(req, timeout=45) as r: return json.loads(r.read().decode())
     except urllib.error.HTTPError as e:
-        raise RuntimeError(f"GitHub API {e.code}: {e.read().decode(errors="replace")[:800]}") from e
+        raise RuntimeError(f"GitHub API {e.code}: {e.read().decode(errors='replace')[:800]}") from e
 
 def parse_pr(ref: str):
-    m = re.search(r"github\\.com/([^/]+)/([^/]+)/pull/(\\d+)", ref)
+    m = re.search(r"github\.com/([^/]+)/([^/]+)/pull/(\d+)", ref)
     if m: return m.group(1), m.group(2), int(m.group(3))
-    m = re.fullmatch(r"([^/]+)/([^/#]+)#(\\d+)", ref.strip())
+    m = re.fullmatch(r"([^/]+)/([^/#]+)#(\d+)", ref.strip())
     if m: return m.group(1), m.group(2), int(m.group(3))
     raise SystemExit(f"cannot parse PR reference: {ref!r}")
 

@@ -269,3 +269,37 @@ Agent-Identity: Grok (Administrator) · RECON consolidation 2026-09-19
 
 Proposal: `docs/proposals/active/temporal-langsmith-adapter/`  
 Runbook: `docs/ops/TEMPORAL-LANGSMITH-ADAPTER.md`
+
+
+---
+
+## 12. Codespace + integration reconciliation (2026-10-01)
+
+Canonical reconciliation record: `docs/ops/CODESPACE-INTEGRATION-RECONCILIATION-2026-10-01.md` · Issue #976.
+
+### Environment surfaces
+
+| Surface | Role | Current disposition |
+|---|---|---|
+| Codespaces root + role lanes | interactive development/reproduction | **LIVE on current master tree** |
+| Docker / Temporal self-host | reproducible runtime substrate | **LIVE / P1** |
+| Bifrost | gateway/provider evaluation | **LANDED / evaluation** |
+| Gravitee | API-management research seed | **OPEN stale carrier; re-extract only** |
+| Hindsight | agent memory integration | **LANDED; one stale cleanup carrier** |
+
+### Recovered Codespace evidence
+
+- `agent-bifrost-006-5g7qvg7pqjggh4jqv` — observed Provisioning → Available on 2026-09-23.
+- `glorious-capybara-wrq7vrqj7xqjh995p` — observed Shutdown after idle timeout; not evidence of deletion or limit rotation.
+- Provider inventory is not exposed by the current connector surface, therefore absent historical records remain **UNKNOWN**, never implicitly Deleted.
+
+### Staleness boundaries
+
+- Gravitee #702: 5 commits ahead / 703 behind current master at recon; preserve research-seed intent, do not merge wholesale.
+- Hindsight #914: 1 commit ahead / 159 behind current master at recon; preserve as provenance and re-root its one-file cleanup only if still required.
+- Temporal #825/#830/#960: landed lineage; no stale carrier required for the production substrate.
+
+### Graph rule
+
+`Codespaces → environment`, `Docker/Temporal → execution substrate`, `OTEL/ATES/JSONL → evidence boundary`, and Bifrost/Gravitee/Hindsight remain distinct integration lanes. None becomes a competing source of truth.
+

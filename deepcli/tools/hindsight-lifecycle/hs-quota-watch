@@ -1,0 +1,89 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# hs-quota-watch [--once|--loop N]
+# Probes cloud billing/usage; on 402 or credits below threshold:
+#  1. triggers export from cloud
+#  2. logs to hs-parity.jsonl
+#  3. alerts via termux-notification (if available)
+set -u
+_L="$HOME/.deepcli/logs/hs-parity.jsonl"
+_KEY="${HINDSIGHT_API_KEY:-}"
+_API="https://api.hindsight.vectorize.io"
+_BANK="${HINDSIGHT_BANK_ID:-deepagent::termux-monorepo}"
+_THRESHOLD="${HS_QUOTA_THRESHOLD:-5}"
+
+_log() { printf '{"ts":"%s","op":"%s","status":"%s","note":"%s"}\n' \
+  "$(date -u +%FT%TZ)" "$1" "$2" "${3:-}" >> "$_L"; }
+
+_probe() {
+  # Try to read bank stats (cheap read op)
+  _c=$(curl -sS -o "$TMPDIR/_qw.json" -w '%{http_code}' --max-time 8 \
+    -H "Authorization: Bearer $_KEY" "$_API/v1/default/banks/$_BANK" 2>/dev/null)
+  echo "$_c"
+}
+
+_export_now() {
+  echo "  triggering cloud export..."
+  _op=$(curl -sS --max-time 15 -X POST \
+    "$_API/v1/default/banks/$_BANK/transfer/export" \
+    -H "Authorization: Bearer $_KEY" -H "Content-Type: application/json" \
+    -d '{"include_data":true,"include_bank_config":true,"include_history":true}' \
+    2>/dev/null | python3 -c "import sys,json;print(json.load(sys.stdin).get('operation_id',''))" 2>/dev/null)
+  if [ -z "$_op" ]; then echo "  [FAIL] no operation_id"; return 1; fi
+  for _i in $(seq 1 30); do
+    sleep 4
+    _r=$(curl -sS --max-time 10 -H "Authorization: Bearer $_KEY" \
+      "$_API/v1/default/banks/$_BANK/operations/$_op" 2>/dev/null)
+    _s=$(printf '%s' "$_r" | python3 -c "import sys,json;print(json.load(sys.stdin).get('status',''))" 2>/dev/null)
+    if [ "$_s" = "succeeded" ] || [ "$_s" = "completed" ]; then
+      _url=$(printf '%s' "$_r" | python3 -c "import sys,json;d=json.load(sys.stdin);print((d.get('result_metadata') or {}).get('download_url',''))" 2>/dev/null)
+      if [ -n "$_url" ]; then
+        mkdir -p "$HOME/.deepcli/backups"
+        _stamp=$(date -u +%Y%m%dT%H%M%SZ)
+        curl -sS --max-time 120 -H "Authorization: Bearer $_KEY" "$_url" \
+          -o "$HOME/.deepcli/backups/bank-cloud-$_stamp.zip" 2>&1 | tail -1
+        echo "  [OK] exported $HOME/.deepcli/backups/bank-cloud-$_stamp.zip"
+        _log export ok "$_stamp"
+        return 0
+      fi
+    fi
+  done
+  _log export fail "timeout"
+  return 1
+}
+
+_check() {
+  _code=$(_probe)
+  case "$_code" in
+    200)
+      echo "  cloud: ok ($_code)"
+      _log probe ok "$_code"
+      ;;
+    402)
+      echo "  cloud: 402 INSUFFICIENT CREDITS"
+      _log probe 402 "insufficient credits"
+      _export_now
+      if command -v termux-notification >/dev/null 2>&1; then
+        termux-notification -t "Hindsight Cloud 402" \
+          -c "Credits exhausted. Export triggered. Use codespace env." 2>/dev/null || true
+      fi
+      ;;
+    401|403)
+      echo "  cloud: $_code auth"
+      _log probe auth "$_code"
+      ;;
+    000)
+      echo "  cloud: unreachable"
+      _log probe down "$_code"
+      ;;
+    *)
+      echo "  cloud: $_code"
+      _log probe odd "$_code"
+      ;;
+  esac
+}
+
+case "${1:---once}" in
+  --once) _check ;;
+  --loop) _n="${2:-60}"; while true; do _check; sleep "$_n"; done ;;
+  *) echo "usage: hs-quota-watch [--once|--loop N]"; exit 2 ;;
+esac

@@ -1,0 +1,57 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# hs-parity {export-cloud|import-codespace|import-local|status}
+set -u
+_KEY="${HINDSIGHT_API_KEY:-}"
+_API="https://api.hindsight.vectorize.io"
+_CS="http://localhost:18888"
+_BANK="${HINDSIGHT_BANK_ID:-deepagent::termux-monorepo}"
+_BK="$HOME/.deepcli/backups"
+
+case "${1:-status}" in
+  export-cloud)
+    # See hs-quota-watch _export_now — same shape
+    exec ~/.local/bin/hs-quota-watch --once
+    ;;
+  import-codespace)
+    _z="$2"; [ -f "$_z" ] || { echo "usage: hs-parity import-codespace <zip>"; exit 2; }
+    echo "  importing $_z → codespace $_CS bank=$_BANK"
+    curl -sS --max-time 300 -X POST "$_CS/v1/default/banks/$_BANK/transfer/import" \
+      -H "Content-Type: application/octet-stream" --data-binary "@$_z" \
+      -w '\n  http=%{http_code}\n' 2>&1 | tail -3
+    ;;
+  import-local)
+    _z="$2"; [ -f "$_z" ] || { echo "usage: hs-parity import-local <zip>"; exit 2; }
+    echo "  importing $_z → local FTS5"
+    _tmp="$TMPDIR/parity-import"; rm -rf "$_tmp"; mkdir -p "$_tmp"
+    unzip -q "$_z" -d "$_tmp" 2>/dev/null
+    python3 - "$_tmp" "$HOME/.deepcli/bank-local.db" <<'PY'
+import json, sqlite3, sys
+from pathlib import Path
+src, db = Path(sys.argv[1]), Path(sys.argv[2])
+con = sqlite3.connect(db); con.execute("PRAGMA journal_mode=WAL")
+n = 0
+for f in (src / "documents").glob("*.json"):
+    try: d = json.loads(f.read_text())
+    except: continue
+    k = f"cloud-import:{f.stem}"
+    if con.execute("SELECT 1 FROM memory WHERE key=?", (k,)).fetchone(): continue
+    txt = d.get("text") or d.get("content") or json.dumps(d)[:2000]
+    con.execute("INSERT OR REPLACE INTO memory(source,key,content,metadata) VALUES(?,?,?,?)",
+                ("cloud_import", k, str(txt)[:8000], json.dumps({"imported": True})))
+    n += 1
+con.commit()
+print(f"  imported {n} docs into FTS5")
+PY
+    ;;
+  status)
+    echo "=== parity status ==="
+    printf "  cloud:     %s\n" "$(curl -sS -o /dev/null -w '%{http_code}' --max-time 5 https://api.hindsight.vectorize.io/health 2>/dev/null)"
+    printf "  codespace: %s\n" "$(curl -sS -o /dev/null -w '%{http_code}' --max-time 5 http://localhost:18888/health 2>/dev/null)"
+    printf "  fts5:      %s items\n" "$(command -v sqlite3 >/dev/null 2>&1 && sqlite3 ~/.deepcli/bank-local.db 'SELECT COUNT(*) FROM memory' 2>/dev/null || echo '?')"
+    echo "  backups:"
+    ls -1t "$_BK"/bank-*.zip 2>/dev/null | head -5 | while read -r z; do
+      printf "    %s  %s\n" "$(du -h "$z" | cut -f1)" "$(basename "$z")"
+    done
+    ;;
+  *) echo "usage: hs-parity {export-cloud|import-codespace <zip>|import-local <zip>|status}"; exit 2 ;;
+esac

@@ -1,0 +1,35 @@
+name: Delphic Bayesian Observatory Lab
+
+on:
+  pull_request:
+    paths:
+      - "scripts/delphic_oracle.py"
+      - "tests/test_delphic_oracle.py"
+      - "docs/schemas/delphic-oracle-control-plane.yaml"
+      - "docs/proposals/active/delphic-bayesian-observatory-lab/**"
+      - "experiments/delphic-observatory-lab/**"
+  push:
+    branches:
+      - experiment/delphic-bayesian-observatory-lab
+    paths:
+      - "scripts/delphic_oracle.py"
+      - "tests/test_delphic_oracle.py"
+
+permissions:
+  contents: read
+
+jobs:
+  deterministic-oracle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Python version
+        run: python3 --version
+      - name: Run deterministic Delphic fixtures
+        run: python3 -m pytest -q tests/test_delphic_oracle.py
+      - name: Compile engine
+        run: python3 -m py_compile scripts/delphic_oracle.py

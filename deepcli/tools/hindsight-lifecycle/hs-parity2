@@ -1,0 +1,154 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# hs-parity2 <op> [args]
+#   export <env> [<out.zip>]        env: cloud|codespace|local
+#   import <env> <zip>              env: cloud|codespace|local
+#   sync <src> <dst>                direct env→env
+#   status
+#   verify <env>
+set -u
+_KEY="${HINDSIGHT_API_KEY:-}"
+_API="https://api.hindsight.vectorize.io"
+_CS="http://localhost:18888"
+_BANK="${HINDSIGHT_BANK_ID:-deepagent::termux-monorepo}"
+_BK="$HOME/.deepcli/backups"
+_DB="$HOME/.deepcli/bank-local.db"
+_L="$HOME/.deepcli/logs/hs-parity.jsonl"
+
+_log() { printf '{"ts":"%s","op":"%s","status":"%s","note":"%s"}\n' \
+  "$(date -u +%FT%TZ)" "$1" "$2" "${3:-}" >> "$_L"; }
+
+_url() { case "$1" in cloud) echo "$_API";; codespace) echo "$_CS";; *) echo "";; esac; }
+
+_export_http() {
+  # $1=base $2=out.zip
+  local base="$1" out="$2"
+  local op=$(curl -sS --max-time 20 -X POST "$base/v1/default/banks/$_BANK/transfer/export" \
+    -H "Content-Type: application/json" \
+    -d '{"include_data":true,"include_bank_config":true,"include_history":true}' \
+    2>/dev/null | python3 -c "import sys,json;print(json.load(sys.stdin).get('operation_id',''))" 2>/dev/null)
+  [ -z "$op" ] && { echo "  export: no operation_id"; return 1; }
+  for i in $(seq 1 40); do
+    sleep 4
+    local r=$(curl -sS --max-time 10 "$base/v1/default/banks/$_BANK/operations/$op" 2>/dev/null)
+    local s=$(printf '%s' "$r" | python3 -c "import sys,json;print(json.load(sys.stdin).get('status',''))" 2>/dev/null)
+    if [ "$s" = "succeeded" ] || [ "$s" = "completed" ]; then
+      local u=$(printf '%s' "$r" | python3 -c "import sys,json;d=json.load(sys.stdin);print((d.get('result_metadata') or {}).get('download_url',''))" 2>/dev/null)
+      [ -z "$u" ] && u="$base/v1/default/banks/$_BANK/transfer/export/download/$op"
+      curl -sS --max-time 300 "$u" -o "$out" 2>&1 | tail -1
+      return 0
+    fi
+  done
+  return 1
+}
+
+_export_local() {
+  # $1=out.zip — pack FTS5 into zip with documents/*.json shape
+  local out="$1"
+  local tmp="$TMPDIR/pv-$$"
+  mkdir -p "$tmp/documents"
+  if command -v sqlite3 >/dev/null 2>&1; then
+    sqlite3 "$_DB" "SELECT id, source, key, content, metadata FROM memory" 2>/dev/null | \
+      python3 -c "
+import sys, json
+i = 0
+for line in sys.stdin:
+    parts = line.rstrip('\n').split('|', 4)
+    if len(parts) < 4: continue
+    d = {'id': parts[0], 'source': parts[1], 'key': parts[2], 'text': parts[3], 'metadata': parts[4] if len(parts)>4 else '{}'}
+    open(f'$tmp/documents/{i:06d}.json','w').write(json.dumps(d))
+    i += 1
+print(i)
+"
+  fi
+  (cd "$tmp" && zip -qr "$out" .)
+  rm -rf "$tmp"
+}
+
+_import_http() {
+  # $1=base $2=zip
+  local base="$1" z="$2"
+  curl -sS --max-time 300 -X POST "$base/v1/default/banks/$_BANK/transfer/import" \
+    -H "Content-Type: application/octet-stream" --data-binary "@$z" \
+    -w '\n  http=%{http_code}\n' 2>&1 | tail -3
+}
+
+_import_local() {
+  # $1=zip
+  local z="$1" tmp="$TMPDIR/pimp-$$"
+  rm -rf "$tmp"; mkdir -p "$tmp"; unzip -q "$z" -d "$tmp" 2>/dev/null
+  python3 - "$tmp" "$_DB" <<'PY'
+import json, sqlite3, sys
+from pathlib import Path
+src, db = Path(sys.argv[1]), Path(sys.argv[2])
+con = sqlite3.connect(db); con.execute("PRAGMA journal_mode=WAL")
+n = 0
+for f in (src / "documents").glob("*.json"):
+    try: d = json.loads(f.read_text())
+    except: continue
+    k = f"parity:{f.stem}:{d.get('id','')}"
+    if con.execute("SELECT 1 FROM memory WHERE key=?", (k,)).fetchone(): continue
+    txt = d.get("text") or d.get("content") or json.dumps(d)[:2000]
+    con.execute("INSERT OR REPLACE INTO memory(source,key,content,metadata) VALUES(?,?,?,?)",
+                (d.get("source","parity_import"), k, str(txt)[:8000], json.dumps({"parity": True})))
+    n += 1
+con.commit()
+print(f"  imported {n} docs")
+PY
+  rm -rf "$tmp"
+}
+
+op="${1:-status}"
+case "$op" in
+  export)
+    env="$2"; out="${3:-$_BK/bank-$env-$(date -u +%Y%m%dT%H%M%SZ).zip}"
+    case "$env" in
+      cloud)     _export_http "$_API" "$out" && echo "  $out" ; _log export-cloud ok "$out" ;;
+      codespace) _export_http "$_CS" "$out"  && echo "  $out" ; _log export-codespace ok "$out" ;;
+      local)     _export_local "$out"        && echo "  $out" ; _log export-local ok "$out" ;;
+      *) echo "env: cloud|codespace|local"; exit 2 ;;
+    esac
+    ;;
+  import)
+    env="$2"; z="$3"
+    [ -f "$z" ] || { echo "usage: hs-parity2 import <env> <zip>"; exit 2; }
+    case "$env" in
+      cloud)     _import_http "$_API" "$z" ; _log import-cloud ok "$z" ;;
+      codespace) _import_http "$_CS"  "$z" ; _log import-codespace ok "$z" ;;
+      local)     _import_local "$z"        ; _log import-local ok "$z" ;;
+      *) echo "env: cloud|codespace|local"; exit 2 ;;
+    esac
+    ;;
+  sync)
+    src="$2"; dst="$3"
+    z="$_BK/sync-${src}-to-${dst}-$(date -u +%Y%m%dT%H%M%SZ).zip"
+    echo "  sync: $src → $dst"
+    bash "$0" export "$src" "$z" >/dev/null 2>&1 || { echo "  export fail"; exit 1; }
+    [ -f "$z" ] || { echo "  zip missing"; exit 1; }
+    bash "$0" import "$dst" "$z"
+    _log sync ok "$src->$dst $z"
+    ;;
+  status)
+    for e in cloud codespace; do
+      case "$e" in
+        cloud) base="$_API";; codespace) base="$_CS";; esac
+      printf "  %-11s %s\n" "$e" "$(curl -sS -o /dev/null -w '%{http_code}' --max-time 5 "$base/health" 2>/dev/null)"
+    done
+    printf "  %-11s %s items\n" "local" "$(command -v sqlite3 >/dev/null 2>&1 && sqlite3 "$_DB" 'SELECT COUNT(*) FROM memory' 2>/dev/null || echo '?')"
+    echo "  backups:"
+    ls -1t "$_BK"/bank-*.zip 2>/dev/null | head -6 | while read -r z; do
+      printf "    %s  %s\n" "$(du -h "$z" | cut -f1)" "$(basename "$z")"
+    done
+    ;;
+  verify)
+    env="$2"; base=$(_url "$env")
+    [ -z "$base" ] && { echo "env: cloud|codespace"; exit 2; }
+    curl -sS --max-time 10 "$base/v1/default/banks" | python3 -c "
+import json,sys
+try:
+  for b in json.load(sys.stdin).get('banks',[]):
+    print(f\"  {b['bank_id']} facts={b.get('fact_count',0)} updated={b.get('updated_at','')}\")
+except: pass
+"
+    ;;
+  *) echo "usage: hs-parity2 {export|import|sync|status|verify} ..."; exit 2 ;;
+esac

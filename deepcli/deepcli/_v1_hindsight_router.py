@@ -91,6 +91,19 @@ class RoutedHindsightClient:
         print("[router] cloud demoted: " + reason + "; routing local FTS5", file=sys.stderr)
 
     async def aretain(self, content, *, bank_id=None, metadata=None):
+        # Fanout: write to every reachable store
+        if os.environ.get("HS_WRITE_MODE", "failover") == "fanout":
+            _targets = []
+            if self.codespace is not None: _targets.append(("codespace", self.codespace))
+            if self._cloud_healthy:        _targets.append(("cloud", self.cloud))
+            _targets.append(("local", self.local))
+            _out = {}
+            for _n, _c in _targets:
+                try:
+                    _out[_n] = await _c.aretain(content, bank_id=bank_id, metadata=metadata)
+                except Exception as _e:
+                    _out[_n] = {"success": False, "error": str(_e)[:120]}
+            return {"fanout": True, "results": _out}
         self._maybe_restore()
         if self.codespace is not None:
             try:

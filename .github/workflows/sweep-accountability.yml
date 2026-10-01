@@ -1,6 +1,9 @@
 name: Sweep Accountability
 
 on:
+  push:
+    paths-ignore:
+      - "docs/ops/generated/sweep-ledger/**"
   schedule:
     - cron: "17 2 * * *"
   workflow_dispatch:

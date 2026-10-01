@@ -20,7 +20,7 @@ from pathlib import Path
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--kind", required=True, help="claim | upstream_pr | fallback | notice | scout_bench")
+    ap.add_argument("--kind", required=True, help="claim | stake_pr | upstream_pr | diff_gate | fallback | notice | scout_bench")
     ap.add_argument("--issue", default="", help="issue URL or owner/repo#n")
     ap.add_argument("--ok", default="true", choices=("true", "false"))
     ap.add_argument("--pr-url", default="")
@@ -60,7 +60,7 @@ def main() -> int:
         "delivery": "upstream-pr-primary",
         **extra,
     }
-    # drop nulls for thinner lines
+    if receipt.get("stage") is None: receipt.pop("stage", None)\n    if receipt.get("gate_pass") is None: receipt.pop("gate_pass", None)\n    # drop nulls for thinner lines
     receipt = {k: v for k, v in receipt.items() if v is not None}
 
     out = Path(args.out_dir)

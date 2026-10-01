@@ -487,3 +487,21 @@ proposals:
     related_prs: [695]
     related_branches: [docs/paper2agent-scientific-factory-proposal-2026-09-29]
     gates_required: [repo-gate, termux-smoke]
+  - id: delphic-bayesian-observatory-lab
+    title: "Delphic Bayesian Oracle × Observatory control-plane design/evaluation"
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/delphic-bayesian-observatory-lab/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues: [968]
+    related_prs: []
+    related_branches:
+      - experiment/delphic-bayesian-observatory-lab
+    gates_required: [repo-gate, termux-smoke]

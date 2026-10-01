@@ -28,7 +28,7 @@ main{max-width:1180px;margin:auto;padding:16px}.hud{display:flex;gap:12px;align-
     <div class="card"><div class="label">RECOMBINATION</div><div class="value" id="merge">0</div></div>
     <div class="card"><div class="label">SELECTED</div><div class="value" id="selected">none</div></div>
   </section>
-  <p class="hint">Click a node to inspect its state, cumulative probability, and incoming path contributions. The transition matrix is the model source of truth.</p>
+  <pre class="hint" id="details">Click a node to inspect its state, cumulative probability, incoming contributions, and retained path provenance. The transition matrix is the model source of truth.</pre>
 </main>
 <script type="module">
 import { recombiningTrellis, strictTree, sampleNext } from "./src/markov-engine.mjs";
@@ -116,6 +116,22 @@ function draw(){
   const incoming=last.nodes.reduce((s,n)=>s+(n.incoming?.length||0),0);
   $("merge").textContent=mode==="trellis"?incoming-last.nodes.length:0;
   $("selected").textContent=selected||"none";
+  const selectedNode=selected?lookup.get(selected):null;
+  if(selectedNode){
+    const incoming=(selectedNode.incoming||[]).map(x=>x.from+"  contribution="+x.probability.toFixed(5)+"  transition="+x.transition.toFixed(3)).join("\n")||"none";
+    const provenance=(selectedNode.provenance||[]).slice(0,8).map(x=>x.path.join(" → ")+"  P="+x.probability.toFixed(5)).join("\n")||"none";
+    $("details").textContent=[
+      "STATE: "+selectedNode.state,
+      "TIME: t"+selectedNode.time,
+      "CUMULATIVE P: "+selectedNode.probability.toFixed(6),
+      "INCOMING:",
+      incoming,
+      "PROVENANCE (first 8):",
+      provenance
+    ].join("\n");
+  } else {
+    $("details").textContent="Click a node to inspect its state, cumulative probability, incoming contributions, and retained path provenance. The transition matrix is the model source of truth.";
+  }
   requestAnimationFrame(draw);
 }
 function makeParticle(layers){

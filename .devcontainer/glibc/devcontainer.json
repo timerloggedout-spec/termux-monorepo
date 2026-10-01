@@ -4,10 +4,19 @@
     "dockerfile": "Dockerfile",
     "context": "."
   },
-  "hostRequirements": { "cpus": 4, "memory": "8gb", "storage": "32gb" },
-  "forwardPorts": [8888],
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "8gb",
+    "storage": "32gb"
+  },
+  "forwardPorts": [
+    8888
+  ],
   "portsAttributes": {
-    "8888": { "label": "hindsight", "onAutoForward": "silent" }
+    "8888": {
+      "label": "hindsight",
+      "onAutoForward": "silent"
+    }
   },
   "containerEnv": {
     "HINDSIGHT_API_LLM_PROVIDER": "gemini",
@@ -22,5 +31,10 @@
     "HINDSIGHT_API_HOST": "0.0.0.0"
   },
   "postCreateCommand": "bash .devcontainer/glibc/post-create.sh",
-  "postStartCommand": "bash .devcontainer/glibc/post-start.sh"
+  "postStartCommand": "bash .devcontainer/glibc/post-start.sh",
+  "features": {
+    "ghcr.io/devcontainers/features/sshd:1": {
+      "version": "latest"
+    }
+  }
 }

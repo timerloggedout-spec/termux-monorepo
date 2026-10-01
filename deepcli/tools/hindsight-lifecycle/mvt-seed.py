@@ -201,49 +201,51 @@ async def post_batch(hs_url, bank, items, timeout=180):
 async def worker(name, hs_url, bank, queue, counters, pace):
     consec_quota = 0
     while True:
-        # Collect up to BATCH_SIZE items
         items = []
-        try:
-            first = await queue.get()
-            if first is None:
-                queue.task_done(); return
-            items.append(first)
-            while len(items) < BATCH_SIZE:
-                try:
-                    nxt = queue.get_nowait()
-                    if nxt is None:
-                        queue.task_done(); break
-                    items.append(nxt)
-                except asyncio.QueueEmpty:
-                    break
-            code, body = await post_batch(hs_url, bank, items)
-            for _ in items: queue.task_done()
+        first = await queue.get()
+        if first is None:
+            queue.task_done(); return
+        items.append(first)
+        while len(items) < BATCH_SIZE:
+            try:
+                nxt = queue.get_nowait()
+                if nxt is None:
+                    queue.task_done(); break
+                items.append(nxt)
+            except asyncio.QueueEmpty:
+                break
 
-        quota_in_body = ("RESOURCE_EXHAUSTED" in body or "429" in body
+        code, body = await post_batch(hs_url, bank, items)
+        for _ in items: queue.task_done()
+
+        quota_in_body = ("RESOURCE_EXHAUSTED" in body
+                         or '"code": 429' in body
                          or "quota" in body.lower())
 
         if code == 200:
             counters["ok"] += len(items)
             consec_quota = 0
         elif code == 429 or (code == 500 and quota_in_body):
-            counters["429"] += 1
+            counters["429"] += len(items)
             consec_quota += 1
-            log(f"  [{name}] quota (HTTP {code}) consec={consec_quota}")
+            log(f"  [{name}] quota (HTTP {code}) consec={consec_quota} batch={len(items)}")
             if consec_quota >= 5:
                 log(f"  [{name}] ABORT lane: 5 consecutive quota errors")
                 counters["abort"] = True
-                queue.task_done()
+                while not queue.empty():
+                    try:
+                        queue.get_nowait(); queue.task_done()
+                    except Exception:
+                        break
                 return
             await asyncio.sleep(20)
         else:
-            counters["fail"] += 1
+            counters["fail"] += len(items)
             if counters["fail"] % 20 == 0:
                 log(f"  [{name}] HTTP {code} (fail={counters['fail']})")
         if code == 200 and counters["ok"] % 100 == 0:
             log(f"  [{name}] ok={counters['ok']} fail={counters['fail']} 429={counters['429']}")
         await asyncio.sleep(pace)
-        queue.task_done()
-
 
 async def run_provider(provider, source):
     prov = provider["name"]

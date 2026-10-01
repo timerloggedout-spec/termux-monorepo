@@ -47,6 +47,23 @@ jobs:
           from datetime import datetime, timezone
 
           d = json.load(open("bridge.json", encoding="utf-8"))
+          with open("deepcli-agent-bridge-receipt.json", "w", encoding="utf-8") as out:
+              json.dump({
+                  "schema_version": 1,
+                  "run_id": int("${{ github.run_id }}"),
+                  "run_attempt": int("${{ github.run_attempt }}"),
+                  "sha": "${{ github.sha }}",
+                  "ref": "${{ github.ref }}",
+                  "bridge": {
+                      "status": d.get("status"),
+                      "endpoint": d.get("endpoint"),
+                      "port": d.get("port"),
+                      "ssh_user": d.get("ssh_user"),
+                      "expires_at": d.get("expires_at"),
+                      "stale_reason": d.get("stale_reason"),
+                  },
+                  "checks": [],
+              }, out, indent=2, sort_keys=True)
           required = ("endpoint", "port", "ssh_user", "expires_at")
           if d.get("status") != "active":
               raise SystemExit(f"bridge status is {d.get('status')!r}; publisher must refresh it")

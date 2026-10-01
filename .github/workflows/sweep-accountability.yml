@@ -25,9 +25,21 @@ on:
         description: Optional upper bound (ISO-8601)
         required: false
         default: ""
+  pull_request:
+    types: [opened, reopened, synchronize, closed, ready_for_review, converted_to_draft]
+  issues:
+    types: [opened, edited, closed, reopened, labeled, unlabeled, assigned, unassigned]
+  issue_comment:
+    types: [created, edited, deleted]
+  workflow_run:
+    workflows: ["*"]
+    types: [completed]
 
 permissions:
   contents: write
+  actions: read
+  issues: read
+  pull-requests: read
 
 concurrency:
   group: sweep-accountability
@@ -36,7 +48,7 @@ concurrency:
 jobs:
   sweep:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
         with:
@@ -44,6 +56,29 @@ jobs:
 
       - name: Validate receipt contract
         run: python3 scripts/ci/test_sweep_accountability.py
+
+      - name: Historical source census
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'HISTORICAL' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p docs/ops/generated/sweep-ledger/census
+          gh api --paginate "repos/$GITHUB_REPOSITORY/pulls?state=all&per_page=100" > docs/ops/generated/sweep-ledger/census/pulls.json
+          gh api --paginate "repos/$GITHUB_REPOSITORY/issues?state=all&per_page=100" > docs/ops/generated/sweep-ledger/census/issues.json
+          gh api --paginate "repos/$GITHUB_REPOSITORY/actions/runs?per_page=100" > docs/ops/generated/sweep-ledger/census/workflow-runs.json
+          python3 - <<PY
+import json, pathlib
+p=pathlib.Path("docs/ops/generated/sweep-ledger/census")
+for name in ("pulls","issues","workflow-runs"):
+    raw=p.joinpath(name+".json").read_text()
+    try:
+        pages=json.loads(raw)
+        count=sum(len(x) for x in pages) if isinstance(pages,list) and pages and isinstance(pages[0],list) else (len(pages) if isinstance(pages,list) else 0)
+    except Exception:
+        count=-1
+    print(name, count)
+PY
 
       - name: Record sweep observation
         env:
@@ -61,21 +96,25 @@ jobs:
           TO_TIME="${TO_TIME:-}"
           git config user.name "termux-monorepo sweep"
           git config user.email "actions@users.noreply.github.com"
-
           START="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           COMMITS="$(git rev-list --count HEAD)"
           HEAD_SHA="$(git rev-parse HEAD)"
           FIRST_SHA="$(git rev-list --max-parents=0 HEAD | tail -n 1)"
           RUN_URL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
-          export COMMITS HEAD_SHA FIRST_SHA
-
+          EVENT_KIND="$GITHUB_EVENT_NAME"
+          export COMMITS HEAD_SHA FIRST_SHA EVENT_KIND
           FINDINGS="$(python3 - <<PY
-import json, os
-print(json.dumps([
-  {"id":"repository-head","classification":"OBSERVED","statement":"HEAD="+os.environ["HEAD_SHA"],"evidence_refs":["git://commit/"+os.environ["HEAD_SHA"]],"confidence":1},
-  {"id":"repository-commit-count","classification":"OBSERVED","statement":"reachable commits="+os.environ["COMMITS"],"evidence_refs":["git://rev-list"],"confidence":1},
-  {"id":"historical-source-boundary","classification":"OBSERVED","statement":"Git history is directly observable; retained GitHub events/artifacts require separate reconciliation.","evidence_refs":["git://repository"],"confidence":1}
-], separators=(",",":")))
+import json, os, pathlib
+items=[{"id":"repository-head","classification":"OBSERVED","statement":"HEAD="+os.environ["HEAD_SHA"],"evidence_refs":["git://commit/"+os.environ["HEAD_SHA"]],"confidence":1},{"id":"repository-commit-count","classification":"OBSERVED","statement":"reachable commits="+os.environ["COMMITS"],"evidence_refs":["git://rev-list"],"confidence":1},{"id":"trigger-event","classification":"OBSERVED","statement":"sweep trigger="+os.environ["EVENT_KIND"],"evidence_refs":["github://event"],"confidence":1}]
+p=pathlib.Path("docs/ops/generated/sweep-ledger/census")
+if p.exists():
+  for name in ("pulls","issues","workflow-runs"):
+    f=p.joinpath(name+".json")
+    if f.exists():
+      try: raw=json.loads(f.read_text()); n=sum(len(x) for x in raw) if raw and isinstance(raw,list) and isinstance(raw[0],list) else len(raw) if isinstance(raw,list) else 0
+      except Exception: n=-1
+      items.append({"id":"census-"+name,"classification":"OBSERVED","statement":name+" pages/items="+str(n),"evidence_refs":["artifact://census/"+name],"confidence":1})
+print(json.dumps(items,separators=(",",":")))
 PY
           )"
 
@@ -90,13 +129,13 @@ PY
             --ref "$GITHUB_REF_NAME" \
             --from "$FROM_TIME" \
             --to "${TO_TIME:-$START}" \
-            --query "repository history baseline" \
-            --sources "[\"git://repository\",\"github://actions/$GITHUB_RUN_ID\"]" \
+            --query "event=$EVENT_KIND; historical census when requested" \
+            --sources "[\"git://repository\",\"github://event/$GITHUB_EVENT_NAME\",\"github://actions/$GITHUB_RUN_ID\"]" \
             --provenance "{\"actor_type\":\"workflow\",\"actor\":\"$GITHUB_ACTOR\",\"tool\":\"GitHub Actions\",\"workflow\":\"$GITHUB_WORKFLOW\",\"run_id\":\"$GITHUB_RUN_ID\",\"event\":\"$GITHUB_EVENT_NAME\",\"source_refs\":[\"$RUN_URL\"],\"source_shas\":[\"$HEAD_SHA\",\"$FIRST_SHA\"]}" \
             --findings "$FINDINGS" \
-            --actions "[{\"id\":\"sweep-$GITHUB_RUN_ID\",\"type\":\"repository-history-observation\",\"status\":\"SUCCEEDED\",\"actor\":\"$GITHUB_ACTOR\",\"tool\":\"GitHub Actions\",\"target\":\"$GITHUB_REPOSITORY\"}]" \
-            --effects "[{\"id\":\"effect-$GITHUB_RUN_ID\",\"type\":\"accountability-receipt\",\"after\":{\"head_sha\":\"$HEAD_SHA\",\"reachable_commits\":$COMMITS,\"run_url\":\"$RUN_URL\"}}]" \
-            --coverage-reason "Git history is complete for the checked-out ref; external event retention remains a separately reconciled source." \
+            --actions "[{\"id\":\"sweep-$GITHUB_RUN_ID\",\"type\":\"accountability-sweep\",\"status\":\"SUCCEEDED\",\"actor\":\"$GITHUB_ACTOR\",\"tool\":\"GitHub Actions\",\"target\":\"$GITHUB_REPOSITORY\"}]" \
+            --effects "[{\"id\":\"effect-$GITHUB_RUN_ID\",\"type\":\"accountability-receipt\",\"after\":{\"head_sha\":\"$HEAD_SHA\",\"reachable_commits\":$COMMITS,\"trigger_event\":\"$EVENT_KIND\",\"run_url\":\"$RUN_URL\"}}]" \
+            --coverage-reason "Git history is complete for the checked-out ref; external source census is explicit and retained when HISTORICAL mode is requested." \
             --out-dir docs/ops/generated/sweep-ledger
 
           git add docs/ops/generated/sweep-ledger

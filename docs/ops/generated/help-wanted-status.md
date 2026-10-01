@@ -1,10 +1,9 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-01T15:42:11Z UTC · receipts=733 · foreign_open=24 · tributes=62_
+_Generated 2026-10-01T17:02:08Z UTC · receipts=756 · foreign_open=23 · tributes=62_
 
 ## Tributes (contributor ledger)
 
-- [nextcloud/spreed#19662](https://github.com/nextcloud/spreed/pull/19662) · state=open · help-wanted: stake + contribute for #19498
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -28,6 +27,7 @@ _Generated 2026-10-01T15:42:11Z UTC · receipts=733 · foreign_open=24 · tribut
 - [Vikram-sardiwal/react-open-source#50](https://github.com/Vikram-sardiwal/react-open-source/pull/50) · state=open · help-wanted: stake + contribute for #16
 - [laugh-tales/starpass-contracts#59](https://github.com/laugh-tales/starpass-contracts/pull/59) · state=open · help-wanted: stake + contribute for #28
 - [kawacukennedy/afrpoweros#40](https://github.com/kawacukennedy/afrpoweros/pull/40) · state=open · help-wanted: stake + contribute for #5
+- [nextcloud/spreed#19662](https://github.com/nextcloud/spreed/pull/19662) · state=closed · help-wanted: stake + contribute for #19498
 - [LibreUML/LibreUML#130](https://github.com/LibreUML/LibreUML/pull/130) · state=closed · help-wanted: stake + contribute for #126
 - [StellarCanary/Protocol-Canary#345](https://github.com/StellarCanary/Protocol-Canary/pull/345) · state=closed · help-wanted: stake + contribute for #295
 - [arsova-mx/OpenPoker#69](https://github.com/arsova-mx/OpenPoker/pull/69) · state=closed · help-wanted: stake + contribute for #67
@@ -47,7 +47,6 @@ _Generated 2026-10-01T15:42:11Z UTC · receipts=733 · foreign_open=24 · tribut
 
 ## Foreign open PRs
 
-- [nextcloud/spreed#19662](https://github.com/nextcloud/spreed/pull/19662) — help-wanted: stake + contribute for #19498
 - [kawacukennedy/afrpoweros#40](https://github.com/kawacukennedy/afrpoweros/pull/40) — help-wanted: stake + contribute for #5
 - [laugh-tales/starpass-contracts#59](https://github.com/laugh-tales/starpass-contracts/pull/59) — help-wanted: stake + contribute for #28
 - [Vikram-sardiwal/react-open-source#50](https://github.com/Vikram-sardiwal/react-open-source/pull/50) — help-wanted: stake + contribute for #16
@@ -72,6 +71,6 @@ _Generated 2026-10-01T15:42:11Z UTC · receipts=733 · foreign_open=24 · tribut
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=733 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 647, 'followup_reengage': 19, 'followup_stale_nudge': 18, 'followup_changes': 1}`
+## Outcomes · ok=756 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 670, 'followup_reengage': 19, 'followup_stale_nudge': 18, 'followup_changes': 1}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

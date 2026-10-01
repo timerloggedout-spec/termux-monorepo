@@ -1,0 +1,129 @@
+{
+  "collected_at": "2026-10-01T10:04:20.315359+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 36846773986,
+    "endpoint": ".../runs/36846773986/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 110318674786,
+        "run_id": 36846773986,
+        "workflow_name": "Agent Throughput Evidence",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/36846773986",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAZr4FjYg",
+        "head_sha": "97250d8ca52ad11a7087011d887d19ada9e8fc29",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/110318674786",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36846773986/job/110318674786",
+        "status": "in_progress",
+        "conclusion": null,
+        "created_at": "2026-10-01T10:04:08Z",
+        "started_at": "2026-10-01T10:04:17Z",
+        "completed_at": null,
+        "name": "emit",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-01T10:04:18Z",
+            "completed_at": "2026-10-01T10:04:19Z"
+          },
+          {
+            "name": "Checkout observer implementation",
+            "status": "in_progress",
+            "conclusion": null,
+            "number": 2,
+            "started_at": "2026-10-01T10:04:19Z",
+            "completed_at": null
+          },
+          {
+            "name": "Download ATES task-boundary evidence",
+            "status": "pending",
+            "conclusion": null,
+            "number": 3,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Collect trusted workflow metadata",
+            "status": "pending",
+            "conclusion": null,
+            "number": 4,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Move metadata into workspace",
+            "status": "pending",
+            "conclusion": null,
+            "number": 5,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Emit sanitized ATES JSONL",
+            "status": "pending",
+            "conclusion": null,
+            "number": 6,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Validate emitter tests",
+            "status": "pending",
+            "conclusion": null,
+            "number": 7,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Reduce observed ATES metrics",
+            "status": "pending",
+            "conclusion": null,
+            "number": 8,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Build evidence receipt",
+            "status": "pending",
+            "conclusion": null,
+            "number": 9,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Upload ATES evidence",
+            "status": "pending",
+            "conclusion": null,
+            "number": 10,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Post Checkout observer implementation",
+            "status": "pending",
+            "conclusion": null,
+            "number": 20,
+            "started_at": null,
+            "completed_at": null
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/110318674786",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000176126,
+        "runner_name": "GitHub Actions 1000176126",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

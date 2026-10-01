@@ -68,12 +68,19 @@ class _LocalCodespaceClient:
         pass
 
 
+
+class _RemoteHttpsClient(_LocalCodespaceClient):
+    """HTTPS client for the public codespace URL. Same shape as local."""
+
+
 class RoutedHindsightClient:
     def __init__(self, cloud=None, local=None):
         self.cloud = cloud or HindsightClient()
         self.local = local or LocalHindsightClient()
         _cs_url = os.environ.get("HS_LOCAL_URL", "")
+        _remote = os.environ.get("HS_REMOTE_URL", "")
         self.codespace = _LocalCodespaceClient(_cs_url) if _cs_url else None
+        self.remote = _RemoteHttpsClient(_remote) if _remote else None
         self.default_bank_id = os.environ.get(
             "HINDSIGHT_BANK_ID", self.cloud.default_bank_id
         )

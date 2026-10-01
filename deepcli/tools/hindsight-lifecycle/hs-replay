@@ -1,0 +1,19 @@
+#!/data/data/com.termux/files/usr/bin/bash
+set -u
+_p="$HOME/.deepcli/pending"
+[ -d "$_p" ] || { echo "  no pending dir"; exit 0; }
+_n=$(find "$_p" -maxdepth 1 -name '*.jsonl' -type f | wc -l)
+[ "$_n" = "0" ] && { echo "  nothing to replay"; exit 0; }
+echo "  replaying $_n pending file(s)"
+for _f in "$_p"/*.jsonl; do
+  [ -f "$_f" ] || continue
+  while IFS= read -r _line; do
+    [ -z "$_line" ] && continue
+    curl -sS --max-time 30 -X POST \
+      "http://localhost:18888/v1/default/banks/deepagent::termux-monorepo/memories" \
+      -H "Content-Type: application/json" \
+      -d "$_line" >/dev/null 2>&1
+  done < "$_f"
+  mv "$_f" "$_p/replayed-$(basename "$_f").$(date +%s)"
+  echo "  replayed $(basename "$_f")"
+done

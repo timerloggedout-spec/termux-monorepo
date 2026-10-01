@@ -215,7 +215,15 @@ async def worker(name, hs_url, bank, queue, counters, pace):
             except asyncio.QueueEmpty:
                 break
 
+        counters["batches"] = counters.get("batches", 0) + 1
+        bnum = counters["batches"]
+        if bnum <= 5 or bnum % 20 == 0:
+            log(f"  [{name}] batch #{bnum} size={len(items)} posting...")
+        _t0 = time.time()
         code, body = await post_batch(hs_url, bank, items)
+        _dt = time.time() - _t0
+        if bnum <= 5 or bnum % 20 == 0 or code != 200:
+            log(f"  [{name}] batch #{bnum} -> HTTP {code} ({_dt:.1f}s)")
         for _ in items: queue.task_done()
 
         quota_in_body = ("RESOURCE_EXHAUSTED" in body
@@ -271,14 +279,31 @@ async def run_provider(provider, source):
     ]
 
     queued = 0
-    for item in factory():
+    _loop = asyncio.get_running_loop()
+    _sentinel = object()
+
+    def _next_item(gen):
+        try:
+            return next(gen)
+        except StopIteration:
+            return _sentinel
+
+    gen = factory()
+    log("  generator started, queueing...")
+    while True:
+        item = await _loop.run_in_executor(None, _next_item, gen)
+        if item is _sentinel:
+            break
         await q.put(item)
         queued += 1
+        if queued % 50 == 0:
+            log(f"  queued={queued}")
+
+    log(f"  queued={queued} total, sending sentinels...")
     for _ in workers:
         await q.put(None)
 
-    log(f"  queued={queued}, waiting for workers...")
-    # Watch for abort signal; drain remaining items if a worker aborts
+    log("  waiting for workers...")
     async def _watch():
         while not counters.get("abort"):
             await asyncio.sleep(1)

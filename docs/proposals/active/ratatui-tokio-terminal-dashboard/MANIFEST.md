@@ -13,9 +13,9 @@ reviewers:
   - id: ChatGPT
     role: author+executor
     status: executing
-related_prs: []
+related_prs: [935, 938, 940]
 related_branches:
-  - feat/ratatui-tokio-terminal-dashboard
+  - feat/ratatui-tokio-terminal-dashboard\n  - docs/ratatui-dashboard-collaborator
 gates_required: [repo-gate, termux-smoke]
 ---
 
@@ -46,8 +46,8 @@ Execution is bounded to the integration crate. Promotion requires repo-gate, ter
 - [x] ITEMS.md itemized
 - [ ] At least one non-author review recorded
 - [x] Status is executing under the explicit implementation request
-- [ ] PR cites `Implements: TUI-RATATUI-001`
-- [ ] Gates green on merge
+- [x] PR history cites the implementation items across #935/#938/#940\n- [x] Collaborator hand-off documentation committed as TUI-RATATUI-008
+- [x] Gates green on the final hardening merge
 - [ ] Closed + moved to `closed/` when terminal
 
 ## Links

@@ -33,6 +33,12 @@ assert.equal(trellis[4].nodes.length, states.length);
 const sync = trellis[4].nodes.find((node) => node.state === "Sync");
 assert.ok(sync.probability > 0);
 assert.ok(sync.incoming.length > 0);
+assert.ok(sync.provenance.length > 1);
+assertClose(
+  sync.provenance.reduce((sum, entry) => sum + entry.probability, 0),
+  sync.probability
+);
+assert.ok(sync.provenance.every((entry) => entry.path.at(-1) === "Sync"));
 
 const sampled = samplePath({
   start: "Idle",

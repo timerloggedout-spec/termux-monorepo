@@ -32,7 +32,16 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - name: Validate automation documentation freshness
-        run: python3 scripts/ci/automation_docs.py --check
+        # automation-docs-continuous-refresh owns the generated catalog commit.
+        # A workflow-file push is stale until that follow-up lands (run 36914069529
+        # on ffb39b22). Warn here; do not fail correlation on catalog drift.
+        run: |
+          set -euo pipefail
+          if python3 scripts/ci/automation_docs.py --check; then
+            echo "automation catalog is fresh"
+          else
+            echo "::warning::generated automation catalog is stale; automation-docs-continuous-refresh owns the follow-up commit"
+          fi
       - name: Snapshot and correlate repository history
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

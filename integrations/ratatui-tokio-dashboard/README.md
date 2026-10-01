@@ -58,7 +58,11 @@ The stream producer is intentionally a deterministic in-process source for the f
 
 This implementation treats /proc as an optional observation surface. Android/Termux kernels and permission policies can expose different process details. The dashboard therefore does not require every /proc file to exist.
 
-RSS conversion currently assumes a 4 KiB page. If Android-specific page sizing becomes important, the metric adapter should read the runtime page size instead of hard-coding it.
+Process RSS is parsed from `/proc/<pid>/status` via `VmRSS` in KiB. This avoids assuming a fixed kernel page size and is more portable across Linux/Android variants.
+
+## Collaborating
+
+See [`COLLABORATING.md`](COLLABORATING.md) for the maintainer hand-off, architecture invariants, extension points, portability guidance, Codespaces/CI workflow, and troubleshooting notes.
 
 ## Validation
 

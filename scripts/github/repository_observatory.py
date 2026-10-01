@@ -28,6 +28,7 @@ UA = "termux-monorepo-repository-observatory/2.1"
 SCHEMA_VERSION = "1.1"
 MAX_PAGES = 100
 RETRIES = 3
+API = "https://api.github.com"
 
 
 def now() -> str:

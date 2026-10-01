@@ -150,4 +150,14 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add docs/ops/generated
           git commit -m 'docs(ops): refresh generated automation catalog + mmdc renders'
-          git push
+          git fetch origin master
+          git rebase origin/master
+          for attempt in 1 2 3; do
+            if git push origin HEAD:master; then
+              exit 0
+            fi
+            echo "push rejected (attempt ${attempt}); rebasing onto origin/master"
+            git pull --rebase origin master
+          done
+          echo '::error::failed to push automation docs after retries'
+          exit 1

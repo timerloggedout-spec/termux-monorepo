@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from repository_observatory import GitHubHttpError, build_records, build_payload, classify, resolve_login, snapshot_hash
+from repository_observatory import API, GitHubHttpError, build_records, build_payload, classify, resolve_login, snapshot_hash
 
 
 BASE = {
@@ -30,6 +30,10 @@ BASE = {
 
 
 class ObservatoryTests(unittest.TestCase):
+    def test_api_host_is_bound(self):
+        # Run 36896271590 on 63635bd9 failed with NameError: name 'API' is not defined.
+        self.assertEqual(API, "https://api.github.com")
+
     def test_classification_is_deterministic(self):
         self.assertEqual(classify(BASE, ["starred"]), classify(BASE, ["starred"]))
         self.assertIn("research", classify(BASE, ["starred"])["domains"])

@@ -92,4 +92,14 @@ jobs:
           git commit -s -m 'chore(observatory): refresh repository index' \
             -m 'Agent-Identity: GitHub Actions Repository Observatory' \
             -m 'Source: GitHub owned and starred repository metadata'
-          git push origin HEAD:master
+          git fetch origin master
+          git rebase origin/master
+          for attempt in 1 2 3; do
+            if git push origin HEAD:master; then
+              exit 0
+            fi
+            echo "push rejected (attempt ${attempt}); rebasing onto origin/master"
+            git pull --rebase origin master
+          done
+          echo '::error::failed to push observatory index after retries'
+          exit 1

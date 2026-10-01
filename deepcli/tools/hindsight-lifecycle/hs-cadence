@@ -20,6 +20,11 @@ done
 _h=$(hs_health)
 [ "$_h" != "200" ] && { echo "hs-cadence: health=$_h — run hs-up first"; exit 1; }
 
+# Quota pre-check: log current state into cadence ledger
+~/.local/bin/hs-quota-state >> "$HS_LOG" 2>&1 || true
+_qc=$(cat "$HOME/.deepcli/logs/telemetry/hs-quota.json" 2>/dev/null | python3 -c "import json,sys;d=json.load(sys.stdin);print(d.get('cloud',0))" 2>/dev/null || echo 0)
+echo "  quota: cloud=$_qc (402=credits exhausted; local-only writes)"
+
 _start=$(date +%s)
 case "$_source" in
   harvest) _cmd=~/.local/bin/provenance-harvest ;;

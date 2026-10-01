@@ -1,0 +1,30 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# Read latest quota snapshot; emit both JSON and Prometheus-style lines.
+_L="$HOME/.deepcli/logs/hs-parity.jsonl"
+_T="$HOME/.deepcli/logs/telemetry/hs-quota.prom"
+_J="$HOME/.deepcli/logs/telemetry/hs-quota.json"
+
+cloud=0; codespace=0; fts5=0
+cloud=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 6 https://api.hindsight.vectorize.io/health 2>/dev/null || echo 0)
+codespace=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 6 http://localhost:18888/health 2>/dev/null || echo 0)
+[ -f "$HOME/.deepcli/bank-local.db" ] && command -v sqlite3 >/dev/null 2>&1 && \
+  fts5=$(sqlite3 "$HOME/.deepcli/bank-local.db" 'SELECT COUNT(*) FROM memory' 2>/dev/null || echo 0)
+
+_ts=$(date +%s)
+printf '{"ts":%s,"cloud":%s,"codespace":%s,"fts5":%s}\n' "$_ts" "$cloud" "$codespace" "$fts5" > "$_J"
+
+cat > "$_T" <<EOF
+# HELP hs_quota_http HTTP status per environment (200=ok, 402=quota, 000=down)
+# TYPE hs_quota_http gauge
+hs_quota_http{env="cloud"} $cloud
+hs_quota_http{env="codespace"} $codespace
+# HELP hs_quota_items item count per store
+# TYPE hs_quota_items gauge
+hs_quota_items{store="fts5"} $fts5
+# HELP hs_quota_ts unix timestamp of last probe
+# TYPE hs_quota_ts gauge
+hs_quota_ts $_ts
+EOF
+
+# Console summary
+printf 'cloud=%s codespace=%s fts5=%s\n' "$cloud" "$codespace" "$fts5"

@@ -15,3 +15,10 @@ External Gemini output is untrusted research/design evidence. Repository tests a
 Prepared in `GEMINI-REVIEW-REQUEST.md`. The request asks Gemini to review the left/right semantic split, Bayesian workflow semantics, Observatory projection boundaries, dynamic adversarial admission, visual ambiguity, and accessibility.
 
 No Gemini findings are accepted until returned and independently validated.
+
+## 2026-10-01 — Gemini dispatch
+
+- Trigger: `@gemini-cli /review` on PR #969.
+- Workflow run: `36845593424`.
+- Initial provider state: queued; no findings yet.
+- The review remains external evidence only and will be independently validated if returned.

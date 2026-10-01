@@ -39,7 +39,7 @@ concurrency:
 
 jobs:
   evaluate:
-    if: inputs.run_external_reference && vars.SWE_REFERENCE_EVALUATION_ENABLED == 'true'
+    if: ${{ inputs.run_external_reference == true && vars.SWE_REFERENCE_EVALUATION_ENABLED == 'true' }}
     name: bounded mini-SWE smoke evaluation
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -149,7 +149,7 @@ jobs:
           exit "${{ steps.run.outputs.runner_exit_code }}"
 
   disabled:
-    if: "!(inputs.run_external_reference && vars.SWE_REFERENCE_EVALUATION_ENABLED == 'true')"
+    if: ${{ inputs.run_external_reference != true || vars.SWE_REFERENCE_EVALUATION_ENABLED != 'true' }}
     name: external reference disabled
     runs-on: ubuntu-latest
     timeout-minutes: 2

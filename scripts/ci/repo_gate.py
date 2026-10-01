@@ -20,6 +20,29 @@ Two kinds of check:
            Fail if a counter goes UP. Print a nudge if it goes DOWN so the
            baseline can be lowered. Debt can only shrink.
 
+One HARD check deserves its own note: `check_yaml_structure`. A workflow file with
+invalid YAML never schedules a job, so it fails *silently* — the run is red with no
+step output, and every tool that reads the file leniently (regex parsing, docs
+catalogues) keeps reporting it as healthy. A control-plane schema is worse: nothing
+parses it at all, so the breakage is invisible until a consumer adds a parser. Five
+workflow files and one schema in this repository reached that state.
+`yaml_structure_faults()` is a stdlib-only structural check for the failure classes
+actually observed:
+
+  * a root-level (column 0) line that is not a mapping key — the signature of a
+    heredoc or quoted string body whose continuation lines lost their indentation
+    while the surrounding `run: |` block scalar stayed behind;
+  * a mapping value starting with `!(` — YAML reads `!` as a tag token, so an
+    unquoted `if: !(...)` is a scanner error, not a boolean expression;
+  * a block scalar whose first body line is not indented past its header;
+  * a plain scalar value containing `: `, which the scanner reads as a nested
+    mapping ("mapping values are not allowed here").
+
+It is validated to agree with a full YAML parse on every file in its scope across
+the repository (see tests/test_repo_gate_workflow_yaml.py). It is not a YAML parser
+and does not replace the advisory actionlint lane; it exists so the specific
+silent-failure classes above cannot grow again.
+
 Usage:
   python3 scripts/ci/repo_gate.py                    # full gate
   python3 scripts/ci/repo_gate.py --base origin/master
@@ -91,6 +114,166 @@ SECRET_PATTERNS = (
     ("slack token", re.compile(r"\bxox[abprs]-[0-9A-Za-z\-]{10,}\b")),
     ("private key block", re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH |PGP )?PRIVATE KEY-----")),
 )
+
+# --------------------------------------------------------------------------- #
+# Workflow YAML structure (see the module docstring)
+# --------------------------------------------------------------------------- #
+
+# YAML surfaces where a parse failure is silent and high-impact: a workflow never
+# schedules a job, and a control-plane schema is read by policy gates and doc
+# generators that do not parse it.
+CONTROL_PLANE_YAML_RE = re.compile(
+    r"^(?:\.github/workflows/[^/]+\.ya?ml|docs/schemas/[^/]+\.ya?ml)$"
+)
+
+# A block scalar header: an optional `- ` sequence marker, a mapping key, and a
+# `|`/`>` value with optional chomping/indent indicators and a trailing comment.
+# Deliberately keyed on a real mapping key so a shell pipeline that happens to end
+# a line with `|` is not mistaken for a block scalar.
+BLOCK_SCALAR_HEADER_RE = re.compile(
+    r"^(?P<indent>[ ]*)(?:- +)?[A-Za-z_][A-Za-z0-9_.\-]* *: *[|>][-+0-9]* *(?:#.*)?$"
+)
+# A line that is legal at the document root: a document marker or a mapping key.
+# `(?:\s|$)` rather than `\b`: `-` and `.` are non-word characters, so a trailing
+# word boundary can never match after `---` / `...`.
+ROOT_MARKER_RE = re.compile(r"^(?:---|\.\.\.|%YAML|%TAG)(?:\s|$)")
+# Leading whitespace, tabs included, so indentation faults are measured the way the
+# YAML scanner measures them.
+INDENT_RE = re.compile(r"^[ \t]*")
+ROOT_MAPPING_KEY_RE = re.compile(r"^[^\s#][^:]*:")
+# `key: !(...)` — `!` starts a tag; `(` is not a legal shorthand tag character.
+UNQUOTED_TAG_VALUE_RE = re.compile(r"^[ ]*(?:- +)?[A-Za-z_][A-Za-z0-9_.\-]* *: +!\(")
+# `key: value` whose plain (unquoted, non-flow, non-block) value itself contains a
+# `: ` — the scanner reads that as a nested mapping and raises
+# "mapping values are not allowed here". Shell/JS code inside a block scalar is
+# full of these, so the rule is only applied outside a block scalar body.
+PLAIN_VALUE_COLON_RE = re.compile(
+    r"^(?P<indent>[ ]*)(?:- +)?[A-Za-z_][A-Za-z0-9_.\-]* *: +"
+    r"(?P<value>[^\s'\"|>\[\]{#*&!%@`].*)$"
+)
+TRAILING_COMMENT_RE = re.compile(r"\s+#.*$")
+
+
+def indent_of(line: str) -> tuple[int, str]:
+    """Return `(width, text)` of a line's leading whitespace, tabs included."""
+    whitespace = INDENT_RE.match(line).group(0)
+    return len(whitespace), whitespace
+
+
+def block_scalar_body_lines(lines: list[str]) -> set[int]:
+    """Line indices (0-based) that fall inside a block scalar body.
+
+    A block scalar runs until the first non-blank line indented no further than its
+    header. That boundary is what makes the root-level rule below work: a heredoc
+    body that has lost its indentation *terminates* the surrounding block scalar, so
+    the offending lines are reported rather than skipped as body content.
+    """
+    inside: set[int] = set()
+    index = 0
+    while index < len(lines):
+        header = BLOCK_SCALAR_HEADER_RE.match(lines[index])
+        if header is None:
+            index += 1
+            continue
+        header_indent = len(header.group("indent"))
+        index += 1
+        while index < len(lines):
+            line = lines[index]
+            if not line.strip():
+                inside.add(index)
+                index += 1
+                continue
+            if indent_of(line)[0] <= header_indent:
+                break
+            inside.add(index)
+            index += 1
+    return inside
+
+
+def yaml_structure_faults(text: str) -> list[str]:
+    """Return structural YAML faults, as `line N: reason` strings.
+
+    Only high-precision rules for the observed silent-failure classes; see the
+    module docstring. An empty list means "no fault found", not "valid YAML" — the
+    authoritative lint remains the advisory actionlint lane.
+    """
+    faults: list[str] = []
+    lines = text.split("\n")
+    inside_block = block_scalar_body_lines(lines)
+
+    for index, line in enumerate(lines):
+        number = index + 1
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
+        indent, indent_text = indent_of(line)
+        if (
+            indent == 0
+            and not ROOT_MARKER_RE.match(line)
+            and not ROOT_MAPPING_KEY_RE.match(line)
+        ):
+            faults.append(
+                f"line {number}: root-level line is neither a mapping key nor a document "
+                f"marker (an escaped string/heredoc body?): {line.strip()[:60]!r}"
+            )
+            continue
+        if index in inside_block:
+            continue
+        if "\t" in indent_text:
+            faults.append(f"line {number}: tab used for indentation (YAML forbids tabs)")
+            continue
+        if UNQUOTED_TAG_VALUE_RE.match(line):
+            faults.append(
+                f"line {number}: value starts with '!(', which YAML scans as a tag rather "
+                f"than a string — quote the whole expression: {line.strip()[:60]!r}"
+            )
+            continue
+        match = PLAIN_VALUE_COLON_RE.match(line)
+        if match:
+            value = TRAILING_COMMENT_RE.sub("", match.group("value"))
+            if ": " in value or value.endswith(":"):
+                faults.append(
+                    f"line {number}: plain scalar value contains ': ', which YAML scans as "
+                    f"a nested mapping — quote the value or use a block scalar: "
+                    f"{value.strip()[:60]!r}"
+                )
+
+    for index, line in enumerate(lines):
+        header = BLOCK_SCALAR_HEADER_RE.match(line)
+        if not header:
+            continue
+        header_indent = len(header.group("indent"))
+        body = index + 1
+        while body < len(lines) and not lines[body].strip():
+            body += 1
+        if body >= len(lines):
+            continue
+        body_line = lines[body]
+        body_indent = len(body_line) - len(body_line.lstrip(" "))
+        if body_indent <= header_indent:
+            faults.append(
+                f"line {body + 1}: block scalar body indented {body_indent}, not past its "
+                f"header on line {index + 1} at {header_indent}: {body_line.strip()[:60]!r}"
+            )
+
+    return faults
+
+
+def check_yaml_structure(report: Report, paths: list[str], index: dict[str, IndexEntry]) -> int:
+    checked = 0
+    for path in paths:
+        if not CONTROL_PLANE_YAML_RE.match(path):
+            continue
+        entry = index.get(path)
+        if entry is None or entry.is_symlink or entry.is_gitlink:
+            continue
+        checked += 1
+        text = blob(entry.sha).decode("utf-8", "replace")
+        for fault in yaml_structure_faults(text):
+            report.fail(
+                "yaml-structure",
+                f"{path}: {fault} — nothing will run or read this file until it parses",
+            )
+    return checked
 
 BOLD, RED, YELLOW, GREEN, DIM, RESET = (
     ("\033[1m", "\033[31m", "\033[33m", "\033[32m", "\033[2m", "\033[0m")
@@ -373,6 +556,7 @@ def measure(index: list[IndexEntry]) -> dict[str, int]:
     paths_with_spaces = 0
     tracked_browser_profile_files = 0
     tracked_browser_credential_stores = 0
+    invalid_control_plane_yaml = 0
 
     blob_cache: dict[str, str] = {}
 
@@ -381,6 +565,11 @@ def measure(index: list[IndexEntry]) -> dict[str, int]:
 
         if " " in path:
             paths_with_spaces += 1
+
+        if CONTROL_PLANE_YAML_RE.match(path) and not entry.is_symlink and not entry.is_gitlink:
+            text = blob(entry.sha).decode("utf-8", "replace")
+            if yaml_structure_faults(text):
+                invalid_control_plane_yaml += 1
 
         if entry.is_symlink:
             target = blob_cache.get(entry.sha)
@@ -412,6 +601,7 @@ def measure(index: list[IndexEntry]) -> dict[str, int]:
         "paths_with_spaces": paths_with_spaces,
         "tracked_browser_profile_files": tracked_browser_profile_files,
         "tracked_browser_credential_stores": tracked_browser_credential_stores,
+        "invalid_control_plane_yaml": invalid_control_plane_yaml,
     }
 
 
@@ -488,6 +678,7 @@ def main() -> int:
                 "py": check_python_syntax(report, paths, by_path),
                 "sh": check_shell_syntax(report, paths, by_path),
                 "json": check_json_parses(report, paths, by_path),
+                "yaml-structure": check_yaml_structure(report, paths, by_path),
                 "symlinks": check_new_symlinks(report, paths, by_path),
                 "scanned": check_secrets(report, paths, by_path),
             }

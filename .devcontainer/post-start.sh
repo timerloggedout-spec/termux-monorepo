@@ -8,10 +8,10 @@ pgrep -f hindsight-api >/dev/null 2>&1 && exit 0
 
 export HINDSIGHT_API_WORKER_ID=hindsight-termux-monorepo
 export HINDSIGHT_API_LLM_PROVIDER=gemini
-export HINDSIGHT_API_LLM_MODEL=gemini-2.0-flash
+export HINDSIGHT_API_LLM_MODEL=gemini-3.8-flash
 export HINDSIGHT_API_LLM_GEMINI_SERVICE_TIER=flex
 export HINDSIGHT_API_EMBEDDINGS_PROVIDER=google
-export HINDSIGHT_API_EMBEDDINGS_MODEL=text-embedding-004
+export HINDSIGHT_API_EMBEDDINGS_MODEL=gemini-embedding-001
 export HINDSIGHT_API_RERANKER_PROVIDER=rrf
 export HINDSIGHT_API_RERANKER_REQUIRED=false
 export HINDSIGHT_API_FILE_PARSER=markitdown

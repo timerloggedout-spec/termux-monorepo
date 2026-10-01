@@ -20,16 +20,26 @@ from dataclasses import dataclass, field
 from enum import Enum
 
 # Import transport layers
-from ..webwrapper.stdio_transport import StdioTransport, StdioTransportError
-from ..webwrapper.curl_cffi_transport import CurlCffiTransport, CurlCffiTransportError
+try:
+    from multi_ai_cli.webwrapper.stdio_transport import StdioTransport, StdioTransportError
+    from multi_ai_cli.webwrapper.curl_cffi_transport import CurlCffiTransport, CurlCffiTransportError
+except ImportError:
+    try:
+        from webwrapper.stdio_transport import StdioTransport, StdioTransportError
+        from webwrapper.curl_cffi_transport import CurlCffiTransport, CurlCffiTransportError
+    except ImportError:
+        StdioTransport = None
+        StdioTransportError = Exception
+        CurlCffiTransport = None
+        CurlCffiTransportError = Exception
 
 # Import provider backends
 try:
-    from ..backends.mistralai import MistralAIBackend
-    from ..backends.deepseek import DeepSeekBackend
-    from ..backends.ai_studio import AIStudioBackend
-    from ..backends.chapito import ChapitoBackend
-    from ..collab.colab_backend import ColabBackend
+    from multi_ai_cli.backends.mistralai import MistralAIBackend
+    from multi_ai_cli.backends.deepseek import DeepSeekBackend
+    from multi_ai_cli.backends.ai_studio import AIStudioBackend
+    from multi_ai_cli.backends.chapito import ChapitoBackend
+    from multi_ai_cli.collab.colab_backend import ColabBackend
     _BACKENDS_AVAILABLE = True
 except ImportError as e:
     logging.warning(f"Some backends not available: {e}")

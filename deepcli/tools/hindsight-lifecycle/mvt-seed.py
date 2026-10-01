@@ -28,9 +28,11 @@ def _active_model():
 
 PROVIDERS = [
     {"name": "gemini",     "rpm": 15, "concurrency": 4, "pace": 4.5,
-     "hs_url": "http://localhost:8888"},
+     "hs_url": "http://localhost:8888",
+     "model": "gemini-3.5-flash-lite", "role": "mev"},
     {"name": "openrouter", "rpm": 20, "concurrency": 5, "pace": 3.5,
-     "hs_url": "http://localhost:8889"},
+     "hs_url": "http://localhost:8889",
+     "model": "meta-llama/llama-3.3-70b-instruct:free", "role": "mev"},
 ]
 
 def log(m):
@@ -216,8 +218,9 @@ async def worker(name, hs_url, bank, queue, counters, pace):
 async def run_provider(provider, source):
     prov = provider["name"]
     comp_hash = "base"
-    model = _active_model()
-    bank = f"deepagent::mvt::{prov}::{comp_hash}"
+    model = provider.get("model") or _active_model()
+    role = provider.get("role", "mev")
+    bank = f"deepagent::mvt::{prov}::{model}::{role}::{comp_hash}"
     state = load_state(prov, source)
     done = state.get("n_ok", 0)
     log(f"=== provider={prov} source={source} model={model} bank={bank} resumed_from={done} key={'SET' if KEY else 'MISSING'} ===")

@@ -34,7 +34,10 @@ actually observed:
     while the surrounding `run: |` block scalar stayed behind;
   * a mapping value starting with `!(` — YAML reads `!` as a tag token, so an
     unquoted `if: !(...)` is a scanner error, not a boolean expression;
-  * a block scalar whose first body line is not indented past its header;
+  * a block scalar whose first body line is not indented past its header, or
+    whose later content dedents below the indentation the first content line
+    established (a *partial* dedent, which YAML rejects but a naive
+    indentation comparison against the header alone does not see);
   * a plain scalar value containing `: `, which the scanner reads as a nested
     mapping ("mapping values are not allowed here");
   * a literal `\\n` / `\\r` / `\\t` escape in an unquoted scalar — a JSON body
@@ -145,7 +148,7 @@ CONTROL_PLANE_YAML_RE = re.compile(
 # Deliberately keyed on a real mapping key so a shell pipeline that happens to end
 # a line with `|` is not mistaken for a block scalar.
 BLOCK_SCALAR_HEADER_RE = re.compile(
-    r"^(?P<indent>[ ]*)(?:- +)?[A-Za-z_][A-Za-z0-9_.\-]* *: *[|>][-+0-9]* *(?:#.*)?$"
+    r"^(?P<indent>[ ]*)(?P<dash>- +)?[A-Za-z_][A-Za-z0-9_.\-]* *: *[|>][-+0-9]* *(?:#.*)?$"
 )
 # A line that is legal at the document root: a document marker or a mapping key.
 # `(?:\s|$)` rather than `\b`: `-` and `.` are non-word characters, so a trailing
@@ -166,6 +169,14 @@ PLAIN_VALUE_COLON_RE = re.compile(
     r"(?P<value>[^\s'\"|>\[\]{#*&!%@`].*)$"
 )
 TRAILING_COMMENT_RE = re.compile(r"\s+#.*$")
+# An explicit indentation indicator in a block scalar header (`|2`, `>4`, and the
+# chomping variants `|-2` / `>+4`). It fixes the content indentation up front, so the
+# partial-dedent rule below applies to it too.
+BLOCK_SCALAR_INDENT_RE = re.compile(r"[|>][-+]?(?P<indent>[1-9])")
+# A line that may legally follow an *empty* block scalar: a mapping key, a sequence
+# entry, or (handled separately) a comment. Only used to tell "the scalar is empty and
+# this is the next entry" from "the scalar's body lost its indentation".
+SIBLING_ENTRY_RE = re.compile(r"^[ ]*(?:- +[^\s#]|[^\s#][^:]*:)")
 # A YAML escape (`\n`, `\r`, `\t`) sitting in an unquoted scalar. Double-quoted is
 # the only style where those are real escapes; unquoted, they are two literal
 # characters, which is what a JSON body pasted into YAML looks like. YAML does not
@@ -239,34 +250,103 @@ def indent_of(line: str) -> tuple[int, str]:
     return len(whitespace), whitespace
 
 
-def block_scalar_body_lines(lines: list[str]) -> set[int]:
-    """Line indices (0-based) that fall inside a block scalar body.
+def block_scalar_scan(lines: list[str]) -> tuple[set[int], list[str]]:
+    """Walk every block scalar: return `(body line indices, faults)`.
 
-    A block scalar runs until the first non-blank line indented no further than its
-    header. That boundary is what makes the root-level rule below work: a heredoc
-    body that has lost its indentation *terminates* the surrounding block scalar, so
-    the offending lines are reported rather than skipped as body content.
+    A block scalar runs from its header to the first non-blank line indented no
+    further than the *content* indentation. Two consequences, and both are load
+    bearing:
+
+    * A heredoc body that lost its indentation *terminates* the surrounding scalar,
+      so those lines stay eligible for the root-level rule instead of being skipped
+      as body content.
+    * A content line that dedents below the indentation the first content line
+      established — while still indenting past the header — is a *partial* dedent,
+      which YAML rejects outright. Comparing only against the header indent, as a
+      naive rule does, cannot see it. An explicit indentation indicator (`|2`, `>4`)
+      fixes the content indentation up front and is compared the same way.
+
+    An empty scalar is legal, and so is any dedent back to an enclosing level:
+    only a line that is neither a sibling entry nor a comment is reported as a lost
+    body, because that is the shape a de-indented body actually leaves behind.
+
+    The scan is a single forward walk, so a line that is block scalar *content*
+    (including something that looks exactly like a `key: |` header) is consumed by
+    its own scalar and can never be re-examined as a header.
     """
     inside: set[int] = set()
+    faults: list[str] = []
     index = 0
     while index < len(lines):
         header = BLOCK_SCALAR_HEADER_RE.match(lines[index])
         if header is None:
             index += 1
             continue
+        header_number = index + 1
         header_indent = len(header.group("indent"))
-        index += 1
-        while index < len(lines):
-            line = lines[index]
-            if not line.strip():
-                inside.add(index)
-                index += 1
-                continue
-            if indent_of(line)[0] <= header_indent:
-                break
-            inside.add(index)
+        # An indentation indicator counts from the *parent node* — the mapping the
+        # scalar is a value in — so a `- ` sequence marker shifts it by its width.
+        key_indent = header_indent + len(header.group("dash") or "")
+        indicator = BLOCK_SCALAR_INDENT_RE.search(header.group(0))
+        declared = key_indent + int(indicator.group("indent")) if indicator else None
+
+        cursor = index + 1
+        while cursor < len(lines) and not lines[cursor].strip():
+            cursor += 1
+        if cursor >= len(lines):
             index += 1
-    return inside
+            continue
+        line = lines[cursor]
+        first_indent = indent_of(line)[0]
+        content_indent = declared if declared is not None else first_indent
+
+        if first_indent <= header_indent:
+            # The scalar is empty; the next line is whatever follows it. It is only a
+            # fault when that line could not legally follow — the lost-body shape.
+            if not line.lstrip().startswith("#") and not SIBLING_ENTRY_RE.match(line):
+                faults.append(
+                    f"line {cursor + 1}: block scalar body indented {first_indent}, not past "
+                    f"its header on line {header_number} at {header_indent}: {line.strip()[:60]!r}"
+                )
+            index = cursor
+            continue
+        if first_indent < content_indent:
+            faults.append(
+                f"line {cursor + 1}: block scalar body indented {first_indent}, below the "
+                f"{content_indent} its indentation indicator requires on line {header_number}: "
+                f"{line.strip()[:60]!r}"
+            )
+            index = cursor
+            continue
+
+        for leading in range(index + 1, cursor):
+            inside.add(leading)
+        walk = cursor
+        while walk < len(lines):
+            text = lines[walk]
+            if not text.strip():
+                inside.add(walk)
+                walk += 1
+                continue
+            line_indent = indent_of(text)[0]
+            if line_indent <= header_indent:
+                break
+            if line_indent < content_indent:
+                faults.append(
+                    f"line {walk + 1}: block scalar content dedents to {line_indent}, below the "
+                    f"{content_indent} established on line {cursor + 1} — YAML rejects a partial "
+                    f"dedent: {text.strip()[:60]!r}"
+                )
+                break
+            inside.add(walk)
+            walk += 1
+        index = walk
+    return inside, faults
+
+
+def block_scalar_body_lines(lines: list[str]) -> set[int]:
+    """Line indices (0-based) that fall inside a block scalar body."""
+    return block_scalar_scan(lines)[0]
 
 
 def yaml_structure_faults(text: str) -> list[str]:
@@ -278,7 +358,7 @@ def yaml_structure_faults(text: str) -> list[str]:
     """
     faults: list[str] = []
     lines = text.split("\n")
-    inside_block = block_scalar_body_lines(lines)
+    inside_block, block_faults = block_scalar_scan(lines)
 
     for index, line in enumerate(lines):
         number = index + 1
@@ -324,25 +404,7 @@ def yaml_structure_faults(text: str) -> list[str]:
                     f"{value.strip()[:60]!r}"
                 )
 
-    for index, line in enumerate(lines):
-        header = BLOCK_SCALAR_HEADER_RE.match(line)
-        if not header:
-            continue
-        header_indent = len(header.group("indent"))
-        body = index + 1
-        while body < len(lines) and not lines[body].strip():
-            body += 1
-        if body >= len(lines):
-            continue
-        body_line = lines[body]
-        body_indent = len(body_line) - len(body_line.lstrip(" "))
-        if body_indent <= header_indent:
-            faults.append(
-                f"line {body + 1}: block scalar body indented {body_indent}, not past its "
-                f"header on line {index + 1} at {header_indent}: {body_line.strip()[:60]!r}"
-            )
-
-    return faults
+    return faults + block_faults
 
 
 def check_yaml_structure(report: Report, paths: list[str], index: dict[str, IndexEntry]) -> int:

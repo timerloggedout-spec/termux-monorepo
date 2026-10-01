@@ -1,0 +1,108 @@
+name: Sweep Accountability
+
+on:
+  schedule:
+    - cron: "17 2 * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: HISTORICAL or CONTINUOUS
+        required: true
+        default: CONTINUOUS
+      sweep_version:
+        description: Analytical layer/version
+        required: true
+        default: v1
+      iteration:
+        description: Iteration number within the layer
+        required: true
+        default: "0"
+      from:
+        description: Optional lower bound (ISO-8601)
+        required: false
+        default: ""
+      to:
+        description: Optional upper bound (ISO-8601)
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sweep-accountability
+  cancel-in-progress: false
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate receipt contract
+        run: python3 scripts/ci/test_sweep_accountability.py
+
+      - name: Record sweep observation
+        env:
+          MODE: ${{ github.event.inputs.mode }}
+          SWEEP_VERSION: ${{ github.event.inputs.sweep_version }}
+          ITERATION: ${{ github.event.inputs.iteration }}
+          FROM_TIME: ${{ github.event.inputs.from }}
+          TO_TIME: ${{ github.event.inputs.to }}
+        run: |
+          set -euo pipefail
+          MODE="${MODE:-CONTINUOUS}"
+          SWEEP_VERSION="${SWEEP_VERSION:-v1}"
+          ITERATION="${ITERATION:-0}"
+          FROM_TIME="${FROM_TIME:-}"
+          TO_TIME="${TO_TIME:-}"
+          git config user.name "termux-monorepo sweep"
+          git config user.email "actions@users.noreply.github.com"
+
+          START="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          COMMITS="$(git rev-list --count HEAD)"
+          HEAD_SHA="$(git rev-parse HEAD)"
+          FIRST_SHA="$(git rev-list --max-parents=0 HEAD | tail -n 1)"
+          RUN_URL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          export COMMITS HEAD_SHA FIRST_SHA
+
+          FINDINGS="$(python3 - <<PY
+import json, os
+print(json.dumps([
+  {"id":"repository-head","classification":"OBSERVED","statement":"HEAD="+os.environ["HEAD_SHA"],"evidence_refs":["git://commit/"+os.environ["HEAD_SHA"]],"confidence":1},
+  {"id":"repository-commit-count","classification":"OBSERVED","statement":"reachable commits="+os.environ["COMMITS"],"evidence_refs":["git://rev-list"],"confidence":1},
+  {"id":"historical-source-boundary","classification":"OBSERVED","statement":"Git history is directly observable; retained GitHub events/artifacts require separate reconciliation.","evidence_refs":["git://repository"],"confidence":1}
+], separators=(",",":")))
+PY
+          )"
+
+          python3 scripts/ci/sweep_accountability.py \
+            --repository "$GITHUB_REPOSITORY" \
+            --sweep-version "$SWEEP_VERSION" \
+            --iteration "$ITERATION" \
+            --mode "$MODE" \
+            --status SUCCESS \
+            --coverage COMPLETE \
+            --observed "$COMMITS" \
+            --ref "$GITHUB_REF_NAME" \
+            --from "$FROM_TIME" \
+            --to "${TO_TIME:-$START}" \
+            --query "repository history baseline" \
+            --sources "[\"git://repository\",\"github://actions/$GITHUB_RUN_ID\"]" \
+            --provenance "{\"actor_type\":\"workflow\",\"actor\":\"$GITHUB_ACTOR\",\"tool\":\"GitHub Actions\",\"workflow\":\"$GITHUB_WORKFLOW\",\"run_id\":\"$GITHUB_RUN_ID\",\"event\":\"$GITHUB_EVENT_NAME\",\"source_refs\":[\"$RUN_URL\"],\"source_shas\":[\"$HEAD_SHA\",\"$FIRST_SHA\"]}" \
+            --findings "$FINDINGS" \
+            --actions "[{\"id\":\"sweep-$GITHUB_RUN_ID\",\"type\":\"repository-history-observation\",\"status\":\"SUCCEEDED\",\"actor\":\"$GITHUB_ACTOR\",\"tool\":\"GitHub Actions\",\"target\":\"$GITHUB_REPOSITORY\"}]" \
+            --effects "[{\"id\":\"effect-$GITHUB_RUN_ID\",\"type\":\"accountability-receipt\",\"after\":{\"head_sha\":\"$HEAD_SHA\",\"reachable_commits\":$COMMITS,\"run_url\":\"$RUN_URL\"}}]" \
+            --coverage-reason "Git history is complete for the checked-out ref; external event retention remains a separately reconciled source." \
+            --out-dir docs/ops/generated/sweep-ledger
+
+          git add docs/ops/generated/sweep-ledger
+          if git diff --cached --quiet; then
+            echo "No ledger delta"
+            exit 0
+          fi
+          git commit -m "chore(ops): record sweep accountability receipt"
+          git push

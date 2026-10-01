@@ -5,8 +5,9 @@ Why this exists
 A workflow file with invalid YAML never schedules a job: the run goes red with no
 step output at all, and every lenient consumer (regex-based docs catalogues,
 `automation_docs.py`, the generated automation-workflow-catalog) keeps reporting
-the file as healthy. Five workflow files and one control-plane schema in this
-repository reached exactly that state, undetected for weeks.
+the file as healthy. Five workflow files, one control-plane schema and the live
+research lane registry in this repository reached exactly that state, undetected
+for weeks.
 
 `repo_gate.py` therefore carries a stdlib-only structural check
 (`yaml_structure_faults`) for the failure classes actually observed, wired in as
@@ -141,7 +142,25 @@ PLAIN_SCALAR_COLON = """\
       rollback: set capability-spine-observe: 'false' on each model-router action call
     """
 
+# docs/research/RESEARCH-LANES.yaml: a JSON body pasted into YAML. The `\n` the
+# author meant as a newline stayed two characters, so the line grew a second key
+# and the document died with:
+#   ParserError: while parsing a block mapping
+#   in "docs/research/RESEARCH-LANES.yaml", line 9, column 95
+LITERAL_ESCAPE_IN_PLAIN_SCALAR = """\
+    schema_version: "1.0"
+    hub: termux-monorepo
+    lanes:
+      - lane_id: agent-observability
+        orgs: [termux-monorepo, Research-Astute]
+        inputs: [OpenTelemetry, Docker, Tree-sitter]\\n    contributors: [gemini, felo]
+    """
+
 POSITIVE_FIXTURES = {
+    "literal escape in a plain scalar": (
+        LITERAL_ESCAPE_IN_PLAIN_SCALAR,
+        "escape in an unquoted scalar",
+    ),
     "flush-left heredoc body": (FLUSH_LEFT_HEREDOC, "root-level line"),
     "flush-left quoted heredoc": (FLUSH_LEFT_QUOTED_HEREDOC, "root-level line"),
     "flush-left backslash continuation": (
@@ -254,7 +273,57 @@ DOCUMENT_MARKERS_AND_FOLDED_SCALAR = """\
     ...
     """
 
+# Shell and JS inside a `run: |` block scalar are full of `\n`, `\t` and `\r` —
+# they are the script's own escapes and none of them are YAML's business. This is
+# the single largest source of false positives for the escape rule; the block
+# scalar tracker is what removes them.
+ESCAPES_INSIDE_BLOCK_SCALAR = """\
+    name: shell
+    on: [push]
+    jobs:
+      build:
+        runs-on: ubuntu-latest
+        steps:
+          - name: shell keeps its own escapes
+            run: |
+              printf 'a\\nb\\n'
+              node -e 'console.log("x\\ty")'
+              sed -e 's/\\r//' file.txt
+              jq -r '.body // "" | gsub("\\n"; " ")'
+    """
+
+# Quoting is how an author says "I mean the backslash": a real escape in a
+# double-quoted scalar, a literal character in a single-quoted one, and a doubled
+# backslash in an unquoted Windows path. None of them is a structural fault.
+ESCAPES_THAT_ARE_MEANT = """\
+    name: quoted
+    on: [push]
+    jobs:
+      build:
+        runs-on: ubuntu-latest
+        env:
+          JOINED: "first\\nsecond"
+          LITERAL: 'C:\\\\Users\\\\runner\\tseparator'
+          REGEX: '^a\\d+b$'
+          WINDOWS_PATH: C:\\\\temp\\\\notes.txt
+    """
+
+# An escape after a `#` is prose, not content.
+ESCAPE_INSIDE_TRAILING_COMMENT = """\
+    name: commented
+    on: [push]
+    jobs:
+      build:
+        runs-on: ubuntu-latest
+        steps:
+          - name: note
+            run: echo ok   # the marker \\n is literal text here, not an escape
+    """
+
 NEGATIVE_FIXTURES = {
+    "escapes inside a run block scalar": ESCAPES_INSIDE_BLOCK_SCALAR,
+    "escapes that are meant": ESCAPES_THAT_ARE_MEANT,
+    "escape inside a trailing comment": ESCAPE_INSIDE_TRAILING_COMMENT,
     "correctly indented run block": CORRECTLY_INDENTED_RUN,
     "shell pipeline ending in a pipe": SHELL_PIPELINE_ENDING_IN_PIPE,
     "quoted tag expression": QUOTED_TAG_EXPRESSION,
@@ -314,6 +383,8 @@ class YamlStructureScopeTests(unittest.TestCase):
             ".github/workflows/ci.yaml",
             "docs/schemas/routing-priority.yaml",
             "docs/schemas/model-success-matrix.yml",
+            "docs/research/RESEARCH-LANES.yaml",
+            "docs/research/resource-registry.yml",
         ):
             with self.subTest(path=path):
                 self.assertIsNotNone(repo_gate.CONTROL_PLANE_YAML_RE.match(path))
@@ -322,6 +393,8 @@ class YamlStructureScopeTests(unittest.TestCase):
         for path in (
             ".github/workflows/nested/ci.yml",
             "docs/schemas/nested/x.yaml",
+            "docs/research/nested/x.yaml",
+            "docs/research/README.md",
             "docs/ops/generated/automation-workflow-catalog.json",
             "profiles/default.yml",
             ".github/dependabot.yml",
@@ -365,8 +438,10 @@ class PyYamlAgreementTests(unittest.TestCase):
         This is the regression guard the whole check exists for: a new blind spot
         fails here rather than shipping as silence in CI.
         """
-        candidates = sorted(ROOT.glob(".github/workflows/*.y*ml")) + sorted(
-            ROOT.glob("docs/schemas/*.y*ml")
+        candidates = (
+            sorted(ROOT.glob(".github/workflows/*.y*ml"))
+            + sorted(ROOT.glob("docs/schemas/*.y*ml"))
+            + sorted(ROOT.glob("docs/research/*.y*ml"))
         )
         self.assertTrue(candidates, "no in-scope YAML files found — scope regex drifted")
         missed = []

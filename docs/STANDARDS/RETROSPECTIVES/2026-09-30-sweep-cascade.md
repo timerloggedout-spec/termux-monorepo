@@ -229,3 +229,28 @@ anything with recovery value.
 
 **DO** archive before destructive verbs.
 **DO NOT** `rm -rf` any path not proven cache, duplicate, or git-managed.
+
+## Addendum · Hang awareness — monitoring patterns that don't lie
+
+### The 55-minute perceived hang
+Two stacked causes:
+1. `watch -n 15 'gh codespace ssh ...'` spawns a new SSH session every
+   15s. Each handshake takes 5-15s. Under load, sessions queue — the loop
+   never catches up. Looks like a hang; is actually SSH backpressure.
+2. The offload was in a Gemini 429 retry loop. Hindsight's LLM wrapper
+   uses exponential backoff. Every retain → 429 → sleep → retry. Silent.
+
+### Rule: monitor via log tail, not via SSH watch
+**DO NOT** `watch 'gh codespace ssh ...'` — each tick creates a session.
+**DO** ship a monitor script once, run it inside the codespace, tee to a log.
+**DO** tail that log from Termux: `gh codespace ssh -c $CS -- 'tail -f /tmp/run.log'`.
+Or run inside codespace tmux and poll `tmux capture-pane`.
+
+### Rule: retry loops must log
+Every retry prints one line to /tmp/hs.log with attempt#, code, backoff.
+If a run has been silent >2 min, it's stuck in a loop.
+
+### Rule: model rotation is logged per-attempt
+Each provider/model attempt appends a row to
+~/.deepcli/logs/model-rotation/<provider>__<model>.jsonl with health result.
+Successful model on a task category is the leaderboard entry.

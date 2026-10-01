@@ -1,0 +1,122 @@
+name: Sweep Accountability
+
+on:
+  push:
+    paths-ignore:
+      - "docs/ops/generated/sweep-ledger/**"
+  schedule:
+    - cron: "17 2 * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: HISTORICAL or CONTINUOUS
+        required: true
+        default: CONTINUOUS
+      sweep_version:
+        description: Analytical layer/version
+        required: true
+        default: v1
+      iteration:
+        description: Iteration number within the layer
+        required: true
+        default: "0"
+      from:
+        description: Optional lower bound (ISO-8601)
+        required: false
+        default: ""
+      to:
+        description: Optional upper bound (ISO-8601)
+        required: false
+        default: ""
+  pull_request:
+    types: [opened, reopened, synchronize, closed, ready_for_review, converted_to_draft]
+  issues:
+    types: [opened, edited, closed, reopened, labeled, unlabeled, assigned, unassigned]
+  issue_comment:
+    types: [created, edited, deleted]
+
+permissions:
+  contents: write
+  actions: read
+  issues: read
+  pull-requests: read
+
+concurrency:
+  group: sweep-accountability-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate receipt contract
+        run: python3 scripts/ci/test_sweep_accountability.py
+
+      - name: Historical source census
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'HISTORICAL' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p docs/ops/generated/sweep-ledger/census
+          gh api --paginate "repos/$GITHUB_REPOSITORY/pulls?state=all&per_page=100" > docs/ops/generated/sweep-ledger/census/pulls.json
+          gh api --paginate "repos/$GITHUB_REPOSITORY/issues?state=all&per_page=100" > docs/ops/generated/sweep-ledger/census/issues.json
+          gh api --paginate "repos/$GITHUB_REPOSITORY/actions/runs?per_page=100" > docs/ops/generated/sweep-ledger/census/workflow-runs.json
+          python3 scripts/ci/sweep_census_counts.py docs/ops/generated/sweep-ledger/census
+
+      - name: Record sweep observation
+        if: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+        env:
+          MODE: ${{ github.event.inputs.mode }}
+          SWEEP_VERSION: ${{ github.event.inputs.sweep_version }}
+          ITERATION: ${{ github.event.inputs.iteration }}
+          FROM_TIME: ${{ github.event.inputs.from }}
+          TO_TIME: ${{ github.event.inputs.to }}
+        run: |
+          set -euo pipefail
+          MODE="${MODE:-CONTINUOUS}"
+          SWEEP_VERSION="${SWEEP_VERSION:-v1}"
+          ITERATION="${ITERATION:-0}"
+          FROM_TIME="${FROM_TIME:-}"
+          TO_TIME="${TO_TIME:-}"
+          git config user.name "termux-monorepo sweep"
+          git config user.email "actions@users.noreply.github.com"
+          START="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          COMMITS="$(git rev-list --count HEAD)"
+          HEAD_SHA="$(git rev-parse HEAD)"
+          FIRST_SHA="$(git rev-list --max-parents=0 HEAD | tail -n 1)"
+          RUN_URL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          EVENT_KIND="$GITHUB_EVENT_NAME"
+          export COMMITS HEAD_SHA FIRST_SHA EVENT_KIND
+          FINDINGS="$(python3 scripts/ci/sweep_findings.py)"
+          python3 scripts/ci/sweep_accountability.py \
+            --repository "$GITHUB_REPOSITORY" \
+            --sweep-version "$SWEEP_VERSION" \
+            --iteration "$ITERATION" \
+            --mode "$MODE" \
+            --status SUCCESS \
+            --coverage COMPLETE \
+            --observed "$COMMITS" \
+            --ref "$GITHUB_REF_NAME" \
+            --from "$FROM_TIME" \
+            --to "${TO_TIME:-$START}" \
+            --query "event=$EVENT_KIND; historical census when requested" \
+            --sources "[\"git://repository\",\"github://event/$GITHUB_EVENT_NAME\",\"github://actions/$GITHUB_RUN_ID\"]" \
+            --provenance "{\"actor_type\":\"workflow\",\"actor\":\"$GITHUB_ACTOR\",\"tool\":\"GitHub Actions\",\"workflow\":\"$GITHUB_WORKFLOW\",\"run_id\":\"$GITHUB_RUN_ID\",\"event\":\"$GITHUB_EVENT_NAME\",\"source_refs\":[\"$RUN_URL\"],\"source_shas\":[\"$HEAD_SHA\",\"$FIRST_SHA\"]}" \
+            --findings "$FINDINGS" \
+            --actions "[{\"id\":\"sweep-$GITHUB_RUN_ID\",\"type\":\"accountability-sweep\",\"status\":\"SUCCEEDED\",\"actor\":\"$GITHUB_ACTOR\",\"tool\":\"GitHub Actions\",\"target\":\"$GITHUB_REPOSITORY\"}]" \
+            --effects "[{\"id\":\"effect-$GITHUB_RUN_ID\",\"type\":\"accountability-receipt\",\"after\":{\"head_sha\":\"$HEAD_SHA\",\"reachable_commits\":$COMMITS,\"trigger_event\":\"$EVENT_KIND\",\"run_url\":\"$RUN_URL\"}}]" \
+            --coverage-reason "Git history is complete for the checked-out ref; external source census is explicit and retained when HISTORICAL mode is requested." \
+            --out-dir docs/ops/generated/sweep-ledger
+          git add docs/ops/generated/sweep-ledger
+          if git diff --cached --quiet; then
+            echo "No ledger delta"
+            exit 0
+          fi
+          git commit -m "chore(ops): record sweep accountability receipt"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

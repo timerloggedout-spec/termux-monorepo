@@ -1,0 +1,47 @@
+name: help-wanted diff gate
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: "Foreign PR URL or owner/repo#number"
+        required: true
+      expect:
+        description: "stake or solution"
+        required: true
+        default: solution
+        type: choice
+        options: [stake, solution]
+  repository_dispatch:
+    types: [help-wanted-diff-gate]
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Verify Help-Given Tribute state
+        env:
+          GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.inputs.pr || github.event.client_payload.pr || '' }}
+          EXPECT: ${{ github.event.inputs.expect || github.event.client_payload.expect || 'solution' }}
+        run: |
+          set -euo pipefail
+          test -n "$PR"
+          mkdir -p docs/ops/generated/help-wanted-evidence/diff-gates
+          python3 scripts/ci/help_wanted_diff_gate.py --pr "$PR" --expect "$EXPECT" --out "docs/ops/generated/help-wanted-evidence/diff-gates/${GITHUB_RUN_ID}.json"
+      - name: Upload diff-gate receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: help-wanted-diff-gate-${{ github.run_id }}
+          path: docs/ops/generated/help-wanted-evidence/diff-gates/${{ github.run_id }}.json
+          retention-days: 30
+          if-no-files-found: error

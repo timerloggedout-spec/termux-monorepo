@@ -36,3 +36,12 @@ Regenerate: `python3 scripts/ci/help_wanted_status.py` (Actions: `help-wanted-st
 - Maintainer feedback → rerequest / revise — no zero-81 special modes.
 
 Agent-Identity: Grok (Administrator)
+
+## Graduation / Help-Given Tribute
+
+The detailed work-acquisition and diff-proof contract is now canonical in docs/ops/HELP-GIVEN-TRIBUTE.md. This keeps the existing tribute ledger while preventing a stake-only PR from being mistaken for a completed fix.
+
+- STAKE is an intent/review surface.
+- SOLUTION requires an implementation delta and explicit diff/validation proof.
+- VALIDATED requires observed checks/evidence.
+- ACCEPTED is an upstream maintainer outcome.

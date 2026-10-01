@@ -31,10 +31,18 @@ jobs:
       - name: Analyze pushed commits
         env:
           GH_TOKEN: ${{ github.token }}
+          RANGE_BEFORE: ${{ github.event.before }}
+          RANGE_SHA: ${{ github.sha }}
         shell: bash
         run: |
           set -euo pipefail
           empty=()
+          # Zero SHA means a new branch or a missing before; do not interpolate
+          # event SHAs into the script text (run 36934415564 exit 127).
+          if [[ -z "${RANGE_BEFORE}" || "${RANGE_BEFORE}" == 0000000000000000000000000000000000000000 ]]; then
+            echo "No comparable before SHA; skipping empty-commit range."
+            exit 0
+          fi
           while read -r sha; do
             [[ -z "$sha" ]] && continue
             parent="$(git rev-parse "${sha}^" 2>/dev/null || true)"
@@ -46,27 +54,30 @@ jobs:
             fi
             if [[ "$files" -eq 0 ]]; then
               author="$(git show -s --format='%an <%ae>' "$sha")"
-              empty+=("$sha $author")
+              empty+=("${sha}|${author}")
             fi
-          done < <(git rev-list --reverse "${{ github.event.before }}..${{ github.sha }}")
+          done < <(git rev-list --reverse "${RANGE_BEFORE}..${RANGE_SHA}")
 
           if [[ "${#empty[@]}" -eq 0 ]]; then
-            echo 'No empty direct-push commits observed.'
+            echo "No empty direct-push commits observed."
             exit 0
           fi
 
-          body='<!-- direct-master-empty-commit-watcher:v2 -->
-          ## 🛡️ Empty direct-push commit detected
-
-          The pushed range contains commit(s) with no file-tree delta:
-
-          '
+          # Do not wrap SHAs in backticks. Run 36934415564 treated the SHA as a
+          # command (exit 127) because \\` inside the double-quoted body became
+          # command substitution after Actions wrote the runner script.
+          printf '%s\n' '<!-- direct-master-empty-commit-watcher:v3 -->'
+          printf '%s\n' '## Empty direct-push commit detected'
+          printf '%s\n' ''
+          printf '%s\n' 'The pushed range contains commit(s) with no file-tree delta:'
+          printf '%s\n' ''
           for item in "${empty[@]}"; do
-            body+="- \\`${item%% *}\\` — ${item#* }\n"
+            sha="${item%%|*}"
+            author="${item#*|}"
+            printf -- '- %s — %s\n' "$sha" "$author"
           done
-          body+='\nPR commit effectiveness is measured by `pr-change-effectiveness-ledger.yml`; this watcher only covers direct pushes to protected branches.'
-
+          printf '%s\n' ''
+          printf '%s\n' 'PR commit effectiveness is measured by pr-change-effectiveness-ledger.yml; this watcher only covers direct pushes to protected branches.'
           # Issue #1 is intentionally not targeted: direct-push telemetry is
           # logged in the workflow run rather than generating noisy PR comments.
-          printf '%b\n' "$body"
           exit 1

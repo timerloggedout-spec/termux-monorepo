@@ -1,0 +1,22 @@
+# shellcheck shell=bash
+HS_PORT_LOCAL=18888
+HS_PORT_REMOTE=8888
+HS_LOG="$HOME/.deepcli/logs/hs-cadence.jsonl"
+HS_CREDS="$HOME/.deepcli/creds/hindsight-codespace.env"
+HS_NAME_FILE="$HOME/.deepcli/cs-hindsight-name.txt"
+
+hs_cs() { cat "$HS_NAME_FILE" 2>/dev/null; }
+hs_ssh_host() { echo "cs.$(hs_cs).feat-gh-actions-deepseek-integrates-itself"; }
+
+hs_log() {
+  # $1=op $2=status $3=note
+  printf '{"ts":"%s","op":"%s","status":"%s","note":"%s"}\n' \
+    "$(date -u +%FT%TZ)" "$1" "$2" "${3:-}" >> "$HS_LOG"
+}
+
+hs_tunnel_alive() { pgrep -f "ssh.*-L ${HS_PORT_LOCAL}" >/dev/null 2>&1; }
+
+hs_health() {
+  curl -sS -o /dev/null -w '%{http_code}' --max-time 6 \
+    "http://localhost:${HS_PORT_LOCAL}/health" 2>/dev/null
+}

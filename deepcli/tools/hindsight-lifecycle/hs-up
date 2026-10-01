@@ -1,0 +1,50 @@
+#!/data/data/com.termux/files/usr/bin/bash
+. "$HOME/.local/bin/hs-lib" || exit 1
+_cs=$(hs_cs)
+[ -z "$_cs" ] && { echo "no codespace name"; exit 1; }
+echo "hs-up: $_cs"
+
+# 1 · Codespace state
+_st=$(gh codespace view -c "$_cs" --json state --jq '.state' 2>/dev/null)
+echo "  state: $_st"
+if [ "$_st" != "Available" ]; then
+  gh codespace start -c "$_cs" 2>&1 | tail -1
+  for _i in $(seq 1 30); do
+    sleep 10
+    _st=$(gh codespace view -c "$_cs" --json state --jq '.state' 2>/dev/null)
+    [ "$_st" = "Available" ] && { echo "  ready t=$((_i*10))s"; break; }
+  done
+fi
+
+# 2 · Process inside
+_alive=$(gh codespace ssh -c "$_cs" -- 'pgrep -c hindsight-api' 2>/dev/null | tail -1)
+if [ "${_alive:-0}" = "0" ]; then
+  echo "  relaunching hindsight inside codespace..."
+  gh codespace ssh -c "$_cs" -- 'bash -lc "nohup bash -c \"cd ~/hindsight && . .venv/bin/activate && export HINDSIGHT_API_WORKER_ID=hindsight-termux-monorepo HINDSIGHT_API_LLM_PROVIDER=gemini HINDSIGHT_API_LLM_MODEL=gemini-3.5-flash HINDSIGHT_API_LLM_GEMINI_SERVICE_TIER=flex HINDSIGHT_API_EMBEDDINGS_PROVIDER=google HINDSIGHT_API_EMBEDDINGS_MODEL=gemini-embedding-001 HINDSIGHT_API_EMBEDDINGS_GEMINI_OUTPUT_DIMENSIONALITY=768 HINDSIGHT_API_RERANKER_PROVIDER=rrf HINDSIGHT_API_RERANKER_REQUIRED=false HINDSIGHT_API_FILE_PARSER=markitdown HINDSIGHT_API_PORT=8888 HINDSIGHT_API_HOST=0.0.0.0 && hindsight-api --port 8888 --host 0.0.0.0 > /tmp/hs.log 2>&1\" >/dev/null 2>&1 &"' 2>&1 | tail -1
+  sleep 12
+fi
+
+# 3 · Tunnel
+if ! hs_tunnel_alive; then
+  pkill -f "ssh.*-L ${HS_PORT_LOCAL}" 2>/dev/null
+  sleep 1
+  nohup ssh -N -L "${HS_PORT_LOCAL}:localhost:${HS_PORT_REMOTE}" "$(hs_ssh_host)" >/dev/null 2>&1 &
+  sleep 5
+fi
+hs_tunnel_alive && echo "  tunnel: up" || echo "  tunnel: DOWN"
+
+# 4 · Health
+for _i in $(seq 1 8); do
+  _h=$(hs_health)
+  echo "  t=$((_i*6))s  http=$_h"
+  [ "$_h" = "200" ] && break
+  sleep 6
+done
+if [ "$_h" = "200" ]; then
+  hs_log up ok "$_cs"
+  echo "  ✅ hs-up complete"
+  exit 0
+fi
+hs_log up fail "$_cs"
+echo "  ✗ hs-up failed"
+exit 1

@@ -1,0 +1,11 @@
+#!/data/data/com.termux/files/usr/bin/bash
+. "$HOME/.local/bin/hs-lib" || exit 1
+_cs=$(hs_cs)
+[ -z "$_cs" ] && { echo "no codespace name"; exit 1; }
+echo "hs-down: $_cs"
+
+pkill -f "ssh.*-L ${HS_PORT_LOCAL}" 2>/dev/null && echo "  tunnel killed" || echo "  no tunnel"
+
+gh codespace stop -c "$_cs" 2>&1 | tail -1
+hs_log down ok "$_cs"
+echo "  ✅ hs-down complete"

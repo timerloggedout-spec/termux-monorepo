@@ -1,0 +1,53 @@
+#!/data/data/com.termux/files/usr/bin/bash
+. "$HOME/.local/bin/hs-lib" || exit 1
+_cs=$(hs_cs)
+
+echo "=== hs-status ==="
+printf "  codespace:  %s\n" "${_cs:-none}"
+printf "  state:      %s\n" "$(gh codespace view -c "$_cs" --json state --jq '.state' 2>/dev/null || echo '?')"
+printf "  last used:  %s\n" "$(gh codespace view -c "$_cs" --json lastUsedAt --jq '.lastUsedAt' 2>/dev/null || echo '?')"
+printf "  tunnel:     %s\n" "$(hs_tunnel_alive && echo up || echo down)"
+printf "  health:     %s\n" "$(hs_health)"
+
+echo
+echo "=== Codespaces quota (billing) ==="
+gh api "users/timerloggedout-spec/settings/billing/usage" 2>/dev/null | python3 -c "
+import json,sys
+try:
+    d = json.load(sys.stdin)
+    for item in d.get('usageItems', [])[:5]:
+        if 'Codespaces' in item.get('product',''):
+            print(f\"  {item.get('product')} {item.get('sku')}: {item.get('quantity')} {item.get('unitType')}\")
+except Exception as e:
+    print(f'  (api: {e})')
+" 2>/dev/null || echo "  (billing api unavailable)"
+
+echo
+echo "=== Hindsight bank ==="
+curl -sS --max-time 6 "http://localhost:${HS_PORT_LOCAL}/v1/default/banks" 2>/dev/null \
+  | python3 -c "
+import json,sys
+try:
+    d=json.load(sys.stdin)
+    for b in d.get('banks',[]):
+        print(f\"  {b['bank_id']}  facts={b.get('fact_count',0)}\")
+except: pass
+"
+
+echo
+echo "=== Cadence ledger ==="
+if [ -f "$HS_LOG" ]; then
+  _n=$(wc -l < "$HS_LOG")
+  echo "  total ops: $_n"
+  echo "  last 5:"
+  tail -5 "$HS_LOG" | sed 's/^/    /'
+else
+  echo "  (no cadence runs yet)"
+fi
+
+echo
+echo "=== Local ledgers ==="
+for _l in harvest-ledger multi-ledger exports-ledger; do
+  _p="$HOME/.deepcli/logs/provenance/${_l}.json"
+  [ -f "$_p" ] && printf "  %-20s %s entries\n" "$_l" "$(python3 -c "import json;print(len(json.load(open('$_p'))))" 2>/dev/null || echo '?')"
+done

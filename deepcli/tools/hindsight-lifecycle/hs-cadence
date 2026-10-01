@@ -1,0 +1,41 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# hs-cadence [--max-items N] [--batch B] [--wait-s S] <source>
+#   source: harvest | multi | exports
+#   Pauses between batches, honors a per-codespace RPM budget,
+#   logs each run to hs-cadence.jsonl
+. "$HOME/.local/bin/hs-lib" || exit 1
+
+_max=0; _batch=25; _wait=3; _source=""
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --max-items) _max="$2"; shift 2 ;;
+    --batch)     _batch="$2"; shift 2 ;;
+    --wait-s)    _wait="$2"; shift 2 ;;
+    harvest|multi|exports) _source="$1"; shift ;;
+    *) echo "unknown arg: $1"; exit 2 ;;
+  esac
+done
+[ -z "$_source" ] && { echo "usage: hs-cadence [opts] {harvest|multi|exports}"; exit 2; }
+
+_h=$(hs_health)
+[ "$_h" != "200" ] && { echo "hs-cadence: health=$_h — run hs-up first"; exit 1; }
+
+_start=$(date +%s)
+case "$_source" in
+  harvest) _cmd=~/.local/bin/provenance-harvest ;;
+  multi)   _cmd=~/.local/bin/provenance-multi ;;
+  exports) _cmd=~/.local/bin/provenance-exports ;;
+esac
+
+echo "hs-cadence: source=$_source max=$_max batch=$_batch wait=${_wait}s"
+hs_log cadence start "$_source max=$_max batch=$_batch"
+"$_cmd" --new ${_max:+--limit=$_max} 2>&1 | tee -a "$HS_LOG.${_source}.$(date +%s)"
+_rc=${PIPESTATUS[0]}
+_end=$(date +%s)
+_el=$((_end - _start))
+hs_log cadence "$([ $_rc -eq 0 ] && echo ok || echo fail)" "$_source elapsed=${_el}s"
+echo "hs-cadence: done rc=$_rc elapsed=${_el}s"
+
+# health after batch
+_h=$(hs_health)
+[ "$_h" = "200" ] || echo "  ⚠ health degraded: $_h"

@@ -1,0 +1,10 @@
+id: tier-1-cloud-memory
+requires: [tier-0-local]
+providers:
+  gh-secret:
+    - { name: HINDSIGHT_API_KEY, scope: codespaces }
+    - { name: HINDSIGHT_BASE_URL, scope: codespaces }
+health_checks:
+  - name: cloud_reachable
+    cmd: curl -fsS https://api.hindsight.vectorize.io/health
+uninstall_hooks: []

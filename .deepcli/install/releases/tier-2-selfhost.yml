@@ -1,0 +1,12 @@
+id: tier-2-selfhost
+requires: [tier-1-cloud-memory]
+providers:
+  gh-secret:
+    - { name: HINDSIGHT_API_LLM_API_KEY, scope: codespaces }
+  gh-cli: [{ binary: gh, auth: verified }]
+install_hooks: [create_codespace, ship_launcher, wire_tunnel]
+health_checks:
+  - name: hindsight_health
+    cmd: curl -fsS http://localhost:18888/health
+    expect: '{"status"'
+uninstall_hooks: [stop_codespace, kill_tunnel]

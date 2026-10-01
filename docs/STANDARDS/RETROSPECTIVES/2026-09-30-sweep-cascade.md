@@ -216,3 +216,16 @@ Footgun sequence:
   6. Repeat
 
 Break the loop with one line: `git ls-tree -r origin/<branch> -- <path>`.
+
+## Addendum · Archive doctrine
+
+Replace `rm -rf` with `archive.sh --reason "..."`. Targets move to
+`~/.deepcli/archive/<UTC-stamp>/<original-path>`; a row is appended to
+`~/.deepcli/logs/destructive.jsonl` with sha256, size, reason.
+
+`rm` is permitted only for `$TMPDIR/*`. `rm-safe` remains for
+intentional single-file removal. `archive.sh` is the default verb for
+anything with recovery value.
+
+**DO** archive before destructive verbs.
+**DO NOT** `rm -rf` any path not proven cache, duplicate, or git-managed.

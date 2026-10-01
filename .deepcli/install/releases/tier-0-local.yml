@@ -1,0 +1,10 @@
+id: tier-0-local
+requires: []
+providers:
+  file: [~/.deepcli/bank-local.db]
+health_checks:
+  - name: bank_local
+    cmd: test -f ~/.deepcli/bank-local.db
+  - name: server_module
+    cmd: test -f ~/deepcli/server.py
+uninstall_hooks: []

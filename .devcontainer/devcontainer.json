@@ -1,30 +1,25 @@
 {
-  "name": "termux-monorepo / hindsight-self-host",
-  "build": {
-    "dockerfile": "Dockerfile",
-    "context": "."
+  "name": "hindsight-glibc",
+  "image": "mcr.microsoft.com/devcontainers/python:1-3.11-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/sshd:1": { "version": "latest" }
   },
-  "hostRequirements": {
-    "cpus": 4,
-    "memory": "8gb",
-    "storage": "32gb"
-  },
-  "forwardPorts": [8888, 8000, 8800],
+  "hostRequirements": { "cpus": 4, "memory": "8gb", "storage": "32gb" },
+  "forwardPorts": [8888, 8502],
   "portsAttributes": {
-    "8888": { "label": "hindsight-api", "onAutoForward": "silent" },
-    "8000": { "label": "kimi-free-api", "onAutoForward": "silent" },
-    "8800": { "label": "deepcli-server", "onAutoForward": "silent" }
+    "8888": { "label": "hindsight", "onAutoForward": "silent" },
+    "8502": { "label": "observatory", "onAutoForward": "silent" }
+  },
+  "containerEnv": {
+    "HINDSIGHT_API_LLM_PROVIDER": "gemini",
+    "HINDSIGHT_API_LLM_MODEL": "gemini-2.0-flash",
+    "HINDSIGHT_API_LLM_GEMINI_SERVICE_TIER": "on_demand",
+    "HINDSIGHT_API_EMBEDDINGS_PROVIDER": "gemini",
+    "HINDSIGHT_API_EMBEDDINGS_MODEL": "text-embedding-004",
+    "HINDSIGHT_API_RERANKER_PROVIDER": "none",
+    "HINDSIGHT_API_FILE_PARSER": "markitdown",
+    "HINDSIGHT_API_FILE_PARSER_ALLOWLIST": "markitdown"
   },
   "postCreateCommand": "bash .devcontainer/post-create.sh",
-  "postStartCommand": "sudo service docker start && bash .devcontainer/post-start.sh",
-  "remoteEnv": {
-    "HINDSIGHT_BASE_URL": "http://localhost:8888",
-    "KIMI_LOCAL_URL": "http://localhost:8000",
-    "HINDSIGHT_API_LLM_PROVIDER": "gemini"
-  },
-  "secrets": {
-    "HINDSIGHT_API_LLM_API_KEY": { "description": "Google AI Studio key" },
-    "HINDSIGHT_API_KEY":          { "description": "Existing cloud key" },
-    "MOONSHOT_REFRESH_TOKEN":     { "description": "Kimi refresh_token" }
-  }
+  "postStartCommand": "bash .devcontainer/post-start.sh"
 }

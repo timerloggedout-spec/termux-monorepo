@@ -5,9 +5,11 @@ cd "$HOME/hindsight" 2>/dev/null || exit 0
 . .venv/bin/activate
 command -v hindsight-api >/dev/null 2>&1 || exit 0
 pgrep -f hindsight-api >/dev/null 2>&1 && exit 0
+# clear stale
+for v in $(env | grep -oE '^HINDSIGHT_API_[A-Z0-9_]+' || true); do unset "$v"; done
 export HINDSIGHT_API_LLM_PROVIDER=gemini
 export HINDSIGHT_API_LLM_MODEL=gemini-2.0-flash
-export HINDSIGHT_API_LLM_GEMINI_SERVICE_TIER=on_demand
+export HINDSIGHT_API_LLM_GEMINI_SERVICE_TIER=flex
 export HINDSIGHT_API_EMBEDDINGS_PROVIDER=gemini
 export HINDSIGHT_API_EMBEDDINGS_MODEL=text-embedding-004
 export HINDSIGHT_API_RERANKER_PROVIDER=none

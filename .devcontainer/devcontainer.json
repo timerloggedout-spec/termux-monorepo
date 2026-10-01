@@ -2,14 +2,31 @@
   "name": "hindsight",
   "image": "mcr.microsoft.com/devcontainers/base:bookworm",
   "features": {
-    "ghcr.io/devcontainers/features/sshd:1": { "version": "latest" },
-    "ghcr.io/devcontainers/features/python:1": { "version": "3.11" }
+    "ghcr.io/devcontainers/features/sshd:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.11"
+    }
   },
-  "hostRequirements": { "cpus": 4, "memory": "8gb", "storage": "32gb" },
-  "forwardPorts": [8888, 8502],
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "8gb",
+    "storage": "32gb"
+  },
+  "forwardPorts": [
+    8888,
+    8502
+  ],
   "portsAttributes": {
-    "8888": { "label": "hindsight", "onAutoForward": "silent" },
-    "8502": { "label": "observatory", "onAutoForward": "silent" }
+    "8888": {
+      "label": "hindsight",
+      "onAutoForward": "silent"
+    },
+    "8502": {
+      "label": "observatory",
+      "onAutoForward": "silent"
+    }
   },
   "postCreateCommand": "bash .devcontainer/post-create.sh",
   "postStartCommand": "bash .devcontainer/post-start.sh"

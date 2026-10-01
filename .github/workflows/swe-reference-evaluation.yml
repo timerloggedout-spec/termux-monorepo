@@ -6,6 +6,9 @@ name: SWE reference evaluation
 # repository variable explicitly permit an external reference run.
 
 on:
+  push:
+    paths:
+      - ".github/workflows/swe-reference-evaluation.yml"
   workflow_dispatch:
     inputs:
       run_external_reference:
@@ -34,12 +37,11 @@ permissions:
   contents: read
 
 concurrency:
-  group: swe-reference-evaluation-${{ inputs.benchmark }}-${{ inputs.split }}
+  group: swe-reference-evaluation-${{ github.run_id }}
   cancel-in-progress: false
 
 jobs:
   evaluate:
-    if: ${{ inputs.run_external_reference == true && vars.SWE_REFERENCE_EVALUATION_ENABLED == 'true' }}
     name: bounded mini-SWE smoke evaluation
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -47,13 +49,34 @@ jobs:
       MINI_SWE_REVISION: a83fcae82d2a08f0ee0c688f9d137b3566c097f8
       RUN_DIRECTORY: ${{ github.workspace }}/.swe-evaluation-run
     steps:
+      - name: Gate external reference
+        id: gate
+        env:
+          RUN_EXT: ${{ inputs.run_external_reference }}
+          ENABLED: ${{ vars.SWE_REFERENCE_EVALUATION_ENABLED }}
+        run: |
+          set -euo pipefail
+          if [ "${GITHUB_EVENT_NAME}" = "workflow_dispatch" ] && [ "${RUN_EXT}" = "true" ] && [ "${ENABLED}" = "true" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            {
+              echo "## SWE reference evaluation disabled"
+              echo
+              echo "Event ${GITHUB_EVENT_NAME} did not enable an external reference run."
+              echo "No external package was cloned or installed, and no provider credential was exposed."
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
       - name: Checkout repository without provider credentials
+        if: steps.gate.outputs.run == 'true'
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           fetch-depth: 1
           submodules: false
 
       - name: Validate bounded invocation
+        if: steps.gate.outputs.run == 'true'
         env:
           MODEL_ID: ${{ inputs.model_id }}
         run: |
@@ -68,6 +91,7 @@ jobs:
           fi
 
       - name: Checkout pinned mini-SWE-agent reference without provider credentials
+        if: steps.gate.outputs.run == 'true'
         run: |
           set -euo pipefail
           git clone --filter=blob:none https://github.com/timerloggedout-spec/mini-swe-agent_fork.git reference
@@ -75,12 +99,14 @@ jobs:
           test "$(git -C reference rev-parse HEAD)" = "${MINI_SWE_REVISION}"
 
       - name: Install pinned reference dependencies without provider credentials
+        if: steps.gate.outputs.run == 'true'
         run: |
           set -euo pipefail
           python -m pip install --disable-pip-version-check --no-input --upgrade pip
           python -m pip install --disable-pip-version-check --no-input ./reference
 
       - name: Run one bounded benchmark instance
+        if: steps.gate.outputs.run == 'true'
         id: run
         env:
           MODEL_ID: ${{ inputs.model_id }}
@@ -112,7 +138,7 @@ jobs:
           echo "runner_exit_code=${RUNNER_EXIT_CODE}" >> "${GITHUB_OUTPUT}"
 
       - name: Build redacted result manifest
-        if: always()
+        if: steps.gate.outputs.run == 'true'
         env:
           MODEL_ID: ${{ inputs.model_id }}
         run: |
@@ -133,7 +159,7 @@ jobs:
           python3 scripts/ci/swe_evaluation_contract.py audit evaluation-results/manifest.json
 
       - name: Upload redacted evaluation manifest
-        if: always()
+        if: steps.gate.outputs.run == 'true'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: swe-evaluation-manifest-${{ github.run_id }}-${{ github.run_attempt }}
@@ -143,22 +169,7 @@ jobs:
           include-hidden-files: false
 
       - name: Set evaluation outcome
-        if: always()
+        if: steps.gate.outputs.run == 'true'
         run: |
           set -euo pipefail
           exit "${{ steps.run.outputs.runner_exit_code }}"
-
-  disabled:
-    if: ${{ inputs.run_external_reference != true || vars.SWE_REFERENCE_EVALUATION_ENABLED != 'true' }}
-    name: external reference disabled
-    runs-on: ubuntu-latest
-    timeout-minutes: 2
-    steps:
-      - name: Record safe non-execution
-        run: |
-          {
-            echo '## SWE reference evaluation disabled'
-            echo
-            echo 'No external package was cloned or installed, and no provider credential was exposed.'
-            echo 'Enable only with explicit manual input and the trusted SWE_REFERENCE_EVALUATION_ENABLED repository variable.'
-          } >> "$GITHUB_STEP_SUMMARY"

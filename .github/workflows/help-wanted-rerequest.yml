@@ -1,0 +1,33 @@
+name: help-wanted-rerequest
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: "PR URL (empty = all foreign CHANGES_REQUESTED)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  rerequest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Re-request reviews
+        env:
+          OPERATOR_GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+          OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
+          ARCHWIZ_GITHUB_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.inputs.pr }}
+        run: |
+          set -euo pipefail
+          if [ -n "${PR:-}" ]; then
+            python3 scripts/ci/help_wanted_rerequest.py --pr "$PR"
+          else
+            python3 scripts/ci/help_wanted_rerequest.py --all-foreign
+          fi

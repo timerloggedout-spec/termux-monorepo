@@ -1,18 +1,88 @@
 # TERMUX MONOREPO
 
+```
++---------------------------------------------------------------------------------------------------------+
+|  ⚡ ARCHWIZ COCKPIT // TERMUX HYPER-FORGE  |  TARGET: Android/Termux  |  GATES: repo-gate + smoke |
+|  MODE: operator / supervised-autonomous |  STATE: source-of-truth bound |  THEME: Tron-capable |
++---------------------------------------------------------------------------------------------------------+
+|  [1] 🤖 Swarm Autonomous Dispatch (Jules/Commingle)   [13] 🔄 Session Pipeline & Live Telemetry          |
+|  [2] 🔍 Deep RECON & Archaeology Sweep (ICM Routing)   [14] 📜 Narrative Feed & Execution Ledger         |
+|  [3] ⚡ Agent Shell v3 (Role-Aware Multi-Model)        [15] 🌾 Lexicon & AST Context Harvest             |
+|  [4] 📊 Real-Time Metrics & Performance Monitor        [16] 👁️ Live View & Interactive Preview Portal   |
+|  [5] 💾 System Backup & State Persistence              [17] 🔬 Forensic Toolchain & Pointer Indexer      |
+|  [6] 🔄 Ecosystem Refresh & Rebuild Indices            [18] 📝 Auto-Doc Pipeline (COMMIT_NOTES.md)       |
+|  [7] ⚙️ Profile & Environment Management              [19] 🚀 Promote Sandbox Workspace -> Master       |
+|  [8] 🛠️ StepWise MCP Automation Engine                 [20] 🛡️ Execute Dual-Gate CI Validation           |
++---------------------------------------------------------------------------------------------------------+
+|  >> PIPELINE: ACTIVE [auto]  |  MCP-HUB: CONNECTED  |  ICM ROUTER: ONLINE  |  "Ask && U $h411 π3c31ve"  |
++---------------------------------------------------------------------------------------------------------+
+```
+
+![1000029617](https://github.com/user-attachments/assets/0fb68186-bab6-495b-99d2-39fcb04cf8d1)
+
+<img width="1408" height="768" alt="1000029613" src="https://github.com/user-attachments/assets/3dccedab-1c59-4b19-8042-2abc43f24ddf" />
+
+<img width="688" height="1539" alt="1000029616" src="https://github.com/user-attachments/assets/135dada3-82ca-42cd-9124-2ab00974ba41" />
+
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/timerloggedout-spec/termux-monorepo)
 
-<!-- partner-banner:start (edit docs/PARTNERS.md to add a partner; keep this block to four badges + two lines) -->
+
+### ⚡ Termux Hyper-Forge — the first implementation surface
+
+The cinematic cockpit concept is now grounded in a **real Termux-native implementation**. The Hyper-Forge is an ANSI/TUI adapter over existing repository primitives rather than a second orchestration system.
+
+```text
+                         TERMUX / ANDROID
+                              │
+                    ┌─────────▼─────────┐
+                    │ ARCHWIZ HYPER-FORGE│
+                    │  ANSI / TUI layer  │
+                    └─────────┬─────────┘
+                              │
+             ┌────────────────┼────────────────┐
+             ▼                ▼                ▼
+         FORESIGHT        CHRONOMANCER      DISPATCH
+      impact/context      time-aware fork   bounded task
+             └────────────────┼────────────────┘
+                              ▼
+                       DUAL-GATE VALIDATION
+                    repo-gate + termux-smoke
+                              │
+                              ▼
+                           RECORD
+```
+
+Launch directly on Termux:
+
+```bash
+python3 archwiz/termux_cockpit.py
+```
+
+Or enter it from the established ArchWiz TUI with **[20] Termux Hyper-Forge Cockpit**.
+
+The optional ARCHWIZ_THEME=tron mode supplies the Tron-inspired cyan/green terminal treatment. It is presentation-only: it does not change routing, authority, telemetry schemas, or promotion semantics.
+
+See [docs/ops/TERMUX-ARCHWIZ-HYPERFORGE.md](docs/ops/TERMUX-ARCHWIZ-HYPERFORGE.md).
+
+> **Evidence rule:** header images and cinematic panels are visual seeds, not live telemetry. Never present generated art as current branch/PR/CI state unless it was generated from a verified repository snapshot.
+
+
+<!-- partner-banner:start (edit docs/PARTNERS.md to add a partner; one badge per ACTIVE lane, rows of three — Operator lifted the four-badge cap 2026-09-20) -->
 <p align="center">
-  <a href="https://cellcog.ai/invitation/l19hdRGY9dTh"><img src="https://img.shields.io/badge/Powered_by-CellCog_AI_employees-2e7e7e?style=for-the-badge" alt="Powered by CellCog AI employees"></a>
-  <a href="https://cellcog.ai/invitation/l19hdRGY9dTh"><img src="https://img.shields.io/badge/500_bonus_credits-claim_via_invitation-f5b800?style=for-the-badge" alt="500 bonus credits via invitation"></a>
+  <a href="https://cellcog.ai/invitation/l19hdRGY9dTh"><img src="https://img.shields.io/badge/CellCog-500_bonus_credits-2e7e7e?style=for-the-badge" alt="CellCog AI employees — 500 bonus credits via invitation"></a>
+  <a href="https://manus.im/invitation/5MHU34UJRBOTVC6?utm_source=invitation&utm_medium=social&utm_campaign=system_share"><img src="https://img.shields.io/badge/Manus_AI-invitation-111111?style=for-the-badge" alt="Manus AI invitation"></a>
+  <a href="https://polsia.com/?ref=B5K7S8NL"><img src="https://img.shields.io/badge/Polsia-referral_bonus-7c3aed?style=for-the-badge" alt="Polsia referral bonus"></a>
+  <br>
+  <a href="https://grafana.com/auth/sign-up?refCode=gr8WEigykKjVGTV"><img src="https://img.shields.io/badge/Grafana_Cloud-referral_sign--up-F46800?style=for-the-badge&logo=grafana&logoColor=white" alt="Grafana Cloud referral sign-up"></a>
   <a href="https://termux-monorepo.vercel.app/"><img src="https://img.shields.io/badge/Preview_portal-Vercel_%28WIP%29-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Preview portal on Vercel (work in progress)"></a>
   <a href="https://timerloggedout-spec.github.io/"><img src="https://img.shields.io/badge/Landing_page-GitHub_Pages-1e6fd9?style=for-the-badge&logo=github&logoColor=white" alt="Landing page on GitHub Pages"></a>
 </p>
 
+[runnable](https://runable.cloud/?refer_code=MVGL8T)
+
 > **Powered by autonomous AI employees.** This project uses [CellCog](https://cellcog.ai/invitation/l19hdRGY9dTh) AI employees for continuous integration, PR review, and engineering operations. Standing AI workers run across persistent sessions with their own cloud environments, tool execution, and team channels. Sign up through the [community partner invitation](https://cellcog.ai/invitation/l19hdRGY9dTh) to receive **500 bonus credits** on your first purchase. See the [landing page](https://timerloggedout-spec.github.io/) and the [preview portal (WIP)](https://termux-monorepo.vercel.app/).
 >
-> Developer partners are registered in [`docs/PARTNERS.md`](docs/PARTNERS.md); each entry is a badge, one line, and a link, so new lanes (cloud hosting, dev tools, compute) slot in without redesigning this banner.
+> Ecosystem partners — referral, affiliate, and gifted-usage lanes — are registered in [`docs/PARTNERS.md`](docs/PARTNERS.md) (active lanes, pipeline, wallets). Partner links may be affiliate or referral links; new accounts may receive promotional credits, terms apply.
 <!-- partner-banner:end -->
 
 > **ATES attention surface (blocked on good asset).**  

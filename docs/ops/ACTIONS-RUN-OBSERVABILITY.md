@@ -4,7 +4,22 @@
 
 `she.ingest.actions` already provides the repository's observer-side normalization for `workflow_run` / job events into stable Incident records, with deterministic fingerprints and evidence references. The Self-Healing Engine roadmap treats this as P0.2 event ingestion; recovery, verification, learning, attestation, and promotion remain separately gated contracts.
 
-`Actions Run Watcher — incident notification` (`.github/workflows/actions-run-watcher.yml`) is the operational notification edge. It listens for completed runs with failure, timeout, cancellation, or action-required conclusions and creates or updates an open incident issue. It is intentionally observer/notification-only and does not bypass SHE authority or verification gates.
+`Actions Run Watcher — incident notification` (`.github/workflows/actions-run-watcher.yml`) is the operational notification edge. It listens for completed runs, but only creates or updates an incident for `failure`, `timed_out`, or `action_required` conclusions. Routine `cancelled` runs are observed without incident notification because concurrency cancellation is an expected operational state in this repository. The watcher is intentionally observer/notification-only and does not bypass SHE authority or verification gates.
+
+The watcher keeps its incident filter at the **step level** rather than making the whole job conditional. This keeps the observer job runnable for every completed event while limiting issue writes and incident receipts to the explicit incident conclusion set.
+
+## Conclusion policy
+
+| Conclusion | Watcher behavior | Rationale |
+|---|---|---|
+| `failure` | incident notification + structured receipt | actionable workflow failure |
+| `timed_out` | incident notification + structured receipt | actionable execution timeout |
+| `action_required` | incident notification + structured receipt | explicit human/action gate |
+| `cancelled` | observation only | routine concurrency cancellation is not itself a failure |
+| `success`, `skipped`, `neutral` | observation only | non-incident completion |
+| unfinished / missing | not emitted by `completed` trigger | outside this watcher contract |
+
+This distinction is specific to the notification edge. Other repository metrics may intentionally count cancellation as a separate operational signal; those metrics must not be conflated with incident notification.
 
 ## Evidence contract
 
@@ -23,6 +38,10 @@ Minimum useful run evidence is:
 - provider/model/manager/treatment identity when the run is an experiment;
 - timestamps and wait/retry/skip rationale;
 - outcome separate from operational conclusion.
+
+## GitHub semantics note
+
+A skipped GitHub Actions **job** is reported as `Success`; therefore the historical hypothesis that a job-level `if` on this watcher caused an otherwise empty workflow to become a failed run is not supported by GitHub's documented job-skipping semantics. The production fix here addresses the concrete notification-noise defect—treating routine `cancelled` completions as incidents—rather than relying on an unsupported zero-jobs-failed premise.
 
 ## Grafana / OTLP / Sentry implementation note
 

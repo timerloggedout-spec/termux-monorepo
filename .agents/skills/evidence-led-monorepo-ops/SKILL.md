@@ -1,43 +1,159 @@
 ---
 name: evidence-led-monorepo-ops
-description: Continuous evidence-led admin ops on timerloggedout-spec/termux-monorepo (and similar agentic monorepos). Triggers on priority matrix, master gates, SHE progress, Manus/provider RE, dirty PR triage, Actions hygiene, or when the operator says continue, BIUDL, maximize actions, or /continue. Use for live state pulls, dispositions, small-green extracts, adaptive WAIT, and iterative process improvement documented as skills. Load this skill in every admin session.
+description: Continuous evidence-led admin operations for timerloggedout-spec/termux-monorepo. Reconstruct current state, bind actions to immutable SHAs, preserve provenance, and never confuse activity with verified outcome.
 ---
 
-# Skill: evidence-led-monorepo-ops
+# Evidence-Led Monorepo Operations
 
-**Owner:** ArchW1z / Grok Administrator continuous admin on timerloggedout-spec/termux-monorepo.
+Load this skill for every repository-admin session.
 
-**Canonical paths (keep in sync):**
-- `.agents/skills/evidence-led-monorepo-ops/SKILL.md` ← **agent load path**
-- `docs/ops/skills/evidence-led-monorepo-ops/SKILL.md` ← human/docs mirror
-- `docs/ops/SKILLS-INVENTORY.md` ← full skill table + adaptive WAIT
+## Operating contract
 
-**Primary agent entry:** `CLAUDE.md`.
+RECON -> CLASSIFY -> PLAN -> ACT -> WAIT -> VALIDATE -> RE-FETCH -> RECORD -> REPEAT
 
-## Posture
+The goal is a verified repository outcome, not a green-looking activity stream.
 
-- Evidence over anecdote. Extract-only. Dual-gate before merge.
-- Extra-red ≠ dual-gate. Behind-master dual-gate green ≠ auto-merge.
-- Identity: `Agent-Identity: Grok (Administrator)`.
-- GitHub MCP write works as `timerloggedout-spec` even when local sandbox has no OPERATOR PAT / `gh`.
+## 1. Reconstruct current state
 
-## Current production anchors (2026-09-17T21:05Z)
+Before a consequential action, resolve:
 
-| Item | State |
-|------|-------|
-| Master HEAD | `f779b9a2fd550` (`ops(skills): record #581 landing` #582) |
-| Just landed | #576 Sentinel `4d532a9e5655`; #577 Bolt `92d704c0f8c8`; #579 `60a742a6d2f0`; #580 `96a04af3839d4`; #581 `d886560b8a546`; #582 record landing `f779b9a2fd550` |
-| Dual gates last verified | Master push dual-gate on `d886560`: smoke 35269615266 success; repo-gate 35269615325 success. #582 PR dual-gate: agentic termux smoke + hygiene + portability gate success. Parent `96a04af` dual-gate: smoke 35258129320 + repo-gate 35258129342 |
-| Observe (not merged) | #583 Grafana MCP boundary (hygiene green; extra-red mix). #584 MVT context-safe budget (dual-gate green; `validate-pull-request` extra-red FAIL ≠ gate) |
-| Extra-red HOLD | #549 ML (#175) dirty/behind base `6df9b66`; sibling #432 HOLD — extract later from live master |
-| HOLD mega | #523 #527 #545 #543 #455 #485 #483 #481 #474 #471 #466 #456 #453 |
-| Draft | #578 accounting/bidding schema pilot |
-| Comment-storm-skip | Gemini/Jules/ECC/`coderabbitai` `issue_comment` cancelled/success mix ≠ gate |
-| Extra-red non-gate | Vercel rate-limit historically on #545/#549 |
-| Non-gates | historical-eval / swe-reference-evaluation fail; mermaid docs-refresh; agent-jules-on-issues / actions-run-watcher startup_failure; OpenRouter free catalog sync fail |
+- live master SHA;
+- target branch/ref and immutable head SHA;
+- merge-base and ahead/behind relationship;
+- changed paths;
+- open PR/issue context;
+- current workflow runs, jobs, steps, artifacts, reviews, and comments relevant to the current SHA;
+- applicable skill, governance, lane, and proposal SSOTs.
 
-## Extract recipe
+Prefer exact file, symbol, PR, issue, label, scope, or permalink roots. Keep verified relationships separate from heuristic candidates.
 
-Create branch from current master. Do not force-update dirty branches. #549 remains dirty/behind — do not merge; extract later from `f779b9a2`.
+## 2. Evidence hierarchy
 
-BIUDL. Agent-Identity: Grok (Administrator)
+Prefer evidence in this order:
+
+1. current-SHA repository diff and contracts;
+2. current-SHA validation/test results;
+3. current-SHA workflow/job/step/artifact evidence;
+4. substantive current-SHA review findings;
+5. provenance and task/issue lineage;
+6. historical evidence from superseded SHAs;
+7. size, age, comment count, or activity volume as **context only** (not promote blockers).
+
+A workflow success proves that workflow result. It does not prove the requested task outcome.
+
+## 3. Evidence identity
+
+Every material observation should bind, where available, to repository/ref; immutable commit SHA; base SHA/merge-base; workflow/run/attempt/job/step IDs; artifact or receipt IDs; review/comment IDs; observed/event timestamps; agent/provider/model identity with confidence; experiment/cohort ID when applicable; status/outcome; provenance/confidence; and superseded predecessor.
+
+Never infer missing IDs, timestamps, counts, authorship, or causal relationships.
+
+## 4. State classification
+
+Keep these states distinct:
+
+PASS | FAIL | UNKNOWN | WARNING | SKIPPED | STALLED
+
+Apply them separately to dispatch, execution, provider availability, quota/capacity, correctness, tests, integration, review, deployment, and task outcome.
+
+A provider outage, rate limit, skipped reviewer, stale branch, and correctness failure are different observations.
+
+## 5. Adaptive WAIT integration
+
+During asynchronous work, use .agents/skills/adaptive-wait/SKILL.md.
+
+- Re-fetch immediately after material commits, reruns, steering, or newly reported failures.
+- Back off only when authoritative state is live and repeated observations show no material delta.
+- Retry only when the next attempt differs for an evidence-backed reason.
+- Continue disjoint work while useful evidence is accumulating.
+- Stop on authoritative terminal state, stagnation, or a missing authority/input.
+- Bind conclusions to the SHA that produced the evidence.
+
+HOLD and OBSERVE are not idle parking states. WAIT collects evidence until promote conditions hold, then promote.
+
+## 6. Change discipline
+
+For repository mutations:
+
+1. identify a change that advances the requested outcome (slice **or** mega — both valid);
+2. re-read the current file/ref before writing;
+3. make the change;
+4. run the smallest relevant deterministic validation;
+5. commit with a specific message;
+6. re-fetch the resulting SHA and checks;
+7. preserve failed attempts and superseded evidence.
+
+Never force-push, reset, delete evidence, or silently overwrite another active state.
+
+## 7. Promotion
+
+Promotion requires current-SHA evidence for base alignment/reconciliation; relevant tests and invariants; review/finding disposition; integration/task outcome; and repository-defined dual gates.
+
+COMMITTED, EXECUTED, VALIDATED, and PROMOTED are independent states.
+
+Do not promote because a branch is old, a PR is green on an older SHA, a reviewer is silent, or a provider returned HTTP 200.
+
+Repository dual-gate: hygiene/portability + agentic termux smoke. Vercel is non-gate (#772). Copilot / CodeRabbit / Devin are advisory only.
+
+**Mega-merge policy (Operator 2026-09-24):** Mega-merge is **allowed** when dual-gate SUCCESS + mergeable on the candidate SHA. Collaborators hold large context windows. CodeRabbit’s ~100-file limit is **advisory review capacity**, not a hard promote ban. File count alone must not refuse a dual-gate-green PR. `mergeable_state=dirty` or merge conflict remains a hard block until rebased.
+
+## 8. Historical continuity
+
+Historical collection is bounded and resumable. Record page/window bounds, continuation state, collection timestamp, source/ref, parser/API failures, exclusions, and coverage. Never call a partial page complete history.
+
+A failed or superseded attempt remains evidence. Correct forward with a successor change.
+
+## 9. Write boundaries
+
+Read-only reconnaissance may inspect repository/GitHub state. Mutating operations require the applicable explicit authorization and governance tier.
+
+Never persist secrets, authorization headers, tokens, browser/session stores, private discussion bodies, or generated credentials in the repository. Issue #184 is names-only.
+
+## 10. Closeout receipt
+
+Use a compact receipt shape:
+
+    operation: <bounded operation>
+    repo: <owner/name>
+    base_sha: <sha>
+    head_sha: <sha>
+    observed_at: <UTC>
+    evidence:
+      checks: [<ids>]
+      runs: [<ids>]
+      reviews: [<ids>]
+      artifacts: [<ids>]
+    state: PASS|FAIL|UNKNOWN|WARNING|SKIPPED|STALLED
+    outcome: PASS|FAIL|UNKNOWN
+    provenance: <source/actor confidence>
+    decision: KEEP|RETRY|STEER|HOLD|PROMOTE|STOP
+    reason: <evidence-backed reason>
+    remaining: <unproven work>
+
+Receipts are projections; the longitudinal GitHub/evidence corpus remains the source of historical truth.
+
+## Related operational skills
+
+- adaptive-wait — asynchronous control and cadence;
+- adaptive-feedback-cycle — continuous feedback and historical evaluation;
+- review-loop — review ingestion and repeated validation;
+- context-relationship-graph — metadata-only relationship evidence;
+- production-reconciliation — ref/base reconciliation;
+- action-effectiveness-ledger — action-to-outcome measurement;
+- evidence-envelope / evidence-provenance — normalized provenance;
+- workflow-orchestration — modular Actions coordination;
+- evolutionary-replay — bounded replay of realized discovery history.
+
+This skill owns repository-admin evidence discipline; it does not replace those specialist lanes.
+
+## Session 2026-09-28 17:15 PDT
+
+- Live master tip: `8daeeb72d71ecdefa2f9cde6698426131117e474` (catalog/mmdc bot refresh after #904).
+- Dual-gate PASS on that SHA: repo-gate 36497249095 + termux-smoke 36497249115.
+- #904 squash `4efef68d` dual-gate PASS on master: 36497147812 / 36497147650.
+- Candidate evidence for #904 pre-merge: repo-gate 36497057302 + termux-smoke 36497057157 on `4df79c30`.
+- Tunnel scheduled fail 36496185804 / 109176191755 classified empty-URL skip, closed by #904.
+- Instant-fail path-unfiltered workflows on feature branches are noise.
+- #903 HOLD (empty-diff / ledger). #899 rebase in flight. Do not merge stale #892/#894.
+- Do not pulse #175. #184 names-only. Vercel combined-status is #772 non-gate.
+
+Agent-Identity: Grok (Administrator)

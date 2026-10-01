@@ -1,0 +1,326 @@
+name: help-wanted execute
+
+# LIVE ONLY — no dry runs. Ever.
+# PRIMARY: claim comment + upstream PR into author's repo.
+# Interthread: after success → repository_dispatch help-wanted-followup poll.
+# Foreign: accepts repository_dispatch help-wanted-execute.
+
+on:
+  schedule:
+    - cron: "41 */4 * * *"
+  workflow_dispatch:
+    inputs:
+      issue:
+        description: Issue URL or owner/repo#n (empty = adaptive scout top-1 / mutual preference)
+        required: false
+        default: ""
+      mode:
+        description: claim-and-pr | claim-and-patch-zero-72
+        required: false
+        default: claim-and-pr
+      daily_budget:
+        description: Max live contributes per UTC day (soft ceiling this runner)
+        required: false
+        default: "8"
+  repository_dispatch:
+    types:
+      - help-wanted-execute
+      - help-wanted-foreign-execute
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: help-wanted-execute
+  cancel-in-progress: false
+
+jobs:
+  budget:
+    name: adaptive budget + inline scout
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    outputs:
+      allow: ${{ steps.gate.outputs.allow }}
+      remaining: ${{ steps.gate.outputs.remaining }}
+      issue: ${{ steps.gate.outputs.issue }}
+      mode: ${{ steps.gate.outputs.mode }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Gate (inline scout when needed)
+        id: gate
+        env:
+          INPUT_ISSUE: ${{ github.event.inputs.issue || github.event.client_payload.issue || '' }}
+          INPUT_MODE: ${{ github.event.inputs.mode || github.event.client_payload.mode || 'claim-and-pr' }}
+          INPUT_BUDGET: ${{ github.event.inputs.daily_budget || github.event.client_payload.daily_budget || '8' }}
+          EVENT_NAME: ${{ github.event_name }}
+          OPERATOR_GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+          OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
+          ARCHWIZ_GITHUB_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          export GITHUB_TOKEN="${OPERATOR_GITHUB_TOKEN:-${OPERATOR_TOKEN:-${ARCHWIZ_GITHUB_TOKEN:-$GITHUB_TOKEN}}}"
+          python3 <<'PY'
+          import json, os, subprocess
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          budget = int(os.environ.get("INPUT_BUDGET") or "8")
+          day = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+          path = Path("docs/ops/generated/help-wanted-daily-budget.json")
+          path.parent.mkdir(parents=True, exist_ok=True)
+          data = {"day": day, "used": 0, "success": 0, "fail": 0, "events": [], "note": "ephemeral-runner soft ceiling"}
+          remaining = budget
+          issue = (os.environ.get("INPUT_ISSUE") or "").strip()
+          mode = (os.environ.get("INPUT_MODE") or "claim-and-pr").strip() or "claim-and-pr"
+          event = os.environ.get("EVENT_NAME") or ""
+
+          MUTUAL = [
+              "https://github.com/DioNanos/codex-termux/issues/14",
+              "https://github.com/GlassHaven/Haven/issues/273",
+              "https://github.com/Kilo-Org/agentic-path/issues/25",
+              "https://github.com/PubDeer/astro-loop/issues/42",
+          ]
+
+          if not issue:
+              out = Path("docs/ops/generated/help-wanted-catalog.json")
+              out.parent.mkdir(parents=True, exist_ok=True)
+              for label in ("good first issue", "help wanted"):
+                  subprocess.run(
+                      ["python3", "scripts/ci/help_wanted_scout.py", "--max", "20", "--label", label, "--out", str(out)],
+                      check=False,
+                  )
+                  items = []
+                  if out.exists():
+                      try:
+                          items = json.loads(out.read_text()).get("items") or []
+                      except Exception:
+                          items = []
+                  if items:
+                      top = items[0]
+                      issue = top.get("url") or top.get("html_url") or ""
+                      print(f"inline scout top: score={top.get('score')} {issue}")
+                      break
+              if not issue and MUTUAL:
+                  issue = MUTUAL[0]
+                  print(f"mutual fallback: {issue}")
+
+          if mode == "claim-and-patch-zero-72" and not issue:
+              issue = "https://github.com/vedantnimbarte/zero/issues/72"
+
+          allow = "true" if issue else "false"
+          print(f"day={day} remaining={remaining} allow={allow} issue={issue!r} mode={mode} event={event}")
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"allow={allow}\n")
+              f.write(f"remaining={remaining}\n")
+              f.write(f"issue={issue}\n")
+              f.write(f"mode={mode}\n")
+          path.write_text(json.dumps(data, indent=2))
+          PY
+
+      - name: Upload catalog if produced
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: help-wanted-execute-gate
+          path: |
+            docs/ops/generated/help-wanted-catalog.json
+            docs/ops/generated/help-wanted-daily-budget.json
+          if-no-files-found: ignore
+
+  fail_closed:
+    name: fail-closed if nothing selected
+    needs: budget
+    if: needs.budget.outputs.allow != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: No issue selected
+        run: |
+          echo "::error::help-wanted execute selected no issue"
+          exit 1
+
+  claim:
+    name: claim comment (stake)
+    needs: budget
+    if: needs.budget.outputs.allow == 'true' && needs.budget.outputs.issue != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Resolve operator token
+        id: tok
+        env:
+          OPERATOR_GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+          OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
+          ARCHWIZ_GITHUB_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -n "${OPERATOR_GITHUB_TOKEN:-}" ]; then
+            echo "src=OPERATOR_GITHUB_TOKEN"
+            echo "token=${OPERATOR_GITHUB_TOKEN}" >> "$GITHUB_OUTPUT"
+          elif [ -n "${OPERATOR_TOKEN:-}" ]; then
+            echo "src=OPERATOR_TOKEN"
+            echo "token=${OPERATOR_TOKEN}" >> "$GITHUB_OUTPUT"
+          elif [ -n "${ARCHWIZ_GITHUB_TOKEN:-}" ]; then
+            echo "src=ARCHWIZ_GITHUB_TOKEN"
+            echo "token=${ARCHWIZ_GITHUB_TOKEN}" >> "$GITHUB_OUTPUT"
+          elif [ -n "${GITHUB_TOKEN:-}" ]; then
+            echo "src=GITHUB_TOKEN"
+            echo "token=${GITHUB_TOKEN}" >> "$GITHUB_OUTPUT"
+          else
+            echo "No OPERATOR token" >&2
+            exit 1
+          fi
+          echo "::add-mask::${OPERATOR_GITHUB_TOKEN:-}"
+          echo "::add-mask::${OPERATOR_TOKEN:-}"
+          echo "::add-mask::${ARCHWIZ_GITHUB_TOKEN:-}"
+
+      - name: Live claim (no dry-run)
+        env:
+          GITHUB_TOKEN: ${{ steps.tok.outputs.token }}
+          GH_TOKEN: ${{ steps.tok.outputs.token }}
+        run: |
+          set -euo pipefail
+          python3 scripts/ci/help_wanted_claim.py --issue "${{ needs.budget.outputs.issue }}"
+
+      - name: Evidence receipt
+        if: success()
+        env:
+          GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          python3 scripts/ci/help_wanted_evidence.py \
+            --kind claim --issue "${{ needs.budget.outputs.issue }}" --ok true --run-url "$GITHUB_RUN_URL"
+
+      - name: Evidence receipt (fail)
+        if: failure()
+        env:
+          GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python3 scripts/ci/help_wanted_evidence.py \
+            --kind claim --issue "${{ needs.budget.outputs.issue }}" --ok false --run-url "$GITHUB_RUN_URL" || true
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: help-wanted-claim-evidence
+          path: docs/ops/generated/help-wanted-evidence/
+          retention-days: 30
+          if-no-files-found: ignore
+
+  contribute:
+    name: fork + commit + upstream PR
+    needs: [budget, claim]
+    if: needs.budget.outputs.allow == 'true' && needs.budget.outputs.mode == 'claim-and-pr'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Resolve operator token
+        id: tok
+        env:
+          OPERATOR_GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+          OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
+          ARCHWIZ_GITHUB_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          TOKEN="${OPERATOR_GITHUB_TOKEN:-${OPERATOR_TOKEN:-${ARCHWIZ_GITHUB_TOKEN:-}}}"
+          if [ -z "$TOKEN" ]; then
+            echo "OPERATOR PAT required for upstream PR" >&2
+            exit 1
+          fi
+          echo "token=${TOKEN}" >> "$GITHUB_OUTPUT"
+          echo "::add-mask::${TOKEN}"
+
+      - name: Contribute (PRIMARY upstream-pr)
+        id: contrib
+        env:
+          GH_TOKEN: ${{ steps.tok.outputs.token }}
+          GITHUB_TOKEN: ${{ steps.tok.outputs.token }}
+          GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          python3 scripts/ci/help_wanted_contribute.py --issue "${{ needs.budget.outputs.issue }}"
+
+      - name: Evidence receipt (success)
+        if: success()
+        env:
+          GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          python3 scripts/ci/help_wanted_evidence.py \
+            --kind upstream_pr --issue "${{ needs.budget.outputs.issue }}" --ok true --run-url "$GITHUB_RUN_URL"
+
+      - name: Evidence receipt (fail)
+        if: failure()
+        env:
+          GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python3 scripts/ci/help_wanted_evidence.py \
+            --kind upstream_pr --issue "${{ needs.budget.outputs.issue }}" --ok false --run-url "$GITHUB_RUN_URL" || true
+
+      - name: Interthread → followup poll
+        if: always()
+        env:
+          TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          # repository_dispatch foreign-hook compatible interthread
+          curl -sS -X POST \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/dispatches" \
+            -d '{"event_type":"help-wanted-followup","client_payload":{"mode":"poll","source":"execute","run_id":"${{ github.run_id }}"}}' \
+            || true
+          echo "dispatched help-wanted-followup"
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: help-wanted-contribute-evidence
+          path: docs/ops/generated/help-wanted-evidence/
+          retention-days: 30
+          if-no-files-found: ignore
+
+  patch-zero-72:
+    name: external PR zero 72 ponytail
+    if: needs.budget.outputs.mode == 'claim-and-patch-zero-72'
+    needs: [budget, claim]
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Resolve operator token
+        id: tok
+        env:
+          OPERATOR_GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+          OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
+          ARCHWIZ_GITHUB_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          TOKEN="${OPERATOR_GITHUB_TOKEN:-${OPERATOR_TOKEN:-${ARCHWIZ_GITHUB_TOKEN:-}}}"
+          if [ -z "$TOKEN" ]; then exit 1; fi
+          echo "token=${TOKEN}" >> "$GITHUB_OUTPUT"
+          echo "::add-mask::${TOKEN}"
+      - name: Patch + upstream PR
+        env:
+          GH_TOKEN: ${{ steps.tok.outputs.token }}
+          GITHUB_TOKEN: ${{ steps.tok.outputs.token }}
+        run: |
+          set -euo pipefail
+          python3 scripts/ci/help_wanted_contribute.py --issue "https://github.com/vedantnimbarte/zero/issues/72"

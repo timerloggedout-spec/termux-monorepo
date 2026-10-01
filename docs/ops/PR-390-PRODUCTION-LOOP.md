@@ -64,12 +64,17 @@ The loop stops only when:
 
 ## Related automation
 
+### Implemented and present on `master` today
+
 - `.github/workflows/pr-production-ledger.yml` — read-only SHA/timestamp/count ledger.
-- `.github/workflows/pr390-master-realign.yml` — non-rewriting `master` convergence for PR #390.
-- `.github/workflows/master-deletion-recovery.yml` — recovery of authoritative source/docs/tests without blind telemetry regeneration.
 - `.github/workflows/agent-continuous-ops.yml` — unattended agent progression and debounce/loop controls.
 - `.github/workflows/agent-mvt-experiment.yml` — dynamic branch/commit MVT comparison and validation.
 - `.github/workflows/agent-feedback-linear-sync.yml` — review feedback projection into Linear.
+
+### Planned, not yet implemented
+
+- `pr390-master-realign.yml` — intended non-rewriting `master` convergence for PR #390; never merged to `master`, no such workflow file currently exists in the repository.
+- `master-deletion-recovery.yml` — intended recovery of authoritative source/docs/tests without blind telemetry regeneration; never merged to `master`, no such workflow file currently exists in the repository.
 
 ## Provenance anchors
 

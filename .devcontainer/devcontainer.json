@@ -12,7 +12,7 @@
     "ghcr.io/devcontainers/features/rust:1": {},
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
-  "postCreateCommand": "bash -c 'export ARCHWIZ_ENV=codespace; export DEBIAN_FRONTEND=noninteractive; sudo apt-get update -qq && sudo apt-get install -y -qq jq ripgrep fd-find shellcheck 2>/dev/null || true; bash setup.sh || true; git submodule update --init --recursive --depth 1 || true; echo \"[codespace] production tools ready\"'",
+  "postCreateCommand": "bash -c 'export ARCHWIZ_ENV=codespace; export DEBIAN_FRONTEND=noninteractive; sudo apt-get update -qq && sudo apt-get install -y -qq jq ripgrep fd-find shellcheck 2>/dev/null || true; bash setup.sh || true; git submodule update --init --recursive --depth 1 || true; echo \"[codespace] production tools ready\"; echo \"[skills] role: Admin / Grok Administrator -- look up the current skill set in docs/ops/SKILLS-INVENTORY.md (Role load matrix table, do not hardcode a SHA); as of last check: load evidence-led-monorepo-ops + adaptive-wait first, then termux-monorepo-agentic-governance + review-loop\"'",
   "postStartCommand": "bash -c 'echo \"[codespace] agent lane ready: $(date -u +%Y-%m-%dT%H:%M:%SZ) ARCHWIZ_ENV=$ARCHWIZ_ENV\"'",
   "customizations": {
     "vscode": {

@@ -184,7 +184,7 @@ def sync_project(plan: dict[str, Any], report: dict[str, Any], repo: str, *, app
     return {"apply": apply, "project_url": project["url"], "operations": operations}
 
 
-def dispatch_claim(plan: dict[str, Any], report: dict[str, Any], repo: str, phase_id: str, issue_number: int, *, apply: bool) -> dict[str, Any]:
+def dispatch_claim(plan: dict[str, Any], report: dict[str, Any], repo: str, phase_id: str, issue_number: int, *, apply: bool, route_specialist: str | None = None, route_policy: str | None = None) -> dict[str, Any]:
     """Create one idempotent issue-backed phase claim after evaluating readiness."""
     evaluation = next((entry for entry in report["evaluations"] if entry["phase_id"] == phase_id), None)
     if evaluation is None:
@@ -192,6 +192,14 @@ def dispatch_claim(plan: dict[str, Any], report: dict[str, Any], repo: str, phas
     if evaluation["state"] != "ready":
         raise CommandError(f"phase {phase_id} is {evaluation['state']}: {evaluation['reason']}")
     phase = _phase_by_id(plan, phase_id)
+    if apply and (not route_specialist or not route_policy):
+        raise CommandError("applied dispatch requires manager/router route provenance")
+    approved_agents = plan.get("policy", {}).get("dispatch_agents", [])
+    if route_specialist is not None and route_specialist not in approved_agents:
+        raise CommandError(f"route specialist {route_specialist} is not approved by the dependency-phase policy")
+    wave = evaluation.get("wave")
+    if not isinstance(wave, int) or wave < 0:
+        raise CommandError(f"phase {phase_id} has no valid deterministic admission wave")
     canonical_issues = [candidate for candidate in issues(repo) if phase_issue_matches(plan, phase, candidate)]
     if len(canonical_issues) != 1:
         raise CommandError(f"expected exactly one canonical issue for {phase_id}, found {len(canonical_issues)}")
@@ -208,9 +216,11 @@ def dispatch_claim(plan: dict[str, Any], report: dict[str, Any], repo: str, phas
         f"Dependency phase `{phase_id}` is claimed against plan `{plan['plan_id']}`.",
         f"Plan hash: `{report['plan_sha256']}`.",
         "The dispatcher revalidated prerequisites, approval evidence, current PR state, and project evidence before recording this claim.",
+        f"Manager routing policy: `{route_policy or 'unspecified'}`.",
+        f"Selected specialist: `{route_specialist or 'unspecified'}`.",
     ])
     result = post_issue_comment(repo, canonical_number, body, apply=apply)
-    return {"phase_id": phase_id, "claimed": bool(apply), "idempotency_key": key, **result}
+    return {"phase_id": phase_id, "claimed": bool(apply), "wave": wave, "idempotency_key": key, **result}
 
 
 def _parse_arguments(argv: list[str]) -> argparse.Namespace:
@@ -233,6 +243,8 @@ def _parse_arguments(argv: list[str]) -> argparse.Namespace:
     dispatch = subparsers.add_parser("dispatch", help="dry-run or record one idempotent phase claim")
     dispatch.add_argument("--phase-id", required=True)
     dispatch.add_argument("--issue", required=True, type=int)
+    dispatch.add_argument("--route-specialist", help="manager/router-selected specialist")
+    dispatch.add_argument("--route-policy", help="manager/router policy identifier")
     return parser.parse_args(argv)
 
 
@@ -269,7 +281,7 @@ def main(argv: list[str] | None = None) -> int:
         if arguments.command == "dispatch":
             if not arguments.live:
                 raise CommandError("dispatch requires --live so readiness is revalidated before claiming")
-            print(json.dumps(dispatch_claim(plan, report, arguments.repo, arguments.phase_id, arguments.issue, apply=arguments.apply), indent=2))
+            print(json.dumps(dispatch_claim(plan, report, arguments.repo, arguments.phase_id, arguments.issue, apply=arguments.apply, route_specialist=arguments.route_specialist, route_policy=arguments.route_policy), indent=2))
             return 0
         raise CommandError(f"unknown command: {arguments.command}")
     except (PlanValidationError, GitHubAdapterError, CommandError, OSError, json.JSONDecodeError) as error:

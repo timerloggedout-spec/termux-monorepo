@@ -3,7 +3,7 @@
 **Auditor:** Tanka collaborator session (parallel to the primary author/agent working PR #523)
 **Scope requested:** Independently validate Phases A–E on current head, focusing on Phase B (emit) and Phase C (correlate) concrete implementation gaps; audit `context relationship historical backfill` run history for admission / queue / execution / effect / pagination stalls; preserve evidence identity (run_id + attempt + head_sha + ref + observed state); no merge/force-push/delete/close/credential rotation; no weakening of quality gates.
 
-**Evidence pinning note:** PR #523 received live commits from another contributor/agent while this audit was in progress — head moved from `25bff014c37210289fc297903add16c09ef859c6` to `bb8586f28f943f3f974872388573edc7d873b91f` (43 → 44 commits) during the review window. Every file-level finding below was re-verified against the blob SHA at the newer head; all files discussed were byte-identical across both commits except for the addition of `.github/workflows/historical-backfill-promotion-gate.yml`, which is reviewed separately in Finding 6. All findings are therefore valid as of head `bb8586f28f943f3f974872388573edc7d873b91f` on ref `ops/automate-historical-backfill-ates-she`.
+**Evidence pinning note:** PR #523 received live commits from another contributor/agent while this audit was in progress — head moved from `25bff014c37210289fc297903add16c09ef859c6` to `bb8586f28f943f3f974872388573edc7d873b91f` (43 → 44 commits) during the review window. Every file-level finding below was re-verified against the blob SHA at the newer head; all files discussed were byte-identical across both commits except for the addition of `historical-backfill-promotion-gate.yml` (PR-branch-only workflow, never merged to `master` — see Finding 6), which is reviewed separately in Finding 6. All findings are therefore valid as of head `bb8586f28f943f3f974872388573edc7d873b91f` on ref `ops/automate-historical-backfill-ates-she`.
 
 ---
 
@@ -80,7 +80,7 @@ Applying the WAIT → WATCH → VALIDATE → RE-FETCH → COMPARE → CLASSIFY �
 
 ## Finding 6 — New commit added during this audit: `historical-backfill-promotion-gate.yml` — verified sound, not a gap
 
-While this audit was in progress, the PR branch gained one new file: `.github/workflows/historical-backfill-promotion-gate.yml`. It runs on `pull_request` (`opened, synchronize, reopened`) and reads `master-staging`'s manifest directly, hard-failing the PR check if `next_start_page` is not `null`:
+While this audit was in progress, the PR branch gained one new file: `historical-backfill-promotion-gate.yml` (added on the PR branch; never merged to `master`, so this file does not exist under `.github/workflows/` on `master` today). It runs on `pull_request` (`opened, synchronize, reopened`) and reads `master-staging`'s manifest directly, hard-failing the PR check if `next_start_page` is not `null`:
 
 ```
 if nxt is not None:

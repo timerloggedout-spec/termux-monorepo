@@ -1,0 +1,20 @@
+{
+  "sha": "8d36f149214f4a147932188bc424e7c29b8de444",
+  "checks": [
+    {
+      "name": "repo gate",
+      "conclusion": "success",
+      "run_id": 36268169372
+    },
+    {
+      "name": "termux smoke",
+      "conclusion": "success",
+      "run_id": 36268169447
+    },
+    {
+      "name": "Vercel",
+      "conclusion": "failure",
+      "note": "non-gate #772"
+    }
+  ]
+}

@@ -53,8 +53,8 @@ def test_branch():
     sid = create_session(token)
     try:
         stream_completion(token, "Branch test", sid, auto_retry=False)
-    except:
-        pass
+    except Exception as e:
+        log(False, "Stream completion (branch setup)", str(e)[:100])
     time.sleep(1)
     messages = get_history(token, sid)
     assistants = [m for m in messages if m.get("role", "").upper() == "ASSISTANT"]

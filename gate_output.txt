@@ -1,0 +1,9 @@
+repo gate — 5398 tracked paths
+  base origin/master — 1094 changed path(s)
+  hard checks: py=302, sh=9, json=269, symlinks=0, scanned=1053
+  counters device_absolute_symlinks=34, other_absolute_symlinks=0, paths_with_spaces=452, tracked_backup_files=120, tracked_browser_credential_stores=115, tracked_browser_profile_files=607, tracked_session_artifacts=423
+FAIL  no-secrets: data/briefing/briefings/2026-09-30.json:103: possible openai/anthropic-style key — rotate it, then remove it from the diff
+FAIL  no-secrets: data/briefing/radar.jsonl:10: possible openai/anthropic-style key — rotate it, then remove it from the diff
+FAIL  no-secrets: docs/briefing/CONTRIBUTOR-INTEGRATION-2026-09-30.md:82: possible openai/anthropic-style key — rotate it, then remove it from the diff
+
+3 failure(s)

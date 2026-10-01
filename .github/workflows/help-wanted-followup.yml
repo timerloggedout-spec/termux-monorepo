@@ -1,0 +1,58 @@
+name: help-wanted-followup
+
+# Dynamic follow-up on FOREIGN open PRs we authored:
+#   - CHANGES_REQUESTED after last marker
+#   - Maintainer comments/reviews after last marker (re-engage, cooldown)
+#   - Stale idle tributes + CONTRIBUTING.md recon + URL notes
+# See docs/ops/HELP-WANTED-LANE.md + HELP-WANTED-TRIBUTE.md
+
+on:
+  schedule:
+    - cron: "17 */2 * * *"
+  workflow_dispatch:
+  repository_dispatch:
+    types:
+      - help-wanted-followup
+      - help-wanted-foreign
+      - help-wanted-changes-requested
+
+concurrency:
+  group: help-wanted-followup
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  poll:
+    name: poll + re-engage foreign PRs
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Follow up (dynamic)
+        env:
+          OPERATOR_GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+          OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
+          ARCHWIZ_GITHUB_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HELP_WANTED_REENGAGE_HOURS: "18"
+          HELP_WANTED_STALE_IDLE_HOURS: "72"
+        run: python3 scripts/ci/help_wanted_followup.py
+
+      - name: Commit evidence if any
+        env:
+          TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          if git status --porcelain docs/ops/generated/help-wanted-evidence 2>/dev/null | grep -q .; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add docs/ops/generated/help-wanted-evidence || true
+            git commit -m "ops(help-wanted): follow-up evidence $(date -u +%Y-%m-%dT%H:%MZ)" || true
+            git push "https://x-access-token:${TOKEN}@github.com/${{ github.repository }}.git" HEAD:master || true
+          else
+            echo "no evidence delta"
+          fi

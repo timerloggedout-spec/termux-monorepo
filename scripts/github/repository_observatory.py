@@ -19,7 +19,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable
 
-API = "https://api.github.com"
+class GitHubHttpError(RuntimeError):
+    def __init__(self, code: int, path: str):
+        super().__init__(f"HTTP {code} for {path}")
+        self.code = code
+        self.path = path
 UA = "termux-monorepo-repository-observatory/2.1"
 SCHEMA_VERSION = "1.1"
 MAX_PAGES = 100
@@ -43,11 +47,12 @@ def get_json(path: str, token: str, params: dict[str, Any] | None = None) -> Any
             with urllib.request.urlopen(req, timeout=30) as response:  # nosec B310: fixed API host
                 return json.loads(response.read().decode("utf-8"))
         except urllib.error.HTTPError as exc:
-            if exc.code not in {429, 500, 502, 503, 504} or attempt == RETRIES - 1:
-                raise
-            retry_after = exc.headers.get("Retry-After")
-            delay = min(int(retry_after), 60) if retry_after and retry_after.isdigit() else 2**attempt
-            time.sleep(delay)
+            if exc.code in {429, 500, 502, 503, 504} and attempt != RETRIES - 1:
+                retry_after = exc.headers.get("Retry-After")
+                delay = min(int(retry_after), 60) if retry_after and retry_after.isdigit() else 2**attempt
+                time.sleep(delay)
+                continue
+            raise GitHubHttpError(exc.code, path) from exc
         except (urllib.error.URLError, TimeoutError):
             if attempt == RETRIES - 1:
                 raise
@@ -218,6 +223,32 @@ def build_payload(owner: str, login: str, records: list[dict[str, Any]], observe
     }
 
 
+def resolve_login(fetch: Callable[..., Any], token: str, owner: str) -> str:
+    """Bind the observatory actor.
+
+    Actions GITHUB_TOKEN cannot call /user (403). Fall back to the declared
+    owner profile so the scheduled index still runs.
+    """
+    try:
+        me = fetch("/user", token)
+        login = me.get("login") if isinstance(me, dict) else None
+        if login:
+            if login != owner:
+                raise RuntimeError(f"authenticated GitHub user is {login!r}, expected {owner!r}")
+            return login
+    except GitHubHttpError as exc:
+        if exc.code not in {401, 403, 404}:
+            raise
+    except urllib.error.HTTPError as exc:
+        if exc.code not in {401, 403, 404}:
+            raise
+    profile = fetch(f"/users/{urllib.parse.quote(owner)}", token)
+    login = profile.get("login") if isinstance(profile, dict) else None
+    if login != owner:
+        raise RuntimeError(f"could not bind observatory actor to {owner!r} (got {login!r})")
+    return login
+
+
 def main(argv: list[str] | None = None, fetch: Callable[..., Any] = get_json) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--owner", required=True); parser.add_argument("--output", type=Path, required=True); parser.add_argument("--markdown", type=Path, required=True)
@@ -225,8 +256,8 @@ def main(argv: list[str] | None = None, fetch: Callable[..., Any] = get_json) ->
     args = parser.parse_args(argv)
     token = os.environ.get(args.token_env) or os.environ.get("GITHUB_TOKEN")
     if not token: print(f"missing {args.token_env} or GITHUB_TOKEN", file=sys.stderr); return 2
-    me = fetch("/user", token); login = me.get("login") if isinstance(me, dict) else None
-    if login != args.owner: raise RuntimeError(f"authenticated GitHub user is {login!r}, expected {args.owner!r}")
+    login = resolve_login(fetch, token, args.owner)
+    owner_path = urllib.parse.quote(args.owner)
     def pages(path: str, params: dict[str, Any]) -> list[dict[str, Any]]:
         out: list[dict[str, Any]] = []
         for page in range(1, MAX_PAGES + 1):
@@ -235,8 +266,8 @@ def main(argv: list[str] | None = None, fetch: Callable[..., Any] = get_json) ->
             out.extend(x for x in payload if isinstance(x, dict))
             if len(payload) < 100: return out
         raise RuntimeError(f"pagination exceeded {MAX_PAGES} pages for {path}")
-    owned = [r for r in pages("/user/repos", {"affiliation": "owner", "sort": "updated", "direction": "desc"}) if r.get("owner", {}).get("login") == args.owner]
-    starred = pages("/user/starred", {"sort": "updated", "direction": "desc"})
+    owned = [r for r in pages(f"/users/{owner_path}/repos", {"type": "owner", "sort": "updated", "direction": "desc"}) if r.get("owner", {}).get("login") == args.owner]
+    starred = pages(f"/users/{owner_path}/starred", {"sort": "updated", "direction": "desc"})
     records = build_records(owned, starred)
     previous: dict[str, Any] = {}
     if args.output.exists():

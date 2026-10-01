@@ -32,6 +32,9 @@ if ! hs_tunnel_alive; then
   sleep 5
 fi
 hs_tunnel_alive && echo "  tunnel: up" || echo "  tunnel: DOWN"
+gh codespace ports visibility 8888:public -c "$_cs" >/dev/null 2>&1
+sleep 1
+_url=$(gh codespace ports -c "$_cs" --json browseUrl,sourcePort 2>/dev/null | python3 -c "import json,sys\ntry:\n  for p in json.load(sys.stdin):\n    if p.get(\"sourcePort\")==8888: print(p[\"browseUrl\"]); break\nexcept: pass")\n[ -n "$_url" ] && echo "$_url" > "$HOME/.deepcli/cs-hindsight-url.txt"
 
 # 4 · Health
 for _i in $(seq 1 8); do
@@ -40,6 +43,7 @@ for _i in $(seq 1 8); do
   [ "$_h" = "200" ] && break
   sleep 6
 done
+~/.local/bin/hs-replay 2>&1 | tail -3
 if [ "$_h" = "200" ]; then
   hs_log up ok "$_cs"
   echo "  ✅ hs-up complete"

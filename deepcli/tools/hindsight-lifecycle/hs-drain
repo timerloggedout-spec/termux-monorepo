@@ -1,0 +1,59 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# hs-drain — export codespace bank via PUBLIC URL, save zip, commit manifest.
+# Public URL auth = Bearer $HINDSIGHT_API_KEY (injected from codespace env).
+set -u
+_url=$(cat "$HOME/.deepcli/cs-hindsight-url.txt" 2>/dev/null)
+[ -z "$_url" ] && { echo "  no URL cached; run hs-up"; exit 1; }
+
+_cs=$(cat "$HOME/.deepcli/cs-hindsight-name.txt" 2>/dev/null)
+_key=$(gh codespace ssh -c "$_cs" -- 'bash -lc "printenv HINDSIGHT_API_KEY" 2>/dev/null' 2>/dev/null | tail -1)
+[ -z "$_key" ] && { echo "  no bearer in codespace"; exit 1; }
+
+_bk="$HOME/.deepcli/backups"
+_stamp=$(date -u +%Y%m%dT%H%M%SZ)
+_zip="$_bk/bank-drain-$_stamp.zip"
+_tmp="${TMPDIR:-${PREFIX:-/data/data/com.termux/files/usr}/tmp}"
+
+# 1 · trigger export
+_code=$(curl -sS -o "$_tmp/drain-op.json" -w '%{http_code}' --max-time 20 \
+  -X POST "$_url/v1/default/banks/deepagent::termux-monorepo/transfer/export" \
+  -H "Authorization: Bearer $_key" -H "Content-Type: application/json" \
+  -d '{"include_data":true,"include_bank_config":true,"include_history":true}' 2>/dev/null)
+[ "$_code" != "200" ] && [ "$_code" != "201" ] && { echo "  export trigger HTTP $_code"; head -c 200 "$_tmp/drain-op.json"; echo; exit 1; }
+
+_op=$(python3 -c "import json;print(json.load(open('$_tmp/drain-op.json')).get('operation_id',''))" 2>/dev/null)
+[ -z "$_op" ] && { echo "  no operation_id"; exit 1; }
+echo "  operation: $_op"
+
+for _i in $(seq 1 40); do
+  sleep 3
+  curl -sS -o "$_tmp/drain-st.json" --max-time 10 \
+    -H "Authorization: Bearer $_key" \
+    "$_url/v1/default/banks/deepagent::termux-monorepo/operations/$_op" 2>/dev/null
+  _st=$(python3 -c "import json;print(json.load(open('$_tmp/drain-st.json')).get('status',''))" 2>/dev/null)
+  [ "$_st" = "succeeded" ] || [ "$_st" = "completed" ] && break
+done
+
+_dl=$(python3 -c "import json;d=json.load(open('$_tmp/drain-st.json'));print((d.get('result_metadata') or {}).get('download_url',''))" 2>/dev/null)
+[ -z "$_dl" ] && { echo "  no download_url"; head -c 300 "$_tmp/drain-st.json"; exit 1; }
+
+curl -sS --max-time 300 -H "Authorization: Bearer $_key" "$_dl" -o "$_zip" 2>/dev/null
+[ -s "$_zip" ] || { echo "  empty zip"; exit 1; }
+echo "  wrote $_zip ($(du -h "$_zip" | cut -f1))"
+
+# 2 · commit manifest to memory-bank
+cd "$_bk" || exit 1
+cat > LAST-DRAIN.md <<EOF
+# Last drain
+- ts: $_stamp
+- source: codespace $_cs
+- url: $_url
+- zip: $(basename "$_zip")
+- size: $(du -h "$_zip" | cut -f1)
+- sha256: $(sha256sum "$_zip" | cut -c1-16)…
+EOF
+git add LAST-DRAIN.md 2>/dev/null
+git -c user.name="timerloggedout" -c user.email="timerloggedout@gmail.com" \
+  commit -m "memory-bank: drain $_stamp" 2>&1 | tail -1
+git push origin memory-bank 2>&1 | tail -1
+echo "  ✅ drained + committed"

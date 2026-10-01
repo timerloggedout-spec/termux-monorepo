@@ -184,26 +184,43 @@ async def post_one(hs_url, bank, item, timeout=180):
         )
         try:
             with urllib.request.urlopen(req, timeout=timeout) as r:
-                return r.status
+                return (r.status, "")
         except urllib.error.HTTPError as e:
-            return e.code
-        except Exception:
-            return 0
+            body = ""
+            try:
+                body = e.read()[:400].decode("utf-8", "replace")
+            except Exception:
+                pass
+            return (e.code, body)
+        except Exception as e:
+            return (0, str(e)[:200])
 
     return await loop.run_in_executor(None, _blocking)
 
 async def worker(name, hs_url, bank, queue, counters, pace):
+    consec_quota = 0
     while True:
         item = await queue.get()
         if item is None:
             queue.task_done()
             return
-        code = await post_one(hs_url, bank, item)
+        code, body = await post_one(hs_url, bank, item)
+
+        quota_in_body = ("RESOURCE_EXHAUSTED" in body or "429" in body
+                         or "quota" in body.lower())
+
         if code == 200:
             counters["ok"] += 1
-        elif code == 429:
+            consec_quota = 0
+        elif code == 429 or (code == 500 and quota_in_body):
             counters["429"] += 1
-            log(f"  [{name}] 429 backoff 20s")
+            consec_quota += 1
+            log(f"  [{name}] quota (HTTP {code}) consec={consec_quota}")
+            if consec_quota >= 5:
+                log(f"  [{name}] ABORT lane: 5 consecutive quota errors")
+                counters["abort"] = True
+                queue.task_done()
+                return
             await asyncio.sleep(20)
         else:
             counters["fail"] += 1
@@ -232,7 +249,7 @@ async def run_provider(provider, source):
         return
 
     q = asyncio.Queue(maxsize=provider["concurrency"] * 4)
-    counters = {"ok": 0, "fail": 0, "429": 0}
+    counters = {"ok": 0, "fail": 0, "429": 0, "abort": False}
     workers = [
         asyncio.create_task(worker(f"{prov}-{i}", provider["hs_url"], bank, q, counters, provider["pace"]))
         for i in range(provider["concurrency"])
@@ -246,7 +263,18 @@ async def run_provider(provider, source):
         await q.put(None)
 
     log(f"  queued={queued}, waiting for workers...")
-    await asyncio.gather(*workers)
+    # Watch for abort signal; drain remaining items if a worker aborts
+    async def _watch():
+        while not counters.get("abort"):
+            await asyncio.sleep(1)
+        while not q.empty():
+            try:
+                q.get_nowait(); q.task_done()
+            except Exception:
+                break
+    watcher = asyncio.create_task(_watch())
+    await asyncio.gather(*workers, return_exceptions=True)
+    watcher.cancel()
 
     log(f"  DONE {prov}/{source}: ok={counters['ok']} fail={counters['fail']} 429={counters['429']}")
     save_state(

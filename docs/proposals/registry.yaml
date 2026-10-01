@@ -1,6 +1,6 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-09-30T15:45:00Z"
+updated_at: "2026-09-30T23:55:00Z"
 updated_by: grok-administrator
 
 proposals:
@@ -18,9 +18,10 @@ proposals:
         role: author+executor
         status: executing
     related_issues: [934]
-    related_prs: []
+    related_prs: [935, 938, 940, 955]
     related_branches:
       - feat/ratatui-tokio-terminal-dashboard
+      - docs/ratatui-dashboard-collaborator
     gates_required: [repo-gate, termux-smoke]
 
   - id: ml-keep-alive

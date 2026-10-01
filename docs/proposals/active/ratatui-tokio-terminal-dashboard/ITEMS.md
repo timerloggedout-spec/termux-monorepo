@@ -8,7 +8,7 @@
 | TUI-RATATUI-004 | Add CPU/memory/process/thread metrics with graceful fallback | P1 | fixture/model tests + documented platform behavior |
 | TUI-RATATUI-005 | Add stream latency/throughput panel model | P1 | deterministic metric reducer tests |
 | TUI-RATATUI-006 | Add documentation and Termux build/run instructions | P1 | docs review |
-| TUI-RATATUI-007 | Add focused CI/build validation without expanding the always-on repo gate | P1 | workflow or documented manual lane |
+| TUI-RATATUI-007 | Add focused CI/build validation without expanding the always-on repo gate | P1 | workflow or documented manual lane |\n| TUI-RATATUI-008 | Publish collaborator/maintainer hand-off documentation and keep runtime guidance current | P1 | collaborator guide + README portability update |
 
 ## Gate order
 

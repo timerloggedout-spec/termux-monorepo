@@ -11,9 +11,9 @@ This proposal is a parallel research/evaluation lane. It does not alter producti
 | ID | Status | Work |
 |---|---|---|
 | MARKOV-TRELLIS-LAB-001 | executing | Build deterministic Markov tree/DAG/trellis model + interactive visualization sandbox |
-| MARKOV-TRELLIS-LAB-002 | todo | Add controlled probability-conservation and recombination fixtures |
-| MARKOV-TRELLIS-LAB-003 | todo | Compare strict-tree vs recombining node growth |
-| MARKOV-TRELLIS-LAB-004 | todo | Run adversarial review with Gemini and capture evidence |
+| MARKOV-TRELLIS-LAB-002 | executing | Add controlled probability-conservation and recombination fixtures |
+| MARKOV-TRELLIS-LAB-003 | executing | Compare strict-tree vs recombining node growth |
+| MARKOV-TRELLIS-LAB-004 | cooldown | Run adversarial review with Gemini and capture evidence |
 | MARKOV-TRELLIS-LAB-005 | todo | Evaluate whether any reusable pieces should graduate to ArchWiz production surfaces |
 
 ## Evidence rule

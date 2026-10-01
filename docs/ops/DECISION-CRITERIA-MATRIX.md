@@ -59,7 +59,7 @@ No ranking as “primary”. Selection is criteria-driven.
 | Help-wanted urgency score | Score primitive, multi-lang | Laya multilingual | Score weakest primitive for many engines |
 | Dual-gate / adaptive-wait “done” | Canny rule (facts only hard-block) | Canny pattern + any noul engine | Ledger append-only |
 | Context GC / compaction | Keep/drop without rewrite | Pattern from fast-jev-compaction | Engine scores relevance; code keeps text |
-| PR / code-review stage | Staged scores + evidence | Jev-Review style + Canny | Never YOLO |
+| PR / code-review stage | Staged scores + evidence | Jev-Review style + Canny | Evidence-gated only |
 | High-frequency / games | Latency secondary; determinism | Kev small or Laya | Local only preferred |
 | Browser / computer-use action | Choice over candidates | jev-ultrafast pattern | Separate generation |
 
@@ -105,4 +105,4 @@ Dense feedback required on every return: `engine_id`, `checkpoint`, `confidence`
 
 - Registry: comparative Laya + Kev family + Jev reference + Canny pattern
 - `scripts/canny_completion_gate.py` production stub for dual-gate / adaptive-wait
-- Dual-gate before promote; no YOLO / YEET / AUTOAPPROVE
+- Dual-gate before promote; auto-promote on green + verified outcome (FA-ADE)

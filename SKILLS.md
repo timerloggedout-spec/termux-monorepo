@@ -38,6 +38,6 @@ Every skill directory must contain a `SKILL.md`. Inventory lists **all** of them
 Do not keep skill policy only in local `.grok/skills/` mirrors — **master is SSOT**.
 
 **BIUDL = Broad → Integrate → Validate → Develop → Learn.**  
-Fully Continuous Automated Development Evaluation Environment.  
-AVOID HITL YOLO MODE YEET AUTOAPPROVE.  
+Fully Automated Agentic Development Environment (FA-ADE).  
+Auto-promote when dual gates green + task outcome verified.  
 Agent-Identity: Grok (Administrator)

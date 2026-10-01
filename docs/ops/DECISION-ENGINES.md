@@ -54,6 +54,6 @@ See `DECISION-CRITERIA-MATRIX.md` for full quality dimensions and workflow mappi
 ## Cadence rules
 
 - Dual-gate before promote.  
-- AVOID HITL YOLO YEET AUTOAPPROVE.  
+- Auto-promote when dual gates green + task outcome verified (FA-ADE).  
 - adaptive-wait on completion evidence (Canny-style).  
 - Free-first: hosted Jev only when explicitly allowed.

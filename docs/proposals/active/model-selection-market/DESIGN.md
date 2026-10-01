@@ -1,7 +1,7 @@
 # DESIGN — model-selection-market
 
 **Status:** posted proposal SSOT (docs only). Runtime code lands under MSM-001..005 thin extracts.
-**Policy:** BIUDL · FA-ADE · free-first · dual-gate · AVOID HITL YOLO YEET AUTOAPPROVE.
+**Policy:** BIUDL · FA-ADE · free-first · dual-gate · auto-promote on green + verified outcome.
 
 ## 1. Control plane
 

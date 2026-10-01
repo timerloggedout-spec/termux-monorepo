@@ -40,7 +40,7 @@ market (Itself|Others|Job) with **trading-card** code/meta sharing and a total r
 - DSPy is **consideration / DoE only** — not model-router primary.
 - Bets are ledgered and observational until policy promotes; no silent quota spend.
 - Trading cards hold no secrets (#184 names-only).
-- Thin extracts only. No mega-PR. Dual-gate before promote. AVOID HITL YOLO YEET AUTOAPPROVE.
+- Thin extracts only. No mega-PR. Dual-gate before promote; auto-promote on green + verified outcome.
 
 ## Authority chain (unchanged)
 

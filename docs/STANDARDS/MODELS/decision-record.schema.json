@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DecisionRecord",
+  "description": "One classifier invocation. Selection + full probability scale.",
+  "type": "object",
+  "required": [
+    "ts", "classifier", "family", "bank_id", "input_state_hash",
+    "question", "selection", "probability", "distribution",
+    "calibration", "latency_ms", "comp_hash"
+  ],
+  "properties": {
+    "ts":               {"type": "string", "format": "date-time"},
+    "classifier":       {"type": "string"},
+    "family":           {"enum": ["encoder_only", "llm_head", "nli", "novel"]},
+    "bank_id":          {"type": "string"},
+    "input_state_hash": {"type": "string"},
+    "input_state_len":  {"type": "integer"},
+    "question": {
+      "type": "object",
+      "required": ["id", "type"],
+      "properties": {
+        "id":      {"type": "string"},
+        "type":    {"enum": ["choice", "noul", "score"]},
+        "options": {"type": "array", "items": {"type": "string"}},
+        "scale_min": {"type": "number"},
+        "scale_max": {"type": "number"}
+      }
+    },
+    "selection":   {"type": "string"},
+    "probability": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+    "distribution": {
+      "type": "object",
+      "additionalProperties": {"type": "number", "minimum": 0.0, "maximum": 1.0}
+    },
+    "calibration": {
+      "type": "object",
+      "properties": {
+        "brier_expected": {"type": "number"},
+        "ece_bucket":     {"type": "number"},
+        "temperature":    {"type": "number"}
+      }
+    },
+    "latency_ms":     {"type": "integer"},
+    "model_revision": {"type": "string"},
+    "comp_hash":      {"type": "string"}
+  }
+}

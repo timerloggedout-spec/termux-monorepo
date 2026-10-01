@@ -1,0 +1,45 @@
+# ops/cadence/observatory-lanes.yml
+# Fold-in from timerloggedout-spec/codespaces-blank_fork-hindsight_RFP
+lanes:
+  rfp-mind:
+    source: "https://github.com/timerloggedout-spec/codespaces-blank_fork-hindsight_RFP"
+    base_image: "mcr.microsoft.com/devcontainers/python:1-3.11-bookworm"
+    surfaces:
+      - streamlit:8502
+      - hindsight:8888
+    banks: ["rfp-mind-cluster-v3"]
+    llm: "groq"
+    role: [proposal_generation, memory_ui_pattern, lane_reference]
+    fold_in:
+      - devcontainer_image_spec
+      - hindsight_client_api_shape
+      - domain_bank_naming
+      - safeguard_doctrine
+      - streamlit_control_surface
+
+  archwiz-observatory:
+    source: "local"
+    base_image: "mcr.microsoft.com/devcontainers/python:1-3.11-bookworm"
+    surfaces:
+      - streamlit:8502
+    banks: ["observatory::archwiz"]
+    llm: "gemini"
+    role: [control_surface, memory_ui, lane_dashboard]
+
+banks:
+  deepagent::termux-monorepo: "coding agents, session history"
+  observatory::archwiz: "ArchWiz state, tool taxonomy"
+  provenance::exports: "pointer index, codex, exports"
+  foresight::lanes: "lane dispatch, quota, cadence"
+
+safeguards:
+  - id: recall_is_boundary
+    rule: "filter for relevance, authorization, known source before generation"
+  - id: keep_provenance
+    rule: "record which memory IDs fed each draft"
+  - id: separate_failure_states
+    rule: "empty recall != unavailable service != generation error"
+  - id: review_before_reuse
+    rule: "source proposal and scope travel with the lesson"
+  - id: no_secrets_in_code
+    rule: "Codespaces secrets only"

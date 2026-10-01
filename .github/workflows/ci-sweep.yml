@@ -26,13 +26,13 @@ jobs:
           set -euo pipefail
           if [ -z "${AGENT_URL:-}" ]; then echo "::error::DEEPSEEK_AGENT_URL not set"; exit 1; fi
           TASK=$(cat <<'EOF'
-Execute ~/deepcli/tasks/workflow-sweep.md.
-Scope: all repos owned by timerloggedout-spec.
-Follow the evidence-led method: DISCOVER, CLASSIFY, PRIORITIZE, FIX, VALIDATE, REPORT.
-For each fix, open a PR — do not auto-merge. Post the final report as an issue comment
-on the newest open issue titled "CI Sweep" or open one if none exists.
-EOF
-)
+          Execute ~/deepcli/tasks/workflow-sweep.md.
+          Scope: all repos owned by timerloggedout-spec.
+          Follow the evidence-led method: DISCOVER, CLASSIFY, PRIORITIZE, FIX, VALIDATE, REPORT.
+          For each fix, open a PR — do not auto-merge. Post the final report as an issue comment
+          on the newest open issue titled "CI Sweep" or open one if none exists.
+          EOF
+          )
           jq -n --arg t "$TASK" '{task:$t, source:"gh-schedule:ci-sweep"}' \
             > payload.json
           INV=$(curl -sS --max-time 30 -X POST "$AGENT_URL/v1/agent" \

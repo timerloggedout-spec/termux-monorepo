@@ -1,0 +1,69 @@
+name: hindsight
+on:
+  workflow_dispatch:
+    inputs:
+      op:      { description: "retain|recall|reflect", required: true, default: recall }
+      payload: { description: "JSON body", required: true, default: '{"query":"session 143","top_k":3}' }
+  issue_comment:
+    types: [created]
+
+jobs:
+  call:
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@hindsight'))
+    runs-on: ubuntu-latest
+    steps:
+      - name: Guard
+        env:
+          KEY: ${{ secrets.HINDSIGHT_API_KEY }}
+          URL: ${{ secrets.HINDSIGHT_BASE_URL }}
+        run: |
+          [ -z "$KEY" ] && { echo "HINDSIGHT_API_KEY missing"; exit 1; }
+          [ -z "$URL" ] && { echo "HINDSIGHT_BASE_URL missing"; exit 1; }
+          echo "target: $URL"
+      - name: Retain
+        if: github.event.inputs.op == 'retain'
+        env:
+          KEY: ${{ secrets.HINDSIGHT_API_KEY }}
+          URL: ${{ secrets.HINDSIGHT_BASE_URL }}
+          BANK: ${{ secrets.HINDSIGHT_BANK_ID }}
+          BODY: ${{ github.event.inputs.payload }}
+        run: |
+          curl -sS -X POST "$URL/v1/default/banks/$BANK/memories" \
+            -H "Authorization: Bearer $KEY" \
+            -H "Content-Type: application/json" \
+            -d "$BODY" | tee /tmp/out.json
+      - name: Recall
+        if: github.event.inputs.op == 'recall'
+        env:
+          KEY: ${{ secrets.HINDSIGHT_API_KEY }}
+          URL: ${{ secrets.HINDSIGHT_BASE_URL }}
+          BANK: ${{ secrets.HINDSIGHT_BANK_ID }}
+          BODY: ${{ github.event.inputs.payload }}
+        run: |
+          curl -sS -X POST "$URL/v1/default/banks/$BANK/memories/recall" \
+            -H "Authorization: Bearer $KEY" \
+            -H "Content-Type: application/json" \
+            -d "$BODY" | tee /tmp/out.json
+      - name: Reflect
+        if: github.event.inputs.op == 'reflect'
+        env:
+          KEY: ${{ secrets.HINDSIGHT_API_KEY }}
+          URL: ${{ secrets.HINDSIGHT_BASE_URL }}
+          BANK: ${{ secrets.HINDSIGHT_BANK_ID }}
+          BODY: ${{ github.event.inputs.payload }}
+        run: |
+          curl -sS -X POST "$URL/v1/default/banks/$BANK/reflect" \
+            -H "Authorization: Bearer $KEY" \
+            -H "Content-Type: application/json" \
+            -d "$BODY" | tee /tmp/out.json
+      - name: Comment on issue (from issue_comment trigger)
+        if: github.event_name == 'issue_comment'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          _out=$(head -c 4000 /tmp/out.json 2>/dev/null || echo "")
+          gh issue comment ${{ github.event.issue.number }} \
+            --repo ${{ github.repository }} \
+            --body "$(printf '```json\n%s\n```\n\n— via @hindsight' "$_out")"

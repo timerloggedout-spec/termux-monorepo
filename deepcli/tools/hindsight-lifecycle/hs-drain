@@ -19,7 +19,7 @@ _code=$(curl -sS -o "$_tmp/drain-op.json" -w '%{http_code}' --max-time 20 \
   -X POST "$_url/v1/default/banks/deepagent::termux-monorepo/transfer/export" \
   -H "Authorization: Bearer $_key" -H "Content-Type: application/json" \
   -d '{"include_data":true,"include_bank_config":true,"include_history":true}' 2>/dev/null)
-[ "$_code" != "200" ] && [ "$_code" != "201" ] && { echo "  export trigger HTTP $_code"; head -c 200 "$_tmp/drain-op.json"; echo; exit 1; }
+[ "$_code" != "200" ] && [ "$_code" != "201" ] && [ "$_code" != "202" ] && { echo "  export trigger HTTP $_code"; head -c 200 "$_tmp/drain-op.json"; echo; exit 1; }
 
 _op=$(python3 -c "import json;print(json.load(open('$_tmp/drain-op.json')).get('operation_id',''))" 2>/dev/null)
 [ -z "$_op" ] && { echo "  no operation_id"; exit 1; }

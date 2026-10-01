@@ -1,0 +1,14 @@
+id: tier-6-fanout
+requires: [tier-5-multi-llm]
+doctrine:
+  mev:  { producer: raw_response }
+  jev:  { critic:   rubric_scored }
+  kev:  { verifier: reference_compared }
+  laya: { merger:   weighted_rank }
+selection: dynamic
+fanout:
+  mev: { provider_pool: router.select(category=task), k: 3 }
+install_hooks: [wire_fanout, register_lanes]
+health_checks:
+  - name: fanout_available
+    cmd: test -f ~/.deepcli/install/lanes/mev.yml

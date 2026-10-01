@@ -1,0 +1,9 @@
+id: tier-9-tournament
+requires: [tier-8-leaderboard]
+pipeline:
+  meta: tournament
+  structure: [campaign → trial → winner → leaderboard_update]
+install_hooks: [wire_tournament, wire_orchestrator]
+health_checks:
+  - name: orchestrator_module
+    cmd: python3 -c "import sys;sys.path.insert(0,'~');from deepcli.observatory import tournament"

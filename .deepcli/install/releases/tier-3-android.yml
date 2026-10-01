@@ -1,0 +1,11 @@
+id: tier-3-android
+requires: [tier-2-selfhost]
+providers:
+  tasker: [{ package: net.dinglisch.android.taskerm }]
+  shizuku: [{ package: moe.shizuku.privileged.api }]
+install_hooks: [install_tasker_profiles, wire_shizuku]
+health_checks:
+  - name: tasker_present
+    cmd: cmd package list packages | grep -q net.dinglisch.android.taskerm
+  - name: shizuku_present
+    cmd: cmd package list packages | grep -q moe.shizuku.privileged.api

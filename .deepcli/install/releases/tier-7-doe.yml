@@ -1,0 +1,16 @@
+id: tier-7-doe
+requires: [tier-6-fanout]
+design:
+  default:      doe.full_factorial(factors=[provider, temperature], levels=3)
+  optimization: doe.taguchi(L9)
+  adaptive:     doe.bayesian(acq=expected_improvement)
+pipeline:
+  series: [mev, jev, kev, laya]
+  fanout: { mev: { provider_pool: router.select(category=task) } }
+persist:
+  to: hindsight
+  as: { lane, doctrine, provider, design, run_id, scores, cost, latency }
+install_hooks: [wire_doe_runner]
+health_checks:
+  - name: doe_module
+    cmd: python3 -c "import sys;sys.path.insert(0,'~');from deepcli.observatory import doe"

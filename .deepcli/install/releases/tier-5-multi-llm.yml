@@ -1,0 +1,13 @@
+id: tier-5-multi-llm
+requires: [tier-4-oauth]
+providers:
+  gh-secret:
+    - { name: DEEPSEEK_API_KEY, scope: actions }
+    - { name: GEMINI_API_KEY,   scope: actions }
+  llm_registry: [{ file: ~/deepcli/deepcli/llm/registry.py }]
+install_hooks: [register_adapters]
+health_checks:
+  - name: deepseek_adapter
+    cmd: test -f ~/deepcli/deepcli/llm/adapters/kimi.py
+  - name: registry_resolves
+    cmd: python3 -c "import sys;sys.path.insert(0,'~');from deepcli.llm.registry import resolve;assert resolve('kimi')"

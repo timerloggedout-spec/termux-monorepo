@@ -1,0 +1,9 @@
+id: tier-4-oauth
+requires: [tier-3-android]
+providers:
+  firefox: [{ package: org.mozilla.firefox }]
+  cookie_export: [{ file: ~/.deepcli/creds/cookies/ }]
+install_hooks: [install_cookie_ext, wire_oauth_runner]
+health_checks:
+  - name: cookies_dir
+    cmd: test -d ~/.deepcli/creds/cookies

@@ -1,0 +1,8 @@
+id: tier-8-leaderboard
+requires: [tier-7-doe]
+providers:
+  leaderboard: [{ file: ~/.deepcli/leaderboard.json }]
+install_hooks: [init_leaderboard, wire_scout]
+health_checks:
+  - name: leaderboard_present
+    cmd: test -f ~/.deepcli/leaderboard.json

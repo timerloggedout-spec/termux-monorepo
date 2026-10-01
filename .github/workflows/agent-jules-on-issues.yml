@@ -221,7 +221,8 @@ jobs:
           EOF
           )
           jq -n \
-            --arg prompt "$PROMPT" \            --arg source "$source_name" \
+            --arg prompt "$PROMPT" \
+            --arg source "$source_name" \
             '{
               "prompt": $prompt,
               "sourceContext": {
@@ -386,7 +387,8 @@ jobs:
           EOF
           )
           jq -n \
-            --arg prompt "$PROMPT" \            --arg source "$source_name" \
+            --arg prompt "$PROMPT" \
+            --arg source "$source_name" \
             '{"prompt":$prompt,"sourceContext":{"source":$source,"githubRepoContext":{"startingBranch":"master-staging"}},"requirePlanApproval":false,"automationMode":"AUTO_CREATE_PR"}' > jules_payload.json
           response_file="$(mktemp)"
           http_code="$(curl --silent --show-error --fail-with-body -o "$response_file" -w '%{http_code}' -X POST -H 'Content-Type: application/json' -H "x-goog-api-key: $JULES_API_KEY" -d @jules_payload.json 'https://jules.googleapis.com/v1alpha/sessions')" || {

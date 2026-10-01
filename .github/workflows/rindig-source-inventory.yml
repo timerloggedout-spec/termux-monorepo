@@ -1,0 +1,35 @@
+name: RinDig Source Inventory
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 5 * * 1"
+  push:
+    paths:
+      - config/rindig_sources.json
+      - scripts/ci/rindig_source_inventory.py
+      - .github/workflows/rindig-source-inventory.yml
+
+permissions:
+  contents: read
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inventory RinDig branches, commits, and Actions workflows
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python3 scripts/ci/rindig_source_inventory.py \
+            --registry config/rindig_sources.json \
+            --output /tmp/rindig-source-inventory.json
+      - name: Publish inventory artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rindig-source-inventory-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/rindig-source-inventory.json
+          if-no-files-found: error
+          retention-days: 14

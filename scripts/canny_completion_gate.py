@@ -10,6 +10,9 @@ or any System One–compatible endpoint.
 
 Production use: agent "I am done" claims, PR dual-gate evidence,
 adaptive-wait completion. Never YOLO.
+
+Gate decisions: ALLOW | BLOCK | NEED_EVIDENCE.
+HOLD / WAIT / OBSERVE are invalid agent parking states — not gate outputs.
 """
 
 from __future__ import annotations
@@ -33,63 +36,73 @@ FACT_KINDS = frozenset(
     }
 )
 
+VALID_DECISIONS = frozenset({"ALLOW", "BLOCK", "NEED_EVIDENCE"})
+INVALID_AGENT_STATES = frozenset({"HOLD", "WAIT", "OBSERVE"})
+
 
 def evaluate_facts(facts: list[dict[str, Any]]) -> dict[str, Any]:
     """Deterministic fact evaluation. Only facts can hard-block."""
     blocks: list[dict[str, Any]] = []
+    positives: list[dict[str, Any]] = []
     for f in facts:
-        kind = (f or {}).get("kind")
+        if not f:
+            continue
+        kind = f.get("kind")
         if kind not in FACT_KINDS:
             continue
-        if kind == "file_changed" and f.get("paths"):
+        if kind == "file_changed":
+            paths = f.get("paths") or f.get("detail") or []
+            positives.append({"kind": kind, "detail": paths})
             continue
-        if kind == "command_exit_nonzero" and int(f.get("exit_code") or 0) != 0:
-            blocks.append({"kind": kind, "detail": f.get("detail") or f.get("cmd")})
-        if kind == "command_failed_repeat" and int(f.get("count") or 0) >= 2:
+        if kind == "command_exit_nonzero":
+            if int(f.get("exit_code") or 0) != 0:
+                blocks.append({"kind": kind, "detail": f.get("detail") or f.get("cmd")})
+        elif kind == "test_failed":
             blocks.append({"kind": kind, "detail": f.get("detail")})
-        if kind == "test_failed":
-            blocks.append({"kind": kind, "detail": f.get("detail")})
-        if kind == "secret_detected":
+        elif kind == "command_failed_repeat":
+            if int(f.get("count") or 0) >= 2:
+                blocks.append({"kind": kind, "detail": f.get("detail")})
+        elif kind == "secret_detected":
             blocks.append({"kind": kind, "detail": "redacted"})
-        if kind == "diff_empty" and f.get("claimed_done"):
-            blocks.append({"kind": kind, "detail": "no diff since claim"})
-        if kind == "check_not_run_since_edit":
+        elif kind == "diff_empty":
+            if f.get("claimed_done"):
+                blocks.append({"kind": kind, "detail": "no diff since claim"})
+        elif kind == "check_not_run_since_edit":
             blocks.append({"kind": kind, "detail": f.get("check") or "required check"})
     return {
         "hard_block": bool(blocks),
         "blocks": blocks,
+        "positives": positives,
         "fact_count": len(facts),
         "mode": "facts_only",
     }
 
 
-def _evidence_is_adverse(e: dict[str, Any]) -> bool:
-    kind = e.get("kind")
-    if kind == "test_failed":
-        return True
-    if kind == "command_exit_nonzero" and int(e.get("exit_code") or 0) != 0:
-        return True
-    if kind == "secret_detected":
-        return True
-    return False
-
-
 def mock_noul_advice(claim: str, state: dict[str, Any] | None = None) -> dict[str, Any]:
     """Offline stand-in for engine noul on 'is completion claim supported?'."""
     evidence = (state or {}).get("evidence") or []
-    adverse = any(_evidence_is_adverse(e) for e in evidence)
-    has_positive = any(
-        e.get("kind") in ("file_changed",) or (
-            e.get("kind") == "command_exit_nonzero" and int(e.get("exit_code") or 0) == 0
-        )
-        for e in evidence
-    )
+    adverse = False
+    has_positive = False
+    for e in evidence:
+        if not e:
+            continue
+        k = e.get("kind")
+        if k == "test_failed" or k == "secret_detected" or (
+            k == "command_exit_nonzero" and int(e.get("exit_code") or 0) != 0
+        ):
+            adverse = True
+            break
+        if k == "file_changed" or (
+            k == "command_exit_nonzero" and int(e.get("exit_code") or 0) == 0
+        ):
+            has_positive = True
+
     supported = has_positive and not adverse
     noul = 0.72 if supported else 0.28
     return {
         "noul": noul,
         "confidence": 0.55,
-        "advice": "relax_allowed" if noul >= 0.6 else "hold_for_evidence",
+        "advice": "relax_allowed" if noul >= 0.6 else "need_evidence",
         "mode": "mock_noul",
         "claim_snippet": (claim or "")[:120],
     }
@@ -109,10 +122,12 @@ def gate(
         "claim": (claim or "")[:200],
         "hard_block": fact_result["hard_block"],
         "blocks": fact_result["blocks"],
+        "positives": fact_result["positives"],
         "ts": int(time.time()),
         "dense_feedback": {
             "ledger_entry": True,
             "fact_block": fact_result["hard_block"],
+            "positive_count": len(fact_result["positives"]),
             "reason": "facts_hard_block" if fact_result["hard_block"] else "facts_clear",
         },
     }
@@ -126,15 +141,16 @@ def gate(
         out["noul_advice"] = advice
         out["dense_feedback"]["noul_advice"] = advice.get("advice")
         out["dense_feedback"]["confidence"] = advice.get("confidence")
-        if advice.get("advice") == "hold_for_evidence":
-            out["decision"] = "HOLD"
-            out["dense_feedback"]["reason"] = "noul_hold"
+        if advice.get("advice") == "need_evidence":
+            out["decision"] = "NEED_EVIDENCE"
+            out["dense_feedback"]["reason"] = "noul_need_evidence"
         else:
             out["decision"] = "ALLOW"
             out["dense_feedback"]["reason"] = "facts_clear_noul_relax"
     else:
         out["decision"] = "ALLOW"
         out["dense_feedback"]["reason"] = "facts_clear_no_noul"
+    assert out["decision"] in VALID_DECISIONS
     return out
 
 

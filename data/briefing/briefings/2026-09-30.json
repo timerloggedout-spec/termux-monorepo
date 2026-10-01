@@ -1,0 +1,129 @@
+{
+  "schema_version": "1.0",
+  "briefing_date": "2026-09-30",
+  "generated_at": "2026-09-30T22:22:00Z",
+  "contract": {
+    "spec": "docs/briefing/DAILY-DIGEST-SPEC.md",
+    "ingest": "docs/research/BRIEFING-INGEST.md",
+    "procurement": "docs/research/FOSS-PROCUREMENT-MATRIX.md",
+    "radar": "docs/research/FORESIGHT-RADAR.md",
+    "source_registry": "config/foresight_digest_sources.json"
+  },
+  "evidence_note": "Primary/authoritative sources were preferred. Vendor performance statements remain attributed claims even when the underlying announcement is confirmed.",
+  "items": [
+    {
+      "headline": "Open agent runtimes are moving governance into enforceable execution boundaries",
+      "horizon": "H1",
+      "evidence_status": "confirmed",
+      "summary": "NVIDIA announced its Open Agent Safety Platform on 2026-09-28, centered on the open-source OpenShell runtime and a reference system for governing agent execution. HPE separately described integrating OpenShell into HPE Private Cloud AI. OpenShell is positioned as an external runtime boundary that applies policy, sandboxing, access controls, and auditability around agents rather than relying on model behavior alone.",
+      "why_it_matters": "This strengthens the case for treating agent execution policy, sandboxing, identity, and telemetry as infrastructure contracts rather than provider-specific features. It also provides a concrete FOSS reference for evaluating hosted agent-governance products.",
+      "opportunity_or_procurement": "Prototype the monorepo's security boundary around portable policy and evidence contracts. Require exportable policy decisions, trace IDs, tool permissions, and runtime evidence before accepting a hosted governance layer as canonical.",
+      "monorepo_relevance": "Direct fit for MCP admission, OpenTelemetry evidence, sandboxed execution, and manager-controlled agent authority. Compare OpenShell-class controls with the repository's existing policy/evidence architecture without making NVIDIA-specific runtime dependencies canonical.",
+      "sources": [
+        {"url":"https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Launches-Open-Agent-Safety-Platform-to-Secure-Agents-From-Testing-to-Deployment/","source_type":"official_company_release"},
+        {"url":"https://www.hpe.com/us/en/newsroom/blog-post/2026/09/hpe-and-nvidia-bring-secure-governed-agentic-ai-into-enterprise-production.html","source_type":"official_company_technical_context"},
+        {"url":"https://www.nvidia.com/en-us/ai/openshell/","source_type":"official_product_documentation"}
+      ],
+      "confidence": "high",
+      "unresolved_questions": [
+        "How portable are OpenShell policy and evidence artifacts across non-NVIDIA hardware and Termux-adjacent execution?",
+        "Which runtime-policy fields should become part of the monorepo canonical admission receipt?"
+      ],
+      "image_query": "NVIDIA Open Agent Safety Platform OpenShell secure AI agent runtime architecture"
+    },
+    {
+      "headline": "Verifiable agent delegation is emerging as a distinct MCP/A2A security primitive",
+      "horizon": "H1",
+      "evidence_status": "research",
+      "summary": "The March 2026 AIP preprint proposes invocation-bound capability tokens for verifiable delegation across MCP, A2A, and HTTP. The paper reports a scan of roughly 2,000 MCP servers in which authentication was absent, and evaluates chained delegation, provenance binding, and attack resistance. These are research results from one paper and should not be treated as an ecosystem-wide measurement.",
+      "why_it_matters": "Agent-to-tool and agent-to-agent interoperability needs a durable answer to identity, attenuation, delegation depth, provenance, and revocation. This aligns directly with the monorepo's goal of separating transport interoperability from auditable authority.",
+      "opportunity_or_procurement": "Prototype a minimal signed delegation receipt alongside MCP invocation events. Procurement criteria should require short-lived scoped authorization, explicit delegation provenance, revocation semantics, and exportable audit evidence.",
+      "monorepo_relevance": "High: extend the MCP admission lane with principal, parent delegation, capability scope, policy decision, invocation hash, and evidence linkage while preserving null semantics for unavailable data.",
+      "sources": [
+        {"url":"https://arxiv.org/abs/2603.24775","source_type":"preprint"}
+      ],
+      "confidence": "medium",
+      "unresolved_questions": [
+        "Independent replication and protocol-standardization path remain unresolved.",
+        "Determine how a capability-token layer should coexist with existing OAuth/workload identity systems.",
+        "Validate overhead and security properties on constrained ARM/Android deployments."
+      ],
+      "image_query": "cryptographic agent delegation MCP A2A capability token diagram"
+    },
+    {
+      "headline": "Heterogeneous inference is being built around latency, memory bandwidth, and accelerator specialization",
+      "horizon": "H1",
+      "evidence_status": "attributed",
+      "summary": "Cerebras and Gimlet Labs announced on 2026-09-28 that Cerebras wafer-scale systems will be integrated into Gimlet Cloud, with the companies targeting up to 3,000 tokens/second and a first Cerebras-powered datacenter later in 2026. Gimlet also describes a heterogeneous cloud combining GPUs with Cerebras systems. The performance figures and deployment timing are company claims, while the underlying partnership announcement is confirmed.",
+      "why_it_matters": "Inference procurement is increasingly about heterogeneous hardware, memory locality, latency, and workload placement rather than a single accelerator family. That reinforces a routing model that can escalate between local ARM, CPU, accelerator, and remote inference without changing the task contract.",
+      "opportunity_or_procurement": "Add latency-to-completion, memory pressure, energy proxy, and workload-placement measurements to the edge inference evidence contract. Preserve a CPU/local fallback and portable model artifacts so accelerator-specific APIs remain optional.",
+      "monorepo_relevance": "High for the local-edge-ARM-Android lane and manager routing. Use the same bounded task cohort across local llama.cpp, CPU, and remote/accelerator paths and compare useful completion rather than raw token rate alone.",
+      "sources": [
+        {"url":"https://www.cerebras.ai/press-release/gimlet-labs-adds-cerebras-to-deliver-ultrafast-ai-inference-through-gimlet-cloud-deployment","source_type":"official_company_release"},
+        {"url":"https://gimletlabs.ai/blog/cerebras-announcement","source_type":"official_company_technical_context"},
+        {"url":"https://www.reuters.com/technology/cerebras-supply-ai-systems-cloud-computing-startup-gimlet-labs-2026-09-28/","source_type":"secondary_context"}
+      ],
+      "confidence": "medium",
+      "unresolved_questions": [
+        "Validate the announced throughput on representative agent workloads rather than isolated token-generation tests.",
+        "Measure whether heterogeneous placement reduces total task latency after orchestration overhead.",
+        "Quantify memory, thermal, and energy tradeoffs against local ARM execution."
+      ],
+      "image_query": "Cerebras wafer scale inference accelerator heterogeneous AI datacenter"
+    },
+    {
+      "headline": "NIST's finalized traceability framework gives provenance work a stronger interoperable reference model",
+      "horizon": "H0",
+      "evidence_status": "confirmed",
+      "summary": "NIST finalized IR 8536 on 2026-09-09. The framework describes interoperable traceability information, cryptographically verifiable links, continuous provenance chains, and selective disclosure, and NIST reports an associated open-source Python reference implementation.",
+      "why_it_matters": "The model is directly applicable as a conceptual reference for software, model, benchmark, and agent-execution provenance: preserve verifiable links without forcing all internal data into one centralized repository.",
+      "opportunity_or_procurement": "Map the monorepo's evidence receipt, SBOM/provenance, benchmark lineage, and model/runtime hashes against IR 8536 concepts. Prefer systems that export portable provenance and support selective disclosure.",
+      "monorepo_relevance": "Very high for the Foresight Evidence Spine, supply-chain lane, agent evidence receipts, and contributor auditability. Use the report as policy/reference input rather than claiming compliance automatically.",
+      "sources": [
+        {"url":"https://csrc.nist.gov/pubs/ir/8536/final","source_type":"government_publication"},
+        {"url":"https://www.nist.gov/news-events/news/2026/09/finalized-manufacturing-supply-chain-traceability-meta-framework","source_type":"government_announcement"}
+      ],
+      "confidence": "high",
+      "unresolved_questions": [
+        "Map selective disclosure and cryptographic linkage to SBOM/AIBOM and agent runtime records.",
+        "Track the public reference implementation separately from the final report."
+      ],
+      "image_query": "NIST supply chain traceability provenance cryptographic linkage framework"
+    },
+    {
+      "headline": "AI memory and advanced packaging remain a core systems constraint behind inference efficiency",
+      "horizon": "H1",
+      "evidence_status": "confirmed",
+      "summary": "Applied Materials announced 2026 partnerships with Micron and SK hynix focused on next-generation DRAM, HBM, NAND, materials engineering, and advanced packaging for AI workloads. The announcements emphasize energy-efficient performance, HBM, and 3D packaging as active development areas.",
+      "why_it_matters": "The hardware roadmap reinforces that memory bandwidth, packaging, thermal behavior, and energy efficiency are system-level constraints. Software procurement and benchmarking should therefore measure memory and energy behavior rather than treating model quality and accelerator throughput as independent variables.",
+      "opportunity_or_procurement": "Add memory-bandwidth, RAM pressure, thermal throttling, and energy-per-completed-task fields to procurement experiments. Prefer open runtimes that expose backend behavior and retain CPU/local fallbacks.",
+      "monorepo_relevance": "High for edge-inference evidence, reproducible environments, model/runtime procurement, and manager routing. The benchmark contract should capture device ABI, runtime version, model hash, environment fingerprint, and resource observations.",
+      "sources": [
+        {"url":"https://www.appliedmaterials.com/us/en/newsroom/press-releases/031026-applied-materials-micron-partner-advance-us-innovation-next-gen-ai.html","source_type":"official_company_release"},
+        {"url":"https://www.appliedmaterials.com/us/en/newsroom/press-releases/031026-applied-materials-and-sk-hynix-announce-long-term-rd-partnership.html","source_type":"official_company_release"}
+      ],
+      "confidence": "high",
+      "unresolved_questions": [
+        "Determine which memory/thermal metrics are practical on Android/Termux without privileged instrumentation.",
+        "Separate vendor roadmap claims from independently reproducible system measurements."
+      ],
+      "image_query": "HBM advanced packaging AI memory semiconductor 3D packaging"
+    }
+  ],
+  "radar_watch": [
+    {
+      "title": "OpenTelemetry GenAI/MCP conventions remain development-status while MCP itself evolves",
+      "horizon": "H2",
+      "evidence_status": "signal",
+      "source": "https://github.com/open-telemetry/semantic-conventions-genai/blob/main/docs/gen-ai/mcp.md",
+      "note": "Use the current conventions as an adapter input, not a frozen canonical schema. The upstream MCP conventions explicitly remain in development and current protocol changes require version-aware instrumentation."
+    },
+    {
+      "title": "Durable agent execution semantics are becoming an observability research lane",
+      "horizon": "H2",
+      "evidence_status": "signal",
+      "source": "https://github.com/open-telemetry/semantic-conventions-genai/issues/462",
+      "note": "Track checkpoint/resume, delegation, retries, compensation, and non-linear causal links without prematurely expanding the canonical event contract."
+    }
+  ]
+}

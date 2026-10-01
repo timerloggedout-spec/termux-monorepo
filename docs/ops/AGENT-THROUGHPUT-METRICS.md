@@ -7,7 +7,7 @@
 
 SHE already reconstructs durable GitHub Actions timing from run/job timestamps. This lane extends that reducer model to multi-agent execution telemetry without introducing a hosted observability dependency.
 
-ATES is **not a future/fancy add-on**: Phase A has already landed as a pure reducer and test contract. The remaining phases add evidence emission, longitudinal correlation, provider experiments, and manager-level use around that foundation.
+ATES is **not a future/fancy add-on**: Phase A has already landed as a pure reducer and test contract. Phase B now adds runtime evidence emission; the remaining phases add longitudinal correlation, provider experiments, and manager-level use around that foundation.
 
 The design accepts Gemini's ATES concepts, but makes three corrections:
 
@@ -112,6 +112,9 @@ The repository should measure the adapters against the same event schema, then r
 - Phase A reducer: `she/metrics/agent_throughput.py`
 - Phase A tests: `tests/test_she_agent_throughput.py`
 - Phase A quality gate: `.github/workflows/agent-quality-lane.yml` + `scripts/ci/verify_agent_quality.py`
+- Phase B emitter: `scripts/ci/emit_agent_throughput.py`
+- Phase B observer: `.github/workflows/agent-throughput-evidence.yml`
+- Phase B tests: `tests/test_emit_agent_throughput.py`
 - Hex-compatible sanitizer: `scripts/hex_moneyball_export.py`
 - Actions timing reducer: `she/metrics/job_timestamps.py`
 - Longitudinal corpus: `workspace/llm_map/context_relationships/`
@@ -123,9 +126,9 @@ The repository should measure the adapters against the same event schema, then r
 
 Land schema + pure reducer + fixtures + quality verification. No external telemetry dependency. This is the ATES foundation already present on the active integration branch.
 
-### Phase B — evidence emission **[NEXT]**
+### Phase B — evidence emission **[IMPLEMENTED]**
 
-Teach eligible agent workflows to emit sanitized JSONL and publish a receipt alongside existing Action artifacts. Every event must retain run/attempt/SHA linkage where available.
+An observer workflow now watches eligible completed agent workflows, emits sanitized JSONL, and publishes a receipt alongside the reducer output. Every emitted event retains run/attempt/SHA linkage; ambiguous complexity and missing job timing remain absent.
 
 ### Phase C — longitudinal correlation
 

@@ -9,10 +9,12 @@ The observability stack is reorganized by dependency rather than by product cate
 - OpenTelemetry: neutral trace/span transport at the agent invocation boundary.
 - Docker: reproducible execution substrate for CI and agent jobs; useful for controlled experiments, isolated tooling, environment fingerprints, and reproducible failure reproduction.
 - Complexity scoring: explicit complexity plus the structural fallback is part of the measurement foundation. Tree-sitter is the preferred language-neutral structural expansion.
-- ATES Phase A: the pure reducer, event schema, focused tests, and quality verification are already implemented; subsequent phases instrument the runtime around this foundation.
+- ATES Phase A + B: the pure reducer, event schema, focused tests, quality verification, and a read-only `workflow_run` runtime evidence observer are implemented; ATES is the primary execution-measurement spine for the quality-first telemetry plane.
 
 **P1 — parallel evaluation and reproduction surfaces**
 
+- Temporal (self-host FOSS first; optional Cloud Free Tier): durable Workflow/Activity substrate for long-running agents. Capability-gated; not a dual-gate dependency. Docker Compose under `mcp-docker/temporal/`; local `temporal server start-dev`.
+- LangSmith Trajectories: readable flat chronological path over multi-turn sessions (thread projection). Online evals, annotation queues, dataset/SFT export. Observational adapter only — never canonical corpus. Official Temporal Python `LangSmithPlugin` bridges Worker boundaries.
 - Langfuse: optional experiment/evaluation adapter over canonical JSONL/OTEL evidence.
 - Phoenix: parallel open-source experiment/evaluation adapter, with Docker as one possible reproducible lab substrate.
 - Lizard: fast multi-language CCN/NLOC/token/parameter feature provider.
@@ -45,9 +47,9 @@ ATES is an observation inside this quality-first frame, not the objective functi
 
 Pure ATES/WTCV reducer, sanitized event schema, focused fixtures, missing-evidence invariants, structural complexity fallback, and a visible Actions quality check. No external telemetry dependency.
 
-### Phase B — emit
+### Phase B — emit **[IMPLEMENTED]**
 
-Teach eligible agent workflows to emit sanitized JSONL and publish a receipt alongside existing Action artifacts. Add immutable run/attempt/SHA linkage and environment fingerprints where available.
+The read-only `agent-throughput-evidence` observer watches eligible completed agent workflows, emits sanitized JSONL, reduces the observations through ATES, and publishes a receipt with immutable run/attempt/SHA linkage. It does not execute triggering code and does not infer missing complexity or a sequential baseline.
 
 ### Phase C — correlate
 
@@ -55,7 +57,7 @@ Join execution events to GitHub run attempts, SHAs, PRs, Action→Effect events,
 
 ### Phase D — parallelize/reproduce
 
-Run equivalent telemetry through Langfuse and Phoenix adapters, and use Docker/Codespaces for distinct reproduction/experiment purposes. Compare completeness, decision quality, cost, privacy surface, and variance.
+Run equivalent telemetry through Langfuse, Phoenix, and (optional) LangSmith Trajectories adapters. Temporal self-host may host durable multi-turn execution for those cohorts. Use Docker/Codespaces for distinct reproduction/experiment purposes. Compare completeness, decision quality, cost, privacy surface, and variance.
 
 ### Phase E — compete
 

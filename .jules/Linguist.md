@@ -73,7 +73,7 @@ Ensure all Trie-structured regex builders use non-capturing groups `(?:...)` at 
 Calling line-by-line document translation and regex parsing on documents that contain zero target translatable terms introduces unnecessary CPU overhead and string allocations. By adding a single document-level pre-search check (`if not text or not COMP_SINGLE_REGEX.search(text): return text`) in `compile_doc` and `decompile_doc`, non-matching documents bypass line splitting and regex parsing entirely, reducing latency from ~0.7-2.6ms down to ~0.02ms (~35x-130x speedup). Furthermore, tightening the code fence line check to `"```" in line and line.strip().startswith("```")` prevents string `strip()` allocations on lines with single backticks (e.g., inline code markers).
 
 **Action:**
-Always perform document-level fast-path search short-circuiting before line splitting in document transformation routines, and restrict code fence start checks using full triple-backtick `"`"`"" substring guards.
+Always perform document-level fast-path search short-circuiting before line splitting in document transformation routines, and restrict code fence start checks using full triple-backtick substring guards.
 
 ## 2026-09-25 - Surface Codec Translation Fast-Path for 100% Substitution Probability
 **Learning:**
@@ -89,9 +89,32 @@ Instantiating multiple nested function closures (`link_repl`, `bold_repl_1`, `bo
 **Action:**
 Use `__slots__` context objects with pre-bound method callbacks instead of inner function closures in high-frequency line iteration loops, and ensure character guards cover all matching prefix/separator symbols including dot extensions.
 
+<<<<<<< Updated upstream
+## 2026-09-25 - Decimal Guard via Pre-Compiled Regex Search
+**Learning:**
+Using generator expressions like `any(c.isdigit() for c in line)` inside high-frequency line iteration loops allocates a Python generator on every line that already contains `.`. Replacing that guard with `DECIMAL_PATTERN.search(line)` reuses the module-level compiled pattern and delegates digit+dot detection to the C regex engine.
+
+**Action:**
+Prefer pre-compiled `PATTERN.search(text)` over Python `any(...)` generator guards for numeric/decimal checks in `translate_line`.
+
+## 2026-10-03 - ASCII Trie Character Class Expansion vs Unicode `re.IGNORECASE` Overhead
+**Learning:**
+Compiling Trie-structured regular expressions with the `re.IGNORECASE` flag in Python forces the regex engine to perform Unicode case-folding table lookups on every single character comparison across string scanning operations. By expanding alphabetic characters into ASCII case character classes (`[aA]`, `[bB]`) directly within Trie regex node generation, case matching is executed via direct ASCII byte comparisons in C-level regex automaton state transitions. Removing `re.IGNORECASE` reduced document compilation latency by ~20% and PhaseCodec surface transformations by ~21-25%. Additionally, extracting top-level callback functions (`_replace_leet_default`) for default probability configurations in `to_1337speak()` eliminated inner function closure allocations during high-frequency surface codec invocations.
+
+**Action:**
+In high-performance regex matching pipelines over ASCII technical documents, compile explicit character class branches into Trie regex builders and omit `re.IGNORECASE` flags to delegate case matching directly to automaton state transitions.
+
+## 2026-10-04 - Invariant Token Pre-Filtering Set in Surface Codecs
+**Learning:**
+During high-frequency randomized surface codec substitutions (`to_1337speak`), executing character-by-character loop iterations, dictionary lookups, list allocations, and random number generator evaluations on matched tokens that contain zero eligible leet substitution characters (e.g., `pr0b3`, `h4x`, `3ch0`, `l00p`, `gr1m01r3`) creates significant CPU overhead (~25% of callback runtime). Precomputing an `O(1)` module-level set `VARIANTS_WITH_NO_ELIGIBLE` allows `_replace_leet_default` to short-circuit instantly for invariant tokens, bypassing list creation and RNG evaluations.
+
+**Action:**
+In randomized surface transformers, pre-filter non-mutable tokens using pre-computed module-scope sets to eliminate unnecessary allocations and RNG evaluations.
+=======
 ## 2026-10-10 - Precomputed Active Stem Tuple Pre-filtering in Document Translation Pipelines
 **Learning:**
 In document-level translation pipelines (CedrLang `compile_doc` / `decompile_doc`), evaluating C-level Trie regular expressions (`COMP_SINGLE_REGEX.search(line)`) on every line of a document introduces significant CPU backtracking and regex state evaluation overhead. By extracting unique initial token stems at module load (`COMP_STEMS`, `DECOMP_STEMS`) and computing active document stems (`active_stems = tuple(s for s in COMP_STEMS if s in text.lower())`), line-by-line checks can perform O(1) string containment checks (`any(s in line_lower for s in active_stems)`). Lines lacking active stems bypass line translation and placeholder regex protection entirely, reducing `compile_doc` latency from 3.49ms to 2.67ms (~1.3x speedup) and `decompile_doc` latency from 3.30ms to 2.58ms (~1.28x speedup) on real-world document compilations.
 
 **Action:**
 Compute initial active stem tuples at module load and perform fast string containment checks per line prior to triggering regular expression searches in document transformation loops.
+>>>>>>> Stashed changes

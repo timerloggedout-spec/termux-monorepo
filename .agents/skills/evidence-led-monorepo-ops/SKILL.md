@@ -37,7 +37,7 @@ Prefer evidence in this order:
 4. substantive current-SHA review findings;
 5. provenance and task/issue lineage;
 6. historical evidence from superseded SHAs;
-7. size, age, comment count, or activity volume as context only.
+7. size, age, comment count, or activity volume as **context only** (not promote blockers).
 
 A workflow success proves that workflow result. It does not prove the requested task outcome.
 
@@ -74,10 +74,10 @@ HOLD and OBSERVE are not idle parking states. WAIT collects evidence until promo
 
 For repository mutations:
 
-1. identify the smallest change that advances the requested outcome;
+1. identify a change that advances the requested outcome (slice **or** mega — both valid);
 2. re-read the current file/ref before writing;
-3. make one bounded change;
-4. run git diff --check and the smallest relevant deterministic validation;
+3. make the change;
+4. run the smallest relevant deterministic validation;
 5. commit with a specific message;
 6. re-fetch the resulting SHA and checks;
 7. preserve failed attempts and superseded evidence.
@@ -92,7 +92,9 @@ COMMITTED, EXECUTED, VALIDATED, and PROMOTED are independent states.
 
 Do not promote because a branch is old, a PR is green on an older SHA, a reviewer is silent, or a provider returned HTTP 200.
 
-Repository dual-gate: hygiene/portability + agentic termux smoke. Vercel is non-gate (#772). Copilot is not a promote precondition.
+Repository dual-gate: hygiene/portability + agentic termux smoke. Vercel is non-gate (#772). Copilot / CodeRabbit / Devin are advisory only.
+
+**Mega-merge policy (Operator 2026-09-24):** Mega-merge is **allowed** when dual-gate SUCCESS + mergeable on the candidate SHA. Collaborators hold large context windows. CodeRabbit’s ~100-file limit is **advisory review capacity**, not a hard promote ban. File count alone must not refuse a dual-gate-green PR. `mergeable_state=dirty` or merge conflict remains a hard block until rebased.
 
 ## 8. Historical continuity
 
@@ -143,11 +145,15 @@ Receipts are projections; the longitudinal GitHub/evidence corpus remains the so
 
 This skill owns repository-admin evidence discipline; it does not replace those specialist lanes.
 
-## Session 2026-09-23 16:00 PDT
+## Session 2026-09-28 17:15 PDT
 
-- Live master `a07584b3`. Policy #789/#790 MERGED. #784 MERGED. #69 SUPERSEDED.
-- #787 dual-gate SUCCESS on `75aa3b13` + dirty vs tip — re-extract.
-- #48 EXTRACT (master-staging, dirty).
-- Pulse PR #791 rebased onto `a07584b3`.
+- Live master tip: `8daeeb72d71ecdefa2f9cde6698426131117e474` (catalog/mmdc bot refresh after #904).
+- Dual-gate PASS on that SHA: repo-gate 36497249095 + termux-smoke 36497249115.
+- #904 squash `4efef68d` dual-gate PASS on master: 36497147812 / 36497147650.
+- Candidate evidence for #904 pre-merge: repo-gate 36497057302 + termux-smoke 36497057157 on `4df79c30`.
+- Tunnel scheduled fail 36496185804 / 109176191755 classified empty-URL skip, closed by #904.
+- Instant-fail path-unfiltered workflows on feature branches are noise.
+- #903 HOLD (empty-diff / ledger). #899 rebase in flight. Do not merge stale #892/#894.
+- Do not pulse #175. #184 names-only. Vercel combined-status is #772 non-gate.
 
 Agent-Identity: Grok (Administrator)

@@ -1,9 +1,87 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-09-23T18:15:00Z"
+updated_at: "2026-10-01T01:58:00Z"
 updated_by: grok-administrator
 
 proposals:
+  - id: model-selection-market
+    title: "Model selection market — equal-weight bootstrap, 3L0 performance, DSPy-DoE, bets/trading-cards"
+    author: grok
+    status: posted
+    priority: P1
+    path: active/model-selection-market/
+    reviewers:
+      - id: grok
+        role: author+executor
+        status: executing
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_prs: []
+    related_branches:
+      - docs/model-selection-market-3l0-20261001
+    related_proposals:
+      - approxination-integration
+      - ml-keep-alive
+      - rate-limit-rotation
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: ratatui-tokio-terminal-dashboard
+    title: "Termux-first Ratatui + Tokio responsive terminal dashboard"
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/ratatui-tokio-terminal-dashboard/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues: [934]
+    related_prs: [935, 938, 940, 955]
+    related_branches:
+      - feat/ratatui-tokio-terminal-dashboard
+      - docs/ratatui-dashboard-collaborator
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: ml-keep-alive
+    title: "ML keep-alive DAG extract onto live master (Issue #175)"
+    author: grok
+    status: executing
+    priority: P0
+    path: active/ml-keep-alive/
+    reviewers:
+      - id: grok
+        role: author+executor
+        status: executing
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: [175, 772]
+    related_prs: [817, 787, 746, 682, 432]
+    related_branches: [feat/ml-pipelines-keepalive-20260925]
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: temporal-langsmith-adapter
+    title: "Temporal self-host + LangSmith Trajectories adapter (P1 observational)"
+    author: grok
+    status: executing
+    priority: P1
+    path: active/temporal-langsmith-adapter/
+    reviewers:
+      - id: grok
+        role: author+executor
+        status: executing
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_prs: []
+    related_branches:
+      - feat/temporal-langsmith-adapter
+    gates_required: [repo-gate, termux-smoke]
+
   - id: approxination-integration
     title: "Approxination skill search/create/contribute + A/B/C/D evaluation cohort"
     author: grok
@@ -43,7 +121,6 @@ proposals:
       - https://github.com/timerloggedout-spec/bifrost_fork
       - https://github.com/timerloggedout-spec/bifrost-benchmarking_fork
     gates_required: [repo-gate, termux-smoke]
-
 
   - id: auditengine-adapt
     title: "RinDig AuditEngine (Ethics Engine) adapt pass"
@@ -378,3 +455,35 @@ proposals:
     related_prs: [492]
     related_branches: [docs/proposals/agentic-scoped-access-and-tier4-review]
     gates_required: []
+
+  - id: rindig-eduba-consolidation
+    title: "RinDig ICM + EDUBA repository consolidation"
+    author: timerloggedout-spec
+    status: executing
+    priority: P0
+    path: active/rindig-eduba-consolidation/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_prs: []
+    related_branches: [feat/rindig-eduba-consolidation]
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: paper2agent-scientific-factory
+    title: "Paper2Agent scientific factory: manifest, claim graph, reproduction, certificate"
+    author: ChatGPT
+    status: posted
+    priority: P1
+    path: active/paper2agent-scientific-factory/
+    reviewers:
+      - id: ChatGPT
+        role: author+executor
+        status: posted
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: [621]
+    related_prs: [695]
+    related_branches: [docs/paper2agent-scientific-factory-proposal-2026-09-29]
+    gates_required: [repo-gate, termux-smoke]

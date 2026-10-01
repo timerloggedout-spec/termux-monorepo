@@ -106,6 +106,10 @@ SHE should render:
 
 The dashboard must not silently substitute the larger staging corpus for master.
 
-## Current next action
+## Implemented continuation upgrade
 
-**Resume at page `2`, but first replace the stale `master-staging` continuation target with a fresh current-master lineage.** The exact historical collection cannot be executed from this conversation because the available GitHub connector exposes workflow inspection/write primitives but not a workflow-dispatch operation. The control-plane change should therefore be made before the next operator dispatch rather than pretending a run occurred.
+The continuation control plane is now anchored to canonical `master`. `.github/workflows/context-relationship-backfill.yml` no longer checks out or pushes the diverged `master-staging` branch. When no page is explicitly supplied, it reads `history_window.next_start_page` from the canonical manifest and resumes that page.
+
+The builder now also emits an L2 temporal evidence layer under `workspace/llm_map/context_relationships/temporal/`: immutable snapshots, structural deltas, and append-only lineage. Snapshot identity includes source SHA/ref, observation/page bounds, and graph content hashes. The latest observation is exposed through `temporal-current.json` and summarized by `snapshot_id`, `previous_snapshot_id`, `coverage`, and `delta` in `build-summary.json`.
+
+The next collection window should therefore resume from the canonical manifest's current `history_window.next_start_page` (currently documented as page `2` in the historical evidence above), validate the new temporal artifacts, and continue until `next_start_page` is `null`. No claim of live completion is made by this documentation update.

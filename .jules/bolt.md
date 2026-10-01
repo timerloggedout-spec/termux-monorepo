@@ -44,3 +44,24 @@ In GitHub API ingestion workflows (`historical_event_correlation.py`), the jobs 
 
 **Action:**
 Always check for embedded child arrays in GitHub API parent endpoints before executing separate per-item HTTP GET calls.
+
+## 2026-09-25 - Module-Load Precomputation and Single-Pass Early Exits in Decision Engines
+**Learning:**
+In system-1 decision engine registries and completion gates (`scripts/decision_engines.py` & `scripts/canny_completion_gate.py`), executing repeated string lowerings, `.join()` calls, `str()` conversions, and multi-pass `any()` checks inside high-frequency selection loops creates substantial overhead. Pre-calculating static engine metadata (`_workflows_str`, `_multi_lang_str`, `_base_score`) at module load time and evaluating evidence in a single pass with early exit on adverse facts improves engine selection performance by ~33%.
+
+**Action:**
+Precompute static string/score metadata on catalog dictionaries at module initialization and replace multi-pass generator expressions with single-pass early-exit loops in decision gates.
+
+## 2026-09-26 - Fast-Path Zero Matching and Pre-Allocated Secret Collections in Provider Catalog Polling
+**Learning:**
+When polling high-volume provider model catalogs, executing float conversions (`float(pricing.get("prompt"))`) on every catalog row creates string-to-float parsing overhead during price classification. Fast-pathing string and integer zero equality (`"0"`, `"0.0"`, `0`) avoids `float()` allocation frames for free models. Furthermore, precomputing provider secret environment variable tuples (`RESOLVE_SECRET_NAMES`) and header filter tuples (`HEADER_PREFIXES`) at module load time eliminates per-poll dictionary and tuple allocations.
+
+**Action:**
+Use fast-path string/int checks before float conversions in catalog pricing loops, and precompute secret environment lookup tuples at module load time.
+
+## 2026-09-29 - Generator-Based Aggregation and Single-Pass Regex Parsing in Index & Lag Compilers
+**Learning:**
+In CI documentation indexers (`generate_docs_branch_index.py`), lag compilers (`calculate_lag_index.py`), and Scout mission proposal generators (`scout_missions.py`), executing inline regex compilation inside per-line iteration loops and creating intermediate list comprehensions (`[r for r in candidates if ...]`) solely for `len()` calls introduces unnecessary frame and memory allocation overhead. Pre-compiling YAML extraction regexes at module load time and utilizing `sum(1 for ...)` generator expressions eliminates allocation overhead and reduces line iteration runtime.
+
+**Action:**
+Pre-compile all YAML line parsing regexes at module scope and use `sum(1 for ...)` generators instead of instantiating intermediate lists when calculating count metrics.

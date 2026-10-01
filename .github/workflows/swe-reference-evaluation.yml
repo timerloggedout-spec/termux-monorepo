@@ -45,7 +45,7 @@ jobs:
     timeout-minutes: 60
     env:
       MINI_SWE_REVISION: a83fcae82d2a08f0ee0c688f9d137b3566c097f8
-      RUN_DIRECTORY: ${{ runner.temp }}/swe-evaluation
+      RUN_DIRECTORY: ${{ github.workspace }}/.swe-evaluation-run
     steps:
       - name: Checkout repository without provider credentials
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0

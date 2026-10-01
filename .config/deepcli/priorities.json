@@ -1,0 +1,15 @@
+{
+  "updated": "2026-09-30T23:25:00Z",
+  "chain": [
+    {"n": "1",    "id": "hindsight_wire",       "status": "closed",  "desc": "Wire deepcli._v1_hindsight into server.py + deepagent tools"},
+    {"n": "1+",   "id": "provenance_harvest",   "status": "closed",  "desc": "974 sessions + pointers + exports -> local FTS5 bank"},
+    {"n": "2",    "id": "foss_research",        "status": "active",  "desc": "FOSS research + Observatory; rish approval pending"},
+    {"n": "2+1",  "id": "multi_llm_adapters",   "status": "active",  "desc": "Kimi code ready; token extraction in progress"},
+    {"n": "2++",  "id": "provenance_issues",    "status": "pending", "desc": "Curated provenance issue index"},
+    {"n": "3",    "id": "device_scan",          "status": "pending", "desc": "App + HomeScreen folders + shortcuts scan"},
+    {"n": "3+",   "id": "moar_signups",         "status": "pending", "desc": "More signups + integrations"},
+    {"n": "4",    "id": "user_testing_lane",    "status": "queued",  "desc": "UI/UX control surface testing lane; visual regression, interaction coverage"},
+    {"n": "4+",   "id": "render_emulator",      "status": "blocked", "desc": "Render demo version + emulator investigation; stalled with @jukes"},
+    {"n": "5",    "id": "hindsight_selfhost",   "status": "active",  "desc": "Codespace self-hosted Hindsight; ~100s provision, docker verify pending"}
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "hindsight-glibc",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "."
+  },
+  "hostRequirements": { "cpus": 4, "memory": "8gb", "storage": "32gb" },
+  "forwardPorts": [8888],
+  "portsAttributes": {
+    "8888": { "label": "hindsight", "onAutoForward": "silent" }
+  },
+  "containerEnv": {
+    "HINDSIGHT_API_LLM_PROVIDER": "gemini",
+    "HINDSIGHT_API_LLM_MODEL": "gemini-2.0-flash",
+    "HINDSIGHT_API_LLM_GEMINI_SERVICE_TIER": "on_demand",
+    "HINDSIGHT_API_EMBEDDINGS_PROVIDER": "gemini",
+    "HINDSIGHT_API_EMBEDDINGS_MODEL": "text-embedding-004",
+    "HINDSIGHT_API_RERANKER_PROVIDER": "none",
+    "HINDSIGHT_API_FILE_PARSER": "markitdown",
+    "HINDSIGHT_API_FILE_PARSER_ALLOWLIST": "markitdown",
+    "HINDSIGHT_API_PORT": "8888",
+    "HINDSIGHT_API_HOST": "0.0.0.0"
+  },
+  "postCreateCommand": "bash .devcontainer/glibc/post-create.sh",
+  "postStartCommand": "bash .devcontainer/glibc/post-start.sh"
+}

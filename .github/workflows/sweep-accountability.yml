@@ -70,6 +70,7 @@ jobs:
           python3 scripts/ci/sweep_census_counts.py docs/ops/generated/sweep-ledger/census
 
       - name: Record sweep observation
+        if: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
         env:
           MODE: ${{ github.event.inputs.mode }}
           SWEEP_VERSION: ${{ github.event.inputs.sweep_version }}
@@ -118,4 +119,4 @@ jobs:
             exit 0
           fi
           git commit -m "chore(ops): record sweep accountability receipt"
-          git push
+          git push origin "HEAD:${GITHUB_REF_NAME}"

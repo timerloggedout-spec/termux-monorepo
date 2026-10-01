@@ -255,3 +255,17 @@ Does **not** alter live catalog → router → MB edges; feeds **roster / attrib
 | Certifications template | Issue #506 |
 
 Agent-Identity: Grok (Administrator) · RECON consolidation 2026-09-19
+
+---
+
+## Temporal self-host + LangSmith Trajectories (2026-09-24 / residual 2026-09-30)
+
+| Node | Edge | Notes |
+|------|------|-------|
+| Temporal self-host | durable execution substrate | FOSS MIT; GHA `temporal-self-host-smoke` SUCCESS; `mcp-docker/temporal/`; Codespaces |
+| LangSmith Trajectories | observational path view | flat ordered messages; online evals; SFT export |
+| LangSmithPlugin (temporalio) | Worker-boundary trace continuity | experimental; capability-gated |
+| OTEL + ATES/JSONL | canonical evidence | unchanged P0 |
+
+Proposal: `docs/proposals/active/temporal-langsmith-adapter/`  
+Runbook: `docs/ops/TEMPORAL-LANGSMITH-ADAPTER.md`

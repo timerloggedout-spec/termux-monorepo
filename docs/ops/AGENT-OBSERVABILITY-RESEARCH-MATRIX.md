@@ -12,6 +12,8 @@ The research candidates should be compared as **parallel adapters/providers agai
 |---|---|---|---|---|
 | **Canonical JSONL + receipts** | repository-owned evidence source | runtime watcher / artifact ledger | **P0** | canonical evidence authority |
 | OpenTelemetry | neutral trace/span interoperability | agent invocation + Actions boundary | **P0** | transport/interoperability layer |
+| Temporal (self-host FOSS) | durable Workflow/Activity execution for long agents | mcp-docker/temporal + GHA temporal-self-host-smoke + Codespaces | P1 | optional runtime substrate; not dual-gate required |
+| LangSmith Trajectories | flat chronological agent session path + online evals + SFT export | observational adapter over OTEL/JSONL; Temporal LangSmithPlugin bridge | P1 | observational; no source-of-truth authority |
 | **ATES runtime evidence** | run/job/task throughput observations | workflow watcher + canonical JSONL | **P0** | observational execution spine |
 | **Complexity contract** | normalized task/code difficulty | structural + provider feature pipeline | **P0** | measurement foundation |
 | **Docker** | reproducible CI/research execution | instrument/evaluation parity harness | **P0** | environment substrate, not evidence source |
@@ -26,6 +28,7 @@ The research candidates should be compared as **parallel adapters/providers agai
 | MASEval / agent benchmark suites | multi-agent evaluation patterns | future manager tournament cohorts | P2 | research input; adopt only after local schema mapping |
 | Langfuse/Phoenix persistence UX | hosted/vendor-specific persistence | adapters over canonical events | P2 | never replace canonical corpus |
 | Edge/ARM/Android inference | local inference efficiency | device/runtime benchmark lane | P2 | benchmark/research only until reproducibility is demonstrated |
+
 ## TDQS lane
 
 Glama's **Tool Definition Quality Score (TDQS)** is now explicitly represented
@@ -79,6 +82,16 @@ changelog records the six-dimension rubric, server coherence, and later
 shadowing-risk work; the monorepo keeps the deterministic portion locally so
 inputs, hashes, and historical evidence remain under the repository's own
 contracts.
+
+## Why Temporal + LangSmith Trajectories
+
+**Temporal** (MIT) is the durable execution layer. Self-host first via GHA `.github/workflows/temporal-self-host-smoke.yml` (SUCCESS on master), `mcp-docker/temporal/`, or Codespaces. Cloud Free Tier optional after secrets exist.
+
+**LangSmith Trajectories** project a multi-turn thread into a readable ordered message path. Online evaluators score the path; export to datasets / SFT.
+
+**Bridge:** Temporal Python SDK experimental `LangSmithPlugin` for Worker-boundary continuity.
+
+Ops: [`docs/ops/TEMPORAL-LANGSMITH-ADAPTER.md`](TEMPORAL-LANGSMITH-ADAPTER.md)
 
 ## Why Langfuse deserves attention
 
@@ -178,6 +191,7 @@ The repository-owned evidence contract is defined in [`AGENT-EVIDENCE-SUBSTRATE.
 ## Current-state rule
 
 Historical PR state must not be presented as current execution state. Re-fetch the live branch/commit before describing a PR, workflow, corpus, or promotion state. Observer/status commits are evidence epochs, not substitutes for the execution artifact they describe.
+
 ## Phase gates
 
 ### Phase A — contract + reducer **[IMPLEMENTED]**
@@ -204,7 +218,7 @@ providers. Provider observations remain separate from ATES truth.
 ### Phase E — parallel evaluation
 
 Run equivalent cohorts through GitHub-only, TDQS, Langfuse-adapter, and
-Phoenix-adapter paths.
+Phoenix-adapter paths (optional LangSmith Trajectories adapter).
 
 ### Phase F — environment parity
 

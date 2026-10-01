@@ -34,7 +34,7 @@ esac
 
 echo "hs-cadence: source=$_source max=$_max batch=$_batch wait=${_wait}s"
 hs_log cadence start "$_source max=$_max batch=$_batch"
-"$_cmd" --new ${_max:+--limit=$_max} 2>&1 | tee -a "$HS_LOG.${_source}.$(date +%s)"
+if [ "${_max:-0}" -gt 0 ]; then "$_cmd" --new --limit=$_max; else "$_cmd" --new; fi 2>&1 | tee -a "$HS_LOG.${_source}.$(date +%s)"
 _rc=${PIPESTATUS[0]}
 _end=$(date +%s)
 _el=$((_end - _start))

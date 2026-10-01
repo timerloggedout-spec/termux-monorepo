@@ -16,6 +16,7 @@ import asyncio, json, os, sys, time, urllib.request, urllib.error, zipfile
 from pathlib import Path
 
 HS = os.environ.get("HINDSIGHT_BASE_URL", "http://localhost:8888").rstrip("/")
+KEY = os.environ.get("HINDSIGHT_API_KEY", "")
 LOG = Path("/tmp/mvt-seed.log")
 ACTIVE = Path("/tmp/hs-stack/active.json")
 
@@ -26,10 +27,10 @@ def _active_model():
         return "gemini-3.5-flash-lite"
 
 PROVIDERS = [
-    {"name": "gemini", "rpm": 15, "concurrency": 4, "pace": 4.5},
-    # Future lanes (uncomment when keys present):
-    # {"name": "openrouter", "rpm": 20, "concurrency": 5, "pace": 3.5},
-    # {"name": "groq",       "rpm": 30, "concurrency": 6, "pace": 2.5},
+    {"name": "gemini",     "rpm": 15, "concurrency": 4, "pace": 4.5,
+     "hs_url": "http://localhost:8888"},
+    {"name": "openrouter", "rpm": 20, "concurrency": 5, "pace": 3.5,
+     "hs_url": "http://localhost:8889"},
 ]
 
 def log(m):
@@ -167,16 +168,17 @@ def source_factory(name):
     return None
 
 # ── Async post ──────────────────────────────────────────────────
-async def post_one(bank, item, timeout=180):
+async def post_one(hs_url, bank, item, timeout=180):
     body = json.dumps({"items": [item]}).encode()
     loop = asyncio.get_running_loop()
 
     def _blocking():
         req = urllib.request.Request(
-            f"{HS}/v1/default/banks/{bank}/memories",
+            f"{hs_url}/v1/default/banks/{bank}/memories",
             data=body,
             method="POST",
-            headers={"Content-Type": "application/json"},
+            headers={"Content-Type": "application/json",
+                     "Authorization": f"Bearer {KEY}"},
         )
         try:
             with urllib.request.urlopen(req, timeout=timeout) as r:
@@ -188,13 +190,13 @@ async def post_one(bank, item, timeout=180):
 
     return await loop.run_in_executor(None, _blocking)
 
-async def worker(name, bank, queue, counters, pace):
+async def worker(name, hs_url, bank, queue, counters, pace):
     while True:
         item = await queue.get()
         if item is None:
             queue.task_done()
             return
-        code = await post_one(bank, item)
+        code = await post_one(hs_url, bank, item)
         if code == 200:
             counters["ok"] += 1
         elif code == 429:
@@ -210,23 +212,6 @@ async def worker(name, bank, queue, counters, pace):
         await asyncio.sleep(pace)
         queue.task_done()
 
-def _ensure_bank(bank):
-    body = json.dumps({"bank_id": bank, "name": bank}).encode()
-    req = urllib.request.Request(
-        f"{HS}/v1/default/banks",
-        data=body,
-        method="POST",
-        headers={"Content-Type": "application/json"},
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=10):
-            pass
-        log(f"  created bank {bank}")
-    except urllib.error.HTTPError as e:
-        if e.code not in (409, 400):
-            log(f"  ensure_bank {bank} -> HTTP {e.code}")
-    except Exception as e:
-        log(f"  ensure_bank {bank} -> {type(e).__name__}: {e}")
 
 async def run_provider(provider, source):
     prov = provider["name"]
@@ -235,9 +220,8 @@ async def run_provider(provider, source):
     bank = f"deepagent::mvt::{prov}::{comp_hash}"
     state = load_state(prov, source)
     done = state.get("n_ok", 0)
-    log(f"=== provider={prov} source={source} model={model} bank={bank} resumed_from={done} ===")
+    log(f"=== provider={prov} source={source} model={model} bank={bank} resumed_from={done} key={'SET' if KEY else 'MISSING'} ===")
 
-    _ensure_bank(bank)
 
     factory = source_factory(source)
     if factory is None:
@@ -247,7 +231,7 @@ async def run_provider(provider, source):
     q = asyncio.Queue(maxsize=provider["concurrency"] * 4)
     counters = {"ok": 0, "fail": 0, "429": 0}
     workers = [
-        asyncio.create_task(worker(f"{prov}-{i}", bank, q, counters, provider["pace"]))
+        asyncio.create_task(worker(f"{prov}-{i}", provider["hs_url"], bank, q, counters, provider["pace"]))
         for i in range(provider["concurrency"])
     ]
 

@@ -17,6 +17,7 @@ from pathlib import Path
 
 HS = os.environ.get("HINDSIGHT_BASE_URL", "http://localhost:8888").rstrip("/")
 KEY = os.environ.get("HINDSIGHT_API_KEY", "")
+BATCH_SIZE = int(os.environ.get("MVT_BATCH_SIZE", "8"))
 LOG = Path("/tmp/mvt-seed.log")
 ACTIVE = Path("/tmp/hs-stack/active.json")
 
@@ -170,8 +171,8 @@ def source_factory(name):
     return None
 
 # ── Async post ──────────────────────────────────────────────────
-async def post_one(hs_url, bank, item, timeout=180):
-    body = json.dumps({"items": [item]}).encode()
+async def post_batch(hs_url, bank, items, timeout=180):
+    body = json.dumps({"items": items}).encode()
     loop = asyncio.get_running_loop()
 
     def _blocking():
@@ -200,17 +201,29 @@ async def post_one(hs_url, bank, item, timeout=180):
 async def worker(name, hs_url, bank, queue, counters, pace):
     consec_quota = 0
     while True:
-        item = await queue.get()
-        if item is None:
-            queue.task_done()
-            return
-        code, body = await post_one(hs_url, bank, item)
+        # Collect up to BATCH_SIZE items
+        items = []
+        try:
+            first = await queue.get()
+            if first is None:
+                queue.task_done(); return
+            items.append(first)
+            while len(items) < BATCH_SIZE:
+                try:
+                    nxt = queue.get_nowait()
+                    if nxt is None:
+                        queue.task_done(); break
+                    items.append(nxt)
+                except asyncio.QueueEmpty:
+                    break
+            code, body = await post_batch(hs_url, bank, items)
+            for _ in items: queue.task_done()
 
         quota_in_body = ("RESOURCE_EXHAUSTED" in body or "429" in body
                          or "quota" in body.lower())
 
         if code == 200:
-            counters["ok"] += 1
+            counters["ok"] += len(items)
             consec_quota = 0
         elif code == 429 or (code == 500 and quota_in_body):
             counters["429"] += 1

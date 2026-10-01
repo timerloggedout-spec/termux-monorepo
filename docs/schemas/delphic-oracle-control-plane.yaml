@@ -1,0 +1,72 @@
+version: "1.0"
+id: "delphic-oracle-control-plane"
+principle: "probabilistic state explains uncertainty; canonical evidence remains authoritative"
+
+input:
+  source: "canonical evidence ledger / SHE snapshot / bounded experiment receipt"
+  required_identity: [source_sha, event_id, observed_at]
+  missingness: "unknown remains unknown; never coerce to zero"
+
+left_now_layers:
+  tensor:
+    meaning: "multidimensional observation slice over time/task/actor/provider/metric"
+    source: "derived projection"
+  graph:
+    meaning: "evidence relationships and provenance edges"
+    source: "derived projection"
+  matrix:
+    meaning: "state × state, actor × outcome, or cohort × evidence incidence"
+    source: "derived projection"
+  constellation:
+    meaning: "visual grouping of related evidence entities"
+    source: "derived projection"
+
+right_interthreading_layers:
+  dag:
+    meaning: "decision/evidence causality: hypothesis → treatment → observation → outcome"
+    not_git_dag: true
+  trellis:
+    meaning: "time-indexed state transitions with recombination by equivalent state"
+  markov:
+    meaning: "transition probabilities between explicitly modeled states"
+  provenance:
+    meaning: "immutable source identities and confidence-bearing relationship edges"
+
+bayesian:
+  binary_outcome:
+    family: beta_bernoulli
+    update_only_when: [executed, attributed, observed_binary_outcome]
+  route:
+    family: model_average
+    selection_policy: "hard gates first; uncertainty-aware policy second"
+  evi:
+    formula: "expected_post_experiment_utility - current_expected_utility - experiment_cost"
+  safeguards:
+    - "admission failure is availability/capacity evidence, not model-quality failure"
+    - "duplicate retries sharing experiment_id are not independent trials"
+    - "posterior intervals accompany point estimates"
+    - "priors retain provenance"
+    - "correlated observations are not silently multiplied"
+
+adversarial_review:
+  mode: dynamic_admission
+  signals:
+    uncertainty_width: "posterior interval width"
+    benchmark_regression: "validated cohort delta below declared baseline"
+    anomaly_density: "unexpected event/retry/error density"
+    provenance_gap: "missing/low-confidence identity or source linkage"
+    change_point: "detected regime shift"
+    decision_impact: "material downstream consequence"
+  admission_result:
+    enum: [not_admitted, advisory, required]
+  authority: "review recommendation only"
+
+observatory_projection:
+  read_only: true
+  consumes: [canonical_evidence, delphic_state, provenance_edges]
+  emits: [snapshot]
+  cannot: [emit_telemetry, mutate_canonical_evidence, approve_promotion, bypass_hard_gates]
+
+identity:
+  required: [experiment_id, source_sha, event_id, observed_at, policy_version]
+  optional: [run_id, run_attempt, cohort_id, task_family, provider, model, topology]

@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-01T13:04:31Z UTC · receipts=733 · foreign_open=23 · tributes=61_
+_Generated 2026-10-01T15:41:26Z UTC · receipts=733 · foreign_open=24 · tributes=62_
 
 ## Tributes (contributor ledger)
 
+- [nextcloud/spreed#19662](https://github.com/nextcloud/spreed/pull/19662) · state=open · help-wanted: stake + contribute for #19498
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -43,10 +44,10 @@ _Generated 2026-10-01T13:04:31Z UTC · receipts=733 · foreign_open=23 · tribut
 - [UnityChainxx/StellarHunts#599](https://github.com/UnityChainxx/StellarHunts/pull/599) · state=closed · help-wanted: stake + contribute for #519
 - [Stellar-songifi/Lyricsflip_server#212](https://github.com/Stellar-songifi/Lyricsflip_server/pull/212) · state=closed · help-wanted: stake + contribute for #108
 - [C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend#587](https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587) · state=closed · help-wanted: stake + contribute for #579
-- [vavallee/bindery#2770](https://github.com/vavallee/bindery/pull/2770) · state=closed · help-wanted: stake + contribute for #2769
 
 ## Foreign open PRs
 
+- [nextcloud/spreed#19662](https://github.com/nextcloud/spreed/pull/19662) — help-wanted: stake + contribute for #19498
 - [kawacukennedy/afrpoweros#40](https://github.com/kawacukennedy/afrpoweros/pull/40) — help-wanted: stake + contribute for #5
 - [laugh-tales/starpass-contracts#59](https://github.com/laugh-tales/starpass-contracts/pull/59) — help-wanted: stake + contribute for #28
 - [Vikram-sardiwal/react-open-source#50](https://github.com/Vikram-sardiwal/react-open-source/pull/50) — help-wanted: stake + contribute for #16

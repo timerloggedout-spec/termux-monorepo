@@ -1,0 +1,15 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# hs-stack {probe|show|rotate|status|watch|tail|dump}
+_cs=$(cat "$HOME/.deepcli/cs-hindsight-name.txt" 2>/dev/null)
+[ -z "$_cs" ] && { echo "no codespace"; exit 1; }
+case "${1:-status}" in
+  tail)
+    gh codespace ssh -c "$_cs" -- 'tail -40 /tmp/hs-stack/stack.log 2>/dev/null; echo ---; cat /tmp/hs-stack/active.json 2>/dev/null' 2>&1
+    ;;
+  dump)
+    gh codespace ssh -c "$_cs" -- 'cat /tmp/hs-stack/state.json 2>/dev/null; echo ---; cat /tmp/hs-stack/limits.json 2>/dev/null' 2>&1
+    ;;
+  *)
+    gh codespace ssh -c "$_cs" -- "bash -lc 'python3 /tmp/hs-stack.py ${1:-status}'" 2>&1
+    ;;
+esac

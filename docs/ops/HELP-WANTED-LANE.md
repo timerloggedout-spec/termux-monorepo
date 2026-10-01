@@ -37,3 +37,11 @@ Claim once · skip closed · PRIMARY upstream · no stake `Fixes #` · foreign-o
 LLM assist: `OPENROUTER_API_KEY` / `FELO_AI_API` / `OMNI_*` (by name in Actions).
 
 Agent-Identity: Grok (Administrator)
+
+## Help-Given Tribute graduation gate
+
+The lane now distinguishes the stake/claim event from a delivered fix. Use docs/ops/HELP-GIVEN-TRIBUTE.md and scripts/ci/help_wanted_diff_gate.py for the canonical state machine and diff-proof gate.
+
+A stake PR is a legitimate tribute event but never solution credit. A solution requires a non-placeholder repository delta plus explicit Help-Given Tribute / Stage: solution / Diff proof: / Validation: evidence in the PR body.
+
+Destination: fixes discovered by this lane are delivered as upstream Help-Given Tributes to the foreign maintainer's repository; the monorepo records the transaction and evidence.

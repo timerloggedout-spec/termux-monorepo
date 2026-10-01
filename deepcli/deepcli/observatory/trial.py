@@ -7,7 +7,7 @@
 5. persist to Leaderboard + Hindsight (fanout)
 """
 from __future__ import annotations
-import asyncio, json, os, time, urllib.request, urllib.error
+import asyncio, hashlib, json, os, time, urllib.request, urllib.error
 from pathlib import Path
 from .mev import produce
 from .jev import critique
@@ -37,6 +37,42 @@ def _retain(content: str, meta: dict) -> int:
         return e.code
     except Exception:
         return 0
+
+
+
+def _composition_hash(bank_cfg: dict) -> str:
+    """Deterministic hash of bank configuration (mission, disposition, boosts)."""
+    return hashlib.sha256(
+        json.dumps(bank_cfg, sort_keys=True).encode()
+    ).hexdigest()[:12]
+
+
+def _bank_export(base: str, key: str, bank: str) -> dict:
+    """GET /v1/default/banks/{bank}/export -> template manifest."""
+    hdrs = {"Accept": "application/json"}
+    if key:
+        hdrs["Authorization"] = f"Bearer {key}"
+    req = urllib.request.Request(
+        f"{base}/v1/default/banks/{bank}/export", headers=hdrs)
+    try:
+        with urllib.request.urlopen(req, timeout=20) as r:
+            return json.load(r)
+    except Exception:
+        return {}
+
+
+def _bank_config(base: str, key: str, bank: str) -> dict:
+    """GET /v1/default/banks/{bank} -> live config (mission, disposition)."""
+    hdrs = {"Accept": "application/json"}
+    if key:
+        hdrs["Authorization"] = f"Bearer {key}"
+    req = urllib.request.Request(
+        f"{base}/v1/default/banks/{bank}", headers=hdrs)
+    try:
+        with urllib.request.urlopen(req, timeout=20) as r:
+            return json.load(r)
+    except Exception:
+        return {}
 
 
 async def run_trial(prompt: str,
@@ -82,11 +118,15 @@ async def run_trial(prompt: str,
                       [k for k in kevs if k.get("ok")])
 
     lb = Leaderboard()
+    _bank_cfg = _bank_config(HS_URL, HS_KEY, BANK)
+    _comp_hash = _composition_hash(_bank_cfg)
+
     for entry in laya["ranked"]:
         lb.record(
             role="laya", task=task,
             provider=entry["provider"], model=entry["model"],
             score=entry["composite"], ok=True,
+            composition_hash=_comp_hash,
         )
 
     winner = laya.get("winner") or {}
@@ -102,6 +142,8 @@ async def run_trial(prompt: str,
 
     return {
         "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "composition_hash": _comp_hash,
+        "bank_config": _bank_cfg,
         "task": task,
         "prompt": prompt,
         "providers": providers,

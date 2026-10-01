@@ -17,15 +17,18 @@ class Leaderboard:
             except Exception:
                 self.data = {}
 
-    def _key(self, role: str, task: str, provider: str, model: str) -> str:
-        return f"{role}::{task}::{provider}::{model}"
+    def _key(self, role: str, task: str, provider: str, model: str,
+             composition_hash: str = "") -> str:
+        base = f"{role}::{task}::{provider}::{model}"
+        return f"{base}::{composition_hash}" if composition_hash else base
 
     def record(self, role: str, task: str, provider: str, model: str,
                score: float, cost: float = 0.0, latency_ms: int = 0,
-               ok: bool = True) -> None:
-        k = self._key(role, task, provider, model)
+               ok: bool = True, composition_hash: str = "") -> None:
+        k = self._key(role, task, provider, model, composition_hash)
         e = self.data.setdefault(k, {
             "role": role, "task": task, "provider": provider, "model": model,
+            "composition_hash": composition_hash,
             "runs": 0, "ok": 0, "fail": 0, "scores": [], "cost": 0.0,
             "latency_ms_sum": 0, "first_seen": time.time(), "last_seen": time.time(),
         })
@@ -53,6 +56,7 @@ class Leaderboard:
             score = avg * (e["ok"] / n)
             cands.append({
                 "provider": e["provider"], "model": e["model"],
+                "composition_hash": e.get("composition_hash", ""),
                 "avg_score": round(avg, 4), "ok_rate": round(e["ok"] / n, 4),
                 "composite": round(score, 4), "cost_total": round(e["cost"], 4),
                 "avg_latency_ms": round(avg_lat, 1), "runs": e["runs"],

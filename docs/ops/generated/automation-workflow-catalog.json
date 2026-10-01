@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "6599ccca65186df1fbdd329560b360dcf5e67a3e063f2502425c920237429004",
-  "workflow_count": 117,
+  "source_fingerprint": "d5781522ae33a5537b1e0f3c6e4ae8dbc4fe7346a4fc2ae3d5f5653deb146887",
+  "workflow_count": 119,
   "workflows": [
     {
       "action_pins": [
@@ -1206,6 +1206,22 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "verify"
+      ],
+      "name": "help-wanted diff gate",
+      "path": ".github/workflows/help-wanted-diff-gate.yml",
+      "schedules": [],
+      "triggers": [
+        "repository_dispatch",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
       "concurrency": "group: help-wanted-execute cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
@@ -2109,6 +2125,28 @@
       "schedules": [],
       "triggers": [
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: sweep-accountability-${{ github.ref }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "sweep"
+      ],
+      "name": "Sweep Accountability",
+      "path": ".github/workflows/sweep-accountability.yml",
+      "schedules": [
+        "17 2 * * *"
+      ],
+      "triggers": [
+        "issue_comment",
+        "issues",
+        "pull_request",
+        "push",
+        "schedule",
         "workflow_dispatch"
       ]
     },

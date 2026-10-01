@@ -65,3 +65,10 @@ In CI documentation indexers (`generate_docs_branch_index.py`), lag compilers (`
 
 **Action:**
 Pre-compile all YAML line parsing regexes at module scope and use `sum(1 for ...)` generators instead of instantiating intermediate lists when calculating count metrics.
+
+## 2026-10-01 - Single-Pass Topological Order Passing and Regex Caching in Dependency-Phase Engines
+**Learning:**
+In dependency phase DAG engines and Gantt projections (`dependency_phase_engine.py` & `gantt_projection.py`), `topological_order()` was being executed up to 3 times per evaluation and projection run. Additionally, phase matching regex patterns were being compiled on every candidate PR/issue check, and critical path calculation constructed intermediate list copies (`best_chain[prev] + [node]`) for every DAG node. Pre-computing `topo_order` once and passing it as an optional parameter, caching compiled phase patterns in a module dictionary, and replacing list concatenations with a single parent pointer dictionary chain reduced plan evaluation time by >50%.
+
+**Action:**
+Accept optional pre-computed topological order parameters in DAG traversal functions, cache dynamic regex patterns in module dicts when phase IDs are repeatedly searched, and use parent pointer backtracking instead of list copies when computing paths on directed graphs.

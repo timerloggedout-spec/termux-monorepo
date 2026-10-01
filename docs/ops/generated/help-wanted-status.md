@@ -1,6 +1,6 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-09-30T23:43:50Z UTC · receipts=685 · foreign_open=25 · tributes=60_
+_Generated 2026-10-01T01:19:01Z UTC · receipts=710 · foreign_open=25 · tributes=60_
 
 ## Tributes (contributor ledger)
 
@@ -73,6 +73,6 @@ _Generated 2026-09-30T23:43:50Z UTC · receipts=685 · foreign_open=25 · tribut
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=685 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 599, 'followup_reengage': 19, 'followup_stale_nudge': 18, 'followup_changes': 1}`
+## Outcomes · ok=710 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 624, 'followup_reengage': 19, 'followup_stale_nudge': 18, 'followup_changes': 1}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

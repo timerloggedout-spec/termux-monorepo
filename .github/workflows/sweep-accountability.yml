@@ -34,9 +34,6 @@ on:
     types: [opened, edited, closed, reopened, labeled, unlabeled, assigned, unassigned]
   issue_comment:
     types: [created, edited, deleted]
-  workflow_run:
-    workflows: ["*"]
-    types: [completed]
 
 permissions:
   contents: write
@@ -45,7 +42,7 @@ permissions:
   pull-requests: read
 
 concurrency:
-  group: sweep-accountability
+  group: sweep-accountability-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -70,18 +67,7 @@ jobs:
           gh api --paginate "repos/$GITHUB_REPOSITORY/pulls?state=all&per_page=100" > docs/ops/generated/sweep-ledger/census/pulls.json
           gh api --paginate "repos/$GITHUB_REPOSITORY/issues?state=all&per_page=100" > docs/ops/generated/sweep-ledger/census/issues.json
           gh api --paginate "repos/$GITHUB_REPOSITORY/actions/runs?per_page=100" > docs/ops/generated/sweep-ledger/census/workflow-runs.json
-          python3 - <<PY
-import json, pathlib
-p=pathlib.Path("docs/ops/generated/sweep-ledger/census")
-for name in ("pulls","issues","workflow-runs"):
-    raw=p.joinpath(name+".json").read_text()
-    try:
-        pages=json.loads(raw)
-        count=sum(len(x) for x in pages) if isinstance(pages,list) and pages and isinstance(pages[0],list) else (len(pages) if isinstance(pages,list) else 0)
-    except Exception:
-        count=-1
-    print(name, count)
-PY
+          python3 scripts/ci/sweep_census_counts.py docs/ops/generated/sweep-ledger/census
 
       - name: Record sweep observation
         env:
@@ -106,21 +92,7 @@ PY
           RUN_URL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
           EVENT_KIND="$GITHUB_EVENT_NAME"
           export COMMITS HEAD_SHA FIRST_SHA EVENT_KIND
-          FINDINGS="$(python3 - <<PY
-import json, os, pathlib
-items=[{"id":"repository-head","classification":"OBSERVED","statement":"HEAD="+os.environ["HEAD_SHA"],"evidence_refs":["git://commit/"+os.environ["HEAD_SHA"]],"confidence":1},{"id":"repository-commit-count","classification":"OBSERVED","statement":"reachable commits="+os.environ["COMMITS"],"evidence_refs":["git://rev-list"],"confidence":1},{"id":"trigger-event","classification":"OBSERVED","statement":"sweep trigger="+os.environ["EVENT_KIND"],"evidence_refs":["github://event"],"confidence":1}]
-p=pathlib.Path("docs/ops/generated/sweep-ledger/census")
-if p.exists():
-  for name in ("pulls","issues","workflow-runs"):
-    f=p.joinpath(name+".json")
-    if f.exists():
-      try: raw=json.loads(f.read_text()); n=sum(len(x) for x in raw) if raw and isinstance(raw,list) and isinstance(raw[0],list) else len(raw) if isinstance(raw,list) else 0
-      except Exception: n=-1
-      items.append({"id":"census-"+name,"classification":"OBSERVED","statement":name+" pages/items="+str(n),"evidence_refs":["artifact://census/"+name],"confidence":1})
-print(json.dumps(items,separators=(",",":")))
-PY
-          )"
-
+          FINDINGS="$(python3 scripts/ci/sweep_findings.py)"
           python3 scripts/ci/sweep_accountability.py \
             --repository "$GITHUB_REPOSITORY" \
             --sweep-version "$SWEEP_VERSION" \
@@ -140,7 +112,6 @@ PY
             --effects "[{\"id\":\"effect-$GITHUB_RUN_ID\",\"type\":\"accountability-receipt\",\"after\":{\"head_sha\":\"$HEAD_SHA\",\"reachable_commits\":$COMMITS,\"trigger_event\":\"$EVENT_KIND\",\"run_url\":\"$RUN_URL\"}}]" \
             --coverage-reason "Git history is complete for the checked-out ref; external source census is explicit and retained when HISTORICAL mode is requested." \
             --out-dir docs/ops/generated/sweep-ledger
-
           git add docs/ops/generated/sweep-ledger
           if git diff --cached --quiet; then
             echo "No ledger delta"

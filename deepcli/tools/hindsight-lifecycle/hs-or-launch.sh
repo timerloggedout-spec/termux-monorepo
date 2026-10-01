@@ -3,14 +3,19 @@ set -u
 _main=$(pgrep -f 'hindsight-api --port 8888' | head -1)
 [ -z "$_main" ] && { echo "no :8888 api"; exit 1; }
 
-# Source entire HINDSIGHT_* env from the live primary (embeddings, reranker, parser, tier)
+# Capture the Gemini key BEFORE we override LLM_API_KEY
+_gem=$(tr '\0' '\n' < /proc/$_main/environ | grep '^HINDSIGHT_API_LLM_API_KEY=' | cut -d= -f2-)
+
+# Inherit all HINDSIGHT_* from primary
 while IFS='=' read -r _k _v; do
-  case "$_k" in
-    HINDSIGHT_*) export "$_k=$_v" ;;
-  esac
+  case "$_k" in HINDSIGHT_*) export "$_k=$_v" ;; esac
 done < <(tr '\0' '\n' < /proc/$_main/environ)
 
-# Override only the LLM + port + worker
+# Pin embeddings to the Gemini key so embeddings don't pick up the OR key
+export HINDSIGHT_API_EMBEDDINGS_GEMINI_API_KEY="$_gem"
+export HINDSIGHT_API_EMBEDDINGS_API_KEY="$_gem"
+
+# Override LLM to OpenRouter
 export HINDSIGHT_API_LLM_PROVIDER="openrouter"
 export HINDSIGHT_API_LLM_MODEL="meta-llama/llama-3.3-70b-instruct:free"
 export HINDSIGHT_API_LLM_API_KEY=$(tr '\0' '\n' < /proc/$_main/environ | grep '^OPENROUTER_API_KEY=' | cut -d= -f2-)
@@ -18,8 +23,7 @@ export HINDSIGHT_API_WORKER_ID="hindsight-openrouter"
 export HINDSIGHT_API_PORT=8889
 export HINDSIGHT_API_HOST=0.0.0.0
 
-echo "or_key_len=${#HINDSIGHT_API_LLM_API_KEY}  or_model=$HINDSIGHT_API_LLM_MODEL"
-echo "embed_provider=$HINDSIGHT_API_EMBEDDINGS_PROVIDER  embed_model=$HINDSIGHT_API_EMBEDDINGS_MODEL"
+echo "llm_key_len=${#HINDSIGHT_API_LLM_API_KEY}  embed_gem_len=${#HINDSIGHT_API_EMBEDDINGS_GEMINI_API_KEY}"
 
 pkill -9 -f 'hindsight-api --port 8889' 2>/dev/null || true
 sleep 1

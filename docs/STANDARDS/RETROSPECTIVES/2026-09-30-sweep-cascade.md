@@ -106,3 +106,113 @@ Correct order is the reverse — vault first, then work.
 **Perfect RECON:** inventory → classify → plan → verify → execute → verify → log
 **Perfect Trunk:** short lane → rebase daily → push always → merge fast →
 delete branch+worktree same day → snapshot trunk
+
+---
+
+## Addendum · DinD in Codespaces is a wall
+
+**Finding:** GitHub Codespaces outer container lacks `CAP_SYS_ADMIN`. The
+`unshare` syscall is blocked by seccomp. Docker can pull images but cannot
+register layers (`unshare: operation not permitted`).
+
+**Why the devcontainer `docker-in-docker:2` feature works:** it configures
+the codespace itself with elevated capabilities (`--privileged`-equivalent
+runArgs) at *creation time*. A manually-started dockerd inside a non-feature
+codespace cannot cross this boundary.
+
+**Verified on:** Alpine 3.23 outer container, dockerd 29.5.2, vfs storage
+driver, `iptables: false`, `bridge: none`. All the daemon-level flags that
+work on bare metal — none of them bypass the seccomp filter on `unshare`.
+
+**Correct pattern:** run the target service as a **direct process** in the
+codespace (Python venv, Node, Go binary). Skip Docker entirely. The codespace
+becomes a leased compute cell for the process, not a container host.
+
+**DO** treat Docker-in-Codespaces as opt-in via the official feature only.
+**DO NOT** start dockerd manually and expect `docker run` to succeed.
+
+## Addendum · Codespaces prebuild fallback
+
+GitHub Codespaces falls back to a **previous prebuild** when the new
+devcontainer config fails to build. This silently serves the old image.
+
+Confirmed: `.devcontainer/devcontainer.json` said `FROM base:ubuntu`, but
+new codespaces landed on Alpine 3.23 (musl). Alpine has no musllinux
+wheels for torch/onnxruntime — Hindsight cannot install.
+
+**Workaround:** new devcontainer path `.devcontainer/glibc/devcontainer.json`
+has no prebuild history. Fresh path → forced rebuild → Ubuntu base.
+
+**DO** when changing devcontainer config: use a new path.
+**DO** verify base after create: `grep PRETTY_NAME /etc/os-release`.
+
+## Addendum · Codespaces 502 pattern
+
+`502 Bad Gateway` from `<codespace>-<port>.app.github.dev` means the port
+forwarding is registered but the backend socket isn't accepting. Causes:
+
+1. App still in warm-up. Hindsight issue #4374: `create_app()` lifespan
+   awaits `memory.initialize()` before uvicorn accepts connections.
+   Window: up to 3 min when local embedding/reranker providers are used.
+2. App crashed on startup — port never bound. `tail /tmp/hs.log`.
+3. SSH feature missing from devcontainer — health probes silently fail.
+   `gh codespace ssh` needs `ghcr.io/devcontainers/features/sshd:1`.
+
+Diagnose order: log tail → `ss -tln | grep PORT` → probe `/health/live`
+(DB-free) vs `/health/ready` (DB-gated). A 503 on ready + 200 on live
+means the process is up and the DB is still initialising.
+
+Gotcha repeats: `/tmp` doesn't exist on Termux. Always `$TMPDIR`.
+
+## Addendum · gh-status gate
+
+`gh` CLI prints `check your internet connection or https://githubstatus.com`
+when API calls fail for reasons other than the local network. The message
+does not distinguish GitHub platform degradation from local auth or
+rate-limit failure.
+
+**DO** run `gh-status check` before retrying any failed gh/git-push/git-fetch.
+Exit codes: 0=operational, 1=degraded, 2=outage, 3=fetch-error.
+**DO** wrap destructive GitHub operations with `gh-status gate -- <cmd>`.
+**DO** review `gh-status history` when correlating a failure window.
+
+Endpoints: /api/v2/{status,summary,components,incidents/unresolved}.json
+Cache: 60s at ~/.deepcli/cache/gh-status-*.json
+Log: ~/.deepcli/logs/gh-status/history.jsonl
+
+## Addendum · Unpushed-commit masquerading as prebuild staleness
+
+**Symptom:** every new codespace landed on Alpine despite
+`.devcontainer/devcontainer.json` specifying a Debian base.
+
+**Misdiagnosis:** prebuild cache fallback. Spent ~40 minutes on
+prebuild API calls, delete-all, delete-prebuilds, non-canonical paths.
+
+**Actual cause:** `.devcontainer/*` files existed in local HEAD
+(`fbba4709`) but were never pushed to `origin/feat/...`. Codespaces
+clones from origin. When origin lacks the config, Codespaces falls back
+to a default image — which happens to be Alpine-based for this repo.
+
+`git ls-tree -r origin/<branch> -- .devcontainer/` returning empty
+was the diagnostic signal. My prior blocks didn't run that check.
+
+**DO** after any commit that changes `.devcontainer/`:
+    git push origin HEAD:<branch>
+    git ls-tree -r origin/<branch> -- .devcontainer/ | wc -l   # must be > 0
+
+**DO NOT** attempt prebuild invalidation until origin-verify is green.
+**DO NOT** delete codespaces as a workaround before verifying origin.
+
+**Fix confirmed 2026-10-01:** after `f2e1d91b` landed on origin, fresh
+create produced `Debian GNU/Linux 12 (bookworm)` + `Python 3.11.17` +
+`GLIBC 2.36` — post-create log captured in codespace creation output.
+
+Footgun sequence:
+  1. Commit locally
+  2. Assume Codespaces reads local
+  3. See old image → blame prebuilds
+  4. Delete codespaces / prebuilds
+  5. Recreate → same fallback because origin still lacks files
+  6. Repeat
+
+Break the loop with one line: `git ls-tree -r origin/<branch> -- <path>`.

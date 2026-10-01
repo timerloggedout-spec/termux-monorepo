@@ -200,19 +200,28 @@ async def post_batch(hs_url, bank, items, timeout=180):
 
 async def worker(name, hs_url, bank, queue, counters, pace):
     consec_quota = 0
+    BATCH_WINDOW = 0.8  # seconds to wait for more items before posting
+
     while True:
         items = []
-        first = await queue.get()
+        try:
+            first = await asyncio.wait_for(queue.get(), timeout=2.0)
+        except asyncio.TimeoutError:
+            continue
         if first is None:
             queue.task_done(); return
         items.append(first)
+
+        deadline = time.monotonic() + BATCH_WINDOW
         while len(items) < BATCH_SIZE:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0: break
             try:
-                nxt = queue.get_nowait()
+                nxt = await asyncio.wait_for(queue.get(), timeout=remaining)
                 if nxt is None:
                     queue.task_done(); break
                 items.append(nxt)
-            except asyncio.QueueEmpty:
+            except asyncio.TimeoutError:
                 break
 
         counters["batches"] = counters.get("batches", 0) + 1
@@ -289,21 +298,19 @@ async def run_provider(provider, source):
             return _sentinel
 
     gen = factory()
-    log("  generator started, queueing...")
-    while True:
-        item = await _loop.run_in_executor(None, _next_item, gen)
-        if item is _sentinel:
-            break
-        await q.put(item)
-        queued += 1
-        if queued % 50 == 0:
-            log(f"  queued={queued}")
 
-    log(f"  queued={queued} total, sending sentinels...")
-    for _ in workers:
-        await q.put(None)
+    async def _produce():
+        q_n = 0
+        while True:
+            item = await _loop.run_in_executor(None, _next_item, gen)
+            if item is _sentinel: break
+            await q.put(item)
+            q_n += 1
+            if q_n % 50 == 0:
+                log(f"  produced={q_n} qsize={q.qsize()}")
+        for _ in workers: await q.put(None)
+        log(f"  produced={q_n} total, sentinels sent")
 
-    log("  waiting for workers...")
     async def _watch():
         while not counters.get("abort"):
             await asyncio.sleep(1)
@@ -312,8 +319,10 @@ async def run_provider(provider, source):
                 q.get_nowait(); q.task_done()
             except Exception:
                 break
+
+    producer = asyncio.create_task(_produce())
     watcher = asyncio.create_task(_watch())
-    await asyncio.gather(*workers, return_exceptions=True)
+    await asyncio.gather(producer, *workers, return_exceptions=True)
     watcher.cancel()
 
     log(f"  DONE {prov}/{source}: ok={counters['ok']} fail={counters['fail']} 429={counters['429']}")

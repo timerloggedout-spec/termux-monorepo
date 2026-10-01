@@ -254,3 +254,16 @@ If a run has been silent >2 min, it's stuck in a loop.
 Each provider/model attempt appends a row to
 ~/.deepcli/logs/model-rotation/<provider>__<model>.jsonl with health result.
 Successful model on a task category is the leaderboard entry.
+
+## Addendum · Python at zsh prompt
+
+**Symptom:** `from deepcli.observatory import run_trial` → zsh prints
+"The program from is not installed. Install it by executing: pkg install mailutils"
+and `await run_trial(...)` → "The program await is not installed."
+
+**Rule:** Python never appears at the zsh prompt. Every block of Python >1 line
+goes in a file (`cat > file.py <<'PYEOF'`), executed via `python3 file.py`.
+Heredoc with quoted delimiter prevents shell expansion.
+
+**DO** write `cat > $TMPDIR/x.py <<'PYEOF' ... PYEOF; python3 $TMPDIR/x.py`.
+**DO NOT** paste Python, SQL, TOML, YAML, or JSON at the shell prompt.

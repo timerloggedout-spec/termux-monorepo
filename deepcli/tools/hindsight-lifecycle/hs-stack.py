@@ -191,12 +191,31 @@ def pick_next():
     return name if headroom > 0 else None
 
 
+def _live_env_from_api():
+    """Pull HINDSIGHT_* env from the running API process, so we preserve keys."""
+    import subprocess
+    pid = subprocess.run(["pgrep","-f","hindsight-api --port 8888"],
+                         capture_output=True, text=True).stdout.strip().split("\n")[0]
+    if not pid: return {}
+    try:
+        raw = open(f"/proc/{pid}/environ","rb").read().decode("utf-8","replace")
+    except Exception:
+        return {}
+    out = {}
+    for kv in raw.split("\0"):
+        if "=" in kv and kv.startswith("HINDSIGHT_"):
+            k, v = kv.split("=", 1)
+            out[k] = v
+    return out
+
+
 def restart_hindsight(model: str) -> bool:
     env = os.environ.copy()
+    env.update(_live_env_from_api())
     env.update({
         "HINDSIGHT_API_WORKER_ID": "hindsight-termux-monorepo",
         "HINDSIGHT_API_LLM_PROVIDER": "gemini",
-        "HINDSIGHT_API_LLM_MODEL": model,
+        "HINDSIGHT_API_LLM_MODEL": model,  # overrides live env
         "HINDSIGHT_API_LLM_GEMINI_SERVICE_TIER": "flex",
         "HINDSIGHT_API_LLM_PROMPT_CACHE_ENABLED": "false",
         "HINDSIGHT_API_LLM_CACHE_AFFINITY": "none",

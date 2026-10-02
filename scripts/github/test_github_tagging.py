@@ -30,7 +30,7 @@ class TagRepoTests(unittest.TestCase):
 
 
 class BuildExportTests(unittest.TestCase):
-    def test_build_export_stats(self):
+    def test_build_export_stats_and_matrix(self):
         owned = [{
             "name": "termux-monorepo",
             "full_name": "timerloggedout-spec/termux-monorepo",
@@ -61,6 +61,10 @@ class BuildExportTests(unittest.TestCase):
         self.assertEqual(export["stars_indexed"], 1)
         self.assertEqual(len(export["snapshot_hash"]), 64)
         self.assertIn("P0", export["stats"]["by_priority"])
+        self.assertIn("cells", export["harvest_matrix"])
+        board = gt.build_visibility_board(export)
+        self.assertEqual(board["schema"], "github-tagging-visibility/v1")
+        self.assertIn("termux-monorepo", board["p0"])
 
 
 if __name__ == "__main__":

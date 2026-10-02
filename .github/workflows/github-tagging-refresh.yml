@@ -1,19 +1,19 @@
 name: github-tagging-refresh
 
-# Multi-category tagging of owned + starred repos.
+# Multi-category tagging harvest (owned + starred).
+# KEEP SEPARATE from repository-observatory + lane-matrix-sweep.
+# Integrative hooks: harvest-matrix.json, visibility-board.json, optional observatory enrich.
 # Autogenerates docs/ops/generated/github-tagging/* and commits on delta.
-# Companion to repository-observatory (index) — this lane is the filter surface.
 
 on:
   schedule:
-    # Daily 05:41 UTC — offset from observatory 04:17 and telemetry 03:17
     - cron: "41 5 * * *"
   workflow_dispatch:
     inputs:
       max_star_pages:
         description: Max starred pages (100 each)
         type: string
-        default: "5"
+        default: "8"
 
 permissions:
   contents: write
@@ -26,7 +26,7 @@ jobs:
   tag:
     name: tag-owned-and-starred
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
@@ -48,11 +48,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.REPOSITORY_OBSERVATORY_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || github.token }}
         run: |
           set -euo pipefail
-          MAX="${{ inputs.max_star_pages || '5' }}"
+          MAX="${{ inputs.max_star_pages || '8' }}"
           python scripts/github/github_tagging.py \
             --owner "$GITHUB_REPOSITORY_OWNER" \
             --out-dir docs/ops/generated/github-tagging \
-            --max-star-pages "$MAX"
+            --max-star-pages "$MAX" \
+            --observatory-index workspace/llm_map/repositories/repository-index.json
 
       - name: Validate artifacts
         run: |
@@ -62,7 +63,7 @@ jobs:
           from pathlib import Path
           root = Path("docs/ops/generated/github-tagging")
           data = json.loads((root / "repos_tagged.json").read_text())
-          required = {"schema_version", "builder", "account", "generated_at", "repos_indexed", "snapshot_hash", "repos", "stats"}
+          required = {"schema_version", "builder", "account", "generated_at", "repos_indexed", "snapshot_hash", "repos", "stats", "harvest_matrix"}
           missing = required - data.keys()
           if missing:
               raise SystemExit(f"missing fields: {sorted(missing)}")
@@ -70,10 +71,9 @@ jobs:
               raise SystemExit("snapshot_hash must be SHA-256 hex")
           if data["repos_indexed"] < 1:
               raise SystemExit("expected at least one owned repo")
-          if not (root / "repos_tagged.csv").exists():
-              raise SystemExit("missing CSV")
-          if not (root / "taxonomy.json").exists():
-              raise SystemExit("missing taxonomy.json")
+          for name in ("repos_tagged.csv", "taxonomy.json", "visibility-board.json", "harvest-matrix.json"):
+              if not (root / name).exists():
+                  raise SystemExit(f"missing {name}")
           print(f"validated {data['repos_indexed']} repos hash={data['snapshot_hash'][:12]}")
           PY
 
@@ -84,6 +84,7 @@ jobs:
           import json
           from pathlib import Path
           data = json.loads(Path("docs/ops/generated/github-tagging/repos_tagged.json").read_text())
+          matrix = data.get("harvest_matrix") or {}
           print("## GitHub multi-category tagging")
           print()
           print(f"Generated: `{data['generated_at']}`")
@@ -94,6 +95,12 @@ jobs:
           print("### Priority")
           for k, v in (data.get("stats") or {}).get("by_priority", {}).items():
               print(f"- **{k}:** {v}")
+          print()
+          print("### P0 domains (harvest matrix)")
+          for k, v in (matrix.get("p0_domains") or {}).items():
+              print(f"- **{k}:** {v}")
+          print()
+          print("Boards: lane-matrix-status · repository-observatory · **github-tagging** (KEEP SEPARATE; hooks only)")
           PY
 
       - name: Commit generated tagging delta
@@ -106,7 +113,7 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -s -m "chore(tagging): refresh multi-category repo tags" \
+          git commit -s -m "chore(tagging): refresh multi-category repo tags + harvest matrix" \
             -m "Agent-Identity: GitHub Actions github-tagging-refresh" \
-            -m "Source: owned + starred GitHub metadata; deterministic rule engine"
+            -m "Source: owned + starred metadata; optional observatory enrich; visibility board"
           git push origin HEAD:master

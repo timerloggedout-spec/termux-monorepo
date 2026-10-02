@@ -121,6 +121,13 @@ VARIANTS_WITH_NO_ELIGIBLE = {
     v for v in VARIANT_INDEX.keys()
     if not any(c in ELIGIBLE_LEET_CHARS for c in v.lower())
 }
+# Pre-expand exact token forms (lowercase, uppercase, titlecase) to avoid token.lower() allocations
+VARIANTS_NO_ELIGIBLE_EXACT = (
+    VARIANTS_WITH_NO_ELIGIBLE
+    | {v.upper() for v in VARIANTS_WITH_NO_ELIGIBLE}
+    | {v.capitalize() for v in VARIANTS_WITH_NO_ELIGIBLE}
+)
+
 
 def _from_1337_replace(match: re.Match[str]) -> str:
     """Top-level replacement callback for normalization back to canonical tokens."""
@@ -136,7 +143,7 @@ def _replace_leet_default(match: re.Match[str]) -> str:
     """Top-level replacement callback for default 0.70 probability and unseeded RNG."""
     token = match.group(0)
     # Fast-path O(1) guard: short-circuit if token contains no eligible leet characters
-    if token.lower() in VARIANTS_WITH_NO_ELIGIBLE:
+    if token in VARIANTS_NO_ELIGIBLE_EXACT or token.lower() in VARIANTS_WITH_NO_ELIGIBLE:
         return token
     chars = list(token)
     for i, char in enumerate(chars):

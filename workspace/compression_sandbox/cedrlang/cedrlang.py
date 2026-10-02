@@ -127,6 +127,9 @@ def apply_casing(src: str, dst: str) -> str:
     return lowercase_word(dst)
 
 SYMBOL_REGEXES = {phrase: re.compile(re.escape(phrase), re.IGNORECASE) for phrase in SYMBOL_MAP}
+# Pre-computed tuple list for fast initial-string phrase filtering in sequential symbol substitution
+SYMBOL_ITEMS = [(phrase, phrase.lower(), pattern, SYMBOL_MAP[phrase]) for phrase, pattern in SYMBOL_REGEXES.items()]
+
 INLINE_CODE_PATTERN = re.compile(r'`[^`]+`')
 HTML_TAG_PATTERN = re.compile(r'<[^>]+>')
 LINK_PATTERN = re.compile(r'\[([^\]]+)\]\(([^)]+)\)')
@@ -199,8 +202,10 @@ def compress(text: str, aggressive: bool = True) -> str:
     if not text:
         return ""
     result = text[:]
-    for phrase, pattern in SYMBOL_REGEXES.items():
-        result = pattern.sub(SYMBOL_MAP[phrase], result)
+    res_lower = result.lower()
+    for phrase, phrase_lower, pattern, repl in SYMBOL_ITEMS:
+        if phrase_lower in res_lower:
+            result = pattern.sub(repl, result)
     if not aggressive:
         return result.strip()
     words = result.split()
@@ -212,8 +217,10 @@ def compress(text: str, aggressive: bool = True) -> str:
 
 def caveman(text: str, max_up: bool = False) -> str:
     t = text.upper() if max_up else text
-    for phrase, pattern in SYMBOL_REGEXES.items():
-        t = pattern.sub(SYMBOL_MAP[phrase], t)
+    t_initial_lower = t.lower()
+    for phrase, phrase_lower, pattern, repl in SYMBOL_ITEMS:
+        if phrase_lower in t_initial_lower:
+            t = pattern.sub(repl, t)
     words = [w for w in t.split() if w.lower() not in STOPWORDS]
     return SPACES_PATTERN.sub(' ', " ".join(words)).strip()
 
@@ -288,13 +295,15 @@ def translate_line(line: str, to_compressed: bool) -> str:
         line = INLINE_CODE_PATTERN.sub(ctx.raw_match_repl, line)
     if "<" in line:
         line = HTML_TAG_PATTERN.sub(ctx.raw_match_repl, line)
-    if "[" in line:
+    if "](" in line:
         line = LINK_PATTERN.sub(ctx.link_repl, line)
-    if "*" in line:
+    if "**" in line:
         line = BOLD_PATTERN_2.sub(ctx.bold_repl_2, line)
+    if "*" in line:
         line = BOLD_PATTERN_1.sub(ctx.bold_repl_1, line)
-    if "_" in line:
+    if "__" in line:
         line = BOLD_PATTERN_UNDER2.sub(ctx.bold_repl_under2, line)
+    if "_" in line:
         line = BOLD_PATTERN_UNDER1.sub(ctx.bold_repl_under1, line)
     if "/" in line or "\\" in line or "~" in line or "." in line:
         line = PATH_REGEX.sub(ctx.raw_match_repl, line)

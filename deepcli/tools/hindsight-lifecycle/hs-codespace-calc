@@ -1,0 +1,41 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# @tool hs-codespace-calc
+# @version 0.1.0
+# @since 2026-10-02
+# @change compute + storage budget calculator per codespace
+set -u
+FREE_CORE_HOURS=120
+FREE_GB_MONTH=15
+HOURS_IN_MONTH=720
+
+echo "=== CODESPACE USAGE CALC ==="
+gh codespace list --json name,state,machineName,createdAt,lastUsedAt,idleTimeoutMinutes,retentionPeriodDays 2>/dev/null | python3 -c "
+import json,sys
+from datetime import datetime, timezone
+HOURS_IN_MONTH=720
+MACHINE_CORES={"standardLinux32gb":2,"standardLinux32gbX4":4,"standardLinux32gbX8":8}
+MACHINE_DISK_GB={"standardLinux32gb":32,"standardLinux32gbX4":32,"standardLinux32gbX8":64}
+now=datetime.now(timezone.utc)
+def parse(s):
+    if not s: return None
+    try: return datetime.fromisoformat(s.replace('Z','+00:00'))
+    except: return None
+rows=json.load(sys.stdin)
+total_ch=0; total_gbm=0
+print(f"  {'name':<38s} {'state':<10s} {'wall_h':>7s} {'core_h':>7s} {'disk_gb':>7s} {'gb_mo':>7s}")
+for r in rows:
+    m=r.get('machineName','?')
+    cores=MACHINE_CORES.get(m,2)
+    disk=MACHINE_DISK_GB.get(m,32)
+    c=parse(r.get('createdAt')); u=parse(r.get('lastUsedAt'))
+    wall_h=(now-c).total_seconds()/3600 if c else 0
+    core_h=wall_h*cores
+    gb_mo=disk*wall_h/HOURS_IN_MONTH
+    total_ch+=core_h; total_gbm+=gb_mo
+    print(f"  {r['name']:<38s} {r['state']:<10s} {wall_h:>7.1f} {core_h:>7.1f} {disk:>7d} {gb_mo:>7.2f}")
+print()
+print(f"  TOTAL core_hours:    {total_ch:>7.1f}  of 120  ({100*total_ch/120:.1f}%)")
+print(f"  TOTAL GB_months:     {total_gbm:>7.2f}  of  15  ({100*total_gbm/15:.1f}%)")
+print(f"  compute blocked: {'YES' if total_ch>=120 else 'no'}")
+print(f"  storage blocked: {'YES' if total_gbm>=15 else 'no'}")
+"

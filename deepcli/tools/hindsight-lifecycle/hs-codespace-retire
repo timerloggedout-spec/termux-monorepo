@@ -1,0 +1,65 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# @tool hs-codespace-retire
+# @version 0.1.0
+# @since 2026-10-02
+# @change export uncommitted work to a repo branch, then delete
+set -u
+_cs="${1:-}"
+[ -z "$_cs" ] && { echo "usage: hs-codespace-retire <name>"; exit 2; }
+
+echo "=== retire $_cs ==="
+state=$(gh codespace view -c "$_cs" --json state --jq '.state' 2>/dev/null)
+echo "  state: $state"
+
+# 1 · capture everything that isn't in git
+echo "--- step 1 · ship uncommitted state to memory-bank branch ---"
+TMP="${TMPDIR:-$HOME/.deepcli/tmp}"; mkdir -p "$TMP/retire-$_cs"
+gh codespace ssh -c "$_cs" -- bash -c '
+set -u
+TS=$(date -u +%Y%m%dT%H%M%SZ)
+OUT=/tmp/retire-$TS
+mkdir -p $OUT
+# code state
+cd ~/hindsight 2>/dev/null && git log --oneline -20 > $OUT/hindsight-log.txt 2>&1 || true
+cd ~ && git log --oneline -20 > $OUT/termux-monorepo-log.txt 2>&1 || true
+# bank exports
+_p=$(pgrep -f "hindsight-api --port 8888" | head -1)
+if [ -n "$_p" ]; then
+  P=/home/vscode/.pg0/installation/18.1.0/bin/psql
+  PGPASSWORD=hindsight $P -h /tmp -U hindsight -d hindsight -tAc "
+    SELECT row_to_json(t) FROM memory_units t
+  " > $OUT/memory_units.jsonl 2>/dev/null
+  PGPASSWORD=hindsight $P -h /tmp -U hindsight -d hindsight -tAc "
+    SELECT row_to_json(t) FROM documents t
+  " > $OUT/documents.jsonl 2>/dev/null
+  PGPASSWORD=hindsight $P -h /tmp -U hindsight -d hindsight -tAc "
+    SELECT row_to_json(t) FROM observation_history t
+  " > $OUT/observation_history.jsonl 2>/dev/null
+fi
+# tmp scripts
+cp -r /tmp/*.py /tmp/*.sh $OUT/ 2>/dev/null || true
+echo "captured to $OUT"
+ls -la $OUT | head -20
+' 2>&1
+
+# 2 · pull the archive down
+echo "--- step 2 · pull archive to Termux ---"
+gh codespace ssh -c "$_cs" -- bash -c 'ls -d /tmp/retire-* 2>/dev/null | tail -1' | tr -d '' > "$TMP/retire-path.txt"
+_RET=$(cat "$TMP/retire-path.txt")
+if [ -n "$_RET" ]; then
+  gh codespace ssh -c "$_cs" -- bash -c "tar czf ${_RET}.tgz -C $(dirname $_RET) $(basename $_RET)"
+  gh codespace cp -c "$_cs" -e "remote:${_RET}.tgz" "$TMP/retire-$_cs.tgz"
+  echo "  downloaded: $TMP/retire-$_cs.tgz ($(du -h $TMP/retire-$_cs.tgz | cut -f1))"
+fi
+
+# 3 · export to branch (uncommitted repo changes)
+echo "--- step 3 · export to branch (repo UI path) ---"
+echo "  manually: github.com/codespaces → $_cs → ⋯ → Export to a branch"
+echo "  OR: gh api POST /user/codespaces/$_cs/exports"
+
+# 4 · delete
+echo "--- step 4 · DELETE (irreversible) ---"
+read -p "  delete $_cs? [y/N] " ans
+[ "$ans" = "y" ] || { echo "  aborted"; exit 0; }
+gh codespace delete -c "$_cs" --force 2>&1
+echo "  deleted"

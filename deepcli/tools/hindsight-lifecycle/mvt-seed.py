@@ -252,7 +252,7 @@ def _safe_bank(s):
     return s.replace("/", "_")
 
 
-async def worker(name, hs_url, bank, queue, counters, pace):
+async def worker(name, hs_url, bank, queue, counters, pace, model=None):
     consec_quota = 0
     BATCH_WINDOW = 0.8  # seconds to wait for more items before posting
 
@@ -297,7 +297,7 @@ async def worker(name, hs_url, bank, queue, counters, pace):
             with MVT_LEDGER.open("a") as _lf:
                 _lf.write(json.dumps({
                     "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                    "provider": name.split("-")[0] if "-" in name else name, "model": model, "source": source,
+                    "provider": name.rsplit("-", 1)[0] if "-" in name else name, "model": model or "(unset)", "source": source,
                     "worker": name, "batch_n": bnum, "size": len(items),
                     "http": code, "wall_s": round(_dt, 2),
                     "tokens_in": _tin, "tokens_out": _tout,
@@ -356,7 +356,7 @@ async def run_provider(provider, source):
     q = asyncio.Queue(maxsize=provider["concurrency"] * 4)
     counters = {"ok": 0, "fail": 0, "429": 0, "abort": False}
     workers = [
-        asyncio.create_task(worker(f"{prov}-{i}", provider["hs_url"], bank, q, counters, provider["pace"]))
+        asyncio.create_task(worker(f"{prov}-{i}", provider["hs_url"], bank, q, counters, provider["pace"], model=model))
         for i in range(provider["concurrency"])
     ]
 

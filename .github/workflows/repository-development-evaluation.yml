@@ -3,6 +3,7 @@ name: Repository development evaluation
 # Implements: THUB-007
 # Measures redacted, same-repository development evidence. It does not invoke a
 # model, mutate GitHub state, access provider credentials, or use a device runner.
+# Empty checks.listForRef is deferred; the contract still rejects a zero check-state manifest.
 
 on:
   pull_request:

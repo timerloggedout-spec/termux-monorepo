@@ -95,7 +95,16 @@ jobs:
             -d "$body")
           echo "$resp" | jq '{name, state, machine: .machine.name, web_url, message}' 2>/dev/null || echo "$resp"
           name=$(echo "$resp" | jq -r '.name // empty')
+          message=$(echo "$resp" | jq -r '.message // empty')
           if [ -z "$name" ]; then
+            case "$message" in
+              *"too many codespaces"*|*"quota"*|*"rate limit"*)
+                echo "::warning::Codespace create skipped: $message"
+                echo "### Codespace create skipped" >> "$GITHUB_STEP_SUMMARY"
+                echo "$message" >> "$GITHUB_STEP_SUMMARY"
+                exit 0
+                ;;
+            esac
             echo "::error::Create failed"
             exit 1
           fi

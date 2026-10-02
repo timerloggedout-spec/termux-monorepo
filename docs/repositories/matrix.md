@@ -2,7 +2,7 @@
 
 > Generated from GitHub repository and starring metadata. JSON is canonical; this file is a navigation projection.
 
-Observed: `2026-10-01T17:24:02.717413Z`
+Observed: `2026-10-02T10:32:16.704827Z`
 
 ## Navigation
 
@@ -82,6 +82,7 @@ Observed: `2026-10-01T17:24:02.717413Z`
 | [timerloggedout-spec/Camshaft_fork](https://github.com/timerloggedout-spec/Camshaft_fork) | owned, starred | agent, ai | medium | upstream-comparison |
 | [timerloggedout-spec/cognitive-dissonance-dspy_fork](https://github.com/timerloggedout-spec/cognitive-dissonance-dspy_fork) | owned, starred | agent, ai | medium | upstream-comparison |
 | [timerloggedout-spec/Constellation_fork](https://github.com/timerloggedout-spec/Constellation_fork) | owned, starred | agent, ai | medium | upstream-comparison |
+| [timerloggedout-spec/dentalpin](https://github.com/timerloggedout-spec/dentalpin) | owned | agent, ai | medium | upstream-comparison |
 | [timerloggedout-spec/dockashell_fork](https://github.com/timerloggedout-spec/dockashell_fork) | owned, starred | agent, ai | medium | upstream-comparison |
 | [timerloggedout-spec/evener](https://github.com/timerloggedout-spec/evener) | owned | agent, ai | medium | upstream-comparison |
 | [timerloggedout-spec/EvoAgentX_fork](https://github.com/timerloggedout-spec/EvoAgentX_fork) | owned, starred | agent, ai | medium | upstream-comparison |
@@ -501,6 +502,7 @@ Observed: `2026-10-01T17:24:02.717413Z`
 | [timerloggedout-spec/mcp-toolshed_fork](https://github.com/timerloggedout-spec/mcp-toolshed_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/mcp_fork-hyperbrowser](https://github.com/timerloggedout-spec/mcp_fork-hyperbrowser) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/mdx_fork](https://github.com/timerloggedout-spec/mdx_fork) | owned, starred | unclassified | medium | upstream-comparison |
+| [timerloggedout-spec/MergeEarn](https://github.com/timerloggedout-spec/MergeEarn) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/mergepay-web](https://github.com/timerloggedout-spec/mergepay-web) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/mesa-frames_fork](https://github.com/timerloggedout-spec/mesa-frames_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/mflow-benchmarks_fork](https://github.com/timerloggedout-spec/mflow-benchmarks_fork) | owned, starred | unclassified | medium | upstream-comparison |
@@ -2055,6 +2057,7 @@ Observed: `2026-10-01T17:24:02.717413Z`
 | [tsinghua886/cli-config-tutorial-site](https://github.com/tsinghua886/cli-config-tutorial-site) | starred | developer-tools | medium | — |
 | [vicanso/zedis](https://github.com/vicanso/zedis) | starred | developer-tools | medium | — |
 | [Vortex-xf/JulesCli](https://github.com/Vortex-xf/JulesCli) | starred | developer-tools | medium | — |
+| [w1977-0/open-stream-saver](https://github.com/w1977-0/open-stream-saver) | starred | developer-tools | medium | — |
 | [Wbaker7702/gk-cli](https://github.com/Wbaker7702/gk-cli) | starred | developer-tools | medium | upstream-comparison |
 | [Wbaker7702/jfrog-cli](https://github.com/Wbaker7702/jfrog-cli) | starred | developer-tools | medium | upstream-comparison |
 | [Wbaker7702/nethermind](https://github.com/Wbaker7702/nethermind) | starred | developer-tools | medium | upstream-comparison |
@@ -4213,6 +4216,7 @@ Observed: `2026-10-01T17:24:02.717413Z`
 | [timerloggedout-spec/Camshaft_fork](https://github.com/timerloggedout-spec/Camshaft_fork) | owned, starred | agent, ai | medium | upstream-comparison |
 | [timerloggedout-spec/cognitive-dissonance-dspy_fork](https://github.com/timerloggedout-spec/cognitive-dissonance-dspy_fork) | owned, starred | agent, ai | medium | upstream-comparison |
 | [timerloggedout-spec/Constellation_fork](https://github.com/timerloggedout-spec/Constellation_fork) | owned, starred | agent, ai | medium | upstream-comparison |
+| [timerloggedout-spec/dentalpin](https://github.com/timerloggedout-spec/dentalpin) | owned | agent, ai | medium | upstream-comparison |
 | [timerloggedout-spec/dockashell_fork](https://github.com/timerloggedout-spec/dockashell_fork) | owned, starred | agent, ai | medium | upstream-comparison |
 | [timerloggedout-spec/evener](https://github.com/timerloggedout-spec/evener) | owned | agent, ai | medium | upstream-comparison |
 | [timerloggedout-spec/EvoAgentX_fork](https://github.com/timerloggedout-spec/EvoAgentX_fork) | owned, starred | agent, ai | medium | upstream-comparison |
@@ -5020,6 +5024,7 @@ Observed: `2026-10-01T17:24:02.717413Z`
 | [timerloggedout-spec/mcp-toolshed_fork](https://github.com/timerloggedout-spec/mcp-toolshed_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/mcp_fork-hyperbrowser](https://github.com/timerloggedout-spec/mcp_fork-hyperbrowser) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/mdx_fork](https://github.com/timerloggedout-spec/mdx_fork) | owned, starred | unclassified | medium | upstream-comparison |
+| [timerloggedout-spec/MergeEarn](https://github.com/timerloggedout-spec/MergeEarn) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/mergepay-web](https://github.com/timerloggedout-spec/mergepay-web) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/mesa-frames_fork](https://github.com/timerloggedout-spec/mesa-frames_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/mflow-benchmarks_fork](https://github.com/timerloggedout-spec/mflow-benchmarks_fork) | owned, starred | unclassified | medium | upstream-comparison |

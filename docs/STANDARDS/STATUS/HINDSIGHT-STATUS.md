@@ -112,3 +112,31 @@ provenance-harvest, sovereign-run.sh
 - by_out = outputTokenLimit / out_per_item.
 - by_window = HTTP_WINDOW_S / per_item_s (measured median, prior 9.4s until ≥3 samples).
 - No fixed cap. Values recomputed on every sovereign tick.
+
+
+## Dashboard lane (collaborator, 2026-10-02)
+
+Recovered from d3e9035a. Sections:
+  00-overview    10-run-state   20-banks      30-extraction
+  40-quota       50-ledgers     90-integrity  99-template
+
+purge-stale.sql: transaction + advisory lock + dry-run default +
+explicit -v purge_apply=1 gate + no constraint dropping.
+
+verify.sh: syntax, shebang, @section, mutation guard, pipeline
+state guard, purge execution guard, purge contract.
+
+Branch: feat/dashboard-lanes-v2.
+
+## Hindsight product (live, 2026-10-02)
+
+  banks                4
+  memory_units         154
+  observation_history  62
+  mental_models        0  (not triggered yet)
+  knowledge_pages      0
+  chunks               121
+  fact_type split      world=55 experience=23 observation=8
+  avg proof_count      observation=7.88 (vs 1.00 raw)
+
+Observations form. Mental models not yet triggered.

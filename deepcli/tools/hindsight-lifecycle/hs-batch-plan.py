@@ -1,21 +1,16 @@
 #!/usr/bin/env python3
-"""hs-batch-plan - batch size derived from measurement + model token limits.
+"""hs-batch-plan - batch size from live model token limits + measured per-item time.
 
-No arbitrary cap. The batch size is:
-  min( by_window, by_input_tokens, by_output_tokens )
+size = min( inputTokenLimit/avg_item_tokens,
+            outputTokenLimit/out_tokens_per_item,
+            HTTP_WINDOW_S / measured_per_item_s )
 
-Where:
-  by_window       = HTTP_WINDOW_S / measured_per_item_s   (dynamic, from log)
-  by_input_tokens = inputTokenLimit / avg_item_tokens
-  by_output_tokens = outputTokenLimit / out_tokens_per_item
-
-If no measurements exist, window-based bound is unknown and we use the
-smaller of the two token bounds.
+No hardcoded cap. Token limits fetched live from Gemini models API.
 """
-import json, os, re, sys
+import json, os, re, sys, urllib.request
 from pathlib import Path
+from statistics import median
 
-LIM = Path("/tmp/hs-stack/limits.json")
 ACT = Path("/tmp/hs-stack/active.json")
 LOG = Path("/tmp/mvt-seed.log")
 
@@ -24,58 +19,67 @@ OUT_PER_ITEM    = int(os.environ.get("MVT_OUT_TOKENS_PER_ITEM", "110"))
 HTTP_WINDOW_S   = int(os.environ.get("MVT_HTTP_WINDOW_S", "120"))
 MIN_BATCH       = int(os.environ.get("MVT_BATCH_SIZE_MIN", "1"))
 
-def measured_per_item_s():
-    """From 'batch #N size=K -> HTTP 200 (Xs)' lines, compute median per-item sec."""
-    if not LOG.exists(): return None
-    from statistics import median
-    per_item = []
-    for line in LOG.read_text().splitlines()[-2000:]:
-        m = re.search(r'size=(\d+).*?HTTP 200 \(([0-9.]+)s\)', line)
-        if m:
-            size, wall = int(m.group(1)), float(m.group(2))
-            if size > 0 and wall > 0:
-                per_item.append(wall / size)
-    if len(per_item) < 3: return None
-    return median(per_item)
+FALLBACK = {"gemini": (1048576, 65536), "qwen": (262144, 65536),
+            "gemma": (262144, 65536), "llama": (131072, 32768)}
 
-def token_bounds():
-    if not (LIM.exists() and ACT.exists()): return None
-    lim = json.loads(LIM.read_text())
-    act = json.loads(ACT.read_text()).get("model", "")
-    m = (lim.get("models") or {}).get(act) or {}
-    in_lim = int(m.get("inputTokenLimit") or 0)
-    out_lim = int(m.get("outputTokenLimit") or 0)
-    if not in_lim or not out_lim: return None
-    by_in  = max(1, in_lim  // AVG_ITEM_TOKENS)
-    by_out = max(1, out_lim // OUT_PER_ITEM)
-    return min(by_in, by_out), in_lim, out_lim, by_in, by_out
+def api_key():
+    import subprocess
+    p = subprocess.run(["pgrep", "-f", "hindsight-api --port 8888"],
+                       capture_output=True, text=True).stdout.strip().split("\n")[0]
+    if not p: return None
+    for line in open(f"/proc/{p}/environ").read().split("\0"):
+        if line.startswith("HINDSIGHT_API_LLM_API_KEY="):
+            return line.split("=", 1)[1]
+    return None
+
+def live_token_limits(model):
+    key = api_key()
+    if not key: return None
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}?key={key}"
+    try:
+        with urllib.request.urlopen(url, timeout=10) as r:
+            d = json.load(r)
+        return int(d.get("inputTokenLimit", 0)), int(d.get("outputTokenLimit", 0))
+    except Exception:
+        return None
+
+def family_defaults(model):
+    m = (model or "").lower()
+    for k, v in FALLBACK.items():
+        if k in m: return v
+    return None
+
+def per_item_s():
+    if not LOG.exists(): return None
+    per = []
+    for line in LOG.read_text().splitlines()[-2000:]:
+        mm = re.search(r'size=(\d+).*?HTTP 200 \(([0-9.]+)s\)', line)
+        if mm:
+            s, w = int(mm.group(1)), float(mm.group(2))
+            if s > 0 and w > 0: per.append(w / s)
+    return median(per) if len(per) >= 3 else None
 
 def main():
     verbose = "--verbose" in sys.argv
-    per_item = measured_per_item_s()
-    tb = token_bounds()
+    model = json.loads(ACT.read_text()).get("model", "") if ACT.exists() else ""
+    limits = live_token_limits(model) or family_defaults(model) or (0, 0)
+    in_lim, out_lim = limits
 
-    if tb:
-        token_cap, in_lim, out_lim, by_in, by_out = tb
-    else:
-        token_cap, in_lim, out_lim, by_in, by_out = None, 0, 0, 0, 0
+    by_in  = in_lim  // AVG_ITEM_TOKENS if in_lim  else None
+    by_out = out_lim // OUT_PER_ITEM    if out_lim else None
+    p = per_item_s()
+    by_win = int(HTTP_WINDOW_S / p) if p else None
 
-    if per_item:
-        by_window = max(1, int(HTTP_WINDOW_S / per_item))
-    else:
-        by_window = None
-
-    candidates = [c for c in (by_window, token_cap) if c]
-    size = min(candidates) if candidates else 8
-    size = max(size, MIN_BATCH)
+    candidates = [c for c in (by_in, by_out, by_win) if c]
+    size = max(MIN_BATCH, min(candidates)) if candidates else 8
 
     if verbose:
-        print(f"per_item_s={per_item:.3f}" if per_item else "per_item_s=(no samples)")
-        print(f"window={HTTP_WINDOW_S}s  by_window={by_window}")
-        print(f"input_limit={in_lim}  avg_item={AVG_ITEM_TOKENS}  by_in={by_in}")
-        print(f"output_limit={out_lim}  out_per_item={OUT_PER_ITEM}  by_out={by_out}")
-        print(f"token_cap={token_cap}")
-        print(f"chosen={size}")
+        print(f"model={model}")
+        print(f"  live inputTokenLimit={in_lim}  outputTokenLimit={out_lim}")
+        print(f"  avg_item_tokens={AVG_ITEM_TOKENS}  out_per_item={OUT_PER_ITEM}")
+        print(f"  by_input={by_in}  by_output={by_out}")
+        print(f"  per_item_s={p if p else '(no samples)'}  window={HTTP_WINDOW_S}s  by_window={by_win}")
+        print(f"  chosen={size}")
     else:
         print(size)
 

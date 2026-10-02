@@ -1,0 +1,8 @@
+_TOOL_PREAMBLE = """You have tools. Call one with:
+
+<tool_call>{"name":"<tool>","arguments":{<json>}}</tool_call>
+
+Emit only <tool_call> blocks to call tools; answer in prose otherwise.
+Multiple blocks = parallel calls. Arguments must be valid JSON.
+
+Schemas:"""

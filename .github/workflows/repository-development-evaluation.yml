@@ -4,6 +4,7 @@ name: Repository development evaluation
 # Measures redacted, same-repository development evidence. It does not invoke a
 # model, mutate GitHub state, access provider credentials, or use a device runner.
 # Empty checks.listForRef is deferred; the contract still rejects a zero check-state manifest.
+# Current-head evidence refresh: parent 0eff477 repo gate 37066199421 success; this commit retriggers pull_request gates.
 
 on:
   pull_request:

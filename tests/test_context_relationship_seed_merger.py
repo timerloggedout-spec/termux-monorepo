@@ -154,3 +154,33 @@ def test_merge_seeds_still_rejects_distinct_file_urls():
 
     with pytest.raises(CompilationError, match="contradictory url"):
         merge_seeds(first, second)
+
+
+def test_merge_seeds_unions_symbol_spans_without_observed_at():
+    first = {
+        **BASE,
+        "nodes": [
+            {
+                "kind": "symbol",
+                "external_id": "central_mapper_v420.py:CentralMapper:36",
+                "attributes": {"name": "CentralMapper", "line": 36, "end_line": 80},
+            }
+        ],
+        "edges": [],
+    }
+    second = {
+        **BASE,
+        "nodes": [
+            {
+                "kind": "symbol",
+                "external_id": "central_mapper_v420.py:CentralMapper:36",
+                "attributes": {"name": "CentralMapper", "line": 36, "end_line": 120},
+            }
+        ],
+        "edges": [],
+    }
+
+    merged, _ = merge_seeds(first, second)
+
+    assert merged["nodes"][0]["attributes"]["end_line"] == 120
+    assert merged["nodes"][0]["attributes"]["line"] == 36

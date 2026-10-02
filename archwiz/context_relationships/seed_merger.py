@@ -15,7 +15,12 @@ try:
 except ImportError:  # Supports direct script use.
     from compiler import CompilationError, load_json
 
-MERGER_ID = "archwiz.context_relationships.seed_merger@1.1"
+MERGER_ID = "archwiz.context_relationships.seed_merger@1.2"
+
+# Line spans are observations of the same symbol, not identity. Collectors
+# disagree when one parse includes a decorator or trailing blank and another
+# does not. Missing observed_at must not fail the historical backfill.
+SPAN_ATTRIBUTE_KEYS = {"line", "start_line", "end_line"}
 
 
 def node_reference(record: Mapping[str, Any]) -> str:
@@ -39,6 +44,12 @@ def merge_attributes(
     timestamps_available = isinstance(existing_observed_at, str) and isinstance(incoming_observed_at, str)
     for key, value in right.items():
         if key in merged and merged[key] != value:
+            if key in SPAN_ATTRIBUTE_KEYS and isinstance(merged[key], int) and isinstance(value, int):
+                if key == "end_line":
+                    merged[key] = max(merged[key], value)
+                else:
+                    merged[key] = min(merged[key], value)
+                continue
             if not timestamps_available:
                 raise CompilationError(f"node {node_ref} has contradictory attribute {key!r}")
             if incoming_observed_at >= existing_observed_at:

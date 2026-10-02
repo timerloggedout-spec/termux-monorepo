@@ -92,8 +92,9 @@ def local_import_target(module: str, level: int, source_path: str, files: set[st
 
 
 class SymbolCollector(ast.NodeVisitor):
-    def __init__(self, relative_path: str) -> None:
+    def __init__(self, relative_path: str, observed_at: str | None = None) -> None:
         self.relative_path = relative_path
+        self.observed_at = observed_at
         self.stack: list[str] = []
         self.symbols: list[dict[str, Any]] = []
 
@@ -103,6 +104,7 @@ class SymbolCollector(ast.NodeVisitor):
             {
                 "kind": "symbol",
                 "external_id": f"{self.relative_path}:{qualname}:{getattr(node, 'lineno', 0)}",
+                "observed_at": self.observed_at,
                 "attributes": {
                     "path": self.relative_path,
                     "language": "python",
@@ -268,7 +270,7 @@ def collect_source_seed(
         except (OSError, UnicodeDecodeError, SyntaxError, RecursionError) as exc:
             report.parser_failures.append({"path": relative_path, "error": str(exc).splitlines()[0]})
             continue
-        symbols = SymbolCollector(relative_path)
+        symbols = SymbolCollector(relative_path, file_observed_at)
         try:
             symbols.visit(tree)
         except RecursionError as exc:

@@ -1,0 +1,83 @@
+#!/data/data/com.termux/files/usr/bin/zsh
+# hygiene - Termux resource + worktree hygiene flow
+# subs: status | audit | reclaim | worktree | doc
+set -u
+SENTINEL="$HOME/.local/bin/termux-resource-snapshot.sh"
+HYG_LOG="$HOME/.deepcli/logs/hygiene-$(date +%F).md"
+mkdir -p "$(dirname "$HYG_LOG")"
+snap()     { [ -x "$SENTINEL" ] && "$SENTINEL" 2>/dev/null ; }
+pressure() { snap | grep -q "^status=PRESSURE$" ; }
+gate() {
+  if pressure; then
+    snap | grep -E "^(memory_available_mib|storage_available_mib|storage_used_percent)=" >&2
+    echo "hygiene: PRESSURE - free space first" >&2
+    return 1
+  fi
+  return 0
+}
+cmd_status() {
+  echo "--- storage ---"; df -h "$HOME" | tail -1
+  echo "--- sentinel ---"; snap | grep -E "^(memory_available_mib|swap_free_mib|storage_available_mib|storage_used_percent|status)="
+  echo "--- worktrees ---"; git -C "$HOME" worktree list
+  echo "--- top home ---"; du -h --max-depth=1 "$HOME" 2>/dev/null | sort -rh | head -12
+}
+cmd_audit() {
+  local p="${1:?path required}"
+  [ -e "$p" ] || { echo "missing: $p" >&2; return 1; }
+  echo "path:  $p"
+  echo "size:  $(du -sh "$p" | cut -f1)"
+  echo "type:  $(stat -c %F "$p")"
+  echo "mtime: $(stat -c %y "$p")"
+}
+cmd_reclaim() {
+  gate || return 1
+  local k="${1:-caches}" d n g src arc
+  case "$k" in
+    caches)
+      for d in "$HOME/.npm/_cacache" "$HOME/.cache/pip" "$HOME/.cache/uv" "$HOME/.cache/whisper" "$HOME/.cpan/Metadata" ; do
+        [ -e "$d" ] || continue
+        echo "reclaim: $d"
+        rm-safe --confirm "$d" 2>&1 | tail -1
+      done ;;
+    exports)
+      src="$HOME/synthegration_exports"
+      arc="$HOME/synthegration-exports-$(date +%F).tar.gz"
+      [ -d "$src/primary" ] || { echo "abort: primary missing" >&2; return 1; }
+      ( cd "$src" && tar --exclude=./primary -czf "$arc" . )
+      n=$(ls -1 "$src" | grep -v "^primary$" | wc -l)
+      g=$(tar -tzf "$arc" | sed "s|^\./||;s|/.*||" | grep -v "^$" | sort -u | wc -l)
+      echo "expected: $n  in-archive: $g"
+      [ "$n" = "$g" ] || { echo "MISMATCH - hold" >&2; return 1; }
+      for d in "$src"/*/ ; do
+        [ "$d" = "$src/primary/" ] && continue
+        rm-safe --confirm "$d" 2>&1 | tail -1
+      done ;;
+    *) echo "unknown reclaim kind: $k" >&2; return 1 ;;
+  esac
+}
+cmd_worktree() {
+  local wt="${1:?worktree path required}" br sha wip rem
+  br="${2:-$(git -C "$wt" rev-parse --abbrev-ref HEAD 2>/dev/null)}"
+  wip="wip/${br//\//-}-$(date +%F)"
+  [ -d "$wt" ] || { echo "missing: $wt" >&2; return 1; }
+  [ "$(git -C "$wt" status --porcelain | wc -l)" = "0" ] || { echo "dirty - snapshot + commit first" >&2; return 1; }
+  git -C "$wt" submodule deinit --all --force >/dev/null 2>&1
+  sha=$(git -C "$wt" rev-parse HEAD)
+  echo "pushing $br -> $wip"
+  git -C "$wt" push origin "HEAD:refs/heads/$wip" || { echo "push failed" >&2; return 1; }
+  rem=$(git -C "$HOME" ls-remote --heads origin "$wip" | awk "{print \$1}")
+  [ "$sha" = "$rem" ] || { echo "sha mismatch: $sha vs $rem" >&2; return 1; }
+  git -C "$HOME" worktree remove --force --force "$wt" 2>&1 | tail -2
+}
+cmd_doc() {
+  echo "log: $HYG_LOG"
+  [ -f "$HYG_LOG" ] && wc -l "$HYG_LOG"
+}
+case "${1:-status}" in
+  status)   cmd_status ;;
+  audit)    shift; cmd_audit "$@" ;;
+  reclaim)  shift; cmd_reclaim "$@" ;;
+  worktree) shift; cmd_worktree "$@" ;;
+  doc)      cmd_doc ;;
+  *) echo "usage: hygiene <status|audit|reclaim|worktree|doc>" >&2; exit 2 ;;
+esac

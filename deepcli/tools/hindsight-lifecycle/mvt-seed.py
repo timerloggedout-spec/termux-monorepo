@@ -12,7 +12,7 @@ Usage:
   SEED_SOURCE=fts5 python3 mvt-seed.py
   SEED_SOURCE=conversations python3 mvt-seed.py
 """
-import asyncio, json, os, sys, time, urllib.request, urllib.error, zipfile
+import asyncio, json, os, time, urllib.request, urllib.error, zipfile
 from pathlib import Path
 
 HS = os.environ.get("HINDSIGHT_BASE_URL", "http://localhost:8888").rstrip("/")

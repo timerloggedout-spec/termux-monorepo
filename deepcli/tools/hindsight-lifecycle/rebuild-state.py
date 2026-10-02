@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Rebuild /tmp/hs-stack/state.json from llm_requests so rotator DERIVED
 matches reality. Counters keyed by model, day = Pacific."""
-import json, subprocess, sys
-from datetime import datetime, timezone, timedelta
+import json, subprocess
+from datetime import datetime, timezone
 from pathlib import Path
 
 def psql(q):

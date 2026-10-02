@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """hs-bank-audit — classify every bank by convention state."""
-import subprocess, sys
+import subprocess
 
 SQL = """
 SELECT bank_id,

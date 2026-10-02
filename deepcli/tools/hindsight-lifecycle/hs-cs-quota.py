@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """hs-cs-quota - codespace quota + usage. Works on Termux and codespace."""
-import json, subprocess, sys, os
+import json, subprocess, os
 
 def resolve_cs():
     v = os.environ.get("HS_CS_NAME")

@@ -309,8 +309,9 @@ def cmd_watch():
             cmd_rotate()
         # probe active model with a retain
         body = {"items": [{"content": "watch tick", "metadata": {"kind": "watch"}}]}
+        _probe_bank = "health::watch"
         req = urllib.request.Request(
-            f"{HS}/v1/default/banks/{BANK}/memories",
+            f"{HS}/v1/default/banks/{_probe_bank}/memories",
             data=json.dumps(body).encode(), method="POST",
             headers={"Content-Type": "application/json"})
         try:

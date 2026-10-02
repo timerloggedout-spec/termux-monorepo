@@ -209,6 +209,11 @@ async def post_batch(hs_url, bank, items, timeout=180):
 
     return await loop.run_in_executor(None, _blocking)
 
+def _safe_bank(s):
+    """Bank IDs travel in URL paths. Replace / and : that break routing."""
+    return s.replace("/", "_").replace(":", "-")
+
+
 async def worker(name, hs_url, bank, queue, counters, pace):
     consec_quota = 0
     BATCH_WINDOW = 0.8  # seconds to wait for more items before posting
@@ -286,7 +291,7 @@ async def run_provider(provider, source):
     comp_hash = "base"
     model = provider.get("model") or _active_model()
     role = provider.get("role") or _active_role()
-    bank = f"deepagent::mvt::{prov}::{model}::{role}::{comp_hash}"
+    bank = _safe_bank(f"termux-monorepo::mvt::{prov}::{model}::{role}::{comp_hash}")
     state = load_state(prov, source)
     done = state.get("n_ok", 0)
     log(f"=== provider={prov} source={source} model={model} bank={bank} resumed_from={done} key={'SET' if KEY else 'MISSING'} ===")

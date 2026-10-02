@@ -8,7 +8,7 @@ set -u
 _L="$HOME/.deepcli/logs/hs-parity.jsonl"
 _KEY="${HINDSIGHT_API_KEY:-}"
 _API="https://api.hindsight.vectorize.io"
-_BANK="${HINDSIGHT_BANK_ID:-deepagent::termux-monorepo}"
+_BANK="${HINDSIGHT_BANK_ID:-termux-monorepo::primary}"
 _THRESHOLD="${HS_QUOTA_THRESHOLD:-5}"
 
 _log() { printf '{"ts":"%s","op":"%s","status":"%s","note":"%s"}\n' \

@@ -3,7 +3,7 @@ set -u
 cd /tmp
 
 echo "=== SOVEREIGN TICK: $(date -u +%FT%TZ) ==="
-# purge stale deepagent::termux-monorepo if it reappears
+# purge stale termux-monorepo::primary if it reappears
 if [ -f /tmp/purge-stale.sql ]; then
   _n=$(bash /tmp/hs-db-runner.sh /tmp/purge-stale.sql 2>/dev/null | tail -1)
   [ -n "$_n" ] && echo "  stale purge: $_n"

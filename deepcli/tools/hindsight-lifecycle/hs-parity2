@@ -9,7 +9,7 @@ set -u
 _KEY="${HINDSIGHT_API_KEY:-}"
 _API="https://api.hindsight.vectorize.io"
 _CS="http://localhost:18888"
-_BANK="${HINDSIGHT_BANK_ID:-deepagent::termux-monorepo}"
+_BANK="${HINDSIGHT_BANK_ID:-termux-monorepo::primary}"
 _BK="$HOME/.deepcli/backups"
 _DB="$HOME/.deepcli/bank-local.db"
 _L="$HOME/.deepcli/logs/hs-parity.jsonl"

@@ -10,7 +10,7 @@ for _f in "$_p"/*.jsonl; do
   while IFS= read -r _line; do
     [ -z "$_line" ] && continue
     curl -sS --max-time 30 -X POST \
-      "http://localhost:18888/v1/default/banks/deepagent::termux-monorepo/memories" \
+      "http://localhost:18888/v1/default/banks/termux-monorepo::primary/memories" \
       -H "Content-Type: application/json" \
       -d "$_line" >/dev/null 2>&1
   done < "$_f"

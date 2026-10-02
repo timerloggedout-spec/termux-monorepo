@@ -15,7 +15,7 @@ class LocalHindsightClient:
     def __init__(self, db_path=None, bank_id=None):
         self.db_path = Path(db_path) if db_path else DB_DEFAULT
         self.default_bank_id = bank_id or os.environ.get(
-            "HINDSIGHT_BANK_ID", "deepagent::termux-monorepo"
+            "HINDSIGHT_BANK_ID", "termux-monorepo::primary"
         )
 
     def _con(self):

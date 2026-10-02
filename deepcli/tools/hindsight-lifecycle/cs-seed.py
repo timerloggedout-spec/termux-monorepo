@@ -7,7 +7,7 @@ from pathlib import Path
 
 HOME = Path.home()
 HS = "http://localhost:8888"
-BANK = "deepagent::termux-monorepo"
+BANK = "termux-monorepo::primary"
 LOG = Path("/tmp/cs-seed.log")
 STATE = Path("/tmp/cs-seed-state.json")
 BATCH = int(os.environ.get("SEED_BATCH", "20"))

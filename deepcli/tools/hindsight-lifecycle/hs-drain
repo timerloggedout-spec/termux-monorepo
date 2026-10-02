@@ -16,7 +16,7 @@ _tmp="${TMPDIR:-${PREFIX:-/data/data/com.termux/files/usr}/tmp}"
 
 # 1 · trigger export
 _code=$(curl -sS -o "$_tmp/drain-op.json" -w '%{http_code}' --max-time 20 \
-  -X POST "$_url/v1/default/banks/deepagent::termux-monorepo/transfer/export" \
+  -X POST "$_url/v1/default/banks/termux-monorepo::primary/transfer/export" \
   -H "Authorization: Bearer $_key" -H "Content-Type: application/json" \
   -d '{"include_data":true,"include_bank_config":true,"include_history":true}' 2>/dev/null)
 [ "$_code" != "200" ] && [ "$_code" != "201" ] && [ "$_code" != "202" ] && { echo "  export trigger HTTP $_code"; head -c 200 "$_tmp/drain-op.json"; echo; exit 1; }
@@ -29,7 +29,7 @@ for _i in $(seq 1 40); do
   sleep 3
   curl -sS -o "$_tmp/drain-st.json" --max-time 10 \
     -H "Authorization: Bearer $_key" \
-    "$_url/v1/default/banks/deepagent::termux-monorepo/operations/$_op" 2>/dev/null
+    "$_url/v1/default/banks/termux-monorepo::primary/operations/$_op" 2>/dev/null
   _st=$(python3 -c "import json;print(json.load(open('$_tmp/drain-st.json')).get('status',''))" 2>/dev/null)
   [ "$_st" = "succeeded" ] || [ "$_st" = "completed" ] && break
 done

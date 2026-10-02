@@ -15,7 +15,7 @@ from pathlib import Path
 
 HOME = Path.home()
 HS = "http://localhost:8888"
-BANK = "deepagent::termux-monorepo"
+BANK = "termux-monorepo::primary"
 KEY = os.environ.get("HINDSIGHT_API_LLM_API_KEY", "")
 GEM = "https://generativelanguage.googleapis.com/v1beta"
 STACK = Path("/tmp/hs-stack")

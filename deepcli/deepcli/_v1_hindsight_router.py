@@ -25,7 +25,7 @@ class _LocalCodespaceClient:
     def __init__(self, url: str):
         self.base_url = url
         self.default_bank_id = os.environ.get(
-            "HINDSIGHT_BANK_ID", "deepagent::termux-monorepo"
+            "HINDSIGHT_BANK_ID", "termux-monorepo::primary"
         )
 
     async def _req(self, path: str, method: str = "GET", payload=None):

@@ -18,7 +18,7 @@ from .leaderboard import Leaderboard
 HOME = Path.home()
 HS_URL = os.environ.get("HS_REMOTE_URL") or os.environ.get("HS_LOCAL_URL") or "http://localhost:18888"
 HS_KEY = os.environ.get("HINDSIGHT_API_KEY", "")
-BANK = os.environ.get("HINDSIGHT_BANK_ID", "deepagent::termux-monorepo")
+BANK = os.environ.get("HINDSIGHT_BANK_ID", "termux-monorepo::primary")
 
 
 def _retain(content: str, meta: dict) -> int:

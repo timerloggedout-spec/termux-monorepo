@@ -36,6 +36,30 @@ Lifecycle semantics remain:
 
 A missing Codespace record is **UNKNOWN**, not Deleted. Current GitHub connector capabilities available to this reconciliation do not expose a Codespaces inventory endpoint, so this document intentionally does not invent a live/deleted inventory.
 
+
+
+## 2A. Recovered Codespace name ledger
+
+**Source:** user-provided Codespace inventory recovered during the 2026-10-01 continuation pass.
+**Important:** names below are confirmed as recovered identifiers, but their current provider lifecycle state is not independently observable through the connected GitHub surface. Where development is reported, preserve the workspace and treat it as **ACTIVE/PROTECTED** until explicitly reconciled.
+
+| Friendly name | Codespace identifier | Recovery classification | Action |
+|---|---|---|---|
+| glorious capybara | `glorious-capybara-wrq7vrqj7xqjh995p` | **RECOVERED / DEVELOPMENT CANDIDATE** | Preserve; reconcile state before cleanup |
+| agent-bifrost-006 | `agent-bifrost-006-5g7qvg7pqjggh4jqv` | **RECOVERED / BIFROST EVIDENCE** | Preserve; link to BIFROST-006 evidence |
+| list-only-probe | `list-only-probe-v6jvp6j7v75xfxxv9` | **RECOVERED / PROBE** | Preserve as probe lineage; do not promote to production |
+| congenial space doodle | `congenial-space-doodle-5g7qvg7pqpw92q7v` | **RECOVERED / UNKNOWN** | Inventory first; no deletion assumption |
+| hindsight-1552 | `hindsight-1552-4jp7qjp975j73q9qj` | **RECOVERED / HINDSIGHT DEVELOPMENT** | Protect active work; reconcile against current Hindsight lane |
+
+### Recovery invariants
+
+- A recovered identifier establishes **identity**, not current lifecycle.
+- A user-reported "being developed" workspace is treated as **PROTECTED** for consolidation until explicitly reconciled.
+- No workspace is deleted, recreated, or repurposed during this recovery pass merely because it is absent from the connector inventory.
+- `list-only-probe` remains diagnostic/probe lineage unless current evidence promotes it.
+- `agent-bifrost-006` and `hindsight-1552` are linked to their respective integration lanes rather than treated as generic disposable environments.
+- The next operational pass should capture: `codespace_id`, friendly name, repository/ref, current lifecycle, last observed time, devcontainer/config, uncommitted-work indicator, branch/SHA, owner/agent lane, and disposition.
+
 ## 3. Bifrost lineage
 
 Bifrost is already a reconciled integration concept, not a pending wholesale source merge.

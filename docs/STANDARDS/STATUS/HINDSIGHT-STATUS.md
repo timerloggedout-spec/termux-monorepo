@@ -103,3 +103,12 @@ provenance-harvest, sovereign-run.sh
 5. Fix hs-cadence harvest (D6).
 6. Wire DeepAgent Phase 3 (S1, S2): finish handler calls hindsight_retain.
 7. Only then open S3 (classifier runtime) and S4 (leaderboard).
+
+
+## Batch plan (2026-10-02)
+
+- `hs-batch-plan.py` v0.3.0: size = min(by_in, by_out, by_window).
+- by_in = inputTokenLimit / avg_item_tokens (live from Gemini models API).
+- by_out = outputTokenLimit / out_per_item.
+- by_window = HTTP_WINDOW_S / per_item_s (measured median, prior 9.4s until ≥3 samples).
+- No fixed cap. Values recomputed on every sovereign tick.

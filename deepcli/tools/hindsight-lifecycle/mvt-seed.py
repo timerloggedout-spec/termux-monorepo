@@ -22,6 +22,16 @@ BATCH_HARD_TIMEOUT = int(os.environ.get("MVT_BATCH_TIMEOUT", "90"))
 LOG = Path("/tmp/mvt-seed.log")
 ACTIVE = Path("/tmp/hs-stack/active.json")
 
+
+
+def _active_role():
+    """Read role from active.json (set by observatory/tournament) or default."""
+    try:
+        d = json.loads(ACTIVE.read_text())
+        return d.get("role") or os.environ.get("MVT_ROLE") or "mev"
+    except Exception:
+        return os.environ.get("MVT_ROLE") or "mev"
+
 def _active_model():
     try:
         return json.loads(ACTIVE.read_text()).get("model", "gemini-3.5-flash-lite")
@@ -29,12 +39,12 @@ def _active_model():
         return "gemini-3.5-flash-lite"
 
 PROVIDERS = [
-    {"name": "gemini",     "rpm": 15, "concurrency": 4, "pace": 4.5,
+    {"name": "gemini",     "rpm": 15, "concurrency": 4, "pace": 3.0,
      "hs_url": "http://localhost:8888",
-     "model": "gemini-3.5-flash-lite", "role": "mev"},
-    {"name": "openrouter", "rpm": 20, "concurrency": 5, "pace": 3.5,
+     "model_from_active": True},
+    {"name": "openrouter", "rpm": 20, "concurrency": 4, "pace": 3.0,
      "hs_url": "http://localhost:8889",
-     "model": "meta-llama/llama-3.3-70b-instruct:free", "role": "mev"},
+     "model": "meta-llama/llama-3.3-70b-instruct:free"},
 ]
 
 def log(m):
@@ -275,7 +285,7 @@ async def run_provider(provider, source):
     prov = provider["name"]
     comp_hash = "base"
     model = provider.get("model") or _active_model()
-    role = provider.get("role", "mev")
+    role = provider.get("role") or _active_role()
     bank = f"deepagent::mvt::{prov}::{model}::{role}::{comp_hash}"
     state = load_state(prov, source)
     done = state.get("n_ok", 0)

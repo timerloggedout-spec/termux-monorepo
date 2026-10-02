@@ -30,7 +30,8 @@ if [ -f "$INST" ]; then
   PSQL=/home/vscode/.pg0/installation/$(jq -r .version "$INST")/bin/psql
   "$PSQL" -tAc "SELECT 1" >/dev/null 2>&1 && ok "PG auth" || bad "PG auth"
   NB=$("$PSQL" -tAc "SELECT count(*) FROM banks" 2>/dev/null || echo "?")
-  [ "$NB" != "?" ] && ok "PG banks count=$NB" || bad "PG banks query"
+  NMU=$("$PSQL" -tAc "SELECT count(*) FROM memory_units" 2>/dev/null || echo "?")
+  [ "$NB" != "?" ] && ok "PG banks=$NB memory_units=$NMU" || bad "PG banks query"
 else
   bad "no instance.json"
 fi
@@ -40,7 +41,7 @@ active_model=$(python3 -c "import json;print(json.load(open('/tmp/hs-stack/activ
 [ "$api_model" = "$active_model" ] && ok "model sync ($api_model)" || bad "model drift api=$api_model active=$active_model"
 
 if [ -n "$PSQL" ]; then
-  F=$("$PSQL" -tAc "SELECT COALESCE(SUM(fact_count),0) FROM banks WHERE bank_id LIKE '%mvt%'" 2>/dev/null || echo 0)
+  F=$("$PSQL" -tAc "SELECT COALESCE(SUM(c),0) FROM (SELECT count(*) c FROM memory_units WHERE bank_id LIKE '%mvt%' GROUP BY bank_id) t" 2>/dev/null || echo 0)
   [ "${F:-0}" -gt 0 ] && ok "MVT facts=$F" || info "MVT facts=0 (may be fresh)"
 fi
 

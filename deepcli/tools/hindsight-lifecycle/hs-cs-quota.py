@@ -8,9 +8,18 @@ def resolve_cs():
     f = os.path.expanduser("~/.deepcli/cs-hindsight-name.txt")
     if os.path.exists(f):
         return open(f).read().strip()
-    # On codespace: read codespace name from GITHUB_CODESPACE_TOKEN env or hostname
-    h = os.environ.get("CODESPACES_NAME") or os.environ.get("GITHUB_CODESPACE_NAME")
-    if h: return h
+    # On codespace: check env vars
+    for k in ("CODESPACES_NAME", "GITHUB_CODESPACE_NAME", "HOSTNAME"):
+        h = os.environ.get(k)
+        if h and h.startswith("hs-"):
+            return h
+    # Parse hostname from /etc/hostname
+    try:
+        h = open("/etc/hostname").read().strip()
+        if h.startswith("hs-"):
+            return h
+    except Exception:
+        pass
     # Fallback: pick any Available codespace from gh list
     try:
         r = subprocess.run(["gh", "codespace", "list", "--json", "name,state"],

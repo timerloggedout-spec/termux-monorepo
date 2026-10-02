@@ -41,7 +41,7 @@ active_model=$(python3 -c "import json;print(json.load(open('/tmp/hs-stack/activ
 [ "$api_model" = "$active_model" ] && ok "model sync ($api_model)" || bad "model drift api=$api_model active=$active_model"
 
 if [ -n "$PSQL" ]; then
-  F=$("$PSQL" -tAc "SELECT COALESCE(SUM(c),0) FROM (SELECT count(*) c FROM memory_units WHERE bank_id LIKE '%mvt%' GROUP BY bank_id) t" 2>/dev/null || echo 0)
+  F=$("$PSQL" -tAc "SELECT COALESCE(SUM(c),0) FROM (SELECT count(*) c FROM memory_units WHERE bank_id LIKE 'mvt::%' GROUP BY bank_id) t" 2>/dev/null || echo 0)
   [ "${F:-0}" -gt 0 ] && ok "MVT facts=$F" || info "MVT facts=0 (may be fresh)"
 fi
 

@@ -28,9 +28,9 @@ def _active_role():
     """Read role from active.json (set by observatory/tournament) or default."""
     try:
         d = json.loads(ACTIVE.read_text())
-        return d.get("role") or os.environ.get("MVT_ROLE") or "mev"
+        return d.get("role") or os.environ.get("MVT_ROLE") or "producer"
     except Exception:
-        return os.environ.get("MVT_ROLE") or "mev"
+        return os.environ.get("MVT_ROLE") or "producer"
 
 def _active_model():
     try:

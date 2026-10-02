@@ -1660,6 +1660,12 @@ def _autosnapshot(reason: str = "auto"):
 def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False, category="default"):
     """Loop until finish OR no-progress detected. Ceiling is safety, not policy."""
     print(f"\n▶ task: {task}\n")
+    import subprocess as _sp
+    try:
+        _sp.Popen(["$HOME/.local/bin/deepagent-notify".replace("$HOME", str(HOME)), "start", task[:160]],
+                  stdout=_sp.DEVNULL, stderr=_sp.DEVNULL)
+    except Exception:
+        pass
     _t0 = time.time()
     key = session_store.task_key(task, task_path)
     _notify(

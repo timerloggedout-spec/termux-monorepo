@@ -184,6 +184,10 @@ ledger = {
 
 OUT.parent.mkdir(parents=True, exist_ok=True)
 OUT.write_text(json.dumps(ledger, indent=2, default=str))
+# also write a tracked snapshot for git history
+tracked_dir = Path(__file__).parent / "data"
+tracked_dir.mkdir(parents=True, exist_ok=True)
+(tracked_dir / "quota-ledger-latest.json").write_text(json.dumps(ledger, indent=2, default=str))
 print(f"wrote {OUT}")
 print(f"  codespaces compute: {gh.get('codespaces_compute_core_hours',0):.1f} / {FREE['codespaces_compute_core_hours']:.0f} core-h ({ledger['gates']['codespaces_compute']['pct']:.1f}%)")
 print(f"  actions linux:      {gh.get('actions_linux_minutes',0):.0f} / {FREE['actions_linux_minutes']:.0f} min")

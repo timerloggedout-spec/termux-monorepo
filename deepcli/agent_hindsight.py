@@ -7,7 +7,7 @@ import json, os, threading, urllib.request, urllib.error
 
 BASE = os.environ.get("HINDSIGHT_BASE_URL", "").rstrip("/")
 KEY  = os.environ.get("HINDSIGHT_API_KEY", "")
-BANK = os.environ.get("HINDSIGHT_BANK_ID", "termux-monorepo")
+BANK = os.environ.get("HINDSIGHT_BANK_ID", "termux-monorepo::primary")
 DEFAULT_TIMEOUT = int(os.environ.get("HINDSIGHT_RETAIN_TIMEOUT", "30"))
 
 

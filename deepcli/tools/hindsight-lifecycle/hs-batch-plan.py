@@ -1,50 +1,44 @@
 #!/usr/bin/env python3
-"""hs-batch-plan - measured + theoretical batch size.
+"""hs-batch-plan - batch size derived from measurement + model token limits.
 
-Priority:
-  1. Measured: parse wall times, pick size maximizing items/sec under window.
-  2. Theoretical: inputTokenLimit / avg_item_tokens, outputTokenLimit / out_per_item.
-  3. Fallback: 8.
+No arbitrary cap. The batch size is:
+  min( by_window, by_input_tokens, by_output_tokens )
+
+Where:
+  by_window       = HTTP_WINDOW_S / measured_per_item_s   (dynamic, from log)
+  by_input_tokens = inputTokenLimit / avg_item_tokens
+  by_output_tokens = outputTokenLimit / out_tokens_per_item
+
+If no measurements exist, window-based bound is unknown and we use the
+smaller of the two token bounds.
 """
 import json, os, re, sys
 from pathlib import Path
-from statistics import median
 
 LIM = Path("/tmp/hs-stack/limits.json")
 ACT = Path("/tmp/hs-stack/active.json")
 LOG = Path("/tmp/mvt-seed.log")
 
 AVG_ITEM_TOKENS = int(os.environ.get("MVT_AVG_ITEM_TOKENS", "2200"))
-OUT_PER_ITEM = int(os.environ.get("MVT_OUT_TOKENS_PER_ITEM", "110"))
-MAX_BATCH = int(os.environ.get("MVT_BATCH_SIZE_MAX", "16"))
-MIN_BATCH = int(os.environ.get("MVT_BATCH_SIZE_MIN", "4"))
-HTTP_WINDOW_S = int(os.environ.get("MVT_HTTP_WINDOW_S", "120"))
+OUT_PER_ITEM    = int(os.environ.get("MVT_OUT_TOKENS_PER_ITEM", "110"))
+HTTP_WINDOW_S   = int(os.environ.get("MVT_HTTP_WINDOW_S", "120"))
+MIN_BATCH       = int(os.environ.get("MVT_BATCH_SIZE_MIN", "1"))
 
-def parse_log():
-    if not LOG.exists(): return []
-    pairs = []
-    for line in LOG.read_text().splitlines()[-500:]:
+def measured_per_item_s():
+    """From 'batch #N size=K -> HTTP 200 (Xs)' lines, compute median per-item sec."""
+    if not LOG.exists(): return None
+    from statistics import median
+    per_item = []
+    for line in LOG.read_text().splitlines()[-2000:]:
         m = re.search(r'size=(\d+).*?HTTP 200 \(([0-9.]+)s\)', line)
         if m:
-            pairs.append((int(m.group(1)), float(m.group(2))))
-    return pairs
+            size, wall = int(m.group(1)), float(m.group(2))
+            if size > 0 and wall > 0:
+                per_item.append(wall / size)
+    if len(per_item) < 3: return None
+    return median(per_item)
 
-def measured():
-    samples = parse_log()
-    if len(samples) < 3: return None
-    buckets = {}
-    for size, wall in samples:
-        buckets.setdefault(size, []).append(wall)
-    best = None
-    for size, walls in buckets.items():
-        med = median(walls)
-        if med <= 0 or med > HTTP_WINDOW_S: continue
-        ips = size / med
-        if best is None or ips > best[1]:
-            best = (size, ips, med, len(walls))
-    return best
-
-def theoretical():
+def token_bounds():
     if not (LIM.exists() and ACT.exists()): return None
     lim = json.loads(LIM.read_text())
     act = json.loads(ACT.read_text()).get("model", "")
@@ -52,29 +46,38 @@ def theoretical():
     in_lim = int(m.get("inputTokenLimit") or 0)
     out_lim = int(m.get("outputTokenLimit") or 0)
     if not in_lim or not out_lim: return None
-    by_input = max(1, in_lim // AVG_ITEM_TOKENS)
-    by_output = max(1, out_lim // OUT_PER_ITEM)
-    raw = min(by_input, by_output)
-    return min(MAX_BATCH, max(MIN_BATCH, raw))
+    by_in  = max(1, in_lim  // AVG_ITEM_TOKENS)
+    by_out = max(1, out_lim // OUT_PER_ITEM)
+    return min(by_in, by_out), in_lim, out_lim, by_in, by_out
 
-verbose = "--verbose" in sys.argv
-meas = measured()
-theo = theoretical()
-if meas:
-    size, ips, med_s, n = meas
-    reason = f"measured: {size}/{med_s:.1f}s = {ips:.3f} ips over {n}"
-elif theo:
-    size = theo
-    reason = f"theoretical cap: {size}"
-else:
-    size = 8
-    reason = "fallback 8"
+def main():
+    verbose = "--verbose" in sys.argv
+    per_item = measured_per_item_s()
+    tb = token_bounds()
 
-size = min(MAX_BATCH, max(MIN_BATCH, size))
+    if tb:
+        token_cap, in_lim, out_lim, by_in, by_out = tb
+    else:
+        token_cap, in_lim, out_lim, by_in, by_out = None, 0, 0, 0, 0
 
-if verbose:
-    print(f"chosen={size}  max={MAX_BATCH}  window={HTTP_WINDOW_S}s")
-    print(f"reason={reason}")
-    print(f"samples={len(parse_log())}")
-else:
-    print(size)
+    if per_item:
+        by_window = max(1, int(HTTP_WINDOW_S / per_item))
+    else:
+        by_window = None
+
+    candidates = [c for c in (by_window, token_cap) if c]
+    size = min(candidates) if candidates else 8
+    size = max(size, MIN_BATCH)
+
+    if verbose:
+        print(f"per_item_s={per_item:.3f}" if per_item else "per_item_s=(no samples)")
+        print(f"window={HTTP_WINDOW_S}s  by_window={by_window}")
+        print(f"input_limit={in_lim}  avg_item={AVG_ITEM_TOKENS}  by_in={by_in}")
+        print(f"output_limit={out_lim}  out_per_item={OUT_PER_ITEM}  by_out={by_out}")
+        print(f"token_cap={token_cap}")
+        print(f"chosen={size}")
+    else:
+        print(size)
+
+if __name__ == "__main__":
+    main()

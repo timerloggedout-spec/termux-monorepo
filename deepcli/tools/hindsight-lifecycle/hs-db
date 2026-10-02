@@ -1,17 +1,29 @@
-#!/usr/bin/env bash
+#!/data/data/com.termux/files/usr/bin/bash
 # @tool hs-db
-# @version 0.1.0
+# @version 0.3.0
 # @since 2026-10-01
-# @change direct PG query via instance.json (codespace-local only)
+# @change Termux wrapper: ships SQL to codespace, runs there
 # @doc docs/STANDARDS/FLOWS/DB-ACCESS.md
+#
+# Usage:
+#   hs-db <<'SQL'
+#   SELECT 1;
+#   SQL
+#   hs-db -f /path/to/query.sql
+#
+# Runs on Termux, executes on codespace via a tmp file.
 set -u
-INST=/home/vscode/.pg0/instances/hindsight/instance.json
-[ -f "$INST" ] || { echo "hs-db: run on codespace, not Termux"; exit 1; }
-export PGHOST=/tmp
-export PGPORT=$(jq -r .port "$INST")
-export PGUSER=$(jq -r .username "$INST")
-export PGPASSWORD=$(jq -r .password "$INST")
-export PGDATABASE=$(jq -r .database "$INST")
-PSQL=/home/vscode/.pg0/installation/$(jq -r .version "$INST")/bin/psql
-if [ $# -eq 0 ]; then exec "$PSQL"; fi
-exec "$PSQL" -tAc "$*"
+_cs=$(cat "$HOME/.deepcli/cs-hindsight-name.txt" 2>/dev/null)
+[ -z "$_cs" ] && { echo "no codespace"; exit 1; }
+_tmp="${TMPDIR:-$HOME/.deepcli/tmp}"
+mkdir -p "$_tmp"
+
+if [ "${1:-}" = "-f" ]; then
+  [ -f "${2:-}" ] || { echo "usage: hs-db -f file.sql"; exit 2; }
+  cp "$2" "$_tmp/.hs-db.sql"
+else
+  cat > "$_tmp/.hs-db.sql"
+fi
+
+gh codespace cp -c "$_cs" -e "$_tmp/.hs-db.sql" "remote:/tmp/.hs-db.sql" >/dev/null 2>&1
+gh codespace ssh -c "$_cs" -- bash /tmp/hs-db-runner.sh /tmp/.hs-db.sql 2>&1

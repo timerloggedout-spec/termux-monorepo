@@ -1,0 +1,85 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# @tool hs-facts
+# @version 0.1.0
+# @since 2026-10-01
+# @change memory_unit CRUD via PG (list/get/set-meta/del/recent)
+# @doc docs/STANDARDS/FLOWS/DB-ACCESS.md
+#
+#   hs-facts list   [bank_pattern] [limit]
+#   hs-facts recent [bank_pattern] [limit]
+#   hs-facts get    <bank_id> <unit_id>
+#   hs-facts set-meta <bank_id> <unit_id> '<json>'
+#   hs-facts del    <bank_id> <unit_id>
+#   hs-facts count  [bank_pattern]
+set -u
+_cs=$(cat "$HOME/.deepcli/cs-hindsight-name.txt" 2>/dev/null)
+[ -z "$_cs" ] && { echo "no codespace"; exit 1; }
+
+cmd="${1:-list}"; shift || true
+
+emit_sql() {
+  cat > "$TMPDIR/.hs-facts.sql"
+  gh codespace cp -c "$_cs" -e "$TMPDIR/.hs-facts.sql" "remote:/tmp/.hs-facts.sql" >/dev/null 2>&1
+  gh codespace ssh -c "$_cs" -- bash /tmp/hs-db-runner.sh /tmp/.hs-facts.sql 2>&1
+}
+
+case "$cmd" in
+  list)
+    pat="${1:-%}"; lim="${2:-20}"
+    emit_sql <<SQL
+SELECT id || ' | ' || bank_id || ' | ' || left(content, 80)
+FROM memory_units
+WHERE bank_id LIKE '$pat'
+ORDER BY created_at DESC
+LIMIT $lim;
+SQL
+    ;;
+  recent)
+    pat="${1:-%}"; lim="${2:-10}"
+    emit_sql <<SQL
+SELECT bank_id || ' | ' || id || ' | ' || to_char(created_at,'HH24:MI:SS') || ' | ' || left(content, 60)
+FROM memory_units
+WHERE bank_id LIKE '$pat'
+ORDER BY created_at DESC
+LIMIT $lim;
+SQL
+    ;;
+  count)
+    pat="${1:-%}"
+    emit_sql <<SQL
+SELECT bank_id || '  facts=' || count(*)
+FROM memory_units
+WHERE bank_id LIKE '$pat'
+GROUP BY bank_id
+ORDER BY count(*) DESC;
+SQL
+    ;;
+  get)
+    bank="$1"; uid="$2"
+    emit_sql <<SQL
+SELECT id || E'\\n' || bank_id || E'\\n' || content || E'\\n---meta---\\n' || coalesce(metadata::text,'{}')
+FROM memory_units
+WHERE bank_id='$bank' AND id='$uid';
+SQL
+    ;;
+  set-meta)
+    bank="$1"; uid="$2"; js="$3"
+    emit_sql <<SQL
+UPDATE memory_units SET metadata = '$js'::jsonb
+WHERE bank_id='$bank' AND id='$uid'
+RETURNING id, metadata;
+SQL
+    ;;
+  del)
+    bank="$1"; uid="$2"
+    emit_sql <<SQL
+DELETE FROM memory_units
+WHERE bank_id='$bank' AND id='$uid'
+RETURNING id;
+SQL
+    ;;
+  *)
+    echo "usage: hs-facts {list|recent|count|get|set-meta|del} ..."
+    exit 2
+    ;;
+esac

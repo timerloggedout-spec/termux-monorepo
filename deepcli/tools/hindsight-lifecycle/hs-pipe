@@ -7,7 +7,7 @@
 set -u
 _cs=$(cat "$HOME/.deepcli/cs-hindsight-name.txt" 2>/dev/null)
 [ -z "$_cs" ] && { echo "no codespace"; exit 1; }
-cmd="${1:-status}"
+cmd="${1:-help}"
 _tmp="${TMPDIR:-$HOME/.deepcli/tmp}"; mkdir -p "$_tmp"
 
 cat > "$_tmp/hs-pipe-status.sh" <<'R'
@@ -63,7 +63,20 @@ case "$cmd" in
   status)
     gh codespace ssh -c "$_cs" -- bash /tmp/hs-pipe-status.sh 2>&1
     ;;
-  *)
+  help)
+    cat <<U
+usage: hs-pipe {start|resume|pause|stop|full-stop|restart|status}
+
+  start      launch sovereign loop + rotator (via hs-sovereign-launch)
+  resume     alias of start
+  pause      stop loop + mvt-seed; APIs + rotator stay up (validation window)
+  stop       pause + kill rotator; APIs stay up
+  full-stop  stop + shutdown codespace
+  restart    stop then start
+  status     UP/DOWN per process
+U
+    ;;
+  help|"")
     cat <<U
 usage: hs-pipe {start|resume|pause|stop|full-stop|restart|status}
 

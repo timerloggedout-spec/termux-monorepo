@@ -1,50 +1,52 @@
 #!/usr/bin/env python3
-"""hs-cs-quota — codespace quota + usage monitor."""
+"""hs-cs-quota - codespace quota + usage. Works on Termux and codespace."""
 import json, subprocess, sys, os
 
-cs = os.environ.get("HS_CS_NAME") or open(
-    os.path.expanduser("~/.deepcli/cs-hindsight-name.txt")).read().strip()
+def resolve_cs():
+    v = os.environ.get("HS_CS_NAME")
+    if v: return v
+    f = os.path.expanduser("~/.deepcli/cs-hindsight-name.txt")
+    if os.path.exists(f):
+        return open(f).read().strip()
+    # On codespace: read codespace name from GITHUB_CODESPACE_TOKEN env or hostname
+    h = os.environ.get("CODESPACES_NAME") or os.environ.get("GITHUB_CODESPACE_NAME")
+    if h: return h
+    # Fallback: pick any Available codespace from gh list
+    try:
+        r = subprocess.run(["gh", "codespace", "list", "--json", "name,state"],
+                           capture_output=True, text=True, timeout=10)
+        if r.returncode == 0:
+            for c in json.loads(r.stdout):
+                if c.get("state") == "Available":
+                    return c["name"]
+    except Exception:
+        pass
+    return None
 
 def gh_json(*args):
-    r = subprocess.run(["gh", *args], capture_output=True, text=True)
-    if r.returncode != 0:
-        return None
-    try:
-        return json.loads(r.stdout)
-    except Exception:
-        return None
+    r = subprocess.run(["gh", *args], capture_output=True, text=True, timeout=15)
+    if r.returncode != 0: return None
+    try: return json.loads(r.stdout)
+    except Exception: return None
 
+cs = resolve_cs()
 print("[ CODESPACE QUOTA ]")
-rows = gh_json("codespace", "list", "--json",
-               "name,state,machineName,lastUsedAt,createdAt,idleTimeoutMinutes")
-if rows:
-    for r in rows:
-        if r["name"] != cs:
-            continue
-        print(f"  name={r['name']}  state={r['state']}  machine={r['machineName']}")
-        print(f"  idle_timeout_min={r.get('idleTimeoutMinutes','?')}")
-        print(f"  created={r.get('createdAt','?')}")
-        print(f"  last_used={r.get('lastUsedAt','?')}")
+if not cs:
+    print("  (unable to resolve codespace name)")
 else:
-    print("  (gh codespace list failed)")
+    rows = gh_json("codespace", "list", "--json",
+                   "name,state,machineName,lastUsedAt,createdAt,idleTimeoutMinutes")
+    found = False
+    if rows:
+        for r in rows:
+            if r["name"] != cs: continue
+            found = True
+            print(f"  name={r['name']}  state={r['state']}  machine={r['machineName']}")
+            print(f"  idle={r.get('idleTimeoutMinutes','?')}m  created={r.get('createdAt','?')[:19]}")
+            print(f"  last_used={r.get('lastUsedAt','?')[:19]}")
+    if not found:
+        print(f"  {cs} not in gh list (may be offline from this context)")
 
-print()
-print("[ CODESPACE USAGE — gh api ]")
-d = gh_json("api", "/user/codespaces")
-if d:
-    print(f"  total_codespaces={d.get('total_count', 0)}")
-    for x in d.get("codespaces", [])[:5]:
-        print(f"    {x['name']}  {x['state']}  {x.get('machine',{}).get('name','?')}")
-
-print()
-print("[ BILLING — if org/enterprise scope ]")
-me = gh_json("api", "/user")
-login = (me or {}).get("login", "")
-if login:
-    b = gh_json("api", f"/users/{login}/settings/billing/codespaces")
-    if b:
-        print(f"  minutes_used={b.get('minutes_used','?')}")
-        print(f"  minutes_included={b.get('minutes_included','?')}")
-        print(f"  paid_storage={b.get('paid_storage',{}).get('total_usage_bytes','?')}")
-    else:
-        print("  personal account: billing endpoint not available")
+    d = gh_json("api", "/user/codespaces")
+    if d:
+        print(f"  total_codespaces={d.get('total_count', 0)}")

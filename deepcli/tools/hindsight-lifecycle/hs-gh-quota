@@ -47,18 +47,17 @@ except Exception as e:
 # 3 · reset date
 echo
 echo "[ RESET ]"
-python3 -c "
-from datetime import datetime, timezone, timedelta
-now = datetime.now(timezone.utc)
-# GitHub self-serve billing cycle: 00:00 UTC on 1st of month
-if now.month == 12:
-    nxt = datetime(now.year+1, 1, 1, tzinfo=timezone.utc)
+python3 <<'PYEOF'
+from datetime import datetime, timezone
+n = datetime.now(timezone.utc)
+if n.month == 12:
+    nx = datetime(n.year + 1, 1, 1, tzinfo=timezone.utc)
 else:
-    nxt = datetime(now.year, now.month+1, 1, tzinfo=timezone.utc)
-days = (nxt - now).days
-print(f'  billing cycle reset: {nxt.strftime("%Y-%m-%d 00:00 UTC")}')
-print(f'  days remaining:      {days}')
-"
+    nx = datetime(n.year, n.month + 1, 1, tzinfo=timezone.utc)
+days = (nx - n).days
+print("  billing cycle reset:", nx.strftime("%Y-%m-%d"), "00:00 UTC")
+print("  days remaining:     ", days)
+PYEOF
 
 # 4 · free-tier reference
 echo

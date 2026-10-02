@@ -28,6 +28,20 @@ _src="${_srcs[$((_idx % 4))]}"
 echo "$(( _idx + 1 ))" > "$_src_file"
 echo "  source this tick: $_src"
 
+
+# Auto-drain every 6 hours (configurable via HS_DRAIN_INTERVAL_S)
+if [ -f /tmp/hs-drain-auto.sh ]; then
+  _last_drain_file=/tmp/hs-last-drain.ts
+  _now=$(date +%s)
+  _last=$(cat "$_last_drain_file" 2>/dev/null || echo 0)
+  _interval="${HS_DRAIN_INTERVAL_S:-21600}"
+  if [ $(( _now - _last )) -ge "$_interval" ]; then
+    echo "  auto-drain (interval=${_interval}s since last=${_last})"
+    bash /tmp/hs-drain-auto.sh >> /tmp/hs-drain.log 2>&1
+    echo "$_now" > "$_last_drain_file"
+  fi
+fi
+
 # Dynamic batch size from model token limits
 if [ -f /tmp/hs-batch-plan.py ]; then
   _bs=$(python3 /tmp/hs-batch-plan.py 2>/dev/null || echo 8)

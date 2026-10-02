@@ -1,34 +1,80 @@
 #!/data/data/com.termux/files/usr/bin/bash
 # @tool hs-pipe
-# @version 0.2.0
+# @version 0.3.0
 # @since 2026-10-02
-# @change status via script file, no nested bash -c quotes
+# @change explicit pause (loop only) vs stop (loop + rotator) vs full-stop (codespace down)
+# @doc docs/STANDARDS/FLOWS/DASHBOARD-CONTROLS.md
 set -u
 _cs=$(cat "$HOME/.deepcli/cs-hindsight-name.txt" 2>/dev/null)
 [ -z "$_cs" ] && { echo "no codespace"; exit 1; }
 cmd="${1:-status}"
 _tmp="${TMPDIR:-$HOME/.deepcli/tmp}"; mkdir -p "$_tmp"
 
-cat > "$_tmp/hs-pipe-remote.sh" <<'REMOTE'
+cat > "$_tmp/hs-pipe-status.sh" <<'R'
 #!/usr/bin/env bash
-set -u
 for pat in "hindsight-api --port 8888" "hindsight-api --port 8889" "hs-stack.py watch" "sovereign-run.sh" "mvt-seed.py"; do
   pid=$(pgrep -f "$pat" | head -1)
   [ -n "$pid" ] && echo "  UP   $pat (pid=$pid)" || echo "  DOWN $pat"
 done
-REMOTE
-chmod +x "$_tmp/hs-pipe-remote.sh"
-gh codespace cp -c "$_cs" -e "$_tmp/hs-pipe-remote.sh" "remote:/tmp/hs-pipe-remote.sh" >/dev/null 2>&1
+R
+chmod +x "$_tmp/hs-pipe-status.sh"
+gh codespace cp -c "$_cs" -e "$_tmp/hs-pipe-status.sh" "remote:/tmp/hs-pipe-status.sh" >/dev/null 2>&1
+
+cat > "$_tmp/hs-pipe-pause.sh" <<'R'
+#!/usr/bin/env bash
+pkill -9 -f 'sovereign-run.sh' 2>/dev/null || true
+pkill -9 -f 'mvt-seed.py' 2>/dev/null || true
+pkill -9 -f 'while true; do bash /tmp/sovereign' 2>/dev/null || true
+echo "  paused: sovereign-run + mvt-seed stopped; rotator + APIs kept"
+R
+chmod +x "$_tmp/hs-pipe-pause.sh"
+gh codespace cp -c "$_cs" -e "$_tmp/hs-pipe-pause.sh" "remote:/tmp/hs-pipe-pause.sh" >/dev/null 2>&1
+
+cat > "$_tmp/hs-pipe-stop.sh" <<'R'
+#!/usr/bin/env bash
+pkill -9 -f 'sovereign-run.sh' 2>/dev/null || true
+pkill -9 -f 'mvt-seed.py' 2>/dev/null || true
+pkill -9 -f 'hs-stack.py watch' 2>/dev/null || true
+pkill -9 -f 'while true; do bash /tmp/sovereign' 2>/dev/null || true
+echo "  stopped: loop + rotator; APIs (:8888 :8889) kept up"
+R
+chmod +x "$_tmp/hs-pipe-stop.sh"
+gh codespace cp -c "$_cs" -e "$_tmp/hs-pipe-stop.sh" "remote:/tmp/hs-pipe-stop.sh" >/dev/null 2>&1
 
 case "$cmd" in
-  start)   gh codespace ssh -c "$_cs" -- bash /tmp/hs-sovereign-launch.sh 2>&1 | tail -10 ;;
-  stop)
-    gh codespace ssh -c "$_cs" -- bash -c 'pkill -9 -f sovereign-run.sh; pkill -9 -f mvt-seed.py; echo stopped' 2>&1 | tail -2
-    ;;
-  restart)
-    gh codespace ssh -c "$_cs" -- bash -c 'pkill -9 -f sovereign-run.sh; pkill -9 -f mvt-seed.py; sleep 2' >/dev/null 2>&1
+  start|resume)
     gh codespace ssh -c "$_cs" -- bash /tmp/hs-sovereign-launch.sh 2>&1 | tail -10
     ;;
-  status)  gh codespace ssh -c "$_cs" -- bash /tmp/hs-pipe-remote.sh 2>&1 ;;
-  *) echo "usage: hs-pipe {start|stop|restart|status}"; exit 2 ;;
+  pause)
+    gh codespace ssh -c "$_cs" -- bash /tmp/hs-pipe-pause.sh 2>&1
+    ;;
+  stop)
+    gh codespace ssh -c "$_cs" -- bash /tmp/hs-pipe-stop.sh 2>&1
+    ;;
+  full-stop)
+    gh codespace ssh -c "$_cs" -- bash /tmp/hs-pipe-stop.sh 2>&1
+    gh codespace stop -c "$_cs" 2>&1 | tail -1
+    ;;
+  restart)
+    gh codespace ssh -c "$_cs" -- bash /tmp/hs-pipe-stop.sh >/dev/null 2>&1
+    sleep 2
+    gh codespace ssh -c "$_cs" -- bash /tmp/hs-sovereign-launch.sh 2>&1 | tail -10
+    ;;
+  status)
+    gh codespace ssh -c "$_cs" -- bash /tmp/hs-pipe-status.sh 2>&1
+    ;;
+  *)
+    cat <<U
+usage: hs-pipe {start|resume|pause|stop|full-stop|restart|status}
+
+  start      launch sovereign loop + rotator (via hs-sovereign-launch)
+  resume     alias of start
+  pause      stop loop + mvt-seed; APIs + rotator stay up (validation window)
+  stop       pause + kill rotator; APIs stay up
+  full-stop  stop + shutdown codespace
+  restart    stop then start
+  status     UP/DOWN per process
+U
+    exit 2
+    ;;
 esac

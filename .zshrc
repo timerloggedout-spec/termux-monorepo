@@ -81,3 +81,62 @@ alias block-verdicts='python3 ~/archwiz/block_verdicts.py'
 export PATH=/data/data/com.termux/files/home/.local/bin:$PATH
 export PATH="$HOME/.local/bin:$PATH"
 alias coderabbit="grun ~/.local/bin/coderabbit"
+alias da='~/.local/bin/deepagent-cli'
+alias da-dry='~/.local/bin/deepagent-cli --dry-run'
+alias da-fresh='~/.local/bin/deepagent-cli --fresh'
+alias da-task='~/.local/bin/deepagent-cli --task-file'
+
+# ── Safe command hygiene (Session 143)
+rm()  { echo "REFUSED: use rm-safe --confirm for local, git-rm-safe for tracked"; return 1; }
+alias gtrm='~/.local/bin/git-rm-safe'
+
+# ── Session 143 · anti-sweep stash guard
+git() {
+  if [ "${1:-}" = "stash" ]; then
+    shift
+    command ~/.local/bin/git-stash-safe "$@"
+  else
+    command git "$@"
+  fi
+}
+
+# ── gh-status integration (Session 143)
+# Auto-check GitHub status when `gh` or `git push/fetch` fails.
+_gh_fail_hook() {
+  local _rc=$?
+  if [ "$_rc" -ne 0 ]; then
+    printf '\n[gh-status] command failed — checking githubstatus.com\n' >&2
+    ~/.local/bin/gh-status check 2>&1 | head -2 >&2
+  fi
+  return "$_rc"
+}
+# Wrap gh (function; guard against re-wrap)
+if ! typeset -f gh >/dev/null 2>&1; then
+  gh() {
+    command gh "$@"
+    _gh_fail_hook
+  }
+fi
+# Wrap git push/fetch only (not status/log/etc.)
+git() {
+  local _sub="${1:-}"
+  command git "$@"
+  local _rc=$?
+  case "$_sub" in
+    push|fetch|pull|clone|remote) _gh_fail_hook ;;
+    *) return "$_rc" ;;
+  esac
+  return "$_rc"
+}
+alias ghs='~/.local/bin/gh-status summary'
+alias ghs-check='~/.local/bin/gh-status check'
+alias ghs-inc='~/.local/bin/gh-status incidents'
+alias ghs-watch='~/.local/bin/gh-status watch'
+alias ghs-history='~/.local/bin/gh-status history'
+
+# ── archive doctrine
+archive() { ~/.local/bin/archive.sh "$@"; }
+alias rm-arch='~/.local/bin/archive.sh'
+
+export HS_REMOTE_URL="https://hs-0345-7vj97vj49jp9cg45-8888.app.github.dev"
+export HINDSIGHT_BASE_URL="https://hs-0345-7vj97vj49jp9cg45-8888.app.github.dev"

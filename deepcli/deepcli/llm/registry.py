@@ -44,14 +44,25 @@ def catalog_for_classifier() -> str:
 
 
 def resolve(name: str) -> LLMAdapter | None:
-    """Return an instantiated adapter for a name, or None if not yet built."""
+    """Return an instantiated adapter for a name, or None if not yet built.
+
+    Tries both package layouts:
+      - deepcli.llm.adapters.<name>   (repo-root on sys.path)
+      - llm.adapters.<name>           (deepcli/ on sys.path)
+    """
     import importlib
-    try:
-        mod = importlib.import_module(f"llm.adapters.{name}")
+    _candidates = (
+        f"deepcli.llm.adapters.{name}",
+        f"llm.adapters.{name}",
+    )
+    for _path in _candidates:
+        try:
+            mod = importlib.import_module(_path)
+        except ModuleNotFoundError:
+            continue
+        except Exception as e:  # noqa: BLE001
+            print(f"[registry] adapter '{name}' load failed at {_path}: {e}")
+            return None
         cls = getattr(mod, "Adapter", None)
         return cls() if cls else None
-    except ModuleNotFoundError:
-        return None
-    except Exception as e:
-        print(f"[registry] adapter '{name}' load failed: {e}")
-        return None
+    return None

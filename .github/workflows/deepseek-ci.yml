@@ -43,7 +43,7 @@ jobs:
       # Prefer dispatch payload when provided; otherwise use the real event
       GITHUB_EVENT: ${{ github.event.inputs.event_payload != '' && github.event.inputs.event_payload || toJson(github.event) }}
       # Ephemeral cache outside checkout (no Class-3 session files in workspace)
-      DEEPSEEK_CACHE_DIR: ${{ runner.temp }}/.deepseek-cache
+      DEEPSEEK_CACHE_DIR: /tmp/.deepseek-cache
       # Account-1 / primary is PRIORITY default
       DEEPSEEK_ACCOUNT: ${{ github.event.inputs.account || 'account-1' }}
       DEEPSEEK_TOKEN_PRIMARY: ${{ secrets.DEEPSEEK_TOKEN_PRIMARY || secrets.DEEPSEEK_TOKEN_ACCOUNT_1 || secrets.DEEPSEEK_TOKEN }}

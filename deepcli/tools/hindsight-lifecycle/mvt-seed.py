@@ -297,7 +297,7 @@ async def worker(name, hs_url, bank, queue, counters, pace):
             with MVT_LEDGER.open("a") as _lf:
                 _lf.write(json.dumps({
                     "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                    "provider": prov, "model": model, "source": source,
+                    "provider": name.split("-")[0] if "-" in name else name, "model": model, "source": source,
                     "worker": name, "batch_n": bnum, "size": len(items),
                     "http": code, "wall_s": round(_dt, 2),
                     "tokens_in": _tin, "tokens_out": _tout,

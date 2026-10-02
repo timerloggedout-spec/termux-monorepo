@@ -93,6 +93,36 @@ def test_merge_seeds_rejects_conflicting_node_attributes():
         merge_seeds(first, second)
 
 
+def test_merge_seeds_unions_symbol_spans_without_timestamps():
+    first = {
+        **BASE,
+        "nodes": [
+            {
+                "kind": "symbol",
+                "external_id": "central_mapper_v420.py:CentralMapper:36",
+                "attributes": {"name": "CentralMapper", "start_line": 36, "end_line": 80},
+            }
+        ],
+        "edges": [],
+    }
+    second = {
+        **BASE,
+        "nodes": [
+            {
+                "kind": "symbol",
+                "external_id": "central_mapper_v420.py:CentralMapper:36",
+                "attributes": {"name": "CentralMapper", "start_line": 40, "end_line": 120},
+            }
+        ],
+        "edges": [],
+    }
+
+    merged, _ = merge_seeds(first, second)
+
+    assert merged["nodes"][0]["attributes"]["start_line"] == 36
+    assert merged["nodes"][0]["attributes"]["end_line"] == 120
+
+
 def test_merge_seeds_canonicalizes_file_blob_urls_onto_seed_ref():
     historical = {
         **BASE,

@@ -15,7 +15,9 @@ try:
 except ImportError:  # Supports direct script use.
     from compiler import CompilationError, load_json
 
-MERGER_ID = "archwiz.context_relationships.seed_merger@1.1"
+MERGER_ID = "archwiz.context_relationships.seed_merger@1.2"
+SPAN_MIN_KEYS = frozenset({"start_line"})
+SPAN_MAX_KEYS = frozenset({"end_line"})
 
 
 def node_reference(record: Mapping[str, Any]) -> str:
@@ -24,6 +26,16 @@ def node_reference(record: Mapping[str, Any]) -> str:
     if not isinstance(kind, str) or not isinstance(external_id, str):
         raise CompilationError("seed node must contain string kind and external_id")
     return f"{kind}:{external_id}"
+
+
+def _union_span(key: str, existing: Any, incoming: Any) -> Any | None:
+    if not isinstance(existing, int) or not isinstance(incoming, int):
+        return None
+    if key in SPAN_MIN_KEYS:
+        return min(existing, incoming)
+    if key in SPAN_MAX_KEYS:
+        return max(existing, incoming)
+    return None
 
 
 def merge_attributes(
@@ -40,6 +52,10 @@ def merge_attributes(
     for key, value in right.items():
         if key in merged and merged[key] != value:
             if not timestamps_available:
+                span = _union_span(key, merged[key], value)
+                if span is not None:
+                    merged[key] = span
+                    continue
                 raise CompilationError(f"node {node_ref} has contradictory attribute {key!r}")
             if incoming_observed_at >= existing_observed_at:
                 merged[key] = value

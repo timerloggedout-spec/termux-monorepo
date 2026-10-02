@@ -22,6 +22,8 @@ for path, entries in tv.items():
 # Scan target directories
 targets = [
     os.path.join(HOME, "synthegration_exports"),
+    os.path.join(HOME, "synthegration_exports/primary"),
+    os.path.join(HOME, "synthegration_exports/secondary"),
     os.path.join(HOME, "storage/downloads/synthegration_exports"),
     os.path.join(HOME, "storage/downloads/synthegration_batch_export"),
 ]

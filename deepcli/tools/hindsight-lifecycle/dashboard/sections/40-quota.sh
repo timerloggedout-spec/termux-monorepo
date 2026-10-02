@@ -5,23 +5,35 @@
 set -u
 echo
 echo "=== [ QUOTA / MODEL ] ==="
-python3 - <<'PY' 2>/dev/null || true
+_act=$(cat /tmp/hs-stack/active.json 2>/dev/null | python3 -c "import json,sys;print(json.load(sys.stdin).get('model',''))" 2>/dev/null)
+_ts=$(cat /tmp/hs-stack/active.json 2>/dev/null | python3 -c "import json,sys;print(json.load(sys.stdin).get('ts',''))" 2>/dev/null)
+printf "  active:    %s\n" "${_act:-unknown}"
+printf "  since:     %s\n" "${_ts:-unknown}"
+
+if [ -f /tmp/hs-stack/state.json ]; then
+  echo "  --- per-model usage (from state.json) ---"
+  python3 -c "
 import json
-from pathlib import Path
-try:
- a=json.loads(Path("/tmp/hs-stack/active.json").read_text())
- print(f"  active:    {a.get('model','?')}")
- print(f"  since:     {a.get('ts','?')}")
-except Exception: print("  active:    unknown")
-try:
- d=json.loads(Path("/tmp/hs-stack/limits.json").read_text())
- st=json.loads(Path("/tmp/hs-stack/state.json").read_text()) if Path("/tmp/hs-stack/state.json").exists() else {}
- from datetime import datetime,timezone,timedelta
- today=(datetime.now(timezone.utc)-timedelta(hours=8)).strftime("%Y-%m-%d")
- order=["gemini-3.5-flash-lite","gemini-3.1-flash-lite","gemini-flash-lite-latest","gemini-3.7-flash","gemini-3.6-flash","gemini-3.5-flash","gemini-3-flash-preview","gemini-flash-latest","gemma-4-26b-a4b-it"]
- for n in order:
-  e=d.get("models",{}).get(n)
-  if e:
-   r=int(e.get("rpd") or 0); u=int(st.get(n,{}).get(today,0)); print(f"  {n:<30} rpd={r:<4} used={u:<4} left={max(0,r-u) if r else '?'}")
-except Exception: print("  limits:    no probe cache")
-PY
+d=json.load(open('/tmp/hs-stack/state.json'))
+for m in sorted(d):
+    days=d[m]
+    for day,v in days.items():
+        if isinstance(v,dict):
+            print(f\"  {m:42s} {day} items={v.get('items',0):5d} in={v.get('tin',0):7d} out={v.get('tout',0):6d} calls={v.get('calls',0)}\")
+        else:
+            print(f\"  {m:42s} {day} items={v}\")
+"
+fi
+
+if [ -f /tmp/hs-stack/limits.json ]; then
+  echo "  --- probe cache (limits.json) ---"
+  python3 -c "
+import json
+d=json.load(open('/tmp/hs-stack/limits.json'))
+for m in sorted((d.get('models') or {}))[:15]:
+    e=d['models'][m]
+    print(f\"  {m:42s} http={e.get('http')} rpd={e.get('rpd',0)}\")
+"
+else
+  echo "  limits:    no probe cache"
+fi

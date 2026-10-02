@@ -363,7 +363,6 @@ async def run_provider(provider, source):
         for i in range(provider["concurrency"])
     ]
 
-    queued = 0
     _loop = asyncio.get_running_loop()
     _sentinel = object()
 

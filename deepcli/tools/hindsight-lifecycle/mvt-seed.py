@@ -40,15 +40,49 @@ def _active_model():
     except Exception:
         return "gemini-3.5-flash-lite"
 
+
+
+def _derive(model, provider_name):
+    """Derive (vendor, family, settings) from model id + provider key."""
+    m = (model or "").lower()
+    if m.startswith("gemini"):
+        vendor, family = "google", "gemini"
+    elif m.startswith("gemma"):
+        vendor, family = "google", "gemma"
+    elif m.startswith("qwen"):
+        vendor, family = "alibaba", "qwen"
+    elif m.startswith("meta-llama") or m.startswith("llama"):
+        vendor, family = "meta", "llama"
+    elif m.startswith("mistral") or m.startswith("mixtral"):
+        vendor, family = "mistral", "mistral"
+    elif m.startswith("deepseek"):
+        vendor, family = "deepseek", "deepseek"
+    elif m.startswith("gpt-oss") or m.startswith("openai"):
+        vendor, family = "openai", "gpt"
+    elif m.startswith("claude"):
+        vendor, family = "anthropic", "claude"
+    else:
+        vendor, family = "unknown", "unknown"
+    # route via provider if it differs from vendor (openrouter re-hosts)
+    if provider_name == "openrouter":
+        vendor = "openrouter"
+    # settings from suffix
+    if ":free" in m: settings = "free"
+    elif "flex" in m: settings = "flex"
+    elif "thinking" in m or "reasoning" in m: settings = "thinking"
+    elif "preview" in m: settings = "preview"
+    elif "flash-lite" in m or "flash_lite" in m: settings = "lite"
+    elif "flash" in m: settings = "flash"
+    else: settings = "standard"
+    return vendor, family, settings
+
 PROVIDERS = [
     {"name": "gemini", "rpm": 15, "concurrency": 4, "pace": 3.0,
      "hs_url": "http://localhost:8888",
-     "model_from_active": True,
-     "vendor": "google", "family": "gemini", "settings": "standard"},
+     "model_from_active": True},
     {"name": "openrouter", "rpm": 20, "concurrency": 4, "pace": 3.0,
      "hs_url": "http://localhost:8889",
-     "model": "qwen/qwen3.8-27b:free",
-     "vendor": "openrouter", "family": "qwen", "settings": "free"},
+     "model": "qwen/qwen3.8-27b:free"},
 ]
 
 def log(m):
@@ -307,7 +341,7 @@ async def run_provider(provider, source):
     comp_hash = "base"
     model = provider.get("model") or _active_model()
     role = provider.get("role") or _active_role()
-    bank = _safe_bank(f"termux-monorepo::mvt::"f"{provider.get('vendor', prov)}::"f"{provider.get('family', 'unknown')}::"f"{model}::"f"{provider.get('settings', 'standard')}::"f"{role}::{comp_hash}")
+    bank = _safe_bank(f"termux-monorepo::mvt::{vendor}::{family}::{model}::{settings}::{role}::{comp_hash}")}::"f"{provider.get('family', 'unknown')}::"f"{model}::"f"{provider.get('settings', 'standard')}::"f"{role}::{comp_hash}")
     state = load_state(prov, source)
     done = state.get("n_ok", 0)
     log(f"=== provider={prov} source={source} model={model} bank={bank} resumed_from={done} key={'SET' if KEY else 'MISSING'} ===")

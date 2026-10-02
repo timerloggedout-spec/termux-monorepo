@@ -46,7 +46,7 @@ SQL
   list|recent)
     pat="${1:-%}"; lim="${2:-20}"
     _emit <<SQL
-SELECT id::text || ' | ' || bank_id || ' | ' || left(context, 80)
+SELECT id::text || ' | ' || bank_id || ' | ' || left(coalesce(nullif(text,''), context, '(empty)'), 80)
 FROM memory_units WHERE bank_id LIKE '$pat'
 ORDER BY created_at DESC LIMIT $lim;
 SQL

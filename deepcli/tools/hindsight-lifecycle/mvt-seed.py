@@ -293,7 +293,7 @@ async def run_provider(provider, source):
     comp_hash = "base"
     model = provider.get("model") or _active_model()
     role = provider.get("role") or _active_role()
-    bank = _safe_bank(f"termux-monorepo::mvt::{vendor}::{family}::{model}::{settings}::{role}::{comp_hash}")
+    bank = _safe_bank(f"termux-monorepo::mvt::"f"{provider.get('vendor', prov)}::"f"{provider.get('family', 'unknown')}::"f"{model}::"f"{provider.get('settings', 'standard')}::"f"{role}::{comp_hash}")
     state = load_state(prov, source)
     done = state.get("n_ok", 0)
     log(f"=== provider={prov} source={source} model={model} bank={bank} resumed_from={done} key={'SET' if KEY else 'MISSING'} ===")

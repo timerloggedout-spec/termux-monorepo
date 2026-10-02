@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "registry_id": "termux-monorepo.foss-foresight",
-  "updated_at": "2026-09-27T18:30:00Z",
+  "updated_at": "2026-10-01T00:00:00Z",
   "maintainer": "timerloggedout-spec",
   "policy": {
     "horizons": [
@@ -491,6 +491,160 @@
       "deployment": [
         "policy",
         "reference-implementation-watch"
+      ]
+    },
+    {
+      "id": "wso2-agent-manager",
+      "name": "WSO2 Agent Manager",
+      "category": "agent-control-plane",
+      "horizon": "H1",
+      "evidence_status": "CONFIRMED",
+      "license": "Apache-2.0",
+      "canonical_sources": [
+        "https://github.com/wso2/agent-manager"
+      ],
+      "capabilities": [
+        "agent-lifecycle",
+        "identity-security",
+        "governance",
+        "OpenTelemetry",
+        "MCP",
+        "A2A"
+      ],
+      "lock_in_risk": "MEDIUM",
+      "egress_risk": "LOW",
+      "reproducibility": "HIGH",
+      "procurement_action": "P1_OPTIONAL_OPEN_CONTROL_PLANE_ADAPTER",
+      "unresolved": "Validate self-hosted footprint, canonical JSONL export, and Android/Termux-adjacent interoperability.",
+      "deployment": [
+        "self-host",
+        "kubernetes",
+        "adapter"
+      ],
+      "platforms": [
+        "linux",
+        "arm64"
+      ]
+    },
+    {
+      "id": "nvidia-openshell",
+      "name": "NVIDIA OpenShell",
+      "category": "agentic-security",
+      "horizon": "H1",
+      "evidence_status": "CONFIRMED",
+      "license": "VERIFY_RELEASE",
+      "canonical_sources": [
+        "https://www.nvidia.com/en-us/ai/openshell/",
+        "https://github.com/NVIDIA/OpenShell"
+      ],
+      "capabilities": [
+        "sandboxing",
+        "policy-enforcement",
+        "credential-control",
+        "runtime-observability"
+      ],
+      "lock_in_risk": "MEDIUM",
+      "egress_risk": "LOW",
+      "reproducibility": "MEDIUM",
+      "procurement_action": "P1_RUNTIME_SECURITY_REFERENCE",
+      "unresolved": "Verify exact release/license and non-NVIDIA/Android portability; Sentry hardware remains optional.",
+      "deployment": [
+        "self-host",
+        "sandbox",
+        "adapter"
+      ],
+      "platforms": [
+        "linux",
+        "arm64"
+      ]
+    },
+    {
+      "id": "orchbench",
+      "name": "OrchBench",
+      "category": "multi-agent-evaluation",
+      "horizon": "H1",
+      "evidence_status": "EARLY_SIGNAL",
+      "license": "VERIFY_RESEARCH_ARTIFACT",
+      "canonical_sources": [
+        "https://arxiv.org/abs/2607.25656"
+      ],
+      "capabilities": [
+        "deterministic-orchestration-simulation",
+        "DAG-evaluation",
+        "manager-policy-diagnostics"
+      ],
+      "lock_in_risk": "LOW",
+      "egress_risk": "LOW",
+      "reproducibility": "HIGH",
+      "procurement_action": "P2_MANAGER_PREFLIGHT_RESEARCH",
+      "unresolved": "Validate implementation/data availability and coding/ARM/Android transfer.",
+      "deployment": [
+        "local",
+        "ci",
+        "research"
+      ],
+      "platforms": [
+        "linux",
+        "arm64"
+      ]
+    },
+    {
+      "id": "llama-cpp-vulkan-deferred",
+      "name": "llama.cpp Vulkan backend",
+      "category": "local-inference",
+      "horizon": "H1",
+      "evidence_status": "CONFIRMED",
+      "license": "MIT",
+      "canonical_sources": [
+        "https://github.com/ggml-org/llama.cpp"
+      ],
+      "capabilities": [
+        "Vulkan",
+        "ARM64-inference",
+        "GPU-backend"
+      ],
+      "lock_in_risk": "LOW",
+      "egress_risk": "LOW",
+      "reproducibility": "HIGH",
+      "procurement_action": "HOLD_DEVICE_CAPABILITY_GATE",
+      "unresolved": "Current target device constraints; require Vulkan capability, memory, thermal, energy, driver, and reproducibility evidence.",
+      "deployment": [
+        "local",
+        "deferred"
+      ],
+      "platforms": [
+        "linux",
+        "arm64"
+      ]
+    },
+    {
+      "id": "needle-3-cactus",
+      "name": "Needle 3 / cactus-compute",
+      "category": "local-edge-inference",
+      "horizon": "H1",
+      "evidence_status": "EARLY_SIGNAL",
+      "license": "VERIFY_UPSTREAM",
+      "canonical_sources": [
+        "https://github.com/cactus-compute/needle"
+      ],
+      "capabilities": [
+        "tiny-device-model",
+        "tool-calling",
+        "structured-output",
+        "on-device-inference"
+      ],
+      "lock_in_risk": "MEDIUM",
+      "egress_risk": "LOW",
+      "reproducibility": "MEDIUM",
+      "procurement_action": "P1_CONSTRAINED_DEVICE_INVESTIGATE",
+      "unresolved": "Pin current artifact/version and validate Android/Termux buildability plus independent device measurements.",
+      "deployment": [
+        "local",
+        "research"
+      ],
+      "platforms": [
+        "arm64",
+        "android-adjacent"
       ]
     }
   ]

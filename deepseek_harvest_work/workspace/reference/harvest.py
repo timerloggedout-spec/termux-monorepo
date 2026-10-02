@@ -127,6 +127,8 @@ def parse_export(json_path: str) -> List[CodeBlock]:
         data = [data]
 
     fence_re = re.compile(r"```(\w*)\s*\n(.*?)```", re.DOTALL)
+    _heredoc_re = re.compile(r"cat\s*>\s*(~?[\w./\-]+)\s*<<\s*'?([A-Za-z_][A-Za-z0-9_]*)'?\s*\n(.*?)\n\2", re.DOTALL)
+
     blocks = []
 
     for conv_idx, conv in enumerate(data):
@@ -154,6 +156,26 @@ def parse_export(json_path: str) -> List[CodeBlock]:
                 start = match.start()
                 before = content[max(0, start-120):start].strip()
                 cb.preceding_text_snippet = before
+                blocks.append(cb)
+            # heredoc bodies: cat > path <<TAG ... TAG
+            for hd in _heredoc_re.finditer(content):
+                _path, _tag, _body = hd.group(1), hd.group(2), hd.group(3)
+                _name = _path.rsplit("/", 1)[-1] or "heredoc"
+                _ext = {"py":"python","sh":"bash","json":"json","md":"markdown"}.get(
+                    _name.rsplit(".", 1)[-1] if "." in _name else "", "text")
+                if not _body.strip():
+                    continue
+                cb = CodeBlock(
+                    conv_id=tinfo["conversation_id"],
+                    conv_title=f"{tinfo['conversation_title']}#{_name}",
+                    role=tinfo["role"],
+                    timestamp=tinfo["timestamp"],
+                    msg_idx=msg_idx,
+                    blk_idx=10000 + len(blocks),
+                    lang=_ext,
+                    code=_body,
+                )
+                cb.preceding_text_snippet = f"heredoc {_path} <<{_tag}"
                 blocks.append(cb)
 
     return blocks

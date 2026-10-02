@@ -27,7 +27,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "190c2c42e3005bf1461a1fa88915259221a95f03d53fe9d777ff50b321e48797",
+  "source_fingerprint": "d32a69b0d2189b9a72a91b198b8918b6b186a60dfe9b4c1eb58f5bf0c0542340",
   "workflow_count": 119,
   "workflows": [
     {
@@ -466,7 +466,7 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
-      "concurrency": "",
+      "concurrency": "group: codespace-create-${{ github.repository }} cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
         "run"

@@ -18,6 +18,7 @@ AVG_ITEM_TOKENS = int(os.environ.get("MVT_AVG_ITEM_TOKENS", "2200"))
 OUT_PER_ITEM    = int(os.environ.get("MVT_OUT_TOKENS_PER_ITEM", "110"))
 HTTP_WINDOW_S   = int(os.environ.get("MVT_HTTP_WINDOW_S", "120"))
 MIN_BATCH       = int(os.environ.get("MVT_BATCH_SIZE_MIN", "1"))
+PRIOR_PER_ITEM_S = float(os.environ.get("MVT_PRIOR_PER_ITEM_S", "9.4"))
 
 FALLBACK = {"gemini": (1048576, 65536), "qwen": (262144, 65536),
             "gemma": (262144, 65536), "llama": (131072, 32768)}
@@ -68,17 +69,17 @@ def main():
     by_in  = in_lim  // AVG_ITEM_TOKENS if in_lim  else None
     by_out = out_lim // OUT_PER_ITEM    if out_lim else None
     p = per_item_s()
-    by_win = int(HTTP_WINDOW_S / p) if p else None
+    by_win = int(HTTP_WINDOW_S / (p or PRIOR_PER_ITEM_S))
 
     candidates = [c for c in (by_in, by_out, by_win) if c]
-    size = max(MIN_BATCH, min(candidates)) if candidates else 8
+    size = max(MIN_BATCH, min(candidates))
 
     if verbose:
         print(f"model={model}")
         print(f"  live inputTokenLimit={in_lim}  outputTokenLimit={out_lim}")
         print(f"  avg_item_tokens={AVG_ITEM_TOKENS}  out_per_item={OUT_PER_ITEM}")
         print(f"  by_input={by_in}  by_output={by_out}")
-        print(f"  per_item_s={p if p else '(no samples)'}  window={HTTP_WINDOW_S}s  by_window={by_win}")
+        print(f"  per_item_s={p if p else PRIOR_PER_ITEM_S}  window={HTTP_WINDOW_S}s  by_window={by_win}")
         print(f"  chosen={size}")
     else:
         print(size)

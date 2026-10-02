@@ -1,6 +1,6 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-02T06:13:32Z UTC · receipts=804 · foreign_open=25 · tributes=64_
+_Generated 2026-10-02T12:25:24Z UTC · receipts=804 · foreign_open=23 · tributes=64_
 
 ## Tributes (contributor ledger)
 
@@ -20,14 +20,14 @@ _Generated 2026-10-02T06:13:32Z UTC · receipts=804 · foreign_open=25 · tribut
 - [EF-CHAIN/SendAm#607](https://github.com/EF-CHAIN/SendAm/pull/607) · state=open · help-wanted: stake + contribute for #538
 - [SO4-Markets/so4-oracle#1143](https://github.com/SO4-Markets/so4-oracle/pull/1143) · state=open · help-wanted: stake + contribute for #906
 - [StellarLock/StellarLock#865](https://github.com/StellarLock/StellarLock/pull/865) · state=open · help-wanted: stake + contribute for #721
-- [StayLitCodes/Vaultix#711](https://github.com/StayLitCodes/Vaultix/pull/711) · state=open · help-wanted: stake + contribute for #706
+- [StayLitCodes/Vaultix#711](https://github.com/StayLitCodes/Vaultix/pull/711) · state=closed · help-wanted: stake + contribute for #706
 - [KayStcx/KayStcx#104](https://github.com/KayStcx/KayStcx/pull/104) · state=open · help-wanted: stake + contribute for #85
 - [prime-radiant-inc/evener#2661](https://github.com/prime-radiant-inc/evener/pull/2661) · state=open · help-wanted: stake + contribute for #2627
 - [OBLIQ-in/OBLIQ-Website#39](https://github.com/OBLIQ-in/OBLIQ-Website/pull/39) · state=open · help-wanted: stake + contribute for #12
 - [TrusTrove/TrusTrove-contract#860](https://github.com/TrusTrove/TrusTrove-contract/pull/860) · state=open · help-wanted: stake + contribute for #836
 - [Vikram-sardiwal/react-open-source#50](https://github.com/Vikram-sardiwal/react-open-source/pull/50) · state=open · help-wanted: stake + contribute for #16
 - [laugh-tales/starpass-contracts#59](https://github.com/laugh-tales/starpass-contracts/pull/59) · state=open · help-wanted: stake + contribute for #28
-- [kawacukennedy/afrpoweros#40](https://github.com/kawacukennedy/afrpoweros/pull/40) · state=open · help-wanted: stake + contribute for #5
+- [kawacukennedy/afrpoweros#40](https://github.com/kawacukennedy/afrpoweros/pull/40) · state=closed · help-wanted: stake + contribute for #5
 - [Saidur-droid/MergeEarn#76](https://github.com/Saidur-droid/MergeEarn/pull/76) · state=open · help-wanted: stake + contribute for #69
 - [nextcloud/spreed#19662](https://github.com/nextcloud/spreed/pull/19662) · state=closed · help-wanted: stake + contribute for #19498
 - [LibreUML/LibreUML#130](https://github.com/LibreUML/LibreUML/pull/130) · state=closed · help-wanted: stake + contribute for #126
@@ -49,14 +49,12 @@ _Generated 2026-10-02T06:13:32Z UTC · receipts=804 · foreign_open=25 · tribut
 
 - [dentalpin/dentalpin#591](https://github.com/dentalpin/dentalpin/pull/591) — help-wanted: stake + contribute for #590
 - [Saidur-droid/MergeEarn#76](https://github.com/Saidur-droid/MergeEarn/pull/76) — help-wanted: stake + contribute for #69
-- [kawacukennedy/afrpoweros#40](https://github.com/kawacukennedy/afrpoweros/pull/40) — help-wanted: stake + contribute for #5
 - [laugh-tales/starpass-contracts#59](https://github.com/laugh-tales/starpass-contracts/pull/59) — help-wanted: stake + contribute for #28
 - [Vikram-sardiwal/react-open-source#50](https://github.com/Vikram-sardiwal/react-open-source/pull/50) — help-wanted: stake + contribute for #16
 - [TrusTrove/TrusTrove-contract#860](https://github.com/TrusTrove/TrusTrove-contract/pull/860) — help-wanted: stake + contribute for #836
 - [OBLIQ-in/OBLIQ-Website#39](https://github.com/OBLIQ-in/OBLIQ-Website/pull/39) — help-wanted: stake + contribute for #12
 - [prime-radiant-inc/evener#2661](https://github.com/prime-radiant-inc/evener/pull/2661) — help-wanted: stake + contribute for #2627
 - [KayStcx/KayStcx#104](https://github.com/KayStcx/KayStcx/pull/104) — help-wanted: stake + contribute for #85
-- [StayLitCodes/Vaultix#711](https://github.com/StayLitCodes/Vaultix/pull/711) — help-wanted: stake + contribute for #706
 - [StellarLock/StellarLock#865](https://github.com/StellarLock/StellarLock/pull/865) — help-wanted: stake + contribute for #721
 - [SO4-Markets/so4-oracle#1143](https://github.com/SO4-Markets/so4-oracle/pull/1143) — help-wanted: stake + contribute for #906
 - [EF-CHAIN/SendAm#607](https://github.com/EF-CHAIN/SendAm/pull/607) — help-wanted: stake + contribute for #538

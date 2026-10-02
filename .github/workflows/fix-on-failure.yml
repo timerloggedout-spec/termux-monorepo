@@ -53,6 +53,17 @@ jobs:
           TOK: ${{ secrets.DEEPSEEK_AGENT_TOKEN }}
         run: |
           set -euo pipefail
+          if [ -z "${URL:-}" ]; then
+            echo "::warning::DEEPSEEK_AGENT_URL not set. Recording tunnel-unresolved skip."
+            echo '{"phase":"skipped","reason":"url-unset"}' > agent_status.json
+            exit 0
+          fi
+          HOST=$(python3 -c 'import os; from urllib.parse import urlparse; print(urlparse(os.environ["URL"]).hostname or "")')
+          if [ -z "$HOST" ] || ! getent hosts "$HOST" >/dev/null 2>&1; then
+            echo "::warning::DEEPSEEK agent host ${HOST:-<empty>} does not resolve. Upstream failure is not repairable from a dead tunnel."
+            echo '{"phase":"skipped","reason":"tunnel-unresolved"}' > agent_status.json
+            exit 0
+          fi
           INV=$(curl -sS --max-time 30 -X POST "$URL/v1/agent" \
                   -H "Authorization: Bearer $TOK" \
                   -H 'Content-Type: application/json' \

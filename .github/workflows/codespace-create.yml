@@ -25,6 +25,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: codespace-create-${{ github.repository }}
+  cancel-in-progress: false
+
 jobs:
   run:
     runs-on: ubuntu-latest
@@ -91,13 +95,27 @@ jobs:
             -H "X-GitHub-Api-Version: 2022-11-28" \
             "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/codespaces" > /tmp/codespaces.status
           status=$(cat /tmp/codespaces.status)
+          action="${{ inputs.action }}"
           if [ "$status" != "200" ]; then
+            if [ "$action" = "create" ]; then
+              echo "::error::Codespace list HTTP $status; refusing create without a preflight count"
+              exit 1
+            fi
             echo "::warning::Codespace list HTTP $status; last-used receipt skipped"
             exit 0
           fi
-          jq -r '[.codespaces[]? | {name, state, created_at, last_used_at}]' /tmp/codespaces.json > /tmp/codespaces.names.json
+          if [ "$(jq -r '.codespaces | type' /tmp/codespaces.json)" != "array" ]; then
+            if [ "$action" = "create" ]; then
+              echo "::error::Codespace list response has no codespaces array; refusing create"
+              exit 1
+            fi
+            echo "::warning::Codespace list response has no codespaces array; receipt skipped"
+            exit 0
+          fi
+          jq -r '[.codespaces[] | {name, state, created_at, last_used_at}]' /tmp/codespaces.json > /tmp/codespaces.names.json
           count=$(jq 'length' /tmp/codespaces.names.json)
           echo "codespace_count=$count" >> "$GITHUB_ENV"
+          echo "codespace_list_ok=true" >> "$GITHUB_ENV"
           {
             echo "### Codespace last-used (names only)"
             echo ""
@@ -127,6 +145,10 @@ jobs:
           # Local cap, not the GitHub quota API. Historical failure 36970871999
           # exited before the POST message matcher. Receipt 84e48b1b did not emit
           # pull_request synchronize runs, so this comment re-arms repo gate.
+          if [ "${codespace_list_ok:-false}" != "true" ]; then
+            echo "::error::Create preflight did not record a codespace list"
+            exit 1
+          fi
           if [ "${codespace_count:-0}" -ge 8 ]; then
             quota_skip "preflight count ${codespace_count} already at local cap; not posting create"
           fi
@@ -147,9 +169,10 @@ jobs:
                 quota_skip "$message"
                 ;;
             esac
-            if [ "$resp" = "429" ] || [ "$resp" = "403" ]; then
+            if [ "$resp" = "429" ]; then
               quota_skip "HTTP $resp $message"
             fi
+            # 403 is an auth failure unless the body already matched quota/rate-limit above.
             echo "::error::Create failed HTTP $resp"
             exit 1
           fi

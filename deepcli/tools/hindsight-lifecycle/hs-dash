@@ -1,21 +1,54 @@
 #!/data/data/com.termux/files/usr/bin/bash
 # @tool hs-dash
-# @version 0.5.1
+# @version 0.6.0
 # @since 2026-10-02
-# @change ships dashboard/ dir + uses hs-dash-runner.sh (no nested -c)
+# @change operational sections + explicit stale-purge staging + failure accounting
+# @doc docs/STANDARDS/FLOWS/DASHBOARD-CONTROLS.md
 set -u
 _cs=$(cat "$HOME/.deepcli/cs-hindsight-name.txt" 2>/dev/null)
-[ -z "$_cs" ] && { echo "no codespace"; exit 1; }
+[ -n "$_cs" ] || { echo "no codespace"; exit 1; }
 _dash="$HOME/deepcli/tools/hindsight-lifecycle/dashboard"
-[ -d "$_dash" ] || { echo "no dashboard dir"; exit 1; }
-
+[ -d "$_dash" ] || { echo "no dashboard dir at $_dash"; exit 1; }
 _tmp="${TMPDIR:-$HOME/.deepcli/tmp}"; mkdir -p "$_tmp"
-rm -rf "$_tmp/dashship"; mkdir -p "$_tmp/dashship/sections"
-cp "$_dash/sections/"*.sh "$_tmp/dashship/sections/" 2>/dev/null || true
-
-gh codespace ssh -c "$_cs" -- 'rm -rf /tmp/dashboard && mkdir -p /tmp/dashboard/sections' >/dev/null 2>&1
-for f in "$_tmp/dashship/sections/"*.sh; do
-  [ -f "$f" ] || continue
-  gh codespace cp -c "$_cs" -e "$f" "remote:/tmp/dashboard/sections/$(basename "$f")" >/dev/null 2>&1
+rm -rf "$_tmp/dashboard"; cp -r "$_dash" "$_tmp/dashboard"
+echo "=== hs-dash ==="
+printf "  codespace: %s\n" "$_cs"
+printf "  started:   %s\n" "$(date -u +%FT%TZ)"
+gh codespace ssh -c "$_cs" -- 'rm -rf /tmp/dashboard && mkdir -p /tmp/dashboard/sections' || exit 1
+for f in "$_tmp/dashboard/sections/"*.sh "$_tmp/dashboard/COLLABORATOR.md"; do
+ [ -f "$f" ] || continue
+ _rel="sections/$(basename "$f")"
+ case "$f" in *COLLABORATOR.md) _rel="COLLABORATOR.md";; esac
+ gh codespace cp -c "$_cs" -e "$f" "remote:/tmp/dashboard/$_rel" || exit 1
 done
-gh codespace ssh -c "$_cs" -- bash /tmp/hs-dash-runner.sh 2>&1
+_purge="$HOME/deepcli/tools/hindsight-lifecycle/purge-stale.sql"
+if [ -f "$_purge" ]; then
+ gh codespace cp -c "$_cs" -e "$_purge" "remote:/tmp/purge-stale.sql" || exit 1
+else
+ echo "  WARNING: purge-stale.sql not found locally; stale purge will not be armed"
+fi
+gh codespace ssh -c "$_cs" -- bash -s <<'REMOTE'
+set -u
+INST=/home/vscode/.pg0/instances/hindsight/instance.json
+export PGHOST=/tmp PGPORT=$(jq -r .port "$INST") PGUSER=$(jq -r .username "$INST")
+export PGPASSWORD=$(jq -r .password "$INST") PGDATABASE=$(jq -r .database "$INST")
+export PSQL=/home/vscode/.pg0/installation/$(jq -r .version "$INST")/bin/psql
+export CS=$(cat /tmp/.csname 2>/dev/null || echo "")
+_p=$(pgrep -f "hindsight-api --port 8888" | head -1)
+export KEY=$(tr '\0' '\n' < /proc/$_p/environ 2>/dev/null | grep "^HINDSIGHT_API_KEY=" | cut -d= -f2-)
+export DASHBOARD_RUN_ID="$(date -u +%Y%m%dT%H%M%SZ)"
+export DASHBOARD_STARTED_AT="$(date -u +%FT%TZ)"
+fail=0; count=0
+for s in /tmp/dashboard/sections/*.sh; do
+ [ -f "$s" ] || continue
+ count=$((count+1)); name="$(basename "$s")"
+ echo; echo "--- section: $name ---"
+ if bash "$s" 2>&1; then echo "--- result: PASS ($name) ---"; else rc=$?; echo "--- result: FAIL ($name rc=$rc) ---"; fail=$((fail+1)); fi
+done
+echo; echo "=== dashboard receipt ==="
+printf "  run_id:    %s\n" "$DASHBOARD_RUN_ID"
+printf "  sections:  %s\n" "$count"
+printf "  failures:  %s\n" "$fail"
+printf "  finished:  %s\n" "$(date -u +%FT%TZ)"
+[ "$fail" -eq 0 ]
+REMOTE

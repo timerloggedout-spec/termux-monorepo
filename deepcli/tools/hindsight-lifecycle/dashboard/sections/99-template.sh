@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
-# @section template
+# @section TEMPLATE
 # @owner yourhandle
 # @depends db
-# Copy to NN-yourname.sh. Observers only — no mutation, no pipeline kill,
-# no writes to /tmp/hs-stack.
+# Copy this file to NN-yourname.sh and edit.
 echo
-echo "[ YOUR SECTION ]"
+echo "=== [ YOUR SECTION ] ==="
 if [ -n "${PSQL:-}" ]; then
   "$PSQL" -tA -c "SELECT '  sample: ' || count(*) FROM memory_units;" 2>&1
 fi

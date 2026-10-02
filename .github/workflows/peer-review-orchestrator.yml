@@ -47,6 +47,7 @@ jobs:
     steps:
       - name: Collect controls and provider response evidence
         id: collect
+        timeout-minutes: 8
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
           # Comma-separated active-provider policy. CodeRabbit is the only
@@ -533,6 +534,7 @@ jobs:
           steps.collect.outputs.skipped != 'true' &&
           steps.collect.outputs.ready != 'true' &&
           steps.publisher-token.outputs.available == 'true'
+        timeout-minutes: 5
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
           PR_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number }}

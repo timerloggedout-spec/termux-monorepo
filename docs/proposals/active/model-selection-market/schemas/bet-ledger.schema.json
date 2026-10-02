@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://timerloggedout-spec.github.io/termux-monorepo/schemas/bet-ledger.schema.json",
+  "title": "BetLedgerEntry",
+  "description": "Observational bet/wager/bid entry. Free-only. No secrets. Settlement does not bypass dual-gate.",
+  "type": "object",
+  "required": ["entry_id", "actor_class", "subject", "created_at", "status"],
+  "additionalProperties": false,
+  "properties": {
+    "entry_id": { "type": "string", "minLength": 8 },
+    "actor_class": { "type": "string", "enum": ["itself", "others", "job"] },
+    "actor_id": { "type": "string" },
+    "subject": {
+      "type": "object",
+      "required": ["kind"],
+      "properties": {
+        "kind": { "type": "string", "enum": ["model", "engine", "job", "card"] },
+        "id": { "type": "string" },
+        "role": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "stake": {
+      "type": "object",
+      "properties": {
+        "units": { "type": "number", "minimum": 0 },
+        "unit_kind": { "type": "string", "enum": ["observational", "soft_quota_token"] },
+        "note": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "prediction": { "type": "string" },
+    "outcome": {
+      "type": ["object", "null"],
+      "properties": {
+        "result": { "type": "string", "enum": ["win", "lose", "void", "pending"] },
+        "observed_at": { "type": "string", "format": "date-time" },
+        "evidence_sha": { "type": "string" },
+        "success_matrix_sample_id": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "card_id": { "type": ["string", "null"] },
+    "created_at": { "type": "string", "format": "date-time" },
+    "status": { "type": "string", "enum": ["open", "settled", "cancelled"] },
+    "head_sha": { "type": "string" }
+  }
+}

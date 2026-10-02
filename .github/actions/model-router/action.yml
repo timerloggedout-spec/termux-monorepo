@@ -40,6 +40,10 @@ inputs:
   current-sha:
     required: false
     default: ''
+  routing-mode:
+    description: 'Topology policy: single | series | dynamic | parallel | nested | co-working | volley'
+    required: false
+    default: 'single'
 
 outputs:
   provider:
@@ -56,6 +60,8 @@ outputs:
     value: ${{ steps.pick.outputs.decision_summary }}
   catalog-state:
     value: ${{ steps.pick.outputs.catalog_state }}
+  routing-mode:
+    value: ${{ steps.pick.outputs.routing_mode }}
 
 runs:
   using: composite
@@ -85,6 +91,7 @@ runs:
         CAPABILITY_SPINE_OBSERVE: ${{ inputs.capability-spine-observe }}
         TARGET_SHA: ${{ inputs.target-sha }}
         CURRENT_SHA: ${{ inputs.current-sha }}
+        ROUTING_MODE: ${{ inputs.routing-mode }}
         OPENROUTER_API_KEY: ${{ inputs.openrouter-api-key }}
         FELO_AI_API: ${{ inputs.felo-api-key }}
         OMNI_API_KEY: ${{ inputs.omni-api-key }}

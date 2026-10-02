@@ -1,0 +1,105 @@
+{
+  "collected_at": "2026-10-01T02:15:10.762362+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 36804932928,
+    "endpoint": ".../runs/36804932928/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 110187051006,
+        "run_id": 36804932928,
+        "workflow_name": "Audit Cycle \u2014 Single PR Feed-Forward",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/36804932928",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAZp6j3_g",
+        "head_sha": "8d8d0a0f929f1d626b604043ca8f5fe12516451d",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/110187051006",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36804932928/job/110187051006",
+        "status": "in_progress",
+        "conclusion": null,
+        "created_at": "2026-10-01T02:15:05Z",
+        "started_at": "2026-10-01T02:15:08Z",
+        "completed_at": null,
+        "name": "audit",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-01T02:15:08Z",
+            "completed_at": "2026-10-01T02:15:09Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "in_progress",
+            "conclusion": null,
+            "number": 2,
+            "started_at": "2026-10-01T02:15:09Z",
+            "completed_at": null
+          },
+          {
+            "name": "Resolve audited PR and event identity",
+            "status": "pending",
+            "conclusion": null,
+            "number": 3,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Capture repository audit receipt",
+            "status": "pending",
+            "conclusion": null,
+            "number": 4,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Static correctness gates",
+            "status": "pending",
+            "conclusion": null,
+            "number": 5,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Upload append-only audit receipt",
+            "status": "pending",
+            "conclusion": null,
+            "number": 6,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Feed-forward audit receipt to PR",
+            "status": "pending",
+            "conclusion": null,
+            "number": 7,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "pending",
+            "conclusion": null,
+            "number": 14,
+            "started_at": null,
+            "completed_at": null
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/110187051006",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000174143,
+        "runner_name": "GitHub Actions 1000174143",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

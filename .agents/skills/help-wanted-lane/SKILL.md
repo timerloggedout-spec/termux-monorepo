@@ -73,3 +73,18 @@ Prefer continuing **open** threads we already touched when they still need code.
 ## BIUDL
 
 Agent-Identity: Grok (Administrator)
+
+## Help-Given Tribute graduation
+
+Before describing an external PR as a fix, run:
+
+    python3 scripts/ci/help_wanted_diff_gate.py --pr <foreign-pr-url> --expect solution
+
+A claim or stake is not a solution. The graduation contract is docs/ops/HELP-GIVEN-TRIBUTE.md; its receipt schema is docs/ops/HELP-WANTED-TRIBUTE.schema.json.
+
+The initial execute arm may intentionally create a stake-only PR. Record that as STAKE evidence, then return to the same upstream PR for the actual Help-Given Tribute patch and proof.
+
+
+## Sweep accountability
+
+This lane is governed by `docs/ops/SWEEP-ACCOUNTABILITY.md`. Every historical/future observation or action is recorded as an append-only sweep receipt with version/iteration lineage, findings, actions, effects, provenance, source SHAs, and continuation cursor. Lane receipts remain source evidence; sweep receipts do not replace them.

@@ -255,3 +255,56 @@ Does **not** alter live catalog → router → MB edges; feeds **roster / attrib
 | Certifications template | Issue #506 |
 
 Agent-Identity: Grok (Administrator) · RECON consolidation 2026-09-19
+
+---
+
+## Temporal self-host + LangSmith Trajectories (2026-09-24 / residual 2026-09-30)
+
+| Node | Edge | Notes |
+|------|------|-------|
+| Temporal self-host | durable execution substrate | FOSS MIT; GHA `temporal-self-host-smoke` SUCCESS; `mcp-docker/temporal/`; Codespaces |
+| LangSmith Trajectories | observational path view | flat ordered messages; online evals; SFT export |
+| LangSmithPlugin (temporalio) | Worker-boundary trace continuity | experimental; capability-gated |
+| OTEL + ATES/JSONL | canonical evidence | unchanged P0 |
+
+Proposal: `docs/proposals/active/temporal-langsmith-adapter/`  
+Runbook: `docs/ops/TEMPORAL-LANGSMITH-ADAPTER.md`
+
+
+---
+
+## 13. Codespace carrier consolidation (2026-10-01)
+
+Canonical reconciliation: `docs/ops/CODESPACE-INTEGRATION-RECONCILIATION-2026-10-01.md`  
+Carrier audit: `docs/ops/CODESPACE-CARRIER-DELTA-MATRIX-2026-10-01.md`  
+Tracking: Issue #976
+
+The carrier audit compares every recovered Codespace/Bifrost/Hindsight/Gravitee/Temporal branch against **current `master`**, rather than against its historical merge base.
+
+### Authority boundaries
+
+| Surface | Authority | Rule |
+|---|---|---|
+| Codespaces | environment | identity/lifecycle evidence only |
+| Docker / CI / Temporal | execution substrate | reproducible runtime |
+| OTEL / ATES / JSONL | evidence boundary | canonical system evidence |
+| Bifrost | gateway/provider evaluation | evidence-gated integration |
+| Hindsight | agent memory | current landed lane + surgical cleanup |
+| Gravitee | research observatory | adjacent seed; no runtime dependency |
+
+### Carrier rule
+
+`RECON → RE-ROOT → VALIDATE → WATCH → RECORD`
+
+A stale branch is never merged wholesale merely because it contains apparently useful history. Unique deltas are classified as **LANDED**, **SUPERSEDED**, **RE-EXTRACT**, **PROVENANCE**, or **UNKNOWN** before cleanup.
+
+Recovered Codespace identities are protected from destructive cleanup until current lifecycle/development state is explicitly reconciled. Missing provider inventory is **UNKNOWN**, not Deleted.
+
+### Current high-value re-extraction candidates
+
+- Codespace start-existing / enablement variants — inspect only where current lifecycle coverage is incomplete.
+- Gravitee repository-observatory seed — preserve research intent; selectively re-root validated observability work.
+- Hindsight one-file cleanup — re-root `deepcli/deepagent.py` only if still required.
+- Temporal lag/index optimization — validate against current indexing/context-relationship architecture before re-rooting.
+
+Temporal adapter and BIFROST-006 evidence carriers are retained as provenance because their functional lineage is already represented on current `master`.

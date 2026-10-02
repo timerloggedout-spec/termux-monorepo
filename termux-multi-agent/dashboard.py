@@ -15,6 +15,54 @@ try:
     _has_rich = True
 except ImportError:
     _has_rich = False
+    ROUNDED = None
+
+    class Text:
+        def __init__(self, text="", style=None):
+            self.text = str(text)
+            self.style = style
+
+        def append(self, text, style=None):
+            self.text += str(text)
+
+        def __str__(self):
+            return self.text
+
+        def __repr__(self):
+            return f"Text({self.text!r})"
+
+    class Panel:
+        def __init__(self, renderable, title=None, box=None, border_style=None, expand=True):
+            self.renderable = renderable
+            self.title = title
+
+    class Group:
+        def __init__(self, *renderables):
+            self.renderables = renderables
+
+    class Table:
+        def __init__(self, box=None, border_style=None, expand=True):
+            self.columns = []
+            self.rows = []
+
+        def add_column(self, name, **kwargs):
+            self.columns.append(name)
+
+        def add_row(self, *args):
+            self.rows.append(args)
+
+    class Live:
+        def __init__(self, renderable, refresh_per_second=1, screen=True):
+            self.renderable = renderable
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc_val, exc_tb):
+            pass
+
+        def update(self, renderable):
+            self.renderable = renderable
 
 TELEMETRY_LOG = "agent_telemetry_stream.json"
 if _has_rich:
@@ -116,6 +164,11 @@ def make_dashboard():
     header_text = Text()
     header_text.append("⚡ TERMUX MULTI-AGENT PARALLEL TELEMETRY ⚡\n", style="bold yellow")
     header_text.append(f"Last Sync: {now_str}  |  File: {TELEMETRY_LOG}", style="dim")
+    if jobs:
+        passed_cnt = sum(1 for j in jobs if str(j.get("level", "")).upper() in ("SUCCESS", "PASS", "COMPLETED"))
+        failed_cnt = sum(1 for j in jobs if str(j.get("level", "")).upper() in ("CRITICAL", "ERROR", "FAILED", "FAIL"))
+        active_cnt = len(jobs) - passed_cnt - failed_cnt
+        header_text.append(f"\nJobs: {len(jobs)} Total  |  ✔ {passed_cnt} Passed  |  ✖ {failed_cnt} Failed  |  ⚙ {active_cnt} Active", style="dim cyan")
 
     header_panel = Panel(
         header_text,
@@ -184,15 +237,15 @@ def make_dashboard():
         # Beautiful styled status tag
         lvl_upper = str(level).upper()
         if lvl_upper in ("SUCCESS", "PASS", "COMPLETED"):
-            status_str = Text("SUCCESS", style="bold green")
+            status_str = Text("✔ SUCCESS", style="bold green")
         elif lvl_upper in ("RETRY", "RETRYING"):
-            status_str = Text("RETRYING", style="bold yellow")
+            status_str = Text("⚠ RETRYING", style="bold yellow")
         elif lvl_upper in ("WARNING", "WARN"):
-            status_str = Text("WARNING", style="bold yellow")
+            status_str = Text("⚠ WARNING", style="bold yellow")
         elif lvl_upper in ("CRITICAL", "ERROR", "FAILED", "FAIL"):
-            status_str = Text(lvl_upper, style="bold red")
+            status_str = Text(f"✖ {lvl_upper}", style="bold red")
         else:
-            status_str = Text("PROCESSING", style="bold blue")
+            status_str = Text("⚙ PROCESSING", style="bold blue")
 
         table.add_row(
             target,

@@ -103,6 +103,28 @@ def test_archwiz_path_traversal_prevention(tmp_path, monkeypatch):
         with pytest.raises(ValueError, match="Path traversal detected"):
             ac.set_session_store(path)
 
+        with pytest.raises(ValueError, match="Path traversal detected"):
+            ac.set_log_dir(path)
+
+    cfg = ac.Config()
+
+    # Test property-level traversal protection when config dict has invalid paths
+    cfg._cfg["session_store"] = "../invalid/store"
+    with pytest.raises(ValueError, match="Path traversal detected"):
+        _ = cfg.SESSION_STORE
+
+    cfg._cfg["multi_ai_tokens_dir"] = "../invalid/tokens"
+    with pytest.raises(ValueError, match="Path traversal detected"):
+        _ = cfg.MULTI_AI_TOKENS_DIR
+
+    cfg._cfg["log_dir"] = "../invalid/logs"
+    with pytest.raises(ValueError, match="Path traversal detected"):
+        _ = cfg.LOG_DIR
+
+    cfg._cfg["archwiz_root"] = "../invalid/root"
+    with pytest.raises(ValueError, match="Path traversal detected"):
+        _ = cfg.archwiz_root
+
 
 def test_activity_listener_symlink_safety(tmp_path, monkeypatch):
     import archwiz.activity_listener as al

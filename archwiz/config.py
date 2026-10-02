@@ -132,7 +132,10 @@ class Config:
     @property
     def archwiz_root(self) -> Path:
         """Root home directory for this environment."""
-        return Path(self._cfg["archwiz_root"])
+        p = Path(self._cfg["archwiz_root"])
+        if ".." in p.parts:
+            raise ValueError(f"Path traversal detected in archwiz root: {p}")
+        return p
 
     @property
     def ARCHWIZ_DIR(self) -> Path:
@@ -153,6 +156,8 @@ class Config:
     def SESSION_STORE(self) -> Path:
         """~/.deepcli/session_store/ — per-session JSON cache."""
         p = Path(self._cfg["session_store"])
+        if ".." in p.parts:
+            raise ValueError(f"Path traversal detected in session store: {p}")
         self._mkdir(p.parent)
         self._mkdir(p)
         return p
@@ -160,12 +165,18 @@ class Config:
     @property
     def MULTI_AI_TOKENS_DIR(self) -> Path:
         """~/.multi-ai-tokens/ — bearer tokens for all AI providers."""
-        return self._mkdir(Path(self._cfg["multi_ai_tokens_dir"]))
+        p = Path(self._cfg["multi_ai_tokens_dir"])
+        if ".." in p.parts:
+            raise ValueError(f"Path traversal detected in tokens dir: {p}")
+        return self._mkdir(p)
 
     @property
     def LOG_DIR(self) -> Path:
         """~/.archwiz/logs/ — pipeline + debug logs."""
-        return self._mkdir(Path(self._cfg["log_dir"]))
+        p = Path(self._cfg["log_dir"])
+        if ".." in p.parts:
+            raise ValueError(f"Path traversal detected in log dir: {p}")
+        return self._mkdir(p)
 
     @property
     def SSOT_DIR(self) -> Path:
@@ -217,6 +228,13 @@ def set_session_store(path):
     if ".." in p.parts:
         raise ValueError(f"Path traversal detected in session store: {path}")
     _config.set("session_store", str(path))
+
+
+def set_log_dir(path):
+    p = Path(path)
+    if ".." in p.parts:
+        raise ValueError(f"Path traversal detected in log dir: {path}")
+    _config.set("log_dir", str(path))
 
 
 def ensure_dirs():

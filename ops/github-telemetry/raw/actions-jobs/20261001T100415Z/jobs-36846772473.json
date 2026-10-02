@@ -1,0 +1,40 @@
+{
+  "collected_at": "2026-10-01T10:04:25.138318+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 36846772473,
+    "endpoint": ".../runs/36846772473/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 110318745154,
+        "run_id": 36846772473,
+        "workflow_name": "Audit Cycle \u2014 Single PR Feed-Forward",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/36846772473",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAZr4J2Qg",
+        "head_sha": "97250d8ca52ad11a7087011d887d19ada9e8fc29",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/110318745154",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36846772473/job/110318745154",
+        "status": "in_progress",
+        "conclusion": null,
+        "created_at": "2026-10-01T10:04:20Z",
+        "started_at": "2026-10-01T10:04:23Z",
+        "completed_at": null,
+        "name": "audit",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/110318745154",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000176133,
+        "runner_name": "GitHub Actions 1000176133",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

@@ -29,6 +29,7 @@ permissions: {}
 jobs:
   invoke:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
       contents: read
       issues: write
@@ -46,6 +47,48 @@ jobs:
           has-omni: ${{ secrets.OMNI_API_KEY != '' || secrets.OMNIROUTE_API_KEY != '' }}
           has-openrouter: ${{ secrets.OPENROUTER_API_KEY != '' }}
           has-gemini: ${{ secrets.GEMINI_API_KEY != '' }}
+
+      - name: Emit ATES task-boundary identity
+        env:
+          AGENT_ID: gemini
+          TASK_KIND: invoke
+          TARGET_KIND: ${{ inputs.pr_number != '' && 'pull_request' || 'issue' }}
+          TARGET_NUMBER: ${{ inputs.pr_number || inputs.issue_number || github.event.pull_request.number || github.event.issue.number }}
+          TASK_TEXT: ${{ inputs.additional_context }}
+          REPOSITORY: ${{ github.repository }}
+          BASE_SHA: ${{ github.sha }}
+          RUNNER_IMAGE: ${{ env.ImageOS }}:${{ env.ImageVersion }}
+          WORKFLOW: ${{ github.workflow }}
+          PROVIDER: ${{ steps.router.outputs.provider || 'unresolved' }}
+          MODEL: ${{ steps.router.outputs.model || 'unresolved' }}
+        run: |
+          set -euo pipefail
+          jq -n \
+            --arg agent "$AGENT_ID" \
+            --arg kind "$TASK_KIND" \
+            --arg target "$TARGET_KIND" \
+            --arg number "$TARGET_NUMBER" \
+            --arg task "$TASK_TEXT" \
+            --arg repo "$REPOSITORY" \
+            --arg sha "$BASE_SHA" \
+            --arg image "$RUNNER_IMAGE" \
+            --arg workflow "$WORKFLOW" \
+            --arg provider "$PROVIDER" \
+            --arg model "$MODEL" \
+            '{agent_id:$agent,task_kind:$kind,target_kind:$target,target_number:$number,task_text:$task,repository:$repo,base_sha:$sha,runner_image:$image,workflow:$workflow,provider:$provider,model:$model}' \
+            > "$RUNNER_TEMP/ates-task-input.json"
+          python scripts/ci/write_agent_task_boundary.py \
+            --input "$RUNNER_TEMP/ates-task-input.json" \
+            --output "$RUNNER_TEMP/ates-task-boundary.json"
+
+      - name: Upload ATES task-boundary identity
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.5.0
+        with:
+          name: ates-task-boundary-${{ github.run_id }}
+          path: ${{ runner.temp }}/ates-task-boundary.json
+          if-no-files-found: ignore
+          retention-days: 14
 
       - name: Record capability-spine observe decision
         env:

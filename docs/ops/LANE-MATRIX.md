@@ -1,65 +1,72 @@
-# LANE-MATRIX (living SSOT)
+# LANE-MATRIX (policy SSOT)
 
-**Session:** 2026-09-21 16:13 PDT  
-**Agent-Identity:** Grok (Administrator)  
-**Live master (base):** `cb995e76`  
-**This PR tip:** ops/biudl-claude-primary-deprecate-agents-20260921  
-**Priority hub:** Issue #175
+This file is **durable policy**, not a live dashboard.
 
-Rewrite this file every admin session. Copilot is optional peer, not a promote gate. Size ≠ quality. Promote when dual-gate is green **and** the diff is an extract, not a mega. Vercel rate-limit is non-gate. Age alone does not promote.
+**Open the live board:** [lane-matrix-status.md](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/generated/lane-matrix-status.md) · [JSON](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/generated/lane-matrix-status.json) · [sweep workflow](https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/ops-lane-matrix-sweep.yml)
 
-**BIUDL = Broad → Integrate → Validate → Develop → Learn.** Fully Continuous Automated Development Evaluation Environment. **AVOID HITL YOLO MODE YEET AUTOAPPROVE.**
+Live inventory on disk: [`docs/ops/generated/lane-matrix-status.md`](generated/lane-matrix-status.md)  
+Writer: `.github/workflows/ops-lane-matrix-sweep.yml` + `scripts/ops/lane_matrix_sweep.py`  
+Priority issue: #175 is a **hub**, not a comment stream.  
+Credentials: #184 names-only.
 
-**Status change (this cycle):** Root `CLAUDE.md` is sole primary agent entry. Root `AGENTS.md` is **deprecated** (Linguist / CedrLang / Jules redirect-only). Content folded. All lanes (Jules, Linguist, Sentinel, Bolt, help-wanted, Codespace, ecc-tools, Stepie) load `CLAUDE.md` first.
+Do **not** open `ops/session-lane-matrix-*` PRs to restamp this file.  
+Do **not** post a recon comment on #175 every session.  
+Git history is a ledger. The generated artifact is the board. **Open that artifact.** Do not keep a pulse PR open to “hold the matrix open.”
 
-## Landed this window (evidence)
+## What belongs where
 
-| SHA | What |
-|-----|------|
-| (pending dual-gate) | CLAUDE.md BIUDL expanded + AGENTS.md deprecated redirect |
-| (pending) | REFTEMPLATES directive corrected (no YOLO/YEET) |
-| `cb995e76` | prior tip |
+| Artifact | Role | How it changes |
+|----------|------|----------------|
+| This file | Dual-gate, mega-merge, Vercel, dirty-block rules | Rare policy PR |
+| `docs/ops/generated/lane-matrix-status.*` | Open-PR inventory + lane counts | Sweep commits to master (observer) |
+| Issue #175 | Durable operator intent | Edit the issue body when intent changes; no pulse comments |
+| Product PRs | Code / extracts / rebases | Dual-gate then promote |
+| Session chat | Human recon | Stays in chat; not a merge candidate |
 
-## Dual-gate contract
+## Dual-gate contract (promote authority)
 
-1. `hygiene + portability gate` SUCCESS
-2. `agentic termux smoke` SUCCESS
-3. Vercel rate-limits are **non-gate**
-4. Copilot / CodeRabbit / Qodo / Devin = advisory
-5. GitLab / Mintlify = non-gate
-6. Age alone does not promote; dual-gate + rebase onto live master does
-7. Size ≠ quality: dual-gate green + 130 files still EXTRACT
+1. `hygiene + portability gate` / `repo gate` SUCCESS on **this** SHA
+2. `agentic termux smoke` / `termux smoke` SUCCESS on **this** SHA
+3. Vercel rate-limits are **non-gate** (#772)
+4. Copilot / CodeRabbit / Qodo / Devin = advisory only
+5. Age, file count, and comment volume are context only
+6. Mega-merge is allowed when dual-gate SUCCESS **and** mergeable on the candidate SHA
+7. CodeRabbit ~100-file limit is advisory review capacity, not a promote ban
+8. `mergeable_state=dirty` or a merge conflict **blocks** promote until rebase/re-extract
+9. Dual-gate SUCCESS on an older head does not authorize a newer SHA
+10. Combined commit status is not dual-gate; bind the named jobs
 
-## Tip-first active lanes
+## Lane vocabulary (sweep v2)
 
-| PR | Lane | Why |
-|----|------|-----|
-| #682 | EXTRACT / WAIT | ML keep-alive DAG (#175). 130 files. Prefer slimmer `ml/pipelines/` child. |
-| this | SSOT / BIUDL | CLAUDE primary + AGENTS deprecate + directive hygiene |
-| #680 / #708 | OBSERVE | Bolt live_catalog_feed family (Jules). Overlapping catalog work — do not double-merge. |
-| #702 | OBSERVE | Gravitee observatory seed |
-| #684 | HOLD / REBASE | unify Actions cadence; dirty vs tip |
-| #685 | OBSERVE | arrhythmic-zero-token-search |
-| #630 | EXTRACT | Jules dashboard rich UI — minesweeper |
-| #432/#549/#601 | EXTRACT | ML wholesale family — keep-alive is #682 tree |
+| Lane | Meaning |
+|------|---------|
+| EXTRACT | Re-cut onto live master; do not wholesale-merge |
+| CANDIDATE | On master; dual-gate may promote if green |
+| NEED_EVIDENCE | Wrong-base / draft / dirty — missing rebase or checks |
+| SUPERSEDE | Session pulse, bot-only, or ancient no-auto |
 
-## Ancient / wrong-base HOLD
+HOLD / WAIT / OBSERVE are **invalid parking**. Gate outputs remain ALLOW | BLOCK | NEED_EVIDENCE.
 
-#47 OBSERVE/SUPERSEDED. #48 HOLD (base master-staging). #69 HOLD (feature base). #73 HOLD. #81 OBSERVE. #92 EXTRACT security slice. Do not close-as-superseded until extract lands.
+## Session recon is not a PR
 
-## Issue → PR map
+A timestamped rewrite of who is dirty / superseded is stale before CI finishes.
 
-| Issue | Role | Linked |
-|-------|------|--------|
-| **#175** | OPERATOR matrix + dual-gate | #432 #549 #601 #682 (ML); #630 minesweeper |
-| #184 | Credential inventory (notes only) | secrets hygiene |
-| #117 | Agent2Agent / MCP Agent Mail | #143 |
-| #88/#91/#94 | routing | #48 family |
-| #50 | termux-smoke / master-staging gate | dual-gate ancestry |
+Agents must:
 
-## Next cycle
+- **Read** generated status + live GitHub API for current SHA
+- **Write** product or durable policy only
+- **Close** leftover `ops(session): … LANE-MATRIX` PRs as not-planned / superseded
+- **Never** treat HOLD / OBSERVE / WAIT as idle parking when product work exists
 
-1. Dual-gate this PR; promote only when green + outcome verified.
-2. Leave #682 EXTRACT until sliced.
-3. Stay busy on SSOT / skill upgrades while CI waits. No HITL YOLO merge.
-4. Jules / Linguist: confirm AGENTS.md is redirect-only.
+Sweep classifies session-record titles as **SUPERSEDE**, not dual-gate WAIT.
+
+## Known durable lanes (update only when the fact is durable)
+
+- #48 remainder EXTRACT; core already on master via #805. Dirty vs `master-staging` is a hard block. Do not retarget.
+- #809 / #806 need rebase onto live `master` before any promote attempt.
+- #69 superseded by #784. #810 / #812 are historical pulses.
+- #772 documents Vercel mergeable_state noise.
+- #814 landed the board-vs-ledger policy.
+- #184 names-only credential inventory. Do not paste secret values.
+
+Agent-Identity: Grok (Administrator)

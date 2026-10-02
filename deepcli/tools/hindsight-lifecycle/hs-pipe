@@ -1,41 +1,34 @@
 #!/data/data/com.termux/files/usr/bin/bash
 # @tool hs-pipe
-# @version 0.1.0
+# @version 0.2.0
 # @since 2026-10-02
-# @change start/stop/status for rotator + sovereign + OR instance
+# @change status via script file, no nested bash -c quotes
 set -u
 _cs=$(cat "$HOME/.deepcli/cs-hindsight-name.txt" 2>/dev/null)
 [ -z "$_cs" ] && { echo "no codespace"; exit 1; }
-
 cmd="${1:-status}"
+_tmp="${TMPDIR:-$HOME/.deepcli/tmp}"; mkdir -p "$_tmp"
+
+cat > "$_tmp/hs-pipe-remote.sh" <<'REMOTE'
+#!/usr/bin/env bash
+set -u
+for pat in "hindsight-api --port 8888" "hindsight-api --port 8889" "hs-stack.py watch" "sovereign-run.sh" "mvt-seed.py"; do
+  pid=$(pgrep -f "$pat" | head -1)
+  [ -n "$pid" ] && echo "  UP   $pat (pid=$pid)" || echo "  DOWN $pat"
+done
+REMOTE
+chmod +x "$_tmp/hs-pipe-remote.sh"
+gh codespace cp -c "$_cs" -e "$_tmp/hs-pipe-remote.sh" "remote:/tmp/hs-pipe-remote.sh" >/dev/null 2>&1
 
 case "$cmd" in
-  start)
-    gh codespace ssh -c "$_cs" -- bash /tmp/hs-sovereign-launch.sh 2>&1 | tail -10
-    ;;
+  start)   gh codespace ssh -c "$_cs" -- bash /tmp/hs-sovereign-launch.sh 2>&1 | tail -10 ;;
   stop)
-    gh codespace ssh -c "$_cs" -- bash -c '
-      pkill -9 -f sovereign-run.sh 2>/dev/null
-      pkill -9 -f mvt-seed.py 2>/dev/null
-      pkill -9 -f "while true; do bash /tmp/sovereign" 2>/dev/null
-      echo stopped
-    ' 2>&1 | tail -2
+    gh codespace ssh -c "$_cs" -- bash -c 'pkill -9 -f sovereign-run.sh; pkill -9 -f mvt-seed.py; echo stopped' 2>&1 | tail -2
     ;;
   restart)
-    gh codespace ssh -c "$_cs" -- bash -c '
-      pkill -9 -f sovereign-run.sh 2>/dev/null
-      pkill -9 -f mvt-seed.py 2>/dev/null
-      sleep 2
-    ' >/dev/null 2>&1
+    gh codespace ssh -c "$_cs" -- bash -c 'pkill -9 -f sovereign-run.sh; pkill -9 -f mvt-seed.py; sleep 2' >/dev/null 2>&1
     gh codespace ssh -c "$_cs" -- bash /tmp/hs-sovereign-launch.sh 2>&1 | tail -10
     ;;
-  status)
-    gh codespace ssh -c "$_cs" -- bash -c '
-      for pat in "hindsight-api --port 8888" "hindsight-api --port 8889" "hs-stack.py watch" "sovereign-run.sh" "mvt-seed.py"; do
-        pid=$(pgrep -f "$pat" | head -1)
-        [ -n "$pid" ] && echo "  UP   $pat (pid=$pid)" || echo "  DOWN $pat"
-      done
-    ' 2>&1
-    ;;
-  *) echo "usage: hs-pipe {start|stop|restart|status}"; exit 2;;
+  status)  gh codespace ssh -c "$_cs" -- bash /tmp/hs-pipe-remote.sh 2>&1 ;;
+  *) echo "usage: hs-pipe {start|stop|restart|status}"; exit 2 ;;
 esac

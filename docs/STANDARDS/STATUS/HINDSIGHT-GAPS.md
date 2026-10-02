@@ -7,9 +7,9 @@ Generated: 2026-10-02
 | # | Gap | Fix |
 |---|-----|-----|
 | G1 | mvt-seed NameError: vendor not defined | inline provider.get() in f-string |
-| G2 | memory_units.context empty; text was real column | COALESCE(text, context) everywhere |
+| G2 | CLOSED — memory_units.text, context is wrapper | COALESCE applied |
 | G3 | bank rename PK conflict | DELETE old banks, no UPDATE |
-| G4 | OpenRouter llama-3.3-70b:free dead (404) | probe /api/v1/models, pick qwen/qwen3.8-27b:free |
+| G4 | CLOSED — qwen/qwen3.8-27b:free live, 4 calls, 22141 in / 435 out | — |
 | G5 | hs-db command not found on Termux | Termux wrapper -> codespace runner |
 | G6 | /tmp on Termux vs codespace confusion | doctrine: TMPDIR on Termux |
 | G7 | heredoc parsing chokes in app UI | prefer .py file writes |
@@ -18,7 +18,7 @@ Generated: 2026-10-02
 
 | # | Gap | Impact | Next |
 |---|-----|--------|------|
-| G8 | MVT extraction produces zero-length text | Quality of comparison degraded | After G2 confirmed, re-seed historical docs |
+| G8 | CLOSED — real column is text, COALESCE text/context in all readers | — | len=161 avg |
 | G9 | No automated reviewer/critic role | MVT only compares producers | Build critic via observatory.jev runtime |
 | G10 | No calibration ledger active | Confidence scales not tracked | Wire decision-record.schema.json writer |
 | G11 | observatory role labels conflated with classifier products | Naming confusion | Separate decide:: namespace, build classifier runtime |
@@ -37,3 +37,22 @@ Vendor = who bills (google, openrouter)
 Family = product line (gemini, qwen, llama)
 Model = specific checkpoint
 Settings = tier/variant (standard, flex, free, thinking)
+
+
+## Session close-out 2026-10-02
+
+Verified working:
+- primary bank: termux-monorepo::primary (47 facts)
+- MVT lane 1: termux-monorepo::mvt::google::gemini::base (56 facts)
+- MVT lane 2: termux-monorepo::mvt::google::gemini::gemini-3.5-flash-lite::standard::producer::base (6 facts)
+- OpenRouter active: qwen/qwen3.8-27b:free (4 calls, real tokens)
+- Divergence query renders
+- agent_hindsight module shipped + finish handler wired
+
+Open next:
+- G9 critic role runtime
+- G10 calibration ledger writer
+- G11 classifier namespace
+- G12 DeepAgent end-to-end test (retain on finish)
+- G14 offload.sh materialization
+- G15 hs-cadence fix

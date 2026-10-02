@@ -229,7 +229,7 @@ def restart_hindsight(model: str) -> bool:
         "HINDSIGHT_API_PORT": "8888",
         "HINDSIGHT_API_HOST": "0.0.0.0",
     })
-    subprocess.run(["pkill", "-9", "-f", "hindsight-api"], check=False)
+    subprocess.run(["pkill", "-9", "-f", "hindsight-api --port 8888"], check=False)
     time.sleep(2)
     subprocess.Popen(
         ["bash", "-lc",

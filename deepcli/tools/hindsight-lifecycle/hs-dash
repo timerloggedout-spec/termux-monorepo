@@ -1,0 +1,112 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# @tool hs-dash
+# @version 0.1.0
+# @since 2026-10-01
+# @change one-shot dashboard: processes, quota, banks, seed progress, OR quota
+# @doc docs/STANDARDS/FLOWS/HINDSIGHT-LIFECYCLE-LIB.md
+set -u
+_cs=$(cat "$HOME/.deepcli/cs-hindsight-name.txt" 2>/dev/null)
+[ -z "$_cs" ] && { echo "no codespace"; exit 1; }
+
+cat > /tmp/.hs-dash.sh <<'INNER'
+#!/usr/bin/env bash
+set -u
+BAR="────────────────────────────────────────────────────────"
+
+echo "$BAR"
+echo " HINDSIGHT DASHBOARD  $(date -u +%FT%TZ)"
+echo "$BAR"
+
+echo "[ CODESPACE ]"
+echo "  host: $(hostname)  uptime: $(uptime -p 2>/dev/null || uptime)"
+echo
+
+echo "[ PROCESSES ]"
+for pat in 'hindsight-api --port 8888' 'hindsight-api --port 8889' \
+           'hs-stack.py watch' 'sovereign-run.sh' 'mvt-seed.py'; do
+  pid=$(pgrep -f "$pat" | head -1)
+  if [ -n "$pid" ]; then
+    up=$(ps -o etime= -p "$pid" 2>/dev/null | tr -d ' ')
+    printf "  %-32s pid=%-7s up=%s\n" "$pat" "$pid" "$up"
+  else
+    printf "  %-32s DEAD\n" "$pat"
+  fi
+done
+echo
+
+echo "[ API MODEL — actual, from /proc ]"
+for p in 8888 8889; do
+  pid=$(pgrep -f "hindsight-api --port $p" | head -1)
+  if [ -z "$pid" ]; then
+    echo "  :$p DEAD"
+    continue
+  fi
+  m=$(tr '\0' '\n' < /proc/$pid/environ | grep '^HINDSIGHT_API_LLM_MODEL=' | cut -d= -f2-)
+  prov=$(tr '\0' '\n' < /proc/$pid/environ | grep '^HINDSIGHT_API_LLM_PROVIDER=' | cut -d= -f2-)
+  k=$(tr '\0' '\n' < /proc/$pid/environ | grep '^HINDSIGHT_API_LLM_API_KEY=' | cut -d= -f2-)
+  echo "  :$p provider=$prov model=$m llm_key_len=${#k}"
+done
+echo
+
+echo "[ QUOTA — rotator view ]"
+python3 /tmp/hs-stack.py status 2>/dev/null | sed 's/^/  /'
+echo
+
+echo "[ OPENROUTER QUOTA ]"
+_pid=$(pgrep -f 'hindsight-api --port 8888' | head -1)
+_or=$(tr '\0' '\n' < /proc/$_pid/environ 2>/dev/null | grep '^OPENROUTER_API_KEY=' | cut -d= -f2-)
+if [ -n "$_or" ]; then
+  _r=$(curl -sS --max-time 8 -H "Authorization: Bearer $_or" https://openrouter.ai/api/v1/auth/key 2>/dev/null)
+  echo "$_r" | python3 -c "
+import json,sys
+try:
+  d=json.load(sys.stdin).get('data',{})
+  print(f\"  limit={d.get('limit','unlimited')}  usage={d.get('usage','?')}  tier={d.get('label','?')}\")
+except Exception as e: print('  err:',e)
+"
+else
+  echo "  no OPENROUTER_API_KEY in :8888 env"
+fi
+echo
+
+echo "[ BANKS ]"
+_pid=$(pgrep -f 'hindsight-api --port 8888' | head -1)
+_k=$(tr '\0' '\n' < /proc/$_pid/environ | grep '^HINDSIGHT_API_KEY=' | cut -d= -f2-)
+for port in 8888 8889; do
+  echo "  :$port"
+  curl -sS --max-time 6 -H "Authorization: Bearer $_k" http://localhost:$port/v1/default/banks 2>/dev/null \
+   | python3 -c "
+import json,sys
+try:
+  d=json.load(sys.stdin)
+  for b in sorted(d.get('banks',[]), key=lambda x: -x.get('fact_count',0)):
+    print(f\"    {b['bank_id']}  facts={b.get('fact_count',0)}  last={b.get('last_write_at','-')[:19]}\")
+except Exception as e: print('    err:',e)
+"
+done
+echo
+
+echo "[ MVT SEED PROGRESS ]"
+echo "  --- state files ---"
+for f in /tmp/mvt-state-*.json; do
+  [ -f "$f" ] && echo "    $(basename $f): $(cat $f)"
+done
+echo "  --- last 8 mvt-seed.log lines ---"
+tail -8 /tmp/mvt-seed.log 2>/dev/null | sed 's/^/    /'
+echo
+
+echo "[ SOVEREIGN TAIL ]"
+tail -6 /tmp/sovereign.log 2>/dev/null | sed 's/^/  /'
+echo
+
+echo "[ HEALTH ]"
+for p in 8888 8889; do
+  code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 4 http://localhost:$p/health 2>/dev/null || echo 000)
+  echo "  :$p /health = $code"
+done
+echo "$BAR"
+INNER
+chmod +x /tmp/.hs-dash.sh
+gh codespace cp -c "$_cs" -e /tmp/.hs-dash.sh "remote:/tmp/.hs-dash.sh" >/dev/null 2>&1
+
+gh codespace ssh -c "$_cs" -- bash /tmp/.hs-dash.sh 2>&1

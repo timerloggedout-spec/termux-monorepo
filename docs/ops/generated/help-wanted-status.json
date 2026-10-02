@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-02T19:18:48Z",
+  "generated_at": "2026-10-02T20:58:47Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
   "receipts": 851,
@@ -16,6 +16,15 @@
     "ok": 851
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/uttrflow/uttrflow-swift/pull/3719",
+      "title": "help-wanted: stake + contribute for #3713",
+      "number": 3719,
+      "repo": "uttrflow/uttrflow-swift",
+      "state": "open",
+      "updated_at": "2026-10-02T20:58:33Z",
+      "tribute": true
+    },
     {
       "html_url": "https://github.com/CopilotKit/CopilotKit/pull/7594",
       "title": "help-wanted: stake + contribute for #4775",
@@ -233,8 +242,21 @@
       "tribute": true
     }
   ],
-  "foreign_open_count": 24,
+  "foreign_open_count": 25,
   "tributes": [
+    {
+      "pr_url": "https://github.com/uttrflow/uttrflow-swift/pull/3719",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-10-02T20:58:33Z",
+      "providers": [],
+      "repo": "uttrflow/uttrflow-swift",
+      "number": 3719,
+      "title": "help-wanted: stake + contribute for #3713",
+      "state": "open"
+    },
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
@@ -1886,7 +1908,7 @@
       "state": "closed"
     }
   ],
-  "tribute_count": 65,
+  "tribute_count": 66,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -9781,7 +9803,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "95cb1fe9fafe0bb2ba3b024521eb6e2c871d75fe",
+    "source_sha": "fc0ffa06c1473aa32d7cb5a8fae474637dc4a99a",
     "source_ref": "master",
     "history_complete": false,
     "history_coverage": "lane-local-complete; repository-wide historical accountability requires sweep-accountability backfill",
@@ -9815,12 +9837,12 @@
   },
   "evolution": [
     {
-      "sha": "95cb1fe9fafe0bb2ba3b024521eb6e2c871d75fe",
-      "short_sha": "95cb1fe9fafe",
-      "date": "2026-10-02T19:18:09Z",
-      "author": "github-actions[bot]",
-      "subject": "ops(help-wanted): live status refresh 2026-10-02T19:18Z",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/95cb1fe9fafe0bb2ba3b024521eb6e2c871d75fe"
+      "sha": "fc0ffa06c1473aa32d7cb5a8fae474637dc4a99a",
+      "short_sha": "fc0ffa06c147",
+      "date": "2026-10-02T19:25:15Z",
+      "author": "termux-monorepo sweep",
+      "subject": "chore(ops): record sweep accountability receipt",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/fc0ffa06c1473aa32d7cb5a8fae474637dc4a99a"
     }
   ],
   "pipeline": [

@@ -33,7 +33,7 @@ except Exception as e:
 # 2 · codespaces list with storage-relevant fields
 echo
 echo "[ CODESPACES ]"
-gh codespace list --json name,state,machineName,lastUsedAt,createdAt,retentionExpiresAt 2>/dev/null | python3 -c "
+gh codespace list --json name,state,machineName,lastUsedAt,createdAt 2>/dev/null | python3 -c "
 import json,sys
 from datetime import datetime, timezone
 try:

@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-02T05:37:43Z UTC · receipts=804 · foreign_open=24 · tributes=63_
+_Generated 2026-10-02T06:13:10Z UTC · receipts=804 · foreign_open=25 · tributes=64_
 
 ## Tributes (contributor ledger)
 
+- [dentalpin/dentalpin#591](https://github.com/dentalpin/dentalpin/pull/591) · state=open · help-wanted: stake + contribute for #590
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -43,10 +44,10 @@ _Generated 2026-10-02T05:37:43Z UTC · receipts=804 · foreign_open=24 · tribut
 - [lonestill/scope-launcher#45](https://github.com/lonestill/scope-launcher/pull/45) · state=closed · help-wanted: stake + contribute for #19
 - [https://github.com/lonestill/onyx-launcher/pull/45](https://github.com/lonestill/onyx-launcher/pull/45) · state=? · 
 - [UnityChainxx/StellarHunts#599](https://github.com/UnityChainxx/StellarHunts/pull/599) · state=closed · help-wanted: stake + contribute for #519
-- [Stellar-songifi/Lyricsflip_server#212](https://github.com/Stellar-songifi/Lyricsflip_server/pull/212) · state=closed · help-wanted: stake + contribute for #108
 
 ## Foreign open PRs
 
+- [dentalpin/dentalpin#591](https://github.com/dentalpin/dentalpin/pull/591) — help-wanted: stake + contribute for #590
 - [Saidur-droid/MergeEarn#76](https://github.com/Saidur-droid/MergeEarn/pull/76) — help-wanted: stake + contribute for #69
 - [kawacukennedy/afrpoweros#40](https://github.com/kawacukennedy/afrpoweros/pull/40) — help-wanted: stake + contribute for #5
 - [laugh-tales/starpass-contracts#59](https://github.com/laugh-tales/starpass-contracts/pull/59) — help-wanted: stake + contribute for #28

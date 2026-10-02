@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-02T12:35:15Z",
+  "generated_at": "2026-10-02T15:01:46Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
   "receipts": 827,
@@ -16,6 +16,15 @@
     "ok": 827
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/CopilotKit/CopilotKit/pull/7594",
+      "title": "help-wanted: stake + contribute for #4775",
+      "number": 7594,
+      "repo": "CopilotKit/CopilotKit",
+      "state": "open",
+      "updated_at": "2026-10-02T15:01:34Z",
+      "tribute": true
+    },
     {
       "html_url": "https://github.com/dentalpin/dentalpin/pull/591",
       "title": "help-wanted: stake + contribute for #590",
@@ -224,8 +233,21 @@
       "tribute": true
     }
   ],
-  "foreign_open_count": 23,
+  "foreign_open_count": 24,
   "tributes": [
+    {
+      "pr_url": "https://github.com/CopilotKit/CopilotKit/pull/7594",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-10-02T15:01:34Z",
+      "providers": [],
+      "repo": "CopilotKit/CopilotKit",
+      "number": 7594,
+      "title": "help-wanted: stake + contribute for #4775",
+      "state": "open"
+    },
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
@@ -1841,7 +1863,7 @@
       "state": "closed"
     }
   ],
-  "tribute_count": 64,
+  "tribute_count": 65,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -9500,7 +9522,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "af85599e94acefcb411da8ee890c50a413052962",
+    "source_sha": "4c1ca967ee79906044e798a5f86e8b5b9379cb98",
     "source_ref": "master",
     "history_complete": false,
     "history_coverage": "lane-local-complete; repository-wide historical accountability requires sweep-accountability backfill",
@@ -9534,12 +9556,12 @@
   },
   "evolution": [
     {
-      "sha": "af85599e94acefcb411da8ee890c50a413052962",
-      "short_sha": "af85599e94ac",
-      "date": "2026-10-02T12:34:31Z",
+      "sha": "4c1ca967ee79906044e798a5f86e8b5b9379cb98",
+      "short_sha": "4c1ca967ee79",
+      "date": "2026-10-02T12:56:07Z",
       "author": "github-actions[bot]",
-      "subject": "chore(docs): refresh DOCS-BRANCH-INDEX",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/af85599e94acefcb411da8ee890c50a413052962"
+      "subject": "chore(context): backfill relationship history",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/4c1ca967ee79906044e798a5f86e8b5b9379cb98"
     }
   ],
   "pipeline": [

@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-02T12:35:15Z UTC · receipts=827 · foreign_open=23 · tributes=64_
+_Generated 2026-10-02T15:01:46Z UTC · receipts=827 · foreign_open=24 · tributes=65_
 
 ## Tributes (contributor ledger)
 
+- [CopilotKit/CopilotKit#7594](https://github.com/CopilotKit/CopilotKit/pull/7594) · state=open · help-wanted: stake + contribute for #4775
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -43,10 +44,10 @@ _Generated 2026-10-02T12:35:15Z UTC · receipts=827 · foreign_open=23 · tribut
 - [umn-adc/ATLAS#42](https://github.com/umn-adc/ATLAS/pull/42) · state=closed · help-wanted: stake + contribute for #31
 - [lonestill/scope-launcher#45](https://github.com/lonestill/scope-launcher/pull/45) · state=closed · help-wanted: stake + contribute for #19
 - [https://github.com/lonestill/onyx-launcher/pull/45](https://github.com/lonestill/onyx-launcher/pull/45) · state=? · 
-- [UnityChainxx/StellarHunts#599](https://github.com/UnityChainxx/StellarHunts/pull/599) · state=closed · help-wanted: stake + contribute for #519
 
 ## Foreign open PRs
 
+- [CopilotKit/CopilotKit#7594](https://github.com/CopilotKit/CopilotKit/pull/7594) — help-wanted: stake + contribute for #4775
 - [dentalpin/dentalpin#591](https://github.com/dentalpin/dentalpin/pull/591) — help-wanted: stake + contribute for #590
 - [Saidur-droid/MergeEarn#76](https://github.com/Saidur-droid/MergeEarn/pull/76) — help-wanted: stake + contribute for #69
 - [laugh-tales/starpass-contracts#59](https://github.com/laugh-tales/starpass-contracts/pull/59) — help-wanted: stake + contribute for #28

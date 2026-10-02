@@ -124,6 +124,9 @@ jobs:
             } >> "$GITHUB_STEP_SUMMARY"
             exit 0
           }
+          # Local cap, not the GitHub quota API. Historical failure 36970871999
+          # exited before the POST message matcher. Receipt 84e48b1b did not emit
+          # pull_request synchronize runs, so this comment re-arms repo gate.
           if [ "${codespace_count:-0}" -ge 8 ]; then
             quota_skip "preflight count ${codespace_count} already at local cap; not posting create"
           fi

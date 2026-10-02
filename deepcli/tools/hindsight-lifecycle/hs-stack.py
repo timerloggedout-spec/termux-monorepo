@@ -177,7 +177,10 @@ def pick_next():
         e = c.get("models", {}).get(n)
         if not e:
             continue
-        if e.get("http") not in (200, 429):
+        # Skip if last probe returned 429 (exhausted)
+        if e.get("http") == 429:
+            continue
+        if e.get("http") not in (200,):
             continue
         rpd = e.get("rpd", 0) or BASELINE.get(n, {}).get("rpd", 0)
         used = st.get(n, {}).get(today, 0)

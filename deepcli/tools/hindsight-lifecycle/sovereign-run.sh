@@ -33,6 +33,31 @@ if [ -f /tmp/mvt-seed.py ]; then
   SEED_SOURCE="$_src" python3 /tmp/mvt-seed.py 2>&1 | tail -15
   _rc=${PIPESTATUS[0]}
   echo "  seed batch rc=$_rc"
+  # Count how many 200s this batch produced and bump the model counter
+  _ok=$(grep -oE 'batch #[0-9]+ -> HTTP 200' /tmp/mvt-seed.log 2>/dev/null | wc -l)
+  if [ "${_ok:-0}" -gt 0 ] && [ -n "${_active:-}" ]; then
+    python3 -c "
+import sys; sys.path.insert(0,'/tmp')
+try:
+    from hs_stack import _bump
+except Exception:
+    from hs_stack import _bump
+" 2>/dev/null || true
+    # fallback: direct json bump
+    python3 - <<PYBUMP
+import json, os
+from datetime import datetime, timezone, timedelta
+today = (datetime.now(timezone.utc) - timedelta(hours=8)).strftime("%Y-%m-%d")
+sp = "/tmp/hs-stack/state.json"
+st = {}
+if os.path.exists(sp):
+    try: st = json.load(open(sp))
+    except Exception: st = {}
+st.setdefault("${_active}", {})
+st["${_active}"][today] = st["${_active}"].get(today, 0) + ${_ok}
+json.dump(st, open(sp, "w"), indent=2)
+PYBUMP
+  fi
   if grep -q "ABORT lane" /tmp/mvt-seed.log 2>/dev/null; then
     echo "  lane aborted — rotating model"
     python3 /tmp/hs-stack.py rotate >/dev/null 2>&1

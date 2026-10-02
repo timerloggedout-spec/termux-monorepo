@@ -21,6 +21,7 @@ BATCH_SIZE = int(os.environ.get("MVT_BATCH_SIZE", "8"))
 BATCH_HARD_TIMEOUT = int(os.environ.get("MVT_BATCH_TIMEOUT", "90"))
 LOG = Path("/tmp/mvt-seed.log")
 RUN_STATE = Path("/tmp/mvt-run-state.json")
+MVT_LEDGER = Path("/tmp/mvt-batches.jsonl")
 ACTIVE = Path("/tmp/hs-stack/active.json")
 
 
@@ -258,6 +259,18 @@ async def worker(name, hs_url, bank, queue, counters, pace):
         _dt = time.time() - _t0
         if bnum <= 5 or bnum % 20 == 0 or code != 200:
             log(f"  [{name}] batch #{bnum} -> HTTP {code} ({_dt:.1f}s)")
+        try:
+            with MVT_LEDGER.open("a") as _lf:
+                _lf.write(json.dumps({
+                    "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                    "provider": prov, "model": model, "source": source,
+                    "worker": name, "batch_n": bnum, "size": len(items),
+                    "http": code, "wall_s": round(_dt, 2),
+                    "tokens_in": _tin, "tokens_out": _tout,
+                    "out_per_sec": round(_tout / _dt, 2) if _dt > 0 else 0,
+                }) + "\n")
+        except Exception:
+            pass
         for _ in items: queue.task_done()
 
         quota_in_body = ("RESOURCE_EXHAUSTED" in body

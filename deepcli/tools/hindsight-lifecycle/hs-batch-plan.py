@@ -1,43 +1,87 @@
 #!/usr/bin/env python3
-"""hs-batch-plan — compute optimal BATCH_SIZE from model token limits."""
-import json, os, sys
+"""hs-batch-plan - measured batch size, not theoretical token limits.
+
+Reads:
+  /tmp/hs-stack/limits.json   model input/output token limits
+  /tmp/hs-stack/active.json   active model
+  /tmp/mvt-seed.log           per-batch HTTP wall times
+
+Logic:
+  - Hindsight serializes items WITHIN one POST. Batch size does NOT reduce
+    LLM call count (1 call per item regardless). It only reduces HTTP overhead.
+  - Workers run concurrently. Real throughput = workers * items_per_sec.
+  - If batch wall time is superlinear (16 items takes >2x 8 items), reduce.
+  - If linear, keep batch at a size that fits a reasonable HTTP window.
+"""
+import json, os, re, sys
 from pathlib import Path
 
 LIM = Path("/tmp/hs-stack/limits.json")
 ACT = Path("/tmp/hs-stack/active.json")
-AVG_ITEM_TOKENS = int(os.environ.get("MVT_AVG_ITEM_TOKENS", "2200"))
-OUT_TOKENS_PER_ITEM = int(os.environ.get("MVT_OUT_TOKENS_PER_ITEM", "110"))
-WORKER_CONCURRENCY = int(os.environ.get("MVT_CONCURRENCY", "4"))
+LOG = Path("/tmp/mvt-seed.log")
 
-if not LIM.exists() or not ACT.exists():
-    print("8"); sys.exit(0)
+DEFAULT_BATCH = int(os.environ.get("MVT_BATCH_SIZE_DEFAULT", "8"))
+MAX_BATCH = int(os.environ.get("MVT_BATCH_SIZE_MAX", "16"))
+HTTP_WINDOW_S = int(os.environ.get("MVT_HTTP_WINDOW_S", "120"))
 
-limits = json.loads(LIM.read_text())
-active = json.loads(ACT.read_text()).get("model", "")
+def parse_log():
+    """Return [(items, wall_s), ...] from 'batch #N size=K -> HTTP 200 (Xs)'"""
+    if not LOG.exists(): return []
+    pairs = []
+    for line in LOG.read_text().splitlines()[-500:]:
+        m = re.search(r'size=(\d+).*?HTTP 200 \(([0-9.]+)s\)', line)
+        if m:
+            pairs.append((int(m.group(1)), float(m.group(2))))
+    return pairs
 
-# Find model in limits cache
-m = (limits.get("models") or {}).get(active) or {}
-# Fall back to known family defaults if limits cache lacks the field
-in_limit = int(m.get("inputTokenLimit") or m.get("in") or 1_048_576)
-out_limit = int(m.get("outputTokenLimit") or m.get("out") or 65_536)
+def measured_batch(candidates=(4, 8, 16, 24)):
+    """Given wall-time samples, pick batch size maximizing items/sec under window."""
+    samples = parse_log()
+    if len(samples) < 3:
+        return None
+    from statistics import median
+    buckets = {}
+    for items, wall in samples:
+        buckets.setdefault(items, []).append(wall)
+    best = None
+    for size, walls in buckets.items():
+        med = median(walls)
+        if med <= 0: continue
+        if med > HTTP_WINDOW_S: continue
+        items_per_sec = size / med
+        if best is None or items_per_sec > best[1]:
+            best = (size, items_per_sec, med, len(walls))
+    return best
 
-# Per-item token cost
-# In: whole batch input is per-item so item count = in_limit / avg_item
-by_input = max(1, in_limit // AVG_ITEM_TOKENS)
-# Out: whole batch output must fit in one response for Hindsight chunker
-# Hindsight chunks by tokens, so this is generous
-by_output = max(1, out_limit // OUT_TOKENS_PER_ITEM)
+def main():
+    verbose = "--verbose" in sys.argv
+    lim = json.loads(LIM.read_text()) if LIM.exists() else {}
+    act = json.loads(ACT.read_text()).get("model", "") if ACT.exists() else ""
+    m = (lim.get("models") or {}).get(act) or {}
+    in_lim = int(m.get("inputTokenLimit") or 1_048_576)
+    out_lim = int(m.get("outputTokenLimit") or 65_536)
 
-# Practical bound: 8 is Hindsight's shared_slots default
-raw = min(by_input, by_output)
-# Cap at 16 to leave room for concurrent POSTs
-planned = min(16, raw)
+    measured = measured_batch()
+    if measured:
+        size, ips, med_s, n = measured
+        reason = f"measured: {size} items/{med_s:.1f}s = {ips:.3f} items/s over {n} samples"
+    else:
+        # Theoretical cap from tokens, default fallback
+        size = DEFAULT_BATCH
+        reason = f"no samples yet; default {DEFAULT_BATCH}"
+    size = min(size, MAX_BATCH)
 
-if len(sys.argv) > 1 and sys.argv[1] == "--verbose":
-    print(f"model={active}")
-    print(f"  inputTokenLimit={in_limit}  outputTokenLimit={out_limit}")
-    print(f"  avg_item_tokens={AVG_ITEM_TOKENS}  out_per_item={OUT_TOKENS_PER_ITEM}")
-    print(f"  by_input={by_input}  by_output={by_output}")
-    print(f"  planned_batch={planned}  concurrency={WORKER_CONCURRENCY}")
-else:
-    print(planned)
+    if verbose:
+        print(f"model={act}")
+        print(f"  input_limit={in_lim}  output_limit={out_lim}")
+        print(f"  chosen={size}  max={MAX_BATCH}  window={HTTP_WINDOW_S}s")
+        print(f"  reason={reason}")
+        # Show all samples
+        samples = parse_log()
+        if samples:
+            print(f"  samples={len(samples)}: " + ", ".join(f"{i}i:{w:.1f}s" for i, w in samples[-8:]))
+    else:
+        print(size)
+
+if __name__ == "__main__":
+    main()

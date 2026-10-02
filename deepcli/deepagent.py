@@ -55,6 +55,37 @@ def _broker():
 
 # tool descriptions identical to agent.py — the model doesn't need to know
 # whether the transport is HTTP or in-process
+
+
+SYSTEM_PROMPTS = {
+    "default": (
+        "You are DeepAgent, a Termux-hosted autonomous coding agent.\n"
+        "Environment: HOME=$HOME. write_file limited to .deepcli/, "
+        "deepcli/tasks/, deepcli/agent_workspaces/.\n"
+        "Call finish(summary) when done. summary must name what shipped "
+        "(file, PR url, invariant), be >=20 chars, and not be a placeholder. "
+        "A rejected finish does NOT end the loop.\n"
+    ),
+    "audit": (
+        "You are DeepAgent in AUDIT mode. Read-only. Do not write files, "
+        "do not push, do not open PRs unless the task explicitly asks. "
+        "Report findings with file:line references. Finish with a summary "
+        "that names every artifact you inspected and the projected impact.\n"
+    ),
+    "fix": (
+        "You are DeepAgent in FIX mode. Multi-file changes require "
+        "gh_worktree: create branch, edit, commit_push_pr. Single-line fixes "
+        "may use gh_edit_file. Never push to master. Verify with a test call "
+        "before declaring done.\n"
+    ),
+    "research": (
+        "You are DeepAgent in RESEARCH mode. Read-only. Use gh_get_file and "
+        "read_file to gather evidence. Cite file:line for every claim. "
+        "Do not speculate; mark unknowns NEED_EVIDENCE.\n"
+    ),
+}
+
+
 TOOLS = [
     {
         "type": "function",
@@ -1518,6 +1549,8 @@ def _chat_once(
                 "F", (), {"name": _n, "description": _de, "parameters": _pa}
             )()
 
+    if system:
+        messages = [{"role": "system", "content": system}] + list(messages)
     msgs = [_M(m) for m in messages]
     tls = [_TM(t) for t in tools] if tools else None
     prompt = _fl(msgs, tls)
@@ -1624,7 +1657,7 @@ def _autosnapshot(reason: str = "auto"):
         pass
 
 
-def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False):
+def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False, category="default"):
     """Loop until finish OR no-progress detected. Ceiling is safety, not policy."""
     print(f"\n▶ task: {task}\n")
     _t0 = time.time()
@@ -1667,7 +1700,8 @@ def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False
         if step > 0 and IDLE_SLEEP:
             time.sleep(IDLE_SLEEP)
         sid, content, calls, next_parent = _chat_once(
-            msgs, TOOLS, model=model, session_id=sid, parent_message_id=parent_id
+            msgs, TOOLS, model=model, session_id=sid, parent_message_id=parent_id,
+            system=SYSTEM_PROMPTS.get(category, SYSTEM_PROMPTS["default"]).replace("$HOME", str(HOME)),
         )
         parent_id = next_parent
         if content:
@@ -1826,6 +1860,12 @@ if __name__ == "__main__":
     if "--dry-run" in argv:
         dry = True
         argv.remove("--dry-run")
+    category = "default"
+    if "--category" in argv:
+        i = argv.index("--category")
+        if i + 1 < len(argv):
+            category = argv[i + 1]
+            del argv[i : i + 2]
     if "--fresh" in argv:
         fresh = True
         argv.remove("--fresh")
@@ -1837,4 +1877,4 @@ if __name__ == "__main__":
     if not argv:
         print('usage: deepagent.py [--dry-run] [--fresh] [--task-file P] "<task>"')
         sys.exit(2)
-    loop(" ".join(argv), dry_run=dry, task_path=task_path, fresh=fresh)
+    loop(" ".join(argv), dry_run=dry, task_path=task_path, fresh=fresh, category=category)

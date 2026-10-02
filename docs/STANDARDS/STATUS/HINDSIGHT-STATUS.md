@@ -21,16 +21,16 @@ Generated: 2026-10-02T00:45Z  |  Branch: feat/gh-actions/deepseek-integrates-its
 
 | # | Defect | Severity | Evidence |
 |---|---|---|---|
-| D1 | MVT facts=0 despite 4 batches 200 | HIGH | hs-verify info MVT facts=0 |
-| D2 | hs-db arg mangling via ssh | LOW | syntax error on argv passthrough |
+| D1 | CLOSED — memory_units.context, not banks.fact_count | — | dashboard shows facts |
+| D2 | CLOSED — hs-db v0.3.0 reads SQL from stdin | — | — |
 | D3 | DeepAgent Hindsight is a stub | HIGH | `if False else None  # Phase 3` in deepagent.py |
 | D4 | cs-seed.py does not read active.json | MED | older seeder, superseded by mvt-seed |
 | D5 | offload.sh missing from disk | MED | referenced, never shipped |
 | D6 | hs-cadence harvest fails 4-6s since 09:00 | MED | hs-cadence.jsonl shows repeated fail |
-| D7 | mvt_diag.sh write to /tmp failed | LOW | Termux has no /tmp — use TMPDIR |
-| D8 | Role hardcoding in PROVIDERS | FIXED | patched to _active_role() but not verified live |
-| D9 | hs-dash-body DB TRUTH section | NOT SHIPPED | last block aborted before ship |
-| D10 | Legacy bank deepagent::mvt::gemini::base orphan | LOW | 56 facts, superseded naming |
+| D7 | CLOSED — all scripts use TMPDIR | — | — |
+| D8 | CLOSED — _active_role reads active.json, verified in mvt-seed.log | — | producer |
+| D9 | CLOSED — DB TRUTH + QUOTA + OR QUOTA + PROVENANCE + ERRORS | — | live |
+| D10 | Legacy bank rename — done via FK-aware txn | — | banks + children updated |
 
 ## STUBS — declared but not implemented
 

@@ -63,8 +63,13 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
     return records
 
 
-def load_canonical_history(output: Path, owner: str, repo: str, ref: str) -> dict[str, Any] | None:
-    """Rehydrate prior canonical records as compiler-valid seed data for retention."""
+def load_canonical_history(output: Path, owner: str, repo: str, ref: str, adopt_ref: bool = False) -> dict[str, Any] | None:
+    """Rehydrate prior canonical records as compiler-valid seed data for retention.
+
+    adopt_ref is only for an operator-controlled continuation onto the current
+    default branch. Repository identity must still match. A stored ref such as
+    master-staging is rewritten to the requested ref in the retained seed.
+    """
     manifest_path = output / "manifest.json"
     nodes_path = output / "nodes.jsonl"
     edges_path = output / "edges.jsonl"
@@ -78,8 +83,17 @@ def load_canonical_history(output: Path, owner: str, repo: str, ref: str) -> dic
         raise CompilationError("canonical manifest must be an object")
     if manifest.get("schema_version") != "1.0":
         raise CompilationError("canonical history schema version is not supported")
-    if manifest.get("repository") != f"{owner}/{repo}" or manifest.get("default_branch") != ref:
+    stored_repo = manifest.get("repository")
+    stored_ref = manifest.get("default_branch")
+    if stored_repo != f"{owner}/{repo}":
         raise CompilationError("canonical history belongs to a different repository or ref")
+    if stored_ref != ref:
+        if not adopt_ref:
+            raise CompilationError(
+                "canonical history belongs to a different repository or ref "
+                f"(stored_ref={stored_ref!r}, requested_ref={ref!r})"
+            )
+    adopted_ref = ref
     canonical_nodes = read_jsonl(nodes_path)
     canonical_edges = read_jsonl(edges_path)
     node_refs: dict[str, str] = {}
@@ -120,7 +134,8 @@ def load_canonical_history(output: Path, owner: str, repo: str, ref: str) -> dic
         raw_edges.append(raw_edge)
     return {
         "schema_version": "1.0",
-        "repository": {"owner": owner, "name": repo, "default_branch": ref},
+        "repository": {"owner": owner, "name": repo, "default_branch": adopted_ref},
+        "adopted_from_ref": stored_ref if stored_ref != ref else None,
         "nodes": raw_nodes,
         "edges": raw_edges,
     }
@@ -143,11 +158,12 @@ def build_index(
     max_retries: int,
     full_refresh: bool = False,
     history_start_page: int = 1,
+    adopt_canonical_ref: bool = False,
 ) -> dict[str, Any]:
     """Build a complete index, replacing canonical artifacts only after validation."""
     checkpoint_path = output / "checkpoint.json"
     since = None if full_refresh else load_checkpoint(checkpoint_path, owner, repo, ref)
-    historical_seed = load_canonical_history(output, owner, repo, ref)
+    historical_seed = load_canonical_history(output, owner, repo, ref, adopt_ref=adopt_canonical_ref)
     bootstrap_backfill = historical_seed is None
     collection_max_items = max(max_items, 100) if bootstrap_backfill else max_items
     collection_max_commits = max(max_commits, 100) if bootstrap_backfill else max_commits
@@ -311,6 +327,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--without-comments", action="store_true")
     parser.add_argument("--max-retries", type=int, default=3)
     parser.add_argument("--full-refresh", action="store_true", help="Ignore the existing checkpoint for a bounded reconciliation run")
+    parser.add_argument(
+        "--adopt-canonical-ref",
+        action="store_true",
+        help="Retain same-repo canonical history when its stored default_branch differs from --ref",
+    )
     return parser.parse_args(argv)
 
 
@@ -349,6 +370,7 @@ def main(argv: list[str] | None = None) -> int:
             args.max_retries,
             args.full_refresh,
             args.history_start_page,
+            args.adopt_canonical_ref,
         )
         print(json.dumps(summary, indent=2, sort_keys=True))
         return 0

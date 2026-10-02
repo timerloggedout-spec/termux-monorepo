@@ -90,7 +90,8 @@ jobs:
             --max-commits "$MAX_COMMITS" \
             --max-comments-per-item 10 \
             --max-cochange-pairs-per-commit 100 \
-            --full-refresh
+            --full-refresh \
+            --adopt-canonical-ref
 
       - name: Publish backfill coverage summary
         if: steps.continuation.outputs.continue == 'true'

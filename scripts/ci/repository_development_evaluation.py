@@ -176,6 +176,8 @@ def validate(payload: dict[str, Any]) -> None:
         )
     )
     if check_total == 0:
+        # Empty listings are a collector race, not a valid evaluation.
+        # The workflow defers when checks.listForRef returns nothing.
         raise ContractError("metrics must describe at least one check state")
     required_string(payload, "result_digest", DIGEST)
     if payload["result_digest"] != digest(payload, serialized_canonical=serialized_canonical):

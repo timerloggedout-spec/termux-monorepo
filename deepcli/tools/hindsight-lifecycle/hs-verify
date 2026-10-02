@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# @tool hs-verify
+# @version 0.1.0
+# @since 2026-10-01
+# @change 8-point verification suite
+# @doc docs/STANDARDS/FLOWS/HINDSIGHT-LIFECYCLE-LIB.md
+set -u
+PASS=0; FAIL=0
+ok()   { printf "  PASS %s\n" "$1"; PASS=$((PASS+1)); }
+bad()  { printf "  FAIL %s\n" "$1"; FAIL=$((FAIL+1)); }
+info() { printf "  info %s\n" "$1"; }
+
+echo "==== HINDSIGHT VERIFY $(date -u +%FT%TZ) ===="
+
+for pat in 'hindsight-api --port 8888' 'hs-stack.py watch' 'sovereign-run.sh'; do
+  pgrep -f "$pat" >/dev/null && ok "process: $pat" || bad "process: $pat"
+done
+
+for p in 8888 8889; do
+  c=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 4 http://localhost:$p/health 2>/dev/null || echo 000)
+  [ "$c" = "200" ] && ok ":$p health=$c" || bad ":$p health=$c"
+done
+
+INST=/home/vscode/.pg0/instances/hindsight/instance.json
+PSQL=""
+if [ -f "$INST" ]; then
+  export PGHOST=/tmp PGPORT=$(jq -r .port "$INST")
+  export PGUSER=$(jq -r .username "$INST") PGPASSWORD=$(jq -r .password "$INST")
+  export PGDATABASE=$(jq -r .database "$INST")
+  PSQL=/home/vscode/.pg0/installation/$(jq -r .version "$INST")/bin/psql
+  "$PSQL" -tAc "SELECT 1" >/dev/null 2>&1 && ok "PG auth" || bad "PG auth"
+  NB=$("$PSQL" -tAc "SELECT count(*) FROM banks" 2>/dev/null || echo "?")
+  [ "$NB" != "?" ] && ok "PG banks count=$NB" || bad "PG banks query"
+else
+  bad "no instance.json"
+fi
+
+api_model=$(tr '\0' '\n' < /proc/$(pgrep -f 'hindsight-api --port 8888' | head -1)/environ 2>/dev/null | grep '^HINDSIGHT_API_LLM_MODEL=' | cut -d= -f2-)
+active_model=$(python3 -c "import json;print(json.load(open('/tmp/hs-stack/active.json'))['model'])" 2>/dev/null || echo "?")
+[ "$api_model" = "$active_model" ] && ok "model sync ($api_model)" || bad "model drift api=$api_model active=$active_model"
+
+if [ -n "$PSQL" ]; then
+  F=$("$PSQL" -tAc "SELECT COALESCE(SUM(fact_count),0) FROM banks WHERE bank_id LIKE '%mvt%'" 2>/dev/null || echo 0)
+  [ "${F:-0}" -gt 0 ] && ok "MVT facts=$F" || info "MVT facts=0 (may be fresh)"
+fi
+
+[ -f /tmp/sovereign.log ] && {
+  T=$(grep -c 'SOVEREIGN TICK' /tmp/sovereign.log 2>/dev/null || echo 0)
+  [ "$T" -gt 0 ] && ok "sovereign ticks=$T" || bad "sovereign ticks=0"
+}
+
+[ -f /tmp/mvt-seed.log ] && {
+  B=$(grep -c 'batch #' /tmp/mvt-seed.log 2>/dev/null || echo 0)
+  [ "$B" -gt 0 ] && ok "seed batches=$B" || info "seed batches=0"
+}
+
+echo "==== PASS=$PASS FAIL=$FAIL ===="

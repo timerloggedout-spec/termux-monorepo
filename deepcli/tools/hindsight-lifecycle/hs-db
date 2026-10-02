@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# @tool hs-db
+# @version 0.1.0
+# @since 2026-10-01
+# @change direct PG query via instance.json (codespace-local only)
+# @doc docs/STANDARDS/FLOWS/DB-ACCESS.md
+set -u
+INST=/home/vscode/.pg0/instances/hindsight/instance.json
+[ -f "$INST" ] || { echo "hs-db: run on codespace, not Termux"; exit 1; }
+export PGHOST=/tmp
+export PGPORT=$(jq -r .port "$INST")
+export PGUSER=$(jq -r .username "$INST")
+export PGPASSWORD=$(jq -r .password "$INST")
+export PGDATABASE=$(jq -r .database "$INST")
+PSQL=/home/vscode/.pg0/installation/$(jq -r .version "$INST")/bin/psql
+if [ $# -eq 0 ]; then exec "$PSQL"; fi
+exec "$PSQL" -tAc "$*"

@@ -177,7 +177,7 @@ jobs:
   jules-on-mention:
     if: |
       github.event_name == 'issue_comment' &&
-      !github.event.issue.pull_request &&
+      github.event.issue.pull_request == false &&
       github.event.sender.type == 'User' &&
       contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association) &&
       (
@@ -241,7 +241,10 @@ jobs:
             }
 
       - name: Invoke Jules API on mention (optional)
-        if: ${{ secrets.JULES_API_KEY != '' }}
+        env:
+          JULES_API_KEY: ${{ secrets.JULES_API_KEY }}
+        # secrets context in if: fails workflow load (zero-job). Gate on env.
+        if: env.JULES_API_KEY != ''
         continue-on-error: true
         uses: google-labs-code/jules-invoke@v1
         with:

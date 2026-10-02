@@ -39,12 +39,14 @@ def _active_model():
         return "gemini-3.5-flash-lite"
 
 PROVIDERS = [
-    {"name": "gemini",     "rpm": 15, "concurrency": 4, "pace": 3.0,
+    {"name": "gemini", "rpm": 15, "concurrency": 4, "pace": 3.0,
      "hs_url": "http://localhost:8888",
-     "model_from_active": True},
+     "model_from_active": True,
+     "vendor": "google", "family": "gemini", "settings": "standard"},
     {"name": "openrouter", "rpm": 20, "concurrency": 4, "pace": 3.0,
      "hs_url": "http://localhost:8889",
-     "model": "qwen/qwen3.8-27b:free"},
+     "model": "qwen/qwen3.8-27b:free",
+     "vendor": "openrouter", "family": "qwen", "settings": "free"},
 ]
 
 def log(m):
@@ -291,7 +293,7 @@ async def run_provider(provider, source):
     comp_hash = "base"
     model = provider.get("model") or _active_model()
     role = provider.get("role") or _active_role()
-    bank = _safe_bank(f"termux-monorepo::mvt::{prov}::{model}::{role}::{comp_hash}")
+    bank = _safe_bank(f"termux-monorepo::mvt::{vendor}::{family}::{model}::{settings}::{role}::{comp_hash}")
     state = load_state(prov, source)
     done = state.get("n_ok", 0)
     log(f"=== provider={prov} source={source} model={model} bank={bank} resumed_from={done} key={'SET' if KEY else 'MISSING'} ===")

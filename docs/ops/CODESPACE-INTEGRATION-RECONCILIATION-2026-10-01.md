@@ -60,6 +60,55 @@ A missing Codespace record is **UNKNOWN**, not Deleted. Current GitHub connector
 - `agent-bifrost-006` and `hindsight-1552` are linked to their respective integration lanes rather than treated as generic disposable environments.
 - The next operational pass should capture: `codespace_id`, friendly name, repository/ref, current lifecycle, last observed time, devcontainer/config, uncommitted-work indicator, branch/SHA, owner/agent lane, and disposition.
 
+
+
+## 2B. Branch-lineage census
+
+The repository currently exposes these relevant historical/current branches. Branch existence is **provenance evidence**, not proof that a Codespace is live or that the branch should be merged.
+
+### Codespace / environment carriers
+
+- `codespaces-multi-lane-agent-roles` — historical multi-lane role architecture
+- `docs/proposals/codespaces-enablement` — enablement proposal lineage
+- `feat/codespace-agent-devcontainer` — agent devcontainer implementation lineage
+- `feat/codespace-production-lane` — production-lane implementation lineage
+- `gaps-opps/add-devcontainer-codespaces` — gap/opportunity lineage
+- `ops/codespace-create-secret-chain` — creation credential chain lineage
+- `ops/codespace-create-use-archwiz-token` — creation/auth lineage
+- `ops/codespace-create-workflow-dispatch` — dispatch creation lineage
+- `ops/codespace-start-existing` — start-existing lifecycle lineage
+- `docs/codespace-bifrost-006-run` — BIFROST-006 Codespace execution lineage
+- `ops/bifrost-006-evidence-and-codespace-ssot` — BIFROST Codespace evidence/SSOT lineage
+
+### Bifrost
+
+- `docs/bifrost-006-benchmark-runbook`
+- `docs/bifrost-gateway-recon-reconcile`
+- `docs/codespace-bifrost-006-run`
+- `ops/bifrost-006-evidence-and-codespace-ssot`
+
+### Hindsight
+
+- `hindsight-wire`
+- `fix/hindsight-tool-envelope`
+- `lane1/deadcode-hindsight-finish`
+
+### Gravitee
+
+- `feat/gravitee-repository-observatory`
+
+### Temporal
+
+- `bolt-temporal-lag-index-optimization-7092498872592714131`
+- `feat/temporal-langsmith-adapter`
+- `ops/fa-ade-claude-temporal-smoke`
+- `ops/fa-ade-claude-temporal-smoke-e2757801`
+- `ops/temporal-langsmith-matrix-residual-20261001`
+
+### Consolidation rule
+
+The branch census is deliberately retained as a **lineage graph**. The operational source of truth remains current `master` plus merged artifacts. Before deleting or closing anything, compute its unique delta against current `master` and classify it as `LANDED`, `SUPERSEDED`, `RE-EXTRACT`, `ACTIVE`, or `UNKNOWN`.
+
 ## 3. Bifrost lineage
 
 Bifrost is already a reconciled integration concept, not a pending wholesale source merge.

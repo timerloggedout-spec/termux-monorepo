@@ -25,6 +25,15 @@ jobs:
         run: |
           set -euo pipefail
           if [ -z "${AGENT_URL:-}" ]; then echo "::error::DEEPSEEK_AGENT_URL not set"; exit 1; fi
+          # Unresolved tunnel (curl exit 6) is environmental, not a repo defect.
+          # Run 36959200200 on 7921e406 failed resolving the Pinggy host.
+          HOST=$(python3 -c 'import os; from urllib.parse import urlparse; print(urlparse(os.environ["AGENT_URL"]).hostname or "")')
+          if [ -z "$HOST" ] || ! getent hosts "$HOST" >/dev/null 2>&1; then
+            echo "::warning::DEEPSEEK agent host ${HOST:-<empty>} does not resolve. Recording tunnel-unresolved skip."
+            echo "skipped=tunnel-unresolved" >> "$GITHUB_OUTPUT"
+            echo '{"phase":"skipped","reason":"tunnel-unresolved"}' > agent_status.json
+            exit 0
+          fi
           TASK=$(cat <<'EOF'
           Execute ~/deepcli/tasks/workflow-sweep.md.
           Scope: all repos owned by timerloggedout-spec.

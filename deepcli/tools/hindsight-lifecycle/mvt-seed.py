@@ -252,7 +252,7 @@ def _safe_bank(s):
     return s.replace("/", "_")
 
 
-async def worker(name, hs_url, bank, queue, counters, pace, model=None):
+async def worker(name, hs_url, bank, queue, counters, pace, model=None, source=None):
     consec_quota = 0
     BATCH_WINDOW = 0.8  # seconds to wait for more items before posting
 
@@ -297,11 +297,14 @@ async def worker(name, hs_url, bank, queue, counters, pace, model=None):
             with MVT_LEDGER.open("a") as _lf:
                 _lf.write(json.dumps({
                     "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                    "provider": name.rsplit("-", 1)[0] if "-" in name else name, "model": model or "(unset)", "source": source,
-                    "worker": name, "batch_n": bnum, "size": len(items),
-                    "http": code, "wall_s": round(_dt, 2),
-                    "tokens_in": _tin, "tokens_out": _tout,
-                    "out_per_sec": round(_tout / _dt, 2) if _dt > 0 else 0,
+                    "provider": name.rsplit("-", 1)[0] if "-" in name else name,
+                    "model": model or "(unset)",
+                    "source": source or "(unset)",
+                    "worker": name,
+                    "batch_n": bnum,
+                    "size": len(items),
+                    "http": code,
+                    "wall_s": round(_dt, 2),
                 }) + "\n")
         except Exception:
             pass
@@ -356,7 +359,7 @@ async def run_provider(provider, source):
     q = asyncio.Queue(maxsize=provider["concurrency"] * 4)
     counters = {"ok": 0, "fail": 0, "429": 0, "abort": False}
     workers = [
-        asyncio.create_task(worker(f"{prov}-{i}", provider["hs_url"], bank, q, counters, provider["pace"], model=model))
+        asyncio.create_task(worker(f"{prov}-{i}", provider["hs_url"], bank, q, counters, provider["pace"], model=model, source=source))
         for i in range(provider["concurrency"])
     ]
 
@@ -400,7 +403,7 @@ async def run_provider(provider, source):
 
     log(f"  DONE {prov}/{source}: ok={counters['ok']} fail={counters['fail']} 429={counters['429']}")
     await _write_state({
-        "ts": _t.strftime("%Y-%m-%dT%H:%M:%SZ", _t.gmtime()),
+        "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "source": source,
         "provider": prov,
         "model": model,
@@ -409,7 +412,6 @@ async def run_provider(provider, source):
         "fail": counters["fail"],
         "429": counters["429"],
         "abort": counters.get("abort", False),
-        "elapsed_s": round(_t.time() - _t0, 1) if "_t0" in dir() else 0,
     })
     save_state(
         prov,
@@ -432,8 +434,6 @@ async def _write_state(d):
 
 async def main():
     source = os.environ.get("SEED_SOURCE", "fts5")
-    import time as _t
-    _t0 = _t.time()
     log(f"--- mvt-seed run source={source} model={_active_model()} ---")
     for p in PROVIDERS:
         try:

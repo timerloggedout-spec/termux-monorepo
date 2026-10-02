@@ -2,7 +2,7 @@
 """On-codespace seeder. Reads local zips + sqlite, batches to localhost:8888.
 No network round-trips — bank and seed run on the same host.
 """
-import json, os, sqlite3, sys, time, urllib.request, urllib.error, zipfile
+import json, os, time, urllib.request, urllib.error, zipfile
 from pathlib import Path
 
 HOME = Path.home()

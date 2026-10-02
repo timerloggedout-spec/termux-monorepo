@@ -211,7 +211,7 @@ async def post_batch(hs_url, bank, items, timeout=180):
 
 def _safe_bank(s):
     """Bank IDs travel in URL paths. Replace / and : that break routing."""
-    return s.replace("/", "_").replace(":", "-")
+    return s.replace("/", "_")
 
 
 async def worker(name, hs_url, bank, queue, counters, pace):

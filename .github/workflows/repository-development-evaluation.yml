@@ -38,6 +38,7 @@ jobs:
           submodules: false
 
       - name: Collect lifecycle and automation metrics
+        id: collect
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
           PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
@@ -175,9 +176,18 @@ jobs:
             };
             fs.mkdirSync('evaluation-results', {recursive: true});
             fs.writeFileSync('evaluation-results/raw-repository-evidence.json', JSON.stringify(raw, null, 2));
+            if (latestChecks.size === 0) {
+              core.notice('No check runs listed for the head yet. Deferring evaluation so an empty check state is not a filename failure.');
+              fs.mkdirSync('evaluation-results', {recursive: true});
+              fs.writeFileSync('evaluation-results/deferred.txt', 'checks-not-yet-listed\n');
+              core.setOutput('checks_observed', 'false');
+              return;
+            }
+            core.setOutput('checks_observed', 'true');
             core.info(`Collected redacted evidence for PR #${prNumber}; checks=${latestChecks.size}, markers=${markerComments.length}`);
 
       - name: Build and audit canonical manifest
+        if: steps.collect.outputs.checks_observed == 'true'
         run: |
           set -euo pipefail
           python3 scripts/ci/repository_development_evaluation.py manifest \
@@ -188,6 +198,7 @@ jobs:
             evaluation-results/repository-development-manifest.json
 
       - name: Publish advisory evaluation summary
+        if: steps.collect.outputs.checks_observed == 'true'
         run: |
           set -euo pipefail
           python3 - <<'PY'
@@ -209,6 +220,14 @@ jobs:
           PY
           cat evaluation-results/summary.md >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Record deferred evaluation
+        if: steps.collect.outputs.checks_observed != 'true'
+        run: |
+          set -euo pipefail
+          mkdir -p evaluation-results
+          printf '%s\n' '## Repository development evaluation' '' '- Deferred: no check runs were listed for the head yet.' > evaluation-results/summary.md
+          cat evaluation-results/summary.md >> "$GITHUB_STEP_SUMMARY"
+
       - name: Upload redacted evaluation evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
@@ -216,6 +235,7 @@ jobs:
           path: |
             evaluation-results/repository-development-manifest.json
             evaluation-results/summary.md
-          if-no-files-found: error
+            evaluation-results/deferred.txt
+          if-no-files-found: warn
           retention-days: 30
           include-hidden-files: false

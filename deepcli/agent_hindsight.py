@@ -5,7 +5,10 @@ Env-gated: no HINDSIGHT_BASE_URL or HINDSIGHT_API_KEY = no-op.
 """
 import json, os, threading, urllib.request, urllib.error
 
-BASE = os.environ.get("HINDSIGHT_BASE_URL", "").rstrip("/")
+# Prefer explicit HINDSIGHT_LOCAL_URL; refuse cloud URL for agent writes.
+BASE = os.environ.get("HINDSIGHT_LOCAL_URL", "").rstrip("/") or "http://localhost:8888"
+if "vectorize.io" in BASE or "hindsight.cloud" in BASE:
+    BASE = "http://localhost:8888"
 KEY  = os.environ.get("HINDSIGHT_API_KEY", "")
 BANK = os.environ.get("HINDSIGHT_BANK_ID", "termux-monorepo::primary")
 DEFAULT_TIMEOUT = int(os.environ.get("HINDSIGHT_RETAIN_TIMEOUT", "30"))

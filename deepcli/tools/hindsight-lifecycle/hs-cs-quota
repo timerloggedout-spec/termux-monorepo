@@ -1,0 +1,51 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# @tool hs-cs-quota
+# @version 0.1.0
+# @since 2026-10-02
+# @change codespace usage + idle timeout + plan quota
+# @doc docs/STANDARDS/FLOWS/DB-ACCESS.md
+set -u
+_cs=$(cat "$HOME/.deepcli/cs-hindsight-name.txt" 2>/dev/null)
+[ -z "$_cs" ] && { echo "no codespace"; exit 1; }
+
+echo "[ CODESPACE QUOTA ]"
+gh codespace list --json name,state,machineName,lastUsedAt,createdAt,idleTimeoutMinutes,devcontainerPath 2>/dev/null \
+ | python3 -c "
+import json, sys, datetime
+rows = json.load(sys.stdin)
+for r in rows:
+    if r['name'] != '$_cs': continue
+    last = r.get('lastUsedAt') or '?'
+    created = r.get('createdAt') or '?'
+    print(f'  name={r["name"]}  state={r["state"]}  machine={r["machineName"]}')
+    print(f'  idle_timeout_min={r.get("idleTimeoutMinutes","?")}')
+    print(f'  created={created}')
+    print(f'  last_used={last}')
+"
+
+echo
+echo "[ CODESPACE USAGE — gh api ]"
+gh api /user/codespaces 2>/dev/null | python3 -c "
+import json, sys
+try:
+    d = json.load(sys.stdin)
+    total = d.get('total_count', 0)
+    print(f'  total_codespaces={total}')
+    for cs in d.get('codespaces', [])[:5]:
+        print(f"    {cs['name']}  {cs['state']}  {cs.get('machine',{}).get('name','?')}")
+except Exception as e:
+    print('  err:', e)
+"
+
+echo
+echo "[ GITHUB BILLING — codespaces (if accessible) ]"
+gh api /users/$(gh api /user --jq .login)/settings/billing/codespaces 2>/dev/null \
+ | python3 -c "
+import json, sys
+try:
+    d = json.load(sys.stdin)
+    print(f'  minutes_used={d.get("minutes_used","?")}  minutes_limit={d.get("minutes_included","?")}')
+    print(f'  storage_bytes={d.get("paid_storage",{}).get("total_usage_bytes","?")}')
+except Exception as e:
+    print('  billing api not accessible (personal scope)')
+" || echo "  billing endpoint requires org/enterprise scope"

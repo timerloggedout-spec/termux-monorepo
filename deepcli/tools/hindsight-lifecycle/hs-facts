@@ -1,45 +1,36 @@
 #!/data/data/com.termux/files/usr/bin/bash
 # @tool hs-facts
-# @version 0.2.0
+# @version 0.4.0
 # @since 2026-10-01
-# @change provenance journal + soft-delete; all edits recorded
+# @change schema-locked to actual PG columns (memory_units.context etc)
 # @doc docs/STANDARDS/FLOWS/DB-ACCESS.md
-#
-#   hs-facts list   [bank_pattern] [limit]
-#   hs-facts recent [bank_pattern] [limit]
-#   hs-facts get    <bank_id> <unit_id>
-#   hs-facts set-meta <bank_id> <unit_id> '<json>'   [reason]
-#   hs-facts del    <bank_id> <unit_id>              [reason]  (soft)
-#   hs-facts hist   <bank_id> <unit_id>
-#   hs-facts count  [bank_pattern]
 set -u
 _cs=$(cat "$HOME/.deepcli/cs-hindsight-name.txt" 2>/dev/null)
 [ -z "$_cs" ] && { echo "no codespace"; exit 1; }
 _tmp="${TMPDIR:-$HOME/.deepcli/tmp}"
 mkdir -p "$_tmp"
-
 _actor="${HS_FACTS_ACTOR:-$(whoami 2>/dev/null || echo agent)}"
 
-emit_sql() {
+_emit() {
   cat > "$_tmp/.hs-facts.sql"
   gh codespace cp -c "$_cs" -e "$_tmp/.hs-facts.sql" "remote:/tmp/.hs-facts.sql" >/dev/null 2>&1
   gh codespace ssh -c "$_cs" -- bash /tmp/hs-db-runner.sh /tmp/.hs-facts.sql 2>&1
 }
 
-_ensure_journal() {
-  emit_sql <<'SQL'
+_journal() {
+  _emit <<'J'
 CREATE TABLE IF NOT EXISTS hs_facts_journal (
-  id          bigserial PRIMARY KEY,
-  ts          timestamptz NOT NULL DEFAULT now(),
-  actor       text NOT NULL,
-  op          text NOT NULL,      -- 'set-meta' | 'del' | 'restore'
-  bank_id     text NOT NULL,
-  unit_id     text NOT NULL,
-  before      jsonb,
-  after       jsonb,
-  reason      text
+  id bigserial PRIMARY KEY,
+  ts timestamptz NOT NULL DEFAULT now(),
+  actor text NOT NULL,
+  op text NOT NULL,
+  bank_id text NOT NULL,
+  unit_id text NOT NULL,
+  before jsonb,
+  after jsonb,
+  reason text
 );
-SQL
+J
 }
 
 cmd="${1:-list}"; shift || true
@@ -47,67 +38,56 @@ cmd="${1:-list}"; shift || true
 case "$cmd" in
   count)
     pat="${1:-%}"
-    emit_sql <<SQL
+    _emit <<SQL
 SELECT bank_id || '  facts=' || count(*) FROM memory_units
 WHERE bank_id LIKE '$pat' GROUP BY bank_id ORDER BY count(*) DESC;
 SQL
     ;;
   list|recent)
     pat="${1:-%}"; lim="${2:-20}"
-    emit_sql <<SQL
-SELECT id || ' | ' || bank_id || ' | ' || left(content, 80)
+    _emit <<SQL
+SELECT id::text || ' | ' || bank_id || ' | ' || left(context, 80)
 FROM memory_units WHERE bank_id LIKE '$pat'
 ORDER BY created_at DESC LIMIT $lim;
 SQL
     ;;
   get)
-    emit_sql <<SQL
-SELECT id || E'\n' || bank_id || E'\n' || content || E'\n---meta---\n' || coalesce(metadata::text,'{}')
-FROM memory_units WHERE bank_id='$1' AND id='$2';
+    _emit <<SQL
+SELECT id::text || E'\n' || bank_id || E'\n' || context || E'\n---meta---\n' || coalesce(metadata::text,'{}')
+FROM memory_units WHERE bank_id='$1' AND id::text='$2';
 SQL
     ;;
   set-meta)
-    bank="$1"; uid="$2"; js="$3"; reason="${4:-user edit}"
-    _ensure_journal
-    emit_sql <<SQL
+    _journal >/dev/null
+    _emit <<SQL
 INSERT INTO hs_facts_journal (actor, op, bank_id, unit_id, before, reason)
-SELECT '$_actor', 'set-meta', '$bank', '$uid', metadata, '$reason'
-FROM memory_units WHERE bank_id='$bank' AND id='$uid';
+SELECT '${_actor}', 'set-meta', '$1', '$2', metadata, '${4:-user edit}'
+FROM memory_units WHERE bank_id='$1' AND id::text='$2';
 
-UPDATE memory_units SET metadata = '$js'::jsonb
-WHERE bank_id='$bank' AND id='$uid'
-RETURNING id, metadata;
+UPDATE memory_units SET metadata = '$3'::jsonb
+WHERE bank_id='$1' AND id::text='$2'
+RETURNING id::text, metadata;
 SQL
     ;;
   del)
-    bank="$1"; uid="$2"; reason="${3:-user delete}"
-    _ensure_journal
-    # soft-delete: move to invalidated_memory_units (Hindsight ships this table)
-    emit_sql <<SQL
+    _journal >/dev/null
+    _emit <<SQL
 INSERT INTO hs_facts_journal (actor, op, bank_id, unit_id, before, reason)
-SELECT '$_actor', 'del', '$bank', '$uid', row_to_json(mu)::jsonb, '$reason'
-FROM memory_units mu WHERE bank_id='$bank' AND id='$uid';
+SELECT '${_actor}', 'del', '$1', '$2', to_jsonb(mu), '${3:-user delete}'
+FROM memory_units mu WHERE bank_id='$1' AND id::text='$2';
 
-INSERT INTO invalidated_memory_units
-SELECT mu.*, now() AS invalidated_at, '$_actor' AS invalidated_by, '$reason' AS reason
-FROM memory_units mu WHERE bank_id='$bank' AND id='$uid'
-ON CONFLICT DO NOTHING;
-
-DELETE FROM memory_units WHERE bank_id='$bank' AND id='$uid'
-RETURNING id;
+DELETE FROM memory_units
+WHERE bank_id='$1' AND id::text='$2'
+RETURNING id::text;
 SQL
     ;;
   hist)
-    _ensure_journal
-    emit_sql <<SQL
-SELECT to_char(ts,'YYYY-MM-DD HH24:MI:SS') || '  ' || actor || '  ' || op || '  ' || coalesce(reason,'')
-FROM hs_facts_journal
-WHERE bank_id='$1' AND unit_id='$2'
+    _journal >/dev/null
+    _emit <<SQL
+SELECT to_char(ts,'MM-DD HH24:MI:SS') || '  ' || actor || '  ' || op || '  ' || coalesce(reason,'')
+FROM hs_facts_journal WHERE bank_id='$1' AND unit_id='$2'
 ORDER BY ts DESC LIMIT 20;
 SQL
     ;;
-  *)
-    echo "usage: hs-facts {list|recent|count|get|set-meta|del|hist} ..."
-    exit 2
-    ;;
+  *) echo "usage: hs-facts {list|recent|count|get|set-meta|del|hist} ..."; exit 2;;
 esac

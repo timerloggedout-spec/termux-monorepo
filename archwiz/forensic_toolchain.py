@@ -14,11 +14,49 @@ EXPORT_SOURCES = [
     HOME / "deepseek_harvest_work/export.json",
 ]
 
+
+def _discover_synthegration_exports():
+    """Every session.json under synthegration_exports/{primary,secondary,...}/<uuid>/."""
+    roots = [
+        HOME / "synthegration_exports",
+        HOME / "storage/downloads/synthegration_exports",
+        HOME / "storage/downloads/synthegration_batch_export",
+    ]
+    found = []
+    for root in roots:
+        if not root.is_dir(): continue
+        for sess in root.rglob("session.json"):
+            if sess.is_file() and sess.stat().st_size > 200:
+                found.append(sess)
+    return found
+
+
+SYNTH_EXPORTS = _discover_synthegration_exports()
+
 EXPORT_SOURCES = [
     HOME / "storage/downloads/_doing/_1-build/DeepSeek/exports/deepseek_data-2026-05-26/conversations.json",
     HOME / "storage/downloads/_doing/_1-build/DeepSeek/exports/deepseek_data-2026-05-17/conversations.json",
     HOME / "deepseek_harvest_work/export.json",
 ]
+
+
+def _discover_synthegration_exports():
+    """Every session.json under synthegration_exports/{primary,secondary,...}/<uuid>/."""
+    roots = [
+        HOME / "synthegration_exports",
+        HOME / "storage/downloads/synthegration_exports",
+        HOME / "storage/downloads/synthegration_batch_export",
+    ]
+    found = []
+    for root in roots:
+        if not root.is_dir(): continue
+        for sess in root.rglob("session.json"):
+            if sess.is_file() and sess.stat().st_size > 200:
+                found.append(sess)
+    return found
+
+
+SYNTH_EXPORTS = _discover_synthegration_exports()
 
 # Additional sources: all synthegration_exports manifest.json files
 def _load_export_sources():
@@ -36,7 +74,7 @@ R = '\033[1;31m'; G = '\033[1;32m'; Y = '\033[1;33m'; C = '\033[1;36m'; N = '\03
 
 def load_code_blocks():
     blocks = []
-    for cf in EXPORT_SOURCES + _load_export_sources():
+    for cf in EXPORT_SOURCES + _load_export_sources() + SYNTH_EXPORTS:
         if not cf.exists(): continue
         with open(cf) as f: data = json.load(f)
         for conv in (data if isinstance(data, list) else [data]):

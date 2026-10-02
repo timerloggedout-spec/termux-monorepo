@@ -1,15 +1,15 @@
 #!/data/data/com.termux/files/usr/bin/bash
 # @tool hs-dash
-# @version 0.2.0
+# @version 0.3.0
 # @since 2026-10-01
-# @change live quota probe (Gemini 429 body + OpenRouter /auth/key + /credits)
+# @change TMPDIR not /tmp; ship body each call
 # @doc docs/STANDARDS/FLOWS/HINDSIGHT-LIFECYCLE-LIB.md
 set -u
 _cs=$(cat "$HOME/.deepcli/cs-hindsight-name.txt" 2>/dev/null)
 [ -z "$_cs" ] && { echo "no codespace"; exit 1; }
 _tmp="${TMPDIR:-$HOME/.deepcli/tmp}"
 mkdir -p "$_tmp"
-cp "$HOME/.deepcli/hs-dash-body.sh" "$_tmp/.hs-dash.sh"
-chmod +x "$_tmp/.hs-dash.sh"
-gh codespace cp -c "$_cs" -e "$_tmp/.hs-dash.sh" "remote:/tmp/.hs-dash.sh" >/dev/null 2>&1
-gh codespace ssh -c "$_cs" -- bash /tmp/.hs-dash.sh 2>&1
+cp "$HOME/.deepcli/hs-dash-body.sh" "$_tmp/.hs-dash-body.sh"
+chmod +x "$_tmp/.hs-dash-body.sh"
+gh codespace cp -c "$_cs" -e "$_tmp/.hs-dash-body.sh" "remote:/tmp/.hs-dash-body.sh" >/dev/null 2>&1
+gh codespace ssh -c "$_cs" -- bash /tmp/.hs-dash-body.sh 2>&1

@@ -44,7 +44,7 @@ PROVIDERS = [
      "model_from_active": True},
     {"name": "openrouter", "rpm": 20, "concurrency": 4, "pace": 3.0,
      "hs_url": "http://localhost:8889",
-     "model": "meta-llama/llama-3.3-70b-instruct:free"},
+     "model": "qwen/qwen3.8-27b:free"},
 ]
 
 def log(m):

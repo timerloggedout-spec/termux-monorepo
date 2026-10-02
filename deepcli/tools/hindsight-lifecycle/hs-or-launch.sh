@@ -17,7 +17,7 @@ export HINDSIGHT_API_EMBEDDINGS_API_KEY="$_gem"
 
 # Override LLM to OpenRouter
 export HINDSIGHT_API_LLM_PROVIDER="openrouter"
-export HINDSIGHT_API_LLM_MODEL="meta-llama/llama-3.3-70b-instruct:free"
+export HINDSIGHT_API_LLM_MODEL="qwen/qwen3.8-27b:free"
 export HINDSIGHT_API_LLM_API_KEY=$(tr '\0' '\n' < /proc/$_main/environ | grep '^OPENROUTER_API_KEY=' | cut -d= -f2-)
 export HINDSIGHT_API_WORKER_ID="hindsight-openrouter"
 export HINDSIGHT_API_PORT=8889

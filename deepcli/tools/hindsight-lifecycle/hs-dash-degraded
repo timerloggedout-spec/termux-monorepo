@@ -23,6 +23,29 @@ if [ -n "$_cs" ]; then
 fi
 
 echo
+echo
+echo "[ GITHUB QUOTA ]"
+_user=$(gh api /user --jq '.login' 2>/dev/null)
+if [ -n "$_user" ]; then
+  gh api "/users/${_user}/settings/billing/usage?year=$(date -u +%Y)&month=$(date -u +%-m)" 2>/dev/null | python3 -c "
+import json,sys
+from datetime import datetime, timezone
+try:
+    d=json.load(sys.stdin)
+    items=[i for i in (d.get('usageItems') or []) if i.get('product')=='Codespaces']
+    if not items: print('  (no usage items returned)')
+    for i in items:
+        print(f\"  {i.get('sku','?'):40s}  {i.get('quantity',0):>10.2f} {i.get('unitType','')}\")
+except Exception as e: print('  err:',e)
+"
+  python3 -c "
+from datetime import datetime, timezone
+n=datetime.now(timezone.utc)
+nx=datetime(n.year+1,1,1,tzinfo=timezone.utc) if n.month==12 else datetime(n.year,n.month+1,1,tzinfo=timezone.utc)
+print(f'  reset in {(nx-n).days}d ({nx.strftime(\"%Y-%m-%d\")})')
+"
+fi
+
 echo "[ CLOUD — api.hindsight.vectorize.io ]"
 _hc=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 6 https://api.hindsight.vectorize.io/health 2>/dev/null || echo 000)
 echo "  health=$_hc"

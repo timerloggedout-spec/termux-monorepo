@@ -20,7 +20,7 @@ if [ "$_state" = "Available" ]; then
   fi
 fi
 
-_result=$(gh codespace start "$_cs" 2>&1)
+_result=$(gh api -X POST "/user/codespaces/${_cs}/start" 2>&1)
 if [ $? -ne 0 ]; then
   echo "$(_ts) start failed: $(echo "$_result" | head -1)" >> "$LOG"
   exit 1

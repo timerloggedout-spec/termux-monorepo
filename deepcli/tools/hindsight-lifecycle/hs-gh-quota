@@ -1,0 +1,85 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# @tool hs-gh-quota
+# @version 0.1.0
+# @since 2026-10-02
+# @change live GitHub billing metrics + reset date + codespace storage breakdown
+set -u
+_user=$(gh api /user --jq '.login' 2>/dev/null)
+[ -z "$_user" ] && { echo "gh not authenticated"; exit 1; }
+
+echo "=== GITHUB QUOTA ==="
+echo "  user:  $_user"
+
+# 1 · billing usage (enhanced billing platform)
+echo
+echo "[ BILLING USAGE ]"
+gh api "/users/${_user}/settings/billing/usage?year=$(date -u +%Y)&month=$(date -u +%-m)" 2>/dev/null | python3 -c "
+import json,sys
+try:
+    d=json.load(sys.stdin)
+    items = d.get('usageItems') or []
+    if not items:
+        print('  (empty or endpoint not available for this account)')
+    for i in items:
+        if i.get('product') == 'Codespaces':
+            q = i.get('quantity', 0)
+            unit = i.get('unitType','')
+            sku = i.get('sku','')
+            print(f\"  {sku:40s}  {q:>10.2f} {unit}\")
+except Exception as e:
+    print('  err:', e)
+"
+
+# 2 · codespaces list with storage-relevant fields
+echo
+echo "[ CODESPACES ]"
+gh codespace list --json name,state,machineName,lastUsedAt,createdAt,retentionExpiresAt 2>/dev/null | python3 -c "
+import json,sys
+from datetime import datetime, timezone
+try:
+    rows=json.load(sys.stdin)
+    for r in rows:
+        print(f\"  {r['name']:35s} state={r['state']:10s} machine={r.get('machineName','?'):18s} last={r.get('lastUsedAt','?')[:10]}\")
+except Exception as e:
+    print('  err:', e)
+"
+
+# 3 · reset date
+echo
+echo "[ RESET ]"
+python3 -c "
+from datetime import datetime, timezone, timedelta
+now = datetime.now(timezone.utc)
+# GitHub self-serve billing cycle: 00:00 UTC on 1st of month
+if now.month == 12:
+    nxt = datetime(now.year+1, 1, 1, tzinfo=timezone.utc)
+else:
+    nxt = datetime(now.year, now.month+1, 1, tzinfo=timezone.utc)
+days = (nxt - now).days
+print(f'  billing cycle reset: {nxt.strftime("%Y-%m-%d 00:00 UTC")}')
+print(f'  days remaining:      {days}')
+"
+
+# 4 · free-tier reference
+echo
+echo "[ FREE TIER REFERENCE ]"
+echo "  GitHub Free personal: 120 core-hours + 15 GB-month storage / month"
+echo "  std 2-core machine   = 60 wall hours"
+echo "  std 4-core machine   = 30 wall hours"
+echo "  std 8-core machine   = 15 wall hours"
+echo "  no rollover between months"
+
+# 5 · current codespace details
+echo
+echo "[ CURRENT CODESPACE ]"
+_cs=$(cat "$HOME/.deepcli/cs-hindsight-name.txt" 2>/dev/null)
+if [ -n "$_cs" ]; then
+  gh codespace view -c "$_cs" --json name,state,machineName,idleTimeoutMinutes,retentionPeriodDays,createdAt,lastUsedAt 2>/dev/null | python3 -c "
+import json,sys
+try:
+    r=json.load(sys.stdin)
+    for k in ('name','state','machineName','idleTimeoutMinutes','retentionPeriodDays','createdAt','lastUsedAt'):
+        print(f\"  {k:22s} {r.get(k,'?')}\")
+except Exception as e: print('  err:', e)
+"
+fi

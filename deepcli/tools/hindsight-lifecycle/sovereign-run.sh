@@ -3,6 +3,12 @@ set -u
 cd /tmp
 
 echo "=== SOVEREIGN TICK: $(date -u +%FT%TZ) ==="
+# self-heal rotator state
+mkdir -p /tmp/hs-stack
+if [ ! -f /tmp/hs-stack/active.json ]; then
+  echo '{"model":"gemini-3.1-flash-lite","ts":"auto-init"}' > /tmp/hs-stack/active.json
+  echo "  created /tmp/hs-stack/active.json"
+fi
 
 _active=$(python3 /tmp/hs-stack.py status 2>/dev/null | grep '^active:' | awk '{print $2}')
 if [ -z "$_active" ]; then

@@ -28,6 +28,13 @@ _src="${_srcs[$((_idx % 4))]}"
 echo "$(( _idx + 1 ))" > "$_src_file"
 echo "  source this tick: $_src"
 
+# Dynamic batch size from model token limits
+if [ -f /tmp/hs-batch-plan.py ]; then
+  _bs=$(python3 /tmp/hs-batch-plan.py 2>/dev/null || echo 8)
+  export MVT_BATCH_SIZE="$_bs"
+  echo "  dynamic batch_size=$_bs"
+fi
+
 if [ -f /tmp/mvt-seed.py ]; then
   echo "  launching mvt-seed ($_src)..."
   SEED_SOURCE="$_src" python3 /tmp/mvt-seed.py 2>&1 | tail -15

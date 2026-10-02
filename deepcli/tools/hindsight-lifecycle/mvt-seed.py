@@ -20,6 +20,7 @@ KEY = os.environ.get("HINDSIGHT_API_KEY", "")
 BATCH_SIZE = int(os.environ.get("MVT_BATCH_SIZE", "8"))
 BATCH_HARD_TIMEOUT = int(os.environ.get("MVT_BATCH_TIMEOUT", "90"))
 LOG = Path("/tmp/mvt-seed.log")
+RUN_STATE = Path("/tmp/mvt-run-state.json")
 ACTIVE = Path("/tmp/hs-stack/active.json")
 
 
@@ -350,6 +351,18 @@ async def run_provider(provider, source):
     watcher.cancel()
 
     log(f"  DONE {prov}/{source}: ok={counters['ok']} fail={counters['fail']} 429={counters['429']}")
+    await _write_state({
+        "ts": _t.strftime("%Y-%m-%dT%H:%M:%SZ", _t.gmtime()),
+        "source": source,
+        "provider": prov,
+        "model": model,
+        "bank": bank,
+        "ok": counters["ok"],
+        "fail": counters["fail"],
+        "429": counters["429"],
+        "abort": counters.get("abort", False),
+        "elapsed_s": round(_t.time() - _t0, 1) if "_t0" in dir() else 0,
+    })
     save_state(
         prov,
         source,
@@ -362,8 +375,17 @@ async def run_provider(provider, source):
         },
     )
 
+async def _write_state(d):
+    try:
+        RUN_STATE.write_text(json.dumps(d, indent=2))
+    except Exception:
+        pass
+
+
 async def main():
     source = os.environ.get("SEED_SOURCE", "fts5")
+    import time as _t
+    _t0 = _t.time()
     log(f"--- mvt-seed run source={source} model={_active_model()} ---")
     for p in PROVIDERS:
         try:

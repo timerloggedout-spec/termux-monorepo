@@ -111,11 +111,13 @@ jobs:
             core.setOutput('prior_prs', inventory);
 
       - name: Invoke Jules API (optional)
-        if: ${{ secrets.JULES_API_KEY != '' }}
+        env:
+          JULES_API_KEY: ${{ secrets.JULES_API_KEY }}
+        if: env.JULES_API_KEY != ''
         continue-on-error: true
         uses: google-labs-code/jules-invoke@v1
         with:
-          jules_api_key: ${{ secrets.JULES_API_KEY }}
+          jules_api_key: ${{ env.JULES_API_KEY }}
           starting_branch: master-staging
           prompt: |
             You are Jules working on termux-monorepo. Read AGENTS.md and GEMINI.md if present.
@@ -147,7 +149,9 @@ jobs:
             5. Do not commit secrets or Class 3/4 artifacts.
 
       - name: Fallback @jules ping (App path)
-        if: ${{ secrets.JULES_API_KEY == '' }}
+        env:
+          JULES_API_KEY: ${{ secrets.JULES_API_KEY }}
+        if: env.JULES_API_KEY == ''
         uses: actions/github-script@v7
         with:
           script: |

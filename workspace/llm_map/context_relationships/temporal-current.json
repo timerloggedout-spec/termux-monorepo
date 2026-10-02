@@ -1,8 +1,5 @@
 {
-  "bootstrap_backfill": false,
-  "builder": "archwiz.context_relationships.build_index@1.0",
-  "candidate_edge_count": 2358,
-  "checkpoint_eligible": false,
+  "builder": "archwiz.context_relationships.temporal@1.0",
   "coverage": "PARTIAL_CONTINUATION_REQUIRED",
   "delta": {
     "counts": {
@@ -17,26 +14,18 @@
     "schema": "context-relationship-temporal/v1"
   },
   "edge_count": 20954,
-  "excluded_history_paths": 11,
-  "github_requests": 611,
-  "github_retries": 0,
+  "edges_hash": "214242e4d78d07cf65c369042ec0f9f98d7251c9c462bfe6cb5022a65fb7c378",
   "history_window": {
-    "issue_count": 100,
-    "issues_complete": false,
-    "limit_per_family": 100,
     "next_start_page": 3,
-    "pull_request_count": 100,
-    "pull_requests_complete": false,
     "start_page": 2
   },
-  "incremental_since": null,
   "node_count": 13233,
-  "parser_failures": 12,
+  "nodes_hash": "2dbfe11010831eb8445055900883a83ab911a523967362698e2262d8b3539f52",
+  "observed_at": "2026-10-02T12:52:32.395011Z",
   "previous_snapshot_id": null,
-  "ref": "master",
   "repository": "timerloggedout-spec/termux-monorepo",
-  "retained_history": true,
+  "schema": "context-relationship-temporal/v1",
   "snapshot_id": "crg-f274ddd619a1b0168425",
-  "temporal_schema": "context-relationship-temporal/v1",
-  "verified_edge_count": 18596
+  "source_ref": "master",
+  "source_sha": "a9d66c7b6e08abb5495d3e9cc282963370acabc4"
 }

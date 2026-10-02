@@ -1,0 +1,46 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# @tool hs-codespace-cron
+# @version 0.1.0
+# @since 2026-10-02
+# @change poll codespace availability; auto-resume when billing clears
+set -u
+_cs=$(cat "$HOME/.deepcli/cs-hindsight-name.txt" 2>/dev/null)
+[ -z "$_cs" ] && exit 0
+LOG="$HOME/.deepcli/logs/codespace-cron.log"
+mkdir -p "$(dirname "$LOG")"
+_ts() { date -u +%FT%TZ; }
+
+_state=$(gh codespace view -c "$_cs" --json state --jq '.state' 2>/dev/null || echo "?")
+if [ "$_state" = "Available" ]; then
+  _url="https://${_cs}-8888.app.github.dev"
+  h=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 4 "$_url/health" 2>/dev/null || echo 000)
+  if [ "$h" = "200" ]; then
+    echo "$(_ts) already up (health=200)" >> "$LOG"
+    exit 0
+  fi
+fi
+
+_result=$(gh codespace start -c "$_cs" 2>&1)
+if [ $? -ne 0 ]; then
+  echo "$(_ts) start failed: $(echo "$_result" | head -1)" >> "$LOG"
+  exit 1
+fi
+
+_url="https://${_cs}-8888.app.github.dev"
+h=000
+for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30; do
+  sleep 10
+  h=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 4 "$_url/health" 2>/dev/null || echo 000)
+  [ "$h" = "200" ] && break
+done
+
+if [ "$h" = "200" ]; then
+  echo "$(_ts) codespace UP health=200" >> "$LOG"
+  [ -x "$HOME/.local/bin/hs-up" ] && "$HOME/.local/bin/hs-up" >> "$LOG" 2>&1
+  [ -x "$HOME/.local/bin/hs-replay" ] && "$HOME/.local/bin/hs-replay" >> "$LOG" 2>&1
+  [ -x "$HOME/.local/bin/hs-pipe" ] && "$HOME/.local/bin/hs-pipe" resume >> "$LOG" 2>&1
+  [ -x "$HOME/.local/bin/hs-parity2" ] && "$HOME/.local/bin/hs-parity2" sync codespace local >> "$LOG" 2>&1
+else
+  echo "$(_ts) start ok but health=$h" >> "$LOG"
+  exit 2
+fi

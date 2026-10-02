@@ -9,6 +9,11 @@ _cs=$(cat "$HOME/.deepcli/cs-hindsight-name.txt" 2>/dev/null)
 [ -n "$_cs" ] || { echo "no codespace"; exit 1; }
 _dash="$HOME/deepcli/tools/hindsight-lifecycle/dashboard"
 [ -d "$_dash" ] || { echo "no dashboard dir at $_dash"; exit 1; }
+_cs_state=$(gh codespace view -c "$_cs" --json state --jq '.state' 2>/dev/null || echo "?")
+if [ "$_cs_state" != "Available" ]; then
+  echo "  codespace state=$_cs_state — degraded mode"
+  exec "$HOME/.local/bin/hs-dash-degraded"
+fi
 _tmp="${TMPDIR:-$HOME/.deepcli/tmp}"; mkdir -p "$_tmp"
 rm -rf "$_tmp/dashboard"; cp -r "$_dash" "$_tmp/dashboard"
 echo "=== hs-dash ==="

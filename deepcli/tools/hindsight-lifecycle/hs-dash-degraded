@@ -1,0 +1,60 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# @tool hs-dash-degraded
+# @version 0.1.0
+# @since 2026-10-02
+# @change dashboard in codespace-down mode: FTS5 + cloud + git + pending
+set -u
+BAR="============================================================"
+_cs=$(cat "$HOME/.deepcli/cs-hindsight-name.txt" 2>/dev/null)
+_url=$(cat "$HOME/.deepcli/cs-hindsight-url.txt" 2>/dev/null)
+
+echo "$BAR"
+echo " HINDSIGHT DASHBOARD (DEGRADED)  $(date -u +%FT%TZ)"
+echo "$BAR"
+
+echo "[ CODESPACE ]"
+if [ -n "$_cs" ]; then
+  st=$(gh codespace view -c "$_cs" --json state --jq '.state' 2>/dev/null || echo "?")
+  echo "  name=$_cs  state=$st"
+  if [ -n "$_url" ]; then
+    h=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 4 "$_url/health" 2>/dev/null || echo 000)
+    echo "  url=$_url  health=$h"
+  fi
+fi
+
+echo
+echo "[ CLOUD — api.hindsight.vectorize.io ]"
+_hc=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 6 https://api.hindsight.vectorize.io/health 2>/dev/null || echo 000)
+echo "  health=$_hc"
+
+echo
+echo "[ LOCAL FTS5 ]"
+_db="$HOME/.deepcli/bank-local.db"
+if [ -f "$_db" ]; then
+  sz=$(du -h "$_db" | cut -f1)
+  n=$(sqlite3 "$_db" "SELECT COUNT(*) FROM memory;" 2>/dev/null || echo "?")
+  echo "  size=$sz  rows=$n"
+fi
+
+echo
+echo "[ PENDING WRITES ]"
+_pd="$HOME/.deepcli/pending"
+echo "  files=$(find "$_pd" -name '*.jsonl' 2>/dev/null | wc -l)"
+
+echo
+echo "[ BACKUPS ]"
+ls -lt "$HOME/.deepcli/backups/"*.zip 2>/dev/null | head -5 | awk '{print "  " $5 "b  " $9}'
+
+echo
+echo "[ GIT SUBSTRATE ]"
+echo "  memory-bank: $(cd $HOME && git ls-remote origin memory-bank 2>/dev/null | cut -c1-12)"
+echo "  branch:      $(cd $HOME && git branch --show-current 2>/dev/null)"
+
+echo
+echo "[ RESUME MONITOR ]"
+if [ -f "$HOME/.deepcli/logs/codespace-cron.log" ]; then
+  tail -5 "$HOME/.deepcli/logs/codespace-cron.log" | sed 's/^/  /'
+else
+  echo "  (cron not run yet)"
+fi
+echo "$BAR"

@@ -68,9 +68,24 @@ jobs:
             const comments = await github.paginate(github.rest.issues.listComments, {
               owner, repo, issue_number: prNumber, per_page: 100,
             });
-            const checkRuns = await github.paginate(github.rest.checks.listForRef, {
-              owner, repo, ref: pr.head.sha, per_page: 100,
-            });
+            async function listChecks() {
+              return github.paginate(github.rest.checks.listForRef, {
+                owner, repo, ref: pr.head.sha, per_page: 100,
+              });
+            }
+            // pull_request starts before other checks register. Poll briefly, then
+            // record one pending observation so an empty API page is not a contract failure.
+            let checkRuns = await listChecks();
+            for (let attempt = 1; attempt < 6 && checkRuns.length === 0; attempt += 1) {
+              core.info(`checks API empty for ${pr.head.sha}; retry ${attempt}/5`);
+              await new Promise(resolve => setTimeout(resolve, 10000));
+              checkRuns = await listChecks();
+            }
+            let checksNotYetRegistered = false;
+            if (checkRuns.length === 0) {
+              checksNotYetRegistered = true;
+              core.info('checks API still empty; recording one pending observation');
+            }
 
             const latestChecks = new Map();
             for (const check of checkRuns) {
@@ -84,6 +99,7 @@ jobs:
               if (!previous || checkTime >= previousTime) latestChecks.set(identity, check);
             }
             const checkCounts = {success: 0, failure: 0, cancelled: 0, pending: 0};
+            if (checksNotYetRegistered) checkCounts.pending = 1;
             for (const check of latestChecks.values()) {
               if (check.status !== 'completed') {
                 checkCounts.pending += 1;

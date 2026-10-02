@@ -188,3 +188,35 @@ def test_live_view_symlink_safety(tmp_path, monkeypatch):
     if os.name != "nt":
         assert (target_file.stat().st_mode & 0o777) == 0o644
         assert target_file.read_text() == "echo unsafe live_view"
+
+
+def test_termux_activity_listener_scaffold_symlink_safety(tmp_path, monkeypatch):
+    target_file = tmp_path / "target_scaffold.py"
+    target_file.write_text("# sensitive scaffold target")
+    if os.name != "nt":
+        target_file.chmod(0o644)
+
+    pipeline_dir = tmp_path / "archwiz"
+    pipeline_dir.mkdir(parents=True, exist_ok=True)
+
+    symlink_scaffold = pipeline_dir / "bridge_scaffold.py"
+    symlink_scaffold.symlink_to(target_file)
+
+    al_path = Path("termux-multi-agent/workspace/activity_listener.py")
+    code_text = al_path.read_text()
+    idx = code_text.rfind("patterns = [")
+    if idx != -1:
+        code_text = code_text[:idx] + "patterns = []\n            return []\n\ndef main(): pass\n"
+
+    monkeypatch.setattr("pathlib.Path.home", lambda: tmp_path)
+
+    mod_namespace = {"__file__": str(al_path), "__name__": "tma_al"}
+    exec(code_text, mod_namespace)
+    bridge_cls = mod_namespace["DeepSeekBridge"]
+
+    with pytest.raises(ValueError, match="Symlink scaffold path rejected"):
+        bridge_cls()
+
+    if os.name != "nt":
+        assert (target_file.stat().st_mode & 0o777) == 0o644
+        assert target_file.read_text() == "# sensitive scaffold target"

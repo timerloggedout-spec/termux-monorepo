@@ -156,11 +156,23 @@ jobs:
                 core.setFailed('Invalid target PR number.');
                 return;
               }
-              const { data: pr } = await github.rest.pulls.get({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: Number(targetPrNumber),
-              });
+              let pr;
+              try {
+                ({ data: pr } = await github.rest.pulls.get({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: Number(targetPrNumber),
+                }));
+              } catch (error) {
+                const status = error.status || error.response?.status;
+                const message = String(error.message || error.response?.data?.message || '');
+                if (status >= 500 || status === 403 || /no server is currently available|secondary rate limit|abuse detection/i.test(message)) {
+                  core.notice(`GitHub API unavailable for PR #${targetPrNumber} (${status || 'unknown'}); skipping discovery. ${message}`);
+                  core.setOutput('skip', 'true');
+                  return;
+                }
+                throw error;
+              }
               if (pr.state !== 'open' || pr.draft || pr.head.repo?.full_name !== `${context.repo.owner}/${context.repo.repo}`) {
                 core.notice('Target pull request is no longer an eligible same-repository review target; skipping stale discovery.');
                 core.setOutput('skip', 'true');

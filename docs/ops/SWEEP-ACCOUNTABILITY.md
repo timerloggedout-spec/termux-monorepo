@@ -177,3 +177,19 @@ RECON → HISTORICAL BACKFILL → BASELINE RECEIPT
 \`\`\`
 
 This is the accountability substrate for MoneyBall / MVT-DOE / ATES and manager evolution.
+
+
+## Trigger and coverage semantics
+
+The accountability invariant applies to every **sweep transaction**, not merely successful code changes. A sweep may be initiated by a push, pull-request event, issue event, issue-comment event, scheduled reconciliation, or explicit manual dispatch. Scheduled/HISTORICAL reconciliation is the authoritative mechanism for event families that GitHub Actions cannot subscribe to generically or whose retained history must be reconstructed from the API.
+
+The implementation deliberately distinguishes:
+
+- **event-trigger coverage** — the triggering event itself receives a receipt;
+- **historical source coverage** — retained GitHub/Git/API history is enumerated and recorded with pagination/coverage state;
+- **repository-history coverage** — Git commits reachable from the checked-out ref;
+- **analytical coverage** — what the current sweep version actually inspected.
+
+No one of these is allowed to masquerade as another. A receipt must report COMPLETE, PARTIAL, or UNKNOWN coverage and preserve the reason/cursor when coverage is incomplete.
+
+Historical census artifacts are stored beneath a unique workflow-run directory. They are therefore append-only across iterations; later sweeps add observations rather than replacing prior census data.

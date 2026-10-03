@@ -1,0 +1,85 @@
+#!/data/data/com.termux/files/usr/bin/env bash
+# hygiene-backup — snapshot, checksum, upload.
+#   --dry-run      plan only (default)
+#   --local-only   tar.zst + manifest, no upload
+#   --push         also upload via rclone
+set -euo pipefail
+
+MODE="${1:---dry-run}"
+TS="$(date -u +%Y%m%dT%H%M%SZ)"
+STAGE="$HOME/.deepcli/backups/$TS"
+ARCHIVE="$STAGE/state-$TS.tar.zst"
+MANIFEST="$STAGE/manifest-$TS.json"
+LOG="$HOME/.deepcli/logs/hygiene/backup.log"
+REMOTE="${BACKUP_REMOTE:-}"
+RETAIN="${BACKUP_RETAIN:-7}"
+
+ROOTS=(
+  ".deepcli/config.json"
+  ".deepcli/config_account2.json"
+  ".deepcli/account2.env"
+  ".deepcli/session_store"
+  ".deepcli/watchdog"
+  ".deepcli/coordination"
+  ".deepcli/logs/provenance.jsonl"
+  ".gnupg"
+  ".password-store"
+)
+
+mkdir -p "$(dirname "$LOG")"
+log(){ printf '[%s] %s\n' "$(date -u +%FT%TZ)" "$*" | tee -a "$LOG"; }
+
+if [ "$MODE" = "--dry-run" ]; then
+  log "dry-run"
+  for r in "${ROOTS[@]}"; do
+    p="$HOME/$r"
+    if [ -e "$p" ]; then
+      sz=$(du -sh "$p" 2>/dev/null | cut -f1)
+      log "  would include $r ($sz)"
+    else
+      log "  missing       $r"
+    fi
+  done
+  log "stage:  $STAGE"
+  log "remote: ${REMOTE:-<unset>}"
+  log "retain: $RETAIN"
+  exit 0
+fi
+
+mkdir -p "$STAGE"
+log "archive $ARCHIVE"
+PRESENT=()
+for r in "${ROOTS[@]}"; do [ -e "$HOME/$r" ] && PRESENT+=("$r"); done
+tar --zstd -cf "$ARCHIVE" -C "$HOME" "${PRESENT[@]}"
+SUM=$(sha256sum "$ARCHIVE" | awk '{print $1}')
+SIZE=$(stat -c %s "$ARCHIVE")
+log "size=$SIZE sha=$SUM"
+
+python3 - "$MANIFEST" "$TS" "$SUM" "$SIZE" "${PRESENT[@]}" <<'PYM'
+import sys, json, time, pathlib
+manifest, ts, sha, size, *roots = sys.argv[1:]
+rec = {
+    "ts": int(time.time()),
+    "iso": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+    "archive": f"state-{ts}.tar.zst",
+    "sha256": sha,
+    "size_bytes": int(size),
+    "roots": roots,
+    "author": "hygiene-backup",
+}
+pathlib.Path(manifest).write_text(json.dumps(rec, indent=2))
+print(json.dumps(rec, indent=2))
+PYM
+
+if [ "$MODE" = "--push" ]; then
+  [ -n "$REMOTE" ] || { log "ERROR BACKUP_REMOTE unset"; exit 2; }
+  command -v rclone >/dev/null || { log "ERROR rclone missing"; exit 3; }
+  log "upload -> $REMOTE/$TS/"
+  rclone copy "$STAGE" "$REMOTE/$TS/" --checksum --retries 3
+  log "upload done"
+  rclone lsf "$REMOTE/" --dirs-only 2>/dev/null | sort | head -n -"$RETAIN" | while read -r old; do
+    log "  prune $old"
+    rclone purge "$REMOTE/$old" 2>/dev/null || true
+  done
+fi
+log "done"

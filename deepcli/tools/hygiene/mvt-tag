@@ -1,0 +1,141 @@
+#!/data/data/com.termux/files/usr/bin/env python3
+"""mvt-tag — session tagging for MVT exclusion and annotation.
+
+Usage:
+  mvt-tag <sid>                    # show tags
+  mvt-tag <sid> personal           # add tag
+  mvt-tag <sid> -personal          # remove tag
+  mvt-tag <sid> personal test      # add multiple
+  mvt-tag list                     # all tagged sessions
+  mvt-tag list personal            # sessions with that tag
+  mvt-tag markers                  # show active marker patterns
+"""
+import sys, os, json, time, pathlib, re
+
+HOME = pathlib.Path.home()
+TAGS = HOME/".deepcli"/"watchdog"/"session-tags.json"
+EVENTS = HOME/".deepcli"/"watchdog"/"session-tag-events.jsonl"
+
+RESERVED = {
+    "personal": "private — excluded from MVT scoring",
+    "private":  "same as personal",
+    "test":     "test run — excluded from MVT scoring",
+    "draft":    "WIP — scored but flagged",
+    "archive":  "old — no re-scan",
+    "public":   "explicit override — always scored",
+    "mvp":      "reference candidate — high priority",
+}
+
+def load():
+    try: return json.loads(TAGS.read_text())
+    except Exception: return {}
+
+def save(d):
+    TAGS.write_text(json.dumps(d, indent=2, sort_keys=True))
+
+def log_event(sid, tag, op, source="cli"):
+    with EVENTS.open("a") as f:
+        f.write(json.dumps({
+            "ts": int(time.time()),
+            "iso": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            "sid": sid, "tag": tag, "op": op, "source": source,
+        }) + "\n")
+
+def show(sid):
+    d = load()
+    e = d.get(sid, {})
+    tags = e.get("tags", [])
+    if not tags:
+        print(f"{sid}: (no tags)")
+        return
+    print(f"{sid}:")
+    for t in tags:
+        hint = RESERVED.get(t, "")
+        print(f"  #{t}  {hint}")
+
+def add(sid, tag):
+    d = load()
+    e = d.setdefault(sid, {"tags": [], "first_seen": int(time.time())})
+    if tag not in e["tags"]:
+        e["tags"].append(tag)
+        e["updated"] = int(time.time())
+        save(d)
+        log_event(sid, tag, "add")
+        print(f"  + #{tag} → {sid}")
+    else:
+        print(f"  = #{tag} already on {sid}")
+
+def rm(sid, tag):
+    d = load()
+    e = d.get(sid, {})
+    tags = e.get("tags", [])
+    if tag in tags:
+        tags.remove(tag)
+        e["tags"] = tags
+        e["updated"] = int(time.time())
+        save(d)
+        log_event(sid, tag, "remove")
+        print(f"  - #{tag} ← {sid}")
+    else:
+        print(f"  ? #{tag} not on {sid}")
+
+def list_all(filter_tag=None):
+    d = load()
+    rows = []
+    for sid, e in d.items():
+        tags = e.get("tags", [])
+        if filter_tag and filter_tag not in tags:
+            continue
+        rows.append((sid, tags, e.get("updated", e.get("first_seen", 0))))
+    rows.sort(key=lambda x: -x[2])
+    if not rows:
+        print("(no tagged sessions)")
+        return
+    for sid, tags, ts in rows:
+        when = time.strftime("%m-%d %H:%M", time.localtime(ts))
+        tag_str = " ".join(f"#{t}" for t in tags)
+        print(f"  {when}  {sid[:20]:20s}  {tag_str}")
+
+def show_markers():
+    print("first-message marker patterns (auto-tag):")
+    for m, tag in MARKERS:
+        print(f"  {m:20s} → #{tag}")
+
+# Markers detected in first message of a session
+MARKERS = [
+    (r"^\s*#\s*personal\b", "personal"),
+    (r"^\s*#\s*private\b",  "personal"),
+    (r"^\s*#\s*test\b",     "test"),
+    (r"^\s*#\s*draft\b",    "draft"),
+    (r"^\s*#\s*archive\b",  "archive"),
+    (r"^\s*#\s*mvp\b",      "mvp"),
+]
+
+def detect_marker(first_msg):
+    if not first_msg: return None
+    for pat, tag in MARKERS:
+        if re.search(pat, first_msg, re.I):
+            return tag
+    return None
+
+def main():
+    args = sys.argv[1:]
+    if not args:
+        print(__doc__); return 2
+    if args[0] == "list":
+        return list_all(args[1] if len(args) > 1 else None)
+    if args[0] == "markers":
+        return show_markers()
+    sid = args[0]
+    tags = args[1:]
+    if not tags:
+        return show(sid)
+    for t in tags:
+        if t.startswith("-"):
+            rm(sid, t[1:])
+        else:
+            add(sid, t)
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(main() or 0)

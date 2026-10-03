@@ -1,0 +1,61 @@
+name: n8n SHE bridge
+
+on:
+  workflow_run:
+    types: [completed]
+
+permissions:
+  contents: read
+
+jobs:
+  emit:
+    name: Emit sanitized workflow evidence to optional n8n
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check n8n bridge configuration
+        id: config
+        env:
+          N8N_SHE_WEBHOOK_URL: ${{ secrets.N8N_SHE_WEBHOOK_URL }}
+        run: |
+          if [ -n "$N8N_SHE_WEBHOOK_URL" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "n8n bridge not configured; leaving canonical GitHub evidence unchanged."
+          fi
+
+      - name: Emit sanitized workflow_run receipt
+        if: steps.config.outputs.configured == 'true'
+        env:
+          N8N_SHE_WEBHOOK_URL: ${{ secrets.N8N_SHE_WEBHOOK_URL }}
+          REPOSITORY: ${{ github.repository }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          RUN_NUMBER: ${{ github.event.workflow_run.run_number }}
+          WORKFLOW_NAME: ${{ github.event.workflow_run.name }}
+          STATUS: ${{ github.event.workflow_run.status }}
+          CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          HTML_URL: ${{ github.event.workflow_run.html_url }}
+          ACTOR: ${{ github.event.workflow_run.actor.login }}
+        run: |
+          python - <<'PY' | curl --fail-with-body --silent --show-error --retry 2 --connect-timeout 10 --max-time 30 \
+            -H 'Content-Type: application/json' \
+            --data-binary @- "$N8N_SHE_WEBHOOK_URL"
+          import json, os
+          print(json.dumps({
+              "action": "completed",
+              "repository": os.environ["REPOSITORY"],
+              "workflow_run": {
+                  "id": int(os.environ["RUN_ID"]),
+                  "run_number": int(os.environ["RUN_NUMBER"]),
+                  "name": os.environ["WORKFLOW_NAME"],
+                  "status": os.environ["STATUS"],
+                  "conclusion": os.environ["CONCLUSION"],
+                  "head_sha": os.environ["HEAD_SHA"],
+                  "head_branch": os.environ["HEAD_BRANCH"],
+                  "html_url": os.environ["HTML_URL"],
+                  "actor": {"login": os.environ["ACTOR"]},
+              },
+          }, separators=(",", ":")))
+          PY

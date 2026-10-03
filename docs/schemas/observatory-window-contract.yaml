@@ -1,0 +1,52 @@
+version: "1.0"
+id: "observatory-window-contract"
+purpose: "nested read-only analytical windows over canonical evidence"
+
+topology:
+  left: "NOW"
+  center: "evidence-to-decision bridge"
+  right: "DAG/Markov interthreading"
+  rule: "a source observation may project into multiple windows without becoming a new observation"
+
+window:
+  required_identity: [source_sha, event_id, observed_at, policy_version]
+  fields:
+    cadence: {values: [hourly, daily, sprint, release, custom], semantics: "temporal aggregation"}
+    agile: {dimensions: [epic, feature, story, task, blocker, review, acceptance], semantics: "delivery planning projection"}
+    gantt: {dimensions: [task, start, finish, dependency, critical_path, slack], semantics: "schedule/dependency projection"}
+    integration_planning: {dimensions: [integration_point, owner, dependency, interface, gate, evidence], semantics: "cross-lane integration projection"}
+    code_complexity: {dimensions: [loc, cyclomatic, cognitive, nesting, dependency_depth, churn], semantics: "pluggable structural measurement"}
+    resource_compute: {dimensions: [cpu_time, wall_time, memory, tokens, io, network, cost], semantics: "execution/resource observation"}
+    quality: {dimensions: [tests, failures, regressions, review_cycles, defects, acceptance], semantics: "outcome/evidence projection"}
+    provenance: {dimensions: [run_id, job_id, step_id, artifact_id, source_sha, provider, model], semantics: "identity and attribution"}
+    uncertainty: {dimensions: [prior, posterior, interval, missingness, confidence, evi], semantics: "belief state"}
+
+nested_controls:
+  filters: [time_range, cohort, provider, model, task_family, branch, sha, evidence_class, confidence]
+  pivots: [time, state, dependency, provider, task, artifact]
+  overlays: [provenance, uncertainty, benchmark_baseline, complexity, resource_cost, review_admission]
+  drilldown: {max_default_depth: 3, preserve_source_identity: true}
+  window_linking: {mode: "many-to-many projection", preserve_event_identity: true}
+
+right_interthreading:
+  dag: "hypothesis/treatment/observation/outcome dependencies"
+  trellis: "time × equivalent-state recombination"
+  markov: "explicit transition probabilities only"
+  dependency_graph: "build/integration dependencies; distinct from decision DAG"
+  critical_path: "gantt/dependency projection"
+  complexity_path: "code_complexity projection"
+
+dynamic_fields:
+  allowed: true
+  registration_required: true
+  namespace: "observatory.x-*"
+  must_declare: [meaning, source, units, provider, version, confidence, retention]
+  forbidden: [secrets, raw_credentials, inferred_facts_without_provenance, synthetic_zero_for_missing]
+
+controls:
+  read_only: true
+  mutate_evidence: false
+  emit_telemetry: false
+  bypass_hard_gates: false
+  approve_promotion: false
+  become_routing_authority: false

@@ -109,3 +109,10 @@ During high-frequency randomized surface codec substitutions (`to_1337speak`), e
 
 **Action:**
 In randomized surface transformers, pre-filter non-mutable tokens using pre-computed module-scope sets to eliminate unnecessary allocations and RNG evaluations.
+
+## 2026-10-05 - Sub-String Guard Narrowing for Multi-Character Markdown Syntax
+**Learning:**
+Using single-character existence guards like `if "[" in line:` or `if "*" in line:` before executing regex substitutions for multi-character markdown formatting patterns like markdown links (`[text](url)` requiring `](`) or double asterisks (`**bold**` requiring `**`) causes regex pattern evaluations on lines that contain single asterisks or standalone square brackets without markdown links. Narrowing character existence guards to exact compound markers (`"](" in line` and `"**" in line`) bypasses regex scanning on non-matching lines without introducing regex overhead.
+
+**Action:**
+When guarding regex pattern substitutions in line-processing loops, check for compound multi-character syntax markers (`"]("`, `"**"`, `"__"`) to minimize unnecessary regex engine calls.

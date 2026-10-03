@@ -103,7 +103,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut fragments = Vec::new();
     for line in stdin.lock().lines() {
         let line = line?;
-        if line.trim().is_empty() { continue; }
+        if line.trim().is_empty() {
+            continue;
+        }
         fragments.push(serde_json::from_str::<Fragment>(&line)?);
     }
 

@@ -18,7 +18,14 @@ import urllib.request
 from datetime import datetime, timedelta, timezone
 
 
-def gh(method: str, path: str, token: str, body: dict | None = None) -> dict | list:
+class GitHubSkip(Exception):
+    def __init__(self, code: int, detail: str) -> None:
+        self.code = code
+        self.detail = detail
+        super().__init__(f"{code}: {detail[:200]}")
+
+
+def gh(method: str, path: str, token: str, body: dict | None = None, skip_codes: tuple[int, ...] = ()) -> dict | list:
     req = urllib.request.Request(
         f"https://api.github.com{path}",
         data=None if body is None else json.dumps(body).encode(),
@@ -36,6 +43,8 @@ def gh(method: str, path: str, token: str, body: dict | None = None) -> dict | l
             return json.loads(raw) if raw else {}
     except urllib.error.HTTPError as exc:
         detail = exc.read().decode(errors="replace")
+        if exc.code in skip_codes:
+            raise GitHubSkip(exc.code, detail) from exc
         raise SystemExit(f"GitHub {method} {path} -> {exc.code}: {detail[:400]}") from exc
 
 
@@ -52,6 +61,7 @@ def main() -> int:
     cutoff = datetime.now(timezone.utc) - timedelta(hours=args.older_than_hours)
     page = 1
     cancelled = 0
+    skipped = 0
     scanned = 0
     while page <= 5:
         query = urllib.parse.urlencode({"status": "queued", "per_page": 50, "page": page})
@@ -75,15 +85,39 @@ def main() -> int:
                 "head_branch": run.get("head_branch"),
             }
             if args.apply:
-                gh("POST", f"/repos/{args.repo}/actions/runs/{run['id']}/cancel", token)
-                record["action"] = "cancelled"
-                cancelled += 1
+                try:
+                    gh(
+                        "POST",
+                        f"/repos/{args.repo}/actions/runs/{run['id']}/cancel",
+                        token,
+                        skip_codes=(409,),
+                    )
+                    record["action"] = "cancelled"
+                    cancelled += 1
+                except GitHubSkip as skip:
+                    # Queued re-runs can return 409 before they are cancelable.
+                    # Fall back to force-cancel; if that also 409s, skip and continue.
+                    try:
+                        gh(
+                            "POST",
+                            f"/repos/{args.repo}/actions/runs/{run['id']}/force-cancel",
+                            token,
+                            skip_codes=(409,),
+                        )
+                        record["action"] = "force_cancelled"
+                        record["detail"] = skip.detail[:180]
+                        cancelled += 1
+                    except GitHubSkip as forced:
+                        record["action"] = "skip_uncancelable"
+                        record["status"] = forced.code
+                        record["detail"] = forced.detail[:180]
+                        skipped += 1
             else:
                 record["action"] = "would_cancel"
                 cancelled += 1
             print(json.dumps(record, sort_keys=True))
         page += 1
-    print(json.dumps({"scanned": scanned, "candidates": cancelled, "apply": args.apply}))
+    print(json.dumps({"scanned": scanned, "candidates": cancelled, "skipped_uncancelable": skipped, "apply": args.apply}))
     return 0
 
 

@@ -1,0 +1,50 @@
+name: hygiene-sweep
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"   # every 6 hours
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 1}
+
+      - name: Check secrets
+        id: cfg
+        env:
+          KEY:  ${{ secrets.MANUS_SSH_KEY }}
+          HOST: ${{ secrets.MANUS_SSH_HOST }}
+        run: |
+          if [ -z "$KEY" ] || [ -z "$HOST" ]; then
+            echo "::warning::MANUS_SSH_* missing — skipped"
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Reach Termux
+        if: steps.cfg.outputs.ok == 'true'
+        env:
+          KEY:  ${{ secrets.MANUS_SSH_KEY }}
+          HOST: ${{ secrets.MANUS_SSH_HOST }}
+          PORT: ${{ secrets.MANUS_SSH_PORT }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p "${PORT:-22}" "$HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
+
+          echo "── reclaim ──"
+          ssh -p "${PORT:-22}" -o BatchMode=yes "termux@$HOST" \
+            "python3 ~/.local/bin/hygiene-reclaim 2>&1 | tail -15"
+
+          echo "── mvt-batch ──"
+          ssh -p "${PORT:-22}" -o BatchMode=yes "termux@$HOST" \
+            "python3 ~/.local/bin/mvt-batch 2>&1 | tail -25"

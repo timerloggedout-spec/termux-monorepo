@@ -77,3 +77,43 @@ def test_termux_context_collector_modes(tmp_path, monkeypatch):
     # Mode: minimized
     monkeypatch.setenv("CONTEXT_MODE", "minimized")
     collector.assemble_minimized_bundle("active_termux.py")
+
+
+def test_context_collector_path_traversal_prevention(tmp_path, monkeypatch):
+    temp_db = tmp_path / "test_repo.db"
+    monkeypatch.setattr("src.context_collector.DB_PATH", str(temp_db))
+
+    with sqlite3.connect(str(temp_db)) as conn:
+        conn.execute("CREATE TABLE edges (source_file TEXT, target_file TEXT, type TEXT, PRIMARY KEY (source_file, target_file, type))")
+        conn.commit()
+
+    collector = AutomatedContextCollector(str(tmp_path))
+
+    with pytest.raises(ValueError, match="Invalid file path"):
+        collector.assemble_minimized_bundle("../../../etc/passwd")
+
+    with pytest.raises(ValueError, match="Invalid file path"):
+        collector.find_dependent_files("foo/../../bar.py")
+
+    with pytest.raises(ValueError, match="Invalid file path"):
+        collector.generate_ast_skeleton("/etc/shadow")
+
+
+def test_context_collector_symlink_rejection(tmp_path, monkeypatch):
+    temp_db = tmp_path / "test_repo.db"
+    monkeypatch.setattr("src.context_collector.DB_PATH", str(temp_db))
+
+    with sqlite3.connect(str(temp_db)) as conn:
+        conn.execute("CREATE TABLE edges (source_file TEXT, target_file TEXT, type TEXT, PRIMARY KEY (source_file, target_file, type))")
+        conn.commit()
+
+    target_file = tmp_path / "real_file.py"
+    target_file.write_text("print('sensitive')\n")
+
+    symlink_file = tmp_path / "symlink_file.py"
+    symlink_file.symlink_to(target_file)
+
+    collector = AutomatedContextCollector(str(tmp_path))
+
+    with pytest.raises(ValueError, match="symlink target rejected"):
+        collector.assemble_minimized_bundle("symlink_file.py")

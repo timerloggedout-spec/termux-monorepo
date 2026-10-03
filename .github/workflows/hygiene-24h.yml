@@ -1,0 +1,139 @@
+# hygiene-24h.yml — 24h watchdog review, agent-dispatched.
+#
+# STATUS: DRAFT. Trigger is manual (workflow_dispatch). No cron yet —
+# the schedule line is commented until the architecture is confirmed:
+#   runner must reach the Termux device (manus-termux-reverse-ssh
+#   tunnel) to read ~/.deepcli/logs/hygiene/watchdog.jsonl.
+#
+# Once confirmed: uncomment the `schedule:` block.
+# Until then: Actions → Run workflow → pick branch → run.
+name: hygiene-24h-review
+
+on:
+  workflow_dispatch:
+    inputs:
+      task:
+        description: "Task file path relative to repo root"
+        required: false
+        default: "deepcli/tasks/hygiene-24h-review.md"
+      dry_run:
+        description: "Print plan, do not commit"
+        type: boolean
+        required: false
+        default: true
+  # schedule:
+  #   - cron: "0 6 * * *"   # daily 06:00 UTC — enable after tunnel confirmed
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install repo deps
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          if [ -f deepcli/requirements.txt ]; then pip install -r deepcli/requirements.txt; fi
+
+      - name: Verify task file
+        run: |
+          test -f "${{ inputs.task }}" || {
+            echo "::error::task file not found: ${{ inputs.task }}"
+            exit 1
+          }
+          echo "task file present:"
+          head -20 "${{ inputs.task }}"
+
+      - name: Reach Termux device
+        id: reach
+        env:
+          SSH_KEY: ${{ secrets.MANUS_SSH_KEY }}
+          SSH_HOST: ${{ secrets.MANUS_SSH_HOST }}
+          SSH_PORT: ${{ secrets.MANUS_SSH_PORT }}
+        run: |
+          if [ -z "${SSH_HOST:-}" ] || [ -z "${SSH_KEY:-}" ]; then
+            echo "::warning::MANUS_SSH_* secrets not set — skipping remote fetch"
+            echo "reachable=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          mkdir -p ~/.ssh
+          printf '%s
+' "$SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p "${SSH_PORT:-22}" "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
+          if ssh -p "${SSH_PORT:-22}" -o BatchMode=yes -o ConnectTimeout=8                "termux@$SSH_HOST" 'test -r ~/.deepcli/logs/hygiene/watchdog.jsonl'; then
+            ssh -p "${SSH_PORT:-22}" "termux@$SSH_HOST"               'cat ~/.deepcli/logs/hygiene/watchdog.jsonl' > watchdog.jsonl
+            echo "reachable=true" >> "$GITHUB_OUTPUT"
+            wc -l watchdog.jsonl
+          else
+            echo "::warning::tunnel reachable but watchdog.jsonl not readable"
+            echo "reachable=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run local reducer (fallback if agent unavailable)
+        if: steps.reach.outputs.reachable == 'true'
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, statistics, time
+          src = pathlib.Path("watchdog.jsonl")
+          events = []
+          for line in src.read_text(errors="ignore").splitlines():
+              line = line.strip()
+              if not line: continue
+              try: events.append(json.loads(line))
+              except Exception: pass
+          mems = [e["mem_mb"] for e in events if isinstance(e.get("mem_mb"), int) and e["mem_mb"] > 0]
+          out = {
+              "sample_count": len(events),
+              "boot_count":   sum(1 for e in events if e.get("event") == "reboot_detected"),
+              "min_mem_mb":   min(mems) if mems else 0,
+              "p50_mem_mb":   int(statistics.median(mems)) if mems else 0,
+              "max_mem_mb":   max(mems) if mems else 0,
+          }
+          pathlib.Path("docs/ops/hygiene").mkdir(parents=True, exist_ok=True)
+          pathlib.Path("docs/ops/hygiene/24h-review.json").write_text(json.dumps(out, indent=2))
+          print(json.dumps(out, indent=2))
+          PY
+
+      - name: Dispatch to DeepAgent
+        id: agent
+        if: steps.reach.outputs.reachable == 'true'
+        run: |
+          # The agent entrypoint is chosen from repo layout at run time.
+          ENTRY=""
+          for candidate in deepcli/deepagent.py deepcli/agent.py; do
+            if [ -f "$candidate" ]; then ENTRY="$candidate"; break; fi
+          done
+          if [ -z "$ENTRY" ]; then
+            echo "::warning::neither deepcli/deepagent.py nor deepcli/agent.py present"
+            exit 0
+          fi
+          echo "entrypoint: $ENTRY"
+          # Placeholder invocation — replace with the real CLI once confirmed:
+          # python3 "$ENTRY" --task "${{ inputs.task }}" --input watchdog.jsonl --out docs/ops/hygiene/24h-review.json
+          python3 "$ENTRY" --help >/dev/null 2>&1 && echo "entrypoint responds to --help"
+
+      - name: Commit result
+        if: inputs.dry_run == false && steps.reach.outputs.reachable == 'true'
+        run: |
+          git config user.name  "hygiene-bot"
+          git config user.email "hygiene-bot@users.noreply.github.com"
+          git add docs/ops/hygiene/24h-review.json docs/ops/hygiene/24h-review.md 2>/dev/null || true
+          git diff --cached --quiet && { echo "no changes"; exit 0; }
+          git commit -m "chore(hygiene): 24h review $(date -u +%FT%TZ)"
+          git push

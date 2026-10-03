@@ -1,6 +1,6 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-03T13:55:44Z UTC · receipts=927 · foreign_open=27 · tributes=68_
+_Generated 2026-10-03T16:17:27Z UTC · receipts=927 · foreign_open=26 · tributes=68_
 
 ## Tributes (contributor ledger)
 
@@ -30,7 +30,7 @@ _Generated 2026-10-03T13:55:44Z UTC · receipts=927 · foreign_open=27 · tribut
 - [dentalpin/dentalpin#591](https://github.com/dentalpin/dentalpin/pull/591) · state=open · help-wanted: stake + contribute for #590
 - [CopilotKit/CopilotKit#7594](https://github.com/CopilotKit/CopilotKit/pull/7594) · state=open · help-wanted: stake + contribute for #4775
 - [uttrflow/uttrflow-swift#3719](https://github.com/uttrflow/uttrflow-swift/pull/3719) · state=open · help-wanted: stake + contribute for #3713
-- [speedyk-005/yasbd-lib#363](https://github.com/speedyk-005/yasbd-lib/pull/363) · state=open · Submit contribution stake and upstream PR for #362
+- [speedyk-005/yasbd-lib#363](https://github.com/speedyk-005/yasbd-lib/pull/363) · state=closed · Submit contribution stake and upstream PR for #362
 - [StayLitCodes/Vaultix#711](https://github.com/StayLitCodes/Vaultix/pull/711) · state=closed · help-wanted: stake + contribute for #706
 - [kawacukennedy/afrpoweros#40](https://github.com/kawacukennedy/afrpoweros/pull/40) · state=closed · help-wanted: stake + contribute for #5
 - [nextcloud/spreed#19662](https://github.com/nextcloud/spreed/pull/19662) · state=closed · help-wanted: stake + contribute for #19498
@@ -48,7 +48,6 @@ _Generated 2026-10-03T13:55:44Z UTC · receipts=927 · foreign_open=27 · tribut
 ## Foreign open PRs
 
 - [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) — help-wanted: stake + contribute for #225
-- [speedyk-005/yasbd-lib#363](https://github.com/speedyk-005/yasbd-lib/pull/363) — Submit contribution stake and upstream PR for #362
 - [uttrflow/uttrflow-swift#3719](https://github.com/uttrflow/uttrflow-swift/pull/3719) — help-wanted: stake + contribute for #3713
 - [CopilotKit/CopilotKit#7594](https://github.com/CopilotKit/CopilotKit/pull/7594) — help-wanted: stake + contribute for #4775
 - [dentalpin/dentalpin#591](https://github.com/dentalpin/dentalpin/pull/591) — help-wanted: stake + contribute for #590

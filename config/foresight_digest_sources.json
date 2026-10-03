@@ -13,7 +13,8 @@
     "permit_external_research_lanes": true,
     "require_canonical_source": true,
     "preserve_evidence_status": true,
-    "require_version_or_commit": true
+    "require_version_or_commit": true,
+    "last_evidence_snapshot": "2026-10-03"
   },
   "resource_families": [
     {
@@ -117,6 +118,36 @@
       "name": "Edge inference evidence lane",
       "role": "ARM/Android/local-runtime reproducibility and energy/memory measurement",
       "url": "https://github.com/ggml-org/llama.cpp"
+    },
+    {
+      "id": "mcp_spec_2026_07_28",
+      "name": "Model Context Protocol 2026-07-28",
+      "role": "stateless tool/resource/prompt interoperability baseline",
+      "url": "https://blog.modelcontextprotocol.io/posts/2026-07-28/"
+    },
+    {
+      "id": "agent_harness_security",
+      "name": "AI coding-agent harness supply-chain research",
+      "role": "agent configuration admission and supply-chain security",
+      "url": "https://arxiv.org/abs/2609.07360"
+    },
+    {
+      "id": "agentcompass",
+      "name": "AgentCompass",
+      "role": "open agent evaluation infrastructure and manager-tournament substrate",
+      "url": "https://github.com/open-compass/AgentCompass"
+    },
+    {
+      "id": "codestruct",
+      "name": "CODESTRUCT",
+      "role": "structured AST action interfaces for code agents",
+      "url": "https://arxiv.org/abs/2604.05407"
+    },
+    {
+      "id": "photonic_ai_accelerators",
+      "name": "Photonic accelerators for AI",
+      "role": "accelerator/materials/energy foresight research",
+      "url": "https://www.nature.com/articles/s41566-026-01987-z"
     }
   ],
   "source_classes": [

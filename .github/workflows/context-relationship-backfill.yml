@@ -107,7 +107,11 @@ jobs:
             echo "Resume only when \`history_window.next_start_page\` is non-null."
             echo
             echo '```json'
-            cat workspace/llm_map/context_relationships/build-summary.json
+            if [ -f workspace/llm_map/context_relationships/build-summary.json ]; then
+              cat workspace/llm_map/context_relationships/build-summary.json
+            else
+              echo '{"deferred":true,"reason":"rate-limit window not committed"}'
+            fi
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 

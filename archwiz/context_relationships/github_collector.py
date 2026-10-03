@@ -29,6 +29,11 @@ try:
 except ImportError:  # Supports direct script use.
     from compiler import CompilationError, load_json, path_is_sensitive
 
+
+class RateLimitDeferred(CompilationError):
+    """Transient GitHub 403/429 after retries. Callers may defer the window."""
+
+
 COLLECTOR_ID = "archwiz.context_relationships.github_collector@1.0"
 REFERENCE_RE = re.compile(
     r"(?:(?P<owner>[A-Za-z0-9_.-]+)/(?P<repo>[A-Za-z0-9_.-]+))?#(?P<number>\d+)"
@@ -165,6 +170,10 @@ class GitHubClient:
                     return payload, response.headers.get("Link")
             except HTTPError as error:
                 retriable = error.code in {403, 429, 500, 502, 503, 504}
+                if error.code in {403, 429} and attempt >= self.max_retries:
+                    raise RateLimitDeferred(
+                        f"GitHub API request {path} deferred after HTTP {error.code}"
+                    ) from error
                 if not retriable or attempt >= self.max_retries:
                     raise CompilationError(f"GitHub API request {path} failed with HTTP {error.code}") from error
                 self.retry_count += 1

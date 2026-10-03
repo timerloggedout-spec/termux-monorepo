@@ -13,6 +13,7 @@ from typing import Any
 
 try:
     from .compiler import CompilationError, compile_seed, write_artifacts
+    from .github_collector import RateLimitDeferred
     from .github_collector import (
         GitHubClient,
         collect_github_seed,
@@ -24,6 +25,7 @@ try:
     from .temporal import TemporalError, build_lineage, build_snapshot, compare_snapshots, write_snapshot
 except ImportError:  # Supports direct script use.
     from compiler import CompilationError, compile_seed, write_artifacts
+    from github_collector import RateLimitDeferred
     from github_collector import (
         GitHubClient,
         collect_github_seed,
@@ -360,6 +362,10 @@ def main(argv: list[str] | None = None) -> int:
             args.history_start_page,
         )
         print(json.dumps(summary, indent=2, sort_keys=True))
+        return 0
+    except RateLimitDeferred as exc:
+        print(f"context relationship build deferred: {exc}", file=sys.stderr)
+        print(json.dumps({"deferred": True, "reason": str(exc), "history_start_page": args.history_start_page}, sort_keys=True))
         return 0
     except CompilationError as exc:
         print(f"context relationship build failed: {exc}", file=sys.stderr)

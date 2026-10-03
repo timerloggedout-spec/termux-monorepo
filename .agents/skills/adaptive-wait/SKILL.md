@@ -145,3 +145,8 @@ Session 2026-10-02 20:14 PDT / 2026-10-03 03:14 UTC:
 - Ancestor `0b135032` zero-job class is not current-tree. Hygiene-24h zero-job on feat/dashboard-lanes-v2 closed by #1003 on that base only.
 - Active class: Sweep Accountability receipt non-fast-forward (run 37082734311). Repair branch `fix/sweep-receipt-non-ff-20261002`. Do not promote until that SHA has no filename-named workflow failure and repo gate is green.
 - #984 not master. #903 HOLD. Do not pulse #175. #184 names-only. Linear TER-15 / TER-71 not promote authority.
+
+Session 2026-10-03 09:16 PDT / 2026-10-03 16:16 UTC:
+- Master tip at session start moved through sweep receipt `7f7562c81919d623bb4ec02835cfdbb90af81cb8` to help-wanted refresh. Active master filename class: historical backfill run 37126510237 on `39f3eaf50cd1549d2975f959084e5203d98f8848` exit 2, GitHub issues HTTP 403 after retries (page 7). Watcher run 37126698328 followed that conclusion. Not a graph-contradiction recurrence.
+- Repair branch fix/backfill-rate-limit-defer defers 403/429 after retries (RateLimitDeferred, exit 0, no graph commit). Do not promote until that SHA has no filename-named workflow failure and repo gate is green.
+- Throughput runs 37125932879 artifact-not-found plus 403 are not this repair. Sweep 37136188913 receipt refname race is not master. #984 not master. #903 HOLD. Do not pulse #175. #184 names-only. Linear TER-15 / TER-71 not promote authority.

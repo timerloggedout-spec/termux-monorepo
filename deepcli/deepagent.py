@@ -1015,12 +1015,20 @@ _WT_BASE_FILE = HOME / ".deepcli" / "watchdog" / "worktree-bases.json"
 def _wt_bases_load():
     import json as _j
     try: return _j.loads(_WT_BASE_FILE.read_text())
-    except Exception: return {{}}
+    except Exception: return {}
 
 def _wt_bases_save(d):
     import json as _j
     _WT_BASE_FILE.parent.mkdir(parents=True, exist_ok=True)
     _WT_BASE_FILE.write_text(_j.dumps(d))
+
+
+def _wt_default_repo_branch() -> str | None:
+    """Branch the PR should target by default (origin/HEAD)."""
+    r = _wt_git(["symbolic-ref", "--short", "refs/remotes/origin/HEAD"], str(HOME))
+    if r.returncode == 0 and r.stdout.strip():
+        return r.stdout.strip().rsplit("/", 1)[-1]
+    return None
 
 
 def _gh_worktree(a):
@@ -1067,6 +1075,12 @@ def _gh_worktree(a):
         )
         if r.returncode != 0:
             return {"error": f"worktree add failed: {r.stderr[-300:]}"}
+        try:
+            _b = _wt_bases_load()
+            _b[branch] = base
+            _wt_bases_save(_b)
+        except Exception:
+            pass
         return {"path": str(path), "branch": branch, "base": base, "created": True}
 
     if action == "commit_push_pr":

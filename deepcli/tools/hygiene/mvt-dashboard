@@ -1,0 +1,150 @@
+#!/data/data/com.termux/files/usr/bin/env python3
+"""mvt-dashboard v2 — session inventory + MVT scoreboard + model history.
+
+Session types:
+  DEEPAGENT  sessions keyed in ~/.deepcli/sessions.json (task-hash)
+  LISTENER   session id in ~/.deepcli/active_session (auto-exec)
+  UI         all others — manual TUI / copy-paste
+
+Model history: read from msg.model field in each session message.
+Empty in old sessions, populated in newer ones — the field exists in
+every session (verified against 417ddd6d).
+
+Load-bearing credential files: NOT read, NOT printed. Stat only:
+  ~/.deepcli/config.json         (DeepSeek session token for core.py)
+  ~/.deepcli/hub.token           (bearer for /gh /run /v1/agent)
+  storage/downloads/.../cookies_2.json  (account-1 + account-2 auth)
+  ~/.gnupg/.2fa-pass             (TOTP passphrase)
+  ~/.password-store/secret/github.gpg   (TOTP encrypted)
+
+Source: ~/.deepcli/session_store only. Exports + zips are stale.
+"""
+import sys, os, re, json, time, pathlib, subprocess, collections
+
+HOME = pathlib.Path.home()
+SS   = HOME/".deepcli"/"session_store"
+SESS = HOME/".deepcli"/"sessions.json"
+ACT  = HOME/".deepcli"/"active_session"
+SCORE = HOME/".local"/"bin"/"mvt-score"
+
+LOAD_BEARING = [
+    HOME/".deepcli"/"config.json",
+    HOME/".deepcli"/"hub.token",
+    HOME/"storage"/"downloads"/"_doing"/"_1-build"/"DeepSeek"/"exports"/"cookies_2.json",
+    HOME/".gnupg"/".2fa-pass",
+    HOME/".password-store"/"secret"/"github.gpg",
+]
+
+def sz(n):
+    for u in ("B","K","M","G"):
+        if n < 1024: return f"{n:.1f}{u}"
+        n /= 1024
+    return f"{n:.1f}P"
+
+def session_type(sid, deep_ids, listener_id):
+    if listener_id and sid == listener_id: return "LISTENER"
+    if sid in deep_ids: return "DEEPAGENT"
+    return "UI"
+
+def main():
+    t0 = time.time()
+    print(f"=== mvt-dashboard v2  {time.strftime('%Y-%m-%dT%H:%MZ', time.gmtime())} ===\n")
+
+    deep_ids = set()
+    if SESS.exists():
+        try:
+            for v in json.loads(SESS.read_text()).values():
+                if isinstance(v, dict) and v.get("session_id"):
+                    deep_ids.add(v["session_id"])
+        except Exception: pass
+
+    listener_id = None
+    if ACT.exists():
+        try: listener_id = ACT.read_text().strip() or None
+        except Exception: pass
+
+    files = sorted(SS.glob("*.json"), key=lambda f: f.stat().st_mtime, reverse=True)
+    by_type = {"DEEPAGENT": [], "LISTENER": [], "UI": []}
+    for f in files:
+        by_type[session_type(f.stem, deep_ids, listener_id)].append(f)
+
+    print("── SESSION INVENTORY ──")
+    print(f"  total           {len(files):>5d}")
+    print(f"  DEEPAGENT       {len(by_type['DEEPAGENT']):>5d}")
+    print(f"  LISTENER        {len(by_type['LISTENER']):>5d}")
+    print(f"  UI (paste)      {len(by_type['UI']):>5d}")
+    print()
+
+    print("── MODEL HISTORY (msg.model, capped 30 sessions) ──")
+    mc = collections.Counter()
+    by_month = collections.defaultdict(collections.Counter)
+    for f in files[:30]:
+        try: raw = json.loads(f.read_text())
+        except Exception: continue
+        if not isinstance(raw, list): continue
+        for m in raw:
+            if not isinstance(m, dict): continue
+            mod = m.get("model")
+            if mod and isinstance(mod, str) and mod.strip():
+                mc[mod] += 1
+                ts = m.get("inserted_at") or ""
+                if isinstance(ts, str) and len(ts) >= 7:
+                    by_month[ts[:7]][mod] += 1
+    if mc:
+        for mod, n in mc.most_common(12):
+            print(f"  {mod:36s} {n:>6d}")
+        print("  by month:")
+        for month in sorted(by_month)[-8:]:
+            print(f"    {month}: {dict(by_month[month].most_common(3))}")
+    else:
+        print("  (no populated model field in scanned samples)")
+    print()
+
+    print("── MVT SCORES (capped 6 per type) ──")
+    if SCORE.exists():
+        for stype in ("DEEPAGENT", "LISTENER", "UI"):
+            fl = by_type[stype][:6]
+            if not fl:
+                print(f"  {stype:10s}  (none)"); continue
+            L = {0:0,1:0,2:0}
+            for f in fl:
+                try:
+                    r = subprocess.run([sys.executable, str(SCORE), f.stem],
+                                       capture_output=True, text=True, timeout=45)
+                except Exception: continue
+                for ln in r.stdout.splitlines():
+                    try: obj = json.loads(ln)
+                    except Exception: continue
+                    lv = obj.get("level")
+                    if isinstance(lv, int): L[lv] = L.get(lv,0) + 1
+            print(f"  {stype:10s}  L0={L[0]:>3d}  L1={L[1]:>3d}  L2={L[2]:>3d}")
+    print()
+
+    print("── RECENT DEEPAGENT TASKS ──")
+    if SESS.exists():
+        try:
+            d = json.loads(SESS.read_text())
+            rows = sorted(d.items(), key=lambda kv: kv[1].get("last_used", 0), reverse=True)[:6]
+            for k, v in rows:
+                used = v.get("last_used", 0)
+                used_s = time.strftime("%m-%d %H:%M", time.localtime(used)) if used else "?"
+                task = (v.get("last_task") or "")[:60]
+                print(f"  {used_s}  {k[:14]}  runs={v.get('runs','?')}  {task}")
+        except Exception as e:
+            print(f"  read fail: {e}")
+    print()
+
+    print("── LOAD-BEARING CREDENTIALS (stat only, never printed) ──")
+    for p in LOAD_BEARING:
+        if p.exists():
+            st = p.stat()
+            mode = oct(st.st_mode)[-3:]
+            print(f"  OK   {str(p.relative_to(HOME)):60s}  {sz(st.st_size):>8s}  mode={mode}")
+        else:
+            print(f"  MISS {str(p.relative_to(HOME))}")
+    print()
+
+    print(f"# elapsed {time.time()-t0:.1f}s")
+
+if __name__ == "__main__":
+    sys.exit(main())

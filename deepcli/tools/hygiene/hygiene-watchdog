@@ -39,7 +39,9 @@ sample() {
         log_event "mem_low" "\"mem_mb\":$MEM_MB,\"floor\":$MEM_FLOOR_MB"
     fi
     for name in python3 node git zsh bash sh; do
-        n=$(pgrep -c -x "$name" 2>/dev/null || echo 0)
+        n=$(pgrep -c -x "$name" 2>/dev/null)
+        n=$(printf '%s' "$n" | tr -dc '0-9')
+        n=${n:-0}
         case "$name" in
             python3) lim=8;; node) lim=5;; git) lim=4;;
             zsh) lim=12;; bash) lim=25;; sh) lim=35;;

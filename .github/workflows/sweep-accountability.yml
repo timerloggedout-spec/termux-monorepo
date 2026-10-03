@@ -34,6 +34,9 @@ on:
     types: [opened, edited, closed, reopened, labeled, unlabeled, assigned, unassigned]
   issue_comment:
     types: [created, edited, deleted]
+  workflow_run:
+    workflows: ["*"]
+    types: [completed]
 
 permissions:
   contents: write
@@ -63,14 +66,14 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          mkdir -p docs/ops/generated/sweep-ledger/census
-          gh api --paginate "repos/$GITHUB_REPOSITORY/pulls?state=all&per_page=100" > docs/ops/generated/sweep-ledger/census/pulls.json
-          gh api --paginate "repos/$GITHUB_REPOSITORY/issues?state=all&per_page=100" > docs/ops/generated/sweep-ledger/census/issues.json
-          gh api --paginate "repos/$GITHUB_REPOSITORY/actions/runs?per_page=100" > docs/ops/generated/sweep-ledger/census/workflow-runs.json
-          python3 scripts/ci/sweep_census_counts.py docs/ops/generated/sweep-ledger/census
+          CENSUS_DIR="docs/ops/generated/sweep-ledger/census/${GITHUB_RUN_ID}"
+          mkdir -p "$CENSUS_DIR"
+          gh api --paginate "repos/$GITHUB_REPOSITORY/pulls?state=all&per_page=100" > "$CENSUS_DIR/pulls.json"
+          gh api --paginate "repos/$GITHUB_REPOSITORY/issues?state=all&per_page=100" > "$CENSUS_DIR/issues.json"
+          gh api --paginate "repos/$GITHUB_REPOSITORY/actions/runs?per_page=100" > "$CENSUS_DIR/workflow-runs.json"
+          python3 scripts/ci/sweep_census_counts.py "$CENSUS_DIR"
 
       - name: Record sweep observation
-        if: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
         env:
           MODE: ${{ github.event.inputs.mode }}
           SWEEP_VERSION: ${{ github.event.inputs.sweep_version }}
@@ -93,6 +96,7 @@ jobs:
           RUN_URL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
           EVENT_KIND="$GITHUB_EVENT_NAME"
           export COMMITS HEAD_SHA FIRST_SHA EVENT_KIND
+          export CENSUS_DIR="${CENSUS_DIR:-}"
           FINDINGS="$(python3 scripts/ci/sweep_findings.py)"
           python3 scripts/ci/sweep_accountability.py \
             --repository "$GITHUB_REPOSITORY" \

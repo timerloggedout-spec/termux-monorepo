@@ -1075,6 +1075,11 @@ def _gh_worktree(a):
         title = a.get("title") or message.split("\n")[0][:200]
         body = a.get("body") or message
         repo = a.get("repo") or _wt_default_repo()
+        # coerce all string fields; nested dicts leak from malformed model output
+        for _k in ("message","title","body","base","branch","repo"):
+            _v = a.get(_k)
+            if _v is not None and not isinstance(_v, str):
+                a[_k] = str(_v)
         draft = bool(a.get("draft"))
         if not branch or not repo:
             return {"error": "branch and repo required"}

@@ -172,6 +172,15 @@ def _mk_call(name, arguments):
 
 def _extract_calls(text: str):
     """Parse tool calls from canonical <tool_call>, fenced JSON, or DSML variants."""
+    # Pre-clean: DeepSeek sometimes wraps params in DSML tokens that leak
+    # into JSON. Strip them entirely before extraction.
+    if isinstance(text, str):
+        text = re.sub(r"<\|DSML\|[^>]*>", "", text)
+        text = re.sub(r"</\|DSML\|[^>]*>", "", text)
+        text = re.sub(r"<parameter[^>]*>", "", text)
+        text = re.sub(r"</parameter>", "", text)
+        text = re.sub(r"<invoke[^>]*>", "", text)
+        text = re.sub(r"</invoke>", "", text)
     if not text:
         return []
     out = []

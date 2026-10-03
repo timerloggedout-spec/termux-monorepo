@@ -1067,6 +1067,10 @@ def _gh_worktree(a):
         )
         if r.returncode != 0:
             return {"error": f"worktree add failed: {r.stderr[-300:]}"}
+        # persist branch->base so commit_push_pr defaults the PR base correctly
+        _b = _wt_bases_load()
+        _b[branch] = base
+        _wt_bases_save(_b)
         return {"path": str(path), "branch": branch, "base": base, "created": True}
 
     if action == "commit_push_pr":

@@ -3,6 +3,7 @@ from pathlib import Path
 from archwiz.context_relationships.temporal import build_lineage, build_snapshot, write_snapshot
 from archwiz.context_relationships.temporal_query import (
     TemporalQueryError,
+    between_projection,
     changes_between,
     snapshot_at,
     snapshots_between,
@@ -77,8 +78,12 @@ def test_between_and_changes_only_are_deterministic(tmp_path):
     selected = snapshots_between(tmp_path, "2026-10-01T00:00:00Z", "2026-10-02T23:59:59Z")
     assert [row["snapshot_id"] for row in selected] == [first["snapshot_id"], second["snapshot_id"]]
 
+    between = between_projection(tmp_path, "2026-10-01T00:00:00Z", "2026-10-03T23:59:59Z")
+    assert between["event_count"] == 3
+
     result = changes_between(tmp_path, "2026-10-01T00:00:00Z", "2026-10-03T23:59:59Z")
     assert result["event_count"] == 3
+    assert result["changes_only"] is True
     assert [event["snapshot_id"] for event in result["events"]] == [
         first["snapshot_id"], second["snapshot_id"], third["snapshot_id"]
     ]

@@ -157,3 +157,25 @@ def score(events, next_action=None, env=None):
         return result
 
     return result
+
+
+def check_action(action, events=None, env=None):
+    """Preflight a single candidate action against current risk.
+
+    Thin, self-contained wrapper over score(): resolves the live
+    environment exactly once (unless an explicit ``env`` is supplied)
+    and scores ``action`` as the next action in the context of
+    ``events`` (defaults to an empty history).
+
+    Always passes a fully-resolved ``env`` mapping to score(), so
+    callers never hit the ``env=None`` path in score()'s recovery
+    branch.
+
+    Returns the same dict shape as score(), with an added
+    ``action`` key echoing the action under test.
+    """
+    if env is None:
+        env = env_state()
+    result = score(events or [], next_action=action, env=env)
+    result["action"] = action
+    return result

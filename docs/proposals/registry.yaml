@@ -1,13 +1,13 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-10-01T01:58:00Z"
+updated_at: "2026-10-03T07:50:00Z"
 updated_by: grok-administrator
 
 proposals:
   - id: model-selection-market
     title: "Model selection market — equal-weight bootstrap, 3L0 performance, DSPy-DoE, bets/trading-cards"
     author: grok
-    status: posted
+    status: executing
     priority: P1
     path: active/model-selection-market/
     reviewers:
@@ -16,8 +16,8 @@ proposals:
         status: executing
       - id: timerloggedout-spec
         role: operator-authorizer
-        status: requested
-    related_prs: []
+        status: accepted
+    related_prs: [959, 961]
     related_branches:
       - docs/model-selection-market-3l0-20261001
     related_proposals:
@@ -25,6 +25,7 @@ proposals:
       - ml-keep-alive
       - rate-limit-rotation
     gates_required: [repo-gate, termux-smoke]
+    notes: "MSM-000..005 landed; observe-mode weights; next = live catalog join + first observe cycle samples"
 
   - id: ratatui-tokio-terminal-dashboard
     title: "Termux-first Ratatui + Tokio responsive terminal dashboard"

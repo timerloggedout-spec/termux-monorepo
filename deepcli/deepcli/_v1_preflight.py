@@ -157,3 +157,20 @@ def score(events, next_action=None, env=None):
         return result
 
     return result
+
+
+def check_action(action, env=None):
+    """Preflight a single candidate action.
+
+    Thin, documented wrapper over ``score()``: the action itself is folded
+    into the event stream so the penalty and n-gram detectors see it, and a
+    live environment probe is used unless ``env`` is supplied. Returns the
+    same dict as ``score()`` with two extra keys:
+
+        action : the action that was checked
+        safe   : True when the level is GREEN
+    """
+    result = score([action], next_action=action, env=env)
+    result["action"] = action
+    result["safe"] = result["level"] == "GREEN"
+    return result

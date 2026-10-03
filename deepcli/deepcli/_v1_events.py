@@ -48,12 +48,24 @@ def extract(text):
 
 
 def message_text(m):
-    """Join content + thinking_content for a message dict."""
+    """Join content + thinking_content + fragments[].content for a message.
+
+    Session-store messages carry empty `content` after API refresh; the
+    actual reply text lives in `fragments[].content`. Earlier versions
+    only read `content`, so events looked empty on live sessions.
+    """
     parts = []
     for k in ("content", "thinking_content", "text"):
         v = m.get(k)
-        if isinstance(v, str):
+        if isinstance(v, str) and v:
             parts.append(v)
+    frags = m.get("fragments")
+    if isinstance(frags, list):
+        for fr in frags:
+            if isinstance(fr, dict):
+                c = fr.get("content")
+                if isinstance(c, str) and c:
+                    parts.append(c)
     return "\n".join(parts)
 
 

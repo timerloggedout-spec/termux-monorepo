@@ -1715,16 +1715,22 @@ def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False
         if not calls:
             # Guard: if we've run >=3 steps and NO write_file/gh_worktree
             # happened yet, treat this as premature — force another turn.
+            _WRITE_TOOLS = {"write_file", "gh_put", "gh_edit_file", "gh_worktree"}
             _no_work_done = not any(
-                (
-                    '"write_file"' in str(m.get("content", ""))
-                    and "/worktrees/" in str(m.get("content", ""))
-                )
-                or '"gh_worktree"' in str(m.get("content", ""))
-                or '"gh_edit_file"' in str(m.get("content", ""))
-                or '"gh_put"' in str(m.get("content", ""))
+                # assistant message emitted a write-tool call
+                (m.get("role") == "assistant" and isinstance(m.get("tool_calls"), list)
+                 and any(
+                     isinstance(tc, dict)
+                     and tc.get("function", {}).get("name") in _WRITE_TOOLS
+                     for tc in m["tool_calls"]
+                 ))
+                # or a tool result that looks like a successful write
+                or (m.get("role") == "tool" and isinstance(m.get("content"), str)
+                    and ("pr_url" in m["content"]
+                         or "commit_pushed" in m["content"]
+                         or ('"path":' in m["content"] and '"bytes":' in m["content"])))
                 for m in msgs
-                if isinstance(m, dict) and m.get("role") == "tool"
+                if isinstance(m, dict)
             )
             if step >= 3 and _no_work_done:
                 print(

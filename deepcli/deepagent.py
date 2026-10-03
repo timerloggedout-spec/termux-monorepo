@@ -1009,6 +1009,20 @@ def _wt_default_repo() -> str | None:
     return f"{m.group(1)}/{m.group(2)}" if m else None
 
 
+# ─── worktree → base provenance (commit_push_pr defaults to it) ──
+_WT_BASE_FILE = HOME / ".deepcli" / "watchdog" / "worktree-bases.json"
+
+def _wt_bases_load():
+    import json as _j
+    try: return _j.loads(_WT_BASE_FILE.read_text())
+    except Exception: return {{}}
+
+def _wt_bases_save(d):
+    import json as _j
+    _WT_BASE_FILE.parent.mkdir(parents=True, exist_ok=True)
+    _WT_BASE_FILE.write_text(_j.dumps(d))
+
+
 def _gh_worktree(a):
     action = a.get("action", "")
     WORKTREE_ROOT.mkdir(parents=True, exist_ok=True)
@@ -1088,6 +1102,9 @@ def _gh_worktree(a):
         # create PR via gh
         import subprocess as _sp
 
+        # default PR base to the base the worktree was created from
+        _b = _wt_bases_load()
+        _default_base = a.get("base") or _b.get(branch) or _wt_default_repo_branch() or "master"
         pr_cmd = [
             "gh",
             "pr",
@@ -1095,7 +1112,7 @@ def _gh_worktree(a):
             "--repo",
             repo,
             "--base",
-            a.get("base") or "master",
+            _default_base,
             "--head",
             branch,
             "--title",

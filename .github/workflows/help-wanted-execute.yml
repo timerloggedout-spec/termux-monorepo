@@ -261,7 +261,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/ci/help_wanted_evidence.py \
-            --kind upstream_pr --issue "${{ needs.budget.outputs.issue }}" --ok true --run-url "$GITHUB_RUN_URL"
+            --kind stake_pr --issue "${{ needs.budget.outputs.issue }}" --ok true --extra '{"stage":"STAKE","gate_pass":false}' --run-url "$GITHUB_RUN_URL"
 
       - name: Evidence receipt (fail)
         if: failure()
@@ -269,7 +269,7 @@ jobs:
           GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           python3 scripts/ci/help_wanted_evidence.py \
-            --kind upstream_pr --issue "${{ needs.budget.outputs.issue }}" --ok false --run-url "$GITHUB_RUN_URL" || true
+            --kind stake_pr --issue "${{ needs.budget.outputs.issue }}" --ok false --extra '{"stage":"STAKE","gate_pass":false}' --run-url "$GITHUB_RUN_URL" || true
 
       - name: Interthread → followup poll
         if: always()

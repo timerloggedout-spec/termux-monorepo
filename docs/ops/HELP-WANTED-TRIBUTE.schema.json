@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/HELP-WANTED-TRIBUTE.schema.json",
+  "title": "Help-Given Tribute Work Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version","stage","gate_pass","changed_files","implementation_files","diff_present"],
+  "properties": {
+    "schema_version": {"const":"help-wanted.work.v1"},
+    "stage": {"enum":["PROPOSED","CLAIMED","STAKE","IMPLEMENTATION","DIFF_PROOF","REQUIREMENT_COVERAGE","VALIDATION","ACCEPTED","REJECTED","RELEASED","HOLD"]},
+    "gate_pass": {"type":"boolean"},
+    "changed_files": {"type":"integer","minimum":0},
+    "implementation_files": {"type":"integer","minimum":0},
+    "diff_present": {"type":"boolean"},
+    "stake_marker_present": {"type":"boolean"},
+    "stake_only": {"type":"boolean"},
+    "diff_proof_present": {"type":"boolean"},
+    "validation_evidence_present": {"type":"boolean"},
+    "base_sha": {"type":"string"},
+    "head_sha": {"type":"string"},
+    "pr": {"type":"string"},
+    "reason": {"type":"string"}
+  }
+}

@@ -2,6 +2,11 @@ name: context relationship historical backfill
 
 on:
   # Historical collection is anchored to canonical master; continuation is page-bounded and resumable.
+  # A corpus commit wakes exactly one additional bounded page; the hourly schedule remains the safety net.
+  push:
+    branches: [master]
+    paths:
+      - 'workspace/llm_map/context_relationships/**'
   schedule:
     - cron: '23 * * * *'
   workflow_dispatch:
@@ -70,7 +75,7 @@ jobs:
               else:
                   print('continue=true')
                   print(f'start_page={next_page}')
-PY
+          PY
       - name: Build one historical relationship-index window
         if: steps.continuation.outputs.continue == 'true'
         env:

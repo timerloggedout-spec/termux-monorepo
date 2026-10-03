@@ -269,3 +269,73 @@ Agent-Identity: Grok (Administrator) · RECON consolidation 2026-09-19
 
 Proposal: `docs/proposals/active/temporal-langsmith-adapter/`  
 Runbook: `docs/ops/TEMPORAL-LANGSMITH-ADAPTER.md`
+
+
+---
+
+## 13. Codespace carrier consolidation (2026-10-01)
+
+Canonical reconciliation: `docs/ops/CODESPACE-INTEGRATION-RECONCILIATION-2026-10-01.md`  
+Carrier audit: `docs/ops/CODESPACE-CARRIER-DELTA-MATRIX-2026-10-01.md`  
+Tracking: Issue #976
+
+The carrier audit compares every recovered Codespace/Bifrost/Hindsight/Gravitee/Temporal branch against **current `master`**, rather than against its historical merge base.
+
+### Authority boundaries
+
+| Surface | Authority | Rule |
+|---|---|---|
+| Codespaces | environment | identity/lifecycle evidence only |
+| Docker / CI / Temporal | execution substrate | reproducible runtime |
+| OTEL / ATES / JSONL | evidence boundary | canonical system evidence |
+| Bifrost | gateway/provider evaluation | evidence-gated integration |
+| Hindsight | agent memory | current landed lane + surgical cleanup |
+| Gravitee | research observatory | adjacent seed; no runtime dependency |
+
+### Carrier rule
+
+`RECON → RE-ROOT → VALIDATE → WATCH → RECORD`
+
+A stale branch is never merged wholesale merely because it contains apparently useful history. Unique deltas are classified as **LANDED**, **SUPERSEDED**, **RE-EXTRACT**, **PROVENANCE**, or **UNKNOWN** before cleanup.
+
+Recovered Codespace identities are protected from destructive cleanup until current lifecycle/development state is explicitly reconciled. Missing provider inventory is **UNKNOWN**, not Deleted.
+
+### Current high-value re-extraction candidates
+
+- Codespace start-existing / enablement variants — inspect only where current lifecycle coverage is incomplete.
+- Gravitee repository-observatory seed — preserve research intent; selectively re-root validated observability work.
+- Hindsight one-file cleanup — re-root `deepcli/deepagent.py` only if still required.
+- Temporal lag/index optimization — validate against current indexing/context-relationship architecture before re-rooting.
+
+Temporal adapter and BIFROST-006 evidence carriers are retained as provenance because their functional lineage is already represented on current `master`.
+
+
+---
+
+## 14. n8n Community Edition adapter (2026-10-02)
+
+n8n is now wired as an **optional free self-hosted adapter**, not a competing system of record.
+
+| Surface | Role | Authority |
+|---|---|---|
+| GitHub | source history / PR / checks / runs | **canonical** |
+| Actions | collection / validation / evidence | **canonical execution** |
+| SHE | deterministic reduction / projection | **canonical reducer** |
+| n8n Community Edition | visual workflow composition / optional operator automation | **adapter** |
+| Vercel / Pages / Hex | presentation / analysis | consumers |
+
+Adapter path:
+
+`GitHub workflow_run → optional n8n webhook → sanitize/normalize → receipt`
+
+Security boundary:
+
+- webhook URL is operator secret/configuration;
+- only allowlisted run metadata crosses the adapter;
+- GitHub credentials never cross;
+- no arbitrary workflow payload is persisted by the example;
+- bridge is inert when `N8N_SHE_WEBHOOK_URL` is absent.
+
+Operational provenance remains:
+
+`DESIGNED → IMPORTED → CONFIGURED → OBSERVED → VALIDATED → PROMOTED`

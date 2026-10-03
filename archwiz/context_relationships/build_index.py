@@ -78,8 +78,17 @@ def load_canonical_history(output: Path, owner: str, repo: str, ref: str) -> dic
         raise CompilationError("canonical manifest must be an object")
     if manifest.get("schema_version") != "1.0":
         raise CompilationError("canonical history schema version is not supported")
-    if manifest.get("repository") != f"{owner}/{repo}" or manifest.get("default_branch") != ref:
+    if manifest.get("repository") != f"{owner}/{repo}":
         raise CompilationError("canonical history belongs to a different repository or ref")
+    recorded_ref = manifest.get("default_branch")
+    if recorded_ref != ref:
+        # Scheduled backfill is anchored to the live checkout ref. A stale
+        # recorded branch (for example master-staging) must not fail the job
+        # when the repository identity still matches; compile rebinds the ref.
+        if not isinstance(recorded_ref, str) or not recorded_ref:
+            raise CompilationError("canonical history belongs to a different repository or ref")
+        manifest["previous_default_branch"] = recorded_ref
+        manifest["default_branch"] = ref
     canonical_nodes = read_jsonl(nodes_path)
     canonical_edges = read_jsonl(edges_path)
     node_refs: dict[str, str] = {}

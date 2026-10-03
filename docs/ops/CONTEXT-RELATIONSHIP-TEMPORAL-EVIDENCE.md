@@ -98,4 +98,22 @@ Consumers must preserve:
 
 The temporal contract is covered by `tests/test_context_relationship_temporal.py` for deterministic identity, structural deltas, reclassification, invalid coverage/page rejection, lineage, and immutable snapshot writes.
 
-The normal context-relationship test family remains the required integration gate.
+The normal context-relationship test family remains the required integration gate. Temporal consumers use the read-only temporal_query module for bounded reconstruction and change inspection.
+
+## Temporal query projections
+
+The immutable evidence store now has a read-only query surface:
+
+- --at TIMESTAMP selects the latest immutable snapshot observed at or before the requested UTC timestamp and returns its graph records.
+- --between START END returns snapshot observations and their recorded deltas in an inclusive time range.
+- --changes-only --between START END is an explicit operator-facing form for delta/event inspection.
+- --timeline lists all immutable snapshots in deterministic observation order.
+
+Examples:
+
+    python -m archwiz.context_relationships.temporal_query --at 2026-10-03T00:00:00Z --format json
+    python -m archwiz.context_relationships.temporal_query --between 2026-10-01T00:00:00Z 2026-10-03T23:59:59Z --changes-only
+    python -m archwiz.context_relationships.temporal_query --timeline
+
+A temporal query never mutates the corpus. If no observation exists at or before --at, the query fails rather than manufacturing a state. Range results identify the first selected event's previous_snapshot_id as the baseline so consumers can distinguish an in-range change from the preceding observation.
+

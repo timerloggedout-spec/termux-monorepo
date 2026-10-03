@@ -133,3 +133,22 @@ def test_provider_result_has_health_status_fields():
     row = probe.result("openrouter")
     assert row["catalog_status"] is None
     assert row["inference_status"] is None
+
+def test_openrouter_zero_price_model_is_health_eligible(monkeypatch):
+    response = MagicMock()
+    response.status = 200
+    response.read.return_value = json.dumps({
+        "data": [{
+            "id": "provider/model-without-free-suffix",
+            "pricing": {"prompt": "0", "completion": "0"}
+        }]
+    }).encode()
+    response.__enter__.return_value = response
+
+    monkeypatch.setattr(probe.urllib.request, "urlopen", lambda *args, **kwargs: response)
+    row = probe.result("openrouter")
+    probe.probe_catalog("openrouter", "https://example.invalid/models", "token", row)
+
+    assert row["catalog_ok"] is True
+    assert row["free_model_count"] == 1
+    assert row["model"] == "provider/model-without-free-suffix"

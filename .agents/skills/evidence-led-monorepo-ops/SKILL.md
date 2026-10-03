@@ -184,3 +184,10 @@ Session 2026-10-03 09:16 PDT / 2026-10-03 16:16 UTC:
 - Master tip at session start moved through sweep receipt `7f7562c81919d623bb4ec02835cfdbb90af81cb8` to help-wanted refresh. Active master filename class: historical backfill run 37126510237 on `39f3eaf50cd1549d2975f959084e5203d98f8848` exit 2, GitHub issues HTTP 403 after retries (page 7). Watcher run 37126698328 followed that conclusion. Not a graph-contradiction recurrence.
 - Repair branch fix/backfill-rate-limit-defer defers 403/429 after retries (RateLimitDeferred, exit 0, no graph commit). Do not promote until that SHA has no filename-named workflow failure and repo gate is green.
 - Throughput runs 37125932879 artifact-not-found plus 403 are not this repair. Sweep 37136188913 receipt refname race is not master. #984 not master. #903 HOLD. Do not pulse #175. #184 names-only. Linear TER-15 / TER-71 not promote authority.
+
+Session 2026-10-03 12:15 PDT / 2026-10-03 19:15 UTC:
+- Master tip at session start moved during recon from `ea84e1e0d22e680bd051c919a295ba53e52dd036` to `349411034c89ea77207f7cbb79f37007426b2d9e`.
+- Active failure class: continuous-improve run 37145725107 on `4a54d96f76f0bba120f1d6713d2e3c7e9baab7af` exit 255, ssh temporary failure in name resolution. Environmental host, not YAML parse. Repair branch `fix/continuous-improve-dns-preflight` adds getent preflight and dispatch-lost skip. Do not promote until that SHA has no filename-named workflow failure and repo gate is green.
+- #1052 merged `b74b91cd822ce27ef4401a553df331e02b47bcc6`. Push termux smoke 37143927236 success. Push repo gate 37143927238 cancelled (superseded), not a compile failure.
+- #1053 merged `4d53960ab6ab2afd55e9852904dfb1eb108b6a27`. Push event gates not listed on that SHA. Not reopened.
+- #903 HOLD. Do not pulse #175. #184 names-only. Linear TER-15 / TER-71 not promote authority.

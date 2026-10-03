@@ -188,3 +188,55 @@ def test_live_view_symlink_safety(tmp_path, monkeypatch):
     if os.name != "nt":
         assert (target_file.stat().st_mode & 0o777) == 0o644
         assert target_file.read_text() == "echo unsafe live_view"
+
+
+def test_listener_control_symlink_safety(tmp_path, monkeypatch):
+    import archwiz.listener_control as lc
+
+    target_pid = tmp_path / "target_pid.pid"
+    target_pid.write_text("12345")
+    if os.name != "nt":
+        target_pid.chmod(0o644)
+
+    target_listener = tmp_path / "target_listener.py"
+    target_listener.write_text("print('unsafe')")
+    if os.name != "nt":
+        target_listener.chmod(0o644)
+
+    symlink_pid = tmp_path / ".listener.pid"
+    symlink_pid.symlink_to(target_pid)
+
+    symlink_listener = tmp_path / "activity_listener.py"
+    symlink_listener.symlink_to(target_listener)
+
+    # 1. Reject symlinked PID_FILE in start() and stop()
+    monkeypatch.setattr(lc, "PID_FILE", symlink_pid)
+    monkeypatch.setattr(lc, "LISTENER", target_listener)
+
+    with pytest.raises(ValueError, match="Symlink PID_FILE rejected"):
+        lc.start()
+
+    with pytest.raises(ValueError, match="Symlink PID_FILE rejected"):
+        lc.stop()
+
+    # 2. Reject symlinked LISTENER in start()
+    real_pid = tmp_path / "real.pid"
+    monkeypatch.setattr(lc, "PID_FILE", real_pid)
+    monkeypatch.setattr(lc, "LISTENER", symlink_listener)
+
+    with pytest.raises(ValueError, match="Symlink LISTENER rejected"):
+        lc.start()
+
+    # 3. Test normal execution creates PID_FILE with 0o600 permissions
+    monkeypatch.setattr(lc, "LISTENER", target_listener)
+
+    # Mock subprocess.Popen
+    class DummyProc:
+        pid = 99999
+    monkeypatch.setattr(lc.subprocess, "Popen", lambda *args, **kwargs: DummyProc())
+
+    lc.start()
+    assert real_pid.exists()
+    assert real_pid.read_text() == "99999"
+    if os.name != "nt":
+        assert (real_pid.stat().st_mode & 0o777) == 0o600

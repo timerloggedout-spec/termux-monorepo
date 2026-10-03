@@ -70,5 +70,6 @@ def cmd_stats():
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "stats"
     arg = sys.argv[2] if len(sys.argv) > 2 else ""
-    {"pointer": cmd_pointer, "sid": cmd_sid, "source": cmd_source,
-     "taxonomy": cmd_taxonomy, "stats": cmd_stats}.get(cmd, cmd_stats)(arg)
+    fn = {"pointer": cmd_pointer, "sid": cmd_sid, "source": cmd_source,
+      "taxonomy": cmd_taxonomy, "stats": cmd_stats}.get(cmd, cmd_stats)
+    fn(arg) if cmd != "stats" else fn()

@@ -1,0 +1,74 @@
+#!/data/data/com.termux/files/usr/bin/env python3
+"""scripts-db — query the codex pointer index and llm_map index.
+
+Backing stores:
+  ~/cli-synthegration/codex/codex_index.json     — pointer[] of {sid, ch, path, source}
+  ~/workspace/llm_map/llm_index_compact.jsonl    — one row per file with AST hashes
+  ~/workspace/llm_map/_TOOL_TAXONOMY/            — tool classification
+
+Usage:
+    scripts-db pointer <substring>    match pointer paths
+    scripts-db sid <session-id>       every pointer with this sid
+    scripts-db source <pattern>       filter by source kind
+    scripts-db taxonomy <category>    list tools in taxonomy category
+    scripts-db stats                  counts per source / project
+"""
+import sys, json, pathlib, re, collections
+
+HOME = pathlib.Path.home()
+CODEX = HOME/"cli-synthegration"/"codex"/"codex_index.json"
+LLM = HOME/"workspace"/"llm_map"/"llm_index_compact.jsonl"
+TAX = HOME/"workspace"/"llm_map"/"_TOOL_TAXONOMY"
+
+def load_codex():
+    try: d = json.loads(CODEX.read_text())
+    except Exception: return []
+    return d.get("pointers", []) if isinstance(d, dict) else []
+
+def cmd_pointer(sub):
+    for p in load_codex():
+        if sub in (p.get("path") or ""):
+            print(f"{p.get('sid','?')[:16]}  {p.get('source','?'):12s}  {p['path']}")
+
+def cmd_sid(sid):
+    for p in load_codex():
+        if p.get("sid","").startswith(sid):
+            print(f"{p.get('source','?'):12s}  {p['path']}")
+
+def cmd_source(pat):
+    for p in load_codex():
+        if re.search(pat, p.get("source","") or ""):
+            print(f"{p.get('sid','?')[:16]}  {p.get('source','?'):12s}  {p['path']}")
+
+def cmd_taxonomy(cat):
+    d = TAX/cat
+    if not d.is_dir():
+        print(f"no taxonomy category: {cat}"); return
+    for f in sorted(d.rglob("*.json")):
+        try: j = json.loads(f.read_text())
+        except Exception: continue
+        if isinstance(j, dict):
+            for k, v in j.items():
+                print(f"  {f.name}: {k} = {str(v)[:100]}")
+
+def cmd_stats():
+    by_source = collections.Counter(p.get("source","?") for p in load_codex())
+    print("  pointers by source:")
+    for s, n in by_source.most_common():
+        print(f"    {s:20s} {n}")
+    if LLM.exists():
+        by_proj = collections.Counter()
+        for line in LLM.read_text(errors="ignore").splitlines():
+            try: r = json.loads(line)
+            except Exception: continue
+            by_proj[r.get("pj","?")] += 1
+        print()
+        print("  llm_index rows by project:")
+        for p, n in by_proj.most_common(15):
+            print(f"    {p:20s} {n}")
+
+if __name__ == "__main__":
+    cmd = sys.argv[1] if len(sys.argv) > 1 else "stats"
+    arg = sys.argv[2] if len(sys.argv) > 2 else ""
+    {"pointer": cmd_pointer, "sid": cmd_sid, "source": cmd_source,
+     "taxonomy": cmd_taxonomy, "stats": cmd_stats}.get(cmd, cmd_stats)(arg)

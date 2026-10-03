@@ -1,0 +1,130 @@
+#!/data/data/com.termux/files/usr/bin/env python3
+"""toolbelt-status — consolidated awareness of every script on this device.
+
+Two jobs:
+  1. inventory  — count scripts per directory, detect duplicates by content
+  2. symlink    — consolidate executables into ~/.local/bin (safe, idempotent)
+
+Usage:
+    toolbelt-status inventory         # read-only count + dupes
+    toolbelt-status symlink           # create missing links
+    toolbelt-status doctor            # show which of PATH bins are broken
+    toolbelt-status report            # write markdown to downloads
+
+Extend by editing CANDIDATES below. Modularize by moving the directory
+map into ~/.config/toolbelt/roots.json.
+"""
+import os, sys, json, subprocess, pathlib, hashlib, time
+
+HOME = pathlib.Path.home()
+ROOTS_JSON = HOME/".config"/"toolbelt"/"roots.json"
+LINK_DIR = HOME/".local"/"bin"
+OUTDIR = HOME/"storage"/"downloads"/"_doing"/"scans"
+
+# default roots — override via ~/.config/toolbelt/roots.json
+DEFAULTS = {
+    "bin":                       "bin",
+    ".local/bin":                ".local/bin",
+    "scripts":                   "scripts",
+    "tools":                     "tools",
+    "ops":                       "ops",
+    "harmony_hub/utility_belt":  "harmony_hub/utility_belt",
+    "workspace/llm_map":         "workspace/llm_map",
+    "archwiz":                   "archwiz",
+    "nexuscli":                  "nexuscli",
+    "cli-synthegration":         "cli-synthegration",
+    "synthegration-cli":         "synthegration-cli",
+}
+
+def roots():
+    if ROOTS_JSON.exists():
+        try: return json.loads(ROOTS_JSON.read_text())
+        except Exception: pass
+    return DEFAULTS
+
+def scan():
+    out = {}
+    for label, rel in roots().items():
+        p = HOME / rel
+        if not p.is_dir(): continue
+        files = []
+        for f in p.rglob("*"):
+            if f.is_file() and not f.is_symlink() and f.stat().st_size < 2_000_000:
+                if f.suffix in (".sh", ".py", ".cjs", ".js") or                    (f.suffix == "" and (f.stat().st_mode & 0o111)):
+                    files.append(f)
+        out[label] = files
+    return out
+
+def sha16(p):
+    try: return hashlib.sha256(p.read_bytes()).hexdigest()[:16]
+    except Exception: return None
+
+def inventory():
+    inv = scan()
+    total = 0
+    for label, files in inv.items():
+        print(f"  {label:32s}  {len(files):5d}")
+        total += len(files)
+    print(f"  {'TOTAL':32s}  {total:5d}")
+
+    # duplicate content detection
+    by_sha = {}
+    for label, files in inv.items():
+        for f in files:
+            h = sha16(f)
+            if h: by_sha.setdefault(h, []).append(f)
+    dupes = [(h, paths) for h, paths in by_sha.items() if len(paths) > 1]
+    print(f"\n  content-identical scripts: {len(dupes)}")
+    for h, paths in dupes[:10]:
+        print(f"    {h}  ({len(paths)} copies)")
+        for p in paths[:3]:
+            print(f"      {p.relative_to(HOME)}")
+
+def symlink():
+    inv = scan()
+    LINK_DIR.mkdir(parents=True, exist_ok=True)
+    added, skipped, conflicted = 0, 0, 0
+    for label, files in inv.items():
+        if label in ("bin", ".local/bin"): continue
+        for f in files:
+            name = f.stem if f.suffix else f.name
+            if any(x in name for x in (".bak", ".new", ".tmp", ".old",
+                                        "-v2", "-v3", "-v4", "-v5")): 
+                skipped += 1; continue
+            link = LINK_DIR / name
+            if link.exists() or link.is_symlink():
+                skipped += 1; continue
+            try:
+                link.symlink_to(f); added += 1
+            except Exception:
+                conflicted += 1
+    print(f"  added={added}  skipped={skipped}  conflicted={conflicted}")
+    print(f"  {LINK_DIR.relative_to(HOME)}: {len(list(LINK_DIR.iterdir()))} entries")
+
+def doctor():
+    bins = list(LINK_DIR.iterdir())
+    broken = [b for b in bins if b.is_symlink() and not b.exists()]
+    print(f"  total links: {len(bins)}  broken: {len(broken)}")
+    for b in broken[:20]:
+        print(f"    BROKEN  {b.name}  ->  {b.readlink()}")
+
+def report():
+    OUTDIR.mkdir(parents=True, exist_ok=True)
+    TS = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
+    out = OUTDIR / f"toolbelt-report-{TS}.md"
+    buf = [f"# toolbelt report {TS}", ""]
+    inv = scan()
+    for label, files in inv.items():
+        buf.append(f"## {label}  ({len(files)})")
+        for f in files:
+            buf.append(f"- `{f.relative_to(HOME)}`")
+        buf.append("")
+    out.write_text("\n".join(buf))
+    print(f"  → {out}")
+    subprocess.run(["termux-media-scan", "-r", str(out.parent)],
+                   capture_output=True)
+
+if __name__ == "__main__":
+    cmd = sys.argv[1] if len(sys.argv) > 1 else "inventory"
+    {"inventory": inventory, "symlink": symlink,
+     "doctor": doctor, "report": report}.get(cmd, inventory)()

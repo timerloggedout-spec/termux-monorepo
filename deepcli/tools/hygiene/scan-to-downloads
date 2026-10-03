@@ -1,0 +1,17 @@
+#!/data/data/com.termux/files/usr/bin/env bash
+# scan-to-downloads — pipe any command's stdout+stderr to a dated file
+# in ~/storage/downloads/_doing/scans/ for attach-to-chat reuse.
+set -eu
+NAME="${1:-scan}"
+shift || true
+DIR="$HOME/storage/downloads/_doing/scans"
+mkdir -p "$DIR"
+TS="$(date -u +%Y%m%dT%H%M%SZ)"
+OUT="$DIR/${NAME}-${TS}.md"
+{
+  echo "# $NAME  $TS"
+  echo
+  "$@" 2>&1
+} | tee "$OUT"
+echo
+echo "→ $OUT"

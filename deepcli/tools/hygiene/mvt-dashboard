@@ -74,9 +74,17 @@ def count_messages(path, cache):
 
 def aggregate_message_totals():
     """Return dict with totals and per-session detail. Uses cache so second
-    call is fast (only changed files re-parse)."""
+    call is fast (only changed files re-parse). Scans primary/secondary/flat
+    so writes to any of them are counted."""
     cache = load_count_cache()
-    sessions = list(SS.glob("*.json"))
+    sessions = []
+    seen = set()
+    for base in (SS/"primary", SS/"secondary", SS):
+        if not base.is_dir(): continue
+        for f in base.glob("*.json"):
+            if f.stem in seen: continue
+            seen.add(f.stem)
+            sessions.append(f)
     total = 0
     biggest = []
     newest = None
@@ -184,7 +192,15 @@ def main():
         try: listener_id = ACT.read_text().strip() or None
         except Exception: pass
 
-    files = sorted(SS.glob("*.json"), key=lambda f: f.stat().st_mtime, reverse=True)
+    _raw = []
+    _seen = set()
+    for _base in (SS/"primary", SS/"secondary", SS):
+        if not _base.is_dir(): continue
+        for _f in _base.glob("*.json"):
+            if _f.stem in _seen: continue
+            _seen.add(_f.stem)
+            _raw.append(_f)
+    files = sorted(_raw, key=lambda f: f.stat().st_mtime, reverse=True)
     by_type = {"DEEPAGENT": [], "LISTENER": [], "UI": []}
     for f in files:
         by_type[session_type(f.stem, deep_ids, listener_id)].append(f)

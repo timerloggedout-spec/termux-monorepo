@@ -131,7 +131,11 @@ def score(events, next_action=None, env=None):
         return result
 
     # destructive on a cached-but-unrecoverable agent
-    if next_action == "KILL_AGENT" and env.get("pubring_size", 0) < 100 and env.get("agent_grips", 0) > 0:
+    # (env may be None when the caller relies on the live env_state()
+    # probe inside env_risk(); guard before touching env keys)
+    if (next_action == "KILL_AGENT" and env is not None
+            and env.get("pubring_size", 0) < 100
+            and env.get("agent_grips", 0) > 0):
         result["level"] = "RED"
         result["reason"] = "KILL_AGENT on cached agent with empty pubring — no recovery"
         return result

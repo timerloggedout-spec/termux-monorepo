@@ -3,7 +3,13 @@
 import sys, pathlib, unittest
 
 sys.path.insert(0, str(pathlib.Path.home() / "deepcli"))
-from deepcli._v1_preflight import score, pattern_match, penalty_count, env_risk
+from deepcli._v1_preflight import (
+    score,
+    pattern_match,
+    penalty_count,
+    env_risk,
+    PUBRING_MIN_BYTES,
+)
 
 
 class TestPreflight(unittest.TestCase):
@@ -30,6 +36,38 @@ class TestPreflight(unittest.TestCase):
 
     def test_read_green(self):
         self.assertEqual(score([], next_action="TOTP_CALL")["level"], "GREEN")
+
+    def test_pubring_threshold_is_named_constant(self):
+        # boundary is exactly PUBRING_MIN_BYTES: one byte below is risky, at it is ok
+        s_below, _ = env_risk(
+            {
+                "agent_grips": 3,
+                "pubring_size": PUBRING_MIN_BYTES - 1,
+                "pass_2fa_exists": True,
+            }
+        )
+        s_at, _ = env_risk(
+            {
+                "agent_grips": 3,
+                "pubring_size": PUBRING_MIN_BYTES,
+                "pass_2fa_exists": True,
+            }
+        )
+        self.assertEqual(s_below, 4)
+        self.assertEqual(s_at, 0)
+
+    def test_kill_recovery_uses_named_constant(self):
+        # exactly at threshold with a live grip -> NOT the empty-pubring branch
+        env = {
+            "agent_grips": 2,
+            "pubring_size": PUBRING_MIN_BYTES,
+            "pass_2fa_exists": True,
+        }
+        r = score([], next_action="KILL_AGENT", env=env)
+        self.assertNotEqual(
+            r["reason"],
+            "KILL_AGENT on cached agent with empty pubring \u2014 no recovery",
+        )
 
 
 class TestEnvRisk(unittest.TestCase):

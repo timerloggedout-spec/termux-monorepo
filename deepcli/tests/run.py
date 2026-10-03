@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import sys, pathlib, unittest
 HERE = pathlib.Path(__file__).parent
+ROOT = HERE.parent  # repo root containing the deepcli package
+sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(HERE))
 
 def main():

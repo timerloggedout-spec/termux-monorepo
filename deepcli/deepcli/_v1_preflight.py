@@ -109,6 +109,8 @@ def env_risk(state=None):
 
 def score(events, next_action=None, env=None):
     """Return dict with level GREEN/AMBER/RED and reason."""
+    if env is None:
+        env = env_state()
     p_score, p_gram = pattern_match(events)
     e_score = penalty_count(events)
     env_score, env_weights = env_risk(env)
@@ -157,3 +159,17 @@ def score(events, next_action=None, env=None):
         return result
 
     return result
+
+
+def check_action(action, events=None, env=None):
+    """Preflight for a single named action.
+
+    Documented in the module docstring but previously undefined (API drift).
+    Thin wrapper over score(): it asks whether doing `action` now is risky
+    given the recent event stream and live environment.
+
+    Returns the same dict shape as score(), with `next_action` pinned to
+    `action`. Destructive actions on a fragile/recovery-less environment
+    surface as RED; a benign action on a healthy env stays GREEN.
+    """
+    return score(events or [], next_action=action, env=env)

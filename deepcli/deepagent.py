@@ -1683,6 +1683,89 @@ def _autosnapshot(reason: str = "auto"):
         pass
 
 
+# ─── hygiene_preflight ─────────────────────────────────────────────────
+# Runs at the top of loop(). Refuses to start if the environment is not
+# safe for the work. Reports but does not delete anything — branch
+# retention is enforced via gh_worktree remove refusal (BRANCH-RETENTION.md).
+
+def _mem_kb():
+    try:
+        for line in pathlib.Path("/proc/meminfo").read_text().splitlines():
+            if line.startswith("MemAvailable:"):
+                return int(line.split()[1])
+    except Exception:
+        pass
+    return 999_999_999
+
+def _swap_free_kb():
+    try:
+        for line in pathlib.Path("/proc/meminfo").read_text().splitlines():
+            if line.startswith("SwapFree:"):
+                return int(line.split()[1])
+    except Exception:
+        pass
+    return 999_999_999
+
+def _worktree_count():
+    try:
+        r = subprocess.run(["git","-C",str(HOME),"worktree","list","--porcelain"],
+                           capture_output=True, text=True, timeout=10)
+        return sum(1 for l in r.stdout.splitlines() if l.startswith("worktree "))
+    except Exception:
+        return -1
+
+def _log_dir_size_mb():
+    try:
+        total = 0
+        for p in (HOME/".deepcli"/"logs").rglob("*"):
+            if p.is_file():
+                total += p.stat().st_size
+        return total // (1024*1024)
+    except Exception:
+        return -1
+
+def hygiene_preflight(verbose=True):
+    """Return dict; refuse if environment unsafe. Non-destructive."""
+    mem_mb  = _mem_kb()  // 1024
+    swap_mb = _swap_free_kb() // 1024
+    wt      = _worktree_count()
+    log_mb  = _log_dir_size_mb()
+    state = {
+        "mem_available_mb": mem_mb,
+        "swap_free_mb":     swap_mb,
+        "worktrees":        wt,
+        "log_dir_mb":       log_mb,
+        "ok": True,
+        "reasons": [],
+    }
+    # gates
+    if mem_mb < 300:
+        state["ok"] = False
+        state["reasons"].append(f"mem_available={mem_mb}MB < 300MB floor")
+    if swap_mb < 150:
+        state["ok"] = False
+        state["reasons"].append(f"swap_free={swap_mb}MB < 150MB floor")
+    if wt > 50:
+        state["ok"] = False
+        state["reasons"].append(f"worktrees={wt} — inventory cleanup required")
+    if verbose:
+        print(f"  [hygiene] mem={mem_mb}MB swap={swap_mb}MB worktrees={wt} logs={log_mb}MB")
+        for r in state["reasons"]:
+            print(f"  [hygiene] REFUSE: {r}")
+    return state
+
+
+def post_loop_cleanup():
+    """Non-destructive: log inventory, no deletion."""
+    try:
+        wt = _worktree_count()
+        log_mb = _log_dir_size_mb()
+        mem_mb = _mem_kb() // 1024
+        print(f"  [hygiene-post] mem={mem_mb}MB worktrees={wt} logs={log_mb}MB")
+    except Exception:
+        pass
+
+
 def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False, category="default"):
     """Loop until finish OR no-progress detected. Ceiling is safety, not policy."""
     print(f"\n▶ task: {task}\n")
@@ -1864,6 +1947,7 @@ def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False
                     except Exception:
                         pass
                 _autosnapshot("finish")
+                post_loop_cleanup()
                 _notify(
                     "run",
                     "✅ Agent done",

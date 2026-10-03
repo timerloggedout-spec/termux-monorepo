@@ -1,3 +1,13 @@
+# BASE BRANCH: feat/dashboard-lanes-v2
+
+All worktrees created for this task MUST use:
+    gh_worktree(action="create", base="feat/dashboard-lanes-v2", branch="...")
+
+All PRs MUST be opened against feat/dashboard-lanes-v2, not master.
+master is reserved for eventual promotion, not iteration targets.
+
+---
+
 # REVIEW REQUIRED — first iteration produces PLAN.md
 
 Do NOT execute edits on iteration 1. Write PLAN.md in the worktree

@@ -119,4 +119,33 @@ jobs:
             exit 0
           fi
           git commit -m "chore(ops): record sweep accountability receipt"
-          git push origin "HEAD:${GITHUB_REF_NAME}"
+          # Receipt races are not compile failures. Run 37082734311 failed
+          # non-fast-forward when another writer moved the ref. Retry once
+          # by rebasing the ledger-only commit; leave the remote tip
+          # authoritative if the ref moves again.
+          set +e
+          push_out="$(git push origin "HEAD:${GITHUB_REF_NAME}" 2>&1)"
+          push_rc=$?
+          set -e
+          printf '%s\n' "$push_out"
+          if [ "$push_rc" -eq 0 ]; then
+            exit 0
+          fi
+          if ! printf '%s\n' "$push_out" | grep -Eq 'non-fast-forward|rejected'; then
+            exit "$push_rc"
+          fi
+          echo "receipt push rejected; rebasing ledger-only commit onto origin/${GITHUB_REF_NAME}"
+          git fetch origin "${GITHUB_REF_NAME}"
+          if git rebase --onto "origin/${GITHUB_REF_NAME}" HEAD~1 HEAD; then
+            set +e
+            retry_out="$(git push origin "HEAD:${GITHUB_REF_NAME}" 2>&1)"
+            retry_rc=$?
+            set -e
+            printf '%s\n' "$retry_out"
+            if [ "$retry_rc" -ne 0 ]; then
+              echo "receipt still superseded after rebase; remote tip remains authoritative"
+            fi
+          else
+            echo "receipt rebase conflict; remote tip remains authoritative"
+            git rebase --abort || true
+          fi

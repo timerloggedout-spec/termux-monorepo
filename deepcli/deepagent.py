@@ -1851,9 +1851,30 @@ def post_loop_cleanup():
         pass
 
 
+# ─── delegate child status writer ────────────────────────
+def _child_status(event, **kw):
+    """Write a status row for the parent process that spawned us."""
+    import json as _j, os as _o, time as _t, pathlib as _p
+    path = _o.environ.get("DEEPAGENT_STATUS_FILE")
+    if not path: return
+    rec = {"ts": int(_t.time()),
+           "iso": _t.strftime("%Y-%m-%dT%H:%M:%SZ", _t.gmtime()),
+           "child": _o.environ.get("DEEPAGENT_CHILD_ID"),
+           "parent": _o.environ.get("DEEPAGENT_PARENT_SESSION"),
+           "account": _o.environ.get("DEEPSEEK_ACCOUNT"),
+           "event": event}
+    rec.update(kw)
+    try:
+        p = _p.Path(path); p.parent.mkdir(parents=True, exist_ok=True)
+        with p.open("a") as f: f.write(_j.dumps(rec, default=str) + "\n")
+    except Exception:
+        pass
+
+
 def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False, category="default"):
     """Loop until finish OR no-progress detected. Ceiling is safety, not policy."""
     print(f"\n▶ task: {task}\n")
+    _child_status("started", task=task[:200])
     import subprocess as _sp
     try:
         _sp.Popen(["$HOME/.local/bin/deepagent-notify".replace("$HOME", str(HOME)), "start", task[:160]],
@@ -2014,6 +2035,7 @@ def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False
                 if sid and not dry_run:
                     session_store.save(key, sid, meta={"last_task": task[:200]})
                     print(f"  [session] saved {sid[:12]}\u2026 for key={key}")
+                    _child_status("finished", sid=sid, summary=(result.get("summary") or "")[:400])
                 try:
                     _elapsed = round(time.time() - _t0, 1)
                 except Exception:
@@ -2076,6 +2098,25 @@ if __name__ == "__main__":
     if "--fresh" in argv:
         fresh = True
         argv.remove("--fresh")
+    account = None
+    if "--account" in argv:
+        i = argv.index("--account")
+        if i + 1 < len(argv):
+            try: account = int(argv[i + 1])
+            except ValueError: account = None
+            del argv[i : i + 2]
+    if account is None:
+        try: account = int(os.environ.get("DEEPSEEK_ACCOUNT", "1"))
+        except Exception: account = 1
+    if account != 1:
+        # swap the config file the core reads
+        os.environ["DEEPSEEK_CONFIG"] = str(HOME / ".deepcli" / f"config-{account}.json")
+        try:
+            import deepcli.core as _c
+            _c.CONFIG_FILE = pathlib.Path(os.environ["DEEPSEEK_CONFIG"])
+        except Exception:
+            pass
+
     if "--task-file" in argv:
         i = argv.index("--task-file")
         if i + 1 < len(argv):

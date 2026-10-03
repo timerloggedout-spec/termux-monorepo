@@ -4,7 +4,7 @@ This is an **optional hot path**, not a second source of truth.
 
 ## Contract
 
-- Input: newline-delimited JSON fragments on stdin.
+- Input: newline-delimited JSON fragments on stdin; each fragment may provide an explicit `bytes` rendered-span size.
 - Output: one JSON analysis object on stdout.
 - Full BLAKE3-256 is retained for identity verification.
 - Human/editable refs use a 128-bit truncated digest encoded as 22 base64url characters.

@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "7cbed438fe5b5b0fcb72a41461e4c410db3524dbebf389c0cd70c3f1d0d23e82",
-  "workflow_count": 121,
+  "source_fingerprint": "f291105407d80c1b91453ba373dc312a81f7a309071ffa03b2ef5ed31522d79e",
+  "workflow_count": 124,
   "workflows": [
     {
       "action_pins": [
@@ -702,6 +702,24 @@
       "concurrency": "",
       "domain": "agentic-development",
       "jobs": [
+        "dispatch"
+      ],
+      "name": "continuous-improve",
+      "path": ".github/workflows/continuous-improve.yml",
+      "schedules": [
+        "0 */8 * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
         "validate"
       ],
       "name": "Credential Inventory Validation",
@@ -729,6 +747,21 @@
       "triggers": [
         "pull_request",
         "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "dispatch"
+      ],
+      "name": "deepagent-task",
+      "path": ".github/workflows/deepagent-task.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },
@@ -1446,6 +1479,24 @@
       "schedules": [],
       "triggers": [
         "pull_request",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "sweep"
+      ],
+      "name": "hygiene-sweep",
+      "path": ".github/workflows/hygiene-sweep.yml",
+      "schedules": [
+        "0 */6 * * *"
+      ],
+      "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },

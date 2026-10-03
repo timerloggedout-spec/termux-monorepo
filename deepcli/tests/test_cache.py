@@ -4,6 +4,7 @@ import sys, time, tempfile, pathlib, unittest
 
 sys.path.insert(0, str(pathlib.Path.home() / "deepcli"))
 from deepcli._v1_cache import atomic_json_dump, read_session, last_msg_ts, is_fresh
+import deepcli._v1_cache as _cache
 
 
 class TestCache(unittest.TestCase):
@@ -54,6 +55,18 @@ class TestCache(unittest.TestCase):
 
     def test_fresh_missing_file(self):
         self.assertFalse(is_fresh(self.tmp / "nope.json"))
+
+    def test_public_api_surface(self):
+        """__all__ is exactly the documented public API, and every name resolves.
+
+        Guards the module docstring's Public API list against drift: each
+        exported name must exist as a callable attribute, and __all__ must
+        not list anything the module does not define.
+        """
+        documented = ("atomic_json_dump", "read_session", "last_msg_ts", "is_fresh")
+        self.assertEqual(sorted(_cache.__all__), sorted(documented))
+        for name in documented:
+            self.assertTrue(callable(getattr(_cache, name)), name)
 
 
 if __name__ == "__main__":

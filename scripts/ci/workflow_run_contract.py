@@ -3,7 +3,7 @@
 
 GitHub treats that omission as an invalid workflow file and records a
 zero-job failure. Runs 37085767517 and 37085844806 on n8n-she-bridge.yml
-were that class. This check is stdlib-only so repo gate can run it.
+were that class. Evidence follow-up on receipt ab4de3c2 so current SHA is gated. This check is stdlib-only so repo gate can run it.
 """
 
 from __future__ import annotations

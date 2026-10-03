@@ -121,3 +121,30 @@ That distinction prevents documentation from pretending a single-provider invoca
 `RECON → PLAN/MEASURE → ACT → COMMIT → WAIT → WATCH → VALIDATE → RE-FETCH → COMPARE → CLASSIFY → RECORD → REPEAT`
 
 The routing plane plugs into this loop at **CLASSIFY → admission → selection → execution → evidence**, while the observation/watch plane remains independent and immutable.
+
+
+## Executable topology boundary
+
+The routing topology contract is now executable through `scripts/routing_topology.py`.
+
+- `single`: one admitted participant.
+- `series`: ordered handoff; each stage receives the previous output.
+- `parallel`: bounded concurrent independent treatments.
+- `dynamic`: selection is recomputed from an explicit selector/context.
+- `nested`: a bounded participant may return a subordinate route specification.
+- `co-working`: participants operate against explicit shared state.
+- `volley`: bounded alternating passes with an explicit stop condition.
+
+Every execution emits `routing-execution/v1` evidence containing declared participants,
+actually executed participants, outputs, round count, status, timestamp, and sanitized
+error classes.
+
+This preserves the invariant:
+
+`declared route != executed route != successful outcome`.
+
+The executor does **not** perform provider admission, credential validation, security
+authorization, or quality scoring. Those remain upstream control-plane responsibilities.
+A topology implementation is therefore not evidence of provider quality, and a failed
+participant is recorded as execution evidence rather than silently converted into a
+routing preference.

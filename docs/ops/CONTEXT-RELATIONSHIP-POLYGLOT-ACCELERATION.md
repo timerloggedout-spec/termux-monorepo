@@ -114,7 +114,7 @@ python -m archwiz.context_relationships.source_collector ...
 
 Without the binary, the Python reference path continues unchanged.
 
-For production CI, the dedicated Rust workflow compiles and tests the accelerator. It is path-triggered so Rust minutes are not spent on unrelated Python-only changes.
+For production CI, the existing context-relationship validation workflow compiles and tests the accelerator. Its existing graph path trigger admits the Rust lane without creating a second validation surface.
 
 ## Rejected designs
 

@@ -28,6 +28,7 @@ heuristic honest:
 from __future__ import annotations
 
 import importlib.util
+import json
 import subprocess
 import sys
 import tempfile
@@ -438,19 +439,22 @@ class PyYamlAgreementTests(unittest.TestCase):
         This is the regression guard the whole check exists for: a new blind spot
         fails here rather than shipping as silence in CI.
         """
-        candidates = (
-            sorted(ROOT.glob(".github/workflows/*.y*ml"))
-            + sorted(ROOT.glob("docs/schemas/*.y*ml"))
-            + sorted(ROOT.glob("docs/research/*.y*ml"))
+        candidates = sorted(
+            (
+                entry
+                for entry in repo_gate.read_index()
+                if repo_gate.CONTROL_PLANE_YAML_RE.match(entry.path)
+                and not entry.is_symlink
+                and not entry.is_gitlink
+            ),
+            key=lambda entry: entry.path,
         )
         self.assertTrue(candidates, "no in-scope YAML files found — scope regex drifted")
         missed = []
         false_positives = []
-        for path in candidates:
-            rel = path.relative_to(ROOT).as_posix()
-            if repo_gate.CONTROL_PLANE_YAML_RE.match(rel) is None:
-                self.fail(f"{rel} matched neither scope nor glob — regex drifted")
-            text = path.read_text(encoding="utf-8", errors="replace")
+        for entry in candidates:
+            rel = entry.path
+            text = repo_gate.blob(entry.sha).decode("utf-8", "replace")
             parses = self._parses(text)
             flagged = bool(repo_gate.yaml_structure_faults(text))
             if parses and flagged:
@@ -521,6 +525,12 @@ class RepoGateIntegrationTests(unittest.TestCase):
         self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
 
     def test_ratchet_counter_records_invalid_control_plane_yaml(self) -> None:
+        # Pin this temp repo's allowance so the test does not depend on the real
+        # baseline, which is 0 once the repository has no invalid control-plane YAML.
+        baseline_path = self.repo / "scripts" / "ci" / "baseline.json"
+        baseline = json.loads(baseline_path.read_text())
+        baseline["counters"]["invalid_control_plane_yaml"] = 1
+        baseline_path.write_text(json.dumps(baseline))
         workflow = self.repo / ".github" / "workflows" / "ci.yml"
         workflow.write_text(self.BROKEN)
         self._git("add", "-A")

@@ -51,3 +51,16 @@ jobs:
           python -m archwiz.context_relationships.compiler \
             --input tests/fixtures/context_relationships/seed.json \
             --validate
+
+      - name: Validate committed temporal lineage when present
+        run: |
+          set -euo pipefail
+          lineage=workspace/llm_map/context_relationships/temporal/lineage.jsonl
+          manifest=workspace/llm_map/context_relationships/manifest.json
+          if [ -f "$lineage" ] && [ -f "$manifest" ]; then
+            python scripts/ci/verify_context_temporal_lineage.py \
+              --lineage "$lineage" \
+              --manifest "$manifest"
+          else
+            echo 'Temporal corpus lineage not present in this candidate; runtime corpus validation remains authoritative.'
+          fi

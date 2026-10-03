@@ -29,7 +29,53 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
+      - name: Skip historical non-tip zero-job
+        id: class
+        env:
+          RID: ${{ github.event.workflow_run.id || github.event.inputs.run_id }}
+          HEAD: ${{ github.event.workflow_run.head_sha || '' }}
+          CONCLUSION: ${{ github.event.workflow_run.conclusion || 'failure' }}
+          EVENT_NAME: ${{ github.event_name }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT_NAME" = "workflow_dispatch" ] || [ -z "${RID:-}" ]; then
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            echo "label=manual" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          TIP=$(gh api "repos/${{ github.repository }}/commits/master" --jq .sha)
+          JOBS=$(gh api "repos/${{ github.repository }}/actions/runs/${RID}/jobs?per_page=1" --jq .total_count)
+          LABEL=$(python3 - "$HEAD" "$TIP" "$JOBS" "$CONCLUSION" <<'PY'
+          import sys
+          head, tip, jobs, conclusion = sys.argv[1:5]
+          try:
+              job_count = int(jobs)
+          except ValueError:
+              job_count = -1
+          if conclusion != "failure":
+              label = "not-failure"
+          elif job_count != 0:
+              label = "has-jobs"
+          elif not head or not tip:
+              label = "insufficient-evidence"
+          elif head == tip:
+              label = "current-tip-zero-job"
+          else:
+              label = "historical-non-tip-zero-job"
+          print(label)
+          PY
+          )
+          echo "label=$LABEL" >> "$GITHUB_OUTPUT"
+          if [ "$LABEL" = "historical-non-tip-zero-job" ]; then
+            echo "::notice::Run $RID is a zero-job failure on $HEAD, not master tip $TIP. Not a current-tree repair."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo '{"phase":"skipped","reason":"historical-non-tip-zero-job"}' > agent_status.json
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
       - name: Build payload
+        if: steps.class.outputs.skip != 'true'
         env:
           RID: ${{ github.event.workflow_run.id || github.event.inputs.run_id }}
           WN:  ${{ github.event.workflow_run.name || 'manual' }}
@@ -44,10 +90,12 @@ jobs:
           3. Diagnose.
           4. Apply ONE fix via gh_worktree then commit_push_pr.
           5. Report the PR URL as finish summary.
-          If environmental (missing secret, quota), finish with validation=deferred. Never auto-merge."
+          If environmental (missing secret, quota), finish with validation=deferred. Never auto-merge.
+          If the failed run head SHA is not the current master tip and the run has zero jobs, finish with validation=deferred and class=historical-non-tip-zero-job."
           jq -n --arg t "$TASK" --arg r "$RID" '{task:$t, source:("gh-fix-on-failure:"+$r)}' > payload.json
           cat payload.json
       - name: Dispatch to local agent
+        if: steps.class.outputs.skip != 'true'
         env:
           URL: ${{ secrets.DEEPSEEK_AGENT_URL }}
           TOK: ${{ secrets.DEEPSEEK_AGENT_TOKEN }}

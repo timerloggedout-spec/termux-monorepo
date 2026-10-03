@@ -50,6 +50,7 @@ jobs:
             tests/test_context_relationship_query.py \
             tests/test_context_temporal_query.py \
             tests/test_context_relationship_build_index.py \
+            tests/test_context_relationship_rust_accel.py \
             -q
           python -m archwiz.context_relationships.compiler \
             --input tests/fixtures/context_relationships/seed.json \
@@ -67,3 +68,33 @@ jobs:
           else
             echo 'Temporal corpus lineage not present in this candidate; runtime corpus validation remains authoritative.'
           fi
+
+  rust-accelerator:
+    name: Rust accelerator
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: archwiz/context_relationships/rust_accel
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          components: rustfmt, clippy
+
+      - name: Format
+        run: cargo fmt --check
+
+      - name: Check
+        run: cargo check
+
+      - name: Test
+        run: cargo test
+
+      - name: Clippy
+        run: cargo clippy --all-targets --all-features -- -D warnings

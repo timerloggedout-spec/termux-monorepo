@@ -311,6 +311,35 @@ except Exception as _e:  # pragma: no cover
     print(f"[server] hindsight router skipped: {_e}")
 
 
+# ── OpenAI-compatible tool surface + agent runner ───────────────────────────
+# Mount the /v1/chat/completions tool-calling router (_v1_tools) and the
+# async agent-run router (_v1_agent) so the deepagent tool path
+# (hindsight_retain / hindsight_recall / hindsight_reflect advertised to the
+# model) and the /v1/agent/* job surface are actually served by this process.
+# Invariant: the mount is best-effort; a missing optional dep degrades the
+# surface but never prevents server startup.
+try:
+    try:
+        from deepcli._v1_tools import router as _tools_router
+    except Exception:
+        from _v1_tools import router as _tools_router  # noqa
+    app.include_router(_tools_router)
+    print("[server] /v1 chat-completions (tool-calling) router mounted")
+except Exception as _te:  # pragma: no cover
+    print(f"[server] /v1 tools router skipped: {_te}")
+
+try:
+    try:
+        from deepcli._v1_agent import router as _agent_router
+    except Exception:
+        from _v1_agent import router as _agent_router  # noqa
+    app.include_router(_agent_router)
+    print("[server] /v1/agent async-run router mounted")
+except Exception as _ae:  # pragma: no cover
+    print(f"[server] /v1/agent router skipped: {_ae}")
+
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8800)

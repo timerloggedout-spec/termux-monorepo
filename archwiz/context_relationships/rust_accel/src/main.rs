@@ -149,7 +149,7 @@ mod tests {
 
     #[test]
     fn reference_is_128_bit_and_collision_safe_by_full_hash() {
-        let f = Fragment { id: "a".into(), level: "function".into(), text: "hello".into(), children: vec![] };
+        let f = Fragment { id: "a".into(), level: "function".into(), text: "hello".into(), children: vec![], bytes: None };
         let hash = digest(&f);
         assert_eq!(ref_id(&hash).len(), 22);
         assert_eq!(hash.len(), 32);

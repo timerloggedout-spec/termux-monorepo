@@ -17,6 +17,7 @@ import json
 import os
 import ssl
 import urllib.error
+import urllib.parse
 import urllib.request
 
 TIMEOUT = 30
@@ -28,15 +29,40 @@ def now():
     return dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
-def request(url, *, token=None, method="GET", payload=None):
+def request(url, *, token=None, method="GET", payload=None, query_token=None):
+    """Perform a JSON request with auth transport chosen explicitly by the caller."""
     headers = {"User-Agent": UA, "Accept": "application/json", "Content-Type": "application/json"}
     if token:
         headers["Authorization"] = f"Bearer {token}"
+    if query_token:
+        separator = "&" if "?" in url else "?"
+        url = f"{url}{separator}{urllib.parse.urlencode({'key': query_token})}"
     data = json.dumps(payload).encode() if payload is not None else None
     req = urllib.request.Request(url, data=data, headers=headers, method=method)
     with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
         raw = resp.read()
         return resp.status, json.loads(raw.decode("utf-8")) if raw else {}
+
+
+def classify_error(error):
+    """Reduce transport failures to stable, non-secret health classes."""
+    if isinstance(error, urllib.error.HTTPError):
+        code = error.code
+        if code in {401, 403}:
+            return "credential_rejected"
+        if code == 429:
+            return "quota_or_rate_limit"
+        if 500 <= code < 600:
+            return "provider_5xx"
+        return f"http_{code}"
+    if isinstance(error, TimeoutError):
+        return "timeout"
+    if isinstance(error, urllib.error.URLError):
+        reason = str(getattr(error, "reason", "")).lower()
+        if "timed out" in reason or "timeout" in reason:
+            return "timeout"
+        return "network_error"
+    return type(error).__name__
 
 
 def result(provider):
@@ -59,6 +85,7 @@ def probe_catalog(provider, url, token, row):
     try:
         status, payload = request(url, token=token)
         models = payload.get("data", []) if isinstance(payload, dict) else []
+        row["catalog_status"] = status
         row["catalog_ok"] = 200 <= status < 300 and isinstance(models, list)
         row["model_count"] = len(models)
         if provider == "openrouter":
@@ -69,9 +96,9 @@ def probe_catalog(provider, url, token, row):
         elif models:
             row["model"] = models[0].get("id")
     except urllib.error.HTTPError as e:
-        row["error_class"] = f"http_{e.code}"
+        row["error_class"] = classify_error(e)
     except Exception as e:
-        row["error_class"] = type(e).__name__
+        row["error_class"] = classify_error(e)
 
 
 def openrouter_inference(row, token):
@@ -89,11 +116,12 @@ def openrouter_inference(row, token):
                 "max_tokens": 8,
             },
         )
+        row["inference_status"] = status
         row["inference_ok"] = 200 <= status < 300
         if not row["inference_ok"]:
             row["error_class"] = f"inference_http_{status}"
     except urllib.error.HTTPError as e:
-        row["error_class"] = f"inference_http_{e.code}"
+        row["error_class"] = classify_error(e)
     except Exception as e:
         row["error_class"] = f"inference_{type(e).__name__}"
 
@@ -107,18 +135,10 @@ def gemini_probe(row, token):
         status, payload = request(
             "https://generativelanguage.googleapis.com/v1beta/models",
             method="GET",
-            url_token=token,
+            query_token=token,
         )
-    except TypeError:
-        # urllib request helper intentionally keeps secrets out of URLs; Gemini uses query auth.
-        try:
-            url = "https://generativelanguage.googleapis.com/v1beta/models?key=" + urllib.parse.quote(token)
-            status, payload = request(url)
-        except Exception as e:
-            row["error_class"] = type(e).__name__
-            return
     except Exception as e:
-        row["error_class"] = type(e).__name__
+        row["error_class"] = classify_error(e)
         return
 
     models = payload.get("models", []) if isinstance(payload, dict) else []
@@ -134,10 +154,11 @@ def gemini_probe(row, token):
     row["model"] = model_name
     try:
         import urllib.parse
-        url = f"https://generativelanguage.googleapis.com/v1beta/{chosen['name']}:generateContent?key={urllib.parse.quote(token)}"
+        url = f"https://generativelanguage.googleapis.com/v1beta/{chosen['name']}:generateContent"
         status, _ = request(
             url,
             method="POST",
+            query_token=token,
             payload={"contents": [{"parts": [{"text": "Reply with exactly: PROVIDER_HEALTH_OK"}]}]},
         )
         row["inference_ok"] = 200 <= status < 300

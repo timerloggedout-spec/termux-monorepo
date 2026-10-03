@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-03T19:16:24Z UTC · receipts=953 · foreign_open=26 · tributes=68_
+_Generated 2026-10-03T19:25:33Z UTC · receipts=953 · foreign_open=27 · tributes=69_
 
 ## Tributes (contributor ledger)
 
+- [Magiclovekorean/unbloarchy#5](https://github.com/Magiclovekorean/unbloarchy/pull/5) · state=open · help-wanted: stake + contribute for #4
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -43,10 +44,10 @@ _Generated 2026-10-03T19:16:24Z UTC · receipts=953 · foreign_open=26 · tribut
 - [bmad-code-org/bmad-loop#819](https://github.com/bmad-code-org/bmad-loop/pull/819) · state=closed · help-wanted: stake + contribute for #780
 - [Hugelidus/Pointcast#48](https://github.com/Hugelidus/Pointcast/pull/48) · state=closed · help-wanted: stake + contribute for #45
 - [mergepay/mergepay-web#552](https://github.com/mergepay/mergepay-web/pull/552) · state=closed · help-wanted: stake + contribute for #546
-- [olcf/olcf-test-harness#280](https://github.com/olcf/olcf-test-harness/pull/280) · state=closed · help-wanted: stake + contribute for #278
 
 ## Foreign open PRs
 
+- [Magiclovekorean/unbloarchy#5](https://github.com/Magiclovekorean/unbloarchy/pull/5) — help-wanted: stake + contribute for #4
 - [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) — help-wanted: stake + contribute for #225
 - [uttrflow/uttrflow-swift#3719](https://github.com/uttrflow/uttrflow-swift/pull/3719) — help-wanted: stake + contribute for #3713
 - [CopilotKit/CopilotKit#7594](https://github.com/CopilotKit/CopilotKit/pull/7594) — help-wanted: stake + contribute for #4775

@@ -22,8 +22,10 @@ from typing import Any
 
 try:
     from .compiler import CompilationError, load_json, path_is_sensitive
+    from .rust_accel import RustAccelerationError, analyze_fragments
 except ImportError:  # Supports direct `python path/to/source_collector.py` use.
     from compiler import CompilationError, load_json, path_is_sensitive
+    from rust_accel import RustAccelerationError, analyze_fragments
 
 COLLECTOR_ID = "archwiz.context_relationships.source_collector@1.0"
 SUPPORTED_LANGUAGES = {".py": "python"}
@@ -40,6 +42,8 @@ class SourceReport:
     unavailable_files: int = 0
     symlink_files: int = 0
     scopes_matched: int = 0
+    accelerator: str = "disabled"
+    accelerator_files: int = 0
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -53,6 +57,8 @@ class SourceReport:
             "unavailable_files": self.unavailable_files,
             "symlink_files": self.symlink_files,
             "scopes_matched": self.scopes_matched,
+            "accelerator": self.accelerator,
+            "accelerator_files": self.accelerator_files,
         }
 
 
@@ -211,6 +217,7 @@ def collect_source_seed(
         }
     ]
     edges: list[dict[str, Any]] = []
+    accelerator_inputs: list[dict[str, Any]] = []
     local_files = {relative_path for _, relative_path, _, _, _ in file_records}
 
     for scope in scopes:
@@ -264,9 +271,13 @@ def collect_source_seed(
                     }
                 )
         try:
+            source_text = path.read_text(encoding="utf-8")
+            accelerator_inputs.append(
+                {"id": relative_path, "level": "file", "text": source_text, "children": []}
+            )
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore", SyntaxWarning)
-                tree = ast.parse(path.read_text(encoding="utf-8"), filename=relative_path)
+                tree = ast.parse(source_text, filename=relative_path)
         except (OSError, UnicodeDecodeError, SyntaxError, RecursionError) as exc:
             report.parser_failures.append({"path": relative_path, "error": str(exc).splitlines()[0]})
             continue
@@ -327,6 +338,36 @@ def collect_source_seed(
                         ],
                     }
                 )
+
+    if accelerator_inputs:
+        try:
+            analysis = analyze_fragments(accelerator_inputs)
+        except RustAccelerationError as exc:
+            raise CompilationError(str(exc)) from exc
+        if analysis is not None:
+            fingerprints = {
+                item["id"]: item
+                for item in analysis.get("fingerprints", [])
+                if isinstance(item, Mapping) and isinstance(item.get("id"), str)
+            }
+            file_nodes = {
+                node["external_id"]: node
+                for node in nodes
+                if node.get("kind") == "file"
+            }
+            for relative_path, fingerprint in fingerprints.items():
+                node = file_nodes.get(relative_path)
+                if node is None:
+                    continue
+                node["attributes"]["fingerprint"] = {
+                    "algorithm": "BLAKE3-256",
+                    "hash": fingerprint["full_hash"],
+                    "ref": fingerprint["ref_id"],
+                }
+            report.accelerator = "rust"
+            report.accelerator_files = len(fingerprints)
+        else:
+            report.accelerator = "unavailable"
 
     seed = {
         "schema_version": "1.0",

@@ -34,9 +34,6 @@ on:
     types: [opened, edited, closed, reopened, labeled, unlabeled, assigned, unassigned]
   issue_comment:
     types: [created, edited, deleted]
-  workflow_run:
-    workflows: ["*"]
-    types: [completed]
 
 permissions:
   contents: write

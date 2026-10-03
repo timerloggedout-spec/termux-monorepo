@@ -27,7 +27,7 @@ def make_snapshot(tmp_path: Path, observed_at: str, start: int, next_page: int |
         }],
         edges=[],
         coverage="COMPLETE" if next_page is None else "PARTIAL_CONTINUATION_REQUIRED",
-        delta={"counts": delta_counts or {"nodes_added": 1 if title == "one" else 0, "nodes_changed": 1 if title != "one" else 0}},
+        delta={"counts": delta_counts if delta_counts is not None else {"nodes_added": 1 if title == "one" else 0, "nodes_changed": 1 if title != "one" else 0}},
     )
     temporal = tmp_path / "temporal"
     write_snapshot(
@@ -74,6 +74,7 @@ def test_between_and_changes_only_are_deterministic(tmp_path):
     first = make_snapshot(tmp_path, "2026-10-01T10:00:00Z", 1, 2, "one")
     second = make_snapshot(tmp_path, "2026-10-02T10:00:00Z", 2, 3, "two")
     third = make_snapshot(tmp_path, "2026-10-03T10:00:00Z", 3, None, "three")
+    fourth = make_snapshot(tmp_path, "2026-10-04T10:00:00Z", 4, None, "three", delta_counts={})
 
     selected = snapshots_between(tmp_path, "2026-10-01T00:00:00Z", "2026-10-02T23:59:59Z")
     assert [row["snapshot_id"] for row in selected] == [first["snapshot_id"], second["snapshot_id"]]

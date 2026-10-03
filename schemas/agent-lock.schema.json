@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/schemas/agent-lock.schema.json",
+  "title": "Agent Harness Admission Lock",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "manifest_id",
+    "components"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "agent-lock.v1"
+    },
+    "manifest_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generated_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "source_repo": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "components": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "component_id",
+          "kind",
+          "source",
+          "version_or_commit",
+          "content_hash",
+          "requested_permissions",
+          "provenance",
+          "admission"
+        ],
+        "properties": {
+          "component_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "mcp_server",
+              "skill",
+              "hook",
+              "subagent",
+              "agent_config",
+              "workflow_extension",
+              "tool"
+            ]
+          },
+          "source": {
+            "type": "string",
+            "format": "uri"
+          },
+          "version_or_commit": {
+            "type": "string",
+            "minLength": 1
+          },
+          "content_hash": {
+            "type": "string",
+            "pattern": "^(sha256:)?[0-9a-fA-F]{64}$"
+          },
+          "requested_permissions": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "filesystem",
+              "network",
+              "process",
+              "secrets"
+            ],
+            "properties": {
+              "filesystem": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "network": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "process": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "secrets": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "provenance": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "observed_at",
+              "evidence_status"
+            ],
+            "properties": {
+              "observed_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "evidence_status": {
+                "enum": [
+                  "confirmed",
+                  "research",
+                  "attributed",
+                  "signal",
+                  "speculative",
+                  "disputed"
+                ]
+              },
+              "source_commit": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "admission": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "status",
+              "reason"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "UNVALIDATED",
+                  "ADMITTED",
+                  "REJECTED",
+                  "HOLD"
+                ]
+              },
+              "reason": {
+                "type": "string"
+              },
+              "policy_version": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -7,6 +7,8 @@ on:
       - 'config/context_relationships/**'
       - 'tests/test_context_relationship_*.py'
       - 'tests/test_context_temporal_lineage.py'
+      - 'tests/test_context_temporal_query.py'
+      - 'archwiz/context_relationships/temporal_query.py'
       - 'scripts/ci/verify_context_temporal_lineage.py'
       - 'tests/fixtures/context_relationships/**'
       - '.github/workflows/context-relationship-*.yml'

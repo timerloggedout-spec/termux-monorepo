@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-03T23:03:49Z UTC · receipts=953 · foreign_open=27 · tributes=69_
+_Generated 2026-10-03T23:20:41Z UTC · receipts=953 · foreign_open=28 · tributes=70_
 
 ## Tributes (contributor ledger)
 
+- [TricklePay/tricklepay-backend#441](https://github.com/TricklePay/tricklepay-backend/pull/441) · state=open · help-wanted: stake + contribute for #395
 - [Magiclovekorean/unbloarchy#5](https://github.com/Magiclovekorean/unbloarchy/pull/5) · state=open · help-wanted: stake + contribute for #4
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
@@ -43,10 +44,10 @@ _Generated 2026-10-03T23:03:49Z UTC · receipts=953 · foreign_open=27 · tribut
 - [inferstep/ATLAS#278](https://github.com/inferstep/ATLAS/pull/278) · state=closed · help-wanted: stake + contribute for #277
 - [bmad-code-org/bmad-loop#819](https://github.com/bmad-code-org/bmad-loop/pull/819) · state=closed · help-wanted: stake + contribute for #780
 - [Hugelidus/Pointcast#48](https://github.com/Hugelidus/Pointcast/pull/48) · state=closed · help-wanted: stake + contribute for #45
-- [mergepay/mergepay-web#552](https://github.com/mergepay/mergepay-web/pull/552) · state=closed · help-wanted: stake + contribute for #546
 
 ## Foreign open PRs
 
+- [TricklePay/tricklepay-backend#441](https://github.com/TricklePay/tricklepay-backend/pull/441) — help-wanted: stake + contribute for #395
 - [Magiclovekorean/unbloarchy#5](https://github.com/Magiclovekorean/unbloarchy/pull/5) — help-wanted: stake + contribute for #4
 - [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) — help-wanted: stake + contribute for #225
 - [uttrflow/uttrflow-swift#3719](https://github.com/uttrflow/uttrflow-swift/pull/3719) — help-wanted: stake + contribute for #3713

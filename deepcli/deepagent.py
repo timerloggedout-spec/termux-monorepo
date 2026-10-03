@@ -1134,6 +1134,10 @@ def _gh_worktree(a):
         r = _sp.run(pr_cmd, capture_output=True, text=True, timeout=60)
         if r.returncode != 0:
             return {"error": f"gh pr create: {r.stderr[-400:]}", "commit_pushed": True}
+        try:
+            _wt_git(["clean", "-fdx"], str(path), timeout=120)
+        except Exception:
+            pass
         return {
             "pr_url": r.stdout.strip(),
             "branch": branch,

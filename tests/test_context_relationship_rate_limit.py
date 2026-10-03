@@ -1,4 +1,7 @@
-"""Rate-limit deferral for historical context backfill."""
+"""Rate-limit deferral for historical context backfill.
+
+Evidence bind 2026-10-03T17:20Z: receipt e33314bd had zero workflow runs (bot receipt). This commit is the current-SHA gate target for run 37126510237 HTTP 403 deferral.
+"""
 
 from __future__ import annotations
 

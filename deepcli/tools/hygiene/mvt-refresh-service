@@ -1,0 +1,30 @@
+#!/data/data/com.termux/files/usr/bin/env python3
+"""Reads active_session, refreshes it via API every 15s. Follows changes."""
+import os, sys, time, pathlib, subprocess
+HOME = pathlib.Path.home()
+sys.path.insert(0, str(HOME/"deepcli"))
+from deepcli.core import get_token, get_history
+
+ACT = HOME/".deepcli"/"active_session"
+INTERVAL = int(os.environ.get("MVT_REFRESH_INTERVAL", "15"))
+
+tok = get_token()
+cur_sid = None
+print(f"mvt-refresh-service started, interval={INTERVAL}s", flush=True)
+
+while True:
+    try:
+        if ACT.exists():
+            sid = ACT.read_text().strip()
+            if sid and sid != cur_sid:
+                print(f"{time.strftime('%H:%M:%S')}  switching to {sid[:20]}", flush=True)
+                cur_sid = sid
+        if cur_sid:
+            msgs = get_history(tok, cur_sid, force_refresh=True)
+            n = len(msgs) if isinstance(msgs, list) else 0
+            print(f"{time.strftime('%H:%M:%S')}  {cur_sid[:12]}  {n} msgs", flush=True)
+        else:
+            print(f"{time.strftime('%H:%M:%S')}  no active session", flush=True)
+    except Exception as e:
+        print(f"{time.strftime('%H:%M:%S')}  err: {type(e).__name__}: {str(e)[:120]}", flush=True)
+    time.sleep(INTERVAL)

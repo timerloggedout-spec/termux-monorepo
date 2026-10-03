@@ -1,0 +1,136 @@
+#!/data/data/com.termux/files/usr/bin/env python3
+"""mvt-status — one-glance view of the MVT system. --copy to clipboard."""
+import os, sys, json, time, pathlib, subprocess
+
+HOME = pathlib.Path.home()
+SS   = HOME/".deepcli"/"session_store"
+TAGF = HOME/".deepcli"/"watchdog"/"session-tags.json"
+CNTF = HOME/".deepcli"/"watchdog"/"msg-count-cache.json"
+INCF = HOME/".deepcli"/"logs"/"hygiene"/"mvt-increments.jsonl"
+ACT  = HOME/".deepcli"/"active_session"
+PIDS = HOME/".deepcli"/"watchdog"
+
+def sz(n):
+    for u in ("B","K","M","G"):
+        if n < 1024: return f"{n:.1f}{u}"
+        n /= 1024
+    return f"{n:.1f}P"
+
+def pid_alive(pid):
+    try: os.kill(int(pid), 0); return True
+    except Exception: return False
+
+def pid_of(name):
+    p = PIDS/f"{name}.pid"
+    if not p.exists(): return None
+    pid = p.read_text().strip()
+    return pid if pid_alive(pid) else None
+
+def ago(ts):
+    age = time.time() - ts
+    if age < 60: return f"{age:.0f}s"
+    if age < 3600: return f"{age/60:.1f}m"
+    if age < 86400: return f"{age/3600:.1f}h"
+    return f"{age/86400:.1f}d"
+
+def count_all():
+    """Return (total, per-root breakdown)."""
+    seen = {}
+    roots = [SS/"primary", SS/"secondary", SS]
+    per_root = {"primary": 0, "secondary": 0, "flat": 0}
+    for base in roots:
+        if not base.is_dir(): continue
+        label = base.name if base.name in per_root else "flat"
+        for f in base.glob("*.json"):
+            if f.stem in seen: continue
+            seen[f.stem] = f
+            try:
+                raw = json.loads(f.read_text())
+                n = len(raw) if isinstance(raw, list) else 0
+                per_root[label] += n
+            except Exception: pass
+    return sum(per_root.values()), len(seen), per_root
+
+def main():
+    lines = []
+    def p(s=""): lines.append(s)
+
+    ts = time.strftime("%Y-%m-%dT%H:%MZ", time.gmtime())
+    p(f"MVT · {ts}")
+    p("─" * 60)
+
+    # active session
+    sid = None
+    if ACT.exists():
+        try: sid = ACT.read_text().strip()
+        except Exception: pass
+    if sid:
+        f = SS/"primary"/f"{sid}.json"
+        if not f.exists(): f = SS/f"{sid}.json"
+        if f.exists():
+            try:
+                raw = json.loads(f.read_text())
+                n = len(raw) if isinstance(raw, list) else 0
+            except Exception: n = 0
+            p(f"active session   {sid[:20]}  ({n} msgs, {ago(f.stat().st_mtime)} old)")
+        else:
+            p(f"active session   {sid[:20]}  (no file)")
+    else:
+        p("active session   (none)")
+
+    # message count
+    total, n_sessions, per_root = count_all()
+    p(f"total messages   {total}")
+    p(f"total sessions   {n_sessions}  (primary={per_root['primary']} flat={per_root['flat']} secondary={per_root['secondary']})")
+
+    # last increment
+    if INCF.exists():
+        try:
+            last = json.loads(INCF.read_text().strip().splitlines()[-1])
+            p(f"last increment   {last.get('iso','?')}  total={last.get('total')}  delta={last.get('delta'):+d}")
+        except Exception: pass
+
+    # running daemons
+    p()
+    p("daemons")
+    for name in ("watchlog", "hygiene-watchdog"):
+        pid = pid_of(name)
+        p(f"  {name:20s} {'running pid=' + pid if pid else 'not running'}")
+    # sv services
+    try:
+        r = subprocess.run(["sv", "status", "hygiene-watchdog"],
+                           capture_output=True, text=True, timeout=5)
+        p(f"  hygiene-watchdog sv  {r.stdout.strip()[:60]}")
+    except Exception: pass
+
+    # tags
+    p()
+    p("tags")
+    try:
+        tags = json.loads(TAGF.read_text())
+        if not tags:
+            p("  (none)")
+        else:
+            from collections import Counter
+            c = Counter()
+            for sid_, e in tags.items():
+                for t in e.get("tags", []):
+                    c[t] += 1
+            for t, n in c.most_common():
+                p(f"  #{t:12s} {n} session(s)")
+    except Exception:
+        p("  (no tag store)")
+
+    # scroll: no more than 20 lines
+    output = "\n".join(lines)
+    print(output)
+
+    if "--copy" in sys.argv:
+        try:
+            subprocess.run(["termux-clipboard-set"], input=output.encode(), timeout=10)
+            print("\n(copied to clipboard)")
+        except Exception as e:
+            print(f"\n(clipboard fail: {e})")
+
+if __name__ == "__main__":
+    main()

@@ -99,6 +99,63 @@ def aggregate_message_totals():
         "top5": biggest[:5],
     }
 
+
+
+# ─── inline MVT scorer (no subprocess) + per-session score cache ──
+MVT_SCORE_PATH = HOME / "deepcli" / "tools" / "hygiene" / "mvt-score"
+SCORE_CACHE_FILE = HOME / ".deepcli" / "watchdog" / "mvt-score-cache.json"
+
+_mvt_mod = None
+def _load_mvt():
+    global _mvt_mod
+    if _mvt_mod is not None: return _mvt_mod
+    if not MVT_SCORE_PATH.exists(): return None
+    try:
+        from importlib.machinery import SourceFileLoader
+        from importlib.util import spec_from_loader, module_from_spec
+        loader = SourceFileLoader("mvt_score_inline", str(MVT_SCORE_PATH))
+        spec = spec_from_loader("mvt_score_inline", loader)
+        m = module_from_spec(spec)
+        import sys as _s
+        _s.modules["mvt_score_inline"] = m
+        loader.exec_module(m)
+        _mvt_mod = m
+        return m
+    except Exception:
+        return None
+
+def load_score_cache():
+    try: return json.loads(SCORE_CACHE_FILE.read_text())
+    except Exception: return {}
+
+def save_score_cache(cache):
+    try:
+        SCORE_CACHE_FILE.parent.mkdir(parents=True, exist_ok=True)
+        SCORE_CACHE_FILE.write_text(json.dumps(cache))
+    except Exception: pass
+
+def scored_levels_for(path, cache):
+    """Return {0: n, 1: n, 2: n} for one session, mtime-cached."""
+    ps = str(path)
+    try: mt = path.stat().st_mtime
+    except Exception: return {0:0,1:0,2:0}
+    ent = cache.get(ps)
+    if ent and abs(float(ent[0]) - mt) < 0.001:
+        return {int(k): int(v) for k, v in ent[1].items()}
+    mod = _load_mvt()
+    if mod is None: return {0:0,1:0,2:0}
+    L = {0:0,1:0,2:0}
+    try:
+        trials = mod.score_session(path)
+    except Exception:
+        trials = []
+    for t in trials:
+        lv = t.get("level")
+        if isinstance(lv, int): L[lv] = L.get(lv,0) + 1
+    cache[ps] = [mt, {str(k): v for k, v in L.items()}]
+    return L
+
+
 def sz(n):
     for u in ("B","K","M","G"):
         if n < 1024: return f"{n:.1f}{u}"
@@ -200,24 +257,18 @@ def main():
         print("  (no proxy signals in scanned samples)")
     print()
 
-    print("── MVT SCORES (capped 6 per type) ──")
-    if SCORE.exists():
-        for stype in ("DEEPAGENT", "LISTENER", "UI"):
-            fl = by_type[stype][:6]
-            if not fl:
-                print(f"  {stype:10s}  (none)"); continue
-            L = {0:0,1:0,2:0}
-            for f in fl:
-                try:
-                    r = subprocess.run([sys.executable, str(SCORE), f.stem],
-                                       capture_output=True, text=True, timeout=45)
-                except Exception: continue
-                for ln in r.stdout.splitlines():
-                    try: obj = json.loads(ln)
-                    except Exception: continue
-                    lv = obj.get("level")
-                    if isinstance(lv, int): L[lv] = L.get(lv,0) + 1
-            print(f"  {stype:10s}  L0={L[0]:>3d}  L1={L[1]:>3d}  L2={L[2]:>3d}")
+    print("── MVT SCORES (inline, mtime-cached; 6 per type) ──")
+    score_cache = load_score_cache()
+    for stype in ("DEEPAGENT", "LISTENER", "UI"):
+        fl = by_type[stype][:6]
+        if not fl:
+            print(f"  {stype:10s}  (none)"); continue
+        L = {0:0,1:0,2:0}
+        for f in fl:
+            s = scored_levels_for(f, score_cache)
+            for k in L: L[k] += s.get(k, 0)
+        print(f"  {stype:10s}  L0={L[0]:>3d}  L1={L[1]:>3d}  L2={L[2]:>3d}")
+    save_score_cache(score_cache)
     print()
 
     print("── RECENT DEEPAGENT TASKS ──")

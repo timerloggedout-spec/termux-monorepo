@@ -6,6 +6,8 @@ on:
       - 'archwiz/context_relationships/**'
       - 'config/context_relationships/**'
       - 'tests/test_context_relationship_*.py'
+      - 'tests/test_context_temporal_lineage.py'
+      - 'scripts/ci/verify_context_temporal_lineage.py'
       - 'tests/fixtures/context_relationships/**'
       - '.github/workflows/context-relationship-*.yml'
   workflow_dispatch:
@@ -38,6 +40,7 @@ jobs:
       - name: Validate relationship-index behavior
         run: |
           python -m pytest \
+            tests/test_context_temporal_lineage.py \
             tests/test_context_relationship_compiler.py \
             tests/test_context_relationship_source_collector.py \
             tests/test_context_relationship_github_collector.py \
@@ -48,3 +51,16 @@ jobs:
           python -m archwiz.context_relationships.compiler \
             --input tests/fixtures/context_relationships/seed.json \
             --validate
+
+      - name: Validate committed temporal lineage when present
+        run: |
+          set -euo pipefail
+          lineage=workspace/llm_map/context_relationships/temporal/lineage.jsonl
+          manifest=workspace/llm_map/context_relationships/manifest.json
+          if [ -f "$lineage" ] && [ -f "$manifest" ]; then
+            python scripts/ci/verify_context_temporal_lineage.py \
+              --lineage "$lineage" \
+              --manifest "$manifest"
+          else
+            echo 'Temporal corpus lineage not present in this candidate; runtime corpus validation remains authoritative.'
+          fi

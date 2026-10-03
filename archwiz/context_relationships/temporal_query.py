@@ -111,7 +111,7 @@ def snapshots_between(index_dir: Path, start: str, end: str) -> list[dict[str, A
     ]
 
 
-def changes_between(index_dir: Path, start: str, end: str) -> dict[str, Any]:
+def between_projection(index_dir: Path, start: str, end: str) -> dict[str, Any]:
     selected = snapshots_between(index_dir, start, end)
     events: list[dict[str, Any]] = []
     for row in selected:
@@ -125,7 +125,7 @@ def changes_between(index_dir: Path, start: str, end: str) -> dict[str, Any]:
             "delta": manifest.get("delta") or {},
         })
     return {
-        "projection": "temporal_changes",
+        "projection": "temporal_between",
         "start": start,
         "end": end,
         "baseline_snapshot_id": events[0].get("previous_snapshot_id") if events else None,
@@ -133,6 +133,19 @@ def changes_between(index_dir: Path, start: str, end: str) -> dict[str, Any]:
         "event_count": len(events),
     }
 
+
+def changes_between(index_dir: Path, start: str, end: str) -> dict[str, Any]:
+    result = between_projection(index_dir, start, end)
+    changed_events = []
+    for event in result["events"]:
+        counts = (event.get("delta") or {}).get("counts", {})
+        if any(int(value or 0) != 0 for value in counts.values()):
+            changed_events.append(event)
+    result["projection"] = "temporal_changes"
+    result["events"] = changed_events
+    result["event_count"] = len(changed_events)
+    result["changes_only"] = True
+    return result
 
 def temporal_timeline(index_dir: Path) -> dict[str, Any]:
     return {"projection": "temporal_timeline", "snapshots": list_snapshots(index_dir)}
@@ -205,7 +218,11 @@ def main(argv: list[str] | None = None) -> int:
         if args.at:
             result = snapshot_at(args.index, args.at)
         elif args.between:
-            result = changes_between(args.index, args.between[0], args.between[1])
+            result = (
+                changes_between(args.index, args.between[0], args.between[1])
+                if args.changes_only
+                else between_projection(args.index, args.between[0], args.between[1])
+            )
         else:
             result = temporal_timeline(args.index)
         output = json.dumps(result, indent=2, sort_keys=True) if args.format == "json" else render_markdown(result)

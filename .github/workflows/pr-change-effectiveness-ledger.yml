@@ -47,6 +47,16 @@ jobs:
           # Fetch PR objects only. Nothing from the PR is executed.
           git fetch --no-tags --prune origin "refs/pull/${PR_NUMBER}/head:refs/remotes/origin/pr-${PR_NUMBER}"
           read -r BASE_SHA HEAD_SHA < <(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq '[.base.sha, .head.sha] | @tsv')
+          # API head can move between fetch and measure (sweep receipt). Refetch once.
+          if ! git cat-file -e "${HEAD_SHA}^{commit}" 2>/dev/null || ! git cat-file -e "${BASE_SHA}^{commit}" 2>/dev/null; then
+            git fetch --no-tags origin "refs/pull/${PR_NUMBER}/head" "$BASE_SHA" || true
+          fi
+          if ! git cat-file -e "${HEAD_SHA}^{commit}" 2>/dev/null || ! git cat-file -e "${BASE_SHA}^{commit}" 2>/dev/null; then
+            echo "receipt race: base=${BASE_SHA} head=${HEAD_SHA} not in fetched objects; skipping measure" >&2
+            echo "skipped=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "skipped=false" >> "$GITHUB_OUTPUT"
           MERGE_BASE="$(git merge-base "$BASE_SHA" "$HEAD_SHA")"
           mapfile -t COMMITS < <(git rev-list --reverse "$MERGE_BASE..$HEAD_SHA")
           COMMIT_COUNT=${#COMMITS[@]}
@@ -112,6 +122,7 @@ jobs:
           printf '%s\n' "${EMPTY_LIST[@]:-}" > empty-commits.txt
 
       - name: Publish evidence summary
+        if: steps.measure.outputs.skipped != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}

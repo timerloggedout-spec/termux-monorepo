@@ -93,20 +93,28 @@ def main():
     # running daemons
     p()
     p("daemons")
-    for name in ("watchlog", "mvt-refresh"):
-        pid = pid_of(name)
-        p(f"  {name:20s} {'running pid=' + pid if pid else 'not running'}")
-    # sv services (authoritative)
-    for svc in ("hygiene-watchdog", "mvt-refresh"):
-        try:
-            r = subprocess.run(["sv", "status", svc],
-                               capture_output=True, text=True, timeout=5)
-            line = r.stdout.strip().splitlines()[0] if r.stdout.strip() else "?"
-            # shorten
-            if ":" in line:
-                line = line.split(":", 1)[1].strip()[:60]
-            p(f"  {svc:20s} sv: {line}")
-        except Exception: pass
+    # watchlog: pidfile
+    pid = pid_of("watchlog")
+    p(f"  {'watchlog':20s} {'running pid=' + pid if pid else 'not running'}")
+    # mvt-refresh: sv-managed, no pidfile
+    try:
+        r = subprocess.run(["sv", "status", "mvt-refresh"],
+                           capture_output=True, text=True, timeout=5)
+        out = r.stdout.strip()
+        if "run:" in out:
+            p(f"  {'mvt-refresh':20s} sv running")
+        else:
+            p(f"  {'mvt-refresh':20s} sv: {out[:60]}")
+    except Exception:
+        p(f"  {'mvt-refresh':20s} sv status unavailable")
+    # hygiene-watchdog: sv-authoritative
+    try:
+        r = subprocess.run(["sv", "status", "hygiene-watchdog"],
+                           capture_output=True, text=True, timeout=5)
+        line = r.stdout.strip().splitlines()[0] if r.stdout.strip() else "?"
+        if ":" in line: line = line.split(":", 1)[1].strip()
+        p(f"  {'hygiene-watchdog':20s} sv: {line[:60]}")
+    except Exception: pass
 
     # tags
     p()

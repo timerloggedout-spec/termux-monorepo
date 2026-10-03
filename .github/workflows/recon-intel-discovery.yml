@@ -162,19 +162,25 @@ jobs:
                 pull_number: Number(targetPrNumber),
               });
               if (pr.state !== 'open' || pr.draft || pr.head.repo?.full_name !== `${context.repo.owner}/${context.repo.repo}`) {
-                core.setFailed('Target pull request is no longer an eligible same-repository review target.');
+                core.notice('Target pull request is no longer an eligible same-repository review target; skipping stale discovery.');
+                core.setOutput('skip', 'true');
                 return;
               }
               resolvedSha = pr.head.sha;
             }
             if (resolvedSha !== expectedSha) {
-              core.setFailed('Target changed during discovery; refusing stale comparison.');
+              core.notice('Target changed during discovery; refusing stale comparison.');
+                // Evidence follow-up: bind gates to a non-receipt SHA (parent 11ec4e58).
+
+              core.setOutput('skip', 'true');
               return;
             }
+            core.setOutput('skip', 'false');
             core.setOutput('github_sha', resolvedSha);
 
       - name: Classify GitHub–GitLab ancestry
         id: classify
+        if: steps.github-target.outputs.skip != 'true'
         env:
           RECON_INTEL_GITLAB_READ_TOKEN: ${{ secrets.RECON_INTEL_GITLAB_READ_TOKEN || secrets.GITLAB_TOKEN || secrets.OPERATOR_GITLAB_TOKEN }}
           GITHUB_TOKEN: ${{ github.token }}
@@ -185,7 +191,7 @@ jobs:
             --gitlab-ref "${{ needs.select-targets.outputs.gitlab_ref }}"
 
       - name: Record SHA-bound RECON INTEL lease check
-        if: steps.classify.outputs.state != ''
+        if: steps.github-target.outputs.skip != 'true' && steps.classify.outputs.state != ''
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
           GITHUB_SHA: ${{ steps.classify.outputs.github_sha }}

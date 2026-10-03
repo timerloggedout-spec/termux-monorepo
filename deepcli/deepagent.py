@@ -1067,6 +1067,10 @@ def _gh_worktree(a):
         )
         if r.returncode != 0:
             return {"error": f"worktree add failed: {r.stderr[-300:]}"}
+        # record branch->base so commit_push_pr can inherit it
+        _b = _wt_bases_load()
+        _b[branch] = base
+        _wt_bases_save(_b)
         return {"path": str(path), "branch": branch, "base": base, "created": True}
 
     if action == "commit_push_pr":
@@ -1113,7 +1117,7 @@ def _gh_worktree(a):
 
         # default PR base to the base the worktree was created from
         _b = _wt_bases_load()
-        _default_base = a.get("base") or _b.get(branch) or _wt_default_repo_branch() or "master"
+        _default_base = a.get("base") or _b.get(branch) or "master"
         pr_cmd = [
             "gh",
             "pr",

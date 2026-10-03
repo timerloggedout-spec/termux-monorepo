@@ -1088,8 +1088,12 @@ def _gh_worktree(a):
         if not path.exists():
             return {"error": f"worktree not found: {path}"}
 
-        # stage and commit
-        r = _wt_git(["add", "-A"], str(path))
+        # stage and commit — exclude auto-generated sweep-ledger files
+        _EXCLUDE = (".git", "docs/ops/generated/sweep-ledger", "docs/ops/generated/")
+        r = _wt_git(["add", "-A", "--", "."], str(path))
+        # unstage anything under excluded paths
+        for _ex in _EXCLUDE[1:]:
+            _wt_git(["reset", "-q", "HEAD", "--", _ex], str(path))
         if r.returncode != 0:
             return {"error": f"git add: {r.stderr[-300:]}"}
         r = _wt_git(["status", "--porcelain"], str(path))

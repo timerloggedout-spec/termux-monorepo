@@ -16,9 +16,14 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: n8n-she-bridge-${{ github.event.workflow_run.head_sha || github.ref }}
+  cancel-in-progress: false
+
 jobs:
   emit:
     name: Emit sanitized workflow evidence to optional n8n
+    if: github.event.workflow_run.conclusion == 'success' || github.event.workflow_run.conclusion == 'failure'
     runs-on: ubuntu-latest
     steps:
       - name: Check n8n bridge configuration

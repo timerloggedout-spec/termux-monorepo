@@ -1,10 +1,29 @@
 #!/usr/bin/env python3
-"""deepagent.py — agent loop with DIRECT imports, no HTTP hop.
+"""deepagent.py — DeepAgent loop, direct-import, session-resumable.
 
-Same tool semantics as agent.py, but:
-- imports deepcli.core, gh_broker, files/skills logic in-process
-- doesn't need server.py running
-- server.py stays for external callers (GH Actions, Agora, curl)
+Same tool semantics as agent.py, no HTTP hop. Runs one task per
+process. Sessions are keyed by a content hash of the task + path so
+re-running the same task resumes; --fresh forces a new session.
+
+Entry point:
+    python3 deepagent.py [--dry-run] [--fresh] [--task-file P] "<task>"
+
+Loop shape:
+    1. hygiene_preflight()   floor check, auto-reclaim
+    2. session lookup        resume or fresh
+    3. _chat_once()          model call, XML/DSML parsing
+    4. execute(call)         tool dispatch
+    5. repeat until finish, ceiling, or no-progress
+
+Attribution:
+    Every write is journaled to ~/.deepcli/logs/provenance.jsonl via
+    _v1_provenance. Failures trace back to the session whose write
+    introduced the breaking code (see mvt-attribute).
+
+Doctrine:
+    docs/STANDARDS/PROCESS/RECON-FIRST-WORKTREE-DISCIPLINE.md
+    docs/STANDARDS/PROCESS/AGENT-ROLES.md
+    docs/STANDARDS/PROCESS/BRANCH-RETENTION.md
 """
 
 import json, os, sys, time, uuid
@@ -16,6 +35,11 @@ sys.path.insert(0, str(HOME / "deepcli"))
 sys.path.insert(0, str(HOME))
 
 from deepcli.core import get_token, create_session, chat_completion  # noqa
+try:
+    from deepcli._v1_provenance import record as _prov_record, file_sha as _prov_sha
+except Exception:
+    def _prov_record(**kw): return None
+    def _prov_sha(p): return None
 from src.gh_broker import GhBroker  # noqa
 
 # Hindsight memory (optional, env-gated)
@@ -598,11 +622,14 @@ def _write(a):
             )
             data = fixed.encode()
     q.parent.mkdir(parents=True, exist_ok=True)
+    _before = _prov_sha(q)
     q.write_bytes(data)
     try:
         os.chmod(q, 0o600)
     except Exception:
         pass
+    _after = _prov_sha(q)
+    _prov_log(q, "write_file", _before, _after)
     return {"path": str(q), "bytes": len(data)}
 
 
@@ -805,6 +832,8 @@ def _gh_edit_file(a):
         }
     resp = _json.loads(r.stdout)
     c = resp.get("content", {})
+    _prov_log(path, "gh_edit_file", None, c.get("sha"),
+              extra={"commit": resp.get("commit", {}).get("sha")})
     return {
         "path": c.get("path"),
         "sha": c.get("sha"),
@@ -848,6 +877,8 @@ def _gh_put(a):
     try:
         resp = _json.loads(r.stdout)
         c = resp.get("content", {})
+        _prov_log(path, "gh_put", None, c.get("sha"),
+                  extra={"commit": resp.get("commit", {}).get("sha")})
         return {
             "path": c.get("path"),
             "sha": c.get("sha"),
@@ -1239,6 +1270,25 @@ def _auto_feedback(tok, sid, kind):
         )
     except Exception:
         return None
+
+
+def _prov_log(path, tool, before, after, extra=None):
+    """Best-effort provenance row for a write."""
+    try:
+        _ctx = globals().get("_CURRENT_SESSION_CTX", {}) or {}
+        _prov_record(
+            path=str(path),
+            before_sha=before,
+            after_sha=after,
+            writer="agent",
+            session=_ctx.get("sid"),
+            msg_hash=(extra or {}).get("msg_hash"),
+            tool=tool,
+            commit=(extra or {}).get("commit"),
+            note=(extra or {}).get("note"),
+        )
+    except Exception:
+        pass
 
 
 DISPATCH = {

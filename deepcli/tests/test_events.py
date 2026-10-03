@@ -3,7 +3,7 @@
 import json, sys, pathlib, tempfile, unittest
 
 sys.path.insert(0, str(pathlib.Path.home() / "deepcli"))
-from deepcli._v1_events import extract, message_text, scan_session
+from deepcli._v1_events import extract, message_text, scan_session, scan_dir
 
 
 class TestEvents(unittest.TestCase):
@@ -81,6 +81,38 @@ class TestScanSession(unittest.TestCase):
         recs = scan_session(self._write(msgs))
         self.assertEqual(len(recs), 1)
         self.assertEqual(recs[0]["idx"], 1)
+
+
+class TestScanDir(unittest.TestCase):
+    """scan_dir yields (stem, records) for symbol-bearing *.json only."""
+
+    def setUp(self):
+        self.d = pathlib.Path(tempfile.mkdtemp())
+
+    def _write(self, name, obj):
+        (self.d / name).write_text(json.dumps(obj))
+
+    def test_empty_dir_yields_nothing(self):
+        self.assertEqual(list(scan_dir(str(self.d))), [])
+
+    def test_yields_stem_and_records(self):
+        self._write("chat1.json", [{"role": "assistant", "content": "gh2fa"}])
+        out = list(scan_dir(str(self.d)))
+        self.assertEqual(len(out), 1)
+        stem, recs = out[0]
+        self.assertEqual(stem, "chat1")
+        self.assertEqual(len(recs), 1)
+        self.assertIn("TOTP_CALL", recs[0]["symbols"])
+
+    def test_files_without_symbols_are_omitted(self):
+        self._write("plain.json", [{"role": "user", "content": "no events here"}])
+        self.assertEqual(list(scan_dir(str(self.d))), [])
+
+    def test_ignores_non_json_files(self):
+        self._write("ok.json", [{"content": "gpgconf --kill gpg-agent"}])
+        (self.d / "notes.txt").write_text("gpgconf --kill gpg-agent")
+        out = list(scan_dir(str(self.d)))
+        self.assertEqual([stem for stem, _ in out], ["ok"])
 
 
 if __name__ == "__main__":

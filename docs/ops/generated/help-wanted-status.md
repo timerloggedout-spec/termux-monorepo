@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-03T05:19:24Z UTC · receipts=901 · foreign_open=25 · tributes=66_
+_Generated 2026-10-03T05:45:12Z UTC · receipts=901 · foreign_open=26 · tributes=67_
 
 ## Tributes (contributor ledger)
 
+- [speedyk-005/yasbd-lib#363](https://github.com/speedyk-005/yasbd-lib/pull/363) · state=open · Submit contribution stake and upstream PR for #362
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -43,10 +44,10 @@ _Generated 2026-10-03T05:19:24Z UTC · receipts=901 · foreign_open=25 · tribut
 - [mergepay/mergepay-web#552](https://github.com/mergepay/mergepay-web/pull/552) · state=closed · help-wanted: stake + contribute for #546
 - [olcf/olcf-test-harness#280](https://github.com/olcf/olcf-test-harness/pull/280) · state=closed · help-wanted: stake + contribute for #278
 - [umn-adc/ATLAS#42](https://github.com/umn-adc/ATLAS/pull/42) · state=closed · help-wanted: stake + contribute for #31
-- [lonestill/scope-launcher#45](https://github.com/lonestill/scope-launcher/pull/45) · state=closed · help-wanted: stake + contribute for #19
 
 ## Foreign open PRs
 
+- [speedyk-005/yasbd-lib#363](https://github.com/speedyk-005/yasbd-lib/pull/363) — Submit contribution stake and upstream PR for #362
 - [uttrflow/uttrflow-swift#3719](https://github.com/uttrflow/uttrflow-swift/pull/3719) — help-wanted: stake + contribute for #3713
 - [CopilotKit/CopilotKit#7594](https://github.com/CopilotKit/CopilotKit/pull/7594) — help-wanted: stake + contribute for #4775
 - [dentalpin/dentalpin#591](https://github.com/dentalpin/dentalpin/pull/591) — help-wanted: stake + contribute for #590

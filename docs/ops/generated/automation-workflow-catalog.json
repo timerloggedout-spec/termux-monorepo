@@ -27,7 +27,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "dc068dd7091b3e32f4d8882e22d900986a0714f363c67c037f2489b3aa8d7d2f",
+  "source_fingerprint": "fdd40b3534e84107f5528231c9536b503b64ff8d5fccb8155abc4a10de173b1f",
   "workflow_count": 120,
   "workflows": [
     {
@@ -1504,7 +1504,7 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
-      "concurrency": "",
+      "concurrency": "group: n8n-she-bridge-${{ github.event.workflow_run.head_sha || github.ref }} cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
         "emit"

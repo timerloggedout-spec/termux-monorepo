@@ -1,0 +1,96 @@
+#!/data/data/com.termux/files/usr/bin/env python3
+"""loop-guard — pause continuous-improve on failure cascades."""
+import os, re, sys, json, time, pathlib, subprocess
+
+HOME = pathlib.Path.home()
+LOG_DIR = HOME/".deepcli"/"logs"/"hygiene"
+PAUSE = HOME/".deepcli"/"watchdog"/"loop.paused"
+STATE = HOME/".deepcli"/"watchdog"/"loop-guard.json"
+JOURNAL = HOME/".deepcli"/"logs"/"hygiene"/"loop-guard.jsonl"
+INTERVAL = int(os.environ.get("LOOP_GUARD_INTERVAL", "60"))
+FAIL_THRESHOLD = int(os.environ.get("LOOP_GUARD_FAIL_THRESHOLD", "3"))
+
+def now(): return int(time.time())
+def journal(rec):
+    try:
+        with JOURNAL.open("a") as f:
+            f.write(json.dumps(rec, default=str) + "\n")
+    except Exception: pass
+
+def newest_log():
+    logs = sorted(LOG_DIR.glob("continuous-*.log"),
+                  key=lambda p: p.stat().st_mtime, reverse=True)
+    return logs[0] if logs else None
+
+def parse_iterations(text):
+    parts = re.split(r"^── iteration (\d+)", text, flags=re.M)
+    out = []
+    for i in range(1, len(parts), 2):
+        try: n = int(parts[i])
+        except Exception: continue
+        body = parts[i+1] if i+1 < len(parts) else ""
+        out.append((n, body))
+    return out
+
+def classify(body):
+    m = re.search(r"(IndentationError|SyntaxError|TypeError|ImportError|"
+                  r"AttributeError|NameError|FileNotFoundError)", body)
+    if m:
+        l = re.search(r"line (\d+)", body)
+        return f"{m.group(1)}@L{l.group(1) if l else '?'}"
+    if "implicit finish" in body and body.count("▶") == 0:
+        return "no-tool-calls"
+    if "SAFETY_CEILING" in body:
+        return "safety-ceiling"
+    return None
+
+def notify(title, body, nid=9301):
+    n = HOME/".local"/"bin"/"hygiene-notify"
+    if not n.exists(): return
+    try: subprocess.run(["bash", str(n), title, body[:400], str(nid)], timeout=10)
+    except Exception: pass
+
+def main():
+    pidfile = HOME/".deepcli"/"watchdog"/"loop-guard.pid"
+    pidfile.write_text(str(os.getpid()))
+    PAUSE.parent.mkdir(parents=True, exist_ok=True)
+    state = {"last_iter_seen": 0, "last_signature": None,
+             "consecutive_same": 0, "paused": False}
+    try: state.update(json.loads(STATE.read_text()))
+    except Exception: pass
+
+    while True:
+        try:
+            p = newest_log()
+            if p and p.exists():
+                iters = parse_iterations(p.read_text(errors="ignore"))
+                if iters:
+                    last_n, last_body = iters[-1]
+                    sig = classify(last_body)
+                    if last_n != state["last_iter_seen"]:
+                        state["last_iter_seen"] = last_n
+                        if sig == state["last_signature"]:
+                            state["consecutive_same"] += 1
+                        else:
+                            state["consecutive_same"] = 1 if sig else 0
+                            state["last_signature"] = sig
+                        journal({"ts": now(), "iter": last_n, "sig": sig,
+                                 "consecutive": state["consecutive_same"]})
+                        if (sig and state["consecutive_same"] >= FAIL_THRESHOLD
+                                and not state["paused"]):
+                            PAUSE.write_text(
+                                f"paused at {time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())}\n"
+                                f"reason: {state['consecutive_same']}× {sig} at iter {last_n}\n")
+                            state["paused"] = True
+                            notify("🛑 loop-guard",
+                                   f"paused: {state['consecutive_same']}× {sig} at iter {last_n}",
+                                   9301)
+                            journal({"ts": now(), "event": "pause",
+                                     "sig": sig, "consecutive": state["consecutive_same"]})
+                STATE.write_text(json.dumps(state))
+        except Exception as e:
+            journal({"ts": now(), "error": str(e)[:200]})
+        time.sleep(INTERVAL)
+
+if __name__ == "__main__":
+    main()

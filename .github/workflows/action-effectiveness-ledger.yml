@@ -66,8 +66,12 @@ jobs:
               git fetch --no-tags "https://github.com/${head_repo}.git" "$head_sha"
             fi
           fi
-          git cat-file -e "${base_sha}^{commit}" || { echo "base SHA unavailable: $base_sha" >&2; exit 1; }
-          git cat-file -e "${head_sha}^{commit}" || { echo "head SHA unavailable: $head_sha" >&2; exit 1; }
+          if ! git cat-file -e "${base_sha}^{commit}" 2>/dev/null || ! git cat-file -e "${head_sha}^{commit}" 2>/dev/null; then
+            echo "receipt race: base=${base_sha} head=${head_sha} unavailable after fetch; skipping measure" >&2
+            echo "skipped=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "skipped=false" >> "$GITHUB_OUTPUT"
           merge_base="$(git merge-base "$base_sha" "$head_sha")"
 
           mapfile -t commits < <(git rev-list --reverse "$merge_base..$head_sha")
@@ -217,6 +221,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Publish idempotent longitudinal ledger
+        if: steps.measure.outputs.skipped != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number || inputs.pr_number }}

@@ -72,18 +72,30 @@ fn ref_id(full: &[u8; 32]) -> String {
 }
 
 fn estimate_alpha(values: &[u64]) -> f64 {
-    if values.len() < 2 { return 0.0; }
+    if values.len() < 2 {
+        return 0.0;
+    }
+
     let mut f = values.to_vec();
     f.sort_unstable_by(|a, b| b.cmp(a));
     let n = f.len() as f64;
     let (mut sx, mut sy, mut sxx, mut sxy) = (0.0, 0.0, 0.0, 0.0);
+
     for (rank, freq) in f.iter().enumerate() {
         let x = ((rank + 1) as f64).ln();
         let y = (*freq as f64).ln();
-        sx += x; sy += y; sxx += x * x; sxy += x * y;
+        sx += x;
+        sy += y;
+        sxx += x * x;
+        sxy += x * y;
     }
+
     let den = n * sxx - sx * sx;
-    if den.abs() < f64::EPSILON { 0.0 } else { -((n * sxy - sx * sy) / den) }
+    if den.abs() < f64::EPSILON {
+        0.0
+    } else {
+        -((n * sxy - sx * sy) / den)
+    }
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -110,8 +122,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             ref_id: ref_text.clone(),
             child_count: fragment.children.len(),
         });
-        by_level.entry(fragment.level.clone()).or_default()
-            .entry(hash).and_modify(|v| v.0 += 1).or_insert((1, bytes));
+        by_level
+            .entry(fragment.level.clone())
+            .or_default()
+            .entry(hash)
+            .and_modify(|v| v.0 += 1)
+            .or_insert((1, bytes));
     }
 
     let mut policies = Vec::new();
@@ -137,7 +153,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
 
-    let result = Analysis { fingerprints, policies, alpha };
+    let result = Analysis {
+        fingerprints,
+        policies,
+        alpha,
+    };
     serde_json::to_writer(&mut io::stdout(), &result)?;
     io::stdout().write_all(b"\n")?;
     Ok(())
@@ -149,7 +169,13 @@ mod tests {
 
     #[test]
     fn reference_is_128_bit_and_collision_safe_by_full_hash() {
-        let f = Fragment { id: "a".into(), level: "function".into(), text: "hello".into(), children: vec![], bytes: None };
+        let f = Fragment {
+            id: "a".into(),
+            level: "function".into(),
+            text: "hello".into(),
+            children: vec![],
+            bytes: None,
+        };
         let hash = digest(&f);
         assert_eq!(ref_id(&hash).len(), 22);
         assert_eq!(hash.len(), 32);

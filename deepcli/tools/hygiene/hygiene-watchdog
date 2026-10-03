@@ -1,0 +1,87 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# hygiene-watchdog — Termux resource loop detector.
+set -u
+INTERVAL="${HYGIENE_WD_INTERVAL:-30}"
+LOG="${HOME}/.deepcli/logs/hygiene/watchdog.jsonl"
+STATE="${HOME}/.deepcli/watchdog/state.json"
+MEM_FLOOR_MB="${HYGIENE_WD_MEM_FLOOR:-200}"
+CPU_PEG="${HYGIENE_WD_CPU_PEG:-85}"
+TMP="${TMPDIR:-${PREFIX}/tmp}"
+mkdir -p "$(dirname "$LOG")" "$(dirname "$STATE")" "$TMP"
+
+log_event() {
+    printf '{"ts":%d,"iso":"%s","event":"%s",%s}\n' \
+        "$(date +%s)" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$1" "$2" >> "$LOG"
+}
+
+UP_NOW=$(awk '{print int($1)}' /proc/uptime 2>/dev/null)
+BOOT_ID=$(cat /proc/sys/kernel/random/boot_id 2>/dev/null || echo unknown)
+MEM_KB=$(awk '/MemAvailable/{print $2}' /proc/meminfo 2>/dev/null)
+MEM_MB=$(( MEM_KB / 1024 ))
+UP_LAST=0; BOOTS=0
+if [ -f "$STATE" ]; then
+    UP_LAST=$(sed -n 's/.*"uptime":\([0-9]*\).*/\1/p' "$STATE" | head -1)
+    BOOTS=$(sed -n 's/.*"boot_count":\([0-9]*\).*/\1/p' "$STATE" | head -1)
+fi
+[ -z "$UP_LAST" ] && UP_LAST=0
+[ -z "$BOOTS" ] && BOOTS=0
+LAST_BOOT=$(sed -n 's/.*"boot_id":"\([^"]*\)".*/\1/p' "$STATE" | head -1)
+if [ -n "$LAST_BOOT" ] && [ "$LAST_BOOT" != "$BOOT_ID" ]; then
+    BOOTS=$((BOOTS + 1))
+    log_event "reboot_detected" "\"boot_id\":\"$BOOT_ID\",\"last_boot_id\":\"$LAST_BOOT\",\"boot_count\":$BOOTS"
+fi
+if [ "$MEM_MB" -lt "$MEM_FLOOR_MB" ]; then
+    log_event "mem_low" "\"mem_mb\":$MEM_MB,\"floor\":$MEM_FLOOR_MB"
+fi
+
+# duplicate process detection (per-name limits)
+check_dup() {
+    name="$1"; limit="$2"
+    n=$(pgrep -c -x "$name" 2>/dev/null)
+    [ -z "$n" ] && n=0
+    if [ "$n" -gt "$limit" ]; then
+        log_event "dup_procs" "\"name\":\"$name\",\"count\":$n,\"limit\":$limit"
+    fi
+}
+check_dup python3 5
+check_dup node 3
+check_dup git 3
+check_dup gpg-agent 2
+check_dup ssh 4
+check_dup zsh 10
+check_dup bash 20
+check_dup sh 30
+
+# cpu peg via two samples 5s apart
+SNAP="$TMP/.wd_snap_$$"
+ps -eo pid,comm 2>/dev/null | awk 'NR>1{print $1" "$2}' > "$TMP/.wd_procs_$$"
+while read -r pid comm; do
+    [ -r "/proc/$pid/stat" ] || continue
+    t1=$(awk '{print $14+$15}' "/proc/$pid/stat" 2>/dev/null)
+    [ -n "$t1" ] && echo "$pid $comm $t1" >> "$SNAP"
+done < "$TMP/.wd_procs_$$"
+sleep 5
+while read -r pid comm t1; do
+    [ -r "/proc/$pid/stat" ] || continue
+    t2=$(awk '{print $14+$15}' "/proc/$pid/stat" 2>/dev/null)
+    [ -z "$t2" ] && continue
+    delta=$(( t2 - t1 )); pct=$(( delta / 5 ))
+    if [ "$pct" -ge "$CPU_PEG" ]; then
+        log_event "cpu_peg" "\"pid\":$pid,\"comm\":\"$comm\",\"pct\":$pct"
+    fi
+done < "$SNAP"
+rm -f "$SNAP" "$TMP/.wd_procs_$$"
+
+# write state
+printf '{"uptime":%d,"boot_count":%d,"mem_mb":%d,"boot_id":"%s","ts":%d}\n' \
+    "$UP_NOW" "$BOOTS" "$MEM_MB" "$BOOT_ID" "$(date +%s)" > "$STATE"
+
+log_event "heartbeat" "\"mem_mb\":$MEM_MB,\"uptime\":$UP_NOW,\"boots\":$BOOTS"
+
+# rotate log
+if [ -f "$LOG" ]; then
+    SZ=$(wc -c < "$LOG")
+    if [ "$SZ" -gt 5242880 ]; then
+        mv "$LOG" "$LOG.1"; : > "$LOG"
+    fi
+fi

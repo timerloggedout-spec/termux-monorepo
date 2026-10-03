@@ -243,3 +243,90 @@ does not pay it a fourth.
 | Pipeline "looks stale" | read every stage, fix the stage that failed |
 | Two options, unsure | pick the one that preserves state |
 | Asked to "just do X" | RECON first, then X, verifying each step |
+
+
+---
+
+## 11 - Session lessons (2026-10-02 / 2026-10-03)
+
+Grounded failures and the doctrine each produced. Append-only.
+
+### 11.1 - Python helper blocks
+
+Every `sh()` helper in a paste-in block MUST accept `cwd=` if any
+caller passes it. Test `py_compile` before shipping. Two blocks this
+session crashed on `sh() got an unexpected keyword argument 'cwd'`.
+
+    def sh(cmd, cwd=None, timeout=60):  # ALWAYS this signature
+
+### 11.2 - Termux reboot detection
+
+`/proc/uptime` on Termux resets per app process session and often reads
+0. Reboot detection uses `/proc/sys/kernel/random/boot_id`. Value is
+stable for the life of the Android boot, changes on device reboot or
+app force-stop.
+
+### 11.3 - gpg-agent passphrase priming
+
+`gpg-preset-passphrase` is not supported on Termux. The only working
+path is:
+
+    gpg-agent.conf: allow-preset-passphrase
+    gpg-connect-agent 'PRESET_PASSPHRASE <GRIP> -1 <HEX_PW>' /bye
+
+Hex-encode the passphrase. `-1` means no expiry.
+
+### 11.4 - gpg-agent key export vs import
+
+`EXPORT_KEY` returns `ERR 67109045 Missing key - did you run KEYWRAP_KEY ?`
+when the pubring is missing. The correct recovery is `IMPORT_KEY` with
+the hex of the raw `private-keys-v1.d/*.key` file. GnuPG 2.5 ECC
+private keys embed the public point `(q #...#)`, so the public half is
+re-derivable. `pubring.kbx` being 32 bytes (empty) is not fatal.
+
+### 11.5 - copytree on ~/.gnupg
+
+`shutil.copytree` raises `ENXIO` on the gpg-agent socket files
+(`S.gpg-agent`, `S.keyboxd`, ...). Walk with `stat.S_ISREG` filtering.
+
+### 11.6 - git stash on repos with large untracked trees
+
+`git stash push -u -- .` on a home-dir repo with an 18k-file harvest
+tree will run for 300+ seconds and leave a zombie `git stash` +
+`git apply --index -R` pair holding a core. Use tracked-only
+`git stash push` (no pathspec, no `-u`). Untracked files never block
+a rebase.
+
+### 11.7 - commit-msg hooks
+
+`recover(2fa):` is not a valid Conventional Commits type. Use `fix`,
+`feat`, `docs`, `chore`, `refactor`, `test`, `perf`, `build`, `ci`.
+Read the hook's stderr on rejection; do not `--no-verify`.
+
+### 11.8 - Termux:Boot overlap
+
+Boot scripts that install `while true; do ...; sleep N; done` daemons
+need a `flock -n` guard at the top, otherwise a Termux force-stop +
+restart spawns a second loop that competes with the first for the same
+resources.
+
+### 11.9 - Terminal-multiline paste
+
+Multi-line Python pasted into zsh gets wrapped and truncated by the
+terminal width. Long blocks belong in a heredoc (`python3 - <<'PY'`)
+or a file. Do not paste bare Python at the prompt.
+
+### 11.10 - "Smoother after rebase" is not the rebase
+
+A CPU-pegged zombie `git` process left by a timed-out `stash push -u`
+will present as "the rebase made it smoother" once the zombie is
+finally killed. Always check `ps` for orphans before attributing
+performance changes to the operation you just ran.
+
+### 11.11 - The watchdog pattern
+
+Passive detection first. `~/.local/bin/hygiene-watchdog` under
+`runsvdir`, logging to `~/.deepcli/logs/hygiene/watchdog.jsonl`. The
+soft and hard protector tiers are written from what the passive log
+shows, not from hypothesis. You cannot protect against a pattern you
+have not observed.

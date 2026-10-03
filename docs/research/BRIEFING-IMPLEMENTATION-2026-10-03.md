@@ -42,8 +42,8 @@ Photonic acceleration remains a research/procurement watch. The actionable softw
 
 ## Next bounded experiments
 
-1. Audit repository MCP integrations for pre-2026-07-28 session assumptions.
-2. Draft `agent-lock.json` schema and a read-only admission scanner.
+1. Audit repository MCP integrations for pre-2026-07-28 session assumptions — **initial code search found no `Mcp-Session-Id` implementation hit; re-check generated/external configuration before promotion.**
+2. Drafted `schemas/agent-lock.schema.json` and `docs/security/AGENT-HARNESS-ADMISSION.md`; implement the read-only scanner next.
 3. Run AgentCompass and the existing ATES reducer over one identical cohort.
 4. Add one AST-native action adapter experiment and compare against text editing.
 5. Benchmark llama.cpp b11379 on the first admitted Android/Termux cohort.

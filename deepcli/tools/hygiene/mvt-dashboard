@@ -1,5 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/env python3
-"""mvt-dashboard v2 — session inventory + MVT scoreboard + model history.
+"""mvt-dashboard v3 — session inventory + MVT scoreboard + model history.
 
 Session types:
   DEEPAGENT  sessions keyed in ~/.deepcli/sessions.json (task-hash)
@@ -48,7 +48,7 @@ def session_type(sid, deep_ids, listener_id):
 
 def main():
     t0 = time.time()
-    print(f"=== mvt-dashboard v2  {time.strftime('%Y-%m-%dT%H:%MZ', time.gmtime())} ===\n")
+    print(f"=== mvt-dashboard v3  {time.strftime('%Y-%m-%dT%H:%MZ', time.gmtime())} ===\n")
 
     deep_ids = set()
     if SESS.exists():
@@ -75,7 +75,7 @@ def main():
     print(f"  UI (paste)      {len(by_type['UI']):>5d}")
     print()
 
-    print("── MODEL FAMILY (proxy: thinking_enabled, capped 30 sessions) ──")
+    print("── MODEL FAMILY (proxy: thinking_enabled; msg.model empty in this data) ──")
     mc = collections.Counter()
     by_month = collections.defaultdict(collections.Counter)
     for f in files[:30]:
@@ -98,9 +98,16 @@ def main():
             else:
                 fam = "(unknown)"
             mc[fam] += 1
-            ts = m.get("inserted_at") or ""
+            ts = m.get("inserted_at")
+            month = None
             if isinstance(ts, str) and len(ts) >= 7:
-                by_month[ts[:7]][fam] += 1
+                month = ts[:7]
+            elif isinstance(ts, (int, float)) and ts > 0:
+                # epoch seconds → YYYY-MM
+                try: month = time.strftime("%Y-%m", time.localtime(ts))
+                except Exception: month = None
+            if month:
+                by_month[month][fam] += 1
     if mc:
         for fam, n in mc.most_common(12):
             print(f"  {fam:36s} {n:>6d}")

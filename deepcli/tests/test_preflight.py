@@ -2,7 +2,23 @@
 
 import sys, pathlib, unittest
 
-sys.path.insert(0, str(pathlib.Path.home() / "deepcli"))
+def _repo_root():
+    """Walk up from this test file to the checkout root that contains
+    deepcli/_v1_preflight.py. Fall back to $HOME/deepcli."""
+    here = pathlib.Path(__file__).resolve()
+    for parent in here.parents:
+        if (parent / "deepcli" / "_v1_preflight.py").is_file():
+            return parent
+    return pathlib.Path.home() / "deepcli"
+
+
+sys.path.insert(0, str(_repo_root()))
+# run.py loads test modules alphabetically in one process; drop any
+# deepcli modules already imported from another checkout so this module
+# always resolves against _repo_root() above.
+for _m in list(sys.modules):
+    if _m == "deepcli" or _m.startswith("deepcli."):
+        del sys.modules[_m]
 from deepcli._v1_preflight import score, pattern_match, penalty_count, env_risk
 
 
@@ -30,6 +46,11 @@ class TestPreflight(unittest.TestCase):
 
     def test_read_green(self):
         self.assertEqual(score([], next_action="TOTP_CALL")["level"], "GREEN")
+
+    def test_kill_agent_default_env_does_not_crash(self):
+        # regression: omitted env must not raise AttributeError; must return a level
+        r = score([], next_action="KILL_AGENT")
+        self.assertIn(r["level"], ("GREEN", "AMBER", "RED"))
 
 
 class TestEnvRisk(unittest.TestCase):

@@ -109,6 +109,8 @@ def env_risk(state=None):
 
 def score(events, next_action=None, env=None):
     """Return dict with level GREEN/AMBER/RED and reason."""
+    if env is None:
+        env = env_state()
     p_score, p_gram = pattern_match(events)
     e_score = penalty_count(events)
     env_score, env_weights = env_risk(env)

@@ -17,6 +17,8 @@ struct Fragment {
     text: String,
     #[serde(default)]
     children: Vec<String>,
+    #[serde(default)]
+    bytes: Option<usize>,
 }
 
 #[derive(Debug, Serialize)]
@@ -93,13 +95,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         fragments.push(serde_json::from_str::<Fragment>(&line)?);
     }
 
-    let mut seen: BTreeMap<[u8; 32], (usize, u64, String)> = BTreeMap::new();
     let mut by_level: BTreeMap<String, BTreeMap<[u8; 32], (u64, usize)>> = BTreeMap::new();
     let mut fingerprints = Vec::with_capacity(fragments.len());
 
     for fragment in &fragments {
         let hash = digest(fragment);
-        let bytes = fragment.text.len();
+        let bytes = fragment.bytes.unwrap_or_else(|| fragment.text.len());
         let ref_text = ref_id(&hash);
         fingerprints.push(Fingerprint {
             id: fragment.id.clone(),
@@ -109,8 +110,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             ref_id: ref_text.clone(),
             child_count: fragment.children.len(),
         });
-        let entry = seen.entry(hash).or_insert((bytes, 0, ref_text));
-        entry.1 += 1;
         by_level.entry(fragment.level.clone()).or_default()
             .entry(hash).and_modify(|v| v.0 += 1).or_insert((1, bytes));
     }

@@ -806,7 +806,22 @@ def execute(call):
     h = DISPATCH.get(fn)
     if not h: return f"ERROR unknown tool: {fn}"
     try:
-        return h(args)
+        result = h(args)
+        # Async handlers (e.g. hindsight_retain/recall/reflect) return a
+        # coroutine that must be awaited; otherwise the HTTP call never runs
+        # and the caller sees a bare coroutine object.
+        import inspect as _inspect
+        if _inspect.iscoroutine(result):
+            import asyncio as _asyncio
+            try:
+                _loop = _asyncio.get_event_loop()
+                if _loop.is_running():
+                    result = _asyncio.run_coroutine_threadsafe(result, _loop).result(30)
+                else:
+                    result = _loop.run_until_complete(result)
+            except RuntimeError:
+                result = _asyncio.run(result)
+        return result
     except (PermissionError, FileNotFoundError) as e:
         return f"BLOCKED: {type(e).__name__}: {e}"
     except Exception as e:
@@ -1037,15 +1052,19 @@ def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False
                 except Exception:
                     _elapsed = 0.0
                 if _HINDSIGHT_AVAILABLE and os.environ.get("HINDSIGHT_BASE_URL"):
+                    # Fire-and-forget retain of the finished task summary via the
+                    # sync agent_hindsight helper (env-gated no-op if unset).
                     try:
-                        _hooks = {s.name: s.handler for s in _hs_build()}
-                        if "hindsight_retain" in _hooks:
-                            import asyncio as _aio
-                            _aio.get_event_loop().create_task(
-                                _hooks["hindsight_retain"](
-                                    {"content": f"task: {task[:300]}\nsummary: {result.get('summary','')[:500]}"}
-                                )
-                            ) if False else None  # sync context; defer to Phase 3
+                        import agent_hindsight as _ah
+                        _ah.retain_async(
+                            content=f"task: {task[:300]}\nsummary: {result.get('summary','')[:500]}",
+                            metadata={
+                                "origin": "deepagent",
+                                "event": "finish",
+                                "task": task[:200],
+                                "sid": sid or "",
+                            },
+                        )
                     except Exception:
                         pass
                 _autosnapshot("finish")

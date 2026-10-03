@@ -17,5 +17,12 @@ class TestPreflight(unittest.TestCase):
         self.assertEqual(r["level"], "RED")
     def test_read_green(self):
         self.assertEqual(score([], next_action="TOTP_CALL")["level"], "GREEN")
+    def test_kill_agent_default_env_does_not_crash(self):
+        # Regression (IT57): score(..., env=None) must probe env_state()
+        # once and reuse it, not call env.get() on the raw None argument.
+        env = {"agent_grips": 0, "pubring_size": 4096, "pass_2fa_exists": True}
+        r = score([], next_action="KILL_AGENT", env=env)
+        self.assertIn(r["level"], ("GREEN", "AMBER", "RED"))
+        self.assertNotIn("NoneType", r["reason"])
 
 if __name__ == "__main__": unittest.main()

@@ -1,0 +1,140 @@
+{
+  "schema_version": "1.0",
+  "briefing_date": "2026-10-03",
+  "generated_at": "2026-10-03T22:40:00Z",
+  "contract": {
+    "spec": "docs/briefing/DAILY-DIGEST-SPEC.md",
+    "ingest": "docs/research/BRIEFING-INGEST.md",
+    "procurement": "docs/research/FOSS-PROCUREMENT-MATRIX.md",
+    "radar": "docs/research/FORESIGHT-RADAR.md",
+    "source_registry": "config/foresight_digest_sources.json"
+  },
+  "evidence_note": "Primary/authoritative sources were preferred. Research results remain research; company claims remain attributed; image queries are contextual enrichment only.",
+  "items": [
+    {
+      "headline": "MCP 2026-07-28 makes the protocol core stateless",
+      "horizon": "H0",
+      "evidence_status": "confirmed",
+      "summary": "The 2026-07-28 MCP release retires the protocol-level initialize/initialized handshake and Mcp-Session-Id, making requests independently routable while adding MRTR, header-based routing, authorization hardening, extensions, and updated SDKs.",
+      "why_it_matters": "Open interoperability is becoming deployable like ordinary HTTP infrastructure; hidden protocol sessions no longer need to be the scaling boundary.",
+      "opportunity_or_procurement": "Adopt 2026-07-28 as the compatibility baseline; audit legacy session assumptions; preserve application state as explicit handles and keep raw invocation evidence exportable.",
+      "monorepo_relevance": "Directly affects MCP hosts/servers, admission, routing, and OTel instrumentation. Keep protocol state separate from application state.",
+      "sources": [
+        {
+          "url": "https://blog.modelcontextprotocol.io/posts/2026-07-28/",
+          "source_type": "official_release"
+        }
+      ],
+      "confidence": "high",
+      "unresolved_questions": [
+        "Which repository MCP surfaces still assume protocol-level sessions?",
+        "How should explicit application state handles be represented in canonical evidence?"
+      ],
+      "image_query": "Model Context Protocol stateless architecture MCP agent interoperability"
+    },
+    {
+      "headline": "AI coding-agent configuration is now a measurable supply-chain security surface",
+      "horizon": "H0",
+      "evidence_status": "research",
+      "summary": "Scanning the Harness analyzed 3,171 public repositories and reports validated defects involving unpinned MCP servers, pre-approved arbitrary execution, and shell-preauthorizing skills. The study reports 16.0% of studied setups carrying a security defect under its decidable rules.",
+      "why_it_matters": "Skills, hooks, MCP declarations, and subagents can behave like executable dependencies with developer privileges; configuration provenance and permissions need the same rigor as packages and CI.",
+      "opportunity_or_procurement": "Prototype an agent lockfile/admission scanner that pins versions/hashes, records permissions, verifies provenance, and emits an auditable decision receipt.",
+      "monorepo_relevance": "Critical: this repository already has agent skills, MCP surfaces, workflows, and provider integrations that should become a first-class dependency graph.",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2609.07360",
+          "source_type": "preprint"
+        }
+      ],
+      "confidence": "high",
+      "unresolved_questions": [
+        "Which rule classes should be adopted without overfitting to the paper's methodology?",
+        "What is the minimal agent-lock schema?"
+      ],
+      "image_query": "AI coding agent MCP supply chain security architecture"
+    },
+    {
+      "headline": "Agent evaluation and AST-native coding are converging on reproducible infrastructure",
+      "horizon": "H1",
+      "evidence_status": "research",
+      "summary": "AgentCompass v1.0.0 provides open evaluation infrastructure for trajectories, tool calls, usage, latency and artifacts, while CODESTRUCT reports gains from operating on named AST entities rather than raw text spans. Together they support evaluating the full model+harness+environment stack while making code actions structurally inspectable.",
+      "why_it_matters": "The useful benchmark unit is increasingly model + harness + tools + environment + task, and structural code interfaces can reduce brittle text-edit behavior.",
+      "opportunity_or_procurement": "Prototype same-cohort AgentCompass evaluation with the existing ATES/WTCV evidence spine, plus an AST action provider using Tree-sitter-class structure. Keep raw JSONL canonical.",
+      "monorepo_relevance": "Very high for agent observability, complexity normalization, manager tournaments, and reproducible code-agent experiments.",
+      "sources": [
+        {
+          "url": "https://github.com/open-compass/AgentCompass",
+          "source_type": "official_project_repository"
+        },
+        {
+          "url": "https://arxiv.org/abs/2604.05407",
+          "source_type": "preprint"
+        }
+      ],
+      "confidence": "high",
+      "unresolved_questions": [
+        "Can reported CODESTRUCT gains be reproduced on monorepo cohorts?",
+        "Which AgentCompass artifact fields should map into the canonical event schema?"
+      ],
+      "image_query": "AI agent evaluation trajectory AST structured code editing"
+    },
+    {
+      "headline": "llama.cpp now exposes a stronger Android/ARM heterogeneous inference target",
+      "horizon": "H0",
+      "evidence_status": "confirmed",
+      "summary": "The b11379 release published on October 3 includes Android arm64 CPU artifacts plus Android arm64 Snapdragon CPU/Adreno GPU/Hexagon NPU artifacts and corresponding setup guidance; Linux arm64 Snapdragon artifacts are also present.",
+      "why_it_matters": "This materially improves the case for treating Android/ARM as a first-class reproducible inference target rather than a CPU-only fallback.",
+      "opportunity_or_procurement": "Prototype a pinned Termux device cohort using b11379, model hashes, backend identifiers, memory/thermal/energy observations, and portable JSONL receipts. Preserve CPU fallback.",
+      "monorepo_relevance": "Direct: feeds the local-edge-ARM-Android evidence lane and manager routing with a concrete current runtime baseline.",
+      "sources": [
+        {
+          "url": "https://github.com/ggml-org/llama.cpp/releases/tag/b11379",
+          "source_type": "official_release"
+        }
+      ],
+      "confidence": "high",
+      "unresolved_questions": [
+        "Which Termux devices and backends should be admitted first?",
+        "What non-root energy/thermal measurement is portable enough for longitudinal use?"
+      ],
+      "image_query": "llama.cpp Android Snapdragon Adreno Hexagon NPU local inference"
+    },
+    {
+      "headline": "Photonic AI acceleration is moving into a credible edge/cloud systems research lane",
+      "horizon": "H1",
+      "evidence_status": "research",
+      "summary": "A September 2026 Nature Photonics Perspective maps photonic accelerators across cloud and edge systems, highlighting energy, throughput, density and latency opportunities while identifying electro-optic losses, nonlinearities, reconfigurability and optics footprint as constraints.",
+      "why_it_matters": "The durable signal is hardware optimization around data movement, energy and specialization rather than FLOPS alone.",
+      "opportunity_or_procurement": "Do not procure exotic hardware yet. Make accelerator-neutral model/runtime interfaces and energy/memory evidence first-class so future photonic or heterogeneous backends can be evaluated without software lock-in.",
+      "monorepo_relevance": "Strategic input for edge inference, memory/energy benchmarking, and procurement decisions.",
+      "sources": [
+        {
+          "url": "https://www.nature.com/articles/s41566-026-01987-z",
+          "source_type": "peer_reviewed_paper"
+        }
+      ],
+      "confidence": "high",
+      "unresolved_questions": [
+        "Which compiler/runtime abstractions will remain portable across heterogeneous accelerators?",
+        "What benchmark fields fairly capture energy and memory movement?"
+      ],
+      "image_query": "photonic AI accelerator edge cloud integrated photonics"
+    }
+  ],
+  "radar_watch": [
+    {
+      "title": "OpenTelemetry GenAI/MCP semantic conventions remain Development status",
+      "horizon": "H2",
+      "evidence_status": "signal",
+      "source": "https://github.com/open-telemetry/semantic-conventions-genai/blob/main/docs/gen-ai/mcp.md",
+      "note": "Use upstream conventions as an adapter input, not the canonical monorepo schema; tool arguments/results may contain sensitive information and protocol-version alignment remains active."
+    },
+    {
+      "title": "Manager-tournament evaluation is moving toward deterministic simulation",
+      "horizon": "H2",
+      "evidence_status": "research",
+      "source": "https://arxiv.org/abs/2607.25656",
+      "note": "Use deterministic orchestration simulation as a preflight lane; do not confuse simulation outcomes with live execution evidence."
+    }
+  ]
+}

@@ -113,20 +113,21 @@ jobs:
       - name: Dispatch to DeepAgent
         id: agent
         if: steps.reach.outputs.reachable == 'true'
+        env:
+          SSH_KEY:  ${{ secrets.MANUS_SSH_KEY }}
+          SSH_HOST: ${{ secrets.MANUS_SSH_HOST }}
+          SSH_PORT: ${{ secrets.MANUS_SSH_PORT }}
+          TASK:     ${{ inputs.task }}
         run: |
-          # The agent entrypoint is chosen from repo layout at run time.
-          ENTRY=""
-          for candidate in deepcli/deepagent.py deepcli/agent.py; do
-            if [ -f "$candidate" ]; then ENTRY="$candidate"; break; fi
-          done
-          if [ -z "$ENTRY" ]; then
-            echo "::warning::neither deepcli/deepagent.py nor deepcli/agent.py present"
-            exit 0
-          fi
-          echo "entrypoint: $ENTRY"
-          # Placeholder invocation — replace with the real CLI once confirmed:
-          # python3 "$ENTRY" --task "${{ inputs.task }}" --input watchdog.jsonl --out docs/ops/hygiene/24h-review.json
-          python3 "$ENTRY" --help >/dev/null 2>&1 && echo "entrypoint responds to --help"
+          # The runner is a trigger, not an executor. Real work happens on
+          # Termux via the tunnel where deepagent.py + tooling already live.
+          #
+          # Interface (validated against deepagent.py on disk):
+          #   deepagent.py [--dry-run] [--fresh] [--task-file P] "<task>"
+          ssh -p "${SSH_PORT:-22}" -o BatchMode=yes -o ConnectTimeout=10 \
+              "termux@$SSH_HOST" \
+              "cd ~ && git -C ~ fetch --quiet origin && git -C ~ reset --hard origin/feat/dashboard-lanes-v2 && \
+               python3 deepcli/deepagent.py --task-file '$TASK' 'run the 24h hygiene review'"
 
       - name: Commit result
         if: inputs.dry_run == false && steps.reach.outputs.reachable == 'true'

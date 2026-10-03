@@ -1,0 +1,62 @@
+import sys, pathlib
+sys.path.insert(0, str(pathlib.Path.home() / '.local' / 'lib'))
+import mvt_safe_read
+#!/data/data/com.termux/files/usr/bin/env python3
+"""mvt-wait [seconds=120] — block until message count changes, print delta."""
+import os, sys, json, time, pathlib
+
+HOME = pathlib.Path.home()
+SS   = HOME/".deepcli"/"session_store"
+
+def _scan_dirs():
+    """Primary, secondary, flat — deduped by stem, primary wins."""
+    seen = {}
+    for base in (SS/"primary", SS/"secondary", SS):
+        if not base.is_dir(): continue
+        for f in base.glob("*.json"):
+            if f.stem in seen: continue
+            seen[f.stem] = f
+    return list(seen.values())
+
+CACHE= HOME/".deepcli"/"watchdog"/"msg-count-cache.json"
+
+def load_cache():
+    try: return json.loads(CACHE.read_text())
+    except Exception: return {}
+
+def count(cache):
+    total = 0; newest = None; newest_mt = 0
+    for f in _scan_dirs():
+        ps = str(f)
+        try: mt = f.stat().st_mtime
+        except Exception: continue
+        ent = cache.get(ps)
+        if ent and abs(float(ent[0]) - mt) < 0.001:
+            n = int(ent[1])
+        else:
+            n = len(mvt_safe_read.read_session(f))
+            cache[ps] = [mt, n]
+        total += n
+        if mt > newest_mt: newest_mt = mt; newest = (f.stem, n, mt)
+    try: CACHE.write_text(json.dumps(cache))
+    except Exception: pass
+    return total, newest
+
+def main():
+    limit = int(sys.argv[1]) if len(sys.argv) > 1 else 120
+    cache = load_cache()
+    t0, _ = count(cache)
+    print(f"baseline: {t0}  (watching {limit}s)")
+    start = time.time()
+    while time.time() - start < limit:
+        time.sleep(3)
+        t, newest = count(cache)
+        if t != t0:
+            dt = int(time.time() - start)
+            print(f"+{dt}s  total={t}  delta={t-t0:+d}  newest={newest[0][:16] if newest else '?'}  msgs={newest[1] if newest else 0}")
+            return 0
+    print(f"no change in {limit}s (baseline {t0})")
+    return 1
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -1,6 +1,8 @@
 #!/data/data/com.termux/files/usr/bin/env python3
 """mvt-status — one-glance view of the MVT system. --copy to clipboard."""
 import os, sys, json, time, pathlib, subprocess
+sys.path.insert(0, str(pathlib.Path.home() / '.local' / 'lib'))
+import mvt_safe_read
 
 HOME = pathlib.Path.home()
 SS   = HOME/".deepcli"/"session_store"
@@ -34,7 +36,7 @@ def ago(ts):
     return f"{age/86400:.1f}d"
 
 def count_all():
-    """Return (total, per-root breakdown)."""
+    """Return (total, per-root breakdown). Safe-read tolerant of partial writes."""
     seen = {}
     roots = [SS/"primary", SS/"secondary", SS]
     per_root = {"primary": 0, "secondary": 0, "flat": 0}
@@ -44,11 +46,8 @@ def count_all():
         for f in base.glob("*.json"):
             if f.stem in seen: continue
             seen[f.stem] = f
-            try:
-                raw = json.loads(f.read_text())
-                n = len(raw) if isinstance(raw, list) else 0
-                per_root[label] += n
-            except Exception: pass
+            msgs = mvt_safe_read.read_session(f)
+            per_root[label] += len(msgs)
     return sum(per_root.values()), len(seen), per_root
 
 def main():
@@ -68,10 +67,7 @@ def main():
         f = SS/"primary"/f"{sid}.json"
         if not f.exists(): f = SS/f"{sid}.json"
         if f.exists():
-            try:
-                raw = json.loads(f.read_text())
-                n = len(raw) if isinstance(raw, list) else 0
-            except Exception: n = 0
+            n = len(mvt_safe_read.read_session(f))
             p(f"active session   {sid[:20]}  ({n} msgs, {ago(f.stat().st_mtime)} old)")
         else:
             p(f"active session   {sid[:20]}  (no file)")

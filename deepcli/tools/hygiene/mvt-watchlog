@@ -1,0 +1,94 @@
+import sys, pathlib
+sys.path.insert(0, str(pathlib.Path.home() / '.local' / 'lib'))
+import mvt_safe_read
+#!/data/data/com.termux/files/usr/bin/env python3
+"""mvt-watchlog — poll message count, append jsonl on change.
+
+Usage:  mvt-watchlog [interval_secs=5]
+Log:    ~/.deepcli/logs/hygiene/mvt-increments.jsonl
+Stop:   Ctrl-C, or kill by PID file at ~/.deepcli/watchdog/watchlog.pid
+"""
+import os, sys, json, time, pathlib
+
+HOME = pathlib.Path.home()
+SS   = HOME/".deepcli"/"session_store"
+LOG  = HOME/".deepcli"/"logs"/"hygiene"/"mvt-increments.jsonl"
+PIDF = HOME/".deepcli"/"watchdog"/"watchlog.pid"
+CACHE= HOME/".deepcli"/"watchdog"/"msg-count-cache.json"
+
+interval = int(sys.argv[1]) if len(sys.argv) > 1 else 5
+
+def load_cache():
+    try: return json.loads(CACHE.read_text())
+    except Exception: return {}
+
+def count(cache):
+    total = 0
+    newest = None
+    newest_mt = 0
+    # scan primary + secondary + flat (all three)
+    scan_dirs = [SS / "primary", SS / "secondary", SS]
+    seen_sids = set()
+    for base in scan_dirs:
+        if not base.is_dir(): continue
+        for f in base.glob("*.json"):
+            if f.stem in seen_sids: continue
+            seen_sids.add(f.stem)
+            ps = str(f)
+            try: mt = f.stat().st_mtime
+            except Exception: continue
+            ent = cache.get(ps)
+        if ent and abs(float(ent[0]) - mt) < 0.001:
+            n = int(ent[1])
+        else:
+            n = len(mvt_safe_read.read_session(f))
+            cache[ps] = [mt, n]
+        total += n
+        if mt > newest_mt:
+            newest_mt = mt
+            newest = (f.stem, n, mt)
+    try: CACHE.write_text(json.dumps(cache))
+    except Exception: pass
+    return total, newest
+
+def main():
+    PIDF.parent.mkdir(parents=True, exist_ok=True)
+    LOG.parent.mkdir(parents=True, exist_ok=True)
+    PIDF.write_text(str(os.getpid()))
+
+    cache = load_cache()
+    last_total = -1
+    # seed
+    t, newest = count(cache)
+    last_total = t
+    entry = {"ts": int(time.time()),
+             "iso": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+             "total": t, "delta": 0, "event": "seed",
+             "newest": newest[0] if newest else None}
+    with LOG.open("a") as f: f.write(json.dumps(entry) + "\n")
+    print(f"seeded: {t}")
+
+    while True:
+        try:
+            time.sleep(interval)
+            t, newest = count(cache)
+            if t != last_total:
+                now = int(time.time())
+                entry = {"ts": now,
+                         "iso": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)),
+                         "total": t, "delta": t - last_total, "event": "change",
+                         "newest": newest[0] if newest else None}
+                with LOG.open("a") as f: f.write(json.dumps(entry) + "\n")
+                print(f"{entry['iso']}  total={t}  delta={entry['delta']:+d}")
+                last_total = t
+        except KeyboardInterrupt:
+            print("stopped.")
+            try: PIDF.unlink()
+            except Exception: pass
+            return
+        except Exception as e:
+            print(f"error: {e}")
+            time.sleep(interval * 2)
+
+if __name__ == "__main__":
+    sys.exit(main())

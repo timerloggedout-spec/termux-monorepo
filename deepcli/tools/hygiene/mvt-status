@@ -68,7 +68,11 @@ def main():
         if not f.exists(): f = SS/f"{sid}.json"
         if f.exists():
             n = len(mvt_safe_read.read_session(f))
-            p(f"active session   {sid[:20]}  ({n} msgs, {ago(f.stat().st_mtime)} old)")
+            mts = mvt_safe_read.last_msg_ts(f)
+            if mts:
+                p(f"active session   {sid[:20]}  ({n} msgs, last msg {ago(mts)} ago)")
+            else:
+                p(f"active session   {sid[:20]}  ({n} msgs, file {ago(f.stat().st_mtime)} ago)")
         else:
             p(f"active session   {sid[:20]}  (no file)")
     else:

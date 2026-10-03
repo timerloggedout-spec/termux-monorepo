@@ -69,8 +69,8 @@ def main():
     iso = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now))
     line = f"{iso}  total={total}  delta={delta:+d}"
     if newest:
-        age = now - int(newest[2])
-        line += f"  newest={newest[0][:16]}  msgs={newest[1]}  age={age}s"
+        age = now - int(newest[2])  # file mtime, not msg time
+        line += f"  newest={newest[0][:16]}  msgs={newest[1]}  file_file_age={age}s"
     print(line)
 
 if __name__ == "__main__":

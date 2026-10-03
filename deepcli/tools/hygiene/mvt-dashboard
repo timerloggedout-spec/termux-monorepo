@@ -25,6 +25,11 @@ HOME = pathlib.Path.home()
 SS   = HOME/".deepcli"/"session_store"
 SESS = HOME/".deepcli"/"sessions.json"
 ACT  = HOME/".deepcli"/"active_session"
+try:
+    from mvt_safe_read import last_msg_ts as _lmts
+except ImportError:
+    def _lmts(_): return None
+
 SCORE = HOME/".local"/"bin"/"mvt-score"
 
 LOAD_BEARING = [
@@ -110,6 +115,7 @@ def aggregate_message_totals():
 
 
 # ─── inline MVT scorer (no subprocess) + per-session score cache ──
+SCORE_TIMEOUT = 30
 MVT_SCORE_PATH = HOME / "deepcli" / "tools" / "hygiene" / "mvt-score"
 SCORE_CACHE_FILE = HOME / ".deepcli" / "watchdog" / "mvt-score-cache.json"
 
@@ -219,9 +225,12 @@ def main():
     print(f"  total sessions    {agg['total_sessions']:>8d}")
     if agg["newest"]:
         f, n, mt = agg["newest"]
-        age = int(time.time() - mt)
+        mts = _lmts(f)
+        ts = mts if mts else mt
+        label = "last msg" if mts else "file"
+        age = int(time.time() - ts)
         age_str = f"{age}s" if age < 120 else (f"{age//60}m" if age < 7200 else f"{age//3600}h")
-        print(f"  newest session    {f.stem[:20]}  {n:>5d} msgs  ({age_str} ago)")
+        print(f"  newest session    {f.stem[:20]}  {n:>5d} msgs  ({label} {age_str} ago)")
     if agg["top5"]:
         print("  top 5 by size:")
         for n, sid, mt in agg["top5"]:

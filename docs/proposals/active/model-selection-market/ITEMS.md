@@ -10,6 +10,8 @@
 | MSM-003 | series \| parallel \| concurrent selector | **done** | MSM-002 | `selector.py` |
 | MSM-004 | DSPy-DoE consideration stub | **done** | MSM-000 | `dspy_doe.py` — not default router |
 | MSM-005 | Cards + bets + graph stub | **done** | MSM-002, MSM-003 | `market.py` |
+| MSM-006 | Live catalog join (observe) | planned | MSM-001 | Optional `--catalog`; free-only; no network in dual-gate path |
+| MSM-007 | model_router peer hook | planned | MSM-003, MSM-006 | Observe-mode only; no silent weight promote |
 
 ## Runtime package
 

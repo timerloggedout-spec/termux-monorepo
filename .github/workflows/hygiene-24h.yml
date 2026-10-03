@@ -15,7 +15,7 @@ on:
       task:
         description: "Task file path relative to repo root"
         required: false
-        default: "deepcli/tasks/hygiene-24h-review.md"
+        default: "docs/ops/hygiene/24h-review-task.md"
       dry_run:
         description: "Print plan, do not commit"
         type: boolean

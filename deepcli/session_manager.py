@@ -85,7 +85,22 @@ def solve_pow(token: str, cookies: dict | None = None, target_path: str = "/api/
     }
 
 
+def _load_env_file_if_needed():
+    """If DEEPSEEK_TOKEN_SECONDARY is unset, source ~/.deepcli/account2.env."""
+    if os.environ.get("DEEPSEEK_TOKEN_SECONDARY"):
+        return
+    p = Path.home() / ".deepcli" / "account2.env"
+    if not p.exists():
+        return
+    import re as _re
+    for line in p.read_text().splitlines():
+        m = _re.match(r"^export ([A-Z0-9_]+)='(.*)'$", line)
+        if m and not os.environ.get(m.group(1)):
+            os.environ[m.group(1)] = m.group(2)
+
+
 def _token_from_env(account: str) -> str | None:
+    _load_env_file_if_needed()
     """Resolve bearer token for account from env / secrets-exported vars."""
     specific = os.environ.get(f"DEEPSEEK_TOKEN_{account.upper()}")
     if specific:

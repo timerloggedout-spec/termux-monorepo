@@ -404,39 +404,39 @@ def stream_completion(token: str, prompt: str, session_id: str,
             for line in raw.split('\n'):
                 if not line.strip():
                     continue
-                if line.startswith('data:'):
+                if line.startswith("data:"):
+                    body = line[5:].strip()
+                    if not body:
+                        continue
                     try:
-                        data = json.loads(line[5:].strip())
-                        if isinstance(data, dict):
-                            # Save close event for auto-continue
-                            if data.get("click_behavior") is not None or data.get("auto_resume") is not None:
-                                global _last_close_data
-                                _last_close_data = {
-                                    "auto_resume": data.get("auto_resume"),
-                                    "click_behavior": data.get("click_behavior"),
-                                    "message_id": data.get("message_id") or data.get("response_message_id")
-                                }
-                            # Log any unknown keys for debugging
-                            _known_keys = {"v","content","auto_resume","click_behavior",
-                                          "finish_reason","message_id","request_message_id",
-                                          "response_message_id","model_type"}
-                            for k in data:
-                                if k not in _known_keys:
-                                    try:
-                                        with open(os.path.join(os.path.dirname(__file__),
-                                            "..","..","cli-synthegration","metrics","sse_keys.log"),"a") as _f:
-                                            _f.write(json.dumps({k:data[k]})+"\n")
-                                    except: pass
-                            # Track auto_resume flag for continue button
-                            if data.get("auto_resume") is not None:
-                                _last_auto_resume = data.get("auto_resume")
-                            if data.get("click_behavior") is not None:
-                                _last_click_behavior = data.get("click_behavior")
-                            chunk = data.get("v") or data.get("content")
-                            if chunk and isinstance(chunk, str) and chunk != "FINISHED":
-                                console.print(chunk, end="")
-                    except json.JSONDecodeError:
+                        obj = json.loads(body)
+                    except Exception:
+                        continue
+                    # Fragment schema (observed 2026-10-03 raw capture):
+                    #   {"p": "response/fragments/-1/content", "o": "APPEND", "v": str}
+                    #   {"v": str}                                        continuation
+                    #   {"p": "response", "o": "BATCH", "v": [list]}      metadata batch
+                    #   {"p": "response/status", "o": "SET", "v": "FINISHED"} terminator
+                    #   event: title  +  {"content": str}                session title
+                    _p = obj.get("p")
+                    _o = obj.get("o")
+                    _v = obj.get("v")
+                    if isinstance(_p, str) and _p.endswith("/content") and _o == "APPEND":
+                        if isinstance(_v, str):
+                            print(_v, end="", flush=True)
+                    elif _p == "response" and _o == "BATCH" and isinstance(_v, list):
+                        for _item in _v:
+                            if isinstance(_item, dict):
+                                _ip = _item.get("p", "")
+                                if isinstance(_ip, str) and _ip.endswith("/content"):
+                                    _iv = _item.get("v")
+                                    if isinstance(_iv, str):
+                                        print(_iv, end="", flush=True)
+                    elif _p == "response/status" and _v == "FINISHED":
                         pass
+                    elif _p is None and "content" not in obj and isinstance(_v, str) and _v != "FINISHED":
+                        print(_v, end="", flush=True)
+                    # silently ignore: title event, metadata, unknown shapes
             return
         except Exception as e:
             retries += 1

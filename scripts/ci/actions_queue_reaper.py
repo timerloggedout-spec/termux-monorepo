@@ -9,6 +9,7 @@ older than a threshold, and have no jobs. In-progress work is untouched.
 A queued re-run can return 409 "Cannot cancel a workflow re-run that has not
 yet queued." That response is not a reaper failure: record it and continue so
 one stuck id does not abort the rest of the scan (run 37102847026).
+Evidence follow-up for receipt SHA 17f43526 which had zero runs.
 """
 from __future__ import annotations
 

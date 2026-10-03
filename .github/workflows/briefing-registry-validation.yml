@@ -29,6 +29,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Validate registry
         run: python3 scripts/briefing/validate_registry.py
+      - name: Validate dated briefing snapshots
+        run: python3 scripts/briefing/validate_snapshots.py
       - name: Validate JSON
         run: |
           python3 - <<'PY'

@@ -1,10 +1,9 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-03T17:54:25Z UTC · receipts=927 · foreign_open=26 · tributes=68_
+_Generated 2026-10-03T19:16:24Z UTC · receipts=953 · foreign_open=26 · tributes=68_
 
 ## Tributes (contributor ledger)
 
-- [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) · state=open · help-wanted: stake + contribute for #225
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -30,6 +29,7 @@ _Generated 2026-10-03T17:54:25Z UTC · receipts=927 · foreign_open=26 · tribut
 - [dentalpin/dentalpin#591](https://github.com/dentalpin/dentalpin/pull/591) · state=open · help-wanted: stake + contribute for #590
 - [CopilotKit/CopilotKit#7594](https://github.com/CopilotKit/CopilotKit/pull/7594) · state=open · help-wanted: stake + contribute for #4775
 - [uttrflow/uttrflow-swift#3719](https://github.com/uttrflow/uttrflow-swift/pull/3719) · state=open · help-wanted: stake + contribute for #3713
+- [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) · state=open · help-wanted: stake + contribute for #225
 - [speedyk-005/yasbd-lib#363](https://github.com/speedyk-005/yasbd-lib/pull/363) · state=closed · Submit contribution stake and upstream PR for #362
 - [StayLitCodes/Vaultix#711](https://github.com/StayLitCodes/Vaultix/pull/711) · state=closed · help-wanted: stake + contribute for #706
 - [kawacukennedy/afrpoweros#40](https://github.com/kawacukennedy/afrpoweros/pull/40) · state=closed · help-wanted: stake + contribute for #5
@@ -74,6 +74,6 @@ _Generated 2026-10-03T17:54:25Z UTC · receipts=927 · foreign_open=26 · tribut
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=927 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 827, 'followup_reengage': 23, 'followup_stale_nudge': 28, 'followup_changes': 1}`
+## Outcomes · ok=953 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 853, 'followup_reengage': 23, 'followup_stale_nudge': 28, 'followup_changes': 1}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

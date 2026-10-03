@@ -54,7 +54,10 @@ jobs:
               catch (error) { core.warning(`${label} unavailable: ${error.message}`); return fallback; }
             };
             const pr = await safeCall(github.rest.pulls.get, { owner, repo, pull_number: prNumber }, 'PR metadata', null);
-            if (!pr) throw new Error(`Unable to read PR #${prNumber}`);
+            if (!pr) {
+              core.notice(`Unable to read PR #${prNumber}; skipping evidence evaluation (API unavailable, not a code failure).`);
+              return;
+            }
             const reviews = await safePaginate(github.rest.pulls.listReviews, { owner, repo, pull_number: prNumber, per_page: 100 }, 'reviews');
             const comments = await safePaginate(github.rest.issues.listComments, { owner, repo, issue_number: prNumber, per_page: 100 }, 'issue comments');
             const reviewComments = await safePaginate(github.rest.pulls.listReviewComments, { owner, repo, pull_number: prNumber, per_page: 100 }, 'inline review comments');

@@ -401,6 +401,7 @@ def stream_completion(token: str, prompt: str, session_id: str,
                 continue
             # Read full response and parse SSE manually (curl_cffi doesn't do iter_lines)
             raw = resp.content.decode('utf-8', errors='replace')
+            _seen_frag_keys = set()
             for line in raw.split('\n'):
                 if not line.strip():
                     continue
@@ -412,18 +413,28 @@ def stream_completion(token: str, prompt: str, session_id: str,
                         obj = json.loads(body)
                     except Exception:
                         continue
-                    # Fragment schema (observed 2026-10-03 raw capture):
-                    #   {"p": "response/fragments/-1/content", "o": "APPEND", "v": str}
-                    #   {"v": str}                                        continuation
-                    #   {"p": "response", "o": "BATCH", "v": [list]}      metadata batch
-                    #   {"p": "response/status", "o": "SET", "v": "FINISHED"} terminator
-                    #   event: title  +  {"content": str}                session title
                     _p = obj.get("p")
                     _o = obj.get("o")
                     _v = obj.get("v")
                     if isinstance(_p, str) and _p.endswith("/content") and _o == "APPEND":
                         if isinstance(_v, str):
                             print(_v, end="", flush=True)
+                    elif isinstance(_v, dict) and isinstance(_v.get("response"), dict):
+                        _resp = _v["response"]
+                        _mid = _resp.get("message_id")
+                        _frags = _resp.get("fragments")
+                        if isinstance(_frags, list):
+                            for _frag in _frags:
+                                if not isinstance(_frag, dict):
+                                    continue
+                                _fid = _frag.get("id")
+                                _fcontent = _frag.get("content")
+                                if _fid is not None and isinstance(_fcontent, str) and _fcontent:
+                                    _key = (_mid, _fid)
+                                    if _key in _seen_frag_keys:
+                                        continue
+                                    _seen_frag_keys.add(_key)
+                                    print(_fcontent, end="", flush=True)
                     elif _p == "response" and _o == "BATCH" and isinstance(_v, list):
                         for _item in _v:
                             if isinstance(_item, dict):
@@ -436,7 +447,6 @@ def stream_completion(token: str, prompt: str, session_id: str,
                         pass
                     elif _p is None and "content" not in obj and isinstance(_v, str) and _v != "FINISHED":
                         print(_v, end="", flush=True)
-                    # silently ignore: title event, metadata, unknown shapes
             return
         except Exception as e:
             retries += 1

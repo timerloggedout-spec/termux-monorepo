@@ -72,8 +72,7 @@ jobs:
             exit 0
           fi
           mkdir -p ~/.ssh
-          printf '%s
-' "$SSH_KEY" > ~/.ssh/id_ed25519
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -p "${SSH_PORT:-22}" "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
           if ssh -p "${SSH_PORT:-22}" -o BatchMode=yes -o ConnectTimeout=8                "termux@$SSH_HOST" 'test -r ~/.deepcli/logs/hygiene/watchdog.jsonl'; then

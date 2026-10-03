@@ -1,0 +1,39 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# hygiene-notify "title" "content" [id]
+set -u
+TITLE="${1:-hygiene}"
+CONTENT="${2:-}"
+ID="${3:-9001}"
+
+# primary: termux-notification (Termux:API → Android notification service)
+if command -v termux-notification >/dev/null 2>&1; then
+    termux-notification \
+        --id "$ID" \
+        --title "$TITLE" \
+        --content "$CONTENT" \
+        --priority high \
+        --vibrate 200 2>/dev/null && exit 0
+fi
+
+# fallback: adb-local (works only if wireless-debugging loopback is up)
+if command -v adb >/dev/null 2>&1 && adb devices 2>/dev/null | grep -q 'device$'; then
+    adb shell cmd notification post -S bigtext \
+        -t "$TITLE" "hyg_$ID" "$CONTENT" 2>/dev/null && exit 0
+fi
+
+# last resort: log it
+printf '[%s] NOTIFY %s :: %s\n' "$(date -u +%FT%TZ)" "$TITLE" "$CONTENT" \
+    >> "$HOME/.deepcli/logs/hygiene/notify-fallback.log"
+exit 0
+
+# status mode — silent, replaces in place, id 9999
+if [ "${3:-}" = "--status" ]; then
+    termux-notification \
+        --id 9999 \
+        --channel "hygiene-status" \
+        --title "$1" \
+        --content "$2" \
+        --priority low \
+        --silent 2>/dev/null || true
+    exit 0
+fi

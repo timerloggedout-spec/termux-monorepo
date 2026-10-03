@@ -202,6 +202,86 @@ async def list_models():
         ]
     })
 
+# ── Hindsight tool surface ─────────────────────────────────────────────────
+# Wires deepcli._v1_hindsight into the server and routes it through the
+# quota-aware RoutedHindsightClient (cloud → codespace → local FTS5) declared
+# in ops/routing.yaml. 402/429/5xx demote the cloud lane; the local FTS5 bank
+# always remains a reachable sink, preserving `circuit_break_on_cost`.
+try:
+    from fastapi import APIRouter as _APIRouter
+
+    try:
+        from deepcli._v1_hindsight import build_hindsight_tools as _hindsight_tools
+    except Exception:
+        from _v1_hindsight import build_hindsight_tools as _hindsight_tools  # noqa
+
+    _ROUTER_OK = False
+    try:
+        try:
+            from deepcli._v1_hindsight_router import (
+                RoutedHindsightClient as _RoutedClient,
+            )
+        except Exception:
+            from _v1_hindsight_router import (  # noqa
+                RoutedHindsightClient as _RoutedClient,
+            )
+        _routed_client = _RoutedClient()
+        _ROUTER_OK = True
+    except Exception as _re:  # pragma: no cover
+        _routed_client = None
+        print(f"[server] hindsight routed client unavailable: {_re}")
+
+    def _tools():
+        # Route the retain/recall/reflect handlers through the routed client
+        # when available; fall back to the plain client otherwise.
+        if _ROUTER_OK and _routed_client is not None:
+            return _hindsight_tools(_routed_client)
+        return _hindsight_tools()
+
+    _hindsight_router = _APIRouter(prefix="/v1/hindsight", tags=["hindsight"])
+
+    @_hindsight_router.get("/tools")
+    async def _hindsight_tool_specs():
+        _specs = _tools()
+        return {
+            "count": len(_specs),
+            "tools": [
+                {
+                    "name": s.name,
+                    "description": getattr(s, "description", ""),
+                    "schema": dict(getattr(s, "schema", {}) or {}),
+                }
+                for s in _specs
+            ],
+        }
+
+    @_hindsight_router.get("/health")
+    async def _hindsight_health():
+        import os as _os
+        return {
+            "base_url": _os.environ.get("HINDSIGHT_BASE_URL"),
+            "bank_id": _os.environ.get("HINDSIGHT_BANK_ID"),
+            "tools_available": len(_tools()),
+            "routed": _ROUTER_OK,
+        }
+
+    @_hindsight_router.get("/router")
+    async def _hindsight_router_status():
+        # Reports circuit-breaker state for the routed client so the
+        # Observatory can render lane health without probing the cloud.
+        if _ROUTER_OK and _routed_client is not None and hasattr(_routed_client, "status"):
+            return {"routed": True, **(dict(_routed_client.status()))}
+        return {"routed": False, "reason": "RoutedHindsightClient unavailable"}
+
+    app.include_router(_hindsight_router)
+    print(
+        "[server] hindsight router mounted at /v1/hindsight "
+        f"(routed={_ROUTER_OK})"
+    )
+except Exception as _e:  # pragma: no cover
+    print(f"[server] hindsight router skipped: {_e}")
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8800)

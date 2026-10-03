@@ -1,0 +1,181 @@
+#!/data/data/com.termux/files/usr/bin/env python3
+"""mvt-score — MVT DOE 3L0 scoring of assistant-block → user-result pairs.
+
+Source of truth: ~/.deepcli/session_store/{sid}.json (LIVE cache, written
+by DeepCLI. Not exports. Not zips. Those are stale snapshots.)
+
+Pairing model:
+    assistant message with fenced code block(s)
+        → next user message in the same session
+    The next user message is normally produced by archwiz/activity_listener
+    (auto-exec) or pasted by the user (manual result).
+
+Levels:
+    L0  error       result contains traceback / non-zero exit / FAIL
+    L1  partial     ran with warnings, mixed signals, or ambiguous
+    L2  success     clean output with success markers
+
+Usage:
+    mvt-score <sid> [<sid> ...]         # session IDs
+    mvt-score --all [--max N] [--min-size K]
+    mvt-score --dir <path>
+"""
+import sys, os, re, json, hashlib, pathlib
+
+HOME = pathlib.Path.home()
+SS   = HOME / ".deepcli" / "session_store"
+FENCE = re.compile(r"```(\w*)\s*\n(.*?)```", re.DOTALL)
+
+ERR_PATTERNS = [
+    r"Traceback \(most recent call last\)",
+    r"\bSyntaxError\b", r"\bNameError\b", r"\bImportError\b",
+    r"\bModuleNotFoundError\b", r"\bFileNotFoundError\b",
+    r"\bPermissionError\b", r"\bTypeError\b", r"\bValueError\b",
+    r"\bKeyError\b", r"\bAttributeError\b",
+    r"command not found", r"No such file or directory",
+    r"gpg:\s+decryption failed", r"public key decryption failed",
+    r"^fatal:", r"\bFAILED\b", r"\bFAIL\b",
+    r"exit code [1-9]", r"rc=[1-9]\b",
+    r"\bError:", r"^\w*error:",
+]
+OK_PATTERNS = [
+    r"\bOK\b", r"\bPASS\b", r"\bSUCCESS\b", r"✓", r"✅",
+    r"^[0-9]{6}$",
+    r"Everything up-to-date",
+    r"Successfully rebased",
+    r"create mode \d+",
+    r"\d+ files? changed",
+    r"^Stored \d+",
+    r"^Wrote ",
+]
+
+def classify(text):
+    if not text: return (1, "empty", [])
+    t = text.strip()
+    if len(t) < 8: return (1, "short", [])
+    err_hits = [re.search(p, t, re.I | re.M).group(0)[:40]
+                for p in ERR_PATTERNS if re.search(p, t, re.I | re.M)]
+    ok_hits  = [re.search(p, t, re.I | re.M).group(0)[:40]
+                for p in OK_PATTERNS  if re.search(p, t, re.I | re.M)]
+    if err_hits and not ok_hits: return (0, "error", err_hits[:3])
+    if ok_hits  and not err_hits: return (2, "success", ok_hits[:3])
+    if err_hits and ok_hits:      return (1, "mixed", (err_hits+ok_hits)[:4])
+    return (1, "no-signal", [])
+
+def load_msgs(path):
+    p = pathlib.Path(path)
+    if not p.exists(): return None
+    try:
+        raw = json.loads(p.read_text())
+    except Exception as e:
+        return {"__error__": f"{type(e).__name__}: {e}"}
+    if isinstance(raw, list): return raw
+    if isinstance(raw, dict):
+        for k in ("messages", "conversation", "data", "history"):
+            v = raw.get(k)
+            if isinstance(v, list): return v
+    return []
+
+def role_of(m):
+    r = m.get("role") or m.get("author") or ""
+    if isinstance(r, dict): r = r.get("role","")
+    return str(r).lower()
+
+def content_of(m):
+    c = m.get("content")
+    if isinstance(c, list):
+        return "".join(f.get("content","") if isinstance(f,dict) else str(f) for f in c)
+    if isinstance(c, dict):
+        return c.get("content","") or c.get("text","")
+    return str(c or "")
+
+def score_session(path):
+    sid = pathlib.Path(path).stem
+    msgs = load_msgs(path)
+    if msgs is None: return []
+    if isinstance(msgs, dict) and "__error__" in msgs:
+        return [{"session": sid, "error": msgs["__error__"]}]
+    if not msgs: return []
+
+    trials = []
+    for i, m in enumerate(msgs):
+        if not isinstance(m, dict): continue
+        if role_of(m) != "assistant": continue
+        body = content_of(m)
+        for bi, match in enumerate(FENCE.finditer(body)):
+            lang = match.group(1) or "text"
+            code = match.group(2).rstrip("\n")
+            if not code.strip(): continue
+            # find next user message
+            result = None
+            for j in range(i+1, len(msgs)):
+                if isinstance(msgs[j], dict) and role_of(msgs[j]) == "user":
+                    result = msgs[j]; break
+            if not result: continue
+            rbody = content_of(result)
+            level, signal, tokens = classify(rbody)
+            h = hashlib.sha256(code.encode()).hexdigest()[:16]
+            trials.append({
+                "session": sid,
+                "assistant_idx": i,
+                "block_idx": bi,
+                "assistant_hash": h,
+                "assistant_lang": lang,
+                "assistant_head": code.splitlines()[0][:80] if code.strip() else "",
+                "assistant_bytes": len(code),
+                "result_head": rbody.strip().splitlines()[0][:100] if rbody.strip() else "",
+                "result_bytes": len(rbody),
+                "level": level,
+                "signal": signal,
+                "tokens": tokens,
+            })
+    return trials
+
+def iter_targets(argv):
+    if not argv:
+        print(__doc__, file=sys.stderr); return []
+    max_n = None; min_size = 0; all_mode = False; dir_path = None
+    sids = []
+    i = 0
+    while i < len(argv):
+        a = argv[i]
+        if a == "--all": all_mode = True
+        elif a == "--max": i += 1; max_n = int(argv[i])
+        elif a == "--min-size": i += 1; min_size = int(argv[i]) * 1024
+        elif a == "--dir": i += 1; dir_path = argv[i]
+        else: sids.append(a)
+        i += 1
+
+    if dir_path:
+        return sorted(pathlib.Path(dir_path).glob("*.json"))
+    if all_mode or not sids:
+        files = [f for f in SS.glob("*.json")
+                 if f.stat().st_size >= min_size]
+        files.sort(key=lambda f: f.stat().st_mtime, reverse=True)
+        if max_n: files = files[:max_n]
+        return files
+    return [SS / f"{s}.json" for s in sids]
+
+def main(argv):
+    targets = iter_targets(argv)
+    if not targets: return 2
+    totals = {0:0, 1:0, 2:0}
+    errors = 0
+    for t in targets:
+        try:
+            trials = score_session(t)
+        except Exception as e:
+            print(json.dumps({"session": pathlib.Path(t).stem,
+                              "error": f"{type(e).__name__}: {e}"}))
+            errors += 1
+            continue
+        for tr in trials:
+            lvl = tr.get("level")
+            if isinstance(lvl, int): totals[lvl] = totals.get(lvl,0) + 1
+            print(json.dumps(tr, ensure_ascii=False))
+    print(f"\n# totals L0={totals[0]} L1={totals[1]} L2={totals[2]}  errors={errors}",
+          file=sys.stderr)
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

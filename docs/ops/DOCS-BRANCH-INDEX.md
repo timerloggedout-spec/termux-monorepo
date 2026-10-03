@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-10-02T12:34:30Z` UTC  
+**Generated:** `2026-10-03T11:39:13Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 57 docs-lane branch(es)
+**Count:** 58 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -46,7 +46,8 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/mintlify-nav-complete`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/mintlify-nav-complete) | `c731fc0077cd` | — | — | orphan lane |
 | [`docs/mintlify-notation-sets-page`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/mintlify-notation-sets-page) | `df1f534e1c22` | — | — | orphan lane |
 | [`docs/model-selection-market-3l0-20261001`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/model-selection-market-3l0-20261001) | `cafa086a5418` | — | `timerloggedout-spec` | registered; no open PR |
-| [`docs/msm-items-landed-20261001`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/msm-items-landed-20261001) | `f89ecc93470e` | [#961](https://github.com/timerloggedout-spec/termux-monorepo/pull/961)→`master` | — | PR without registry link |
+| [`docs/msm-items-landed-20261001`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/msm-items-landed-20261001) | `4b8b75e744c5` | — | — | orphan lane |
+| [`docs/msm-registry-executing-20261003`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/msm-registry-executing-20261003) | `b2ecae7f114c` | — | — | orphan lane |
 | [`docs/notation-sets-evolution`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/notation-sets-evolution) | `25dbe5778683` | — | `timerloggedout-spec` | registered; no open PR |
 | [`docs/nse-022-023-lambda-lean-extract`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/nse-022-023-lambda-lean-extract) | `e588a84c04bf` | — | — | orphan lane |
 | [`docs/ops-docs-branch-index-automation`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/ops-docs-branch-index-automation) | `17961df7b0c5` | — | — | orphan lane |

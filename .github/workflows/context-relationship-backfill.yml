@@ -70,7 +70,7 @@ jobs:
               else:
                   print('continue=true')
                   print(f'start_page={next_page}')
-PY
+          PY
       - name: Build one historical relationship-index window
         if: steps.continuation.outputs.continue == 'true'
         env:

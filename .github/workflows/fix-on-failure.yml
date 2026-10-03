@@ -38,13 +38,13 @@ jobs:
         run: |
           set -euo pipefail
           TASK="Fix the GitHub Actions failure in run $RID ('$WN' on branch $WB). Run URL: $RU.
-Method:
-1. gh run view $RID --log-failed --repo ${{ github.repository }} -- identify the failing step.
-2. gh_get_file the failing workflow file at ref $WB.
-3. Diagnose.
-4. Apply ONE fix via gh_worktree then commit_push_pr.
-5. Report the PR URL as finish summary.
-If environmental (missing secret, quota), finish with validation=deferred. Never auto-merge."
+          Method:
+          1. gh run view $RID --log-failed --repo ${{ github.repository }} -- identify the failing step.
+          2. gh_get_file the failing workflow file at ref $WB.
+          3. Diagnose.
+          4. Apply ONE fix via gh_worktree then commit_push_pr.
+          5. Report the PR URL as finish summary.
+          If environmental (missing secret, quota), finish with validation=deferred. Never auto-merge."
           jq -n --arg t "$TASK" --arg r "$RID" '{task:$t, source:("gh-fix-on-failure:"+$r)}' > payload.json
           cat payload.json
       - name: Dispatch to local agent

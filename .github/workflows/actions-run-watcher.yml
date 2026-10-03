@@ -2,6 +2,12 @@ name: Actions Run Watcher — incident notification
 
 on:
   workflow_run:
+    workflows:
+      - "repo gate"
+      - "termux smoke"
+      - "Merge Promotion Queue"
+      - "PR production ledger"
+      - "repository observatory"
     types: [completed]
 
 permissions:

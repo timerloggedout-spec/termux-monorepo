@@ -48,3 +48,6 @@ jobs:
 
       - name: Run gate
         run: python3 scripts/ci/repo_gate.py --base "${{ steps.base.outputs.ref }}"
+
+      - name: workflow_run contract
+        run: python3 scripts/ci/workflow_run_contract.py

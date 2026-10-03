@@ -273,6 +273,35 @@ try:
             return {"routed": True, **(dict(_routed_client.status()))}
         return {"routed": False, "reason": "RoutedHindsightClient unavailable"}
 
+    @_hindsight_router.post("/invoke")
+    async def _hindsight_invoke(body: dict):
+        """Invoke one Hindsight tool by name.
+
+        Body: {"tool": "hindsight_recall", "args": {...}}
+        Dispatches to the same handlers advertised by GET /v1/hindsight/tools,
+        so HTTP callers (curl, GH Actions, Agora) get identical semantics to
+        the in-process deepagent tool path.
+        """
+        name = (body or {}).get("tool")
+        args = (body or {}).get("args") or {}
+        if not name:
+            raise HTTPException(status_code=400, detail="missing 'tool'")
+        if not isinstance(args, dict):
+            raise HTTPException(status_code=400, detail="'args' must be an object")
+        handlers = {s.name: s.handler for s in _tools()}
+        handler = handlers.get(name)
+        if handler is None:
+            raise HTTPException(
+                status_code=404,
+                detail=f"unknown hindsight tool {name!r}; have {sorted(handlers)}",
+            )
+        try:
+            result = await handler(**args)
+        except TypeError as exc:
+            # Bad/missing argument shape — surface as a 400, not a 500.
+            raise HTTPException(status_code=400, detail=f"bad args: {exc}")
+        return {"tool": name, "ok": True, "result": result}
+
     app.include_router(_hindsight_router)
     print(
         "[server] hindsight router mounted at /v1/hindsight "

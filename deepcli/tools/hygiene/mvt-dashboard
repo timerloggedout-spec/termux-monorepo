@@ -35,6 +35,70 @@ LOAD_BEARING = [
     HOME/".password-store"/"secret"/"github.gpg",
 ]
 
+# ─── message-count cache (mtime-keyed) ─────────────────────────────
+COUNT_CACHE_FILE = HOME / ".deepcli" / "watchdog" / "msg-count-cache.json"
+
+def load_count_cache():
+    try:
+        return json.loads(COUNT_CACHE_FILE.read_text())
+    except Exception:
+        return {}
+
+def save_count_cache(cache):
+    try:
+        COUNT_CACHE_FILE.parent.mkdir(parents=True, exist_ok=True)
+        COUNT_CACHE_FILE.write_text(json.dumps(cache))
+    except Exception:
+        pass
+
+def count_messages(path, cache):
+    """Return message count for a session file, cached by mtime.
+    Cache entry: {path_str: [mtime, count]}."""
+    ps = str(path)
+    try:
+        st = path.stat()
+    except Exception:
+        return 0
+    mt = st.st_mtime
+    ent = cache.get(ps)
+    if ent and abs(float(ent[0]) - mt) < 0.001:
+        return int(ent[1])
+    try:
+        raw = json.loads(path.read_text())
+    except Exception:
+        cache[ps] = [mt, 0]
+        return 0
+    n = len(raw) if isinstance(raw, list) else 0
+    cache[ps] = [mt, n]
+    return n
+
+def aggregate_message_totals():
+    """Return dict with totals and per-session detail. Uses cache so second
+    call is fast (only changed files re-parse)."""
+    cache = load_count_cache()
+    sessions = list(SS.glob("*.json"))
+    total = 0
+    biggest = []
+    newest = None
+    newest_mt = 0
+    for f in sessions:
+        n = count_messages(f, cache)
+        total += n
+        try: mt = f.stat().st_mtime
+        except Exception: mt = 0
+        if mt > newest_mt:
+            newest_mt = mt
+            newest = (f, n, mt)
+        biggest.append((n, f.stem, mt))
+    biggest.sort(reverse=True)
+    save_count_cache(cache)
+    return {
+        "total_sessions": len(sessions),
+        "total_messages": total,
+        "newest": newest,
+        "top5": biggest[:5],
+    }
+
 def sz(n):
     for u in ("B","K","M","G"):
         if n < 1024: return f"{n:.1f}{u}"
@@ -73,6 +137,24 @@ def main():
     print(f"  DEEPAGENT       {len(by_type['DEEPAGENT']):>5d}")
     print(f"  LISTENER        {len(by_type['LISTENER']):>5d}")
     print(f"  UI (paste)      {len(by_type['UI']):>5d}")
+    print()
+
+    # message totals (cached)
+    agg = aggregate_message_totals()
+    print("── MESSAGE TOTALS (mtime-cached) ──")
+    print(f"  total messages    {agg['total_messages']:>8d}")
+    print(f"  total sessions    {agg['total_sessions']:>8d}")
+    if agg["newest"]:
+        f, n, mt = agg["newest"]
+        age = int(time.time() - mt)
+        age_str = f"{age}s" if age < 120 else (f"{age//60}m" if age < 7200 else f"{age//3600}h")
+        print(f"  newest session    {f.stem[:20]}  {n:>5d} msgs  ({age_str} ago)")
+    if agg["top5"]:
+        print("  top 5 by size:")
+        for n, sid, mt in agg["top5"]:
+            age = int(time.time() - mt)
+            age_str = f"{age//3600}h" if age > 3600 else f"{age//60}m"
+            print(f"    {sid[:20]}  {n:>6d} msgs  ({age_str} old)")
     print()
 
     print("── MODEL FAMILY (proxy: thinking_enabled; msg.model empty in this data) ──")
@@ -153,16 +235,54 @@ def main():
     print()
 
     print("── LOAD-BEARING CREDENTIALS (stat only, never printed) ──")
+    # cache /proc/mounts once
+    try:
+        mounts_raw = pathlib.Path("/proc/mounts").read_text().splitlines()
+    except Exception:
+        mounts_raw = []
+    def fstype_of(p):
+        try: resolved = str(p.resolve())
+        except Exception: return "?"
+        best = ""; fst = "?"
+        for line in mounts_raw:
+            parts = line.split()
+            if len(parts) < 3: continue
+            mp = parts[1]
+            if resolved.startswith(mp) and len(mp) > len(best):
+                best = mp; fst = parts[2]
+        return fst
     for p in LOAD_BEARING:
         if p.exists():
             st = p.stat()
             mode = oct(st.st_mode)[-3:]
-            print(f"  OK   {str(p.relative_to(HOME)):60s}  {sz(st.st_size):>8s}  mode={mode}")
+            fs = fstype_of(p)
+            flag = "FUSE-noop-chmod" if fs == "fuse" else "local"
+            print(f"  OK   {str(p.relative_to(HOME)):60s}  {sz(st.st_size):>8s}  mode={mode}  fs={fs}  [{flag}]")
         else:
             print(f"  MISS {str(p.relative_to(HOME))}")
     print()
 
     print(f"# elapsed {time.time()-t0:.1f}s")
 
+def watch_loop(interval=5):
+    """Re-run main() every interval seconds. Ctrl-C exits."""
+    import time as _t
+    while True:
+        os.system("clear")
+        try: main()
+        except Exception as e: print(f"watch error: {e}")
+        print(f"\n# next refresh in {interval}s — Ctrl-C to stop")
+        try: _t.sleep(interval)
+        except KeyboardInterrupt:
+            print("\nstopped."); return
+
 if __name__ == "__main__":
-    sys.exit(main())
+    if "--watch" in sys.argv:
+        i = sys.argv.index("--watch")
+        n = 5
+        if i + 1 < len(sys.argv):
+            try: n = int(sys.argv[i+1])
+            except ValueError: pass
+        watch_loop(interval=n)
+    else:
+        sys.exit(main())

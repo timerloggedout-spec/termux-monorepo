@@ -120,6 +120,17 @@ jobs:
             exit 0
           fi
           git commit -m "chore(ops): record sweep accountability receipt"
+          # pull_request checkouts use GITHUB_REF_NAME like 1059/merge, which
+          # is not a branch. Run 37148428849 failed: destination is not a full
+          # refname. Receipts belong on the branch that was pushed, not the
+          # merge ref. Issue/comment events also lack a writable branch.
+          case "${GITHUB_REF}" in
+            refs/heads/*) ;;
+            *)
+              echo "skip receipt push: event=${GITHUB_EVENT_NAME} ref=${GITHUB_REF} is not a branch"
+              exit 0
+              ;;
+          esac
           # Receipt races are not compile failures. Run 37082734311 failed
           # non-fast-forward when another writer moved the ref. Retry once
           # by rebasing the ledger-only commit; leave the remote tip

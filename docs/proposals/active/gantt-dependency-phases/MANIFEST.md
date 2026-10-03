@@ -13,9 +13,14 @@ reviewers:
   - id: Manus AI
     role: executor
     status: executing
+  - id: Grok
+    role: collaborator-administrator
+    status: executing
 related_prs: [248, 252, 253, 254, 257, 717, 774, 828]
+related_issues: [246, 247, 255, 259, 184]
 related_branches:
   - master
+  - feat/dph-all-collaborator-plan-20261003
 gates_required: [repo-gate, termux-smoke]
 ---
 
@@ -23,65 +28,35 @@ gates_required: [repo-gate, termux-smoke]
 
 ## Summary
 
-Implement a repository-native dependency-phase system that derives lifecycle state from a versioned phase plan, GitHub Project items, pull-request/check evidence, explicit approval records, and idempotent claims. Mermaid and Markdown reports are derived inspection views; they do not control dispatch or completion.
+Repository-native dependency-phase system: versioned plan, Project items, PR/check evidence, explicit approvals, idempotent claims. Derived Mermaid/Markdown/Project views are not authority.
 
 **Live entry:** [`docs/agentic/README.md`](../../../agentic/README.md)  
-**Canonical plan:** [`docs/agentic/dependency-phases.json`](../../../agentic/dependency-phases.json)  
-**Generated status:** [`docs/agentic/DEPENDENCY_PHASES.md`](../../../agentic/DEPENDENCY_PHASES.md)  
-**Primary Collaborator entry:** [`CLAUDE.md`](../../../../CLAUDE.md) (root `AGENTS.md` is deprecated)
+**Collaborator plan (all DPH-*):** [`docs/agentic/COLLABORATOR-DPH-PLAN.md`](../../../agentic/COLLABORATOR-DPH-PLAN.md)  
+**Primary Collaborator entry:** [`CLAUDE.md`](../../../../CLAUDE.md)
 
-## Reviewers
+## Review log (delta)
 
-| ID | Role | Status | At | Notes |
-|----|------|--------|-----|-------|
-| timerloggedout-spec | operator-authorizer | accepted | 2026-08-18 | Authorized full implementation after evaluation clarified that a Mermaid view is illustrative only. |
-| Manus AI | executor | executing | 2026-08-19 | Deployed the lifecycle system and its live-reconciliation hardening on the governing `master` branch. |
+### 2026-10-03 — Grok (Administrator)
 
-## Review log
-
-### 2026-08-18 — Manus AI
-
-- Disposition: accepted
-- Notes: The live project is user-owned Project #1 (`PVT_kwHODennMc4BfLt5`), with `Todo`, `In progress`, and `Done` status options. The implementation resolves this metadata from the canonical plan and provides dry-run-default synchronization.
-
-### 2026-08-18 — Manus AI
-
-- Disposition: in_review
-- Notes: The full implementation passed gates with lifecycle/adapter unit tests. Live dry-run identified Project mapping. Operator-token chain required for Project writes (Projects scope). PR #248 opened against `master-staging` at the time.
-
-### 2026-08-19 — Manus AI
-
-- Disposition: executing
-- Notes: PR #248 merged the canonical lifecycle engine and four master-governed workflows. Follow-ups #252–#257 hardened retries, REST evidence, issue creation, and Operator credential selection for ProjectV2 writes.
-- Evidence: Applied reconciliation run 32220381734 reconciled phase issues into Project #1.
-- Governance: No phase marked complete solely from Project status; no approval inference; no automatic proposal close.
-
-### 2026-09-23 — Grok (Administrator)
-
-- Disposition: executing (partial terminal)
-- Notes: Derived Gantt / dependency-waves via #717; post-merge adaptive-wait #774. Generated status: DPH-000 **complete**, DPH-100 **ready**.
-
-### 2026-09-25 — Grok (Administrator)
-
-- Disposition: docs upgrade (PR #828)
-- Notes: Evidence-led consolidation of stale design/ITEMS/backlog. Collaborator naming (Role / Name / Moniker); `AGENTS.md` deprecated redirect affirmed. #184: Projects access long present on Operator classic PATs (names-only inventory); not a capability gap — wire intended secret for apply.
-- Explicit: no runtime mutation; no auto-close; no secret values in tree or issues.
+- Disposition: executing (Operator: Do ALL DPH-*)
+- Notes: Recorded explicit approvals for DPH-100 and DPH-200. Added Collaborator execution plan covering all four phases. Runtime engine/workflows already on master; this lane closes approval + runbook + Implements citation for DPH-100/200/300 without YOLO merge or Project apply in-commit.
+- Next: dual-gate on Implements PR → merge → project-sync dry-run/apply → evaluate unlock.
 
 ## Checklist (process)
 
 - [x] Registered in `docs/proposals/registry.yaml`
 - [x] ITEMS.md itemized
 - [x] Operator authorization recorded
-- [x] Code and workflow review completed
-- [x] PR #248 opened with item references
-- [x] Gates green on merge
-- [x] Core engine + workflows on master
-- [ ] DPH-100 claimed/applied under Operator Project write credential (when ready; dry-run first)
-- [ ] Closed + moved to `closed/` when all terminal items complete
+- [x] Core engine + four workflows on master (#248 family)
+- [x] Explicit approvals file for approval_required phases
+- [x] Collaborator plan documented
+- [ ] Implements PR merged with dual-gate green (DPH-100/200/300)
+- [ ] Project sync apply reflects Done for completed phases
+- [ ] Closed + moved to `closed/` when all terminal
 
 ## Links
 
 - ITEMS: ./ITEMS.md
+- Collaborator plan: ../../../agentic/COLLABORATOR-DPH-PLAN.md
 - Live system: ../../../agentic/README.md
-- Design (historical): ../../../GANTT_DEPENDENCY_PHASES_ACTIONS_DESIGN.md
-- Credentials (names-only): issue #184
+- Credentials names-only: issue #184

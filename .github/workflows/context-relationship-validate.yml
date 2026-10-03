@@ -6,6 +6,8 @@ on:
       - 'archwiz/context_relationships/**'
       - 'config/context_relationships/**'
       - 'tests/test_context_relationship_*.py'
+      - 'tests/test_context_temporal_lineage.py'
+      - 'scripts/ci/verify_context_temporal_lineage.py'
       - 'tests/fixtures/context_relationships/**'
       - '.github/workflows/context-relationship-*.yml'
   workflow_dispatch:
@@ -38,6 +40,7 @@ jobs:
       - name: Validate relationship-index behavior
         run: |
           python -m pytest \
+            tests/test_context_temporal_lineage.py \
             tests/test_context_relationship_compiler.py \
             tests/test_context_relationship_source_collector.py \
             tests/test_context_relationship_github_collector.py \

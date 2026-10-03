@@ -40,6 +40,7 @@ except Exception:
 
 import requests as http_requests
 from rich.console import Console
+from ._v1_cache import atomic_json_dump
 
 console = Console()
 
@@ -93,8 +94,7 @@ def _cache_save(session_id: str, messages: List[Dict[str, Any]], account: str = 
         except Exception:
             pass
 
-    with open(path, 'w') as f:
-        json.dump(messages, f, indent=2)
+    atomic_json_dump(path, messages, indent=2)
 
     p_file = Path(path)
     if p_file.exists() and not p_file.is_symlink():

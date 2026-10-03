@@ -75,7 +75,7 @@ def main():
     print(f"  UI (paste)      {len(by_type['UI']):>5d}")
     print()
 
-    print("── MODEL HISTORY (msg.model, capped 30 sessions) ──")
+    print("── MODEL FAMILY (proxy: thinking_enabled, capped 30 sessions) ──")
     mc = collections.Counter()
     by_month = collections.defaultdict(collections.Counter)
     for f in files[:30]:
@@ -84,20 +84,31 @@ def main():
         if not isinstance(raw, list): continue
         for m in raw:
             if not isinstance(m, dict): continue
-            mod = m.get("model")
-            if mod and isinstance(mod, str) and mod.strip():
-                mc[mod] += 1
-                ts = m.get("inserted_at") or ""
-                if isinstance(ts, str) and len(ts) >= 7:
-                    by_month[ts[:7]][mod] += 1
+            if (m.get("role") or "").lower() != "assistant": continue
+            te = m.get("thinking_enabled")
+            tc = m.get("thinking_content")
+            # prefer explicit model when present
+            explicit = m.get("model")
+            if explicit and isinstance(explicit, str) and explicit.strip():
+                fam = explicit
+            elif te is True or (isinstance(tc, str) and tc.strip()):
+                fam = "reasoner-family (thinking)"
+            elif te is False:
+                fam = "chat-family (no thinking)"
+            else:
+                fam = "(unknown)"
+            mc[fam] += 1
+            ts = m.get("inserted_at") or ""
+            if isinstance(ts, str) and len(ts) >= 7:
+                by_month[ts[:7]][fam] += 1
     if mc:
-        for mod, n in mc.most_common(12):
-            print(f"  {mod:36s} {n:>6d}")
+        for fam, n in mc.most_common(12):
+            print(f"  {fam:36s} {n:>6d}")
         print("  by month:")
         for month in sorted(by_month)[-8:]:
             print(f"    {month}: {dict(by_month[month].most_common(3))}")
     else:
-        print("  (no populated model field in scanned samples)")
+        print("  (no proxy signals in scanned samples)")
     print()
 
     print("── MVT SCORES (capped 6 per type) ──")

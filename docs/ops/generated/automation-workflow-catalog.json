@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "1c802687f7c9fdc53a196ced0e6a2a37f35ed8b0370e13a0410584dff1a75f1f",
-  "workflow_count": 119,
+  "source_fingerprint": "7d1bf5e66304d7a8701df687e0e33ba3d9928e765af5b7f9ac2af412cd8b3a33",
+  "workflow_count": 120,
   "workflows": [
     {
       "action_pins": [
@@ -572,6 +572,7 @@
         "23 * * * *"
       ],
       "triggers": [
+        "push",
         "schedule",
         "workflow_dispatch"
       ]
@@ -1498,6 +1499,21 @@
         "pull_request",
         "push",
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "emit"
+      ],
+      "name": "n8n SHE bridge",
+      "path": ".github/workflows/n8n-she-bridge.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_run"
       ]
     },
     {

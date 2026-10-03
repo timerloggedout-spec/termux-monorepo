@@ -5,6 +5,11 @@ GitHub occasionally leaves issue_comment / pull_request runs in status=queued
 with zero jobs for days. Those stalls consume the concurrent queue and surface
 as permanent failures. This reaper only cancels runs that are still queued,
 older than a threshold, and have no jobs. In-progress work is untouched.
+
+A queued re-run can return 409 "Cannot cancel a workflow re-run that has not
+yet queued." That response is not a reaper failure: record it and continue so
+one stuck id does not abort the rest of the scan (run 37102847026).
+Evidence follow-up for receipt SHA 17f43526 which had zero runs.
 """
 from __future__ import annotations
 
@@ -16,6 +21,15 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta, timezone
+
+
+class GitHubError(Exception):
+    def __init__(self, method: str, path: str, code: int, detail: str) -> None:
+        super().__init__(f"GitHub {method} {path} -> {code}: {detail[:400]}")
+        self.method = method
+        self.path = path
+        self.code = code
+        self.detail = detail
 
 
 def gh(method: str, path: str, token: str, body: dict | None = None) -> dict | list:
@@ -36,7 +50,7 @@ def gh(method: str, path: str, token: str, body: dict | None = None) -> dict | l
             return json.loads(raw) if raw else {}
     except urllib.error.HTTPError as exc:
         detail = exc.read().decode(errors="replace")
-        raise SystemExit(f"GitHub {method} {path} -> {exc.code}: {detail[:400]}") from exc
+        raise GitHubError(method, path, exc.code, detail) from exc
 
 
 def main() -> int:
@@ -52,8 +66,9 @@ def main() -> int:
     cutoff = datetime.now(timezone.utc) - timedelta(hours=args.older_than_hours)
     page = 1
     cancelled = 0
+    skipped = 0
     scanned = 0
-    while page <= 5:
+    while page <= 8:
         query = urllib.parse.urlencode({"status": "queued", "per_page": 50, "page": page})
         payload = gh("GET", f"/repos/{args.repo}/actions/runs?{query}", token)
         runs = payload.get("workflow_runs") or []
@@ -75,7 +90,17 @@ def main() -> int:
                 "head_branch": run.get("head_branch"),
             }
             if args.apply:
-                gh("POST", f"/repos/{args.repo}/actions/runs/{run['id']}/cancel", token)
+                try:
+                    gh("POST", f"/repos/{args.repo}/actions/runs/{run['id']}/cancel", token)
+                except GitHubError as exc:
+                    if exc.code == 409:
+                        record["action"] = "uncancellable"
+                        record["detail"] = exc.detail[:180]
+                        skipped += 1
+                        print(json.dumps(record, sort_keys=True))
+                        continue
+                    print(json.dumps({**record, "action": "error", "detail": str(exc)[:180]}))
+                    return 1
                 record["action"] = "cancelled"
                 cancelled += 1
             else:
@@ -83,7 +108,12 @@ def main() -> int:
                 cancelled += 1
             print(json.dumps(record, sort_keys=True))
         page += 1
-    print(json.dumps({"scanned": scanned, "candidates": cancelled, "apply": args.apply}))
+    print(json.dumps({
+        "scanned": scanned,
+        "candidates": cancelled,
+        "uncancellable": skipped,
+        "apply": args.apply,
+    }))
     return 0
 
 

@@ -1,0 +1,3 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# gh2fa-status — show cached keygrips in the running agent.
+exec gpg-connect-agent 'KEYINFO --list' /bye

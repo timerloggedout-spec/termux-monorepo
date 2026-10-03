@@ -1,0 +1,10 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# gh2fa — print current GitHub TOTP; auto-reprime on failure.
+set -eu
+BIN="$(dirname "$(readlink -f "$0")")"
+code=""
+if ! code="$("$BIN/gh-code" 2>/dev/null)" || [ -z "$code" ]; then
+    "$BIN/gpg-prime" >/dev/null 2>&1 || true
+    code="$("$BIN/gh-code")"
+fi
+printf '%s\n' "$code"

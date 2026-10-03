@@ -1,0 +1,3 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# gh2fa-prime — force re-prime of the gpg-agent cache.
+exec "$(dirname "$0")/gpg-prime" "$@"

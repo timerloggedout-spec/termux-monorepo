@@ -1,0 +1,14 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# Refresh gh auth via device flow (browser) with codespaces scope.
+# Uses TOTP from pass store when browser prompts for 2FA.
+echo "== device flow =="
+echo "  1. browser opens https://github.com/login/device"
+echo "  2. paste the code shown below"
+echo "  3. when prompted for 2FA, use:"
+printf "     TOTP: %s\n" "$(pass otp secret/github 2>/dev/null)"
+echo
+gh auth login --hostname github.com --git-protocol ssh --web \
+  --scopes "repo,workflow,read:org,codespace,gist"
+echo
+echo "== status =="
+gh auth status 2>&1 | head -10

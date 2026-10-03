@@ -1,0 +1,6 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# gh2fa-copy — print code and copy to Termux clipboard.
+set -eu
+code="$("$(dirname "$0")/gh-code")"
+printf '%s' "$code" | termux-clipboard-set 2>/dev/null || true
+printf '%s\n' "$code"

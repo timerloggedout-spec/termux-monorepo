@@ -1,0 +1,27 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# gpg-prime — prime gpg-agent with the 2FA passphrase, no TTL.
+# Reads ~/.gnupg/.2fa-pass (mode 600, no trailing newline).
+set -eu
+PW_FILE="${HOME}/.gnupg/.2fa-pass"
+[ -r "$PW_FILE" ] || { echo "gpg-prime: missing $PW_FILE" >&2; exit 1; }
+PW="$(tr -d '\r\n' < "$PW_FILE")"
+HEX="$(printf '%s' "$PW" | od -An -v -tx1 | tr -d ' \n')"
+
+GRIPS=()
+while IFS= read -r g; do
+  [ -n "$g" ] && GRIPS+=("$g")
+done < <(gpg-connect-agent 'KEYINFO --list' /bye 2>/dev/null | awk '/^S KEYINFO/{print $3}')
+
+if [ ${#GRIPS[@]} -eq 0 ]; then
+  for f in "${HOME}/.gnupg/private-keys-v1.d"/*.key; do
+    [ -e "$f" ] || continue
+    GRIPS+=("$(basename "$f" .key)")
+  done
+fi
+
+for g in "${GRIPS[@]}"; do
+  gpg-connect-agent "PRESET_PASSPHRASE ${g} -1 ${HEX}" /bye >/dev/null 2>&1 || \
+    echo "gpg-prime: preset failed for ${g}" >&2
+done
+
+gpg-connect-agent 'KEYINFO --list' /bye

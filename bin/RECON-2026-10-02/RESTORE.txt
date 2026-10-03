@@ -1,0 +1,179 @@
+# 2FA restore — phase 2 prep
+# 2026-10-02T21:32:45Z
+
+## current ~/bin/ state
+-rwxr-xr-x.  1 u0_a216 u0_a216     569 Oct  2 13:11 gh-code
+-rwx------.  1 u0_a216 u0_a216    1742 Oct  2 13:11 gpg-prime
+
+## bash -n each
+  gh-code: OK    (569b)
+  gh2fa: OK    (2960b)
+  gh2fa-copy: FAIL  (4272b)
+  gh2fa-prime: FAIL  (8061b)
+  gh2fa-status: FAIL  (8061b)
+  gpg-prime: FAIL  (1742b)
+
+============================================================
+## writer block 15794 — the script that produced all six
+============================================================
+python3 - <<'PY'
+import os
+from pathlib import Path
+HOME = Path.home()
+BIN = HOME / "bin"; BIN.mkdir(exist_ok=True)
+
+# gpg-prime — primes agent with all keygrips, no TTL
+(BIN / "gpg-prime").write_text('''#!/data/data/com.termux/files/usr/bin/bash
+# @tool gpg-prime
+# Preset the gpg-agent cache for every keygrip (primary + encryption subkey).
+set -u
+export GPG_TTY="$(tty 2>/dev/null || echo /dev/null)"
+PF="$HOME/.gnupg/.2fa-pass"
+[ -f "$PF" ] || { echo "gpg-prime: no $PF"; exit 1; }
+PW="$(cat "$PF")"
+KEYGRIPS=$(gpg --list-secret-keys --with-keygrip 2>/dev/null | awk '/Keygrip/{print $3}')
+[ -z "$KEYGRIPS" ] && { echo "gpg-prime: no keygrips found"; exit 1; }
+for kg in $KEYGRIPS; do
+  printf 'PRESET_PASSPHRASE %s -1 %s\\n' "$kg" "$(printf '%s' "$PW" | xxd -p -c 200)" \\
+    | gpg-connect-agent --quiet >/dev/null 2>&1 || true
+done
+echo "gpg-prime: primed $(echo "$KEYGRIPS" | wc -l) keygrip(s)"
+''')
+os.chmod(BIN / "gpg-prime", 0o755)
+
+# gh2fa — print current TOTP, re-prime on failure
+(BIN / "gh2fa").write_text('''#!/data/data/com.termux/files/usr/bin/bash
+# @tool gh2fa
+set -u
+export GPG_TTY="$(tty 2>/dev/null || echo /dev/null)"
+code="$(pass otp secret/github 2>/dev/null)" || code=""
+if [ -z "$code" ] || [ "${#code}" -lt 6 ]; then
+  "$HOME/bin/gpg-prime" >/dev/null 2>&1 || true
+  code="$(pass otp secret/github 2>/dev/null)" || code=""
+fi
+[ -n "$code" ] && printf '%s\\n' "$code" || { echo "gh2fa: failed" >&2; exit 1; }
+''')
+os.chmod(BIN / "gh2fa", 0o755)
+
+# ghcode — raw pass output
+(BIN / "ghcode").write_text('''#!/data/data/com.termux/files/usr/bin/bash
+# @tool ghcode
+set -u
+export GPG_TTY="$(tty 2>/dev/null || echo /dev/null)"
+exec pass otp secret/github
+''')
+os.chmod(BIN / "ghcode", 0o755)
+
+# gh2fa-copy — code to clipboard
+(BIN / "gh2fa-copy").write_text('''#!/data/data/com.termux/files/usr/bin/bash
+# @tool gh2fa-copy
+set -u
+code="$("$HOME/bin/gh2fa")"
+printf '%s' "$code" | termux-clipboard-set
+printf 'copied: %s\\n' "$code"
+''')
+os.chmod(BIN / "gh2fa-copy", 0o755)
+
+# gh2fa-status — show cached keygrips
+(BIN / "gh2fa-status").write_text('''#!/data/data/com.termux/files/usr/bin/bash
+# @tool gh2fa-status
+set -u
+gpg-connect-agent --quiet 'KEYINFO --list' /bye 2>/dev/null | awk 'NF>1 {print $2, $3, $4}'
+''')
+os.chmod(BIN / "gh2fa-status", 0o755)
+
+# gh2fa-prime — alias for gpg-prime
+(BIN / "gh2fa-prime").write_text('''#!/data/data/com.termux/files/usr/bin/bash
+exec "$HOME/bin/gpg-prime" "$@"
+''')
+os.chmod(BIN / "gh2fa-prime", 0o755)
+
+# ensure ~/bin on PATH via .zshrc
+zr = HOME / ".zshrc"
+t = zr.read_text() if zr.exists() else ""
+if "$HOME/bin" not in t and "/bin:" not in t.split("PATH=")[1].split(":")[0] if "PATH=" in t else True:
+    if 'export PATH="$HOME/bin:$PATH"' not in t:
+        t += '\nexport PATH="$HOME/bin:$PATH"\n'
+        zr.write_text(t)
+        print("  added ~/bin to PATH in .zshrc")
+
+print("wrote:")
+for f in sorted(BIN.glob("gh*")) + sorted(BIN.glob("gpg-prime")):
+    print(f"  {f.relative_to(HOME)}  {f.stat().st_size}b  mode={oct(f.stat().st_mode)[-3:]}")
+PY
+============================================================
+## writer block 15864
+============================================================
+python3 - <<'PY'
+import sys, json
+from pathlib import Path
+HOME = Path.home()
+sys.path.insert(0, str(HOME / "deepcli"))
+from deepcli.core import get_token, get_history
+
+tok = get_token()
+sid = "0d3639e8-239e-4a"  # prefix; resolve full id first
+# resolve full id
+from deepcli.core import fetch_sessions
+for s in fetch_sessions(tok):
+    if (s.get("id") or "").startswith(sid):
+        sid = s.get("id")
+        break
+print(f"sid={sid}")
+
+msgs = get_history(tok, sid, force_refresh=True)
+print(f"messages: {len(msgs or [])}")
+
+hits = []
+for i, m in enumerate(msgs or []):
+    c = m.get("content") or ""
+    for k in ("gpg-prime","gh-code","gh2fa","2fa-pass","pass otp","gpg-connect-agent","PRESET_PASSPHRASE"):
+        if k in c:
+            hits.append((i, m.get("role"), k, len(c)))
+            break
+
+print(f"keyword hits: {len(hits)}")
+for i, role, k, n in hits:
+    print(f"  [{i}] role={role}  match={k}  len={n}")
+
+out = HOME / ".deepcli/recovered/2fa-this-session"
+out.mkdir(parents=True, exist_ok=True)
+for idx, (i, role, k, n) in enumerate(hits):
+    (out / f"msg-{i:03d}-{role or 'x'}.txt").write_text((msgs[i].get("content") or ""))
+print(f"wrote {len(hits)} messages to {out}")
+PY
+============================================================
+## writer block 15866
+============================================================
+python3 - <<'PY'
+import sys
+from pathlib import Path
+HOME = Path.home()
+sys.path.insert(0, str(HOME / "deepcli"))
+from deepcli.core import get_token, get_history, fetch_sessions
+
+tok = get_token()
+sessions = fetch_sessions(tok)
+print(f"scanning {len(sessions)} sessions for script keywords")
+
+needles = ["gpg-prime", "gh-code", "gh2fa", "2fa-pass", "pass otp", "PRESET_PASSPHRASE", "gpg-connect-agent"]
+found = []
+for s in sessions:
+    sid = s.get("id") or s.get("chat_session_id")
+    if not sid: continue
+    try:
+        msgs = get_history(tok, sid, force_refresh=False)
+    except Exception:
+        continue
+    n = 0
+    for m in msgs or []:
+        c = m.get("content") or ""
+        if any(k in c for k in needles):
+            n += 1
+    if n:
+        title = s.get("title") or s.get("name") or "?"
+        print(f"  HIT {sid[:16]}  msgs={len(msgs)}  matches={n}  {title[:60]}")
+        found.append((sid, n, title))
+
+print(f"\ntotal: {len(found)}")
+PY

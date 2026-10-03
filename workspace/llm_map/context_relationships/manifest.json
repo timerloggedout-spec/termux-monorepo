@@ -1,85 +1,85 @@
 {
   "bootstrap_backfill": false,
   "builder": "archwiz.context_relationships.build_index@1.0",
-  "candidate_edge_count": 2562,
+  "candidate_edge_count": 2674,
   "compiler": "archwiz.context_relationships.compiler@1.0",
   "default_branch": "master",
-  "edge_count": 28205,
+  "edge_count": 30867,
   "github_report": {
     "checkpoint_eligible": false,
-    "collected_at": "2026-10-03T02:07:06.799546Z",
+    "collected_at": "2026-10-03T08:19:19.163837Z",
     "collector": "archwiz.context_relationships.github_collector@1.0",
     "counts": {
-      "cochange_candidates": 399,
-      "commit_files": 314,
+      "cochange_candidates": 354,
+      "commit_files": 280,
       "commits": 100,
-      "excluded_history_paths": 2,
-      "explicit_references": 169,
-      "issue_comments": 9,
-      "issues": 3,
-      "labels": 31,
-      "permalink_references": 11,
-      "pull_request_comments": 992,
-      "pull_request_commits": 553,
-      "pull_request_files": 612,
-      "pull_request_window_stubs": 31,
+      "excluded_history_paths": 105,
+      "explicit_references": 263,
+      "issue_comments": 48,
+      "issues": 18,
+      "labels": 89,
+      "permalink_references": 53,
+      "pull_request_comments": 899,
+      "pull_request_commits": 589,
+      "pull_request_files": 716,
+      "pull_request_window_stubs": 33,
       "pull_requests": 100,
-      "review_comments": 85,
-      "reviews": 70,
-      "timeline_cross_references": 6
+      "review_comments": 195,
+      "reviews": 105,
+      "timeline_cross_references": 67
     },
     "history_window": {
       "issue_count": 100,
       "issues_complete": false,
       "limit_per_family": 100,
-      "next_start_page": 6,
+      "next_start_page": 7,
       "pull_request_count": 100,
       "pull_requests_complete": false,
-      "start_page": 5
+      "start_page": 6
     },
     "include_comments": true,
     "max_comments_per_item": 10,
     "max_commits": 100,
     "max_items": 100,
-    "request_count": 609,
+    "request_count": 639,
     "retry_count": 0,
     "since": null,
-    "unresolved_internal_reference_count": 304
+    "unresolved_internal_reference_count": 140
   },
   "history_window": {
     "issue_count": 100,
     "issues_complete": false,
     "limit_per_family": 100,
-    "next_start_page": 6,
+    "next_start_page": 7,
     "pull_request_count": 100,
     "pull_requests_complete": false,
-    "start_page": 5
+    "start_page": 6
   },
   "incremental_since": null,
-  "input_sha256": "2d5c5dbddd430b10bf008ee66101a0d1a9cdc7ce937c5bc4a06350f86abb3136",
-  "latest_observed_at": "2026-10-03T02:07:06.799546Z",
+  "input_sha256": "0140ddfe427d1aeaca1d8bca87d06e61294810c980d4cfd57ce14d80a667e506",
+  "latest_observed_at": "2026-10-03T08:19:19.163837Z",
   "merge_report": {
     "input_count": 3,
     "input_counts": [
       {
-        "edges": 26203,
-        "nodes": 16667
+        "edges": 28205,
+        "nodes": 18077
       },
       {
-        "edges": 5137,
-        "nodes": 5328
+        "edges": 5164,
+        "nodes": 5355
       },
       {
-        "edges": 3347,
-        "nodes": 2405
+        "edges": 3902,
+        "nodes": 2725
       }
     ],
-    "merged_edge_count": 34687,
-    "merged_node_count": 18077,
+    "merged_edge_count": 37271,
+    "merged_node_count": 19835,
     "merger": "archwiz.context_relationships.seed_merger@1.2",
     "retained_history": true
   },
-  "node_count": 18077,
+  "node_count": 19835,
   "repository": "timerloggedout-spec/termux-monorepo",
   "retained_history": true,
   "schema_sha256": "795fd782ddbb7d52c09a9a85a8356683b12202968d6ba7b04fb13c55393cde93",
@@ -139,12 +139,12 @@
         "path": "harmony_hub/utility_belt/recover-session.py"
       }
     ],
-    "scanned_files": 5546,
-    "scopes_matched": 150,
-    "source_files": 911,
+    "scanned_files": 5575,
+    "scopes_matched": 153,
+    "source_files": 916,
     "symlink_files": 45,
     "unavailable_files": 0,
-    "unsupported_files": 3207
+    "unsupported_files": 3231
   },
-  "verified_edge_count": 25643
+  "verified_edge_count": 28193
 }

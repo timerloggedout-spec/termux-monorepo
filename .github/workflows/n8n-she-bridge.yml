@@ -2,6 +2,13 @@ name: n8n SHE bridge
 
 on:
   workflow_run:
+    # workflows is required. Omitting it is an invalid workflow file and
+    # produces a zero-job failure on push (runs 37085767517, 37085844806).
+    workflows:
+      - repo gate
+      - termux smoke
+      - Sweep Accountability
+      - context relationship historical backfill
     types: [completed]
 
 permissions:

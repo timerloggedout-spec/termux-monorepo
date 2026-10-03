@@ -1,6 +1,7 @@
 import datetime as dt
 import json
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
+import urllib.error
 
 from scripts import provider_availability_probe as probe
 
@@ -94,3 +95,41 @@ def test_main_writes_document_without_leaking_secrets(tmp_path):
     body = out.read_text(encoding="utf-8")
     for key in CREDENTIAL_KEYS:
         assert key not in body
+
+def test_gemini_query_auth_is_explicit_and_encoded(monkeypatch):
+    calls = []
+
+    def fake_urlopen(request, timeout):
+        calls.append(request.full_url)
+        response = MagicMock()
+        response.status = 200
+        response.read.return_value = json.dumps({
+            "models": [{
+                "name": "models/gemini-test",
+                "supportedGenerationMethods": ["generateContent"],
+            }]
+        }).encode()
+        response.__enter__.return_value = response
+        return response
+
+    monkeypatch.setattr(probe.urllib.request, "urlopen", fake_urlopen)
+    row = probe.result("gemini")
+    probe.gemini_probe(row, "secret/with+reserved&chars")
+
+    assert row["credential_present"] is True
+    assert row["catalog_ok"] is True
+    assert row["model"] == "gemini-test"
+    assert "key=secret%2Fwith%2Breserved%26chars" in calls[0]
+    assert calls[0].count("key=") == 1
+
+
+def test_error_classes_are_stable_and_non_secret():
+    assert probe.classify_error(urllib.error.HTTPError("x", 401, "bad", {}, None)) == "credential_rejected"
+    assert probe.classify_error(urllib.error.HTTPError("x", 429, "rate", {}, None)) == "quota_or_rate_limit"
+    assert probe.classify_error(urllib.error.HTTPError("x", 503, "down", {}, None)) == "provider_5xx"
+
+
+def test_provider_result_has_health_status_fields():
+    row = probe.result("openrouter")
+    assert row["catalog_status"] is None
+    assert row["inference_status"] is None

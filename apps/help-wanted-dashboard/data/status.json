@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-03T13:19:40Z",
+  "generated_at": "2026-10-03T13:55:14Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
   "receipts": 927,
@@ -16,6 +16,15 @@
     "ok": 927
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/qim-center/qim3d/pull/273",
+      "title": "help-wanted: stake + contribute for #225",
+      "number": 273,
+      "repo": "qim-center/qim3d",
+      "state": "open",
+      "updated_at": "2026-10-03T13:54:56Z",
+      "tribute": true
+    },
     {
       "html_url": "https://github.com/speedyk-005/yasbd-lib/pull/363",
       "title": "Submit contribution stake and upstream PR for #362",
@@ -251,8 +260,21 @@
       "tribute": true
     }
   ],
-  "foreign_open_count": 26,
+  "foreign_open_count": 27,
   "tributes": [
+    {
+      "pr_url": "https://github.com/qim-center/qim3d/pull/273",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-10-03T13:54:56Z",
+      "providers": [],
+      "repo": "qim-center/qim3d",
+      "number": 273,
+      "title": "help-wanted: stake + contribute for #225",
+      "state": "open"
+    },
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
@@ -2004,7 +2026,7 @@
       "state": "closed"
     }
   ],
-  "tribute_count": 67,
+  "tribute_count": 68,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -10602,7 +10624,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "517db1417c7d1d58307afd867a543b0a85e7a77e",
+    "source_sha": "31d85f4cc3bbf108ec7aa14be4b12172a745e111",
     "source_ref": "master",
     "history_complete": false,
     "history_coverage": "lane-local-complete; repository-wide historical accountability requires sweep-accountability backfill",
@@ -10636,12 +10658,12 @@
   },
   "evolution": [
     {
-      "sha": "517db1417c7d1d58307afd867a543b0a85e7a77e",
-      "short_sha": "517db1417c7d",
-      "date": "2026-10-03T12:59:40Z",
+      "sha": "31d85f4cc3bbf108ec7aa14be4b12172a745e111",
+      "short_sha": "31d85f4cc3bb",
+      "date": "2026-10-03T13:54:28Z",
       "author": "termux-monorepo sweep",
       "subject": "chore(ops): record sweep accountability receipt",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/517db1417c7d1d58307afd867a543b0a85e7a77e"
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/31d85f4cc3bbf108ec7aa14be4b12172a745e111"
     }
   ],
   "pipeline": [

@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "087cfa91d667f350b5724fc72fd024480238040512ffc61216ee9e4e82f9052d",
-  "workflow_count": 120,
+  "source_fingerprint": "7cbed438fe5b5b0fcb72a41461e4c410db3524dbebf389c0cd70c3f1d0d23e82",
+  "workflow_count": 121,
   "workflows": [
     {
       "action_pins": [
@@ -65,6 +65,26 @@
       "schedules": [],
       "triggers": [
         "pull_request",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: actions-queue-reaper cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "reap"
+      ],
+      "name": "Actions queue reaper",
+      "path": ".github/workflows/actions-queue-reaper.yml",
+      "schedules": [
+        "23 */6 * * *"
+      ],
+      "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },

@@ -1015,7 +1015,7 @@ _WT_BASE_FILE = HOME / ".deepcli" / "watchdog" / "worktree-bases.json"
 def _wt_bases_load():
     import json as _j
     try: return _j.loads(_WT_BASE_FILE.read_text())
-    except Exception: return {{}}
+    except Exception: return {}
 
 def _wt_bases_save(d):
     import json as _j
@@ -1113,7 +1113,7 @@ def _gh_worktree(a):
 
         # default PR base to the base the worktree was created from
         _b = _wt_bases_load()
-        _default_base = a.get("base") or _b.get(branch) or _wt_default_repo_branch() or "master"
+        _default_base = a.get("base") or _b.get(branch) or "master"
         pr_cmd = [
             "gh",
             "pr",

@@ -1,0 +1,44 @@
+name: continuous-improve
+
+on:
+  schedule:
+    - cron: "0 */8 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 1}
+
+      - name: Check secrets
+        id: cfg
+        env:
+          KEY:  ${{ secrets.MANUS_SSH_KEY }}
+          HOST: ${{ secrets.MANUS_SSH_HOST }}
+        run: |
+          if [ -z "$KEY" ] || [ -z "$HOST" ]; then
+            echo "::warning::MANUS_SSH_* missing — skipped"
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Dispatch on Termux
+        if: steps.cfg.outputs.ok == 'true'
+        env:
+          KEY:  ${{ secrets.MANUS_SSH_KEY }}
+          HOST: ${{ secrets.MANUS_SSH_HOST }}
+          PORT: ${{ secrets.MANUS_SSH_PORT }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p "${PORT:-22}" "$HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
+          ssh -p "${PORT:-22}" -o BatchMode=yes "termux@$HOST" \
+            "nohup ~/.local/bin/deepagent-continuous 8 >/dev/null 2>&1 &"

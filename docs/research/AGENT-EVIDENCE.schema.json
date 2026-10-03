@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Termux Monorepo Agent Evidence Event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "event_id", "run_id", "event_type", "occurred_at",
+    "agent_id", "task_id", "protocol", "status"
+  ],
+  "properties": {
+    "schema_version": {"type": "integer", "const": 1},
+    "event_id": {"type": "string", "minLength": 1},
+    "run_id": {"type": "string", "minLength": 1},
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "agent.invoke", "agent.plan", "workflow.invoke", "tool.execute",
+        "mcp.session", "mcp.operation", "a2a.delegate", "a2a.result",
+        "evaluation.judgement", "provenance.snapshot",
+        "environment.snapshot", "artifact.produced"
+      ]
+    },
+    "occurred_at": {"type": "string", "format": "date-time"},
+    "agent_id": {"type": "string", "minLength": 1},
+    "manager_id": {"type": ["string", "null"]},
+    "parent_event_id": {"type": ["string", "null"]},
+    "task_id": {"type": "string", "minLength": 1},
+    "provider": {"type": ["string", "null"]},
+    "model": {"type": ["string", "null"]},
+    "tool_name": {"type": ["string", "null"]},
+    "protocol": {"enum": ["mcp", "a2a", "local", "other"]},
+    "status": {
+      "enum": [
+        "DISPATCHED", "QUEUED", "IN_PROGRESS", "EXECUTED",
+        "VALIDATED", "FAILED", "CANCELLED", "STALLED"
+      ]
+    },
+    "attributes": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^(?!.*(prompt|completion|secret|token|credential|authorization|payload|message)).+$": {}
+      }
+    }
+  }
+}

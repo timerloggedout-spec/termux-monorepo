@@ -25,16 +25,29 @@ EVENT_SPANS = {
     "artifact.produced": "artifact_produced",
 }
 
+SENSITIVE_NAMES = {
+    "prompt", "completion", "secret", "token", "credential",
+    "authorization", "tool_payload", "payload", "message",
+}
+
 
 def _epoch_nanos(value: str) -> int:
     stamp = datetime.fromisoformat(value.replace("Z", "+00:00"))
     return int(stamp.timestamp() * 1_000_000_000)
 
 
+def _safe_attributes(attributes: Mapping[str, Any]) -> dict[str, Any]:
+    return {
+        key: value
+        for key, value in attributes.items()
+        if key.lower() not in SENSITIVE_NAMES
+    }
+
+
 def project_event(event: Mapping[str, Any]) -> dict[str, Any]:
     event_type = event["event_type"]
     span_name = EVENT_SPANS.get(event_type, event_type)
-    attrs = dict(event.get("attributes") or {})
+    attrs = _safe_attributes(dict(event.get("attributes") or {}))
     attrs.update({
         "agent.id": event["agent_id"],
         "task.id": event["task_id"],

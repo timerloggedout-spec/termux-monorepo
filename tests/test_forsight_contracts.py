@@ -19,24 +19,25 @@ class ForesightContractsTest(unittest.TestCase):
             "protocol": "mcp",
             "status": "EXECUTED",
             "tool_name": "repo.read",
-            "attributes": {"duration_ms": 12},
+            "attributes": {"duration_ms": 12, "prompt": "must be removed"},
             "prompt": "must never appear",
         }
         projected = project_event(event)
         self.assertEqual(projected["name"], "execute_tool")
         self.assertNotIn("prompt", json.dumps(projected))
 
-    def test_manifest_removes_sensitive_fields_and_binds_digests(self):
+    def test_manifest_recursively_removes_sensitive_fields(self):
         manifest = build_manifest(
             run_id="run-1",
             source_sha="abc",
-            environment={"os": "linux", "token": "secret"},
+            environment={"os": "linux", "nested": {"token": "secret", "arch": "arm64"}},
             runtime={"name": "runtime", "version": "1"},
             model={"name": "model", "quantization": "Q4"},
-            tools=[{"name": "repo.read", "version": "1"}],
-            result={"accepted": True},
+            tools=[{"name": "repo.read", "version": "1", "credential": "secret"}],
+            result={"accepted": True, "message": "private"},
         )
-        self.assertEqual(manifest["environment"], {"os": "linux"})
+        self.assertEqual(manifest["environment"], {"os": "linux", "nested": {"arch": "arm64"}})
+        self.assertEqual(manifest["tools"], [{"name": "repo.read", "version": "1"}])
         self.assertTrue(manifest["environment_digest"].startswith("sha256:"))
         self.assertTrue(manifest["model_digest"].startswith("sha256:"))
         self.assertIsNotNone(datetime.fromisoformat(

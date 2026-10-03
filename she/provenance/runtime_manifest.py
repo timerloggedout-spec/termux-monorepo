@@ -10,7 +10,7 @@ from typing import Any, Mapping
 
 SENSITIVE_KEYS = {
     "prompt", "completion", "secret", "token", "credential",
-    "authorization", "tool_payload",
+    "authorization", "tool_payload", "payload", "message",
 }
 
 
@@ -19,12 +19,17 @@ def _digest(value: Any) -> str:
     return "sha256:" + hashlib.sha256(raw).hexdigest()
 
 
-def sanitize(mapping: Mapping[str, Any]) -> dict[str, Any]:
-    return {
-        key: value
-        for key, value in mapping.items()
-        if key.lower() not in SENSITIVE_KEYS
-    }
+def sanitize(value: Any) -> Any:
+    """Recursively remove sensitive keys while preserving evidence structure."""
+    if isinstance(value, Mapping):
+        return {
+            key: sanitize(item)
+            for key, item in value.items()
+            if key.lower() not in SENSITIVE_KEYS
+        }
+    if isinstance(value, list):
+        return [sanitize(item) for item in value]
+    return value
 
 
 def build_manifest(
@@ -42,22 +47,31 @@ def build_manifest(
     event_stream: list[Mapping[str, Any]] | None = None,
     result: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
-    events = event_stream or []
+    events = sanitize(event_stream or [])
+    clean_environment = sanitize(environment)
+    clean_runtime = sanitize(runtime)
+    clean_model = sanitize(model)
+    clean_tools = sanitize(tools)
+    clean_mcp = sanitize(mcp_servers or [])
+    clean_a2a = sanitize(a2a_peers or [])
+    clean_dependencies = sanitize(dependencies or [])
+    clean_artifacts = sanitize(artifacts or [])
+    clean_result = sanitize(result or {})
     return {
         "schema_version": 1,
         "run_id": run_id,
         "source_sha": source_sha,
-        "environment": sanitize(environment),
-        "environment_digest": _digest(sanitize(environment)),
-        "runtime": sanitize(runtime),
-        "model": sanitize(model),
-        "model_digest": _digest(sanitize(model)),
-        "tools": [sanitize(item) for item in tools],
-        "mcp_servers": [sanitize(item) for item in (mcp_servers or [])],
-        "a2a_peers": [sanitize(item) for item in (a2a_peers or [])],
-        "dependencies": [sanitize(item) for item in (dependencies or [])],
-        "artifacts": [sanitize(item) for item in (artifacts or [])],
+        "environment": clean_environment,
+        "environment_digest": _digest(clean_environment),
+        "runtime": clean_runtime,
+        "model": clean_model,
+        "model_digest": _digest(clean_model),
+        "tools": clean_tools,
+        "mcp_servers": clean_mcp,
+        "a2a_peers": clean_a2a,
+        "dependencies": clean_dependencies,
+        "artifacts": clean_artifacts,
         "event_stream_digest": _digest(events),
-        "result_digest": _digest(sanitize(result or {})),
+        "result_digest": _digest(clean_result),
         "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
     }

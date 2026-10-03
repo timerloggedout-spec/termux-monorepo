@@ -1,6 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/bash
-# gh2fa-copy — print code and copy to Termux clipboard.
+# gh2fa-copy — print TOTP and copy to Android clipboard.
 set -eu
-code="$("$(dirname "$0")/gh-code")"
+BIN="$(dirname "$(readlink -f "$0")")"
+code="$("$BIN/gh2fa")"
 printf '%s' "$code" | termux-clipboard-set 2>/dev/null || true
 printf '%s\n' "$code"

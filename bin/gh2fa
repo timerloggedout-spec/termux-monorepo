@@ -1,10 +1,10 @@
 #!/data/data/com.termux/files/usr/bin/bash
-# gh2fa — print current GitHub TOTP; auto-reprime on failure.
+# gh2fa — print current GitHub TOTP. Auto-reprime gpg-agent on failure.
 set -eu
 BIN="$(dirname "$(readlink -f "$0")")"
 code=""
-if ! code="$("$BIN/gh-code" 2>/dev/null)" || [ -z "$code" ]; then
+if ! code="$(pass otp secret/github 2>/dev/null)" || [ -z "$code" ]; then
     "$BIN/gpg-prime" >/dev/null 2>&1 || true
-    code="$("$BIN/gh-code")"
+    code="$(pass otp secret/github)"
 fi
 printf '%s\n' "$code"

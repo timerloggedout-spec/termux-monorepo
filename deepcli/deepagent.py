@@ -1738,7 +1738,38 @@ def hygiene_preflight(verbose=True):
         "ok": True,
         "reasons": [],
     }
-    # gates
+    # SOFT FLOORS — auto-run reclaim, re-check, then evaluate
+    SOFT_MEM_MB = 500
+    SOFT_SWAP_MB = 300
+    SOFT_WORKTREES = 40
+    soft_breach = (
+        mem_mb < SOFT_MEM_MB
+        or swap_mb < SOFT_SWAP_MB
+        or wt > SOFT_WORKTREES
+    )
+    if soft_breach:
+        if verbose:
+            print(f"  [hygiene] soft floor breached (mem<{SOFT_MEM_MB} "
+                  f"swap<{SOFT_SWAP_MB} wt>{SOFT_WORKTREES}) — running reclaim")
+        try:
+            _rn = HOME/".local"/"bin"/"reclaim-now"
+            if _rn.exists():
+                r = subprocess.run(["bash", str(_rn), "preflight"],
+                                   capture_output=True, text=True, timeout=300)
+                if verbose and r.stdout:
+                    print(f"  [hygiene] {r.stdout.strip()[:200]}")
+        except Exception as e:
+            if verbose:
+                print(f"  [hygiene] reclaim-now failed: {e}")
+        # re-read metrics
+        mem_mb  = _mem_kb()  // 1024
+        swap_mb = _swap_free_kb() // 1024
+        wt      = _worktree_count()
+        state["mem_available_mb"] = mem_mb
+        state["swap_free_mb"]     = swap_mb
+        state["worktrees"]        = wt
+
+    # HARD FLOORS — refuse if still under after reclaim
     if mem_mb < 300:
         state["ok"] = False
         state["reasons"].append(f"mem_available={mem_mb}MB < 300MB floor")

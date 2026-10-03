@@ -28,7 +28,7 @@ def main() -> int:
             "confidence": 1,
         },
     ]
-    census = pathlib.Path("docs/ops/generated/sweep-ledger/census")
+    census = pathlib.Path(os.environ.get("CENSUS_DIR", "docs/ops/generated/sweep-ledger/census"))
     if census.exists():
         for name in ("pulls", "issues", "workflow-runs"):
             path = census.joinpath(name + ".json")

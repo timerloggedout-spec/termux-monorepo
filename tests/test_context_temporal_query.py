@@ -11,7 +11,7 @@ from archwiz.context_relationships.temporal_query import (
 )
 
 
-def make_snapshot(tmp_path: Path, observed_at: str, start: int, next_page: int | None, title: str):
+def make_snapshot(tmp_path: Path, observed_at: str, start: int, next_page: int | None, title: str, delta_counts=None):
     snapshot = build_snapshot(
         repository="example/repo",
         source_ref="master",
@@ -27,7 +27,7 @@ def make_snapshot(tmp_path: Path, observed_at: str, start: int, next_page: int |
         }],
         edges=[],
         coverage="COMPLETE" if next_page is None else "PARTIAL_CONTINUATION_REQUIRED",
-        delta={"counts": {"nodes_added": 1 if title == "one" else 0, "nodes_changed": 1 if title != "one" else 0}},
+        delta={"counts": delta_counts or {"nodes_added": 1 if title == "one" else 0, "nodes_changed": 1 if title != "one" else 0}},
     )
     temporal = tmp_path / "temporal"
     write_snapshot(
@@ -88,6 +88,7 @@ def test_between_and_changes_only_are_deterministic(tmp_path):
         first["snapshot_id"], second["snapshot_id"], third["snapshot_id"]
     ]
     assert result["events"][1]["delta"]["counts"]["nodes_changed"] == 1
+    assert fourth["snapshot_id"] not in [event["snapshot_id"] for event in result["events"]]
 
 
 def test_timeline_is_sorted_by_observation_time(tmp_path):

@@ -2,7 +2,14 @@
 
 import sys, pathlib, unittest
 
-sys.path.insert(0, str(pathlib.Path.home() / "deepcli"))
+def _repo_root():
+    """Walk up from this file to the dir containing deepcli/_v1_preflight.py."""
+    for parent in [pathlib.Path(__file__).resolve().parent, *pathlib.Path(__file__).resolve().parents]:
+        if (parent / "deepcli" / "_v1_preflight.py").exists():
+            return parent
+    return pathlib.Path.home() / "deepcli"
+
+sys.path.insert(0, str(_repo_root()))
 from deepcli._v1_preflight import score, pattern_match, penalty_count, env_risk
 
 
@@ -77,3 +84,38 @@ class TestEnvRisk(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+class TestDocstringApiParity(unittest.TestCase):
+    """The module docstring's Public API block must only name real symbols."""
+
+    @staticmethod
+    def _load_this_checkout_module():
+        """Import _v1_preflight from THIS checkout's file, not a sibling's."""
+        import importlib.util
+        path = pathlib.Path(__file__).resolve().parents[1] / "deepcli" / "_v1_preflight.py"
+        spec = importlib.util.spec_from_file_location("iter14_preflight", path)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        return mod
+
+    def test_no_phantom_public_api(self):
+        import re
+        mod = self._load_this_checkout_module()
+        doc = mod.__doc__ or ""
+        api = doc.split("Public API:", 1)[1]
+        names = re.findall(r"^\s{4}([A-Za-z_][A-Za-z0-9_]*)\(", api, re.M)
+        self.assertTrue(names, "docstring should document at least one public fn")
+        for name in names:
+            self.assertTrue(
+                callable(getattr(mod, name, None)),
+                f"docstring advertises {name}() but module has no such callable",
+            )
+
+    def test_check_action_not_advertised(self):
+        mod = self._load_this_checkout_module()
+        self.assertNotIn(
+            "check_action",
+            mod.__doc__ or "",
+            "phantom check_action was removed from the public API docstring",
+        )
+        self.assertFalse(hasattr(mod, "check_action"))

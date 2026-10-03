@@ -308,3 +308,34 @@ Recovered Codespace identities are protected from destructive cleanup until curr
 - Temporal lag/index optimization — validate against current indexing/context-relationship architecture before re-rooting.
 
 Temporal adapter and BIFROST-006 evidence carriers are retained as provenance because their functional lineage is already represented on current `master`.
+
+
+---
+
+## 14. n8n Community Edition adapter (2026-10-02)
+
+n8n is now wired as an **optional free self-hosted adapter**, not a competing system of record.
+
+| Surface | Role | Authority |
+|---|---|---|
+| GitHub | source history / PR / checks / runs | **canonical** |
+| Actions | collection / validation / evidence | **canonical execution** |
+| SHE | deterministic reduction / projection | **canonical reducer** |
+| n8n Community Edition | visual workflow composition / optional operator automation | **adapter** |
+| Vercel / Pages / Hex | presentation / analysis | consumers |
+
+Adapter path:
+
+`GitHub workflow_run → optional n8n webhook → sanitize/normalize → receipt`
+
+Security boundary:
+
+- webhook URL is operator secret/configuration;
+- only allowlisted run metadata crosses the adapter;
+- GitHub credentials never cross;
+- no arbitrary workflow payload is persisted by the example;
+- bridge is inert when `N8N_SHE_WEBHOOK_URL` is absent.
+
+Operational provenance remains:
+
+`DESIGNED → IMPORTED → CONFIGURED → OBSERVED → VALIDATED → PROMOTED`

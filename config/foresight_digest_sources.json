@@ -117,6 +117,30 @@
       "name": "Edge inference evidence lane",
       "role": "ARM/Android/local-runtime reproducibility and energy/memory measurement",
       "url": "https://github.com/ggml-org/llama.cpp"
+    },
+    {
+      "id": "mcp_interoperability",
+      "name": "Model Context Protocol",
+      "role": "open agent-tool interoperability and capability boundary",
+      "url": "https://modelcontextprotocol.io/"
+    },
+    {
+      "id": "a2a_interoperability",
+      "name": "Agent2Agent Protocol",
+      "role": "agent-to-agent delegation interoperability",
+      "url": "https://a2a-protocol.org/"
+    },
+    {
+      "id": "otel_genai",
+      "name": "OpenTelemetry GenAI semantic conventions",
+      "role": "vendor-neutral agent/GenAI telemetry projection",
+      "url": "https://opentelemetry.io/docs/specs/semconv/gen-ai/"
+    },
+    {
+      "id": "agent_judge_bench",
+      "name": "AgentJudgeBench",
+      "role": "tool-calling agent evaluator research",
+      "url": "https://arxiv.org/abs/2608.26623"
     }
   ],
   "source_classes": [
@@ -134,5 +158,13 @@
   "lane_registry": "docs/research/RESEARCH-LANES.yaml",
   "provenance_contract": "docs/research/BRIEFING-INGEST.md",
   "procurement_contract": "docs/research/FOSS-PROCUREMENT-MATRIX.md",
-  "horizon_contract": "docs/research/FORESIGHT-RADAR.md"
+  "horizon_contract": "docs/research/FORESIGHT-RADAR.md",
+  "implementation_contracts": {
+    "agent_evidence": "docs/research/AGENT-EVIDENCE-CONTRACT.md",
+    "manager_tournament": "docs/research/MANAGER-TOURNAMENT-CONTRACT.md",
+    "edge_inference": "docs/research/EDGE-INFERENCE-CONFORMANCE.md",
+    "runtime_provenance": "docs/research/RUNTIME-PROVENANCE-AIBOM.md",
+    "implementation_status": "docs/research/FORESIGHT-IMPLEMENTATION-STATUS.md",
+    "edge_matrix": "config/edge_inference_matrix.json"
+  }
 }

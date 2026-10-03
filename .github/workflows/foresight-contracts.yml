@@ -1,0 +1,40 @@
+name: Foresight Contract Validation
+
+on:
+  pull_request:
+    paths:
+      - "docs/research/**"
+      - "config/foresight_digest_sources.json"
+      - "config/edge_inference_matrix.json"
+      - "she/telemetry/**"
+      - "she/provenance/**"
+      - "tests/test_forsight_contracts.py"
+      - ".github/workflows/foresight-contracts.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: foresight-contracts-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          persist-credentials: false
+      - name: Validate JSON contracts
+        run: |
+          python -m json.tool config/edge_inference_matrix.json >/dev/null
+          python -m json.tool config/foresight_digest_sources.json >/dev/null
+      - name: Compile implementation
+        run: python -m compileall -q she/telemetry she/provenance tests/test_forsight_contracts.py
+      - name: Run focused tests
+        run: python -m unittest tests.test_forsight_contracts -v
+      - name: Verify no sensitive evidence fields are admitted
+        run: |
+          ! grep -RniE '(^|[^a-z])(prompt|completion|secret|token|credential|authorization|tool_payload)[[:space:]]*:'             she/telemetry she/provenance

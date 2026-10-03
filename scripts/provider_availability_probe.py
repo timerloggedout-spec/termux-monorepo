@@ -89,7 +89,16 @@ def probe_catalog(provider, url, token, row):
         row["catalog_ok"] = 200 <= status < 300 and isinstance(models, list)
         row["model_count"] = len(models)
         if provider == "openrouter":
-            free = [m.get("id") for m in models if str(m.get("id", "")).endswith(":free")]
+            free = []
+            for model in models:
+                model_id = model.get("id", "")
+                pricing = model.get("pricing") or {}
+                try:
+                    zero_priced = float(pricing.get("prompt", 1)) == 0.0 and float(pricing.get("completion", 1)) == 0.0
+                except (TypeError, ValueError):
+                    zero_priced = False
+                if str(model_id).endswith(":free") or zero_priced:
+                    free.append(model_id)
             row["free_model_count"] = len(free)
             preferred = os.environ.get("OPENROUTER_HEALTH_MODEL", "").strip()
             row["model"] = preferred if preferred and preferred in free else (free[0] if free else None)

@@ -94,3 +94,38 @@ if __name__ == "__main__":
         print("forgotten:", sys.argv[2])
     else:
         print("usage: session_store.py list | forget <key>")
+
+# ─── session-decision journal (append-only) ─────────────────
+def _journal(record):
+    import json as _j, time as _t, pathlib as _p
+    log_path = _p.Path.home() / ".deepcli" / "logs" / "hygiene" / "session-decisions.jsonl"
+    try:
+        log_path.parent.mkdir(parents=True, exist_ok=True)
+        with log_path.open("a") as f:
+            f.write(_j.dumps(record, default=str) + "\n")
+    except Exception:
+        pass
+
+_orig_save = save
+def save(key, session_id, *, meta=None):
+    _orig_save(key, session_id, meta=meta)
+    _journal({
+        "ts": __import__("time").time(),
+        "iso": __import__("time").strftime("%Y-%m-%dT%H:%M:%SZ",
+                                          __import__("time").gmtime()),
+        "op": "save", "key": key, "sid": session_id,
+        "meta": meta or {},
+    })
+
+_orig_load = load
+def load(key):
+    rec = _orig_load(key)
+    _journal({
+        "ts": __import__("time").time(),
+        "iso": __import__("time").strftime("%Y-%m-%dT%H:%M:%SZ",
+                                          __import__("time").gmtime()),
+        "op": "load", "key": key,
+        "hit": bool(rec),
+        "sid": (rec or {}).get("session_id"),
+    })
+    return rec

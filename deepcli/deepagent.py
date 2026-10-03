@@ -1752,20 +1752,6 @@ def hygiene_preflight(verbose=True):
         or wt > SOFT_WORKTREES
     )
     if soft_breach:
-        # prune untracked in every worktree (branches preserved)
-        try:
-            _wt_root = HOME/'.deepcli'/'worktrees'
-            if _wt_root.is_dir():
-            for _wt in _wt_root.iterdir():
-                if (_wt/'.git').exists():
-                    try:
-                            subprocess.run(['git','-C',str(_wt),'clean','-fdx'],
-                                           capture_output=True, timeout=120)
-                    except Exception:
-                        pass
-        except Exception:
-            pass
-
         if verbose:
             print(f"  [hygiene] soft floor breached (mem<{SOFT_MEM_MB} "
                   f"swap<{SOFT_SWAP_MB} wt>{SOFT_WORKTREES}) — running reclaim")

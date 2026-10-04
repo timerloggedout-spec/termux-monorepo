@@ -143,7 +143,7 @@ jobs:
           d = json.load(open("bridge.json", encoding="utf-8"))
           host, port, user = d["endpoint"], str(d["port"]), d["ssh_user"]
           ssh = [
-              "ssh", "-i", "$HOME/.ssh/termux_mcp",
+              "ssh", "-i", os.path.expanduser("~/.ssh/termux_mcp"),
               "-o", "IdentitiesOnly=yes",
               "-o", "StrictHostKeyChecking=yes",
               "-o", "ServerAliveInterval=15",

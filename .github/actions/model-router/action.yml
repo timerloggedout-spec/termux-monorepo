@@ -86,6 +86,13 @@ runs:
           model-router-${{ inputs.cache-schema }}-
         enableCrossOsArchive: true
 
+    - name: Record cache authority boundary
+      shell: bash
+      run: |
+        echo "Model-router cache is advisory catalog/capacity state only."
+        echo "Authoritative provider quota/rate-limit state must come from live observations."
+        echo "cache_hit=${{ steps.restore.outputs.cache-hit || 'false' }}"
+
     - name: Pick provider + model plus observe-mode capability decision
       id: pick
       shell: bash

@@ -52,9 +52,28 @@ Tree edges describe containment. Match/dedup edges remain separate.
 
 Raw memory pointers MUST NOT cross a persistence or synchronization boundary.
 
+## Compute-plane hierarchy
+
+**Remote execution is the primary compute path. Termux / BLU B160V is a failsafe and controlled actuation plane.**
+
+The contributor implementation MUST be evaluated against this hierarchy:
+
+```text
+canonical CRG contract
+        |
+        +--> GitHub Actions / remote build + processing (primary)
+        |
+        +--> Termux / BLU B160V (failsafe / device-specific actions)
+        |
+        v
+canonical metadata + parity contract
+```
+
+The remote path owns reproducible compile, release build, deterministic processing, and validation evidence. A successful local AArch64 build is not a substitute for remote evidence.
+
 ## Termux edge plane
 
-Termux is the local high-performance indexing plane:
+Termux remains useful for bounded local execution, diagnostics, offline development, and device-specific actions. It is **not** the default bulk compute authority:
 
 ```text
 local sessions / exports / source

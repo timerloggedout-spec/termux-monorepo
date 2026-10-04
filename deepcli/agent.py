@@ -5,7 +5,7 @@ import json, os, sys, time, urllib.request
 HUB = os.environ.get("DSH_HUB", "http://127.0.0.1:8800")
 TOK = open(os.path.expanduser("~/.deepcli/hub.token")).read().strip()
 import session_store
-from deepcli.prompt_system import build_system_prompt
+from prompt_system import build_system_prompt
 
 MAX_STEPS = int(os.environ.get("AGENT_MAX_STEPS", "16"))
 

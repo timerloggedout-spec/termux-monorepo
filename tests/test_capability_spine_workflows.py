@@ -59,3 +59,6 @@ def test_jules_feedback_relay_coalesces_by_pr():
     assert "group: agent-auto-jules-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}" in source
     assert "cancel-in-progress: true" in source
     assert "source_revision" in source
+    assert "qodo:billing-blocked" in source
+    assert "providerCapacityNotice" in source
+    assert "trial has ended" in source

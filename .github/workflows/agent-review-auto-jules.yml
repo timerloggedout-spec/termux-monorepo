@@ -21,10 +21,11 @@ on:
     types: [created, edited]
 
 concurrency:
-  # Serialize only the same provider source. Distinct provider comments/reviews
-  # on one PR must not cancel one another's feedback relay.
-  group: agent-auto-jules-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}-${{ github.event.review.id || github.event.comment.id || github.run_id }}
-  cancel-in-progress: false
+  # Cadence is PR-scoped: a new provider event supersedes an older relay for
+  # the same PR. The source revision remains in the idempotency marker,
+  # so cancellation cannot erase provenance.
+  group: agent-auto-jules-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
+  cancel-in-progress: true
 
 jobs:
   detect-bot-feedback:

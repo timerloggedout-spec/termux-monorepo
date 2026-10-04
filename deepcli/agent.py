@@ -5,6 +5,7 @@ import json, os, sys, time, urllib.request
 HUB = os.environ.get("DSH_HUB", "http://127.0.0.1:8800")
 TOK = open(os.path.expanduser("~/.deepcli/hub.token")).read().strip()
 import session_store
+from prompt_system import build_system_prompt
 
 MAX_STEPS = int(os.environ.get("AGENT_MAX_STEPS", "16"))
 
@@ -358,9 +359,10 @@ def _agent_notify(kind: str, title: str, content: str, priority: str = "default"
         pass
 
 
-def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False):
+def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False, role=None, task_id=None, transport=None):
     print(f"\n▶ task: {task}\n")
-    msgs = [{"role":"user","content":task}]
+    print(f"  [role] {role or os.environ.get(\"DEEPCLI_ROLE\", \"engineer\")} [task_id] {task_id or os.environ.get(\"DEEPCLI_TASK_ID\", \"unassigned\")} [transport] {transport or os.environ.get(\"DEEPCLI_TRANSPORT\", \"auto\")}")
+    msgs = [{"role":"system","content":build_system_prompt(task, role=role, task_id=task_id, transport=transport)}, {"role":"user","content":task}]
     for step in range(MAX_STEPS):
         print(f"── step {step+1}/{MAX_STEPS} ──")
         if step > 0:
@@ -396,8 +398,17 @@ def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False
 if __name__ == "__main__":
     argv = sys.argv[1:]
     dry = False
+    role = os.environ.get("DEEPCLI_ROLE", "engineer")
+    task_id = os.environ.get("DEEPCLI_TASK_ID")
+    transport = os.environ.get("DEEPCLI_TRANSPORT", "auto")
     if argv and argv[0] == "--dry-run":
         dry = True; argv = argv[1:]
+    if "--role" in argv:
+        i=argv.index("--role"); role=argv[i+1]; del argv[i:i+2]
+    if "--task-id" in argv:
+        i=argv.index("--task-id"); task_id=argv[i+1]; del argv[i:i+2]
+    if "--transport" in argv:
+        i=argv.index("--transport"); transport=argv[i+1]; del argv[i:i+2]
     if not argv:
         print("usage: agent.py [--dry-run] \"<task>\""); sys.exit(2)
-    loop(" ".join(argv), dry_run=dry)
+    loop(" ".join(argv), dry_run=dry, role=role, task_id=task_id, transport=transport)

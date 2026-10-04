@@ -37,3 +37,19 @@ for line in rows:
     try: m = int(mins)
     except: m = 9999
     print(f"  {bank:<76s} {facts:>6s} {mins:>6s}  {classify(bank, m)}")
+
+# ─── slots mode (offline, no psql) ─────────────────────
+def _slots_from_argv():
+    """hs-bank-audit.py --slots <bank> [<bank> ...]"""
+    import sys, json, pathlib
+    sys.path.insert(0, str(pathlib.Path.home()/"deepcli"))
+    from deepcli._v1_namespace import parse_any, shared
+    for bank in sys.argv[2:]:
+        d = parse_any(bank)
+        s = shared(bank)
+        print(json.dumps({"bank": bank, "shape": d.get("shape"),
+                          "shared": s, "slots": d}, sort_keys=True))
+
+
+if "--slots" in __import__("sys").argv:
+    _slots_from_argv()

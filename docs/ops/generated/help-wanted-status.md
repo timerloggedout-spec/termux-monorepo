@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-04T05:51:27Z UTC · receipts=980 · foreign_open=27 · tributes=70_
+_Generated 2026-10-04T06:21:54Z UTC · receipts=980 · foreign_open=28 · tributes=71_
 
 ## Tributes (contributor ledger)
 
+- [GRITui/pixel-builder#13](https://github.com/GRITui/pixel-builder/pull/13) · state=open · help-wanted: stake + contribute for #11
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -43,10 +44,10 @@ _Generated 2026-10-04T05:51:27Z UTC · receipts=980 · foreign_open=27 · tribut
 - [tarantool/tarantool#13285](https://github.com/tarantool/tarantool/pull/13285) · state=closed · help-wanted: stake + contribute for #13284
 - [inferstep/ATLAS#278](https://github.com/inferstep/ATLAS/pull/278) · state=closed · help-wanted: stake + contribute for #277
 - [bmad-code-org/bmad-loop#819](https://github.com/bmad-code-org/bmad-loop/pull/819) · state=closed · help-wanted: stake + contribute for #780
-- [Hugelidus/Pointcast#48](https://github.com/Hugelidus/Pointcast/pull/48) · state=closed · help-wanted: stake + contribute for #45
 
 ## Foreign open PRs
 
+- [GRITui/pixel-builder#13](https://github.com/GRITui/pixel-builder/pull/13) — help-wanted: stake + contribute for #11
 - [TricklePay/tricklepay-backend#441](https://github.com/TricklePay/tricklepay-backend/pull/441) — help-wanted: stake + contribute for #395
 - [Magiclovekorean/unbloarchy#5](https://github.com/Magiclovekorean/unbloarchy/pull/5) — help-wanted: stake + contribute for #4
 - [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) — help-wanted: stake + contribute for #225

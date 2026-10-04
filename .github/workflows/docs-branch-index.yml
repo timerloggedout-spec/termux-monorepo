@@ -56,12 +56,14 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # Run 37220078647: rebase refused because the generated file was already staged.
-          # Do not rebase a shallow checkout. Stash, check out origin/master, restore
-          # or regenerate, then commit. A second fetch covers a receipt between
-          # commit and push (run 37216655064).
-          git stash push -m docs-branch-index -- docs/ops/DOCS-BRANCH-INDEX.md
-          git fetch origin master
+          # Run 37231399762: `git fetch origin master` updated FETCH_HEAD only.
+          # Push then expected 2e68c5dd while master was b6df687.
+          # Always update refs/remotes/origin/master, then retry the push.
+          git stash push -u -m docs-branch-index -- docs/ops/DOCS-BRANCH-INDEX.md
+          update_master() {
+            git fetch origin +refs/heads/master:refs/remotes/origin/master
+          }
+          update_master
           git checkout -B docs-index-refresh origin/master
           if ! git stash pop; then
             echo "Index stash did not apply; regenerating on origin/master."
@@ -77,10 +79,32 @@ jobs:
           git commit -s -m "chore(docs): refresh DOCS-BRANCH-INDEX" \
             -m "Automated inventory of docs/* debate lanes." \
             -m "Agent-Identity: GitHub Actions docs-branch-index" \
-            -m "Evidence: docs-branch-index run 37220078647 dirty-index rebase refusal."
-          git fetch origin master
-          git rebase origin/master
-          git push origin HEAD:master
+            -m "Evidence: docs-branch-index run 37231399762 stale origin/master ref."
+          for attempt in 1 2 3 4 5; do
+            update_master
+            if ! git rebase origin/master; then
+              git rebase --abort || true
+              git reset --hard origin/master
+              python3 scripts/ops/generate_docs_branch_index.py
+              git add docs/ops/DOCS-BRANCH-INDEX.md
+              if git diff --cached --quiet; then
+                echo "Index delta absorbed after rebase conflict."
+                exit 0
+              fi
+              git commit -s -m "chore(docs): refresh DOCS-BRANCH-INDEX" \
+                -m "Automated inventory of docs/* debate lanes." \
+                -m "Agent-Identity: GitHub Actions docs-branch-index" \
+                -m "Evidence: docs-branch-index run 37231399762 stale origin/master ref."
+            fi
+            if git push origin HEAD:master; then
+              echo "Pushed docs-branch index on attempt ${attempt}."
+              exit 0
+            fi
+            echo "Push rejected on attempt ${attempt}; refreshing origin/master."
+            sleep $((attempt * 2))
+          done
+          echo "docs-branch-index push failed after retries."
+          exit 1
 
       - name: Summary
         run: |
@@ -89,7 +113,6 @@ jobs:
             echo "## Docs-branch index"
             echo
             if [ -f docs/ops/DOCS-BRANCH-INDEX.md ]; then
-              # first 40 lines for step summary
               sed -n '1,40p' docs/ops/DOCS-BRANCH-INDEX.md
             else
               echo "(missing DOCS-BRANCH-INDEX.md)"

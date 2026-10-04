@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-10-03T11:39:13Z` UTC  
+**Generated:** `2026-10-04T12:21:19Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 58 docs-lane branch(es)
+**Count:** 60 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -54,11 +54,13 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/paper2agent-scientific-factory-proposal-2026-09-29`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/paper2agent-scientific-factory-proposal-2026-09-29) | `f9923fd7bdfa` | — | `timerloggedout-spec` | registered; no open PR |
 | [`docs/pr-concept-consolidation-ledger-558`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/pr-concept-consolidation-ledger-558) | `0b4e0e61e65a` | — | — | orphan lane |
 | [`docs/pr-scope-discipline-ce22`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/pr-scope-discipline-ce22) | `a68300477966` | [#67](https://github.com/timerloggedout-spec/termux-monorepo/pull/67)→`master` | — | PR without registry link |
+| [`docs/preflight-remove-phantom-check-action`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/preflight-remove-phantom-check-action) | `b622610948b2` | [#1075](https://github.com/timerloggedout-spec/termux-monorepo/pull/1075)→`feat/dashboard-lanes-v2` | — | PR without registry link |
 | [`docs/promote-archwiz-to-master`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/promote-archwiz-to-master) | `70bfdeff314a` | — | — | orphan lane |
 | [`docs/proposals/agentic-scoped-access-and-tier4-review`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/proposals/agentic-scoped-access-and-tier4-review) | `7f39e156f87f` | — | `agent-automation`, `agent-automation` | registered; no open PR |
 | [`docs/proposals/codespaces-enablement`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/proposals/codespaces-enablement) | `0dc0c23dbb15` | [#500](https://github.com/timerloggedout-spec/termux-monorepo/pull/500)→`master` | — | PR without registry link |
 | [`docs/proposals/demo-portal`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/proposals/demo-portal) | `563c02aa8de5` | — | `Claude` | registered; no open PR |
 | [`docs/proposals/vercel-lane-topology`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/proposals/vercel-lane-topology) | `7b45afe7373e` | — | `Claude` | registered; no open PR |
+| [`docs/provenance-record-kwonly-docstring`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/provenance-record-kwonly-docstring) | `6fe7e7282d50` | [#1103](https://github.com/timerloggedout-spec/termux-monorepo/pull/1103)→`master` | — | PR without registry link |
 | [`docs/ratatui-dashboard-collaborator`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/ratatui-dashboard-collaborator) | `543dd4f99c9b` | — | `ChatGPT` | registered; no open PR |
 | [`docs/readme-agents-reference`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/readme-agents-reference) | `05ac94d4211f` | — | — | orphan lane |
 | [`docs/readme-ates-image-polish`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/readme-ates-image-polish) | `ee0ffc2540b8` | — | — | orphan lane |

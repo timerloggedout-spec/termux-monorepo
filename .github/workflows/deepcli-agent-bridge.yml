@@ -91,6 +91,49 @@ jobs:
           printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
           chmod 600 ~/.ssh/termux_mcp ~/.ssh/known_hosts
 
+      - name: Sync DeepAgent payload to Termux
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, subprocess
+          d=json.load(open("bridge.json", encoding="utf-8"))
+          base=["scp","-i","$HOME/.ssh/termux_mcp","-o","IdentitiesOnly=yes","-o","StrictHostKeyChecking=yes","-o","ConnectTimeout=15","-P",str(d["port"])]
+          target=f"{d['ssh_user']}@{d['endpoint']}:~/deepcli/"
+          files=["deepcli/prompt_system.py","deepcli/roles.json","deepcli/deepagent.py","deepcli/agent.py"]
+          r=subprocess.run(base+files+[target],text=True,capture_output=True)
+          if r.returncode:
+              print(r.stdout); print(r.stderr)
+              raise SystemExit(r.returncode)
+          PY
+
+      - name: Dispatch assigned DeepAgent task
+        env:
+          DEEPCLI_TASK_ID: deepagent-ci-continuation-001
+          DEEPCLI_ROLE: engineer
+          DEEPCLI_TRANSPORT: auto
+          DEEPCLI_TASK: >-
+            Inspect and operationalize the DeepCLI agent execution path now. Verify the
+            role-aware prompt system, task identity, checkpoint/resume behavior, and the
+            direct and HTTP agent paths. Make only safe, task-scoped changes. Run focused
+            verification. Do not claim success unless the objective is evidenced. If the
+            transport is unavailable, classify that as access/admission failure and preserve
+            the exact evidence for the next continuation.
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, shlex, subprocess, sys
+          d=json.load(open("bridge.json", encoding="utf-8"))
+          ssh=["ssh","-i","$HOME/.ssh/termux_mcp","-o","IdentitiesOnly=yes","-o","StrictHostKeyChecking=yes","-o","ConnectTimeout=15","-p",str(d["port"]),f"{d['ssh_user']}@{d['endpoint']}"]
+          task="Inspect and operationalize the DeepCLI agent execution path now. Verify the role-aware prompt system, task identity, checkpoint/resume behavior, and the direct and HTTP agent paths. Make only safe, task-scoped changes. Run focused verification. Do not claim success unless the objective is evidenced. If the transport is unavailable, classify that as access/admission failure and preserve the exact evidence for the next continuation."
+          remote="DEEPCLI_TASK_ID=deepagent-ci-continuation-001 DEEPCLI_ROLE=engineer DEEPCLI_TRANSPORT=auto DEEPCLI_TASK="+shlex.quote(task)+" bash -lc 'python3 ~/deepcli/deepagent.py --role engineer --task-id deepagent-ci-continuation-001 --transport auto "+shlex.quote(task)+"'"
+          r=subprocess.run(ssh+[remote],text=True,capture_output=True,timeout=600)
+          open("deepagent-task-output.txt","w").write(r.stdout[-12000:])
+          open("deepagent-task-error.txt","w").write(r.stderr[-6000:])
+          print(r.stdout[-4000:]); print(r.stderr[-2000:],file=sys.stderr)
+          if r.returncode:
+              raise SystemExit(r.returncode)
+          PY
+
       - name: Execute bounded dual-agent smoke
         run: |
           set -euo pipefail
@@ -140,6 +183,17 @@ jobs:
           with open("deepcli-agent-bridge-receipt.json", "w", encoding="utf-8") as f:
               json.dump(receipt, f, indent=2, sort_keys=True)
           PY
+
+      - name: Upload DeepAgent task evidence
+        if: always()
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.2
+        with:
+          name: deepagent-task-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            deepagent-task-output.txt
+            deepagent-task-error.txt
+          if-no-files-found: warn
+          retention-days: 14
 
       - name: Upload immutable smoke receipt
         if: always()

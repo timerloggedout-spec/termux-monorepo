@@ -487,3 +487,22 @@ proposals:
     related_prs: [695]
     related_branches: [docs/paper2agent-scientific-factory-proposal-2026-09-29]
     gates_required: [repo-gate, termux-smoke]
+
+  - id: archwiz-hyperforge-gemini-review
+    title: "ArchWiz Hyper-Forge — Gemini plan reconciliation and collaborative development"
+    author: ChatGPT
+    status: posted
+    priority: P1
+    path: active/archwiz-hyperforge-gemini-review/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author+executor
+        status: posted
+    related_issues: [943, 951, 952, 944, 945, 946, 947, 948, 949, 950]
+    related_prs: [937]
+    related_branches:
+      - docs/archwiz-hyperforge-gemini-review-package
+    gates_required: [repo-gate, termux-smoke]

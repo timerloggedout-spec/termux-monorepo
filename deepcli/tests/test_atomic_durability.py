@@ -9,8 +9,25 @@ existing file's contents wholesale (no stale tail from the old payload).
 
 import sys, pathlib, tempfile, unittest
 
-sys.path.insert(0, str(pathlib.Path.home() / "deepcli"))
+
+def _repo_root():
+    """Walk up from this file to the dir containing deepcli/_v1_cache.py."""
+    here = pathlib.Path(__file__).resolve()
+    for d in here.parents:
+        if (d / "deepcli" / "_v1_cache.py").exists():
+            return d
+    return pathlib.Path.home() / "deepcli"
+
+
+sys.path.insert(0, str(_repo_root()))
 from deepcli._v1_cache import atomic_json_dump, read_session
+
+
+class TestBootstrap(unittest.TestCase):
+    def test_bootstrap_resolves_to_this_checkout(self):
+        root = _repo_root()
+        self.assertTrue((root / "deepcli" / "_v1_cache.py").exists())
+        self.assertIn(root, pathlib.Path(__file__).resolve().parents)
 
 
 class TestAtomicDumpDurability(unittest.TestCase):

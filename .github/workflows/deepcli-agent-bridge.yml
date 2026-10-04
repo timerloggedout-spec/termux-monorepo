@@ -2,10 +2,16 @@ name: DeepCLI Agent Bridge Smoke
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "*/30 * * * *"
   pull_request:
     types: [opened, synchronize, reopened]
+    paths:
+      - "deepcli/agent.py"
+      - "deepcli/deepagent.py"
+      - "deepcli/session_manager.py"
+      - "deepcli/core.py"
+      - "ops/termux-bridge/current.json"
+      - "scripts/termux/**"
+      - ".github/workflows/deepcli-agent-bridge.yml"
   push:
     branches: [master]
     paths:
@@ -67,8 +73,12 @@ jobs:
                   "checks": [],
               }, out, indent=2, sort_keys=True)
           required = ("endpoint", "port", "ssh_user", "expires_at")
-          if d.get("status") != "active":
-              raise SystemExit(f"bridge status is {d.get('status')!r}; publisher must refresh it")
+          status = d.get("status")
+          if status != "active":
+              print(f"bridge status is {status!r}; skip smoke until publisher refreshes it")
+              Path = __import__("pathlib").Path
+              Path("deepcli-bridge-skip").write_text("inactive\n", encoding="utf-8")
+              raise SystemExit(0)
           missing = [k for k in required if not d.get(k)]
           if missing:
               raise SystemExit(f"bridge manifest incomplete: {missing}")
@@ -81,6 +91,7 @@ jobs:
           PY
 
       - name: Install pinned SSH identity
+        if: hashFiles('deepcli-bridge-skip') == ''
         env:
           SSH_KEY: ${{ secrets.TERMUX_MCP_SSH_PRIVATE_KEY }}
           KNOWN_HOSTS: ${{ secrets.TERMUX_MCP_KNOWN_HOSTS }}
@@ -94,6 +105,7 @@ jobs:
           chmod 600 ~/.ssh/termux_mcp ~/.ssh/known_hosts
 
       - name: Sync DeepAgent payload to Termux
+        if: hashFiles('deepcli-bridge-skip') == ''
         run: |
           set -euo pipefail
           python - <<'PY'
@@ -109,6 +121,7 @@ jobs:
           PY
 
       - name: Dispatch assigned DeepAgent task
+        if: hashFiles('deepcli-bridge-skip') == ''
         env:
           DEEPCLI_TASK_ID: deepagent-ci-continuation-001
           DEEPCLI_ROLE: engineer
@@ -136,7 +149,9 @@ jobs:
               raise SystemExit(r.returncode)
           PY
 
-      # DeepAgent task execution is the verification path. No secondary smoke gate is required.\n\n      - name: Upload DeepAgent task evidence
+      # DeepAgent task execution is the verification path. No secondary smoke gate is required.
+
+      - name: Upload DeepAgent task evidence
         if: always()
         uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.2
         with:

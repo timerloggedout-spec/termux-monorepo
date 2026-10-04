@@ -6,10 +6,12 @@ with zero jobs for days. Those stalls consume the concurrent queue and surface
 as permanent failures. This reaper only cancels runs that are still queued,
 older than a threshold, and have no jobs. In-progress work is untouched.
 
-A queued re-run can return 409 "Cannot cancel a workflow re-run that has not
-yet queued." That response is not a reaper failure: record it and continue so
-one stuck id does not abort the rest of the scan (run 37102847026).
-Evidence follow-up for receipt SHA 17f43526 which had zero runs.
+A queued re-run can return 409 "Cannot cancel a workflow run that is not in
+progress." Cancel-only left those ghosts in status=queued (reaper run
+37181555004: scanned 44, uncancellable 38). Delete the run after a 409 so the
+ghost leaves the concurrent queue. In-progress work is still untouched.
+Evidence: DELETE on run 32218223992 returned 204 and a subsequent GET was 404.
+
 """
 from __future__ import annotations
 
@@ -66,6 +68,7 @@ def main() -> int:
     cutoff = datetime.now(timezone.utc) - timedelta(hours=args.older_than_hours)
     page = 1
     cancelled = 0
+    deleted = 0
     skipped = 0
     scanned = 0
     while page <= 8:
@@ -94,9 +97,21 @@ def main() -> int:
                     gh("POST", f"/repos/{args.repo}/actions/runs/{run['id']}/cancel", token)
                 except GitHubError as exc:
                     if exc.code == 409:
-                        record["action"] = "uncancellable"
-                        record["detail"] = exc.detail[:180]
-                        skipped += 1
+                        try:
+                            gh(
+                                "DELETE",
+                                f"/repos/{args.repo}/actions/runs/{run['id']}",
+                                token,
+                            )
+                        except GitHubError as delete_exc:
+                            record["action"] = "uncancellable"
+                            record["detail"] = delete_exc.detail[:180]
+                            skipped += 1
+                            print(json.dumps(record, sort_keys=True))
+                            continue
+                        record["action"] = "deleted"
+                        record["detail"] = "cancel 409; deleted ghost"
+                        deleted += 1
                         print(json.dumps(record, sort_keys=True))
                         continue
                     print(json.dumps({**record, "action": "error", "detail": str(exc)[:180]}))
@@ -111,6 +126,7 @@ def main() -> int:
     print(json.dumps({
         "scanned": scanned,
         "candidates": cancelled,
+        "deleted": deleted,
         "uncancellable": skipped,
         "apply": args.apply,
     }))

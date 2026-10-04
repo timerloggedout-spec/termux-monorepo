@@ -1,7 +1,8 @@
 name: Actions queue reaper
 
 # Stale queued runs with zero jobs (issue_comment fan-out, abandoned PR events)
-# hold the Actions queue. Cancel only those; never touch in-progress jobs.
+# hold the Actions queue. Cancel those; if cancel returns 409, delete the ghost.
+# Never touch in-progress jobs.
 on:
   schedule:
     - cron: '23 */6 * * *'

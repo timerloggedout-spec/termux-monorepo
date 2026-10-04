@@ -164,7 +164,8 @@ jobs:
           if (( event_count > 0 )); then followthrough_pct=$(( followed_count * 100 / event_count )); fi
           first_followthrough_sha="$(jq -r '.all | map(select(.associated_commit_sha != null)) | .[0].associated_commit_sha // ""' <<<"$correlation_json")"
           median_lag_minutes="$(jq -r '.all | map(select(.lag_minutes != null) | .lag_minutes) | if length == 0 then 0 else sort | .[length/2|floor] end' <<<"$correlation_json")"
-          recent_events_json="$(jq -c '.recent | map(del(.body))' <<<"$correlation_json")"
+          recent_events_json="$(jq -c '[.recent // [] | .[-8:] | .[] | {id, created_at, html_url, event: (.event // .type // "event"), actor: (.actor.login // .user.login // "unknown")}]' <<<"$correlation_json")"
+          printf '%s\n' "$recent_events_json" > "$RUNNER_TEMP/ledger-recent-events.json"
 
           # Recover the previous v2 marker for longitudinal comparison. If absent, baseline is zero.
           existing="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" --jq '.[] | select((.body // "") | startswith("<!-- action-effectiveness-ledger:v2 ")) | .id' | head -n1 || true)"
@@ -200,8 +201,12 @@ jobs:
           history_json="$(jq -c --arg head "$head_sha" --arg base "$base_sha" --arg at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
             --argjson fd "$final_delta" --argjson b "$behind" --argjson ev "$event_count" --argjson fo "$followed_count" --argjson de "$delta_final" --argjson db "$delta_behind" --argjson df "$delta_failure" --argjson dp "$delta_pending" --argjson dv "$delta_events" --argjson dfo "$delta_followed" \
             '(.history // []) + [{observed_at:$at,head_sha:$head,base_sha:$base,final_delta:$fd,behind:$b,event_count:$ev,followed_count:$fo,delta:{final_delta:$de,behind:$db,check_failure:$df,check_pending:$dp,event_count:$dv,followed_count:$dfo}}] | .[-12:]' <<<"$previous_json")"
-
+          printf '%s\n' "$history_json" > "$RUNNER_TEMP/ledger-history.json"
+          # recent_events and history are file inputs. Passing them as --argjson
+          # overflows ARG_MAX (run 37161519194 exit 126: /usr/bin/jq Argument list too long).
           state_json="$(jq -cn \
+            --slurpfile recent_events "$RUNNER_TEMP/ledger-recent-events.json" \
+            --slurpfile history "$RUNNER_TEMP/ledger-history.json" \
             --arg observed_at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
             --arg base_sha "$base_sha" --arg head_sha "$head_sha" --arg merge_base "$merge_base" --arg head_repo "$head_repo" \
             --argjson commit_count "$commit_count" --argjson empty_count "$empty_count" --argjson metadata_count "$metadata_only_count" --argjson effective_count "$effective_count" \
@@ -209,11 +214,10 @@ jobs:
             --argjson ahead "$ahead" --argjson behind "$behind" --argjson noop_pct "$noop_pct" --argjson realization_pct "$realization_pct" \
             --argjson comment_count "$comment_count" --argjson review_count "$review_count" --argjson review_comment_count "$review_comment_count" --argjson actionable_comments "$actionable_comment_count" --argjson approvals "$approvals" --argjson changes_requested "$changes_requested" \
             --argjson check_total "$check_total" --argjson check_success "$check_success" --argjson check_failure "$check_failure" --argjson check_pending "$check_pending" \
-            --argjson event_count "$event_count" --argjson followed_count "$followed_count" --argjson followthrough_pct "$followthrough_pct" --argjson median_lag_minutes "$median_lag_minutes" --argjson recent_events "$recent_events_json" \
+            --argjson event_count "$event_count" --argjson followed_count "$followed_count" --argjson followthrough_pct "$followthrough_pct" --argjson median_lag_minutes "$median_lag_minutes" \
             --argjson delta_final "$delta_final" --argjson delta_behind "$delta_behind" --argjson delta_failure "$delta_failure" --argjson delta_pending "$delta_pending" --argjson delta_events "$delta_events" --argjson delta_followed "$delta_followed" \
-            --argjson history "$history_json" \
             --arg state "$state" --arg first_followthrough_sha "$first_followthrough_sha" \
-            '{version:2,observed_at:$observed_at,base_sha:$base_sha,head_sha:$head_sha,merge_base:$merge_base,head_repo:$head_repo,state:$state,commit_count:$commit_count,empty_count:$empty_count,metadata_count:$metadata_count,effective_count:$effective_count,gross_add:$gross_add,gross_del:$gross_del,final_add:$final_add,final_del:$final_del,final_files:$final_files,final_delta:$final_delta,ahead:$ahead,behind:$behind,noop_pct:$noop_pct,realization_pct:$realization_pct,comment_count:$comment_count,review_count:$review_count,review_comment_count:$review_comment_count,actionable_comments:$actionable_comments,approvals:$approvals,changes_requested:$changes_requested,check_total:$check_total,check_success:$check_success,check_failure:$check_failure,check_pending:$check_pending,event_count:$event_count,followed_count:$followed_count,followthrough_pct:$followthrough_pct,median_lag_minutes:$median_lag_minutes,first_followthrough_sha:$first_followthrough_sha,recent_events:$recent_events,delta:{final_delta:$delta_final,behind:$delta_behind,check_failure:$delta_failure,check_pending:$delta_pending,event_count:$delta_events,followed_count:$delta_followed},history:$history}')"
+            '{version:2,observed_at:$observed_at,base_sha:$base_sha,head_sha:$head_sha,merge_base:$merge_base,head_repo:$head_repo,state:$state,commit_count:$commit_count,empty_count:$empty_count,metadata_count:$metadata_count,effective_count:$effective_count,gross_add:$gross_add,gross_del:$gross_del,final_add:$final_add,final_del:$final_del,final_files:$final_files,final_delta:$final_delta,ahead:$ahead,behind:$behind,noop_pct:$noop_pct,realization_pct:$realization_pct,comment_count:$comment_count,review_count:$review_count,review_comment_count:$review_comment_count,actionable_comments:$actionable_comments,approvals:$approvals,changes_requested:$changes_requested,check_total:$check_total,check_success:$check_success,check_failure:$check_failure,check_pending:$check_pending,event_count:$event_count,followed_count:$followed_count,followthrough_pct:$followthrough_pct,median_lag_minutes:$median_lag_minutes,first_followthrough_sha:$first_followthrough_sha,recent_events:($recent_events[0] // []),delta:{final_delta:$delta_final,behind:$delta_behind,check_failure:$delta_failure,check_pending:$delta_pending,event_count:$delta_events,followed_count:$delta_followed},history:($history[0] // [])}')"
 
           {
             echo "state_json=$state_json"

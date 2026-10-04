@@ -197,4 +197,9 @@ Session 2026-10-03 16:16 PDT / 2026-10-03 23:16 UTC:
 - #1070 merged `da08d49e9722366e8a2dfcfd4fc8c7ab3f2f36b7`. Pre-merge RECON 37155014804 still setFailed on the pre-fix SHA. Current master skip path is present. Not a current-tree failure.
 - Active residual: PR Change Effectiveness Ledger run 37159037262 exit 128, `Not a valid commit name` after head moved. Repair branch `fix/ledger-missing-head-skip`. Do not promote until that SHA has no filename-named workflow failure and repo gate is green.
 - #984 not master. #903 HOLD. Do not pulse #175. #184 names-only. Linear TER-15 / TER-71 not promote authority.
-
+Session 2026-10-03 17:20 PDT / 2026-10-04 00:20 UTC:
+- Master tip at session start `01992fcd922a7e0c064116992abab1b6d78f9e26` (sweep receipt).
+- #1085 merged `fa49b9fc5a401a3bd2c764b057d01518e58888ce`. Push gates: repo gate 37161524126 success, termux smoke 37161524158 success, empty-commit watcher 37161524135 success. Sweep push 37161524167 cancelled (superseded), not a filename failure.
+- Active class: Action Effectiveness Ledger run 37161519194 exit 126, `/usr/bin/jq: Argument list too long` on unbounded recent_events argv. Skill Quality Lane 37161520852 exit 2 was new blank line at EOF on the three skill files. Not a compile failure.
+- Repair branch `fix/ledger-jq-arg-max`. Do not promote until that SHA has no filename-named workflow failure and repo gate is green.
+- #984 not master. #903 HOLD. Do not pulse #175. #184 names-only (open, title only). Linear TER-15 / TER-71 not promote authority.

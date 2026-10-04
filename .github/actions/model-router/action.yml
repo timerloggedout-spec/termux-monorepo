@@ -96,5 +96,5 @@ runs:
       uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
       with:
         path: /tmp/model-router
-        key: model-router-${{ steps.date.outputs.key }}-${{ github.run_id }}-${{ github.run_attempt }}
+        key: model-router-${{ inputs.cache-schema }}-${{ steps.date.outputs.key }}-${{ github.repository }}-${{ github.run_id }}-${{ github.run_attempt }}
         enableCrossOsArchive: true

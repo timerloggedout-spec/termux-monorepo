@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           ref: master
-          fetch-depth: 1
+          fetch-depth: 0
           persist-credentials: true
 
       - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
@@ -57,12 +57,18 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # Run 37220078647: rebase refused because the generated file was already staged.
-          # Stash the delta, move onto origin/master, then restore. A second fetch
-          # covers a receipt landing between commit and push (run 37216655064).
+          # Do not rebase a shallow checkout. Stash, check out origin/master, restore
+          # or regenerate, then commit. A second fetch covers a receipt between
+          # commit and push (run 37216655064).
           git stash push -m docs-branch-index -- docs/ops/DOCS-BRANCH-INDEX.md
           git fetch origin master
-          git rebase origin/master
-          git stash pop
+          git checkout -B docs-index-refresh origin/master
+          if ! git stash pop; then
+            echo "Index stash did not apply; regenerating on origin/master."
+            git checkout -- docs/ops/DOCS-BRANCH-INDEX.md || true
+            git reset --hard origin/master
+            python3 scripts/ops/generate_docs_branch_index.py
+          fi
           git add docs/ops/DOCS-BRANCH-INDEX.md
           if git diff --cached --quiet; then
             echo "Index delta absorbed by origin/master."

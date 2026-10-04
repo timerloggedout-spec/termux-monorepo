@@ -15,6 +15,7 @@ sys.path.insert(0, str(HOME / "deepcli"))
 sys.path.insert(0, str(HOME))
 
 from deepcli.core import get_token, create_session, chat_completion  # noqa
+from deepcli.prompt_system import build_system_prompt  # noqa
 from src.gh_broker import GhBroker                                    # noqa
 
 # Hindsight memory (optional, env-gated)
@@ -918,9 +919,10 @@ def _autosnapshot(reason: str = "auto"):
         pass
 
 
-def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False):
+def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False, role=None, task_id=None, transport=None):
     """Loop until finish OR no-progress detected. Ceiling is safety, not policy."""
     print(f"\n▶ task: {task}\n")
+    print(f"  [role] {role or os.environ.get("DEEPCLI_ROLE", "engineer")} [task_id] {task_id or os.environ.get("DEEPCLI_TASK_ID", "unassigned")} [transport] {transport or os.environ.get("DEEPCLI_TRANSPORT", "auto")}")
     _t0 = time.time()
     key = session_store.task_key(task, task_path)
     _notify("run", "🤖 Agent starting",
@@ -961,13 +963,15 @@ def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False
     # the network-interrupt checkpoint exists, else start fresh.
     if resumed_state:
         msgs = resumed_state["msgs"]
+        if not msgs or msgs[0].get("role") != "system":
+            msgs.insert(0, {"role":"system","content":build_system_prompt(task, role=role, task_id=task_id, transport=transport)})
         sid = resumed_state.get("sid") or sid
         parent_id = resumed_state.get("parent_id")
         seen_sigs = resumed_state.get("seen_sigs") or []
         step_offset = resumed_state.get("step", 0)
         no_progress = 0
     else:
-        msgs = [{"role":"user","content":task}]
+        msgs = [{"role":"system","content":build_system_prompt(task, role=role, task_id=task_id, transport=transport)}, {"role":"user","content":task}]
         parent_id = None
         seen_sigs = []
         step_offset = 0
@@ -1070,6 +1074,9 @@ def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False
                 "step": step + 1,
                 "task": task[:400],
                 "task_path": str(task_path) if task_path else None,
+                "task_id": task_id or os.environ.get("DEEPCLI_TASK_ID"),
+                "role": role or os.environ.get("DEEPCLI_ROLE", "engineer"),
+                "transport": transport or os.environ.get("DEEPCLI_TRANSPORT", "auto"),
                 "saved_at": time.time(),
             })
         except Exception as _e:
@@ -1093,6 +1100,9 @@ if __name__ == "__main__":
     argv = sys.argv[1:]
     dry = False
     fresh = False
+    role = os.environ.get("DEEPCLI_ROLE", "engineer")
+    task_id = os.environ.get("DEEPCLI_TASK_ID")
+    transport = os.environ.get("DEEPCLI_TRANSPORT", "auto")
     task_path = None
     if "--dry-run" in argv:
         dry = True; argv.remove("--dry-run")
@@ -1106,4 +1116,4 @@ if __name__ == "__main__":
     if not argv:
         print("usage: deepagent.py [--dry-run] [--fresh] [--task-file P] \"<task>\"")
         sys.exit(2)
-    loop(" ".join(argv), dry_run=dry, task_path=task_path, fresh=fresh)
+    loop(" ".join(argv), dry_run=dry, task_path=task_path, fresh=fresh, role=role, task_id=task_id, transport=transport)

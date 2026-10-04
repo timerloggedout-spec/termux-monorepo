@@ -2,8 +2,25 @@
 
 import json, sys, pathlib, tempfile, unittest
 
-sys.path.insert(0, str(pathlib.Path.home() / "deepcli"))
+
+def _repo_root():
+    """Walk up from this file to the dir containing deepcli/_v1_events.py."""
+    here = pathlib.Path(__file__).resolve()
+    for d in here.parents:
+        if (d / "deepcli" / "_v1_events.py").exists():
+            return d
+    return pathlib.Path.home() / "deepcli"
+
+
+sys.path.insert(0, str(_repo_root()))
 from deepcli._v1_events import extract, message_text, scan_session
+
+
+class TestBootstrap(unittest.TestCase):
+    def test_bootstrap_resolves_to_this_checkout(self):
+        root = _repo_root()
+        self.assertTrue((root / "deepcli" / "_v1_events.py").exists())
+        self.assertIn(root, pathlib.Path(__file__).resolve().parents)
 
 
 class TestEvents(unittest.TestCase):

@@ -98,3 +98,49 @@ jobs:
 
       - name: Clippy
         run: cargo clippy --all-targets --all-features -- -D warnings
+
+      - name: Build release executable
+        run: cargo build --release
+
+      - name: Remote deterministic processing and parity receipt
+        env:
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          cat > /tmp/crg-parity-input.jsonl <<'EOF'
+          {"id":"parity-a","level":"function","text":"fn repeated_fragment() { return 42; }","children":[],"bytes":38}
+          {"id":"parity-b","level":"function","text":"fn repeated_fragment() { return 42; }","children":[],"bytes":38}
+          EOF
+
+          ./target/release/crg-rust-accel < /tmp/crg-parity-input.jsonl > /tmp/crg-parity-output.json
+          SOURCE_SHA="$SOURCE_SHA" python - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+
+          source = Path('/tmp/crg-parity-input.jsonl').read_bytes()
+          output = Path('/tmp/crg-parity-output.json').read_bytes()
+          data = json.loads(output)
+
+          assert isinstance(data.get('fingerprints'), list)
+          assert len(data['fingerprints']) == 2
+          assert data['fingerprints'][0]['full_hash'] == data['fingerprints'][1]['full_hash']
+          assert data['fingerprints'][0]['ref_id'] == data['fingerprints'][1]['ref_id']
+          assert all('text' not in item and 'source' not in item for item in data['fingerprints'])
+
+          policies = data.get('policies', [])
+          assert policies, 'deterministic fixture must exercise pointer policy'
+          assert any(policy['pointer'] for policy in policies), 'repeated fixture must produce a pointer candidate'
+
+          receipt = {
+              'contract': 'context-relationship-remote-parity-v1',
+              'source_sha': os.environ['SOURCE_SHA'],
+              'input_sha256': hashlib.sha256(source).hexdigest(),
+              'output_sha256': hashlib.sha256(output).hexdigest(),
+              'fingerprints': len(data['fingerprints']),
+              'policies': len(policies),
+              'parity': 'validated',
+          }
+          print(json.dumps(receipt, sort_keys=True))
+          PY

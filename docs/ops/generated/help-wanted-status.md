@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-04T23:10:44Z UTC · receipts=1061 · foreign_open=27 · tributes=73_
+_Generated 2026-10-04T23:36:32Z UTC · receipts=1061 · foreign_open=28 · tributes=74_
 
 ## Tributes (contributor ledger)
 
+- [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) · state=open · help-wanted: stake + contribute for #928
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -43,10 +44,10 @@ _Generated 2026-10-04T23:10:44Z UTC · receipts=1061 · foreign_open=27 · tribu
 - [StellarCanary/Protocol-Canary#345](https://github.com/StellarCanary/Protocol-Canary/pull/345) · state=closed · help-wanted: stake + contribute for #295
 - [arsova-mx/OpenPoker#69](https://github.com/arsova-mx/OpenPoker/pull/69) · state=closed · help-wanted: stake + contribute for #67
 - [Agora-Events/agora#1518](https://github.com/Agora-Events/agora/pull/1518) · state=closed · help-wanted: stake + contribute for #1423
-- [tarantool/tarantool#13285](https://github.com/tarantool/tarantool/pull/13285) · state=closed · help-wanted: stake + contribute for #13284
 
 ## Foreign open PRs
 
+- [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) — help-wanted: stake + contribute for #928
 - [estruyf/playwright-github-actions-reporter#59](https://github.com/estruyf/playwright-github-actions-reporter/pull/59) — help-wanted: stake + contribute for #50
 - [TricklePay/tricklepay-backend#441](https://github.com/TricklePay/tricklepay-backend/pull/441) — help-wanted: stake + contribute for #395
 - [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) — help-wanted: stake + contribute for #225

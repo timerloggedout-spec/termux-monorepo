@@ -1,85 +1,85 @@
 {
   "bootstrap_backfill": false,
   "builder": "archwiz.context_relationships.build_index@1.0",
-  "candidate_edge_count": 2856,
+  "candidate_edge_count": 2970,
   "compiler": "archwiz.context_relationships.compiler@1.0",
   "default_branch": "master",
-  "edge_count": 35815,
+  "edge_count": 37814,
   "github_report": {
     "checkpoint_eligible": false,
-    "collected_at": "2026-10-04T01:43:01.697050Z",
+    "collected_at": "2026-10-04T08:33:38.792010Z",
     "collector": "archwiz.context_relationships.github_collector@1.0",
     "counts": {
-      "cochange_candidates": 100,
-      "commit_files": 211,
+      "cochange_candidates": 172,
+      "commit_files": 206,
       "commits": 100,
-      "excluded_history_paths": 14,
-      "explicit_references": 492,
-      "issue_comments": 94,
-      "issues": 30,
-      "labels": 391,
-      "permalink_references": 144,
-      "pull_request_comments": 980,
-      "pull_request_commits": 1038,
-      "pull_request_files": 1265,
-      "pull_request_window_stubs": 55,
+      "excluded_history_paths": 123,
+      "explicit_references": 537,
+      "issue_comments": 107,
+      "issues": 26,
+      "labels": 222,
+      "permalink_references": 42,
+      "pull_request_comments": 831,
+      "pull_request_commits": 928,
+      "pull_request_files": 1123,
+      "pull_request_window_stubs": 74,
       "pull_requests": 100,
-      "review_comments": 428,
-      "reviews": 216,
-      "timeline_cross_references": 117
+      "review_comments": 607,
+      "reviews": 354,
+      "timeline_cross_references": 208
     },
     "history_window": {
       "issue_count": 100,
       "issues_complete": false,
       "limit_per_family": 100,
-      "next_start_page": 9,
+      "next_start_page": 10,
       "pull_request_count": 100,
       "pull_requests_complete": false,
-      "start_page": 8
+      "start_page": 9
     },
     "include_comments": true,
     "max_comments_per_item": 10,
     "max_commits": 100,
     "max_items": 100,
-    "request_count": 663,
+    "request_count": 655,
     "retry_count": 0,
     "since": null,
-    "unresolved_internal_reference_count": 141
+    "unresolved_internal_reference_count": 171
   },
   "history_window": {
     "issue_count": 100,
     "issues_complete": false,
     "limit_per_family": 100,
-    "next_start_page": 9,
+    "next_start_page": 10,
     "pull_request_count": 100,
     "pull_requests_complete": false,
-    "start_page": 8
+    "start_page": 9
   },
   "incremental_since": null,
-  "input_sha256": "2e45d0702ffc9419b11ff1ae1d6a502bfab3b7f3adce86d150100d64665328fc",
-  "latest_observed_at": "2026-10-04T01:43:01.697050Z",
+  "input_sha256": "1171322ed51b67d85adcb28b74030a65f5752b52daa6930095c9cc08c8c967c9",
+  "latest_observed_at": "2026-10-04T08:37:05Z",
   "merge_report": {
     "input_count": 3,
     "input_counts": [
       {
-        "edges": 32846,
-        "nodes": 21093
+        "edges": 35815,
+        "nodes": 22325
       },
       {
-        "edges": 5204,
-        "nodes": 5387
+        "edges": 5205,
+        "nodes": 5388
       },
       {
-        "edges": 6046,
-        "nodes": 3791
+        "edges": 5985,
+        "nodes": 3776
       }
     ],
-    "merged_edge_count": 44096,
-    "merged_node_count": 22325,
+    "merged_edge_count": 47005,
+    "merged_node_count": 23352,
     "merger": "archwiz.context_relationships.seed_merger@1.2",
     "retained_history": true
   },
-  "node_count": 22325,
+  "node_count": 23352,
   "repository": "timerloggedout-spec/termux-monorepo",
   "retained_history": true,
   "schema_sha256": "795fd782ddbb7d52c09a9a85a8356683b12202968d6ba7b04fb13c55393cde93",
@@ -139,12 +139,12 @@
         "path": "harmony_hub/utility_belt/recover-session.py"
       }
     ],
-    "scanned_files": 5890,
+    "scanned_files": 5958,
     "scopes_matched": 155,
     "source_files": 919,
     "symlink_files": 45,
     "unavailable_files": 0,
-    "unsupported_files": 3543
+    "unsupported_files": 3611
   },
-  "verified_edge_count": 32959
+  "verified_edge_count": 34844
 }

@@ -50,6 +50,10 @@ concurrency:
 jobs:
   index:
     name: Build append-only temporal evidence
+    if: >-
+      github.event_name != 'issue_comment' ||
+      github.event.comment.user.login != 'github-actions[bot]' ||
+      !contains(github.event.comment.body, 'sweep accountability receipt')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:

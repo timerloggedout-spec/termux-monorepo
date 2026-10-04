@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ARCHW1Z // Markov Trellis Lab</title>
+<style>
+:root{--bg:#03070d;--panel:#091824;--cyan:#00e5ff;--green:#00ff66;--gold:#ffb700;--magenta:#ff007f;--grid:#0a2336}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#dff;font:13px ui-monospace,SFMono-Regular,Menlo,monospace}
+main{max-width:1180px;margin:auto;padding:16px}.hud{display:flex;gap:12px;align-items:center;justify-content:space-between;border:1px solid var(--grid);padding:10px;background:#06101a}.title{color:var(--gold);font-weight:800}.controls{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.controls button,.controls label{border:1px solid #16435a;background:#071722;color:var(--cyan);padding:7px 10px}.controls button{cursor:pointer}.controls button.active{border-color:var(--gold);color:var(--gold)}canvas{width:100%;height:560px;display:block;border:1px solid var(--grid);background:#02060b}.telemetry{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}.card{padding:9px;border:1px solid var(--grid);background:var(--panel)}.label{color:#7ba7b7;font-size:10px}.value{font-size:15px;margin-top:3px}.hint{color:#86a7b2;margin:10px 0 0}
+@media(max-width:800px){.telemetry{grid-template-columns:repeat(2,1fr)}canvas{height:480px}}
+</style>
+</head>
+<body>
+<main>
+  <header class="hud"><div><span class="title">ARCHW1Z.MARKOV.LAB</span> // RECOMBINING TRELLIS ENGINE</div><div id="status">READY</div></header>
+  <section class="controls">
+    <button data-mode="tree">MODE: TREE</button>
+    <button data-mode="trellis" class="active">MODE: TRELLIS</button>
+    <label>HORIZON <input id="horizon" type="range" min="1" max="6" value="4"></label>
+    <label>FLOW <input id="flow" type="range" min=".3" max="3" step=".1" value="1.4"></label>
+    <button id="particles">PARTICLES: ON</button>
+  </section>
+  <canvas id="graph" width="1160" height="560" aria-label="Interactive Markov trellis visualization"></canvas>
+  <section class="telemetry">
+    <div class="card"><div class="label">VISIBLE NODES</div><div class="value" id="nodes">0</div></div>
+    <div class="card"><div class="label">LAYER PROBABILITY</div><div class="value" id="prob">1.0000</div></div>
+    <div class="card"><div class="label">RECOMBINATION</div><div class="value" id="merge">0</div></div>
+    <div class="card"><div class="label">SELECTED</div><div class="value" id="selected">none</div></div>
+  </section>
+  <pre class="hint" id="details">Click a node to inspect its state, cumulative probability, incoming contributions, and retained path provenance. The transition matrix is the model source of truth.</pre>
+</main>
+<script type="module">
+import { recombiningTrellis, strictTree, sampleNext } from "./src/markov-engine.mjs";
+
+const states=["Idle","Scan","Process","Sync"];
+const transitions={
+  Idle:{Scan:.7,Process:.3},
+  Scan:{Scan:.2,Process:.6,Sync:.2},
+  Process:{Process:.4,Sync:.6},
+  Sync:{Sync:1}
+};
+const initial={Idle:1,Scan:0,Process:0,Sync:0};
+const palette={bg:"#03070d",grid:"#0a2336",cyan:"#00e5ff",green:"#00ff66",gold:"#ffb700",magenta:"#ff007f"};
+const canvas=document.querySelector("#graph"),ctx=canvas.getContext("2d");
+let mode="trellis",horizon=4,flow=1.4,particlesOn=true,selected=null;
+let particles=[];
+const $=id=>document.querySelector(id);
+
+function model(){
+  return mode==="tree"
+    ? strictTree({states,transitions,initial,horizon})
+    : recombiningTrellis({states,transitions,initial,horizon});
+}
+function pos(layers,node){
+  const xPad=90,yPad=70,w=canvas.width-2*xPad,h=canvas.height-2*yPad;
+  const x=xPad+(node.time/Math.max(1,horizon))*w;
+  const layer=layers[node.time].nodes;
+  const idx=layer.indexOf(node);
+  const y=yPad+(idx+1)*(h/(layer.length+1));
+  return {x,y};
+}
+function bezier(a,b,t){
+  const mx=(a.x+b.x)/2;
+  const c1={x:mx,y:a.y},c2={x:mx,y:b.y};
+  return {
+    x:(1-t)**3*a.x+3*(1-t)**2*t*c1.x+3*(1-t)*t*t*c2.x+t**3*b.x,
+    y:(1-t)**3*a.y+3*(1-t)**2*t*c1.y+3*(1-t)*t*t*c2.y+t**3*b.y
+  };
+}
+function draw(){
+  const layers=model();
+  ctx.fillStyle=palette.bg;ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.strokeStyle=palette.grid;ctx.lineWidth=1;
+  for(let x=0;x<canvas.width;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,canvas.height);ctx.stroke()}
+  const lookup=new Map(layers.flatMap(l=>l.nodes.map(n=>[n.id,n])));
+  for(const layer of layers){
+    for(const node of layer.nodes){
+      const a=pos(layers,node);
+      for(const inc of node.incoming||[]){
+        const parent=lookup.get(inc.from); if(!parent) continue;
+        const b=pos(layers,parent);
+        ctx.beginPath();ctx.moveTo(b.x,b.y);const mx=(a.x+b.x)/2;
+        ctx.bezierCurveTo(mx,b.y,mx,a.y,a.x,a.y);
+        ctx.strokeStyle=node.state==="Sync"? "rgba(255,183,0,.55)":"rgba(0,229,255,.3)";
+        ctx.lineWidth=Math.max(1,Math.min(7,inc.probability*8));ctx.stroke();
+      }
+      if(mode==="tree"&&node.parent){
+        const parent=lookup.get(node.parent),b=pos(layers,parent);
+        ctx.beginPath();ctx.moveTo(b.x,b.y);const mx=(a.x+b.x)/2;ctx.bezierCurveTo(mx,b.y,mx,a.y,a.x,a.y);
+        ctx.strokeStyle="rgba(0,255,102,.25)";ctx.lineWidth=1;ctx.stroke();
+      }
+    }
+  }
+  if(particlesOn){
+    while(particles.length<70) particles.push(makeParticle(layers));
+    for(const p of particles){
+      p.t+=.0035*flow;
+      if(p.t>=1){Object.assign(p,makeParticle(layers));p.t=0}
+      const q=bezier(p.a,p.b,p.t);
+      ctx.fillStyle=p.color;ctx.shadowColor=p.color;ctx.shadowBlur=8;ctx.beginPath();ctx.arc(q.x,q.y,2.5,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+    }
+  }else particles=[];
+  for(const layer of layers) for(const node of layer.nodes){
+    const p=pos(layers,node),r=selected===node.id?21:16;
+    const c=node.state==="Sync"?palette.gold:(node.state==="Idle"?palette.green:palette.cyan);
+    ctx.fillStyle="#091824";ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle=c;ctx.lineWidth=selected===node.id?3:1.5;ctx.shadowColor=c;ctx.shadowBlur=selected===node.id?16:7;ctx.stroke();ctx.shadowBlur=0;
+    ctx.fillStyle="#fff";ctx.font="10px monospace";ctx.textAlign="center";ctx.fillText(node.state,p.x,p.y+32);
+    ctx.fillStyle=c;ctx.fillText("P="+node.probability.toFixed(3),p.x,p.y-25);
+  }
+  const last=layers.at(-1),total=last.nodes.reduce((s,n)=>s+n.probability,0);
+  $("nodes").textContent=layers.reduce((s,l)=>s+l.nodes.length,0);
+  $("prob").textContent=total.toFixed(4);
+  const theoretical=mode==="trellis"?layers.reduce((s,l)=>s+l.nodes.length,0):0;
+  const incoming=last.nodes.reduce((s,n)=>s+(n.incoming?.length||0),0);
+  $("merge").textContent=mode==="trellis"?incoming-last.nodes.length:0;
+  $("selected").textContent=selected||"none";
+  const selectedNode=selected?lookup.get(selected):null;
+  if(selectedNode){
+    const incoming=(selectedNode.incoming||[]).map(x=>x.from+"  contribution="+x.probability.toFixed(5)+"  transition="+x.transition.toFixed(3)).join("\n")||"none";
+    const provenance=(selectedNode.provenance||[]).slice(0,8).map(x=>x.path.join(" → ")+"  P="+x.probability.toFixed(5)).join("\n")||"none";
+    $("details").textContent=[
+      "STATE: "+selectedNode.state,
+      "TIME: t"+selectedNode.time,
+      "CUMULATIVE P: "+selectedNode.probability.toFixed(6),
+      "INCOMING:",
+      incoming,
+      "PROVENANCE (first 8):",
+      provenance
+    ].join("\n");
+  } else {
+    $("details").textContent="Click a node to inspect its state, cumulative probability, incoming contributions, and retained path provenance. The transition matrix is the model source of truth.";
+  }
+  requestAnimationFrame(draw);
+}
+function makeParticle(layers){
+  const t=Math.floor(Math.random()*horizon);
+  const layer=layers[t].nodes.filter(n=>n.probability>0);
+  const from=layer[Math.floor(Math.random()*layer.length)]||layers[0].nodes[0];
+  const toState=sampleNext(from.state,transitions);
+  const target=layers[Math.min(t+1,horizon)].nodes.find(n=>n.state===toState)||layers[Math.min(t+1,horizon)].nodes[0];
+  return {a:pos(layers,from),b:pos(layers,target),t:Math.random(),color:from.state==="Sync"?palette.gold:palette.cyan};
+}
+canvas.addEventListener("click",e=>{
+  const r=canvas.getBoundingClientRect(),x=(e.clientX-r.left)*canvas.width/r.width,y=(e.clientY-r.top)*canvas.height/r.height,layers=model();
+  selected=null;
+  for(const layer of layers) for(const n of layer.nodes){const p=pos(layers,n);if(Math.hypot(p.x-x,p.y-y)<24)selected=n.id}
+});
+document.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>{mode=b.dataset.mode;document.querySelectorAll("[data-mode]").forEach(x=>x.classList.toggle("active",x===b))});
+$("horizon").oninput=e=>horizon=+e.target.value;
+$("flow").oninput=e=>flow=+e.target.value;
+$("particles").onclick=e=>{particlesOn=!particlesOn;e.target.textContent="PARTICLES: "+(particlesOn?"ON":"OFF")};
+draw();
+</script>
+</body>
+</html>

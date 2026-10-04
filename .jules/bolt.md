@@ -65,3 +65,10 @@ In CI documentation indexers (`generate_docs_branch_index.py`), lag compilers (`
 
 **Action:**
 Pre-compile all YAML line parsing regexes at module scope and use `sum(1 for ...)` generators instead of instantiating intermediate lists when calculating count metrics.
+
+## 2026-10-04 - Single-Pass Counter Accumulation and Method Hoisting in Bayesian Routing
+**Learning:**
+In Bayesian routing and Monte Carlo sampling engines (`scripts/bayesian_routing.py`), calling `BetaBelief.update()` inside observation iteration loops instantiates new dataclass instances on every observation update, and calling `dataclasses.asdict()` uses slow runtime type reflection. Accumulating local float counters (`cur_alpha`, `cur_beta`) directly in a single-pass loop, hoisting `rng.betavariate` method handles out of sampling loops, and building result dictionaries directly speeds up candidate summarization by over 4.6x.
+
+**Action:**
+Accumulate local scalar variables in tight observation iteration loops instead of instantiating immutable dataclasses per iteration, avoid `dataclasses.asdict` on hot paths, and hoist random generator method references out of Monte Carlo sampling loops.

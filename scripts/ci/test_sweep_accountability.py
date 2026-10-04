@@ -36,5 +36,11 @@ class SweepAccountabilityTests(unittest.TestCase):
             r=make_receipt(args); write_receipt(r, Path(td))
             with self.assertRaises(FileExistsError): write_receipt(r, Path(td))
 
+    def test_push_receipt_debounce_is_present(self):
+        wf = Path(__file__).resolve().parents[2] / ".github/workflows/sweep-accountability.yml"
+        text = wf.read_text()
+        self.assertIn("skip receipt: tip is a sweep receipt", text)
+        self.assertIn("[ \"$age\" -lt 900 ]", text)
+
 if __name__ == "__main__":
     unittest.main()

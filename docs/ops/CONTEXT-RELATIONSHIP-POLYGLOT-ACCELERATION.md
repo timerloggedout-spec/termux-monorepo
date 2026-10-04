@@ -101,6 +101,12 @@ Providers must:
 3. preserve source-path and parser-coverage provenance;
 4. never become an autonomous GitHub write authority.
 
+## Compute-plane hierarchy
+
+**Remote execution is the primary compute path. Termux / BLU B160V is a failsafe and controlled actuation surface.** The complete contract is documented in `docs/ops/CONTEXT-RELATIONSHIP-REMOTE-PARITY.md`.
+
+The remote lane owns compile, release build, deterministic processing, and parity evidence. Local AArch64 execution is never a substitute for remote validation.
+
 ## Termux operating model
 
 The accelerator is deliberately **optional**.

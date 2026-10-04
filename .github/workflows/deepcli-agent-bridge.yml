@@ -95,7 +95,7 @@ jobs:
         run: |
           set -euo pipefail
           python - <<'PY'
-          import json, subprocess
+          import json, subprocess, os
           d=json.load(open("bridge.json", encoding="utf-8"))
           base=["scp","-i",os.path.expanduser("~/.ssh/termux_mcp"),"-o","IdentitiesOnly=yes","-o","StrictHostKeyChecking=yes","-o","ConnectTimeout=15","-P",str(d["port"])]
           target=f"{d['ssh_user']}@{d['endpoint']}:~/deepcli/"
@@ -121,7 +121,7 @@ jobs:
         run: |
           set -euo pipefail
           python - <<'PY'
-          import json, shlex, subprocess, sys
+          import json, shlex, subprocess, sys, os
           d=json.load(open("bridge.json", encoding="utf-8"))
           ssh=["ssh","-i",os.path.expanduser("~/.ssh/termux_mcp"),"-o","IdentitiesOnly=yes","-o","StrictHostKeyChecking=yes","-o","ConnectTimeout=15","-p",str(d["port"]),f"{d['ssh_user']}@{d['endpoint']}"]
           task="Inspect and operationalize the DeepCLI agent execution path now. Verify the role-aware prompt system, task identity, checkpoint/resume behavior, and the direct and HTTP agent paths. Make only safe, task-scoped changes. Run focused verification. Do not claim success unless the objective is evidenced. If the transport is unavailable, classify that as access/admission failure and preserve the exact evidence for the next continuation."

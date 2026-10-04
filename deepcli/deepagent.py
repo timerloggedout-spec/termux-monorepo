@@ -1797,9 +1797,9 @@ def hygiene_preflight(verbose=True):
         "reasons": [],
     }
     # SOFT FLOORS — auto-run reclaim, re-check, then evaluate
-    SOFT_MEM_MB = 500
-    SOFT_SWAP_MB = 300
-    SOFT_WORKTREES = 40
+    SOFT_MEM_MB = 800
+    SOFT_SWAP_MB = 500
+    SOFT_WORKTREES = 30
     soft_breach = (
         mem_mb < SOFT_MEM_MB
         or swap_mb < SOFT_SWAP_MB
@@ -1828,13 +1828,13 @@ def hygiene_preflight(verbose=True):
         state["worktrees"]        = wt
 
     # HARD FLOORS — refuse if still under after reclaim
-    if mem_mb < 300:
+    if mem_mb < 500:
         state["ok"] = False
         state["reasons"].append(f"mem_available={mem_mb}MB < 300MB floor")
-    if swap_mb < 150:
+    if swap_mb < 300:
         state["ok"] = False
         state["reasons"].append(f"swap_free={swap_mb}MB < 150MB floor")
-    if wt > 50:
+    if wt > 40:
         state["ok"] = False
         state["reasons"].append(f"worktrees={wt} — inventory cleanup required")
     if verbose:
@@ -1887,6 +1887,20 @@ def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False
         pass
     _t0 = time.time()
     key = session_store.task_key(task, task_path)
+    # silent status notif, updated in place per iteration
+    try:
+        import subprocess as _sp, shutil as _sh
+        if _sh.which("termux-notification"):
+            _sp.Popen([
+                "termux-notification", "--id", "9999",
+                "--channel", "hygiene-status",
+                "--title", "Agent iteration",
+                "--content", f"{task[:80]}",
+                "--priority", "low", "--silent",
+            ], stdout=_sp.DEVNULL, stderr=_sp.DEVNULL)
+    except Exception:
+        pass
+
     _notify(
         "run",
         "🤖 Agent starting",

@@ -1,16 +1,27 @@
 """_v1_mergeable classification.
 
-Revision 2: self-locating import so the suite works both from a clean
-checkout (where the package root is <repo>/deepcli) and from $HOME.
+Revision 3: sys.path bootstrap is checkout-relative. The package root is
+located by walking up from this file to the directory that contains
+``deepcli/_v1_mergeable.py``; ``$HOME/deepcli`` is only a last-resort
+fallback. This keeps a worktree run importing *that* worktree's
+``_v1_mergeable`` rather than the main checkout's copy.
 """
 
 import sys, pathlib, unittest
 
 _HERE = pathlib.Path(__file__).resolve()
-for _root in (_HERE.parents[1], pathlib.Path.home() / "deepcli"):
-    if (_root / "deepcli" / "_v1_mergeable.py").exists():
-        sys.path.insert(0, str(_root))
-        break
+
+
+def _repo_root():
+    """Directory that contains deepcli/_v1_mergeable.py, else $HOME/deepcli."""
+    for base in _HERE.parents:
+        if (base / "deepcli" / "_v1_mergeable.py").exists():
+            return base
+    return pathlib.Path.home() / "deepcli"
+
+
+_ROOT = _repo_root()
+sys.path.insert(0, str(_ROOT))
 from deepcli._v1_mergeable import (
     is_merge_ready,
     merge_blockers,
@@ -31,6 +42,14 @@ def _run(name, conclusion=None, state=None):
 def _ctx(context, state):
     """Build a StatusContext-shaped rollup entry."""
     return {"context": context, "state": state}
+
+
+class TestBootstrap(unittest.TestCase):
+    def test_bootstrap_resolves_to_this_checkout(self):
+        # The resolved root must contain the module and be an ancestor of
+        # this test file (i.e. the checkout we are running from).
+        self.assertTrue((_ROOT / "deepcli" / "_v1_mergeable.py").exists())
+        self.assertIn(_ROOT, _HERE.parents)
 
 
 class TestMergeable(unittest.TestCase):

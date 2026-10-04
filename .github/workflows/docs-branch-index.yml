@@ -78,7 +78,7 @@ jobs:
             -m "Automated inventory of docs/* debate lanes." \
             -m "Agent-Identity: GitHub Actions docs-branch-index" \
             -m "Evidence: docs-branch-index run 37231399762 lock race after single rebase."
-          # Run 37231399762: fetch+rebase then push still lost the lock
+          # Run 37231399762: fetch+rebase then push still lost the lock (rebased onto eee912e).
           # (master moved 2e68c5dd -> b6df687 between rebase and push).
           pushed=0
           for attempt in 1 2 3 4 5; do

@@ -27,7 +27,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "ab3c043b2ca5b7d97566a59749b02ae7e40763232dcf22be689de509e9810a81",
+  "source_fingerprint": "0f8121934422a61e688bb81ae99e1fecaf366fb47f0bce413cdba5bb1c39008b",
   "workflow_count": 126,
   "workflows": [
     {
@@ -778,13 +778,10 @@
       ],
       "name": "DeepCLI Agent Bridge Smoke",
       "path": ".github/workflows/deepcli-agent-bridge.yml",
-      "schedules": [
-        "*/30 * * * *"
-      ],
+      "schedules": [],
       "triggers": [
         "pull_request",
         "push",
-        "schedule",
         "workflow_dispatch"
       ]
     },

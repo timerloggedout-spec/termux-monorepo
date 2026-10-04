@@ -1,9 +1,39 @@
-"""_v1_preflight scoring."""
+"""_v1_preflight scoring.
+
+Revision 2 (iteration 48): self-locating import. A worktree run must
+resolve `_v1_preflight` from *this* checkout's deepcli root; the
+$HOME/deepcli path is only a last-resort fallback. The previous bootstrap
+inserted ``$HOME/deepcli`` unconditionally, so a worktree run imported the
+MAIN checkout's ``_v1_preflight`` instead of the worktree's. The chosen
+bootstrap root is asserted on-disk so the check is independent of import
+order inside the unittest harness.
+"""
 
 import sys, pathlib, unittest
 
-sys.path.insert(0, str(pathlib.Path.home() / "deepcli"))
+
+def _repo_root():
+    """Walk up from this test file to the checkout that owns deepcli/.
+
+    Resolve ``__file__``-relative first, fall back to the old
+    ``$HOME/deepcli`` location only when no checkout root is found.
+    """
+    here = pathlib.Path(__file__).resolve()
+    for parent in here.parents:
+        if (parent / "deepcli" / "_v1_preflight.py").is_file():
+            return parent
+    return pathlib.Path.home() / "deepcli"
+
+
+sys.path.insert(0, str(_repo_root()))
 from deepcli._v1_preflight import score, pattern_match, penalty_count, env_risk
+
+
+class TestBootstrap(unittest.TestCase):
+    def test_bootstrap_resolves_to_this_checkout(self):
+        root = _repo_root()
+        self.assertTrue((root / "deepcli" / "_v1_preflight.py").is_file())
+        self.assertIn(root, pathlib.Path(__file__).resolve().parents)
 
 
 class TestPreflight(unittest.TestCase):

@@ -86,6 +86,25 @@ jobs:
           TO_TIME="${TO_TIME:-}"
           git config user.name "termux-monorepo sweep"
           git config user.email "actions@users.noreply.github.com"
+          # Receipt commits on non-master refs collide with master ledger
+          # files (add/add) and move PR heads. Record only on master.
+          # On master, skip a push whose tip is already a fresh receipt so
+          # deploy contexts are not re-triggered until the Vercel rate limit clears.
+          # Schedule and workflow_dispatch still record on master.
+          if [ "${GITHUB_REF}" != "refs/heads/master" ]; then
+            echo "skip receipt push: ref ${GITHUB_REF} is not master"
+            exit 0
+          fi
+          if [ "${GITHUB_EVENT_NAME}" = "push" ]; then
+            tip_subject="$(git log -1 --format=%s)"
+            tip_epoch="$(git log -1 --format=%ct)"
+            now_epoch="$(date -u +%s)"
+            age=$((now_epoch - tip_epoch))
+            if [ "$tip_subject" = "chore(ops): record sweep accountability receipt" ] && [ "$age" -lt 900 ]; then
+              echo "skip receipt: tip is a sweep receipt ${age}s old (< 900s debounce)"
+              exit 0
+            fi
+          fi
           START="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           COMMITS="$(git rev-list --count HEAD)"
           HEAD_SHA="$(git rev-parse HEAD)"

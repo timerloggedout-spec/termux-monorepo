@@ -8,6 +8,7 @@ Same tool semantics as agent.py, but:
 """
 import json, os, sys, time, uuid
 import session_store
+from deepcli.prompt_system import build_system_prompt  # noqa
 from pathlib import Path
 
 HOME = Path.home()
@@ -918,9 +919,10 @@ def _autosnapshot(reason: str = "auto"):
         pass
 
 
-def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False):
+def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False, role=None, task_id=None, transport=None):
     """Loop until finish OR no-progress detected. Ceiling is safety, not policy."""
     print(f"\n▶ task: {task}\n")
+    print(f"  [role] {role or os.environ.get(\"DEEPCLI_ROLE\", \"engineer\")} [task_id] {task_id or os.environ.get(\"DEEPCLI_TASK_ID\", \"unassigned\")} [transport] {transport or os.environ.get(\"DEEPCLI_TRANSPORT\", \"auto\")}")
     _t0 = time.time()
     key = session_store.task_key(task, task_path)
     _notify("run", "🤖 Agent starting",
@@ -967,7 +969,7 @@ def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False
         step_offset = resumed_state.get("step", 0)
         no_progress = 0
     else:
-        msgs = [{"role":"user","content":task}]
+        msgs = [{"role":"system","content":build_system_prompt(task, role=role, task_id=task_id, transport=transport)}, {"role":"user","content":task}]
         parent_id = None
         seen_sigs = []
         step_offset = 0
@@ -1092,6 +1094,9 @@ def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False
 if __name__ == "__main__":
     argv = sys.argv[1:]
     dry = False
+    role = os.environ.get("DEEPCLI_ROLE", "engineer")
+    task_id = os.environ.get("DEEPCLI_TASK_ID")
+    transport = os.environ.get("DEEPCLI_TRANSPORT", "auto")
     fresh = False
     task_path = None
     if "--dry-run" in argv:
@@ -1106,4 +1111,4 @@ if __name__ == "__main__":
     if not argv:
         print("usage: deepagent.py [--dry-run] [--fresh] [--task-file P] \"<task>\"")
         sys.exit(2)
-    loop(" ".join(argv), dry_run=dry, task_path=task_path, fresh=fresh)
+    loop(" ".join(argv), dry_run=dry, task_path=task_path, fresh=fresh, role=role, task_id=task_id, transport=transport)

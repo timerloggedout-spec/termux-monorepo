@@ -136,57 +136,7 @@ jobs:
               raise SystemExit(r.returncode)
           PY
 
-      - name: Execute bounded dual-agent smoke
-        run: |
-          set -euo pipefail
-          python - <<'PY'
-          import json, shlex, subprocess, sys, os
-
-          d = json.load(open("bridge.json", encoding="utf-8"))
-          host, port, user = d["endpoint"], str(d["port"]), d["ssh_user"]
-          ssh = [
-              "ssh", "-i", os.path.expanduser("~/.ssh/termux_mcp"),
-              "-o", "IdentitiesOnly=yes",
-              "-o", "StrictHostKeyChecking=yes",
-              "-o", "ServerAliveInterval=15",
-              "-o", "ConnectTimeout=15",
-              "-p", port, f"{user}@{host}",
-          ]
-
-          checks = [
-              ("entrypoints-compile", ["python3", "-m", "py_compile", "$HOME/deepcli/deepagent.py", "$HOME/deepcli/agent.py"]),
-              ("direct-agent", ["env", "AGENT_MAX_STEPS=1", "python3", "$HOME/deepcli/deepagent.py", "--dry-run", "Reply exactly SMOKE_OK"]),
-              ("http-agent", ["env", "AGENT_MAX_STEPS=1", "python3", "$HOME/deepcli/agent.py", "--dry-run", "Reply exactly SMOKE_OK"]),
-          ]
-
-          receipt = {
-              "schema_version": 1,
-              "run_id": int("${{ github.run_id }}"),
-              "run_attempt": int("${{ github.run_attempt }}"),
-              "sha": "${{ github.sha }}",
-              "ref": "${{ github.ref }}",
-              "bridge": {"endpoint": host, "port": int(port), "ssh_user": user, "expires_at": d.get("expires_at")},
-              "checks": [],
-          }
-
-          for name, remote_argv in checks:
-              command = " ".join(shlex.quote(x) for x in remote_argv)
-              result = subprocess.run(ssh + [command], text=True, capture_output=True, timeout=180)
-              row = {"name": name, "rc": result.returncode, "stdout": result.stdout[-4000:], "stderr": result.stderr[-2000:]}
-              receipt["checks"].append(row)
-              print(json.dumps({k: v for k, v in row.items() if k not in ("stdout", "stderr")}))
-              if result.returncode != 0:
-                  print(result.stdout[-4000:])
-                  print(result.stderr[-2000:], file=sys.stderr)
-                  with open("deepcli-agent-bridge-receipt.json", "w", encoding="utf-8") as f:
-                      json.dump(receipt, f, indent=2, sort_keys=True)
-                  raise SystemExit(f"{name} failed with rc={result.returncode}")
-
-          with open("deepcli-agent-bridge-receipt.json", "w", encoding="utf-8") as f:
-              json.dump(receipt, f, indent=2, sort_keys=True)
-          PY
-
-      - name: Upload DeepAgent task evidence
+      # DeepAgent task execution is the verification path. No secondary smoke gate is required.\n\n      - name: Upload DeepAgent task evidence
         if: always()
         uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.2
         with:

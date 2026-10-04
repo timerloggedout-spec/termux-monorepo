@@ -518,10 +518,7 @@ def stream_completion(token: str, prompt: str, session_id: str,
             console.print(f"[red]Request error: {e}. Retrying in {delay}s...[/]")
             time.sleep(delay)
     console.print("[red]Failed after multiple retries.[/]")
-
-
-
-    return final_text
+    return ""
 def continue_response(token: str, session_id: str, parent_message_id: str,
                       auto_retry: bool = True) -> bool:
     """Send a continue request after an auto_resume signal. Returns True if more content was generated."""

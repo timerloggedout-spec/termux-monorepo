@@ -39,6 +39,10 @@ inputs:
     description: 'Optional trusted current SHA used to validate target-sha; required when target-sha is supplied'
     required: false
     default: ''
+  cache-schema:
+    description: 'Versioned cache namespace for advisory catalog/capacity state'
+    required: false
+    default: 'v2'
 
 outputs:
   provider:
@@ -59,6 +63,9 @@ outputs:
   decision-summary:
     description: 'One-line AR-18 observe-mode decision summary'
     value: ${{ steps.pick.outputs.decision_summary }}
+  cache-hit:
+    description: 'Whether an advisory model-router cache was restored'
+    value: ${{ steps.restore.outputs.cache-hit }}
 
 runs:
   using: composite
@@ -68,13 +75,15 @@ runs:
       shell: bash
       run: echo "key=$(TZ=America/Los_Angeles date +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
 
-    - name: Restore per-model counters (per-branch best-effort)
+    - name: Restore versioned model-router capacity cache
       id: restore
       uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
       with:
         path: /tmp/model-router
-        key: model-router-${{ steps.date.outputs.key }}
-        restore-keys: model-router-${{ steps.date.outputs.key }}
+        key: model-router-${{ inputs.cache-schema }}-${{ steps.date.outputs.key }}-${{ github.repository }}
+        restore-keys: |
+          model-router-${{ inputs.cache-schema }}-${{ steps.date.outputs.key }}-
+          model-router-${{ inputs.cache-schema }}-
         enableCrossOsArchive: true
 
     - name: Pick provider + model plus observe-mode capability decision
@@ -86,12 +95,13 @@ runs:
         HAS_OPENROUTER: ${{ inputs.has-openrouter }}
         HAS_GEMINI: ${{ inputs.has-gemini }}
         CAPABILITY_SPINE_OBSERVE: ${{ inputs.capability-spine-observe }}
+        MODEL_ROUTER_CACHE_SCHEMA: ${{ inputs.cache-schema }}
         TARGET_SHA: ${{ inputs.target-sha }}
         CURRENT_SHA: ${{ inputs.current-sha }}
       run: |
         python3 -m scripts.model_router
 
-    - name: Save per-model counters
+    - name: Save versioned model-router capacity cache
       if: steps.pick.outputs.skip != 'true'
       uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
       with:

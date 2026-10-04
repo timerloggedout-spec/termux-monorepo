@@ -76,7 +76,7 @@ jobs:
           summary = {
               "job_count": len(jobs.get("jobs", [])),
               "jobs": [{"name": j.get("name"), "status": j.get("status"), "conclusion": j.get("conclusion")} for j in jobs.get("jobs", [])],
-              "artifact_count": len(artifacts.get("artifacts", [])],
+              "artifact_count": len(artifacts.get("artifacts", [])),
               "artifacts": [{"name": a.get("name"), "expired": a.get("expired")} for a in artifacts.get("artifacts", [])],
           }
           with open("runtime-summary.json", "w", encoding="utf-8") as f:
@@ -96,7 +96,7 @@ jobs:
             echo "- Event: ${{ github.event.action }}"
             echo "- Status: ${{ github.event.workflow_run.status }}"
             echo "- Conclusion: ${{ github.event.workflow_run.conclusion || 'pending' }}"
-            echo "- SHA: ${{ github.event.workflow_run.head_sha }}"
+            echo "- SHA: '${{ github.event.workflow_run.head_sha }}'"
             echo "- Evidence: ${{ github.event.workflow_run.html_url }}"
             echo
             cat runtime-summary.json 2>/dev/null || true

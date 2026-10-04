@@ -91,3 +91,96 @@ def test_merge_seeds_rejects_conflicting_node_attributes():
 
     with pytest.raises(CompilationError, match="contradictory attribute"):
         merge_seeds(first, second)
+
+
+def test_merge_seeds_canonicalizes_file_blob_urls_onto_seed_ref():
+    historical = {
+        **BASE,
+        "nodes": [
+            {
+                "kind": "file",
+                "external_id": "central_mapper_v420.py",
+                "observed_at": "2026-10-01T00:00:00Z",
+                "attributes": {"path": "central_mapper_v420.py"},
+                "url": "https://github.com/example/repo/blob/master-staging/central_mapper_v420.py",
+            }
+        ],
+        "edges": [],
+    }
+    current = {
+        **BASE,
+        "nodes": [
+            {
+                "kind": "file",
+                "external_id": "central_mapper_v420.py",
+                "observed_at": "2026-10-02T01:26:08Z",
+                "attributes": {"path": "central_mapper_v420.py"},
+                "url": "https://github.com/example/repo/blob/abc123def/central_mapper_v420.py#L10",
+            }
+        ],
+        "edges": [],
+    }
+
+    merged, _ = merge_seeds(historical, current)
+
+    assert merged["nodes"][0]["url"] == "https://github.com/example/repo/blob/main/central_mapper_v420.py"
+
+
+def test_merge_seeds_still_rejects_distinct_file_urls():
+    first = {
+        **BASE,
+        "nodes": [
+            {
+                "kind": "file",
+                "external_id": "central_mapper_v420.py",
+                "attributes": {"path": "central_mapper_v420.py"},
+                "url": "https://github.com/example/repo/blob/main/central_mapper_v420.py",
+            }
+        ],
+        "edges": [],
+    }
+    second = {
+        **BASE,
+        "nodes": [
+            {
+                "kind": "file",
+                "external_id": "central_mapper_v420.py",
+                "attributes": {"path": "central_mapper_v420.py"},
+                "url": "https://example.invalid/other",
+            }
+        ],
+        "edges": [],
+    }
+
+    with pytest.raises(CompilationError, match="contradictory url"):
+        merge_seeds(first, second)
+
+
+def test_merge_seeds_unions_symbol_spans_without_observed_at():
+    first = {
+        **BASE,
+        "nodes": [
+            {
+                "kind": "symbol",
+                "external_id": "central_mapper_v420.py:CentralMapper:36",
+                "attributes": {"name": "CentralMapper", "line": 36, "end_line": 80},
+            }
+        ],
+        "edges": [],
+    }
+    second = {
+        **BASE,
+        "nodes": [
+            {
+                "kind": "symbol",
+                "external_id": "central_mapper_v420.py:CentralMapper:36",
+                "attributes": {"name": "CentralMapper", "line": 36, "end_line": 120},
+            }
+        ],
+        "edges": [],
+    }
+
+    merged, _ = merge_seeds(first, second)
+
+    assert merged["nodes"][0]["attributes"]["end_line"] == 120
+    assert merged["nodes"][0]["attributes"]["line"] == 36

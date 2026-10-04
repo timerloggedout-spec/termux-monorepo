@@ -2,12 +2,14 @@ name: Actions Run Watcher — incident notification
 
 on:
   workflow_run:
+    # workflows is required; omitting it makes every push fail this file with zero jobs.
     workflows:
-      - "repo gate"
-      - "termux smoke"
-      - "Merge Promotion Queue"
-      - "PR production ledger"
-      - "repository observatory"
+      - repository observatory
+      - Automation Documentation Continuous Refresh
+      - Context Relationship + Lead/Lag Audit
+      - Agent Throughput Evidence
+      - Audit Cycle — Single PR Feed-Forward
+      - PR production ledger
     types: [completed]
 
 permissions:

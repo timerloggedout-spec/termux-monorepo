@@ -37,8 +37,12 @@ jobs:
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         with:
           script: |
-            const prNumber = Number(context.payload.pull_request?.number || context.payload.issue?.number);
-            if (!prNumber) return core.info('No pull request in event; nothing to ledger.');
+            const issue = context.payload.issue;
+            const prNumber = Number(context.payload.pull_request?.number || (issue?.pull_request ? issue.number : 0));
+            if (!prNumber) {
+              core.info('Event is not a pull request; ledger skipped.');
+              return;
+            }
 
             const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
             const isTransient = error => {

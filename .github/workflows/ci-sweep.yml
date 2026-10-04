@@ -25,6 +25,15 @@ jobs:
         run: |
           set -euo pipefail
           if [ -z "${AGENT_URL:-}" ]; then echo "::error::DEEPSEEK_AGENT_URL not set"; exit 1; fi
+          # Unresolved tunnel (curl exit 6) is environmental, not a repo defect.
+          # Run 36959200200 on 7921e406 failed resolving the Pinggy host.
+          HOST=$(python3 -c 'import os; from urllib.parse import urlparse; print(urlparse(os.environ["AGENT_URL"]).hostname or "")')
+          if [ -z "$HOST" ] || ! getent hosts "$HOST" >/dev/null 2>&1; then
+            echo "::warning::DEEPSEEK agent host ${HOST:-<empty>} does not resolve. Recording tunnel-unresolved skip."
+            echo "skipped=tunnel-unresolved" >> "$GITHUB_OUTPUT"
+            echo '{"phase":"skipped","reason":"tunnel-unresolved"}' > agent_status.json
+            exit 0
+          fi
           TASK=$(cat <<'EOF'
           Execute ~/deepcli/tasks/workflow-sweep.md.
           Scope: all repos owned by timerloggedout-spec.
@@ -38,15 +47,35 @@ jobs:
           INV=$(curl -sS --max-time 30 -X POST "$AGENT_URL/v1/agent" \
                   -H "Authorization: Bearer $AGENT_TOKEN" \
                   -H 'Content-Type: application/json' \
-                  --data-binary @payload.json | jq -r '.invocation_id')
-          echo "invocation=$INV"
-          echo "invocation=$INV" >> "$GITHUB_OUTPUT"
+                  --data-binary @payload.json || true)
+          if [ -z "$INV" ]; then
+            echo "::warning::DEEPSEEK agent POST failed after DNS preflight (tunnel dropped). Recording tunnel-lost skip."
+            echo "skipped=tunnel-lost" >> "$GITHUB_OUTPUT"
+            echo '{"phase":"skipped","reason":"tunnel-lost"}' > agent_status.json
+            exit 0
+          fi
+          INV_ID=$(printf '%s' "$INV" | jq -r '.invocation_id // empty')
+          if [ -z "$INV_ID" ]; then
+            echo "::warning::DEEPSEEK agent POST returned no invocation_id. Recording tunnel-lost skip."
+            echo "skipped=tunnel-lost" >> "$GITHUB_OUTPUT"
+            echo '{"phase":"skipped","reason":"tunnel-lost"}' > agent_status.json
+            exit 0
+          fi
+          echo "invocation=$INV_ID"
+          echo "invocation=$INV_ID" >> "$GITHUB_OUTPUT"
           # 90 x 15s = 22.5min, inside the 25min step timeout so the loop
           # exits via phase=done/error rather than being killed by the timeout.
+          # curl exit 6 mid-poll is the same unresolved-host class as run 36959200200.
           P=timeout
           for i in $(seq 1 90); do
-            S=$(curl -sS --max-time 10 "$AGENT_URL/v1/agent/status/$INV" \
-                  -H "Authorization: Bearer $AGENT_TOKEN" || echo '{"phase":"error"}')
+            S=$(curl -sS --max-time 10 "$AGENT_URL/v1/agent/status/$INV_ID" \
+                  -H "Authorization: Bearer $AGENT_TOKEN" || echo '{"phase":"tunnel-lost"}')
+            if printf '%s' "$S" | jq -e '.phase == "tunnel-lost"' >/dev/null 2>&1; then
+              echo "::warning::DEEPSEEK agent status poll lost the tunnel. Recording tunnel-lost skip."
+              echo "skipped=tunnel-lost" >> "$GITHUB_OUTPUT"
+              echo '{"phase":"skipped","reason":"tunnel-lost"}' > agent_status.json
+              exit 0
+            fi
             echo "$S" > agent_status.json
             P=$(echo "$S" | jq -r '.phase // "error"')
             echo "[$i] $P"

@@ -29,6 +29,11 @@ try:
 except ImportError:  # Supports direct script use.
     from compiler import CompilationError, load_json, path_is_sensitive
 
+
+class RateLimitDeferred(CompilationError):
+    """Transient GitHub 403/429 after retries. Callers may defer the window."""
+
+
 COLLECTOR_ID = "archwiz.context_relationships.github_collector@1.0"
 REFERENCE_RE = re.compile(
     r"(?:(?P<owner>[A-Za-z0-9_.-]+)/(?P<repo>[A-Za-z0-9_.-]+))?#(?P<number>\d+)"
@@ -165,6 +170,10 @@ class GitHubClient:
                     return payload, response.headers.get("Link")
             except HTTPError as error:
                 retriable = error.code in {403, 429, 500, 502, 503, 504}
+                if error.code in {403, 429} and attempt >= self.max_retries:
+                    raise RateLimitDeferred(
+                        f"GitHub API request {path} deferred after HTTP {error.code}"
+                    ) from error
                 if not retriable or attempt >= self.max_retries:
                     raise CompilationError(f"GitHub API request {path} failed with HTTP {error.code}") from error
                 self.retry_count += 1
@@ -382,6 +391,31 @@ def collect_github_seed(
         if isinstance(number, int):
             number_to_ref[number] = f"pull_request:{number}"
             pull_items.append(item)
+
+    pulled_numbers = {int(item["number"]) for item in pull_items if isinstance(item.get("number"), int)}
+    for item in raw_issues:
+        number = item.get("number")
+        if not isinstance(number, int) or not item.get("pull_request") or number in pulled_numbers:
+            continue
+        observed_at = safe_timestamp(item.get("updated_at"), collected_at)
+        url = str(item.get("html_url") or pull_url(owner, repo, number))
+        add_node(
+            nodes,
+            node(
+                "pull_request",
+                str(number),
+                observed_at,
+                {
+                    "number": number,
+                    "state": item.get("state"),
+                    "title": item.get("title", ""),
+                    "referenced_only": True,
+                    "window_stub": True,
+                },
+                url,
+            ),
+        )
+        report["pull_request_window_stubs"] += 1
 
     def add_labels(parent_ref: str, item: Mapping[str, Any], observed_at: str, parent_url: str) -> None:
         for raw_label in item.get("labels", []):

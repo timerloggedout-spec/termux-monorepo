@@ -2,8 +2,8 @@
 
 ```
 +---------------------------------------------------------------------------------------------------------+
-|  ⚡ ARCHWIZ COCKPIT v4.0.0 [PROD BUILD]  |  TARGET: Android/Termux Surface  |  DUAL-GATE: ✅ GREEN       |
-|  SESSION: admin@termux-monorepo          |  BRANCHES: 397 Active            |  PRs: 61 Open / 341 Merged |
+|  ⚡ ARCHWIZ COCKPIT // TERMUX HYPER-FORGE  |  TARGET: Android/Termux  |  GATES: repo-gate + smoke |
+|  MODE: operator / supervised-autonomous |  STATE: source-of-truth bound |  THEME: Tron-capable |
 +---------------------------------------------------------------------------------------------------------+
 |  [1] 🤖 Swarm Autonomous Dispatch (Jules/Commingle)   [13] 🔄 Session Pipeline & Live Telemetry          |
 |  [2] 🔍 Deep RECON & Archaeology Sweep (ICM Routing)   [14] 📜 Narrative Feed & Execution Ledger         |
@@ -25,6 +25,47 @@
 <img width="688" height="1539" alt="1000029616" src="https://github.com/user-attachments/assets/135dada3-82ca-42cd-9124-2ab00974ba41" />
 
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/timerloggedout-spec/termux-monorepo)
+
+
+### ⚡ Termux Hyper-Forge — the first implementation surface
+
+The cinematic cockpit concept is now grounded in a **real Termux-native implementation**. The Hyper-Forge is an ANSI/TUI adapter over existing repository primitives rather than a second orchestration system.
+
+```text
+                         TERMUX / ANDROID
+                              │
+                    ┌─────────▼─────────┐
+                    │ ARCHWIZ HYPER-FORGE│
+                    │  ANSI / TUI layer  │
+                    └─────────┬─────────┘
+                              │
+             ┌────────────────┼────────────────┐
+             ▼                ▼                ▼
+         FORESIGHT        CHRONOMANCER      DISPATCH
+      impact/context      time-aware fork   bounded task
+             └────────────────┼────────────────┘
+                              ▼
+                       DUAL-GATE VALIDATION
+                    repo-gate + termux-smoke
+                              │
+                              ▼
+                           RECORD
+```
+
+Launch directly on Termux:
+
+```bash
+python3 archwiz/termux_cockpit.py
+```
+
+Or enter it from the established ArchWiz TUI with **[20] Termux Hyper-Forge Cockpit**.
+
+The optional ARCHWIZ_THEME=tron mode supplies the Tron-inspired cyan/green terminal treatment. It is presentation-only: it does not change routing, authority, telemetry schemas, or promotion semantics.
+
+See [docs/ops/TERMUX-ARCHWIZ-HYPERFORGE.md](docs/ops/TERMUX-ARCHWIZ-HYPERFORGE.md).
+
+> **Evidence rule:** header images and cinematic panels are visual seeds, not live telemetry. Never present generated art as current branch/PR/CI state unless it was generated from a verified repository snapshot.
+
 
 <!-- partner-banner:start (edit docs/PARTNERS.md to add a partner; one badge per ACTIVE lane, rows of three — Operator lifted the four-badge cap 2026-09-20) -->
 <p align="center">

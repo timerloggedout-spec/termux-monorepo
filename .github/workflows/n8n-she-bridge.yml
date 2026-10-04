@@ -1,0 +1,79 @@
+name: n8n SHE bridge
+
+on:
+  workflow_run:
+    # workflows is required. Omitting it is an invalid workflow file and
+    # produces a zero-job failure on push (runs 37085767517, 37085844806).
+    workflows:
+      - repo gate
+      - termux smoke
+      - Sweep Accountability
+      - context relationship historical backfill
+    types: [completed]
+
+# Evidence parent 06dd1e3: repo gate 37089209326, termux smoke 37089209367, actionlint 37089209393, workflow surface 37089209271. Receipt 55588944 had zero runs.
+
+permissions:
+  contents: read
+
+# One in-flight emit per parent workflow and SHA. Superseded duplicates cancel.
+# Sweep accountability receipts are not new gate evidence (runs 37176681028, 37176632246).
+concurrency:
+  group: n8n-she-bridge-${{ github.event.workflow_run.name }}-${{ github.event.workflow_run.head_sha || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  emit:
+    name: Emit sanitized workflow evidence to optional n8n
+    if: >-
+      (github.event.workflow_run.conclusion == 'success' || github.event.workflow_run.conclusion == 'failure') &&
+      !startsWith(github.event.workflow_run.head_commit.message, 'chore(ops): record sweep accountability receipt')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check n8n bridge configuration
+        id: config
+        env:
+          N8N_SHE_WEBHOOK_URL: ${{ secrets.N8N_SHE_WEBHOOK_URL }}
+        run: |
+          if [ -n "$N8N_SHE_WEBHOOK_URL" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "n8n bridge not configured; leaving canonical GitHub evidence unchanged."
+          fi
+
+      - name: Emit sanitized workflow_run receipt
+        if: steps.config.outputs.configured == 'true'
+        env:
+          N8N_SHE_WEBHOOK_URL: ${{ secrets.N8N_SHE_WEBHOOK_URL }}
+          REPOSITORY: ${{ github.repository }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          RUN_NUMBER: ${{ github.event.workflow_run.run_number }}
+          WORKFLOW_NAME: ${{ github.event.workflow_run.name }}
+          STATUS: ${{ github.event.workflow_run.status }}
+          CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          HTML_URL: ${{ github.event.workflow_run.html_url }}
+          ACTOR: ${{ github.event.workflow_run.actor.login }}
+        run: |
+          python - <<'PY' | curl --fail-with-body --silent --show-error --retry 2 --connect-timeout 10 --max-time 30 \
+            -H 'Content-Type: application/json' \
+            --data-binary @- "$N8N_SHE_WEBHOOK_URL"
+          import json, os
+          print(json.dumps({
+              "action": "completed",
+              "repository": os.environ["REPOSITORY"],
+              "workflow_run": {
+                  "id": int(os.environ["RUN_ID"]),
+                  "run_number": int(os.environ["RUN_NUMBER"]),
+                  "name": os.environ["WORKFLOW_NAME"],
+                  "status": os.environ["STATUS"],
+                  "conclusion": os.environ["CONCLUSION"],
+                  "head_sha": os.environ["HEAD_SHA"],
+                  "head_branch": os.environ["HEAD_BRANCH"],
+                  "html_url": os.environ["HTML_URL"],
+                  "actor": {"login": os.environ["ACTOR"]},
+              },
+          }, separators=(",", ":")))
+          PY

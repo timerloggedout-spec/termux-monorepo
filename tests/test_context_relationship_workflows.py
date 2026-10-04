@@ -43,6 +43,16 @@ def test_reconciliation_is_bounded_and_explicitly_refreshes_history():
     assert "pull_request_target" not in content
 
 
+def test_historical_backfill_self_wakes_from_corpus_commits():
+    content = workflow("context-relationship-backfill.yml")
+
+    assert "push:" in content
+    assert "branches: [master]" in content
+    assert "paths:" in content
+    assert "workspace/llm_map/context_relationships/**" in content
+    assert "schedule:" in content
+
+
 def test_historical_backfill_is_manual_resumable_and_page_bounded():
     content = workflow("context-relationship-backfill.yml")
 

@@ -1,0 +1,137 @@
+{
+  "collected_at": "2026-09-30T23:15:15.148138+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 36788032564,
+    "endpoint": ".../runs/36788032564/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 110134033371,
+        "run_id": 36788032564,
+        "workflow_name": "Agent Throughput Evidence",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/36788032564",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAZpH_72w",
+        "head_sha": "f87e2c542779810d488200b09f8477e8c6f068f7",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/110134033371",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36788032564/job/110134033371",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-09-30T22:52:29Z",
+        "started_at": "2026-09-30T22:52:32Z",
+        "completed_at": "2026-09-30T22:52:45Z",
+        "name": "emit",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-09-30T22:52:34Z",
+            "completed_at": "2026-09-30T22:52:36Z"
+          },
+          {
+            "name": "Checkout observer implementation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-09-30T22:52:36Z",
+            "completed_at": "2026-09-30T22:52:40Z"
+          },
+          {
+            "name": "Download ATES task-boundary evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-09-30T22:52:40Z",
+            "completed_at": "2026-09-30T22:52:40Z"
+          },
+          {
+            "name": "Collect trusted workflow metadata",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-09-30T22:52:40Z",
+            "completed_at": "2026-09-30T22:52:41Z"
+          },
+          {
+            "name": "Move metadata into workspace",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-09-30T22:52:41Z",
+            "completed_at": "2026-09-30T22:52:41Z"
+          },
+          {
+            "name": "Emit sanitized ATES JSONL",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-09-30T22:52:41Z",
+            "completed_at": "2026-09-30T22:52:41Z"
+          },
+          {
+            "name": "Validate emitter tests",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-09-30T22:52:41Z",
+            "completed_at": "2026-09-30T22:52:41Z"
+          },
+          {
+            "name": "Reduce observed ATES metrics",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-09-30T22:52:41Z",
+            "completed_at": "2026-09-30T22:52:41Z"
+          },
+          {
+            "name": "Build evidence receipt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-09-30T22:52:41Z",
+            "completed_at": "2026-09-30T22:52:41Z"
+          },
+          {
+            "name": "Upload ATES evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-09-30T22:52:41Z",
+            "completed_at": "2026-09-30T22:52:42Z"
+          },
+          {
+            "name": "Post Checkout observer implementation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 20,
+            "started_at": "2026-09-30T22:52:42Z",
+            "completed_at": "2026-09-30T22:52:43Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 21,
+            "started_at": "2026-09-30T22:52:43Z",
+            "completed_at": "2026-09-30T22:52:43Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/110134033371",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000172882,
+        "runner_name": "GitHub Actions 1000172882",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

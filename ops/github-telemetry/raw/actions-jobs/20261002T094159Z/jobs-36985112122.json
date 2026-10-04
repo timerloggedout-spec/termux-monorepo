@@ -1,0 +1,89 @@
+{
+  "collected_at": "2026-10-02T09:42:09.409752+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 36985112122,
+    "endpoint": ".../runs/36985112122/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 110768252823,
+        "run_id": 36985112122,
+        "workflow_name": "Engineering health (script)",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/36985112122",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAZyk1nlw",
+        "head_sha": "e6efb0fc82d01c4b9e2197e3a5b716490c7d319e",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/110768252823",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36985112122/job/110768252823",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-02T08:37:40Z",
+        "started_at": "2026-10-02T08:37:43Z",
+        "completed_at": "2026-10-02T08:37:55Z",
+        "name": "engineering-health snapshot",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-02T08:37:43Z",
+            "completed_at": "2026-10-02T08:37:44Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-02T08:37:44Z",
+            "completed_at": "2026-10-02T08:37:48Z"
+          },
+          {
+            "name": "Run pure script (no CellCog)",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-02T08:37:48Z",
+            "completed_at": "2026-10-02T08:37:52Z"
+          },
+          {
+            "name": "Upload snapshot artifact",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-02T08:37:52Z",
+            "completed_at": "2026-10-02T08:37:53Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-02T08:37:53Z",
+            "completed_at": "2026-10-02T08:37:53Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-10-02T08:37:53Z",
+            "completed_at": "2026-10-02T08:37:53Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/110768252823",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000183047,
+        "runner_name": "GitHub Actions 1000183047",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

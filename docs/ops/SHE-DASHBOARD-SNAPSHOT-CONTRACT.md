@@ -46,3 +46,14 @@ A published snapshot should contain:
 - GitHub Pages build;
 - Hex import/export adapter;
 - DOE/MVT analysis jobs.
+
+## Historical reconstruction
+
+The SHE projection may use the repository-native temporal query surface for point-in-time or bounded change views. Use the immutable L2 snapshot as evidence; do not reconstruct historical state from the current L1 graph alone.
+
+- Point-in-time: temporal_query --at TIMESTAMP
+- Range: temporal_query --between START END
+- Change events: temporal_query --changes-only --between START END
+- Snapshot inventory: temporal_query --timeline
+
+These queries are read-only projections. Coverage and provenance from the selected snapshot remain authoritative.

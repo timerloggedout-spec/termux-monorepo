@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "4edc0c69cde19e2493c11963407ad6adf7f18d63180871fdb79b2aef789fb2b9",
-  "workflow_count": 116,
+  "source_fingerprint": "672dc066a36c137988eaba9cf73f294f3751e12f0ab928b05df7ee27e921a43d",
+  "workflow_count": 124,
   "workflows": [
     {
       "action_pins": [
@@ -65,6 +65,26 @@
       "schedules": [],
       "triggers": [
         "pull_request",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: actions-queue-reaper cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "reap"
+      ],
+      "name": "Actions queue reaper",
+      "path": ".github/workflows/actions-queue-reaper.yml",
+      "schedules": [
+        "23 */6 * * *"
+      ],
+      "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -172,7 +192,8 @@
       "domain": "agentic-development",
       "jobs": [
         "event-received",
-        "jules-on-label"
+        "jules-on-label",
+        "jules-on-mention"
       ],
       "name": "Jules on Issues (label / @jules)",
       "path": ".github/workflows/agent-jules-on-issues.yml",
@@ -465,7 +486,7 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
-      "concurrency": "",
+      "concurrency": "group: codespace-create-${{ github.repository }} cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
         "run"
@@ -571,6 +592,7 @@
         "23 * * * *"
       ],
       "triggers": [
+        "push",
         "schedule",
         "workflow_dispatch"
       ]
@@ -680,6 +702,24 @@
       "concurrency": "",
       "domain": "agentic-development",
       "jobs": [
+        "dispatch"
+      ],
+      "name": "continuous-improve",
+      "path": ".github/workflows/continuous-improve.yml",
+      "schedules": [
+        "0 */8 * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
         "validate"
       ],
       "name": "Credential Inventory Validation",
@@ -707,6 +747,21 @@
       "triggers": [
         "pull_request",
         "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "dispatch"
+      ],
+      "name": "deepagent-task",
+      "path": ".github/workflows/deepagent-task.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },
@@ -1205,6 +1260,22 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "verify"
+      ],
+      "name": "help-wanted diff gate",
+      "path": ".github/workflows/help-wanted-diff-gate.yml",
+      "schedules": [],
+      "triggers": [
+        "repository_dispatch",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
       "concurrency": "group: help-wanted-execute cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
@@ -1414,6 +1485,24 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "sweep"
+      ],
+      "name": "hygiene-sweep",
+      "path": ".github/workflows/hygiene-sweep.yml",
+      "schedules": [
+        "0 */6 * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
       "concurrency": "group: hindsight-deploy cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
@@ -1481,6 +1570,21 @@
         "pull_request",
         "push",
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: n8n-she-bridge-${{ github.event.workflow_run.name }}-${{ github.event.workflow_run.head_sha || github.ref }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "emit"
+      ],
+      "name": "n8n SHE bridge",
+      "path": ".github/workflows/n8n-she-bridge.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_run"
       ]
     },
     {
@@ -1755,6 +1859,25 @@
       "path": ".github/workflows/publish-wiki.yml",
       "schedules": [],
       "triggers": [
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "dtolnay/rust-toolchain@02cb101ec7c40f2c49e1d9714d64511d8e1b74de"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: ratatui-tokio-dashboard-\\${{ github.ref }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "rust"
+      ],
+      "name": "Ratatui Tokio dashboard",
+      "path": ".github/workflows/ratatui-tokio-dashboard.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
         "push",
         "workflow_dispatch"
       ]
@@ -2079,16 +2202,38 @@
         "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
       ],
       "authority": "read-only-or-advisory",
-      "concurrency": "group: swe-reference-evaluation-${{ inputs.benchmark }}-${{ inputs.split }} cancel-in-progress: false",
+      "concurrency": "group: swe-reference-evaluation-${{ github.run_id }} cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
-        "disabled",
         "evaluate"
       ],
       "name": "SWE reference evaluation",
       "path": ".github/workflows/swe-reference-evaluation.yml",
       "schedules": [],
       "triggers": [
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: sweep-accountability-${{ github.ref }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "sweep"
+      ],
+      "name": "Sweep Accountability",
+      "path": ".github/workflows/sweep-accountability.yml",
+      "schedules": [
+        "17 2 * * *"
+      ],
+      "triggers": [
+        "issue_comment",
+        "issues",
+        "pull_request",
+        "push",
+        "schedule",
         "workflow_dispatch"
       ]
     },

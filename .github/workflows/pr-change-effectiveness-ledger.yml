@@ -47,6 +47,16 @@ jobs:
           # Fetch PR objects only. Nothing from the PR is executed.
           git fetch --no-tags --prune origin "refs/pull/${PR_NUMBER}/head:refs/remotes/origin/pr-${PR_NUMBER}"
           read -r BASE_SHA HEAD_SHA < <(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq '[.base.sha, .head.sha] | @tsv')
+          # API head can move between fetch and measure (sweep receipt). Refetch once.
+          if ! git cat-file -e "${HEAD_SHA}^{commit}" 2>/dev/null || ! git cat-file -e "${BASE_SHA}^{commit}" 2>/dev/null; then
+            git fetch --no-tags origin "refs/pull/${PR_NUMBER}/head" "$BASE_SHA" || true
+          fi
+          if ! git cat-file -e "${HEAD_SHA}^{commit}" 2>/dev/null || ! git cat-file -e "${BASE_SHA}^{commit}" 2>/dev/null; then
+            echo "receipt race: base=${BASE_SHA} head=${HEAD_SHA} not in fetched objects; skipping measure" >&2
+            echo "skipped=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "skipped=false" >> "$GITHUB_OUTPUT"
           MERGE_BASE="$(git merge-base "$BASE_SHA" "$HEAD_SHA")"
           mapfile -t COMMITS < <(git rev-list --reverse "$MERGE_BASE..$HEAD_SHA")
           COMMIT_COUNT=${#COMMITS[@]}
@@ -83,6 +93,12 @@ jobs:
             BEGIN {a=0;d=0;f=0}
             { if ($1 ~ /^[0-9]+$/) a += $1; if ($2 ~ /^[0-9]+$/) d += $2; f++ }
             END {print a,d,f+0}')
+          # Unique patch vs merge-base. Tip-to-tip can be empty when base already
+          # contains an equivalent tree (run 37166124171: ahead 1 / behind 1, gross 27, final 0).
+          read -r UNIQUE_ADD UNIQUE_DEL UNIQUE_FILES < <(git diff --numstat "$MERGE_BASE" "$HEAD_SHA" | awk '
+            BEGIN {a=0;d=0;f=0}
+            { if ($1 ~ /^[0-9]+$/) a += $1; if ($2 ~ /^[0-9]+$/) d += $2; f++ }
+            END {print a,d,f+0}')
 
           AHEAD=$(git rev-list --count "$BASE_SHA..$HEAD_SHA")
           BEHIND=$(git rev-list --count "$HEAD_SHA..$BASE_SHA")
@@ -103,6 +119,9 @@ jobs:
             echo "final_additions=$FINAL_ADD"
             echo "final_deletions=$FINAL_DEL"
             echo "final_changed_files=$FINAL_FILES"
+            echo "unique_additions=$UNIQUE_ADD"
+            echo "unique_deletions=$UNIQUE_DEL"
+            echo "unique_changed_files=$UNIQUE_FILES"
             echo "ahead=$AHEAD"
             echo "behind=$BEHIND"
             echo "noop_percent=$NOOP_PCT"
@@ -112,6 +131,7 @@ jobs:
           printf '%s\n' "${EMPTY_LIST[@]:-}" > empty-commits.txt
 
       - name: Publish evidence summary
+        if: steps.measure.outputs.skipped != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
@@ -126,6 +146,7 @@ jobs:
           FINAL_ADD: ${{ steps.measure.outputs.final_additions }}
           FINAL_DEL: ${{ steps.measure.outputs.final_deletions }}
           FINAL_FILES: ${{ steps.measure.outputs.final_changed_files }}
+          UNIQUE_FILES: ${{ steps.measure.outputs.unique_changed_files }}
           AHEAD: ${{ steps.measure.outputs.ahead }}
           BEHIND: ${{ steps.measure.outputs.behind }}
           NOOP_PCT: ${{ steps.measure.outputs.noop_percent }}
@@ -135,7 +156,13 @@ jobs:
           set -euo pipefail
           marker='<!-- pr-change-effectiveness-ledger:v1 -->'
           state='🟢 EFFECTIVE_DIFF_PRESENT'
-          if [[ "$FINAL_FILES" -eq 0 ]]; then state='❌ NO_EFFECTIVE_DIFF'; fi
+          absorbed=0
+          if [[ "$FINAL_FILES" -eq 0 && "$UNIQUE_FILES" -eq 0 && "$EFFECTIVE_COUNT" -eq 0 ]]; then
+            state='❌ NO_EFFECTIVE_DIFF'
+          elif [[ "$FINAL_FILES" -eq 0 && ( "$UNIQUE_FILES" -gt 0 || "$EFFECTIVE_COUNT" -gt 0 ) ]]; then
+            state='🟡 ABSORBED_BY_BASE'
+            absorbed=1
+          fi
           noop='No empty commits observed.'
           if [[ "$EMPTY_COUNT" -gt 0 ]]; then noop="⚠️ ${EMPTY_COUNT} empty/no-op commit(s) observed."; fi
 
@@ -158,7 +185,8 @@ jobs:
           body+="| gross deletions across commits | ${GROSS_DEL} |${nl}"
           body+="| final additions vs base | ${FINAL_ADD} |${nl}"
           body+="| final deletions vs base | ${FINAL_DEL} |${nl}"
-          body+="| final changed files | ${FINAL_FILES} |${nl}"
+          body+="| final changed files vs base tip | ${FINAL_FILES} |${nl}"
+          body+="| unique changed files vs merge-base | ${UNIQUE_FILES} |${nl}"
           body+="| churn → retained final diff | ${REALIZATION_PCT}% |${nl}"
           body+="| ahead / behind base | ${AHEAD} / ${BEHIND} |${nl}${nl}"
           body+="**Interpretation:** commit count is context, not quality. Empty commits are explicitly measured, not silently treated as productive work. Gross churn describes work performed across history; the final base→head diff describes what remains. Review/comment/check evidence must be evaluated separately and tied to this measured head SHA.${nl}${nl}"
@@ -173,6 +201,8 @@ jobs:
             gh api --method POST "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" -f body="$body" >/dev/null
           fi
 
-          if [[ "$FINAL_FILES" -eq 0 ]]; then
+          # Hard-fail only a true empty PR. Equivalent tip trees with a unique
+          # patch are absorbed-by-base, not a workflow defect (run 37166124171).
+          if [[ "$FINAL_FILES" -eq 0 && "$absorbed" -eq 0 ]]; then
             exit 1
           fi

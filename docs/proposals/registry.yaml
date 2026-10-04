@@ -1,9 +1,51 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-09-25T21:10:00Z"
+updated_at: "2026-10-01T01:58:00Z"
 updated_by: grok-administrator
 
 proposals:
+  - id: model-selection-market
+    title: "Model selection market — equal-weight bootstrap, 3L0 performance, DSPy-DoE, bets/trading-cards"
+    author: grok
+    status: posted
+    priority: P1
+    path: active/model-selection-market/
+    reviewers:
+      - id: grok
+        role: author+executor
+        status: executing
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_prs: []
+    related_branches:
+      - docs/model-selection-market-3l0-20261001
+    related_proposals:
+      - approxination-integration
+      - ml-keep-alive
+      - rate-limit-rotation
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: ratatui-tokio-terminal-dashboard
+    title: "Termux-first Ratatui + Tokio responsive terminal dashboard"
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/ratatui-tokio-terminal-dashboard/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues: [934]
+    related_prs: [935, 938, 940, 955]
+    related_branches:
+      - feat/ratatui-tokio-terminal-dashboard
+      - docs/ratatui-dashboard-collaborator
+    gates_required: [repo-gate, termux-smoke]
+
   - id: ml-keep-alive
     title: "ML keep-alive DAG extract onto live master (Issue #175)"
     author: grok

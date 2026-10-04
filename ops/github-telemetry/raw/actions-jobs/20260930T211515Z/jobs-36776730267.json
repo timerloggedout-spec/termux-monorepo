@@ -1,0 +1,146 @@
+{
+  "collected_at": "2026-09-30T21:15:19.257740+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 36776730267,
+    "endpoint": ".../runs/36776730267/jobs"
+  },
+  "data": {
+    "total_count": 4,
+    "jobs": [
+      {
+        "id": 110096417229,
+        "run_id": 36776730267,
+        "workflow_name": "help-wanted-dashboard-deploy",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/36776730267",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAZokIBzQ",
+        "head_sha": "9ceb1b9ddcbaace1b53f4a955bdeade750184958",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/110096417229",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36776730267/job/110096417229",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-09-30T21:02:01Z",
+        "started_at": "2026-09-30T21:02:04Z",
+        "completed_at": "2026-09-30T21:02:08Z",
+        "name": "enable-project-pages",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-09-30T21:02:05Z",
+            "completed_at": "2026-09-30T21:02:05Z"
+          },
+          {
+            "name": "Create or update Pages site (branch gh-pages)",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-09-30T21:02:05Z",
+            "completed_at": "2026-09-30T21:02:06Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-09-30T21:02:06Z",
+            "completed_at": "2026-09-30T21:02:06Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/110096417229",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000172346,
+        "runner_name": "GitHub Actions 1000172346",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 110096419041,
+        "run_id": 36776730267,
+        "workflow_name": "help-wanted-dashboard-deploy",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/36776730267",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAZokII4Q",
+        "head_sha": "9ceb1b9ddcbaace1b53f4a955bdeade750184958",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/110096419041",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36776730267/job/110096419041",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-09-30T21:02:02Z",
+        "started_at": "2026-09-30T21:02:02Z",
+        "completed_at": "2026-09-30T21:02:01Z",
+        "name": "vercel-prod",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/110096419041",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      },
+      {
+        "id": 110096464536,
+        "run_id": 36776730267,
+        "workflow_name": "help-wanted-dashboard-deploy",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/36776730267",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAZokK6mA",
+        "head_sha": "9ceb1b9ddcbaace1b53f4a955bdeade750184958",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/110096464536",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36776730267/job/110096464536",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-09-30T21:02:08Z",
+        "started_at": "2026-09-30T21:02:08Z",
+        "completed_at": "2026-09-30T21:02:08Z",
+        "name": "publish-gh-pages",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/110096464536",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      },
+      {
+        "id": 110096464787,
+        "run_id": 36776730267,
+        "workflow_name": "help-wanted-dashboard-deploy",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/36776730267",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAZokK7kw",
+        "head_sha": "9ceb1b9ddcbaace1b53f4a955bdeade750184958",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/110096464787",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36776730267/job/110096464787",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-09-30T21:02:08Z",
+        "started_at": "2026-09-30T21:02:08Z",
+        "completed_at": "2026-09-30T21:02:08Z",
+        "name": "mirror-user-github-io",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/110096464787",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      }
+    ]
+  }
+}

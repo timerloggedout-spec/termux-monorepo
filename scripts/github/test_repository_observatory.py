@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from repository_observatory import build_records, build_payload, classify, snapshot_hash
+from repository_observatory import API, GitHubHttpError, build_records, build_payload, classify, resolve_login, snapshot_hash
 
 
 BASE = {
@@ -30,6 +30,10 @@ BASE = {
 
 
 class ObservatoryTests(unittest.TestCase):
+    def test_api_host_is_bound(self):
+        # Run 36896271590 on 63635bd9 failed with NameError: name 'API' is not defined.
+        self.assertEqual(API, "https://api.github.com")
+
     def test_classification_is_deterministic(self):
         self.assertEqual(classify(BASE, ["starred"]), classify(BASE, ["starred"]))
         self.assertIn("research", classify(BASE, ["starred"])["domains"])
@@ -57,6 +61,24 @@ class ObservatoryTests(unittest.TestCase):
             path = Path(tmp) / "index.json"
             path.write_text(json.dumps({"snapshot_hash": snapshot_hash(build_records([], [BASE])), "observed_at": "old"}))
             self.assertEqual(json.loads(path.read_text())["observed_at"], "old")
+
+
+    def test_actions_token_403_falls_back_to_declared_owner(self):
+        def fetch(path, token, params=None):
+            if path == "/user":
+                raise GitHubHttpError(403, path)
+            if path == "/users/timerloggedout-spec":
+                return {"login": "timerloggedout-spec"}
+            raise AssertionError(path)
+
+        self.assertEqual(resolve_login(fetch, "ghs_test", "timerloggedout-spec"), "timerloggedout-spec")
+
+    def test_user_mismatch_still_fails(self):
+        def fetch(path, token, params=None):
+            return {"login": "other"}
+
+        with self.assertRaises(RuntimeError):
+            resolve_login(fetch, "ghs_test", "timerloggedout-spec")
 
 
 if __name__ == "__main__":

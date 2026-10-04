@@ -70,3 +70,21 @@ GitHub-linked evidence
 ```
 
 No credential, webhook URL, tunnel endpoint, or provider token belongs in this documentation or source repository.
+
+
+## n8n Community Edition adapter — 2026-10-02
+
+The previously reference-only n8n lane now has a **free, self-hosted Community Edition adapter** committed under `ops/n8n/`.
+
+- `ops/n8n/docker-compose.yml` — localhost-bound persistent Community Edition runtime.
+- `ops/n8n/.env.example` — operator-only encryption/webhook configuration.
+- `ops/n8n/workflows/she-github-workflow-run-intake.json` — importable SHE evidence intake workflow.
+- `.github/workflows/n8n-she-bridge.yml` — optional GitHub `workflow_run` → n8n bridge.
+
+This changes the status from **reference-only** to **optional operational adapter** while preserving the existing authority boundary:
+
+`GitHub truth → Actions/evidence → SHE → optional n8n projection/automation`
+
+The bridge is deliberately inert until `N8N_SHE_WEBHOOK_URL` is configured. It sends only an allowlisted workflow receipt and never forwards GitHub credentials or arbitrary event payloads.
+
+n8n remains optional and does not replace GitHub Actions, SHE reducers, or the system-of-record boundary.

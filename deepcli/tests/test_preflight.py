@@ -1,9 +1,33 @@
-"""_v1_preflight scoring."""
+"""_v1_preflight scoring.
+
+sys.path bootstrap is self-locating: it walks up from this file to the
+checkout root that contains deepcli/_v1_preflight.py, so a worktree run
+imports *that* checkout's module instead of the $HOME/deepcli main
+checkout (which diverges once edits land). $HOME/deepcli remains a
+last-resort fallback when no checkout root is found.
+"""
 
 import sys, pathlib, unittest
 
-sys.path.insert(0, str(pathlib.Path.home() / "deepcli"))
+
+def _repo_root():
+    """Walk up from this file to the dir containing deepcli/_v1_preflight.py."""
+    here = pathlib.Path(__file__).resolve()
+    for d in here.parents:
+        if (d / "deepcli" / "_v1_preflight.py").exists():
+            return d
+    return pathlib.Path.home() / "deepcli"
+
+
+sys.path.insert(0, str(_repo_root()))
 from deepcli._v1_preflight import score, pattern_match, penalty_count, env_risk
+
+
+class TestBootstrap(unittest.TestCase):
+    def test_bootstrap_resolves_to_this_checkout(self):
+        root = _repo_root()
+        self.assertTrue((root / "deepcli" / "_v1_preflight.py").exists())
+        self.assertIn(root, pathlib.Path(__file__).resolve().parents)
 
 
 class TestPreflight(unittest.TestCase):

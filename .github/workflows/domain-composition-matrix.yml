@@ -18,6 +18,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
+      - name: Install pytest
+        run: python -m pip install --disable-pip-version-check pytest
       - name: Validate domain composition seed
         run: python scripts/ci/validate_domain_composition.py
       - name: Run domain composition tests

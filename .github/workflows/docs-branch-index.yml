@@ -56,10 +56,19 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Fetch-first: sweep receipts move master between checkout and push
+          # (run 37216655064 rejected HEAD -> master). Do not mention #175.
+          git fetch origin master
+          git rebase origin/master
+          git add docs/ops/DOCS-BRANCH-INDEX.md
+          if git diff --cached --quiet; then
+            echo "Index delta absorbed by origin/master."
+            exit 0
+          fi
           git commit -s -m "chore(docs): refresh DOCS-BRANCH-INDEX" \
             -m "Automated inventory of docs/* debate lanes." \
             -m "Agent-Identity: GitHub Actions docs-branch-index" \
-            -m "Refs: #175"
+            -m "Evidence: docs-branch-index run 37216655064 fetch-first rejection."
           git push origin HEAD:master
 
       - name: Summary

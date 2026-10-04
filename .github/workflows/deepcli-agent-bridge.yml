@@ -140,7 +140,7 @@ jobs:
         run: |
           set -euo pipefail
           python - <<'PY'
-          import json, shlex, subprocess, sys
+          import json, shlex, subprocess, sys, os
 
           d = json.load(open("bridge.json", encoding="utf-8"))
           host, port, user = d["endpoint"], str(d["port"]), d["ssh_user"]

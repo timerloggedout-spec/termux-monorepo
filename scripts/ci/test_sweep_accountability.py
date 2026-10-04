@@ -42,6 +42,9 @@ class SweepAccountabilityTests(unittest.TestCase):
         self.assertIn("skip receipt push: ref", text)
         self.assertIn("skip receipt: tip is a sweep receipt", text)
         self.assertIn('[ "$age" -lt 900 ]', text)
+        self.assertIn('GITHUB_EVENT_NAME" != "schedule"', text)
+        self.assertIn('GITHUB_EVENT_NAME" != "workflow_dispatch"', text)
+        self.assertNotIn('GITHUB_EVENT_NAME}" = "push"', text)
 
 if __name__ == "__main__":
     unittest.main()

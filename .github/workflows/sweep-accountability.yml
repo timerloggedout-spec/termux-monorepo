@@ -92,20 +92,22 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           # Receipt commits on non-master refs collide with master ledger
           # files (add/add) and move PR heads. Record only on master.
-          # On master, skip a push whose tip is already a fresh receipt so
+          # On master, skip when the tip is already a fresh receipt so
           # deploy contexts are not re-triggered until the Vercel rate limit clears.
-          # Schedule and workflow_dispatch still record on master.
+          # Push-only debounce left issue, pull_request, and issue_comment
+          # events stacking receipts (211a4087, bba47c06, 924446ff within 240s
+          # on 2026-10-04). Schedule and workflow_dispatch still record.
           if [ "${GITHUB_REF}" != "refs/heads/master" ]; then
             echo "skip receipt push: ref ${GITHUB_REF} is not master"
             exit 0
           fi
-          if [ "${GITHUB_EVENT_NAME}" = "push" ]; then
+          if [ "${GITHUB_EVENT_NAME}" != "schedule" ] && [ "${GITHUB_EVENT_NAME}" != "workflow_dispatch" ]; then
             tip_subject="$(git log -1 --format=%s)"
             tip_epoch="$(git log -1 --format=%ct)"
             now_epoch="$(date -u +%s)"
             age=$((now_epoch - tip_epoch))
             if [ "$tip_subject" = "chore(ops): record sweep accountability receipt" ] && [ "$age" -lt 900 ]; then
-              echo "skip receipt: tip is a sweep receipt ${age}s old (< 900s debounce)"
+              echo "skip receipt: tip is a sweep receipt ${age}s old (< 900s debounce) event=${GITHUB_EVENT_NAME}"
               exit 0
             fi
           fi

@@ -6,7 +6,7 @@ parent keeps working in parallel; the child writes status rows the
 parent reads.
 
 Public API:
-    assign(child_id, role, task, task_file, parent_session, account=2, cli=CLI)
+    assign(child_id, *, role, task, task_file=None, parent_session=None, account=2, cli=None)
     poll(child_id) -> latest status row
     active() -> list of live children
     cancel(child_id)

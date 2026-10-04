@@ -1,10 +1,9 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-04T19:49:59Z UTC · receipts=1034 · foreign_open=28 · tributes=73_
+_Generated 2026-10-04T21:24:11Z UTC · receipts=1061 · foreign_open=27 · tributes=73_
 
 ## Tributes (contributor ledger)
 
-- [nesstyx/ChessHome#81](https://github.com/nesstyx/ChessHome/pull/81) · state=open · help-wanted: stake + contribute for #40
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -32,6 +31,7 @@ _Generated 2026-10-04T19:49:59Z UTC · receipts=1034 · foreign_open=28 · tribu
 - [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) · state=open · help-wanted: stake + contribute for #225
 - [TricklePay/tricklepay-backend#441](https://github.com/TricklePay/tricklepay-backend/pull/441) · state=open · help-wanted: stake + contribute for #395
 - [estruyf/playwright-github-actions-reporter#59](https://github.com/estruyf/playwright-github-actions-reporter/pull/59) · state=open · help-wanted: stake + contribute for #50
+- [nesstyx/ChessHome#81](https://github.com/nesstyx/ChessHome/pull/81) · state=closed · help-wanted: stake + contribute for #40
 - [Magiclovekorean/unbloarchy#5](https://github.com/Magiclovekorean/unbloarchy/pull/5) · state=closed · help-wanted: stake + contribute for #4
 - [GRITui/pixel-builder#13](https://github.com/GRITui/pixel-builder/pull/13) · state=closed · help-wanted: stake + contribute for #11
 - [OBLIQ-in/OBLIQ-Website#39](https://github.com/OBLIQ-in/OBLIQ-Website/pull/39) · state=closed · help-wanted: stake + contribute for #12
@@ -47,7 +47,6 @@ _Generated 2026-10-04T19:49:59Z UTC · receipts=1034 · foreign_open=28 · tribu
 
 ## Foreign open PRs
 
-- [nesstyx/ChessHome#81](https://github.com/nesstyx/ChessHome/pull/81) — help-wanted: stake + contribute for #40
 - [estruyf/playwright-github-actions-reporter#59](https://github.com/estruyf/playwright-github-actions-reporter/pull/59) — help-wanted: stake + contribute for #50
 - [TricklePay/tricklepay-backend#441](https://github.com/TricklePay/tricklepay-backend/pull/441) — help-wanted: stake + contribute for #395
 - [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) — help-wanted: stake + contribute for #225
@@ -76,6 +75,6 @@ _Generated 2026-10-04T19:49:59Z UTC · receipts=1034 · foreign_open=28 · tribu
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=1034 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 931, 'followup_reengage': 25, 'followup_stale_nudge': 29, 'followup_changes': 1}`
+## Outcomes · ok=1061 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 956, 'followup_reengage': 25, 'followup_stale_nudge': 31, 'followup_changes': 1}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

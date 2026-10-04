@@ -1,6 +1,23 @@
 """_extract_calls shapes."""
 import sys, pathlib, unittest
-sys.path.insert(0, str(pathlib.Path.home() / "deepcli"))
+
+
+def _repo_root():
+    """Return the checkout that owns this test file's ``_v1_tools.py``.
+
+    Walk up from __file__ to the directory that directly contains
+    ``_v1_tools.py`` (the repo root; ``tests/`` sits one level below it).
+    A ``$HOME/deepcli`` fallback preserves the old behaviour when no
+    checkout root is found.
+    """
+    here = pathlib.Path(__file__).resolve()
+    for parent in here.parents:
+        if (parent / "_v1_tools.py").is_file():
+            return parent
+    return pathlib.Path.home() / "deepcli"
+
+
+sys.path.insert(0, str(_repo_root()))
 from _v1_tools import _extract_calls
 
 class TestExtract(unittest.TestCase):
@@ -18,5 +35,14 @@ class TestExtract(unittest.TestCase):
     def test_multiline(self):
         c = _extract_calls('<tool_call>{"name":"run",\n"arguments":{"argv":["ls"]}}</tool_call>')
         self.assertEqual(len(c), 1)
+
+
+class TestBootstrap(unittest.TestCase):
+    def test_bootstrap_resolves_to_this_checkout(self):
+        root = _repo_root()
+        self.assertTrue((root / "_v1_tools.py").is_file())
+        # The resolved root must be an ancestor of this test file.
+        self.assertIn(root, pathlib.Path(__file__).resolve().parents)
+
 
 if __name__ == "__main__": unittest.main()

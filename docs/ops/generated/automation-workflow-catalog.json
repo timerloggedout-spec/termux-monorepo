@@ -27,7 +27,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "7d10d72c2f8be11ba6030a27e44f9207d1dd833f193fe72145b5bff77493a8c4",
+  "source_fingerprint": "1fc160a50add6ac870b2b7497ea3f534d7ab68e65d51cbbc4951e49b34641a4f",
   "workflow_count": 124,
   "workflows": [
     {
@@ -1575,7 +1575,7 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
-      "concurrency": "group: n8n-she-bridge-${{ github.event.workflow_run.head_sha || github.ref }} cancel-in-progress: false",
+      "concurrency": "group: n8n-she-bridge-${{ github.event.workflow_run.name }}-${{ github.event.workflow_run.head_sha || github.ref }} cancel-in-progress: true",
       "domain": "agentic-development",
       "jobs": [
         "emit"

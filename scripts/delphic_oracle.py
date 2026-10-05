@@ -13,6 +13,15 @@ import sys
 from dataclasses import dataclass, asdict
 from typing import Any
 
+from scripts.delphic_math import (
+    beta_entropy,
+    one_step_information_gain,
+    posterior_predictive_probability,
+    posterior_predictive_variance,
+    posterior_predictive_mean,
+    evsi_binary_decision,
+)
+
 
 _BETA_EPS = 3e-30
 _BETA_MAX_ITER = 200
@@ -227,6 +236,16 @@ def workflow(payload: dict[str, Any]) -> dict[str, Any]:
     observations = payload.get("observations", [])
     belief, counts = posterior(observations)
     interval = belief.interval95
+    predictive = {
+        "next_success_probability": belief.mean,
+        "next_failure_probability": 1.0 - belief.mean,
+        "three_trial_success_pmf": [
+            posterior_predictive_probability(belief.alpha, belief.beta, k, 3)
+            for k in range(4)
+        ],
+        "three_trial_mean": posterior_predictive_mean(belief.alpha, belief.beta, 3),
+        "three_trial_variance": posterior_predictive_variance(belief.alpha, belief.beta, 3),
+    }
     review = adversarial_admission(
         interval_width=interval[1] - interval[0],
         benchmark_regression=bool(payload.get("benchmark_regression", False)),
@@ -265,7 +284,10 @@ def workflow(payload: dict[str, Any]) -> dict[str, Any]:
             "credible_interval_95": interval,
             "credible_interval_95_approx": belief.interval95_approx,
             "counts": counts,
+            "entropy": beta_entropy(belief.alpha, belief.beta),
+            "one_step_information_gain": one_step_information_gain(belief.alpha, belief.beta),
         },
+        "posterior_predictive": predictive,
         "adversarial_review": {"admission": review},
         "left_now": left,
         "right_interthreading": right,

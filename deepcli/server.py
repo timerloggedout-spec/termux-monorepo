@@ -314,8 +314,14 @@ async def _sf_agent_start(body: _SFAgentBody):
                      body.source or "execute the task"],
                     stdout=fh, stderr=_sf_subprocess.STDOUT,
                     preexec_fn=_sf_limits,
+                    start_new_session=True,
                 )
-                pid_file.write_text(str(proc.pid))
+                import os as _sf_os
+                try:
+                    pgid = _sf_os.getpgid(proc.pid)
+                except OSError:
+                    pgid = proc.pid
+                pid_file.write_text(str(pgid))
                 rc = proc.wait()
                 pid_file.unlink(missing_ok=True)
         except Exception as exc:
@@ -373,7 +379,7 @@ def _sf_agent_pause(inv: str):
         return {"invocation_id": inv, "status": "unknown"}
     try:
         import os as _sf_os
-        _sf_os.kill(pid, _sf_signal.SIGSTOP)
+        _sf_os.killpg(pid, _sf_signal.SIGSTOP)
         _sf_runs.setdefault(inv, {})["status"] = "paused"
         return {"invocation_id": inv, "status": "paused"}
     except OSError as exc:
@@ -387,7 +393,7 @@ def _sf_agent_resume(inv: str):
         return {"invocation_id": inv, "status": "unknown"}
     try:
         import os as _sf_os
-        _sf_os.kill(pid, _sf_signal.SIGCONT)
+        _sf_os.killpg(pid, _sf_signal.SIGCONT)
         _sf_runs.setdefault(inv, {})["status"] = "running"
         return {"invocation_id": inv, "status": "running"}
     except OSError as exc:
@@ -401,7 +407,7 @@ def _sf_agent_stop(inv: str):
         return {"invocation_id": inv, "status": "unknown"}
     try:
         import os as _sf_os
-        _sf_os.kill(pid, _sf_signal.SIGTERM)
+        _sf_os.killpg(pid, _sf_signal.SIGTERM)
         _sf_runs.setdefault(inv, {})["status"] = "stopping"
         return {"invocation_id": inv, "status": "stopping"}
     except OSError as exc:
@@ -415,7 +421,7 @@ def _sf_agent_cancel(inv: str):
         return {"invocation_id": inv, "status": "unknown"}
     try:
         import os as _sf_os
-        _sf_os.kill(pid, _sf_signal.SIGKILL)
+        _sf_os.killpg(pid, _sf_signal.SIGKILL)
         _sf_runs.setdefault(inv, {})["status"] = "cancelled"
         return {"invocation_id": inv, "status": "cancelled"}
     except OSError as exc:

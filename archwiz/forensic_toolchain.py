@@ -71,32 +71,121 @@ def _load_export_sources():
 STAGING = HOME / 'archwiz/staging_blocks.json'
 
 R = '\033[1;31m'; G = '\033[1;32m'; Y = '\033[1;33m'; C = '\033[1;36m'; N = '\033[0m'
+# ─── mesh peer loader (role-aware) ──────────────────────────────────────
+# Peer 1: harvest manifest (~18k blocks, pre-parsed, has message_role)
+# Peer 2: export JSONs (existing behavior)
+# No peer authoritative. Blocks carry message_role: "user" | "assistant".
+# User blocks are AUTHORITATIVE for recovery (user actually ran them).
+_HARVEST_MANIFEST = Path.home() / "deepseek_harvest_work" / "code_harvest" / "manifest.json"
 
-def load_code_blocks():
+
+def _load_from_manifest():
+    """Read blocks from harvest manifest. Role-aware. Empty on miss."""
+    if not _HARVEST_MANIFEST.is_file():
+        return []
+    try:
+        raw = json.loads(_HARVEST_MANIFEST.read_text())
+    except Exception:
+        return []
+    blocks = []
+    for b in raw if isinstance(raw, list) else []:
+        code = (b.get("code") or "").strip()
+        if not code:
+            continue
+        h = b.get("code_hash") or hashlib.sha256(code.encode()).hexdigest()[:16]
+        role = (b.get("message_role") or "unknown").lower()
+        snippet = b.get("preceding_text_snippet") or ""
+        blocks.append({
+            "session":       str(b.get("conversation_id") or "manifest"),
+            "node_id":       f"blk{b.get('block_index', '?')}",
+            "block_idx":     b.get("block_index", 0),
+            "timestamp_utc": None,
+            "text":          code,
+            "hash":          h,
+            "shape":         "heredoc" if "heredoc" in snippet.lower() else "fenced",
+            "lang":          b.get("language", "text"),
+            "message_role":  role,
+            "snippet":       snippet[:200],
+        })
+    return blocks
+
+
+def _load_from_exports():
+    """Existing reader behavior, factored for reuse. Role-tagged."""
     blocks = []
     for cf in EXPORT_SOURCES + _load_export_sources() + SYNTH_EXPORTS:
-        if not cf.exists(): continue
-        with open(cf) as f: data = json.load(f)
+        if not cf.exists():
+            continue
+        try:
+            data = json.loads(cf.read_text())
+        except Exception:
+            continue
         for conv in (data if isinstance(data, list) else [data]):
-            sid = conv.get('id') or conv.get('title','?')
-            for nid, node in conv.get('mapping',{}).items():
-                msg = node.get('message')
-                if not isinstance(msg, dict): continue
-                ts = msg.get('inserted_at')
+            sid = conv.get("id") or conv.get("title", "?")
+            for nid, node in conv.get("mapping", {}).items():
+                msg = node.get("message")
+                if not isinstance(msg, dict):
+                    continue
+                ts = msg.get("inserted_at")
                 utc_ts = None
                 if ts:
-                    try: utc_ts = datetime.fromisoformat(str(ts).replace('Z','+00:00')).timestamp()
-                    except: pass
-                content = ''
-                for frag in msg.get('fragments', []):
-                    if isinstance(frag, dict): content += frag.get('content','') + '\n'
+                    try:
+                        utc_ts = datetime.fromisoformat(str(ts).replace("Z", "+00:00")).timestamp()
+                    except Exception:
+                        pass
+                role = (msg.get("role") or msg.get("author", {}).get("role") or "unknown").lower()
+                content = ""
+                for frag in msg.get("fragments", []):
+                    if isinstance(frag, dict):
+                        content += frag.get("content", "") + "\n"
                 for bi, block in enumerate(re.findall(r"```(?:\w+)?\n(.*?)\n```", content, re.DOTALL)):
                     blocks.append({
-                        'session': str(sid), 'node_id': nid, 'block_idx': bi,
-                        'timestamp_utc': utc_ts, 'text': block,
-                        'hash': hashlib.sha256(block.strip().encode()).hexdigest(),
+                        "session": str(sid), "node_id": nid, "block_idx": bi,
+                        "timestamp_utc": utc_ts, "text": block,
+                        "hash": hashlib.sha256(block.strip().encode()).hexdigest(),
+                        "shape": "fenced", "lang": "text",
+                        "message_role": role, "snippet": "",
                     })
     return blocks
+
+
+def _mesh_load(role=None):
+    """Consult every peer, dedupe by hash. Optionally filter by message_role.
+    role=None      → all blocks
+    role='user'    → only user-pasted (authoritative for recovery)
+    role='assistant' → only assistant-drafted
+    """
+    seen = set()
+    out = []
+    for peer_name, fn in (("manifest", _load_from_manifest), ("exports", _load_from_exports)):
+        try:
+            for b in fn():
+                if role and b.get("message_role") != role:
+                    continue
+                if b["hash"] in seen:
+                    continue
+                seen.add(b["hash"])
+                out.append(b)
+        except Exception as e:
+            print(f"{Y}peer {peer_name} load failed: {type(e).__name__}: {e}{N}", file=sys.stderr)
+    return out
+
+
+def mesh_stats():
+    """Diagnostic: count blocks by peer, role, shape."""
+    from collections import Counter
+    m = _load_from_manifest()
+    e = _load_from_exports()
+    return {
+        "manifest": {"total": len(m), "by_role": dict(Counter(b["message_role"] for b in m)),
+                     "by_shape": dict(Counter(b["shape"] for b in m))},
+        "exports":  {"total": len(e), "by_role": dict(Counter(b["message_role"] for b in e)),
+                     "by_shape": dict(Counter(b["shape"] for b in e))},
+    }
+
+def load_code_blocks(role=None):
+    """Mesh-native, role-aware. See _mesh_load(role)."""
+    return _mesh_load(role=role)
 
 def fragment_match(search_term):
     """Find code blocks containing the search term."""

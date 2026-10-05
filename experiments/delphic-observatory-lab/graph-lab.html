@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ARCHW1Z // Graph Lab</title>
+<style>
+:root{--bg:#05080d;--panel:#0a1119;--line:#203344;--text:#dbe8ef;--muted:#7f95a3;--focus:#8de8ff;--warn:#ffbd69}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:13px ui-monospace,SFMono-Regular,Menlo,monospace}
+main{max-width:1200px;margin:auto;padding:18px}.bar,.panel{border:1px solid var(--line);background:var(--panel)}
+.bar{padding:12px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.title{color:var(--focus);font-weight:800}
+.grid{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-top:12px}.panel{padding:14px}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+button,select{background:#0d1822;color:var(--text);border:1px solid var(--line);padding:8px;font:inherit}
+button:hover{border-color:var(--focus)}svg{width:100%;height:520px;background:#070c12;border:1px solid var(--line)}
+.edge{stroke:#4f6a79;stroke-width:2;fill:none}.edge.active{stroke:var(--focus);stroke-width:4}
+.node{fill:#0d1822;stroke:#6e8997;stroke-width:2}.node.active{stroke:var(--focus);stroke-width:3}
+.label{fill:var(--text);font-size:13px;text-anchor:middle}.muted{color:var(--muted);line-height:1.55}
+pre{white-space:pre-wrap;word-break:break-word;background:#071018;border:1px solid var(--line);padding:10px;min-height:160px}
+@media(max-width:850px){.grid{grid-template-columns:1fr}svg{height:400px}}
+</style>
+</head>
+<body>
+<main>
+<header class="bar"><div><span class="title">ARCHW1Z.GRAPH.LAB</span> // executable explanation surface</div><div>READ-ONLY / PROJECTION</div></header>
+<div class="grid">
+<section class="panel">
+<div class="toolbar">
+<label>Algorithm <select id="algo">
+<option value="topo">Topological Sort / Kahn</option>
+<option value="longest">Longest Path / DAG DP</option>
+<option value="prob">Forward Markov Propagation</option>
+<option value="ancestors">Maximal Common Ancestors</option>
+</select></label>
+<button id="step">STEP</button><button id="play">PLAY</button><button id="reset">RESET</button>
+</div>
+<svg viewBox="0 0 900 520" role="img" aria-label="Sample DAG algorithm visualization">
+<g id="edges" class="edge">
+<path d="M450 70 C450 120 250 120 250 190"/><path d="M450 70 C450 120 650 120 650 190"/>
+<path d="M250 220 C250 270 160 270 160 350"/><path d="M250 220 C250 270 350 270 350 350"/>
+<path d="M650 220 C650 270 550 270 550 350"/><path d="M650 220 C650 270 740 270 740 350"/>
+<path d="M350 380 C350 430 450 430 450 470"/><path d="M550 380 C550 430 450 430 450 470"/>
+</g>
+<g id="nodes">
+<circle class="node" cx="450" cy="55" r="24" data-id="A"/><circle class="node" cx="250" cy="205" r="24" data-id="B"/>
+<circle class="node" cx="650" cy="205" r="24" data-id="C"/><circle class="node" cx="160" cy="365" r="24" data-id="D"/>
+<circle class="node" cx="350" cy="365" r="24" data-id="E"/><circle class="node" cx="550" cy="365" r="24" data-id="F"/>
+<circle class="node" cx="740" cy="365" r="24" data-id="G"/><circle class="node" cx="450" cy="485" r="24" data-id="H"/>
+</g>
+<g id="labels">
+<text class="label" x="450" y="60">A</text><text class="label" x="250" y="210">B</text><text class="label" x="650" y="210">C</text>
+<text class="label" x="160" y="370">D</text><text class="label" x="350" y="370">E</text><text class="label" x="550" y="370">F</text>
+<text class="label" x="740" y="370">G</text><text class="label" x="450" y="490">H</text>
+</g></svg>
+</section>
+<aside class="panel">
+<h3>Algorithm State</h3>
+<div id="state" class="muted"></div>
+<pre id="output"></pre>
+<p class="muted">Graph Lab is an explanatory projection. It preserves the distinction between DAG topology, Markov transition semantics, and canonical evidence.</p>
+</aside>
+</div>
+</main>
+<script>
+const orders={topo:["A","B","C","D","E","F","G","H"],longest:["A","C","G","H"],prob:["A","B","C","D","E","F","G","H"],ancestors:["D","E","F","G","H"]};
+let index=0,timer=null;
+const algo=document.querySelector("#algo"), state=document.querySelector("#state"), output=document.querySelector("#output");
+function render(){const key=algo.value;const seq=orders[key];document.querySelectorAll(".node").forEach(n=>n.classList.toggle("active",seq.slice(0,index).includes(n.dataset.id)));state.textContent="step "+index+" / "+seq.length+" • "+algo.options[algo.selectedIndex].text;output.textContent=JSON.stringify({algorithm:algo.options[algo.selectedIndex].text,active:seq.slice(0,index),remaining:seq.slice(index),authority:"projection_only",mutates_evidence:false},null,2)}
+function reset(){index=0;render();if(timer){clearInterval(timer);timer=null}}
+document.querySelector("#step").onclick=()=>{if(index<orders[algo.value].length){index++;render()}};
+document.querySelector("#reset").onclick=reset;
+document.querySelector("#play").onclick=()=>{if(timer)return;timer=setInterval(()=>{if(index>=orders[algo.value].length){clearInterval(timer);timer=null;return}index++;render()},500)};
+algo.onchange=reset;render();
+</script>
+</body>
+</html>

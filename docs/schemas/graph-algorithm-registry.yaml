@@ -102,3 +102,18 @@ ui:
     contradiction: cross
     unresolved: open_circle
     recombination: bullseye
+
+
+  - id: "dag.expected_path_cost"
+    kind: "markov_trellis"
+    algorithm: "forward dynamic programming over explicit transition probabilities and edge costs"
+    semantics: "expected accumulated edge cost at each node and expected terminal cost"
+    recurrence: "C_j += P(i->j)*(C_i + m_i*c(i,j))"
+    preconditions:
+      - "DAG"
+      - "explicit normalized transition probabilities"
+      - "finite edge costs"
+    theoretical_time: "O(V+E)"
+    theoretical_space: "O(V)"
+    output: ["cost_mass_by_node", "expected_terminal_cost"]
+    evidence_role: "derived_projection"

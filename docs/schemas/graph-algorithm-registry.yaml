@@ -1,0 +1,103 @@
+version: "1.0"
+id: "graph-algorithm-registry"
+purpose: "registered, provenance-aware algorithms available to the Delphic Observatory Graph Lab"
+
+principles:
+  - "DAG does not imply every operation is O(V+E)"
+  - "graph kind is explicit; Git history is not interchangeable with decision/evidence graphs"
+  - "computed projections never become canonical evidence"
+  - "algorithm outputs carry input and execution provenance"
+  - "missingness is preserved"
+
+graph_kinds:
+  - git_history
+  - decision_dag
+  - evidence_dag
+  - dependency_dag
+  - state_reconciliation
+  - markov_trellis
+
+algorithms:
+  - id: dag.topological_sort.kahn
+    family: ordering
+    inputs: [dag]
+    outputs: [ordered_nodes]
+    deterministic: true
+    complexity:
+      time: "O(V+E)"
+      space: "O(V)"
+  - id: dag.longest_path
+    family: dynamic_programming
+    inputs: [dag]
+    outputs: [path, distance]
+    deterministic: true
+    complexity:
+      time: "O(V+E)"
+      space: "O(V)"
+  - id: dag.forward_probability
+    family: probability
+    inputs: [dag, markov_trellis]
+    outputs: [state_mass, terminal_mass]
+    deterministic: true
+    preconditions:
+      - "transition probabilities are explicit"
+      - "outgoing probability mass is normalized for each modeled state"
+    complexity:
+      time: "O(V+E)"
+      space: "O(V)"
+  - id: dag.maximal_common_ancestors
+    family: ancestry
+    inputs: [dag]
+    outputs: [maximal_common_ancestors]
+    deterministic: true
+    notes:
+      - "general DAG ancestry is not the tree-only Tarjan offline LCA problem"
+      - "reachability indexing strategy determines practical complexity"
+      - "multiple maximal common ancestors are valid and must not be collapsed silently"
+  - id: state.three_way_diff
+    family: reconciliation
+    inputs: [state_reconciliation]
+    outputs: [merged, conflicts]
+    deterministic: true
+    notes:
+      - "base, branch_1, and branch_2 are explicit inputs"
+      - "Git merge semantics are not assumed for non-Git state"
+  - id: dag.sugiyama_layout
+    family: visualization
+    inputs: [dag]
+    outputs: [ranked_coordinates]
+    deterministic: false
+    notes:
+      - "layering and crossing-reduction heuristics may vary"
+      - "layout output is presentation state, not evidence"
+
+provenance:
+  required:
+    - algorithm_id
+    - algorithm_version
+    - input_digest
+    - parameters_digest
+    - executed_at
+    - runtime_ms
+    - output_digest
+  optional:
+    - run_id
+    - source_sha
+    - provider
+    - model
+
+ui:
+  edge_semantics:
+    observed_dependency: solid
+    inferred_relationship: dashed
+    proposed_relationship: dotted
+    selected_path: thick
+  node_semantics:
+    observation: circle
+    state: square
+    hypothesis: diamond
+    action: triangle
+    validated_outcome: filled_circle
+    contradiction: cross
+    unresolved: open_circle
+    recombination: bullseye

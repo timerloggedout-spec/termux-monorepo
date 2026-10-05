@@ -73,3 +73,18 @@ Review admission is triggered by evidence signals, including posterior uncertain
 python3 scripts/delphic_oracle.py /path/to/input.json
 pytest -q tests/test_delphic_oracle.py
 ```
+
+
+## Mathematical substrate
+
+The lane now treats mathematics as a contract rather than presentation metadata:
+
+- **Bayesian:** Beta-Bernoulli posterior updates with exact equal-tail Beta credible intervals; the normal approximation remains available only as explicitly labeled legacy/approximate output.
+- **Information value:** scalar EVI and outcome-weighted EVSI-style utility calculations require finite inputs and normalized outcome probabilities.
+- **Markov:** transition probabilities are explicit, finite, non-negative, and complete over every modeled outgoing edge; terminal mass is exposed so probability cannot disappear silently.
+- **DAG:** Kahn ordering and longest-path dynamic programming retain theoretical `O(V+E)` bounds while documenting deterministic reference-implementation sorting overhead; longest-path distance is measured in edges.
+- **Ancestry:** maximal common ancestors are defined for general DAGs and can be multiple; tree-only LCA assumptions are not imported.
+- **Reconciliation:** missing keys and explicit `null` values remain distinct, so clean deletions are not converted into synthetic nulls.
+- **Provenance:** algorithm input and parameter digests cover every value capable of changing a result.
+
+Wolfram is used as an external mathematical reference/verification layer. The production research lane remains stdlib-only and does not make runtime calls to Wolfram.

@@ -87,6 +87,8 @@ def test_workflow_preserves_two_sides_and_math_contract():
         "benchmark_regression": False,
     })
     assert result["posterior"]["counts"]["successes"] == 1
+    assert 0.0 <= result["posterior"]["one_step_information_gain"]
+    assert abs(sum(result["posterior_predictive"]["three_trial_success_pmf"]) - 1.0) < 1e-12
     assert len(result["posterior"]["credible_interval_95"]) == 2
     assert len(result["posterior"]["credible_interval_95_approx"]) == 2
     assert "tensor" in result["left_now"]

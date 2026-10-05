@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Materialize the versioned Domain Composition Matrix seed into SQLite."""
 from __future__ import annotations
-import json, sqlite3
+import argparse, json, sqlite3
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 BASE=ROOT/"docs/proposals/active/domain-composition-matrix"
@@ -23,4 +23,8 @@ def build(output: Path=DEFAULT_DB)->Path:
         db.executemany("INSERT INTO evidence(evidence_id,rule_id,source_ref,source_kind,locator,claim,observed_at,confidence) VALUES (?,?,?,?,?,?,?,?)",[(x["evidence_id"],x["rule_id"],x["source_ref"],x["source_kind"],x.get("locator"),x["claim"],x.get("observed_at"),x.get("confidence")) for x in data["evidence"]])
         db.commit()
     return output
-if __name__=="__main__": print(build())
+if __name__=="__main__":
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output",type=Path,default=DEFAULT_DB)
+    args=parser.parse_args()
+    print(build(args.output))

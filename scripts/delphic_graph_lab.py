@@ -173,8 +173,11 @@ def three_way_diff(
         rows.append({
             "key": key,
             "base": None if b is missing else b,
+            "base_present": b is not missing,
             "branch_1": None if one is missing else one,
+            "branch_1_present": one is not missing,
             "branch_2": None if two is missing else two,
+            "branch_2_present": two is not missing,
             "status": status,
         })
     return {"merged": merged, "conflicts": conflicts, "rows": rows}

@@ -20,10 +20,15 @@ def _digest(value: Any) -> str:
 
 
 def _adjacency(graph: dict[str, Iterable[str]]) -> dict[str, tuple[str, ...]]:
-    nodes = set(graph)
-    for children in graph.values():
+    """Materialize child iterables once; preserve generator-valued edges safely."""
+    materialized = {node: tuple(children) for node, children in graph.items()}
+    nodes = set(materialized)
+    for children in materialized.values():
         nodes.update(children)
-    return {node: tuple(sorted(set(graph.get(node, ())))) for node in sorted(nodes)}
+    return {
+        node: tuple(sorted(set(materialized.get(node, ()))))
+        for node in sorted(nodes)
+    }
 
 
 def topological_sort(graph: dict[str, Iterable[str]]) -> list[str]:
@@ -75,7 +80,7 @@ def _ancestors(graph: dict[str, Iterable[str]], target: str) -> set[str]:
     for parent, children in _adjacency(graph).items():
         for child in children:
             reverse[child].add(parent)
-    seen: set[str] = set()
+    seen: set[str] = {target}
     stack = list(reverse.get(target, ()))
     while stack:
         node = stack.pop()
@@ -121,13 +126,15 @@ def forward_probability(
         if node not in transitions:
             raise ValueError(f"missing transition probabilities for non-terminal state {node!r}")
         outgoing = transitions[node]
-        total = sum(outgoing.get(child, 0.0) for child in adj[node])
+        probabilities = [outgoing.get(child, 0.0) for child in adj[node]]
+        if any(not isinstance(p, (int, float)) or not __import__("math").isfinite(p) for p in probabilities):
+            raise ValueError("transition probabilities must be finite")
+        if any(p < 0.0 for p in probabilities):
+            raise ValueError("transition probabilities must be non-negative")
+        total = sum(probabilities)
         if abs(total - 1.0) > 1e-9:
             raise ValueError(f"transition mass for {node!r} must sum to 1.0")
-        for child in adj[node]:
-            probability = outgoing.get(child, 0.0)
-            if probability < 0:
-                raise ValueError("transition probabilities must be non-negative")
+        for child, probability in zip(adj[node], probabilities):
             mass[child] += mass[node] * probability
     return mass
 
@@ -169,6 +176,13 @@ def execute(
     reconciliation: tuple[dict[str, Any], dict[str, Any], dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     started = time.perf_counter()
+    normalized_graph = _adjacency(graph)
+    parameters = {
+        "transitions": transitions,
+        "start": start,
+        "targets": targets,
+        "reconciliation": reconciliation,
+    }
     if algorithm_id == "dag.topological_sort.kahn":
         output = {"ordered_nodes": topological_sort(graph)}
     elif algorithm_id == "dag.longest_path":
@@ -181,7 +195,13 @@ def execute(
     elif algorithm_id == "dag.forward_probability":
         if transitions is None or start is None:
             raise ValueError("transitions and start are required")
-        output = {"state_mass": forward_probability(graph, transitions, start)}
+        state_mass = forward_probability(graph, transitions, start)
+        terminal_nodes = [node for node, children in normalized_graph.items() if not children]
+        output = {
+            "state_mass": state_mass,
+            "terminal_mass": {node: state_mass[node] for node in terminal_nodes},
+            "terminal_mass_total": sum(state_mass[node] for node in terminal_nodes),
+        }
     elif algorithm_id == "state.three_way_diff":
         if reconciliation is None:
             raise ValueError("base, branch_1, and branch_2 are required")
@@ -192,7 +212,14 @@ def execute(
     return {
         "algorithm_id": algorithm_id,
         "algorithm_version": "1.0",
-        "input_digest": _digest(graph),
+        "input_digest": _digest({
+            "graph": normalized_graph,
+            "transitions": transitions,
+            "start": start,
+            "targets": targets,
+            "reconciliation": reconciliation,
+        }),
+        "parameters_digest": _digest(parameters),
         "executed_at": time.time(),
         "runtime_ms": runtime_ms,
         "output": output,

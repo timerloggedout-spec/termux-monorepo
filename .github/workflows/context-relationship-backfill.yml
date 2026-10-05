@@ -151,13 +151,18 @@ jobs:
             retry_rc=$?
             set -e
             if [ "$retry_rc" -ne 0 ]; then
-              echo 'backfill still superseded after rebase; remote tip remains authoritative'
-              exit 0
+              git fetch origin master
+              if git merge-base --is-ancestor HEAD origin/master; then
+                echo 'backfill delta is present in the superseding remote tip'
+                exit 0
+              fi
+              echo 'backfill retry failed and superseding publish was not verified'
+              exit "$retry_rc"
             fi
           else
-            echo 'backfill rebase conflict; remote tip remains authoritative'
+            echo 'backfill rebase conflict; superseding publish was not verified'
             git rebase --abort || true
-            exit 0
+            exit "$push_rc"
           fi
 
       - name: Publish completion state

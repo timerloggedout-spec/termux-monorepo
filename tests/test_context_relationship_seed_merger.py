@@ -214,3 +214,44 @@ def test_merge_seeds_coerces_string_end_line_without_observed_at():
 
     assert merged["nodes"][0]["attributes"]["end_line"] == 140
     assert merged["nodes"][0]["attributes"]["line"] == 37
+
+
+def test_span_line_rejects_bool_and_coerces_numeric_string():
+    from archwiz.context_relationships.seed_merger import span_line
+
+    assert span_line(True) is None
+    assert span_line(False) is None
+    assert span_line("37") == 37
+    assert span_line(" 140 ") == 140
+    assert span_line(37.0) == 37
+    assert span_line("37.5") is None
+
+
+def test_merge_seeds_ignores_bool_span_and_keeps_observed_line():
+    first = {
+        **BASE,
+        "nodes": [
+            {
+                "kind": "symbol",
+                "external_id": "multi-ai-cli/backends/deepseek.py:DeepSeekBackend:37",
+                "attributes": {"name": "DeepSeekBackend", "line": True, "end_line": 80},
+            }
+        ],
+        "edges": [],
+    }
+    second = {
+        **BASE,
+        "nodes": [
+            {
+                "kind": "symbol",
+                "external_id": "multi-ai-cli/backends/deepseek.py:DeepSeekBackend:37",
+                "attributes": {"name": "DeepSeekBackend", "line": "37", "end_line": False},
+            }
+        ],
+        "edges": [],
+    }
+
+    merged, _ = merge_seeds(first, second)
+
+    assert merged["nodes"][0]["attributes"]["line"] == 37
+    assert merged["nodes"][0]["attributes"]["end_line"] == 80

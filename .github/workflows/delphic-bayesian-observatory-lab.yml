@@ -15,6 +15,7 @@ on:
       - "docs/schemas/observatory-window-contract.yaml"
       - "docs/proposals/active/delphic-bayesian-observatory-lab/**"
       - "experiments/delphic-observatory-lab/**"
+      - ".github/workflows/delphic-bayesian-observatory-lab.yml"
   push:
     branches:
       - experiment/delphic-bayesian-observatory-lab
@@ -29,6 +30,7 @@ on:
       - "docs/schemas/delphic-math-contract.yaml"
       - "docs/schemas/graph-algorithm-registry.yaml"
       - "docs/schemas/observatory-window-contract.yaml"
+      - ".github/workflows/delphic-bayesian-observatory-lab.yml"
 
 permissions:
   contents: read
@@ -44,6 +46,8 @@ jobs:
           fetch-depth: 1
       - name: Python version
         run: python3 --version
+      - name: Install pytest
+        run: python3 -m pip install --disable-pip-version-check -q pytest
       - name: Run deterministic Delphic + Graph Lab fixtures
         run: python3 -m pytest -q tests/test_delphic_oracle.py tests/test_delphic_graph_lab.py tests/test_delphic_math.py
       - name: Compile engines

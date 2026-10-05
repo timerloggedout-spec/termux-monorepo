@@ -10,6 +10,19 @@ response_data = None
 response_event = threading.Event()
 token_file = Path.home() / ".multi-ai-tokens" / "mistral_token.txt"
 
+def _write_token_securely(token: str, target_file: Path = token_file) -> None:
+    parent = target_file.parent
+    if parent.is_symlink():
+        raise ValueError(f"Symlink token directory rejected for security: {parent}")
+    parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+    if target_file.is_symlink():
+        raise ValueError(f"Symlink token file rejected for security: {target_file}")
+
+    flags = os.O_WRONLY | os.O_CREAT | os.O_TRUNC
+    fd = os.open(target_file, flags, 0o600)
+    with os.fdopen(fd, "w", encoding="utf-8") as f:
+        f.write(token)
+
 class BridgeHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         global prompt_queue, response_data
@@ -17,7 +30,7 @@ class BridgeHandler(BaseHTTPRequestHandler):
         body = self.rfile.read(length)
         data = json.loads(body)
         if data.get("type") == "token":
-            token_file.write_text(data["token"])
+            _write_token_securely(data["token"])
             self.send_response(200)
             self.end_headers()
             self.wfile.write(b'ok')

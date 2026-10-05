@@ -27,7 +27,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "88a75acdd5095ec5fa0e04315712b4ce7c552b98da5a35a8d70904c041bf9680",
+  "source_fingerprint": "07b32db728d84c420059d9b747a0acd29f8e0d61bcec11decf045bbcc4f84053",
   "workflow_count": 126,
   "workflows": [
     {
@@ -1727,7 +1727,7 @@
         "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
       ],
       "authority": "bounded-state-write",
-      "concurrency": "# Coalesce superseded PR/provider events. State comments and requests are # SHA-bound and idempotent, so only the newest event for a PR needs to finish. group: peer-orch-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }} cancel-in-progress: true",
+      "concurrency": "# Comment storms must not cancel an in-flight provider collect. Cancelled # runs were recorded as failures (runs 37247048701 / 37247242679 on #1125). # Include event_name so a pull_request_target collect is not superseded by # a later issue_comment on the same PR. group: peer-orch-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}-${{ github.event_name }} cancel-in-progress: false",
       "domain": "peer-provider-review",
       "jobs": [
         "collect-peer-responses"

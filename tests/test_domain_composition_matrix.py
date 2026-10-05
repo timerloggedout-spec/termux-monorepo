@@ -32,12 +32,11 @@ def test_every_rule_resolves_to_declared_entities():
 
 def test_sqlite_materialization_is_queryable(tmp_path):
     db_path=tmp_path/"domain-composition.sqlite"
-    r=subprocess.run([sys.executable,str(BUILDER)],cwd=ROOT,capture_output=True,text=True,check=True,env={**__import__("os").environ,"PYTHONPATH":str(ROOT)})
-    assert "domain-composition.sqlite" in r.stdout
-    generated=ROOT/"docs/proposals/active/domain-composition-matrix/domain-composition.sqlite"
+    r=subprocess.run([sys.executable,str(BUILDER),"--output",str(db_path)],cwd=ROOT,capture_output=True,text=True,check=True)
+    assert str(db_path) in r.stdout
+    generated=db_path
     assert generated.exists()
     with sqlite3.connect(generated) as db:
         assert db.execute("select count(*) from composition_rule").fetchone()[0] == 3
         assert db.execute("select count(*) from entity_type").fetchone()[0] == 4
         assert db.execute("select count(*) from evidence").fetchone()[0] == 1
-    generated.unlink()

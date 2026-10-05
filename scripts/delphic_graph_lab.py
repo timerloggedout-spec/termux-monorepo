@@ -116,9 +116,11 @@ def forward_probability(
         raise KeyError(start)
     mass[start] = 1.0
     for node in order:
-        outgoing = transitions.get(node, {})
-        if not outgoing:
+        if not adj[node]:
             continue
+        if node not in transitions:
+            raise ValueError(f"missing transition probabilities for non-terminal state {node!r}")
+        outgoing = transitions[node]
         total = sum(outgoing.get(child, 0.0) for child in adj[node])
         if abs(total - 1.0) > 1e-9:
             raise ValueError(f"transition mass for {node!r} must sum to 1.0")
@@ -164,6 +166,7 @@ def execute(
     transitions: dict[str, dict[str, float]] | None = None,
     start: str | None = None,
     targets: tuple[str, str] | None = None,
+    reconciliation: tuple[dict[str, Any], dict[str, Any], dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     started = time.perf_counter()
     if algorithm_id == "dag.topological_sort.kahn":
@@ -179,6 +182,10 @@ def execute(
         if transitions is None or start is None:
             raise ValueError("transitions and start are required")
         output = {"state_mass": forward_probability(graph, transitions, start)}
+    elif algorithm_id == "state.three_way_diff":
+        if reconciliation is None:
+            raise ValueError("base, branch_1, and branch_2 are required")
+        output = three_way_diff(*reconciliation)
     else:
         raise ValueError(f"unsupported algorithm: {algorithm_id}")
     runtime_ms = round((time.perf_counter() - started) * 1000.0, 3)

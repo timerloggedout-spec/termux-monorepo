@@ -1,0 +1,111 @@
+version: "1.0"
+id: "delphic-math-contract"
+purpose: "machine-readable mathematical invariants for the Delphic Bayesian Observatory and Graph Lab"
+
+numeric_policy:
+  finite_required: true
+  probability_domain: "[0,1]"
+  normalization_tolerance: 1.0e-9
+  interval_quantile_tolerance: 1.0e-12
+  missing_value: "unknown; never synthetic zero"
+
+bayesian:
+  model:
+    name: "Beta-Bernoulli"
+    prior: "Beta(alpha,beta), alpha>0, beta>0"
+    posterior: "Beta(alpha+s,beta+f)"
+  mean: "alpha/(alpha+beta)"
+  variance: "alpha*beta/((alpha+beta)^2*(alpha+beta+1))"
+  sd: "sqrt(variance)"
+  credible_interval:
+    method: "equal-tail posterior quantiles"
+    levels: [0.025, 0.975]
+    primary: true
+    normal_approximation:
+      allowed: true
+      primary: false
+      label: "approximate"
+  evidence_admission:
+    required:
+      - "executed == true"
+      - "attributed == true"
+      - "observed binary outcome"
+      - "experiment_id present"
+    duplicate_rule: "one accepted observation per experiment_id"
+    null_outcome: "does not enter posterior and does not consume experiment_id"
+
+information_value:
+  evi:
+    formula: "expected_post_experiment_utility - current_expected_utility - experiment_cost"
+    precondition: "all inputs finite"
+  expected_value_of_information:
+    formula: "sum(p(outcome)*U(after_information,outcome)) - current_expected_utility - experiment_cost"
+    probability_rule: "outcome probabilities are finite, non-negative, and sum to 1"
+
+markov:
+  semantics: "explicit transition probabilities over modeled states"
+  row_rule: "every non-terminal modeled state has an explicit outgoing distribution"
+  normalization: "sum(p(child|state)) == 1 within tolerance"
+  finite: true
+  conservation:
+    rule: "terminal_mass_total + mass_on_nonterminal_states == 1 for a complete DAG traversal"
+    diagnostic: "terminal_mass is exposed rather than silently discarded"
+  transitions: "never inferred from edge presence alone"
+
+dag:
+  topological_sort:
+    algorithm: "Kahn"
+    theoretical_time: "O(V+E)"
+    theoretical_space: "O(V)"
+    reference_bound_note: "sorted/deduplicated adjacency and deterministic queue ordering add O(V log V + E log E) implementation overhead"
+  longest_path:
+    algorithm: "DAG dynamic programming over topological order"
+    metric: "edge count; path with k nodes has distance k-1"
+    theoretical_time: "O(V+E)"
+    theoretical_space: "O(V)"
+    reference_bound_note: "inherits deterministic adjacency/topological ordering overhead"
+  maximal_common_ancestors:
+    semantics: "general DAG; multiple incomparable maximal common ancestors are valid"
+    target_semantics: "target nodes are included in their own ancestor closure"
+    complexity: "depends on reachability traversal/indexing; no tree-only LCA bound is claimed"
+
+reconciliation:
+  three_way:
+    inputs: [base, branch_1, branch_2]
+    rule_order:
+      - "identical branch values win, including explicit null"
+      - "if branch_1 equals base, accept branch_2"
+      - "if branch_2 equals base, accept branch_1"
+      - "otherwise conflict"
+    deletion: "missing keys remain distinguishable from explicit null and are omitted when cleanly deleted"
+    git_semantics: "not assumed outside git_history graph kind"
+
+provenance:
+  required:
+    - algorithm_id
+    - algorithm_version
+    - input_digest
+    - parameters_digest
+    - executed_at
+    - runtime_ms
+    - output_digest
+  digest_inputs:
+    graph_algorithms: [graph, transitions, start, targets, reconciliation]
+
+authority:
+  canonical_evidence: "source of truth"
+  mathematical_results: "derived projection"
+  mutation: false
+  routing_authority: false
+  promotion_authority: false
+
+verification:
+  external_reference:
+    provider: "Wolfram"
+    date: "2026-10-05"
+    fixture: "BetaDistribution[2,2] mean, standard deviation, equal-tail 95% interval"
+    expected:
+      mean: 0.5
+      sd: 0.22360679774997896
+      interval95: [0.0942993240502461, 0.9057006759497539]
+  note: "CI remains stdlib-only; Wolfram values are reference fixtures, not a runtime dependency."

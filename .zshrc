@@ -140,3 +140,41 @@ alias rm-arch='~/.local/bin/archive.sh'
 
 export HS_REMOTE_URL="https://hs-0345-7vj97vj49jp9cg45-8888.app.github.dev"
 export HINDSIGHT_BASE_URL="https://hs-0345-7vj97vj49jp9cg45-8888.app.github.dev"
+
+export PATH="$HOME/bin:$PATH"
+source ~/.zsh/hooks/mvt-status.zsh
+
+# account-2 env (bearer-equivalent; source-only, mode 600)
+[ -f "$HOME/.deepcli/account2.env" ] && . "$HOME/.deepcli/account2.env"
+
+# >>> shell-forge (managed block — do not edit) >>>
+[ -f "/data/data/com.termux/files/home/.config/shell-forge/aliases.zsh" ]  && source "/data/data/com.termux/files/home/.config/shell-forge/aliases.zsh"
+# <<< shell-forge <<<
+
+# >>> shell-forge preexec lint >>>
+
+# Gate .py writes with ruff + ast.parse at command time.
+__sf_lint_py() {
+  local cmd="$1"
+  case "$cmd" in
+    *".py"*) ;;
+    *) return 0 ;;
+  esac
+  case "$cmd" in
+    *ruff*|*ast.parse*|*python3\ -c*|*pytest*|*git\ diff*|*git\ log*|*git\ show*|*git\ grep*|*rg\ *|*grep\ *|*ls\ *|*cat\ *) return 0 ;;
+  esac
+  local f
+  for f in ${(z)cmd}; do
+    if [[ "$f" == *.py && -f "$f" ]]; then
+      if command -v ruff >/dev/null 2>&1; then
+        ruff check --select E9,F63,F7,F82 "$f" >/dev/null 2>&1 \
+          || { print -P "%F{red}[lint] ruff issues in $f%f"; ruff check --select E9,F63,F7,F82 "$f"; }
+      fi
+      python3 -c "import ast,sys; ast.parse(open(sys.argv[1]).read())" "$f" 2>/dev/null \
+        || print -P "%F{red}[lint] ast.parse FAIL $f%f"
+    fi
+  done
+}
+autoload -Uz add-zsh-hook 2>/dev/null
+add-zsh-hook preexec __sf_lint_py 2>/dev/null || true
+# <<< shell-forge preexec lint <<<

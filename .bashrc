@@ -10,3 +10,7 @@ if ! pgrep -f "obsidian_server.py" > /dev/null; then
     mkdir -p ~/bin
     nohup python ~/bin/obsidian_server.py > ~/bin/obsidian_server.log 2>&1 &
 fi
+
+# >>> shell-forge (managed block — do not edit) >>>
+[ -f "/data/data/com.termux/files/home/.config/shell-forge/aliases.bash" ] && source "/data/data/com.termux/files/home/.config/shell-forge/aliases.bash"
+# <<< shell-forge <<<

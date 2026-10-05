@@ -1,4 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/bash
+mkdir -p "$HOME/.deepcli/locks"
+exec 9>"$HOME/.deepcli/locks/symlink_to_nix.lock"
+flock -n 9 || exit 0
 
 # Directories
 TERMUX_BIN="/data/data/com.termux/files/usr/bin"

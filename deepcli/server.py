@@ -243,6 +243,11 @@ except Exception as _e:
     print(f"[server] hindsight router skipped: {_e}")
 
 
+# shell-forge: root /health route (idempotent, added 20261005T004302)
+@app.get("/health")
+def _shellforge_root_health():
+    return {"ok": True, "service": "hub", "plane": "root"}
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8800)

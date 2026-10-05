@@ -47,6 +47,9 @@ DESTRUCTIVE_ACTIONS = {
     "KILL_AGENT", "CRED_WRITE", "PUBRING_DELETE", "PRIVATE_KEY_DELETE"
 }
 
+# pubring.kbx below this many bytes is treated as empty / unrecoverable.
+PUBRING_MIN_BYTES = 100
+
 
 def penalty_count(events, window=10):
     score = 0
@@ -101,7 +104,7 @@ def env_risk(state=None):
     state = state or env_state()
     weights = {
         "agent_empty":      5 if state["agent_grips"] == 0 else 0,
-        "pubring_empty":    4 if state["pubring_size"] < 100 else 0,
+        "pubring_empty":    4 if state["pubring_size"] < PUBRING_MIN_BYTES else 0,
         "pass_2fa_missing": 8 if not state["pass_2fa_exists"] else 0,
     }
     return sum(weights.values()), weights
@@ -139,7 +142,7 @@ def score(events, next_action=None, env=None):
         return result
 
     # destructive on a cached-but-unrecoverable agent
-    if next_action == "KILL_AGENT" and env.get("pubring_size", 0) < 100 and env.get("agent_grips", 0) > 0:
+    if next_action == "KILL_AGENT" and env.get("pubring_size", 0) < PUBRING_MIN_BYTES and env.get("agent_grips", 0) > 0:
         result["level"] = "RED"
         result["reason"] = "KILL_AGENT on cached agent with empty pubring — no recovery"
         return result

@@ -147,11 +147,14 @@ def three_way_diff(
 ) -> dict[str, Any]:
     """Deterministic three-way reconciliation matrix."""
     keys = sorted(set(base) | set(branch_1) | set(branch_2))
+    missing = object()
     merged: dict[str, Any] = {}
     conflicts: list[str] = []
     rows: list[dict[str, Any]] = []
     for key in keys:
-        b, one, two = base.get(key), branch_1.get(key), branch_2.get(key)
+        b = base.get(key, missing)
+        one = branch_1.get(key, missing)
+        two = branch_2.get(key, missing)
         if one == two:
             value, status = one, "identical_or_unchanged"
         elif one == b:
@@ -159,11 +162,17 @@ def three_way_diff(
         elif two == b:
             value, status = one, "clean_branch_1"
         else:
-            value, status = None, "conflict"
+            value, status = missing, "conflict"
             conflicts.append(key)
-        if status != "conflict":
+        if status != "conflict" and value is not missing:
             merged[key] = value
-        rows.append({"key": key, "base": b, "branch_1": one, "branch_2": two, "status": status})
+        rows.append({
+            "key": key,
+            "base": None if b is missing else b,
+            "branch_1": None if one is missing else one,
+            "branch_2": None if two is missing else two,
+            "status": status,
+        })
     return {"merged": merged, "conflicts": conflicts, "rows": rows}
 
 

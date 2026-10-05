@@ -2,7 +2,23 @@
 
 import sys, time, tempfile, pathlib, unittest
 
-sys.path.insert(0, str(pathlib.Path.home() / "deepcli"))
+
+def _repo_root():
+    """Walk up from this test file to the checkout that owns deepcli/.
+
+    The previous bootstrap inserted ``$HOME/deepcli`` unconditionally, so a
+    worktree run imported the MAIN checkout's ``_v1_cache`` instead of the
+    worktree's. Resolve ``__file__``-relative first, fall back to the old
+    location only when no checkout root is found.
+    """
+    here = pathlib.Path(__file__).resolve()
+    for parent in here.parents:
+        if (parent / "deepcli" / "_v1_cache.py").is_file():
+            return parent
+    return pathlib.Path.home() / "deepcli"
+
+
+sys.path.insert(0, str(_repo_root()))
 from deepcli._v1_cache import atomic_json_dump, read_session, last_msg_ts, is_fresh
 
 
@@ -54,6 +70,11 @@ class TestCache(unittest.TestCase):
 
     def test_fresh_missing_file(self):
         self.assertFalse(is_fresh(self.tmp / "nope.json"))
+
+    def test_bootstrap_is_checkout_relative(self):
+        """_repo_root() must resolve to a directory that owns deepcli/."""
+        root = _repo_root()
+        self.assertTrue((root / "deepcli" / "_v1_cache.py").is_file())
 
 
 if __name__ == "__main__":

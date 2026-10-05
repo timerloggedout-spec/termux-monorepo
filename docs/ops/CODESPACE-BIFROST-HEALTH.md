@@ -5,7 +5,7 @@
 - `.devcontainer/devcontainer.json` exists and defines Python 3.12 Bullseye, Node 20, Rust, GitHub CLI, setup.sh, and 4 CPU / 8 GB / 32 GB requirements.
 - `docs/ops/CODESPACE-AGENT-LANE.md` defines Codespaces as the interactive/support plane.
 - `docs/ops/CODESPACE-CREDENTIALS-SSOT.md` defines the credential precedence without exposing token values.
-- `.github/workflows/codespace-start.yml` can start an existing Codespace and list current Codespaces.
+- `.github/workflows/codespace-health.yml` can inspect an existing Codespace and optionally start it when it is Shutdown.
 - BIFROST-006 identifies Codespaces as the preferred mocker/Bifrost/Go benchmark host.
 
 ## Live-state caveat

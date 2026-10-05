@@ -241,3 +241,16 @@ __pycache__/
 .cache/tribute/
 *.py.bak.*
 *.bak.[0-9]*
+
+# shell-forge — runtime dir seal (20261005T012139)
+.deepcli/locks/
+.deepcli/pointer/
+.deepcli/tasks/
+.deepcli/watchdog/
+.deepcli/tunnel.url
+.deepcli/tunnel-cf.url
+.deepcli/policy/
+.deepcli/session_store/primary/
+.deepcli/session_store/*/
+term_mcp_deepseek/.venv/
+term_mcp_deepseek/logs/

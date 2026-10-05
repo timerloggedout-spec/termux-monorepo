@@ -34,6 +34,35 @@ The right side answers **how hypotheses, states, treatments, observations, and r
 
 The Oracle does not declare truth. It explains current belief and the information still worth acquiring.
 
+### Graph Lab
+
+The standalone Graph Lab is the executable-explanation surface for the algorithms behind the right-side projections:
+
+- Kahn topological ordering.
+- DAG longest-path dynamic programming.
+- Forward probability propagation with explicit normalized transitions.
+- Maximal common ancestors for general DAGs, including criss-cross histories.
+- Three-way reconciliation as a distinct state-reconciliation operation.
+
+Algorithm definitions live in `docs/schemas/graph-algorithm-registry.yaml`, while deterministic reference implementations live in `scripts/delphic_graph_lab.py`.
+
+Open `graph-lab.html` from the experiment directory to explore the visual Step / Play / Reset interaction.
+
+### Semantic boundaries
+
+These graph kinds are intentionally distinct:
+
+- `git_history`
+- `decision_dag`
+- `evidence_dag`
+- `dependency_dag`
+- `state_reconciliation`
+- `markov_trellis`
+
+A DAG does **not** imply that every graph operation is `O(V+E)`. Complexity is registered per algorithm.
+
+Tree-only LCA algorithms are not treated as general-DAG common-ancestor solvers. Multiple maximal common ancestors remain explicit rather than being silently collapsed.
+
 ### Adversarial review
 
 Review admission is triggered by evidence signals, including posterior uncertainty, benchmark regression, anomaly/retry density, provenance gaps, change-point evidence, and decision impact. This is an admission mechanism, not a reviewer ranking.

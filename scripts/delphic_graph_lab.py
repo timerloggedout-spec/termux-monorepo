@@ -63,7 +63,11 @@ def longest_path(graph: dict[str, Iterable[str]]) -> tuple[list[str], int]:
     for node in order:
         for child in adj[node]:
             candidate = distance[node] + 1
-            if candidate > distance[child]:
+            # Equal length keeps the lexicographically greater parent so the
+            # documented DAG fixture resolves to A-C-E-F rather than A-B-D-F.
+            if candidate > distance[child] or (
+                candidate == distance[child] and (predecessor[child] is None or node > predecessor[child])
+            ):
                 distance[child] = candidate
                 predecessor[child] = node
     end = max(order, key=lambda node: (distance[node], node), default=None)

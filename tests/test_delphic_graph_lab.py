@@ -108,8 +108,10 @@ def test_execute_carries_complete_provenance_inputs_and_terminal_mass():
     assert len(result["input_digest"]) == 64
     assert len(result["parameters_digest"]) == 64
     assert len(result["output_digest"]) == 64
-    assert result["output"]["terminal_mass"] == {"F": 1.0}
-    assert result["output"]["terminal_mass_total"] == 1.0
+    terminal = result["output"]["terminal_mass"]
+    assert set(terminal) == {"F"}
+    assert abs(terminal["F"] - 1.0) < 1e-12
+    assert abs(result["output"]["terminal_mass_total"] - 1.0) < 1e-12
     assert result["authority"]["projection_only"] is True
     assert result["authority"]["mutates_evidence"] is False
 

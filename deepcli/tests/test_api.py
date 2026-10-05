@@ -1,92 +1,97 @@
-#!/usr/bin/env python3
-"""Direct‑API test suite for DeepSeek v4‑Pro."""
-import json, os, sys, time
+"""Opt-in live DeepSeek API integration tests (network-gated).
+
+This module is SKIPPED unless the environment variable ``DEEPCLI_API_TESTS``
+is set to ``1``. By default the standard suite therefore stays offline and
+deterministic; CI never makes outbound calls unless it explicitly opts in.
+
+Every test here performs real network I/O and creates real server-side chat
+sessions, so treat it as an integration smoke test, not a unit test.
+
+Import bootstrap: sys.path is rooted at *this checkout* (derived from
+``__file__``), not at ``$HOME/deepcli``, so a git worktree exercises the
+worktree's own code.
+"""
+
+import os
+import sys
+import time
+import unittest
 from pathlib import Path
-sys.path.insert(0, str(Path.home() / 'deepcli'))
+
+_REPO_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(_REPO_ROOT))
+
 from deepcli import (
-    get_token, get_session, get_pow_challenge, solve_pow,
-    upload_file, wait_for_file, branch_conversation,
-    stream_completion, create_session, fetch_sessions, get_history
+    get_token,
+    get_session,
+    upload_file,
+    wait_for_file,
+    branch_conversation,
+    stream_completion,
+    create_session,
+    fetch_sessions,
+    get_history,
 )
 
 BASE = "https://chat.deepseek.com/api/v0"
-passed = failed = 0
+OPT_IN = os.environ.get("DEEPCLI_API_TESTS") == "1"
 
-def log(ok: bool, name: str, detail=""):
-    global passed, failed
-    if ok:
-        passed += 1
-        print(f"  ✅ {name}")
-    else:
-        failed += 1
-        print(f"  ❌ {name}  {detail}")
 
-def test_auth():
-    token = get_token()
-    s = get_session(token)
-    r = s.get(f"{BASE}/users/current")
-    ok = r.status_code == 200 and "biz_data" in r.json().get("data", {})
-    log(ok, "Authentication", r.status_code)
+@unittest.skipUnless(
+    OPT_IN,
+    "live network tests; set DEEPCLI_API_TESTS=1 to enable",
+)
+class TestDeepSeekAPI(unittest.TestCase):
+    """Live DeepSeek API integration tests (opt-in only)."""
 
-def test_create_session():
-    token = get_token()
-    sid = create_session(token)
-    log(bool(sid), "Create chat session", sid)
+    def test_auth(self):
+        token = get_token()
+        s = get_session(token)
+        r = s.get(f"{BASE}/users/current")
+        self.assertEqual(r.status_code, 200)
+        self.assertIn("biz_data", r.json().get("data", {}))
 
-def test_upload():
-    token = get_token()
-    test_file = Path.home() / 'test.txt'
-    if not test_file.exists():
-        test_file.write_text("Hello DeepSeek test upload!")
-    try:
+    def test_create_session(self):
+        token = get_token()
+        sid = create_session(token)
+        self.assertTrue(sid, f"no session id returned: {sid!r}")
+
+    def test_upload(self):
+        token = get_token()
+        test_file = Path.home() / "test.txt"
+        if not test_file.exists():
+            test_file.write_text("Hello DeepSeek test upload!")
         fid = upload_file(token, "test", str(test_file))
-        if fid:
-            ok = wait_for_file(token, fid, timeout=30)
-            log(ok, "File upload + processing", fid)
-        else:
-            log(False, "File upload", "no file_id returned")
-    except Exception as e:
-        log(False, "File upload", str(e)[:200])
+        self.assertTrue(fid, "no file_id returned")
+        self.assertTrue(wait_for_file(token, fid, timeout=30))
 
-def test_branch():
-    token = get_token()
-    sid = create_session(token)
-    try:
-        stream_completion(token, "Branch test", sid, auto_retry=False)
-    except:
-        pass
-    time.sleep(1)
-    messages = get_history(token, sid)
-    assistants = [m for m in messages if m.get("role", "").upper() == "ASSISTANT"]
-    if not assistants:
-        log(False, "Branch conversation", "no assistant messages")
-        return
-    target_id = assistants[-1]["message_id"]
-    try:
-        new_sid = branch_conversation(token, sid, target_id)
-        log(new_sid is not None and new_sid != sid, "Branch conversation", new_sid)
-    except Exception as e:
-        log(False, "Branch conversation", str(e)[:300])
-def test_list_sessions():
-    token = get_token()
-    sessions = fetch_sessions(token)
-    log(len(sessions) > 0, "List sessions", f"found {len(sessions)}")
-
-def test_stream():
-    token = get_token()
-    sid = create_session(token)
-    try:
-        stream_completion(token, "Say hello in one word", sid, auto_retry=False)
-        log(True, "Stream completion")
-    except Exception as e:
-        log(False, "Stream completion", str(e)[:100])
-
-if __name__ == '__main__':
-    print("🧪 DeepSeek API Test Suite")
-    print("=" * 40)
-    for test in [test_auth, test_create_session, test_upload, test_branch, test_list_sessions, test_stream]:
+    def test_branch(self):
+        token = get_token()
+        sid = create_session(token)
         try:
-            test()
-        except Exception as e:
-            log(False, test.__name__, str(e)[:100])
-    print(f"\n{passed} passed, {failed} failed")
+            stream_completion(token, "Branch test", sid, auto_retry=False)
+        except Exception:
+            pass
+        time.sleep(1)
+        messages = get_history(token, sid)
+        assistants = [m for m in messages if m.get("role", "").upper() == "ASSISTANT"]
+        self.assertTrue(assistants, "no assistant messages to branch from")
+        target_id = assistants[-1]["message_id"]
+        new_sid = branch_conversation(token, sid, target_id)
+        self.assertIsNotNone(new_sid)
+        self.assertNotEqual(new_sid, sid)
+
+    def test_list_sessions(self):
+        token = get_token()
+        sessions = fetch_sessions(token)
+        self.assertGreater(len(sessions), 0)
+
+    def test_stream(self):
+        token = get_token()
+        sid = create_session(token)
+        # Raises on failure; reaching here means the stream completed.
+        stream_completion(token, "Say hello in one word", sid, auto_retry=False)
+
+
+if __name__ == "__main__":
+    unittest.main()

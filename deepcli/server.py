@@ -279,13 +279,24 @@ async def _sf_agent_start(body: _SFAgentBody):
     log.parent.mkdir(parents=True, exist_ok=True)
 
     def _sf_limits() -> None:
-        # shell-forge: limits apply to the CHILD only, never the hub process
+        # shell-forge: RLIMIT_DATA, not RLIMIT_AS.
+        # Fact: python3 bare VSZ is ~10.6 GiB on this device; RLIMIT_AS=384
+        # kills any python child at import time.  RLIMIT_DATA caps heap use.
         import resource as _sf_resource
-        _sf_resource.setrlimit(_sf_resource.RLIMIT_AS,
-                               (384 * 1024 * 1024, 384 * 1024 * 1024))
-        _sf_resource.setrlimit(_sf_resource.RLIMIT_CPU, (900, 900))
-        _sf_resource.setrlimit(_sf_resource.RLIMIT_FSIZE,
-                               (16 * 1024 * 1024, 16 * 1024 * 1024))
+        try:
+            _sf_resource.setrlimit(_sf_resource.RLIMIT_DATA,
+                                   (512 * 1024 * 1024, 512 * 1024 * 1024))
+        except (ValueError, OSError):
+            pass
+        try:
+            _sf_resource.setrlimit(_sf_resource.RLIMIT_CPU, (900, 900))
+        except (ValueError, OSError):
+            pass
+        try:
+            _sf_resource.setrlimit(_sf_resource.RLIMIT_FSIZE,
+                                   (16 * 1024 * 1024, 16 * 1024 * 1024))
+        except (ValueError, OSError):
+            pass
 
     def _runner() -> None:
         started = _sf_time.time()
@@ -293,13 +304,20 @@ async def _sf_agent_start(body: _SFAgentBody):
         task_dir.mkdir(parents=True, exist_ok=True)
         task_file = task_dir / (inv + ".md")
         task_file.write_text(body.task or "execute the task")
+        pid_file = (_sf_pathlib.Path.home() / ".deepcli" / "watchdog"
+                    / ("dispatch-" + inv + ".pid"))
+        pid_file.parent.mkdir(parents=True, exist_ok=True)
         try:
             with log.open("w") as fh:
-                rc = _sf_subprocess.call(
-                    [str(_sf_dispatch), str(task_file), body.source or "execute the task"],
+                proc = _sf_subprocess.Popen(
+                    [str(_sf_dispatch), str(task_file),
+                     body.source or "execute the task"],
                     stdout=fh, stderr=_sf_subprocess.STDOUT,
                     preexec_fn=_sf_limits,
                 )
+                pid_file.write_text(str(proc.pid))
+                rc = proc.wait()
+                pid_file.unlink(missing_ok=True)
         except Exception as exc:
             rc = 999
             log.write_text("dispatch error: " + repr(exc))
@@ -336,13 +354,16 @@ import signal as _sf_signal
 
 
 def _sf_pid_for(inv: str) -> int | None:
-    pid_file = _sf_pathlib.Path.home() / ".deepcli" / "watchdog" / "dispatch.pid"
-    if not pid_file.exists():
-        return None
-    try:
-        return int(pid_file.read_text().strip())
-    except (OSError, ValueError):
-        return None
+    base = _sf_pathlib.Path.home() / ".deepcli" / "watchdog"
+    per = base / ("dispatch-" + inv + ".pid")
+    legacy = base / "dispatch.pid"
+    for cand in (per, legacy):
+        if cand.exists():
+            try:
+                return int(cand.read_text().strip())
+            except (OSError, ValueError):
+                pass
+    return None
 
 
 @app.post("/v1/agent/{inv}/pause")

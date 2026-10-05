@@ -1,0 +1,69 @@
+{
+  "generated": "20261005T023055",
+  "device": "BLU B160V (Termux 0.118.3, aarch64)",
+  "session_docs": [
+    ".deepcli/docs/sessions/session-20261005T010254.md"
+  ],
+  "toolkits": {
+    "scripts/bridge": [
+      "health_probe.py",
+      "health_route.py",
+      "bridge_health.sh",
+      "README.md"
+    ],
+    "scripts/tribute": [
+      "recon_repo.py",
+      "tribute_worktree.py",
+      "repo_hygiene.py",
+      "tribute_lane.sh",
+      "README.md"
+    ]
+  },
+  "boot": {
+    "orchestrator": "~/.termux/boot/50-tunnel-lanes.sh",
+    "wake_lock": "~/.termux/boot/1-wake_lock.sh",
+    "legacy": [
+      "95-hs-stack.sh",
+      "96-hs-quota-state.sh",
+      "97-hs-quota.sh",
+      "98-hs-tunnel.sh",
+      "99-hs-codespace-cron.sh",
+      "symlink_to_nix.sh"
+    ]
+  },
+  "endpoints": {
+    "hub_base": "http://127.0.0.1:8800",
+    "agent_start": "POST /v1/agent",
+    "agent_status": "GET /v1/agent/status/{inv}",
+    "agent_pause": "POST /v1/agent/{inv}/pause",
+    "agent_resume": "POST /v1/agent/{inv}/resume",
+    "agent_stop": "POST /v1/agent/{inv}/stop",
+    "agent_cancel": "POST /v1/agent/{inv}/cancel",
+    "agent_list": "GET /v1/agent/list"
+  },
+  "limits": {
+    "child_RLIMIT_DATA_mib": 512,
+    "child_RLIMIT_CPU_sec": 900,
+    "child_RLIMIT_FSIZE_mib": 16,
+    "rationale": "RLIMIT_AS would kill python children at import \u2014 see DOCTRINE"
+  },
+  "facts": {
+    "bare_python3_VSZ_mib": 10658.9,
+    "bare_python3_RSS_mib": 11.1,
+    "hub_VSZ_mib": 10791.4,
+    "hub_RSS_mib": 56.8,
+    "session_store_mb": 445.7,
+    "git_size_pack_mib": 249.07
+  },
+  "notifications": {
+    "owner_rotation": "tunnel-keeper-loop",
+    "owner_agent": "deepagent-notify",
+    "collapse_key": "--id"
+  },
+  "reversal": {
+    "server_backups": "~/deepcli/server.py.bak.<ts>",
+    "git_refs": "~/.cache/tribute/git-refs-<ts>.txt",
+    "session_docs": "~/.deepcli/docs/sessions/session-<ts>.md",
+    "shell_backups": "~/.shell-forge-backups/<ts>/"
+  }
+}

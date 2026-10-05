@@ -1,12 +1,12 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-05T06:14:43Z UTC · receipts=1089 · foreign_open=29 · tributes=75_
+_Generated 2026-10-05T08:54:21Z UTC · receipts=1089 · foreign_open=25 · tributes=75_
 
 ## Tributes (contributor ledger)
 
-- [pulseaiclub/phi#286](https://github.com/pulseaiclub/phi/pull/286) · state=open · help-wanted: stake + contribute for #285
+- [pulseaiclub/phi#286](https://github.com/pulseaiclub/phi/pull/286) · state=closed · help-wanted: stake + contribute for #285
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
-- [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=open · help-wanted: stake + contribute for #273
+- [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=closed · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
 - [mangiapanejohn-dev/MOBIUS-Searcher#7](https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7) · state=open · help-wanted: stake + contribute for #6
@@ -26,12 +26,12 @@ _Generated 2026-10-05T06:14:43Z UTC · receipts=1089 · foreign_open=29 · tribu
 - [Vikram-sardiwal/react-open-source#50](https://github.com/Vikram-sardiwal/react-open-source/pull/50) · state=open · help-wanted: stake + contribute for #16
 - [laugh-tales/starpass-contracts#59](https://github.com/laugh-tales/starpass-contracts/pull/59) · state=open · help-wanted: stake + contribute for #28
 - [Saidur-droid/MergeEarn#76](https://github.com/Saidur-droid/MergeEarn/pull/76) · state=open · help-wanted: stake + contribute for #69
-- [dentalpin/dentalpin#591](https://github.com/dentalpin/dentalpin/pull/591) · state=open · help-wanted: stake + contribute for #590
+- [dentalpin/dentalpin#591](https://github.com/dentalpin/dentalpin/pull/591) · state=closed · help-wanted: stake + contribute for #590
 - [CopilotKit/CopilotKit#7594](https://github.com/CopilotKit/CopilotKit/pull/7594) · state=open · help-wanted: stake + contribute for #4775
 - [uttrflow/uttrflow-swift#3719](https://github.com/uttrflow/uttrflow-swift/pull/3719) · state=open · help-wanted: stake + contribute for #3713
 - [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) · state=open · help-wanted: stake + contribute for #225
 - [TricklePay/tricklepay-backend#441](https://github.com/TricklePay/tricklepay-backend/pull/441) · state=open · help-wanted: stake + contribute for #395
-- [estruyf/playwright-github-actions-reporter#59](https://github.com/estruyf/playwright-github-actions-reporter/pull/59) · state=open · help-wanted: stake + contribute for #50
+- [estruyf/playwright-github-actions-reporter#59](https://github.com/estruyf/playwright-github-actions-reporter/pull/59) · state=closed · help-wanted: stake + contribute for #50
 - [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) · state=open · help-wanted: stake + contribute for #928
 - [nesstyx/ChessHome#81](https://github.com/nesstyx/ChessHome/pull/81) · state=closed · help-wanted: stake + contribute for #40
 - [Magiclovekorean/unbloarchy#5](https://github.com/Magiclovekorean/unbloarchy/pull/5) · state=closed · help-wanted: stake + contribute for #4
@@ -47,14 +47,11 @@ _Generated 2026-10-05T06:14:43Z UTC · receipts=1089 · foreign_open=29 · tribu
 
 ## Foreign open PRs
 
-- [pulseaiclub/phi#286](https://github.com/pulseaiclub/phi/pull/286) — help-wanted: stake + contribute for #285
 - [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) — help-wanted: stake + contribute for #928
-- [estruyf/playwright-github-actions-reporter#59](https://github.com/estruyf/playwright-github-actions-reporter/pull/59) — help-wanted: stake + contribute for #50
 - [TricklePay/tricklepay-backend#441](https://github.com/TricklePay/tricklepay-backend/pull/441) — help-wanted: stake + contribute for #395
 - [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) — help-wanted: stake + contribute for #225
 - [uttrflow/uttrflow-swift#3719](https://github.com/uttrflow/uttrflow-swift/pull/3719) — help-wanted: stake + contribute for #3713
 - [CopilotKit/CopilotKit#7594](https://github.com/CopilotKit/CopilotKit/pull/7594) — help-wanted: stake + contribute for #4775
-- [dentalpin/dentalpin#591](https://github.com/dentalpin/dentalpin/pull/591) — help-wanted: stake + contribute for #590
 - [Saidur-droid/MergeEarn#76](https://github.com/Saidur-droid/MergeEarn/pull/76) — help-wanted: stake + contribute for #69
 - [laugh-tales/starpass-contracts#59](https://github.com/laugh-tales/starpass-contracts/pull/59) — help-wanted: stake + contribute for #28
 - [Vikram-sardiwal/react-open-source#50](https://github.com/Vikram-sardiwal/react-open-source/pull/50) — help-wanted: stake + contribute for #16
@@ -73,7 +70,6 @@ _Generated 2026-10-05T06:14:43Z UTC · receipts=1089 · foreign_open=29 · tribu
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) — help-wanted: stake + contribute for #25
 - [mangiapanejohn-dev/MOBIUS-Searcher#7](https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7) — help-wanted: stake + contribute for #6
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) — help-wanted: stake + contribute for #20
-- [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) — help-wanted: stake + contribute for #273
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 

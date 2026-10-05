@@ -2,8 +2,13 @@
 
 import sys, pathlib, unittest
 
-sys.path.insert(0, str(pathlib.Path.home() / "deepcli"))
+# __file__-relative bootstrap: import deepcli.* from THIS checkout
+# (not $HOME/deepcli), so worktree-local edits are exercised.
+_TESTS_DIR = pathlib.Path(__file__).resolve().parent
+_REPO_ROOT = _TESTS_DIR.parent  # <checkout>/deepcli/tests -> <checkout>/deepcli (dir holding the deepcli package)
+sys.path.insert(0, str(_REPO_ROOT))
 from deepcli._v1_preflight import score, pattern_match, penalty_count, env_risk
+from deepcli import _v1_preflight as preflight_mod
 
 
 class TestPreflight(unittest.TestCase):
@@ -73,6 +78,31 @@ class TestEnvRisk(unittest.TestCase):
         s, w = env_risk({"agent_grips": 0, "pubring_size": 0, "pass_2fa_exists": False})
         self.assertEqual(s, 17)
         self.assertEqual(sum(w.values()), 17)
+
+
+
+class TestPublicApiMatchesDocstring(unittest.TestCase):
+    """The module __doc__ 'Public API' block must not advertise names that
+    do not exist. Guards against docstring/API drift (e.g. the removed
+    phantom check_action() entry)."""
+
+    def test_every_documented_public_name_exists(self):
+        doc = preflight_mod.__doc__ or ""
+        self.assertIn("Public API:", doc)
+        api_section = doc.split("Public API:", 1)[1]
+        import re
+        # Lines look like:  name(args) -> dict   # comment
+        names = re.findall(r"^\s*([a-zA-Z_]\w*)\(", api_section, re.M)
+        self.assertTrue(names, "no public API names parsed from docstring")
+        missing = [n for n in names if not hasattr(preflight_mod, n)]
+        self.assertEqual(missing, [], f"docstring advertises missing names: {missing}")
+
+    def test_check_action_is_not_advertised(self):
+        # explicit pin: check_action() was never implemented and must not be
+        # listed in the docstring's Public API block.
+        doc = preflight_mod.__doc__ or ""
+        api_section = doc.split("Public API:", 1)[1]
+        self.assertNotIn("check_action", api_section)
 
 
 if __name__ == "__main__":

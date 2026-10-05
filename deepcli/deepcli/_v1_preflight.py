@@ -13,7 +13,6 @@ Combined into a GREEN / AMBER / RED level for a candidate action.
 Public API:
     score(events, next_action=None) -> dict
     env_state() -> dict             # live system probe
-    check_action(action) -> dict    # preflight for a single action
 """
 
 import os, re, json, time, pathlib, subprocess

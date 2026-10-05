@@ -7,11 +7,22 @@ Covers two branches that existing TestPreflight did not exercise:
 
 Both are pure: score() takes a state dict and never shells out or
 hits the network when env is supplied.
+
+Revision 2 (iteration 45): self-locating import. A worktree run must
+resolve `_v1_preflight` from *this* checkout's deepcli root; the
+$HOME/deepcli path is only a last-resort fallback. The chosen bootstrap
+root is asserted on-disk so the check is independent of import order
+inside the unittest harness.
 """
 
 import sys, pathlib, unittest
 
-sys.path.insert(0, str(pathlib.Path.home() / "deepcli"))
+_HERE = pathlib.Path(__file__).resolve()
+_BOOT_ROOTS = (_HERE.parents[1], pathlib.Path.home() / "deepcli")
+for _root in _BOOT_ROOTS:
+    if (_root / "deepcli" / "_v1_preflight.py").exists():
+        sys.path.insert(0, str(_root))
+        break
 from deepcli._v1_preflight import score
 
 
@@ -45,6 +56,15 @@ class TestScoreBranches(unittest.TestCase):
             env={"agent_grips": 2, "pubring_size": 4096, "pass_2fa_exists": True},
         )
         self.assertEqual(r["level"], "RED")
+
+    def test_bootstrap_prefers_checkout_root(self):
+        # pick _HERE.parents[1] (this checkout's deepcli) over $HOME/deepcli
+        local = _HERE.parents[1] / "deepcli" / "_v1_preflight.py"
+        self.assertTrue(local.exists(), "worktree _v1_preflight.py must exist")
+        chosen = next(
+            r for r in _BOOT_ROOTS if (r / "deepcli" / "_v1_preflight.py").exists()
+        )
+        self.assertEqual(chosen.resolve(), _HERE.parents[1].resolve())
 
 
 if __name__ == "__main__":

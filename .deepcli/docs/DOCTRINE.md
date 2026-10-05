@@ -139,6 +139,29 @@ DO Collapse notifications by `owner` and `--id` to preserve signal clarity.
 DO Verify agent `logs` directly to confirm workflow health.
 DO Validate every root cause with a complete `traceback` && empirical measurement.
 
+## Process-group control (added 2026-10-05)
+
+The `/v1/agent/{inv}/{pause,resume,stop,cancel}` endpoints signal the
+**process group**, not a single PID.  Facts that make this necessary:
+
+- `deepagent-dispatch` runs as `bash -c` wrapping `python3 deepagent.py`.
+- Signalling the bash wrapper leaves the python worker running.
+- `Popen(start_new_session=True)` makes the wrapper a session leader; its
+  PID becomes the PGID of the whole tree.
+- The per-invocation pid file stores the **PGID**, not the wrapper PID.
+- Control endpoints call `os.killpg(pgid, sig)`.
+
+Verified on BLU B160V (2026-10-05, inv `9bf7893f17a1`):
+
+| Action | bash state | python state |
+|---|---|---|
+| baseline | `Ss` | `R` |
+| after `/pause` | `Ts` | `T` |
+| after `/resume` | `Ss` | `R` |
+| after `/stop` | gone | gone |
+
+Exit code from clean SIGTERM: `rc = -15`.
+
 ## Expansion points
 
 - Add new endpoint → same pattern as `/v1/agent/{inv}/pause`: guard `ast.parse`,

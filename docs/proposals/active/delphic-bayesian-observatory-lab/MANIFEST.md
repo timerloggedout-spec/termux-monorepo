@@ -32,6 +32,7 @@ The Bayesian/Delphic layer sits between evidence and decision explanation. It do
 
 - `docs/schemas/graph-algorithm-registry.yaml` — registered algorithm semantics and complexity.
 - `scripts/delphic_graph_lab.py` — deterministic reference implementations.
+- `scripts/delphic_math.py` — local stable formulas for prediction, entropy, KL, information gain, EVSI, and expected path cost.
 - `experiments/delphic-observatory-lab/graph-lab.html` — executable visual explanation surface.
 
 The Graph Lab deliberately distinguishes Git history, decision/evidence DAGs, dependency DAGs, state reconciliation, and Markov trellises.
@@ -62,6 +63,8 @@ Adversarial review admission is dynamic. Candidate admission signals are uncerta
 - [x] Observatory projection contract added
 - [x] Design sandbox added
 - [x] Focused tests added
+- [x] Mathematical substrate expanded
+- [x] Predictive / information / EVSI / expected-cost fixtures added
 - [x] Graph algorithm registry added
 - [x] Graph Lab reference engine added
 - [x] Graph Lab visual sandbox added

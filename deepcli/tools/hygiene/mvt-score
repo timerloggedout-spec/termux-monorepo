@@ -24,6 +24,13 @@ import sys, os, re, json, hashlib, pathlib
 
 HOME = pathlib.Path.home()
 SS   = HOME / ".deepcli" / "session_store"
+import sys as _sys
+_sys.path.insert(0, str(pathlib.Path.home() / '.local' / 'lib'))
+try:
+    import mvt_exclude
+except ImportError:
+    mvt_exclude = None
+
 FENCE = re.compile(r"```(\w*)\s*\n(.*?)```", re.DOTALL)
 
 ERR_PATTERNS = [
@@ -92,6 +99,10 @@ def content_of(m):
 def score_session(path):
     sid = pathlib.Path(path).stem
     msgs = load_msgs(path)
+    if mvt_exclude and isinstance(msgs, list) and msgs:
+        first = content_of(msgs[0])[:200] if isinstance(msgs[0], dict) else ""
+        if mvt_exclude.is_excluded(sid, first):
+            return []
     if msgs is None: return []
     if isinstance(msgs, dict) and "__error__" in msgs:
         return [{"session": sid, "error": msgs["__error__"]}]

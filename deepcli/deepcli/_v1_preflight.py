@@ -108,7 +108,15 @@ def env_risk(state=None):
 
 
 def score(events, next_action=None, env=None):
-    """Return dict with level GREEN/AMBER/RED and reason."""
+    """Return dict with level GREEN/AMBER/RED and reason.
+
+    ``env`` may be omitted; when it is None the live environment is
+    probed once via ``env_state()`` and that resolved mapping is used
+    for the rest of the call. This keeps the KILL_AGENT guard below
+    from dereferencing a None env.
+    """
+    if env is None:
+        env = env_state()
     p_score, p_gram = pattern_match(events)
     e_score = penalty_count(events)
     env_score, env_weights = env_risk(env)

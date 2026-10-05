@@ -36,48 +36,24 @@ RULES = [
 
 
 def extract(text):
-    """Return symbols in order of first appearance in `text`.
-
-    The docstring contract is positional: the result is the sequence of
-    distinct symbols ordered by where each one first matches in `text`.
-    (Iterating RULES and appending on match would return them in *rule*
-    order, an arbitrary constant that silently reorders real sequences.)
-
-    Order matters downstream: _v1_preflight.pattern_match() scans this
-    sequence for dangerous n-grams such as ("CRED_READ", "KILL_AGENT").
-    Emitting rule order inverted such pairs (KILL_AGENT is rule #0, so it
-    always came first), so the n-gram never matched and the risk signal
-    was lost.
-    """
+    """Return symbols in order of first appearance."""
     if not text:
         return []
-    first = {}  # sym -> index of earliest match
+    seen = []
     for sym, pat in RULES:
-        m = re.search(pat, text, re.M)
-        if m:
-            first[sym] = m.start()
-    return [s for s, _ in sorted(first.items(), key=lambda kv: kv[1])]
+        if re.search(pat, text, re.M):
+            if sym not in seen:
+                seen.append(sym)
+    return seen
 
 
 def message_text(m):
-    """Join content + thinking_content + fragments[].content for a message.
-
-    Session-store messages carry empty `content` after API refresh; the
-    actual reply text lives in `fragments[].content`. Earlier versions
-    only read `content`, so events looked empty on live sessions.
-    """
+    """Join content + thinking_content for a message dict."""
     parts = []
     for k in ("content", "thinking_content", "text"):
         v = m.get(k)
-        if isinstance(v, str) and v:
+        if isinstance(v, str):
             parts.append(v)
-    frags = m.get("fragments")
-    if isinstance(frags, list):
-        for fr in frags:
-            if isinstance(fr, dict):
-                c = fr.get("content")
-                if isinstance(c, str) and c:
-                    parts.append(c)
     return "\n".join(parts)
 
 

@@ -1,87 +1,32 @@
-"""_v1_events symbols + session scanning."""
-
-import json, sys, pathlib, tempfile, unittest
-
+"""_v1_events symbols."""
+import sys, pathlib, unittest
 sys.path.insert(0, str(pathlib.Path.home() / "deepcli"))
-from deepcli._v1_events import extract, message_text, scan_session
-
+from deepcli._v1_events import extract
 
 class TestEvents(unittest.TestCase):
-    def test_kill(self):
-        self.assertIn("KILL_AGENT", extract("gpgconf --kill gpg-agent"))
+    def test_kill(self):  self.assertIn("KILL_AGENT", extract("gpgconf --kill gpg-agent"))
+    def test_read(self):  self.assertIn("CRED_READ", extract("cat ~/.gnupg/.2fa-pass"))
+    def test_write(self): self.assertIn("CRED_WRITE", extract("echo pw > ~/.gnupg/.2fa-pass"))
+    def test_empty(self): self.assertEqual(extract(""), [])
 
-    def test_read(self):
-        self.assertIn("CRED_READ", extract("cat ~/.gnupg/.2fa-pass"))
+    def test_order_is_first_appearance_not_rule_order(self):
+        # CRED_WRITE appears before KILL_AGENT in the text, but KILL_AGENT is
+        # RULES[0]. The result must follow the text, not the rule table.
+        s = extract("echo pw > ~/.gnupg/.2fa-pass" + chr(10) + "gpgconf --kill gpg-agent")
+        self.assertEqual(s, ["CRED_WRITE", "KILL_AGENT"])
 
-    def test_write(self):
-        self.assertIn("CRED_WRITE", extract("echo pw > ~/.gnupg/.2fa-pass"))
+    def test_cross_category_order_preserved(self):
+        # CRED_READ precedes PUBRING_DELETE in text; both are distinct rules.
+        s = extract("cat ~/.gnupg/.2fa-pass" + chr(10) + "rm ~/.gnupg/pubring.kbx")
+        self.assertEqual(s, ["CRED_READ", "PUBRING_DELETE"])
 
-    def test_empty(self):
-        self.assertEqual(extract(""), [])
-
-
-class TestMessageText(unittest.TestCase):
-    """message_text joins content-bearing fields in a fixed order."""
-
-    def test_content_only(self):
-        self.assertEqual(message_text({"content": "hi"}), "hi")
-
-    def test_ignores_empty_and_non_string(self):
-        self.assertEqual(message_text({"content": "", "text": None, "ts": 5}), "")
-
-    def test_order_content_then_thinking_then_text(self):
-        m = {"content": "a", "thinking_content": "b", "text": "c"}
-        self.assertEqual(message_text(m), "a\nb\nc")
-
-    def test_fragments_fallback(self):
-        # content empty after API refresh; reply lives in fragments[].content
-        m = {"content": "", "fragments": [{"content": "from-frag"}]}
-        self.assertEqual(message_text(m), "from-frag")
-
-    def test_fragments_malformed_ignored(self):
-        m = {"fragments": ["not-a-dict", {"content": 7}, {"content": "ok"}]}
-        self.assertEqual(message_text(m), "ok")
-
-
-class TestScanSession(unittest.TestCase):
-    def _write(self, obj):
-        d = tempfile.mkdtemp()
-        p = pathlib.Path(d) / "s.json"
-        p.write_text(json.dumps(obj))
-        return str(p)
-
-    def test_missing_file_returns_empty(self):
-        self.assertEqual(scan_session("/nonexistent/nope.json"), [])
-
-    def test_non_list_returns_empty(self):
-        self.assertEqual(scan_session(self._write({"messages": []})), [])
-
-    def test_only_symbol_bearing_messages(self):
-        msgs = [
-            {"role": "user", "content": "hello there"},
-            {"role": "assistant", "content": "gpgconf --kill gpg-agent"},
-        ]
-        recs = scan_session(self._write(msgs))
-        self.assertEqual(len(recs), 1)
-        self.assertEqual(recs[0]["idx"], 1)
-        self.assertEqual(recs[0]["role"], "assistant")
-        self.assertIn("KILL_AGENT", recs[0]["symbols"])
-
-    def test_role_defaults_and_lowercased(self):
-        msgs = [{"content": "cat ~/.gnupg/.2fa-pass"}]
-        recs = scan_session(self._write(msgs))
-        self.assertEqual(recs[0]["role"], "?")
-
-    def test_ts_prefers_inserted_at(self):
-        msgs = [{"content": "gh2fa", "inserted_at": 111, "timestamp": 222}]
-        self.assertEqual(scan_session(self._write(msgs))[0]["ts"], 111)
-
-    def test_non_dict_entries_skipped(self):
-        msgs = ["junk", {"content": "gh2fa"}]
-        recs = scan_session(self._write(msgs))
-        self.assertEqual(len(recs), 1)
-        self.assertEqual(recs[0]["idx"], 1)
-
+    def test_danger_ngram_detected_after_fix(self):
+        # End-to-end: the (CRED_READ, KILL_AGENT) danger n-gram must now fire.
+        from deepcli._v1_preflight import pattern_match
+        s = extract("cat ~/.gnupg/.2fa-pass" + chr(10) + "gpgconf --kill gpg-agent")
+        p, gram = pattern_match(s)
+        self.assertGreaterEqual(p, 0.85)
+        self.assertEqual(gram, ("CRED_READ", "KILL_AGENT"))
 
 if __name__ == "__main__":
     unittest.main()

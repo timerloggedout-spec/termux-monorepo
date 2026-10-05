@@ -16,3 +16,13 @@
 ## Boundary
 
 This is a research/design lane. It does not become the telemetry SSOT, routing authority, context-relationship graph authority, correctness gate, or promotion authority.
+
+
+## DBO-011 — Mathematical contract hardening
+- Status: executing
+- Register exact Beta-Bernoulli posterior semantics, equal-tail credible intervals, EVI/EVSI, Markov normalization/conservation, DAG metric semantics, reconciliation missingness, and numerical tolerances.
+- Wolfram reference fixtures are verification evidence only; runtime remains stdlib-only.
+
+## DBO-012 — Numerical and algorithmic invariants
+- Status: executing
+- Add deterministic edge-case fixtures for finite probabilities, explicit transition support, terminal mass, target-inclusive ancestry, deletion/null reconciliation, generator-valued graph edges, and complete algorithm provenance.

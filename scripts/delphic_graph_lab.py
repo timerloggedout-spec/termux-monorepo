@@ -8,10 +8,10 @@ canonical evidence or act as routing/promotion authority.
 from __future__ import annotations
 
 import hashlib
+import heapq
 import json
 import math
 import time
-from collections import deque
 from typing import Any, Iterable
 
 
@@ -39,15 +39,16 @@ def topological_sort(graph: dict[str, Iterable[str]]) -> list[str]:
     for children in adj.values():
         for child in children:
             indegree[child] += 1
-    queue = deque(sorted(node for node, degree in indegree.items() if degree == 0))
+    queue = [node for node, degree in indegree.items() if degree == 0]
+    heapq.heapify(queue)
     ordered: list[str] = []
     while queue:
-        node = queue.popleft()
+        node = heapq.heappop(queue)
         ordered.append(node)
         for child in adj[node]:
             indegree[child] -= 1
             if indegree[child] == 0:
-                queue.append(child)
+                heapq.heappush(queue, child)
     if len(ordered) != len(adj):
         raise ValueError("graph contains a cycle")
     return ordered

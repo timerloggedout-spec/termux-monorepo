@@ -79,6 +79,16 @@ def test_forward_probability_rejects_non_finite_probabilities():
         raise AssertionError("expected finite-probability validation")
 
 
+def test_forward_probability_requires_explicit_child_keys():
+    bad = {"A": {"B": 1.0}}
+    try:
+        m.forward_probability(GRAPH, bad, "A")
+    except ValueError as exc:
+        assert "exactly match graph children" in str(exc)
+    else:
+        raise AssertionError("expected explicit transition-key validation")
+
+
 def test_execute_carries_complete_provenance_inputs_and_terminal_mass():
     transitions = {
         "A": {"B": 0.7, "C": 0.3},

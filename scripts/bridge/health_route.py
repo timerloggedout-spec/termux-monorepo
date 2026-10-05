@@ -1,55 +1,56 @@
 #!/usr/bin/env python3
-"""Ensure ~/deepcli/server.py declares a GET /health route returning 200.
+"""Add GET /health to the ROOT FastAPI app in ~/deepcli/server.py.
 
-Positive contract: after running, GET /health returns 200.
-Strict gate: matches ROUTE DECLARATIONS, never bare substrings.
-Idempotent: second run reports present:true action:noop.
+Positive contract: after running, GET /health returns 200 on the root app.
+Scoped gate: matches route declarations on the ROOT app variable only,
+never on mounted sub-routers.
 """
 from __future__ import annotations
-import ast, datetime, pathlib, re, shutil, sys
+import ast, datetime, pathlib, re, shutil
 
 HOME = pathlib.Path.home()
 SRC  = HOME / "deepcli" / "server.py"
 TS   = datetime.datetime.now().strftime("%Y%m%dT%H%M%S")
 
-# Real route declaration — decorator or explicit add_get call.
-DECL = re.compile(
-    r'(?:'
-    r'@\w+\.(?:get|route|add_get)\s*\(\s*["\']/?health["\']'
-    r'|'
-    r'\w+\.router\.add_get\s*\(\s*["\']/?health["\']'
-    r')',
-    re.I,
-)
+def find_root_app(text: str) -> str | None:
+    m = re.search(r"^(\w+)\s*=\s*FastAPI\s*\(", text, re.M)
+    return m.group(1) if m else None
+
+def root_decl(app: str) -> re.Pattern[str]:
+    return re.compile(
+        r"@" + re.escape(app) + r"\.(?:get|route)\s*\(\s*[\"']/?health[\"']",
+        re.I,
+    )
 
 def render(app: str) -> str:
     return (
-        "\n\n# shell-forge: /health route (idempotent, added " + TS + ")\n"
+        "\n\n# shell-forge: root /health route (idempotent, added " + TS + ")\n"
         "@" + app + ".get(\"/health\")\n"
-        "def _shellforge_health():\n"
-        "    return {\"ok\": True, \"service\": \"hub\"}\n"
+        "def _shellforge_root_health():\n"
+        "    return {\"ok\": True, \"service\": \"hub\", \"plane\": \"root\"}\n"
     )
 
 def main() -> int:
     if not SRC.exists():
         print("present:false path:" + str(SRC)); return 1
     text = SRC.read_text(errors="replace")
-    m = DECL.search(text)
+    app = find_root_app(text)
+    if app is None:
+        print("root-app:not-found"); return 2
+    print("root-app:" + app)
+    m = root_decl(app).search(text)
     if m:
         print("present:true action:noop matched:" + repr(m.group(0)))
         return 0
-    m = re.search(r"^(\w+)\s*=\s*FastAPI\s*\(", text, re.M)
-    app = m.group(1) if m else "app"
-    print("app:" + app)
     try:
         ast.parse(text)
     except SyntaxError as exc:
-        print("gate:existing-syntax-fail line:" + str(exc.lineno)); return 2
+        print("gate:existing-syntax-fail line:" + str(exc.lineno)); return 3
     patched = text.rstrip() + "\n" + render(app)
     try:
         ast.parse(patched)
     except SyntaxError as exc:
-        print("gate:patched-syntax-fail line:" + str(exc.lineno)); return 3
+        print("gate:patched-syntax-fail line:" + str(exc.lineno)); return 4
     bak = SRC.with_suffix(".py.bak." + TS)
     shutil.copy2(SRC, bak)
     SRC.write_text(patched)

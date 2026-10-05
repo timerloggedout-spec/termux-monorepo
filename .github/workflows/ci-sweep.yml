@@ -44,22 +44,29 @@ jobs:
           )
           jq -n --arg t "$TASK" '{task:$t, source:"gh-schedule:ci-sweep"}' \
             > payload.json
-          INV=$(curl -sS --max-time 30 -X POST "$AGENT_URL/v1/agent" \
-                  -H "Authorization: Bearer $AGENT_TOKEN" \
-                  -H 'Content-Type: application/json' \
-                  --data-binary @payload.json || true)
-          if [ -z "$INV" ]; then
-            echo "::warning::DEEPSEEK agent POST failed after DNS preflight (tunnel dropped). Recording tunnel-lost skip."
+          set +e
+          curl -sS --max-time 30 -X POST "$AGENT_URL/v1/agent" \
+            -H "Authorization: Bearer $AGENT_TOKEN" \
+            -H 'Content-Type: application/json' \
+            --data-binary @payload.json > agent_response.json
+          post_rc=$?
+          set -e
+          if [ "$post_rc" -eq 6 ]; then
+            echo "::warning::DEEPSEEK agent POST hit an unresolved tunnel. Recording tunnel-lost skip."
             echo "skipped=tunnel-lost" >> "$GITHUB_OUTPUT"
             echo '{"phase":"skipped","reason":"tunnel-lost"}' > agent_status.json
             exit 0
+          elif [ "$post_rc" -ne 0 ]; then
+            echo "::error::DEEPSEEK agent POST failed with curl exit $post_rc."
+            cat agent_response.json || true
+            exit "$post_rc"
           fi
+          INV=$(cat agent_response.json)
           INV_ID=$(printf '%s' "$INV" | jq -r '.invocation_id // empty')
           if [ -z "$INV_ID" ]; then
-            echo "::warning::DEEPSEEK agent POST returned no invocation_id. Recording tunnel-lost skip."
-            echo "skipped=tunnel-lost" >> "$GITHUB_OUTPUT"
-            echo '{"phase":"skipped","reason":"tunnel-lost"}' > agent_status.json
-            exit 0
+            echo "::error::DEEPSEEK agent POST succeeded at transport level but returned no invocation_id."
+            cat agent_response.json
+            exit 1
           fi
           echo "invocation=$INV_ID"
           echo "invocation=$INV_ID" >> "$GITHUB_OUTPUT"
@@ -68,14 +75,22 @@ jobs:
           # curl exit 6 mid-poll is the same unresolved-host class as run 36959200200.
           P=timeout
           for i in $(seq 1 90); do
-            S=$(curl -sS --max-time 10 "$AGENT_URL/v1/agent/status/$INV_ID" \
-                  -H "Authorization: Bearer $AGENT_TOKEN" || echo '{"phase":"tunnel-lost"}')
-            if printf '%s' "$S" | jq -e '.phase == "tunnel-lost"' >/dev/null 2>&1; then
+            set +e
+            curl -sS --max-time 10 "$AGENT_URL/v1/agent/status/$INV_ID" \
+              -H "Authorization: Bearer $AGENT_TOKEN" > status_response.json
+            poll_rc=$?
+            set -e
+            if [ "$poll_rc" -eq 6 ]; then
               echo "::warning::DEEPSEEK agent status poll lost the tunnel. Recording tunnel-lost skip."
               echo "skipped=tunnel-lost" >> "$GITHUB_OUTPUT"
               echo '{"phase":"skipped","reason":"tunnel-lost"}' > agent_status.json
               exit 0
+            elif [ "$poll_rc" -ne 0 ]; then
+              echo "::error::DEEPSEEK agent status poll failed with curl exit $poll_rc."
+              cat status_response.json || true
+              exit "$poll_rc"
             fi
+            S=$(cat status_response.json)
             echo "$S" > agent_status.json
             P=$(echo "$S" | jq -r '.phase // "error"')
             echo "[$i] $P"

@@ -193,12 +193,12 @@ def expected_value_of_information(
         not math.isfinite(p) or p < 0.0 for p in probabilities
     ):
         raise ValueError("outcome probabilities must be finite and non-negative")
-    if abs(sum(probabilities) - 1.0) > 1e-9:
+    if abs(math.fsum(probabilities) - 1.0) > 1e-9:
         raise ValueError("outcome probabilities must sum to 1.0")
     utilities = list(post_information_utilities.values())
     if not all(math.isfinite(u) for u in utilities):
         raise ValueError("post-information utilities must be finite")
-    return sum(
+    return math.fsum(
         outcome_probabilities[key] * post_information_utilities[key]
         for key in outcome_probabilities
     ) - current_expected_utility - experiment_cost

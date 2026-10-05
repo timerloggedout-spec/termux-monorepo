@@ -243,6 +243,18 @@ except Exception as _e:
     print(f"[server] hindsight router skipped: {_e}")
 
 
+# ── /v1/agent async run surface (workflow dispatch target)
+try:
+    try:
+        from deepcli._v1_agent import router as _agent_router
+    except Exception:
+        from _v1_agent import router as _agent_router  # noqa
+    app.include_router(_agent_router)
+    print("[server] agent router mounted at /v1/agent")
+except Exception as _e:
+    print(f"[server] agent router skipped: {_e}")
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8800)

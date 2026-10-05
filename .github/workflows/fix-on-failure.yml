@@ -38,13 +38,13 @@ jobs:
         run: |
           set -euo pipefail
           TASK="Fix the GitHub Actions failure in run $RID ('$WN' on branch $WB). Run URL: $RU.
-Method:
-1. gh run view $RID --log-failed --repo ${{ github.repository }} -- identify the failing step.
-2. gh_get_file the failing workflow file at ref $WB.
-3. Diagnose.
-4. Apply ONE fix via gh_worktree then commit_push_pr.
-5. Report the PR URL as finish summary.
-If environmental (missing secret, quota), finish with validation=deferred. Never auto-merge."
+          Method:
+          1. gh run view $RID --log-failed --repo ${{ github.repository }} -- identify the failing step.
+          2. gh_get_file the failing workflow file at ref $WB.
+          3. Diagnose.
+          4. Apply ONE fix via gh_worktree then commit_push_pr.
+          5. Report the PR URL as finish summary.
+          If environmental (missing secret, quota), finish with validation=deferred. Never auto-merge."
           jq -n --arg t "$TASK" --arg r "$RID" '{task:$t, source:("gh-fix-on-failure:"+$r)}' > payload.json
           cat payload.json
       - name: Dispatch to local agent
@@ -53,14 +53,36 @@ If environmental (missing secret, quota), finish with validation=deferred. Never
           TOK: ${{ secrets.DEEPSEEK_AGENT_TOKEN }}
         run: |
           set -euo pipefail
-          INV=$(curl -sS --max-time 30 -X POST "$URL/v1/agent" \
+          if [ -z "${URL:-}" ]; then
+            echo "::warning::DEEPSEEK_AGENT_URL not set. Recording tunnel-unresolved skip."
+            echo '{"phase":"skipped","reason":"url-unset"}' > agent_status.json
+            exit 0
+          fi
+          HOST=$(python3 -c 'import os; from urllib.parse import urlparse; print(urlparse(os.environ["URL"]).hostname or "")')
+          if [ -z "$HOST" ] || ! getent hosts "$HOST" >/dev/null 2>&1; then
+            echo "::warning::DEEPSEEK agent host ${HOST:-<empty>} does not resolve. Upstream failure is not repairable from a dead tunnel."
+            echo '{"phase":"skipped","reason":"tunnel-unresolved"}' > agent_status.json
+            exit 0
+          fi
+          RAW=$(curl -sS --max-time 30 -X POST "$URL/v1/agent" \
                   -H "Authorization: Bearer $TOK" \
                   -H 'Content-Type: application/json' \
-                  --data-binary @payload.json | jq -r .invocation_id)
+                  --data-binary @payload.json || true)
+          INV=$(printf '%s' "$RAW" | jq -r '.invocation_id // empty')
+          if [ -z "$INV" ]; then
+            echo "::warning::DEEPSEEK agent POST failed after DNS preflight. Recording tunnel-lost skip."
+            echo '{"phase":"skipped","reason":"tunnel-lost"}' > agent_status.json
+            exit 0
+          fi
           echo "invocation=$INV"
           for i in $(seq 1 120); do
-            S=$(curl -sS --max-time 10 "$URL/v1/agent/status/$INV" -H "Authorization: Bearer $TOK")
-            P=$(echo "$S" | jq -r .phase)
+            S=$(curl -sS --max-time 10 "$URL/v1/agent/status/$INV" -H "Authorization: Bearer $TOK" || echo '{"phase":"tunnel-lost"}')
+            P=$(echo "$S" | jq -r '.phase // "tunnel-lost"')
+            if [ "$P" = "tunnel-lost" ]; then
+              echo "::warning::DEEPSEEK agent status poll lost the tunnel. Recording tunnel-lost skip."
+              echo '{"phase":"skipped","reason":"tunnel-lost"}' > agent_status.json
+              exit 0
+            fi
             echo "[$i] $P"
             [ "$P" = "done" ] && break
             [ "$P" = "error" ] && break

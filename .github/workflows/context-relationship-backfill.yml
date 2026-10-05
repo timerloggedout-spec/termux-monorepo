@@ -2,6 +2,11 @@ name: context relationship historical backfill
 
 on:
   # Historical collection is anchored to canonical master; continuation is page-bounded and resumable.
+  # A corpus commit wakes exactly one additional bounded page; the hourly schedule remains the safety net.
+  push:
+    branches: [master]
+    paths:
+      - 'workspace/llm_map/context_relationships/**'
   schedule:
     - cron: '23 * * * *'
   workflow_dispatch:
@@ -70,7 +75,7 @@ jobs:
               else:
                   print('continue=true')
                   print(f'start_page={next_page}')
-PY
+          PY
       - name: Build one historical relationship-index window
         if: steps.continuation.outputs.continue == 'true'
         env:
@@ -102,7 +107,11 @@ PY
             echo "Resume only when \`history_window.next_start_page\` is non-null."
             echo
             echo '```json'
-            cat workspace/llm_map/context_relationships/build-summary.json
+            if [ -f workspace/llm_map/context_relationships/build-summary.json ]; then
+              cat workspace/llm_map/context_relationships/build-summary.json
+            else
+              echo '{"deferred":true,"reason":"rate-limit window not committed"}'
+            fi
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
@@ -120,7 +129,36 @@ PY
             -m 'Implements: CRG-10' \
             -m 'Agent-Identity: GitHub Actions Context Indexer' \
             -m 'Task-Ref: CRG-10'
-          git push origin HEAD:master
+          # master-no-rewind forbids non-fast-forward. Run 37142679076 lost the
+          # race to a concurrent receipt. Rebase the single delta once. The retry
+          # line stays an exact HEAD:master push for the promotion gate.
+          set +e
+          push_out="$(git push origin HEAD:master 2>&1)"
+          push_rc=$?
+          set -e
+          printf '%s\n' "$push_out"
+          if [ "$push_rc" -eq 0 ]; then
+            exit 0
+          fi
+          if ! printf '%s\n' "$push_out" | grep -Eq 'non-fast-forward|rejected|fetch first'; then
+            exit "$push_rc"
+          fi
+          echo 'backfill push rejected; rebasing single delta onto origin/master'
+          git fetch origin master
+          if git rebase --onto origin/master HEAD~1 HEAD; then
+            set +e
+            git push origin HEAD:master
+            retry_rc=$?
+            set -e
+            if [ "$retry_rc" -ne 0 ]; then
+              echo 'backfill still superseded after rebase; remote tip remains authoritative'
+              exit 0
+            fi
+          else
+            echo 'backfill rebase conflict; remote tip remains authoritative'
+            git rebase --abort || true
+            exit 0
+          fi
 
       - name: Publish completion state
         if: steps.continuation.outputs.continue != 'true'

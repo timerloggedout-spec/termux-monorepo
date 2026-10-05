@@ -81,8 +81,10 @@ def _ancestors(graph: dict[str, Iterable[str]], target: str) -> set[str]:
     for parent, children in _adjacency(graph).items():
         for child in children:
             reverse[child].add(parent)
+    if target not in reverse:
+        raise KeyError(target)
     seen: set[str] = {target}
-    stack = list(reverse.get(target, ()))
+    stack = list(reverse[target])
     while stack:
         node = stack.pop()
         if node in seen:
@@ -127,7 +129,9 @@ def forward_probability(
         if node not in transitions:
             raise ValueError(f"missing transition probabilities for non-terminal state {node!r}")
         outgoing = transitions[node]
-        probabilities = [outgoing.get(child, 0.0) for child in adj[node]]
+        if set(outgoing) != set(adj[node]):
+            raise ValueError(f"transition keys for {node!r} must exactly match graph children")
+        probabilities = [outgoing[child] for child in adj[node]]
         if any(not isinstance(p, (int, float)) or not math.isfinite(p) for p in probabilities):
             raise ValueError("transition probabilities must be finite")
         if any(p < 0.0 for p in probabilities):
@@ -221,7 +225,7 @@ def execute(
     runtime_ms = round((time.perf_counter() - started) * 1000.0, 3)
     return {
         "algorithm_id": algorithm_id,
-        "algorithm_version": "1.0",
+        "algorithm_version": "1.1",
         "input_digest": _digest({
             "graph": normalized_graph,
             "transitions": transitions,

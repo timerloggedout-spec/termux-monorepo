@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-10-04T22:23:10Z` UTC  
+**Generated:** `2026-10-05T14:37:49Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 60 docs-lane branch(es)
+**Count:** 62 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -26,6 +26,8 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/automation-decision-trees`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/automation-decision-trees) | `ed0fe8bd0b5e` | — | — | orphan lane |
 | [`docs/bifrost-006-benchmark-runbook`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/bifrost-006-benchmark-runbook) | `e6ebdf70df02` | — | — | orphan lane |
 | [`docs/bifrost-gateway-recon-reconcile`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/bifrost-gateway-recon-reconcile) | `54e9cd4575e4` | — | `timerloggedout-spec` | registered; no open PR |
+| [`docs/briefing-2026-10-04-collaborator-radar`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/briefing-2026-10-04-collaborator-radar) | `d36c4f85f727` | — | — | orphan lane |
+| [`docs/briefing-2026-10-04-collaborator-radar-v2`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/briefing-2026-10-04-collaborator-radar-v2) | `07f1033563d4` | — | — | orphan lane |
 | [`docs/cedrlang-obfuscation-boundary`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/cedrlang-obfuscation-boundary) | `d6aaf4691d45` | — | — | orphan lane |
 | [`docs/certifications-roles-lane`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/certifications-roles-lane) | `f86e45ac2ae7` | — | — | orphan lane |
 | [`docs/claude-md-primary-entry`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/claude-md-primary-entry) | `ad716d0c806e` | — | — | orphan lane |

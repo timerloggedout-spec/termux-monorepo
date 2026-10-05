@@ -137,7 +137,7 @@ def forward_probability(
             raise ValueError("transition probabilities must be finite")
         if any(p < 0.0 for p in probabilities):
             raise ValueError("transition probabilities must be non-negative")
-        total = sum(probabilities)
+        total = math.fsum(probabilities)
         if abs(total - 1.0) > 1e-9:
             raise ValueError(f"transition mass for {node!r} must sum to 1.0")
         for child, probability in zip(adj[node], probabilities):
@@ -218,7 +218,7 @@ def execute(
         output = {
             "state_mass": state_mass,
             "terminal_mass": {node: state_mass[node] for node in terminal_nodes},
-            "terminal_mass_total": sum(state_mass[node] for node in terminal_nodes),
+            "terminal_mass_total": math.fsum(state_mass[node] for node in terminal_nodes),
         }
     elif algorithm_id == "state.three_way_diff":
         if reconciliation is None:

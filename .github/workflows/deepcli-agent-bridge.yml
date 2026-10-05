@@ -3,7 +3,7 @@ name: DeepCLI Agent Bridge Smoke
 on:
   workflow_dispatch:
   schedule:
-    - cron: '* * * * *'
+    - cron: '*/30 * * * *'
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
@@ -77,10 +77,7 @@ jobs:
           required = ("endpoint", "port", "ssh_user", "expires_at")
           status = d.get("status")
           if status != "active":
-              print(f"bridge status is {status!r}; skip smoke until publisher refreshes it")
-              Path = __import__("pathlib").Path
-              Path("deepcli-bridge-skip").write_text("inactive\n", encoding="utf-8")
-              raise SystemExit(0)
+              raise SystemExit(f"ACCESS/ADMISSION FAILURE: bridge status is {status!r}; publish a fresh authorized manifest before dispatch")
           missing = [k for k in required if not d.get(k)]
           if missing:
               raise SystemExit(f"bridge manifest incomplete: {missing}")

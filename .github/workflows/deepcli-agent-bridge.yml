@@ -145,7 +145,7 @@ jobs:
           import json, shlex, subprocess, sys, os
           d=json.load(open("bridge.json", encoding="utf-8"))
           ssh=["ssh","-i",os.path.expanduser("~/.ssh/termux_mcp"),"-o","IdentitiesOnly=yes","-o","StrictHostKeyChecking=yes","-o","ConnectTimeout=15","-p",str(d["port"]),f"{d['ssh_user']}@{d['endpoint']}"]
-          task="Verify the live DeepAgent worker is awake and able to accept work now. Inspect worker/session state, claim DA-WORK-001, identify the actual worker and transport, execute the task through the normal path, and emit FINISH with verification evidence. Do not run a synthetic smoke. If transport is unavailable, classify it explicitly as access/admission failure and preserve exact evidence for resumption."
+          task="DA-WORK-001 LIVE DISPATCH: Verify the live DeepAgent worker is awake and able to accept work now. Inspect worker/session state, claim DA-WORK-001, identify the actual worker and transport, execute the task through the normal path, and emit FINISH with verification evidence. Do not run a synthetic smoke. If transport is unavailable, classify it explicitly as access/admission failure and preserve exact evidence for resumption."
           remote="DEEPCLI_TASK_ID=DA-WORK-001 DEEPCLI_ROLE=diagnostician DEEPCLI_TRANSPORT=auto DEEPCLI_TASK="+shlex.quote(task)+" bash -lc 'DEEPCLI_TASK_ID=DA-WORK-001 DEEPCLI_ROLE=diagnostician DEEPCLI_TRANSPORT=auto DEEPCLI_TASK="+shlex.quote(task)+" bash ~/deepcli/run-deepagent-task.sh'"
           r=subprocess.run(ssh+[remote],text=True,capture_output=True,timeout=600)
           open("deepagent-task-output.txt","w").write(r.stdout[-12000:])

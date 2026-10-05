@@ -14,6 +14,10 @@ gates_required: [repo-gate, termux-smoke]
 
 # MANIFEST
 
+## Mathematical substrate
+- `docs/schemas/delphic-math-contract.yaml` — exact Bayesian, information-value, Markov, DAG, reconciliation, provenance, and numerical invariants.
+- Wolfram-verified BetaDistribution[2,2] regression fixture; Wolfram is not a CI runtime dependency.
+
 ## Intent
 
 Create a separate Gemini design/style proposal that ingests existing control-plane evidence and renders three complementary analytical planes:

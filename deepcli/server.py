@@ -248,6 +248,158 @@ except Exception as _e:
 def _shellforge_root_health():
     return {"ok": True, "service": "hub", "plane": "root"}
 
+
+# shell-forge: workflow dispatch endpoints (added 20261005T013150)
+import asyncio as _sf_asyncio
+import json as _sf_json
+import pathlib as _sf_pathlib
+import subprocess as _sf_subprocess
+import time as _sf_time
+import uuid as _sf_uuid
+
+_sf_runs: dict[str, dict] = {}
+_sf_dispatch = _sf_pathlib.Path.home() / ".local" / "bin" / "deepagent-dispatch"
+
+
+class _SFAgentBody(__import__("pydantic").BaseModel):
+    task: str = ""
+    source: str = "gh-workflow"
+    invocation_id: str | None = None
+
+
+@app.get("/v1/agent")
+def _sf_agent_index():
+    return {"endpoint": "/v1/agent", "method": "POST", "fields": ["task", "source"]}
+
+
+@app.post("/v1/agent")
+async def _sf_agent_start(body: _SFAgentBody):
+    inv = body.invocation_id or _sf_uuid.uuid4().hex[:12]
+    log = _sf_pathlib.Path.home() / ".deepcli" / "logs" / "agent" / (inv + ".log")
+    log.parent.mkdir(parents=True, exist_ok=True)
+
+    def _sf_limits() -> None:
+        # shell-forge: limits apply to the CHILD only, never the hub process
+        import resource as _sf_resource
+        _sf_resource.setrlimit(_sf_resource.RLIMIT_AS,
+                               (384 * 1024 * 1024, 384 * 1024 * 1024))
+        _sf_resource.setrlimit(_sf_resource.RLIMIT_CPU, (900, 900))
+        _sf_resource.setrlimit(_sf_resource.RLIMIT_FSIZE,
+                               (16 * 1024 * 1024, 16 * 1024 * 1024))
+
+    def _runner() -> None:
+        started = _sf_time.time()
+        task_dir = _sf_pathlib.Path.home() / ".deepcli" / "tasks"
+        task_dir.mkdir(parents=True, exist_ok=True)
+        task_file = task_dir / (inv + ".md")
+        task_file.write_text(body.task or "execute the task")
+        try:
+            with log.open("w") as fh:
+                rc = _sf_subprocess.call(
+                    [str(_sf_dispatch), str(task_file), body.source or "execute the task"],
+                    stdout=fh, stderr=_sf_subprocess.STDOUT,
+                    preexec_fn=_sf_limits,
+                )
+        except Exception as exc:
+            rc = 999
+            log.write_text("dispatch error: " + repr(exc))
+        _sf_runs[inv] = {
+            "invocation_id": inv,
+            "status": "complete" if rc == 0 else "failed",
+            "phase": "complete" if rc == 0 else "failed",
+            "rc": rc,
+            "seconds": round(_sf_time.time() - started, 1),
+            "log": str(log),
+        }
+
+    _sf_runs[inv] = {"invocation_id": inv, "status": "running", "phase": "starting",
+                     "started_at": _sf_time.time(), "log": str(log)}
+    _sf_asyncio.create_task(_sf_asyncio.to_thread(_runner))
+    return {"invocation_id": inv, "status": "running"}
+
+
+@app.get("/v1/agent/status/{inv}")
+def _sf_agent_status(inv: str):
+    row = _sf_runs.get(inv)
+    if row is None:
+        return {"invocation_id": inv, "status": "unknown"}
+    return row
+
+
+@app.get("/v1/agent/list")
+def _sf_agent_list():
+    return {"runs": list(_sf_runs.values())[-20:]}
+
+
+# shell-forge: control surface (added 20261005T015737)
+import signal as _sf_signal
+
+
+def _sf_pid_for(inv: str) -> int | None:
+    pid_file = _sf_pathlib.Path.home() / ".deepcli" / "watchdog" / "dispatch.pid"
+    if not pid_file.exists():
+        return None
+    try:
+        return int(pid_file.read_text().strip())
+    except (OSError, ValueError):
+        return None
+
+
+@APP.post("/v1/agent/{inv}/pause")
+def _sf_agent_pause(inv: str):
+    pid = _sf_pid_for(inv)
+    if pid is None:
+        return {"invocation_id": inv, "status": "unknown"}
+    try:
+        import os as _sf_os
+        _sf_os.kill(pid, _sf_signal.SIGSTOP)
+        _sf_runs.setdefault(inv, {})["status"] = "paused"
+        return {"invocation_id": inv, "status": "paused"}
+    except OSError as exc:
+        return {"invocation_id": inv, "status": "error", "detail": str(exc)}
+
+
+@APP.post("/v1/agent/{inv}/resume")
+def _sf_agent_resume(inv: str):
+    pid = _sf_pid_for(inv)
+    if pid is None:
+        return {"invocation_id": inv, "status": "unknown"}
+    try:
+        import os as _sf_os
+        _sf_os.kill(pid, _sf_signal.SIGCONT)
+        _sf_runs.setdefault(inv, {})["status"] = "running"
+        return {"invocation_id": inv, "status": "running"}
+    except OSError as exc:
+        return {"invocation_id": inv, "status": "error", "detail": str(exc)}
+
+
+@APP.post("/v1/agent/{inv}/stop")
+def _sf_agent_stop(inv: str):
+    pid = _sf_pid_for(inv)
+    if pid is None:
+        return {"invocation_id": inv, "status": "unknown"}
+    try:
+        import os as _sf_os
+        _sf_os.kill(pid, _sf_signal.SIGTERM)
+        _sf_runs.setdefault(inv, {})["status"] = "stopping"
+        return {"invocation_id": inv, "status": "stopping"}
+    except OSError as exc:
+        return {"invocation_id": inv, "status": "error", "detail": str(exc)}
+
+
+@APP.post("/v1/agent/{inv}/cancel")
+def _sf_agent_cancel(inv: str):
+    pid = _sf_pid_for(inv)
+    if pid is None:
+        return {"invocation_id": inv, "status": "unknown"}
+    try:
+        import os as _sf_os
+        _sf_os.kill(pid, _sf_signal.SIGKILL)
+        _sf_runs.setdefault(inv, {})["status"] = "cancelled"
+        return {"invocation_id": inv, "status": "cancelled"}
+    except OSError as exc:
+        return {"invocation_id": inv, "status": "error", "detail": str(exc)}
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8800)

@@ -88,6 +88,11 @@ jobs:
             --data-binary @agent_payload.json > agent_start.json
           cat agent_start.json
           INV=$(jq -r '.invocation_id' agent_start.json)
+          if [ -z "$INV" ] || [ "$INV" = "null" ]; then
+            echo "::error::hub returned no invocation_id (agent chain broken)"
+            cat agent_start.json || true
+            exit 1
+          fi
           echo "invocation_id=$INV" >> "$GITHUB_OUTPUT"
 
       - name: Poll for completion

@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "170885181c0a62a6a5e4daffd4a27dcb57775320908f923dfa5fd80bc00f2926",
-  "workflow_count": 126,
+  "source_fingerprint": "0bae61af2d1e01a9b7b7ab29bb05471531adabe08fffd6308ab90ade9ea6504e",
+  "workflow_count": 127,
   "workflows": [
     {
       "action_pins": [
@@ -640,7 +640,7 @@
         "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
       ],
       "authority": "writer",
-      "concurrency": "group: context-relationship-writer-master-staging cancel-in-progress: false",
+      "concurrency": "group: context-relationship-writer-master cancel-in-progress: false",
       "domain": "governance-relationships",
       "jobs": [
         "reconcile"
@@ -1643,6 +1643,25 @@
       ],
       "triggers": [
         "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: operations-cadence-audit-${{ github.ref }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "audit"
+      ],
+      "name": "Operations Cadence Audit",
+      "path": ".github/workflows/operations-cadence-audit.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push",
         "workflow_dispatch"
       ]
     },

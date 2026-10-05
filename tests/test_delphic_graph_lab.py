@@ -32,15 +32,15 @@ def test_longest_path_runs_on_dag():
 def test_general_dag_can_have_multiple_maximal_common_ancestors():
     graph = {
         "A": ["B", "C"],
-        "B": ["D"],
-        "C": ["D"],
-        "D": ["E", "F"],
-        "E": ["G"],
-        "F": ["G"],
-        "G": [],
+        "B": ["E", "X"],
+        "C": ["Y", "F"],
+        "X": ["F"],
+        "Y": ["E"],
+        "E": [],
+        "F": [],
     }
-    # B and C are both incomparable maximal common ancestors of E/F.
-    assert m.maximal_common_ancestors(graph, "E", "F") == ["D"]
+    # B and C are incomparable maximal common ancestors of E and F.
+    assert m.maximal_common_ancestors(graph, "E", "F") == ["B", "C"]
 
 
 def test_forward_probability_requires_normalized_transitions():

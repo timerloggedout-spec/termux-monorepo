@@ -65,3 +65,12 @@ def test_execute_carries_provenance_and_authority_boundary():
     assert len(result["output_digest"]) == 64
     assert result["authority"]["projection_only"] is True
     assert result["authority"]["mutates_evidence"] is False
+
+
+def test_topological_sort_rejects_cycles():
+    try:
+        m.topological_sort({"A": ["B"], "B": ["A"]})
+    except ValueError as exc:
+        assert "cycle" in str(exc)
+    else:
+        raise AssertionError("expected cycle detection")

@@ -80,8 +80,11 @@ pytest -q tests/test_delphic_oracle.py
 The lane now treats mathematics as a contract rather than presentation metadata:
 
 - **Bayesian:** Beta-Bernoulli posterior updates with exact equal-tail Beta credible intervals; the normal approximation remains available only as explicitly labeled legacy/approximate output.
-- **Information value:** scalar EVI and outcome-weighted EVSI-style utility calculations require finite inputs and normalized outcome probabilities.
+- **Posterior prediction:** Beta-Binomial predictive PMF, mean, and variance are computed in the log-Beta/log-Gamma domain for numerical stability.
+- **Information theory:** Beta differential entropy, Beta-to-Beta KL divergence, and one-step expected information gain are explicit; tiny negative roundoff is clamped only at machine-noise scale.
+- **Information value:** scalar EVI and decision-optimized binary EVSI use `E_y[max_a EU(a|y)] - max_a EU(a) - cost`, rather than treating arbitrary post-information utility as a substitute for re-optimization.
 - **Markov:** transition probabilities are explicit, finite, non-negative, and complete over every modeled outgoing edge; terminal mass is exposed so probability cannot disappear silently.
+- **Markov path economics:** expected accumulated edge cost is propagated alongside probability mass, preserving the recurrence `C_j += P(i→j)(C_i + m_i c(i,j))`.
 - **DAG:** Kahn ordering and longest-path dynamic programming retain theoretical `O(V+E)` bounds while documenting deterministic reference-implementation sorting overhead; longest-path distance is measured in edges.
 - **Ancestry:** maximal common ancestors are defined for general DAGs and can be multiple; tree-only LCA assumptions are not imported.
 - **Reconciliation:** missing keys and explicit `null` values remain distinct, so clean deletions are not converted into synthetic nulls.

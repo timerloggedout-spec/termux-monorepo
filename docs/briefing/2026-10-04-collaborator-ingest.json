@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "briefing_date": "2026-10-04",
+  "observed_at": "2026-10-04T23:37:00Z",
+  "contract_refs": [
+    "docs/briefing/DAILY-DIGEST-SPEC.md",
+    "docs/research/BRIEFING-INGEST.md",
+    "docs/research/FOSS-PROCUREMENT-MATRIX.md",
+    "docs/research/FORESIGHT-RADAR.md",
+    "config/foresight_digest_sources.json"
+  ],
+  "items": [
+    {
+      "id": "mcp-2026-07-28",
+      "headline": "MCP 2026-07-28 moves agent/tool interoperability toward a stateless infrastructure layer",
+      "horizon": "H0",
+      "evidence_status": "confirmed",
+      "version": "2026-07-28",
+      "canonical_source": "https://blog.modelcontextprotocol.io/posts/2026-07-28/",
+      "source_type": "official_release",
+      "published": "2026-07-28",
+      "confidence": 0.95,
+      "related_lanes": [
+        "mcp",
+        "agent_interoperability",
+        "termux"
+      ],
+      "procurement_decision": "PROTOTYPE",
+      "image_query": "Model Context Protocol stateless agent interoperability architecture"
+    },
+    {
+      "id": "otel-semconv-1.44.0",
+      "headline": "OpenTelemetry is the strongest neutral evidence boundary for agent workflows",
+      "horizon": "H0",
+      "evidence_status": "confirmed",
+      "version": "1.44.0",
+      "canonical_source": "https://opentelemetry.io/docs/specs/semconv/",
+      "source_type": "technical_documentation",
+      "observed_at": "2026-10-04",
+      "confidence": 0.96,
+      "related_lanes": [
+        "observability",
+        "mcp",
+        "agent_evaluation"
+      ],
+      "procurement_decision": "ADOPT",
+      "image_query": "OpenTelemetry AI agent MCP distributed trace architecture"
+    },
+    {
+      "id": "openshell-0.1.x",
+      "headline": "OpenShell demonstrates enforceable runtime boundaries for agents",
+      "horizon": "H0/H1",
+      "evidence_status": "confirmed+attributed",
+      "version": "0.1.x stable family",
+      "canonical_source": "https://github.com/NVIDIA/OpenShell",
+      "source_type": "official_project_repository",
+      "observed_at": "2026-10-04",
+      "confidence": 0.91,
+      "related_lanes": [
+        "agentic_security",
+        "sandboxing",
+        "provenance"
+      ],
+      "procurement_decision": "INVESTIGATE",
+      "image_query": "OpenShell agent sandbox policy enforcement architecture"
+    },
+    {
+      "id": "orchbench-2607.25656",
+      "headline": "OrchBench makes manager/orchestration tournaments cheaper to evaluate",
+      "horizon": "H1",
+      "evidence_status": "research",
+      "version": "arXiv:2607.25656",
+      "canonical_source": "https://arxiv.org/abs/2607.25656",
+      "source_type": "preprint",
+      "published": "2026-07-28",
+      "confidence": 0.87,
+      "related_lanes": [
+        "multi_agent_orchestration",
+        "manager_tournaments",
+        "evaluation"
+      ],
+      "procurement_decision": "PROTOTYPE",
+      "image_query": "multi-agent orchestration DAG deterministic simulation benchmark"
+    },
+    {
+      "id": "edge-inference-android-2026-10-04",
+      "headline": "Android/ARM local inference is a first-class reproducibility target",
+      "horizon": "H0/H1",
+      "evidence_status": "confirmed+device-specific",
+      "version": "llama.cpp b11398 observed pre-release; ExecuTorch 1.5 docs",
+      "canonical_source": "https://github.com/ggml-org/llama.cpp/blob/master/docs/android.md",
+      "source_type": "official_project_repository",
+      "observed_at": "2026-10-04",
+      "confidence": 0.94,
+      "related_lanes": [
+        "edge_inference",
+        "android",
+        "arm64",
+        "termux"
+      ],
+      "procurement_decision": "PROTOTYPE",
+      "image_query": "llama.cpp Android ARM64 Snapdragon NPU local inference"
+    }
+  ],
+  "radar_watch": [
+    {
+      "id": "nist-ir-8536",
+      "horizon": "H2",
+      "evidence_status": "confirmed",
+      "version": "Final, 2026-09-09",
+      "canonical_source": "https://csrc.nist.gov/pubs/ir/8536/final",
+      "confidence": 0.94,
+      "related_lanes": [
+        "provenance",
+        "supply_chain",
+        "reproducibility"
+      ]
+    }
+  ]
+}\n

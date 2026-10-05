@@ -14,6 +14,7 @@ on:
       - "ops/termux-bridge/current.json"
       - "scripts/termux/**"
       - ".github/workflows/deepcli-agent-bridge.yml"
+      - "tests/test_bridge_admission.py"
   push:
     branches: [master]
     paths:
@@ -24,14 +25,15 @@ on:
       - "ops/termux-bridge/current.json"
       - "scripts/termux/**"
       - ".github/workflows/deepcli-agent-bridge.yml"
+      - "tests/test_bridge_admission.py"
 
 permissions:
   contents: read
   actions: read
 
 concurrency:
-  group: deepcli-agent-bridge
-  cancel-in-progress: true
+  group: deepcli-agent-bridge-${{ github.event_name }}
+  cancel-in-progress: false
 
 jobs:
   bridge-smoke:
@@ -50,44 +52,15 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          gh api "repos/${GITHUB_REPOSITORY}/contents/ops/termux-bridge/current.json?ref=master" \
+          gh api "repos/${GITHUB_REPOSITORY}/contents/ops/termux-bridge/current.json?ref=${GITHUB_SHA}" \
             --jq '.content' | tr -d '\n' | base64 -d > bridge.json
-          python - <<'PY'
-          import json
-          from datetime import datetime, timezone
-
-          d = json.load(open("bridge.json", encoding="utf-8"))
-          with open("deepcli-agent-bridge-receipt.json", "w", encoding="utf-8") as out:
-              json.dump({
-                  "schema_version": 1,
-                  "run_id": int("${{ github.run_id }}"),
-                  "run_attempt": int("${{ github.run_attempt }}"),
-                  "sha": "${{ github.sha }}",
-                  "ref": "${{ github.ref }}",
-                  "bridge": {
-                      "status": d.get("status"),
-                      "endpoint": d.get("endpoint"),
-                      "port": d.get("port"),
-                      "ssh_user": d.get("ssh_user"),
-                      "expires_at": d.get("expires_at"),
-                      "stale_reason": d.get("stale_reason"),
-                  },
-                  "checks": [],
-              }, out, indent=2, sort_keys=True)
-          required = ("endpoint", "port", "ssh_user", "expires_at")
-          status = d.get("status")
-          if status != "active":
-              raise SystemExit(f"ACCESS/ADMISSION FAILURE: bridge status is {status!r}; publish a fresh authorized manifest before dispatch")
-          missing = [k for k in required if not d.get(k)]
-          if missing:
-              raise SystemExit(f"bridge manifest incomplete: {missing}")
-          expires = datetime.fromisoformat(d["expires_at"].replace("Z", "+00:00"))
-          if expires <= datetime.now(timezone.utc):
-              raise SystemExit("bridge endpoint is expired")
-          if not (1 <= int(d["port"]) <= 65535):
-              raise SystemExit("bridge port out of range")
-          print(f"bridge={d['ssh_user']}@{d['endpoint']}:{d['port']}")
-          PY
+          python scripts/termux/bridge_admission.py bridge.json \
+            --receipt deepcli-agent-bridge-receipt.json \
+            --event-name "${GITHUB_EVENT_NAME}" \
+            --run-id "${GITHUB_RUN_ID}" \
+            --run-attempt "${GITHUB_RUN_ATTEMPT}" \
+            --sha "${GITHUB_SHA}" \
+            --ref "${GITHUB_REF}"
 
       - name: Install pinned SSH identity
         if: hashFiles('deepcli-bridge-skip') == ''
@@ -121,17 +94,6 @@ jobs:
 
       - name: Dispatch assigned DeepAgent task
         if: hashFiles('deepcli-bridge-skip') == ''
-        env:
-          DEEPCLI_TASK_ID: deepagent-ci-continuation-001
-          DEEPCLI_ROLE: engineer
-          DEEPCLI_TRANSPORT: auto
-          DEEPCLI_TASK: >-
-            Inspect and operationalize the DeepCLI agent execution path now. Verify the
-            role-aware prompt system, task identity, checkpoint/resume behavior, and the
-            direct and HTTP agent paths. Make only safe, task-scoped changes. Run focused
-            verification. Do not claim success unless the objective is evidenced. If the
-            transport is unavailable, classify that as access/admission failure and preserve
-            the exact evidence for the next continuation.
         run: |
           set -euo pipefail
           python - <<'PY'
@@ -147,8 +109,6 @@ jobs:
           if r.returncode:
               raise SystemExit(r.returncode)
           PY
-
-      # DeepAgent task execution is the verification path. No secondary smoke gate is required.
 
       - name: Upload DeepAgent task evidence
         if: always()

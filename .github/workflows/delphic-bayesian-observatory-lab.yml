@@ -8,7 +8,12 @@ on:
       - "tests/test_delphic_oracle.py"
       - "tests/test_delphic_graph_lab.py"
       - "docs/schemas/delphic-oracle-control-plane.yaml"
+      - "docs/schemas/delphic-math-contract.yaml"
+      - "docs/schemas/delphic-math-contract.yaml"
+      - "docs/schemas/delphic-oracle-control-plane.yaml"
       - "docs/schemas/graph-algorithm-registry.yaml"
+      - "docs/schemas/observatory-window-contract.yaml"
+      - "docs/schemas/observatory-window-contract.yaml"
       - "docs/proposals/active/delphic-bayesian-observatory-lab/**"
       - "experiments/delphic-observatory-lab/**"
   push:

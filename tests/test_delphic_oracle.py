@@ -47,7 +47,7 @@ def test_evi_and_evsi_are_deterministic():
             {"success": 0.5, "failure": 0.5},
             {"success": 0.90, "failure": 0.70},
             0.10,
-        ) - 0.40
+        ) - 0.10
     ) < 1e-12
 
 

@@ -1,4 +1,4 @@
-version: "1.0"
+version: "1.1"
 id: "delphic-math-contract"
 purpose: "machine-readable mathematical invariants for the Delphic Bayesian Observatory and Graph Lab"
 
@@ -25,6 +25,17 @@ bayesian:
       allowed: true
       primary: false
       label: "approximate"
+  posterior_predictive:
+    one_step_success: "alpha/(alpha+beta)"
+    one_step_failure: "beta/(alpha+beta)"
+    beta_binomial_pmf: "Binomial[n,k]*B(alpha+k,beta+n-k)/B(alpha,beta)"
+    mean: "n*alpha/(alpha+beta)"
+    variance: "n*alpha*beta*(alpha+beta+n)/((alpha+beta)^2*(alpha+beta+1))"
+    computation: "log-gamma/log-beta domain for numerical stability"
+  information:
+    beta_entropy: "log(B(alpha,beta)) -(alpha-1)psi(alpha) -(beta-1)psi(beta) +(alpha+beta-2)psi(alpha+beta)"
+    beta_kl: "log(B(a2,b2)/B(a1,b1)) +(a1-a2)psi(a1) +(b1-b2)psi(b1) +(a2-a1+b2-b1)psi(a1+b1)"
+    one_step_gain: "H(prior)-p_success*H(posterior_success)-p_failure*H(posterior_failure)"
   evidence_admission:
     required:
       - "executed == true"
@@ -41,8 +52,19 @@ information_value:
   expected_value_of_information:
     formula: "sum(p(outcome)*U(after_information,outcome)) - current_expected_utility - experiment_cost"
     probability_rule: "outcome probabilities are finite, non-negative, and sum to 1"
+  evsi_binary_decision:
+    formula: "sum_y P(y)*max_a EU(a|y) - max_a EU(a) - experiment_cost"
+    semantics: "decision is re-optimized after each observed outcome"
+    tie_break: "lexical action id for deterministic results"
 
 markov:
+  propagation:
+    state_mass: "m_j(t+1)=sum_i m_i(t) P(i->j)"
+    matrix_form: "m(t+1)=m(t)P"
+    conservation: "sum_j m_j(t+1)=1 for normalized complete transition rows"
+  expected_edge_cost:
+    recurrence: "C_j += P(i->j)*(C_i + m_i*c(i,j))"
+    terminal_expected_cost: "sum(C_j) over terminal j"
   semantics: "explicit transition probabilities over modeled states"
   row_rule: "every non-terminal modeled state has an explicit outgoing distribution"
   normalization: "sum(p(child|state)) == 1 within tolerance"
@@ -108,4 +130,4 @@ verification:
       mean: 0.5
       sd: 0.22360679774997896
       interval95: [0.0942993240502461, 0.9057006759497539]
-  note: "CI remains stdlib-only; Wolfram values are reference fixtures, not a runtime dependency."
+  note: "Wolfram is a mathematical design/review aid; production calculations are implemented locally with deterministic stdlib-only code."

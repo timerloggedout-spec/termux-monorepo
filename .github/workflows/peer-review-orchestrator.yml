@@ -21,10 +21,12 @@ on:
     types: [submitted]
 
 concurrency:
-  # Coalesce superseded PR/provider events. State comments and requests are
-  # SHA-bound and idempotent, so only the newest event for a PR needs to finish.
-  group: peer-orch-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
-  cancel-in-progress: true
+  # Comment storms must not cancel an in-flight provider collect. Cancelled
+  # runs were recorded as failures (runs 37247048701 / 37247242679 on #1125).
+  # Include event_name so a pull_request_target collect is not superseded by
+  # a later issue_comment on the same PR.
+  group: peer-orch-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}-${{ github.event_name }}
+  cancel-in-progress: false
 
 permissions: {}
 
@@ -32,8 +34,17 @@ jobs:
   collect-peer-responses:
     if: >-
       github.event_name != 'issue_comment' ||
-      github.event.comment.user.login != 'github-actions[bot]' ||
-      !contains(github.event.comment.body, 'sweep accountability receipt')
+      (
+        github.event.issue.pull_request &&
+        github.event.comment.user.login != 'github-actions[bot]' &&
+        !contains(github.event.comment.body, 'sweep accountability receipt') &&
+        (
+          contains(github.event.comment.body, '@coderabbitai') ||
+          contains(github.event.comment.body, '@qodo') ||
+          contains(github.event.comment.body, 'devin review') ||
+          contains(github.event.comment.body, 'operator-action')
+        )
+      )
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:

@@ -246,6 +246,14 @@ def workflow(payload: dict[str, Any]) -> dict[str, Any]:
         "three_trial_mean": posterior_predictive_mean(belief.alpha, belief.beta, 3),
         "three_trial_variance": posterior_predictive_variance(belief.alpha, belief.beta, 3),
     }
+    evsi_value = None
+    if payload.get("decision_utilities") is not None:
+        evsi_value = evsi_binary_decision(
+            belief.alpha,
+            belief.beta,
+            payload["decision_utilities"],
+            float(payload.get("experiment_cost", 0.0)),
+        )
     review = adversarial_admission(
         interval_width=interval[1] - interval[0],
         benchmark_regression=bool(payload.get("benchmark_regression", False)),
@@ -288,6 +296,9 @@ def workflow(payload: dict[str, Any]) -> dict[str, Any]:
             "one_step_information_gain": one_step_information_gain(belief.alpha, belief.beta),
         },
         "posterior_predictive": predictive,
+        "information_value": {
+            "evsi_binary_decision": evsi_value,
+        },
         "adversarial_review": {"admission": review},
         "left_now": left,
         "right_interthreading": right,

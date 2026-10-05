@@ -1,12 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-05T08:54:21Z UTC · receipts=1089 · foreign_open=25 · tributes=75_
+_Generated 2026-10-05T09:03:21Z UTC · receipts=1114 · foreign_open=25 · tributes=75_
 
 ## Tributes (contributor ledger)
 
-- [pulseaiclub/phi#286](https://github.com/pulseaiclub/phi/pull/286) · state=closed · help-wanted: stake + contribute for #285
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
-- [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=closed · help-wanted: stake + contribute for #273
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
 - [mangiapanejohn-dev/MOBIUS-Searcher#7](https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7) · state=open · help-wanted: stake + contribute for #6
@@ -26,13 +24,15 @@ _Generated 2026-10-05T08:54:21Z UTC · receipts=1089 · foreign_open=25 · tribu
 - [Vikram-sardiwal/react-open-source#50](https://github.com/Vikram-sardiwal/react-open-source/pull/50) · state=open · help-wanted: stake + contribute for #16
 - [laugh-tales/starpass-contracts#59](https://github.com/laugh-tales/starpass-contracts/pull/59) · state=open · help-wanted: stake + contribute for #28
 - [Saidur-droid/MergeEarn#76](https://github.com/Saidur-droid/MergeEarn/pull/76) · state=open · help-wanted: stake + contribute for #69
-- [dentalpin/dentalpin#591](https://github.com/dentalpin/dentalpin/pull/591) · state=closed · help-wanted: stake + contribute for #590
 - [CopilotKit/CopilotKit#7594](https://github.com/CopilotKit/CopilotKit/pull/7594) · state=open · help-wanted: stake + contribute for #4775
 - [uttrflow/uttrflow-swift#3719](https://github.com/uttrflow/uttrflow-swift/pull/3719) · state=open · help-wanted: stake + contribute for #3713
 - [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) · state=open · help-wanted: stake + contribute for #225
 - [TricklePay/tricklepay-backend#441](https://github.com/TricklePay/tricklepay-backend/pull/441) · state=open · help-wanted: stake + contribute for #395
-- [estruyf/playwright-github-actions-reporter#59](https://github.com/estruyf/playwright-github-actions-reporter/pull/59) · state=closed · help-wanted: stake + contribute for #50
 - [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) · state=open · help-wanted: stake + contribute for #928
+- [pulseaiclub/phi#286](https://github.com/pulseaiclub/phi/pull/286) · state=closed · help-wanted: stake + contribute for #285
+- [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=closed · help-wanted: stake + contribute for #273
+- [dentalpin/dentalpin#591](https://github.com/dentalpin/dentalpin/pull/591) · state=closed · help-wanted: stake + contribute for #590
+- [estruyf/playwright-github-actions-reporter#59](https://github.com/estruyf/playwright-github-actions-reporter/pull/59) · state=closed · help-wanted: stake + contribute for #50
 - [nesstyx/ChessHome#81](https://github.com/nesstyx/ChessHome/pull/81) · state=closed · help-wanted: stake + contribute for #40
 - [Magiclovekorean/unbloarchy#5](https://github.com/Magiclovekorean/unbloarchy/pull/5) · state=closed · help-wanted: stake + contribute for #4
 - [GRITui/pixel-builder#13](https://github.com/GRITui/pixel-builder/pull/13) · state=closed · help-wanted: stake + contribute for #11
@@ -73,6 +73,6 @@ _Generated 2026-10-05T08:54:21Z UTC · receipts=1089 · foreign_open=25 · tribu
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=1089 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 983, 'followup_reengage': 26, 'followup_stale_nudge': 31, 'followup_changes': 1}`
+## Outcomes · ok=1114 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 1006, 'followup_reengage': 28, 'followup_stale_nudge': 31, 'followup_changes': 1}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

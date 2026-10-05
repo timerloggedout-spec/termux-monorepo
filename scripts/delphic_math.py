@@ -210,7 +210,7 @@ def expected_path_cost(
         probs = [float(transitions[node][child]) for child in children]
         if any(not math.isfinite(p) or p < 0.0 for p in probs):
             raise ValueError("transition probabilities must be finite and non-negative")
-        if abs(sum(probs) - 1.0) > _EPS:
+        if abs(math.fsum(probs) - 1.0) > _EPS:
             raise ValueError("transition probabilities must sum to 1")
         for child, p in zip(children, probs):
             edge = (node, child)
@@ -223,4 +223,4 @@ def expected_path_cost(
             cost_mass[child] += p * (cost_mass[node] + mass[node] * cost)
             mass[child] += mass_to_child
     terminal = [node for node, children in adj.items() if not children]
-    return cost_mass, sum(cost_mass[node] for node in terminal)
+    return cost_mass, math.fsum(cost_mass[node] for node in terminal)

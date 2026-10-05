@@ -33,7 +33,7 @@ pre{white-space:pre-wrap;word-break:break-word;background:#071018;border:1px sol
 </select></label>
 <button id="step">STEP</button><button id="play">PLAY</button><button id="reset">RESET</button>
 </div>
-<svg viewBox="0 0 900 520" role="img" aria-label="Sample DAG algorithm visualization">
+<svg viewBox="0 0 900 520" role="img" aria-label="Sample directed acyclic graph algorithm visualization">
 <g id="edges" class="edge">
 <path d="M450 70 C450 120 250 120 250 190"/><path d="M450 70 C450 120 650 120 650 190"/>
 <path d="M250 220 C250 270 160 270 160 350"/><path d="M250 220 C250 270 350 270 350 350"/>
@@ -54,21 +54,28 @@ pre{white-space:pre-wrap;word-break:break-word;background:#071018;border:1px sol
 </section>
 <aside class="panel">
 <h3>Algorithm State</h3>
-<div id="state" class="muted"></div>
+<div id="state" class="muted" aria-live="polite" aria-atomic="true"></div>
 <pre id="output"></pre>
 <p class="muted">Graph Lab is an explanatory projection. It preserves the distinction between DAG topology, Markov transition semantics, and canonical evidence.</p>
 </aside>
 </div>
 </main>
 <script>
-const orders={topo:["A","B","C","D","E","F","G","H"],longest:["A","C","G","H"],prob:["A","B","C","D","E","F","G","H"],ancestors:["D","E","F","G","H"]};
+const GRAPH={A:["B","C"],B:["D","E"],C:["F","G"],D:["H"],E:["H"],F:["H"],G:["H"],H:[]};
+const TRANSITIONS={A:{B:.7,C:.3},B:{D:.6,E:.4},C:{F:.5,G:.5},D:{H:1},E:{H:1},F:{H:1},G:{H:1},H:{}};
+function topo(graph){const indegree=Object.fromEntries(Object.keys(graph).map(n=>[n,0]));for(const [n,cs] of Object.entries(graph))for(const c of cs)indegree[c]++;const q=Object.keys(indegree).filter(n=>indegree[n]===0).sort();const out=[];while(q.length){const n=q.shift();out.push(n);for(const c of [...graph[n]].sort()){if(--indegree[c]===0)q.push(c);q.sort()}}if(out.length!==Object.keys(graph).length)throw Error("cycle");return out}
+function longest(graph){const order=topo(graph),d=Object.fromEntries(order.map(n=>[n,0])),p=Object.fromEntries(order.map(n=>[n,null]));for(const n of order)for(const c of [...graph[n]].sort()){const cand=d[n]+1;if(cand>d[c]){d[c]=cand;p[c]=n}}let end=order.reduce((a,b)=>d[b]>d[a]?b:a,order[0]);const path=[];while(end){path.push(end);end=p[end]}return path.reverse()}
+function probability(graph,t,start){const mass=Object.fromEntries(Object.keys(graph).map(n=>[n,0]));mass[start]=1;for(const n of topo(graph)){if(!graph[n].length)continue;const ps=graph[n].map(c=>t[n][c]);if(Math.abs(ps.reduce((a,b)=>a+b,0)-1)>1e-9)throw Error("unnormalized");for(let i=0;i<graph[n].length;i++)mass[graph[n][i]]+=mass[n]*ps[i]}return mass}
+function ancestors(graph,target){const rev=Object.fromEntries(Object.keys(graph).map(n=>[n,[]]));for(const [n,cs] of Object.entries(graph))for(const c of cs)rev[c].push(n);const seen=new Set([target]),stack=[...rev[target]];while(stack.length){const n=stack.pop();if(seen.has(n))continue;seen.add(n);stack.push(...rev[n])}return seen}
+function maximalCommon(graph,left,right){const a=ancestors(graph,left),b=ancestors(graph,right),common=[...a].filter(x=>b.has(x)).sort();return common.filter(n=>!graph[n].some(c=>common.includes(c)))}
+function derive(){const key=algo.value;if(key==="topo"){const ordered=topo(GRAPH);return {steps:ordered,detail:{ordered_nodes:ordered}}}if(key==="longest"){const path=longest(GRAPH);return {steps:path,detail:{path,distance:path.length-1,metric:"edges"}}}if(key==="prob"){const mass=probability(GRAPH,TRANSITIONS,"A");return {steps:topo(GRAPH),detail:{state_mass:mass,terminal_mass:{H:mass.H},terminal_mass_total:mass.H}}}const result=maximalCommon(GRAPH,"D","H");return {steps:result,detail:{targets:["D","H"],maximal_common_ancestors:result}}}
 let index=0,timer=null;
-const algo=document.querySelector("#algo"), state=document.querySelector("#state"), output=document.querySelector("#output");
-function render(){const key=algo.value;const seq=orders[key];document.querySelectorAll(".node").forEach(n=>n.classList.toggle("active",seq.slice(0,index).includes(n.dataset.id)));state.textContent="step "+index+" / "+seq.length+" • "+algo.options[algo.selectedIndex].text;output.textContent=JSON.stringify({algorithm:algo.options[algo.selectedIndex].text,active:seq.slice(0,index),remaining:seq.slice(index),authority:"projection_only",mutates_evidence:false},null,2)}
-function reset(){index=0;render();if(timer){clearInterval(timer);timer=null}}
-document.querySelector("#step").onclick=()=>{if(index<orders[algo.value].length){index++;render()}};
+const algo=document.querySelector("#algo"),state=document.querySelector("#state"),output=document.querySelector("#output");
+function render(){const result=derive(),seq=result.steps;index=Math.min(index,seq.length);document.querySelectorAll(".node").forEach(n=>n.classList.toggle("active",seq.slice(0,index).includes(n.dataset.id)));state.textContent="step "+index+" / "+seq.length+" • "+algo.options[algo.selectedIndex].text;output.textContent=JSON.stringify({algorithm:algo.options[algo.selectedIndex].text,active:seq.slice(0,index),remaining:seq.slice(index),computed:result.detail,authority:"projection_only",mutates_evidence:false},null,2)}
+function reset(){index=0;if(timer){clearInterval(timer);timer=null}render()}
+document.querySelector("#step").onclick=()=>{const n=derive().steps.length;if(index<n){index++;render()}};
 document.querySelector("#reset").onclick=reset;
-document.querySelector("#play").onclick=()=>{if(timer)return;timer=setInterval(()=>{if(index>=orders[algo.value].length){clearInterval(timer);timer=null;return}index++;render()},500)};
+document.querySelector("#play").onclick=()=>{if(timer)return;timer=setInterval(()=>{const n=derive().steps.length;if(index>=n){clearInterval(timer);timer=null;return}index++;render()},500)};
 algo.onchange=reset;render();
 </script>
 </body>

@@ -57,6 +57,8 @@ jobs:
           from datetime import datetime, timezone
 
           d = json.load(open("bridge.json", encoding="utf-8"))
+          status = d.get("status")
+          admission = "dispatch" if status == "active" else "skipped_not_active"
           with open("deepcli-agent-bridge-receipt.json", "w", encoding="utf-8") as out:
               json.dump({
                   "schema_version": 1,
@@ -64,8 +66,9 @@ jobs:
                   "run_attempt": int("${{ github.run_attempt }}"),
                   "sha": "${{ github.sha }}",
                   "ref": "${{ github.ref }}",
+                  "admission": admission,
                   "bridge": {
-                      "status": d.get("status"),
+                      "status": status,
                       "endpoint": d.get("endpoint"),
                       "port": d.get("port"),
                       "ssh_user": d.get("ssh_user"),
@@ -75,9 +78,13 @@ jobs:
                   "checks": [],
               }, out, indent=2, sort_keys=True)
           required = ("endpoint", "port", "ssh_user", "expires_at")
-          status = d.get("status")
           if status != "active":
-              raise SystemExit(f"ACCESS/ADMISSION FAILURE: bridge status is {status!r}; publish a fresh authorized manifest before dispatch")
+              with open("deepcli-bridge-skip", "w", encoding="utf-8") as skip:
+                  skip.write(str(status or "missing") + "\n")
+              print(
+                  "::notice::bridge status is not active; dispatch skipped until an authorized manifest is published"
+              )
+              raise SystemExit(0)
           missing = [k for k in required if not d.get(k)]
           if missing:
               raise SystemExit(f"bridge manifest incomplete: {missing}")
@@ -86,7 +93,7 @@ jobs:
               raise SystemExit("bridge endpoint is expired")
           if not (1 <= int(d["port"]) <= 65535):
               raise SystemExit("bridge port out of range")
-          print(f"bridge={d['ssh_user']}@{d['endpoint']}:{d['port']}")
+          print("bridge admission ok")
           PY
 
       - name: Install pinned SSH identity

@@ -21,15 +21,25 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - run: pip install pyyaml
       - name: Rebuild TOC and diff
         run: |
+          # Pin stamp and stale age to the MATRIX commit date. Wall-clock today
+          # failed schedule run 37377726547 (header 2026-09-28 vs 2026-10-05).
+          export DEBATE_TOC_DATE="$(git log -1 --format=%cs -- docs/DEBATE/MATRIX.yaml)"
+          if [ -z "$DEBATE_TOC_DATE" ]; then
+            echo "::error::MATRIX.yaml has no commit date"
+            exit 1
+          fi
+          echo "DEBATE_TOC_DATE=$DEBATE_TOC_DATE"
           python3 scripts/debate/build_toc.py
           if ! git diff --quiet docs/DEBATE/TOC.md; then
-            echo "::error::TOC.md out of date — run scripts/debate/build_toc.py"
+            echo "::error::TOC.md out of date — rebuild with DEBATE_TOC_DATE from MATRIX.yaml"
             git diff docs/DEBATE/TOC.md
             exit 1
           fi

@@ -1,7 +1,14 @@
 #!/usr/bin/env python3
-"""Rebuild docs/DEBATE/TOC.md from MATRIX.yaml (single source of tags)."""
+"""Rebuild docs/DEBATE/TOC.md from MATRIX.yaml (single source of tags).
+
+The header stamp is not wall-clock. CI sets DEBATE_TOC_DATE to the MATRIX.yaml
+commit date so a Monday schedule does not fail on date-only drift (run
+37377726547). Stale/blocker age still uses today unless DEBATE_TOC_DATE is set,
+in which case both stamp and age share that pin.
+"""
 from __future__ import annotations
 import datetime as dt
+import os
 import sys
 from pathlib import Path
 
@@ -16,11 +23,26 @@ MATRIX = ROOT / "docs" / "DEBATE" / "MATRIX.yaml"
 TOC = ROOT / "docs" / "DEBATE" / "TOC.md"
 
 
+def pinned_date() -> dt.date | None:
+    raw = (os.environ.get("DEBATE_TOC_DATE") or "").strip()
+    if not raw:
+        return None
+    if raw.isdigit():
+        return dt.datetime.fromtimestamp(int(raw), dt.timezone.utc).date()
+    try:
+        return dt.date.fromisoformat(raw[:10])
+    except ValueError:
+        print(f"FAIL: DEBATE_TOC_DATE not a date: {raw}", file=sys.stderr)
+        sys.exit(2)
+
+
 def main() -> int:
     data = yaml.safe_load(MATRIX.read_text(encoding="utf-8"))
     debates = data.get("debates") or []
     stale_after = int(data.get("stale_after_days") or 14)
-    today = dt.date.today()
+    pin = pinned_date()
+    today = pin or dt.date.today()
+    stamp = pin.isoformat() if pin else "MATRIX.yaml"
 
     rows = []
     attention = []
@@ -49,11 +71,16 @@ def main() -> int:
         if attention
         else "| _(none)_ | | |"
     )
+    stamp_line = (
+        f"> Auto-built {stamp} from MATRIX.yaml via `scripts/debate/build_toc.py`."
+        if pin
+        else "> Auto-built from MATRIX.yaml via `scripts/debate/build_toc.py` (no wall-clock stamp)."
+    )
 
     body = f"""# DEBATE — Table of Contents
 
 > **LLM rule:** Prefer this file over any `active/*` body.
-> Auto-built {today.isoformat()} from MATRIX.yaml via `scripts/debate/build_toc.py`.
+{stamp_line}
 
 | ID | Title | Status | Stale? | Blocker? | Tags | Path |
 |----|-------|--------|--------|----------|------|------|
@@ -80,7 +107,7 @@ python3 scripts/debate/build_toc.py
 3. MATRIX status → `resolved`; rebuild TOC.
 """
     TOC.write_text(body, encoding="utf-8")
-    print(f"OK: TOC rebuilt ({len(debates)} debates, {len(attention)} attention flags)")
+    print(f"OK: TOC rebuilt ({len(debates)} debates, {len(attention)} attention flags, stamp={stamp})")
     return 0
 
 

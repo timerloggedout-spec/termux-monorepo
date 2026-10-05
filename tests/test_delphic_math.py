@@ -47,5 +47,6 @@ def test_expected_path_cost_conserves_probability_and_accumulates_edge_cost():
     transitions = {"A": {"B": 0.25, "C": 0.75}, "B": {"D": 1.0}, "C": {"D": 1.0}, "D": {}}
     costs = {("A", "B"): 2.0, ("A", "C"): 4.0, ("B", "D"): 10.0, ("C", "D"): 6.0}
     cost_mass, terminal_cost = m.expected_path_cost(graph, transitions, costs, "A")
-    assert abs(cost_mass["D"] - 9.0) < 1e-12
-    assert abs(terminal_cost - 9.0) < 1e-12
+    # 0.25*(2+10) + 0.75*(4+6) = 10.5. The previous 9.0 fixture did not match these edges.
+    assert abs(cost_mass["D"] - 10.5) < 1e-12
+    assert abs(terminal_cost - 10.5) < 1e-12

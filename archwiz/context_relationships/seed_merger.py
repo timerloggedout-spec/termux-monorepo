@@ -15,20 +15,28 @@ try:
 except ImportError:  # Supports direct script use.
     from compiler import CompilationError, load_json
 
-MERGER_ID = "archwiz.context_relationships.seed_merger@1.2"
+MERGER_ID = "archwiz.context_relationships.seed_merger@1.3"
 
 # Line spans are observations of the same symbol, not identity. Collectors
 # disagree when one parse includes a decorator or trailing blank and another
-# does not. Missing observed_at must not fail the historical backfill.
+# does not. Historical seeds may store the same span as int or numeric string.
+# Missing observed_at must not fail the historical backfill.
 SPAN_ATTRIBUTE_KEYS = {"line", "start_line", "end_line"}
 
 
-def node_reference(record: Mapping[str, Any]) -> str:
-    kind = record.get("kind")
-    external_id = record.get("external_id")
-    if not isinstance(kind, str) or not isinstance(external_id, str):
-        raise CompilationError("seed node must contain string kind and external_id")
-    return f"{kind}:{external_id}"
+def span_line(value: Any) -> int | None:
+    """Coerce a span observation to int. Bool is not a line number."""
+    if isinstance(value, bool) or value is None:
+        return None
+    if isinstance(value, int):
+        return value
+    if isinstance(value, float) and value.is_integer():
+        return int(value)
+    if isinstance(value, str):
+        text = value.strip()
+        if text.isdigit() or (text.startswith("-") and text[1:].isdigit()):
+            return int(text)
+    return None
 
 
 def merge_attributes(
@@ -44,11 +52,18 @@ def merge_attributes(
     timestamps_available = isinstance(existing_observed_at, str) and isinstance(incoming_observed_at, str)
     for key, value in right.items():
         if key in merged and merged[key] != value:
-            if key in SPAN_ATTRIBUTE_KEYS and isinstance(merged[key], int) and isinstance(value, int):
-                if key == "end_line":
-                    merged[key] = max(merged[key], value)
-                else:
-                    merged[key] = min(merged[key], value)
+            if key in SPAN_ATTRIBUTE_KEYS:
+                left_line = span_line(merged[key])
+                right_line = span_line(value)
+                if left_line is None and right_line is None:
+                    continue
+                if left_line is None:
+                    merged[key] = right_line
+                    continue
+                if right_line is None:
+                    merged[key] = left_line
+                    continue
+                merged[key] = max(left_line, right_line) if key == "end_line" else min(left_line, right_line)
                 continue
             if not timestamps_available:
                 raise CompilationError(f"node {node_ref} has contradictory attribute {key!r}")
@@ -57,6 +72,14 @@ def merge_attributes(
             continue
         merged[key] = value
     return merged
+
+
+def node_reference(record: Mapping[str, Any]) -> str:
+    kind = record.get("kind")
+    external_id = record.get("external_id")
+    if not isinstance(kind, str) or not isinstance(external_id, str):
+        raise CompilationError("seed node must contain string kind and external_id")
+    return f"{kind}:{external_id}"
 
 
 def canonical_github_blob_url(url: str, owner: str, name: str, ref: str) -> str:

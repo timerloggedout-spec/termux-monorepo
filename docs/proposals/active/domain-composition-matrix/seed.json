@@ -90,10 +90,10 @@
     {
       "rule_id": "lean-compose-001",
       "domain_id": "lean",
-      "source_entity_type_id": "morphism",
+      "source_entity_type_id": "lean_morphism",
       "operation_id": "morphism_composition",
-      "target_entity_type_id": "morphism",
-      "result_entity_type_id": "morphism",
+      "target_entity_type_id": "lean_morphism",
+      "result_entity_type_id": "lean_morphism",
       "notation_id": "lean-compose",
       "associative": 1,
       "identity_required": 1,
@@ -125,6 +125,40 @@
       "locator": "notation-set domain/composition reconciliation",
       "claim": "Generic composition must remain distinct from domain-specific Lean and Haskell notation.",
       "confidence": 0.95
+    }
+  ],
+  "entity_types": [
+    {
+      "entity_type_id": "morphism",
+      "domain_id": "category_theory",
+      "name": "Morphism",
+      "kind": "typed_arrow",
+      "description": "A morphism between compatible objects.",
+      "version": 1
+    },
+    {
+      "entity_type_id": "lean_morphism",
+      "domain_id": "lean",
+      "name": "Morphism",
+      "kind": "typed_arrow",
+      "description": "A Lean/Mathlib morphism participating in composition.",
+      "version": 1
+    },
+    {
+      "entity_type_id": "monadic_value",
+      "domain_id": "haskell",
+      "name": "Monadic Value",
+      "kind": "effectful_value",
+      "description": "A value in a monadic context.",
+      "version": 1
+    },
+    {
+      "entity_type_id": "monadic_function",
+      "domain_id": "haskell",
+      "name": "Monadic Function",
+      "kind": "effectful_function",
+      "description": "A function returning a value in the same monadic context.",
+      "version": 1
     }
   ]
 }

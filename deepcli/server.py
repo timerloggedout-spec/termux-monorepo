@@ -345,7 +345,7 @@ def _sf_pid_for(inv: str) -> int | None:
         return None
 
 
-@APP.post("/v1/agent/{inv}/pause")
+@app.post("/v1/agent/{inv}/pause")
 def _sf_agent_pause(inv: str):
     pid = _sf_pid_for(inv)
     if pid is None:
@@ -359,7 +359,7 @@ def _sf_agent_pause(inv: str):
         return {"invocation_id": inv, "status": "error", "detail": str(exc)}
 
 
-@APP.post("/v1/agent/{inv}/resume")
+@app.post("/v1/agent/{inv}/resume")
 def _sf_agent_resume(inv: str):
     pid = _sf_pid_for(inv)
     if pid is None:
@@ -373,7 +373,7 @@ def _sf_agent_resume(inv: str):
         return {"invocation_id": inv, "status": "error", "detail": str(exc)}
 
 
-@APP.post("/v1/agent/{inv}/stop")
+@app.post("/v1/agent/{inv}/stop")
 def _sf_agent_stop(inv: str):
     pid = _sf_pid_for(inv)
     if pid is None:
@@ -387,7 +387,7 @@ def _sf_agent_stop(inv: str):
         return {"invocation_id": inv, "status": "error", "detail": str(exc)}
 
 
-@APP.post("/v1/agent/{inv}/cancel")
+@app.post("/v1/agent/{inv}/cancel")
 def _sf_agent_cancel(inv: str):
     pid = _sf_pid_for(inv)
     if pid is None:

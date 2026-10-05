@@ -223,3 +223,21 @@ __pycache__/
 .mcp/
 .zsh/
 .deepcli/archive/
+
+# shell-forge — secret + ephemeral hygiene (20261005T011900)
+.deepcli/hub.token
+.deepcli/*.token
+.deepcli/active_session
+.deepcli/config-2.json
+.deepcli/lanes/
+.deepcli/agent_workspaces/
+.deepcli/archives/
+.deepcli/forensic/
+.deepcli/sandbox/
+.android/
+.codex/
+.config/shell-forge/
+.shell-forge-backups/
+.cache/tribute/
+*.py.bak.*
+*.bak.[0-9]*

@@ -134,7 +134,7 @@ def posterior(
         if row.get("executed") is not True or row.get("attributed") is not True:
             continue
         outcome = row.get("outcome")
-        if outcome not in (True, False):
+        if type(outcome) is not bool:
             continue
         exp_id = row.get("experiment_id")
         if not exp_id:

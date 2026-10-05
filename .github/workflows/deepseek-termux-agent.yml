@@ -131,15 +131,40 @@ jobs:
         run: |
           set -euo pipefail
           if [ -z "${AGENT_URL:-}" ]; then echo "::error::DEEPSEEK_AGENT_URL not set"; exit 1; fi
-          curl -sS --max-time 30 -X POST "$AGENT_URL/v1/agent" \
+          # Unresolved tunnel (curl exit 6) is environmental, not a repo defect.
+          # Runs 37247570120 and 37247469812 failed resolving the Pinggy host.
+          HOST=$(python3 -c 'import os; from urllib.parse import urlparse; print(urlparse(os.environ["AGENT_URL"]).hostname or "")')
+          if [ -z "$HOST" ] || ! getent hosts "$HOST" >/dev/null 2>&1; then
+            echo "::warning::DEEPSEEK agent host ${HOST:-<empty>} does not resolve. Recording tunnel-unresolved skip."
+            echo "skipped=tunnel-unresolved" >> "$GITHUB_OUTPUT"
+            echo '{"phase":"skipped","reason":"tunnel-unresolved"}' > agent_start.json
+            echo '{"phase":"skipped","reason":"tunnel-unresolved"}' > agent_status_final.json
+            exit 0
+          fi
+          INV=$(curl -sS --max-time 30 -X POST "$AGENT_URL/v1/agent" \
             -H "Authorization: Bearer $AGENT_TOKEN" \
             -H 'Content-Type: application/json' \
-            --data-binary @agent_payload.json > agent_start.json
+            --data-binary @agent_payload.json || true)
+          if [ -z "$INV" ]; then
+            echo "::warning::DEEPSEEK agent POST failed after DNS preflight (tunnel dropped). Recording tunnel-lost skip."
+            echo "skipped=tunnel-lost" >> "$GITHUB_OUTPUT"
+            echo '{"phase":"skipped","reason":"tunnel-lost"}' > agent_start.json
+            echo '{"phase":"skipped","reason":"tunnel-lost"}' > agent_status_final.json
+            exit 0
+          fi
+          printf '%s\n' "$INV" > agent_start.json
           cat agent_start.json
-          INV=$(jq -r '.invocation_id' agent_start.json)
-          echo "invocation_id=$INV" >> "$GITHUB_OUTPUT"
+          INV_ID=$(jq -r '.invocation_id // empty' agent_start.json)
+          if [ -z "$INV_ID" ]; then
+            echo "::warning::DEEPSEEK agent POST returned no invocation_id. Recording tunnel-lost skip."
+            echo "skipped=tunnel-lost" >> "$GITHUB_OUTPUT"
+            echo '{"phase":"skipped","reason":"tunnel-lost"}' > agent_status_final.json
+            exit 0
+          fi
+          echo "invocation_id=$INV_ID" >> "$GITHUB_OUTPUT"
 
       - name: Poll for completion
+        if: steps.start.outputs.skipped == ''
         timeout-minutes: 22
         env:
           AGENT_URL: ${{ secrets.DEEPSEEK_AGENT_URL }}
@@ -151,7 +176,12 @@ jobs:
           # 120 x 10s = 20min, inside the 25min job timeout so the
           # timeout/error path can still emit agent_status_final.json.
           for i in $(seq 1 120); do
-            S=$(curl -sS --max-time 10 "$AGENT_URL/v1/agent/status/$INV" -H "Authorization: Bearer $AGENT_TOKEN" || echo '{"phase":"error"}')
+            S=$(curl -sS --max-time 10 "$AGENT_URL/v1/agent/status/$INV" -H "Authorization: Bearer $AGENT_TOKEN" || echo '{"phase":"tunnel-lost"}')
+            if printf '%s' "$S" | jq -e '.phase == "tunnel-lost"' >/dev/null 2>&1; then
+              echo "::warning::DEEPSEEK agent status poll lost the tunnel. Recording tunnel-lost skip."
+              echo '{"phase":"skipped","reason":"tunnel-lost"}' > agent_status_final.json
+              break
+            fi
             PHASE=$(echo "$S" | jq -r '.phase')
             IDLE=$(echo "$S" | jq -r '.idle_s // 0')
             echo "[$i] phase=$PHASE idle=${IDLE}s"
@@ -163,6 +193,7 @@ jobs:
           cat agent_status_final.json
 
       - name: Extract summary
+        if: steps.start.outputs.skipped == ''
         timeout-minutes: 2
         run: |
           set -uo pipefail
@@ -172,7 +203,7 @@ jobs:
           cat agent_summary.txt
 
       - name: Reply (issue_comment)
-        if: github.event_name == 'issue_comment'
+        if: github.event_name == 'issue_comment' && steps.start.outputs.skipped == ''
         timeout-minutes: 5
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -185,7 +216,7 @@ jobs:
           gh issue comment "$ISSUE_NUMBER" --repo "$REPO" --body-file reply.md
 
       - name: Reply (issue assigned)
-        if: github.event_name == 'issues'
+        if: github.event_name == 'issues' && steps.start.outputs.skipped == ''
         timeout-minutes: 5
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -197,7 +228,7 @@ jobs:
           gh issue comment "$ISSUE_NUMBER" --repo "$REPO" --body-file reply.md
 
       - name: Reply (PR assigned)
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && steps.start.outputs.skipped == ''
         timeout-minutes: 5
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

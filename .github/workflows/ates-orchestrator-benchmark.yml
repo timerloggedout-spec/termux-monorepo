@@ -1,0 +1,52 @@
+name: ATES Orchestrator Benchmark
+
+on:
+  push:
+    paths:
+      - 'scripts/ci/evaluate_orchestrator_benchmark.py'
+      - 'scripts/ci/export_orchestrator_mlflow.py'
+      - 'scripts/model_selection_market/dspy_doe.py'
+      - 'docs/ops/ATES-ORCHESTRATOR-*'
+      - 'tests/test_orchestrator_benchmark.py'
+      - 'tests/test_dspy_doe_ates.py'
+      - 'tests/fixtures/ates/orchestrator_mvt.json'
+  pull_request:
+    paths:
+      - 'scripts/ci/evaluate_orchestrator_benchmark.py'
+      - 'scripts/ci/export_orchestrator_mlflow.py'
+      - 'scripts/model_selection_market/dspy_doe.py'
+      - 'docs/ops/ATES-ORCHESTRATOR-*'
+      - 'tests/test_orchestrator_benchmark.py'
+      - 'tests/test_dspy_doe_ates.py'
+      - 'tests/fixtures/ates/orchestrator_mvt.json'
+
+permissions:
+  contents: read
+
+jobs:
+  mvt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v4.2.2
+      - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
+        with:
+          python-version: '3.12'
+      - name: Validate JSON schemas
+        run: python -m json.tool docs/ops/ATES-ORCHESTRATOR-TRACE.schema.json >/dev/null
+      - name: Run deterministic MVT
+        run: |
+          python -m unittest tests.test_orchestrator_benchmark tests.test_dspy_doe_ates -v
+          python scripts/ci/evaluate_orchestrator_benchmark.py --input tests/fixtures/ates/orchestrator_mvt.json --output /tmp/ates-orchestrator-results.ndjson
+      - name: Export MLflow-compatible evaluation rows
+        run: python scripts/ci/export_orchestrator_mlflow.py --input /tmp/ates-orchestrator-results.ndjson --output /tmp/ates-orchestrator-mlflow.json
+      - name: Assert MVT verdicts
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          rows=[json.loads(x) for x in Path('/tmp/ates-orchestrator-results.ndjson').read_text().splitlines() if x.strip()]
+          assert rows[0]['outcome']=='PASS'
+          assert rows[1]['outcome']=='FAIL_DETERMINISTIC'
+          assert rows[1]['net_score'] == 0.0
+          print('MVT deterministic verdicts: OK')
+          PY

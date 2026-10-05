@@ -39,6 +39,8 @@ KNOWN_FREE_MODELS_WITHOUT_PRICING = {
     "google/lyria-3-pro-preview",
 }
 
+ZERO_PRICING = {"0", "0.0", 0, 0.0}
+
 LIMITS = {
     "omni/auto/best-free": {"triage": 400, "review": 250, "invoke": 400},
     "openrouter/stealth/ox-alpha": {"triage": 80, "review": 80, "invoke": 80},
@@ -91,6 +93,15 @@ ROLE_RESIDUALS = {
     "invoke": ["gemini-3.1-flash-lite", "gemini-2.5-flash-lite"],
 }
 
+# Pre-grouped peer models by role and provider to eliminate per-evaluation list comprehensions
+ROLE_PEER_MODELS = {
+    role: {
+        "omni": [m for p, m in peers if p == "omni"],
+        "openrouter": [m for p, m in peers if p == "openrouter"],
+    }
+    for role, peers in ROLE_PEERS.items()
+}
+
 
 def is_free_openrouter_model(model_id, pricing=None):
     """True for :free suffix OR zero prompt+completion pricing (e.g. stealth/ox-alpha)."""
@@ -101,9 +112,11 @@ def is_free_openrouter_model(model_id, pricing=None):
     if pricing is None:
         return model_id in KNOWN_FREE_MODELS_WITHOUT_PRICING
     try:
-        return float(pricing.get("prompt", 1.0)) == 0.0 and float(
-            pricing.get("completion", 1.0)
-        ) == 0.0
+        p_prompt = pricing.get("prompt", 1.0)
+        p_comp = pricing.get("completion", 1.0)
+        prompt_zero = (p_prompt in ZERO_PRICING) or (float(p_prompt) == 0.0)
+        comp_zero = (p_comp in ZERO_PRICING) or (float(p_comp) == 0.0)
+        return prompt_zero and comp_zero
     except (TypeError, ValueError):
         return False
 
@@ -318,6 +331,7 @@ def emit_decision(
         "omni": has_omni,
         "openrouter": has_openrouter,
     }
+    models_dict = success_matrix.get("models", {})
     pairs = [("gemini", model) for model in role_residuals.get(role, [])]
     pairs.extend(role_peers.get(role, []))
     candidates = []
@@ -348,7 +362,7 @@ def emit_decision(
                 openrouter_catalog_state=catalog_state,
                 limits=limits,
                 usage=get_usage(provider, model),
-                success_entry=success_matrix.get("models", {}).get(model, {}),
+                success_entry=models_dict.get(model, {}),
             )
         )
     decision = capability_spine.compact_envelope(
@@ -393,12 +407,18 @@ def main():
     # One unified candidate pool. Provider identity never implies priority.
     candidates = []
     seen = set()
+    peer_models = ROLE_PEER_MODELS.get(role, {})
     pools = [
         ("gemini", ROLE_RESIDUALS.get(role, [])),
-        ("omni", [m for p, m in ROLE_PEERS.get(role, []) if p == "omni"]),
-        ("openrouter", [m for p, m in ROLE_PEERS.get(role, []) if p == "openrouter"]),
+        ("omni", peer_models.get("omni", [])),
+        ("openrouter", peer_models.get("openrouter", [])),
     ]
     provider_flags = {"gemini": has_gemini, "omni": has_omni, "openrouter": has_openrouter}
+    permitted_openrouter_models = (
+        set(polled_free_models) if polled_free_models is not None else LEGACY_MODELS
+    )
+    models_dict = success_matrix.get("models", {})
+
     for provider, models in pools:
         if not provider_flags.get(provider, False):
             continue
@@ -407,12 +427,11 @@ def main():
             if key in seen:
                 continue
             if provider == "openrouter":
-                permitted_models = polled_free_models if polled_free_models is not None else LEGACY_MODELS
                 # The live free catalog is authoritative for zero-priced models, including IDs without :free.
-                if model not in permitted_models:
+                if model not in permitted_openrouter_models:
                     continue
             seen.add(key)
-            model_entry = success_matrix.get("models", {}).get(model, {})
+            model_entry = models_dict.get(model, {})
             score = model_entry.get("elo", 1000) * model_entry.get("role_suitability", {}).get(role, 1.0)
             limit = LIMITS.get(model if provider == "gemini" else f"{provider}/{model}", {}).get(role, 40)
             used = get_usage(provider, model)

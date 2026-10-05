@@ -9,7 +9,9 @@
 | DBO-005 | executing | Implement telemetry/benchmark-driven adversarial-review admission |
 | DBO-006 | executing | Build Gemini-style standalone design sandbox |
 | DBO-007 | cooldown | Request Gemini adversarial/design review and disposition returned evidence |
-| DBO-008 | todo | Evaluate graduation candidates without coupling production dashboards |
+| DBO-008 | executing | Evaluate graduation candidates without coupling production dashboards |
+| DBO-009 | executing | Register graph algorithm semantics, complexity, provenance, and graph-kind boundaries |
+| DBO-010 | executing | Add standalone executable Graph Lab with deterministic algorithm reference implementations |
 
 ## Boundary
 

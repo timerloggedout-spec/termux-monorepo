@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-05T14:38:59Z UTC · receipts=1114 · foreign_open=25 · tributes=75_
+_Generated 2026-10-05T17:25:16Z UTC · receipts=1114 · foreign_open=25 · tributes=76_
 
 ## Tributes (contributor ledger)
 
+- [amponce/archive-movie-browser#437](https://github.com/amponce/archive-movie-browser/pull/437) · state=open · help-wanted: stake + contribute for #332
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -24,7 +25,7 @@ _Generated 2026-10-05T14:38:59Z UTC · receipts=1114 · foreign_open=25 · tribu
 - [Vikram-sardiwal/react-open-source#50](https://github.com/Vikram-sardiwal/react-open-source/pull/50) · state=open · help-wanted: stake + contribute for #16
 - [laugh-tales/starpass-contracts#59](https://github.com/laugh-tales/starpass-contracts/pull/59) · state=open · help-wanted: stake + contribute for #28
 - [Saidur-droid/MergeEarn#76](https://github.com/Saidur-droid/MergeEarn/pull/76) · state=open · help-wanted: stake + contribute for #69
-- [CopilotKit/CopilotKit#7594](https://github.com/CopilotKit/CopilotKit/pull/7594) · state=open · help-wanted: stake + contribute for #4775
+- [CopilotKit/CopilotKit#7594](https://github.com/CopilotKit/CopilotKit/pull/7594) · state=closed · help-wanted: stake + contribute for #4775
 - [uttrflow/uttrflow-swift#3719](https://github.com/uttrflow/uttrflow-swift/pull/3719) · state=open · help-wanted: stake + contribute for #3713
 - [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) · state=open · help-wanted: stake + contribute for #225
 - [TricklePay/tricklepay-backend#441](https://github.com/TricklePay/tricklepay-backend/pull/441) · state=open · help-wanted: stake + contribute for #395
@@ -43,15 +44,14 @@ _Generated 2026-10-05T14:38:59Z UTC · receipts=1114 · foreign_open=25 · tribu
 - [nextcloud/spreed#19662](https://github.com/nextcloud/spreed/pull/19662) · state=closed · help-wanted: stake + contribute for #19498
 - [LibreUML/LibreUML#130](https://github.com/LibreUML/LibreUML/pull/130) · state=closed · help-wanted: stake + contribute for #126
 - [StellarCanary/Protocol-Canary#345](https://github.com/StellarCanary/Protocol-Canary/pull/345) · state=closed · help-wanted: stake + contribute for #295
-- [arsova-mx/OpenPoker#69](https://github.com/arsova-mx/OpenPoker/pull/69) · state=closed · help-wanted: stake + contribute for #67
 
 ## Foreign open PRs
 
+- [amponce/archive-movie-browser#437](https://github.com/amponce/archive-movie-browser/pull/437) — help-wanted: stake + contribute for #332
 - [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) — help-wanted: stake + contribute for #928
 - [TricklePay/tricklepay-backend#441](https://github.com/TricklePay/tricklepay-backend/pull/441) — help-wanted: stake + contribute for #395
 - [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) — help-wanted: stake + contribute for #225
 - [uttrflow/uttrflow-swift#3719](https://github.com/uttrflow/uttrflow-swift/pull/3719) — help-wanted: stake + contribute for #3713
-- [CopilotKit/CopilotKit#7594](https://github.com/CopilotKit/CopilotKit/pull/7594) — help-wanted: stake + contribute for #4775
 - [Saidur-droid/MergeEarn#76](https://github.com/Saidur-droid/MergeEarn/pull/76) — help-wanted: stake + contribute for #69
 - [laugh-tales/starpass-contracts#59](https://github.com/laugh-tales/starpass-contracts/pull/59) — help-wanted: stake + contribute for #28
 - [Vikram-sardiwal/react-open-source#50](https://github.com/Vikram-sardiwal/react-open-source/pull/50) — help-wanted: stake + contribute for #16

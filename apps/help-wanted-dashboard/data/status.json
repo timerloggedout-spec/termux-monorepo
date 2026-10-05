@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-05T14:38:59Z",
+  "generated_at": "2026-10-05T17:25:16Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
   "receipts": 1114,
@@ -16,6 +16,15 @@
     "ok": 1114
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/amponce/archive-movie-browser/pull/437",
+      "title": "help-wanted: stake + contribute for #332",
+      "number": 437,
+      "repo": "amponce/archive-movie-browser",
+      "state": "open",
+      "updated_at": "2026-10-05T17:25:02Z",
+      "tribute": true
+    },
     {
       "html_url": "https://github.com/fsr5-fhaachen/portals/pull/948",
       "title": "help-wanted: stake + contribute for #928",
@@ -50,15 +59,6 @@
       "repo": "uttrflow/uttrflow-swift",
       "state": "open",
       "updated_at": "2026-10-05T09:02:40Z",
-      "tribute": true
-    },
-    {
-      "html_url": "https://github.com/CopilotKit/CopilotKit/pull/7594",
-      "title": "help-wanted: stake + contribute for #4775",
-      "number": 7594,
-      "repo": "CopilotKit/CopilotKit",
-      "state": "open",
-      "updated_at": "2026-10-03T11:38:20Z",
       "tribute": true
     },
     {
@@ -244,6 +244,19 @@
   ],
   "foreign_open_count": 25,
   "tributes": [
+    {
+      "pr_url": "https://github.com/amponce/archive-movie-browser/pull/437",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-10-05T17:25:02Z",
+      "providers": [],
+      "repo": "amponce/archive-movie-browser",
+      "number": 437,
+      "title": "help-wanted: stake + contribute for #332",
+      "state": "open"
+    },
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
@@ -1308,7 +1321,7 @@
       "repo": "CopilotKit/CopilotKit",
       "number": 7594,
       "title": "help-wanted: stake + contribute for #4775",
-      "state": "open"
+      "state": "closed"
     },
     {
       "pr_url": "https://github.com/uttrflow/uttrflow-swift/pull/3719",
@@ -2281,7 +2294,7 @@
       "state": "closed"
     }
   ],
-  "tribute_count": 75,
+  "tribute_count": 76,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -12596,7 +12609,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "35244d2bd603ce75db92863da8a5f6d88714fa39",
+    "source_sha": "045b1af29808cfb07d07777cd38d7924323fad34",
     "source_ref": "master",
     "history_complete": false,
     "history_coverage": "lane-local-complete; repository-wide historical accountability requires sweep-accountability backfill",
@@ -12630,12 +12643,12 @@
   },
   "evolution": [
     {
-      "sha": "35244d2bd603ce75db92863da8a5f6d88714fa39",
-      "short_sha": "35244d2bd603",
-      "date": "2026-10-05T14:37:51Z",
-      "author": "github-actions[bot]",
-      "subject": "chore(docs): refresh DOCS-BRANCH-INDEX",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/35244d2bd603ce75db92863da8a5f6d88714fa39"
+      "sha": "045b1af29808cfb07d07777cd38d7924323fad34",
+      "short_sha": "045b1af29808",
+      "date": "2026-10-05T17:23:30Z",
+      "author": "termux-monorepo sweep",
+      "subject": "chore(ops): record sweep accountability receipt",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/045b1af29808cfb07d07777cd38d7924323fad34"
     }
   ],
   "pipeline": [

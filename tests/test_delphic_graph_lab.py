@@ -74,3 +74,31 @@ def test_topological_sort_rejects_cycles():
         assert "cycle" in str(exc)
     else:
         raise AssertionError("expected cycle detection")
+
+
+def test_forward_probability_rejects_missing_non_terminal_transition_map():
+    try:
+        m.forward_probability(GRAPH, {"A": {"B": 0.7, "C": 0.3}}, "A")
+    except ValueError as exc:
+        assert "missing transition probabilities" in str(exc)
+    else:
+        raise AssertionError("expected missing transition detection")
+
+
+def test_three_way_reconciliation_exposes_conflicts():
+    result = m.three_way_diff(
+        {"x": "base", "y": "base"},
+        {"x": "left", "y": "base"},
+        {"x": "right", "y": "right"},
+    )
+    assert result["merged"]["y"] == "right"
+    assert result["conflicts"] == ["x"]
+    assert m.execute(
+        "state.three_way_diff",
+        {},
+        reconciliation=(
+            {"x": "base"},
+            {"x": "left"},
+            {"x": "right"},
+        ),
+    )["output"]["conflicts"] == ["x"]

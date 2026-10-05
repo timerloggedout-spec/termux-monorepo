@@ -1,4 +1,4 @@
-version: "1.0"
+version: "1.1"
 id: "delphic-oracle-control-plane"
 principle: "probabilistic state explains uncertainty; canonical evidence remains authoritative"
 
@@ -41,10 +41,14 @@ bayesian:
     selection_policy: "hard gates first; uncertainty-aware policy second"
   evi:
     formula: "expected_post_experiment_utility - current_expected_utility - experiment_cost"
+  evsi:
+    formula: "sum(p(outcome)*U(after_information,outcome)) - current_expected_utility - experiment_cost"
+    probability_normalization: "sum(p(outcome)) == 1 within declared tolerance"
   safeguards:
     - "admission failure is availability/capacity evidence, not model-quality failure"
     - "duplicate retries sharing experiment_id are not independent trials"
-    - "posterior intervals accompany point estimates"
+    - "exact equal-tail Beta posterior intervals accompany point estimates"
+    - "normal approximations are explicitly labeled approximate"
     - "priors retain provenance"
     - "correlated observations are not silently multiplied"
 

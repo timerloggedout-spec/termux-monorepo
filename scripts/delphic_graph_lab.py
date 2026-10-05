@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import time
 from collections import deque
 from typing import Any, Iterable
@@ -127,7 +128,7 @@ def forward_probability(
             raise ValueError(f"missing transition probabilities for non-terminal state {node!r}")
         outgoing = transitions[node]
         probabilities = [outgoing.get(child, 0.0) for child in adj[node]]
-        if any(not isinstance(p, (int, float)) or not __import__("math").isfinite(p) for p in probabilities):
+        if any(not isinstance(p, (int, float)) or not math.isfinite(p) for p in probabilities):
             raise ValueError("transition probabilities must be finite")
         if any(p < 0.0 for p in probabilities):
             raise ValueError("transition probabilities must be non-negative")

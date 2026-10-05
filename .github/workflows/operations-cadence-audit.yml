@@ -1,0 +1,24 @@
+name: Operations Cadence Audit
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches: [master]
+    paths:
+      - .github/workflows/**
+      - scripts/ci/operations_cadence_audit.py
+permissions:
+  contents: read
+concurrency:
+  group: operations-cadence-audit-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: Audit workflow schedule blocks
+        run: |
+          python3 -m pip install --disable-pip-version-check -q pyyaml || true
+          python3 scripts/ci/operations_cadence_audit.py

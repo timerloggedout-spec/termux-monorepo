@@ -19,4 +19,6 @@ jobs:
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: Audit workflow schedule blocks
-        run: python3 scripts/ci/operations_cadence_audit.py
+        run: |
+          python3 -m pip install --disable-pip-version-check -q pyyaml || true
+          python3 scripts/ci/operations_cadence_audit.py

@@ -26,3 +26,10 @@ This is a research/design lane. It does not become the telemetry SSOT, routing a
 ## DBO-012 — Numerical and algorithmic invariants
 - Status: executing
 - Add deterministic edge-case fixtures for finite probabilities, explicit transition support, terminal mass, target-inclusive ancestry, deletion/null reconciliation, generator-valued graph edges, and complete algorithm provenance.
+
+
+## DBO-013 — Formula-engine upgrade
+- Status: executing
+- Use Wolfram for symbolic derivation/reduction and mathematical design review; encode the resulting formulas locally.
+- Add stable Beta-Binomial prediction, Beta entropy/KL, expected information gain, decision-optimized binary EVSI, and expected DAG path-cost propagation.
+- Wolfram must not become a runtime dependency or outsourced calculator.

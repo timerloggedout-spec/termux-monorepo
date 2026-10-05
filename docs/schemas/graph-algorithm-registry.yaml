@@ -1,4 +1,4 @@
-version: "1.0"
+version: "1.1"
 id: "graph-algorithm-registry"
 purpose: "registered, provenance-aware algorithms available to the Delphic Observatory Graph Lab"
 
@@ -24,7 +24,7 @@ algorithms:
     outputs: [ordered_nodes]
     deterministic: true
     complexity:
-      time: "O(V+E)"
+      time: "O(V+E) theoretical; O(V log V + E log E) reference implementation"
       space: "O(V)"
   - id: dag.longest_path
     family: dynamic_programming
@@ -32,7 +32,7 @@ algorithms:
     outputs: [path, distance]
     deterministic: true
     complexity:
-      time: "O(V+E)"
+      time: "O(V+E) theoretical; O(V log V + E log E) reference implementation"
       space: "O(V)"
   - id: dag.forward_probability
     family: probability
@@ -43,7 +43,7 @@ algorithms:
       - "transition probabilities are explicit"
       - "outgoing probability mass is normalized for each modeled state"
     complexity:
-      time: "O(V+E)"
+      time: "O(V+E) theoretical; O(V log V + E log E) reference implementation"
       space: "O(V)"
   - id: dag.maximal_common_ancestors
     family: ancestry
@@ -67,6 +67,7 @@ algorithms:
     inputs: [dag]
     outputs: [ranked_coordinates]
     deterministic: false
+    status: planned
     notes:
       - "layering and crossing-reduction heuristics may vary"
       - "layout output is presentation state, not evidence"

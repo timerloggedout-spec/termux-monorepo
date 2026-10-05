@@ -1,6 +1,6 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-05T19:18:26Z UTC · receipts=1139 · foreign_open=25 · tributes=76_
+_Generated 2026-10-05T22:37:33Z UTC · receipts=1139 · foreign_open=24 · tributes=75_
 
 ## Tributes (contributor ledger)
 
@@ -28,7 +28,7 @@ _Generated 2026-10-05T19:18:26Z UTC · receipts=1139 · foreign_open=25 · tribu
 - [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) · state=open · help-wanted: stake + contribute for #225
 - [TricklePay/tricklepay-backend#441](https://github.com/TricklePay/tricklepay-backend/pull/441) · state=open · help-wanted: stake + contribute for #395
 - [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) · state=open · help-wanted: stake + contribute for #928
-- [amponce/archive-movie-browser#437](https://github.com/amponce/archive-movie-browser/pull/437) · state=open · help-wanted: stake + contribute for #332
+- [amponce/archive-movie-browser#437](https://github.com/amponce/archive-movie-browser/pull/437) · state=closed · help-wanted: stake + contribute for #332
 - [CopilotKit/CopilotKit#7594](https://github.com/CopilotKit/CopilotKit/pull/7594) · state=closed · help-wanted: stake + contribute for #4775
 - [pulseaiclub/phi#286](https://github.com/pulseaiclub/phi/pull/286) · state=closed · help-wanted: stake + contribute for #285
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=closed · help-wanted: stake + contribute for #273
@@ -47,7 +47,6 @@ _Generated 2026-10-05T19:18:26Z UTC · receipts=1139 · foreign_open=25 · tribu
 
 ## Foreign open PRs
 
-- [amponce/archive-movie-browser#437](https://github.com/amponce/archive-movie-browser/pull/437) — help-wanted: stake + contribute for #332
 - [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) — help-wanted: stake + contribute for #928
 - [TricklePay/tricklepay-backend#441](https://github.com/TricklePay/tricklepay-backend/pull/441) — help-wanted: stake + contribute for #395
 - [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) — help-wanted: stake + contribute for #225

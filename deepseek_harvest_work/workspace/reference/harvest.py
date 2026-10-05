@@ -90,6 +90,9 @@ def recursive_texts(obj, parent_key="", conv_meta: Optional[Dict]=None) -> List[
     elif isinstance(obj, dict):
         # Try to extract conversation‑level metadata
         new_meta = dict(conv_meta) if conv_meta else {}
+        # Flat message shape: {role, content, ...} — session_store/primary
+        if isinstance(obj.get("role"), str) and "content" in obj:
+            new_meta["role"] = obj["role"]
         if "id" in obj and parent_key == "":   # top-level conversation id
             new_meta["conversation_id"] = obj.get("id", new_meta.get("conversation_id"))
         if "title" in obj:

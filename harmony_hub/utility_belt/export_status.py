@@ -6,7 +6,9 @@ from datetime import datetime
 
 HOME = Path.home()
 cache_dir = HOME / '.deepcli/session_store'
-exports_dir = HOME / 'storage/downloads/synthegration_exports'
+exports_dir = HOME / 'synthegration_exports' / 'primary'
+if not exports_dir.is_dir():
+    exports_dir = HOME / 'storage/downloads/synthegration_exports'
 
 cached = {f.stem for f in cache_dir.glob('*.json')} if cache_dir.is_dir() else set()
 exported = {d.name for d in exports_dir.iterdir() if d.is_dir() and (d / 'manifest.json').exists()} if exports_dir.is_dir() else set()

@@ -141,9 +141,20 @@ def browse_sessions(_=''):
     """Interactive session browser with real‑time category toggles."""
     # ── load all sessions with metadata ──
     all_sessions = []
+    _roots = [
+        os.path.expanduser('~/.deepcli/session_store/primary'),
+        os.path.expanduser('~/.deepcli/session_store/secondary'),
+        os.path.expanduser('~/.deepcli/session_store'),
+    ]
+    _files = {}
+    for _root in _roots:
+        if os.path.isdir(_root):
+            for _f in Path(_root).glob('*.json'):
+                if _f.stem not in _files:
+                    _files[_f.stem] = _f
     cache_dir = os.path.expanduser('~/.deepcli/session_store')
-    if os.path.isdir(cache_dir):
-        for f in Path(cache_dir).glob('*.json'):
+    if _files:
+        for f in _files.values():
             try:
                 data = json.loads(f.read_text())
                 msgs = data if isinstance(data, list) else data.get('messages', [])
@@ -395,9 +406,20 @@ def main():
             sort_by = 'recent'
             if '--relevance' in args: sort_by = 'relevance'
             all_sessions = []
+            _roots2 = [
+                os.path.expanduser('~/.deepcli/session_store/primary'),
+                os.path.expanduser('~/.deepcli/session_store/secondary'),
+                os.path.expanduser('~/.deepcli/session_store'),
+            ]
+            _files2 = {}
+            for _root2 in _roots2:
+                if os.path.isdir(_root2):
+                    for _f2 in Path(_root2).glob('*.json'):
+                        if _f2.stem not in _files2:
+                            _files2[_f2.stem] = _f2
             cache_dir = os.path.expanduser('~/.deepcli/session_store')
-            if os.path.isdir(cache_dir):
-                for f in Path(cache_dir).glob('*.json'):
+            if _files2:
+                for f in _files2.values():
                     try:
                         data = json.loads(f.read_text())
                         msgs = data if isinstance(data, list) else data.get('messages', [])

@@ -2,6 +2,8 @@ name: DeepCLI Agent Bridge Smoke
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '* * * * *'
   pull_request:
     types: [opened, synchronize, reopened]
     paths:

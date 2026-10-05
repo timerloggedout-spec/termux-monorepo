@@ -35,7 +35,7 @@ jobs:
         run: python -m json.tool docs/ops/ATES-ORCHESTRATOR-TRACE.schema.json >/dev/null
       - name: Run deterministic MVT
         run: |
-          python -m unittest tests.test_orchestrator_benchmark tests.test_dspy_doe_ates -v
+          python -m unittest tests.test_orchestrator_benchmark tests.test_dspy_doe_ates tests.test_ates_orchestrator -v
           python scripts/ci/evaluate_orchestrator_benchmark.py --input tests/fixtures/ates/orchestrator_mvt.json --output /tmp/ates-orchestrator-results.ndjson
       - name: Export MLflow-compatible evaluation rows
         run: python scripts/ci/export_orchestrator_mlflow.py --input /tmp/ates-orchestrator-results.ndjson --output /tmp/ates-orchestrator-mlflow.json

@@ -16,12 +16,21 @@ gates_required: [repo-gate, termux-smoke]
 
 ## Intent
 
-Create a separate Gemini design/style proposal that ingests existing control-plane evidence and renders two complementary analytical sides:
+Create a separate Gemini design/style proposal that ingests existing control-plane evidence and renders three complementary analytical planes:
 
 - **LEFT / NOW:** tensor, graph, matrix, constellation layers.
-- **RIGHT / interthreading:** DAG, trellis, Markov state transitions.
+- **CENTER / windows:** cadence, Agile, Gantt/dependencies, integration, complexity, compute, quality, uncertainty, provenance.
+- **RIGHT / interthreading:** DAG, trellis, Markov state transitions, dependency paths.
 
 The Bayesian/Delphic layer sits between evidence and decision explanation. It does not replace the evidence ledger.
+
+## Computational substrate
+
+- `docs/schemas/graph-algorithm-registry.yaml` — registered algorithm semantics and complexity.
+- `scripts/delphic_graph_lab.py` — deterministic reference implementations.
+- `experiments/delphic-observatory-lab/graph-lab.html` — executable visual explanation surface.
+
+The Graph Lab deliberately distinguishes Git history, decision/evidence DAGs, dependency DAGs, state reconciliation, and Markov trellises.
 
 ## Existing architecture bindings
 
@@ -49,6 +58,9 @@ Adversarial review admission is dynamic. Candidate admission signals are uncerta
 - [x] Observatory projection contract added
 - [x] Design sandbox added
 - [x] Focused tests added
+- [x] Graph algorithm registry added
+- [x] Graph Lab reference engine added
+- [x] Graph Lab visual sandbox added
 - [x] Gemini review request prepared
 - [ ] Gemini findings received/dispositioned
 - [ ] repo-gate + termux-smoke

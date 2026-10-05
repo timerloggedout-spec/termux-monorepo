@@ -140,3 +140,65 @@ alias rm-arch='~/.local/bin/archive.sh'
 
 export HS_REMOTE_URL="https://hs-0345-7vj97vj49jp9cg45-8888.app.github.dev"
 export HINDSIGHT_BASE_URL="https://hs-0345-7vj97vj49jp9cg45-8888.app.github.dev"
+
+# >>> shell-forge destructive guard >>>
+# Blocks destructive git/rm verbs.  Bypass: SF_ALLOW_DESTRUCTIVE=1 <cmd>
+# Logs to:  ~/.deepcli/logs/shell-forge/destructive-bypass.log
+# Record in: docs/STANDARDS/EXCEPTIONS.md
+__sf_destructive_guard() {
+  local cmd="$1"
+  local -a patterns=(
+    'git reset --hard'
+    'git reset --keep'
+    'git reset --merge'
+    'git clean -fdx'
+    'git clean -fdX'
+    'git clean -xdf'
+    'git checkout -- .'
+    'git checkout -f'
+    'git restore --worktree'
+    'git stash drop'
+    'git stash clear'
+    'git branch -D'
+    'git branch --delete --force'
+    'git push --force'
+    'git push -f'
+    'rm -rf $HOME'
+    'rm -rf ~'
+    'rm -rf /data/data/com.termux/files/home'
+  )
+  local p
+  for p in "${patterns[@]}"; do
+    if [[ "$cmd" == *"$p"* ]]; then
+      if [[ "$cmd" == "SF_ALLOW_DESTRUCTIVE=1 "* ]]; then
+        mkdir -p "$HOME/.deepcli/logs/shell-forge"
+        printf '%s | pid=%s | tty=%s | cmd=%s\n' \
+          "$(date -Iseconds)" "$$" "${TTY:-?}" "$cmd" \
+          >> "$HOME/.deepcli/logs/shell-forge/destructive-bypass.log"
+        print -P "%F{yellow}SF bypass logged: $p%f"
+        print "  Add to docs/STANDARDS/EXCEPTIONS.md:"
+        print "  | $(date +%Y-%m-%d) | $p | <reason> | <reverted?> |"
+        return 0
+      fi
+      print -P "%F{red}BLOCKED: matches pattern: $p%f"
+      print ""
+      print "  This command can erase staged or uncommitted work."
+      print "  To proceed deliberately, prefix with SF_ALLOW_DESTRUCTIVE=1"
+      print ""
+      print "    SF_ALLOW_DESTRUCTIVE=1 $cmd"
+      print ""
+      print "  Every bypass logs to:"
+      print "    ~/.deepcli/logs/shell-forge/destructive-bypass.log"
+      print "  Every bypass MUST be recorded in:"
+      print "    docs/STANDARDS/EXCEPTIONS.md"
+      print ""
+      print "  If this was not your intent, read:"
+      print "    docs/STANDARDS/PROCESS/RECON-FIRST-WORKTREE-DISCIPLINE.md"
+      return 1
+    fi
+  done
+  return 0
+}
+add-zsh-hook preexec __sf_destructive_guard 2>/dev/null || true
+# <<< shell-forge destructive guard <<<
+

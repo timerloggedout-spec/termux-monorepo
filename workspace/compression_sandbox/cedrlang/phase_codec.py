@@ -114,13 +114,26 @@ VARIANT_REGEX = re.compile(_build_trie_regex(VARIANT_INDEX.keys()))
 
 # Module-level set of eligible leet characters
 ELIGIBLE_LEET_CHARS = set(LEET_MAP.keys())
-# Precompute set of token variants that contain zero eligible leet substitution characters.
-# For these invariant tokens (e.g., pr0b3, h4x, 3ch0), _replace_leet_default short-circuits instantly,
-# bypassing character iteration, list allocations, and random number generator evaluations.
-VARIANTS_WITH_NO_ELIGIBLE = {
+# Filter variant index to only tokens containing eligible leet substitution characters
+MUTABLE_VARIANTS = {
     v for v in VARIANT_INDEX.keys()
-    if not any(c in ELIGIBLE_LEET_CHARS for c in v.lower())
+    if any(c in ELIGIBLE_LEET_CHARS for c in v.lower())
 }
+
+# Pre-compile Trie regex for mutable variants to skip invariant tokens completely during substitution
+MUTABLE_VARIANT_REGEX = re.compile(_build_trie_regex(MUTABLE_VARIANTS))
+
+# Pre-compute positional mapping for mutable variants: (lowercase_token) -> tuple of (character_position, leet_replacement_char)
+MUTABLE_VARIANT_MAP: Dict[str, Tuple[Tuple[int, str], ...]] = {}
+for variant_key in VARIANT_INDEX.keys():
+    pos_map = tuple(
+        (i, LEET_MAP[char.lower()])
+        for i, char in enumerate(variant_key)
+        if char.lower() in LEET_MAP
+    )
+    if pos_map:
+        MUTABLE_VARIANT_MAP[variant_key.lower()] = pos_map
+
 
 def _from_1337_replace(match: re.Match[str]) -> str:
     """Top-level replacement callback for normalization back to canonical tokens."""
@@ -133,16 +146,19 @@ def _replace_leet_100(match: re.Match[str]) -> str:
 
 
 def _replace_leet_default(match: re.Match[str]) -> str:
-    """Top-level replacement callback for default 0.70 probability and unseeded RNG."""
+    """Top-level replacement callback for default 0.70 probability and unseeded RNG.
+
+    Uses pre-computed positional mapping MUTABLE_VARIANT_MAP to directly look up
+    eligible character indices and replacement characters without string iteration or dictionary lookups.
+    """
     token = match.group(0)
-    # Fast-path O(1) guard: short-circuit if token contains no eligible leet characters
-    if token.lower() in VARIANTS_WITH_NO_ELIGIBLE:
+    pos_map = MUTABLE_VARIANT_MAP.get(token.lower())
+    if not pos_map:
         return token
     chars = list(token)
-    for i, char in enumerate(chars):
-        replacement = LEET_MAP.get(char.lower())
-        if replacement and random.random() < INITIAL_SUBSTITUTION_PROBABILITY:
-            chars[i] = replacement
+    for pos, lchar in pos_map:
+        if random.random() < INITIAL_SUBSTITUTION_PROBABILITY:
+            chars[pos] = lchar
     return "".join(chars)
 
 
@@ -162,19 +178,22 @@ def to_1337speak(
         raise ValueError("probability must be between 0.0 and 1.0")
     if not text or probability == 0.0:
         return text
-    # Fast-path optimization: check if any matching tokens exist before evaluating RNG or regex sub
-    if not VARIANT_REGEX.search(text):
-        return text
 
     # Fast-path for probability=1.0: use pre-computed translation table and top-level callback
     # Bypasses per-match list creation, inner closure allocation, and RNG evaluations
     if probability == 1.0:
+        if not VARIANT_REGEX.search(text):
+            return text
         return VARIANT_REGEX.sub(_replace_leet_100, text)
 
+    # Fast-path optimization: check if any MUTABLE matching tokens exist before evaluating RNG or regex sub
+    if not MUTABLE_VARIANT_REGEX.search(text):
+        return text
+
     # Fast-path for default probability (0.70) and unseeded RNG: use top-level callback
-    # Bypasses inner closure function creation and RNG handle resolution
+    # Bypasses inner closure function creation, inner dictionary lookups, and RNG handle resolution
     if probability == INITIAL_SUBSTITUTION_PROBABILITY and rng is None:
-        return VARIANT_REGEX.sub(_replace_leet_default, text)
+        return MUTABLE_VARIANT_REGEX.sub(_replace_leet_default, text)
 
     # Direct RNG handle resolution: avoid allocating new random.Random() instances when unseeded
     rand_val = rng.random if rng is not None else random.random

@@ -1,6 +1,6 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-06T18:38:37Z UTC · receipts=1214 · foreign_open=27 · tributes=78_
+_Generated 2026-10-06T20:15:59Z UTC · receipts=1214 · foreign_open=26 · tributes=77_
 
 ## Tributes (contributor ledger)
 
@@ -29,7 +29,7 @@ _Generated 2026-10-06T18:38:37Z UTC · receipts=1214 · foreign_open=27 · tribu
 - [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) · state=open · help-wanted: stake + contribute for #225
 - [TricklePay/tricklepay-backend#441](https://github.com/TricklePay/tricklepay-backend/pull/441) · state=open · help-wanted: stake + contribute for #395
 - [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) · state=open · help-wanted: stake + contribute for #928
-- [O2sa/DevImpact#221](https://github.com/O2sa/DevImpact/pull/221) · state=open · help-wanted: stake + contribute for #220
+- [O2sa/DevImpact#221](https://github.com/O2sa/DevImpact/pull/221) · state=closed · help-wanted: stake + contribute for #220
 - [ROCm/rocm-libraries#13152](https://github.com/ROCm/rocm-libraries/pull/13152) · state=open · help-wanted: stake + contribute for #10586
 - [amponce/archive-movie-browser#437](https://github.com/amponce/archive-movie-browser/pull/437) · state=closed · help-wanted: stake + contribute for #332
 - [CopilotKit/CopilotKit#7594](https://github.com/CopilotKit/CopilotKit/pull/7594) · state=closed · help-wanted: stake + contribute for #4775
@@ -49,7 +49,6 @@ _Generated 2026-10-06T18:38:37Z UTC · receipts=1214 · foreign_open=27 · tribu
 
 - [topoteretes/cognee#5439](https://github.com/topoteretes/cognee/pull/5439) — help-wanted: stake + contribute for #4757
 - [ROCm/rocm-libraries#13152](https://github.com/ROCm/rocm-libraries/pull/13152) — help-wanted: stake + contribute for #10586
-- [O2sa/DevImpact#221](https://github.com/O2sa/DevImpact/pull/221) — help-wanted: stake + contribute for #220
 - [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) — help-wanted: stake + contribute for #928
 - [TricklePay/tricklepay-backend#441](https://github.com/TricklePay/tricklepay-backend/pull/441) — help-wanted: stake + contribute for #395
 - [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) — help-wanted: stake + contribute for #225

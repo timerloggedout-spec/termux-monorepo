@@ -20,6 +20,8 @@ class AutomatedContextCollector:
             rel_path_str = str(file_path)
         current_hash = hashlib.sha256(Path(file_path).read_bytes()).hexdigest()[:16]
         cache_file = Path.home() / '.cache/sig_cache' / f'{Path(file_path).name}.{current_hash}.json'
+        if cache_file.is_symlink() or cache_file.parent.is_symlink():
+            return None
         if cache_file.exists():
             with open(cache_file) as cf:
                 return json.load(cf)
@@ -31,14 +33,28 @@ class AutomatedContextCollector:
                 if entry['file'] == rel_path_str:
                     sigs.append(f"{entry['name']} line {entry['line']}: {entry.get('sig','')[:80]}")
         if sigs:
-            cache_file.parent.mkdir(parents=True, exist_ok=True)
-            with open(cache_file, 'w') as cf:
-                json.dump(sigs, cf)
+            if not cache_file.parent.is_symlink():
+                cache_file.parent.mkdir(parents=True, exist_ok=True)
+            if not cache_file.is_symlink():
+                with open(cache_file, 'w') as cf:
+                    json.dump(sigs, cf)
             return sigs
         return None
 
     def __init__(self, workspace_root):
-        self.workspace = os.path.abspath(workspace_root)
+        self.workspace = os.path.realpath(os.path.abspath(workspace_root))
+
+    def _validate_path(self, relative_path: str) -> str:
+        p_str = str(relative_path)
+        if ".." in Path(p_str).parts or os.path.isabs(p_str) or "\\" in p_str:
+            raise ValueError("Invalid file path")
+        raw_target = Path(os.path.join(self.workspace, p_str))
+        if raw_target.is_symlink():
+            raise ValueError("Invalid file path: symlink target rejected")
+        abs_target = os.path.realpath(str(raw_target))
+        if os.path.commonpath([self.workspace, abs_target]) != self.workspace:
+            raise ValueError("Invalid file path")
+        return abs_target
 
     def find_dependent_files(self, file_relative_path, conn=None):
         """
@@ -46,6 +62,7 @@ class AutomatedContextCollector:
         Accepts an optional open sqlite3.Connection to reuse existing connection handles and minimize disk I/O.
         Combines edge queries with UNION to halve query roundtrips.
         """
+        self._validate_path(file_relative_path)
         base_name = os.path.splitext(file_relative_path)[0]
         related_files = set()
         close_conn = False
@@ -86,7 +103,7 @@ class AutomatedContextCollector:
         return valid_dependencies
 
     def generate_ast_skeleton(self, file_relative_path):
-        abs_path = os.path.join(self.workspace, file_relative_path)
+        abs_path = self._validate_path(file_relative_path)
         ext = os.path.splitext(file_relative_path)[1]
         if ext == '.py':
             pattern = "class $NAME: $$$"
@@ -111,7 +128,7 @@ class AutomatedContextCollector:
     def assemble_minimized_bundle(self, active_target_file):
         import os
         mode = os.environ.get("CONTEXT_MODE", "full")
-        target_path = os.path.join(self.workspace, active_target_file)
+        target_path = self._validate_path(active_target_file)
         if mode == "minimized":
             sigs = self._get_cached_signatures(Path(target_path))
             target_code = "\n".join(sigs) if sigs else "# No signatures"

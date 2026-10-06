@@ -27,7 +27,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "8ecfec9c3da63fd391dd4cf0b9bc061e0fd7bbb2386f8278022404414732b21c",
+  "source_fingerprint": "0bfd4f5df4fd1c9036fd07b8ff6f82b25f9ccf6a43222f71dbbd1af1e8be3303",
   "workflow_count": 127,
   "workflows": [
     {
@@ -35,7 +35,7 @@
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
       "authority": "bounded-state-write",
-      "concurrency": "group: action-effectiveness-${{ github.event.pull_request.number || github.event.issue.number || inputs.pr_number || github.run_id }} cancel-in-progress: true",
+      "concurrency": "# Comment storms must not cancel an in-flight ledger. Cancelled zero-job # runs on issue_comment (PR #1156, 2026-10-06) are a failure mode, not a skip. # Include event_name so a /ledger comment does not cancel pull_request_target. group: action-effectiveness-${{ github.event.pull_request.number || github.event.issue.number || inputs.pr_number || github.run_id }}-${{ github.event_name }} cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
         "ledger"

@@ -10,6 +10,8 @@ import json, math, statistics, sys
 from collections import defaultdict
 
 VALID_STATUS = {"attempted", "failed", "succeeded", "skipped"}
+VALID_EVALUATED_STATUSES = {"attempted", "failed", "succeeded"}
+PROVIDER_ERROR_CLASSES = {"auth", "rate_limit", "provider", "transport"}
 VALID_OUTCOME = {"PASS", "FAIL", "UNKNOWN", None}
 
 
@@ -77,11 +79,11 @@ def main():
             if st == "skipped":
                 skipped_count += 1
                 continue
-            if st not in {"attempted", "failed", "succeeded"}:
+            if st not in VALID_EVALUATED_STATUSES:
                 continue
 
             attempted_count += 1
-            if x.get("error_class") in {"auth", "rate_limit", "provider", "transport"}:
+            if x.get("error_class") in PROVIDER_ERROR_CLASSES:
                 provider_failures += 1
 
             w = x.get("warning_count")

@@ -178,18 +178,18 @@ jobs:
 
           # Recover the previous v2 marker for longitudinal comparison. If absent, baseline is zero.
           existing="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" --jq '.[] | select((.body // "") | startswith("<!-- action-effectiveness-ledger:v2 ")) | .id' | head -n1 || true)"
-          previous_json='{}'
+          printf '{}\n' > "$RUNNER_TEMP/ledger-previous.json"
           if [[ -n "$existing" ]]; then
             previous_body="$(gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${existing}" --jq .body)"
-            previous_json="$(grep -o '<!-- action-effectiveness-ledger:v2 {.*} -->' <<<"$previous_body" | head -n1 | sed 's/^<!-- action-effectiveness-ledger:v2 //; s/ -->$//' || echo '{}')"
+            grep -o '<!-- action-effectiveness-ledger:v2 {.*} -->' <<<"$previous_body" | head -n1 | sed 's/^<!-- action-effectiveness-ledger:v2 //; s/ -->$//' > "$RUNNER_TEMP/ledger-previous.json" || printf '{}\n' > "$RUNNER_TEMP/ledger-previous.json"
           fi
 
-          prev_final_delta="$(jq -r '.final_delta // 0' <<<"$previous_json")"
-          prev_behind="$(jq -r '.behind // 0' <<<"$previous_json")"
-          prev_failure="$(jq -r '.check_failure // 0' <<<"$previous_json")"
-          prev_pending="$(jq -r '.check_pending // 0' <<<"$previous_json")"
-          prev_events="$(jq -r '.event_count // 0' <<<"$previous_json")"
-          prev_followed="$(jq -r '.followed_count // 0' <<<"$previous_json")"
+          prev_final_delta="$(jq -r '.final_delta // 0' < "$RUNNER_TEMP/ledger-previous.json")"
+          prev_behind="$(jq -r '.behind // 0' < "$RUNNER_TEMP/ledger-previous.json")"
+          prev_failure="$(jq -r '.check_failure // 0' < "$RUNNER_TEMP/ledger-previous.json")"
+          prev_pending="$(jq -r '.check_pending // 0' < "$RUNNER_TEMP/ledger-previous.json")"
+          prev_events="$(jq -r '.event_count // 0' < "$RUNNER_TEMP/ledger-previous.json")"
+          prev_followed="$(jq -r '.followed_count // 0' < "$RUNNER_TEMP/ledger-previous.json")"
 
           delta_final=$((final_delta - prev_final_delta))
           delta_behind=$((behind - prev_behind))
@@ -207,9 +207,9 @@ jobs:
             state='🟡 VALIDATION_PENDING'
           fi
 
-          history_json="$(jq -c --arg head "$head_sha" --arg base "$base_sha" --arg at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+          history_json="$(jq -cn --slurpfile prev "$RUNNER_TEMP/ledger-previous.json" --arg head "$head_sha" --arg base "$base_sha" --arg at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
             --argjson fd "$final_delta" --argjson b "$behind" --argjson ev "$event_count" --argjson fo "$followed_count" --argjson de "$delta_final" --argjson db "$delta_behind" --argjson df "$delta_failure" --argjson dp "$delta_pending" --argjson dv "$delta_events" --argjson dfo "$delta_followed" \
-            '(.history // []) + [{observed_at:$at,head_sha:$head,base_sha:$base,final_delta:$fd,behind:$b,event_count:$ev,followed_count:$fo,delta:{final_delta:$de,behind:$db,check_failure:$df,check_pending:$dp,event_count:$dv,followed_count:$dfo}}] | .[-12:]' <<<"$previous_json")"
+            '(( $prev[0] // {} ).history // []) + [{observed_at:$at,head_sha:$head,base_sha:$base,final_delta:$fd,behind:$b,event_count:$ev,followed_count:$fo,delta:{final_delta:$de,behind:$db,check_failure:$df,check_pending:$dp,event_count:$dv,followed_count:$dfo}}] | .[-12:]')"
           printf '%s\n' "$history_json" > "$RUNNER_TEMP/ledger-history.json"
           # recent_events and history are file inputs. Passing them as --argjson
           # overflows ARG_MAX (run 37161519194 exit 126: /usr/bin/jq Argument list too long).

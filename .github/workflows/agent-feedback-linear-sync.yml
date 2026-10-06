@@ -94,7 +94,7 @@ jobs:
 
             const search = await linear(
               `query($title: String!) {
-                issues(filter: { title: { eq: $title } }) {
+                issues(filter: { title: { eq: $title } }, first: 5) {
                   nodes { id identifier title }
                 }
               }`,

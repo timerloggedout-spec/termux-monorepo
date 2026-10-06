@@ -29,6 +29,7 @@ jobs:
           fetch-depth: 0
 
       - name: Run Gemini CLI PR review
+        id: gemini
         uses: google-github-actions/run-gemini-cli@v0
         continue-on-error: true
         env:
@@ -53,3 +54,8 @@ jobs:
             If this is a Jules PR, focus on gaps Jules may have missed rather than rewriting the same work.
 
             Additional context: ${{ inputs.additional_context }}
+
+      - name: Report Gemini CLI PR review status
+        if: steps.gemini.outcome == 'failure'
+        run: |
+          echo "::warning title=Gemini CLI PR Review::Gemini CLI review step encountered an error or hit rate/quota limits."

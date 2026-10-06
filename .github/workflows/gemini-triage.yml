@@ -28,6 +28,7 @@ jobs:
           persist-credentials: false
 
       - name: Run Gemini CLI triage
+        id: gemini
         uses: google-github-actions/run-gemini-cli@v0
         continue-on-error: true
         env:
@@ -51,3 +52,8 @@ jobs:
 
             Additional context: ${{ inputs.additional_context }}
             Stay within free-tier good citizenship (concise, no speculative long work).
+
+      - name: Report Gemini CLI triage status
+        if: steps.gemini.outcome == 'failure'
+        run: |
+          echo "::warning title=Gemini CLI Triage::Gemini CLI triage step encountered an error or hit rate/quota limits."

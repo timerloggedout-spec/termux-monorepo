@@ -28,6 +28,7 @@ jobs:
           persist-credentials: false
 
       - name: Run Gemini CLI assistant
+        id: gemini
         uses: google-github-actions/run-gemini-cli@v0
         continue-on-error: true
         env:
@@ -56,3 +57,8 @@ jobs:
             Perform the request within free-tier limits. Prefer analysis + concrete suggestions or minimal patches.
             If code changes are required and you cannot push, describe the exact diff and next steps for Jules or a human.
             Never invent work outside the proposal registry process. Never commit secrets.
+
+      - name: Report Gemini CLI assistant status
+        if: steps.gemini.outcome == 'failure'
+        run: |
+          echo "::warning title=Gemini CLI Assistant::Gemini CLI assistant step encountered an error or hit rate/quota limits."

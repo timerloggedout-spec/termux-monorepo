@@ -71,3 +71,12 @@ Session 2026-10-05 15:16 PDT / 2026-10-05 22:16 UTC:
 - Dispatch 37362442314 authoritative metadata: event workflow_dispatch, head_branch master, head_sha 7dc766caa5b7be6d63b94c3dec349684525bde51, conclusion failure. Not master-staging and not f534f2e3. Do not rewrite that provenance.
 - Do not promote #1140 until the follow-up SHA has no filename-named workflow failure and repo gate is green.
 - #984 not master. #903 HOLD. Do not pulse #175. #184 names-only. Linear TER-15 / TER-71 not promote authority. Vercel rate-limit noise. Devin trial-expired skip is not a pass.
+
+Session 2026-10-05 18:16 PDT / 2026-10-06 01:16 UTC:
+- Master tip at session start moved; observed tip `51f69cfdec4d953c3401f3245321fce9b4734ed2` (sweep receipt), then help-wanted refresh `37fb994`.
+- #1143 merged `01493829297a2f6035a45ecab688a5c0d7658eef`. Ancestor of tip (compare ahead, behind 0). Push gates on that SHA were not listed (superseded by #1144 51s later).
+- #1144 merged `fb1434ac652497cf6e5173dcebc41faad2241a42`. Push gates: repo gate 37393739923 success, termux smoke 37393740748 success, sweep 37393741112 success, empty-commit watcher 37393739957 success, cadence audit 37393739914 success, Team MVT 37393739716 success. Debate-hygiene class closed by inclusion; schedule rerun not yet observed. Not a filename failure.
+- Active class: Dependabot dynamic run 37393760327 on `fb1434ac` exit 1, security_update_not_possible for mcp-hub npm group (undici 5.28.4 vs 6.28.1 and siblings). Not YAML parse. Repair branch `fix/dependabot-mcp-hub-unresolvable-security` ignores those names so the update job stops failing Actions. Do not promote until that SHA has no filename-named workflow failure and repo gate is green.
+- Ops report run 37288781360 remains model_not_supported. Integration cannot read Actions variables (403). Do not swap the B3 model fallback again.
+- help-wanted-followup run 37398435167 success. Vercel rate-limit noise. Devin trial-expired skip is not a pass.
+- #984 not master. #903 HOLD. Do not pulse #175. #184 names-only. Linear TER-15 / TER-71 not promote authority.

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-06T16:49:07Z",
+  "generated_at": "2026-10-06T18:37:55Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
   "receipts": 1214,
@@ -16,6 +16,15 @@
     "ok": 1214
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/topoteretes/cognee/pull/5439",
+      "title": "help-wanted: stake + contribute for #4757",
+      "number": 5439,
+      "repo": "topoteretes/cognee",
+      "state": "open",
+      "updated_at": "2026-10-06T18:37:38Z",
+      "tribute": true
+    },
     {
       "html_url": "https://github.com/ROCm/rocm-libraries/pull/13152",
       "title": "help-wanted: stake + contribute for #10586",
@@ -251,8 +260,21 @@
       "tribute": true
     }
   ],
-  "foreign_open_count": 26,
+  "foreign_open_count": 27,
   "tributes": [
+    {
+      "pr_url": "https://github.com/topoteretes/cognee/pull/5439",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-10-06T18:37:38Z",
+      "providers": [],
+      "repo": "topoteretes/cognee",
+      "number": 5439,
+      "title": "help-wanted: stake + contribute for #4757",
+      "state": "open"
+    },
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
@@ -2413,7 +2435,7 @@
       "state": "closed"
     }
   ],
-  "tribute_count": 77,
+  "tribute_count": 78,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -13679,7 +13701,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "d816c9cd6efb33a0e726fc54fed437a309a96f97",
+    "source_sha": "e62fc379e0a5980bcc864b8475c3a17483dec8fe",
     "source_ref": "master",
     "history_complete": false,
     "history_coverage": "lane-local-complete; repository-wide historical accountability requires sweep-accountability backfill",
@@ -13713,12 +13735,12 @@
   },
   "evolution": [
     {
-      "sha": "d816c9cd6efb33a0e726fc54fed437a309a96f97",
-      "short_sha": "d816c9cd6efb",
-      "date": "2026-10-06T16:48:42Z",
+      "sha": "e62fc379e0a5980bcc864b8475c3a17483dec8fe",
+      "short_sha": "e62fc379e0a5",
+      "date": "2026-10-06T18:19:22Z",
       "author": "github-actions[bot]",
-      "subject": "ops(help-wanted): follow-up evidence 2026-10-06T16:48Z",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/d816c9cd6efb33a0e726fc54fed437a309a96f97"
+      "subject": "ops(lane-matrix): refresh generated status from recursive sweep",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/e62fc379e0a5980bcc864b8475c3a17483dec8fe"
     }
   ],
   "pipeline": [

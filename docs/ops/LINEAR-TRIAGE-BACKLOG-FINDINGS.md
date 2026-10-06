@@ -44,7 +44,9 @@ and nothing in the pipeline ever transitions them out of Triage once the PR is r
 | #485 | closed | yes |
 
 13 of 17 sampled PRs (76%) are already merged. For a merged PR, the review feedback it generated
-is resolved by definition (addressed pre-merge, or accepted as-is at merge time) — the rollup +
+was either addressed pre-merge or accepted as-is by the merging maintainer. Close a child as Done
+only with that evidence (merged-PR link); any finding with genuine residual work stays open (In Progress)
+and the rollup is Done only once no unresolved children remain. Beyond that, the rollup +
 child issues sitting in Triage for a merged PR are stale tracking noise, not open work. Extrapolated
 across the full 336+ issue set (dominated by the same two title shapes going back through PR
 history), the large majority of "stuck in Triage" is very likely this same pattern rather than a
@@ -101,7 +103,8 @@ free-plan issue cap), not on the GraphQL API's request rate and not on reads. Th
 - The actual risk is any workflow that tries to **create** new Linear issues (new feature
   rollups, new subtasks) will keep failing until either the workspace is upgraded off the free
   plan or issue volume is brought down (which is exactly what the Triage cleanup above starts
-  to address — every rollup/subtask issue closed frees capacity for real new tracked work).
+  to address). Note: on the Free plan, Done/Canceled issues still count toward the 250-issue cap
+  until they are archived (auto-archive can lag), so closing alone does not free capacity immediately.
 
 No further code change is needed for the sync script itself; the existing `USAGE_LIMIT_EXCEEDED`
 catch-and-warn behavior in `agent-feedback-linear-sync.yml` is the correct degrade-gracefully

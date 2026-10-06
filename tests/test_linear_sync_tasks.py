@@ -46,6 +46,7 @@ def test_get_tasks_ignores_non_dict_entries(monkeypatch, tmp_path):
 
 def test_get_tasks_handles_invalid_json_gracefully(monkeypatch, tmp_path):
     monkeypatch.setattr(linear_sync, "ARCHWIZ_DIR", tmp_path)
+    monkeypatch.setattr(linear_sync, "capture_exception", lambda exc: None)
     (tmp_path / "master_tasks.json").write_text("{not valid json", encoding="utf-8")
     assert linear_sync.get_tasks() == []
 

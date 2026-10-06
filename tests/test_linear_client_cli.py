@@ -142,13 +142,15 @@ def test_main_dispatches_create_with_all_args(monkeypatch):
 
 
 def test_main_requires_a_subcommand():
-    with pytest.raises(SystemExit):
+    with pytest.raises(SystemExit) as exc_info:
         linear_client.main([])
+    assert exc_info.value.code == 2
 
 
 def test_main_rejects_unknown_subcommand():
-    with pytest.raises(SystemExit):
+    with pytest.raises(SystemExit) as exc_info:
         linear_client.main(["frobnicate", "TER-1"])
+    assert exc_info.value.code == 2
 
 
 def test_main_catches_handler_exception_and_returns_1(monkeypatch):

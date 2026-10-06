@@ -109,3 +109,10 @@ During high-frequency randomized surface codec substitutions (`to_1337speak`), e
 
 **Action:**
 In randomized surface transformers, pre-filter non-mutable tokens using pre-computed module-scope sets to eliminate unnecessary allocations and RNG evaluations.
+
+## 2026-10-04 - Pre-Search Trigger Guards & Single-Pass Regex Expansion in Symbol Codecs
+**Learning:**
+In symbol compression and expansion pipelines (`compress`, `caveman`, `expand`), running sequential dictionary iterations over texts missing symbol triggers adds unnecessary CPU overhead. By adding a single global `ANY_SYMBOL_SEARCH` check, text without symbol triggers bypasses all pattern evaluations (~2.8x speedup). For symbol expansion (`expand`), single-pass regex substitution (`EXPAND_SINGLE_REGEX.sub`) replaces sequential loop iterations and string replace calls (~3.8x speedup).
+
+**Action:**
+Pre-filter inputs with a single global existence search pattern before executing sequential string/pattern substitutions, and use single-pass regex alternations for non-overlapping expansion maps.

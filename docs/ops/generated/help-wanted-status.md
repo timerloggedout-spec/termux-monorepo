@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-06T01:18:36Z UTC · receipts=1163 · foreign_open=24 · tributes=75_
+_Generated 2026-10-06T01:28:46Z UTC · receipts=1163 · foreign_open=25 · tributes=76_
 
 ## Tributes (contributor ledger)
 
+- [O2sa/DevImpact#221](https://github.com/O2sa/DevImpact/pull/221) · state=open · help-wanted: stake + contribute for #220
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -43,10 +44,10 @@ _Generated 2026-10-06T01:18:36Z UTC · receipts=1163 · foreign_open=24 · tribu
 - [kawacukennedy/afrpoweros#40](https://github.com/kawacukennedy/afrpoweros/pull/40) · state=closed · help-wanted: stake + contribute for #5
 - [nextcloud/spreed#19662](https://github.com/nextcloud/spreed/pull/19662) · state=closed · help-wanted: stake + contribute for #19498
 - [LibreUML/LibreUML#130](https://github.com/LibreUML/LibreUML/pull/130) · state=closed · help-wanted: stake + contribute for #126
-- [StellarCanary/Protocol-Canary#345](https://github.com/StellarCanary/Protocol-Canary/pull/345) · state=closed · help-wanted: stake + contribute for #295
 
 ## Foreign open PRs
 
+- [O2sa/DevImpact#221](https://github.com/O2sa/DevImpact/pull/221) — help-wanted: stake + contribute for #220
 - [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) — help-wanted: stake + contribute for #928
 - [TricklePay/tricklepay-backend#441](https://github.com/TricklePay/tricklepay-backend/pull/441) — help-wanted: stake + contribute for #395
 - [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) — help-wanted: stake + contribute for #225

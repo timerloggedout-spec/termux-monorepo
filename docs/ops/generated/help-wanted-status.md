@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-06T08:58:46Z UTC · receipts=1188 · foreign_open=25 · tributes=76_
+_Generated 2026-10-06T11:36:49Z UTC · receipts=1188 · foreign_open=26 · tributes=77_
 
 ## Tributes (contributor ledger)
 
+- [ROCm/rocm-libraries#13152](https://github.com/ROCm/rocm-libraries/pull/13152) · state=open · help-wanted: stake + contribute for #10586
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -43,10 +44,10 @@ _Generated 2026-10-06T08:58:46Z UTC · receipts=1188 · foreign_open=25 · tribu
 - [StayLitCodes/Vaultix#711](https://github.com/StayLitCodes/Vaultix/pull/711) · state=closed · help-wanted: stake + contribute for #706
 - [kawacukennedy/afrpoweros#40](https://github.com/kawacukennedy/afrpoweros/pull/40) · state=closed · help-wanted: stake + contribute for #5
 - [nextcloud/spreed#19662](https://github.com/nextcloud/spreed/pull/19662) · state=closed · help-wanted: stake + contribute for #19498
-- [LibreUML/LibreUML#130](https://github.com/LibreUML/LibreUML/pull/130) · state=closed · help-wanted: stake + contribute for #126
 
 ## Foreign open PRs
 
+- [ROCm/rocm-libraries#13152](https://github.com/ROCm/rocm-libraries/pull/13152) — help-wanted: stake + contribute for #10586
 - [O2sa/DevImpact#221](https://github.com/O2sa/DevImpact/pull/221) — help-wanted: stake + contribute for #220
 - [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) — help-wanted: stake + contribute for #928
 - [TricklePay/tricklepay-backend#441](https://github.com/TricklePay/tricklepay-backend/pull/441) — help-wanted: stake + contribute for #395

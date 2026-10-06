@@ -172,10 +172,14 @@ def _cache_save(session_id: str, messages: List[Dict[str, Any]], account: str = 
         except Exception:
             pass
 
-    with open(path, "w") as f:
+    p_file = Path(path)
+    if p_file.is_symlink():
+        raise ValueError("Symlink cache path rejected for security")
+
+    fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, "w") as f:
         json.dump(messages, f, indent=2)
 
-    p_file = Path(path)
     if p_file.exists() and not p_file.is_symlink():
         try:
             p_file.chmod(0o600)

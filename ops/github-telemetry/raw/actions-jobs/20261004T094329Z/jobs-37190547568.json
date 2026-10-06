@@ -1,0 +1,40 @@
+{
+  "collected_at": "2026-10-04T09:43:42.422166+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 37190547568,
+    "endpoint": ".../runs/37190547568/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 111401635181,
+        "run_id": 37190547568,
+        "workflow_name": "n8n SHE bridge",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37190547568",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAZ8A4NbQ",
+        "head_sha": "ba1efd460881f3b4950b8e9aff4dabdfea100a27",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/111401635181",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37190547568/job/111401635181",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-10-04T08:56:49Z",
+        "started_at": "2026-10-04T08:56:49Z",
+        "completed_at": "2026-10-04T08:56:39Z",
+        "name": "Emit sanitized workflow evidence to optional n8n",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/111401635181",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      }
+    ]
+  }
+}

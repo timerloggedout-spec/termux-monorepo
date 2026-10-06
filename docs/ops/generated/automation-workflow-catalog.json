@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "672dc066a36c137988eaba9cf73f294f3751e12f0ab928b05df7ee27e921a43d",
-  "workflow_count": 124,
+  "source_fingerprint": "d05369e0d3e04d7334598eaaa12ae42b4112ccb87635ae37c8fcd19e30957a04",
+  "workflow_count": 127,
   "workflows": [
     {
       "action_pins": [
@@ -640,7 +640,7 @@
         "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
       ],
       "authority": "writer",
-      "concurrency": "group: context-relationship-writer-master-staging cancel-in-progress: false",
+      "concurrency": "group: context-relationship-writer-master cancel-in-progress: false",
       "domain": "governance-relationships",
       "jobs": [
         "reconcile"
@@ -762,6 +762,29 @@
       "path": ".github/workflows/deepagent-task.yml",
       "schedules": [],
       "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09",
+        "actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: deepcli-agent-bridge cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "bridge-smoke"
+      ],
+      "name": "DeepCLI Agent Bridge Smoke",
+      "path": ".github/workflows/deepcli-agent-bridge.yml",
+      "schedules": [
+        "*/30 * * * *"
+      ],
+      "triggers": [
+        "pull_request",
+        "push",
+        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -948,6 +971,22 @@
         "push",
         "schedule",
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "validate"
+      ],
+      "name": "Domain Composition Matrix",
+      "path": ".github/workflows/domain-composition-matrix.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push"
       ]
     },
     {
@@ -1611,6 +1650,25 @@
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: operations-cadence-audit-${{ github.ref }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "audit"
+      ],
+      "name": "Operations Cadence Audit",
+      "path": ".github/workflows/operations-cadence-audit.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
       "authority": "writer",
       "concurrency": "group: ops-gitlink-lego-fork cancel-in-progress: false",
       "domain": "agentic-development",
@@ -1688,7 +1746,7 @@
         "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
       ],
       "authority": "bounded-state-write",
-      "concurrency": "# Coalesce superseded PR/provider events. State comments and requests are # SHA-bound and idempotent, so only the newest event for a PR needs to finish. group: peer-orch-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }} cancel-in-progress: true",
+      "concurrency": "# Comment storms must not cancel an in-flight provider collect. Cancelled # runs were recorded as failures (runs 37247048701 / 37247242679 on #1125). # Include event_name so a pull_request_target collect is not superseded by # a later issue_comment on the same PR. group: peer-orch-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}-${{ github.event_name }} cancel-in-progress: false",
       "domain": "peer-provider-review",
       "jobs": [
         "collect-peer-responses"

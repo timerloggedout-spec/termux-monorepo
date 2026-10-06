@@ -184,3 +184,33 @@ def test_merge_seeds_unions_symbol_spans_without_observed_at():
 
     assert merged["nodes"][0]["attributes"]["end_line"] == 120
     assert merged["nodes"][0]["attributes"]["line"] == 36
+
+
+def test_merge_seeds_coerces_string_end_line_without_observed_at():
+    first = {
+        **BASE,
+        "nodes": [
+            {
+                "kind": "symbol",
+                "external_id": "multi-ai-cli/backends/deepseek.py:DeepSeekBackend:37",
+                "attributes": {"name": "DeepSeekBackend", "line": 37, "end_line": 80},
+            }
+        ],
+        "edges": [],
+    }
+    second = {
+        **BASE,
+        "nodes": [
+            {
+                "kind": "symbol",
+                "external_id": "multi-ai-cli/backends/deepseek.py:DeepSeekBackend:37",
+                "attributes": {"name": "DeepSeekBackend", "line": "37", "end_line": "140"},
+            }
+        ],
+        "edges": [],
+    }
+
+    merged, _ = merge_seeds(first, second)
+
+    assert merged["nodes"][0]["attributes"]["end_line"] == 140
+    assert merged["nodes"][0]["attributes"]["line"] == 37

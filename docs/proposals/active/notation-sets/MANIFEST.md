@@ -10,7 +10,7 @@ reviewers:
   - id: timerloggedout-spec
     role: operator-authorizer
     status: requested
-related_issues: [320, 309, 182, 175, 126, 304, 196, 177, 208, 274]
+related_issues: [320, 309, 182, 175, 126, 304, 196, 177, 208, 274, 1115]
 related_prs: [322, 324]
 related_branches:
   - docs/notation-sets-evolution
@@ -33,6 +33,12 @@ Establish #320 as the proposal/specification layer for a canonical, continuously
 `docs/linguist/MASTER-ALIGNMENT.md` is the current master-first recovery plan. `workspace/compression_sandbox/cedrlang/phase_codec.py` restores the PR #154 `to_1337speak()` experiment as NSE-019: an explicit reversible phase with an initial **70% probability threshold**. The threshold is intentionally a rollout control for incrementally increasing usage, not a semantic/index confidence score or a claim of optimality.
 
 The recovery preserves the later `dc8c08d`/#196 CedrLang v2 baseline, strict technical-token protection, Caveman/Grimoire performance lineage, and AGENTS.hum round-trip rather than replaying historical commits wholesale.
+
+## Domain Composition Matrix
+
+Issue #1115 establishes the Domain Composition Matrix as a separate research database. It is deliberately not another notation index: the database stores domain-specific composition rules, typed constraints, evidence, confidence, lifecycle state, and projections. Initial master implementation lives under `docs/proposals/active/domain-composition-matrix/`, with a SQLite-compatible schema, seed records, deterministic validator, and regression tests. Generic notation semantics remain in the notation-sets proposal; the domain database supplies the research facts consumed by downstream views.
+
+The initial seeded conventions keep generic `f ; g`, Lean `f ≫ g`, and Haskell `m >>= f` distinct while allowing explicit semantic relationships. All seeded rows remain `candidate` until evidence and validation promote them.
 
 ## Research basis
 
@@ -79,6 +85,7 @@ These additions remain governed by NSE-008 (evolution ledger). The proposal rema
 - [x] ITEMS.md itemized
 - [x] Linguist lineage/provenance map added
 - [x] Master-first diaspora recovery item recorded (NSE-019)
+- [x] Domain Composition Matrix research database seeded (#1115)
 - [x] Recovery fixture + tests added
 - [ ] At least one non-author review recorded
 - [ ] Status → accepted before execution merges
@@ -96,5 +103,6 @@ These additions remain governed by NSE-008 (evolution ledger). The proposal rema
 - Issue #309: https://github.com/timerloggedout-spec/termux-monorepo/issues/309
 - Issue #182: https://github.com/timerloggedout-spec/termux-monorepo/issues/182
 - Issue #175: https://github.com/timerloggedout-spec/termux-monorepo/issues/175
+- Issue #1115: https://github.com/timerloggedout-spec/termux-monorepo/issues/1115
 - PR #322: https://github.com/timerloggedout-spec/termux-monorepo/pull/322
 - PR #324: https://github.com/timerloggedout-spec/termux-monorepo/pull/324

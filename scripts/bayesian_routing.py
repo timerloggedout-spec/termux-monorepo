@@ -11,7 +11,7 @@ import json
 import math
 import random
 import sys
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 from typing import Any
 
 
@@ -39,6 +39,34 @@ class BetaBelief:
         )
 
 
+def _posterior_and_executed_count(
+    observations: list[dict[str, Any]],
+    *,
+    alpha: float = 1.0,
+    beta: float = 1.0,
+) -> tuple[BetaBelief, int]:
+    cur_alpha = float(alpha)
+    cur_beta = float(beta)
+    executed_count = 0
+    seen: set[str] = set()
+    for item in observations:
+        if item.get("executed") is not True or item.get("attributed") is not True:
+            continue
+        experiment_id = item.get("experiment_id")
+        if experiment_id:
+            if experiment_id in seen:
+                continue
+            seen.add(experiment_id)
+        outcome = item.get("outcome")
+        if outcome is True:
+            cur_alpha += 1.0
+            executed_count += 1
+        elif outcome is False:
+            cur_beta += 1.0
+            executed_count += 1
+    return BetaBelief(cur_alpha, cur_beta), executed_count
+
+
 def posterior(
     observations: list[dict[str, Any]],
     *,
@@ -50,21 +78,7 @@ def posterior(
     admission failures, unknown outcomes, and retries sharing an experiment
     identity must not silently become independent performance failures.
     """
-    belief = BetaBelief(alpha, beta)
-    seen: set[str] = set()
-    for item in observations:
-        if item.get("executed") is not True or item.get("attributed") is not True:
-            continue
-        experiment_id = item.get("experiment_id")
-        if experiment_id and experiment_id in seen:
-            continue
-        if experiment_id:
-            seen.add(experiment_id)
-        outcome = item.get("outcome")
-        if outcome is True:
-            belief = belief.update(True)
-        elif outcome is False:
-            belief = belief.update(False)
+    belief, _ = _posterior_and_executed_count(observations, alpha=alpha, beta=beta)
     return belief
 
 
@@ -82,7 +96,10 @@ def probability_a_exceeds_b(
     if draws <= 0:
         raise ValueError("draws must be positive")
     rng = random.Random(seed)
-    wins = sum(sample_beta(a, rng) > sample_beta(b, rng) for _ in range(draws))
+    betavariate = rng.betavariate
+    a_alpha, a_beta = a.alpha, a.beta
+    b_alpha, b_beta = b.alpha, b.beta
+    wins = sum(betavariate(a_alpha, a_beta) > betavariate(b_alpha, b_beta) for _ in range(draws))
     return wins / draws
 
 
@@ -101,21 +118,15 @@ def summarize_candidate(
     *,
     seed: int = 0,
 ) -> dict[str, Any]:
-    belief = posterior(observations)
+    belief, executed_count = _posterior_and_executed_count(observations)
     rng = random.Random(seed)
     return {
         "candidate": candidate,
-        "posterior": asdict(belief),
+        "posterior": {"alpha": belief.alpha, "beta": belief.beta},
         "posterior_mean": belief.mean,
         "posterior_sd": math.sqrt(belief.variance),
         "thompson_sample": sample_beta(belief, rng),
-        "executed_observations": sum(
-            1
-            for x in observations
-            if x.get("executed") is True
-            and x.get("attributed") is True
-            and x.get("outcome") in (True, False)
-        ),
+        "executed_observations": executed_count,
     }
 
 

@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           ref: master
-          fetch-depth: 1
+          fetch-depth: 0
           persist-credentials: true
 
       - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
@@ -56,11 +56,60 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Run 37220078647: rebase refused because the generated file was already staged.
+          # Do not rebase a shallow checkout. Stash, check out origin/master, restore
+          # or regenerate, then commit. A second fetch covers a receipt between
+          # commit and push (run 37216655064).
+          git stash push -m docs-branch-index -- docs/ops/DOCS-BRANCH-INDEX.md
+          git fetch origin master
+          git checkout -B docs-index-refresh origin/master
+          if ! git stash pop; then
+            echo "Index stash did not apply; regenerating on origin/master."
+            git checkout -- docs/ops/DOCS-BRANCH-INDEX.md || true
+            git reset --hard origin/master
+            python3 scripts/ops/generate_docs_branch_index.py
+          fi
+          git add docs/ops/DOCS-BRANCH-INDEX.md
+          if git diff --cached --quiet; then
+            echo "Index delta absorbed by origin/master."
+            exit 0
+          fi
           git commit -s -m "chore(docs): refresh DOCS-BRANCH-INDEX" \
             -m "Automated inventory of docs/* debate lanes." \
             -m "Agent-Identity: GitHub Actions docs-branch-index" \
-            -m "Refs: #175"
-          git push origin HEAD:master
+            -m "Evidence: docs-branch-index run 37231399762 lock race after single rebase."
+          # Run 37231399762: fetch+rebase then push still lost the lock (rebased onto eee912e).
+          # (master moved 2e68c5dd -> b6df687 between rebase and push).
+          pushed=0
+          for attempt in 1 2 3 4 5; do
+            git fetch origin master
+            if ! git rebase origin/master; then
+              echo "Rebase failed on attempt ${attempt}; regenerating on origin/master."
+              git rebase --abort || true
+              git checkout -- docs/ops/DOCS-BRANCH-INDEX.md || true
+              git reset --hard origin/master
+              python3 scripts/ops/generate_docs_branch_index.py
+              git add docs/ops/DOCS-BRANCH-INDEX.md
+              if git diff --cached --quiet; then
+                echo "Index delta absorbed by origin/master."
+                exit 0
+              fi
+              git commit -s -m "chore(docs): refresh DOCS-BRANCH-INDEX" \
+                -m "Automated inventory of docs/* debate lanes." \
+                -m "Agent-Identity: GitHub Actions docs-branch-index" \
+                -m "Evidence: docs-branch-index run 37231399762 lock race after single rebase."
+            fi
+            if git push origin HEAD:master; then
+              pushed=1
+              break
+            fi
+            echo "Push rejected on attempt ${attempt}; refetch and retry."
+            sleep $((attempt * 2))
+          done
+          if [ "$pushed" -ne 1 ]; then
+            echo "docs-branch-index push failed after retries."
+            exit 1
+          fi
 
       - name: Summary
         run: |

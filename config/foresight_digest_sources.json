@@ -117,6 +117,30 @@
       "name": "Edge inference evidence lane",
       "role": "ARM/Android/local-runtime reproducibility and energy/memory measurement",
       "url": "https://github.com/ggml-org/llama.cpp"
+    },
+    {
+      "id": "mcp_protocol",
+      "name": "Model Context Protocol specification",
+      "role": "open agent/tool interoperability protocol",
+      "url": "https://blog.modelcontextprotocol.io/posts/2026-07-28/"
+    },
+    {
+      "id": "otel_genai",
+      "name": "OpenTelemetry GenAI semantic conventions",
+      "role": "neutral agent and MCP observability semantics",
+      "url": "https://opentelemetry.io/docs/specs/semconv/"
+    },
+    {
+      "id": "openshell",
+      "name": "NVIDIA OpenShell",
+      "role": "open agent runtime sandbox and policy enforcement research",
+      "url": "https://github.com/NVIDIA/OpenShell"
+    },
+    {
+      "id": "executorch",
+      "name": "ExecuTorch",
+      "role": "on-device Android/ARM inference runtime",
+      "url": "https://github.com/pytorch/executorch"
     }
   ],
   "source_classes": [

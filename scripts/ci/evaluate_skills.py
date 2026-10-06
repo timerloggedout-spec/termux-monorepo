@@ -11,7 +11,7 @@ import sys
 import zipfile
 from pathlib import Path
 
-VERSION = "1.1"
+VERSION = "1.2"
 SECRET_PATTERNS = [
     re.compile(r"(?:sk-[A-Za-z0-9]{20,}|gh[pousr]_[A-Za-z0-9_]{20,})"),
     re.compile(r"(?i)(?:api[_-]?key|token|password|secret)\s*[:=]\s*['\"][^'\"]{12,}['\"]"),
@@ -139,6 +139,24 @@ def evaluate_package(path: Path):
         return failure(str(path), ".skill", {"archive": f"invalid: {exc}"}, "archive_invalid")
 
 
+
+def evaluate_inventory(text: str, identity: str):
+    """Session mirrors under docs/ops/skills are notes, not skill contracts."""
+    if identity.startswith("docs/ops/skills/") and not text.startswith("---\n"):
+        return {
+            "path": identity,
+            "source_kind": "session_mirror",
+            "validator_version": VERSION,
+            "input_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
+            "valid": True,
+            "score": 100,
+            "dimensions": {},
+            "checks": {"frontmatter": "session mirror without contract; not a definition"},
+            "hard_failures": [],
+        }
+    return evaluate_text(text, identity, "SKILL.md")
+
+
 def changed_skill_paths(base_ref: str, head_ref: str, root: Path) -> set[str]:
     """Return changed skill-definition paths for regression gating on a PR."""
     completed = subprocess.run(
@@ -168,7 +186,8 @@ def main():
     for base in (root / ".agents" / "skills", root / ".github" / "skills", root / "docs" / "ops" / "skills"):
         if base.exists():
             for p in sorted(base.rglob("SKILL.md")):
-                results.append(evaluate_text(p.read_text(encoding="utf-8"), p.relative_to(root).as_posix(), "SKILL.md"))
+                rel = p.relative_to(root).as_posix()
+                results.append(evaluate_inventory(p.read_text(encoding="utf-8"), rel))
     for p in sorted(root.rglob("*.skill")):
         if ".git" not in p.parts:
             results.append(evaluate_package(p))

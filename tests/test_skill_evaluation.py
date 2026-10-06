@@ -4,7 +4,7 @@ import zipfile
 from pathlib import Path
 from unittest.mock import patch
 
-from scripts.ci.evaluate_skills import changed_skill_paths, evaluate_package, evaluate_text
+from scripts.ci.evaluate_skills import changed_skill_paths, evaluate_inventory, evaluate_package, evaluate_text
 
 GOOD = '''---
 name: example-skill
@@ -69,6 +69,17 @@ class SkillEvaluationTests(unittest.TestCase):
             paths = changed_skill_paths("base", "head", Path("."))
         self.assertEqual(paths, {".agents/skills/new/SKILL.md", "fixture.skill"})
         run.assert_called_once()
+
+
+
+    def test_docs_ops_session_mirror_without_frontmatter_is_not_a_definition(self):
+        result = evaluate_inventory("# session note\n", "docs/ops/skills/adaptive-wait/SKILL.md")
+        self.assertTrue(result["valid"])
+        self.assertEqual(result["source_kind"], "session_mirror")
+        self.assertEqual(result["hard_failures"], [])
+        canonical = evaluate_inventory("# no frontmatter\n", ".agents/skills/adaptive-wait/SKILL.md")
+        self.assertFalse(canonical["valid"])
+        self.assertIn("frontmatter", canonical["hard_failures"])
 
 
 if __name__ == "__main__":

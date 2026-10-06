@@ -207,6 +207,7 @@ To ensure clear scope boundaries and prevent unneeded re-work, all issues, PRs, 
 | **#154** | Linguist CedrLang v2 compression overhaul | Lane 1: Performance | MERGED via #196 | PR #154 closed as superseded (AUDIT-003) |
 | **#129 / PR #131** | MoneyBall agent roster & betting arena | Lane 4: Multi-Agent | MERGED | Built into `src/team_manager.py` (AUDIT-006) |
 | **#117 / PR #143** | MCP Agent Mail coordination layer | Lane 4: Multi-Agent | MERGED via #203| Composite action active in `.github/actions/mcp-agent-mail/` (AUDIT-007) |
+| **#59 / PR #137** | Gemini rate limits & soft skip handling | Lane 5: Workflows | MERGED / ACTIVE | Configured `continue-on-error: true` and router fallback (AUDIT-008) |
 
 ---
 

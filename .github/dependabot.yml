@@ -10,24 +10,8 @@ updates:
       interval: "monthly"
     open-pull-requests-limit: 0
 
-  - package-ecosystem: "npm"
-    directory: "/mcp-hub"
-    schedule:
-      interval: "monthly"
-    open-pull-requests-limit: 0
-    # Run 37393760327 on fb1434ac failed security_update_not_possible.
-    # Lockfile-resolvable versions are below the patched floors
-    # (undici 5.28.4 vs 6.28.1, minimatch 3.1.5 vs 4.2.5, tar 7.5.7 vs 7.5.21,
-    # smol-toml 1.5.2 vs 1.9.0, and the same class for brace-expansion,
-    # fast-uri, ip-address, js-yaml, @tootallnate/once). Ignoring stops the
-    # grouped security update job from failing Actions. Alerts remain.
-    ignore:
-      - dependency-name: "@tootallnate/once"
-      - dependency-name: "brace-expansion"
-      - dependency-name: "fast-uri"
-      - dependency-name: "ip-address"
-      - dependency-name: "js-yaml"
-      - dependency-name: "minimatch"
-      - dependency-name: "smol-toml"
-      - dependency-name: "tar"
-      - dependency-name: "undici"
+  # npm /mcp-hub is intentionally absent. Ignore rules did not stop the
+  # dynamic security-update job: run 37423240181 on 489b8d6b exited 1 with
+  # all_versions_ignored (same class as 37393760327 security_update_not_possible).
+  # Lockfile floors cannot resolve the patched ranges. Automated security
+  # fixes are paused at the repo setting; vulnerability alerts stay enabled.

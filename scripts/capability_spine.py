@@ -8,6 +8,7 @@ capability. Eligibility is decided before a candidate receives a score.
 
 from __future__ import annotations
 
+import itertools
 from collections.abc import Iterable
 from typing import Any
 
@@ -124,9 +125,8 @@ def make_candidate(
         openrouter_models,
         openrouter_catalog_state,
     )
-    limit = int(
-        limits.get(f"{provider}/{model}", limits.get(model, {})).get(capability, 0)
-    )
+    limit_entry = limits.get(f"{provider}/{model}") or limits.get(model) or {}
+    limit = int(limit_entry.get(capability, 0))
     quota_reason = None
     if limit <= 0:
         quota_reason = "no declared capability quota exists"
@@ -138,7 +138,8 @@ def make_candidate(
         availability = "blocked"
 
     elo = float(success_entry.get("elo", 1000))
-    suitability = float(success_entry.get("role_suitability", {}).get(capability, 1.0))
+    role_suitability_map = success_entry.get("role_suitability") or {}
+    suitability = float(role_suitability_map.get(capability, 1.0))
     historic_prior = _normalise_elo(elo) * _clamp(suitability / 1.3)
     repository_evidence_confidence = 0.20 if success_entry else 0.0
     repository_outcome = (
@@ -205,7 +206,7 @@ def decide(
     """Return a stable bounded observation without executing a specialist."""
     if mode != OBSERVE_MODE:
         raise ValueError("AR-18 accepts observe mode only")
-    all_candidates = list(candidates)[:MAX_CANDIDATES]
+    all_candidates = list(itertools.islice(candidates, MAX_CANDIDATES))
     eligible = [candidate for candidate in all_candidates if candidate["eligible"]]
     eligible.sort(
         key=lambda item: (

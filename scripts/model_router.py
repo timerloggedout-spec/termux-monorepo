@@ -431,9 +431,11 @@ def main():
                 if model not in permitted_openrouter_models:
                     continue
             seen.add(key)
-            model_entry = models_dict.get(model, {})
-            score = model_entry.get("elo", 1000) * model_entry.get("role_suitability", {}).get(role, 1.0)
-            limit = LIMITS.get(model if provider == "gemini" else f"{provider}/{model}", {}).get(role, 40)
+            model_entry = models_dict.get(model) or {}
+            role_suitability = model_entry.get("role_suitability") or {}
+            score = model_entry.get("elo", 1000) * role_suitability.get(role, 1.0)
+            limit_entry = LIMITS.get(model if provider == "gemini" else f"{provider}/{model}") or {}
+            limit = limit_entry.get(role, 40)
             used = get_usage(provider, model)
             if used >= limit:
                 sys.stderr.write(f"Candidate soft budget exhausted: {provider}/{model} ({used}/{limit})\n")

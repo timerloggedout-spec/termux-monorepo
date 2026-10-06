@@ -148,9 +148,9 @@ jobs:
               def bot_noise($body): ($body // "") | test("(usage limits|rate limit|review limit reached|auto-generated comment: release notes|<!-- action-effectiveness-ledger:)"; "i");
               def event($kind;$id;$at): {kind:$kind,id:$id,at:$at};
               ([
-                ($comments[] | select(((.body // "") | bot_noise) | not) | select(actionable(.body)) | select(.created_at != null) | event("issue_comment";(.id|tostring);.created_at)),
+                ($comments[] | select(bot_noise(.body) | not) | select(actionable(.body)) | select(.created_at != null) | event("issue_comment";(.id|tostring);.created_at)),
                 ($reviews[] | select(.state != "PENDING") | select(.submitted_at != null) | event("review";(.id|tostring);.submitted_at)),
-                ($inline[] | select(((.body // "") | bot_noise) | not) | select(actionable(.body)) | select(.created_at != null) | event("review_comment";(.id|tostring);.created_at))
+                ($inline[] | select(bot_noise(.body) | not) | select(actionable(.body)) | select(.created_at != null) | event("review_comment";(.id|tostring);.created_at))
               ] | sort_by(.at)) as $events
               | ($commits | map({sha:.sha, at:(.commit.committer.date // .commit.author.date)}) | map(select(.at != null)) | sort_by(.at)) as $cs
               | [$events[] as $e

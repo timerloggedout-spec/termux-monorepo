@@ -20,7 +20,14 @@ def main() -> int:
     data = yaml.safe_load(MATRIX.read_text(encoding="utf-8"))
     debates = data.get("debates") or []
     stale_after = int(data.get("stale_after_days") or 14)
-    today = dt.date.today()
+    # Committed TOC must be deterministic from MATRIX.yaml. Wall-clock today
+    # made the weekly schedule fail on the auto-built date line (run 37377726547).
+    as_of_raw = str(data.get("updated_at") or "")[:10]
+    try:
+        as_of = dt.date.fromisoformat(as_of_raw)
+    except ValueError:
+        as_of = dt.date(1970, 1, 1)
+    today = as_of
 
     rows = []
     attention = []
@@ -53,7 +60,7 @@ def main() -> int:
     body = f"""# DEBATE — Table of Contents
 
 > **LLM rule:** Prefer this file over any `active/*` body.
-> Auto-built {today.isoformat()} from MATRIX.yaml via `scripts/debate/build_toc.py`.
+> Auto-built {as_of.isoformat()} from MATRIX.yaml updated_at via `scripts/debate/build_toc.py`.
 
 | ID | Title | Status | Stale? | Blocker? | Tags | Path |
 |----|-------|--------|--------|----------|------|------|

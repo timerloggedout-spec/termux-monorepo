@@ -1,7 +1,7 @@
 # DEBATE — Table of Contents
 
 > **LLM rule:** Prefer this file over any `active/*` body.
-> Auto-built 2026-09-28 from MATRIX.yaml via `scripts/debate/build_toc.py`.
+> Auto-built 2026-09-23 from MATRIX.yaml updated_at via `scripts/debate/build_toc.py`.
 
 | ID | Title | Status | Stale? | Blocker? | Tags | Path |
 |----|-------|--------|--------|----------|------|------|

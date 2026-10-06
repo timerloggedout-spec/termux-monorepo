@@ -22,23 +22,15 @@ concurrency:
 
 jobs:
   observe-completion:
+    # Success and cancelled completions were starting a runner only to echo.
+    # On 2026-10-06 the receipt SHA f26eedd0 produced a burst of watcher runs
+    # with no incident. Skip the job unless the completion is actionable.
+    if: >-
+      github.event.workflow_run.conclusion == 'failure' ||
+      github.event.workflow_run.conclusion == 'timed_out'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Record non-incident completion
-        # action_required is bot approval / ruleset wait, not a compile failure.
-        # cancelled is already excluded: only failure and timed_out open incidents.
-        if: >-
-          github.event.workflow_run.conclusion != 'failure' &&
-          github.event.workflow_run.conclusion != 'timed_out'
-        env:
-          RUN_ID: ${{ github.event.workflow_run.id }}
-          CONCLUSION: ${{ github.event.workflow_run.conclusion }}
-          WORKFLOW_NAME: ${{ github.event.workflow_run.name }}
-        run: |
-          set -euo pipefail
-          echo "Observed workflow completion: ${WORKFLOW_NAME} (${RUN_ID}) conclusion=${CONCLUSION}; no incident notification required."
-
       - name: Create or update incident notification
         if: >-
           github.event.workflow_run.conclusion == 'failure' ||

@@ -44,41 +44,54 @@ def sha256_text(value: str) -> str:
 
 def sanitize(event: dict[str, Any], snapshot_id: str | None = None) -> dict[str, Any]:
     message = event.get("message")
-    out = {
+    msg_present = isinstance(message, str)
+    out: dict[str, Any] = {
         "contract_version": CONTRACT,
-        "snapshot_id": snapshot_id,
-        "timestamp": event.get("timestamp"),
-        "level": event.get("level"),
-        "agent_id": event.get("agent"),
-        "target": event.get("target"),
-        "attempt_no": event.get("attempt"),
+        "message_present": msg_present,
     }
-    if snapshot_id:
+    if snapshot_id is not None:
         out["snapshot_id"] = snapshot_id
-    if isinstance(message, str):
-        out["message_sha256"] = sha256_text(message)
-        out["message_present"] = True
-    else:
-        out["message_present"] = False
-    return {k: v for k, v in out.items() if v is not None}
+
+    ts = event.get("timestamp")
+    if ts is not None:
+        out["timestamp"] = ts
+    lvl = event.get("level")
+    if lvl is not None:
+        out["level"] = lvl
+    ag = event.get("agent")
+    if ag is not None:
+        out["agent_id"] = ag
+    tgt = event.get("target")
+    if tgt is not None:
+        out["target"] = tgt
+    att = event.get("attempt")
+    if att is not None:
+        out["attempt_no"] = att
+
+    if msg_present:
+        out["message_sha256"] = sha256_text(message)  # type: ignore[arg-type]
+
+    return out
 
 
 def write_csv(path: Path, records: list[dict[str, Any]]) -> None:
     with path.open("w", newline="", encoding="utf-8") as dst:
-        writer = csv.DictWriter(dst, fieldnames=FIELDNAMES, extrasaction="ignore")
-        writer.writeheader()
+        writer = csv.writer(dst)
+        writer.writerow(FIELDNAMES)
         for record in records:
-            row = {
-                key: str(value).lower() if isinstance(value, bool) else value
-                for key, value in record.items()
-            }
-            writer.writerow(row)
+            writer.writerow([
+                record.get("contract_version", CONTRACT),
+                record.get("snapshot_id") or "",
+                record.get("timestamp") or "",
+                record.get("level") or "",
+                record.get("agent_id") or "",
+                record.get("target") or "",
+                record.get("attempt_no") if record.get("attempt_no") is not None else "",
+                record.get("message_sha256") or "",
+                "true" if record.get("message_present") else "false",
+            ])
 
 
-def main() -> int:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("input", type=Path)
-    parser.add_argument("output", type=Path)
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("input", type=Path)
@@ -105,29 +118,36 @@ def main() -> int:
     try:
         if args.csv:
             csv_file = args.csv.open("w", newline="", encoding="utf-8")
-            csv_writer = csv.DictWriter(csv_file, fieldnames=FIELDNAMES, extrasaction="ignore")
-            csv_writer.writeheader()
+            csv_writer = csv.writer(csv_file)
+            csv_writer.writerow(FIELDNAMES)
 
         with args.input.open("r", encoding="utf-8") as src, args.output.open("w", encoding="utf-8") as dst:
             for line in src:
-                if not line.strip():
+                line_str = line.strip()
+                if not line_str:
                     continue
-                event = json.loads(line)
+                event = json.loads(line_str)
                 if not isinstance(event, dict):
                     raise ValueError("NDJSON event must be an object")
                 record = sanitize(event, args.snapshot_id)
-                if FORBIDDEN_FIELDS.intersection(record):
+                if not FORBIDDEN_FIELDS.isdisjoint(record):
                     raise ValueError("forbidden raw-content field reached sanitized record")
 
                 dst.write(json.dumps(record, separators=(",", ":"), sort_keys=True) + "\n")
                 count += 1
 
                 if csv_writer is not None:
-                    row = {
-                        key: str(value).lower() if isinstance(value, bool) else value
-                        for key, value in record.items()
-                    }
-                    csv_writer.writerow(row)
+                    csv_writer.writerow([
+                        CONTRACT,
+                        record.get("snapshot_id") or "",
+                        record.get("timestamp") or "",
+                        record.get("level") or "",
+                        record.get("agent_id") or "",
+                        record.get("target") or "",
+                        record.get("attempt_no") if record.get("attempt_no") is not None else "",
+                        record.get("message_sha256") or "",
+                        "true" if record.get("message_present") else "false",
+                    ])
     finally:
         if csv_file is not None:
             csv_file.close()

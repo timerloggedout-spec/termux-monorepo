@@ -65,3 +65,10 @@ In CI documentation indexers (`generate_docs_branch_index.py`), lag compilers (`
 
 **Action:**
 Pre-compile all YAML line parsing regexes at module scope and use `sum(1 for ...)` generators instead of instantiating intermediate lists when calculating count metrics.
+
+## 2026-10-03 - Stream Direct Construction and `isdisjoint` Set Validation in Evidence Harvesters
+**Learning:**
+In privacy-preserving NDJSON stream processors (`scripts/hex_moneyball_export.py`), using post-hoc dictionary comprehensions (`{k: v for k, v in out.items() if v is not None}`) and set intersection (`FORBIDDEN_FIELDS.intersection(record)`) creates heavy per-event allocation overhead. Direct conditional key assignment during dictionary construction and set `isdisjoint()` checking avoids intermediate tuple/set allocations and dictionary re-indexing frames. Additionally, writing CSV output rows directly via positional list formatting in `csv.writer` bypasses `csv.DictWriter` dictionary re-parsing and string casing conversions.
+
+**Action:**
+Construct stream records with direct conditional key insertions, check forbidden fields using `set.isdisjoint()`, and stream CSV outputs directly with `csv.writer`.

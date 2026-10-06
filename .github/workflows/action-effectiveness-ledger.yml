@@ -127,6 +127,11 @@ jobs:
           review_comments_json="$(jq -c 'add // []' <<<"$review_comments_pages")"
           commits_json="$(jq -c 'add // []' <<<"$commits_pages")"
 
+          printf '%s\n' "$comments_json" > "$RUNNER_TEMP/ledger-comments.json"
+          printf '%s\n' "$reviews_json" > "$RUNNER_TEMP/ledger-reviews.json"
+          printf '%s\n' "$review_comments_json" > "$RUNNER_TEMP/ledger-review-comments.json"
+          printf '%s\n' "$commits_json" > "$RUNNER_TEMP/ledger-commits.json"
+
           comment_count="$(jq 'length' <<<"$comments_json")"
           review_count="$(jq 'length' <<<"$reviews_json")"
           review_comment_count="$(jq 'length' <<<"$review_comments_json")"
@@ -139,20 +144,21 @@ jobs:
           check_pending="$(jq 'map(.check_runs[]) | map(select(.status != "completed")) | length' <<<"$checks_pages")"
 
           # Temporal follow-through is association, not causal attribution.
+          # Use --slurpfile inputs to prevent ARG_MAX parameter list length overflow.
           correlation_json="$(jq -n \
-            --argjson comments "$comments_json" \
-            --argjson reviews "$reviews_json" \
-            --argjson inline "$review_comments_json" \
-            --argjson commits "$commits_json" '
+            --slurpfile comments "$RUNNER_TEMP/ledger-comments.json" \
+            --slurpfile reviews "$RUNNER_TEMP/ledger-reviews.json" \
+            --slurpfile inline "$RUNNER_TEMP/ledger-review-comments.json" \
+            --slurpfile commits "$RUNNER_TEMP/ledger-commits.json" '
               def actionable($body): ($body // "") | test("(^|\\n)\\s*(fix|change|update|remove|add|please|must|should|address|resolve|request|review)\\b"; "i");
               def bot_noise($body): ($body // "") | test("(usage limits|rate limit|review limit reached|auto-generated comment: release notes|<!-- action-effectiveness-ledger:)"; "i");
               def event($kind;$id;$at): {kind:$kind,id:$id,at:$at};
               ([
-                ($comments[] | select(bot_noise(.body) | not) | select(actionable(.body)) | select(.created_at != null) | event("issue_comment";(.id|tostring);.created_at)),
-                ($reviews[] | select(.state != "PENDING") | select(.submitted_at != null) | event("review";(.id|tostring);.submitted_at)),
-                ($inline[] | select(bot_noise(.body) | not) | select(actionable(.body)) | select(.created_at != null) | event("review_comment";(.id|tostring);.created_at))
+                (($comments[0] // [])[] | select(bot_noise(.body) | not) | select(actionable(.body)) | select(.created_at != null) | event("issue_comment";(.id|tostring);.created_at)),
+                (($reviews[0] // [])[] | select(.state != "PENDING") | select(.submitted_at != null) | event("review";(.id|tostring);.submitted_at)),
+                (($inline[0] // [])[] | select(bot_noise(.body) | not) | select(actionable(.body)) | select(.created_at != null) | event("review_comment";(.id|tostring);.created_at))
               ] | sort_by(.at)) as $events
-              | ($commits | map({sha:.sha, at:(.commit.committer.date // .commit.author.date)}) | map(select(.at != null)) | sort_by(.at)) as $cs
+              | (($commits[0] // []) | map({sha:.sha, at:(.commit.committer.date // .commit.author.date)}) | map(select(.at != null)) | sort_by(.at)) as $cs
               | [$events[] as $e
                  | ($cs | map(select((.at|fromdateiso8601) > ($e.at|fromdateiso8601))) | .[0]) as $next
                  | {kind:$e.kind,id:$e.id,at:$e.at,associated_commit_sha:($next.sha // null),associated_commit_at:($next.at // null),lag_minutes:(if $next then ((($next.at|fromdateiso8601)-($e.at|fromdateiso8601))/60|floor) else null end),relationship:(if $next then "FOLLOWED_BY_COMMIT" else "NO_LATER_COMMIT_IN_RANGE" end)}

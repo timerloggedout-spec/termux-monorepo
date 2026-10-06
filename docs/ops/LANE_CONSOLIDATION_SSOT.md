@@ -198,15 +198,18 @@ To maintain this SSOT, automated sweeps (2-hour cron) and manual operator audits
 
 To ensure clear scope boundaries and prevent unneeded re-work, all issues, PRs, and audit discrepancies are linked directly to specific lane owners:
 
-| Issue / PR Tag | Title / Focus Area | Development Lane | Status & Owner | Action / Alignment |
-|---|---|---|---|---|
-| **#146 / PR #149** | Review signal alignment & disposition matrix | Lane 5: Workflows | OPEN (Grok) | Aligns lag index disposition & PR review signals |
-| **#145 / PR #148** | Programmatic session & context management | Lane 5: Workflows | OPEN (Jules) | Quota gating (3 concurrent, 15/24h rolling) |
-| **#130 / PR #142** | Telemetry parsing performance optimizations | Lane 1: Performance | MERGED via #187 | PR #142 closed as superseded (AUDIT-001) |
-| **#141** | Sentinel local privilege and symlink safety | Lane 2: Security | MERGED via #186 | PR #141 closed as superseded (AUDIT-002) |
-| **#154** | Linguist CedrLang v2 compression overhaul | Lane 1: Performance | MERGED via #196 | PR #154 closed as superseded (AUDIT-003) |
-| **#129 / PR #131** | MoneyBall agent roster & betting arena | Lane 4: Multi-Agent | MERGED | Built into `src/team_manager.py` (AUDIT-006) |
-| **#117 / PR #143** | MCP Agent Mail coordination layer | Lane 4: Multi-Agent | MERGED via #203| Composite action active in `.github/actions/mcp-agent-mail/` (AUDIT-007) |
+| Issue / PR Tag | Audit Discrepancy Tag | Title / Focus Area | Development Lane | Status & Owner | Action / Alignment |
+|---|---|---|---|---|---|
+| **#146 / PR #149** | N/A | Review signal alignment & disposition matrix | Lane 5: Workflows | OPEN (Grok) | Aligns lag index disposition & PR review signals |
+| **#145 / PR #148** | N/A | Programmatic session & context management | Lane 5: Workflows | OPEN (Jules) | Quota gating (3 concurrent, 15/24h rolling) |
+| **#130 / PR #142** | `[SKIPPED_REVIEW]` | Telemetry parsing performance optimizations | Lane 1: Performance | MERGED via #187 | PR #142 closed as superseded (AUDIT-001) |
+| **#141** | `[SKIPPED_REVIEW]` | Sentinel local privilege and symlink safety | Lane 2: Security | MERGED via #186 | PR #141 closed as superseded (AUDIT-002) |
+| **#154** | `[SKIPPED_REVIEW]` | Linguist CedrLang v2 compression overhaul | Lane 1: Performance | MERGED via #196 | PR #154 closed as superseded (AUDIT-003) |
+| **#174** | `[SKIPPED_REVIEW]` | DeepSeek integration premature execution | Lane 5: Workflows | CLOSED | ACK disposition gating updated in lag index (AUDIT-004) |
+| **Test Mismatch** | `[BUG]` | `test_sentinel_privileges.py` import failure | Lane 2: Security | FIXED | Updated import path to `deepcli.deepcli.core` (AUDIT-005) |
+| **#129 / PR #131** | `[SCOPE_LEAK]` | MoneyBall agent roster & betting arena | Lane 4: Multi-Agent | MERGED | Built into `src/team_manager.py` (AUDIT-006) |
+| **#117 / PR #143** | `[SCOPE_LEAK]` | MCP Agent Mail coordination layer | Lane 4: Multi-Agent | MERGED via #203| Composite action active in `.github/actions/mcp-agent-mail/` (AUDIT-007) |
+| **#59 / PR #137** | `[ERROR]` | Gemini Daily Quota Exhaustion & Soft Skip | Lane 5: Workflows | MERGED via #137 | Soft skip & residual fallback enabled (AUDIT-008) |
 
 ---
 

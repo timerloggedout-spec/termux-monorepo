@@ -30,6 +30,11 @@ concurrency:
 
 jobs:
   ledger:
+    # Bot issue_comment storms (coderabbitai[bot] on receipt SHAs) start a runner
+    # only to record a comment. Human comments and pull_request events still run.
+    if: >-
+      github.event_name != 'issue_comment' ||
+      (github.event.issue.pull_request && github.event.comment.user.type != 'Bot')
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:

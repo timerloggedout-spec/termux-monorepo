@@ -12,6 +12,10 @@ progress." Cancel-only left those ghosts in status=queued (reaper run
 ghost leaves the concurrent queue. In-progress work is still untouched.
 Evidence: DELETE on run 32218223992 returned 204 and a subsequent GET was 404.
 
+2026-10-07: cancel and force-cancel on 36803855107 and 36803852632 returned
+2xx while status stayed queued. DELETE returned 403 "Could not delete the
+workflow run". Run 34718267095 force-cancel returned 409 "has not been queued
+yet". A 2xx cancel is not clearance until a follow-up GET leaves queued.
 """
 from __future__ import annotations
 
@@ -55,6 +59,19 @@ def gh(method: str, path: str, token: str, body: dict | None = None) -> dict | l
         raise GitHubError(method, path, exc.code, detail) from exc
 
 
+def still_queued(run: dict) -> bool:
+    return (run.get("status") == "queued") and (run.get("conclusion") in (None, ""))
+
+
+def residual_detail(detail: str) -> str:
+    text = detail.replace("\n", " ")
+    if "not been queued yet" in text:
+        return "residual ghost: not queued yet"
+    if "Could not delete" in text:
+        return "residual ghost: delete 403"
+    return text[:180]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo", required=True)
@@ -93,31 +110,19 @@ def main() -> int:
                 "head_branch": run.get("head_branch"),
             }
             if args.apply:
-                try:
-                    gh("POST", f"/repos/{args.repo}/actions/runs/{run['id']}/cancel", token)
-                except GitHubError as exc:
-                    if exc.code == 409:
-                        try:
-                            gh(
-                                "DELETE",
-                                f"/repos/{args.repo}/actions/runs/{run['id']}",
-                                token,
-                            )
-                        except GitHubError as delete_exc:
-                            record["action"] = "uncancellable"
-                            record["detail"] = delete_exc.detail[:180]
-                            skipped += 1
-                            print(json.dumps(record, sort_keys=True))
-                            continue
-                        record["action"] = "deleted"
-                        record["detail"] = "cancel 409; deleted ghost"
-                        deleted += 1
-                        print(json.dumps(record, sort_keys=True))
-                        continue
-                    print(json.dumps({**record, "action": "error", "detail": str(exc)[:180]}))
+                outcome = clear_ghost(args.repo, run["id"], token)
+                record["action"] = outcome["action"]
+                if outcome.get("detail"):
+                    record["detail"] = outcome["detail"]
+                if outcome["action"] == "cancelled":
+                    cancelled += 1
+                elif outcome["action"] == "deleted":
+                    deleted += 1
+                elif outcome["action"] == "residual_ghost":
+                    skipped += 1
+                elif outcome["action"] == "error":
+                    print(json.dumps(record, sort_keys=True))
                     return 1
-                record["action"] = "cancelled"
-                cancelled += 1
             else:
                 record["action"] = "would_cancel"
                 cancelled += 1
@@ -131,6 +136,39 @@ def main() -> int:
         "apply": args.apply,
     }))
     return 0
+
+
+def clear_ghost(repo: str, run_id: int, token: str) -> dict:
+    """Cancel, verify, force-cancel, then delete. 403 delete is residual, not fatal."""
+    try:
+        gh("POST", f"/repos/{repo}/actions/runs/{run_id}/cancel", token)
+    except GitHubError as exc:
+        if exc.code != 409:
+            return {"action": "error", "detail": str(exc)[:180]}
+        return _delete_or_residual(repo, run_id, token, exc.detail)
+    current = gh("GET", f"/repos/{repo}/actions/runs/{run_id}", token)
+    if not still_queued(current):
+        return {"action": "cancelled"}
+    try:
+        gh("POST", f"/repos/{repo}/actions/runs/{run_id}/force-cancel", token)
+    except GitHubError as exc:
+        if exc.code != 409:
+            return {"action": "error", "detail": str(exc)[:180]}
+        return _delete_or_residual(repo, run_id, token, exc.detail)
+    current = gh("GET", f"/repos/{repo}/actions/runs/{run_id}", token)
+    if not still_queued(current):
+        return {"action": "cancelled", "detail": "force-cancel cleared queued status"}
+    return _delete_or_residual(repo, run_id, token, "still queued after force-cancel")
+
+
+def _delete_or_residual(repo: str, run_id: int, token: str, prior: str) -> dict:
+    try:
+        gh("DELETE", f"/repos/{repo}/actions/runs/{run_id}", token)
+    except GitHubError as exc:
+        if exc.code in (403, 409):
+            return {"action": "residual_ghost", "detail": residual_detail(exc.detail or prior)}
+        return {"action": "error", "detail": str(exc)[:180]}
+    return {"action": "deleted", "detail": residual_detail(prior) or "deleted ghost"}
 
 
 if __name__ == "__main__":

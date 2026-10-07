@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "545cb2aa72fc3db446acffbce83c4a7d1ae61f61a9e22ee86c0ff8c56b59e409",
-  "workflow_count": 128,
+  "source_fingerprint": "e5373e4207203179bfd63b4a761923fff7a46676bd6b4b27bcf8bb0758669e69",
+  "workflow_count": 129,
   "workflows": [
     {
       "action_pins": [
@@ -1567,8 +1567,25 @@
       ],
       "name": "Merge Promotion Queue v2",
       "path": ".github/workflows/merge-promotion-queue-v2.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: merge-promotion-queue-v3 cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "inventory"
+      ],
+      "name": "Merge Promotion Queue v3",
+      "path": ".github/workflows/merge-promotion-queue-v3.yml",
       "schedules": [
-        "17,47 * * * *"
+        "7,37 * * * *"
       ],
       "triggers": [
         "schedule",

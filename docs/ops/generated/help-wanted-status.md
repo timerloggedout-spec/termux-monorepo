@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-07T15:31:02Z UTC · receipts=1319 · foreign_open=26 · tributes=77_
+_Generated 2026-10-07T15:47:15Z UTC · receipts=1319 · foreign_open=27 · tributes=78_
 
 ## Tributes (contributor ledger)
 
+- [P-r-e-m-i-u-m/open-source-starter-lab#492](https://github.com/P-r-e-m-i-u-m/open-source-starter-lab/pull/492) · state=open · help-wanted: stake + contribute for #490
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -43,10 +44,10 @@ _Generated 2026-10-07T15:31:02Z UTC · receipts=1319 · foreign_open=26 · tribu
 - [Magiclovekorean/unbloarchy#5](https://github.com/Magiclovekorean/unbloarchy/pull/5) · state=closed · help-wanted: stake + contribute for #4
 - [GRITui/pixel-builder#13](https://github.com/GRITui/pixel-builder/pull/13) · state=closed · help-wanted: stake + contribute for #11
 - [OBLIQ-in/OBLIQ-Website#39](https://github.com/OBLIQ-in/OBLIQ-Website/pull/39) · state=closed · help-wanted: stake + contribute for #12
-- [speedyk-005/yasbd-lib#363](https://github.com/speedyk-005/yasbd-lib/pull/363) · state=closed · Submit contribution stake and upstream PR for #362
 
 ## Foreign open PRs
 
+- [P-r-e-m-i-u-m/open-source-starter-lab#492](https://github.com/P-r-e-m-i-u-m/open-source-starter-lab/pull/492) — help-wanted: stake + contribute for #490
 - [topoteretes/cognee#5439](https://github.com/topoteretes/cognee/pull/5439) — help-wanted: stake + contribute for #4757
 - [ROCm/rocm-libraries#13152](https://github.com/ROCm/rocm-libraries/pull/13152) — help-wanted: stake + contribute for #10586
 - [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) — help-wanted: stake + contribute for #928

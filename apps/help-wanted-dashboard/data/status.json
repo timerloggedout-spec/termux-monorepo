@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-07T00:10:22Z",
+  "generated_at": "2026-10-07T00:38:28Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
   "receipts": 1240,
@@ -16,15 +16,6 @@
     "ok": 1240
   },
   "foreign_open_prs": [
-    {
-      "html_url": "https://github.com/Soneso/stellar-agent-wallet/pull/349",
-      "title": "help-wanted: stake + contribute for #285",
-      "number": 349,
-      "repo": "Soneso/stellar-agent-wallet",
-      "state": "open",
-      "updated_at": "2026-10-07T00:09:43Z",
-      "tribute": true
-    },
     {
       "html_url": "https://github.com/topoteretes/cognee/pull/5439",
       "title": "help-wanted: stake + contribute for #4757",
@@ -260,7 +251,7 @@
       "tribute": true
     }
   ],
-  "foreign_open_count": 27,
+  "foreign_open_count": 26,
   "tributes": [
     {
       "pr_url": "https://github.com/Soneso/stellar-agent-wallet/pull/349",
@@ -268,12 +259,12 @@
         "upstream_pr"
       ],
       "ok": true,
-      "last_ts": "2026-10-07T00:09:43Z",
+      "last_ts": "2026-10-07T00:14:33Z",
       "providers": [],
       "repo": "Soneso/stellar-agent-wallet",
       "number": 349,
       "title": "help-wanted: stake + contribute for #285",
-      "state": "open"
+      "state": "closed"
     },
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
@@ -2445,22 +2436,9 @@
       "number": 3,
       "title": "chore: refresh research and development lane pins",
       "state": "closed"
-    },
-    {
-      "pr_url": "https://github.com/Research-Astute/manus-ui-research-hub/pull/1",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-08-21T06:29:22Z",
-      "providers": [],
-      "repo": "Research-Astute/manus-ui-research-hub",
-      "number": 1,
-      "title": "ci: add hub policy and onboarding controls",
-      "state": "closed"
     }
   ],
-  "tribute_count": 78,
+  "tribute_count": 77,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -13962,7 +13940,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "30586d58461412682a3227b9af8a4351d58afe50",
+    "source_sha": "fa2ca84e25a949d746a78d9eb9526ad9b6471d80",
     "source_ref": "master",
     "history_complete": false,
     "history_coverage": "lane-local-complete; repository-wide historical accountability requires sweep-accountability backfill",
@@ -13996,12 +13974,12 @@
   },
   "evolution": [
     {
-      "sha": "30586d58461412682a3227b9af8a4351d58afe50",
-      "short_sha": "30586d584614",
-      "date": "2026-10-07T00:09:58Z",
-      "author": "github-actions[bot]",
-      "subject": "ops(help-wanted): live status refresh 2026-10-07T00:09Z",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/30586d58461412682a3227b9af8a4351d58afe50"
+      "sha": "fa2ca84e25a949d746a78d9eb9526ad9b6471d80",
+      "short_sha": "fa2ca84e25a9",
+      "date": "2026-10-07T00:31:43Z",
+      "author": "termux-monorepo sweep",
+      "subject": "chore(ops): record sweep accountability receipt",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/fa2ca84e25a949d746a78d9eb9526ad9b6471d80"
     }
   ],
   "pipeline": [

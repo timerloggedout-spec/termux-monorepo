@@ -141,6 +141,10 @@ NEGATIVE_FIXTURES = {
     ),
     "empty block scalar before a sibling entry": EMPTY_BLOCK_SCALAR_BEFORE_A_SIBLING,
     "explicit indentation indicator satisfied": EXPLICIT_INDENTATION_INDICATOR_SATISFIED,
+    "empty literal scalar before a document end": "description: |\n\n...\n",
+    "empty folded scalar before a document end comment": "description: >-\n... # end\n",
+    "empty sequence scalar before a document end": "- run: |\n\n...\n",
+    "empty scalar before a new document": "description: |\n---\nnext: value\n",
 }
 
 
@@ -182,6 +186,21 @@ class BlockScalarScanTests(unittest.TestCase):
             (set(), []),
         )
 
+    def test_document_markers_after_empty_scalars_are_not_body_content(self) -> None:
+        for marker in ("...", "---", "... # end", "--- # next"):
+            with self.subTest(marker=marker):
+                self.assertEqual(
+                    repo_gate.block_scalar_scan(["description: |", "", marker]),
+                    (set(), []),
+                )
+
+    def test_marker_lookalikes_still_report_a_lost_body(self) -> None:
+        for marker in ("....", "---oops", "...oops"):
+            with self.subTest(marker=marker):
+                found = repo_gate.block_scalar_scan(["description: |", marker])[1]
+                self.assertEqual(len(found), 1, found)
+                self.assertIn("block scalar body", found[0])
+
     def test_a_partial_dedent_is_reported_once(self) -> None:
         found = repo_gate.block_scalar_scan(["run: |", "    first", "  second", "next: 1"])[1]
         self.assertEqual(len(found), 1, found)
@@ -212,7 +231,9 @@ class PyYamlBlockScalarAgreementTests(unittest.TestCase):
     @staticmethod
     def _parses(source: str) -> bool:
         try:
-            yaml.safe_load(source)
+            # YAML document-start markers can legally end an empty scalar and
+            # begin another document; consume the stream to validate every one.
+            list(yaml.safe_load_all(source))
         except Exception:
             return False
         return True

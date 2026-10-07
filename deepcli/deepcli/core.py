@@ -440,6 +440,7 @@ def stream_completion(token: str, prompt: str, session_id: str,
     retries = 0
     max_retries = 8
     base_delay = 2
+    final_text = ""
     while retries < max_retries:
         try:
             resp = base_sess.post(url, json=payload, headers=headers, stream=True)

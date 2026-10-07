@@ -125,3 +125,4 @@ A receipt is a durable projection of an observation. The historical corpus is th
 ## Closeout
 
 A cycle is not complete merely because a comment was posted, a provider was dispatched, or a commit exists. Re-fetch the current SHA, validate objective evidence, compare against the previous observation, classify the effect, and retain the result for future cohorts.
+Session 2026-10-06 21:14 PDT: jq programs moved to scripts/ci/ledger/*.jq. Do not interpolate state_json into GITHUB_OUTPUT. Run 37551434859 was ARG_MAX on the inline filter.

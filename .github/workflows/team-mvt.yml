@@ -271,8 +271,12 @@ jobs:
           lanes={r['lane'] for r in rows}
           expected=15
           lane_result='${{ needs.lane.result }}'
-          if len(rows)<expected and lane_result=='cancelled':
-              summary={'schema':'team-mvt-evaluation/v2','cells':len(rows),'expected':expected,'eligible':len(eligible),'executed':len(executed),'execution_failures':len(failed),'skipped':len(skipped),'lanes':sorted(lanes),'promotion_ready':False,'reason':'incomplete DOE cells after cancelled matrix jobs; not a catalog or evaluator defect'}
+          # Mixed matrix: cancelled siblings make needs.lane.result=failure, not cancelled
+          # (run 37371618749: 12/15 cells, 3 lanes cancelled, evaluate raised). Incomplete
+          # evidence is not promotion-ready and is not an evaluator defect when no uploaded
+          # lane reports execution_status=failure.
+          if len(rows)<expected and lane_result in ('cancelled','failure') and not failed:
+              summary={'schema':'team-mvt-evaluation/v2','cells':len(rows),'expected':expected,'eligible':len(eligible),'executed':len(executed),'execution_failures':len(failed),'skipped':len(skipped),'lanes':sorted(lanes),'promotion_ready':False,'reason':'incomplete DOE cells after cancelled or failed-closed matrix jobs; not a catalog or evaluator defect'}
               print(json.dumps(summary,sort_keys=True)); os.makedirs('/tmp/evaluation',exist_ok=True); json.dump(summary,open('/tmp/evaluation/summary.json','w'),indent=2)
               raise SystemExit(0)
           if len(rows)<expected: raise SystemExit(f'FAIL: expected {expected} DOE cells, found {len(rows)} (lane result {lane_result})')

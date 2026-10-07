@@ -2,7 +2,7 @@
 
 > Generated from GitHub repository and starring metadata. JSON is canonical; this file is a navigation projection.
 
-Observed: `2026-10-05T11:31:30.015702Z`
+Observed: `2026-10-06T11:18:16.918634Z`
 
 ## Navigation
 
@@ -389,6 +389,7 @@ Observed: `2026-10-05T11:31:30.015702Z`
 | [timerloggedout-spec/AlphaPy_fork](https://github.com/timerloggedout-spec/AlphaPy_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/anki-deck-scraper_fork](https://github.com/timerloggedout-spec/anki-deck-scraper_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/Anmol-Baranwal_fork](https://github.com/timerloggedout-spec/Anmol-Baranwal_fork) | owned | unclassified | medium | upstream-comparison, workflow-candidate |
+| [timerloggedout-spec/archive-movie-browser](https://github.com/timerloggedout-spec/archive-movie-browser) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/assistral_fork](https://github.com/timerloggedout-spec/assistral_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/ast-grep-essentials_fork](https://github.com/timerloggedout-spec/ast-grep-essentials_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/ATLAS](https://github.com/timerloggedout-spec/ATLAS) | owned | unclassified | medium | upstream-comparison |
@@ -448,6 +449,7 @@ Observed: `2026-10-05T11:31:30.015702Z`
 | [timerloggedout-spec/deepterm_fork2](https://github.com/timerloggedout-spec/deepterm_fork2) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/Delta-v](https://github.com/timerloggedout-spec/Delta-v) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/deploy-cloudrun_fork](https://github.com/timerloggedout-spec/deploy-cloudrun_fork) | owned | unclassified | medium | upstream-comparison |
+| [timerloggedout-spec/DevImpact](https://github.com/timerloggedout-spec/DevImpact) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/DFIRGlossary_fork](https://github.com/timerloggedout-spec/DFIRGlossary_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/doom_fork](https://github.com/timerloggedout-spec/doom_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/DSRs_fork](https://github.com/timerloggedout-spec/DSRs_fork) | owned | unclassified | medium | upstream-comparison |
@@ -4928,6 +4930,7 @@ Observed: `2026-10-05T11:31:30.015702Z`
 | [timerloggedout-spec/AlphaPy_fork](https://github.com/timerloggedout-spec/AlphaPy_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/anki-deck-scraper_fork](https://github.com/timerloggedout-spec/anki-deck-scraper_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/Anmol-Baranwal_fork](https://github.com/timerloggedout-spec/Anmol-Baranwal_fork) | owned | unclassified | medium | upstream-comparison, workflow-candidate |
+| [timerloggedout-spec/archive-movie-browser](https://github.com/timerloggedout-spec/archive-movie-browser) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/assistral_fork](https://github.com/timerloggedout-spec/assistral_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/ast-grep-essentials_fork](https://github.com/timerloggedout-spec/ast-grep-essentials_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/ATLAS](https://github.com/timerloggedout-spec/ATLAS) | owned | unclassified | medium | upstream-comparison |
@@ -4987,6 +4990,7 @@ Observed: `2026-10-05T11:31:30.015702Z`
 | [timerloggedout-spec/deepterm_fork2](https://github.com/timerloggedout-spec/deepterm_fork2) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/Delta-v](https://github.com/timerloggedout-spec/Delta-v) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/deploy-cloudrun_fork](https://github.com/timerloggedout-spec/deploy-cloudrun_fork) | owned | unclassified | medium | upstream-comparison |
+| [timerloggedout-spec/DevImpact](https://github.com/timerloggedout-spec/DevImpact) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/DFIRGlossary_fork](https://github.com/timerloggedout-spec/DFIRGlossary_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/doom_fork](https://github.com/timerloggedout-spec/doom_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/DSRs_fork](https://github.com/timerloggedout-spec/DSRs_fork) | owned | unclassified | medium | upstream-comparison |

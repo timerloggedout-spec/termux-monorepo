@@ -303,7 +303,11 @@ def block_scalar_scan(lines: list[str]) -> tuple[set[int], list[str]]:
         if first_indent <= header_indent:
             # The scalar is empty; the next line is whatever follows it. It is only a
             # fault when that line could not legally follow — the lost-body shape.
-            if not line.lstrip().startswith("#") and not SIBLING_ENTRY_RE.match(line):
+            if (
+                not line.lstrip().startswith("#")
+                and not ROOT_MARKER_RE.match(line)
+                and not SIBLING_ENTRY_RE.match(line)
+            ):
                 faults.append(
                     f"line {cursor + 1}: block scalar body indented {first_indent}, not past "
                     f"its header on line {header_number} at {header_indent}: {line.strip()[:60]!r}"

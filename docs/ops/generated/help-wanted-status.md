@@ -1,10 +1,9 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-06T07:30:08Z UTC · receipts=1163 · foreign_open=25 · tributes=76_
+_Generated 2026-10-07T07:10:52Z UTC · receipts=1293 · foreign_open=26 · tributes=77_
 
 ## Tributes (contributor ledger)
 
-- [O2sa/DevImpact#221](https://github.com/O2sa/DevImpact/pull/221) · state=open · help-wanted: stake + contribute for #220
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -29,6 +28,11 @@ _Generated 2026-10-06T07:30:08Z UTC · receipts=1163 · foreign_open=25 · tribu
 - [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) · state=open · help-wanted: stake + contribute for #225
 - [TricklePay/tricklepay-backend#441](https://github.com/TricklePay/tricklepay-backend/pull/441) · state=open · help-wanted: stake + contribute for #395
 - [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) · state=open · help-wanted: stake + contribute for #928
+- [ROCm/rocm-libraries#13152](https://github.com/ROCm/rocm-libraries/pull/13152) · state=open · help-wanted: stake + contribute for #10586
+- [topoteretes/cognee#5439](https://github.com/topoteretes/cognee/pull/5439) · state=open · help-wanted: stake + contribute for #4757
+- [aHuddini/UniPlaySong#101](https://github.com/aHuddini/UniPlaySong/pull/101) · state=closed · help-wanted: stake + contribute for #94
+- [Soneso/stellar-agent-wallet#349](https://github.com/Soneso/stellar-agent-wallet/pull/349) · state=closed · help-wanted: stake + contribute for #285
+- [O2sa/DevImpact#221](https://github.com/O2sa/DevImpact/pull/221) · state=closed · help-wanted: stake + contribute for #220
 - [amponce/archive-movie-browser#437](https://github.com/amponce/archive-movie-browser/pull/437) · state=closed · help-wanted: stake + contribute for #332
 - [CopilotKit/CopilotKit#7594](https://github.com/CopilotKit/CopilotKit/pull/7594) · state=closed · help-wanted: stake + contribute for #4775
 - [pulseaiclub/phi#286](https://github.com/pulseaiclub/phi/pull/286) · state=closed · help-wanted: stake + contribute for #285
@@ -40,14 +44,11 @@ _Generated 2026-10-06T07:30:08Z UTC · receipts=1163 · foreign_open=25 · tribu
 - [GRITui/pixel-builder#13](https://github.com/GRITui/pixel-builder/pull/13) · state=closed · help-wanted: stake + contribute for #11
 - [OBLIQ-in/OBLIQ-Website#39](https://github.com/OBLIQ-in/OBLIQ-Website/pull/39) · state=closed · help-wanted: stake + contribute for #12
 - [speedyk-005/yasbd-lib#363](https://github.com/speedyk-005/yasbd-lib/pull/363) · state=closed · Submit contribution stake and upstream PR for #362
-- [StayLitCodes/Vaultix#711](https://github.com/StayLitCodes/Vaultix/pull/711) · state=closed · help-wanted: stake + contribute for #706
-- [kawacukennedy/afrpoweros#40](https://github.com/kawacukennedy/afrpoweros/pull/40) · state=closed · help-wanted: stake + contribute for #5
-- [nextcloud/spreed#19662](https://github.com/nextcloud/spreed/pull/19662) · state=closed · help-wanted: stake + contribute for #19498
-- [LibreUML/LibreUML#130](https://github.com/LibreUML/LibreUML/pull/130) · state=closed · help-wanted: stake + contribute for #126
 
 ## Foreign open PRs
 
-- [O2sa/DevImpact#221](https://github.com/O2sa/DevImpact/pull/221) — help-wanted: stake + contribute for #220
+- [topoteretes/cognee#5439](https://github.com/topoteretes/cognee/pull/5439) — help-wanted: stake + contribute for #4757
+- [ROCm/rocm-libraries#13152](https://github.com/ROCm/rocm-libraries/pull/13152) — help-wanted: stake + contribute for #10586
 - [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) — help-wanted: stake + contribute for #928
 - [TricklePay/tricklepay-backend#441](https://github.com/TricklePay/tricklepay-backend/pull/441) — help-wanted: stake + contribute for #395
 - [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) — help-wanted: stake + contribute for #225
@@ -73,6 +74,6 @@ _Generated 2026-10-06T07:30:08Z UTC · receipts=1163 · foreign_open=25 · tribu
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=1163 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 1049, 'followup_reengage': 29, 'followup_stale_nudge': 36, 'followup_changes': 1}`
+## Outcomes · ok=1293 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 1169, 'followup_reengage': 33, 'followup_stale_nudge': 42, 'followup_changes': 1}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

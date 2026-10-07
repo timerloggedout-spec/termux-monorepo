@@ -33,7 +33,10 @@ on:
   issues:
     types: [opened, edited, closed, reopened, labeled, unlabeled, assigned, unassigned]
   issue_comment:
-    types: [created, edited, deleted]
+    # Receipt comments must not enter the runner. Run 37561312192 failed because
+    # fix/sweep-comment-gate replaced this file with PLACEHOLDER. Only an
+    # explicit /sweep command should schedule the job.
+    types: [created]
 
 permissions:
   contents: write
@@ -49,8 +52,7 @@ jobs:
   sweep:
     if: >-
       github.event_name != 'issue_comment' ||
-      github.event.comment.user.login != 'github-actions[bot]' ||
-      !contains(github.event.comment.body, 'sweep accountability receipt')
+      startsWith(github.event.comment.body, '/sweep')
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:

@@ -102,3 +102,9 @@ Session 2026-10-05 22:14 PDT / 2026-10-06 05:14 UTC:
 - Skill Quality Lane 37403348402 on `b2962651` (ops/session-note-1145-dependabot) exit 2, new blank line at EOF on the three skill files. Class closed by #1147. Not a current-tip failure.
 - Dependabot dynamic 37393760327 remains historical on `fb1434ac`. Ignore block present on tip. No open Dependabot PRs.
 - Combined status failure is Vercel rate-limit only. #984 not master. #903 HOLD. Do not pulse #175. #184 names-only. Linear TER-15 / TER-71 not promote authority.
+
+Session 2026-10-06 23:19 PDT / 2026-10-07 06:19 UTC:
+- Master tip at session start `2012b735571397891b0b7e6b90e21d1d7f5799b3`. No conclusion=failure in the latest master window.
+- Active class: fix/sweep-comment-gate @ `bd73365fe54839cf00835559cd425ee2f2c6dcf5` run 37561312192 zero jobs. Blob `311c8dd0658759f372c9be9a2065c327fdb1a203` is PLACEHOLDER (11 bytes). Do not promote that branch.
+- Repair is the comment gate on this PR. Do not promote until this SHA has no filename-named workflow failure and repo gate is green.
+- #903 HOLD. Do not pulse #175. #184 names-only. #984 not master. Linear TER-15 Done — not promote authority.

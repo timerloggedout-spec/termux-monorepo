@@ -10,3 +10,13 @@ def test_schedule_cutoff_is_shorter_than_comment_ghosts():
     assert schedule == now - timedelta(minutes=45)
     assert other == now - timedelta(hours=6)
     assert schedule > other
+
+
+from scripts.ci.actions_queue_reaper import classify_cancel_failure
+
+
+def test_not_queued_yet_plus_delete_403_is_github_ghost():
+    detail = "Cannot cancel a workflow run that has not been queued yet."
+    assert classify_cancel_failure(409, detail, 403) == "github_ghost"
+    assert classify_cancel_failure(409, "Cannot cancel a workflow run that is not in progress.", 403) == "uncancellable"
+    assert classify_cancel_failure(409, detail, None) == "deleted"

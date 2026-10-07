@@ -55,6 +55,23 @@ def gh(method: str, path: str, token: str, body: dict | None = None) -> dict | l
         raise GitHubError(method, path, exc.code, detail) from exc
 
 
+def classify_cancel_failure(cancel_code: int, cancel_detail: str, delete_code: int | None) -> str:
+    """Map cancel/delete outcomes. Not a workflow YAML failure.
+
+    Merge Promotion Queue run 37655538554 (created 2026-10-07T16:57:32Z) returned
+    cancel 409 "Cannot cancel a workflow run that has not been queued yet" and
+    DELETE 403 from both GITHUB_TOKEN (reaper 37673036011) and the operator token.
+    That ghost stays status=queued. Do not treat it as a code failure.
+    """
+    if cancel_code == 409 and delete_code == 403 and "not been queued yet" in cancel_detail:
+        return "github_ghost"
+    if cancel_code == 409 and delete_code == 403:
+        return "uncancellable"
+    if cancel_code == 409 and delete_code is None:
+        return "deleted"
+    return "error"
+
+
 def cutoff_for(event: str, now: datetime, older_hours: float, schedule_minutes: float) -> datetime:
     """Scheduled runs are hourly. A zero-job queue past the schedule window is a stall.
 
@@ -82,6 +99,7 @@ def main() -> int:
     cancelled = 0
     deleted = 0
     skipped = 0
+    ghosts = 0
     scanned = 0
     while page <= 8:
         query = urllib.parse.urlencode({"status": "queued", "per_page": 50, "page": page})
@@ -122,9 +140,13 @@ def main() -> int:
                                 token,
                             )
                         except GitHubError as delete_exc:
-                            record["action"] = "uncancellable"
+                            action = classify_cancel_failure(exc.code, exc.detail, delete_exc.code)
+                            record["action"] = action
                             record["detail"] = delete_exc.detail[:180]
-                            skipped += 1
+                            if action == "github_ghost":
+                                ghosts += 1
+                            else:
+                                skipped += 1
                             print(json.dumps(record, sort_keys=True))
                             continue
                         record["action"] = "deleted"
@@ -146,6 +168,7 @@ def main() -> int:
         "candidates": cancelled,
         "deleted": deleted,
         "uncancellable": skipped,
+        "github_ghost": ghosts,
         "apply": args.apply,
     }))
     return 0

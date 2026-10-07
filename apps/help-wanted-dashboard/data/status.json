@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-06T22:40:01Z",
+  "generated_at": "2026-10-07T00:09:57Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
   "receipts": 1240,
@@ -16,6 +16,15 @@
     "ok": 1240
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/Soneso/stellar-agent-wallet/pull/349",
+      "title": "help-wanted: stake + contribute for #285",
+      "number": 349,
+      "repo": "Soneso/stellar-agent-wallet",
+      "state": "open",
+      "updated_at": "2026-10-07T00:09:43Z",
+      "tribute": true
+    },
     {
       "html_url": "https://github.com/topoteretes/cognee/pull/5439",
       "title": "help-wanted: stake + contribute for #4757",
@@ -49,7 +58,7 @@
       "number": 441,
       "repo": "TricklePay/tricklepay-backend",
       "state": "open",
-      "updated_at": "2026-10-03T23:20:20Z",
+      "updated_at": "2026-10-07T00:09:49Z",
       "tribute": true
     },
     {
@@ -58,7 +67,7 @@
       "number": 273,
       "repo": "qim-center/qim3d",
       "state": "open",
-      "updated_at": "2026-10-03T23:03:10Z",
+      "updated_at": "2026-10-07T00:09:51Z",
       "tribute": true
     },
     {
@@ -251,8 +260,21 @@
       "tribute": true
     }
   ],
-  "foreign_open_count": 26,
+  "foreign_open_count": 27,
   "tributes": [
+    {
+      "pr_url": "https://github.com/Soneso/stellar-agent-wallet/pull/349",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-10-07T00:09:43Z",
+      "providers": [],
+      "repo": "Soneso/stellar-agent-wallet",
+      "number": 349,
+      "title": "help-wanted: stake + contribute for #285",
+      "state": "open"
+    },
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
@@ -2438,7 +2460,7 @@
       "state": "closed"
     }
   ],
-  "tribute_count": 77,
+  "tribute_count": 78,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -13940,7 +13962,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "48d6e7d9ce382850390f2cfba88af96391db9439",
+    "source_sha": "440a1fe81efcde683894050e025ac4f50d5ce3e4",
     "source_ref": "master",
     "history_complete": false,
     "history_coverage": "lane-local-complete; repository-wide historical accountability requires sweep-accountability backfill",
@@ -13974,12 +13996,12 @@
   },
   "evolution": [
     {
-      "sha": "48d6e7d9ce382850390f2cfba88af96391db9439",
-      "short_sha": "48d6e7d9ce38",
-      "date": "2026-10-06T22:39:42Z",
-      "author": "github-actions[bot]",
-      "subject": "ops(help-wanted): follow-up evidence 2026-10-06T22:39Z",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/48d6e7d9ce382850390f2cfba88af96391db9439"
+      "sha": "440a1fe81efcde683894050e025ac4f50d5ce3e4",
+      "short_sha": "440a1fe81efc",
+      "date": "2026-10-06T23:50:14Z",
+      "author": "termux-monorepo sweep",
+      "subject": "chore(ops): record sweep accountability receipt",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/440a1fe81efcde683894050e025ac4f50d5ce3e4"
     }
   ],
   "pipeline": [

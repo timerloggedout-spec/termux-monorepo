@@ -272,8 +272,26 @@ jobs:
             "Generated: " + .observed_at
           ' <<< "$STATE_JSON")"
 
+          # pull_request_target github.token sometimes returns 403
+          # "Resource not accessible by integration" (runs 37551532077 and
+          # 37556718962) even with issues: write. Measurement already succeeded.
+          # Do not fail the named workflow on that token boundary; keep other
+          # API errors fail-closed.
+          set +e
           if [[ -n "$EXISTING_COMMENT_ID" ]]; then
-            gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/comments/${EXISTING_COMMENT_ID}" -f body="$body" >/dev/null
+            err="$(gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/comments/${EXISTING_COMMENT_ID}" -f body="$body" 2>&1 >/dev/null)"
+            rc=$?
           else
-            gh api --method POST "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" -f body="$body" >/dev/null
+            err="$(gh api --method POST "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" -f body="$body" 2>&1 >/dev/null)"
+            rc=$?
+          fi
+          set -e
+          if [[ "$rc" -ne 0 ]]; then
+            if grep -q 'Resource not accessible by integration' <<<"$err"; then
+              echo "ledger publish skipped: github.token cannot comment (HTTP 403)" >> "$GITHUB_STEP_SUMMARY"
+              echo "$err" >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            echo "$err" >&2
+            exit "$rc"
           fi

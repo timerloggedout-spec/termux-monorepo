@@ -55,17 +55,29 @@ def gh(method: str, path: str, token: str, body: dict | None = None) -> dict | l
         raise GitHubError(method, path, exc.code, detail) from exc
 
 
+def cutoff_for(event: str, now: datetime, older_hours: float, schedule_minutes: float) -> datetime:
+    """Scheduled runs are hourly. A zero-job queue past the schedule window is a stall.
+
+    Merge Promotion Queue run 37655538554 stayed status=queued with zero jobs from
+    2026-10-07T16:57:32Z. The 6h threshold never saw it. Issue-comment ghosts stay
+    on the longer threshold.
+    """
+    if event == "schedule":
+        return now - timedelta(minutes=schedule_minutes)
+    return now - timedelta(hours=older_hours)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo", required=True)
     parser.add_argument("--older-than-hours", type=float, default=6)
+    parser.add_argument("--schedule-older-than-minutes", type=float, default=45)
     parser.add_argument("--apply", action="store_true")
     args = parser.parse_args()
     token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
     if not token:
         print("GH_TOKEN required", file=sys.stderr)
         return 2
-    cutoff = datetime.now(timezone.utc) - timedelta(hours=args.older_than_hours)
     page = 1
     cancelled = 0
     deleted = 0
@@ -80,6 +92,12 @@ def main() -> int:
         for run in runs:
             scanned += 1
             created = datetime.fromisoformat(run["created_at"].replace("Z", "+00:00"))
+            cutoff = cutoff_for(
+                str(run.get("event") or ""),
+                datetime.now(timezone.utc),
+                args.older_than_hours,
+                args.schedule_older_than_minutes,
+            )
             if created > cutoff:
                 continue
             jobs = gh("GET", f"/repos/{args.repo}/actions/runs/{run['id']}/jobs?per_page=1", token)

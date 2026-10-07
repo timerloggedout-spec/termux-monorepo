@@ -254,3 +254,8 @@ Session 2026-10-06 23:19 PDT / 2026-10-07 06:19 UTC:
 - Active class: fix/sweep-comment-gate @ `bd73365fe54839cf00835559cd425ee2f2c6dcf5` run 37561312192 zero jobs. Blob `311c8dd0658759f372c9be9a2065c327fdb1a203` is PLACEHOLDER (11 bytes). Do not promote that branch.
 - Repair is the comment gate on this PR. Do not promote until this SHA has no filename-named workflow failure and repo gate is green.
 - #903 HOLD. Do not pulse #175. #184 names-only. #984 not master. Linear TER-15 Done — not promote authority.
+Session 2026-10-07 11:14 PDT / 2026-10-07 18:14 UTC:
+- Master tip at session start `cca461e1d6978405c893d25a55ac03692634d614` (help-wanted refresh). No conclusion=failure in the latest master window. Dependabot dynamic 37423240181 remains historical on `489b8d6b`.
+- Active class: Merge Promotion Queue run 37655538554 on `6b95b53f` status=queued, zero jobs, created 2026-10-07T16:57:32Z. Not a filename failure. Sweep Accountability run 37561312192 on `fix/sweep-comment-gate` `bd73365fe` was a PLACEHOLDER intermediate; child `4b47a773` Sweep Accountability 37561321398 success. Not master.
+- Repair branch `fix/schedule-queue-reaper-45m` shortens the zero-job reaper threshold for schedule events to 45 minutes. Do not promote until that SHA has no filename-named workflow failure and repo gate is green.
+- #903 HOLD. Do not pulse #175. #184 names-only. #984 not master. Linear TER-15 Done — not promote authority.

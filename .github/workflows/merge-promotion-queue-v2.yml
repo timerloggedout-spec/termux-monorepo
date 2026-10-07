@@ -2,7 +2,11 @@ name: Merge Promotion Queue v2
 
 on:
   schedule:
-    - cron: '47 * * * *'
+    # Two minutes so a first-hour registration miss does not drop the hour.
+    # File created by #1167 at 21:18Z; cron '47 * * * *' did not start at 21:47Z
+    # (only run is dispatch 37688431750). Ghost 37655538554 remains queued on
+    # the old workflow id and is not this file's concurrency group.
+    - cron: '17,47 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -31,6 +35,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          echo "merge-queue-v2 event=${GITHUB_EVENT_NAME} sha=${GITHUB_SHA}"
           mkdir -p /tmp/merge-queue
           : > /tmp/merge-queue/candidates.ndjson
 

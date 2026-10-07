@@ -200,11 +200,13 @@ def to_1337speak(
 
     def replace(match: re.Match[str]) -> str:
         token = match.group(0)
+        pos_map = MUTABLE_VARIANT_MAP.get(token.lower())
+        if not pos_map:
+            return token
         chars = list(token)
-        for i, char in enumerate(chars):
-            replacement = LEET_MAP.get(char.lower())
-            if replacement and rand_val() < probability:
-                chars[i] = replacement
+        for pos, lchar in pos_map:
+            if rand_val() < probability:
+                chars[pos] = lchar
         return "".join(chars)
 
     return VARIANT_REGEX.sub(replace, text)

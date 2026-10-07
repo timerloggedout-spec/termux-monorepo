@@ -288,21 +288,24 @@ def translate_line(line: str, to_compressed: bool) -> str:
         line = INLINE_CODE_PATTERN.sub(ctx.raw_match_repl, line)
     if "<" in line:
         line = HTML_TAG_PATTERN.sub(ctx.raw_match_repl, line)
-    if "[" in line:
+    if "](" in line:
         line = LINK_PATTERN.sub(ctx.link_repl, line)
     if "*" in line:
-        line = BOLD_PATTERN_2.sub(ctx.bold_repl_2, line)
+        if "**" in line:
+            line = BOLD_PATTERN_2.sub(ctx.bold_repl_2, line)
         line = BOLD_PATTERN_1.sub(ctx.bold_repl_1, line)
     if "_" in line:
-        line = BOLD_PATTERN_UNDER2.sub(ctx.bold_repl_under2, line)
+        if "__" in line:
+            line = BOLD_PATTERN_UNDER2.sub(ctx.bold_repl_under2, line)
         line = BOLD_PATTERN_UNDER1.sub(ctx.bold_repl_under1, line)
     if "/" in line or "\\" in line or "~" in line or "." in line:
         line = PATH_REGEX.sub(ctx.raw_match_repl, line)
     if "." in line:
         line = DECIMAL_PATTERN.sub(ctx.raw_match_repl, line)
     line = translate_text_raw(line, to_compressed)
-    for ph, orig in reversed(ctx.placeholders):
-        line = line.replace(ph, orig)
+    if ctx.placeholders:
+        for ph, orig in reversed(ctx.placeholders):
+            line = line.replace(ph, orig)
     return line
 
 def compile_doc(text: str) -> str:

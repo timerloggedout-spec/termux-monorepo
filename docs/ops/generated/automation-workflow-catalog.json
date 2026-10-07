@@ -27,7 +27,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "77d09cdc13a0b9da73698ed1554e45f68ab13ccb82daabadc97054b54ede950e",
+  "source_fingerprint": "545cb2aa72fc3db446acffbce83c4a7d1ae61f61a9e22ee86c0ff8c56b59e409",
   "workflow_count": 128,
   "workflows": [
     {
@@ -1568,7 +1568,7 @@
       "name": "Merge Promotion Queue v2",
       "path": ".github/workflows/merge-promotion-queue-v2.yml",
       "schedules": [
-        "47 * * * *"
+        "17,47 * * * *"
       ],
       "triggers": [
         "schedule",

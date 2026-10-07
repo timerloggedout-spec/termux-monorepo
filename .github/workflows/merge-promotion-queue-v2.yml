@@ -1,6 +1,8 @@
-name: Merge Promotion Queue
+name: Merge Promotion Queue v2
 
 on:
+  schedule:
+    - cron: '47 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -16,7 +18,7 @@ permissions:
 # on merge-promotion-queue-v2.yml. This file is dispatch-only so the ghost
 # does not keep owning the cron.
 concurrency:
-  group: merge-promotion-queue-legacy-dispatch
+  group: merge-promotion-queue-v2
   cancel-in-progress: false
 
 jobs:

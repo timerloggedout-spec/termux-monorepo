@@ -43,5 +43,14 @@ class SweepAccountabilityTests(unittest.TestCase):
         self.assertIn("skip receipt: tip is a sweep receipt", text)
         self.assertIn('[ "$age" -lt 900 ]', text)
 
+
+    def test_issue_comment_gate_rejects_placeholder(self):
+        wf = Path(__file__).resolve().parents[2] / ".github/workflows/sweep-accountability.yml"
+        text = wf.read_text()
+        self.assertNotEqual(text.strip(), "PLACEHOLDER")
+        self.assertIn("types: [created]", text)
+        self.assertIn("startsWith(github.event.comment.body, '/sweep')", text)
+        self.assertNotIn("types: [created, edited, deleted]", text)
+
 if __name__ == "__main__":
     unittest.main()

@@ -10,9 +10,15 @@ permissions:
   pull-requests: read
   checks: read
 
+# Run 37655538554 (2026-10-07T16:57:32Z) is status=queued with zero jobs.
+# Cancel returned 409 not-been-queued-yet; DELETE returned 403 for GITHUB_TOKEN
+# and the operator token. That ghost holds group merge-promotion-queue, so the
+# hourly cron never starts a new run (last success 37599771695 at 09:19Z).
+# A new group lets schedules proceed. Do not cancel-in-progress: GitHub cannot
+# cancel the ghost, and a cancel attempt re-stalls the group.
 concurrency:
-  group: merge-promotion-queue
-  cancel-in-progress: true
+  group: merge-promotion-queue-v2
+  cancel-in-progress: false
 
 jobs:
   inventory:

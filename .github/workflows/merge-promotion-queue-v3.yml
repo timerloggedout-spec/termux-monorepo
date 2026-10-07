@@ -1,11 +1,14 @@
-name: Merge Promotion Queue v2
+name: Merge Promotion Queue v3
 
 on:
+  schedule:
+    # v2 workflow id 377846902 missed 22:17Z and 22:47Z after #1168
+    # (only run remains dispatch 37688431750). Old workflow id 354842048
+    # was disabled_manually this session; ghost 37655538554 stayed queued.
+    # New file so GitHub registers a workflow id that has never owned a
+    # queued schedule run. 7,37 avoids the top-of-hour load minute.
+    - cron: '7,37 * * * *'
   workflow_dispatch:
-
-# Schedule moved to merge-promotion-queue-v3.yml. v2 id 377846902 did not
-# start at 22:17Z or 22:47Z (only run dispatch 37688431750). Leaving a cron
-# on this id would keep a registered-but-silent schedule.
 
 permissions:
   contents: read
@@ -20,7 +23,7 @@ permissions:
 # on merge-promotion-queue-v2.yml. This file is dispatch-only so the ghost
 # does not keep owning the cron.
 concurrency:
-  group: merge-promotion-queue-v2
+  group: merge-promotion-queue-v3
   cancel-in-progress: false
 
 jobs:
@@ -33,7 +36,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          echo "merge-queue-v2 event=${GITHUB_EVENT_NAME} sha=${GITHUB_SHA}"
+          echo "merge-queue-v3 event=${GITHUB_EVENT_NAME} sha=${GITHUB_SHA}"
           mkdir -p /tmp/merge-queue
           : > /tmp/merge-queue/candidates.ndjson
 

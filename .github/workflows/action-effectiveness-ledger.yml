@@ -142,37 +142,23 @@ jobs:
           check_pending="$(jq 'map(.check_runs[]) | map(select(.status != "completed")) | length' "$RUNNER_TEMP/ledger-checks-pages.json")"
 
           # Temporal follow-through is association, not causal attribution.
-          # --slurpfile reads one JSON value per file and wraps it, so [0] is the array.
-          correlation_json="$(jq -n \
+          # Filter programs live in files. Inline jq programs overflow ARG_MAX
+          # (run 37551434859 exit 126: /usr/bin/jq Argument list too long).
+          jq -n \
             --slurpfile comments "$RUNNER_TEMP/ledger-comments.json" \
             --slurpfile reviews "$RUNNER_TEMP/ledger-reviews.json" \
             --slurpfile inline "$RUNNER_TEMP/ledger-inline.json" \
-            --slurpfile commits "$RUNNER_TEMP/ledger-commits.json" '
-              def actionable($body): ($body // "") | test("(^|\\n)\\s*(fix|change|update|remove|add|please|must|should|address|resolve|request|review)\\b"; "i");
-              def bot_noise($body): ($body // "") | test("(usage limits|rate limit|review limit reached|auto-generated comment: release notes|<!-- action-effectiveness-ledger:)"; "i");
-              def event($kind;$id;$at): {kind:$kind,id:$id,at:$at};
-              ([
-                ($comments[0][] | select(((.body // "") | bot_noise(.)) | not) | select(actionable(.body)) | select(.created_at != null) | event("issue_comment";(.id|tostring);.created_at)),
-                ($reviews[0][] | select(.state != "PENDING") | select(.submitted_at != null) | event("review";(.id|tostring);.submitted_at)),
-                ($inline[0][] | select(((.body // "") | bot_noise(.)) | not) | select(actionable(.body)) | select(.created_at != null) | event("review_comment";(.id|tostring);.created_at))
-              ] | sort_by(.at)) as $events
-              | ($commits[0] | map({sha:.sha, at:(.commit.committer.date // .commit.author.date)}) | map(select(.at != null)) | sort_by(.at)) as $cs
-              | [$events[] as $e
-                 | ($cs | map(select((.at|fromdateiso8601) > ($e.at|fromdateiso8601))) | .[0]) as $next
-                 | {kind:$e.kind,id:$e.id,at:$e.at,associated_commit_sha:($next.sha // null),associated_commit_at:($next.at // null),lag_minutes:(if $next then ((($next.at|fromdateiso8601)-($e.at|fromdateiso8601))/60|floor) else null end),relationship:(if $next then "FOLLOWED_BY_COMMIT" else "NO_LATER_COMMIT_IN_RANGE" end)}
-                ]
-              | {all:., recent:(.[-32:])}
-            '
-          )"
-
-          event_count="$(jq '.all | length' <<<"$correlation_json")"
-          followed_count="$(jq '[.all[] | select(.associated_commit_sha != null)] | length' <<<"$correlation_json")"
+            --slurpfile commits "$RUNNER_TEMP/ledger-commits.json" \
+            -f scripts/ci/ledger/correlation.jq \
+            > "$RUNNER_TEMP/ledger-correlation.json"
+          event_count="$(jq '.all | length' "$RUNNER_TEMP/ledger-correlation.json")"
+          followed_count="$(jq '[.all[] | select(.associated_commit_sha != null)] | length' "$RUNNER_TEMP/ledger-correlation.json")"
           followthrough_pct=0
           if (( event_count > 0 )); then followthrough_pct=$(( followed_count * 100 / event_count )); fi
-          first_followthrough_sha="$(jq -r '.all | map(select(.associated_commit_sha != null)) | .[0].associated_commit_sha // ""' <<<"$correlation_json")"
-          median_lag_minutes="$(jq -r '.all | map(select(.lag_minutes != null) | .lag_minutes) | if length == 0 then 0 else sort | .[length/2|floor] end' <<<"$correlation_json")"
-          recent_events_json="$(jq -c '[.recent // [] | .[-8:] | .[] | {id, created_at, html_url, event: (.event // .type // "event"), actor: (.actor.login // .user.login // "unknown")}]' <<<"$correlation_json")"
-          printf '%s\n' "$recent_events_json" > "$RUNNER_TEMP/ledger-recent-events.json"
+          first_followthrough_sha="$(jq -r '.all | map(select(.associated_commit_sha != null)) | .[0].associated_commit_sha // ""' "$RUNNER_TEMP/ledger-correlation.json")"
+          median_lag_minutes="$(jq -r '.all | map(select(.lag_minutes != null) | .lag_minutes) | if length == 0 then 0 else sort | .[length/2|floor] end' "$RUNNER_TEMP/ledger-correlation.json")"
+          jq -c '[.recent // [] | .[-8:] | .[] | {id, created_at, html_url, event: (.event // .type // "event"), actor: (.actor.login // .user.login // "unknown")}]' \
+            "$RUNNER_TEMP/ledger-correlation.json" > "$RUNNER_TEMP/ledger-recent-events.json"
 
           # Recover the previous v2 marker for longitudinal comparison. If absent, baseline is zero.
           existing="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" --jq '.[] | select((.body // "") | startswith("<!-- action-effectiveness-ledger:v2 ")) | .id' | head -n1 || true)"
@@ -210,9 +196,10 @@ jobs:
             --argjson fd "$final_delta" --argjson b "$behind" --argjson ev "$event_count" --argjson fo "$followed_count" --argjson de "$delta_final" --argjson db "$delta_behind" --argjson df "$delta_failure" --argjson dp "$delta_pending" --argjson dv "$delta_events" --argjson dfo "$delta_followed" \
             '(.history // []) + [{observed_at:$at,head_sha:$head,base_sha:$base,final_delta:$fd,behind:$b,event_count:$ev,followed_count:$fo,delta:{final_delta:$de,behind:$db,check_failure:$df,check_pending:$dp,event_count:$dv,followed_count:$dfo}}] | .[-12:]' "$RUNNER_TEMP/ledger-previous.json")"
           printf '%s\n' "$history_json" > "$RUNNER_TEMP/ledger-history.json"
-          # recent_events and history are file inputs. Passing them as --argjson
-          # overflows ARG_MAX (run 37161519194 exit 126: /usr/bin/jq Argument list too long).
-          state_json="$(jq -cn \
+          # recent_events and history are file inputs. The state program is also
+          # a file: an inline filter plus --slurpfile still overflowed ARG_MAX
+          # (run 37551434859 exit 126). Do not echo the object into GITHUB_OUTPUT.
+          jq -n \
             --slurpfile recent_events "$RUNNER_TEMP/ledger-recent-events.json" \
             --slurpfile history "$RUNNER_TEMP/ledger-history.json" \
             --arg observed_at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
@@ -225,10 +212,10 @@ jobs:
             --argjson event_count "$event_count" --argjson followed_count "$followed_count" --argjson followthrough_pct "$followthrough_pct" --argjson median_lag_minutes "$median_lag_minutes" \
             --argjson delta_final "$delta_final" --argjson delta_behind "$delta_behind" --argjson delta_failure "$delta_failure" --argjson delta_pending "$delta_pending" --argjson delta_events "$delta_events" --argjson delta_followed "$delta_followed" \
             --arg state "$state" --arg first_followthrough_sha "$first_followthrough_sha" \
-            '{version:2,observed_at:$observed_at,base_sha:$base_sha,head_sha:$head_sha,merge_base:$merge_base,head_repo:$head_repo,state:$state,commit_count:$commit_count,empty_count:$empty_count,metadata_count:$metadata_count,effective_count:$effective_count,gross_add:$gross_add,gross_del:$gross_del,final_add:$final_add,final_del:$final_del,final_files:$final_files,final_delta:$final_delta,ahead:$ahead,behind:$behind,noop_pct:$noop_pct,realization_pct:$realization_pct,comment_count:$comment_count,review_count:$review_count,review_comment_count:$review_comment_count,actionable_comments:$actionable_comments,approvals:$approvals,changes_requested:$changes_requested,check_total:$check_total,check_success:$check_success,check_failure:$check_failure,check_pending:$check_pending,event_count:$event_count,followed_count:$followed_count,followthrough_pct:$followthrough_pct,median_lag_minutes:$median_lag_minutes,first_followthrough_sha:$first_followthrough_sha,recent_events:($recent_events[0] // []),delta:{final_delta:$delta_final,behind:$delta_behind,check_failure:$delta_failure,check_pending:$delta_pending,event_count:$delta_events,followed_count:$delta_followed},history:($history[0] // [])}')"
-
+            -f scripts/ci/ledger/state.jq \
+            > "$RUNNER_TEMP/ledger-state.json"
           {
-            echo "state_json=$state_json"
+            echo "state_path=$RUNNER_TEMP/ledger-state.json"
             echo "existing_comment_id=$existing"
           } >> "$GITHUB_OUTPUT"
 
@@ -237,7 +224,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number || inputs.pr_number }}
-          STATE_JSON: ${{ steps.measure.outputs.state_json }}
+          STATE_PATH: ${{ steps.measure.outputs.state_path }}
           EXISTING_COMMENT_ID: ${{ steps.measure.outputs.existing_comment_id }}
         shell: bash
         run: |
@@ -270,7 +257,7 @@ jobs:
             "### Longitudinal window\n" +
             "Rolling history retains the latest 12 observations in the machine-readable marker. The comment is updated in place to prevent comment amplification.\n\n" +
             "Generated: " + .observed_at
-          ' <<< "$STATE_JSON")"
+          ' "$STATE_PATH")"
 
           # pull_request_target github.token sometimes returns 403
           # "Resource not accessible by integration" (runs 37551532077 and

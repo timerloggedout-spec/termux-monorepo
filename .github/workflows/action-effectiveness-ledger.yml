@@ -116,33 +116,30 @@ jobs:
 
           # --slurp is required because gh api --paginate emits one JSON array per page.
           # Fail closed on API errors; normalize empty collections to [].
-          comments_pages="$(gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100")"
-          reviews_pages="$(gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/reviews?per_page=100")"
-          review_comments_pages="$(gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/comments?per_page=100")"
-          commits_pages="$(gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/commits?per_page=100")"
-          checks_pages="$(gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/commits/${head_sha}/check-runs?per_page=100")"
+          # Write pages to files. Capturing them in shell variables and feeding
+          # jq via here-strings still execs jq with an oversized argv
+          # (run 37551434859 exit 126: /usr/bin/jq Argument list too long).
+          gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" > "$RUNNER_TEMP/ledger-comments-pages.json"
+          gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/reviews?per_page=100" > "$RUNNER_TEMP/ledger-reviews-pages.json"
+          gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/comments?per_page=100" > "$RUNNER_TEMP/ledger-inline-pages.json"
+          gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/commits?per_page=100" > "$RUNNER_TEMP/ledger-commits-pages.json"
+          gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/commits/${head_sha}/check-runs?per_page=100" > "$RUNNER_TEMP/ledger-checks-pages.json"
 
-          # Keep page aggregates on disk. Heredoc/argv expansion of full review
-          # bodies exceeds ARG_MAX (run 37548629582 exit 126: /usr/bin/jq Argument list too long).
-          jq -c 'add // []' <<<"$comments_pages" > "$RUNNER_TEMP/ledger-comments.json"
-          jq -c 'add // []' <<<"$reviews_pages" > "$RUNNER_TEMP/ledger-reviews.json"
-          jq -c 'add // []' <<<"$review_comments_pages" > "$RUNNER_TEMP/ledger-inline.json"
-          jq -c 'add // []' <<<"$commits_pages" > "$RUNNER_TEMP/ledger-commits.json"
-          comments_json="$(jq -c . "$RUNNER_TEMP/ledger-comments.json")"
-          reviews_json="$(jq -c . "$RUNNER_TEMP/ledger-reviews.json")"
-          review_comments_json="$(jq -c . "$RUNNER_TEMP/ledger-inline.json")"
-          commits_json="$(jq -c . "$RUNNER_TEMP/ledger-commits.json")"
+          jq -c 'add // []' "$RUNNER_TEMP/ledger-comments-pages.json" > "$RUNNER_TEMP/ledger-comments.json"
+          jq -c 'add // []' "$RUNNER_TEMP/ledger-reviews-pages.json" > "$RUNNER_TEMP/ledger-reviews.json"
+          jq -c 'add // []' "$RUNNER_TEMP/ledger-inline-pages.json" > "$RUNNER_TEMP/ledger-inline.json"
+          jq -c 'add // []' "$RUNNER_TEMP/ledger-commits-pages.json" > "$RUNNER_TEMP/ledger-commits.json"
 
-          comment_count="$(jq 'length' <<<"$comments_json")"
-          review_count="$(jq 'length' <<<"$reviews_json")"
-          review_comment_count="$(jq 'length' <<<"$review_comments_json")"
-          actionable_comment_count="$(jq '[.[] | select((.body // "") | test("(^|\\n)\\s*(fix|change|update|remove|add|please|must|should|address|resolve|request|review)\\b"; "i"))] | length' <<<"$comments_json")"
-          approvals="$(jq '[.[] | select(.state == "APPROVED")] | length' <<<"$reviews_json")"
-          changes_requested="$(jq '[.[] | select(.state == "CHANGES_REQUESTED")] | length' <<<"$reviews_json")"
-          check_total="$(jq 'map(.check_runs[]) | length' <<<"$checks_pages")"
-          check_success="$(jq 'map(.check_runs[]) | map(select(.conclusion == "success")) | length' <<<"$checks_pages")"
-          check_failure="$(jq 'map(.check_runs[]) | map(select(.conclusion == "failure")) | length' <<<"$checks_pages")"
-          check_pending="$(jq 'map(.check_runs[]) | map(select(.status != "completed")) | length' <<<"$checks_pages")"
+          comment_count="$(jq 'length' "$RUNNER_TEMP/ledger-comments.json")"
+          review_count="$(jq 'length' "$RUNNER_TEMP/ledger-reviews.json")"
+          review_comment_count="$(jq 'length' "$RUNNER_TEMP/ledger-inline.json")"
+          actionable_comment_count="$(jq '[.[] | select((.body // "") | test("(^|\\n)\\s*(fix|change|update|remove|add|please|must|should|address|resolve|request|review)\\b"; "i"))] | length' "$RUNNER_TEMP/ledger-comments.json")"
+          approvals="$(jq '[.[] | select(.state == "APPROVED")] | length' "$RUNNER_TEMP/ledger-reviews.json")"
+          changes_requested="$(jq '[.[] | select(.state == "CHANGES_REQUESTED")] | length' "$RUNNER_TEMP/ledger-reviews.json")"
+          check_total="$(jq 'map(.check_runs[]) | length' "$RUNNER_TEMP/ledger-checks-pages.json")"
+          check_success="$(jq 'map(.check_runs[]) | map(select(.conclusion == "success")) | length' "$RUNNER_TEMP/ledger-checks-pages.json")"
+          check_failure="$(jq 'map(.check_runs[]) | map(select(.conclusion == "failure")) | length' "$RUNNER_TEMP/ledger-checks-pages.json")"
+          check_pending="$(jq 'map(.check_runs[]) | map(select(.status != "completed")) | length' "$RUNNER_TEMP/ledger-checks-pages.json")"
 
           # Temporal follow-through is association, not causal attribution.
           # --slurpfile reads one JSON value per file and wraps it, so [0] is the array.
@@ -185,12 +182,13 @@ jobs:
             previous_json="$(grep -o '<!-- action-effectiveness-ledger:v2 {.*} -->' <<<"$previous_body" | head -n1 | sed 's/^<!-- action-effectiveness-ledger:v2 //; s/ -->$//' || echo '{}')"
           fi
 
-          prev_final_delta="$(jq -r '.final_delta // 0' <<<"$previous_json")"
-          prev_behind="$(jq -r '.behind // 0' <<<"$previous_json")"
-          prev_failure="$(jq -r '.check_failure // 0' <<<"$previous_json")"
-          prev_pending="$(jq -r '.check_pending // 0' <<<"$previous_json")"
-          prev_events="$(jq -r '.event_count // 0' <<<"$previous_json")"
-          prev_followed="$(jq -r '.followed_count // 0' <<<"$previous_json")"
+          printf '%s\n' "$previous_json" > "$RUNNER_TEMP/ledger-previous.json"
+          prev_final_delta="$(jq -r '.final_delta // 0' "$RUNNER_TEMP/ledger-previous.json")"
+          prev_behind="$(jq -r '.behind // 0' "$RUNNER_TEMP/ledger-previous.json")"
+          prev_failure="$(jq -r '.check_failure // 0' "$RUNNER_TEMP/ledger-previous.json")"
+          prev_pending="$(jq -r '.check_pending // 0' "$RUNNER_TEMP/ledger-previous.json")"
+          prev_events="$(jq -r '.event_count // 0' "$RUNNER_TEMP/ledger-previous.json")"
+          prev_followed="$(jq -r '.followed_count // 0' "$RUNNER_TEMP/ledger-previous.json")"
 
           delta_final=$((final_delta - prev_final_delta))
           delta_behind=$((behind - prev_behind))
@@ -210,7 +208,7 @@ jobs:
 
           history_json="$(jq -c --arg head "$head_sha" --arg base "$base_sha" --arg at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
             --argjson fd "$final_delta" --argjson b "$behind" --argjson ev "$event_count" --argjson fo "$followed_count" --argjson de "$delta_final" --argjson db "$delta_behind" --argjson df "$delta_failure" --argjson dp "$delta_pending" --argjson dv "$delta_events" --argjson dfo "$delta_followed" \
-            '(.history // []) + [{observed_at:$at,head_sha:$head,base_sha:$base,final_delta:$fd,behind:$b,event_count:$ev,followed_count:$fo,delta:{final_delta:$de,behind:$db,check_failure:$df,check_pending:$dp,event_count:$dv,followed_count:$dfo}}] | .[-12:]' <<<"$previous_json")"
+            '(.history // []) + [{observed_at:$at,head_sha:$head,base_sha:$base,final_delta:$fd,behind:$b,event_count:$ev,followed_count:$fo,delta:{final_delta:$de,behind:$db,check_failure:$df,check_pending:$dp,event_count:$dv,followed_count:$dfo}}] | .[-12:]' "$RUNNER_TEMP/ledger-previous.json")"
           printf '%s\n' "$history_json" > "$RUNNER_TEMP/ledger-history.json"
           # recent_events and history are file inputs. Passing them as --argjson
           # overflows ARG_MAX (run 37161519194 exit 126: /usr/bin/jq Argument list too long).
@@ -274,8 +272,26 @@ jobs:
             "Generated: " + .observed_at
           ' <<< "$STATE_JSON")"
 
+          # pull_request_target github.token sometimes returns 403
+          # "Resource not accessible by integration" (runs 37551532077 and
+          # 37556718962) even with issues: write. Measurement already succeeded.
+          # Do not fail the named workflow on that token boundary; keep other
+          # API errors fail-closed.
+          set +e
           if [[ -n "$EXISTING_COMMENT_ID" ]]; then
-            gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/comments/${EXISTING_COMMENT_ID}" -f body="$body" >/dev/null
+            err="$(gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/comments/${EXISTING_COMMENT_ID}" -f body="$body" 2>&1 >/dev/null)"
+            rc=$?
           else
-            gh api --method POST "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" -f body="$body" >/dev/null
+            err="$(gh api --method POST "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" -f body="$body" 2>&1 >/dev/null)"
+            rc=$?
+          fi
+          set -e
+          if [[ "$rc" -ne 0 ]]; then
+            if grep -q 'Resource not accessible by integration' <<<"$err"; then
+              echo "ledger publish skipped: github.token cannot comment (HTTP 403)" >> "$GITHUB_STEP_SUMMARY"
+              echo "$err" >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            echo "$err" >&2
+            exit "$rc"
           fi

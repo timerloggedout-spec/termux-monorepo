@@ -27,7 +27,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "8a4b1b1598d63e9eea41ea69315408ac05c14e0467c71fc962afaf29c62cdb15",
+  "source_fingerprint": "5277c2996151f4924721583835c7896b86cc0e237f07e1fa10e6fc3b5f2a8758",
   "workflow_count": 127,
   "workflows": [
     {
@@ -1560,7 +1560,7 @@
         "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
       ],
       "authority": "read-only-or-advisory",
-      "concurrency": "group: merge-promotion-queue cancel-in-progress: true",
+      "concurrency": "group: merge-promotion-queue-v2 cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
         "inventory"

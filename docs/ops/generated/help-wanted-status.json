@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-07T21:15:38Z",
+  "generated_at": "2026-10-07T21:35:40Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
   "receipts": 1345,
@@ -16,6 +16,15 @@
     "ok": 1345
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/gabe-santana/saccade/pull/27",
+      "title": "help-wanted: stake + contribute for #25",
+      "number": 27,
+      "repo": "gabe-santana/saccade",
+      "state": "open",
+      "updated_at": "2026-10-07T21:35:22Z",
+      "tribute": true
+    },
     {
       "html_url": "https://github.com/topoteretes/cognee/pull/5439",
       "title": "help-wanted: stake + contribute for #4757",
@@ -251,8 +260,21 @@
       "tribute": true
     }
   ],
-  "foreign_open_count": 26,
+  "foreign_open_count": 27,
   "tributes": [
+    {
+      "pr_url": "https://github.com/gabe-santana/saccade/pull/27",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-10-07T21:35:22Z",
+      "providers": [],
+      "repo": "gabe-santana/saccade",
+      "number": 27,
+      "title": "help-wanted: stake + contribute for #25",
+      "state": "open"
+    },
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
@@ -2542,7 +2564,7 @@
       "state": "closed"
     }
   ],
-  "tribute_count": 77,
+  "tribute_count": 78,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -15000,7 +15022,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "9e91db4361ff5413acba781b3b3c3ad33ea69ec4",
+    "source_sha": "74ad0221a580d79dae36fe94313c4f6b5aa1cd9e",
     "source_ref": "master",
     "history_complete": false,
     "history_coverage": "lane-local-complete; repository-wide historical accountability requires sweep-accountability backfill",
@@ -15034,12 +15056,12 @@
   },
   "evolution": [
     {
-      "sha": "9e91db4361ff5413acba781b3b3c3ad33ea69ec4",
-      "short_sha": "9e91db4361ff",
-      "date": "2026-10-07T20:19:22Z",
+      "sha": "74ad0221a580d79dae36fe94313c4f6b5aa1cd9e",
+      "short_sha": "74ad0221a580",
+      "date": "2026-10-07T21:19:21Z",
       "author": "termux-monorepo sweep",
       "subject": "chore(ops): record sweep accountability receipt",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/9e91db4361ff5413acba781b3b3c3ad33ea69ec4"
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/74ad0221a580d79dae36fe94313c4f6b5aa1cd9e"
     }
   ],
   "pipeline": [

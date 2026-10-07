@@ -29,4 +29,4 @@ jobs:
         timeout-minutes: 10
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python3 scripts/ci/actions_queue_reaper.py --repo "${{ github.repository }}" --older-than-hours 6 --apply
+        run: python3 scripts/ci/actions_queue_reaper.py --repo "${{ github.repository }}" --older-than-hours 6 --schedule-older-than-minutes 45 --apply

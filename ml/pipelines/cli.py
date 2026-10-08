@@ -1,4 +1,4 @@
-"""cli: python3 -m ml.pipelines.cli <status|run|lanes|cctv|matrix|center|bind|drift|extract-plan|explain|gate>"""
+"""cli: python3 -m ml.pipelines.cli <status|run|lanes|cctv|matrix|center|bind|drift|extract-plan|explain|gate|recon>"""
 from __future__ import annotations
 
 import argparse
@@ -6,6 +6,7 @@ import json
 import sys
 from typing import Any
 
+from ml.pipelines import __version__
 from ml.pipelines.command_center.bind import bind
 from ml.pipelines.command_center.drift import drift_report
 from ml.pipelines.command_center.extract import plan_many
@@ -19,6 +20,7 @@ from ml.pipelines.lib.latest import latest_session_path
 from ml.pipelines.moneyball.explain import explain
 from ml.pipelines.moneyball.scorer import score
 from ml.pipelines.operator.matrix import PRIORITY
+from ml.pipelines.recon.receipt import build_receipt
 from ml.pipelines.stages import STAGES
 from ml.pipelines.viz.cctv import emit_cctv
 from ml.pipelines.viz.mermaid import dag_mermaid
@@ -38,7 +40,7 @@ def cmd_status(_: argparse.Namespace) -> int:
         "session": payload.get("session"),
         "fixture": latest_session_path().name,
         "vocab": ["EXTRACT", "CANDIDATE", "NEED_EVIDENCE", "SUPERSEDE"],
-        "version": "0.6.0",
+        "version": __version__,
     }, indent=2))
     return 0
 
@@ -125,6 +127,11 @@ def cmd_gate(ns: argparse.Namespace) -> int:
     return 1
 
 
+def cmd_recon(_: argparse.Namespace) -> int:
+    print(json.dumps(build_receipt(init_version=__version__), indent=2))
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="ml.pipelines")
     sub = parser.add_subparsers(dest="cmd", required=True)
@@ -144,6 +151,7 @@ def main(argv: list[str] | None = None) -> int:
     gate_p = sub.add_parser("gate")
     gate_p.add_argument("number")
     gate_p.set_defaults(fn=cmd_gate)
+    sub.add_parser("recon").set_defaults(fn=cmd_recon)
     ns = parser.parse_args(argv)
     return int(ns.fn(ns))
 

@@ -17,7 +17,13 @@ on:
     # schedule 37804137141 succeeded at 15:51Z on master. Kick inventory
     # from that healthy schedule too. Do not open another workflow id;
     # ghost 37655538554 stays on disabled merge-promotion-queue.yml.
-    workflows: ["RECON INTEL discovery", "help-wanted execute"]
+    # 2026-10-08T17:15Z: v3 schedule still 37763375599 at 10:25Z. Cron 7,37
+    # did not start at 16:37Z. help-wanted execute 37804137141 succeeded at
+    # 15:51Z, before #1175 added it to this list, so it could not kick.
+    # Production Reconciliation Engine schedule succeeded at 16:29Z and
+    # Engineering health (script) at 16:28Z on master. Kick from those.
+    # Do not open another workflow id.
+    workflows: ["RECON INTEL discovery", "help-wanted execute", "Production Reconciliation Engine", "Engineering health (script)"]
     types: [completed]
 
 permissions:

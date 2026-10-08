@@ -2,17 +2,21 @@ name: Merge Promotion Queue v3
 
 on:
   schedule:
-    # v3 workflow id 377919668 created 2026-10-07T23:19:35Z on #1170.
-    # Cron 7,37 did not start a run at 00:07Z (zero schedule runs at 00:19Z).
-    # First execution is dispatch 37707182223, not a schedule.
-    # Ghost 37655538554 remains queued on disabled workflow id 354842048.
+    # v3 workflow id 377919668. Schedule run 37720010307 succeeded at 02:52Z
+    # on 1885410f. By 05:15Z there was no later schedule run (missed 03:07,
+    # 03:37, 04:07, 04:37, 05:07). Do not open another workflow id.
     - cron: '7,37 * * * *'
   workflow_dispatch:
-  # RECON INTEL discovery cron '*/15 * * * *' completed on master at 00:14Z
-  # (run 37706706134) while this file's own cron stayed silent. Kick the
-  # inventory from that healthy schedule so a missed cron is not a stall.
+  # RECON INTEL discovery last scheduled at 00:14Z (run 37706706134), so that
+  # kick cannot cover a missed v3 cron. hygiene-sweep 37730965281 (05:09Z),
+  # Continuous CI Sweep 37723733402 (03:39Z), and Agent Runtime Stall Watch
+  # 37726528537 (04:14Z) all completed success on tip 000c9391.
   workflow_run:
-    workflows: ["RECON INTEL discovery"]
+    workflows:
+      - "RECON INTEL discovery"
+      - "hygiene-sweep"
+      - "Continuous CI Sweep"
+      - "Agent Runtime Stall Watch"
     types: [completed]
 
 permissions:
@@ -20,21 +24,16 @@ permissions:
   pull-requests: read
   checks: read
 
-# Run 37655538554 (2026-10-07T16:57:32Z) stayed status=queued with zero jobs
-# after #1166 moved concurrency to merge-promotion-queue-v2. Dispatch
-# 37680968394 on 3f9d769c succeeded, but cron '47 * * * *' did not start a
-# run at 20:47Z. GitHub skips new scheduled runs of a workflow id while a
-# prior scheduled run of that same file is still queued. Schedule now lives
-# on merge-promotion-queue-v2.yml. This file is dispatch-only so the ghost
-# does not keep owning the cron.
+# Ghost 37655538554 stays queued on disabled workflow id 354842048.
+# It does not serialize this concurrency group. Same file, same workflow id.
 concurrency:
   group: merge-promotion-queue-v3
   cancel-in-progress: false
 
 jobs:
   inventory:
-    # workflow_run also fires for pull_request RECON completions. Only the
-    # scheduled master success should enqueue inventory.
+    # workflow_run also fires for pull_request completions. Only a scheduled
+    # master success should enqueue inventory.
     if: >-
       github.event_name != 'workflow_run' ||
       (github.event.workflow_run.conclusion == 'success' &&

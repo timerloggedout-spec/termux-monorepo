@@ -110,9 +110,16 @@ jobs:
             checks=$(gh api \
               -H 'Accept: application/vnd.github+json' \
               "/repos/${GITHUB_REPOSITORY}/commits/${head_sha}/check-runs?per_page=100")
-            repo_gate=$(jq -r '[.check_runs[] | select(.name == "repo gate") | .conclusion] | last // "missing"' <<<"$checks")
-            termux_smoke=$(jq -r '[.check_runs[] | select(.name == "termux smoke") | .conclusion] | last // "missing"' <<<"$checks")
-            hard_failures=$(jq '[.check_runs[] | select(.status == "completed" and (.conclusion == "failure" or .conclusion == "timed_out" or .conclusion == "action_required"))] | length' <<<"$checks")
+            # Live dual-gate names are "hygiene + portability gate" and
+            # "agentic termux smoke" (runs 37853882867 / 37853883038 on
+            # #1180). Legacy aliases "repo gate" / "termux smoke" stay
+            # accepted. Exact equality missed both, so every green PR
+            # stayed HOLD as repo-gate-missing.
+            repo_gate=$(jq -r '[.check_runs[] | select(.name == "hygiene + portability gate" or .name == "repo gate") | .conclusion] | last // "missing"' <<<"$checks")
+            termux_smoke=$(jq -r '[.check_runs[] | select(.name == "agentic termux smoke" or .name == "termux smoke") | .conclusion] | last // "missing"' <<<"$checks")
+            # Vercel rate-limit is non-gate (#772). Do not let those
+            # check runs, when present, force HOLD.
+            hard_failures=$(jq '[.check_runs[] | select(.status == "completed" and (.conclusion == "failure" or .conclusion == "timed_out" or .conclusion == "action_required") and (.name | test("Vercel|vercel") | not))] | length' <<<"$checks")
             pending=$(jq '[.check_runs[] | select(.status != "completed")] | length' <<<"$checks")
 
             disposition="HOLD"
@@ -171,7 +178,7 @@ jobs:
             echo
             echo '> Observer-only: this workflow never merges, closes, labels, rebases, or dispatches the merge writer.'
             echo
-            echo '| PR | Disposition | repo gate | smoke | SHA | Reason |'
+            echo '| PR | Disposition | hygiene gate | termux smoke | SHA | Reason |'
             echo '|---:|---|---|---|---|---|'
             jq -r '.[] | "| #\(.number) | \(.disposition) | \(.repo_gate) | \(.termux_smoke) | \(.head_sha[0:12]) | \(.reason) |"' /tmp/merge-queue/merge-promotion-queue.json
           } >> "$GITHUB_STEP_SUMMARY"

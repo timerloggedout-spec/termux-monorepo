@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-08T13:29:40Z",
+  "generated_at": "2026-10-08T15:52:55Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
   "receipts": 1427,
@@ -17,21 +17,21 @@
   },
   "foreign_open_prs": [
     {
+      "html_url": "https://github.com/Local-Settle/local-settle-frontend/pull/4",
+      "title": "help-wanted: stake + contribute for #1",
+      "number": 4,
+      "repo": "Local-Settle/local-settle-frontend",
+      "state": "open",
+      "updated_at": "2026-10-08T15:52:39Z",
+      "tribute": true
+    },
+    {
       "html_url": "https://github.com/traceopt-ai/traceml/pull/547",
       "title": "help-wanted: stake + contribute for #128",
       "number": 547,
       "repo": "traceopt-ai/traceml",
       "state": "open",
       "updated_at": "2026-10-08T13:27:33Z",
-      "tribute": true
-    },
-    {
-      "html_url": "https://github.com/gabe-santana/saccade/pull/27",
-      "title": "help-wanted: stake + contribute for #25",
-      "number": 27,
-      "repo": "gabe-santana/saccade",
-      "state": "open",
-      "updated_at": "2026-10-07T21:35:22Z",
       "tribute": true
     },
     {
@@ -271,6 +271,19 @@
   ],
   "foreign_open_count": 28,
   "tributes": [
+    {
+      "pr_url": "https://github.com/Local-Settle/local-settle-frontend/pull/4",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-10-08T15:52:39Z",
+      "providers": [],
+      "repo": "Local-Settle/local-settle-frontend",
+      "number": 4,
+      "title": "help-wanted: stake + contribute for #1",
+      "state": "open"
+    },
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
@@ -1729,7 +1742,7 @@
       "repo": "gabe-santana/saccade",
       "number": 27,
       "title": "help-wanted: stake + contribute for #25",
-      "state": "open"
+      "state": "closed"
     },
     {
       "pr_url": "https://github.com/traceopt-ai/traceml/pull/547",
@@ -2648,19 +2661,6 @@
       "last_ts": "2026-09-07T10:27:32Z",
       "providers": [],
       "repo": "timerloggedout-spec/termux-mcp",
-      "number": 1,
-      "title": "fix(ci): pin actions/checkout and vercel CLI to immutable versions",
-      "state": "closed"
-    },
-    {
-      "pr_url": "https://github.com/timerloggedout-spec/android-mcp/pull/1",
-      "kinds": [
-        "upstream_pr"
-      ],
-      "ok": true,
-      "last_ts": "2026-09-07T10:27:30Z",
-      "providers": [],
-      "repo": "timerloggedout-spec/android-mcp",
       "number": 1,
       "title": "fix(ci): pin actions/checkout and vercel CLI to immutable versions",
       "state": "closed"
@@ -15881,7 +15881,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "1e82d5488fbfeca3f5ea6da66bf5df27e592bbeb",
+    "source_sha": "bf779d5150ff09cfe664cf44476379de975905a7",
     "source_ref": "master",
     "history_complete": false,
     "history_coverage": "lane-local-complete; repository-wide historical accountability requires sweep-accountability backfill",
@@ -15915,12 +15915,12 @@
   },
   "evolution": [
     {
-      "sha": "1e82d5488fbfeca3f5ea6da66bf5df27e592bbeb",
-      "short_sha": "1e82d5488fbf",
-      "date": "2026-10-08T13:28:58Z",
+      "sha": "bf779d5150ff09cfe664cf44476379de975905a7",
+      "short_sha": "bf779d5150ff",
+      "date": "2026-10-08T13:29:40Z",
       "author": "github-actions[bot]",
-      "subject": "chore(docs): refresh DOCS-BRANCH-INDEX",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/1e82d5488fbfeca3f5ea6da66bf5df27e592bbeb"
+      "subject": "ops(help-wanted): live status refresh 2026-10-08T13:29Z",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/bf779d5150ff09cfe664cf44476379de975905a7"
     }
   ],
   "pipeline": [

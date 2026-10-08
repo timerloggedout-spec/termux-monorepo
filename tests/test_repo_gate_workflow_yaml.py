@@ -412,10 +412,20 @@ class PyYamlAgreementTests(unittest.TestCase):
     @staticmethod
     def _parses(source: str) -> bool:
         try:
-            yaml.safe_load(source)
+            list(yaml.safe_load_all(source))
         except Exception:
             return False
         return True
+
+    def test_oracle_accepts_a_complete_multi_document_stream(self) -> None:
+        source = "description: |\n---\nnext: value\n"
+        self.assertTrue(self._parses(source))
+        self.assertEqual(faults(source), [])
+
+    def test_oracle_rejects_a_malformed_later_document(self) -> None:
+        # safe_load_all is lazy: consuming it is essential to check later docs.
+        source = "description: |\n---\nnext: [unterminated\n"
+        self.assertFalse(self._parses(source))
 
     def test_fixtures_agree_with_a_real_parser(self) -> None:
         for name, (source, _) in POSITIVE_FIXTURES.items():

@@ -2,13 +2,18 @@ name: Merge Promotion Queue v3
 
 on:
   schedule:
-    # v2 workflow id 377846902 missed 22:17Z and 22:47Z after #1168
-    # (only run remains dispatch 37688431750). Old workflow id 354842048
-    # was disabled_manually this session; ghost 37655538554 stayed queued.
-    # New file so GitHub registers a workflow id that has never owned a
-    # queued schedule run. 7,37 avoids the top-of-hour load minute.
+    # v3 workflow id 377919668 created 2026-10-07T23:19:35Z on #1170.
+    # Cron 7,37 did not start a run at 00:07Z (zero schedule runs at 00:19Z).
+    # First execution is dispatch 37707182223, not a schedule.
+    # Ghost 37655538554 remains queued on disabled workflow id 354842048.
     - cron: '7,37 * * * *'
   workflow_dispatch:
+  # RECON INTEL discovery cron '*/15 * * * *' completed on master at 00:14Z
+  # (run 37706706134) while this file's own cron stayed silent. Kick the
+  # inventory from that healthy schedule so a missed cron is not a stall.
+  workflow_run:
+    workflows: ["RECON INTEL discovery"]
+    types: [completed]
 
 permissions:
   contents: read
@@ -28,6 +33,13 @@ concurrency:
 
 jobs:
   inventory:
+    # workflow_run also fires for pull_request RECON completions. Only the
+    # scheduled master success should enqueue inventory.
+    if: >-
+      github.event_name != 'workflow_run' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'schedule' &&
+       github.event.workflow_run.head_branch == 'master')
     runs-on: ubuntu-latest
     steps:
       - name: Inventory open master PRs

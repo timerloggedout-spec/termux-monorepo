@@ -71,9 +71,9 @@ class AutomatedContextCollector:
         return valid_dependencies
 
     def generate_ast_skeleton(self, file_relative_path):
+        abs_path = self._validate_path(file_relative_path)
         if not shutil.which("ast-grep"):
             return f"// Unable to trace AST module boundary map for {file_relative_path}"
-        abs_path = self._validate_path(file_relative_path)
         ext = os.path.splitext(file_relative_path)[1]
         if ext == '.py':
             pattern = "class $NAME: $$$"
@@ -81,8 +81,6 @@ class AutomatedContextCollector:
             pattern = "function $NAME($$ $) { $$$ }"
         else:
             return f"/* Structural stub context for file: {file_relative_path} */"
-        if not shutil.which("ast-grep"):
-            return f"// Unable to trace AST module boundary map for {file_relative_path}"
         try:
             output = subprocess.check_output(["ast-grep", "scan", "--pattern", pattern, "--json", abs_path], text=True)
             import json

@@ -72,6 +72,22 @@ def classify_cancel_failure(cancel_code: int, cancel_detail: str, delete_code: i
     return "error"
 
 
+def reaper_record(run: dict) -> dict:
+    """Stable row for operator logs.
+
+    Ghost 37655538554 remains queued on disabled workflow id 354842048.
+    workflow_id distinguishes that class from a live concurrency stall.
+    """
+    return {
+        "id": run["id"],
+        "name": run.get("name"),
+        "event": run.get("event"),
+        "created_at": run.get("created_at"),
+        "head_branch": run.get("head_branch"),
+        "workflow_id": run.get("workflow_id"),
+    }
+
+
 def cutoff_for(event: str, now: datetime, older_hours: float, schedule_minutes: float) -> datetime:
     """Scheduled runs are hourly. A zero-job queue past the schedule window is a stall.
 
@@ -121,13 +137,7 @@ def main() -> int:
             jobs = gh("GET", f"/repos/{args.repo}/actions/runs/{run['id']}/jobs?per_page=1", token)
             if int(jobs.get("total_count") or 0) > 0:
                 continue
-            record = {
-                "id": run["id"],
-                "name": run.get("name"),
-                "event": run.get("event"),
-                "created_at": run.get("created_at"),
-                "head_branch": run.get("head_branch"),
-            }
+            record = reaper_record(run)
             if args.apply:
                 try:
                     gh("POST", f"/repos/{args.repo}/actions/runs/{run['id']}/cancel", token)

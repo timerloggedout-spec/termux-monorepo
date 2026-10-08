@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-08T06:04:17Z",
+  "generated_at": "2026-10-08T06:40:36Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
   "receipts": 1399,
@@ -16,6 +16,15 @@
     "ok": 1399
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/traceopt-ai/traceml/pull/547",
+      "title": "help-wanted: stake + contribute for #128",
+      "number": 547,
+      "repo": "traceopt-ai/traceml",
+      "state": "open",
+      "updated_at": "2026-10-08T06:40:31Z",
+      "tribute": true
+    },
     {
       "html_url": "https://github.com/gabe-santana/saccade/pull/27",
       "title": "help-wanted: stake + contribute for #25",
@@ -260,8 +269,21 @@
       "tribute": true
     }
   ],
-  "foreign_open_count": 27,
+  "foreign_open_count": 28,
   "tributes": [
+    {
+      "pr_url": "https://github.com/traceopt-ai/traceml/pull/547",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-10-08T06:40:31Z",
+      "providers": [],
+      "repo": "traceopt-ai/traceml",
+      "number": 547,
+      "title": "help-wanted: stake + contribute for #128",
+      "state": "open"
+    },
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
@@ -2617,7 +2639,7 @@
       "state": "closed"
     }
   ],
-  "tribute_count": 78,
+  "tribute_count": 79,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -15569,7 +15591,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "f9c243d6707121da4d03c086ab14db615977ed10",
+    "source_sha": "87c300dc9f0af52762d31f8b75bcd3536e1d9653",
     "source_ref": "master",
     "history_complete": false,
     "history_coverage": "lane-local-complete; repository-wide historical accountability requires sweep-accountability backfill",
@@ -15603,12 +15625,12 @@
   },
   "evolution": [
     {
-      "sha": "f9c243d6707121da4d03c086ab14db615977ed10",
-      "short_sha": "f9c243d67071",
-      "date": "2026-10-08T06:02:55Z",
+      "sha": "87c300dc9f0af52762d31f8b75bcd3536e1d9653",
+      "short_sha": "87c300dc9f0a",
+      "date": "2026-10-08T06:04:18Z",
       "author": "github-actions[bot]",
-      "subject": "ops(help-wanted): live status refresh 2026-10-08T06:02Z",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/f9c243d6707121da4d03c086ab14db615977ed10"
+      "subject": "ops(help-wanted): live status refresh 2026-10-08T06:04Z",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/87c300dc9f0af52762d31f8b75bcd3536e1d9653"
     }
   ],
   "pipeline": [

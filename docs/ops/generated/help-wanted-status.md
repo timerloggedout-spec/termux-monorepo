@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-08T06:04:17Z UTC · receipts=1399 · foreign_open=27 · tributes=78_
+_Generated 2026-10-08T06:40:36Z UTC · receipts=1399 · foreign_open=28 · tributes=79_
 
 ## Tributes (contributor ledger)
 
+- [traceopt-ai/traceml#547](https://github.com/traceopt-ai/traceml/pull/547) · state=open · help-wanted: stake + contribute for #128
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -43,10 +44,10 @@ _Generated 2026-10-08T06:04:17Z UTC · receipts=1399 · foreign_open=27 · tribu
 - [estruyf/playwright-github-actions-reporter#59](https://github.com/estruyf/playwright-github-actions-reporter/pull/59) · state=closed · help-wanted: stake + contribute for #50
 - [nesstyx/ChessHome#81](https://github.com/nesstyx/ChessHome/pull/81) · state=closed · help-wanted: stake + contribute for #40
 - [Magiclovekorean/unbloarchy#5](https://github.com/Magiclovekorean/unbloarchy/pull/5) · state=closed · help-wanted: stake + contribute for #4
-- [GRITui/pixel-builder#13](https://github.com/GRITui/pixel-builder/pull/13) · state=closed · help-wanted: stake + contribute for #11
 
 ## Foreign open PRs
 
+- [traceopt-ai/traceml#547](https://github.com/traceopt-ai/traceml/pull/547) — help-wanted: stake + contribute for #128
 - [gabe-santana/saccade#27](https://github.com/gabe-santana/saccade/pull/27) — help-wanted: stake + contribute for #25
 - [topoteretes/cognee#5439](https://github.com/topoteretes/cognee/pull/5439) — help-wanted: stake + contribute for #4757
 - [ROCm/rocm-libraries#13152](https://github.com/ROCm/rocm-libraries/pull/13152) — help-wanted: stake + contribute for #10586

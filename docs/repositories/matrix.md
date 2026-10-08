@@ -2,7 +2,7 @@
 
 > Generated from GitHub repository and starring metadata. JSON is canonical; this file is a navigation projection.
 
-Observed: `2026-10-07T11:06:32.142138Z`
+Observed: `2026-10-08T11:24:19.776912Z`
 
 ## Navigation
 
@@ -259,6 +259,7 @@ Observed: `2026-10-07T11:06:32.142138Z`
 | [timerloggedout-spec/tailscale_fork-render_subnet_router](https://github.com/timerloggedout-spec/tailscale_fork-render_subnet_router) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/term_mcp_deepseek_fork-](https://github.com/timerloggedout-spec/term_mcp_deepseek_fork-) | owned, starred | ai | medium | upstream-comparison |
 | [timerloggedout-spec/toolhouse-assessment_fork](https://github.com/timerloggedout-spec/toolhouse-assessment_fork) | owned | ai | medium | upstream-comparison |
+| [timerloggedout-spec/traceml](https://github.com/timerloggedout-spec/traceml) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/tricklepay-backend](https://github.com/timerloggedout-spec/tricklepay-backend) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/TrusTrove-contract](https://github.com/timerloggedout-spec/TrusTrove-contract) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/Tubitak-EPDK-AI-Proje-Asistan_fork](https://github.com/timerloggedout-spec/Tubitak-EPDK-AI-Proje-Asistan_fork) | owned, starred | ai | medium | upstream-comparison |
@@ -276,6 +277,7 @@ Observed: `2026-10-07T11:06:32.142138Z`
 | [timerloggedout-spec/knowledge-garden_fork](https://github.com/timerloggedout-spec/knowledge-garden_fork) | owned, starred | ai, context | high | upstream-comparison |
 | [timerloggedout-spec/lawglance_fork](https://github.com/timerloggedout-spec/lawglance_fork) | owned | ai, context | high | upstream-comparison |
 | [timerloggedout-spec/moodle-ai-skill-navigator_fork](https://github.com/timerloggedout-spec/moodle-ai-skill-navigator_fork) | owned, starred | ai, context | high | upstream-comparison |
+| [timerloggedout-spec/saccade](https://github.com/timerloggedout-spec/saccade) | owned | ai, context | high | upstream-comparison |
 | [timerloggedout-spec/wdoc_fork](https://github.com/timerloggedout-spec/wdoc_fork) | owned | ai, context | high | upstream-comparison |
 | [timerloggedout-spec/xai-cookbook_fork](https://github.com/timerloggedout-spec/xai-cookbook_fork) | owned | ai, context | high | upstream-comparison |
 | [timerloggedout-spec/Chat2API](https://github.com/timerloggedout-spec/Chat2API) | owned | ai, context, developer-tools | high | upstream-comparison |
@@ -290,6 +292,7 @@ Observed: `2026-10-07T11:06:32.142138Z`
 | [timerloggedout-spec/jules_api_cli_fork](https://github.com/timerloggedout-spec/jules_api_cli_fork) | owned | ai, developer-tools | medium | upstream-comparison |
 | [timerloggedout-spec/OBLIQ-Website](https://github.com/timerloggedout-spec/OBLIQ-Website) | owned | ai, developer-tools | medium | upstream-comparison, workflow-candidate |
 | [timerloggedout-spec/OmniRoute_fork](https://github.com/timerloggedout-spec/OmniRoute_fork) | owned, starred | ai, developer-tools | medium | upstream-comparison |
+| [timerloggedout-spec/open-source-starter-lab](https://github.com/timerloggedout-spec/open-source-starter-lab) | owned | ai, developer-tools | medium | upstream-comparison |
 | [timerloggedout-spec/pal-mcp-server_fork](https://github.com/timerloggedout-spec/pal-mcp-server_fork) | owned | ai, developer-tools | medium | upstream-comparison |
 | [timerloggedout-spec/Sail-CLI](https://github.com/timerloggedout-spec/Sail-CLI) | owned | ai, developer-tools | medium | upstream-comparison |
 | [timerloggedout-spec/sovereign-gemini-jules-hub_fork](https://github.com/timerloggedout-spec/sovereign-gemini-jules-hub_fork) | owned | ai, developer-tools | medium | upstream-comparison |
@@ -1022,6 +1025,7 @@ Observed: `2026-10-07T11:06:32.142138Z`
 | [sumitsingh4411/repo-agent](https://github.com/sumitsingh4411/repo-agent) | starred | agent, ai, context, developer-tools | high | — |
 | [ub3dqy/llm-wiki](https://github.com/ub3dqy/llm-wiki) | starred | agent, ai, context, developer-tools | high | dependency-candidate |
 | [wheattoast11/openrouter-deep-research-mcp](https://github.com/wheattoast11/openrouter-deep-research-mcp) | starred | agent, ai, context, developer-tools, research | high | — |
+| [tomkabel/google-botguard-security-research](https://github.com/tomkabel/google-botguard-security-research) | starred | agent, ai, context, developer-tools, research, security | high | — |
 | [metorial/metorial](https://github.com/metorial/metorial) | starred | agent, ai, context, developer-tools, security | high | workflow-candidate |
 | [OthmaneBlial/term_mcp_deepseek](https://github.com/OthmaneBlial/term_mcp_deepseek) | starred | agent, ai, context, developer-tools, security | high | workflow-candidate |
 | [alphaparkinc/genpark-autonomous-browser-action-planner-skill](https://github.com/alphaparkinc/genpark-autonomous-browser-action-planner-skill) | starred | agent, ai, context, research | high | — |
@@ -1953,7 +1957,6 @@ Observed: `2026-10-07T11:06:32.142138Z`
 | [meganz/webclient](https://github.com/meganz/webclient) | starred | context, developer-tools | high | — |
 | [timerloggedout-spec/kalamarnica_fork](https://github.com/timerloggedout-spec/kalamarnica_fork) | owned, starred | context, developer-tools | high | upstream-comparison |
 | [zaryo/kalamarnica](https://github.com/zaryo/kalamarnica) | starred | context, developer-tools | high | — |
-| [tomkabel/google-botguard-security-research](https://github.com/tomkabel/google-botguard-security-research) | starred | context, developer-tools, research, security | high | — |
 | [trimstray/the-book-of-secret-knowledge](https://github.com/trimstray/the-book-of-secret-knowledge) | starred | context, developer-tools, research, security | high | — |
 | [kahz12/DroidMCP](https://github.com/kahz12/DroidMCP) | starred | context, developer-tools, termux | high | — |
 | [Threekiii/Awesome-Laws](https://github.com/Threekiii/Awesome-Laws) | starred | context, security | high | — |
@@ -3779,6 +3782,7 @@ Observed: `2026-10-07T11:06:32.142138Z`
 | [timerloggedout-spec/pyrite](https://github.com/timerloggedout-spec/pyrite) | owned | agent, ai, context, developer-tools | high | upstream-comparison |
 | [ub3dqy/llm-wiki](https://github.com/ub3dqy/llm-wiki) | starred | agent, ai, context, developer-tools | high | dependency-candidate |
 | [wheattoast11/openrouter-deep-research-mcp](https://github.com/wheattoast11/openrouter-deep-research-mcp) | starred | agent, ai, context, developer-tools, research | high | — |
+| [tomkabel/google-botguard-security-research](https://github.com/tomkabel/google-botguard-security-research) | starred | agent, ai, context, developer-tools, research, security | high | — |
 | [metorial/metorial](https://github.com/metorial/metorial) | starred | agent, ai, context, developer-tools, security | high | workflow-candidate |
 | [OthmaneBlial/term_mcp_deepseek](https://github.com/OthmaneBlial/term_mcp_deepseek) | starred | agent, ai, context, developer-tools, security | high | workflow-candidate |
 | [alphaparkinc/genpark-autonomous-browser-action-planner-skill](https://github.com/alphaparkinc/genpark-autonomous-browser-action-planner-skill) | starred | agent, ai, context, research | high | — |
@@ -3887,6 +3891,7 @@ Observed: `2026-10-07T11:06:32.142138Z`
 | [timerloggedout-spec/knowledge-garden_fork](https://github.com/timerloggedout-spec/knowledge-garden_fork) | owned, starred | ai, context | high | upstream-comparison |
 | [timerloggedout-spec/lawglance_fork](https://github.com/timerloggedout-spec/lawglance_fork) | owned | ai, context | high | upstream-comparison |
 | [timerloggedout-spec/moodle-ai-skill-navigator_fork](https://github.com/timerloggedout-spec/moodle-ai-skill-navigator_fork) | owned, starred | ai, context | high | upstream-comparison |
+| [timerloggedout-spec/saccade](https://github.com/timerloggedout-spec/saccade) | owned | ai, context | high | upstream-comparison |
 | [timerloggedout-spec/wdoc_fork](https://github.com/timerloggedout-spec/wdoc_fork) | owned | ai, context | high | upstream-comparison |
 | [timerloggedout-spec/xai-cookbook_fork](https://github.com/timerloggedout-spec/xai-cookbook_fork) | owned | ai, context | high | upstream-comparison |
 | [TOPDEV99999/AI-codepilot](https://github.com/TOPDEV99999/AI-codepilot) | starred | ai, context | high | — |
@@ -4021,7 +4026,6 @@ Observed: `2026-10-07T11:06:32.142138Z`
 | [timerloggedout-spec/kalamarnica_fork](https://github.com/timerloggedout-spec/kalamarnica_fork) | owned, starred | context, developer-tools | high | upstream-comparison |
 | [timerloggedout-spec/OpenRouter-Client_fork](https://github.com/timerloggedout-spec/OpenRouter-Client_fork) | owned | context, developer-tools | high | upstream-comparison |
 | [zaryo/kalamarnica](https://github.com/zaryo/kalamarnica) | starred | context, developer-tools | high | — |
-| [tomkabel/google-botguard-security-research](https://github.com/tomkabel/google-botguard-security-research) | starred | context, developer-tools, research, security | high | — |
 | [trimstray/the-book-of-secret-knowledge](https://github.com/trimstray/the-book-of-secret-knowledge) | starred | context, developer-tools, research, security | high | — |
 | [kahz12/DroidMCP](https://github.com/kahz12/DroidMCP) | starred | context, developer-tools, termux | high | — |
 | [timerloggedout-spec/MOBIUS-Searcher](https://github.com/timerloggedout-spec/MOBIUS-Searcher) | owned | context, research | high | upstream-comparison |
@@ -4533,6 +4537,7 @@ Observed: `2026-10-07T11:06:32.142138Z`
 | [timerloggedout-spec/tailscale_fork-render_subnet_router](https://github.com/timerloggedout-spec/tailscale_fork-render_subnet_router) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/term_mcp_deepseek_fork-](https://github.com/timerloggedout-spec/term_mcp_deepseek_fork-) | owned, starred | ai | medium | upstream-comparison |
 | [timerloggedout-spec/toolhouse-assessment_fork](https://github.com/timerloggedout-spec/toolhouse-assessment_fork) | owned | ai | medium | upstream-comparison |
+| [timerloggedout-spec/traceml](https://github.com/timerloggedout-spec/traceml) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/tricklepay-backend](https://github.com/timerloggedout-spec/tricklepay-backend) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/TrusTrove-contract](https://github.com/timerloggedout-spec/TrusTrove-contract) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/Tubitak-EPDK-AI-Proje-Asistan_fork](https://github.com/timerloggedout-spec/Tubitak-EPDK-AI-Proje-Asistan_fork) | owned, starred | ai | medium | upstream-comparison |
@@ -4594,6 +4599,7 @@ Observed: `2026-10-07T11:06:32.142138Z`
 | [timerloggedout-spec/knowledge-garden_fork](https://github.com/timerloggedout-spec/knowledge-garden_fork) | owned, starred | ai, context | high | upstream-comparison |
 | [timerloggedout-spec/lawglance_fork](https://github.com/timerloggedout-spec/lawglance_fork) | owned | ai, context | high | upstream-comparison |
 | [timerloggedout-spec/moodle-ai-skill-navigator_fork](https://github.com/timerloggedout-spec/moodle-ai-skill-navigator_fork) | owned, starred | ai, context | high | upstream-comparison |
+| [timerloggedout-spec/saccade](https://github.com/timerloggedout-spec/saccade) | owned | ai, context | high | upstream-comparison |
 | [timerloggedout-spec/wdoc_fork](https://github.com/timerloggedout-spec/wdoc_fork) | owned | ai, context | high | upstream-comparison |
 | [timerloggedout-spec/xai-cookbook_fork](https://github.com/timerloggedout-spec/xai-cookbook_fork) | owned | ai, context | high | upstream-comparison |
 | [Wbaker7702/vscode-gitlens](https://github.com/Wbaker7702/vscode-gitlens) | starred | ai, context | high | upstream-comparison |
@@ -4618,6 +4624,7 @@ Observed: `2026-10-07T11:06:32.142138Z`
 | [timerloggedout-spec/jules_api_cli_fork](https://github.com/timerloggedout-spec/jules_api_cli_fork) | owned | ai, developer-tools | medium | upstream-comparison |
 | [timerloggedout-spec/OBLIQ-Website](https://github.com/timerloggedout-spec/OBLIQ-Website) | owned | ai, developer-tools | medium | upstream-comparison, workflow-candidate |
 | [timerloggedout-spec/OmniRoute_fork](https://github.com/timerloggedout-spec/OmniRoute_fork) | owned, starred | ai, developer-tools | medium | upstream-comparison |
+| [timerloggedout-spec/open-source-starter-lab](https://github.com/timerloggedout-spec/open-source-starter-lab) | owned | ai, developer-tools | medium | upstream-comparison |
 | [timerloggedout-spec/pal-mcp-server_fork](https://github.com/timerloggedout-spec/pal-mcp-server_fork) | owned | ai, developer-tools | medium | upstream-comparison |
 | [timerloggedout-spec/Sail-CLI](https://github.com/timerloggedout-spec/Sail-CLI) | owned | ai, developer-tools | medium | upstream-comparison |
 | [timerloggedout-spec/sovereign-gemini-jules-hub_fork](https://github.com/timerloggedout-spec/sovereign-gemini-jules-hub_fork) | owned | ai, developer-tools | medium | upstream-comparison |

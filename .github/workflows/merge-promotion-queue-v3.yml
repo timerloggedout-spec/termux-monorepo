@@ -3,16 +3,20 @@ name: Merge Promotion Queue v3
 on:
   schedule:
     # v3 workflow id 377919668 created 2026-10-07T23:19:35Z on #1170.
-    # Cron 7,37 did not start a run at 00:07Z (zero schedule runs at 00:19Z).
-    # First execution is dispatch 37707182223, not a schedule.
+    # Cron 7,37 did not start at 00:07Z, 01:07Z, or 01:37Z.
+    # Only run before this change is dispatch 37707182223.
     # Ghost 37655538554 remains queued on disabled workflow id 354842048.
     - cron: '7,37 * * * *'
   workflow_dispatch:
-  # RECON INTEL discovery cron '*/15 * * * *' completed on master at 00:14Z
-  # (run 37706706134) while this file's own cron stayed silent. Kick the
-  # inventory from that healthy schedule so a missed cron is not a stall.
+  # RECON INTEL discovery schedule 37706706134 completed at 00:14Z, before
+  # the #1172 workflow_run trigger was on master. No later RECON schedule
+  # run exists, so that kick never fired. context relationship historical
+  # backfill schedule 37716108331 completed on master at 02:04Z. Chain
+  # inventory to that healthy schedule so a silent cron is not a stall.
   workflow_run:
-    workflows: ["RECON INTEL discovery"]
+    workflows:
+      - "RECON INTEL discovery"
+      - "context relationship historical backfill"
     types: [completed]
 
 permissions:
@@ -25,16 +29,16 @@ permissions:
 # 37680968394 on 3f9d769c succeeded, but cron '47 * * * *' did not start a
 # run at 20:47Z. GitHub skips new scheduled runs of a workflow id while a
 # prior scheduled run of that same file is still queued. Schedule now lives
-# on merge-promotion-queue-v2.yml. This file is dispatch-only so the ghost
-# does not keep owning the cron.
+# on merge-promotion-queue-v3.yml. This file also accepts workflow_run from
+# schedules that are completing, so the ghost does not own the inventory.
 concurrency:
   group: merge-promotion-queue-v3
   cancel-in-progress: false
 
 jobs:
   inventory:
-    # workflow_run also fires for pull_request RECON completions. Only the
-    # scheduled master success should enqueue inventory.
+    # workflow_run also fires for pull_request completions. Only a scheduled
+    # master success should enqueue inventory.
     if: >-
       github.event_name != 'workflow_run' ||
       (github.event.workflow_run.conclusion == 'success' &&

@@ -127,3 +127,10 @@ Session 2026-10-07 16:16 PDT / 2026-10-07 23:16 UTC:
 - #1168 class remains: v2 workflow id 377846902 did not start at 22:17Z or 22:47Z. Only v2 run is dispatch 37688431750 success. Ghost 37655538554 still queued, zero jobs. Old workflow id 354842048 set disabled_manually; ghost status unchanged.
 - Repair moves the cron to merge-promotion-queue-v3.yml (`7,37`) and leaves v2 dispatch-only. Do not promote until that SHA has no filename-named workflow failure and repo gate is green.
 - #903 HOLD. Do not pulse #175. #184 names-only. #984 not master. Linear TER-15 Done — not promote authority.
+
+Session 2026-10-07 20:14 PDT / 2026-10-08 03:14 UTC:
+- Master tip `1885410f923b3dd0538fd85ebd5431a25b2120a6` (help-wanted refresh).
+- #1172 merged `f3e0244a97ea76877f2278e434f1144dd128fdb3`. Push gates on that SHA succeeded: repo gate 37707430694, termux smoke 37707430616, cadence 37707430654, empty-commit watcher 37707430651, sweep 37707430743, n8n SHE bridge 37707451428.
+- v3 schedule class closed: workflow id 377919668 run 37720010307 event=schedule conclusion=success on tip `1885410f` at 2026-10-08T02:52:39Z. Dispatch 37716951206 success. No conclusion=failure in the latest 80 completed runs. Not a filename failure.
+- Ghost 37655538554 still queued, zero jobs, on disabled workflow id 354842048. Cancel 409 / DELETE 403 unchanged. It does not serialize v3. Do not open another workflow id.
+- #903 HOLD. Do not pulse #175. #184 names-only. #984 not master. Linear TER-15 Done — not promote authority.

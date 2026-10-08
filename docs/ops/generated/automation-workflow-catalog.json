@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "509828fcf8a1f979f56481cbb48e1ef60f7853d312a66142473d06f9c27e631c",
-  "workflow_count": 127,
+  "source_fingerprint": "8b0c3914fabefdde04b012a2389df020302db714564fefe517b20b119151aa6b",
+  "workflow_count": 129,
   "workflows": [
     {
       "action_pins": [
@@ -1560,18 +1560,53 @@
         "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
       ],
       "authority": "read-only-or-advisory",
-      "concurrency": "group: merge-promotion-queue cancel-in-progress: true",
+      "concurrency": "group: merge-promotion-queue-v2 cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "inventory"
+      ],
+      "name": "Merge Promotion Queue v2",
+      "path": ".github/workflows/merge-promotion-queue-v2.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: merge-promotion-queue-v3 cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "inventory"
+      ],
+      "name": "Merge Promotion Queue v3",
+      "path": ".github/workflows/merge-promotion-queue-v3.yml",
+      "schedules": [
+        "7,37 * * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch",
+        "workflow_run"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: merge-promotion-queue-legacy-dispatch cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
         "inventory"
       ],
       "name": "Merge Promotion Queue",
       "path": ".github/workflows/merge-promotion-queue.yml",
-      "schedules": [
-        "47 * * * *"
-      ],
+      "schedules": [],
       "triggers": [
-        "schedule",
         "workflow_dispatch"
       ]
     },

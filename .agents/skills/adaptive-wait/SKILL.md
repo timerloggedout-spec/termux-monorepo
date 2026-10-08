@@ -220,3 +220,29 @@ Session 2026-10-06 23:19 PDT / 2026-10-07 06:19 UTC:
 - Active class: fix/sweep-comment-gate @ `bd73365fe54839cf00835559cd425ee2f2c6dcf5` run 37561312192 zero jobs. Blob `311c8dd0658759f372c9be9a2065c327fdb1a203` is PLACEHOLDER (11 bytes). Do not promote that branch.
 - Repair is the comment gate on this PR. Do not promote until this SHA has no filename-named workflow failure and repo gate is green.
 - #903 HOLD. Do not pulse #175. #184 names-only. #984 not master. Linear TER-15 Done — not promote authority.
+Session 2026-10-07 11:14 PDT / 2026-10-07 18:14 UTC:
+- Master tip at session start `cca461e1d6978405c893d25a55ac03692634d614` (help-wanted refresh). No conclusion=failure in the latest master window. Dependabot dynamic 37423240181 remains historical on `489b8d6b`.
+- Active class: Merge Promotion Queue run 37655538554 on `6b95b53f` status=queued, zero jobs, created 2026-10-07T16:57:32Z. Not a filename failure. Sweep Accountability run 37561312192 on `fix/sweep-comment-gate` `bd73365fe` was a PLACEHOLDER intermediate; child `4b47a773` Sweep Accountability 37561321398 success. Not master.
+- Repair branch `fix/schedule-queue-reaper-45m` shortens the zero-job reaper threshold for schedule events to 45 minutes. Do not promote until that SHA has no filename-named workflow failure and repo gate is green.
+- #903 HOLD. Do not pulse #175. #184 names-only. #984 not master. Linear TER-15 Done — not promote authority.
+
+Session 2026-10-07 12:14 PDT / 2026-10-07 19:14 UTC:
+- Master tip at session start `cca461e1d6978405c893d25a55ac03692634d614`. No conclusion=failure in the latest master window. Dependabot dynamic 37423240181 remains historical on `489b8d6b`.
+- #1164 merged `1f6b6e766ffd4fac71b816d6eab3010dd31a88d3` on code head `182446b5a5ceb640ec66fabfa439120248b4290d`. Pre-merge repo gate 37665584127 success, termux smoke 37665584341 success, cadence 37665584027 success, historical promotion gate 37665584120 success. DeepSeek cancelled, not a filename failure. Vercel rate-limit noise. Devin trial-expired skip is not a pass.
+- Post-merge push on `1f6b6e76`: repo gate 37673033042 success, termux smoke 37673033126 success, cadence 37673032921 success, empty-commit watcher 37673033162 success.
+- Reaper dispatch 37673036011 success on that SHA. Selected Merge Promotion Queue run 37655538554 (schedule, created 2026-10-07T16:57:32Z). Cancel 409 not-been-queued-yet; DELETE 403 from GITHUB_TOKEN and operator token. Oct 1 issue_comment runs 36803855107 and 36803852632 cancelled. Sep 12 run 34718267095 remains delete 403. Not a compile failure.
+- #903 HOLD. Do not pulse #175. #184 names-only. #984 not master. Linear TER-15 Done — not promote authority.
+
+
+Session 2026-10-07 16:16 PDT / 2026-10-07 23:16 UTC:
+- Master tip at session start `5631e322ebd3f39f3a86eaf5cc2324b7239a17ef` (help-wanted refresh). No conclusion=failure created>=2026-10-07T18:00:00Z on master.
+- #1168 class remains: v2 workflow id 377846902 did not start at 22:17Z or 22:47Z. Only v2 run is dispatch 37688431750 success. Ghost 37655538554 still queued, zero jobs. Old workflow id 354842048 set disabled_manually; ghost status unchanged.
+- Repair moves the cron to merge-promotion-queue-v3.yml (`7,37`) and leaves v2 dispatch-only. Do not promote until that SHA has no filename-named workflow failure and repo gate is green.
+- #903 HOLD. Do not pulse #175. #184 names-only. #984 not master. Linear TER-15 Done — not promote authority.
+
+Session 2026-10-07 20:14 PDT / 2026-10-08 03:14 UTC:
+- Master tip `1885410f923b3dd0538fd85ebd5431a25b2120a6` (help-wanted refresh).
+- #1172 merged `f3e0244a97ea76877f2278e434f1144dd128fdb3`. Push gates on that SHA succeeded: repo gate 37707430694, termux smoke 37707430616, cadence 37707430654, empty-commit watcher 37707430651, sweep 37707430743, n8n SHE bridge 37707451428.
+- v3 schedule class closed: workflow id 377919668 run 37720010307 event=schedule conclusion=success on tip `1885410f` at 2026-10-08T02:52:39Z. Dispatch 37716951206 success. No conclusion=failure in the latest 80 completed runs. Not a filename failure.
+- Ghost 37655538554 still queued, zero jobs, on disabled workflow id 354842048. Cancel 409 / DELETE 403 unchanged. It does not serialize v3. Do not open another workflow id.
+- #903 HOLD. Do not pulse #175. #184 names-only. #984 not master. Linear TER-15 Done — not promote authority.

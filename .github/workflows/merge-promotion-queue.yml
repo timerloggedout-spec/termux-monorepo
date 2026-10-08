@@ -1,8 +1,6 @@
 name: Merge Promotion Queue
 
 on:
-  schedule:
-    - cron: '47 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -10,9 +8,16 @@ permissions:
   pull-requests: read
   checks: read
 
+# Run 37655538554 (2026-10-07T16:57:32Z) stayed status=queued with zero jobs
+# after #1166 moved concurrency to merge-promotion-queue-v2. Dispatch
+# 37680968394 on 3f9d769c succeeded, but cron '47 * * * *' did not start a
+# run at 20:47Z. GitHub skips new scheduled runs of a workflow id while a
+# prior scheduled run of that same file is still queued. Schedule now lives
+# on merge-promotion-queue-v2.yml. This file is dispatch-only so the ghost
+# does not keep owning the cron.
 concurrency:
-  group: merge-promotion-queue
-  cancel-in-progress: true
+  group: merge-promotion-queue-legacy-dispatch
+  cancel-in-progress: false
 
 jobs:
   inventory:

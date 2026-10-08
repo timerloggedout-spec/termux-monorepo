@@ -1,0 +1,139 @@
+name: Merge Promotion Queue v2
+
+on:
+  workflow_dispatch:
+
+# Schedule moved to merge-promotion-queue-v3.yml. v2 id 377846902 did not
+# start at 22:17Z or 22:47Z (only run dispatch 37688431750). Leaving a cron
+# on this id would keep a registered-but-silent schedule.
+
+permissions:
+  contents: read
+  pull-requests: read
+  checks: read
+
+# Run 37655538554 (2026-10-07T16:57:32Z) stayed status=queued with zero jobs
+# after #1166 moved concurrency to merge-promotion-queue-v2. Dispatch
+# 37680968394 on 3f9d769c succeeded, but cron '47 * * * *' did not start a
+# run at 20:47Z. GitHub skips new scheduled runs of a workflow id while a
+# prior scheduled run of that same file is still queued. Schedule now lives
+# on merge-promotion-queue-v2.yml. This file is dispatch-only so the ghost
+# does not keep owning the cron.
+concurrency:
+  group: merge-promotion-queue-v2
+  cancel-in-progress: false
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Inventory open master PRs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "merge-queue-v2 event=${GITHUB_EVENT_NAME} sha=${GITHUB_SHA}"
+          mkdir -p /tmp/merge-queue
+          : > /tmp/merge-queue/candidates.ndjson
+
+          gh api --paginate \
+            -H 'Accept: application/vnd.github+json' \
+            "/repos/${GITHUB_REPOSITORY}/pulls?state=open&base=master&per_page=100" \
+            > /tmp/merge-queue/pr-pages.json
+
+          jq -c '
+            if type == "array" then
+              .[] | if type == "array" then .[] else . end
+            elif type == "object" then .
+            else empty
+            end
+          ' /tmp/merge-queue/pr-pages.json | while read -r pr; do
+            number=$(jq -r '.number' <<<"$pr")
+            head_sha=$(jq -r '.head.sha' <<<"$pr")
+            head_ref=$(jq -r '.head.ref' <<<"$pr")
+            title=$(jq -r '.title' <<<"$pr")
+            draft=$(jq -r '.draft' <<<"$pr")
+            mergeable=$(jq -r '.mergeable' <<<"$pr")
+            updated=$(jq -r '.updated_at' <<<"$pr")
+
+            [[ "$number" =~ ^[0-9]+$ ]] || continue
+            [[ -n "$head_sha" && "$head_sha" != "null" ]] || continue
+
+            reviews=$(gh api \
+              -H 'Accept: application/vnd.github+json' \
+              "/repos/${GITHUB_REPOSITORY}/pulls/${number}/reviews?per_page=100")
+            active_changes=$(jq '[.[] | select(.state == "CHANGES_REQUESTED")] | length' <<<"$reviews")
+
+            checks=$(gh api \
+              -H 'Accept: application/vnd.github+json' \
+              "/repos/${GITHUB_REPOSITORY}/commits/${head_sha}/check-runs?per_page=100")
+            repo_gate=$(jq -r '[.check_runs[] | select(.name == "repo gate") | .conclusion] | last // "missing"' <<<"$checks")
+            termux_smoke=$(jq -r '[.check_runs[] | select(.name == "termux smoke") | .conclusion] | last // "missing"' <<<"$checks")
+            hard_failures=$(jq '[.check_runs[] | select(.status == "completed" and (.conclusion == "failure" or .conclusion == "timed_out" or .conclusion == "action_required"))] | length' <<<"$checks")
+            pending=$(jq '[.check_runs[] | select(.status != "completed")] | length' <<<"$checks")
+
+            disposition="HOLD"
+            reason=""
+            if [[ "$draft" == "true" ]]; then
+              reason="draft"
+            elif [[ "$mergeable" != "true" ]]; then
+              reason="not-mergeable"
+            elif (( active_changes > 0 )); then
+              reason="active-changes-requested"
+            elif (( hard_failures > 0 )); then
+              reason="completed-check-failure"
+            elif (( pending > 0 )); then
+              reason="checks-pending"
+            elif [[ "$repo_gate" != "success" ]]; then
+              reason="repo-gate-${repo_gate}"
+            elif [[ "$termux_smoke" != "success" ]]; then
+              reason="termux-smoke-${termux_smoke}"
+            else
+              disposition="CANDIDATE"
+              reason="all-promotion-preconditions-observed"
+            fi
+
+            jq -cn \
+              --argjson number "$number" \
+              --arg title "$title" \
+              --arg head_ref "$head_ref" \
+              --arg head_sha "$head_sha" \
+              --arg updated "$updated" \
+              --arg disposition "$disposition" \
+              --arg reason "$reason" \
+              --arg repo_gate "$repo_gate" \
+              --arg termux_smoke "$termux_smoke" \
+              --argjson active_changes "$active_changes" \
+              --argjson hard_failures "$hard_failures" \
+              --argjson pending "$pending" \
+              '{number:$number,title:$title,head_ref:$head_ref,head_sha:$head_sha,updated_at:$updated,disposition:$disposition,reason:$reason,repo_gate:$repo_gate,termux_smoke:$termux_smoke,active_changes_requested:$active_changes,hard_failures:$hard_failures,pending_checks:$pending}' \
+              >> /tmp/merge-queue/candidates.ndjson
+          done
+
+          if [[ ! -s /tmp/merge-queue/candidates.ndjson ]]; then
+            echo '[]' > /tmp/merge-queue/merge-promotion-queue.json
+          else
+            jq -s 'map(select(type == "object" and has("number"))) | sort_by([.disposition != "CANDIDATE", .updated_at])' \
+              /tmp/merge-queue/candidates.ndjson > /tmp/merge-queue/merge-promotion-queue.json
+          fi
+
+          {
+            echo '# Merge Promotion Queue'
+            echo
+            echo "Generated from SHA ${GITHUB_SHA} at $(date -u +%Y-%m-%dT%H:%M:%SZ)."
+            echo
+            echo '> Observer-only: this workflow never merges, closes, labels, rebases, or dispatches the merge writer.'
+            echo
+            echo '| PR | Disposition | repo gate | smoke | SHA | Reason |'
+            echo '|---:|---|---|---|---|---|'
+            jq -r '.[] | "| #\(.number) | \(.disposition) | \(.repo_gate) | \(.termux_smoke) | \(.head_sha[0:12]) | \(.reason) |"' /tmp/merge-queue/merge-promotion-queue.json
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Publish queue artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: merge-promotion-queue-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/merge-queue/merge-promotion-queue.json
+          if-no-files-found: error
+          retention-days: 14

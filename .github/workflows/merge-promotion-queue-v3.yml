@@ -12,7 +12,12 @@ on:
   # (run 37706706134) while this file's own cron stayed silent. Kick the
   # inventory from that healthy schedule so a missed cron is not a stall.
   workflow_run:
-    workflows: ["RECON INTEL discovery"]
+    # RECON */15 last schedule success 37787946148 at 13:53Z. v3 schedule
+    # last fired 37763375599 at 10:25Z (cron 7,37). help-wanted execute
+    # schedule 37804137141 succeeded at 15:51Z on master. Kick inventory
+    # from that healthy schedule too. Do not open another workflow id;
+    # ghost 37655538554 stays on disabled merge-promotion-queue.yml.
+    workflows: ["RECON INTEL discovery", "help-wanted execute"]
     types: [completed]
 
 permissions:

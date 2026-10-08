@@ -246,3 +246,9 @@ Session 2026-10-07 20:14 PDT / 2026-10-08 03:14 UTC:
 - v3 schedule class closed: workflow id 377919668 run 37720010307 event=schedule conclusion=success on tip `1885410f` at 2026-10-08T02:52:39Z. Dispatch 37716951206 success. No conclusion=failure in the latest 80 completed runs. Not a filename failure.
 - Ghost 37655538554 still queued, zero jobs, on disabled workflow id 354842048. Cancel 409 / DELETE 403 unchanged. It does not serialize v3. Do not open another workflow id.
 - #903 HOLD. Do not pulse #175. #184 names-only. #984 not master. Linear TER-15 Done — not promote authority.
+
+Session 2026-10-08 09:17 PDT / 2026-10-08 16:17 UTC:
+- Master tip at session start `635d91f9b0b0274f03070e7e30174bf70446208f` (help-wanted refresh). No conclusion=failure created after 2026-10-06 on master besides historical Dependabot dynamic 37423240181 on `489b8d6b`.
+- v3 workflow id 377919668 schedule success 37763375599 at 10:25Z. No later schedule run by 16:17Z (missed 13:07/13:37/16:07). workflow_run kick 37788308513 success at 13:55Z from RECON schedule 37787946148. help-wanted execute 37804137141 success at 15:51Z did not kick v3.
+- Repair adds help-wanted execute to v3 workflow_run workflows. Do not open another workflow id. Do not promote until that SHA has no filename-named workflow failure and repo gate is green.
+- Ghost 37655538554 still queued on disabled id 354842048. #903 HOLD. Do not pulse #175. #184 names-only. #984 not master. Linear TER-15 Done — not promote authority.

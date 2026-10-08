@@ -127,6 +127,15 @@ def apply_casing(src: str, dst: str) -> str:
     return lowercase_word(dst)
 
 SYMBOL_REGEXES = {phrase: re.compile(re.escape(phrase), re.IGNORECASE) for phrase in SYMBOL_MAP}
+# Pre-bind substitution methods and pre-search trigger regex at module scope
+FAST_COMPILED_SYMBOLS = [(pattern.sub, SYMBOL_MAP[phrase]) for phrase, pattern in SYMBOL_REGEXES.items()]
+ANY_SYMBOL_SEARCH = re.compile("|".join(re.escape(k) for k in SYMBOL_MAP), re.IGNORECASE)
+
+REV_MAP = {v.strip(): f" {k.strip()} " for k, v in SYMBOL_MAP.items()}
+EXPAND_SYMBOLS_SORTED = sorted(REV_MAP.keys(), key=len, reverse=True)
+EXPAND_SINGLE_REGEX = re.compile("|".join(re.escape(s) for s in EXPAND_SYMBOLS_SORTED))
+EXPAND_LOOKUP = {s: REV_MAP[s] for s in EXPAND_SYMBOLS_SORTED}
+
 INLINE_CODE_PATTERN = re.compile(r'`[^`]+`')
 HTML_TAG_PATTERN = re.compile(r'<[^>]+>')
 LINK_PATTERN = re.compile(r'\[([^\]]+)\]\(([^)]+)\)')
@@ -198,32 +207,34 @@ for human, comp in SORTED_MAPPINGS_DECOMP:
 def compress(text: str, aggressive: bool = True) -> str:
     if not text:
         return ""
-    result = text[:]
-    for phrase, pattern in SYMBOL_REGEXES.items():
-        result = pattern.sub(SYMBOL_MAP[phrase], result)
+    result = text
+    # Pre-search trigger check bypasses 32 regex pattern substitutions when no symbols are present
+    if ANY_SYMBOL_SEARCH.search(result):
+        for sub_fn, repl in FAST_COMPILED_SYMBOLS:
+            result = sub_fn(repl, result)
     if not aggressive:
         return result.strip()
     words = result.split()
     filtered = [w for w in words if w.lower() not in STOPWORDS]
-    result = " ".join(filtered)
-    result = SPACES_PATTERN.sub(' ', result).strip()
-    result = PUNCTUATION_PATTERN.sub('', result)
-    return result
+    result = " ".join(filtered).strip()
+    return PUNCTUATION_PATTERN.sub('', result)
 
 def caveman(text: str, max_up: bool = False) -> str:
     t = text.upper() if max_up else text
-    for phrase, pattern in SYMBOL_REGEXES.items():
-        t = pattern.sub(SYMBOL_MAP[phrase], t)
+    if ANY_SYMBOL_SEARCH.search(t):
+        for sub_fn, repl in FAST_COMPILED_SYMBOLS:
+            t = sub_fn(repl, t)
     words = [w for w in t.split() if w.lower() not in STOPWORDS]
-    return SPACES_PATTERN.sub(' ', " ".join(words)).strip()
+    return " ".join(words).strip()
 
 def expand(cedr: str) -> str:
-    rev_map = {v.strip(): k.strip() for k, v in SYMBOL_MAP.items()}
-    result = cedr
-    for sym, phrase in rev_map.items():
-        result = result.replace(sym, f" {phrase} ")
-    result = SPACES_PATTERN.sub(' ', result)
-    return result.strip()
+    if not cedr:
+        return ""
+    # Single-pass substitution replaces 32 sequential .replace() loops and per-call dictionary allocations
+    if not EXPAND_SINGLE_REGEX.search(cedr):
+        return cedr.strip()
+    result = EXPAND_SINGLE_REGEX.sub(lambda m: EXPAND_LOOKUP[m.group(0)], cedr)
+    return SPACES_PATTERN.sub(' ', result).strip()
 
 def _sub_cb_comp(m: re.Match[str]) -> str:
     val = m.group(0)
@@ -288,21 +299,24 @@ def translate_line(line: str, to_compressed: bool) -> str:
         line = INLINE_CODE_PATTERN.sub(ctx.raw_match_repl, line)
     if "<" in line:
         line = HTML_TAG_PATTERN.sub(ctx.raw_match_repl, line)
-    if "[" in line:
+    if "](" in line:
         line = LINK_PATTERN.sub(ctx.link_repl, line)
     if "*" in line:
-        line = BOLD_PATTERN_2.sub(ctx.bold_repl_2, line)
+        if "**" in line:
+            line = BOLD_PATTERN_2.sub(ctx.bold_repl_2, line)
         line = BOLD_PATTERN_1.sub(ctx.bold_repl_1, line)
     if "_" in line:
-        line = BOLD_PATTERN_UNDER2.sub(ctx.bold_repl_under2, line)
+        if "__" in line:
+            line = BOLD_PATTERN_UNDER2.sub(ctx.bold_repl_under2, line)
         line = BOLD_PATTERN_UNDER1.sub(ctx.bold_repl_under1, line)
     if "/" in line or "\\" in line or "~" in line or "." in line:
         line = PATH_REGEX.sub(ctx.raw_match_repl, line)
     if "." in line:
         line = DECIMAL_PATTERN.sub(ctx.raw_match_repl, line)
     line = translate_text_raw(line, to_compressed)
-    for ph, orig in reversed(ctx.placeholders):
-        line = line.replace(ph, orig)
+    if ctx.placeholders:
+        for ph, orig in reversed(ctx.placeholders):
+            line = line.replace(ph, orig)
     return line
 
 def compile_doc(text: str) -> str:

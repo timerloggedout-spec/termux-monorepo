@@ -81,7 +81,16 @@ jobs:
             title=$(jq -r '.title' <<<"$pr")
             draft=$(jq -r '.draft' <<<"$pr")
             mergeable=$(jq -r '.mergeable' <<<"$pr")
+            mergeable_state=$(jq -r '.mergeable_state // "unknown"' <<<"$pr")
             updated=$(jq -r '.updated_at' <<<"$pr")
+            # List pulls leaves mergeable null until GitHub computes it.
+            # Run 37834455648 artifact counted 130 HOLD not-mergeable; list
+            # payload mergeable is null, not false. Resolve only the nulls.
+            if [[ "$mergeable" == "null" || -z "$mergeable" ]]; then
+              detail=$(gh api -H 'Accept: application/vnd.github+json'                 "/repos/${GITHUB_REPOSITORY}/pulls/${number}")
+              mergeable=$(jq -r '.mergeable' <<<"$detail")
+              mergeable_state=$(jq -r '.mergeable_state // "unknown"' <<<"$detail")
+            fi
 
             [[ "$number" =~ ^[0-9]+$ ]] || continue
             [[ -n "$head_sha" && "$head_sha" != "null" ]] || continue
@@ -103,8 +112,10 @@ jobs:
             reason=""
             if [[ "$draft" == "true" ]]; then
               reason="draft"
+            elif [[ "$mergeable" == "null" || -z "$mergeable" ]]; then
+              reason="mergeable-unknown"
             elif [[ "$mergeable" != "true" ]]; then
-              reason="not-mergeable"
+              reason="not-mergeable-${mergeable_state}"
             elif (( active_changes > 0 )); then
               reason="active-changes-requested"
             elif (( hard_failures > 0 )); then
@@ -133,7 +144,9 @@ jobs:
               --argjson active_changes "$active_changes" \
               --argjson hard_failures "$hard_failures" \
               --argjson pending "$pending" \
-              '{number:$number,title:$title,head_ref:$head_ref,head_sha:$head_sha,updated_at:$updated,disposition:$disposition,reason:$reason,repo_gate:$repo_gate,termux_smoke:$termux_smoke,active_changes_requested:$active_changes,hard_failures:$hard_failures,pending_checks:$pending}' \
+              --arg mergeable "$mergeable" \
+              --arg mergeable_state "$mergeable_state" \
+              '{number:$number,title:$title,head_ref:$head_ref,head_sha:$head_sha,updated_at:$updated,disposition:$disposition,reason:$reason,repo_gate:$repo_gate,termux_smoke:$termux_smoke,active_changes_requested:$active_changes,hard_failures:$hard_failures,pending_checks:$pending,mergeable:$mergeable,mergeable_state:$mergeable_state}' \
               >> /tmp/merge-queue/candidates.ndjson
           done
 

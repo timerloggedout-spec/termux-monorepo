@@ -27,7 +27,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "e5373e4207203179bfd63b4a761923fff7a46676bd6b4b27bcf8bb0758669e69",
+  "source_fingerprint": "aa583de578c81b09c45ce6963724f70e6864ed8c0491b90d60054f2e3dbdaa88",
   "workflow_count": 129,
   "workflows": [
     {
@@ -1589,7 +1589,8 @@
       ],
       "triggers": [
         "schedule",
-        "workflow_dispatch"
+        "workflow_dispatch",
+        "workflow_run"
       ]
     },
     {

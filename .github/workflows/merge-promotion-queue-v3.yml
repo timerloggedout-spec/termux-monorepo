@@ -23,7 +23,14 @@ on:
     # Production Reconciliation Engine schedule succeeded at 16:29Z and
     # Engineering health (script) at 16:28Z on master. Kick from those.
     # Do not open another workflow id.
-    workflows: ["RECON INTEL discovery", "help-wanted execute", "Production Reconciliation Engine", "Engineering health (script)"]
+    # 2026-10-08T21:14Z: v3 schedule still 37817607215 at 17:34Z. Cron 7,37
+    # did not start at 18:07Z, 18:37Z, 19:07Z, 19:37Z, 20:07Z, or 20:37Z.
+    # RECON schedule last success 37834177319 at 19:44Z kicked v3 run
+    # 37834455648. Later RECON slots did not start. Tunnel Canary schedule
+    # 37840694520 succeeded at 20:36Z on master (cron */30). Kick from that.
+    # Do not open another workflow id. Ghost 37655538554 stays on disabled
+    # workflow id 354842048.
+    workflows: ["RECON INTEL discovery", "help-wanted execute", "Production Reconciliation Engine", "Engineering health (script)", "Tunnel Canary"]
     types: [completed]
 
 permissions:

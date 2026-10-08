@@ -20,3 +20,13 @@ def test_not_queued_yet_plus_delete_403_is_github_ghost():
     assert classify_cancel_failure(409, detail, 403) == "github_ghost"
     assert classify_cancel_failure(409, "Cannot cancel a workflow run that is not in progress.", 403) == "uncancellable"
     assert classify_cancel_failure(409, detail, None) == "deleted"
+
+from scripts.ci.actions_queue_reaper import is_known_github_ghost
+
+
+def test_known_ghosts_skip_cancel_delete():
+    assert is_known_github_ghost(37655538554)
+    assert is_known_github_ghost(36803855107)
+    assert is_known_github_ghost(36803852632)
+    assert is_known_github_ghost(34718267095)
+    assert not is_known_github_ghost(37817607215)

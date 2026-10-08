@@ -55,6 +55,17 @@ def gh(method: str, path: str, token: str, body: dict | None = None) -> dict | l
         raise GitHubError(method, path, exc.code, detail) from exc
 
 
+# Immutable ghosts: cancel 409 and DELETE 403 on disabled or stale workflow ids.
+# 37655538554 workflow 354842048 (disabled_manually) still queued with zero jobs.
+# 36803855107 and 36803852632 returned DELETE 403 on 2026-10-03.
+# 34718267095 returned DELETE 403 on 2026-10-03. Do not spend cancel/delete on them.
+KNOWN_GITHUB_GHOSTS = frozenset({37655538554, 36803855107, 36803852632, 34718267095})
+
+
+def is_known_github_ghost(run_id: int) -> bool:
+    return int(run_id) in KNOWN_GITHUB_GHOSTS
+
+
 def classify_cancel_failure(cancel_code: int, cancel_detail: str, delete_code: int | None) -> str:
     """Map cancel/delete outcomes. Not a workflow YAML failure.
 
@@ -117,6 +128,19 @@ def main() -> int:
                 args.schedule_older_than_minutes,
             )
             if created > cutoff:
+                continue
+            if is_known_github_ghost(int(run["id"])):
+                record = {
+                    "id": run["id"],
+                    "name": run.get("name"),
+                    "event": run.get("event"),
+                    "created_at": run.get("created_at"),
+                    "head_branch": run.get("head_branch"),
+                    "action": "known_github_ghost",
+                    "detail": "skip cancel/delete; prior 409/403 evidence",
+                }
+                ghosts += 1
+                print(json.dumps(record, sort_keys=True))
                 continue
             jobs = gh("GET", f"/repos/{args.repo}/actions/runs/{run['id']}/jobs?per_page=1", token)
             if int(jobs.get("total_count") or 0) > 0:

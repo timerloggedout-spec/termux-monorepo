@@ -2,9 +2,7 @@ name: Merge Promotion Queue v3
 
 on:
   schedule:
-    # v3 workflow id 377919668 created 2026-10-07T23:19:35Z on #1170.
-    # Cron 7,37 did not start a run at 00:07Z (zero schedule runs at 00:19Z).
-    # First execution is dispatch 37707182223, not a schedule.
+    # v3 workflow id 377919668. Do not open another workflow id.
     # Ghost 37655538554 remains queued on disabled workflow id 354842048.
     - cron: '7,37 * * * *'
   workflow_dispatch:
@@ -30,8 +28,16 @@ jobs:
        github.event.workflow_run.head_branch == 'master')
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: Inventory open master PRs
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: bash ops/queue-v3-inventory.sh
+      - name: Publish queue artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: merge-promotion-queue-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/merge-queue/merge-promotion-queue.json
+          if-no-files-found: error
+          retention-days: 14

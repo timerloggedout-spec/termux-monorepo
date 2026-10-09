@@ -12,7 +12,31 @@ on:
   # (run 37706706134) while this file's own cron stayed silent. Kick the
   # inventory from that healthy schedule so a missed cron is not a stall.
   workflow_run:
-    workflows: ["RECON INTEL discovery"]
+    # RECON */15 last schedule success 37787946148 at 13:53Z. v3 schedule
+    # last fired 37763375599 at 10:25Z (cron 7,37). help-wanted execute
+    # schedule 37804137141 succeeded at 15:51Z on master. Kick inventory
+    # from that healthy schedule too. Do not open another workflow id;
+    # ghost 37655538554 stays on disabled merge-promotion-queue.yml.
+    # 2026-10-08T17:15Z: v3 schedule still 37763375599 at 10:25Z. Cron 7,37
+    # did not start at 16:37Z. help-wanted execute 37804137141 succeeded at
+    # 15:51Z, before #1175 added it to this list, so it could not kick.
+    # Production Reconciliation Engine schedule succeeded at 16:29Z and
+    # Engineering health (script) at 16:28Z on master. Kick from those.
+    # Do not open another workflow id.
+    # 2026-10-08T21:14Z: v3 schedule still 37817607215 at 17:34Z. Cron 7,37
+    # did not start at 18:07Z, 18:37Z, 19:07Z, 19:37Z, 20:07Z, or 20:37Z.
+    # RECON schedule last success 37834177319 at 19:44Z kicked v3 run
+    # 37834455648. Later RECON slots did not start. Tunnel Canary schedule
+    # 37840694520 succeeded at 20:36Z on master (cron */30). Kick from that.
+    # Do not open another workflow id. Ghost 37655538554 stays on disabled
+    # workflow id 354842048.
+    # 2026-10-09T05:15Z: v3 schedule last success 37874986417 at 02:31Z on
+    # 18f4acbe. Cron 7,37 did not start at 03:07Z, 03:37Z, 04:07Z, 04:37Z,
+    # or 05:07Z. Kick 37878611526 at 03:17Z skipped. hygiene-sweep schedule
+    # 37887473132 succeeded at 05:12Z on tip 8e4fbc08. Continuous CI Sweep
+    # 37880662849 succeeded at 03:44Z. continuous-improve 37878189168
+    # succeeded at 03:12Z. Kick from those. Do not open another workflow id.
+    workflows: ["RECON INTEL discovery", "help-wanted execute", "Production Reconciliation Engine", "Engineering health (script)", "Tunnel Canary", "hygiene-sweep", "Continuous CI Sweep", "continuous-improve"]
     types: [completed]
 
 permissions:
@@ -70,7 +94,16 @@ jobs:
             title=$(jq -r '.title' <<<"$pr")
             draft=$(jq -r '.draft' <<<"$pr")
             mergeable=$(jq -r '.mergeable' <<<"$pr")
+            mergeable_state=$(jq -r '.mergeable_state // "unknown"' <<<"$pr")
             updated=$(jq -r '.updated_at' <<<"$pr")
+            # List pulls leaves mergeable null until GitHub computes it.
+            # Run 37834455648 artifact counted 130 HOLD not-mergeable; list
+            # payload mergeable is null, not false. Resolve only the nulls.
+            if [[ "$mergeable" == "null" || -z "$mergeable" ]]; then
+              detail=$(gh api -H 'Accept: application/vnd.github+json'                 "/repos/${GITHUB_REPOSITORY}/pulls/${number}")
+              mergeable=$(jq -r '.mergeable' <<<"$detail")
+              mergeable_state=$(jq -r '.mergeable_state // "unknown"' <<<"$detail")
+            fi
 
             [[ "$number" =~ ^[0-9]+$ ]] || continue
             [[ -n "$head_sha" && "$head_sha" != "null" ]] || continue
@@ -83,17 +116,36 @@ jobs:
             checks=$(gh api \
               -H 'Accept: application/vnd.github+json' \
               "/repos/${GITHUB_REPOSITORY}/commits/${head_sha}/check-runs?per_page=100")
-            repo_gate=$(jq -r '[.check_runs[] | select(.name == "repo gate") | .conclusion] | last // "missing"' <<<"$checks")
-            termux_smoke=$(jq -r '[.check_runs[] | select(.name == "termux smoke") | .conclusion] | last // "missing"' <<<"$checks")
-            hard_failures=$(jq '[.check_runs[] | select(.status == "completed" and (.conclusion == "failure" or .conclusion == "timed_out" or .conclusion == "action_required"))] | length' <<<"$checks")
+            # Live dual-gate names are "hygiene + portability gate" and
+            # "agentic termux smoke" (runs 37853882867 / 37853883038 on
+            # #1180). Legacy aliases "repo gate" / "termux smoke" stay
+            # accepted. Exact equality missed both, so every green PR
+            # stayed HOLD as repo-gate-missing.
+            repo_gate=$(jq -r '[.check_runs[] | select(.name == "hygiene + portability gate" or .name == "repo gate") | .conclusion] | last // "missing"' <<<"$checks")
+            termux_smoke=$(jq -r '[.check_runs[] | select(.name == "agentic termux smoke" or .name == "termux smoke") | .conclusion] | last // "missing"' <<<"$checks")
+            # Vercel rate-limit is non-gate (#772). Do not let those
+            # check runs, when present, force HOLD.
+            hard_failures=$(jq '[.check_runs[] | select(.status == "completed" and (.conclusion == "failure" or .conclusion == "timed_out" or .conclusion == "action_required") and (.name | test("Vercel|vercel") | not))] | length' <<<"$checks")
             pending=$(jq '[.check_runs[] | select(.status != "completed")] | length' <<<"$checks")
+            # Artifact 11591369769 on run 37874986417 marked 17 CANDIDATE
+            # with mergeable=true. #1182 head 93a2afd8 baseRefOid was
+            # ddb22aea, not the master tip that produced the artifact.
+            # Dual-gate on an older base is not current-base alignment.
+            behind="unknown"
+            compare_status="unknown"
+            if compare=$(gh api -H 'Accept: application/vnd.github+json'               "/repos/${GITHUB_REPOSITORY}/compare/${GITHUB_SHA}...${head_sha}" 2>/dev/null); then
+              behind=$(jq -r '.behind_by // "unknown"' <<<"$compare")
+              compare_status=$(jq -r '.status // "unknown"' <<<"$compare")
+            fi
 
             disposition="HOLD"
             reason=""
             if [[ "$draft" == "true" ]]; then
               reason="draft"
+            elif [[ "$mergeable" == "null" || -z "$mergeable" ]]; then
+              reason="mergeable-unknown"
             elif [[ "$mergeable" != "true" ]]; then
-              reason="not-mergeable"
+              reason="not-mergeable-${mergeable_state}"
             elif (( active_changes > 0 )); then
               reason="active-changes-requested"
             elif (( hard_failures > 0 )); then
@@ -104,6 +156,10 @@ jobs:
               reason="repo-gate-${repo_gate}"
             elif [[ "$termux_smoke" != "success" ]]; then
               reason="termux-smoke-${termux_smoke}"
+            elif [[ "$behind" == "unknown" || -z "$behind" ]]; then
+              reason="base-compare-unknown"
+            elif [[ "$behind" != "0" ]]; then
+              reason="base-behind-${behind}"
             else
               disposition="CANDIDATE"
               reason="all-promotion-preconditions-observed"
@@ -122,7 +178,11 @@ jobs:
               --argjson active_changes "$active_changes" \
               --argjson hard_failures "$hard_failures" \
               --argjson pending "$pending" \
-              '{number:$number,title:$title,head_ref:$head_ref,head_sha:$head_sha,updated_at:$updated,disposition:$disposition,reason:$reason,repo_gate:$repo_gate,termux_smoke:$termux_smoke,active_changes_requested:$active_changes,hard_failures:$hard_failures,pending_checks:$pending}' \
+              --arg mergeable "$mergeable" \
+              --arg mergeable_state "$mergeable_state" \
+              --arg behind "$behind" \
+              --arg compare_status "$compare_status" \
+              '{number:$number,title:$title,head_ref:$head_ref,head_sha:$head_sha,updated_at:$updated,disposition:$disposition,reason:$reason,repo_gate:$repo_gate,termux_smoke:$termux_smoke,active_changes_requested:$active_changes,hard_failures:$hard_failures,pending_checks:$pending,mergeable:$mergeable,mergeable_state:$mergeable_state,behind:$behind,compare_status:$compare_status}' \
               >> /tmp/merge-queue/candidates.ndjson
           done
 
@@ -140,9 +200,9 @@ jobs:
             echo
             echo '> Observer-only: this workflow never merges, closes, labels, rebases, or dispatches the merge writer.'
             echo
-            echo '| PR | Disposition | repo gate | smoke | SHA | Reason |'
-            echo '|---:|---|---|---|---|---|'
-            jq -r '.[] | "| #\(.number) | \(.disposition) | \(.repo_gate) | \(.termux_smoke) | \(.head_sha[0:12]) | \(.reason) |"' /tmp/merge-queue/merge-promotion-queue.json
+            echo '| PR | Disposition | hygiene gate | termux smoke | behind | SHA | Reason |'
+            echo '|---:|---|---|---|---:|---|---|'
+            jq -r '.[] | "| #\(.number) | \(.disposition) | \(.repo_gate) | \(.termux_smoke) | \(.behind // "") | \(.head_sha[0:12]) | \(.reason) |"' /tmp/merge-queue/merge-promotion-queue.json
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Publish queue artifact

@@ -1,0 +1,81 @@
+{
+  "collected_at": "2026-10-08T10:30:26.735667+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 37754760756,
+    "endpoint": ".../runs/37754760756/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 113236497756,
+        "run_id": 37754760756,
+        "workflow_name": "context relationship backfill watcher",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37754760756",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaXWvVXA",
+        "head_sha": "b52bf0fef9ccdead9b65362530f1a655967d5bd8",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/113236497756",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37754760756/job/113236497756",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-08T09:10:09Z",
+        "started_at": "2026-10-08T09:10:11Z",
+        "completed_at": "2026-10-08T09:10:17Z",
+        "name": "observe runtime progression",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-08T09:10:12Z",
+            "completed_at": "2026-10-08T09:10:13Z"
+          },
+          {
+            "name": "Capture runtime state and jobs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-08T09:10:13Z",
+            "completed_at": "2026-10-08T09:10:14Z"
+          },
+          {
+            "name": "Publish watcher summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-08T09:10:14Z",
+            "completed_at": "2026-10-08T09:10:14Z"
+          },
+          {
+            "name": "Upload structured watcher observation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-08T09:10:14Z",
+            "completed_at": "2026-10-08T09:10:15Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-08T09:10:15Z",
+            "completed_at": "2026-10-08T09:10:15Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/113236497756",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000223871,
+        "runner_name": "GitHub Actions 1000223871",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

@@ -134,3 +134,27 @@ Session 2026-10-07 20:14 PDT / 2026-10-08 03:14 UTC:
 - v3 schedule class closed: workflow id 377919668 run 37720010307 event=schedule conclusion=success on tip `1885410f` at 2026-10-08T02:52:39Z. Dispatch 37716951206 success. No conclusion=failure in the latest 80 completed runs. Not a filename failure.
 - Ghost 37655538554 still queued, zero jobs, on disabled workflow id 354842048. Cancel 409 / DELETE 403 unchanged. It does not serialize v3. Do not open another workflow id.
 - #903 HOLD. Do not pulse #175. #184 names-only. #984 not master. Linear TER-15 Done — not promote authority.
+
+Session 2026-10-08 09:17 PDT / 2026-10-08 16:17 UTC:
+- Master tip at session start `635d91f9b0b0274f03070e7e30174bf70446208f` (help-wanted refresh). No conclusion=failure created after 2026-10-06 on master besides historical Dependabot dynamic 37423240181 on `489b8d6b`.
+- v3 workflow id 377919668 schedule success 37763375599 at 10:25Z. No later schedule run by 16:17Z (missed 13:07/13:37/16:07). workflow_run kick 37788308513 success at 13:55Z from RECON schedule 37787946148. help-wanted execute 37804137141 success at 15:51Z did not kick v3.
+- Repair adds help-wanted execute to v3 workflow_run workflows. Do not open another workflow id. Do not promote until that SHA has no filename-named workflow failure and repo gate is green.
+- Ghost 37655538554 still queued on disabled id 354842048. #903 HOLD. Do not pulse #175. #184 names-only. #984 not master. Linear TER-15 Done — not promote authority.
+Session 2026-10-08 10:16 PDT / 2026-10-08 17:16 UTC:
+- Master tip at session start `a29e192ff74c413293362404c6abd18c6c8f5464` (help-wanted status refresh). No conclusion=failure created after 2026-10-06 on master besides historical Dependabot dynamic 37423240181 on `489b8d6b`.
+- #1175 merged `9686f3a84433d7eb48f82e4d22d45318d772f614`. help-wanted execute 37804137141 succeeded at 15:51Z before that merge, so it did not kick v3. v3 schedule remains 37763375599 at 10:25Z. Cron 7,37 did not start at 16:37Z by 17:15Z. Ghost 37655538554 still queued on disabled id 354842048.
+- Repair adds Production Reconciliation Engine (schedule success 16:29Z) and Engineering health (script) (schedule success 16:28Z) to v3 workflow_run workflows. Do not open another workflow id. Do not promote until that SHA has no filename-named workflow failure and repo gate is green.
+- #903 HOLD. Do not pulse #175. #184 names-only. #984 not master. Linear TER-15 Done — not promote authority.
+Session 2026-10-08 13:15 PDT / 2026-10-08 20:15 UTC:
+- Master tip at session start `35c60250e3052a29eab98f7053779706280eab25` (help-wanted refresh). No conclusion=failure created on 2026-10-08. Combined status failure is Vercel rate-limit only.
+- #1176 merged `9f62d036b6e135223a6dd2c4068ba55c63122906`. Push gates on that SHA succeeded: repo gate 37815564538, termux smoke 37815564535, cadence 37815564498, empty-commit watcher 37815564603, sweep 37815564497.
+- v3 schedule class closed after #1176: workflow id 377919668 run 37817607215 event=schedule conclusion=success at 2026-10-08T17:34:23Z. workflow_run kick 37834455648 success at 19:46Z. Do not open another workflow id.
+- Queue artifact 11575510839 on 37834455648: 144 open master PRs, 144 HOLD (130 not-mergeable, 14 draft). List payload mergeable was null, so not-mergeable was not a computed conflict. Repair records mergeable-unknown and resolves nulls with a per-PR GET. Do not promote until that SHA has no filename-named workflow failure and repo gate is green.
+- Ghost 37655538554 still queued on disabled id 354842048. #903 HOLD. Do not pulse #175. #184 names-only. #984 not master. Linear TER-15 Done — not promote authority.
+Session 2026-10-08 14:14 PDT / 2026-10-08 21:14 UTC:
+- Master tip at session start `2ccec53872a4fa46fabb9b42be10809a2bee00c1` (sweep receipt). No conclusion=failure created on 2026-10-08 besides historical Dependabot dynamic 37423240181 on `489b8d6b`. Combined status failure is Vercel rate-limit only.
+- #1177 merged `6493f868b431b010d880936ad88f28036852cadb`. Push gates on that SHA succeeded before this session.
+- v3 schedule class reopened: workflow id 377919668 last schedule success 37817607215 at 17:34Z. Cron 7,37 did not start at 18:07Z through 20:37Z. RECON kick 37834455648 success at 19:46Z. Later RECON schedule slots did not start.
+- Repair PR #1178 merged `806beb4da7d95eee4aed5820089a0f03268c4ba2` on code head `c19d47fc7f98ab276bbffce31266362c186a02fc`. Pre-merge repo gate 37845625780 success, termux smoke 37845625683 success, historical promotion gate 37845625674 success, cadence 37845625657 success, workflow surface policy 37845625631 success, actionlint advisory 37845626059 success, sweep 37845625695 success, RECON 37845625953 success. DeepSeek 37845625738 cancelled, not a filename failure.
+- Post-merge push on `806beb4d`: repo gate 37845783284 success, termux smoke 37845783202 success, cadence 37845783129 success, empty-commit watcher 37845783287 success, sweep 37845783434 success, n8n SHE bridge 37845813750 success. Context audit 37845783325 cancelled, not a filename failure. Tip moved to receipt `35f0ef44c4c1`. Schedule/kick on the Tunnel Canary workflows list not yet observed. Do not open another workflow id.
+- Ghost 37655538554 still queued on disabled id 354842048. #903 HOLD. Do not pulse #175. #184 names-only. #984 not master. Linear TER-15 Done — not promote authority.

@@ -1,10 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-08T06:41:05Z UTC · receipts=1399 · foreign_open=28 · tributes=79_
+_Generated 2026-10-09T06:43:43Z UTC · receipts=1484 · foreign_open=30 · tributes=81_
 
 ## Tributes (contributor ledger)
 
-- [traceopt-ai/traceml#547](https://github.com/traceopt-ai/traceml/pull/547) · state=open · help-wanted: stake + contribute for #128
+- [tusharmotwani1718/dropsend#24](https://github.com/tusharmotwani1718/dropsend/pull/24) · state=open · help-wanted: stake + contribute for #23
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -31,7 +31,10 @@ _Generated 2026-10-08T06:41:05Z UTC · receipts=1399 · foreign_open=28 · tribu
 - [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) · state=open · help-wanted: stake + contribute for #928
 - [ROCm/rocm-libraries#13152](https://github.com/ROCm/rocm-libraries/pull/13152) · state=open · help-wanted: stake + contribute for #10586
 - [topoteretes/cognee#5439](https://github.com/topoteretes/cognee/pull/5439) · state=open · help-wanted: stake + contribute for #4757
-- [gabe-santana/saccade#27](https://github.com/gabe-santana/saccade/pull/27) · state=open · help-wanted: stake + contribute for #25
+- [traceopt-ai/traceml#547](https://github.com/traceopt-ai/traceml/pull/547) · state=open · help-wanted: stake + contribute for #128
+- [Local-Settle/local-settle-frontend#4](https://github.com/Local-Settle/local-settle-frontend/pull/4) · state=open · help-wanted: stake + contribute for #1
+- [Suhas29wasnotavailable/blroad#12](https://github.com/Suhas29wasnotavailable/blroad/pull/12) · state=open · help-wanted: stake + contribute for #7
+- [gabe-santana/saccade#27](https://github.com/gabe-santana/saccade/pull/27) · state=closed · help-wanted: stake + contribute for #25
 - [P-r-e-m-i-u-m/open-source-starter-lab#492](https://github.com/P-r-e-m-i-u-m/open-source-starter-lab/pull/492) · state=closed · help-wanted: stake + contribute for #490
 - [aHuddini/UniPlaySong#101](https://github.com/aHuddini/UniPlaySong/pull/101) · state=closed · help-wanted: stake + contribute for #94
 - [Soneso/stellar-agent-wallet#349](https://github.com/Soneso/stellar-agent-wallet/pull/349) · state=closed · help-wanted: stake + contribute for #285
@@ -41,14 +44,13 @@ _Generated 2026-10-08T06:41:05Z UTC · receipts=1399 · foreign_open=28 · tribu
 - [pulseaiclub/phi#286](https://github.com/pulseaiclub/phi/pull/286) · state=closed · help-wanted: stake + contribute for #285
 - [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=closed · help-wanted: stake + contribute for #273
 - [dentalpin/dentalpin#591](https://github.com/dentalpin/dentalpin/pull/591) · state=closed · help-wanted: stake + contribute for #590
-- [estruyf/playwright-github-actions-reporter#59](https://github.com/estruyf/playwright-github-actions-reporter/pull/59) · state=closed · help-wanted: stake + contribute for #50
-- [nesstyx/ChessHome#81](https://github.com/nesstyx/ChessHome/pull/81) · state=closed · help-wanted: stake + contribute for #40
-- [Magiclovekorean/unbloarchy#5](https://github.com/Magiclovekorean/unbloarchy/pull/5) · state=closed · help-wanted: stake + contribute for #4
 
 ## Foreign open PRs
 
+- [tusharmotwani1718/dropsend#24](https://github.com/tusharmotwani1718/dropsend/pull/24) — help-wanted: stake + contribute for #23
+- [Suhas29wasnotavailable/blroad#12](https://github.com/Suhas29wasnotavailable/blroad/pull/12) — help-wanted: stake + contribute for #7
+- [Local-Settle/local-settle-frontend#4](https://github.com/Local-Settle/local-settle-frontend/pull/4) — help-wanted: stake + contribute for #1
 - [traceopt-ai/traceml#547](https://github.com/traceopt-ai/traceml/pull/547) — help-wanted: stake + contribute for #128
-- [gabe-santana/saccade#27](https://github.com/gabe-santana/saccade/pull/27) — help-wanted: stake + contribute for #25
 - [topoteretes/cognee#5439](https://github.com/topoteretes/cognee/pull/5439) — help-wanted: stake + contribute for #4757
 - [ROCm/rocm-libraries#13152](https://github.com/ROCm/rocm-libraries/pull/13152) — help-wanted: stake + contribute for #10586
 - [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) — help-wanted: stake + contribute for #928
@@ -76,6 +78,6 @@ _Generated 2026-10-08T06:41:05Z UTC · receipts=1399 · foreign_open=28 · tribu
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=1399 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 1271, 'followup_reengage': 35, 'followup_stale_nudge': 44, 'followup_changes': 1}`
+## Outcomes · ok=1484 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 1350, 'followup_reengage': 38, 'followup_stale_nudge': 47, 'followup_changes': 1}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

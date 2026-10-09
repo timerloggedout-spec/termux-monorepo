@@ -39,6 +39,9 @@ KNOWN_FREE_MODELS_WITHOUT_PRICING = {
     "google/lyria-3-pro-preview",
 }
 
+# Pre-allocated zero-pricing set for O(1) zero-price fast-path matching
+ZERO_PRICING = {"0", "0.0", 0, 0.0}
+
 PREFERRED_EXTRA = (
     "stealth/ox-alpha",
     "z-ai/glm-5.2:free",
@@ -55,10 +58,13 @@ def is_free_openrouter_model(model_id, pricing=None):
         return True
     if pricing is None:
         return model_id in KNOWN_FREE_MODELS_WITHOUT_PRICING
+    prompt = pricing.get("prompt", 1.0)
+    completion = pricing.get("completion", 1.0)
+    # Bolt optimization: Fast-path zero matching to avoid float() parsing frames
+    if prompt in ZERO_PRICING and completion in ZERO_PRICING:
+        return True
     try:
-        return float(pricing.get("prompt", 1.0)) == 0.0 and float(
-            pricing.get("completion", 1.0)
-        ) == 0.0
+        return float(prompt) == 0.0 and float(completion) == 0.0
     except (TypeError, ValueError):
         return False
 
@@ -141,8 +147,7 @@ def resolve_free_catalog(counter_dir="/tmp/model-router"):
 def expand_openrouter_peers(base_peers, free_models):
     if not free_models:
         return list(base_peers)
-    curated = list(base_peers)
-    seen = {model for provider, model in curated if provider == "openrouter"}
+    seen = {model for provider, model in base_peers if provider == "openrouter"}
     ordered = []
     free_set = set(free_models)
     for mid in PREFERRED_EXTRA:
@@ -154,7 +159,5 @@ def expand_openrouter_peers(base_peers, free_models):
             continue
         ordered.append(mid)
         seen.add(mid)
-    expanded = list(curated)
-    for mid in ordered:
-        expanded.append(("openrouter", mid))
-    return expanded
+    # Bolt optimization: Direct list concatenation without redundant list copying
+    return list(base_peers) + [("openrouter", mid) for mid in ordered]

@@ -1,0 +1,112 @@
+{
+  "master_sha": "9dc1e437088d2983d26043a16e608e2051f46d38",
+  "product_sha": "8d36f149214f4a147932188bc424e7c29b8de444",
+  "observed_at": "2026-10-09T16:20:00Z",
+  "session": "20261009-1620Z-ml-recon07",
+  "issue": 175,
+  "observer_tip_promotable": false,
+  "counts": {
+    "open_prs": 198,
+    "note": "subset fixture; generated board remains the full writer"
+  },
+  "prs": [
+    {
+      "number": 48,
+      "title": "feat(llm-api-hub): OpenAI hub + standalone server + ADE/kai9000 split (TER-71)",
+      "base": {"ref": "master-staging"},
+      "user": {"login": "timerloggedout-spec"},
+      "draft": false,
+      "mergeable_state": "unknown",
+      "changed_files": 12,
+      "why": "wrong-base:master-staging",
+      "reasons": ["wrong-base:master-staging"],
+      "head_ref": "ter-41-hub-server-standalone",
+      "wholesale": false,
+      "keep_alive": false
+    },
+    {
+      "number": 65,
+      "title": "Palette: pulsing heartbeat and color-blind telemetry symbols",
+      "base": {"ref": "master"},
+      "user": {"login": "google-labs-jules[bot]"},
+      "draft": false,
+      "mergeable_state": "unknown",
+      "changed_files": 8,
+      "why": "bot-no-auto-promote,minesweeper-title",
+      "reasons": ["bot-no-auto-promote", "minesweeper-title"],
+      "head_ref": "jules-palette-65",
+      "wholesale": false,
+      "keep_alive": false
+    },
+    {
+      "number": 432,
+      "title": "feat(ml): observe-mode GitHub ML pipelines + Issue #175 matrix + PR minesweeper",
+      "base": {"ref": "master"},
+      "user": {"login": "timerloggedout-spec"},
+      "draft": false,
+      "mergeable_state": "dirty",
+      "changed_files": 80,
+      "why": "ml-wholesale-no-go",
+      "reasons": ["ml-wholesale-no-go"],
+      "head_ref": "feat/ml-pipelines-init-175",
+      "wholesale": true,
+      "keep_alive": false
+    },
+    {
+      "number": 630,
+      "title": "fix(termux-multi-agent): add fallback rich UI classes in dashboard.py",
+      "base": {"ref": "master"},
+      "user": {"login": "google-labs-jules[bot]"},
+      "draft": false,
+      "mergeable_state": "unknown",
+      "changed_files": 4,
+      "why": "minesweeper-title",
+      "reasons": ["minesweeper-title"],
+      "head_ref": "jules-630",
+      "wholesale": false,
+      "keep_alive": false
+    },
+    {
+      "number": 682,
+      "title": "feat(ml): keep-alive pipeline DAG + operator skills (Issue #175)",
+      "base": {"ref": "master"},
+      "user": {"login": "timerloggedout-spec"},
+      "draft": false,
+      "mergeable_state": "dirty",
+      "changed_files": 90,
+      "why": "ml-keep-alive-rebase-required",
+      "reasons": ["ml-keep-alive-rebase-required"],
+      "head_ref": "ops/ml-pipeline-keep-20260920",
+      "wholesale": false,
+      "keep_alive": true
+    },
+    {
+      "number": 806,
+      "title": "ops: harden evaluation lanes and GitHub App capability evidence",
+      "base": {"ref": "master"},
+      "user": {"login": "timerloggedout-spec"},
+      "draft": false,
+      "mergeable_state": "unstable",
+      "changed_files": 5,
+      "why": "state:unknown",
+      "reasons": ["state:unknown"],
+      "head_ref": "ops/production-steward-20260924",
+      "wholesale": false,
+      "keep_alive": false
+    },
+    {
+      "number": 809,
+      "title": "feat: move GAMUT remote and extend all-repo wiki knowledge fabric",
+      "base": {"ref": "master"},
+      "user": {"login": "timerloggedout-spec"},
+      "draft": false,
+      "mergeable_state": "unknown",
+      "changed_files": 6,
+      "why": "state:unknown",
+      "reasons": ["state:unknown"],
+      "head_ref": "feat/gamut-wiki",
+      "wholesale": false,
+      "keep_alive": false
+    }
+  ]
+}

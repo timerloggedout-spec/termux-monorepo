@@ -17,6 +17,8 @@ Projects the live operator board from `ml/pipelines/command_center/`.
 python3 -m ml.pipelines.cli center
 python3 -m ml.pipelines.cli bind
 python3 -m ml.pipelines.cli drift
+python3 -m ml.pipelines.cli recon
+python3 -m ml.pipelines.cli steward
 ```
 
 Agent-Identity: Grok (Administrator)

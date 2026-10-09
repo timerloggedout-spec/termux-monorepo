@@ -5,8 +5,9 @@ description: Keep-alive ML pipeline DAG for termux-monorepo. Load on Issue #175 
 
 # Skill: ml-pipeline-ops
 
-Session 2026-09-26 21:15 UTC. Product SHA `8d36f149` dual-gate GREEN.
-Keep-alive is `ml/pipelines/` v0.6.0 (command-center). Mega ML PRs stay EXTRACT.
+Session 2026-10-09. Product SHA `8d36f149` remains the last recorded dual-gate.
+Observer tip `9dc1e437` is a help-wanted refresh and is **not** a promote SHA.
+Keep-alive is `ml/pipelines/` v0.7.0 (`recon07` binder + command-center). Mega ML PRs stay EXTRACT.
 
 ## Hard rules
 
@@ -33,6 +34,8 @@ python3 -m ml.pipelines.cli center
 python3 -m ml.pipelines.cli bind
 python3 -m ml.pipelines.cli drift
 python3 -m ml.pipelines.cli extract-plan
+python3 -m ml.pipelines.cli recon
+python3 -m ml.pipelines.cli steward
 python3 -m ml.pipelines.cli explain 682
 python3 -m ml.pipelines.cli gate 48
 python3 -m unittest discover -s ml/pipelines -p 'test_*.py'

@@ -36,7 +36,12 @@ on:
     # 37887473132 succeeded at 05:12Z on tip 8e4fbc08. Continuous CI Sweep
     # 37880662849 succeeded at 03:44Z. continuous-improve 37878189168
     # succeeded at 03:12Z. Kick from those. Do not open another workflow id.
-    workflows: ["RECON INTEL discovery", "help-wanted execute", "Production Reconciliation Engine", "Engineering health (script)", "Tunnel Canary", "hygiene-sweep", "Continuous CI Sweep", "continuous-improve"]
+        # 2026-10-09T18:14Z: v3 schedule last success 37959806584 at 16:32Z on
+    # 0acc8d24. Cron 7,37 did not start at 17:07Z or 17:37Z. Kick
+    # 37965597646 on merge SHA 66236447 skipped (push is not a schedule).
+    # Continuous agent ops schedule 37963359848 succeeded at 17:01Z on
+    # 09b3b186. Kick from that. Do not open another workflow id.
+workflows: ["RECON INTEL discovery", "help-wanted execute", "Production Reconciliation Engine", "Engineering health (script)", "Tunnel Canary", "hygiene-sweep", "Continuous CI Sweep", "continuous-improve", "Continuous agent ops"]
     types: [completed]
 
 permissions:

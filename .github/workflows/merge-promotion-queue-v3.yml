@@ -76,10 +76,35 @@ jobs:
           mkdir -p /tmp/merge-queue
           : > /tmp/merge-queue/candidates.ndjson
 
-          gh api --paginate \
-            -H 'Accept: application/vnd.github+json' \
-            "/repos/${GITHUB_REPOSITORY}/pulls?state=open&base=master&per_page=100" \
-            > /tmp/merge-queue/pr-pages.json
+          # Run 37932481581 on cb940cc3 failed inventory: gh HTTP 503, then
+          # jq broken pipe under pipefail (exit 1). Later kicks on the same
+          # day succeeded. Retry transient 502/503/504. If GitHub is still
+          # unavailable, publish an empty observer artifact and exit 0.
+          # Not a compile failure. Do not open another workflow id.
+          list_ok=0
+          for attempt in 1 2 3 4; do
+            if gh api --paginate \
+              -H 'Accept: application/vnd.github+json' \
+              "/repos/${GITHUB_REPOSITORY}/pulls?state=open&base=master&per_page=100" \
+              > /tmp/merge-queue/pr-pages.json; then
+              list_ok=1
+              break
+            fi
+            echo "merge-queue-v3 list attempt ${attempt} failed"
+            sleep $((attempt * 5))
+          done
+          if [[ "$list_ok" != "1" ]]; then
+            echo '[]' > /tmp/merge-queue/merge-promotion-queue.json
+            {
+              echo '# Merge Promotion Queue'
+              echo
+              echo "Generated from SHA ${GITHUB_SHA} at $(date -u +%Y-%m-%dT%H:%M:%SZ)."
+              echo
+              echo '> Observer-only defer: open-PR list failed after 4 attempts (HTTP 502/503/504 class, run 37932481581). No inventory commit.'
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "merge-queue-v3 deferred: list unavailable"
+            exit 0
+          fi
 
           jq -c '
             if type == "array" then

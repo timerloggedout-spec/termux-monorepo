@@ -1,10 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-09T16:59:52Z UTC · receipts=1513 · foreign_open=30 · tributes=81_
+_Generated 2026-10-09T21:17:18Z UTC · receipts=1543 · foreign_open=31 · tributes=82_
 
 ## Tributes (contributor ledger)
 
-- [MMALI3287/vibewatt#100](https://github.com/MMALI3287/vibewatt/pull/100) · state=open · help-wanted: stake + contribute for #95
+- [Tanishq964/trail-kit.#6](https://github.com/Tanishq964/trail-kit./pull/6) · state=open · help-wanted: stake + contribute for #1
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -34,6 +34,7 @@ _Generated 2026-10-09T16:59:52Z UTC · receipts=1513 · foreign_open=30 · tribu
 - [traceopt-ai/traceml#547](https://github.com/traceopt-ai/traceml/pull/547) · state=open · help-wanted: stake + contribute for #128
 - [Local-Settle/local-settle-frontend#4](https://github.com/Local-Settle/local-settle-frontend/pull/4) · state=open · help-wanted: stake + contribute for #1
 - [Suhas29wasnotavailable/blroad#12](https://github.com/Suhas29wasnotavailable/blroad/pull/12) · state=open · help-wanted: stake + contribute for #7
+- [MMALI3287/vibewatt#100](https://github.com/MMALI3287/vibewatt/pull/100) · state=open · help-wanted: stake + contribute for #95
 - [tusharmotwani1718/dropsend#24](https://github.com/tusharmotwani1718/dropsend/pull/24) · state=closed · help-wanted: stake + contribute for #23
 - [gabe-santana/saccade#27](https://github.com/gabe-santana/saccade/pull/27) · state=closed · help-wanted: stake + contribute for #25
 - [P-r-e-m-i-u-m/open-source-starter-lab#492](https://github.com/P-r-e-m-i-u-m/open-source-starter-lab/pull/492) · state=closed · help-wanted: stake + contribute for #490
@@ -43,10 +44,10 @@ _Generated 2026-10-09T16:59:52Z UTC · receipts=1513 · foreign_open=30 · tribu
 - [amponce/archive-movie-browser#437](https://github.com/amponce/archive-movie-browser/pull/437) · state=closed · help-wanted: stake + contribute for #332
 - [CopilotKit/CopilotKit#7594](https://github.com/CopilotKit/CopilotKit/pull/7594) · state=closed · help-wanted: stake + contribute for #4775
 - [pulseaiclub/phi#286](https://github.com/pulseaiclub/phi/pull/286) · state=closed · help-wanted: stake + contribute for #285
-- [GlassHaven/Haven#657](https://github.com/GlassHaven/Haven/pull/657) · state=closed · help-wanted: stake + contribute for #273
 
 ## Foreign open PRs
 
+- [Tanishq964/trail-kit.#6](https://github.com/Tanishq964/trail-kit./pull/6) — help-wanted: stake + contribute for #1
 - [MMALI3287/vibewatt#100](https://github.com/MMALI3287/vibewatt/pull/100) — help-wanted: stake + contribute for #95
 - [Suhas29wasnotavailable/blroad#12](https://github.com/Suhas29wasnotavailable/blroad/pull/12) — help-wanted: stake + contribute for #7
 - [Local-Settle/local-settle-frontend#4](https://github.com/Local-Settle/local-settle-frontend/pull/4) — help-wanted: stake + contribute for #1
@@ -78,6 +79,6 @@ _Generated 2026-10-09T16:59:52Z UTC · receipts=1513 · foreign_open=30 · tribu
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=1513 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 1376, 'followup_reengage': 39, 'followup_stale_nudge': 49, 'followup_changes': 1}`
+## Outcomes · ok=1543 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 1400, 'followup_reengage': 39, 'followup_stale_nudge': 54, 'followup_changes': 2}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

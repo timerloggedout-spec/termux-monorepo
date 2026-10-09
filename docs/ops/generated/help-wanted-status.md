@@ -1,10 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-09T06:43:43Z UTC · receipts=1484 · foreign_open=30 · tributes=81_
+_Generated 2026-10-09T08:59:35Z UTC · receipts=1484 · foreign_open=29 · tributes=80_
 
 ## Tributes (contributor ledger)
 
-- [tusharmotwani1718/dropsend#24](https://github.com/tusharmotwani1718/dropsend/pull/24) · state=open · help-wanted: stake + contribute for #23
+- [tusharmotwani1718/dropsend#24](https://github.com/tusharmotwani1718/dropsend/pull/24) · state=closed · help-wanted: stake + contribute for #23
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -47,7 +47,6 @@ _Generated 2026-10-09T06:43:43Z UTC · receipts=1484 · foreign_open=30 · tribu
 
 ## Foreign open PRs
 
-- [tusharmotwani1718/dropsend#24](https://github.com/tusharmotwani1718/dropsend/pull/24) — help-wanted: stake + contribute for #23
 - [Suhas29wasnotavailable/blroad#12](https://github.com/Suhas29wasnotavailable/blroad/pull/12) — help-wanted: stake + contribute for #7
 - [Local-Settle/local-settle-frontend#4](https://github.com/Local-Settle/local-settle-frontend/pull/4) — help-wanted: stake + contribute for #1
 - [traceopt-ai/traceml#547](https://github.com/traceopt-ai/traceml/pull/547) — help-wanted: stake + contribute for #128

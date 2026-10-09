@@ -41,7 +41,14 @@ on:
     # 37965597646 on merge SHA 66236447 skipped (push is not a schedule).
     # Continuous agent ops schedule 37963359848 succeeded at 17:01Z on
     # 09b3b186. Kick from that. Do not open another workflow id.
-    workflows: ["RECON INTEL discovery", "help-wanted execute", "Production Reconciliation Engine", "Engineering health (script)", "Tunnel Canary", "hygiene-sweep", "Continuous CI Sweep", "continuous-improve", "Continuous agent ops"]
+    # 2026-10-09T20:18Z: v3 schedule still 37959806584 at 16:32Z. Cron 7,37
+    # did not start at 19:07Z, 19:37Z, or 20:07Z. Continuous Team Evaluation
+    # schedule 37982812983 succeeded at 19:49Z on tip f5b8bdac and is not a
+    # kick source. Briefing Evidence Heartbeat schedule 37984782189 succeeded
+    # at 20:06Z on the same tip. Kick from those. Tunnel Canary 37985873055
+    # at 20:16Z already kicked inventory 37985892697. Do not open another
+    # workflow id.
+    workflows: ["RECON INTEL discovery", "help-wanted execute", "Production Reconciliation Engine", "Engineering health (script)", "Tunnel Canary", "hygiene-sweep", "Continuous CI Sweep", "continuous-improve", "Continuous agent ops", "Continuous Team Evaluation", "Briefing Evidence Heartbeat"]
     types: [completed]
 
 permissions:

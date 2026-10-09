@@ -112,13 +112,17 @@ jobs:
             exit 0
           fi
 
+          # Artifact 11638568343 on kick 37976242706 (2026-10-09T18:52Z,
+          # sha aad91816) recorded 63 mergeable-unknown and 0 CANDIDATE.
+          # The 24-null retry walked list order. Walk updated_at descending
+          # so the budget covers PRs touched today, not ancient diverged heads.
           jq -c '
             if type == "array" then
               .[] | if type == "array" then .[] else . end
             elif type == "object" then .
             else empty
             end
-          ' /tmp/merge-queue/pr-pages.json | while read -r pr; do
+          ' /tmp/merge-queue/pr-pages.json | jq -s -c 'sort_by(.updated_at) | reverse | .[]' | while read -r pr; do
             number=$(jq -r '.number' <<<"$pr")
             head_sha=$(jq -r '.head.sha' <<<"$pr")
             head_ref=$(jq -r '.head.ref' <<<"$pr")
@@ -135,11 +139,12 @@ jobs:
               mergeable=$(jq -r '.mergeable' <<<"$detail")
               mergeable_state=$(jq -r '.mergeable_state // "unknown"' <<<"$detail")
             fi
-            # Artifact 11630953815 on schedule run 37959806584 (2026-10-09T16:32Z,
-            # sha 0acc8d24) still recorded 70 mergeable-unknown after one GET.
-            # GitHub computes mergeable asynchronously. Retry at most 24 nulls
-            # once, after 2s. Remaining nulls stay mergeable-unknown.
-            if [[ "$mergeable" == "null" || -z "$mergeable" ]] && (( null_retries < 24 )); then
+            # Artifact 11638568343 on kick 37976242706 (sha aad91816) still
+            # recorded 63 mergeable-unknown after a 24-null budget spent in
+            # list order. Retry only PRs updated in the last 21 days, up to
+            # 36, once, after 2s. Older nulls stay mergeable-unknown.
+            recent_cutoff=$(date -u -d '21 days ago' +%Y-%m-%dT%H:%M:%SZ)
+            if [[ "$mergeable" == "null" || -z "$mergeable" ]] && [[ "$updated" > "$recent_cutoff" ]] && (( null_retries < 36 )); then
               null_retries=$((null_retries + 1))
               sleep 2
               detail=$(gh api -H 'Accept: application/vnd.github+json'                 "/repos/${GITHUB_REPOSITORY}/pulls/${number}")

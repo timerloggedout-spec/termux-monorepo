@@ -72,3 +72,10 @@ In Bayesian routing and Monte Carlo sampling engines (`scripts/bayesian_routing.
 
 **Action:**
 Accumulate local scalar variables in tight observation iteration loops instead of instantiating immutable dataclasses per iteration, avoid `dataclasses.asdict` on hot paths, and hoist random generator method references out of Monte Carlo sampling loops.
+
+## 2026-10-09 - Fast-Path Set Equality and Pre-Compiled Module Scope Patterns in CI Evaluators
+**Learning:**
+In CI evaluation and auditing contracts (`evaluate_skills.py` & `swe_evaluation_contract.py`), inline regex searching and set difference calculations (`EXPECTED_FIELDS - set(payload)`) inside validation loops allocate intermediate match lists and set objects frame-by-frame. Pre-compiling evaluation regexes and weight maps at module scope, using generator iterations (`sum(1 for _ in FENCES_RE.finditer(text))`), and fast-pathing `payload_keys != EXPECTED_FIELDS` set equality checks completely bypasses set difference allocations on valid payloads.
+
+**Action:**
+Pre-compile all structural validation regexes and lookup maps at module initialization, use generator counts for fence and pattern matching, and check set equality before computing set difference debug details.

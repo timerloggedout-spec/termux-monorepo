@@ -1,1 +1,37 @@
-PLACEHOLDER_WILL_REPLACE
+name: Merge Promotion Queue v3
+
+on:
+  schedule:
+    # v3 workflow id 377919668 created 2026-10-07T23:19:35Z on #1170.
+    # Cron 7,37 did not start a run at 00:07Z (zero schedule runs at 00:19Z).
+    # First execution is dispatch 37707182223, not a schedule.
+    # Ghost 37655538554 remains queued on disabled workflow id 354842048.
+    - cron: '7,37 * * * *'
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["RECON INTEL discovery", "help-wanted execute", "Production Reconciliation Engine", "Engineering health (script)", "Tunnel Canary", "hygiene-sweep", "Continuous CI Sweep", "continuous-improve", "Continuous agent ops"]
+    types: [completed]
+
+permissions:
+  contents: read
+  pull-requests: read
+  checks: read
+
+concurrency:
+  group: merge-promotion-queue-v3
+  cancel-in-progress: false
+
+jobs:
+  inventory:
+    if: >-
+      github.event_name != 'workflow_run' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'schedule' &&
+       github.event.workflow_run.head_branch == 'master')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Inventory open master PRs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: bash ops/queue-v3-inventory.sh

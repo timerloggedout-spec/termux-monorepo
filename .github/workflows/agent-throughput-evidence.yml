@@ -6,6 +6,8 @@ name: Agent Throughput Evidence
 # or executes the triggering workflow's SHA and never writes source/repository
 # state. workflow_run intentionally runs from the default branch; keep this file
 # on master before expecting live completion events.
+# Unmatched workflow names and installation rate limits are observational skips,
+# not failures (issue #1026).
 on:
   workflow_run:
     workflows:
@@ -42,7 +44,9 @@ jobs:
           path: ${{ runner.temp }}/ates-task-boundary
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Collect trusted workflow metadata
+        id: collect
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
           METADATA_PATH: ${{ runner.temp }}/agent-throughput-metadata.json
@@ -50,8 +54,10 @@ jobs:
           script: |
             const fs = require('fs');
             const run = context.payload.workflow_run;
+            core.setOutput('skip', 'false');
             if (!run) {
-              core.setFailed('workflow_dispatch is supported only as a validation surface; no target run was supplied');
+              core.warning('no target workflow_run was supplied; skipping throughput evidence');
+              core.setOutput('skip', 'true');
               return;
             }
 
@@ -67,6 +73,7 @@ jobs:
               const message = String(error.message || '');
               if (status === 403 || /rate limit/i.test(message)) {
                 core.warning(`installation rate limit; skipping throughput evidence: ${message}`);
+                core.setOutput('skip', 'true');
                 return;
               }
               throw error;
@@ -123,7 +130,8 @@ jobs:
             ].find(([needle]) => workflowName.includes(needle));
 
             if (!identity) {
-              core.setFailed(`workflow is outside the explicit agent identity map: ${workflowName}`);
+              core.warning(`workflow is outside the explicit agent identity map; skipping: ${workflowName}`);
+              core.setOutput('skip', 'true');
               return;
             }
 
@@ -164,18 +172,22 @@ jobs:
               .write();
 
       - name: Move metadata into workspace
+        if: steps.collect.outputs.skip != 'true'
         run: cp "${{ runner.temp }}/agent-throughput-metadata.json" ./agent-throughput-metadata.json
 
       - name: Emit sanitized ATES JSONL
+        if: steps.collect.outputs.skip != 'true'
         run: |
           python3 scripts/ci/emit_agent_throughput.py \
             --metadata agent-throughput-metadata.json \
             --output agent-throughput.ndjson
 
       - name: Validate emitter tests
+        if: steps.collect.outputs.skip != 'true'
         run: python3 -m unittest tests.test_emit_agent_throughput -v
 
       - name: Reduce observed ATES metrics
+        if: steps.collect.outputs.skip != 'true'
         run: |
           python3 - <<'PY'
           import json
@@ -195,6 +207,7 @@ jobs:
           PY
 
       - name: Build evidence receipt
+        if: steps.collect.outputs.skip != 'true'
         env:
           SOURCE_RUN_ID: ${{ github.event.workflow_run.id || '0' }}
           SOURCE_RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt || '1' }}
@@ -235,6 +248,7 @@ jobs:
           PY
 
       - name: Upload ATES evidence
+        if: steps.collect.outputs.skip != 'true'
         uses: actions/upload-artifact@v4.6.2
         with:
           name: agent-throughput-${{ github.event.workflow_run.id }}-${{ github.event.workflow_run.run_attempt }}

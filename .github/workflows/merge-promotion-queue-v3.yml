@@ -121,6 +121,16 @@ jobs:
             # check runs, when present, force HOLD.
             hard_failures=$(jq '[.check_runs[] | select(.status == "completed" and (.conclusion == "failure" or .conclusion == "timed_out" or .conclusion == "action_required") and (.name | test("Vercel|vercel") | not))] | length' <<<"$checks")
             pending=$(jq '[.check_runs[] | select(.status != "completed")] | length' <<<"$checks")
+            # Artifact 11591369769 on run 37874986417 marked 17 CANDIDATE
+            # with mergeable=true. #1182 head 93a2afd8 baseRefOid was
+            # ddb22aea, not the master tip that produced the artifact.
+            # Dual-gate on an older base is not current-base alignment.
+            behind="unknown"
+            compare_status="unknown"
+            if compare=$(gh api -H 'Accept: application/vnd.github+json'               "/repos/${GITHUB_REPOSITORY}/compare/${GITHUB_SHA}...${head_sha}" 2>/dev/null); then
+              behind=$(jq -r '.behind_by // "unknown"' <<<"$compare")
+              compare_status=$(jq -r '.status // "unknown"' <<<"$compare")
+            fi
 
             disposition="HOLD"
             reason=""
@@ -140,6 +150,10 @@ jobs:
               reason="repo-gate-${repo_gate}"
             elif [[ "$termux_smoke" != "success" ]]; then
               reason="termux-smoke-${termux_smoke}"
+            elif [[ "$behind" == "unknown" || -z "$behind" ]]; then
+              reason="base-compare-unknown"
+            elif [[ "$behind" != "0" ]]; then
+              reason="base-behind-${behind}"
             else
               disposition="CANDIDATE"
               reason="all-promotion-preconditions-observed"
@@ -160,7 +174,9 @@ jobs:
               --argjson pending "$pending" \
               --arg mergeable "$mergeable" \
               --arg mergeable_state "$mergeable_state" \
-              '{number:$number,title:$title,head_ref:$head_ref,head_sha:$head_sha,updated_at:$updated,disposition:$disposition,reason:$reason,repo_gate:$repo_gate,termux_smoke:$termux_smoke,active_changes_requested:$active_changes,hard_failures:$hard_failures,pending_checks:$pending,mergeable:$mergeable,mergeable_state:$mergeable_state}' \
+              --arg behind "$behind" \
+              --arg compare_status "$compare_status" \
+              '{number:$number,title:$title,head_ref:$head_ref,head_sha:$head_sha,updated_at:$updated,disposition:$disposition,reason:$reason,repo_gate:$repo_gate,termux_smoke:$termux_smoke,active_changes_requested:$active_changes,hard_failures:$hard_failures,pending_checks:$pending,mergeable:$mergeable,mergeable_state:$mergeable_state,behind:$behind,compare_status:$compare_status}' \
               >> /tmp/merge-queue/candidates.ndjson
           done
 
@@ -178,9 +194,9 @@ jobs:
             echo
             echo '> Observer-only: this workflow never merges, closes, labels, rebases, or dispatches the merge writer.'
             echo
-            echo '| PR | Disposition | hygiene gate | termux smoke | SHA | Reason |'
-            echo '|---:|---|---|---|---|---|'
-            jq -r '.[] | "| #\(.number) | \(.disposition) | \(.repo_gate) | \(.termux_smoke) | \(.head_sha[0:12]) | \(.reason) |"' /tmp/merge-queue/merge-promotion-queue.json
+            echo '| PR | Disposition | hygiene gate | termux smoke | behind | SHA | Reason |'
+            echo '|---:|---|---|---|---:|---|---|'
+            jq -r '.[] | "| #\(.number) | \(.disposition) | \(.repo_gate) | \(.termux_smoke) | \(.behind // "") | \(.head_sha[0:12]) | \(.reason) |"' /tmp/merge-queue/merge-promotion-queue.json
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Publish queue artifact

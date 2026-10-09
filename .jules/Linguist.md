@@ -116,3 +116,10 @@ When performing randomized surface codec transformations (`to_1337speak`), execu
 
 **Action:**
 In surface codec transformers, build pre-search regexes using only mutable dictionary tokens and pre-compute positional index maps to eliminate runtime character iteration and map lookups inside substitution callbacks.
+
+## 2026-10-06 - Narrowed Compound Substring Pre-Filtering and Positional Indexing in Fallback Surface Codecs
+**Learning:**
+In line-by-line document translation pipelines, single-character string existence guards (e.g. `if "[" in line` or `if "*" in line`) trigger regex evaluations (`LINK_PATTERN.sub`, `BOLD_PATTERN_2.sub`) on lines containing non-link brackets (`[BUG]`, `[ERROR]`, `[SKIPPED_REVIEW]`) or single-asterisk list items (`* item`). Narrowing pre-search guards to compound markdown formatting syntax (`"](" in line` for `LINK_PATTERN`, `"**" in line` for `BOLD_PATTERN_2`, and `"__" in line` for `BOLD_PATTERN_UNDER2`) completely bypasses regex execution on lines lacking multi-character markdown formatting constructs. Additionally, leveraging `MUTABLE_VARIANT_MAP` positional tuple index lookups in `to_1337speak()` fallback closures eliminates character loops and `LEET_MAP.get()` calls when custom RNG instances or non-default probabilities are passed.
+
+**Action:**
+Use exact multi-character compound substring pre-checks (`"]("`, `"**"`, `"__"`) before regex substitution on markdown syntax elements, and reuse pre-computed positional index maps across both default and custom RNG surface codec callback branches.

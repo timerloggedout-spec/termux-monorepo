@@ -30,7 +30,13 @@ on:
     # 37840694520 succeeded at 20:36Z on master (cron */30). Kick from that.
     # Do not open another workflow id. Ghost 37655538554 stays on disabled
     # workflow id 354842048.
-    workflows: ["RECON INTEL discovery", "help-wanted execute", "Production Reconciliation Engine", "Engineering health (script)", "Tunnel Canary"]
+    # 2026-10-09T05:15Z: v3 schedule last success 37874986417 at 02:31Z on
+    # 18f4acbe. Cron 7,37 did not start at 03:07Z, 03:37Z, 04:07Z, 04:37Z,
+    # or 05:07Z. Kick 37878611526 at 03:17Z skipped. hygiene-sweep schedule
+    # 37887473132 succeeded at 05:12Z on tip 8e4fbc08. Continuous CI Sweep
+    # 37880662849 succeeded at 03:44Z. continuous-improve 37878189168
+    # succeeded at 03:12Z. Kick from those. Do not open another workflow id.
+    workflows: ["RECON INTEL discovery", "help-wanted execute", "Production Reconciliation Engine", "Engineering health (script)", "Tunnel Canary", "hygiene-sweep", "Continuous CI Sweep", "continuous-improve"]
     types: [completed]
 
 permissions:

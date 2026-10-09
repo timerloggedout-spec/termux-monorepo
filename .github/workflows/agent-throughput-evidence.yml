@@ -6,6 +6,10 @@ name: Agent Throughput Evidence
 # or executes the triggering workflow's SHA and never writes source/repository
 # state. workflow_run intentionally runs from the default branch; keep this file
 # on master before expecting live completion events.
+#
+# Rate-limit / 403 on the installation token is an intentional skip, not a failure.
+# The collector writes a skip marker so later steps do not treat a missing
+# metadata file as an incident (issue #1026).
 on:
   workflow_run:
     workflows:
@@ -42,7 +46,9 @@ jobs:
           path: ${{ runner.temp }}/ates-task-boundary
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Collect trusted workflow metadata
+        id: collect
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
           METADATA_PATH: ${{ runner.temp }}/agent-throughput-metadata.json
@@ -50,6 +56,19 @@ jobs:
           script: |
             const fs = require('fs');
             const run = context.payload.workflow_run;
+            const writeSkip = (reason, detail) => {
+              const marker = {
+                skipped: true,
+                reason,
+                detail: String(detail || '').slice(0, 300),
+                observed_at: new Date().toISOString(),
+              };
+              fs.writeFileSync(process.env.METADATA_PATH, JSON.stringify(marker, null, 2) + '\n', 'utf8');
+              core.setOutput('skipped', 'true');
+              core.setOutput('skip_reason', reason);
+              core.warning(`ATES observer skip (${reason}): ${marker.detail}`);
+            };
+
             if (!run) {
               core.setFailed('workflow_dispatch is supported only as a validation surface; no target run was supplied');
               return;
@@ -65,8 +84,8 @@ jobs:
             } catch (error) {
               const status = error.status || error.response?.status;
               const message = String(error.message || '');
-              if (status === 403 || /rate limit/i.test(message)) {
-                core.warning(`installation rate limit; skipping throughput evidence: ${message}`);
+              if (status === 403 || status === 429 || /rate limit/i.test(message)) {
+                writeSkip('rate_limit', message);
                 return;
               }
               throw error;
@@ -123,11 +142,12 @@ jobs:
             ].find(([needle]) => workflowName.includes(needle));
 
             if (!identity) {
-              core.setFailed(`workflow is outside the explicit agent identity map: ${workflowName}`);
+              writeSkip('unmapped_workflow', workflowName);
               return;
             }
 
             const metadata = {
+              skipped: false,
               agent_id: identity[1],
               workflow_run: {
                 id: run.id,
@@ -152,6 +172,7 @@ jobs:
             };
 
             fs.writeFileSync(process.env.METADATA_PATH, JSON.stringify(metadata, null, 2) + '\n', 'utf8');
+            core.setOutput('skipped', 'false');
             await core.summary
               .addHeading('ATES evidence observation')
               .addRaw(`- workflow: ${run.name}\n`)
@@ -164,18 +185,22 @@ jobs:
               .write();
 
       - name: Move metadata into workspace
+        if: steps.collect.outputs.skipped != 'true'
         run: cp "${{ runner.temp }}/agent-throughput-metadata.json" ./agent-throughput-metadata.json
 
       - name: Emit sanitized ATES JSONL
+        if: steps.collect.outputs.skipped != 'true'
         run: |
           python3 scripts/ci/emit_agent_throughput.py \
             --metadata agent-throughput-metadata.json \
             --output agent-throughput.ndjson
 
       - name: Validate emitter tests
+        if: steps.collect.outputs.skipped != 'true'
         run: python3 -m unittest tests.test_emit_agent_throughput -v
 
       - name: Reduce observed ATES metrics
+        if: steps.collect.outputs.skipped != 'true'
         run: |
           python3 - <<'PY'
           import json
@@ -195,6 +220,7 @@ jobs:
           PY
 
       - name: Build evidence receipt
+        if: steps.collect.outputs.skipped != 'true'
         env:
           SOURCE_RUN_ID: ${{ github.event.workflow_run.id || '0' }}
           SOURCE_RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt || '1' }}
@@ -234,7 +260,42 @@ jobs:
           )
           PY
 
+      - name: Write skip receipt
+        if: steps.collect.outputs.skipped == 'true'
+        env:
+          SOURCE_RUN_ID: ${{ github.event.workflow_run.id || '0' }}
+          SOURCE_RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt || '1' }}
+          SKIP_REASON: ${{ steps.collect.outputs.skip_reason }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          receipt = {
+              "schema_version": "ates.evidence.v1",
+              "producer": "agent-throughput-evidence",
+              "source_run_id": int(os.environ["SOURCE_RUN_ID"]),
+              "source_run_attempt": int(os.environ["SOURCE_RUN_ATTEMPT"]),
+              "skipped": True,
+              "skip_reason": os.environ.get("SKIP_REASON") or "unknown",
+              "files": {},
+              "privacy": {
+                  "prompts": False,
+                  "completions": False,
+                  "credentials": False,
+                  "tool_payloads": False,
+              },
+              "ates_gate": "observational-only-skip",
+              "baseline": "missing-unless-explicitly-declared",
+          }
+          Path("agent-throughput-receipt.json").write_text(
+              json.dumps(receipt, sort_keys=True, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          PY
+
       - name: Upload ATES evidence
+        if: steps.collect.outputs.skipped != 'true'
         uses: actions/upload-artifact@v4.6.2
         with:
           name: agent-throughput-${{ github.event.workflow_run.id }}-${{ github.event.workflow_run.run_attempt }}
@@ -244,3 +305,12 @@ jobs:
             agent-throughput-receipt.json
           if-no-files-found: error
           retention-days: 14
+
+      - name: Upload ATES skip receipt
+        if: steps.collect.outputs.skipped == 'true'
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: agent-throughput-skip-${{ github.event.workflow_run.id }}-${{ github.event.workflow_run.run_attempt }}
+          path: agent-throughput-receipt.json
+          if-no-files-found: error
+          retention-days: 7

@@ -15,6 +15,7 @@ on:
 permissions:
   contents: read
   issues: write
+  actions: read
 
 concurrency:
   group: actions-run-watcher-${{ github.event.workflow_run.id }}
@@ -25,16 +26,46 @@ jobs:
     # Success and cancelled completions were starting a runner only to echo.
     # On 2026-10-06 the receipt SHA f26eedd0 produced a burst of watcher runs
     # with no incident. Skip the job unless the completion is actionable.
+    # A workflow_run conclusion of failure is still not enough: run
+    # 37859394240 on ddb22aea concluded cancelled, and stale incidents such
+    # as #1025 were re-commented after the current tip ledger succeeded.
     if: >-
       github.event.workflow_run.conclusion == 'failure' ||
       github.event.workflow_run.conclusion == 'timed_out'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Validate job classifier
+        run: python3 scripts/ci/test_classify_workflow_jobs.py
+
+      - name: Classify job conclusions
+        id: classify
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          gh api "repos/${REPOSITORY}/actions/runs/${RUN_ID}/jobs?per_page=100" \
+            | python3 scripts/ci/classify_workflow_jobs.py > "$RUNNER_TEMP/classification.json" \
+            && rc=0 || rc=$?
+          cat "$RUNNER_TEMP/classification.json"
+          if [ "$rc" -eq 1 ]; then
+            echo "actionable=false" >> "$GITHUB_OUTPUT"
+            echo "no failed or timed_out job; skip incident"
+            exit 0
+          fi
+          if [ "$rc" -ne 0 ]; then
+            exit "$rc"
+          fi
+          echo "actionable=true" >> "$GITHUB_OUTPUT"
+
       - name: Create or update incident notification
-        if: >-
-          github.event.workflow_run.conclusion == 'failure' ||
-          github.event.workflow_run.conclusion == 'timed_out'
+        if: steps.classify.outputs.actionable == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           RUN_ID: ${{ github.event.workflow_run.id }}
@@ -62,6 +93,8 @@ jobs:
 
           Evidence: ${RUN_URL}
 
+          Job classifier required at least one failure or timed_out job. Cancelled-only and skipped completions are not incidents.
+
           This notification is observation/notification only; remediation remains governed by the Self-Healing Engine authority and verification gates.
           EOF
           )
@@ -75,9 +108,7 @@ jobs:
           fi
 
       - name: Emit structured incident receipt
-        if: >-
-          github.event.workflow_run.conclusion == 'failure' ||
-          github.event.workflow_run.conclusion == 'timed_out'
+        if: steps.classify.outputs.actionable == 'true'
         env:
           RUN_ID: ${{ github.event.workflow_run.id }}
           CONCLUSION: ${{ github.event.workflow_run.conclusion }}
@@ -95,5 +126,6 @@ jobs:
               "head_sha": os.environ["HEAD_SHA"],
               "run_url": os.environ["RUN_URL"],
               "observer_only": True,
+              "job_classifier": "actions-job-classifier/v1",
           }, sort_keys=True))
           PY

@@ -75,6 +75,7 @@ jobs:
           echo "merge-queue-v3 event=${GITHUB_EVENT_NAME} sha=${GITHUB_SHA}"
           mkdir -p /tmp/merge-queue
           : > /tmp/merge-queue/candidates.ndjson
+          null_retries=0
 
           # Run 37932481581 on cb940cc3 failed inventory: gh HTTP 503, then
           # jq broken pipe under pipefail (exit 1). Later kicks on the same
@@ -129,6 +130,17 @@ jobs:
               mergeable=$(jq -r '.mergeable' <<<"$detail")
               mergeable_state=$(jq -r '.mergeable_state // "unknown"' <<<"$detail")
             fi
+            # Artifact 11630953815 on schedule run 37959806584 (2026-10-09T16:32Z,
+            # sha 0acc8d24) still recorded 70 mergeable-unknown after one GET.
+            # GitHub computes mergeable asynchronously. Retry at most 24 nulls
+            # once, after 2s. Remaining nulls stay mergeable-unknown.
+            if [[ "$mergeable" == "null" || -z "$mergeable" ]] && (( null_retries < 24 )); then
+              null_retries=$((null_retries + 1))
+              sleep 2
+              detail=$(gh api -H 'Accept: application/vnd.github+json'                 "/repos/${GITHUB_REPOSITORY}/pulls/${number}")
+              mergeable=$(jq -r '.mergeable' <<<"$detail")
+              mergeable_state=$(jq -r '.mergeable_state // "unknown"' <<<"$detail")
+            fi
 
             [[ "$number" =~ ^[0-9]+$ ]] || continue
             [[ -n "$head_sha" && "$head_sha" != "null" ]] || continue
@@ -150,7 +162,10 @@ jobs:
             termux_smoke=$(jq -r '[.check_runs[] | select(.name == "agentic termux smoke" or .name == "termux smoke") | .conclusion] | last // "missing"' <<<"$checks")
             # Vercel rate-limit is non-gate (#772). Do not let those
             # check runs, when present, force HOLD.
-            hard_failures=$(jq '[.check_runs[] | select(.status == "completed" and (.conclusion == "failure" or .conclusion == "timed_out" or .conclusion == "action_required") and (.name | test("Vercel|vercel") | not))] | length' <<<"$checks")
+            # Vercel rate-limit is non-gate (#772). DeepSeek/Devin are advisory;
+            # run 37959235963 on #1188 concluded cancelled while the check
+            # surface reported deepseek-agent fail. Do not HOLD on those names.
+            hard_failures=$(jq '[.check_runs[] | select(.status == "completed" and (.conclusion == "failure" or .conclusion == "timed_out" or .conclusion == "action_required") and (.name | test("Vercel|vercel|DeepSeek|Devin") | not))] | length' <<<"$checks")
             pending=$(jq '[.check_runs[] | select(.status != "completed")] | length' <<<"$checks")
             # Artifact 11591369769 on run 37874986417 marked 17 CANDIDATE
             # with mergeable=true. #1182 head 93a2afd8 baseRefOid was

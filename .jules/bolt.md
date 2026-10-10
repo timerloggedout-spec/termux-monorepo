@@ -72,3 +72,10 @@ In Bayesian routing and Monte Carlo sampling engines (`scripts/bayesian_routing.
 
 **Action:**
 Accumulate local scalar variables in tight observation iteration loops instead of instantiating immutable dataclasses per iteration, avoid `dataclasses.asdict` on hot paths, and hoist random generator method references out of Monte Carlo sampling loops.
+
+## 2026-10-10 - Module-Load Path Evaluation vs Runtime Environment Overrides and Single-Pass Roster Metrics
+**Learning:**
+Evaluating file paths and environment configurations (`os.environ.get("OUTPUT", ...)`) at module load time binds global constants (`OUT`) upon module import. When unit tests patch environment variables dynamically inside `patch.dict("os.environ", ...)`, the imported module continues reading the import-time constant, leading to test failures and preventing dynamic runtime configuration. Evaluating output paths dynamically inside `main()` allows runtime environment overrides. Additionally, accumulating candidate counts during single-pass roster generation (`build()`) in Scout catalog compilers eliminates O(N) candidate filter iterations in calling applications (`scout_missions.py` & `main()`).
+
+**Action:**
+Evaluate environment variable output paths dynamically inside `main()` or accessor functions instead of module-level constants to support runtime patching, and accumulate candidate metrics during single-pass data structures assembly.

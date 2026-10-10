@@ -29,8 +29,10 @@ OVERSIGHT_CLASSES = (
 
 
 def missions(roster: dict) -> list[dict]:
-    candidates = roster.get("candidates", [])
-    candidate_count = sum(1 for r in candidates if r.get("status") == "candidate")
+    candidate_count = roster.get("candidate_count")
+    if candidate_count is None:
+        candidates = roster.get("candidates", [])
+        candidate_count = sum(1 for r in candidates if r.get("status") == "candidate")
     result = []
     for scout, purpose in SCOUTS.items():
         target = "provider/model population" if scout != "oversight" else "external evaluation opportunities"

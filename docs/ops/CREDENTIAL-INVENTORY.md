@@ -33,4 +33,4 @@ CodeRabbit, Qodo, Devin, Jules, Copilot, Vercel, Linear, Grok GitHub App are rev
 4. Rebind Actions secrets by name only.
 5. Record rotation date here without values.
 
-Last inventory pass: 2026-09-27 (names-only contract + validator; no secret material).
+Last inventory pass: 2026-10-10 (names-only contract + validator; no secret material). Master tip d019031648c42f8e50e2dd6eee6fc1c11761b8c5 green; recent dual-gate and v3 queue success. Classic PATs with unused admin scopes remain rotation candidates off-repo.

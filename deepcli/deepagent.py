@@ -949,15 +949,9 @@ def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False
 
     SAFETY_CEILING = int(os.environ.get("AGENT_SAFETY_CEILING", "60"))
     NO_PROGRESS_LIMIT = int(os.environ.get("AGENT_NO_PROGRESS_LIMIT", "5"))
-    # Hindsight gate (from master): the client is constructed only if env set;
-    # reachability is checked at loop start.
-    if _HINDSIGHT_AVAILABLE and os.environ.get("HINDSIGHT_BASE_URL"):
-        try:
-            import asyncio as _aio
-            _hs = _hs_build()[0].client if hasattr(_hs_build()[0], "client") else None
-            # recall is invoked as a tool by the model; no eager recall here
-        except Exception:
-            pass
+    # Hindsight recall is invoked as a tool by the model; no eager recall here.
+    # (The previous eager-client shim was dead code: it bound _aio/_hs and
+    # called _hs_build() twice without ever using the result.)
 
     # Checkpoint resume (from branch): hydrate loop state from prior run if
     # the network-interrupt checkpoint exists, else start fresh.
@@ -1041,13 +1035,13 @@ def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False
                 if _HINDSIGHT_AVAILABLE and os.environ.get("HINDSIGHT_BASE_URL"):
                     try:
                         _hooks = {s.name: s.handler for s in _hs_build()}
-                        if "hindsight_retain" in _hooks:
-                            import asyncio as _aio
-                            _aio.get_event_loop().create_task(
-                                _hooks["hindsight_retain"](
-                                    {"content": f"task: {task[:300]}\nsummary: {result.get('summary','')[:500]}"}
-                                )
-                            ) if False else None  # sync context; defer to Phase 3
+                        # NOTE: hindsight_retain is intentionally NOT dispatched here.
+                        # The loop body is synchronous, so the async retain coroutine
+                        # cannot be scheduled without a running event loop; eager
+                        # retain is deferred until a real async context exists.
+                        # Kept the hook lookup so a future async refactor has the
+                        # handle ready.
+                        _ = _hooks.get("hindsight_retain")
                     except Exception:
                         pass
                 _autosnapshot("finish")

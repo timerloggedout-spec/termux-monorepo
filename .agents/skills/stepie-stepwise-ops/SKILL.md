@@ -174,3 +174,11 @@ Session 2026-10-09 12:16 PDT / 2026-10-09 19:16 UTC:
 - v3 workflow id 377919668 kick 37976242706 event=workflow_run conclusion=success at 2026-10-09T18:51:59Z on tip `aad91816`. Schedule last success remains 37959806584 at 16:32Z. Cron 7,37 did not start at 18:07Z or 18:37Z. Kick path from RECON schedule is live. Do not open another workflow id.
 - Artifact 11638568343: 148 open, 0 CANDIDATE, 63 mergeable-unknown, 49 dirty, 14 draft. The 24-null retry walked list order. Repair sorts by updated_at descending and retries only PRs updated in the last 21 days, cap 36.
 - Ghost 37655538554 still queued on disabled id 354842048. #903 HOLD. Do not pulse #175. #1188 CHANGES_REQUESTED. #184 names-only. Linear TER-15 Done — not promote authority.
+
+Session 2026-10-09 17:20 PDT / 2026-10-10 00:20 UTC:
+- Master tip at session start `b95af90806829c7e5b569bd087d92b12228f3120` (help-wanted refresh 2026-10-09T22:38Z).
+- No conclusion=failure in the latest completed master window. Recent runs: Merge Promotion Queue v3 38008255768 success, Tunnel Canary 38008242226 success, Historical Evaluation Correlation 38007000621 success, Continuous Team Evaluation 38006683498 success. Dual-gate on recent pushes (e.g. fae23613) success. Not a filename failure.
+- Lane-matrix-status.md on tip lists Master `50c7898ba7ac67593d25bc32fed0ffe31131b1fa` (prior sweep receipt). Open PRs ~199.
+- #903 HOLD. Do not pulse #175. #184 names-only. #1188 CHANGES_REQUESTED. Linear TER-15 Done — not promote authority.
+- Ghost 37655538554 still queued on disabled id 354842048. Do not open another workflow id.
+- Open incidents #1025/#1026 historical. Vercel rate-limit non-gate.

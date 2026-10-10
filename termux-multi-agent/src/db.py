@@ -3,13 +3,37 @@ import os
 import json
 import re
 import subprocess
+from pathlib import Path
 
 DB_PATH = "local_repo.db"
+
+def _ensure_secure_db_path(db_path=None):
+    """Enforce strict permissions and symlink rejection on database path and parent directory."""
+    p = Path(db_path if db_path is not None else DB_PATH)
+    parent = p.parent
+    if parent.is_symlink():
+        raise RuntimeError(f"Symlink parent directory {parent} rejected for security")
+    if not parent.exists():
+        parent.mkdir(parents=True, exist_ok=True)
+    if os.name != "nt" and parent != Path(".") and parent != Path("") and parent.resolve() != Path.cwd().resolve():
+        try:
+            parent.chmod(0o700)
+        except Exception:
+            pass
+
+    if p.is_symlink():
+        raise RuntimeError(f"Symlink database path {p} rejected for security")
+    if p.exists() and os.name != "nt":
+        try:
+            p.chmod(0o600)
+        except Exception:
+            pass
 
 def init_db():
     """
     Create the SQLite database tables used for code indexing, run history, and message search.
     """
+    _ensure_secure_db_path()
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
         cursor.execute('''
@@ -45,10 +69,7 @@ def init_db():
                 msg_idx UNINDEXED
             )''')
         conn.commit()
-    try:
-        os.chmod(DB_PATH, 0o600)
-    except Exception:
-        pass
+    _ensure_secure_db_path()
 
 def log_attempt_telemetry(target_file, attempt, patch, errors, verdict):
     """
@@ -61,6 +82,7 @@ def log_attempt_telemetry(target_file, attempt, patch, errors, verdict):
     	errors (str): Errors recorded during the attempt.
     	verdict (str): Outcome assigned to the attempt.
     """
+    _ensure_secure_db_path()
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
         cursor.execute(
@@ -126,6 +148,7 @@ def index_project_file(workspace_root, relative_path, conn=None):
         # Database transaction using batch executemany for high performance
         close_conn = False
         if conn is None:
+            _ensure_secure_db_path()
             conn = sqlite3.connect(DB_PATH)
             close_conn = True
 
@@ -163,6 +186,7 @@ def batch_insert_fts_messages(messages, conn=None):
 
     close_conn = False
     if conn is None:
+        _ensure_secure_db_path()
         conn = sqlite3.connect(DB_PATH)
         close_conn = True
     try:
@@ -188,6 +212,7 @@ def search_fts_messages(query, limit=10, conn=None):
     """
     close_conn = False
     if conn is None:
+        _ensure_secure_db_path()
         conn = sqlite3.connect(DB_PATH)
         close_conn = True
     try:

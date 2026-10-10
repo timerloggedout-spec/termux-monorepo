@@ -286,3 +286,8 @@ Session 2026-10-09 12:16 PDT / 2026-10-09 19:16 UTC:
 - v3 workflow id 377919668 kick 37976242706 event=workflow_run conclusion=success at 2026-10-09T18:51:59Z on tip `aad91816`. Schedule last success remains 37959806584 at 16:32Z. Cron 7,37 did not start at 18:07Z or 18:37Z. Kick path from RECON schedule is live. Do not open another workflow id.
 - Artifact 11638568343: 148 open, 0 CANDIDATE, 63 mergeable-unknown, 49 dirty, 14 draft. The 24-null retry walked list order. Repair sorts by updated_at descending and retries only PRs updated in the last 21 days, cap 36.
 - Ghost 37655538554 still queued on disabled id 354842048. #903 HOLD. Do not pulse #175. #1188 CHANGES_REQUESTED. #184 names-only. Linear TER-15 Done — not promote authority.
+
+Session 2026-10-09 22:14 PDT / 2026-10-10 05:14 UTC:
+- Master tip at session start `d019031648c42f8e50e2dd6eee6fc1c11761b8c5`. v3 schedule/kick class success. No new filename failures.
+- #1195 dual-gate SUCCESS on `2fa3a38` then squash to `dea085f`. Post-merge gates observed starting. Adaptive wait for post-merge confirmation of no filename-named failure on new tip.
+- Ghost remains queued on disabled id. #903 HOLD. Do not pulse #175. #184 names-only. Linear TER-15 Done — not promote authority.

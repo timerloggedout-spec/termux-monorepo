@@ -12,10 +12,27 @@ import zipfile
 from pathlib import Path
 
 VERSION = "1.1"
+# Bolt optimization: Pre-compile regex patterns and pre-allocate weight dictionary at module scope
+# to eliminate per-evaluation regex compilation and dictionary allocation overhead.
+PROCEDURE_RE = re.compile(r"^#{1,3} .*?(?:workflow|procedure|steps|operating|process)", re.I | re.M)
+SAFETY_RE = re.compile(r"safe|safety|secret|credential|permission|do not|never", re.I)
+EVIDENCE_RE = re.compile(r"verify|validate|evidence|test|closeout", re.I)
+INTEGRATION_RE = re.compile(
+    r"^#{1,3} .*?(?:reference|maintenance|related)|\bReferences\b|\bmaintenance\b|\brelated\b", re.I | re.M
+)
+FENCES_RE = re.compile(r"^```", re.M)
 SECRET_PATTERNS = [
     re.compile(r"(?:sk-[A-Za-z0-9]{20,}|gh[pousr]_[A-Za-z0-9_]{20,})"),
     re.compile(r"(?i)(?:api[_-]?key|token|password|secret)\s*[:=]\s*['\"][^'\"]{12,}['\"]"),
 ]
+DIMENSION_WEIGHTS = {
+    "identity_clarity": 20,
+    "procedure_completeness": 20,
+    "safety_boundaries": 20,
+    "verification_evidence": 20,
+    "integration_maintenance": 10,
+    "packaging_hygiene": 10,
+}
 
 
 def parse_frontmatter(text: str):
@@ -60,11 +77,11 @@ def evaluate_text(text: str, identity: str, source_kind: str, packaging_ok: bool
 
     identity_ok = bool(fm.get("name", "").strip() and fm.get("description", "").strip())
     body = text.split("---", 2)[-1].strip()
-    procedure_ok = bool(re.search(r"^#{1,3} .*?(?:workflow|procedure|steps|operating|process)", text, re.I | re.M))
-    safety_ok = bool(re.search(r"safe|safety|secret|credential|permission|do not|never", text, re.I))
-    evidence_ok = bool(re.search(r"verify|validate|evidence|test|closeout", text, re.I))
-    integration_ok = bool(re.search(r"^#{1,3} .*?(?:reference|maintenance|related)|\bReferences\b|\bmaintenance\b|\brelated\b", text, re.I | re.M))
-    fences_ok = len(re.findall(r"^```", text, re.MULTILINE)) % 2 == 0
+    procedure_ok = bool(PROCEDURE_RE.search(text))
+    safety_ok = bool(SAFETY_RE.search(text))
+    evidence_ok = bool(EVIDENCE_RE.search(text))
+    integration_ok = bool(INTEGRATION_RE.search(text))
+    fences_ok = sum(1 for _ in FENCES_RE.finditer(text)) % 2 == 0
     secrets_ok = not any(p.search(text) for p in SECRET_PATTERNS)
 
     checks = {
@@ -86,15 +103,7 @@ def evaluate_text(text: str, identity: str, source_kind: str, packaging_ok: bool
         "integration_maintenance": dim(integration_ok),
         "packaging_hygiene": dim(packaging_ok and fences_ok and secrets_ok),
     }
-    weights = {
-        "identity_clarity": 20,
-        "procedure_completeness": 20,
-        "safety_boundaries": 20,
-        "verification_evidence": 20,
-        "integration_maintenance": 10,
-        "packaging_hygiene": 10,
-    }
-    score = round(sum(dimensions[k] * weights[k] for k in dimensions) / 5)
+    score = round(sum(dimensions[k] * DIMENSION_WEIGHTS[k] for k in dimensions) / 5)
     hard_failures = []
     if not identity_ok:
         hard_failures.append("frontmatter_identity")

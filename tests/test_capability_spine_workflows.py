@@ -44,3 +44,21 @@ def test_event_classifier_remains_an_event_classifier_not_a_second_router():
     source = Path(".github/workflows/gemini-dispatch.yml").read_text(encoding="utf-8")
     assert "command', 'defer-peers'" in source
     assert "uses: ./.github/actions/model-router" not in source
+def test_model_router_cache_is_versioned_and_advisory():
+    source = ACTION.read_text(encoding="utf-8")
+    assert "cache-schema:" in source
+    assert "default: 'v2'" in source
+    assert "model-router-${{ inputs.cache-schema }}-" in source
+    assert "Authoritative provider quota/rate-limit state" in source
+    assert "cache-hit:" in source
+
+def test_jules_feedback_relay_coalesces_provider_capacity_noise():
+    source = Path(".github/workflows/agent-review-auto-jules.yml").read_text(
+        encoding="utf-8"
+    )
+    assert "group: agent-auto-jules-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}" in source
+    assert "cancel-in-progress: true" in source
+    assert "source_revision" in source
+    assert "qodo:billing-blocked" in source
+    assert "providerCapacityNotice" in source
+    assert "trial has ended" in source

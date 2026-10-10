@@ -34,17 +34,20 @@ class GitHubError(Exception):
         self.detail = detail
 
 
+# Pre-allocate base headers at module scope to eliminate per-request header dictionary construction overhead.
+BASE_HEADERS: dict[str, str] = {
+    "Accept": "application/vnd.github+json",
+    "X-GitHub-Api-Version": "2022-11-28",
+    "User-Agent": "termux-monorepo-queue-reaper",
+}
+
+
 def gh(method: str, path: str, token: str, body: dict | None = None) -> dict | list:
     req = urllib.request.Request(
         f"https://api.github.com{path}",
         data=None if body is None else json.dumps(body).encode(),
         method=method,
-        headers={
-            "Accept": "application/vnd.github+json",
-            "Authorization": f"Bearer {token}",
-            "X-GitHub-Api-Version": "2022-11-28",
-            "User-Agent": "termux-monorepo-queue-reaper",
-        },
+        headers={**BASE_HEADERS, "Authorization": f"Bearer {token}"},
     )
     try:
         with urllib.request.urlopen(req, timeout=60) as resp:
@@ -107,12 +110,13 @@ def main() -> int:
         runs = payload.get("workflow_runs") or []
         if not runs:
             break
+        now = datetime.now(timezone.utc)
         for run in runs:
             scanned += 1
             created = datetime.fromisoformat(run["created_at"].replace("Z", "+00:00"))
             cutoff = cutoff_for(
                 str(run.get("event") or ""),
-                datetime.now(timezone.utc),
+                now,
                 args.older_than_hours,
                 args.schedule_older_than_minutes,
             )

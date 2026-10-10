@@ -21,7 +21,8 @@ import urllib.request
 
 TIMEOUT = 30
 UA = "termux-monorepo-provider-availability/1"
-OUT = os.environ.get("OUTPUT", "/tmp/provider-availability.json")
+# Pre-allocate base headers at module scope to avoid per-request header dictionary allocation.
+BASE_HEADERS = {"User-Agent": UA, "Accept": "application/json", "Content-Type": "application/json"}
 
 
 def now():
@@ -29,9 +30,7 @@ def now():
 
 
 def request(url, *, token=None, method="GET", payload=None):
-    headers = {"User-Agent": UA, "Accept": "application/json", "Content-Type": "application/json"}
-    if token:
-        headers["Authorization"] = f"Bearer {token}"
+    headers = BASE_HEADERS if not token else {**BASE_HEADERS, "Authorization": f"Bearer {token}"}
     data = json.dumps(payload).encode() if payload is not None else None
     req = urllib.request.Request(url, data=data, headers=headers, method=method)
     with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
@@ -179,7 +178,8 @@ def main():
         },
         "providers": rows,
     }
-    with open(OUT, "w", encoding="utf-8") as fh:
+    out_path = os.environ.get("OUTPUT", "/tmp/provider-availability.json")
+    with open(out_path, "w", encoding="utf-8") as fh:
         json.dump(document, fh, indent=2, sort_keys=True)
         fh.write("\n")
 

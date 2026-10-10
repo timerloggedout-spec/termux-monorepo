@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-10T12:32:11Z UTC · receipts=1636 · foreign_open=31 · tributes=82_
+_Generated 2026-10-10T14:44:53Z UTC · receipts=1636 · foreign_open=32 · tributes=83_
 
 ## Tributes (contributor ledger)
 
+- [Lee-Dongwook/E2E-Self-Heal#371](https://github.com/Lee-Dongwook/E2E-Self-Heal/pull/371) · state=open · help-wanted: stake + contribute for #351
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -43,10 +44,10 @@ _Generated 2026-10-10T12:32:11Z UTC · receipts=1636 · foreign_open=31 · tribu
 - [O2sa/DevImpact#221](https://github.com/O2sa/DevImpact/pull/221) · state=closed · help-wanted: stake + contribute for #220
 - [amponce/archive-movie-browser#437](https://github.com/amponce/archive-movie-browser/pull/437) · state=closed · help-wanted: stake + contribute for #332
 - [CopilotKit/CopilotKit#7594](https://github.com/CopilotKit/CopilotKit/pull/7594) · state=closed · help-wanted: stake + contribute for #4775
-- [pulseaiclub/phi#286](https://github.com/pulseaiclub/phi/pull/286) · state=closed · help-wanted: stake + contribute for #285
 
 ## Foreign open PRs
 
+- [Lee-Dongwook/E2E-Self-Heal#371](https://github.com/Lee-Dongwook/E2E-Self-Heal/pull/371) — help-wanted: stake + contribute for #351
 - [Tanishq964/trail-kit.#6](https://github.com/Tanishq964/trail-kit./pull/6) — help-wanted: stake + contribute for #1
 - [MMALI3287/vibewatt#100](https://github.com/MMALI3287/vibewatt/pull/100) — help-wanted: stake + contribute for #95
 - [Suhas29wasnotavailable/blroad#12](https://github.com/Suhas29wasnotavailable/blroad/pull/12) — help-wanted: stake + contribute for #7

@@ -1,4 +1,4 @@
-"""cli: python3 -m ml.pipelines.cli <status|run|lanes|cctv|matrix|center|bind|drift|extract-plan|explain|gate>"""
+"""cli: python3 -m ml.pipelines.cli <status|run|lanes|cctv|matrix|center|bind|drift|extract-plan|recon|steward|explain|gate>"""
 from __future__ import annotations
 
 import argparse
@@ -20,6 +20,8 @@ from ml.pipelines.moneyball.explain import explain
 from ml.pipelines.moneyball.scorer import score
 from ml.pipelines.operator.matrix import PRIORITY
 from ml.pipelines.stages import STAGES
+from ml.pipelines.recon08.stamp import stamp_report
+from ml.pipelines.recon08.steward import report as steward_report
 from ml.pipelines.viz.cctv import emit_cctv
 from ml.pipelines.viz.mermaid import dag_mermaid
 
@@ -38,7 +40,9 @@ def cmd_status(_: argparse.Namespace) -> int:
         "session": payload.get("session"),
         "fixture": latest_session_path().name,
         "vocab": ["EXTRACT", "CANDIDATE", "NEED_EVIDENCE", "SUPERSEDE"],
-        "version": "0.6.0",
+        "version": "0.8.0",
+        "product_sha": "8d36f149214f4a147932188bc424e7c29b8de444",
+        "observer_tip_promotable": False,
     }, indent=2))
     return 0
 
@@ -99,6 +103,17 @@ def cmd_dag(_: argparse.Namespace) -> int:
     return 0
 
 
+
+def cmd_recon(_: argparse.Namespace) -> int:
+    print(json.dumps(stamp_report(), indent=2))
+    return 0
+
+
+def cmd_steward(_: argparse.Namespace) -> int:
+    print(json.dumps(steward_report(), indent=2))
+    return 0
+
+
 def cmd_explain(ns: argparse.Namespace) -> int:
     payload = _fixture()
     wanted = int(ns.number)
@@ -137,6 +152,8 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("bind").set_defaults(fn=cmd_bind)
     sub.add_parser("drift").set_defaults(fn=cmd_drift)
     sub.add_parser("extract-plan").set_defaults(fn=cmd_extract_plan)
+    sub.add_parser("recon").set_defaults(fn=cmd_recon)
+    sub.add_parser("steward").set_defaults(fn=cmd_steward)
     sub.add_parser("dag").set_defaults(fn=cmd_dag)
     explain_p = sub.add_parser("explain")
     explain_p.add_argument("number")

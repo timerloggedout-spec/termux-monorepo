@@ -1,0 +1,102 @@
+name: Remote GAMUT evaluation
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_benchmark:
+        description: "Run the configured GAMUT response evaluation"
+        required: true
+        default: false
+        type: boolean
+      responses_path:
+        description: "Repository-relative JSONL response file"
+        required: false
+        default: ""
+        type: string
+      judge_model:
+        description: "OpenAI-compatible judge model identifier"
+        required: false
+        default: ""
+        type: string
+      base_url:
+        description: "Optional OpenAI-compatible API base URL"
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: remote-gamut-evaluation
+  cancel-in-progress: false
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    environment: gamut-evaluation
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          repository: facebookresearch/GAMUT
+          path: .gamut
+          ref: main
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: .gamut/requirements.txt
+      - name: Install GAMUT dependencies
+        run: python -m pip install -r .gamut/requirements.txt
+      - name: Run evaluator smoke test
+        run: python .gamut/evaluation/tests/e2e_test.py
+      - name: Validate benchmark inputs
+        if: ${{ inputs.run_benchmark }}
+        env:
+          RESPONSES_PATH: ${{ inputs.responses_path }}
+          JUDGE_MODEL: ${{ inputs.judge_model }}
+        run: |
+          set -euo pipefail
+          test -n "${RESPONSES_PATH}" || { echo "responses_path is required" >&2; exit 2; }
+          test -f "${RESPONSES_PATH}" || { echo "response file missing: ${RESPONSES_PATH}" >&2; exit 2; }
+          test -n "${JUDGE_MODEL}" || { echo "judge_model is required" >&2; exit 2; }
+      - name: Run benchmark evaluation
+        if: ${{ inputs.run_benchmark }}
+        env:
+          OPENAI_API_KEY: ${{ secrets.GAMUT_JUDGE_API_KEY }}
+          BASE_URL: ${{ inputs.base_url }}
+          RESPONSES_PATH: ${{ inputs.responses_path }}
+          JUDGE_MODEL: ${{ inputs.judge_model }}
+        run: |
+          set -euo pipefail
+          test -n "${OPENAI_API_KEY}" || { echo "GAMUT_JUDGE_API_KEY is not configured" >&2; exit 2; }
+          args=(--dataset facebook/GAMUT --responses "${RESPONSES_PATH}" --judge-model "${JUDGE_MODEL}" --output-dir gamut-results)
+          if [[ -n "${BASE_URL}" ]]; then args+=(--base-url "${BASE_URL}"); fi
+          python .gamut/evaluation/evaluate.py "${args[@]}"
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "## Remote GAMUT evaluation"
+            echo
+            echo "- Execution: GitHub-hosted runner"
+            echo "- Environment: gamut-evaluation"
+            echo "- Benchmark requested: ${{ inputs.run_benchmark }}"
+            echo "- Observational / benchmark-scoped; not a merge gate."
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload bounded results
+        if: ${{ always() && inputs.run_benchmark }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: gamut-results-${{ github.run_id }}-${{ github.run_attempt }}
+          path: gamut-results/
+          if-no-files-found: warn
+          retention-days: 14
+          include-hidden-files: false

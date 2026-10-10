@@ -1,0 +1,121 @@
+{
+  "collected_at": "2026-10-10T09:46:32.074790+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 38041031672,
+    "endpoint": ".../runs/38041031672/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 114181143604,
+        "run_id": 38041031672,
+        "workflow_name": "DeepCLI Agent Bridge Smoke",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/38041031672",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAalbn8NA",
+        "head_sha": "c1ca1ac90a89983543719a94968839a13360cb8e",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/114181143604",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/38041031672/job/114181143604",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-10T09:20:18Z",
+        "started_at": "2026-10-10T09:20:20Z",
+        "completed_at": "2026-10-10T09:20:31Z",
+        "name": "Termux bridge + dual agent smoke",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-10T09:20:21Z",
+            "completed_at": "2026-10-10T09:20:22Z"
+          },
+          {
+            "name": "Checkout",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-10T09:20:22Z",
+            "completed_at": "2026-10-10T09:20:26Z"
+          },
+          {
+            "name": "Read and validate live bridge manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-10T09:20:26Z",
+            "completed_at": "2026-10-10T09:20:28Z"
+          },
+          {
+            "name": "Install pinned SSH identity",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 4,
+            "started_at": "2026-10-10T09:20:28Z",
+            "completed_at": "2026-10-10T09:20:28Z"
+          },
+          {
+            "name": "Sync DeepAgent payload to Termux",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 5,
+            "started_at": "2026-10-10T09:20:28Z",
+            "completed_at": "2026-10-10T09:20:28Z"
+          },
+          {
+            "name": "Dispatch assigned DeepAgent task",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 6,
+            "started_at": "2026-10-10T09:20:28Z",
+            "completed_at": "2026-10-10T09:20:28Z"
+          },
+          {
+            "name": "Upload DeepAgent task evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-10T09:20:28Z",
+            "completed_at": "2026-10-10T09:20:29Z"
+          },
+          {
+            "name": "Upload immutable smoke receipt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-10T09:20:29Z",
+            "completed_at": "2026-10-10T09:20:29Z"
+          },
+          {
+            "name": "Post Checkout",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 16,
+            "started_at": "2026-10-10T09:20:29Z",
+            "completed_at": "2026-10-10T09:20:29Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17,
+            "started_at": "2026-10-10T09:20:29Z",
+            "completed_at": "2026-10-10T09:20:29Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/114181143604",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000229982,
+        "runner_name": "GitHub Actions 1000229982",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

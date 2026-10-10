@@ -143,12 +143,10 @@ CONTROL_PLANE_YAML_RE = re.compile(
     r"|docs/research/[^/]+\.ya?ml)$"
 )
 
-# A block scalar header: an optional `- ` sequence marker, a mapping key, and a
-# `|`/`>` value with optional chomping/indent indicators and a trailing comment.
-# Deliberately keyed on a real mapping key so a shell pipeline that happens to end
-# a line with `|` is not mistaken for a block scalar.
+# A mapping or sequence-entry block scalar header, with optional chomping/indent
+# indicators and a trailing comment. A bare shell pipeline is not a header.
 BLOCK_SCALAR_HEADER_RE = re.compile(
-    r"^(?P<indent>[ ]*)(?P<dash>- +)?[A-Za-z_][A-Za-z0-9_.\-]* *: *[|>][-+0-9]* *(?:#.*)?$"
+    r"^(?P<indent>[ ]*)(?:(?P<dash>- +)?(?P<key>[A-Za-z_][A-Za-z0-9_.\-]*) *: *|- +)[|>][-+0-9]* *(?:#.*)?$"
 )
 # A line that is legal at the document root: a document marker or a mapping key.
 # `(?:\s|$)` rather than `\b`: `-` and `.` are non-word characters, so a trailing
@@ -186,9 +184,10 @@ SIBLING_ENTRY_RE = re.compile(r"^[ ]*(?:- +[^\s#]|[^\s#][^:]*:)")
 LITERAL_ESCAPE_RE = re.compile(r"\\[nrt]")
 
 
-def literal_escape_fault(line: str) -> str | None:
+def literal_escape_fault(line: str, quote_state: list[bool] | None = None) -> str | None:
     """Return the offending `\\x` escape in `line`, or None.
 
+    Optional mutable quote_state preserves open quotes across YAML lines.
     Scans left to right tracking quoted-scalar state, so the rule fires only where
     the escape is unquoted and therefore unintended: inside either quote style the
     author has explicitly asked for the backslash (as a real escape in `"..."`, as
@@ -207,7 +206,7 @@ def literal_escape_fault(line: str) -> str | None:
     not structural.
     """
     index = 0
-    in_single = in_double = False
+    in_single, in_double = quote_state if quote_state is not None else (False, False)
     while index < len(line):
         char = line[index]
         if in_double:
@@ -241,6 +240,8 @@ def literal_escape_fault(line: str) -> str | None:
             ):
                 return line[index : index + 2]
         index += 1
+    if quote_state is not None:
+        quote_state[:] = [in_single, in_double]
     return None
 
 
@@ -299,6 +300,14 @@ def block_scalar_scan(lines: list[str]) -> tuple[set[int], list[str]]:
         line = lines[cursor]
         first_indent = indent_of(line)[0]
         content_indent = declared if declared is not None else first_indent
+
+        if declared is None:
+            for leading in range(index + 1, cursor):
+                if indent_of(lines[leading])[0] > content_indent:
+                    faults.append(
+                        f"line {leading + 1}: leading blank scalar line indented beyond "
+                        f"content indentation {content_indent} established on line {cursor + 1}"
+                    )
 
         if first_indent <= header_indent:
             # The scalar is empty; the next line is whatever follows it. It is only a
@@ -363,9 +372,17 @@ def yaml_structure_faults(text: str) -> list[str]:
     faults: list[str] = []
     lines = text.split("\n")
     inside_block, block_faults = block_scalar_scan(lines)
+    quote_state = [False, False]
 
     for index, line in enumerate(lines):
         number = index + 1
+        if index in inside_block:
+            continue
+        continued_quote = any(quote_state)
+        escape = literal_escape_fault(line, quote_state)
+        if continued_quote:
+            # YAML folds multiline quoted content; it is not a new mapping entry.
+            continue
         if not line.strip() or line.lstrip().startswith("#"):
             continue
         indent, indent_text = indent_of(line)
@@ -373,18 +390,16 @@ def yaml_structure_faults(text: str) -> list[str]:
             indent == 0
             and not ROOT_MARKER_RE.match(line)
             and not ROOT_MAPPING_KEY_RE.match(line)
+            and not BLOCK_SCALAR_HEADER_RE.match(line)
         ):
             faults.append(
                 f"line {number}: root-level line is neither a mapping key nor a document "
                 f"marker (an escaped string/heredoc body?): {line.strip()[:60]!r}"
             )
             continue
-        if index in inside_block:
-            continue
         if "\t" in indent_text:
             faults.append(f"line {number}: tab used for indentation (YAML forbids tabs)")
             continue
-        escape = literal_escape_fault(line)
         if escape is not None:
             faults.append(
                 f"line {number}: literal '\\{escape[1]}' escape in an unquoted scalar — "

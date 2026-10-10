@@ -136,6 +136,13 @@ EXPLICIT_INDENTATION_INDICATOR_SATISFIED = """\
     """
 
 NEGATIVE_FIXTURES = {
+    "literal sequence scalar": "items:\n  - |\n    rollback: set flag: false\n",
+    "folded root sequence scalar": "- >\n  rollback: set flag: false\n",
+    "sequence scalar explicit indentation": "items:\n  - |2\n    rollback: set flag: false\n",
+    "explicit indentation permits deeper blank": "run: |2\n    \n  echo ok\n",
+    "multiline double quoted escape": 'value: "first\n  second\\n more"\n',
+    "multiline single quoted escape": "value: 'first\n  second\\n more'\n",
+    "leading blank matching content": "run: |\n  \n  echo ok\n",
     "block scalar payload that looks like a header": (
         BLOCK_SCALAR_PAYLOAD_THAT_LOOKS_LIKE_A_HEADER
     ),
@@ -167,6 +174,21 @@ class BlockScalarFaultTests(unittest.TestCase):
 
 class BlockScalarScanTests(unittest.TestCase):
     """The scan itself, so a regression names the property it broke."""
+
+    def test_over_indented_leading_blank_is_rejected(self) -> None:
+        # Do not dedent: textwrap strips whitespace-only lines, erasing the defect.
+        source = "run: |\n    \n  echo ok\n"
+        found = repo_gate.yaml_structure_faults(source)
+        self.assertTrue(any("leading blank" in fault for fault in found), found)
+        if yaml is not None:
+            with self.assertRaises(yaml.YAMLError):
+                list(yaml.safe_load_all(source))
+
+    def test_quote_state_closes_before_later_unquoted_escape(self) -> None:
+        source = 'value: "first\n  second\\n more"\nnext: value\\n trailing\n'
+        found = faults(source)
+        self.assertEqual(len(found), 1, found)
+        self.assertIn("line 3", found[0])
 
     def test_scalar_payload_is_never_re_examined_as_a_header(self) -> None:
         lines = [

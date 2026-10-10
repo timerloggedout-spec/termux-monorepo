@@ -125,7 +125,7 @@ jobs:
           git commit -m 'ops(lane-matrix): refresh generated status from recursive sweep' \
             -m 'Agent-Identity: GitHub Actions lane-matrix-sweep' \
             -m 'Observer only — dual-gate remains promote authority.'
-          git push origin HEAD:master
+          git pull --rebase origin master && git push origin HEAD:master
 
       - name: Upload artifacts
         if: always()

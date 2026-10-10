@@ -158,3 +158,23 @@ Session 2026-10-08 14:14 PDT / 2026-10-08 21:14 UTC:
 - Repair PR #1178 merged `806beb4da7d95eee4aed5820089a0f03268c4ba2` on code head `c19d47fc7f98ab276bbffce31266362c186a02fc`. Pre-merge repo gate 37845625780 success, termux smoke 37845625683 success, historical promotion gate 37845625674 success, cadence 37845625657 success, workflow surface policy 37845625631 success, actionlint advisory 37845626059 success, sweep 37845625695 success, RECON 37845625953 success. DeepSeek 37845625738 cancelled, not a filename failure.
 - Post-merge push on `806beb4d`: repo gate 37845783284 success, termux smoke 37845783202 success, cadence 37845783129 success, empty-commit watcher 37845783287 success, sweep 37845783434 success, n8n SHE bridge 37845813750 success. Context audit 37845783325 cancelled, not a filename failure. Tip moved to receipt `35f0ef44c4c1`. Schedule/kick on the Tunnel Canary workflows list not yet observed. Do not open another workflow id.
 - Ghost 37655538554 still queued on disabled id 354842048. #903 HOLD. Do not pulse #175. #184 names-only. #984 not master. Linear TER-15 Done — not promote authority.
+
+
+Session 2026-10-09 10:16 PDT / 2026-10-09 17:16 UTC:
+- Master tip at session start `09b3b186eae7394b91a250ab292976b2bb02dc86` (help-wanted refresh).
+- No conclusion=failure created after #1187 besides historical v3 run 37932481581 on `cb940cc3` (HTTP 503, already deferred on master). Dependabot dynamic 37423240181 remains historical on `489b8d6b`.
+- v3 schedule class closed: workflow id 377919668 run 37959806584 event=schedule conclusion=success at 2026-10-09T16:32:03Z. Artifact 11630953815: 148 open, 1 CANDIDATE (#1188), 70 mergeable-unknown, 53 dirty, 14 draft.
+- #1188 head `7a7c080f` behind 2 vs tip, reviewDecision CHANGES_REQUESTED. Do not promote. Do not pulse #175.
+- Repair retries up to 24 still-null mergeable GETs and ignores DeepSeek/Devin advisory check failures. Do not promote until that SHA has no filename-named workflow failure and repo gate is green.
+- Ghost 37655538554 still queued on disabled id 354842048. #903 HOLD. #184 names-only. Linear TER-15 Done — not promote authority.
+
+Session 2026-10-09 12:16 PDT / 2026-10-09 19:16 UTC:
+- Master tip at session start `aad91816f2ca2d33d2e1b704e5e95c908e5ed2cc` (sweep receipt).
+- No conclusion=failure created on master after #1190. Branch failure 37972087430 on `c24abdd` was the unindented workflows key, closed by #1190 `fe2b4e1c`. Dependabot dynamic 37423240181 remains historical on `489b8d6b`.
+- v3 workflow id 377919668 kick 37976242706 event=workflow_run conclusion=success at 2026-10-09T18:51:59Z on tip `aad91816`. Schedule last success remains 37959806584 at 16:32Z. Cron 7,37 did not start at 18:07Z or 18:37Z. Kick path from RECON schedule is live. Do not open another workflow id.
+- Artifact 11638568343: 148 open, 0 CANDIDATE, 63 mergeable-unknown, 49 dirty, 14 draft. The 24-null retry walked list order. Repair sorts by updated_at descending and retries only PRs updated in the last 21 days, cap 36.
+- Ghost 37655538554 still queued on disabled id 354842048. #903 HOLD. Do not pulse #175. #1188 CHANGES_REQUESTED. #184 names-only. Linear TER-15 Done — not promote authority.
+
+Session 2026-10-09 22:14 PDT / 2026-10-10 05:14 UTC:
+- Planning surface only. #1195 merged dual-gate on candidate. Master tip `dea085f`. No promote authority from Stepie.
+- #903 HOLD. Do not pulse #175. #184 names-only. Linear TER-15 Done — not promote authority.

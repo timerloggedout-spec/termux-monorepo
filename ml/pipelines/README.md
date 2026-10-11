@@ -1,4 +1,7 @@
-# ml/pipelines — observe-mode keep-alive (v0.6.0)
+# ml/pipelines — observe-mode keep-alive
+
+Frozen recon stamp: v0.8.0 (`python3 -m ml.pipelines.cli recon`).
+Live cut: v0.9.0 (`python3 -m ml.pipelines.cli live`) on observer tip `c15fbdf6` (2026-10-11). That tip is not a product promote. Product SHA remains `8d36f149` until dual-gate passes on a newer candidate.
 
 Stdlib only. No network. No secrets. No GPU.
 

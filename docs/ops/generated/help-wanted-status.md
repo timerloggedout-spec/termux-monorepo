@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-11T23:39:46Z UTC · receipts=1826 · foreign_open=32 · tributes=86_
+_Generated 2026-10-11T23:59:45Z UTC · receipts=1826 · foreign_open=33 · tributes=87_
 
 ## Tributes (contributor ledger)
 
+- [kiinshuk/kinshow#434](https://github.com/kiinshuk/kinshow/pull/434) · state=open · help-wanted: stake + contribute for #157
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -43,10 +44,10 @@ _Generated 2026-10-11T23:39:46Z UTC · receipts=1826 · foreign_open=32 · tribu
 - [Vikram-sardiwal/react-open-source#50](https://github.com/Vikram-sardiwal/react-open-source/pull/50) · state=closed · help-wanted: stake + contribute for #16
 - [tusharmotwani1718/dropsend#24](https://github.com/tusharmotwani1718/dropsend/pull/24) · state=closed · help-wanted: stake + contribute for #23
 - [gabe-santana/saccade#27](https://github.com/gabe-santana/saccade/pull/27) · state=closed · help-wanted: stake + contribute for #25
-- [P-r-e-m-i-u-m/open-source-starter-lab#492](https://github.com/P-r-e-m-i-u-m/open-source-starter-lab/pull/492) · state=closed · help-wanted: stake + contribute for #490
 
 ## Foreign open PRs
 
+- [kiinshuk/kinshow#434](https://github.com/kiinshuk/kinshow/pull/434) — help-wanted: stake + contribute for #157
 - [dereksantos/cortex#274](https://github.com/dereksantos/cortex/pull/274) — help-wanted: stake + contribute for #264
 - [apache/hugegraph-computer#365](https://github.com/apache/hugegraph-computer/pull/365) — help-wanted: stake + contribute for #325
 - [Lee-Dongwook/E2E-Self-Heal#371](https://github.com/Lee-Dongwook/E2E-Self-Heal/pull/371) — help-wanted: stake + contribute for #351

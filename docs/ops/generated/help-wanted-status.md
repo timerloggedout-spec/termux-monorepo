@@ -1,10 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-11T06:28:10Z UTC · receipts=1733 · foreign_open=33 · tributes=85_
+_Generated 2026-10-11T12:41:43Z UTC · receipts=1733 · foreign_open=30 · tributes=84_
 
 ## Tributes (contributor ledger)
 
-- [adharshramu12/Seetha_ai#8](https://github.com/adharshramu12/Seetha_ai/pull/8) · state=open · help-wanted: stake + contribute for #2
+- [adharshramu12/Seetha_ai#8](https://github.com/adharshramu12/Seetha_ai/pull/8) · state=closed · help-wanted: stake + contribute for #2
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -24,7 +24,7 @@ _Generated 2026-10-11T06:28:10Z UTC · receipts=1733 · foreign_open=33 · tribu
 - [TrusTrove/TrusTrove-contract#860](https://github.com/TrusTrove/TrusTrove-contract/pull/860) · state=open · help-wanted: stake + contribute for #836
 - [laugh-tales/starpass-contracts#59](https://github.com/laugh-tales/starpass-contracts/pull/59) · state=open · help-wanted: stake + contribute for #28
 - [Saidur-droid/MergeEarn#76](https://github.com/Saidur-droid/MergeEarn/pull/76) · state=open · help-wanted: stake + contribute for #69
-- [uttrflow/uttrflow-swift#3719](https://github.com/uttrflow/uttrflow-swift/pull/3719) · state=open · help-wanted: stake + contribute for #3713
+- [uttrflow/uttrflow-swift#3719](https://github.com/uttrflow/uttrflow-swift/pull/3719) · state=closed · help-wanted: stake + contribute for #3713
 - [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) · state=open · help-wanted: stake + contribute for #225
 - [TricklePay/tricklepay-backend#441](https://github.com/TricklePay/tricklepay-backend/pull/441) · state=open · help-wanted: stake + contribute for #395
 - [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) · state=open · help-wanted: stake + contribute for #928
@@ -36,7 +36,7 @@ _Generated 2026-10-11T06:28:10Z UTC · receipts=1733 · foreign_open=33 · tribu
 - [MMALI3287/vibewatt#100](https://github.com/MMALI3287/vibewatt/pull/100) · state=open · help-wanted: stake + contribute for #95
 - [Tanishq964/trail-kit.#6](https://github.com/Tanishq964/trail-kit./pull/6) · state=open · help-wanted: stake + contribute for #1
 - [Lee-Dongwook/E2E-Self-Heal#371](https://github.com/Lee-Dongwook/E2E-Self-Heal/pull/371) · state=open · help-wanted: stake + contribute for #351
-- [rishiyaduwanshi/boiler#101](https://github.com/rishiyaduwanshi/boiler/pull/101) · state=open · help-wanted: stake + contribute for #99
+- [rishiyaduwanshi/boiler#101](https://github.com/rishiyaduwanshi/boiler/pull/101) · state=closed · help-wanted: stake + contribute for #99
 - [marrabld/omazone#72](https://github.com/marrabld/omazone/pull/72) · state=closed · help-wanted: stake + contribute for #14
 - [Vikram-sardiwal/react-open-source#50](https://github.com/Vikram-sardiwal/react-open-source/pull/50) · state=closed · help-wanted: stake + contribute for #16
 - [tusharmotwani1718/dropsend#24](https://github.com/tusharmotwani1718/dropsend/pull/24) · state=closed · help-wanted: stake + contribute for #23
@@ -47,8 +47,6 @@ _Generated 2026-10-11T06:28:10Z UTC · receipts=1733 · foreign_open=33 · tribu
 
 ## Foreign open PRs
 
-- [adharshramu12/Seetha_ai#8](https://github.com/adharshramu12/Seetha_ai/pull/8) — help-wanted: stake + contribute for #2
-- [rishiyaduwanshi/boiler#101](https://github.com/rishiyaduwanshi/boiler/pull/101) — help-wanted: stake + contribute for #99
 - [Lee-Dongwook/E2E-Self-Heal#371](https://github.com/Lee-Dongwook/E2E-Self-Heal/pull/371) — help-wanted: stake + contribute for #351
 - [Tanishq964/trail-kit.#6](https://github.com/Tanishq964/trail-kit./pull/6) — help-wanted: stake + contribute for #1
 - [MMALI3287/vibewatt#100](https://github.com/MMALI3287/vibewatt/pull/100) — help-wanted: stake + contribute for #95
@@ -60,7 +58,6 @@ _Generated 2026-10-11T06:28:10Z UTC · receipts=1733 · foreign_open=33 · tribu
 - [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) — help-wanted: stake + contribute for #928
 - [TricklePay/tricklepay-backend#441](https://github.com/TricklePay/tricklepay-backend/pull/441) — help-wanted: stake + contribute for #395
 - [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) — help-wanted: stake + contribute for #225
-- [uttrflow/uttrflow-swift#3719](https://github.com/uttrflow/uttrflow-swift/pull/3719) — help-wanted: stake + contribute for #3713
 - [Saidur-droid/MergeEarn#76](https://github.com/Saidur-droid/MergeEarn/pull/76) — help-wanted: stake + contribute for #69
 - [laugh-tales/starpass-contracts#59](https://github.com/laugh-tales/starpass-contracts/pull/59) — help-wanted: stake + contribute for #28
 - [TrusTrove/TrusTrove-contract#860](https://github.com/TrusTrove/TrusTrove-contract/pull/860) — help-wanted: stake + contribute for #836

@@ -1,10 +1,9 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-11T12:41:43Z UTC · receipts=1733 · foreign_open=30 · tributes=84_
+_Generated 2026-10-11T12:48:42Z UTC · receipts=1763 · foreign_open=30 · tributes=84_
 
 ## Tributes (contributor ledger)
 
-- [adharshramu12/Seetha_ai#8](https://github.com/adharshramu12/Seetha_ai/pull/8) · state=closed · help-wanted: stake + contribute for #2
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -24,7 +23,6 @@ _Generated 2026-10-11T12:41:43Z UTC · receipts=1733 · foreign_open=30 · tribu
 - [TrusTrove/TrusTrove-contract#860](https://github.com/TrusTrove/TrusTrove-contract/pull/860) · state=open · help-wanted: stake + contribute for #836
 - [laugh-tales/starpass-contracts#59](https://github.com/laugh-tales/starpass-contracts/pull/59) · state=open · help-wanted: stake + contribute for #28
 - [Saidur-droid/MergeEarn#76](https://github.com/Saidur-droid/MergeEarn/pull/76) · state=open · help-wanted: stake + contribute for #69
-- [uttrflow/uttrflow-swift#3719](https://github.com/uttrflow/uttrflow-swift/pull/3719) · state=closed · help-wanted: stake + contribute for #3713
 - [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) · state=open · help-wanted: stake + contribute for #225
 - [TricklePay/tricklepay-backend#441](https://github.com/TricklePay/tricklepay-backend/pull/441) · state=open · help-wanted: stake + contribute for #395
 - [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) · state=open · help-wanted: stake + contribute for #928
@@ -36,6 +34,8 @@ _Generated 2026-10-11T12:41:43Z UTC · receipts=1733 · foreign_open=30 · tribu
 - [MMALI3287/vibewatt#100](https://github.com/MMALI3287/vibewatt/pull/100) · state=open · help-wanted: stake + contribute for #95
 - [Tanishq964/trail-kit.#6](https://github.com/Tanishq964/trail-kit./pull/6) · state=open · help-wanted: stake + contribute for #1
 - [Lee-Dongwook/E2E-Self-Heal#371](https://github.com/Lee-Dongwook/E2E-Self-Heal/pull/371) · state=open · help-wanted: stake + contribute for #351
+- [adharshramu12/Seetha_ai#8](https://github.com/adharshramu12/Seetha_ai/pull/8) · state=closed · help-wanted: stake + contribute for #2
+- [uttrflow/uttrflow-swift#3719](https://github.com/uttrflow/uttrflow-swift/pull/3719) · state=closed · help-wanted: stake + contribute for #3713
 - [rishiyaduwanshi/boiler#101](https://github.com/rishiyaduwanshi/boiler/pull/101) · state=closed · help-wanted: stake + contribute for #99
 - [marrabld/omazone#72](https://github.com/marrabld/omazone/pull/72) · state=closed · help-wanted: stake + contribute for #14
 - [Vikram-sardiwal/react-open-source#50](https://github.com/Vikram-sardiwal/react-open-source/pull/50) · state=closed · help-wanted: stake + contribute for #16
@@ -78,6 +78,6 @@ _Generated 2026-10-11T12:41:43Z UTC · receipts=1733 · foreign_open=30 · tribu
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=1733 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 1578, 'followup_reengage': 44, 'followup_stale_nudge': 61, 'followup_changes': 2}`
+## Outcomes · ok=1763 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 1605, 'followup_reengage': 46, 'followup_stale_nudge': 62, 'followup_changes': 2}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

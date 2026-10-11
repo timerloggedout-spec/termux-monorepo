@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-11T18:55:02Z UTC · receipts=1794 · foreign_open=31 · tributes=85_
+_Generated 2026-10-11T20:35:02Z UTC · receipts=1794 · foreign_open=32 · tributes=86_
 
 ## Tributes (contributor ledger)
 
+- [dereksantos/cortex#274](https://github.com/dereksantos/cortex/pull/274) · state=open · help-wanted: stake + contribute for #264
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -43,10 +44,10 @@ _Generated 2026-10-11T18:55:02Z UTC · receipts=1794 · foreign_open=31 · tribu
 - [tusharmotwani1718/dropsend#24](https://github.com/tusharmotwani1718/dropsend/pull/24) · state=closed · help-wanted: stake + contribute for #23
 - [gabe-santana/saccade#27](https://github.com/gabe-santana/saccade/pull/27) · state=closed · help-wanted: stake + contribute for #25
 - [P-r-e-m-i-u-m/open-source-starter-lab#492](https://github.com/P-r-e-m-i-u-m/open-source-starter-lab/pull/492) · state=closed · help-wanted: stake + contribute for #490
-- [aHuddini/UniPlaySong#101](https://github.com/aHuddini/UniPlaySong/pull/101) · state=closed · help-wanted: stake + contribute for #94
 
 ## Foreign open PRs
 
+- [dereksantos/cortex#274](https://github.com/dereksantos/cortex/pull/274) — help-wanted: stake + contribute for #264
 - [apache/hugegraph-computer#365](https://github.com/apache/hugegraph-computer/pull/365) — help-wanted: stake + contribute for #325
 - [Lee-Dongwook/E2E-Self-Heal#371](https://github.com/Lee-Dongwook/E2E-Self-Heal/pull/371) — help-wanted: stake + contribute for #351
 - [Tanishq964/trail-kit.#6](https://github.com/Tanishq964/trail-kit./pull/6) — help-wanted: stake + contribute for #1

@@ -83,7 +83,7 @@ As merged in PR #156 and upgraded in Schema v2, the agent continuous operations 
 
 ## 3. Pull Request & Issue Audit (Unified Map)
 
-Based on live GitHub tracking and active repository branches, open and closed items are consolidated into clear development lanes.
+Based on live GitHub tracking (`https://github.com/timerloggedout-spec/termux-monorepo/pulls` and `https://github.com/timerloggedout-spec/termux-monorepo/issues`) and active repository branches, open and closed items are consolidated into clear development lanes.
 
 ### 3.1 Open & Superseded Pull Requests
 1. **PR #149** (`ops(pipes): review-signal alignment docs + disposition matrix`): Open (Grok) — aligns lag index disposition & PR review signals.

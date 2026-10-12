@@ -1,10 +1,9 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-12T09:06:05Z UTC · receipts=1858 · foreign_open=32 · tributes=87_
+_Generated 2026-10-12T15:22:51Z UTC · receipts=1889 · foreign_open=31 · tributes=86_
 
 ## Tributes (contributor ledger)
 
-- [ciaren-labs/Ciaren#234](https://github.com/ciaren-labs/Ciaren/pull/234) · state=open · help-wanted: stake + contribute for #96
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -32,11 +31,12 @@ _Generated 2026-10-12T09:06:05Z UTC · receipts=1858 · foreign_open=32 · tribu
 - [Local-Settle/local-settle-frontend#4](https://github.com/Local-Settle/local-settle-frontend/pull/4) · state=open · help-wanted: stake + contribute for #1
 - [Suhas29wasnotavailable/blroad#12](https://github.com/Suhas29wasnotavailable/blroad/pull/12) · state=open · help-wanted: stake + contribute for #7
 - [MMALI3287/vibewatt#100](https://github.com/MMALI3287/vibewatt/pull/100) · state=open · help-wanted: stake + contribute for #95
-- [https://github.com/Tanishq964/trail-kit./pull/6](https://github.com/Tanishq964/trail-kit./pull/6) · state=? · 
 - [Lee-Dongwook/E2E-Self-Heal#371](https://github.com/Lee-Dongwook/E2E-Self-Heal/pull/371) · state=open · help-wanted: stake + contribute for #351
 - [apache/hugegraph-computer#365](https://github.com/apache/hugegraph-computer/pull/365) · state=open · help-wanted: stake + contribute for #325
-- [dereksantos/cortex#274](https://github.com/dereksantos/cortex/pull/274) · state=open · help-wanted: stake + contribute for #264
 - [kiinshuk/kinshow#434](https://github.com/kiinshuk/kinshow/pull/434) · state=open · help-wanted: stake + contribute for #157
+- [ciaren-labs/Ciaren#234](https://github.com/ciaren-labs/Ciaren/pull/234) · state=open · help-wanted: stake + contribute for #96
+- [https://github.com/Tanishq964/trail-kit./pull/6](https://github.com/Tanishq964/trail-kit./pull/6) · state=? · 
+- [dereksantos/cortex#274](https://github.com/dereksantos/cortex/pull/274) · state=closed · help-wanted: stake + contribute for #264
 - [prime-radiant-inc/evener#2661](https://github.com/prime-radiant-inc/evener/pull/2661) · state=closed · help-wanted: stake + contribute for #2627
 - [adharshramu12/Seetha_ai#8](https://github.com/adharshramu12/Seetha_ai/pull/8) · state=closed · help-wanted: stake + contribute for #2
 - [uttrflow/uttrflow-swift#3719](https://github.com/uttrflow/uttrflow-swift/pull/3719) · state=closed · help-wanted: stake + contribute for #3713
@@ -49,7 +49,6 @@ _Generated 2026-10-12T09:06:05Z UTC · receipts=1858 · foreign_open=32 · tribu
 
 - [ciaren-labs/Ciaren#234](https://github.com/ciaren-labs/Ciaren/pull/234) — help-wanted: stake + contribute for #96
 - [kiinshuk/kinshow#434](https://github.com/kiinshuk/kinshow/pull/434) — help-wanted: stake + contribute for #157
-- [dereksantos/cortex#274](https://github.com/dereksantos/cortex/pull/274) — help-wanted: stake + contribute for #264
 - [apache/hugegraph-computer#365](https://github.com/apache/hugegraph-computer/pull/365) — help-wanted: stake + contribute for #325
 - [Lee-Dongwook/E2E-Self-Heal#371](https://github.com/Lee-Dongwook/E2E-Self-Heal/pull/371) — help-wanted: stake + contribute for #351
 - [MMALI3287/vibewatt#100](https://github.com/MMALI3287/vibewatt/pull/100) — help-wanted: stake + contribute for #95
@@ -80,6 +79,6 @@ _Generated 2026-10-12T09:06:05Z UTC · receipts=1858 · foreign_open=32 · tribu
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=1858 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 1696, 'followup_reengage': 47, 'followup_stale_nudge': 65, 'followup_changes': 2}`
+## Outcomes · ok=1889 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 1719, 'followup_reengage': 49, 'followup_stale_nudge': 71, 'followup_changes': 2}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

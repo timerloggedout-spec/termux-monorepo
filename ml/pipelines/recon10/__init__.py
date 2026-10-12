@@ -2,7 +2,7 @@
 
 Does not merge, force-push, restamp docs/ops/LANE-MATRIX.md, or pulse-comment.
 Keeps frozen v0.8.0 (`recon`) and frozen v0.9.0 (`live`) plus the command-center DAG.
-Master tip 458ff778 is a context-index reconcile, not a product promote.
+Master tip df342068 is a help-wanted status refresh, not a product promote.
 """
 from ml.pipelines.recon10.roles import VERSION
 

@@ -2,7 +2,7 @@
 
 Frozen recon stamp: v0.8.0 (`python3 -m ml.pipelines.cli recon`).
 Frozen live cut: v0.9.0 (`python3 -m ml.pipelines.cli live`).
-Current cut: v0.10.0 (`python3 -m ml.pipelines.cli cut`) on observer tip `458ff778` (2026-10-12). That tip is a context-index reconcile already on master, not a product promote. Product SHA remains `8d36f149` until dual-gate passes on a newer candidate.
+Current cut: v0.10.0 (`python3 -m ml.pipelines.cli cut`) on observer tip `df342068` (2026-10-12). That tip is a help-wanted status refresh already on master, not a product promote. Product SHA remains `8d36f149` until dual-gate passes on a newer candidate.
 
 Stdlib only. No network. No secrets. No GPU.
 

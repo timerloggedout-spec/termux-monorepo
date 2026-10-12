@@ -7,7 +7,7 @@ CONNECTORS: tuple[dict[str, str], ...] = (
         "name": "github",
         "state": "LIVE",
         "lane": "CANDIDATE",
-        "note": "authenticated as timerloggedout-spec; 210 open PRs readable",
+        "note": "authenticated as timerloggedout-spec; 211 open PRs readable",
     },
     {
         "name": "linear",
@@ -23,9 +23,9 @@ CONNECTORS: tuple[dict[str, str], ...] = (
     },
     {
         "name": "gmail",
-        "state": "NOT_REPROBED",
+        "state": "LIVE",
         "lane": "NEED_EVIDENCE",
-        "note": "not re-read this cut; prior auth note is not refreshed evidence",
+        "note": "label GitHub/Priority/termux-monorepo exists; message bodies not read",
     },
     {
         "name": "notion",
@@ -41,9 +41,9 @@ CONNECTORS: tuple[dict[str, str], ...] = (
     },
     {
         "name": "grafana",
-        "state": "PAUSED",
+        "state": "LIVE",
         "lane": "NEED_EVIDENCE",
-        "note": "dashboard search returned HTTP 424 stack paused or starting",
+        "note": "search answered with 0 dashboards matching termux; HTTP 424 not reproduced; not a gate",
     },
     {
         "name": "mixpanel",
@@ -55,7 +55,7 @@ CONNECTORS: tuple[dict[str, str], ...] = (
         "name": "stepie",
         "state": "LIVE",
         "lane": "NEED_EVIDENCE",
-        "note": "task search returned rows whose titles name older master SHAs; not a gate",
+        "note": "task titles name older SHAs 912ab126 and 0e1fee04; not a gate",
     },
     {
         "name": "gamma",

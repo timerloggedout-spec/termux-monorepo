@@ -1,10 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-12T18:14:13Z UTC · receipts=1889 · foreign_open=32 · tributes=87_
+_Generated 2026-10-12T19:00:50Z UTC · receipts=1889 · foreign_open=31 · tributes=86_
 
 ## Tributes (contributor ledger)
 
-- [yakew7/Fair-Code#940](https://github.com/yakew7/Fair-Code/pull/940) · state=open · help-wanted: stake + contribute for #934
+- [yakew7/Fair-Code#940](https://github.com/yakew7/Fair-Code/pull/940) · state=closed · help-wanted: stake + contribute for #934
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -47,7 +47,6 @@ _Generated 2026-10-12T18:14:13Z UTC · receipts=1889 · foreign_open=32 · tribu
 
 ## Foreign open PRs
 
-- [yakew7/Fair-Code#940](https://github.com/yakew7/Fair-Code/pull/940) — help-wanted: stake + contribute for #934
 - [ciaren-labs/Ciaren#234](https://github.com/ciaren-labs/Ciaren/pull/234) — help-wanted: stake + contribute for #96
 - [kiinshuk/kinshow#434](https://github.com/kiinshuk/kinshow/pull/434) — help-wanted: stake + contribute for #157
 - [apache/hugegraph-computer#365](https://github.com/apache/hugegraph-computer/pull/365) — help-wanted: stake + contribute for #325

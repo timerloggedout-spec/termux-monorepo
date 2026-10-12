@@ -1,0 +1,105 @@
+{
+  "collected_at": "2026-10-12T10:42:59.972144+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 38237587830,
+    "endpoint": ".../runs/38237587830/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 114771976440,
+        "run_id": 38237587830,
+        "workflow_name": "Historical Evaluation Correlation",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/38237587830",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAauPFg-A",
+        "head_sha": "91c40cabd2fd19482150bee41b7f588ce77c413a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/114771976440",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/38237587830/job/114771976440",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-12T10:38:25Z",
+        "started_at": "2026-10-12T10:38:28Z",
+        "completed_at": "2026-10-12T10:39:05Z",
+        "name": "correlate",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-12T10:38:29Z",
+            "completed_at": "2026-10-12T10:38:29Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-12T10:38:29Z",
+            "completed_at": "2026-10-12T10:38:37Z"
+          },
+          {
+            "name": "Validate automation documentation freshness",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-12T10:38:37Z",
+            "completed_at": "2026-10-12T10:38:37Z"
+          },
+          {
+            "name": "Snapshot and correlate repository history",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-12T10:38:37Z",
+            "completed_at": "2026-10-12T10:39:02Z"
+          },
+          {
+            "name": "Validate documented workflow references",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-12T10:39:02Z",
+            "completed_at": "2026-10-12T10:39:02Z"
+          },
+          {
+            "name": "Publish immutable correlation artifact",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-12T10:39:02Z",
+            "completed_at": "2026-10-12T10:39:03Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-10-12T10:39:03Z",
+            "completed_at": "2026-10-12T10:39:04Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-10-12T10:39:04Z",
+            "completed_at": "2026-10-12T10:39:04Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/114771976440",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000234926,
+        "runner_name": "GitHub Actions 1000234926",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

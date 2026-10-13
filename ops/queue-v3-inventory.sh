@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -uo pipefail
+retry() { local n=0; local max=3; while (( n < max )); do if "$@"; then return 0; fi; n=$((n+1)); sleep $((n*2)); done; return 1; }
 echo "merge-queue-v3 event=${GITHUB_EVENT_NAME} sha=${GITHUB_SHA}"
 mkdir -p /tmp/merge-queue
 : > /tmp/merge-queue/candidates.ndjson
@@ -36,20 +37,20 @@ while read -r pr; do
     continue
   fi
   if [[ "$mergeable" == "null" || -z "$mergeable" ]]; then
-    detail=$(gh api -H 'Accept: application/vnd.github+json' "/repos/${GITHUB_REPOSITORY}/pulls/${number}")
+    detail=$(retry gh api -H 'Accept: application/vnd.github+json' "/repos/${GITHUB_REPOSITORY}/pulls/${number}")
     mergeable=$(jq -r '.mergeable' <<<"$detail")
     mergeable_state=$(jq -r '.mergeable_state // "unknown"' <<<"$detail")
   fi
   if [[ "$mergeable" == "null" || -z "$mergeable" ]] && (( null_retries < 36 )); then
     null_retries=$((null_retries + 1))
     sleep 2
-    detail=$(gh api -H 'Accept: application/vnd.github+json' "/repos/${GITHUB_REPOSITORY}/pulls/${number}")
+    detail=$(retry gh api -H 'Accept: application/vnd.github+json' "/repos/${GITHUB_REPOSITORY}/pulls/${number}")
     mergeable=$(jq -r '.mergeable' <<<"$detail")
     mergeable_state=$(jq -r '.mergeable_state // "unknown"' <<<"$detail")
   fi
-  reviews=$(gh api -H 'Accept: application/vnd.github+json' "/repos/${GITHUB_REPOSITORY}/pulls/${number}/reviews?per_page=100")
+  reviews=$(retry gh api -H 'Accept: application/vnd.github+json' "/repos/${GITHUB_REPOSITORY}/pulls/${number}/reviews?per_page=100")
   active_changes=$(jq '[.[] | select(.state == "CHANGES_REQUESTED")] | length' <<<"$reviews")
-  checks=$(gh api -H 'Accept: application/vnd.github+json' "/repos/${GITHUB_REPOSITORY}/commits/${head_sha}/check-runs?per_page=100")
+  checks=$(retry gh api -H 'Accept: application/vnd.github+json' "/repos/${GITHUB_REPOSITORY}/commits/${head_sha}/check-runs?per_page=100")
   repo_gate=$(jq -r '[.check_runs[] | select(.name == "hygiene + portability gate" or .name == "repo gate") | .conclusion] | last // "missing"' <<<"$checks")
   termux_smoke=$(jq -r '[.check_runs[] | select(.name == "agentic termux smoke" or .name == "termux smoke") | .conclusion] | last // "missing"' <<<"$checks")
   hard_failures=$(jq '[.check_runs[] | select(.status == "completed" and (.conclusion == "failure" or .conclusion == "timed_out" or .conclusion == "action_required") and (.name | test("Vercel|vercel|DeepSeek|Devin") | not))] | length' <<<"$checks")

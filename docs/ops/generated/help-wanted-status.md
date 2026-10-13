@@ -1,6 +1,6 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-12T22:59:46Z UTC · receipts=1920 · foreign_open=31 · tributes=86_
+_Generated 2026-10-13T01:18:01Z UTC · receipts=1920 · foreign_open=30 · tributes=85_
 
 ## Tributes (contributor ledger)
 
@@ -31,7 +31,7 @@ _Generated 2026-10-12T22:59:46Z UTC · receipts=1920 · foreign_open=31 · tribu
 - [Local-Settle/local-settle-frontend#4](https://github.com/Local-Settle/local-settle-frontend/pull/4) · state=open · help-wanted: stake + contribute for #1
 - [Suhas29wasnotavailable/blroad#12](https://github.com/Suhas29wasnotavailable/blroad/pull/12) · state=open · help-wanted: stake + contribute for #7
 - [MMALI3287/vibewatt#100](https://github.com/MMALI3287/vibewatt/pull/100) · state=open · help-wanted: stake + contribute for #95
-- [Lee-Dongwook/E2E-Self-Heal#371](https://github.com/Lee-Dongwook/E2E-Self-Heal/pull/371) · state=open · help-wanted: stake + contribute for #351
+- [Lee-Dongwook/E2E-Self-Heal#371](https://github.com/Lee-Dongwook/E2E-Self-Heal/pull/371) · state=closed · help-wanted: stake + contribute for #351
 - [apache/hugegraph-computer#365](https://github.com/apache/hugegraph-computer/pull/365) · state=open · help-wanted: stake + contribute for #325
 - [kiinshuk/kinshow#434](https://github.com/kiinshuk/kinshow/pull/434) · state=open · help-wanted: stake + contribute for #157
 - [ciaren-labs/Ciaren#234](https://github.com/ciaren-labs/Ciaren/pull/234) · state=open · help-wanted: stake + contribute for #96
@@ -50,7 +50,6 @@ _Generated 2026-10-12T22:59:46Z UTC · receipts=1920 · foreign_open=31 · tribu
 - [ciaren-labs/Ciaren#234](https://github.com/ciaren-labs/Ciaren/pull/234) — help-wanted: stake + contribute for #96
 - [kiinshuk/kinshow#434](https://github.com/kiinshuk/kinshow/pull/434) — help-wanted: stake + contribute for #157
 - [apache/hugegraph-computer#365](https://github.com/apache/hugegraph-computer/pull/365) — help-wanted: stake + contribute for #325
-- [Lee-Dongwook/E2E-Self-Heal#371](https://github.com/Lee-Dongwook/E2E-Self-Heal/pull/371) — help-wanted: stake + contribute for #351
 - [MMALI3287/vibewatt#100](https://github.com/MMALI3287/vibewatt/pull/100) — help-wanted: stake + contribute for #95
 - [Suhas29wasnotavailable/blroad#12](https://github.com/Suhas29wasnotavailable/blroad/pull/12) — help-wanted: stake + contribute for #7
 - [Local-Settle/local-settle-frontend#4](https://github.com/Local-Settle/local-settle-frontend/pull/4) — help-wanted: stake + contribute for #1

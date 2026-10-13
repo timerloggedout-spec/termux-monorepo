@@ -15,7 +15,7 @@ try:
 except ImportError:  # Supports direct script use.
     from compiler import CompilationError, load_json
 
-MERGER_ID = "archwiz.context_relationships.seed_merger@1.3"
+MERGER_ID = "archwiz.context_relationships.seed_merger@1.4"
 
 # Line spans are observations of the same symbol, not identity. Collectors
 # disagree when one parse includes a decorator or trailing blank and another
@@ -121,6 +121,15 @@ def merge_node(
         if can_canonicalize and isinstance(right, str):
             right = canonical_github_blob_url(right, owner, name, ref)
         if left and right and left != right:
+            # Prefer the canonical repository URL for issue nodes when a contradictory external URL is present.
+            # Historical collection can surface cross-repo references that should not fail the entire backfill.
+            canonical_prefix = f"https://github.com/{owner}/{name}/"
+            left_canonical = isinstance(left, str) and left.startswith(canonical_prefix)
+            right_canonical = isinstance(right, str) and right.startswith(canonical_prefix)
+            if node_ref.startswith("issue:") and (left_canonical or right_canonical):
+                preferred = left if left_canonical else right
+                merged[field] = preferred
+                continue
             raise CompilationError(f"node {node_ref} has contradictory {field}: {left!r} vs {right!r}")
         if right:
             merged[field] = right

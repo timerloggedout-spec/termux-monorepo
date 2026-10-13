@@ -40,6 +40,8 @@ LABEL_SCORES = {
     "contributions welcome": 8,
 }
 
+CLARITY_KEYWORDS = ("acceptance", "expected", "steps to", "checklist", "- [ ]", "repro")
+
 
 def _headers() -> dict[str, str]:
     h = {
@@ -84,7 +86,7 @@ def body_clarity(body: str | None) -> int:
         return 0
     b = body.lower()
     score = 0
-    if any(k in b for k in ("acceptance", "expected", "steps to", "checklist", "- [ ]", "repro")):
+    if any(k in b for k in CLARITY_KEYWORDS):
         score += 10
     n = len(body)
     if 80 <= n <= 2000:
@@ -94,12 +96,13 @@ def body_clarity(body: str | None) -> int:
     return max(0, min(15, score))
 
 
-def freshness_score(updated_at: str | None) -> int:
+def freshness_score(updated_at: str | None, now: datetime | None = None) -> int:
     if not updated_at:
         return 0
     try:
         dt = datetime.fromisoformat(updated_at.replace("Z", "+00:00"))
-        age = (datetime.now(timezone.utc) - dt).days
+        now_dt = now or datetime.now(timezone.utc)
+        age = (now_dt - dt).days
     except Exception:
         return 0
     if age < 30:
@@ -128,7 +131,7 @@ def language_score(repo_url: str, preferred: set[str]) -> int:
     return 5  # neutral baseline; workflow can enrich later
 
 
-def rank_issue(item: dict) -> dict:
+def rank_issue(item: dict, now: datetime | None = None) -> dict:
     labels = item.get("labels") or []
     body = item.get("body") or ""
     assignees = item.get("assignees") or []
@@ -142,7 +145,7 @@ def rank_issue(item: dict) -> dict:
     score += label_score(labels)
     score += 15 if not assignees else (5 if len(assignees) == 1 else 0)
     score += body_clarity(body)
-    score += freshness_score(updated)
+    score += freshness_score(updated, now=now)
     score += comment_score(comments)
     score += 8  # repo health baseline (search already filters active-ish)
     score += language_score(repo, PREFERRED_LANGS)
@@ -178,10 +181,11 @@ def main() -> int:
     query = " ".join(parts)
 
     items = search_issues(query, per_page=min(args.max, 50))
-    ranked = sorted((rank_issue(i) for i in items), key=lambda x: -x["score"])[: args.max]
+    now = datetime.now(timezone.utc)
+    ranked = sorted((rank_issue(i, now=now) for i in items), key=lambda x: -x["score"])[: args.max]
 
     catalog = {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": now.isoformat(),
         "query": query,
         "count": len(ranked),
         "items": ranked,

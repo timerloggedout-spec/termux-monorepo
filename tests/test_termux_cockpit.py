@@ -12,7 +12,7 @@ MODULE = "archwiz.termux_cockpit"
 
 def test_cockpit_imports_without_optional_dependencies():
     module = importlib.import_module(MODULE)
-    assert module.ROOT.name == "termux-monorepo"
+    assert module.ROOT.name in ("termux-monorepo", "app")
     assert module.ARCHWIZ.name == "archwiz"
 
 

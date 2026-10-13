@@ -32,6 +32,10 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
     try:
+        if ".." in args.job.parts:
+            raise JobValidationError(f"Path traversal in job path {args.job} rejected for security")
+        if args.job.is_symlink():
+            raise JobValidationError(f"Symlink job path {args.job} rejected for security")
         payload = json.loads(args.job.read_text(encoding="utf-8"))
         result = execute_payload(payload, args.repository, args.state_directory)
     except (OSError, json.JSONDecodeError, JobValidationError) as exc:

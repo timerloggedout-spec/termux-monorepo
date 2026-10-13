@@ -25,6 +25,8 @@ class ReplayStore:
             return set()
         if self.path.is_symlink():
             raise JobValidationError(f"Symlink replay store path {self.path} rejected for security")
+        if self.path.parent.is_symlink():
+            raise JobValidationError(f"Symlink replay directory {self.path.parent} rejected for security")
         try:
             data = json.loads(self.path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError) as exc:
@@ -120,6 +122,10 @@ def execute(job: Job, repository: Path, replay_store: ReplayStore) -> ResultEnve
 
 def execute_payload(payload: dict, repository: Path, state_directory: Path) -> dict:
     """Validate and execute a raw JSON-compatible payload for a single-worker hub."""
+    if ".." in state_directory.parts:
+        raise JobValidationError(f"Path traversal in state directory path {state_directory} rejected for security")
+    if state_directory.is_symlink():
+        raise JobValidationError(f"Symlink state directory {state_directory} rejected for security")
     job = Job.from_mapping(payload)
     result = execute(job, repository, ReplayStore(state_directory / "processed_jobs.json"))
     return result.to_mapping()

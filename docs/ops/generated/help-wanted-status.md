@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-13T22:39:33Z UTC · receipts=2015 · foreign_open=32 · tributes=88_
+_Generated 2026-10-13T23:54:51Z UTC · receipts=2015 · foreign_open=33 · tributes=89_
 
 ## Tributes (contributor ledger)
 
+- [Dfunder/stellarAid-api#968](https://github.com/Dfunder/stellarAid-api/pull/968) · state=open · help-wanted: stake + contribute for #918
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -43,10 +44,10 @@ _Generated 2026-10-13T22:39:33Z UTC · receipts=2015 · foreign_open=32 · tribu
 - [dereksantos/cortex#274](https://github.com/dereksantos/cortex/pull/274) · state=closed · help-wanted: stake + contribute for #264
 - [prime-radiant-inc/evener#2661](https://github.com/prime-radiant-inc/evener/pull/2661) · state=closed · help-wanted: stake + contribute for #2627
 - [adharshramu12/Seetha_ai#8](https://github.com/adharshramu12/Seetha_ai/pull/8) · state=closed · help-wanted: stake + contribute for #2
-- [uttrflow/uttrflow-swift#3719](https://github.com/uttrflow/uttrflow-swift/pull/3719) · state=closed · help-wanted: stake + contribute for #3713
 
 ## Foreign open PRs
 
+- [Dfunder/stellarAid-api#968](https://github.com/Dfunder/stellarAid-api/pull/968) — help-wanted: stake + contribute for #918
 - [Nano-Collective/nanocoder#1749](https://github.com/Nano-Collective/nanocoder/pull/1749) — help-wanted: stake + contribute for #1748
 - [MyFanss/MyFans#2056](https://github.com/MyFanss/MyFans/pull/2056) — help-wanted: stake + contribute for #2032
 - [ciaren-labs/Ciaren#234](https://github.com/ciaren-labs/Ciaren/pull/234) — help-wanted: stake + contribute for #96

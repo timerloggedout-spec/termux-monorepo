@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-13T22:39:33Z",
+  "generated_at": "2026-10-13T23:54:51Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
   "receipts": 2015,
@@ -16,6 +16,15 @@
     "ok": 2015
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/Dfunder/stellarAid-api/pull/968",
+      "title": "help-wanted: stake + contribute for #918",
+      "number": 968,
+      "repo": "Dfunder/stellarAid-api",
+      "state": "open",
+      "updated_at": "2026-10-13T23:54:29Z",
+      "tribute": true
+    },
     {
       "html_url": "https://github.com/Nano-Collective/nanocoder/pull/1749",
       "title": "help-wanted: stake + contribute for #1748",
@@ -305,8 +314,21 @@
       "tribute": true
     }
   ],
-  "foreign_open_count": 32,
+  "foreign_open_count": 33,
   "tributes": [
+    {
+      "pr_url": "https://github.com/Dfunder/stellarAid-api/pull/968",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-10-13T23:54:29Z",
+      "providers": [],
+      "repo": "Dfunder/stellarAid-api",
+      "number": 968,
+      "title": "help-wanted: stake + contribute for #918",
+      "state": "open"
+    },
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
@@ -3375,7 +3397,7 @@
       "providers": []
     }
   ],
-  "tribute_count": 88,
+  "tribute_count": 89,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -22041,7 +22063,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "f8a7c7c21063d44b712077cceede518a7e068550",
+    "source_sha": "8b5c8b7af9d04263301ff91f03a379464d5f1ac1",
     "source_ref": "master",
     "history_complete": false,
     "history_coverage": "lane-local-complete; repository-wide historical accountability requires sweep-accountability backfill",
@@ -22075,12 +22097,12 @@
   },
   "evolution": [
     {
-      "sha": "f8a7c7c21063d44b712077cceede518a7e068550",
-      "short_sha": "f8a7c7c21063",
-      "date": "2026-10-13T21:26:30Z",
+      "sha": "8b5c8b7af9d04263301ff91f03a379464d5f1ac1",
+      "short_sha": "8b5c8b7af9d0",
+      "date": "2026-10-13T22:40:18Z",
       "author": "github-actions[bot]",
-      "subject": "chore(context): backfill relationship history",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/f8a7c7c21063d44b712077cceede518a7e068550"
+      "subject": "ops(lane-matrix): refresh generated status from recursive sweep",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/8b5c8b7af9d04263301ff91f03a379464d5f1ac1"
     }
   ],
   "pipeline": [

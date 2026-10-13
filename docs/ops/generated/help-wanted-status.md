@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-13T17:33:50Z UTC · receipts=1983 · foreign_open=32 · tributes=87_
+_Generated 2026-10-13T19:33:07Z UTC · receipts=1983 · foreign_open=33 · tributes=88_
 
 ## Tributes (contributor ledger)
 
+- [TabularisDB/tabularis#1074](https://github.com/TabularisDB/tabularis/pull/1074) · state=open · help-wanted: stake + contribute for #1042
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -43,10 +44,10 @@ _Generated 2026-10-13T17:33:50Z UTC · receipts=1983 · foreign_open=32 · tribu
 - [prime-radiant-inc/evener#2661](https://github.com/prime-radiant-inc/evener/pull/2661) · state=closed · help-wanted: stake + contribute for #2627
 - [adharshramu12/Seetha_ai#8](https://github.com/adharshramu12/Seetha_ai/pull/8) · state=closed · help-wanted: stake + contribute for #2
 - [uttrflow/uttrflow-swift#3719](https://github.com/uttrflow/uttrflow-swift/pull/3719) · state=closed · help-wanted: stake + contribute for #3713
-- [rishiyaduwanshi/boiler#101](https://github.com/rishiyaduwanshi/boiler/pull/101) · state=closed · help-wanted: stake + contribute for #99
 
 ## Foreign open PRs
 
+- [TabularisDB/tabularis#1074](https://github.com/TabularisDB/tabularis/pull/1074) — help-wanted: stake + contribute for #1042
 - [Nano-Collective/nanocoder#1749](https://github.com/Nano-Collective/nanocoder/pull/1749) — help-wanted: stake + contribute for #1748
 - [MyFanss/MyFans#2056](https://github.com/MyFanss/MyFans/pull/2056) — help-wanted: stake + contribute for #2032
 - [ciaren-labs/Ciaren#234](https://github.com/ciaren-labs/Ciaren/pull/234) — help-wanted: stake + contribute for #96

@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-13T01:18:01Z UTC · receipts=1920 · foreign_open=30 · tributes=85_
+_Generated 2026-10-13T02:15:30Z UTC · receipts=1920 · foreign_open=31 · tributes=86_
 
 ## Tributes (contributor ledger)
 
+- [MyFanss/MyFans#2056](https://github.com/MyFanss/MyFans/pull/2056) · state=open · help-wanted: stake + contribute for #2032
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -43,10 +44,10 @@ _Generated 2026-10-13T01:18:01Z UTC · receipts=1920 · foreign_open=30 · tribu
 - [uttrflow/uttrflow-swift#3719](https://github.com/uttrflow/uttrflow-swift/pull/3719) · state=closed · help-wanted: stake + contribute for #3713
 - [rishiyaduwanshi/boiler#101](https://github.com/rishiyaduwanshi/boiler/pull/101) · state=closed · help-wanted: stake + contribute for #99
 - [marrabld/omazone#72](https://github.com/marrabld/omazone/pull/72) · state=closed · help-wanted: stake + contribute for #14
-- [Vikram-sardiwal/react-open-source#50](https://github.com/Vikram-sardiwal/react-open-source/pull/50) · state=closed · help-wanted: stake + contribute for #16
 
 ## Foreign open PRs
 
+- [MyFanss/MyFans#2056](https://github.com/MyFanss/MyFans/pull/2056) — help-wanted: stake + contribute for #2032
 - [ciaren-labs/Ciaren#234](https://github.com/ciaren-labs/Ciaren/pull/234) — help-wanted: stake + contribute for #96
 - [kiinshuk/kinshow#434](https://github.com/kiinshuk/kinshow/pull/434) — help-wanted: stake + contribute for #157
 - [apache/hugegraph-computer#365](https://github.com/apache/hugegraph-computer/pull/365) — help-wanted: stake + contribute for #325

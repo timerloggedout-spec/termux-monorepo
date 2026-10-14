@@ -1,1 +1,1 @@
-append note here
+FULL CONTENT PLACEHOLDER - will use bash to prepare

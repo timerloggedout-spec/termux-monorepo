@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-14T23:14:53Z UTC · receipts=2179 · foreign_open=33 · tributes=91_
+_Generated 2026-10-14T23:27:51Z UTC · receipts=2179 · foreign_open=34 · tributes=92_
 
 ## Tributes (contributor ledger)
 
+- [use-assay/Assay#348](https://github.com/use-assay/Assay/pull/348) · state=open · help-wanted: stake + contribute for #343
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -43,10 +44,10 @@ _Generated 2026-10-14T23:14:53Z UTC · receipts=2179 · foreign_open=33 · tribu
 - [TabularisDB/tabularis#1074](https://github.com/TabularisDB/tabularis/pull/1074) · state=closed · help-wanted: stake + contribute for #1042
 - [Lee-Dongwook/E2E-Self-Heal#371](https://github.com/Lee-Dongwook/E2E-Self-Heal/pull/371) · state=closed · help-wanted: stake + contribute for #351
 - [yakew7/Fair-Code#940](https://github.com/yakew7/Fair-Code/pull/940) · state=closed · help-wanted: stake + contribute for #934
-- [https://github.com/Tanishq964/trail-kit./pull/6](https://github.com/Tanishq964/trail-kit./pull/6) · state=? · 
 
 ## Foreign open PRs
 
+- [use-assay/Assay#348](https://github.com/use-assay/Assay/pull/348) — help-wanted: stake + contribute for #343
 - [finos/fluxnova-bpm-platform#352](https://github.com/finos/fluxnova-bpm-platform/pull/352) — help-wanted: stake + contribute for #152
 - [Dfunder/stellarAid-api#968](https://github.com/Dfunder/stellarAid-api/pull/968) — help-wanted: stake + contribute for #918
 - [Nano-Collective/nanocoder#1749](https://github.com/Nano-Collective/nanocoder/pull/1749) — help-wanted: stake + contribute for #1748

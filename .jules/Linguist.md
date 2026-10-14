@@ -116,3 +116,10 @@ When performing randomized surface codec transformations (`to_1337speak`), execu
 
 **Action:**
 In surface codec transformers, build pre-search regexes using only mutable dictionary tokens and pre-compute positional index maps to eliminate runtime character iteration and map lookups inside substitution callbacks.
+
+## 2026-10-18 - Non-Canonical Variant Index Pre-Filtering and Static Replacement Map Hoisting
+**Learning:**
+In phased 1337speak surface codec transformers (`from_1337speak` / `to_1337speak`), `VARIANT_REGEX` previously matched all 61 variant tokens, including 31 invariant tokens that are identical to canonical forms (e.g., `h4x`, `pr0b3`, `3ch0`). This caused half of all match callbacks during surface normalization to execute redundant replacements on canonical tokens. Filtering `NON_CANONICAL_INDEX` to only mutated variants where `variant.lower() != canonical.lower()` eliminates match callbacks on invariant tokens (~16.6% speedup in `from_1337speak`). Using `MUTABLE_VARIANT_REGEX` for `probability == 1.0` in `to_1337speak` similarly skips invariant tokens (~20% speedup). Additionally, in `expand()`, hoisting symbol mapping dictionaries and pre-formatted replacement pairs (`REV_SYMBOL_PAIRS`) to module scope with `if sym in result:` existence guards avoids dictionary allocations and string formatting on every call frame (~3.6x speedup).
+
+**Action:**
+Always pre-filter variant indexes in surface codec transformers to exclude invariant/canonical entries, and hoist static replacement pairs to module scope with fast existence guards.

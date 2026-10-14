@@ -1,6 +1,6 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-14T13:38:44Z UTC · receipts=2081 · foreign_open=32 · tributes=89_
+_Generated 2026-10-14T13:43:42Z UTC · receipts=2113 · foreign_open=32 · tributes=89_
 
 ## Tributes (contributor ledger)
 
@@ -22,7 +22,6 @@ _Generated 2026-10-14T13:38:44Z UTC · receipts=2081 · foreign_open=32 · tribu
 - [TrusTrove/TrusTrove-contract#860](https://github.com/TrusTrove/TrusTrove-contract/pull/860) · state=open · help-wanted: stake + contribute for #836
 - [laugh-tales/starpass-contracts#59](https://github.com/laugh-tales/starpass-contracts/pull/59) · state=open · help-wanted: stake + contribute for #28
 - [Saidur-droid/MergeEarn#76](https://github.com/Saidur-droid/MergeEarn/pull/76) · state=open · help-wanted: stake + contribute for #69
-- [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) · state=closed · help-wanted: stake + contribute for #225
 - [TricklePay/tricklepay-backend#441](https://github.com/TricklePay/tricklepay-backend/pull/441) · state=open · help-wanted: stake + contribute for #395
 - [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) · state=open · help-wanted: stake + contribute for #928
 - [ROCm/rocm-libraries#13152](https://github.com/ROCm/rocm-libraries/pull/13152) · state=open · help-wanted: stake + contribute for #10586
@@ -37,6 +36,7 @@ _Generated 2026-10-14T13:38:44Z UTC · receipts=2081 · foreign_open=32 · tribu
 - [MyFanss/MyFans#2056](https://github.com/MyFanss/MyFans/pull/2056) · state=open · help-wanted: stake + contribute for #2032
 - [Nano-Collective/nanocoder#1749](https://github.com/Nano-Collective/nanocoder/pull/1749) · state=open · help-wanted: stake + contribute for #1748
 - [Dfunder/stellarAid-api#968](https://github.com/Dfunder/stellarAid-api/pull/968) · state=open · help-wanted: stake + contribute for #918
+- [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) · state=closed · help-wanted: stake + contribute for #225
 - [LandSandBoat/server#11771](https://github.com/LandSandBoat/server/pull/11771) · state=closed · help-wanted: stake + contribute for #4757
 - [TabularisDB/tabularis#1074](https://github.com/TabularisDB/tabularis/pull/1074) · state=closed · help-wanted: stake + contribute for #1042
 - [Lee-Dongwook/E2E-Self-Heal#371](https://github.com/Lee-Dongwook/E2E-Self-Heal/pull/371) · state=closed · help-wanted: stake + contribute for #351
@@ -80,6 +80,6 @@ _Generated 2026-10-14T13:38:44Z UTC · receipts=2081 · foreign_open=32 · tribu
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=2081 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 1903, 'followup_reengage': 49, 'followup_stale_nudge': 79, 'followup_changes': 2}`
+## Outcomes · ok=2113 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 1933, 'followup_reengage': 49, 'followup_stale_nudge': 81, 'followup_changes': 2}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

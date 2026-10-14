@@ -2,13 +2,17 @@
 """Extract token and conversations from DeepSeek official data export ZIP.
 Usage: python extract_from_official_export.py <export.zip> [--account <name>]
 Outputs: token saved to ~/.deepcli/config_<name>.json, conversations to ~/storage/downloads/synthegration_exports/"""
-import sys, json, zipfile, shutil
+import sys, os, json, re, zipfile, shutil
 from pathlib import Path
 from datetime import datetime
 
 HOME = Path.home()
+SAFE_ACCOUNT_REGEX = re.compile(r"^[a-zA-Z0-9_-]+$")
 EXPORT_ZIP = Path(sys.argv[1]) if len(sys.argv) > 1 else None
 ACCOUNT = sys.argv[sys.argv.index('--account')+1] if '--account' in sys.argv else 'default'
+
+if ACCOUNT != 'default' and not SAFE_ACCOUNT_REGEX.match(ACCOUNT):
+    raise ValueError(f"Invalid account name '{ACCOUNT}': must contain only alphanumeric characters, underscores, or hyphens.")
 
 if not EXPORT_ZIP or not EXPORT_ZIP.exists():
     print("Usage: extract_from_official_export.py <export.zip> [--account <name>]")
@@ -46,9 +50,31 @@ for f in TMP.rglob('*'):
 
 if token:
     config_dir = HOME / '.deepcli'
-    config_dir.mkdir(parents=True, exist_ok=True)
+    config_dir.mkdir(mode=0o700, parents=True, exist_ok=True)
+    if config_dir.is_symlink():
+        raise ValueError(f"Symlink config directory {config_dir} rejected for security")
+    try:
+        os.chmod(str(config_dir), 0o700)
+    except OSError:
+        pass
+
     config_file = config_dir / (f'config_{ACCOUNT}.json' if ACCOUNT != 'default' else 'config.json')
-    config_file.write_text(json.dumps({'token': token}, indent=2))
+    if config_file.is_symlink():
+        raise ValueError(f"Symlink config file {config_file} rejected for security")
+
+    fd = os.open(str(config_file), os.O_CREAT | os.O_WRONLY | os.O_TRUNC, 0o600)
+    if hasattr(os, "fchmod"):
+        try:
+            os.fchmod(fd, 0o600)
+        except OSError:
+            pass
+    try:
+        with os.fdopen(fd, 'w') as f:
+            json.dump({'token': token}, f, indent=2)
+    except Exception:
+        if not f.closed:
+            f.close()
+        raise
     print(f"Token saved to {config_file}")
 else:
     print("No token found in export. Searching for alternatives...")

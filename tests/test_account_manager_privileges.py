@@ -98,3 +98,52 @@ def test_account_manager_privileges_and_retrieval(tmp_path, monkeypatch):
     # Get token
     token = am.get_token("user1")
     assert token == "valid_secret_token_123"
+
+
+def test_extract_official_export_security(tmp_path, monkeypatch):
+    import subprocess
+    fake_home = tmp_path / "home"
+    fake_home.mkdir()
+    monkeypatch.setattr(Path, "home", lambda: fake_home)
+
+    dummy_zip = tmp_path / "export.zip"
+    import zipfile
+    with zipfile.ZipFile(dummy_zip, 'w') as zf:
+        zf.writestr("token.json", json.dumps({"token": "export_secret_token_99"}))
+
+    script_path = os.path.abspath("cli-synthegration/extract_from_official_export.py")
+
+    env = {**os.environ, "HOME": str(fake_home)}
+
+    # 1. Invalid account name rejection
+    res = subprocess.run(
+        [sys.executable, script_path, str(dummy_zip), "--account", "../traversal"],
+        capture_output=True, text=True, env=env
+    )
+    assert res.returncode != 0
+    assert "Invalid account name" in res.stderr
+
+    # 2. Valid execution and permission check
+    res_valid = subprocess.run(
+        [sys.executable, script_path, str(dummy_zip), "--account", "valid_acc"],
+        capture_output=True, text=True, env=env
+    )
+    assert res_valid.returncode == 0
+    out_config = fake_home / ".deepcli" / "config_valid_acc.json"
+    assert out_config.exists()
+    if os.name != "nt":
+        assert (out_config.stat().st_mode & 0o777) == 0o600
+        assert ((fake_home / ".deepcli").stat().st_mode & 0o777) == 0o700
+
+    # 3. Symlink rejection
+    symlink_config = fake_home / ".deepcli" / "config_sym_acc.json"
+    target = tmp_path / "target.json"
+    target.write_text("{}")
+    symlink_config.symlink_to(target)
+
+    res_sym = subprocess.run(
+        [sys.executable, script_path, str(dummy_zip), "--account", "sym_acc"],
+        capture_output=True, text=True, env=env
+    )
+    assert res_sym.returncode != 0
+    assert "Symlink config file" in res_sym.stderr

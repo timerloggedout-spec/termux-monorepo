@@ -127,6 +127,19 @@ def apply_casing(src: str, dst: str) -> str:
     return lowercase_word(dst)
 
 SYMBOL_REGEXES = {phrase: re.compile(re.escape(phrase), re.IGNORECASE) for phrase in SYMBOL_MAP}
+# Pre-compile exact phrase alternation regex without \b restrictions to match all symbol phrases
+ANY_SYMBOL_REGEX = re.compile("|".join(re.escape(k) for k in SYMBOL_MAP.keys()), re.IGNORECASE)
+# Pre-compile tuple of (pattern, replacement) at module scope to bypass dict key lookups in substitution loops
+SYMBOL_PATTERNS: Tuple[Tuple[re.Pattern[str], str], ...] = tuple(
+    (pattern, SYMBOL_MAP[phrase]) for phrase, pattern in SYMBOL_REGEXES.items()
+)
+
+# Pre-computed module-scope expansion tuples to eliminate dict creation and string formatting per call
+REV_MAP = {v.strip(): k.strip() for k, v in SYMBOL_MAP.items()}
+REV_SYMBOL_PAIRS: Tuple[Tuple[str, str], ...] = tuple(
+    (sym, f" {phrase} ") for sym, phrase in REV_MAP.items()
+)
+
 INLINE_CODE_PATTERN = re.compile(r'`[^`]+`')
 HTML_TAG_PATTERN = re.compile(r'<[^>]+>')
 LINK_PATTERN = re.compile(r'\[([^\]]+)\]\(([^)]+)\)')
@@ -198,9 +211,11 @@ for human, comp in SORTED_MAPPINGS_DECOMP:
 def compress(text: str, aggressive: bool = True) -> str:
     if not text:
         return ""
-    result = text[:]
-    for phrase, pattern in SYMBOL_REGEXES.items():
-        result = pattern.sub(SYMBOL_MAP[phrase], result)
+    result = text
+    # Pre-search short-circuit guard: bypass iterating over 32 symbol regex patterns when no symbol phrases exist
+    if ANY_SYMBOL_REGEX.search(result):
+        for pattern, replacement in SYMBOL_PATTERNS:
+            result = pattern.sub(replacement, result)
     if not aggressive:
         return result.strip()
     words = result.split()
@@ -212,16 +227,21 @@ def compress(text: str, aggressive: bool = True) -> str:
 
 def caveman(text: str, max_up: bool = False) -> str:
     t = text.upper() if max_up else text
-    for phrase, pattern in SYMBOL_REGEXES.items():
-        t = pattern.sub(SYMBOL_MAP[phrase], t)
+    # Pre-search short-circuit guard: bypass iterating over 32 symbol regex patterns when no symbol phrases exist
+    if ANY_SYMBOL_REGEX.search(t):
+        for pattern, replacement in SYMBOL_PATTERNS:
+            t = pattern.sub(replacement, t)
     words = [w for w in t.split() if w.lower() not in STOPWORDS]
     return SPACES_PATTERN.sub(' ', " ".join(words)).strip()
 
 def expand(cedr: str) -> str:
-    rev_map = {v.strip(): k.strip() for k, v in SYMBOL_MAP.items()}
+    if not cedr:
+        return ""
     result = cedr
-    for sym, phrase in rev_map.items():
-        result = result.replace(sym, f" {phrase} ")
+    # Use pre-computed module-scope replacement tuples and check substring presence before string substitution
+    for sym, replacement in REV_SYMBOL_PAIRS:
+        if sym in result:
+            result = result.replace(sym, replacement)
     result = SPACES_PATTERN.sub(' ', result)
     return result.strip()
 
@@ -293,13 +313,15 @@ def translate_line(line: str, to_compressed: bool) -> str:
         line = LINK_PATTERN.sub(ctx.link_repl, line)
     if "*" in line:
         line = BOLD_PATTERN_2.sub(ctx.bold_repl_2, line)
-        line = BOLD_PATTERN_1.sub(ctx.bold_repl_1, line)
+        if "*" in line:
+            line = BOLD_PATTERN_1.sub(ctx.bold_repl_1, line)
     if "_" in line:
         line = BOLD_PATTERN_UNDER2.sub(ctx.bold_repl_under2, line)
-        line = BOLD_PATTERN_UNDER1.sub(ctx.bold_repl_under1, line)
-    if "/" in line or "\\" in line or "~" in line or "." in line:
+        if "_" in line:
+            line = BOLD_PATTERN_UNDER1.sub(ctx.bold_repl_under1, line)
+    if ("/" in line or "\\" in line or "~" in line or "." in line) and PATH_REGEX.search(line):
         line = PATH_REGEX.sub(ctx.raw_match_repl, line)
-    if "." in line:
+    if "." in line and DECIMAL_PATTERN.search(line):
         line = DECIMAL_PATTERN.sub(ctx.raw_match_repl, line)
     line = translate_text_raw(line, to_compressed)
     if ctx.placeholders:

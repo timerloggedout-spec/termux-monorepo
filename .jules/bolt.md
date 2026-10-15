@@ -72,3 +72,10 @@ In Bayesian routing and Monte Carlo sampling engines (`scripts/bayesian_routing.
 
 **Action:**
 Accumulate local scalar variables in tight observation iteration loops instead of instantiating immutable dataclasses per iteration, avoid `dataclasses.asdict` on hot paths, and hoist random generator method references out of Monte Carlo sampling loops.
+
+## 2026-10-07 - Module-Scope Regex Pre-Compilation and Set Superset Character Validation in CI Evaluators
+**Learning:**
+In deterministic evaluator and telemetry producer scripts (`scripts/ci/evaluate_skills.py` and `scripts/ci/emit_agent_throughput.py`), compiling regular expressions dynamically inside evaluation routines (`re.search`, `re.findall`) and iterating over individual characters in Python loops (`any(ch not in ... for ch in value)`) introduces significant CPU compilation and allocation overhead during batch operations. Pre-compiling evaluation regexes at module scope, utilizing generator count expressions (`sum(1 for _ in FENCES_RE.finditer(text))`), and leveraging C-level set superset checks (`frozenset("0123456789abcdef").issuperset(value)`) eliminates re-compilation and per-character loop overhead. Additionally, returning both formatted ISO strings and parsed `datetime` instances in timestamp utilities avoids redundant ISO timestamp re-parsing.
+
+**Action:**
+Pre-compile all structural evaluation regex patterns at module scope, use `sum(1 for ...)` generator expressions over `re.finditer` instead of `len(re.findall(...))` list allocations, and use `set.issuperset()` for fast C-level character set validation.

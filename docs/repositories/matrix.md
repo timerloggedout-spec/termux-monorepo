@@ -2,7 +2,7 @@
 
 > Generated from GitHub repository and starring metadata. JSON is canonical; this file is a navigation projection.
 
-Observed: `2026-10-14T09:32:43.019596Z`
+Observed: `2026-10-15T09:10:49.318163Z`
 
 ## Navigation
 
@@ -188,6 +188,7 @@ Observed: `2026-10-14T09:32:43.019596Z`
 | [timerloggedout-spec/ApexChainx-Contracts](https://github.com/timerloggedout-spec/ApexChainx-Contracts) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/Approxination-Benchmark_fork](https://github.com/timerloggedout-spec/Approxination-Benchmark_fork) | owned, starred | ai | medium | upstream-comparison |
 | [timerloggedout-spec/ArchWiz_fork](https://github.com/timerloggedout-spec/ArchWiz_fork) | owned | ai | medium | — |
+| [timerloggedout-spec/Assay](https://github.com/timerloggedout-spec/Assay) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/AuditEngine_fork](https://github.com/timerloggedout-spec/AuditEngine_fork) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/awesome-code-ai_fork](https://github.com/timerloggedout-spec/awesome-code-ai_fork) | owned, starred | ai | medium | upstream-comparison |
 | [timerloggedout-spec/awesome-deepseek-integration_fork](https://github.com/timerloggedout-spec/awesome-deepseek-integration_fork) | owned | ai | medium | upstream-comparison |
@@ -273,10 +274,12 @@ Observed: `2026-10-14T09:32:43.019596Z`
 | [timerloggedout-spec/vscowork-web_fork](https://github.com/timerloggedout-spec/vscowork-web_fork) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/vscowork_fork](https://github.com/timerloggedout-spec/vscowork_fork) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/waveterm_fork](https://github.com/timerloggedout-spec/waveterm_fork) | owned | ai | medium | upstream-comparison, workflow-candidate |
+| [timerloggedout-spec/wayfare](https://github.com/timerloggedout-spec/wayfare) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/WebModel_fork](https://github.com/timerloggedout-spec/WebModel_fork) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/zero](https://github.com/timerloggedout-spec/zero) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/AI-codepilot_fork](https://github.com/timerloggedout-spec/AI-codepilot_fork) | owned, starred | ai, context | high | upstream-comparison |
 | [timerloggedout-spec/benchmarks_fork_startup-time-comparison](https://github.com/timerloggedout-spec/benchmarks_fork_startup-time-comparison) | owned, starred | ai, context | high | upstream-comparison |
+| [timerloggedout-spec/cubrid-mcp-server](https://github.com/timerloggedout-spec/cubrid-mcp-server) | owned | ai, context | high | upstream-comparison |
 | [timerloggedout-spec/deepseek-mcp-server_fork](https://github.com/timerloggedout-spec/deepseek-mcp-server_fork) | owned, starred | ai, context | high | upstream-comparison |
 | [timerloggedout-spec/DeepTerminologyExtraction_fork](https://github.com/timerloggedout-spec/DeepTerminologyExtraction_fork) | owned, starred | ai, context | high | upstream-comparison |
 | [timerloggedout-spec/DeepV-Ki_fork](https://github.com/timerloggedout-spec/DeepV-Ki_fork) | owned, starred | ai, context | high | upstream-comparison |
@@ -480,6 +483,7 @@ Observed: `2026-10-14T09:32:43.019596Z`
 | [timerloggedout-spec/feishu-agy-sdk-bridge_fork](https://github.com/timerloggedout-spec/feishu-agy-sdk-bridge_fork) | owned | unclassified | medium | dependency-candidate, upstream-comparison |
 | [timerloggedout-spec/filet_fork](https://github.com/timerloggedout-spec/filet_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/flint_fork](https://github.com/timerloggedout-spec/flint_fork) | owned | unclassified | medium | upstream-comparison |
+| [timerloggedout-spec/fluxnova-bpm-platform](https://github.com/timerloggedout-spec/fluxnova-bpm-platform) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/Focusflow](https://github.com/timerloggedout-spec/Focusflow) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/frontend](https://github.com/timerloggedout-spec/frontend) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/fsrs4anki-helper_fork](https://github.com/timerloggedout-spec/fsrs4anki-helper_fork) | owned, starred | unclassified | medium | upstream-comparison |
@@ -808,7 +812,6 @@ Observed: `2026-10-14T09:32:43.019596Z`
 | [FareedKhan-dev/production-grade-agentic-system](https://github.com/FareedKhan-dev/production-grade-agentic-system) | starred | agent, ai | medium | — |
 | [farion1231/cc-switch](https://github.com/farion1231/cc-switch) | starred | agent, ai | medium | — |
 | [fathah/hermes-desktop](https://github.com/fathah/hermes-desktop) | starred | agent, ai | medium | — |
-| [firecrawl/firecrawl](https://github.com/firecrawl/firecrawl) | starred | agent, ai | medium | dependency-candidate |
 | [Fosowl/agenticSeek](https://github.com/Fosowl/agenticSeek) | starred | agent, ai | medium | — |
 | [FSoft-AI4Code/AgileCoder](https://github.com/FSoft-AI4Code/AgileCoder) | starred | agent, ai | medium | — |
 | [garrytan/gbrain](https://github.com/garrytan/gbrain) | starred | agent, ai | medium | — |
@@ -916,6 +919,7 @@ Observed: `2026-10-14T09:32:43.019596Z`
 | [timerloggedout-spec/temporal-ai-agent_fork](https://github.com/timerloggedout-spec/temporal-ai-agent_fork) | owned, starred | agent, ai | medium | upstream-comparison, workflow-candidate |
 | [timerloggedout-spec/Wingman_fork](https://github.com/timerloggedout-spec/Wingman_fork) | owned, starred | agent, ai | medium | upstream-comparison |
 | [tom-doerr/dspy_nodes](https://github.com/tom-doerr/dspy_nodes) | starred | agent, ai | medium | — |
+| [tw93/Waza](https://github.com/tw93/Waza) | starred | agent, ai | medium | — |
 | [ultraworkers/claw-code](https://github.com/ultraworkers/claw-code) | starred | agent, ai | medium | — |
 | [upperspacecase/agentcostcalc](https://github.com/upperspacecase/agentcostcalc) | starred | agent, ai | medium | — |
 | [vstorm-co/memv](https://github.com/vstorm-co/memv) | starred | agent, ai | medium | dependency-candidate |
@@ -1104,7 +1108,7 @@ Observed: `2026-10-14T09:32:43.019596Z`
 | [eltociear/awesome-AI-driven-development](https://github.com/eltociear/awesome-AI-driven-development) | starred | agent, ai, developer-tools | medium | — |
 | [esengine/DeepSeek-Reasonix](https://github.com/esengine/DeepSeek-Reasonix) | starred | agent, ai, developer-tools | medium | dependency-candidate |
 | [Gentleman-Programming/engram](https://github.com/Gentleman-Programming/engram) | starred | agent, ai, developer-tools | medium | — |
-| [GlassOnTin/claude-memory-skills](https://github.com/GlassOnTin/claude-memory-skills) | starred | agent, ai, developer-tools | medium | — |
+| [GlassOnTin/memory-skills](https://github.com/GlassOnTin/memory-skills) | starred | agent, ai, developer-tools | medium | — |
 | [google-gemini/gemini-cli](https://github.com/google-gemini/gemini-cli) | starred | agent, ai, developer-tools | medium | — |
 | [google/agents-cli](https://github.com/google/agents-cli) | starred | agent, ai, developer-tools | medium | — |
 | [googleworkspace/cli](https://github.com/googleworkspace/cli) | starred | agent, ai, developer-tools | medium | — |
@@ -1662,7 +1666,6 @@ Observed: `2026-10-14T09:32:43.019596Z`
 | [TOPDEV99999/ai-vibecoder-frontend](https://github.com/TOPDEV99999/ai-vibecoder-frontend) | starred | ai | medium | — |
 | [TOPDEV99999/SmartRecruit-AI](https://github.com/TOPDEV99999/SmartRecruit-AI) | starred | ai | medium | — |
 | [TuringLang/Bijectors.jl](https://github.com/TuringLang/Bijectors.jl) | starred | ai | medium | — |
-| [tw93/Waza](https://github.com/tw93/Waza) | starred | ai | medium | — |
 | [tylerpearson/california-laws-api](https://github.com/tylerpearson/california-laws-api) | starred | ai | medium | — |
 | [Unity-Technologies/UniversalRenderingExamples](https://github.com/Unity-Technologies/UniversalRenderingExamples) | starred | ai | medium | — |
 | [univieCUBE/gepard](https://github.com/univieCUBE/gepard) | starred | ai | medium | — |
@@ -2211,6 +2214,7 @@ Observed: `2026-10-14T09:32:43.019596Z`
 | [alechilczenko/kimi](https://github.com/alechilczenko/kimi) | starred | security | medium | — |
 | [BARGHEST-ngo/MESH](https://github.com/BARGHEST-ngo/MESH) | starred | security | medium | — |
 | [bee-san/RustScan](https://github.com/bee-san/RustScan) | starred | security | medium | — |
+| [DosX-dev/obfus.h](https://github.com/DosX-dev/obfus.h) | starred | security | medium | — |
 | [getsops/sops](https://github.com/getsops/sops) | starred | security | medium | — |
 | [google-github-actions/auth](https://github.com/google-github-actions/auth) | starred | security | medium | workflow-candidate |
 | [gravitee-io/gravitee-access-management](https://github.com/gravitee-io/gravitee-access-management) | starred | security | medium | — |
@@ -3219,6 +3223,7 @@ Observed: `2026-10-14T09:32:43.019596Z`
 | [ryantm/agenix](https://github.com/ryantm/agenix) | starred | unclassified | medium | — |
 | [ryanvmenezes/mbm_notebooks](https://github.com/ryanvmenezes/mbm_notebooks) | starred | unclassified | medium | — |
 | [rzgross/Wharton-Moneyball.github.io](https://github.com/rzgross/Wharton-Moneyball.github.io) | starred | unclassified | medium | — |
+| [Saganaki22/Blackjack](https://github.com/Saganaki22/Blackjack) | starred | unclassified | medium | — |
 | [Sakyapanchen/TournamentBracket](https://github.com/Sakyapanchen/TournamentBracket) | starred | unclassified | medium | — |
 | [saltbot-org/saltbot](https://github.com/saltbot-org/saltbot) | starred | unclassified | medium | — |
 | [sam09/zipf](https://github.com/sam09/zipf) | starred | unclassified | medium | — |
@@ -3897,6 +3902,7 @@ Observed: `2026-10-14T09:32:43.019596Z`
 | [thiswillbeyourgithub/wdoc](https://github.com/thiswillbeyourgithub/wdoc) | starred | ai, context | high | — |
 | [timerloggedout-spec/AI-codepilot_fork](https://github.com/timerloggedout-spec/AI-codepilot_fork) | owned, starred | ai, context | high | upstream-comparison |
 | [timerloggedout-spec/benchmarks_fork_startup-time-comparison](https://github.com/timerloggedout-spec/benchmarks_fork_startup-time-comparison) | owned, starred | ai, context | high | upstream-comparison |
+| [timerloggedout-spec/cubrid-mcp-server](https://github.com/timerloggedout-spec/cubrid-mcp-server) | owned | ai, context | high | upstream-comparison |
 | [timerloggedout-spec/deepseek-mcp-server_fork](https://github.com/timerloggedout-spec/deepseek-mcp-server_fork) | owned, starred | ai, context | high | upstream-comparison |
 | [timerloggedout-spec/DeepTerminologyExtraction_fork](https://github.com/timerloggedout-spec/DeepTerminologyExtraction_fork) | owned, starred | ai, context | high | upstream-comparison |
 | [timerloggedout-spec/DeepV-Ki_fork](https://github.com/timerloggedout-spec/DeepV-Ki_fork) | owned, starred | ai, context | high | upstream-comparison |
@@ -4226,7 +4232,6 @@ Observed: `2026-10-14T09:32:43.019596Z`
 | [czlonkowski/n8n-skills](https://github.com/czlonkowski/n8n-skills) | starred | agent, ai | medium | workflow-candidate |
 | [darinkishore/codex_dspy](https://github.com/darinkishore/codex_dspy) | starred | agent, ai | medium | dependency-candidate, workflow-candidate |
 | [Dicklesworthstone/agentic_coding_flywheel_setup](https://github.com/Dicklesworthstone/agentic_coding_flywheel_setup) | starred | agent, ai | medium | workflow-candidate |
-| [firecrawl/firecrawl](https://github.com/firecrawl/firecrawl) | starred | agent, ai | medium | dependency-candidate |
 | [github/gh-aw](https://github.com/github/gh-aw) | starred | agent, ai | medium | workflow-candidate |
 | [glama-ai/tool-definition-quality-score](https://github.com/glama-ai/tool-definition-quality-score) | starred | agent, ai | medium | dependency-candidate |
 | [google-labs-code/jules-action](https://github.com/google-labs-code/jules-action) | starred | agent, ai | medium | workflow-candidate |
@@ -4482,6 +4487,7 @@ Observed: `2026-10-14T09:32:43.019596Z`
 | [timerloggedout-spec/AnkiAIUtils_fork](https://github.com/timerloggedout-spec/AnkiAIUtils_fork) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/ApexChainx-Contracts](https://github.com/timerloggedout-spec/ApexChainx-Contracts) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/Approxination-Benchmark_fork](https://github.com/timerloggedout-spec/Approxination-Benchmark_fork) | owned, starred | ai | medium | upstream-comparison |
+| [timerloggedout-spec/Assay](https://github.com/timerloggedout-spec/Assay) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/AuditEngine_fork](https://github.com/timerloggedout-spec/AuditEngine_fork) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/awesome-code-ai_fork](https://github.com/timerloggedout-spec/awesome-code-ai_fork) | owned, starred | ai | medium | upstream-comparison |
 | [timerloggedout-spec/awesome-deepseek-integration_fork](https://github.com/timerloggedout-spec/awesome-deepseek-integration_fork) | owned | ai | medium | upstream-comparison |
@@ -4565,6 +4571,7 @@ Observed: `2026-10-14T09:32:43.019596Z`
 | [timerloggedout-spec/vscowork-web_fork](https://github.com/timerloggedout-spec/vscowork-web_fork) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/vscowork_fork](https://github.com/timerloggedout-spec/vscowork_fork) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/waveterm_fork](https://github.com/timerloggedout-spec/waveterm_fork) | owned | ai | medium | upstream-comparison, workflow-candidate |
+| [timerloggedout-spec/wayfare](https://github.com/timerloggedout-spec/wayfare) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/WebModel_fork](https://github.com/timerloggedout-spec/WebModel_fork) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/zero](https://github.com/timerloggedout-spec/zero) | owned | ai | medium | upstream-comparison |
 | [vllm-project/speculators](https://github.com/vllm-project/speculators) | starred | ai | medium | dependency-candidate |
@@ -4613,6 +4620,7 @@ Observed: `2026-10-14T09:32:43.019596Z`
 | [oldwinter/knowledge-garden](https://github.com/oldwinter/knowledge-garden) | starred | ai, context | high | — |
 | [timerloggedout-spec/AI-codepilot_fork](https://github.com/timerloggedout-spec/AI-codepilot_fork) | owned, starred | ai, context | high | upstream-comparison |
 | [timerloggedout-spec/benchmarks_fork_startup-time-comparison](https://github.com/timerloggedout-spec/benchmarks_fork_startup-time-comparison) | owned, starred | ai, context | high | upstream-comparison |
+| [timerloggedout-spec/cubrid-mcp-server](https://github.com/timerloggedout-spec/cubrid-mcp-server) | owned | ai, context | high | upstream-comparison |
 | [timerloggedout-spec/deepseek-mcp-server_fork](https://github.com/timerloggedout-spec/deepseek-mcp-server_fork) | owned, starred | ai, context | high | upstream-comparison |
 | [timerloggedout-spec/DeepTerminologyExtraction_fork](https://github.com/timerloggedout-spec/DeepTerminologyExtraction_fork) | owned, starred | ai, context | high | upstream-comparison |
 | [timerloggedout-spec/DeepV-Ki_fork](https://github.com/timerloggedout-spec/DeepV-Ki_fork) | owned, starred | ai, context | high | upstream-comparison |
@@ -5043,6 +5051,7 @@ Observed: `2026-10-14T09:32:43.019596Z`
 | [timerloggedout-spec/feishu-agy-sdk-bridge_fork](https://github.com/timerloggedout-spec/feishu-agy-sdk-bridge_fork) | owned | unclassified | medium | dependency-candidate, upstream-comparison |
 | [timerloggedout-spec/filet_fork](https://github.com/timerloggedout-spec/filet_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/flint_fork](https://github.com/timerloggedout-spec/flint_fork) | owned | unclassified | medium | upstream-comparison |
+| [timerloggedout-spec/fluxnova-bpm-platform](https://github.com/timerloggedout-spec/fluxnova-bpm-platform) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/Focusflow](https://github.com/timerloggedout-spec/Focusflow) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/frontend](https://github.com/timerloggedout-spec/frontend) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/fsrs4anki-helper_fork](https://github.com/timerloggedout-spec/fsrs4anki-helper_fork) | owned, starred | unclassified | medium | upstream-comparison |

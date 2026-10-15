@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-15T04:39:19Z",
+  "generated_at": "2026-10-15T05:13:02Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
   "receipts": 2213,
@@ -17,12 +17,21 @@
   },
   "foreign_open_prs": [
     {
+      "html_url": "https://github.com/Wayfare-labs/wayfare/pull/731",
+      "title": "help-wanted: stake + contribute for #730",
+      "number": 731,
+      "repo": "Wayfare-labs/wayfare",
+      "state": "open",
+      "updated_at": "2026-10-15T05:12:57Z",
+      "tribute": true
+    },
+    {
       "html_url": "https://github.com/use-assay/Assay/pull/348",
       "title": "help-wanted: stake + contribute for #343",
       "number": 348,
       "repo": "use-assay/Assay",
       "state": "open",
-      "updated_at": "2026-10-14T23:27:53Z",
+      "updated_at": "2026-10-15T04:50:41Z",
       "tribute": true
     },
     {
@@ -323,8 +332,21 @@
       "tribute": true
     }
   ],
-  "foreign_open_count": 34,
+  "foreign_open_count": 35,
   "tributes": [
+    {
+      "pr_url": "https://github.com/Wayfare-labs/wayfare/pull/731",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-10-15T05:12:57Z",
+      "providers": [],
+      "repo": "Wayfare-labs/wayfare",
+      "number": 731,
+      "title": "help-wanted: stake + contribute for #730",
+      "state": "open"
+    },
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
@@ -3631,7 +3653,7 @@
       "providers": []
     }
   ],
-  "tribute_count": 92,
+  "tribute_count": 93,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -24111,7 +24133,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "5ed3083b9816ba923ad6c31fd3eaa6c8be352b83",
+    "source_sha": "bc5be5dd264be1ae3e1f0db2add9983fc0705f07",
     "source_ref": "master",
     "history_complete": false,
     "history_coverage": "lane-local-complete; repository-wide historical accountability requires sweep-accountability backfill",
@@ -24145,12 +24167,12 @@
   },
   "evolution": [
     {
-      "sha": "5ed3083b9816ba923ad6c31fd3eaa6c8be352b83",
-      "short_sha": "5ed3083b9816",
-      "date": "2026-10-15T04:37:49Z",
+      "sha": "bc5be5dd264be1ae3e1f0db2add9983fc0705f07",
+      "short_sha": "bc5be5dd264b",
+      "date": "2026-10-15T04:58:41Z",
       "author": "github-actions[bot]",
-      "subject": "ops(help-wanted): live status refresh 2026-10-15T04:37Z",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/5ed3083b9816ba923ad6c31fd3eaa6c8be352b83"
+      "subject": "chore(context): backfill relationship history",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/bc5be5dd264be1ae3e1f0db2add9983fc0705f07"
     }
   ],
   "pipeline": [

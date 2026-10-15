@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-15T04:39:19Z UTC · receipts=2213 · foreign_open=34 · tributes=92_
+_Generated 2026-10-15T05:13:02Z UTC · receipts=2213 · foreign_open=35 · tributes=93_
 
 ## Tributes (contributor ledger)
 
+- [Wayfare-labs/wayfare#731](https://github.com/Wayfare-labs/wayfare/pull/731) · state=open · help-wanted: stake + contribute for #730
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -43,10 +44,10 @@ _Generated 2026-10-15T04:39:19Z UTC · receipts=2213 · foreign_open=34 · tribu
 - [LandSandBoat/server#11771](https://github.com/LandSandBoat/server/pull/11771) · state=closed · help-wanted: stake + contribute for #4757
 - [TabularisDB/tabularis#1074](https://github.com/TabularisDB/tabularis/pull/1074) · state=closed · help-wanted: stake + contribute for #1042
 - [Lee-Dongwook/E2E-Self-Heal#371](https://github.com/Lee-Dongwook/E2E-Self-Heal/pull/371) · state=closed · help-wanted: stake + contribute for #351
-- [yakew7/Fair-Code#940](https://github.com/yakew7/Fair-Code/pull/940) · state=closed · help-wanted: stake + contribute for #934
 
 ## Foreign open PRs
 
+- [Wayfare-labs/wayfare#731](https://github.com/Wayfare-labs/wayfare/pull/731) — help-wanted: stake + contribute for #730
 - [use-assay/Assay#348](https://github.com/use-assay/Assay/pull/348) — help-wanted: stake + contribute for #343
 - [finos/fluxnova-bpm-platform#352](https://github.com/finos/fluxnova-bpm-platform/pull/352) — help-wanted: stake + contribute for #152
 - [Dfunder/stellarAid-api#968](https://github.com/Dfunder/stellarAid-api/pull/968) — help-wanted: stake + contribute for #918

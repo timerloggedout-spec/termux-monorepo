@@ -1,10 +1,9 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-15T13:43:33Z UTC · receipts=2246 · foreign_open=34 · tributes=92_
+_Generated 2026-10-15T17:00:51Z UTC · receipts=2279 · foreign_open=33 · tributes=91_
 
 ## Tributes (contributor ledger)
 
-- [ShippedLabs/soroban-upgrade-safeguard#781](https://github.com/ShippedLabs/soroban-upgrade-safeguard/pull/781) · state=open · help-wanted: stake + contribute for #764
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -35,9 +34,10 @@ _Generated 2026-10-15T13:43:33Z UTC · receipts=2246 · foreign_open=34 · tribu
 - [kiinshuk/kinshow#434](https://github.com/kiinshuk/kinshow/pull/434) · state=open · help-wanted: stake + contribute for #157
 - [ciaren-labs/Ciaren#234](https://github.com/ciaren-labs/Ciaren/pull/234) · state=open · help-wanted: stake + contribute for #96
 - [MyFanss/MyFans#2056](https://github.com/MyFanss/MyFans/pull/2056) · state=open · help-wanted: stake + contribute for #2032
-- [Dfunder/stellarAid-api#968](https://github.com/Dfunder/stellarAid-api/pull/968) · state=open · help-wanted: stake + contribute for #918
 - [finos/fluxnova-bpm-platform#352](https://github.com/finos/fluxnova-bpm-platform/pull/352) · state=open · help-wanted: stake + contribute for #152
 - [use-assay/Assay#348](https://github.com/use-assay/Assay/pull/348) · state=open · help-wanted: stake + contribute for #343
+- [ShippedLabs/soroban-upgrade-safeguard#781](https://github.com/ShippedLabs/soroban-upgrade-safeguard/pull/781) · state=open · help-wanted: stake + contribute for #764
+- [Dfunder/stellarAid-api#968](https://github.com/Dfunder/stellarAid-api/pull/968) · state=closed · help-wanted: stake + contribute for #918
 - [Wayfare-labs/wayfare#731](https://github.com/Wayfare-labs/wayfare/pull/731) · state=closed · help-wanted: stake + contribute for #730
 - [Nano-Collective/nanocoder#1749](https://github.com/Nano-Collective/nanocoder/pull/1749) · state=closed · help-wanted: stake + contribute for #1748
 - [cubrid-lab/cubrid-mcp-server#334](https://github.com/cubrid-lab/cubrid-mcp-server/pull/334) · state=closed · help-wanted: stake + contribute for #333
@@ -50,7 +50,6 @@ _Generated 2026-10-15T13:43:33Z UTC · receipts=2246 · foreign_open=34 · tribu
 - [ShippedLabs/soroban-upgrade-safeguard#781](https://github.com/ShippedLabs/soroban-upgrade-safeguard/pull/781) — help-wanted: stake + contribute for #764
 - [use-assay/Assay#348](https://github.com/use-assay/Assay/pull/348) — help-wanted: stake + contribute for #343
 - [finos/fluxnova-bpm-platform#352](https://github.com/finos/fluxnova-bpm-platform/pull/352) — help-wanted: stake + contribute for #152
-- [Dfunder/stellarAid-api#968](https://github.com/Dfunder/stellarAid-api/pull/968) — help-wanted: stake + contribute for #918
 - [MyFanss/MyFans#2056](https://github.com/MyFanss/MyFans/pull/2056) — help-wanted: stake + contribute for #2032
 - [ciaren-labs/Ciaren#234](https://github.com/ciaren-labs/Ciaren/pull/234) — help-wanted: stake + contribute for #96
 - [kiinshuk/kinshow#434](https://github.com/kiinshuk/kinshow/pull/434) — help-wanted: stake + contribute for #157
@@ -82,6 +81,6 @@ _Generated 2026-10-15T13:43:33Z UTC · receipts=2246 · foreign_open=34 · tribu
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=2246 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 2061, 'followup_reengage': 49, 'followup_stale_nudge': 86, 'followup_changes': 2}`
+## Outcomes · ok=2279 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 2088, 'followup_reengage': 49, 'followup_stale_nudge': 92, 'followup_changes': 2}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

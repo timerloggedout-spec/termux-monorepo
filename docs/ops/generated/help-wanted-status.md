@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-15T22:11:58Z UTC · receipts=2313 · foreign_open=34 · tributes=92_
+_Generated 2026-10-15T23:19:16Z UTC · receipts=2313 · foreign_open=35 · tributes=93_
 
 ## Tributes (contributor ledger)
 
+- [Neziahtech/streampay#147](https://github.com/Neziahtech/streampay/pull/147) · state=open · help-wanted: stake + contribute for #5
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -43,10 +44,10 @@ _Generated 2026-10-15T22:11:58Z UTC · receipts=2313 · foreign_open=34 · tribu
 - [Nano-Collective/nanocoder#1749](https://github.com/Nano-Collective/nanocoder/pull/1749) · state=closed · help-wanted: stake + contribute for #1748
 - [cubrid-lab/cubrid-mcp-server#334](https://github.com/cubrid-lab/cubrid-mcp-server/pull/334) · state=closed · help-wanted: stake + contribute for #333
 - [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) · state=closed · help-wanted: stake + contribute for #225
-- [LandSandBoat/server#11771](https://github.com/LandSandBoat/server/pull/11771) · state=closed · help-wanted: stake + contribute for #4757
 
 ## Foreign open PRs
 
+- [Neziahtech/streampay#147](https://github.com/Neziahtech/streampay/pull/147) — help-wanted: stake + contribute for #5
 - [TrustHire/hiresettle-backend#518](https://github.com/TrustHire/hiresettle-backend/pull/518) — help-wanted: stake + contribute for #517
 - [ShippedLabs/soroban-upgrade-safeguard#781](https://github.com/ShippedLabs/soroban-upgrade-safeguard/pull/781) — help-wanted: stake + contribute for #764
 - [use-assay/Assay#348](https://github.com/use-assay/Assay/pull/348) — help-wanted: stake + contribute for #343

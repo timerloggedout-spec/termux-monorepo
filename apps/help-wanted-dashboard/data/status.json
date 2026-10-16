@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-16T21:08:47Z",
+  "generated_at": "2026-10-16T23:02:11Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
   "receipts": 2489,
@@ -16,6 +16,15 @@
     "ok": 2489
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/stellar-compliance-kit/compliance-primitives/pull/656",
+      "title": "help-wanted: stake + contribute for #180",
+      "number": 656,
+      "repo": "stellar-compliance-kit/compliance-primitives",
+      "state": "open",
+      "updated_at": "2026-10-16T23:01:56Z",
+      "tribute": true
+    },
     {
       "html_url": "https://github.com/Local-Settle/local-settle-backend/pull/127",
       "title": "help-wanted: stake + contribute for #2",
@@ -50,15 +59,6 @@
       "repo": "ShippedLabs/soroban-upgrade-safeguard",
       "state": "open",
       "updated_at": "2026-10-15T13:42:31Z",
-      "tribute": true
-    },
-    {
-      "html_url": "https://github.com/use-assay/Assay/pull/348",
-      "title": "help-wanted: stake + contribute for #343",
-      "number": 348,
-      "repo": "use-assay/Assay",
-      "state": "open",
-      "updated_at": "2026-10-16T11:34:38Z",
       "tribute": true
     },
     {
@@ -334,6 +334,19 @@
   ],
   "foreign_open_count": 35,
   "tributes": [
+    {
+      "pr_url": "https://github.com/stellar-compliance-kit/compliance-primitives/pull/656",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-10-16T23:01:56Z",
+      "providers": [],
+      "repo": "stellar-compliance-kit/compliance-primitives",
+      "number": 656,
+      "title": "help-wanted: stake + contribute for #180",
+      "state": "open"
+    },
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
@@ -2660,7 +2673,7 @@
       "repo": "use-assay/Assay",
       "number": 348,
       "title": "help-wanted: stake + contribute for #343",
-      "state": "open"
+      "state": "closed"
     },
     {
       "pr_url": "https://github.com/ShippedLabs/soroban-upgrade-safeguard/pull/781",
@@ -3907,11 +3920,7 @@
       ],
       "ok": true,
       "last_ts": "2026-09-24T17:09:53Z",
-      "providers": [],
-      "repo": "vavallee/bindery",
-      "number": 2770,
-      "title": "help-wanted: stake + contribute for #2769",
-      "state": "closed"
+      "providers": []
     },
     {
       "pr_url": "https://github.com/DioNanos/codex-termux/pull/27",
@@ -3933,7 +3942,7 @@
       "providers": []
     }
   ],
-  "tribute_count": 94,
+  "tribute_count": 95,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -26943,7 +26952,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "84787d8701fc5cb089297aaf2e6da3dd64c8498b",
+    "source_sha": "60e6f0532606692c05f4917a71c864b741e711c5",
     "source_ref": "master",
     "history_complete": false,
     "history_coverage": "lane-local-complete; repository-wide historical accountability requires sweep-accountability backfill",
@@ -26977,12 +26986,12 @@
   },
   "evolution": [
     {
-      "sha": "84787d8701fc5cb089297aaf2e6da3dd64c8498b",
-      "short_sha": "84787d8701fc",
-      "date": "2026-10-16T21:07:30Z",
+      "sha": "60e6f0532606692c05f4917a71c864b741e711c5",
+      "short_sha": "60e6f0532606",
+      "date": "2026-10-16T21:08:49Z",
       "author": "github-actions[bot]",
-      "subject": "ops(help-wanted): live status refresh 2026-10-16T21:07Z",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/84787d8701fc5cb089297aaf2e6da3dd64c8498b"
+      "subject": "ops(help-wanted): live status refresh 2026-10-16T21:08Z",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/60e6f0532606692c05f4917a71c864b741e711c5"
     }
   ],
   "pipeline": [

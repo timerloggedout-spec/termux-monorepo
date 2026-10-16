@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-16T21:08:47Z UTC · receipts=2489 · foreign_open=35 · tributes=94_
+_Generated 2026-10-16T23:02:11Z UTC · receipts=2489 · foreign_open=35 · tributes=95_
 
 ## Tributes (contributor ledger)
 
+- [stellar-compliance-kit/compliance-primitives#656](https://github.com/stellar-compliance-kit/compliance-primitives/pull/656) · state=open · help-wanted: stake + contribute for #180
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -34,7 +35,7 @@ _Generated 2026-10-16T21:08:47Z UTC · receipts=2489 · foreign_open=35 · tribu
 - [kiinshuk/kinshow#434](https://github.com/kiinshuk/kinshow/pull/434) · state=open · help-wanted: stake + contribute for #157
 - [ciaren-labs/Ciaren#234](https://github.com/ciaren-labs/Ciaren/pull/234) · state=open · help-wanted: stake + contribute for #96
 - [finos/fluxnova-bpm-platform#352](https://github.com/finos/fluxnova-bpm-platform/pull/352) · state=open · help-wanted: stake + contribute for #152
-- [use-assay/Assay#348](https://github.com/use-assay/Assay/pull/348) · state=open · help-wanted: stake + contribute for #343
+- [use-assay/Assay#348](https://github.com/use-assay/Assay/pull/348) · state=closed · help-wanted: stake + contribute for #343
 - [ShippedLabs/soroban-upgrade-safeguard#781](https://github.com/ShippedLabs/soroban-upgrade-safeguard/pull/781) · state=open · help-wanted: stake + contribute for #764
 - [TrustHire/hiresettle-backend#518](https://github.com/TrustHire/hiresettle-backend/pull/518) · state=open · help-wanted: stake + contribute for #517
 - [ssupportme/support-me#316](https://github.com/ssupportme/support-me/pull/316) · state=open · help-wanted: stake + contribute for #301
@@ -43,15 +44,14 @@ _Generated 2026-10-16T21:08:47Z UTC · receipts=2489 · foreign_open=35 · tribu
 - [MyFanss/MyFans#2056](https://github.com/MyFanss/MyFans/pull/2056) · state=closed · help-wanted: stake + contribute for #2032
 - [Neziahtech/streampay#147](https://github.com/Neziahtech/streampay/pull/147) · state=closed · help-wanted: stake + contribute for #5
 - [nextcloud/spreed#19662](https://github.com/nextcloud/spreed/pull/19662) · state=closed · help-wanted: stake + contribute for #19498
-- [Dfunder/stellarAid-api#968](https://github.com/Dfunder/stellarAid-api/pull/968) · state=closed · help-wanted: stake + contribute for #918
 
 ## Foreign open PRs
 
+- [stellar-compliance-kit/compliance-primitives#656](https://github.com/stellar-compliance-kit/compliance-primitives/pull/656) — help-wanted: stake + contribute for #180
 - [Local-Settle/local-settle-backend#127](https://github.com/Local-Settle/local-settle-backend/pull/127) — help-wanted: stake + contribute for #2
 - [ssupportme/support-me#316](https://github.com/ssupportme/support-me/pull/316) — help-wanted: stake + contribute for #301
 - [TrustHire/hiresettle-backend#518](https://github.com/TrustHire/hiresettle-backend/pull/518) — help-wanted: stake + contribute for #517
 - [ShippedLabs/soroban-upgrade-safeguard#781](https://github.com/ShippedLabs/soroban-upgrade-safeguard/pull/781) — help-wanted: stake + contribute for #764
-- [use-assay/Assay#348](https://github.com/use-assay/Assay/pull/348) — help-wanted: stake + contribute for #343
 - [finos/fluxnova-bpm-platform#352](https://github.com/finos/fluxnova-bpm-platform/pull/352) — help-wanted: stake + contribute for #152
 - [ciaren-labs/Ciaren#234](https://github.com/ciaren-labs/Ciaren/pull/234) — help-wanted: stake + contribute for #96
 - [kiinshuk/kinshow#434](https://github.com/kiinshuk/kinshow/pull/434) — help-wanted: stake + contribute for #157

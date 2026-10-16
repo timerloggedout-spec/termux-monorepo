@@ -1,6 +1,6 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-16T12:22:27Z UTC · receipts=2384 · foreign_open=35 · tributes=93_
+_Generated 2026-10-16T13:15:35Z UTC · receipts=2419 · foreign_open=35 · tributes=93_
 
 ## Tributes (contributor ledger)
 
@@ -38,8 +38,8 @@ _Generated 2026-10-16T12:22:27Z UTC · receipts=2384 · foreign_open=35 · tribu
 - [use-assay/Assay#348](https://github.com/use-assay/Assay/pull/348) · state=open · help-wanted: stake + contribute for #343
 - [ShippedLabs/soroban-upgrade-safeguard#781](https://github.com/ShippedLabs/soroban-upgrade-safeguard/pull/781) · state=open · help-wanted: stake + contribute for #764
 - [TrustHire/hiresettle-backend#518](https://github.com/TrustHire/hiresettle-backend/pull/518) · state=open · help-wanted: stake + contribute for #517
-- [Neziahtech/streampay#147](https://github.com/Neziahtech/streampay/pull/147) · state=closed · help-wanted: stake + contribute for #5
 - [ssupportme/support-me#316](https://github.com/ssupportme/support-me/pull/316) · state=open · help-wanted: stake + contribute for #301
+- [Neziahtech/streampay#147](https://github.com/Neziahtech/streampay/pull/147) · state=closed · help-wanted: stake + contribute for #5
 - [nextcloud/spreed#19662](https://github.com/nextcloud/spreed/pull/19662) · state=closed · help-wanted: stake + contribute for #19498
 - [Dfunder/stellarAid-api#968](https://github.com/Dfunder/stellarAid-api/pull/968) · state=closed · help-wanted: stake + contribute for #918
 - [Wayfare-labs/wayfare#731](https://github.com/Wayfare-labs/wayfare/pull/731) · state=closed · help-wanted: stake + contribute for #730
@@ -83,6 +83,6 @@ _Generated 2026-10-16T12:22:27Z UTC · receipts=2384 · foreign_open=35 · tribu
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=2384 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 2189, 'followup_reengage': 49, 'followup_stale_nudge': 96, 'followup_changes': 2}`
+## Outcomes · ok=2419 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 2223, 'followup_reengage': 49, 'followup_stale_nudge': 97, 'followup_changes': 2}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

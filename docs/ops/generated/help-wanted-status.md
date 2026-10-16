@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-16T05:00:56Z UTC · receipts=2348 · foreign_open=36 · tributes=94_
+_Generated 2026-10-16T07:04:58Z UTC · receipts=2348 · foreign_open=36 · tributes=94_
 
 ## Tributes (contributor ledger)
 
+- [nextcloud/spreed#19662](https://github.com/nextcloud/spreed/pull/19662) · state=closed · help-wanted: stake + contribute for #19498
 - [ssupportme/support-me#316](https://github.com/ssupportme/support-me/pull/316) · state=open · help-wanted: stake + contribute for #301
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -43,7 +44,6 @@ _Generated 2026-10-16T05:00:56Z UTC · receipts=2348 · foreign_open=36 · tribu
 - [Dfunder/stellarAid-api#968](https://github.com/Dfunder/stellarAid-api/pull/968) · state=closed · help-wanted: stake + contribute for #918
 - [Wayfare-labs/wayfare#731](https://github.com/Wayfare-labs/wayfare/pull/731) · state=closed · help-wanted: stake + contribute for #730
 - [Nano-Collective/nanocoder#1749](https://github.com/Nano-Collective/nanocoder/pull/1749) · state=closed · help-wanted: stake + contribute for #1748
-- [cubrid-lab/cubrid-mcp-server#334](https://github.com/cubrid-lab/cubrid-mcp-server/pull/334) · state=closed · help-wanted: stake + contribute for #333
 
 ## Foreign open PRs
 

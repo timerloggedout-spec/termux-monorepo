@@ -2,7 +2,7 @@
 
 > Generated from GitHub repository and starring metadata. JSON is canonical; this file is a navigation projection.
 
-Observed: `2026-10-15T09:10:49.318163Z`
+Observed: `2026-10-16T09:03:31.716909Z`
 
 ## Navigation
 
@@ -330,6 +330,7 @@ Observed: `2026-10-15T09:10:49.318163Z`
 | [timerloggedout-spec/m_flow_fork](https://github.com/timerloggedout-spec/m_flow_fork) | owned, starred | context | high | upstream-comparison |
 | [timerloggedout-spec/mlfinlab_fork](https://github.com/timerloggedout-spec/mlfinlab_fork) | owned | context | high | upstream-comparison |
 | [timerloggedout-spec/obsidian-local-rest-api_fork](https://github.com/timerloggedout-spec/obsidian-local-rest-api_fork) | owned | context | high | upstream-comparison |
+| [timerloggedout-spec/soroban-upgrade-safeguard](https://github.com/timerloggedout-spec/soroban-upgrade-safeguard) | owned | context | high | upstream-comparison |
 | [timerloggedout-spec/upload-cloud-storage_fork](https://github.com/timerloggedout-spec/upload-cloud-storage_fork) | owned, starred | context | high | upstream-comparison |
 | [timerloggedout-spec/kalamarnica_fork](https://github.com/timerloggedout-spec/kalamarnica_fork) | owned, starred | context, developer-tools | high | upstream-comparison |
 | [timerloggedout-spec/OpenRouter-Client_fork](https://github.com/timerloggedout-spec/OpenRouter-Client_fork) | owned | context, developer-tools | high | upstream-comparison |
@@ -505,6 +506,7 @@ Observed: `2026-10-15T09:10:49.318163Z`
 | [timerloggedout-spec/Gods_Eye_fork](https://github.com/timerloggedout-spec/Gods_Eye_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/Goof_fork](https://github.com/timerloggedout-spec/Goof_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/gravitee-api-management_fork](https://github.com/timerloggedout-spec/gravitee-api-management_fork) | owned | unclassified | medium | upstream-comparison |
+| [timerloggedout-spec/hiresettle-backend](https://github.com/timerloggedout-spec/hiresettle-backend) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/homebrew-instantgrep](https://github.com/timerloggedout-spec/homebrew-instantgrep) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/houdini_fork](https://github.com/timerloggedout-spec/houdini_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/hugegraph-computer](https://github.com/timerloggedout-spec/hugegraph-computer) | owned | unclassified | medium | upstream-comparison |
@@ -614,7 +616,9 @@ Observed: `2026-10-15T09:10:49.318163Z`
 | [timerloggedout-spec/statedecoded_fork](https://github.com/timerloggedout-spec/statedecoded_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/Stellar_fork](https://github.com/timerloggedout-spec/Stellar_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/StellarLock](https://github.com/timerloggedout-spec/StellarLock) | owned | unclassified | medium | upstream-comparison |
+| [timerloggedout-spec/streampay](https://github.com/timerloggedout-spec/streampay) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/super-productivity_fork](https://github.com/timerloggedout-spec/super-productivity_fork) | owned | unclassified | medium | upstream-comparison |
+| [timerloggedout-spec/support-me](https://github.com/timerloggedout-spec/support-me) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/syde556_fork](https://github.com/timerloggedout-spec/syde556_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/synapse_fork](https://github.com/timerloggedout-spec/synapse_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/synchrony_fork](https://github.com/timerloggedout-spec/synchrony_fork) | owned, starred | unclassified | medium | upstream-comparison |
@@ -812,6 +816,7 @@ Observed: `2026-10-15T09:10:49.318163Z`
 | [FareedKhan-dev/production-grade-agentic-system](https://github.com/FareedKhan-dev/production-grade-agentic-system) | starred | agent, ai | medium | — |
 | [farion1231/cc-switch](https://github.com/farion1231/cc-switch) | starred | agent, ai | medium | — |
 | [fathah/hermes-desktop](https://github.com/fathah/hermes-desktop) | starred | agent, ai | medium | — |
+| [firecrawl/firecrawl](https://github.com/firecrawl/firecrawl) | starred | agent, ai | medium | dependency-candidate |
 | [Fosowl/agenticSeek](https://github.com/Fosowl/agenticSeek) | starred | agent, ai | medium | — |
 | [FSoft-AI4Code/AgileCoder](https://github.com/FSoft-AI4Code/AgileCoder) | starred | agent, ai | medium | — |
 | [garrytan/gbrain](https://github.com/garrytan/gbrain) | starred | agent, ai | medium | — |
@@ -4034,6 +4039,7 @@ Observed: `2026-10-15T09:10:49.318163Z`
 | [timerloggedout-spec/m_flow_fork](https://github.com/timerloggedout-spec/m_flow_fork) | owned, starred | context | high | upstream-comparison |
 | [timerloggedout-spec/mlfinlab_fork](https://github.com/timerloggedout-spec/mlfinlab_fork) | owned | context | high | upstream-comparison |
 | [timerloggedout-spec/obsidian-local-rest-api_fork](https://github.com/timerloggedout-spec/obsidian-local-rest-api_fork) | owned | context | high | upstream-comparison |
+| [timerloggedout-spec/soroban-upgrade-safeguard](https://github.com/timerloggedout-spec/soroban-upgrade-safeguard) | owned | context | high | upstream-comparison |
 | [timerloggedout-spec/upload-cloud-storage_fork](https://github.com/timerloggedout-spec/upload-cloud-storage_fork) | owned, starred | context | high | upstream-comparison |
 | [troyanco99/solana-jupiter-arb](https://github.com/troyanco99/solana-jupiter-arb) | starred | context | high | — |
 | [ValtteriL/harjus](https://github.com/ValtteriL/harjus) | starred | context | high | — |
@@ -4232,6 +4238,7 @@ Observed: `2026-10-15T09:10:49.318163Z`
 | [czlonkowski/n8n-skills](https://github.com/czlonkowski/n8n-skills) | starred | agent, ai | medium | workflow-candidate |
 | [darinkishore/codex_dspy](https://github.com/darinkishore/codex_dspy) | starred | agent, ai | medium | dependency-candidate, workflow-candidate |
 | [Dicklesworthstone/agentic_coding_flywheel_setup](https://github.com/Dicklesworthstone/agentic_coding_flywheel_setup) | starred | agent, ai | medium | workflow-candidate |
+| [firecrawl/firecrawl](https://github.com/firecrawl/firecrawl) | starred | agent, ai | medium | dependency-candidate |
 | [github/gh-aw](https://github.com/github/gh-aw) | starred | agent, ai | medium | workflow-candidate |
 | [glama-ai/tool-definition-quality-score](https://github.com/glama-ai/tool-definition-quality-score) | starred | agent, ai | medium | dependency-candidate |
 | [google-labs-code/jules-action](https://github.com/google-labs-code/jules-action) | starred | agent, ai | medium | workflow-candidate |
@@ -4696,6 +4703,7 @@ Observed: `2026-10-15T09:10:49.318163Z`
 | [timerloggedout-spec/m_flow_fork](https://github.com/timerloggedout-spec/m_flow_fork) | owned, starred | context | high | upstream-comparison |
 | [timerloggedout-spec/mlfinlab_fork](https://github.com/timerloggedout-spec/mlfinlab_fork) | owned | context | high | upstream-comparison |
 | [timerloggedout-spec/obsidian-local-rest-api_fork](https://github.com/timerloggedout-spec/obsidian-local-rest-api_fork) | owned | context | high | upstream-comparison |
+| [timerloggedout-spec/soroban-upgrade-safeguard](https://github.com/timerloggedout-spec/soroban-upgrade-safeguard) | owned | context | high | upstream-comparison |
 | [timerloggedout-spec/upload-cloud-storage_fork](https://github.com/timerloggedout-spec/upload-cloud-storage_fork) | owned, starred | context | high | upstream-comparison |
 | [Wbaker7702/Azurite](https://github.com/Wbaker7702/Azurite) | starred | context | high | upstream-comparison |
 | [Wbaker7702/gcsfuse](https://github.com/Wbaker7702/gcsfuse) | starred | context | high | upstream-comparison |
@@ -5072,6 +5080,7 @@ Observed: `2026-10-15T09:10:49.318163Z`
 | [timerloggedout-spec/Gods_Eye_fork](https://github.com/timerloggedout-spec/Gods_Eye_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/Goof_fork](https://github.com/timerloggedout-spec/Goof_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/gravitee-api-management_fork](https://github.com/timerloggedout-spec/gravitee-api-management_fork) | owned | unclassified | medium | upstream-comparison |
+| [timerloggedout-spec/hiresettle-backend](https://github.com/timerloggedout-spec/hiresettle-backend) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/homebrew-instantgrep](https://github.com/timerloggedout-spec/homebrew-instantgrep) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/houdini_fork](https://github.com/timerloggedout-spec/houdini_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/hugegraph-computer](https://github.com/timerloggedout-spec/hugegraph-computer) | owned | unclassified | medium | upstream-comparison |
@@ -5179,7 +5188,9 @@ Observed: `2026-10-15T09:10:49.318163Z`
 | [timerloggedout-spec/statedecoded_fork](https://github.com/timerloggedout-spec/statedecoded_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/Stellar_fork](https://github.com/timerloggedout-spec/Stellar_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/StellarLock](https://github.com/timerloggedout-spec/StellarLock) | owned | unclassified | medium | upstream-comparison |
+| [timerloggedout-spec/streampay](https://github.com/timerloggedout-spec/streampay) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/super-productivity_fork](https://github.com/timerloggedout-spec/super-productivity_fork) | owned | unclassified | medium | upstream-comparison |
+| [timerloggedout-spec/support-me](https://github.com/timerloggedout-spec/support-me) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/syde556_fork](https://github.com/timerloggedout-spec/syde556_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/synapse_fork](https://github.com/timerloggedout-spec/synapse_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/synchrony_fork](https://github.com/timerloggedout-spec/synchrony_fork) | owned, starred | unclassified | medium | upstream-comparison |

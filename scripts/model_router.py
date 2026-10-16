@@ -231,24 +231,34 @@ def fetch_openrouter_free_models_cached_with_source():
     cached_models = None
     cached_time = 0
     if os.path.exists(cache_file):
-        try:
-            with open(cache_file, "r", encoding="utf-8") as handle:
-                cache_data = json.load(handle)
-            cached_models = cache_data.get("models")
-            cached_time = cache_data.get("timestamp", 0)
-        except (OSError, ValueError, TypeError, json.JSONDecodeError) as error:
-            sys.stderr.write(f"Warning: OpenRouter cache is unreadable ({error}).\n")
+        if os.path.islink(cache_file):
+            sys.stderr.write("Warning: OpenRouter catalog cache path is a symlink. Rejecting cache read.\n")
+        else:
+            try:
+                with open(cache_file, "r", encoding="utf-8") as handle:
+                    cache_data = json.load(handle)
+                cached_models = cache_data.get("models")
+                cached_time = cache_data.get("timestamp", 0)
+            except (OSError, ValueError, TypeError, json.JSONDecodeError) as error:
+                sys.stderr.write(f"Warning: OpenRouter cache is unreadable ({error}).\n")
     if cached_models is not None and time.time() - cached_time < 3600:
         sys.stderr.write("Using cached OpenRouter free models list.\n")
         return cached_models, "cached"
     models = fetch_openrouter_free_models()
     if models is not None:
-        try:
-            os.makedirs(COUNTER_DIR, exist_ok=True)
-            with open(cache_file, "w", encoding="utf-8") as handle:
-                json.dump({"timestamp": time.time(), "models": models}, handle)
-        except (OSError, TypeError, ValueError) as error:
-            sys.stderr.write(f"Warning: Could not persist OpenRouter catalog ({error}).\n")
+        if os.path.islink(cache_file):
+            sys.stderr.write("Warning: OpenRouter catalog cache path is a symlink. Skipping cache write.\n")
+        else:
+            try:
+                os.makedirs(COUNTER_DIR, exist_ok=True)
+                flags = os.O_WRONLY | os.O_CREAT | os.O_TRUNC
+                if hasattr(os, "O_CLOEXEC"):
+                    flags |= os.O_CLOEXEC
+                fd = os.open(cache_file, flags, 0o600)
+                with os.fdopen(fd, "w", encoding="utf-8") as handle:
+                    json.dump({"timestamp": time.time(), "models": models}, handle)
+            except (OSError, TypeError, ValueError) as error:
+                sys.stderr.write(f"Warning: Could not persist OpenRouter catalog ({error}).\n")
         return models, "live"
     if cached_models is not None:
         sys.stderr.write("Warning: OpenRouter fresh poll failed. Falling back to stale cached models list.\n")
@@ -265,6 +275,9 @@ def get_usage(provider, model):
     key = f"{provider}/{model}" if provider != "gemini" else model
     filename = os.path.join(COUNTER_DIR, key.replace("/", "_") + ".txt")
     if os.path.exists(filename):
+        if os.path.islink(filename):
+            sys.stderr.write(f"Warning: usage counter path {filename} is a symlink. Rejecting counter read.\n")
+            return 0
         try:
             with open(filename, "r", encoding="utf-8") as handle:
                 return int(handle.read().strip())
@@ -278,10 +291,20 @@ def increment_usage(provider, model):
     key = f"{provider}/{model}" if provider != "gemini" else model
     os.makedirs(COUNTER_DIR, exist_ok=True)
     filename = os.path.join(COUNTER_DIR, key.replace("/", "_") + ".txt")
+    if os.path.islink(filename):
+        sys.stderr.write(f"Warning: usage counter path {filename} is a symlink. Skipping counter write.\n")
+        return get_usage(provider, model) + 1
     current = get_usage(provider, model)
     new_usage = current + 1
-    with open(filename, "w", encoding="utf-8") as handle:
-        handle.write(str(new_usage))
+    try:
+        flags = os.O_WRONLY | os.O_CREAT | os.O_TRUNC
+        if hasattr(os, "O_CLOEXEC"):
+            flags |= os.O_CLOEXEC
+        fd = os.open(filename, flags, 0o600)
+        with os.fdopen(fd, "w", encoding="utf-8") as handle:
+            handle.write(str(new_usage))
+    except (OSError, ValueError) as error:
+        sys.stderr.write(f"Warning: Could not write usage counter ({error}).\n")
     return new_usage
 
 

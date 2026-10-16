@@ -117,9 +117,51 @@ def test_usage_counters(tmp_path, monkeypatch):
     new_usage = mr.increment_usage("openrouter", "google/gemma-3-12b-it:free")
     assert new_usage == 1
 
+    counter_file = tmp_path / "openrouter_google_gemma-3-12b-it:free.txt"
+    assert counter_file.exists()
+    if os.name != "nt":
+        assert (counter_file.stat().st_mode & 0o777) == 0o600
+
     # Read again
     usage = mr.get_usage("openrouter", "google/gemma-3-12b-it:free")
     assert usage == 1
+
+
+def test_model_router_symlink_safety(tmp_path, monkeypatch):
+    monkeypatch.setattr(mr, "COUNTER_DIR", str(tmp_path))
+
+    target_file = tmp_path / "target_file.txt"
+    target_file.write_text("100")
+    if os.name != "nt":
+        target_file.chmod(0o644)
+
+    # Symlink for counter file
+    counter_symlink = tmp_path / "openrouter_test-model.txt"
+    counter_symlink.symlink_to(target_file)
+
+    # get_usage on symlink must return 0 and reject read
+    assert mr.get_usage("openrouter", "test-model") == 0
+
+    # increment_usage on symlink must not write to target_file
+    mr.increment_usage("openrouter", "test-model")
+    assert target_file.read_text() == "100"
+
+    # Symlink for catalog cache file
+    cache_symlink = tmp_path / "openrouter_models_cache.json"
+    cache_symlink.symlink_to(target_file)
+
+    mock_response = MagicMock()
+    mock_response.read.return_value = json.dumps({
+        "data": [{"id": "meta-llama/llama-3.3-70b-instruct:free", "pricing": {"prompt": "0", "completion": "0"}}]
+    }).encode("utf-8")
+    mock_response.__enter__.return_value = mock_response
+    monkeypatch.setattr(urllib.request, "urlopen", lambda *args, **kwargs: mock_response)
+
+    models, source = mr.fetch_openrouter_free_models_cached_with_source()
+    assert models == ["meta-llama/llama-3.3-70b-instruct:free"]
+    assert source == "live"
+    # Target file should not have been overwritten with json cache payload
+    assert target_file.read_text() == "100"
 
 
 def test_main_routing_decision_openrouter(tmp_path, monkeypatch, capsys):

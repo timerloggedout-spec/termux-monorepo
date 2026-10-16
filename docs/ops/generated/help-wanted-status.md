@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-16T18:03:55Z UTC · receipts=2454 · foreign_open=35 · tributes=94_
+_Generated 2026-10-16T19:43:07Z UTC · receipts=2454 · foreign_open=36 · tributes=95_
 
 ## Tributes (contributor ledger)
 
+- [FujoJTOP/loment#428](https://github.com/FujoJTOP/loment/pull/428) · state=open · help-wanted: stake + contribute for #9
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -43,10 +44,10 @@ _Generated 2026-10-16T18:03:55Z UTC · receipts=2454 · foreign_open=35 · tribu
 - [Neziahtech/streampay#147](https://github.com/Neziahtech/streampay/pull/147) · state=closed · help-wanted: stake + contribute for #5
 - [nextcloud/spreed#19662](https://github.com/nextcloud/spreed/pull/19662) · state=closed · help-wanted: stake + contribute for #19498
 - [Dfunder/stellarAid-api#968](https://github.com/Dfunder/stellarAid-api/pull/968) · state=closed · help-wanted: stake + contribute for #918
-- [Wayfare-labs/wayfare#731](https://github.com/Wayfare-labs/wayfare/pull/731) · state=closed · help-wanted: stake + contribute for #730
 
 ## Foreign open PRs
 
+- [FujoJTOP/loment#428](https://github.com/FujoJTOP/loment/pull/428) — help-wanted: stake + contribute for #9
 - [Local-Settle/local-settle-backend#127](https://github.com/Local-Settle/local-settle-backend/pull/127) — help-wanted: stake + contribute for #2
 - [ssupportme/support-me#316](https://github.com/ssupportme/support-me/pull/316) — help-wanted: stake + contribute for #301
 - [TrustHire/hiresettle-backend#518](https://github.com/TrustHire/hiresettle-backend/pull/518) — help-wanted: stake + contribute for #517

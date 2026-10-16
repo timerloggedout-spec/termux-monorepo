@@ -1,6 +1,6 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-16T07:09:57Z UTC · receipts=2384 · foreign_open=36 · tributes=94_
+_Generated 2026-10-16T12:22:27Z UTC · receipts=2384 · foreign_open=35 · tributes=93_
 
 ## Tributes (contributor ledger)
 
@@ -38,7 +38,7 @@ _Generated 2026-10-16T07:09:57Z UTC · receipts=2384 · foreign_open=36 · tribu
 - [use-assay/Assay#348](https://github.com/use-assay/Assay/pull/348) · state=open · help-wanted: stake + contribute for #343
 - [ShippedLabs/soroban-upgrade-safeguard#781](https://github.com/ShippedLabs/soroban-upgrade-safeguard/pull/781) · state=open · help-wanted: stake + contribute for #764
 - [TrustHire/hiresettle-backend#518](https://github.com/TrustHire/hiresettle-backend/pull/518) · state=open · help-wanted: stake + contribute for #517
-- [Neziahtech/streampay#147](https://github.com/Neziahtech/streampay/pull/147) · state=open · help-wanted: stake + contribute for #5
+- [Neziahtech/streampay#147](https://github.com/Neziahtech/streampay/pull/147) · state=closed · help-wanted: stake + contribute for #5
 - [ssupportme/support-me#316](https://github.com/ssupportme/support-me/pull/316) · state=open · help-wanted: stake + contribute for #301
 - [nextcloud/spreed#19662](https://github.com/nextcloud/spreed/pull/19662) · state=closed · help-wanted: stake + contribute for #19498
 - [Dfunder/stellarAid-api#968](https://github.com/Dfunder/stellarAid-api/pull/968) · state=closed · help-wanted: stake + contribute for #918
@@ -48,7 +48,6 @@ _Generated 2026-10-16T07:09:57Z UTC · receipts=2384 · foreign_open=36 · tribu
 ## Foreign open PRs
 
 - [ssupportme/support-me#316](https://github.com/ssupportme/support-me/pull/316) — help-wanted: stake + contribute for #301
-- [Neziahtech/streampay#147](https://github.com/Neziahtech/streampay/pull/147) — help-wanted: stake + contribute for #5
 - [TrustHire/hiresettle-backend#518](https://github.com/TrustHire/hiresettle-backend/pull/518) — help-wanted: stake + contribute for #517
 - [ShippedLabs/soroban-upgrade-safeguard#781](https://github.com/ShippedLabs/soroban-upgrade-safeguard/pull/781) — help-wanted: stake + contribute for #764
 - [use-assay/Assay#348](https://github.com/use-assay/Assay/pull/348) — help-wanted: stake + contribute for #343

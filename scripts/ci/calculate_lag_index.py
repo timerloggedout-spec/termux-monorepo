@@ -55,15 +55,19 @@ def github_api_request(url: str, token: str | None):
         return None
 
 def parse_iso8601(ts_str: str | None):
+    """Parse ISO 8601 timestamp string into timezone-naive datetime object.
+
+    Bolt Optimization: Use direct datetime.fromisoformat which handles 'Z' and offset formats natively
+    in Python 3.11+, avoiding string allocations and slow strptime fallback.
+    """
     if not ts_str:
         return None
     try:
-        clean_ts = ts_str.replace("Z", "+00:00") if ts_str.endswith("Z") else ts_str
-        dt = datetime.fromisoformat(clean_ts)
+        dt = datetime.fromisoformat(ts_str)
         return dt.replace(tzinfo=None) if dt.tzinfo else dt
     except ValueError:
         try:
-            return datetime.strptime(ts_str.replace("Z", ""), "%Y-%m-%dT%H:%M:%S")
+            return datetime.strptime(ts_str.rstrip("Z"), "%Y-%m-%dT%H:%M:%S")
         except ValueError:
             return None
 

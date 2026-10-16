@@ -41,7 +41,11 @@ INVALID_AGENT_STATES = frozenset({"HOLD", "WAIT", "OBSERVE"})
 
 
 def evaluate_facts(facts: list[dict[str, Any]]) -> dict[str, Any]:
-    """Deterministic fact evaluation. Only facts can hard-block."""
+    """Deterministic fact evaluation. Only facts can hard-block.
+
+    Bolt Optimization: Use single-pass if/elif branches for kind dispatch to avoid
+    redundant f.get() evaluations and unnecessary control flow jumps.
+    """
     blocks: list[dict[str, Any]] = []
     positives: list[dict[str, Any]] = []
     for f in facts:
@@ -53,8 +57,7 @@ def evaluate_facts(facts: list[dict[str, Any]]) -> dict[str, Any]:
         if kind == "file_changed":
             paths = f.get("paths") or f.get("detail") or []
             positives.append({"kind": kind, "detail": paths})
-            continue
-        if kind == "command_exit_nonzero":
+        elif kind == "command_exit_nonzero":
             if int(f.get("exit_code") or 0) != 0:
                 blocks.append({"kind": kind, "detail": f.get("detail") or f.get("cmd")})
         elif kind == "test_failed":
@@ -79,7 +82,11 @@ def evaluate_facts(facts: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def mock_noul_advice(claim: str, state: dict[str, Any] | None = None) -> dict[str, Any]:
-    """Offline stand-in for engine noul on 'is completion claim supported?'."""
+    """Offline stand-in for engine noul on 'is completion claim supported?'.
+
+    Bolt Optimization: Short-circuit evidence evaluation loop immediately upon
+    encountering the first adverse fact (test failure, secret detected, or nonzero exit code).
+    """
     evidence = (state or {}).get("evidence") or []
     adverse = False
     has_positive = False
@@ -87,14 +94,15 @@ def mock_noul_advice(claim: str, state: dict[str, Any] | None = None) -> dict[st
         if not e:
             continue
         k = e.get("kind")
-        if k == "test_failed" or k == "secret_detected" or (
-            k == "command_exit_nonzero" and int(e.get("exit_code") or 0) != 0
-        ):
+        if k == "test_failed" or k == "secret_detected":
             adverse = True
             break
-        if k == "file_changed" or (
-            k == "command_exit_nonzero" and int(e.get("exit_code") or 0) == 0
-        ):
+        elif k == "command_exit_nonzero":
+            if int(e.get("exit_code") or 0) != 0:
+                adverse = True
+                break
+            has_positive = True
+        elif k == "file_changed":
             has_positive = True
 
     supported = has_positive and not adverse

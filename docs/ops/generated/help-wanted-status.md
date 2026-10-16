@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-16T01:15:49Z UTC · receipts=2348 · foreign_open=35 · tributes=93_
+_Generated 2026-10-16T05:00:19Z UTC · receipts=2348 · foreign_open=36 · tributes=94_
 
 ## Tributes (contributor ledger)
 
+- [ssupportme/support-me#316](https://github.com/ssupportme/support-me/pull/316) · state=open · help-wanted: stake + contribute for #301
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -43,10 +44,10 @@ _Generated 2026-10-16T01:15:49Z UTC · receipts=2348 · foreign_open=35 · tribu
 - [Wayfare-labs/wayfare#731](https://github.com/Wayfare-labs/wayfare/pull/731) · state=closed · help-wanted: stake + contribute for #730
 - [Nano-Collective/nanocoder#1749](https://github.com/Nano-Collective/nanocoder/pull/1749) · state=closed · help-wanted: stake + contribute for #1748
 - [cubrid-lab/cubrid-mcp-server#334](https://github.com/cubrid-lab/cubrid-mcp-server/pull/334) · state=closed · help-wanted: stake + contribute for #333
-- [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) · state=closed · help-wanted: stake + contribute for #225
 
 ## Foreign open PRs
 
+- [ssupportme/support-me#316](https://github.com/ssupportme/support-me/pull/316) — help-wanted: stake + contribute for #301
 - [Neziahtech/streampay#147](https://github.com/Neziahtech/streampay/pull/147) — help-wanted: stake + contribute for #5
 - [TrustHire/hiresettle-backend#518](https://github.com/TrustHire/hiresettle-backend/pull/518) — help-wanted: stake + contribute for #517
 - [ShippedLabs/soroban-upgrade-safeguard#781](https://github.com/ShippedLabs/soroban-upgrade-safeguard/pull/781) — help-wanted: stake + contribute for #764

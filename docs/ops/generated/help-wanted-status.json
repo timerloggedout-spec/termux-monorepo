@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-16T01:15:49Z",
+  "generated_at": "2026-10-16T05:00:19Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
   "receipts": 2348,
@@ -16,6 +16,15 @@
     "ok": 2348
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/ssupportme/support-me/pull/316",
+      "title": "help-wanted: stake + contribute for #301",
+      "number": 316,
+      "repo": "ssupportme/support-me",
+      "state": "open",
+      "updated_at": "2026-10-16T05:00:09Z",
+      "tribute": true
+    },
     {
       "html_url": "https://github.com/Neziahtech/streampay/pull/147",
       "title": "help-wanted: stake + contribute for #5",
@@ -67,7 +76,7 @@
       "number": 2056,
       "repo": "MyFanss/MyFans",
       "state": "open",
-      "updated_at": "2026-10-13T02:15:07Z",
+      "updated_at": "2026-10-16T05:00:15Z",
       "tribute": true
     },
     {
@@ -332,8 +341,21 @@
       "tribute": true
     }
   ],
-  "foreign_open_count": 35,
+  "foreign_open_count": 36,
   "tributes": [
+    {
+      "pr_url": "https://github.com/ssupportme/support-me/pull/316",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-10-16T05:00:09Z",
+      "providers": [],
+      "repo": "ssupportme/support-me",
+      "number": 316,
+      "title": "help-wanted: stake + contribute for #301",
+      "state": "open"
+    },
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
@@ -3785,7 +3807,7 @@
       "providers": []
     }
   ],
-  "tribute_count": 93,
+  "tribute_count": 94,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -25507,7 +25529,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "243e349d562ed467a8ccaf726840bb2090eee551",
+    "source_sha": "27ae45d5b0207567796d2a378f3d0fa379741797",
     "source_ref": "master",
     "history_complete": false,
     "history_coverage": "lane-local-complete; repository-wide historical accountability requires sweep-accountability backfill",
@@ -25541,12 +25563,12 @@
   },
   "evolution": [
     {
-      "sha": "243e349d562ed467a8ccaf726840bb2090eee551",
-      "short_sha": "243e349d562e",
-      "date": "2026-10-16T00:24:52Z",
+      "sha": "27ae45d5b0207567796d2a378f3d0fa379741797",
+      "short_sha": "27ae45d5b020",
+      "date": "2026-10-16T04:25:40Z",
       "author": "github-actions[bot]",
-      "subject": "ops(help-wanted): live status refresh 2026-10-16T00:24Z",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/243e349d562ed467a8ccaf726840bb2090eee551"
+      "subject": "ops(lane-matrix): refresh generated status from recursive sweep",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/27ae45d5b0207567796d2a378f3d0fa379741797"
     }
   ],
   "pipeline": [

@@ -123,3 +123,10 @@ Executing 32 sequential `.sub()` regex passes unconditionally in `compress()` / 
 
 **Action:**
 Use C-level substring guards (`if phrase.lower() in text_lower:`) before running sequential regex phrase substitutions, pre-compute reverse pair tuples at module scope, and avoid pre-calling `.search()` prior to `.sub()` on document transformations.
+
+## 2026-10-17 - Non-Canonical Variant Pre-Filtering and Path Extension Fast-Path Guarding
+**Learning:**
+In PhaseCodec normalization (`from_1337speak`), building a Trie-structured regex over all variants (including invariant canonical tokens like `h4x`, `pr0b3`, `l00p`, `gr1m01r3`) forces Python's C-regex engine to match and execute callback frames on tokens that map to themselves (`h4x` -> `h4x`). Pre-filtering the variant index to `NON_CANONICAL_INDEX` (`where variant.lower() != canonical.lower()`) and pre-compiling `NON_CANONICAL_REGEX` skips match callbacks on canonical tokens entirely, reducing `from_1337speak()` execution latency from ~0.93ms to ~0.78ms per 1,000 invocations (~16% speedup). Additionally, in line translation (`translate_line`), guarding path protection with `PATH_EXTENSIONS` tuple check when `.` is present prevents running full `PATH_REGEX.sub` evaluations on plain prose lines ending with periods.
+
+**Action:**
+Pre-filter variant dictionaries to include only non-canonical entries for decoding pipelines and guard complex regex operations with specific extension tuple pre-checks when periods are detected in line translation.

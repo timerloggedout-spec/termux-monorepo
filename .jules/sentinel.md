@@ -42,3 +42,8 @@
 **Vulnerability:** High-level file creation (`open(path, "w")`) creates session cache files with default process umask permissions (`0o644`/`0o666`), briefly leaving sensitive message history world/group-readable before post-write `chmod(0o600)` executes.
 **Learning:** Standard `open()` does not allow specifying low-level file creation mode bits directly, resulting in a race window where created files inherit default umask permissions before explicit `chmod` calls.
 **Prevention:** Use `fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)` wrapped in `os.fdopen()` to guarantee atomic `0o600` permissions from the moment of file creation.
+
+## 2026-10-13 - Path Traversal and Symlink Validation in Hub Job CLI and State Stores
+**Vulnerability:** In `hub_mcp/cli.py` and `hub_mcp/runner.py`, command-line job envelope input files (`args.job`) and state directory arguments (`args.state_directory`) were parsed and read/written without path traversal (`..`) or symlink (`is_symlink()`) checks, allowing arbitrary file reading or local permission/file mutation outside intended worker boundaries.
+**Learning:** CLI entrypoints and payload executors accepting filesystem arguments must explicitly validate path components for traversal and verify symlinks on both target files and state parent directories before attempting file reads, directory creation, or permission adjustments.
+**Prevention:** Check `".." in path.parts` and `path.is_symlink()` / `path.parent.is_symlink()` prior to reading input JSON payloads or constructing replay stores.

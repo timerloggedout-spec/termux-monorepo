@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import concurrent.futures
+import functools
 import json
 import os
 import pathlib
@@ -139,8 +140,10 @@ def main() -> None:
     run_targets = [r.get("id") for r in runs if r.get("id") is not None]
 
     data["entities"]["reviews"] = {}
+    # Use functools.partial to avoid creating lambda function allocation frames in pool iteration
+    collect_reviews_fn = functools.partial(collect_reviews, repo, token, args.nested_pages)
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
-        for _, number, rows, err in pool.map(lambda num: collect_reviews(repo, token, args.nested_pages, num), review_targets):
+        for _, number, rows, err in pool.map(collect_reviews_fn, review_targets):
             data["entities"]["reviews"][str(number)] = rows
             if err:
                 errors.append({"entity": f"reviews:{number}", "error": err})
@@ -148,8 +151,9 @@ def main() -> None:
     data["entities"]["run_jobs"] = {}
     data["entities"]["run_artifacts"] = {}
     data["entities"]["job_steps"] = {}
+    collect_run_detail_fn = functools.partial(collect_run_detail, repo, token, args.nested_pages)
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
-        for run_id, jobs, artifacts, steps, local_errors in pool.map(lambda rid: collect_run_detail(repo, token, args.nested_pages, rid), run_targets):
+        for run_id, jobs, artifacts, steps, local_errors in pool.map(collect_run_detail_fn, run_targets):
             data["entities"]["run_jobs"][str(run_id)] = jobs
             data["entities"]["run_artifacts"][str(run_id)] = artifacts
             for job_id, rows in steps.items():
@@ -169,9 +173,12 @@ def main() -> None:
             edges.append({"type": "pr_review", "pr": number, "review_id": review.get("id"), "commit_id": review.get("commit_id"), "state": review.get("state"), "submitted_at": review.get("submitted_at")})
 
     for comment in data["entities"].get("issue_comments", []):
-        edges.append({"type": "issue_comment", "comment_id": comment.get("id"), "issue_or_pr": comment.get("issue_url", "").rstrip("/").split("/")[-1], "updated_at": comment.get("updated_at")})
+        # Fast-path URL parsing: rsplit('/', 1) avoids allocating intermediate path segment lists
+        issue_url = comment.get("issue_url") or ""
+        edges.append({"type": "issue_comment", "comment_id": comment.get("id"), "issue_or_pr": issue_url.rstrip("/").rsplit("/", 1)[-1], "updated_at": comment.get("updated_at")})
     for comment in data["entities"].get("review_comments", []):
-        edges.append({"type": "review_comment", "comment_id": comment.get("id"), "pr": comment.get("pull_request_url", "").rstrip("/").split("/")[-1], "commit_id": comment.get("commit_id"), "updated_at": comment.get("updated_at")})
+        pr_url = comment.get("pull_request_url") or ""
+        edges.append({"type": "review_comment", "comment_id": comment.get("id"), "pr": pr_url.rstrip("/").rsplit("/", 1)[-1], "commit_id": comment.get("commit_id"), "updated_at": comment.get("updated_at")})
 
     for run in runs:
         run_id = run.get("id")
@@ -185,7 +192,11 @@ def main() -> None:
             edges.append({"type": "run_artifact", "run_id": run_id, "artifact_id": artifact.get("id"), "name": artifact.get("name"), "size_in_bytes": artifact.get("size_in_bytes"), "expired": artifact.get("expired")})
 
     for commit in data["entities"].get("commits", []):
-        edges.append({"type": "commit", "sha": commit.get("sha"), "message": (commit.get("commit") or {}).get("message", "").splitlines()[0], "author": (commit.get("author") or {}).get("login")})
+        # Extract first line safely handling CRLF line endings without IndexError on empty messages
+        msg = (commit.get("commit") or {}).get("message") or ""
+        lines = msg.splitlines()
+        first_line = lines[0] if lines else ""
+        edges.append({"type": "commit", "sha": commit.get("sha"), "message": first_line, "author": (commit.get("author") or {}).get("login")})
 
     data["edges"] = edges
     data["errors"] = errors

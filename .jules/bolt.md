@@ -72,3 +72,10 @@ In Bayesian routing and Monte Carlo sampling engines (`scripts/bayesian_routing.
 
 **Action:**
 Accumulate local scalar variables in tight observation iteration loops instead of instantiating immutable dataclasses per iteration, avoid `dataclasses.asdict` on hot paths, and hoist random generator method references out of Monte Carlo sampling loops.
+
+## 2026-10-13 - Single-Pass Submodule Gitlink Lookup Table in Provenance Auditing
+**Learning:**
+In upstream and fork provenance audit tools (`scripts/ci/rindig_provenance_audit.py`), executing per-repository `git ls-tree HEAD -- <path>` CLI subprocesses inside iteration loops creates significant process creation overhead ($O(N)$ subprocess spawns). Running a single `git ls-tree -r HEAD` pass once to populate an in-memory path-to-SHA lookup dictionary reduces subprocess spawns to $O(1)$ and speeds up workspace auditing.
+
+**Action:**
+Avoid spawning git CLI subprocesses inside loops over files or submodules; run a single recursive `git ls-tree` scan upfront and query the resulting hash map.

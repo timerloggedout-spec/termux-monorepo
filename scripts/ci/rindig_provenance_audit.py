@@ -47,6 +47,21 @@ def compare_cross_repo(fork, upstream, branch):
     except (urllib.error.HTTPError, KeyError):
         return {"supported": False, "reason": "cross-repository compare unavailable"}
 
+def load_all_gitlinks(repo_root):
+    """Load all gitlinks in a single O(1) pass to eliminate per-repository subprocess spawns."""
+    gitlinks = {}
+    try:
+        out = subprocess.check_output(["git", "ls-tree", "-r", "HEAD"], cwd=repo_root, text=True)
+        for line in out.splitlines():
+            subparts = line.strip().split("\t", 1)
+            if len(subparts) == 2:
+                meta = subparts[0].split()
+                if len(meta) >= 3 and meta[0] == "160000":
+                    gitlinks[subparts[1]] = meta[2]
+    except Exception:
+        pass
+    return gitlinks
+
 def gitlink(path, repo_root):
     try:
         out = subprocess.check_output(["git","ls-tree","HEAD","--",path], cwd=repo_root, text=True).strip()
@@ -63,13 +78,14 @@ def main():
     ap.add_argument("--repo-root",type=Path,default=Path("."))
     args=ap.parse_args()
     reg=json.loads(args.registry.read_text())
+    gitlinks = load_all_gitlinks(args.repo_root)
     rows=[]
     for e in reg["repositories"]:
         if e.get("integration") != "submodule" or not e.get("owned_fork"):
             continue
         upstream=e["repository"]; fork=e["owned_fork"]; branch=e.get("default_branch","main")
         up=head(upstream,branch); fk=head(fork,branch)
-        pinned=gitlink(e["path"],args.repo_root)
+        pinned=gitlinks.get(e["path"]) or gitlink(e["path"],args.repo_root)
         cmp=compare_cross_repo(fork,upstream,branch)
         state=classify_state(pinned, fk, up)
         rows.append({"id":e["id"],"upstream":upstream,"fork":fork,"branch":branch,

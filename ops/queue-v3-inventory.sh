@@ -11,7 +11,7 @@ for attempt in 1 2 3 4; do
     list_ok=1
     break
   fi
-  echo "merge-queue-v3 list attempt ${attempt} failed"
+  echo "merge-queue-v3 list attempt ${attempt} failed; retrying with backoff"
   sleep $((attempt * 5))
 done
 if [[ "$list_ok" != "1" ]]; then
@@ -89,3 +89,4 @@ if [[ ! -s /tmp/merge-queue/candidates.ndjson ]]; then echo '[]' > /tmp/merge-qu
   echo '|---:|---|---|---|---:|---|---|'
   jq -r '.[] | "| #\(.number) | \(.disposition) | \(.repo_gate) | \(.termux_smoke) | \(.behind // "") | \(.head_sha[0:12]) | \(.reason) |"' /tmp/merge-queue/merge-promotion-queue.json
 } >> "$GITHUB_STEP_SUMMARY"
+# Enhanced 2026-10-10: added explicit retry logging for inventory list failures (historical run 38049030150 class)

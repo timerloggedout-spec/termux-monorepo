@@ -1,6 +1,6 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-17T19:21:58Z UTC · receipts=2668 · foreign_open=38 · tributes=98_
+_Generated 2026-10-17T22:14:26Z UTC · receipts=2668 · foreign_open=37 · tributes=98_
 
 ## Tributes (contributor ledger)
 
@@ -36,7 +36,7 @@ _Generated 2026-10-17T19:21:58Z UTC · receipts=2668 · foreign_open=38 · tribu
 - [ciaren-labs/Ciaren#234](https://github.com/ciaren-labs/Ciaren/pull/234) · state=open · help-wanted: stake + contribute for #96
 - [finos/fluxnova-bpm-platform#352](https://github.com/finos/fluxnova-bpm-platform/pull/352) · state=open · help-wanted: stake + contribute for #152
 - [ShippedLabs/soroban-upgrade-safeguard#781](https://github.com/ShippedLabs/soroban-upgrade-safeguard/pull/781) · state=open · help-wanted: stake + contribute for #764
-- [TrustHire/hiresettle-backend#518](https://github.com/TrustHire/hiresettle-backend/pull/518) · state=open · help-wanted: stake + contribute for #517
+- [TrustHire/hiresettle-backend#518](https://github.com/TrustHire/hiresettle-backend/pull/518) · state=closed · help-wanted: stake + contribute for #517
 - [Local-Settle/local-settle-backend#127](https://github.com/Local-Settle/local-settle-backend/pull/127) · state=open · help-wanted: stake + contribute for #2
 - [stellar-compliance-kit/compliance-primitives#656](https://github.com/stellar-compliance-kit/compliance-primitives/pull/656) · state=open · help-wanted: stake + contribute for #180
 - [Health-watchers/health_watchers#1698](https://github.com/Health-watchers/health_watchers/pull/1698) · state=open · help-wanted: stake + contribute for #1519
@@ -53,7 +53,6 @@ _Generated 2026-10-17T19:21:58Z UTC · receipts=2668 · foreign_open=38 · tribu
 - [Health-watchers/health_watchers#1698](https://github.com/Health-watchers/health_watchers/pull/1698) — help-wanted: stake + contribute for #1519
 - [stellar-compliance-kit/compliance-primitives#656](https://github.com/stellar-compliance-kit/compliance-primitives/pull/656) — help-wanted: stake + contribute for #180
 - [Local-Settle/local-settle-backend#127](https://github.com/Local-Settle/local-settle-backend/pull/127) — help-wanted: stake + contribute for #2
-- [TrustHire/hiresettle-backend#518](https://github.com/TrustHire/hiresettle-backend/pull/518) — help-wanted: stake + contribute for #517
 - [ShippedLabs/soroban-upgrade-safeguard#781](https://github.com/ShippedLabs/soroban-upgrade-safeguard/pull/781) — help-wanted: stake + contribute for #764
 - [finos/fluxnova-bpm-platform#352](https://github.com/finos/fluxnova-bpm-platform/pull/352) — help-wanted: stake + contribute for #152
 - [ciaren-labs/Ciaren#234](https://github.com/ciaren-labs/Ciaren/pull/234) — help-wanted: stake + contribute for #96

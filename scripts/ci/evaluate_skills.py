@@ -17,6 +17,16 @@ SECRET_PATTERNS = [
     re.compile(r"(?i)(?:api[_-]?key|token|password|secret)\s*[:=]\s*['\"][^'\"]{12,}['\"]"),
 ]
 
+# Bolt optimization: Pre-compile evaluation regexes at module scope to eliminate per-evaluation re-compilation.
+PROCEDURE_RE = re.compile(r"^#{1,3} .*?(?:workflow|procedure|steps|operating|process)", re.I | re.M)
+SAFETY_RE = re.compile(r"safe|safety|secret|credential|permission|do not|never", re.I)
+EVIDENCE_RE = re.compile(r"verify|validate|evidence|test|closeout", re.I)
+INTEGRATION_RE = re.compile(
+    r"^#{1,3} .*?(?:reference|maintenance|related)|\bReferences\b|\bmaintenance\b|\brelated\b",
+    re.I | re.M,
+)
+FENCES_RE = re.compile(r"^```", re.M)
+
 
 def parse_frontmatter(text: str):
     if not text.startswith("---\n"):
@@ -60,11 +70,12 @@ def evaluate_text(text: str, identity: str, source_kind: str, packaging_ok: bool
 
     identity_ok = bool(fm.get("name", "").strip() and fm.get("description", "").strip())
     body = text.split("---", 2)[-1].strip()
-    procedure_ok = bool(re.search(r"^#{1,3} .*?(?:workflow|procedure|steps|operating|process)", text, re.I | re.M))
-    safety_ok = bool(re.search(r"safe|safety|secret|credential|permission|do not|never", text, re.I))
-    evidence_ok = bool(re.search(r"verify|validate|evidence|test|closeout", text, re.I))
-    integration_ok = bool(re.search(r"^#{1,3} .*?(?:reference|maintenance|related)|\bReferences\b|\bmaintenance\b|\brelated\b", text, re.I | re.M))
-    fences_ok = len(re.findall(r"^```", text, re.MULTILINE)) % 2 == 0
+    procedure_ok = bool(PROCEDURE_RE.search(text))
+    safety_ok = bool(SAFETY_RE.search(text))
+    evidence_ok = bool(EVIDENCE_RE.search(text))
+    integration_ok = bool(INTEGRATION_RE.search(text))
+    # Bolt optimization: Use generator count expression to avoid allocating list of matched backtick strings
+    fences_ok = sum(1 for _ in FENCES_RE.finditer(text)) % 2 == 0
     secrets_ok = not any(p.search(text) for p in SECRET_PATTERNS)
 
     checks = {

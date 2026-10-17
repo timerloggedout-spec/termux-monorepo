@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-17T15:35:01Z UTC · receipts=2631 · foreign_open=36 · tributes=96_
+_Generated 2026-10-17T15:57:10Z UTC · receipts=2631 · foreign_open=37 · tributes=97_
 
 ## Tributes (contributor ledger)
 
+- [Nodal-stellar/Nodal-AI#857](https://github.com/Nodal-stellar/Nodal-AI/pull/857) · state=open · help-wanted: stake + contribute for #811
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -43,10 +44,10 @@ _Generated 2026-10-17T15:35:01Z UTC · receipts=2631 · foreign_open=36 · tribu
 - [ssupportme/support-me#316](https://github.com/ssupportme/support-me/pull/316) · state=closed · help-wanted: stake + contribute for #301
 - [use-assay/Assay#348](https://github.com/use-assay/Assay/pull/348) · state=closed · help-wanted: stake + contribute for #343
 - [Loment-Lang/loment#428](https://github.com/Loment-Lang/loment/pull/428) · state=closed · help-wanted: stake + contribute for #9
-- [MyFanss/MyFans#2056](https://github.com/MyFanss/MyFans/pull/2056) · state=closed · help-wanted: stake + contribute for #2032
 
 ## Foreign open PRs
 
+- [Nodal-stellar/Nodal-AI#857](https://github.com/Nodal-stellar/Nodal-AI/pull/857) — help-wanted: stake + contribute for #811
 - [Nodal-stellar/Nodal-AI#853](https://github.com/Nodal-stellar/Nodal-AI/pull/853) — help-wanted: stake + contribute for #769
 - [Health-watchers/health_watchers#1698](https://github.com/Health-watchers/health_watchers/pull/1698) — help-wanted: stake + contribute for #1519
 - [stellar-compliance-kit/compliance-primitives#656](https://github.com/stellar-compliance-kit/compliance-primitives/pull/656) — help-wanted: stake + contribute for #180

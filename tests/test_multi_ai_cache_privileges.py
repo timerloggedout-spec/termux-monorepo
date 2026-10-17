@@ -3,14 +3,13 @@ import sys
 from pathlib import Path
 import pytest
 
+import importlib.util
+
 def _get_mc():
-    try:
-        import multi_ai_cli.core.cache as mc
-        return mc
-    except ModuleNotFoundError:
-        sys.path.insert(0, os.path.abspath("multi-ai-cli"))
-        import core.cache as mc
-        return mc
+    spec = importlib.util.spec_from_file_location("multi_ai_core_cache", os.path.abspath("multi-ai-cli/core/cache.py"))
+    mc = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mc)
+    return mc
 
 def test_multi_ai_cache_privileges_enforcement(tmp_path, monkeypatch):
     test_cache_dir = tmp_path / ".multi-ai-cache"

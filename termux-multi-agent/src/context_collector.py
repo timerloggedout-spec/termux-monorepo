@@ -104,6 +104,8 @@ class AutomatedContextCollector:
 
     def generate_ast_skeleton(self, file_relative_path):
         abs_path = self._validate_path(file_relative_path)
+        if not shutil.which("ast-grep"):
+            return f"// Unable to trace AST module boundary map for {file_relative_path}"
         ext = os.path.splitext(file_relative_path)[1]
         if ext == '.py':
             pattern = "class $NAME: $$$"

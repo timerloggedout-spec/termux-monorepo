@@ -3,10 +3,13 @@ import json, os
 from pathlib import Path
 
 VAULT_DIR = Path.home() / '.synthegration'
-VAULT_DIR.mkdir(exist_ok=True)
+if not VAULT_DIR.is_symlink():
+    VAULT_DIR.mkdir(mode=0o700, parents=True, exist_ok=True)
 VAULT = VAULT_DIR / 'vault.json'
 
 def _load_json(path):
+    if path.parent.is_symlink():
+        raise ValueError(f"Symlink vault directory rejected for security: {path.parent}")
     if path.exists():
         if path.is_symlink():
             raise ValueError(f"Symlink vault path rejected for security: {path}")
@@ -59,9 +62,13 @@ def get_token(account='primary'):
         raise ValueError(f"Unknown account: {account}")
 
     if token:
+        if VAULT_DIR.is_symlink():
+            raise ValueError(f"Symlink vault directory rejected for security: {VAULT_DIR}")
         if VAULT.is_symlink():
             raise ValueError(f"Symlink vault path rejected for security: {VAULT}")
         VAULT_DIR.mkdir(mode=0o700, parents=True, exist_ok=True)
+        if not VAULT_DIR.is_symlink():
+            os.chmod(VAULT_DIR, 0o700)
         # Save to vault
         current = _load_json(VAULT) or {}
         current[account] = token

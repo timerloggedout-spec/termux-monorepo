@@ -66,19 +66,26 @@ class PerformanceLedger:
     def __init__(self, path: Path | None = None) -> None:
         self.path = path
         self._samples: list[dict[str, Any]] = []
+        # Performance optimization: track role/model counts for O(1) _n_for lookups
+        self._counts: dict[tuple[str, str], int] = {}
         if path and path.is_file():
             for line in path.read_text(encoding="utf-8").splitlines():
                 line = line.strip()
                 if line:
-                    self._samples.append(json.loads(line))
+                    rec = json.loads(line)
+                    self._samples.append(rec)
+                    r, m = rec.get("role"), rec.get("model_id")
+                    if r and m:
+                        self._counts[(r, m)] = self._counts.get((r, m), 0) + 1
 
     def _n_for(self, role: str, model_id: str) -> int:
-        return sum(1 for s in self._samples if s.get("role") == role and s.get("model_id") == model_id)
+        return self._counts.get((role, model_id), 0)
 
     def append(self, sample: LedgerSample) -> dict[str, Any]:
         n = self._n_for(sample.role, sample.model_id)
         rec = sample.to_record(n_prior=n)
         self._samples.append(rec)
+        self._counts[(sample.role, sample.model_id)] = n + 1
         if self.path:
             self.path.parent.mkdir(parents=True, exist_ok=True)
             with self.path.open("a", encoding="utf-8") as f:

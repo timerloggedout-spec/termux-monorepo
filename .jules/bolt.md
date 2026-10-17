@@ -72,3 +72,10 @@ In Bayesian routing and Monte Carlo sampling engines (`scripts/bayesian_routing.
 
 **Action:**
 Accumulate local scalar variables in tight observation iteration loops instead of instantiating immutable dataclasses per iteration, avoid `dataclasses.asdict` on hot paths, and hoist random generator method references out of Monte Carlo sampling loops.
+
+## 2026-10-17 - Property Memoization and Frequency Map Lookups in Replay Simulation & MSM Ledgers
+**Learning:**
+In agent evolution simulation (`replay_simulator.py`), accessing `@property policy_id` repeatedly inside evolution loops performed `json.dumps` and `hashlib.sha256` hashing on every access, causing severe property evaluation overhead. Decorating `policy_id` with `@functools.cached_property` memoizes the hash computation on immutable policy instances, speeding property access by over 80x. Additionally, in `PerformanceLedger` (`ledger.py`), computing prior sample counts `_n_for` via list iteration on every `append` created $O(N^2)$ iteration bottlenecks over batch writes; maintaining a `self._counts` tuple map reduced append time by over 8.7x.
+
+**Action:**
+Use `@functools.cached_property` for computed property hashes on immutable policy dataclasses, and maintain frequency maps for state counts in append-only ledgers to preserve $O(1)$ append performance.

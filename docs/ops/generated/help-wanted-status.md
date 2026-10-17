@@ -1,10 +1,9 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-17T17:05:31Z UTC · receipts=2631 · foreign_open=37 · tributes=97_
+_Generated 2026-10-17T18:30:57Z UTC · receipts=2668 · foreign_open=37 · tributes=97_
 
 ## Tributes (contributor ledger)
 
-- [Nodal-stellar/Nodal-AI#857](https://github.com/Nodal-stellar/Nodal-AI/pull/857) · state=open · help-wanted: stake + contribute for #811
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -41,6 +40,7 @@ _Generated 2026-10-17T17:05:31Z UTC · receipts=2631 · foreign_open=37 · tribu
 - [stellar-compliance-kit/compliance-primitives#656](https://github.com/stellar-compliance-kit/compliance-primitives/pull/656) · state=open · help-wanted: stake + contribute for #180
 - [Health-watchers/health_watchers#1698](https://github.com/Health-watchers/health_watchers/pull/1698) · state=open · help-wanted: stake + contribute for #1519
 - [Nodal-stellar/Nodal-AI#853](https://github.com/Nodal-stellar/Nodal-AI/pull/853) · state=open · help-wanted: stake + contribute for #769
+- [Nodal-stellar/Nodal-AI#857](https://github.com/Nodal-stellar/Nodal-AI/pull/857) · state=open · help-wanted: stake + contribute for #811
 - [ssupportme/support-me#316](https://github.com/ssupportme/support-me/pull/316) · state=closed · help-wanted: stake + contribute for #301
 - [use-assay/Assay#348](https://github.com/use-assay/Assay/pull/348) · state=closed · help-wanted: stake + contribute for #343
 - [Loment-Lang/loment#428](https://github.com/Loment-Lang/loment/pull/428) · state=closed · help-wanted: stake + contribute for #9
@@ -85,6 +85,6 @@ _Generated 2026-10-17T17:05:31Z UTC · receipts=2631 · foreign_open=37 · tribu
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=2631 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 2429, 'followup_reengage': 50, 'followup_stale_nudge': 102, 'followup_changes': 2}`
+## Outcomes · ok=2668 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 2466, 'followup_reengage': 50, 'followup_stale_nudge': 102, 'followup_changes': 2}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

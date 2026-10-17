@@ -2,7 +2,7 @@
 
 **Status:** COMPLETE & CONSOLIDATED
 **Auditor:** Jules (Automated Systems Engineer)
-**Date:** 2026-09-20
+**Date:** 2026-09-21
 **SSOT Reference:** `docs/ops/LANE_CONSOLIDATION_SSOT.md`
 
 ## 1. Executive Summary
@@ -11,11 +11,11 @@ This audit provides full production visibility into merged branches, open and cl
 ## 2. Lane Alignment Matrix (Open, Closed & Merged)
 | Development Lane | Primary Focus & Domain | Hanging / Open PR | Merged / Superseding PR | Issues & Threads | Action / Scope Boundary |
 |---|---|---|---|---|---|
-| **Lane 1: Performance (Bolt / Linguist)** | `termux-multi-agent/dashboard.py`, `agent_telemetry_stream.json`, `cedrlang.py` | PR #142, PR #154, PR #83 | PR #187, PR #196, PR #165 | Issue #130, Issue #154 | Close hanging PRs as superseded; enforce O(1) state-tracked seek/tell & CedrLang v2 O(N) regex matching. |
-| **Lane 2: Security (Sentinel)** | `deepcli/deepcli/core.py`, `tests/test_sentinel_privileges.py`, config dirs | PR #141, PR #106 | PR #186, PR #194 | Issue #141 | Close hanging PRs as superseded; enforce `0o700` dir / `0o600` file permissions & symlink traversal prevention. |
-| **Lane 3: Reactive UX (Palette)** | `commingle-swarm/web/`, `palette.md` | PR #140, PR #108 | PR #165, PR #193 | Issue #140 | Close hanging PRs as superseded; lit-html closures, pnpm only, sub-50 line UX modifications. |
-| **Lane 4: Multi-Agent (MoneyBall / Mail)** | `termux-multi-agent/src/team_manager.py`, `roster.json`, `.github/actions/mcp-agent-mail/` | PR #131 | PR #203, Built into `team_manager.py` | Issue #117, Issue #129 | ELO/3L0 calculations, spectator betting, and Rust-based MCP agent mailbox integration. |
-| **Lane 5: Peer Routing (Grok / Jules)** | `scripts/model_router.py`, `agent-review-auto-jules.yml`, `peer-review-orchestrator.yml`, `agent-continuous-ops.yml` | PR #147, PR #148, PR #149 | PR #156, PR #193, PR #203 | Issue #59, Issue #86, #122, #124, #145, #146 | Dual-quota capacity gating (3 concurrent, 15/24h rolling), 45m autofix throttle, 20m auto-jules debounce, 90m sweep window. |
+| **Lane 1: Performance (Bolt / Linguist)** | `termux-multi-agent/dashboard.py`, `agent_telemetry_stream.json`, `cedrlang.py` | PR #142, PR #154, PR #83, PR #452, PR #436 | PR #187, PR #196, PR #165, PR #542 | Issue #130, Issue #154 | Close hanging PRs as superseded; enforce O(1) state-tracked seek/tell & CedrLang v2 O(N) regex matching. |
+| **Lane 2: Security (Sentinel)** | `deepcli/deepcli/core.py`, `tests/test_sentinel_privileges.py`, config dirs | PR #141, PR #106, PR #429, PR #419 | PR #186, PR #194, PR #553 | Issue #141 | Close hanging PRs as superseded; enforce `0o700` dir / `0o600` file permissions & symlink traversal prevention. |
+| **Lane 3: Reactive UX (Palette)** | `commingle-swarm/web/`, `palette.md` | PR #140, PR #108, PR #513 | PR #165, PR #193, PR #524 | Issue #140 | Close hanging PRs as superseded; lit-html closures, pnpm only, sub-50 line UX modifications. |
+| **Lane 4: Multi-Agent (MoneyBall / Mail)** | `termux-multi-agent/src/team_manager.py`, `roster.json`, `.github/actions/mcp-agent-mail/` | PR #131, PR #549, PR #432 | PR #203, Built into `team_manager.py` | Issue #117, Issue #129, Issue #175 | ELO/3L0 calculations, spectator betting, and Rust-based MCP agent mailbox integration. |
+| **Lane 5: Peer Routing (Grok / Jules)** | `scripts/model_router.py`, `agent-review-auto-jules.yml`, `peer-review-orchestrator.yml`, `agent-continuous-ops.yml` | PR #147, PR #148, PR #149, PR #481, PR #483 | PR #156, PR #193, PR #203, PR #554, PR #555, PR #557 | Issue #59, Issue #86, #122, #124, #145, #146 | Dual-quota capacity gating (3 concurrent, 15/24h rolling), 45m autofix throttle, 20m auto-jules debounce, 90m sweep window. |
 
 ## 3. Discrepancies and Skipped Reviews Audit
 

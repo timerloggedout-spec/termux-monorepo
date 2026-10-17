@@ -8,8 +8,11 @@ def _get_mc():
         import multi_ai_cli.core.cache as mc
         return mc
     except ModuleNotFoundError:
-        sys.path.insert(0, os.path.abspath("multi-ai-cli"))
-        import core.cache as mc
+        import importlib.util
+        cache_path = os.path.abspath("multi-ai-cli/core/cache.py")
+        spec = importlib.util.spec_from_file_location("multi_ai_cli_core_cache", cache_path)
+        mc = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mc)
         return mc
 
 def test_multi_ai_cache_privileges_enforcement(tmp_path, monkeypatch):

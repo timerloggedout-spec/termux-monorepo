@@ -123,3 +123,10 @@ Executing 32 sequential `.sub()` regex passes unconditionally in `compress()` / 
 
 **Action:**
 Use C-level substring guards (`if phrase.lower() in text_lower:`) before running sequential regex phrase substitutions, pre-compute reverse pair tuples at module scope, and avoid pre-calling `.search()` prior to `.sub()` on document transformations.
+
+## 2026-10-07 - Full-Document Lowercasing Elimination and Non-Canonical Variant Filtering
+**Learning:**
+In `compress()` and `caveman()`, English phrase substitutions with CedrLang symbols (e.g. `leads to` -> `→`, `and` -> `∧`) only replace words with non-letter symbols and never introduce new English words. Re-evaluating `text_lower = result.lower()` inside the phrase iteration loop on matching documents caused repeated full-document lowercasing passes over 15KB strings, while running `SPACES_PATTERN.sub(' ', result)` on strings produced by `" ".join(...)` was completely redundant. Eliminating re-lowercasing passes and replacing trailing punctuation regexes with fast string checks reduced `compress()` execution time from 7.17s to 3.31s (~2.17x speedup) and `caveman()` from 7.27s to 3.24s (~2.25x speedup). Additionally, in `from_1337speak()`, pre-filtering `NON_CANONICAL_INDEX` and pre-compiling `NON_CANONICAL_VARIANT_REGEX` alongside `FAST_CASING_NON_CANONICAL` bypassed matching and replacing canonical tokens with themselves, yielding a ~1.15x speedup.
+
+**Action:**
+In sequential string transformer loops, avoid re-computing lowercased document copies if transformations do not introduce lowercasable characters, avoid regex whitespace cleanups on `" ".join()` outputs, and filter out self-mapping canonical tokens from normalization regexes.

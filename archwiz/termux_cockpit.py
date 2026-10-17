@@ -6,7 +6,7 @@ operator surface: canonical state remains in repository files, protocol
 objects, GitHub, and the existing validation gates.
 """
 from __future__ import annotations
-import os, subprocess, sys, time
+import os, shutil, subprocess, sys, time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -51,7 +51,10 @@ def gate(command: list[str]) -> int:
         print(c(RED, f"gate unavailable: {exc}"))
         return 1
 
-def panel(title: str, rows: list[str], width: int = 88) -> None:
+def panel(title: str, rows: list[str], width: int | None = None) -> None:
+    if width is None:
+        term_cols = shutil.get_terminal_size((80, 24)).columns
+        width = min(80, max(36, term_cols - 2))
     print(c(CYAN, "+" + "-" * width + "+"))
     print(c(BOLD + CYAN, f"| {title:<{width - 2}}|"))
     print(c(CYAN, "+" + "-" * width + "+"))
@@ -61,16 +64,7 @@ def panel(title: str, rows: list[str], width: int = 88) -> None:
 
 def banner() -> None:
     clear()
-    logo = r"""
-      ___    ____  _____ _    _  _____ _____  _______    _    _  ______
-     / _ \  |  _ \|  ___| |  | |/ ____|  __ \|__   __|  / \  | |/ / ___|
-    / /_\ \ | |_) | |__ | |__| | (___ | |__) |  | |    / _ \ | ' /| |
-    |  _  | |  _ <|  __||  __  |\___ \|  ___/   | |   / ___ \|  < | |
-    | | | | | |_) | |___| |  | |____) | |       | |  /_/   \_\ . \| |___
-    \_| |_/ |____/|_____|_|  |_|_____/|_|       |_|          |_|\_\\____|
-"""
-    print(c(BOLD + CYAN, logo))
-    print(c(BOLD + GREEN, "  ARCHWIZ // TERMUX HYPER-FORGE"))
+    print(c(BOLD + GREEN, "⚡ ARCHWIZ // TERMUX HYPER-FORGE ⚡"))
     print(c(DIM, "  Tron-inspired display layer • dependency-free • operator-first"))
     print()
     panel("TERMUX EXECUTION SURFACE", [

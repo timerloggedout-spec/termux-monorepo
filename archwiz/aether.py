@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """🪄 AETHER — ArchWiz Ecosystem Command Engine"""
 
-import sys, os, subprocess, json
+import sys, os, subprocess, json, shlex
 
 HOME = os.path.expanduser("~")
 LLM_MAP = os.path.join(HOME, "workspace/llm_map")
@@ -23,7 +23,7 @@ def cmd_map(args):
 
 def cmd_dep(args):
     if not args: print("Usage: aether dep <file>"); return
-    out, _, _ = run(f"bash {LLM_MAP}/depgraph.sh {args[0]}")
+    out, _, _ = run(f"bash {shlex.quote(LLM_MAP + '/depgraph.sh')} {shlex.quote(args[0])}")
     print(out)
 
 def cmd_funcfind(args):
@@ -102,13 +102,13 @@ def cmd_xref(args):
     run(f"python3 {ARCHWIZ}/xref_exports.py")
 
 def cmd_bookmark(args):
-    run(f"python3 {ARCHWIZ}/lexicon_mark.py " + " ".join(args))
+    run(f"python3 {shlex.quote(ARCHWIZ + '/lexicon_mark.py')} " + " ".join(shlex.quote(a) for a in args))
 
 def cmd_timeline(args):
     run(f"python3 {ARCHWIZ}/timeline_editor.py")
 
 def cmd_lexicon(args):
-    run(f"python3 {HOME}/workspace/compression_sandbox/cedrlang/cid.py " + " ".join(args))
+    run(f"python3 {shlex.quote(HOME + '/workspace/compression_sandbox/cedrlang/cid.py')} " + " ".join(shlex.quote(a) for a in args))
 
 # ── NEW: Reindex pipeline ──
 def cmd_reindex(args):

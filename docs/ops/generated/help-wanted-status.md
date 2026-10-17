@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-17T04:17:12Z UTC · receipts=2524 · foreign_open=35 · tributes=95_
+_Generated 2026-10-17T05:00:39Z UTC · receipts=2524 · foreign_open=36 · tributes=96_
 
 ## Tributes (contributor ledger)
 
+- [Health-watchers/health_watchers#1698](https://github.com/Health-watchers/health_watchers/pull/1698) · state=open · help-wanted: stake + contribute for #1519
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -43,10 +44,10 @@ _Generated 2026-10-17T04:17:12Z UTC · receipts=2524 · foreign_open=35 · tribu
 - [Loment-Lang/loment#428](https://github.com/Loment-Lang/loment/pull/428) · state=closed · help-wanted: stake + contribute for #9
 - [MyFanss/MyFans#2056](https://github.com/MyFanss/MyFans/pull/2056) · state=closed · help-wanted: stake + contribute for #2032
 - [Neziahtech/streampay#147](https://github.com/Neziahtech/streampay/pull/147) · state=closed · help-wanted: stake + contribute for #5
-- [nextcloud/spreed#19662](https://github.com/nextcloud/spreed/pull/19662) · state=closed · help-wanted: stake + contribute for #19498
 
 ## Foreign open PRs
 
+- [Health-watchers/health_watchers#1698](https://github.com/Health-watchers/health_watchers/pull/1698) — help-wanted: stake + contribute for #1519
 - [stellar-compliance-kit/compliance-primitives#656](https://github.com/stellar-compliance-kit/compliance-primitives/pull/656) — help-wanted: stake + contribute for #180
 - [Local-Settle/local-settle-backend#127](https://github.com/Local-Settle/local-settle-backend/pull/127) — help-wanted: stake + contribute for #2
 - [ssupportme/support-me#316](https://github.com/ssupportme/support-me/pull/316) — help-wanted: stake + contribute for #301

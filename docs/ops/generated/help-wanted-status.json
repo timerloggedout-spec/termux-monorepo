@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-17T04:17:12Z",
+  "generated_at": "2026-10-17T05:00:39Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
   "receipts": 2524,
@@ -16,6 +16,15 @@
     "ok": 2524
   },
   "foreign_open_prs": [
+    {
+      "html_url": "https://github.com/Health-watchers/health_watchers/pull/1698",
+      "title": "help-wanted: stake + contribute for #1519",
+      "number": 1698,
+      "repo": "Health-watchers/health_watchers",
+      "state": "open",
+      "updated_at": "2026-10-17T05:00:20Z",
+      "tribute": true
+    },
     {
       "html_url": "https://github.com/stellar-compliance-kit/compliance-primitives/pull/656",
       "title": "help-wanted: stake + contribute for #180",
@@ -332,8 +341,21 @@
       "tribute": true
     }
   ],
-  "foreign_open_count": 35,
+  "foreign_open_count": 36,
   "tributes": [
+    {
+      "pr_url": "https://github.com/Health-watchers/health_watchers/pull/1698",
+      "kinds": [
+        "upstream_pr"
+      ],
+      "ok": true,
+      "last_ts": "2026-10-17T05:00:20Z",
+      "providers": [],
+      "repo": "Health-watchers/health_watchers",
+      "number": 1698,
+      "title": "help-wanted: stake + contribute for #1519",
+      "state": "open"
+    },
     {
       "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
       "kinds": [
@@ -3976,7 +3998,7 @@
       "providers": []
     }
   ],
-  "tribute_count": 95,
+  "tribute_count": 96,
   "issues": {
     "https://github.com/vedantnimbarte/zero/issues/72": [
       {
@@ -27306,7 +27328,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "9571f34225a5af19e033bd8644d374da9ed3151f",
+    "source_sha": "e8d2583917297517ae9101c8fb16aedf9d188e77",
     "source_ref": "master",
     "history_complete": false,
     "history_coverage": "lane-local-complete; repository-wide historical accountability requires sweep-accountability backfill",
@@ -27340,12 +27362,12 @@
   },
   "evolution": [
     {
-      "sha": "9571f34225a5af19e033bd8644d374da9ed3151f",
-      "short_sha": "9571f34225a5",
-      "date": "2026-10-17T03:16:13Z",
-      "author": "termux-monorepo sweep",
-      "subject": "chore(ops): record sweep accountability receipt",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/9571f34225a5af19e033bd8644d374da9ed3151f"
+      "sha": "e8d2583917297517ae9101c8fb16aedf9d188e77",
+      "short_sha": "e8d258391729",
+      "date": "2026-10-17T04:19:32Z",
+      "author": "github-actions[bot]",
+      "subject": "ops(lane-matrix): refresh generated status from recursive sweep",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/e8d2583917297517ae9101c8fb16aedf9d188e77"
     }
   ],
   "pipeline": [

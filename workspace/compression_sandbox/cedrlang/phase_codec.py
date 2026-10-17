@@ -112,6 +112,19 @@ VARIANT_INDEX = _build_variant_index(CANONICAL_TOKENS)
 # Build ASCII case-insensitive Trie regex without re.IGNORECASE to avoid Unicode case-folding overhead
 VARIANT_REGEX = re.compile(_build_trie_regex(VARIANT_INDEX.keys()))
 
+# Pre-compute non-canonical variant index (where variant != canonical) to bypass invariant canonical tokens during decode
+NON_CANONICAL_INDEX: Dict[str, str] = {
+    k: v for k, v in VARIANT_INDEX.items() if k != v
+}
+NON_CANONICAL_VARIANT_REGEX = re.compile(_build_trie_regex(NON_CANONICAL_INDEX.keys()))
+
+# Pre-compute casing mapping for non-canonical variants to bypass string casing checks
+FAST_CASING_NON_CANONICAL: Dict[str, str] = {}
+for variant, canonical in NON_CANONICAL_INDEX.items():
+    FAST_CASING_NON_CANONICAL[variant.lower()] = canonical.lower()
+    FAST_CASING_NON_CANONICAL[variant.capitalize()] = canonical.lower()
+    FAST_CASING_NON_CANONICAL[variant.upper()] = canonical.upper()
+
 # Module-level set of eligible leet characters
 ELIGIBLE_LEET_CHARS = set(LEET_MAP.keys())
 # Filter variant index to only tokens containing eligible leet substitution characters
@@ -137,7 +150,14 @@ for variant_key in VARIANT_INDEX.keys():
 
 def _from_1337_replace(match: re.Match[str]) -> str:
     """Top-level replacement callback for normalization back to canonical tokens."""
-    return VARIANT_INDEX[match.group(0).lower()]
+    token = match.group(0)
+    fast_res = FAST_CASING_NON_CANONICAL.get(token)
+    if fast_res is not None:
+        return fast_res
+    target = NON_CANONICAL_INDEX[token.lower()]
+    if token.isupper():
+        return target.upper()
+    return target
 
 
 def _replace_leet_100(match: re.Match[str]) -> str:
@@ -208,8 +228,10 @@ def from_1337speak(text: str) -> str:
     """Normalize known randomized variants back to canonical compressed tokens."""
     if not text:
         return text
-    # Single-pass substitution avoids redundant double-scanning (.search + .sub) (~15.3% speedup)
-    return VARIANT_REGEX.sub(_from_1337_replace, text)
+    # Pre-search guard bypasses regex substitution on canonical/unmutated prose (~1.15x speedup)
+    if not NON_CANONICAL_VARIANT_REGEX.search(text):
+        return text
+    return NON_CANONICAL_VARIANT_REGEX.sub(_from_1337_replace, text)
 
 
 def compile_phase(text: str, canonical_compiler) -> str:

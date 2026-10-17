@@ -123,3 +123,10 @@ Executing 32 sequential `.sub()` regex passes unconditionally in `compress()` / 
 
 **Action:**
 Use C-level substring guards (`if phrase.lower() in text_lower:`) before running sequential regex phrase substitutions, pre-compute reverse pair tuples at module scope, and avoid pre-calling `.search()` prior to `.sub()` on document transformations.
+
+## 2026-10-07 - Non-Canonical Variant Indexing for Surface Normalization
+**Learning:**
+During PhaseCodec surface normalization (`from_1337speak()`), matching regex patterns against all 61 variant tokens in `VARIANT_INDEX` forces Python's regex engine to match and trigger callbacks for 31 canonical tokens where `variant == canonical` (e.g. `pr0b3`, `h4x`, `3ch0`, `l00p`, `gr1m01r3`). Pre-filtering `NON_CANONICAL_INDEX` at module load time to contain only non-canonical variants (`variant != canonical`) and constructing `NON_CANONICAL_VARIANT_REGEX` reduces the Trie regex state space from 61 tokens to 30 non-canonical variants. Furthermore, pre-searching `NON_CANONICAL_VARIANT_REGEX.search(text)` allows canonical prose to bypass `.sub()` substitution calls entirely (~1.15x speedup during normalization).
+
+**Action:**
+When normalizing surface variant tokens back to canonical tokens, construct Trie regexes using only non-canonical variants (`variant != canonical`) and pre-search before executing `.sub()` passes.

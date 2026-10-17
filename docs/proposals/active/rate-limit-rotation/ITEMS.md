@@ -17,7 +17,17 @@
 | RL-13 | Gemini second-pass after peers only | P0 | grok | done | gemini-after-peers.yml |
 | RL-14 | Devin Apply Suggestions automation | P1 | | partial | enable Auto-Fix in Devin Settings; no public click-API |
 | RL-15 | Honest OpenRouter (no false route) | P0 | grok | done | model-router skip=true always when Gemini exhausted |
-| RL-16 | Shared global counter (not per-branch cache) | P2 | | todo | gist/issue optimistic concurrency |
+| RL-16 | Shared global counter (not per-branch cache) | P2 | | deferred | GitHub Actions cache remains advisory; authoritative quota/rate-limit state must come from live provider observations |
 | RL-17 | Model availability polling & ELO (3L0) routing | P0 | jules | done | #123 scripts/model_router.py, model-success-matrix.yaml |
 | RL-18 | DeepSeek CI peer path (no Class 3/4 cache) | P0 | jules | blocked | #134 security hold — ephemeral session only |
 | RL-19 | Audit Merged Branches, Skipped Reviews & Lane Consolidation | P0 | jules | done | docs/ops/MERGED-BRANCH-AUDIT-2026.md, docs/ops/LANE_CONSOLIDATION_SSOT.md |
+
+
+### 2026-10 cadence/cache clarification
+
+- Model-router cache is versioned and explicitly advisory.
+- Public catalogs and static capability metadata may be cached to reduce redundant polling.
+- Provider cooldown/rate-limit observations may be retained with timestamp, provider, model, and SHA provenance, but cached state never establishes current account balance.
+- PR-scoped peer feedback is coalesced at the Actions concurrency boundary; source revisions remain idempotency evidence.
+- Qodo billing/trial exhaustion and other provider-capacity notices are not implementation-review input for Jules.
+- Obsidian remains a required correctness/security capability.

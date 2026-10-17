@@ -40,6 +40,10 @@ inputs:
   current-sha:
     required: false
     default: ''
+  cache-schema:
+    description: 'Versioned cache namespace for advisory catalog/capacity state'
+    required: false
+    default: 'v2'
   routing-mode:
     description: 'Topology policy: single | series | dynamic | parallel | nested | co-working | volley'
     required: false
@@ -62,6 +66,8 @@ outputs:
     value: ${{ steps.pick.outputs.catalog_state }}
   routing-mode:
     value: ${{ steps.pick.outputs.routing_mode }}
+  cache-hit:
+    value: ${{ steps.restore.outputs.cache-hit }}
 
 runs:
   using: composite
@@ -71,13 +77,23 @@ runs:
       shell: bash
       run: echo "key=$(TZ=America/Los_Angeles date +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
 
-    - name: Restore per-model counters
+    - name: Restore versioned model-router capacity cache
+      id: restore
       uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830
       with:
         path: /tmp/model-router
-        key: model-router-${{ steps.date.outputs.key }}
-        restore-keys: model-router-${{ steps.date.outputs.key }}
+        key: model-router-${{ inputs.cache-schema }}-${{ steps.date.outputs.key }}-${{ github.repository }}
+        restore-keys: |
+          model-router-${{ inputs.cache-schema }}-${{ steps.date.outputs.key }}-
+          model-router-${{ inputs.cache-schema }}-
         enableCrossOsArchive: true
+
+    - name: Record cache authority boundary
+      shell: bash
+      run: |
+        echo "Model-router cache is advisory catalog/capacity state only."
+        echo "Authoritative provider quota/rate-limit state must come from live observations."
+        echo "cache_hit=${{ steps.restore.outputs.cache-hit || 'false' }}"
 
     - name: Pick provider + model (live catalog feed)
       id: pick
@@ -96,13 +112,14 @@ runs:
         FELO_AI_API: ${{ inputs.felo-api-key }}
         OMNI_API_KEY: ${{ inputs.omni-api-key }}
         COUNTER_DIR: /tmp/model-router
+        MODEL_ROUTER_CACHE_SCHEMA: ${{ inputs.cache-schema }}
       run: |
         python3 -m scripts.model_router_bootstrap
 
-    - name: Save per-model counters
+    - name: Save versioned model-router capacity cache
       if: steps.pick.outputs.skip != 'true'
       uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830
       with:
         path: /tmp/model-router
-        key: model-router-${{ steps.date.outputs.key }}-${{ github.run_id }}-${{ github.run_attempt }}
+        key: model-router-${{ inputs.cache-schema }}-${{ steps.date.outputs.key }}-${{ github.repository }}-${{ github.run_id }}-${{ github.run_attempt }}
         enableCrossOsArchive: true

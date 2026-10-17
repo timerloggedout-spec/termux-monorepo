@@ -172,3 +172,40 @@ def test_upload_file_path_traversal_prevention():
 
     with pytest.raises(ValueError, match="Invalid file path"):
         dc.upload_file("token", "session_123", "foo/../bar.txt")
+
+
+def test_upload_file_and_log_retry_symlink_rejection(tmp_path, monkeypatch):
+    dc = _get_dc()
+
+    # 1. Test upload_file symlink rejection
+    target_file = tmp_path / "target.txt"
+    target_file.write_text("secret_file_data")
+
+    symlink_file = tmp_path / "symlink.txt"
+    symlink_file.symlink_to(target_file)
+
+    with pytest.raises(ValueError, match="Symlink file path rejected"):
+        dc.upload_file("token", "session_123", str(symlink_file))
+
+    # 2. Test _log_retry symlink protection
+    log_target = tmp_path / "sensitive_log.txt"
+    log_target.write_text("unmodified")
+
+    log_symlink = tmp_path / "retry_log.jsonl"
+    log_symlink.symlink_to(log_target)
+
+    # Patch __file__ in dc to route metrics dir inside tmp_path
+    fake_file = tmp_path / "deepcli" / "core.py"
+    fake_file.parent.mkdir(parents=True, exist_ok=True)
+    monkeypatch.setattr(dc, "__file__", str(fake_file))
+
+    # Create symlinked log file under expected path
+    metrics_dir = tmp_path / "cli-synthegration" / "metrics"
+    metrics_dir.mkdir(parents=True, exist_ok=True)
+    sym_log_path = metrics_dir / "retry_log.jsonl"
+    sym_log_path.symlink_to(log_target)
+
+    dc._log_retry("test_op", 503, 1, 1.0)
+
+    # Target file should remain untouched
+    assert log_target.read_text() == "unmodified"

@@ -334,9 +334,12 @@ def get_pow_challenge(token: str, target_path="/api/v0/chat/completion") -> dict
 def upload_file(token: str, session_id: str, file_path: str) -> Optional[str]:
     if ".." in str(file_path) or (not Path(file_path).is_absolute() and ".." in Path(file_path).parts):
         raise ValueError("Invalid file path")
-    if not Path(file_path).exists():
+    p = Path(file_path)
+    if not p.exists():
         console.print(f"[red]File not found: {file_path}[/]")
         return None
+    if p.is_symlink():
+        raise ValueError("Symlink file path rejected for security")
     challenge = get_pow_challenge(token, "/api/v0/file/upload_file")
     pow_header = solve_pow(challenge)
 
@@ -405,8 +408,12 @@ def _log_retry(operation: str, status_code: int, attempt: int, delay: float):
         import os
         import json
         log_path = os.path.join(os.path.dirname(__file__), "..", "..", "cli-synthegration", "metrics", "retry_log.jsonl")
-        os.makedirs(os.path.dirname(log_path), exist_ok=True)
-        with open(log_path, "a") as f:
+        p = Path(log_path)
+        if p.is_symlink() or p.parent.is_symlink():
+            return
+        p.parent.mkdir(parents=True, exist_ok=True)
+        fd = os.open(log_path, os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o600)
+        with os.fdopen(fd, "a") as f:
             json.dump({"ts": __import__("datetime").datetime.now().isoformat(), "op": operation, "status": status_code, "attempt": attempt, "delay": delay}, f)
             f.write("\n")
     except Exception:
@@ -502,10 +509,14 @@ def stream_completion(token: str, prompt: str, session_id: str,
                             for k in data:
                                 if k not in _known_keys:
                                     try:
-                                        with open(os.path.join(os.path.dirname(__file__),
-                                            "..","..","cli-synthegration","metrics","sse_keys.log"),"a") as _f:
-                                            _f.write(json.dumps({k:data[k]})+"\n")
-                                    except: pass
+                                        log_p = Path(os.path.join(os.path.dirname(__file__), "..", "..", "cli-synthegration", "metrics", "sse_keys.log"))
+                                        if not log_p.is_symlink() and not log_p.parent.is_symlink():
+                                            log_p.parent.mkdir(parents=True, exist_ok=True)
+                                            fd = os.open(str(log_p), os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o600)
+                                            with os.fdopen(fd, "a") as _f:
+                                                _f.write(json.dumps({k: data[k]}) + "\n")
+                                    except Exception:
+                                        pass
                             # Track auto_resume flag for continue button
                             if data.get("auto_resume") is not None:
                                 _last_auto_resume = data.get("auto_resume")

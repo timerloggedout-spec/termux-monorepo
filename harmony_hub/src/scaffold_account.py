@@ -50,7 +50,8 @@ def scaffold(cookies_path: str, account_name: str):
         with open(vault_file) as f:
             vault = json.load(f)
     vault[account_name] = token
-    with open(vault_file, 'w') as f:
+    fd = os.open(vault_file, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, 'w') as f:
         json.dump(vault, f)
     if not vault_file.is_symlink():
         os.chmod(vault_file, 0o600)
@@ -92,7 +93,8 @@ def scaffold(cookies_path: str, account_name: str):
             'project': 'synthegration'
         }
     }
-    with open(accounts_file, 'w') as f:
+    fd = os.open(accounts_file, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, 'w') as f:
         json.dump(accounts, f, indent=2)
     if not accounts_file.is_symlink():
         os.chmod(accounts_file, 0o600)

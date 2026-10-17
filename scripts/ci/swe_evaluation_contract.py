@@ -93,9 +93,12 @@ def require_nonnegative_int(payload: dict[str, Any], field: str) -> int:
 def validate(payload: dict[str, Any]) -> None:
     if not isinstance(payload, dict):
         raise ContractError("manifest root must be an object")
-    missing = EXPECTED_FIELDS - set(payload)
-    unknown = set(payload) - EXPECTED_FIELDS
-    if missing or unknown:
+    # Bolt optimization: Fast-path exact set equality to avoid set difference allocations on valid payloads,
+    # and reuse single payload_keys set on validation failure.
+    payload_keys = set(payload)
+    if payload_keys != EXPECTED_FIELDS:
+        missing = EXPECTED_FIELDS - payload_keys
+        unknown = payload_keys - EXPECTED_FIELDS
         raise ContractError(f"missing={sorted(missing)} unknown={sorted(unknown)}")
     serialized_canonical = canonical_json(payload)
     if SECRET.search(serialized_canonical):

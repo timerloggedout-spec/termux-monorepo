@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "326e25b5f5e508d9c2b71db37b1c5a30b144724e1c01b5abaa51d9eed384772d",
-  "workflow_count": 131,
+  "source_fingerprint": "f996f5f9ea899ecb3d1f80ecea1c8e94c33428588248df8df066b0ca55f6cc3c",
+  "workflow_count": 132,
   "workflows": [
     {
       "action_pins": [
@@ -2437,6 +2437,22 @@
       "schedules": [],
       "triggers": [
         "pull_request",
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: tribute-vercel-prod cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "promote"
+      ],
+      "name": "tribute-vercel-prod",
+      "path": ".github/workflows/tribute-vercel-prod.yml",
+      "schedules": [],
+      "triggers": [
         "push",
         "workflow_dispatch"
       ]

@@ -46,6 +46,7 @@ GitHub still **lists** skipped runs in the Actions tab (platform limitation: `wo
 4. **Watcher** — incidents only for `failure` / `timed_out` / `action_required` (`docs/ops/ACTIONS-RUN-OBSERVABILITY.md`). Cancelled/skipped = observation only, **no issue spam**.
 5. **Lead/Lag index** — correctness > latency; skipped route ≠ model failure (`docs/ops/LEAD-LAG-INDEX.md` + `cadence-lead-lag.yml`). Dynamic adaptive telemetry plane.
 6. **Adaptive cache / WAIT** — re-fetch only on material delta; backoff on no-progress; disjoint work while quiet.
+7. **In-process queued/skipped** — concurrency groups + reaper + Lead/Lag classify as operational lag (no notification).
 
 Current master tip (`c9cd2059…`) shows success + intentional skipped (e.g. Fix-on-Failure, Run Watcher) with no failure conclusions in latest window. Ghost queued residual on disabled workflow id remains platform observation only.
 
@@ -60,6 +61,7 @@ Skipped / Cancelled / Stale / Timed out / Queued / Neutral require **attentive v
 | Timed out / Stale | Stall class + changed input / reaper |
 | Neutral | Explicit non-gate (e.g. Vercel rate-limit #772) |
 | Queued (zero-job) | Reaper or concurrency cancel; not silent fail |
+| In-process waiting | Adaptive WAIT + Lead/Lag lag_operational; no spam |
 
 ## Repeated-issue classes (historical → current)
 
@@ -78,13 +80,13 @@ Skipped / Cancelled / Stale / Timed out / Queued / Neutral require **attentive v
 
 | Surface | Role |
 |---------|------|
-| Lead/Lag Index + cadence-lead-lag.yml | Lead signals vs lag outcomes; latency diagnostic only; GHA-only (no device UI) |
+| Lead/Lag Index + cadence-lead-lag.yml | Lead signals vs lag outcomes; latency diagnostic only; GHA-only (no device UI); adaptive snapshot (skip commit if identical) |
 | Actions Run Observability | Notification edge policy; capability-gated OTLP |
 | Adaptive WAIT | Re-fetch SHA → runs → jobs; disjoint work while quiet; dynamic backoff |
 | Dual-gate | Promote authority only |
 | n8n SHE bridge | Optional emit; not correctness |
 | Queue reaper | Zero-job / long-queued cleanup |
-| Cache | Actions cache + agent-context-store for work context (auth ephemeral) |
+| Cache | Actions cache + agent-context-store for work context (auth ephemeral); Lead/Lag uses local file cache for delta detection |
 
 **Lead/Lag + AEF/DOE + Adaptive WAIT** is the moneyball/telemetry plane: measure outcome not activity, adaptive cadence, cache durable context.
 
@@ -129,8 +131,9 @@ Target: reduce effective notification edges by combining related schedules into 
 - Concurrency per SHA.
 - Watcher incidents only failure/timeout.
 - Lead/Lag classifies skipped as lag_operational (no incident).
+- In-process queued classified as operational lag via adaptive WAIT.
 
-Next slice: audit top 10 schedule workflows by run volume and apply concurrency + if-conditions for non-critical.
+Next slice: audit top 10 schedule workflows by run volume and apply concurrency + if-conditions for non-critical. Lead/Lag snapshot uses delta detection to avoid empty commits.
 
 ## Additional flowchart: skip/cancel audit
 
@@ -156,5 +159,5 @@ flowchart TD
 - Requirement: operator sets unique TERMUX_DEVICE_ID on physical units; publisher job updates status to active when tunnel verified.
 - Alternatives: Cloudflare tunnel, secondary node, pure Actions runners for non-device work. Redundant paths documented for broken-screen primary.
 
-Observed this session: 2026-10-18T17:00Z (master tip c9cd2059 green; recent runs success/skipped intentional)
+Observed this session: 2026-10-18T17:20Z (master tip c9cd2059 green; recent runs success/skipped intentional; PR #1245 head 3db265d green on advisory checks)
 Agent-Identity: Grok (Administrator)

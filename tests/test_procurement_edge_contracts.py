@@ -26,7 +26,7 @@ def procurement_record():
         "reproducibility": "Version pin required",
         "provenance": "Official project documentation",
         "dependency_risk": "Medium",
-        "lock_in_risk": "Low",
+        "lock_in_risk": {"runtime": "Low.", "evidence": "Low if exports remain canonical."},
         "security_surface": "Local runtime",
         "resource_cost": "FOSS; compute cost not measured",
         "operational_fit": "Prototype only",

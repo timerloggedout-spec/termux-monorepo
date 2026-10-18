@@ -77,6 +77,21 @@ jobs:
             cp docs/ops/generated/lane-matrix-status.json _site/data/lane-matrix-status.json
           fi
           touch _site/.nojekyll
+      - name: Opt gh-pages out of Vercel Git deployments
+        # gh-pages is a force-orphaned static Pages artifact, not an app source.
+        # Every Vercel project linked to this repo (mcp-hub, help-wanted-dash,
+        # help-wanted-oversight, termux-monorepo) otherwise tries a Preview build
+        # of it and fails because its Root Directory is absent here. Drop a
+        # vercel.json at the root and at every known lane Root Directory so
+        # Vercel skips the branch (git.deploymentEnabled) and, as a fallback,
+        # cancels instead of failing (ignoreCommand). Additive only; no app files.
+        run: |
+          set -euo pipefail
+          for d in . mcp-hub demo-portal/public deepseek-cli apps/help-wanted-dashboard apps/help-wanted-oversight; do
+            mkdir -p "_site/$d"
+            printf '%s\n' '{' '  "git": { "deploymentEnabled": false },' '  "ignoreCommand": "exit 0"' '}' > "_site/$d/vercel.json"
+          done
+          find _site -name vercel.json -print
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:

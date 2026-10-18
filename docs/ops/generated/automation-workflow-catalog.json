@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "94b972f2f31f4b69cc5ee3bf53f245a2c15a5c0ef2a9416bec1a460a10ab385f",
-  "workflow_count": 130,
+  "source_fingerprint": "326e25b5f5e508d9c2b71db37b1c5a30b144724e1c01b5abaa51d9eed384772d",
+  "workflow_count": 131,
   "workflows": [
     {
       "action_pins": [
@@ -1955,6 +1955,21 @@
       "schedules": [],
       "triggers": [
         "repository_dispatch",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: provision-secrets cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "provision"
+      ],
+      "name": "Provision secrets (secret-to-secret)",
+      "path": ".github/workflows/provision-secrets.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },

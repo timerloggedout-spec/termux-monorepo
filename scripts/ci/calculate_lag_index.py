@@ -36,10 +36,11 @@ AGENT_LOGINS = (
     "gitar-bot",
     "blocksorg",
 )
+AGENT_LOGINS_LOWER = tuple(a.lower() for a in AGENT_LOGINS)
 
 def is_agent(username: str) -> bool:
     u = (username or "").lower()
-    return any(a in u for a in AGENT_LOGINS)
+    return any(a in u for a in AGENT_LOGINS_LOWER)
 
 def github_api_request(url: str, token: str | None):
     req = urllib.request.Request(url)
@@ -58,14 +59,18 @@ def parse_iso8601(ts_str: str | None):
     if not ts_str:
         return None
     try:
-        clean_ts = ts_str.replace("Z", "+00:00") if ts_str.endswith("Z") else ts_str
-        dt = datetime.fromisoformat(clean_ts)
+        dt = datetime.fromisoformat(ts_str)
         return dt.replace(tzinfo=None) if dt.tzinfo else dt
     except ValueError:
         try:
-            return datetime.strptime(ts_str.replace("Z", ""), "%Y-%m-%dT%H:%M:%S")
+            clean_ts = ts_str.replace("Z", "+00:00") if ts_str.endswith("Z") else ts_str
+            dt = datetime.fromisoformat(clean_ts)
+            return dt.replace(tzinfo=None) if dt.tzinfo else dt
         except ValueError:
-            return None
+            try:
+                return datetime.strptime(ts_str.replace("Z", ""), "%Y-%m-%dT%H:%M:%S")
+            except ValueError:
+                return None
 
 def write_outputs(metrics: dict, table_rows: list[str]) -> None:
     os.makedirs("docs/ops", exist_ok=True)

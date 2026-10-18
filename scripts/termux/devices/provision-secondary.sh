@@ -41,11 +41,19 @@ gh auth setup-git
 
 step "4/8 opaque device identity"
 if [ -n "$DEVICE_ID" ]; then
-  bash "$SCRIPT_DIR/device-identity.sh" init --id "$DEVICE_ID" --role observer --origin-id "$ORIGIN_ID"
+  bash "$SCRIPT_DIR/device-identity.sh" init --id "$DEVICE_ID" --role observer-controller --origin-id "$ORIGIN_ID"
 else
-  bash "$SCRIPT_DIR/device-identity.sh" init --role observer --origin-id "$ORIGIN_ID"
+  bash "$SCRIPT_DIR/device-identity.sh" init --role observer-controller --origin-id "$ORIGIN_ID"
 fi
 bash "$SCRIPT_DIR/device-identity.sh" show
+bash "$SCRIPT_DIR/inventory.sh" >/dev/null && echo "inventory: $TMX_STATE_DIR/inventory.json (local only)"
+# Controller key: restricted to tmx-ctl.sh on the origin via an authorized_keys forced command.
+if [ ! -f "$HOME/.ssh/tmx_controller_ed25519" ]; then
+  mkdir -p "$HOME/.ssh" && chmod 700 "$HOME/.ssh"
+  ssh-keygen -q -t ed25519 -N '' -C "$(. "$TMX_IDENTITY_ENV"; echo "$TERMUX_DEVICE_ID")-controller" -f "$HOME/.ssh/tmx_controller_ed25519"
+fi
+echo "Origin authorized_keys line (add on the ORIGIN, see SECONDARY-NODE-PROVISIONING.md 'Controller key'):"
+printf 'command="bash ~/termux-monorepo/scripts/termux/devices/tmx-ctl.sh",no-port-forwarding,no-agent-forwarding,no-X11-forwarding,no-pty %s\n' "$(cat "$HOME/.ssh/tmx_controller_ed25519.pub")"
 
 step "5/8 destructive-git guard"
 bash "$SCRIPT_DIR/install-git-guard.sh"

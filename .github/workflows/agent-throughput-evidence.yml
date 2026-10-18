@@ -201,8 +201,11 @@ jobs:
             --metadata agent-throughput-metadata.json \
             --output agent-throughput.ndjson
 
-      - name: Validate emitter tests
-        run: python3 -m unittest tests.test_emit_agent_throughput -v
+      - name: Validate provenance and citation curation
+        run: |
+          python3 -m unittest tests.test_emit_agent_throughput -v
+          python3 -m unittest tests.test_curate_briefing_sources -v
+          python3 scripts/ci/curate_briefing_sources.py --output source-citations.jsonl
 
       - name: Reduce observed ATES metrics
         run: |
@@ -235,7 +238,7 @@ jobs:
           from pathlib import Path
 
           files = {}
-          for name in ("agent-throughput.ndjson", "agent-throughput-metrics.json"):
+          for name in ("agent-throughput.ndjson", "agent-throughput-metrics.json", "source-citations.jsonl"):
               data = Path(name).read_bytes()
               files[name] = {
                   "bytes": len(data),
@@ -271,5 +274,6 @@ jobs:
             agent-throughput.ndjson
             agent-throughput-metrics.json
             agent-throughput-receipt.json
+            source-citations.jsonl
           if-no-files-found: error
           retention-days: 14

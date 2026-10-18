@@ -63,8 +63,9 @@ jobs:
             checks=$(gh api \
               -H 'Accept: application/vnd.github+json' \
               "/repos/${GITHUB_REPOSITORY}/commits/${head_sha}/check-runs?per_page=100")
-            repo_gate=$(jq -r '[.check_runs[] | select(.name == "repo gate") | .conclusion] | last // "missing"' <<<"$checks")
-            termux_smoke=$(jq -r '[.check_runs[] | select(.name == "termux smoke") | .conclusion] | last // "missing"' <<<"$checks")
+            # Accept current dual-gate job names and legacy aliases (aligned with queue-v3-inventory.sh)
+            repo_gate=$(jq -r '[.check_runs[] | select(.name == "hygiene + portability gate" or .name == "repo gate") | .conclusion] | last // "missing"' <<<"$checks")
+            termux_smoke=$(jq -r '[.check_runs[] | select(.name == "agentic termux smoke" or .name == "termux smoke") | .conclusion] | last // "missing"' <<<"$checks")
             hard_failures=$(jq '[.check_runs[] | select(.status == "completed" and (.conclusion == "failure" or .conclusion == "timed_out" or .conclusion == "action_required"))] | length' <<<"$checks")
             pending=$(jq '[.check_runs[] | select(.status != "completed")] | length' <<<"$checks")
 
@@ -120,7 +121,7 @@ jobs:
             echo
             echo '> Observer-only: this workflow never merges, closes, labels, rebases, or dispatches the merge writer.'
             echo
-            echo '| PR | Disposition | repo gate | smoke | SHA | Reason |'
+            echo '| PR | Disposition | hygiene gate | smoke | SHA | Reason |'
             echo '|---:|---|---|---|---|---|'
             jq -r '.[] | "| #\(.number) | \(.disposition) | \(.repo_gate) | \(.termux_smoke) | \(.head_sha[0:12]) | \(.reason) |"' /tmp/merge-queue/merge-promotion-queue.json
           } >> "$GITHUB_STEP_SUMMARY"

@@ -1,10 +1,9 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-17T22:41:33Z UTC · receipts=2705 · foreign_open=38 · tributes=99_
+_Generated 2026-10-18T00:06:00Z UTC · receipts=2744 · foreign_open=39 · tributes=100_
 
 ## Tributes (contributor ledger)
 
-- [RetinaX-Org/RetinaX#352](https://github.com/RetinaX-Org/RetinaX/pull/352) · state=open · help-wanted: stake + contribute for #282
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -42,11 +41,13 @@ _Generated 2026-10-17T22:41:33Z UTC · receipts=2705 · foreign_open=38 · tribu
 - [Nodal-stellar/Nodal-AI#853](https://github.com/Nodal-stellar/Nodal-AI/pull/853) · state=open · help-wanted: stake + contribute for #769
 - [Nodal-stellar/Nodal-AI#857](https://github.com/Nodal-stellar/Nodal-AI/pull/857) · state=open · help-wanted: stake + contribute for #811
 - [LabsCrypt/remitlend#1990](https://github.com/LabsCrypt/remitlend/pull/1990) · state=open · help-wanted: stake + contribute for #1503
+- [xtekky/gpt4free#3541](https://github.com/xtekky/gpt4free/pull/3541) · state=open · Fix typo in README from 'Interference' to 'Inference'
+- [RetinaX-Org/RetinaX#352](https://github.com/RetinaX-Org/RetinaX/pull/352) · state=open · help-wanted: stake + contribute for #282
 - [TrustHire/hiresettle-backend#518](https://github.com/TrustHire/hiresettle-backend/pull/518) · state=closed · help-wanted: stake + contribute for #517
-- [ssupportme/support-me#316](https://github.com/ssupportme/support-me/pull/316) · state=closed · help-wanted: stake + contribute for #301
 
 ## Foreign open PRs
 
+- [xtekky/gpt4free#3541](https://github.com/xtekky/gpt4free/pull/3541) — Fix typo in README from 'Interference' to 'Inference'
 - [RetinaX-Org/RetinaX#352](https://github.com/RetinaX-Org/RetinaX/pull/352) — help-wanted: stake + contribute for #282
 - [LabsCrypt/remitlend#1990](https://github.com/LabsCrypt/remitlend/pull/1990) — help-wanted: stake + contribute for #1503
 - [Nodal-stellar/Nodal-AI#857](https://github.com/Nodal-stellar/Nodal-AI/pull/857) — help-wanted: stake + contribute for #811
@@ -86,6 +87,6 @@ _Generated 2026-10-17T22:41:33Z UTC · receipts=2705 · foreign_open=38 · tribu
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=2705 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 2501, 'followup_reengage': 50, 'followup_stale_nudge': 104, 'followup_changes': 2}`
+## Outcomes · ok=2744 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 2539, 'followup_reengage': 50, 'followup_stale_nudge': 105, 'followup_changes': 2}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

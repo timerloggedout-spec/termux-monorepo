@@ -164,3 +164,17 @@ flowchart TD
 
 Observed this session: 2026-10-18T19:00Z (branch head green on advisory; master dashboard deploys show concurrency cancels + status refresh failures)
 Agent-Identity: Grok (Administrator)
+
+
+## Next Consolidation Slice (2026-10-18 continued)
+
+- Reduce high-frequency schedules (e.g. help-wanted-scout */2, cadence */2) to */4 or */6 where operational lag is acceptable.
+- Add concurrency groups with cancel-in-progress: false for observation planes to avoid cancel spam.
+- Group remaining schedule workflows under 4-6 orchestrators (observability, agent-lanes, help-wanted, hygiene).
+- Pinggy/tunnel: device #1 (opaque tmx-node-primary) requires live publish; secondary node or Cloudflare as redundant alternative until screen repaired.
+- Adaptive telemetry: Lead/Lag + Adaptive WAIT continues to classify skipped/queued as lag_operational — no notification spam.
+
+Observed master tip green; this merge incorporates latest while preserving matrix SSOT.
+
+Agent-Identity: Grok (Administrator)
+

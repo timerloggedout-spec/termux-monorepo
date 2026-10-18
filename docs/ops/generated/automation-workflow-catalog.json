@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "57a23d6778a424e2a9dcc1bd9799c701f85b9b55da29b2fd18c7253eed21981e",
-  "workflow_count": 129,
+  "source_fingerprint": "94b972f2f31f4b69cc5ee3bf53f245a2c15a5c0ef2a9416bec1a460a10ab385f",
+  "workflow_count": 130,
   "workflows": [
     {
       "action_pins": [
@@ -416,6 +416,27 @@
       "triggers": [
         "pull_request",
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
+      ],
+      "authority": "writer",
+      "concurrency": "group: cadence-lead-lag cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "classify"
+      ],
+      "name": "Cadence Lead/Lag",
+      "path": ".github/workflows/cadence-lead-lag.yml",
+      "schedules": [
+        "12 */2 * * *"
+      ],
+      "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -1649,7 +1670,7 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
-      "concurrency": "group: n8n-she-bridge-${{ github.event.workflow_run.name }}-${{ github.event.workflow_run.head_sha || github.ref }} cancel-in-progress: true",
+      "concurrency": "group: n8n-she-bridge-${{ github.event.workflow_run.head_sha || github.ref }} cancel-in-progress: true",
       "domain": "agentic-development",
       "jobs": [
         "emit"

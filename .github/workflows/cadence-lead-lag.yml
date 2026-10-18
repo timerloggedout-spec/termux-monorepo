@@ -6,17 +6,19 @@ on:
   workflow_dispatch:
     inputs:
       per_page:
-        description: Workflow runs to sample
-        type: string
-        default: "50"
+        description: Maximum recent workflow runs to sample (1–100)
+        type: number
+        default: 50
+        required: true
 
 permissions:
   actions: read
   contents: write
 
+# Do not cancel a running snapshot writer; queued invocations may coalesce naturally.
 concurrency:
   group: cadence-lead-lag
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   classify:
@@ -26,7 +28,8 @@ jobs:
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
-          fetch-depth: 1
+          ref: master
+          fetch-depth: 0
 
       - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
         with:
@@ -36,36 +39,46 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           GITHUB_TOKEN: ${{ github.token }}
+          CADENCE_PER_PAGE: ${{ inputs.per_page || 50 }}
+        shell: bash
         run: |
           set -euo pipefail
-          PER="${{ inputs.per_page || '50' }}"
           python3 scripts/ops/lead_lag_cadence.py \
-            --owner "${{ github.repository_owner }}" \
+            --owner "$GITHUB_REPOSITORY_OWNER" \
             --repo "${GITHUB_REPOSITORY#*/}" \
             --branch master \
-            --per-page "$PER" \
+            --per-page "$CADENCE_PER_PAGE" \
             --out docs/ops/generated/lead-lag-cadence.json
 
       - name: Summary
+        shell: bash
         run: |
           set -euo pipefail
+          REPORT=docs/ops/generated/lead-lag-cadence.json
           {
             echo "## Cadence Lead/Lag (moneyball plane)"
             echo
             echo "Correctness > green badges. Skipped/cancelled = operational lag, not model failure."
             echo
-            if [ -f docs/ops/generated/lead-lag-cadence.json ]; then
-              echo '```json'
-              head -c 6000 docs/ops/generated/lead-lag-cadence.json
-              echo
-              echo '```'
-            fi
+            SAMPLE=$(jq -r '.sample_size' "$REPORT")
+            TOTAL=$(jq -r '.api_total_count // "unknown"' "$REPORT")
+            TRUNCATED=$(jq -r '.sample_truncated' "$REPORT")
+            VERDICT=$(jq -r '.verdict' "$REPORT")
+            echo "- Sample: $SAMPLE / $TOTAL recent runs"
+            echo "- Truncated: $TRUNCATED"
+            echo "- Verdict: $VERDICT (observer-only; not a promotion gate)"
+            echo
+            echo '```json'
+            head -c 6000 "$REPORT"
+            echo
+            echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Commit cadence snapshot
+        shell: bash
         run: |
           set -euo pipefail
-          git add docs/ops/generated/lead-lag-cadence.json 2>/dev/null || true
+          git add docs/ops/generated/lead-lag-cadence.json
           if git diff --cached --quiet; then
             echo "No cadence delta."
             exit 0
@@ -75,4 +88,8 @@ jobs:
           git commit -s -m "chore(cadence): Lead/Lag moneyball snapshot" \
             -m "Observation plane only. Not dual-gate. Device UI not required." \
             -m "Agent-Identity: Cadence Lead/Lag"
-          git push || echo "push skipped (expected without write on some refs)"
+          # Reconcile concurrent master movement; a rejected push is a real failure,
+          # not a success-shaped log message.
+          git fetch origin master
+          git rebase origin/master
+          git push origin HEAD:master

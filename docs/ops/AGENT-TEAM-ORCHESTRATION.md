@@ -227,3 +227,25 @@ The scheduler should exploit a verified promotional window while it is open, but
 Agents should have clear bounded authority, observable decisions, and durable handoff state. Humans should be able to inspect why an agent was selected, what it consumed, what it produced, and why another agent was or was not invoked.
 
 The goal is an environment where agent autonomy and human UX reinforce each other rather than competing.
+
+
+## BIUDL execution and author provenance implementation
+
+The cross-lane implementation/acceptance contract is indexed in
+[`docs/ops/BIUDL-EXECUTION-AND-PROVENANCE.md`](BIUDL-EXECUTION-AND-PROVENANCE.md).
+The event-level author contract is
+[`docs/ops/AGENT-THROUGHPUT-EVENT.schema.json`](AGENT-THROUGHPUT-EVENT.schema.json).
+
+For PAT-mediated activity, keep `github_actor` and `triggering_actor` separate
+from the `author` attribution object. A workflow-name mapping can identify a
+known provider/role at workflow level, but it cannot prove which model generated
+a particular line of code. `model`, settings fingerprint, and context fingerprint
+remain null unless trusted invocation/task-boundary evidence supplies them.
+Settings/context values are SHA-256 fingerprints only; never persist raw prompts,
+completions, credentials, or session context.
+
+The existing read-only ATES observer now includes the known manager, scout, and
+orchestrator workflow cohort alongside Gemini/DeepSeek execution lanes. It retains
+run/attempt/SHA linkage, records attribution confidence and evidence references,
+and does not infer a model from the PAT owner. The citation curator and index are
+documented in `docs/briefing/SOURCE-CITATION-INDEX.md`.

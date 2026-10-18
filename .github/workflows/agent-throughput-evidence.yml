@@ -191,7 +191,7 @@ jobs:
             await core.summary
               .addHeading('ATES evidence observation')
               .addRaw(`- workflow: ${run.name}\n`)
-              .addRaw(`- agent: ${identity[1]}\n`)
+              .addRaw(`- agent: ${identity.agentId}\n`)
               .addRaw(`- run: ${run.id} / attempt ${run.run_attempt || 1}\n`)
               .addRaw(`- SHA: ${run.head_sha}\n`)
               .addRaw(`- conclusion: ${run.conclusion}\n`)

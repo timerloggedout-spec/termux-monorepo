@@ -131,3 +131,6 @@ case "$level" in
     fi ;;
   OK) [ "$last" = OK ] || termux-notification-remove "$TMX_NOTIFY_ALERT_ID" 2>/dev/null || true ;;
 esac
+
+# Observer|controller 🎮 nodes also refresh the control pane (id 43114) in the same group.
+if [ "${TERMUX_DEVICE_ROLE:-}" = observer-controller ]; then bash "$SCRIPT_DIR/controller-panel.sh" draw || true; fi

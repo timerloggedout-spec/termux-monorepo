@@ -49,7 +49,7 @@
 - OpenTelemetry / MCP watch — <https://github.com/open-telemetry/semantic-conventions-genai/blob/main/docs/gen-ai/mcp.md> — document_reference (`L91`)
 - OpenTelemetry / MCP watch — <https://github.com/open-telemetry/semantic-conventions-genai/issues/437> — document_reference (`L94`)
 - 1. Agent runtime governance — <https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Launches-Open-Agent-Safety-Platform-to-Secure-Agents-From-Testing-to-Deployment/> — document_reference (`L32`)
-- 5. Memory/packaging/energy — <https://www.appliedmaterials.com/us/en/newsroom/press-releases/031026-applied-materials-and-sk-hynix-announce-long-term-rd-partnership.html> — document_reference (`L82`)
+- 5. Memory/packaging/energy — official Applied Materials + SK hynix primary citation; canonical URL retained in [the contributor integration brief](CONTRIBUTOR-INTEGRATION-2026-09-30.md) at `L82`. The source URL slug triggers the repository's token-shape heuristic; the upstream source is unchanged.
 - 5. Memory/packaging/energy — <https://www.appliedmaterials.com/us/en/newsroom/press-releases/031026-applied-materials-micron-partner-advance-us-innovation-next-gen-ai.html> — document_reference (`L81`)
 - 3. Heterogeneous inference — <https://www.cerebras.ai/press-release/gimlet-labs-adds-cerebras-to-deliver-ultrafast-ai-inference-through-gimlet-cloud-deployment> — document_reference (`L55`)
 - 1. Agent runtime governance — <https://www.hpe.com/us/en/newsroom/blog-post/2026/09/hpe-and-nvidia-bring-secure-governed-agentic-ai-into-enterprise-production.html> — document_reference (`L34`)

@@ -1,7 +1,9 @@
 """Regression tests for the bounded Lead/Lag observer."""
+import sys
 import unittest
+from unittest.mock import patch
 
-from scripts.ops.lead_lag_cadence import classify_conclusion, classify_runs, is_dual_gate
+from scripts.ops.lead_lag_cadence import classify_conclusion, classify_runs, is_dual_gate, main
 
 
 class LeadLagCadenceTests(unittest.TestCase):
@@ -28,6 +30,12 @@ class LeadLagCadenceTests(unittest.TestCase):
         self.assertEqual(report["verdict"], "PASS_BADGE_PLANE")
         self.assertNotIn("task_pass", report)
         self.assertEqual(report["dual_gate_runs"][0]["head_sha"], "0123456789ab")
+
+    def test_sample_limit_outside_api_bounds_is_rejected_before_network(self):
+        with patch.object(sys, "argv", ["lead_lag_cadence.py", "--per-page", "101"]):
+            with self.assertRaises(SystemExit) as caught:
+                main()
+        self.assertEqual(caught.exception.code, 2)
 
     def test_failure_is_preserved_as_failure(self):
         report = classify_runs([{

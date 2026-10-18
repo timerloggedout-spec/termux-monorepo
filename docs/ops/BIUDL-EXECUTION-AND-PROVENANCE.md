@@ -6,7 +6,7 @@
 
 ## Operating rule
 
-Reuse existing control planes. The repo already has the Foresight Evidence Spine, closed ATES event schema/reducer, the read-only `agent-throughput-evidence` observer, provider catalog, Scout missions, manager MVT/continuous evaluation, and Pinggy bridge publishing. Do not create a competing orchestrator, telemetry store, or source-of-truth. Extend these contracts at their existing boundaries.
+Reuse existing control planes. The repo already has the [Agent Evidence Substrate](AGENT-EVIDENCE-SUBSTRATE.md), [Agent Team Orchestration](AGENT-TEAM-ORCHESTRATION.md), [Agent Team Roster](AGENT-TEAM-ROSTER.md), [Agent Monikers SSOT](AGENT-MONIKERS.md), [Agent Evaluation Framework](../architecture/AGENT-EVALUATION-FRAMEWORK.md), [Foresight Evidence Spine](FORESIGHT-EVIDENCE-SPINE.md), closed ATES event schema/reducer, the read-only `agent-throughput-evidence` observer, provider catalog (`../schemas/agent-roster.yaml`), Scout missions, manager MVT/continuous evaluation, Hindsight integration, and Pinggy/bridge publishing. The existing MCP admission, edge inference, and manager tournament schemas remain the domain contracts. Do not create a competing orchestrator, telemetry store, or source-of-truth. Extend these contracts at their existing boundaries.
 
 The execution loop is:
 

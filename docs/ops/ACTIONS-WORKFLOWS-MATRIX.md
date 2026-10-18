@@ -108,3 +108,52 @@ flowchart TD
 
 Agent-Identity: Grok (Administrator)  
 Observed: 2026-10-18T05:01Z
+
+## Modular Consolidation Plan (notification reduction)
+
+Target: reduce effective notification edges by combining related schedules into orchestrators.
+
+| Module | Current workflows (examples) | Proposed | Cadence |
+|--------|------------------------------|----------|---------|
+| Dual-gate core | repo-gate.yml, termux-smoke.yml | Keep as authority | push + PR |
+| Observability | actions-run-watcher, cadence-lead-lag | Merge watcher into Lead/Lag | schedule 15-30m |
+| Bridge/Tunnel | n8n-she-bridge, tunnel-canary, termux-bridge-connect | Keep separate; canary is inventory only | */30 or dispatch |
+| Context graph | context-relationship-*.yml (many) | Single orchestrator with path filters | schedule + workflow_run limited |
+| Agent lanes | agent-*-ops, quality, throughput | Group under agent-continuous-ops | schedule staggered |
+| Help-wanted | help-wanted-* | Already somewhat modular | schedule |
+
+**Spam reduction levers already applied:**
+- n8n parents limited to dual-gate.
+- Concurrency per SHA.
+- Watcher incidents only failure/timeout.
+- Lead/Lag classifies skipped as lag_operational (no incident).
+
+Next slice: audit top 10 schedule workflows by run volume and apply concurrency + if-conditions for non-critical.
+
+## Additional flowchart: skip/cancel audit
+
+```mermaid
+flowchart TD
+  Run[Workflow run starts] --> Conc{Concurrency cancel?}
+  Conc -->|Yes| Succ{Successor success?}
+  Succ -->|Yes| AuditOK[Audit PASS: cancelled by design]
+  Succ -->|No| Investigate[Check logs / re-fetch]
+  Conc -->|No| Job{Job if: matched?}
+  Job -->|Skip| Cond{Documented condition?}
+  Cond -->|Yes| AuditOK2[Audit PASS: intentional skip]
+  Cond -->|No| Fix[Add if: or remove trigger]
+  Job -->|Run| Conc2{Conclusion}
+  Conc2 -->|success/failure| Evidence
+  Conc2 -->|timeout| Stall class
+```
+
+## Device #1 status (opaque)
+
+- Public: device_id=`tmx-node-primary` in seed manifest.
+- Status: unknown (no live publish this session).
+- Requirement: operator sets unique TERMUX_DEVICE_ID on physical units; publisher job updates status to active when tunnel verified.
+- Alternatives: Cloudflare tunnel, secondary node, Actions runners for non-device work.
+
+Observed this session: 2026-10-18T16:05Z
+Agent-Identity: Grok (Administrator)
+Rebased onto master tip c9cd205995eafe70ddf534593ff3a163d3bc6110

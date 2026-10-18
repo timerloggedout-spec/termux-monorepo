@@ -18,10 +18,10 @@ import os
 import ssl
 import urllib.error
 import urllib.request
+from pathlib import Path
 
 TIMEOUT = 30
 UA = "termux-monorepo-provider-availability/1"
-OUT = os.environ.get("OUTPUT", "/tmp/provider-availability.json")
 
 
 def now():
@@ -179,9 +179,27 @@ def main():
         },
         "providers": rows,
     }
-    with open(OUT, "w", encoding="utf-8") as fh:
+
+    out_target = os.environ.get("OUTPUT", "/tmp/provider-availability.json")
+    out_path = Path(out_target)
+    if ".." in out_path.parts:
+        raise ValueError(f"Path traversal detected in OUTPUT path: {out_target}")
+    if out_path.is_symlink():
+        raise ValueError(f"OUTPUT path {out_target} cannot be a symlink")
+    if out_path.parent.exists() and out_path.parent.is_symlink():
+        raise ValueError(f"OUTPUT parent directory {out_path.parent} cannot be a symlink")
+
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    flags = os.O_WRONLY | os.O_CREAT | os.O_TRUNC
+    fd = os.open(out_path, flags, 0o600)
+    with open(fd, "w", encoding="utf-8") as fh:
         json.dump(document, fh, indent=2, sort_keys=True)
         fh.write("\n")
+    if not out_path.is_symlink():
+        try:
+            os.chmod(out_path, 0o600)
+        except Exception:
+            pass
 
     for row in rows:
         print(

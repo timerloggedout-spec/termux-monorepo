@@ -14,9 +14,11 @@ if str(_ROOT) not in sys.path:
     sys.path.insert(0, str(_ROOT))
 
 from scripts.model_selection_market.bootstrap import bootstrap_equal_weights  # noqa: E402
+from scripts.model_selection_market.catalog_join import join_catalog  # noqa: E402
 from scripts.model_selection_market.dspy_doe import DoeArm, DspyDoeStub  # noqa: E402
 from scripts.model_selection_market.ledger import LedgerSample, PerformanceLedger  # noqa: E402
 from scripts.model_selection_market.market import BetEntry, MarketGraph, TradingCard  # noqa: E402
+from scripts.model_selection_market.router_peer import observe_peers_for_role, peers_as_router_pairs  # noqa: E402
 from scripts.model_selection_market.selector import select_models  # noqa: E402
 
 
@@ -33,6 +35,15 @@ def main(argv: list[str] | None = None) -> int:
     sel.add_argument("-k", type=int, default=3)
     sub.add_parser("dspy-demo", help="MSM-004 A/B/C/D stub arms")
     sub.add_parser("market-demo", help="MSM-005 card + bet snapshot")
+    jn = sub.add_parser("join", help="MSM-006 live catalog join (observe)")
+    jn.add_argument("--catalog", type=Path, default=None)
+    peer = sub.add_parser("peers", help="MSM-007 observe peers for model_router")
+    peer.add_argument("--role", default="triage")
+    peer.add_argument("--mode", default="series", choices=["series", "parallel", "concurrent"])
+    peer.add_argument("-k", type=int, default=5)
+    peer.add_argument("--catalog", type=Path, default=None)
+    peer.add_argument("--ledger", type=Path, default=None)
+    peer.add_argument("--pairs", action="store_true")
     sub.add_parser("all-demo", help="run all demos once")
 
     args = p.parse_args(argv)
@@ -71,12 +82,28 @@ def main(argv: list[str] | None = None) -> int:
             )
         )
         out = g.snapshot()
+    elif args.cmd == "join":
+        out = join_catalog(catalog_path=args.catalog)
+    elif args.cmd == "peers":
+        obs = observe_peers_for_role(
+            role=args.role,
+            mode=args.mode,
+            k=args.k,
+            catalog_path=args.catalog,
+            ledger_path=args.ledger,
+        )
+        out = {"pairs": peers_as_router_pairs(obs)} if args.pairs else obs
     elif args.cmd == "all-demo":
+        joined = join_catalog()
+        obs = observe_peers_for_role(role="triage", k=3)
         out = {
             "bootstrap_model_count": bootstrap_equal_weights()["model_count"],
+            "join_count": joined.get("join", {}).get("joined_count"),
+            "join_sources": joined.get("join", {}).get("sources"),
             "select_series": select_models(mode="series"),
             "select_parallel": select_models(mode="parallel", k=2),
             "select_concurrent": select_models(mode="concurrent"),
+            "peers_observe": obs,
             "dspy": DspyDoeStub().cohort_summary(),
             "market_edges": MarketGraph().snapshot()["edges"],
         }

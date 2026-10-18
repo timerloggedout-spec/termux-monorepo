@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "note": "Public registry of opaque Termux node ids. No make/model/IMEI/serial/MAC/build fingerprint here, ever. Each fingerprint map is age-encrypted and stored as GitHub secret TMX_FPMAP_<SUFFIX> (see docs/ops/DEVICE-IDENTITY.md).",
+  "heartbeat": {
+    "branch": "device-heartbeat",
+    "path": "ops/devices/heartbeat/<device_id>.json",
+    "interval_minutes": 15,
+    "stale_after_minutes": 45
+  },
+  "nodes": [
+    {
+      "device_id": "tmx-node-primary",
+      "role": "bridge",
+      "kind": "origin",
+      "status": "active",
+      "operation": "headless (broken screen): ADB / wireless debugging, Termux sshd 8022",
+      "jobs": { "43107": "resource sentinel", "43108": "existing (untouched)", "43109": "pinggy publisher", "43110": "device heartbeat" },
+      "fpmap_secret": "TMX_FPMAP_PRIMARY"
+    },
+    {
+      "device_id": "tmx-node-55619bd5",
+      "role": "observer",
+      "kind": "secondary",
+      "status": "provisioning",
+      "operation": "working screen; watches origin and notifies",
+      "jobs": { "43110": "device heartbeat", "43111": "origin status notification" },
+      "fpmap_secret": "TMX_FPMAP_55619BD5"
+    }
+  ]
+}

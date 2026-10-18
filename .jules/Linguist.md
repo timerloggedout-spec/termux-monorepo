@@ -123,3 +123,10 @@ Executing 32 sequential `.sub()` regex passes unconditionally in `compress()` / 
 
 **Action:**
 Use C-level substring guards (`if phrase.lower() in text_lower:`) before running sequential regex phrase substitutions, pre-compute reverse pair tuples at module scope, and avoid pre-calling `.search()` prior to `.sub()` on document transformations.
+
+## 2026-10-12 - Path Extension Filtering Guard for Structural Regex Substitution
+**Learning:**
+Checking for `.` in `translate_line` as a guard before evaluating `PATH_REGEX.sub` causes every plain sentence ending with a period to trigger full path regex scanning and match allocations. By pre-defining a tuple of target path extensions (`PATH_EXTENSIONS = (".py", ".js", ...)`), `translate_line` can verify `any(ext in line for ext in PATH_EXTENSIONS)` when `.` is present without path separators (`/`, `\`, `~`). This allows plain prose lines ending with periods to short-circuit path regex evaluations entirely, reducing `compile_doc` latency from 0.1867ms to 0.1272ms (~31.9% speedup).
+
+**Action:**
+When using broad regular expressions with character guards like `.`, pre-filter against target extension tuples to prevent plain prose punctuation from triggering regex evaluations.

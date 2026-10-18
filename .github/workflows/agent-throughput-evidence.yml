@@ -11,6 +11,12 @@ on:
     workflows:
       - "🔀 Gemini Dispatch (free-tier agentic)"
       - "DeepSeek CI – Agentic Automation"
+      - "DeepSeek Termux Agent"
+      - "DeepSeek Self-Integrate"
+      - "Team MVT — simultaneous provider lanes"
+      - "Continuous Team Evaluation"
+      - "help-wanted scout"
+      - "Peer review orchestrator"
     types: [completed]
 
 permissions:
@@ -118,17 +124,40 @@ jobs:
             }
             const workflowName = String(run.name || '');
             const identity = [
-              ['Gemini Dispatch', 'gemini'],
-              ['DeepSeek CI', 'deepseek']
-            ].find(([needle]) => workflowName.includes(needle));
+              { needle: 'Gemini Dispatch', agentId: 'gemini', provider: 'google', role: 'specialist', kind: 'agent', confidence: 0.80 },
+              { needle: 'DeepSeek CI', agentId: 'deepseek', provider: 'deepseek', role: 'specialist', kind: 'agent', confidence: 0.80 },
+              { needle: 'DeepSeek Termux Agent', agentId: 'deepseek-termux', provider: 'deepseek', role: 'specialist', kind: 'agent', confidence: 0.80 },
+              { needle: 'DeepSeek Self-Integrate', agentId: 'deepseek-self-integrate', provider: 'deepseek', role: 'builder', kind: 'agent', confidence: 0.80 },
+              { needle: 'Team MVT', agentId: 'team-mvt', provider: null, role: 'manager', kind: 'manager', confidence: 0.65 },
+              { needle: 'Continuous Team Evaluation', agentId: 'continuous-evaluation', provider: null, role: 'manager', kind: 'manager', confidence: 0.65 },
+              { needle: 'help-wanted scout', agentId: 'help-wanted-scout', provider: null, role: 'scout', kind: 'scout', confidence: 0.65 },
+              { needle: 'Peer review orchestrator', agentId: 'peer-review-orchestrator', provider: null, role: 'orchestrator', kind: 'orchestrator', confidence: 0.65 }
+            ].find(entry => workflowName.includes(entry.needle));
 
             if (!identity) {
-              core.setFailed(`workflow is outside the explicit agent identity map: ${workflowName}`);
+              core.notice(`workflow is outside the attribution map; no provider/model identity will be guessed: ${workflowName}`);
               return;
             }
 
+            const boundaryAuthor = taskBoundary && typeof taskBoundary === 'object' && taskBoundary.author && typeof taskBoundary.author === 'object'
+              ? taskBoundary.author : {};
+            const fingerprint = value => typeof value === 'string' && /^[0-9a-f]{64}$/.test(value) ? value : null;
             const metadata = {
-              agent_id: identity[1],
+              agent_id: identity.agentId,
+              github_actor: run.actor?.login || null,
+              triggering_actor: run.triggering_actor?.login || null,
+              author: {
+                provider: identity.provider,
+                model: null,
+                adapter: 'github-actions',
+                role: identity.role,
+                identity_kind: identity.kind,
+                settings_fingerprint: fingerprint(boundaryAuthor.settings_fingerprint),
+                context_fingerprint: fingerprint(boundaryAuthor.context_fingerprint),
+                attribution_method: identity.provider ? 'workflow_name_mapping' : 'inferred',
+                confidence: identity.confidence,
+                evidence_refs: [`workflow_run:${run.id}`, `workflow_name:${workflowName}`]
+              },
               workflow_run: {
                 id: run.id,
                 run_attempt: run.run_attempt || 1,

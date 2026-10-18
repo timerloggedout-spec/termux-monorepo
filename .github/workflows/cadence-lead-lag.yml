@@ -60,9 +60,13 @@ jobs:
             echo
             echo "Correctness > green badges. Skipped/cancelled = operational lag, not model failure."
             echo
-            echo "- Sample: $(jq -r '.sample_size' "$REPORT") / $(jq -r '.api_total_count // \"unknown\"' "$REPORT") recent runs"
-            echo "- Truncated: $(jq -r '.sample_truncated' "$REPORT")"
-            echo "- Verdict: $(jq -r '.verdict' "$REPORT") (observer-only; not a promotion gate)"
+            SAMPLE=$(jq -r '.sample_size' "$REPORT")
+            TOTAL=$(jq -r '.api_total_count // "unknown"' "$REPORT")
+            TRUNCATED=$(jq -r '.sample_truncated' "$REPORT")
+            VERDICT=$(jq -r '.verdict' "$REPORT")
+            echo "- Sample: $SAMPLE / $TOTAL recent runs"
+            echo "- Truncated: $TRUNCATED"
+            echo "- Verdict: $VERDICT (observer-only; not a promotion gate)"
             echo
             echo '```json'
             head -c 6000 "$REPORT"

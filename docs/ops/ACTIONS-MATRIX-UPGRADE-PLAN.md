@@ -1,127 +1,138 @@
-# Actions Matrix Upgrade — 13-Phase Delivery Plan
+# Actions Matrix Upgrade — RECON and Execution Map
 
-**Workstream:** CADE / Actions Matrix Upgrade  
+**Authority:** established 13-phase process in [Issue #631](https://github.com/timerloggedout-spec/termux-monorepo/issues/631). This document maps the Actions Matrix work into that process; it does not redefine the phases or establish a parallel methodology.
+
 **Implementation branch:** `ops/actions-matrix-upgrade-hardening-2026-10-18`  
-**Planning baseline:** `ops/actions-matrix-upgrade-2026-10-18` at `0757583bcb5fad5ed247ea9a03d48ccb28df7c6a`  
+**Source branch at request:** `ops/actions-matrix-upgrade-2026-10-18` @ `0757583bcb5fad5ed247ea9a03d48ccb28df7c6a`  
 **Requested master comparison point:** `669c0d0bc81862c6fbab830b3521a82464031320`  
-**Re-fetched PR base at creation:** `c83ea89d92eb4f3176f8d3371e7701183527692c` (re-fetch again before promotion)  
-**Status:** PLAN + implementation in progress; this document is not a claim of CI success, merge, live device health, or production promotion.
+**Base observed at prior PR fetch:** `c83ea89d92eb4f3176f8d3371e7701183527692c` — re-fetch before promotion.  
+**State:** RECON found existing governance, quota policy, and the canonical phase definitions. Current implementation and current-SHA validation remain distinct states.
 
-## Objectives and non-negotiable invariants
+## RECON findings — verified repository authority
 
-1. Correctness and promotion authority outrank speed and green-badge counts.
-2. A workflow success badge is not task PASS; dual-gate remains promotion authority.
-3. Skipped/cancelled/queued observations are classified and audited, not silently discarded or mislabeled as model failure.
-4. Public device manifests contain opaque IDs only; never publish physical device identity, serials, IMEI, MAC, or location.
-5. Runtime health must be proven by a live device publisher; a seeded `status: unknown` manifest is not healthy.
-6. Workflow automation must be bounded, observable, idempotent, and honest about failed writes.
-7. The matrix is the navigation/decision surface; individual workflow contracts and generated evidence remain authoritative for their own domains.
+1. The canonical phase names and meanings are in Issue #631. The previous version of this file replaced them with invented technical work-package phase names. That was incorrect; the map below preserves the canonical phases.
+2. Repository operating contract is `RECON → CLASSIFY → PLAN → ACT → WAIT → VALIDATE → RE-FETCH → RECORD → REPEAT` in `.agents/skills/evidence-led-monorepo-ops/SKILL.md`.
+3. Adaptive asynchronous execution is governed by `.agents/skills/adaptive-wait/SKILL.md`: re-fetch after material changes, back off only on no-delta evidence, retry only when the attempt changes for an evidence-backed reason, and do not duplicate active work.
+4. The repository dual-gate is hygiene/portability plus agentic Termux smoke. Vercel is explicitly a non-gate in the canonical ops skill and issue #772. A Vercel quota failure must not be misreported as a code defect or CI gate failure.
+5. `docs/DEPLOYMENT-LANES.md` records the `termux-monorepo` and `mcp-hub` Vercel lanes as live. GitHub Pages is not enabled; Render and Cloudflare are candidates with no live deployment evidence in this repository. Do not silently claim or route production traffic to an unproven lane.
+6. `docs/schemas/model-rotation.yaml` governs **LLM** free-tier rotation; it is not a Vercel deployment quota registry. Reuse its quota-first design principles, but do not conflate provider types or their budgets.
+7. The latest known PR #1242 head before this RECON correction was `4b569bc2c9a8e032fd8464636b2d0d9e6a6e2087`. Re-fetch the live PR head/base and checks before drawing any current-state conclusion.
 
-## Thirteen phases
+## Canonical 13 phases — retained verbatim in name and intent
 
-| Phase | Work package | Depends on | Deliverable / exit criterion | Priority |
-|---|---|---|---|---|
-| P01 | Reconcile source SHAs and branch ancestry | — | Exact base/head SHAs recorded; no ambiguous “latest” refs | P0 |
-| P02 | Inventory workflows and trigger graph | P01 | Machine-readable inventory of workflow IDs, triggers, permissions, concurrency, and downstream consumers | P0 |
-| P03 | Classify dual-gate authority | P01, P02 | Explicit allowlist of promotion-authoritative checks; advisory/non-gate checks separated | P0 |
-| P04 | Harden cadence input and sampling | P01 | Input is shell-safe; sample is 1–100 runs; no accidental unbounded history scan | P0 |
-| P05 | Harden snapshot commit/push behavior | P04 | No swallowed push failures; concurrent master movement is reconciled; no-op remains successful | P0 |
-| P06 | Add classifier regression tests | P04 | Success badge, operational outcomes, in-flight states, and failures have deterministic tests | P0 |
-| P07 | Validate YAML and workflow policy | P04–P06 | YAML parse + actionlint + repository workflow-surface policy pass on exact head SHA | P0 |
-| P08 | Validate observer runtime | P07 | Dispatch/scheduled run records sample count, API total, truncation, output hash, run/job IDs | P1 |
-| P09 | Reconcile notification fan-out | P02, P03, P07 | Trigger graph reduced without removing required coverage; skip/cancel noise has no incident spam | P1 |
-| P10 | Add queue/stall reaper evidence | P02, P03 | Zero-job/long-queued runs classified with reason and successor evidence; no blind cancellation | P1 |
-| P11 | Verify device bridge publication | P01, P07 | Live publisher proves TCP target and emits schema v3 with unique opaque ID; otherwise remains UNKNOWN | P1 |
-| P12 | Produce Gantt/dependency and live status receipt | P01–P11 | Matrix, generated evidence, and this plan agree on open/closed/blocked work | P1 |
-| P13 | Promotion review and post-promotion watch | P07–P12 | Exact-head dual-gate green, mergeability clean, deliberate promotion, then observe first production cycle | P0 gate |
+The phases below are the established workflow. Technical work packages may run in parallel at different phases, as Issue #631 specifies; the phases themselves are not replaced by technical milestones.
 
-## Gantt — relative sequence, not calendar promises
+| # | Tone | Established phase | Application to this work | Evidence / exit condition |
+|---:|---|---|---|---|
+| 1 | Magnetic (Hun) | **Initiation / Purpose** | Define the requested outcome: improve Actions-matrix reliability and quota-resilient operation without changing the canonical process. | Objective and scope trace to the user request and issue/PR lineage. |
+| 2 | Lunar (Ka) | **Challenge / Obstacle** | Reconstruct source/master SHAs, existing phase authority, CI gates, provider quota constraints, and unproven fallback lanes. | Current-state facts, risks, and unknowns explicitly separated. |
+| 3 | Electric (Ox) | **Activation / Movement** | Start bounded implementation of the confirmed defects: bounded run sampling, safe input handling, reliable snapshot writes, classifier tests, and bridge input validation. | Changes tied to identified code paths; no speculative provider switch. |
+| 4 | Self-Existing (Kan) | **Form / Architecture** | Fit technical work to the existing workflow graph, dual-gate, lane SSOTs, and established phase process. | Contracts and dependencies cite the existing repository authorities. |
+| 5 | Overtone (Ho) | **Empowerment / Core** | Preserve the promotion authority and make provider capacity decisions explicit. Separate required gates, advisory services, and deployment capacity. | No success badge or provider response is treated as task success; no unverified lane gains authority. |
+| 6 | Rhythmic (Uac) | **Balance / Rhythm** | Use adaptive WAIT and quota-aware scheduling: sample boundedly, preserve concurrency, deduplicate equivalent work, observe remaining capacity where available, and back off on no delta. | Run IDs, sample limits, cooldown/rotation decisions, and retry reasons are recorded. |
+| 7 | Resonant (Uc) | **Alignment / Attunement** | Reconcile workflow owners, downstream consumers, notification fan-out, source SHA, review findings, and current base. | No trigger is removed without verifying required downstream coverage. |
+| 8 | Galactic (Uaxac) | **Integrity / Modeling** | Validate YAML/action policy, deterministic classifier tests, privacy-safe manifests, and quota/fallback decisions against fixtures. | Tests and policy checks run on the exact candidate SHA; unknown behavior remains UNKNOWN. |
+| 9 | Solar (Bolon) | **Realization / Intent** | Close confirmed defects and produce current-SHA evidence for the operational outcome. | Implementation evidence plus authoritative check/run/job/artifact receipts. |
+| 10 | Planetary (Lahun) | **Manifestation / Production** | Promote only through the repository-defined dual-gate and deliberate merge process; verify production outcomes separately. | Candidate SHA and resulting production SHA are recorded; deployment health is independently checked. |
+| 11 | Spectral (Buluc) | **Release / Dissolution** | Remove redundant polling, unbounded scans, duplicate dispatches, noisy notifications, and retries that cannot change the outcome. | Before/after evidence shows lower waste without losing required coverage. |
+| 12 | Crystal (Lahca) | **Cooperation / Review** | Review implementation and quota decisions with the relevant lane owners; capture actionable findings and dispositions. | Review evidence is current-SHA-bound; advisory skips are not called approvals. |
+| 13 | Cosmic (Oxlahun) | **Transcendence / Evolution** | Record lessons and promote verified improvements into the next operating baseline; feed residual work back into the same 13-phase cycle. | Closeout receipt names what is proven, what remains unknown, and the next evidence-backed cycle. |
 
-Legend: `██` planned execution window; `◆` decision gate. Windows are dependency slots, not duration guarantees.
+## Parallel work map and dependency order
 
-| Phase | W1 | W2 | W3 | W4 | W5 | W6 |
-|---|:---:|:---:|:---:|:---:|:---:|:---:|
-| P01 Source reconciliation | ██ | | | | | |
-| P02 Workflow inventory | ██ | ██ | | | | |
-| P03 Dual-gate authority | | ██ | | | | |
-| P04 Bounded sampling | ██ | | | | | |
-| P05 Safe snapshot writer | ██ | ██ | | | | |
-| P06 Regression tests | ██ | ██ | | | | |
-| P07 Static policy gates | | ◆ | ██ | | | |
-| P08 Runtime observer validation | | | ██ | | | |
-| P09 Fan-out reduction | | ██ | ██ | ██ | | |
-| P10 Queue/stall reaper | | | ██ | ██ | | |
-| P11 Device bridge proof | | ██ | ██ | | | |
-| P12 Matrix/status reconciliation | | | | ██ | ██ | |
-| P13 Promotion + watch | | | | | ◆ | ██ |
+These are workstreams inside the canonical phases, not replacement phases:
 
-W1–W6 are relative planning windows. Do not convert them into dated commitments until run capacity, maintainers, and device access are confirmed.
+| Workstream | Main phases | Depends on | Status / completion evidence |
+|---|---|---|---|
+| Source and workflow recon | 1–2, 4, 7 | Live refs and SSOTs | Re-fetch master/head, ancestry, changed paths, trigger graph, current-SHA runs/jobs/reviews. |
+| Bounded cadence collector | 3, 6, 8 | Workflow input and API contract | Single-page run sampling; validate 1–100; expose API total and truncation; deterministic tests. |
+| Snapshot writer correctness | 3, 6, 8 | Cadence collector output | No swallowed write/push errors; safe no-op; reconcile concurrent master movement; never cancel active writer. |
+| Classification and regression tests | 3, 8, 9 | Explicit operational-state contract | Distinguish workflow badge, task outcome, queued/in-flight, skipped/cancelled/neutral, and real failure. |
+| Notification/fan-out reduction | 4, 7, 11 | Verified trigger and consumer inventory | Remove only redundant fan-out; retain required downstream coverage; measure noise/volume before and after. |
+| Device bridge safety | 3, 4, 8 | Manifest schema and live device access | Validate opaque device IDs, roles, TTL; do not publish local usernames; live health remains UNKNOWN until independently proven. |
+| Quota and capacity management | 2, 5, 6, 8, 11 | Provider identity, observed limits, and configured alternatives | Classify provider-capacity failures independently; avoid retry storms; rotate only to a pre-provisioned, verified eligible lane. |
+| Promotion and post-promotion watch | 8–13 | Exact-SHA validation, reviews, current base | Dual-gate + task outcome on candidate; deliberate promotion; inspect first production cycle and record resulting SHA. |
 
-## Dependency graph
+### Dependency view
 
 ```mermaid
 flowchart TD
-  P01[P01 Reconcile SHAs] --> P02[P02 Inventory workflows]
-  P01 --> P04[P04 Bound sampling]
-  P02 --> P03[P03 Define dual-gate authority]
-  P04 --> P05[P05 Safe snapshot writer]
-  P04 --> P06[P06 Regression tests]
-  P05 --> P07[P07 Static policy validation]
-  P06 --> P07
-  P02 --> P09[P09 Fan-out reduction]
-  P03 --> P09
-  P02 --> P10[P10 Queue/stall reaper]
-  P03 --> P10
-  P01 --> P11[P11 Device bridge proof]
-  P07 --> P08[P08 Runtime observer proof]
-  P07 --> P09
-  P07 --> P10
-  P07 --> P11
-  P08 --> P12[P12 Reconcile status evidence]
-  P09 --> P12
-  P10 --> P12
-  P11 --> P12
-  P12 --> P13{P13 Exact-SHA promotion gate}
-  P07 --> P13
+  RECON[Phase 2: reconstruct SHAs, gates, lanes] --> ARCH[Phase 4: fit existing architecture]
+  RECON --> CODE[Phase 3: bounded implementation]
+  ARCH --> CLASSIFY[Phase 5: classify gate vs advisory vs capacity]
+  CODE --> TEST[Phase 8: deterministic validation]
+  CLASSIFY --> TEST
+  RECON --> FANOUT[Phase 7: verify consumers and owners]
+  FANOUT --> REDUCE[Phase 11: remove measured waste]
+  TEST --> EVIDENCE[Phase 9: verify task outcome]
+  REDUCE --> EVIDENCE
+  EVIDENCE --> REVIEW[Phase 12: review/disposition]
+  REVIEW --> PROMOTE[Phase 10: deliberate production promotion]
+  PROMOTE --> LEARN[Phase 13: record and feed-forward]
+  LEARN --> RECON
 ```
+
+### Gantt — relative work overlap, not new phase numbering
+
+`W1–W6` are dependency slots, not calendar promises. The canonical phases remain the phase sequence above; parallel technical work can span multiple phases.
+
+| Workstream | W1 | W2 | W3 | W4 | W5 | W6 |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|
+| Source / SSOT RECON | ■ | ■ | | | | |
+| Cadence collector + snapshot writer | ■ | ■ | | | | |
+| Classifier tests + static policy validation | | ■ | ■ | | | |
+| Trigger graph + fan-out review | ■ | ■ | ■ | | | |
+| Quota/fallback lane recon | ■ | ■ | ■ | | | |
+| Device bridge proof | | ■ | ■ | ■ | | |
+| Current-SHA integration evidence | | | ■ | ■ | | |
+| Review, promotion, post-promotion watch | | | | ■ | ■ | ■ |
+
+## Quota resilience policy — act before exhaustion, never after a retry storm
+
+### Correct classification
+
+A Vercel `api-deployments-free-per-day` response is **provider capacity = constrained/exhausted**, not code correctness = FAIL and not repository dual-gate = FAIL. Keep the deployment observation visible, but do not let a Vercel-only check block the code gates. This is consistent with the canonical ops skill and issue #772.
+
+### Rotation and fallback contract
+
+1. **Spend only on meaningful deploy events.** Use change/path filtering, deduplication, stable concurrency, and no-op detection so duplicate or docs-only changes do not consume a deployment where the lane does not need one.
+2. **Use budget thresholds before exhaustion.** Track observed usage and reset time when the provider exposes them. At the configured safety threshold, stop optional/preview deployments and reserve capacity for production-critical work. Never invent an exact remaining quota when the provider does not expose it.
+3. **Classify before retry.** On a provider quota response, preserve the first response and timestamp; do not immediately repeat the same deploy. Re-fetch provider state once if useful, then wait for reset or select an eligible alternative.
+4. **Rotate only across verified lanes.** Candidate order is a policy input, not proof of readiness. An alternative must already have a concrete project/site, source/root boundary, required secrets, production branch, URL, and successful source-SHA verification. Do not automatically send live traffic to Render, Cloudflare, or GitHub Pages based only on their mention in the lane registry.
+5. **Fail open for CI, fail closed for promotion.** A Vercel quota failure does not fail unrelated CI. A release cannot claim deployment success until the intended source SHA is deployed and verified on the selected lane.
+6. **Circuit-break and recover.** Mark the exhausted provider/lane unavailable for the relevant quota window, avoid retry storms, continue independent work, re-check at the provider's reset or recovery signal, and restore preference only after a successful health/source-SHA probe.
+7. **Keep secrets and budgets separate.** Do not copy credentials between providers or infer quota availability from the LLM model-rotation registry. Provider-specific capacity and authorization are independent inputs.
+
+### Current deployment-lane truth
+
+| Lane | Evidence-backed status | Allowed behavior during Vercel quota exhaustion |
+|---|---|---|
+| Vercel `termux-monorepo` | Live lane; Hobby plan observed in the connected Vercel team context | Defer noncritical deploys; preserve CI and source evidence; retry only after capacity recovery or a changed deployment input. |
+| Vercel `mcp-hub` | Live lane in deployment-lane SSOT | Manage independently by project; do not assume its deployment budget is a separate account-wide allowance without provider evidence. |
+| GitHub Pages | Candidate / not enabled in deployment-lane SSOT | Not an automatic fallback. Requires reviewed setup and a verified publication lane. |
+| Render | Candidate / unproven in this repository | Not an automatic fallback. Requires concrete project/service and source-SHA health proof. |
+| Cloudflare / Pages / Workers | Candidate / unproven in this repository | Not an automatic fallback. Establish the exact product, project, route/domain, source boundary, and verification first. |
+
+**Present limitation:** this RECON verified the connected Vercel team is on the Hobby plan and that the repository records alternative hosts as candidates, not live fallbacks. It did not establish a live remaining-deployment counter or a deployable alternative lane. Therefore the safe immediate behavior is to keep Vercel non-gating for CI, prevent wasteful deployment attempts, and not claim automatic failover until a fallback is provisioned and verified. The next useful implementation is an observe-mode quota/lane selector plus fixtures, followed by a reviewed enablement once real provider telemetry and an alternative lane are available.
 
 ## Acceptance checklist
 
-- [ ] Branch head and master base re-fetched immediately before review.
-- [ ] Unit tests cover classifier semantics and invalid sample bounds.
-- [ ] `actionlint`, YAML parse, and repository workflow-surface policy pass on the exact PR head.
-- [ ] Dispatch input is never interpolated directly into shell source.
-- [ ] API sample is bounded to one page and records `api_total_count` + `sample_truncated`.
-- [ ] Snapshot writer never converts a failed push into a successful step.
-- [ ] Writer concurrency does not cancel an in-progress snapshot write.
-- [ ] Public bridge manifest stays schema v3 and opaque; live status remains UNKNOWN until independently observed.
-- [ ] Queue reaper records evidence and avoids destructive action without a verified successor.
-- [ ] Skipped, cancelled, stale, queued, neutral, and timed-out outcomes receive explicit classification.
-- [ ] Required dual-gate checks pass on the exact head SHA; advisory checks are not mislabeled as blockers.
-- [ ] Promotion is deliberate; no merge is implied by this plan.
-- [ ] After promotion, watch one real scheduled/dispatch cycle through run, jobs, artifact/output, and resulting repository SHA.
+- [ ] Canonical 13 phase names/meanings remain unchanged from Issue #631.
+- [ ] Current master/head/base and ancestry are re-fetched before promotion.
+- [ ] Unit tests, YAML parse, actionlint, and workflow-surface policy run on the exact current head.
+- [ ] Cadence sampling is bounded and records API total/truncation.
+- [ ] Snapshot writes are concurrency-safe and do not mask push failures.
+- [ ] Classifier tests distinguish operational state from correctness/task outcome.
+- [ ] Fan-out changes preserve required downstream coverage.
+- [ ] Provider capacity, CI correctness, deployment state, and task outcome are classified independently.
+- [ ] Quota responses do not trigger blind retry loops or incorrectly fail repository dual-gate.
+- [ ] No alternative deployment provider is labeled live or selected for production without source-SHA verification.
+- [ ] Device bridge remains UNKNOWN until live publication and reachability are proven.
+- [ ] Review, dual-gate, mergeability, and task outcome are current-SHA-bound.
+- [ ] Post-promotion observation records run/job/artifact and resulting source/deployment SHA.
 
-## Risks and mitigations
+## Operating receipt
 
-| Risk | Impact | Mitigation |
-|---|---|---|
-| Workflow inventory misses dynamic/downstream triggers | Fan-out changes silently remove coverage | Compare event triggers, `workflow_run` consumers, reusable workflows, and dispatch callers before disabling anything |
-| Master advances during snapshot commit | Lost update or push rejection | Fetch/rebase and fail visibly if push cannot be reconciled |
-| API sample accidentally paginates all history | Excess runtime/API use; misleading “sample” semantics | Single-page fetch; expose total count and truncation |
-| Green workflow is mistaken for product correctness | Unsafe promotion | Exact-SHA dual-gate + task evidence + explicit promotion gate |
-| Seed manifest is treated as live device health | False operational readiness | Require live timestamp, expiry, TCP verification, and opaque device identity |
-| Cancelled/skipped runs are ignored | Hidden deadlocks or concurrency starvation | Preserve operational samples and require successor/stall evidence |
-| Broad workflow cleanup breaks unrelated lanes | Coverage regression | Modular slices, dependency map, before/after run cohort comparison |
+Every material cycle should retain the repository's existing receipt fields: operation, repo, base SHA, head SHA, observed-at timestamp, evidence IDs, state/outcome, provenance/confidence, decision, reason, and remaining unproven work. Use the established RECON → CLASSIFY → PLAN → ACT → WAIT → VALIDATE → RE-FETCH → RECORD → REPEAT loop; do not create a parallel phase system.
 
-## Current known blockers
-
-- Device bridge seed remains `status: unknown`; this plan cannot prove live Termux/Pinggy connectivity.
-- The branch requires exact-head CI evidence before promotion.
-- The repository's broad workflow fan-out reduction is intentionally split into multiple slices; this PR should not claim all 158 workflows have been optimized.
-- Live runtime and post-promotion behavior remain unverified until a real run is observed.
-
-## Operating loop
-
-`RECON → PLAN/MEASURE → IMPLEMENT → TEST → COMMIT → WAIT → WATCH → VALIDATE → RE-FETCH → COMPARE → CLASSIFY → RECORD → REPEAT`
-
-Every status transition must be backed by source SHA, workflow run/attempt, conclusion, and evidence reference. `QUEUED` is not `EXECUTED`; `SUCCESS` is not automatically `PROMOTED`.
+**Truth boundary:** this document is a reconstructed execution map, not proof that CI passed, a provider quota is available, a fallback deployment is live, a device is healthy, or production promotion occurred.
